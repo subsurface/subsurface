@@ -1,3 +1,4 @@
+<dives>
 <dive>
 <number>1</number>
 <size>767</size>
@@ -34070,3 +34071,4 @@
    <event type="9" time="15" flags="0" value="0">surface</event>
 </sample>
 </dive>
+</dives>
