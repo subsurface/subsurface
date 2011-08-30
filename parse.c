@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <time.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
@@ -100,15 +101,22 @@ struct dive {
 static void record_dive(struct dive *dive)
 {
 	static int nr;
+	struct tm *tm;
 
-	printf("Recording dive %d with %d samples\n", ++nr, dive->samples);
+	tm = gmtime(&dive->when);
+
+	printf("Dive %d with %d samples at %02d:%02d:%02d %04d-%02d-%02d\n",
+		++nr, dive->samples,
+		tm->tm_hour, tm->tm_min, tm->tm_sec,
+		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
 }
 
-static void nonmatch(const char *type, const char *fullname, const char *name, int size, const char *buffer)
+static void nonmatch(const char *type, const char *fullname, const char *name, char *buffer)
 {
-	printf("Unable to match %s '(%.*s)%s' (%.*s)\n", type,
+	printf("Unable to match %s '(%.*s)%s' (%s)\n", type,
 		(int) (name - fullname), fullname, name,
-		size, buffer);
+		buffer);
+	free(buffer);
 }
 
 static const char *last_part(const char *name)
@@ -117,18 +125,14 @@ static const char *last_part(const char *name)
 	return p ? p+1 : name;
 }
 
-/* We're in samples - try to convert the random xml value to something useful */
-static void try_to_fill_sample(struct sample *sample, const char *name, int size, const char *buffer)
-{
-	const char *last = last_part(name);
-	nonmatch("sample", name, last, size, buffer);
-}
+typedef void (*matchfn_t)(char *buffer, void *);
 
-/* We're in the top-level dive xml. Try to convert whatever value to a dive value */
-static void try_to_fill_dive(struct dive *dive, const char *name, int size, const char *buffer)
+static int match(const char *pattern, const char *name, matchfn_t fn, char *buf, void *data)
 {
-	const char *last = last_part(name);
-	nonmatch("dive", name, last, size, buffer);
+	if (strcasecmp(pattern, name))
+		return 0;
+	fn(buf, data);
+	return 1;
 }
 
 /*
@@ -137,6 +141,85 @@ static void try_to_fill_dive(struct dive *dive, const char *name, int size, cons
 static int alloc_samples;
 static struct dive *dive;
 static struct sample *sample;
+static struct tm tm;
+
+static time_t utc_mktime(struct tm *tm)
+{
+	static const int mdays[] = {
+	    0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
+	};
+	int year = tm->tm_year;
+	int month = tm->tm_mon;
+	int day = tm->tm_mday;
+
+	if (year < 70)
+		year += 100;
+	else if (year > 1900)
+		year -= 1900;
+
+	/* Normalized to Jan 1, 1970: unix time */
+	year -= 70;
+
+	if (year < 0 || year > 129) /* algo only works for 1970-2099 */
+		return -1;
+	if (month < 0 || month > 11) /* array bounds */
+		return -1;
+	if (month < 2 || (year + 2) % 4)
+		day--;
+	if (tm->tm_hour < 0 || tm->tm_min < 0 || tm->tm_sec < 0)
+		return -1;
+	return (year * 365 + (year + 1) / 4 + mdays[month] + day) * 24*60*60UL +
+		tm->tm_hour * 60*60 + tm->tm_min * 60 + tm->tm_sec;
+}
+
+static void divedate(char *buffer, void *_when)
+{
+	int d,m,y;
+	time_t *when = _when;
+
+	if (sscanf(buffer, "%d.%d.%d", &d, &m, &y) == 3) {
+		tm.tm_year = y;
+		tm.tm_mon = m-1;
+		tm.tm_mday = d;
+		if (tm.tm_sec | tm.tm_min | tm.tm_hour)
+			*when = utc_mktime(&tm);
+	}
+	free(buffer);
+}
+
+static void divetime(char *buffer, void *_when)
+{
+	int h,m,s = 0;
+	time_t *when = _when;
+
+	if (sscanf(buffer, "%d:%d:%d", &h, &m, &s) >= 2) {
+		tm.tm_hour = h;
+		tm.tm_min = m;
+		tm.tm_sec = s;
+		if (tm.tm_year)
+			*when = utc_mktime(&tm);
+	}
+	free(buffer);
+}
+
+/* We're in samples - try to convert the random xml value to something useful */
+static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
+{
+	const char *last = last_part(name);
+	nonmatch("sample", name, last, buf);
+}
+
+/* We're in the top-level dive xml. Try to convert whatever value to a dive value */
+static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
+{
+	const char *last = last_part(name);
+
+	if (match("date", last, divedate, buf, &dive->when))
+		return;
+	if (match("time", last, divetime, buf, &dive->when))
+		return;
+	nonmatch("dive", name, last, buf);
+}
 
 static unsigned int dive_size(int samples)
 {
@@ -153,12 +236,16 @@ static void dive_start(void)
 {
 	unsigned int size;
 
+	if (dive)
+		return;
+
 	alloc_samples = 5;
 	size = dive_size(alloc_samples);
 	dive = malloc(size);
 	if (!dive)
 		exit(1);
 	memset(dive, 0, size);
+	memset(&tm, 0, sizeof(tm));
 }
 
 static void dive_end(void)
@@ -196,14 +283,20 @@ static void sample_end(void)
 	dive->samples++;
 }
 
-static void entry(const char *name, int size, const char *buffer)
+static void entry(const char *name, int size, const char *raw)
 {
+	char *buf = malloc(size+1);
+
+	if (!buf)
+		return;
+	memcpy(buf, raw, size);
+	buf[size] = 0;
 	if (sample) {
-		try_to_fill_sample(sample, name, size, buffer);
+		try_to_fill_sample(sample, name, buf);
 		return;
 	}
 	if (dive) {
-		try_to_fill_dive(dive, name, size, buffer);
+		try_to_fill_dive(dive, name, buf);
 		return;
 	}
 }
