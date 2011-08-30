@@ -185,7 +185,7 @@ static void sample_start(void)
 		if (!dive)
 			return;
 	}
-	sample = dive->samples + nr;
+	sample = dive->sample + nr;
 }
 
 static void sample_end(void)
