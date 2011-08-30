@@ -185,6 +185,7 @@ static time_t utc_mktime(struct tm *tm)
 	int month = tm->tm_mon;
 	int day = tm->tm_mday;
 
+	/* First normalize relative to 1900 */
 	if (year < 70)
 		year += 100;
 	else if (year > 1900)
@@ -231,6 +232,26 @@ static void divetime(char *buffer, void *_when)
 		tm.tm_sec = s;
 		if (tm.tm_year)
 			*when = utc_mktime(&tm);
+	}
+	free(buffer);
+}
+
+/* Libdivecomputer: "2011-03-20 10:22:38" */
+static void divedatetime(char *buffer, void *_when)
+{
+	int y,m,d;
+	int hr,min,sec;
+	time_t *when = _when;
+
+	if (sscanf(buffer, "%d-%d-%d %d:%d:%d",
+		&y, &m, &d, &hr, &min, &sec) == 6) {
+		tm.tm_year = y;
+		tm.tm_mon = m-1;
+		tm.tm_mday = d;
+		tm.tm_hour = hr;
+		tm.tm_min = min;
+		tm.tm_sec = sec;
+		*when = utc_mktime(&tm);
 	}
 	free(buffer);
 }
@@ -404,6 +425,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (match("date", last, divedate, buf, &dive->when))
 		return;
 	if (match("time", last, divetime, buf, &dive->when))
+		return;
+	if (match("datetime", last, divedatetime, buf, &dive->when))
 		return;
 	nonmatch("dive", name, last, buf);
 }
