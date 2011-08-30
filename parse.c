@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
+#include <errno.h>
 #include <time.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -202,10 +204,165 @@ static void divetime(char *buffer, void *_when)
 	free(buffer);
 }
 
+union int_or_float {
+	long i;
+	double fp;
+};
+
+enum number_type {
+	NEITHER,
+	INTEGER,
+	FLOAT
+};
+
+static enum number_type integer_or_float(char *buffer, union int_or_float *res)
+{
+	char *end;
+	long val;
+	double fp;
+
+	/* Integer or floating point? */
+	val = strtol(buffer, &end, 10);
+	if (val < 0 || end == buffer)
+		return NEITHER;
+
+	/* Looks like it might be floating point? */
+	if (*end == '.') {
+		errno = 0;
+		fp = strtod(buffer, &end);
+		if (!errno) {
+			res->fp = fp;
+			return FLOAT;
+		}
+	}
+
+	res->i = val;
+	return INTEGER;
+}
+
+static void pressure(char *buffer, void *_press)
+{
+	pressure_t *pressure = _press;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		/* Maybe it's in Bar? */
+		if (val.fp < 500.0) {
+			pressure->mbar = val.fp * 1000;
+			break;
+		}
+		printf("Unknown fractional pressure reading %s\n", buffer);
+		break;
+
+	case INTEGER:
+		/*
+		 * Random integer? Maybe in PSI? Or millibar already?
+		 *
+		 * We assume that 5 bar is a ridiculous tank pressure,
+		 * so if it's smaller than 5000, it's in PSI..
+		 */
+		if (val.i < 5000) {
+			pressure->mbar = val.i * 68.95;
+			break;
+		}
+		pressure->mbar = val.i;
+		break;
+	default:
+		printf("Strange pressure reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
+static void depth(char *buffer, void *_depth)
+{
+	depth_t *depth = _depth;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	/* Integer values are probably in feet */
+	case INTEGER:
+		depth->mm = 304.8 * val.i;
+		break;
+	/* Float? Probably meters.. */
+	case FLOAT:
+		depth->mm = val.fp * 1000;
+		break;
+	default:
+		printf("Strange depth reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
+static void temperature(char *buffer, void *_temperature)
+{
+	temperature_t *temperature = _temperature;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	/* C or F? Who knows? Let's default to Celsius */
+	case INTEGER:
+		val.fp = val.i;
+		/* Fallthrough */
+	case FLOAT:
+		/* Ignore zero. It means "none" */
+		if (!val.fp)
+			break;
+		/* Celsius */
+		if (val.fp < 50.0) {
+			temperature->mkelvin = (val.fp + 273.16) * 1000;
+			break;
+		}
+		/* Fahrenheit */
+		if (val.fp < 212.0) {
+			temperature->mkelvin = (val.fp + 459.67) * 5000/9;
+			break;
+		}
+		/* Kelvin or already millikelvin */
+		if (val.fp < 1000.0)
+			val.fp *= 1000;
+		temperature->mkelvin = val.fp;
+		break;
+	default:
+		printf("Strange temperature reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
+static void sampletime(char *buffer, void *_time)
+{
+	duration_t *time = _time;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	/* C or F? Who knows? Let's default to Celsius */
+	case INTEGER:
+		time->seconds = val.i * 1000;
+		break;
+	default:
+		printf("Strange sample time reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
 	const char *last = last_part(name);
+
+	if (match("pressure", last, pressure, buf, &sample->tankpressure))
+		return;
+	if (match("cylpress", last, pressure, buf, &sample->tankpressure))
+		return;
+	if (match("depth", last, depth, buf, &sample->depth))
+		return;
+	if (match("temperature", last, temperature, buf, &sample->temperature))
+		return;
+	if (match("sampletime", last, sampletime, buf, &sample->time))
+		return;
+	if (match("time", last, sampletime, buf, &sample->time))
+		return;
+
 	nonmatch("sample", name, last, buf);
 }
 
@@ -273,6 +430,7 @@ static void sample_start(void)
 			return;
 	}
 	sample = dive->sample + nr;
+	memset(sample, 0, sizeof(*sample));
 }
 
 static void sample_end(void)
