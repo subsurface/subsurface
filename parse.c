@@ -210,12 +210,9 @@ static void entry(const char *name, int size, const char *buffer)
 
 static const char *nodename(xmlNode *node, char *buf, int len)
 {
-	/* Don't print out the node name if it is "text" */
-	if (!strcmp(node->name, "text")) {
-		node = node->parent;
-		if (!node || !node->name)
-			return "root";
-	}
+
+	if (!node || !node->name)
+		return "root";
 
 	buf += len;
 	*--buf = 0;
@@ -263,6 +260,10 @@ static void visit_one_node(xmlNode *node)
 
 	if (!len)
 		return;
+
+	/* Don't print out the node name if it is "text" */
+	if (!strcmp(node->name, "text"))
+		node = node->parent;
 
 	name = nodename(node, buffer, sizeof(buffer));
 
