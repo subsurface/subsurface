@@ -104,14 +104,31 @@ static void record_dive(struct dive *dive)
 	printf("Recording dive %d with %d samples\n", ++nr, dive->samples);
 }
 
+static void nonmatch(const char *type, const char *fullname, const char *name, int size, const char *buffer)
+{
+	printf("Unable to match %s '(%.*s)%s' (%.*s)\n", type,
+		(int) (name - fullname), fullname, name,
+		size, buffer);
+}
+
+static const char *last_part(const char *name)
+{
+	const char *p = strrchr(name, '.');
+	return p ? p+1 : name;
+}
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, int size, const char *buffer)
 {
+	const char *last = last_part(name);
+	nonmatch("sample", name, last, size, buffer);
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, int size, const char *buffer)
 {
+	const char *last = last_part(name);
+	nonmatch("dive", name, last, size, buffer);
 }
 
 /*
