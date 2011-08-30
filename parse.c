@@ -83,6 +83,21 @@ typedef struct {
 	pressure_t pressure;
 } tank_type_t;
 
+static int to_feet(depth_t depth)
+{
+	return depth.mm * 0.00328084 + 0.5;
+}
+
+static int to_C(temperature_t temp)
+{
+	return (temp.mkelvin + 272150) / 1000;
+}
+
+static int to_PSI(pressure_t pressure)
+{
+	return pressure.mbar * 0.0145037738 + 0.5;
+}
+
 struct sample {
 	duration_t time;
 	depth_t depth;
@@ -104,6 +119,7 @@ struct dive {
 
 static void record_dive(struct dive *dive)
 {
+	int i;
 	static int nr;
 	struct tm *tm;
 
@@ -113,6 +129,16 @@ static void record_dive(struct dive *dive)
 		++nr, dive->samples,
 		tm->tm_hour, tm->tm_min, tm->tm_sec,
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+	for (i = 0; i < dive->samples; i++) {
+		struct sample *s = dive->sample + i;
+
+		printf("%4d:%02d: %3d ft, %2d C, %4d PSI\n",
+			s->time.seconds / 60,
+			s->time.seconds % 60,
+			to_feet(s->depth),
+			to_C(s->temperature),
+			to_PSI(s->tankpressure));
+	}
 }
 
 static void nonmatch(const char *type, const char *fullname, const char *name, char *buffer)
@@ -338,9 +364,8 @@ static void sampletime(char *buffer, void *_time)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	/* C or F? Who knows? Let's default to Celsius */
 	case INTEGER:
-		time->seconds = val.i * 1000;
+		time->seconds = val.i;
 		break;
 	default:
 		printf("Strange sample time reading %s\n", buffer);
