@@ -1,2 +1,2 @@
 parse: parse.c
-	gcc -g -o parse `xml2-config --cflags` parse.c `xml2-config --libs`
+	gcc -Wall -g -o parse `xml2-config --cflags` parse.c `xml2-config --libs`

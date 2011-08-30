@@ -1,23 +1,77 @@
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-static void show_one_node(int i, xmlNode *node)
+static const char *nodename(xmlNode *node, char *buf, int len)
 {
-	static const char indent[] = "        ..";
+	/* Don't print out the node name if it is "text" */
+	if (!strcmp(node->name, "text")) {
+		node = node->parent;
+		if (!node || !node->name)
+			return "root";
+	}
 
-	if (i >= sizeof(indent))
-		i = sizeof(indent)-1;
-	printf("%.*snode '%s': %s\n", i, indent, node->name, node->content);
+	buf += len;
+	*--buf = 0;
+	len--;
+
+	for(;;) {
+		const char *name = node->name;
+		int i = strlen(name);
+		while (--i >= 0) {
+			unsigned char c = name[i];
+			*--buf = tolower(c);
+			if (!--len)
+				return buf;
+		}
+		node = node->parent;
+		if (!node || !node->name)
+			return buf;
+		*--buf = '.';
+		if (!--len)
+			return buf;
+	}
 }
 
-static void show(int indent, xmlNode *node)
+#define MAXNAME 64
+
+static void show_one_node(xmlNode *node)
+{
+	int len;
+	const unsigned char *content;
+	char buffer[MAXNAME];
+	const char *name;
+
+	content = node->content;
+	if (!content)
+		return;
+
+	/* Trim whitespace at beginning */
+	while (isspace(*content))
+		content++;
+
+	/* Trim whitespace at end */
+	len = strlen(content);
+	while (len && isspace(content[len-1]))
+		len--;
+
+	if (!len)
+		return;
+
+	name = nodename(node, buffer, sizeof(buffer));
+
+	printf("%s: %.*s\n", name, len, content);
+}
+
+static void show(xmlNode *node)
 {
 	xmlNode *n;
 
 	for (n = node; n; n = n->next) {
-		show_one_node(indent, n);
-		show(indent+2, n->children);
+		show_one_node(n);
+		show(n->children);
 	}
 }
 
@@ -31,7 +85,7 @@ static void parse(const char *filename)
 		return;
 	}
 
-	show(0, xmlDocGetRootElement(doc));
+	show(xmlDocGetRootElement(doc));
 	xmlFreeDoc(doc);
 	xmlCleanupParser();
 }
