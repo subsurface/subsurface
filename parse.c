@@ -7,6 +7,8 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+static int verbose;
+
 /*
  * Some silly typedefs to make our units very explicit.
  *
@@ -115,9 +117,10 @@ static void record_dive(struct dive *dive)
 
 static void nonmatch(const char *type, const char *fullname, const char *name, char *buffer)
 {
-	printf("Unable to match %s '(%.*s)%s' (%s)\n", type,
-		(int) (name - fullname), fullname, name,
-		buffer);
+	if (verbose)
+		printf("Unable to match %s '(%.*s)%s' (%s)\n", type,
+			(int) (name - fullname), fullname, name,
+			buffer);
 	free(buffer);
 }
 
@@ -570,13 +573,36 @@ static void parse(const char *filename)
 	xmlCleanupParser();
 }
 
+static void parse_argument(const char *arg)
+{
+	const char *p = arg+1;
+
+	do {
+		switch (*p) {
+		case 'v':
+			verbose++;
+			continue;
+		default:
+			fprintf(stderr, "Bad argument '%s'\n", arg);
+			exit(1);
+		}
+	} while (*++p);
+}
+
 int main(int argc, char **argv)
 {
 	int i;
 
 	LIBXML_TEST_VERSION
 
-	for (i = 1; i < argc; i++)
-		parse(argv[i]);
+	for (i = 1; i < argc; i++) {
+		const char *a = argv[i];
+
+		if (a[0] == '-') {
+			parse_argument(a);
+			continue;
+		}
+		parse(a);
+	}
 	return 0;
 }
