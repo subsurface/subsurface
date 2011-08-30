@@ -4,6 +4,35 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+/*
+ * File boundaries are dive boundaries. But sometimes there are
+ * multiple dives per file, so there can be other events too that
+ * trigger a "new dive" marker and you may get some nesting due
+ * to that. Just ignore nesting levels.
+ */
+static void dive_start(void)
+{
+	printf("---\n");
+}
+
+static void dive_end(void)
+{
+}
+
+static void sample_start(void)
+{
+	printf("Sample:\n");
+}
+
+static void sample_end(void)
+{
+}
+
+static void entry(const char *name, int size, const char *buffer)
+{
+	printf("%s: %.*s\n", name, size, buffer);
+}
+
 static const char *nodename(xmlNode *node, char *buf, int len)
 {
 	/* Don't print out the node name if it is "text" */
@@ -37,7 +66,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 
 #define MAXNAME 64
 
-static void show_one_node(xmlNode *node)
+static void visit_one_node(xmlNode *node)
 {
 	int len;
 	const unsigned char *content;
@@ -62,16 +91,38 @@ static void show_one_node(xmlNode *node)
 
 	name = nodename(node, buffer, sizeof(buffer));
 
-	printf("%s: %.*s\n", name, len, content);
+	entry(name, len, content);
 }
 
-static void show(xmlNode *node)
+static void traverse(xmlNode *node)
 {
 	xmlNode *n;
 
 	for (n = node; n; n = n->next) {
-		show_one_node(n);
-		show(n->children);
+		/* XML from libdivecomputer: 'dive' per new dive */
+		if (!strcmp(n->name, "dive")) {
+			dive_start();
+			traverse(n->children);
+			dive_end();
+			continue;
+		}
+
+		/*
+		 * At least both libdivecomputer and Suunto
+		 * agree on "sample".
+		 *
+		 * Well - almost. Ignore case.
+		 */
+		if (!strcasecmp(n->name, "sample")) {
+			sample_start();
+			traverse(n->children);
+			sample_end();
+			continue;
+		}
+
+		/* Anything else - just visit it and recurse */
+		visit_one_node(n);
+		traverse(n->children);
 	}
 }
 
@@ -85,7 +136,9 @@ static void parse(const char *filename)
 		return;
 	}
 
-	show(xmlDocGetRootElement(doc));
+	dive_start();
+	traverse(xmlDocGetRootElement(doc));
+	dive_end();
 	xmlFreeDoc(doc);
 	xmlCleanupParser();
 }
