@@ -90,7 +90,9 @@ static int to_feet(depth_t depth)
 
 static int to_C(temperature_t temp)
 {
-	return (temp.mkelvin + 272150) / 1000;
+	if (!temp.mkelvin)
+		return 0;
+	return (temp.mkelvin - 273150) / 1000;
 }
 
 static int to_PSI(pressure_t pressure)
