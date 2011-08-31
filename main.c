@@ -51,6 +51,7 @@ static GtkWidget *dive_profile;
 
 void repaint_dive(void)
 {
+	update_dive_info(current_dive);
 	gtk_widget_queue_draw(dive_profile);
 }
 
