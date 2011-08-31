@@ -101,6 +101,7 @@ struct sample {
 };
 
 struct dive {
+	const char *name;
 	time_t when;
 	depth_t maxdepth, meandepth;
 	duration_t duration, surfacetime;
