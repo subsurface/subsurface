@@ -94,8 +94,11 @@ int main(int argc, char **argv)
 	/* Frame for dive profile */
 	frame = dive_profile_frame();
 	gtk_table_attach_defaults(GTK_TABLE(table), frame, 1, 2, 1, 2);
-
 	dive_profile = frame;
+
+	/* Frame for dive info */
+	frame = dive_info_frame();
+	gtk_table_attach_defaults(GTK_TABLE(table), frame, 1, 2, 0, 1);
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
