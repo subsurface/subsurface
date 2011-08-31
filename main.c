@@ -47,51 +47,12 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	gtk_main_quit();
 }
 
-static GtkTreeModel *fill_dive_list(void)
-{
-	int i;
-	GtkListStore *store;
-	GtkTreeIter iter;
-
-	store = gtk_list_store_new(1, G_TYPE_STRING);
-
-	for (i = 0; i < dive_table.nr; i++) {
-		struct dive *dive = dive_table.dives[i];
-
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
-			0, dive->name,
-			-1);
-	}
-
-	return GTK_TREE_MODEL(store);
-}
-
-static GtkWidget *create_dive_list(void)
-{
-	GtkWidget *list;
-	GtkCellRenderer *renderer;
-	GtkTreeModel *model;
-
-	list = gtk_tree_view_new();
-
-	renderer = gtk_cell_renderer_text_new();
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(list),
-		-1, "Dive", renderer, "text", 0, NULL);
-
-	model = fill_dive_list();
-	gtk_tree_view_set_model(GTK_TREE_VIEW(list), model);
-	g_object_unref(model);
-	return list;
-}
-
 int main(int argc, char **argv)
 {
 	int i;
 	GtkWidget *win;
 	GtkWidget *divelist;
 	GtkWidget *vbox;
-	GtkWidget *scrolled_window;
 	GtkWidget *frame;
 
 	parse_xml_init();
@@ -119,23 +80,13 @@ int main(int argc, char **argv)
 	gtk_container_add(GTK_CONTAINER(win), vbox);
 	gtk_widget_show(vbox);
 
-	/* Scrolled window for the list goes into the vbox.. */
-	scrolled_window=gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_usize(scrolled_window, 150, 350);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_container_add(GTK_CONTAINER(vbox), scrolled_window);
-	gtk_widget_show(scrolled_window);
+	/* Create the atual divelist */
+	divelist = create_dive_list();
+	gtk_container_add(GTK_CONTAINER(vbox), divelist);
 
 	/* Frame for dive profile */
 	frame = dive_profile_frame();
-
 	gtk_container_add(GTK_CONTAINER(vbox), frame);
-
-	/* Create the atual divelist */
-	divelist = create_dive_list();
-
-	/* .. and connect it to the scrolled window */
-	gtk_container_add(GTK_CONTAINER(scrolled_window), divelist);
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);

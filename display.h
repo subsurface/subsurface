@@ -6,5 +6,6 @@
 #include <cairo.h>
 
 extern GtkWidget *dive_profile_frame(void);
+extern GtkWidget *create_dive_list(void);
 
 #endif
