@@ -6,12 +6,12 @@
 #include <cairo.h>
 
 extern int selected_dive;
+#define current_dive (get_dive(selected_dive))
+
 extern GtkWidget *dive_profile_frame(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *create_dive_list(void);
 extern void update_dive_info(struct dive *dive);
 extern void repaint_dive(void);
-
-#define current_dive (dive_table.dives[selected_dive])
 
 #endif

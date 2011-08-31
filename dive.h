@@ -121,6 +121,13 @@ struct dive_table {
 
 extern struct dive_table dive_table;
 
+static inline struct dive *get_dive(unsigned int nr)
+{
+	if (nr >= dive_table.nr)
+		return NULL;
+	return dive_table.dives[nr];
+}
+
 extern void parse_xml_init(void);
 extern void parse_xml_file(const char *filename);
 
