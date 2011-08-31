@@ -119,18 +119,35 @@ struct dive {
 	struct sample sample[];
 };
 
+static struct dive **dive_table;
+static int nr_dives, nr_allocated;
+
 static void record_dive(struct dive *dive)
 {
+	if (nr_dives >= nr_allocated) {
+		nr_allocated = (nr_dives + 32) * 3 / 2;
+		dive_table = realloc(dive_table, nr_allocated * sizeof(struct dive *));
+		if (!dive_table)
+			exit(1);
+	}
+	dive_table[nr_dives++] = dive;
+}
+
+static void show_dive(int nr, struct dive *dive)
+{
 	int i;
-	static int nr;
 	struct tm *tm;
 
 	tm = gmtime(&dive->when);
 
 	printf("Dive %d with %d samples at %02d:%02d:%02d %04d-%02d-%02d\n",
-		++nr, dive->samples,
+		nr, dive->samples,
 		tm->tm_hour, tm->tm_min, tm->tm_sec,
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+
+	if (!verbose)
+		return;
+
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *s = dive->sample + i;
 
@@ -143,9 +160,30 @@ static void record_dive(struct dive *dive)
 	}
 }
 
+static int sortfn(const void *_a, const void *_b)
+{
+	const struct dive *a = *(void **)_a;
+	const struct dive *b = *(void **)_b;
+
+	if (a->when < b->when)
+		return -1;
+	if (a->when > b->when)
+		return 1;
+	return 0;
+}
+
+static void report_dives(void)
+{
+	int i;
+	qsort(dive_table, nr_dives, sizeof(struct dive *), sortfn);
+
+	for (i = 0; i < nr_dives; i++)
+		show_dive(i+1, dive_table[i]);
+}
+
 static void nonmatch(const char *type, const char *fullname, const char *name, char *buffer)
 {
-	if (verbose)
+	if (verbose > 1)
 		printf("Unable to match %s '(%.*s)%s' (%s)\n", type,
 			(int) (name - fullname), fullname, name,
 			buffer);
@@ -654,5 +692,6 @@ int main(int argc, char **argv)
 		}
 		parse(a);
 	}
+	report_dives();
 	return 0;
 }
