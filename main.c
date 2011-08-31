@@ -5,33 +5,6 @@
 #include "dive.h"
 #include "display.h"
 
-static void show_dive(int nr, struct dive *dive)
-{
-	int i;
-	struct tm *tm;
-
-	tm = gmtime(&dive->when);
-
-	printf("At %02d:%02d:%02d %04d-%02d-%02d  (%d ft max, %d minutes)\n",
-		tm->tm_hour, tm->tm_min, tm->tm_sec,
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-		to_feet(dive->maxdepth), dive->duration.seconds / 60);
-
-	if (!verbose)
-		return;
-
-	for (i = 0; i < dive->samples; i++) {
-		struct sample *s = dive->sample + i;
-
-		printf("%4d:%02d: %3d ft, %2d C, %4d PSI\n",
-			s->time.seconds / 60,
-			s->time.seconds % 60,
-			to_feet(s->depth),
-			to_C(s->temperature),
-			to_PSI(s->tankpressure));
-	}
-}
-
 static int sortfn(const void *_a, const void *_b)
 {
 	const struct dive *a = *(void **)_a;
