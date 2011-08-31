@@ -421,17 +421,32 @@ static void temperature(char *buffer, void *_temperature)
 
 static void sampletime(char *buffer, void *_time)
 {
+	int i;
+	int min, sec;
 	duration_t *time = _time;
-	union int_or_float val;
 
-	switch (integer_or_float(buffer, &val)) {
-	case INTEGER:
-		time->seconds = val.i;
+	i = sscanf(buffer, "%d:%d", &min, &sec);
+	switch (i) {
+	case 1:
+		sec = min;
+		min = 0;
+	/* fallthrough */
+	case 2:
+		time->seconds = sec + min*60;
 		break;
 	default:
 		printf("Strange sample time reading %s\n", buffer);
 	}
 	free(buffer);
+}
+
+static void duration(char *buffer, void *_time)
+{
+	sampletime(buffer, _time);
+}
+
+static void ignore(char *buffer, void *_time)
+{
 }
 
 /* We're in samples - try to convert the random xml value to something useful */
@@ -465,6 +480,34 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (match("time", last, divetime, buf, &dive->when))
 		return;
 	if (match("datetime", last, divedatetime, buf, &dive->when))
+		return;
+	if (match("maxdepth", last, depth, buf, &dive->maxdepth))
+		return;
+	if (match("meandepth", last, depth, buf, &dive->meandepth))
+		return;
+	if (match("divetime", last, duration, buf, &dive->duration))
+		return;
+	if (match("divetimesec", last, duration, buf, &dive->duration))
+		return;
+	if (match("surfacetime", last, duration, buf, &dive->surfacetime))
+		return;
+	if (match("airtemp", last, temperature, buf, &dive->airtemp))
+		return;
+	if (match("watertemp", last, temperature, buf, &dive->watertemp))
+		return;
+	if (match("cylinderstartpressure", last, pressure, buf, &dive->beginning_pressure))
+		return;
+	if (match("cylinderendpressure", last, pressure, buf, &dive->end_pressure))
+		return;
+	if (match("divenumber", last, ignore, buf, NULL))
+		return;
+	if (match("diveseries", last, ignore, buf, NULL))
+		return;
+	if (match("number", last, ignore, buf, NULL))
+		return;
+	if (match("size", last, ignore, buf, NULL))
+		return;
+	if (match("fingerprint", last, ignore, buf, NULL))
 		return;
 	nonmatch("dive", name, last, buf);
 }
