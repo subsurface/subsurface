@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	int i;
 	GtkWidget *win;
 	GtkWidget *divelist;
-	GtkWidget *vbox;
+	GtkWidget *table;
 	GtkWidget *frame;
 
 	parse_xml_init();
@@ -81,19 +81,20 @@ int main(int argc, char **argv)
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
 
-	/* HBOX for the list of dives and cairo window */
-	vbox=gtk_hbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
-	gtk_container_add(GTK_CONTAINER(win), vbox);
-	gtk_widget_show(vbox);
+	/* Table for the list of dives, cairo window, and dive info */
+	table = gtk_table_new(2, 2, FALSE);
+	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+	gtk_container_add(GTK_CONTAINER(win), table);
+	gtk_widget_show(table);
 
 	/* Create the atual divelist */
 	divelist = create_dive_list();
-	gtk_container_add(GTK_CONTAINER(vbox), divelist);
+	gtk_table_attach_defaults(GTK_TABLE(table), divelist, 0, 1, 0, 2);
 
 	/* Frame for dive profile */
 	frame = dive_profile_frame();
-	gtk_container_add(GTK_CONTAINER(vbox), frame);
+	gtk_table_attach_defaults(GTK_TABLE(table), frame, 1, 2, 1, 2);
+
 	dive_profile = frame;
 
 	gtk_widget_set_app_paintable(win, TRUE);
