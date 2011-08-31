@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+#include <cairo.h>
 
 #include "dive.h"
 
@@ -43,13 +46,13 @@ static int sortfn(const void *_a, const void *_b)
 	return 0;
 }
 
+/*
+ * This doesn't really report anything at all. We just sort the
+ * dives, the GUI does the reporting
+ */
 static void report_dives(void)
 {
-	int i;
-
 	qsort(dive_table.dives, dive_table.nr, sizeof(struct dive *), sortfn);
-	for (i = 0; i < dive_table.nr; i++)
-		show_dive(i+1, dive_table.dives[i]);
 }
 
 static void parse_argument(const char *arg)
@@ -68,11 +71,27 @@ static void parse_argument(const char *arg)
 	} while (*++p);
 }
 
+static void on_destroy(GtkWidget* w, gpointer data)
+{
+	gtk_main_quit();
+}
+
+static gboolean on_expose(GtkWidget* w, GdkEventExpose* e, gpointer data)
+{
+	cairo_t* cr;
+	cr = gdk_cairo_create(w->window);
+	cairo_destroy(cr);
+	return FALSE;
+}
+
 int main(int argc, char **argv)
 {
 	int i;
+	GtkWidget* win;
 
 	parse_xml_init();
+
+	gtk_init(&argc, &argv);
 
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];
@@ -83,7 +102,16 @@ int main(int argc, char **argv)
 		}
 		parse_xml_file(a);
 	}
+
 	report_dives();
+
+	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
+	g_signal_connect(G_OBJECT(win), "expose-event", G_CALLBACK(on_expose), NULL);
+	gtk_widget_set_app_paintable(win, TRUE);
+	gtk_widget_show_all(win);
+
+	gtk_main();
 	return 0;
 }
 
