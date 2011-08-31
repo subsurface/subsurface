@@ -444,9 +444,18 @@ static void sample_start(void)
 
 static void sample_end(void)
 {
-	sample = NULL;
 	if (!dive)
 		return;
+
+	if (sample->time.seconds > dive->duration.seconds) {
+		if (sample->depth.mm)
+			dive->duration = sample->time;
+	}
+
+	if (sample->depth.mm > dive->maxdepth.mm)
+		dive->maxdepth.mm = sample->depth.mm;
+
+	sample = NULL;
 	dive->samples++;
 }
 
