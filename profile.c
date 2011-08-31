@@ -8,16 +8,21 @@
 int selected_dive = 0;
 
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
-#define MAX(x,y) ((x) > (y) ? (x) : (y))
 
+/*
+ * When showing dive profiles, we scale things to the
+ * current dive. However, we don't scale past less than
+ * 30 minutes or 90 ft, just so that small dives show
+ * up as such.
+ */
 static int round_seconds_up(int seconds)
 {
-	return MAX(30, ROUND_UP(seconds, 60*10));
+	return MAX(30*60, ROUND_UP(seconds, 60*10));
 }
 
 static int round_feet_up(int feet)
 {
-	return MAX(45, ROUND_UP(feet+5, 15));
+	return MAX(90, ROUND_UP(feet+5, 15));
 }
 
 /* Scale to 0,0 -> maxx,maxy */
