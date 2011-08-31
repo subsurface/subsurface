@@ -127,6 +127,8 @@ int main(int argc, char **argv)
 	int i;
 	GtkWidget *win;
 	GtkWidget *divelist;
+	GtkWidget *vbox;
+	GtkWidget *scrolled_window;
 
 	parse_xml_init();
 
@@ -148,8 +150,24 @@ int main(int argc, char **argv)
 	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
 	g_signal_connect(G_OBJECT(win), "expose-event", G_CALLBACK(on_expose), NULL);
 
+	/* VBOX for the list of dives */
+	vbox=gtk_vbox_new(FALSE, 5);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	gtk_container_add(GTK_CONTAINER(win), vbox);
+	gtk_widget_show(vbox);
+
+	/* Scrolled window for the list goes into the vbox.. */
+	scrolled_window=gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_set_usize(scrolled_window, 250, 350);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_container_add(GTK_CONTAINER(vbox), scrolled_window);
+	gtk_widget_show(scrolled_window);
+
+	/* Create the atual divelist */
 	divelist = create_dive_list();
-	gtk_container_add(GTK_CONTAINER(win), divelist);
+
+	/* .. and connect it to the scrolled window */
+	gtk_container_add(GTK_CONTAINER(scrolled_window), divelist);
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
