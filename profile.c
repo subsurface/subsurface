@@ -29,6 +29,7 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive, int samples, stru
 	double topx, topy, maxx, maxy;
 	double scalex, scaley;
 	int maxtime, maxdepth;
+	int begins, sec, depth;
 
 	topx = w / 20.0;
 	topy = h / 20.0;
@@ -63,11 +64,21 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive, int samples, stru
 
 	/* Depth profile */
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
+	begins = sample->time.seconds;
 	cairo_move_to(cr, SCALE(sample->time.seconds, to_feet(sample->depth)));
 	for (i = 1; i < dive->samples; i++) {
 		sample++;
-		cairo_line_to(cr, SCALE(sample->time.seconds, to_feet(sample->depth)));
+		sec = sample->time.seconds;
+		depth = to_feet(sample->depth);
+		cairo_line_to(cr, SCALE(sec, depth));
 	}
+	scaley = 1.0;
+	cairo_line_to(cr, SCALE(sec, 0));
+	cairo_line_to(cr, SCALE(begins, 0));
+	cairo_close_path(cr);
+	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.20);
+	cairo_fill_preserve(cr);
+	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
 
 	/* Bounding box last */
