@@ -12,6 +12,13 @@ void update_dive_info(struct dive *dive)
 	struct tm *tm;
 	char buffer[80];
 
+	if (!dive) {
+		gtk_entry_set_text(GTK_ENTRY(datetime), "no dive");
+		gtk_entry_set_text(GTK_ENTRY(depth), "");
+		gtk_entry_set_text(GTK_ENTRY(duration), "");
+		return;
+	}
+
 	tm = gmtime(&dive->when);
 	snprintf(buffer, sizeof(buffer),
 		"%04d-%02d-%02d "

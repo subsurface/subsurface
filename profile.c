@@ -100,7 +100,7 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive, int samples, stru
 
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
-	struct dive *dive = dive_table.dives[selected_dive];
+	struct dive *dive = current_dive;
 	cairo_t *cr;
 	int w,h;
 
@@ -111,7 +111,7 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_paint(cr);
 
-	if (dive->samples)
+	if (dive && dive->samples)
 		plot(cr, w, h, dive, dive->samples, dive->sample);
 
 	cairo_destroy(cr);
