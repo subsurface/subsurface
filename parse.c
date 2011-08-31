@@ -140,10 +140,10 @@ static void show_dive(int nr, struct dive *dive)
 
 	tm = gmtime(&dive->when);
 
-	printf("Dive %d with %d samples at %02d:%02d:%02d %04d-%02d-%02d\n",
-		nr, dive->samples,
+	printf("At %02d:%02d:%02d %04d-%02d-%02d  (%d ft max, %d minutes)\n",
 		tm->tm_hour, tm->tm_min, tm->tm_sec,
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
+		to_feet(dive->maxdepth), dive->duration.seconds / 60);
 
 	if (!verbose)
 		return;
@@ -595,7 +595,6 @@ static void entry(const char *name, int size, const char *raw)
 
 static const char *nodename(xmlNode *node, char *buf, int len)
 {
-
 	if (!node || !node->name)
 		return "root";
 
