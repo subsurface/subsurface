@@ -76,14 +76,6 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	gtk_main_quit();
 }
 
-static gboolean on_expose(GtkWidget* w, GdkEventExpose* e, gpointer data)
-{
-	cairo_t* cr;
-	cr = gdk_cairo_create(w->window);
-	cairo_destroy(cr);
-	return FALSE;
-}
-
 static GtkTreeModel *fill_dive_list(void)
 {
 	int i;
@@ -102,6 +94,35 @@ static GtkTreeModel *fill_dive_list(void)
 	}
 
 	return GTK_TREE_MODEL(store);
+}
+
+static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
+	struct dive *dive = dive_table.dives[0];
+	cairo_t *cr;
+	int i;
+
+	cr = gdk_cairo_create(widget->window);
+	cairo_set_source_rgb(cr, 0, 0, 0);
+	gdk_cairo_rectangle(cr, &event->area);
+	cairo_fill(cr);
+
+	cairo_set_line_width(cr, 3);
+	cairo_set_source_rgb(cr, 1, 1, 1);
+
+	if (dive->samples) {
+		struct sample *sample = dive->sample;
+		cairo_move_to(cr, sample->time.seconds / 5, to_feet(sample->depth) * 3);
+		for (i = 1; i < dive->samples; i++) {
+			sample++;
+			cairo_line_to(cr, sample->time.seconds / 5, to_feet(sample->depth) * 3);
+		}
+		cairo_stroke(cr);
+	}
+
+	cairo_destroy(cr);
+
+	return FALSE;
 }
 
 static GtkWidget *create_dive_list(void)
@@ -129,6 +150,8 @@ int main(int argc, char **argv)
 	GtkWidget *divelist;
 	GtkWidget *vbox;
 	GtkWidget *scrolled_window;
+	GtkWidget *frame;
+	GtkWidget *da;
 
 	parse_xml_init();
 
@@ -148,20 +171,28 @@ int main(int argc, char **argv)
 
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
-	g_signal_connect(G_OBJECT(win), "expose-event", G_CALLBACK(on_expose), NULL);
 
-	/* VBOX for the list of dives */
-	vbox=gtk_vbox_new(FALSE, 5);
+	/* HBOX for the list of dives and cairo window */
+	vbox=gtk_hbox_new(FALSE, 5);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 	gtk_container_add(GTK_CONTAINER(win), vbox);
 	gtk_widget_show(vbox);
 
 	/* Scrolled window for the list goes into the vbox.. */
 	scrolled_window=gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_usize(scrolled_window, 250, 350);
+	gtk_widget_set_usize(scrolled_window, 150, 350);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(vbox), scrolled_window);
 	gtk_widget_show(scrolled_window);
+
+	/* Frame for dive profile */
+	frame = gtk_frame_new("Dive profile");
+	gtk_container_add(GTK_CONTAINER(vbox), frame);
+	gtk_widget_show(frame);
+	da = gtk_drawing_area_new();
+	gtk_widget_set_size_request(da, 450, 350);
+	gtk_container_add(GTK_CONTAINER(frame), da);
+	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
 
 	/* Create the atual divelist */
 	divelist = create_dive_list();
