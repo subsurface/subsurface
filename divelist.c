@@ -5,13 +5,22 @@
 #include "dive.h"
 #include "display.h"
 
-static GtkTreeModel *fill_dive_list(void)
+static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
+{
+	GtkTreeIter iter;
+	GValue value = {0, };
+
+	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
+		return;
+
+	gtk_tree_model_get_value(model, &iter, 0, &value);
+	printf("'%s' selected\n", g_value_get_string(&value));
+}
+
+static void fill_dive_list(GtkListStore *store)
 {
 	int i;
-	GtkListStore *store;
 	GtkTreeIter iter;
-
-	store = gtk_list_store_new(1, G_TYPE_STRING);
 
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
@@ -21,35 +30,43 @@ static GtkTreeModel *fill_dive_list(void)
 			0, dive->name,
 			-1);
 	}
-
-	return GTK_TREE_MODEL(store);
 }
 
 GtkWidget *create_dive_list(void)
 {
-	GtkWidget *list;
-	GtkCellRenderer *renderer;
-	GtkTreeModel *model;
-	GtkWidget *scrolled_window;
+	GtkListStore      *model;
+	GtkWidget         *tree_view;
+	GtkTreeSelection  *selection;
+	GtkCellRenderer   *renderer;
+	GtkTreeViewColumn *col;
+	GtkWidget         *scroll_window;
 
-	list = gtk_tree_view_new();
+	model = gtk_list_store_new(1, G_TYPE_STRING);
+	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
+
+	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
+	gtk_widget_set_size_request(tree_view, 200, -1);
+
+	fill_dive_list(model);
 
 	renderer = gtk_cell_renderer_text_new();
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(list),
-		-1, "Dive", renderer, "text", 0, NULL);
+	col = gtk_tree_view_column_new();
+	gtk_tree_view_column_pack_start(col, renderer, TRUE);
+	gtk_tree_view_column_add_attribute(col, renderer, "text", 0);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
 
-	model = fill_dive_list();
-	gtk_tree_view_set_model(GTK_TREE_VIEW(list), model);
-	g_object_unref(model);
+	g_object_set(G_OBJECT(tree_view), "headers-visible", FALSE,
+					  "search-column", 0,
+					  "rules-hint", FALSE,
+					  NULL);
 
-	/* Scrolled window for the list goes into the vbox.. */
-	scrolled_window=gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_usize(scrolled_window, 150, 350);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_widget_show(scrolled_window);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
 
-	/* .. and connect it to the scrolled window */
-	gtk_container_add(GTK_CONTAINER(scrolled_window), list);
+	scroll_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_window),
+		               GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_container_add(GTK_CONTAINER(scroll_window), tree_view);
 
-	return scrolled_window;
+	return scroll_window;
 }
