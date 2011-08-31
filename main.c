@@ -61,6 +61,7 @@ int main(int argc, char **argv)
 	GtkWidget *win;
 	GtkWidget *divelist;
 	GtkWidget *table;
+	GtkWidget *notebook;
 	GtkWidget *frame;
 
 	parse_xml_init();
@@ -92,14 +93,18 @@ int main(int argc, char **argv)
 	divelist = create_dive_list();
 	gtk_table_attach_defaults(GTK_TABLE(table), divelist, 0, 1, 0, 2);
 
-	/* Frame for dive profile */
-	frame = dive_profile_frame();
-	gtk_table_attach_defaults(GTK_TABLE(table), frame, 1, 2, 1, 2);
-	dive_profile = frame;
+	/* Notebook for dive info vs profile vs .. */
+	notebook = gtk_notebook_new();
+	gtk_table_attach_defaults(GTK_TABLE(table), notebook, 1, 2, 1, 2);
 
 	/* Frame for dive info */
 	frame = dive_info_frame();
-	gtk_table_attach_defaults(GTK_TABLE(table), frame, 1, 2, 0, 1);
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), frame, gtk_label_new("Dive Info"));
+
+	/* Frame for dive profile */
+	frame = dive_profile_frame();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), frame, gtk_label_new("Dive Profile"));
+	dive_profile = frame;
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
