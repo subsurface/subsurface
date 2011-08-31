@@ -84,10 +84,49 @@ static gboolean on_expose(GtkWidget* w, GdkEventExpose* e, gpointer data)
 	return FALSE;
 }
 
+static GtkTreeModel *fill_dive_list(void)
+{
+	int i;
+	GtkListStore *store;
+	GtkTreeIter iter;
+
+	store = gtk_list_store_new(1, G_TYPE_STRING);
+
+	for (i = 0; i < dive_table.nr; i++) {
+		struct dive *dive = dive_table.dives[i];
+
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+			0, dive->name,
+			-1);
+	}
+
+	return GTK_TREE_MODEL(store);
+}
+
+static GtkWidget *create_dive_list(void)
+{
+	GtkWidget *list;
+	GtkCellRenderer *renderer;
+	GtkTreeModel *model;
+
+	list = gtk_tree_view_new();
+
+	renderer = gtk_cell_renderer_text_new();
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(list),
+		-1, "Dive", renderer, "text", 0, NULL);
+
+	model = fill_dive_list();
+	gtk_tree_view_set_model(GTK_TREE_VIEW(list), model);
+	g_object_unref(model);
+	return list;
+}
+
 int main(int argc, char **argv)
 {
 	int i;
-	GtkWidget* win;
+	GtkWidget *win;
+	GtkWidget *divelist;
 
 	parse_xml_init();
 
@@ -108,10 +147,13 @@ int main(int argc, char **argv)
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
 	g_signal_connect(G_OBJECT(win), "expose-event", G_CALLBACK(on_expose), NULL);
+
+	divelist = create_dive_list();
+	gtk_container_add(GTK_CONTAINER(win), divelist);
+
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
 
 	gtk_main();
 	return 0;
 }
-
