@@ -111,4 +111,16 @@ struct dive {
 	struct sample sample[];
 };
 
+extern int verbose;
+
+struct dive_table {
+	int nr, allocated;
+	struct dive **dives;
+};
+
+extern struct dive_table dive_table;
+
+void parse_xml_init(void);
+void parse_xml_file(const char *filename);
+
 #endif /* DIVE_H */
