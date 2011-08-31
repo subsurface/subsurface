@@ -10,11 +10,11 @@ parse: $(OBJS)
 parse.o: parse.c dive.h
 	$(CC) $(CFLAGS) -c `xml2-config --cflags` parse.c
 
-main.o: main.c dive.h
+main.o: main.c dive.h display.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c main.c
 
-profile.o: profile.c dive.h
+profile.o: profile.c dive.h display.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c profile.c
 
-divelist.o: divelist.c dive.h
+divelist.o: divelist.c dive.h display.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c divelist.c
