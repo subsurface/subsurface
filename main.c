@@ -55,6 +55,35 @@ void repaint_dive(void)
 	gtk_widget_queue_draw(dive_profile);
 }
 
+static void file_open(GtkWidget *w, gpointer data)
+{
+}
+
+static void file_save(GtkWidget *w, gpointer data)
+{
+}
+
+static GtkItemFactoryEntry menu_items[] = {
+	{ "/_File",		NULL,		NULL,		0, "<Branch>" },
+	{ "/File/_Open",	"<control>O",	file_open,	0, "<StockItem>", GTK_STOCK_OPEN },
+	{ "/File/_Save",	"<control>S",	file_save,	0, "<StockItem>", GTK_STOCK_SAVE },
+};
+static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
+
+/* This is just directly from the gtk menubar tutorial. */
+static GtkWidget *get_menubar_menu(GtkWidget *window)
+{
+	GtkItemFactory *item_factory;
+	GtkAccelGroup *accel_group;
+
+	accel_group = gtk_accel_group_new();
+	item_factory = gtk_item_factory_new(GTK_TYPE_MENU_BAR, "<main>", accel_group);
+
+	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);
+	gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
+	return gtk_item_factory_get_widget(item_factory, "<main>");
+}
+
 int main(int argc, char **argv)
 {
 	int i;
@@ -63,6 +92,8 @@ int main(int argc, char **argv)
 	GtkWidget *table;
 	GtkWidget *notebook;
 	GtkWidget *frame;
+	GtkWidget *menubar;
+	GtkWidget *vbox;
 
 	parse_xml_init();
 
@@ -83,10 +114,16 @@ int main(int argc, char **argv)
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
 
+	vbox = gtk_vbox_new(FALSE, 1);
+	gtk_container_add(GTK_CONTAINER(win), vbox);
+
+	menubar = get_menubar_menu(win);
+	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, TRUE, 0);
+
 	/* Table for the list of dives, cairo window, and dive info */
 	table = gtk_table_new(2, 2, FALSE);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-	gtk_container_add(GTK_CONTAINER(win), table);
+	gtk_box_pack_end(GTK_BOX(vbox), table, FALSE, TRUE, 0);
 	gtk_widget_show(table);
 
 	/* Create the atual divelist */
