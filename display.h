@@ -5,6 +5,7 @@
 #include <gdk/gdk.h>
 #include <cairo.h>
 
+extern int selected_dive;
 extern GtkWidget *dive_profile_frame(void);
 extern GtkWidget *create_dive_list(void);
 

@@ -5,9 +5,11 @@
 #include "dive.h"
 #include "display.h"
 
+int selected_dive = 0;
+
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
-	struct dive *dive = dive_table.dives[0];
+	struct dive *dive = dive_table.dives[selected_dive];
 	cairo_t *cr;
 	int i;
 

@@ -13,8 +13,9 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
 		return;
 
-	gtk_tree_model_get_value(model, &iter, 0, &value);
-	printf("'%s' selected\n", g_value_get_string(&value));
+	gtk_tree_model_get_value(model, &iter, 1, &value);
+	selected_dive = g_value_get_int(&value);
+	repaint_dive();
 }
 
 static void fill_dive_list(GtkListStore *store)
@@ -28,6 +29,7 @@ static void fill_dive_list(GtkListStore *store)
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			0, dive->name,
+			1, i,
 			-1);
 	}
 }
@@ -41,7 +43,7 @@ GtkWidget *create_dive_list(void)
 	GtkTreeViewColumn *col;
 	GtkWidget         *scroll_window;
 
-	model = gtk_list_store_new(1, G_TYPE_STRING);
+	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
 

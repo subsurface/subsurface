@@ -47,6 +47,13 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	gtk_main_quit();
 }
 
+static GtkWidget *dive_profile;
+
+void repaint_dive(void)
+{
+	gtk_widget_queue_draw(dive_profile);
+}
+
 int main(int argc, char **argv)
 {
 	int i;
@@ -87,6 +94,7 @@ int main(int argc, char **argv)
 	/* Frame for dive profile */
 	frame = dive_profile_frame();
 	gtk_container_add(GTK_CONTAINER(vbox), frame);
+	dive_profile = frame;
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
