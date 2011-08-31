@@ -1,8 +1,10 @@
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
 
-parse: main.o parse.o
-	$(CC) $(LDLAGS) -o parse main.o parse.o `xml2-config --libs` \
+OBJS=main.o profile.o parse.o
+
+parse: $(OBJS)
+	$(CC) $(LDLAGS) -o parse $(OBJS) `xml2-config --libs` \
 		`pkg-config --libs gtk+-2.0`
 
 parse.o: parse.c dive.h
@@ -10,3 +12,6 @@ parse.o: parse.c dive.h
 
 main.o: main.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c main.c
+
+profile.o: profile.c dive.h
+	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c profile.c

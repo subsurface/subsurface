@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <gtk/gtk.h>
-#include <gdk/gdk.h>
-#include <cairo.h>
 
 #include "dive.h"
+#include "display.h"
 
 static void show_dive(int nr, struct dive *dive)
 {
@@ -96,35 +94,6 @@ static GtkTreeModel *fill_dive_list(void)
 	return GTK_TREE_MODEL(store);
 }
 
-static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{
-	struct dive *dive = dive_table.dives[0];
-	cairo_t *cr;
-	int i;
-
-	cr = gdk_cairo_create(widget->window);
-	cairo_set_source_rgb(cr, 0, 0, 0);
-	gdk_cairo_rectangle(cr, &event->area);
-	cairo_fill(cr);
-
-	cairo_set_line_width(cr, 3);
-	cairo_set_source_rgb(cr, 1, 1, 1);
-
-	if (dive->samples) {
-		struct sample *sample = dive->sample;
-		cairo_move_to(cr, sample->time.seconds / 5, to_feet(sample->depth) * 3);
-		for (i = 1; i < dive->samples; i++) {
-			sample++;
-			cairo_line_to(cr, sample->time.seconds / 5, to_feet(sample->depth) * 3);
-		}
-		cairo_stroke(cr);
-	}
-
-	cairo_destroy(cr);
-
-	return FALSE;
-}
-
 static GtkWidget *create_dive_list(void)
 {
 	GtkWidget *list;
@@ -151,7 +120,6 @@ int main(int argc, char **argv)
 	GtkWidget *vbox;
 	GtkWidget *scrolled_window;
 	GtkWidget *frame;
-	GtkWidget *da;
 
 	parse_xml_init();
 
@@ -186,13 +154,9 @@ int main(int argc, char **argv)
 	gtk_widget_show(scrolled_window);
 
 	/* Frame for dive profile */
-	frame = gtk_frame_new("Dive profile");
+	frame = dive_profile_frame();
+
 	gtk_container_add(GTK_CONTAINER(vbox), frame);
-	gtk_widget_show(frame);
-	da = gtk_drawing_area_new();
-	gtk_widget_set_size_request(da, 450, 350);
-	gtk_container_add(GTK_CONTAINER(frame), da);
-	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
 
 	/* Create the atual divelist */
 	divelist = create_dive_list();
