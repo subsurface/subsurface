@@ -222,11 +222,10 @@ static void depth(char *buffer, void *_depth)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	/* Integer values are probably in feet */
+	/* All values are probably in meters */
 	case INTEGER:
-		depth->mm = 304.8 * val.i;
-		break;
-	/* Float? Probably meters.. */
+		val.fp = val.i;
+		/* fallthrough */
 	case FLOAT:
 		depth->mm = val.fp * 1000;
 		break;
