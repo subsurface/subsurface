@@ -133,4 +133,6 @@ static inline struct dive *get_dive(unsigned int nr)
 extern void parse_xml_init(void);
 extern void parse_xml_file(const char *filename);
 
+void save_dives(const char *filename);
+
 #endif /* DIVE_H */

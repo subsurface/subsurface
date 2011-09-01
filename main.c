@@ -96,7 +96,7 @@ static void file_save(GtkWidget *w, gpointer data)
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		char *filename;
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		printf("Save: '%s'\n", filename);
+		save_dives(filename);
 		g_free(filename);
 	}
 	gtk_widget_destroy(dialog);
