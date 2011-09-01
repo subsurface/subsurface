@@ -51,19 +51,31 @@ GtkWidget *dive_info_frame(void)
 
 	datetime = gtk_entry_new();
 	gtk_editable_set_editable(GTK_EDITABLE(datetime), FALSE);
-
 	gtk_box_pack_start(GTK_BOX(hbox), datetime, FALSE, FALSE, 0);
 
 	depth = gtk_entry_new();
 	gtk_editable_set_editable(GTK_EDITABLE(depth), FALSE);
-
 	gtk_box_pack_start(GTK_BOX(hbox), depth, FALSE, FALSE, 0);
 
 	duration = gtk_entry_new();
 	gtk_editable_set_editable(GTK_EDITABLE(duration), FALSE);
-
 	gtk_box_pack_start(GTK_BOX(hbox), duration, FALSE, FALSE, 0);
 
+	return frame;
+}
+
+GtkWidget *extended_dive_info_frame(void)
+{
+	GtkWidget *frame;
+	GtkWidget *vbox;
+
+	frame = gtk_frame_new("Extended dive info");
+	gtk_widget_show(frame);
+
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
+
+	/* Add extended info here: name, description, yadda yadda */
 	update_dive_info(current_dive);
 	return frame;
 }
