@@ -173,7 +173,8 @@ int main(int argc, char **argv)
 
 	/* Frame for minimal dive info */
 	frame = dive_info_frame();
-	gtk_table_attach(GTK_TABLE(table), frame, 1, 2, 0, 1, 0, 0, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), frame, 1, 2, 0, 1,
+		 GTK_FILL | GTK_SHRINK | GTK_EXPAND, 0, 0, 0);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
