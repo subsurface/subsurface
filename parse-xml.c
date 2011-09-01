@@ -333,6 +333,10 @@ static void gasmix(char *buffer, void *_fraction)
 		percent(buffer, _fraction);
 }
 
+static void gasmix_nitrogen(char *buffer, void *_gasmix)
+{
+	/* Ignore n2 percentages. There's no value in them. */
+}
 
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
@@ -407,7 +411,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH(".o2", gasmix, &dive->gasmix[gasmix_index].o2))
 		return;
-	if (MATCH(".n2", gasmix, &dive->gasmix[gasmix_index].n2))
+	if (MATCH(".n2", gasmix_nitrogen, &dive->gasmix[gasmix_index]))
 		return;
 	if (MATCH(".he", gasmix, &dive->gasmix[gasmix_index].he))
 		return;
@@ -468,12 +472,43 @@ static char *generate_name(struct dive *dive)
 	return p;
 }
 
+static void sanitize_gasmix(struct dive *dive)
+{
+	int i;
+
+	for (i = 0; i < MAX_MIXES; i++) {
+		gasmix_t *mix = dive->gasmix+i;
+		unsigned int o2, he;
+
+		o2 = mix->o2.permille;
+		he = mix->he.permille;
+
+		/* Regular air: leave empty */
+		if (!he) {
+			if (!o2)
+				continue;
+			/* 20.9% or 21% O2 is just air */
+			if (o2 >= 209 && o2 <= 210) {
+				mix->o2.permille = 0;
+				continue;
+			}
+		}
+
+		/* Sane mix? */
+		if (o2 <= 1000 && he <= 1000 && o2+he <= 1000)
+			continue;
+		fprintf(stderr, "Odd gasmix: %d O2 %d He\n", o2, he);
+		memset(mix, 0, sizeof(*mix));
+	}
+}
+
 static void dive_end(void)
 {
 	if (!dive)
 		return;
 	if (!dive->name)
 		dive->name = generate_name(dive);
+	sanitize_gasmix(dive);
 	record_dive(dive);
 	dive = NULL;
 	gasmix_index = 0;

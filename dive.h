@@ -66,7 +66,6 @@ typedef struct {
 
 typedef struct {
 	fraction_t o2;
-	fraction_t n2;
 	fraction_t he;
 } gasmix_t;
 
