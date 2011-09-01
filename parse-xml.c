@@ -197,7 +197,7 @@ static void pressure(char *buffer, void *_press)
 	case FLOAT:
 		/* Maybe it's in Bar? */
 		if (val.fp < 500.0) {
-			pressure->mbar = val.fp * 1000;
+			pressure->mbar = val.fp * 1000 + 0.5;
 			break;
 		}
 		printf("Unknown fractional pressure reading %s\n", buffer);
@@ -233,7 +233,7 @@ static void depth(char *buffer, void *_depth)
 		val.fp = val.i;
 		/* fallthrough */
 	case FLOAT:
-		depth->mm = val.fp * 1000;
+		depth->mm = val.fp * 1000 + 0.5;
 		break;
 	default:
 		printf("Strange depth reading %s\n", buffer);
@@ -257,7 +257,7 @@ static void temperature(char *buffer, void *_temperature)
 			break;
 		/* Celsius */
 		if (val.fp < 50.0) {
-			temperature->mkelvin = (val.fp + 273.16) * 1000;
+			temperature->mkelvin = (val.fp + 273.15) * 1000 + 0.5;
 			break;
 		}
 		/* Fahrenheit */
@@ -352,6 +352,8 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	if (MATCH(".sample.cylpress", pressure, &sample->tankpressure))
 		return;
 	if (MATCH(".sample.depth", depth, &sample->depth))
+		return;
+	if (MATCH(".sample.temp", temperature, &sample->temperature))
 		return;
 	if (MATCH(".sample.temperature", temperature, &sample->temperature))
 		return;

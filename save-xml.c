@@ -26,6 +26,7 @@ static void save_overview(FILE *f, struct dive *dive)
 {
 	fprintf(f, "  <maxdepth>%u.%03u m</maxdepth>\n", FRACTION(dive->maxdepth.mm, 1000));
 	show_temperature(f, dive->airtemp, "  <airtemp>", " C</airtemp>\n");
+	show_temperature(f, dive->watertemp, "  <watertemp>", " C</airtemp>\n");
 }
 
 static void save_gasmix(FILE *f, struct dive *dive)
@@ -53,7 +54,7 @@ static void save_sample(FILE *f, struct sample *sample)
 		FRACTION(sample->depth.mm, 1000));
 	show_temperature(f, sample->temperature, " temp='", " C'");
 	if (sample->tankpressure.mbar) {
-		fprintf(f, " tankpressure='%u.%03u bar'",
+		fprintf(f, " pressure='%u.%03u bar'",
 			FRACTION(sample->tankpressure.mbar, 1000));
 	}
 	fprintf(f, "></sample>\n");
