@@ -33,26 +33,30 @@ static void record_dive(struct dive *dive)
 	dive_table.nr = nr+1;
 }
 
-static void nonmatch(const char *type, const char *fullname, const char *name, char *buffer)
+static void start_match(const char *type, const char *name, char *buffer)
 {
-	if (verbose > 1)
-		printf("Unable to match %s '(%.*s)%s' (%s)\n", type,
-			(int) (name - fullname), fullname, name,
-			buffer);
-	free(buffer);
+	if (verbose > 2)
+		printf("Matching %s '%s' (%s)\n",
+			type, name, buffer);
 }
 
-static const char *last_part(const char *name)
+static void nonmatch(const char *type, const char *name, char *buffer)
 {
-	const char *p = strrchr(name, '.');
-	return p ? p+1 : name;
+	if (verbose > 1)
+		printf("Unable to match %s '%s' (%s)\n",
+			type, name, buffer);
+	free(buffer);
 }
 
 typedef void (*matchfn_t)(char *buffer, void *);
 
-static int match(const char *pattern, const char *name, matchfn_t fn, char *buf, void *data)
+static int match(const char *pattern, int plen,
+		 const char *name, int nlen,
+		 matchfn_t fn, char *buf, void *data)
 {
-	if (strcasecmp(pattern, name))
+	if (plen > nlen)
+		return 0;
+	if (memcmp(pattern, name + nlen - plen, plen))
 		return 0;
 	fn(buf, data);
 	return 1;
@@ -300,67 +304,72 @@ static void ignore(char *buffer, void *_time)
 {
 }
 
+#define MATCH(pattern, fn, dest) \
+	match(pattern, strlen(pattern), name, len, fn, buf, dest)
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
-	const char *last = last_part(name);
+	int len = strlen(name);
 
-	if (match("pressure", last, pressure, buf, &sample->tankpressure))
+	start_match("sample", name, buf);
+	if (MATCH(".sample.pressure", pressure, &sample->tankpressure))
 		return;
-	if (match("cylpress", last, pressure, buf, &sample->tankpressure))
+	if (MATCH(".sample.cylpress", pressure, &sample->tankpressure))
 		return;
-	if (match("depth", last, depth, buf, &sample->depth))
+	if (MATCH(".sample.depth", depth, &sample->depth))
 		return;
-	if (match("temperature", last, temperature, buf, &sample->temperature))
+	if (MATCH(".sample.temperature", temperature, &sample->temperature))
 		return;
-	if (match("sampletime", last, sampletime, buf, &sample->time))
+	if (MATCH(".sample.sampletime", sampletime, &sample->time))
 		return;
-	if (match("time", last, sampletime, buf, &sample->time))
+	if (MATCH(".sample.time", sampletime, &sample->time))
 		return;
 
-	nonmatch("sample", name, last, buf);
+	nonmatch("sample", name, buf);
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
-	const char *last = last_part(name);
+	int len = strlen(name);
 
-	if (match("date", last, divedate, buf, &dive->when))
+	start_match("dive", name, buf);
+	if (MATCH(".date", divedate, &dive->when))
 		return;
-	if (match("time", last, divetime, buf, &dive->when))
+	if (MATCH(".time", divetime, &dive->when))
 		return;
-	if (match("datetime", last, divedatetime, buf, &dive->when))
+	if (MATCH(".datetime", divedatetime, &dive->when))
 		return;
-	if (match("maxdepth", last, depth, buf, &dive->maxdepth))
+	if (MATCH(".maxdepth", depth, &dive->maxdepth))
 		return;
-	if (match("meandepth", last, depth, buf, &dive->meandepth))
+	if (MATCH(".meandepth", depth, &dive->meandepth))
 		return;
-	if (match("divetime", last, duration, buf, &dive->duration))
+	if (MATCH(".divetime", duration, &dive->duration))
 		return;
-	if (match("divetimesec", last, duration, buf, &dive->duration))
+	if (MATCH(".divetimesec", duration, &dive->duration))
 		return;
-	if (match("surfacetime", last, duration, buf, &dive->surfacetime))
+	if (MATCH(".surfacetime", duration, &dive->surfacetime))
 		return;
-	if (match("airtemp", last, temperature, buf, &dive->airtemp))
+	if (MATCH(".airtemp", temperature, &dive->airtemp))
 		return;
-	if (match("watertemp", last, temperature, buf, &dive->watertemp))
+	if (MATCH(".watertemp", temperature, &dive->watertemp))
 		return;
-	if (match("cylinderstartpressure", last, pressure, buf, &dive->beginning_pressure))
+	if (MATCH(".cylinderstartpressure", pressure, &dive->beginning_pressure))
 		return;
-	if (match("cylinderendpressure", last, pressure, buf, &dive->end_pressure))
+	if (MATCH(".cylinderendpressure", pressure, &dive->end_pressure))
 		return;
-	if (match("divenumber", last, ignore, buf, NULL))
+	if (MATCH(".divenumber", ignore, NULL))
 		return;
-	if (match("diveseries", last, ignore, buf, NULL))
+	if (MATCH(".diveseries", ignore, NULL))
 		return;
-	if (match("number", last, ignore, buf, NULL))
+	if (MATCH(".number", ignore, NULL))
 		return;
-	if (match("size", last, ignore, buf, NULL))
+	if (MATCH(".size", ignore, NULL))
 		return;
-	if (match("fingerprint", last, ignore, buf, NULL))
+	if (MATCH(".fingerprint", ignore, NULL))
 		return;
-	nonmatch("dive", name, last, buf);
+	nonmatch("dive", name, buf);
 }
 
 static unsigned int dive_size(int samples)
@@ -538,15 +547,32 @@ static void visit_one_node(xmlNode *node)
 	entry(name, len, content);
 }
 
-static void traverse(xmlNode *node)
+static void traverse(xmlNode *root);
+
+static void traverse_properties(xmlNode *node)
+{
+	xmlAttr *p;
+
+	for (p = node->properties; p; p = p->next)
+		traverse(p->children);
+}
+
+static void visit(xmlNode *n)
+{
+	visit_one_node(n);
+	traverse_properties(n);
+	traverse(n->children);
+}
+
+static void traverse(xmlNode *root)
 {
 	xmlNode *n;
 
-	for (n = node; n; n = n->next) {
+	for (n = root; n; n = n->next) {
 		/* XML from libdivecomputer: 'dive' per new dive */
 		if (!strcmp(n->name, "dive")) {
 			dive_start();
-			traverse(n->children);
+			visit(n);
 			dive_end();
 			continue;
 		}
@@ -559,14 +585,13 @@ static void traverse(xmlNode *node)
 		 */
 		if (!strcasecmp(n->name, "sample")) {
 			sample_start();
-			traverse(n->children);
+			visit(n);
 			sample_end();
 			continue;
 		}
 
 		/* Anything else - just visit it and recurse */
-		visit_one_node(n);
-		traverse(n->children);
+		visit(n);
 	}
 }
 
