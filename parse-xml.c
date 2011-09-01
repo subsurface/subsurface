@@ -69,6 +69,8 @@ static int alloc_samples;
 static struct dive *dive;
 static struct sample *sample;
 static struct tm tm;
+static int suunto;
+static int event_index, gasmix_index;
 
 static time_t utc_mktime(struct tm *tm)
 {
@@ -300,6 +302,35 @@ static void duration(char *buffer, void *_time)
 	sampletime(buffer, _time);
 }
 
+static void percent(char *buffer, void *_fraction)
+{
+	fraction_t *fraction = _fraction;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	/* C or F? Who knows? Let's default to Celsius */
+	case INTEGER:
+		val.fp = val.i;
+		/* Fallthrough */
+	case FLOAT:
+		if (val.fp <= 100.0)
+			fraction->permille = val.fp * 10 + 0.5;
+		break;
+
+	default:
+		printf("Strange percentage reading %s\n", buffer);
+		break;
+	}
+	free(buffer);
+}
+
+static void gasmix(char *buffer, void *_fraction)
+{
+	if (gasmix_index < MAX_MIXES)
+		percent(buffer, _fraction);
+}
+
+
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
 
@@ -323,6 +354,21 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 
 	nonmatch("sample", name, buf);
+}
+
+/*
+ * Crazy suunto xml. Look at how those o2/he things match up.
+ */
+static int suunto_dive_match(struct dive *dive, const char *name, int len, char *buf)
+{
+	return	MATCH(".o2pct", percent, &dive->gasmix[0].o2) ||
+		MATCH(".hepct_0", percent, &dive->gasmix[0].he) ||
+		MATCH(".o2pct_2", percent, &dive->gasmix[1].o2) ||
+		MATCH(".hepct_1", percent, &dive->gasmix[1].he) ||
+		MATCH(".o2pct_3", percent, &dive->gasmix[2].o2) ||
+		MATCH(".hepct_2", percent, &dive->gasmix[2].he) ||
+		MATCH(".o2pct_4", percent, &dive->gasmix[3].o2) ||
+		MATCH(".hepct_3", percent, &dive->gasmix[3].he);
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
@@ -355,6 +401,18 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".cylinderendpressure", pressure, &dive->end_pressure))
 		return;
+
+	if (MATCH(".o2", gasmix, &dive->gasmix[gasmix_index].o2))
+		return;
+	if (MATCH(".n2", gasmix, &dive->gasmix[gasmix_index].n2))
+		return;
+	if (MATCH(".he", gasmix, &dive->gasmix[gasmix_index].he))
+		return;
+
+	/* Suunto XML files are some crazy sh*t. */
+	if (suunto && suunto_dive_match(dive, name, len, buf))
+		return;
+
 	nonmatch("dive", name, buf);
 }
 
@@ -415,6 +473,35 @@ static void dive_end(void)
 		dive->name = generate_name(dive);
 	record_dive(dive);
 	dive = NULL;
+	gasmix_index = 0;
+}
+
+static void suunto_start(void)
+{
+	suunto++;
+}
+
+static void suunto_end(void)
+{
+	suunto--;
+}
+
+static void event_start(void)
+{
+}
+
+static void event_end(void)
+{
+	event_index++;
+}
+
+static void gasmix_start(void)
+{
+}
+
+static void gasmix_end(void)
+{
+	gasmix_index++;
 }
 
 static void sample_start(void)
@@ -435,6 +522,7 @@ static void sample_start(void)
 	}
 	sample = dive->sample + nr;
 	memset(sample, 0, sizeof(*sample));
+	event_index = 0;
 }
 
 static void sample_end(void)
@@ -550,34 +638,41 @@ static void visit(xmlNode *n)
 	traverse(n->children);
 }
 
+/*
+ * I'm sure this could be done as some fancy DTD rules.
+ * It's just not worth the headache.
+ */
+static struct nesting {
+	const char *name;
+	void (*start)(void), (*end)(void);
+} nesting[] = {
+	{ "dive", dive_start, dive_end },
+	{ "SUUNTO", suunto_start, suunto_end },
+	{ "sample", sample_start, sample_end },
+	{ "SAMPLE", sample_start, sample_end },
+	{ "event", event_start, event_end },
+	{ "gasmix", gasmix_start, gasmix_end },
+	{ NULL, }
+};
+
 static void traverse(xmlNode *root)
 {
 	xmlNode *n;
 
 	for (n = root; n; n = n->next) {
-		/* XML from libdivecomputer: 'dive' per new dive */
-		if (!strcmp(n->name, "dive")) {
-			dive_start();
-			visit(n);
-			dive_end();
-			continue;
-		}
+		struct nesting *rule = nesting;
 
-		/*
-		 * At least both libdivecomputer and Suunto
-		 * agree on "sample".
-		 *
-		 * Well - almost. Ignore case.
-		 */
-		if (!strcasecmp(n->name, "sample")) {
-			sample_start();
-			visit(n);
-			sample_end();
-			continue;
-		}
+		do {
+			if (!strcmp(rule->name, n->name))
+				break;
+			rule++;
+		} while (rule->name);
 
-		/* Anything else - just visit it and recurse */
+		if (rule->start)
+			rule->start();
 		visit(n);
+		if (rule->end)
+			rule->end();
 	}
 }
 

@@ -67,7 +67,7 @@ typedef struct {
 typedef struct {
 	fraction_t o2;
 	fraction_t n2;
-	fraction_t he2;
+	fraction_t he;
 } gasmix_t;
 
 typedef struct {
@@ -100,6 +100,8 @@ struct sample {
 	int tankindex;
 };
 
+#define MAX_MIXES (4)
+
 struct dive {
 	const char *name;
 	time_t when;
@@ -108,6 +110,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	pressure_t beginning_pressure, end_pressure;
+	gasmix_t gasmix[MAX_MIXES];
 	int samples;
 	struct sample sample[];
 };
