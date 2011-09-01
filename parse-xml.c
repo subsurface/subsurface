@@ -300,10 +300,6 @@ static void duration(char *buffer, void *_time)
 	sampletime(buffer, _time);
 }
 
-static void ignore(char *buffer, void *_time)
-{
-}
-
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
 
@@ -358,16 +354,6 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".cylinderstartpressure", pressure, &dive->beginning_pressure))
 		return;
 	if (MATCH(".cylinderendpressure", pressure, &dive->end_pressure))
-		return;
-	if (MATCH(".divenumber", ignore, NULL))
-		return;
-	if (MATCH(".diveseries", ignore, NULL))
-		return;
-	if (MATCH(".number", ignore, NULL))
-		return;
-	if (MATCH(".size", ignore, NULL))
-		return;
-	if (MATCH(".fingerprint", ignore, NULL))
 		return;
 	nonmatch("dive", name, buf);
 }
