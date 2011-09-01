@@ -5,6 +5,8 @@
 #include "dive.h"
 #include "display.h"
 
+GtkWidget *main_window;
+
 static int sortfn(const void *_a, const void *_b)
 {
 	const struct dive *a = *(void **)_a;
@@ -55,12 +57,49 @@ void repaint_dive(void)
 	gtk_widget_queue_draw(dive_profile);
 }
 
+static char *existing_filename;
+
 static void file_open(GtkWidget *w, gpointer data)
 {
+	GtkWidget *dialog;
+	dialog = gtk_file_chooser_dialog_new("Open File",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_OPEN,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+		NULL);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		char *filename;
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		printf("Open: '%s'\n", filename);
+		g_free(filename);
+	}
+	gtk_widget_destroy(dialog);
 }
 
 static void file_save(GtkWidget *w, gpointer data)
 {
+	GtkWidget *dialog;
+	dialog = gtk_file_chooser_dialog_new("Save File",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_SAVE,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
+	if (!existing_filename) {
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
+	} else
+		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), existing_filename);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		char *filename;
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		printf("Save: '%s'\n", filename);
+		g_free(filename);
+	}
+	gtk_widget_destroy(dialog);
 }
 
 static GtkItemFactoryEntry menu_items[] = {
@@ -113,6 +152,7 @@ int main(int argc, char **argv)
 
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
+	main_window = win;
 
 	vbox = gtk_vbox_new(FALSE, 1);
 	gtk_container_add(GTK_CONTAINER(win), vbox);
