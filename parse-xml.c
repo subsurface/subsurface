@@ -326,6 +326,9 @@ static void percent(char *buffer, void *_fraction)
 
 static void gasmix(char *buffer, void *_fraction)
 {
+	/* libdivecomputer does negative percentages. */
+	if (*buffer == '-')
+		return;
 	if (gasmix_index < MAX_MIXES)
 		percent(buffer, _fraction);
 }
