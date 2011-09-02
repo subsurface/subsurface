@@ -377,23 +377,23 @@ static void water_pressure(char *buffer, void *_depth)
 {
 	depth_t *depth = _depth;
         union int_or_float val;
-	float atm;
+	double atm, cm;
 
         switch (integer_or_float(buffer, &val)) {
         case FLOAT:
-		switch (units.pressure) {
-		case BAR:
-			/* It's actually centibar! */
-			atm = (val.fp / 100) / 1.01325;
+		if (!val.fp)
 			break;
-		case PSI:
-			/* I think it's centiPSI too. Crazy. */
-			atm = (val.fp / 100) * 0.0680459639;
+		/* cbar to atm */
+		atm = (val.fp / 100) / 1.01325;
+		/*
+		 * atm to cm. Why not mm? The precision just isn't
+		 * there.
+		 */
+		cm = 100 * (atm - 1) + 0.5;
+		if (cm > 0) {
+			depth->mm = 10 * (long)cm;
 			break;
 		}
-		/* 10 m per atm */
-		depth->mm = 10000 * atm;
-		break;
 	default:
 		fprintf(stderr, "Strange water pressure '%s'\n", buffer);
 	}
@@ -403,10 +403,51 @@ static void water_pressure(char *buffer, void *_depth)
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
 
+static void get_index(char *buffer, void *_i)
+{
+	int *i = _i;
+	*i = atoi(buffer);
+	free(buffer);
+}
+
+static void centibar(char *buffer, void *_pressure)
+{
+	pressure_t *pressure = _pressure;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		pressure->mbar = val.fp * 10 + 0.5;
+		break;
+	default:
+		fprintf(stderr, "Strange centibar pressure '%s'\n", buffer);
+	}
+	free(buffer);
+}
+
+static void decicelsius(char *buffer, void *_temp)
+{
+	temperature_t *temp = _temp;
+        union int_or_float val;
+
+        switch (integer_or_float(buffer, &val)) {
+        case FLOAT:
+		temp->mkelvin = (val.fp/10 + 273.15) * 1000 + 0.5;
+		break;
+	default:
+		fprintf(stderr, "Strange julian date: %s", buffer);
+	}
+	free(buffer);
+}
+
 static int uemis_fill_sample(struct sample *sample, const char *name, int len, char *buf)
 {
 	return	MATCH(".reading.dive_time", sampletime, &sample->time) ||
-		MATCH(".reading.water_pressure", water_pressure, &sample->depth);
+		MATCH(".reading.water_pressure", water_pressure, &sample->depth) ||
+		MATCH(".reading.active_tank", get_index, &sample->tankindex) ||
+		MATCH(".reading.tank_pressure", centibar, &sample->tankpressure) ||
+		MATCH(".reading.dive_temperature", decicelsius, &sample->temperature) ||
+		0;
 }
 
 /* We're in samples - try to convert the random xml value to something useful */
@@ -472,7 +513,9 @@ static void uemis_volume_unit(char *buffer, void *_unused)
 
 static void uemis_pressure_unit(char *buffer, void *_unused)
 {
+#if 0
 	units.pressure = buffer_value(buffer) ? PSI : BAR;
+#endif
 }
 
 static void uemis_temperature_unit(char *buffer, void *_unused)
@@ -534,7 +577,9 @@ static int uemis_dive_match(struct dive *dive, const char *name, int len, char *
 		MATCH(".units.time", uemis_time_unit, &units) ||
 		MATCH(".units.date", uemis_date_unit, &units) ||
 		MATCH(".date_time", uemis_date_time, &dive->when) ||
-		MATCH(".time_zone", uemis_time_zone, &dive->when);
+		MATCH(".time_zone", uemis_time_zone, &dive->when) ||
+		MATCH(".ambient.temperature", decicelsius, &dive->airtemp) ||
+		0;
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
