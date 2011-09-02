@@ -31,7 +31,7 @@ static void show_depth(FILE *f, depth_t depth, const char *pre, const char *post
 static void show_duration(FILE *f, duration_t duration, const char *pre, const char *post)
 {
 	if (duration.seconds)
-		fprintf(f, "%s%u:%03u%s", pre, FRACTION(duration.seconds, 60), post);
+		fprintf(f, "%s%u:%02u%s", pre, FRACTION(duration.seconds, 60), post);
 }
 
 static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const char *post)
@@ -72,7 +72,7 @@ static void save_gasmix(FILE *f, struct dive *dive)
 
 static void save_sample(FILE *f, struct sample *sample)
 {
-	fprintf(f, "  <sample time='%u:%02u' depth='%u.%03u'",
+	fprintf(f, "  <sample time='%u:%02u min' depth='%u.%03u m'",
 		FRACTION(sample->time.seconds,60),
 		FRACTION(sample->depth.mm, 1000));
 	show_temperature(f, sample->temperature, " temp='", " C'");
@@ -87,8 +87,8 @@ static void save_dive(FILE *f, struct dive *dive)
 	int i;
 	struct tm *tm = gmtime(&dive->when);
 
-	fprintf(f, "<dive date='%02u.%02u.%u' time='%02u:%02u:%02u'>\n",
-		tm->tm_mday, tm->tm_mon+1, tm->tm_year+1900,
+	fprintf(f, "<dive date='%04u-%02u-%02u' time='%02u:%02u:%02u'>\n",
+		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
 		tm->tm_hour, tm->tm_min, tm->tm_sec);
 	save_overview(f, dive);
 	save_gasmix(f, dive);
