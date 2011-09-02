@@ -111,7 +111,7 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_depth(f, dive->maxdepth, "  <maxdepth>", "</maxdepth>\n");
 	show_depth(f, dive->meandepth, "  <meandepth>", "</meandepth>\n");
 	show_temperature(f, dive->airtemp, "  <airtemp>", "</airtemp>\n");
-	show_temperature(f, dive->watertemp, "  <watertemp>", "</airtemp>\n");
+	show_temperature(f, dive->watertemp, "  <watertemp>", "</watertemp>\n");
 	show_duration(f, dive->duration, "  <duration>", "</duration>\n");
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_pressure(f, dive->beginning_pressure, "  <cylinderstartpressure>", "</cylinderstartpressure>\n");
