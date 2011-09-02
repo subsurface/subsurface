@@ -6,7 +6,9 @@
 #include "display.h"
 
 static GtkWidget *divedate, *divetime, *depth, *duration;
-static GtkWidget *location, *notes;
+static GtkTextBuffer *location, *notes;
+static int location_changed = 1, notes_changed = 1;
+static struct dive *buffered_dive;
 
 static const char *weekday(int wday)
 {
@@ -16,10 +18,42 @@ static const char *weekday(int wday)
 	return wday_array[wday];
 }
 
+static char *get_text(GtkTextBuffer *buffer)
+{
+	GtkTextIter start;
+	GtkTextIter end;
+
+	gtk_text_buffer_get_start_iter(buffer, &start);
+	gtk_text_buffer_get_end_iter(buffer, &end);
+	return gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+}
+
+void flush_dive_info_changes(void)
+{
+	struct dive *dive = buffered_dive;
+
+	if (!dive)
+		return;
+
+	if (location_changed) {
+		g_free(dive->location);
+		dive->location = get_text(location);
+	}
+
+	if (notes_changed) {
+		g_free(dive->notes);
+		dive->notes = get_text(notes);
+	}
+}
+
 void update_dive_info(struct dive *dive)
 {
 	struct tm *tm;
 	char buffer[80];
+	char *text;
+
+	flush_dive_info_changes();
+	buffered_dive = dive;
 
 	if (!dive) {
 		gtk_label_set_text(GTK_LABEL(divedate), "no dive");
@@ -50,6 +84,11 @@ void update_dive_info(struct dive *dive)
 		"%d min",
 		dive->duration.seconds / 60);
 	gtk_label_set_text(GTK_LABEL(duration), buffer);
+
+	text = dive->location ? : "";
+	gtk_text_buffer_set_text(location, text, -1);
+	text = dive->notes ? : "";
+	gtk_text_buffer_set_text(notes, text, -1);
 }
 
 static GtkWidget *info_label(GtkWidget *box, const char *str)
@@ -80,14 +119,20 @@ GtkWidget *dive_info_frame(void)
 	return frame;
 }
 
-static GtkWidget *text_entry(GtkWidget *box, const char *label)
+static GtkTextBuffer *text_entry(GtkWidget *box, const char *label, gboolean expand)
 {
-	GtkWidget *entry;
+	GtkWidget *view;
+	GtkTextBuffer *buffer;
+
 	GtkWidget *frame = gtk_frame_new(label);
-	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
-	entry = gtk_entry_new();
-	gtk_container_add(GTK_CONTAINER(frame), entry);
-	return entry;
+
+	gtk_box_pack_start(GTK_BOX(box), frame, expand, expand, 0);
+
+	view = gtk_text_view_new ();
+	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+
+	gtk_container_add(GTK_CONTAINER(frame), view);
+	return buffer;
 }
 
 GtkWidget *extended_dive_info_frame(void)
@@ -101,9 +146,8 @@ GtkWidget *extended_dive_info_frame(void)
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_container_add(GTK_CONTAINER(frame), vbox);
 
-	location = text_entry(vbox, "Location");
-	notes = text_entry(vbox, "Notes");
-	location = gtk_entry_new();
+	location = text_entry(vbox, "Location", FALSE);
+	notes = text_entry(vbox, "Notes", TRUE);
 
 	/* Add extended info here: name, description, yadda yadda */
 	update_dive_info(current_dive);

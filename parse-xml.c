@@ -349,6 +349,11 @@ static void gasmix_nitrogen(char *buffer, void *_gasmix)
 	/* Ignore n2 percentages. There's no value in them. */
 }
 
+static void utf8_string(char *buffer, void *_res)
+{
+	*(char **)_res = buffer;
+}
+
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
 
@@ -422,6 +427,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".cylinderstartpressure", pressure, &dive->beginning_pressure))
 		return;
 	if (MATCH(".cylinderendpressure", pressure, &dive->end_pressure))
+		return;
+	if (MATCH(".location", utf8_string, &dive->location))
+		return;
+	if (MATCH(".notes", utf8_string, &dive->notes))
 		return;
 
 	if (MATCH(".o2", gasmix, &dive->gasmix[gasmix_index].o2))

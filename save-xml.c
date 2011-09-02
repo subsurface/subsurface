@@ -40,6 +40,63 @@ static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const c
 		fprintf(f, "%s%u.%03u bar%s", pre, FRACTION(pressure.mbar, 1000), post);
 }
 
+/*
+ * We're outputting utf8 in xml.
+ * We need to quote the characters <, >, &.
+ *
+ * Nothing else (and if we ever do this using attributes, we'd need to
+ * quote the quotes we use too).
+ */
+static void quote(FILE *f, const char *text)
+{
+	const char *p = text;
+
+	for (;;) {
+		const char *escape;
+
+		switch (*p++) {
+		default:
+			continue;
+		case 0:
+			escape = NULL;
+			break;
+		case '<':
+			escape = "&lt;";
+			break;
+		case '>':
+			escape = "&gt;";
+			break;
+		case '&':
+			escape = "&amp;";
+			break;
+		}
+		fwrite(text, (p - text - 1), 1, f);
+		if (!escape)
+			break;
+		fputs(escape, f);
+		text = p;
+	}
+}
+
+static void show_utf8(FILE *f, const char *text, const char *pre, const char *post)
+{
+	int len;
+
+	if (!text)
+		return;
+	while (isspace(*text))
+		text++;
+	len = strlen(text);
+	if (!len)
+		return;
+	while (len && isspace(text[len-1]))
+		len--;
+	/* FIXME! Quoting! */
+	fputs(pre, f);
+	quote(f, text);
+	fputs(post, f);
+}
+
 static void save_overview(FILE *f, struct dive *dive)
 {
 	show_depth(f, dive->maxdepth, "  <maxdepth>", "</maxdepth>\n");
@@ -50,6 +107,8 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_pressure(f, dive->beginning_pressure, "  <cylinderstartpressure>", "</cylinderstartpressure>\n");
 	show_pressure(f, dive->end_pressure, "  <cylinderendpressure>", "</cylinderendpressure>\n");
+	show_utf8(f, dive->location, "  <location>","</location>\n");
+	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
 }
 
 static void save_gasmix(FILE *f, struct dive *dive)
@@ -106,6 +165,10 @@ void save_dives(const char *filename)
 
 	if (!f)
 		return;
+
+	/* Flush any edits of current dives back to the dives! */
+	flush_dive_info_changes();
+
 	fprintf(f, "<dives>\n<program name='diveclog' version='%d'></program>\n", VERSION);
 	for (i = 0; i < dive_table.nr; i++)
 		save_dive(f, get_dive(i));

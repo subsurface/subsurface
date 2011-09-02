@@ -104,6 +104,8 @@ struct sample {
 struct dive {
 	const char *name;
 	time_t when;
+	char *location;
+	char *notes;
 	depth_t maxdepth, meandepth;
 	duration_t duration, surfacetime;
 	depth_t visibility;
@@ -133,6 +135,7 @@ static inline struct dive *get_dive(unsigned int nr)
 extern void parse_xml_init(void);
 extern void parse_xml_file(const char *filename);
 
-void save_dives(const char *filename);
+extern void flush_dive_info_changes(void);
+extern void save_dives(const char *filename);
 
 #endif /* DIVE_H */
