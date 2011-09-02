@@ -227,6 +227,9 @@ static void pressure(char *buffer, void *_press)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
+		/* Just ignore zero values */
+		if (!val.fp)
+			break;
 		switch (units.pressure) {
 		case BAR:
 			/* Assume mbar, but if it's really small, it's bar */
