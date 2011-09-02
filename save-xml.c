@@ -66,7 +66,7 @@ static void save_gasmix(FILE *f, struct dive *dive)
 		fprintf(f, "  <gasmix o2='%u.%u%%'", FRACTION(o2, 10));
 		if (mix->he.permille)
 			fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
-		fprintf(f, " n2='%u.%u%%'></gasmix>\n", FRACTION(n2, 10));
+		fprintf(f, " n2='%u.%u%%' />\n", FRACTION(n2, 10));
 	}
 }
 
