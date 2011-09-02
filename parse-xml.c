@@ -106,14 +106,25 @@ static void divedate(char *buffer, void *_when)
 {
 	int d,m,y;
 	time_t *when = _when;
+	int success = 0;
 
+	success = tm.tm_sec | tm.tm_min | tm.tm_hour;
 	if (sscanf(buffer, "%d.%d.%d", &d, &m, &y) == 3) {
 		tm.tm_year = y;
 		tm.tm_mon = m-1;
 		tm.tm_mday = d;
-		if (tm.tm_sec | tm.tm_min | tm.tm_hour)
-			*when = utc_mktime(&tm);
+	} else if (sscanf(buffer, "%d-%d-%d", &y, &m, &d) == 3) {
+		tm.tm_year = y;
+		tm.tm_mon = m-1;
+		tm.tm_mday = d;
+	} else {
+		fprintf(stderr, "Unable to parse date '%s'\n", buffer);
+		success = 0;
 	}
+
+	if (success)
+		*when = utc_mktime(&tm);
+
 	free(buffer);
 }
 
@@ -395,6 +406,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".maxdepth", depth, &dive->maxdepth))
 		return;
 	if (MATCH(".meandepth", depth, &dive->meandepth))
+		return;
+	if (MATCH(".duration", duration, &dive->duration))
 		return;
 	if (MATCH(".divetime", duration, &dive->duration))
 		return;
