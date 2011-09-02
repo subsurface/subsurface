@@ -5,7 +5,7 @@
 #include "dive.h"
 #include "display.h"
 
-static GtkWidget *divedate, *divetime, *depth, *duration;
+static GtkWidget *divedate, *divetime, *depth, *duration, *temperature;
 static GtkTextBuffer *location, *notes;
 static int location_changed = 1, notes_changed = 1;
 static struct dive *buffered_dive;
@@ -85,6 +85,13 @@ void update_dive_info(struct dive *dive)
 		dive->duration.seconds / 60);
 	gtk_label_set_text(GTK_LABEL(duration), buffer);
 
+	*buffer = 0;
+	if (dive->watertemp.mkelvin)
+		snprintf(buffer, sizeof(buffer),
+			"%d C",
+			to_C(dive->watertemp));
+	gtk_label_set_text(GTK_LABEL(temperature), buffer);
+
 	text = dive->location ? : "";
 	gtk_text_buffer_set_text(location, text, -1);
 	text = dive->notes ? : "";
@@ -115,6 +122,7 @@ GtkWidget *dive_info_frame(void)
 	divetime = info_label(hbox, "time");
 	depth = info_label(hbox, "depth");
 	duration = info_label(hbox, "duration");
+	temperature = info_label(hbox, "temperature");
 
 	return frame;
 }
