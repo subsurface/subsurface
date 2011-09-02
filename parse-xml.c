@@ -186,13 +186,11 @@ static void divedatetime(char *buffer, void *_when)
 }
 
 union int_or_float {
-	long i;
 	double fp;
 };
 
 enum number_type {
 	NEITHER,
-	INTEGER,
 	FLOAT
 };
 
@@ -217,38 +215,34 @@ static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 		}
 	}
 
-	res->i = val;
-	return INTEGER;
+	res->fp = val;
+	return FLOAT;
 }
 
 static void pressure(char *buffer, void *_press)
 {
+	double mbar;
 	pressure_t *pressure = _press;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		/* Maybe it's in Bar? */
-		if (val.fp < 500.0) {
-			pressure->mbar = val.fp * 1000 + 0.5;
+		switch (units.pressure) {
+		case BAR:
+			/* Assume mbar, but if it's really small, it's bar */
+			mbar = val.fp;
+			if (mbar < 5000)
+				mbar = mbar * 1000;
+			break;
+		case PSI:
+			mbar = val.fp * 68.95;
 			break;
 		}
-		printf("Unknown fractional pressure reading %s\n", buffer);
-		break;
-
-	case INTEGER:
-		/*
-		 * Random integer? Maybe in PSI? Or millibar already?
-		 *
-		 * We assume that 5 bar is a ridiculous tank pressure,
-		 * so if it's smaller than 5000, it's in PSI..
-		 */
-		if (val.i < 5000) {
-			pressure->mbar = val.i * 68.95;
+		if (mbar > 5 && mbar < 500000) {
+			pressure->mbar = mbar + 0.5;
 			break;
 		}
-		pressure->mbar = val.i;
-		break;
+	/* fallthrough */
 	default:
 		printf("Strange pressure reading %s\n", buffer);
 	}
@@ -261,12 +255,15 @@ static void depth(char *buffer, void *_depth)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	/* All values are probably in meters */
-	case INTEGER:
-		val.fp = val.i;
-		/* fallthrough */
 	case FLOAT:
-		depth->mm = val.fp * 1000 + 0.5;
+		switch (units.length) {
+		case METERS:
+			depth->mm = val.fp * 1000 + 0.5;
+			break;
+		case FEET:
+			depth->mm = val.fp * 304.8 + 0.5;
+			break;
+		}
 		break;
 	default:
 		printf("Strange depth reading %s\n", buffer);
@@ -280,28 +277,19 @@ static void temperature(char *buffer, void *_temperature)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	/* C or F? Who knows? Let's default to Celsius */
-	case INTEGER:
-		val.fp = val.i;
-		/* Fallthrough */
 	case FLOAT:
 		/* Ignore zero. It means "none" */
 		if (!val.fp)
 			break;
 		/* Celsius */
-		if (val.fp < 50.0) {
+		switch (units.temperature) {
+		case CELSIUS:
 			temperature->mkelvin = (val.fp + 273.15) * 1000 + 0.5;
 			break;
-		}
-		/* Fahrenheit */
-		if (val.fp < 212.0) {
+		case FAHRENHEIT:
 			temperature->mkelvin = (val.fp + 459.67) * 5000/9;
 			break;
 		}
-		/* Kelvin or already millikelvin */
-		if (val.fp < 1000.0)
-			val.fp *= 1000;
-		temperature->mkelvin = val.fp;
 		break;
 	default:
 		printf("Strange temperature reading %s\n", buffer);
@@ -341,10 +329,6 @@ static void percent(char *buffer, void *_fraction)
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
-	/* C or F? Who knows? Let's default to Celsius */
-	case INTEGER:
-		val.fp = val.i;
-		/* Fallthrough */
 	case FLOAT:
 		if (val.fp <= 100.0)
 			fraction->permille = val.fp * 10 + 0.5;
@@ -393,9 +377,6 @@ static void water_pressure(char *buffer, void *_depth)
 	float atm;
 
         switch (integer_or_float(buffer, &val)) {
-        case INTEGER:
-                val.fp = val.i;
-                /* Fallthrough */
         case FLOAT:
 		switch (units.pressure) {
 		case BAR:
@@ -516,9 +497,6 @@ static void uemis_date_time(char *buffer, void *_when)
         union int_or_float val;
 
         switch (integer_or_float(buffer, &val)) {
-        case INTEGER:
-                val.fp = val.i;
-                /* Fallthrough */
         case FLOAT:
 		*when = (val.fp - 40587.5) * 86400;
 		break;
