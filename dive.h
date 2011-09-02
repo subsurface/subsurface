@@ -138,4 +138,9 @@ extern void parse_xml_file(const char *filename);
 extern void flush_dive_info_changes(void);
 extern void save_dives(const char *filename);
 
+static inline unsigned int dive_size(int samples)
+{
+	return sizeof(struct dive) + samples*sizeof(struct sample);
+}
+
 #endif /* DIVE_H */

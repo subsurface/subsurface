@@ -636,11 +636,6 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	nonmatch("dive", name, buf);
 }
 
-static unsigned int dive_size(int samples)
-{
-	return sizeof(struct dive) + samples*sizeof(struct sample);
-}
-
 /*
  * File boundaries are dive boundaries. But sometimes there are
  * multiple dives per file, so there can be other events too that
