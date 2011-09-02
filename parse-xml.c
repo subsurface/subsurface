@@ -600,6 +600,11 @@ static void sample_end(void)
 	if (sample->depth.mm > dive->maxdepth.mm)
 		dive->maxdepth.mm = sample->depth.mm;
 
+	if (sample->temperature.mkelvin) {
+		if (!dive->watertemp.mkelvin || dive->watertemp.mkelvin > sample->temperature.mkelvin)
+			dive->watertemp = sample->temperature;
+	}
+
 	sample = NULL;
 	dive->samples++;
 }
