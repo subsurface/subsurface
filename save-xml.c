@@ -18,38 +18,38 @@ static void show_temperature(FILE *f, temperature_t temp, const char *pre, const
 			sign = "-";
 			mcelsius = - mcelsius;
 		}
-		fprintf(f, "%s%s%u.%03u%s", pre, sign, FRACTION(mcelsius, 1000), post);
+		fprintf(f, "%s%s%u.%03u C%s", pre, sign, FRACTION(mcelsius, 1000), post);
 	}
 }
 
 static void show_depth(FILE *f, depth_t depth, const char *pre, const char *post)
 {
 	if (depth.mm)
-		fprintf(f, "%s%u.%03u%s", pre, FRACTION(depth.mm, 1000), post);
+		fprintf(f, "%s%u.%03u m%s", pre, FRACTION(depth.mm, 1000), post);
 }
 
 static void show_duration(FILE *f, duration_t duration, const char *pre, const char *post)
 {
 	if (duration.seconds)
-		fprintf(f, "%s%u:%02u%s", pre, FRACTION(duration.seconds, 60), post);
+		fprintf(f, "%s%u:%02u min%s", pre, FRACTION(duration.seconds, 60), post);
 }
 
 static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const char *post)
 {
 	if (pressure.mbar)
-		fprintf(f, "%s%u.%03u%s", pre, FRACTION(pressure.mbar, 1000), post);
+		fprintf(f, "%s%u.%03u bar%s", pre, FRACTION(pressure.mbar, 1000), post);
 }
 
 static void save_overview(FILE *f, struct dive *dive)
 {
-	show_depth(f, dive->maxdepth, "  <maxdepth>", " m</maxdepth>\n");
-	show_depth(f, dive->meandepth, "  <meandepth>", " m</meandepth>\n");
-	show_temperature(f, dive->airtemp, "  <airtemp>", " C</airtemp>\n");
-	show_temperature(f, dive->watertemp, "  <watertemp>", " C</airtemp>\n");
-	show_duration(f, dive->duration, "  <duration>", " min</duration>\n");
-	show_duration(f, dive->surfacetime, "  <surfacetime>", " min</surfacetime>\n");
-	show_pressure(f, dive->beginning_pressure, "  <cylinderstartpressure>", " bar</cylinderstartpressure>\n");
-	show_pressure(f, dive->end_pressure, "  <cylinderendpressure>", " bar</cylinderendpressure>\n");
+	show_depth(f, dive->maxdepth, "  <maxdepth>", "</maxdepth>\n");
+	show_depth(f, dive->meandepth, "  <meandepth>", "</meandepth>\n");
+	show_temperature(f, dive->airtemp, "  <airtemp>", "</airtemp>\n");
+	show_temperature(f, dive->watertemp, "  <watertemp>", "</airtemp>\n");
+	show_duration(f, dive->duration, "  <duration>", "</duration>\n");
+	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
+	show_pressure(f, dive->beginning_pressure, "  <cylinderstartpressure>", "</cylinderstartpressure>\n");
+	show_pressure(f, dive->end_pressure, "  <cylinderendpressure>", "</cylinderendpressure>\n");
 }
 
 static void save_gasmix(FILE *f, struct dive *dive)
@@ -75,11 +75,11 @@ static void save_sample(FILE *f, struct sample *sample)
 	fprintf(f, "  <sample time='%u:%02u min' depth='%u.%03u m'",
 		FRACTION(sample->time.seconds,60),
 		FRACTION(sample->depth.mm, 1000));
-	show_temperature(f, sample->temperature, " temp='", " C'");
-	show_pressure(f, sample->tankpressure, " pressure='", " bar'");
+	show_temperature(f, sample->temperature, " temp='", "'");
+	show_pressure(f, sample->tankpressure, " pressure='", "'");
 	if (sample->tankindex)
 		fprintf(f, " tankindex='%d'", sample->tankindex);
-	fprintf(f, "></sample>\n");
+	fprintf(f, " />\n");
 }
 
 static void save_dive(FILE *f, struct dive *dive)
