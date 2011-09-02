@@ -63,13 +63,35 @@ static int match(const char *pattern, int plen,
 }
 
 /*
+ * We keep our internal data in well-specified units, but
+ * the input may come in some random format. This keeps track
+ * of the incoming units.
+ */
+static struct units {
+	enum { METERS, FEET } length;
+	enum { LITER, CUFT } volume;
+	enum { BAR, PSI } pressure;
+	enum { CELSIUS, FAHRENHEIT } temperature;
+	enum { KG, LBS } weight;
+} units;
+
+/* We're going to default to SI units for input */
+static const struct units SI_units = {
+	.length = METERS,
+	.volume = LITER,
+	.pressure = BAR,
+	.temperature = CELSIUS,
+	.weight = KG
+};
+
+/*
  * Dive info as it is being built up..
  */
 static int alloc_samples;
 static struct dive *dive;
 static struct sample *sample;
 static struct tm tm;
-static int suunto;
+static int suunto, uemis;
 static int event_index, gasmix_index;
 
 static time_t utc_mktime(struct tm *tm)
@@ -354,8 +376,54 @@ static void utf8_string(char *buffer, void *_res)
 	*(char **)_res = buffer;
 }
 
+/*
+ * Uemis water_pressure. In centibar. And when converting to
+ * depth, I'm just going to always use saltwater, because I
+ * think "true depth" is just stupid. From a diving standpoint,
+ * "true depth" is pretty much completely pointless, unless
+ * you're doing some kind of underwater surveying work.
+ *
+ * So I give water depths in "pressure depth", always assuming
+ * salt water. So one atmosphere per 10m.
+ */
+static void water_pressure(char *buffer, void *_depth)
+{
+	depth_t *depth = _depth;
+        union int_or_float val;
+	float atm;
+
+        switch (integer_or_float(buffer, &val)) {
+        case INTEGER:
+                val.fp = val.i;
+                /* Fallthrough */
+        case FLOAT:
+		switch (units.pressure) {
+		case BAR:
+			/* It's actually centibar! */
+			atm = (val.fp / 100) / 1.01325;
+			break;
+		case PSI:
+			/* I think it's centiPSI too. Crazy. */
+			atm = (val.fp / 100) * 0.0680459639;
+			break;
+		}
+		/* 10 m per atm */
+		depth->mm = 10000 * atm;
+		break;
+	default:
+		fprintf(stderr, "Strange water pressure '%s'\n", buffer);
+	}
+	free(buffer);
+}
+
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
+
+static int uemis_fill_sample(struct sample *sample, const char *name, int len, char *buf)
+{
+	return	MATCH(".reading.dive_time", sampletime, &sample->time) ||
+		MATCH(".reading.water_pressure", water_pressure, &sample->depth);
+}
 
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
@@ -378,6 +446,11 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	if (MATCH(".sample.time", sampletime, &sample->time))
 		return;
 
+	if (uemis) {
+		if (uemis_fill_sample(sample, name, len, buf))
+			return;
+	}
+
 	nonmatch("sample", name, buf);
 }
 
@@ -394,6 +467,93 @@ static int suunto_dive_match(struct dive *dive, const char *name, int len, char 
 		MATCH(".hepct_2", percent, &dive->gasmix[2].he) ||
 		MATCH(".o2pct_4", percent, &dive->gasmix[3].o2) ||
 		MATCH(".hepct_3", percent, &dive->gasmix[3].he);
+}
+
+static int buffer_value(char *buffer)
+{
+	int val = atoi(buffer);
+	free(buffer);
+	return val;
+}
+
+static void uemis_length_unit(char *buffer, void *_unused)
+{
+	units.length = buffer_value(buffer) ? FEET : METERS;
+}
+
+static void uemis_volume_unit(char *buffer, void *_unused)
+{
+	units.volume = buffer_value(buffer) ? CUFT : LITER;
+}
+
+static void uemis_pressure_unit(char *buffer, void *_unused)
+{
+	units.pressure = buffer_value(buffer) ? PSI : BAR;
+}
+
+static void uemis_temperature_unit(char *buffer, void *_unused)
+{
+	units.temperature = buffer_value(buffer) ? FAHRENHEIT : CELSIUS;
+}
+
+static void uemis_weight_unit(char *buffer, void *_unused)
+{
+	units.weight = buffer_value(buffer) ? LBS : KG;
+}
+
+static void uemis_time_unit(char *buffer, void *_unused)
+{
+}
+
+static void uemis_date_unit(char *buffer, void *_unused)
+{
+}
+
+/* Modified julian day, yay! */
+static void uemis_date_time(char *buffer, void *_when)
+{
+	time_t *when = _when;
+        union int_or_float val;
+
+        switch (integer_or_float(buffer, &val)) {
+        case INTEGER:
+                val.fp = val.i;
+                /* Fallthrough */
+        case FLOAT:
+		*when = (val.fp - 40587.5) * 86400;
+		break;
+	default:
+		fprintf(stderr, "Strange julian date: %s", buffer);
+	}
+	free(buffer);
+}
+
+/*
+ * Uemis doesn't know time zones. You need to do them as
+ * minutes, not hours.
+ *
+ * But that's ok, we don't track timezones yet either. We
+ * just turn everything into "localtime expressed as UTC".
+ */
+static void uemis_time_zone(char *buffer, void *_when)
+{
+	time_t *when = _when;
+	signed char tz = atoi(buffer);
+
+	*when += tz * 3600;
+}
+
+static int uemis_dive_match(struct dive *dive, const char *name, int len, char *buf)
+{
+	return	MATCH(".units.length", uemis_length_unit, &units) ||
+		MATCH(".units.volume", uemis_volume_unit, &units) ||
+		MATCH(".units.pressure", uemis_pressure_unit, &units) ||
+		MATCH(".units.temperature", uemis_temperature_unit, &units) ||
+		MATCH(".units.weight", uemis_weight_unit, &units) ||
+		MATCH(".units.time", uemis_time_unit, &units) ||
+		MATCH(".units.date", uemis_date_unit, &units) ||
+		MATCH(".date_time", uemis_date_time, &dive->when) ||
+		MATCH(".time_zone", uemis_time_zone, &dive->when);
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
@@ -442,6 +602,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	/* Suunto XML files are some crazy sh*t. */
 	if (suunto && suunto_dive_match(dive, name, len, buf))
+		return;
+
+	if (uemis && uemis_dive_match(dive, name, len, buf))
 		return;
 
 	nonmatch("dive", name, buf);
@@ -541,11 +704,22 @@ static void dive_end(void)
 static void suunto_start(void)
 {
 	suunto++;
+	units = SI_units;
 }
 
 static void suunto_end(void)
 {
 	suunto--;
+}
+
+static void uemis_start(void)
+{
+	uemis++;
+	units = SI_units;
+}
+
+static void uemis_end(void)
+{
 }
 
 static void event_start(void)
@@ -717,8 +891,10 @@ static struct nesting {
 	{ "SUUNTO", suunto_start, suunto_end },
 	{ "sample", sample_start, sample_end },
 	{ "SAMPLE", sample_start, sample_end },
+	{ "reading", sample_start, sample_end },
 	{ "event", event_start, event_end },
 	{ "gasmix", gasmix_start, gasmix_end },
+	{ "pre_dive", uemis_start, uemis_end },
 	{ NULL, }
 };
 
@@ -743,6 +919,21 @@ static void traverse(xmlNode *root)
 	}
 }
 
+/* Per-file reset */
+static void reset_all(void)
+{
+	/*
+	 * We reset the units for each file. You'd think it was
+	 * a per-dive property, but I'm not going to trust people
+	 * to do per-dive setup. If the xml does have per-dive
+	 * data within one file, we might have to reset it per
+	 * dive for that format.
+	 */
+	units = SI_units;
+	suunto = 0;
+	uemis = 0;
+}
+
 void parse_xml_file(const char *filename)
 {
 	xmlDoc *doc;
@@ -753,6 +944,7 @@ void parse_xml_file(const char *filename)
 		return;
 	}
 
+	reset_all();
 	dive_start();
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
