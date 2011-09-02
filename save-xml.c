@@ -44,6 +44,10 @@ static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const c
  * We're outputting utf8 in xml.
  * We need to quote the characters <, >, &.
  *
+ * Technically I don't think we'd necessarily need to quote the control
+ * characters, but at least libxml2 doesn't like them. It doesn't even
+ * allow them quoted. So we just skip them and replace them with '?'.
+ *
  * Nothing else (and if we ever do this using attributes, we'd need to
  * quote the quotes we use too).
  */
@@ -59,6 +63,11 @@ static void quote(FILE *f, const char *text)
 			continue;
 		case 0:
 			escape = NULL;
+			break;
+		case 1 ... 8:
+		case 11: case 12:
+		case 14 ... 31:
+			escape = "?";
 			break;
 		case '<':
 			escape = "&lt;";
