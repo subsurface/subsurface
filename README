@@ -1,5 +1,40 @@
 Half-arsed divelog software in C.
 
-I'm tired of java programs that don't work etc. 
+I'm tired of java programs that don't work etc.
 
 License: GPLv2
+
+You need libxml2-devel and gtk2-devel to build this.
+
+Usage:
+
+	make
+	./divelog dives/*.xml
+
+to see my dives (with no notes or commentary).
+
+There's a lot of duplicates in there, and divelog will de-duplicate the
+ones that are exactly the same (just because they were imported multiple
+times).  But at least two of the dives have duplicates that were edited
+by Dirk in the Suunto Dive Manager, so they don't trigger the "exact
+duplicates" match.
+
+WARNING! I wasn't kidding when I said that I've done this by reading
+gtk2 tutorials as I've gone along.  If somebody is more comfortable with
+gtk, feel free to send me (signed-off) patches.
+
+Just as an example of the extreme hackiness of the code, I don't even
+bother connecting a signal for the "somebody edited the dive info"
+cases.  I just save/restore the dive info every single time you switch
+dives.  Christ! That's truly lame.
+
+Also, I don't actually integrate directly with libdivecomputer, I just
+read the XML files it can spit out.  But I included my own raw dive
+profile xml files for anybody who isn't a diver, but decides that they
+want to educate me in gtk.
+
+NOTE! Some of the dives are pretty pitiful.  All the last dives are from
+my divemaster course, so they are from following open water students
+along (many of them the confined*water dives).  There a lot of the
+action is at the surface, so some of the "dives" are 4ft deep and 2min
+long.
