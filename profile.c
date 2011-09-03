@@ -47,6 +47,14 @@ static void plot_profile(struct dive *dive, cairo_t *cr,
 	maxtime = round_seconds_up(dive->duration.seconds);
 	maxdepth = round_feet_up(to_feet(dive->maxdepth));
 
+	/* Time markers: every 5 min */
+	scalex = maxtime;
+	scaley = 1.0;
+	for (i = 5*60; i < maxtime; i += 5*60) {
+		cairo_move_to(cr, SCALE(i, 0));
+		cairo_line_to(cr, SCALE(i, 1));
+	}
+
 	/* Depth markers: every 15 ft */
 	scalex = 1.0;
 	scaley = maxdepth;
@@ -55,17 +63,15 @@ static void plot_profile(struct dive *dive, cairo_t *cr,
 		cairo_move_to(cr, SCALE(0, i));
 		cairo_line_to(cr, SCALE(1, i));
 	}
-
-	/* Time markers: every 5 min */
-	scalex = maxtime;
-	scaley = 1.0;
-	for (i = 5*60; i < maxtime; i += 5*60) {
-		cairo_move_to(cr, SCALE(i, 0));
-		cairo_line_to(cr, SCALE(i, 1));
-	}
 	cairo_stroke(cr);
 
-	scaley = maxdepth;
+	/* Show mean depth */
+	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.40);
+	cairo_move_to(cr, SCALE(0, to_feet(dive->meandepth)));
+	cairo_line_to(cr, SCALE(1, to_feet(dive->meandepth)));
+	cairo_stroke(cr);
+
+	scalex = maxtime;
 
 	sample = dive->sample;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
