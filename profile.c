@@ -28,18 +28,18 @@ static int round_feet_up(int feet)
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALE(x,y) (x)*maxx/scalex+topx,(y)*maxy/scaley+topy
 
-static void plot(cairo_t *cr, int w, int h, struct dive *dive, int samples, struct sample *sample)
+static void plot_profile(struct dive *dive, cairo_t *cr,
+	double topx, double topy, double maxx, double maxy)
 {
-	int i;
-	double topx, topy, maxx, maxy;
 	double scalex, scaley;
-	int maxtime, maxdepth;
 	int begins, sec, depth;
+	int i, samples;
+	struct sample *sample;
+	int maxtime, maxdepth;
 
-	topx = w / 20.0;
-	topy = h / 20.0;
-	maxx = (w - 2*topx);
-	maxy = (h - 2*topy);
+	samples = dive->samples;
+	if (!samples)
+		return;
 
 	cairo_set_line_width(cr, 2);
 
@@ -67,7 +67,7 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive, int samples, stru
 
 	scaley = maxdepth;
 
-	/* Depth profile */
+	sample = dive->sample;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	begins = sample->time.seconds;
 	cairo_move_to(cr, SCALE(sample->time.seconds, to_feet(sample->depth)));
@@ -85,6 +85,76 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive, int samples, stru
 	cairo_fill_preserve(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
+}
+
+static int get_tank_pressure_range(struct dive *dive, double *scalex, double *scaley)
+{
+	int i;
+	double min, max;
+
+	*scalex = round_seconds_up(dive->duration.seconds);
+
+	max = 0;
+	min = 5000;
+	for (i = 0; i < dive->samples; i++) {
+		struct sample *sample = dive->sample + i;
+		double bar;
+
+		if (!sample->tankpressure.mbar)
+			continue;
+		bar = sample->tankpressure.mbar;
+		if (bar < min)
+			min = bar;
+		if (bar > max)
+			max = bar;
+	}
+	if (!max)
+		return 0;
+	*scaley = max * 1.5;
+	return 1;
+}
+
+static void plot_tank_pressure(struct dive *dive, cairo_t *cr,
+	double topx, double topy, double maxx, double maxy)
+{
+	int i;
+	double scalex, scaley;
+
+	if (!get_tank_pressure_range(dive, &scalex, &scaley))
+		return;
+
+	cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 0.80);
+
+	cairo_move_to(cr, SCALE(0, dive->beginning_pressure.mbar));
+	for (i = 1; i < dive->samples; i++) {
+		int sec, mbar;
+		struct sample *sample = dive->sample + i;
+
+		sec = sample->time.seconds;
+		mbar = sample->tankpressure.mbar;
+		if (!mbar)
+			continue;
+		cairo_line_to(cr, SCALE(sec, mbar));
+	}
+	cairo_line_to(cr, SCALE(dive->duration.seconds, dive->end_pressure.mbar));
+	cairo_stroke(cr);
+}
+
+static void plot(cairo_t *cr, int w, int h, struct dive *dive)
+{
+	double topx, topy, maxx, maxy;
+	double scalex, scaley;
+
+	topx = w / 20.0;
+	topy = h / 20.0;
+	maxx = (w - 2*topx);
+	maxy = (h - 2*topy);
+
+	/* Depth profile */
+	plot_profile(dive, cr, topx, topy, maxx, maxy);
+
+	/* Tank pressure plot? */
+	plot_tank_pressure(dive, cr, topx, topy, maxx, maxy);
 
 	/* Bounding box last */
 	scalex = scaley = 1.0;
@@ -111,8 +181,8 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_paint(cr);
 
-	if (dive && dive->samples)
-		plot(cr, w, h, dive, dive->samples, dive->sample);
+	if (dive)
+		plot(cr, w, h, dive);
 
 	cairo_destroy(cr);
 

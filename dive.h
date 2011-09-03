@@ -1,6 +1,9 @@
 #ifndef DIVE_H
 #define DIVE_H
 
+#include <stdlib.h>
+#include <time.h>
+
 /*
  * Some silly typedefs to make our units very explicit.
  *
@@ -142,5 +145,8 @@ static inline unsigned int dive_size(int samples)
 {
 	return sizeof(struct dive) + samples*sizeof(struct sample);
 }
+
+extern struct dive *fixup_dive(struct dive *dive);
+extern struct dive *try_to_merge(struct dive *a, struct dive *b);
 
 #endif /* DIVE_H */

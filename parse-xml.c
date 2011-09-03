@@ -29,7 +29,7 @@ static void record_dive(struct dive *dive)
 		dive_table.dives = dives;
 		dive_table.allocated = allocated;
 	}
-	dives[nr] = dive;
+	dives[nr] = fixup_dive(dive);
 	dive_table.nr = nr+1;
 }
 
@@ -786,19 +786,6 @@ static void sample_end(void)
 {
 	if (!dive)
 		return;
-
-	if (sample->time.seconds > dive->duration.seconds) {
-		if (sample->depth.mm)
-			dive->duration = sample->time;
-	}
-
-	if (sample->depth.mm > dive->maxdepth.mm)
-		dive->maxdepth.mm = sample->depth.mm;
-
-	if (sample->temperature.mkelvin) {
-		if (!dive->watertemp.mkelvin || dive->watertemp.mkelvin > sample->temperature.mkelvin)
-			dive->watertemp = sample->temperature;
-	}
 
 	sample = NULL;
 	dive->samples++;
