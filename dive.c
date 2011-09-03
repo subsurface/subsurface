@@ -3,6 +3,30 @@
 
 #include "dive.h"
 
+/*
+ * So when we re-calculate maxdepth and meandepth, we will
+ * not override the old numbers if they are close to the
+ * new ones.
+ *
+ * Why? Because a dive computer may well actually track the
+ * max depth and mean depth at finer granularity than the
+ * samples it stores. So it's possible that the max and mean
+ * have been reported more correctly originally.
+ *
+ * Only if the values calulcated from the samples are clearly
+ * different do we override the normal depth values.
+ *
+ * This considers 1m to be "clearly different". That's
+ * a totally random number.
+ */
+static void update_depth(depth_t *depth, int new)
+{
+	int old = depth->mm;
+
+	if (abs(old - new) > 1000)
+		depth->mm = new;
+}
+
 struct dive *fixup_dive(struct dive *dive)
 {
 	int i;
@@ -50,15 +74,16 @@ struct dive *fixup_dive(struct dive *dive)
 		return dive;
 	dive->duration.seconds = end - start;
 	if (start != end)
-		dive->meandepth.mm = depthtime / (end - start);
+		update_depth(&dive->meandepth, depthtime / (end - start));
 	if (startpress)
 		dive->beginning_pressure.mbar = startpress;
 	if (endpress)
 		dive->end_pressure.mbar = endpress;
 	if (mintemp)
 		dive->watertemp.mkelvin = mintemp;
+
 	if (maxdepth)
-		dive->maxdepth.mm = maxdepth;
+		update_depth(&dive->maxdepth, maxdepth);
 
 	return dive;
 }
