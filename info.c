@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 
 #include "dive.h"
 #include "display.h"
 
-static GtkWidget *divedate, *divetime, *depth, *duration, *temperature;
+static GtkWidget *divedate, *divetime, *depth, *duration, *temperature, *locationnote;
 static GtkTextBuffer *location, *notes;
 static int location_changed = 1, notes_changed = 1;
 static struct dive *buffered_dive;
@@ -94,14 +95,16 @@ void update_dive_info(struct dive *dive)
 
 	text = dive->location ? : "";
 	gtk_text_buffer_set_text(location, text, -1);
+	gtk_label_set_text(GTK_LABEL(locationnote), text);
+
 	text = dive->notes ? : "";
 	gtk_text_buffer_set_text(notes, text, -1);
 }
 
-static GtkWidget *info_label(GtkWidget *box, const char *str)
+static GtkWidget *info_label(GtkWidget *box, const char *str, GtkJustification jtype)
 {
 	GtkWidget *label = gtk_label_new(str);
-	gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_RIGHT);
+	gtk_label_set_justify(GTK_LABEL(label), jtype);
 	gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
 	return label;
 }
@@ -109,20 +112,32 @@ static GtkWidget *info_label(GtkWidget *box, const char *str)
 GtkWidget *dive_info_frame(void)
 {
 	GtkWidget *frame;
-	GtkWidget *hbox;
+	GtkWidget *hbox, *hbox2;
+	GtkWidget *vbox;
 
 	frame = gtk_frame_new("Dive info");
 	gtk_widget_show(frame);
 
+	vbox = gtk_vbox_new(TRUE, 5);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
+
 	hbox = gtk_hbox_new(TRUE, 5);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 3);
-	gtk_container_add(GTK_CONTAINER(frame), hbox);
+	gtk_container_add(GTK_CONTAINER(vbox), hbox);
 
-	divedate = info_label(hbox, "date");
-	divetime = info_label(hbox, "time");
-	depth = info_label(hbox, "depth");
-	duration = info_label(hbox, "duration");
-	temperature = info_label(hbox, "temperature");
+	hbox2 = gtk_hbox_new(FALSE, 0);
+	gtk_container_set_border_width(GTK_CONTAINER(hbox2), 3);
+	gtk_container_add(GTK_CONTAINER(vbox), hbox2);
+
+	divedate = info_label(hbox, "date", GTK_JUSTIFY_RIGHT);
+	divetime = info_label(hbox, "time", GTK_JUSTIFY_RIGHT);
+	depth = info_label(hbox, "depth", GTK_JUSTIFY_RIGHT);
+	duration = info_label(hbox, "duration", GTK_JUSTIFY_RIGHT);
+	temperature = info_label(hbox, "temperature", GTK_JUSTIFY_RIGHT);
+
+	locationnote = info_label(hbox2, "location", GTK_JUSTIFY_LEFT);
+	gtk_label_set_width_chars(GTK_LABEL(locationnote), 80);
 
 	return frame;
 }
