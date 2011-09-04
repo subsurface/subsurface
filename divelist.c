@@ -115,7 +115,7 @@ GtkWidget *create_dive_list(void)
 
 	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
 					  "search-column", 0,
-					  "rules-hint", FALSE,
+					  "rules-hint", TRUE,
 					  NULL);
 
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
