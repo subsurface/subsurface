@@ -128,25 +128,38 @@ static void file_save(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
-static GtkItemFactoryEntry menu_items[] = {
-	{ "/_File",		NULL,		NULL,		0, "<Branch>" },
-	{ "/File/_Open",	"<control>O",	file_open,	0, "<StockItem>", GTK_STOCK_OPEN },
-	{ "/File/_Save",	"<control>S",	file_save,	0, "<StockItem>", GTK_STOCK_SAVE },
+static GtkActionEntry menu_items[] = {
+	{ "FileMenuAction", GTK_STOCK_FILE, NULL, NULL, NULL, NULL},
+	{ "OpenFile",       GTK_STOCK_OPEN, NULL, "<control>O", NULL, G_CALLBACK(file_open) },
+	{ "SaveFile",       GTK_STOCK_SAVE, NULL, "<control>S", NULL, G_CALLBACK(file_save) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
-/* This is just directly from the gtk menubar tutorial. */
+static const gchar* ui_string = " \
+	<ui> \
+		<menubar name=\"MainMenu\"> \
+			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
+				<menuitem name=\"Open\" action=\"OpenFile\" /> \
+				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+			</menu> \
+		</menubar> \
+	</ui> \
+";
+
 static GtkWidget *get_menubar_menu(GtkWidget *window)
 {
-	GtkItemFactory *item_factory;
-	GtkAccelGroup *accel_group;
+	GtkActionGroup *action_group = gtk_action_group_new("Menu");
+	gtk_action_group_add_actions(action_group, menu_items, nmenu_items, 0);
 
-	accel_group = gtk_accel_group_new();
-	item_factory = gtk_item_factory_new(GTK_TYPE_MENU_BAR, "<main>", accel_group);
+	GtkUIManager *ui_manager = gtk_ui_manager_new();
+	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
+	GError* error = 0;
+	gtk_ui_manager_add_ui_from_string(GTK_UI_MANAGER(ui_manager), ui_string, -1, &error);
 
-	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);
-	gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
-	return gtk_item_factory_get_widget(item_factory, "<main>");
+	gtk_window_add_accel_group(GTK_WINDOW(window), gtk_ui_manager_get_accel_group(ui_manager));
+	GtkWidget* menu = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
+
+	return menu;
 }
 
 int main(int argc, char **argv)
