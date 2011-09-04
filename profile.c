@@ -174,23 +174,19 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 
 }
 
-static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
 	struct dive *dive = current_dive;
-	cairo_t *cr;
 	int w,h;
 
-	w = widget->allocation.width;
-	h = widget->allocation.height;
+	w = gtk_widget_get_allocated_width(widget);
+	h = gtk_widget_get_allocated_height(widget);
 
-	cr = gdk_cairo_create(widget->window);
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_paint(cr);
 
 	if (dive)
 		plot(cr, w, h, dive);
-
-	cairo_destroy(cr);
 
 	return FALSE;
 }
@@ -204,7 +200,7 @@ GtkWidget *dive_profile_frame(void)
 	gtk_widget_show(frame);
 	da = gtk_drawing_area_new();
 	gtk_widget_set_size_request(da, 450, 350);
-	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
+	g_signal_connect(da, "draw", G_CALLBACK(draw), NULL);
 	gtk_container_add(GTK_CONTAINER(frame), da);
 
 	return frame;

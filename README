@@ -4,7 +4,7 @@ I'm tired of java programs that don't work etc.
 
 License: GPLv2
 
-You need libxml2-devel and gtk2-devel to build this.
+You need libxml2-devel and gtk3-devel to build this.
 
 Usage:
 
