@@ -147,6 +147,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<separator name=\"Seperator\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \
