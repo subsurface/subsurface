@@ -93,7 +93,7 @@ static void plot_profile(struct dive *dive, cairo_t *cr,
 	cairo_stroke(cr);
 }
 
-static int get_tank_pressure_range(struct dive *dive, double *scalex, double *scaley)
+static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley)
 {
 	int i;
 	double min, max;
@@ -106,9 +106,9 @@ static int get_tank_pressure_range(struct dive *dive, double *scalex, double *sc
 		struct sample *sample = dive->sample + i;
 		double bar;
 
-		if (!sample->tankpressure.mbar)
+		if (!sample->cylinderpressure.mbar)
 			continue;
-		bar = sample->tankpressure.mbar;
+		bar = sample->cylinderpressure.mbar;
 		if (bar < min)
 			min = bar;
 		if (bar > max)
@@ -120,13 +120,13 @@ static int get_tank_pressure_range(struct dive *dive, double *scalex, double *sc
 	return 1;
 }
 
-static void plot_tank_pressure(struct dive *dive, cairo_t *cr,
+static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 	double topx, double topy, double maxx, double maxy)
 {
 	int i;
 	double scalex, scaley;
 
-	if (!get_tank_pressure_range(dive, &scalex, &scaley))
+	if (!get_cylinder_pressure_range(dive, &scalex, &scaley))
 		return;
 
 	cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 0.80);
@@ -137,7 +137,7 @@ static void plot_tank_pressure(struct dive *dive, cairo_t *cr,
 		struct sample *sample = dive->sample + i;
 
 		sec = sample->time.seconds;
-		mbar = sample->tankpressure.mbar;
+		mbar = sample->cylinderpressure.mbar;
 		if (!mbar)
 			continue;
 		cairo_line_to(cr, SCALE(sec, mbar));
@@ -159,8 +159,8 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 	/* Depth profile */
 	plot_profile(dive, cr, topx, topy, maxx, maxy);
 
-	/* Tank pressure plot? */
-	plot_tank_pressure(dive, cr, topx, topy, maxx, maxy);
+	/* Cylinder pressure plot? */
+	plot_cylinder_pressure(dive, cr, topx, topy, maxx, maxy);
 
 	/* Bounding box last */
 	scalex = scaley = 1.0;

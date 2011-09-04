@@ -92,7 +92,7 @@ static struct dive *dive;
 static struct sample *sample;
 static struct tm tm;
 static int suunto, uemis;
-static int event_index, gasmix_index;
+static int event_index, cylinder_index;
 
 static time_t utc_mktime(struct tm *tm)
 {
@@ -349,13 +349,30 @@ static void gasmix(char *buffer, void *_fraction)
 	/* libdivecomputer does negative percentages. */
 	if (*buffer == '-')
 		return;
-	if (gasmix_index < MAX_MIXES)
+	if (cylinder_index < MAX_CYLINDERS)
 		percent(buffer, _fraction);
 }
 
 static void gasmix_nitrogen(char *buffer, void *_gasmix)
 {
 	/* Ignore n2 percentages. There's no value in them. */
+}
+
+static void cylindersize(char *buffer, void *_volume)
+{
+	volume_t *volume = _volume;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		volume->mliter = val.fp * 1000 + 0.5;
+		break;
+
+	default:
+		printf("Strange volume reading %s\n", buffer);
+		break;
+	}
+	free(buffer);
 }
 
 static void utf8_string(char *buffer, void *_res)
@@ -444,8 +461,8 @@ static int uemis_fill_sample(struct sample *sample, const char *name, int len, c
 {
 	return	MATCH(".reading.dive_time", sampletime, &sample->time) ||
 		MATCH(".reading.water_pressure", water_pressure, &sample->depth) ||
-		MATCH(".reading.active_tank", get_index, &sample->tankindex) ||
-		MATCH(".reading.tank_pressure", centibar, &sample->tankpressure) ||
+		MATCH(".reading.active_tank", get_index, &sample->cylinderindex) ||
+		MATCH(".reading.tank_pressure", centibar, &sample->cylinderpressure) ||
 		MATCH(".reading.dive_temperature", decicelsius, &sample->temperature) ||
 		0;
 }
@@ -456,9 +473,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	int len = strlen(name);
 
 	start_match("sample", name, buf);
-	if (MATCH(".sample.pressure", pressure, &sample->tankpressure))
+	if (MATCH(".sample.pressure", pressure, &sample->cylinderpressure))
 		return;
-	if (MATCH(".sample.cylpress", pressure, &sample->tankpressure))
+	if (MATCH(".sample.cylpress", pressure, &sample->cylinderpressure))
 		return;
 	if (MATCH(".sample.depth", depth, &sample->depth))
 		return;
@@ -484,14 +501,17 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
  */
 static int suunto_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
-	return	MATCH(".o2pct", percent, &dive->gasmix[0].o2) ||
-		MATCH(".hepct_0", percent, &dive->gasmix[0].he) ||
-		MATCH(".o2pct_2", percent, &dive->gasmix[1].o2) ||
-		MATCH(".hepct_1", percent, &dive->gasmix[1].he) ||
-		MATCH(".o2pct_3", percent, &dive->gasmix[2].o2) ||
-		MATCH(".hepct_2", percent, &dive->gasmix[2].he) ||
-		MATCH(".o2pct_4", percent, &dive->gasmix[3].o2) ||
-		MATCH(".hepct_3", percent, &dive->gasmix[3].he);
+	return	MATCH(".o2pct", percent, &dive->cylinder[0].gasmix.o2) ||
+		MATCH(".hepct_0", percent, &dive->cylinder[0].gasmix.he) ||
+		MATCH(".o2pct_2", percent, &dive->cylinder[1].gasmix.o2) ||
+		MATCH(".hepct_1", percent, &dive->cylinder[1].gasmix.he) ||
+		MATCH(".o2pct_3", percent, &dive->cylinder[2].gasmix.o2) ||
+		MATCH(".hepct_2", percent, &dive->cylinder[2].gasmix.he) ||
+		MATCH(".o2pct_4", percent, &dive->cylinder[3].gasmix.o2) ||
+		MATCH(".hepct_3", percent, &dive->cylinder[3].gasmix.he) ||
+		MATCH(".cylindersize", cylindersize, &dive->cylinder[0].type.size) ||
+		MATCH(".cylinderworkpressure", pressure, &dive->cylinder[0].type.workingpressure) ||
+		0;
 }
 
 static int buffer_value(char *buffer)
@@ -619,11 +639,16 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".notes", utf8_string, &dive->notes))
 		return;
 
-	if (MATCH(".o2", gasmix, &dive->gasmix[gasmix_index].o2))
+	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cylinder_index].type.size))
 		return;
-	if (MATCH(".n2", gasmix_nitrogen, &dive->gasmix[gasmix_index]))
+	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cylinder_index].type.workingpressure))
 		return;
-	if (MATCH(".he", gasmix, &dive->gasmix[gasmix_index].he))
+
+	if (MATCH(".o2", gasmix, &dive->cylinder[cylinder_index].gasmix.o2))
+		return;
+	if (MATCH(".n2", gasmix_nitrogen, &dive->cylinder[cylinder_index].gasmix))
+		return;
+	if (MATCH(".he", gasmix, &dive->cylinder[cylinder_index].gasmix.he))
 		return;
 
 	/* Suunto XML files are some crazy sh*t. */
@@ -680,33 +705,66 @@ static char *generate_name(struct dive *dive)
 	return p;
 }
 
-static void sanitize_gasmix(struct dive *dive)
+static void sanitize_gasmix(gasmix_t *mix)
+{
+	unsigned int o2, he;
+
+	o2 = mix->o2.permille;
+	he = mix->he.permille;
+
+	/* Regular air: leave empty */
+	if (!he) {
+		if (!o2)
+			return;
+		/* 20.9% or 21% O2 is just air */
+		if (o2 >= 209 && o2 <= 210) {
+			mix->o2.permille = 0;
+			return;
+		}
+	}
+
+	/* Sane mix? */
+	if (o2 <= 1000 && he <= 1000 && o2+he <= 1000)
+		return;
+	fprintf(stderr, "Odd gasmix: %d O2 %d He\n", o2, he);
+	memset(mix, 0, sizeof(*mix));
+}
+
+/*
+ * There are two ways to give cylinder size information:
+ *  - total amount of gas in cuft (depends on working pressure and physical size)
+ *  - physical size
+ *
+ * where "physical size" is the one that actually matters and is sane.
+ *
+ * We internally use physical size only. But we save the workingpressure
+ * so that we can do the conversion if required.
+ */
+static void sanitize_cylinder_type(cylinder_type_t *type)
+{
+	/* If we have no working pressure, it had *better* be just a physical size! */
+	if (!type->workingpressure.mbar)
+		return;
+
+	/*
+	 * 35l tanks? Do they exist?
+	 * Assume this is a "size in cuft" thing.
+	 */
+	if (type->size.mliter > 35000) {
+		double volume_of_air = type->size.mliter * 28.317;	/* cu ft to milliliter */
+		double atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
+		double volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
+		type->size.mliter = volume;
+	}
+}
+
+static void sanitize_cylinder_info(struct dive *dive)
 {
 	int i;
 
-	for (i = 0; i < MAX_MIXES; i++) {
-		gasmix_t *mix = dive->gasmix+i;
-		unsigned int o2, he;
-
-		o2 = mix->o2.permille;
-		he = mix->he.permille;
-
-		/* Regular air: leave empty */
-		if (!he) {
-			if (!o2)
-				continue;
-			/* 20.9% or 21% O2 is just air */
-			if (o2 >= 209 && o2 <= 210) {
-				mix->o2.permille = 0;
-				continue;
-			}
-		}
-
-		/* Sane mix? */
-		if (o2 <= 1000 && he <= 1000 && o2+he <= 1000)
-			continue;
-		fprintf(stderr, "Odd gasmix: %d O2 %d He\n", o2, he);
-		memset(mix, 0, sizeof(*mix));
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		sanitize_gasmix(&dive->cylinder[i].gasmix);
+		sanitize_cylinder_type(&dive->cylinder[i].type);
 	}
 }
 
@@ -716,10 +774,10 @@ static void dive_end(void)
 		return;
 	if (!dive->name)
 		dive->name = generate_name(dive);
-	sanitize_gasmix(dive);
+	sanitize_cylinder_info(dive);
 	record_dive(dive);
 	dive = NULL;
-	gasmix_index = 0;
+	cylinder_index = 0;
 }
 
 static void suunto_start(void)
@@ -752,13 +810,13 @@ static void event_end(void)
 	event_index++;
 }
 
-static void gasmix_start(void)
+static void cylinder_start(void)
 {
 }
 
-static void gasmix_end(void)
+static void cylinder_end(void)
 {
-	gasmix_index++;
+	cylinder_index++;
 }
 
 static void sample_start(void)
@@ -901,7 +959,8 @@ static struct nesting {
 	{ "SAMPLE", sample_start, sample_end },
 	{ "reading", sample_start, sample_end },
 	{ "event", event_start, event_end },
-	{ "gasmix", gasmix_start, gasmix_end },
+	{ "gasmix", cylinder_start, cylinder_end },
+	{ "cylinder", cylinder_start, cylinder_end },
 	{ "pre_dive", uemis_start, uemis_end },
 	{ NULL, }
 };

@@ -120,21 +120,34 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
 }
 
-static void save_gasmix(FILE *f, struct dive *dive)
+static void save_cylinder_info(FILE *f, struct dive *dive)
 {
 	int i;
 
-	for (i = 0; i < MAX_MIXES; i++) {
-		gasmix_t *mix = dive->gasmix+i;
-		int o2 = mix->o2.permille, he = mix->he.permille;
-		int n2 = 1000 - o2 - he;
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cylinder = dive->cylinder+i;
+		int volume = cylinder->type.size.mliter;
+		int pressure = cylinder->type.workingpressure.mbar;
+		int o2 = cylinder->gasmix.o2.permille;
+		int he = cylinder->gasmix.he.permille;
 
-		if (!mix->o2.permille)
+		/* No cylinder information at all? */
+		if (!o2 && !volume)
 			return;
-		fprintf(f, "  <gasmix o2='%u.%u%%'", FRACTION(o2, 10));
-		if (mix->he.permille)
-			fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
-		fprintf(f, " n2='%u.%u%%' />\n", FRACTION(n2, 10));
+		fprintf(f, "  <cylinder");
+		if (o2) {
+			int n2 = 1000 - o2 - he;
+			fprintf(f, " o2='%u.%u%%'", FRACTION(o2, 10));
+			if (he)
+				fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
+			fprintf(f, " n2='%u.%u%%'", FRACTION(n2, 10));
+		}
+		if (volume) {
+			fprintf(f, " size='%u.%03u l'", FRACTION(volume, 1000));
+			if (pressure)
+				fprintf(f, " workpressure='%u.%03u bar'", FRACTION(pressure, 1000));
+		}
+		fprintf(f, " />\n");
 	}
 }
 
@@ -144,9 +157,9 @@ static void save_sample(FILE *f, struct sample *sample)
 		FRACTION(sample->time.seconds,60),
 		FRACTION(sample->depth.mm, 1000));
 	show_temperature(f, sample->temperature, " temp='", "'");
-	show_pressure(f, sample->tankpressure, " pressure='", "'");
-	if (sample->tankindex)
-		fprintf(f, " tankindex='%d'", sample->tankindex);
+	show_pressure(f, sample->cylinderpressure, " pressure='", "'");
+	if (sample->cylinderindex)
+		fprintf(f, " cylinderindex='%d'", sample->cylinderindex);
 	fprintf(f, " />\n");
 }
 
@@ -159,7 +172,7 @@ static void save_dive(FILE *f, struct dive *dive)
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
 		tm->tm_hour, tm->tm_min, tm->tm_sec);
 	save_overview(f, dive);
-	save_gasmix(f, dive);
+	save_cylinder_info(f, dive);
 	for (i = 0; i < dive->samples; i++)
 		save_sample(f, dive->sample+i);
 	fprintf(f, "</dive>\n");

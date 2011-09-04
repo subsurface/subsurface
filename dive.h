@@ -14,7 +14,7 @@
  *
  * We also strive to make '0' a meaningless number saying "not
  * initialized", since many values are things that may not have
- * been reported (eg tank pressure or temperature from dive
+ * been reported (eg cylinder pressure or temperature from dive
  * computers that don't support them). But sometimes -1 is an even
  * more explicit way of saying "not there".
  *
@@ -22,7 +22,7 @@
  * temperatures. Doing temperatures in celsius or fahrenheit would
  * make for loss of precision when converting from one to the other,
  * and using millikelvin is SI-like but also means that a temperature
- * of '0' is clearly just a missing temperature or tank pressure.
+ * of '0' is clearly just a missing temperature or cylinder pressure.
  *
  * Also strive to use units that can not possibly be mistaken for a
  * valid value in a "normal" system without conversion. If the max
@@ -74,8 +74,13 @@ typedef struct {
 
 typedef struct {
 	volume_t size;
-	pressure_t pressure;
-} tank_type_t;
+	pressure_t workingpressure;
+} cylinder_type_t;
+
+typedef struct {
+	cylinder_type_t type;
+	gasmix_t gasmix;
+} cylinder_t;
 
 static inline int to_feet(depth_t depth)
 {
@@ -98,11 +103,11 @@ struct sample {
 	duration_t time;
 	depth_t depth;
 	temperature_t temperature;
-	pressure_t tankpressure;
-	int tankindex;
+	pressure_t cylinderpressure;
+	int cylinderindex;
 };
 
-#define MAX_MIXES (4)
+#define MAX_CYLINDERS (4)
 
 struct dive {
 	const char *name;
@@ -114,7 +119,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	pressure_t beginning_pressure, end_pressure;
-	gasmix_t gasmix[MAX_MIXES];
+	cylinder_t cylinder[MAX_CYLINDERS];
 	int samples;
 	struct sample sample[];
 };

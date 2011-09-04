@@ -42,7 +42,7 @@ struct dive *fixup_dive(struct dive *dive)
 		struct sample *sample = dive->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
-		int press = sample->tankpressure.mbar;
+		int press = sample->cylinderpressure.mbar;
 		int temp = sample->temperature.mkelvin;
 
 		if (lastdepth)
@@ -168,10 +168,10 @@ add_sample_b:
 			sample.depth = as->depth;
 		if (as->temperature.mkelvin)
 			sample.temperature = as->temperature;
-		if (as->tankpressure.mbar)
-			sample.tankpressure = as->tankpressure;
-		if (as->tankindex)
-			sample.tankindex = as->tankindex;
+		if (as->cylinderpressure.mbar)
+			sample.cylinderpressure = as->cylinderpressure;
+		if (as->cylinderindex)
+			sample.cylinderindex = as->cylinderindex;
 
 		res = add_sample(&sample, at, res);
 
@@ -197,6 +197,27 @@ static char *merge_text(const char *a, const char *b)
 		return (char *)a;
 	sprintf(res, "(%s) or (%s)", a, b);
 	return res;
+}
+
+/* Pick whichever has any info (if either). Prefer 'a' */
+static void merge_cylinder_type(cylinder_type_t *res, cylinder_type_t *a, cylinder_type_t *b)
+{
+	if (a->size.mliter)
+		b = a;
+	*res = *b;
+}
+
+static void merge_cylinder_mix(gasmix_t *res, gasmix_t *a, gasmix_t *b)
+{
+	if (a->o2.permille)
+		b = a;
+	*res = *b;
+}
+
+static void merge_cylinder_info(cylinder_t *res, cylinder_t *a, cylinder_t *b)
+{
+	merge_cylinder_type(&res->type, &a->type, &b->type);
+	merge_cylinder_mix(&res->gasmix, &a->gasmix, &b->gasmix);
 }
 
 /*
@@ -230,12 +251,8 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_MIN(res, a, b, watertemp.mkelvin);
 	MERGE_MAX(res, a, b, beginning_pressure.mbar);
 	MERGE_MAX(res, a, b, end_pressure.mbar);
-	for (i = 0; i < MAX_MIXES; i++) {
-		if (a->gasmix[i].o2.permille) {
-			res->gasmix[i] = a->gasmix[i];
-			continue;
-		}
-		res->gasmix[i] = b->gasmix[i];
-	}
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
+
 	return merge_samples(res, a, b, 0);
 }
