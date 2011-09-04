@@ -210,6 +210,7 @@ int main(int argc, char **argv)
 	table = gtk_table_new(2, 2, FALSE);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
 	gtk_box_pack_end(GTK_BOX(vbox), table, TRUE, TRUE, 0);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 	gtk_widget_show(table);
 
 	/* Create the atual divelist */
@@ -220,11 +221,12 @@ int main(int argc, char **argv)
 	/* Frame for minimal dive info */
 	frame = dive_info_frame();
 	gtk_table_attach(GTK_TABLE(table), frame, 1, 2, 0, 1,
-		 GTK_FILL | GTK_SHRINK | GTK_EXPAND, 0, 0, 0);
+		 GTK_FILL | GTK_SHRINK | GTK_EXPAND, 0, 6, 6);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
-	gtk_table_attach_defaults(GTK_TABLE(table), notebook, 1, 2, 1, 2);
+	gtk_table_attach(GTK_TABLE(table), notebook, 1, 2, 1, 2,
+		GTK_FILL | GTK_EXPAND, GTK_FILL | GTK_EXPAND, 6, 6);
 
 	/* Frame for dive profile */
 	frame = dive_profile_frame();
