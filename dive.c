@@ -34,7 +34,6 @@ struct dive *fixup_dive(struct dive *dive)
 	int lasttime = 0;
 	int start = -1, end = -1;
 	int startpress = 0, endpress = 0;
-	int starttemp = 0, endtemp = 0;
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 
@@ -60,9 +59,6 @@ struct dive *fixup_dive(struct dive *dive)
 				startpress = press;
 		}
 		if (temp) {
-			endtemp = temp;
-			if (!starttemp)
-				starttemp = temp;
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
 		}
