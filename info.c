@@ -7,7 +7,8 @@
 #include "display.h"
 
 static GtkWidget *divedate, *divetime, *depth, *duration, *temperature, *locationnote;
-static GtkTextBuffer *location, *notes;
+static GtkEntry *location;
+static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
 static struct dive *buffered_dive;
 
@@ -38,7 +39,7 @@ void flush_dive_info_changes(void)
 
 	if (location_changed) {
 		g_free(dive->location);
-		dive->location = get_text(location);
+		dive->location = gtk_editable_get_chars(GTK_EDITABLE(location), 0, -1);
 	}
 
 	if (notes_changed) {
@@ -94,7 +95,7 @@ void update_dive_info(struct dive *dive)
 	gtk_label_set_text(GTK_LABEL(temperature), buffer);
 
 	text = dive->location ? : "";
-	gtk_text_buffer_set_text(location, text, -1);
+	gtk_entry_set_text(location, text);
 	gtk_label_set_text(GTK_LABEL(locationnote), text);
 
 	text = dive->notes ? : "";
@@ -142,7 +143,21 @@ GtkWidget *dive_info_frame(void)
 	return frame;
 }
 
-static GtkTextBuffer *text_entry(GtkWidget *box, const char *label, gboolean expand)
+static GtkEntry *text_entry(GtkWidget *box, const char *label)
+{
+	GtkWidget *entry;
+
+	GtkWidget *frame = gtk_frame_new(label);
+
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
+
+	entry = gtk_entry_new ();
+	gtk_container_add(GTK_CONTAINER(frame), entry);
+
+	return GTK_ENTRY(entry);
+}
+
+static GtkTextBuffer *text_view(GtkWidget *box, const char *label, gboolean expand)
 {
 	GtkWidget *view;
 	GtkTextBuffer *buffer;
@@ -152,10 +167,12 @@ static GtkTextBuffer *text_entry(GtkWidget *box, const char *label, gboolean exp
 	gtk_box_pack_start(GTK_BOX(box), frame, expand, expand, 0);
 
 	GtkWidget* scrolled_window = gtk_scrolled_window_new (0, 0);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
 	gtk_widget_show(scrolled_window);
 
 	view = gtk_text_view_new ();
+	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), view);
 
 	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
@@ -175,8 +192,8 @@ GtkWidget *extended_dive_info_frame(void)
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_container_add(GTK_CONTAINER(frame), vbox);
 
-	location = text_entry(vbox, "Location", FALSE);
-	notes = text_entry(vbox, "Notes", TRUE);
+	location = text_entry(vbox, "Location");
+	notes = text_view(vbox, "Notes", TRUE);
 
 	/* Add extended info here: name, description, yadda yadda */
 	update_dive_info(current_dive);
