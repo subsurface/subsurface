@@ -658,6 +658,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cylinder_index].type.workingpressure))
 		return;
+	if (MATCH(".cylinder.description", utf8_string, &dive->cylinder[cylinder_index].type.description))
+		return;
 
 	if (MATCH(".o2", gasmix, &dive->cylinder[cylinder_index].gasmix.o2))
 		return;
