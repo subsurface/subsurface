@@ -13,7 +13,7 @@
  * samples it stores. So it's possible that the max and mean
  * have been reported more correctly originally.
  *
- * Only if the values calulcated from the samples are clearly
+ * Only if the values calculated from the samples are clearly
  * different do we override the normal depth values.
  *
  * This considers 1m to be "clearly different". That's
