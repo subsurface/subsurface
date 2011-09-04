@@ -151,10 +151,16 @@ static GtkTextBuffer *text_entry(GtkWidget *box, const char *label, gboolean exp
 
 	gtk_box_pack_start(GTK_BOX(box), frame, expand, expand, 0);
 
+	GtkWidget* scrolled_window = gtk_scrolled_window_new (0, 0);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
+	gtk_widget_show(scrolled_window);
+
 	view = gtk_text_view_new ();
+	gtk_container_add(GTK_CONTAINER(scrolled_window), view);
+
 	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
 
-	gtk_container_add(GTK_CONTAINER(frame), view);
+	gtk_container_add(GTK_CONTAINER(frame), scrolled_window);
 	return buffer;
 }
 
