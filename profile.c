@@ -200,7 +200,7 @@ GtkWidget *dive_profile_frame(void)
 	GtkWidget *frame;
 	GtkWidget *da;
 
-	frame = gtk_frame_new("Dive profile");
+	frame = gtk_frame_new("Dive Profile");
 	gtk_widget_show(frame);
 	da = gtk_drawing_area_new();
 	gtk_widget_set_size_request(da, 450, 350);

@@ -134,7 +134,7 @@ static void quit(GtkWidget *w, gpointer data)
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
+	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
@@ -147,6 +147,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<separator name=\"Seperator\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \
@@ -176,6 +177,7 @@ int main(int argc, char **argv)
 	GtkWidget *divelist;
 	GtkWidget *table;
 	GtkWidget *notebook;
+	GtkWidget *box;
 	GtkWidget *frame;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
@@ -210,6 +212,7 @@ int main(int argc, char **argv)
 	table = gtk_table_new(2, 2, FALSE);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
 	gtk_box_pack_end(GTK_BOX(vbox), table, TRUE, TRUE, 0);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 	gtk_widget_show(table);
 
 	/* Create the atual divelist */
@@ -220,11 +223,12 @@ int main(int argc, char **argv)
 	/* Frame for minimal dive info */
 	frame = dive_info_frame();
 	gtk_table_attach(GTK_TABLE(table), frame, 1, 2, 0, 1,
-		 GTK_FILL | GTK_SHRINK | GTK_EXPAND, 0, 0, 0);
+		 GTK_FILL | GTK_SHRINK | GTK_EXPAND, 0, 6, 6);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
-	gtk_table_attach_defaults(GTK_TABLE(table), notebook, 1, 2, 1, 2);
+	gtk_table_attach(GTK_TABLE(table), notebook, 1, 2, 1, 2,
+		GTK_FILL | GTK_EXPAND, GTK_FILL | GTK_EXPAND, 6, 6);
 
 	/* Frame for dive profile */
 	frame = dive_profile_frame();
@@ -232,8 +236,8 @@ int main(int argc, char **argv)
 	dive_profile = frame;
 
 	/* Frame for extended dive info */
-	frame = extended_dive_info_frame();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), frame, gtk_label_new("Extended dive Info"));
+	box = extended_dive_info_box();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), box, gtk_label_new("Extended Dive Info"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
