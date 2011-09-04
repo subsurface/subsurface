@@ -128,10 +128,16 @@ static void file_save(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void quit(GtkWidget *w, gpointer data)
+{
+	gtk_main_quit();
+}
+
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, NULL, NULL, NULL, NULL},
-	{ "OpenFile",       GTK_STOCK_OPEN, NULL, "<control>O", NULL, G_CALLBACK(file_open) },
-	{ "SaveFile",       GTK_STOCK_SAVE, NULL, "<control>S", NULL, G_CALLBACK(file_save) },
+	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
+	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
+	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
+	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -141,6 +147,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \
 	</ui> \
@@ -190,7 +197,7 @@ int main(int argc, char **argv)
 	report_dives();
 
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	g_signal_connect(G_OBJECT(win), "destroy",      G_CALLBACK(on_destroy), NULL);
+	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
 	vbox = gtk_vbox_new(FALSE, 0);
