@@ -134,7 +134,7 @@ static void quit(GtkWidget *w, gpointer data)
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
+	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
