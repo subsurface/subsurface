@@ -9,23 +9,26 @@
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 
+static void show_milli(FILE *f, const char *pre, int value, const char *unit, const char *post)
+{
+	fputs(pre, f);
+	if (value < 0) {
+		putc('-', f);
+		value = -value;
+	}
+	fprintf(f, "%u.%03u%s%s", FRACTION(value, 1000), unit, post);
+}
+
 static void show_temperature(FILE *f, temperature_t temp, const char *pre, const char *post)
 {
-	if (temp.mkelvin) {
-		int mcelsius = temp.mkelvin - 273150;
-		const char *sign ="";
-		if (mcelsius < 0) {
-			sign = "-";
-			mcelsius = - mcelsius;
-		}
-		fprintf(f, "%s%s%u.%03u C%s", pre, sign, FRACTION(mcelsius, 1000), post);
-	}
+	if (temp.mkelvin)
+		show_milli(f, pre, temp.mkelvin - 273150, " C", post);
 }
 
 static void show_depth(FILE *f, depth_t depth, const char *pre, const char *post)
 {
 	if (depth.mm)
-		fprintf(f, "%s%u.%03u m%s", pre, FRACTION(depth.mm, 1000), post);
+		show_milli(f, pre, depth.mm, " m", post);
 }
 
 static void show_duration(FILE *f, duration_t duration, const char *pre, const char *post)
@@ -37,7 +40,7 @@ static void show_duration(FILE *f, duration_t duration, const char *pre, const c
 static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const char *post)
 {
 	if (pressure.mbar)
-		fprintf(f, "%s%u.%03u bar%s", pre, FRACTION(pressure.mbar, 1000), post);
+		show_milli(f, pre, pressure.mbar, " bar", post);
 }
 
 /*
@@ -141,7 +144,7 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 				fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
 		}
 		if (volume)
-			fprintf(f, " size='%u.%03u l'", FRACTION(volume, 1000));
+			show_milli(f, " size='", volume, " l", "'");
 		if (description)
 			fprintf(f, " description='%s'", description);
 		fprintf(f, " />\n");
@@ -150,9 +153,8 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 
 static void save_sample(FILE *f, struct sample *sample)
 {
-	fprintf(f, "  <sample time='%u:%02u min' depth='%u.%03u m'",
-		FRACTION(sample->time.seconds,60),
-		FRACTION(sample->depth.mm, 1000));
+	fprintf(f, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds,60));
+	show_milli(f, " depth='", sample->depth.mm, " m", "'");
 	show_temperature(f, sample->temperature, " temp='", "'");
 	show_pressure(f, sample->cylinderpressure, " pressure='", "'");
 	if (sample->cylinderindex)
