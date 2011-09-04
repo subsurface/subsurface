@@ -164,21 +164,16 @@ static GtkTextBuffer *text_entry(GtkWidget *box, const char *label, gboolean exp
 	return buffer;
 }
 
-GtkWidget *extended_dive_info_frame(void)
+GtkWidget *extended_dive_info_box(void)
 {
-	GtkWidget *frame;
 	GtkWidget *vbox;
-
-	frame = gtk_frame_new("Extended dive info");
-	gtk_widget_show(frame);
-
 	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
 
 	location = text_entry(vbox, "Location", FALSE);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 	notes = text_entry(vbox, "Notes", TRUE);
 
 	/* Add extended info here: name, description, yadda yadda */
 	update_dive_info(current_dive);
-	return frame;
+	return vbox;
 }
