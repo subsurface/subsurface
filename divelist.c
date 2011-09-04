@@ -97,17 +97,21 @@ GtkWidget *create_dive_list(void)
 	col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "ft");
 	gtk_tree_view_column_set_sort_column_id(col, 3);
-	gtk_tree_view_column_pack_start(col, renderer, TRUE);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", 2);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 	
 	renderer = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "min");
 	gtk_tree_view_column_set_sort_column_id(col, 5);
-	gtk_tree_view_column_pack_start(col, renderer, TRUE);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", 4);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 
 	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
 					  "search-column", 0,
