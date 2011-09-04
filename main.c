@@ -134,7 +134,7 @@ static void quit(GtkWidget *w, gpointer data)
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
+	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
@@ -147,6 +147,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<separator name=\"Seperator\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \
@@ -217,16 +218,16 @@ int main(int argc, char **argv)
 	gtk_paned_add1(GTK_PANED(paned), divelist);
 
 	/* VBox for dive info, and tabs */
-	info_box = gtk_vbox_new(FALSE, 5);
+	info_box = gtk_vbox_new(FALSE, 6);
 	gtk_paned_add2(GTK_PANED(paned), info_box);
 
 	/* Frame for minimal dive info */
 	frame = dive_info_frame();
-	gtk_box_pack_start(GTK_BOX(info_box), frame, FALSE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(info_box), frame, FALSE, TRUE, 6);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(info_box), notebook, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(info_box), notebook, TRUE, TRUE, 6);
 
 	/* Frame for dive profile */
 	dive_profile = dive_profile_widget();
@@ -234,7 +235,7 @@ int main(int argc, char **argv)
 
 	/* Frame for extended dive info */
 	dive_info = extended_dive_info_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_info, gtk_label_new("Extended dive Info"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_info, gtk_label_new("Extended Dive Info"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);

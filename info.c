@@ -119,15 +119,15 @@ GtkWidget *dive_info_frame(void)
 	frame = gtk_frame_new("Dive info");
 	gtk_widget_show(frame);
 
-	vbox = gtk_vbox_new(TRUE, 5);
+	vbox = gtk_vbox_new(TRUE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 	gtk_container_add(GTK_CONTAINER(frame), vbox);
 
-	hbox = gtk_hbox_new(TRUE, 5);
+	hbox = gtk_hbox_new(TRUE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 3);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox);
 
-	hbox2 = gtk_hbox_new(FALSE, 0);
+	hbox2 = gtk_hbox_new(FALSE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox2), 3);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox2);
 
@@ -185,9 +185,10 @@ GtkWidget *extended_dive_info_widget(void)
 {
 	GtkWidget *vbox;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_vbox_new(FALSE, 6);
 
 	location = text_entry(vbox, "Location");
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 	notes = text_view(vbox, "Notes", TRUE);
 
 	/* Add extended info here: name, description, yadda yadda */
