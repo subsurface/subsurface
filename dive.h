@@ -111,7 +111,6 @@ struct sample {
 #define MAX_CYLINDERS (4)
 
 struct dive {
-	const char *name;
 	time_t when;
 	char *location;
 	char *notes;

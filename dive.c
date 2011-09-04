@@ -253,7 +253,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	memset(res, 0, dive_size(alloc_samples));
 
 	res->when = a->when;
-	res->name = merge_text(a->name, b->name);
 	res->location = merge_text(a->location, b->location);
 	res->notes = merge_text(a->notes, b->notes);
 	MERGE_MAX(res, a, b, maxdepth.mm);
