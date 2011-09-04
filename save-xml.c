@@ -136,11 +136,9 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 			return;
 		fprintf(f, "  <cylinder");
 		if (o2) {
-			int n2 = 1000 - o2 - he;
 			fprintf(f, " o2='%u.%u%%'", FRACTION(o2, 10));
 			if (he)
 				fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
-			fprintf(f, " n2='%u.%u%%'", FRACTION(n2, 10));
 		}
 		if (volume) {
 			fprintf(f, " size='%u.%03u l'", FRACTION(volume, 1000));
