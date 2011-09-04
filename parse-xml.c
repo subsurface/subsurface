@@ -587,6 +587,7 @@ static void uemis_time_zone(char *buffer, void *_when)
 	*when += tz * 3600;
 }
 
+/* Christ. Uemis tank data is a total mess. */
 static int uemis_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
 	return	MATCH(".units.length", uemis_length_unit, &units) ||
@@ -599,6 +600,20 @@ static int uemis_dive_match(struct dive *dive, const char *name, int len, char *
 		MATCH(".date_time", uemis_date_time, &dive->when) ||
 		MATCH(".time_zone", uemis_time_zone, &dive->when) ||
 		MATCH(".ambient.temperature", decicelsius, &dive->airtemp) ||
+		MATCH(".air.bottom_tank.size", cylindersize, &dive->cylinder[0].type.size) ||
+		MATCH(".air.bottom_tank.oxygen", percent, &dive->cylinder[0].gasmix.o2) ||
+		MATCH(".nitrox_1.bottom_tank.size", cylindersize, &dive->cylinder[1].type.size) ||
+		MATCH(".nitrox_1.bottom_tank.oxygen", percent, &dive->cylinder[1].gasmix.o2) ||
+		MATCH(".nitrox_2.bottom_tank.size", cylindersize, &dive->cylinder[2].type.size) ||
+		MATCH(".nitrox_2.bottom_tank.oxygen", percent, &dive->cylinder[2].gasmix.o2) ||
+		MATCH(".nitrox_2.deco_tank.size", cylindersize, &dive->cylinder[3].type.size) ||
+		MATCH(".nitrox_2.deco_tank.oxygen", percent, &dive->cylinder[3].gasmix.o2) ||
+		MATCH(".nitrox_3.bottom_tank.size", cylindersize, &dive->cylinder[4].type.size) ||
+		MATCH(".nitrox_3.bottom_tank.oxygen", percent, &dive->cylinder[4].gasmix.o2) ||
+		MATCH(".nitrox_3.deco_tank.size", cylindersize, &dive->cylinder[5].type.size) ||
+		MATCH(".nitrox_3.deco_tank.oxygen", percent, &dive->cylinder[5].gasmix.o2) ||
+		MATCH(".nitrox_3.travel_tank.size", cylindersize, &dive->cylinder[6].type.size) ||
+		MATCH(".nitrox_3.travel_tank.oxygen", percent, &dive->cylinder[6].gasmix.o2) ||
 		0;
 }
 

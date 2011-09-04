@@ -108,7 +108,7 @@ struct sample {
 	int cylinderindex;
 };
 
-#define MAX_CYLINDERS (4)
+#define MAX_CYLINDERS (8)
 
 struct dive {
 	time_t when;
