@@ -177,6 +177,7 @@ int main(int argc, char **argv)
 	GtkWidget *divelist;
 	GtkWidget *table;
 	GtkWidget *notebook;
+	GtkWidget *box;
 	GtkWidget *frame;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
@@ -235,8 +236,8 @@ int main(int argc, char **argv)
 	dive_profile = frame;
 
 	/* Frame for extended dive info */
-	frame = extended_dive_info_frame();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), frame, gtk_label_new("Extended Dive Info"));
+	box = extended_dive_info_box();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), box, gtk_label_new("Extended Dive Info"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
