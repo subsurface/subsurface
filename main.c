@@ -212,7 +212,7 @@ int main(int argc, char **argv)
 	gtk_box_pack_end(GTK_BOX(vbox), table, TRUE, TRUE, 0);
 	gtk_widget_show(table);
 
-	/* Create the atual divelist */
+	/* Create the actual divelist */
 	divelist = create_dive_list();
 	gtk_table_attach(GTK_TABLE(table), divelist, 0, 1, 0, 2,
 		0, GTK_FILL | GTK_SHRINK | GTK_EXPAND, 0, 0);
