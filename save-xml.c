@@ -193,4 +193,5 @@ void save_dives(const char *filename)
 	for (i = 0; i < dive_table.nr; i++)
 		save_dive(f, get_dive(i));
 	fprintf(f, "</dives>\n");
+	fclose(f);
 }
