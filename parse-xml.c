@@ -709,6 +709,51 @@ static void sanitize_gasmix(gasmix_t *mix)
 }
 
 /*
+ * See if the size/workingpressure looks like some standard cylinder
+ * size, eg "AL80".
+ */
+static void match_standard_cylinder(cylinder_type_t *type)
+{
+	int psi, cuft, len;
+	const char *fmt;
+	char buffer[20], *p;
+
+	/* Do we already have a cylinder description? */
+	if (type->description)
+		return;
+
+	cuft = type->size.mliter / 1000;
+	psi = type->workingpressure.mbar / 68.95;
+
+	switch (psi) {
+	case 2300 ... 2500:	/* 2400 psi: LP tank */
+		fmt = "LP%d";
+		break;
+	case 2600 ... 2700:	/* 2640 psi: LP+10% */
+		fmt = "LP%d+";
+		break;
+	case 2900 ... 3100:	/* 3000 psi: ALx tank */
+		fmt = "AL%d";
+		break;
+	case 3400 ... 3500:	/* 3442 psi: HP tank */
+		fmt = "HP%d";
+		break;
+	case 3700 ... 3850:	/* HP+10% */
+		fmt = "HP%d+";
+		break;
+	default:
+		return;
+	}
+	len = snprintf(buffer, sizeof(buffer), fmt, cuft);
+	p = malloc(len+1);
+	if (!p)
+		return;
+	memcpy(p, buffer, len+1);
+	type->description = p;
+}
+
+
+/*
  * There are two ways to give cylinder size information:
  *  - total amount of gas in cuft (depends on working pressure and physical size)
  *  - physical size
@@ -720,20 +765,24 @@ static void sanitize_gasmix(gasmix_t *mix)
  */
 static void sanitize_cylinder_type(cylinder_type_t *type)
 {
+	double volume_of_air, atm, volume;
+
 	/* If we have no working pressure, it had *better* be just a physical size! */
 	if (!type->workingpressure.mbar)
 		return;
 
-	/*
-	 * 35l tanks? Do they exist?
-	 * Assume this is a "size in cuft" thing.
-	 */
-	if (type->size.mliter > 35000) {
-		double volume_of_air = type->size.mliter * 28.317;	/* cu ft to milliliter */
-		double atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
-		double volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
-		type->size.mliter = volume;
-	}
+	/* No size either? Nothing to go on */
+	if (!type->size.mliter)
+		return;
+
+	/* Ok, we have both size and pressure: try to match a description */
+	match_standard_cylinder(type);
+
+	/* .. and let's assume that the 'size' was cu ft of air */
+	volume_of_air = type->size.mliter * 28.317;	/* milli-cu ft to milliliter */
+	atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
+	volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
+	type->size.mliter = volume + 0.5;
 }
 
 static void sanitize_cylinder_info(struct dive *dive)

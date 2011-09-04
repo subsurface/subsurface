@@ -127,6 +127,7 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cylinder = dive->cylinder+i;
 		int volume = cylinder->type.size.mliter;
+		const char *description = cylinder->type.description;
 		int o2 = cylinder->gasmix.o2.permille;
 		int he = cylinder->gasmix.he.permille;
 
@@ -141,6 +142,8 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 		}
 		if (volume)
 			fprintf(f, " size='%u.%03u l'", FRACTION(volume, 1000));
+		if (description)
+			fprintf(f, " name='%s'", description);
 		fprintf(f, " />\n");
 	}
 }
