@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 
 	/* Frame for extended dive info */
 	frame = extended_dive_info_frame();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), frame, gtk_label_new("Extended dive Info"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), frame, gtk_label_new("Extended Dive Info"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
