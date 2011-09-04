@@ -11,12 +11,28 @@
 
 static void show_milli(FILE *f, const char *pre, int value, const char *unit, const char *post)
 {
+	int i;
+	char buf[4];
+	unsigned v;
+
 	fputs(pre, f);
+	v = value;
 	if (value < 0) {
 		putc('-', f);
-		value = -value;
+		v = -value;
 	}
-	fprintf(f, "%u.%03u%s%s", FRACTION(value, 1000), unit, post);
+	for (i = 2; i >= 0; i--) {
+		buf[i] = (v % 10) + '0';
+		v /= 10;
+	}
+	buf[3] = 0;
+	if (buf[2] == '0') {
+		buf[2] = 0;
+		if (buf[1] == '0')
+			buf[1] = 0;
+	}
+
+	fprintf(f, "%u.%s%s%s", v, buf, unit, post);
 }
 
 static void show_temperature(FILE *f, temperature_t temp, const char *pre, const char *post)
