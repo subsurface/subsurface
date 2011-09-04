@@ -21,10 +21,38 @@
  */
 static void update_depth(depth_t *depth, int new)
 {
-	int old = depth->mm;
+	if (new) {
+		int old = depth->mm;
 
-	if (abs(old - new) > 1000)
-		depth->mm = new;
+		if (abs(old - new) > 1000)
+			depth->mm = new;
+	}
+}
+
+static void update_pressure(pressure_t *pressure, int new)
+{
+	if (new) {
+		int old = pressure->mbar;
+
+		if (abs(old - new) > 1000)
+			pressure->mbar = new;
+	}
+}
+
+static void update_duration(duration_t *duration, int new)
+{
+	if (new)
+		duration->seconds = new;
+}
+
+static void update_temperature(temperature_t *temperature, int new)
+{
+	if (new) {
+		int old = temperature->mkelvin;
+
+		if (abs(old - new) > 1000)
+			temperature->mkelvin = new;
+	}
 }
 
 struct dive *fixup_dive(struct dive *dive)
@@ -85,18 +113,16 @@ struct dive *fixup_dive(struct dive *dive)
 	}
 	if (end < 0)
 		return dive;
-	dive->duration.seconds = end - start;
-	if (start != end)
-		update_depth(&dive->meandepth, depthtime / (end - start));
-	if (startpress)
-		dive->beginning_pressure.mbar = startpress;
-	if (endpress)
-		dive->end_pressure.mbar = endpress;
-	if (mintemp)
-		dive->watertemp.mkelvin = mintemp;
 
-	if (maxdepth)
-		update_depth(&dive->maxdepth, maxdepth);
+	update_duration(&dive->duration, end - start);
+	if (start != end)
+		depthtime /= (end - start);
+
+	update_depth(&dive->meandepth, depthtime);
+	update_pressure(&dive->beginning_pressure, startpress);
+	update_pressure(&dive->end_pressure, endpress);
+	update_temperature(&dive->watertemp, mintemp);
+	update_depth(&dive->maxdepth, maxdepth);
 
 	return dive;
 }
