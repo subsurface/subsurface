@@ -34,9 +34,10 @@ struct dive *fixup_dive(struct dive *dive)
 	int lasttime = 0;
 	int start = -1, end = -1;
 	int startpress = 0, endpress = 0;
-	int starttemp = 0, endtemp = 0;
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
+	int lasttemp = 0;
+	temperature_t *redundant_temp = NULL;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -60,9 +61,21 @@ struct dive *fixup_dive(struct dive *dive)
 				startpress = press;
 		}
 		if (temp) {
-			endtemp = temp;
-			if (!starttemp)
-				starttemp = temp;
+			/*
+			 * If we have consecutive identical
+			 * temperature readings, throw away
+			 * the redundant ones. We care about
+			 * the "edges" only.
+			 */
+			if (lasttemp == temp) {
+				if (redundant_temp)
+					redundant_temp->mkelvin = 0;
+				redundant_temp = &sample->temperature;
+			} else {
+				redundant_temp = NULL;
+				lasttemp = temp;
+			}
+
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
 		}
@@ -240,7 +253,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	memset(res, 0, dive_size(alloc_samples));
 
 	res->when = a->when;
-	res->name = merge_text(a->name, b->name);
 	res->location = merge_text(a->location, b->location);
 	res->notes = merge_text(a->notes, b->notes);
 	MERGE_MAX(res, a, b, maxdepth.mm);

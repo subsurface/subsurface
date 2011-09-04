@@ -4,7 +4,7 @@ CFLAGS=-Wall -Wno-pointer-sign -g
 OBJS=main.o dive.o profile.o info.o divelist.o parse-xml.o save-xml.o
 
 divelog: $(OBJS)
-	$(CC) $(LDLAGS) -o divelog $(OBJS) \
+	$(CC) $(LDFLAGS) -o divelog $(OBJS) \
 		`xml2-config --libs` \
 		`pkg-config --libs gtk+-2.0`
 

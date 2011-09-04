@@ -127,7 +127,6 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cylinder = dive->cylinder+i;
 		int volume = cylinder->type.size.mliter;
-		int pressure = cylinder->type.workingpressure.mbar;
 		int o2 = cylinder->gasmix.o2.permille;
 		int he = cylinder->gasmix.he.permille;
 
@@ -140,11 +139,8 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 			if (he)
 				fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
 		}
-		if (volume) {
+		if (volume)
 			fprintf(f, " size='%u.%03u l'", FRACTION(volume, 1000));
-			if (pressure)
-				fprintf(f, " workpressure='%u.%03u bar'", FRACTION(pressure, 1000));
-		}
 		fprintf(f, " />\n");
 	}
 }
@@ -193,4 +189,5 @@ void save_dives(const char *filename)
 	for (i = 0; i < dive_table.nr; i++)
 		save_dive(f, get_dive(i));
 	fprintf(f, "</dives>\n");
+	fclose(f);
 }

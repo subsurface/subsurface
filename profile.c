@@ -195,17 +195,13 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	return FALSE;
 }
 
-GtkWidget *dive_profile_frame(void)
+GtkWidget *dive_profile_widget(void)
 {
-	GtkWidget *frame;
 	GtkWidget *da;
 
-	frame = gtk_frame_new("Dive Profile");
-	gtk_widget_show(frame);
 	da = gtk_drawing_area_new();
 	gtk_widget_set_size_request(da, 450, 350);
 	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
-	gtk_container_add(GTK_CONTAINER(frame), da);
 
-	return frame;
+	return da;
 }

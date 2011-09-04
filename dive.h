@@ -75,6 +75,7 @@ typedef struct {
 typedef struct {
 	volume_t size;
 	pressure_t workingpressure;
+	const char *description;	/* "LP85", "AL72", "AL80", "HP100+" or whatever */
 } cylinder_type_t;
 
 typedef struct {
@@ -110,7 +111,6 @@ struct sample {
 #define MAX_CYLINDERS (4)
 
 struct dive {
-	const char *name;
 	time_t when;
 	char *location;
 	char *notes;

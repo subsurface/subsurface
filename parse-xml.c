@@ -683,28 +683,6 @@ static void dive_start(void)
 	memset(&tm, 0, sizeof(tm));
 }
 
-static char *generate_name(struct dive *dive)
-{
-	int len;
-	struct tm *tm;
-	char buffer[256], *p;
-
-	tm = gmtime(&dive->when);
-
-	len = snprintf(buffer, sizeof(buffer),
-		"%04d-%02d-%02d "
-		"%02d:%02d:%02d "
-		"(%d ft, %d min)",
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-		tm->tm_hour, tm->tm_min, tm->tm_sec,
-		to_feet(dive->maxdepth), dive->duration.seconds / 60);
-	p = malloc(len+1);
-	if (!p)
-		exit(1);
-	memcpy(p, buffer, len+1);
-	return p;
-}
-
 static void sanitize_gasmix(gasmix_t *mix)
 {
 	unsigned int o2, he;
@@ -772,8 +750,6 @@ static void dive_end(void)
 {
 	if (!dive)
 		return;
-	if (!dive->name)
-		dive->name = generate_name(dive);
 	sanitize_cylinder_info(dive);
 	record_dive(dive);
 	dive = NULL;
