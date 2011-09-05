@@ -633,6 +633,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".meandepth", depth, &dive->meandepth))
 		return;
+	if (MATCH(".depth.max", depth, &dive->maxdepth))
+		return;
+	if (MATCH(".depth.mean", depth, &dive->meandepth))
+		return;
 	if (MATCH(".duration", duration, &dive->duration))
 		return;
 	if (MATCH(".divetime", duration, &dive->duration))
@@ -644,6 +648,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".airtemp", temperature, &dive->airtemp))
 		return;
 	if (MATCH(".watertemp", temperature, &dive->watertemp))
+		return;
+	if (MATCH(".temperature.air", temperature, &dive->airtemp))
+		return;
+	if (MATCH(".temperature.water", temperature, &dive->watertemp))
 		return;
 	if (MATCH(".cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;

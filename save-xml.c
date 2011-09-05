@@ -125,13 +125,32 @@ static void show_utf8(FILE *f, const char *text, const char *pre, const char *po
 	fputs(post, f);
 }
 
+static void save_depths(FILE *f, struct dive *dive)
+{
+	/* What's the point of this dive entry again? */
+	if (!dive->maxdepth.mm && !dive->meandepth.mm)
+		return;
+
+	fputs("  <depth", f);
+	show_depth(f, dive->maxdepth, " max='", "'");
+	show_depth(f, dive->meandepth, " mean='", "'");
+	fputs(" />\n", f);
+}
+
+static void save_temperatures(FILE *f, struct dive *dive)
+{
+	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
+		return;
+	fputs("  <temperature", f);
+	show_temperature(f, dive->airtemp, " air='", "'");
+	show_temperature(f, dive->watertemp, " water='", "'");
+	fputs(" />\n", f);
+}
+
 static void save_overview(FILE *f, struct dive *dive)
 {
-	show_depth(f, dive->maxdepth, "  <maxdepth>", "</maxdepth>\n");
-	show_depth(f, dive->meandepth, "  <meandepth>", "</meandepth>\n");
-	show_temperature(f, dive->airtemp, "  <airtemp>", "</airtemp>\n");
-	show_temperature(f, dive->watertemp, "  <watertemp>", "</watertemp>\n");
-	show_duration(f, dive->duration, "  <duration>", "</duration>\n");
+	save_depths(f, dive);
+	save_temperatures(f, dive);
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_utf8(f, dive->location, "  <location>","</location>\n");
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
@@ -185,9 +204,10 @@ static void save_dive(FILE *f, struct dive *dive)
 	int i;
 	struct tm *tm = gmtime(&dive->when);
 
-	fprintf(f, "<dive date='%04u-%02u-%02u' time='%02u:%02u:%02u'>\n",
+	fprintf(f, "<dive date='%04u-%02u-%02u' time='%02u:%02u:%02u' duration='%u:%02u min'>\n",
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-		tm->tm_hour, tm->tm_min, tm->tm_sec);
+		tm->tm_hour, tm->tm_min, tm->tm_sec,
+		FRACTION(dive->duration.seconds, 60));
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
 	for (i = 0; i < dive->samples; i++)
