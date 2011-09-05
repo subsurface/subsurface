@@ -17,14 +17,14 @@ save-xml.o: save-xml.c dive.h
 dive.o: dive.c dive.h
 	$(CC) $(CFLAGS) -c dive.c
 
-main.o: main.c dive.h display.h
+main.o: main.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c main.c
 
-profile.o: profile.c dive.h display.h
+profile.o: profile.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c profile.c
 
-info.o: info.c dive.h display.h
+info.o: info.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c info.c
 
-divelist.o: divelist.c dive.h display.h
+divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c divelist.c

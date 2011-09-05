@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "divelist.h"
 #include "dive.h"
 #include "display.h"
 
@@ -62,27 +63,31 @@ static void fill_dive_list(GtkListStore *store)
 	}
 }
 
-GtkWidget *create_dive_list(void)
+void dive_list_update_dives(struct DiveList dive_list)
 {
-	GtkListStore      *model;
-	GtkWidget         *tree_view;
+	gtk_list_store_clear(GTK_LIST_STORE(dive_list.model));
+	fill_dive_list(GTK_LIST_STORE(dive_list.model));
+}
+
+struct DiveList dive_list_create(void)
+{
+	struct DiveList    dive_list;
 	GtkTreeSelection  *selection;
 	GtkCellRenderer   *renderer;
 	GtkTreeViewColumn *col;
-	GtkWidget         *scroll_window;
 
-	model = gtk_list_store_new(7,
+	dive_list.model = gtk_list_store_new(7,
 				   G_TYPE_STRING, G_TYPE_INT,
 	                           G_TYPE_STRING, G_TYPE_INT, 
 	                           G_TYPE_STRING, G_TYPE_INT,
 	                           G_TYPE_INT);
-	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
+	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
-	gtk_widget_set_size_request(tree_view, 200, 100);
+	gtk_widget_set_size_request(dive_list.tree_view, 200, 100);
 
-	fill_dive_list(model);
+	fill_dive_list(dive_list.model);
 
 	renderer = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new();
@@ -91,7 +96,7 @@ GtkWidget *create_dive_list(void)
 	gtk_tree_view_column_set_resizable (col, TRUE);
 	gtk_tree_view_column_pack_start(col, renderer, TRUE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", 0);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	
 	renderer = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new();
@@ -99,7 +104,7 @@ GtkWidget *create_dive_list(void)
 	gtk_tree_view_column_set_sort_column_id(col, 3);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", 2);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 	
@@ -109,21 +114,21 @@ GtkWidget *create_dive_list(void)
 	gtk_tree_view_column_set_sort_column_id(col, 5);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", 4);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 
-	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
+	g_object_set(G_OBJECT(dive_list.tree_view), "headers-visible", TRUE,
 					  "search-column", 0,
 					  "rules-hint", TRUE,
 					  NULL);
 
-	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
 
-	scroll_window = gtk_scrolled_window_new(NULL, NULL);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_window),
+	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dive_list.container_widget),
 		               GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_container_add(GTK_CONTAINER(scroll_window), tree_view);
+	gtk_container_add(GTK_CONTAINER(dive_list.container_widget), dive_list.tree_view);
 
-	return scroll_window;
+	return dive_list;
 }

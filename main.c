@@ -4,9 +4,11 @@
 #include <time.h>
 
 #include "dive.h"
+#include "divelist.h"
 #include "display.h"
 
 GtkWidget *main_window;
+struct DiveList   dive_list;
 
 static int sortfn(const void *_a, const void *_b)
 {
@@ -98,8 +100,10 @@ static void file_open(GtkWidget *w, gpointer data)
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		char *filename;
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		printf("Open: '%s'\n", filename);
+		parse_xml_file(filename);
 		g_free(filename);
+		report_dives();
+		dive_list_update_dives(dive_list);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -174,7 +178,6 @@ int main(int argc, char **argv)
 {
 	int i;
 	GtkWidget *win;
-	GtkWidget *divelist;
 	GtkWidget *paned;
 	GtkWidget *info_box;
 	GtkWidget *notebook;
@@ -214,8 +217,8 @@ int main(int argc, char **argv)
 	gtk_box_pack_end(GTK_BOX(vbox), paned, TRUE, TRUE, 0);
 
 	/* Create the actual divelist */
-	divelist = create_dive_list();
-	gtk_paned_add1(GTK_PANED(paned), divelist);
+	dive_list = dive_list_create();
+	gtk_paned_add1(GTK_PANED(paned), dive_list.container_widget);
 
 	/* VBox for dive info, and tabs */
 	info_box = gtk_vbox_new(FALSE, 6);
