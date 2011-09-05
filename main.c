@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 	paned = gtk_hpaned_new();
 	gtk_box_pack_end(GTK_BOX(vbox), paned, TRUE, TRUE, 0);
 
-	/* Create the atual divelist */
+	/* Create the actual divelist */
 	divelist = create_dive_list();
 	gtk_paned_add1(GTK_PANED(paned), divelist);
 
