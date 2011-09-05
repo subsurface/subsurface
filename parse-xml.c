@@ -98,6 +98,7 @@ static enum import_source {
 	LIBDIVECOMPUTER,
 	SUUNTO,
 	UEMIS,
+	DIVINGLOG,
 } import_source;
 
 static time_t utc_mktime(struct tm *tm)
@@ -473,6 +474,35 @@ static int uemis_fill_sample(struct sample *sample, const char *name, int len, c
 		0;
 }
 
+/*
+ * Divinglog is crazy. The temperatures are in celsius. EXCEPT
+ * for the sample temperatures, that are in Fahrenheit.
+ * WTF?
+ */
+static void fahrenheit(char *buffer, void *_temperature)
+{
+	temperature_t *temperature = _temperature;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		temperature->mkelvin = (val.fp + 459.67) * 5000/9;
+		break;
+	default:
+		fprintf(stderr, "Crazy Diving Log temperature reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
+static int divinglog_fill_sample(struct sample *sample, const char *name, int len, char *buf)
+{
+	return	MATCH(".p.time", sampletime, &sample->time) ||
+		MATCH(".p.depth", depth, &sample->depth) ||
+		MATCH(".p.temp", fahrenheit, &sample->temperature) ||
+		MATCH(".p.press1", pressure, &sample->cylinderpressure) ||
+		0;
+}
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
@@ -500,6 +530,11 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 			return;
 		break;
 
+	case DIVINGLOG:
+		if (divinglog_fill_sample(sample, name, len, buf))
+			return;
+		break;
+
 	default:
 		break;
 	}
@@ -522,6 +557,44 @@ static int suunto_dive_match(struct dive *dive, const char *name, int len, char 
 		MATCH(".hepct_3", percent, &dive->cylinder[3].gasmix.he) ||
 		MATCH(".cylindersize", cylindersize, &dive->cylinder[0].type.size) ||
 		MATCH(".cylinderworkpressure", pressure, &dive->cylinder[0].type.workingpressure) ||
+		0;
+}
+
+static const char *country, *city;
+
+static void divinglog_place(char *place, void *_location)
+{
+	char **location = _location;
+	char buffer[256], *p;
+	int len;
+
+	len = snprintf(buffer, sizeof(buffer),
+		"%s%s%s%s%s",
+		place,
+		city ? ", " : "",
+		city ? city : "",
+		country ? ", " : "",
+		country ? country : "");
+
+	p = malloc(len+1);
+	memcpy(p, buffer, len+1);
+	*location = p;
+
+	city = NULL;
+	country = NULL;
+}
+
+static int divinglog_dive_match(struct dive *dive, const char *name, int len, char *buf)
+{
+	return	MATCH(".divedate", divedate, &dive->when) ||
+		MATCH(".entrytime", divetime, &dive->when) ||
+		MATCH(".depth", depth, &dive->maxdepth) ||
+		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
+		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
+		MATCH(".comments", utf8_string, &dive->notes) ||
+		MATCH(".country.name", utf8_string, &country) ||
+		MATCH(".city.name", utf8_string, &city) ||
+		MATCH(".place.name", divinglog_place, &dive->location) ||
 		0;
 }
 
@@ -698,6 +771,27 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	int len = strlen(name);
 
 	start_match("dive", name, buf);
+
+	switch (import_source) {
+	case SUUNTO:
+		if (suunto_dive_match(dive, name, len, buf))
+			return;
+		break;
+
+	case UEMIS:
+		if (uemis_dive_match(dive, name, len, buf))
+			return;
+		break;
+
+	case DIVINGLOG:
+		if (divinglog_dive_match(dive, name, len, buf))
+			return;
+		break;
+
+	default:
+		break;
+	}
+
 	if (MATCH(".date", divedate, &dive->when))
 		return;
 	if (MATCH(".time", divetime, &dive->when))
@@ -755,20 +849,6 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".he", gasmix, &dive->cylinder[cylinder_index].gasmix.he))
 		return;
 
-	switch (import_source) {
-	case SUUNTO:
-		if (suunto_dive_match(dive, name, len, buf))
-			return;
-		break;
-
-	case UEMIS:
-		if (uemis_dive_match(dive, name, len, buf))
-			return;
-		break;
-
-	default:
-		break;
-	}
 	nonmatch("dive", name, buf);
 }
 
@@ -916,26 +996,6 @@ static void dive_end(void)
 	cylinder_index = 0;
 }
 
-static void suunto_start(void)
-{
-	import_source = SUUNTO;
-	units = SI_units;
-}
-
-static void suunto_end(void)
-{
-}
-
-static void uemis_start(void)
-{
-	import_source = UEMIS;
-	units = SI_units;
-}
-
-static void uemis_end(void)
-{
-}
-
 static void event_start(void)
 {
 }
@@ -1080,6 +1140,33 @@ static void visit(xmlNode *n)
 	traverse(n->children);
 }
 
+static void suunto_importer(void)
+{
+	import_source = SUUNTO;
+	units = SI_units;
+}
+
+static void uemis_importer(void)
+{
+	import_source = UEMIS;
+	units = SI_units;
+}
+
+static void DivingLog_importer(void)
+{
+	import_source = DIVINGLOG;
+
+	/*
+	 * Diving Log units are really strange.
+	 *
+	 * Temperatures are in C, except in samples,
+	 * when they are in Fahrenheit. Depths are in
+	 * meters, but pressure is in PSI.
+	 */
+	units = SI_units;
+	units.pressure = PSI;
+}
+
 /*
  * I'm sure this could be done as some fancy DTD rules.
  * It's just not worth the headache.
@@ -1089,14 +1176,20 @@ static struct nesting {
 	void (*start)(void), (*end)(void);
 } nesting[] = {
 	{ "dive", dive_start, dive_end },
-	{ "SUUNTO", suunto_start, suunto_end },
+	{ "Dive", dive_start, dive_end },
 	{ "sample", sample_start, sample_end },
 	{ "SAMPLE", sample_start, sample_end },
 	{ "reading", sample_start, sample_end },
 	{ "event", event_start, event_end },
 	{ "gasmix", cylinder_start, cylinder_end },
 	{ "cylinder", cylinder_start, cylinder_end },
-	{ "pre_dive", uemis_start, uemis_end },
+	{ "P", sample_start, sample_end },
+
+	/* Import type recognition */
+	{ "SUUNTO", suunto_importer },
+	{ "Divinglog", DivingLog_importer },
+	{ "pre_dive", uemis_importer },
+
 	{ NULL, }
 };
 
