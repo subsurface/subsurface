@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <glib.h>
+
 /*
  * Some silly typedefs to make our units very explicit.
  *
@@ -141,7 +143,7 @@ static inline struct dive *get_dive(unsigned int nr)
 }
 
 extern void parse_xml_init(void);
-extern void parse_xml_file(const char *filename);
+extern void parse_xml_file(const char *filename, GError **error);
 
 extern void flush_dive_info_changes(void);
 extern void save_dives(const char *filename);
@@ -153,5 +155,7 @@ static inline unsigned int dive_size(int samples)
 
 extern struct dive *fixup_dive(struct dive *dive);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b);
+
+#define DIVE_ERROR_PARSE 1
 
 #endif /* DIVE_H */

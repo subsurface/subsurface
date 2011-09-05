@@ -5,6 +5,7 @@
 
 #include "dive.h"
 #include "display.h"
+#include "divelist.h"
 
 static GtkWidget *divedate, *divetime, *depth, *duration, *temperature, *locationnote;
 static GtkEntry *location;

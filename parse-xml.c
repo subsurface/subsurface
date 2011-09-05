@@ -1228,13 +1228,20 @@ static void reset_all(void)
 	import_source = UNKNOWN;
 }
 
-void parse_xml_file(const char *filename)
+void parse_xml_file(const char *filename, GError **error)
 {
 	xmlDoc *doc;
 
 	doc = xmlReadFile(filename, NULL, 0);
 	if (!doc) {
 		fprintf(stderr, "Failed to parse '%s'.\n", filename);
+		if (error != NULL)
+		{
+			*error = g_error_new(g_quark_from_string("divelog"),
+			                     DIVE_ERROR_PARSE,
+			                     "Failed to parse '%s'",
+			                     filename);
+		}
 		return;
 	}
 
