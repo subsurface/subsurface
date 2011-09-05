@@ -587,7 +587,70 @@ static void uemis_time_zone(char *buffer, void *_when)
 	*when += tz * 3600;
 }
 
-/* Christ. Uemis tank data is a total mess. */
+/* 0 - air ; 1 - nitrox1 ; 2 - nitrox2 ; 3 = nitrox3 */
+static int uemis_gas_template;
+
+/*
+ * Christ. Uemis tank data is a total mess.
+ *
+ * We're passed a "virtual cylinder" (0 - 6) for the different
+ * Uemis tank cases ("air", "nitrox_1", "nitrox_2.{bottom,deco}"
+ * and "nitrox_3.{bottom,deco,travel}". We need to turn that
+ * into the actual cylinder data depending on the gas template,
+ * and ignore the ones that are irrelevant for that template.
+ *
+ * So for "template 2" (nitrox_2), we ignore virtual tanks 0-1
+ * (which are "air" and "nitrox_1" respectively), and tanks 4-6
+ * (which are the three "nitrox_3" tanks), and we turn virtual
+ * tanks 2/3 into actual tanks 0/1.
+ *
+ * Confused yet?
+ */
+static int uemis_cylinder_index(void *_cylinder)
+{
+	cylinder_t *cylinder = _cylinder;
+	unsigned int index = cylinder - dive->cylinder;
+
+	if (index > 6) {
+		fprintf(stderr, "Uemis cylinder pointer calculations broken\n");
+		return -1;
+	}
+	switch(uemis_gas_template) {
+	case 1:	/* Dive uses tank 1 */
+		index -= 1;
+	/* Fallthrough */
+	case 0:	/* Dive uses tank 0 */
+		if (index)
+			index = -1;
+		break;
+	case 2: /* Dive uses tanks 2-3 */
+		index -= 2;
+		if (index > 1)
+			index = -1;
+		break;
+	case 3: /* Dive uses tanks 4-6 */
+		index -= 4;
+		if (index > 2)
+			index = -1;
+		break;
+	}
+	return index;
+}
+
+static void uemis_cylindersize(char *buffer, void *_cylinder)
+{
+	int index = uemis_cylinder_index(_cylinder);
+	if (index >= 0)
+		cylindersize(buffer, &dive->cylinder[index].type.size);
+}
+
+static void uemis_percent(char *buffer, void *_cylinder)
+{
+	int index = uemis_cylinder_index(_cylinder);
+	if (index >= 0)
+		percent(buffer, &dive->cylinder[index].gasmix.o2);
+}
+
 static int uemis_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
 	return	MATCH(".units.length", uemis_length_unit, &units) ||
@@ -600,20 +663,21 @@ static int uemis_dive_match(struct dive *dive, const char *name, int len, char *
 		MATCH(".date_time", uemis_date_time, &dive->when) ||
 		MATCH(".time_zone", uemis_time_zone, &dive->when) ||
 		MATCH(".ambient.temperature", decicelsius, &dive->airtemp) ||
-		MATCH(".air.bottom_tank.size", cylindersize, &dive->cylinder[0].type.size) ||
-		MATCH(".air.bottom_tank.oxygen", percent, &dive->cylinder[0].gasmix.o2) ||
-		MATCH(".nitrox_1.bottom_tank.size", cylindersize, &dive->cylinder[1].type.size) ||
-		MATCH(".nitrox_1.bottom_tank.oxygen", percent, &dive->cylinder[1].gasmix.o2) ||
-		MATCH(".nitrox_2.bottom_tank.size", cylindersize, &dive->cylinder[2].type.size) ||
-		MATCH(".nitrox_2.bottom_tank.oxygen", percent, &dive->cylinder[2].gasmix.o2) ||
-		MATCH(".nitrox_2.deco_tank.size", cylindersize, &dive->cylinder[3].type.size) ||
-		MATCH(".nitrox_2.deco_tank.oxygen", percent, &dive->cylinder[3].gasmix.o2) ||
-		MATCH(".nitrox_3.bottom_tank.size", cylindersize, &dive->cylinder[4].type.size) ||
-		MATCH(".nitrox_3.bottom_tank.oxygen", percent, &dive->cylinder[4].gasmix.o2) ||
-		MATCH(".nitrox_3.deco_tank.size", cylindersize, &dive->cylinder[5].type.size) ||
-		MATCH(".nitrox_3.deco_tank.oxygen", percent, &dive->cylinder[5].gasmix.o2) ||
-		MATCH(".nitrox_3.travel_tank.size", cylindersize, &dive->cylinder[6].type.size) ||
-		MATCH(".nitrox_3.travel_tank.oxygen", percent, &dive->cylinder[6].gasmix.o2) ||
+		MATCH(".gas.template", get_index, &uemis_gas_template) ||
+		MATCH(".air.bottom_tank.size", uemis_cylindersize, dive->cylinder + 0) ||
+		MATCH(".air.bottom_tank.oxygen", uemis_percent, dive->cylinder + 0) ||
+		MATCH(".nitrox_1.bottom_tank.size", uemis_cylindersize, dive->cylinder + 1) ||
+		MATCH(".nitrox_1.bottom_tank.oxygen", uemis_percent, dive->cylinder + 1) ||
+		MATCH(".nitrox_2.bottom_tank.size", uemis_cylindersize, dive->cylinder + 2) ||
+		MATCH(".nitrox_2.bottom_tank.oxygen", uemis_percent, dive->cylinder + 2) ||
+		MATCH(".nitrox_2.deco_tank.size", uemis_cylindersize, dive->cylinder + 3) ||
+		MATCH(".nitrox_2.deco_tank.oxygen", uemis_percent, dive->cylinder + 3) ||
+		MATCH(".nitrox_3.bottom_tank.size", uemis_cylindersize, dive->cylinder + 4) ||
+		MATCH(".nitrox_3.bottom_tank.oxygen", uemis_percent, dive->cylinder + 4) ||
+		MATCH(".nitrox_3.deco_tank.size", uemis_cylindersize, dive->cylinder + 5) ||
+		MATCH(".nitrox_3.deco_tank.oxygen", uemis_percent, dive->cylinder + 5) ||
+		MATCH(".nitrox_3.travel_tank.size", uemis_cylindersize, dive->cylinder + 6) ||
+		MATCH(".nitrox_3.travel_tank.oxygen", uemis_percent, dive->cylinder + 6) ||
 		0;
 }
 
