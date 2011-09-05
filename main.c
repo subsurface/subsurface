@@ -8,6 +8,10 @@
 #include "display.h"
 
 GtkWidget *main_window;
+GtkWidget *main_vbox;
+GtkWidget *error_info_bar;
+GtkWidget *error_label;
+int        error_count;
 struct DiveList   dive_list;
 
 static int sortfn(const void *_a, const void *_b)
@@ -87,6 +91,49 @@ void repaint_dive(void)
 
 static char *existing_filename;
 
+static void on_info_bar_response(GtkWidget *widget, gint response,
+                                 gpointer data)
+{
+	if (response == GTK_RESPONSE_OK)
+	{
+		gtk_widget_destroy(widget);
+		error_info_bar = NULL;
+	}
+}
+
+static void report_error(GError* error)
+{
+	if (error == NULL)
+	{
+		return;
+	}
+	
+	if (error_info_bar == NULL)
+	{
+		error_count = 1;
+		error_info_bar = gtk_info_bar_new_with_buttons(GTK_STOCK_OK,
+		                                               GTK_RESPONSE_OK,
+		                                               NULL);
+		g_signal_connect(error_info_bar, "response", G_CALLBACK(on_info_bar_response), NULL);
+		gtk_info_bar_set_message_type(GTK_INFO_BAR(error_info_bar),
+		                              GTK_MESSAGE_ERROR);
+		
+		error_label = gtk_label_new(error->message);
+		GtkWidget *container = gtk_info_bar_get_content_area(GTK_INFO_BAR(error_info_bar));
+		gtk_container_add(GTK_CONTAINER(container), error_label);
+		
+		gtk_box_pack_start(GTK_BOX(main_vbox), error_info_bar, FALSE, FALSE, 0);
+		gtk_widget_show_all(main_vbox);
+	}
+	else
+	{
+		error_count++;
+		char buffer[256];
+		snprintf(buffer, sizeof(buffer), "Failed to open %i files.", error_count);
+		gtk_label_set(GTK_LABEL(error_label), buffer);
+	}
+}
+
 static void file_open(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
@@ -103,9 +150,17 @@ static void file_open(GtkWidget *w, gpointer data)
 		char *filename;
 		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 		
+		GError *error = NULL;
 		while(filenames != NULL) {
 			filename = (char *)filenames->data;
-			parse_xml_file(filename);
+			parse_xml_file(filename, &error);
+			if (error != NULL)
+			{
+				report_error(error);
+				g_error_free(error);
+				error = NULL;
+			}
+			
 			g_free(filename);
 			filenames = g_slist_next(filenames);
 		}
@@ -198,24 +253,14 @@ int main(int argc, char **argv)
 
 	gtk_init(&argc, &argv);
 
-	for (i = 1; i < argc; i++) {
-		const char *a = argv[i];
-
-		if (a[0] == '-') {
-			parse_argument(a);
-			continue;
-		}
-		parse_xml_file(a);
-	}
-
-	report_dives();
-
+	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(win), vbox);
+	main_vbox = vbox;
 
 	menubar = get_menubar_menu(win);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
@@ -250,6 +295,27 @@ int main(int argc, char **argv)
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
+	
+	for (i = 1; i < argc; i++) {
+		const char *a = argv[i];
+
+		if (a[0] == '-') {
+			parse_argument(a);
+			continue;
+		}
+		GError *error = NULL;
+		parse_xml_file(a, &error);
+		
+		if (error != NULL)
+		{
+			report_error(error);
+			g_error_free(error);
+			error = NULL;
+		}
+	}
+
+	report_dives();
+	dive_list_update_dives(dive_list);
 
 	gtk_main();
 	return 0;
