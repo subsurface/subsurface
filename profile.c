@@ -4,6 +4,7 @@
 
 #include "dive.h"
 #include "display.h"
+#include "divelist.h"
 
 int selected_dive = 0;
 

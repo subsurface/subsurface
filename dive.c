@@ -130,8 +130,6 @@ struct dive *fixup_dive(struct dive *dive)
 }
 
 /* Don't pick a zero for MERGE_MIN() */
-#define MIN(a,b) ((a)<(b)?(a):(b))
-#define MAX(a,b) ((a)>(b)?(a):(b))
 #define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
 #define MERGE_MIN(res, a, b, n) res->n = (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 

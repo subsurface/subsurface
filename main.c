@@ -4,9 +4,15 @@
 #include <time.h>
 
 #include "dive.h"
+#include "divelist.h"
 #include "display.h"
 
 GtkWidget *main_window;
+GtkWidget *main_vbox;
+GtkWidget *error_info_bar;
+GtkWidget *error_label;
+int        error_count;
+struct DiveList   dive_list;
 
 static int sortfn(const void *_a, const void *_b)
 {
@@ -85,6 +91,49 @@ void repaint_dive(void)
 
 static char *existing_filename;
 
+static void on_info_bar_response(GtkWidget *widget, gint response,
+                                 gpointer data)
+{
+	if (response == GTK_RESPONSE_OK)
+	{
+		gtk_widget_destroy(widget);
+		error_info_bar = NULL;
+	}
+}
+
+static void report_error(GError* error)
+{
+	if (error == NULL)
+	{
+		return;
+	}
+	
+	if (error_info_bar == NULL)
+	{
+		error_count = 1;
+		error_info_bar = gtk_info_bar_new_with_buttons(GTK_STOCK_OK,
+		                                               GTK_RESPONSE_OK,
+		                                               NULL);
+		g_signal_connect(error_info_bar, "response", G_CALLBACK(on_info_bar_response), NULL);
+		gtk_info_bar_set_message_type(GTK_INFO_BAR(error_info_bar),
+		                              GTK_MESSAGE_ERROR);
+		
+		error_label = gtk_label_new(error->message);
+		GtkWidget *container = gtk_info_bar_get_content_area(GTK_INFO_BAR(error_info_bar));
+		gtk_container_add(GTK_CONTAINER(container), error_label);
+		
+		gtk_box_pack_start(GTK_BOX(main_vbox), error_info_bar, FALSE, FALSE, 0);
+		gtk_widget_show_all(main_vbox);
+	}
+	else
+	{
+		error_count++;
+		char buffer[256];
+		snprintf(buffer, sizeof(buffer), "Failed to open %i files.", error_count);
+		gtk_label_set(GTK_LABEL(error_label), buffer);
+	}
+}
+
 static void file_open(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
@@ -94,12 +143,30 @@ static void file_open(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		GSList *filenames;
 		char *filename;
-		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		printf("Open: '%s'\n", filename);
-		g_free(filename);
+		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+		
+		GError *error = NULL;
+		while(filenames != NULL) {
+			filename = (char *)filenames->data;
+			parse_xml_file(filename, &error);
+			if (error != NULL)
+			{
+				report_error(error);
+				g_error_free(error);
+				error = NULL;
+			}
+			
+			g_free(filename);
+			filenames = g_slist_next(filenames);
+		}
+		g_slist_free(filenames);
+		report_dives();
+		dive_list_update_dives(dive_list);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -174,7 +241,6 @@ int main(int argc, char **argv)
 {
 	int i;
 	GtkWidget *win;
-	GtkWidget *divelist;
 	GtkWidget *paned;
 	GtkWidget *info_box;
 	GtkWidget *notebook;
@@ -187,24 +253,14 @@ int main(int argc, char **argv)
 
 	gtk_init(&argc, &argv);
 
-	for (i = 1; i < argc; i++) {
-		const char *a = argv[i];
-
-		if (a[0] == '-') {
-			parse_argument(a);
-			continue;
-		}
-		parse_xml_file(a);
-	}
-
-	report_dives();
-
+	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(win), vbox);
+	main_vbox = vbox;
 
 	menubar = get_menubar_menu(win);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
@@ -214,8 +270,8 @@ int main(int argc, char **argv)
 	gtk_box_pack_end(GTK_BOX(vbox), paned, TRUE, TRUE, 0);
 
 	/* Create the actual divelist */
-	divelist = create_dive_list();
-	gtk_paned_add1(GTK_PANED(paned), divelist);
+	dive_list = dive_list_create();
+	gtk_paned_add1(GTK_PANED(paned), dive_list.container_widget);
 
 	/* VBox for dive info, and tabs */
 	info_box = gtk_vbox_new(FALSE, 6);
@@ -239,6 +295,27 @@ int main(int argc, char **argv)
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
+	
+	for (i = 1; i < argc; i++) {
+		const char *a = argv[i];
+
+		if (a[0] == '-') {
+			parse_argument(a);
+			continue;
+		}
+		GError *error = NULL;
+		parse_xml_file(a, &error);
+		
+		if (error != NULL)
+		{
+			report_error(error);
+			g_error_free(error);
+			error = NULL;
+		}
+	}
+
+	report_dives();
+	dive_list_update_dives(dive_list);
 
 	gtk_main();
 	return 0;
