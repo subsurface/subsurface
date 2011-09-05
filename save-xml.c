@@ -133,8 +133,6 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_temperature(f, dive->watertemp, "  <watertemp>", "</watertemp>\n");
 	show_duration(f, dive->duration, "  <duration>", "</duration>\n");
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
-	show_pressure(f, dive->beginning_pressure, "  <cylinderstartpressure>", "</cylinderstartpressure>\n");
-	show_pressure(f, dive->end_pressure, "  <cylinderendpressure>", "</cylinderendpressure>\n");
 	show_utf8(f, dive->location, "  <location>","</location>\n");
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
 }
@@ -149,9 +147,11 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 		const char *description = cylinder->type.description;
 		int o2 = cylinder->gasmix.o2.permille;
 		int he = cylinder->gasmix.he.permille;
+		int start = cylinder->start.mbar;
+		int end = cylinder->end.mbar;
 
 		/* No cylinder information at all? */
-		if (!o2 && !volume)
+		if (!o2 && !volume && !start && !end)
 			return;
 		fprintf(f, "  <cylinder");
 		if (o2) {
@@ -163,6 +163,8 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 			show_milli(f, " size='", volume, " l", "'");
 		if (description)
 			fprintf(f, " description='%s'", description);
+		show_pressure(f, cylinder->start, " start='", "'");
+		show_pressure(f, cylinder->end, " end='", "'");
 		fprintf(f, " />\n");
 	}
 }

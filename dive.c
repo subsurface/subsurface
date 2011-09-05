@@ -29,16 +29,6 @@ static void update_depth(depth_t *depth, int new)
 	}
 }
 
-static void update_pressure(pressure_t *pressure, int new)
-{
-	if (new) {
-		int old = pressure->mbar;
-
-		if (abs(old - new) > 1000)
-			pressure->mbar = new;
-	}
-}
-
 static void update_duration(duration_t *duration, int new)
 {
 	if (new)
@@ -55,13 +45,30 @@ static void update_temperature(temperature_t *temperature, int new)
 	}
 }
 
+static void fixup_pressure(struct dive *dive, struct sample *sample)
+{
+	unsigned int pressure, index;
+	cylinder_t *cyl;
+
+	pressure = sample->cylinderpressure.mbar;
+	if (!pressure)
+		return;
+	index = sample->cylinderindex;
+	if (index >= MAX_CYLINDERS)
+		return;
+	cyl = dive->cylinder + index;
+	if (!cyl->start.mbar)
+		cyl->start.mbar = pressure;
+	if (!cyl->end.mbar || pressure < cyl->end.mbar)
+		cyl->end.mbar = pressure;
+}
+
 struct dive *fixup_dive(struct dive *dive)
 {
 	int i;
 	double depthtime = 0;
 	int lasttime = 0;
 	int start = -1, end = -1;
-	int startpress = 0, endpress = 0;
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0;
@@ -71,7 +78,6 @@ struct dive *fixup_dive(struct dive *dive)
 		struct sample *sample = dive->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
-		int press = sample->cylinderpressure.mbar;
 		int temp = sample->temperature.mkelvin;
 
 		if (lastdepth)
@@ -83,11 +89,9 @@ struct dive *fixup_dive(struct dive *dive)
 			if (depth > maxdepth)
 				maxdepth = depth;
 		}
-		if (press) {
-			endpress = press;
-			if (!startpress)
-				startpress = press;
-		}
+
+		fixup_pressure(dive, sample);
+
 		if (temp) {
 			/*
 			 * If we have consecutive identical
@@ -119,8 +123,6 @@ struct dive *fixup_dive(struct dive *dive)
 		depthtime /= (end - start);
 
 	update_depth(&dive->meandepth, depthtime);
-	update_pressure(&dive->beginning_pressure, startpress);
-	update_pressure(&dive->end_pressure, endpress);
 	update_temperature(&dive->watertemp, mintemp);
 	update_depth(&dive->maxdepth, maxdepth);
 
@@ -257,6 +259,8 @@ static void merge_cylinder_info(cylinder_t *res, cylinder_t *a, cylinder_t *b)
 {
 	merge_cylinder_type(&res->type, &a->type, &b->type);
 	merge_cylinder_mix(&res->gasmix, &a->gasmix, &b->gasmix);
+	MERGE_MAX(res, a, b, start.mbar);
+	MERGE_MIN(res, a, b, end.mbar);
 }
 
 /*
@@ -287,8 +291,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_MAX(res, a, b, surfacetime.seconds);
 	MERGE_MAX(res, a, b, airtemp.mkelvin);
 	MERGE_MIN(res, a, b, watertemp.mkelvin);
-	MERGE_MAX(res, a, b, beginning_pressure.mbar);
-	MERGE_MAX(res, a, b, end_pressure.mbar);
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
 

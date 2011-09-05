@@ -645,9 +645,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".watertemp", temperature, &dive->watertemp))
 		return;
-	if (MATCH(".cylinderstartpressure", pressure, &dive->beginning_pressure))
+	if (MATCH(".cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
-	if (MATCH(".cylinderendpressure", pressure, &dive->end_pressure))
+	if (MATCH(".cylinderendpressure", pressure, &dive->cylinder[0].end))
 		return;
 	if (MATCH(".location", utf8_string, &dive->location))
 		return;
@@ -659,6 +659,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cylinder_index].type.workingpressure))
 		return;
 	if (MATCH(".cylinder.description", utf8_string, &dive->cylinder[cylinder_index].type.description))
+		return;
+	if (MATCH(".cylinder.start", pressure, &dive->cylinder[cylinder_index].start))
+		return;
+	if (MATCH(".cylinder.end", pressure, &dive->cylinder[cylinder_index].end))
 		return;
 
 	if (MATCH(".o2", gasmix, &dive->cylinder[cylinder_index].gasmix.o2))

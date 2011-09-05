@@ -81,6 +81,7 @@ typedef struct {
 typedef struct {
 	cylinder_type_t type;
 	gasmix_t gasmix;
+	pressure_t start, end;
 } cylinder_t;
 
 static inline int to_feet(depth_t depth)
@@ -118,7 +119,6 @@ struct dive {
 	duration_t duration, surfacetime;
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
-	pressure_t beginning_pressure, end_pressure;
 	cylinder_t cylinder[MAX_CYLINDERS];
 	int samples;
 	struct sample sample[];

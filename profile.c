@@ -106,6 +106,9 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 		struct sample *sample = dive->sample + i;
 		double bar;
 
+		/* FIXME! We only track cylinder 0 right now */
+		if (sample->cylinderindex)
+			continue;
 		if (!sample->cylinderpressure.mbar)
 			continue;
 		bar = sample->cylinderpressure.mbar;
@@ -131,7 +134,7 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 
 	cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 0.80);
 
-	cairo_move_to(cr, SCALE(0, dive->beginning_pressure.mbar));
+	cairo_move_to(cr, SCALE(0, dive->cylinder[0].start.mbar));
 	for (i = 1; i < dive->samples; i++) {
 		int sec, mbar;
 		struct sample *sample = dive->sample + i;
@@ -142,7 +145,7 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 			continue;
 		cairo_line_to(cr, SCALE(sec, mbar));
 	}
-	cairo_line_to(cr, SCALE(dive->duration.seconds, dive->end_pressure.mbar));
+	cairo_line_to(cr, SCALE(dive->duration.seconds, dive->cylinder[0].end.mbar));
 	cairo_stroke(cr);
 }
 
