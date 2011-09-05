@@ -91,8 +91,14 @@ static int alloc_samples;
 static struct dive *dive;
 static struct sample *sample;
 static struct tm tm;
-static int suunto, uemis;
 static int event_index, cylinder_index;
+
+static enum import_source {
+	UNKNOWN,
+	LIBDIVECOMPUTER,
+	SUUNTO,
+	UEMIS,
+} import_source;
 
 static time_t utc_mktime(struct tm *tm)
 {
@@ -488,9 +494,14 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	if (MATCH(".sample.time", sampletime, &sample->time))
 		return;
 
-	if (uemis) {
+	switch (import_source) {
+	case UEMIS:
 		if (uemis_fill_sample(sample, name, len, buf))
 			return;
+		break;
+
+	default:
+		break;
 	}
 
 	nonmatch("sample", name, buf);
@@ -744,13 +755,20 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".he", gasmix, &dive->cylinder[cylinder_index].gasmix.he))
 		return;
 
-	/* Suunto XML files are some crazy sh*t. */
-	if (suunto && suunto_dive_match(dive, name, len, buf))
-		return;
+	switch (import_source) {
+	case SUUNTO:
+		if (suunto_dive_match(dive, name, len, buf))
+			return;
+		break;
 
-	if (uemis && uemis_dive_match(dive, name, len, buf))
-		return;
+	case UEMIS:
+		if (uemis_dive_match(dive, name, len, buf))
+			return;
+		break;
 
+	default:
+		break;
+	}
 	nonmatch("dive", name, buf);
 }
 
@@ -900,18 +918,17 @@ static void dive_end(void)
 
 static void suunto_start(void)
 {
-	suunto++;
+	import_source = SUUNTO;
 	units = SI_units;
 }
 
 static void suunto_end(void)
 {
-	suunto--;
 }
 
 static void uemis_start(void)
 {
-	uemis++;
+	import_source = UEMIS;
 	units = SI_units;
 }
 
@@ -1115,8 +1132,7 @@ static void reset_all(void)
 	 * dive for that format.
 	 */
 	units = SI_units;
-	suunto = 0;
-	uemis = 0;
+	import_source = UNKNOWN;
 }
 
 void parse_xml_file(const char *filename)
