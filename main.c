@@ -96,12 +96,20 @@ static void file_open(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		GSList *filenames;
 		char *filename;
-		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		parse_xml_file(filename);
-		g_free(filename);
+		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+		
+		while(filenames != NULL) {
+			filename = (char *)filenames->data;
+			parse_xml_file(filename);
+			g_free(filename);
+			filenames = g_slist_next(filenames);
+		}
+		g_slist_free(filenames);
 		report_dives();
 		dive_list_update_dives(dive_list);
 	}
