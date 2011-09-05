@@ -28,3 +28,8 @@ info.o: info.c dive.h display.h
 
 divelist.o: divelist.c dive.h display.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c divelist.c
+
+clean:
+	rm -f *.o divelog
+
+.PHONY: clean
