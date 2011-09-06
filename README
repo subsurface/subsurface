@@ -38,3 +38,14 @@ my divemaster course, so they are from following open water students
 along (many of them the confined*water dives).  There a lot of the
 action is at the surface, so some of the "dives" are 4ft deep and 2min
 long.
+
+Contributing:
+
+Please either send me signed-off patches or a pull request with
+signed-off commits.  If you don't sign off on them, I will not accept
+them. This means adding a line that says "Signed-off-by: Name <email>"
+at the end of each commit, indicating that you wrote the code and have
+the right to pass it on as an open source patch.
+
+See: http://gerrit.googlecode.com/svn/documentation/2.0/user-signedoffby.html
+
