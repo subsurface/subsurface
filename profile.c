@@ -127,7 +127,7 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 	double topx, double topy, double maxx, double maxy)
 {
-	int i;
+	int i, sec = -1;
 	double scalex, scaley;
 
 	if (!get_cylinder_pressure_range(dive, &scalex, &scaley))
@@ -137,16 +137,21 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 
 	cairo_move_to(cr, SCALE(0, dive->cylinder[0].start.mbar));
 	for (i = 1; i < dive->samples; i++) {
-		int sec, mbar;
+		int mbar;
 		struct sample *sample = dive->sample + i;
 
-		sec = sample->time.seconds;
 		mbar = sample->cylinderpressure.mbar;
 		if (!mbar)
 			continue;
+		sec = sample->time.seconds;
 		cairo_line_to(cr, SCALE(sec, mbar));
 	}
-	cairo_line_to(cr, SCALE(dive->duration.seconds, dive->cylinder[0].end.mbar));
+	/*
+	 * We may have "surface time" events, in which case we don't go
+	 * back to dive duration
+	 */
+	if (sec < dive->duration.seconds)
+		cairo_line_to(cr, SCALE(dive->duration.seconds, dive->cylinder[0].end.mbar));
 	cairo_stroke(cr);
 }
 
