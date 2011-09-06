@@ -52,9 +52,15 @@ static void plot_text(cairo_t *cr, double x, double y, const char *fmt, ...)
 	cairo_show_text(cr, buffer);
 }
 
-/* Find the next maximum point in a 5-minute window */
-static int next_minmax(struct dive *dive, int index, int max)
+/*
+ * Find the next maximum point in a 10-minute window.
+ *
+ * We exit early if we hit "enough" of a depth reversal,
+ * which is roughly 10 feet.
+ */
+static int next_minmax(struct dive *dive, int index, int minmax)
 {
+	const int enough = 3000;
 	int timelimit, depthlimit, result;
 	struct sample *sample = dive->sample + index;
 
@@ -76,17 +82,25 @@ static int next_minmax(struct dive *dive, int index, int max)
 		depth = sample->depth.mm;
 		if (time > timelimit)
 			break;
-		if (max) {
-			if (depth <= depthlimit)
+
+		if (minmax) {
+			if (depth <= depthlimit) {
+				if (depthlimit - depth > enough)
+					break;
 				continue;
+			}
 		} else {
-			if (depth >= depthlimit)
+			if (depth >= depthlimit) {
+				if (depth - depthlimit > enough)
+					break;
 				continue;
+			}
 		}
 
-		depthlimit = depth;
-		timelimit = time + 300;
 		result = index;
+		depthlimit = depth;
+		/* Look up to ten minutes into the future */
+		timelimit = time + 600;
 	}
 	return result;
 }
