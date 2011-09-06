@@ -28,8 +28,8 @@ static int round_feet_up(int feet)
 }
 
 typedef struct {
-    double r,g,b;
-    enum {CENTER,LEFT} allign;
+	double r,g,b;
+	enum {CENTER,LEFT} allign;
 } text_render_options_t;
 
 static void plot_text(cairo_t *cr, text_render_options_t *tro,
@@ -46,7 +46,7 @@ static void plot_text(cairo_t *cr, text_render_options_t *tro,
 	cairo_text_extents(cr, buffer, &extents);
 
 	if (tro->allign == CENTER)
-	    x -= extents.width/2 + extents.x_bearing;
+		x -= extents.width/2 + extents.x_bearing;
 	y += extents.height * 1.2;
 
 	cairo_move_to(cr, x, y);
@@ -113,10 +113,10 @@ static int next_minmax(struct dive *dive, int index, int minmax)
 }
 
 /* Scale to 0,0 -> maxx,maxy */
-#define SCALE(x,y) (x)*maxx/scalex+topx,(y)*maxy/scaley+topy
+#define SCALE(x,y) (x)*maxx/scalex,(y)*maxy/scaley
 
 static void plot_depth_text(struct dive *dive, cairo_t *cr,
-	double topx, double topy, double maxx, double maxy)
+	double maxx, double maxy)
 {
 	double scalex, scaley;
 	int maxtime, maxdepth;
@@ -146,7 +146,7 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 }
 
 static void plot_depth_profile(struct dive *dive, cairo_t *cr,
-	double topx, double topy, double maxx, double maxy)
+	double maxx, double maxy)
 {
 	double scalex, scaley;
 	int begins, sec, depth;
@@ -223,7 +223,7 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 	max = 0;
 	min = 5000;
 	if (startp)
-	    *startp = *endp = 0.0;
+		*startp = *endp = 0.0;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -235,14 +235,14 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 			continue;
 		bar = sample->cylinderpressure.mbar;
 		if (bar != 0.0 && startp && *startp == 0.0)
-		    *startp = bar;
+			*startp = bar;
 		if (bar < min)
 			min = bar;
 		if (bar > max)
 			max = bar;
 	}
 	if (endp)
-	    *endp = bar;
+		*endp = bar;
 	if (!max)
 		return 0;
 	*scaley = max * 1.5;
@@ -250,7 +250,7 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 }
 
 static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
-	double topx, double topy, double maxx, double maxy)
+	double maxx, double maxy)
 {
 	int i, sec = -1;
 	double scalex, scaley;
@@ -305,7 +305,7 @@ static double calculate_airuse(struct dive *dive)
 }
 
 static void plot_info(struct dive *dive, cairo_t *cr,
-	double topx, double topy, double maxx, double maxy)
+	double maxx, double maxy)
 {
 	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
 	const double liters_per_cuft = 28.317;
@@ -317,16 +317,16 @@ static void plot_info(struct dive *dive, cairo_t *cr,
 
 	/* I really need to start addign some unit setting thing */
 	airuse /= liters_per_cuft;
-	plot_text(cr, &tro, maxx*0.95, maxy*0.9, "cuft: %4.2f", airuse);
+	plot_text(cr, &tro, maxx*0.8, maxy*0.8, "cuft: %4.2f", airuse);
 	if (dive->duration.seconds) {
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
-		plot_text(cr, &tro, maxx*0.95, maxy*0.95, "SAC: %4.2f", sac);
+		plot_text(cr, &tro, maxx*0.8, maxy*0.85, "SAC: %4.2f", sac);
 	}
 }
 
 static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
-	double topx, double topy, double maxx, double maxy)
+	double maxx, double maxy)
 {
 	double scalex, scaley;
 	double startp,endp;
@@ -351,19 +351,20 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 	topy = h / 20.0;
 	maxx = (w - 2*topx);
 	maxy = (h - 2*topy);
+	cairo_translate(cr, topx, topy);
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure(dive, cr, topx, topy, maxx, maxy);
+	plot_cylinder_pressure(dive, cr, maxx, maxy);
 
 	/* Depth profile */
-	plot_depth_profile(dive, cr, topx, topy, maxx, maxy);
+	plot_depth_profile(dive, cr, maxx, maxy);
 
 	/* Text on top of all graphs.. */
-	plot_depth_text(dive, cr, topx, topy, maxx, maxy);
-	plot_cylinder_pressure_text(dive, cr, topx, topy, maxx, maxy);
+	plot_depth_text(dive, cr, maxx, maxy);
+	plot_cylinder_pressure_text(dive, cr, maxx, maxy);
 
 	/* And info box in the lower right corner.. */
-	plot_info(dive, cr, topx, topy, maxx, maxy);
+	plot_info(dive, cr, maxx, maxy);
 
 	/* Bounding box last */
 	scalex = scaley = 1.0;
