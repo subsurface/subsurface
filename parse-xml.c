@@ -648,7 +648,7 @@ static void uemis_date_time(char *buffer, void *_when)
 
         switch (integer_or_float(buffer, &val)) {
         case FLOAT:
-		*when = (val.fp - 40587.5) * 86400;
+		*when = (val.fp - 40587) * 86400;
 		break;
 	default:
 		fprintf(stderr, "Strange julian date: %s", buffer);
@@ -665,10 +665,14 @@ static void uemis_date_time(char *buffer, void *_when)
  */
 static void uemis_time_zone(char *buffer, void *_when)
 {
+#if 0 /* seems like this is only used to display it correctly
+       * the stored time appears to be UTC */
+
 	time_t *when = _when;
 	signed char tz = atoi(buffer);
 
 	*when += tz * 3600;
+#endif
 }
 
 /* 0 - air ; 1 - nitrox1 ; 2 - nitrox2 ; 3 = nitrox3 */
