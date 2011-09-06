@@ -27,7 +27,13 @@ static int round_feet_up(int feet)
 	return MAX(90, ROUND_UP(feet+5, 15));
 }
 
-static void plot_text(cairo_t *cr, int xpos, int ypos, double x, double y, const char *fmt, ...)
+typedef struct {
+    double r,g,b;
+    enum {CENTER,LEFT} allign;
+} text_render_options_t;
+
+static void plot_text(cairo_t *cr, text_render_options_t *tro,
+		      double x, double y, const char *fmt, ...)
 {
 	cairo_text_extents_t extents;
 	char buffer[80];
@@ -39,26 +45,9 @@ static void plot_text(cairo_t *cr, int xpos, int ypos, double x, double y, const
 
 	cairo_text_extents(cr, buffer, &extents);
 
-	switch (xpos) {
-	case -1:	/* Left-justify */
-		break;
-	case 0:		/* Center */
-		x -= extents.width/2 + extents.x_bearing;
-		break;
-	case 1:		/* Right-justify */
-		x -= extents.width + extents.x_bearing;
-		break;
-	}
-	switch (ypos) {
-	case -1:	/* Top-justify */
-		break;
-	case 0:		/* Center */
-		y -= extents.height/2 + extents.y_bearing;
-		break;
-	case 1:		/* Bottom-justify */
-		y += extents.height * 1.2;
-		break;
-	}
+	if (tro->allign == CENTER)
+	    x -= extents.width/2 + extents.x_bearing;
+	y += extents.height * 1.2;
 
 	cairo_move_to(cr, x, y);
 	cairo_text_path(cr, buffer);
@@ -66,7 +55,7 @@ static void plot_text(cairo_t *cr, int xpos, int ypos, double x, double y, const
 	cairo_stroke(cr);
 
 	cairo_move_to(cr, x, y);
-	cairo_set_source_rgb(cr, 1, 0, 0);
+	cairo_set_source_rgb(cr, tro->r, tro->g, tro->b);
 	cairo_show_text(cr, buffer);
 }
 
@@ -144,11 +133,12 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 	cairo_set_source_rgb(cr, 1, 0.2, 0.2);
 	i = 0;
 	while ((i = next_minmax(dive, i, 1)) != 0) {
+		text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
 		struct sample *sample = dive->sample+i;
 		int sec = sample->time.seconds;
 		int depth = to_feet(sample->depth);
 
-		plot_text(cr, 0, 1, SCALE(sec, depth), "%d ft", depth);
+		plot_text(cr, &tro, SCALE(sec, depth), "%d ft", depth);
 		i = next_minmax(dive, i, 0);
 		if (!i)
 			break;
@@ -220,18 +210,23 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 	cairo_stroke(cr);
 }
 
-static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley)
+/* gets both the actual start and end pressure as well as the scaling factors */
+static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley,
+				       double *startp, double *endp)
 {
 	int i;
 	double min, max;
+	double bar;
 
 	*scalex = round_seconds_up(dive->duration.seconds);
 
 	max = 0;
 	min = 5000;
+	if (startp)
+	    *startp = *endp = 0.0;
+
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
-		double bar;
 
 		/* FIXME! We only track cylinder 0 right now */
 		if (sample->cylinderindex)
@@ -239,11 +234,15 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 		if (!sample->cylinderpressure.mbar)
 			continue;
 		bar = sample->cylinderpressure.mbar;
+		if (bar != 0.0 && startp && *startp == 0.0)
+		    *startp = bar;
 		if (bar < min)
 			min = bar;
 		if (bar > max)
 			max = bar;
 	}
+	if (endp)
+	    *endp = bar;
 	if (!max)
 		return 0;
 	*scaley = max * 1.5;
@@ -256,7 +255,7 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 	int i, sec = -1;
 	double scalex, scaley;
 
-	if (!get_cylinder_pressure_range(dive, &scalex, &scaley))
+	if (!get_cylinder_pressure_range(dive, &scalex, &scaley, NULL, NULL))
 		return;
 
 	cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 0.80);
@@ -308,6 +307,7 @@ static double calculate_airuse(struct dive *dive)
 static void plot_info(struct dive *dive, cairo_t *cr,
 	double topx, double topy, double maxx, double maxy)
 {
+	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
 	const double liters_per_cuft = 28.317;
 	double airuse;
 
@@ -317,11 +317,28 @@ static void plot_info(struct dive *dive, cairo_t *cr,
 
 	/* I really need to start addign some unit setting thing */
 	airuse /= liters_per_cuft;
-	plot_text(cr, 1, 0, maxx*0.95, maxy*0.9, "cuft: %4.2f", airuse);
+	plot_text(cr, &tro, maxx*0.95, maxy*0.9, "cuft: %4.2f", airuse);
 	if (dive->duration.seconds) {
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
-		plot_text(cr, 1, 0, maxx*0.95, maxy*0.95, "SAC: %4.2f", sac);
+		plot_text(cr, &tro, maxx*0.95, maxy*0.95, "SAC: %4.2f", sac);
+	}
+}
+
+static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
+	double topx, double topy, double maxx, double maxy)
+{
+	double scalex, scaley;
+	double startp,endp;
+
+	cairo_set_font_size(cr, 10);
+
+	if (get_cylinder_pressure_range(dive, &scalex, &scaley,
+					&startp, &endp)) {
+		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
+		plot_text(cr, &tro, SCALE(0, startp), "%3.0f bar", startp/1000.0);
+		plot_text(cr, &tro, SCALE(dive->duration.seconds, endp),
+			  "%3.0f bar", endp/1000.0);
 	}
 }
 
@@ -343,6 +360,7 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 
 	/* Text on top of all graphs.. */
 	plot_depth_text(dive, cr, topx, topy, maxx, maxy);
+	plot_cylinder_pressure_text(dive, cr, topx, topy, maxx, maxy);
 
 	/* And info box in the lower right corner.. */
 	plot_info(dive, cr, topx, topy, maxx, maxy);
