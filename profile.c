@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <time.h>
 
 #include "dive.h"
@@ -26,6 +27,70 @@ static int round_feet_up(int feet)
 	return MAX(90, ROUND_UP(feet+5, 15));
 }
 
+static void plot_text(cairo_t *cr, double x, double y, const char *fmt, ...)
+{
+	cairo_text_extents_t extents;
+	char buffer[80];
+	va_list args;
+
+	va_start(args, fmt);
+	vsnprintf(buffer, sizeof(buffer), fmt, args);
+	va_end(args);
+
+	cairo_text_extents(cr, buffer, &extents);
+
+	x -= extents.width/2 + extents.x_bearing;
+	y += extents.height * 1.2;
+
+	cairo_move_to(cr, x, y);
+	cairo_text_path(cr, buffer);
+	cairo_set_source_rgb(cr, 0, 0, 0);
+	cairo_stroke(cr);
+
+	cairo_move_to(cr, x, y);
+	cairo_set_source_rgb(cr, 1, 0, 0);
+	cairo_show_text(cr, buffer);
+}
+
+/* Find the next maximum point in a 5-minute window */
+static int next_minmax(struct dive *dive, int index, int max)
+{
+	int timelimit, depthlimit, result;
+	struct sample *sample = dive->sample + index;
+
+	if (index >= dive->samples)
+		return 0;
+
+	timelimit = 24*60*60;
+	depthlimit = sample->depth.mm;
+	result = 0;
+
+	for (;;) {
+		int time, depth;
+
+		index++;
+		sample++;
+		if (index >= dive->samples)
+			break;
+		time = sample->time.seconds;
+		depth = sample->depth.mm;
+		if (time > timelimit)
+			break;
+		if (max) {
+			if (depth <= depthlimit)
+				continue;
+		} else {
+			if (depth >= depthlimit)
+				continue;
+		}
+
+		depthlimit = depth;
+		timelimit = time + 300;
+		result = index;
+	}
+	return result;
+}
+
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALE(x,y) (x)*maxx/scalex+topx,(y)*maxy/scaley+topy
 
@@ -36,7 +101,7 @@ static void plot_profile(struct dive *dive, cairo_t *cr,
 	int begins, sec, depth;
 	int i, samples;
 	struct sample *sample;
-	int maxtime, maxdepth;
+	int maxtime, maxdepth, mindepth;
 
 	samples = dive->samples;
 	if (!samples)
@@ -92,6 +157,24 @@ static void plot_profile(struct dive *dive, cairo_t *cr,
 	cairo_fill_preserve(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
+
+	scalex = maxtime;
+	scaley = maxdepth;
+
+	maxdepth = mindepth = 0;
+	maxtime = 0;
+	cairo_set_font_size(cr, 14);
+	cairo_set_source_rgb(cr, 1, 0.2, 0.2);
+	i = 0;
+	while ((i = next_minmax(dive, i, 1)) != 0) {
+		sample = dive->sample+i;
+		sec = sample->time.seconds;
+		depth = to_feet(sample->depth);
+		plot_text(cr, SCALE(sec, depth), "%d ft", depth);
+		i = next_minmax(dive, i, 0);
+		if (!i)
+			break;
+	}
 }
 
 static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley)
