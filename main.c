@@ -166,7 +166,6 @@ static void file_open(GtkWidget *w, gpointer data)
 		}
 		g_slist_free(filenames);
 		report_dives();
-		repaint_dive();
 		dive_list_update_dives(dive_list);
 	}
 	gtk_widget_destroy(dialog);

@@ -67,6 +67,7 @@ void dive_list_update_dives(struct DiveList dive_list)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(dive_list.model));
 	fill_dive_list(GTK_LIST_STORE(dive_list.model));
+	repaint_dive();
 }
 
 struct DiveList dive_list_create(void)
