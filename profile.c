@@ -108,14 +108,43 @@ static int next_minmax(struct dive *dive, int index, int minmax)
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALE(x,y) (x)*maxx/scalex+topx,(y)*maxy/scaley+topy
 
-static void plot_profile(struct dive *dive, cairo_t *cr,
+static void plot_depth_text(struct dive *dive, cairo_t *cr,
+	double topx, double topy, double maxx, double maxy)
+{
+	double scalex, scaley;
+	int maxtime, maxdepth;
+	int i;
+
+	/* Get plot scaling limits */
+	maxtime = round_seconds_up(dive->duration.seconds);
+	maxdepth = round_feet_up(to_feet(dive->maxdepth));
+
+	scalex = maxtime;
+	scaley = maxdepth;
+
+	cairo_set_font_size(cr, 14);
+	cairo_set_source_rgb(cr, 1, 0.2, 0.2);
+	i = 0;
+	while ((i = next_minmax(dive, i, 1)) != 0) {
+		struct sample *sample = dive->sample+i;
+		int sec = sample->time.seconds;
+		int depth = to_feet(sample->depth);
+
+		plot_text(cr, SCALE(sec, depth), "%d ft", depth);
+		i = next_minmax(dive, i, 0);
+		if (!i)
+			break;
+	}
+}
+
+static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 	double topx, double topy, double maxx, double maxy)
 {
 	double scalex, scaley;
 	int begins, sec, depth;
 	int i, samples;
 	struct sample *sample;
-	int maxtime, maxdepth, mindepth;
+	int maxtime, maxdepth;
 
 	samples = dive->samples;
 	if (!samples)
@@ -171,24 +200,6 @@ static void plot_profile(struct dive *dive, cairo_t *cr,
 	cairo_fill_preserve(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
-
-	scalex = maxtime;
-	scaley = maxdepth;
-
-	maxdepth = mindepth = 0;
-	maxtime = 0;
-	cairo_set_font_size(cr, 14);
-	cairo_set_source_rgb(cr, 1, 0.2, 0.2);
-	i = 0;
-	while ((i = next_minmax(dive, i, 1)) != 0) {
-		sample = dive->sample+i;
-		sec = sample->time.seconds;
-		depth = to_feet(sample->depth);
-		plot_text(cr, SCALE(sec, depth), "%d ft", depth);
-		i = next_minmax(dive, i, 0);
-		if (!i)
-			break;
-	}
 }
 
 static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley)
@@ -262,11 +273,14 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 	maxx = (w - 2*topx);
 	maxy = (h - 2*topy);
 
-	/* Depth profile */
-	plot_profile(dive, cr, topx, topy, maxx, maxy);
-
-	/* Cylinder pressure plot? */
+	/* Cylinder pressure plot */
 	plot_cylinder_pressure(dive, cr, topx, topy, maxx, maxy);
+
+	/* Depth profile */
+	plot_depth_profile(dive, cr, topx, topy, maxx, maxy);
+
+	/* Text on top of all graphs.. */
+	plot_depth_text(dive, cr, topx, topy, maxx, maxy);
 
 	/* Bounding box last */
 	scalex = scaley = 1.0;
