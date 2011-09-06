@@ -197,11 +197,13 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 	for (i = 1; i < dive->samples; i++) {
 		sample++;
 		sec = sample->time.seconds;
-		depth = to_feet(sample->depth);
-		cairo_line_to(cr, SCALE(sec, depth));
+		if (sec <= maxtime) {
+			depth = to_feet(sample->depth);
+			cairo_line_to(cr, SCALE(sec, depth));
+		}
 	}
 	scaley = 1.0;
-	cairo_line_to(cr, SCALE(sec, 0));
+	cairo_line_to(cr, SCALE(MIN(sec,maxtime), 0));
 	cairo_line_to(cr, SCALE(begins, 0));
 	cairo_close_path(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.20);
@@ -269,7 +271,8 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 		if (!mbar)
 			continue;
 		sec = sample->time.seconds;
-		cairo_line_to(cr, SCALE(sec, mbar));
+		if (sec <= dive->duration.seconds)
+			cairo_line_to(cr, SCALE(sec, mbar));
 	}
 	/*
 	 * We may have "surface time" events, in which case we don't go
