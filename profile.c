@@ -27,7 +27,7 @@ static int round_feet_up(int feet)
 	return MAX(90, ROUND_UP(feet+5, 15));
 }
 
-static void plot_text(cairo_t *cr, double x, double y, const char *fmt, ...)
+static void plot_text(cairo_t *cr, int xpos, int ypos, double x, double y, const char *fmt, ...)
 {
 	cairo_text_extents_t extents;
 	char buffer[80];
@@ -39,8 +39,26 @@ static void plot_text(cairo_t *cr, double x, double y, const char *fmt, ...)
 
 	cairo_text_extents(cr, buffer, &extents);
 
-	x -= extents.width/2 + extents.x_bearing;
-	y += extents.height * 1.2;
+	switch (xpos) {
+	case -1:	/* Left-justify */
+		break;
+	case 0:		/* Center */
+		x -= extents.width/2 + extents.x_bearing;
+		break;
+	case 1:		/* Right-justify */
+		x -= extents.width + extents.x_bearing;
+		break;
+	}
+	switch (ypos) {
+	case -1:	/* Top-justify */
+		break;
+	case 0:		/* Center */
+		y -= extents.height/2 + extents.y_bearing;
+		break;
+	case 1:		/* Bottom-justify */
+		y += extents.height * 1.2;
+		break;
+	}
 
 	cairo_move_to(cr, x, y);
 	cairo_text_path(cr, buffer);
@@ -130,7 +148,7 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 		int sec = sample->time.seconds;
 		int depth = to_feet(sample->depth);
 
-		plot_text(cr, SCALE(sec, depth), "%d ft", depth);
+		plot_text(cr, 0, 1, SCALE(sec, depth), "%d ft", depth);
 		i = next_minmax(dive, i, 0);
 		if (!i)
 			break;
@@ -263,6 +281,50 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 	cairo_stroke(cr);
 }
 
+/*
+ * Return air usage (in liters).
+ */
+static double calculate_airuse(struct dive *dive)
+{
+	double airuse = 0;
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder + i;
+		int size = cyl->type.size.mliter;
+		double kilo_atm;
+
+		if (!size)
+			continue;
+
+		kilo_atm = (cyl->start.mbar - cyl->end.mbar) / 1013250.0;
+
+		/* Liters of air at 1 atm == milliliters at 1k atm*/
+		airuse += kilo_atm * size;
+	}
+	return airuse;
+}
+
+static void plot_info(struct dive *dive, cairo_t *cr,
+	double topx, double topy, double maxx, double maxy)
+{
+	const double liters_per_cuft = 28.317;
+	double airuse;
+
+	airuse = calculate_airuse(dive);
+	if (!airuse)
+		return;
+
+	/* I really need to start addign some unit setting thing */
+	airuse /= liters_per_cuft;
+	plot_text(cr, 1, 0, maxx*0.95, maxy*0.9, "cuft: %4.2f", airuse);
+	if (dive->duration.seconds) {
+		double pressure = 1 + (dive->meandepth.mm / 10000.0);
+		double sac = airuse / pressure * 60 / dive->duration.seconds;
+		plot_text(cr, 1, 0, maxx*0.95, maxy*0.95, "SAC: %4.2f", sac);
+	}
+}
+
 static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 {
 	double topx, topy, maxx, maxy;
@@ -281,6 +343,9 @@ static void plot(cairo_t *cr, int w, int h, struct dive *dive)
 
 	/* Text on top of all graphs.. */
 	plot_depth_text(dive, cr, topx, topy, maxx, maxy);
+
+	/* And info box in the lower right corner.. */
+	plot_info(dive, cr, topx, topy, maxx, maxy);
 
 	/* Bounding box last */
 	scalex = scaley = 1.0;
