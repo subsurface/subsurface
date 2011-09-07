@@ -70,12 +70,17 @@ static int match(const char *pattern, int plen,
 static struct units {
 	enum { METERS, FEET } length;
 	enum { LITER, CUFT } volume;
-	enum { BAR, PSI } pressure;
-	enum { CELSIUS, FAHRENHEIT } temperature;
+	enum { BAR, PSI, PASCAL } pressure;
+	enum { CELSIUS, FAHRENHEIT, KELVIN } temperature;
 	enum { KG, LBS } weight;
 } units;
 
-/* We're going to default to SI units for input */
+/*
+ * We're going to default to SI units for input. Yes,
+ * technically the SI unit for pressure is Pascal, but
+ * we default to bar (10^5 pascal), which people
+ * actually use. Similarly, C instead of Kelvin.
+ */
 static const struct units SI_units = {
 	.length = METERS,
 	.volume = LITER,
@@ -99,6 +104,7 @@ static enum import_source {
 	SUUNTO,
 	UEMIS,
 	DIVINGLOG,
+	UDDF,
 } import_source;
 
 static time_t utc_mktime(struct tm *tm)
@@ -238,6 +244,9 @@ static void pressure(char *buffer, void *_press)
 		if (!val.fp)
 			break;
 		switch (units.pressure) {
+		case PASCAL:
+			mbar = val.fp / 100;
+			break;
 		case BAR:
 			/* Assume mbar, but if it's really small, it's bar */
 			mbar = val.fp;
@@ -293,6 +302,9 @@ static void temperature(char *buffer, void *_temperature)
 			break;
 		/* Celsius */
 		switch (units.temperature) {
+		case KELVIN:
+			temperature->mkelvin = val.fp * 1000;
+			break;
 		case CELSIUS:
 			temperature->mkelvin = (val.fp + 273.15) * 1000 + 0.5;
 			break;
@@ -1171,6 +1183,14 @@ static void DivingLog_importer(void)
 	units.pressure = PSI;
 }
 
+static void uddf_importer(void)
+{
+	import_source = UDDF;
+	units = SI_units;
+	units.pressure = PASCAL;
+	units.temperature = KELVIN;
+}
+
 /*
  * I'm sure this could be done as some fancy DTD rules.
  * It's just not worth the headache.
@@ -1182,6 +1202,7 @@ static struct nesting {
 	{ "dive", dive_start, dive_end },
 	{ "Dive", dive_start, dive_end },
 	{ "sample", sample_start, sample_end },
+	{ "waypoint", sample_start, sample_end },
 	{ "SAMPLE", sample_start, sample_end },
 	{ "reading", sample_start, sample_end },
 	{ "event", event_start, event_end },
@@ -1193,6 +1214,7 @@ static struct nesting {
 	{ "SUUNTO", suunto_importer },
 	{ "Divinglog", DivingLog_importer },
 	{ "pre_dive", uemis_importer },
+	{ "uddf", uddf_importer },
 
 	{ NULL, }
 };
