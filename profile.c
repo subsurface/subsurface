@@ -67,26 +67,25 @@ static void plot_text(cairo_t *cr, text_render_options_t *tro,
  * We exit early if we hit "enough" of a depth reversal,
  * which is roughly 10 feet.
  */
-static int next_minmax(struct dive *dive, int index, int minmax)
+static struct sample *next_minmax(struct dive *dive, struct sample *sample, struct sample *end, int minmax)
 {
 	const int enough = 3000;
-	int timelimit, depthlimit, result;
-	struct sample *sample = dive->sample + index;
+	struct sample *result;
+	int timelimit, depthlimit;
 
-	if (index >= dive->samples)
+	if (sample >= end)
 		return 0;
 
 	timelimit = 24*60*60;
 	depthlimit = sample->depth.mm;
-	result = 0;
+	result = NULL;
 
 	for (;;) {
 		int time, depth;
 
-		index++;
 		sample++;
-		if (index >= dive->samples)
-			break;
+		if (sample >= end)
+			return NULL;
 		time = sample->time.seconds;
 		depth = sample->depth.mm;
 		if (time > timelimit)
@@ -106,7 +105,7 @@ static int next_minmax(struct dive *dive, int index, int minmax)
 			}
 		}
 
-		result = index;
+		result = sample;
 		depthlimit = depth;
 		/* Look up to ten minutes into the future */
 		timelimit = time + 600;
@@ -120,9 +119,9 @@ static int next_minmax(struct dive *dive, int index, int minmax)
 static void plot_depth_text(struct dive *dive, cairo_t *cr,
 	double maxx, double maxy)
 {
+	struct sample *sample, *end;
 	double scalex, scaley;
 	int maxtime, maxdepth;
-	int i;
 
 	/* Get plot scaling limits */
 	maxtime = round_seconds_up(dive->duration.seconds);
@@ -133,10 +132,17 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 
 	cairo_set_font_size(cr, 14);
 	cairo_set_source_rgb(cr, 1, 0.2, 0.2);
-	i = 0;
-	while ((i = next_minmax(dive, i, 1)) != 0) {
+
+	/*
+	 * We never take the last sample into account.
+	 * It should be a surface event anyway, although
+	 * there are buggy cases where it isn't..
+	 */
+	sample = dive->sample;
+	end = dive->sample + dive->samples - 1;
+
+	while ((sample = next_minmax(dive, sample, end, 1)) != NULL) {
 		text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
-		struct sample *sample = dive->sample+i;
 		int sec = sample->time.seconds;
 		depth_t depth = sample->depth;
 		const char *fmt;
@@ -154,8 +160,8 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 		}
 
 		plot_text(cr, &tro, SCALE(sec, depth.mm), fmt, d);
-		i = next_minmax(dive, i, 0);
-		if (!i)
+		sample = next_minmax(dive, sample, end, 0);
+		if (!sample)
 			break;
 	}
 }
