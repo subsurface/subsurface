@@ -58,7 +58,8 @@ static int round_depth_up(depth_t depth)
 
 typedef struct {
 	double r,g,b;
-	enum {CENTER,LEFT} allign;
+	enum {CENTER,LEFT} halign;
+	enum {MIDDLE,TOP,BOTTOM} valign;
 } text_render_options_t;
 
 static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
@@ -76,9 +77,25 @@ static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
 
 	cairo_text_extents(cr, buffer, &extents);
 	dx = 0;
-	if (tro->allign == CENTER)
+	switch (tro->halign) {
+	case CENTER:
 		dx = -(extents.width/2 + extents.x_bearing);
-	dy = extents.height * 1.2;
+		break;
+	case LEFT:
+		dx = 0;
+		break;
+	}
+	switch (tro->valign) {
+	case TOP:
+		dy = extents.height * 1.2;
+		break;
+	case BOTTOM:
+		dy = -extents.height * 0.8;
+		break;
+	case MIDDLE:
+		dy = 0;
+		break;
+	}
 
 	move_to(gc, x, y);
 	cairo_rel_move_to(cr, dx, dy);
@@ -143,7 +160,7 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 
 static void render_depth_sample(struct graphics_context *gc, struct sample *sample)
 {
-	text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
+	text_render_options_t tro = {1.0, 0.2, 0.2, CENTER, TOP};
 	int sec = sample->time.seconds;
 	depth_t depth = sample->depth;
 	const char *fmt;
@@ -363,7 +380,7 @@ static double calculate_airuse(struct dive *dive)
 
 static void plot_info(struct dive *dive, struct graphics_context *gc)
 {
-	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
+	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT, TOP};
 	const double liters_per_cuft = 28.317;
 	const char *unit;
 	double airuse;
@@ -418,7 +435,7 @@ static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_conte
 			break;
 		}
 
-		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
+		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT, TOP};
 		plot_text(gc, &tro, 0, startp.mbar, "%d %s", start, unit);
 		plot_text(gc, &tro, dive->duration.seconds, endp.mbar,
 			  "%d %s", end, unit);
