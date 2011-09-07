@@ -22,9 +22,11 @@ static int round_seconds_up(int seconds)
 	return MAX(30*60, ROUND_UP(seconds, 60*10));
 }
 
-static int round_feet_up(int feet)
+static int round_depth_up(depth_t depth)
 {
-	return MAX(90, ROUND_UP(feet+5, 15));
+	unsigned mm = depth.mm;
+	/* Minimum 30m */
+	return MAX(30000, ROUND_UP(mm+3000, 10000));
 }
 
 typedef struct {
@@ -124,7 +126,7 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 
 	/* Get plot scaling limits */
 	maxtime = round_seconds_up(dive->duration.seconds);
-	maxdepth = round_feet_up(to_feet(dive->maxdepth));
+	maxdepth = round_depth_up(dive->maxdepth);
 
 	scalex = maxtime;
 	scaley = maxdepth;
@@ -136,9 +138,22 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 		text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
 		struct sample *sample = dive->sample+i;
 		int sec = sample->time.seconds;
-		int depth = to_feet(sample->depth);
+		depth_t depth = sample->depth;
+		const char *fmt;
+		double d;
 
-		plot_text(cr, &tro, SCALE(sec, depth), "%d ft", depth);
+		switch (output_units.length) {
+		case METERS:
+			d = depth.mm / 1000.0;
+			fmt = "%.1f";
+			break;
+		case FEET:
+			d = to_feet(depth);
+			fmt = "%.0f";
+			break;
+		}
+
+		plot_text(cr, &tro, SCALE(sec, depth.mm), fmt, d);
 		i = next_minmax(dive, i, 0);
 		if (!i)
 			break;
@@ -152,7 +167,7 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 	int begins, sec, depth;
 	int i, samples;
 	struct sample *sample;
-	int maxtime, maxdepth;
+	int maxtime, maxdepth, marker;
 
 	samples = dive->samples;
 	if (!samples)
@@ -162,7 +177,7 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 
 	/* Get plot scaling limits */
 	maxtime = round_seconds_up(dive->duration.seconds);
-	maxdepth = round_feet_up(to_feet(dive->maxdepth));
+	maxdepth = round_depth_up(dive->maxdepth);
 
 	/* Time markers: every 5 min */
 	scalex = maxtime;
@@ -172,11 +187,16 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 		cairo_line_to(cr, SCALE(i, 1));
 	}
 
-	/* Depth markers: every 15 ft */
+	/* Depth markers: every 30 ft or 10 m*/
 	scalex = 1.0;
 	scaley = maxdepth;
+	switch (output_units.length) {
+	case METERS: marker = 10000; break;
+	case FEET: marker = 9144; break;	/* 30 ft */
+	}
+
 	cairo_set_source_rgba(cr, 1, 1, 1, 0.5);
-	for (i = 15; i < maxdepth; i += 15) {
+	for (i = marker; i < maxdepth; i += marker) {
 		cairo_move_to(cr, SCALE(0, i));
 		cairo_line_to(cr, SCALE(1, i));
 	}
@@ -184,8 +204,8 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 
 	/* Show mean depth */
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.40);
-	cairo_move_to(cr, SCALE(0, to_feet(dive->meandepth)));
-	cairo_line_to(cr, SCALE(1, to_feet(dive->meandepth)));
+	cairo_move_to(cr, SCALE(0, dive->meandepth.mm));
+	cairo_line_to(cr, SCALE(1, dive->meandepth.mm));
 	cairo_stroke(cr);
 
 	scalex = maxtime;
@@ -193,12 +213,12 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 	sample = dive->sample;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	begins = sample->time.seconds;
-	cairo_move_to(cr, SCALE(sample->time.seconds, to_feet(sample->depth)));
+	cairo_move_to(cr, SCALE(sample->time.seconds, sample->depth.mm));
 	for (i = 1; i < dive->samples; i++) {
 		sample++;
 		sec = sample->time.seconds;
 		if (sec <= maxtime) {
-			depth = to_feet(sample->depth);
+			depth = sample->depth.mm;
 			cairo_line_to(cr, SCALE(sec, depth));
 		}
 	}
