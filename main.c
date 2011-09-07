@@ -205,11 +205,13 @@ static void quit(GtkWidget *w, gpointer data)
 static void imperial(GtkWidget *w, gpointer data)
 {
 	output_units = IMPERIAL_units;
+	repaint_dive();
 }
 
 static void metric(GtkWidget *w, gpointer data)
 {
 	output_units = SI_units;
+	repaint_dive();
 }
 
 static GtkActionEntry menu_items[] = {

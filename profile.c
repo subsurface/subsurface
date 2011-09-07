@@ -217,7 +217,7 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 				       pressure_t *startp, pressure_t *endp)
 {
 	int i;
-	int min, max, mbar;
+	int min, max;
 
 	*scalex = round_seconds_up(dive->duration.seconds);
 
@@ -227,6 +227,7 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 		startp->mbar = endp->mbar = 0;
 
 	for (i = 0; i < dive->samples; i++) {
+		int mbar;
 		struct sample *sample = dive->sample + i;
 
 		/* FIXME! We only track cylinder 0 right now */
@@ -235,15 +236,15 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 		mbar = sample->cylinderpressure.mbar;
 		if (!mbar)
 			continue;
-		if (mbar && startp && !startp->mbar)
-			startp->mbar = mbar;
 		if (mbar < min)
 			min = mbar;
 		if (mbar > max)
 			max = mbar;
 	}
+	if (startp)
+		startp->mbar = max;
 	if (endp)
-		endp->mbar = mbar;
+		endp->mbar = min;
 	if (!max)
 		return 0;
 	*scaley = max * 1.5;
@@ -311,6 +312,7 @@ static void plot_info(struct dive *dive, cairo_t *cr,
 {
 	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
 	const double liters_per_cuft = 28.317;
+	const char *unit;
 	double airuse;
 
 	airuse = calculate_airuse(dive);
@@ -318,12 +320,20 @@ static void plot_info(struct dive *dive, cairo_t *cr,
 		return;
 
 	/* I really need to start addign some unit setting thing */
-	airuse /= liters_per_cuft;
-	plot_text(cr, &tro, maxx*0.8, maxy*0.8, "cuft: %4.2f", airuse);
+	switch (output_units.volume) {
+	case LITER:
+		unit = "l";
+		break;
+	case CUFT:
+		unit = "cuft";
+		airuse /= liters_per_cuft;
+		break;
+	}
+	plot_text(cr, &tro, maxx*0.8, maxy*0.8, "vol: %4.2f %s", airuse, unit);
 	if (dive->duration.seconds) {
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
-		plot_text(cr, &tro, maxx*0.8, maxy*0.85, "SAC: %4.2f", sac);
+		plot_text(cr, &tro, maxx*0.8, maxy*0.85, "SAC: %4.2f %s/min", sac, unit);
 	}
 }
 
@@ -337,10 +347,31 @@ static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
 
 	if (get_cylinder_pressure_range(dive, &scalex, &scaley,
 					&startp, &endp)) {
+		int start, end;
+		const char *unit = "bar";
+
+		switch (output_units.pressure) {
+		case PASCAL:
+			start = startp.mbar * 100;
+			end = startp.mbar * 100;
+			unit = "pascal";
+			break;
+		case BAR:
+			start = startp.mbar / 1000;
+			end = endp.mbar / 1000;
+			unit = "bar";
+			break;
+		case PSI:
+			start = startp.mbar / 68.95;
+			end = endp.mbar / 68.95;
+			unit = "psi";
+			break;
+		}
+
 		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
-		plot_text(cr, &tro, SCALE(0, startp.mbar), "%3.0f bar", startp.mbar/1000.0);
+		plot_text(cr, &tro, SCALE(0, startp.mbar), "%d %s", start, unit);
 		plot_text(cr, &tro, SCALE(dive->duration.seconds, endp.mbar),
-			  "%3.0f bar", endp.mbar/1000.0);
+			  "%d %s", end, unit);
 	}
 }
 
