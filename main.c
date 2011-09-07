@@ -243,10 +243,10 @@ static void create_radio(GtkWidget *dialog, const char *name, ...)
 static void name(GtkWidget *w, gpointer data) 			\
 {								\
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))	\
-		output_units.type = value;			\
-	repaint_dive();						\
-	dive_list_update_dives(dive_list);			\
+		menu_units.type = value;			\
 }
+
+static struct units menu_units;
 
 UNITCALLBACK(set_meter, length, METERS)
 UNITCALLBACK(set_feet, length, FEET)
@@ -259,11 +259,17 @@ UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
 
 static void unit_dialog(GtkWidget *w, gpointer data)
 {
+	int result;
 	GtkWidget *dialog;
+
+	menu_units = output_units;
 
 	dialog = gtk_dialog_new_with_buttons("Units",
 		GTK_WINDOW(main_window),
-		GTK_DIALOG_DESTROY_WITH_PARENT, NULL);
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
 
 	create_radio(dialog, "Depth:",
 		"Meter", set_meter, (output_units.length == METERS),
@@ -286,6 +292,13 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	gtk_widget_show(dialog);
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (result == GTK_RESPONSE_ACCEPT) {
+		output_units = menu_units;
+		repaint_dive();
+		dive_list_update_dives(dive_list);
+	}
+	gtk_widget_destroy(dialog);
 }
 
 static GtkActionEntry menu_items[] = {
