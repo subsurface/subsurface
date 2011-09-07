@@ -239,40 +239,23 @@ static void create_radio(GtkWidget *dialog, const char *name, ...)
 	va_end(args);
 }
 
-static void set_meter(GtkWidget *w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
-		output_units.length = METERS;
-	repaint_dive();
+#define UNITCALLBACK(name, type, value)				\
+static void name(GtkWidget *w, gpointer data) 			\
+{								\
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))	\
+		output_units.type = value;			\
+	repaint_dive();						\
+	dive_list_update_dives(dive_list);			\
 }
 
-static void set_feet(GtkWidget *w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
-		output_units.length = FEET;
-	repaint_dive();
-}
-
-static void set_bar(GtkWidget *w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
-		output_units.pressure = BAR;
-	repaint_dive();
-}
-
-static void set_psi(GtkWidget *w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
-		output_units.pressure = PSI;
-	repaint_dive();
-}
-
-static void set_pascal(GtkWidget *w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
-		output_units.pressure = PASCAL;
-	repaint_dive();
-}
+UNITCALLBACK(set_meter, length, METERS)
+UNITCALLBACK(set_feet, length, FEET)
+UNITCALLBACK(set_bar, pressure, BAR)
+UNITCALLBACK(set_psi, pressure, PSI)
+UNITCALLBACK(set_liter, volume, LITER)
+UNITCALLBACK(set_cuft, volume, CUFT)
+UNITCALLBACK(set_celsius, temperature, CELSIUS)
+UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
 
 static void unit_dialog(GtkWidget *w, gpointer data)
 {
@@ -290,7 +273,16 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 	create_radio(dialog, "Pressure:",
 		"Bar", set_bar, (output_units.pressure == BAR),
 		"PSI",  set_psi, (output_units.pressure == PSI),
-		"Pascal",  set_pascal, (output_units.pressure == PASCAL),
+		NULL);
+
+	create_radio(dialog, "Volume:",
+		"Liter",  set_liter, (output_units.volume == LITER),
+		"CuFt", set_cuft, (output_units.volume == CUFT),
+		NULL);
+
+	create_radio(dialog, "Temperature:",
+		"Celsius", set_celsius, (output_units.temperature == CELSIUS),
+		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
 
 	gtk_widget_show(dialog);

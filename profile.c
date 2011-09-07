@@ -357,13 +357,13 @@ static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
 			unit = "pascal";
 			break;
 		case BAR:
-			start = startp.mbar / 1000;
-			end = endp.mbar / 1000;
+			start = (startp.mbar + 500) / 1000;
+			end = (endp.mbar + 500) / 1000;
 			unit = "bar";
 			break;
 		case PSI:
-			start = startp.mbar / 68.95;
-			end = endp.mbar / 68.95;
+			start = to_PSI(startp);
+			end = to_PSI(endp);
 			unit = "psi";
 			break;
 		}
