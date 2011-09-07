@@ -91,7 +91,7 @@ struct DiveList dive_list_create(void)
 	fill_dive_list(dive_list.model);
 
 	renderer = gtk_cell_renderer_text_new();
-	col = gtk_tree_view_column_new();
+	dive_list.date = col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "Date");
 	gtk_tree_view_column_set_sort_column_id(col, 1);
 	gtk_tree_view_column_set_resizable (col, TRUE);
@@ -100,7 +100,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	
 	renderer = gtk_cell_renderer_text_new();
-	col = gtk_tree_view_column_new();
+	dive_list.depth = col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "ft");
 	gtk_tree_view_column_set_sort_column_id(col, 3);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
@@ -110,7 +110,7 @@ struct DiveList dive_list_create(void)
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 	
 	renderer = gtk_cell_renderer_text_new();
-	col = gtk_tree_view_column_new();
+	dive_list.duration = col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "min");
 	gtk_tree_view_column_set_sort_column_id(col, 5);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
