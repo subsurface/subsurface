@@ -78,9 +78,18 @@ void update_dive_info(struct dive *dive)
 		tm->tm_hour, tm->tm_min, tm->tm_sec);
 	gtk_label_set_text(GTK_LABEL(divetime), buffer);
 
-	snprintf(buffer, sizeof(buffer),
-		"%d ft",
-		to_feet(dive->maxdepth));
+	switch (output_units.length) {
+	case METERS:
+		snprintf(buffer, sizeof(buffer),
+			"%.1f m",
+			dive->maxdepth.mm / 1000.0);
+		break;
+	case FEET:
+		snprintf(buffer, sizeof(buffer),
+			"%d ft",
+			to_feet(dive->maxdepth));
+		break;
+	}
 	gtk_label_set_text(GTK_LABEL(depth), buffer);
 
 	snprintf(buffer, sizeof(buffer),
@@ -89,10 +98,25 @@ void update_dive_info(struct dive *dive)
 	gtk_label_set_text(GTK_LABEL(duration), buffer);
 
 	*buffer = 0;
-	if (dive->watertemp.mkelvin)
-		snprintf(buffer, sizeof(buffer),
-			"%d C",
-			to_C(dive->watertemp));
+	if (dive->watertemp.mkelvin) {
+		switch (output_units.temperature) {
+		case CELSIUS:
+			snprintf(buffer, sizeof(buffer),
+				"%d C",
+				to_C(dive->watertemp));
+			break;
+		case FAHRENHEIT:
+			snprintf(buffer, sizeof(buffer),
+				"%d F",
+				to_F(dive->watertemp));
+			break;
+		case KELVIN:
+			snprintf(buffer, sizeof(buffer),
+				"%d K",
+				to_K(dive->watertemp));
+			break;
+		}
+	}
 	gtk_label_set_text(GTK_LABEL(temperature), buffer);
 
 	text = dive->location ? : "";

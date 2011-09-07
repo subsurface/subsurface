@@ -95,7 +95,21 @@ static inline int to_C(temperature_t temp)
 {
 	if (!temp.mkelvin)
 		return 0;
-	return (temp.mkelvin - 273150) / 1000;
+	return (temp.mkelvin - 273150 + 499) / 1000;
+}
+
+static inline int to_F(temperature_t temp)
+{
+	if (!temp.mkelvin)
+		return 0;
+	return temp.mkelvin * 9 / 5000.0 - 459.670 + 0.5;
+}
+
+static inline int to_K(temperature_t temp)
+{
+	if (!temp.mkelvin)
+		return 0;
+	return (temp.mkelvin + 499)/1000;
 }
 
 static inline int to_PSI(pressure_t pressure)
