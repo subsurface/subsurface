@@ -146,6 +146,28 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 	return result;
 }
 
+static void render_depth_sample(struct graphics_context *gc, struct sample *sample)
+{
+	text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
+	int sec = sample->time.seconds;
+	depth_t depth = sample->depth;
+	const char *fmt;
+	double d;
+
+	switch (output_units.length) {
+	case METERS:
+		d = depth.mm / 1000.0;
+		fmt = "%.1f";
+		break;
+	case FEET:
+		d = to_feet(depth);
+		fmt = "%.0f";
+		break;
+	}
+	plot_text(gc, &tro, sec, depth.mm, fmt, d);
+}
+
+
 void plot_text_samples(struct dive *dive, struct graphics_context *gc,
 			struct sample *a, struct sample *b)
 {
@@ -158,33 +180,12 @@ void plot_text_samples(struct dive *dive, struct graphics_context *gc,
 
 	max = next_minmax(a, b, 1);
 	if (max) {
-		text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
-		int sec = max->time.seconds;
-		depth_t depth = max->depth;
-		const char *fmt;
-		double d;
-
+		render_depth_sample(gc, max);
 		min = next_minmax(max, b, 0);
-		plot_text_samples(dive, gc, a, max);
 		if (min) {
-			plot_text_samples(dive, gc, max, min);
 			plot_text_samples(dive, gc, min, b);
-		} else
-			plot_text_samples(dive, gc, max, b);
-
-		switch (output_units.length) {
-		case METERS:
-			d = depth.mm / 1000.0;
-			fmt = "%.1f";
-			break;
-		case FEET:
-			d = to_feet(depth);
-			fmt = "%.0f";
-			break;
+			return;
 		}
-
-		plot_text(gc, &tro, sec, depth.mm, fmt, d);
-		return;
 	}
 }
 
