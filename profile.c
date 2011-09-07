@@ -214,18 +214,17 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 
 /* gets both the actual start and end pressure as well as the scaling factors */
 static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley,
-				       double *startp, double *endp)
+				       pressure_t *startp, pressure_t *endp)
 {
 	int i;
-	double min, max;
-	double bar;
+	int min, max, mbar;
 
 	*scalex = round_seconds_up(dive->duration.seconds);
 
 	max = 0;
-	min = 5000;
+	min = 5000000;
 	if (startp)
-		*startp = *endp = 0.0;
+		startp->mbar = endp->mbar = 0;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -233,18 +232,18 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 		/* FIXME! We only track cylinder 0 right now */
 		if (sample->cylinderindex)
 			continue;
-		if (!sample->cylinderpressure.mbar)
+		mbar = sample->cylinderpressure.mbar;
+		if (!mbar)
 			continue;
-		bar = sample->cylinderpressure.mbar;
-		if (bar != 0.0 && startp && *startp == 0.0)
-			*startp = bar;
-		if (bar < min)
-			min = bar;
-		if (bar > max)
-			max = bar;
+		if (mbar && startp && !startp->mbar)
+			startp->mbar = mbar;
+		if (mbar < min)
+			min = mbar;
+		if (mbar > max)
+			max = mbar;
 	}
 	if (endp)
-		*endp = bar;
+		endp->mbar = mbar;
 	if (!max)
 		return 0;
 	*scaley = max * 1.5;
@@ -332,16 +331,16 @@ static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
 	double maxx, double maxy)
 {
 	double scalex, scaley;
-	double startp,endp;
+	pressure_t startp, endp;
 
 	cairo_set_font_size(cr, 10);
 
 	if (get_cylinder_pressure_range(dive, &scalex, &scaley,
 					&startp, &endp)) {
 		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
-		plot_text(cr, &tro, SCALE(0, startp), "%3.0f bar", startp/1000.0);
-		plot_text(cr, &tro, SCALE(dive->duration.seconds, endp),
-			  "%3.0f bar", endp/1000.0);
+		plot_text(cr, &tro, SCALE(0, startp.mbar), "%3.0f bar", startp.mbar/1000.0);
+		plot_text(cr, &tro, SCALE(dive->duration.seconds, endp.mbar),
+			  "%3.0f bar", endp.mbar/1000.0);
 	}
 }
 
