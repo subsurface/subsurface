@@ -95,7 +95,7 @@ static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
 }
 
 /*
- * Find the next maximum point in a 10-minute window.
+ * Find the next minimum/maximum point.
  *
  * We exit early if we hit "enough" of a depth reversal,
  * which is roughly 10 feet.
@@ -164,21 +164,16 @@ static void render_depth_sample(struct graphics_context *gc, struct sample *samp
 
 static void plot_text_samples(struct graphics_context *gc, struct sample *a, struct sample *b)
 {
-	struct sample *max, *min;
-
-	if (b <= a)
-		return;
-	if (b[-1].time.seconds - a->time.seconds < 3*60)
-		return;
-
-	max = next_minmax(a, b, 1);
-	if (max) {
-		render_depth_sample(gc, max);
-		min = next_minmax(max, b, 0);
-		if (min) {
-			plot_text_samples(gc, min, b);
+	for (;;) {
+		if (b <= a)
+			break;
+		a = next_minmax(a, b, 1);
+		if (!a)
 			return;
-		}
+		render_depth_sample(gc, a);
+		a = next_minmax(a, b, 0);
+		if (!a)
+			break;
 	}
 }
 
