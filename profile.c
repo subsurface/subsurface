@@ -104,12 +104,11 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 {
 	const int enough = 3000;
 	struct sample *result;
-	int timelimit, depthlimit;
+	int depthlimit;
 
 	if (sample >= end)
 		return 0;
 
-	timelimit = 24*60*60;
 	depthlimit = sample->depth.mm;
 	result = NULL;
 
@@ -121,8 +120,6 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 			return NULL;
 		time = sample->time.seconds;
 		depth = sample->depth.mm;
-		if (time > timelimit)
-			break;
 
 		if (minmax) {
 			if (depth <= depthlimit) {
@@ -140,8 +137,6 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 
 		result = sample;
 		depthlimit = depth;
-		/* Look up to ten minutes into the future */
-		timelimit = time + 600;
 	}
 	return result;
 }
@@ -171,9 +166,9 @@ static void plot_text_samples(struct graphics_context *gc, struct sample *a, str
 {
 	struct sample *max, *min;
 
-	if (b < a)
+	if (b <= a)
 		return;
-	if (b->time.seconds - a->time.seconds < 3*60)
+	if (b[-1].time.seconds - a->time.seconds < 3*60)
 		return;
 
 	max = next_minmax(a, b, 1);
@@ -201,13 +196,8 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 
 	cairo_set_font_size(gc->cr, 14);
 
-	/*
-	 * We never take the last sample into account.
-	 * It should be a surface event anyway, although
-	 * there are buggy cases where it isn't..
-	 */
 	sample = dive->sample;
-	end = dive->sample + dive->samples - 1;
+	end = dive->sample + dive->samples;
 
 	plot_text_samples(gc, sample, end);
 }
