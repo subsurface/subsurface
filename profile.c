@@ -9,6 +9,33 @@
 
 int selected_dive = 0;
 
+/*
+ * Cairo scaling really is horribly horribly mis-designed.
+ *
+ * Which is sad, because I really like Cairo otherwise. But
+ * the fact that the line width is scaled with the same scale
+ * as the coordinate system is a f*&%ing disaster. So we
+ * can't use it, and instead have this butt-ugly wrapper thing..
+ */
+struct graphics_context {
+	cairo_t *cr;
+	double maxx, maxy;
+	double scalex, scaley;
+};
+
+/* Scale to 0,0 -> maxx,maxy */
+#define SCALE(gc,x,y) (x)*gc->maxx/gc->scalex,(y)*gc->maxy/gc->scaley
+
+static void move_to(struct graphics_context *gc, double x, double y)
+{
+	cairo_move_to(gc->cr, SCALE(gc, x, y));
+}
+
+static void line_to(struct graphics_context *gc, double x, double y)
+{
+	cairo_line_to(gc->cr, SCALE(gc, x, y));
+}
+
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
 
 /*
@@ -34,10 +61,12 @@ typedef struct {
 	enum {CENTER,LEFT} allign;
 } text_render_options_t;
 
-static void plot_text(cairo_t *cr, text_render_options_t *tro,
+static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
 		      double x, double y, const char *fmt, ...)
 {
+	cairo_t *cr = gc->cr;
 	cairo_text_extents_t extents;
+	double dx, dy;
 	char buffer[80];
 	va_list args;
 
@@ -46,17 +75,21 @@ static void plot_text(cairo_t *cr, text_render_options_t *tro,
 	va_end(args);
 
 	cairo_text_extents(cr, buffer, &extents);
-
+	dx = 0;
 	if (tro->allign == CENTER)
-		x -= extents.width/2 + extents.x_bearing;
-	y += extents.height * 1.2;
+		dx = -(extents.width/2 + extents.x_bearing);
+	dy = extents.height * 1.2;
 
-	cairo_move_to(cr, x, y);
+	move_to(gc, x, y);
+	cairo_rel_move_to(cr, dx, dy);
+
 	cairo_text_path(cr, buffer);
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_stroke(cr);
 
-	cairo_move_to(cr, x, y);
+	move_to(gc, x, y);
+	cairo_rel_move_to(cr, dx, dy);
+
 	cairo_set_source_rgb(cr, tro->r, tro->g, tro->b);
 	cairo_show_text(cr, buffer);
 }
@@ -113,12 +146,7 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 	return result;
 }
 
-/* Scale to 0,0 -> maxx,maxy */
-#define SCALE(x,y) (x)*maxx/scalex,(y)*maxy/scaley
-
-void plot_text_samples(struct dive *dive, cairo_t *cr,
-			double maxx, double maxy,
-			double scalex, double scaley,
+void plot_text_samples(struct dive *dive, struct graphics_context *gc,
 			struct sample *a, struct sample *b)
 {
 	struct sample *max, *min;
@@ -137,12 +165,12 @@ void plot_text_samples(struct dive *dive, cairo_t *cr,
 		double d;
 
 		min = next_minmax(max, b, 0);
-		plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, a, max);
+		plot_text_samples(dive, gc, a, max);
 		if (min) {
-			plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, max, min);
-			plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, min, b);
+			plot_text_samples(dive, gc, max, min);
+			plot_text_samples(dive, gc, min, b);
 		} else
-			plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, max, b);
+			plot_text_samples(dive, gc, max, b);
 
 		switch (output_units.length) {
 		case METERS:
@@ -155,27 +183,24 @@ void plot_text_samples(struct dive *dive, cairo_t *cr,
 			break;
 		}
 
-		plot_text(cr, &tro, SCALE(sec, depth.mm), fmt, d);
+		plot_text(gc, &tro, sec, depth.mm, fmt, d);
 		return;
 	}
 }
 
-static void plot_depth_text(struct dive *dive, cairo_t *cr,
-	double maxx, double maxy)
+static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 {
 	struct sample *sample, *end;
-	double scalex, scaley;
 	int maxtime, maxdepth;
 
 	/* Get plot scaling limits */
 	maxtime = round_seconds_up(dive->duration.seconds);
 	maxdepth = round_depth_up(dive->maxdepth);
 
-	scalex = maxtime;
-	scaley = maxdepth;
+	gc->scalex = maxtime;
+	gc->scaley = maxdepth;
 
-	cairo_set_font_size(cr, 14);
-	cairo_set_source_rgb(cr, 1, 0.2, 0.2);
+	cairo_set_font_size(gc->cr, 14);
 
 	/*
 	 * We never take the last sample into account.
@@ -185,13 +210,12 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 	sample = dive->sample;
 	end = dive->sample + dive->samples - 1;
 
-	plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, sample, end);
+	plot_text_samples(dive, gc, sample, end);
 }
 
-static void plot_depth_profile(struct dive *dive, cairo_t *cr,
-	double maxx, double maxy)
+static void plot_depth_profile(struct dive *dive, struct graphics_context *gc)
 {
-	double scalex, scaley;
+	cairo_t *cr = gc->cr;
 	int begins, sec, depth;
 	int i, samples;
 	struct sample *sample;
@@ -201,23 +225,23 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 	if (!samples)
 		return;
 
-	cairo_set_line_width(cr, 2);
+	cairo_set_line_width(gc->cr, 2);
 
 	/* Get plot scaling limits */
 	maxtime = round_seconds_up(dive->duration.seconds);
 	maxdepth = round_depth_up(dive->maxdepth);
 
 	/* Time markers: every 5 min */
-	scalex = maxtime;
-	scaley = 1.0;
+	gc->scalex = maxtime;
+	gc->scaley = 1.0;
 	for (i = 5*60; i < maxtime; i += 5*60) {
-		cairo_move_to(cr, SCALE(i, 0));
-		cairo_line_to(cr, SCALE(i, 1));
+		move_to(gc, i, 0);
+		line_to(gc, i, 1);
 	}
 
 	/* Depth markers: every 30 ft or 10 m*/
-	scalex = 1.0;
-	scaley = maxdepth;
+	gc->scalex = 1.0;
+	gc->scaley = maxdepth;
 	switch (output_units.length) {
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
@@ -225,34 +249,34 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 
 	cairo_set_source_rgba(cr, 1, 1, 1, 0.5);
 	for (i = marker; i < maxdepth; i += marker) {
-		cairo_move_to(cr, SCALE(0, i));
-		cairo_line_to(cr, SCALE(1, i));
+		move_to(gc, 0, i);
+		line_to(gc, 1, i);
 	}
 	cairo_stroke(cr);
 
 	/* Show mean depth */
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.40);
-	cairo_move_to(cr, SCALE(0, dive->meandepth.mm));
-	cairo_line_to(cr, SCALE(1, dive->meandepth.mm));
+	move_to(gc, 0, dive->meandepth.mm);
+	line_to(gc, 1, dive->meandepth.mm);
 	cairo_stroke(cr);
 
-	scalex = maxtime;
+	gc->scalex = maxtime;
 
 	sample = dive->sample;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
 	begins = sample->time.seconds;
-	cairo_move_to(cr, SCALE(sample->time.seconds, sample->depth.mm));
+	move_to(gc, sample->time.seconds, sample->depth.mm);
 	for (i = 1; i < dive->samples; i++) {
 		sample++;
 		sec = sample->time.seconds;
 		if (sec <= maxtime) {
 			depth = sample->depth.mm;
-			cairo_line_to(cr, SCALE(sec, depth));
+			line_to(gc, sec, depth);
 		}
 	}
-	scaley = 1.0;
-	cairo_line_to(cr, SCALE(MIN(sec,maxtime), 0));
-	cairo_line_to(cr, SCALE(begins, 0));
+	gc->scaley = 1.0;
+	line_to(gc, MIN(sec,maxtime), 0);
+	line_to(gc, begins, 0);
 	cairo_close_path(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.20);
 	cairo_fill_preserve(cr);
@@ -261,13 +285,13 @@ static void plot_depth_profile(struct dive *dive, cairo_t *cr,
 }
 
 /* gets both the actual start and end pressure as well as the scaling factors */
-static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double *scaley,
-				       pressure_t *startp, pressure_t *endp)
+static int get_cylinder_pressure_range(struct dive *dive, struct graphics_context *gc,
+	pressure_t *startp, pressure_t *endp)
 {
 	int i;
 	int min, max;
 
-	*scalex = round_seconds_up(dive->duration.seconds);
+	gc->scalex = round_seconds_up(dive->duration.seconds);
 
 	max = 0;
 	min = 5000000;
@@ -295,22 +319,20 @@ static int get_cylinder_pressure_range(struct dive *dive, double *scalex, double
 		endp->mbar = min;
 	if (!max)
 		return 0;
-	*scaley = max * 1.5;
+	gc->scaley = max * 1.5;
 	return 1;
 }
 
-static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
-	double maxx, double maxy)
+static void plot_cylinder_pressure(struct dive *dive, struct graphics_context *gc)
 {
 	int i, sec = -1;
-	double scalex, scaley;
 
-	if (!get_cylinder_pressure_range(dive, &scalex, &scaley, NULL, NULL))
+	if (!get_cylinder_pressure_range(dive, gc, NULL, NULL))
 		return;
 
-	cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 0.80);
+	cairo_set_source_rgba(gc->cr, 0.2, 1.0, 0.2, 0.80);
 
-	cairo_move_to(cr, SCALE(0, dive->cylinder[0].start.mbar));
+	move_to(gc, 0, dive->cylinder[0].start.mbar);
 	for (i = 1; i < dive->samples; i++) {
 		int mbar;
 		struct sample *sample = dive->sample + i;
@@ -320,15 +342,15 @@ static void plot_cylinder_pressure(struct dive *dive, cairo_t *cr,
 			continue;
 		sec = sample->time.seconds;
 		if (sec <= dive->duration.seconds)
-			cairo_line_to(cr, SCALE(sec, mbar));
+			line_to(gc, sec, mbar);
 	}
 	/*
 	 * We may have "surface time" events, in which case we don't go
 	 * back to dive duration
 	 */
 	if (sec < dive->duration.seconds)
-		cairo_line_to(cr, SCALE(dive->duration.seconds, dive->cylinder[0].end.mbar));
-	cairo_stroke(cr);
+		line_to(gc, dive->duration.seconds, dive->cylinder[0].end.mbar);
+	cairo_stroke(gc->cr);
 }
 
 /*
@@ -355,8 +377,7 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-static void plot_info(struct dive *dive, cairo_t *cr,
-	double maxx, double maxy)
+static void plot_info(struct dive *dive, struct graphics_context *gc)
 {
 	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
 	const double liters_per_cuft = 28.317;
@@ -377,24 +398,21 @@ static void plot_info(struct dive *dive, cairo_t *cr,
 		airuse /= liters_per_cuft;
 		break;
 	}
-	plot_text(cr, &tro, maxx*0.8, maxy*0.8, "vol: %4.2f %s", airuse, unit);
+	plot_text(gc, &tro, 0.8, 0.8, "vol: %4.2f %s", airuse, unit);
 	if (dive->duration.seconds) {
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
-		plot_text(cr, &tro, maxx*0.8, maxy*0.85, "SAC: %4.2f %s/min", sac, unit);
+		plot_text(gc, &tro, 0.8, 0.85, "SAC: %4.2f %s/min", sac, unit);
 	}
 }
 
-static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
-	double maxx, double maxy)
+static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_context *gc)
 {
-	double scalex, scaley;
 	pressure_t startp, endp;
 
-	cairo_set_font_size(cr, 10);
+	cairo_set_font_size(gc->cr, 10);
 
-	if (get_cylinder_pressure_range(dive, &scalex, &scaley,
-					&startp, &endp)) {
+	if (get_cylinder_pressure_range(dive, gc, &startp, &endp)) {
 		int start, end;
 		const char *unit = "bar";
 
@@ -417,65 +435,72 @@ static void plot_cylinder_pressure_text(struct dive *dive, cairo_t *cr,
 		}
 
 		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT};
-		plot_text(cr, &tro, SCALE(0, startp.mbar), "%d %s", start, unit);
-		plot_text(cr, &tro, SCALE(dive->duration.seconds, endp.mbar),
+		plot_text(gc, &tro, 0, startp.mbar, "%d %s", start, unit);
+		plot_text(gc, &tro, dive->duration.seconds, endp.mbar,
 			  "%d %s", end, unit);
 	}
 }
 
-static void plot(cairo_t *cr, int w, int h, struct dive *dive)
+static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 {
-	double topx, topy, maxx, maxy;
-	double scalex, scaley;
+	double topx, topy;
 
 	topx = w / 20.0;
 	topy = h / 20.0;
-	maxx = (w - 2*topx);
-	maxy = (h - 2*topy);
-	cairo_translate(cr, topx, topy);
+	cairo_translate(gc->cr, topx, topy);
+
+	/*
+	 * We can use "cairo_translate()" because that doesn't
+	 * scale line width etc. But the actual scaling we need
+	 * do set up ourselves..
+	 *
+	 * Snif. What a pity.
+	 */
+	gc->maxx = (w - 2*topx);
+	gc->maxy = (h - 2*topy);
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure(dive, cr, maxx, maxy);
+	plot_cylinder_pressure(dive, gc);
 
 	/* Depth profile */
-	plot_depth_profile(dive, cr, maxx, maxy);
+	plot_depth_profile(dive, gc);
 
 	/* Text on top of all graphs.. */
-	plot_depth_text(dive, cr, maxx, maxy);
-	plot_cylinder_pressure_text(dive, cr, maxx, maxy);
+	plot_depth_text(dive, gc);
+	plot_cylinder_pressure_text(dive, gc);
 
 	/* And info box in the lower right corner.. */
-	plot_info(dive, cr, maxx, maxy);
+	gc->scalex = gc->scaley = 1.0;
+	plot_info(dive, gc);
 
 	/* Bounding box last */
-	scalex = scaley = 1.0;
-	cairo_set_source_rgb(cr, 1, 1, 1);
-	cairo_move_to(cr, SCALE(0,0));
-	cairo_line_to(cr, SCALE(0,1));
-	cairo_line_to(cr, SCALE(1,1));
-	cairo_line_to(cr, SCALE(1,0));
-	cairo_close_path(cr);
-	cairo_stroke(cr);
+	cairo_set_source_rgb(gc->cr, 1, 1, 1);
+	move_to(gc, 0, 0);
+	line_to(gc, 0, 1);
+	line_to(gc, 1, 1);
+	line_to(gc, 1, 0);
+	cairo_close_path(gc->cr);
+	cairo_stroke(gc->cr);
 
 }
 
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
 	struct dive *dive = current_dive;
-	cairo_t *cr;
+	struct graphics_context gc;
 	int w,h;
 
 	w = widget->allocation.width;
 	h = widget->allocation.height;
 
-	cr = gdk_cairo_create(widget->window);
-	cairo_set_source_rgb(cr, 0, 0, 0);
-	cairo_paint(cr);
+	gc.cr = gdk_cairo_create(widget->window);
+	cairo_set_source_rgb(gc.cr, 0, 0, 0);
+	cairo_paint(gc.cr);
 
 	if (dive)
-		plot(cr, w, h, dive);
+		plot(&gc, w, h, dive);
 
-	cairo_destroy(cr);
+	cairo_destroy(gc.cr);
 
 	return FALSE;
 }
