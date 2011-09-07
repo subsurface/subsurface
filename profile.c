@@ -67,7 +67,7 @@ static void plot_text(cairo_t *cr, text_render_options_t *tro,
  * We exit early if we hit "enough" of a depth reversal,
  * which is roughly 10 feet.
  */
-static struct sample *next_minmax(struct dive *dive, struct sample *sample, struct sample *end, int minmax)
+static struct sample *next_minmax(struct sample *sample, struct sample *end, int minmax)
 {
 	const int enough = 3000;
 	struct sample *result;
@@ -116,6 +116,50 @@ static struct sample *next_minmax(struct dive *dive, struct sample *sample, stru
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALE(x,y) (x)*maxx/scalex,(y)*maxy/scaley
 
+void plot_text_samples(struct dive *dive, cairo_t *cr,
+			double maxx, double maxy,
+			double scalex, double scaley,
+			struct sample *a, struct sample *b)
+{
+	struct sample *max, *min;
+
+	if (b < a)
+		return;
+	if (b->time.seconds - a->time.seconds < 3*60)
+		return;
+
+	max = next_minmax(a, b, 1);
+	if (max) {
+		text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
+		int sec = max->time.seconds;
+		depth_t depth = max->depth;
+		const char *fmt;
+		double d;
+
+		min = next_minmax(max, b, 0);
+		plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, a, max);
+		if (min) {
+			plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, max, min);
+			plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, min, b);
+		} else
+			plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, max, b);
+
+		switch (output_units.length) {
+		case METERS:
+			d = depth.mm / 1000.0;
+			fmt = "%.1f";
+			break;
+		case FEET:
+			d = to_feet(depth);
+			fmt = "%.0f";
+			break;
+		}
+
+		plot_text(cr, &tro, SCALE(sec, depth.mm), fmt, d);
+		return;
+	}
+}
+
 static void plot_depth_text(struct dive *dive, cairo_t *cr,
 	double maxx, double maxy)
 {
@@ -141,29 +185,7 @@ static void plot_depth_text(struct dive *dive, cairo_t *cr,
 	sample = dive->sample;
 	end = dive->sample + dive->samples - 1;
 
-	while ((sample = next_minmax(dive, sample, end, 1)) != NULL) {
-		text_render_options_t tro = {1.0, 0.2, 0.2, CENTER};
-		int sec = sample->time.seconds;
-		depth_t depth = sample->depth;
-		const char *fmt;
-		double d;
-
-		switch (output_units.length) {
-		case METERS:
-			d = depth.mm / 1000.0;
-			fmt = "%.1f";
-			break;
-		case FEET:
-			d = to_feet(depth);
-			fmt = "%.0f";
-			break;
-		}
-
-		plot_text(cr, &tro, SCALE(sec, depth.mm), fmt, d);
-		sample = next_minmax(dive, sample, end, 0);
-		if (!sample)
-			break;
-	}
+	plot_text_samples(dive, cr, maxx, maxy, scalex, scaley, sample, end);
 }
 
 static void plot_depth_profile(struct dive *dive, cairo_t *cr,
