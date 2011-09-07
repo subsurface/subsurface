@@ -126,6 +126,22 @@ struct dive {
 	struct sample sample[];
 };
 
+/*
+ * We keep our internal data in well-specified units, but
+ * the input and output may come in some random format. This
+ * keeps track of those units.
+ */
+struct units {
+	enum { METERS, FEET } length;
+	enum { LITER, CUFT } volume;
+	enum { BAR, PSI, PASCAL } pressure;
+	enum { CELSIUS, FAHRENHEIT, KELVIN } temperature;
+	enum { KG, LBS } weight;
+};
+
+extern const struct units SI_units, IMPERIAL_units;
+extern struct units input_units, output_units;
+
 extern int verbose;
 
 struct dive_table {

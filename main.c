@@ -14,6 +14,8 @@ GtkWidget *error_label;
 int        error_count;
 struct DiveList   dive_list;
 
+struct units output_units;
+
 static int sortfn(const void *_a, const void *_b)
 {
 	const struct dive *a = *(void **)_a;
@@ -200,11 +202,23 @@ static void quit(GtkWidget *w, gpointer data)
 	gtk_main_quit();
 }
 
+static void imperial(GtkWidget *w, gpointer data)
+{
+	output_units = IMPERIAL_units;
+}
+
+static void metric(GtkWidget *w, gpointer data)
+{
+	output_units = SI_units;
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
+	{ "Metric",         NULL, "Metric", NULL, NULL, G_CALLBACK(metric) },
+	{ "Imperial",       NULL, "Imperial", NULL, NULL, G_CALLBACK(imperial) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -214,6 +228,9 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<separator name=\"Seperator\"/> \
+				<menuitem name=\"Metric\" action=\"Metric\" /> \
+				<menuitem name=\"Imperial\" action=\"Imperial\" /> \
 				<separator name=\"Seperator\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
@@ -249,6 +266,7 @@ int main(int argc, char **argv)
 	GtkWidget *menubar;
 	GtkWidget *vbox;
 
+	output_units = SI_units;
 	parse_xml_init();
 
 	gtk_init(&argc, &argv);

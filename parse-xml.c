@@ -62,18 +62,8 @@ static int match(const char *pattern, int plen,
 	return 1;
 }
 
-/*
- * We keep our internal data in well-specified units, but
- * the input may come in some random format. This keeps track
- * of the incoming units.
- */
-static struct units {
-	enum { METERS, FEET } length;
-	enum { LITER, CUFT } volume;
-	enum { BAR, PSI, PASCAL } pressure;
-	enum { CELSIUS, FAHRENHEIT, KELVIN } temperature;
-	enum { KG, LBS } weight;
-} units;
+
+struct units input_units;
 
 /*
  * We're going to default to SI units for input. Yes,
@@ -81,12 +71,20 @@ static struct units {
  * we default to bar (10^5 pascal), which people
  * actually use. Similarly, C instead of Kelvin.
  */
-static const struct units SI_units = {
+const struct units SI_units = {
 	.length = METERS,
 	.volume = LITER,
 	.pressure = BAR,
 	.temperature = CELSIUS,
 	.weight = KG
+};
+
+const struct units IMPERIAL_units = {
+	.length = FEET,
+	.volume = CUFT,
+	.pressure = PSI,
+	.temperature = FAHRENHEIT,
+	.weight = LBS
 };
 
 /*
@@ -243,7 +241,7 @@ static void pressure(char *buffer, void *_press)
 		/* Just ignore zero values */
 		if (!val.fp)
 			break;
-		switch (units.pressure) {
+		switch (input_units.pressure) {
 		case PASCAL:
 			mbar = val.fp / 100;
 			break;
@@ -275,7 +273,7 @@ static void depth(char *buffer, void *_depth)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		switch (units.length) {
+		switch (input_units.length) {
 		case METERS:
 			depth->mm = val.fp * 1000 + 0.5;
 			break;
@@ -301,7 +299,7 @@ static void temperature(char *buffer, void *_temperature)
 		if (!val.fp)
 			break;
 		/* Celsius */
-		switch (units.temperature) {
+		switch (input_units.temperature) {
 		case KELVIN:
 			temperature->mkelvin = val.fp * 1000;
 			break;
@@ -632,29 +630,29 @@ static int buffer_value(char *buffer)
 
 static void uemis_length_unit(char *buffer, void *_unused)
 {
-	units.length = buffer_value(buffer) ? FEET : METERS;
+	input_units.length = buffer_value(buffer) ? FEET : METERS;
 }
 
 static void uemis_volume_unit(char *buffer, void *_unused)
 {
-	units.volume = buffer_value(buffer) ? CUFT : LITER;
+	input_units.volume = buffer_value(buffer) ? CUFT : LITER;
 }
 
 static void uemis_pressure_unit(char *buffer, void *_unused)
 {
 #if 0
-	units.pressure = buffer_value(buffer) ? PSI : BAR;
+	input_units.pressure = buffer_value(buffer) ? PSI : BAR;
 #endif
 }
 
 static void uemis_temperature_unit(char *buffer, void *_unused)
 {
-	units.temperature = buffer_value(buffer) ? FAHRENHEIT : CELSIUS;
+	input_units.temperature = buffer_value(buffer) ? FAHRENHEIT : CELSIUS;
 }
 
 static void uemis_weight_unit(char *buffer, void *_unused)
 {
-	units.weight = buffer_value(buffer) ? LBS : KG;
+	input_units.weight = buffer_value(buffer) ? LBS : KG;
 }
 
 static void uemis_time_unit(char *buffer, void *_unused)
@@ -766,13 +764,13 @@ static void uemis_percent(char *buffer, void *_cylinder)
 
 static int uemis_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
-	return	MATCH(".units.length", uemis_length_unit, &units) ||
-		MATCH(".units.volume", uemis_volume_unit, &units) ||
-		MATCH(".units.pressure", uemis_pressure_unit, &units) ||
-		MATCH(".units.temperature", uemis_temperature_unit, &units) ||
-		MATCH(".units.weight", uemis_weight_unit, &units) ||
-		MATCH(".units.time", uemis_time_unit, &units) ||
-		MATCH(".units.date", uemis_date_unit, &units) ||
+	return	MATCH(".units.length", uemis_length_unit, &input_units) ||
+		MATCH(".units.volume", uemis_volume_unit, &input_units) ||
+		MATCH(".units.pressure", uemis_pressure_unit, &input_units) ||
+		MATCH(".units.temperature", uemis_temperature_unit, &input_units) ||
+		MATCH(".units.weight", uemis_weight_unit, &input_units) ||
+		MATCH(".units.time", uemis_time_unit, &input_units) ||
+		MATCH(".units.date", uemis_date_unit, &input_units) ||
 		MATCH(".date_time", uemis_date_time, &dive->when) ||
 		MATCH(".time_zone", uemis_time_zone, &dive->when) ||
 		MATCH(".ambient.temperature", decicelsius, &dive->airtemp) ||
@@ -1229,13 +1227,13 @@ static void visit(xmlNode *n)
 static void suunto_importer(void)
 {
 	import_source = SUUNTO;
-	units = SI_units;
+	input_units = SI_units;
 }
 
 static void uemis_importer(void)
 {
 	import_source = UEMIS;
-	units = SI_units;
+	input_units = SI_units;
 }
 
 static void DivingLog_importer(void)
@@ -1249,16 +1247,16 @@ static void DivingLog_importer(void)
 	 * when they are in Fahrenheit. Depths are in
 	 * meters, but pressure is in PSI.
 	 */
-	units = SI_units;
-	units.pressure = PSI;
+	input_units = SI_units;
+	input_units.pressure = PSI;
 }
 
 static void uddf_importer(void)
 {
 	import_source = UDDF;
-	units = SI_units;
-	units.pressure = PASCAL;
-	units.temperature = KELVIN;
+	input_units = SI_units;
+	input_units.pressure = PASCAL;
+	input_units.temperature = KELVIN;
 }
 
 /*
@@ -1320,7 +1318,7 @@ static void reset_all(void)
 	 * data within one file, we might have to reset it per
 	 * dive for that format.
 	 */
-	units = SI_units;
+	input_units = SI_units;
 	import_source = UNKNOWN;
 }
 
