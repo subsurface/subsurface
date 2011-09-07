@@ -20,14 +20,74 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 	repaint_dive();
 }
 
-static void fill_dive_list(struct DiveList *dive_list)
+static gboolean set_one_dive(GtkTreeModel *model,
+			     GtkTreePath *path,
+			     GtkTreeIter *iter,
+			     gpointer data)
 {
-	int i;
-	GtkTreeIter iter;
-	const char *unit;
-	GtkListStore *store;
+	int len;
+	GValue value = {0, };
+	struct dive *dive;
+	char buffer[256], *datestr, *depth, *duration;
+	struct tm *tm;
+	int integer, frac;
 
-	store = GTK_LIST_STORE(dive_list->model);
+	/* Get the dive number */
+	gtk_tree_model_get_value(model, iter, 6, &value);
+	dive = get_dive(g_value_get_int(&value));
+	if (!dive)
+		return TRUE;
+
+	tm = gmtime(&dive->when);
+	len = snprintf(buffer, sizeof(buffer),
+		"%02d.%02d.%02d %02d:%02d",
+		tm->tm_mday, tm->tm_mon+1, tm->tm_year % 100,
+		tm->tm_hour, tm->tm_min);
+	datestr = malloc(len+1);
+	memcpy(datestr, buffer, len+1);
+
+	switch (output_units.length) {
+	unsigned int depth;
+	case METERS:
+		depth = (dive->maxdepth.mm + 49) / 100;
+		integer = depth / 10;
+		frac = depth % 10;
+		if (integer < 20)
+			break;
+		frac = -1;
+		/* Rounding? */
+		break;
+	case FEET:
+		integer = to_feet(dive->maxdepth);
+		frac = -1;
+	}
+	len = snprintf(buffer, sizeof(buffer),
+	               "%d", integer);
+	if (frac >= 0)
+		len += snprintf(buffer+len, sizeof(buffer)-len,
+			".%d", frac);
+	depth = malloc(len + 1);
+	memcpy(depth, buffer, len+1);
+
+	len = snprintf(buffer, sizeof(buffer),
+	               "%d", dive->duration.seconds / 60);
+	duration = malloc(len + 1);
+	memcpy(duration, buffer, len+1);
+
+	gtk_list_store_set(GTK_LIST_STORE(model), iter,
+		0, datestr,
+		2, depth,
+		4, duration,
+		-1);
+
+	return FALSE;
+}
+
+void update_dive_list_units(struct DiveList *dive_list)
+{
+	const char *unit;
+	GtkTreeModel *model = GTK_TREE_MODEL(dive_list->model);
+
 	switch (output_units.length) {
 	case METERS:
 		unit = "m";
@@ -38,61 +98,33 @@ static void fill_dive_list(struct DiveList *dive_list)
 	}
 	gtk_tree_view_column_set_title(dive_list->depth, unit);
 
+	gtk_tree_model_foreach(model, set_one_dive, NULL);
+}
+
+static void fill_dive_list(struct DiveList *dive_list)
+{
+	int i;
+	GtkTreeIter iter;
+	GtkListStore *store;
+
+	store = GTK_LIST_STORE(dive_list->model);
+
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
 
-		int len;
-		char buffer[256], *datestr, *depth, *duration;
-		struct tm *tm;
-		int integer, frac;
-		
-		tm = gmtime(&dive->when);
-		len = snprintf(buffer, sizeof(buffer),
-			"%02d.%02d.%02d %02d:%02d",
-			tm->tm_mday, tm->tm_mon+1, tm->tm_year % 100,
-			tm->tm_hour, tm->tm_min);
-		datestr = malloc(len+1);
-		memcpy(datestr, buffer, len+1);
-
-		switch (output_units.length) {
-		unsigned int depth;
-		case METERS:
-			depth = (dive->maxdepth.mm + 49) / 100;
-			integer = depth / 10;
-			frac = depth % 10;
-			if (integer < 20)
-				break;
-			frac = -1;
-			/* Rounding? */
-			break;
-		case FEET:
-			integer = to_feet(dive->maxdepth);
-			frac = -1;
-		}
-		len = snprintf(buffer, sizeof(buffer),
-		               "%d", integer);
-		if (frac >= 0)
-			len += snprintf(buffer+len, sizeof(buffer)-len,
-				".%d", frac);
-		depth = malloc(len + 1);
-		memcpy(depth, buffer, len+1);
-		
-		len = snprintf(buffer, sizeof(buffer),
-		               "%d", dive->duration.seconds / 60);
-		duration = malloc(len + 1);
-		memcpy(duration, buffer, len+1);
-
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
-			0, datestr,
+			0, "date",
 			1, dive->when,
-			2, depth,
+			2, "depth",
 			3, dive->maxdepth,
-			4, duration,
+			4, "duration",
 			5, dive->duration.seconds,
 			6, i,
 			-1);
 	}
+
+	update_dive_list_units(dive_list);
 }
 
 void dive_list_update_dives(struct DiveList dive_list)
@@ -128,7 +160,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_column_pack_start(col, renderer, TRUE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", 0);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
-	
+
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.depth = col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "ft");
@@ -138,7 +170,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
-	
+
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.duration = col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "min");

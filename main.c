@@ -295,8 +295,8 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		output_units = menu_units;
+		update_dive_list_units(&dive_list);
 		repaint_dive();
-		dive_list_update_dives(dive_list);
 	}
 	gtk_widget_destroy(dialog);
 }
