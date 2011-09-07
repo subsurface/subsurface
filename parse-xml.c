@@ -515,6 +515,14 @@ static int divinglog_fill_sample(struct sample *sample, const char *name, int le
 		0;
 }
 
+static int uddf_fill_sample(struct sample *sample, const char *name, int len, char *buf)
+{
+	return	MATCH(".divetime", sampletime, &sample->time) ||
+		MATCH(".depth", depth, &sample->depth) ||
+		MATCH(".temperature", temperature, &sample->temperature) ||
+		0;
+}
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
@@ -544,6 +552,11 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 
 	case DIVINGLOG:
 		if (divinglog_fill_sample(sample, name, len, buf))
+			return;
+		break;
+
+	case UDDF:
+		if (uddf_fill_sample(sample, name, len, buf))
 			return;
 		break;
 
@@ -781,6 +794,58 @@ static int uemis_dive_match(struct dive *dive, const char *name, int len, char *
 		0;
 }
 
+/*
+ * Uddf specifies ISO 8601 time format.
+ *
+ * There are many variations on that. This handles the useful cases.
+ */
+static void uddf_datetime(char *buffer, void *_when)
+{
+	char c;
+	int y,m,d,hh,mm,ss;
+	time_t *when = _when;
+	struct tm tm = { 0 };
+	int i;
+
+	i = sscanf(buffer, "%d-%d-%d%c%d:%d:%d", &y, &m, &d, &c, &hh, &mm, &ss);
+	if (i == 7)
+		goto success;
+	ss = 0;
+	if (i == 6)
+		goto success;
+
+	i = sscanf(buffer, "%04d%02d%02d%c%02d%02d%02d", &y, &m, &d, &c, &hh, &mm, &ss);
+	if (i == 7)
+		goto success;
+	ss = 0;
+	if (i == 6)
+		goto success;
+bad_date:
+	printf("Bad date time %s\n", buffer);
+	free(buffer);
+	return;
+
+success:
+	if (c != 'T' && c != ' ')
+		goto bad_date;
+	tm.tm_year = y;
+	tm.tm_mon = m - 1;
+	tm.tm_mday = d;
+	tm.tm_hour = hh;
+	tm.tm_min = mm;
+	tm.tm_sec = ss;
+	*when = utc_mktime(&tm);
+	free(buffer);
+}
+
+static int uddf_dive_match(struct dive *dive, const char *name, int len, char *buf)
+{
+	return	MATCH(".datetime", uddf_datetime, &dive->when) ||
+		MATCH(".diveduration", duration, &dive->duration) ||
+		MATCH(".greatestdepth", depth, &dive->maxdepth) ||
+		0;
+}
+
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
@@ -801,6 +866,11 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	case DIVINGLOG:
 		if (divinglog_dive_match(dive, name, len, buf))
+			return;
+		break;
+
+	case UDDF:
+		if (uddf_dive_match(dive, name, len, buf))
 			return;
 		break;
 
