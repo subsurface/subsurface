@@ -167,9 +167,7 @@ static void render_depth_sample(struct graphics_context *gc, struct sample *samp
 	plot_text(gc, &tro, sec, depth.mm, fmt, d);
 }
 
-
-void plot_text_samples(struct dive *dive, struct graphics_context *gc,
-			struct sample *a, struct sample *b)
+static void plot_text_samples(struct graphics_context *gc, struct sample *a, struct sample *b)
 {
 	struct sample *max, *min;
 
@@ -183,7 +181,7 @@ void plot_text_samples(struct dive *dive, struct graphics_context *gc,
 		render_depth_sample(gc, max);
 		min = next_minmax(max, b, 0);
 		if (min) {
-			plot_text_samples(dive, gc, min, b);
+			plot_text_samples(gc, min, b);
 			return;
 		}
 	}
@@ -211,7 +209,7 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 	sample = dive->sample;
 	end = dive->sample + dive->samples - 1;
 
-	plot_text_samples(dive, gc, sample, end);
+	plot_text_samples(gc, sample, end);
 }
 
 static void plot_depth_profile(struct dive *dive, struct graphics_context *gc)
