@@ -202,16 +202,98 @@ static void quit(GtkWidget *w, gpointer data)
 	gtk_main_quit();
 }
 
-static void imperial(GtkWidget *w, gpointer data)
+static void create_radio(GtkWidget *dialog, const char *name, ...)
 {
-	output_units = IMPERIAL_units;
+	va_list args;
+	GtkRadioButton *group = NULL;
+	GtkWidget *box, *label;
+
+	box = gtk_hbox_new(TRUE, 10);
+	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), box);
+	gtk_widget_show(box);
+
+	label = gtk_label_new(name);
+	gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
+	gtk_widget_show(label);
+
+	va_start(args, name);
+	for (;;) {
+		int enabled;
+		const char *name;
+		GtkWidget *button;
+		void *callback_fn;
+
+		name = va_arg(args, char *);
+		if (!name)
+			break;
+		callback_fn = va_arg(args, void *);
+		enabled = va_arg(args, int);
+
+		button = gtk_radio_button_new_with_label_from_widget(group, name);
+		group = GTK_RADIO_BUTTON(button);
+		gtk_box_pack_start(GTK_BOX(box), button, TRUE, TRUE, 0);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled);
+		g_signal_connect(button, "toggled", G_CALLBACK(callback_fn), NULL);
+		gtk_widget_show(button);
+	}
+	va_end(args);
+}
+
+static void set_meter(GtkWidget *w, gpointer data)
+{
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
+		output_units.length = METERS;
 	repaint_dive();
 }
 
-static void metric(GtkWidget *w, gpointer data)
+static void set_feet(GtkWidget *w, gpointer data)
 {
-	output_units = SI_units;
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
+		output_units.length = FEET;
 	repaint_dive();
+}
+
+static void set_bar(GtkWidget *w, gpointer data)
+{
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
+		output_units.pressure = BAR;
+	repaint_dive();
+}
+
+static void set_psi(GtkWidget *w, gpointer data)
+{
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
+		output_units.pressure = PSI;
+	repaint_dive();
+}
+
+static void set_pascal(GtkWidget *w, gpointer data)
+{
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))
+		output_units.pressure = PASCAL;
+	repaint_dive();
+}
+
+static void unit_dialog(GtkWidget *w, gpointer data)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_dialog_new_with_buttons("Units",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT, NULL);
+
+	create_radio(dialog, "Depth:",
+		"Meter", set_meter, (output_units.length == METERS),
+		"Feet",  set_feet, (output_units.length == FEET),
+		NULL);
+
+	create_radio(dialog, "Pressure:",
+		"Bar", set_bar, (output_units.pressure == BAR),
+		"PSI",  set_psi, (output_units.pressure == PSI),
+		"Pascal",  set_pascal, (output_units.pressure == PASCAL),
+		NULL);
+
+	gtk_widget_show(dialog);
 }
 
 static GtkActionEntry menu_items[] = {
@@ -219,8 +301,7 @@ static GtkActionEntry menu_items[] = {
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
-	{ "Metric",         NULL, "Metric", NULL, NULL, G_CALLBACK(metric) },
-	{ "Imperial",       NULL, "Imperial", NULL, NULL, G_CALLBACK(imperial) },
+	{ "Units",          NULL, "Units", NULL, NULL, G_CALLBACK(unit_dialog) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -230,10 +311,9 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
-				<separator name=\"Seperator\"/> \
-				<menuitem name=\"Metric\" action=\"Metric\" /> \
-				<menuitem name=\"Imperial\" action=\"Imperial\" /> \
-				<separator name=\"Seperator\"/> \
+				<separator name=\"Separator1\"/> \
+				<menuitem name=\"Units\" action=\"Units\" /> \
+				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \
