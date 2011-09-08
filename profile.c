@@ -129,10 +129,10 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_show_text(cr, buffer);
 }
 
-static void render_depth_sample(struct graphics_context *gc, struct sample *sample, const text_render_options_t *tro)
+static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
 {
-	int sec = sample->time.seconds;
-	depth_t depth = sample->depth;
+	int sec = entry->sec;
+	depth_t depth = { entry->val };
 	const char *fmt;
 	double d;
 
@@ -149,76 +149,28 @@ static void render_depth_sample(struct graphics_context *gc, struct sample *samp
 	plot_text(gc, tro, sec, depth.mm, fmt, d);
 }
 
-/*
- * Find the next minimum/maximum point.
- *
- * We exit early if we hit "enough" of a depth reversal,
- * which is roughly 10 feet.
- */
-static struct sample *next_minmax(struct sample *sample, struct sample *end, int minmax)
-{
-	const int enough = 3000;
-	struct sample *result;
-	int depthlimit;
-
-	if (sample >= end)
-		return 0;
-
-	depthlimit = sample->depth.mm;
-	result = NULL;
-
-	for (;;) {
-		int depth;
-
-		sample++;
-		if (sample >= end)
-			return NULL;
-		depth = sample->depth.mm;
-
-		if (minmax) {
-			if (depth <= depthlimit) {
-				if (depthlimit - depth > enough)
-					break;
-				continue;
-			}
-		} else {
-			if (depth >= depthlimit) {
-				if (depth - depthlimit > enough)
-					break;
-				continue;
-			}
-		}
-
-		result = sample;
-		depthlimit = depth;
-	}
-	return result;
-}
-
-static void plot_text_samples(struct graphics_context *gc, struct sample *a, struct sample *b)
+static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 {
 	static const text_render_options_t deep = {14, 1.0, 0.2, 0.2, CENTER, TOP};
 	static const text_render_options_t shallow = {14, 1.0, 0.2, 0.2, CENTER, BOTTOM};
+	int i;
 
-	for (;;) {
-		if (b <= a)
-			break;
-		a = next_minmax(a, b, 1);
-		if (!a)
-			break;
-		render_depth_sample(gc, a, &deep);
-		a = next_minmax(a, b, 0);
-		if (!a)
-			break;
-		if (a->depth.mm < 2500)
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+
+		if (entry->val < 2000)
 			continue;
-		render_depth_sample(gc, a, &shallow);
+
+		if (entry == entry->max[2])
+			render_depth_sample(gc, entry, &deep);
+
+		if (entry == entry->min[2])
+			render_depth_sample(gc, entry, &shallow);
 	}
 }
 
-static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
+static void plot_depth_text(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
 {
-	struct sample *sample, *end;
 	int maxtime, maxdepth;
 
 	/* Get plot scaling limits */
@@ -228,10 +180,7 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 	gc->scalex = maxtime;
 	gc->scaley = maxdepth;
 
-	sample = dive->sample;
-	end = dive->sample + dive->samples;
-
-	plot_text_samples(gc, sample, end);
+	plot_text_samples(gc, pi);
 }
 
 static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -625,7 +574,7 @@ static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	plot_depth_profile(dive, gc, pi);
 
 	/* Text on top of all graphs.. */
-	plot_depth_text(dive, gc);
+	plot_depth_text(dive, gc, pi);
 	plot_cylinder_pressure_text(dive, gc);
 
 	/* And info box in the lower right corner.. */
