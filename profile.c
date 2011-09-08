@@ -32,8 +32,8 @@ struct plot_info {
 		int sec;
 		int val;
 		int smoothed;
-		int min[3];
-		int max[3];
+		struct plot_data *min[3];
+		struct plot_data *max[3];
 		int avg[3];
 	} entry[];
 };
@@ -255,13 +255,13 @@ static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_
 	struct plot_data *entry = pi->entry;
 
 	cairo_set_source_rgba(gc->cr, 1, 0.2, 1, a);
-	move_to(gc, entry->sec, entry->min[index]);
+	move_to(gc, entry->sec, entry->min[index]->val);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
-		line_to(gc, entry->sec, entry->min[index]);
+		line_to(gc, entry->sec, entry->min[index]->val);
 	}
 	for (i = 1; i < pi->nr; i++) {
-		line_to(gc, entry->sec, entry->max[index]);
+		line_to(gc, entry->sec, entry->max[index]->val);
 		entry--;
 	}
 	cairo_close_path(gc->cr);
@@ -504,8 +504,9 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 {
 	struct plot_data *p = entry;
 	int time = entry->sec;
-	int seconds = 60*(index+1);
-	int min, max, avg, nr;
+	int seconds = 90*(index+1);
+	struct plot_data *min, *max;
+	int avg, nr;
 
 	/* Go back 'seconds' in time */
 	while (p > first) {
@@ -515,7 +516,8 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 	}
 
 	/* Then go forward until we hit an entry past the time */
-	min = max = avg = p->val;
+	min = max = p;
+	avg = p->val;
 	nr = 1;
 	while (++p < last) {
 		int val = p->val;
@@ -523,10 +525,10 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 			break;
 		avg += val;
 		nr ++;
-		if (val < min)
-			min = val;
-		if (val > max)
-			max = val;
+		if (val < min->val)
+			min = p;
+		if (val > max->val)
+			max = p;
 	}
 	entry->min[index] = min;
 	entry->max[index] = max;
