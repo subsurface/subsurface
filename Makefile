@@ -1,6 +1,8 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Wno-pointer-sign -Wno-unused-parameter -g
 
+RM=rm
+
 OBJS=main.o dive.o profile.o info.o divelist.o parse-xml.o save-xml.o
 
 divelog: $(OBJS)
@@ -28,3 +30,8 @@ info.o: info.c dive.h display.h divelist.h
 
 divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c divelist.c
+
+clean:
+	$(RM) -f $(OBJS) divelog
+
+.PHONY: clean
