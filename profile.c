@@ -113,6 +113,27 @@ static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
 	cairo_show_text(cr, buffer);
 }
 
+static void render_depth_sample(struct graphics_context *gc, struct sample *sample)
+{
+	text_render_options_t tro = {14, 1.0, 0.2, 0.2, CENTER, TOP};
+	int sec = sample->time.seconds;
+	depth_t depth = sample->depth;
+	const char *fmt;
+	double d;
+
+	switch (output_units.length) {
+	case METERS:
+		d = depth.mm / 1000.0;
+		fmt = "%.1f";
+		break;
+	case FEET:
+		d = to_feet(depth);
+		fmt = "%.0f";
+		break;
+	}
+	plot_text(gc, &tro, sec, depth.mm, fmt, d);
+}
+
 /*
  * Find the next minimum/maximum point.
  *
@@ -160,27 +181,6 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 	return result;
 }
 
-static void render_depth_sample(struct graphics_context *gc, struct sample *sample)
-{
-	text_render_options_t tro = {14, 1.0, 0.2, 0.2, CENTER, TOP};
-	int sec = sample->time.seconds;
-	depth_t depth = sample->depth;
-	const char *fmt;
-	double d;
-
-	switch (output_units.length) {
-	case METERS:
-		d = depth.mm / 1000.0;
-		fmt = "%.1f";
-		break;
-	case FEET:
-		d = to_feet(depth);
-		fmt = "%.0f";
-		break;
-	}
-	plot_text(gc, &tro, sec, depth.mm, fmt, d);
-}
-
 static void plot_text_samples(struct graphics_context *gc, struct sample *a, struct sample *b)
 {
 	for (;;) {
@@ -188,7 +188,7 @@ static void plot_text_samples(struct graphics_context *gc, struct sample *a, str
 			break;
 		a = next_minmax(a, b, 1);
 		if (!a)
-			return;
+			break;
 		render_depth_sample(gc, a);
 		a = next_minmax(a, b, 0);
 		if (!a)
