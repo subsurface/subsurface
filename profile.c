@@ -152,12 +152,11 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 	result = NULL;
 
 	for (;;) {
-		int time, depth;
+		int depth;
 
 		sample++;
 		if (sample >= end)
 			return NULL;
-		time = sample->time.seconds;
 		depth = sample->depth.mm;
 
 		if (minmax) {
