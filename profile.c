@@ -234,6 +234,47 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 	plot_text_samples(gc, sample, end);
 }
 
+static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info *pi)
+{
+	int i;
+	struct plot_data *entry = pi->entry;
+
+	cairo_set_source_rgba(gc->cr, 1, 0.2, 0.2, 0.20);
+	move_to(gc, entry->sec, entry->smoothed);
+	for (i = 1; i < pi->nr; i++) {
+		entry++;
+		line_to(gc, entry->sec, entry->smoothed);
+	}
+	cairo_stroke(gc->cr);
+}
+
+static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_info *pi,
+				int index, double a)
+{
+	int i;
+	struct plot_data *entry = pi->entry;
+
+	cairo_set_source_rgba(gc->cr, 1, 0.2, 1, a);
+	move_to(gc, entry->sec, entry->min[index]);
+	for (i = 1; i < pi->nr; i++) {
+		entry++;
+		line_to(gc, entry->sec, entry->min[index]);
+	}
+	for (i = 1; i < pi->nr; i++) {
+		line_to(gc, entry->sec, entry->max[index]);
+		entry--;
+	}
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
+}
+
+static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *pi)
+{
+	plot_minmax_profile_minute(gc, pi, 2, 0.1);
+	plot_minmax_profile_minute(gc, pi, 1, 0.1);
+	plot_minmax_profile_minute(gc, pi, 0, 0.1);
+}
+
 static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
@@ -278,6 +319,9 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	cairo_stroke(cr);
 
 	gc->scalex = maxtime;
+
+	plot_smoothed_profile(gc, pi);
+	plot_minmax_profile(gc, pi);
 
 	entry = pi->entry;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
