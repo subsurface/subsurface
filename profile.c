@@ -57,6 +57,7 @@ static int round_depth_up(depth_t depth)
 }
 
 typedef struct {
+	int size;
 	double r,g,b;
 	enum {CENTER,LEFT} halign;
 	enum {MIDDLE,TOP,BOTTOM} valign;
@@ -75,6 +76,7 @@ static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
 	vsnprintf(buffer, sizeof(buffer), fmt, args);
 	va_end(args);
 
+	cairo_set_font_size(cr, tro->size);
 	cairo_text_extents(cr, buffer, &extents);
 	dx = 0;
 	switch (tro->halign) {
@@ -160,7 +162,7 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 
 static void render_depth_sample(struct graphics_context *gc, struct sample *sample)
 {
-	text_render_options_t tro = {1.0, 0.2, 0.2, CENTER, TOP};
+	text_render_options_t tro = {14, 1.0, 0.2, 0.2, CENTER, TOP};
 	int sec = sample->time.seconds;
 	depth_t depth = sample->depth;
 	const char *fmt;
@@ -205,8 +207,6 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 
 	gc->scalex = maxtime;
 	gc->scaley = maxdepth;
-
-	cairo_set_font_size(gc->cr, 14);
 
 	sample = dive->sample;
 	end = dive->sample + dive->samples;
@@ -380,7 +380,7 @@ static double calculate_airuse(struct dive *dive)
 
 static void plot_info(struct dive *dive, struct graphics_context *gc)
 {
-	text_render_options_t tro = {0.2, 1.0, 0.2, LEFT, TOP};
+	text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
 	const double liters_per_cuft = 28.317;
 	const char *unit;
 	double airuse;
@@ -411,8 +411,6 @@ static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_conte
 {
 	pressure_t startp, endp;
 
-	cairo_set_font_size(gc->cr, 10);
-
 	if (get_cylinder_pressure_range(dive, gc, &startp, &endp)) {
 		int start, end;
 		const char *unit = "bar";
@@ -435,7 +433,7 @@ static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_conte
 			break;
 		}
 
-		text_render_options_t tro = {0.2, 1.0, 0.2, LEFT, TOP};
+		text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
 		plot_text(gc, &tro, 0, startp.mbar, "%d %s", start, unit);
 		plot_text(gc, &tro, dive->duration.seconds, endp.mbar,
 			  "%d %s", end, unit);
