@@ -50,7 +50,7 @@ typedef struct {
 } depth_t;
 
 typedef struct {
-	int mbar;
+	unsigned int mbar;
 } pressure_t;
 
 typedef struct {
@@ -159,7 +159,7 @@ extern struct units input_units, output_units;
 extern int verbose;
 
 struct dive_table {
-	int nr, allocated;
+	unsigned int nr, allocated;
 	struct dive **dives;
 };
 

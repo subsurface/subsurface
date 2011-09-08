@@ -802,8 +802,10 @@ static void uddf_datetime(char *buffer, void *_when)
 	char c;
 	int y,m,d,hh,mm,ss;
 	time_t *when = _when;
-	struct tm tm = { 0 };
+	struct tm tm;
 	int i;
+
+	memset(&tm, 0, sizeof(tm));
 
 	i = sscanf(buffer, "%d-%d-%d%c%d:%d:%d", &y, &m, &d, &c, &hh, &mm, &ss);
 	if (i == 7)
@@ -1279,12 +1281,12 @@ static struct nesting {
 	{ "P", sample_start, sample_end },
 
 	/* Import type recognition */
-	{ "SUUNTO", suunto_importer },
-	{ "Divinglog", DivingLog_importer },
-	{ "pre_dive", uemis_importer },
-	{ "uddf", uddf_importer },
+	{ "SUUNTO", suunto_importer, NULL },
+	{ "Divinglog", DivingLog_importer, NULL },
+	{ "pre_dive", uemis_importer, NULL },
+	{ "uddf", uddf_importer, NULL },
 
-	{ NULL, }
+	{ NULL, NULL, NULL }
 };
 
 static void traverse(xmlNode *root)

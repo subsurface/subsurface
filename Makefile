@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wno-pointer-sign -g
+CFLAGS=-Wall -Wextra -Wno-pointer-sign -Wno-unused-parameter -g
 
 OBJS=main.o dive.o profile.o info.o divelist.o parse-xml.o save-xml.o
 

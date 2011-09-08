@@ -10,7 +10,9 @@
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
 	GtkTreeIter iter;
-	GValue value = {0, };
+	GValue value;
+
+	memset(&value, 0, sizeof(value));
 
 	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
 		return;
@@ -26,11 +28,13 @@ static gboolean set_one_dive(GtkTreeModel *model,
 			     gpointer data)
 {
 	int len;
-	GValue value = {0, };
+	GValue value;
 	struct dive *dive;
 	char buffer[256], *datestr, *depth, *duration;
 	struct tm *tm;
 	int integer, frac;
+
+	memset(&value, 0, sizeof(value));
 
 	/* Get the dive number */
 	gtk_tree_model_get_value(model, iter, 6, &value);
@@ -103,7 +107,7 @@ void update_dive_list_units(struct DiveList *dive_list)
 
 static void fill_dive_list(struct DiveList *dive_list)
 {
-	int i;
+	unsigned int i;
 	GtkTreeIter iter;
 	GtkListStore *store;
 

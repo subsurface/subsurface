@@ -219,7 +219,7 @@ static void save_dive(FILE *f, struct dive *dive)
 
 void save_dives(const char *filename)
 {
-	int i;
+	unsigned int i;
 	FILE *f = fopen(filename, "w");
 
 	if (!f)

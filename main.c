@@ -34,7 +34,7 @@ static int sortfn(const void *_a, const void *_b)
  */
 static void report_dives(void)
 {
-	int i;
+	unsigned int i;
 
 	qsort(dive_table.dives, dive_table.nr, sizeof(struct dive *), sortfn);
 
