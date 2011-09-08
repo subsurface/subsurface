@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <gconf/gconf-client.h>
+
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
@@ -14,7 +16,10 @@ GtkWidget *error_label;
 int        error_count;
 struct DiveList   dive_list;
 
+GConfClient *gconf;
 struct units output_units;
+
+#define GCONF_NAME(x) "/apps/diveclog/" #x
 
 static int sortfn(const void *_a, const void *_b)
 {
@@ -297,6 +302,10 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 		output_units = menu_units;
 		update_dive_list_units(&dive_list);
 		repaint_dive();
+		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -357,6 +366,18 @@ int main(int argc, char **argv)
 	parse_xml_init();
 
 	gtk_init(&argc, &argv);
+
+	g_type_init();
+	gconf = gconf_client_get_default();
+
+	if (gconf_client_get_bool(gconf, GCONF_NAME(feet), NULL))
+		output_units.length = FEET;
+	if (gconf_client_get_bool(gconf, GCONF_NAME(psi), NULL))
+		output_units.pressure = PSI;
+	if (gconf_client_get_bool(gconf, GCONF_NAME(cuft), NULL))
+		output_units.volume = CUFT;
+	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
+		output_units.temperature = FAHRENHEIT;
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
