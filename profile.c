@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <time.h>
 
 #include "dive.h"
@@ -22,6 +23,21 @@ struct graphics_context {
 	double maxx, maxy;
 	double scalex, scaley;
 };
+
+/* Plot info with smoothing and one-, two- and three-minute minimums and maximums */
+struct plot_info {
+	int nr;
+	int maxtime;
+	struct plot_data {
+		int sec;
+		int val;
+		int smoothed;
+		int min[3];
+		int max[3];
+		int avg[3];
+	} entry[];
+};
+#define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
 
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALE(gc,x,y) (x)*gc->maxx/gc->scalex,(y)*gc->maxy/gc->scaley
@@ -218,17 +234,13 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc)
 	plot_text_samples(gc, sample, end);
 }
 
-static void plot_depth_profile(struct dive *dive, struct graphics_context *gc)
+static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
 {
+	int i;
 	cairo_t *cr = gc->cr;
 	int begins, sec, depth;
-	int i, samples;
-	struct sample *sample;
+	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
-
-	samples = dive->samples;
-	if (!samples)
-		return;
 
 	cairo_set_line_width(gc->cr, 2);
 
@@ -267,15 +279,15 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc)
 
 	gc->scalex = maxtime;
 
-	sample = dive->sample;
+	entry = pi->entry;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
-	begins = sample->time.seconds;
-	move_to(gc, sample->time.seconds, sample->depth.mm);
-	for (i = 1; i < dive->samples; i++) {
-		sample++;
-		sec = sample->time.seconds;
+	begins = entry->sec;
+	move_to(gc, entry->sec, entry->val);
+	for (i = 1; i < pi->nr; i++) {
+		entry++;
+		sec = entry->sec;
 		if (sec <= maxtime) {
-			depth = sample->depth.mm;
+			depth = entry->val;
 			line_to(gc, sec, depth);
 		}
 	}
@@ -444,9 +456,107 @@ static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_conte
 	}
 }
 
+static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, int index)
+{
+	struct plot_data *p = entry;
+	int time = entry->sec;
+	int seconds = 60*(index+1);
+	int min, max, avg, nr;
+
+	/* Go back 'seconds' in time */
+	while (p > first) {
+		if (p[-1].sec < time - seconds)
+			break;
+		p--;
+	}
+
+	/* Then go forward until we hit an entry past the time */
+	min = max = avg = p->val;
+	nr = 1;
+	while (++p < last) {
+		int val = p->val;
+		if (p->sec > time + seconds)
+			break;
+		avg += val;
+		nr ++;
+		if (val < min)
+			min = val;
+		if (val > max)
+			max = val;
+	}
+	entry->min[index] = min;
+	entry->max[index] = max;
+	entry->avg[index] = (avg + nr/2) / nr;
+}
+
+static void analyze_plot_info_minmax(struct plot_data *entry, struct plot_data *first, struct plot_data *last)
+{
+	analyze_plot_info_minmax_minute(entry, first, last, 0);
+	analyze_plot_info_minmax_minute(entry, first, last, 1);
+	analyze_plot_info_minmax_minute(entry, first, last, 2);
+}
+
+static struct plot_info *analyze_plot_info(struct plot_info *pi)
+{
+	int i;
+	int nr = pi->nr;
+
+	/* Smoothing function: 5-point triangular smooth */
+	for (i = 2; i < nr-2; i++) {
+		struct plot_data *entry = pi->entry+i;
+		int val;
+
+		val = entry[-2].val + 2*entry[-1].val + 3*entry[0].val + 2*entry[1].val + entry[2].val;
+		entry->smoothed = (val+4) / 9;
+	}
+
+	/* One-, two- and three-minute minmax data */
+	for (i = 0; i < nr; i++) {
+		struct plot_data *entry = pi->entry +i;
+		analyze_plot_info_minmax(entry, pi->entry, pi->entry+nr);
+	}
+	
+	return pi;
+}
+
+/*
+ * Create a plot-info with smoothing and ranged min/max
+ *
+ * This also makes sure that we have extra empty events on both
+ * sides, so that you can do end-points without having to worry
+ * about it.
+ */
+static struct plot_info *depth_plot_info(struct dive *dive)
+{
+	int i, nr = dive->samples + 4, sec;
+	size_t alloc_size = plot_info_size(nr);
+	struct plot_info *pi;
+
+	pi = malloc(alloc_size);
+	if (!pi)
+		return pi;
+	memset(pi, 0, alloc_size);
+	pi->nr = nr;
+	sec = 0;
+	for (i = 0; i < dive->samples; i++) {
+		struct sample *sample = dive->sample+i;
+		struct plot_data *entry = pi->entry + i + 2;
+
+		sec = entry->sec = sample->time.seconds;
+		entry->val = sample->depth.mm;
+	}
+	/* Fill in the last two entries with empty values but valid times */
+	i = dive->samples + 2;
+	pi->entry[i].sec = sec + 20;
+	pi->entry[i+1].sec = sec + 40;
+
+	return analyze_plot_info(pi);
+}
+
 static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 {
 	double topx, topy;
+	struct plot_info *pi = depth_plot_info(dive);
 
 	topx = w / 20.0;
 	topy = h / 20.0;
@@ -466,7 +576,7 @@ static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	plot_cylinder_pressure(dive, gc);
 
 	/* Depth profile */
-	plot_depth_profile(dive, gc);
+	plot_depth_profile(dive, gc, pi);
 
 	/* Text on top of all graphs.. */
 	plot_depth_text(dive, gc);
