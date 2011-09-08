@@ -63,7 +63,7 @@ typedef struct {
 	enum {MIDDLE,TOP,BOTTOM} valign;
 } text_render_options_t;
 
-static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
+static void plot_text(struct graphics_context *gc, const text_render_options_t *tro,
 		      double x, double y, const char *fmt, ...)
 {
 	cairo_t *cr = gc->cr;
@@ -113,9 +113,8 @@ static void plot_text(struct graphics_context *gc, text_render_options_t *tro,
 	cairo_show_text(cr, buffer);
 }
 
-static void render_depth_sample(struct graphics_context *gc, struct sample *sample)
+static void render_depth_sample(struct graphics_context *gc, struct sample *sample, const text_render_options_t *tro)
 {
-	text_render_options_t tro = {14, 1.0, 0.2, 0.2, CENTER, TOP};
 	int sec = sample->time.seconds;
 	depth_t depth = sample->depth;
 	const char *fmt;
@@ -131,7 +130,7 @@ static void render_depth_sample(struct graphics_context *gc, struct sample *samp
 		fmt = "%.0f";
 		break;
 	}
-	plot_text(gc, &tro, sec, depth.mm, fmt, d);
+	plot_text(gc, tro, sec, depth.mm, fmt, d);
 }
 
 /*
@@ -183,16 +182,22 @@ static struct sample *next_minmax(struct sample *sample, struct sample *end, int
 
 static void plot_text_samples(struct graphics_context *gc, struct sample *a, struct sample *b)
 {
+	static const text_render_options_t deep = {14, 1.0, 0.2, 0.2, CENTER, TOP};
+	static const text_render_options_t shallow = {14, 1.0, 0.2, 0.2, CENTER, BOTTOM};
+
 	for (;;) {
 		if (b <= a)
 			break;
 		a = next_minmax(a, b, 1);
 		if (!a)
 			break;
-		render_depth_sample(gc, a);
+		render_depth_sample(gc, a, &deep);
 		a = next_minmax(a, b, 0);
 		if (!a)
 			break;
+		if (a->depth.mm < 2500)
+			continue;
+		render_depth_sample(gc, a, &shallow);
 	}
 }
 
