@@ -78,12 +78,12 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 
 	cairo_set_font_size(cr, tro->size);
 	cairo_text_extents(cr, buffer, &extents);
-	dx = 0;
 	switch (tro->halign) {
 	case CENTER:
 		dx = -(extents.width/2 + extents.x_bearing);
 		break;
 	case LEFT:
+	default:
 		dx = 0;
 		break;
 	}
@@ -95,6 +95,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 		dy = -extents.height * 0.8;
 		break;
 	case MIDDLE:
+	default:
 		dy = 0;
 		break;
 	}
@@ -126,6 +127,7 @@ static void render_depth_sample(struct graphics_context *gc, struct sample *samp
 		fmt = "%.1f";
 		break;
 	case FEET:
+	default:
 		d = to_feet(depth);
 		fmt = "%.0f";
 		break;
@@ -249,7 +251,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc)
 	gc->scaley = maxdepth;
 	switch (output_units.length) {
 	case METERS: marker = 10000; break;
-	case FEET: marker = 9144; break;	/* 30 ft */
+	case FEET: default: marker = 9144; break;	/* 30 ft */
 	}
 
 	cairo_set_source_rgba(cr, 1, 1, 1, 0.5);
@@ -269,7 +271,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc)
 
 	sample = dive->sample;
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
-	begins = sample->time.seconds;
+	sec = begins = sample->time.seconds;
 	move_to(gc, sample->time.seconds, sample->depth.mm);
 	for (i = 1; i < dive->samples; i++) {
 		sample++;
@@ -399,6 +401,7 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 		unit = "l";
 		break;
 	case CUFT:
+	default:
 		unit = "cuft";
 		airuse /= liters_per_cuft;
 		break;
@@ -431,6 +434,7 @@ static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_conte
 			unit = "bar";
 			break;
 		case PSI:
+		default:
 			start = to_PSI(startp);
 			end = to_PSI(endp);
 			unit = "psi";

@@ -62,6 +62,7 @@ static gboolean set_one_dive(GtkTreeModel *model,
 		/* Rounding? */
 		break;
 	case FEET:
+	default:
 		integer = to_feet(dive->maxdepth);
 		frac = -1;
 	}
@@ -97,6 +98,7 @@ void update_dive_list_units(struct DiveList *dive_list)
 		unit = "m";
 		break;
 	case FEET:
+	default:
 		unit = "ft";
 		break;
 	}

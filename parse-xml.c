@@ -252,6 +252,7 @@ static void pressure(char *buffer, void *_press)
 				mbar = mbar * 1000;
 			break;
 		case PSI:
+		default:
 			mbar = val.fp * 68.95;
 			break;
 		}

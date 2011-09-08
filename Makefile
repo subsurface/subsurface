@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Wno-pointer-sign -Wno-unused-parameter -g
+CFLAGS=-O2 -Wall -Wextra -Wno-pointer-sign -Wno-unused-parameter -Wno-unused-result -g
 
 RM=rm
 
