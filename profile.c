@@ -391,7 +391,7 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 {
 	text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
 	const double liters_per_cuft = 28.317;
-	const char *unit;
+	const char *unit, *desc;
 	double airuse;
 
 	airuse = calculate_airuse(dive);
@@ -413,6 +413,15 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
 		plot_text(gc, &tro, 0.8, 0.85, "SAC: %4.2f %s/min", sac, unit);
+	}
+	desc = dive->cylinder[0].type.description;
+	if (desc || dive->cylinder[0].gasmix.o2.permille) {
+		int o2 = dive->cylinder[0].gasmix.o2.permille / 10;
+		if (!desc)
+			desc = "";
+		if (!o2)
+			o2 = 21;
+		plot_text(gc, &tro, 0.8, 0.9, "%s (%d%%)", desc, o2);
 	}
 }
 
