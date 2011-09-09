@@ -215,11 +215,9 @@ static void create_radio(GtkWidget *dialog, const char *name, ...)
 
 	box = gtk_hbox_new(TRUE, 10);
 	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), box);
-	gtk_widget_show(box);
 
 	label = gtk_label_new(name);
 	gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
-	gtk_widget_show(label);
 
 	va_start(args, name);
 	for (;;) {
@@ -239,7 +237,6 @@ static void create_radio(GtkWidget *dialog, const char *name, ...)
 		gtk_box_pack_start(GTK_BOX(box), button, TRUE, TRUE, 0);
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled);
 		g_signal_connect(button, "toggled", G_CALLBACK(callback_fn), NULL);
-		gtk_widget_show(button);
 	}
 	va_end(args);
 }
@@ -296,7 +293,7 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
 
-	gtk_widget_show(dialog);
+	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		output_units = menu_units;
@@ -359,6 +356,7 @@ int main(int argc, char **argv)
 	GtkWidget *notebook;
 	GtkWidget *frame;
 	GtkWidget *dive_info;
+	GtkWidget *cylinder_management;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
 
@@ -417,7 +415,11 @@ int main(int argc, char **argv)
 
 	/* Frame for extended dive info */
 	dive_info = extended_dive_info_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_info, gtk_label_new("Extended Dive Info"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_info, gtk_label_new("Dive Notes"));
+
+	/* Frame for extended dive info */
+	cylinder_management = cylinder_management_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), cylinder_management, gtk_label_new("Cylinders"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);

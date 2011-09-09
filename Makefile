@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
 
-OBJS=main.o dive.o profile.o info.o divelist.o parse-xml.o save-xml.o
+OBJS=main.o dive.o profile.o info.o cylinders.o divelist.o parse-xml.o save-xml.o
 
 divelog: $(OBJS)
 	$(CC) $(LDFLAGS) -o divelog $(OBJS) \
@@ -26,6 +26,9 @@ profile.o: profile.c dive.h display.h divelist.h
 
 info.o: info.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c info.c
+
+cylinders.o: cylinders.c dive.h display.h divelist.h
+	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c cylinders.c
 
 divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c divelist.c
