@@ -12,12 +12,31 @@ static int cylinder_changed;
 static GtkComboBox *cylinder_description;
 static GtkSpinButton *cylinder_size, *cylinder_pressure, *nitrox_value;
 
+static void set_cylinder_spinbuttons(int ml, int mbar)
+{
+	double volume, pressure;
+
+	volume = ml / 1000.0;
+	pressure = mbar / 1000.0;
+	if (mbar) {
+		if (output_units.volume == CUFT) {
+			volume /= 28.3168466;	/* Liters to cuft */
+			volume *= pressure / 1.01325;
+		}
+		if (output_units.pressure == PSI) {
+			pressure *= 14.5037738;	/* Bar to PSI */
+		}
+	}
+
+	gtk_spin_button_set_value(cylinder_size, volume);
+	gtk_spin_button_set_value(cylinder_pressure, pressure);
+}
+
 static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
 	GValue value1 = {0, }, value2 = {0,};
-	int volume, pressure;
 	cylinder_t *cyl = current_dive->cylinder + 0;
 
 	/* Did the user set it to some non-standard value? */
@@ -43,14 +62,9 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	cylinder_changed = 1;
 
 	gtk_tree_model_get_value(model, &iter, 1, &value1);
-	volume = g_value_get_int(&value1);
 	gtk_tree_model_get_value(model, &iter, 2, &value2);
-	pressure = g_value_get_int(&value2);
 
-	gtk_spin_button_set_value(cylinder_size,
-			volume / 1000.0);
-	gtk_spin_button_set_value(cylinder_pressure,
-			pressure / 1000.0);
+	set_cylinder_spinbuttons(g_value_get_int(&value1), g_value_get_int(&value2));
 }
 
 static gboolean match_cylinder(GtkTreeModel *model,
@@ -79,10 +93,8 @@ void show_dive_equipment(struct dive *dive)
 
 	if (desc)
 		gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
-	gtk_spin_button_set_value(cylinder_size,
-			cyl->type.size.mliter / 1000.0);
-	gtk_spin_button_set_value(cylinder_pressure,
-			cyl->type.workingpressure.mbar / 1000.0);
+
+	set_cylinder_spinbuttons(cyl->type.size.mliter, cyl->type.workingpressure.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
 	if (!o2)
 		o2 = 21.0;
@@ -104,12 +116,25 @@ static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double mi
 	return button;
 }
 
-static void fill_cylinder_info(cylinder_t *cyl, const char *desc, int mliter, int mbar, int o2)
+static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume, double pressure, int o2)
 {
+	int mbar, ml;
+
+	if (output_units.pressure == PSI)
+		pressure /= 14.5037738;
+
+	if (pressure && output_units.volume == CUFT) {
+		volume *= 28.3168466;	/* CUFT to liter */
+		volume /= pressure / 1.01325;
+	}
+
+	ml = volume * 1000 + 0.5;
+	mbar = pressure * 1000 + 0.5;
+
 	if (o2 < 211)
 		o2 = 0;
 	cyl->type.description = desc;
-	cyl->type.size.mliter = mliter;
+	cyl->type.size.mliter = ml;
 	cyl->type.workingpressure.mbar = mbar;
 	cyl->gasmix.o2.permille = o2;
 }
@@ -118,11 +143,12 @@ static void record_cylinder_changes(struct dive *dive)
 {
 	const gchar *desc;
 	GtkComboBox *box = cylinder_description;
-	int volume, pressure, o2;
+	double volume, pressure;
+	int o2;
 
 	desc = gtk_combo_box_get_active_text(box);
-	volume = gtk_spin_button_get_value(cylinder_size) * 1000 + 0.5;
-	pressure = gtk_spin_button_get_value(cylinder_pressure) * 1000 + 0.5;
+	volume = gtk_spin_button_get_value(cylinder_size);
+	pressure = gtk_spin_button_get_value(cylinder_pressure);
 	o2 = gtk_spin_button_get_value(nitrox_value)*10 + 0.5;
 	fill_cylinder_info(dive->cylinder+0, desc, volume, pressure, o2);
 }
