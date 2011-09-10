@@ -90,9 +90,25 @@ static void on_destroy(GtkWidget* w, gpointer data)
 
 static GtkWidget *dive_profile;
 
+void update_dive(struct dive *new_dive)
+{
+	static struct dive *buffered_dive;
+	struct dive *old_dive = buffered_dive;
+
+	if (old_dive) {
+		flush_dive_info_changes(old_dive);
+		flush_dive_equipment_changes(old_dive);
+	}
+	if (new_dive) {
+		buffered_dive = new_dive;
+		show_dive_info(new_dive);
+		show_dive_equipment(new_dive);
+	}
+}
+
 void repaint_dive(void)
 {
-	update_dive_info(current_dive);
+	update_dive(current_dive);
 	gtk_widget_queue_draw(dive_profile);
 }
 
@@ -356,7 +372,7 @@ int main(int argc, char **argv)
 	GtkWidget *notebook;
 	GtkWidget *frame;
 	GtkWidget *dive_info;
-	GtkWidget *cylinder_management;
+	GtkWidget *equipment;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
 
@@ -417,9 +433,9 @@ int main(int argc, char **argv)
 	dive_info = extended_dive_info_widget();
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_info, gtk_label_new("Dive Notes"));
 
-	/* Frame for extended dive info */
-	cylinder_management = cylinder_management_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), cylinder_management, gtk_label_new("Cylinders"));
+	/* Frame for dive equipment */
+	equipment = equipment_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), equipment, gtk_label_new("Equipment"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);

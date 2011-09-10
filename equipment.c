@@ -8,6 +8,14 @@
 #include "display.h"
 #include "divelist.h"
 
+void show_dive_equipment(struct dive *dive)
+{
+}
+
+void flush_dive_equipment_changes(struct dive *dive)
+{
+}
+
 static struct tank_info {
 	const char *name;
 	int size;	/* cuft or mliter depending on psi */
@@ -59,7 +67,6 @@ static void fill_tank_list(GtkListStore *store)
 static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 {
 	GtkWidget *frame, *hbox, *size;
-	GtkCellRenderer *cell;
 	char buffer[80];
 
 	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr);
@@ -69,11 +76,7 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	hbox = gtk_hbox_new(TRUE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
-	size = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
-	cell = gtk_cell_renderer_text_new();
-	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(size), cell, TRUE);
-	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(size), cell, "text", 0, NULL );
-
+	size = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
 	gtk_box_pack_start(GTK_BOX(hbox), size, FALSE, FALSE, 0);
 }
 
@@ -91,17 +94,15 @@ static GtkListStore *create_tank_size_model(void)
 	return model;
 }
 
-GtkWidget *cylinder_management_widget(void)
+GtkWidget *equipment_widget(void)
 {
-	int i;
 	GtkWidget *vbox;
 	GtkListStore *model;
 
 	vbox = gtk_vbox_new(TRUE, 3);
 
 	model = create_tank_size_model();
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		cylinder_widget(vbox, i, model);
+	cylinder_widget(vbox, 0, model);
 
 	return vbox;
 }

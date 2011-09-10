@@ -11,7 +11,6 @@ static GtkWidget *divedate, *divetime, *depth, *duration, *temperature, *locatio
 static GtkEntry *location;
 static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
-static struct dive *buffered_dive;
 
 static const char *weekday(int wday)
 {
@@ -31,10 +30,8 @@ static char *get_text(GtkTextBuffer *buffer)
 	return gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 }
 
-void flush_dive_info_changes(void)
+void flush_dive_info_changes(struct dive *dive)
 {
-	struct dive *dive = buffered_dive;
-
 	if (!dive)
 		return;
 
@@ -49,14 +46,11 @@ void flush_dive_info_changes(void)
 	}
 }
 
-void update_dive_info(struct dive *dive)
+void show_dive_info(struct dive *dive)
 {
 	struct tm *tm;
 	char buffer[80];
 	char *text;
-
-	flush_dive_info_changes();
-	buffered_dive = dive;
 
 	if (!dive) {
 		gtk_label_set_text(GTK_LABEL(divedate), "no dive");
@@ -217,6 +211,6 @@ GtkWidget *extended_dive_info_widget(void)
 	notes = text_view(vbox, "Notes", TRUE);
 
 	/* Add extended info here: name, description, yadda yadda */
-	update_dive_info(current_dive);
+	show_dive_info(current_dive);
 	return vbox;
 }
