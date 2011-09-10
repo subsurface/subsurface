@@ -1053,11 +1053,12 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 	/* Ok, we have both size and pressure: try to match a description */
 	match_standard_cylinder(type);
 
-	/* .. and let's assume that the 'size' was cu ft of air */
-	volume_of_air = type->size.mliter * 28.317;	/* milli-cu ft to milliliter */
-	atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
-	volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
-	type->size.mliter = volume + 0.5;
+	if (input_units.volume == CUFT || import_source == SUUNTO) {
+		volume_of_air = type->size.mliter * 28.317;	/* milli-cu ft to milliliter */
+		atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
+		volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
+		type->size.mliter = volume + 0.5;
+	}
 }
 
 static void sanitize_cylinder_info(struct dive *dive)
