@@ -180,6 +180,7 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 		}
 		if (volume)
 			show_milli(f, " size='", volume, " l", "'");
+		show_pressure(f, cylinder->type.workingpressure, " workpressure='", "'");
 		if (description)
 			fprintf(f, " description='%s'", description);
 		show_pressure(f, cylinder->start, " start='", "'");
