@@ -67,6 +67,12 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	set_cylinder_spinbuttons(g_value_get_int(&value1), g_value_get_int(&value2));
 }
 
+/*
+ * The gtk_tree_model_foreach() interface is bad. It could have
+ * returned whether the callback ever returned true
+ */
+static int found_match = 0;
+
 static gboolean match_cylinder(GtkTreeModel *model,
 				GtkTreePath *path,
 				GtkTreeIter *iter,
@@ -81,6 +87,7 @@ static gboolean match_cylinder(GtkTreeModel *model,
 	if (strcmp(desc, name))
 		return FALSE;
 	gtk_combo_box_set_active_iter(cylinder_description, iter);
+	found_match = 1;
 	return TRUE;
 }
 
@@ -91,8 +98,9 @@ void show_dive_equipment(struct dive *dive)
 	GtkTreeModel *model = gtk_combo_box_get_model(cylinder_description);
 	double o2;
 
-	if (desc)
-		gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+	if (!desc)
+		desc = "";
+	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
 
 	set_cylinder_spinbuttons(cyl->type.size.mliter, cyl->type.workingpressure.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
@@ -119,6 +127,7 @@ static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double mi
 static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume, double pressure, int o2)
 {
 	int mbar, ml;
+	GtkTreeModel *model;
 
 	if (output_units.pressure == PSI)
 		pressure /= 14.5037738;
@@ -137,6 +146,25 @@ static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume,
 	cyl->type.size.mliter = ml;
 	cyl->type.workingpressure.mbar = mbar;
 	cyl->gasmix.o2.permille = o2;
+
+	/*
+	 * Also, insert it into the model if it doesn't already exist
+	 */
+	found_match = 0;
+	model = gtk_combo_box_get_model(cylinder_description);
+	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+
+	if (!found_match) {
+		GtkListStore *store = GTK_LIST_STORE(model);
+		GtkTreeIter iter;
+
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+			0, desc,
+			1, ml,
+			2, mbar,
+			-1);
+	}
 }
 
 static void record_cylinder_changes(struct dive *dive)
@@ -164,7 +192,7 @@ static struct tank_info {
 	int size;	/* cuft or mliter depending on psi */
 	int psi;	/* If zero, size is in mliter */
 } tank_info[] = {
-	{ "None", 0, 0 },
+	{ "", 0, 0 },
 	{ "10.0 l", 10000 },
 	{ "11.1 l", 11100 },
 	{ "AL72", 72, 3000 },
