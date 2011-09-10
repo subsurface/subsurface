@@ -8,7 +8,31 @@
 #include "display.h"
 #include "divelist.h"
 
-static GtkWidget *cylinder_description;
+static int cylinder_changed;
+static GtkComboBox *cylinder_description;
+static GtkSpinButton *cylinder_size, *cylinder_pressure;
+
+static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
+	GValue value1 = {0, }, value2 = {0,};
+	int volume, pressure;
+
+	cylinder_changed = 1;
+	if (!gtk_combo_box_get_active_iter(combo_box, &iter))
+		return;
+
+	gtk_tree_model_get_value(model, &iter, 1, &value1);
+	volume = g_value_get_int(&value1);
+	gtk_tree_model_get_value(model, &iter, 2, &value2);
+	pressure = g_value_get_int(&value2);
+
+	gtk_spin_button_set_value(cylinder_size,
+			volume / 1000.0);
+	gtk_spin_button_set_value(cylinder_pressure,
+			pressure / 1000.0);
+}
 
 static gboolean match_cylinder(GtkTreeModel *model,
 				GtkTreePath *path,
@@ -23,18 +47,22 @@ static gboolean match_cylinder(GtkTreeModel *model,
 	name = g_value_get_string(&value);
 	if (strcmp(desc, name))
 		return FALSE;
-	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(cylinder_description), iter);
+	gtk_combo_box_set_active_iter(cylinder_description, iter);
 	return TRUE;
 }
 
 void show_dive_equipment(struct dive *dive)
 {
-	const char *desc = dive->cylinder[0].type.description;
-	GtkTreeModel *model = gtk_combo_box_get_model(GTK_COMBO_BOX(cylinder_description));
+	cylinder_type_t *type = &dive->cylinder[0].type;
+	const char *desc = type->description;
+	GtkTreeModel *model = gtk_combo_box_get_model(cylinder_description);
 
-	if (!desc)
-		return;
-	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+	if (desc)
+		gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+	gtk_spin_button_set_value(cylinder_size,
+			type->size.mliter / 1000.0);
+	gtk_spin_button_set_value(cylinder_pressure,
+			type->workingpressure.mbar / 1000.0);
 }
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name)
@@ -44,39 +72,10 @@ static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name)
 	frame = gtk_frame_new(name);
 	gtk_container_add(GTK_CONTAINER(vbox), frame);
 
-	button = gtk_spin_button_new_with_range( 1.0, 3000, 0.1);
+	button = gtk_spin_button_new_with_range( 0.0, 3500.0, 0.1);
 	gtk_container_add(GTK_CONTAINER(frame), button);
 
 	return button;
-}
-
-static int get_cylinder_details(const char *name, int *volume, int *pressure)
-{
-	int result;
-	GtkWidget *dialog, *frame, *vbox;
-
-	dialog = gtk_dialog_new_with_buttons("New Cylinder Type",
-		GTK_WINDOW(main_window),
-		GTK_DIALOG_DESTROY_WITH_PARENT,
-		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-		NULL);
-
-	frame = gtk_frame_new(name);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), frame);
-	vbox = gtk_vbox_new(TRUE, 6);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
-
-	create_spinbutton(vbox, "Size:");
-	create_spinbutton(vbox, "Working pressure:");
-
-	gtk_widget_show_all(dialog);
-	result = gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_destroy(dialog);
-
-	*volume = 0;
-	*pressure = 0;
-	return result == GTK_RESPONSE_ACCEPT;
 }
 
 static void fill_cylinder_info(cylinder_t *cyl, const char *desc, int mliter, int mbar)
@@ -94,35 +93,26 @@ static void fill_cylinder_info(cylinder_t *cyl, const char *desc, int mliter, in
 #endif
 }
 
+static void record_cylinder_changes(struct dive *dive)
+{
+	const gchar *desc;
+	GtkComboBox *box = cylinder_description;
+	gdouble volume, pressure;
+
+	desc = gtk_combo_box_get_active_text(box);
+	volume = gtk_spin_button_get_value(cylinder_size);
+	pressure = gtk_spin_button_get_value(cylinder_pressure);
+
+	fill_cylinder_info(dive->cylinder+0,
+		desc, volume * 1000, pressure * 1000);
+}
+
 void flush_dive_equipment_changes(struct dive *dive)
 {
-	GtkTreeIter iter;
-	const gchar *desc;
-	GtkComboBox *box = GTK_COMBO_BOX(cylinder_description);
-	GtkTreeModel *model = gtk_combo_box_get_model(box);
-	GtkListStore *store = GTK_LIST_STORE(model);
-	GValue value1 = {0, }, value2 = {0,}, value3 = {0, };
-	int volume, pressure;
-
-	if (!gtk_combo_box_get_active_iter(box, &iter)) {
-		desc = gtk_combo_box_get_active_text(box);
-		if (!get_cylinder_details(desc, &volume, &pressure))
-			return;
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
-			0, desc,
-			1, volume,
-			2, pressure,
-			-1);
+	if (cylinder_changed) {
+		cylinder_changed = 0;
+		record_cylinder_changes(dive);
 	}
-
-	gtk_tree_model_get_value(model, &iter, 0, &value1);
-	desc = g_value_get_string(&value1);
-	gtk_tree_model_get_value(model, &iter, 1, &value2);
-	volume = g_value_get_int(&value2);
-	gtk_tree_model_get_value(model, &iter, 2, &value3);
-	pressure = g_value_get_int(&value3);
-	fill_cylinder_info(dive->cylinder+0, desc, volume, pressure);
 }
 
 /* We should take these from the dive list instead */
@@ -178,7 +168,8 @@ static void fill_tank_list(GtkListStore *store)
 
 static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 {
-	GtkWidget *frame, *hbox, *size;
+	GtkWidget *frame, *hbox;
+	GtkWidget *description, *size, *pressure;
 	char buffer[80];
 
 	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr);
@@ -188,10 +179,20 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	hbox = gtk_hbox_new(TRUE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
-	size = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
-	gtk_box_pack_start(GTK_BOX(hbox), size, FALSE, FALSE, 0);
+	frame = gtk_frame_new("Description");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, FALSE, 0);
 
-	cylinder_description = size;
+	description = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	gtk_container_add(GTK_CONTAINER(frame), description);
+
+	cylinder_description = GTK_COMBO_BOX(description);
+	g_signal_connect(description, "changed", G_CALLBACK(cylinder_cb), description);
+
+	size = create_spinbutton(hbox, "Size");
+	cylinder_size = GTK_SPIN_BUTTON(size);
+
+	pressure = create_spinbutton(hbox, "Working Pressure");
+	cylinder_pressure = GTK_SPIN_BUTTON(pressure);
 }
 
 static GtkListStore *create_tank_size_model(void)
