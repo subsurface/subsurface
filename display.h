@@ -5,6 +5,8 @@
 #include <gdk/gdk.h>
 #include <cairo.h>
 
+extern GtkWidget *main_window;
+
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *extended_dive_info_widget(void);
