@@ -136,13 +136,16 @@ void show_dive_equipment(struct dive *dive)
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
 {
-	GtkWidget *frame, *button;
+	GtkWidget *frame, *hbox, *button;
 
 	frame = gtk_frame_new(name);
-	gtk_container_add(GTK_CONTAINER(vbox), frame);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
 	button = gtk_spin_button_new_with_range(min, max, incr);
-	gtk_container_add(GTK_CONTAINER(frame), button);
+	gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, TRUE, 0);
 
 	gtk_spin_button_set_update_policy(GTK_SPIN_BUTTON(button), GTK_UPDATE_IF_VALID);
 
@@ -273,15 +276,18 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	GtkWidget *widget;
 	char buffer[80];
 
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, FALSE, 0);
+
 	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr);
 	frame = gtk_frame_new(buffer);
-	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	hbox = gtk_hbox_new(TRUE, 3);
+	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
 	frame = gtk_frame_new("Description");
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
 	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
 	gtk_container_add(GTK_CONTAINER(frame), widget);
@@ -292,7 +298,7 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	widget = create_spinbutton(hbox, "Size", 0, 200, 0.1);
 	cylinder_size = GTK_SPIN_BUTTON(widget);
 
-	widget = create_spinbutton(hbox, "Working Pressure", 0, 5000, 1);
+	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
 	cylinder_pressure = GTK_SPIN_BUTTON(widget);
 
 	widget = create_spinbutton(hbox, "Nitrox", 21, 100, 0.1);
