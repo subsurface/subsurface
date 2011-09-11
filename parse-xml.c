@@ -410,11 +410,11 @@ static void utf8_string(char *buffer, void *_res)
 static void water_pressure(char *buffer, void *_depth)
 {
 	depth_t *depth = _depth;
-        union int_or_float val;
+	union int_or_float val;
 	double atm, cm;
 
-        switch (integer_or_float(buffer, &val)) {
-        case FLOAT:
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
 		if (!val.fp)
 			break;
 		/* cbar to atm */
@@ -462,10 +462,10 @@ static void centibar(char *buffer, void *_pressure)
 static void decicelsius(char *buffer, void *_temp)
 {
 	temperature_t *temp = _temp;
-        union int_or_float val;
+	union int_or_float val;
 
-        switch (integer_or_float(buffer, &val)) {
-        case FLOAT:
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
 		temp->mkelvin = (val.fp/10 + 273.15) * 1000 + 0.5;
 		break;
 	default:
@@ -504,12 +504,37 @@ static void fahrenheit(char *buffer, void *_temperature)
 	free(buffer);
 }
 
+/*
+ * Did I mention how bat-shit crazy divinglog is? The sample
+ * pressures are in PSI. But the tank working pressure is in
+ * bar. WTF^2?
+ *
+ * Crazy stuff like this is why diveclog has everything in
+ * these inconvenient typed structures, and you have to say
+ * "pressure->mbar" to get the actual value. Exactly so that
+ * you can never have unit confusion.
+ */
+static void psi(char *buffer, void *_pressure)
+{
+	pressure_t *pressure = _pressure;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		pressure->mbar = val.fp * 68.95 + 0.5;
+		break;
+	default:
+		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
 static int divinglog_fill_sample(struct sample *sample, const char *name, int len, char *buf)
 {
 	return	MATCH(".p.time", sampletime, &sample->time) ||
 		MATCH(".p.depth", depth, &sample->depth) ||
 		MATCH(".p.temp", fahrenheit, &sample->temperature) ||
-		MATCH(".p.press1", pressure, &sample->cylinderpressure) ||
+		MATCH(".p.press1", psi, &sample->cylinderpressure) ||
 		0;
 }
 
@@ -613,6 +638,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, int len, ch
 		MATCH(".entrytime", divetime, &dive->when) ||
 		MATCH(".depth", depth, &dive->maxdepth) ||
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
+		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
 		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
 		MATCH(".comments", utf8_string, &dive->notes) ||
 		MATCH(".country.name", utf8_string, &country) ||
@@ -667,10 +693,10 @@ static void uemis_date_unit(char *buffer, void *_unused)
 static void uemis_date_time(char *buffer, void *_when)
 {
 	time_t *when = _when;
-        union int_or_float val;
+	union int_or_float val;
 
-        switch (integer_or_float(buffer, &val)) {
-        case FLOAT:
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
 		*when = (val.fp - 40587) * 86400;
 		break;
 	default:
@@ -1248,10 +1274,12 @@ static void DivingLog_importer(void)
 	 *
 	 * Temperatures are in C, except in samples,
 	 * when they are in Fahrenheit. Depths are in
-	 * meters, but pressure is in PSI.
+	 * meters, an dpressure is in PSI in the samples,
+	 * but in bar when it comes to working pressure.
+	 *
+	 * Crazy f*%^ morons.
 	 */
 	input_units = SI_units;
-	input_units.pressure = PSI;
 }
 
 static void uddf_importer(void)
@@ -1335,9 +1363,9 @@ void parse_xml_file(const char *filename, GError **error)
 		if (error != NULL)
 		{
 			*error = g_error_new(g_quark_from_string("divelog"),
-			                     DIVE_ERROR_PARSE,
-			                     "Failed to parse '%s'",
-			                     filename);
+					     DIVE_ERROR_PARSE,
+					     "Failed to parse '%s'",
+					     filename);
 		}
 		return;
 	}
