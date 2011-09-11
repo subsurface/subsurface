@@ -91,16 +91,41 @@ static gboolean match_cylinder(GtkTreeModel *model,
 	return TRUE;
 }
 
+static void add_cylinder(const char *desc, int ml, int mbar)
+{
+	GtkTreeModel *model;
+
+	found_match = 0;
+	model = gtk_combo_box_get_model(cylinder_description);
+	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+
+	if (!found_match) {
+		GtkListStore *store = GTK_LIST_STORE(model);
+		GtkTreeIter iter;
+
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+			0, desc,
+			1, ml,
+			2, mbar,
+			-1);
+		gtk_combo_box_set_active_iter(cylinder_description, &iter);
+	}
+}
+
 void show_dive_equipment(struct dive *dive)
 {
 	cylinder_t *cyl = &dive->cylinder[0];
 	const char *desc = cyl->type.description;
-	GtkTreeModel *model = gtk_combo_box_get_model(cylinder_description);
+	int ml, mbar;
 	double o2;
 
 	if (!desc)
 		desc = "";
-	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+
+	ml = cyl->type.size.mliter;
+	mbar = cyl->type.workingpressure.mbar;
+	add_cylinder(desc, ml, mbar);
 
 	set_cylinder_spinbuttons(cyl->type.size.mliter, cyl->type.workingpressure.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
@@ -127,7 +152,6 @@ static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double mi
 static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume, double pressure, int o2)
 {
 	int mbar, ml;
-	GtkTreeModel *model;
 
 	if (output_units.pressure == PSI)
 		pressure /= 14.5037738;
@@ -150,21 +174,7 @@ static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume,
 	/*
 	 * Also, insert it into the model if it doesn't already exist
 	 */
-	found_match = 0;
-	model = gtk_combo_box_get_model(cylinder_description);
-	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
-
-	if (!found_match) {
-		GtkListStore *store = GTK_LIST_STORE(model);
-		GtkTreeIter iter;
-
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
-			0, desc,
-			1, ml,
-			2, mbar,
-			-1);
-	}
+	add_cylinder(desc, ml, mbar);
 }
 
 static void record_cylinder_changes(struct dive *dive)
@@ -186,30 +196,50 @@ void flush_dive_equipment_changes(struct dive *dive)
 	record_cylinder_changes(dive);
 }
 
-/* We should take these from the dive list instead */
+/*
+ * We hardcode the most common standard cylinders,
+ * we should pick up any other names from the dive
+ * logs directly.
+ */
 static struct tank_info {
 	const char *name;
-	int size;	/* cuft or mliter depending on psi */
+	int size;	/* cuft if < 1000, otherwise mliter */
 	int psi;	/* If zero, size is in mliter */
-} tank_info[] = {
+} tank_info[100] = {
+	/* Need an empty entry for the no-cylinder case */
 	{ "", 0, 0 },
+
+	/* Size-only metric cylinders */
 	{ "10.0 l", 10000 },
 	{ "11.1 l", 11100 },
-	{ "AL72", 72, 3000 },
-	{ "AL80", 80, 3000 },
-	{ "LP85", 85, 2400 },
-	{ "LP95", 95, 2400 },
-	{ "LP85+", 85, 2640 },
-	{ "LP95+", 95, 2640 },
+
+	/* Most common AL cylinders */
+	{ "AL50",   50, 3000 },
+	{ "AL63",   63, 3000 },
+	{ "AL72",   72, 3000 },
+	{ "AL80",   80, 3000 },
+	{ "AL100", 100, 3300 },
+
+	/* Somewhat common LP steel cylinders */
+	{ "LP85",   85, 2640 },
+	{ "LP95",   95, 2640 },
+	{ "LP108", 108, 2640 },
+	{ "LP121", 121, 2640 },
+
+	/* Somewhat common HP steel cylinders */
+	{ "HP65",   65, 3442 },
+	{ "HP80",   80, 3442 },
 	{ "HP100", 100, 3442 },
 	{ "HP119", 119, 3442 },
+	{ "HP130", 130, 3442 },
+
+	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
 };
 
 static void fill_tank_list(GtkListStore *store)
 {
 	GtkTreeIter iter;
-
 	struct tank_info *info = tank_info;
 
 	while (info->name) {
