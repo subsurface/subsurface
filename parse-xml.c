@@ -488,6 +488,16 @@ static int uemis_fill_sample(struct sample *sample, const char *name, int len, c
  * Divinglog is crazy. The temperatures are in celsius. EXCEPT
  * for the sample temperatures, that are in Fahrenheit.
  * WTF?
+ *
+ * Oh, and I think Diving Log *internally* probably kept them
+ * in celsius, because I'm seeing entries like
+ *
+ *	<Temp>32.0</Temp>
+ *
+ * in there. Which is freezing, aka 0 degC. I bet the "0" is
+ * what Diving Log uses for "no temperature".
+ *
+ * So throw away crap like that.
  */
 static void fahrenheit(char *buffer, void *_temperature)
 {
@@ -496,6 +506,9 @@ static void fahrenheit(char *buffer, void *_temperature)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
+		/* Floating point equality is evil, but works for small integers */
+		if (val.fp == 32.0)
+			break;
 		temperature->mkelvin = (val.fp + 459.67) * 5000/9;
 		break;
 	default:
