@@ -128,6 +128,7 @@ struct sample {
 #define MAX_CYLINDERS (8)
 
 struct dive {
+	int nr;
 	time_t when;
 	char *location;
 	char *notes;

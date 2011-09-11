@@ -205,9 +205,14 @@ static void save_dive(FILE *f, struct dive *dive)
 	int i;
 	struct tm *tm = gmtime(&dive->when);
 
-	fprintf(f, "<dive date='%04u-%02u-%02u' time='%02u:%02u:%02u' duration='%u:%02u min'>\n",
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-		tm->tm_hour, tm->tm_min, tm->tm_sec,
+	fputs("<dive", f);
+	if (dive->nr)
+		fprintf(f, " nr='%d'", dive->nr);
+	fprintf(f, " date='%04u-%02u-%02u'",
+		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+	fprintf(f, " time='%02u:%02u:%02u'",
+		tm->tm_hour, tm->tm_min, tm->tm_sec);
+	fprintf(f, " duration='%u:%02u min'>\n",
 		FRACTION(dive->duration.seconds, 60));
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
