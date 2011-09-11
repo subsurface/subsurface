@@ -98,9 +98,9 @@ void update_dive(struct dive *new_dive)
 	if (old_dive) {
 		flush_dive_info_changes(old_dive);
 		flush_dive_equipment_changes(old_dive);
+		buffered_dive = new_dive;
 	}
 	if (new_dive) {
-		buffered_dive = new_dive;
 		show_dive_info(new_dive);
 		show_dive_equipment(new_dive);
 	}
@@ -312,6 +312,8 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
+		/* Make sure to flush any modified old dive data with old units */
+		update_dive(NULL);
 		output_units = menu_units;
 		update_dive_list_units(&dive_list);
 		repaint_dive();

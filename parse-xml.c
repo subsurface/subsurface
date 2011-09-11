@@ -639,7 +639,6 @@ static int divinglog_dive_match(struct dive *dive, const char *name, int len, ch
 		MATCH(".depth", depth, &dive->maxdepth) ||
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
 		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
-		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
 		MATCH(".comments", utf8_string, &dive->notes) ||
 		MATCH(".country.name", utf8_string, &country) ||
 		MATCH(".city.name", utf8_string, &city) ||
@@ -1017,7 +1016,8 @@ static void sanitize_gasmix(gasmix_t *mix)
  */
 static void match_standard_cylinder(cylinder_type_t *type)
 {
-	int psi, cuft, len;
+	double cuft;
+	int psi, len;
 	const char *fmt;
 	char buffer[20], *p;
 
@@ -1025,7 +1025,8 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	if (type->description)
 		return;
 
-	cuft = type->size.mliter / 1000;
+	cuft = type->size.mliter / 28317.0;
+	cuft *= type->workingpressure.mbar / 1013.25;
 	psi = type->workingpressure.mbar / 68.95;
 
 	switch (psi) {
@@ -1047,7 +1048,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	default:
 		return;
 	}
-	len = snprintf(buffer, sizeof(buffer), fmt, cuft);
+	len = snprintf(buffer, sizeof(buffer), fmt, (int) (cuft+0.5));
 	p = malloc(len+1);
 	if (!p)
 		return;
@@ -1078,15 +1079,15 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 	if (!type->size.mliter)
 		return;
 
-	/* Ok, we have both size and pressure: try to match a description */
-	match_standard_cylinder(type);
-
 	if (input_units.volume == CUFT || import_source == SUUNTO) {
 		volume_of_air = type->size.mliter * 28.317;	/* milli-cu ft to milliliter */
 		atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
 		volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
 		type->size.mliter = volume + 0.5;
 	}
+
+	/* Ok, we have both size and pressure: try to match a description */
+	match_standard_cylinder(type);
 }
 
 static void sanitize_cylinder_info(struct dive *dive)

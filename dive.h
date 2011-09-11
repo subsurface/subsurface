@@ -166,6 +166,9 @@ struct dive_table {
 
 extern struct dive_table dive_table;
 
+extern int selected_dive;
+#define current_dive (get_dive(selected_dive))
+
 static inline struct dive *get_dive(unsigned int nr)
 {
 	if (nr >= dive_table.nr)
