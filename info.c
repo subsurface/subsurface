@@ -51,6 +51,7 @@ void show_dive_info(struct dive *dive)
 	struct tm *tm;
 	char buffer[80];
 	char *text;
+	int len;
 
 	if (!dive) {
 		gtk_label_set_text(GTK_LABEL(divedate), "no dive");
@@ -115,7 +116,12 @@ void show_dive_info(struct dive *dive)
 
 	text = dive->location ? : "";
 	gtk_entry_set_text(location, text);
-	gtk_label_set_text(GTK_LABEL(locationnote), text);
+
+	len = 0;
+	if (dive->nr)
+		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->nr);
+	snprintf(buffer+len, sizeof(buffer)-len, "%s", text);
+	gtk_label_set_text(GTK_LABEL(locationnote), buffer);
 
 	text = dive->notes ? : "";
 	gtk_text_buffer_set_text(notes, text, -1);
