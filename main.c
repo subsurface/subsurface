@@ -325,12 +325,51 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void renumber_dives(int nr)
+{
+	int i;
+
+	for (i = 0; i < dive_table.nr; i++) {
+		struct dive *dive = dive_table.dives[i];
+		dive->number = nr + i;
+	}
+}
+
+static void renumber_dialog(GtkWidget *w, gpointer data)
+{
+	int result;
+	GtkWidget *dialog, *frame, *button;
+
+	dialog = gtk_dialog_new_with_buttons("Renumber",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	frame = gtk_frame_new("New starting number");
+	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), frame);
+
+	button = gtk_spin_button_new_with_range(1, 50000, 1);
+	gtk_container_add(GTK_CONTAINER(frame), button);
+
+	gtk_widget_show_all(dialog);
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (result == GTK_RESPONSE_ACCEPT) {
+		int nr = gtk_spin_button_get_value(GTK_SPIN_BUTTON(button));
+		renumber_dives(nr);
+		repaint_dive();
+	}
+	gtk_widget_destroy(dialog);
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
+	{ "Units",          NULL, "Units",    NULL, NULL, G_CALLBACK(unit_dialog) },
+	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
-	{ "Units",          NULL, "Units", NULL, NULL, G_CALLBACK(unit_dialog) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -342,6 +381,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Units\" action=\"Units\" /> \
+				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
