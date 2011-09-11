@@ -627,7 +627,7 @@ GtkWidget *dive_profile_widget(void)
 	GtkWidget *da;
 
 	da = gtk_drawing_area_new();
-	gtk_widget_set_size_request(da, 450, 350);
+	gtk_widget_set_size_request(da, 350, 250);
 	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
 
 	return da;
