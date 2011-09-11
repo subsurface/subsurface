@@ -7,7 +7,8 @@
 #include "display.h"
 #include "divelist.h"
 
-static GtkWidget *divedate, *divetime, *depth, *duration, *temperature, *locationnote;
+static GtkWidget *info_frame;
+static GtkWidget *divedate, *divetime, *depth, *duration, *temperature;
 static GtkEntry *location;
 static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
@@ -117,11 +118,14 @@ void show_dive_info(struct dive *dive)
 	text = dive->location ? : "";
 	gtk_entry_set_text(location, text);
 
+	text = "Dive Info";
+	if (dive->location && *dive->location)
+		text = dive->location;
 	len = 0;
 	if (dive->number)
 		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->number);
 	snprintf(buffer+len, sizeof(buffer)-len, "%s", text);
-	gtk_label_set_text(GTK_LABEL(locationnote), buffer);
+	gtk_frame_set_label(GTK_FRAME(info_frame), buffer);
 
 	text = dive->notes ? : "";
 	gtk_text_buffer_set_text(notes, text, -1);
@@ -138,23 +142,20 @@ static GtkWidget *info_label(GtkWidget *box, const char *str, GtkJustification j
 GtkWidget *dive_info_frame(void)
 {
 	GtkWidget *frame;
-	GtkWidget *hbox, *hbox2;
+	GtkWidget *hbox;
 	GtkWidget *vbox;
 
 	frame = gtk_frame_new("Dive info");
+	info_frame = frame;
 	gtk_widget_show(frame);
 
-	vbox = gtk_vbox_new(TRUE, 6);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 	gtk_container_add(GTK_CONTAINER(frame), vbox);
 
-	hbox = gtk_hbox_new(TRUE, 6);
+	hbox = gtk_hbox_new(FALSE, 16);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 3);
-	gtk_container_add(GTK_CONTAINER(vbox), hbox);
-
-	hbox2 = gtk_hbox_new(FALSE, 6);
-	gtk_container_set_border_width(GTK_CONTAINER(hbox2), 3);
-	gtk_container_add(GTK_CONTAINER(vbox), hbox2);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
 	divedate = info_label(hbox, "date", GTK_JUSTIFY_RIGHT);
 	divetime = info_label(hbox, "time", GTK_JUSTIFY_RIGHT);
@@ -162,59 +163,57 @@ GtkWidget *dive_info_frame(void)
 	duration = info_label(hbox, "duration", GTK_JUSTIFY_RIGHT);
 	temperature = info_label(hbox, "temperature", GTK_JUSTIFY_RIGHT);
 
-	locationnote = info_label(hbox2, "location", GTK_JUSTIFY_LEFT);
-	gtk_label_set_width_chars(GTK_LABEL(locationnote), 80);
-
 	return frame;
 }
 
 static GtkEntry *text_entry(GtkWidget *box, const char *label)
 {
 	GtkWidget *entry;
-
 	GtkWidget *frame = gtk_frame_new(label);
 
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
 
-	entry = gtk_entry_new ();
+	entry = gtk_entry_new();
 	gtk_container_add(GTK_CONTAINER(frame), entry);
 
 	return GTK_ENTRY(entry);
 }
 
-static GtkTextBuffer *text_view(GtkWidget *box, const char *label, gboolean expand)
+static GtkTextBuffer *text_view(GtkWidget *box, const char *label)
 {
-	GtkWidget *view;
+	GtkWidget *view, *vbox;
 	GtkTextBuffer *buffer;
-
 	GtkWidget *frame = gtk_frame_new(label);
 
-	gtk_box_pack_start(GTK_BOX(box), frame, expand, expand, 0);
+	gtk_box_pack_start(GTK_BOX(box), frame, TRUE, TRUE, 0);
+	box = gtk_hbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+	vbox = gtk_vbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(box), vbox);
 
-	GtkWidget* scrolled_window = gtk_scrolled_window_new (0, 0);
+	GtkWidget* scrolled_window = gtk_scrolled_window_new(0, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
 	gtk_widget_show(scrolled_window);
 
-	view = gtk_text_view_new ();
+	view = gtk_text_view_new();
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), view);
 
 	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
 
-	gtk_container_add(GTK_CONTAINER(frame), scrolled_window);
+	gtk_box_pack_start(GTK_BOX(vbox), scrolled_window, TRUE, TRUE, 0);
 	return buffer;
 }
 
 GtkWidget *extended_dive_info_widget(void)
 {
 	GtkWidget *vbox;
-
 	vbox = gtk_vbox_new(FALSE, 6);
 
 	location = text_entry(vbox, "Location");
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
-	notes = text_view(vbox, "Notes", TRUE);
+	notes = text_view(vbox, "Notes");
 
 	/* Add extended info here: name, description, yadda yadda */
 	show_dive_info(current_dive);
