@@ -1034,7 +1034,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 		fmt = "LP%d";
 		break;
 	case 2600 ... 2700:	/* 2640 psi: LP+10% */
-		fmt = "LP%d+";
+		fmt = "LP%d";
 		break;
 	case 2900 ... 3100:	/* 3000 psi: ALx tank */
 		fmt = "AL%d";
