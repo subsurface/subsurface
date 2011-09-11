@@ -118,8 +118,8 @@ void show_dive_info(struct dive *dive)
 	gtk_entry_set_text(location, text);
 
 	len = 0;
-	if (dive->nr)
-		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->nr);
+	if (dive->number)
+		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->number);
 	snprintf(buffer+len, sizeof(buffer)-len, "%s", text);
 	gtk_label_set_text(GTK_LABEL(locationnote), buffer);
 

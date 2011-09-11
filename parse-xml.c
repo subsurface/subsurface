@@ -609,8 +609,7 @@ static void divinglog_place(char *place, void *_location)
 
 static int divinglog_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
-	return	MATCH(".id", get_index, &dive->nr) ||
-		MATCH(".divedate", divedate, &dive->when) ||
+	return	MATCH(".divedate", divedate, &dive->when) ||
 		MATCH(".entrytime", divetime, &dive->when) ||
 		MATCH(".depth", depth, &dive->maxdepth) ||
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
@@ -877,7 +876,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		break;
 	}
 
-	if (MATCH(".nr", get_index, &dive->nr))
+	if (MATCH(".number", get_index, &dive->number))
 		return;
 	if (MATCH(".date", divedate, &dive->when))
 		return;
