@@ -98,12 +98,12 @@ void update_dive(struct dive *new_dive)
 	if (old_dive) {
 		flush_dive_info_changes(old_dive);
 		flush_dive_equipment_changes(old_dive);
-		buffered_dive = new_dive;
 	}
 	if (new_dive) {
 		show_dive_info(new_dive);
 		show_dive_equipment(new_dive);
 	}
+	buffered_dive = new_dive;
 }
 
 void repaint_dive(void)
