@@ -124,7 +124,7 @@ static void on_info_bar_response(GtkWidget *widget, gint response,
 	}
 }
 
-static void report_error(GError* error)
+void report_error(GError* error)
 {
 	if (error == NULL)
 	{
