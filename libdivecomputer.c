@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
 
+#include "dive.h"
 #include "display.h"
 
 /* libdivecomputer */
@@ -89,6 +90,31 @@ static device_status_t device_open(const char *devname,
 	}
 }
 
+static void error(const char *fmt, ...)
+{
+	va_list args;
+	GError *error;
+
+	va_start(args, fmt);
+	error = g_error_new_valist(
+		g_quark_from_string("divelog"),
+		DIVE_ERROR_PARSE, fmt, args);
+	va_end(args);
+	report_error(error);
+	g_error_free(error);
+}
+
+static void
+event_cb (device_t *device, device_event_t event, const void *data, void *userdata)
+{
+}
+
+static int
+cancel_cb (void *userdata)
+{
+	return 0;
+}
+
 static void do_import(const char *computer, device_type_t type)
 {
 	/* FIXME! Needs user input! */
@@ -97,9 +123,29 @@ static void do_import(const char *computer, device_type_t type)
 	device_status_t rc;
 
 	rc = device_open(devname, type, &device);
-	printf("rc=%d\n", rc);
-	if (rc != DEVICE_STATUS_SUCCESS)
+	if (rc != DEVICE_STATUS_SUCCESS) {
+		error("Unable to open %s (%s)", computer, devname);
 		return;
+	}
+
+	// Register the event handler.
+	int events = DEVICE_EVENT_WAITING | DEVICE_EVENT_PROGRESS | DEVICE_EVENT_DEVINFO | DEVICE_EVENT_CLOCK;
+	rc = device_set_events(device, events, event_cb, NULL);
+	if (rc != DEVICE_STATUS_SUCCESS) {
+		error("Error registering the event handler.");
+		device_close(device);
+		return;
+	}
+
+	// Register the cancellation handler.
+	rc = device_set_cancel(device, cancel_cb, NULL);
+	if (rc != DEVICE_STATUS_SUCCESS) {
+		error("Error registering the cancellation handler.");
+		device_close(device);
+		return;
+	}
+
+	error("No actual code yet for importing (%s: %s)", computer, devname);
 }
 
 /*
