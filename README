@@ -6,6 +6,15 @@ License: GPLv2
 
 You need libxml2-devel, gtk2-devel and GConf2-devel to build this.
 
+You also need to have libdivecomputer installed, which goes something like this:
+
+	git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
+	cd libdivecomputer
+	autoreconf --install
+	./configure
+	make
+	sudo make install
+
 Usage:
 
 	make
@@ -13,11 +22,20 @@ Usage:
 
 to see my dives (with no notes or commentary).
 
-There's a lot of duplicates in there, and divelog will de-duplicate the
-ones that are exactly the same (just because they were imported multiple
-times).  But at least two of the dives have duplicates that were edited
-by Dirk in the Suunto Dive Manager, so they don't trigger the "exact
-duplicates" match.
+Or, if you have a dive computer supported by libdivecomputer (and
+connected to /dev/ttyUSB0), you can just do
+
+	make
+	./divelog
+
+and select "Import" from the File menu, tell it what dive computer you
+have, and hit "OK".
+
+There's a lot of duplicates in the XML files that come as an example,
+and divelog will de-duplicate the ones that are exactly the same (just
+because they were imported multiple times).  But at least two of the
+dives have duplicates that were edited by Dirk in the Suunto Dive
+Manager, so they don't trigger the "exact duplicates" match.
 
 WARNING! I wasn't kidding when I said that I've done this by reading
 gtk2 tutorials as I've gone along.  If somebody is more comfortable with
