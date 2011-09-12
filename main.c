@@ -367,6 +367,7 @@ static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
+	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
 	{ "Units",          NULL, "Units",    NULL, NULL, G_CALLBACK(unit_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
@@ -380,9 +381,11 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<separator name=\"Separator1\"/> \
+				<menuitem name=\"Import\" action=\"Import\" /> \
+				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Units\" action=\"Units\" /> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
-				<separator name=\"Separator2\"/> \
+				<separator name=\"Separator3\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \

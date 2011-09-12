@@ -7,6 +7,8 @@
 
 extern GtkWidget *main_window;
 
+extern void import_dialog(GtkWidget *, gpointer);
+
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *extended_dive_info_widget(void);

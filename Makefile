@@ -1,12 +1,18 @@
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
 
-OBJS=main.o dive.o profile.o info.o equipment.o divelist.o parse-xml.o save-xml.o
+LIBDIVECOMPUTERDIR = /usr/local
+LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
+
+OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
+	parse-xml.o save-xml.o libdivecomputer.o
 
 divelog: $(OBJS)
 	$(CC) $(LDFLAGS) -o divelog $(OBJS) \
 		`xml2-config --libs` \
-		`pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0`
+		`pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0` \
+		$(LIBDIVECOMPUTERARCHIVE)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
@@ -32,3 +38,8 @@ equipment.o: equipment.c dive.h display.h divelist.h
 
 divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c divelist.c
+
+libdivecomputer.o: libdivecomputer.c dive.h display.h
+	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` \
+			-I$(LIBDIVECOMPUTERINCLUDES) \
+			-c libdivecomputer.c
