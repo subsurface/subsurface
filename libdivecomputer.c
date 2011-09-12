@@ -124,6 +124,7 @@ static int parse_gasmixes(struct dive *dive, parser_t *parser, int ngases)
 	for (i = 0; i < ngases; i++) {
 		int rc;
 		gasmix_t gasmix = {0};
+		int o2, he;
 
 		rc = parser_get_field(parser, FIELD_TYPE_GASMIX, i, &gasmix);
 		if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED)
@@ -132,8 +133,17 @@ static int parse_gasmixes(struct dive *dive, parser_t *parser, int ngases)
 		if (i >= MAX_CYLINDERS)
 			continue;
 
-		dive->cylinder[i].gasmix.o2.permille = gasmix.oxygen * 1000 + 0.5;
-		dive->cylinder[i].gasmix.he.permille = gasmix.helium * 1000 + 0.5;
+		o2 = gasmix.oxygen * 1000 + 0.5;
+		he = gasmix.helium * 1000 + 0.5;
+
+		/* Ignore bogus data - libdivecomputer does some crazy stuff */
+		if (o2 < 210 || o2 >= 1000)
+			o2 = 0;
+		if (he < 0 || he >= 800 || o2+he >= 1000)
+			he = 0;
+
+		dive->cylinder[i].gasmix.o2.permille = o2;
+		dive->cylinder[i].gasmix.he.permille = he;
 	}
 	return PARSER_STATUS_SUCCESS;
 }
