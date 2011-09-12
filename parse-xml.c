@@ -998,7 +998,7 @@ static void dive_start(void)
 	memset(&tm, 0, sizeof(tm));
 }
 
-static void sanitize_gasmix(gasmix_t *mix)
+static void sanitize_gasmix(struct gasmix *mix)
 {
 	unsigned int o2, he;
 

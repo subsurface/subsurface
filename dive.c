@@ -246,7 +246,7 @@ static void merge_cylinder_type(cylinder_type_t *res, cylinder_type_t *a, cylind
 	*res = *b;
 }
 
-static void merge_cylinder_mix(gasmix_t *res, gasmix_t *a, gasmix_t *b)
+static void merge_cylinder_mix(struct gasmix *res, struct gasmix *a, struct gasmix *b)
 {
 	if (a->o2.permille)
 		b = a;

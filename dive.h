@@ -69,10 +69,10 @@ typedef struct {
 	int grams;
 } weight_t;
 
-typedef struct {
+struct gasmix {
 	fraction_t o2;
 	fraction_t he;
-} gasmix_t;
+};
 
 typedef struct {
 	volume_t size;
@@ -82,7 +82,7 @@ typedef struct {
 
 typedef struct {
 	cylinder_type_t type;
-	gasmix_t gasmix;
+	struct gasmix gasmix;
 	pressure_t start, end;
 } cylinder_t;
 
