@@ -103,6 +103,87 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 	}
 }
 
+static int parse_gasmixes(parser_t *parser, int ngases)
+{
+	int i;
+
+	for (i = 0; i < ngases; i++) {
+		int rc;
+		gasmix_t gasmix = {0};
+
+		rc = parser_get_field(parser, FIELD_TYPE_GASMIX, i, &gasmix);
+		if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED)
+			return rc;
+
+		printf("<gasmix>\n"
+			"   <he>%.1f</he>\n"
+			"   <o2>%.1f</o2>\n"
+			"   <n2>%.1f</n2>\n"
+			"</gasmix>\n",
+			gasmix.helium * 100.0,
+			gasmix.oxygen * 100.0,
+			gasmix.nitrogen * 100.0);
+	}
+	return PARSER_STATUS_SUCCESS;
+}
+
+void
+sample_cb (parser_sample_type_t type, parser_sample_value_t value, void *userdata)
+{
+	int i;
+	static const char *events[] = {
+		"none", "deco", "rbt", "ascent", "ceiling", "workload", "transmitter",
+		"violation", "bookmark", "surface", "safety stop", "gaschange",
+		"safety stop (voluntary)", "safety stop (mandatory)", "deepstop",
+		"ceiling (safety stop)", "unknown", "divetime", "maxdepth",
+		"OLF", "PO2", "airtime", "rgbm", "heading", "tissue level warning"};
+
+	switch (type) {
+	case SAMPLE_TYPE_TIME:
+		printf("<sample>\n");
+		printf("   <time>%02u:%02u</time>\n", value.time / 60, value.time % 60);
+		break;
+	case SAMPLE_TYPE_DEPTH:
+		printf("   <depth>%.2f</depth>\n", value.depth);
+		break;
+	case SAMPLE_TYPE_PRESSURE:
+		printf("   <pressure tank=\"%u\">%.2f</pressure>\n", value.pressure.tank, value.pressure.value);
+		break;
+	case SAMPLE_TYPE_TEMPERATURE:
+		printf("   <temperature>%.2f</temperature>\n", value.temperature);
+		break;
+	case SAMPLE_TYPE_EVENT:
+		printf("   <event type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</event>\n",
+			value.event.type, value.event.time, value.event.flags, value.event.value, events[value.event.type]);
+		break;
+	case SAMPLE_TYPE_RBT:
+		printf("   <rbt>%u</rbt>\n", value.rbt);
+		break;
+	case SAMPLE_TYPE_HEARTBEAT:
+		printf("   <heartbeat>%u</heartbeat>\n", value.heartbeat);
+		break;
+	case SAMPLE_TYPE_BEARING:
+		printf("   <bearing>%u</bearing>\n", value.bearing);
+		break;
+	case SAMPLE_TYPE_VENDOR:
+		printf("   <vendor type=\"%u\" size=\"%u\">", value.vendor.type, value.vendor.size);
+		for (i = 0; i < value.vendor.size; ++i)
+			printf("%02X", ((unsigned char *) value.vendor.data)[i]);
+		printf("</vendor>\n");
+		break;
+	default:
+		break;
+	}
+}
+
+
+static int parse_samples(parser_t *parser)
+{
+	// Parse the sample data.
+	printf("Parsing the sample data.\n");
+	return parser_samples_foreach(parser, sample_cb, NULL);
+}
+
 static int dive_cb(const unsigned char *data, unsigned int size,
 	const unsigned char *fingerprint, unsigned int fsize,
 	void *userdata)
@@ -136,8 +217,58 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dt.year, dt.month, dt.day,
 		dt.hour, dt.minute, dt.second);
 
+	// Parse the divetime.
+	printf("Parsing the divetime.\n");
+	unsigned int divetime = 0;
+	rc = parser_get_field (parser, FIELD_TYPE_DIVETIME, 0, &divetime);
+	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+		error("Error parsing the divetime.");
+		parser_destroy(parser);
+		return rc;
+	}
+
+	printf("<divetime>%02u:%02u</divetime>\n",
+		divetime / 60, divetime % 60);
+
+	// Parse the maxdepth.
+	printf("Parsing the maxdepth.\n");
+	double maxdepth = 0.0;
+	rc = parser_get_field(parser, FIELD_TYPE_MAXDEPTH, 0, &maxdepth);
+	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+		error("Error parsing the maxdepth.");
+		parser_destroy(parser);
+		return rc;
+	}
+
+	printf("<maxdepth>%.2f</maxdepth>\n", maxdepth);
+
+	// Parse the gas mixes.
+	printf("Parsing the gas mixes.\n");
+	unsigned int ngases = 0;
+	rc = parser_get_field(parser, FIELD_TYPE_GASMIX_COUNT, 0, &ngases);
+	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+		error("Error parsing the gas mix count.");
+		parser_destroy(parser);
+		return rc;
+	}
+
+	rc = parse_gasmixes(parser, ngases);
+	if (rc != PARSER_STATUS_SUCCESS) {
+		error("Error parsing the gas mix.");
+		parser_destroy(parser);
+		return rc;
+	}
+
+	// Initialize the sample data.
+	rc = parse_samples(parser);
+	if (rc != PARSER_STATUS_SUCCESS) {
+		error("Error parsing the samples.");
+		parser_destroy(parser);
+		return rc;
+	}
+
 	parser_destroy(parser);
-	return PARSER_STATUS_SUCCESS;
+	return 1;
 }
 
 
