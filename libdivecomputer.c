@@ -17,6 +17,135 @@
 #include <atomics.h>
 #include <utils.h>
 
+static void error(const char *fmt, ...)
+{
+	va_list args;
+	GError *error;
+
+	va_start(args, fmt);
+	error = g_error_new_valist(
+		g_quark_from_string("divelog"),
+		DIVE_ERROR_PARSE, fmt, args);
+	va_end(args);
+	report_error(error);
+	g_error_free(error);
+}
+
+typedef struct device_data_t {
+	device_type_t type;
+	const char *name;
+	device_devinfo_t devinfo;
+	device_clock_t clock;
+} device_data_t;
+
+static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
+{
+	switch (devdata->type) {
+	case DEVICE_TYPE_SUUNTO_SOLUTION:
+		return suunto_solution_parser_create(parser);
+
+	case DEVICE_TYPE_SUUNTO_EON:
+		return suunto_eon_parser_create(parser, 0);
+
+	case DEVICE_TYPE_SUUNTO_VYPER:
+		if (devdata->devinfo.model == 0x01)
+			return suunto_eon_parser_create(parser, 1);
+		return suunto_vyper_parser_create(parser);
+
+	case DEVICE_TYPE_SUUNTO_VYPER2:
+	case DEVICE_TYPE_SUUNTO_D9:
+		return suunto_d9_parser_create(parser, devdata->devinfo.model);
+
+	case DEVICE_TYPE_UWATEC_ALADIN:
+	case DEVICE_TYPE_UWATEC_MEMOMOUSE:
+		return uwatec_memomouse_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
+
+	case DEVICE_TYPE_UWATEC_SMART:
+		return uwatec_smart_parser_create(parser, devdata->devinfo.model, devdata->clock.devtime, devdata->clock.systime);
+
+	case DEVICE_TYPE_REEFNET_SENSUS:
+		return reefnet_sensus_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
+
+	case DEVICE_TYPE_REEFNET_SENSUSPRO:
+		return reefnet_sensuspro_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
+
+	case DEVICE_TYPE_REEFNET_SENSUSULTRA:
+		return reefnet_sensusultra_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
+
+	case DEVICE_TYPE_OCEANIC_VTPRO:
+		return oceanic_vtpro_parser_create(parser);
+
+	case DEVICE_TYPE_OCEANIC_VEO250:
+		return oceanic_veo250_parser_create(parser, devdata->devinfo.model);
+
+	case DEVICE_TYPE_OCEANIC_ATOM2:
+		return oceanic_atom2_parser_create(parser, devdata->devinfo.model);
+
+	case DEVICE_TYPE_MARES_NEMO:
+	case DEVICE_TYPE_MARES_PUCK:
+		return mares_nemo_parser_create(parser, devdata->devinfo.model);
+
+	case DEVICE_TYPE_MARES_ICONHD:
+		return mares_iconhd_parser_create(parser);
+
+	case DEVICE_TYPE_HW_OSTC:
+		return hw_ostc_parser_create(parser);
+
+	case DEVICE_TYPE_CRESSI_EDY:
+	case DEVICE_TYPE_ZEAGLE_N2ITION3:
+		return cressi_edy_parser_create(parser, devdata->devinfo.model);
+
+	case DEVICE_TYPE_ATOMICS_COBALT:
+		return atomics_cobalt_parser_create(parser);
+
+	default:
+		return PARSER_STATUS_ERROR;
+	}
+}
+
+static int dive_cb(const unsigned char *data, unsigned int size,
+	const unsigned char *fingerprint, unsigned int fsize,
+	void *userdata)
+{
+	int rc;
+	parser_t *parser = NULL;
+	device_data_t *devdata = userdata;
+	dc_datetime_t dt = {0};
+
+	rc = create_parser(devdata, &parser);
+	if (rc != PARSER_STATUS_SUCCESS) {
+		error("Unable to create parser for %s", devdata->name);
+		return rc;
+	}
+
+	rc = parser_set_data(parser, data, size);
+	if (rc != PARSER_STATUS_SUCCESS) {
+		error("Error registering the data.");
+		parser_destroy(parser);
+		return rc;
+	}
+
+	rc = parser_get_datetime(parser, &dt);
+	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+		error("Error parsing the datetime.");
+		parser_destroy (parser);
+		return rc;
+	}
+
+	printf("<datetime>%04i-%02i-%02i %02i:%02i:%02i</datetime>\n",
+		dt.year, dt.month, dt.day,
+		dt.hour, dt.minute, dt.second);
+
+	parser_destroy(parser);
+	return PARSER_STATUS_SUCCESS;
+}
+
+
+static device_status_t import_device_data(device_t *device, device_data_t *devicedata)
+{
+	return device_foreach(device, dive_cb, devicedata);
+}
+
 static device_status_t device_open(const char *devname,
 	device_type_t type,
 	device_t **device)
@@ -90,20 +219,6 @@ static device_status_t device_open(const char *devname,
 	}
 }
 
-static void error(const char *fmt, ...)
-{
-	va_list args;
-	GError *error;
-
-	va_start(args, fmt);
-	error = g_error_new_valist(
-		g_quark_from_string("divelog"),
-		DIVE_ERROR_PARSE, fmt, args);
-	va_end(args);
-	report_error(error);
-	g_error_free(error);
-}
-
 static void
 event_cb (device_t *device, device_event_t event, const void *data, void *userdata)
 {
@@ -121,6 +236,10 @@ static void do_import(const char *computer, device_type_t type)
 	const char *devname = "/dev/ttyUSB0";
 	device_t *device = NULL;
 	device_status_t rc;
+	device_data_t devicedata = {
+		.type = type,
+		.name = computer,
+	};
 
 	rc = device_open(devname, type, &device);
 	if (rc != DEVICE_STATUS_SUCCESS) {
@@ -130,7 +249,7 @@ static void do_import(const char *computer, device_type_t type)
 
 	// Register the event handler.
 	int events = DEVICE_EVENT_WAITING | DEVICE_EVENT_PROGRESS | DEVICE_EVENT_DEVINFO | DEVICE_EVENT_CLOCK;
-	rc = device_set_events(device, events, event_cb, NULL);
+	rc = device_set_events(device, events, event_cb, &devicedata);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Error registering the event handler.");
 		device_close(device);
@@ -138,14 +257,21 @@ static void do_import(const char *computer, device_type_t type)
 	}
 
 	// Register the cancellation handler.
-	rc = device_set_cancel(device, cancel_cb, NULL);
+	rc = device_set_cancel(device, cancel_cb, &devicedata);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Error registering the cancellation handler.");
 		device_close(device);
 		return;
 	}
 
-	error("No actual code yet for importing (%s: %s)", computer, devname);
+	rc = import_device_data(device, &devicedata);
+	if (rc != DEVICE_STATUS_SUCCESS) {
+		error("Dive data import error");
+		device_close(device);
+		return;
+	}
+
+	device_close(device);
 }
 
 /*
