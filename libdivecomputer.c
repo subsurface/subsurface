@@ -222,6 +222,35 @@ static device_status_t device_open(const char *devname,
 static void
 event_cb (device_t *device, device_event_t event, const void *data, void *userdata)
 {
+	const device_progress_t *progress = (device_progress_t *) data;
+	const device_devinfo_t *devinfo = (device_devinfo_t *) data;
+	const device_clock_t *clock = (device_clock_t *) data;
+	device_data_t *devdata = (device_data_t *) userdata;
+
+	switch (event) {
+	case DEVICE_EVENT_WAITING:
+		printf("Event: waiting for user action\n");
+		break;
+	case DEVICE_EVENT_PROGRESS:
+		printf("Event: progress %3.2f%% (%u/%u)\n",
+			100.0 * (double) progress->current / (double) progress->maximum,
+			progress->current, progress->maximum);
+		break;
+	case DEVICE_EVENT_DEVINFO:
+		devdata->devinfo = *devinfo;
+		printf("Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
+			devinfo->model, devinfo->model,
+			devinfo->firmware, devinfo->firmware,
+			devinfo->serial, devinfo->serial);
+		break;
+	case DEVICE_EVENT_CLOCK:
+		devdata->clock = *clock;
+		printf("Event: systime=%lld, devtime=%u\n",
+			clock->systime, clock->devtime);
+		break;
+	default:
+		break;
+	}
 }
 
 static int
