@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 
 #include "dive.h"
+#include "divelist.h"
 #include "display.h"
 
 /* libdivecomputer */
@@ -116,7 +117,7 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 	}
 }
 
-static int parse_gasmixes(parser_t *parser, int ngases)
+static int parse_gasmixes(struct dive *dive, parser_t *parser, int ngases)
 {
 	int i;
 
@@ -128,20 +129,17 @@ static int parse_gasmixes(parser_t *parser, int ngases)
 		if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED)
 			return rc;
 
-		printf("<gasmix>\n"
-			"   <he>%.1f</he>\n"
-			"   <o2>%.1f</o2>\n"
-			"   <n2>%.1f</n2>\n"
-			"</gasmix>\n",
-			gasmix.helium * 100.0,
-			gasmix.oxygen * 100.0,
-			gasmix.nitrogen * 100.0);
+		if (i >= MAX_CYLINDERS)
+			continue;
+
+		dive->cylinder[i].gasmix.o2.permille = gasmix.oxygen * 1000 + 0.5;
+		dive->cylinder[i].gasmix.he.permille = gasmix.helium * 1000 + 0.5;
 	}
 	return PARSER_STATUS_SUCCESS;
 }
 
 void
-sample_cb (parser_sample_type_t type, parser_sample_value_t value, void *userdata)
+sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata)
 {
 	int i;
 	static const char *events[] = {
@@ -150,20 +148,31 @@ sample_cb (parser_sample_type_t type, parser_sample_value_t value, void *userdat
 		"safety stop (voluntary)", "safety stop (mandatory)", "deepstop",
 		"ceiling (safety stop)", "unknown", "divetime", "maxdepth",
 		"OLF", "PO2", "airtime", "rgbm", "heading", "tissue level warning"};
+	struct dive **divep = userdata;
+	struct dive *dive = *divep;
+	struct sample *sample;
+
+	/*
+	 * We fill in the "previous" sample - except for SAMPLE_TYPE_TIME,
+	 * which creates a new one.
+	 */
+	sample = dive->samples ? dive->sample+dive->samples-1 : NULL;
 
 	switch (type) {
 	case SAMPLE_TYPE_TIME:
-		printf("<sample>\n");
-		printf("   <time>%02u:%02u</time>\n", value.time / 60, value.time % 60);
+		sample = prepare_sample(divep);
+		sample->time.seconds = value.time;
+		finish_sample(*divep, sample);
 		break;
 	case SAMPLE_TYPE_DEPTH:
-		printf("   <depth>%.2f</depth>\n", value.depth);
+		sample->depth.mm = value.depth * 1000 + 0.5;
 		break;
 	case SAMPLE_TYPE_PRESSURE:
-		printf("   <pressure tank=\"%u\">%.2f</pressure>\n", value.pressure.tank, value.pressure.value);
+		sample->cylinderindex = value.pressure.tank;
+		sample->cylinderpressure.mbar = value.pressure.value * 1000 + 0.5;
 		break;
 	case SAMPLE_TYPE_TEMPERATURE:
-		printf("   <temperature>%.2f</temperature>\n", value.temperature);
+		sample->temperature.mkelvin = (value.temperature + 273.15) * 1000 + 0.5;
 		break;
 	case SAMPLE_TYPE_EVENT:
 		printf("   <event type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</event>\n",
@@ -190,11 +199,11 @@ sample_cb (parser_sample_type_t type, parser_sample_value_t value, void *userdat
 }
 
 
-static int parse_samples(parser_t *parser)
+static int parse_samples(struct dive **divep, parser_t *parser)
 {
 	// Parse the sample data.
 	printf("Parsing the sample data.\n");
-	return parser_samples_foreach(parser, sample_cb, NULL);
+	return parser_samples_foreach(parser, sample_cb, divep);
 }
 
 static int dive_cb(const unsigned char *data, unsigned int size,
@@ -205,6 +214,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	parser_t *parser = NULL;
 	device_data_t *devdata = userdata;
 	dc_datetime_t dt = {0};
+	struct tm tm;
+	struct dive *dive;
 
 	/* Christ, this is hacky */
 	run_gtk_mainloop();
@@ -222,6 +233,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return rc;
 	}
 
+	dive = alloc_dive();
 	rc = parser_get_datetime(parser, &dt);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
 		error("Error parsing the datetime.");
@@ -229,9 +241,13 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return rc;
 	}
 
-	printf("<datetime>%04i-%02i-%02i %02i:%02i:%02i</datetime>\n",
-		dt.year, dt.month, dt.day,
-		dt.hour, dt.minute, dt.second);
+	tm.tm_year = dt.year;
+	tm.tm_mon = dt.month-1;
+	tm.tm_mday = dt.day;
+	tm.tm_hour = dt.hour;
+	tm.tm_min = dt.minute;
+	tm.tm_sec = dt.second;
+	dive->when = utc_mktime(&tm);
 
 	// Parse the divetime.
 	printf("Parsing the divetime.\n");
@@ -242,9 +258,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		parser_destroy(parser);
 		return rc;
 	}
-
-	printf("<divetime>%02u:%02u</divetime>\n",
-		divetime / 60, divetime % 60);
+	dive->duration.seconds = divetime;
 
 	// Parse the maxdepth.
 	printf("Parsing the maxdepth.\n");
@@ -255,8 +269,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		parser_destroy(parser);
 		return rc;
 	}
-
-	printf("<maxdepth>%.2f</maxdepth>\n", maxdepth);
+	dive->maxdepth.mm = maxdepth * 1000 + 0.5;
 
 	// Parse the gas mixes.
 	printf("Parsing the gas mixes.\n");
@@ -268,7 +281,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return rc;
 	}
 
-	rc = parse_gasmixes(parser, ngases);
+	rc = parse_gasmixes(dive, parser, ngases);
 	if (rc != PARSER_STATUS_SUCCESS) {
 		error("Error parsing the gas mix.");
 		parser_destroy(parser);
@@ -276,12 +289,13 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	// Initialize the sample data.
-	rc = parse_samples(parser);
+	rc = parse_samples(&dive, parser);
 	if (rc != PARSER_STATUS_SUCCESS) {
 		error("Error parsing the samples.");
 		parser_destroy(parser);
 		return rc;
 	}
+	record_dive(dive);
 
 	parser_destroy(parser);
 	return 1;
@@ -565,4 +579,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		break;
 	}
 	gtk_widget_destroy(dialog);
+
+	report_dives();
+	dive_list_update_dives(dive_list);
 }

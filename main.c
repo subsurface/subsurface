@@ -37,7 +37,7 @@ static int sortfn(const void *_a, const void *_b)
  * This doesn't really report anything at all. We just sort the
  * dives, the GUI does the reporting
  */
-static void report_dives(void)
+void report_dives(void)
 {
 	int i;
 
