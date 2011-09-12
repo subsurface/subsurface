@@ -16,7 +16,7 @@ struct dive_table dive_table;
 /*
  * Add a dive into the dive_table array
  */
-static void record_dive(struct dive *dive)
+void record_dive(struct dive *dive)
 {
 	int nr = dive_table.nr, allocated = dive_table.allocated;
 	struct dive **dives = dive_table.dives;
@@ -90,7 +90,6 @@ const struct units IMPERIAL_units = {
 /*
  * Dive info as it is being built up..
  */
-static int alloc_samples;
 static struct dive *dive;
 static struct sample *sample;
 static struct tm tm;
@@ -984,17 +983,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
  */
 static void dive_start(void)
 {
-	unsigned int size;
-
 	if (dive)
 		return;
-
-	alloc_samples = 5;
-	size = dive_size(alloc_samples);
-	dive = malloc(size);
-	if (!dive)
-		exit(1);
-	memset(dive, 0, size);
+	dive = alloc_dive();
 	memset(&tm, 0, sizeof(tm));
 }
 
@@ -1143,22 +1134,7 @@ static void cylinder_end(void)
 
 static void sample_start(void)
 {
-	int nr;
-
-	if (!dive)
-		return;
-	nr = dive->samples;
-	if (nr >= alloc_samples) {
-		unsigned int size;
-
-		alloc_samples = (alloc_samples * 3)/2 + 10;
-		size = dive_size(alloc_samples);
-		dive = realloc(dive, size);
-		if (!dive)
-			return;
-	}
-	sample = dive->sample + nr;
-	memset(sample, 0, sizeof(*sample));
+	sample = prepare_sample(&dive);
 	event_index = 0;
 }
 
@@ -1167,8 +1143,8 @@ static void sample_end(void)
 	if (!dive)
 		return;
 
+	finish_sample(dive, sample);
 	sample = NULL;
-	dive->samples++;
 }
 
 static void entry(const char *name, int size, const char *raw)

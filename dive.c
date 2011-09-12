@@ -3,6 +3,51 @@
 
 #include "dive.h"
 
+struct dive *alloc_dive(void)
+{
+	const int initial_samples = 5;
+	unsigned int size;
+	struct dive *dive;
+
+	size = dive_size(initial_samples);
+	dive = malloc(size);
+	if (!dive)
+		exit(1);
+	memset(dive, 0, size);
+	dive->alloc_samples = initial_samples;
+	return dive;
+}
+
+struct sample *prepare_sample(struct dive **divep)
+{
+	struct dive *dive = *divep;
+	if (dive) {
+		int nr = dive->samples;
+		int alloc_samples = dive->alloc_samples;
+		struct sample *sample;
+		if (nr >= alloc_samples) {
+			unsigned int size;
+
+			alloc_samples = (alloc_samples * 3)/2 + 10;
+			size = dive_size(alloc_samples);
+			dive = realloc(dive, size);
+			if (!dive)
+				return NULL;
+			dive->alloc_samples = alloc_samples;
+			*divep = dive;
+		}
+		sample = dive->sample + nr;
+		memset(sample, 0, sizeof(*sample));
+		return sample;
+	}
+	return NULL;
+}
+
+void finish_sample(struct dive *dive, struct sample *sample)
+{
+	dive->samples++;
+}
+
 /*
  * So when we re-calculate maxdepth and meandepth, we will
  * not override the old numbers if they are close to the
@@ -133,24 +178,15 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
 #define MERGE_MIN(res, a, b, n) res->n = (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 
-static int alloc_samples;
-
 static struct dive *add_sample(struct sample *sample, int time, struct dive *dive)
 {
-	int nr = dive->samples;
-	struct sample *d;
+	struct sample *p = prepare_sample(&dive);
 
-	if (nr >= alloc_samples) {
-		alloc_samples = (alloc_samples + 64) * 3 / 2;
-		dive = realloc(dive, dive_size(alloc_samples));
-		if (!dive)
-			return NULL;
-	}
-	dive->samples = nr+1;
-	d = dive->sample + nr;
-
-	*d = *sample;
-	d->time.seconds = time;
+	if (!p)
+		return NULL;
+	*p = *sample;
+	p->time.seconds = time;
+	finish_sample(dive, p);
 	return dive;
 }
 
@@ -274,15 +310,12 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	if (a->when != b->when)
 		return NULL;
 
-	alloc_samples = 5;
-	res = malloc(dive_size(alloc_samples));
-	if (!res)
-		return NULL;
-	memset(res, 0, dive_size(alloc_samples));
+	res = alloc_dive();
 
 	res->when = a->when;
 	res->location = merge_text(a->location, b->location);
 	res->notes = merge_text(a->notes, b->notes);
+	MERGE_MAX(res, a, b, number);
 	MERGE_MAX(res, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;
 	MERGE_MAX(res, a, b, duration.seconds);
