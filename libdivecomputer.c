@@ -17,6 +17,18 @@
 #include <atomics.h>
 #include <utils.h>
 
+/*
+ * I'd love to do a while-loop here for pending events, but
+ * that seems to screw up with the dive computer reading timing.
+ *
+ * I may need to spawn a new thread to do the computer
+ * reading stuff..
+ */
+static int run_gtk_mainloop(void)
+{
+	return gtk_main_iteration_do(0);
+}
+
 static void error(const char *fmt, ...)
 {
 	va_list args;
@@ -33,7 +45,8 @@ static void error(const char *fmt, ...)
 
 typedef struct device_data_t {
 	device_type_t type;
-	const char *name;
+	const char *name, *devname;
+	GtkWidget *progressbar;
 	device_devinfo_t devinfo;
 	device_clock_t clock;
 } device_data_t;
@@ -193,6 +206,9 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	device_data_t *devdata = userdata;
 	dc_datetime_t dt = {0};
 
+	/* Christ, this is hacky */
+	run_gtk_mainloop();
+
 	rc = create_parser(devdata, &parser);
 	if (rc != PARSER_STATUS_SUCCESS) {
 		error("Unable to create parser for %s", devdata->name);
@@ -351,21 +367,23 @@ static device_status_t device_open(const char *devname,
 }
 
 static void
-event_cb (device_t *device, device_event_t event, const void *data, void *userdata)
+event_cb(device_t *device, device_event_t event, const void *data, void *userdata)
 {
 	const device_progress_t *progress = (device_progress_t *) data;
 	const device_devinfo_t *devinfo = (device_devinfo_t *) data;
 	const device_clock_t *clock = (device_clock_t *) data;
 	device_data_t *devdata = (device_data_t *) userdata;
 
+	/* Christ, this is hacky */
+	run_gtk_mainloop();
+
 	switch (event) {
 	case DEVICE_EVENT_WAITING:
 		printf("Event: waiting for user action\n");
 		break;
 	case DEVICE_EVENT_PROGRESS:
-		printf("Event: progress %3.2f%% (%u/%u)\n",
-			100.0 * (double) progress->current / (double) progress->maximum,
-			progress->current, progress->maximum);
+		gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(devdata->progressbar),
+			(double) progress->current / (double) progress->maximum);
 		break;
 	case DEVICE_EVENT_DEVINFO:
 		devdata->devinfo = *devinfo;
@@ -385,31 +403,27 @@ event_cb (device_t *device, device_event_t event, const void *data, void *userda
 }
 
 static int
-cancel_cb (void *userdata)
+cancel_cb(void *userdata)
 {
-	return 0;
+	return run_gtk_mainloop();
 }
 
-static void do_import(const char *computer, device_type_t type)
+static void do_import(device_data_t *data)
 {
 	/* FIXME! Needs user input! */
 	const char *devname = "/dev/ttyUSB0";
 	device_t *device = NULL;
 	device_status_t rc;
-	device_data_t devicedata = {
-		.type = type,
-		.name = computer,
-	};
 
-	rc = device_open(devname, type, &device);
+	rc = device_open(devname, data->type, &device);
 	if (rc != DEVICE_STATUS_SUCCESS) {
-		error("Unable to open %s (%s)", computer, devname);
+		error("Unable to open %s (%s)", data->name, data->devname);
 		return;
 	}
 
 	// Register the event handler.
 	int events = DEVICE_EVENT_WAITING | DEVICE_EVENT_PROGRESS | DEVICE_EVENT_DEVINFO | DEVICE_EVENT_CLOCK;
-	rc = device_set_events(device, events, event_cb, &devicedata);
+	rc = device_set_events(device, events, event_cb, data);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Error registering the event handler.");
 		device_close(device);
@@ -417,14 +431,14 @@ static void do_import(const char *computer, device_type_t type)
 	}
 
 	// Register the cancellation handler.
-	rc = device_set_cancel(device, cancel_cb, &devicedata);
+	rc = device_set_cancel(device, cancel_cb, data);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Error registering the cancellation handler.");
 		device_close(device);
 		return;
 	}
 
-	rc = import_device_data(device, &devicedata);
+	rc = import_device_data(device, data);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Dive data import error");
 		device_close(device);
@@ -490,7 +504,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
 	GtkCellRenderer *renderer;
 
 	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), hbox);
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, FALSE, 3);
 
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 	fill_computer_list(model);
@@ -508,8 +522,11 @@ static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *hbox;
 	GtkComboBox *computer;
+	device_data_t devicedata = {
+		.devname = "/dev/ttyUSB0",
+	};
 
 	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
 		GTK_WINDOW(main_window),
@@ -519,6 +536,11 @@ void import_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	computer = dive_computer_selector(dialog);
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 3);
+	devicedata.progressbar = gtk_progress_bar_new();
+	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progressbar);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -535,11 +557,12 @@ void import_dialog(GtkWidget *w, gpointer data)
 			0, &comp,
 			1, &type,
 			-1);
-		do_import(comp, type);
+		devicedata.type = type;
+		devicedata.name = comp;
+		do_import(&devicedata);
 		break;
 	default:
 		break;
 	}
 	gtk_widget_destroy(dialog);
 }
-
