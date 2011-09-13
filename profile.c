@@ -297,11 +297,9 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	cairo_stroke(cr);
 }
 
-static void plot_temperature_profile(struct dive *dive, struct graphics_context *gc)
+static int setup_temperature_limits(struct dive *dive, struct graphics_context *gc)
 {
 	int i;
-	cairo_t *cr = gc->cr;
-	int begins = 0, sec = 0;
 	int maxtime, mintemp, maxtemp;
 
 	/* Get plot scaling limits */
@@ -313,32 +311,75 @@ static void plot_temperature_profile(struct dive *dive, struct graphics_context 
 		int mkelvin = sample->temperature.mkelvin;
 		if (!mkelvin)
 			continue;
-		if (!begins) {
-			begins = mkelvin;
-			sec = sample->time.seconds;
-		}
 		if (mkelvin > maxtemp)
 			maxtemp = mkelvin;
 		if (mkelvin < mintemp)
 			mintemp = mkelvin;
 	}
-	if (mintemp >= maxtemp)
-		return;
 
 	gc->leftx = 0; gc->rightx = maxtime;
 	/* Show temperatures in roughly the lower third */
 	gc->topy = maxtemp + (maxtemp - mintemp)*2;
 	gc->bottomy = mintemp - (maxtemp - mintemp)/2;
 
+	return maxtemp > mintemp;
+}
+
+static void plot_temperature_text(struct dive *dive, struct graphics_context *gc)
+{
+	int i;
+	static const text_render_options_t tro = {12, 0.2, 0.2, 1.0, LEFT, TOP};
+
+	int last = 0;
+
+	if (!setup_temperature_limits(dive, gc))
+		return;
+
+	for (i = 0; i < dive->samples; i++) {
+		const char *unit;
+		struct sample *sample = dive->sample+i;
+		int mkelvin = sample->temperature.mkelvin;
+		int sec, deg;
+		if (!mkelvin)
+			continue;
+		sec = sample->time.seconds;
+		if (sec < last)
+			continue;
+		last = sec + 300;
+		if (output_units.temperature == FAHRENHEIT) {
+			deg = to_F(sample->temperature);
+			unit = "F";
+		} else {
+			deg = to_C(sample->temperature);
+			unit = "C";
+		}
+		plot_text(gc, &tro, sec, mkelvin, "%d %s", deg, unit);
+	}
+}
+
+static void plot_temperature_profile(struct dive *dive, struct graphics_context *gc)
+{
+	int i;
+	cairo_t *cr = gc->cr;
+	int last = 0;
+
+	if (!setup_temperature_limits(dive, gc))
+		return;
+
 	cairo_set_source_rgba(cr, 0.2, 0.2, 1.0, 0.8);
-	move_to(gc, sec, begins);
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample+i;
 		int mkelvin = sample->temperature.mkelvin;
-		if (!mkelvin)
-			mkelvin = begins;
-		line_to(gc, sample->time.seconds, mkelvin);
-		begins = mkelvin;
+		if (!mkelvin) {
+			if (!last)
+				continue;
+			mkelvin = last;
+		}
+		if (last)
+			line_to(gc, sample->time.seconds, mkelvin);
+		else
+			move_to(gc, sample->time.seconds, mkelvin);
+		last = mkelvin;
 	}
 	cairo_stroke(cr);
 }
@@ -625,16 +666,17 @@ static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	gc->maxx = (w - 2*topx);
 	gc->maxy = (h - 2*topy);
 
+	/* Temperature profile */
+	plot_temperature_profile(dive, gc);
+
 	/* Cylinder pressure plot */
 	plot_cylinder_pressure(dive, gc);
 
 	/* Depth profile */
 	plot_depth_profile(dive, gc, pi);
 
-	/* Temperature profile */
-	plot_temperature_profile(dive, gc);
-
 	/* Text on top of all graphs.. */
+	plot_temperature_text(dive, gc);
 	plot_depth_text(dive, gc, pi);
 	plot_cylinder_pressure_text(dive, gc);
 
