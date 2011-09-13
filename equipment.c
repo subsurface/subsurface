@@ -10,7 +10,8 @@
 
 static int cylinder_changed;
 static GtkComboBox *cylinder_description;
-static GtkSpinButton *cylinder_size, *cylinder_pressure, *nitrox_value;
+static GtkSpinButton *cylinder_size, *cylinder_pressure;
+static GtkWidget *nitrox_value, *nitrox_button;
 
 static void set_cylinder_spinbuttons(int ml, int mbar)
 {
@@ -129,9 +130,11 @@ void show_dive_equipment(struct dive *dive)
 
 	set_cylinder_spinbuttons(cyl->type.size.mliter, cyl->type.workingpressure.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
+	gtk_widget_set_sensitive(nitrox_value, !!o2);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(nitrox_button), !!o2);
 	if (!o2)
 		o2 = 21.0;
-	gtk_spin_button_set_value(nitrox_value, o2);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(nitrox_value), o2);
 }
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
@@ -190,7 +193,9 @@ static void record_cylinder_changes(struct dive *dive)
 	desc = gtk_combo_box_get_active_text(box);
 	volume = gtk_spin_button_get_value(cylinder_size);
 	pressure = gtk_spin_button_get_value(cylinder_pressure);
-	o2 = gtk_spin_button_get_value(nitrox_value)*10 + 0.5;
+	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(nitrox_value))*10 + 0.5;
+	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(nitrox_button)))
+		o2 = 0;
 	fill_cylinder_info(dive->cylinder+0, desc, volume, pressure, o2);
 }
 
@@ -270,6 +275,15 @@ static void fill_tank_list(GtkListStore *store)
 	}
 }
 
+static void nitrox_cb(GtkToggleButton *button, gpointer data)
+{
+	GtkWidget *nitrox_value = data;
+	int state;
+
+	state = gtk_toggle_button_get_active(button);
+	gtk_widget_set_sensitive(nitrox_value, state);
+}
+
 static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 {
 	GtkWidget *frame, *hbox;
@@ -302,8 +316,13 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	cylinder_pressure = GTK_SPIN_BUTTON(widget);
 
 	widget = create_spinbutton(hbox, "Nitrox", 21, 100, 0.1);
-	nitrox_value = GTK_SPIN_BUTTON(widget);
-	gtk_spin_button_set_range(nitrox_value, 21.0, 100.0);
+	nitrox_value = widget;
+	nitrox_button = gtk_check_button_new();
+	gtk_box_pack_start(GTK_BOX(gtk_widget_get_parent(nitrox_value)),
+		nitrox_button, FALSE, FALSE, 3);
+	g_signal_connect(nitrox_button, "toggled", G_CALLBACK(nitrox_cb), nitrox_value);
+
+	gtk_spin_button_set_range(GTK_SPIN_BUTTON(nitrox_value), 21.0, 100.0);
 }
 
 static GtkListStore *create_tank_size_model(void)
