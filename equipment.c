@@ -286,25 +286,22 @@ static void nitrox_cb(GtkToggleButton *button, gpointer data)
 
 static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 {
-	GtkWidget *frame, *hbox;
+	GtkWidget *frame, *hbox, *hbox2;
 	GtkWidget *widget;
 	char buffer[80];
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, FALSE, 0);
 
-	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr);
+	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr+1);
 	frame = gtk_frame_new(buffer);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_container_add(GTK_CONTAINER(frame), hbox);
-
-	frame = gtk_frame_new("Description");
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
+	hbox2 = gtk_hbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), hbox2);
 
 	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
-	gtk_container_add(GTK_CONTAINER(frame), widget);
+	gtk_box_pack_start(GTK_BOX(hbox2), widget, FALSE, TRUE, 0);
 
 	cylinder_description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), NULL);
