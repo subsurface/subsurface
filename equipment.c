@@ -9,15 +9,16 @@
 #include "divelist.h"
 
 struct cylinder_widget {
-	int changed;
+	int index, changed;
+	const char *name;
 	GtkComboBox *description;
 	GtkSpinButton *size, *pressure;
 	GtkWidget *o2, *gasmix_button;
 };
 
-static struct cylinder_widget cylinder;
+static struct cylinder_widget gtk_cylinder[MAX_CYLINDERS];
 
-static void set_cylinder_spinbuttons(int ml, int mbar)
+static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
 {
 	double volume, pressure;
 
@@ -33,8 +34,8 @@ static void set_cylinder_spinbuttons(int ml, int mbar)
 		}
 	}
 
-	gtk_spin_button_set_value(cylinder.size, volume);
-	gtk_spin_button_set_value(cylinder.pressure, pressure);
+	gtk_spin_button_set_value(cylinder->size, volume);
+	gtk_spin_button_set_value(cylinder->pressure, pressure);
 }
 
 static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
@@ -42,11 +43,12 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	GtkTreeIter iter;
 	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
 	GValue value1 = {0, }, value2 = {0,};
-	cylinder_t *cyl = current_dive->cylinder + 0;
+	struct cylinder_widget *cylinder = data;
+	cylinder_t *cyl = current_dive->cylinder + cylinder->index;
 
 	/* Did the user set it to some non-standard value? */
 	if (!gtk_combo_box_get_active_iter(combo_box, &iter)) {
-		cylinder.changed = 1;
+		cylinder->changed = 1;
 		return;
 	}
 
@@ -55,7 +57,7 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	 * the description by hand. Whatever. So ignore them if
 	 * they are no-ops.
 	 */
-	if (!cylinder.changed && cyl->type.description) {
+	if (!cylinder->changed && cyl->type.description) {
 		int same;
 		char *desc = gtk_combo_box_get_active_text(combo_box);
 
@@ -64,12 +66,12 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 		if (same)
 			return;
 	}
-	cylinder.changed = 1;
+	cylinder->changed = 1;
 
 	gtk_tree_model_get_value(model, &iter, 1, &value1);
 	gtk_tree_model_get_value(model, &iter, 2, &value2);
 
-	set_cylinder_spinbuttons(g_value_get_int(&value1), g_value_get_int(&value2));
+	set_cylinder_spinbuttons(cylinder, g_value_get_int(&value1), g_value_get_int(&value2));
 }
 
 /*
@@ -84,25 +86,26 @@ static gboolean match_cylinder(GtkTreeModel *model,
 				gpointer data)
 {
 	const char *name;
-	const char *desc = data;
+	struct cylinder_widget *cylinder = data;
 	GValue value = {0, };
 
 	gtk_tree_model_get_value(model, iter, 0, &value);
 	name = g_value_get_string(&value);
-	if (strcmp(desc, name))
+	if (strcmp(cylinder->name, name))
 		return FALSE;
-	gtk_combo_box_set_active_iter(cylinder.description, iter);
+	gtk_combo_box_set_active_iter(cylinder->description, iter);
 	found_match = 1;
 	return TRUE;
 }
 
-static void add_cylinder(const char *desc, int ml, int mbar)
+static void add_cylinder(struct cylinder_widget *cylinder, const char *desc, int ml, int mbar)
 {
 	GtkTreeModel *model;
 
 	found_match = 0;
-	model = gtk_combo_box_get_model(cylinder.description);
-	gtk_tree_model_foreach(model, match_cylinder, (gpointer)desc);
+	model = gtk_combo_box_get_model(cylinder->description);
+	cylinder->name = desc;
+	gtk_tree_model_foreach(model, match_cylinder, cylinder);
 
 	if (!found_match) {
 		GtkListStore *store = GTK_LIST_STORE(model);
@@ -114,7 +117,7 @@ static void add_cylinder(const char *desc, int ml, int mbar)
 			1, ml,
 			2, mbar,
 			-1);
-		gtk_combo_box_set_active_iter(cylinder.description, &iter);
+		gtk_combo_box_set_active_iter(cylinder->description, &iter);
 	}
 }
 
@@ -122,6 +125,7 @@ void show_dive_equipment(struct dive *dive)
 {
 	cylinder_t *cyl = &dive->cylinder[0];
 	const char *desc = cyl->type.description;
+	struct cylinder_widget *cylinder = &gtk_cylinder[0];
 	int ml, mbar;
 	double o2;
 
@@ -130,15 +134,15 @@ void show_dive_equipment(struct dive *dive)
 
 	ml = cyl->type.size.mliter;
 	mbar = cyl->type.workingpressure.mbar;
-	add_cylinder(desc, ml, mbar);
+	add_cylinder(cylinder, desc, ml, mbar);
 
-	set_cylinder_spinbuttons(cyl->type.size.mliter, cyl->type.workingpressure.mbar);
+	set_cylinder_spinbuttons(cylinder, cyl->type.size.mliter, cyl->type.workingpressure.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
-	gtk_widget_set_sensitive(cylinder.o2, !!o2);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cylinder.gasmix_button), !!o2);
+	gtk_widget_set_sensitive(cylinder->o2, !!o2);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button), !!o2);
 	if (!o2)
 		o2 = 21.0;
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder.o2), o2);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->o2), o2);
 }
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
@@ -159,7 +163,7 @@ static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double mi
 	return button;
 }
 
-static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume, double pressure, int o2)
+static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl, const char *desc, double volume, double pressure, int o2)
 {
 	int mbar, ml;
 
@@ -184,23 +188,24 @@ static void fill_cylinder_info(cylinder_t *cyl, const char *desc, double volume,
 	/*
 	 * Also, insert it into the model if it doesn't already exist
 	 */
-	add_cylinder(desc, ml, mbar);
+	add_cylinder(cylinder, desc, ml, mbar);
 }
 
 static void record_cylinder_changes(struct dive *dive)
 {
 	const gchar *desc;
-	GtkComboBox *box = cylinder.description;
+	struct cylinder_widget *cylinder = &gtk_cylinder[0];
+	GtkComboBox *box = cylinder->description;
 	double volume, pressure;
 	int o2;
 
 	desc = gtk_combo_box_get_active_text(box);
-	volume = gtk_spin_button_get_value(cylinder.size);
-	pressure = gtk_spin_button_get_value(cylinder.pressure);
-	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder.o2))*10 + 0.5;
-	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder.gasmix_button)))
+	volume = gtk_spin_button_get_value(cylinder->size);
+	pressure = gtk_spin_button_get_value(cylinder->pressure);
+	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
+	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
 		o2 = 0;
-	fill_cylinder_info(dive->cylinder+0, desc, volume, pressure, o2);
+	fill_cylinder_info(cylinder, dive->cylinder+0, desc, volume, pressure, o2);
 }
 
 void flush_dive_equipment_changes(struct dive *dive)
@@ -281,18 +286,22 @@ static void fill_tank_list(GtkListStore *store)
 
 static void nitrox_cb(GtkToggleButton *button, gpointer data)
 {
-	GtkWidget *o2 = data;
+	struct cylinder_widget *cylinder = data;
 	int state;
 
 	state = gtk_toggle_button_get_active(button);
-	gtk_widget_set_sensitive(o2, state);
+	gtk_widget_set_sensitive(cylinder->o2, state);
 }
 
 static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 {
+	struct cylinder_widget *cylinder;
 	GtkWidget *frame, *hbox, *hbox2;
 	GtkWidget *widget;
 	char buffer[80];
+
+	cylinder = gtk_cylinder + nr;
+	cylinder->index = nr;
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, FALSE, 0);
@@ -307,23 +316,23 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
 	gtk_box_pack_start(GTK_BOX(hbox2), widget, FALSE, TRUE, 0);
 
-	cylinder.description = GTK_COMBO_BOX(widget);
-	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), NULL);
+	cylinder->description = GTK_COMBO_BOX(widget);
+	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
 
 	widget = create_spinbutton(hbox, "Size", 0, 200, 0.1);
-	cylinder.size = GTK_SPIN_BUTTON(widget);
+	cylinder->size = GTK_SPIN_BUTTON(widget);
 
 	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
-	cylinder.pressure = GTK_SPIN_BUTTON(widget);
+	cylinder->pressure = GTK_SPIN_BUTTON(widget);
 
 	widget = create_spinbutton(hbox, "Nitrox", 21, 100, 0.1);
-	cylinder.o2 = widget;
-	cylinder.gasmix_button = gtk_check_button_new();
-	gtk_box_pack_start(GTK_BOX(gtk_widget_get_parent(cylinder.o2)),
-		cylinder.gasmix_button, FALSE, FALSE, 3);
-	g_signal_connect(cylinder.gasmix_button, "toggled", G_CALLBACK(nitrox_cb), cylinder.o2);
+	cylinder->o2 = widget;
+	cylinder->gasmix_button = gtk_check_button_new();
+	gtk_box_pack_start(GTK_BOX(gtk_widget_get_parent(cylinder->o2)),
+		cylinder->gasmix_button, FALSE, FALSE, 3);
+	g_signal_connect(cylinder->gasmix_button, "toggled", G_CALLBACK(nitrox_cb), cylinder);
 
-	gtk_spin_button_set_range(GTK_SPIN_BUTTON(cylinder.o2), 21.0, 100.0);
+	gtk_spin_button_set_range(GTK_SPIN_BUTTON(cylinder->o2), 21.0, 100.0);
 }
 
 static GtkListStore *create_tank_size_model(void)
