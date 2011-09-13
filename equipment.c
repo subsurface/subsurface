@@ -11,6 +11,7 @@
 struct cylinder_widget {
 	int index, changed;
 	const char *name;
+	GtkWidget *hbox;
 	GtkComboBox *description;
 	GtkSpinButton *size, *pressure;
 	GtkWidget *o2, *gasmix_button;
@@ -310,7 +311,7 @@ static void nitrox_cb(GtkToggleButton *button, gpointer data)
 	gtk_widget_set_sensitive(cylinder->o2, state);
 }
 
-static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
+static void cylinder_widget(int nr, GtkListStore *model)
 {
 	struct cylinder_widget *cylinder;
 	GtkWidget *frame, *hbox, *hbox2;
@@ -321,7 +322,7 @@ static void cylinder_widget(GtkWidget *box, int nr, GtkListStore *model)
 	cylinder->index = nr;
 
 	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, FALSE, 0);
+	cylinder->hbox = hbox;
 
 	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr+1);
 	frame = gtk_frame_new(buffer);
@@ -368,14 +369,23 @@ static GtkListStore *create_tank_size_model(void)
 
 GtkWidget *equipment_widget(void)
 {
+	int i;
 	GtkWidget *vbox;
 	GtkListStore *model;
 
 	vbox = gtk_vbox_new(FALSE, 3);
 
 	model = create_tank_size_model();
-	cylinder_widget(vbox, 0, model);
-	cylinder_widget(vbox, 1, model);
+
+	/* Create all MAX_CYLINDER gtk widgets */
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		cylinder_widget(i, model);
+
+	/* But only connect two of them right now to the frame vbox */
+	for (i = 0; i < 2; i++) {
+		struct cylinder_widget *cylinder = gtk_cylinder+i;
+		gtk_box_pack_start(GTK_BOX(vbox), cylinder->hbox, FALSE, TRUE, 0);
+	}
 
 	return vbox;
 }
