@@ -121,17 +121,19 @@ static void add_cylinder(struct cylinder_widget *cylinder, const char *desc, int
 	}
 }
 
-void show_dive_equipment(struct dive *dive)
+static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 {
-	cylinder_t *cyl = &dive->cylinder[0];
-	const char *desc = cyl->type.description;
-	struct cylinder_widget *cylinder = &gtk_cylinder[0];
+	const char *desc;
 	int ml, mbar;
 	double o2;
 
+	/* Don't show uninitialized cylinder widgets */
+	if (!cylinder->description)
+		return;
+
+	desc = cyl->type.description;
 	if (!desc)
 		desc = "";
-
 	ml = cyl->type.size.mliter;
 	mbar = cyl->type.workingpressure.mbar;
 	add_cylinder(cylinder, desc, ml, mbar);
@@ -143,6 +145,14 @@ void show_dive_equipment(struct dive *dive)
 	if (!o2)
 		o2 = 21.0;
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->o2), o2);
+}
+
+void show_dive_equipment(struct dive *dive)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		show_cylinder(dive->cylinder + i, gtk_cylinder+i);
 }
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
@@ -191,13 +201,17 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 	add_cylinder(cylinder, desc, ml, mbar);
 }
 
-static void record_cylinder_changes(struct dive *dive)
+static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cylinder)
 {
 	const gchar *desc;
-	struct cylinder_widget *cylinder = &gtk_cylinder[0];
-	GtkComboBox *box = cylinder->description;
+	GtkComboBox *box;
 	double volume, pressure;
 	int o2;
+
+	/* Ignore uninitialized cylinder widgets */
+	box = cylinder->description;
+	if (!box)
+		return;
 
 	desc = gtk_combo_box_get_active_text(box);
 	volume = gtk_spin_button_get_value(cylinder->size);
@@ -205,12 +219,15 @@ static void record_cylinder_changes(struct dive *dive)
 	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
 	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
 		o2 = 0;
-	fill_cylinder_info(cylinder, dive->cylinder+0, desc, volume, pressure, o2);
+	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, o2);
 }
 
 void flush_dive_equipment_changes(struct dive *dive)
 {
-	record_cylinder_changes(dive);
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		record_cylinder_changes(dive->cylinder+i, gtk_cylinder+i);
 }
 
 /*
@@ -358,6 +375,7 @@ GtkWidget *equipment_widget(void)
 
 	model = create_tank_size_model();
 	cylinder_widget(vbox, 0, model);
+	cylinder_widget(vbox, 1, model);
 
 	return vbox;
 }
