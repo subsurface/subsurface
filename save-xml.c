@@ -153,6 +153,8 @@ static void save_overview(FILE *f, struct dive *dive)
 	save_temperatures(f, dive);
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_utf8(f, dive->location, "  <location>","</location>\n");
+	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n");
+	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n");
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
 }
 

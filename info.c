@@ -9,9 +9,10 @@
 
 static GtkWidget *info_frame;
 static GtkWidget *divedate, *divetime, *depth, *duration, *temperature;
-static GtkEntry *location;
+static GtkEntry *location, *buddy, *divemaster;
 static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
+static int divemaster_changed = 1, buddy_changed = 1;
 
 static const char *weekday(int wday)
 {
@@ -39,6 +40,16 @@ void flush_dive_info_changes(struct dive *dive)
 	if (location_changed) {
 		g_free(dive->location);
 		dive->location = gtk_editable_get_chars(GTK_EDITABLE(location), 0, -1);
+	}
+
+	if (divemaster_changed) {
+		g_free(dive->divemaster);
+		dive->divemaster = gtk_editable_get_chars(GTK_EDITABLE(divemaster), 0, -1);
+	}
+
+	if (buddy_changed) {
+		g_free(dive->buddy);
+		dive->buddy = gtk_editable_get_chars(GTK_EDITABLE(buddy), 0, -1);
 	}
 
 	if (notes_changed) {
@@ -117,6 +128,12 @@ void show_dive_info(struct dive *dive)
 
 	text = dive->location ? : "";
 	gtk_entry_set_text(location, text);
+
+	text = dive->divemaster ? : "";
+	gtk_entry_set_text(divemaster, text);
+
+	text = dive->buddy ? : "";
+	gtk_entry_set_text(buddy, text);
 
 	text = "Dive Info";
 	if (dive->location && *dive->location)
@@ -208,11 +225,18 @@ static GtkTextBuffer *text_view(GtkWidget *box, const char *label)
 
 GtkWidget *extended_dive_info_widget(void)
 {
-	GtkWidget *vbox;
+	GtkWidget *vbox, *hbox;
 	vbox = gtk_vbox_new(FALSE, 6);
 
-	location = text_entry(vbox, "Location");
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
+	location = text_entry(vbox, "Location");
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	divemaster = text_entry(hbox, "Divemaster");
+	buddy = text_entry(hbox, "Buddy");
+
 	notes = text_view(vbox, "Notes");
 
 	/* Add extended info here: name, description, yadda yadda */

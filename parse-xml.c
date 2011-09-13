@@ -652,6 +652,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, int len, ch
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
 		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
 		MATCH(".comments", utf8_string, &dive->notes) ||
+		MATCH(".buddy.names", utf8_string, &dive->buddy) ||
 		MATCH(".country.name", utf8_string, &country) ||
 		MATCH(".city.name", utf8_string, &city) ||
 		MATCH(".place.name", divinglog_place, &dive->location) ||
@@ -952,6 +953,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".location", utf8_string, &dive->location))
 		return;
 	if (MATCH(".notes", utf8_string, &dive->notes))
+		return;
+	if (MATCH(".divemaster", utf8_string, &dive->divemaster))
+		return;
+	if (MATCH(".buddy", utf8_string, &dive->buddy))
 		return;
 
 	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cylinder_index].type.size))

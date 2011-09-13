@@ -132,6 +132,7 @@ struct dive {
 	time_t when;
 	char *location;
 	char *notes;
+	char *divemaster, *buddy;
 	depth_t maxdepth, meandepth;
 	duration_t duration, surfacetime;
 	depth_t visibility;
