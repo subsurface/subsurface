@@ -235,8 +235,6 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
 
-	cairo_set_line_width(gc->cr, 2);
-
 	/* Get plot scaling limits */
 	maxtime = round_seconds_up(dive->duration.seconds);
 	maxdepth = round_depth_up(dive->maxdepth);
@@ -655,6 +653,9 @@ static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	topx = w / 20.0;
 	topy = h / 20.0;
 	cairo_translate(gc->cr, topx, topy);
+	cairo_set_line_width(gc->cr, 2);
+	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
+	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
 
 	/*
 	 * We can use "cairo_translate()" because that doesn't
