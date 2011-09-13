@@ -21,7 +21,8 @@ int selected_dive = 0;
 struct graphics_context {
 	cairo_t *cr;
 	double maxx, maxy;
-	double scalex, scaley;
+	double leftx, rightx;
+	double topy, bottomy;
 };
 
 /* Plot info with smoothing and one-, two- and three-minute minimums and maximums */
@@ -40,7 +41,9 @@ struct plot_info {
 #define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
 
 /* Scale to 0,0 -> maxx,maxy */
-#define SCALE(gc,x,y) (x)*gc->maxx/gc->scalex,(y)*gc->maxy/gc->scaley
+#define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
+#define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
+#define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
 
 static void move_to(struct graphics_context *gc, double x, double y)
 {
@@ -177,8 +180,8 @@ static void plot_depth_text(struct dive *dive, struct graphics_context *gc, stru
 	maxtime = round_seconds_up(dive->duration.seconds);
 	maxdepth = round_depth_up(dive->maxdepth);
 
-	gc->scalex = maxtime;
-	gc->scaley = maxdepth;
+	gc->leftx = 0; gc->rightx = maxtime;
+	gc->topy = 0; gc->bottomy = maxdepth;
 
 	plot_text_samples(gc, pi);
 }
@@ -239,16 +242,16 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	maxdepth = round_depth_up(dive->maxdepth);
 
 	/* Time markers: every 5 min */
-	gc->scalex = maxtime;
-	gc->scaley = 1.0;
+	gc->leftx = 0; gc->rightx = maxtime;
+	gc->topy = 0; gc->bottomy = 1.0;
 	for (i = 5*60; i < maxtime; i += 5*60) {
 		move_to(gc, i, 0);
 		line_to(gc, i, 1);
 	}
 
 	/* Depth markers: every 30 ft or 10 m*/
-	gc->scalex = 1.0;
-	gc->scaley = maxdepth;
+	gc->leftx = 0; gc->rightx = 1.0;
+	gc->topy = 0; gc->bottomy = maxdepth;
 	switch (output_units.length) {
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
@@ -267,7 +270,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	line_to(gc, 1, dive->meandepth.mm);
 	cairo_stroke(cr);
 
-	gc->scalex = maxtime;
+	gc->leftx = 0; gc->rightx = maxtime;
 
 	plot_smoothed_profile(gc, pi);
 	plot_minmax_profile(gc, pi);
@@ -284,13 +287,59 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 			line_to(gc, sec, depth);
 		}
 	}
-	gc->scaley = 1.0;
+	gc->topy = 0; gc->bottomy = 1.0;
 	line_to(gc, MIN(sec,maxtime), 0);
 	line_to(gc, begins, 0);
 	cairo_close_path(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.20);
 	cairo_fill_preserve(cr);
 	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
+	cairo_stroke(cr);
+}
+
+static void plot_temperature_profile(struct dive *dive, struct graphics_context *gc)
+{
+	int i;
+	cairo_t *cr = gc->cr;
+	int begins = 0, sec = 0;
+	int maxtime, mintemp, maxtemp;
+
+	/* Get plot scaling limits */
+	maxtime = round_seconds_up(dive->duration.seconds);
+	mintemp = INT_MAX;
+	maxtemp = 0;
+	for (i = 0; i < dive->samples; i++) {
+		struct sample *sample = dive->sample+i;
+		int mkelvin = sample->temperature.mkelvin;
+		if (!mkelvin)
+			continue;
+		if (!begins) {
+			begins = mkelvin;
+			sec = sample->time.seconds;
+		}
+		if (mkelvin > maxtemp)
+			maxtemp = mkelvin;
+		if (mkelvin < mintemp)
+			mintemp = mkelvin;
+	}
+	if (mintemp >= maxtemp)
+		return;
+
+	gc->leftx = 0; gc->rightx = maxtime;
+	/* Show temperatures in roughly the lower third */
+	gc->topy = maxtemp + (maxtemp - mintemp)*2;
+	gc->bottomy = mintemp - (maxtemp - mintemp)/2;
+
+	cairo_set_source_rgba(cr, 0.2, 0.2, 1.0, 0.8);
+	move_to(gc, sec, begins);
+	for (i = 0; i < dive->samples; i++) {
+		struct sample *sample = dive->sample+i;
+		int mkelvin = sample->temperature.mkelvin;
+		if (!mkelvin)
+			mkelvin = begins;
+		line_to(gc, sample->time.seconds, mkelvin);
+		begins = mkelvin;
+	}
 	cairo_stroke(cr);
 }
 
@@ -301,7 +350,7 @@ static int get_cylinder_pressure_range(struct dive *dive, struct graphics_contex
 	int i;
 	int min, max;
 
-	gc->scalex = round_seconds_up(dive->duration.seconds);
+	gc->leftx = 0; gc->rightx = round_seconds_up(dive->duration.seconds);
 
 	max = 0;
 	min = 5000000;
@@ -329,7 +378,7 @@ static int get_cylinder_pressure_range(struct dive *dive, struct graphics_contex
 		endp->mbar = min;
 	if (!max)
 		return 0;
-	gc->scaley = max * 1.5;
+	gc->topy = 0; gc->bottomy = max * 1.5;
 	return 1;
 }
 
@@ -582,12 +631,16 @@ static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	/* Depth profile */
 	plot_depth_profile(dive, gc, pi);
 
+	/* Temperature profile */
+	plot_temperature_profile(dive, gc);
+
 	/* Text on top of all graphs.. */
 	plot_depth_text(dive, gc, pi);
 	plot_cylinder_pressure_text(dive, gc);
 
 	/* And info box in the lower right corner.. */
-	gc->scalex = gc->scaley = 1.0;
+	gc->leftx = 0; gc->rightx = 1.0;
+	gc->topy = 0; gc->bottomy = 1.0;
 	plot_info(dive, gc);
 
 	/* Bounding box last */

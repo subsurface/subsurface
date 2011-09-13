@@ -117,7 +117,6 @@ struct dive *fixup_dive(struct dive *dive)
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0;
-	temperature_t *redundant_temp = NULL;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -141,17 +140,12 @@ struct dive *fixup_dive(struct dive *dive)
 			/*
 			 * If we have consecutive identical
 			 * temperature readings, throw away
-			 * the redundant ones. We care about
-			 * the "edges" only.
+			 * the redundant ones.
 			 */
-			if (lasttemp == temp) {
-				if (redundant_temp)
-					redundant_temp->mkelvin = 0;
-				redundant_temp = &sample->temperature;
-			} else {
-				redundant_temp = NULL;
+			if (lasttemp == temp)
+				sample->temperature.mkelvin = 0;
+			else
 				lasttemp = temp;
-			}
 
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
