@@ -10,21 +10,6 @@
 
 int selected_dive = 0;
 
-/*
- * Cairo scaling really is horribly horribly mis-designed.
- *
- * Which is sad, because I really like Cairo otherwise. But
- * the fact that the line width is scaled with the same scale
- * as the coordinate system is a f*&%ing disaster. So we
- * can't use it, and instead have this butt-ugly wrapper thing..
- */
-struct graphics_context {
-	cairo_t *cr;
-	double maxx, maxy;
-	double leftx, rightx;
-	double topy, bottomy;
-};
-
 /* Plot info with smoothing and one-, two- and three-minute minimums and maximums */
 struct plot_info {
 	int nr;
@@ -645,7 +630,7 @@ static struct plot_info *depth_plot_info(struct dive *dive)
 	return analyze_plot_info(pi);
 }
 
-static void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
+void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 {
 	double topx, topy;
 	struct plot_info *pi = depth_plot_info(dive);
