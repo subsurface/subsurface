@@ -434,12 +434,10 @@ cancel_cb(void *userdata)
 
 static void do_import(device_data_t *data)
 {
-	/* FIXME! Needs user input! */
-	const char *devname = "/dev/ttyUSB0";
 	device_t *device = NULL;
 	device_status_t rc;
 
-	rc = device_open(devname, data->type, &device);
+	rc = device_open(data->devname, data->type, &device);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Unable to open %s (%s)", data->name, data->devname);
 		return;
