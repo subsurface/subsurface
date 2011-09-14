@@ -410,6 +410,11 @@ static GtkWidget *get_menubar_menu(GtkWidget *window)
 	return menu;
 }
 
+static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
+{
+	repaint_dive();
+}
+
 int main(int argc, char **argv)
 {
 	int i;
@@ -470,6 +475,7 @@ int main(int argc, char **argv)
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
+	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 	gtk_box_pack_start(GTK_BOX(info_box), notebook, TRUE, TRUE, 6);
 
 	/* Frame for dive profile */
