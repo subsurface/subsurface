@@ -43,10 +43,11 @@ static void line_to(struct graphics_context *gc, double x, double y)
 static void set_source_rgba(struct graphics_context *gc, double r, double g, double b, double a)
 {
 	if (gc->printer) {
-		a = 1;
-		if (r+g+b > 1)
+		/* Black is white and white is black */
+		double sum = r+g+b;
+		if (sum > 2)
 			r = g = b = 0;
-		else
+		else if (sum < 1)
 			r = g = b = 1;
 	}
 	cairo_set_source_rgba(gc->cr, r, g, b, a);
@@ -293,10 +294,8 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	line_to(gc, MIN(sec,maxtime), 0);
 	line_to(gc, begins, 0);
 	cairo_close_path(cr);
-	if (!gc->printer) {
-		set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
-		cairo_fill_preserve(cr);
-	}
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
+	cairo_fill_preserve(cr);
 	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
 }
