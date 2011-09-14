@@ -11,7 +11,7 @@ static void draw_page(GtkPrintOperation *operation,
 	cairo_t *cr;
 	PangoLayout *layout;
 	double w, h;
-	struct graphics_context gc = { 0 };
+	struct graphics_context gc = { .printer = 1 };
 
 	cr = gtk_print_context_get_cairo_context(context);
 	gc.cr = cr;
@@ -21,11 +21,8 @@ static void draw_page(GtkPrintOperation *operation,
 	w = gtk_print_context_get_width(context);
 	h = gtk_print_context_get_height(context);
 
-	/* Do the profile on the top third of the page.. */
-	cairo_set_source_rgb(cr, 0, 0, 0);
-	cairo_rectangle(cr, 0, 0, w, h/3);
-	cairo_fill(cr);
-	plot(&gc, w, h/3, current_dive);
+	/* Do the profile on the top half of the page.. */
+	plot(&gc, w, h/2, current_dive);
 
 	pango_cairo_show_layout(cr,layout);
 	g_object_unref(layout);

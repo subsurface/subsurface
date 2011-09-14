@@ -27,6 +27,7 @@ extern void do_print(void);
  * can't use it, and instead have this butt-ugly wrapper thing..
  */
 struct graphics_context {
+	int printer;
 	cairo_t *cr;
 	double maxx, maxy;
 	double leftx, rightx;

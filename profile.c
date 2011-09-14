@@ -40,6 +40,23 @@ static void line_to(struct graphics_context *gc, double x, double y)
 	cairo_line_to(gc->cr, SCALE(gc, x, y));
 }
 
+static void set_source_rgba(struct graphics_context *gc, double r, double g, double b, double a)
+{
+	if (gc->printer) {
+		a = 1;
+		if (r+g+b > 1)
+			r = g = b = 0;
+		else
+			r = g = b = 1;
+	}
+	cairo_set_source_rgba(gc->cr, r, g, b, a);
+}
+
+static void set_source_rgb(struct graphics_context *gc, double r, double g, double b)
+{
+	set_source_rgba(gc, r, g, b, 1);
+}
+
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
 
 /*
@@ -107,13 +124,13 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_rel_move_to(cr, dx, dy);
 
 	cairo_text_path(cr, buffer);
-	cairo_set_source_rgb(cr, 0, 0, 0);
+	set_source_rgb(gc, 0, 0, 0);
 	cairo_stroke(cr);
 
 	move_to(gc, x, y);
 	cairo_rel_move_to(cr, dx, dy);
 
-	cairo_set_source_rgb(cr, tro->r, tro->g, tro->b);
+	set_source_rgb(gc, tro->r, tro->g, tro->b);
 	cairo_show_text(cr, buffer);
 }
 
@@ -207,6 +224,8 @@ static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_
 
 static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *pi)
 {
+	if (gc->printer)
+		return;
 	plot_minmax_profile_minute(gc, pi, 2, 0.1);
 	plot_minmax_profile_minute(gc, pi, 1, 0.1);
 	plot_minmax_profile_minute(gc, pi, 0, 0.1);
@@ -240,7 +259,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
 
-	cairo_set_source_rgba(cr, 1, 1, 1, 0.5);
+	set_source_rgba(gc, 1, 1, 1, 0.5);
 	for (i = marker; i < maxdepth; i += marker) {
 		move_to(gc, 0, i);
 		line_to(gc, 1, i);
@@ -248,7 +267,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	cairo_stroke(cr);
 
 	/* Show mean depth */
-	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.40);
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.40);
 	move_to(gc, 0, dive->meandepth.mm);
 	line_to(gc, 1, dive->meandepth.mm);
 	cairo_stroke(cr);
@@ -259,7 +278,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	plot_minmax_profile(gc, pi);
 
 	entry = pi->entry;
-	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
 	begins = entry->sec;
 	move_to(gc, entry->sec, entry->val);
 	for (i = 1; i < pi->nr; i++) {
@@ -274,9 +293,11 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	line_to(gc, MIN(sec,maxtime), 0);
 	line_to(gc, begins, 0);
 	cairo_close_path(cr);
-	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.20);
-	cairo_fill_preserve(cr);
-	cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.80);
+	if (!gc->printer) {
+		set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
+		cairo_fill_preserve(cr);
+	}
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
 }
 
@@ -349,7 +370,7 @@ static void plot_temperature_profile(struct dive *dive, struct graphics_context 
 	if (!setup_temperature_limits(dive, gc))
 		return;
 
-	cairo_set_source_rgba(cr, 0.2, 0.2, 1.0, 0.8);
+	set_source_rgba(gc, 0.2, 0.2, 1.0, 0.8);
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample+i;
 		int mkelvin = sample->temperature.mkelvin;
@@ -672,7 +693,7 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	plot_info(dive, gc);
 
 	/* Bounding box last */
-	cairo_set_source_rgb(gc->cr, 1, 1, 1);
+	set_source_rgb(gc, 1, 1, 1);
 	move_to(gc, 0, 0);
 	line_to(gc, 0, 1);
 	line_to(gc, 1, 1);
@@ -685,14 +706,14 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
 	struct dive *dive = current_dive;
-	struct graphics_context gc;
+	struct graphics_context gc = { .printer = 0 };
 	int w,h;
 
 	w = widget->allocation.width;
 	h = widget->allocation.height;
 
 	gc.cr = gdk_cairo_create(widget->window);
-	cairo_set_source_rgb(gc.cr, 0, 0, 0);
+	set_source_rgb(&gc, 0, 0, 0);
 	cairo_paint(gc.cr);
 
 	if (dive)
