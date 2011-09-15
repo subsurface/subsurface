@@ -328,35 +328,50 @@ static int setup_temperature_limits(struct dive *dive, struct graphics_context *
 	return maxtemp > mintemp;
 }
 
+static void plot_single_temp_text(struct graphics_context *gc, int sec, temperature_t temperature)
+{
+	int deg;
+	const char *unit;
+	static const text_render_options_t tro = {12, 0.2, 0.2, 1.0, LEFT, TOP};
+
+	if (output_units.temperature == FAHRENHEIT) {
+		deg = to_F(temperature);
+		unit = "F";
+	} else {
+		deg = to_C(temperature);
+		unit = "C";
+	}
+	plot_text(gc, &tro, sec, temperature.mkelvin, "%d %s", deg, unit);
+}
+
 static void plot_temperature_text(struct dive *dive, struct graphics_context *gc)
 {
 	int i;
-	static const text_render_options_t tro = {12, 0.2, 0.2, 1.0, LEFT, TOP};
-
 	int last = 0;
+	temperature_t last_temperature, last_printed_temp;
 
 	if (!setup_temperature_limits(dive, gc))
 		return;
 
 	for (i = 0; i < dive->samples; i++) {
-		const char *unit;
 		struct sample *sample = dive->sample+i;
+		if (sample->time.seconds > dive->duration.seconds)
+			break; /* let's not plot surface temp events */
 		int mkelvin = sample->temperature.mkelvin;
-		int sec, deg;
+		int sec;
 		if (!mkelvin)
 			continue;
+		last_temperature = sample->temperature;
 		sec = sample->time.seconds;
 		if (sec < last)
 			continue;
 		last = sec + 300;
-		if (output_units.temperature == FAHRENHEIT) {
-			deg = to_F(sample->temperature);
-			unit = "F";
-		} else {
-			deg = to_C(sample->temperature);
-			unit = "C";
-		}
-		plot_text(gc, &tro, sec, mkelvin, "%d %s", deg, unit);
+		plot_single_temp_text(gc,sec,sample->temperature);
+		last_printed_temp = last_temperature ;
+	}
+	/* it would be nice to print the end temperature, if it's different */
+	if (last_temperature.mkelvin != last_printed_temp.mkelvin) {
+		plot_single_temp_text(gc,dive->duration.seconds,last_temperature);
 	}
 }
 
