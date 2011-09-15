@@ -18,6 +18,9 @@
 #include <atomics.h>
 #include <utils.h>
 
+/* handling uemis Zurich SDA files */
+#include "uemis.h"
+
 /*
  * I'd love to do a while-loop here for pending events, but
  * that seems to screw up with the dive computer reading timing.
@@ -437,6 +440,10 @@ static void do_import(device_data_t *data)
 	device_t *device = NULL;
 	device_status_t rc;
 
+	if (data->type == DEVICE_TYPE_UEMIS) {
+		return uemis_import();
+	}
+
 	rc = device_open(data->devname, data->type, &device);
 	if (rc != DEVICE_STATUS_SUCCESS) {
 		error("Unable to open %s (%s)", data->name, data->devname);
@@ -502,6 +509,7 @@ struct device_list {
 	{ "Cressi Edy",		DEVICE_TYPE_CRESSI_EDY },
 	{ "Zeagle N2iTiON 3",	DEVICE_TYPE_ZEAGLE_N2ITION3 },
 	{ "Atomics Cobalt",	DEVICE_TYPE_ATOMICS_COBALT },
+	{ "Uemis Zurich SDA",	DEVICE_TYPE_UEMIS },
 	{ NULL }
 };
 
