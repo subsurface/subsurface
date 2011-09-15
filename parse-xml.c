@@ -521,7 +521,7 @@ static void fahrenheit(char *buffer, void *_temperature)
  * pressures are in PSI. But the tank working pressure is in
  * bar. WTF^2?
  *
- * Crazy stuff like this is why diveclog has everything in
+ * Crazy stuff like this is why subsurface has everything in
  * these inconvenient typed structures, and you have to say
  * "pressure->mbar" to get the actual value. Exactly so that
  * you can never have unit confusion.
@@ -1357,7 +1357,7 @@ void parse_xml_file(const char *filename, GError **error)
 		fprintf(stderr, "Failed to parse '%s'.\n", filename);
 		if (error != NULL)
 		{
-			*error = g_error_new(g_quark_from_string("divelog"),
+			*error = g_error_new(g_quark_from_string("subsurface"),
 					     DIVE_ERROR_PARSE,
 					     "Failed to parse '%s'",
 					     filename);

@@ -8,8 +8,8 @@ LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o
 
-divelog: $(OBJS)
-	$(CC) $(LDFLAGS) -o divelog $(OBJS) \
+subsurface: $(OBJS)
+	$(CC) $(LDFLAGS) -o subsurface $(OBJS) \
 		`xml2-config --libs` \
 		`pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0` \
 		$(LIBDIVECOMPUTERARCHIVE)

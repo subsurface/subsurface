@@ -19,7 +19,7 @@ struct DiveList   dive_list;
 GConfClient *gconf;
 struct units output_units;
 
-#define GCONF_NAME(x) "/apps/diveclog/" #x
+#define GCONF_NAME(x) "/apps/subsurface/" #x
 
 static int sortfn(const void *_a, const void *_b)
 {

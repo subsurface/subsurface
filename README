@@ -18,7 +18,7 @@ You also need to have libdivecomputer installed, which goes something like this:
 Usage:
 
 	make
-	./divelog dives/*.xml
+	./subsurface dives/*.xml
 
 to see my dives (with no notes or commentary).
 
@@ -26,15 +26,15 @@ Or, if you have a dive computer supported by libdivecomputer (and
 connected to /dev/ttyUSB0), you can just do
 
 	make
-	./divelog
+	./subsurface
 
 and select "Import" from the File menu, tell it what dive computer you
 have, and hit "OK".
 
 There's a lot of duplicates in the XML files that come as an example,
-and divelog will de-duplicate the ones that are exactly the same (just
-because they were imported multiple times).  But at least two of the
-dives have duplicates that were edited by Dirk in the Suunto Dive
+and subsurface will de-duplicate the ones that are exactly the same
+(just because they were imported multiple times).  But at least two of
+the dives have duplicates that were edited by Dirk in the Suunto Dive
 Manager, so they don't trigger the "exact duplicates" match.
 
 WARNING! I wasn't kidding when I said that I've done this by reading

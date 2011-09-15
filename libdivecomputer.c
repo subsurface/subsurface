@@ -40,7 +40,7 @@ static void error(const char *fmt, ...)
 
 	va_start(args, fmt);
 	error = g_error_new_valist(
-		g_quark_from_string("divelog"),
+		g_quark_from_string("subsurface"),
 		DIVE_ERROR_PARSE, fmt, args);
 	va_end(args);
 	report_error(error);

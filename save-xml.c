@@ -236,7 +236,7 @@ void save_dives(const char *filename)
 	/* Flush any edits of current dives back to the dives! */
 	update_dive(current_dive);
 
-	fprintf(f, "<dives>\n<program name='diveclog' version='%d'></program>\n", VERSION);
+	fprintf(f, "<dives>\n<program name='subsurface' version='%d'></program>\n", VERSION);
 	for (i = 0; i < dive_table.nr; i++)
 		save_dive(f, get_dive(i));
 	fprintf(f, "</dives>\n");
