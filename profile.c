@@ -372,6 +372,8 @@ static void plot_temperature_profile(struct dive *dive, struct graphics_context 
 	set_source_rgba(gc, 0.2, 0.2, 1.0, 0.8);
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample+i;
+		if (sample->time.seconds > dive->duration.seconds)
+			break; /* let's not plot surface temp events */
 		int mkelvin = sample->temperature.mkelvin;
 		if (!mkelvin) {
 			if (!last)
