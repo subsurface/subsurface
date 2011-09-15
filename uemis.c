@@ -155,7 +155,7 @@ int uemis_convert_base64(char *base64, uint8_t **data) {
 	}
 	decode(base64, *data, len);
 
-	if (memcmp(data,"Dive\01\00\00",7))
+	if (memcmp(*data,"Dive\01\00\00",7))
 		fprintf(stderr,"Missing Dive100 header\n");
 
 bail:
