@@ -134,6 +134,24 @@ int matchit(FILE *infd, char *regex, char *typeregex, char **found) {
 	return 0;
 }
 
+/*
+ * pressure_to_depth: In centibar. And when converting to
+ * depth, I'm just going to always use saltwater, because I
+ * think "true depth" is just stupid. From a diving standpoint,
+ * "true depth" is pretty much completely pointless, unless
+ * you're doing some kind of underwater surveying work.
+ *
+ * So I give water depths in "pressure depth", always assuming
+ * salt water. So one atmosphere per 10m.
+ */
+static int pressure_to_depth(uint16_t value)
+{
+	double atm, cm;
+
+	atm = (value / 100.0) / 1.01325;
+	cm = 100 * atm + 0.5;
+	return( (cm > 0) ? 10 * (long)cm : 0);
+}
 
 /*
  * convert the base64 data blog
@@ -170,6 +188,7 @@ static void parse_divelog_binary(char *base64, struct dive **divep) {
 	int i;
 	uint8_t *data;
 	struct sample *sample;
+	struct dive *dive = *divep;
 
 	datalen = uemis_convert_base64(base64, &data);
 
@@ -177,15 +196,21 @@ static void parse_divelog_binary(char *base64, struct dive **divep) {
 	i = 0x123;
 	while ((i < datalen) && (*(uint16_t *)(data+i))) {
 		/* it seems that a dive_time of 0 indicates the end of the valid readings */
+		/* the SDA usually records more samples after the end of the dive --
+		 * we want to discard those, but not cut the dive short; sadly the dive
+		 * duration in the header is a) in minutes and b) up to 3 minutes short */
+		if (*(uint16_t *)(data+i) > dive->duration.seconds + 180)
+			break;
 		sample = prepare_sample(divep);
 		sample->time.seconds = *(uint16_t *)(data+i);
-		sample->depth.mm = (*(uint16_t *)(data+i+2) - 100) / 0.101428571 + 0.5;
+		sample->depth.mm = pressure_to_depth(*(uint16_t *)(data+i+2));
 		sample->temperature.mkelvin = (*(uint16_t *)(data+i+4) * 100) + 273150;
 		sample->cylinderpressure.mbar= *(uint16_t *)(data+i+23) * 10;
 		sample->cylinderindex = *(uint8_t *)(data+i+22);
 		finish_sample(*divep, sample);
 		i += 0x25;
 	}
+	dive->duration.seconds = sample->time.seconds - 1;
 	return;
 }
 
@@ -217,7 +242,7 @@ parse_uemis_file(char *divelogfilename,GError **error) {
 		/* some error handling */
 		goto bail;
 	}
-	dive->maxdepth.mm = atof(found) / 0.10143 + 0.5;
+	dive->maxdepth.mm = pressure_to_depth(atoi(found));
 
 	if (! matchit(divelogfile,"<val key=\"file_content\">",
 			">\\([a-zA-Z0-9+/]*\\)<", &found)) {
