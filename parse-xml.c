@@ -422,7 +422,7 @@ static void water_pressure(char *buffer, void *_depth)
 		 * atm to cm. Why not mm? The precision just isn't
 		 * there.
 		 */
-		cm = 100 * (atm - 1) + 0.5;
+		cm = 100 * atm + 0.5;
 		if (cm > 0) {
 			depth->mm = 10 * (long)cm;
 			break;
