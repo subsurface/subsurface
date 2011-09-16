@@ -63,22 +63,21 @@ void show_dive_info(struct dive *dive)
 	struct tm *tm;
 	char buffer[80];
 	char *text;
-	int len;
 
 	if (!dive) {
 		gtk_label_set_text(GTK_LABEL(depth), "");
 		gtk_label_set_text(GTK_LABEL(duration), "");
 		return;
 	}
-
+	/* dive number and location (or lacking that, the date) go in the window title */
 	tm = gmtime(&dive->when);
 	text = dive->location;
 	if (!text)
 		text = "";
 	if (*text) {
-		snprintf(buffer, sizeof(buffer), "%d. %s", dive->number, text);
+		snprintf(buffer, sizeof(buffer), "Dive #%d - %s", dive->number, text);
 	} else {
-		snprintf(buffer, sizeof(buffer), "%d. %s %02d/%02d/%04d at %d:%02d",
+		snprintf(buffer, sizeof(buffer), "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
 			dive->number,
 			weekday(tm->tm_wday),
 			tm->tm_mon+1, tm->tm_mday,
@@ -87,19 +86,16 @@ void show_dive_info(struct dive *dive)
 	}
 	text = buffer;
 	if (!dive->number)
-		text += 3;	/* Skip the "0. " part */
+		text += 9;	/* Skip the "Dive 0 - " part */
 	gtk_window_set_title(GTK_WINDOW(main_window), text);
 
-	len = 0;
-	if (dive->number)
-		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->number);
-	snprintf(buffer, sizeof(buffer), "%d. %s %02d/%02d/%04d at %d:%02d",
-		dive->number,
+	/* the date goes in the frame label */
+	snprintf(buffer, sizeof(buffer), "%s %02d/%02d/%04d at %d:%02d",
 		weekday(tm->tm_wday),
 		tm->tm_mon+1, tm->tm_mday,
 		tm->tm_year+1900,
 		tm->tm_hour, tm->tm_min);
-	gtk_frame_set_label(GTK_FRAME(info_frame), dive->number ? buffer : buffer+3);
+	gtk_frame_set_label(GTK_FRAME(info_frame), buffer);
 
 
 	switch (output_units.length) {
