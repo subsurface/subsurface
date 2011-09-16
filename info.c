@@ -86,7 +86,7 @@ void show_dive_info(struct dive *dive)
 	}
 	text = buffer;
 	if (!dive->number)
-		text += 9;	/* Skip the "Dive 0 - " part */
+		text += 10;	/* Skip the "Dive #0 - " part */
 	gtk_window_set_title(GTK_WINDOW(main_window), text);
 
 	/* the date goes in the frame label */
