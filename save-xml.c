@@ -147,12 +147,39 @@ static void save_temperatures(FILE *f, struct dive *dive)
 	fputs(" />\n", f);
 }
 
+static void show_location(FILE *f, struct dive *dive)
+{
+	char buffer[80];
+	const char *prefix = "  <location>";
+	double latitude = dive->latitude;
+	double longitude = dive->longitude;
+
+	/*
+	 * Ok, theoretically I guess you could dive at
+	 * exactly 0,0. But we don't support that. So
+	 * if you do, just fudge it a bit, and say that
+	 * you dove a few meters away.
+	 */
+	if (latitude || longitude) {
+		int len = snprintf(buffer, sizeof(buffer)-4,
+			"  <location gps='%f %f'>",
+			latitude, longitude);
+		if (!dive->location) {
+			memcpy(&buffer[len-1], "/>\n", 4);
+			fputs(buffer, f);
+			return;
+		}
+		prefix = buffer;
+	}
+	show_utf8(f, dive->location, prefix,"</location>\n");
+}
+
 static void save_overview(FILE *f, struct dive *dive)
 {
 	save_depths(f, dive);
 	save_temperatures(f, dive);
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
-	show_utf8(f, dive->location, "  <location>","</location>\n");
+	show_location(f, dive);
 	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n");
 	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n");
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");

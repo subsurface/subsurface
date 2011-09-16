@@ -882,6 +882,20 @@ static int uddf_dive_match(struct dive *dive, const char *name, int len, char *b
 		0;
 }
 
+static void gps_location(char *buffer, void *_dive)
+{
+	int i;
+	struct dive *dive = _dive;
+	double latitude, longitude;
+
+	i = sscanf(buffer, "%lf %lf", &latitude, &longitude);
+	if (i == 2) {
+		dive->latitude = latitude;
+		dive->longitude = longitude;
+	}
+	free(buffer);
+}
+
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
@@ -949,6 +963,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH(".cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
 	if (MATCH(".cylinderendpressure", pressure, &dive->cylinder[0].end))
+		return;
+	if (MATCH(".gps", gps_location, dive))
 		return;
 	if (MATCH(".location", utf8_string, &dive->location))
 		return;

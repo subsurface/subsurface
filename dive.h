@@ -133,6 +133,7 @@ struct dive {
 	char *location;
 	char *notes;
 	char *divemaster, *buddy;
+	double latitude, longitude;
 	depth_t maxdepth, meandepth;
 	duration_t duration, surfacetime;
 	depth_t visibility;
