@@ -8,7 +8,7 @@
 #include "divelist.h"
 
 static GtkWidget *info_frame;
-static GtkWidget *divedate, *divetime, *depth, *duration, *temperature;
+static GtkWidget *depth, *duration, *temperature;
 static GtkEntry *location, *buddy, *divemaster;
 static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
@@ -66,24 +66,41 @@ void show_dive_info(struct dive *dive)
 	int len;
 
 	if (!dive) {
-		gtk_label_set_text(GTK_LABEL(divedate), "no dive");
-		gtk_label_set_text(GTK_LABEL(divetime), "");
 		gtk_label_set_text(GTK_LABEL(depth), "");
 		gtk_label_set_text(GTK_LABEL(duration), "");
 		return;
 	}
 
 	tm = gmtime(&dive->when);
-	snprintf(buffer, sizeof(buffer),
-		"%s %02d/%02d/%04d",
-		weekday(tm->tm_wday),
-		tm->tm_mon+1, tm->tm_mday, tm->tm_year+1900);
-	gtk_label_set_text(GTK_LABEL(divedate), buffer);
+	text = dive->location;
+	if (!text)
+		text = "";
+	if (*text) {
+		snprintf(buffer, sizeof(buffer), "%d. %s", dive->number, text);
+	} else {
+		snprintf(buffer, sizeof(buffer), "%d. %s %02d/%02d/%04d at %d:%02d",
+			dive->number,
+			weekday(tm->tm_wday),
+			tm->tm_mon+1, tm->tm_mday,
+			tm->tm_year+1900,
+			tm->tm_hour, tm->tm_min);
+	}
+	text = buffer;
+	if (!dive->number)
+		text += 3;	/* Skip the "0. " part */
+	gtk_window_set_title(GTK_WINDOW(main_window), text);
 
-	snprintf(buffer, sizeof(buffer),
-		"%02d:%02d:%02d",
-		tm->tm_hour, tm->tm_min, tm->tm_sec);
-	gtk_label_set_text(GTK_LABEL(divetime), buffer);
+	len = 0;
+	if (dive->number)
+		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->number);
+	snprintf(buffer, sizeof(buffer), "%d. %s %02d/%02d/%04d at %d:%02d",
+		dive->number,
+		weekday(tm->tm_wday),
+		tm->tm_mon+1, tm->tm_mday,
+		tm->tm_year+1900,
+		tm->tm_hour, tm->tm_min);
+	gtk_frame_set_label(GTK_FRAME(info_frame), dive->number ? buffer : buffer+3);
+
 
 	switch (output_units.length) {
 	case METERS:
@@ -135,15 +152,6 @@ void show_dive_info(struct dive *dive)
 	text = dive->buddy ? : "";
 	gtk_entry_set_text(buddy, text);
 
-	text = "Dive Info";
-	if (dive->location && *dive->location)
-		text = dive->location;
-	len = 0;
-	if (dive->number)
-		len = snprintf(buffer, sizeof(buffer), "%d. ", dive->number);
-	snprintf(buffer+len, sizeof(buffer)-len, "%s", text);
-	gtk_frame_set_label(GTK_FRAME(info_frame), buffer);
-
 	text = dive->notes ? : "";
 	gtk_text_buffer_set_text(notes, text, -1);
 }
@@ -174,8 +182,6 @@ GtkWidget *dive_info_frame(void)
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	divedate = info_label(hbox, "date", GTK_JUSTIFY_RIGHT);
-	divetime = info_label(hbox, "time", GTK_JUSTIFY_RIGHT);
 	depth = info_label(hbox, "depth", GTK_JUSTIFY_RIGHT);
 	duration = info_label(hbox, "duration", GTK_JUSTIFY_RIGHT);
 	temperature = info_label(hbox, "temperature", GTK_JUSTIFY_RIGHT);
