@@ -207,6 +207,8 @@ extern void report_dives(void);
 extern struct dive *fixup_dive(struct dive *dive);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b);
 
+extern void update_air_info(char *buffer);
+
 #define DIVE_ERROR_PARSE 1
 
 #endif /* DIVE_H */
