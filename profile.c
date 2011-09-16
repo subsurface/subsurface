@@ -300,7 +300,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 static int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
 {
-	int maxtime, mintemp, maxtemp;
+	int maxtime, mintemp, maxtemp, delta;
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
@@ -308,9 +308,16 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 	maxtemp = pi->maxtemp;
 
 	gc->leftx = 0; gc->rightx = maxtime;
-	/* Show temperatures in roughly the lower third */
-	gc->topy = maxtemp + (maxtemp - mintemp)*2;
-	gc->bottomy = mintemp - (maxtemp - mintemp)/2;
+	/* Show temperatures in roughly the lower third, but make sure the scale
+	   is at least somewhat reasonable */
+	delta = maxtemp - mintemp;
+	if (delta > 3000) { /* more than 3K in fluctuation */
+		gc->topy = maxtemp + delta*2;
+		gc->bottomy = mintemp - delta/2;
+	} else {
+		gc->topy = maxtemp + 1500 + delta*2;
+		gc->bottomy = mintemp - delta/2;
+	}
 
 	return maxtemp > mintemp;
 }
