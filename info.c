@@ -8,7 +8,7 @@
 #include "divelist.h"
 
 static GtkWidget *info_frame;
-static GtkWidget *depth, *duration, *temperature;
+static GtkWidget *depth, *duration, *temperature, *airconsumption;
 static GtkEntry *location, *buddy, *divemaster;
 static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
@@ -67,6 +67,7 @@ void show_dive_info(struct dive *dive)
 	if (!dive) {
 		gtk_label_set_text(GTK_LABEL(depth), "");
 		gtk_label_set_text(GTK_LABEL(duration), "");
+		gtk_label_set_text(GTK_LABEL(airconsumption), "");
 		return;
 	}
 	/* dive number and location (or lacking that, the date) go in the window title */
@@ -181,8 +182,17 @@ GtkWidget *dive_info_frame(void)
 	depth = info_label(hbox, "depth", GTK_JUSTIFY_RIGHT);
 	duration = info_label(hbox, "duration", GTK_JUSTIFY_RIGHT);
 	temperature = info_label(hbox, "temperature", GTK_JUSTIFY_RIGHT);
+	airconsumption = info_label(hbox, "air", GTK_JUSTIFY_RIGHT);
 
 	return frame;
+}
+
+void update_air_info(char *buffer)
+{
+	char markup[120];
+	
+	snprintf(markup, sizeof(markup), "<span font=\"8\">%s</span>",buffer);
+	gtk_label_set_markup(GTK_LABEL(airconsumption), markup);
 }
 
 static GtkEntry *text_entry(GtkWidget *box, const char *label)

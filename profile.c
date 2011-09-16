@@ -456,33 +456,40 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 {
 	text_render_options_t tro = {10, 0.2, 1.0, 0.2, RIGHT, BOTTOM};
 	const double liters_per_cuft = 28.317;
-	const char *unit, *desc;
+	const char *unit, *format, *desc;
 	double airuse;
+	char buffer1[80];
+	char buffer2[80];
+	int len;
 
 	airuse = calculate_airuse(dive);
-	if (!airuse)
+	if (!airuse) {
+		update_air_info("");
 		return;
-
-	/* I really need to start addign some unit setting thing */
+	}
 	switch (output_units.volume) {
 	case LITER:
 		unit = "l";
+		format = "vol: %4.0f %s";
 		break;
 	case CUFT:
 		unit = "cuft";
+		format = "vol: %4.2f %s";
 		airuse /= liters_per_cuft;
 		break;
 	}
 	tro.vpos = -1.0;
-	plot_text(gc, &tro, 0.98, 0.98, "vol: %4.2f %s", airuse, unit);
-
+	plot_text(gc, &tro, 0.98, 0.98, format, airuse, unit);
+	len = snprintf(buffer1, sizeof(buffer1), format, airuse, unit);
 	tro.vpos = -2.2;
 	if (dive->duration.seconds) {
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
 		plot_text(gc, &tro, 0.98, 0.98, "SAC: %4.2f %s/min", sac, unit);
+		snprintf(buffer1+len, sizeof(buffer1)-len, 
+				"\nSAC: %4.2f %s/min", sac, unit);
 	}
-
+	len = 0;
 	tro.vpos = -3.4;
 	desc = dive->cylinder[0].type.description;
 	if (desc || dive->cylinder[0].gasmix.o2.permille) {
@@ -492,7 +499,10 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 		if (!o2)
 			o2 = 21;
 		plot_text(gc, &tro, 0.98, 0.98, "%s (%d%%)", desc, o2);
+		len = snprintf(buffer2, sizeof(buffer2), "%s (%d%%): used ", desc, o2);
 	}
+	snprintf(buffer2+len, sizeof(buffer2)-len, buffer1); 
+	update_air_info(buffer2);
 }
 
 static int mbar_to_PSI(int mbar)
