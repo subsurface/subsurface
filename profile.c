@@ -74,27 +74,36 @@ static void set_source_rgb(struct graphics_context *gc, double r, double g, doub
 static int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
-	return MAX(30*60, ROUND_UP(seconds, 60*10));
+	/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
+	return MAX(30*60, ROUND_UP(seconds+150, 60*5));
 }
 
 static int get_maxdepth(struct plot_info *pi)
 {
 	unsigned mm = pi->maxdepth;
-	/* Minimum 30m */
+	/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
 	return MAX(30000, ROUND_UP(mm+3000, 10000));
 }
 
 typedef struct {
 	int size;
 	double r,g,b;
-	enum {CENTER,LEFT} halign;
-	enum {MIDDLE,TOP,BOTTOM} valign;
+	double hpos, vpos;
 } text_render_options_t;
+
+#define RIGHT (-1.0)
+#define CENTER (-0.5)
+#define LEFT (0.0)
+
+#define TOP (1)
+#define MIDDLE (0)
+#define BOTTOM (-1)
 
 static void plot_text(struct graphics_context *gc, const text_render_options_t *tro,
 		      double x, double y, const char *fmt, ...)
 {
 	cairo_t *cr = gc->cr;
+	cairo_font_extents_t fe;
 	cairo_text_extents_t extents;
 	double dx, dy;
 	char buffer[80];
@@ -105,27 +114,10 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	va_end(args);
 
 	cairo_set_font_size(cr, tro->size);
+	cairo_font_extents(cr, &fe);
 	cairo_text_extents(cr, buffer, &extents);
-	dx = 0;
-	switch (tro->halign) {
-	case CENTER:
-		dx = -(extents.width/2 + extents.x_bearing);
-		break;
-	case LEFT:
-		dx = 0;
-		break;
-	}
-	switch (tro->valign) {
-	case TOP:
-		dy = extents.height * 1.2;
-		break;
-	case BOTTOM:
-		dy = -extents.height * 0.8;
-		break;
-	case MIDDLE:
-		dy = 0;
-		break;
-	}
+	dx = tro->hpos * extents.width + extents.x_bearing;
+	dy = tro->vpos * extents.height + fe.descent;
 
 	move_to(gc, x, y);
 	cairo_rel_move_to(cr, dx, dy);
@@ -455,7 +447,7 @@ static double calculate_airuse(struct dive *dive)
 
 static void plot_info(struct dive *dive, struct graphics_context *gc)
 {
-	text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
+	text_render_options_t tro = {10, 0.2, 1.0, 0.2, RIGHT, BOTTOM};
 	const double liters_per_cuft = 28.317;
 	const char *unit, *desc;
 	double airuse;
@@ -474,12 +466,17 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 		airuse /= liters_per_cuft;
 		break;
 	}
-	plot_text(gc, &tro, 0.8, 0.8, "vol: %4.2f %s", airuse, unit);
+	tro.vpos = -1.0;
+	plot_text(gc, &tro, 0.98, 0.98, "vol: %4.2f %s", airuse, unit);
+
+	tro.vpos = -2.2;
 	if (dive->duration.seconds) {
 		double pressure = 1 + (dive->meandepth.mm / 10000.0);
 		double sac = airuse / pressure * 60 / dive->duration.seconds;
-		plot_text(gc, &tro, 0.8, 0.85, "SAC: %4.2f %s/min", sac, unit);
+		plot_text(gc, &tro, 0.98, 0.98, "SAC: %4.2f %s/min", sac, unit);
 	}
+
+	tro.vpos = -3.4;
 	desc = dive->cylinder[0].type.description;
 	if (desc || dive->cylinder[0].gasmix.o2.permille) {
 		int o2 = dive->cylinder[0].gasmix.o2.permille / 10;
@@ -487,7 +484,7 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 			desc = "";
 		if (!o2)
 			o2 = 21;
-		plot_text(gc, &tro, 0.8, 0.9, "%s (%d%%)", desc, o2);
+		plot_text(gc, &tro, 0.98, 0.98, "%s (%d%%)", desc, o2);
 	}
 }
 
