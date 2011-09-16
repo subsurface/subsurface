@@ -14,8 +14,13 @@ int selected_dive = 0;
 struct plot_info {
 	int nr;
 	int maxtime;
+	int maxdepth;
+	int minpressure, maxpressure;
+	int mintemp, maxtemp;
 	struct plot_data {
 		int sec;
+		int pressure, temperature;
+		/* Depth info */
 		int val;
 		int smoothed;
 		struct plot_data *min[3];
@@ -301,25 +306,14 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 	cairo_stroke(cr);
 }
 
-static int setup_temperature_limits(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
+static int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
 {
-	int i;
 	int maxtime, mintemp, maxtemp;
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
-	mintemp = INT_MAX;
-	maxtemp = 0;
-	for (i = 0; i < dive->samples; i++) {
-		struct sample *sample = dive->sample+i;
-		int mkelvin = sample->temperature.mkelvin;
-		if (!mkelvin)
-			continue;
-		if (mkelvin > maxtemp)
-			maxtemp = mkelvin;
-		if (mkelvin < mintemp)
-			mintemp = mkelvin;
-	}
+	mintemp = pi->mintemp;
+	maxtemp = pi->maxtemp;
 
 	gc->leftx = 0; gc->rightx = maxtime;
 	/* Show temperatures in roughly the lower third */
@@ -329,11 +323,12 @@ static int setup_temperature_limits(struct dive *dive, struct graphics_context *
 	return maxtemp > mintemp;
 }
 
-static void plot_single_temp_text(struct graphics_context *gc, int sec, temperature_t temperature)
+static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkelvin)
 {
 	int deg;
 	const char *unit;
 	static const text_render_options_t tro = {12, 0.2, 0.2, 1.0, LEFT, TOP};
+	temperature_t temperature = { mkelvin };
 
 	if (output_units.temperature == FAHRENHEIT) {
 		deg = to_F(temperature);
@@ -345,36 +340,33 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, temperat
 	plot_text(gc, &tro, sec, temperature.mkelvin, "%d %s", deg, unit);
 }
 
-static void plot_temperature_text(struct dive *dive, struct graphics_context *gc,
-	struct plot_info *pi)
+static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
 	int last = 0;
-	temperature_t last_temperature, last_printed_temp;
+	int last_temperature = 0, last_printed_temp = 0;
 
-	if (!setup_temperature_limits(dive, gc, pi))
+	if (!setup_temperature_limits(gc, pi))
 		return;
 
-	for (i = 0; i < dive->samples; i++) {
-		struct sample *sample = dive->sample+i;
-		if (sample->time.seconds > dive->duration.seconds)
-			break; /* let's not plot surface temp events */
-		int mkelvin = sample->temperature.mkelvin;
+	for (i = 0; i < pi->nr; i++) {
 		int sec;
+		struct plot_data *entry = pi->entry+i;
+		int mkelvin = entry->temperature;
+
 		if (!mkelvin)
 			continue;
-		last_temperature = sample->temperature;
-		sec = sample->time.seconds;
-		if (sec < last)
+		last_temperature = mkelvin;
+		sec = entry->sec;
+		if (sec < last + 300)
 			continue;
-		last = sec + 300;
-		plot_single_temp_text(gc,sec,sample->temperature);
-		last_printed_temp = last_temperature ;
+		last = sec;
+		plot_single_temp_text(gc,sec,mkelvin);
+		last_printed_temp = mkelvin;
 	}
 	/* it would be nice to print the end temperature, if it's different */
-	if (last_temperature.mkelvin != last_printed_temp.mkelvin) {
-		plot_single_temp_text(gc,dive->duration.seconds,last_temperature);
-	}
+	if (last_temperature != last_printed_temp)
+		plot_single_temp_text(gc, last, last_temperature);
 }
 
 static void plot_temperature_profile(struct dive *dive, struct graphics_context *gc,
@@ -384,7 +376,7 @@ static void plot_temperature_profile(struct dive *dive, struct graphics_context 
 	cairo_t *cr = gc->cr;
 	int last = 0;
 
-	if (!setup_temperature_limits(dive, gc, pi))
+	if (!setup_temperature_limits(gc, pi))
 		return;
 
 	set_source_rgba(gc, 0.2, 0.2, 1.0, 0.8);
@@ -647,7 +639,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-static struct plot_info *depth_plot_info(struct dive *dive)
+static struct plot_info *create_plot_info(struct dive *dive)
 {
 	int lastdepth, maxtime;
 	int i, nr = dive->samples + 4, sec;
@@ -663,15 +655,34 @@ static struct plot_info *depth_plot_info(struct dive *dive)
 	maxtime = 0;
 	lastdepth = -1;
 	for (i = 0; i < dive->samples; i++) {
-		int depth;
+		int depth, pressure, temperature;
 		struct sample *sample = dive->sample+i;
 		struct plot_data *entry = pi->entry + i + 2;
 
 		sec = entry->sec = sample->time.seconds;
 		depth = entry->val = sample->depth.mm;
+		pressure = entry->pressure = sample->cylinderpressure.mbar;
+		temperature = entry->temperature = sample->temperature.mkelvin;
+
 		if (depth || lastdepth)
 			maxtime = sec;
 		lastdepth = depth;
+		if (depth > pi->maxdepth)
+			pi->maxdepth = depth;
+
+		if (pressure) {
+			if (!pi->minpressure || pressure < pi->minpressure)
+				pi->minpressure = pressure;
+			if (pressure > pi->maxpressure)
+				pi->maxpressure = pressure;
+		}
+
+		if (temperature) {
+			if (!pi->mintemp || temperature < pi->mintemp)
+				pi->mintemp = temperature;
+			if (temperature > pi->maxtemp)
+				pi->maxtemp = temperature;
+		}
 	}
 	if (lastdepth)
 		maxtime = sec + 20;
@@ -687,7 +698,7 @@ static struct plot_info *depth_plot_info(struct dive *dive)
 void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 {
 	double topx, topy;
-	struct plot_info *pi = depth_plot_info(dive);
+	struct plot_info *pi = create_plot_info(dive);
 
 	topx = w / 20.0;
 	topy = h / 20.0;
@@ -716,7 +727,7 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	plot_depth_profile(dive, gc, pi);
 
 	/* Text on top of all graphs.. */
-	plot_temperature_text(dive, gc, pi);
+	plot_temperature_text(gc, pi);
 	plot_depth_text(dive, gc, pi);
 	plot_cylinder_pressure_text(dive, gc, pi);
 
