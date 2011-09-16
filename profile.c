@@ -614,6 +614,27 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 	int i;
 	int nr = pi->nr;
 
+	/* Do pressure min/max based on the non-surface data */
+	for (i = 0; i < nr; i++) {
+		struct plot_data *entry = pi->entry+i;
+		int pressure = entry->pressure;
+		int temperature = entry->temperature;
+
+		if (pressure) {
+			if (!pi->minpressure || pressure < pi->minpressure)
+				pi->minpressure = pressure;
+			if (pressure > pi->maxpressure)
+				pi->maxpressure = pressure;
+		}
+
+		if (temperature) {
+			if (!pi->mintemp || temperature < pi->mintemp)
+				pi->mintemp = temperature;
+			if (temperature > pi->maxtemp)
+				pi->maxtemp = temperature;
+		}
+	}
+
 	/* Smoothing function: 5-point triangular smooth */
 	for (i = 2; i < nr-2; i++) {
 		struct plot_data *entry = pi->entry+i;
@@ -641,7 +662,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
  */
 static struct plot_info *create_plot_info(struct dive *dive)
 {
-	int lastdepth, maxtime;
+	int lastdepth, lastindex;
 	int i, nr = dive->samples + 4, sec;
 	size_t alloc_size = plot_info_size(nr);
 	struct plot_info *pi;
@@ -652,45 +673,34 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	memset(pi, 0, alloc_size);
 	pi->nr = nr;
 	sec = 0;
-	maxtime = 0;
+	lastindex = 0;
 	lastdepth = -1;
 	for (i = 0; i < dive->samples; i++) {
-		int depth, pressure, temperature;
+		int depth;
 		struct sample *sample = dive->sample+i;
 		struct plot_data *entry = pi->entry + i + 2;
 
 		sec = entry->sec = sample->time.seconds;
 		depth = entry->val = sample->depth.mm;
-		pressure = entry->pressure = sample->cylinderpressure.mbar;
-		temperature = entry->temperature = sample->temperature.mkelvin;
+		entry->pressure = sample->cylinderpressure.mbar;
+		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
-			maxtime = sec;
+			lastindex = i+2;
+
 		lastdepth = depth;
 		if (depth > pi->maxdepth)
 			pi->maxdepth = depth;
-
-		if (pressure) {
-			if (!pi->minpressure || pressure < pi->minpressure)
-				pi->minpressure = pressure;
-			if (pressure > pi->maxpressure)
-				pi->maxpressure = pressure;
-		}
-
-		if (temperature) {
-			if (!pi->mintemp || temperature < pi->mintemp)
-				pi->mintemp = temperature;
-			if (temperature > pi->maxtemp)
-				pi->maxtemp = temperature;
-		}
 	}
 	if (lastdepth)
-		maxtime = sec + 20;
+		lastindex = i + 2;
 	/* Fill in the last two entries with empty values but valid times */
 	i = dive->samples + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
-	pi->maxtime = maxtime;
+
+	pi->nr = lastindex+1;
+	pi->maxtime = pi->entry[lastindex].sec;
 
 	return analyze_plot_info(pi);
 }
