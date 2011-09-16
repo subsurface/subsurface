@@ -14,7 +14,7 @@ int selected_dive = 0;
 struct plot_info {
 	int nr;
 	int maxtime;
-	int maxdepth;
+	int meandepth, maxdepth;
 	int minpressure, maxpressure;
 	int mintemp, maxtemp;
 	struct plot_data {
@@ -77,9 +77,9 @@ static int get_maxtime(struct plot_info *pi)
 	return MAX(30*60, ROUND_UP(seconds, 60*10));
 }
 
-static int round_depth_up(depth_t depth)
+static int get_maxdepth(struct plot_info *pi)
 {
-	unsigned mm = depth.mm;
+	unsigned mm = pi->maxdepth;
 	/* Minimum 30m */
 	return MAX(30000, ROUND_UP(mm+3000, 10000));
 }
@@ -181,13 +181,13 @@ static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 	}
 }
 
-static void plot_depth_text(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
+static void plot_depth_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	int maxtime, maxdepth;
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
-	maxdepth = round_depth_up(dive->maxdepth);
+	maxdepth = get_maxdepth(pi);
 
 	gc->leftx = 0; gc->rightx = maxtime;
 	gc->topy = 0; gc->bottomy = maxdepth;
@@ -238,7 +238,7 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 	plot_minmax_profile_minute(gc, pi, 0, 0.1);
 }
 
-static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
+static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
 	cairo_t *cr = gc->cr;
@@ -248,7 +248,7 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
-	maxdepth = round_depth_up(dive->maxdepth);
+	maxdepth = get_maxdepth(pi);
 
 	/* Time markers: every 5 min */
 	gc->leftx = 0; gc->rightx = maxtime;
@@ -275,8 +275,8 @@ static void plot_depth_profile(struct dive *dive, struct graphics_context *gc, s
 
 	/* Show mean depth */
 	set_source_rgba(gc, 1, 0.2, 0.2, 0.40);
-	move_to(gc, 0, dive->meandepth.mm);
-	line_to(gc, 1, dive->meandepth.mm);
+	move_to(gc, 0, pi->meandepth);
+	line_to(gc, 1, pi->meandepth);
 	cairo_stroke(cr);
 
 	gc->leftx = 0; gc->rightx = maxtime;
@@ -400,52 +400,20 @@ static void plot_temperature_profile(struct dive *dive, struct graphics_context 
 }
 
 /* gets both the actual start and end pressure as well as the scaling factors */
-static int get_cylinder_pressure_range(struct dive *dive, struct graphics_context *gc,
-	struct plot_info *pi,
-	pressure_t *startp, pressure_t *endp)
+static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_info *pi)
 {
-	int i;
-	int min, max;
-
 	gc->leftx = 0;
 	gc->rightx = get_maxtime(pi);
 
-	max = 0;
-	min = 5000000;
-	if (startp)
-		startp->mbar = endp->mbar = 0;
-
-	for (i = 0; i < dive->samples; i++) {
-		int mbar;
-		struct sample *sample = dive->sample + i;
-
-		/* FIXME! We only track cylinder 0 right now */
-		if (sample->cylinderindex)
-			continue;
-		mbar = sample->cylinderpressure.mbar;
-		if (!mbar)
-			continue;
-		if (mbar < min)
-			min = mbar;
-		if (mbar > max)
-			max = mbar;
-	}
-	if (startp)
-		startp->mbar = max;
-	if (endp)
-		endp->mbar = min;
-	if (!max)
-		return 0;
-	gc->topy = 0; gc->bottomy = max * 1.5;
-	return 1;
+	gc->topy = 0; gc->bottomy = pi->maxpressure * 1.5;
+	return pi->maxpressure != 0;
 }
 
-static void plot_cylinder_pressure(struct dive *dive, struct graphics_context *gc,
-	struct plot_info *pi)
+static void plot_cylinder_pressure(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
 {
 	int i, sec = -1;
 
-	if (!get_cylinder_pressure_range(dive, gc, pi, NULL, NULL))
+	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
 	cairo_set_source_rgba(gc->cr, 0.2, 1.0, 0.2, 0.80);
@@ -533,36 +501,39 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 	}
 }
 
-static void plot_cylinder_pressure_text(struct dive *dive, struct graphics_context *gc,
-	struct plot_info *pi)
+static int mbar_to_PSI(int mbar)
 {
-	pressure_t startp, endp;
+	pressure_t p = {mbar};
+	return to_PSI(p);
+}
 
-	if (get_cylinder_pressure_range(dive, gc, pi, &startp, &endp)) {
+static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
+{
+	if (get_cylinder_pressure_range(gc, pi)) {
 		int start, end;
 		const char *unit = "bar";
 
 		switch (output_units.pressure) {
 		case PASCAL:
-			start = startp.mbar * 100;
-			end = startp.mbar * 100;
+			start = pi->maxpressure * 100;
+			end = pi->minpressure * 100;
 			unit = "pascal";
 			break;
 		case BAR:
-			start = (startp.mbar + 500) / 1000;
-			end = (endp.mbar + 500) / 1000;
+			start = (pi->maxpressure + 500) / 1000;
+			end = (pi->minpressure + 500) / 1000;
 			unit = "bar";
 			break;
 		case PSI:
-			start = to_PSI(startp);
-			end = to_PSI(endp);
+			start = mbar_to_PSI(pi->maxpressure);
+			end = mbar_to_PSI(pi->minpressure);
 			unit = "psi";
 			break;
 		}
 
 		text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
-		plot_text(gc, &tro, 0, startp.mbar, "%d %s", start, unit);
-		plot_text(gc, &tro, dive->duration.seconds, endp.mbar,
+		plot_text(gc, &tro, 0, pi->maxpressure, "%d %s", start, unit);
+		plot_text(gc, &tro, pi->maxtime, pi->minpressure,
 			  "%d %s", end, unit);
 	}
 }
@@ -702,6 +673,11 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	pi->nr = lastindex+1;
 	pi->maxtime = pi->entry[lastindex].sec;
 
+	pi->minpressure = dive->cylinder[0].end.mbar;
+	pi->maxpressure = dive->cylinder[0].start.mbar;
+
+	pi->meandepth = dive->meandepth.mm;
+
 	return analyze_plot_info(pi);
 }
 
@@ -734,12 +710,12 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	plot_cylinder_pressure(dive, gc, pi);
 
 	/* Depth profile */
-	plot_depth_profile(dive, gc, pi);
+	plot_depth_profile(gc, pi);
 
 	/* Text on top of all graphs.. */
 	plot_temperature_text(gc, pi);
-	plot_depth_text(dive, gc, pi);
-	plot_cylinder_pressure_text(dive, gc, pi);
+	plot_depth_text(gc, pi);
+	plot_cylinder_pressure_text(gc, pi);
 
 	/* And info box in the lower right corner.. */
 	gc->leftx = 0; gc->rightx = 1.0;
