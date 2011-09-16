@@ -10,7 +10,8 @@
 
 int selected_dive = 0;
 
-/* Plot info with smoothing and one-, two- and three-minute minimums and maximums */
+/* Plot info with smoothing, velocity indication
+ * and one-, two- and three-minute minimums and maximums */
 struct plot_info {
 	int nr;
 	int maxtime;
@@ -23,11 +24,23 @@ struct plot_info {
 		/* Depth info */
 		int val;
 		int smoothed;
+		enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity;
 		struct plot_data *min[3];
 		struct plot_data *max[3];
 		int avg[3];
 	} entry[];
 };
+
+/* convert velocity to colors */
+typedef struct { double r, g, b; } rgb_t;
+static const rgb_t rgb[] = {
+	[STABLE]   = {0.0, 0.4, 0.0},
+	[SLOW]     = {0.4, 0.8, 0.0},
+	[MODERATE] = {0.8, 0.8, 0.0},
+	[FAST]     = {0.8, 0.5, 0.0},
+	[CRAZY]    = {1.0, 0.0, 0.0},
+};
+
 #define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
 
 /* Scale to 0,0 -> maxx,maxy */
@@ -70,6 +83,8 @@ static void set_source_rgb(struct graphics_context *gc, double r, double g, doub
  * current dive. However, we don't scale past less than
  * 30 minutes or 90 ft, just so that small dives show
  * up as such.
+ * we also need to add 180 seconds at the end so the min/max
+ * plots correctly
  */
 static int get_maxtime(struct plot_info *pi)
 {
@@ -234,7 +249,9 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 {
 	int i;
 	cairo_t *cr = gc->cr;
-	int begins, sec, depth;
+	int ends, sec, depth;
+	int *secs;
+	int *depths;
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
 
@@ -278,24 +295,47 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	entry = pi->entry;
 	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
-	begins = entry->sec;
-	move_to(gc, entry->sec, entry->val);
+	secs = (int *) malloc(sizeof(int) * pi->nr);
+	depths = (int *) malloc(sizeof(int) * pi->nr);
+	secs[0] = entry->sec;
+	depths[0] = entry->val;
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
 		sec = entry->sec;
-		if (sec <= maxtime) {
+		if (sec <= maxtime || entry->val > 0) {
+			/* we want to draw the segments in different colors
+			 * representing the vertical velocity, so we need to
+			 * chop this into short segments */
+			rgb_t color = rgb[entry->velocity];
 			depth = entry->val;
+			set_source_rgb(gc, color.r, color.g, color.b);
+			move_to(gc, secs[i-1], depths[i-1]);
 			line_to(gc, sec, depth);
+			cairo_stroke(cr);
+			ends = i;
 		}
+		secs[i] = sec;
+		depths[i] = depth;
 	}
+	move_to(gc, secs[ends], depths[ends]);
 	gc->topy = 0; gc->bottomy = 1.0;
-	line_to(gc, MIN(sec,maxtime), 0);
-	line_to(gc, begins, 0);
+	line_to(gc, secs[ends], 0);
+	line_to(gc, secs[0], 0);
 	cairo_close_path(cr);
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
-	cairo_fill_preserve(cr);
 	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
 	cairo_stroke(cr);
+	/* now do it again for the neat fill */
+	gc->topy = 0; gc->bottomy = maxdepth;
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
+	move_to(gc, secs[0], depths[0]);
+	for (i = 1; i <= ends; i++) {
+		line_to(gc, secs[i],depths[i]);
+	}
+	gc->topy = 0; gc->bottomy = 1.0;
+	line_to(gc, secs[ends], 0);
+	line_to(gc, secs[0], 0);
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
 }
 
 static int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
@@ -611,12 +651,39 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 	}
 
 	/* Smoothing function: 5-point triangular smooth */
-	for (i = 2; i < nr-2; i++) {
+	for (i = 2; i < nr-1; i++) {
 		struct plot_data *entry = pi->entry+i;
 		int val;
 
-		val = entry[-2].val + 2*entry[-1].val + 3*entry[0].val + 2*entry[1].val + entry[2].val;
-		entry->smoothed = (val+4) / 9;
+		if (i < nr-2) {
+			val = entry[-2].val + 2*entry[-1].val + 3*entry[0].val + 2*entry[1].val + entry[2].val;
+			entry->smoothed = (val+4) / 9;
+		}
+		/* vertical velocity in mm/sec */
+		if (entry[0].sec - entry[-1].sec) {
+			val = (entry[0].val - entry[-1].val) / (entry[0].sec - entry[-1].sec);
+			if (val < -304) /* ascent faster than -60ft/min */
+				entry->velocity = CRAZY;
+			else if (val < -152) /* above -30ft/min */
+				entry->velocity = FAST;
+			else if (val < -76) /* -15ft/min */
+				entry->velocity = MODERATE;
+			else if (val < -25) /* -5ft/min */
+				entry->velocity = SLOW;
+			else if (val < 25) /* very hard to find data, but it appears that the recommendations
+					      for descent are usually about 2x ascent rate; still, we want 
+					      stable to mean stable */
+				entry->velocity = STABLE;
+			else if (val < 152) /* between 5 and 30ft/min is considered slow */
+				entry->velocity = SLOW;
+			else if (val < 304) /* up to 60ft/min is moderate */
+				entry->velocity = MODERATE;
+			else if (val < 507) /* up to 100ft/min is fast */
+				entry->velocity = FAST;
+			else /* more than that is just crazy - you'll blow your ears out */
+				entry->velocity = CRAZY;
+		} else
+			entry->velocity = STABLE;
 	}
 
 	/* One-, two- and three-minute minmax data */
