@@ -369,8 +369,7 @@ static void plot_temperature_text(struct graphics_context *gc, struct plot_info 
 		plot_single_temp_text(gc, last, last_temperature);
 }
 
-static void plot_temperature_profile(struct dive *dive, struct graphics_context *gc,
-	struct plot_info *pi)
+static void plot_temperature_profile(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
 	cairo_t *cr = gc->cr;
@@ -380,20 +379,19 @@ static void plot_temperature_profile(struct dive *dive, struct graphics_context 
 		return;
 
 	set_source_rgba(gc, 0.2, 0.2, 1.0, 0.8);
-	for (i = 0; i < dive->samples; i++) {
-		struct sample *sample = dive->sample+i;
-		if (sample->time.seconds > dive->duration.seconds)
-			break; /* let's not plot surface temp events */
-		int mkelvin = sample->temperature.mkelvin;
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+		int mkelvin = entry->temperature;
+		int sec = entry->sec;
 		if (!mkelvin) {
 			if (!last)
 				continue;
 			mkelvin = last;
 		}
 		if (last)
-			line_to(gc, sample->time.seconds, mkelvin);
+			line_to(gc, sec, mkelvin);
 		else
-			move_to(gc, sample->time.seconds, mkelvin);
+			move_to(gc, sec, mkelvin);
 		last = mkelvin;
 	}
 	cairo_stroke(cr);
@@ -409,33 +407,26 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	return pi->maxpressure != 0;
 }
 
-static void plot_cylinder_pressure(struct dive *dive, struct graphics_context *gc, struct plot_info *pi)
+static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi)
 {
-	int i, sec = -1;
+	int i;
 
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
 	cairo_set_source_rgba(gc->cr, 0.2, 1.0, 0.2, 0.80);
 
-	move_to(gc, 0, dive->cylinder[0].start.mbar);
-	for (i = 1; i < dive->samples; i++) {
+	move_to(gc, 0, pi->maxpressure);
+	for (i = 1; i < pi->nr; i++) {
 		int mbar;
-		struct sample *sample = dive->sample + i;
+		struct plot_data *entry = pi->entry + i;
 
-		mbar = sample->cylinderpressure.mbar;
+		mbar = entry->pressure;
 		if (!mbar)
 			continue;
-		sec = sample->time.seconds;
-		if (sec <= dive->duration.seconds)
-			line_to(gc, sec, mbar);
+		line_to(gc, entry->sec, mbar);
 	}
-	/*
-	 * We may have "surface time" events, in which case we don't go
-	 * back to dive duration
-	 */
-	if (sec < dive->duration.seconds)
-		line_to(gc, dive->duration.seconds, dive->cylinder[0].end.mbar);
+	line_to(gc, pi->maxtime, pi->minpressure);
 	cairo_stroke(gc->cr);
 }
 
@@ -704,10 +695,10 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	gc->maxy = (h - 2*topy);
 
 	/* Temperature profile */
-	plot_temperature_profile(dive, gc, pi);
+	plot_temperature_profile(gc, pi);
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure(dive, gc, pi);
+	plot_cylinder_pressure(gc, pi);
 
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
