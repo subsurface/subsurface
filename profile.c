@@ -343,14 +343,13 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
-	int last = 0;
+	int last = 0, sec = 0;
 	int last_temperature = 0, last_printed_temp = 0;
 
 	if (!setup_temperature_limits(gc, pi))
 		return;
 
 	for (i = 0; i < pi->nr; i++) {
-		int sec;
 		struct plot_data *entry = pi->entry+i;
 		int mkelvin = entry->temperature;
 
@@ -365,8 +364,8 @@ static void plot_temperature_text(struct graphics_context *gc, struct plot_info 
 		last_printed_temp = mkelvin;
 	}
 	/* it would be nice to print the end temperature, if it's different */
-	if (last_temperature != last_printed_temp)
-		plot_single_temp_text(gc, last, last_temperature);
+	if (abs(last_temperature - last_printed_temp) > 500)
+		plot_single_temp_text(gc, sec, last_temperature);
 }
 
 static void plot_temperature_profile(struct graphics_context *gc, struct plot_info *pi)
