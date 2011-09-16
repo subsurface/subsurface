@@ -12,7 +12,7 @@ subsurface: $(OBJS)
 	$(CC) $(LDFLAGS) -o subsurface $(OBJS) \
 		`xml2-config --libs` \
 		`pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0` \
-		$(LIBDIVECOMPUTERARCHIVE)
+		$(LIBDIVECOMPUTERARCHIVE) -lpthread
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c

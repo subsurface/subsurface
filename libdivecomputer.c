@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
+#include <pthread.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -20,18 +21,6 @@
 
 /* handling uemis Zurich SDA files */
 #include "uemis.h"
-
-/*
- * I'd love to do a while-loop here for pending events, but
- * that seems to screw up with the dive computer reading timing.
- *
- * I may need to spawn a new thread to do the computer
- * reading stuff..
- */
-static int run_gtk_mainloop(void)
-{
-	return gtk_main_iteration_do(0);
-}
 
 static void error(const char *fmt, ...)
 {
@@ -230,18 +219,15 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	struct tm tm;
 	struct dive *dive;
 
-	/* Christ, this is hacky */
-	run_gtk_mainloop();
-
 	rc = create_parser(devdata, &parser);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		error("Unable to create parser for %s", devdata->name);
+		fprintf(stderr, "Unable to create parser for %s", devdata->name);
 		return rc;
 	}
 
 	rc = parser_set_data(parser, data, size);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		error("Error registering the data.");
+		fprintf(stderr, "Error registering the data.");
 		parser_destroy(parser);
 		return rc;
 	}
@@ -249,7 +235,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive = alloc_dive();
 	rc = parser_get_datetime(parser, &dt);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		error("Error parsing the datetime.");
+		fprintf(stderr, "Error parsing the datetime.");
 		parser_destroy (parser);
 		return rc;
 	}
@@ -267,7 +253,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	unsigned int divetime = 0;
 	rc = parser_get_field (parser, FIELD_TYPE_DIVETIME, 0, &divetime);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		error("Error parsing the divetime.");
+		fprintf(stderr, "Error parsing the divetime.");
 		parser_destroy(parser);
 		return rc;
 	}
@@ -278,7 +264,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	double maxdepth = 0.0;
 	rc = parser_get_field(parser, FIELD_TYPE_MAXDEPTH, 0, &maxdepth);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		error("Error parsing the maxdepth.");
+		fprintf(stderr, "Error parsing the maxdepth.");
 		parser_destroy(parser);
 		return rc;
 	}
@@ -289,14 +275,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	unsigned int ngases = 0;
 	rc = parser_get_field(parser, FIELD_TYPE_GASMIX_COUNT, 0, &ngases);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		error("Error parsing the gas mix count.");
+		fprintf(stderr, "Error parsing the gas mix count.");
 		parser_destroy(parser);
 		return rc;
 	}
 
 	rc = parse_gasmixes(dive, parser, ngases);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		error("Error parsing the gas mix.");
+		fprintf(stderr, "Error parsing the gas mix.");
 		parser_destroy(parser);
 		return rc;
 	}
@@ -304,7 +290,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Initialize the sample data.
 	rc = parse_samples(&dive, parser);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		error("Error parsing the samples.");
+		fprintf(stderr, "Error parsing the samples.");
 		parser_destroy(parser);
 		return rc;
 	}
@@ -401,9 +387,6 @@ event_cb(device_t *device, device_event_t event, const void *data, void *userdat
 	const device_clock_t *clock = (device_clock_t *) data;
 	device_data_t *devdata = (device_data_t *) userdata;
 
-	/* Christ, this is hacky */
-	run_gtk_mainloop();
-
 	switch (event) {
 	case DEVICE_EVENT_WAITING:
 		printf("Event: waiting for user action\n");
@@ -429,52 +412,80 @@ event_cb(device_t *device, device_event_t event, const void *data, void *userdat
 	}
 }
 
+static int import_thread_done = 0, import_thread_cancelled;
+
 static int
 cancel_cb(void *userdata)
 {
-	return run_gtk_mainloop();
+	return import_thread_cancelled;
 }
 
-static void do_import(device_data_t *data)
+static const char *do_libdivecomputer_import(device_data_t *data)
 {
 	device_t *device = NULL;
 	device_status_t rc;
 
-	if (data->type == DEVICE_TYPE_UEMIS) {
-		return uemis_import();
-	}
-
 	rc = device_open(data->devname, data->type, &device);
-	if (rc != DEVICE_STATUS_SUCCESS) {
-		error("Unable to open %s (%s)", data->name, data->devname);
-		return;
-	}
+	if (rc != DEVICE_STATUS_SUCCESS)
+		return "Unable to open %s (%s)";
 
 	// Register the event handler.
 	int events = DEVICE_EVENT_WAITING | DEVICE_EVENT_PROGRESS | DEVICE_EVENT_DEVINFO | DEVICE_EVENT_CLOCK;
 	rc = device_set_events(device, events, event_cb, data);
 	if (rc != DEVICE_STATUS_SUCCESS) {
-		error("Error registering the event handler.");
 		device_close(device);
-		return;
+		return "Error registering the event handler.";
 	}
 
 	// Register the cancellation handler.
 	rc = device_set_cancel(device, cancel_cb, data);
 	if (rc != DEVICE_STATUS_SUCCESS) {
-		error("Error registering the cancellation handler.");
 		device_close(device);
-		return;
+		return "Error registering the cancellation handler.";
 	}
 
 	rc = import_device_data(device, data);
 	if (rc != DEVICE_STATUS_SUCCESS) {
-		error("Dive data import error");
 		device_close(device);
-		return;
+		return "Dive data import error";
 	}
 
 	device_close(device);
+	return NULL;
+}
+
+static void *pthread_wrapper(void *_data)
+{
+	device_data_t *data = _data;
+	const char *err_string = do_libdivecomputer_import(data);
+	import_thread_done = 1;
+	return (void *)err_string;
+}
+
+static void do_import(device_data_t *data)
+{
+	pthread_t pthread;
+	void *retval;
+
+	if (data->type == DEVICE_TYPE_UEMIS)
+		return uemis_import();
+
+	/* I'm sure there is some better interface for waiting on a thread in a gtk main loop */
+	import_thread_done = 0;
+	pthread_create(&pthread, NULL, pthread_wrapper, data);
+	while (!import_thread_done) {
+		while (gtk_events_pending()) {
+			if (gtk_main_iteration_do(0)) {
+				import_thread_cancelled = 1;
+				break;
+			}
+		}
+		usleep(100000);
+	}
+	if (pthread_join(pthread, &retval) < 0)
+		retval = "Odd pthread error return";
+	if (retval)
+		error(retval, data->name, data->devname);
 }
 
 /*
