@@ -468,83 +468,6 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 	cairo_stroke(gc->cr);
 }
 
-/*
- * Return air usage (in liters).
- */
-static double calculate_airuse(struct dive *dive)
-{
-	double airuse = 0;
-	int i;
-
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
-		int size = cyl->type.size.mliter;
-		double kilo_atm;
-
-		if (!size)
-			continue;
-
-		kilo_atm = (cyl->start.mbar - cyl->end.mbar) / 1013250.0;
-
-		/* Liters of air at 1 atm == milliliters at 1k atm*/
-		airuse += kilo_atm * size;
-	}
-	return airuse;
-}
-
-static void plot_info(struct dive *dive, struct graphics_context *gc)
-{
-	text_render_options_t tro = {10, 0.2, 1.0, 0.2, RIGHT, BOTTOM};
-	const double liters_per_cuft = 28.317;
-	const char *unit, *format, *desc;
-	double airuse;
-	char buffer1[80];
-	char buffer2[80];
-	int len;
-
-	airuse = calculate_airuse(dive);
-	if (!airuse) {
-		update_air_info(NULL);
-		return;
-	}
-	switch (output_units.volume) {
-	case LITER:
-		unit = "l";
-		format = "vol: %4.0f %s";
-		break;
-	case CUFT:
-		unit = "cuft";
-		format = "vol: %4.2f %s";
-		airuse /= liters_per_cuft;
-		break;
-	}
-	tro.vpos = -1.0;
-	plot_text(gc, &tro, 0.98, 0.98, format, airuse, unit);
-	len = snprintf(buffer1, sizeof(buffer1), format, airuse, unit);
-	tro.vpos = -2.2;
-	if (dive->duration.seconds) {
-		double pressure = 1 + (dive->meandepth.mm / 10000.0);
-		double sac = airuse / pressure * 60 / dive->duration.seconds;
-		plot_text(gc, &tro, 0.98, 0.98, "SAC: %4.2f %s/min", sac, unit);
-		snprintf(buffer1+len, sizeof(buffer1)-len, 
-				"\nSAC: %4.2f %s/min", sac, unit);
-	}
-	len = 0;
-	tro.vpos = -3.4;
-	desc = dive->cylinder[0].type.description;
-	if (desc || dive->cylinder[0].gasmix.o2.permille) {
-		int o2 = dive->cylinder[0].gasmix.o2.permille / 10;
-		if (!desc)
-			desc = "";
-		if (!o2)
-			o2 = 21;
-		plot_text(gc, &tro, 0.98, 0.98, "%s (%d%%)", desc, o2);
-		len = snprintf(buffer2, sizeof(buffer2), "%s (%d%%): used ", desc, o2);
-	}
-	snprintf(buffer2+len, sizeof(buffer2)-len, buffer1); 
-	update_air_info(buffer2);
-}
-
 static int mbar_to_PSI(int mbar)
 {
 	pressure_t p = {mbar};
@@ -788,12 +711,10 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	plot_depth_text(gc, pi);
 	plot_cylinder_pressure_text(gc, pi);
 
-	/* And info box in the lower right corner.. */
+	/* Bounding box last */
 	gc->leftx = 0; gc->rightx = 1.0;
 	gc->topy = 0; gc->bottomy = 1.0;
-	plot_info(dive, gc);
 
-	/* Bounding box last */
 	set_source_rgb(gc, 1, 1, 1);
 	move_to(gc, 0, 0);
 	line_to(gc, 0, 1);
