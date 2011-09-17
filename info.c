@@ -197,6 +197,8 @@ void update_air_info(char *buffer)
 {
 	char markup[120];
 	
+	if (! buffer)
+		buffer = EMPTY_AIRCONSUMPTION;
 	snprintf(markup, sizeof(markup), "<span font=\"8\">%s</span>",buffer);
 	gtk_label_set_markup(GTK_LABEL(airconsumption), markup);
 }

@@ -504,7 +504,7 @@ static void plot_info(struct dive *dive, struct graphics_context *gc)
 
 	airuse = calculate_airuse(dive);
 	if (!airuse) {
-		update_air_info("          \n          ");
+		update_air_info(NULL);
 		return;
 	}
 	switch (output_units.volume) {
