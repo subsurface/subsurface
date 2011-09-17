@@ -441,7 +441,7 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	gc->leftx = 0;
 	gc->rightx = get_maxtime(pi);
 
-	gc->topy = 0; gc->bottomy = pi->maxpressure * 1.5;
+	gc->bottomy = 0; gc->topy = pi->maxpressure * 1.5;
 	return pi->maxpressure != 0;
 }
 
