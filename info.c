@@ -35,6 +35,86 @@ static char *get_text(GtkTextBuffer *buffer)
 	return gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 }
 
+void update_air_info(char *buffer)
+{
+	char markup[120];
+	
+	if (! buffer)
+		buffer = EMPTY_AIRCONSUMPTION;
+	snprintf(markup, sizeof(markup), "<span font=\"8\">%s</span>",buffer);
+	gtk_label_set_markup(GTK_LABEL(airconsumption), markup);
+}
+
+/*
+ * Return air usage (in liters).
+ */
+static double calculate_airuse(struct dive *dive)
+{
+	double airuse = 0;
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder + i;
+		int size = cyl->type.size.mliter;
+		double kilo_atm;
+
+		if (!size)
+			continue;
+
+		kilo_atm = (cyl->start.mbar - cyl->end.mbar) / 1013250.0;
+
+		/* Liters of air at 1 atm == milliliters at 1k atm*/
+		airuse += kilo_atm * size;
+	}
+	return airuse;
+}
+
+static void update_air_info_frame(struct dive *dive)
+{
+	const double liters_per_cuft = 28.317;
+	const char *unit, *format, *desc;
+	double airuse;
+	char buffer1[80];
+	char buffer2[80];
+	int len;
+
+	airuse = calculate_airuse(dive);
+	if (!airuse) {
+		update_air_info(NULL);
+		return;
+	}
+	switch (output_units.volume) {
+	case LITER:
+		unit = "l";
+		format = "vol: %4.0f %s";
+		break;
+	case CUFT:
+		unit = "cuft";
+		format = "vol: %4.2f %s";
+		airuse /= liters_per_cuft;
+		break;
+	}
+	len = snprintf(buffer1, sizeof(buffer1), format, airuse, unit);
+	if (dive->duration.seconds) {
+		double pressure = 1 + (dive->meandepth.mm / 10000.0);
+		double sac = airuse / pressure * 60 / dive->duration.seconds;
+		snprintf(buffer1+len, sizeof(buffer1)-len, 
+				"\nSAC: %4.2f %s/min", sac, unit);
+	}
+	len = 0;
+	desc = dive->cylinder[0].type.description;
+	if (desc || dive->cylinder[0].gasmix.o2.permille) {
+		int o2 = dive->cylinder[0].gasmix.o2.permille / 10;
+		if (!desc)
+			desc = "";
+		if (!o2)
+			o2 = 21;
+		len = snprintf(buffer2, sizeof(buffer2), "%s (%d%%): used ", desc, o2);
+	}
+	snprintf(buffer2+len, sizeof(buffer2)-len, buffer1); 
+	update_air_info(buffer2);
+}
+
 void flush_dive_info_changes(struct dive *dive)
 {
 	if (!dive)
@@ -155,6 +235,8 @@ void show_dive_info(struct dive *dive)
 
 	text = dive->notes ? : "";
 	gtk_text_buffer_set_text(notes, text, -1);
+
+	update_air_info_frame(dive);
 }
 
 static GtkWidget *info_label(GtkWidget *box, const char *str, GtkJustification jtype)
@@ -191,14 +273,6 @@ GtkWidget *dive_info_frame(void)
 	gtk_label_set_width_chars(GTK_LABEL(airconsumption), AIRCON_WIDTH);
 
 	return frame;
-}
-
-void update_air_info(char *buffer)
-{
-	char markup[120];
-	
-	snprintf(markup, sizeof(markup), "<span font=\"8\">%s</span>",buffer);
-	gtk_label_set_markup(GTK_LABEL(airconsumption), markup);
 }
 
 static GtkEntry *text_entry(GtkWidget *box, const char *label)
