@@ -10,6 +10,7 @@
 
 int selected_dive = 0;
 
+typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 /* Plot info with smoothing, velocity indication
  * and one-, two- and three-minute minimums and maximums */
 struct plot_info {
@@ -24,7 +25,7 @@ struct plot_info {
 		/* Depth info */
 		int val;
 		int smoothed;
-		enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity;
+		velocity_t velocity;
 		struct plot_data *min[3];
 		struct plot_data *max[3];
 		int avg[3];
@@ -547,6 +548,33 @@ static void analyze_plot_info_minmax(struct plot_data *entry, struct plot_data *
 	analyze_plot_info_minmax_minute(entry, first, last, 2);
 }
 
+static velocity_t velocity(int speed)
+{
+	velocity_t v;
+
+	if (speed < -304) /* ascent faster than -60ft/min */
+		v = CRAZY;
+	else if (speed < -152) /* above -30ft/min */
+		v = FAST;
+	else if (speed < -76) /* -15ft/min */
+		v = MODERATE;
+	else if (speed < -25) /* -5ft/min */
+		v = SLOW;
+	else if (speed < 25) /* very hard to find data, but it appears that the recommendations
+				for descent are usually about 2x ascent rate; still, we want 
+				stable to mean stable */
+		v = STABLE;
+	else if (speed < 152) /* between 5 and 30ft/min is considered slow */
+		v = SLOW;
+	else if (speed < 304) /* up to 60ft/min is moderate */
+		v = MODERATE;
+	else if (speed < 507) /* up to 100ft/min is fast */
+		v = FAST;
+	else /* more than that is just crazy - you'll blow your ears out */
+		v = CRAZY;
+
+	return v;
+}
 static struct plot_info *analyze_plot_info(struct plot_info *pi)
 {
 	int i;
@@ -583,28 +611,17 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 			entry->smoothed = (val+4) / 9;
 		}
 		/* vertical velocity in mm/sec */
+		/* Linus wants to smooth this - let's at least look at the samples that aren't FAST or CRAZY */
 		if (entry[0].sec - entry[-1].sec) {
-			val = (entry[0].val - entry[-1].val) / (entry[0].sec - entry[-1].sec);
-			if (val < -304) /* ascent faster than -60ft/min */
-				entry->velocity = CRAZY;
-			else if (val < -152) /* above -30ft/min */
-				entry->velocity = FAST;
-			else if (val < -76) /* -15ft/min */
-				entry->velocity = MODERATE;
-			else if (val < -25) /* -5ft/min */
-				entry->velocity = SLOW;
-			else if (val < 25) /* very hard to find data, but it appears that the recommendations
-					      for descent are usually about 2x ascent rate; still, we want 
-					      stable to mean stable */
-				entry->velocity = STABLE;
-			else if (val < 152) /* between 5 and 30ft/min is considered slow */
-				entry->velocity = SLOW;
-			else if (val < 304) /* up to 60ft/min is moderate */
-				entry->velocity = MODERATE;
-			else if (val < 507) /* up to 100ft/min is fast */
-				entry->velocity = FAST;
-			else /* more than that is just crazy - you'll blow your ears out */
-				entry->velocity = CRAZY;
+			entry->velocity = velocity((entry[0].val - entry[-1].val) / (entry[0].sec - entry[-1].sec));
+                        /* if our samples are short and we aren't too FAST*/
+			if (entry[0].sec - entry[-1].sec < 30 && entry->velocity < FAST) { 
+				int past = -2;
+				while (pi->entry <= entry-past && entry[0].sec - entry[past].sec < 30)
+					past--;
+				entry->velocity = velocity((entry[0].val - entry[past].val) / 
+							(entry[0].sec - entry[past].sec));
+			}
 		} else
 			entry->velocity = STABLE;
 	}
