@@ -14,6 +14,9 @@ static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
 static int divemaster_changed = 1, buddy_changed = 1;
 
+#define EMPTY_AIRCONSUMPTION " \n "
+#define AIRCON_WIDTH 20
+
 static const char *weekday(int wday)
 {
 	static const char wday_array[7][4] = {
@@ -67,7 +70,8 @@ void show_dive_info(struct dive *dive)
 	if (!dive) {
 		gtk_label_set_text(GTK_LABEL(depth), "");
 		gtk_label_set_text(GTK_LABEL(duration), "");
-		gtk_label_set_text(GTK_LABEL(airconsumption), "");
+		gtk_label_set_text(GTK_LABEL(airconsumption), EMPTY_AIRCONSUMPTION);
+		gtk_label_set_width_chars(GTK_LABEL(airconsumption), AIRCON_WIDTH);
 		return;
 	}
 	/* dive number and location (or lacking that, the date) go in the window title */
@@ -183,6 +187,8 @@ GtkWidget *dive_info_frame(void)
 	duration = info_label(hbox, "duration", GTK_JUSTIFY_RIGHT);
 	temperature = info_label(hbox, "temperature", GTK_JUSTIFY_RIGHT);
 	airconsumption = info_label(hbox, "air", GTK_JUSTIFY_RIGHT);
+	gtk_misc_set_alignment(GTK_MISC(airconsumption), 1.0, 0.5);
+	gtk_label_set_width_chars(GTK_LABEL(airconsumption), AIRCON_WIDTH);
 
 	return frame;
 }
