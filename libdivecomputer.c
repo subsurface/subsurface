@@ -608,5 +608,5 @@ void import_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 
 	report_dives();
-	dive_list_update_dives(dive_list);
+	dive_list_update_dives();
 }

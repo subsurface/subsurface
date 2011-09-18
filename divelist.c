@@ -7,6 +7,9 @@
 #include "dive.h"
 #include "display.h"
 
+/* let's just have a global dive list */
+struct DiveList dive_list;
+ 
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
 	GtkTreeIter iter;
@@ -127,7 +130,7 @@ static void fill_dive_list(struct DiveList *dive_list)
 	update_dive_list_units(dive_list);
 }
 
-void dive_list_update_dives(struct DiveList dive_list)
+void dive_list_update_dives(void)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(dive_list.model));
 	fill_dive_list(&dive_list);

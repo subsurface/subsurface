@@ -12,7 +12,7 @@ struct DiveList {
 
 extern struct DiveList dive_list;
 extern struct DiveList dive_list_create(void);
-extern void dive_list_update_dives(struct DiveList);
+
 extern void update_dive_list_units(struct DiveList *);
 
 #endif

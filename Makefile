@@ -6,7 +6,8 @@ LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
 LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
-	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o
+	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
+	gtk-gui.o
 
 subsurface: $(OBJS)
 	$(CC) $(LDFLAGS) -o subsurface $(OBJS) \
@@ -24,8 +25,12 @@ dive.o: dive.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c dive.c
 
 main.o: main.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
+	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0 gconf-2.0` \
 		-c main.c
+
+gtk-gui.o: gtk-gui.c dive.h display.h divelist.h
+	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
+		-c gtk-gui.c
 
 profile.o: profile.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c profile.c
