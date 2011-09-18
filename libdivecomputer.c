@@ -1,27 +1,13 @@
 #include <stdio.h>
-#include <gtk/gtk.h>
 #include <pthread.h>
 
 #include "dive.h"
 #include "divelist.h"
+
 #include "display.h"
 #include "display-gtk.h"
 
-/* libdivecomputer */
-#include <device.h>
-#include <suunto.h>
-#include <reefnet.h>
-#include <uwatec.h>
-#include <oceanic.h>
-#include <mares.h>
-#include <hw.h>
-#include <cressi.h>
-#include <zeagle.h>
-#include <atomics.h>
-#include <utils.h>
-
-/* handling uemis Zurich SDA files */
-#include "uemis.h"
+#include "libdivecomputer.h"
 
 static void error(const char *fmt, ...)
 {
@@ -36,14 +22,6 @@ static void error(const char *fmt, ...)
 	report_error(error);
 	g_error_free(error);
 }
-
-typedef struct device_data_t {
-	device_type_t type;
-	const char *name, *devname;
-	GtkWidget *progressbar;
-	device_devinfo_t devinfo;
-	device_clock_t clock;
-} device_data_t;
 
 static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 {
@@ -380,8 +358,7 @@ static device_status_t device_open(const char *devname,
 	}
 }
 
-static void
-event_cb(device_t *device, device_event_t event, const void *data, void *userdata)
+static void event_cb(device_t *device, device_event_t event, const void *data, void *userdata)
 {
 	const device_progress_t *progress = (device_progress_t *) data;
 	const device_devinfo_t *devinfo = (device_devinfo_t *) data;
@@ -393,7 +370,7 @@ event_cb(device_t *device, device_event_t event, const void *data, void *userdat
 		printf("Event: waiting for user action\n");
 		break;
 	case DEVICE_EVENT_PROGRESS:
-		gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(devdata->progressbar),
+		update_progressbar(devdata->progress,
 			(double) progress->current / (double) progress->maximum);
 		break;
 	case DEVICE_EVENT_DEVINFO:
@@ -463,7 +440,7 @@ static void *pthread_wrapper(void *_data)
 	return (void *)err_string;
 }
 
-static void do_import(device_data_t *data)
+void do_import(device_data_t *data)
 {
 	pthread_t pthread;
 	void *retval;
@@ -471,16 +448,11 @@ static void do_import(device_data_t *data)
 	if (data->type == DEVICE_TYPE_UEMIS)
 		return uemis_import();
 
-	/* I'm sure there is some better interface for waiting on a thread in a gtk main loop */
+	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
 	import_thread_done = 0;
 	pthread_create(&pthread, NULL, pthread_wrapper, data);
 	while (!import_thread_done) {
-		while (gtk_events_pending()) {
-			if (gtk_main_iteration_do(0)) {
-				import_thread_cancelled = 1;
-				break;
-			}
-		}
+		import_thread_cancelled = process_ui_events();
 		usleep(100000);
 	}
 	if (pthread_join(pthread, &retval) < 0)
@@ -496,10 +468,7 @@ static void do_import(device_data_t *data)
  * libdivecomputer tell us what devices it supports,
  * rather than have the application have to know..
  */
-struct device_list {
-	const char *name;
-	device_type_t type;
-} device_list[] = {
+struct device_list device_list[] = {
 	{ "Suunto Solution",	DEVICE_TYPE_SUUNTO_SOLUTION },
 	{ "Suunto Eon",		DEVICE_TYPE_SUUNTO_EON },
 	{ "Suunto Vyper",	DEVICE_TYPE_SUUNTO_VYPER },
@@ -524,90 +493,3 @@ struct device_list {
 	{ "Uemis Zurich SDA",	DEVICE_TYPE_UEMIS },
 	{ NULL }
 };
-
-static void fill_computer_list(GtkListStore *store)
-{
-	GtkTreeIter iter;
-	struct device_list *list = device_list;
-
-	for (list = device_list ; list->name ; list++) {
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
-			0, list->name,
-			1, list->type,
-			-1);
-	}
-}
-
-static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
-{
-	GtkWidget *hbox, *combo_box;
-	GtkListStore *model;
-	GtkCellRenderer *renderer;
-
-	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, FALSE, 3);
-
-	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
-	fill_computer_list(model);
-
-	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
-	gtk_box_pack_start(GTK_BOX(hbox), combo_box, FALSE, TRUE, 3);
-
-	renderer = gtk_cell_renderer_text_new();
-	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
-	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo_box), renderer, "text", 0, NULL);
-
-	return GTK_COMBO_BOX(combo_box);
-}
-
-void import_dialog(GtkWidget *w, gpointer data)
-{
-	int result;
-	GtkWidget *dialog, *hbox;
-	GtkComboBox *computer;
-	device_data_t devicedata = {
-		.devname = "/dev/ttyUSB0",
-	};
-
-	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
-		GTK_WINDOW(main_window),
-		GTK_DIALOG_DESTROY_WITH_PARENT,
-		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-		NULL);
-
-	computer = dive_computer_selector(dialog);
-
-	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 3);
-	devicedata.progressbar = gtk_progress_bar_new();
-	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progressbar);
-
-	gtk_widget_show_all(dialog);
-	result = gtk_dialog_run(GTK_DIALOG(dialog));
-	switch (result) {
-		int type;
-		GtkTreeIter iter;
-		GtkTreeModel *model;
-		const char *comp;
-	case GTK_RESPONSE_ACCEPT:
-		if (!gtk_combo_box_get_active_iter(computer, &iter))
-			break;
-		model = gtk_combo_box_get_model(computer);
-		gtk_tree_model_get(model, &iter,
-			0, &comp,
-			1, &type,
-			-1);
-		devicedata.type = type;
-		devicedata.name = comp;
-		do_import(&devicedata);
-		break;
-	default:
-		break;
-	}
-	gtk_widget_destroy(dialog);
-
-	report_dives();
-	dive_list_update_dives();
-}

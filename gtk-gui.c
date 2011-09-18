@@ -10,6 +10,8 @@
 #include "display.h"
 #include "display-gtk.h"
 
+#include "libdivecomputer.h"
+
 GtkWidget *main_window;
 GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
@@ -468,4 +470,110 @@ GtkWidget *dive_profile_widget(void)
 	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
 
 	return da;
+}
+
+int process_ui_events(void)
+{
+	int ret=0;
+
+	while (gtk_events_pending()) {
+		if (gtk_main_iteration_do(0)) {
+			ret = 1;
+			break;
+		}
+	}
+	return(ret);
+}
+
+
+static void fill_computer_list(GtkListStore *store)
+{
+	GtkTreeIter iter;
+	struct device_list *list = device_list;
+
+	for (list = device_list ; list->name ; list++) {
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+			0, list->name,
+			1, list->type,
+			-1);
+	}
+}
+
+static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
+{
+	GtkWidget *hbox, *combo_box;
+	GtkListStore *model;
+	GtkCellRenderer *renderer;
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, FALSE, 3);
+
+	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+	fill_computer_list(model);
+
+	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
+	gtk_box_pack_start(GTK_BOX(hbox), combo_box, FALSE, TRUE, 3);
+
+	renderer = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo_box), renderer, "text", 0, NULL);
+
+	return GTK_COMBO_BOX(combo_box);
+}
+
+void import_dialog(GtkWidget *w, gpointer data)
+{
+	int result;
+	GtkWidget *dialog, *hbox;
+	GtkComboBox *computer;
+	device_data_t devicedata = {
+		.devname = "/dev/ttyUSB0",
+	};
+
+	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	computer = dive_computer_selector(dialog);
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 3);
+	devicedata.progress->bar = gtk_progress_bar_new();
+	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress->bar);
+
+	gtk_widget_show_all(dialog);
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	switch (result) {
+		int type;
+		GtkTreeIter iter;
+		GtkTreeModel *model;
+		const char *comp;
+	case GTK_RESPONSE_ACCEPT:
+		if (!gtk_combo_box_get_active_iter(computer, &iter))
+			break;
+		model = gtk_combo_box_get_model(computer);
+		gtk_tree_model_get(model, &iter,
+			0, &comp,
+			1, &type,
+			-1);
+		devicedata.type = type;
+		devicedata.name = comp;
+		do_import(&devicedata);
+		break;
+	default:
+		break;
+	}
+	gtk_widget_destroy(dialog);
+
+	report_dives();
+	dive_list_update_dives();
+}
+
+void update_progressbar(progressbar_t *progress, double value)
+{
+	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress->bar), value);
 }

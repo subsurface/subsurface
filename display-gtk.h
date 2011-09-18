@@ -6,8 +6,15 @@
 
 extern GtkWidget *main_window;
 
+/* we want a progress bar as part of the device_data_t - let's abstract this out */
+typedef struct {
+	GtkWidget *bar;
+} progressbar_t;
+
 extern void import_dialog(GtkWidget *, gpointer);
 extern void report_error(GError* error);
+extern int process_ui_events(void);
+extern void update_progressbar(progressbar_t *progress, double value);
 
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);

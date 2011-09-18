@@ -178,6 +178,7 @@ static inline struct dive *get_dive(unsigned int nr)
 	return dive_table.dives[nr];
 }
 
+
 extern void parse_xml_init(void);
 extern void parse_xml_file(const char *filename, GError **error);
 
