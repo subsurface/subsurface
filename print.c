@@ -2,6 +2,7 @@
 
 #include "dive.h"
 #include "display.h"
+#include "display-gtk.h"
 
 static void draw_page(GtkPrintOperation *operation,
 			GtkPrintContext *context,

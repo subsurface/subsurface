@@ -8,6 +8,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
+#include "display-gtk.h"
 
 GtkWidget *main_window;
 GtkWidget *main_vbox;
@@ -435,4 +436,36 @@ int open_import_file_dialog(char *filterpattern, char *filtertext,
 	gtk_widget_destroy(dialog);
 
 	return ret;
+}
+
+static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
+	struct dive *dive = current_dive;
+	struct graphics_context gc = { .printer = 0 };
+	int w,h;
+
+	w = widget->allocation.width;
+	h = widget->allocation.height;
+
+	gc.cr = gdk_cairo_create(widget->window);
+	set_source_rgb(&gc, 0, 0, 0);
+	cairo_paint(gc.cr);
+
+	if (dive)
+		plot(&gc, w, h, dive);
+
+	cairo_destroy(gc.cr);
+
+	return FALSE;
+}
+
+GtkWidget *dive_profile_widget(void)
+{
+	GtkWidget *da;
+
+	da = gtk_drawing_area_new();
+	gtk_widget_set_size_request(da, 350, 250);
+	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
+
+	return da;
 }

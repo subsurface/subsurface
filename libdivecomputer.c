@@ -5,6 +5,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
+#include "display-gtk.h"
 
 /* libdivecomputer */
 #include <device.h>

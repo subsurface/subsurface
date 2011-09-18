@@ -5,6 +5,7 @@
 
 #include "dive.h"
 #include "display.h"
+#include "display-gtk.h"
 #include "divelist.h"
 
 static GtkWidget *info_frame;
