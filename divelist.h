@@ -7,7 +7,7 @@ struct DiveList {
 	GtkWidget    *tree_view;
 	GtkWidget    *container_widget;
 	GtkListStore *model;
-	GtkTreeViewColumn *date, *depth, *duration;
+	GtkTreeViewColumn *date, *depth, *duration, *location;
 	GtkTreeViewColumn *temperature, *nitrox, *sac;
 };
 
