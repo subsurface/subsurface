@@ -91,18 +91,28 @@ static inline int to_feet(depth_t depth)
 	return depth.mm * 0.00328084 + 0.5;
 }
 
+static double mkelvin_to_C(int mkelvin)
+{
+	return (mkelvin - 273150) / 1000.0;
+}
+
+static double mkelvin_to_F(int mkelvin)
+{
+	return mkelvin * 9 / 5000.0 - 459.670;
+}
+
 static inline int to_C(temperature_t temp)
 {
 	if (!temp.mkelvin)
 		return 0;
-	return (temp.mkelvin - 273150 + 499) / 1000;
+	return mkelvin_to_C(temp.mkelvin) + 0.5;
 }
 
 static inline int to_F(temperature_t temp)
 {
 	if (!temp.mkelvin)
 		return 0;
-	return temp.mkelvin * 9 / 5000.0 - 459.670 + 0.5;
+	return mkelvin_to_F(temp.mkelvin) + 0.5;
 }
 
 static inline int to_K(temperature_t temp)

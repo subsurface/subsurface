@@ -42,6 +42,49 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 	repaint_dive();
 }
 
+static void get_temp(struct dive *dive, int *val, char **str)
+{
+	int value = dive->watertemp.mkelvin;
+	char buffer[80];
+
+	*val = value;
+	*str = "";
+	if (value) {
+		double deg;
+		switch (output_units.temperature) {
+		case CELSIUS:
+			deg = mkelvin_to_C(value);
+			break;
+		case FAHRENHEIT:
+			deg = mkelvin_to_F(value);
+			break;
+		default:
+			return;
+		}
+		snprintf(buffer, sizeof(buffer), "%.1f", deg);
+		*str = strdup(buffer);
+	}
+}
+
+static void get_nitrox(struct dive *dive, int *val, char **str)
+{
+	int value = dive->cylinder[0].gasmix.o2.permille;
+	char buffer[80];
+
+	*val = value;
+	*str = "";
+	if (value) {
+		snprintf(buffer, sizeof(buffer), "%.1f", value/10.0);
+		*str = strdup(buffer);
+	}
+}
+
+static void get_sac(struct dive *dive, int *val, char **str)
+{
+	*val = 0;
+	*str = "";
+}
+
 static gboolean set_one_dive(GtkTreeModel *model,
 			     GtkTreePath *path,
 			     GtkTreeIter *iter,
@@ -53,6 +96,8 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	char buffer[256], *datestr, *depth, *duration;
 	struct tm *tm;
 	int integer, frac;
+	int temp, nitrox, sac;
+	char *tempstr, *nitroxstr, *sacstr;
 
 	/* Get the dive number */
 	gtk_tree_model_get_value(model, iter, DIVE_INDEX, &value);
@@ -96,6 +141,10 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	duration = malloc(len + 1);
 	memcpy(duration, buffer, len+1);
 
+	get_temp(dive, &temp, &tempstr);
+	get_nitrox(dive, &nitrox, &nitroxstr);
+	get_sac(dive, &sac, &sacstr);
+
 	/*
 	 * We only set the fields that changed: the strings.
 	 * The core data itself is unaffected by units
@@ -104,6 +153,12 @@ static gboolean set_one_dive(GtkTreeModel *model,
 		DIVE_DATESTR, datestr,
 		DIVE_DEPTHSTR, depth,
 		DIVE_DURATIONSTR, duration,
+		DIVE_TEMPSTR, tempstr,
+		DIVE_TEMP, temp,
+		DIVE_NITROXSTR, nitroxstr,
+		DIVE_NITROX, nitrox,
+		DIVE_SACSTR, sacstr,
+		DIVE_NITROX, sac,
 		-1);
 
 	return FALSE;
@@ -147,6 +202,12 @@ static void fill_dive_list(struct DiveList *dive_list)
 			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATIONSTR, "duration",
 			DIVE_DURATION, dive->duration.seconds,
+			DIVE_TEMPSTR, "temp",
+			DIVE_TEMP, dive->watertemp.mkelvin,
+			DIVE_NITROXSTR, "21.0",
+			DIVE_NITROX, dive->cylinder[0].gasmix.o2,
+			DIVE_SACSTR, "sac",
+			DIVE_SAC, 0,
 			-1);
 	}
 
