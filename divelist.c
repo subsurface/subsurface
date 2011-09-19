@@ -107,7 +107,7 @@ static void get_depth(struct dive *dive, int *val, char **str)
 		return;
 	}
 	len = snprintf(buffer, sizeof(buffer),
-	               "%d", integer);
+		       "%d", integer);
 	if (frac >= 0)
 		len += snprintf(buffer+len, sizeof(buffer)-len,
 			".%d", frac);
@@ -169,10 +169,67 @@ static void get_nitrox(struct dive *dive, int *val, char **str)
 	}
 }
 
+/*
+ * Return air usage (in liters).
+ */
+static double calculate_airuse(struct dive *dive)
+{
+	double airuse = 0;
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder + i;
+		int size = cyl->type.size.mliter;
+		double kilo_atm;
+
+		if (!size)
+			continue;
+
+		kilo_atm = (cyl->start.mbar - cyl->end.mbar) / 1013250.0;
+
+		/* Liters of air at 1 atm == milliliters at 1k atm*/
+		airuse += kilo_atm * size;
+	}
+	return airuse;
+}
+
 static void get_sac(struct dive *dive, int *val, char **str)
 {
+	const double liters_per_cuft = 28.317;
+	double airuse, pressure, sac;
+	const char *fmt, *unit;
+	char buffer[20];
+
 	*val = 0;
 	*str = "";
+	airuse = calculate_airuse(dive);
+	if (!airuse)
+		return;
+	if (!dive->duration.seconds)
+		return;
+
+	/* Mean pressure in atm: 1 atm per 10m */
+	pressure = 1 + (dive->meandepth.mm / 10000.0);
+	sac = airuse / pressure * 60 / dive->duration.seconds;
+
+	/* milliliters per minute.. */
+	*val = sac * 1000;
+
+	switch (output_units.volume) {
+	case LITER:
+		unit = "l";
+		fmt = "%4.0f %s";
+		break;
+	case CUFT:
+		unit = "cuft";
+		fmt = "%4.2f %s";
+		airuse /= liters_per_cuft;
+		sac /= liters_per_cuft;
+		break;
+	}
+
+	snprintf(buffer, sizeof(buffer), fmt, sac, unit);
+	*str = strdup(buffer);
 }
 
 static gboolean set_one_dive(GtkTreeModel *model,
@@ -214,7 +271,7 @@ static gboolean set_one_dive(GtkTreeModel *model,
 		DIVE_NITROXSTR, nitroxstr,
 		DIVE_NITROX, nitrox,
 		DIVE_SACSTR, sacstr,
-		DIVE_NITROX, sac,
+		DIVE_SAC, sac,
 		-1);
 
 	return FALSE;
@@ -288,8 +345,8 @@ struct DiveList dive_list_create(void)
 	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_STRING, G_TYPE_INT,	/* Date */
-	                        G_TYPE_STRING, G_TYPE_INT, 	/* Depth */
-	                        G_TYPE_STRING, G_TYPE_INT,	/* Duration */
+				G_TYPE_STRING, G_TYPE_INT, 	/* Depth */
+				G_TYPE_STRING, G_TYPE_INT,	/* Duration */
 				G_TYPE_STRING,			/* Location */
 				G_TYPE_STRING, G_TYPE_INT,	/* Temperature */
 				G_TYPE_STRING, G_TYPE_INT,	/* Nitrox */
@@ -379,7 +436,7 @@ struct DiveList dive_list_create(void)
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dive_list.container_widget),
-		               GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+			       GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(dive_list.container_widget), dive_list.tree_view);
 
 	return dive_list;
