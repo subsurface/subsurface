@@ -42,6 +42,87 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 	repaint_dive();
 }
 
+static const char *weekday(int wday)
+{
+	static const char wday_array[7][4] = {
+		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+	};
+	return wday_array[wday];
+}
+
+static const char *monthname(int mon)
+{
+	static const char month_array[12][4] = {
+		"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+		"Jul", "Aug", "Oct", "Sep", "Nov", "Dec",
+	};
+	return month_array[mon];
+}
+
+static void get_date(struct dive *dive, int *val, char **str)
+{
+	struct tm *tm;
+	time_t when = dive->when;
+	char buffer[40];
+
+	/* 2038 problem */
+	*val = when;
+
+	tm = gmtime(&dive->when);
+	snprintf(buffer, sizeof(buffer),
+		"%s, %s %d, %d %02d:%02d",
+		weekday(tm->tm_wday),
+		monthname(tm->tm_mon),
+		tm->tm_mday, tm->tm_year + 1900,
+		tm->tm_hour, tm->tm_min);
+	*str = strdup(buffer);
+}
+
+static void get_depth(struct dive *dive, int *val, char **str)
+{
+	int len;
+	int depth = dive->maxdepth.mm;
+	int integer, frac = -1;
+	char buffer[10];
+
+	*val = depth;
+	*str = "";
+	switch (output_units.length) {
+	case METERS:
+		/* To tenths of meters */
+		depth = (depth + 49) / 100;
+		integer = depth / 10;
+		frac = depth % 10;
+		if (integer < 20)
+			break;
+		frac = -1;
+		/* Rounding? */
+		break;
+	case FEET:
+		integer = to_feet(dive->maxdepth);
+		frac = -1;
+		break;
+	default:
+		return;
+	}
+	len = snprintf(buffer, sizeof(buffer),
+	               "%d", integer);
+	if (frac >= 0)
+		len += snprintf(buffer+len, sizeof(buffer)-len,
+			".%d", frac);
+	*str = strdup(buffer);
+}
+
+static void get_duration(struct dive *dive, int *val, char **str)
+{
+	unsigned int sec = dive->duration.seconds;
+	char buffer[16];
+
+	*val = sec;
+	snprintf(buffer, sizeof(buffer), "%d:%02d", sec / 60, sec % 60);
+	*str = strdup(buffer);
+}
+
 static void get_temp(struct dive *dive, int *val, char **str)
 {
 	int value = dive->watertemp.mkelvin;
@@ -90,14 +171,10 @@ static gboolean set_one_dive(GtkTreeModel *model,
 			     GtkTreeIter *iter,
 			     gpointer data)
 {
-	int len;
 	GValue value = {0, };
 	struct dive *dive;
-	char buffer[256], *datestr, *depth, *duration;
-	struct tm *tm;
-	int integer, frac;
-	int temp, nitrox, sac;
-	char *tempstr, *nitroxstr, *sacstr;
+	int date, depth, duration, temp, nitrox, sac;
+	char *datestr, *depthstr, *durationstr, *tempstr, *nitroxstr, *sacstr;
 
 	/* Get the dive number */
 	gtk_tree_model_get_value(model, iter, DIVE_INDEX, &value);
@@ -105,42 +182,9 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	if (!dive)
 		return TRUE;
 
-	tm = gmtime(&dive->when);
-	len = snprintf(buffer, sizeof(buffer),
-		"%02d.%02d.%02d %02d:%02d",
-		tm->tm_mday, tm->tm_mon+1, tm->tm_year % 100,
-		tm->tm_hour, tm->tm_min);
-	datestr = malloc(len+1);
-	memcpy(datestr, buffer, len+1);
-
-	switch (output_units.length) {
-	unsigned int depth;
-	case METERS:
-		depth = (dive->maxdepth.mm + 49) / 100;
-		integer = depth / 10;
-		frac = depth % 10;
-		if (integer < 20)
-			break;
-		frac = -1;
-		/* Rounding? */
-		break;
-	case FEET:
-		integer = to_feet(dive->maxdepth);
-		frac = -1;
-	}
-	len = snprintf(buffer, sizeof(buffer),
-	               "%d", integer);
-	if (frac >= 0)
-		len += snprintf(buffer+len, sizeof(buffer)-len,
-			".%d", frac);
-	depth = malloc(len + 1);
-	memcpy(depth, buffer, len+1);
-
-	len = snprintf(buffer, sizeof(buffer),
-	               "%d", dive->duration.seconds / 60);
-	duration = malloc(len + 1);
-	memcpy(duration, buffer, len+1);
-
+	get_date(dive, &date, &datestr);
+	get_depth(dive, &depth, &depthstr);
+	get_duration(dive, &duration, &durationstr);
 	get_temp(dive, &temp, &tempstr);
 	get_nitrox(dive, &nitrox, &nitroxstr);
 	get_sac(dive, &sac, &sacstr);
@@ -151,8 +195,8 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
 		DIVE_DATESTR, datestr,
-		DIVE_DEPTHSTR, depth,
-		DIVE_DURATIONSTR, duration,
+		DIVE_DEPTHSTR, depthstr,
+		DIVE_DURATIONSTR, durationstr,
 		DIVE_TEMPSTR, tempstr,
 		DIVE_TEMP, temp,
 		DIVE_NITROXSTR, nitroxstr,
