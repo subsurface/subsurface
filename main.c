@@ -458,7 +458,7 @@ int main(int argc, char **argv)
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 
 	/* HPane for left the dive list, and right the dive info */
-	paned = gtk_hpaned_new();
+	paned = gtk_vpaned_new();
 	gtk_box_pack_end(GTK_BOX(vbox), paned, TRUE, TRUE, 0);
 
 	/* Create the actual divelist */
