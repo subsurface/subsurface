@@ -232,22 +232,13 @@ static void get_sac(struct dive *dive, int *val, char **str)
 	*str = strdup(buffer);
 }
 
-static gboolean set_one_dive(GtkTreeModel *model,
-			     GtkTreePath *path,
-			     GtkTreeIter *iter,
-			     gpointer data)
+static void fill_one_dive(struct dive *dive,
+			  GtkTreeModel *model,
+			  GtkTreeIter *iter)
 {
-	GValue value = {0, };
-	struct dive *dive;
 	int date, depth, duration, temp, nitrox, sac;
 	char *datestr, *depthstr, *durationstr, *tempstr, *nitroxstr, *sacstr;
 	char *location;
-
-	/* Get the dive number */
-	gtk_tree_model_get_value(model, iter, DIVE_INDEX, &value);
-	dive = get_dive(g_value_get_int(&value));
-	if (!dive)
-		return TRUE;
 
 	get_date(dive, &date, &datestr);
 	get_depth(dive, &depth, &depthstr);
@@ -273,8 +264,33 @@ static gboolean set_one_dive(GtkTreeModel *model,
 		DIVE_SACSTR, sacstr,
 		DIVE_SAC, sac,
 		-1);
+}
 
-	return FALSE;
+static gboolean set_one_dive(GtkTreeModel *model,
+			     GtkTreePath *path,
+			     GtkTreeIter *iter,
+			     gpointer data)
+{
+	GValue value = {0, };
+	struct dive *dive;
+
+	/* Get the dive number */
+	gtk_tree_model_get_value(model, iter, DIVE_INDEX, &value);
+	dive = get_dive(g_value_get_int(&value));
+	if (!dive)
+		return TRUE;
+	if (data && dive != data)
+		return FALSE;
+
+	fill_one_dive(dive, model, iter);
+	return dive == data;
+}
+
+void flush_divelist(struct DiveList *dive_list, struct dive *dive)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL(dive_list->model);
+
+	gtk_tree_model_foreach(model, set_one_dive, dive);
 }
 
 void update_dive_list_units(struct DiveList *dive_list)
