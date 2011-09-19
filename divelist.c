@@ -19,6 +19,13 @@ enum {
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATIONSTR,	/* "47" in minutes */
 	DIVE_DURATION,		/* int: in seconds */
+	DIVE_TEMPSTR,		/* "78" in fahrenheit or whatever */
+	DIVE_TEMP,		/* int: in mkelvin */
+	DIVE_NITROXSTR,		/* "32.5" in percent */
+	DIVE_NITROX,		/* int: in permille */
+	DIVE_SACSTR,		/* "0.49" in cuft/min */
+	DIVE_SAC,		/* int: in ml/min or something */
+	DIVELIST_COLUMNS
 };
 
 
@@ -160,11 +167,14 @@ struct DiveList dive_list_create(void)
 	GtkCellRenderer   *renderer;
 	GtkTreeViewColumn *col;
 
-	dive_list.model = gtk_list_store_new(7,
+	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_STRING, G_TYPE_INT,	/* Date */
 	                        G_TYPE_STRING, G_TYPE_INT, 	/* Depth */
-	                        G_TYPE_STRING, G_TYPE_INT	/* Duration */
+	                        G_TYPE_STRING, G_TYPE_INT,	/* Duration */
+				G_TYPE_STRING, G_TYPE_INT,	/* Temperature */
+				G_TYPE_STRING, G_TYPE_INT,	/* Nitrox */
+				G_TYPE_STRING, G_TYPE_INT	/* SAC */
 				);
 	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
@@ -197,6 +207,36 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_column_set_sort_column_id(col, DIVE_DURATION);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_DURATIONSTR);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
+
+	renderer = gtk_cell_renderer_text_new();
+	dive_list.temperature = col = gtk_tree_view_column_new();
+	gtk_tree_view_column_set_title(col, "deg");
+	gtk_tree_view_column_set_sort_column_id(col, DIVE_TEMP);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
+	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_TEMPSTR);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
+
+	renderer = gtk_cell_renderer_text_new();
+	dive_list.nitrox = col = gtk_tree_view_column_new();
+	gtk_tree_view_column_set_title(col, "EAD");
+	gtk_tree_view_column_set_sort_column_id(col, DIVE_NITROX);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
+	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_NITROXSTR);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
+
+	renderer = gtk_cell_renderer_text_new();
+	dive_list.sac = col = gtk_tree_view_column_new();
+	gtk_tree_view_column_set_title(col, "SAC");
+	gtk_tree_view_column_set_sort_column_id(col, DIVE_SAC);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
+	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_SACSTR);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
