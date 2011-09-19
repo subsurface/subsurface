@@ -19,6 +19,7 @@ enum {
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATIONSTR,	/* "47" in minutes */
 	DIVE_DURATION,		/* int: in seconds */
+	DIVE_LOCATION,		/* "47" in minutes */
 	DIVE_TEMPSTR,		/* "78" in fahrenheit or whatever */
 	DIVE_TEMP,		/* int: in mkelvin */
 	DIVE_NITROXSTR,		/* "32.5" in percent */
@@ -123,6 +124,14 @@ static void get_duration(struct dive *dive, int *val, char **str)
 	*str = strdup(buffer);
 }
 
+static void get_location(struct dive *dive, char **str)
+{
+	char buffer[16];
+
+	snprintf(buffer, sizeof(buffer), "%s", dive->location);
+	*str = strdup(buffer);
+}
+
 static void get_temp(struct dive *dive, int *val, char **str)
 {
 	int value = dive->watertemp.mkelvin;
@@ -175,6 +184,7 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	struct dive *dive;
 	int date, depth, duration, temp, nitrox, sac;
 	char *datestr, *depthstr, *durationstr, *tempstr, *nitroxstr, *sacstr;
+	char *location;
 
 	/* Get the dive number */
 	gtk_tree_model_get_value(model, iter, DIVE_INDEX, &value);
@@ -185,6 +195,7 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	get_date(dive, &date, &datestr);
 	get_depth(dive, &depth, &depthstr);
 	get_duration(dive, &duration, &durationstr);
+	get_location(dive, &location);
 	get_temp(dive, &temp, &tempstr);
 	get_nitrox(dive, &nitrox, &nitroxstr);
 	get_sac(dive, &sac, &sacstr);
@@ -197,6 +208,7 @@ static gboolean set_one_dive(GtkTreeModel *model,
 		DIVE_DATESTR, datestr,
 		DIVE_DEPTHSTR, depthstr,
 		DIVE_DURATIONSTR, durationstr,
+		DIVE_LOCATION, location,
 		DIVE_TEMPSTR, tempstr,
 		DIVE_TEMP, temp,
 		DIVE_NITROXSTR, nitroxstr,
@@ -246,6 +258,7 @@ static void fill_dive_list(struct DiveList *dive_list)
 			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATIONSTR, "duration",
 			DIVE_DURATION, dive->duration.seconds,
+			DIVE_LOCATION, "location",
 			DIVE_TEMPSTR, "temp",
 			DIVE_TEMP, dive->watertemp.mkelvin,
 			DIVE_NITROXSTR, "21.0",
@@ -277,6 +290,7 @@ struct DiveList dive_list_create(void)
 				G_TYPE_STRING, G_TYPE_INT,	/* Date */
 	                        G_TYPE_STRING, G_TYPE_INT, 	/* Depth */
 	                        G_TYPE_STRING, G_TYPE_INT,	/* Duration */
+				G_TYPE_STRING,			/* Location */
 				G_TYPE_STRING, G_TYPE_INT,	/* Temperature */
 				G_TYPE_STRING, G_TYPE_INT,	/* Nitrox */
 				G_TYPE_STRING, G_TYPE_INT	/* SAC */
@@ -315,6 +329,14 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
+
+	renderer = gtk_cell_renderer_text_new();
+	dive_list.location = col = gtk_tree_view_column_new();
+	gtk_tree_view_column_set_title(col, "Location");
+	gtk_tree_view_column_set_sort_column_id(col, DIVE_LOCATION);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
+	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_LOCATION);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.temperature = col = gtk_tree_view_column_new();
