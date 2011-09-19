@@ -422,7 +422,6 @@ int main(int argc, char **argv)
 	GtkWidget *paned;
 	GtkWidget *info_box;
 	GtkWidget *notebook;
-	GtkWidget *frame;
 	GtkWidget *dive_info;
 	GtkWidget *equipment;
 	GtkWidget *menubar;
@@ -469,10 +468,6 @@ int main(int argc, char **argv)
 	/* VBox for dive info, and tabs */
 	info_box = gtk_vbox_new(FALSE, 6);
 	gtk_paned_add2(GTK_PANED(paned), info_box);
-
-	/* Frame for minimal dive info */
-	frame = dive_info_frame();
-	gtk_box_pack_start(GTK_BOX(info_box), frame, FALSE, TRUE, 6);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
