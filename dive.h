@@ -208,8 +208,6 @@ extern void report_dives(void);
 extern struct dive *fixup_dive(struct dive *dive);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b);
 
-extern void update_air_info(char *buffer);
-
 extern void renumber_dives(int nr);
 
 /* UI related protopypes */

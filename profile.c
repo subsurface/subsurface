@@ -1,3 +1,7 @@
+/* profile.c */
+/* creates all the necessary data for drawing the dive profile 
+ * uses cairo to draw it
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>

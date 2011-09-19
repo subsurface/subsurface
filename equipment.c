@@ -1,3 +1,13 @@
+/* equipment.c */
+/* creates the UI for the equipment page -
+ * controlled through the following interfaces:
+ * 
+ * void show_dive_equipment(struct dive *dive)
+ * void flush_dive_equipment_changes(struct dive *dive)
+ *
+ * called from gtk-ui:
+ * GtkWidget *equipment_widget(void)
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

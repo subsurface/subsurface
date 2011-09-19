@@ -1,3 +1,5 @@
+/* dive.h */
+/* maintains the internal dive list structure */
 #include <string.h>
 #include <stdio.h>
 

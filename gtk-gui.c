@@ -1,3 +1,8 @@
+/* gtk-gui.c */
+/* gtk UI implementation */
+/* creates the window and overall layout
+ * divelist, dive info, equipment and printing are handled in their own source files
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

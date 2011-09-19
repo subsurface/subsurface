@@ -1,3 +1,14 @@
+/* info.c */
+/* creates the UI for the info frame - 
+ * controlled through the following interfaces:
+ * 
+ * void flush_dive_info_changes(struct dive *dive)
+ * void show_dive_info(struct dive *dive)
+ *
+ * called from gtk-ui:
+ * GtkWidget *dive_info_frame(void)
+ * GtkWidget *extended_dive_info_widget(void)
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -36,7 +47,7 @@ static char *get_text(GtkTextBuffer *buffer)
 	return gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 }
 
-void update_air_info(char *buffer)
+static void update_air_info(char *buffer)
 {
 	char markup[120];
 	

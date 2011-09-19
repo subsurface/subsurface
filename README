@@ -37,6 +37,25 @@ and subsurface will de-duplicate the ones that are exactly the same
 the dives have duplicates that were edited by Dirk in the Suunto Dive
 Manager, so they don't trigger the "exact duplicates" match.
 
+Implementation details:
+
+main.c - program frame
+dive.c - creates and maintaines the internal dive list structure
+libdivecomputer.c 
+uemis.c 
+parse-xml.c 
+save-xml.c - interface with dive computers and the XML files 
+profile.c - creates the data for the profile and draws it using cairo
+
+A first UI has been implemented in gtk and an attempt has been made to
+separate program logic from UI implementation. 
+
+gtk-gui.c - overall layout, main window of the UI
+divelist.c  - list of dives subsurface maintains
+equipment.c - equipment / tank information for each dive
+info.c      - detailed dive info 
+print.c     - printing 
+
 WARNING! I wasn't kidding when I said that I've done this by reading
 gtk2 tutorials as I've gone along.  If somebody is more comfortable with
 gtk, feel free to send me (signed-off) patches.

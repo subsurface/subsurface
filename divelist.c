@@ -1,3 +1,11 @@
+/* divelist.c */
+/* this creates the UI for the dive list - 
+ * controlled through the following interfaces:
+ * 
+ * struct DiveList dive_list_create(void)
+ * void dive_list_update_dives(void)
+ * void update_dive_list_units(struct DiveList *dive_list)
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
