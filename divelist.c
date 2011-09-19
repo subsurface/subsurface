@@ -423,7 +423,7 @@ struct DiveList dive_list_create(void)
 
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.nitrox = col = gtk_tree_view_column_new();
-	gtk_tree_view_column_set_title(col, "EAD");
+	gtk_tree_view_column_set_title(col, "O2%");
 	gtk_tree_view_column_set_sort_column_id(col, DIVE_NITROX);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
 	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_NITROXSTR);
