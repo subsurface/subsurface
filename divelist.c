@@ -344,6 +344,13 @@ void flush_divelist(struct dive *dive)
 	gtk_tree_model_foreach(model, set_one_dive, dive);
 }
 
+void set_divelist_font(const char *font)
+{
+	PangoFontDescription *font_desc = pango_font_description_from_string(font);
+	gtk_widget_modify_font(dive_list.tree_view, font_desc);
+	pango_font_description_free(font_desc);
+}
+
 void update_dive_list_units(void)
 {
 	const char *unit;
@@ -446,7 +453,6 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 GtkWidget *dive_list_create(void)
 {
 	GtkTreeSelection  *selection;
-	PangoFontDescription *font_desc = pango_font_description_from_string("sans 8");
 
 	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
@@ -460,8 +466,7 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT			/* SAC */
 				);
 	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
-	gtk_widget_modify_font(dive_list.tree_view, font_desc);
-	pango_font_description_free(font_desc);
+	set_divelist_font(divelist_font);
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 

@@ -15,6 +15,9 @@ GtkWidget *error_info_bar;
 GtkWidget *error_label;
 int        error_count;
 
+#define DIVELIST_DEFAULT_FONT "Sans 8"
+const char *divelist_font;
+
 GConfClient *gconf;
 struct units output_units;
 
@@ -223,14 +226,14 @@ static void quit(GtkWidget *w, gpointer data)
 	gtk_main_quit();
 }
 
-static void create_radio(GtkWidget *dialog, const char *name, ...)
+static void create_radio(GtkWidget *vbox, const char *name, ...)
 {
 	va_list args;
 	GtkRadioButton *group = NULL;
 	GtkWidget *box, *label;
 
 	box = gtk_hbox_new(TRUE, 10);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), box);
+	gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
 
 	label = gtk_label_new(name);
 	gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
@@ -275,45 +278,58 @@ UNITCALLBACK(set_cuft, volume, CUFT)
 UNITCALLBACK(set_celsius, temperature, CELSIUS)
 UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
 
-static void unit_dialog(GtkWidget *w, gpointer data)
+static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *font, *frame, *box;
 
 	menu_units = output_units;
 
-	dialog = gtk_dialog_new_with_buttons("Units",
+	dialog = gtk_dialog_new_with_buttons("Preferences",
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
-	create_radio(dialog, "Depth:",
+	frame = gtk_frame_new("Units");
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+
+	box = gtk_vbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+
+	create_radio(box, "Depth:",
 		"Meter", set_meter, (output_units.length == METERS),
 		"Feet",  set_feet, (output_units.length == FEET),
 		NULL);
 
-	create_radio(dialog, "Pressure:",
+	create_radio(box, "Pressure:",
 		"Bar", set_bar, (output_units.pressure == BAR),
 		"PSI",  set_psi, (output_units.pressure == PSI),
 		NULL);
 
-	create_radio(dialog, "Volume:",
+	create_radio(box, "Volume:",
 		"Liter",  set_liter, (output_units.volume == LITER),
 		"CuFt", set_cuft, (output_units.volume == CUFT),
 		NULL);
 
-	create_radio(dialog, "Temperature:",
+	create_radio(box, "Temperature:",
 		"Celsius", set_celsius, (output_units.temperature == CELSIUS),
 		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
+
+	font = gtk_font_button_new_with_font(divelist_font);
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), font, FALSE, FALSE, 5);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
+
+		divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
+		set_divelist_font(divelist_font);
+
 		output_units = menu_units;
 		update_dive_list_units();
 		repaint_dive();
@@ -321,6 +337,7 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
+		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -370,7 +387,7 @@ static GtkActionEntry menu_items[] = {
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  "<control>P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
-	{ "Units",          NULL, "Units",    NULL, NULL, G_CALLBACK(unit_dialog) },
+	{ "Preferences",    NULL, "Preferences", NULL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
 };
@@ -386,10 +403,11 @@ static const gchar* ui_string = " \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Import\" action=\"Import\" /> \
 				<separator name=\"Separator2\"/> \
+				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
+				<separator name=\"Separator3\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
-				<menuitem name=\"Units\" action=\"Units\" /> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 			</menu> \
 		</menubar> \
@@ -446,6 +464,10 @@ int main(int argc, char **argv)
 		output_units.volume = CUFT;
 	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
 		output_units.temperature = FAHRENHEIT;
+
+	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
+	if (!divelist_font)
+		divelist_font = DIVELIST_DEFAULT_FONT;
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
