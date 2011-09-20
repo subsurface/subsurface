@@ -22,7 +22,8 @@ static void draw_page(GtkPrintOperation *operation,
 	h = gtk_print_context_get_height(context);
 
 	/* Do the profile on the top half of the page.. */
-	plot(&gc, w, h/2, current_dive);
+	if (current_dive)
+		plot(&gc, w, h/2, current_dive);
 
 	pango_cairo_show_layout(cr,layout);
 	g_object_unref(layout);
