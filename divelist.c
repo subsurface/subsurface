@@ -18,6 +18,7 @@ enum {
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
+	DIVE_CYLINDER,
 	DIVE_NITROX,		/* int: in permille */
 	DIVE_SAC,		/* int: in ml/min */
 	DIVELIST_COLUMNS
@@ -258,12 +259,30 @@ static void get_sac(struct dive *dive, int *val)
 	*val = sac * 1000;
 }
 
+static void get_string(char **str, const char *s)
+{
+	int len;
+	char *n;
+
+	if (!s)
+		s = "";
+	len = strlen(s);
+	if (len > 16)
+		len = 16;
+	n = malloc(len+1);
+	memcpy(n, s, len);
+	n[len] = 0;
+	*str = n;
+}
+
 static void get_location(struct dive *dive, char **str)
 {
-	char buffer[16];
+	get_string(str, dive->location);
+}
 
-	snprintf(buffer, sizeof(buffer), "%s", dive->location);
-	*str = strdup(buffer);
+static void get_cylinder(struct dive *dive, char **str)
+{
+	get_string(str, dive->cylinder[0].type.description);
 }
 
 static void fill_one_dive(struct dive *dive,
@@ -271,8 +290,9 @@ static void fill_one_dive(struct dive *dive,
 			  GtkTreeIter *iter)
 {
 	int sac;
-	char *location;
+	char *location, *cylinder;
 
+	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
 	get_sac(dive, &sac);
 
@@ -282,6 +302,7 @@ static void fill_one_dive(struct dive *dive,
 	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
 		DIVE_LOCATION, location,
+		DIVE_CYLINDER, cylinder,
 		DIVE_SAC, sac,
 		-1);
 }
@@ -379,6 +400,7 @@ struct DiveList dive_list_create(void)
 				G_TYPE_INT,			/* Duration */
 				G_TYPE_STRING,			/* Location */
 				G_TYPE_INT,			/* Temperature */
+				G_TYPE_STRING,			/* Cylinder */
 				G_TYPE_INT,			/* Nitrox */
 				G_TYPE_INT			/* SAC */
 				);
@@ -386,7 +408,7 @@ struct DiveList dive_list_create(void)
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
-	gtk_widget_set_size_request(dive_list.tree_view, 200, 100);
+	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.date = col = gtk_tree_view_column_new();
@@ -434,6 +456,14 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
+
+	renderer = gtk_cell_renderer_text_new();
+	dive_list.temperature = col = gtk_tree_view_column_new();
+	gtk_tree_view_column_set_title(col, "Cyl");
+	gtk_tree_view_column_set_sort_column_id(col, DIVE_CYLINDER);
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
+	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_CYLINDER);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.nitrox = col = gtk_tree_view_column_new();
