@@ -225,10 +225,30 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 
 void flush_dive_equipment_changes(struct dive *dive)
 {
+	/* We do nothing: we require the "Ok" button press */
+}
+
+static void apply_cb(GtkButton *button, gpointer data)
+{
 	int i;
+	struct dive *dive = current_dive;
+
+	if (!dive)
+		return;
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		record_cylinder_changes(dive->cylinder+i, gtk_cylinder+i);
+	flush_divelist(&dive_list, dive);
+}
+
+static void cancel_cb(GtkButton *button, gpointer data)
+{
+	struct dive *dive = current_dive;
+
+	if (!dive)
+		return;
+
+	show_dive_equipment(current_dive);
 }
 
 /*
@@ -370,7 +390,8 @@ static GtkListStore *create_tank_size_model(void)
 GtkWidget *equipment_widget(void)
 {
 	int i;
-	GtkWidget *vbox;
+	GtkWidget *vbox, *hbox;
+	GtkWidget *apply, *cancel;
 	GtkListStore *model;
 
 	vbox = gtk_vbox_new(FALSE, 3);
@@ -386,6 +407,17 @@ GtkWidget *equipment_widget(void)
 		struct cylinder_widget *cylinder = gtk_cylinder+i;
 		gtk_box_pack_start(GTK_BOX(vbox), cylinder->hbox, FALSE, TRUE, 0);
 	}
+
+	hbox = gtk_hbox_new(TRUE, 3);
+	gtk_box_pack_end(GTK_BOX(vbox), hbox, TRUE, FALSE, 0);
+
+	apply = gtk_button_new_from_stock(GTK_STOCK_APPLY);
+	cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
+	gtk_box_pack_start(GTK_BOX(hbox), apply, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), cancel, FALSE, FALSE, 0);
+
+	g_signal_connect(apply, "clicked", G_CALLBACK(apply_cb), dive_list.model);
+	g_signal_connect(cancel, "clicked", G_CALLBACK(cancel_cb), dive_list.model);
 
 	return vbox;
 }
