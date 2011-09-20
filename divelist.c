@@ -38,7 +38,7 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 	repaint_dive();
 }
 
-static const char *weekday(int wday)
+const char *weekday(int wday)
 {
 	static const char wday_array[7][4] = {
 		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
@@ -46,7 +46,7 @@ static const char *weekday(int wday)
 	return wday_array[wday];
 }
 
-static const char *monthname(int mon)
+const char *monthname(int mon)
 {
 	static const char month_array[12][4] = {
 		"Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -463,7 +463,7 @@ struct DiveList dive_list_create(void)
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dive_list.container_widget),
-			       GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+			       GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(dive_list.container_widget), dive_list.tree_view);
 
 	return dive_list;
