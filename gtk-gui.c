@@ -155,14 +155,14 @@ static void quit(GtkWidget *w, gpointer data)
 	gtk_main_quit();
 }
 
-static void create_radio(GtkWidget *dialog, const char *name, ...)
+static void create_radio(GtkWidget *vbox, const char *name, ...)
 {
 	va_list args;
 	GtkRadioButton *group = NULL;
 	GtkWidget *box, *label;
 
 	box = gtk_hbox_new(TRUE, 10);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), box);
+	gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
 
 	label = gtk_label_new(name);
 	gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
