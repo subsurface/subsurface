@@ -464,11 +464,11 @@ int main(int argc, char **argv)
 
 	/* Create the actual divelist */
 	dive_list = dive_list_create();
-	gtk_paned_add1(GTK_PANED(paned), dive_list.container_widget);
+	gtk_paned_add2(GTK_PANED(paned), dive_list.container_widget);
 
 	/* VBox for dive info, and tabs */
 	info_box = gtk_vbox_new(FALSE, 6);
-	gtk_paned_add2(GTK_PANED(paned), info_box);
+	gtk_paned_add1(GTK_PANED(paned), info_box);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
