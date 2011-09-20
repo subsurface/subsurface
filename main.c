@@ -449,6 +449,7 @@ int main(int argc, char **argv)
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_icon_from_file(GTK_WINDOW(win), "icon.svg", NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
