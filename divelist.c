@@ -13,7 +13,6 @@
  */
 enum {
 	DIVE_INDEX = 0,
-	DIVE_DATESTR,		/* "Thu Jun 17th, 2011" or whatever */
 	DIVE_DATE,		/* time_t: dive->when */
 	DIVE_DEPTHSTR,		/* "67" in ft or whatever */
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
@@ -60,23 +59,30 @@ static const char *monthname(int mon)
 	return month_array[mon];
 }
 
-static void get_date(struct dive *dive, int *val, char **str)
+static void date_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
 {
+	int val;
 	struct tm *tm;
-	time_t when = dive->when;
+	time_t when;
 	char buffer[40];
 
-	/* 2038 problem */
-	*val = when;
+	gtk_tree_model_get(model, iter, DIVE_DATE, &val, -1);
 
-	tm = gmtime(&dive->when);
+	/* 2038 problem */
+	when = val;
+
+	tm = gmtime(&when);
 	snprintf(buffer, sizeof(buffer),
 		"%s, %s %d, %d %02d:%02d",
 		weekday(tm->tm_wday),
 		monthname(tm->tm_mon),
 		tm->tm_mday, tm->tm_year + 1900,
 		tm->tm_hour, tm->tm_min);
-	*str = strdup(buffer);
+	g_object_set(renderer, "text", buffer, NULL);
 }
 
 static void get_depth(struct dive *dive, int *val, char **str)
@@ -236,11 +242,10 @@ static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
 {
-	int date, depth, duration, temp, nitrox, sac;
-	char *datestr, *depthstr, *durationstr, *tempstr, *nitroxstr, *sacstr;
+	int depth, duration, temp, nitrox, sac;
+	char *depthstr, *durationstr, *tempstr, *nitroxstr, *sacstr;
 	char *location;
 
-	get_date(dive, &date, &datestr);
 	get_depth(dive, &depth, &depthstr);
 	get_duration(dive, &duration, &durationstr);
 	get_location(dive, &location);
@@ -253,7 +258,6 @@ static void fill_one_dive(struct dive *dive,
 	 * The core data itself is unaffected by units
 	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
-		DIVE_DATESTR, datestr,
 		DIVE_DEPTHSTR, depthstr,
 		DIVE_DURATIONSTR, durationstr,
 		DIVE_LOCATION, location,
@@ -325,7 +329,6 @@ static void fill_dive_list(struct DiveList *dive_list)
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			DIVE_INDEX, i,
-			DIVE_DATESTR, "date",
 			DIVE_DATE, dive->when,
 			DIVE_DEPTHSTR, "depth",
 			DIVE_DEPTH, dive->maxdepth,
@@ -360,7 +363,7 @@ struct DiveList dive_list_create(void)
 
 	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
-				G_TYPE_STRING, G_TYPE_INT,	/* Date */
+				G_TYPE_INT,			/* Date */
 				G_TYPE_STRING, G_TYPE_INT, 	/* Depth */
 				G_TYPE_STRING, G_TYPE_INT,	/* Duration */
 				G_TYPE_STRING,			/* Location */
@@ -380,7 +383,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_column_set_sort_column_id(col, DIVE_DATE);
 	gtk_tree_view_column_set_resizable (col, TRUE);
 	gtk_tree_view_column_pack_start(col, renderer, TRUE);
-	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_DATESTR);
+	gtk_tree_view_column_set_cell_data_func(col, renderer, date_data_func, NULL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 
 	renderer = gtk_cell_renderer_text_new();
