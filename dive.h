@@ -86,9 +86,14 @@ typedef struct {
 	pressure_t start, end;
 } cylinder_t;
 
+static inline double mm_to_feet(int mm)
+{
+	return mm * 0.00328084;
+}
+
 static inline int to_feet(depth_t depth)
 {
-	return depth.mm * 0.00328084 + 0.5;
+	return mm_to_feet(depth.mm) + 0.5;
 }
 
 static double mkelvin_to_C(int mkelvin)
