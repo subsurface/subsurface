@@ -14,7 +14,6 @@ GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
 GtkWidget *error_label;
 int        error_count;
-struct DiveList   dive_list;
 
 GConfClient *gconf;
 struct units output_units;
@@ -98,7 +97,7 @@ void update_dive(struct dive *new_dive)
 	if (old_dive) {
 		flush_dive_info_changes(old_dive);
 		flush_dive_equipment_changes(old_dive);
-		flush_divelist(&dive_list, old_dive);
+		flush_divelist(old_dive);
 	}
 	if (new_dive) {
 		show_dive_info(new_dive);
@@ -190,7 +189,7 @@ static void file_open(GtkWidget *w, gpointer data)
 		}
 		g_slist_free(filenames);
 		report_dives();
-		dive_list_update_dives(dive_list);
+		dive_list_update_dives();
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -316,7 +315,7 @@ static void unit_dialog(GtkWidget *w, gpointer data)
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 		output_units = menu_units;
-		update_dive_list_units(&dive_list);
+		update_dive_list_units();
 		repaint_dive();
 		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
@@ -426,6 +425,7 @@ int main(int argc, char **argv)
 	GtkWidget *info_box;
 	GtkWidget *notebook;
 	GtkWidget *dive_info;
+	GtkWidget *dive_list;
 	GtkWidget *equipment;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
@@ -465,7 +465,7 @@ int main(int argc, char **argv)
 
 	/* Create the actual divelist */
 	dive_list = dive_list_create();
-	gtk_paned_add2(GTK_PANED(paned), dive_list.container_widget);
+	gtk_paned_add2(GTK_PANED(paned), dive_list);
 
 	/* VBox for dive info, and tabs */
 	info_box = gtk_vbox_new(FALSE, 6);
@@ -510,7 +510,7 @@ int main(int argc, char **argv)
 	}
 
 	report_dives();
-	dive_list_update_dives(dive_list);
+	dive_list_update_dives();
 
 	gtk_main();
 	return 0;

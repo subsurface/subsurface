@@ -238,7 +238,7 @@ static void apply_cb(GtkButton *button, gpointer data)
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		record_cylinder_changes(dive->cylinder+i, gtk_cylinder+i);
-	flush_divelist(&dive_list, dive);
+	flush_divelist(dive);
 }
 
 static void cancel_cb(GtkButton *button, gpointer data)
@@ -416,8 +416,8 @@ GtkWidget *equipment_widget(void)
 	gtk_box_pack_start(GTK_BOX(hbox), apply, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), cancel, FALSE, FALSE, 0);
 
-	g_signal_connect(apply, "clicked", G_CALLBACK(apply_cb), dive_list.model);
-	g_signal_connect(cancel, "clicked", G_CALLBACK(cancel_cb), dive_list.model);
+	g_signal_connect(apply, "clicked", G_CALLBACK(apply_cb), NULL);
+	g_signal_connect(cancel, "clicked", G_CALLBACK(cancel_cb), NULL);
 
 	return vbox;
 }

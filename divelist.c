@@ -7,6 +7,16 @@
 #include "dive.h"
 #include "display.h"
 
+struct DiveList {
+	GtkWidget    *tree_view;
+	GtkWidget    *container_widget;
+	GtkListStore *model;
+	GtkTreeViewColumn *date, *depth, *duration, *location;
+	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac;
+};
+
+static struct DiveList dive_list;
+
 /*
  * The dive list has the dive data in both string format (for showing)
  * and in "raw" format (for sorting purposes)
@@ -327,17 +337,17 @@ static gboolean set_one_dive(GtkTreeModel *model,
 	return dive == data;
 }
 
-void flush_divelist(struct DiveList *dive_list, struct dive *dive)
+void flush_divelist(struct dive *dive)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list->model);
+	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
 
 	gtk_tree_model_foreach(model, set_one_dive, dive);
 }
 
-void update_dive_list_units(struct DiveList *dive_list)
+void update_dive_list_units(void)
 {
 	const char *unit;
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list->model);
+	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
 
 	switch (output_units.length) {
 	case METERS:
@@ -347,18 +357,18 @@ void update_dive_list_units(struct DiveList *dive_list)
 		unit = "ft";
 		break;
 	}
-	gtk_tree_view_column_set_title(dive_list->depth, unit);
+	gtk_tree_view_column_set_title(dive_list.depth, unit);
 
 	gtk_tree_model_foreach(model, set_one_dive, NULL);
 }
 
-static void fill_dive_list(struct DiveList *dive_list)
+static void fill_dive_list(void)
 {
 	int i;
 	GtkTreeIter iter;
 	GtkListStore *store;
 
-	store = GTK_LIST_STORE(dive_list->model);
+	store = GTK_LIST_STORE(dive_list.model);
 
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
@@ -376,13 +386,13 @@ static void fill_dive_list(struct DiveList *dive_list)
 			-1);
 	}
 
-	update_dive_list_units(dive_list);
+	update_dive_list_units();
 }
 
-void dive_list_update_dives(struct DiveList dive_list)
+void dive_list_update_dives(void)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(dive_list.model));
-	fill_dive_list(&dive_list);
+	fill_dive_list();
 	repaint_dive();
 }
 
@@ -417,9 +427,8 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 	return col;
 }
 
-struct DiveList dive_list_create(void)
+GtkWidget *dive_list_create(void)
 {
-	struct DiveList    dive_list;
 	GtkTreeSelection  *selection;
 	PangoFontDescription *font_desc = pango_font_description_from_string("sans 8");
 
@@ -452,7 +461,7 @@ struct DiveList dive_list_create(void)
 	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O2%", nitrox_data_func, 1);
 	dive_list.sac = divelist_column(&dive_list, DIVE_NITROX, "SAC", sac_data_func, 1);
 
-	fill_dive_list(&dive_list);
+	fill_dive_list();
 
 	g_object_set(G_OBJECT(dive_list.tree_view), "headers-visible", TRUE,
 					  "search-column", 0,
@@ -466,5 +475,5 @@ struct DiveList dive_list_create(void)
 			       GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(dive_list.container_widget), dive_list.tree_view);
 
-	return dive_list;
+	return dive_list.container_widget;
 }
