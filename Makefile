@@ -5,13 +5,15 @@ LIBDIVECOMPUTERDIR = /usr/local
 LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
 LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 
+# Add libusb in case of libdivecomputer compiled with usb support.
+LIBS = `pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0`
+
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o
 
 subsurface: $(OBJS)
 	$(CC) $(LDFLAGS) -o subsurface $(OBJS) \
-		`xml2-config --libs` \
-		`pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0` \
+		`xml2-config --libs` $(LIBS) \
 		$(LIBDIVECOMPUTERARCHIVE) -lpthread
 
 parse-xml.o: parse-xml.c dive.h
