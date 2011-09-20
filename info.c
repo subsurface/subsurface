@@ -1,3 +1,13 @@
+/* info.c */
+/* creates the UI for the info frame - 
+ * controlled through the following interfaces:
+ * 
+ * void flush_dive_info_changes(struct dive *dive)
+ * void show_dive_info(struct dive *dive)
+ *
+ * called from gtk-ui:
+ * GtkWidget *extended_dive_info_widget(void)
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -5,6 +15,7 @@
 
 #include "dive.h"
 #include "display.h"
+#include "display-gtk.h"
 #include "divelist.h"
 
 static GtkEntry *location, *buddy, *divemaster;

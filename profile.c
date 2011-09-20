@@ -1,3 +1,7 @@
+/* profile.c */
+/* creates all the necessary data for drawing the dive profile 
+ * uses cairo to draw it
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -72,7 +76,7 @@ static void set_source_rgba(struct graphics_context *gc, double r, double g, dou
 	cairo_set_source_rgba(gc->cr, r, g, b, a);
 }
 
-static void set_source_rgb(struct graphics_context *gc, double r, double g, double b)
+void set_source_rgb(struct graphics_context *gc, double r, double g, double b)
 {
 	set_source_rgba(gc, r, g, b, 1);
 }
@@ -740,36 +744,4 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
 
-}
-
-static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{
-	struct dive *dive = current_dive;
-	struct graphics_context gc = { .printer = 0 };
-	int w,h;
-
-	w = widget->allocation.width;
-	h = widget->allocation.height;
-
-	gc.cr = gdk_cairo_create(widget->window);
-	set_source_rgb(&gc, 0, 0, 0);
-	cairo_paint(gc.cr);
-
-	if (dive)
-		plot(&gc, w, h, dive);
-
-	cairo_destroy(gc.cr);
-
-	return FALSE;
-}
-
-GtkWidget *dive_profile_widget(void)
-{
-	GtkWidget *da;
-
-	da = gtk_drawing_area_new();
-	gtk_widget_set_size_request(da, 350, 250);
-	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
-
-	return da;
 }

@@ -9,7 +9,8 @@ LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 LIBS = `pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0`
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
-	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o
+	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
+	gtk-gui.o
 
 subsurface: $(OBJS)
 	$(CC) $(LDFLAGS) -o subsurface $(OBJS) \
@@ -26,13 +27,13 @@ dive.o: dive.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c dive.c
 
 main.o: main.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
+	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0 gconf-2.0` \
 		-c main.c
 
 profile.o: profile.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c profile.c
 
-info.o: info.c dive.h display.h divelist.h
+info.o: info.c dive.h display.h display-gtk.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c info.c
 
 equipment.o: equipment.c dive.h display.h divelist.h
@@ -41,13 +42,18 @@ equipment.o: equipment.c dive.h display.h divelist.h
 divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c divelist.c
 
-print.o: print.c dive.h display.h
+print.o: print.c dive.h display.h display-gtk.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c print.c
 
-libdivecomputer.o: libdivecomputer.c dive.h display.h
+libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` \
 			-I$(LIBDIVECOMPUTERINCLUDES) \
 			-c libdivecomputer.c
+
+gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
+	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
+			-I$(LIBDIVECOMPUTERINCLUDES) \
+			-c gtk-gui.c
 
 uemis.o: uemis.c uemis.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c uemis.c

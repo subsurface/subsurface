@@ -10,6 +10,4 @@
 
 void uemis_import();
 
-extern GtkWidget *main_window;
-
 #endif /* DIVE_H */

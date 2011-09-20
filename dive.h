@@ -222,8 +222,21 @@ extern void report_dives(void);
 extern struct dive *fixup_dive(struct dive *dive);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b);
 
-extern void update_air_info(char *buffer);
+extern void renumber_dives(int nr);
 
+/* UI related protopypes */
+
+extern void init_ui(int argc, char **argv);
+
+extern void run_ui(void);
+
+extern void report_error(GError* error);
+
+extern void dive_list_update_dives(void);
+extern void flush_divelist(struct dive *dive);
+
+extern int open_import_file_dialog(char *filterpattern, char *filtertext, 
+				void(* parse_function)(char *));
 #define DIVE_ERROR_PARSE 1
 
 const char *weekday(int wday);

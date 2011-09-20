@@ -1,3 +1,13 @@
+/* divelist.c */
+/* this creates the UI for the dive list - 
+ * controlled through the following interfaces:
+ * 
+ * void flush_divelist(struct dive *dive)
+ * GtkWidget dive_list_create(void)
+ * void dive_list_update_dives(void)
+ * void update_dive_list_units(void)
+ * void set_divelist_font(const char *font)
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +16,7 @@
 #include "divelist.h"
 #include "dive.h"
 #include "display.h"
+#include "display-gtk.h"
 
 struct DiveList {
 	GtkWidget    *tree_view;
@@ -34,6 +45,8 @@ enum {
 	DIVELIST_COLUMNS
 };
 
+/* the global dive list that we maintain */
+static struct DiveList dive_list;
 
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
@@ -46,23 +59,6 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 	gtk_tree_model_get_value(model, &iter, DIVE_INDEX, &value);
 	selected_dive = g_value_get_int(&value);
 	repaint_dive();
-}
-
-const char *weekday(int wday)
-{
-	static const char wday_array[7][4] = {
-		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-	};
-	return wday_array[wday];
-}
-
-const char *monthname(int mon)
-{
-	static const char month_array[12][4] = {
-		"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-		"Jul", "Aug", "Oct", "Sep", "Nov", "Dec",
-	};
-	return month_array[mon];
 }
 
 static void date_data_func(GtkTreeViewColumn *col,
