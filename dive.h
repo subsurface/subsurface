@@ -226,4 +226,7 @@ extern void update_air_info(char *buffer);
 
 #define DIVE_ERROR_PARSE 1
 
+const char *weekday(int wday);
+const char *monthname(int mon);
+
 #endif /* DIVE_H */

@@ -53,6 +53,30 @@ void flush_dive_info_changes(struct dive *dive)
 
 void show_dive_info(struct dive *dive)
 {
+	struct tm *tm;
+	const char *text;
+	char buffer[80];
+
+	/* dive number and location (or lacking that, the date) go in the window title */
+	tm = gmtime(&dive->when);
+	text = dive->location;
+	if (!text)
+		text = "";
+	if (*text) {
+		snprintf(buffer, sizeof(buffer), "Dive #%d - %s", dive->number, text);
+	} else {
+		snprintf(buffer, sizeof(buffer), "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
+			dive->number,
+			weekday(tm->tm_wday),
+			tm->tm_mon+1, tm->tm_mday,
+			tm->tm_year+1900,
+			tm->tm_hour, tm->tm_min);
+	}
+	text = buffer;
+	if (!dive->number)
+		text += 10;     /* Skip the "Dive #0 - " part */
+	gtk_window_set_title(GTK_WINDOW(main_window), text);
+
 	SET_TEXT_ENTRY(divemaster);
 	SET_TEXT_ENTRY(buddy);
 	SET_TEXT_ENTRY(location);
