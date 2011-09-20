@@ -204,7 +204,7 @@ static void sac_data_func(GtkTreeViewColumn *col,
 	sac = value / 1000.0;
 	switch (output_units.volume) {
 	case LITER:
-		fmt = "%4.0f";
+		fmt = "%4.1f";
 		break;
 	case CUFT:
 		fmt = "%4.2f";
@@ -341,13 +341,26 @@ void update_dive_list_units(struct DiveList *dive_list)
 
 	switch (output_units.length) {
 	case METERS:
-		unit = "m";
+		unit = "max/m";
 		break;
 	case FEET:
-		unit = "ft";
+		unit = "max/ft";
 		break;
 	}
 	gtk_tree_view_column_set_title(dive_list->depth, unit);
+
+	switch (output_units.temperature) {
+	case CELSIUS:
+		unit = "degC";
+		break;
+	case FAHRENHEIT:
+		unit = "degF";
+		break;
+	case KELVIN:
+		unit = "Kelvin";
+		break;
+	}
+	gtk_tree_view_column_set_title(dive_list->temperature, unit);
 
 	gtk_tree_model_foreach(model, set_one_dive, NULL);
 }
