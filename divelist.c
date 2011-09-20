@@ -428,7 +428,7 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 	col = gtk_tree_view_column_new();
 
 	gtk_tree_view_column_set_title(col, title);
-	gtk_tree_view_column_set_sort_column_id(col, DIVE_DATE);
+	gtk_tree_view_column_set_sort_column_id(col, index);
 	gtk_tree_view_column_set_resizable(col, TRUE);
 	gtk_tree_view_column_pack_start(col, renderer, TRUE);
 	if (data_func)
@@ -476,7 +476,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, "degF", temperature_data_func, 1, 0);
 	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, 0, 0);
 	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O2%", nitrox_data_func, 1, 0);
-	dive_list.sac = divelist_column(&dive_list, DIVE_NITROX, "SAC", sac_data_func, 1, 0);
+	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, 1, 0);
 
 	fill_dive_list();
 
