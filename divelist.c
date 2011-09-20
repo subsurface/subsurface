@@ -421,6 +421,7 @@ struct DiveList dive_list_create(void)
 {
 	struct DiveList    dive_list;
 	GtkTreeSelection  *selection;
+	PangoFontDescription *font_desc = pango_font_description_from_string("sans 8");
 
 	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
@@ -434,6 +435,9 @@ struct DiveList dive_list_create(void)
 				G_TYPE_INT			/* SAC */
 				);
 	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
+	gtk_widget_modify_font(dive_list.tree_view, font_desc);
+	pango_font_description_free(font_desc);
+
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
