@@ -295,8 +295,14 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	gc->leftx = 0; gc->rightx = maxtime;
 
-	plot_smoothed_profile(gc, pi);
-	plot_minmax_profile(gc, pi);
+	/*
+	 * These are good for debugging text placement etc,
+	 * but not for actual display..
+	 */
+	if (0) {
+		plot_smoothed_profile(gc, pi);
+		plot_minmax_profile(gc, pi);
+	}
 
 	entry = pi->entry;
 	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
