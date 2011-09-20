@@ -15,15 +15,11 @@ enum {
 	DIVE_INDEX = 0,
 	DIVE_DATE,		/* time_t: dive->when */
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
-	DIVE_DURATIONSTR,	/* "47" in minutes */
 	DIVE_DURATION,		/* int: in seconds */
-	DIVE_LOCATION,		/* "47" in minutes */
-	DIVE_TEMPSTR,		/* "78" in fahrenheit or whatever */
-	DIVE_TEMP,		/* int: in mkelvin */
-	DIVE_NITROXSTR,		/* "32.5" in percent */
+	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
+	DIVE_TEMPERATURE,	/* int: in mkelvin */
 	DIVE_NITROX,		/* int: in permille */
-	DIVE_SACSTR,		/* "0.49" in cuft/min */
-	DIVE_SAC,		/* int: in ml/min or something */
+	DIVE_SAC,		/* int: in ml/min */
 	DIVELIST_COLUMNS
 };
 
@@ -120,31 +116,33 @@ static void depth_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
-static void get_duration(struct dive *dive, int *val, char **str)
+static void duration_data_func(GtkTreeViewColumn *col,
+			       GtkCellRenderer *renderer,
+			       GtkTreeModel *model,
+			       GtkTreeIter *iter,
+			       gpointer data)
 {
-	unsigned int sec = dive->duration.seconds;
+	unsigned int sec;
 	char buffer[16];
 
-	*val = sec;
+	gtk_tree_model_get(model, iter, DIVE_DURATION, &sec, -1);
 	snprintf(buffer, sizeof(buffer), "%d:%02d", sec / 60, sec % 60);
-	*str = strdup(buffer);
+
+	g_object_set(renderer, "text", buffer, NULL);
 }
 
-static void get_location(struct dive *dive, char **str)
+static void temperature_data_func(GtkTreeViewColumn *col,
+				  GtkCellRenderer *renderer,
+				  GtkTreeModel *model,
+				  GtkTreeIter *iter,
+				  gpointer data)
 {
-	char buffer[16];
-
-	snprintf(buffer, sizeof(buffer), "%s", dive->location);
-	*str = strdup(buffer);
-}
-
-static void get_temp(struct dive *dive, int *val, char **str)
-{
-	int value = dive->watertemp.mkelvin;
+	int value;
 	char buffer[80];
 
-	*val = value;
-	*str = "";
+	gtk_tree_model_get(model, iter, DIVE_TEMPERATURE, &value, -1);
+
+	*buffer = 0;
 	if (value) {
 		double deg;
 		switch (output_units.temperature) {
@@ -158,21 +156,63 @@ static void get_temp(struct dive *dive, int *val, char **str)
 			return;
 		}
 		snprintf(buffer, sizeof(buffer), "%.1f", deg);
-		*str = strdup(buffer);
 	}
+
+	g_object_set(renderer, "text", buffer, NULL);
 }
 
-static void get_nitrox(struct dive *dive, int *val, char **str)
+static void nitrox_data_func(GtkTreeViewColumn *col,
+			     GtkCellRenderer *renderer,
+			     GtkTreeModel *model,
+			     GtkTreeIter *iter,
+			     gpointer data)
 {
-	int value = dive->cylinder[0].gasmix.o2.permille;
+	int value;
 	char buffer[80];
 
-	*val = value;
-	*str = "";
-	if (value) {
+	gtk_tree_model_get(model, iter, DIVE_NITROX, &value, -1);
+
+	if (value)
 		snprintf(buffer, sizeof(buffer), "%.1f", value/10.0);
-		*str = strdup(buffer);
+	else
+		strcpy(buffer, "air");
+
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
+/* Render the SAC data (integer value of "ml / min") */
+static void sac_data_func(GtkTreeViewColumn *col,
+			  GtkCellRenderer *renderer,
+			  GtkTreeModel *model,
+			  GtkTreeIter *iter,
+			  gpointer data)
+{
+	int value;
+	const double liters_per_cuft = 28.317;
+	const char *fmt;
+	char buffer[16];
+	double sac;
+
+	gtk_tree_model_get(model, iter, DIVE_SAC, &value, -1);
+
+	if (!value) {
+		g_object_set(renderer, "text", "", NULL);
+		return;
 	}
+
+	sac = value / 1000.0;
+	switch (output_units.volume) {
+	case LITER:
+		fmt = "%4.0f";
+		break;
+	case CUFT:
+		fmt = "%4.2f";
+		sac /= liters_per_cuft;
+		break;
+	}
+	snprintf(buffer, sizeof(buffer), fmt, sac);
+
+	g_object_set(renderer, "text", buffer, NULL);
 }
 
 /*
@@ -199,15 +239,11 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-static void get_sac(struct dive *dive, int *val, char **str)
+static void get_sac(struct dive *dive, int *val)
 {
-	const double liters_per_cuft = 28.317;
 	double airuse, pressure, sac;
-	const char *fmt, *unit;
-	char buffer[20];
 
 	*val = 0;
-	*str = "";
 	airuse = calculate_airuse(dive);
 	if (!airuse)
 		return;
@@ -220,21 +256,13 @@ static void get_sac(struct dive *dive, int *val, char **str)
 
 	/* milliliters per minute.. */
 	*val = sac * 1000;
+}
 
-	switch (output_units.volume) {
-	case LITER:
-		unit = "l";
-		fmt = "%4.0f %s";
-		break;
-	case CUFT:
-		unit = "cuft";
-		fmt = "%4.2f %s";
-		airuse /= liters_per_cuft;
-		sac /= liters_per_cuft;
-		break;
-	}
+static void get_location(struct dive *dive, char **str)
+{
+	char buffer[16];
 
-	snprintf(buffer, sizeof(buffer), fmt, sac, unit);
+	snprintf(buffer, sizeof(buffer), "%s", dive->location);
 	*str = strdup(buffer);
 }
 
@@ -242,28 +270,18 @@ static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
 {
-	int duration, temp, nitrox, sac;
-	char *durationstr, *tempstr, *nitroxstr, *sacstr;
+	int sac;
 	char *location;
 
-	get_duration(dive, &duration, &durationstr);
 	get_location(dive, &location);
-	get_temp(dive, &temp, &tempstr);
-	get_nitrox(dive, &nitrox, &nitroxstr);
-	get_sac(dive, &sac, &sacstr);
+	get_sac(dive, &sac);
 
 	/*
 	 * We only set the fields that changed: the strings.
 	 * The core data itself is unaffected by units
 	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
-		DIVE_DURATIONSTR, durationstr,
 		DIVE_LOCATION, location,
-		DIVE_TEMPSTR, tempstr,
-		DIVE_TEMP, temp,
-		DIVE_NITROXSTR, nitroxstr,
-		DIVE_NITROX, nitrox,
-		DIVE_SACSTR, sacstr,
 		DIVE_SAC, sac,
 		-1);
 }
@@ -329,14 +347,10 @@ static void fill_dive_list(struct DiveList *dive_list)
 			DIVE_INDEX, i,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->maxdepth,
-			DIVE_DURATIONSTR, "duration",
 			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, "location",
-			DIVE_TEMPSTR, "temp",
-			DIVE_TEMP, dive->watertemp.mkelvin,
-			DIVE_NITROXSTR, "21.0",
+			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_NITROX, dive->cylinder[0].gasmix.o2,
-			DIVE_SACSTR, "sac",
 			DIVE_SAC, 0,
 			-1);
 	}
@@ -362,11 +376,11 @@ struct DiveList dive_list_create(void)
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* Date */
 				G_TYPE_INT, 			/* Depth */
-				G_TYPE_STRING, G_TYPE_INT,	/* Duration */
+				G_TYPE_INT,			/* Duration */
 				G_TYPE_STRING,			/* Location */
-				G_TYPE_STRING, G_TYPE_INT,	/* Temperature */
-				G_TYPE_STRING, G_TYPE_INT,	/* Nitrox */
-				G_TYPE_STRING, G_TYPE_INT	/* SAC */
+				G_TYPE_INT,			/* Temperature */
+				G_TYPE_INT,			/* Nitrox */
+				G_TYPE_INT			/* SAC */
 				);
 	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
@@ -398,7 +412,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_column_set_title(col, "min");
 	gtk_tree_view_column_set_sort_column_id(col, DIVE_DURATION);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
-	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_DURATIONSTR);
+	gtk_tree_view_column_set_cell_data_func(col, renderer, duration_data_func, NULL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
@@ -414,9 +428,9 @@ struct DiveList dive_list_create(void)
 	renderer = gtk_cell_renderer_text_new();
 	dive_list.temperature = col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(col, "deg");
-	gtk_tree_view_column_set_sort_column_id(col, DIVE_TEMP);
+	gtk_tree_view_column_set_sort_column_id(col, DIVE_TEMPERATURE);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
-	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_TEMPSTR);
+	gtk_tree_view_column_set_cell_data_func(col, renderer, temperature_data_func, NULL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
@@ -426,7 +440,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_column_set_title(col, "O2%");
 	gtk_tree_view_column_set_sort_column_id(col, DIVE_NITROX);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
-	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_NITROXSTR);
+	gtk_tree_view_column_set_cell_data_func(col, renderer, nitrox_data_func, NULL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
@@ -436,7 +450,7 @@ struct DiveList dive_list_create(void)
 	gtk_tree_view_column_set_title(col, "SAC");
 	gtk_tree_view_column_set_sort_column_id(col, DIVE_SAC);
 	gtk_tree_view_column_pack_start(col, renderer, FALSE);
-	gtk_tree_view_column_add_attribute(col, renderer, "text", DIVE_SACSTR);
+	gtk_tree_view_column_set_cell_data_func(col, renderer, sac_data_func, NULL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dive_list.tree_view), col);
 	gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
