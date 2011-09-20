@@ -365,7 +365,8 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
+	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
+	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  "<control>P", NULL, G_CALLBACK(do_print) },
@@ -386,10 +387,11 @@ static const gchar* ui_string = " \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Import\" action=\"Import\" /> \
 				<separator name=\"Separator2\"/> \
+				<menuitem name=\"Quit\" action=\"Quit\" /> \
+			</menu> \
+			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Units\" action=\"Units\" /> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
-				<separator name=\"Separator3\"/> \
-				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 		</menubar> \
 	</ui> \
