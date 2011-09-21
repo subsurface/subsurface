@@ -31,11 +31,6 @@ struct units output_units;
 
 #define GCONF_NAME(x) "/apps/subsurface/" #x
 
-void on_destroy(GtkWidget* w, gpointer data)
-{
-	gtk_main_quit();
-}
-
 static GtkWidget *dive_profile;
 
 void repaint_dive(void)
@@ -146,8 +141,31 @@ static void file_save(GtkWidget *w, gpointer data)
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		save_dives(filename);
 		g_free(filename);
+		mark_divelist_changed(TRUE);
 	}
 	gtk_widget_destroy(dialog);
+}
+
+static void ask_save_changes()
+{
+	GtkWidget *dialog;
+	dialog = gtk_dialog_new_with_buttons("Save Changes?",
+		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		NULL);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		file_save(NULL,NULL);
+	}
+	gtk_widget_destroy(dialog);
+}
+
+void on_destroy(GtkWidget* w, gpointer data)
+{
+	if (unsaved_changes())
+		ask_save_changes();
+	gtk_main_quit();
 }
 
 static void quit(GtkWidget *w, gpointer data)
