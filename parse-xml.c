@@ -1380,7 +1380,9 @@ void parse_xml_file(const char *filename, GError **error)
 		}
 		return;
 	}
-
+	/* we assume that the last (or only) filename passed as argument is a 
+	 * great filename to use as default when saving the dives */ 
+	set_filename(filename);
 	reset_all();
 	dive_start();
 	traverse(xmlDocGetRootElement(doc));
