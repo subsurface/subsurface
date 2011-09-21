@@ -33,30 +33,59 @@ static char *get_text(GtkTextBuffer *buffer)
 	return gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 }
 
+/* old is NULL or a valid string, new is a valid string
+ * NOTW: NULL and "" need to be treated as "unchanged" */
+static int text_changed(char *old, char *new)
+{
+	return ((old && strcmp(old,new)) ||
+		(!old && strcmp("",new)));
+}
+
 void flush_dive_info_changes(struct dive *dive)
 {
+	char *old_text;
+	int changed = 0;
+
 	if (!dive)
 		return;
 
 	if (location_changed) {
-		g_free(dive->location);
+		old_text = dive->location;
 		dive->location = gtk_editable_get_chars(GTK_EDITABLE(location), 0, -1);
+		if (text_changed(old_text,dive->location))
+			changed = 1;
+		if (old_text)
+			g_free(old_text);
 	}
 
 	if (divemaster_changed) {
-		g_free(dive->divemaster);
+		old_text = dive->divemaster;
 		dive->divemaster = gtk_editable_get_chars(GTK_EDITABLE(divemaster), 0, -1);
+		if (text_changed(old_text,dive->divemaster))
+			changed = 1;
+		if (old_text)
+			g_free(old_text);
 	}
 
 	if (buddy_changed) {
-		g_free(dive->buddy);
+		old_text = dive->buddy;
 		dive->buddy = gtk_editable_get_chars(GTK_EDITABLE(buddy), 0, -1);
+		if (text_changed(old_text,dive->buddy))
+			changed = 1;
+		if (old_text)
+			g_free(old_text);
 	}
 
 	if (notes_changed) {
-		g_free(dive->notes);
+		old_text = dive->notes;
 		dive->notes = get_text(notes);
+		if (text_changed(old_text,dive->notes))
+			changed = 1;
+		if (old_text)
+			g_free(old_text);
 	}
+	if (changed)
+		mark_divelist_changed(TRUE);
 }
 
 #define SET_TEXT_ENTRY(x) \
