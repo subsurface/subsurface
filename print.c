@@ -67,7 +67,7 @@ static int add_quoted_string(char *buffer, size_t size, int len, const char *s)
  * You know what? Maybe somebody can do a real Pango layout thing.
  * This is hacky.
  */
-static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h)
+static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, PangoFontDescription *font)
 {
 	int len;
 	PangoLayout *layout;
@@ -75,6 +75,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h)
 	char buffer[1024], divenr[20];
 
 	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_font_description(layout, font);
 	pango_layout_set_width(layout, w * PANGO_SCALE);
 	pango_layout_set_height(layout, h * PANGO_SCALE * 0.9);
 	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
@@ -151,7 +152,7 @@ static void show_dive_profile(struct dive *dive, cairo_t *cr, double w, double h
 	cairo_restore(cr);
 }
 
-static void print(int divenr, cairo_t *cr, double x, double y, double w, double h)
+static void print(int divenr, cairo_t *cr, double x, double y, double w, double h, PangoFontDescription *font)
 {
 	struct dive *dive;
 
@@ -174,7 +175,7 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w, double 
 	/* Dive information in the lower third */
 	cairo_translate(cr, 0, h*1.33);
 
-	show_dive_text(dive, cr, w*2, h*0.67);
+	show_dive_text(dive, cr, w*2, h*0.67, font);
 
 	cairo_restore(cr);
 }
@@ -187,19 +188,23 @@ static void draw_page(GtkPrintOperation *operation,
 	int nr;
 	cairo_t *cr;
 	double w, h;
+	PangoFontDescription *font;
 
 	cr = gtk_print_context_get_cairo_context(context);
+	font = pango_font_description_from_string("Sans");
 
 	w = gtk_print_context_get_width(context)/2;
 	h = gtk_print_context_get_height(context)/3;
 
 	nr = page_nr*6;
-	print(nr+0, cr, 0,   0, w, h);
-	print(nr+1, cr, w,   0, w, h);
-	print(nr+2, cr, 0,   h, w, h);
-	print(nr+3, cr, w,   h, w, h);
-	print(nr+4, cr, 0, 2*h, w, h);
-	print(nr+5, cr, w, 2*h, w, h);
+	print(nr+0, cr, 0,   0, w, h, font);
+	print(nr+1, cr, w,   0, w, h, font);
+	print(nr+2, cr, 0,   h, w, h, font);
+	print(nr+3, cr, w,   h, w, h, font);
+	print(nr+4, cr, 0, 2*h, w, h, font);
+	print(nr+5, cr, w, 2*h, w, h, font);
+
+	pango_font_description_free(font);
 }
 
 static void begin_print(GtkPrintOperation *operation, gpointer user_data)
