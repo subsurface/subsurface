@@ -5,6 +5,31 @@
 
 #include "dive.h"
 
+double get_depth_units(unsigned int mm, int *frac, const char **units)
+{
+	int decimals;
+	double d;
+	const char *unit;
+
+	switch (output_units.length) {
+	case METERS:
+		d = mm / 1000.0;
+		unit = "m";
+		decimals = d < 20;
+		break;
+	case FEET:
+		d = mm_to_feet(mm);
+		unit = "ft";
+		decimals = 0;
+		break;
+	}
+	if (frac)
+		*frac = decimals;
+	if (units)
+		*units = unit;
+	return d;
+}
+
 struct dive *alloc_dive(void)
 {
 	const int initial_samples = 5;

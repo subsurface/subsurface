@@ -86,6 +86,8 @@ typedef struct {
 	pressure_t start, end;
 } cylinder_t;
 
+extern double get_depth_units(unsigned int mm, int *frac, const char **units);
+
 static inline double mm_to_feet(int mm)
 {
 	return mm * 0.00328084;

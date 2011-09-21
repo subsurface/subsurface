@@ -158,22 +158,12 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 
 static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
 {
-	int sec = entry->sec;
-	depth_t depth = { entry->val };
-	const char *fmt;
+	int sec = entry->sec, decimals;
 	double d;
 
-	switch (output_units.length) {
-	case METERS:
-		d = depth.mm / 1000.0;
-		fmt = "%.1f";
-		break;
-	case FEET:
-		d = to_feet(depth);
-		fmt = "%.0f";
-		break;
-	}
-	plot_text(gc, tro, sec, depth.mm, fmt, d);
+	d = get_depth_units(entry->val, &decimals, NULL);
+
+	plot_text(gc, tro, sec, entry->val, "%.*f", decimals, d);
 }
 
 static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)

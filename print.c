@@ -26,7 +26,9 @@ static void set_font(PangoLayout *layout, PangoFontDescription *font, double siz
  */
 static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, PangoFontDescription *font)
 {
-	int len, width, height, maxwidth, maxheight;
+	double depth;
+	const char *unit;
+	int len, decimals, width, height, maxwidth, maxheight;
 	PangoLayout *layout;
 	struct tm *tm;
 	char buffer[1024], divenr[20];
@@ -64,11 +66,12 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	 * with the depth/duration information. Need to mask that or
 	 * create a box or something.
 	 */
+	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	snprintf(buffer, sizeof(buffer),
-		"Max depth: %d ft\n"
+		"Max depth: %.*f %s\n"
 		"Duration: %d:%02d\n"
 		"%s",
-		to_feet(dive->maxdepth),
+		decimals, depth, unit,
 		dive->duration.seconds / 60,
 		dive->duration.seconds % 60,
 		dive->buddy ? :"");
