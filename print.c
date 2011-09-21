@@ -1,10 +1,64 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 #include <gtk/gtk.h>
 
 #include "dive.h"
 #include "display.h"
 #include "display-gtk.h"
 
-static void show_one_dive(struct dive *dive, cairo_t *cr, double w, double h)
+static void show_text(cairo_t *cr, int size, double x, double y, const char *fmt, ...)
+{
+	va_list args;
+	char buffer[256], *p;
+
+	va_start(args, fmt);
+	vsnprintf(buffer, sizeof(buffer), fmt, args);
+	va_end(args);
+
+	cairo_set_font_size(cr, size);
+
+	p = buffer;
+	do {
+		char *n = strchr(p, '\n');
+		if (n)
+			*n++ = 0;
+		cairo_move_to(cr, x, y);
+		cairo_show_text(cr, p);
+		p = n;
+		y += size;
+	} while (p);
+}
+
+/*
+ * You know what? Maybe somebody can do a real Pango layout thing.
+ *
+ * I'm going to do this with the cairo engine instead. I can only learn so
+ * many new interfaces.
+ */
+static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h)
+{
+	struct tm *tm;
+
+	tm = gmtime(&dive->when);
+	show_text(cr, 16, 0, 2, "Dive #%d - %s, %s %d, %d    %d:%02d",
+		dive->number,
+		weekday(tm->tm_wday),
+		monthname(tm->tm_mon),
+		tm->tm_mday, tm->tm_year + 1900,
+		tm->tm_hour, tm->tm_min);
+
+	show_text(cr, 10, w*0.6, 0,
+		"Max depth: %d ft\nDuration: %d:%02d",
+		to_feet(dive->maxdepth),
+		dive->duration.seconds / 60,
+		dive->duration.seconds % 60);
+
+	show_text(cr, 10, 0, 20, "%s", dive->location ?: "");
+	show_text(cr, 10, 0, 30, "%s", dive->notes ?: "");
+}
+
+static void show_dive_profile(struct dive *dive, cairo_t *cr, double w, double h)
 {
 	struct graphics_context gc = {
 		.printer = 1,
@@ -27,9 +81,11 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w, double 
 	cairo_scale(cr, 0.5, 0.5);
 
 	/* Dive plot in the upper 75% - note the scaling */
-	show_one_dive(dive, cr, w*2, h*1.5);
+	show_dive_profile(dive, cr, w*2, h*1.5);
 
 	/* Dive information in the lower 25% */
+	cairo_translate(cr, 0, h*1.5);
+	show_dive_text(dive, cr, w*2, h*0.5);
 
 	cairo_restore(cr);
 }
@@ -41,11 +97,9 @@ static void draw_page(GtkPrintOperation *operation,
 {
 	int nr;
 	cairo_t *cr;
-	PangoLayout *layout;
 	double w, h;
 
 	cr = gtk_print_context_get_cairo_context(context);
-	layout=gtk_print_context_create_pango_layout(context);
 
 	w = gtk_print_context_get_width(context)/2;
 	h = gtk_print_context_get_height(context)/3;
@@ -57,9 +111,6 @@ static void draw_page(GtkPrintOperation *operation,
 	print(nr+3, cr, w,   h, w, h);
 	print(nr+2, cr, 0, 2*h, w, h);
 	print(nr+3, cr, w, 2*h, w, h);
-
-	pango_cairo_show_layout(cr,layout);
-	g_object_unref(layout);
 }
 
 static void begin_print(GtkPrintOperation *operation, gpointer user_data)
