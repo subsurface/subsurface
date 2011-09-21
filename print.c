@@ -69,11 +69,10 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	snprintf(buffer, sizeof(buffer),
 		"Max depth: %.*f %s\n"
-		"Duration: %d:%02d\n"
+		"Duration: %d min\n"
 		"%s",
 		decimals, depth, unit,
-		dive->duration.seconds / 60,
-		dive->duration.seconds % 60,
+		(dive->duration.seconds+59) / 60,
 		dive->buddy ? :"");
 
 	set_font(layout, font, FONT_SMALL, PANGO_ALIGN_RIGHT);
@@ -107,8 +106,8 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	 * Show the dive notes
 	 */
 	if (dive->notes) {
-		/* Move down by the size of the location (1.5) */
-		height = height * 3 / 2;
+		/* Move down by the size of the location (x2) */
+		height = height * 2;
 		cairo_translate(cr, 0, height / (double) PANGO_SCALE);
 		maxheight -= height;
 
