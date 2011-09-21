@@ -743,4 +743,5 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
 
+	free(pi);
 }
