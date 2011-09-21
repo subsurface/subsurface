@@ -651,3 +651,11 @@ void update_progressbar(progressbar_t *progress, double value)
 {
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress->bar), value);
 }
+
+
+void set_filename(const char *filename)
+{
+	if (filename)
+		existing_filename = strdup(filename);
+	return;
+}
