@@ -26,10 +26,10 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w, double 
 	/* We actually want to scale the text and the lines now */
 	cairo_scale(cr, 0.5, 0.5);
 
-	/* Dive plot in the upper half - note the scaling */
-	show_one_dive(dive, cr, w*2, h);
+	/* Dive plot in the upper 75% - note the scaling */
+	show_one_dive(dive, cr, w*2, h*1.5);
 
-	/* Dive information in the lower half */
+	/* Dive information in the lower 25% */
 
 	cairo_restore(cr);
 }
@@ -47,14 +47,16 @@ static void draw_page(GtkPrintOperation *operation,
 	cr = gtk_print_context_get_cairo_context(context);
 	layout=gtk_print_context_create_pango_layout(context);
 
-	w = gtk_print_context_get_width(context) / 2;
-	h = gtk_print_context_get_height(context) / 2;
+	w = gtk_print_context_get_width(context)/2;
+	h = gtk_print_context_get_height(context)/3;
 
-	nr = page_nr*4;
-	print(nr+0, cr, 0, 0, w, h);
-	print(nr+1, cr, w, 0, w, h);
-	print(nr+2, cr, 0, h, w, h);
-	print(nr+3, cr, w, h, w, h);
+	nr = page_nr*6;
+	print(nr+0, cr, 0,   0, w, h);
+	print(nr+1, cr, w,   0, w, h);
+	print(nr+2, cr, 0,   h, w, h);
+	print(nr+3, cr, w,   h, w, h);
+	print(nr+2, cr, 0, 2*h, w, h);
+	print(nr+3, cr, w, 2*h, w, h);
 
 	pango_cairo_show_layout(cr,layout);
 	g_object_unref(layout);
@@ -75,7 +77,7 @@ void do_print(void)
 	print = gtk_print_operation_new();
 	if (settings != NULL)
 		gtk_print_operation_set_print_settings(print, settings);
-	pages = (dive_table.nr + 3) / 4;
+	pages = (dive_table.nr + 5) / 6;
 	gtk_print_operation_set_n_pages(print, pages);
 	g_signal_connect(print, "begin_print", G_CALLBACK(begin_print), NULL);
 	g_signal_connect(print, "draw_page", G_CALLBACK(draw_page), NULL);
