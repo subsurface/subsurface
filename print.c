@@ -7,77 +7,24 @@
 #include "display.h"
 #include "display-gtk.h"
 
-/* Why doesn't pango/gtk have these quoting functions? */
-static inline int add_char(char *buffer, size_t size, int len, char c)
-{
-	if (len < size)
-		buffer[len++] = c;
-	return len;
-}
-
-/* Add an escape string "atomically" - all or nothing */
-static int add_str(char *buffer, size_t size, int len, const char *s)
-{
-	int oldlen = len;
-	char c;
-	while ((c = *s++) != 0) {
-		if (len >= size)
-			return oldlen;
-		buffer[len++] = c;
-	}
-	return len;
-}
-
-static int add_quoted_string(char *buffer, size_t size, int len, const char *s)
-{
-	if (!s)
-		return len;
-
-	/* Room for '\0' */
-	size--;
-	for (;;) {
-		const char *escape;
-		unsigned char c = *s++;
-		switch(c) {
-		default:
-			len = add_char(buffer, size, len, c);
-			continue;
-		case 0:
-			escape = "\n";
-			break;
-		case '&':
-			escape = "&amp;";
-			break;
-		case '>':
-			escape = "&gt;";
-			break;
-		case '<':
-			escape = "&lt;";
-			break;
-		}
-		len = add_str(buffer, size, len, escape);
-		if (c)
-			continue;
-		buffer[len] = 0;
-		return len;
-	}
-}
-
 /*
  * You know what? Maybe somebody can do a real Pango layout thing.
  * This is hacky.
  */
 static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, PangoFontDescription *font)
 {
-	int len;
+	int len, width, height, maxwidth, maxheight;
 	PangoLayout *layout;
 	struct tm *tm;
 	char buffer[1024], divenr[20];
 
+	maxwidth = w * PANGO_SCALE;
+	maxheight = h * PANGO_SCALE * 0.9;
+
 	layout = pango_cairo_create_layout(cr);
 	pango_layout_set_font_description(layout, font);
-	pango_layout_set_width(layout, w * PANGO_SCALE);
-	pango_layout_set_height(layout, h * PANGO_SCALE * 0.9);
+	pango_layout_set_width(layout, maxwidth);
+	pango_layout_set_height(layout, maxheight);
 	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
 
 	*divenr = 0;
@@ -89,31 +36,19 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	len = snprintf(buffer, sizeof(buffer),
 		"<span size=\"large\">"
 		"%s%s, %s %d, %d   %d:%02d"
-		"</span>\n",
+		"</span>",
 		divenr,
 		weekday(tm->tm_wday),
 		monthname(tm->tm_mon),
 		tm->tm_mday, tm->tm_year + 1900,
 		tm->tm_hour, tm->tm_min);
 
-	/*
-	 * Leave an empty line even if no location: otherwise the notes can
-	 * overrun the depth/duration information.
-	 */
-	if (dive->location)
-		len = add_quoted_string(buffer, sizeof(buffer), len, dive->location);
-	else
-		len = add_char(buffer, sizeof(buffer), len, '\n');
-
-	if (dive->notes) {
-		len = add_char(buffer, sizeof(buffer), len, '\n');
-		len = add_quoted_string(buffer, sizeof(buffer), len, dive->notes);
-	}
-
 	pango_layout_set_justify(layout, 1);
 	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
 	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
+
 	pango_layout_set_markup(layout, buffer, len);
+	pango_layout_get_size(layout, &width, &height);
 
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
@@ -136,6 +71,19 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	pango_layout_set_markup(layout, buffer, -1);
 
 	cairo_move_to(cr, 0, 0);
+	pango_cairo_show_layout(cr, layout);
+
+	len = snprintf(buffer, sizeof(buffer), "%s\n\n%s",
+		dive->location ? : "",
+		dive->notes ? : "");
+
+	maxheight -= height;
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_attributes(layout, NULL);
+	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
+	pango_layout_set_text(layout, buffer, len);
+
+	cairo_move_to(cr, 0, height / (double) PANGO_SCALE);
 	pango_cairo_show_layout(cr, layout);
 
 	g_object_unref(layout);
