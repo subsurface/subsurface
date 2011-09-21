@@ -242,4 +242,7 @@ extern int open_import_file_dialog(char *filterpattern, char *filtertext,
 const char *weekday(int wday);
 const char *monthname(int mon);
 
+#define UTF8_DEGREE "\xc2\xb0"
+#define UTF8_SUBSCRIPT_2 "\xe2\x82\x82"
+
 #endif /* DIVE_H */

@@ -364,10 +364,10 @@ void update_dive_list_units(void)
 
 	switch (output_units.temperature) {
 	case CELSIUS:
-		unit = "degC";
+		unit = UTF8_DEGREE "C";
 		break;
 	case FAHRENHEIT:
-		unit = "degF";
+		unit = UTF8_DEGREE "F";
 		break;
 	case KELVIN:
 		unit = "Kelvin";
@@ -473,9 +473,9 @@ GtkWidget *dive_list_create(void)
 	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "max/ft", depth_data_func, 1, 0);
 	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, 1, 0);
 	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, 0, 1);
-	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, "degF", temperature_data_func, 1, 0);
+	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, 1, 0);
 	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, 0, 0);
-	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O2%", nitrox_data_func, 1, 0);
+	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, 1, 0);
 	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, 1, 0);
 
 	fill_dive_list();

@@ -65,12 +65,15 @@ static void line_to(struct graphics_context *gc, double x, double y)
 
 static void set_source_rgba(struct graphics_context *gc, double r, double g, double b, double a)
 {
+	/*
+	 * For printers, we still honor 'a', but ignore colors
+	 * for now. Black is white and white is black
+	 */
 	if (gc->printer) {
-		/* Black is white and white is black */
 		double sum = r+g+b;
-		if (sum > 2)
+		if (sum > 0.8)
 			r = g = b = 0;
-		else if (sum < 1)
+		else
 			r = g = b = 1;
 	}
 	cairo_set_source_rgba(gc->cr, r, g, b, a);
@@ -212,7 +215,7 @@ static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info 
 	int i;
 	struct plot_data *entry = pi->entry;
 
-	cairo_set_source_rgba(gc->cr, 1, 0.2, 0.2, 0.20);
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
 	move_to(gc, entry->sec, entry->smoothed);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
@@ -227,7 +230,7 @@ static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_
 	int i;
 	struct plot_data *entry = pi->entry;
 
-	cairo_set_source_rgba(gc->cr, 1, 0.2, 1, a);
+	set_source_rgba(gc, 1, 0.2, 1, a);
 	move_to(gc, entry->sec, entry->min[index]->val);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
@@ -372,12 +375,12 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 
 	if (output_units.temperature == FAHRENHEIT) {
 		deg = to_F(temperature);
-		unit = "F";
+		unit = UTF8_DEGREE "F";
 	} else {
 		deg = to_C(temperature);
-		unit = "C";
+		unit = UTF8_DEGREE "C";
 	}
-	plot_text(gc, &tro, sec, temperature.mkelvin, "%d %s", deg, unit);
+	plot_text(gc, &tro, sec, temperature.mkelvin, "%d%s", deg, unit);
 }
 
 static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
@@ -453,7 +456,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
-	cairo_set_source_rgba(gc->cr, 0.2, 1.0, 0.2, 0.80);
+	set_source_rgba(gc, 0.2, 1.0, 0.2, 0.80);
 
 	move_to(gc, 0, pi->maxpressure);
 	for (i = 1; i < pi->nr; i++) {
