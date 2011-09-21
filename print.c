@@ -7,6 +7,19 @@
 #include "display.h"
 #include "display-gtk.h"
 
+#define FONT_NORMAL (12)
+#define FONT_SMALL (FONT_NORMAL / 1.2)
+#define FONT_LARGE (FONT_NORMAL * 1.2)
+
+static void set_font(PangoLayout *layout, PangoFontDescription *font, double size, int align)
+{
+	pango_font_description_set_size(font, size * PANGO_SCALE);
+	pango_layout_set_font_description(layout, font);
+	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
+	pango_layout_set_alignment(layout, align);
+
+}
+
 /*
  * You know what? Maybe somebody can do a real Pango layout thing.
  * This is hacky.
@@ -22,10 +35,8 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	maxheight = h * PANGO_SCALE * 0.9;
 
 	layout = pango_cairo_create_layout(cr);
-	pango_layout_set_font_description(layout, font);
 	pango_layout_set_width(layout, maxwidth);
 	pango_layout_set_height(layout, maxheight);
-	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
 
 	*divenr = 0;
 	if (dive->number)
@@ -34,20 +45,15 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 
 	tm = gmtime(&dive->when);
 	len = snprintf(buffer, sizeof(buffer),
-		"<span size=\"large\">"
-		"%s%s, %s %d, %d   %d:%02d"
-		"</span>",
+		"%s%s, %s %d, %d   %d:%02d",
 		divenr,
 		weekday(tm->tm_wday),
 		monthname(tm->tm_mon),
 		tm->tm_mday, tm->tm_year + 1900,
 		tm->tm_hour, tm->tm_min);
 
-	pango_layout_set_justify(layout, 1);
-	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
-	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
-
-	pango_layout_set_markup(layout, buffer, len);
+	set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
+	pango_layout_set_text(layout, buffer, len);
 	pango_layout_get_size(layout, &width, &height);
 
 	cairo_move_to(cr, 0, 0);
@@ -59,33 +65,60 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	 * create a box or something.
 	 */
 	snprintf(buffer, sizeof(buffer),
-		"<span size=\"small\">"
 		"Max depth: %d ft\n"
-		"Duration: %d:%02d"
-		"</span>",
+		"Duration: %d:%02d\n"
+		"%s",
 		to_feet(dive->maxdepth),
 		dive->duration.seconds / 60,
-		dive->duration.seconds % 60);
+		dive->duration.seconds % 60,
+		dive->buddy ? :"");
 
-	pango_layout_set_alignment(layout, PANGO_ALIGN_RIGHT);
-	pango_layout_set_markup(layout, buffer, -1);
+	set_font(layout, font, FONT_SMALL, PANGO_ALIGN_RIGHT);
+	pango_layout_set_text(layout, buffer, -1);
 
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
 
-	len = snprintf(buffer, sizeof(buffer), "%s\n\n%s",
-		dive->location ? : "",
-		dive->notes ? : "");
-
+	/*
+	 * Show the dive location
+	 *
+	 * .. or at least a space to get the size.
+	 *
+	 * Move down by the size of the date, and limit the
+	 * width to the same width as the date string.
+	 */
+	cairo_translate(cr, 0, height / (double) PANGO_SCALE);
 	maxheight -= height;
-	pango_layout_set_height(layout, maxheight);
-	pango_layout_set_attributes(layout, NULL);
-	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
-	pango_layout_set_text(layout, buffer, len);
+	pango_layout_set_height(layout, 1);
+	pango_layout_set_width(layout, width);
 
-	cairo_move_to(cr, 0, height / (double) PANGO_SCALE);
+	set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+	pango_layout_set_text(layout, dive->location ? : " ", -1);
+
+	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
 
+	pango_layout_get_size(layout, &width, &height);
+
+	/*
+	 * Show the dive notes
+	 */
+	if (dive->notes) {
+		/* Move down by the size of the location (1.5) */
+		height = height * 3 / 2;
+		cairo_translate(cr, 0, height / (double) PANGO_SCALE);
+		maxheight -= height;
+
+		/* Use the full width and remaining height for notes */
+		pango_layout_set_height(layout, maxheight);
+		pango_layout_set_width(layout, maxwidth);
+		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		pango_layout_set_justify(layout, 1);
+		pango_layout_set_text(layout, dive->notes, -1);
+
+		cairo_move_to(cr, 0, 0);
+		pango_cairo_show_layout(cr, layout);
+	}
 	g_object_unref(layout);
 }
 
