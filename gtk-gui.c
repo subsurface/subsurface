@@ -148,13 +148,17 @@ static void file_save(GtkWidget *w, gpointer data)
 
 static void ask_save_changes()
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *label, *content;
 	dialog = gtk_dialog_new_with_buttons("Save Changes?",
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		NULL);
-
+	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
+	gtk_container_add (GTK_CONTAINER (content), label);
+	gtk_widget_show_all (dialog);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		file_save(NULL,NULL);
 	}
@@ -173,6 +177,11 @@ void on_destroy(GtkWidget* w, gpointer data)
 
 static void quit(GtkWidget *w, gpointer data)
 {
+	/* Make sure to flush any modified dive data */
+	update_dive(NULL);
+
+	if (unsaved_changes())
+		ask_save_changes();
 	gtk_main_quit();
 }
 
