@@ -163,6 +163,9 @@ static void ask_save_changes()
 
 void on_destroy(GtkWidget* w, gpointer data)
 {
+	/* Make sure to flush any modified dive data */
+	update_dive(NULL);
+
 	if (unsaved_changes())
 		ask_save_changes();
 	gtk_main_quit();
