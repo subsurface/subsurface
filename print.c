@@ -7,55 +7,86 @@
 #include "display.h"
 #include "display-gtk.h"
 
-static void show_text(cairo_t *cr, int size, double x, double y, const char *fmt, ...)
-{
-	va_list args;
-	char buffer[256], *p;
-
-	va_start(args, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, args);
-	va_end(args);
-
-	cairo_set_font_size(cr, size);
-
-	p = buffer;
-	do {
-		char *n = strchr(p, '\n');
-		if (n)
-			*n++ = 0;
-		cairo_move_to(cr, x, y);
-		cairo_show_text(cr, p);
-		p = n;
-		y += size;
-	} while (p);
-}
-
 /*
  * You know what? Maybe somebody can do a real Pango layout thing.
- *
- * I'm going to do this with the cairo engine instead. I can only learn so
- * many new interfaces.
+ * This is hacky.
  */
-static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h)
+static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, PangoFontDescription *font)
 {
+	int len, width, height, maxwidth, maxheight;
+	PangoLayout *layout;
 	struct tm *tm;
+	char buffer[1024], divenr[20];
+
+	maxwidth = w * PANGO_SCALE;
+	maxheight = h * PANGO_SCALE * 0.9;
+
+	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_font_description(layout, font);
+	pango_layout_set_width(layout, maxwidth);
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+
+	*divenr = 0;
+	if (dive->number)
+		snprintf(divenr, sizeof(divenr), "Dive #%d - ", dive->number);
+
 
 	tm = gmtime(&dive->when);
-	show_text(cr, 16, 0, 2, "Dive #%d - %s, %s %d, %d    %d:%02d",
-		dive->number,
+	len = snprintf(buffer, sizeof(buffer),
+		"<span size=\"large\">"
+		"%s%s, %s %d, %d   %d:%02d"
+		"</span>",
+		divenr,
 		weekday(tm->tm_wday),
 		monthname(tm->tm_mon),
 		tm->tm_mday, tm->tm_year + 1900,
 		tm->tm_hour, tm->tm_min);
 
-	show_text(cr, 10, w*0.6, 0,
-		"Max depth: %d ft\nDuration: %d:%02d",
+	pango_layout_set_justify(layout, 1);
+	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
+	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
+
+	pango_layout_set_markup(layout, buffer, len);
+	pango_layout_get_size(layout, &width, &height);
+
+	cairo_move_to(cr, 0, 0);
+	pango_cairo_show_layout(cr, layout);
+
+	/*
+	 * This is still problematic: a long dive location will clash
+	 * with the depth/duration information. Need to mask that or
+	 * create a box or something.
+	 */
+	snprintf(buffer, sizeof(buffer),
+		"<span size=\"small\">"
+		"Max depth: %d ft\n"
+		"Duration: %d:%02d"
+		"</span>",
 		to_feet(dive->maxdepth),
 		dive->duration.seconds / 60,
 		dive->duration.seconds % 60);
 
-	show_text(cr, 10, 0, 20, "%s", dive->location ?: "");
-	show_text(cr, 10, 0, 30, "%s", dive->notes ?: "");
+	pango_layout_set_alignment(layout, PANGO_ALIGN_RIGHT);
+	pango_layout_set_markup(layout, buffer, -1);
+
+	cairo_move_to(cr, 0, 0);
+	pango_cairo_show_layout(cr, layout);
+
+	len = snprintf(buffer, sizeof(buffer), "%s\n\n%s",
+		dive->location ? : "",
+		dive->notes ? : "");
+
+	maxheight -= height;
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_attributes(layout, NULL);
+	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
+	pango_layout_set_text(layout, buffer, len);
+
+	cairo_move_to(cr, 0, height / (double) PANGO_SCALE);
+	pango_cairo_show_layout(cr, layout);
+
+	g_object_unref(layout);
 }
 
 static void show_dive_profile(struct dive *dive, cairo_t *cr, double w, double h)
@@ -64,10 +95,12 @@ static void show_dive_profile(struct dive *dive, cairo_t *cr, double w, double h
 		.printer = 1,
 		.cr = cr
 	};
+	cairo_save(cr);
 	plot(&gc, w, h, dive);
+	cairo_restore(cr);
 }
 
-static void print(int divenr, cairo_t *cr, double x, double y, double w, double h)
+static void print(int divenr, cairo_t *cr, double x, double y, double w, double h, PangoFontDescription *font)
 {
 	struct dive *dive;
 
@@ -77,15 +110,20 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w, double 
 	cairo_save(cr);
 	cairo_translate(cr, x, y);
 
+	/* Plus 5% on all sides */
+	cairo_translate(cr, w/20, h/20);
+	w *= 0.9; h *= 0.9;
+
 	/* We actually want to scale the text and the lines now */
 	cairo_scale(cr, 0.5, 0.5);
 
-	/* Dive plot in the upper 75% - note the scaling */
-	show_dive_profile(dive, cr, w*2, h*1.5);
+	/* Dive plot in the upper two thirds - note the scaling */
+	show_dive_profile(dive, cr, w*2, h*1.33);
 
-	/* Dive information in the lower 25% */
-	cairo_translate(cr, 0, h*1.5);
-	show_dive_text(dive, cr, w*2, h*0.5);
+	/* Dive information in the lower third */
+	cairo_translate(cr, 0, h*1.33);
+
+	show_dive_text(dive, cr, w*2, h*0.67, font);
 
 	cairo_restore(cr);
 }
@@ -98,19 +136,23 @@ static void draw_page(GtkPrintOperation *operation,
 	int nr;
 	cairo_t *cr;
 	double w, h;
+	PangoFontDescription *font;
 
 	cr = gtk_print_context_get_cairo_context(context);
+	font = pango_font_description_from_string("Sans");
 
 	w = gtk_print_context_get_width(context)/2;
 	h = gtk_print_context_get_height(context)/3;
 
 	nr = page_nr*6;
-	print(nr+0, cr, 0,   0, w, h);
-	print(nr+1, cr, w,   0, w, h);
-	print(nr+2, cr, 0,   h, w, h);
-	print(nr+3, cr, w,   h, w, h);
-	print(nr+2, cr, 0, 2*h, w, h);
-	print(nr+3, cr, w, 2*h, w, h);
+	print(nr+0, cr, 0,   0, w, h, font);
+	print(nr+1, cr, w,   0, w, h, font);
+	print(nr+2, cr, 0,   h, w, h, font);
+	print(nr+3, cr, w,   h, w, h, font);
+	print(nr+4, cr, 0, 2*h, w, h, font);
+	print(nr+5, cr, w, 2*h, w, h, font);
+
+	pango_font_description_free(font);
 }
 
 static void begin_print(GtkPrintOperation *operation, gpointer user_data)
@@ -125,6 +167,7 @@ void do_print(void)
 	GtkPrintOperation *print;
 	GtkPrintOperationResult res;
 
+	repaint_dive();
 	print = gtk_print_operation_new();
 	if (settings != NULL)
 		gtk_print_operation_set_print_settings(print, settings);
