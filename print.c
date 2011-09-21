@@ -86,16 +86,52 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h)
 
 	tm = gmtime(&dive->when);
 	len = snprintf(buffer, sizeof(buffer),
-		"<span size=\"large\">%s%s, %s %d, %d   %d:%02d</span>\n",
+		"<span size=\"large\">"
+		"%s%s, %s %d, %d   %d:%02d"
+		"</span>\n",
 		divenr,
 		weekday(tm->tm_wday),
 		monthname(tm->tm_mon),
 		tm->tm_mday, tm->tm_year + 1900,
 		tm->tm_hour, tm->tm_min);
 
-	len = add_quoted_string(buffer, sizeof(buffer), len, dive->location);
-	len = add_quoted_string(buffer, sizeof(buffer), len, dive->notes);
+	/*
+	 * Leave an empty line even if no location: otherwise the notes can
+	 * overrun the depth/duration information.
+	 */
+	if (dive->location)
+		len = add_quoted_string(buffer, sizeof(buffer), len, dive->location);
+	else
+		len = add_char(buffer, sizeof(buffer), len, '\n');
 
+	if (dive->notes) {
+		len = add_char(buffer, sizeof(buffer), len, '\n');
+		len = add_quoted_string(buffer, sizeof(buffer), len, dive->notes);
+	}
+
+	pango_layout_set_justify(layout, 1);
+	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
+	pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
+	pango_layout_set_markup(layout, buffer, len);
+
+	cairo_move_to(cr, 0, 0);
+	pango_cairo_show_layout(cr, layout);
+
+	/*
+	 * This is still problematic: a long dive location will clash
+	 * with the depth/duration information. Need to mask that or
+	 * create a box or something.
+	 */
+	snprintf(buffer, sizeof(buffer),
+		"<span size=\"small\">"
+		"Max depth: %d ft\n"
+		"Duration: %d:%02d"
+		"</span>",
+		to_feet(dive->maxdepth),
+		dive->duration.seconds / 60,
+		dive->duration.seconds % 60);
+
+	pango_layout_set_alignment(layout, PANGO_ALIGN_RIGHT);
 	pango_layout_set_markup(layout, buffer, -1);
 
 	cairo_move_to(cr, 0, 0);
@@ -110,7 +146,9 @@ static void show_dive_profile(struct dive *dive, cairo_t *cr, double w, double h
 		.printer = 1,
 		.cr = cr
 	};
+	cairo_save(cr);
 	plot(&gc, w, h, dive);
+	cairo_restore(cr);
 }
 
 static void print(int divenr, cairo_t *cr, double x, double y, double w, double h)
