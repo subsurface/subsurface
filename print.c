@@ -58,14 +58,28 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	 * with the depth/duration information. Need to mask that or
 	 * create a box or something.
 	 */
-	snprintf(buffer, sizeof(buffer),
-		"<span size=\"small\">"
-		"Max depth: %d ft\n"
-		"Duration: %d:%02d"
-		"</span>",
-		to_feet(dive->maxdepth),
-		dive->duration.seconds / 60,
-		dive->duration.seconds % 60);
+	switch (output_units.length) {
+	case FEET:
+		snprintf(buffer, sizeof(buffer),
+			"<span size=\"small\">"
+			"Max depth: %d ft\n"
+			"Duration: %d:%02d min"
+			"</span>",
+			to_feet(dive->maxdepth),
+			dive->duration.seconds / 60,
+			dive->duration.seconds % 60);
+		break;
+	case METERS:
+		snprintf(buffer, sizeof(buffer),
+			"<span size=\"small\">"
+			"Max depth: %3.1f m\n"
+			"Duration: %d:%02d min"
+			"</span>",
+			dive->maxdepth.mm / 1000.0,
+			dive->duration.seconds / 60,
+			dive->duration.seconds % 60);
+		break;
+	}
 
 	pango_layout_set_alignment(layout, PANGO_ALIGN_RIGHT);
 	pango_layout_set_markup(layout, buffer, -1);
