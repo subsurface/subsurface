@@ -620,7 +620,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
                         /* if our samples are short and we aren't too FAST*/
 			if (entry[0].sec - entry[-1].sec < 30 && entry->velocity < FAST) { 
 				int past = -2;
-				while (pi->entry <= entry-past && entry[0].sec - entry[past].sec < 30)
+				while (i+past > 0 && entry[0].sec - entry[past].sec < 30)
 					past--;
 				entry->velocity = velocity((entry[0].val - entry[past].val) / 
 							(entry[0].sec - entry[past].sec));
