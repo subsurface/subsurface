@@ -254,9 +254,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 {
 	int i;
 	cairo_t *cr = gc->cr;
-	int ends, sec, depth;
-	int *secs;
-	int *depths;
+	int sec, depth;
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
 
@@ -304,49 +302,34 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		plot_minmax_profile(gc, pi);
 	}
 
-	entry = pi->entry;
 	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
-	secs = (int *) malloc(sizeof(int) * pi->nr);
-	depths = (int *) malloc(sizeof(int) * pi->nr);
-	secs[0] = entry->sec;
-	depths[0] = entry->val;
+
+	/* Do the depth profile for the neat fill */
+	gc->topy = 0; gc->bottomy = maxdepth;
+	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
+
+	entry = pi->entry;
+	move_to(gc, 0, 0);
+	for (i = 0; i < pi->nr; i++, entry++)
+		line_to(gc, entry->sec, entry->val);
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
+
+	/* Now do it again for the velocity colors */
+	entry = pi->entry;
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
 		sec = entry->sec;
-		if (sec <= maxtime || entry->val > 0) {
-			/* we want to draw the segments in different colors
-			 * representing the vertical velocity, so we need to
-			 * chop this into short segments */
-			rgb_t color = rgb[entry->velocity];
-			depth = entry->val;
-			set_source_rgb(gc, color.r, color.g, color.b);
-			move_to(gc, secs[i-1], depths[i-1]);
-			line_to(gc, sec, depth);
-			cairo_stroke(cr);
-			ends = i;
-		}
-		secs[i] = sec;
-		depths[i] = depth;
+		/* we want to draw the segments in different colors
+		 * representing the vertical velocity, so we need to
+		 * chop this into short segments */
+		rgb_t color = rgb[entry->velocity];
+		depth = entry->val;
+		set_source_rgb(gc, color.r, color.g, color.b);
+		move_to(gc, entry[-1].sec, entry[-1].val);
+		line_to(gc, sec, depth);
+		cairo_stroke(cr);
 	}
-	move_to(gc, secs[ends], depths[ends]);
-	gc->topy = 0; gc->bottomy = 1.0;
-	line_to(gc, secs[ends], 0);
-	line_to(gc, secs[0], 0);
-	cairo_close_path(cr);
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
-	cairo_stroke(cr);
-	/* now do it again for the neat fill */
-	gc->topy = 0; gc->bottomy = maxdepth;
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
-	move_to(gc, secs[0], depths[0]);
-	for (i = 1; i <= ends; i++) {
-		line_to(gc, secs[i],depths[i]);
-	}
-	gc->topy = 0; gc->bottomy = 1.0;
-	line_to(gc, secs[ends], 0);
-	line_to(gc, secs[0], 0);
-	cairo_close_path(gc->cr);
-	cairo_fill(gc->cr);
 }
 
 static int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
