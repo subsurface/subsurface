@@ -23,8 +23,11 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w, double 
 	cairo_save(cr);
 	cairo_translate(cr, x, y);
 
-	/* Dive plot in the upper half */
-	show_one_dive(dive, cr, w, h/2);
+	/* We actually want to scale the text and the lines now */
+	cairo_scale(cr, 0.5, 0.5);
+
+	/* Dive plot in the upper half - note the scaling */
+	show_one_dive(dive, cr, w*2, h);
 
 	/* Dive information in the lower half */
 

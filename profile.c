@@ -313,6 +313,13 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	for (i = 0; i < pi->nr; i++, entry++)
 		line_to(gc, entry->sec, entry->val);
 	cairo_close_path(gc->cr);
+	if (gc->printer) {
+		set_source_rgba(gc, 1, 1, 1, 0.2);
+		cairo_fill_preserve(cr);
+		set_source_rgb(gc, 1, 1, 1);
+		cairo_stroke(cr);
+		return;
+	}
 	cairo_fill(gc->cr);
 
 	/* Now do it again for the velocity colors */
