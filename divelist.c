@@ -7,6 +7,8 @@
  * void dive_list_update_dives(void)
  * void update_dive_list_units(void)
  * void set_divelist_font(const char *font)
+ * void mark_divelist_changed(int changed)
+ * int unsaved_changes()
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +26,7 @@ struct DiveList {
 	GtkListStore *model;
 	GtkTreeViewColumn *date, *depth, *duration, *location;
 	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac;
+	int changed;
 };
 
 static struct DiveList dive_list;
@@ -44,9 +47,6 @@ enum {
 	DIVE_SAC,		/* int: in ml/min */
 	DIVELIST_COLUMNS
 };
-
-/* the global dive list that we maintain */
-static struct DiveList dive_list;
 
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
@@ -492,5 +492,17 @@ GtkWidget *dive_list_create(void)
 			       GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(dive_list.container_widget), dive_list.tree_view);
 
+	dive_list.changed = 0;
+
 	return dive_list.container_widget;
+}
+
+void mark_divelist_changed(int changed)
+{
+	dive_list.changed = changed;
+}
+
+int unsaved_changes()
+{
+	return dive_list.changed;
 }

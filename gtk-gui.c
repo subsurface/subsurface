@@ -31,11 +31,6 @@ struct units output_units;
 
 #define GCONF_NAME(x) "/apps/subsurface/" #x
 
-void on_destroy(GtkWidget* w, gpointer data)
-{
-	gtk_main_quit();
-}
-
 static GtkWidget *dive_profile;
 
 void repaint_dive(void)
@@ -146,12 +141,53 @@ static void file_save(GtkWidget *w, gpointer data)
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		save_dives(filename);
 		g_free(filename);
+		mark_divelist_changed(FALSE);
 	}
 	gtk_widget_destroy(dialog);
 }
 
+static void ask_save_changes()
+{
+	GtkWidget *dialog, *label, *content;
+	dialog = gtk_dialog_new_with_buttons("Save Changes?",
+		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		NULL);
+	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
+	gtk_container_add (GTK_CONTAINER (content), label);
+	gtk_widget_show_all (dialog);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		file_save(NULL,NULL);
+	}
+	gtk_widget_destroy(dialog);
+}
+
+static gboolean on_delete(GtkWidget* w, gpointer data)
+{
+	/* Make sure to flush any modified dive data */
+	update_dive(NULL);
+
+	if (unsaved_changes())
+		ask_save_changes();
+
+	return FALSE; /* go ahead, kill the program, we're good now */
+}
+
+static void on_destroy(GtkWidget* w, gpointer data)
+{
+	gtk_main_quit();
+}
+
 static void quit(GtkWidget *w, gpointer data)
 {
+	/* Make sure to flush any modified dive data */
+	update_dive(NULL);
+
+	if (unsaved_changes())
+		ask_save_changes();
 	gtk_main_quit();
 }
 
@@ -387,6 +423,7 @@ void init_ui(int argc, char **argv)
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_icon_from_file(GTK_WINDOW(win), "icon.svg", NULL);
+	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK (on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
@@ -613,4 +650,12 @@ void import_dialog(GtkWidget *w, gpointer data)
 void update_progressbar(progressbar_t *progress, double value)
 {
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress->bar), value);
+}
+
+
+void set_filename(const char *filename)
+{
+	if (filename)
+		existing_filename = strdup(filename);
+	return;
 }

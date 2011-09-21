@@ -249,6 +249,7 @@ static void apply_cb(GtkButton *button, gpointer data)
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		record_cylinder_changes(dive->cylinder+i, gtk_cylinder+i);
+	mark_divelist_changed(TRUE);
 	flush_divelist(dive);
 }
 

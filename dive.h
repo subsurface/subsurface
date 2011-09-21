@@ -197,6 +197,7 @@ static inline struct dive *get_dive(unsigned int nr)
 
 extern void parse_xml_init(void);
 extern void parse_xml_file(const char *filename, GError **error);
+extern void set_filename(const char *filename);
 
 extern void show_dive_info(struct dive *);
 extern void flush_dive_info_changes(struct dive *);
