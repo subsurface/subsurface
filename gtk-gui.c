@@ -141,7 +141,7 @@ static void file_save(GtkWidget *w, gpointer data)
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		save_dives(filename);
 		g_free(filename);
-		mark_divelist_changed(TRUE);
+		mark_divelist_changed(FALSE);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -165,13 +165,19 @@ static void ask_save_changes()
 	gtk_widget_destroy(dialog);
 }
 
-void on_destroy(GtkWidget* w, gpointer data)
+static gboolean on_delete(GtkWidget* w, gpointer data)
 {
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
 	if (unsaved_changes())
 		ask_save_changes();
+
+	return FALSE; /* go ahead, kill the program, we're good now */
+}
+
+static void on_destroy(GtkWidget* w, gpointer data)
+{
 	gtk_main_quit();
 }
 
@@ -417,6 +423,7 @@ void init_ui(int argc, char **argv)
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_icon_from_file(GTK_WINDOW(win), "icon.svg", NULL);
+	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK (on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
