@@ -39,7 +39,7 @@ const char *monthname(int mon)
 {
 	static const char month_array[12][4] = {
 		"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-		"Jul", "Aug", "Oct", "Sep", "Nov", "Dec",
+		"Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 	};
 	return month_array[mon];
 }
