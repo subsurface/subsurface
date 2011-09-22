@@ -4,7 +4,9 @@ I'm tired of java programs that don't work etc.
 
 License: GPLv2
 
-You need libxml2-devel, gtk2-devel and GConf2-devel to build this.
+You need libxml2-devel, gtk2-devel, glib-2.0 and GConf2-devel to build
+this (and libusb-1.0 if you have libdivecomputer built with it, but then
+you obviously already have it installed)
 
 You also need to have libdivecomputer installed, which goes something like this:
 
@@ -14,6 +16,14 @@ You also need to have libdivecomputer installed, which goes something like this:
 	./configure
 	make
 	sudo make install
+
+NOTE! You may need to tell the main Makefile where you installed
+libdivecomputer if you didn't do it in the default /usr/local location.
+I don't trust pkg-config for libdivecomputer, since pkg-config usually
+doesn't work unless the project has been installed by the distro.
+
+Just edit the makefile directly.  autoconf and friends are the devil's
+tools.
 
 Usage:
 
@@ -39,22 +49,22 @@ Manager, so they don't trigger the "exact duplicates" match.
 
 Implementation details:
 
-main.c - program frame
-dive.c - creates and maintaines the internal dive list structure
-libdivecomputer.c 
-uemis.c 
-parse-xml.c 
-save-xml.c - interface with dive computers and the XML files 
-profile.c - creates the data for the profile and draws it using cairo
+  main.c     - program frame
+  dive.c     - creates and maintaines the internal dive list structure
+  libdivecomputer.c
+  uemis.c
+  parse-xml.c
+  save-xml.c - interface with dive computers and the XML files
+  profile.c  - creates the data for the profile and draws it using cairo
 
 A first UI has been implemented in gtk and an attempt has been made to
-separate program logic from UI implementation. 
+separate program logic from UI implementation.
 
-gtk-gui.c - overall layout, main window of the UI
-divelist.c  - list of dives subsurface maintains
-equipment.c - equipment / tank information for each dive
-info.c      - detailed dive info 
-print.c     - printing 
+  gtk-gui.c  - overall layout, main window of the UI
+  divelist.c  - list of dives subsurface maintains
+  equipment.c - equipment / tank information for each dive
+  info.c      - detailed dive info
+  print.c     - printing
 
 WARNING! I wasn't kidding when I said that I've done this by reading
 gtk2 tutorials as I've gone along.  If somebody is more comfortable with
@@ -64,11 +74,6 @@ Just as an example of the extreme hackiness of the code, I don't even
 bother connecting a signal for the "somebody edited the dive info"
 cases.  I just save/restore the dive info every single time you switch
 dives.  Christ! That's truly lame.
-
-Also, I don't actually integrate directly with libdivecomputer, I just
-read the XML files it can spit out.  But I included my own raw dive
-profile xml files for anybody who isn't a diver, but decides that they
-want to educate me in gtk.
 
 NOTE! Some of the dives are pretty pitiful.  All the last dives are from
 my divemaster course, so they are from following open water students
