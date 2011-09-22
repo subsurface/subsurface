@@ -354,10 +354,10 @@ void update_dive_list_units(void)
 
 	switch (output_units.length) {
 	case METERS:
-		unit = "max/m";
+		unit = "m";
 		break;
 	case FEET:
-		unit = "max/ft";
+		unit = "ft";
 		break;
 	}
 	gtk_tree_view_column_set_title(dive_list.depth, unit);
@@ -470,7 +470,7 @@ GtkWidget *dive_list_create(void)
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
 	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, 0, 0);
-	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "max/ft", depth_data_func, 1, 0);
+	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, 1, 0);
 	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, 1, 0);
 	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, 0, 1);
 	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, 1, 0);
