@@ -5,17 +5,24 @@ LIBDIVECOMPUTERDIR = /usr/local
 LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
 LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 
-# Add libusb in case of libdivecomputer compiled with usb support.
-LIBS = `pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0`
+# Libusb-1.0 is only required if libdivecomputer was built with it.
+# And libdivecomputer is only built with it if libusb-1.0 is
+# installed. So get libusb if it exists, but don't complain
+# about it if it doesn't.
+LIBUSB = $(shell pkg-config --libs libusb-1.0 2> /dev/null)
+
+LIBXML2 = $(shell xml2-config --libs)
+LIBGTK = $(shell pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0)
+LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
+
+LIBS = $(LIBXML2) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
 	gtk-gui.o
 
 subsurface: $(OBJS)
-	$(CC) $(LDFLAGS) -o subsurface $(OBJS) \
-		`xml2-config --libs` $(LIBS) \
-		$(LIBDIVECOMPUTERARCHIVE) -lpthread
+	$(CC) $(LDFLAGS) -o subsurface $(OBJS) $(LIBS)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
