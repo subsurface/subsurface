@@ -161,7 +161,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
-	double otu;
+	int otu;
 	int samples, alloc_samples;
 	struct sample sample[];
 };
