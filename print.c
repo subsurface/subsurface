@@ -31,7 +31,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	int len, decimals, width, height, maxwidth, maxheight;
 	PangoLayout *layout;
 	struct tm *tm;
-	char buffer[1024], divenr[20];
+	char buffer[80], divenr[20], *people;
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
@@ -43,7 +43,6 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	*divenr = 0;
 	if (dive->number)
 		snprintf(divenr, sizeof(divenr), "Dive #%d - ", dive->number);
-
 
 	tm = gmtime(&dive->when);
 	len = snprintf(buffer, sizeof(buffer),
@@ -61,11 +60,13 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
 
-	/*
-	 * This is still problematic: a long dive location will clash
-	 * with the depth/duration information. Need to mask that or
-	 * create a box or something.
-	 */
+	people = dive->buddy;
+	if (!people || !*people) {
+		people = dive->divemaster;
+		if (!people)
+			people = "";
+	}
+
 	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	snprintf(buffer, sizeof(buffer),
 		"Max depth: %.*f %s\n"
@@ -73,7 +74,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 		"%s",
 		decimals, depth, unit,
 		(dive->duration.seconds+59) / 60,
-		dive->buddy ? :"");
+		people);
 
 	set_font(layout, font, FONT_SMALL, PANGO_ALIGN_RIGHT);
 	pango_layout_set_text(layout, buffer, -1);
