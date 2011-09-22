@@ -1051,7 +1051,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 		return;
 
 	cuft = type->size.mliter / 28317.0;
-	cuft *= type->workingpressure.mbar / 1013.25;
+	cuft *= to_ATM(type->workingpressure);
 	psi = type->workingpressure.mbar / 68.95;
 
 	switch (psi) {
@@ -1106,7 +1106,7 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 
 	if (input_units.volume == CUFT || import_source == SUUNTO) {
 		volume_of_air = type->size.mliter * 28.317;	/* milli-cu ft to milliliter */
-		atm = type->workingpressure.mbar / 1013.25;	/* working pressure in atm */
+		atm = to_ATM(type->workingpressure);		/* working pressure in atm */
 		volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
 		type->size.mliter = volume + 0.5;
 	}

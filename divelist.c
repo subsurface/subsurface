@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 #include "divelist.h"
 #include "dive.h"
@@ -222,6 +223,25 @@ static void sac_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+/* calculate OTU for a dive */
+static double calculate_otu(struct dive *dive)
+{
+	int i;
+	double otu = 0.0;
+
+	for (i = 1; i < dive->samples; i++) {
+		int t;
+		double po2;
+		struct sample *sample = dive->sample + i;
+		struct sample *psample = sample - 1;
+		t = sample->time.seconds - psample->time.seconds;
+		po2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille / 1000.0 *
+			(sample->depth.mm + 10000) / 10000.0;
+		if (po2 >= 0.5)
+			otu += pow(po2 - 0.5, 0.83) * t / 30.0;
+	}
+	return otu;
+}
 /*
  * Return air usage (in liters).
  */
@@ -389,6 +409,7 @@ static void fill_dive_list(void)
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
 
+		dive->otu = calculate_otu(dive);
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			DIVE_INDEX, i,

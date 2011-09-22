@@ -134,6 +134,11 @@ static inline int to_PSI(pressure_t pressure)
 	return pressure.mbar * 0.0145037738 + 0.5;
 }
 
+static inline double to_ATM(pressure_t pressure)
+{
+	return pressure.mbar / 1013.25;
+}
+
 struct sample {
 	duration_t time;
 	depth_t depth;
@@ -156,6 +161,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
+	double otu;
 	int samples, alloc_samples;
 	struct sample sample[];
 };
