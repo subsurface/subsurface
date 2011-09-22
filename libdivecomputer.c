@@ -369,7 +369,7 @@ static void event_cb(device_t *device, device_event_t event, const void *data, v
 		printf("Event: waiting for user action\n");
 		break;
 	case DEVICE_EVENT_PROGRESS:
-		update_progressbar(devdata->progress,
+		update_progressbar(&devdata->progress,
 			(double) progress->current / (double) progress->maximum);
 		break;
 	case DEVICE_EVENT_DEVINFO:

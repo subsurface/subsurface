@@ -22,7 +22,7 @@
 typedef struct device_data_t {
 	device_type_t type;
 	const char *name, *devname;
-	progressbar_t *progress;
+	progressbar_t progress;
 	device_devinfo_t devinfo;
 	device_clock_t clock;
 } device_data_t;

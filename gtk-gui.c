@@ -616,8 +616,8 @@ void import_dialog(GtkWidget *w, gpointer data)
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 3);
-	devicedata.progress->bar = gtk_progress_bar_new();
-	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress->bar);
+	devicedata.progress.bar = gtk_progress_bar_new();
+	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
