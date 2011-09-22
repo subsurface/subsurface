@@ -120,17 +120,42 @@ static int parse_gasmixes(struct dive *dive, parser_t *parser, int ngases)
 
 static void handle_event(struct dive **divep, struct sample *sample, parser_sample_value_t value)
 {
+	int type, time;
 	static const char *events[] = {
 		"none", "deco", "rbt", "ascent", "ceiling", "workload", "transmitter",
 		"violation", "bookmark", "surface", "safety stop", "gaschange",
 		"safety stop (voluntary)", "safety stop (mandatory)", "deepstop",
 		"ceiling (safety stop)", "unknown", "divetime", "maxdepth",
-		"OLF", "PO2", "airtime", "rgbm", "heading", "tissue level warning"};
+		"OLF", "PO2", "airtime", "rgbm", "heading", "tissue level warning"
+	};
+	const int nr_events = sizeof(events) / sizeof(const char *);
+	const char *name;
 
-	printf("   <event type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</event>\n",
-		value.event.type, value.event.time, value.event.flags, value.event.value, events[value.event.type]);
+	/*
+	 * Just ignore surface events.  They are pointless.  What "surface"
+	 * means depends on the dive computer (and possibly even settings
+	 * in the dive computer). It does *not* necessarily mean "depth 0",
+	 * so don't even turn it into that.
+	 */
+	if (value.event.type == SAMPLE_EVENT_SURFACE)
+		return;
+
+	/*
+	 * Other evens might be more interesting, but for now we just print them out.
+	 */
+	type = value.event.type;
+	name = "invalid event number";
+	if (type < nr_events)
+		name = events[type];
+
+	time = value.event.time;
+	if (sample)
+		time += sample->time.seconds;
+
+	printf("   <event type=\"%u\" time=\"%u:%02u\" flags=\"%u\" value=\"%u\" name=\"%s\" />\n",
+		type, time / 60, time % 60,
+		value.event.flags, value.event.value, name);
 }
-
 
 void
 sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata)
