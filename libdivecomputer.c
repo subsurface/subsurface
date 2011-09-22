@@ -118,16 +118,24 @@ static int parse_gasmixes(struct dive *dive, parser_t *parser, int ngases)
 	return PARSER_STATUS_SUCCESS;
 }
 
-void
-sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata)
+static void handle_event(struct dive **divep, struct sample *sample, parser_sample_value_t value)
 {
-	int i;
 	static const char *events[] = {
 		"none", "deco", "rbt", "ascent", "ceiling", "workload", "transmitter",
 		"violation", "bookmark", "surface", "safety stop", "gaschange",
 		"safety stop (voluntary)", "safety stop (mandatory)", "deepstop",
 		"ceiling (safety stop)", "unknown", "divetime", "maxdepth",
 		"OLF", "PO2", "airtime", "rgbm", "heading", "tissue level warning"};
+
+	printf("   <event type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</event>\n",
+		value.event.type, value.event.time, value.event.flags, value.event.value, events[value.event.type]);
+}
+
+
+void
+sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata)
+{
+	int i;
 	struct dive **divep = userdata;
 	struct dive *dive = *divep;
 	struct sample *sample;
@@ -155,8 +163,7 @@ sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata
 		sample->temperature.mkelvin = (value.temperature + 273.15) * 1000 + 0.5;
 		break;
 	case SAMPLE_TYPE_EVENT:
-		printf("   <event type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</event>\n",
-			value.event.type, value.event.time, value.event.flags, value.event.value, events[value.event.type]);
+		handle_event(divep, sample, value);
 		break;
 	case SAMPLE_TYPE_RBT:
 		printf("   <rbt>%u</rbt>\n", value.rbt);
