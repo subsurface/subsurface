@@ -424,10 +424,11 @@ typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    gpointer data);
 
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const char *title,
-					data_func_t data_func, int align_right)
+					data_func_t data_func, PangoAlignment align)
 {
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *col;
+	double xalign = 0.0; /* left as default */
 
 	renderer = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new();
@@ -440,10 +441,19 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 		gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, NULL, NULL);
 	else
 		gtk_tree_view_column_add_attribute(col, renderer, "text", index);
-	if (align_right) {
-		gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
-		gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", align, NULL);
+	switch (align) {
+	case PANGO_ALIGN_LEFT:
+		xalign = 0.0;
+		break;
+	case PANGO_ALIGN_CENTER:
+		xalign = 0.5;
+		break;
+	case PANGO_ALIGN_RIGHT:
+		xalign = 1.0;
+		break;
 	}
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), xalign, 0.5);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dl->tree_view), col);
 	return col;
 }
@@ -480,14 +490,14 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
-	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, 0);
-	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, 1);
-	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, 1);
-	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, 1);
-	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, 0);
-	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, 1);
-	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, 1);
-	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, 0);
+	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT);
+	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, PANGO_ALIGN_RIGHT);
+	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, PANGO_ALIGN_RIGHT);
+	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT);
+	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, PANGO_ALIGN_CENTER);
+	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, PANGO_ALIGN_CENTER);
+	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, PANGO_ALIGN_CENTER);
+	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, PANGO_ALIGN_LEFT);
 
 	fill_dive_list();
 
