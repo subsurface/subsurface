@@ -481,7 +481,7 @@ GtkWidget *dive_list_create(void)
 	fill_dive_list();
 
 	g_object_set(G_OBJECT(dive_list.tree_view), "headers-visible", TRUE,
-					  "search-column", 0,
+					  "search-column", DIVE_LOCATION,
 					  "rules-hint", TRUE,
 					  NULL);
 
