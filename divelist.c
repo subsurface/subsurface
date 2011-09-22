@@ -40,11 +40,11 @@ enum {
 	DIVE_DATE,		/* time_t: dive->when */
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
-	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
 	DIVE_CYLINDER,
 	DIVE_NITROX,		/* int: in permille */
 	DIVE_SAC,		/* int: in ml/min */
+	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
 	DIVELIST_COLUMNS
 };
 
@@ -424,7 +424,7 @@ typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    gpointer data);
 
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const char *title,
-					data_func_t data_func, int align_right, int expand)
+					data_func_t data_func, int align_right)
 {
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *col;
@@ -444,9 +444,6 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 		gtk_object_set(GTK_OBJECT(renderer), "alignment", PANGO_ALIGN_RIGHT, NULL);
 		gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 	}
-	gtk_tree_view_column_set_expand(col,expand);
-	if (expand)
-		gtk_tree_view_column_set_min_width(col,50);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dl->tree_view), col);
 	return col;
 }
@@ -469,11 +466,11 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* Date */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
-				G_TYPE_STRING,			/* Location */
 				G_TYPE_INT,			/* Temperature */
 				G_TYPE_STRING,			/* Cylinder */
 				G_TYPE_INT,			/* Nitrox */
-				G_TYPE_INT			/* SAC */
+				G_TYPE_INT,			/* SAC */
+				G_TYPE_STRING			/* Location */
 				);
 	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
 	set_divelist_font(divelist_font);
@@ -483,14 +480,14 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
-	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, 0, 0);
-	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, 1, 0);
-	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, 1, 0);
-	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, 0, 1);
-	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, 1, 0);
-	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, 0, 0);
-	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, 1, 0);
-	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, 1, 0);
+	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, 0);
+	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, 1);
+	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, 1);
+	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, 1);
+	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, 0);
+	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, 1);
+	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, 1);
+	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, 0);
 
 	fill_dive_list();
 
