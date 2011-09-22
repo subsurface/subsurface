@@ -403,6 +403,11 @@ static void fill_dive_list(void)
 	}
 
 	update_dive_list_units();
+	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(dive_list.model), &iter)) {
+		GtkTreeSelection *selection;
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+		gtk_tree_selection_select_iter(selection, &iter);
+	}
 }
 
 void dive_list_update_dives(void)
