@@ -1,7 +1,7 @@
 /* divelist.c */
-/* this creates the UI for the dive list - 
+/* this creates the UI for the dive list -
  * controlled through the following interfaces:
- * 
+ *
  * void flush_divelist(struct dive *dive)
  * GtkWidget dive_list_create(void)
  * void dive_list_update_dives(void)
@@ -445,7 +445,7 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 		gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), 1.0, 0.5);
 	}
 	gtk_tree_view_column_set_expand(col,expand);
-	if (expand) 
+	if (expand)
 		gtk_tree_view_column_set_min_width(col,50);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dl->tree_view), col);
 	return col;
