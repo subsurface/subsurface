@@ -451,6 +451,15 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 	return col;
 }
 
+/*
+ * This is some crazy crap. The only way to get default focus seems
+ * to be to grab focus as the widget is being shown the first time.
+ */
+static void realize_cb(GtkWidget *tree_view, gpointer userdata)
+{
+	gtk_widget_grab_focus(tree_view);
+}
+
 GtkWidget *dive_list_create(void)
 {
 	GtkTreeSelection  *selection;
@@ -490,6 +499,7 @@ GtkWidget *dive_list_create(void)
 					  "rules-hint", TRUE,
 					  NULL);
 
+	g_signal_connect_after(dive_list.tree_view, "realize", G_CALLBACK(realize_cb), NULL);
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
