@@ -601,8 +601,10 @@ void import_dialog(GtkWidget *w, gpointer data)
 	int result;
 	GtkWidget *dialog, *hbox;
 	GtkComboBox *computer;
+	progressbar_t progress;
 	device_data_t devicedata = {
 		.devname = "/dev/ttyUSB0",
+		.progress = &progress,
 	};
 
 	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
