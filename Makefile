@@ -1,5 +1,9 @@
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
+INSTALL=install
+
+prefix = $(HOME)
+DESTDIR = $(prefix)/bin
 
 LIBDIVECOMPUTERDIR = /usr/local
 LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
@@ -23,6 +27,10 @@ OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 
 subsurface: $(OBJS)
 	$(CC) $(LDFLAGS) -o subsurface $(OBJS) $(LIBS)
+
+install: subsurface
+	$(INSTALL) -d -m 755 '$(DESTDIR)'
+	$(INSTALL) subsurface '$(DESTDIR)'
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
