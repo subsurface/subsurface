@@ -222,6 +222,7 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
 #define MERGE_MIN(res, a, b, n) res->n = (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 #define MERGE_TXT(res, a, b, n) res->n = merge_text(a->n, b->n)
+#define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
 static struct dive *add_sample(struct sample *sample, int time, struct dive *dive)
 {
@@ -411,6 +412,8 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	res = alloc_dive();
 
 	res->when = a->when;
+	MERGE_NONZERO(res, a, b, latitude);
+	MERGE_NONZERO(res, a, b, longitude);
 	MERGE_TXT(res, a, b, location);
 	MERGE_TXT(res, a, b, notes);
 	MERGE_TXT(res, a, b, buddy);
