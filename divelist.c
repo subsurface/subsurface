@@ -441,7 +441,7 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 		gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, NULL, NULL);
 	else
 		gtk_tree_view_column_add_attribute(col, renderer, "text", index);
-	gtk_object_set(GTK_OBJECT(renderer), "alignment", align, NULL);
+	g_object_set(G_OBJECT(renderer), "alignment", align, NULL);
 	switch (align) {
 	case PANGO_ALIGN_LEFT:
 		xalign = 0.0;
