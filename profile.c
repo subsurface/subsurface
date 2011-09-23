@@ -156,6 +156,33 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_show_text(cr, buffer);
 }
 
+static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event, const text_render_options_t *tro)
+{
+	int i, depth = 0;
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *data = pi->entry + i;
+		if (event->time.seconds < data->sec)
+			break;
+		depth = data->val;
+	}
+	plot_text(gc, tro, event->time.seconds, depth, "%s", event->name);
+}
+
+static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
+{
+	static const text_render_options_t tro = {14, 1.0, 0.2, 0.2, CENTER, TOP};
+	struct event *event = dive->events;
+
+	if (gc->printer)
+		return;
+
+	while (event) {
+		plot_one_event(gc, pi, event, &tro);
+		event = event->next;
+	}
+}
+
 static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
 {
 	int sec = entry->sec, decimals;
@@ -715,6 +742,7 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
+	plot_events(gc, pi, dive);
 
 	/* Text on top of all graphs.. */
 	plot_temperature_text(gc, pi);
