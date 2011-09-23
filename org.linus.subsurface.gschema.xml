@@ -1,0 +1,19 @@
+<schemalist>
+  <schema id="org.linus.subsurface" path="/org/linus/subsurface/">
+    <key name="feet" type="b">
+      <default>false</default>
+    </key>
+    <key name="psi" type="b">
+      <default>false</default>
+    </key>
+    <key name="cuft" type="b">
+      <default>false</default>
+    </key>
+    <key name="fahrenheit" type="b">
+      <default>false</default>
+    </key>
+    <key name="divelist-font" type="s">
+      <default>""</default>
+    </key>
+  </schema>
+</schemalist>

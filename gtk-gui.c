@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <gconf/gconf-client.h>
-
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
@@ -26,10 +24,8 @@ int        error_count;
 #define DIVELIST_DEFAULT_FONT "Sans 8"
 const char *divelist_font;
 
-GConfClient *gconf;
+GSettings *settings;
 struct units output_units;
-
-#define GCONF_NAME(x) "/apps/subsurface/" #x
 
 static GtkWidget *dive_profile;
 
@@ -298,11 +294,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		output_units = menu_units;
 		update_dive_list_units();
 		repaint_dive();
-		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
-		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
+		g_settings_set_boolean(settings, "feet", output_units.length == FEET);
+		g_settings_set_boolean(settings, "psi", output_units.pressure == PSI);
+		g_settings_set_boolean(settings, "cuft", output_units.volume == CUFT);
+		g_settings_set_boolean(settings, "fahrenheit", output_units.temperature == FAHRENHEIT);
+		g_settings_set_string(settings, "divelist-font", divelist_font);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -405,18 +401,18 @@ void init_ui(int argc, char **argv)
 	gtk_init(&argc, &argv);
 
 	g_type_init();
-	gconf = gconf_client_get_default();
+	settings = g_settings_new("org.linus.subsurface");
 
-	if (gconf_client_get_bool(gconf, GCONF_NAME(feet), NULL))
+	if (g_settings_get_boolean(settings, "feet"))
 		output_units.length = FEET;
-	if (gconf_client_get_bool(gconf, GCONF_NAME(psi), NULL))
+	if (g_settings_get_boolean(settings, "psi"))
 		output_units.pressure = PSI;
-	if (gconf_client_get_bool(gconf, GCONF_NAME(cuft), NULL))
+	if (g_settings_get_boolean(settings, "cuft"))
 		output_units.volume = CUFT;
-	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
+	if (g_settings_get_boolean(settings, "fahrenheit"))
 		output_units.temperature = FAHRENHEIT;
 
-	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
+	divelist_font = g_settings_get_string(settings, "divelist-font");
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
 

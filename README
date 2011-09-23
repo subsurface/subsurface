@@ -4,7 +4,7 @@ I'm tired of java programs that don't work etc.
 
 License: GPLv2
 
-You need libxml2-devel, gtk2-devel, glib-2.0 and GConf2-devel to build
+You need libxml2-devel, gtk2-devel, glib-2.0 and to build
 this (and libusb-1.0 if you have libdivecomputer built with it, but then
 you obviously already have it installed)
 
@@ -28,7 +28,7 @@ tools.
 Usage:
 
 	make
-	./subsurface dives/*.xml
+	GSETTINGS_SCHEMA_DIR=. ./subsurface dives/*.xml
 
 to see my dives (with no notes or commentary).
 
@@ -36,7 +36,7 @@ Or, if you have a dive computer supported by libdivecomputer (and
 connected to /dev/ttyUSB0), you can just do
 
 	make
-	./subsurface
+	GSETTINGS_SCHEMA_DIR=. ./subsurface
 
 and select "Import" from the File menu, tell it what dive computer you
 have, and hit "OK".

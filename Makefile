@@ -16,7 +16,7 @@ LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 LIBUSB = $(shell pkg-config --libs libusb-1.0 2> /dev/null)
 
 LIBXML2 = $(shell xml2-config --libs)
-LIBGTK = $(shell pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0)
+LIBGTK = $(shell pkg-config --libs gtk+-2.0 glib-2.0)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
 LIBS = $(LIBXML2) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
@@ -25,7 +25,7 @@ OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
 	gtk-gui.o
 
-subsurface: $(OBJS)
+subsurface: $(OBJS) schema
 	$(CC) $(LDFLAGS) -o subsurface $(OBJS) $(LIBS)
 
 install: subsurface
@@ -42,7 +42,7 @@ dive.o: dive.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c dive.c
 
 main.o: main.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0 gconf-2.0` \
+	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` \
 		-c main.c
 
 profile.o: profile.c dive.h display.h divelist.h
@@ -66,9 +66,12 @@ libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecompu
 			-c libdivecomputer.c
 
 gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
-	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
+	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` \
 			-I$(LIBDIVECOMPUTERINCLUDES) \
 			-c gtk-gui.c
+
+schema:
+	glib-compile-schemas .
 
 uemis.o: uemis.c uemis.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c uemis.c
