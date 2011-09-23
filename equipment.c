@@ -71,10 +71,9 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	 */
 	if (!cylinder->changed && cyl->type.description) {
 		int same;
-		char *desc = gtk_combo_box_get_active_text(combo_box);
+		const char *desc = gtk_entry_get_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box))));
 
 		same = !strcmp(desc, cyl->type.description);
-		g_free(desc);
 		if (same)
 			return;
 	}
@@ -225,7 +224,7 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	if (!box)
 		return;
 
-	desc = gtk_combo_box_get_active_text(box);
+	desc = gtk_entry_get_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(box))));
 	volume = gtk_spin_button_get_value(cylinder->size);
 	pressure = gtk_spin_button_get_value(cylinder->pressure);
 	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
@@ -363,7 +362,7 @@ static void cylinder_widget(int nr, GtkListStore *model)
 	hbox2 = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox2);
 
-	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	widget = gtk_combo_box_new_with_model_and_entry(GTK_TREE_MODEL(model));
 	gtk_box_pack_start(GTK_BOX(hbox2), widget, FALSE, TRUE, 0);
 
 	cylinder->description = GTK_COMBO_BOX(widget);

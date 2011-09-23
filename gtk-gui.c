@@ -76,7 +76,7 @@ void report_error(GError* error)
 		error_count++;
 		char buffer[256];
 		snprintf(buffer, sizeof(buffer), "Failed to open %i files.", error_count);
-		gtk_label_set(GTK_LABEL(error_label), buffer);
+		gtk_label_set_text(GTK_LABEL(error_label), buffer);
 	}
 }
 
@@ -243,6 +243,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *font, *frame, *box;
+	GtkWidget *content_area;
 
 	menu_units = output_units;
 
@@ -253,8 +254,10 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
+	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
 	frame = gtk_frame_new("Units");
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(content_area), frame, FALSE, FALSE, 5);
 
 	box = gtk_vbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
@@ -280,7 +283,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	font = gtk_font_button_new_with_font(divelist_font);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), font, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(content_area), font, FALSE, FALSE, 5);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -307,6 +310,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *frame, *button;
+	GtkWidget *content_area;
 
 	dialog = gtk_dialog_new_with_buttons("Renumber",
 		GTK_WINDOW(main_window),
@@ -315,8 +319,9 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
+	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	frame = gtk_frame_new("New starting number");
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), frame);
+	gtk_container_add(GTK_CONTAINER(content_area), frame);
 
 	button = gtk_spin_button_new_with_range(1, 50000, 1);
 	gtk_container_add(GTK_CONTAINER(frame), button);
@@ -510,23 +515,24 @@ int open_import_file_dialog(char *filterpattern, char *filtertext,
 	return ret;
 }
 
-static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	struct dive *dive = current_dive;
 	struct graphics_context gc = { .printer = 0 };
+	GtkAllocation allocation;
 	int w,h;
 
-	w = widget->allocation.width;
-	h = widget->allocation.height;
+	gtk_widget_get_allocation (widget, &allocation);
 
-	gc.cr = gdk_cairo_create(widget->window);
+	w = allocation.width;
+	h = allocation.height;
+
+	gc.cr = cr;
 	set_source_rgb(&gc, 0, 0, 0);
 	cairo_paint(gc.cr);
 
 	if (dive)
 		plot(&gc, w, h, dive);
-
-	cairo_destroy(gc.cr);
 
 	return FALSE;
 }
@@ -537,7 +543,7 @@ GtkWidget *dive_profile_widget(void)
 
 	da = gtk_drawing_area_new();
 	gtk_widget_set_size_request(da, 350, 250);
-	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
+	g_signal_connect(da, "draw", G_CALLBACK(draw), NULL);
 
 	return da;
 }
@@ -573,11 +579,14 @@ static void fill_computer_list(GtkListStore *store)
 static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
 {
 	GtkWidget *hbox, *combo_box;
+	GtkWidget *content_area;
 	GtkListStore *model;
 	GtkCellRenderer *renderer;
 
+	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
 	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(content_area), hbox, FALSE, FALSE, 3);
 
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 	fill_computer_list(model);
@@ -596,6 +605,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *hbox;
+	GtkWidget *content_area;
 	GtkComboBox *computer;
 	device_data_t devicedata = {
 		.devname = "/dev/ttyUSB0",
@@ -607,11 +617,12 @@ void import_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
+	content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
 	computer = dive_computer_selector(dialog);
 
 	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 3);
+	gtk_box_pack_start(GTK_BOX(content_area), hbox, FALSE, TRUE, 3);
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
