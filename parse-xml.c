@@ -1175,7 +1175,7 @@ static void event_start(void)
 
 static void event_end(void)
 {
-	if (event.name)
+	if (event.name && strcmp(event.name, "surface") != 0)
 		add_event(dive, event.time.seconds, event.type, event.flags, event.value, event.name);
 	event.active = 0;
 }
