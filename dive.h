@@ -142,6 +142,21 @@ struct sample {
 	int cylinderindex;
 };
 
+/*
+ * Events are currently pretty meaningless. This is
+ * just based on the random data that libdivecomputer
+ * gives us. I'm not sure what a real "architected"
+ * event model would actually look like, but right
+ * now you can associate a list of events with a dive,
+ * and we'll do something about it.
+ */
+struct event {
+	struct event *next;
+	duration_t time;
+	int type, flags, value;
+	char name[];
+};
+
 #define MAX_CYLINDERS (8)
 
 struct dive {
@@ -156,6 +171,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
+	struct event *events;
 	int samples, alloc_samples;
 	struct sample sample[];
 };
@@ -226,6 +242,8 @@ extern struct dive *fixup_dive(struct dive *dive);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b);
 
 extern void renumber_dives(int nr);
+
+extern void add_event(struct dive *dive, int time, int type, int flags, int value, const char *name);
 
 /* UI related protopypes */
 

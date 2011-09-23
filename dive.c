@@ -5,6 +5,29 @@
 
 #include "dive.h"
 
+void add_event(struct dive *dive, int time, int type, int flags, int value, const char *name)
+{
+	struct event *ev, **p;
+	unsigned int size, len = strlen(name);
+
+	size = sizeof(*ev) + len + 1;
+	ev = malloc(size);
+	if (!ev)
+		return;
+	memset(ev, 0, size);
+	memcpy(ev->name, name, len);
+	ev->time.seconds = time;
+	ev->type = type;
+	ev->flags = flags;
+	ev->value = value;
+	ev->next = NULL;
+
+	p = &dive->events;
+	while (*p)
+		p = &(*p)->next;
+	*p = ev;
+}
+
 double get_depth_units(unsigned int mm, int *frac, const char **units)
 {
 	int decimals;

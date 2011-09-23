@@ -92,8 +92,14 @@ const struct units IMPERIAL_units = {
  */
 static struct dive *dive;
 static struct sample *sample;
+static struct {
+	int active;
+	duration_t time;
+	int type, flags, value;
+	const char *name;
+} event;
 static struct tm tm;
-static int event_index, cylinder_index;
+static int cylinder_index;
 
 static enum import_source {
 	UNKNOWN,
@@ -556,6 +562,32 @@ static int uddf_fill_sample(struct sample *sample, const char *name, int len, ch
 		MATCH(".depth", depth, &sample->depth) ||
 		MATCH(".temperature", temperature, &sample->temperature) ||
 		0;
+}
+
+static void eventtime(char *buffer, void *_duration)
+{
+	duration_t *duration = _duration;
+	sampletime(buffer, duration);
+	if (sample)
+		duration->seconds += sample->time.seconds;
+}
+
+static void try_to_fill_event(const char *name, char *buf)
+{
+	int len = strlen(name);
+
+	start_match("event", name, buf);
+	if (MATCH(".event", utf8_string, &event.name))
+		return;
+	if (MATCH(".name", utf8_string, &event.name))
+		return;
+	if (MATCH(".time", eventtime, &event.time))
+		return;
+	if (MATCH(".type", get_index, &event.type))
+		return;
+	if (MATCH(".flags", get_index, &event.flags))
+		return;
+	nonmatch("event", name, buf);
 }
 
 /* We're in samples - try to convert the random xml value to something useful */
@@ -1137,11 +1169,15 @@ static void dive_end(void)
 
 static void event_start(void)
 {
+	memset(&event, 0, sizeof(event));
+	event.active = 1;
 }
 
 static void event_end(void)
 {
-	event_index++;
+	if (event.name)
+		add_event(dive, event.time.seconds, event.type, event.flags, event.value, event.name);
+	event.active = 0;
 }
 
 static void cylinder_start(void)
@@ -1156,7 +1192,6 @@ static void cylinder_end(void)
 static void sample_start(void)
 {
 	sample = prepare_sample(&dive);
-	event_index = 0;
 }
 
 static void sample_end(void)
@@ -1176,6 +1211,10 @@ static void entry(const char *name, int size, const char *raw)
 		return;
 	memcpy(buf, raw, size);
 	buf[size] = 0;
+	if (event.active) {
+		try_to_fill_event(name, buf);
+		return;
+	}
 	if (sample) {
 		try_to_fill_sample(sample, name, buf);
 		return;

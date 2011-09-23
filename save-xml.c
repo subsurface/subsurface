@@ -218,6 +218,12 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 	}
 }
 
+static void show_index(FILE *f, int value, const char *pre, const char *post)
+{
+	if (value)
+		fprintf(f, " %s%d%s", pre, value, post);
+}
+
 static void save_sample(FILE *f, struct sample *sample)
 {
 	fprintf(f, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds,60));
@@ -227,6 +233,25 @@ static void save_sample(FILE *f, struct sample *sample)
 	if (sample->cylinderindex)
 		fprintf(f, " cylinderindex='%d'", sample->cylinderindex);
 	fprintf(f, " />\n");
+}
+
+static void save_one_event(FILE *f, struct event *ev)
+{
+	fprintf(f, "  <event time='%d:%02d min'", FRACTION(ev->time.seconds,60));
+	show_index(f, ev->type, "type='", "'");
+	show_index(f, ev->flags, "flags='", "'");
+	show_index(f, ev->value, "value='", "'");
+	show_utf8(f, ev->name, " name='", "'");
+	fprintf(f, " />\n");
+}
+
+
+static void save_events(FILE *f, struct event *ev)
+{
+	while (ev) {
+		save_one_event(f, ev);
+		ev = ev->next;
+	}
 }
 
 static void save_dive(FILE *f, struct dive *dive)
@@ -245,6 +270,7 @@ static void save_dive(FILE *f, struct dive *dive)
 		FRACTION(dive->duration.seconds, 60));
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
+	save_events(f, dive->events);
 	for (i = 0; i < dive->samples; i++)
 		save_sample(f, dive->sample+i);
 	fprintf(f, "</dive>\n");
