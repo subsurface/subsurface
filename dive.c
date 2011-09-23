@@ -319,6 +319,59 @@ static char *merge_text(const char *a, const char *b)
 	return res;
 }
 
+#define SORT(a,b,field) \
+	if (a->field != b->field) return a->field < b->field ? -1 : 1
+
+static int sort_event(struct event *a, struct event *b)
+{
+	SORT(a,b,time.seconds);
+	SORT(a,b,type);
+	SORT(a,b,flags);
+	SORT(a,b,value);
+	return strcmp(a->name, b->name);
+}
+
+static void merge_events(struct dive *res, struct dive *src1, struct dive *src2, int offset)
+{
+	struct event *a, *b;
+	struct event **p = &res->events;
+
+	a = src1->events;
+	b = src2->events;
+	while (b) {
+		b->time.seconds += offset;
+		b = b->next;
+	}
+	b = src2->events;
+
+	while (a || b) {
+		int s;
+		if (!b) {
+			*p = a;
+			break;
+		}
+		if (!a) {
+			*p = b;
+			break;
+		}
+		s = sort_event(a, b);
+		/* Pick b */
+		if (s > 0) {
+			*p = b;
+			p = &b->next;
+			b = b->next;
+			continue;
+		}
+		/* Pick 'a' or neither */
+		if (s < 0) {
+			*p = a;
+			p = &a->next;
+		}
+		a = a->next;
+		continue;
+	}
+}
+
 /* Pick whichever has any info (if either). Prefer 'a' */
 static void merge_cylinder_type(cylinder_type_t *res, cylinder_type_t *a, cylinder_type_t *b)
 {
@@ -371,6 +424,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_MIN(res, a, b, watertemp.mkelvin);
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
-
+	merge_events(res, a, b, 0);
 	return merge_samples(res, a, b, 0);
 }
