@@ -246,7 +246,7 @@ UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *font, *frame, *box;
+	GtkWidget *dialog, *font, *frame, *box, *vbox;
 
 	menu_units = output_units;
 
@@ -258,7 +258,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	frame = gtk_frame_new("Units");
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_vbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
@@ -284,7 +285,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	font = gtk_font_button_new_with_font(divelist_font);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), font, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), font, FALSE, FALSE, 5);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -310,7 +311,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 static void renumber_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *frame, *button;
+	GtkWidget *dialog, *frame, *button, *vbox;
 
 	dialog = gtk_dialog_new_with_buttons("Renumber",
 		GTK_WINDOW(main_window),
@@ -319,8 +320,10 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
 	frame = gtk_frame_new("New starting number");
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), frame);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	button = gtk_spin_button_new_with_range(1, 50000, 1);
 	gtk_container_add(GTK_CONTAINER(frame), button);
@@ -576,12 +579,13 @@ static void fill_computer_list(GtkListStore *store)
 
 static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
 {
-	GtkWidget *hbox, *combo_box;
+	GtkWidget *hbox, *combo_box, *vbox;
 	GtkListStore *model;
 	GtkCellRenderer *renderer;
 
 	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, FALSE, 3);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 	fill_computer_list(model);
@@ -599,7 +603,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *hbox;
+	GtkWidget *dialog, *hbox, *vbox;
 	GtkComboBox *computer;
 	device_data_t devicedata = {
 		.devname = "/dev/ttyUSB0",
@@ -615,7 +619,8 @@ void import_dialog(GtkWidget *w, gpointer data)
 	computer = dive_computer_selector(dialog);
 
 	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 3);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
