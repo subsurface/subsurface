@@ -338,9 +338,32 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void about_dialog(GtkWidget *w, gpointer data)
+{
+	const char *logo_property = NULL;
+	GdkPixbuf *logo = NULL;
+	GtkWidget *image = gtk_image_new_from_file("icon.svg");
+
+	if (image) {
+		logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
+		logo_property = "logo";
+	}
+
+	gtk_show_about_dialog(NULL,
+		"program-name", "SubSurface",
+		"comments", "Half-arsed divelog software in C",
+		"license", "GPLv2",
+		"version", "1.0",
+		"copyright", "Linus Torvalds 2011",
+		/* Must be last: */
+		logo_property, logo,
+		NULL);
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
 	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
+	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  "<control>P", NULL, G_CALLBACK(do_print) },
@@ -348,6 +371,7 @@ static GtkActionEntry menu_items[] = {
 	{ "Preferences",    NULL, "Preferences", NULL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
+	{ "About",           GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -367,6 +391,9 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
+			</menu> \
+			<menu name=\"Help\" action=\"HelpMenuAction\"> \
+				<menuitem name=\"About\" action=\"About\" /> \
 			</menu> \
 		</menubar> \
 	</ui> \
