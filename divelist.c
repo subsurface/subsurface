@@ -469,7 +469,7 @@ typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    gpointer data);
 
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const char *title,
-					data_func_t data_func, PangoAlignment align)
+					data_func_t data_func, PangoAlignment align, gboolean visible)
 {
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *col;
@@ -499,6 +499,7 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const 
 		break;
 	}
 	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), xalign, 0.5);
+	gtk_tree_view_column_set_visible(col, visible);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(dl->tree_view), col);
 	return col;
 }
