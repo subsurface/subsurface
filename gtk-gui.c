@@ -613,21 +613,23 @@ static void fill_computer_list(GtkListStore *store)
 	}
 }
 
-static GtkComboBox *dive_computer_selector(GtkWidget *dialog)
+static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 {
-	GtkWidget *hbox, *combo_box, *vbox;
+	GtkWidget *hbox, *combo_box, *frame;
 	GtkListStore *model;
 	GtkCellRenderer *renderer;
 
 	hbox = gtk_hbox_new(FALSE, 6);
-	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 	fill_computer_list(model);
 
+	frame = gtk_frame_new("Dive computer");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
+
 	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
-	gtk_box_pack_start(GTK_BOX(hbox), combo_box, FALSE, TRUE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), combo_box);
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
@@ -652,10 +654,11 @@ void import_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
-	computer = dive_computer_selector(dialog);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+	computer = dive_computer_selector(vbox);
 
 	hbox = gtk_hbox_new(FALSE, 6);
-	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
