@@ -638,13 +638,31 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	return GTK_COMBO_BOX(combo_box);
 }
 
+static GtkEntry *dive_computer_device(GtkWidget *vbox)
+{
+	GtkWidget *hbox, *entry, *frame;
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
+
+	frame = gtk_frame_new("Device name");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
+
+	entry = gtk_entry_new();
+	gtk_container_add(GTK_CONTAINER(frame), entry);
+	gtk_entry_set_text(GTK_ENTRY(entry), "/dev/ttyUSB0");
+
+	return GTK_ENTRY(entry);
+}
+
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *hbox, *vbox;
 	GtkComboBox *computer;
+	GtkEntry *device;
 	device_data_t devicedata = {
-		.devname = "/dev/ttyUSB0",
+		.devname = NULL,
 	};
 
 	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
@@ -657,6 +675,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
 	computer = dive_computer_selector(vbox);
+	device = dive_computer_device(vbox);
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
@@ -680,6 +699,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 			-1);
 		devicedata.type = type;
 		devicedata.name = comp;
+		devicedata.devname = gtk_entry_get_text(device);
 		do_import(&devicedata);
 		break;
 	default:
