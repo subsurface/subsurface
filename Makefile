@@ -1,3 +1,5 @@
+VERSION=1.0
+
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
 INSTALL=install
@@ -68,6 +70,7 @@ libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecompu
 gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
 			-I$(LIBDIVECOMPUTERINCLUDES) \
+			-DVERSION_STRING='"v$(VERSION)"' \
 			-c gtk-gui.c
 
 uemis.o: uemis.c uemis.h

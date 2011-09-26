@@ -362,7 +362,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		"program-name", "SubSurface",
 		"comments", "Half-arsed divelog software in C",
 		"license", "GPLv2",
-		"version", "1.0",
+		"version", VERSION_STRING,
 		"copyright", "Linus Torvalds 2011",
 		/* Must be last: */
 		logo_property, logo,
