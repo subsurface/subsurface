@@ -32,14 +32,14 @@ Usage:
 
 to see my dives (with no notes or commentary).
 
-Or, if you have a dive computer supported by libdivecomputer (and
-connected to /dev/ttyUSB0), you can just do
+Or, if you have a dive computer supported by libdivecomputer, you can
+just do
 
 	make
 	./subsurface
 
 and select "Import" from the File menu, tell it what dive computer you
-have, and hit "OK".
+have (and where it is connected if you need to), and hit "OK".
 
 There's a lot of duplicates in the XML files that come as an example,
 and subsurface will de-duplicate the ones that are exactly the same
