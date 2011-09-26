@@ -216,6 +216,23 @@ static int parse_samples(struct dive **divep, parser_t *parser)
 	return parser_samples_foreach(parser, sample_cb, divep);
 }
 
+/*
+ * Check if this dive already existed before the import
+ */
+static int find_dive(struct dive *dive, device_data_t *devdata)
+{
+	int i;
+
+	for (i = 0; i < devdata->preexisting; i++) {
+		struct dive *old = dive_table.dives[i];
+
+		if (dive->when != old->when)
+			continue;
+		return 1;
+	}
+	return 0;
+}
+
 static int dive_cb(const unsigned char *data, unsigned int size,
 	const unsigned char *fingerprint, unsigned int fsize,
 	void *userdata)
@@ -302,15 +319,21 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		parser_destroy(parser);
 		return rc;
 	}
-	record_dive(dive);
 
 	parser_destroy(parser);
+
+	/* If we already saw this dive, abort. */
+	if (find_dive(dive, devdata))
+		return 0;
+
+	record_dive(dive);
 	return 1;
 }
 
 
 static device_status_t import_device_data(device_t *device, device_data_t *devicedata)
 {
+	devicedata->preexisting = dive_table.nr;
 	return device_foreach(device, dive_cb, devicedata);
 }
 

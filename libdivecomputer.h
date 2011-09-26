@@ -25,6 +25,7 @@ typedef struct device_data_t {
 	progressbar_t progress;
 	device_devinfo_t devinfo;
 	device_clock_t clock;
+	int preexisting;
 } device_data_t;
 
 struct device_list {
