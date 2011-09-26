@@ -87,6 +87,8 @@ void report_error(GError* error)
 static void file_open(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
+	GtkFileFilter *filter;
+
 	dialog = gtk_file_chooser_dialog_new("Open File",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -94,6 +96,13 @@ static void file_open(GtkWidget *w, gpointer data)
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	filter = gtk_file_filter_new();
+	gtk_file_filter_add_pattern(filter, "*.xml");
+	gtk_file_filter_add_pattern(filter, "*.XML");
+	gtk_file_filter_add_mime_type(filter, "text/xml");
+	gtk_file_filter_set_name(filter, "XML file");
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		GSList *filenames;
