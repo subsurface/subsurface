@@ -460,6 +460,9 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 	repaint_dive();
 }
 
+static const char notebook_group[] = "123";
+#define GRP_ID ((void *)notebook_group)
+
 static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 		GtkWidget *page,
 		gint x, gint y, gpointer data)
@@ -482,12 +485,46 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 	gtk_container_add(GTK_CONTAINER(win), vbox);
 
 	notebook = gtk_notebook_new();
-	gtk_notebook_set_group_id(GTK_NOTEBOOK(notebook), gtk_notebook_get_group_id(source));
+	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
 	gtk_widget_set_size_request(notebook, 350, 250);
 
 	gtk_widget_show_all(win);
 	return GTK_NOTEBOOK(notebook);
+}
+
+static void drag_cb(GtkWidget *widget, GdkDragContext *context,
+	gint x, gint y,
+	GtkSelectionData *selection_data,
+	guint info, guint time,
+	gpointer user_data)
+{
+	GtkWidget *source, *target;
+	GtkWidget *tab;
+
+	/*
+	 * We don't actually really *use* this yet, but Dirk wants to
+	 * do all the tabs as detatched tabs, and we'd need to use
+	 * this all to figure out which window we're talking about.
+	 */
+	source = gtk_drag_get_source_widget(context);
+	target = (GtkWidget *) user_data;
+	tab = *(GtkWidget **)selection_data->data;
+
+	gtk_drag_finish(context, TRUE, TRUE, time);
+
+	/*
+	 * Horrible, horrible hack. We hide the old divelist window, and
+	 * set it to NULL. So if we drag the thing back out, we'll create
+	 * a new window. Ugh.
+	 *
+	 * Actually destroying the divelist window triggers the whole
+	 * destroy callback, which we don't want.
+	 */
+	if (source != target) {
+		gtk_widget_hide(divelist_window);
+		divelist_window = NULL;
+	}
 }
 
 void init_ui(int argc, char **argv)
@@ -499,6 +536,9 @@ void init_ui(int argc, char **argv)
 	GtkWidget *equipment;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
+	static const GtkTargetEntry notebook_target = {
+		"GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0
+	};
 
 	gtk_init(&argc, &argv);
 
@@ -539,13 +579,17 @@ void init_ui(int argc, char **argv)
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
+	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
 	gtk_notebook_set_window_creation_hook(create_new_notebook_window, NULL, NULL);
+	gtk_drag_dest_set(notebook, GTK_DEST_DEFAULT_ALL, &notebook_target, 1, GDK_ACTION_MOVE);
+	g_signal_connect(notebook, "drag-data-received", G_CALLBACK(drag_cb), notebook);
 	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 
 	/* Create the actual divelist */
 	dive_list = dive_list_create();
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_list, gtk_label_new("Dive List"));
 	gtk_notebook_set_tab_detachable(GTK_NOTEBOOK(notebook), dive_list, 1);
+	gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(notebook), dive_list, 1);
 
 	/* Frame for dive profile */
 	dive_profile = dive_profile_widget();
