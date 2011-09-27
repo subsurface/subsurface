@@ -330,7 +330,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(SAC), visible_cols.sac, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(SAC), ! visible_cols.sac, NULL); /* inverted to get the correct default */
 		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
 		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
 	}
@@ -445,7 +445,11 @@ void init_ui(int argc, char **argv)
 		output_units.volume = CUFT;
 	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
 		output_units.temperature = FAHRENHEIT;
-
+	/* an unset key is FALSE - so in order to get the default behavior right we 
+	   invert the meaning of the SAC key */
+	visible_cols.otu = gconf_client_get_bool(gconf, GCONF_NAME(OTU), NULL);
+	visible_cols.sac = ! gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
+		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
