@@ -33,6 +33,8 @@ struct units output_units;
 
 static GtkWidget *dive_profile;
 
+visible_cols_t visible_cols = {TRUE, FALSE};
+
 void repaint_dive(void)
 {
 	update_dive(current_dive);
@@ -253,10 +255,19 @@ UNITCALLBACK(set_cuft, volume, CUFT)
 UNITCALLBACK(set_celsius, temperature, CELSIUS)
 UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
 
+#define OPTIONCALLBACK(name, option) \
+static void name(GtkWidget *w, gpointer data) \
+{ \
+	option = GTK_TOGGLE_BUTTON(w)->active; \
+}
+
+OPTIONCALLBACK(otu_toggle, visible_cols.otu)
+OPTIONCALLBACK(sac_toggle, visible_cols.sac)
+
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *font, *frame, *box, *vbox;
+	GtkWidget *dialog, *font, *frame, *box, *vbox, *button;
 
 	menu_units = output_units;
 
@@ -294,6 +305,22 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
 
+	frame = gtk_frame_new("Columns");
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+
+	button = gtk_check_button_new_with_label("Show SAC");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.sac);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(sac_toggle), NULL);
+
+	button = gtk_check_button_new_with_label("Show OTU");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
+
 	font = gtk_font_button_new_with_font(divelist_font);
 	gtk_box_pack_start(GTK_BOX(vbox), font, FALSE, FALSE, 5);
 
@@ -309,10 +336,13 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		output_units = menu_units;
 		update_dive_list_units();
 		repaint_dive();
+		update_dive_list_col_visibility();
 		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(SAC), ! visible_cols.sac, NULL); /* inverted to get the correct default */
+		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
 		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
 	}
 	gtk_widget_destroy(dialog);
@@ -485,7 +515,11 @@ void init_ui(int argc, char **argv)
 		output_units.volume = CUFT;
 	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
 		output_units.temperature = FAHRENHEIT;
-
+	/* an unset key is FALSE - so in order to get the default behavior right we 
+	   invert the meaning of the SAC key */
+	visible_cols.otu = gconf_client_get_bool(gconf, GCONF_NAME(OTU), NULL);
+	visible_cols.sac = ! gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
+		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
