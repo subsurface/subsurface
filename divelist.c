@@ -26,7 +26,7 @@ struct DiveList {
 	GtkWidget    *container_widget;
 	GtkListStore *model;
 	GtkTreeViewColumn *date, *depth, *duration, *location;
-	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac;
+	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac, *otu;
 	int changed;
 };
 
@@ -422,6 +422,13 @@ void update_dive_list_units(void)
 	gtk_tree_model_foreach(model, set_one_dive, NULL);
 }
 
+void update_dive_list_col_visibility(void)
+{
+		gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
+		gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
+		return;
+}
+
 static void fill_dive_list(void)
 {
 	int i;
@@ -543,8 +550,8 @@ GtkWidget *dive_list_create(void)
 	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, PANGO_ALIGN_CENTER, TRUE);
 	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, PANGO_ALIGN_CENTER, TRUE);
-	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, PANGO_ALIGN_CENTER, TRUE);
-	dive_list.sac = divelist_column(&dive_list, DIVE_OTU, "OTU", otu_data_func, PANGO_ALIGN_CENTER, FALSE);
+	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, PANGO_ALIGN_CENTER, visible_cols.sac);
+	dive_list.otu = divelist_column(&dive_list, DIVE_OTU, "OTU", otu_data_func, PANGO_ALIGN_CENTER, visible_cols.otu);
 	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, PANGO_ALIGN_LEFT, TRUE);
 
 	fill_dive_list();

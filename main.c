@@ -126,6 +126,7 @@ int main(int argc, char **argv)
 	int i;
 
 	output_units = SI_units;
+
 	parse_xml_init();
 
 	init_ui(argc, argv);

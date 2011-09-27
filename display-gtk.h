@@ -11,6 +11,13 @@ typedef struct {
 	GtkWidget *bar;
 } progressbar_t;
 
+typedef struct {
+	gboolean sac;
+	gboolean otu;
+} visible_cols_t;
+
+extern visible_cols_t visible_cols;
+
 extern const char *divelist_font;
 extern void set_divelist_font(const char *);
 
