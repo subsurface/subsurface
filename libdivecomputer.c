@@ -70,8 +70,11 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 		return mares_nemo_parser_create(parser, devdata->devinfo.model);
 
 	case DEVICE_TYPE_MARES_ICONHD:
+#ifdef ICONHDNET
 		return mares_iconhd_parser_create(parser, devdata->devinfo.model);
-
+#else
+		return mares_iconhd_parser_create(parser);
+#endif
 	case DEVICE_TYPE_HW_OSTC:
 		return hw_ostc_parser_create(parser);
 
