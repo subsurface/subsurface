@@ -6,6 +6,7 @@ INSTALL=install
 
 prefix = $(HOME)
 DESTDIR = $(prefix)/bin
+NAME = subsurface
 
 LIBDIVECOMPUTERDIR = /usr/local
 LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
@@ -27,12 +28,12 @@ OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
 	gtk-gui.o
 
-subsurface: $(OBJS)
-	$(CC) $(LDFLAGS) -o subsurface $(OBJS) $(LIBS)
+$(NAME): $(OBJS)
+	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
-install: subsurface
+install: $(NAME)
 	$(INSTALL) -d -m 755 '$(DESTDIR)'
-	$(INSTALL) subsurface '$(DESTDIR)'
+	$(INSTALL) $(NAME) '$(DESTDIR)'
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
@@ -75,3 +76,6 @@ gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
 
 uemis.o: uemis.c uemis.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` -c uemis.c
+
+clean:
+	rm -f $(OBJS) *~ $(NAME)
