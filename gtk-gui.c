@@ -472,8 +472,6 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 
 	divelist_window = win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(win), "Dive List");
-	gtk_window_set_transient_for(GTK_WINDOW(win), GTK_WINDOW(main_window));
-	gtk_window_set_destroy_with_parent(GTK_WINDOW(win), 1);
 	gtk_window_move(GTK_WINDOW(win), x, y);
 
 	/* Destroying the dive list will kill the application */
