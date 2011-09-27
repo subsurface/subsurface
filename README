@@ -41,11 +41,78 @@ just do
 and select "Import" from the File menu, tell it what dive computer you
 have (and where it is connected if you need to), and hit "OK".
 
-There's a lot of duplicates in the XML files that come as an example,
-and subsurface will de-duplicate the ones that are exactly the same
-(just because they were imported multiple times).  But at least two of
-the dives have duplicates that were edited by Dirk in the Suunto Dive
-Manager, so they don't trigger the "exact duplicates" match.
+NOTE! There are often multiple models of dive computers that import
+exactly the same way.  If you have a Suunto Gekko, for example, the
+import function works fine - even if you don't find the Gekko listed
+explicitly.  It has the same import engine as the older Suunto Vyper
+(not "Vyper Air").
+
+So check the (incomplete?) list of supported dive computers below, and
+see which ones show up together.  If you have the "Aeris Elite T3", for
+example, you'd notice that it's in the same group with the "Oceanic Atom
+2", and use that choice to import.
+
+Suunto:
+
+ * Solution
+
+ * Eon, Solution Alpha and Solution Nitrox/Vario
+
+ * Vyper, Cobra, Vytec, Vytec DS, D3, Spyder, Gekko, Mosquito, Stinger and Zoop
+
+ * Vyper2, Cobra2, Cobra3, Vyper Air and HelO2
+
+ * D9, D6 and D4
+
+Uwatec:
+
+ * Aladin
+
+ * Memomouse
+
+ * Smart and Galileo (infrared)
+
+Reefnet:
+
+ * Sensus
+
+ * Sensus Pro
+
+ * Sensus Ultra
+
+Oceanic, Aeris, Sherwood, Hollis, Genesis and Tusa (Pelagic):
+
+ * VT Pro, Versa Pro, Pro Plus 2, Wisdom, Atmos 2, Atmos AI, Atmos
+Elite, ...
+
+ * Veo 250, Veo 180Nx, XR2, React Pro, DG02, Insight, ...
+
+ * Atom 2.0, VT3, Datamask, Geo, Geo 2.0, Veo 2.0, Veo 3.0, Pro Plus 2.1,
+Compumask, Elite T3, Epic, Manta, IQ-900 (Zen), IQ-950 (Zen Air),
+IQ-750 (Element II), ...
+
+Mares:
+
+ * Nemo, Nemo Excel, Nemo Apneist, ...
+
+ * Puck, Puck Air, Nemo Air, Nemo Wide, ...
+
+ * Icon HD
+
+Heinrichs Weikamp:
+
+ * OSTC, OSTC Mk.2 and OSTC 2N
+
+Cressi, Zeagle and Mares (Seiko):
+
+ * Edy, Nemo Sport
+
+ * N2iTiON3
+
+Atomic Aquatics:
+
+ * Cobalt
+
 
 Implementation details:
 
