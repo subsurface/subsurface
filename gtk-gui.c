@@ -17,7 +17,7 @@
 
 #include "libdivecomputer.h"
 
-GtkWidget *main_window;
+GtkWidget *main_window, *divelist_window;
 GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
 GtkWidget *error_label;
@@ -36,7 +36,8 @@ static GtkWidget *dive_profile;
 void repaint_dive(void)
 {
 	update_dive(current_dive);
-	gtk_widget_queue_draw(dive_profile);
+	if (dive_profile)
+		gtk_widget_queue_draw(dive_profile);
 }
 
 static char *existing_filename;
@@ -429,11 +430,41 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 	repaint_dive();
 }
 
+static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
+		GtkWidget *page,
+		gint x, gint y, gpointer data)
+{
+	GtkWidget *win, *notebook, *vbox;
+
+	/* We don't detatch twice */
+	if (divelist_window)
+		return NULL;
+
+	divelist_window = win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(win), "Dive List");
+	gtk_window_set_transient_for(GTK_WINDOW(win), GTK_WINDOW(main_window));
+	gtk_window_set_destroy_with_parent(GTK_WINDOW(win), 1);
+	gtk_window_move(GTK_WINDOW(win), x, y);
+
+	/* Destroying the dive list will kill the application */
+	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
+	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
+
+	vbox = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(win), vbox);
+
+	notebook = gtk_notebook_new();
+	gtk_notebook_set_group_id(GTK_NOTEBOOK(notebook), gtk_notebook_get_group_id(source));
+	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
+	gtk_widget_set_size_request(notebook, 350, 250);
+
+	gtk_widget_show_all(win);
+	return GTK_NOTEBOOK(notebook);
+}
+
 void init_ui(int argc, char **argv)
 {
 	GtkWidget *win;
-	GtkWidget *paned;
-	GtkWidget *info_box;
 	GtkWidget *notebook;
 	GtkWidget *dive_info;
 	GtkWidget *dive_list;
@@ -462,7 +493,7 @@ void init_ui(int argc, char **argv)
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_icon_from_file(GTK_WINDOW(win), "icon.svg", NULL);
-	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK (on_delete), NULL);
+	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
 
@@ -473,22 +504,16 @@ void init_ui(int argc, char **argv)
 	menubar = get_menubar_menu(win);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 
-	/* HPane for left the dive list, and right the dive info */
-	paned = gtk_vpaned_new();
-	gtk_box_pack_end(GTK_BOX(vbox), paned, TRUE, TRUE, 0);
+	/* Notebook for dive info vs profile vs .. */
+	notebook = gtk_notebook_new();
+	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
+	gtk_notebook_set_window_creation_hook(create_new_notebook_window, NULL, NULL);
+	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 
 	/* Create the actual divelist */
 	dive_list = dive_list_create();
-	gtk_paned_add2(GTK_PANED(paned), dive_list);
-
-	/* VBox for dive info, and tabs */
-	info_box = gtk_vbox_new(FALSE, 6);
-	gtk_paned_add1(GTK_PANED(paned), info_box);
-
-	/* Notebook for dive info vs profile vs .. */
-	notebook = gtk_notebook_new();
-	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
-	gtk_box_pack_start(GTK_BOX(info_box), notebook, TRUE, TRUE, 6);
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_list, gtk_label_new("Dive List"));
+	gtk_notebook_set_tab_detachable(GTK_NOTEBOOK(notebook), dive_list, 1);
 
 	/* Frame for dive profile */
 	dive_profile = dive_profile_widget();
