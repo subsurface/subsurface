@@ -502,6 +502,8 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 	notebook = gtk_notebook_new();
 	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
 	gtk_widget_set_name(notebook, nbdp->name);
+	/* disallow drop events */
+	gtk_drag_dest_set(notebook, 0, NULL, 0, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
 	gtk_widget_set_size_request(notebook, 450, 350);
 
@@ -510,19 +512,12 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 }
 
 static void drag_cb(GtkWidget *widget, GdkDragContext *context,
-	gint x, gint y,
-	GtkSelectionData *selection_data,
-	guint info, guint time,
+	gint x, gint y, guint time,
 	gpointer user_data)
 {
 	GtkWidget *source;
 	notebook_data_t *nbdp;
 
-	/*
-	 * We don't actually really *use* this yet, but Dirk wants to
-	 * do all the tabs as detatched tabs, and we'd need to use
-	 * this all to figure out which window we're talking about.
-	 */
 	source = gtk_drag_get_source_widget(context);
 	if (nbd[0].name && ! strcmp(nbd[0].name,gtk_widget_get_name(source)))
 		nbdp = nbd;
