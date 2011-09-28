@@ -460,8 +460,8 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 	repaint_dive();
 }
 
-static const char notebook_name[] = "123";
-
+static const char notebook_group[] = "123";
+#define GRP_ID ((void *)notebook_group)
 typedef struct {
 	char *name;
 	GtkWidget *widget;
@@ -500,8 +500,8 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 	gtk_container_add(GTK_CONTAINER(win), vbox);
 
 	notebook = gtk_notebook_new();
+	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
 	gtk_widget_set_name(notebook, nbdp->name);
-	gtk_notebook_set_group_name(GTK_NOTEBOOK(notebook), notebook_name);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
 	gtk_widget_set_size_request(notebook, 450, 350);
 
@@ -598,7 +598,7 @@ void init_ui(int argc, char **argv)
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
-	gtk_notebook_set_group_name(GTK_NOTEBOOK(notebook), notebook_name);
+	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
 	g_signal_connect(notebook, "create-window", G_CALLBACK(create_new_notebook_window), NULL);
 	gtk_drag_dest_set(notebook, GTK_DEST_DEFAULT_ALL, &notebook_target, 1, GDK_ACTION_MOVE);
 	g_signal_connect(notebook, "drag-drop", G_CALLBACK(drag_cb), notebook);
