@@ -524,9 +524,9 @@ static void drag_cb(GtkWidget *widget, GdkDragContext *context,
 	 * this all to figure out which window we're talking about.
 	 */
 	source = gtk_drag_get_source_widget(context);
-	if (! strcmp(nbd[0].name,gtk_widget_get_name(source)))
+	if (nbd[0].name && ! strcmp(nbd[0].name,gtk_widget_get_name(source)))
 		nbdp = nbd;
-	else if (! strcmp(nbd[1].name,gtk_widget_get_name(source)))
+	else if (nbd[1].name && ! strcmp(nbd[1].name,gtk_widget_get_name(source)))
 		nbdp = nbd + 1;
 	else
 		/* HU? */
@@ -601,7 +601,7 @@ void init_ui(int argc, char **argv)
 	gtk_notebook_set_group_name(GTK_NOTEBOOK(notebook), notebook_name);
 	g_signal_connect(notebook, "create-window", G_CALLBACK(create_new_notebook_window), NULL);
 	gtk_drag_dest_set(notebook, GTK_DEST_DEFAULT_ALL, &notebook_target, 1, GDK_ACTION_MOVE);
-	g_signal_connect(notebook, "drag-data-received", G_CALLBACK(drag_cb), notebook);
+	g_signal_connect(notebook, "drag-drop", G_CALLBACK(drag_cb), notebook);
 	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 
 	/* Create the actual divelist */
