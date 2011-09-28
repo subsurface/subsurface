@@ -306,10 +306,12 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	cairo_stroke(cr);
 
 	/* Show mean depth */
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.40);
-	move_to(gc, 0, pi->meandepth);
-	line_to(gc, 1, pi->meandepth);
-	cairo_stroke(cr);
+	if (! gc->printer) {
+		set_source_rgba(gc, 1, 0.2, 0.2, 0.40);
+		move_to(gc, 0, pi->meandepth);
+		line_to(gc, 1, pi->meandepth);
+		cairo_stroke(cr);
+	}
 
 	gc->leftx = 0; gc->rightx = maxtime;
 
