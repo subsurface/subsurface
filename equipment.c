@@ -369,7 +369,7 @@ static void cylinder_widget(int nr, GtkListStore *model)
 	cylinder->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
 
-	widget = create_spinbutton(hbox, "Size", 0, 200, 0.1);
+	widget = create_spinbutton(hbox, "Size", 0, 300, 0.1);
 	cylinder->size = GTK_SPIN_BUTTON(widget);
 
 	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
