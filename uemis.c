@@ -245,7 +245,7 @@ parse_uemis_file(char *divelogfilename) {
 	dive->maxdepth.mm = pressure_to_depth(atoi(found));
 
 	if (! matchit(divelogfile,"<val key=\"file_content\">",
-			">\\([a-zA-Z0-9+/]*\\)<", &found)) {
+			">\\([a-zA-Z0-9+/=]*\\)<", &found)) {
 		/* some error handling */
 		goto bail;
 	}
