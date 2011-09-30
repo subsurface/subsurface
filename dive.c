@@ -154,8 +154,12 @@ static void fixup_pressure(struct dive *dive, struct sample *sample)
 	cyl = dive->cylinder + index;
 	if (!cyl->start.mbar)
 		cyl->start.mbar = pressure;
-	if (!cyl->end.mbar || pressure < cyl->end.mbar)
-		cyl->end.mbar = pressure;
+	/* we need to handle the user entering beginning and end tank pressures
+	 * - maybe even IF we have samples. But for now if we have air pressure
+	 * data in the samples, we use that instead of the minimum
+	 * if (!cyl->end.mbar || pressure < cyl->end.mbar)
+	 */
+	 cyl->end.mbar = pressure;
 }
 
 struct dive *fixup_dive(struct dive *dive)
