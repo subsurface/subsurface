@@ -22,6 +22,7 @@ struct plot_info {
 	int maxtime;
 	int meandepth, maxdepth;
 	int minpressure, maxpressure;
+	int endpressure; /* start pressure better be max pressure */
 	int mintemp, maxtemp;
 	struct plot_data {
 		int sec;
@@ -471,6 +472,7 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
+	int have_pressure = FALSE;
 
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
@@ -485,9 +487,15 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		mbar = entry->pressure;
 		if (!mbar)
 			continue;
+		have_pressure = TRUE;
 		line_to(gc, entry->sec, mbar);
 	}
-	line_to(gc, pi->maxtime, pi->minpressure);
+	/* if we have valid samples, we don't want to draw a line to the minpressure
+	 * but just end wherever the dive ended (think valve shutdowns during dive)
+	 * but that doesn't work so well if we have only max and min
+	 */
+	if (! have_pressure)
+		line_to(gc, pi->maxtime, pi->minpressure);
 	cairo_stroke(gc->cr);
 }
 
@@ -506,24 +514,24 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 		switch (output_units.pressure) {
 		case PASCAL:
 			start = pi->maxpressure * 100;
-			end = pi->minpressure * 100;
+			end = pi->endpressure * 100;
 			unit = "pascal";
 			break;
 		case BAR:
 			start = (pi->maxpressure + 500) / 1000;
-			end = (pi->minpressure + 500) / 1000;
+			end = (pi->endpressure + 500) / 1000;
 			unit = "bar";
 			break;
 		case PSI:
 			start = mbar_to_PSI(pi->maxpressure);
-			end = mbar_to_PSI(pi->minpressure);
+			end = mbar_to_PSI(pi->endpressure);
 			unit = "psi";
 			break;
 		}
 
 		text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
 		plot_text(gc, &tro, 0, pi->maxpressure, "%d %s", start, unit);
-		plot_text(gc, &tro, pi->maxtime, pi->minpressure,
+		plot_text(gc, &tro, pi->maxtime, pi->endpressure,
 			  "%d %s", end, unit);
 	}
 }
@@ -706,7 +714,7 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	pi->nr = lastindex+1;
 	pi->maxtime = pi->entry[lastindex].sec;
 
-	pi->minpressure = dive->cylinder[0].end.mbar;
+	pi->endpressure = pi->minpressure = dive->cylinder[0].end.mbar;
 	pi->maxpressure = dive->cylinder[0].start.mbar;
 
 	pi->meandepth = dive->meandepth.mm;
