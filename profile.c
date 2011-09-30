@@ -624,7 +624,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 	}
 
 	/* Smoothing function: 5-point triangular smooth */
-	for (i = 2; i < nr-1; i++) {
+	for (i = 2; i < nr; i++) {
 		struct plot_data *entry = pi->entry+i;
 		int val;
 
@@ -637,9 +637,9 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 		if (entry[0].sec - entry[-1].sec) {
 			entry->velocity = velocity((entry[0].val - entry[-1].val) / (entry[0].sec - entry[-1].sec));
                         /* if our samples are short and we aren't too FAST*/
-			if (entry[0].sec - entry[-1].sec < 30 && entry->velocity < FAST) { 
+			if (entry[0].sec - entry[-1].sec < 15 && entry->velocity < FAST) {
 				int past = -2;
-				while (i+past > 0 && entry[0].sec - entry[past].sec < 30)
+				while (i+past > 0 && entry[0].sec - entry[past].sec < 15)
 					past--;
 				entry->velocity = velocity((entry[0].val - entry[past].val) / 
 							(entry[0].sec - entry[past].sec));
