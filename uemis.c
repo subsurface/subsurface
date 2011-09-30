@@ -186,9 +186,30 @@ static void parse_divelog_binary(char *base64, struct dive **divep) {
 	uint8_t *data;
 	struct sample *sample;
 	struct dive *dive = *divep;
+	int template, gasoffset;
 
 	datalen = uemis_convert_base64(base64, &data);
 
+	/* dive template in use:
+	   0 = air
+	   1 = nitrox (B)
+	   2 = nitrox (B+D)
+	   3 = nitrox (B+T+D)
+	   uemis cylinder data is insane - it stores seven tank settings in a block
+	   and the template tells us which of the four groups of tanks we need to look at
+	 */
+	gasoffset = template = *(uint8_t *)(data+115);
+	if (template == 3)
+		gasoffset = 4;
+	for (i = 0; i < template; i++) {
+		float volume = *(float *)(data+116+25*(gasoffset + i)) * 1000.0;
+		/* uemis always assumes a working pressure of 3000psi / 206bar - even though that's wrong */
+		/* I also think that the unit that it stores (cuft for me) might change with SDA settings */
+		// dive->cylinder[i].type.size.mliter = volume * 206.84 / 28.317;
+		dive->cylinder[i].type.size.mliter = volume * 200 / 28.317;
+		dive->cylinder[i].gasmix.o2.permille = *(uint8_t *)(data+120+25*(gasoffset + i)) * 10 + 0.5;
+		dive->cylinder[i].gasmix.he.permille = 0;
+	}
 	/* first byte of divelog data is at offset 0x123 */
 	i = 0x123;
 	while ((i < datalen) && (*(uint16_t *)(data+i))) {
