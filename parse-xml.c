@@ -587,6 +587,8 @@ static void try_to_fill_event(const char *name, char *buf)
 		return;
 	if (MATCH(".flags", get_index, &event.flags))
 		return;
+	if (MATCH(".value", get_index, &event.value))
+		return;
 	nonmatch("event", name, buf);
 }
 
