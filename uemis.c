@@ -225,18 +225,23 @@ static void parse_divelog_binary(char *base64, struct dive **divep) {
 		sample->temperature.mkelvin = (*(uint16_t *)(data+i+4) * 100) + 273150;
 		sample->cylinderpressure.mbar= *(uint16_t *)(data+i+23) * 10;
 		sample->cylinderindex = *(uint8_t *)(data+i+22);
+		/* now create events from the warning bits */
+		if (*(uint8_t *)(data+i+34) & 0x10) {
+			/* Marker set - need to figure out the type/flags/value to use */
+			add_event(*divep, sample->time.seconds, 0, 0, 0, "Marker");
+		}
 		finish_sample(*divep, sample);
 		i += 0x25;
 	}
-	dive->duration.seconds = sample->time.seconds - 1;
+	(*divep)->duration.seconds = sample->time.seconds - 1;
 	return;
 }
 
 /* parse a single file
  * TODO: we don't report any errors when the parse fails - we simply don't add them to the list
  */
-void
-parse_uemis_file(char *divelogfilename) {
+void parse_uemis_file(const char *divelogfilename, GError **error)
+{
 	char *found=NULL;
 	struct tm tm;
 	struct dive *dive;
@@ -272,9 +277,21 @@ parse_uemis_file(char *divelogfilename) {
 	}
 	parse_divelog_binary(found,&dive);
 	record_dive(dive);
-bail:
+
 	if (found)
 		free(found);
+
+	return;
+
+bail:
+	fprintf(stderr, "Failed to parse '%s'.\n", divelogfilename);
+	if (error != NULL)
+	{
+		*error = g_error_new(g_quark_from_string("subsurface"),
+				DIVE_ERROR_PARSE, "Failed to parse '%s'",
+				divelogfilename);
+	}
+	return;
 }
 
 /*

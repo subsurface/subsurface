@@ -637,7 +637,7 @@ void run_ui(void)
  * return 0 if the user cancelled the dialog
  */
 int open_import_file_dialog(char *filterpattern, char *filtertext, 
-			void(* parse_function)(char *))
+			void(* parse_function)(const char *, GError **))
 {
 	int ret=0;
 
@@ -659,8 +659,14 @@ int open_import_file_dialog(char *filterpattern, char *filtertext,
 		char *filename;
 		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 		while(filenames != NULL) {
+			GError *error = NULL;
 			filename = (char *)filenames->data;
-			parse_function(filename);
+			parse_function(filename, &error);
+			if (error != NULL)
+			{
+				report_error(error);
+				g_error_free(error);
+			}
 			g_free(filename);
 			filenames = g_slist_next(filenames);
 		}

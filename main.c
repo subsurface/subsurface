@@ -7,6 +7,7 @@
 #include <gconf/gconf-client.h>
 
 #include "dive.h"
+#include "uemis.h"
 #include "divelist.h"
 
 GConfClient *gconf;
@@ -139,8 +140,11 @@ int main(int argc, char **argv)
 			continue;
 		}
 		GError *error = NULL;
-		parse_xml_file(a, &error);
-		
+		if (strstr(a,".SDA"))
+			parse_uemis_file(a, &error);
+		else
+			parse_xml_file(a, &error);
+
 		if (error != NULL)
 		{
 			report_error(error);

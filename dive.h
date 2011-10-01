@@ -263,7 +263,7 @@ extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 
 extern int open_import_file_dialog(char *filterpattern, char *filtertext, 
-				void(* parse_function)(char *));
+				void(* parse_function)(const char *, GError **));
 #define DIVE_ERROR_PARSE 1
 
 const char *weekday(int wday);

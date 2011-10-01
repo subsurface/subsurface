@@ -9,5 +9,6 @@
 #define DEVICE_TYPE_UEMIS (-1)
 
 void uemis_import();
+void parse_uemis_file(const char *divelogfilename, GError **error);
 
 #endif /* DIVE_H */
