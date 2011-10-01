@@ -124,7 +124,7 @@ void renumber_dives(int nr)
 
 int main(int argc, char **argv)
 {
-	int i;
+	int i, len;
 
 	output_units = SI_units;
 
@@ -140,7 +140,8 @@ int main(int argc, char **argv)
 			continue;
 		}
 		GError *error = NULL;
-		if (strstr(a,".SDA"))
+		len = strlen(a);
+		if (len > 4 && strstr(a+len-4,".SDA"))
 			parse_uemis_file(a, &error);
 		else
 			parse_xml_file(a, &error);
