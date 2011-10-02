@@ -434,31 +434,25 @@ static void nitrox_cb(GtkToggleButton *button, gpointer data)
 	gtk_widget_set_sensitive(cylinder->o2, state);
 }
 
-static void cylinder_widget(int nr, GtkListStore *model)
+static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, GtkListStore *model)
 {
-	struct cylinder_widget *cylinder;
-	GtkWidget *frame, *hbox, *hbox2;
+	GtkWidget *frame, *hbox;
 	GtkWidget *widget;
-	char buffer[80];
 
-	cylinder = gtk_cylinder + nr;
-	cylinder->index = nr;
+	frame = gtk_frame_new("Cylinder");
 
 	hbox = gtk_hbox_new(FALSE, 3);
-	cylinder->hbox = hbox;
-
-	snprintf(buffer, sizeof(buffer), "Cylinder %d", nr+1);
-	frame = gtk_frame_new(buffer);
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
-
-	hbox2 = gtk_hbox_new(FALSE, 3);
-	gtk_container_add(GTK_CONTAINER(frame), hbox2);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
 	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
-	gtk_box_pack_start(GTK_BOX(hbox2), widget, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
 
 	cylinder->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
 	widget = create_spinbutton(hbox, "Size", 0, 300, 0.1);
 	cylinder->size = GTK_SPIN_BUTTON(widget);
@@ -476,8 +470,28 @@ static void cylinder_widget(int nr, GtkListStore *model)
 	gtk_spin_button_set_range(GTK_SPIN_BUTTON(cylinder->o2), 21.0, 100.0);
 }
 
-static void edit_dive_dialog(int index, GtkListStore *model, GtkTreeIter *iter)
+static void edit_cylinder_dialog(int index, GtkListStore *model, GtkTreeIter *iter)
 {
+	int result;
+	struct cylinder_widget cyl;
+	GtkWidget *dialog, *frame, *vbox;
+
+	dialog = gtk_dialog_new_with_buttons("Cylinder",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	cylinder_widget(vbox, &cyl, cylinder_model);
+
+	gtk_widget_show_all(dialog);
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (result == GTK_RESPONSE_ACCEPT) {
+		/* Save it */
+	}
+	gtk_widget_destroy(dialog);
 }
 
 static void edit_cb(GtkButton *button, gpointer data)
@@ -494,7 +508,7 @@ static void edit_cb(GtkButton *button, gpointer data)
 		return;
 
 	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
-	edit_dive_dialog(index, model, &iter);
+	edit_cylinder_dialog(index, model, &iter);
 }
 
 static void add_cb(GtkButton *button, gpointer data)
@@ -502,15 +516,44 @@ static void add_cb(GtkButton *button, gpointer data)
 	int index = cylinder_list.max_index;
 	GtkTreeIter iter;
 	GtkListStore *model = cylinder_list.model;
+	GtkTreeSelection *selection;
 
 	gtk_list_store_append(model, &iter);
-	edit_dive_dialog(index, model, &iter);
+	gtk_list_store_set(model, &iter, CYL_INDEX, index, -1);
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
+	gtk_tree_selection_select_iter(selection, &iter);
+
+	edit_cylinder_dialog(index, model, &iter);
 	cylinder_list.max_index++;
 	gtk_widget_set_sensitive(cylinder_list.add, cylinder_list.max_index < MAX_CYLINDERS);
 }
 
 static void del_cb(GtkButton *button, gpointer data)
 {
+	int index;
+	GtkTreeIter iter;
+	GtkListStore *model = cylinder_list.model;
+	GtkTreeSelection *selection;
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
+
+	/* Nothing selected? This shouldn't happen, since the button should be inactive */
+	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
+		return;
+
+	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
+	if (gtk_list_store_remove(model, &iter)) {
+		do {
+			gtk_list_store_set(model, &iter, CYL_INDEX, index, -1);
+			index++;
+		} while (gtk_tree_model_iter_next(GTK_TREE_MODEL(model), &iter));
+	}
+
+	cylinder_list.max_index--;
+	gtk_widget_set_sensitive(cylinder_list.edit, 0);
+	gtk_widget_set_sensitive(cylinder_list.del, 0);
+	gtk_widget_set_sensitive(cylinder_list.add, 1);
 }
 
 static GtkListStore *create_tank_size_model(void)
@@ -617,6 +660,7 @@ static GtkWidget *cylinder_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
 
+	tree_view_column(tree_view, CYL_INDEX, "Nr", NULL, PANGO_ALIGN_LEFT, TRUE);
 	cylinder_list.desc = tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
 	cylinder_list.size = tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	cylinder_list.workp = tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
