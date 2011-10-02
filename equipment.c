@@ -1,7 +1,7 @@
 /* equipment.c */
 /* creates the UI for the equipment page -
  * controlled through the following interfaces:
- * 
+ *
  * void show_dive_equipment(struct dive *dive)
  * void flush_dive_equipment_changes(struct dive *dive)
  *
@@ -19,6 +19,27 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
+GtkListStore *cylinder_model;
+
+enum {
+	CYL_INDEX,
+	CYL_DESC,
+	CYL_SIZE,
+	CYL_WORKP,
+	CYL_STARTP,
+	CYL_ENDP,
+	CYL_O2,
+	CYL_HE,
+	CYL_COLUMNS
+};
+
+static struct {
+	GtkListStore *model;
+	GtkWidget *tree_view;
+	GtkWidget *edit, *add, *del;
+	GtkTreeViewColumn *desc, *size, *workp, *startp, *endp, *o2, *he;
+} cylinder_list;
+
 struct cylinder_widget {
 	int index, changed;
 	const char *name;
@@ -30,8 +51,25 @@ struct cylinder_widget {
 
 static struct cylinder_widget gtk_cylinder[MAX_CYLINDERS];
 
-static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
+static int convert_pressure(int mbar, double *p)
 {
+	int decimals = 1;
+	double pressure;
+
+	pressure = mbar / 1000.0;
+	if (mbar) {
+		if (output_units.pressure == PSI) {
+			pressure *= 14.5037738;	/* Bar to PSI */
+			decimals = 0;
+		}
+	}
+	*p = pressure;
+	return decimals;
+}
+
+static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
+{
+	int decimals = 1;
 	double volume, pressure;
 
 	volume = ml / 1000.0;
@@ -43,9 +81,19 @@ static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, i
 		}
 		if (output_units.pressure == PSI) {
 			pressure *= 14.5037738;	/* Bar to PSI */
+			decimals = 0;
 		}
 	}
+	*v = volume;
+	*p = pressure;
+	return decimals;
+}
 
+static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
+{
+	double volume, pressure;
+
+	convert_volume_pressure(ml, mbar, &volume, &pressure);
 	gtk_spin_button_set_value(cylinder->size, volume);
 	gtk_spin_button_set_value(cylinder->pressure, pressure);
 }
@@ -159,12 +207,48 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->o2), o2);
 }
 
+static int cyl_nothing(cylinder_t *cyl)
+{
+	return	!cyl->type.size.mliter &&
+		!cyl->type.workingpressure.mbar &&
+		!cyl->type.description &&
+		!cyl->gasmix.o2.permille &&
+		!cyl->gasmix.he.permille &&
+		!cyl->start.mbar &&
+		!cyl->end.mbar;
+}
+
 void show_dive_equipment(struct dive *dive)
 {
-	int i;
+	int i, max;
+	GtkTreeIter iter;
+	GtkListStore *model;
 
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		show_cylinder(dive->cylinder + i, gtk_cylinder+i);
+	model = cylinder_list.model;
+	gtk_list_store_clear(model);
+	max = MAX_CYLINDERS;
+	do {
+		cylinder_t *cyl = &dive->cylinder[max-1];
+
+		if (!cyl_nothing(cyl))
+			break;
+	} while (--max);
+
+	for (i = 0; i < max; i++) {
+		cylinder_t *cyl = dive->cylinder+i;
+
+		gtk_list_store_append(model, &iter);
+		gtk_list_store_set(model, &iter,
+			CYL_INDEX, i,
+			CYL_DESC, cyl->type.description ? : "",
+			CYL_SIZE, cyl->type.size.mliter,
+			CYL_WORKP, cyl->type.workingpressure.mbar,
+			CYL_STARTP, cyl->start.mbar,
+			CYL_ENDP, cyl->end.mbar,
+			CYL_O2, cyl->gasmix.o2.permille,
+			CYL_HE, cyl->gasmix.he.permille,
+			-1);
+	}
 }
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
@@ -385,6 +469,18 @@ static void cylinder_widget(int nr, GtkListStore *model)
 	gtk_spin_button_set_range(GTK_SPIN_BUTTON(cylinder->o2), 21.0, 100.0);
 }
 
+static void edit_cb(GtkButton *button, gpointer data)
+{
+}
+
+static void add_cb(GtkButton *button, gpointer data)
+{
+}
+
+static void del_cb(GtkButton *button, gpointer data)
+{
+}
+
 static GtkListStore *create_tank_size_model(void)
 {
 	GtkListStore *model;
@@ -399,37 +495,139 @@ static GtkListStore *create_tank_size_model(void)
 	return model;
 }
 
+static void size_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int ml, mbar;
+	double size, pressure;
+	char buffer[10];
+
+	gtk_tree_model_get(model, iter, CYL_SIZE, &ml, CYL_WORKP, &mbar, -1);
+	convert_volume_pressure(ml, mbar, &size, &pressure);
+	if (size)
+		snprintf(buffer, sizeof(buffer), "%.1f", size);
+	else
+		strcpy(buffer, "unkn");
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
+static void pressure_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int index = (long)data;
+	int mbar, decimals;
+	double pressure;
+	char buffer[10];
+
+	gtk_tree_model_get(model, iter, index, &mbar, -1);
+	decimals = convert_pressure(mbar, &pressure);
+	if (mbar)
+		snprintf(buffer, sizeof(buffer), "%.*f", decimals, pressure);
+	else
+		*buffer = 0;
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
+static void percentage_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int index = (long)data;
+	int permille;
+	char buffer[10];
+
+	gtk_tree_model_get(model, iter, index, &permille, -1);
+	if (permille)
+		snprintf(buffer, sizeof(buffer), "%.1f%%", permille / 10.0);
+	else
+		*buffer = 0;
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
+static GtkWidget *cylinder_list_create(void)
+{
+	GtkWidget *tree_view;
+	GtkListStore *model;
+
+	model = gtk_list_store_new(CYL_COLUMNS,
+		G_TYPE_INT,		/* CYL_INDEX */
+		G_TYPE_STRING,		/* CYL_DESC: utf8 */
+		G_TYPE_INT,		/* CYL_SIZE: mliter */
+		G_TYPE_INT,		/* CYL_WORKP: mbar */
+		G_TYPE_INT,		/* CYL_STARTP: mbar */
+		G_TYPE_INT,		/* CYL_ENDP: mbar */
+		G_TYPE_INT,		/* CYL_O2: permille */
+		G_TYPE_INT		/* CYL_HE: permille */
+		);
+	cylinder_list.model = model;
+	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+	cylinder_list.desc = tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
+	cylinder_list.size = tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.workp = tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.startp = tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.endp = tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.o2 = tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.he = tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	return tree_view;
+}
+
 GtkWidget *equipment_widget(void)
 {
-	int i;
-	GtkWidget *vbox, *hbox;
-	GtkWidget *apply, *cancel;
-	GtkListStore *model;
+	GtkWidget *vbox, *hbox, *frame, *framebox;
+	GtkWidget *add, *del, *edit;
 
 	vbox = gtk_vbox_new(FALSE, 3);
 
-	model = create_tank_size_model();
+	/*
+	 * We create the cylinder size model at startup, since
+	 * we're going to share it across all cylinders and all
+	 * dives. So if you add a new cylinder type in one dive,
+	 * it will show up when you edit the cylinder types for
+	 * another dive.
+	 */
+	cylinder_model = create_tank_size_model();
 
-	/* Create all MAX_CYLINDER gtk widgets */
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		cylinder_widget(i, model);
+	cylinder_list.tree_view = cylinder_list_create();
 
-	/* But only connect two of them right now to the frame vbox */
-	for (i = 0; i < 2; i++) {
-		struct cylinder_widget *cylinder = gtk_cylinder+i;
-		gtk_box_pack_start(GTK_BOX(vbox), cylinder->hbox, FALSE, TRUE, 0);
-	}
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
+
+	frame = gtk_frame_new("Cylinders");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, FALSE, 3);
+
+	framebox = gtk_vbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), framebox);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	gtk_box_pack_start(GTK_BOX(hbox), cylinder_list.tree_view, TRUE, FALSE, 3);
 
 	hbox = gtk_hbox_new(TRUE, 3);
-	gtk_box_pack_end(GTK_BOX(vbox), hbox, TRUE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	apply = gtk_button_new_from_stock(GTK_STOCK_APPLY);
-	cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-	gtk_box_pack_start(GTK_BOX(hbox), apply, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(hbox), cancel, FALSE, FALSE, 0);
+	edit = gtk_button_new_from_stock(GTK_STOCK_EDIT);
+	add = gtk_button_new_from_stock(GTK_STOCK_ADD);
+	del = gtk_button_new_from_stock(GTK_STOCK_DELETE);
+	gtk_box_pack_start(GTK_BOX(hbox), edit, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), add, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), del, FALSE, FALSE, 0);
 
-	g_signal_connect(apply, "clicked", G_CALLBACK(apply_cb), NULL);
-	g_signal_connect(cancel, "clicked", G_CALLBACK(cancel_cb), NULL);
+	cylinder_list.edit = edit;
+	cylinder_list.add = add;
+	cylinder_list.del = del;
+
+	g_signal_connect(edit, "clicked", G_CALLBACK(edit_cb), NULL);
+	g_signal_connect(add, "clicked", G_CALLBACK(add_cb), NULL);
+	g_signal_connect(del, "clicked", G_CALLBACK(del_cb), NULL);
 
 	return vbox;
 }
