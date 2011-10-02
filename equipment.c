@@ -34,6 +34,7 @@ enum {
 };
 
 static struct {
+	int max_index;
 	GtkListStore *model;
 	GtkWidget *tree_view;
 	GtkWidget *edit, *add, *del;
@@ -233,6 +234,8 @@ void show_dive_equipment(struct dive *dive)
 		if (!cyl_nothing(cyl))
 			break;
 	} while (--max);
+
+	cylinder_list.max_index = max;
 
 	gtk_widget_set_sensitive(cylinder_list.edit, 0);
 	gtk_widget_set_sensitive(cylinder_list.del, 0);
@@ -473,12 +476,37 @@ static void cylinder_widget(int nr, GtkListStore *model)
 	gtk_spin_button_set_range(GTK_SPIN_BUTTON(cylinder->o2), 21.0, 100.0);
 }
 
+static void edit_dive_dialog(int index, GtkListStore *model, GtkTreeIter *iter)
+{
+}
+
 static void edit_cb(GtkButton *button, gpointer data)
 {
+	int index;
+	GtkTreeIter iter;
+	GtkListStore *model = cylinder_list.model;
+	GtkTreeSelection *selection;
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
+
+	/* Nothing selected? This shouldn't happen, since the button should be inactive */
+	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
+		return;
+
+	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
+	edit_dive_dialog(index, model, &iter);
 }
 
 static void add_cb(GtkButton *button, gpointer data)
 {
+	int index = cylinder_list.max_index;
+	GtkTreeIter iter;
+	GtkListStore *model = cylinder_list.model;
+
+	gtk_list_store_append(model, &iter);
+	edit_dive_dialog(index, model, &iter);
+	cylinder_list.max_index++;
+	gtk_widget_set_sensitive(cylinder_list.add, cylinder_list.max_index < MAX_CYLINDERS);
 }
 
 static void del_cb(GtkButton *button, gpointer data)
