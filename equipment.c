@@ -524,10 +524,12 @@ static void add_cb(GtkButton *button, gpointer data)
 
 static void del_cb(GtkButton *button, gpointer data)
 {
-	int index;
+	int index, nr;
 	GtkTreeIter iter;
 	GtkListStore *model = cylinder_list.model;
 	GtkTreeSelection *selection;
+	struct dive *dive;
+	cylinder_t *cyl;
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
 
@@ -536,6 +538,13 @@ static void del_cb(GtkButton *button, gpointer data)
 		return;
 
 	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
+
+	dive = current_dive;
+	if (!dive)
+		return;
+	cyl = dive->cylinder + index;
+	nr = cylinder_list.max_index - index - 1;
+
 	if (gtk_list_store_remove(model, &iter)) {
 		do {
 			gtk_list_store_set(model, &iter, CYL_INDEX, index, -1);
@@ -544,6 +553,12 @@ static void del_cb(GtkButton *button, gpointer data)
 	}
 
 	cylinder_list.max_index--;
+	memmove(cyl, cyl+1, nr*sizeof(*cyl));
+	memset(cyl+nr, 0, sizeof(*cyl));
+
+	mark_divelist_changed(TRUE);
+	flush_divelist(dive);
+
 	gtk_widget_set_sensitive(cylinder_list.edit, 0);
 	gtk_widget_set_sensitive(cylinder_list.del, 0);
 	gtk_widget_set_sensitive(cylinder_list.add, 1);
