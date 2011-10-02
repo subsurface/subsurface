@@ -50,8 +50,6 @@ struct cylinder_widget {
 	GtkWidget *o2, *gasmix_button;
 };
 
-static struct cylinder_widget gtk_cylinder[MAX_CYLINDERS];
-
 static int convert_pressure(int mbar, double *p)
 {
 	int decimals = 1;
@@ -219,6 +217,20 @@ static int cyl_nothing(cylinder_t *cyl)
 		!cyl->end.mbar;
 }
 
+static void set_one_cylinder(int index, cylinder_t *cyl, GtkListStore *model, GtkTreeIter *iter)
+{
+	gtk_list_store_set(model, iter,
+		CYL_INDEX, index,
+		CYL_DESC, cyl->type.description ? : "",
+		CYL_SIZE, cyl->type.size.mliter,
+		CYL_WORKP, cyl->type.workingpressure.mbar,
+		CYL_STARTP, cyl->start.mbar,
+		CYL_ENDP, cyl->end.mbar,
+		CYL_O2, cyl->gasmix.o2.permille,
+		CYL_HE, cyl->gasmix.he.permille,
+		-1);
+}
+
 void show_dive_equipment(struct dive *dive)
 {
 	int i, max;
@@ -245,16 +257,7 @@ void show_dive_equipment(struct dive *dive)
 		cylinder_t *cyl = dive->cylinder+i;
 
 		gtk_list_store_append(model, &iter);
-		gtk_list_store_set(model, &iter,
-			CYL_INDEX, i,
-			CYL_DESC, cyl->type.description ? : "",
-			CYL_SIZE, cyl->type.size.mliter,
-			CYL_WORKP, cyl->type.workingpressure.mbar,
-			CYL_STARTP, cyl->start.mbar,
-			CYL_ENDP, cyl->end.mbar,
-			CYL_O2, cyl->gasmix.o2.permille,
-			CYL_HE, cyl->gasmix.he.permille,
-			-1);
+		set_one_cylinder(i, cyl, model, &iter);
 	}
 }
 
@@ -328,30 +331,6 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 void flush_dive_equipment_changes(struct dive *dive)
 {
 	/* We do nothing: we require the "Ok" button press */
-}
-
-static void apply_cb(GtkButton *button, gpointer data)
-{
-	int i;
-	struct dive *dive = current_dive;
-
-	if (!dive)
-		return;
-
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		record_cylinder_changes(dive->cylinder+i, gtk_cylinder+i);
-	mark_divelist_changed(TRUE);
-	flush_divelist(dive);
-}
-
-static void cancel_cb(GtkButton *button, gpointer data)
-{
-	struct dive *dive = current_dive;
-
-	if (!dive)
-		return;
-
-	show_dive_equipment(current_dive);
 }
 
 /*
@@ -473,8 +452,17 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 static void edit_cylinder_dialog(int index, GtkListStore *model, GtkTreeIter *iter)
 {
 	int result;
-	struct cylinder_widget cyl;
-	GtkWidget *dialog, *frame, *vbox;
+	struct cylinder_widget cylinder;
+	GtkWidget *dialog, *vbox;
+	struct dive *dive;
+	cylinder_t *cyl;
+
+	dive = current_dive;
+	if (!dive)
+		return;
+	cyl = dive->cylinder + index;
+	cylinder.index = index;
+	cylinder.changed = 0;
 
 	dialog = gtk_dialog_new_with_buttons("Cylinder",
 		GTK_WINDOW(main_window),
@@ -484,12 +472,17 @@ static void edit_cylinder_dialog(int index, GtkListStore *model, GtkTreeIter *it
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	cylinder_widget(vbox, &cyl, cylinder_model);
+	cylinder_widget(vbox, &cylinder, cylinder_model);
+
+	show_cylinder(cyl, &cylinder);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
-		/* Save it */
+		record_cylinder_changes(cyl, &cylinder);
+		set_one_cylinder(index, cyl, model, iter);
+		mark_divelist_changed(TRUE);
+		flush_divelist(dive);
 	}
 	gtk_widget_destroy(dialog);
 }
