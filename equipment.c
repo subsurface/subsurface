@@ -234,6 +234,10 @@ void show_dive_equipment(struct dive *dive)
 			break;
 	} while (--max);
 
+	gtk_widget_set_sensitive(cylinder_list.edit, 0);
+	gtk_widget_set_sensitive(cylinder_list.del, 0);
+	gtk_widget_set_sensitive(cylinder_list.add, max < MAX_CYLINDERS);
+
 	for (i = 0; i < max; i++) {
 		cylinder_t *cyl = dive->cylinder+i;
 
@@ -552,9 +556,20 @@ static void percentage_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
+{
+	GtkTreeIter iter;
+	int selected;
+
+	selected = gtk_tree_selection_get_selected(selection, NULL, &iter);
+	gtk_widget_set_sensitive(cylinder_list.edit, selected);
+	gtk_widget_set_sensitive(cylinder_list.del, selected);
+}
+
 static GtkWidget *cylinder_list_create(void)
 {
 	GtkWidget *tree_view;
+	GtkTreeSelection *selection;
 	GtkListStore *model;
 
 	model = gtk_list_store_new(CYL_COLUMNS,
@@ -569,6 +584,11 @@ static GtkWidget *cylinder_list_create(void)
 		);
 	cylinder_list.model = model;
 	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
+	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
+
 	cylinder_list.desc = tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
 	cylinder_list.size = tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	cylinder_list.workp = tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
