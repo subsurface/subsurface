@@ -424,9 +424,9 @@ void update_dive_list_units(void)
 
 void update_dive_list_col_visibility(void)
 {
-		gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
-		gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
-		return;
+	gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
+	gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
+	return;
 }
 
 static void fill_dive_list(void)
@@ -469,46 +469,10 @@ void dive_list_update_dives(void)
 	repaint_dive();
 }
 
-typedef void (*data_func_t)(GtkTreeViewColumn *col,
-			    GtkCellRenderer *renderer,
-			    GtkTreeModel *model,
-			    GtkTreeIter *iter,
-			    gpointer data);
-
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const char *title,
-					data_func_t data_func, PangoAlignment align, gboolean visible)
+				data_func_t data_func, PangoAlignment align, gboolean visible)
 {
-	GtkCellRenderer *renderer;
-	GtkTreeViewColumn *col;
-	double xalign = 0.0; /* left as default */
-
-	renderer = gtk_cell_renderer_text_new();
-	col = gtk_tree_view_column_new();
-
-	gtk_tree_view_column_set_title(col, title);
-	gtk_tree_view_column_set_sort_column_id(col, index);
-	gtk_tree_view_column_set_resizable(col, TRUE);
-	gtk_tree_view_column_pack_start(col, renderer, TRUE);
-	if (data_func)
-		gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, NULL, NULL);
-	else
-		gtk_tree_view_column_add_attribute(col, renderer, "text", index);
-	gtk_object_set(GTK_OBJECT(renderer), "alignment", align, NULL);
-	switch (align) {
-	case PANGO_ALIGN_LEFT:
-		xalign = 0.0;
-		break;
-	case PANGO_ALIGN_CENTER:
-		xalign = 0.5;
-		break;
-	case PANGO_ALIGN_RIGHT:
-		xalign = 1.0;
-		break;
-	}
-	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), xalign, 0.5);
-	gtk_tree_view_column_set_visible(col, visible);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(dl->tree_view), col);
-	return col;
+	return tree_view_column(dl->tree_view, index, title, data_func, align, visible);
 }
 
 /*

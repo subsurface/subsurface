@@ -203,6 +203,42 @@ static void quit(GtkWidget *w, gpointer data)
 	gtk_main_quit();
 }
 
+GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
+				data_func_t data_func, PangoAlignment align, gboolean visible)
+{
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *col;
+	double xalign = 0.0; /* left as default */
+
+	renderer = gtk_cell_renderer_text_new();
+	col = gtk_tree_view_column_new();
+
+	gtk_tree_view_column_set_title(col, title);
+	gtk_tree_view_column_set_sort_column_id(col, index);
+	gtk_tree_view_column_set_resizable(col, TRUE);
+	gtk_tree_view_column_pack_start(col, renderer, TRUE);
+	if (data_func)
+		gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, (void *)(long)index, NULL);
+	else
+		gtk_tree_view_column_add_attribute(col, renderer, "text", index);
+	gtk_object_set(GTK_OBJECT(renderer), "alignment", align, NULL);
+	switch (align) {
+	case PANGO_ALIGN_LEFT:
+		xalign = 0.0;
+		break;
+	case PANGO_ALIGN_CENTER:
+		xalign = 0.5;
+		break;
+	case PANGO_ALIGN_RIGHT:
+		xalign = 1.0;
+		break;
+	}
+	gtk_cell_renderer_set_alignment(GTK_CELL_RENDERER(renderer), xalign, 0.5);
+	gtk_tree_view_column_set_visible(col, visible);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), col);
+	return col;
+}
+
 static void create_radio(GtkWidget *vbox, const char *name, ...)
 {
 	va_list args;

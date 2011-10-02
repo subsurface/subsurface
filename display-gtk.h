@@ -33,4 +33,13 @@ extern GtkWidget *equipment_widget(void);
 
 extern GtkWidget *dive_list_create(void);
 
+typedef void (*data_func_t)(GtkTreeViewColumn *col,
+			    GtkCellRenderer *renderer,
+			    GtkTreeModel *model,
+			    GtkTreeIter *iter,
+			    gpointer data);
+
+extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
+		data_func_t data_func, PangoAlignment align, gboolean visible);
+
 #endif
