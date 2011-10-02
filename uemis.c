@@ -220,12 +220,13 @@ static void parse_divelog_binary(char *base64, struct dive **divep) {
 		if (*(uint16_t *)(data+i) > dive->duration.seconds + 180)
 			break;
 		sample = prepare_sample(divep);
+		dive = *divep; /* prepare_sample might realloc the dive */
 		sample->time.seconds = *(uint16_t *)(data+i);
 		sample->depth.mm = pressure_to_depth(*(uint16_t *)(data+i+2));
 		sample->temperature.mkelvin = (*(uint16_t *)(data+i+4) * 100) + 273150;
 		sample->cylinderpressure.mbar= *(uint16_t *)(data+i+23) * 10;
 		sample->cylinderindex = *(uint8_t *)(data+i+22);
-		finish_sample(*divep, sample);
+		finish_sample(dive, sample);
 		i += 0x25;
 	}
 	dive->duration.seconds = sample->time.seconds - 1;
