@@ -203,10 +203,15 @@ static void parse_divelog_binary(char *base64, struct dive **divep) {
 		gasoffset = 4;
 	for (i = 0; i < template; i++) {
 		float volume = *(float *)(data+116+25*(gasoffset + i)) * 1000.0;
-		/* uemis always assumes a working pressure of 3000psi / 206bar - even though that's wrong */
-		/* I also think that the unit that it stores (cuft for me) might change with SDA settings */
-		// dive->cylinder[i].type.size.mliter = volume * 206.84 / 28.317;
-		dive->cylinder[i].type.size.mliter = volume * 200 / 28.317;
+		/* uemis always assumes a working pressure of 202.6bar (!?!?) - I first thought
+		 * it was 3000psi, but testing against all my dives gets me that strange number.
+		 * Still, that's of course completely bogus and shows they don't get how
+		 * cylinders are named in non-metric parts of the world...
+		 * we store the incorrect working pressure to get the SAC calculations "close"
+		 * but the user will have to correct this manually
+		 */
+		dive->cylinder[i].type.size.mliter = volume;
+		dive->cylinder[i].type.workingpressure.mbar = 202600;
 		dive->cylinder[i].gasmix.o2.permille = *(uint8_t *)(data+120+25*(gasoffset + i)) * 10 + 0.5;
 		dive->cylinder[i].gasmix.he.permille = 0;
 	}
