@@ -22,7 +22,6 @@
 GtkListStore *cylinder_model;
 
 enum {
-	CYL_INDEX,
 	CYL_DESC,
 	CYL_SIZE,
 	CYL_WORKP,
@@ -220,7 +219,6 @@ static int cyl_nothing(cylinder_t *cyl)
 static void set_one_cylinder(int index, cylinder_t *cyl, GtkListStore *model, GtkTreeIter *iter)
 {
 	gtk_list_store_set(model, iter,
-		CYL_INDEX, index,
 		CYL_DESC, cyl->type.description ? : "",
 		CYL_SIZE, cyl->type.size.mliter,
 		CYL_WORKP, cyl->type.workingpressure.mbar,
@@ -490,6 +488,18 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 	return success;
 }
 
+static int get_model_index(GtkListStore *model, GtkTreeIter *iter)
+{
+	int *p, index;
+	GtkTreePath *path;
+
+	path = gtk_tree_model_get_path(GTK_TREE_MODEL(model), iter);
+	p = gtk_tree_path_get_indices(path);
+	index = p ? *p : 0;
+	gtk_tree_path_free(path);
+	return index;
+}
+
 static void edit_cb(GtkButton *button, gpointer data)
 {
 	int index;
@@ -504,7 +514,7 @@ static void edit_cb(GtkButton *button, gpointer data)
 	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
 		return;
 
-	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
+	index = get_model_index(model, &iter);
 	if (!edit_cylinder_dialog(index, &cyl))
 		return;
 
@@ -547,7 +557,7 @@ static void del_cb(GtkButton *button, gpointer data)
 	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
 		return;
 
-	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
+	index = get_model_index(model, &iter);
 
 	dive = current_dive;
 	if (!dive)
@@ -555,12 +565,7 @@ static void del_cb(GtkButton *button, gpointer data)
 	cyl = dive->cylinder + index;
 	nr = cylinder_list.max_index - index - 1;
 
-	if (gtk_list_store_remove(model, &iter)) {
-		do {
-			gtk_list_store_set(model, &iter, CYL_INDEX, index, -1);
-			index++;
-		} while (gtk_tree_model_iter_next(GTK_TREE_MODEL(model), &iter));
-	}
+	gtk_list_store_remove(model, &iter);
 
 	cylinder_list.max_index--;
 	memmove(cyl, cyl+1, nr*sizeof(*cyl));
@@ -670,7 +675,6 @@ static GtkWidget *cylinder_list_create(void)
 	GtkListStore *model;
 
 	model = gtk_list_store_new(CYL_COLUMNS,
-		G_TYPE_INT,		/* CYL_INDEX */
 		G_TYPE_STRING,		/* CYL_DESC: utf8 */
 		G_TYPE_INT,		/* CYL_SIZE: mliter */
 		G_TYPE_INT,		/* CYL_WORKP: mbar */
