@@ -103,6 +103,8 @@ static void file_open(GtkWidget *w, gpointer data)
 	filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
 	gtk_file_filter_add_pattern(filter, "*.XML");
+	gtk_file_filter_add_pattern(filter, "*.sda");
+	gtk_file_filter_add_pattern(filter, "*.SDA");
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, "XML file");
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
@@ -630,46 +632,6 @@ void init_ui(int argc, char **argv)
 void run_ui(void)
 {
 	gtk_main();
-}
-
-/* get the filenames the user selects and call the parsing function
- * on them
- * return 0 if the user cancelled the dialog
- */
-int open_import_file_dialog(char *filterpattern, char *filtertext, 
-			void(* parse_function)(char *))
-{
-	int ret=0;
-
-	GtkWidget *dialog;
-	GtkFileFilter *filter = gtk_file_filter_new ();
-	gtk_file_filter_add_pattern (filter, filterpattern);
-	gtk_file_filter_set_name(filter, filtertext);
-	dialog = gtk_file_chooser_dialog_new("Open File",
-					GTK_WINDOW(main_window),
-					GTK_FILE_CHOOSER_ACTION_OPEN,
-					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-					NULL);
-	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog),filter);
-
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		GSList *filenames;
-		char *filename;
-		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
-		while(filenames != NULL) {
-			filename = (char *)filenames->data;
-			parse_function(filename);
-			g_free(filename);
-			filenames = g_slist_next(filenames);
-		}
-		g_slist_free(filenames);
-		ret = 1;
-	}
-	gtk_widget_destroy(dialog);
-
-	return ret;
 }
 
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)

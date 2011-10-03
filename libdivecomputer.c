@@ -497,9 +497,6 @@ void do_import(device_data_t *data)
 	pthread_t pthread;
 	void *retval;
 
-	if (data->type == DEVICE_TYPE_UEMIS)
-		return uemis_import();
-
 	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
 	import_thread_done = 0;
 	pthread_create(&pthread, NULL, pthread_wrapper, data);
@@ -542,6 +539,5 @@ struct device_list device_list[] = {
 	{ "Cressi Edy",		DEVICE_TYPE_CRESSI_EDY },
 	{ "Zeagle N2iTiON 3",	DEVICE_TYPE_ZEAGLE_N2ITION3 },
 	{ "Atomics Cobalt",	DEVICE_TYPE_ATOMICS_COBALT },
-	{ "Uemis Zurich SDA",	DEVICE_TYPE_UEMIS },
 	{ NULL }
 };
