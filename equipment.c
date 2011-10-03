@@ -449,20 +449,20 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	gtk_spin_button_set_range(GTK_SPIN_BUTTON(cylinder->o2), 21.0, 100.0);
 }
 
-static void edit_cylinder_dialog(int index, GtkListStore *model, GtkTreeIter *iter)
+static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 {
-	int result;
-	struct cylinder_widget cylinder;
+	int success;
 	GtkWidget *dialog, *vbox;
+	struct cylinder_widget cylinder;
 	struct dive *dive;
-	cylinder_t *cyl;
+
+	cylinder.index = index;
+	cylinder.changed = 0;
 
 	dive = current_dive;
 	if (!dive)
-		return;
-	cyl = dive->cylinder + index;
-	cylinder.index = index;
-	cylinder.changed = 0;
+		return 0;
+	*cyl = dive->cylinder[index];
 
 	dialog = gtk_dialog_new_with_buttons("Cylinder",
 		GTK_WINDOW(main_window),
@@ -477,14 +477,17 @@ static void edit_cylinder_dialog(int index, GtkListStore *model, GtkTreeIter *it
 	show_cylinder(cyl, &cylinder);
 
 	gtk_widget_show_all(dialog);
-	result = gtk_dialog_run(GTK_DIALOG(dialog));
-	if (result == GTK_RESPONSE_ACCEPT) {
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (success) {
 		record_cylinder_changes(cyl, &cylinder);
-		set_one_cylinder(index, cyl, model, iter);
+		dive->cylinder[index] = *cyl;
 		mark_divelist_changed(TRUE);
 		flush_divelist(dive);
 	}
+
 	gtk_widget_destroy(dialog);
+
+	return success;
 }
 
 static void edit_cb(GtkButton *button, gpointer data)
@@ -493,6 +496,7 @@ static void edit_cb(GtkButton *button, gpointer data)
 	GtkTreeIter iter;
 	GtkListStore *model = cylinder_list.model;
 	GtkTreeSelection *selection;
+	cylinder_t cyl;
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
 
@@ -501,7 +505,10 @@ static void edit_cb(GtkButton *button, gpointer data)
 		return;
 
 	gtk_tree_model_get(GTK_TREE_MODEL(model), &iter, CYL_INDEX, &index, -1);
-	edit_cylinder_dialog(index, model, &iter);
+	if (!edit_cylinder_dialog(index, &cyl))
+		return;
+
+	set_one_cylinder(index, &cyl, model, &iter);
 }
 
 static void add_cb(GtkButton *button, gpointer data)
@@ -510,14 +517,17 @@ static void add_cb(GtkButton *button, gpointer data)
 	GtkTreeIter iter;
 	GtkListStore *model = cylinder_list.model;
 	GtkTreeSelection *selection;
+	cylinder_t cyl;
+
+	if (!edit_cylinder_dialog(index, &cyl))
+		return;
 
 	gtk_list_store_append(model, &iter);
-	gtk_list_store_set(model, &iter, CYL_INDEX, index, -1);
+	set_one_cylinder(index, &cyl, model, &iter);
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
 	gtk_tree_selection_select_iter(selection, &iter);
 
-	edit_cylinder_dialog(index, model, &iter);
 	cylinder_list.max_index++;
 	gtk_widget_set_sensitive(cylinder_list.add, cylinder_list.max_index < MAX_CYLINDERS);
 }
