@@ -8,6 +8,7 @@
 #include <libxml/tree.h>
 
 #include "dive.h"
+#include "uemis.h"
 
 int verbose;
 
@@ -861,6 +862,7 @@ static int uemis_dive_match(struct dive *dive, const char *name, int len, char *
 		MATCH(".nitrox_3.deco_tank.oxygen", uemis_percent, dive->cylinder + 5) ||
 		MATCH(".nitrox_3.travel_tank.size", uemis_cylindersize, dive->cylinder + 6) ||
 		MATCH(".nitrox_3.travel_tank.oxygen", uemis_percent, dive->cylinder + 6) ||
+		MATCH(".dive.val.bin", uemis_parse_divelog_binary, &dive) ||
 		0;
 }
 
@@ -1365,6 +1367,7 @@ static struct nesting {
 	{ "SUUNTO", suunto_importer },
 	{ "Divinglog", DivingLog_importer },
 	{ "pre_dive", uemis_importer },
+	{ "dives", uemis_importer },
 	{ "uddf", uddf_importer },
 
 	{ NULL, }

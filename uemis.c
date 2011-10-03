@@ -180,7 +180,7 @@ bail:
 /*
  * parse uemis base64 data blob into struct dive
  */
-static void parse_divelog_binary(char *base64, struct dive **divep) {
+void uemis_parse_divelog_binary(char *base64, struct dive **divep) {
 	int datalen;
 	int i;
 	uint8_t *data;
@@ -271,7 +271,7 @@ parse_uemis_file(char *divelogfilename) {
 		/* some error handling */
 		goto bail;
 	}
-	parse_divelog_binary(found,&dive);
+	uemis_parse_divelog_binary(found,&dive);
 	record_dive(dive);
 bail:
 	if (found)

@@ -9,5 +9,6 @@
 #define DEVICE_TYPE_UEMIS (-1)
 
 void uemis_import();
+void uemis_parse_divelog_binary(char *base64, struct dive **divep);
 
 #endif /* DIVE_H */
