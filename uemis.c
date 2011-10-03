@@ -180,11 +180,12 @@ bail:
 /*
  * parse uemis base64 data blob into struct dive
  */
-void uemis_parse_divelog_binary(char *base64, struct dive **divep) {
+void uemis_parse_divelog_binary(char *base64, void *datap) {
 	int datalen;
 	int i;
 	uint8_t *data;
 	struct sample *sample;
+	struct dive **divep = datap;
 	struct dive *dive = *divep;
 	int template, gasoffset;
 
