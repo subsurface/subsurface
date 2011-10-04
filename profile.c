@@ -171,14 +171,20 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	/* draw a little tirangular marker and attach tooltip */
 	x = SCALEX(gc, event->time.seconds);
 	y = SCALEY(gc, depth);
-	set_source_rgba(gc, 1.0, 0.1, 0.1, 0.5);
-	cairo_move_to(gc->cr, x-6, y-3);
-	cairo_line_to(gc->cr, x  , y-3);
-	cairo_line_to(gc->cr, x-3, y+3);
-	cairo_line_to(gc->cr, x-6, y-3);
+	set_source_rgba(gc, 1.0, 1.0, 0.1, 0.8);
+	cairo_move_to(gc->cr, x-15, y+6);
+	cairo_line_to(gc->cr, x-3  , y+6);
+	cairo_line_to(gc->cr, x-9, y-6);
+	cairo_line_to(gc->cr, x-15, y+6);
 	cairo_stroke_preserve(gc->cr);
 	cairo_fill(gc->cr);
-	attach_tooltip(x-6, y-3, 6, 6, event->name);
+	set_source_rgba(gc, 0.0, 0.0, 0.0, 0.8);
+	cairo_move_to(gc->cr, x-9, y-3);
+	cairo_line_to(gc->cr, x-9, y+1);
+	cairo_move_to(gc->cr, x-9, y+4);
+	cairo_line_to(gc->cr, x-9, y+4);
+	cairo_stroke(gc->cr);
+	attach_tooltip(x-15, y-6, 12, 12, event->name);
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
