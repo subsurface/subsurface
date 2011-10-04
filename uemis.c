@@ -151,7 +151,7 @@ void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sam
 	if (flags[4] & 0x08)
 		add_event(dive, sample->time.seconds, 0, 0, 0, "RGT Alert");
 	if (flags[4] & 0x40)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Tank Change Suggest");
+		add_event(dive, sample->time.seconds, 0, 0, 0, "Tank Change Suggested");
 	if (flags[4] & 0x80)
 		add_event(dive, sample->time.seconds, 0, 0, 0, "Depth Limit Exceeded");
 	if (flags[5] & 0x01)
