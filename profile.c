@@ -722,14 +722,11 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	return analyze_plot_info(pi);
 }
 
-void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
+void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive)
 {
-	double topx, topy;
 	struct plot_info *pi = create_plot_info(dive);
 
-	topx = w / 20.0;
-	topy = h / 20.0;
-	cairo_translate(gc->cr, topx, topy);
+	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
 	cairo_set_line_width(gc->cr, 2);
 	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
@@ -741,8 +738,8 @@ void plot(struct graphics_context *gc, int w, int h, struct dive *dive)
 	 *
 	 * Snif. What a pity.
 	 */
-	gc->maxx = (w - 2*topx);
-	gc->maxy = (h - 2*topy);
+	gc->maxx = (drawing_area->width - 2*drawing_area->x);
+	gc->maxy = (drawing_area->height - 2*drawing_area->y);
 
 	/* Temperature profile */
 	plot_temperature_profile(gc, pi);

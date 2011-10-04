@@ -127,12 +127,13 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 
 static void show_dive_profile(struct dive *dive, cairo_t *cr, double w, double h)
 {
+	cairo_rectangle_int_t drawing_area = { w/20.0, h/20.0, w, h};
 	struct graphics_context gc = {
 		.printer = 1,
 		.cr = cr
 	};
 	cairo_save(cr);
-	plot(&gc, w, h, dive);
+	plot(&gc, &drawing_area, dive);
 	cairo_restore(cr);
 }
 

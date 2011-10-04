@@ -22,7 +22,7 @@ struct graphics_context {
 	double topy, bottomy;
 };
 
-extern void plot(struct graphics_context *gc, int w, int h, struct dive *dive);
+extern void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive);
 extern void set_source_rgb(struct graphics_context *gc, double r, double g, double b);
 
 #endif

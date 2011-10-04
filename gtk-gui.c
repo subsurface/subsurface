@@ -674,18 +674,21 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 {
 	struct dive *dive = current_dive;
 	struct graphics_context gc = { .printer = 0 };
-	int w,h;
+	static cairo_rectangle_int_t drawing_area;
 
-	w = widget->allocation.width;
-	h = widget->allocation.height;
+	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
+	 * so effective drawing area is width-2x * height-2y */
+	drawing_area.width = widget->allocation.width;
+	drawing_area.height = widget->allocation.height;
+	drawing_area.x = drawing_area.width / 20.0;
+	drawing_area.y = drawing_area.height / 20.0;
 
 	gc.cr = gdk_cairo_create(widget->window);
 	set_source_rgb(&gc, 0, 0, 0);
 	cairo_paint(gc.cr);
 
 	if (dive)
-		plot(&gc, w, h, dive);
-
+		plot(&gc, &drawing_area, dive);
 	cairo_destroy(gc.cr);
 
 	return FALSE;
