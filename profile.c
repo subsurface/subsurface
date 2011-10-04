@@ -160,6 +160,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event, const text_render_options_t *tro)
 {
 	int i, depth = 0;
+	int x,y;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *data = pi->entry + i;
@@ -167,7 +168,17 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			break;
 		depth = data->val;
 	}
-	plot_text(gc, tro, event->time.seconds, depth, "%s", event->name);
+	/* draw a little tirangular marker and attach tooltip */
+	x = SCALEX(gc, event->time.seconds);
+	y = SCALEY(gc, depth);
+	set_source_rgba(gc, 1.0, 0.1, 0.1, 0.5);
+	cairo_move_to(gc->cr, x-6, y-3);
+	cairo_line_to(gc->cr, x  , y-3);
+	cairo_line_to(gc->cr, x-3, y+3);
+	cairo_line_to(gc->cr, x-6, y-3);
+	cairo_stroke_preserve(gc->cr);
+	cairo_fill(gc->cr);
+	attach_tooltip(x-6, y-3, 6, 6, event->name);
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)

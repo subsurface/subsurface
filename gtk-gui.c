@@ -670,6 +670,48 @@ void run_ui(void)
 	gtk_main();
 }
 
+typedef struct {
+	cairo_rectangle_int_t rect;
+	const char *text;
+} tooltip_record_t;
+
+static tooltip_record_t *tooltip_rects;
+static int tooltips;
+
+void attach_tooltip(int x, int y, int w, int h, const char *text)
+{
+	cairo_rectangle_int_t *rect;
+	tooltip_rects = realloc(tooltip_rects, (tooltips + 1) * sizeof(tooltip_record_t));
+	rect = &tooltip_rects[tooltips].rect;
+	rect->x = x;
+	rect->y = y;
+	rect->width = w;
+	rect->height = h;
+	tooltip_rects[tooltips].text = text;
+	tooltips++;
+}
+
+#define INSIDE_RECT(_r,_x,_y)	((_r.x <= _x) && (_r.x + _r.width >= _x) && \
+				(_r.y <= _y) && (_r.y + _r.height >= _y))
+
+static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
+			gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data)
+{
+	int i;
+	cairo_rectangle_int_t *drawing_area = user_data;
+	gint tx = x - drawing_area->x; /* get transformed coordinates */
+	gint ty = y - drawing_area->y;
+
+	/* are we over an event marker ? */
+	for (i = 0; i < tooltips; i++) {
+		if (INSIDE_RECT(tooltip_rects[i].rect, tx, ty)) {
+			gtk_tooltip_set_text(tooltip,tooltip_rects[i].text);
+			return TRUE; /* show tooltip */
+		}
+	}
+	return FALSE; /* don't show tooltip */
+}
+
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
 	struct dive *dive = current_dive;
@@ -684,11 +726,19 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	drawing_area.y = drawing_area.height / 20.0;
 
 	gc.cr = gdk_cairo_create(widget->window);
+	g_object_set(widget, "has-tooltip", TRUE, NULL);
+	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), &drawing_area);
 	set_source_rgb(&gc, 0, 0, 0);
 	cairo_paint(gc.cr);
 
-	if (dive)
+	if (dive) {
+		if (tooltip_rects) {
+			free(tooltip_rects);
+			tooltip_rects = NULL;
+		}
+		tooltips = 0;
 		plot(&gc, &drawing_area, dive);
+	}
 	cairo_destroy(gc.cr);
 
 	return FALSE;

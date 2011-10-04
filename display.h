@@ -24,5 +24,6 @@ struct graphics_context {
 
 extern void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive);
 extern void set_source_rgb(struct graphics_context *gc, double r, double g, double b);
+extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 
 #endif
