@@ -588,11 +588,14 @@ void init_ui(int argc, char **argv)
 	GtkWidget *equipment;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
+	GtkSettings *settings;
 	static const GtkTargetEntry notebook_target = {
 		"GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0
 	};
 
 	gtk_init(&argc, &argv);
+	settings = gtk_settings_get_default();
+	gtk_settings_set_long_property(settings, "gtk_tooltip_timeout", 10, "subsurface setting");
 
 	g_type_init();
 	gconf = gconf_client_get_default();
