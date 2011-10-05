@@ -139,6 +139,9 @@ void report_dives(void)
 	if (last && last->number)
 		try_to_renumber(last, preexisting);
 
+	/* did we have dives in the table and added more? */
+	if (last && preexisting != dive_table.nr)
+		mark_divelist_changed(TRUE);
 	dive_table.preexisting = dive_table.nr;
 	dive_list_update_dives();
 }
@@ -184,6 +187,7 @@ void renumber_dives(int nr)
 		struct dive *dive = dive_table.dives[i];
 		dive->number = nr + i;
 	}
+	mark_divelist_changed(TRUE);
 }
 
 int main(int argc, char **argv)
