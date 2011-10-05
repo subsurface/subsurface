@@ -209,7 +209,8 @@ int main(int argc, char **argv)
 		}
 		GError *error = NULL;
 		parse_xml_file(a, &error);
-		
+		report_dives();
+
 		if (error != NULL)
 		{
 			report_error(error);
@@ -217,8 +218,6 @@ int main(int argc, char **argv)
 			error = NULL;
 		}
 	}
-
-	report_dives();
 
 	run_ui();
 	return 0;
