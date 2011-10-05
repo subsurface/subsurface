@@ -852,7 +852,7 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
-	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
 
 	filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
