@@ -836,7 +836,15 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	return GTK_ENTRY(entry);
 }
 
-static GtkWidget *xml_file_selector(GtkWidget *vbox)
+/* once a file is selected in the FileChooserButton we want to exit the import dialog */
+static void on_file_set(GtkFileChooserButton *widget, gpointer _data)
+{
+	GtkDialog *main_dialog = _data;
+
+	gtk_dialog_response(main_dialog, GTK_RESPONSE_ACCEPT);
+}
+
+static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
 {
 	GtkWidget *hbox, *frame, *chooser, *dialog;
 	GtkFileFilter *filter;
@@ -864,6 +872,8 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox)
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 	chooser = gtk_file_chooser_button_new_with_dialog(dialog);
+	g_signal_connect(G_OBJECT(chooser), "file-set", G_CALLBACK(on_file_set), main_dialog);
+
 	gtk_file_chooser_button_set_width_chars(GTK_FILE_CHOOSER_BUTTON(chooser), 30);
 	gtk_container_add(GTK_CONTAINER(frame), chooser);
 
@@ -904,7 +914,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	label = gtk_label_new("Import: \nLoad XML file or import directly from dive computer");
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
-	XMLchooser = xml_file_selector(vbox);
+	XMLchooser = xml_file_selector(vbox, dialog);
 	computer = dive_computer_selector(vbox);
 	device = dive_computer_device(vbox);
 	hbox = gtk_hbox_new(FALSE, 6);
