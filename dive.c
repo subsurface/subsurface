@@ -410,7 +410,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	int i;
 	struct dive *res;
 
-	if (a->when != b->when)
+	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
 		return NULL;
 
 	res = alloc_dive();
