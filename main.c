@@ -155,6 +155,15 @@ static void parse_argument(const char *arg)
 		case 'v':
 			verbose++;
 			continue;
+		case '-':
+			/* long options with -- */
+			if (strcmp(arg,"--import") == 0) {
+				/* mark the dives so far as the base,
+				 * everything after is imported */
+				report_dives();
+				return;
+			}
+			/* fallthrough */
 		default:
 			fprintf(stderr, "Bad argument '%s'\n", arg);
 			exit(1);
