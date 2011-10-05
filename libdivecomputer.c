@@ -223,7 +223,7 @@ static int find_dive(struct dive *dive, device_data_t *devdata)
 {
 	int i;
 
-	for (i = 0; i < devdata->preexisting; i++) {
+	for (i = 0; i < dive_table.preexisting; i++) {
 		struct dive *old = dive_table.dives[i];
 
 		if (dive->when != old->when)
@@ -333,7 +333,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 static device_status_t import_device_data(device_t *device, device_data_t *devicedata)
 {
-	devicedata->preexisting = dive_table.nr;
 	return device_foreach(device, dive_cb, devicedata);
 }
 

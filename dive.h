@@ -201,7 +201,7 @@ extern struct units input_units, output_units;
 extern int verbose;
 
 struct dive_table {
-	int nr, allocated;
+	int nr, allocated, preexisting;
 	struct dive **dives;
 };
 

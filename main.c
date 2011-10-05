@@ -45,12 +45,70 @@ const char *monthname(int mon)
 }
 
 /*
+ * When adding dives to the dive table, we try to renumber
+ * the new dives based on any old dives in the dive table.
+ *
+ * But we only do it if:
+ *
+ *  - the last dive in the old dive table was numbered
+ *
+ *  - all the new dives are strictly at the end (so the
+ *    "last dive" is at the same location in the dive table
+ *    after re-sorting the dives.
+ *
+ *  - none of the new dives have any numbers
+ *
+ * This catches the common case of importing new dives from
+ * a dive computer, and gives them proper numbers based on
+ * your old dive list. But it tries to be very conservative
+ * and not give numbers if there is *any* question about
+ * what the numbers should be - in which case you need to do
+ * a manual re-numbering.
+ */
+static void try_to_renumber(struct dive *last, int preexisting)
+{
+	int i, nr;
+
+	/*
+	 * If the new dives aren't all strictly at the end,
+	 * we're going to expect the user to do a manual
+	 * renumbering.
+	 */
+	if (get_dive(preexisting-1) != last)
+		return;
+
+	/*
+	 * If any of the new dives already had a number,
+	 * we'll have to do a manual renumbering.
+	 */
+	for (i = preexisting; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		if (dive->number)
+			return;
+	}
+
+	/*
+	 * Ok, renumber..
+	 */
+	nr = last->number;
+	for (i = preexisting; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		dive->number = ++nr;
+	}
+}
+
+/*
  * This doesn't really report anything at all. We just sort the
  * dives, the GUI does the reporting
  */
 void report_dives(void)
 {
 	int i;
+	int preexisting = dive_table.preexisting;
+	struct dive *last;
+
+	/* This does the right thing for -1: NULL */
+	last = get_dive(preexisting-1);
 
 	qsort(dive_table.dives, dive_table.nr, sizeof(struct dive *), sortfn);
 
@@ -77,6 +135,11 @@ void report_dives(void)
 		i--;
 	}
 
+	/* Was the previous dive table state numbered? */
+	if (last && last->number)
+		try_to_renumber(last, preexisting);
+
+	dive_table.preexisting = dive_table.nr;
 	dive_list_update_dives();
 }
 
