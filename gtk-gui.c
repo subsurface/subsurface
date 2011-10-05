@@ -130,7 +130,6 @@ static void file_open(GtkWidget *w, gpointer data)
 		}
 		g_slist_free(filenames);
 		report_dives();
-		dive_list_update_dives();
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -881,7 +880,6 @@ void import_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 
 	report_dives();
-	dive_list_update_dives();
 }
 
 void update_progressbar(progressbar_t *progress, double value)

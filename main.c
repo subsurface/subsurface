@@ -76,6 +76,8 @@ void report_dives(void)
 		/* Redo the new 'i'th dive */
 		i--;
 	}
+
+	dive_list_update_dives();
 }
 
 static void parse_argument(const char *arg)
@@ -150,7 +152,6 @@ int main(int argc, char **argv)
 	}
 
 	report_dives();
-	dive_list_update_dives();
 
 	run_ui();
 	return 0;
