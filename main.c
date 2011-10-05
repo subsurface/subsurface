@@ -98,6 +98,11 @@ static void try_to_renumber(struct dive *last, int preexisting)
 }
 
 /*
+ * track whether we switched to importing dives
+ */
+static gboolean imported = FALSE;
+
+/*
  * This doesn't really report anything at all. We just sort the
  * dives, the GUI does the reporting
  */
@@ -162,7 +167,8 @@ static void parse_argument(const char *arg)
 			if (strcmp(arg,"--import") == 0) {
 				/* mark the dives so far as the base,
 				 * everything after is imported */
-				report_dives(TRUE);
+				report_dives(FALSE);
+				imported = TRUE;
 				return;
 			}
 			/* fallthrough */
@@ -229,7 +235,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	report_dives(FALSE);
+	report_dives(imported);
 
 	run_ui();
 	return 0;
