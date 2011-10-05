@@ -388,6 +388,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 static void renumber_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
+	struct dive *dive;
 	GtkWidget *dialog, *frame, *button, *vbox;
 
 	dialog = gtk_dialog_new_with_buttons("Renumber",
@@ -404,6 +405,14 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 
 	button = gtk_spin_button_new_with_range(1, 50000, 1);
 	gtk_container_add(GTK_CONTAINER(frame), button);
+
+	/*
+	 * Do we have a number for the first dive already? Use that
+	 * as the default.
+	 */
+	dive = get_dive(0);
+	if (dive && dive->number)
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(button), dive->number);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
