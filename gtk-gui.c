@@ -129,7 +129,7 @@ static void file_open(GtkWidget *w, gpointer data)
 			filenames = g_slist_next(filenames);
 		}
 		g_slist_free(filenames);
-		report_dives();
+		report_dives(FALSE);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -836,12 +836,60 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	return GTK_ENTRY(entry);
 }
 
+static GtkWidget *xml_file_selector(GtkWidget *vbox)
+{
+	GtkWidget *hbox, *frame, *chooser, *dialog;
+	GtkFileFilter *filter;
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
+
+	frame = gtk_frame_new("XML file name");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
+	dialog = gtk_file_chooser_dialog_new("Open XML File",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_OPEN,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	filter = gtk_file_filter_new();
+	gtk_file_filter_add_pattern(filter, "*.xml");
+	gtk_file_filter_add_pattern(filter, "*.XML");
+	gtk_file_filter_add_pattern(filter, "*.sda");
+	gtk_file_filter_add_pattern(filter, "*.SDA");
+	gtk_file_filter_add_mime_type(filter, "text/xml");
+	gtk_file_filter_set_name(filter, "XML file");
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
+
+	chooser = gtk_file_chooser_button_new_with_dialog(dialog);
+	gtk_file_chooser_button_set_width_chars(GTK_FILE_CHOOSER_BUTTON(chooser), 30);
+	gtk_container_add(GTK_CONTAINER(frame), chooser);
+
+	return chooser;
+}
+
+static void do_import_file(gpointer data, gpointer user_data)
+{
+	GError *error = NULL;
+	parse_xml_file((char *)data, &error);
+
+	if (error != NULL)
+	{
+		report_error(error);
+		g_error_free(error);
+		error = NULL;
+	}
+}
+
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *hbox, *vbox;
+	GtkWidget *dialog, *hbox, *vbox, *label;
 	GtkComboBox *computer;
 	GtkEntry *device;
+	GtkWidget *XMLchooser;
 	device_data_t devicedata = {
 		.devname = NULL,
 	};
@@ -854,10 +902,11 @@ void import_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-
+	label = gtk_label_new("Import: \nLoad XML file or import directly from dive computer");
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
+	XMLchooser = xml_file_selector(vbox);
 	computer = dive_computer_selector(vbox);
 	device = dive_computer_device(vbox);
-
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
 	devicedata.progress.bar = gtk_progress_bar_new();
@@ -870,25 +919,34 @@ void import_dialog(GtkWidget *w, gpointer data)
 		GtkTreeIter iter;
 		GtkTreeModel *model;
 		const char *comp;
+		GSList *list;
 	case GTK_RESPONSE_ACCEPT:
-		if (!gtk_combo_box_get_active_iter(computer, &iter))
-			break;
-		model = gtk_combo_box_get_model(computer);
-		gtk_tree_model_get(model, &iter,
-			0, &comp,
-			1, &type,
-			-1);
-		devicedata.type = type;
-		devicedata.name = comp;
-		devicedata.devname = gtk_entry_get_text(device);
-		do_import(&devicedata);
+		/* what happened - did the user pick a file? In that case
+		 * we ignore whether a dive computer model was picked */
+		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
+		if (g_slist_length(list) == 0) {
+			if (!gtk_combo_box_get_active_iter(computer, &iter))
+				break;
+			model = gtk_combo_box_get_model(computer);
+			gtk_tree_model_get(model, &iter,
+					0, &comp,
+					1, &type,
+					-1);
+			devicedata.type = type;
+			devicedata.name = comp;
+			devicedata.devname = gtk_entry_get_text(device);
+			do_import(&devicedata);
+		} else {
+			g_slist_foreach(list,do_import_file,NULL);
+			g_slist_free(list);
+		}
 		break;
 	default:
 		break;
 	}
 	gtk_widget_destroy(dialog);
 
-	report_dives();
+	report_dives(TRUE);
 }
 
 void update_progressbar(progressbar_t *progress, double value)

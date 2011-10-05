@@ -101,7 +101,7 @@ static void try_to_renumber(struct dive *last, int preexisting)
  * This doesn't really report anything at all. We just sort the
  * dives, the GUI does the reporting
  */
-void report_dives(void)
+void report_dives(gboolean imported)
 {
 	int i;
 	int preexisting = dive_table.preexisting;
@@ -135,13 +135,15 @@ void report_dives(void)
 		i--;
 	}
 
-	/* Was the previous dive table state numbered? */
-	if (last && last->number)
-		try_to_renumber(last, preexisting);
+	if (imported) {
+		/* Was the previous dive table state numbered? */
+		if (last && last->number)
+			try_to_renumber(last, preexisting);
 
-	/* did we have dives in the table and added more? */
-	if (last && preexisting != dive_table.nr)
-		mark_divelist_changed(TRUE);
+		/* did we have dives in the table and added more? */
+		if (last && preexisting != dive_table.nr)
+			mark_divelist_changed(TRUE);
+	}
 	dive_table.preexisting = dive_table.nr;
 	dive_list_update_dives();
 }
@@ -160,7 +162,7 @@ static void parse_argument(const char *arg)
 			if (strcmp(arg,"--import") == 0) {
 				/* mark the dives so far as the base,
 				 * everything after is imported */
-				report_dives();
+				report_dives(TRUE);
 				return;
 			}
 			/* fallthrough */
@@ -227,7 +229,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	report_dives();
+	report_dives(FALSE);
 
 	run_ui();
 	return 0;
