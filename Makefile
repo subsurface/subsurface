@@ -4,9 +4,18 @@ CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
 INSTALL=install
 
-prefix = $(HOME)
+# these locations seem to work for SuSE and Fedora
+# prefix = $(HOME)
+prefix = /usr
 DESTDIR = $(prefix)/bin
+DESKTOPDIR = $(prefix)/share/applications
+ICONPATH = $(prefix)/share/icons/hicolor
+ICONDIR = $(ICONPATH)/scalable/apps
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
+
 NAME = subsurface
+ICONFILE = $(NAME).svg
+DESKTOPFILE = $(NAME).desktop
 
 # find libdivecomputer; we don't trust pkg-config here given how young
 # libdivecomputer still is - so we check /usr/local and /usr and then we
@@ -49,6 +58,11 @@ $(NAME): $(OBJS)
 install: $(NAME)
 	$(INSTALL) -d -m 755 $(DESTDIR)
 	$(INSTALL) $(NAME) $(DESTDIR)
+	$(INSTALL) -d -m 755 $(DESKTOPDIR)
+	$(INSTALL) $(DESKTOPFILE) $(DESKTOPDIR)
+	$(INSTALL) -d -m 755 $(ICONDIR)
+	$(INSTALL) $(ICONFILE) $(ICONDIR)
+	$(gtk_update_icon_cache)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c

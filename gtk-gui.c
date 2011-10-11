@@ -43,6 +43,7 @@ void repaint_dive(void)
 }
 
 static char *existing_filename;
+static gboolean need_icon = TRUE;
 
 static void on_info_bar_response(GtkWidget *widget, gint response,
                                  gpointer data)
@@ -428,11 +429,14 @@ static void about_dialog(GtkWidget *w, gpointer data)
 {
 	const char *logo_property = NULL;
 	GdkPixbuf *logo = NULL;
-	GtkWidget *image = gtk_image_new_from_file("icon.svg");
 
-	if (image) {
-		logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
-		logo_property = "logo";
+	if (need_icon) {
+		GtkWidget *image = gtk_image_new_from_file("subsurface.svg");
+
+		if (image) {
+			logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
+			logo_property = "logo";
+		}
 	}
 
 	gtk_show_about_dialog(NULL,
@@ -441,6 +445,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		"license", "GPLv2",
 		"version", VERSION_STRING,
 		"copyright", "Linus Torvalds 2011",
+		"logo-icon-name", "subsurface",
 		/* Must be last: */
 		logo_property, logo,
 		NULL);
@@ -596,6 +601,8 @@ void init_ui(int argc, char **argv)
 	GtkWidget *equipment;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
+	GdkScreen *screen;
+	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
 	static const GtkTargetEntry notebook_target = {
 		"GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0
@@ -627,7 +634,20 @@ void init_ui(int argc, char **argv)
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_icon_from_file(GTK_WINDOW(win), "icon.svg", NULL);
+	g_set_application_name ("subsurface");
+	/* Let's check if the subsurface icon has been installed or if
+	 * we need to try to load it from the current directory */
+	screen = gdk_screen_get_default();
+	if (screen)
+		icon_theme = gtk_icon_theme_get_for_screen(screen);
+	if (icon_theme) {
+		if (gtk_icon_theme_has_icon(icon_theme, "subsurface")) {
+			need_icon = FALSE;
+			gtk_window_set_default_icon_name ("subsurface");
+		}
+	}
+	if (need_icon)
+		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.svg", NULL);
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
