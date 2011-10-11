@@ -47,8 +47,8 @@ $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
-	$(INSTALL) -d -m 755 '$(DESTDIR)'
-	$(INSTALL) $(NAME) '$(DESTDIR)'
+	$(INSTALL) -d -m 755 $(DESTDIR)
+	$(INSTALL) $(NAME) $(DESTDIR)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
