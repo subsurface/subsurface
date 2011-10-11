@@ -8,9 +8,24 @@ prefix = $(HOME)
 DESTDIR = $(prefix)/bin
 NAME = subsurface
 
-LIBDIVECOMPUTERDIR = /usr/local
-LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
-LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
+# find libdivecomputer; we don't trust pkg-config here given how young
+# libdivecomputer still is - so we check /usr/local and /usr and then we
+# give up. You can override by simply setting it here
+#
+libdc-local := $(wildcard /usr/local/include/libdivecomputer/*)
+libdc-usr := $(wildcard /usr/include/libdivecomputer/*)
+
+ifneq ($(strip $(libdc-local)),)
+	LIBDIVECOMPUTERDIR = /usr/local
+	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERARCHIVE = -L$(LIBDIVECOMPUTERDIR)/lib -ldivecomputer
+else ifneq ($(strip $(libdc-usr)),)
+	LIBDIVECOMPUTERDIR = /usr
+	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERARCHIVE = -ldivecomputer
+else
+	$(error Cannot find libdivecomputer - please edit Makefile)
+endif
 
 # Libusb-1.0 is only required if libdivecomputer was built with it.
 # And libdivecomputer is only built with it if libusb-1.0 is
