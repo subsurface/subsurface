@@ -4,13 +4,40 @@ CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
 INSTALL=install
 
-prefix = $(HOME)
+# these locations seem to work for SuSE and Fedora
+# prefix = $(HOME)
+prefix = /usr
 DESTDIR = $(prefix)/bin
-NAME = subsurface
+DATADIR = $(prefix)/share
+DESKTOPDIR = $(DATADIR)/applications
+ICONPATH = $(DATADIR)/icons/hicolor
+ICONDIR = $(ICONPATH)/scalable/apps
+MANDIR = $(DATADIR)/man/man1
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
 
-LIBDIVECOMPUTERDIR = /usr/local
-LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
-LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
+NAME = subsurface
+ICONFILE = $(NAME).svg
+DESKTOPFILE = $(NAME).desktop
+MANFILES = $(NAME).1
+
+# find libdivecomputer; we don't trust pkg-config here given how young
+# libdivecomputer still is - so we check /usr/local and /usr and then we
+# give up. You can override by simply setting it here
+#
+libdc-local := $(wildcard /usr/local/include/libdivecomputer/*)
+libdc-usr := $(wildcard /usr/include/libdivecomputer/*)
+
+ifneq ($(strip $(libdc-local)),)
+	LIBDIVECOMPUTERDIR = /usr/local
+	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERARCHIVE = -L$(LIBDIVECOMPUTERDIR)/lib -ldivecomputer
+else ifneq ($(strip $(libdc-usr)),)
+	LIBDIVECOMPUTERDIR = /usr
+	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERARCHIVE = -ldivecomputer
+else
+$(error Cannot find libdivecomputer - please edit Makefile)
+endif
 
 # Libusb-1.0 is only required if libdivecomputer was built with it.
 # And libdivecomputer is only built with it if libusb-1.0 is
@@ -32,8 +59,14 @@ $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
-	$(INSTALL) -d -m 755 '$(DESTDIR)'
-	$(INSTALL) $(NAME) '$(DESTDIR)'
+	$(INSTALL) -d -m 755 $(DESTDIR)
+	$(INSTALL) $(NAME) $(DESTDIR)
+	$(INSTALL) -d -m 755 $(DESKTOPDIR)
+	$(INSTALL) $(DESKTOPFILE) $(DESKTOPDIR)
+	$(INSTALL) -d -m 755 $(ICONDIR)
+	$(INSTALL) $(ICONFILE) $(ICONDIR)
+	$(gtk_update_icon_cache)
+	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c

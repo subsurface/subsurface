@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=subsurface
+GenericName=dive log program
+Comment=manage and display dive computer data
+Icon=subsurface
+Exec=subsurface
+Terminal=false
+Categories=Accessories;
+
