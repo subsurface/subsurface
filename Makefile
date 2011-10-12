@@ -33,7 +33,7 @@ else ifneq ($(strip $(libdc-usr)),)
 	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
 	LIBDIVECOMPUTERARCHIVE = -ldivecomputer
 else
-	$(error Cannot find libdivecomputer - please edit Makefile)
+$(error Cannot find libdivecomputer - please edit Makefile)
 endif
 
 # Libusb-1.0 is only required if libdivecomputer was built with it.
