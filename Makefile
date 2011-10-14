@@ -30,11 +30,11 @@ libdc-usr := $(wildcard /usr/include/libdivecomputer/*)
 ifneq ($(strip $(libdc-local)),)
 	LIBDIVECOMPUTERDIR = /usr/local
 	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
-	LIBDIVECOMPUTERARCHIVE = -L$(LIBDIVECOMPUTERDIR)/lib -ldivecomputer
+	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 else ifneq ($(strip $(libdc-usr)),)
 	LIBDIVECOMPUTERDIR = /usr
 	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
-	LIBDIVECOMPUTERARCHIVE = -ldivecomputer
+	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 else
 $(error Cannot find libdivecomputer - please edit Makefile)
 endif
