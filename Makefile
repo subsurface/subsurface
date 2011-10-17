@@ -6,8 +6,8 @@ INSTALL=install
 
 # these locations seem to work for SuSE and Fedora
 # prefix = $(HOME)
-prefix = /usr
-DESTDIR = $(prefix)/bin
+prefix = $(DESTDIR)/usr
+BINDIR = $(prefix)/bin
 DATADIR = $(prefix)/share
 DESKTOPDIR = $(DATADIR)/applications
 ICONPATH = $(DATADIR)/icons/hicolor
@@ -59,8 +59,8 @@ $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
-	$(INSTALL) -d -m 755 $(DESTDIR)
-	$(INSTALL) $(NAME) $(DESTDIR)
+	$(INSTALL) -d -m 755 $(BINDIR)
+	$(INSTALL) $(NAME) $(BINDIR)
 	$(INSTALL) -d -m 755 $(DESKTOPDIR)
 	$(INSTALL) $(DESKTOPFILE) $(DESKTOPDIR)
 	$(INSTALL) -d -m 755 $(ICONDIR)
