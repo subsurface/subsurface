@@ -47,6 +47,7 @@ LIBUSB = $(shell pkg-config --libs libusb-1.0 2> /dev/null)
 
 LIBXML2 = $(shell xml2-config --libs)
 LIBGTK = $(shell pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0)
+LIBDIVECOMPUTERCFLAGS = -I$(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
 LIBS = $(LIBXML2) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
@@ -99,12 +100,12 @@ print.o: print.c dive.h display.h display-gtk.h
 
 libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0` \
-			-I$(LIBDIVECOMPUTERINCLUDES) \
+			$(LIBDIVECOMPUTERCFLAGS) \
 			-c libdivecomputer.c
 
 gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
-			-I$(LIBDIVECOMPUTERINCLUDES) \
+			$(LIBDIVECOMPUTERCFLAGS) \
 			-DVERSION_STRING='"v$(VERSION)"' \
 			-c gtk-gui.c
 
