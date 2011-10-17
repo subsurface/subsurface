@@ -66,7 +66,8 @@ install: $(NAME)
 	$(INSTALL) -d -m 755 $(ICONDIR)
 	$(INSTALL) $(ICONFILE) $(ICONDIR)
 	$(gtk_update_icon_cache)
-	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
+	$(INSTALL) -d -m 644 $(MANDIR)
+	$(INSTALL) $(MANFILES) $(MANDIR)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
