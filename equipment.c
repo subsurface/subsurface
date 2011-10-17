@@ -45,7 +45,7 @@ struct cylinder_widget {
 	const char *name;
 	GtkWidget *hbox;
 	GtkComboBox *description;
-	GtkSpinButton *size, *pressure;
+	GtkSpinButton *size, *pressure, *start, *end;
 	GtkWidget *o2, *gasmix_button;
 };
 
@@ -87,20 +87,25 @@ static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	return decimals;
 }
 
-static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
+static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar, int start, int end)
 {
 	double volume, pressure;
 
 	convert_volume_pressure(ml, mbar, &volume, &pressure);
 	gtk_spin_button_set_value(cylinder->size, volume);
 	gtk_spin_button_set_value(cylinder->pressure, pressure);
+
+	convert_pressure(start, &pressure);
+	gtk_spin_button_set_value(cylinder->start, pressure);
+	convert_pressure(end, &pressure);
+	gtk_spin_button_set_value(cylinder->end, pressure);
 }
 
 static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
-	GValue value1 = {0, }, value2 = {0,};
+	int ml, mbar, start, end;
 	struct cylinder_widget *cylinder = data;
 	cylinder_t *cyl = current_dive->cylinder + cylinder->index;
 
@@ -126,10 +131,14 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	}
 	cylinder->changed = 1;
 
-	gtk_tree_model_get_value(model, &iter, 1, &value1);
-	gtk_tree_model_get_value(model, &iter, 2, &value2);
+	gtk_tree_model_get(model, &iter,
+		CYL_SIZE, &ml,
+		CYL_WORKP, &mbar,
+		CYL_STARTP, &start,
+		CYL_ENDP, &end,
+		-1);
 
-	set_cylinder_spinbuttons(cylinder, g_value_get_int(&value1), g_value_get_int(&value2));
+	set_cylinder_spinbuttons(cylinder, ml, mbar, start, end);
 }
 
 /*
@@ -196,7 +205,9 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	mbar = cyl->type.workingpressure.mbar;
 	add_cylinder(cylinder, desc, ml, mbar);
 
-	set_cylinder_spinbuttons(cylinder, cyl->type.size.mliter, cyl->type.workingpressure.mbar);
+	set_cylinder_spinbuttons(cylinder,
+		cyl->type.size.mliter, cyl->type.workingpressure.mbar,
+		cyl->start.mbar, cyl->end.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
 	gtk_widget_set_sensitive(cylinder->o2, !!o2);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button), !!o2);
@@ -264,25 +275,29 @@ static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double mi
 	GtkWidget *frame, *hbox, *button;
 
 	frame = gtk_frame_new(name);
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, TRUE, FALSE, 0);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
 	button = gtk_spin_button_new_with_range(min, max, incr);
-	gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, FALSE, 0);
 
 	gtk_spin_button_set_update_policy(GTK_SPIN_BUTTON(button), GTK_UPDATE_IF_VALID);
 
 	return button;
 }
 
-static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl, const char *desc, double volume, double pressure, int o2)
+static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl, const char *desc,
+		double volume, double pressure, double start, double end, int o2)
 {
 	int mbar, ml;
 
-	if (output_units.pressure == PSI)
+	if (output_units.pressure == PSI) {
 		pressure /= 14.5037738;
+		start /= 14.5037738;
+		end /= 14.5037738;
+	}
 
 	if (pressure && output_units.volume == CUFT) {
 		volume *= 28.3168466;	/* CUFT to liter */
@@ -297,6 +312,8 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 	cyl->type.description = desc;
 	cyl->type.size.mliter = ml;
 	cyl->type.workingpressure.mbar = mbar;
+	cyl->start.mbar = start * 1000 + 0.5;
+	cyl->end.mbar = end * 1000 + 0.5;
 	cyl->gasmix.o2.permille = o2;
 
 	/*
@@ -309,7 +326,7 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 {
 	const gchar *desc;
 	GtkComboBox *box;
-	double volume, pressure;
+	double volume, pressure, start, end;
 	int o2;
 
 	/* Ignore uninitialized cylinder widgets */
@@ -320,10 +337,12 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	desc = gtk_combo_box_get_active_text(box);
 	volume = gtk_spin_button_get_value(cylinder->size);
 	pressure = gtk_spin_button_get_value(cylinder->pressure);
+	start = gtk_spin_button_get_value(cylinder->start);
+	end = gtk_spin_button_get_value(cylinder->end);
 	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
 	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
 		o2 = 0;
-	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, o2);
+	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, start, end, o2);
 }
 
 void flush_dive_equipment_changes(struct dive *dive)
@@ -416,6 +435,10 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	GtkWidget *frame, *hbox;
 	GtkWidget *widget;
 
+	/*
+	 * Cylinder type: description, size and
+	 * working pressure
+	 */
 	frame = gtk_frame_new("Cylinder");
 
 	hbox = gtk_hbox_new(FALSE, 3);
@@ -436,6 +459,24 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 
 	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
 	cylinder->pressure = GTK_SPIN_BUTTON(widget);
+
+	/*
+	 * Cylinder start/end pressures
+	 */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	widget = create_spinbutton(hbox, "Start Pressure", 0, 5000, 1);
+	cylinder->start = GTK_SPIN_BUTTON(widget);
+
+	widget = create_spinbutton(hbox, "End Pressure", 0, 5000, 1);
+	cylinder->end = GTK_SPIN_BUTTON(widget);
+
+	/*
+	 * Cylinder gas mix: Air, Nitrox or Trimix
+	 */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
 	widget = create_spinbutton(hbox, "Nitrox", 21, 100, 0.1);
 	cylinder->o2 = widget;
