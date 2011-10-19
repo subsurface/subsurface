@@ -604,6 +604,8 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH(".sample.cylpress", pressure, &sample->cylinderpressure))
 		return;
+	if (MATCH(".sample.cylinderindex", get_index, &sample->cylinderindex))
+		return;
 	if (MATCH(".sample.depth", depth, &sample->depth))
 		return;
 	if (MATCH(".sample.temp", temperature, &sample->temperature))
