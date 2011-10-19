@@ -140,26 +140,46 @@ static void update_temperature(temperature_t *temperature, int new)
 	}
 }
 
-static void fixup_pressure(struct dive *dive, struct sample *sample)
+/*
+ * If you have more than 32 cylinders, you'd better have a 64-bit build.
+ * And if you have more than 64 cylinders, you need to use another tool,
+ * or fix this up to do something odd.
+ */
+static unsigned long fixup_pressure(struct dive *dive, struct sample *sample, unsigned long flags)
 {
+	unsigned long mask;
 	unsigned int pressure, index;
 	cylinder_t *cyl;
 
 	pressure = sample->cylinderpressure.mbar;
 	if (!pressure)
-		return;
+		return flags;
 	index = sample->cylinderindex;
 	if (index >= MAX_CYLINDERS)
-		return;
+		return flags;
 	cyl = dive->cylinder + index;
 	if (!cyl->start.mbar)
 		cyl->start.mbar = pressure;
+	/*
+	 * If we already have an end pressure, without
+	 * ever having seen a sample for this cylinder,
+	 * that means that somebody set the end pressure
+	 * by hand
+	 */
+	mask = 1ul << index;
+	if (cyl->end.mbar) {
+		if (!(flags & mask))
+			return flags;
+	}
+	flags |= mask;
+
 	/* we need to handle the user entering beginning and end tank pressures
 	 * - maybe even IF we have samples. But for now if we have air pressure
 	 * data in the samples, we use that instead of the minimum
 	 * if (!cyl->end.mbar || pressure < cyl->end.mbar)
 	 */
-	 cyl->end.mbar = pressure;
+	cyl->end.mbar = pressure;
+	return flags;
 }
 
 struct dive *fixup_dive(struct dive *dive)
@@ -171,6 +191,7 @@ struct dive *fixup_dive(struct dive *dive)
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0;
+	unsigned long flags = 0;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -188,7 +209,7 @@ struct dive *fixup_dive(struct dive *dive)
 				maxdepth = depth;
 		}
 
-		fixup_pressure(dive, sample);
+		flags = fixup_pressure(dive, sample, flags);
 
 		if (temp) {
 			/*
