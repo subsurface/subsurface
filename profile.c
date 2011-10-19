@@ -25,6 +25,7 @@ struct plot_info {
 	int endpressure; /* start pressure better be max pressure */
 	int mintemp, maxtemp;
 	struct plot_data {
+		unsigned int same_cylinder:1;
 		int sec;
 		int pressure, temperature;
 		/* Depth info */
@@ -496,8 +497,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 
 	set_source_rgba(gc, 0.2, 1.0, 0.2, 0.80);
 
-	move_to(gc, 0, pi->maxpressure);
-	for (i = 1; i < pi->nr; i++) {
+	for (i = 0; i < pi->nr; i++) {
 		int mbar;
 		struct plot_data *entry = pi->entry + i;
 
@@ -505,7 +505,10 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		if (!mbar)
 			continue;
 		have_pressure = TRUE;
-		line_to(gc, entry->sec, mbar);
+		if (entry->same_cylinder)
+			line_to(gc, entry->sec, mbar);
+		else
+			move_to(gc, 0, pi->maxpressure);
 	}
 	/* if we have valid samples, we don't want to draw a line to the minpressure
 	 * but just end wherever the dive ended (think valve shutdowns during dive)
@@ -691,6 +694,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
  */
 static struct plot_info *create_plot_info(struct dive *dive)
 {
+	int cylinderindex = -1;
 	int lastdepth, lastindex;
 	int i, nr = dive->samples + 4, sec;
 	size_t alloc_size = plot_info_size(nr);
@@ -711,6 +715,9 @@ static struct plot_info *create_plot_info(struct dive *dive)
 
 		sec = entry->sec = sample->time.seconds;
 		depth = entry->val = sample->depth.mm;
+
+		entry->same_cylinder = sample->cylinderindex == cylinderindex;
+		cylinderindex = sample->cylinderindex;
 		entry->pressure = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
 
@@ -727,6 +734,10 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	i = dive->samples + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
+	if (cylinderindex >= 0) {
+		pi->entry[i].pressure = dive->cylinder[cylinderindex].end.mbar;
+		pi->entry[i].same_cylinder = 1;
+	}
 
 	pi->nr = lastindex+1;
 	pi->maxtime = pi->entry[lastindex].sec;
