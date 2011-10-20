@@ -508,7 +508,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		if (entry->same_cylinder)
 			line_to(gc, entry->sec, mbar);
 		else
-			move_to(gc, 0, pi->maxpressure);
+			move_to(gc, entry->sec, mbar);
 	}
 	/* if we have valid samples, we don't want to draw a line to the minpressure
 	 * but just end wherever the dive ended (think valve shutdowns during dive)
