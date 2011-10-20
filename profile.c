@@ -719,6 +719,8 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		entry->same_cylinder = sample->cylinderindex == cylinderindex;
 		cylinderindex = sample->cylinderindex;
 		entry->pressure = sample->cylinderpressure.mbar;
+		if (!entry->same_cylinder && !entry->pressure)
+			entry->pressure = dive->cylinder[cylinderindex].start.mbar;
 		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
