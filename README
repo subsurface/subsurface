@@ -8,6 +8,10 @@ You need libxml2-devel, gtk2-devel, glib-2.0 and GConf2-devel to build
 this (and libusb-1.0 if you have libdivecomputer built with it, but then
 you obviously already have it installed)
 
+For debian/ubuntu distribution:
+sudo apt-get install libxml2-dev libgtk2.0-dev  gconf2 libtool libgconf2-devl
+ 
+
 You also need to have libdivecomputer installed, which goes something like this:
 
 	git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
