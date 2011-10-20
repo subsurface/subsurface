@@ -529,6 +529,7 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 {
 	GtkWidget *win, *notebook, *vbox;
 	notebook_data_t *nbdp;
+	GtkAllocation allocation;
 
 	/* pick the right notebook page data and return if both are detached */
 	if (nbd[0].widget == NULL)
@@ -556,7 +557,8 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 	/* disallow drop events */
 	gtk_drag_dest_set(notebook, 0, NULL, 0, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
-	gtk_widget_set_size_request(notebook, 450, 350);
+	gtk_widget_get_allocation(page, &allocation);
+	gtk_widget_set_size_request(notebook, allocation.width, allocation.height);
 
 	gtk_widget_show_all(win);
 	return GTK_NOTEBOOK(notebook);
