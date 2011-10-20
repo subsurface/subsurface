@@ -198,6 +198,8 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	gasoffset = template = *(uint8_t *)(data+115);
 	if (template == 3)
 		gasoffset = 4;
+	if (template == 0)
+		template = 1;
 	for (i = 0; i < template; i++) {
 		float volume = *(float *)(data+116+25*(gasoffset + i)) * 1000.0;
 		/* uemis always assumes a working pressure of 202.6bar (!?!?) - I first thought
