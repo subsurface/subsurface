@@ -50,17 +50,42 @@ enum {
 	DIVELIST_COLUMNS
 };
 
+static GList *selected_dives;
+
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
 	GtkTreeIter iter;
 	GValue value = {0, };
+	GtkTreePath *path;
 
-	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
+	int nr_selected = gtk_tree_selection_count_selected_rows(selection);
+
+	if (selected_dives) {
+		g_list_foreach (selected_dives, (GFunc) gtk_tree_path_free, NULL);
+		g_list_free (selected_dives);
+	}
+	selected_dives = gtk_tree_selection_get_selected_rows(selection, NULL);
+
+	switch (nr_selected) {
+	case 0: /* keep showing the last selected dive */
 		return;
-
-	gtk_tree_model_get_value(model, &iter, DIVE_INDEX, &value);
-	selected_dive = g_value_get_int(&value);
-	repaint_dive();
+	case 1:	
+		/* just pick that dive as selected */
+		path = g_list_nth_data(selected_dives, 0);
+		if (gtk_tree_model_get_iter(model, &iter, path)) {
+			gtk_tree_model_get_value(model, &iter, DIVE_INDEX, &value);
+			selected_dive = g_value_get_int(&value);
+			repaint_dive();
+		}
+		return;
+	default: /* multiple selections - what now? At this point I
+		  * don't want to change the selected dive unless
+		  * there is exactly one dive selected; not sure this
+		  * is the most intuitive solution.
+		  * I do however want to keep around which dives have
+		  * been selected */
+		return;
+	}
 }
 
 static void date_data_func(GtkTreeViewColumn *col,
@@ -505,7 +530,7 @@ GtkWidget *dive_list_create(void)
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
-	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
+	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_MULTIPLE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
 	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT, TRUE);
