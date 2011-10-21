@@ -989,7 +989,7 @@ void update_progressbar(progressbar_t *progress, double value)
 
 void set_filename(const char *filename)
 {
-	if (filename)
+	if (!existing_filename && filename)
 		existing_filename = strdup(filename);
 	return;
 }
