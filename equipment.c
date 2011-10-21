@@ -522,7 +522,6 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 		dive->cylinder[index] = *cyl;
 		mark_divelist_changed(TRUE);
 		flush_divelist(dive);
-		repaint_dive();
 	}
 
 	gtk_widget_destroy(dialog);
@@ -561,6 +560,7 @@ static void edit_cb(GtkButton *button, gpointer data)
 		return;
 
 	set_one_cylinder(index, &cyl, model, &iter);
+	repaint_dive();
 }
 
 static void add_cb(GtkButton *button, gpointer data)
