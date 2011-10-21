@@ -522,6 +522,7 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 		dive->cylinder[index] = *cyl;
 		mark_divelist_changed(TRUE);
 		flush_divelist(dive);
+		repaint_dive();
 	}
 
 	gtk_widget_destroy(dialog);
