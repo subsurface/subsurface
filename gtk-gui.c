@@ -558,7 +558,7 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 	gtk_drag_dest_set(notebook, 0, NULL, 0, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
 	gtk_widget_get_allocation(page, &allocation);
-	gtk_widget_set_size_request(notebook, allocation.width, allocation.height);
+	gtk_window_set_default_size(GTK_WINDOW(win), allocation.width, allocation.height);
 
 	gtk_widget_show_all(win);
 	return GTK_NOTEBOOK(notebook);
