@@ -19,7 +19,7 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
-GtkListStore *cylinder_model;
+static GtkListStore *cylinder_model;
 
 enum {
 	CYL_DESC,
@@ -148,7 +148,8 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
  * The gtk_tree_model_foreach() interface is bad. It could have
  * returned whether the callback ever returned true
  */
-static int found_match = 0;
+static GtkTreeIter *found_match = NULL;
+static GtkTreeIter match_iter;
 
 static gboolean match_cylinder(GtkTreeModel *model,
 				GtkTreePath *path,
@@ -156,39 +157,70 @@ static gboolean match_cylinder(GtkTreeModel *model,
 				gpointer data)
 {
 	const char *name;
-	struct cylinder_widget *cylinder = data;
+	const char *desc = data;
 	GValue value = {0, };
 
 	gtk_tree_model_get_value(model, iter, 0, &value);
 	name = g_value_get_string(&value);
-	if (strcmp(cylinder->name, name))
+	if (strcmp(desc, name))
 		return FALSE;
-	gtk_combo_box_set_active_iter(cylinder->description, iter);
-	found_match = 1;
+	match_iter = *iter;
+	found_match = &match_iter;
 	return TRUE;
 }
 
-static void add_cylinder(struct cylinder_widget *cylinder, const char *desc, int ml, int mbar)
+static GtkTreeIter *add_cylinder_type(const char *desc, int ml, int mbar, GtkTreeIter *iter)
 {
 	GtkTreeModel *model;
 
-	found_match = 0;
-	model = gtk_combo_box_get_model(cylinder->description);
-	cylinder->name = desc;
-	gtk_tree_model_foreach(model, match_cylinder, cylinder);
+	/* Don't even bother adding stuff without a size */
+	if (!ml)
+		return NULL;
+
+	found_match = NULL;
+	model = GTK_TREE_MODEL(cylinder_model);
+	gtk_tree_model_foreach(model, match_cylinder, (void *)desc);
 
 	if (!found_match) {
 		GtkListStore *store = GTK_LIST_STORE(model);
-		GtkTreeIter iter;
 
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
+		gtk_list_store_append(store, iter);
+		gtk_list_store_set(store, iter,
 			0, desc,
 			1, ml,
 			2, mbar,
 			-1);
-		gtk_combo_box_set_active_iter(cylinder->description, &iter);
+		return iter;
 	}
+	return found_match;
+}
+
+/*
+ * When adding a dive, we'll add all the pre-existing cylinder
+ * information from that dive to our cylinder model.
+ */
+void add_cylinder_description(cylinder_type_t *type)
+{
+	GtkTreeIter iter;
+	const char *desc;
+	unsigned int size, workp;
+
+	desc = type->description;
+	if (!desc)
+		return;
+	size = type->size.mliter;
+	workp = type->workingpressure.mbar;
+	add_cylinder_type(desc, size, workp, &iter);
+}
+
+static void add_cylinder(struct cylinder_widget *cylinder, const char *desc, int ml, int mbar)
+{
+	GtkTreeIter iter, *match;
+
+	cylinder->name = desc;
+	match = add_cylinder_type(desc, ml, mbar, &iter);
+	if (match)
+		gtk_combo_box_set_active_iter(cylinder->description, match);
 }
 
 static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)

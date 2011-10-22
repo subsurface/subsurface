@@ -240,6 +240,11 @@ struct dive *fixup_dive(struct dive *dive)
 	update_temperature(&dive->watertemp, mintemp);
 	update_depth(&dive->maxdepth, maxdepth);
 
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_type_t *type = &dive->cylinder[i].type;
+		add_cylinder_description(type);
+	}
+
 	return dive;
 }
 
