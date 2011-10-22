@@ -466,9 +466,21 @@ static void nitrox_cb(GtkToggleButton *button, gpointer data)
 	gtk_widget_set_sensitive(cylinder->o2, state);
 }
 
+static gboolean completion_cb(GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, struct cylinder_widget *cylinder)
+{
+	const char *desc;
+	unsigned int ml, mbar;
+
+	gtk_tree_model_get(model, iter, CYL_DESC, &desc, CYL_SIZE, &ml, CYL_WORKP, &mbar, -1);
+	add_cylinder(cylinder, desc, ml, mbar);
+	return TRUE;
+}
+
 static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, GtkListStore *model)
 {
 	GtkWidget *frame, *hbox;
+	GtkEntry *entry;
+	GtkEntryCompletion *completion;
 	GtkWidget *widget;
 
 	/*
@@ -485,6 +497,13 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 
 	cylinder->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
+
+	entry = GTK_ENTRY(GTK_BIN(widget)->child);
+	completion = gtk_entry_completion_new();
+	gtk_entry_completion_set_text_column(completion, 0);
+	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
+	g_signal_connect(completion, "match-selected", G_CALLBACK(completion_cb), cylinder);
+	gtk_entry_set_completion(entry, completion);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
