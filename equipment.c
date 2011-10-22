@@ -87,13 +87,18 @@ static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	return decimals;
 }
 
-static void set_cylinder_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar, int start, int end)
+static void set_cylinder_type_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
 {
 	double volume, pressure;
 
 	convert_volume_pressure(ml, mbar, &volume, &pressure);
 	gtk_spin_button_set_value(cylinder->size, volume);
 	gtk_spin_button_set_value(cylinder->pressure, pressure);
+}
+
+static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, int start, int end)
+{
+	double pressure;
 
 	convert_pressure(start, &pressure);
 	gtk_spin_button_set_value(cylinder->start, pressure);
@@ -105,7 +110,7 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
-	int ml, mbar, start, end;
+	int ml, mbar;
 	struct cylinder_widget *cylinder = data;
 	cylinder_t *cyl = current_dive->cylinder + cylinder->index;
 
@@ -134,11 +139,9 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	gtk_tree_model_get(model, &iter,
 		CYL_SIZE, &ml,
 		CYL_WORKP, &mbar,
-		CYL_STARTP, &start,
-		CYL_ENDP, &end,
 		-1);
 
-	set_cylinder_spinbuttons(cylinder, ml, mbar, start, end);
+	set_cylinder_type_spinbuttons(cylinder, ml, mbar);
 }
 
 /*
@@ -205,8 +208,9 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	mbar = cyl->type.workingpressure.mbar;
 	add_cylinder(cylinder, desc, ml, mbar);
 
-	set_cylinder_spinbuttons(cylinder,
-		cyl->type.size.mliter, cyl->type.workingpressure.mbar,
+	set_cylinder_type_spinbuttons(cylinder,
+		cyl->type.size.mliter, cyl->type.workingpressure.mbar);
+	set_cylinder_pressure_spinbuttons(cylinder,
 		cyl->start.mbar, cyl->end.mbar);
 	o2 = cyl->gasmix.o2.permille / 10.0;
 	gtk_widget_set_sensitive(cylinder->o2, !!o2);
