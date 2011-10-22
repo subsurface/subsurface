@@ -26,8 +26,12 @@ struct plot_info {
 	int mintemp, maxtemp;
 	struct plot_data {
 		unsigned int same_cylinder:1;
+		unsigned int cylinderindex;
 		int sec;
-		int pressure, temperature;
+		/* pressure[0] is sensor pressure
+		 * pressure[1] is interpolated pressure */
+		int pressure[2];
+		int temperature;
 		/* Depth info */
 		int depth;
 		int smoothed;
@@ -37,6 +41,10 @@ struct plot_info {
 		int avg[3];
 	} entry[];
 };
+#define SENSOR_PR 0
+#define INTERPOLATED_PR 1
+#define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
+#define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
 
 /* convert velocity to colors */
 typedef struct { double r, g, b; } rgb_t;
@@ -487,36 +495,55 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	return pi->maxpressure != 0;
 }
 
-static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi)
+static void plot_pressure_helper(struct graphics_context *gc, struct plot_info *pi, int type)
 {
 	int i;
-	int have_pressure = FALSE;
-
-	if (!get_cylinder_pressure_range(gc, pi))
-		return;
-
-	set_source_rgba(gc, 0.2, 1.0, 0.2, 0.80);
+	int lift_pen = FALSE;
 
 	for (i = 0; i < pi->nr; i++) {
 		int mbar;
 		struct plot_data *entry = pi->entry + i;
 
-		mbar = entry->pressure;
-		if (!mbar)
+		mbar = entry->pressure[type];
+		if (!entry->same_cylinder)
+			lift_pen = TRUE;
+		if (!mbar) {
+			lift_pen = TRUE;
 			continue;
-		have_pressure = TRUE;
-		if (entry->same_cylinder)
-			line_to(gc, entry->sec, mbar);
+		}
+		if (lift_pen) {
+			if (i > 0 && entry->same_cylinder) {
+				/* if we have a previous event from the same tank,
+				 * draw at least a short line .
+				 * This uses the implementation detail that the
+				 * type is either 0 or 1 */
+				int prev_pr;
+				prev_pr = (entry-1)->pressure[type] ? : (entry-1)->pressure[1 - type];
+				move_to(gc, (entry-1)->sec, prev_pr);
+				line_to(gc, entry->sec, mbar);
+			} else
+				move_to(gc, entry->sec, mbar);
+			lift_pen = FALSE;
+		}
 		else
-			move_to(gc, entry->sec, mbar);
+			line_to(gc, entry->sec, mbar);
 	}
-	/* if we have valid samples, we don't want to draw a line to the minpressure
-	 * but just end wherever the dive ended (think valve shutdowns during dive)
-	 * but that doesn't work so well if we have only max and min
-	 */
-	if (! have_pressure)
-		line_to(gc, pi->maxtime, pi->minpressure);
 	cairo_stroke(gc->cr);
+
+}
+
+static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi)
+{
+	if (!get_cylinder_pressure_range(gc, pi))
+		return;
+
+	/* first plot the pressure readings we have from the dive computer */
+	set_source_rgba(gc, 0.2, 1.0, 0.2, 0.80);
+	plot_pressure_helper(gc, pi, SENSOR_PR);
+
+	/* then, in a different color, the interpolated values */
+	set_source_rgba(gc, 1.0, 1.0, 0.2, 0.80);
+	plot_pressure_helper(gc, pi, INTERPOLATED_PR);
 }
 
 static int mbar_to_PSI(int mbar)
@@ -525,34 +552,71 @@ static int mbar_to_PSI(int mbar)
 	return to_PSI(p);
 }
 
+static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
+				int xalign, int yalign)
+{
+	int pressure;
+	const char *unit;
+
+	switch (output_units.pressure) {
+	case PASCAL:
+		pressure = mbar * 100;
+		unit = "pascal";
+		break;
+	case BAR:
+		pressure = (mbar + 500) / 1000;
+		unit = "bar";
+		break;
+	case PSI:
+		pressure = mbar_to_PSI(mbar);
+		unit = "psi";
+		break;
+	}
+	text_render_options_t tro = {10, 0.2, 1.0, 0.2, xalign, yalign};
+	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
+}
+
 static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
 {
-	if (get_cylinder_pressure_range(gc, pi)) {
-		int start, end;
-		const char *unit = "bar";
+	int i;
+	int mbar, cyl;
+	int seen_cyl[MAX_CYLINDERS] = { FALSE, };
+	int last_pressure[MAX_CYLINDERS] = { 0, };
+	int last_time[MAX_CYLINDERS] = { 0, };
+	struct plot_data *entry;
 
-		switch (output_units.pressure) {
-		case PASCAL:
-			start = pi->maxpressure * 100;
-			end = pi->endpressure * 100;
-			unit = "pascal";
-			break;
-		case BAR:
-			start = (pi->maxpressure + 500) / 1000;
-			end = (pi->endpressure + 500) / 1000;
-			unit = "bar";
-			break;
-		case PSI:
-			start = mbar_to_PSI(pi->maxpressure);
-			end = mbar_to_PSI(pi->endpressure);
-			unit = "psi";
-			break;
+	if (!get_cylinder_pressure_range(gc, pi))
+		return;
+
+	/* only loop over the actual events from the dive computer */
+	for (i = 2; i < pi->nr - 2; i++) {
+		entry = pi->entry + i;
+
+		if (!entry->same_cylinder) {
+			cyl = entry->cylinderindex;
+			if (!seen_cyl[cyl]) {
+				mbar = SENSOR_PRESSURE(entry) ? : INTERPOLATED_PRESSURE(entry);
+				plot_pressure_value(gc, mbar, entry->sec, LEFT, BOTTOM);
+				seen_cyl[cyl] = TRUE;
+			}
+			if (i > 2) {
+				/* remember the last pressure and time of
+				 * the previous cylinder */
+				cyl = (entry - 1)->cylinderindex;
+				last_pressure[cyl] =
+					SENSOR_PRESSURE(entry - 1) ? : INTERPOLATED_PRESSURE(entry - 1);
+				last_time[cyl] = (entry - 1)->sec;
+			}
 		}
+	}
+	cyl = entry->cylinderindex;
+	last_pressure[cyl] = SENSOR_PRESSURE(entry) ? : INTERPOLATED_PRESSURE(entry);
+	last_time[cyl] = entry->sec;
 
-		text_render_options_t tro = {10, 0.2, 1.0, 0.2, LEFT, TOP};
-		plot_text(gc, &tro, 0, pi->maxpressure, "%d %s", start, unit);
-		plot_text(gc, &tro, pi->maxtime, pi->endpressure,
-			  "%d %s", end, unit);
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		if (last_time[cyl]) {
+			plot_pressure_value(gc, last_pressure[cyl], last_time[cyl], CENTER, TOP);
+		}
 	}
 }
 
@@ -633,7 +697,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 	/* Do pressure min/max based on the non-surface data */
 	for (i = 0; i < nr; i++) {
 		struct plot_data *entry = pi->entry+i;
-		int pressure = entry->pressure;
+		int pressure = SENSOR_PRESSURE(entry) ? : INTERPOLATED_PRESSURE(entry);
 		int temperature = entry->temperature;
 
 		if (pressure) {
@@ -686,6 +750,117 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 }
 
 /*
+ * simple structure to track the beginning and end tank pressure as
+ * well as the integral of depth over time spent while we have no
+ * pressure reading from the tank */
+typedef struct pr_track_struct pr_track_t;
+struct pr_track_struct {
+	int start;
+	int end;
+	int t_start;
+	int t_end;
+	double pressure_time;
+	pr_track_t *next;
+};
+
+static pr_track_t *pr_track_alloc(int start, int t_start) {
+	pr_track_t *pt = malloc(sizeof(pr_track_t));
+	pt->start = start;
+	pt->t_start = t_start;
+	pt->end = 0;
+	pt->t_end = 0;
+	pt->pressure_time = 0.0;
+	pt->next = NULL;
+	return pt;
+}
+
+/* poor man's linked list */
+static pr_track_t *list_last(pr_track_t *list)
+{
+	pr_track_t *tail = list;
+	if (!tail)
+		return NULL;
+	while (tail->next) {
+		tail = tail->next;
+	}
+	return tail;
+}
+
+static pr_track_t *list_add(pr_track_t *list, pr_track_t *element)
+{
+	pr_track_t *tail = list_last(list);
+	if (!tail)
+		return element;
+	tail->next = element;
+	return list;
+}
+
+static void list_free(pr_track_t *list)
+{
+	if (!list)
+		return;
+	list_free(list->next);
+	free(list);
+}
+
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
+					pr_track_t **track_pr)
+{
+	pr_track_t *list = NULL;
+	pr_track_t *nlist = NULL;
+	double pt, magic;
+	int cyl, i;
+	struct plot_data *entry;
+	int cur_pr[MAX_CYLINDERS];
+
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		cur_pr[cyl] = track_pr[cyl]->start;
+	}
+	for (i = 0; i < dive->samples; i++) {
+		entry = pi->entry + i + 2;
+		if (SENSOR_PRESSURE(entry)) {
+			cur_pr[entry->cylinderindex] = SENSOR_PRESSURE(entry);
+		} else {
+			if(!list || list->t_end < entry->sec) {
+				nlist = track_pr[entry->cylinderindex];
+				list = NULL;
+				while (nlist && nlist->t_start <= entry->sec) {
+					list = nlist;
+					nlist = list->next;
+				}
+				/* there may be multiple segments - so
+				 * let's assemble the length */
+				nlist = list;
+				pt = list->pressure_time;
+				while (!nlist->end) {
+					nlist = nlist->next;
+					if (!nlist) {
+						/* oops - we have no end pressure,
+						 * so this means this is a tank without
+						 * gas consumption information */
+						break;
+					}
+					pt += nlist->pressure_time;
+				}
+				if (!nlist) {
+					/* just continue without calculating
+					 * interpolated values */
+					list = NULL;
+					continue;
+				}
+				magic = (nlist->end - cur_pr[entry->cylinderindex]) / pt;				}
+			if (pt != 0.0) {
+				double cur_pt = (entry->sec - (entry-1)->sec) *
+					(1 + entry->depth / 10000.0);
+				INTERPOLATED_PRESSURE(entry) =
+					cur_pr[entry->cylinderindex] + cur_pt * magic;
+				cur_pr[entry->cylinderindex] = INTERPOLATED_PRESSURE(entry);
+			}
+		}
+	}
+}
+
+/*
  * Create a plot-info with smoothing and ranged min/max
  *
  * This also makes sure that we have extra empty events on both
@@ -696,9 +871,13 @@ static struct plot_info *create_plot_info(struct dive *dive)
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, nr = dive->samples + 4, sec;
+	int i, nr = dive->samples + 4, sec, cyl;
 	size_t alloc_size = plot_info_size(nr);
 	struct plot_info *pi;
+	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
+	pr_track_t *pr_track, *current;
+	gboolean missing_pr = FALSE;
+	struct plot_data *entry;
 
 	pi = malloc(alloc_size);
 	if (!pi)
@@ -708,19 +887,40 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
+		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
+	current = track_pr[dive->sample[0].cylinderindex];
 	for (i = 0; i < dive->samples; i++) {
 		int depth;
 		struct sample *sample = dive->sample+i;
-		struct plot_data *entry = pi->entry + i + 2;
 
+		entry = pi->entry + i + 2;
 		sec = entry->sec = sample->time.seconds;
 		depth = entry->depth = sample->depth.mm;
-
 		entry->same_cylinder = sample->cylinderindex == cylinderindex;
-		cylinderindex = sample->cylinderindex;
-		entry->pressure = sample->cylinderpressure.mbar;
-		if (!entry->same_cylinder && !entry->pressure)
-			entry->pressure = dive->cylinder[cylinderindex].start.mbar;
+		entry->cylinderindex = cylinderindex = sample->cylinderindex;
+		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
+		/* track the segments per cylinder and their pressure/time integral */
+		if (!entry->same_cylinder) {
+			current->end = SENSOR_PRESSURE(entry-1);
+			current->t_end = (entry-1)->sec;
+			current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
+			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
+		} else { /* same cylinder */
+			if ((!SENSOR_PRESSURE(entry) && SENSOR_PRESSURE(entry-1)) ||
+				(SENSOR_PRESSURE(entry) && !SENSOR_PRESSURE(entry-1))) {
+				/* transmitter changed its working status */
+				current->end = SENSOR_PRESSURE(entry-1);
+				current->t_end = (entry-1)->sec;
+				current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
+				track_pr[cylinderindex] =
+					list_add(track_pr[cylinderindex], current);
+			}
+		}
+		/* finally, do the discrete integration to get the SAC rate equivalent */
+		current->pressure_time += (entry->sec - (entry-1)->sec) *
+						(1 + entry->depth / 10000.0);
+		missing_pr |= !SENSOR_PRESSURE(entry);
 		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
@@ -730,17 +930,20 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		if (depth > pi->maxdepth)
 			pi->maxdepth = depth;
 	}
+	current->t_end = entry->sec;
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) { /* initialize the end pressures */
+		int pr = dive->cylinder[cyl].end.mbar;
+		if (pr && track_pr[cyl]) {
+			pr_track = list_last(track_pr[cyl]);
+			pr_track->end = pr;
+		}
+	}
 	if (lastdepth)
 		lastindex = i + 2;
 	/* Fill in the last two entries with empty values but valid times */
 	i = dive->samples + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
-	if (cylinderindex >= 0) {
-		pi->entry[i].pressure = dive->cylinder[cylinderindex].end.mbar;
-		pi->entry[i].same_cylinder = 1;
-	}
-
 	pi->nr = lastindex+1;
 	pi->maxtime = pi->entry[lastindex].sec;
 
@@ -749,6 +952,11 @@ static struct plot_info *create_plot_info(struct dive *dive)
 
 	pi->meandepth = dive->meandepth.mm;
 
+	if (missing_pr) {
+		fill_missing_tank_pressures(dive, pi, track_pr);
+	}
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++)
+		list_free(track_pr[cyl]);
 	return analyze_plot_info(pi);
 }
 
