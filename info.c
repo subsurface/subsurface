@@ -18,7 +18,7 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
-static GtkEntry *location, *buddy, *divemaster;
+static GtkComboBoxEntry *location, *buddy, *divemaster;
 static GtkTextBuffer *notes;
 static int location_changed = 1, notes_changed = 1;
 static int divemaster_changed = 1, buddy_changed = 1;
@@ -50,8 +50,9 @@ void flush_dive_info_changes(struct dive *dive)
 		return;
 
 	if (location_changed) {
+		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(location));
 		old_text = dive->location;
-		dive->location = gtk_editable_get_chars(GTK_EDITABLE(location), 0, -1);
+		dive->location = new_text;
 		if (text_changed(old_text,dive->location))
 			changed = 1;
 		if (old_text)
@@ -59,8 +60,9 @@ void flush_dive_info_changes(struct dive *dive)
 	}
 
 	if (divemaster_changed) {
+		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(divemaster));
 		old_text = dive->divemaster;
-		dive->divemaster = gtk_editable_get_chars(GTK_EDITABLE(divemaster), 0, -1);
+		dive->divemaster = new_text;
 		if (text_changed(old_text,dive->divemaster))
 			changed = 1;
 		if (old_text)
@@ -68,8 +70,9 @@ void flush_dive_info_changes(struct dive *dive)
 	}
 
 	if (buddy_changed) {
+		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(buddy));
 		old_text = dive->buddy;
-		dive->buddy = gtk_editable_get_chars(GTK_EDITABLE(buddy), 0, -1);
+		dive->buddy = new_text;
 		if (text_changed(old_text,dive->buddy))
 			changed = 1;
 		if (old_text)
@@ -88,8 +91,14 @@ void flush_dive_info_changes(struct dive *dive)
 		mark_divelist_changed(TRUE);
 }
 
+static void set_combo_box_entry_text(GtkComboBoxEntry *combo_box, const char *text)
+{
+	GtkEntry *entry = GTK_ENTRY(GTK_BIN(combo_box)->child);
+	gtk_entry_set_text(entry, text);
+}
+
 #define SET_TEXT_ENTRY(x) \
-	gtk_entry_set_text(x, dive && dive->x ? dive->x : "")
+	set_combo_box_entry_text(x, dive && dive->x ? dive->x : "")
 
 void show_dive_info(struct dive *dive)
 {
@@ -123,25 +132,26 @@ void show_dive_info(struct dive *dive)
 	gtk_text_buffer_set_text(notes, dive && dive->notes ? dive->notes : "", -1);
 }
 
-static GtkEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions)
+static GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions)
 {
-	GtkWidget *entry;
+	GtkEntry *entry;
+	GtkWidget *combo_box;
 	GtkWidget *frame = gtk_frame_new(label);
+	GtkEntryCompletion *completion;
 
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
 
-	entry = gtk_entry_new();
-	gtk_container_add(GTK_CONTAINER(frame), entry);
+	combo_box = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(completions), 0);
+	gtk_container_add(GTK_CONTAINER(frame), combo_box);
 
-	if (completions) {
-		GtkEntryCompletion *completion;
-		completion = gtk_entry_completion_new();
-		gtk_entry_completion_set_text_column(completion, 0);
-		gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(completions));
-		gtk_entry_set_completion(GTK_ENTRY(entry), completion);
-	}
+	entry = GTK_ENTRY(GTK_BIN(combo_box)->child);
 
-	return GTK_ENTRY(entry);
+	completion = gtk_entry_completion_new();
+	gtk_entry_completion_set_text_column(completion, 0);
+	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(completions));
+	gtk_entry_set_completion(entry, completion);
+
+	return GTK_COMBO_BOX_ENTRY(combo_box);
 }
 
 static GtkTextBuffer *text_view(GtkWidget *box, const char *label)
