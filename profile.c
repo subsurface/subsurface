@@ -299,23 +299,43 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 
 static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
 {
-	int i;
+	int i, incr;
 	cairo_t *cr = gc->cr;
 	int sec, depth;
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
+	int increments[4] = { 5*60, 10*60, 15*60, 30*60 };
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
 	maxdepth = get_maxdepth(pi);
 
-	/* Time markers: every 5 min */
+	/* Time markers: at most every 5 min, but no more than 12 markers
+	 * and for convenience we do 5, 10, 15 or 30 min intervals.
+	 * This allows for 6h dives - enough (I hope) for even the craziest
+	 * divers - but just in case, for those 8h depth-record-breaking dives,
+	 * we double the interval if this still doesn't get us to 12 or fewer
+	 * time markers */
+	i = 0;
+	while (maxtime / increments[i] > 12 && i < 4)
+		i++;
+	incr = increments[i];
+	while (maxtime / incr > 12)
+		incr *= 2;
+
 	gc->leftx = 0; gc->rightx = maxtime;
 	gc->topy = 0; gc->bottomy = 1.0;
-	for (i = 5*60; i < maxtime; i += 5*60) {
+	set_source_rgba(gc, 1, 1, 1, 0.5);
+	for (i = incr; i < maxtime; i += incr) {
 		move_to(gc, i, 0);
 		line_to(gc, i, 1);
 	}
+	cairo_stroke(cr);
+
+	/* now the text on every second time marker */
+	text_render_options_t tro = {10, 0.2, 1.0, 0.2, CENTER, TOP};
+	for (i = incr; i < maxtime; i += 2 * incr)
+		plot_text(gc, &tro, i, 1, "%d", i/60);
 
 	/* Depth markers: every 30 ft or 10 m*/
 	gc->leftx = 0; gc->rightx = 1.0;
