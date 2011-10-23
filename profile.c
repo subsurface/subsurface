@@ -887,9 +887,6 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
-		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
-	current = track_pr[dive->sample[0].cylinderindex];
 	for (i = 0; i < dive->samples; i++) {
 		int depth;
 		struct sample *sample = dive->sample+i;
@@ -897,9 +894,27 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		entry = pi->entry + i + 2;
 		sec = entry->sec = sample->time.seconds;
 		depth = entry->depth = sample->depth.mm;
-		entry->same_cylinder = sample->cylinderindex == cylinderindex;
-		entry->cylinderindex = cylinderindex = sample->cylinderindex;
+		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
+		entry->temperature = sample->temperature.mkelvin;
+
+		if (depth || lastdepth)
+			lastindex = i+2;
+
+		lastdepth = depth;
+		if (depth > pi->maxdepth)
+			pi->maxdepth = depth;
+	}
+
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
+		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
+	current = track_pr[dive->sample[0].cylinderindex];
+	for (i = 0; i < dive->samples; i++) {
+		entry = pi->entry + i + 2;
+
+		entry->same_cylinder = entry->cylinderindex == cylinderindex;
+		cylinderindex = entry->cylinderindex;
+
 		/* track the segments per cylinder and their pressure/time integral */
 		if (!entry->same_cylinder) {
 			current->end = SENSOR_PRESSURE(entry-1);
@@ -921,15 +936,8 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
 						(1 + entry->depth / 10000.0);
 		missing_pr |= !SENSOR_PRESSURE(entry);
-		entry->temperature = sample->temperature.mkelvin;
-
-		if (depth || lastdepth)
-			lastindex = i+2;
-
-		lastdepth = depth;
-		if (depth > pi->maxdepth)
-			pi->maxdepth = depth;
 	}
+
 	current->t_end = entry->sec;
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) { /* initialize the end pressures */
 		int pr = dive->cylinder[cyl].end.mbar;
