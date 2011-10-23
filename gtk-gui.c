@@ -649,9 +649,9 @@ void init_ui(int argc, char **argv)
 	/* an unset key is FALSE - all these are hidden by default */
 	visible_cols.cylinder = gconf_client_get_bool(gconf, GCONF_NAME(CYLINDER), NULL);
 	visible_cols.temperature = gconf_client_get_bool(gconf, GCONF_NAME(TEMPERATURE), NULL);
-	visible_cols.nitrox = ! gconf_client_get_bool(gconf, GCONF_NAME(NITROX), NULL);
+	visible_cols.nitrox = gconf_client_get_bool(gconf, GCONF_NAME(NITROX), NULL);
 	visible_cols.otu = gconf_client_get_bool(gconf, GCONF_NAME(OTU), NULL);
-	visible_cols.sac = ! gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
+	visible_cols.sac = gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
 		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
 	if (!divelist_font)
