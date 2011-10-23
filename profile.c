@@ -860,6 +860,68 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	}
 }
 
+static int get_cylinder_index(struct dive *dive, struct event *ev)
+{
+	int i;
+
+	/*
+	 * Try to find a cylinder that matches the O2 percentage
+	 * in the gas change event 'value' field.
+	 *
+	 * Crazy suunto gas change events. We really should do
+	 * this in libdivecomputer or something.
+	 */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder+i;
+		int o2 = (cyl->gasmix.o2.permille + 5) / 10;
+		if (o2 == ev->value)
+			return i;
+	}
+
+	return 0;
+}
+
+static struct event *get_next_gaschange(struct event *event)
+{
+	while (event) {
+		if (!strcmp(event->name, "gaschange"))
+			return event;
+		event = event->next;
+	}
+	return event;
+}
+
+static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
+{
+	while (i < pi->nr) {
+		struct plot_data *entry = pi->entry+i;
+		if (entry->sec > end)
+			break;
+		if (entry->cylinderindex != cylinderindex) {
+			entry->cylinderindex = cylinderindex;
+			entry->pressure[0] = 0;
+		}
+		i++;
+	}
+	return i;
+}
+
+static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
+{
+	int i = 0, cylinderindex = 0;
+	struct event *ev = get_next_gaschange(dive->events);
+
+	if (!ev)
+		return;
+
+	do {
+		i = set_cylinder_index(pi, i, cylinderindex, ev->time.seconds);
+		cylinderindex = get_cylinder_index(dive, ev);
+		ev = get_next_gaschange(ev->next);
+	} while (ev);
+	set_cylinder_index(pi, i, cylinderindex, ~0u);
+}
+
 /*
  * Create a plot-info with smoothing and ranged min/max
  *
@@ -905,6 +967,8 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		if (depth > pi->maxdepth)
 			pi->maxdepth = depth;
 	}
+
+	check_gas_change_events(dive, pi);
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
