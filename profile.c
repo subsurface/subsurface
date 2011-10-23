@@ -29,7 +29,7 @@ struct plot_info {
 		int sec;
 		int pressure, temperature;
 		/* Depth info */
-		int val;
+		int depth;
 		int smoothed;
 		velocity_t velocity;
 		struct plot_data *min[3];
@@ -167,7 +167,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 		struct plot_data *data = pi->entry + i;
 		if (event->time.seconds < data->sec)
 			break;
-		depth = data->val;
+		depth = data->depth;
 	}
 	/* draw a little tirangular marker and attach tooltip */
 	x = SCALEX(gc, event->time.seconds);
@@ -207,9 +207,9 @@ static void render_depth_sample(struct graphics_context *gc, struct plot_data *e
 	int sec = entry->sec, decimals;
 	double d;
 
-	d = get_depth_units(entry->val, &decimals, NULL);
+	d = get_depth_units(entry->depth, &decimals, NULL);
 
-	plot_text(gc, tro, sec, entry->val, "%.*f", decimals, d);
+	plot_text(gc, tro, sec, entry->depth, "%.*f", decimals, d);
 }
 
 static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
@@ -221,7 +221,7 @@ static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 
-		if (entry->val < 2000)
+		if (entry->depth < 2000)
 			continue;
 
 		if (entry == entry->max[2])
@@ -267,13 +267,13 @@ static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_
 	struct plot_data *entry = pi->entry;
 
 	set_source_rgba(gc, 1, 0.2, 1, a);
-	move_to(gc, entry->sec, entry->min[index]->val);
+	move_to(gc, entry->sec, entry->min[index]->depth);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
-		line_to(gc, entry->sec, entry->min[index]->val);
+		line_to(gc, entry->sec, entry->min[index]->depth);
 	}
 	for (i = 1; i < pi->nr; i++) {
-		line_to(gc, entry->sec, entry->max[index]->val);
+		line_to(gc, entry->sec, entry->max[index]->depth);
 		entry--;
 	}
 	cairo_close_path(gc->cr);
@@ -352,7 +352,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	entry = pi->entry;
 	move_to(gc, 0, 0);
 	for (i = 0; i < pi->nr; i++, entry++)
-		line_to(gc, entry->sec, entry->val);
+		line_to(gc, entry->sec, entry->depth);
 	cairo_close_path(gc->cr);
 	if (gc->printer) {
 		set_source_rgba(gc, 1, 1, 1, 0.2);
@@ -372,9 +372,9 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		 * representing the vertical velocity, so we need to
 		 * chop this into short segments */
 		rgb_t color = rgb[entry->velocity];
-		depth = entry->val;
+		depth = entry->depth;
 		set_source_rgb(gc, color.r, color.g, color.b);
-		move_to(gc, entry[-1].sec, entry[-1].val);
+		move_to(gc, entry[-1].sec, entry[-1].depth);
 		line_to(gc, sec, depth);
 		cairo_stroke(cr);
 	}
@@ -573,17 +573,17 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 
 	/* Then go forward until we hit an entry past the time */
 	min = max = p;
-	avg = p->val;
+	avg = p->depth;
 	nr = 1;
 	while (++p < last) {
-		int val = p->val;
+		int depth = p->depth;
 		if (p->sec > time + seconds)
 			break;
-		avg += val;
+		avg += depth;
 		nr ++;
-		if (val < min->val)
+		if (depth < min->depth)
 			min = p;
-		if (val > max->val)
+		if (depth > max->depth)
 			max = p;
 	}
 	entry->min[index] = min;
@@ -654,22 +654,22 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 	/* Smoothing function: 5-point triangular smooth */
 	for (i = 2; i < nr; i++) {
 		struct plot_data *entry = pi->entry+i;
-		int val;
+		int depth;
 
 		if (i < nr-2) {
-			val = entry[-2].val + 2*entry[-1].val + 3*entry[0].val + 2*entry[1].val + entry[2].val;
-			entry->smoothed = (val+4) / 9;
+			depth = entry[-2].depth + 2*entry[-1].depth + 3*entry[0].depth + 2*entry[1].depth + entry[2].depth;
+			entry->smoothed = (depth+4) / 9;
 		}
 		/* vertical velocity in mm/sec */
 		/* Linus wants to smooth this - let's at least look at the samples that aren't FAST or CRAZY */
 		if (entry[0].sec - entry[-1].sec) {
-			entry->velocity = velocity((entry[0].val - entry[-1].val) / (entry[0].sec - entry[-1].sec));
+			entry->velocity = velocity((entry[0].depth - entry[-1].depth) / (entry[0].sec - entry[-1].sec));
                         /* if our samples are short and we aren't too FAST*/
 			if (entry[0].sec - entry[-1].sec < 15 && entry->velocity < FAST) {
 				int past = -2;
 				while (i+past > 0 && entry[0].sec - entry[past].sec < 15)
 					past--;
-				entry->velocity = velocity((entry[0].val - entry[past].val) / 
+				entry->velocity = velocity((entry[0].depth - entry[past].depth) / 
 							(entry[0].sec - entry[past].sec));
 			}
 		} else
@@ -714,7 +714,7 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		struct plot_data *entry = pi->entry + i + 2;
 
 		sec = entry->sec = sample->time.seconds;
-		depth = entry->val = sample->depth.mm;
+		depth = entry->depth = sample->depth.mm;
 
 		entry->same_cylinder = sample->cylinderindex == cylinderindex;
 		cylinderindex = sample->cylinderindex;
