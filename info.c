@@ -149,6 +149,9 @@ static GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListSt
 	completion = gtk_entry_completion_new();
 	gtk_entry_completion_set_text_column(completion, 0);
 	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(completions));
+	gtk_entry_completion_set_inline_completion(completion, TRUE);
+	gtk_entry_completion_set_inline_selection(completion, TRUE);
+	gtk_entry_completion_set_popup_single_match(completion, FALSE);
 	gtk_entry_set_completion(entry, completion);
 
 	return GTK_COMBO_BOX_ENTRY(combo_box);
