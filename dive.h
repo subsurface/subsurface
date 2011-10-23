@@ -260,6 +260,9 @@ extern void run_ui(void);
 extern void report_error(GError* error);
 
 extern void add_cylinder_description(cylinder_type_t *);
+extern void add_people(const char *string);
+extern void add_location(const char *string);
+
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 

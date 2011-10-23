@@ -123,7 +123,7 @@ void show_dive_info(struct dive *dive)
 	gtk_text_buffer_set_text(notes, dive && dive->notes ? dive->notes : "", -1);
 }
 
-static GtkEntry *text_entry(GtkWidget *box, const char *label)
+static GtkEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions)
 {
 	GtkWidget *entry;
 	GtkWidget *frame = gtk_frame_new(label);
@@ -132,6 +132,14 @@ static GtkEntry *text_entry(GtkWidget *box, const char *label)
 
 	entry = gtk_entry_new();
 	gtk_container_add(GTK_CONTAINER(frame), entry);
+
+	if (completions) {
+		GtkEntryCompletion *completion;
+		completion = gtk_entry_completion_new();
+		gtk_entry_completion_set_text_column(completion, 0);
+		gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(completions));
+		gtk_entry_set_completion(GTK_ENTRY(entry), completion);
+	}
 
 	return GTK_ENTRY(entry);
 }
@@ -162,19 +170,70 @@ static GtkTextBuffer *text_view(GtkWidget *box, const char *label)
 	return buffer;
 }
 
+static int found_string_entry;
+
+static gboolean match_string_entry(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
+{
+	const char *string = data;
+	char *entry;
+
+	gtk_tree_model_get(model, iter, 0, &entry, -1);
+	if (strcmp(entry, string))
+		return FALSE;
+	found_string_entry = 1;
+	return TRUE;
+}
+
+static int match_list(GtkListStore *list, const char *string)
+{
+	found_string_entry = 0;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(list), match_string_entry, (void *)string);
+	return found_string_entry;
+}
+
+static GtkListStore *location_list, *people_list;
+
+static void add_string_list_entry(const char *string, GtkListStore *list)
+{
+	GtkTreeIter iter;
+
+	if (!string || !*string)
+		return;
+
+	if (match_list(list, string))
+		return;
+
+	/* Fixme! Check for duplicates! */
+	gtk_list_store_append(list, &iter);
+	gtk_list_store_set(list, &iter, 0, string, -1);
+}
+
+void add_people(const char *string)
+{
+	add_string_list_entry(string, people_list);
+}
+
+void add_location(const char *string)
+{
+	add_string_list_entry(string, location_list);
+}
+
 GtkWidget *extended_dive_info_widget(void)
 {
 	GtkWidget *vbox, *hbox;
 	vbox = gtk_vbox_new(FALSE, 6);
 
+	people_list = gtk_list_store_new(1, G_TYPE_STRING);
+	location_list = gtk_list_store_new(1, G_TYPE_STRING);
+
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
-	location = text_entry(vbox, "Location");
+	location = text_entry(vbox, "Location", location_list);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	divemaster = text_entry(hbox, "Divemaster");
-	buddy = text_entry(hbox, "Buddy");
+	divemaster = text_entry(hbox, "Divemaster", people_list);
+	buddy = text_entry(hbox, "Buddy", people_list);
 
 	notes = text_view(vbox, "Notes");
 	return vbox;
