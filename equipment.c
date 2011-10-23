@@ -106,6 +106,53 @@ static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, 
 	gtk_spin_button_set_value(cylinder->end, pressure);
 }
 
+/*
+ * The gtk_tree_model_foreach() interface is bad. It could have
+ * returned whether the callback ever returned true
+ */
+static GtkTreeIter *found_match = NULL;
+static GtkTreeIter match_iter;
+
+static gboolean match_cylinder(GtkTreeModel *model,
+				GtkTreePath *path,
+				GtkTreeIter *iter,
+				gpointer data)
+{
+	int match;
+	gchar *name;
+	const char *desc = data;
+
+	gtk_tree_model_get(model, iter, 0, &name, -1);
+	match = !strcmp(desc, name);
+	g_free(name);
+	if (match) {
+		match_iter = *iter;
+		found_match = &match_iter;
+	}
+	return match;
+}
+
+static int get_active_cylinder(GtkComboBox *combo_box, GtkTreeIter *iter)
+{
+	char *desc;
+
+	if (gtk_combo_box_get_active_iter(combo_box, iter))
+		return TRUE;
+
+	desc = gtk_combo_box_get_active_text(combo_box);
+
+	found_match = NULL;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(cylinder_model), match_cylinder, (void *)desc);
+
+	g_free(desc);
+	if (!found_match)
+		return FALSE;
+
+	*iter = *found_match;
+	gtk_combo_box_set_active_iter(combo_box, iter);
+	return TRUE;
+}
+
 static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 {
 	GtkTreeIter iter;
@@ -115,7 +162,7 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	cylinder_t *cyl = current_dive->cylinder + cylinder->index;
 
 	/* Did the user set it to some non-standard value? */
-	if (!gtk_combo_box_get_active_iter(combo_box, &iter)) {
+	if (!get_active_cylinder(combo_box, &iter)) {
 		cylinder->changed = 1;
 		return;
 	}
@@ -142,31 +189,6 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 		-1);
 
 	set_cylinder_type_spinbuttons(cylinder, ml, mbar);
-}
-
-/*
- * The gtk_tree_model_foreach() interface is bad. It could have
- * returned whether the callback ever returned true
- */
-static GtkTreeIter *found_match = NULL;
-static GtkTreeIter match_iter;
-
-static gboolean match_cylinder(GtkTreeModel *model,
-				GtkTreePath *path,
-				GtkTreeIter *iter,
-				gpointer data)
-{
-	const char *name;
-	const char *desc = data;
-	GValue value = {0, };
-
-	gtk_tree_model_get_value(model, iter, 0, &value);
-	name = g_value_get_string(&value);
-	if (strcmp(desc, name))
-		return FALSE;
-	match_iter = *iter;
-	found_match = &match_iter;
-	return TRUE;
 }
 
 static GtkTreeIter *add_cylinder_type(const char *desc, int ml, int mbar, GtkTreeIter *iter)
@@ -476,6 +498,12 @@ static gboolean completion_cb(GtkEntryCompletion *widget, GtkTreeModel *model, G
 	return TRUE;
 }
 
+static void cylinder_activate_cb(GtkComboBox *combo_box, gpointer data)
+{
+	struct cylinder_widget *cylinder = data;
+	cylinder_cb(cylinder->description, data);
+}
+
 static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, GtkListStore *model)
 {
 	GtkWidget *frame, *hbox;
@@ -499,6 +527,8 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
 
 	entry = GTK_ENTRY(GTK_BIN(widget)->child);
+	g_signal_connect(entry, "activate", G_CALLBACK(cylinder_activate_cb), cylinder);
+
 	completion = gtk_entry_completion_new();
 	gtk_entry_completion_set_text_column(completion, 0);
 	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
