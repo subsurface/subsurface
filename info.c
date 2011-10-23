@@ -180,23 +180,40 @@ static GtkTextBuffer *text_view(GtkWidget *box, const char *label)
 	return buffer;
 }
 
-static int found_string_entry;
+static enum {
+	MATCH_EXACT,
+	MATCH_PREPEND,
+	MATCH_AFTER
+} found_string_entry;
+static GtkTreeIter string_entry_location;
 
 static gboolean match_string_entry(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
 	const char *string = data;
 	char *entry;
+	int cmp;
 
 	gtk_tree_model_get(model, iter, 0, &entry, -1);
-	if (strcmp(entry, string))
-		return FALSE;
-	found_string_entry = 1;
-	return TRUE;
+	cmp = strcmp(entry, string);
+
+	/* Stop. The entry is bigger than the new one */
+	if (cmp > 0)
+		return TRUE;
+
+	/* Exact match */
+	if (!cmp) {
+		found_string_entry = MATCH_EXACT;
+		return TRUE;
+	}
+
+	string_entry_location = *iter;
+	found_string_entry = MATCH_AFTER;
+	return FALSE;
 }
 
 static int match_list(GtkListStore *list, const char *string)
 {
-	found_string_entry = 0;
+	found_string_entry = MATCH_PREPEND;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(list), match_string_entry, (void *)string);
 	return found_string_entry;
 }
@@ -205,17 +222,23 @@ static GtkListStore *location_list, *people_list;
 
 static void add_string_list_entry(const char *string, GtkListStore *list)
 {
-	GtkTreeIter iter;
+	GtkTreeIter *iter, loc;
 
 	if (!string || !*string)
 		return;
 
-	if (match_list(list, string))
+	switch (match_list(list, string)) {
+	case MATCH_EXACT:
 		return;
-
-	/* Fixme! Check for duplicates! */
-	gtk_list_store_append(list, &iter);
-	gtk_list_store_set(list, &iter, 0, string, -1);
+	case MATCH_PREPEND:
+		iter = NULL;
+		break;
+	case MATCH_AFTER:
+		iter = &string_entry_location;
+		break;
+	}
+	gtk_list_store_insert_after(list, &loc, iter);
+	gtk_list_store_set(list, &loc, 0, string, -1);
 }
 
 void add_people(const char *string)
