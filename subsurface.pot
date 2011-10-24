@@ -1,0 +1,238 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-24 18:19+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: divelist.c:428
+msgid "m"
+msgstr ""
+
+#: divelist.c:431 divelist.c:546
+msgid "ft"
+msgstr ""
+
+#: divelist.c:481
+msgid "location"
+msgstr ""
+
+#: divelist.c:545
+msgid "Date"
+msgstr ""
+
+#: divelist.c:547
+msgid "min"
+msgstr ""
+
+#: divelist.c:549
+msgid "Cyl"
+msgstr ""
+
+#: divelist.c:551
+msgid "SAC"
+msgstr ""
+
+#: divelist.c:552
+msgid "OTU"
+msgstr ""
+
+#: divelist.c:553 info.c:266
+msgid "Location"
+msgstr ""
+
+#: equipment.c:518 equipment.c:591
+msgid "Cylinder"
+msgstr ""
+
+#: equipment.c:542 equipment.c:826
+msgid "Size"
+msgstr ""
+
+#: equipment.c:545
+msgid "Pressure"
+msgstr ""
+
+#: equipment.c:554
+msgid "Start Pressure"
+msgstr ""
+
+#: equipment.c:557
+msgid "End Pressure"
+msgstr ""
+
+#: equipment.c:566
+msgid "Nitrox"
+msgstr ""
+
+#: equipment.c:825
+msgid "Type"
+msgstr ""
+
+#: equipment.c:827
+msgid "MaxPress"
+msgstr ""
+
+#: equipment.c:828
+msgid "Start"
+msgstr ""
+
+#: equipment.c:829
+msgid "End"
+msgstr ""
+
+#: equipment.c:831
+msgid "He%"
+msgstr ""
+
+#: equipment.c:856
+msgid "Cylinders"
+msgstr ""
+
+#: gtk-gui.c:98
+msgid "Open File"
+msgstr ""
+
+#: gtk-gui.c:143
+msgid "Save File"
+msgstr ""
+
+#: gtk-gui.c:168
+msgid "Save Changes?"
+msgstr ""
+
+#: gtk-gui.c:174
+msgid ""
+"You have unsaved changes\n"
+"Would you like to save those before exiting the program?"
+msgstr ""
+
+#: gtk-gui.c:317
+msgid "Preferences"
+msgstr ""
+
+#: gtk-gui.c:324
+msgid "Units"
+msgstr ""
+
+#: gtk-gui.c:331
+msgid "Depth:"
+msgstr ""
+
+#: gtk-gui.c:332
+msgid "Meter"
+msgstr ""
+
+#: gtk-gui.c:333
+msgid "Feet"
+msgstr ""
+
+#: gtk-gui.c:335
+msgid "Pressure:"
+msgstr ""
+
+#: gtk-gui.c:336
+msgid "Bar"
+msgstr ""
+
+#: gtk-gui.c:337
+msgid "PSI"
+msgstr ""
+
+#: gtk-gui.c:340
+msgid "Volume:"
+msgstr ""
+
+#: gtk-gui.c:341
+msgid "Liter"
+msgstr ""
+
+#: gtk-gui.c:342
+msgid "CuFt"
+msgstr ""
+
+#: gtk-gui.c:345
+msgid "Temperature:"
+msgstr ""
+
+#: gtk-gui.c:346
+msgid "Celsius"
+msgstr ""
+
+#: gtk-gui.c:347
+msgid "Fahrenheit"
+msgstr ""
+
+#: gtk-gui.c:350
+msgid "Columns"
+msgstr ""
+
+#: gtk-gui.c:356
+msgid "Show Temp"
+msgstr ""
+
+#: gtk-gui.c:361
+msgid "Show Cyl"
+msgstr ""
+
+#: gtk-gui.c:371
+msgid "Show SAC"
+msgstr ""
+
+#: gtk-gui.c:376
+msgid "Show OTU"
+msgstr ""
+
+#: gtk-gui.c:417
+msgid "Renumber"
+msgstr ""
+
+#: gtk-gui.c:426
+msgid "New starting number"
+msgstr ""
+
+#: gtk-gui.c:860
+msgid "Dive computer"
+msgstr ""
+
+#: gtk-gui.c:880
+msgid "Device name"
+msgstr ""
+
+#: gtk-gui.c:906
+msgid "XML file name"
+msgstr ""
+
+#: gtk-gui.c:958
+msgid "Import from dive computer"
+msgstr ""
+
+#: gtk-gui.c:966
+msgid ""
+"Import: \n"
+"Load XML file or import directly from dive computer"
+msgstr ""
+
+#: info.c:271
+msgid "Divemaster"
+msgstr ""
+
+#: info.c:272
+msgid "Buddy"
+msgstr ""
+
+#: info.c:274
+msgid "Notes"
+msgstr ""

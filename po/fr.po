@@ -1,0 +1,277 @@
+# French translations for PACKAGE package
+# Traductions françaises du paquet PACKAGE.
+# Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#  <jnoel@sissiou.net>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: subversion\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-24 18:19+0400\n"
+"PO-Revision-Date: 2011-10-24 18:20+0400\n"
+"Last-Translator: Jean-Noël Rouchon <jnoel@sissiou.net>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: divelist.c:428
+msgid "m"
+msgstr "m"
+
+#: divelist.c:431
+#: divelist.c:546
+msgid "ft"
+msgstr "ft"
+
+#: divelist.c:481
+msgid "location"
+msgstr "Lieu"
+
+#: divelist.c:545
+msgid "Date"
+msgstr "Date"
+
+#: divelist.c:547
+msgid "min"
+msgstr "min"
+
+#: divelist.c:549
+msgid "Cyl"
+msgstr "Cyl"
+
+#: divelist.c:551
+msgid "SAC"
+msgstr "SAC"
+
+#: divelist.c:552
+msgid "OTU"
+msgstr "OTU"
+
+#: divelist.c:553
+#: info.c:266
+msgid "Location"
+msgstr "Lieu"
+
+#: equipment.c:518
+#: equipment.c:591
+msgid "Cylinder"
+msgstr "Bouteille"
+
+#: equipment.c:542
+#: equipment.c:826
+msgid "Size"
+msgstr "Contenance"
+
+#: equipment.c:545
+msgid "Pressure"
+msgstr "Pression"
+
+#: equipment.c:554
+msgid "Start Pressure"
+msgstr "Pression de départ"
+
+#: equipment.c:557
+msgid "End Pressure"
+msgstr "Pression d'arrivée"
+
+#: equipment.c:566
+msgid "Nitrox"
+msgstr "Nitrox"
+
+#: equipment.c:825
+msgid "Type"
+msgstr "Type"
+
+#: equipment.c:827
+msgid "MaxPress"
+msgstr "Press Max"
+
+#: equipment.c:828
+msgid "Start"
+msgstr "Début"
+
+#: equipment.c:829
+msgid "End"
+msgstr "Fin"
+
+#: equipment.c:831
+msgid "He%"
+msgstr "He%"
+
+#: equipment.c:856
+msgid "Cylinders"
+msgstr "Bouteilles"
+
+#: gtk-gui.c:98
+msgid "Open File"
+msgstr "Ouvrir"
+
+#: gtk-gui.c:143
+msgid "Save File"
+msgstr "Enregistrer"
+
+#: gtk-gui.c:168
+msgid "Save Changes?"
+msgstr "Enregistrer les changements?"
+
+#: gtk-gui.c:174
+msgid ""
+"You have unsaved changes\n"
+"Would you like to save those before exiting the program?"
+msgstr ""
+"Vous avez des changements non sauvegardés\n"
+"Voulez-vous les enregistrer avant de quitter?"
+
+#: gtk-gui.c:317
+msgid "Preferences"
+msgstr "Préférence"
+
+#: gtk-gui.c:324
+msgid "Units"
+msgstr "Unités"
+
+#: gtk-gui.c:331
+msgid "Depth:"
+msgstr "Profondeur:"
+
+#: gtk-gui.c:332
+msgid "Meter"
+msgstr "Mètre"
+
+#: gtk-gui.c:333
+msgid "Feet"
+msgstr "Pieds"
+
+#: gtk-gui.c:335
+msgid "Pressure:"
+msgstr "Pression:"
+
+#: gtk-gui.c:336
+msgid "Bar"
+msgstr "Bar"
+
+#: gtk-gui.c:337
+msgid "PSI"
+msgstr "PSI"
+
+#: gtk-gui.c:340
+msgid "Volume:"
+msgstr "Volume:"
+
+#: gtk-gui.c:341
+msgid "Liter"
+msgstr "Litre"
+
+#: gtk-gui.c:342
+msgid "CuFt"
+msgstr "CuFt"
+
+#: gtk-gui.c:345
+msgid "Temperature:"
+msgstr "Température:"
+
+#: gtk-gui.c:346
+msgid "Celsius"
+msgstr "Celsius"
+
+#: gtk-gui.c:347
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
+
+#: gtk-gui.c:350
+msgid "Columns"
+msgstr "Colonnes"
+
+#: gtk-gui.c:356
+msgid "Show Temp"
+msgstr "Montrer Temp"
+
+#: gtk-gui.c:361
+msgid "Show Cyl"
+msgstr "Montrer Cyl"
+
+#: gtk-gui.c:371
+msgid "Show SAC"
+msgstr "Montrer SAC"
+
+#: gtk-gui.c:376
+msgid "Show OTU"
+msgstr "Montrer OTU"
+
+#: gtk-gui.c:417
+msgid "Renumber"
+msgstr "Re-numéroter"
+
+#: gtk-gui.c:426
+msgid "New starting number"
+msgstr "Nouveau numéro de départ"
+
+#: gtk-gui.c:860
+msgid "Dive computer"
+msgstr "Ordinateur de plongée"
+
+#: gtk-gui.c:880
+msgid "Device name"
+msgstr "Nom du périphérique"
+
+#: gtk-gui.c:906
+msgid "XML file name"
+msgstr "Fichier XML"
+
+#: gtk-gui.c:958
+msgid "Import from dive computer"
+msgstr "Importer depuis un ordinateur de plongée"
+
+#: gtk-gui.c:966
+msgid ""
+"Import: \n"
+"Load XML file or import directly from dive computer"
+msgstr ""
+"Importer: \n"
+"Chargez un fichier XML ou importez directement depuis un ordinateur de plongée"
+
+#: info.c:271
+msgid "Divemaster"
+msgstr "Moniteur"
+
+#: info.c:272
+msgid "Buddy"
+msgstr "Coéquipier"
+
+#: info.c:274
+msgid "Notes"
+msgstr "Notes"
+
+#~ msgid "Show O"
+#~ msgstr "Montrer O"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "F"
+#~ msgstr "F"
+
+#~ msgid "Kelvin"
+#~ msgstr "Kelvin"
+
+#~ msgid "Dive List"
+#~ msgstr "Plongées"
+
+#~ msgid "Dive Profile"
+#~ msgstr "Profil"
+
+#~ msgid "Equipment"
+#~ msgstr "Equipement"
+
+#~ msgid "Help"
+#~ msgstr "Aide"
+
+#~ msgid "Import"
+#~ msgstr "Importer"
+
+#~ msgid "Log"
+#~ msgstr "Log"
