@@ -24,17 +24,27 @@ MANFILES = $(NAME).1
 # libdivecomputer still is - so we check /usr/local and /usr and then we
 # give up. You can override by simply setting it here
 #
-libdc-local := $(wildcard /usr/local/include/libdivecomputer/*)
-libdc-usr := $(wildcard /usr/include/libdivecomputer/*)
+libdc-local := $(wildcard /usr/local/lib/libdivecomputer.a)
+libdc-local64 := $(wildcard /usr/local/lib64/libdivecomputer.a)
+libdc-usr := $(wildcard /usr/lib/libdivecomputer.a)
+libdc-usr64 := $(wildcard /usr/lib64/libdivecomputer.a)
 
 ifneq ($(strip $(libdc-local)),)
 	LIBDIVECOMPUTERDIR = /usr/local
 	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
+else ifneq ($(strip $(libdc-local64)),)
+	LIBDIVECOMPUTERDIR = /usr/local
+	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib64/libdivecomputer.a
 else ifneq ($(strip $(libdc-usr)),)
 	LIBDIVECOMPUTERDIR = /usr
 	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
+else ifneq ($(strip $(libdc-usr64)),)
+	LIBDIVECOMPUTERDIR = /usr
+	LIBDIVECOMPUTERINCLUDES = $(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib64/libdivecomputer.a
 else
 $(error Cannot find libdivecomputer - please edit Makefile)
 endif
@@ -67,8 +77,8 @@ install: $(NAME)
 	$(INSTALL) -d -m 755 $(ICONDIR)
 	$(INSTALL) $(ICONFILE) $(ICONDIR)
 	$(gtk_update_icon_cache)
-	$(INSTALL) -d -m 644 $(MANDIR)
-	$(INSTALL) $(MANFILES) $(MANDIR)
+	$(INSTALL) -d -m 755 $(MANDIR)
+	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
