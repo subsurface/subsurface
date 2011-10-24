@@ -55,6 +55,10 @@ endif
 # about it if it doesn't.
 LIBUSB = $(shell pkg-config --libs libusb-1.0 2> /dev/null)
 
+# it appears that xml2-config isn't included in the libxml2 package for
+# MinGW - so under Windows you may want to replace this with a hardcoded
+# path to the installdir - something like
+# LIBXML2 = /c/opt/gtk/lib
 LIBXML2 = $(shell xml2-config --libs)
 LIBGTK = $(shell pkg-config --libs gtk+-2.0 glib-2.0 gconf-2.0)
 LIBDIVECOMPUTERCFLAGS = -I$(LIBDIVECOMPUTERINCLUDES)
@@ -80,6 +84,16 @@ install: $(NAME)
 	$(INSTALL) -d -m 755 $(MANDIR)
 	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
 
+# it appears that xml2-config isn't included in the libxml2 package for
+# MinGW - so under Windows you may want to replace this with a hardcoded
+# path to the inclde dir - something like
+#
+# XML2INCLUDE = /c/opt/gtk/include/libxml2
+#
+# parse-xml.o: parse-xml.c dive.h
+#	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c $(XML2INCLUDE)  parse-xml.c
+
+ 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) `pkg-config --cflags glib-2.0` -c `xml2-config --cflags`  parse-xml.c
 

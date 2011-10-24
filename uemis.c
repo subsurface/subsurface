@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #define __USE_XOPEN
 #include <time.h>
-#include <regex.h>
 
 #include "dive.h"
 #include "uemis.h"
