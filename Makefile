@@ -1,4 +1,4 @@
-VERSION=1.0
+VERSION=1.1
 
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
@@ -103,7 +103,7 @@ libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecompu
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-c libdivecomputer.c
 
-gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
+gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h Makefile
 	$(CC) $(CFLAGS) `pkg-config --cflags gtk+-2.0 glib-2.0 gconf-2.0` \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-DVERSION_STRING='"v$(VERSION)"' \
