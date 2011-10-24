@@ -12,6 +12,9 @@ typedef struct {
 } progressbar_t;
 
 typedef struct {
+	gboolean cylinder;
+	gboolean temperature;
+	gboolean nitrox;
 	gboolean sac;
 	gboolean otu;
 } visible_cols_t;

@@ -203,6 +203,7 @@ void renumber_dives(int nr)
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
 		dive->number = nr + i;
+		flush_divelist(dive);
 	}
 	mark_divelist_changed(TRUE);
 }

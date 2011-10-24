@@ -25,7 +25,7 @@ struct DiveList {
 	GtkWidget    *tree_view;
 	GtkWidget    *container_widget;
 	GtkListStore *model;
-	GtkTreeViewColumn *date, *depth, *duration, *location;
+	GtkTreeViewColumn *nr, *date, *depth, *duration, *location;
 	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac, *otu;
 	int changed;
 };
@@ -38,6 +38,7 @@ static struct DiveList dive_list;
  */
 enum {
 	DIVE_INDEX = 0,
+	DIVE_NR,		/* int: dive->nr */
 	DIVE_DATE,		/* time_t: dive->when */
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
@@ -375,6 +376,7 @@ static void fill_one_dive(struct dive *dive,
 	 * The core data itself is unaffected by units
 	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
+		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
 		DIVE_CYLINDER, cylinder,
 		DIVE_SAC, sac,
@@ -449,6 +451,9 @@ void update_dive_list_units(void)
 
 void update_dive_list_col_visibility(void)
 {
+	gtk_tree_view_column_set_visible(dive_list.cylinder, visible_cols.cylinder);
+	gtk_tree_view_column_set_visible(dive_list.temperature, visible_cols.temperature);
+	gtk_tree_view_column_set_visible(dive_list.nitrox, visible_cols.nitrox);
 	gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
 	gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
 	return;
@@ -469,6 +474,7 @@ static void fill_dive_list(void)
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			DIVE_INDEX, i,
+			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATION, dive->duration.seconds,
@@ -515,6 +521,7 @@ GtkWidget *dive_list_create(void)
 
 	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
+				G_TYPE_INT,			/* nr */
 				G_TYPE_INT,			/* Date */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
@@ -533,12 +540,14 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_MULTIPLE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
+	dive_list.nr = divelist_column(&dive_list, DIVE_NR, "#", NULL, PANGO_ALIGN_RIGHT, TRUE);
+	gtk_tree_view_column_set_sort_column_id(dive_list.nr, -1);
 	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT, TRUE);
 	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, PANGO_ALIGN_CENTER, TRUE);
-	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, PANGO_ALIGN_CENTER, TRUE);
+	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, visible_cols.temperature);
+	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, PANGO_ALIGN_CENTER, visible_cols.cylinder);
+	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, PANGO_ALIGN_CENTER, visible_cols.nitrox);
 	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, PANGO_ALIGN_CENTER, visible_cols.sac);
 	dive_list.otu = divelist_column(&dive_list, DIVE_OTU, "OTU", otu_data_func, PANGO_ALIGN_CENTER, visible_cols.otu);
 	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, PANGO_ALIGN_LEFT, TRUE);

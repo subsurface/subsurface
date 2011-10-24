@@ -301,6 +301,9 @@ static void name(GtkWidget *w, gpointer data) \
 
 OPTIONCALLBACK(otu_toggle, visible_cols.otu)
 OPTIONCALLBACK(sac_toggle, visible_cols.sac)
+OPTIONCALLBACK(nitrox_toggle, visible_cols.nitrox)
+OPTIONCALLBACK(temperature_toggle, visible_cols.temperature)
+OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
 
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
@@ -349,6 +352,21 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
+	button = gtk_check_button_new_with_label("Show Temp");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.temperature);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(temperature_toggle), NULL);
+
+	button = gtk_check_button_new_with_label("Show Cyl");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.cylinder);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(cylinder_toggle), NULL);
+
+	button = gtk_check_button_new_with_label("Show O" UTF8_SUBSCRIPT_2 "%");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.nitrox);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(nitrox_toggle), NULL);
+
 	button = gtk_check_button_new_with_label("Show SAC");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.sac);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
@@ -379,7 +397,10 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(SAC), ! visible_cols.sac, NULL); /* inverted to get the correct default */
+		gconf_client_set_bool(gconf, GCONF_NAME(TEMPERATURE), visible_cols.temperature, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(CYLINDER), visible_cols.cylinder, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(NITROX), visible_cols.nitrox, NULL);
+		gconf_client_set_bool(gconf, GCONF_NAME(SAC), visible_cols.sac, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
 		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
 	}
@@ -625,10 +646,12 @@ void init_ui(int argc, char **argv)
 		output_units.volume = CUFT;
 	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
 		output_units.temperature = FAHRENHEIT;
-	/* an unset key is FALSE - so in order to get the default behavior right we 
-	   invert the meaning of the SAC key */
+	/* an unset key is FALSE - all these are hidden by default */
+	visible_cols.cylinder = gconf_client_get_bool(gconf, GCONF_NAME(CYLINDER), NULL);
+	visible_cols.temperature = gconf_client_get_bool(gconf, GCONF_NAME(TEMPERATURE), NULL);
+	visible_cols.nitrox = gconf_client_get_bool(gconf, GCONF_NAME(NITROX), NULL);
 	visible_cols.otu = gconf_client_get_bool(gconf, GCONF_NAME(OTU), NULL);
-	visible_cols.sac = ! gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
+	visible_cols.sac = gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
 		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
 	if (!divelist_font)
