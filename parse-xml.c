@@ -783,8 +783,14 @@ static void uemis_ts(char *buffer, void *_when)
 	struct tm tm;
 	time_t *when = _when;
 
-	strptime(buffer, "%Y-%m-%dT%H:%M:%S", &tm);
+	memset(&tm, 0, sizeof(tm));
+	sscanf(buffer,"%d-%d-%dT%d:%d:%d",
+		&tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+		&tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+	tm.tm_mon  -= 1;
+	tm.tm_year -= 1900;
 	*when = utc_mktime(&tm);
+
 }
 
 static void uemis_duration(char *buffer, void *_duration)
