@@ -202,6 +202,17 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	int i, depth = 0;
 	int x,y;
 
+	/* is plotting this event disabled? */
+	if (event->name) {
+		for (i = 0; i < evn_used; i++) {
+			if (! strcmp(event->name, ev_namelist[i].ev_name)) {
+				if (ev_namelist[i].plot_ev)
+					break;
+				else
+					return;
+			}
+		}
+	}
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *data = pi->entry + i;
 		if (event->time.seconds < data->sec)
