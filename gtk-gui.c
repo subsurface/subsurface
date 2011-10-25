@@ -416,18 +416,35 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 static void create_toggle(const char* label, int *on, void *_data)
 {
-	GtkWidget *button, *box = _data;
+	GtkWidget *button, *table = _data;
+	int rows, cols, x, y;
+	static int count;
 
+	if (table == NULL) {
+		/* magic way to reset the number of toggle buttons
+		 * that we have already added - call this before you
+		 * create the dialog */
+		count = 0;
+		return;
+	}
+	g_object_get(G_OBJECT(table), "n-columns", &cols, "n-rows", &rows, NULL);
+	if (count > rows * cols) {
+		gtk_table_resize(GTK_TABLE(table),rows+1,cols);
+		rows++;
+	}
+	x = count % cols;
+	y = count / cols;
 	button = gtk_check_button_new_with_label(label);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), *on);
-	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	gtk_table_attach_defaults(GTK_TABLE(table), button, x, x+1, y, y+1);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(event_toggle), on);
+	count++;
 }
 
 static void selectevents_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *frame, *vbox, *hbox;
+	GtkWidget *dialog, *frame, *vbox, *table;
 
 	dialog = gtk_dialog_new_with_buttons("SelectEvents",
 		GTK_WINDOW(main_window),
@@ -435,15 +452,17 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
+	/* initialize the function that fills the table */
+	create_toggle(NULL, NULL, NULL);
 
 	frame = gtk_frame_new("Enable / Disable Events");
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
-	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_container_add(GTK_CONTAINER(frame), hbox);
+	table = gtk_table_new(1, 4, TRUE);
+	gtk_container_add(GTK_CONTAINER(frame), table);
 
-	evn_foreach(&create_toggle, hbox);
+	evn_foreach(&create_toggle, table);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
