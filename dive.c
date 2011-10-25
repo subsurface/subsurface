@@ -26,6 +26,7 @@ void add_event(struct dive *dive, int time, int type, int flags, int value, cons
 	while (*p)
 		p = &(*p)->next;
 	*p = ev;
+	remember_event(name);
 }
 
 double get_depth_units(unsigned int mm, int *frac, const char **units)

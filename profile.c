@@ -166,11 +166,62 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_show_text(cr, buffer);
 }
 
+struct ev_select {
+	char *ev_name;
+	gboolean plot_ev;
+};
+static struct ev_select *ev_namelist;
+static int evn_allocated;
+static int evn_used;
+
+void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
+{
+	int i;
+
+	for (i = 0; i < evn_used; i++) {
+		callback(ev_namelist[i].ev_name, &ev_namelist[i].plot_ev, data);
+	}
+}
+
+void remember_event(const char *eventname)
+{
+	int i=0, len;
+
+	if (!eventname || (len = strlen(eventname)) == 0)
+		return;
+	while (i < evn_used) {
+		if (!strncmp(eventname,ev_namelist[i].ev_name,len))
+			return;
+		i++;
+	}
+	if (evn_used == evn_allocated) {
+		evn_allocated += 10;
+		ev_namelist = realloc(ev_namelist, evn_allocated * sizeof(struct ev_select));
+		if (! ev_namelist)
+			/* we are screwed, but let's just bail out */
+			return;
+	}
+	ev_namelist[evn_used].ev_name = strdup(eventname);
+	ev_namelist[evn_used].plot_ev = TRUE;
+	evn_used++;
+}
+
 static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event, const text_render_options_t *tro)
 {
 	int i, depth = 0;
 	int x,y;
 
+	/* is plotting this event disabled? */
+	if (event->name) {
+		for (i = 0; i < evn_used; i++) {
+			if (! strcmp(event->name, ev_namelist[i].ev_name)) {
+				if (ev_namelist[i].plot_ev)
+					break;
+				else
+					return;
+			}
+		}
+	}
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *data = pi->entry + i;
 		if (event->time.seconds < data->sec)
