@@ -305,6 +305,13 @@ OPTIONCALLBACK(nitrox_toggle, visible_cols.nitrox)
 OPTIONCALLBACK(temperature_toggle, visible_cols.temperature)
 OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
 
+static void event_toggle(GtkWidget *w, gpointer _data)
+{
+	gboolean *plot_ev = _data;
+
+	*plot_ev = GTK_TOGGLE_BUTTON(w)->active;
+}
+
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -407,6 +414,45 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void create_toggle(const char* label, int *on, void *_data)
+{
+	GtkWidget *button, *box = _data;
+
+	button = gtk_check_button_new_with_label(label);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), *on);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(event_toggle), on);
+}
+
+static void selectevents_dialog(GtkWidget *w, gpointer data)
+{
+	int result;
+	GtkWidget *dialog, *frame, *vbox, *hbox;
+
+	dialog = gtk_dialog_new_with_buttons("SelectEvents",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	frame = gtk_frame_new("Enable / Disable Events");
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
+
+	evn_foreach(&create_toggle, hbox);
+
+	gtk_widget_show_all(dialog);
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (result == GTK_RESPONSE_ACCEPT) {
+		repaint_dive();
+	}
+	gtk_widget_destroy(dialog);
+}
+
 static void renumber_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -475,6 +521,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
 	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
+	{ "FilterMenuAction",  GTK_STOCK_FILE, "Filter", NULL, NULL, NULL},
 	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
@@ -482,8 +529,9 @@ static GtkActionEntry menu_items[] = {
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
 	{ "Preferences",    NULL, "Preferences", NULL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
+	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
-	{ "About",           GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
+	{ "About",          GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -503,6 +551,9 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
+			</menu> \
+			<menu name=\"FilterMenu\" action=\"FilterMenuAction\"> \
+				<menuitem name=\"SelectEvents\" action=\"SelectEvents\" /> \
 			</menu> \
 			<menu name=\"Help\" action=\"HelpMenuAction\"> \
 				<menuitem name=\"About\" action=\"About\" /> \

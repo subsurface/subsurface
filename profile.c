@@ -174,6 +174,15 @@ static struct ev_select *ev_namelist;
 static int evn_allocated;
 static int evn_used;
 
+void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
+{
+	int i;
+
+	for (i = 0; i < evn_used; i++) {
+		callback(ev_namelist[i].ev_name, &ev_namelist[i].plot_ev, data);
+	}
+}
+
 void remember_event(const char *eventname)
 {
 	int i=0, len;
