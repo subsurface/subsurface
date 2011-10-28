@@ -8,7 +8,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#ifndef WIN32
 #include <gconf/gconf-client.h>
+#endif
 
 #include "dive.h"
 #include "divelist.h"
@@ -26,10 +28,12 @@ int        error_count;
 #define DIVELIST_DEFAULT_FONT "Sans 8"
 const char *divelist_font;
 
+#ifndef WIN32
 GConfClient *gconf;
-struct units output_units;
-
 #define GCONF_NAME(x) "/apps/subsurface/" #x
+#endif
+
+struct units output_units;
 
 static GtkWidget *dive_profile;
 
@@ -400,6 +404,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		update_dive_list_units();
 		repaint_dive();
 		update_dive_list_col_visibility();
+#ifndef WIN32
 		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
@@ -410,6 +415,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		gconf_client_set_bool(gconf, GCONF_NAME(SAC), visible_cols.sac, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
 		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
+#endif
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -706,6 +712,8 @@ void init_ui(int argc, char **argv)
 	gtk_settings_set_long_property(settings, "gtk_tooltip_timeout", 10, "subsurface setting");
 
 	g_type_init();
+
+#ifndef WIN32
 	gconf = gconf_client_get_default();
 
 	if (gconf_client_get_bool(gconf, GCONF_NAME(feet), NULL))
@@ -724,6 +732,7 @@ void init_ui(int argc, char **argv)
 	visible_cols.sac = gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
 		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
+#endif
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
 
