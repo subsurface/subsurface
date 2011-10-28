@@ -4,15 +4,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <gconf/gconf-client.h>
-
 #include "dive.h"
 #include "divelist.h"
 
-GConfClient *gconf;
 struct units output_units;
-
-#define GCONF_NAME(x) "/apps/subsurface/" #x
 
 /* random helper functions, used here or elsewhere */
 static int sortfn(const void *_a, const void *_b)
