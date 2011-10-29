@@ -35,6 +35,7 @@ ifeq ($(CC), i686-w64-mingw32-gcc)
 	LIBDIVECOMPUTERINCLUDES = `$(PKGCONFIG) --cflags libdivecomputer`
 	LIBDIVECOMPUTERARCHIVE = `$(PKGCONFIG) --libs libdivecomputer`
 	RESFILE = packaging/windows/subsurface.res
+	LDFLAGS += -Wl,-subsystem,windows
 else
 
 libdc-local := $(wildcard /usr/local/lib/libdivecomputer.a)
