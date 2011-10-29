@@ -21,7 +21,7 @@ FunctionEnd
  
 # define the directory to install to, the desktop in this case as specified  
 # by the predefined $DESKTOP variable
-installDir "$DESKTOP\subsurface"
+installDir "$PROGRAMFILES\subsurface"
 
 # default section
 Section
