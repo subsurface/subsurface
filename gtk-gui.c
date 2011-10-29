@@ -552,7 +552,11 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	GdkPixbuf *logo = NULL;
 
 	if (need_icon) {
+#ifndef WIN32
 		GtkWidget *image = gtk_image_new_from_file("subsurface.svg");
+#else
+		GtkWidget *image = gtk_image_new_from_file("subsurface.ico");
+#endif
 
 		if (image) {
 			logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
@@ -823,7 +827,7 @@ void init_ui(int argc, char **argv)
 #ifndef WIN32
 		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.svg", NULL);
 #else
-		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.bmp", NULL);
+		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.ico", NULL);
 #endif
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
