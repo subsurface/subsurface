@@ -53,6 +53,7 @@ void flush_dive_info_changes(struct dive *dive)
 		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(location));
 		old_text = dive->location;
 		dive->location = new_text;
+		add_location(new_text);
 		if (text_changed(old_text,dive->location))
 			changed = 1;
 		if (old_text)
@@ -63,6 +64,7 @@ void flush_dive_info_changes(struct dive *dive)
 		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(divemaster));
 		old_text = dive->divemaster;
 		dive->divemaster = new_text;
+		add_people(new_text);
 		if (text_changed(old_text,dive->divemaster))
 			changed = 1;
 		if (old_text)
@@ -73,6 +75,7 @@ void flush_dive_info_changes(struct dive *dive)
 		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(buddy));
 		old_text = dive->buddy;
 		dive->buddy = new_text;
+		add_people(new_text);
 		if (text_changed(old_text,dive->buddy))
 			changed = 1;
 		if (old_text)
