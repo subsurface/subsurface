@@ -887,8 +887,9 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
-	for (i = 0; i < dive->samples; i++) {
-		entry = pi->entry + i + 2;
+	/* The first two and last two entries are "fillers" */
+	for (i = 2; i < pi->nr-2; i++) {
+		entry = pi->entry + i;
 		if (SENSOR_PRESSURE(entry)) {
 			cur_pr[entry->cylinderindex] = SENSOR_PRESSURE(entry);
 		} else {
@@ -1000,11 +1001,11 @@ static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-static struct plot_info *create_plot_info(struct dive *dive)
+static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, struct sample *dive_sample)
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, nr = dive->samples + 4, sec, cyl;
+	int i, nr = nr_samples + 4, sec, cyl;
 	size_t alloc_size = plot_info_size(nr);
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
@@ -1020,9 +1021,9 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
-	for (i = 0; i < dive->samples; i++) {
+	for (i = 0; i < nr_samples; i++) {
 		int depth;
-		struct sample *sample = dive->sample+i;
+		struct sample *sample = dive_sample+i;
 
 		entry = pi->entry + i + 2;
 		sec = entry->sec = sample->time.seconds;
@@ -1044,7 +1045,7 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
 	current = track_pr[pi->entry[2].cylinderindex];
-	for (i = 0; i < dive->samples; i++) {
+	for (i = 0; i < nr_samples; i++) {
 		entry = pi->entry + i + 2;
 
 		entry->same_cylinder = entry->cylinderindex == cylinderindex;
@@ -1086,7 +1087,7 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	if (lastdepth)
 		lastindex = i + 2;
 	/* Fill in the last two entries with empty values but valid times */
-	i = dive->samples + 2;
+	i = nr_samples + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
 	pi->nr = lastindex+1;
@@ -1107,7 +1108,24 @@ static struct plot_info *create_plot_info(struct dive *dive)
 
 void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive)
 {
-	struct plot_info *pi = create_plot_info(dive);
+	struct plot_info *pi;
+	static struct sample fake[4];
+	struct sample *sample = dive->sample;
+	int nr = dive->samples;
+
+	if (!nr) {
+		int duration = dive->duration.seconds;
+		int maxdepth = dive->maxdepth.mm;
+		sample = fake;
+		fake[1].time.seconds = duration * 0.05;
+		fake[1].depth.mm = maxdepth;
+		fake[2].time.seconds = duration * 0.95;
+		fake[2].depth.mm = maxdepth;
+		fake[3].time.seconds = duration * 1.00;
+		nr = 4;
+	}
+
+	pi = create_plot_info(dive, nr, sample);
 
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
 	cairo_set_line_width(gc->cr, 2);
