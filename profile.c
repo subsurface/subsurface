@@ -660,7 +660,7 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 		return;
 
 	/* only loop over the actual events from the dive computer */
-	for (i = 2; i < pi->nr - 2; i++) {
+	for (i = 2; i < pi->nr; i++) {
 		entry = pi->entry + i;
 
 		if (!entry->same_cylinder) {
@@ -887,8 +887,9 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
-	/* The first two and last two entries are "fillers" */
-	for (i = 2; i < pi->nr-2; i++) {
+
+	/* The first two are "fillers" */
+	for (i = 2; i < pi->nr; i++) {
 		entry = pi->entry + i;
 		if (SENSOR_PRESSURE(entry)) {
 			cur_pr[entry->cylinderindex] = SENSOR_PRESSURE(entry);
@@ -1084,8 +1085,6 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 			pr_track->end = pr;
 		}
 	}
-	if (lastdepth)
-		lastindex = i + 2;
 	/* Fill in the last two entries with empty values but valid times */
 	i = nr_samples + 2;
 	pi->entry[i].sec = sec + 20;
