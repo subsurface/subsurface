@@ -10,6 +10,8 @@
 
 #ifndef WIN32
 #include <gconf/gconf-client.h>
+#else
+#include <windows.h>
 #endif
 
 #include "dive.h"
@@ -415,6 +417,33 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		gconf_client_set_bool(gconf, GCONF_NAME(SAC), visible_cols.sac, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
 		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
+#else
+		HKEY hkey;
+		LONG success = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
+					0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
+					NULL, &hkey, NULL);
+		if (success != ERROR_SUCCESS)
+			printf("CreateKey Software\\subsurface failed %ld\n", success);
+		DWORD value;
+
+#define StoreInReg(_key, _val) { \
+			value = (_val) ;				\
+			RegSetValueEx(hkey, TEXT(_key), 0, REG_DWORD, &value, 4); \
+		}
+
+		StoreInReg("feet", output_units.length == FEET);
+		StoreInReg("psi",  output_units.pressure == PSI);
+		StoreInReg("cuft", output_units.volume == CUFT);
+		StoreInReg("fahrenheit", output_units.temperature == FAHRENHEIT);
+		StoreInReg("temperature", visible_cols.temperature);
+		StoreInReg("cylinder", visible_cols.cylinder);
+		StoreInReg("nitrox", visible_cols.nitrox);
+		StoreInReg("sac", visible_cols.sac);
+		StoreInReg("otu", visible_cols.otu);
+		RegSetValueEx(hkey, TEXT("divelist_font"), 0, REG_SZ, divelist_font, strlen(divelist_font));
+		if (RegFlushKey(hkey) != ERROR_SUCCESS)
+			printf("RegFlushKey failed %ld\n");
+		RegCloseKey(hkey);
 #endif
 	}
 	gtk_widget_destroy(dialog);
@@ -691,6 +720,22 @@ static void drag_cb(GtkWidget *widget, GdkDragContext *context,
 	nbdp->name = NULL;
 }
 
+#ifdef WIN32
+static int get_from_registry(const char *key)
+{
+	DWORD value;
+	DWORD type;
+	DWORD len = 4;
+	LONG success;
+
+	success = RegGetValue(HKEY_CURRENT_USER, TEXT("Software\\subsurface"), TEXT(key),
+			RRF_RT_ANY, &type, &value, &len);
+	if (success != ERROR_SUCCESS)
+		return FALSE; /* that's what happens the first time we start */
+	return value;
+}
+#endif
+
 void init_ui(int argc, char **argv)
 {
 	GtkWidget *win;
@@ -732,6 +777,30 @@ void init_ui(int argc, char **argv)
 	visible_cols.sac = gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
 		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
+#else
+	DWORD type;
+	DWORD len = 4;
+	LONG success;
+
+	output_units.length = get_from_registry("feet");
+	output_units.pressure = get_from_registry("psi");
+	output_units.volume = get_from_registry("cuft");
+	output_units.temperature = get_from_registry("fahrenheit");
+	visible_cols.temperature = get_from_registry("temperature");
+	visible_cols.cylinder = get_from_registry("cylinder");
+	visible_cols.nitrox = get_from_registry("nitrox");
+	visible_cols.sac = get_from_registry("sac");
+	visible_cols.otu = get_from_registry("otu");
+
+	divelist_font = malloc(80);
+	len = 80;
+	success = RegGetValue(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
+			TEXT("divelist_font"), RRF_RT_ANY, &type, divelist_font, &len);
+	if (success != ERROR_SUCCESS) {
+		/* that's what happens the first time we start - just use the default */
+		free(divelist_font);
+		divelist_font = NULL;
+	}
 #endif
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
@@ -751,7 +820,11 @@ void init_ui(int argc, char **argv)
 		}
 	}
 	if (need_icon)
+#ifndef WIN32
 		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.svg", NULL);
+#else
+		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.bmp", NULL);
+#endif
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;

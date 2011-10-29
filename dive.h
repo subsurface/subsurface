@@ -187,6 +187,10 @@ struct dive {
  * the input and output may come in some random format. This
  * keeps track of those units.
  */
+/* turns out in Win32 PASCAL is defined as a calling convention */
+#ifdef WIN32
+#undef PASCAL
+#endif
 struct units {
 	enum { METERS, FEET } length;
 	enum { LITER, CUFT } volume;
