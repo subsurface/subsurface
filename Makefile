@@ -34,6 +34,8 @@ ifeq ($(CC), i686-w64-mingw32-gcc)
 	LIBDIVECOMPUTERDIR = /usr/i686-w64-mingw32/sys-root/mingw/include/libdivecomputer
 	LIBDIVECOMPUTERINCLUDES = `$(PKGCONFIG) --cflags libdivecomputer`
 	LIBDIVECOMPUTERARCHIVE = `$(PKGCONFIG) --libs libdivecomputer`
+	RESFILE = packaging/windows/subsurface.res
+	LDFLAGS += -Wl,-subsystem,windows
 else
 
 libdc-local := $(wildcard /usr/local/lib/libdivecomputer.a)
@@ -76,7 +78,7 @@ LIBS = $(LIBXML2) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
-	gtk-gui.o
+	gtk-gui.o $(RESFILE)
 
 $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
