@@ -1010,7 +1010,7 @@ static struct plot_info *create_plot_info(struct dive *dive)
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
-	struct plot_data *entry;
+	struct plot_data *entry = NULL;
 
 	pi = malloc(alloc_size);
 	if (!pi)
@@ -1043,7 +1043,7 @@ static struct plot_info *create_plot_info(struct dive *dive)
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
-	current = track_pr[dive->sample[0].cylinderindex];
+	current = track_pr[pi->entry[2].cylinderindex];
 	for (i = 0; i < dive->samples; i++) {
 		entry = pi->entry + i + 2;
 
@@ -1073,7 +1073,9 @@ static struct plot_info *create_plot_info(struct dive *dive)
 		missing_pr |= !SENSOR_PRESSURE(entry);
 	}
 
-	current->t_end = entry->sec;
+	if (entry)
+		current->t_end = entry->sec;
+
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) { /* initialize the end pressures */
 		int pr = dive->cylinder[cyl].end.mbar;
 		if (pr && track_pr[cyl]) {
