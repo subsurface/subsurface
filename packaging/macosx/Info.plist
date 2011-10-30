@@ -13,7 +13,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>subsurface</string>
+	<string>subsurface.sh</string>
 	<key>CFBundleIdentifier</key>
 	<string>torvalds.subsurface</string>
 </dict>

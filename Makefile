@@ -23,9 +23,7 @@ DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 
 MACOSXINSTALL = /Applications/Subsurface.app
-MACOSXICONFILE = macosx/Subsurface.icns
-MACOSXINFOFILE = macosx/Info.plist
-MACOSXPKGFILE = macosx/PkgInfo
+MACOSXFILES = packaging/macosx
 
 # find libdivecomputer
 # First deal with the cross compile environment.
@@ -109,9 +107,11 @@ install-macosx: $(NAME)
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/MacOS
 	$(INSTALL) $(NAME) $(MACOSXINSTALL)/Contents/MacOS/
-	$(INSTALL) $(MACOSXINFOFILE) $(MACOSXINSTALL)/Contents/
-	$(INSTALL) $(MACOSXPKGFILE) $(MACOSXINSTALL)/Contents/
-	$(INSTALL) $(MACOSXICONFILE) $(MACOSXINSTALL)/Contents/Resources/
+	$(INSTALL) $(MACOSXFILES)/subsurface.sh $(MACOSXINSTALL)/Contents/MacOS/
+	$(INSTALL) $(MACOSXFILES)/PkgInfo $(MACOSXINSTALL)/Contents/
+	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
+	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
+	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c $(XML2CFLAGS)  parse-xml.c
