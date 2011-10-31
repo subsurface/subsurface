@@ -22,6 +22,9 @@ ICONFILE = $(NAME).svg
 DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 
+MACOSXINSTALL = /Applications/Subsurface.app
+MACOSXFILES = packaging/macosx
+
 # find libdivecomputer
 # First deal with the cross compile environment.
 # For the native case, Linus doesn't want to trust pkg-config given
@@ -99,6 +102,16 @@ XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
+
+install-macosx: $(NAME)
+	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
+	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/MacOS
+	$(INSTALL) $(NAME) $(MACOSXINSTALL)/Contents/MacOS/
+	$(INSTALL) $(MACOSXFILES)/subsurface.sh $(MACOSXINSTALL)/Contents/MacOS/
+	$(INSTALL) $(MACOSXFILES)/PkgInfo $(MACOSXINSTALL)/Contents/
+	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
+	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
+	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c $(XML2CFLAGS)  parse-xml.c
