@@ -90,7 +90,9 @@ install: $(NAME)
 	$(INSTALL) $(DESKTOPFILE) $(DESKTOPDIR)
 	$(INSTALL) -d -m 755 $(ICONDIR)
 	$(INSTALL) $(ICONFILE) $(ICONDIR)
-	$(gtk_update_icon_cache)
+	@-if test -z "$(DESTDIR)"; then \
+		$(gtk_update_icon_cache); \
+	fi
 	$(INSTALL) -d -m 755 $(MANDIR)
 	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
 
