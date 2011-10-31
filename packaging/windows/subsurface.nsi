@@ -85,5 +85,8 @@ section "uninstall"
   delete "$SMPROGRAMS\subsurface\uninstall-subsurface.lnk"
   delete "$SMPROGRAMS\subsurface\subsurface.lnk"
   RMDir  "$SMPROGRAMS\subsurface"
-sectionEnd
 
+  MessageBox MB_YESNO "Do you wish to store subsurface's settings?" IDYES end
+  DeleteRegKey HKCU "SOFTWARE\subsurface"
+  end:
+sectionEnd
