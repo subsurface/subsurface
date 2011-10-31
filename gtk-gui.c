@@ -725,15 +725,14 @@ static void drag_cb(GtkWidget *widget, GdkDragContext *context,
 }
 
 #ifdef WIN32
-static int get_from_registry(const char *key)
+static int get_from_registry(HKEY hkey, const char *key)
 {
 	DWORD value;
-	DWORD type;
 	DWORD len = 4;
 	LONG success;
 
-	success = RegGetValue(HKEY_CURRENT_USER, TEXT("Software\\subsurface"), TEXT(key),
-			RRF_RT_ANY, &type, &value, &len);
+	success = RegQueryValueEx(hkey, TEXT(key), NULL, NULL,
+				(LPBYTE) &value, &len );
 	if (success != ERROR_SUCCESS)
 		return FALSE; /* that's what happens the first time we start */
 	return value;
@@ -782,29 +781,34 @@ void init_ui(int argc, char **argv)
 		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
 #else
-	DWORD type;
 	DWORD len = 4;
 	LONG success;
+	HKEY hkey;
 
-	output_units.length = get_from_registry("feet");
-	output_units.pressure = get_from_registry("psi");
-	output_units.volume = get_from_registry("cuft");
-	output_units.temperature = get_from_registry("fahrenheit");
-	visible_cols.temperature = get_from_registry("temperature");
-	visible_cols.cylinder = get_from_registry("cylinder");
-	visible_cols.nitrox = get_from_registry("nitrox");
-	visible_cols.sac = get_from_registry("sac");
-	visible_cols.otu = get_from_registry("otu");
+	success = RegOpenKeyEx(	HKEY_CURRENT_USER, TEXT("Software\\subsurface"), 0,
+			KEY_QUERY_VALUE, &hkey);
+
+	output_units.length = get_from_registry(hkey, "feet");
+	output_units.pressure = get_from_registry(hkey, "psi");
+	output_units.volume = get_from_registry(hkey, "cuft");
+	output_units.temperature = get_from_registry(hkey, "fahrenheit");
+	visible_cols.temperature = get_from_registry(hkey, "temperature");
+	visible_cols.cylinder = get_from_registry(hkey, "cylinder");
+	visible_cols.nitrox = get_from_registry(hkey, "nitrox");
+	visible_cols.sac = get_from_registry(hkey, "sac");
+	visible_cols.otu = get_from_registry(hkey, "otu");
 
 	divelist_font = malloc(80);
 	len = 80;
-	success = RegGetValue(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
-			TEXT("divelist_font"), RRF_RT_ANY, &type, divelist_font, &len);
+	success = RegQueryValueEx(hkey, TEXT("divelist_font"), NULL, NULL,
+				(LPBYTE) divelist_font, &len );
 	if (success != ERROR_SUCCESS) {
 		/* that's what happens the first time we start - just use the default */
 		free(divelist_font);
 		divelist_font = NULL;
 	}
+	RegCloseKey(hkey);
+
 #endif
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
