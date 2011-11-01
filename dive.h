@@ -87,6 +87,7 @@ typedef struct {
 } cylinder_t;
 
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
+extern double get_temp_units(unsigned int mm, const char **units);
 
 static inline double mm_to_feet(int mm)
 {

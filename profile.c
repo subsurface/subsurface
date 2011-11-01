@@ -485,19 +485,13 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 
 static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkelvin)
 {
-	int deg;
+	double deg;
 	const char *unit;
 	static const text_render_options_t tro = {12, 0.2, 0.2, 1.0, LEFT, TOP};
-	temperature_t temperature = { mkelvin };
 
-	if (output_units.temperature == FAHRENHEIT) {
-		deg = to_F(temperature);
-		unit = UTF8_DEGREE "F";
-	} else {
-		deg = to_C(temperature);
-		unit = UTF8_DEGREE "C";
-	}
-	plot_text(gc, &tro, sec, temperature.mkelvin, "%d%s", deg, unit);
+	deg = get_temp_units(mkelvin, &unit);
+
+	plot_text(gc, &tro, sec, mkelvin, "%d%s", (int)(deg + 0.5), unit);
 }
 
 static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)

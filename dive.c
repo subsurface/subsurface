@@ -29,6 +29,23 @@ void add_event(struct dive *dive, int time, int type, int flags, int value, cons
 	remember_event(name);
 }
 
+double get_temp_units(unsigned int mk, const char **units)
+{
+	double deg;
+	const char *unit;
+
+	if (output_units.temperature == FAHRENHEIT) {
+		deg = mkelvin_to_F(mk);
+		unit = UTF8_DEGREE "F";
+	} else {
+		deg = mkelvin_to_C(mk);
+		unit = UTF8_DEGREE "C";
+	}
+	if (units)
+		*units = unit;
+	return deg;
+}
+
 double get_depth_units(unsigned int mm, int *frac, const char **units)
 {
 	int decimals;
