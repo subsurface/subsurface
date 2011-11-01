@@ -167,6 +167,12 @@ static void parse_argument(const char *arg)
 				return;
 			}
 			/* fallthrough */
+		case 'p':
+			/* ignore process serial number argument when run as native macosx app */
+			if (strncmp(arg, "-psn_", 5) == 0) {
+				return;
+			}
+			/* fallthrough */ 
 		default:
 			fprintf(stderr, "Bad argument '%s'\n", arg);
 			exit(1);
