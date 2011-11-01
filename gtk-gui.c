@@ -7,6 +7,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <libintl.h>
+#include <locale.h>
 
 #ifndef WIN32
 #include <gconf/gconf-client.h>
@@ -99,7 +101,7 @@ static void file_open(GtkWidget *w, gpointer data)
 	GtkWidget *dialog;
 	GtkFileFilter *filter;
 
-	dialog = gtk_file_chooser_dialog_new("Open File",
+	dialog = gtk_file_chooser_dialog_new(gettext("Open File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -144,7 +146,7 @@ static void file_open(GtkWidget *w, gpointer data)
 static void file_save(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
-	dialog = gtk_file_chooser_dialog_new("Save File",
+	dialog = gtk_file_chooser_dialog_new(gettext("Save File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -169,13 +171,13 @@ static void file_save(GtkWidget *w, gpointer data)
 static void ask_save_changes()
 {
 	GtkWidget *dialog, *label, *content;
-	dialog = gtk_dialog_new_with_buttons("Save Changes?",
+	dialog = gtk_dialog_new_with_buttons(gettext("Save Changes?"),
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		NULL);
 	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
+	label = gtk_label_new (gettext("You have unsaved changes\nWould you like to save those before exiting the program?"));
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
@@ -325,52 +327,51 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 	menu_units = output_units;
 
-	dialog = gtk_dialog_new_with_buttons("Preferences",
+	dialog = gtk_dialog_new_with_buttons(gettext("Preferences"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
-	frame = gtk_frame_new("Units");
+	frame = gtk_frame_new(gettext("Units"));
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_vbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	create_radio(box, "Depth:",
-		"Meter", set_meter, (output_units.length == METERS),
-		"Feet",  set_feet, (output_units.length == FEET),
+	create_radio(box, gettext("Depth:"),
+		gettext("Meter"), set_meter, (output_units.length == METERS),
+		gettext("Feet"),  set_feet, (output_units.length == FEET),
+		NULL);
+	create_radio(box, gettext("Pressure:"),
+		gettext("Bar"), set_bar, (output_units.pressure == BAR),
+		gettext("PSI"),  set_psi, (output_units.pressure == PSI),
 		NULL);
 
-	create_radio(box, "Pressure:",
-		"Bar", set_bar, (output_units.pressure == BAR),
-		"PSI",  set_psi, (output_units.pressure == PSI),
+	create_radio(box, gettext("Volume:"),
+		gettext("Liter"),  set_liter, (output_units.volume == LITER),
+		gettext("CuFt"), set_cuft, (output_units.volume == CUFT),
 		NULL);
 
-	create_radio(box, "Volume:",
-		"Liter",  set_liter, (output_units.volume == LITER),
-		"CuFt", set_cuft, (output_units.volume == CUFT),
+	create_radio(box, gettext("Temperature:"),
+		gettext("Celsius"), set_celsius, (output_units.temperature == CELSIUS),
+		gettext("Fahrenheit"),  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
 
-	create_radio(box, "Temperature:",
-		"Celsius", set_celsius, (output_units.temperature == CELSIUS),
-		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
-		NULL);
-
-	frame = gtk_frame_new("Columns");
+	frame = gtk_frame_new(gettext("Columns"));
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	button = gtk_check_button_new_with_label("Show Temp");
+	button = gtk_check_button_new_with_label(gettext("Show Temp"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.temperature);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(temperature_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show Cyl");
+	button = gtk_check_button_new_with_label(gettext("Show Cyl"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.cylinder);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(cylinder_toggle), NULL);
@@ -380,12 +381,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(nitrox_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show SAC");
+	button = gtk_check_button_new_with_label(gettext("Show SAC"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.sac);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(sac_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show OTU");
+	button = gtk_check_button_new_with_label(gettext("Show OTU"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
@@ -513,7 +514,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 	struct dive *dive;
 	GtkWidget *dialog, *frame, *button, *vbox;
 
-	dialog = gtk_dialog_new_with_buttons("Renumber",
+	dialog = gtk_dialog_new_with_buttons(gettext("Renumber"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -522,7 +523,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	frame = gtk_frame_new("New starting number");
+	frame = gtk_frame_new(gettext("New starting number"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	button = gtk_spin_button_new_with_range(1, 50000, 1);
@@ -754,6 +755,11 @@ void init_ui(int argc, char **argv)
 	static const GtkTargetEntry notebook_target = {
 		"GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0
 	};
+	
+	/* prepare internationalization files */
+	setlocale( LC_ALL, "" );
+	bindtextdomain( "subsurface", "./locale" );
+	textdomain( "subsurface" );
 
 	gtk_init(&argc, &argv);
 	settings = gtk_settings_get_default();
@@ -1011,7 +1017,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 	fill_computer_list(model);
 
-	frame = gtk_frame_new("Dive computer");
+	frame = gtk_frame_new(gettext("Dive computer"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
 	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
@@ -1031,7 +1037,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new("Device name");
+	frame = gtk_frame_new(gettext("Device name"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
 	entry = gtk_entry_new();
@@ -1057,7 +1063,7 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new("XML file name");
+	frame = gtk_frame_new(gettext("XML file name"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 	dialog = gtk_file_chooser_dialog_new("Open XML File",
 		GTK_WINDOW(main_window),
@@ -1109,7 +1115,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		.devname = NULL,
 	};
 
-	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
+	dialog = gtk_dialog_new_with_buttons(gettext("Import from dive computer"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1117,7 +1123,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	label = gtk_label_new("Import: \nLoad XML file or import directly from dive computer");
+	label = gtk_label_new(gettext("Import: \nLoad XML file or import directly from dive computer"));
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
 	XMLchooser = xml_file_selector(vbox, dialog);
 	computer = dive_computer_selector(vbox);

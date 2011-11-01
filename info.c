@@ -266,14 +266,14 @@ GtkWidget *extended_dive_info_widget(void)
 	location_list = gtk_list_store_new(1, G_TYPE_STRING);
 
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
-	location = text_entry(vbox, "Location", location_list);
+	location = text_entry(vbox, gettext("Location"), location_list);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	divemaster = text_entry(hbox, "Divemaster", people_list);
-	buddy = text_entry(hbox, "Buddy", people_list);
+	divemaster = text_entry(hbox, gettext("Divemaster"), people_list);
+	buddy = text_entry(hbox, gettext("Buddy"), people_list);
 
-	notes = text_view(vbox, "Notes");
+	notes = text_view(vbox, gettext("Notes"));
 	return vbox;
 }

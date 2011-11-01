@@ -515,7 +515,7 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	 * Cylinder type: description, size and
 	 * working pressure
 	 */
-	frame = gtk_frame_new("Cylinder");
+	frame = gtk_frame_new(gettext("Cylinder"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
@@ -539,10 +539,10 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	widget = create_spinbutton(hbox, "Size", 0, 300, 0.1);
+	widget = create_spinbutton(hbox, gettext("Size"), 0, 300, 0.1);
 	cylinder->size = GTK_SPIN_BUTTON(widget);
 
-	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
+	widget = create_spinbutton(hbox, gettext("Pressure"), 0, 5000, 1);
 	cylinder->pressure = GTK_SPIN_BUTTON(widget);
 
 	/*
@@ -551,10 +551,10 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	widget = create_spinbutton(hbox, "Start Pressure", 0, 5000, 1);
+	widget = create_spinbutton(hbox, gettext("Start Pressure"), 0, 5000, 1);
 	cylinder->start = GTK_SPIN_BUTTON(widget);
 
-	widget = create_spinbutton(hbox, "End Pressure", 0, 5000, 1);
+	widget = create_spinbutton(hbox, gettext("End Pressure"), 0, 5000, 1);
 	cylinder->end = GTK_SPIN_BUTTON(widget);
 
 	/*
@@ -563,7 +563,7 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	widget = create_spinbutton(hbox, "Nitrox", 21, 100, 0.1);
+	widget = create_spinbutton(hbox, gettext("Nitrox"), 21, 100, 0.1);
 	cylinder->o2 = widget;
 	cylinder->gasmix_button = gtk_check_button_new();
 	gtk_box_pack_start(GTK_BOX(gtk_widget_get_parent(cylinder->o2)),
@@ -588,7 +588,7 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 		return 0;
 	*cyl = dive->cylinder[index];
 
-	dialog = gtk_dialog_new_with_buttons("Cylinder",
+	dialog = gtk_dialog_new_with_buttons(gettext("Cylinder"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -822,13 +822,13 @@ static GtkWidget *cylinder_list_create(void)
 					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
 					  NULL);
 
-	cylinder_list.desc = tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
-	cylinder_list.size = tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.workp = tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.startp = tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.endp = tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.desc = tree_view_column(tree_view, CYL_DESC, gettext("Type"), NULL, PANGO_ALIGN_LEFT, TRUE);
+	cylinder_list.size = tree_view_column(tree_view, CYL_SIZE, gettext("Size"), size_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.workp = tree_view_column(tree_view, CYL_WORKP, gettext("MaxPress"), pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.startp = tree_view_column(tree_view, CYL_STARTP, gettext("Start"), pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.endp = tree_view_column(tree_view, CYL_ENDP, gettext("End"), pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	cylinder_list.o2 = tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.he = tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	cylinder_list.he = tree_view_column(tree_view, CYL_HE, gettext("He%"), percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	return tree_view;
 }
 
@@ -853,7 +853,7 @@ GtkWidget *equipment_widget(void)
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new("Cylinders");
+	frame = gtk_frame_new(gettext("Cylinders"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, FALSE, 3);
 
 	framebox = gtk_vbox_new(FALSE, 3);
