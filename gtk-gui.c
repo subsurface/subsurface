@@ -694,23 +694,21 @@ static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
 	return GTK_NOTEBOOK(notebook);
 }
 
-static void drag_cb(GtkWidget *widget, GdkDragContext *context,
+static gboolean drag_cb(GtkWidget *widget, GdkDragContext *context,
 	gint x, gint y, guint time,
 	gpointer user_data)
 {
 	GtkWidget *source;
 	notebook_data_t *nbdp;
 
+	gtk_drag_finish(context, TRUE, TRUE, time);
 	source = gtk_drag_get_source_widget(context);
 	if (nbd[0].name && ! strcmp(nbd[0].name,gtk_widget_get_name(source)))
 		nbdp = nbd;
 	else if (nbd[1].name && ! strcmp(nbd[1].name,gtk_widget_get_name(source)))
 		nbdp = nbd + 1;
-	else
-		/* HU? */
-		return;
-
-	gtk_drag_finish(context, TRUE, TRUE, time);
+	else /* just on ourselves */
+		return TRUE;
 
 	/* we no longer need the widget - but getting rid of this is hard;
 	 * remove the signal handler, remove the notebook from the box
@@ -722,6 +720,8 @@ static void drag_cb(GtkWidget *widget, GdkDragContext *context,
 	nbdp->widget = NULL;
 	free(nbdp->name);
 	nbdp->name = NULL;
+
+	return TRUE;
 }
 
 #ifdef WIN32
