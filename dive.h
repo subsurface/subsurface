@@ -91,9 +91,19 @@ extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int mm, int *frac, const char **units);
 extern double get_temp_units(unsigned int mm, const char **units);
 
+static inline double bar_to_atm(double bar)
+{
+	return bar / 1.01325;
+}
+
 static inline double ml_to_cuft(int ml)
 {
-	return ml / 28317.0;
+	return ml / 28316.8466;
+}
+
+static inline double cuft_to_ml(double cuft)
+{
+	return cuft * 28.3168466;
 }
 
 static inline double mm_to_feet(int mm)
@@ -137,6 +147,10 @@ static inline int to_K(temperature_t temp)
 	return (temp.mkelvin + 499)/1000;
 }
 
+static inline double psi_to_bar(double psi)
+{
+	return psi / 14.5037738;
+}
 static inline int to_PSI(pressure_t pressure)
 {
 	return pressure.mbar * 0.0145037738 + 0.5;
