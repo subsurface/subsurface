@@ -83,7 +83,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 						dp->duration.seconds * dp->sac) / sac_time ;
 			if (dp->sac > info_stat.max_sac.mliter)
 				info_stat.max_sac.mliter = dp->sac;
-			if (info_stat.min_sac.mliter == 0 || dp->sac < info_stat.max_sac.mliter)
+			if (info_stat.min_sac.mliter == 0 || dp->sac < info_stat.min_sac.mliter)
 				info_stat.min_sac.mliter = dp->sac;
 		}
 	}
