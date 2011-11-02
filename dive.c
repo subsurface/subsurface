@@ -46,6 +46,31 @@ double get_temp_units(unsigned int mk, const char **units)
 	return deg;
 }
 
+double get_volume_units(unsigned int ml, int *frac, const char **units)
+{
+	int decimals;
+	double vol;
+	const char *unit;
+
+	switch (output_units.volume) {
+	case LITER:
+		vol = ml / 1000.0;
+		unit = "l";
+		decimals = 1;
+		break;
+	case CUFT:
+		vol = ml_to_cuft(ml);
+		unit = "cuft";
+		decimals = 2;
+		break;
+	}
+	if (frac)
+		*frac = decimals;
+	if (units)
+		*units = unit;
+	return vol;
+}
+
 double get_depth_units(unsigned int mm, int *frac, const char **units)
 {
 	int decimals;

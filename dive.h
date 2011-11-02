@@ -87,7 +87,13 @@ typedef struct {
 } cylinder_t;
 
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
+extern double get_volume_units(unsigned int mm, int *frac, const char **units);
 extern double get_temp_units(unsigned int mm, const char **units);
+
+static inline double ml_to_cuft(int ml)
+{
+	return ml / 28317.0;
+}
 
 static inline double mm_to_feet(int mm)
 {
@@ -177,7 +183,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
-	int otu;
+	int sac, otu;
 	struct event *events;
 	int samples, alloc_samples;
 	struct sample sample[];

@@ -315,23 +315,22 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-static void get_sac(struct dive *dive, int *val)
+static int calculate_sac(struct dive *dive)
 {
 	double airuse, pressure, sac;
 
-	*val = 0;
 	airuse = calculate_airuse(dive);
 	if (!airuse)
-		return;
+		return 0;
 	if (!dive->duration.seconds)
-		return;
+		return 0;
 
 	/* Mean pressure in atm: 1 atm per 10m */
 	pressure = 1 + (dive->meandepth.mm / 10000.0);
 	sac = airuse / pressure * 60 / dive->duration.seconds;
 
 	/* milliliters per minute.. */
-	*val = sac * 1000;
+	return sac * 1000;
 }
 
 static void get_string(char **str, const char *s)
@@ -364,12 +363,10 @@ static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
 {
-	int sac;
 	char *location, *cylinder;
 
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
-	get_sac(dive, &sac);
 
 	/*
 	 * We only set the fields that changed: the strings.
@@ -379,7 +376,7 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
 		DIVE_CYLINDER, cylinder,
-		DIVE_SAC, sac,
+		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
 		-1);
 }
@@ -471,6 +468,7 @@ static void fill_dive_list(void)
 		struct dive *dive = dive_table.dives[i];
 
 		dive->otu = calculate_otu(dive);
+		dive->sac = calculate_sac(dive);
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			DIVE_INDEX, i,
