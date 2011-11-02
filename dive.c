@@ -29,6 +29,72 @@ void add_event(struct dive *dive, int time, int type, int flags, int value, cons
 	remember_event(name);
 }
 
+int get_pressure_units(unsigned int mb, const char **units)
+{
+	int pressure;
+	const char* unit;
+
+	switch (output_units.pressure) {
+	case PASCAL:
+		pressure = mb * 100;
+		unit = "pascal";
+		break;
+	case BAR:
+		pressure = (mb + 500) / 1000;
+		unit = "bar";
+		break;
+	case PSI:
+		pressure = mbar_to_PSI(mb);
+		unit = "psi";
+		break;
+	}
+	if (units)
+		*units = unit;
+	return pressure;
+}
+
+double get_temp_units(unsigned int mk, const char **units)
+{
+	double deg;
+	const char *unit;
+
+	if (output_units.temperature == FAHRENHEIT) {
+		deg = mkelvin_to_F(mk);
+		unit = UTF8_DEGREE "F";
+	} else {
+		deg = mkelvin_to_C(mk);
+		unit = UTF8_DEGREE "C";
+	}
+	if (units)
+		*units = unit;
+	return deg;
+}
+
+double get_volume_units(unsigned int ml, int *frac, const char **units)
+{
+	int decimals;
+	double vol;
+	const char *unit;
+
+	switch (output_units.volume) {
+	case LITER:
+		vol = ml / 1000.0;
+		unit = "l";
+		decimals = 1;
+		break;
+	case CUFT:
+		vol = ml_to_cuft(ml);
+		unit = "cuft";
+		decimals = 2;
+		break;
+	}
+	if (frac)
+		*frac = decimals;
+	if (units)
+		*units = unit;
+	return vol;
+}
+
 double get_depth_units(unsigned int mm, int *frac, const char **units)
 {
 	int decimals;

@@ -425,7 +425,7 @@ static void water_pressure(char *buffer, void *_depth)
 		if (!val.fp)
 			break;
 		/* cbar to atm */
-		atm = (val.fp / 100) / 1.01325;
+		atm = bar_to_atm(val.fp * 10);
 		/*
 		 * atm to cm. Why not mm? The precision just isn't
 		 * there.
@@ -1122,9 +1122,9 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	if (type->description)
 		return;
 
-	cuft = type->size.mliter / 28317.0;
+	cuft = ml_to_cuft(type->size.mliter);
 	cuft *= to_ATM(type->workingpressure);
-	psi = type->workingpressure.mbar / 68.95;
+	psi = to_PSI(type->workingpressure);
 
 	switch (psi) {
 	case 2300 ... 2500:	/* 2400 psi: LP tank */
@@ -1177,7 +1177,8 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 		return;
 
 	if (input_units.volume == CUFT || import_source == SUUNTO) {
-		volume_of_air = type->size.mliter * 28.317;	/* milli-cu ft to milliliter */
+		/* confusing - we don't really start from ml but millicuft !*/
+		volume_of_air = cuft_to_l(type->size.mliter);
 		atm = to_ATM(type->workingpressure);		/* working pressure in atm */
 		volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
 		type->size.mliter = volume + 0.5;
