@@ -83,7 +83,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 						dp->duration.seconds * dp->sac) / sac_time ;
 			if (dp->sac > info_stat.max_sac.mliter)
 				info_stat.max_sac.mliter = dp->sac;
-			if (info_stat.min_sac.mliter == 0 || dp->sac < info_stat.max_sac.mliter)
+			if (info_stat.min_sac.mliter == 0 || dp->sac < info_stat.min_sac.mliter)
 				info_stat.min_sac.mliter = dp->sac;
 		}
 	}
@@ -132,7 +132,8 @@ void show_dive_stats(struct dive *dive)
 	set_label(info_stat_w.date, buf);
 	set_label(info_stat_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);
 	if (prev_dive)
-		set_label(info_stat_w.surf_intv, get_time_string(dive->when - prev_dive->when, 4));
+		set_label(info_stat_w.surf_intv, 
+			get_time_string(dive->when - (prev_dive->when + prev_dive->duration.seconds), 4));
 	else
 		set_label(info_stat_w.surf_intv, "unknown");
 	value = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
