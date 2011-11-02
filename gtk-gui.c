@@ -746,6 +746,7 @@ void init_ui(int *argcp, char ***argvp)
 	GtkWidget *dive_info;
 	GtkWidget *dive_list;
 	GtkWidget *equipment;
+	GtkWidget *stats;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
 	GdkScreen *screen;
@@ -874,6 +875,10 @@ void init_ui(int *argcp, char ***argvp)
 	/* Frame for dive equipment */
 	equipment = equipment_widget();
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), equipment, gtk_label_new("Equipment"));
+
+	/* Frame for dive statistics */
+	stats = stats_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), stats, gtk_label_new("Info & Stats"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);

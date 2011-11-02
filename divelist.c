@@ -223,7 +223,6 @@ static void sac_data_func(GtkTreeViewColumn *col,
 			  gpointer data)
 {
 	int value;
-	const double liters_per_cuft = 28.317;
 	const char *fmt;
 	char buffer[16];
 	double sac;
@@ -242,7 +241,7 @@ static void sac_data_func(GtkTreeViewColumn *col,
 		break;
 	case CUFT:
 		fmt = "%4.2f";
-		sac /= liters_per_cuft;
+		sac = ml_to_cuft(sac * 1000);
 		break;
 	}
 	snprintf(buffer, sizeof(buffer), fmt, sac);
@@ -307,7 +306,7 @@ static double calculate_airuse(struct dive *dive)
 		if (!size)
 			continue;
 
-		kilo_atm = (cyl->start.mbar - cyl->end.mbar) / 1013250.0;
+		kilo_atm = (to_ATM(cyl->start) - to_ATM(cyl->end)) / 1000.0;
 
 		/* Liters of air at 1 atm == milliliters at 1k atm*/
 		airuse += kilo_atm * size;
@@ -315,23 +314,22 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-static void get_sac(struct dive *dive, int *val)
+static int calculate_sac(struct dive *dive)
 {
 	double airuse, pressure, sac;
 
-	*val = 0;
 	airuse = calculate_airuse(dive);
 	if (!airuse)
-		return;
+		return 0;
 	if (!dive->duration.seconds)
-		return;
+		return 0;
 
 	/* Mean pressure in atm: 1 atm per 10m */
 	pressure = 1 + (dive->meandepth.mm / 10000.0);
 	sac = airuse / pressure * 60 / dive->duration.seconds;
 
 	/* milliliters per minute.. */
-	*val = sac * 1000;
+	return sac * 1000;
 }
 
 static void get_string(char **str, const char *s)
@@ -364,12 +362,10 @@ static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
 {
-	int sac;
 	char *location, *cylinder;
 
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
-	get_sac(dive, &sac);
 
 	/*
 	 * We only set the fields that changed: the strings.
@@ -379,7 +375,7 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
 		DIVE_CYLINDER, cylinder,
-		DIVE_SAC, sac,
+		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
 		-1);
 }
@@ -423,27 +419,10 @@ void update_dive_list_units(void)
 	const char *unit;
 	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
 
-	switch (output_units.length) {
-	case METERS:
-		unit = "m";
-		break;
-	case FEET:
-		unit = "ft";
-		break;
-	}
+	(void) get_depth_units(0, NULL, &unit);
 	gtk_tree_view_column_set_title(dive_list.depth, unit);
 
-	switch (output_units.temperature) {
-	case CELSIUS:
-		unit = UTF8_DEGREE "C";
-		break;
-	case FAHRENHEIT:
-		unit = UTF8_DEGREE "F";
-		break;
-	case KELVIN:
-		unit = "Kelvin";
-		break;
-	}
+	(void) get_temp_units(0, &unit);
 	gtk_tree_view_column_set_title(dive_list.temperature, unit);
 
 	gtk_tree_model_foreach(model, set_one_dive, NULL);
@@ -471,6 +450,7 @@ static void fill_dive_list(void)
 		struct dive *dive = dive_table.dives[i];
 
 		dive->otu = calculate_otu(dive);
+		dive->sac = calculate_sac(dive);
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			DIVE_INDEX, i,

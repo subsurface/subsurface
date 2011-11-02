@@ -33,6 +33,7 @@ extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *extended_dive_info_widget(void);
 extern GtkWidget *equipment_widget(void);
+extern GtkWidget *stats_widget(void);
 
 extern GtkWidget *dive_list_create(void);
 
