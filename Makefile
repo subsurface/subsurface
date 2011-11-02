@@ -81,7 +81,7 @@ LIBS = $(LIBXML2) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
-	gtk-gui.o $(RESFILE)
+	gtk-gui.o statistics.o $(RESFILE)
 
 $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -135,6 +135,9 @@ info.o: info.c dive.h display.h display-gtk.h divelist.h
 
 equipment.o: equipment.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c equipment.c
+
+statistics.o: statistics.c dive.h display.h divelist.h
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c statistics.c
 
 divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c divelist.c

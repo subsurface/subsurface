@@ -49,18 +49,19 @@ struct cylinder_widget {
 	GtkWidget *o2, *gasmix_button;
 };
 
+/* we want bar - so let's not use our unit functions */
 static int convert_pressure(int mbar, double *p)
 {
 	int decimals = 1;
 	double pressure;
 
-	pressure = mbar / 1000.0;
-	if (mbar) {
-		if (output_units.pressure == PSI) {
-			pressure *= 14.5037738;	/* Bar to PSI */
-			decimals = 0;
-		}
+	if (output_units.pressure == PSI) {
+		pressure = mbar_to_PSI(mbar);
+		decimals = 0;
+	} else {
+		pressure = mbar / 1000.0;
 	}
+
 	*p = pressure;
 	return decimals;
 }
@@ -70,17 +71,18 @@ static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	int decimals = 1;
 	double volume, pressure;
 
-	volume = ml / 1000.0;
-	pressure = mbar / 1000.0;
 	if (mbar) {
 		if (output_units.volume == CUFT) {
-			volume /= 28.3168466;	/* Liters to cuft */
-			volume *= pressure / 1.01325;
-		}
+			volume = ml_to_cuft(ml);
+			volume *= bar_to_atm(mbar / 1000.0);
+		} else
+			volume = ml / 1000.0;
+
 		if (output_units.pressure == PSI) {
-			pressure *= 14.5037738;	/* Bar to PSI */
+			pressure = mbar_to_PSI(mbar);
 			decimals = 0;
-		}
+		} else
+			pressure = mbar / 1000.0;
 	}
 	*v = volume;
 	*p = pressure;
@@ -352,14 +354,14 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 	int mbar, ml;
 
 	if (output_units.pressure == PSI) {
-		pressure /= 14.5037738;
-		start /= 14.5037738;
-		end /= 14.5037738;
+		pressure = psi_to_bar(pressure);
+		start = psi_to_bar(start);
+		end = psi_to_bar(end);
 	}
 
 	if (pressure && output_units.volume == CUFT) {
-		volume *= 28.3168466;	/* CUFT to liter */
-		volume /= pressure / 1.01325;
+		volume = cuft_to_l(volume);
+		volume /= bar_to_atm(pressure);
 	}
 
 	ml = volume * 1000 + 0.5;
@@ -461,9 +463,9 @@ static void fill_tank_list(GtkListStore *store)
 
 		/* Is it in cuft and psi? */
 		if (psi) {
-			double bar = 0.0689475729 * psi;
-			double airvolume = 28316.8466 * size;
-			double atm = bar / 1.01325;
+			double bar = psi_to_bar(psi);
+			double airvolume = cuft_to_l(size) * 1000.0;
+			double atm = bar_to_atm(bar);
 
 			ml = airvolume / atm + 0.5;
 			mbar = bar*1000 + 0.5;

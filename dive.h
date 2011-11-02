@@ -86,7 +86,20 @@ typedef struct {
 	pressure_t start, end;
 } cylinder_t;
 
+extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
+extern double get_volume_units(unsigned int mm, int *frac, const char **units);
+extern double get_temp_units(unsigned int mm, const char **units);
+
+static inline double ml_to_cuft(int ml)
+{
+	return ml / 28316.8466;
+}
+
+static inline double cuft_to_l(double cuft)
+{
+	return cuft * 28.3168466;
+}
 
 static inline double mm_to_feet(int mm)
 {
@@ -129,14 +142,29 @@ static inline int to_K(temperature_t temp)
 	return (temp.mkelvin + 499)/1000;
 }
 
+static inline double psi_to_bar(double psi)
+{
+	return psi / 14.5037738;
+}
 static inline int to_PSI(pressure_t pressure)
 {
 	return pressure.mbar * 0.0145037738 + 0.5;
 }
 
+static inline double bar_to_atm(double bar)
+{
+	return bar / 1.01325;
+}
+
 static inline double to_ATM(pressure_t pressure)
 {
 	return pressure.mbar / 1013.25;
+}
+
+static inline int mbar_to_PSI(int mbar)
+{
+	pressure_t p = {mbar};
+	return to_PSI(p);
 }
 
 struct sample {
@@ -176,7 +204,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
-	int otu;
+	int sac, otu;
 	struct event *events;
 	int samples, alloc_samples;
 	struct sample sample[];
@@ -230,6 +258,8 @@ extern void flush_dive_info_changes(struct dive *);
 
 extern void show_dive_equipment(struct dive *);
 extern void flush_dive_equipment_changes(struct dive *);
+
+extern void show_dive_stats(struct dive *);
 
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
