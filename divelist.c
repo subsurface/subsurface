@@ -420,27 +420,10 @@ void update_dive_list_units(void)
 	const char *unit;
 	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
 
-	switch (output_units.length) {
-	case METERS:
-		unit = "m";
-		break;
-	case FEET:
-		unit = "ft";
-		break;
-	}
+	(void) get_depth_units(0, NULL, &unit);
 	gtk_tree_view_column_set_title(dive_list.depth, unit);
 
-	switch (output_units.temperature) {
-	case CELSIUS:
-		unit = UTF8_DEGREE "C";
-		break;
-	case FAHRENHEIT:
-		unit = UTF8_DEGREE "F";
-		break;
-	case KELVIN:
-		unit = "Kelvin";
-		break;
-	}
+	(void) get_temp_units(0, &unit);
 	gtk_tree_view_column_set_title(dive_list.temperature, unit);
 
 	gtk_tree_model_foreach(model, set_one_dive, NULL);

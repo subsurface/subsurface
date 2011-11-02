@@ -86,6 +86,7 @@ typedef struct {
 	pressure_t start, end;
 } cylinder_t;
 
+extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int mm, int *frac, const char **units);
 extern double get_temp_units(unsigned int mm, const char **units);
@@ -144,6 +145,12 @@ static inline int to_PSI(pressure_t pressure)
 static inline double to_ATM(pressure_t pressure)
 {
 	return pressure.mbar / 1013.25;
+}
+
+static inline int mbar_to_PSI(int mbar)
+{
+	pressure_t p = {mbar};
+	return to_PSI(p);
 }
 
 struct sample {

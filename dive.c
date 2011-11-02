@@ -29,6 +29,30 @@ void add_event(struct dive *dive, int time, int type, int flags, int value, cons
 	remember_event(name);
 }
 
+int get_pressure_units(unsigned int mb, const char **units)
+{
+	int pressure;
+	const char* unit;
+
+	switch (output_units.pressure) {
+	case PASCAL:
+		pressure = mb * 100;
+		unit = "pascal";
+		break;
+	case BAR:
+		pressure = (mb + 500) / 1000;
+		unit = "bar";
+		break;
+	case PSI:
+		pressure = mbar_to_PSI(mb);
+		unit = "psi";
+		break;
+	}
+	if (units)
+		*units = unit;
+	return pressure;
+}
+
 double get_temp_units(unsigned int mk, const char **units)
 {
 	double deg;
