@@ -257,7 +257,7 @@ extern void add_event(struct dive *dive, int time, int type, int flags, int valu
 
 /* UI related protopypes */
 
-extern void init_ui(int argc, char **argv);
+extern void init_ui(int *argcp, char ***argvp);
 
 extern void run_ui(void);
 

@@ -217,7 +217,7 @@ int main(int argc, char **argv)
 
 	parse_xml_init();
 
-	init_ui(argc, argv);
+	init_ui(&argc, &argv);
 	
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];

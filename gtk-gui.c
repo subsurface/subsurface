@@ -739,7 +739,7 @@ static int get_from_registry(HKEY hkey, const char *key)
 }
 #endif
 
-void init_ui(int argc, char **argv)
+void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
 	GtkWidget *notebook;
@@ -755,7 +755,7 @@ void init_ui(int argc, char **argv)
 		"GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0
 	};
 
-	gtk_init(&argc, &argv);
+	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();
 	gtk_settings_set_long_property(settings, "gtk_tooltip_timeout", 10, "subsurface setting");
 
