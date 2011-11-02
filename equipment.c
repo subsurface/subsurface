@@ -360,7 +360,7 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 	}
 
 	if (pressure && output_units.volume == CUFT) {
-		volume = cuft_to_ml(volume);
+		volume = cuft_to_l(volume);
 		volume /= bar_to_atm(pressure);
 	}
 
@@ -464,7 +464,7 @@ static void fill_tank_list(GtkListStore *store)
 		/* Is it in cuft and psi? */
 		if (psi) {
 			double bar = psi_to_bar(psi);
-			double airvolume = cuft_to_ml(size);
+			double airvolume = cuft_to_l(size) * 1000.0;
 			double atm = bar_to_atm(bar);
 
 			ml = airvolume / atm + 0.5;

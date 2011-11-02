@@ -223,7 +223,6 @@ static void sac_data_func(GtkTreeViewColumn *col,
 			  gpointer data)
 {
 	int value;
-	const double liters_per_cuft = 28.317;
 	const char *fmt;
 	char buffer[16];
 	double sac;
@@ -242,7 +241,7 @@ static void sac_data_func(GtkTreeViewColumn *col,
 		break;
 	case CUFT:
 		fmt = "%4.2f";
-		sac /= liters_per_cuft;
+		sac = ml_to_cuft(sac * 1000);
 		break;
 	}
 	snprintf(buffer, sizeof(buffer), fmt, sac);
@@ -307,7 +306,7 @@ static double calculate_airuse(struct dive *dive)
 		if (!size)
 			continue;
 
-		kilo_atm = (cyl->start.mbar - cyl->end.mbar) / 1013250.0;
+		kilo_atm = (to_ATM(cyl->start) - to_ATM(cyl->end)) / 1000.0;
 
 		/* Liters of air at 1 atm == milliliters at 1k atm*/
 		airuse += kilo_atm * size;
