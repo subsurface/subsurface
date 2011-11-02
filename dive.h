@@ -259,6 +259,8 @@ extern void flush_dive_info_changes(struct dive *);
 extern void show_dive_equipment(struct dive *);
 extern void flush_dive_equipment_changes(struct dive *);
 
+extern void show_dive_stats(struct dive *);
+
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
 
