@@ -76,7 +76,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 			info_stat.max_depth.mm = dp->maxdepth.mm;
 		info_stat.avg_depth.mm = (1.0 * old_tt * info_stat.avg_depth.mm +
 				dp->duration.seconds * dp->meandepth.mm) / info_stat.total_time.seconds;
-		if (dp->sac > 0) {
+		if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
 			int old_sac_time = sac_time;
 			sac_time += dp->duration.seconds;
 			info_stat.avg_sac.mliter = (1.0 * old_sac_time * info_stat.avg_sac.mliter +
