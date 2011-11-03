@@ -98,9 +98,9 @@ void flush_dive_info_changes(struct dive *dive)
 static void set_combo_box_entry_text(GtkComboBoxEntry *combo_box, const char *text)
 {
 	GtkEntry *entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
-	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), 0);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), -1);
 	if (!*text)
-		text = " ";
+		text = "\n";
 	gtk_entry_set_text(entry, text);
 }
 
