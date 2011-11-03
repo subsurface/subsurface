@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 #include "dive.h"
 #include "display.h"
@@ -20,8 +21,6 @@
 
 static GtkComboBoxEntry *location, *buddy, *divemaster;
 static GtkTextBuffer *notes;
-static int location_changed = 1, notes_changed = 1;
-static int divemaster_changed = 1, buddy_changed = 1;
 
 static char *get_text(GtkTextBuffer *buffer)
 {
@@ -35,68 +34,73 @@ static char *get_text(GtkTextBuffer *buffer)
 
 /* old is NULL or a valid string, new is a valid string
  * NOTW: NULL and "" need to be treated as "unchanged" */
-static int text_changed(char *old, char *new)
+static int text_changed(const char *old, const char *new)
 {
 	return ((old && strcmp(old,new)) ||
 		(!old && strcmp("",new)));
 }
 
+static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
+{
+	char *old = *textp;
+	const gchar *new;
+	GtkEntry *entry;
+
+	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
+	new = gtk_entry_get_text(entry);
+	while (isspace(*new))
+		new++;
+	if (!text_changed(old,new))
+		return NULL;
+	free(old);
+	*textp = strdup(new);
+	return *textp;
+}
+
+
 void flush_dive_info_changes(struct dive *dive)
 {
-	char *old_text;
+	char *old_text, *new_text;
 	int changed = 0;
 
 	if (!dive)
 		return;
 
-	if (location_changed) {
-		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(location));
-		old_text = dive->location;
-		dive->location = new_text;
+	new_text = get_combo_box_entry_text(location, &dive->location);
+	if (new_text) {
 		add_location(new_text);
-		if (text_changed(old_text,dive->location))
-			changed = 1;
-		if (old_text)
-			g_free(old_text);
+		changed = 1;
 	}
 
-	if (divemaster_changed) {
-		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(divemaster));
-		old_text = dive->divemaster;
-		dive->divemaster = new_text;
+	new_text = get_combo_box_entry_text(divemaster, &dive->divemaster);
+	if (new_text) {
 		add_people(new_text);
-		if (text_changed(old_text,dive->divemaster))
-			changed = 1;
-		if (old_text)
-			g_free(old_text);
+		changed = 1;
 	}
 
-	if (buddy_changed) {
-		char *new_text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(buddy));
-		old_text = dive->buddy;
-		dive->buddy = new_text;
+	new_text = get_combo_box_entry_text(buddy, &dive->buddy);
+	if (new_text) {
 		add_people(new_text);
-		if (text_changed(old_text,dive->buddy))
-			changed = 1;
-		if (old_text)
-			g_free(old_text);
+		changed = 1;
 	}
 
-	if (notes_changed) {
-		old_text = dive->notes;
-		dive->notes = get_text(notes);
-		if (text_changed(old_text,dive->notes))
-			changed = 1;
-		if (old_text)
-			g_free(old_text);
-	}
+	old_text = dive->notes;
+	dive->notes = get_text(notes);
+	if (text_changed(old_text,dive->notes))
+		changed = 1;
+	if (old_text)
+		g_free(old_text);
+
 	if (changed)
 		mark_divelist_changed(TRUE);
 }
 
 static void set_combo_box_entry_text(GtkComboBoxEntry *combo_box, const char *text)
 {
-	GtkEntry *entry = GTK_ENTRY(GTK_BIN(combo_box)->child);
+	GtkEntry *entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), 0);
+	if (!*text)
+		text = " ";
 	gtk_entry_set_text(entry, text);
 }
 
