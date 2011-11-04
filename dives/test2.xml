@@ -1,0 +1,9 @@
+<dives>
+  <program name='subsurface' version='1'></program>
+  <dive number='2' date='2011-01-01' time='10:00:00' duration='30:00 min'>
+    <depth max='30.00 m' mean='15.00 m' />
+    <location>3rd test dive, add cylinder with no start/end pressure</location>
+    <cylinder size='9.987 l' workpressure='206.843 bar' description='AL72' />
+  </dive>
+</dives>
+

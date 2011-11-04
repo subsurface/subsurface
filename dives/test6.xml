@@ -1,0 +1,12 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<dive number='6' date='2011-01-01' time='14:00:00' duration='30:00 min'>
+  <depth max='30.0 m' mean='15.0 m' />
+  <temperature air='27.0 C' water='26.0 C' />
+  <location>6th test dive, two tanks</location>
+  <notes>SAC should be 0.93 cuft/min or 26.2 l/min
+Since we have no tank change information, profile shows just one tank.</notes>
+  <cylinder o2='33.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
+  <cylinder o2='50.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
+</dive>
+</dives>
