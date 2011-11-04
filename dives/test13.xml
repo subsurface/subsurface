@@ -1,23 +1,23 @@
 <dives>
 <program name='subsurface' version='1'></program>
-<dive number='8' date='2011-01-01' time='16:00:00' duration='30:00 min'>
+<dive number='13' date='2011-01-01' time='21:00:00' duration='30:00 min'>
   <depth max='30.0 m' mean='15.0 m' />
   <temperature air='27.0 C' water='26.0 C' />
-  <location>8th test dive, with samples</location>
-  <notes>SAC should be 0.93 cuft/min or 26.2 l/min
-Tank pressure plotted correctly (linear approximation)
-Descent light green
-First Ascent red, second orange, third yellow, last green
-</notes>
+  <location>10th test dive, 3 tanks, 3 tank changes</location>
+  <notes>Shows three pressure plots, each from 200 to 100bar and gaschange events at 10, 20 and 25 min mark. Last change is back to first tank
+Now with samples. We have a sample at the first tank change but not the 2nd and 3rd</notes>
   <cylinder o2='33.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
   <cylinder o2='50.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
-  <event time='15:00 min' name='gaschange' value='50' />
-  <sample time='1:00 min' depth='5 m' />
-  <sample time='2:00 min' depth='10 m' />
-  <sample time='3:00 min' depth='15 m' />
-  <sample time='4:00 min' depth='20 m' />
-  <sample time='5:00 min' depth='25 m' />
-  <sample time='6:00 min' depth='30 m' />
+  <cylinder o2='75.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
+  <event time='10:00 min' name='gaschange' value='50' />
+  <event time='20:30 min' name='gaschange' value='75' />
+  <event time='25:59 min' name='gaschange' value='33' />
+  <sample time='1:00 min' temp='27.0 C' depth='5 m' />
+  <sample time='2:00 min' temp='26.0 C' depth='10 m' />
+  <sample time='3:00 min' temp='25.0 C' depth='15 m' />
+  <sample time='4:00 min' temp='24.0 C' depth='20 m' />
+  <sample time='5:00 min' temp='24.0 C' depth='25 m' />
+  <sample time='6:00 min' temp='23.0 C' depth='30 m' />
   <sample time='7:00 min' depth='30 m' />
   <sample time='8:00 min' depth='30 m' />
   <sample time='9:00 min' depth='30 m' />
@@ -25,7 +25,7 @@ First Ascent red, second orange, third yellow, last green
   <sample time='11:00 min' depth='30 m' />
   <sample time='12:00 min' depth='30 m' />
   <sample time='13:00 min' depth='30 m' />
-  <sample time='14:00 min' depth='10 m' />
+  <sample time='14:00 min' temp='26.0 C' depth='10 m' />
   <sample time='15:00 min' depth='15 m' />
   <sample time='16:00 min' depth='5 m' />
   <sample time='17:00 min' depth='10 m' />
@@ -39,8 +39,8 @@ First Ascent red, second orange, third yellow, last green
   <sample time='25:00 min' depth='5 m' />
   <sample time='26:00 min' depth='5 m' />
   <sample time='27:00 min' depth='5 m' />
-  <sample time='28:00 min' depth='5 m' />
-  <sample time='29:00 min' depth='2.5 m' />
-  <sample time='30:00 min' depth='0 m' />
+  <sample time='28:00 min' temp='26.0 C' depth='5 m' />
+  <sample time='29:00 min' temp='26.5 C' depth='2.5 m' />
+  <sample time='30:00 min' temp='26.0 C' depth='0 m' />
 </dive>
 </dives>

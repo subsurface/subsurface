@@ -96,6 +96,24 @@ void set_source_rgb(struct graphics_context *gc, double r, double g, double b)
 
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
 
+/* debugging tool - not normally used */
+static void dump_pi (struct plot_info *pi)
+{
+	int i;
+
+	printf("pi:{nr:%d maxtime:%d meandepth:%d maxdepth:%d \n"
+		"    minpressure:%d maxpressure:%d endpressure:%d mintemp:%d maxtemp:%d\n",
+		pi->nr, pi->maxtime, pi->meandepth, pi->maxdepth,
+		pi->minpressure, pi->maxpressure, pi->endpressure, pi->mintemp, pi->maxtemp);
+	for (i = 0; i < pi->nr; i++)
+		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
+			"                temperature:%d depth:%d smoothed:%d}\n",
+			i, pi->entry[i].same_cylinder, pi->entry[i].cylinderindex, pi->entry[i].sec,
+			pi->entry[i].pressure[0], pi->entry[i].pressure[1],
+			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].smoothed);
+	printf("   }\n");
+}
+
 /*
  * When showing dive profiles, we scale things to the
  * current dive. However, we don't scale past less than
@@ -276,6 +294,7 @@ static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 	static const text_render_options_t deep = {14, 1.0, 0.2, 0.2, CENTER, TOP};
 	static const text_render_options_t shallow = {14, 1.0, 0.2, 0.2, CENTER, BOTTOM};
 	int i;
+	int last = -1;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
@@ -283,11 +302,18 @@ static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 		if (entry->depth < 2000)
 			continue;
 
-		if (entry == entry->max[2])
+		if ((entry == entry->max[2]) && entry->depth != last) {
 			render_depth_sample(gc, entry, &deep);
+			last = entry->depth;
+		}
 
-		if (entry == entry->min[2])
+		if ((entry == entry->min[2]) && entry->depth != last) {
 			render_depth_sample(gc, entry, &shallow);
+			last = entry->depth;
+		}
+
+		if (entry->depth != last)
+			last = -1;
 	}
 }
 
@@ -634,8 +660,10 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
-	/* only loop over the actual events from the dive computer */
-	for (i = 2; i < pi->nr; i++) {
+	/* only loop over the actual events from the dive computer
+	 * plus the second synthetic event at the start (to make sure
+	 * we get "time=0" right) */
+	for (i = 1; i < pi->nr; i++) {
 		entry = pi->entry + i;
 
 		if (!entry->same_cylinder) {
@@ -863,8 +891,9 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
 
-	/* The first two are "fillers" */
-	for (i = 2; i < pi->nr; i++) {
+	/* The first two are "fillers", but in case we don't have a sample
+	 * at time 0 we need to process the second of them here */
+	for (i = 1; i < pi->nr; i++) {
 		entry = pi->entry + i;
 		if (SENSOR_PRESSURE(entry)) {
 			cur_pr[entry->cylinderindex] = SENSOR_PRESSURE(entry);
@@ -903,7 +932,8 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 				INTERPOLATED_PRESSURE(entry) =
 					cur_pr[entry->cylinderindex] + cur_pt * magic;
 				cur_pr[entry->cylinderindex] = INTERPOLATED_PRESSURE(entry);
-			}
+			} else
+				INTERPOLATED_PRESSURE(entry) = cur_pr[entry->cylinderindex];
 		}
 	}
 }
@@ -970,6 +1000,19 @@ static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
 }
 
+/* for computers that track gas changes through events */
+static int count_gas_change_events(struct dive *dive)
+{
+	int count = 0;
+	struct event *ev = get_next_gaschange(dive->events);
+
+	while (ev) {
+		count++;
+		ev = get_next_gaschange(ev->next);
+	}
+	return count;
+}
+
 /*
  * Create a plot-info with smoothing and ranged min/max
  *
@@ -981,48 +1024,103 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, nr = nr_samples + 4, sec, cyl;
-	size_t alloc_size = plot_info_size(nr);
+	int i, pi_idx, nr, sec, cyl;
+	size_t alloc_size;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
+	struct event *ev;
 
+	/* we want to potentially add synthetic plot_info elements for the gas changes */
+	nr = nr_samples + 4 + 2 * count_gas_change_events(dive);
+	alloc_size = plot_info_size(nr);
 	pi = malloc(alloc_size);
 	if (!pi)
 		return pi;
 	memset(pi, 0, alloc_size);
 	pi->nr = nr;
+	pi_idx = 2; /* the two extra events at the start */
+	/* check for gas changes before the samples start */
+	ev = get_next_gaschange(dive->events);
+	while (ev && ev->time.seconds < dive_sample->time.seconds) {
+		entry = pi->entry + pi_idx;
+		entry->sec = ev->time.seconds;
+		entry->depth = 0; /* is that always correct ? */
+		pi_idx++;
+		ev = get_next_gaschange(ev->next);
+	}
+	if (ev && ev->time.seconds == dive_sample->time.seconds) {
+		/* we already have a sample at the time of the event */
+		ev = get_next_gaschange(ev->next);
+	}
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
 	for (i = 0; i < nr_samples; i++) {
 		int depth;
+		int delay = 0;
 		struct sample *sample = dive_sample+i;
 
-		entry = pi->entry + i + 2;
-		sec = entry->sec = sample->time.seconds;
+		entry = pi->entry + i + pi_idx;
+		while (ev && ev->time.seconds < sample->time.seconds) {
+			/* insert two fake plot info structures for the end of
+			 * the old tank and the start of the new tank */
+			entry->sec = ev->time.seconds;
+			(entry+1)->sec = ev->time.seconds + 1;
+			/* we need a fake depth - let's interpolate */
+			if (i) {
+				entry->depth = sample->depth.mm -
+					(sample->depth.mm - (sample-1)->depth.mm) / 2;
+			} else
+				entry->depth = sample->depth.mm;
+			(entry+1)->depth = entry->depth;
+			pi_idx += 2;
+			entry = pi->entry + i + pi_idx;
+			ev = get_next_gaschange(ev->next);
+		}
+		if (ev && ev->time.seconds == sample->time.seconds) {
+			/* we already have a sample at the time of the event
+			 * just add a new one for the old tank and delay the
+			 * real even by one second (to keep time monotonous) */
+			entry->sec = ev->time.seconds;
+			entry->depth = sample->depth.mm;
+			pi_idx++;
+			entry = pi->entry + i + pi_idx;
+			ev = get_next_gaschange(ev->next);
+			delay = 1;
+		}
+		sec = entry->sec = sample->time.seconds + delay;
 		depth = entry->depth = sample->depth.mm;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
-			lastindex = i+2;
+			lastindex = i+pi_idx;
 
 		lastdepth = depth;
 		if (depth > pi->maxdepth)
 			pi->maxdepth = depth;
 	}
-
+	entry = pi->entry + i + pi_idx;
+	/* are there still unprocessed gas changes? that would be very strange */
+	while (ev) {
+		entry->sec = ev->time.seconds;
+		entry->depth = 0; /* why are there gas changes after the dive is over? */
+		pi_idx++;
+		entry = pi->entry + i + pi_idx;
+		ev = get_next_gaschange(ev->next);
+	}
+	nr = nr_samples + pi_idx - 2;
 	check_gas_change_events(dive, pi);
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
 	current = track_pr[pi->entry[2].cylinderindex];
-	for (i = 0; i < nr_samples; i++) {
-		entry = pi->entry + i + 2;
+	for (i = 0; i < nr + 1; i++) {
+		entry = pi->entry + i + 1;
 
 		entry->same_cylinder = entry->cylinderindex == cylinderindex;
 		cylinderindex = entry->cylinderindex;
@@ -1061,9 +1159,11 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		}
 	}
 	/* Fill in the last two entries with empty values but valid times */
-	i = nr_samples + 2;
+	i = nr + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
+	/* the number of actual entries - we may have allocated more if there
+	 * were gas change events, but this is how many were filled */
 	pi->nr = lastindex+1;
 	pi->maxtime = pi->entry[lastindex].sec;
 
@@ -1077,6 +1177,8 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	}
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++)
 		list_free(track_pr[cyl]);
+	if (0) /* awesome for debugging - not useful otherwise */
+		dump_pi(pi);
 	return analyze_plot_info(pi);
 }
 

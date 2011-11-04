@@ -140,7 +140,7 @@ void show_dive_stats(struct dive *dive)
 	set_label(info_stat_w.max_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(dive->meandepth.mm, &decimals, &unit);
 	set_label(info_stat_w.avg_depth, "%.*f %s", decimals, value, unit);
-	if (dive->watertemp.mkelvin > 200) {
+	if (dive->watertemp.mkelvin) {
 		value = get_temp_units(dive->watertemp.mkelvin, &unit);
 		set_label(info_stat_w.water_temp, "%.1f %s", value, unit);
 	} else
