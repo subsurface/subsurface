@@ -660,8 +660,10 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
-	/* only loop over the actual events from the dive computer */
-	for (i = 2; i < pi->nr; i++) {
+	/* only loop over the actual events from the dive computer
+	 * plus the second synthetic event at the start (to make sure
+	 * we get "time=0" right) */
+	for (i = 1; i < pi->nr; i++) {
 		entry = pi->entry + i;
 
 		if (!entry->same_cylinder) {
@@ -889,8 +891,9 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
 
-	/* The first two are "fillers" */
-	for (i = 2; i < pi->nr; i++) {
+	/* The first two are "fillers", but in case we don't have a sample
+	 * at time 0 we need to process the second of them here */
+	for (i = 1; i < pi->nr; i++) {
 		entry = pi->entry + i;
 		if (SENSOR_PRESSURE(entry)) {
 			cur_pr[entry->cylinderindex] = SENSOR_PRESSURE(entry);
@@ -929,7 +932,8 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 				INTERPOLATED_PRESSURE(entry) =
 					cur_pr[entry->cylinderindex] + cur_pt * magic;
 				cur_pr[entry->cylinderindex] = INTERPOLATED_PRESSURE(entry);
-			}
+			} else
+				INTERPOLATED_PRESSURE(entry) = cur_pr[entry->cylinderindex];
 		}
 	}
 }
@@ -1109,14 +1113,14 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		entry = pi->entry + i + pi_idx;
 		ev = get_next_gaschange(ev->next);
 	}
-	nr_samples += pi_idx - 2;
+	nr = nr_samples + pi_idx - 2;
 	check_gas_change_events(dive, pi);
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
 	current = track_pr[pi->entry[2].cylinderindex];
-	for (i = 0; i < nr_samples; i++) {
-		entry = pi->entry + i + 2;
+	for (i = 0; i < nr + 1; i++) {
+		entry = pi->entry + i + 1;
 
 		entry->same_cylinder = entry->cylinderindex == cylinderindex;
 		cylinderindex = entry->cylinderindex;
@@ -1155,7 +1159,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		}
 	}
 	/* Fill in the last two entries with empty values but valid times */
-	i = nr_samples + 2;
+	i = nr + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
 	/* the number of actual entries - we may have allocated more if there

@@ -5,7 +5,7 @@
   <temperature air='27.0 C' water='26.0 C' />
   <location>8th test dive, with samples</location>
   <notes>SAC should be 0.93 cuft/min or 26.2 l/min
-Tank pressure plotted incorrectly (issues with first sample of first tank).
+Tank pressure plotted correctly (linear approximation)
 Descent light green
 First Ascent red, second orange, third yellow, last green
 </notes>
