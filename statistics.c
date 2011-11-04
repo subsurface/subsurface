@@ -140,8 +140,11 @@ void show_dive_stats(struct dive *dive)
 	set_label(info_stat_w.max_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(dive->meandepth.mm, &decimals, &unit);
 	set_label(info_stat_w.avg_depth, "%.*f %s", decimals, value, unit);
-	value = get_temp_units(dive->watertemp.mkelvin, &unit);
-	set_label(info_stat_w.water_temp, "%.1f %s", value, unit);
+	if (dive->watertemp.mkelvin > 200) {
+		value = get_temp_units(dive->watertemp.mkelvin, &unit);
+		set_label(info_stat_w.water_temp, "%.1f %s", value, unit);
+	} else
+		set_label(info_stat_w.water_temp, "");
 	value = get_volume_units(dive->sac, &decimals, &unit);
 	if (value > 0) {
 		set_label(info_stat_w.sac, "%.*f %s/min", decimals, value, unit);
@@ -175,8 +178,7 @@ void show_dive_stats(struct dive *dive)
 			gas_used += cyl->type.size.mliter / 1000.0 *
 				(cyl->start.mbar - cyl->end.mbar);
 	}
-	if (offset)
-		set_label(info_stat_w.o2he, buf);
+	set_label(info_stat_w.o2he, buf);
 	if (gas_used) {
 		value = get_volume_units(gas_used, &decimals, &unit);
 		set_label(info_stat_w.gas_used, "%.*f %s", decimals, value, unit);

@@ -1,0 +1,9 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<dive number='3' date='2011-01-01' time='11:00:00' duration='30:00 min'>
+  <depth max='30.0 m' mean='15.0 m' />
+  <location>3rd test dive, add cylinder with start/end pressure</location>
+  <notes>SAC should be 0.46 cuft/min or 13.1 l/min</notes>
+  <cylinder size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
+</dive>
+</dives>
