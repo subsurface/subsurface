@@ -276,6 +276,7 @@ static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 	static const text_render_options_t deep = {14, 1.0, 0.2, 0.2, CENTER, TOP};
 	static const text_render_options_t shallow = {14, 1.0, 0.2, 0.2, CENTER, BOTTOM};
 	int i;
+	int last = -1;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
@@ -283,11 +284,18 @@ static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 		if (entry->depth < 2000)
 			continue;
 
-		if (entry == entry->max[2])
+		if ((entry == entry->max[2]) && entry->depth != last) {
 			render_depth_sample(gc, entry, &deep);
+			last = entry->depth;
+		}
 
-		if (entry == entry->min[2])
+		if ((entry == entry->min[2]) && entry->depth != last) {
 			render_depth_sample(gc, entry, &shallow);
+			last = entry->depth;
+		}
+
+		if (entry->depth != last)
+			last = -1;
 	}
 }
 
