@@ -5,7 +5,7 @@
   <temperature air='27.0 C' water='26.0 C' />
   <location>7th test dive, two tanks, tank change</location>
   <notes>SAC should be 0.93 cuft/min or 26.2 l/min
-Currently broken profile as we don't create sample / plot info for gas change event.</notes>
+Shows two pressure plots, each from 200 to 100bar and gaschange event at 15 minu mark.</notes>
   <cylinder o2='33.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
   <cylinder o2='50.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
   <event time='15:00 min' name='gaschange' value='50' />
