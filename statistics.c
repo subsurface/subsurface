@@ -178,8 +178,7 @@ void show_dive_stats(struct dive *dive)
 			gas_used += cyl->type.size.mliter / 1000.0 *
 				(cyl->start.mbar - cyl->end.mbar);
 	}
-	if (offset)
-		set_label(info_stat_w.o2he, buf);
+	set_label(info_stat_w.o2he, buf);
 	if (gas_used) {
 		value = get_volume_units(gas_used, &decimals, &unit);
 		set_label(info_stat_w.gas_used, "%.*f %s", decimals, value, unit);
