@@ -2,7 +2,8 @@ Source: subsurface
 Priority: optional
 Maintainer: Roland Dreier <roland@digitalvampire.org>
 Build-Depends: autoconf, automake, libtool, debhelper (>= 8), dh-autoreconf,
- pkg-config, libgtk2.0-dev, libgconf2-dev, libxml2-dev, libdivecomputer-dev
+ pkg-config, libgtk2.0-dev, libgconf2-dev, libxml2-dev, libdivecomputer-dev,
+ libxslt-dev
 Standards-Version: 3.9.2
 Section: utils
 Homepage: http://subsurface.hohndel.org

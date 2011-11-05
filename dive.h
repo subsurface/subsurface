@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include <glib.h>
+#include <libxml/tree.h>
 
 /*
  * Some silly typedefs to make our units very explicit.
@@ -252,6 +253,10 @@ static inline struct dive *get_dive(unsigned int nr)
 extern void parse_xml_init(void);
 extern void parse_xml_file(const char *filename, GError **error);
 extern void set_filename(const char *filename);
+
+#ifdef XSLT
+extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
+#endif
 
 extern void show_dive_info(struct dive *);
 extern void flush_dive_info_changes(struct dive *);

@@ -7,6 +7,9 @@
 #include <time.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#ifdef XSLT
+#include <libxslt/transform.h>
+#endif
 
 #include "dive.h"
 #include "uemis.h"
@@ -1466,6 +1469,9 @@ void parse_xml_file(const char *filename, GError **error)
 	set_filename(filename);
 	reset_all();
 	dive_start();
+#ifdef XSLT
+	doc = test_xslt_transforms(doc);
+#endif
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
@@ -1476,3 +1482,23 @@ void parse_xml_init(void)
 {
 	LIBXML_TEST_VERSION
 }
+
+#ifdef XSLT
+xmlDoc *test_xslt_transforms(xmlDoc *doc)
+{
+	xmlDoc *transformed;
+	xsltStylesheetPtr xslt = NULL;
+	xmlNode *root_element = xmlDocGetRootElement(doc);
+	if (strcasecmp(root_element->name, "JDiveLog") == 0) {
+		xmlSubstituteEntitiesDefault(1);
+		xslt = xsltParseStylesheetFile(XSLT G_DIR_SEPARATOR_S "jdivelog2subsurface.xslt");
+		if (xslt == NULL)
+			return doc;
+		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+		xmlFreeDoc(doc);
+		xsltFreeStylesheet(xslt);
+		return transformed;
+	}
+	return doc;
+}
+#endif

@@ -5,6 +5,7 @@ CFLAGS=-Wall -Wno-pointer-sign -g
 INSTALL=install
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
+XSLCONFIG=xslt-config
 
 # these locations seem to work for SuSE and Fedora
 # prefix = $(HOME)
@@ -15,12 +16,14 @@ DESKTOPDIR = $(DATADIR)/applications
 ICONPATH = $(DATADIR)/icons/hicolor
 ICONDIR = $(ICONPATH)/scalable/apps
 MANDIR = $(DATADIR)/man/man1
+XSLTDIR = $(DATADIR)/subsurface/xslt
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
 
 NAME = subsurface
 ICONFILE = $(NAME).svg
 DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
+XSLTFILES = xslt/*.xslt
 
 MACOSXINSTALL = /Applications/Subsurface.app
 MACOSXFILES = packaging/macosx
@@ -77,7 +80,7 @@ LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0 gconf-2.0)
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
-LIBS = $(LIBXML2) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
@@ -98,12 +101,26 @@ install: $(NAME)
 	fi
 	$(INSTALL) -d -m 755 $(MANDIR)
 	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
+	@-if test ! -z "$(XSLT)"; then \
+		$(INSTALL) -d -m 755 $(DATADIR)/subsurface; \
+		$(INSTALL) -d -m 755 $(XSLTDIR); \
+		$(INSTALL) -m 644 $(XSLTFILES) $(XSLTDIR); \
+	fi
 
 LIBXML2 = $(shell $(XML2CONFIG) --libs)
+LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
+CFLAGS += $(shell $(XSLCONFIG) --cflags)
+
+ifneq ($(strip $(LIBXSLT)),)
+	# We still need proper paths and install options for OSX and Windows
+	ifeq ($(shell sh -c 'uname -s 2>/dev/null || echo not'),Linux)
+		XSLT=-DXSLT='"$(XSLTDIR)"'
+	endif
+endif
 
 install-macosx: $(NAME)
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
@@ -116,7 +133,7 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
 
 parse-xml.o: parse-xml.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c $(XML2CFLAGS)  parse-xml.c
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c $(XML2CFLAGS) $(XSLT) parse-xml.c
 
 save-xml.o: save-xml.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c save-xml.c
