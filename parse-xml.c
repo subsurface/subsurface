@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <unistd.h>
 #define __USE_XOPEN
 #include <time.h>
 #include <libxml/parser.h>
@@ -1484,6 +1485,53 @@ void parse_xml_init(void)
 }
 
 #ifdef XSLT
+
+/* Maybe we'll want a environment variable that can override this.. */
+static const char *xslt_path = XSLT ":xslt:.";
+
+static xsltStylesheetPtr try_get_stylesheet(const char *path, int len, const char *name)
+{
+	xsltStylesheetPtr ret;
+	int namelen = strlen(name);
+	char *filename = malloc(len+1+namelen+1);
+
+	if (!filename)
+		return NULL;
+
+	memcpy(filename, path, len);
+	filename[len] = G_DIR_SEPARATOR;
+	memcpy(filename + len + 1, name, namelen+1);
+
+	ret = NULL;
+	if (!access(filename, R_OK))
+		ret = xsltParseStylesheetFile(filename);
+	free(filename);
+
+	return ret;
+}
+
+static xsltStylesheetPtr get_stylesheet(const char *name)
+{
+	const char *path = xslt_path, *next;
+
+	do {
+		int len;
+		xsltStylesheetPtr ret;
+
+		next = strchr(path, ':');
+		len = strlen(path);
+		if (next) {
+			len = next - path;
+			next++;
+		}
+		ret = try_get_stylesheet(path, len, name);
+		if (ret)
+			return ret;
+	} while ((path = next) != NULL);
+
+	return NULL;
+}
+
 xmlDoc *test_xslt_transforms(xmlDoc *doc)
 {
 	xmlDoc *transformed;
@@ -1491,7 +1539,7 @@ xmlDoc *test_xslt_transforms(xmlDoc *doc)
 	xmlNode *root_element = xmlDocGetRootElement(doc);
 	if (strcasecmp(root_element->name, "JDiveLog") == 0) {
 		xmlSubstituteEntitiesDefault(1);
-		xslt = xsltParseStylesheetFile(XSLT G_DIR_SEPARATOR_S "jdivelog2subsurface.xslt");
+		xslt = get_stylesheet("jdivelog2subsurface.xslt");
 		if (xslt == NULL)
 			return doc;
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
