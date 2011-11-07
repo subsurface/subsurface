@@ -125,10 +125,18 @@ void show_dive_stats(struct dive *dive)
 	const char *unit;
 	int idx, offset, gas_used;
 	struct dive *prev_dive;
+	struct tm *tm;
 
 	process_all_dives(dive, &prev_dive);
 
-	strftime(buf, 80, "%a, %b %d, %Y, %k:%M", gmtime(&dive->when));
+	tm = gmtime(&dive->when);
+	snprintf(buf, sizeof(buf),
+		"%s, %s %d, %d %2d:%02d",
+		weekday(tm->tm_wday),
+		monthname(tm->tm_mon),
+		tm->tm_mday, tm->tm_year + 1900,
+		tm->tm_hour, tm->tm_min);
+
 	set_label(info_stat_w.date, buf);
 	set_label(info_stat_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);
 	if (prev_dive)
