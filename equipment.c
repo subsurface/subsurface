@@ -71,12 +71,12 @@ static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	int decimals = 1;
 	double volume, pressure;
 
+	volume = ml / 1000.0;
 	if (mbar) {
 		if (output_units.volume == CUFT) {
 			volume = ml_to_cuft(ml);
 			volume *= bar_to_atm(mbar / 1000.0);
-		} else
-			volume = ml / 1000.0;
+		}
 
 		if (output_units.pressure == PSI) {
 			pressure = mbar_to_PSI(mbar);
