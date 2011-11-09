@@ -283,18 +283,24 @@ static int cyl_nothing(cylinder_t *cyl)
 		!cyl->type.description &&
 		!cyl->gasmix.o2.permille &&
 		!cyl->gasmix.he.permille &&
+		!cyl->sample_start.mbar &&
+		!cyl->sample_end.mbar &&
 		!cyl->start.mbar &&
 		!cyl->end.mbar;
 }
 
 static void set_one_cylinder(int index, cylinder_t *cyl, GtkListStore *model, GtkTreeIter *iter)
 {
+	unsigned int start, end;
+
+	start = cyl->start.mbar ? : cyl->sample_start.mbar;
+	end = cyl->end.mbar ? : cyl->sample_end.mbar;
 	gtk_list_store_set(model, iter,
 		CYL_DESC, cyl->type.description ? : "",
 		CYL_SIZE, cyl->type.size.mliter,
 		CYL_WORKP, cyl->type.workingpressure.mbar,
-		CYL_STARTP, cyl->start.mbar,
-		CYL_ENDP, cyl->end.mbar,
+		CYL_STARTP, start,
+		CYL_ENDP, end,
 		CYL_O2, cyl->gasmix.o2.permille,
 		CYL_HE, cyl->gasmix.he.permille,
 		-1);
