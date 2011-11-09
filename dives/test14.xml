@@ -1,17 +1,10 @@
 <dives>
 <program name='subsurface' version='1'></program>
-<dive number='13' date='2011-01-01' time='21:00:00' duration='30:00 min'>
+<dive number='14' date='2011-01-01' time='22:00:00' duration='30:00 min'>
   <depth max='30.0 m' mean='15.0 m' />
   <temperature air='27.0 C' water='26.0 C' />
-  <location>13th test dive, 3 tanks, 3 tank changes</location>
-  <notes>Shows three pressure plots, each from 200 to 100bar and gaschange events at 10, 20 and 25 min mark. Last change is back to first tank
-Now with samples. We have a sample at the first tank change but not the 2nd and 3rd</notes>
-  <cylinder o2='33.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
-  <cylinder o2='50.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
-  <cylinder o2='75.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
-  <event time='10:00 min' name='gaschange' value='50' />
-  <event time='20:30 min' name='gaschange' value='75' />
-  <event time='25:59 min' name='gaschange' value='33' />
+  <location>14th test dive - no depth 0 samples</location>
+  <notes>This should show 1m depth at the 30min mark and then a tick up to the surface 20sec later</notes>
   <sample time='1:00 min' temp='27.0 C' depth='5 m' />
   <sample time='2:00 min' temp='26.0 C' depth='10 m' />
   <sample time='3:00 min' temp='25.0 C' depth='15 m' />
@@ -41,6 +34,6 @@ Now with samples. We have a sample at the first tank change but not the 2nd and 
   <sample time='27:00 min' depth='5 m' />
   <sample time='28:00 min' temp='26.0 C' depth='5 m' />
   <sample time='29:00 min' temp='26.5 C' depth='2.5 m' />
-  <sample time='30:00 min' temp='26.0 C' depth='0 m' />
+  <sample time='30:00 min' temp='26.0 C' depth='1 m' />
 </dive>
 </dives>

@@ -3,7 +3,7 @@
 <dive number='11' date='2011-01-01' time='19:00:00' duration='30:00 min'>
   <depth max='30.0 m' mean='15.0 m' />
   <temperature air='27.0 C' water='26.0 C' />
-  <location>10th test dive, 3 tanks, 2 tank changes</location>
+  <location>11th test dive, 3 tanks, 2 tank changes</location>
   <notes>Shows three pressure plots, each from 200 to 100bar and gaschange events at 10 and 20 min mark.</notes>
   <cylinder o2='33.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
   <cylinder o2='50.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />

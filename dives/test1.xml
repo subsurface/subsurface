@@ -2,6 +2,7 @@
   <program name='subsurface' version='1'></program>
   <dive number='1' date='2011-01-01' time='09:00:00' duration='30:00 min'>
     <depth max='30.00 m' mean='15.00 m' />
-    <location>Second test dive, this one with location</location>
+    <location>First test dive, this one with location</location>
+    <notes>Yes, the previous dive is dive 0, that one with no location.</notes>
   </dive>
 </dives>
