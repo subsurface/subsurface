@@ -299,6 +299,7 @@ static double calculate_airuse(struct dive *dive)
 	int i;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
+		pressure_t start, end;
 		cylinder_t *cyl = dive->cylinder + i;
 		int size = cyl->type.size.mliter;
 		double kilo_atm;
@@ -306,7 +307,9 @@ static double calculate_airuse(struct dive *dive)
 		if (!size)
 			continue;
 
-		kilo_atm = (to_ATM(cyl->start) - to_ATM(cyl->end)) / 1000.0;
+		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
+		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
+		kilo_atm = (to_ATM(start) - to_ATM(end)) / 1000.0;
 
 		/* Liters of air at 1 atm == milliliters at 1k atm*/
 		airuse += kilo_atm * size;
