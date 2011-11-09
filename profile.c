@@ -1098,7 +1098,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
-			lastindex = i+pi_idx;
+			lastindex = i + pi_idx;
 
 		lastdepth = depth;
 		if (depth > pi->maxdepth)
@@ -1162,9 +1162,12 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	i = nr + 2;
 	pi->entry[i].sec = sec + 20;
 	pi->entry[i+1].sec = sec + 40;
-	/* the number of actual entries - we may have allocated more if there
-	 * were gas change events, but this is how many were filled */
+	/* the number of actual entries - some computers have lots of
+	 * depth 0 samples at the end of a dive, we want to make sure
+	 * we have exactly one of them at the end */
 	pi->nr = lastindex+1;
+	while (pi->nr <= i+2 && pi->entry[pi->nr-1].depth > 0)
+		pi->nr++;
 	pi->maxtime = pi->entry[lastindex].sec;
 
 	pi->endpressure = pi->minpressure = dive->cylinder[0].end.mbar;
