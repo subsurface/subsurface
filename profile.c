@@ -513,7 +513,7 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 {
 	double deg;
 	const char *unit;
-	static const text_render_options_t tro = {12, 0.2, 0.2, 1.0, LEFT, TOP};
+	static const text_render_options_t tro = {12, 0.6, 0.6, 1.0, LEFT, TOP};
 
 	deg = get_temp_units(mkelvin, &unit);
 
@@ -523,7 +523,7 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
-	int last = 0, sec = 0;
+	int last = -300, sec = 0;
 	int last_temperature = 0, last_printed_temp = 0;
 
 	if (!setup_temperature_limits(gc, pi))
@@ -537,14 +537,23 @@ static void plot_temperature_text(struct graphics_context *gc, struct plot_info 
 			continue;
 		last_temperature = mkelvin;
 		sec = entry->sec;
-		if (sec < last + 300)
+		/* don't print a temperature
+		 * if it's been less than 5min and less than a 2K change OR
+		 * if it's been less than 2min OR if the change from the
+		 * last print is less than .4K (and therefore less than 1F */
+		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
+			(sec < last + 120) ||
+			(abs(mkelvin - last_printed_temp) < 400))
 			continue;
 		last = sec;
 		plot_single_temp_text(gc,sec,mkelvin);
 		last_printed_temp = mkelvin;
 	}
-	/* it would be nice to print the end temperature, if it's different */
-	if (abs(last_temperature - last_printed_temp) > 500)
+	/* it would be nice to print the end temperature, if it's
+	 * different or if the last temperature print has been more
+	 * than a quarter of the dive back */
+	if ((abs(last_temperature - last_printed_temp) > 500) ||
+		((double)last / (double)sec < 0.75))
 		plot_single_temp_text(gc, sec, last_temperature);
 }
 
