@@ -98,13 +98,13 @@ static void set_cylinder_type_spinbuttons(struct cylinder_widget *cylinder, int 
 	gtk_spin_button_set_value(cylinder->pressure, pressure);
 }
 
-static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, int start, int end)
+static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, cylinder_t *cyl)
 {
 	double pressure;
 
-	convert_pressure(start, &pressure);
+	convert_pressure(cyl->start.mbar, &pressure);
 	gtk_spin_button_set_value(cylinder->start, pressure);
-	convert_pressure(end, &pressure);
+	convert_pressure(cyl->end.mbar, &pressure);
 	gtk_spin_button_set_value(cylinder->end, pressure);
 }
 
@@ -266,8 +266,7 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 
 	set_cylinder_type_spinbuttons(cylinder,
 		cyl->type.size.mliter, cyl->type.workingpressure.mbar);
-	set_cylinder_pressure_spinbuttons(cylinder,
-		cyl->start.mbar, cyl->end.mbar);
+	set_cylinder_pressure_spinbuttons(cylinder, cyl);
 	o2 = cyl->gasmix.o2.permille / 10.0;
 	gtk_widget_set_sensitive(cylinder->o2, !!o2);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button), !!o2);
