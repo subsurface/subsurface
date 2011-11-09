@@ -207,46 +207,21 @@ static void update_temperature(temperature_t *temperature, int new)
 	}
 }
 
-/*
- * If you have more than 32 cylinders, you'd better have a 64-bit build.
- * And if you have more than 64 cylinders, you need to use another tool,
- * or fix this up to do something odd.
- */
-static unsigned long fixup_pressure(struct dive *dive, struct sample *sample, unsigned long flags)
+static void fixup_pressure(struct dive *dive, struct sample *sample)
 {
-	unsigned long mask;
 	unsigned int pressure, index;
 	cylinder_t *cyl;
 
 	pressure = sample->cylinderpressure.mbar;
 	if (!pressure)
-		return flags;
+		return;
 	index = sample->cylinderindex;
 	if (index >= MAX_CYLINDERS)
-		return flags;
+		return;
 	cyl = dive->cylinder + index;
-	if (!cyl->start.mbar)
-		cyl->start.mbar = pressure;
-	/*
-	 * If we already have an end pressure, without
-	 * ever having seen a sample for this cylinder,
-	 * that means that somebody set the end pressure
-	 * by hand
-	 */
-	mask = 1ul << index;
-	if (cyl->end.mbar) {
-		if (!(flags & mask))
-			return flags;
-	}
-	flags |= mask;
-
-	/* we need to handle the user entering beginning and end tank pressures
-	 * - maybe even IF we have samples. But for now if we have air pressure
-	 * data in the samples, we use that instead of the minimum
-	 * if (!cyl->end.mbar || pressure < cyl->end.mbar)
-	 */
-	cyl->end.mbar = pressure;
-	return flags;
+	if (!cyl->sample_start.mbar)
+		cyl->sample_start.mbar = pressure;
+	cyl->sample_end.mbar = pressure;
 }
 
 struct dive *fixup_dive(struct dive *dive)
@@ -258,7 +233,6 @@ struct dive *fixup_dive(struct dive *dive)
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0;
-	unsigned long flags = 0;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -276,7 +250,7 @@ struct dive *fixup_dive(struct dive *dive)
 				maxdepth = depth;
 		}
 
-		flags = fixup_pressure(dive, sample, flags);
+		fixup_pressure(dive, sample);
 
 		if (temp) {
 			/*
@@ -311,8 +285,12 @@ struct dive *fixup_dive(struct dive *dive)
 	add_people(dive->divemaster);
 	add_location(dive->location);
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_type_t *type = &dive->cylinder[i].type;
-		add_cylinder_description(type);
+		cylinder_t *cyl = dive->cylinder + i;
+		add_cylinder_description(&cyl->type);
+		if (cyl->sample_start.mbar == cyl->start.mbar)
+			cyl->start.mbar = 0;
+		if (cyl->sample_end.mbar == cyl->end.mbar)
+			cyl->end.mbar = 0;
 	}
 
 	return dive;

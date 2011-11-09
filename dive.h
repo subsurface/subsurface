@@ -84,7 +84,7 @@ typedef struct {
 typedef struct {
 	cylinder_type_t type;
 	struct gasmix gasmix;
-	pressure_t start, end;
+	pressure_t start, end, sample_start, sample_end;
 } cylinder_t;
 
 extern int get_pressure_units(unsigned int mb, const char **units);
