@@ -46,7 +46,7 @@ struct cylinder_widget {
 	GtkWidget *hbox;
 	GtkComboBox *description;
 	GtkSpinButton *size, *pressure;
-	GtkWidget *start, *end;
+	GtkWidget *start, *end, *pressure_button;
 	GtkWidget *o2, *gasmix_button;
 };
 
@@ -101,11 +101,24 @@ static void set_cylinder_type_spinbuttons(struct cylinder_widget *cylinder, int 
 
 static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, cylinder_t *cyl)
 {
+	int set;
+	unsigned int start, end;
 	double pressure;
 
-	convert_pressure(cyl->start.mbar, &pressure);
+	start = cyl->start.mbar;
+	end = cyl->end.mbar;
+	set = start || end;
+	if (!set) {
+		start = cyl->sample_start.mbar;
+		end = cyl->sample_end.mbar;
+	}
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cylinder->pressure_button), set);
+	gtk_widget_set_sensitive(cylinder->start, set);
+	gtk_widget_set_sensitive(cylinder->end, set);
+
+	convert_pressure(start, &pressure);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->start), pressure);
-	convert_pressure(cyl->end.mbar, &pressure);
+	convert_pressure(end, &pressure);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->end), pressure);
 }
 
@@ -405,6 +418,8 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	pressure = gtk_spin_button_get_value(cylinder->pressure);
 	start = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->start));
 	end = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->end));
+	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->pressure_button)))
+		start = end = 0;
 	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
 	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
 		o2 = 0;
@@ -496,6 +511,16 @@ static void nitrox_cb(GtkToggleButton *button, gpointer data)
 	gtk_widget_set_sensitive(cylinder->o2, state);
 }
 
+static void pressure_cb(GtkToggleButton *button, gpointer data)
+{
+	struct cylinder_widget *cylinder = data;
+	int state;
+
+	state = gtk_toggle_button_get_active(button);
+	gtk_widget_set_sensitive(cylinder->start, state);
+	gtk_widget_set_sensitive(cylinder->end, state);
+}
+
 static gboolean completion_cb(GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, struct cylinder_widget *cylinder)
 {
 	const char *desc;
@@ -558,6 +583,10 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	 */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	cylinder->pressure_button = gtk_check_button_new();
+	gtk_box_pack_start(GTK_BOX(hbox), cylinder->pressure_button, FALSE, FALSE, 3);
+	g_signal_connect(cylinder->pressure_button, "toggled", G_CALLBACK(pressure_cb), cylinder);
 
 	widget = create_spinbutton(hbox, "Start Pressure", 0, 5000, 1);
 	cylinder->start = widget;
