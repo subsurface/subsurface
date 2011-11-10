@@ -224,6 +224,16 @@ static void fixup_pressure(struct dive *dive, struct sample *sample)
 	cyl->sample_end.mbar = pressure;
 }
 
+/*
+ * If the cylinder tank pressures are within half a bar
+ * (about 8 PSI) of the sample pressures, we consider it
+ * to be a rounding error, and throw them away as redundant.
+ */
+static int same_rounded_pressure(pressure_t a, pressure_t b)
+{
+	return abs(a.mbar - b.mbar) <= 500;
+}
+
 struct dive *fixup_dive(struct dive *dive)
 {
 	int i;
@@ -287,9 +297,9 @@ struct dive *fixup_dive(struct dive *dive)
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);
-		if (cyl->sample_start.mbar == cyl->start.mbar)
+		if (same_rounded_pressure(cyl->sample_start, cyl->start))
 			cyl->start.mbar = 0;
-		if (cyl->sample_end.mbar == cyl->end.mbar)
+		if (same_rounded_pressure(cyl->sample_end, cyl->end))
 			cyl->end.mbar = 0;
 	}
 
