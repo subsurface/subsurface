@@ -202,16 +202,16 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 		if (!o2 && !volume && !start && !end)
 			return;
 		fprintf(f, "  <cylinder");
-		if (o2) {
-			fprintf(f, " o2='%u.%u%%'", FRACTION(o2, 10));
-			if (he)
-				fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
-		}
 		if (volume)
 			show_milli(f, " size='", volume, " l", "'");
 		show_pressure(f, cylinder->type.workingpressure, " workpressure='", "'");
 		if (description && *description)
 			fprintf(f, " description='%s'", description);
+		if (o2) {
+			fprintf(f, " o2='%u.%u%%'", FRACTION(o2, 10));
+			if (he)
+				fprintf(f, " he='%u.%u%%'", FRACTION(he, 10));
+		}
 		show_pressure(f, cylinder->start, " start='", "'");
 		show_pressure(f, cylinder->end, " end='", "'");
 		fprintf(f, " />\n");
