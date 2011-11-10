@@ -648,6 +648,8 @@ static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
 }
 
+#define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? : INTERPOLATED_PRESSURE(_entry))
+
 static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
@@ -662,14 +664,19 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 
 	/* only loop over the actual events from the dive computer
 	 * plus the second synthetic event at the start (to make sure
-	 * we get "time=0" right) */
+	 * we get "time=0" right)
+	 * sadly with a recent change that first entry may no longer
+	 * have any pressure reading - in that case just grab the
+	 * pressure from the second entry */
+	if (GET_PRESSURE(pi->entry + 1) == 0 && GET_PRESSURE(pi->entry + 2) !=0)
+		INTERPOLATED_PRESSURE(pi->entry + 1) = GET_PRESSURE(pi->entry + 2);
 	for (i = 1; i < pi->nr; i++) {
 		entry = pi->entry + i;
 
 		if (!entry->same_cylinder) {
 			cyl = entry->cylinderindex;
 			if (!seen_cyl[cyl]) {
-				mbar = SENSOR_PRESSURE(entry) ? : INTERPOLATED_PRESSURE(entry);
+				mbar = GET_PRESSURE(entry);
 				plot_pressure_value(gc, mbar, entry->sec, LEFT, BOTTOM);
 				seen_cyl[cyl] = TRUE;
 			}
@@ -677,14 +684,13 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 				/* remember the last pressure and time of
 				 * the previous cylinder */
 				cyl = (entry - 1)->cylinderindex;
-				last_pressure[cyl] =
-					SENSOR_PRESSURE(entry - 1) ? : INTERPOLATED_PRESSURE(entry - 1);
+				last_pressure[cyl] = GET_PRESSURE(entry - 1);
 				last_time[cyl] = (entry - 1)->sec;
 			}
 		}
 	}
 	cyl = entry->cylinderindex;
-	last_pressure[cyl] = SENSOR_PRESSURE(entry) ? : INTERPOLATED_PRESSURE(entry);
+	last_pressure[cyl] = GET_PRESSURE(entry);
 	last_time[cyl] = entry->sec;
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
@@ -771,7 +777,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 	/* Do pressure min/max based on the non-surface data */
 	for (i = 0; i < nr; i++) {
 		struct plot_data *entry = pi->entry+i;
-		int pressure = SENSOR_PRESSURE(entry) ? : INTERPOLATED_PRESSURE(entry);
+		int pressure = GET_PRESSURE(entry);
 		int temperature = entry->temperature;
 
 		if (pressure) {
@@ -1158,10 +1164,17 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 			pr_track->end = pr;
 		}
 	}
-	/* Fill in the last two entries with empty values but valid times */
+	/* Fill in the last two entries with empty values but valid times
+	 * without creating a false cylinder change event */
 	i = nr + 2;
 	pi->entry[i].sec = sec + 20;
+	pi->entry[i].same_cylinder = 1;
+	pi->entry[i].cylinderindex = pi->entry[i-1].cylinderindex;
+	INTERPOLATED_PRESSURE(pi->entry + i) = GET_PRESSURE(pi->entry + i - 1);
 	pi->entry[i+1].sec = sec + 40;
+	pi->entry[i+1].same_cylinder = 1;
+	pi->entry[i+1].cylinderindex = pi->entry[i-1].cylinderindex;
+	INTERPOLATED_PRESSURE(pi->entry + i + 1) = GET_PRESSURE(pi->entry + i - 1);
 	/* the number of actual entries - some computers have lots of
 	 * depth 0 samples at the end of a dive, we want to make sure
 	 * we have exactly one of them at the end */
