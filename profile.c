@@ -21,8 +21,7 @@ struct plot_info {
 	int nr;
 	int maxtime;
 	int meandepth, maxdepth;
-	int minpressure, maxpressure;
-	int endpressure; /* start pressure better be max pressure */
+	int maxpressure;
 	int mintemp, maxtemp;
 	struct plot_data {
 		unsigned int same_cylinder:1;
@@ -102,9 +101,9 @@ static void dump_pi (struct plot_info *pi)
 	int i;
 
 	printf("pi:{nr:%d maxtime:%d meandepth:%d maxdepth:%d \n"
-		"    minpressure:%d maxpressure:%d endpressure:%d mintemp:%d maxtemp:%d\n",
+		"    maxpressure:%d mintemp:%d maxtemp:%d\n",
 		pi->nr, pi->maxtime, pi->meandepth, pi->maxdepth,
-		pi->minpressure, pi->maxpressure, pi->endpressure, pi->mintemp, pi->maxtemp);
+		pi->maxpressure, pi->mintemp, pi->maxtemp);
 	for (i = 0; i < pi->nr; i++)
 		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
 			"                temperature:%d depth:%d smoothed:%d}\n",
@@ -790,8 +789,6 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 		int temperature = entry->temperature;
 
 		if (pressure) {
-			if (!pi->minpressure || pressure < pi->minpressure)
-				pi->minpressure = pressure;
 			if (pressure > pi->maxpressure)
 				pi->maxpressure = pressure;
 		}
@@ -1192,8 +1189,15 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		pi->nr++;
 	pi->maxtime = pi->entry[lastindex].sec;
 
-	pi->endpressure = pi->minpressure = dive->cylinder[0].end.mbar;
-	pi->maxpressure = dive->cylinder[0].start.mbar;
+	/* Analyze_plot_info() will do the sample max pressures,
+	 * this handles the manual pressures
+	 */
+	pi->maxpressure = 0;
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		unsigned int mbar = dive->cylinder[cyl].start.mbar;
+		if (mbar > pi->maxpressure)
+			pi->maxpressure = mbar;
+	}
 
 	pi->meandepth = dive->meandepth.mm;
 
