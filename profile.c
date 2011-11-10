@@ -698,7 +698,8 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 		}
 	}
 	cyl = entry->cylinderindex;
-	last_pressure[cyl] = GET_PRESSURE(entry);
+	if (GET_PRESSURE(entry))
+		last_pressure[cyl] = GET_PRESSURE(entry);
 	last_time[cyl] = entry->sec;
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
@@ -934,6 +935,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 				if (!nlist) {
 					/* just continue without calculating
 					 * interpolated values */
+					INTERPOLATED_PRESSURE(entry) = cur_pr[entry->cylinderindex];
 					list = NULL;
 					continue;
 				}
