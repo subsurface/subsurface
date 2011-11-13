@@ -416,12 +416,14 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	desc = gtk_combo_box_get_active_text(box);
 	volume = gtk_spin_button_get_value(cylinder->size);
 	pressure = gtk_spin_button_get_value(cylinder->pressure);
-	start = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->start));
-	end = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->end));
-	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->pressure_button)))
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->pressure_button))) {
+		start = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->start));
+		end = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->end));
+	} else
 		start = end = 0;
-	o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
-	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
+		o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
+	else
 		o2 = 0;
 	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, start, end, o2);
 }
@@ -643,6 +645,7 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 		record_cylinder_changes(cyl, &cylinder);
 		dive->cylinder[index] = *cyl;
 		mark_divelist_changed(TRUE);
+		update_cylinder_related_info(dive);
 		flush_divelist(dive);
 	}
 
