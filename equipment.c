@@ -419,8 +419,9 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->pressure_button))) {
 		start = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->start));
 		end = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->end));
-	} else
+	} else {
 		start = end = 0;
+	}
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->gasmix_button)))
 		o2 = gtk_spin_button_get_value(GTK_SPIN_BUTTON(cylinder->o2))*10 + 0.5;
 	else
