@@ -335,6 +335,14 @@ static int calculate_sac(struct dive *dive)
 	return sac * 1000;
 }
 
+void update_cylinder_related_info(struct dive *dive)
+{
+	if(dive != NULL) {
+		dive->sac = calculate_sac(dive);
+		dive->otu = calculate_otu(dive);
+	}
+}
+
 static void get_string(char **str, const char *s)
 {
 	int len;
@@ -452,8 +460,7 @@ static void fill_dive_list(void)
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
 
-		dive->otu = calculate_otu(dive);
-		dive->sac = calculate_sac(dive);
+		update_cylinder_related_info(dive);
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			DIVE_INDEX, i,
