@@ -351,8 +351,8 @@ static void get_string(char **str, const char *s)
 	if (!s)
 		s = "";
 	len = strlen(s);
-	if (len > 40)
-		len = 40;
+	if (len > 60)
+		len = 60;
 	n = malloc(len+1);
 	memcpy(n, s, len);
 	n[len] = 0;
