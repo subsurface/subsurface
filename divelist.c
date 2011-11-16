@@ -457,7 +457,8 @@ static void fill_dive_list(void)
 
 	store = GTK_LIST_STORE(dive_list.model);
 
-	for (i = 0; i < dive_table.nr; i++) {
+	i = dive_table.nr;
+	while (--i >= 0) {
 		struct dive *dive = dive_table.dives[i];
 
 		update_cylinder_related_info(dive);
