@@ -1532,14 +1532,28 @@ static xsltStylesheetPtr get_stylesheet(const char *name)
 	return NULL;
 }
 
+static struct xslt_files {
+	const char *root;
+	const char *file;
+} xslt_files[] = {
+	{ "JDiveLog", "jdivelog2subsurface.xslt" },
+	{ NULL, }
+};
+
 xmlDoc *test_xslt_transforms(xmlDoc *doc)
 {
+	struct xslt_files *info = xslt_files;
 	xmlDoc *transformed;
 	xsltStylesheetPtr xslt = NULL;
 	xmlNode *root_element = xmlDocGetRootElement(doc);
-	if (strcasecmp(root_element->name, "JDiveLog") == 0) {
+
+	while ((info->root) && (strcasecmp(root_element->name, info->root) != 0)) {
+		info++;
+	}
+
+	if (info->root) {
 		xmlSubstituteEntitiesDefault(1);
-		xslt = get_stylesheet("jdivelog2subsurface.xslt");
+		xslt = get_stylesheet(info->file);
 		if (xslt == NULL)
 			return doc;
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
