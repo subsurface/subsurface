@@ -1536,6 +1536,7 @@ static struct xslt_files {
 	const char *root;
 	const char *file;
 } xslt_files[] = {
+	{ "SUUNTO", "SuuntoSDM.xslt" },
 	{ "JDiveLog", "jdivelog2subsurface.xslt" },
 	{ NULL, }
 };
