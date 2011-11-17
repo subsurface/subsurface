@@ -44,6 +44,7 @@ struct plot_info {
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
 #define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
+#define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? : INTERPOLATED_PRESSURE(_entry))
 
 /* convert velocity to colors */
 typedef struct { double r, g, b; } rgb_t;
@@ -594,55 +595,103 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	return pi->maxpressure != 0;
 }
 
-static void plot_pressure_helper(struct graphics_context *gc, struct plot_info *pi, int type)
+/* set the color for the pressure plot according to temporary sac rate */
+static void set_sac_color(struct graphics_context *gc, double sac)
+{
+	if (sac < 9)
+		set_source_rgba(gc, 0.0, 0.4, 0.2, 0.80);
+	else if (sac < 11)
+		set_source_rgba(gc, 0.2, 0.6, 0.2, 0.80);
+	else if (sac < 13)
+		set_source_rgba(gc, 0.4, 0.8, 0.2, 0.80);
+	else if (sac < 15)
+		set_source_rgba(gc, 0.6, 0.8, 0.2, 0.80);
+	else if (sac < 17)
+		set_source_rgba(gc, 0.8, 0.8, 0.2, 0.80);
+	else if (sac < 19)
+		set_source_rgba(gc, 0.8, 0.6, 0.2, 0.80);
+	else if (sac < 21)
+		set_source_rgba(gc, 0.8, 0.4, 0.2, 0.80);
+	else if (sac < 23)
+		set_source_rgba(gc, 0.9, 0.3, 0.2, 0.80);
+	else
+		set_source_rgba(gc, 1.0, 0.2, 0.2, 0.80);
+}
+
+/* calculate the current SAC in l/min */
+#define GET_LOCAL_SAC(_entry1, _entry2, _dive)					\
+	((GET_PRESSURE((_entry1)) - GET_PRESSURE((_entry2))) *			\
+		(_dive)->cylinder[(_entry1)->cylinderindex].type.size.mliter /	\
+		(((_entry2)->sec - (_entry1)->sec) / 60.0) /			\
+		(1 + ((_entry1)->depth + (_entry2)->depth) / 20000.0) /		\
+		1000000.0)
+
+#define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
+
+static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi,
+				struct dive *dive)
 {
 	int i;
+	int last = -1;
 	int lift_pen = FALSE;
+	int first_plot = TRUE;
+	double sac = 0.0;
+	struct plot_data *last_entry = NULL;
+
+	if (!get_cylinder_pressure_range(gc, pi))
+		return;
 
 	for (i = 0; i < pi->nr; i++) {
 		int mbar;
 		struct plot_data *entry = pi->entry + i;
 
-		mbar = entry->pressure[type];
-		if (!entry->same_cylinder)
+		mbar = GET_PRESSURE(entry);
+		if (!entry->same_cylinder) {
 			lift_pen = TRUE;
+			last_entry = NULL;
+		}
 		if (!mbar) {
 			lift_pen = TRUE;
 			continue;
 		}
+		if (!last_entry) {
+			last = i;
+			last_entry = entry;
+			if (first_plot) {
+				/* don't start with a sac of 0 */
+				int fe = i + 1;
+				struct plot_data *future_entry = pi->entry + fe;
+				while (fe < pi->nr && future_entry->sec - entry->sec < SAC_WINDOW) {
+					fe++;
+					future_entry = pi->entry + fe;
+				}
+				sac = GET_LOCAL_SAC(entry, future_entry, dive);
+			}
+		} else if (entry->sec - last_entry->sec >= SAC_WINDOW) {
+			sac = GET_LOCAL_SAC(last_entry, entry, dive);
+			last++;
+			last_entry = pi->entry + last;
+		}
+		set_sac_color(gc, sac);
 		if (lift_pen) {
-			if (i > 0 && entry->same_cylinder) {
+			if (!first_plot && entry->same_cylinder) {
 				/* if we have a previous event from the same tank,
-				 * draw at least a short line .
-				 * This uses the implementation detail that the
-				 * type is either 0 or 1 */
+				 * draw at least a short line */
 				int prev_pr;
-				prev_pr = (entry-1)->pressure[type] ? : (entry-1)->pressure[1 - type];
+				prev_pr = GET_PRESSURE(entry - 1);
 				move_to(gc, (entry-1)->sec, prev_pr);
 				line_to(gc, entry->sec, mbar);
-			} else
+			} else {
+				first_plot = FALSE;
 				move_to(gc, entry->sec, mbar);
+			}
 			lift_pen = FALSE;
-		}
-		else
+		} else {
 			line_to(gc, entry->sec, mbar);
+		}
+		cairo_stroke(gc->cr);
+		move_to(gc, entry->sec, mbar);
 	}
-	cairo_stroke(gc->cr);
-
-}
-
-static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi)
-{
-	if (!get_cylinder_pressure_range(gc, pi))
-		return;
-
-	/* first plot the pressure readings we have from the dive computer */
-	set_source_rgba(gc, 0.2, 1.0, 0.2, 0.80);
-	plot_pressure_helper(gc, pi, SENSOR_PR);
-
-	/* then, in a different color, the interpolated values */
-	set_source_rgba(gc, 1.0, 1.0, 0.2, 0.80);
-	plot_pressure_helper(gc, pi, INTERPOLATED_PR);
 }
 
 static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
@@ -655,8 +704,6 @@ static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 	text_render_options_t tro = {10, 0.2, 1.0, 0.2, xalign, yalign};
 	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
 }
-
-#define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? : INTERPOLATED_PRESSURE(_entry))
 
 static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
 {
@@ -1253,7 +1300,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	plot_temperature_profile(gc, pi);
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure(gc, pi);
+	plot_cylinder_pressure(gc, pi, dive);
 
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
