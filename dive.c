@@ -239,16 +239,26 @@ struct dive *fixup_dive(struct dive *dive)
 	int i;
 	double depthtime = 0;
 	int lasttime = 0;
+	int lastindex = -1;
 	int start = -1, end = -1;
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
-	int lasttemp = 0;
+	int lasttemp = 0, lastpressure = 0;
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
 		int temp = sample->temperature.mkelvin;
+		int pressure = sample->cylinderpressure.mbar;
+		int index = sample->cylinderindex;
+
+		/* Remove duplicate redundant pressure information */
+		if (pressure == lastpressure && index == lastindex)
+			sample->cylinderpressure.mbar = 0;
+
+		lastindex = index;
+		lastpressure = pressure;
 
 		if (lastdepth)
 			end = time;
