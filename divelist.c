@@ -337,7 +337,7 @@ static int calculate_sac(struct dive *dive)
 
 void update_cylinder_related_info(struct dive *dive)
 {
-	if(dive != NULL) {
+	if (dive != NULL) {
 		dive->sac = calculate_sac(dive);
 		dive->otu = calculate_otu(dive);
 	}
