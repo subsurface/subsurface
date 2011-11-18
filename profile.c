@@ -595,36 +595,38 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	return pi->maxpressure != 0;
 }
 
-/* set the color for the pressure plot according to temporary sac rate */
-static void set_sac_color(struct graphics_context *gc, double sac)
+/* set the color for the pressure plot according to temporary sac rate
+ * as compared to avg_sac */
+static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 {
-	if (sac < 9)
-		set_source_rgba(gc, 0.0, 0.4, 0.2, 0.80);
-	else if (sac < 11)
-		set_source_rgba(gc, 0.2, 0.6, 0.2, 0.80);
-	else if (sac < 13)
-		set_source_rgba(gc, 0.4, 0.8, 0.2, 0.80);
-	else if (sac < 15)
-		set_source_rgba(gc, 0.6, 0.8, 0.2, 0.80);
-	else if (sac < 17)
-		set_source_rgba(gc, 0.8, 0.8, 0.2, 0.80);
-	else if (sac < 19)
-		set_source_rgba(gc, 0.8, 0.6, 0.2, 0.80);
-	else if (sac < 21)
-		set_source_rgba(gc, 0.8, 0.4, 0.2, 0.80);
-	else if (sac < 23)
-		set_source_rgba(gc, 0.9, 0.3, 0.2, 0.80);
+	int delta = sac - avg_sac;
+	if (delta < -6000)
+		set_source_rgb(gc, 0.0, 0.4, 0.2);
+	else if (delta < -4000)
+		set_source_rgb(gc, 0.2, 0.6, 0.2);
+	else if (delta < -2000)
+		set_source_rgb(gc, 0.4, 0.8, 0.2);
+	else if (delta < 0)
+		set_source_rgb(gc, 0.6, 0.8, 0.2);
+	else if (delta < 2000)
+		set_source_rgb(gc, 0.8, 0.8, 0.2);
+	else if (delta < 4000)
+		set_source_rgb(gc, 0.8, 0.6, 0.2);
+	else if (delta < 6000)
+		set_source_rgb(gc, 0.8, 0.4, 0.2);
+	else if (delta < 8000)
+		set_source_rgb(gc, 0.9, 0.3, 0.2);
 	else
-		set_source_rgba(gc, 1.0, 0.2, 0.2, 0.80);
+		set_source_rgb(gc, 1.0, 0.2, 0.2);
 }
 
-/* calculate the current SAC in l/min */
-#define GET_LOCAL_SAC(_entry1, _entry2, _dive)					\
+/* calculate the current SAC in ml/min and convert to int */
+#define GET_LOCAL_SAC(_entry1, _entry2, _dive)	(int)				\
 	((GET_PRESSURE((_entry1)) - GET_PRESSURE((_entry2))) *			\
 		(_dive)->cylinder[(_entry1)->cylinderindex].type.size.mliter /	\
 		(((_entry2)->sec - (_entry1)->sec) / 60.0) /			\
 		(1 + ((_entry1)->depth + (_entry2)->depth) / 20000.0) /		\
-		1000000.0)
+		1000.0)
 
 #define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
 
@@ -635,7 +637,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 	int last = -1;
 	int lift_pen = FALSE;
 	int first_plot = TRUE;
-	double sac = 0.0;
+	int sac = 0;
 	struct plot_data *last_entry = NULL;
 
 	if (!get_cylinder_pressure_range(gc, pi))
@@ -672,7 +674,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 			last++;
 			last_entry = pi->entry + last;
 		}
-		set_sac_color(gc, sac);
+		set_sac_color(gc, sac, dive->sac);
 		if (lift_pen) {
 			if (!first_plot && entry->same_cylinder) {
 				/* if we have a previous event from the same tank,
