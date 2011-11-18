@@ -19,10 +19,12 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
-static GtkComboBoxEntry *location, *buddy, *divemaster;
+static GtkEntry *location, *buddy, *divemaster;
 static GtkTextBuffer *notes;
 
-static char *get_text(GtkTextBuffer *buffer)
+#define unused /**/
+
+unused char *get_text(GtkTextBuffer *buffer)
 {
 	GtkTextIter start;
 	GtkTextIter end;
@@ -40,7 +42,7 @@ static int text_changed(const char *old, const char *new)
 		(!old && strcmp("",new)));
 }
 
-static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
+unused char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
 {
 	char *old = *textp;
 	const gchar *new;
@@ -60,6 +62,7 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
 
 void flush_dive_info_changes(struct dive *dive)
 {
+#if 0
 	char *old_text, *new_text;
 	int changed = 0;
 
@@ -93,19 +96,11 @@ void flush_dive_info_changes(struct dive *dive)
 
 	if (changed)
 		mark_divelist_changed(TRUE);
+#endif
 }
 
-static void set_combo_box_entry_text(GtkComboBoxEntry *combo_box, const char *text)
-{
-	GtkEntry *entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
-	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), -1);
-	if (!*text)
-		gtk_entry_set_text(entry, " ");
-	gtk_entry_set_text(entry, text);
-}
-
-#define SET_TEXT_ENTRY(x) \
-	set_combo_box_entry_text(x, dive && dive->x ? dive->x : "")
+#define SET_TEXT_VALUE(x) \
+	gtk_entry_set_text(x, dive && dive->x ? dive->x : "")
 
 void show_dive_info(struct dive *dive)
 {
@@ -133,13 +128,26 @@ void show_dive_info(struct dive *dive)
 		text += 10;     /* Skip the "Dive #0 - " part */
 	gtk_window_set_title(GTK_WINDOW(main_window), text);
 
-	SET_TEXT_ENTRY(divemaster);
-	SET_TEXT_ENTRY(buddy);
-	SET_TEXT_ENTRY(location);
+	SET_TEXT_VALUE(divemaster);
+	SET_TEXT_VALUE(buddy);
+	SET_TEXT_VALUE(location);
 	gtk_text_buffer_set_text(notes, dive && dive->notes ? dive->notes : "", -1);
 }
 
-static GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions)
+static GtkEntry *text_value(GtkWidget *box, const char *label)
+{
+	GtkWidget *widget;
+	GtkWidget *frame = gtk_frame_new(label);
+
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
+	widget = gtk_entry_new();
+	gtk_widget_set_can_focus(widget, FALSE);
+	gtk_editable_set_editable(GTK_EDITABLE(widget), FALSE);
+	gtk_container_add(GTK_CONTAINER(frame), widget);
+	return GTK_ENTRY(widget);
+}
+
+unused GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions)
 {
 	GtkEntry *entry;
 	GtkWidget *combo_box;
@@ -181,7 +189,10 @@ static GtkTextBuffer *text_view(GtkWidget *box, const char *label)
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
 
 	view = gtk_text_view_new();
+	gtk_widget_set_can_focus(view, FALSE);
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD);
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+	gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), view);
 
 	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
@@ -270,13 +281,13 @@ GtkWidget *extended_dive_info_widget(void)
 	location_list = gtk_list_store_new(1, G_TYPE_STRING);
 
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
-	location = text_entry(vbox, "Location", location_list);
+	location = text_value(vbox, "Location");
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	divemaster = text_entry(hbox, "Divemaster", people_list);
-	buddy = text_entry(hbox, "Buddy", people_list);
+	divemaster = text_value(hbox, "Divemaster");
+	buddy = text_value(hbox, "Buddy");
 
 	notes = text_view(vbox, "Notes");
 	return vbox;

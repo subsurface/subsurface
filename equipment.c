@@ -853,6 +853,7 @@ static GtkWidget *cylinder_list_create(void)
 		);
 	cylinder_list.model = model;
 	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+	gtk_widget_set_can_focus(tree_view, FALSE);
 	g_signal_connect(tree_view, "row-activated", G_CALLBACK(row_activated_cb), model);
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
