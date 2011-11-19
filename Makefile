@@ -133,48 +133,48 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
 
 parse-xml.o: parse-xml.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c $(XML2CFLAGS) $(XSLT) parse-xml.c
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) -c parse-xml.c
 
 save-xml.o: save-xml.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c save-xml.c
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c save-xml.c
 
 dive.o: dive.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c dive.c
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c dive.c
 
 main.o: main.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) -c main.c
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) -c main.c
 
 profile.o: profile.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c profile.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c profile.c
 
 info.o: info.c dive.h display.h display-gtk.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c info.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c info.c
 
 equipment.o: equipment.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c equipment.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c equipment.c
 
 statistics.o: statistics.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c statistics.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c statistics.c
 
 divelist.o: divelist.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c divelist.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c divelist.c
 
 print.o: print.c dive.h display.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c print.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c print.c
 
 libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) \
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-c libdivecomputer.c
 
 gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h Makefile
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) \
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-DVERSION_STRING='"v$(VERSION)"' \
 			-c gtk-gui.c
 
-uemis.o: uemis.c uemis.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c uemis.c
+uemis.o: uemis.c dive.h uemis.h
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis.c
 
 clean:
 	rm -f $(OBJS) *~ $(NAME)
