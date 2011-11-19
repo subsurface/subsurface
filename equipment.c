@@ -3,7 +3,6 @@
  * controlled through the following interfaces:
  *
  * void show_dive_equipment(struct dive *dive)
- * void flush_dive_equipment_changes(struct dive *dive)
  *
  * called from gtk-ui:
  * GtkWidget *equipment_widget(void)
@@ -35,9 +34,7 @@ enum {
 static struct {
 	int max_index;
 	GtkListStore *model;
-	GtkWidget *tree_view;
 	GtkWidget *edit, *add, *del;
-	GtkTreeViewColumn *desc, *size, *workp, *startp, *endp, *o2, *he;
 } cylinder_list;
 
 struct cylinder_widget {
@@ -429,11 +426,6 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, start, end, o2);
 }
 
-void flush_dive_equipment_changes(struct dive *dive)
-{
-	/* We do nothing: we require the "Ok" button press */
-}
-
 /*
  * We hardcode the most common standard cylinders,
  * we should pick up any other names from the dive
@@ -667,7 +659,7 @@ static int get_model_index(GtkListStore *model, GtkTreeIter *iter)
 	return index;
 }
 
-static void edit_cb(GtkButton *button, gpointer data)
+static void edit_cb(GtkButton *button, GtkTreeView *tree_view)
 {
 	int index;
 	GtkTreeIter iter;
@@ -675,7 +667,7 @@ static void edit_cb(GtkButton *button, gpointer data)
 	GtkTreeSelection *selection;
 	cylinder_t cyl;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
+	selection = gtk_tree_view_get_selection(tree_view);
 
 	/* Nothing selected? This shouldn't happen, since the button should be inactive */
 	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
@@ -689,7 +681,7 @@ static void edit_cb(GtkButton *button, gpointer data)
 	repaint_dive();
 }
 
-static void add_cb(GtkButton *button, gpointer data)
+static void add_cb(GtkButton *button, GtkTreeView *tree_view)
 {
 	int index = cylinder_list.max_index;
 	GtkTreeIter iter;
@@ -703,14 +695,14 @@ static void add_cb(GtkButton *button, gpointer data)
 	gtk_list_store_append(model, &iter);
 	set_one_cylinder(index, &cyl, model, &iter);
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
+	selection = gtk_tree_view_get_selection(tree_view);
 	gtk_tree_selection_select_iter(selection, &iter);
 
 	cylinder_list.max_index++;
 	gtk_widget_set_sensitive(cylinder_list.add, cylinder_list.max_index < MAX_CYLINDERS);
 }
 
-static void del_cb(GtkButton *button, gpointer data)
+static void del_cb(GtkButton *button, GtkTreeView *tree_view)
 {
 	int index, nr;
 	GtkTreeIter iter;
@@ -719,7 +711,7 @@ static void del_cb(GtkButton *button, gpointer data)
 	struct dive *dive;
 	cylinder_t *cyl;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(cylinder_list.tree_view));
+	selection = gtk_tree_view_get_selection(tree_view);
 
 	/* Nothing selected? This shouldn't happen, since the button should be inactive */
 	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
@@ -833,13 +825,40 @@ static void row_activated_cb(GtkTreeView *tree_view,
 			GtkTreeViewColumn *column,
 			GtkTreeModel *model)
 {
-	edit_cb(NULL, NULL);
+	edit_cb(NULL, tree_view);
+}
+
+GtkWidget *cylinder_list_widget(void)
+{
+	GtkListStore *model = cylinder_list.model;
+	GtkWidget *tree_view;
+	GtkTreeSelection *selection;
+
+	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+	gtk_widget_set_can_focus(tree_view, FALSE);
+
+	g_signal_connect(tree_view, "row-activated", G_CALLBACK(row_activated_cb), model);
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
+	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
+
+	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
+					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
+					  NULL);
+
+	tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
+	tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	return tree_view;
 }
 
 static GtkWidget *cylinder_list_create(void)
 {
-	GtkWidget *tree_view;
-	GtkTreeSelection *selection;
 	GtkListStore *model;
 
 	model = gtk_list_store_new(CYL_COLUMNS,
@@ -852,30 +871,12 @@ static GtkWidget *cylinder_list_create(void)
 		G_TYPE_INT		/* CYL_HE: permille */
 		);
 	cylinder_list.model = model;
-	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
-	g_signal_connect(tree_view, "row-activated", G_CALLBACK(row_activated_cb), model);
-
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
-	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
-	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
-
-	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
-					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
-					  NULL);
-
-	cylinder_list.desc = tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
-	cylinder_list.size = tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.workp = tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.startp = tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.endp = tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.o2 = tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	cylinder_list.he = tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	return tree_view;
+	return cylinder_list_widget();
 }
 
 GtkWidget *equipment_widget(void)
 {
-	GtkWidget *vbox, *hbox, *frame, *framebox;
+	GtkWidget *vbox, *hbox, *frame, *framebox, *tree_view;
 	GtkWidget *add, *del, *edit;
 
 	vbox = gtk_vbox_new(FALSE, 3);
@@ -889,7 +890,7 @@ GtkWidget *equipment_widget(void)
 	 */
 	cylinder_model = create_tank_size_model();
 
-	cylinder_list.tree_view = cylinder_list_create();
+	tree_view = cylinder_list_create();
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
@@ -903,7 +904,7 @@ GtkWidget *equipment_widget(void)
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	gtk_box_pack_start(GTK_BOX(hbox), cylinder_list.tree_view, TRUE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(hbox), tree_view, TRUE, FALSE, 3);
 
 	hbox = gtk_hbox_new(TRUE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
@@ -919,9 +920,9 @@ GtkWidget *equipment_widget(void)
 	cylinder_list.add = add;
 	cylinder_list.del = del;
 
-	g_signal_connect(edit, "clicked", G_CALLBACK(edit_cb), NULL);
-	g_signal_connect(add, "clicked", G_CALLBACK(add_cb), NULL);
-	g_signal_connect(del, "clicked", G_CALLBACK(del_cb), NULL);
+	g_signal_connect(edit, "clicked", G_CALLBACK(edit_cb), tree_view);
+	g_signal_connect(add, "clicked", G_CALLBACK(add_cb), tree_view);
+	g_signal_connect(del, "clicked", G_CALLBACK(del_cb), tree_view);
 
 	return vbox;
 }

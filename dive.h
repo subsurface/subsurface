@@ -259,10 +259,8 @@ extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
 #endif
 
 extern void show_dive_info(struct dive *);
-extern void flush_dive_info_changes(struct dive *);
 
 extern void show_dive_equipment(struct dive *);
-extern void flush_dive_equipment_changes(struct dive *);
 
 extern void show_dive_stats(struct dive *);
 
@@ -304,6 +302,7 @@ extern void add_location(const char *string);
 extern void remember_event(const char *eventname);
 extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 
+extern int edit_dive_info(struct dive *dive);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 

@@ -186,8 +186,6 @@ void update_dive(struct dive *new_dive)
 	struct dive *old_dive = buffered_dive;
 
 	if (old_dive) {
-		flush_dive_info_changes(old_dive);
-		flush_dive_equipment_changes(old_dive);
 		flush_divelist(old_dive);
 	}
 	if (new_dive) {
