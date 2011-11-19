@@ -62,26 +62,30 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
 #define SET_TEXT_VALUE(x) \
 	gtk_entry_set_text(x, dive && dive->x ? dive->x : "")
 
+static int divename(char *buf, size_t size, struct dive *dive)
+{
+	struct tm *tm = gmtime(&dive->when);
+	return snprintf(buf, size, "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
+		dive->number,
+		weekday(tm->tm_wday),
+		tm->tm_mon+1, tm->tm_mday,
+		tm->tm_year+1900,
+		tm->tm_hour, tm->tm_min);
+}
+
 void show_dive_info(struct dive *dive)
 {
-	struct tm *tm;
 	const char *text;
 	char buffer[80];
 
 	/* dive number and location (or lacking that, the date) go in the window title */
-	tm = gmtime(&dive->when);
 	text = dive->location;
 	if (!text)
 		text = "";
 	if (*text) {
 		snprintf(buffer, sizeof(buffer), "Dive #%d - %s", dive->number, text);
 	} else {
-		snprintf(buffer, sizeof(buffer), "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
-			dive->number,
-			weekday(tm->tm_wday),
-			tm->tm_mon+1, tm->tm_mday,
-			tm->tm_year+1900,
-			tm->tm_hour, tm->tm_min);
+		divename(buffer, sizeof(buffer), dive);
 	}
 	text = buffer;
 	if (!dive->number)
@@ -294,7 +298,12 @@ static void save_dive_info_changes(struct dive *dive, struct dive_info *info)
 
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info)
 {
-	GtkWidget *hbox;
+	GtkWidget *hbox, *label;
+	char buffer[80];
+
+	divename(buffer, sizeof(buffer), dive);
+	label = gtk_label_new(buffer);
+	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
 	info->location = text_entry(box, "Location", location_list, dive->location);
 
