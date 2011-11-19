@@ -298,7 +298,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive_info *info)
 
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info)
 {
-	GtkWidget *hbox, *label;
+	GtkWidget *hbox, *label, *cylinder, *frame;
 	char buffer[80];
 
 	divename(buffer, sizeof(buffer), dive);
@@ -316,6 +316,11 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	info->notes = text_view(box, "Notes", READ_WRITE);
 	if (dive->notes && *dive->notes)
 		gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
+
+	frame = gtk_frame_new("Cylinder");
+	cylinder = cylinder_list_widget();
+	gtk_container_add(GTK_CONTAINER(frame), cylinder);
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
 }
 
 int edit_dive_info(struct dive *dive)
