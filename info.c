@@ -95,6 +95,19 @@ void show_dive_info(struct dive *dive)
 		dive && dive->notes ? dive->notes : "", -1);
 }
 
+static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
+{
+	edit_dive_info(current_dive);
+}
+
+static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
+{
+	GtkWidget *item = gtk_menu_item_new_with_label("Edit");
+	g_signal_connect(item, "activate", G_CALLBACK(info_menu_edit_cb), NULL);
+	gtk_widget_show(item); /* Yes, really */
+	gtk_menu_prepend(menu, item);
+}
+
 static GtkEntry *text_value(GtkWidget *box, const char *label)
 {
 	GtkWidget *widget;
@@ -105,6 +118,7 @@ static GtkEntry *text_value(GtkWidget *box, const char *label)
 	gtk_widget_set_can_focus(widget, FALSE);
 	gtk_editable_set_editable(GTK_EDITABLE(widget), FALSE);
 	gtk_container_add(GTK_CONTAINER(frame), widget);
+	g_signal_connect(widget, "populate-popup", G_CALLBACK(populate_popup_cb), NULL);
 	return GTK_ENTRY(widget);
 }
 
@@ -160,6 +174,7 @@ static GtkTextView *text_view(GtkWidget *box, const char *label, enum writable w
 		gtk_widget_set_can_focus(view, FALSE);
 		gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
 		gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
+		g_signal_connect(view, "populate-popup", G_CALLBACK(populate_popup_cb), NULL);
 	}
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), view);
