@@ -669,10 +669,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		if (!last_entry) {
 			last = i;
 			last_entry = entry;
-			if (first_plot) {
-				/* don't start with a sac of 0, so just calculate the first one */
-				sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive);
-			}
+			sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive);
 		} else {
 			int j;
 			sac = 0;
@@ -1144,8 +1141,13 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
 			 * the old tank and the start of the new tank */
-			entry->sec = ev->time.seconds;
-			(entry+1)->sec = ev->time.seconds + 1;
+			if (ev->time.seconds == sample->time.seconds - 1) {
+				entry->sec = ev->time.seconds - 1;
+				(entry+1)->sec = ev->time.seconds;
+			} else {
+				entry->sec = ev->time.seconds;
+				(entry+1)->sec = ev->time.seconds + 1;
+			}
 			/* we need a fake depth - let's interpolate */
 			if (i) {
 				entry->depth = sample->depth.mm -
