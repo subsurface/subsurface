@@ -620,14 +620,13 @@ static const rgb_t sac_color[SAC_COLORS] = {
 static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 {
 	int sac_index = 0;
-	int delta = sac - avg_sac + 6000;
+	int delta = sac - avg_sac + 7000;
 
 	sac_index = delta / 2000;
 	if (sac_index < 0)
 		sac_index = 0;
 	if (sac_index > SAC_COLORS - 1)
 		sac_index = SAC_COLORS - 1;
-
 	set_source_rgb_struct(gc, &sac_color[sac_index]);
 }
 
@@ -1312,12 +1311,12 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	/* Temperature profile */
 	plot_temperature_profile(gc, pi);
 
-	/* Cylinder pressure plot */
-	plot_cylinder_pressure(gc, pi, dive);
-
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
 	plot_events(gc, pi, dive);
+
+	/* Cylinder pressure plot */
+	plot_cylinder_pressure(gc, pi, dive);
 
 	/* Text on top of all graphs.. */
 	plot_temperature_text(gc, pi);
