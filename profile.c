@@ -670,19 +670,19 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 			last = i;
 			last_entry = entry;
 			if (first_plot) {
-				/* don't start with a sac of 0 */
-				int fe = i + 1;
-				struct plot_data *future_entry = pi->entry + fe;
-				while (fe < pi->nr && future_entry->sec - entry->sec < SAC_WINDOW) {
-					fe++;
-					future_entry = pi->entry + fe;
-				}
-				sac = GET_LOCAL_SAC(entry, future_entry, dive);
+				/* don't start with a sac of 0, so just calculate the first one */
+				sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive);
 			}
-		} else if (entry->sec - last_entry->sec >= SAC_WINDOW) {
-			sac = GET_LOCAL_SAC(last_entry, entry, dive);
-			last++;
-			last_entry = pi->entry + last;
+		} else {
+			int j;
+			sac = 0;
+			for (j = last; j < i; j++)
+				sac += GET_LOCAL_SAC(pi->entry + j, pi->entry + j + 1, dive);
+			sac /= (i - last);
+			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
+				last++;
+				last_entry = pi->entry + last;
+			}
 		}
 		set_sac_color(gc, sac, dive->sac);
 		if (lift_pen) {
@@ -998,10 +998,11 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 					list = NULL;
 					continue;
 				}
-				magic = (nlist->end - cur_pr[entry->cylinderindex]) / pt;				}
+				magic = (nlist->end - cur_pr[entry->cylinderindex]) / pt;
+			}
 			if (pt != 0.0) {
 				double cur_pt = (entry->sec - (entry-1)->sec) *
-					(1 + entry->depth / 10000.0);
+					(1 + (entry->depth + (entry-1)->depth) / 20000.0);
 				INTERPOLATED_PRESSURE(entry) =
 					cur_pr[entry->cylinderindex] + cur_pt * magic;
 				cur_pr[entry->cylinderindex] = INTERPOLATED_PRESSURE(entry);
@@ -1217,7 +1218,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		}
 		/* finally, do the discrete integration to get the SAC rate equivalent */
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
-						(1 + entry->depth / 10000.0);
+			(1 + (entry->depth + (entry-1)->depth) / 20000.0);
 		missing_pr |= !SENSOR_PRESSURE(entry);
 	}
 
