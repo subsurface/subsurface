@@ -506,6 +506,20 @@ static void realize_cb(GtkWidget *tree_view, gpointer userdata)
 	gtk_widget_grab_focus(tree_view);
 }
 
+static void row_activated_cb(GtkTreeView *tree_view,
+			GtkTreePath *path,
+			GtkTreeViewColumn *column,
+			GtkTreeModel *model)
+{
+	int index;
+	GtkTreeIter iter;
+
+	if (!gtk_tree_model_get_iter(model, &iter, path))
+		return;
+	gtk_tree_model_get(model, &iter, DIVE_INDEX, &index, -1);
+	edit_dive_info(get_dive(index));
+}
+
 GtkWidget *dive_list_create(void)
 {
 	GtkTreeSelection  *selection;
@@ -551,6 +565,7 @@ GtkWidget *dive_list_create(void)
 					  NULL);
 
 	g_signal_connect_after(dive_list.tree_view, "realize", G_CALLBACK(realize_cb), NULL);
+	g_signal_connect(dive_list.tree_view, "row-activated", G_CALLBACK(row_activated_cb), dive_list.model);
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);

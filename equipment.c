@@ -3,7 +3,6 @@
  * controlled through the following interfaces:
  *
  * void show_dive_equipment(struct dive *dive)
- * void flush_dive_equipment_changes(struct dive *dive)
  *
  * called from gtk-ui:
  * GtkWidget *equipment_widget(void)
@@ -427,11 +426,6 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	else
 		o2 = 0;
 	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, start, end, o2);
-}
-
-void flush_dive_equipment_changes(struct dive *dive)
-{
-	/* We do nothing: we require the "Ok" button press */
 }
 
 /*
