@@ -48,7 +48,7 @@ struct plot_info {
 
 /* convert velocity to colors */
 typedef struct { double r, g, b; } rgb_t;
-static const rgb_t rgb[] = {
+static const rgb_t velocity_color[] = {
 	[STABLE]   = {0.0, 0.4, 0.0},
 	[SLOW]     = {0.4, 0.8, 0.0},
 	[MODERATE] = {0.8, 0.8, 0.0},
@@ -87,6 +87,11 @@ static void set_source_rgba(struct graphics_context *gc, double r, double g, dou
 			r = g = b = 1;
 	}
 	cairo_set_source_rgba(gc->cr, r, g, b, a);
+}
+
+static void set_source_rgb_struct(struct graphics_context *gc, const rgb_t *rgb)
+{
+	set_source_rgba(gc, rgb->r, rgb->g, rgb->b, 1);
 }
 
 void set_source_rgb(struct graphics_context *gc, double r, double g, double b)
@@ -476,9 +481,8 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		/* we want to draw the segments in different colors
 		 * representing the vertical velocity, so we need to
 		 * chop this into short segments */
-		rgb_t color = rgb[entry->velocity];
 		depth = entry->depth;
-		set_source_rgb(gc, color.r, color.g, color.b);
+		set_source_rgb_struct(gc, &velocity_color[entry->velocity]);
 		move_to(gc, entry[-1].sec, entry[-1].depth);
 		line_to(gc, sec, depth);
 		cairo_stroke(cr);
@@ -595,29 +599,36 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	return pi->maxpressure != 0;
 }
 
+#define SAC_COLORS 9
+static const rgb_t sac_color[SAC_COLORS] = {
+	{ 0.0, 0.4, 0.2},
+	{ 0.2, 0.6, 0.2},
+	{ 0.4, 0.8, 0.2},
+	{ 0.6, 0.8, 0.2},
+	{ 0.8, 0.8, 0.2},
+	{ 0.8, 0.6, 0.2},
+	{ 0.8, 0.4, 0.2},
+	{ 0.9, 0.3, 0.2},
+	{ 1.0, 0.2, 0.2},
+};
+
 /* set the color for the pressure plot according to temporary sac rate
- * as compared to avg_sac */
+ * as compared to avg_sac; the calculation simply maps the delta between
+ * sac and avg_sac to indexes 0 .. (SAC_COLORS - 1) with everything
+ * more than 6000 ml/min below avg_sac mapped to 0 */
+
 static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 {
-	int delta = sac - avg_sac;
-	if (delta < -6000)
-		set_source_rgb(gc, 0.0, 0.4, 0.2);
-	else if (delta < -4000)
-		set_source_rgb(gc, 0.2, 0.6, 0.2);
-	else if (delta < -2000)
-		set_source_rgb(gc, 0.4, 0.8, 0.2);
-	else if (delta < 0)
-		set_source_rgb(gc, 0.6, 0.8, 0.2);
-	else if (delta < 2000)
-		set_source_rgb(gc, 0.8, 0.8, 0.2);
-	else if (delta < 4000)
-		set_source_rgb(gc, 0.8, 0.6, 0.2);
-	else if (delta < 6000)
-		set_source_rgb(gc, 0.8, 0.4, 0.2);
-	else if (delta < 8000)
-		set_source_rgb(gc, 0.9, 0.3, 0.2);
-	else
-		set_source_rgb(gc, 1.0, 0.2, 0.2);
+	int sac_index = 0;
+	int delta = sac - avg_sac + 6000;
+
+	sac_index = delta / 2000;
+	if (sac_index < 0)
+		sac_index = 0;
+	if (sac_index > SAC_COLORS - 1)
+		sac_index = SAC_COLORS - 1;
+
+	set_source_rgb_struct(gc, &sac_color[sac_index]);
 }
 
 /* calculate the current SAC in ml/min and convert to int */
