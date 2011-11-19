@@ -236,7 +236,7 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
 
 struct dive *fixup_dive(struct dive *dive)
 {
-	int i;
+	int i,j;
 	double depthtime = 0;
 	int lasttime = 0;
 	int lastindex = -1;
@@ -244,6 +244,7 @@ struct dive *fixup_dive(struct dive *dive)
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
+	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
 
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -253,10 +254,25 @@ struct dive *fixup_dive(struct dive *dive)
 		int pressure = sample->cylinderpressure.mbar;
 		int index = sample->cylinderindex;
 
-		/* Remove duplicate redundant pressure information */
-		if (pressure == lastpressure && index == lastindex)
-			sample->cylinderpressure.mbar = 0;
-
+		if (index == lastindex) {
+			/* Remove duplicate redundant pressure information */
+			if (pressure == lastpressure)
+				sample->cylinderpressure.mbar = 0;
+			/* check for simply linear data in the samples
+			   +INT_MAX means uninitialized, -INT_MAX means not linear */
+			if (pressure_delta[index] != -INT_MAX && lastpressure) {
+				if (pressure_delta[index] == INT_MAX) {
+					pressure_delta[index] = abs(pressure - lastpressure);
+				} else {
+					int cur_delta = abs(pressure - lastpressure);
+					if (cur_delta && abs(cur_delta - pressure_delta[index]) > 150) {
+						/* ok the samples aren't just a linearisation
+						 * between start and end */
+						pressure_delta[index] = -INT_MAX;
+					}
+				}
+			}
+		}
 		lastindex = index;
 		lastpressure = pressure;
 
@@ -289,6 +305,33 @@ struct dive *fixup_dive(struct dive *dive)
 		depthtime += (time - lasttime) * (lastdepth + depth) / 2;
 		lastdepth = depth;
 		lasttime = time;
+	}
+	/* if all the samples for a cylinder have pressure data that
+	 * is basically equidistant throw out the sample cylinder pressure
+	 * information but make sure we still have a valid start and end
+	 * pressure
+	 * this happens when DivingLog decides to linearalize the
+	 * pressure between beginning and end and for strange reasons
+	 * decides to put that in the sample data as if it came from
+	 * the dive computer; we don't want that (we'll visualize with
+	 * constant SAC rate instead)
+	 * WARNING WARNING - I have only seen this in single tank dives
+	 * --- maybe I should try to create a multi tank dive and see what
+	 * --- divinglog does there - but the code right now is only tested
+	 * --- for the single tank case */
+	for (j = 0; j < MAX_CYLINDERS; j++) {
+		if (abs(pressure_delta[j]) != INT_MAX) {
+			cylinder_t *cyl = dive->cylinder + j;
+			for (i = 0; i < dive->samples; i++)
+				if (dive->sample[i].cylinderindex == j)
+					dive->sample[i].cylinderpressure.mbar = 0;
+			if (! cyl->start.mbar)
+				cyl->start.mbar = cyl->sample_start.mbar;
+			if (! cyl->end.mbar)
+				cyl->end.mbar = cyl->sample_end.mbar;
+			cyl->sample_start.mbar = 0;
+			cyl->sample_end.mbar = 0;
+		}
 	}
 	if (end < 0)
 		return dive;
