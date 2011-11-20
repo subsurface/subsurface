@@ -1001,7 +1001,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 				double cur_pt = (entry->sec - (entry-1)->sec) *
 					(1 + (entry->depth + (entry-1)->depth) / 20000.0);
 				INTERPOLATED_PRESSURE(entry) =
-					cur_pr[entry->cylinderindex] + cur_pt * magic;
+					cur_pr[entry->cylinderindex] + cur_pt * magic + 0.5;
 				cur_pr[entry->cylinderindex] = INTERPOLATED_PRESSURE(entry);
 			} else
 				INTERPOLATED_PRESSURE(entry) = cur_pr[entry->cylinderindex];
