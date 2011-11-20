@@ -714,7 +714,7 @@ static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
 }
 
-static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
+static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
 	int mbar, cyl;
@@ -760,10 +760,7 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
-			if (dive->cylinder[cyl].end.mbar)
-				plot_pressure_value(gc, dive->cylinder[cyl].end.mbar, last_time[cyl], CENTER, TOP);
-			else
-				plot_pressure_value(gc, last_pressure[cyl], last_time[cyl], CENTER, TOP);
+			plot_pressure_value(gc, last_pressure[cyl], last_time[cyl], CENTER, TOP);
 		}
 	}
 }
@@ -1327,7 +1324,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	/* Text on top of all graphs.. */
 	plot_temperature_text(gc, pi);
 	plot_depth_text(gc, pi);
-	plot_cylinder_pressure_text(gc, pi, dive);
+	plot_cylinder_pressure_text(gc, pi);
 
 	/* Bounding box last */
 	gc->leftx = 0; gc->rightx = 1.0;
