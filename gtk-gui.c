@@ -749,6 +749,7 @@ void init_ui(int *argcp, char ***argvp)
 	GtkWidget *stats;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
+	GtkWidget *hpane, *vpane;
 	GdkScreen *screen;
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
@@ -845,9 +846,15 @@ void init_ui(int *argcp, char ***argvp)
 	menubar = get_menubar_menu(win);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 
+	vpane = gtk_vpaned_new();
+	gtk_box_pack_start(GTK_BOX(vbox), vpane, TRUE, TRUE, 3);
+
+	hpane = gtk_hpaned_new();
+	gtk_paned_add1(GTK_PANED(vpane), hpane);
+
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
+	gtk_paned_add1(GTK_PANED(hpane), notebook);
 	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
 	g_signal_connect(notebook, "create-window", G_CALLBACK(create_new_notebook_window), NULL);
 	gtk_drag_dest_set(notebook, GTK_DEST_DEFAULT_ALL, &notebook_target, 1, GDK_ACTION_MOVE);
@@ -857,16 +864,12 @@ void init_ui(int *argcp, char ***argvp)
 	/* Create the actual divelist */
 	dive_list = dive_list_create();
 	gtk_widget_set_name(dive_list, "Dive List");
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_list, gtk_label_new("Dive List"));
-	gtk_notebook_set_tab_detachable(GTK_NOTEBOOK(notebook), dive_list, 1);
-	gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(notebook), dive_list, 1);
+	gtk_paned_add2(GTK_PANED(vpane), dive_list);
 
 	/* Frame for dive profile */
 	dive_profile = dive_profile_widget();
 	gtk_widget_set_name(dive_profile, "Dive Profile");
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_profile, gtk_label_new("Dive Profile"));
-	gtk_notebook_set_tab_detachable(GTK_NOTEBOOK(notebook), dive_profile, 1);
-	gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(notebook), dive_profile, 1);
+	gtk_paned_add2(GTK_PANED(hpane), dive_profile);
 
 	/* Frame for extended dive info */
 	dive_info = extended_dive_info_widget();
