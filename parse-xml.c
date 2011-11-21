@@ -110,7 +110,6 @@ static int cylinder_index;
 static enum import_source {
 	UNKNOWN,
 	LIBDIVECOMPUTER,
-	SUUNTO,
 	UEMIS,
 	DIVINGLOG,
 	UDDF,
@@ -644,26 +643,6 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	nonmatch("sample", name, buf);
 }
 
-/*
- * Crazy suunto xml. Look at how those o2/he things match up.
- */
-static int suunto_dive_match(struct dive **divep, const char *name, int len, char *buf)
-{
-	struct dive *dive = *divep;
-
-	return	MATCH(".o2pct", percent, &dive->cylinder[0].gasmix.o2) ||
-		MATCH(".hepct_0", percent, &dive->cylinder[0].gasmix.he) ||
-		MATCH(".o2pct_2", percent, &dive->cylinder[1].gasmix.o2) ||
-		MATCH(".hepct_1", percent, &dive->cylinder[1].gasmix.he) ||
-		MATCH(".o2pct_3", percent, &dive->cylinder[2].gasmix.o2) ||
-		MATCH(".hepct_2", percent, &dive->cylinder[2].gasmix.he) ||
-		MATCH(".o2pct_4", percent, &dive->cylinder[3].gasmix.o2) ||
-		MATCH(".hepct_3", percent, &dive->cylinder[3].gasmix.he) ||
-		MATCH(".cylindersize", cylindersize, &dive->cylinder[0].type.size) ||
-		MATCH(".cylinderworkpressure", pressure, &dive->cylinder[0].type.workingpressure) ||
-		0;
-}
-
 static const char *country, *city;
 
 static void divinglog_place(char *place, void *_location)
@@ -978,11 +957,6 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 	start_match("dive", name, buf);
 
 	switch (import_source) {
-	case SUUNTO:
-		if (suunto_dive_match(divep, name, len, buf))
-			return;
-		break;
-
 	case UEMIS:
 		if (uemis_dive_match(divep, name, len, buf))
 			return;
@@ -1180,7 +1154,7 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 	if (!type->size.mliter)
 		return;
 
-	if (input_units.volume == CUFT || import_source == SUUNTO) {
+	if (input_units.volume == CUFT) {
 		/* confusing - we don't really start from ml but millicuft !*/
 		volume_of_air = cuft_to_l(type->size.mliter);
 		atm = to_ATM(type->workingpressure);		/* working pressure in atm */
@@ -1348,12 +1322,6 @@ static void visit(xmlNode *n)
 	traverse(n->children);
 }
 
-static void suunto_importer(void)
-{
-	import_source = SUUNTO;
-	input_units = SI_units;
-}
-
 static void uemis_importer(void)
 {
 	import_source = UEMIS;
@@ -1405,7 +1373,6 @@ static struct nesting {
 	{ "P", sample_start, sample_end },
 
 	/* Import type recognition */
-	{ "SUUNTO", suunto_importer },
 	{ "Divinglog", DivingLog_importer },
 	{ "pre_dive", uemis_importer },
 	{ "dives", uemis_importer },
