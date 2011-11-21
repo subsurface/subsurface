@@ -320,6 +320,7 @@ static double calculate_airuse(struct dive *dive)
 static int calculate_sac(struct dive *dive)
 {
 	double airuse, pressure, sac;
+	int duration, i;
 
 	airuse = calculate_airuse(dive);
 	if (!airuse)
@@ -327,9 +328,25 @@ static int calculate_sac(struct dive *dive)
 	if (!dive->duration.seconds)
 		return 0;
 
+	/* find and eliminate long surface intervals */
+	duration = dive->duration.seconds;
+	for (i = 0; i < dive->samples; i++) {
+		if (dive->sample[i].depth.mm < 100) { /* less than 10cm */
+			int end = i + 1;
+			while (end < dive->samples && dive->sample[end].depth.mm < 100)
+				end++;
+			/* we only want the actual surface time during a dive */
+			if (end < dive->samples) {
+				end--;
+				duration -= dive->sample[end].time.seconds -
+						dive->sample[i].time.seconds;
+				i = end + 1;
+			}
+		}
+	}
 	/* Mean pressure in atm: 1 atm per 10m */
 	pressure = 1 + (dive->meandepth.mm / 10000.0);
-	sac = airuse / pressure * 60 / dive->duration.seconds;
+	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
 	return sac * 1000;
