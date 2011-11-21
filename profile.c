@@ -946,6 +946,21 @@ static void list_free(pr_track_t *list)
 	free(list);
 }
 
+static void dump_pr_track(pr_track_t **track_pr)
+{
+	int cyl;
+	pr_track_t *list;
+
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		list = track_pr[cyl];
+		while (list) {
+			printf("cyl%d: start %d end %d t_start %d t_end %d pt %6.3f\n", cyl,
+				list->start, list->end, list->t_start, list->t_end, list->pressure_time);
+			list = list->next;
+		}
+	}
+}
+
 static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 					pr_track_t **track_pr)
 {
@@ -956,6 +971,10 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	struct plot_data *entry;
 	int cur_pr[MAX_CYLINDERS];
 
+	if (0) {
+		/* another great debugging tool */
+		dump_pr_track(track_pr);
+	}
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
