@@ -8,10 +8,13 @@
 #include <stdlib.h>
 #include <time.h>
 
-#ifndef WIN32
+#if defined __linux__
 #include <gconf/gconf-client.h>
-#else
+#elif defined WIN32
 #include <windows.h>
+#elif defined __APPLE__
+#include <CoreFoundation/CoreFoundation.h>
+static CFURLRef fileURL;
 #endif
 
 #include "dive.h"
@@ -30,7 +33,7 @@ int        error_count;
 #define DIVELIST_DEFAULT_FONT "Sans 8"
 const char *divelist_font;
 
-#ifndef WIN32
+#ifdef __linux__
 GConfClient *gconf;
 #define GCONF_NAME(x) "/apps/subsurface/" #x
 #endif
@@ -406,7 +409,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		update_dive_list_units();
 		repaint_dive();
 		update_dive_list_col_visibility();
-#ifndef WIN32
+#ifdef __linux__
 		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
@@ -417,7 +420,36 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		gconf_client_set_bool(gconf, GCONF_NAME(SAC), visible_cols.sac, NULL);
 		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
 		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
-#else
+#elif defined __APPLE__
+#define STRING_BOOL(_cond) (_cond) ? CFSTR("1") : CFSTR("0")
+
+		CFPropertyListRef propertyList;
+		CFMutableDictionaryRef dict;
+		CFDataRef xmlData;
+		CFStringRef cf_divelist_font;
+		Boolean status;
+		SInt32 errorCode;
+
+		dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks,
+						&kCFTypeDictionaryValueCallBacks);
+		CFDictionarySetValue(dict, CFSTR("feet"), STRING_BOOL(output_units.length == FEET));
+		CFDictionarySetValue(dict, CFSTR("psi"), STRING_BOOL(output_units.pressure == PSI));
+		CFDictionarySetValue(dict, CFSTR("cuft"), STRING_BOOL(output_units.volume == CUFT));
+		CFDictionarySetValue(dict, CFSTR("fahrenheit"), STRING_BOOL(output_units.temperature == FAHRENHEIT));
+		CFDictionarySetValue(dict, CFSTR("TEMPERATURE"), STRING_BOOL(visible_cols.temperature));
+		CFDictionarySetValue(dict, CFSTR("CYLINDER"), STRING_BOOL(visible_cols.cylinder));
+		CFDictionarySetValue(dict, CFSTR("NITROX"), STRING_BOOL(visible_cols.nitrox));
+		CFDictionarySetValue(dict, CFSTR("SAC"), STRING_BOOL(visible_cols.sac));
+		CFDictionarySetValue(dict, CFSTR("OTU"), STRING_BOOL(visible_cols.otu));
+		cf_divelist_font = CFStringCreateWithCString(kCFAllocatorDefault, divelist_font, 1);
+		CFDictionarySetValue(dict, CFSTR("divelist_font"), cf_divelist_font);
+		propertyList = dict;
+		xmlData = CFPropertyListCreateXMLData(kCFAllocatorDefault, propertyList);
+		status = CFURLWriteDataAndPropertiesToResource (fileURL, xmlData, NULL, &errorCode);
+		// some error handling
+		CFRelease(xmlData);
+		CFRelease(propertyList);
+#elif defined WIN32
 		HKEY hkey;
 		LONG success = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
 					0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
@@ -552,9 +584,9 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	GdkPixbuf *logo = NULL;
 
 	if (need_icon) {
-#ifndef WIN32
+#if defined __linux__ || defined __APPLE__
 		GtkWidget *image = gtk_image_new_from_file("subsurface.svg");
-#else
+#elif defined WIN32
 		GtkWidget *image = gtk_image_new_from_file("subsurface.ico");
 #endif
 
@@ -724,7 +756,7 @@ static gboolean drag_cb(GtkWidget *widget, GdkDragContext *context,
 	return TRUE;
 }
 
-#ifdef WIN32
+#if defined WIN32
 static int get_from_registry(HKEY hkey, const char *key)
 {
 	DWORD value;
@@ -763,7 +795,7 @@ void init_ui(int *argcp, char ***argvp)
 
 	g_type_init();
 
-#ifndef WIN32
+#ifdef __linux__
 	gconf = gconf_client_get_default();
 
 	if (gconf_client_get_bool(gconf, GCONF_NAME(feet), NULL))
@@ -782,7 +814,7 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.sac = gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
 		
 	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
-#else
+#elif defined WIN32
 	DWORD len = 4;
 	LONG success;
 	HKEY hkey;
@@ -810,7 +842,38 @@ void init_ui(int *argcp, char ***argvp)
 		divelist_font = NULL;
 	}
 	RegCloseKey(hkey);
+#elif defined __APPLE__
+#define BOOL_FROM_CFSTRING(_pl,_key) \
+	strcmp("0", CFStringGetCStringPtr(CFDictionaryGetValue(_pl, CFSTR(_key)), 0) ? : "")
 
+	CFPropertyListRef propertyList;
+	CFStringRef errorString;
+	CFDataRef resourceData;
+	Boolean status;
+	SInt32 errorCode;
+
+	fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
+						CFSTR("subsurface.pref"),// file path name
+						kCFURLPOSIXPathStyle,    // interpret as POSIX path
+						false );                 // is it a directory?
+
+	status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault,
+							fileURL, &resourceData,
+							NULL, NULL, &errorCode);
+	propertyList = CFPropertyListCreateFromXMLData(kCFAllocatorDefault,
+						resourceData, kCFPropertyListImmutable,
+						&errorString);
+	CFRelease(resourceData);
+	output_units.length = BOOL_FROM_CFSTRING(propertyList, "feet") ? FEET : METERS;
+	output_units.pressure = BOOL_FROM_CFSTRING(propertyList, "psi") ? PSI : BAR;
+	output_units.volume = BOOL_FROM_CFSTRING(propertyList, "cuft") ? CUFT : LITER;
+	output_units.temperature = BOOL_FROM_CFSTRING(propertyList, "fahrenheit") ? FAHRENHEIT : CELSIUS;
+	visible_cols.temperature = BOOL_FROM_CFSTRING(propertyList, "TEMPERATURE");
+	visible_cols.cylinder = BOOL_FROM_CFSTRING(propertyList, "CYLINDER");
+	visible_cols.nitrox = BOOL_FROM_CFSTRING(propertyList, "NITROX");
+	visible_cols.sac = BOOL_FROM_CFSTRING(propertyList, "SAC");
+	visible_cols.otu = BOOL_FROM_CFSTRING(propertyList, "OTU");
+	CFRelease(propertyList);
 #endif
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
@@ -830,9 +893,9 @@ void init_ui(int *argcp, char ***argvp)
 		}
 	}
 	if (need_icon)
-#ifndef WIN32
+#if defined __linux__ || defined __APPLE__
 		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.svg", NULL);
-#else
+#elif defined WIN32
 		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.ico", NULL);
 #endif
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
