@@ -622,12 +622,16 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 	int sac_index = 0;
 	int delta = sac - avg_sac + 7000;
 
-	sac_index = delta / 2000;
-	if (sac_index < 0)
-		sac_index = 0;
-	if (sac_index > SAC_COLORS - 1)
-		sac_index = SAC_COLORS - 1;
-	set_source_rgb_struct(gc, &sac_color[sac_index]);
+	if (!gc->printer) {
+		sac_index = delta / 2000;
+		if (sac_index < 0)
+			sac_index = 0;
+		if (sac_index > SAC_COLORS - 1)
+			sac_index = SAC_COLORS - 1;
+		set_source_rgb_struct(gc, &sac_color[sac_index]);
+	} else {
+		set_source_rgb(gc, 1.0, 1.0, 1.0);
+	}
 }
 
 /* calculate the current SAC in ml/min and convert to int */
@@ -946,6 +950,21 @@ static void list_free(pr_track_t *list)
 	free(list);
 }
 
+static void dump_pr_track(pr_track_t **track_pr)
+{
+	int cyl;
+	pr_track_t *list;
+
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		list = track_pr[cyl];
+		while (list) {
+			printf("cyl%d: start %d end %d t_start %d t_end %d pt %6.3f\n", cyl,
+				list->start, list->end, list->t_start, list->t_end, list->pressure_time);
+			list = list->next;
+		}
+	}
+}
+
 static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 					pr_track_t **track_pr)
 {
@@ -956,6 +975,10 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	struct plot_data *entry;
 	int cur_pr[MAX_CYLINDERS];
 
+	if (0) {
+		/* another great debugging tool */
+		dump_pr_track(track_pr);
+	}
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
