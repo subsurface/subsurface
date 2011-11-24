@@ -8,15 +8,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#if defined __linux__
-#include <gconf/gconf-client.h>
-#elif defined WIN32
-#include <windows.h>
-#elif defined __APPLE__
-#include <CoreFoundation/CoreFoundation.h>
-static CFURLRef fileURL;
-#endif
-
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
@@ -32,11 +23,6 @@ int        error_count;
 
 #define DIVELIST_DEFAULT_FONT "Sans 8"
 const char *divelist_font;
-
-#ifdef __linux__
-GConfClient *gconf;
-#define GCONF_NAME(x) "/apps/subsurface/" #x
-#endif
 
 struct units output_units;
 
@@ -409,74 +395,18 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		update_dive_list_units();
 		repaint_dive();
 		update_dive_list_col_visibility();
-#ifdef __linux__
-		gconf_client_set_bool(gconf, GCONF_NAME(feet), output_units.length == FEET, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(psi), output_units.pressure == PSI, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(cuft), output_units.volume == CUFT, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(fahrenheit), output_units.temperature == FAHRENHEIT, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(TEMPERATURE), visible_cols.temperature, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(CYLINDER), visible_cols.cylinder, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(NITROX), visible_cols.nitrox, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(SAC), visible_cols.sac, NULL);
-		gconf_client_set_bool(gconf, GCONF_NAME(OTU), visible_cols.otu, NULL);
-		gconf_client_set_string(gconf, GCONF_NAME(divelist_font), divelist_font, NULL);
-#elif defined __APPLE__
-#define STRING_BOOL(_cond) (_cond) ? CFSTR("1") : CFSTR("0")
 
-		CFPropertyListRef propertyList;
-		CFMutableDictionaryRef dict;
-		CFDataRef xmlData;
-		CFStringRef cf_divelist_font;
-		Boolean status;
-		SInt32 errorCode;
-
-		dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks,
-						&kCFTypeDictionaryValueCallBacks);
-		CFDictionarySetValue(dict, CFSTR("feet"), STRING_BOOL(output_units.length == FEET));
-		CFDictionarySetValue(dict, CFSTR("psi"), STRING_BOOL(output_units.pressure == PSI));
-		CFDictionarySetValue(dict, CFSTR("cuft"), STRING_BOOL(output_units.volume == CUFT));
-		CFDictionarySetValue(dict, CFSTR("fahrenheit"), STRING_BOOL(output_units.temperature == FAHRENHEIT));
-		CFDictionarySetValue(dict, CFSTR("TEMPERATURE"), STRING_BOOL(visible_cols.temperature));
-		CFDictionarySetValue(dict, CFSTR("CYLINDER"), STRING_BOOL(visible_cols.cylinder));
-		CFDictionarySetValue(dict, CFSTR("NITROX"), STRING_BOOL(visible_cols.nitrox));
-		CFDictionarySetValue(dict, CFSTR("SAC"), STRING_BOOL(visible_cols.sac));
-		CFDictionarySetValue(dict, CFSTR("OTU"), STRING_BOOL(visible_cols.otu));
-		cf_divelist_font = CFStringCreateWithCString(kCFAllocatorDefault, divelist_font, 1);
-		CFDictionarySetValue(dict, CFSTR("divelist_font"), cf_divelist_font);
-		propertyList = dict;
-		xmlData = CFPropertyListCreateXMLData(kCFAllocatorDefault, propertyList);
-		status = CFURLWriteDataAndPropertiesToResource (fileURL, xmlData, NULL, &errorCode);
-		// some error handling
-		CFRelease(xmlData);
-		CFRelease(propertyList);
-#elif defined WIN32
-		HKEY hkey;
-		LONG success = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
-					0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
-					NULL, &hkey, NULL);
-		if (success != ERROR_SUCCESS)
-			printf("CreateKey Software\\subsurface failed %ld\n", success);
-		DWORD value;
-
-#define StoreInReg(_key, _val) { \
-			value = (_val) ;				\
-			RegSetValueEx(hkey, TEXT(_key), 0, REG_DWORD, &value, 4); \
-		}
-
-		StoreInReg("feet", output_units.length == FEET);
-		StoreInReg("psi",  output_units.pressure == PSI);
-		StoreInReg("cuft", output_units.volume == CUFT);
-		StoreInReg("fahrenheit", output_units.temperature == FAHRENHEIT);
-		StoreInReg("temperature", visible_cols.temperature);
-		StoreInReg("cylinder", visible_cols.cylinder);
-		StoreInReg("nitrox", visible_cols.nitrox);
-		StoreInReg("sac", visible_cols.sac);
-		StoreInReg("otu", visible_cols.otu);
-		RegSetValueEx(hkey, TEXT("divelist_font"), 0, REG_SZ, divelist_font, strlen(divelist_font));
-		if (RegFlushKey(hkey) != ERROR_SUCCESS)
-			printf("RegFlushKey failed %ld\n");
-		RegCloseKey(hkey);
-#endif
+		subsurface_set_conf("feet", PREF_BOOL, BOOL_TO_PTR(output_units.length == FEET));
+		subsurface_set_conf("psi", PREF_BOOL, BOOL_TO_PTR(output_units.pressure == PSI));
+		subsurface_set_conf("cuft", PREF_BOOL, BOOL_TO_PTR(output_units.volume == CUFT));
+		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(output_units.temperature == FAHRENHEIT));
+		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(visible_cols.temperature));
+		subsurface_set_conf("CYLINDER", PREF_BOOL, BOOL_TO_PTR(visible_cols.cylinder));
+		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(visible_cols.nitrox));
+		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
+		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
+		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
+		subsurface_close_conf();
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -756,21 +686,6 @@ static gboolean drag_cb(GtkWidget *widget, GdkDragContext *context,
 	return TRUE;
 }
 
-#if defined WIN32
-static int get_from_registry(HKEY hkey, const char *key)
-{
-	DWORD value;
-	DWORD len = 4;
-	LONG success;
-
-	success = RegQueryValueEx(hkey, TEXT(key), NULL, NULL,
-				(LPBYTE) &value, &len );
-	if (success != ERROR_SUCCESS)
-		return FALSE; /* that's what happens the first time we start */
-	return value;
-}
-#endif
-
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -795,86 +710,24 @@ void init_ui(int *argcp, char ***argvp)
 
 	g_type_init();
 
-#ifdef __linux__
-	gconf = gconf_client_get_default();
-
-	if (gconf_client_get_bool(gconf, GCONF_NAME(feet), NULL))
+	subsurface_open_conf();
+	if (subsurface_get_conf("feet", PREF_BOOL))
 		output_units.length = FEET;
-	if (gconf_client_get_bool(gconf, GCONF_NAME(psi), NULL))
+	if (subsurface_get_conf("psi", PREF_BOOL))
 		output_units.pressure = PSI;
-	if (gconf_client_get_bool(gconf, GCONF_NAME(cuft), NULL))
+	if (subsurface_get_conf("cuft", PREF_BOOL))
 		output_units.volume = CUFT;
-	if (gconf_client_get_bool(gconf, GCONF_NAME(fahrenheit), NULL))
+	if (subsurface_get_conf("fahrenheit", PREF_BOOL))
 		output_units.temperature = FAHRENHEIT;
 	/* an unset key is FALSE - all these are hidden by default */
-	visible_cols.cylinder = gconf_client_get_bool(gconf, GCONF_NAME(CYLINDER), NULL);
-	visible_cols.temperature = gconf_client_get_bool(gconf, GCONF_NAME(TEMPERATURE), NULL);
-	visible_cols.nitrox = gconf_client_get_bool(gconf, GCONF_NAME(NITROX), NULL);
-	visible_cols.otu = gconf_client_get_bool(gconf, GCONF_NAME(OTU), NULL);
-	visible_cols.sac = gconf_client_get_bool(gconf, GCONF_NAME(SAC), NULL);
-		
-	divelist_font = gconf_client_get_string(gconf, GCONF_NAME(divelist_font), NULL);
-#elif defined WIN32
-	DWORD len = 4;
-	LONG success;
-	HKEY hkey;
+	visible_cols.cylinder = PTR_TO_BOOL(subsurface_get_conf("CYLINDER", PREF_BOOL));
+	visible_cols.temperature = PTR_TO_BOOL(subsurface_get_conf("TEMPERATURE", PREF_BOOL));
+	visible_cols.nitrox = PTR_TO_BOOL(subsurface_get_conf("NITROX", PREF_BOOL));
+	visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
+	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
-	success = RegOpenKeyEx(	HKEY_CURRENT_USER, TEXT("Software\\subsurface"), 0,
-			KEY_QUERY_VALUE, &hkey);
+	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
-	output_units.length = get_from_registry(hkey, "feet");
-	output_units.pressure = get_from_registry(hkey, "psi");
-	output_units.volume = get_from_registry(hkey, "cuft");
-	output_units.temperature = get_from_registry(hkey, "fahrenheit");
-	visible_cols.temperature = get_from_registry(hkey, "temperature");
-	visible_cols.cylinder = get_from_registry(hkey, "cylinder");
-	visible_cols.nitrox = get_from_registry(hkey, "nitrox");
-	visible_cols.sac = get_from_registry(hkey, "sac");
-	visible_cols.otu = get_from_registry(hkey, "otu");
-
-	divelist_font = malloc(80);
-	len = 80;
-	success = RegQueryValueEx(hkey, TEXT("divelist_font"), NULL, NULL,
-				(LPBYTE) divelist_font, &len );
-	if (success != ERROR_SUCCESS) {
-		/* that's what happens the first time we start - just use the default */
-		free(divelist_font);
-		divelist_font = NULL;
-	}
-	RegCloseKey(hkey);
-#elif defined __APPLE__
-#define BOOL_FROM_CFSTRING(_pl,_key) \
-	strcmp("0", CFStringGetCStringPtr(CFDictionaryGetValue(_pl, CFSTR(_key)), 0) ? : "")
-
-	CFPropertyListRef propertyList;
-	CFStringRef errorString;
-	CFDataRef resourceData;
-	Boolean status;
-	SInt32 errorCode;
-
-	fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
-						CFSTR("subsurface.pref"),// file path name
-						kCFURLPOSIXPathStyle,    // interpret as POSIX path
-						false );                 // is it a directory?
-
-	status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault,
-							fileURL, &resourceData,
-							NULL, NULL, &errorCode);
-	propertyList = CFPropertyListCreateFromXMLData(kCFAllocatorDefault,
-						resourceData, kCFPropertyListImmutable,
-						&errorString);
-	CFRelease(resourceData);
-	output_units.length = BOOL_FROM_CFSTRING(propertyList, "feet") ? FEET : METERS;
-	output_units.pressure = BOOL_FROM_CFSTRING(propertyList, "psi") ? PSI : BAR;
-	output_units.volume = BOOL_FROM_CFSTRING(propertyList, "cuft") ? CUFT : LITER;
-	output_units.temperature = BOOL_FROM_CFSTRING(propertyList, "fahrenheit") ? FAHRENHEIT : CELSIUS;
-	visible_cols.temperature = BOOL_FROM_CFSTRING(propertyList, "TEMPERATURE");
-	visible_cols.cylinder = BOOL_FROM_CFSTRING(propertyList, "CYLINDER");
-	visible_cols.nitrox = BOOL_FROM_CFSTRING(propertyList, "NITROX");
-	visible_cols.sac = BOOL_FROM_CFSTRING(propertyList, "SAC");
-	visible_cols.otu = BOOL_FROM_CFSTRING(propertyList, "OTU");
-	CFRelease(propertyList);
-#endif
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;
 
