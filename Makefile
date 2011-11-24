@@ -80,11 +80,39 @@ LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0 gconf-2.0)
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
+LIBXML2 = $(shell $(XML2CONFIG) --libs)
+LIBXSLT = $(shell $(XSLCONFIG) --libs)
+XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
+GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
+GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
+GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
+CFLAGS += $(shell $(XSLCONFIG) --cflags)
+
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+	OSSUPPORT = linux
+	OSSUPPORT_CFLAGS = $(GTK2CFLAGS) $(GCONF2CFLAGS)
+else ifeq ($(UNAME), Darwin)
+	OSSUPPORT = macos
+	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
+else
+	OSSUPPORT = windows
+	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
+endif
+
+ifneq ($(strip $(LIBXSLT)),)
+	# We still need proper paths and install options for OSX and Windows
+	ifeq ($(shell sh -c 'uname -s 2>/dev/null || echo not'),Linux)
+		XSLT=-DXSLT='"$(XSLTDIR)"'
+	endif
+endif
+
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
-	gtk-gui.o statistics.o $(RESFILE)
+	gtk-gui.o statistics.o $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -106,21 +134,6 @@ install: $(NAME)
 		$(INSTALL) -d -m 755 $(XSLTDIR); \
 		$(INSTALL) -m 644 $(XSLTFILES) $(XSLTDIR); \
 	fi
-
-LIBXML2 = $(shell $(XML2CONFIG) --libs)
-LIBXSLT = $(shell $(XSLCONFIG) --libs)
-XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
-GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
-GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
-GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
-CFLAGS += $(shell $(XSLCONFIG) --cflags)
-
-ifneq ($(strip $(LIBXSLT)),)
-	# We still need proper paths and install options for OSX and Windows
-	ifeq ($(shell sh -c 'uname -s 2>/dev/null || echo not'),Linux)
-		XSLT=-DXSLT='"$(XSLTDIR)"'
-	endif
-endif
 
 install-macosx: $(NAME)
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
@@ -175,6 +188,9 @@ gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
 
 uemis.o: uemis.c dive.h uemis.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis.c
+
+$(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
+	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
 clean:
 	rm -f $(OBJS) *~ $(NAME)
