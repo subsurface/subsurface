@@ -76,7 +76,7 @@ endif
 # about it if it doesn't.
 LIBUSB = $(shell $(PKGCONFIG) --libs libusb-1.0 2> /dev/null)
 
-LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0 gconf-2.0)
+LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
@@ -84,16 +84,18 @@ LIBXML2 = $(shell $(XML2CONFIG) --libs)
 LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
-GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 
-UNAME := $(shell uname)
+UNAME := $(shell $(CC) -v 2>&1 | grep Target | grep -E -o "linux|darwin|win")
 
-ifeq ($(UNAME), Linux)
+
+ifeq ($(UNAME), linux)
+	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
+	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS) $(GCONF2CFLAGS)
-else ifeq ($(UNAME), Darwin)
+else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
 else
@@ -108,7 +110,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBDIVECOMPUTER) -lpthread
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \

@@ -38,7 +38,7 @@ void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 	switch (type) {
 	case PREF_BOOL:
 		/* we simply store the value as DWORD */
-		RegSetValueEx(hkey, TEXT(name), 0, REG_DWORD, (DWORD)value, 4);
+		RegSetValueEx(hkey, TEXT(name), 0, REG_DWORD, value, 4);
 		break;
 	case PREF_STRING:
 		RegSetValueEx(hkey, TEXT(name), 0, REG_SZ, value, strlen(value));
@@ -47,6 +47,7 @@ void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 
 const void *subsurface_get_conf(char *name, pref_type_t type)
 {
+	LONG success;
 	char *string;
 	int len;
 
@@ -57,7 +58,7 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 		string = malloc(80);
 		len = 80;
 		success = RegQueryValueEx(hkey, TEXT(name), NULL, NULL,
-					(LPBYTE) string, &len );
+					(LPBYTE) string, (LPDWORD)&len );
 		if (success != ERROR_SUCCESS) {
 			/* that's what happens the first time we start - just return NULL */
 			free(string);
@@ -72,6 +73,6 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 void subsurface_close_conf(void)
 {
 	if (RegFlushKey(hkey) != ERROR_SUCCESS)
-		printf("RegFlushKey failed %ld\n");
+		printf("RegFlushKey failed \n");
 	RegCloseKey(hkey);
 }
