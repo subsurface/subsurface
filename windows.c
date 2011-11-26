@@ -22,15 +22,11 @@ void subsurface_open_conf(void)
 {
 	LONG success;
 
-	success = RegOpenKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"), 0,
-			KEY_QUERY_VALUE, &hkey);
-	if (success != ERROR_SUCCESS) {
-		success = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
-					0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
-					NULL, &hkey, NULL);
-		if (success != ERROR_SUCCESS)
-			printf("CreateKey Software\\subsurface failed %ld\n", success);
-	}
+	success = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
+				0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
+				NULL, &hkey, NULL);
+	if (success != ERROR_SUCCESS)
+		printf("CreateKey Software\\subsurface failed %ld\n", success);
 }
 
 void subsurface_set_conf(char *name, pref_type_t type, const void *value)
@@ -38,7 +34,7 @@ void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 	switch (type) {
 	case PREF_BOOL:
 		/* we simply store the value as DWORD */
-		RegSetValueEx(hkey, TEXT(name), 0, REG_DWORD, value, 4);
+		RegSetValueEx(hkey, TEXT(name), 0, REG_DWORD, &value, 4);
 		break;
 	case PREF_STRING:
 		RegSetValueEx(hkey, TEXT(name), 0, REG_SZ, value, strlen(value));
