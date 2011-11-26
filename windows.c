@@ -11,8 +11,8 @@ static int get_from_registry(HKEY hkey, const char *key)
 	DWORD len = 4;
 	LONG success;
 
-	success = RegQueryValueEx(hkey, TEXT(key), NULL, NULL,
-				(LPBYTE) &value, &len );
+	success = RegQueryValueEx(hkey, (LPCTSTR)TEXT(key), NULL, NULL,
+				(LPBYTE) &value, (LPDWORD)&len );
 	if (success != ERROR_SUCCESS)
 		return FALSE; /* that's what happens the first time we start */
 	return value;
@@ -22,26 +22,28 @@ void subsurface_open_conf(void)
 {
 	LONG success;
 
-	success = RegOpenKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"), 0,
-			KEY_QUERY_VALUE, &hkey);
-	if (success != ERROR_SUCCESS) {
-		success = RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\subsurface"),
-					0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
-					NULL, &hkey, NULL);
-		if (success != ERROR_SUCCESS)
-			printf("CreateKey Software\\subsurface failed %ld\n", success);
-	}
+	success = RegCreateKeyEx(HKEY_CURRENT_USER, (LPCTSTR)TEXT("Software\\subsurface"),
+				0L, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS,
+				NULL, &hkey, NULL);
+	if (success != ERROR_SUCCESS)
+		printf("CreateKey Software\\subsurface failed %ld\n", success);
 }
 
 void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 {
+	/* since we are using the pointer 'value' as both an actual
+	 * pointer to the string setting and as a way to pass the
+	 * numbers 0 and 1 to this function for booleans, one of the
+	 * calls to RegSetValueEx needs to pass &value (when we want
+	 * to pass the boolean value), the other one passes value (the
+	 * address of the string. */
 	switch (type) {
 	case PREF_BOOL:
 		/* we simply store the value as DWORD */
-		RegSetValueEx(hkey, TEXT(name), 0, REG_DWORD, value, 4);
+		RegSetValueEx(hkey, (LPCTSTR)TEXT(name), 0, REG_DWORD, (const BYTE *)&value, 4);
 		break;
 	case PREF_STRING:
-		RegSetValueEx(hkey, TEXT(name), 0, REG_SZ, value, strlen(value));
+		RegSetValueEx(hkey, (LPCTSTR)TEXT(name), 0, REG_SZ, (const BYTE *)value, strlen(value));
 	}
 }
 
@@ -57,7 +59,7 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 	case PREF_STRING:
 		string = malloc(80);
 		len = 80;
-		success = RegQueryValueEx(hkey, TEXT(name), NULL, NULL,
+		success = RegQueryValueEx(hkey, (LPCTSTR)TEXT(name), NULL, NULL,
 					(LPBYTE) string, (LPDWORD)&len );
 		if (success != ERROR_SUCCESS) {
 			/* that's what happens the first time we start - just return NULL */
