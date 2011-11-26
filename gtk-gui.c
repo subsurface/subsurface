@@ -603,89 +603,6 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 	repaint_dive();
 }
 
-static const char notebook_group[] = "123";
-#define GRP_ID ((void *)notebook_group)
-typedef struct {
-	char *name;
-	GtkWidget *widget;
-	GtkWidget *box;
-	gulong delete_handler;
-	gulong destroy_handler;
-} notebook_data_t;
-
-static notebook_data_t nbd[2]; /* we rip at most two notebook pages off */
-
-static GtkNotebook *create_new_notebook_window(GtkNotebook *source,
-		GtkWidget *page,
-		gint x, gint y, gpointer data)
-{
-	GtkWidget *win, *notebook, *vbox;
-	notebook_data_t *nbdp;
-	GtkAllocation allocation;
-
-	/* pick the right notebook page data and return if both are detached */
-	if (nbd[0].widget == NULL)
-		nbdp = nbd;
-	else if (nbd[1].widget == NULL)
-		nbdp = nbd + 1;
-	else
-		return NULL;
-
-	nbdp->name = strdup(gtk_widget_get_name(page));
-	nbdp->widget = win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(win), nbdp->name);
-	gtk_window_move(GTK_WINDOW(win), x, y);
-
-	/* Destroying the dive list will kill the application */
-	nbdp->delete_handler = g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
-	nbdp->destroy_handler = g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
-
-	nbdp->box = vbox = gtk_vbox_new(FALSE, 0);
-	gtk_container_add(GTK_CONTAINER(win), vbox);
-
-	notebook = gtk_notebook_new();
-	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
-	gtk_widget_set_name(notebook, nbdp->name);
-	/* disallow drop events */
-	gtk_drag_dest_set(notebook, 0, NULL, 0, 0);
-	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 6);
-	gtk_widget_get_allocation(page, &allocation);
-	gtk_window_set_default_size(GTK_WINDOW(win), allocation.width, allocation.height);
-
-	gtk_widget_show_all(win);
-	return GTK_NOTEBOOK(notebook);
-}
-
-static gboolean drag_cb(GtkWidget *widget, GdkDragContext *context,
-	gint x, gint y, guint time,
-	gpointer user_data)
-{
-	GtkWidget *source;
-	notebook_data_t *nbdp;
-
-	gtk_drag_finish(context, TRUE, TRUE, time);
-	source = gtk_drag_get_source_widget(context);
-	if (nbd[0].name && ! strcmp(nbd[0].name,gtk_widget_get_name(source)))
-		nbdp = nbd;
-	else if (nbd[1].name && ! strcmp(nbd[1].name,gtk_widget_get_name(source)))
-		nbdp = nbd + 1;
-	else /* just on ourselves */
-		return TRUE;
-
-	/* we no longer need the widget - but getting rid of this is hard;
-	 * remove the signal handler, remove the notebook from the box
-	 * then destroy the widget (and clear out our data structure) */
-	g_signal_handler_disconnect(nbdp->widget,nbdp->delete_handler);
-	g_signal_handler_disconnect(nbdp->widget,nbdp->destroy_handler);
-	gtk_container_remove(GTK_CONTAINER(nbdp->box), source);
-	gtk_widget_destroy(nbdp->widget);
-	nbdp->widget = NULL;
-	free(nbdp->name);
-	nbdp->name = NULL;
-
-	return TRUE;
-}
-
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -700,9 +617,6 @@ void init_ui(int *argcp, char ***argvp)
 	GdkScreen *screen;
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
-	static const GtkTargetEntry notebook_target = {
-		"GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0
-	};
 
 	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();
@@ -771,10 +685,6 @@ void init_ui(int *argcp, char ***argvp)
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
 	gtk_paned_add1(GTK_PANED(hpane), notebook);
-	gtk_notebook_set_group(GTK_NOTEBOOK(notebook), GRP_ID);
-	g_signal_connect(notebook, "create-window", G_CALLBACK(create_new_notebook_window), NULL);
-	gtk_drag_dest_set(notebook, GTK_DEST_DEFAULT_ALL, &notebook_target, 1, GDK_ACTION_MOVE);
-	g_signal_connect(notebook, "drag-drop", G_CALLBACK(drag_cb), notebook);
 	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 
 	/* Create the actual divelist */
