@@ -87,7 +87,7 @@ GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 
-UNAME := $(shell $(CC) -v 2>&1 | grep Target | grep -E -o "linux|darwin|win")
+UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 
 
 ifeq ($(UNAME), linux)
