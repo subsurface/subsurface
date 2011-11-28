@@ -46,14 +46,64 @@ struct plot_info {
 #define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
 #define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? : INTERPOLATED_PRESSURE(_entry))
 
+typedef enum { TEXT_BACKGROUND, TRIANGULAR_BG, TRIANGULAR_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
+	SMOOTHED, MINUTE, TIME_MARKER, TIME_TEXT, DEPTH_MARKER, MEAN_DEPTH, DEPTH_TOP,
+	DEPTH_BOTTOM, DEPTH_FILL_PRINTER, DEPTH_STROKE_PRINTER, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT,
+	BOUNDING_BOX, PRESSURE_TEXT, VELO_STABLE, VELO_SLOW, VELO_MODERATE, VELO_FAST, VELO_CRAZY,
+	SAC_1, SAC_2, SAC_3, SAC_4, SAC_5, SAC_6, SAC_7, SAC_8, SAC_9, BACKGROUND } color_t;
+
 /* convert velocity to colors */
 typedef struct { double r, g, b; } rgb_t;
-static const rgb_t velocity_color[] = {
-	[STABLE]   = {0.0, 0.4, 0.0},
-	[SLOW]     = {0.4, 0.8, 0.0},
-	[MODERATE] = {0.8, 0.8, 0.0},
-	[FAST]     = {0.8, 0.5, 0.0},
-	[CRAZY]    = {1.0, 0.0, 0.0},
+static const color_t velocity_color[] = {
+	[STABLE]   = VELO_STABLE,
+	[SLOW]     = VELO_SLOW,
+	[MODERATE] = VELO_MODERATE,
+	[FAST]     = VELO_FAST,
+	[CRAZY]    = VELO_CRAZY,
+};
+
+static const rgb_t profile_color[] = {
+	[TEXT_BACKGROUND] = {0.95, 0.95, 0.95},
+	[TRIANGULAR_BG]   = {1.0, 1.0, 0.1},
+	[TRIANGULAR_FG]   = {0.0, 0.0, 0.0},
+	[EVENTS]          = {1.0, 0.2, 0.2},
+	[SAMPLE_DEEP]     = {0.8, 0.2, 0.2},
+	[SAMPLE_SHALLOW]  = {0.8, 0.2, 0.2},
+	[SMOOTHED]        = {1.0, 0.2, 0.2},
+	[MINUTE]          = {0.7, 0.2, 0.7},
+	[TIME_MARKER]     = {1.0, 1.0, 1.0},
+	[TIME_TEXT]       = {0.1, 0.5, 0.1},
+	[DEPTH_MARKER]    = {1.0, 1.0, 1.0},
+	[MEAN_DEPTH]      = {1.0, 0.2, 0.2},
+	[DEPTH_TOP]       = {0.2, 0.2, 0.8},
+	[DEPTH_BOTTOM]    = {0.9, 0.9, 0.9},
+	[DEPTH_FILL_PRINTER] = {1.0, 1.0, 1.0},
+	[DEPTH_STROKE_PRINTER] = {1.0, 1.0, 1.0},
+	[TEMP_TEXT]       = {0.2, 0.2, 0.7},
+	[TEMP_PLOT]       = {0.2, 0.2, 0.9},
+	[SAC_DEFAULT]     = {1.0, 1.0, 1.0},
+	[BOUNDING_BOX]    = {1.0, 1.0, 1.0},
+	[PRESSURE_TEXT]   = {0.2, 0.4, 0.2},
+	[VELO_STABLE]     = {0.0, 0.4, 0.0},
+	[VELO_SLOW]       = {0.4, 0.8, 0.0},
+	[VELO_MODERATE]   = {0.8, 0.8, 0.0},
+	[VELO_FAST]       = {0.8, 0.5, 0.0},
+	[VELO_CRAZY]      = {1.0, 0.0, 0.0},
+	[SAC_1]           = {0.0, 0.4, 0.2},
+	[SAC_2]           = {0.2, 0.6, 0.2},
+	[SAC_3]           = {0.4, 0.8, 0.2},
+	[SAC_4]           = {0.6, 0.8, 0.2},
+	[SAC_5]           = {0.8, 0.8, 0.2},
+	[SAC_6]           = {0.8, 0.6, 0.2},
+	[SAC_7]           = {0.8, 0.4, 0.2},
+	[SAC_8]           = {0.9, 0.3, 0.2},
+	[SAC_9]           = {1.0, 0.2, 0.2},
+	[BACKGROUND]      = {0.95, 0.95, 0.9},
+};
+
+#define SAC_COLORS 9
+static const color_t sac_color[SAC_COLORS] = {
+	SAC_1, SAC_2, SAC_3, SAC_4, SAC_5, SAC_6, SAC_7, SAC_8, SAC_9
 };
 
 #define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
@@ -73,8 +123,12 @@ static void line_to(struct graphics_context *gc, double x, double y)
 	cairo_line_to(gc->cr, SCALE(gc, x, y));
 }
 
-static void set_source_rgba(struct graphics_context *gc, double r, double g, double b, double a)
+static void set_source_rgba(struct graphics_context *gc, color_t c, double a)
 {
+	const rgb_t *rgb = &profile_color[c];
+	double r = rgb->r;
+	double g = rgb->g;
+	double b = rgb->b;
 	/*
 	 * For printers, we still honor 'a', but ignore colors
 	 * for now. Black is white and white is black
@@ -89,14 +143,20 @@ static void set_source_rgba(struct graphics_context *gc, double r, double g, dou
 	cairo_set_source_rgba(gc->cr, r, g, b, a);
 }
 
-static void set_source_rgb_struct(struct graphics_context *gc, const rgb_t *rgb)
+static void set_source_rgb(struct graphics_context *gc, color_t c)
 {
-	set_source_rgba(gc, rgb->r, rgb->g, rgb->b, 1);
+	set_source_rgba(gc, c, 1);
 }
 
-void set_source_rgb(struct graphics_context *gc, double r, double g, double b)
+void init_profile_background(struct graphics_context *gc)
 {
-	set_source_rgba(gc, r, g, b, 1);
+	set_source_rgb(gc, BACKGROUND);
+}
+
+void pattern_add_color_stop_rgba(cairo_pattern_t *pat, double o, color_t c, double a)
+{
+	const rgb_t *rgb = &profile_color[c];
+	cairo_pattern_add_color_stop_rgba (pat, o, rgb->r, rgb->g, rgb->b, a);
 }
 
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
@@ -143,7 +203,7 @@ static int get_maxdepth(struct plot_info *pi)
 
 typedef struct {
 	int size;
-	double r,g,b;
+	color_t color;
 	double hpos, vpos;
 } text_render_options_t;
 
@@ -179,13 +239,13 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_rel_move_to(cr, dx, dy);
 
 	cairo_text_path(cr, buffer);
-	set_source_rgba(gc, 0.95, 0.95, 0.95, 0.95);
+	set_source_rgba(gc, TEXT_BACKGROUND, 0.95);
 	cairo_stroke(cr);
 
 	move_to(gc, x, y);
 	cairo_rel_move_to(cr, dx, dy);
 
-	set_source_rgb(gc, tro->r, tro->g, tro->b);
+	set_source_rgb(gc, tro->color);
 	cairo_show_text(cr, buffer);
 }
 
@@ -254,14 +314,14 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	/* draw a little tirangular marker and attach tooltip */
 	x = SCALEX(gc, event->time.seconds);
 	y = SCALEY(gc, depth);
-	set_source_rgba(gc, 1.0, 1.0, 0.1, 0.8);
+	set_source_rgba(gc, TRIANGULAR_BG, 0.8);
 	cairo_move_to(gc->cr, x-15, y+6);
 	cairo_line_to(gc->cr, x-3  , y+6);
 	cairo_line_to(gc->cr, x-9, y-6);
 	cairo_line_to(gc->cr, x-15, y+6);
 	cairo_stroke_preserve(gc->cr);
 	cairo_fill(gc->cr);
-	set_source_rgba(gc, 0.0, 0.0, 0.0, 0.8);
+	set_source_rgba(gc, TRIANGULAR_FG, 0.8);
 	cairo_move_to(gc->cr, x-9, y-3);
 	cairo_line_to(gc->cr, x-9, y+1);
 	cairo_move_to(gc->cr, x-9, y+4);
@@ -272,7 +332,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
 {
-	static const text_render_options_t tro = {14, 1.0, 0.2, 0.2, CENTER, TOP};
+	static const text_render_options_t tro = {14, EVENTS, CENTER, TOP};
 	struct event *event = dive->events;
 
 	if (gc->printer)
@@ -296,8 +356,8 @@ static void render_depth_sample(struct graphics_context *gc, struct plot_data *e
 
 static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 {
-	static const text_render_options_t deep = {14, 0.8, 0.2, 0.2, CENTER, TOP};
-	static const text_render_options_t shallow = {14, 0.8, 0.2, 0.2, CENTER, BOTTOM};
+	static const text_render_options_t deep = {14, SAMPLE_DEEP, CENTER, TOP};
+	static const text_render_options_t shallow = {14, SAMPLE_SHALLOW, CENTER, BOTTOM};
 	int i;
 	int last = -1;
 
@@ -341,7 +401,7 @@ static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info 
 	int i;
 	struct plot_data *entry = pi->entry;
 
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
+	set_source_rgba(gc, SMOOTHED, 0.20);
 	move_to(gc, entry->sec, entry->smoothed);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
@@ -356,7 +416,7 @@ static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_
 	int i;
 	struct plot_data *entry = pi->entry;
 
-	set_source_rgba(gc, 0.7, 0.2, 0.7, a);
+	set_source_rgba(gc, MINUTE, a);
 	move_to(gc, entry->sec, entry->min[index]->depth);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
@@ -407,7 +467,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	gc->leftx = 0; gc->rightx = maxtime;
 	gc->topy = 0; gc->bottomy = 1.0;
-	set_source_rgba(gc, 1, 1, 1, 0.5);
+	set_source_rgba(gc, TIME_MARKER, 0.5);
 	cairo_set_line_width(gc->cr, 1);
 
 	for (i = incr; i < maxtime; i += incr) {
@@ -417,7 +477,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	cairo_stroke(cr);
 
 	/* now the text on every second time marker */
-	text_render_options_t tro = {10, 0.1, 0.5, 0.1, CENTER, TOP};
+	text_render_options_t tro = {10, TIME_TEXT, CENTER, TOP};
 	for (i = incr; i < maxtime; i += 2 * incr)
 		plot_text(gc, &tro, i, 1, "%d", i/60);
 
@@ -429,7 +489,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
 
-	set_source_rgba(gc, 1, 1, 1, 0.5);
+	set_source_rgba(gc, DEPTH_MARKER, 0.5);
 	for (i = marker; i < maxdepth; i += marker) {
 		move_to(gc, 0, i);
 		line_to(gc, 1, i);
@@ -438,7 +498,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	/* Show mean depth */
 	if (! gc->printer) {
-		set_source_rgba(gc, 1, 0.2, 0.2, 0.40);
+		set_source_rgba(gc, MEAN_DEPTH, 0.40);
 		move_to(gc, 0, pi->meandepth);
 		line_to(gc, 1, pi->meandepth);
 		cairo_stroke(cr);
@@ -455,15 +515,13 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		plot_minmax_profile(gc, pi);
 	}
 
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.80);
-
 	/* Do the depth profile for the neat fill */
 	gc->topy = 0; gc->bottomy = maxdepth;
 
 	cairo_pattern_t *pat;
 	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0);
-	cairo_pattern_add_color_stop_rgba (pat, 1, 0.2, 0.2, 0.8, 0.6);
-	cairo_pattern_add_color_stop_rgba (pat, 0, 0.9, 0.9, 0.9, 0.6);
+	pattern_add_color_stop_rgba (pat, 1, DEPTH_TOP, 0.6);
+	pattern_add_color_stop_rgba (pat, 0, DEPTH_BOTTOM, 0.6);
 
 	cairo_set_source(gc->cr, pat);
 	cairo_pattern_destroy(pat);
@@ -475,9 +533,9 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		line_to(gc, entry->sec, entry->depth);
 	cairo_close_path(gc->cr);
 	if (gc->printer) {
-		set_source_rgba(gc, 1, 1, 1, 0.2);
+		set_source_rgba(gc, DEPTH_FILL_PRINTER, 0.2);
 		cairo_fill_preserve(cr);
-		set_source_rgb(gc, 1, 1, 1);
+		set_source_rgb(gc, DEPTH_STROKE_PRINTER);
 		cairo_stroke(cr);
 		return;
 	}
@@ -492,7 +550,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		 * representing the vertical velocity, so we need to
 		 * chop this into short segments */
 		depth = entry->depth;
-		set_source_rgb_struct(gc, &velocity_color[entry->velocity]);
+		set_source_rgb(gc, velocity_color[entry->velocity]);
 		move_to(gc, entry[-1].sec, entry[-1].depth);
 		line_to(gc, sec, depth);
 		cairo_stroke(cr);
@@ -527,7 +585,7 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 {
 	double deg;
 	const char *unit;
-	static const text_render_options_t tro = {12, 0.2, 0.2, 0.7, LEFT, TOP};
+	static const text_render_options_t tro = {12, TEMP_TEXT, LEFT, TOP};
 
 	deg = get_temp_units(mkelvin, &unit);
 
@@ -581,7 +639,7 @@ static void plot_temperature_profile(struct graphics_context *gc, struct plot_in
 		return;
 
 	cairo_set_line_width(gc->cr, 2);
-	set_source_rgba(gc, 0.2, 0.2, 0.9, 0.8);
+	set_source_rgba(gc, TEMP_PLOT, 0.8);
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		int mkelvin = entry->temperature;
@@ -610,19 +668,6 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	return pi->maxpressure != 0;
 }
 
-#define SAC_COLORS 9
-static const rgb_t sac_color[SAC_COLORS] = {
-	{ 0.0, 0.4, 0.2},
-	{ 0.2, 0.6, 0.2},
-	{ 0.4, 0.8, 0.2},
-	{ 0.6, 0.8, 0.2},
-	{ 0.8, 0.8, 0.2},
-	{ 0.8, 0.6, 0.2},
-	{ 0.8, 0.4, 0.2},
-	{ 0.9, 0.3, 0.2},
-	{ 1.0, 0.2, 0.2},
-};
-
 /* set the color for the pressure plot according to temporary sac rate
  * as compared to avg_sac; the calculation simply maps the delta between
  * sac and avg_sac to indexes 0 .. (SAC_COLORS - 1) with everything
@@ -639,9 +684,9 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 			sac_index = 0;
 		if (sac_index > SAC_COLORS - 1)
 			sac_index = SAC_COLORS - 1;
-		set_source_rgb_struct(gc, &sac_color[sac_index]);
+		set_source_rgb(gc, sac_color[sac_index]);
 	} else {
-		set_source_rgb(gc, 1.0, 1.0, 1.0);
+		set_source_rgb(gc, SAC_DEFAULT);
 	}
 }
 
@@ -727,7 +772,7 @@ static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 	const char *unit;
 
 	pressure = get_pressure_units(mbar, &unit);
-	text_render_options_t tro = {10, 0.2, 0.6, 0.2, xalign, yalign};
+	text_render_options_t tro = {10, PRESSURE_TEXT, xalign, yalign};
 	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
 }
 
@@ -1347,9 +1392,6 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	gc->maxx = (drawing_area->width - 2*drawing_area->x);
 	gc->maxy = (drawing_area->height - 2*drawing_area->y);
 
-	cairo_set_source_rgba(gc->cr, 0.95, 0.95, 0.90, 0.95);
-	cairo_paint(gc->cr);
-
 	/* Temperature profile */
 	plot_temperature_profile(gc, pi);
 
@@ -1369,7 +1411,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	gc->leftx = 0; gc->rightx = 1.0;
 	gc->topy = 0; gc->bottomy = 1.0;
 
-	set_source_rgb(gc, 1, 1, 1);
+	set_source_rgb(gc, BOUNDING_BOX);
 	cairo_set_line_width(gc->cr, 1);
 	move_to(gc, 0, 0);
 	line_to(gc, 0, 1);

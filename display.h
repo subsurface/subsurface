@@ -23,7 +23,7 @@ struct graphics_context {
 };
 
 extern void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive);
-extern void set_source_rgb(struct graphics_context *gc, double r, double g, double b);
+extern void init_profile_background(struct graphics_context *gc);
 extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 
 #endif

@@ -778,7 +778,7 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	gc.cr = gdk_cairo_create(widget->window);
 	g_object_set(widget, "has-tooltip", TRUE, NULL);
 	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), &drawing_area);
-	set_source_rgb(&gc, 0, 0, 0);
+	init_profile_background(&gc);
 	cairo_paint(gc.cr);
 
 	if (dive) {
