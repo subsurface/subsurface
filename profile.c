@@ -179,7 +179,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_rel_move_to(cr, dx, dy);
 
 	cairo_text_path(cr, buffer);
-	set_source_rgb(gc, 0, 0, 0);
+	set_source_rgba(gc, 0.95, 0.95, 0.95, 0.95);
 	cairo_stroke(cr);
 
 	move_to(gc, x, y);
@@ -296,8 +296,8 @@ static void render_depth_sample(struct graphics_context *gc, struct plot_data *e
 
 static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
 {
-	static const text_render_options_t deep = {14, 1.0, 0.2, 0.2, CENTER, TOP};
-	static const text_render_options_t shallow = {14, 1.0, 0.2, 0.2, CENTER, BOTTOM};
+	static const text_render_options_t deep = {14, 0.8, 0.2, 0.2, CENTER, TOP};
+	static const text_render_options_t shallow = {14, 0.8, 0.2, 0.2, CENTER, BOTTOM};
 	int i;
 	int last = -1;
 
@@ -356,7 +356,7 @@ static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_
 	int i;
 	struct plot_data *entry = pi->entry;
 
-	set_source_rgba(gc, 1, 0.2, 1, a);
+	set_source_rgba(gc, 0.7, 0.2, 0.7, a);
 	move_to(gc, entry->sec, entry->min[index]->depth);
 	for (i = 1; i < pi->nr; i++) {
 		entry++;
@@ -408,6 +408,8 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	gc->leftx = 0; gc->rightx = maxtime;
 	gc->topy = 0; gc->bottomy = 1.0;
 	set_source_rgba(gc, 1, 1, 1, 0.5);
+	cairo_set_line_width(gc->cr, 1);
+
 	for (i = incr; i < maxtime; i += incr) {
 		move_to(gc, i, 0);
 		line_to(gc, i, 1);
@@ -415,7 +417,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	cairo_stroke(cr);
 
 	/* now the text on every second time marker */
-	text_render_options_t tro = {10, 0.2, 1.0, 0.2, CENTER, TOP};
+	text_render_options_t tro = {10, 0.1, 0.5, 0.1, CENTER, TOP};
 	for (i = incr; i < maxtime; i += 2 * incr)
 		plot_text(gc, &tro, i, 1, "%d", i/60);
 
@@ -457,7 +459,15 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	/* Do the depth profile for the neat fill */
 	gc->topy = 0; gc->bottomy = maxdepth;
-	set_source_rgba(gc, 1, 0.2, 0.2, 0.20);
+
+	cairo_pattern_t *pat;
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0);
+	cairo_pattern_add_color_stop_rgba (pat, 1, 0.2, 0.2, 0.8, 0.6);
+	cairo_pattern_add_color_stop_rgba (pat, 0, 0.9, 0.9, 0.9, 0.6);
+
+	cairo_set_source(gc->cr, pat);
+	cairo_pattern_destroy(pat);
+	cairo_set_line_width(gc->cr, 2);
 
 	entry = pi->entry;
 	move_to(gc, 0, 0);
@@ -517,7 +527,7 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 {
 	double deg;
 	const char *unit;
-	static const text_render_options_t tro = {12, 0.6, 0.6, 1.0, LEFT, TOP};
+	static const text_render_options_t tro = {12, 0.2, 0.2, 0.7, LEFT, TOP};
 
 	deg = get_temp_units(mkelvin, &unit);
 
@@ -570,7 +580,8 @@ static void plot_temperature_profile(struct graphics_context *gc, struct plot_in
 	if (!setup_temperature_limits(gc, pi))
 		return;
 
-	set_source_rgba(gc, 0.2, 0.2, 1.0, 0.8);
+	cairo_set_line_width(gc->cr, 2);
+	set_source_rgba(gc, 0.2, 0.2, 0.9, 0.8);
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		int mkelvin = entry->temperature;
@@ -657,6 +668,8 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
+	cairo_set_line_width(gc->cr, 2);
+
 	for (i = 0; i < pi->nr; i++) {
 		int mbar;
 		struct plot_data *entry = pi->entry + i;
@@ -714,7 +727,7 @@ static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 	const char *unit;
 
 	pressure = get_pressure_units(mbar, &unit);
-	text_render_options_t tro = {10, 0.2, 1.0, 0.2, xalign, yalign};
+	text_render_options_t tro = {10, 0.2, 0.6, 0.2, xalign, yalign};
 	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
 }
 
@@ -1320,7 +1333,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	pi = create_plot_info(dive, nr, sample);
 
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
-	cairo_set_line_width(gc->cr, 2);
+	cairo_set_line_width(gc->cr, 1);
 	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
 
@@ -1333,6 +1346,9 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	 */
 	gc->maxx = (drawing_area->width - 2*drawing_area->x);
 	gc->maxy = (drawing_area->height - 2*drawing_area->y);
+
+	cairo_set_source_rgba(gc->cr, 0.95, 0.95, 0.90, 0.95);
+	cairo_paint(gc->cr);
 
 	/* Temperature profile */
 	plot_temperature_profile(gc, pi);
@@ -1354,6 +1370,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	gc->topy = 0; gc->bottomy = 1.0;
 
 	set_source_rgb(gc, 1, 1, 1);
+	cairo_set_line_width(gc->cr, 1);
 	move_to(gc, 0, 0);
 	line_to(gc, 0, 1);
 	line_to(gc, 1, 1);
