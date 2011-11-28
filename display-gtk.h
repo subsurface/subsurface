@@ -19,6 +19,19 @@ typedef struct {
 	gboolean otu;
 } visible_cols_t;
 
+typedef enum {
+	PREF_BOOL,
+	PREF_STRING
+} pref_type_t;
+
+#define BOOL_TO_PTR(_cond) ((_cond) ? (void *)1 : NULL)
+#define PTR_TO_BOOL(_ptr) ((_ptr) != NULL)
+
+extern void subsurface_open_conf(void);
+extern void subsurface_set_conf(char *name, pref_type_t type, const void *value);
+extern const void *subsurface_get_conf(char *name, pref_type_t type);
+extern void subsurface_close_conf(void);
+
 extern visible_cols_t visible_cols;
 
 extern const char *divelist_font;

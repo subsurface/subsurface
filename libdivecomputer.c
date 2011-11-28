@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
+#include <unistd.h>
+#include <inttypes.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -433,8 +435,8 @@ static void event_cb(device_t *device, device_event_t event, const void *data, v
 		break;
 	case DEVICE_EVENT_CLOCK:
 		devdata->clock = *clock;
-		printf("Event: systime=%lld, devtime=%u\n",
-			clock->systime, clock->devtime);
+		printf("Event: systime=%"PRId64", devtime=%u\n",
+			(uint64_t)clock->systime, clock->devtime);
 		break;
 	default:
 		break;
