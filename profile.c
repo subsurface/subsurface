@@ -1334,12 +1334,12 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	gc->maxx = (drawing_area->width - 2*drawing_area->x);
 	gc->maxy = (drawing_area->height - 2*drawing_area->y);
 
-	/* Temperature profile */
-	plot_temperature_profile(gc, pi);
-
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
 	plot_events(gc, pi, dive);
+
+	/* Temperature profile */
+	plot_temperature_profile(gc, pi);
 
 	/* Cylinder pressure plot */
 	plot_cylinder_pressure(gc, pi, dive);
