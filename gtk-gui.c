@@ -19,6 +19,7 @@ GtkWidget *main_window;
 GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
 GtkWidget *error_label;
+GtkWidget *vpane, *hpane;
 int        error_count;
 
 #define DIVELIST_DEFAULT_FONT "Sans 8"
@@ -538,9 +539,34 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		NULL);
 }
 
+static void view_list(GtkWidget *w, gpointer data)
+{
+	gtk_paned_set_position(GTK_PANED(vpane), 0);
+}
+
+static void view_profile(GtkWidget *w, gpointer data)
+{
+	gtk_paned_set_position(GTK_PANED(hpane), 0);
+	gtk_paned_set_position(GTK_PANED(vpane), 65535);
+}
+
+static void view_info(GtkWidget *w, gpointer data)
+{
+	gtk_paned_set_position(GTK_PANED(vpane), 65535);
+	gtk_paned_set_position(GTK_PANED(hpane), 65535);
+}
+
+/* Ooh. I don't know how to get the half-way size. So I'm just using random numbers */
+static void view_three(GtkWidget *w, gpointer data)
+{
+	gtk_paned_set_position(GTK_PANED(hpane), 400);
+	gtk_paned_set_position(GTK_PANED(vpane), 200);
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
 	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
+	{ "ViewMenuAction",  GTK_STOCK_FILE, "View", NULL, NULL, NULL},
 	{ "FilterMenuAction",  GTK_STOCK_FILE, "Filter", NULL, NULL, NULL},
 	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
@@ -552,6 +578,10 @@ static GtkActionEntry menu_items[] = {
 	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
+	{ "ViewList",       NULL, "List",  "F1", NULL, G_CALLBACK(view_list) },
+	{ "ViewProfile",    NULL, "Profile", "F2", NULL, G_CALLBACK(view_profile) },
+	{ "ViewInfo",       NULL, "Info", "F3", NULL, G_CALLBACK(view_info) },
+	{ "ViewThree",       NULL, "Three", "F4", NULL, G_CALLBACK(view_three) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -571,6 +601,12 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
+				<menu name=\"View\" action=\"ViewMenuAction\"> \
+					<menuitem name=\"List\" action=\"ViewList\" /> \
+					<menuitem name=\"Profile\" action=\"ViewProfile\" /> \
+					<menuitem name=\"Info\" action=\"ViewInfo\" /> \
+					<menuitem name=\"Paned\" action=\"ViewThree\" /> \
+				</menu> \
 			</menu> \
 			<menu name=\"FilterMenu\" action=\"FilterMenuAction\"> \
 				<menuitem name=\"SelectEvents\" action=\"SelectEvents\" /> \
@@ -613,7 +649,6 @@ void init_ui(int *argcp, char ***argvp)
 	GtkWidget *stats;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
-	GtkWidget *hpane, *vpane;
 	GdkScreen *screen;
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
