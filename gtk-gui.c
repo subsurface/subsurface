@@ -578,10 +578,10 @@ static GtkActionEntry menu_items[] = {
 	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
-	{ "ViewList",       NULL, "List",  "F1", NULL, G_CALLBACK(view_list) },
-	{ "ViewProfile",    NULL, "Profile", "F2", NULL, G_CALLBACK(view_profile) },
-	{ "ViewInfo",       NULL, "Info", "F3", NULL, G_CALLBACK(view_info) },
-	{ "ViewThree",       NULL, "Three", "F4", NULL, G_CALLBACK(view_three) },
+	{ "ViewList",       NULL, "List",  "<control>1", NULL, G_CALLBACK(view_list) },
+	{ "ViewProfile",    NULL, "Profile", "<control>2", NULL, G_CALLBACK(view_profile) },
+	{ "ViewInfo",       NULL, "Info", "<control>3", NULL, G_CALLBACK(view_info) },
+	{ "ViewThree",       NULL, "Three", "<control>4", NULL, G_CALLBACK(view_three) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
