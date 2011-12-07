@@ -25,7 +25,7 @@ struct DiveList {
 	GtkWidget    *tree_view;
 	GtkWidget    *container_widget;
 	GtkListStore *model;
-	GtkTreeViewColumn *nr, *date, *depth, *duration, *location;
+	GtkTreeViewColumn *nr, *date, *stars, *depth, *duration, *location;
 	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac, *otu;
 	int changed;
 };
@@ -40,6 +40,7 @@ enum {
 	DIVE_INDEX = 0,
 	DIVE_NR,		/* int: dive->nr */
 	DIVE_DATE,		/* time_t: dive->when */
+	DIVE_RATING,		/* int: 0-5 stars */
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
@@ -87,6 +88,31 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 		  * been selected */
 		return;
 	}
+}
+
+const char *star_strings[] = {
+	ZERO_STARS,
+	ONE_STARS,
+	TWO_STARS,
+	THREE_STARS,
+	FOUR_STARS,
+	FIVE_STARS
+};
+
+static void star_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int nr_stars;
+	char buffer[40];
+
+	gtk_tree_model_get(model, iter, DIVE_RATING, &nr_stars, -1);
+	if (nr_stars < 0 || nr_stars > 5)
+		nr_stars = 0;
+	snprintf(buffer, sizeof(buffer), "%s", star_strings[nr_stars]);
+	g_object_set(renderer, "text", buffer, NULL);
 }
 
 static void date_data_func(GtkTreeViewColumn *col,
@@ -403,6 +429,7 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
 		DIVE_CYLINDER, cylinder,
+		DIVE_RATING, dive->rating,
 		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
 		-1);
@@ -545,6 +572,7 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
 				G_TYPE_INT,			/* Date */
+				G_TYPE_INT,			/* Star rating */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
 				G_TYPE_INT,			/* Temperature */
@@ -565,6 +593,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.nr = divelist_column(&dive_list, DIVE_NR, "#", NULL, PANGO_ALIGN_RIGHT, TRUE);
 	gtk_tree_view_column_set_sort_column_id(dive_list.nr, -1);
 	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT, TRUE);
+	dive_list.stars = divelist_column(&dive_list, DIVE_RATING, "Rating", star_data_func, PANGO_ALIGN_LEFT, TRUE);
 	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, visible_cols.temperature);
