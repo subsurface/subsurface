@@ -182,7 +182,6 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_location(f, dive);
 	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n");
 	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n");
-	fprintf(f, "  <rating>%d</rating>\n", dive->rating);
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
 }
 
@@ -263,6 +262,8 @@ static void save_dive(FILE *f, struct dive *dive)
 	fputs("<dive", f);
 	if (dive->number)
 		fprintf(f, " number='%d'", dive->number);
+	if (dive->rating)
+		fprintf(f, " rating='%d'", dive->rating);
 	fprintf(f, " date='%04u-%02u-%02u'",
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
 	fprintf(f, " time='%02u:%02u:%02u'",

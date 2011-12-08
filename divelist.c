@@ -593,7 +593,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.nr = divelist_column(&dive_list, DIVE_NR, "#", NULL, PANGO_ALIGN_RIGHT, TRUE);
 	gtk_tree_view_column_set_sort_column_id(dive_list.nr, -1);
 	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT, TRUE);
-	dive_list.stars = divelist_column(&dive_list, DIVE_RATING, "Rating", star_data_func, PANGO_ALIGN_LEFT, TRUE);
+	dive_list.stars = divelist_column(&dive_list, DIVE_RATING, UTF8_BLACKSTAR, star_data_func, PANGO_ALIGN_LEFT, TRUE);
 	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, PANGO_ALIGN_RIGHT, TRUE);
 	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, visible_cols.temperature);
