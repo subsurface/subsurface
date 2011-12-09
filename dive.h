@@ -87,6 +87,8 @@ typedef struct {
 	pressure_t start, end, sample_start, sample_end;
 } cylinder_t;
 
+extern int cylinder_none(cylinder_t *cyl);
+
 extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int mm, int *frac, const char **units);

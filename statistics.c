@@ -169,10 +169,7 @@ void show_dive_stats(struct dive *dive)
 
 		start = cyl->start.mbar ? : cyl->sample_start.mbar;
 		end = cyl->end.mbar ? : cyl->sample_end.mbar;
-		/* we assume that every valid cylinder has either a working pressure
-		 * or a size; but for good measure let's also accept cylinders with
-		 * a starting or ending pressure*/
-		if (cyl->type.workingpressure.mbar || cyl->type.size.mliter || cyl->gasmix.o2.permille || start || end) {
+		if (!cylinder_none(cyl)) {
 			/* 0% O2 strangely means air, so 21% - I don't like that at all */
 			int o2 = cyl->gasmix.o2.permille ? : 209;
 			if (offset > 0) {

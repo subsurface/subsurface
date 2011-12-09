@@ -286,7 +286,7 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->o2), o2);
 }
 
-static int cyl_nothing(cylinder_t *cyl)
+int cylinder_none(cylinder_t *cyl)
 {
 	return	!cyl->type.size.mliter &&
 		!cyl->type.workingpressure.mbar &&
@@ -328,7 +328,7 @@ void show_dive_equipment(struct dive *dive)
 	do {
 		cylinder_t *cyl = &dive->cylinder[max-1];
 
-		if (!cyl_nothing(cyl))
+		if (!cylinder_none(cyl))
 			break;
 	} while (--max);
 
