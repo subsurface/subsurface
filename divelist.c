@@ -160,8 +160,9 @@ static void depth_data_func(GtkTreeViewColumn *col,
 		frac = depth % 10;
 		if (integer < 20)
 			break;
+		if (frac >= 5)
+			integer++;
 		frac = -1;
-		/* Rounding? */
 		break;
 	case FEET:
 		integer = mm_to_feet(depth) + 0.5;
