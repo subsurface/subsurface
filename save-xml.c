@@ -262,6 +262,8 @@ static void save_dive(FILE *f, struct dive *dive)
 	fputs("<dive", f);
 	if (dive->number)
 		fprintf(f, " number='%d'", dive->number);
+	if (dive->rating)
+		fprintf(f, " rating='%d'", dive->rating);
 	fprintf(f, " date='%04u-%02u-%02u'",
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
 	fprintf(f, " time='%02u:%02u:%02u'",

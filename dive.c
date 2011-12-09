@@ -559,6 +559,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_TXT(res, a, b, notes);
 	MERGE_TXT(res, a, b, buddy);
 	MERGE_TXT(res, a, b, divemaster);
+	MERGE_MAX(res, a, b, rating);
 	MERGE_MAX(res, a, b, number);
 	MERGE_MAX(res, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;
