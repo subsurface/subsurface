@@ -537,9 +537,11 @@ void dive_list_update_dives(void)
 }
 
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const char *title,
-				data_func_t data_func, PangoAlignment align, gboolean visible)
+				data_func_t data_func, unsigned int flags, int visible)
 {
-	return tree_view_column(dl->tree_view, index, title, data_func, align, visible);
+	if (!visible)
+		flags |= INVISIBLE;
+	return tree_view_column(dl->tree_view, index, title, data_func, flags);
 }
 
 /*
@@ -591,18 +593,17 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_MULTIPLE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
-	dive_list.nr = divelist_column(&dive_list, DIVE_NR, "#", NULL, PANGO_ALIGN_RIGHT, TRUE);
-	gtk_tree_view_column_set_sort_column_id(dive_list.nr, -1);
-	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT, TRUE);
-	dive_list.stars = divelist_column(&dive_list, DIVE_RATING, UTF8_BLACKSTAR, star_data_func, PANGO_ALIGN_LEFT, TRUE);
-	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, visible_cols.temperature);
-	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, PANGO_ALIGN_CENTER, visible_cols.cylinder);
-	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, PANGO_ALIGN_CENTER, visible_cols.nitrox);
-	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, PANGO_ALIGN_CENTER, visible_cols.sac);
-	dive_list.otu = divelist_column(&dive_list, DIVE_OTU, "OTU", otu_data_func, PANGO_ALIGN_CENTER, visible_cols.otu);
-	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, PANGO_ALIGN_LEFT, TRUE);
+	dive_list.nr = divelist_column(&dive_list, DIVE_NR, "#", NULL, ALIGN_RIGHT | UNSORTABLE, TRUE);
+	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, ALIGN_LEFT, TRUE);
+	dive_list.stars = divelist_column(&dive_list, DIVE_RATING, UTF8_BLACKSTAR, star_data_func, ALIGN_LEFT, TRUE);
+	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, ALIGN_RIGHT, TRUE);
+	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, ALIGN_RIGHT, TRUE);
+	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, ALIGN_RIGHT, visible_cols.temperature);
+	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, 0, visible_cols.cylinder);
+	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, 0, visible_cols.nitrox);
+	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, 0, visible_cols.sac);
+	dive_list.otu = divelist_column(&dive_list, DIVE_OTU, "OTU", otu_data_func, 0, visible_cols.otu);
+	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, ALIGN_LEFT, TRUE);
 
 	fill_dive_list();
 

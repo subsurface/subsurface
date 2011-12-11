@@ -57,7 +57,12 @@ typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    GtkTreeIter *iter,
 			    gpointer data);
 
+#define ALIGN_LEFT 1
+#define ALIGN_RIGHT 2
+#define INVISIBLE 4
+#define UNSORTABLE 8
+
 extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
-		data_func_t data_func, PangoAlignment align, gboolean visible);
+		data_func_t data_func, unsigned int flags);
 
 #endif

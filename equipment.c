@@ -897,13 +897,13 @@ GtkWidget *cylinder_list_widget(void)
 					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
 					  NULL);
 
-	tree_view_column(tree_view, CYL_DESC, "Type", NULL, PANGO_ALIGN_LEFT, TRUE);
-	tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, PANGO_ALIGN_RIGHT, TRUE);
+	tree_view_column(tree_view, CYL_DESC, "Type", NULL, ALIGN_LEFT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, ALIGN_RIGHT | UNSORTABLE);
 	return tree_view;
 }
 

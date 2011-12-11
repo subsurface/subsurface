@@ -202,17 +202,25 @@ static void quit(GtkWidget *w, gpointer data)
 }
 
 GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
-				data_func_t data_func, PangoAlignment align, gboolean visible)
+				data_func_t data_func, unsigned int flags)
 {
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *col;
 	double xalign = 0.0; /* left as default */
+	PangoAlignment align;
+	gboolean visible;
+
+	align = (flags & ALIGN_LEFT) ? PANGO_ALIGN_LEFT :
+		(flags & ALIGN_RIGHT) ? PANGO_ALIGN_RIGHT :
+		PANGO_ALIGN_CENTER;
+	visible = !(flags & INVISIBLE);
 
 	renderer = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new();
 
 	gtk_tree_view_column_set_title(col, title);
-	gtk_tree_view_column_set_sort_column_id(col, index);
+	if (!(flags & UNSORTABLE))
+		gtk_tree_view_column_set_sort_column_id(col, index);
 	gtk_tree_view_column_set_resizable(col, TRUE);
 	gtk_tree_view_column_pack_start(col, renderer, TRUE);
 	if (data_func)
