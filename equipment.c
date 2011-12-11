@@ -479,6 +479,17 @@ static struct tank_info {
 	{ "HP119", .cuft = 119, .psi = 3442 },
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
+	/* Common European steel cylinders */
+	{ "10L 300 bar",  .ml = 10000, .bar = 300 },
+	{ "12L 200 bar",  .ml = 12000, .bar = 200 },
+	{ "12L 232 bar",  .ml = 12000, .bar = 232 },
+	{ "12L 300 bar",  .ml = 12000, .bar = 300 },
+	{ "15L 200 bar",  .ml = 15000, .bar = 200 },
+	{ "15L 232 bar",  .ml = 15000, .bar = 232 },
+	{ "D7 300 bar",   .ml = 14000, .bar = 300 },
+	{ "D8.5 232 bar", .ml = 17000, .bar = 232 },
+	{ "D12 232 bar",  .ml = 24000, .bar = 232 },
+
 	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
 };
