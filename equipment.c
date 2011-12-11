@@ -450,35 +450,34 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
  */
 static struct tank_info {
 	const char *name;
-	int size;	/* cuft if < 1000, otherwise mliter */
-	int psi;	/* If zero, size is in mliter */
+	int cuft, ml, psi, bar;
 } tank_info[100] = {
 	/* Need an empty entry for the no-cylinder case */
-	{ "", 0, 0 },
+	{ "", },
 
 	/* Size-only metric cylinders */
-	{ "10.0 l", 10000 },
-	{ "11.1 l", 11100 },
+	{ "10.0 l", .ml = 10000 },
+	{ "11.1 l", .ml = 11100 },
 
 	/* Most common AL cylinders */
-	{ "AL50",   50, 3000 },
-	{ "AL63",   63, 3000 },
-	{ "AL72",   72, 3000 },
-	{ "AL80",   80, 3000 },
-	{ "AL100", 100, 3300 },
+	{ "AL50",  .cuft =  50, .psi = 3000 },
+	{ "AL63",  .cuft =  63, .psi = 3000 },
+	{ "AL72",  .cuft =  72, .psi = 3000 },
+	{ "AL80",  .cuft =  80, .psi = 3000 },
+	{ "AL100", .cuft = 100, .psi = 3300 },
 
 	/* Somewhat common LP steel cylinders */
-	{ "LP85",   85, 2640 },
-	{ "LP95",   95, 2640 },
-	{ "LP108", 108, 2640 },
-	{ "LP121", 121, 2640 },
+	{ "LP85",  .cuft =  85, 2640 },
+	{ "LP95",  .cuft =  95, 2640 },
+	{ "LP108", .cuft = 108, 2640 },
+	{ "LP121", .cuft = 121, 2640 },
 
 	/* Somewhat common HP steel cylinders */
-	{ "HP65",   65, 3442 },
-	{ "HP80",   80, 3442 },
-	{ "HP100", 100, 3442 },
-	{ "HP119", 119, 3442 },
-	{ "HP130", 130, 3442 },
+	{ "HP65",  .cuft =  65, .psi = 3442 },
+	{ "HP80",  .cuft =  80, .psi = 3442 },
+	{ "HP100", .cuft = 100, .psi = 3442 },
+	{ "HP119", .cuft = 119, .psi = 3442 },
+	{ "HP130", .cuft = 130, .psi = 3442 },
 
 	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
@@ -490,19 +489,25 @@ static void fill_tank_list(GtkListStore *store)
 	struct tank_info *info = tank_info;
 
 	while (info->name) {
-		int size = info->size;
+		int ml = info->ml;
+		int cuft = info->cuft;
 		int psi = info->psi;
-		int mbar = 0, ml = size;
+		int mbar;
+		double bar = info->bar;
 
 		/* Is it in cuft and psi? */
 		if (psi) {
-			double bar = psi_to_bar(psi);
-			double airvolume = cuft_to_l(size) * 1000.0;
-			double atm = bar_to_atm(bar);
+			bar = psi_to_bar(psi);
 
-			ml = airvolume / atm + 0.5;
-			mbar = bar*1000 + 0.5;
+			if (cuft) {
+				double airvolume = cuft_to_l(cuft) * 1000.0;
+				double atm = bar_to_atm(bar);
+
+				ml = airvolume / atm + 0.5;
+			}
 		}
+
+		mbar = bar * 1000 + 0.5;
 
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
