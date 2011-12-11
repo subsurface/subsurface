@@ -434,7 +434,7 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 static struct tank_info {
 	const char *name;
 	int size;	/* cuft if < 1000, otherwise mliter */
-	int psi;	/* If zero, size is in mliter */
+	int pressure;	/* psi if size < 1000, otherwise bar. If zero, size is in mliter. */
 } tank_info[100] = {
 	/* Need an empty entry for the no-cylinder case */
 	{ "", 0, 0 },
@@ -463,6 +463,18 @@ static struct tank_info {
 	{ "HP119", 119, 3442 },
 	{ "HP130", 130, 3442 },
 
+	/* Common European steel cylinders */
+	{ "10L 300 bar", 10000, 300 },
+	{ "12L 200 bar", 12000, 200 },
+	{ "12L 232 bar", 12000, 232 },
+	{ "12L 300 bar", 12000, 300 },
+	{ "15L 200 bar", 15000, 200 },
+	{ "15L 232 bar", 15000, 232 },
+	{ "D7 300 bar", 14000, 300 },
+	{ "D8.5 232 bar", 17000, 232 },
+	{ "D12 232 bar", 24000, 232 },
+
+
 	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
 };
@@ -474,12 +486,14 @@ static void fill_tank_list(GtkListStore *store)
 
 	while (info->name) {
 		int size = info->size;
-		int psi = info->psi;
+		int pressure = info->pressure;
 		int mbar = 0, ml = size;
 
-		/* Is it in cuft and psi? */
-		if (psi) {
-			double bar = psi_to_bar(psi);
+		/* Liters and bars or cuft and psi? */
+		if (pressure && size >= 1000) {
+			mbar = pressure*1000 + 0.5;
+		} else if (pressure) {
+			double bar = psi_to_bar(pressure);
 			double airvolume = cuft_to_l(size) * 1000.0;
 			double atm = bar_to_atm(bar);
 
