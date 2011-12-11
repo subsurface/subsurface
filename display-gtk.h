@@ -57,6 +57,11 @@ typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    GtkTreeIter *iter,
 			    gpointer data);
 
+typedef gint (*sort_func_t)(GtkTreeModel *model,
+			    GtkTreeIter *a,
+			    GtkTreeIter *b,
+			    gpointer user_data);
+
 #define ALIGN_LEFT 1
 #define ALIGN_RIGHT 2
 #define INVISIBLE 4
