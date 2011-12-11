@@ -413,6 +413,10 @@ static void get_cylinder(struct dive *dive, char **str)
 	get_string(str, dive->cylinder[0].type.description);
 }
 
+/*
+ * Set up anything that could have changed due to editing
+ * of dive information
+ */
 static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
@@ -422,10 +426,6 @@ static void fill_one_dive(struct dive *dive,
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
 
-	/*
-	 * We only set the fields that changed: the strings.
-	 * The core data itself is unaffected by units
-	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
@@ -433,6 +433,7 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_RATING, dive->rating,
 		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
+		DIVE_NITROX, dive->cylinder[0].gasmix.o2,
 		-1);
 }
 
