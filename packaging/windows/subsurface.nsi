@@ -82,6 +82,7 @@ file /oname=libpixman-1-0.dll dll\libpixman-1-0.dll
 file /oname=libpng15-15.dll dll\libpng15-15.dll
 file /oname=libtiff-3.dll dll\libtiff-3.dll
 file /oname=libxml2-2.dll dll\libxml2-2.dll
+file /oname=libxslt-1.dll dll\libxslt-1.dll
 file /oname=pthreadGC2.dll dll\pthreadGC2.dll
 file /oname=zlib1.dll dll\zlib1.dll
 sectionEnd
