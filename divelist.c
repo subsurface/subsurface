@@ -223,7 +223,13 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
-/* Get max O2/He permille levels for a dive for the dive summary */
+/*
+ * Get "maximal" dive gas for a dive.
+ * Rules:
+ *  - Trimix trumps nitrox (highest He wins, O2 breaks ties)
+ *  - Nitrox trumps air (even if hypoxic)
+ * These are the same rules as the inter-dive sorting rules.
+ */
 static void get_dive_gas(struct dive *dive, int *o2, int *he)
 {
 	int i;
@@ -231,10 +237,18 @@ static void get_dive_gas(struct dive *dive, int *o2, int *he)
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		struct gasmix *mix = &dive->cylinder[i].gasmix;
-		if (mix->o2.permille > maxo2)
-			maxo2 = mix->o2.permille;
-		if (mix->he.permille > maxhe)
-			maxhe = mix->he.permille;
+		int o2 = mix->o2.permille;
+		int he = mix->he.permille;
+
+		if (he > maxhe)
+			goto newmax;
+		if (he < maxhe)
+			continue;
+		if (o2 <= maxo2)
+			continue;
+newmax:
+		maxhe = he;
+		maxo2 = o2;
 	}
 	*o2 = maxo2;
 	*he = maxhe;
