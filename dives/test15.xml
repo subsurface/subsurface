@@ -1,0 +1,12 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<dive number='15' date='2011-12-01' time='10:00:00' duration='30:00 min'>
+  <depth max='70.0 m' mean='25.0 m' />
+  <temperature air='2.0 C' water='6.0 C' />
+  <location>15th test dive - trimix</location>
+  <notes>Nothing of value, just getting something for the divelist</notes>
+  <cylinder size='15.0 l' workpressure='232.009 bar' description='15L 232 bar' o2='15.0%' he='50.0%' start='227.527 bar' end='75.842 bar' />
+  <cylinder size='6.9 l' workpressure='206.843 bar' description='AL50' o2='70.0%' start='206.843 bar' end='68.948 bar' />
+  <cylinder size='15.0 l' workpressure='232.009 bar' description='15L 232 bar' start='227.527 bar' end='96.527 bar' />
+</dive>
+</dives>
