@@ -1,0 +1,22 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<dive number='19' date='2011-12-02' time='12:00:00' duration='30:00 min'>
+  <depth max='70.0 m' mean='25.0 m' />
+  <temperature air='2.0 C' water='6.0 C' />
+  <location>19th test dive - trimix</location>
+  <notes>Nothing of value, just getting something for the divelist</notes>
+  <cylinder size='12.0 l' workpressure='232.009 bar' description='15L 232 bar' o2='23.0%' start='200 bar' end='96.527 bar' />
+  <cylinder size='15.0 l' workpressure='232.009 bar' description='15L 232 bar' o2='21.0%' he='50.0%' start='232 bar' end='75.842 bar' />
+  <cylinder size='6.9 l' workpressure='206.843 bar' description='AL50' o2='50.0%' start='206.843 bar' end='68.948 bar' />
+  <event time='3:00 min' name='gaschange' value='21' />
+  <event time='15:00 min' name='gaschange' value='23' />
+  <event time='20:30 min' name='gaschange' value='50' />
+  <sample time='0:00 min' depth='0 m' />
+  <sample time='3:00 min' depth='30 m' />
+  <sample time='7:00 min' depth='70 m' />
+  <sample time='11:00 min' depth='70 m' />
+  <sample time='15:00 min' depth='30 m' />
+  <sample time='20:30 min' depth='5 m' />
+  <sample time='29:30 min' depth='5 m' />
+</dive>
+</dives>

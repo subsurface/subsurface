@@ -168,9 +168,10 @@ static void dump_pi (struct plot_info *pi)
 		pi->maxpressure, pi->mintemp, pi->maxtemp);
 	for (i = 0; i < pi->nr; i++)
 		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
-			"                temperature:%d depth:%d smoothed:%d}\n",
+			"                time:%d:%02d temperature:%d depth:%d smoothed:%d}\n",
 			i, pi->entry[i].same_cylinder, pi->entry[i].cylinderindex, pi->entry[i].sec,
 			pi->entry[i].pressure[0], pi->entry[i].pressure[1],
+			pi->entry[i].sec / 60, pi->entry[i].sec % 60,
 			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].smoothed);
 	printf("   }\n");
 }
