@@ -339,10 +339,13 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	if (dive->notes && *dive->notes)
 		gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
 
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
+
 	frame = gtk_frame_new("Cylinder");
 	cylinder = cylinder_list_widget();
 	gtk_container_add(GTK_CONTAINER(frame), cylinder);
-	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 }
 
 int edit_dive_info(struct dive *dive)

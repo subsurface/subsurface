@@ -45,7 +45,7 @@ enum {
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
 	DIVE_CYLINDER,
-	DIVE_NITROX,		/* int: in permille */
+	DIVE_NITROX,		/* int: dummy */
 	DIVE_SAC,		/* int: in ml/min */
 	DIVE_OTU,		/* int: in OTUs */
 	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
@@ -223,19 +223,66 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+/* Get max O2/He permille levels for a dive for the dive summary */
+static void get_dive_gas(struct dive *dive, int *o2, int *he)
+{
+	int i;
+	int maxo2 = -1, maxhe = -1;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		struct gasmix *mix = &dive->cylinder[i].gasmix;
+		if (mix->o2.permille > maxo2)
+			maxo2 = mix->o2.permille;
+		if (mix->he.permille > maxhe)
+			maxhe = mix->he.permille;
+	}
+	*o2 = maxo2;
+	*he = maxhe;
+}
+
+static gint nitrox_sort_func(GtkTreeModel *model,
+	GtkTreeIter *iter_a,
+	GtkTreeIter *iter_b,
+	gpointer user_data)
+{
+	int index_a, index_b;
+	struct dive *a, *b;
+	int a_o2, b_o2;
+	int a_he, b_he;
+
+	gtk_tree_model_get(model, iter_a, DIVE_INDEX, &index_a, -1);
+	gtk_tree_model_get(model, iter_b, DIVE_INDEX, &index_b, -1);
+	a = get_dive(index_a);
+	b = get_dive(index_b);
+	get_dive_gas(a, &a_o2, &a_he);
+	get_dive_gas(b, &b_o2, &b_he);
+
+	/* Sort by Helium first, O2 second */
+	if (a_he == b_he)
+		return a_o2 - b_o2;
+	return a_he - b_he;
+}
+
 static void nitrox_data_func(GtkTreeViewColumn *col,
 			     GtkCellRenderer *renderer,
 			     GtkTreeModel *model,
 			     GtkTreeIter *iter,
 			     gpointer data)
 {
-	int value;
+	int index, o2, he;
 	char buffer[80];
+	struct dive *dive;
 
-	gtk_tree_model_get(model, iter, DIVE_NITROX, &value, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &index, -1);
+	dive = get_dive(index);
+	get_dive_gas(dive, &o2, &he);
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
 
-	if (value)
-		snprintf(buffer, sizeof(buffer), "%.1f", value/10.0);
+	if (he)
+		snprintf(buffer, sizeof(buffer), "%d/%d", o2, he);
+	else if (o2)
+		snprintf(buffer, sizeof(buffer), "%d", o2);
 	else
 		strcpy(buffer, "air");
 
@@ -413,6 +460,10 @@ static void get_cylinder(struct dive *dive, char **str)
 	get_string(str, dive->cylinder[0].type.description);
 }
 
+/*
+ * Set up anything that could have changed due to editing
+ * of dive information
+ */
 static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
@@ -422,10 +473,6 @@ static void fill_one_dive(struct dive *dive,
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
 
-	/*
-	 * We only set the fields that changed: the strings.
-	 * The core data itself is unaffected by units
-	 */
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
@@ -516,7 +563,6 @@ static void fill_dive_list(void)
 			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, "location",
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
-			DIVE_NITROX, dive->cylinder[0].gasmix.o2,
 			DIVE_SAC, 0,
 			-1);
 	}
@@ -536,10 +582,45 @@ void dive_list_update_dives(void)
 	repaint_dive();
 }
 
-static GtkTreeViewColumn *divelist_column(struct DiveList *dl, int index, const char *title,
-				data_func_t data_func, PangoAlignment align, gboolean visible)
+static struct divelist_column {
+	const char *header;
+	data_func_t data;
+	sort_func_t sort;
+	unsigned int flags;
+	int *visible;
+} column[] = {
+	[DIVE_NR] = { "#", NULL, NULL, ALIGN_RIGHT | UNSORTABLE },
+	[DIVE_DATE] = { "Date", date_data_func, NULL, ALIGN_LEFT },
+	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
+	[DIVE_DEPTH] = { "ft", depth_data_func, NULL, ALIGN_RIGHT },
+	[DIVE_DURATION] = { "min", duration_data_func, NULL, ALIGN_RIGHT },
+	[DIVE_TEMPERATURE] = { UTF8_DEGREE "F", temperature_data_func, NULL, ALIGN_RIGHT, &visible_cols.temperature },
+	[DIVE_CYLINDER] = { "Cyl", NULL, NULL, 0, &visible_cols.cylinder },
+	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &visible_cols.nitrox },
+	[DIVE_SAC] = { "SAC", sac_data_func, NULL, 0, &visible_cols.sac },
+	[DIVE_OTU] = { "OTU", otu_data_func, NULL, 0, &visible_cols.otu },
+	[DIVE_LOCATION] = { "Location", NULL, NULL, ALIGN_LEFT },
+};
+
+
+static GtkTreeViewColumn *divelist_column(struct DiveList *dl, struct divelist_column *col)
 {
-	return tree_view_column(dl->tree_view, index, title, data_func, align, visible);
+	int index = col - &column[0];
+	const char *title = col->header;
+	data_func_t data_func = col->data;
+	sort_func_t sort_func = col->sort;
+	unsigned int flags = col->flags;
+	int *visible = col->visible;
+	GtkWidget *tree_view = dl->tree_view;
+	GtkListStore *model = dl->model;
+	GtkTreeViewColumn *ret;
+
+	if (visible && !*visible)
+		flags |= INVISIBLE;
+	ret = tree_view_column(tree_view, index, title, data_func, flags);
+	if (sort_func)
+		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(model), index, sort_func, NULL, NULL);
+	return ret;
 }
 
 /*
@@ -591,18 +672,17 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_MULTIPLE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
-	dive_list.nr = divelist_column(&dive_list, DIVE_NR, "#", NULL, PANGO_ALIGN_RIGHT, TRUE);
-	gtk_tree_view_column_set_sort_column_id(dive_list.nr, -1);
-	dive_list.date = divelist_column(&dive_list, DIVE_DATE, "Date", date_data_func, PANGO_ALIGN_LEFT, TRUE);
-	dive_list.stars = divelist_column(&dive_list, DIVE_RATING, UTF8_BLACKSTAR, star_data_func, PANGO_ALIGN_LEFT, TRUE);
-	dive_list.depth = divelist_column(&dive_list, DIVE_DEPTH, "ft", depth_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	dive_list.duration = divelist_column(&dive_list, DIVE_DURATION, "min", duration_data_func, PANGO_ALIGN_RIGHT, TRUE);
-	dive_list.temperature = divelist_column(&dive_list, DIVE_TEMPERATURE, UTF8_DEGREE "F", temperature_data_func, PANGO_ALIGN_RIGHT, visible_cols.temperature);
-	dive_list.cylinder = divelist_column(&dive_list, DIVE_CYLINDER, "Cyl", NULL, PANGO_ALIGN_CENTER, visible_cols.cylinder);
-	dive_list.nitrox = divelist_column(&dive_list, DIVE_NITROX, "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, PANGO_ALIGN_CENTER, visible_cols.nitrox);
-	dive_list.sac = divelist_column(&dive_list, DIVE_SAC, "SAC", sac_data_func, PANGO_ALIGN_CENTER, visible_cols.sac);
-	dive_list.otu = divelist_column(&dive_list, DIVE_OTU, "OTU", otu_data_func, PANGO_ALIGN_CENTER, visible_cols.otu);
-	dive_list.location = divelist_column(&dive_list, DIVE_LOCATION, "Location", NULL, PANGO_ALIGN_LEFT, TRUE);
+	dive_list.nr = divelist_column(&dive_list, column + DIVE_NR);
+	dive_list.date = divelist_column(&dive_list, column + DIVE_DATE);
+	dive_list.stars = divelist_column(&dive_list, column + DIVE_RATING);
+	dive_list.depth = divelist_column(&dive_list, column + DIVE_DEPTH);
+	dive_list.duration = divelist_column(&dive_list, column + DIVE_DURATION);
+	dive_list.temperature = divelist_column(&dive_list, column + DIVE_TEMPERATURE);
+	dive_list.cylinder = divelist_column(&dive_list, column + DIVE_CYLINDER);
+	dive_list.nitrox = divelist_column(&dive_list, column + DIVE_NITROX);
+	dive_list.sac = divelist_column(&dive_list, column + DIVE_SAC);
+	dive_list.otu = divelist_column(&dive_list, column + DIVE_OTU);
+	dive_list.location = divelist_column(&dive_list, column + DIVE_LOCATION);
 
 	fill_dive_list();
 
