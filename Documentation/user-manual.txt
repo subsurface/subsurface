@@ -2,7 +2,7 @@ Subsurface 1.2
 
 User Manual
 
-Version 0.0.1
+Version 0.0.2
 
 Autor documentation: Jacco van Koll
 
@@ -23,6 +23,7 @@ to Windows and Mac, but it clearly is a native Linux program first.
 Right now, the program is under development and from version 1.1 it is
 already very usable for divers with supported dive-computers.
 
+In this manual the Suunto Viper will be used for all examples.
 
 2. Requirements
 
@@ -53,18 +54,53 @@ The screen is devided in 3 area's:
 4. Import new dives
 
 Before you start fiddeling around with your divecomputer, note that
-many divecomputers (for example, all the Suunto computers) consume
-more power when they are in the PC-Communication mode. This could
-drain your battery. Therefor, ensure yourself that you prepared the
-installation as mentioned in the build manual and that your
-divecomputer is compatible!
+there are divecomputers that consume more power when they are in the
+PC-Communication mode. This could drain your battery. Therefor, ensure
+if your computer is recharging when connecting to the USB port. The
+Suunto Viper does not recharge trough the USB connection. Please
+consult the manual of your divecomputer if you are unsure if it will
+be recharged when connected to the USB port.
 
-...
+Now it is time to hook up your divecomputer to your Linux system:
+
+    Connect your interface cable to your divecomputer
+    Connect your interface cable to a free USB port
+    Put your divecomputer into PC Communication mode. (For Suunto Viper, press Mode - 1 Memory - 3 TR-PC)
+	(You should consult the manual of your specific divecomputer for your brand and type)
+    Go in Subsurface to 'File - Import'
+	Within the popup, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
+	Change the devicename under which your interface is connected. Default is /dev/ttyUSB0
+	Click the 'OK' button.
+
+    Now watch how your data is retrieved from your divecomputer!
+    Depending on your type of computer and/or number of dives, this
+    could take some time. Please be patient.
 
 
-5. Load existing dive log
+5. Viewing and completing your logs
 
-...
+When all data from your divecomputer is transferred, you will see a
+listing of your dives in Area 3.
+
+An example:
+
+On Sunday Oct 23, 2011 you made a dive. In the log line of this dive, you see the following information:
+
+    #: 		12				Dive number
+    Date:	Sun, Oct 23, 2011 10:50		Date and time of your dive
+    *:						Your rating (none at this time)
+    m:		12.8				Your maximum depth in meters
+    min:	31:20				Your dive-time in minutes and seconds
+    Deg. C:	13.0				Lowest water temperature during your dive
+    Cyl:					Your used cylinder (none at this time)
+    O2%:	air				What type of mixture
+    SAC:					SAC (none at this time)
+    Location:					Where you performed your dive (empty)
+
+    As you can see, some information is already there because it is
+    retrieved from your divecomputer. Some information is waiting for
+    you to be added. By double clicking on this dive, you can view and
+    complete the log.
 
 
 6. Edit the dive info
@@ -76,9 +112,10 @@ divecomputer is compatible!
 
 8. Setting up preferences
 
-By using menu 'File - Preferences' you will be presented a popup with
-the 'Units'. You are free to choose what is your preference, with
-other words, use Metric or Imperial.
+Subsurface has the ability to modify the preferences you want. By
+using menu 'File - Preferences' you will be presented a popup with the
+'Units'. You are free to choose what is your preference, with other
+words, use Metric or Imperial.
 
 You can set the following options:
 	Depth:		Your diving depth in Meters or Feet
