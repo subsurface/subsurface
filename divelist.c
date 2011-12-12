@@ -230,16 +230,23 @@ static void temperature_data_func(GtkTreeViewColumn *col,
  *  - Nitrox trumps air (even if hypoxic)
  * These are the same rules as the inter-dive sorting rules.
  */
-static void get_dive_gas(struct dive *dive, int *o2, int *he)
+static void get_dive_gas(struct dive *dive, int *o2, int *he, int *o2low)
 {
 	int i;
-	int maxo2 = -1, maxhe = -1;
+	int maxo2 = -1, maxhe = -1, mino2 = 1000;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		struct gasmix *mix = &dive->cylinder[i].gasmix;
+		cylinder_t *cyl = dive->cylinder + i;
+		struct gasmix *mix = &cyl->gasmix;
 		int o2 = mix->o2.permille;
 		int he = mix->he.permille;
 
+		if (cylinder_none(cyl))
+			continue;
+		if (!o2)
+			o2 = 209;
+		if (o2 < mino2)
+			mino2 = o2;
 		if (he > maxhe)
 			goto newmax;
 		if (he < maxhe)
@@ -250,8 +257,12 @@ newmax:
 		maxhe = he;
 		maxo2 = o2;
 	}
+	/* All air? Show/sort as "air"/zero */
+	if (!maxhe && maxo2 == 209 && mino2 == maxo2)
+		maxo2 = mino2 = 0;
 	*o2 = maxo2;
 	*he = maxhe;
+	*o2low = mino2;
 }
 
 static gint nitrox_sort_func(GtkTreeModel *model,
@@ -263,17 +274,21 @@ static gint nitrox_sort_func(GtkTreeModel *model,
 	struct dive *a, *b;
 	int a_o2, b_o2;
 	int a_he, b_he;
+	int a_o2low, b_o2low;
 
 	gtk_tree_model_get(model, iter_a, DIVE_INDEX, &index_a, -1);
 	gtk_tree_model_get(model, iter_b, DIVE_INDEX, &index_b, -1);
 	a = get_dive(index_a);
 	b = get_dive(index_b);
-	get_dive_gas(a, &a_o2, &a_he);
-	get_dive_gas(b, &b_o2, &b_he);
+	get_dive_gas(a, &a_o2, &a_he, &a_o2low);
+	get_dive_gas(b, &b_o2, &b_he, &b_o2low);
 
 	/* Sort by Helium first, O2 second */
-	if (a_he == b_he)
+	if (a_he == b_he) {
+		if (a_o2 == b_o2)
+			return a_o2low - b_o2low;
 		return a_o2 - b_o2;
+	}
 	return a_he - b_he;
 }
 
@@ -283,20 +298,24 @@ static void nitrox_data_func(GtkTreeViewColumn *col,
 			     GtkTreeIter *iter,
 			     gpointer data)
 {
-	int index, o2, he;
+	int index, o2, he, o2low;
 	char buffer[80];
 	struct dive *dive;
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &index, -1);
 	dive = get_dive(index);
-	get_dive_gas(dive, &o2, &he);
+	get_dive_gas(dive, &o2, &he, &o2low);
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
+	o2low = (o2low + 5) / 10;
 
 	if (he)
 		snprintf(buffer, sizeof(buffer), "%d/%d", o2, he);
 	else if (o2)
-		snprintf(buffer, sizeof(buffer), "%d", o2);
+		if (o2 == o2low)
+			snprintf(buffer, sizeof(buffer), "%d", o2);
+		else
+			snprintf(buffer, sizeof(buffer), "%d-%d", o2low, o2);
 	else
 		strcpy(buffer, "air");
 
