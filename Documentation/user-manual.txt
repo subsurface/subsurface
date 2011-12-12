@@ -82,7 +82,7 @@ listing of your dives in Area 3.
 
 An example:
 
-On Sunday Oct 23, 2011 you made a dive. 
+On Sunday Oct 23, 2011 you made a dive.
 In the log line of this dive, you see the following information:
 
     #: 		12				Dive number
@@ -104,21 +104,23 @@ In the log line of this dive, you see the following information:
 
 6. Edit the dive info
 
-When you double click on the dive log line, the editor window opens. Now you
-can add information that is missing. Let start with completing the example:
+When you double click on the dive log line, the editor window
+opens. Now you can add information that is missing. Let start with
+completing the example:
 
-You double clicked on dive #12, as described in 5. Viewing and completing your logs.
-The Dive Info window pops up and you will see the following:
+You double clicked on dive #12, as described in 5. Viewing and
+completing your logs.  The Dive Info window pops up and you will see
+the following:
 
     Location:	 An input where you can enter your new location, or you can choose with the pull-down previous locations
     Dive Master: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
     Buddy:	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
-    Rating:	 A pull-down where you can rate your dive. 
+    Rating:	 A pull-down where you can rate your dive.
     Notes:	 A free input where you can enter information about your dive. What you've seen, etc.
 
 In this example we use the following information:
 
-    Location:	 	Oostvoornse Meer    
+    Location:	 	Oostvoornse Meer
     Dive Master:	S. de Vries
     Buddy:		S. de Vries
     Rating:		3 stars
@@ -130,39 +132,42 @@ Now don't press ok yet!
 
 7. Edit equipment info
 
-You also want to edit your Cylinder information. And in the previous chapter, this was not edited. There is
-still another item to edit in the Dive Info screen:
+You also want to edit your Cylinder information. And in the previous
+chapter, this was not edited. There is still another item to edit in
+the Dive Info screen:
 
     Cylinder:	 A double-click fieldset. Here you can edit your Cylinder information
 
-So, when you double click on the cylinder info, you get another popup. This popup gives you the following:
+So, when you double click on the cylinder info, you get another
+popup. This popup gives you the following:
 
     Cylinder: 	Pull-down where you can choose your Cylinder, or add your own
     Size:	The volume if not 'filled'
     Pressure:	The maximum pressure of this Cylinder
     Optional:
-    		Start Pressure: What was the pressure starting the dive
-    		End Pressure:	What was the pressure ending the dive
-    		Nitrox:		What was the percentage of blend    
+		Start Pressure: What was the pressure starting the dive
+		End Pressure:	What was the pressure ending the dive
+		Nitrox:		What was the percentage of blend
 
 Now we are going to enter the data:
 
     Cylinder:	15.0 l
     Size:	15.0
     Pressure:	220
-    
+
     Now tick the option for Start & End pressure
-    
+
     Start Pressure:	180
     End Pressure:	60
     Press Ok
 
-Now your dive information for this dive is complete. You can now press ok in the Dive Info screen and view the results.
+Now your dive information for this dive is complete. You can now press
+ok in the Dive Info screen and view the results.
 
 8. Adding equipment info
 
-In Area with the 3 tabs there is the tab Equipment. With this tab, you can add Cylinders. 
-We are going to add an additional Cylinder:
+In Area with the 3 tabs there is the tab Equipment. With this tab, you
+can add Cylinders.  We are going to add an additional Cylinder:
 
 	In the main screen, click on the Equipment tab. This shows your Cylinder you added in 7.
 	Now press the Add button and the Cylinder popup comes back.
@@ -171,13 +176,14 @@ We are going to add an additional Cylinder:
 
 9. View info & Stats
 
-After adding all the information, you can use the tab Info & Stats. This tab will provide
-you with all the (statistical and calculated) information regarding your dive.
+After adding all the information, you can use the tab Info &
+Stats. This tab will provide you with all the (statistical and
+calculated) information regarding your dive.
 
 The information contains:
 
    Dive Info:
-   
+
 	Date:		Date and time of your dive
 	Dive Time:	Duration of your dive
 	Surf Intv:	Interval between previous dive and this dive
@@ -188,16 +194,16 @@ The information contains:
 	OTU:		The Oxygen Toxicity Units of this dive
 	O2/He:		Amount of Oxygen/Helium
 	Gas Used:	The total volume of gas used during this dive
-   
+
    Statistics:
-   
-   	Total time:	Total time of all your dives together, calculated
-   	Avg Time:	The average divetime of your dives, calculated
-   	Max Depth:	The maximum depth of all your dives
-   	Avg Depth:	The average depth of all your dives, calculated
-   	Max SAC:	Highest of Surface Air Consumption of all your dives
-   	Min SAC:	Lowest of Surface Air Consumption of all your dives
-   	Avg SAC:	Average Surface Air Consuption of all your dives, calculated   	
+
+	Total time:	Total time of all your dives together, calculated
+	Avg Time:	The average divetime of your dives, calculated
+	Max Depth:	The maximum depth of all your dives
+	Avg Depth:	The average depth of all your dives, calculated
+	Max SAC:	Highest of Surface Air Consumption of all your dives
+	Min SAC:	Lowest of Surface Air Consumption of all your dives
+	Avg SAC:	Average Surface Air Consuption of all your dives, calculated
 
 10. Setting up preferences
 
@@ -212,7 +218,9 @@ You can set the following options:
 	Volume:		The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
 	Temperature:	The temperature of the water in Celcius or Fahrenheit
 
-In the main screen, you did see in Area 3, some information. In the Columns options, you can enable/disable options you  would like to show there:
+In the main screen, you did see in Area 3, some information. In the
+Columns options, you can enable/disable options you would like to show
+there:
 	Show Temp:	Shows the temperature of your dive
 	Show Cyl:	Shows the cylinder(s) of your dive
 	Show O2%:	Shows the O2% of your dive
