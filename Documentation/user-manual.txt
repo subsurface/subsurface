@@ -4,13 +4,10 @@ User Manual
 
 Version 0.0.1
 
-(c) subsurface - Linus Torvalds 2011
-
-
 Autor documentation: Jacco van Koll
 
 
-Scope of this document is the usage of the program. 
+Scope of this document is the usage of the program.
 Please read the build manual for instructions how to build the
 software and (if needed) it´s dependencies.
 
@@ -20,68 +17,102 @@ Audience: Fun Divers, Tec Divers, Professional Divers
 
 1. Introduction:
 
-Besides his family, Linus has another hobby. This is diving. He tries to dive
-on nice spots whenever he can. Linus got bored by the fact that there wasn't  a proper dive-log program natively for Linux and decided to write one by himself. This is how Subsurface was 'born'. Right now, the program is under development and from version 1.1 it is already very usable for divers with supported dive-computers.
+Subsurface was started because of a lack of viable dive log software
+on Linux. It turns out that the resulting software was easily ported
+to Windows and Mac, but it clearly is a native Linux program first.
+Right now, the program is under development and from version 1.1 it is
+already very usable for divers with supported dive-computers.
 
-2. Complete?
 
-Before you are going to read information from your divecomputer to Subsurface, you need some preparation. Do you have the following:
+2. Requirements
+
+Before you are able to import information from your divecomputer into
+Subsurface, you need some preparation. Do you have the following:
 
 	1. Your Divecomputer - Compatible with libdivecomputer (see list in Appendix A)
 	2. Communication interface - Cable to connect your divecomputer to your PC/Laptop/Netbook
-	3. Working installation of libdivecomputer (see the build manual how to do this)
-	4. Working installation of Subsurface
-	5. If needed, the manual of your divecomputer 
+	3. Working installation of Subsurface
+	4. If needed, the manual of your divecomputer
+
 
 3. Start using the program:
 
-When you start the program for the first time, it shows no information at all. This is because the program does not automatically load the already available dive-log files. 
+When you start the program for the first time, it shows no information
+at all. This is because the program does not automatically load the
+already available dive-log files.
 
 There is a menu, containing 'File', 'Log', 'Filter' and Help.
 
-The screen is devided in 3 area's: 
+The screen is devided in 3 area's:
 
 	Area with 3 tabs: Dive Notes, Equipment, Info & Stats
-	Area next to the 3 tabs, which will contain the diagrams
-	Area with the dives, which can be sorted by number, date, etc.
-	
-The first thing you should do, is setting the preferences you want. By using menu 'File - Preferences' you will be presented a popup with the 'Units'. You are free to choose what is your preference, with other words, use Metric or Imperial.
+	Area next to the 3 tabs, which will contain the dive profile
+	Area with the dives (usually called dive list), which can be sorted by number, date, etc.
+
+
+4. Import new dives
+
+Before you start fiddeling around with your divecomputer, note that
+many divecomputers (for example, all the Suunto computers) consume
+more power when they are in the PC-Communication mode. This could
+drain your battery. Therefor, ensure yourself that you prepared the
+installation as mentioned in the build manual and that your
+divecomputer is compatible!
+
+...
+
+
+5. Load existing dive log
+
+...
+
+
+6. Edit the dive info
+
+
+
+7. Edit equipment info
+
+
+8. Setting up preferences
+
+By using menu 'File - Preferences' you will be presented a popup with
+the 'Units'. You are free to choose what is your preference, with
+other words, use Metric or Imperial.
 
 You can set the following options:
 	Depth:		Your diving depth in Meters or Feet
 	Pressure:	The pressure of your tank(s) in Bar/Ato or PSI (Pressure Square Inch)
 	Volume:		The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
 	Temperature:	The temperature of the water in Celcius or Fahrenheit
-	
+
 In the main screen, you did see in Area 3, some information. In the Columns options, you can enable/disable options you  would like to show there:
 	Show Temp:	Shows the temperature of your dive
 	Show Cyl:	Shows the cylinder(s) of your dive
 	Show O2%:	Shows the 02% of your dive
 	Show SAC:	Shows the SAC of your dive (Surface Air Consumption)
-	Show OTU:	Shows the OTU of your dive
-	
+	Show OTU:	Shows the OTU of your dive (Oxygen Toxicity Units)
+
 And, you can change the font usage of the program.
 
 I will give an example here:
 
-I am a diver in The Netherlands, using the Metric System. Therefor, I go to the menu File, choose Preferences here. In the Units section, I use the folowing:
-	
+I am a diver in The Netherlands, using the Metric System. Therefor, I
+go to the menu File, choose Preferences here. In the Units section, I
+use the folowing:
+
 	Depth:		Meter
 	Pressure:	Bar
 	Volume:		Liter
 	Temperature:	Celcius
-	
+
 I would like to see the:
-			Temperature 
+			Temperature
 			Show Cyl
 			Show O2%
 			Show SAC
-	
-I don't know yet what the OTU is, because I am a beginner. So I leave this one not enabled.
 
-So, now I am ready to use the program.
+As a beginning diver, I don't need to track my OTUs. So I leave this
+one not enabled.
 
-4. Reading information from your divecomputer
-
-Before you start fiddeling around with your divecomputer, note that most divecomputers consume more power when they are in the PC-Communication mode. This could drain your battery. Therefor, ensure yourself that you prepaired the installation as mentioned in the build manual and that your divecomputer is compatible! 
-
+Clicking OK on the dialog stores these settings.
