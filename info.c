@@ -333,6 +333,10 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	info->divemaster = text_entry(hbox, "Dive master", people_list, dive->divemaster);
 	info->buddy = text_entry(hbox, "Buddy", people_list, dive->buddy);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
+
 	info->rating = text_entry(hbox, "Rating", star_list, star_strings[dive->rating]);
 
 	info->notes = text_view(box, "Notes", READ_WRITE);
@@ -400,6 +404,10 @@ GtkWidget *extended_dive_info_widget(void)
 
 	divemaster = text_value(hbox, "Divemaster");
 	buddy = text_value(hbox, "Buddy");
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
 	rating = text_value(hbox, "Rating");
 
 	notes = text_view(vbox, "Notes", READ_ONLY);
