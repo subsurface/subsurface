@@ -32,6 +32,8 @@ extern void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 extern const void *subsurface_get_conf(char *name, pref_type_t type);
 extern void subsurface_close_conf(void);
 
+extern const char *subsurface_USB_name(void);
+
 extern visible_cols_t visible_cols;
 
 extern const char *divelist_font;

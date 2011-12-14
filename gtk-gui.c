@@ -913,7 +913,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 
 	entry = gtk_entry_new();
 	gtk_container_add(GTK_CONTAINER(frame), entry);
-	gtk_entry_set_text(GTK_ENTRY(entry), "/dev/ttyUSB0");
+	gtk_entry_set_text(GTK_ENTRY(entry), subsurface_USB_name());
 
 	return GTK_ENTRY(entry);
 }
