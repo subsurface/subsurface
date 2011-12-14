@@ -2,7 +2,7 @@ Subsurface 1.2
 
 User Manual
 
-Version 0.0.3
+Version 0.0.4
 
 Autor documentation: Jacco van Koll <jko@haringstad.com>
 
@@ -22,6 +22,7 @@ Right now, the program is under development and from version 1.1 it is
 already very usable for divers with supported dive-computers.
 
 In this manual the Suunto Viper will be used for all examples.
+
 
 2. Requirements
 
@@ -164,6 +165,7 @@ Now we are going to enter the data:
 Now your dive information for this dive is complete. You can now press
 ok in the Dive Info screen and view the results.
 
+
 8. Adding equipment info
 
 In Area with the 3 tabs there is the tab Equipment. With this tab, you
@@ -173,6 +175,7 @@ can add Cylinders.  We are going to add an additional Cylinder:
 	Now press the Add button and the Cylinder popup comes back.
 	Just like you added your Cylinder information in 7. Edit equipment info, you add your cylinder
 	information for the second Cylinder. Fill in all the information about this Cylinder and press OK.
+
 
 9. View info & Stats
 
@@ -204,6 +207,7 @@ The information contains:
 	Max SAC:	Highest of Surface Air Consumption of all your dives
 	Min SAC:	Lowest of Surface Air Consumption of all your dives
 	Avg SAC:	Average Surface Air Consuption of all your dives, calculated
+
 
 10. Setting up preferences
 
@@ -250,3 +254,86 @@ As a beginning diver, I don't need to track my OTUs. So I leave this
 one not enabled.
 
 Clicking OK on the dialog stores these settings.
+
+
+11. How to find the Device Name
+
+When you connect your divecomputer by using an USB connector, most of the
+time, the default of ´/dev/ttyUSB0' should work. But if you have other
+Serial to USB devices, this can be different because '/dev/ttyUSB0' is
+already in use.
+
+One of the ways to find out what your dive name is:
+
+	Disconnect your usb cable of your dive computer
+	Open a terminal
+	Type the command: 'dmesg' and press enter
+	Plug in your usb cable of your divecomputer
+	Type the command: 'dmesg' and press enter
+
+Within your terminal you should see a message similair to this one:
+
+	usb 2-1.1: new full speed USB device number 14 using ehci_hcd
+	usbcore: registered new interface driver usbserial
+	USB Serial support registered for generic
+	usbcore: registered new interface driver usbserial_generic
+	usbserial: USB Serial Driver core
+	USB Serial support registered for FTDI USB Serial Device
+	ftdi_sio 2-1.1:1.0: FTDI USB Serial Device converter detected
+	usb 2-1.1: Detected FT232BM
+	usb 2-1.1: Number of endpoints 2
+	usb 2-1.1: Endpoint 1 MaxPacketSize 64
+	usb 2-1.1: Endpoint 2 MaxPacketSize 64
+	usb 2-1.1: Setting MaxPacketSize 64
+	usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB3
+	usbcore: registered new interface driver ftdi_sio
+	ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver
+
+You see that in the third line from the bottom, the usb adapter is
+detected and is connected to 'ttyUSB3'. Now you use this information in
+the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
+connected and you should be able to import your dives.
+
+interface cable to this serial port, 
+
+Appendix A
+
+The use of libdivecomputer provides the support for divecomputers. Within
+the list of computers in the 'File - import' menu, you will see a listing
+of divecomputers. This list is covering a compatible set. Please check
+your users manual to check if your computer will be supported.
+
+   Supported divecomputers:
+
+	Atomics:
+		Cobalt
+	Cressi:
+		Edi
+	Mares:
+		Icon HD
+		Nemo
+		Puck
+	Oceanic:
+		Veo250
+		VT Pro
+	OSTC: *
+		DR5
+		2N
+	Reefnet:
+		Sensus
+		Sensus Pro
+		Sensus Ultra
+	Suunto:
+		D9
+		Eon
+		Solution
+		Viper
+		Viper Air
+	Uwatec:
+		Aladin
+		Memo Mouse
+		Smart
+	Zeagle:
+		N2iTiON 3
+
+* OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
