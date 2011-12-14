@@ -62,13 +62,32 @@ be recharged when connected to the USB port.
 
 Now it is time to hook up your divecomputer to your Linux system:
 
-    Connect your interface cable to your divecomputer
+    Make sure that your OS has the required drivers installed
+
+	 On Linux this means you need to have the correct kernel
+	 module loaded. Most distributions will do this automatically
+	 for you.
+
+	 On Windows, the OS should offer to download the correct
+	 driver when you connect to the USB port.
+
+	 On a Mac you at times have to manually hunt for the correct
+	 driver. For example the correct driver for the Mares Puck
+	 devices can be found as Mac_OSX_VCP_Driver.zip at
+	 http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
+
     Connect your interface cable to a free USB port
+
     Put your divecomputer into PC Communication mode. (For Suunto Viper, press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific divecomputer for your brand and type)
+
     Go in Subsurface to 'File - Import'
 	Within the popup, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
-	Change the devicename under which your interface is connected. Default is /dev/ttyUSB0
+	Change the devicename under which your interface is connected.
+	       On Linux, default is /dev/ttyUSB0
+	       On Windows, default is COM3
+	       On Mac, default is ... specific to the dive computer
+
 	Click the 'OK' button.
 
     Now watch how your data is retrieved from your divecomputer!
@@ -294,7 +313,6 @@ detected and is connected to 'ttyUSB3'. Now you use this information in
 the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
 
-interface cable to this serial port, 
 
 Appendix A
 
