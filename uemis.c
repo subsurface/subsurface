@@ -88,7 +88,7 @@ static int pressure_to_depth(uint16_t value)
 
 	atm = bar_to_atm(value / 100.0);
 	cm = 100 * atm + 0.5;
-	return( (cm > 0) ? 10 * (long)cm : 0);
+	return (cm > 0) ? 10 * (long)cm : 0;
 }
 
 /*

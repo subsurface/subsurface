@@ -858,7 +858,7 @@ int process_ui_events(void)
 			break;
 		}
 	}
-	return(ret);
+	return ret;
 }
 
 
