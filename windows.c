@@ -78,3 +78,8 @@ void subsurface_close_conf(void)
 		printf("RegFlushKey failed \n");
 	RegCloseKey(hkey);
 }
+
+const char *subsurface_USB_name()
+{
+	return("COM3");
+}

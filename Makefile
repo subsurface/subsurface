@@ -25,11 +25,10 @@ DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt
 
-MACOSXINSTALL = /Applications/Subsurface.app
-MACOSXFILES = packaging/macosx
+UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 
 # find libdivecomputer
-# First deal with the cross compile environment.
+# First deal with the cross compile environment and with Mac.
 # For the native case, Linus doesn't want to trust pkg-config given
 # how young libdivecomputer still is - so we check the typical
 # subdirectories of /usr/local and /usr and then we give up. You can
@@ -37,13 +36,14 @@ MACOSXFILES = packaging/macosx
 #
 ifeq ($(CC), i686-w64-mingw32-gcc)
 # ok, we are cross building for Windows
-	LIBDIVECOMPUTERDIR = /usr/i686-w64-mingw32/sys-root/mingw/include/libdivecomputer
 	LIBDIVECOMPUTERINCLUDES = `$(PKGCONFIG) --cflags libdivecomputer`
 	LIBDIVECOMPUTERARCHIVE = `$(PKGCONFIG) --libs libdivecomputer`
 	RESFILE = packaging/windows/subsurface.res
 	LDFLAGS += -Wl,-subsystem,windows
+else ifeq ($(UNAME), darwin)
+	LIBDIVECOMPUTERINCLUDES = `$(PKGCONFIG) --cflags libdivecomputer`
+	LIBDIVECOMPUTERARCHIVE = `$(PKGCONFIG) --libs libdivecomputer`
 else
-
 libdc-local := $(wildcard /usr/local/lib/libdivecomputer.a)
 libdc-local64 := $(wildcard /usr/local/lib64/libdivecomputer.a)
 libdc-usr := $(wildcard /usr/lib/libdivecomputer.a)
@@ -87,9 +87,6 @@ GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 
-UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
-
-
 ifeq ($(UNAME), linux)
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
@@ -98,6 +95,9 @@ ifeq ($(UNAME), linux)
 else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
+	MACOSXINSTALL = /Applications/Subsurface.app
+	MACOSXFILES = packaging/macosx
+	EXTRALIBS = -framework CoreFoundation
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
@@ -110,7 +110,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) -lpthread
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) -lpthread
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
