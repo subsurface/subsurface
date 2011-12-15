@@ -81,5 +81,5 @@ void subsurface_close_conf(void)
 
 const char *subsurface_USB_name()
 {
-	return("COM3");
+	return "COM3";
 }
