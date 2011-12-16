@@ -314,7 +314,7 @@ the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
 
 
-12. Importing dives from JDivelog
+12. Importing dives from JDivelog or other dive log programs
 
 Maybe you have been using JDivelog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
@@ -347,6 +347,24 @@ Information that is not (yet) imported from JDivelog:
 	Type of dive
 	Dive activity
 
+Alternatively, you can start sunsurface with the --import comand line
+which will have the same effect:
+
+      subsurface MyDives.xml --import JDivelogDives.jlb
+
+will open your divelog (assuming that's called MyDives.xml) and then
+import the dives from JdivelogDives.jlb. You can now save the combined
+divelog back as MyDives.xml.
+
+Subsurface will similarly import xml exports from DivingLog as well as
+Suunto DiveManager.
+
+When importing dives subsurface tries to detect multiple records for
+the same dive and merges the information as best as it can. So as long
+as there are no time zone issues (or other reasons that would cause the
+beginning time of the dives to be substantially different) subsurface
+will not create duplicate entries.
+
 
 Appendix A
 
@@ -365,6 +383,7 @@ your users manual to check if your computer will be supported.
 		Icon HD
 		Nemo
 		Puck
+			Air
 	Oceanic:
 		Veo250
 		VT Pro
@@ -408,5 +427,3 @@ your users manual to check if your computer will be supported.
 		N2iTiON 3
 
 * OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
-
-
