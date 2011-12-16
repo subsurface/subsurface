@@ -2,7 +2,7 @@ Subsurface 1.2
 
 User Manual
 
-Version 0.0.4
+Version 0.0.5
 
 Autor documentation: Jacco van Koll <jko@haringstad.com>
 
@@ -314,6 +314,40 @@ the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
 
 
+12. Importing dives from JDivelog
+
+Maybe you have been using JDivelog and you have a lot of dives logged in
+this program. You don't have to type all information by hand into
+Subsurface, because you can import your divelogs from JDivelog.
+
+JDivelog stores it's information into files with the extention of .jlb.
+These .jlb contain all the information that has been stored, except your
+images in xml format.
+
+By using the menu 'File - Import' you get the popup, like described in
+chapter 4, Importing new dives. Within this popup there is the option
+to import existing files which are already on your computer. To import
+your JDivelog file(s) do the following:
+
+	Open 'File - Import' on the menu
+	Use the file locator under XML file name
+	Browse your directories to the location where your *.jlb file is
+	Select your existing *.jlb file and click 'open'
+	Click the OK button in the popup
+
+After a few moments, you see your existing logs in Subsurface. Now you can
+edit your dives like explained in chapter 6.
+
+Information that is not (yet) imported from JDivelog:
+
+	Used amount of weight
+	Used type of suit
+	Used type of gloves
+	Extended dive location information
+	Type of dive
+	Dive activity
+
+
 Appendix A
 
 The use of libdivecomputer provides the support for divecomputers. Within
@@ -342,11 +376,30 @@ your users manual to check if your computer will be supported.
 		Sensus Pro
 		Sensus Ultra
 	Suunto:
+		Cobra
+			2
+			3
+		D3
 		D9
+			D4
+			D4i
+			D6
+			D6i
+			D9tx
 		Eon
+		Gekko
+		HelO2
+		Mosquito
 		Solution
-		Viper
-		Viper Air
+			Alpha
+			Nitrox/Vario
+		Stinger
+		Vyper
+			2
+			Air
+		Vytec
+			DS
+		Zoop
 	Uwatec:
 		Aladin
 		Memo Mouse
@@ -355,3 +408,5 @@ your users manual to check if your computer will be supported.
 		N2iTiON 3
 
 * OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
+
+
