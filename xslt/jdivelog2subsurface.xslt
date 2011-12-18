@@ -66,13 +66,10 @@
 
       <notes>
         <xsl:if test="DiveActivity != ''">
-          <xsl:value-of select="DiveActivity"/>
+Diveactivity: <xsl:value-of select="DiveActivity"/>
         </xsl:if>
-        <xsl:if test="Comment != ''">
-          <xsl:if test="DiveActivity != ''">
-            <xsl:value-of select="': '"/>
-          </xsl:if>
-          <xsl:value-of select="Comment"/>
+        <xsl:if test="DiveType != ''">
+Divetype: <xsl:value-of select="DiveType"/>
         </xsl:if>
         <xsl:if test="Equipment/Visibility != ''">
 Visibility: <xsl:value-of select="Equipment/Visibility"/>
@@ -86,41 +83,51 @@ Gloves: <xsl:value-of select="Equipment/Gloves"/>
         <xsl:if test="Equipment/Weight != ''">
 Weight: <xsl:value-of select="Equipment/Weight"/>
         </xsl:if>
+        <xsl:if test="Comment != ''">
+Comment: <xsl:value-of select="Comment"/>
+        </xsl:if>
       </notes>
 
       <!-- cylinder -->
-      <xsl:variable name="o2">
-        <xsl:choose>
-          <xsl:when test="DIVE/GASES/MIX/O2 != ''">
-            <xsl:value-of select="concat(DIVE/GASES/MIX/O2*100, '%')"/>
-          </xsl:when>
-          <xsl:otherwise>21.0%</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="size">
-        <xsl:choose>
-          <xsl:when test="Equipment/Tanks/Tank/MIX/TANK/TANKVOLUME != ''">
-            <xsl:value-of select="concat(Equipment/Tanks/Tank/MIX/TANK/TANKVOLUME * 1000, ' l')"/>
-          </xsl:when>
-          <xsl:otherwise>0 l</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="start">
-        <xsl:variable name="number" select="Equipment/Tanks/Tank/MIX/TANK/PSTART"/>
-        <xsl:call-template name="pressure">
-          <xsl:with-param name="number" select="$number"/>
-          <xsl:with-param name="units" select="$units"/>
-        </xsl:call-template>
-      </xsl:variable>
-      <xsl:variable name="end">
-        <xsl:variable name="number" select="Equipment/Tanks/Tank/MIX/TANK/PEND"/>
-        <xsl:call-template name="pressure">
-          <xsl:with-param name="number" select="$number"/>
-          <xsl:with-param name="units" select="$units"/>
-        </xsl:call-template>
-      </xsl:variable>
-
-      <cylinder o2="{$o2}" size="{$size}" start="{$start}" end="{$end}"/>
+      <xsl:for-each select="Equipment/Tanks/Tank">
+        <cylinder>
+          <xsl:attribute name="o2">
+            <xsl:choose>
+              <xsl:when test="MIX/O2 != ''">
+                <xsl:value-of select="concat(MIX/O2*100, '%')"/>
+              </xsl:when>
+              <xsl:otherwise>21.0%</xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+          <xsl:if test="MIX/HE != '0.0'">
+            <xsl:attribute name="he">
+              <xsl:value-of select="concat(MIX/HE*100, '%')"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:attribute name="size">
+            <xsl:choose>
+              <xsl:when test="MIX/TANK/TANKVOLUME != ''">
+                <xsl:value-of select="concat(MIX/TANK/TANKVOLUME * 1000, ' l')"/>
+              </xsl:when>
+              <xsl:otherwise>0 l</xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+          <xsl:attribute name="start">
+            <xsl:variable name="number" select="MIX/TANK/PSTART"/>
+            <xsl:call-template name="pressure">
+              <xsl:with-param name="number" select="$number"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
+          </xsl:attribute>
+          <xsl:attribute name="end">
+            <xsl:variable name="number" select="MIX/TANK/PEND"/>
+            <xsl:call-template name="pressure">
+              <xsl:with-param name="number" select="$number"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </cylinder>
+      </xsl:for-each>
       <!-- end cylinder -->
 
       <!-- DELTA is the sample interval -->
@@ -155,6 +162,22 @@ Weight: <xsl:value-of select="Equipment/Weight"/>
         </xsl:if>
       </xsl:for-each>
       <!-- end events -->
+
+      <!-- gas change -->
+      <xsl:for-each select="DIVE/SAMPLES/SWITCH">
+        <event name="gaschange">
+          <xsl:attribute name="time">
+            <xsl:call-template name="timeConvert">
+              <xsl:with-param name="timeSec" select="count(preceding-sibling::D) * $delta"/>
+              <xsl:with-param name="units" select="'si'"/>
+            </xsl:call-template>
+          </xsl:attribute>
+          <xsl:attribute name="value">
+            <xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/O2 * 100" />
+          </xsl:attribute>
+        </event>
+      </xsl:for-each>
+      <!-- end gas change -->
 
       <!-- dive sample - all the depth and temp readings -->
       <xsl:for-each select="DIVE/SAMPLES/D">
