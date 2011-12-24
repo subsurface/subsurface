@@ -8,7 +8,7 @@ Autor documentation: Jacco van Koll <jko@haringstad.com>
 
 Scope of this document is the usage of the program.
 Please read the build manual for instructions how to build the
-software and (if needed) it´s dependencies.
+software and (if needed) it's dependencies.
 
 Audience: Fun Divers, Tec Divers, Professional Divers
 
@@ -278,7 +278,7 @@ Clicking OK on the dialog stores these settings.
 11. How to find the Device Name
 
 When you connect your divecomputer by using an USB connector, most of the
-time, the default of ´/dev/ttyUSB0' should work. But if you have other
+time, the default of '/dev/ttyUSB0' should work. But if you have other
 Serial to USB devices, this can be different because '/dev/ttyUSB0' is
 already in use.
 
@@ -534,7 +534,7 @@ read SuuntoExportDir
 echo -n "Enter the name of your Suunto Divemanager export file: "
 read SuuntoExportFile
 
-echo "You have entered: $SuuntoExportDir/$SuuntoExportFile¨
+echo "You have entered: $SuuntoExportDir/$SuuntoExportFile"
 
 cd $SuuntoExportDir
 
