@@ -87,12 +87,28 @@ typedef struct {
 	pressure_t start, end, sample_start, sample_end;
 } cylinder_t;
 
-extern int cylinder_none(cylinder_t *cyl);
+typedef struct {
+	weight_t weight;
+	const char *description;	/* "integrated", "belt", "ankle" */
+} weightsystem_t;
+
+extern int cylinder_none(void *_data);
+extern int weightsystem_none(void *_data);
 
 extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int mm, int *frac, const char **units);
 extern double get_temp_units(unsigned int mm, const char **units);
+
+static inline double grams_to_lbs(int grams)
+{
+	return grams / 453.6;
+}
+
+static inline int lbs_to_grams(double lbs)
+{
+	return lbs * 453.6 + 0.5;
+}
 
 static inline double ml_to_cuft(int ml)
 {
@@ -194,6 +210,7 @@ struct event {
 };
 
 #define MAX_CYLINDERS (8)
+#define MAX_WEIGHTSYSTEMS (4)
 
 struct dive {
 	int number;
@@ -208,6 +225,7 @@ struct dive {
 	depth_t visibility;
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
+	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	int sac, otu;
 	struct event *events;
 	int samples, alloc_samples;

@@ -296,6 +296,8 @@ UNITCALLBACK(set_liter, volume, LITER)
 UNITCALLBACK(set_cuft, volume, CUFT)
 UNITCALLBACK(set_celsius, temperature, CELSIUS)
 UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
+UNITCALLBACK(set_kg, weight, KG)
+UNITCALLBACK(set_lbs, weight, LBS)
 
 #define OPTIONCALLBACK(name, option) \
 static void name(GtkWidget *w, gpointer data) \
@@ -357,6 +359,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
 
+	create_radio(box, "Weight:",
+		"kg", set_kg, (output_units.weight == KG),
+		"lbs",  set_lbs, (output_units.weight == LBS),
+		NULL);
+
 	frame = gtk_frame_new("Columns");
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
@@ -409,6 +416,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("psi", PREF_BOOL, BOOL_TO_PTR(output_units.pressure == PSI));
 		subsurface_set_conf("cuft", PREF_BOOL, BOOL_TO_PTR(output_units.volume == CUFT));
 		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(output_units.temperature == FAHRENHEIT));
+		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(output_units.weight == LBS));
 		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(visible_cols.temperature));
 		subsurface_set_conf("CYLINDER", PREF_BOOL, BOOL_TO_PTR(visible_cols.cylinder));
 		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(visible_cols.nitrox));
@@ -676,6 +684,8 @@ void init_ui(int *argcp, char ***argvp)
 		output_units.volume = CUFT;
 	if (subsurface_get_conf("fahrenheit", PREF_BOOL))
 		output_units.temperature = FAHRENHEIT;
+	if (subsurface_get_conf("lbs", PREF_BOOL))
+		output_units.weight = LBS;
 	/* an unset key is FALSE - all these are hidden by default */
 	visible_cols.cylinder = PTR_TO_BOOL(subsurface_get_conf("CYLINDER", PREF_BOOL));
 	visible_cols.temperature = PTR_TO_BOOL(subsurface_get_conf("TEMPERATURE", PREF_BOOL));

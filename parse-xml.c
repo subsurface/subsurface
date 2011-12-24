@@ -76,6 +76,7 @@ struct units input_units;
  * technically the SI unit for pressure is Pascal, but
  * we default to bar (10^5 pascal), which people
  * actually use. Similarly, C instead of Kelvin.
+ * And kg instead of g.
  */
 const struct units SI_units = {
 	.length = METERS,
@@ -105,7 +106,7 @@ static struct {
 	const char *name;
 } event;
 static struct tm tm;
-static int cylinder_index;
+static int cylinder_index, ws_index;
 
 static enum import_source {
 	UNKNOWN,
@@ -296,6 +297,27 @@ static void depth(char *buffer, void *_depth)
 		printf("Strange depth reading %s\n", buffer);
 	}
 	free(buffer);
+}
+
+static void weight(char *buffer, void *_weight)
+{
+	weight_t *weight = _weight;
+	union int_or_float val;
+
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		switch (input_units.weight) {
+		case KG:
+			weight->grams = val.fp * 1000 + 0.5;
+			break;
+		case LBS:
+			weight->grams = val.fp * 453.6 + 0.5;
+			break;
+		}
+		break;
+	default:
+		printf("Strange depth reading %s\n", buffer);
+	}
 }
 
 static void temperature(char *buffer, void *_temperature)
@@ -1036,7 +1058,12 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 		return;
 	if (MATCH(".cylinder.end", pressure, &dive->cylinder[cylinder_index].end))
 		return;
-
+	if (MATCH(".weightsystem.description", utf8_string, &dive->weightsystem[ws_index].description))
+		return;
+	if (MATCH(".weightsystem.weight", weight, &dive->weightsystem[ws_index].weight))
+		return;
+	if (MATCH("weight", weight, &dive->weightsystem[ws_index].weight))
+		return;
 	if (MATCH(".o2", gasmix, &dive->cylinder[cylinder_index].gasmix.o2))
 		return;
 	if (MATCH(".n2", gasmix_nitrogen, &dive->cylinder[cylinder_index].gasmix))
@@ -1185,6 +1212,7 @@ static void dive_end(void)
 	record_dive(dive);
 	dive = NULL;
 	cylinder_index = 0;
+	ws_index = 0;
 }
 
 static void event_start(void)
@@ -1207,6 +1235,15 @@ static void cylinder_start(void)
 static void cylinder_end(void)
 {
 	cylinder_index++;
+}
+
+static void ws_start(void)
+{
+}
+
+static void ws_end(void)
+{
+	ws_index++;
 }
 
 static void sample_start(void)
@@ -1371,6 +1408,7 @@ static struct nesting {
 	{ "event", event_start, event_end },
 	{ "gasmix", cylinder_start, cylinder_end },
 	{ "cylinder", cylinder_start, cylinder_end },
+	{ "weightsystem", ws_start, ws_end },
 	{ "P", sample_start, sample_end },
 
 	/* Import type recognition */

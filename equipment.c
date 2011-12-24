@@ -18,7 +18,7 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
-static GtkListStore *cylinder_model;
+static GtkListStore *cylinder_model, *weightsystem_model;
 
 enum {
 	CYL_DESC,
@@ -31,11 +31,20 @@ enum {
 	CYL_COLUMNS
 };
 
-static struct {
+enum {
+	WS_DESC,
+	WS_WEIGHT,
+	WS_COLUMNS
+};
+
+struct equipment_list {
 	int max_index;
 	GtkListStore *model;
 	GtkWidget *edit, *add, *del;
-} cylinder_list;
+};
+
+static struct equipment_list cylinder_list, weightsystem_list;
+
 
 struct cylinder_widget {
 	int index, changed;
@@ -45,6 +54,14 @@ struct cylinder_widget {
 	GtkSpinButton *size, *pressure;
 	GtkWidget *start, *end, *pressure_button;
 	GtkWidget *o2, *he, *gasmix_button;
+};
+
+struct ws_widget {
+	int index, changed;
+	const char *name;
+	GtkWidget *hbox;
+	GtkComboBox *description;
+	GtkSpinButton *weight;
 };
 
 /* we want bar - so let's not use our unit functions */
@@ -87,6 +104,19 @@ static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	return decimals;
 }
 
+static int convert_weight(int grams, double *m)
+{
+	int decimals = 1; /* not sure - do people do less than whole lbs/kg ? */
+	double weight;
+
+	if (output_units.weight == LBS)
+		weight = grams_to_lbs(grams);
+	else
+		weight = grams / 1000.0;
+	*m = weight;
+	return decimals;
+}
+
 static void set_cylinder_type_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
 {
 	double volume, pressure;
@@ -119,6 +149,14 @@ static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->end), pressure);
 }
 
+static void set_weight_weight_spinbutton(struct ws_widget *ws_widget, int grams)
+{
+	double weight;
+
+	convert_weight(grams, &weight);
+	gtk_spin_button_set_value(ws_widget->weight, weight);
+}
+
 /*
  * The gtk_tree_model_foreach() interface is bad. It could have
  * returned whether the callback ever returned true
@@ -126,10 +164,8 @@ static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, 
 static GtkTreeIter *found_match = NULL;
 static GtkTreeIter match_iter;
 
-static gboolean match_cylinder(GtkTreeModel *model,
-				GtkTreePath *path,
-				GtkTreeIter *iter,
-				gpointer data)
+static gboolean match_desc(GtkTreeModel *model,	GtkTreePath *path,
+			GtkTreeIter *iter, gpointer data)
 {
 	int match;
 	gchar *name;
@@ -145,7 +181,7 @@ static gboolean match_cylinder(GtkTreeModel *model,
 	return match;
 }
 
-static int get_active_cylinder(GtkComboBox *combo_box, GtkTreeIter *iter)
+static int get_active_item(GtkComboBox *combo_box, GtkTreeIter *iter, GtkListStore *model)
 {
 	char *desc;
 
@@ -155,7 +191,7 @@ static int get_active_cylinder(GtkComboBox *combo_box, GtkTreeIter *iter)
 	desc = gtk_combo_box_get_active_text(combo_box);
 
 	found_match = NULL;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(cylinder_model), match_cylinder, (void *)desc);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(model), match_desc, (void *)desc);
 
 	g_free(desc);
 	if (!found_match)
@@ -175,7 +211,7 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	cylinder_t *cyl = current_dive->cylinder + cylinder->index;
 
 	/* Did the user set it to some non-standard value? */
-	if (!get_active_cylinder(combo_box, &iter)) {
+	if (!get_active_item(combo_box, &iter, cylinder_model)) {
 		cylinder->changed = 1;
 		return;
 	}
@@ -204,6 +240,43 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	set_cylinder_type_spinbuttons(cylinder, ml, mbar);
 }
 
+static void weight_cb(GtkComboBox *combo_box, gpointer data)
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
+	int weight;
+	struct ws_widget *ws_widget = data;
+	weightsystem_t *ws = current_dive->weightsystem + ws_widget->index;
+
+	/* Did the user set it to some non-standard value? */
+	if (!get_active_item(combo_box, &iter, weightsystem_model)) {
+		ws_widget->changed = 1;
+		return;
+	}
+
+	/*
+	 * We get "change" signal callbacks just because we set
+	 * the description by hand. Whatever. So ignore them if
+	 * they are no-ops.
+	 */
+	if (!ws_widget->changed && ws->description) {
+		int same;
+		char *desc = gtk_combo_box_get_active_text(combo_box);
+
+		same = !strcmp(desc, ws->description);
+		g_free(desc);
+		if (same)
+			return;
+	}
+	ws_widget->changed = 1;
+
+	gtk_tree_model_get(model, &iter,
+		WS_WEIGHT, &weight,
+		-1);
+
+	set_weight_weight_spinbutton(ws_widget, weight);
+}
+
 static GtkTreeIter *add_cylinder_type(const char *desc, int ml, int mbar, GtkTreeIter *iter)
 {
 	GtkTreeModel *model;
@@ -214,7 +287,7 @@ static GtkTreeIter *add_cylinder_type(const char *desc, int ml, int mbar, GtkTre
 
 	found_match = NULL;
 	model = GTK_TREE_MODEL(cylinder_model);
-	gtk_tree_model_foreach(model, match_cylinder, (void *)desc);
+	gtk_tree_model_foreach(model, match_desc, (void *)desc);
 
 	if (!found_match) {
 		GtkListStore *store = GTK_LIST_STORE(model);
@@ -224,6 +297,27 @@ static GtkTreeIter *add_cylinder_type(const char *desc, int ml, int mbar, GtkTre
 			0, desc,
 			1, ml,
 			2, mbar,
+			-1);
+		return iter;
+	}
+	return found_match;
+}
+
+static GtkTreeIter *add_weightsystem_type(const char *desc, int weight, GtkTreeIter *iter)
+{
+	GtkTreeModel *model;
+
+	found_match = NULL;
+	model = GTK_TREE_MODEL(weightsystem_model);
+	gtk_tree_model_foreach(model, match_desc, (void *)desc);
+
+	if (!found_match) {
+		GtkListStore *store = GTK_LIST_STORE(model);
+
+		gtk_list_store_append(store, iter);
+		gtk_list_store_set(store, iter,
+			0, desc,
+			1, weight,
 			-1);
 		return iter;
 	}
@@ -256,6 +350,29 @@ static void add_cylinder(struct cylinder_widget *cylinder, const char *desc, int
 	match = add_cylinder_type(desc, ml, mbar, &iter);
 	if (match)
 		gtk_combo_box_set_active_iter(cylinder->description, match);
+}
+
+void add_weightsystem_description(weightsystem_t *weightsystem)
+{
+	GtkTreeIter iter;
+	const char *desc;
+	unsigned int weight;
+
+	desc = weightsystem->description;
+	if (!desc)
+		return;
+	weight = weightsystem->weight.grams;
+	add_weightsystem_type(desc, weight, &iter);
+}
+
+static void add_weightsystem(struct ws_widget *ws_widget, const char *desc, int weight)
+{
+	GtkTreeIter iter, *match;
+
+	ws_widget->name = desc;
+	match = add_weightsystem_type(desc, weight, &iter);
+	if (match)
+		gtk_combo_box_set_active_iter(ws_widget->description, match);
 }
 
 static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
@@ -293,8 +410,27 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->he), he);
 }
 
-int cylinder_none(cylinder_t *cyl)
+static void show_weightsystem(weightsystem_t *ws, struct ws_widget *weightsystem_widget)
 {
+	const char *desc;
+	int grams;
+
+	/* Don't show uninitialized widgets */
+	if (!weightsystem_widget->description)
+		return;
+
+	desc = ws->description;
+	if (!desc)
+		desc = "";
+	grams = ws->weight.grams;
+	add_weightsystem(weightsystem_widget, desc, grams);
+
+	set_weight_weight_spinbutton(weightsystem_widget, ws->weight.grams);
+}
+
+int cylinder_none(void *_data)
+{
+	cylinder_t *cyl = _data;
 	return	!cyl->type.size.mliter &&
 		!cyl->type.workingpressure.mbar &&
 		!cyl->type.description &&
@@ -306,8 +442,15 @@ int cylinder_none(cylinder_t *cyl)
 		!cyl->end.mbar;
 }
 
-static void set_one_cylinder(int index, cylinder_t *cyl, GtkListStore *model, GtkTreeIter *iter)
+int weightsystem_none(void *_data)
 {
+	weightsystem_t *ws = _data;
+	return !ws->weight.grams && !ws->description;
+}
+
+static void set_one_cylinder(int index, void *_data, GtkListStore *model, GtkTreeIter *iter)
+{
+	cylinder_t *cyl = _data;
 	unsigned int start, end;
 
 	start = cyl->start.mbar ? : cyl->sample_start.mbar;
@@ -323,34 +466,68 @@ static void set_one_cylinder(int index, cylinder_t *cyl, GtkListStore *model, Gt
 		-1);
 }
 
+static void set_one_weightsystem(int index, void *_data, GtkListStore *model, GtkTreeIter *iter)
+{
+	weightsystem_t *ws = _data;
+
+	gtk_list_store_set(model, iter,
+		WS_DESC, ws->description ? : "unspecified",
+		WS_WEIGHT, ws->weight.grams,
+		-1);
+}
+
+static void *cyl_ptr(struct dive *dive, int idx)
+{
+	if (idx < 0 || idx >= MAX_CYLINDERS)
+		return NULL;
+	return &dive->cylinder[idx];
+}
+
+static void *ws_ptr(struct dive *dive, int idx)
+{
+	if (idx < 0 || idx >= MAX_WEIGHTSYSTEMS)
+		return NULL;
+	return &dive->weightsystem[idx];
+}
+
+static void show_equipment(struct dive *dive, int max,
+			struct equipment_list *equipment_list,
+			void*(*ptr_function)(struct dive*, int),
+			int(*none_function)(void *),
+			void(*set_one_function)(int, void*, GtkListStore*, GtkTreeIter *))
+{
+	int i, used;
+	void *data;
+	GtkTreeIter iter;
+	GtkListStore *model = equipment_list->model;
+
+	gtk_list_store_clear(model);
+	used = max;
+	do {
+		data = ptr_function(dive, used-1);
+		if (!none_function(data))
+			break;
+	} while (--used);
+
+	equipment_list->max_index = used;
+
+	gtk_widget_set_sensitive(equipment_list->edit, 0);
+	gtk_widget_set_sensitive(equipment_list->del, 0);
+	gtk_widget_set_sensitive(equipment_list->add, used < max);
+
+	for (i = 0; i < used; i++) {
+		data = ptr_function(dive, i);
+		gtk_list_store_append(model, &iter);
+		set_one_function(i, data, model, &iter);
+	}
+}
+
 void show_dive_equipment(struct dive *dive)
 {
-	int i, max;
-	GtkTreeIter iter;
-	GtkListStore *model;
-
-	model = cylinder_list.model;
-	gtk_list_store_clear(model);
-	max = MAX_CYLINDERS;
-	do {
-		cylinder_t *cyl = &dive->cylinder[max-1];
-
-		if (!cylinder_none(cyl))
-			break;
-	} while (--max);
-
-	cylinder_list.max_index = max;
-
-	gtk_widget_set_sensitive(cylinder_list.edit, 0);
-	gtk_widget_set_sensitive(cylinder_list.del, 0);
-	gtk_widget_set_sensitive(cylinder_list.add, max < MAX_CYLINDERS);
-
-	for (i = 0; i < max; i++) {
-		cylinder_t *cyl = dive->cylinder+i;
-
-		gtk_list_store_append(model, &iter);
-		set_one_cylinder(i, cyl, model, &iter);
-	}
+	show_equipment(dive, MAX_CYLINDERS, &cylinder_list,
+		&cyl_ptr, &cylinder_none, &set_one_cylinder);
+	show_equipment(dive, MAX_WEIGHTSYSTEMS, &weightsystem_list,
+		&ws_ptr, &weightsystem_none, &set_one_weightsystem);
 }
 
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
@@ -443,6 +620,29 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	fill_cylinder_info(cylinder, cyl, desc, volume, pressure, start, end, o2, he);
 }
 
+static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *weightsystem_widget)
+{
+	const gchar *desc;
+	GtkComboBox *box;
+	int grams;
+	double value;
+
+	/* Ignore uninitialized cylinder widgets */
+	box = weightsystem_widget->description;
+	if (!box)
+		return;
+
+	desc = gtk_combo_box_get_active_text(box);
+	value = gtk_spin_button_get_value(weightsystem_widget->weight);
+
+	if (output_units.weight == LBS)
+		grams = lbs_to_grams(value);
+	else
+		grams = value * 1000;
+	ws->weight.grams = grams;
+	ws->description = desc;
+}
+
 /*
  * We hardcode the most common standard cylinders,
  * we should pick up any other names from the dive
@@ -525,6 +725,38 @@ static void fill_tank_list(GtkListStore *store)
 			0, info->name,
 			1, ml,
 			2, mbar,
+			-1);
+		info++;
+	}
+}
+
+/*
+ * We hardcode the most common weight system types
+ * This is a bit odd as the weight system types don't usually encode weight
+ */
+static struct ws_info {
+	const char *name;
+	int grams;
+} ws_info[100] = {
+	/* Need an empty entry for the no weight system case */
+	{ "", },
+	{ "integrated", 0 },
+	{ "belt", 0 },
+	{ "ankle", 0 },
+	{ "bar", 0 },
+	{ "clip-on", 0 },
+};
+
+static void fill_ws_list(GtkListStore *store)
+{
+	GtkTreeIter iter;
+	struct ws_info *info = ws_info;
+
+	while (info->name) {
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+			0, info->name,
+			1, info->grams,
 			-1);
 		info++;
 	}
@@ -671,6 +903,63 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	g_signal_connect(cylinder->gasmix_button, "toggled", G_CALLBACK(gasmix_cb), cylinder);
 }
 
+static gboolean weight_completion_cb(GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, struct ws_widget *ws_widget)
+{
+	const char *desc;
+	unsigned int weight;
+
+	gtk_tree_model_get(model, iter, WS_DESC, &desc, WS_WEIGHT, &weight, -1);
+	add_weightsystem(ws_widget, desc, weight);
+	return TRUE;
+}
+
+static void weight_activate_cb(GtkComboBox *combo_box, gpointer data)
+{
+	struct ws_widget *ws_widget = data;
+	weight_cb(ws_widget->description, data);
+}
+
+static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore *model)
+{
+	GtkWidget *frame, *hbox;
+	GtkEntryCompletion *completion;
+	GtkWidget *widget;
+	GtkEntry *entry;
+
+	/*
+	 * weight_system: description and weight
+	 */
+	frame = gtk_frame_new("Weight");
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
+
+	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
+
+	ws_widget->description = GTK_COMBO_BOX(widget);
+	g_signal_connect(widget, "changed", G_CALLBACK(weight_cb), ws_widget);
+
+	entry = GTK_ENTRY(GTK_BIN(widget)->child);
+	g_signal_connect(entry, "activate", G_CALLBACK(weight_activate_cb), ws_widget);
+
+	completion = gtk_entry_completion_new();
+	gtk_entry_completion_set_text_column(completion, 0);
+	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
+	g_signal_connect(completion, "match-selected", G_CALLBACK(weight_completion_cb), ws_widget);
+	gtk_entry_set_completion(entry, completion);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
+
+	if ( output_units.weight == KG)
+		widget = create_spinbutton(hbox, "kg", 0, 50, 0.5);
+	else
+		widget = create_spinbutton(hbox, "lbs", 0, 110, 1);
+	ws_widget->weight = GTK_SPIN_BUTTON(widget);
+}
+
 static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 {
 	int success;
@@ -705,6 +994,47 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 		dive->cylinder[index] = *cyl;
 		mark_divelist_changed(TRUE);
 		update_cylinder_related_info(dive);
+		flush_divelist(dive);
+	}
+
+	gtk_widget_destroy(dialog);
+
+	return success;
+}
+
+static int edit_weightsystem_dialog(int index, weightsystem_t *ws)
+{
+	int success;
+	GtkWidget *dialog, *vbox;
+	struct ws_widget weightsystem_widget;
+	struct dive *dive;
+
+	weightsystem_widget.index = index;
+	weightsystem_widget.changed = 0;
+
+	dive = current_dive;
+	if (!dive)
+		return 0;
+	*ws = dive->weightsystem[index];
+
+	dialog = gtk_dialog_new_with_buttons("Weight System",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	ws_widget(vbox, &weightsystem_widget, weightsystem_model);
+
+	show_weightsystem(ws, &weightsystem_widget);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (success) {
+		record_weightsystem_changes(ws, &weightsystem_widget);
+		dive->weightsystem[index] = *ws;
+		mark_divelist_changed(TRUE);
 		flush_divelist(dive);
 	}
 
@@ -805,6 +1135,86 @@ static void del_cb(GtkButton *button, GtkTreeView *tree_view)
 	gtk_widget_set_sensitive(cylinder_list.add, 1);
 }
 
+static void ws_edit_cb(GtkButton *button, GtkTreeView *tree_view)
+{
+	int index;
+	GtkTreeIter iter;
+	GtkListStore *model = weightsystem_list.model;
+	GtkTreeSelection *selection;
+	weightsystem_t ws;
+
+	selection = gtk_tree_view_get_selection(tree_view);
+
+	/* Nothing selected? This shouldn't happen, since the button should be inactive */
+	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
+		return;
+
+	index = get_model_index(model, &iter);
+	if (!edit_weightsystem_dialog(index, &ws))
+		return;
+
+	set_one_weightsystem(index, &ws, model, &iter);
+	repaint_dive();
+}
+
+static void ws_add_cb(GtkButton *button, GtkTreeView *tree_view)
+{
+	int index = weightsystem_list.max_index;
+	GtkTreeIter iter;
+	GtkListStore *model = weightsystem_list.model;
+	GtkTreeSelection *selection;
+	weightsystem_t ws;
+
+	if (!edit_weightsystem_dialog(index, &ws))
+		return;
+
+	gtk_list_store_append(model, &iter);
+	set_one_weightsystem(index, &ws, model, &iter);
+
+	selection = gtk_tree_view_get_selection(tree_view);
+	gtk_tree_selection_select_iter(selection, &iter);
+
+	weightsystem_list.max_index++;
+	gtk_widget_set_sensitive(weightsystem_list.add, weightsystem_list.max_index < MAX_WEIGHTSYSTEMS);
+}
+
+static void ws_del_cb(GtkButton *button, GtkTreeView *tree_view)
+{
+	int index, nr;
+	GtkTreeIter iter;
+	GtkListStore *model = weightsystem_list.model;
+	GtkTreeSelection *selection;
+	struct dive *dive;
+	weightsystem_t *ws;
+
+	selection = gtk_tree_view_get_selection(tree_view);
+
+	/* Nothing selected? This shouldn't happen, since the button should be inactive */
+	if (!gtk_tree_selection_get_selected(selection, NULL, &iter))
+		return;
+
+	index = get_model_index(model, &iter);
+
+	dive = current_dive;
+	if (!dive)
+		return;
+	ws = dive->weightsystem + index;
+	nr = weightsystem_list.max_index - index - 1;
+
+	gtk_list_store_remove(model, &iter);
+
+	weightsystem_list.max_index--;
+	memmove(ws, ws+1, nr*sizeof(*ws));
+	memset(ws+nr, 0, sizeof(*ws));
+
+	mark_divelist_changed(TRUE);
+	flush_divelist(dive);
+
+	gtk_widget_set_sensitive(weightsystem_list.edit, 0);
+	gtk_widget_set_sensitive(weightsystem_list.del, 0);
+	gtk_widget_set_sensitive(weightsystem_list.add, 1);
+}
+
 static GtkListStore *create_tank_size_model(void)
 {
 	GtkListStore *model;
@@ -816,6 +1226,19 @@ static GtkListStore *create_tank_size_model(void)
 		-1);
 
 	fill_tank_list(model);
+	return model;
+}
+
+static GtkListStore *create_weightsystem_model(void)
+{
+	GtkListStore *model;
+
+	model = gtk_list_store_new(2,
+		G_TYPE_STRING,		/* Weightsystem description */
+		G_TYPE_INT,		/* Weight in grams */
+		-1);
+
+	fill_ws_list(model);
 	return model;
 }
 
@@ -833,6 +1256,26 @@ static void size_data_func(GtkTreeViewColumn *col,
 	convert_volume_pressure(ml, mbar, &size, &pressure);
 	if (size)
 		snprintf(buffer, sizeof(buffer), "%.1f", size);
+	else
+		strcpy(buffer, "unkn");
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
+static void weight_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int idx = (long)data;
+	int grams, decimals;
+	double value;
+	char buffer[10];
+
+	gtk_tree_model_get(model, iter, idx, &grams, -1);
+	decimals = convert_weight(grams, &value);
+	if (grams)
+		snprintf(buffer, sizeof(buffer), "%.*f", decimals, value);
 	else
 		strcpy(buffer, "unkn");
 	g_object_set(renderer, "text", buffer, NULL);
@@ -876,14 +1319,14 @@ static void percentage_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
-static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
+static void selection_cb(GtkTreeSelection *selection, struct equipment_list *list)
 {
 	GtkTreeIter iter;
 	int selected;
 
 	selected = gtk_tree_selection_get_selected(selection, NULL, &iter);
-	gtk_widget_set_sensitive(cylinder_list.edit, selected);
-	gtk_widget_set_sensitive(cylinder_list.del, selected);
+	gtk_widget_set_sensitive(list->edit, selected);
+	gtk_widget_set_sensitive(list->del, selected);
 }
 
 static void row_activated_cb(GtkTreeView *tree_view,
@@ -907,7 +1350,7 @@ GtkWidget *cylinder_list_widget(void)
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
-	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), model);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), &cylinder_list);
 
 	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
 					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
@@ -920,6 +1363,31 @@ GtkWidget *cylinder_list_widget(void)
 	tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
 	tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, ALIGN_RIGHT | UNSORTABLE);
 	tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, ALIGN_RIGHT | UNSORTABLE);
+	return tree_view;
+}
+
+GtkWidget *weightsystem_list_widget(void)
+{
+	GtkListStore *model = weightsystem_list.model;
+	GtkWidget *tree_view;
+	GtkTreeSelection *selection;
+
+	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+	gtk_widget_set_can_focus(tree_view, FALSE);
+	g_signal_connect(tree_view, "row-activated", G_CALLBACK(row_activated_cb), model);
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
+	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), &weightsystem_list);
+
+	g_object_set(G_OBJECT(tree_view), "headers-visible", TRUE,
+					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
+					  NULL);
+
+	tree_view_column(tree_view, WS_DESC, "Type", NULL, ALIGN_LEFT | UNSORTABLE);
+	tree_view_column(tree_view, WS_WEIGHT, "weight",
+			weight_data_func, ALIGN_RIGHT | UNSORTABLE);
+
 	return tree_view;
 }
 
@@ -940,6 +1408,18 @@ static GtkWidget *cylinder_list_create(void)
 	return cylinder_list_widget();
 }
 
+static GtkWidget *weightsystem_list_create(void)
+{
+	GtkListStore *model;
+
+	model = gtk_list_store_new(WS_COLUMNS,
+		G_TYPE_STRING,		/* WS_DESC: utf8 */
+		G_TYPE_INT		/* WS_WEIGHT: grams */
+		);
+	weightsystem_list.model = model;
+	return weightsystem_list_widget();
+}
+
 GtkWidget *equipment_widget(void)
 {
 	GtkWidget *vbox, *hbox, *frame, *framebox, *tree_view;
@@ -955,7 +1435,6 @@ GtkWidget *equipment_widget(void)
 	 * another dive.
 	 */
 	cylinder_model = create_tank_size_model();
-
 	tree_view = cylinder_list_create();
 
 	hbox = gtk_hbox_new(FALSE, 3);
@@ -989,6 +1468,41 @@ GtkWidget *equipment_widget(void)
 	g_signal_connect(edit, "clicked", G_CALLBACK(edit_cb), tree_view);
 	g_signal_connect(add, "clicked", G_CALLBACK(add_cb), tree_view);
 	g_signal_connect(del, "clicked", G_CALLBACK(del_cb), tree_view);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
+
+	weightsystem_model = create_weightsystem_model();
+	tree_view = weightsystem_list_create();
+
+	frame = gtk_frame_new("Weight");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, FALSE, 3);
+
+	framebox = gtk_vbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), framebox);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	gtk_box_pack_start(GTK_BOX(hbox), tree_view, TRUE, FALSE, 3);
+
+	hbox = gtk_hbox_new(TRUE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	edit = gtk_button_new_from_stock(GTK_STOCK_EDIT);
+	add = gtk_button_new_from_stock(GTK_STOCK_ADD);
+	del = gtk_button_new_from_stock(GTK_STOCK_DELETE);
+	gtk_box_pack_start(GTK_BOX(hbox), edit, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), add, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), del, FALSE, FALSE, 0);
+
+	weightsystem_list.edit = edit;
+	weightsystem_list.add = add;
+	weightsystem_list.del = del;
+
+	g_signal_connect(edit, "clicked", G_CALLBACK(ws_edit_cb), tree_view);
+	g_signal_connect(add, "clicked", G_CALLBACK(ws_add_cb), tree_view);
+	g_signal_connect(del, "clicked", G_CALLBACK(ws_del_cb), tree_view);
 
 	return vbox;
 }
