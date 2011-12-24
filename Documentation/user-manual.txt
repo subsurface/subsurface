@@ -2,7 +2,7 @@ Subsurface 1.2
 
 User Manual
 
-Version 0.0.5
+Version 0.0.6
 
 Autor documentation: Jacco van Koll <jko@haringstad.com>
 
@@ -314,7 +314,7 @@ the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
 
 
-12. Importing dives from JDivelog or other dive log programs
+12. Importing dives from JDivelog
 
 Maybe you have been using JDivelog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
@@ -338,16 +338,19 @@ your JDivelog file(s) do the following:
 After a few moments, you see your existing logs in Subsurface. Now you can
 edit your dives like explained in chapter 6.
 
-Information that is not (yet) imported from JDivelog:
+Information that is imported from JDivelog into the location field:
+
+	Extended dive location information
+
+Information that is merged into the location or notes field:
 
 	Used amount of weight
 	Used type of suit
 	Used type of gloves
-	Extended dive location information
 	Type of dive
 	Dive activity
 
-Alternatively, you can start sunsurface with the --import comand line
+Alternatively, you can start subsurface with the --import comand line
 which will have the same effect:
 
       subsurface MyDives.xml --import JDivelogDives.jlb
@@ -364,6 +367,94 @@ the same dive and merges the information as best as it can. So as long
 as there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be substantially different) subsurface
 will not create duplicate entries.
+
+
+13. Importing dives from Suunto Divemanager 3.*
+
+Before you can start importing dives from Suunto Divemanager, you first
+have to export the dives you want to import. Subsurface does not import
+directly from the Suunto Divemanager log files. The following procedures
+unpacking instructions for Linux and Windows.
+
+13.1 Export from Suunto Divemanager:
+
+	Start Suunto Divemanager and login with the name containing the logs
+	Do not start the import wizard to import dives from your computer.
+	In the navigation tree on the left side of the program-window, select your dives.
+	Within the list of dives, select the dives you would like to import later:
+		To select certain dives: hold ctrl and point & click the dive
+		To select all dives:  Select the first dive, hold down shift and select the last dive
+	With the dives marked, use the program menu 'File - Export'
+	The export popup will show
+	Within this popup, there is one field called Export Path.
+		Click the button browse next to the field Export Path
+			A file-manager like window pops up
+			Navigate to the directory where you want to store the Divelog.SDE file
+			Optional change the name of the file you want to save
+			Click 'Save'
+		You are back in the Export popup. Press the button 'Export'
+	Your dives are now exported to the file Divelogs.SDE.
+
+13.2 Unpacking the Divelogs.SDE on Windows
+
+Renaming your file to a .zip:
+
+	Use the filemanager (explorer) and navigate to your Divelogs.SDE file
+	Right click on the Divelogs.SDE file and choose 'Rename'
+		Change the name into Divelogs.SDE.zip
+		Press enter when done. A warning popup shows:
+			The file could be unusable when changing the extension. Are you sure:
+			Press OK.
+	Your filemanager will show now the filename Divelogs.SDE.zip
+
+When you double click your Divelogs.SDE.zip file, your preferred archiving
+tool will start and show you the list of xml files that are in the zip
+archive. Select all the xml files and extract them to a place where you
+can find them later in the process.
+
+13.3 Unpacking the Divelogs.SDE on Linux
+
+The assumption is that you have exported your Divelogs.SDE on a Windows
+system. You have to transfer the file to a location where you can read it
+from within your Linux environment. You can use file-tranfer, shared
+storage or an USB storage device to do this.
+The example uses an USB storage:
+
+	Insert your USB storage into your Windows computer
+	Use the filemanager (explorer) to navigate to the location where your Divelogs.SDE file is located
+	Copy the file to your USB storage:
+		Select the file by 1 click
+		Press Ctrl+c
+		Navigate to your USB Storage
+		Press Ctrl+v
+	Disconnect your USB storage by right clicking your USB storage in the explorer and choose Eject
+	Insert your USB storage into your Linux computer
+	Use your favourite filemanager to navigate to your USB storage
+	Copy the file to /tmp by:
+		Right click on the file
+		select copy
+		navigate to /tmp
+		press Ctrl+v or use the menu 'Edit - Paste'
+	The file is now transfered to /tmp
+
+Now the file is in /tmp, we can extract the xml files from it. You can do
+this by hand, or use the example script in Appendix B.
+
+To extract the xml files, we need to open a terminal and use the following
+commands:
+
+	cd /tmp
+	mkdir suunto
+	cd suunto
+	unzip ../Divelogs.SDE
+
+Your divelogs have now been extracted from the Divelogs.SDE file and you
+can import them with the command:
+
+	subsurface *.xml
+
+And with the menu 'File - Save' you can save your dives into the
+Subsurface format.
 
 
 Appendix A
@@ -427,3 +518,31 @@ your users manual to check if your computer will be supported.
 		N2iTiON 3
 
 * OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
+
+
+Appendix B
+
+#!/bin/bash
+#
+# Small basic example script to unpack Suunto Export files
+# for the use with Subsurface
+#
+
+echo -n "Enter the directory where you stored your Suunto Divemanager export file: "
+read SuuntoExportDir
+
+echo -n "Enter the name of your Suunto Divemanager export file: "
+read SuuntoExportFile
+
+echo "You have entered: $SuuntoExportDir/$SuuntoExportFile¨
+
+cd $SuuntoExportDir
+
+	if [ -e ./$SuuntoExportFile ]; then
+		mkdir SuuntoXML
+		cd SuuntoXML
+		unzip ../$SuuntoExportFile
+		subsurface *.xml
+	else
+		echo "Nothing found! Try again!"
+	fi
