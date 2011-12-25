@@ -38,8 +38,8 @@ static char *get_text(GtkTextView *view)
  * NOTW: NULL and "" need to be treated as "unchanged" */
 static int text_changed(const char *old, const char *new)
 {
-	return ((old && strcmp(old,new)) ||
-		(!old && strcmp("",new)));
+	return (old && strcmp(old,new)) ||
+		(!old && strcmp("",new));
 }
 
 static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)

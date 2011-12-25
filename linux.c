@@ -46,3 +46,8 @@ void subsurface_close_conf(void)
 {
 	/* this is a no-op */
 }
+
+const char *subsurface_USB_name()
+{
+	return "/dev/ttyUSB0";
+}

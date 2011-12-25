@@ -162,7 +162,7 @@ static void ask_save_changes()
 	dialog = gtk_dialog_new_with_buttons("Save Changes?",
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_NO, GTK_RESPONSE_NO,
 		NULL);
 	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
@@ -858,7 +858,7 @@ int process_ui_events(void)
 			break;
 		}
 	}
-	return(ret);
+	return ret;
 }
 
 
@@ -913,7 +913,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 
 	entry = gtk_entry_new();
 	gtk_container_add(GTK_CONTAINER(frame), entry);
-	gtk_entry_set_text(GTK_ENTRY(entry), "/dev/ttyUSB0");
+	gtk_entry_set_text(GTK_ENTRY(entry), subsurface_USB_name());
 
 	return GTK_ENTRY(entry);
 }

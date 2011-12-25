@@ -292,6 +292,8 @@ static gint nitrox_sort_func(GtkTreeModel *model,
 	return a_he - b_he;
 }
 
+#define UTF8_ELLIPSIS "\xE2\x80\xA6"
+
 static void nitrox_data_func(GtkTreeViewColumn *col,
 			     GtkCellRenderer *renderer,
 			     GtkTreeModel *model,
@@ -315,7 +317,7 @@ static void nitrox_data_func(GtkTreeViewColumn *col,
 		if (o2 == o2low)
 			snprintf(buffer, sizeof(buffer), "%d", o2);
 		else
-			snprintf(buffer, sizeof(buffer), "%d-%d", o2low, o2);
+			snprintf(buffer, sizeof(buffer), "%d" UTF8_ELLIPSIS "%d", o2low, o2);
 	else
 		strcpy(buffer, "air");
 

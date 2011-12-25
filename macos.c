@@ -89,3 +89,8 @@ void subsurface_close_conf(void)
 	CFRelease(xmlData);
 	CFRelease(propertyList);
 }
+
+const char *subsurface_USB_name()
+{
+	return "/dev/tty.SLAB_USBtoUART";
+}
