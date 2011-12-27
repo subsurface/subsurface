@@ -2,13 +2,13 @@ Subsurface 1.2
 
 User Manual
 
-Version 0.0.6
+Version 0.0.7
 
 Autor documentation: Jacco van Koll <jko@haringstad.com>
 
 Scope of this document is the usage of the program.
 Please read the build manual for instructions how to build the
-software and (if needed) it's dependencies.
+software and (if needed) its dependencies.
 
 Audience: Fun Divers, Tec Divers, Professional Divers
 
@@ -50,7 +50,7 @@ The screen is devided in 3 area's:
 	Area with the dives (usually called dive list), which can be sorted by number, date, etc.
 
 
-4. Import new dives
+4. Import new dives from your divecomputer
 
 Before you start fiddeling around with your divecomputer, note that
 there are divecomputers that consume more power when they are in the
@@ -320,7 +320,7 @@ Maybe you have been using JDivelog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
 Subsurface, because you can import your divelogs from JDivelog.
 
-JDivelog stores it's information into files with the extention of .jlb.
+JDivelog stores its information into files with the extention of .jlb.
 These .jlb contain all the information that has been stored, except your
 images in xml format.
 
@@ -455,6 +455,49 @@ can import them with the command:
 
 And with the menu 'File - Save' you can save your dives into the
 Subsurface format.
+
+
+14. The menu and sub-menus
+
+Within Subsurface, there are several menu and sub-menu options. All of
+those will be described here with their function.
+
+14.1 The file menu
+
+The file menu is used for the following menu options:
+
+	Open:		Open your saved Subsurface xml file(s)
+	Save:		Save your current divelogs or changes you made to your divelogs
+	Print:		Print your current divelog profiles and information about the dive
+	Import:		Import your dives from your divecomputer, JDivelogs or Suunto Divemanager
+	Preferences:	Set your preferences as described in chapter 10
+	Quit:		Quit the program
+
+14.2 The Log menu
+
+Within the Log menu, there are only 2 sub-items:
+
+	Renumber:	This option provides you with a popup. Within this
+			popup you can choose what the first number of your dives should be
+			for this set of dives.
+	View:		This is a submenu containing:
+		List:		Show only the list of dives you have made
+		Profile:	Show only the dive profile of the selected dive
+		Info:		Show only the 3 tab information screen
+		Three:		Show the 'default' 3 screen setup
+
+14.3 The Filter menu
+
+This menu gives you the choice to enable or disable Events for the
+selected divelog(s). At this time, you can enable or disable ascent.
+When you enable ascent for your dives, within the dive profile, a yellow
+marker with exclamation sign (!) will show on the points where you have
+ascented.
+
+14.4 The Help menu
+
+The Help menu shows only the About, which contains the version and author
+information and License button.
 
 
 Appendix A
