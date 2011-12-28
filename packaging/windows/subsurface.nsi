@@ -80,11 +80,14 @@ file /oname=libpangoft2-1.0-0.dll dll\libpangoft2-1.0-0.dll
 file /oname=libpangowin32-1.0-0.dll dll\libpangowin32-1.0-0.dll
 file /oname=libpixman-1-0.dll dll\libpixman-1-0.dll
 file /oname=libpng15-15.dll dll\libpng15-15.dll
-file /oname=libtiff-3.dll dll\libtiff-3.dll
+file /oname=libtiff-5.dll dll\libtiff-5.dll
 file /oname=libxml2-2.dll dll\libxml2-2.dll
 file /oname=libxslt-1.dll dll\libxslt-1.dll
 file /oname=pthreadGC2.dll dll\pthreadGC2.dll
 file /oname=zlib1.dll dll\zlib1.dll
+file /oname=libusb-1.0.dll dll\libusb-1.0.dll
+file /oname=SuuntoSDM.xslt ../../xslt/SuuntoSDM.xslt
+file /oname=jdivelog2subsurface.xslt ../../xslt/jdivelog2subsurface.xslt
 sectionEnd
 
 section "uninstall"

@@ -64,9 +64,8 @@ static int convert_pressure(int mbar, double *p)
 	return decimals;
 }
 
-static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
+static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 {
-	int decimals = 1;
 	double volume, pressure;
 
 	volume = ml / 1000.0;
@@ -78,13 +77,11 @@ static int convert_volume_pressure(int ml, int mbar, double *v, double *p)
 
 		if (output_units.pressure == PSI) {
 			pressure = mbar_to_PSI(mbar);
-			decimals = 0;
 		} else
 			pressure = mbar / 1000.0;
 	}
 	*v = volume;
 	*p = pressure;
-	return decimals;
 }
 
 static void set_cylinder_type_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
