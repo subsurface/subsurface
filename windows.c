@@ -83,3 +83,8 @@ const char *subsurface_USB_name()
 {
 	return "COM3";
 }
+
+const char *subsurface_icon_name()
+{
+	return "subsurface.ico";
+}

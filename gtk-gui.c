@@ -523,11 +523,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	GdkPixbuf *logo = NULL;
 
 	if (need_icon) {
-#if defined __linux__ || defined __APPLE__
-		GtkWidget *image = gtk_image_new_from_file("subsurface.svg");
-#elif defined WIN32
-		GtkWidget *image = gtk_image_new_from_file("subsurface.ico");
-#endif
+		GtkWidget *image = gtk_image_new_from_file(subsurface_icon_name());
 
 		if (image) {
 			logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
@@ -703,11 +699,7 @@ void init_ui(int *argcp, char ***argvp)
 		}
 	}
 	if (need_icon)
-#if defined __linux__ || defined __APPLE__
-		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.svg", NULL);
-#elif defined WIN32
-		gtk_window_set_icon_from_file(GTK_WINDOW(win), "subsurface.ico", NULL);
-#endif
+		gtk_window_set_icon_from_file(GTK_WINDOW(win), subsurface_icon_name(), NULL);
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;

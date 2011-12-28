@@ -2,6 +2,7 @@
 /* implements Mac OS X specific functions */
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
+#include <mach-o/dyld.h>
 
 static CFURLRef fileURL;
 static CFPropertyListRef propertyList;
@@ -93,4 +94,24 @@ void subsurface_close_conf(void)
 const char *subsurface_USB_name()
 {
 	return "/dev/tty.SLAB_USBtoUART";
+}
+
+#define REL_ICON_PATH "Resources/Subsurface.icns"
+const char *subsurface_icon_name()
+{
+	static char path[1024];
+	char *ptr1, *ptr2;
+	uint32_t size = sizeof(path); /* need extra space to copy icon path */
+	if (_NSGetExecutablePath(path, &size) == 0) {
+		ptr1 = strcasestr(path,"MacOS/subsurface");
+		ptr2 = strcasestr(path,"Contents");
+		if (ptr1 && ptr2) {
+			/* we are running as installed app from a bundle */
+			if (ptr1 - path < size - strlen(REL_ICON_PATH)) {
+				strcpy(ptr1,REL_ICON_PATH);
+				return path;
+			}
+		}
+	}
+	return "packaging/macosx/Subsurface.icns";
 }

@@ -51,3 +51,8 @@ const char *subsurface_USB_name()
 {
 	return "/dev/ttyUSB0";
 }
+
+const char *subsurface_icon_name()
+{
+	return "subsurface.svg";
+}
