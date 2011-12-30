@@ -258,7 +258,7 @@ newmax:
 		maxo2 = o2;
 	}
 	/* All air? Show/sort as "air"/zero */
-	if (!maxhe && maxo2 == 209 && mino2 == maxo2)
+	if (!maxhe && is_air(maxo2) && mino2 == maxo2)
 		maxo2 = mino2 = 0;
 	*o2 = maxo2;
 	*he = maxhe;

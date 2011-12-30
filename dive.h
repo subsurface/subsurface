@@ -93,6 +93,7 @@ extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int mm, int *frac, const char **units);
 extern double get_temp_units(unsigned int mm, const char **units);
+extern int is_air(int o2);
 
 static inline double ml_to_cuft(int ml)
 {
