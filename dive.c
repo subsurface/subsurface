@@ -572,3 +572,8 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	merge_events(res, a, b, 0);
 	return merge_samples(res, a, b, 0);
 }
+
+int is_air(int o2)
+{
+	return o2 >= 209 && o2 <= 210;
+}
