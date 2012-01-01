@@ -97,7 +97,8 @@ else ifeq ($(UNAME), darwin)
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
-	EXTRALIBS = -framework CoreFoundation
+	EXTRALIBS = `$(PKGCONFIG) --libs gtk-mac-integration` -framework CoreFoundation
+	CFLAGS += `$(PKGCONFIG) --cflags gtk-mac-integration`
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)

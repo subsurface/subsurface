@@ -2,6 +2,7 @@
 /* implements Windows specific functions */
 #include "display-gtk.h"
 #include <windows.h>
+#define DIVELIST_DEFAULT_FONT "Sans 8"
 
 static HKEY hkey;
 
@@ -87,4 +88,12 @@ const char *subsurface_USB_name()
 const char *subsurface_icon_name()
 {
 	return "subsurface.ico";
+}
+
+void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
+		GtkWidget *vbox)
+{
+	if (!divelist_font)
+		divelist_font = DIVELIST_DEFAULT_FONT;
+	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
