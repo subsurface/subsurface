@@ -15,6 +15,6 @@
 	<key>CFBundleExecutable</key>
 	<string>subsurface.sh</string>
 	<key>CFBundleIdentifier</key>
-	<string>torvalds.subsurface</string>
+	<string>org.hohndel.subsurface</string>
 </dict>
 </plist>

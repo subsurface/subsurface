@@ -22,7 +22,6 @@ GtkWidget *error_label;
 GtkWidget *vpane, *hpane;
 int        error_count;
 
-#define DIVELIST_DEFAULT_FONT "Sans 8"
 const char *divelist_font;
 
 struct units output_units;
@@ -681,9 +680,6 @@ void init_ui(int *argcp, char ***argvp)
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
-	if (!divelist_font)
-		divelist_font = DIVELIST_DEFAULT_FONT;
-
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_set_application_name ("subsurface");
@@ -709,7 +705,8 @@ void init_ui(int *argcp, char ***argvp)
 	main_vbox = vbox;
 
 	menubar = get_menubar_menu(win);
-	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
+
+	subsurface_ui_setup(settings, menubar, vbox);
 
 	vpane = gtk_vpaned_new();
 	gtk_box_pack_start(GTK_BOX(vbox), vpane, TRUE, TRUE, 3);
