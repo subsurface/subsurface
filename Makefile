@@ -195,5 +195,8 @@ uemis.o: uemis.c dive.h uemis.h
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
+doc:
+	$(MAKE) -C Documentation doc
+
 clean:
 	rm -f $(OBJS) *~ $(NAME)
