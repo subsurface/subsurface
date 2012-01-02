@@ -16,7 +16,7 @@ static GtkOSXApplication *theApp;
 					kCFAllocatorNull)
 
 #define SUBSURFACE_PREFERENCES CFSTR("org.hohndel.subsurface")
-#define REL_ICON_PATH "Resources/Subsurface.icns"
+#define ICON_NAME "Subsurface.icns"
 #define UI_FONT "Arial Unicode MS 12"
 #define DIVELIST_MAC_DEFAULT_FONT "Arial Unicode MS 9"
 
@@ -74,20 +74,10 @@ const char *subsurface_USB_name()
 const char *subsurface_icon_name()
 {
 	static char path[1024];
-	char *ptr1, *ptr2;
-	uint32_t size = sizeof(path); /* need extra space to copy icon path */
-	if (_NSGetExecutablePath(path, &size) == 0) {
-		ptr1 = strcasestr(path,"MacOS/subsurface");
-		ptr2 = strcasestr(path,"Contents");
-		if (ptr1 && ptr2) {
-			/* we are running as installed app from a bundle */
-			if (ptr1 - path < size - strlen(REL_ICON_PATH)) {
-				strcpy(ptr1,REL_ICON_PATH);
-				return path;
-			}
-		}
-	}
-	return "packaging/macosx/Subsurface.icns";
+
+	snprintf(path, 1024, "%s/%s", quartz_application_get_resource_path(), ICON_NAME);
+
+	return path;
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
