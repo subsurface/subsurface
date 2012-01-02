@@ -195,4 +195,4 @@ $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
 clean:
-	rm -f $(OBJS) *~ $(NAME)
+	rm -f $(OBJS) *~ $(NAME) $(NAME).exe
