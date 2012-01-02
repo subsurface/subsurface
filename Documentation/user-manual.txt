@@ -116,27 +116,19 @@ An example:
 
 On Sunday Oct 23, 2011 you made a dive.
 In the log line of this dive, you see the following information:
-
- #::
-	12			Dive number
- Date::
-	Sun, Oct 23, 2011 10:50		Date and time of your dive
- *::
-				Your rating (none at this time)
- m::
-	12.8			Your maximum depth in meters
- min::
-	31:20			Your dive-time in minutes and seconds
- Deg. C::
-	13.0			Lowest water temperature during your dive
- Cyl::
-				Your used cylinder (none at this time)
- O2%::
-	air			What type of mixture
- SAC::
-				SAC (none at this time)
- Location::
-				Where you performed your dive (empty)
+[width="70%",cols="<5%,10%,<20%,<65%",grid="none",frame="none",style="monospaced"]
+|===============================================================================
+|| #	   | 12			     | Dive number
+|| Date	   | Sun, Oct 23, 2011 10:50 | Date and time of your dive
+|| *	   |			     | Your rating (none at this time)
+|| m	   | 12.8		     | Your maximum depth in meters
+|| min	   | 31:20		     | Your dive-time in minutes and seconds
+|| Deg. C   | 13.0		     | Lowest water temperature during your dive
+|| Cyl	   |			     | Your used cylinder (none at this time)
+|| O2%	   | air		     | What type of mixture
+|| SAC	   |			     | SAC (none at this time)
+|| Location |			     | Where you performed your dive (empty)
+|===============================================================================
 
 As you can see, some information is already there because it is
 retrieved from your divecomputer. Some information is waiting for
@@ -152,24 +144,24 @@ When you double click on the dive log line, the editor window
 opens. Now you can add information that is missing. Let start with
 completing the example:
 
-You double clicked on dive #12, as described in 5. Viewing and
-completing your logs.  The Dive Info window pops up and you will see
+You double clicked on dive #12, as described in <<S_ViewingLogs,Viewing and
+completing your logs>>.  The Dive Info window pops up and you will see
 the following:
-
- - Location:	 An input where you can enter your new location, or you can choose with the pull-down previous locations
- - Dive Master: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
- - Buddy:	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
- - Rating:	 A pull-down where you can rate your dive.
- - Notes:	 A free input where you can enter information about your dive. What you've seen, etc.
+[horizontal]
+ *Location*::	 An input where you can enter your new location, or you can choose with the pull-down previous locations
+ *Dive Master*:: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
+ *Buddy*::	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
+ *Rating*::	 A pull-down where you can rate your dive.
+ *Notes*::	 A free input where you can enter information about your dive. What you've seen, etc.
 
 In this example we use the following information:
-
- - Location:		Oostvoornse Meer
- - Dive Master:		S. de Vries
- - Buddy:		S. de Vries
- - Rating:		3 stars
- - Notes:		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive.
-                        Made movie with 'headcam'.
+[horizontal]
+ *Location*::		Oostvoornse Meer
+ *Dive Master*::	S. de Vries
+ *Buddy*::		S. de Vries
+ *Rating*::		3 stars
+ *Notes*::		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive. +
+                        Made movie with headcam.
 
 Now don't press ok yet!
 
@@ -187,7 +179,7 @@ So, when you double click on the cylinder info, you get another
 popup. This popup gives you the following:
 
  - Cylinder:	Pull-down where you can choose your Cylinder, or add your own
- - Size:	The volume if not 'filled'
+ - Size:	The volume if not `filled'
  - Pressure:	The maximum pressure of this Cylinder
  - Optional:
 		* Start Pressure: What was the pressure starting the dive
@@ -513,7 +505,7 @@ The file menu is used for the following menu options:
  - Save::		Save your current divelogs or changes you made to your divelogs
  - Print::		Print your current divelog profiles and information about the dive
  - Import::	Import your dives from your divecomputer, JDivelogs or Suunto Divemanager
- - Preferences::	Set your preferences as described in chapter 10
+ - Preferences::	Set your preferences as described in <<S_SettingUpPreferences,chapter 10>>
  - Quit::		Quit the program
 
 The Log menu
