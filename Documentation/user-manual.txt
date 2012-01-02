@@ -1,15 +1,12 @@
 Subsurface 1.2 User Manual
 ==========================
-Jacco van Koll <jko@haringstad.com>
-:Author Initials: JvK
+Jacco van_Koll <jko@haringstad.com>
+v0.0.7, January 2021
+:Author Initials: JKO
 :toc:
 :icons:
 :numbered:
 :website: http://subsurface.hohndel.org
-
-Version 0.0.7
-
-Autor documentation: Jacco van Koll <jko@haringstad.com>
 
 Scope of this document is the usage of the program.
 Please read the build manual for instructions how to build the
@@ -18,8 +15,9 @@ software and (if needed) its dependencies.
 Audience: Fun Divers, Tec Divers, Professional Divers
 
 
-Introduction
-------------
+[[S_Introduction]]
+Introduction:
+-------------
 
 Subsurface was started because of a lack of viable dive log software
 on Linux. It turns out that the resulting software was easily ported
@@ -30,18 +28,20 @@ already very usable for divers with supported dive-computers.
 In this manual the Suunto Viper will be used for all examples.
 
 
+[[S_Requirements]]
 Requirements
 ------------
 
 Before you are able to import information from your divecomputer into
 Subsurface, you need some preparation. Do you have the following:
 
-	1. Your Divecomputer - Compatible with libdivecomputer (see list in Appendix A)
+	1. Your Divecomputer - Compatible with libdivecomputer (see list in <<AppendixA,Appendix A>>)
 	2. Communication interface - Cable to connect your divecomputer to your PC/Laptop/Netbook
 	3. Working installation of Subsurface
 	4. If needed, the manual of your divecomputer
 
 
+[[S_StartUsing]]
 Start using the program
 -----------------------
 
@@ -58,6 +58,7 @@ The screen is devided in 3 area's:
  - Area with the dives (usually called dive list) which can be sorted by number, date, etc.
 
 
+[[S_ImportNewDives]]
 Import new dives from your divecomputer
 ---------------------------------------
 
@@ -104,6 +105,7 @@ Now it is time to hook up your divecomputer to your Linux system:
    could take some time. Please be patient.
 
 
+[[S_ViewingLogs]]
 Viewing and completing your logs
 --------------------------------
 
@@ -142,6 +144,7 @@ you to be added. By double clicking on this dive, you can view and
 complete the log.
 
 
+[[S_EditDiveInfo]]
 Edit the dive info
 ------------------
 
@@ -170,13 +173,13 @@ In this example we use the following information:
 
 Now don't press ok yet!
 
-
+[[S_EditEquipmentInfo]]
 Edit equipment info
 -------------------
 
-You also want to edit your Cylinder information. And in the previous
-chapter, this was not edited. There is still another item to edit in
-the Dive Info screen:
+You also want to edit your Cylinder information. And in the
+<<S_EditDiveInfo, previous chapter>>, this was not edited. There is
+still another item to edit in the Dive Info screen:
 
  - Cylinder:	 A double-click fieldset. Here you can edit your Cylinder information
 
@@ -206,7 +209,7 @@ Now tick the option for Start & End pressure
 Now your dive information for this dive is complete. You can now press
 ok in the Dive Info screen and view the results.
 
-
+[[S_AddingEquipment]]
 Adding equipment info
 ---------------------
 
@@ -222,7 +225,7 @@ can add Cylinders.  We are going to add an additional Cylinder:
    info, you add your cylinder information for the second Cylinder.
    Fill in all the information about this Cylinder and press OK.
 
-
+[[S_ViewInfoStats]]
 View info & Stats
 -----------------
 
@@ -255,7 +258,7 @@ The information contains:
 	** Min SAC:	Lowest of Surface Air Consumption of all your dives
 	** Avg SAC:	Average Surface Air Consuption of all your dives, calculated
 
-
+[[S_SettingUpPreferences]]
 Setting up preferences
 ----------------------
 
@@ -304,7 +307,7 @@ one not enabled.
 
 Clicking OK on the dialog stores these settings.
 
-
+[[S_HowFindDeviceName]]
 How to find the Device Name
 ---------------------------
 
@@ -344,7 +347,7 @@ detected and is connected to 'ttyUSB3'. Now you use this information in
 the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
 
-
+[[S_ImportingDivesJDivelog]]
 Importing dives from JDivelog
 -----------------------------
 
@@ -357,9 +360,9 @@ These .jlb contain all the information that has been stored, except your
 images in xml format.
 
 By using the menu 'File - Import' you get the popup, like described in
-chapter 4, Importing new dives. Within this popup there is the option
-to import existing files which are already on your computer. To import
-your JDivelog file(s) do the following:
+<<S_ImportNewDives, chapter 4>>, Importing new dives. Within this
+popup there is the option to import existing files which are already
+on your computer. To import your JDivelog file(s) do the following:
 
  - Open 'File - Import' on the menu
  - Use the file locator under XML file name
@@ -368,7 +371,7 @@ your JDivelog file(s) do the following:
  - Click the OK button in the popup
 
 After a few moments, you see your existing logs in Subsurface. Now you can
-edit your dives like explained in chapter 6.
+edit your dives like explained in <<S_EditDiveInfo, chapter 6>>.
 
 Information that is imported from JDivelog into the location field:
 
@@ -400,7 +403,7 @@ as there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be substantially different) subsurface
 will not create duplicate entries.
 
-
+[[S_ImportingDivesSuunto]]
 Importing dives from Suunto Divemanager 3.*
 -------------------------------------------
 
@@ -476,7 +479,7 @@ The example uses an USB storage:
  - The file is now transfered to /tmp
 
 Now the file is in /tmp, we can extract the xml files from it. You can do
-this by hand, or use the example script in Appendix B.
+this by hand, or use the example script in <<AppendixB,Appendix B>>.
 
 To extract the xml files, we need to open a terminal and use the following
 commands:
@@ -494,7 +497,7 @@ can import them with the command:
 And with the menu 'File - Save' you can save your dives into the
 Subsurface format.
 
-
+[[S_Menu]]
 The menu and sub-menus
 ----------------------
 
@@ -543,8 +546,9 @@ The Help menu shows only the About, which contains the version and author
 information and License button.
 
 
-Appendix A
-----------
+[[AppendixA]]
+Appendix A: Supported Dive Computers
+------------------------------------
 
 The use of libdivecomputer provides the support for divecomputers. Within
 the list of computers in the 'File - import' menu, you will see a listing
@@ -615,8 +619,9 @@ your users manual to check if your computer will be supported.
 * OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
 
 
-Appendix B
-----------
+[[AppendixB]]
+Appendix B: Suunto Export Unpacking Script
+------------------------------------------
 
 	#!/bin/bash
 	#
