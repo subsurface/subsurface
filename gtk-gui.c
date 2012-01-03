@@ -106,9 +106,9 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		GSList *filenames;
+		GSList *filenames, *fn_glist;
 		char *filename;
-		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 		
 		GError *error = NULL;
 		while(filenames != NULL) {
@@ -124,7 +124,7 @@ static void file_open(GtkWidget *w, gpointer data)
 			g_free(filename);
 			filenames = g_slist_next(filenames);
 		}
-		g_slist_free(filenames);
+		g_slist_free(fn_glist);
 		report_dives(FALSE);
 	}
 	gtk_widget_destroy(dialog);
