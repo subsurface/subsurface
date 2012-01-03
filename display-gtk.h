@@ -29,7 +29,7 @@ typedef enum {
 
 #if defined __APPLE__
 #define CTRLCHAR "<Meta>"
-#define PREFERENCE_ACCEL "<Meta>,"
+#define PREFERENCE_ACCEL "<Meta>comma"
 #else
 #define CTRLCHAR "<Control>"
 #define PREFERENCE_ACCEL NULL

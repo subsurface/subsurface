@@ -92,18 +92,28 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 	osx_app = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
 	gtk_widget_hide (menubar);
 	gtk_osxapplication_set_menu_bar(osx_app, GTK_MENU_SHELL(menubar));
+
+	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator3");
+	gtk_widget_destroy(sep);
+	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator2");
+	gtk_widget_destroy(sep);
+
 	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Quit");
 	gtk_widget_hide (menu_item);
 	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/Help/About");
 	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 0);
+
 	sep = gtk_separator_menu_item_new();
 	g_object_ref(sep);
 	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 1);
+
 	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Preferences");
 	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 2);
+
 	sep = gtk_separator_menu_item_new();
 	g_object_ref(sep);
 	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 3);
+
 	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
 	gtk_osxapplication_ready(osx_app);
 }
