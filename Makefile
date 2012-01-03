@@ -36,13 +36,13 @@ UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 #
 ifeq ($(CC), i686-w64-mingw32-gcc)
 # ok, we are cross building for Windows
-	LIBDIVECOMPUTERINCLUDES = `$(PKGCONFIG) --cflags libdivecomputer`
-	LIBDIVECOMPUTERARCHIVE = `$(PKGCONFIG) --libs libdivecomputer`
+	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
+	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
 	RESFILE = packaging/windows/subsurface.res
 	LDFLAGS += -Wl,-subsystem,windows
 else ifeq ($(UNAME), darwin)
-	LIBDIVECOMPUTERINCLUDES = `$(PKGCONFIG) --cflags libdivecomputer`
-	LIBDIVECOMPUTERARCHIVE = `$(PKGCONFIG) --libs libdivecomputer`
+	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
+	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
 else
 libdc-local := $(wildcard /usr/local/lib/libdivecomputer.a)
 libdc-local64 := $(wildcard /usr/local/lib64/libdivecomputer.a)
@@ -97,8 +97,8 @@ else ifeq ($(UNAME), darwin)
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
-	EXTRALIBS = `$(PKGCONFIG) --libs gtk-mac-integration` -framework CoreFoundation
-	CFLAGS += `$(PKGCONFIG) --cflags gtk-mac-integration`
+	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation
+	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
@@ -142,7 +142,6 @@ install-macosx: $(NAME)
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/MacOS
 	$(INSTALL) $(NAME) $(MACOSXINSTALL)/Contents/MacOS/
-	$(INSTALL) $(MACOSXFILES)/subsurface.sh $(MACOSXINSTALL)/Contents/MacOS/
 	$(INSTALL) $(MACOSXFILES)/PkgInfo $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
