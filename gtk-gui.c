@@ -694,8 +694,11 @@ void init_ui(int *argcp, char ***argvp)
 			gtk_window_set_default_icon_name ("subsurface");
 		}
 	}
-	if (need_icon)
-		gtk_window_set_icon_from_file(GTK_WINDOW(win), subsurface_icon_name(), NULL);
+	if (need_icon) {
+		const char *icon_name = subsurface_icon_name();
+		if (!access(icon_name, R_OK))
+			gtk_window_set_icon_from_file(GTK_WINDOW(win), icon_name, NULL);
+	}
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
 	main_window = win;
