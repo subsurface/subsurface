@@ -59,7 +59,7 @@ const char *subsurface_icon_name()
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
-		GtkWidget *vbox)
+		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	if (!divelist_font)
 		divelist_font = DIVELIST_DEFAULT_FONT;

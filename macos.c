@@ -5,7 +5,7 @@
 #include <mach-o/dyld.h>
 #include "gtkosxapplication.h"
 
-static GtkOSXApplication *theApp;
+static GtkOSXApplication *osx_app;
 
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
@@ -81,16 +81,29 @@ const char *subsurface_icon_name()
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
-		GtkWidget *vbox)
+		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
+	GtkWidget *menu_item, *sep;
+
 	if (!divelist_font)
 		divelist_font = DIVELIST_MAC_DEFAULT_FONT;
 	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
 
-	theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
+	osx_app = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
 	gtk_widget_hide (menubar);
-	gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
-	gtk_osxapplication_set_use_quartz_accelerators(theApp, TRUE);
-	gtk_osxapplication_ready(theApp);
-
+	gtk_osxapplication_set_menu_bar(osx_app, GTK_MENU_SHELL(menubar));
+	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Quit");
+	gtk_widget_hide (menu_item);
+	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/Help/About");
+	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 0);
+	sep = gtk_separator_menu_item_new();
+	g_object_ref(sep);
+	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 1);
+	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Preferences");
+	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 2);
+	sep = gtk_separator_menu_item_new();
+	g_object_ref(sep);
+	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 3);
+	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
+	gtk_osxapplication_ready(osx_app);
 }

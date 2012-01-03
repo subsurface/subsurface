@@ -573,19 +573,19 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewMenuAction",  GTK_STOCK_FILE, "View", NULL, NULL, NULL},
 	{ "FilterMenuAction",  GTK_STOCK_FILE, "Filter", NULL, NULL, NULL},
 	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
-	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   "<control>O", NULL, G_CALLBACK(file_open) },
-	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   "<control>S", NULL, G_CALLBACK(file_save) },
-	{ "Print",          GTK_STOCK_PRINT, NULL,  "<control>P", NULL, G_CALLBACK(do_print) },
+	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
+	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
+	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
-	{ "Preferences",    NULL, "Preferences", NULL, NULL, G_CALLBACK(preferences_dialog) },
+	{ "Preferences",    NULL, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
-	{ "Quit",           GTK_STOCK_QUIT, NULL,   "<control>Q", NULL, G_CALLBACK(quit) },
+	{ "Quit",           GTK_STOCK_QUIT, NULL,   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
-	{ "ViewList",       NULL, "List",  "<control>1", NULL, G_CALLBACK(view_list) },
-	{ "ViewProfile",    NULL, "Profile", "<control>2", NULL, G_CALLBACK(view_profile) },
-	{ "ViewInfo",       NULL, "Info", "<control>3", NULL, G_CALLBACK(view_info) },
-	{ "ViewThree",       NULL, "Three", "<control>4", NULL, G_CALLBACK(view_three) },
+	{ "ViewList",       NULL, "List",  CTRLCHAR "1", NULL, G_CALLBACK(view_list) },
+	{ "ViewProfile",    NULL, "Profile", CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
+	{ "ViewInfo",       NULL, "Info", CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
+	{ "ViewThree",       NULL, "Three", CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -622,12 +622,11 @@ static const gchar* ui_string = " \
 	</ui> \
 ";
 
-static GtkWidget *get_menubar_menu(GtkWidget *window)
+static GtkWidget *get_menubar_menu(GtkWidget *window, GtkUIManager *ui_manager)
 {
 	GtkActionGroup *action_group = gtk_action_group_new("Menu");
 	gtk_action_group_add_actions(action_group, menu_items, nmenu_items, 0);
 
-	GtkUIManager *ui_manager = gtk_ui_manager_new();
 	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
 	GError* error = 0;
 	gtk_ui_manager_add_ui_from_string(GTK_UI_MANAGER(ui_manager), ui_string, -1, &error);
@@ -656,6 +655,7 @@ void init_ui(int *argcp, char ***argvp)
 	GdkScreen *screen;
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
+	GtkUIManager *ui_manager;
 
 	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();
@@ -708,9 +708,10 @@ void init_ui(int *argcp, char ***argvp)
 	gtk_container_add(GTK_CONTAINER(win), vbox);
 	main_vbox = vbox;
 
-	menubar = get_menubar_menu(win);
+	ui_manager = gtk_ui_manager_new();
+	menubar = get_menubar_menu(win, ui_manager);
 
-	subsurface_ui_setup(settings, menubar, vbox);
+	subsurface_ui_setup(settings, menubar, vbox, ui_manager);
 
 	vpane = gtk_vpaned_new();
 	gtk_box_pack_start(GTK_BOX(vbox), vpane, TRUE, TRUE, 3);

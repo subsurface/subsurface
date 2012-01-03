@@ -27,6 +27,14 @@ typedef enum {
 #define BOOL_TO_PTR(_cond) ((_cond) ? (void *)1 : NULL)
 #define PTR_TO_BOOL(_ptr) ((_ptr) != NULL)
 
+#if defined __APPLE__
+#define CTRLCHAR "<Meta>"
+#define PREFERENCE_ACCEL "<Meta>,"
+#else
+#define CTRLCHAR "<Control>"
+#define PREFERENCE_ACCEL NULL
+#endif
+
 extern void subsurface_open_conf(void);
 extern void subsurface_set_conf(char *name, pref_type_t type, const void *value);
 extern const void *subsurface_get_conf(char *name, pref_type_t type);
@@ -34,7 +42,8 @@ extern void subsurface_close_conf(void);
 
 extern const char *subsurface_USB_name(void);
 extern const char *subsurface_icon_name(void);
-extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar, GtkWidget *vbox);
+extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
+		GtkWidget *vbox, GtkUIManager *ui_manager);
 
 extern const char *divelist_font;
 
