@@ -1,10 +1,12 @@
-Subsurface 1.2
-
-User Manual
-
-Version 0.0.7
-
-Autor documentation: Jacco van Koll <jko@haringstad.com>
+Subsurface 1.2 User Manual
+==========================
+Jacco van_Koll <jko@haringstad.com>
+v0.0.7, January 2021
+:Author Initials: JKO
+:toc:
+:icons:
+:numbered:
+:website: http://subsurface.hohndel.org
 
 Scope of this document is the usage of the program.
 Please read the build manual for instructions how to build the
@@ -13,7 +15,9 @@ software and (if needed) its dependencies.
 Audience: Fun Divers, Tec Divers, Professional Divers
 
 
-1. Introduction:
+[[S_Introduction]]
+Introduction:
+-------------
 
 Subsurface was started because of a lack of viable dive log software
 on Linux. It turns out that the resulting software was easily ported
@@ -24,18 +28,22 @@ already very usable for divers with supported dive-computers.
 In this manual the Suunto Viper will be used for all examples.
 
 
-2. Requirements
+[[S_Requirements]]
+Requirements
+------------
 
 Before you are able to import information from your divecomputer into
 Subsurface, you need some preparation. Do you have the following:
 
-	1. Your Divecomputer - Compatible with libdivecomputer (see list in Appendix A)
+	1. Your Divecomputer - Compatible with libdivecomputer (see list in <<AppendixA,Appendix A>>)
 	2. Communication interface - Cable to connect your divecomputer to your PC/Laptop/Netbook
 	3. Working installation of Subsurface
 	4. If needed, the manual of your divecomputer
 
 
-3. Start using the program:
+[[S_StartUsing]]
+Start using the program
+-----------------------
 
 When you start the program for the first time, it shows no information
 at all. This is because the program does not automatically load the
@@ -45,12 +53,14 @@ There is a menu, containing 'File', 'Log', 'Filter' and Help.
 
 The screen is devided in 3 area's:
 
-	Area with 3 tabs: Dive Notes, Equipment, Info & Stats
-	Area next to the 3 tabs, which will contain the dive profile
-	Area with the dives (usually called dive list), which can be sorted by number, date, etc.
+ - Area with 3 tabs: Dive Notes, Equipment, Info & Stats
+ - Area next to the 3 tabs which will contain the dive profile
+ - Area with the dives (usually called dive list) which can be sorted by number, date, etc.
 
 
-4. Import new dives from your divecomputer
+[[S_ImportNewDives]]
+Import new dives from your divecomputer
+---------------------------------------
 
 Before you start fiddeling around with your divecomputer, note that
 there are divecomputers that consume more power when they are in the
@@ -62,40 +72,42 @@ be recharged when connected to the USB port.
 
 Now it is time to hook up your divecomputer to your Linux system:
 
-    Make sure that your OS has the required drivers installed
+ - Make sure that your OS has the required drivers installed
 
-	 On Linux this means you need to have the correct kernel
-	 module loaded. Most distributions will do this automatically
-	 for you.
+	* On Linux this means you need to have the correct kernel
+	  module loaded. Most distributions will do this automatically
+	  for you.
 
-	 On Windows, the OS should offer to download the correct
-	 driver when you connect to the USB port.
+	* On Windows, the OS should offer to download the correct
+	  driver when you connect to the USB port.
 
-	 On a Mac you at times have to manually hunt for the correct
-	 driver. For example the correct driver for the Mares Puck
-	 devices can be found as Mac_OSX_VCP_Driver.zip at
-	 http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
+	* On a Mac you at times have to manually hunt for the correct
+	  driver. For example the correct driver for the Mares Puck
+	  devices can be found as Mac_OSX_VCP_Driver.zip at
+	  http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
 
-    Connect your interface cable to a free USB port
+ - Connect your interface cable to a free USB port
 
-    Put your divecomputer into PC Communication mode. (For Suunto Viper, press Mode - 1 Memory - 3 TR-PC)
+ - Put your divecomputer into PC Communication mode. (For Suunto Viper, press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific divecomputer for your brand and type)
 
-    Go in Subsurface to 'File - Import'
-	Within the popup, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
-	Change the devicename under which your interface is connected.
-	       On Linux, default is /dev/ttyUSB0
-	       On Windows, default is COM3
-	       On Mac, default is ... specific to the dive computer
+ - Go in Subsurface to 'File - Import'
+	* Within the popup, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
+	* Change the devicename under which your interface is connected.
+	       ** On Linux, default is /dev/ttyUSB0
+	       ** On Windows, default is COM3
+	       ** On Mac, default is ... specific to the dive computer
 
-	Click the 'OK' button.
+	* Click the 'OK' button.
 
-    Now watch how your data is retrieved from your divecomputer!
-    Depending on your type of computer and/or number of dives, this
-    could take some time. Please be patient.
+ - Now watch how your data is retrieved from your divecomputer!
+   Depending on your type of computer and/or number of dives, this
+   could take some time. Please be patient.
 
 
-5. Viewing and completing your logs
+[[S_ViewingLogs]]
+Viewing and completing your logs
+--------------------------------
 
 When all data from your divecomputer is transferred, you will see a
 listing of your dives in Area 3.
@@ -104,99 +116,110 @@ An example:
 
 On Sunday Oct 23, 2011 you made a dive.
 In the log line of this dive, you see the following information:
+[width="70%",cols="<5%,10%,<20%,<65%",grid="none",frame="none",style="monospaced"]
+|===============================================================================
+|| #	   | 12			     | Dive number
+|| Date	   | Sun, Oct 23, 2011 10:50 | Date and time of your dive
+|| *	   |			     | Your rating (none at this time)
+|| m	   | 12.8		     | Your maximum depth in meters
+|| min	   | 31:20		     | Your dive-time in minutes and seconds
+|| Deg. C   | 13.0		     | Lowest water temperature during your dive
+|| Cyl	   |			     | Your used cylinder (none at this time)
+|| O2%	   | air		     | What type of mixture
+|| SAC	   |			     | SAC (none at this time)
+|| Location |			     | Where you performed your dive (empty)
+|===============================================================================
 
-    #: 		12				Dive number
-    Date:	Sun, Oct 23, 2011 10:50		Date and time of your dive
-    *:						Your rating (none at this time)
-    m:		12.8				Your maximum depth in meters
-    min:	31:20				Your dive-time in minutes and seconds
-    Deg. C:	13.0				Lowest water temperature during your dive
-    Cyl:					Your used cylinder (none at this time)
-    O2%:	air				What type of mixture
-    SAC:					SAC (none at this time)
-    Location:					Where you performed your dive (empty)
-
-    As you can see, some information is already there because it is
-    retrieved from your divecomputer. Some information is waiting for
-    you to be added. By double clicking on this dive, you can view and
-    complete the log.
+As you can see, some information is already there because it is
+retrieved from your divecomputer. Some information is waiting for
+you to be added. By double clicking on this dive, you can view and
+complete the log.
 
 
-6. Edit the dive info
+[[S_EditDiveInfo]]
+Edit the dive info
+------------------
 
 When you double click on the dive log line, the editor window
 opens. Now you can add information that is missing. Let start with
 completing the example:
 
-You double clicked on dive #12, as described in 5. Viewing and
-completing your logs.  The Dive Info window pops up and you will see
+You double clicked on dive #12, as described in <<S_ViewingLogs,Viewing and
+completing your logs>>.  The Dive Info window pops up and you will see
 the following:
-
-    Location:	 An input where you can enter your new location, or you can choose with the pull-down previous locations
-    Dive Master: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
-    Buddy:	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
-    Rating:	 A pull-down where you can rate your dive.
-    Notes:	 A free input where you can enter information about your dive. What you've seen, etc.
+[horizontal]
+ *Location*::	 An input where you can enter your new location, or you can choose with the pull-down previous locations
+ *Dive Master*:: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
+ *Buddy*::	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
+ *Rating*::	 A pull-down where you can rate your dive.
+ *Notes*::	 A free input where you can enter information about your dive. What you've seen, etc.
 
 In this example we use the following information:
-
-    Location:	 	Oostvoornse Meer
-    Dive Master:	S. de Vries
-    Buddy:		S. de Vries
-    Rating:		3 stars
-    Notes:		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive.
-                        Made movie with 'headcam'.
+[horizontal]
+ *Location*::		Oostvoornse Meer
+ *Dive Master*::	S. de Vries
+ *Buddy*::		S. de Vries
+ *Rating*::		3 stars
+ *Notes*::		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive. +
+                        Made movie with headcam.
 
 Now don't press ok yet!
 
+[[S_EditEquipmentInfo]]
+Edit equipment info
+-------------------
 
-7. Edit equipment info
+You also want to edit your Cylinder information. And in the
+<<S_EditDiveInfo, previous chapter>>, this was not edited. There is
+still another item to edit in the Dive Info screen:
 
-You also want to edit your Cylinder information. And in the previous
-chapter, this was not edited. There is still another item to edit in
-the Dive Info screen:
-
-    Cylinder:	 A double-click fieldset. Here you can edit your Cylinder information
+ - Cylinder:	 A double-click fieldset. Here you can edit your Cylinder information
 
 So, when you double click on the cylinder info, you get another
 popup. This popup gives you the following:
 
-    Cylinder: 	Pull-down where you can choose your Cylinder, or add your own
-    Size:	The volume if not 'filled'
-    Pressure:	The maximum pressure of this Cylinder
-    Optional:
-		Start Pressure: What was the pressure starting the dive
-		End Pressure:	What was the pressure ending the dive
-		Nitrox:		What was the percentage of blend
+ - Cylinder:	Pull-down where you can choose your Cylinder, or add your own
+ - Size:	The volume if not `filled'
+ - Pressure:	The maximum pressure of this Cylinder
+ - Optional:
+		* Start Pressure: What was the pressure starting the dive
+		* End Pressure:	What was the pressure ending the dive
+		* Nitrox:		What was the percentage of blend
 
 Now we are going to enter the data:
 
-    Cylinder:	15.0 l
-    Size:	15.0
-    Pressure:	220
+ - Cylinder:	15.0 l
+ - Size:	15.0
+ - Pressure:	220
 
-    Now tick the option for Start & End pressure
+Now tick the option for Start & End pressure
 
-    Start Pressure:	180
-    End Pressure:	60
-    Press Ok
+ - Start Pressure:	180
+ - End Pressure:	60
+ - Press Ok
 
 Now your dive information for this dive is complete. You can now press
 ok in the Dive Info screen and view the results.
 
-
-8. Adding equipment info
+[[S_AddingEquipment]]
+Adding equipment info
+---------------------
 
 In Area with the 3 tabs there is the tab Equipment. With this tab, you
 can add Cylinders.  We are going to add an additional Cylinder:
 
-	In the main screen, click on the Equipment tab. This shows your Cylinder you added in 7.
-	Now press the Add button and the Cylinder popup comes back.
-	Just like you added your Cylinder information in 7. Edit equipment info, you add your cylinder
-	information for the second Cylinder. Fill in all the information about this Cylinder and press OK.
+ - In the main screen, click on the Equipment tab.  This shows your
+   Cylinder you added in 7.
 
+ - Now press the Add button and the Cylinder popup comes back.
 
-9. View info & Stats
+ - Just like you added your Cylinder information in 7.  Edit equipment
+   info, you add your cylinder information for the second Cylinder.
+   Fill in all the information about this Cylinder and press OK.
+
+[[S_ViewInfoStats]]
+View info & Stats
+-----------------
 
 After adding all the information, you can use the tab Info &
 Stats. This tab will provide you with all the (statistical and
@@ -204,31 +227,32 @@ calculated) information regarding your dive.
 
 The information contains:
 
-   Dive Info:
+ - Dive Info:
 
-	Date:		Date and time of your dive
-	Dive Time:	Duration of your dive
-	Surf Intv:	Interval between previous dive and this dive
-	Max Depth:	Maximum depth of this dive
-	Avg Depth:	The average depth of this dive
-	Water Temp:	Lowest temperature of the water
-	SAC:		The amount of Surface Air Consumption liters per minute
-	OTU:		The Oxygen Toxicity Units of this dive
-	O2/He:		Amount of Oxygen/Helium
-	Gas Used:	The total volume of gas used during this dive
+	** Date:	Date and time of your dive
+	** Dive Time:	Duration of your dive
+	** Surf Intv:	Interval between previous dive and this dive
+	** Max Depth:	Maximum depth of this dive
+	** Avg Depth:	The average depth of this dive
+	** Water Temp:	Lowest temperature of the water
+	** SAC:		The amount of Surface Air Consumption liters per minute
+	** OTU:		The Oxygen Toxicity Units of this dive
+	** O2/He:	Amount of Oxygen/Helium
+	** Gas Used:	The total volume of gas used during this dive
 
-   Statistics:
+ - Statistics:
 
-	Total time:	Total time of all your dives together, calculated
-	Avg Time:	The average divetime of your dives, calculated
-	Max Depth:	The maximum depth of all your dives
-	Avg Depth:	The average depth of all your dives, calculated
-	Max SAC:	Highest of Surface Air Consumption of all your dives
-	Min SAC:	Lowest of Surface Air Consumption of all your dives
-	Avg SAC:	Average Surface Air Consuption of all your dives, calculated
+	** Total time:	Total time of all your dives together, calculated
+	** Avg Time:	The average divetime of your dives, calculated
+	** Max Depth:	The maximum depth of all your dives
+	** Avg Depth:	The average depth of all your dives, calculated
+	** Max SAC:	Highest of Surface Air Consumption of all your dives
+	** Min SAC:	Lowest of Surface Air Consumption of all your dives
+	** Avg SAC:	Average Surface Air Consuption of all your dives, calculated
 
-
-10. Setting up preferences
+[[S_SettingUpPreferences]]
+Setting up preferences
+----------------------
 
 Subsurface has the ability to modify the preferences you want. By
 using menu 'File - Preferences' you will be presented a popup with the
@@ -236,19 +260,19 @@ using menu 'File - Preferences' you will be presented a popup with the
 words, use Metric or Imperial.
 
 You can set the following options:
-	Depth:		Your diving depth in Meters or Feet
-	Pressure:	The pressure of your tank(s) in Bar/Ato or PSI (Pressure Square Inch)
-	Volume:		The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
-	Temperature:	The temperature of the water in Celcius or Fahrenheit
+ - Depth:	Your diving depth in Meters or Feet
+ - Pressure:	The pressure of your tank(s) in Bar/Ato or PSI (Pressure Square Inch)
+ - Volume:	The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
+ - Temperature:	The temperature of the water in Celcius or Fahrenheit
 
 In the main screen, you did see in Area 3, some information. In the
 Columns options, you can enable/disable options you would like to show
 there:
-	Show Temp:	Shows the temperature of your dive
-	Show Cyl:	Shows the cylinder(s) of your dive
-	Show O2%:	Shows the O2% of your dive
-	Show SAC:	Shows the SAC of your dive (Surface Air Consumption)
-	Show OTU:	Shows the OTU of your dive (Oxygen Toxicity Units)
+ - Show Temp:	Shows the temperature of your dive
+ - Show Cyl:	Shows the cylinder(s) of your dive
+ - Show O2%:	Shows the O2% of your dive
+ - Show SAC:	Shows the SAC of your dive (Surface Air Consumption)
+ - Show OTU:	Shows the OTU of your dive (Oxygen Toxicity Units)
 
 And, you can change the font usage of the program.
 
@@ -258,24 +282,26 @@ I am a diver in The Netherlands, using the Metric System. Therefor, I
 go to the menu File, choose Preferences here. In the Units section, I
 use the folowing:
 
-	Depth:		Meter
-	Pressure:	Bar
-	Volume:		Liter
-	Temperature:	Celcius
+ - Depth:	Meter
+ - Pressure:	Bar
+ - Volume:	Liter
+ - Temperature:	Celcius
 
 I would like to see the:
-			Temperature
-			Show Cyl
-			Show O2%
-			Show SAC
+
+ - Temperature
+ - Show Cyl
+ - Show O2%
+ - Show SAC
 
 As a beginning diver, I don't need to track my OTUs. So I leave this
 one not enabled.
 
 Clicking OK on the dialog stores these settings.
 
-
-11. How to find the Device Name
+[[S_HowFindDeviceName]]
+How to find the Device Name
+---------------------------
 
 When you connect your divecomputer by using an USB connector, most of the
 time, the default of '/dev/ttyUSB0' should work. But if you have other
@@ -284,11 +310,11 @@ already in use.
 
 One of the ways to find out what your dive name is:
 
-	Disconnect your usb cable of your dive computer
-	Open a terminal
-	Type the command: 'dmesg' and press enter
-	Plug in your usb cable of your divecomputer
-	Type the command: 'dmesg' and press enter
+ - Disconnect your usb cable of your dive computer
+ - Open a terminal
+ - Type the command: 'dmesg' and press enter
+ - Plug in your usb cable of your divecomputer
+ - Type the command: 'dmesg' and press enter
 
 Within your terminal you should see a message similair to this one:
 
@@ -313,8 +339,9 @@ detected and is connected to 'ttyUSB3'. Now you use this information in
 the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
 
-
-12. Importing dives from JDivelog
+[[S_ImportingDivesJDivelog]]
+Importing dives from JDivelog
+-----------------------------
 
 Maybe you have been using JDivelog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
@@ -325,30 +352,30 @@ These .jlb contain all the information that has been stored, except your
 images in xml format.
 
 By using the menu 'File - Import' you get the popup, like described in
-chapter 4, Importing new dives. Within this popup there is the option
-to import existing files which are already on your computer. To import
-your JDivelog file(s) do the following:
+<<S_ImportNewDives, chapter 4>>, Importing new dives. Within this
+popup there is the option to import existing files which are already
+on your computer. To import your JDivelog file(s) do the following:
 
-	Open 'File - Import' on the menu
-	Use the file locator under XML file name
-	Browse your directories to the location where your *.jlb file is
-	Select your existing *.jlb file and click 'open'
-	Click the OK button in the popup
+ - Open 'File - Import' on the menu
+ - Use the file locator under XML file name
+ - Browse your directories to the location where your *.jlb file is
+ - Select your existing *.jlb file and click 'open'
+ - Click the OK button in the popup
 
 After a few moments, you see your existing logs in Subsurface. Now you can
-edit your dives like explained in chapter 6.
+edit your dives like explained in <<S_EditDiveInfo, chapter 6>>.
 
 Information that is imported from JDivelog into the location field:
 
-	Extended dive location information
+ - Extended dive location information
 
 Information that is merged into the location or notes field:
 
-	Used amount of weight
-	Used type of suit
-	Used type of gloves
-	Type of dive
-	Dive activity
+ - Used amount of weight
+ - Used type of suit
+ - Used type of gloves
+ - Type of dive
+ - Dive activity
 
 Alternatively, you can start subsurface with the --import comand line
 which will have the same effect:
@@ -368,51 +395,57 @@ as there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be substantially different) subsurface
 will not create duplicate entries.
 
-
-13. Importing dives from Suunto Divemanager 3.*
+[[S_ImportingDivesSuunto]]
+Importing dives from Suunto Divemanager 3.*
+-------------------------------------------
 
 Before you can start importing dives from Suunto Divemanager, you first
 have to export the dives you want to import. Subsurface does not import
 directly from the Suunto Divemanager log files. The following procedures
 unpacking instructions for Linux and Windows.
 
-13.1 Export from Suunto Divemanager:
+Export from Suunto Divemanager
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	Start Suunto Divemanager and login with the name containing the logs
-	Do not start the import wizard to import dives from your computer.
-	In the navigation tree on the left side of the program-window, select your dives.
-	Within the list of dives, select the dives you would like to import later:
-		To select certain dives: hold ctrl and point & click the dive
-		To select all dives:  Select the first dive, hold down shift and select the last dive
-	With the dives marked, use the program menu 'File - Export'
-	The export popup will show
-	Within this popup, there is one field called Export Path.
-		Click the button browse next to the field Export Path
-			A file-manager like window pops up
-			Navigate to the directory where you want to store the Divelog.SDE file
-			Optional change the name of the file you want to save
-			Click 'Save'
-		You are back in the Export popup. Press the button 'Export'
-	Your dives are now exported to the file Divelogs.SDE.
+ - Start Suunto Divemanager and login with the name containing the logs
+ - Do not start the import wizard to import dives from your computer.
+ - In the navigation tree on the left side of the program-window, select your dives.
+ - Within the list of dives, select the dives you would like to import later:
+	* To select certain dives: hold ctrl and point & click the dive
+	* To select all dives:  Select the first dive, hold down shift and select the last dive
+ - With the dives marked, use the program menu 'File - Export'
+ - The export popup will show
+ - Within this popup, there is one field called Export Path.
+	* Click the button browse next to the field Export Path
+		** A file-manager like window pops up
+		** Navigate to the directory where you want to store the Divelog.SDE file
+		** Optional change the name of the file you want to save
+		** Click 'Save'
+	* You are back in the Export popup. Press the button 'Export'
+ - Your dives are now exported to the file Divelogs.SDE.
 
-13.2 Unpacking the Divelogs.SDE on Windows
+Unpacking the Divelogs.SDE on Windows
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Renaming your file to a .zip:
 
-	Use the filemanager (explorer) and navigate to your Divelogs.SDE file
-	Right click on the Divelogs.SDE file and choose 'Rename'
-		Change the name into Divelogs.SDE.zip
-		Press enter when done. A warning popup shows:
-			The file could be unusable when changing the extension. Are you sure:
-			Press OK.
-	Your filemanager will show now the filename Divelogs.SDE.zip
+ - Use the filemanager (explorer) and navigate to your Divelogs.SDE file
+ - Right click on the Divelogs.SDE file and choose 'Rename'
+	* Change the name into Divelogs.SDE.zip
+	* Press enter when done. A warning popup shows:
+
+		The file could be unusable when changing the extension. Are you sure:
+		Press OK.
+
+	* Your filemanager will show now the filename Divelogs.SDE.zip
 
 When you double click your Divelogs.SDE.zip file, your preferred archiving
 tool will start and show you the list of xml files that are in the zip
 archive. Select all the xml files and extract them to a place where you
 can find them later in the process.
 
-13.3 Unpacking the Divelogs.SDE on Linux
+Unpacking the Divelogs.SDE on Linux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The assumption is that you have exported your Divelogs.SDE on a Windows
 system. You have to transfer the file to a location where you can read it
@@ -420,25 +453,25 @@ from within your Linux environment. You can use file-tranfer, shared
 storage or an USB storage device to do this.
 The example uses an USB storage:
 
-	Insert your USB storage into your Windows computer
-	Use the filemanager (explorer) to navigate to the location where your Divelogs.SDE file is located
-	Copy the file to your USB storage:
-		Select the file by 1 click
-		Press Ctrl+c
-		Navigate to your USB Storage
-		Press Ctrl+v
-	Disconnect your USB storage by right clicking your USB storage in the explorer and choose Eject
-	Insert your USB storage into your Linux computer
-	Use your favourite filemanager to navigate to your USB storage
-	Copy the file to /tmp by:
-		Right click on the file
-		select copy
-		navigate to /tmp
-		press Ctrl+v or use the menu 'Edit - Paste'
-	The file is now transfered to /tmp
+ - Insert your USB storage into your Windows computer
+ - Use the filemanager (explorer) to navigate to the location where your Divelogs.SDE file is located
+ - Copy the file to your USB storage:
+	* Select the file by 1 click
+	* Press Ctrl+c
+	* Navigate to your USB Storage
+	* Press Ctrl+v
+ - Disconnect your USB storage by right clicking your USB storage in the explorer and choose Eject
+ - Insert your USB storage into your Linux computer
+ - Use your favourite filemanager to navigate to your USB storage
+ - Copy the file to /tmp by:
+	* Right click on the file
+	* select copy
+	* navigate to /tmp
+	* press Ctrl+v or use the menu 'Edit - Paste'
+ - The file is now transfered to /tmp
 
 Now the file is in /tmp, we can extract the xml files from it. You can do
-this by hand, or use the example script in Appendix B.
+this by hand, or use the example script in <<AppendixB,Appendix B>>.
 
 To extract the xml files, we need to open a terminal and use the following
 commands:
@@ -456,37 +489,41 @@ can import them with the command:
 And with the menu 'File - Save' you can save your dives into the
 Subsurface format.
 
-
-14. The menu and sub-menus
+[[S_Menu]]
+The menu and sub-menus
+----------------------
 
 Within Subsurface, there are several menu and sub-menu options. All of
 those will be described here with their function.
 
-14.1 The file menu
+The file menu
+~~~~~~~~~~~~~
 
 The file menu is used for the following menu options:
 
-	Open:		Open your saved Subsurface xml file(s)
-	Save:		Save your current divelogs or changes you made to your divelogs
-	Print:		Print your current divelog profiles and information about the dive
-	Import:		Import your dives from your divecomputer, JDivelogs or Suunto Divemanager
-	Preferences:	Set your preferences as described in chapter 10
-	Quit:		Quit the program
+ - Open::		Open your saved Subsurface xml file(s)
+ - Save::		Save your current divelogs or changes you made to your divelogs
+ - Print::		Print your current divelog profiles and information about the dive
+ - Import::	Import your dives from your divecomputer, JDivelogs or Suunto Divemanager
+ - Preferences::	Set your preferences as described in <<S_SettingUpPreferences,chapter 10>>
+ - Quit::		Quit the program
 
-14.2 The Log menu
+The Log menu
+~~~~~~~~~~~~
 
 Within the Log menu, there are only 2 sub-items:
 
-	Renumber:	This option provides you with a popup. Within this
+ - Renumber::	This option provides you with a popup. Within this
 			popup you can choose what the first number of your dives should be
 			for this set of dives.
-	View:		This is a submenu containing:
-		List:		Show only the list of dives you have made
-		Profile:	Show only the dive profile of the selected dive
-		Info:		Show only the 3 tab information screen
-		Three:		Show the 'default' 3 screen setup
+ - View::		This is a submenu containing:
+	* List::		Show only the list of dives you have made
+	* Profile::	Show only the dive profile of the selected dive
+	* Info::		Show only the 3 tab information screen
+	* Three::		Show the 'default' 3 screen setup
 
-14.3 The Filter menu
+The Filter menu
+~~~~~~~~~~~~~~~
 
 This menu gives you the choice to enable or disable Events for the
 selected divelog(s). At this time, you can enable or disable ascent.
@@ -494,41 +531,50 @@ When you enable ascent for your dives, within the dive profile, a yellow
 marker with exclamation sign (!) will show on the points where you have
 ascented.
 
-14.4 The Help menu
+The Help menu
+~~~~~~~~~~~~~
 
 The Help menu shows only the About, which contains the version and author
 information and License button.
 
 
-Appendix A
+[[AppendixA]]
+Appendix A: Supported Dive Computers
+------------------------------------
 
 The use of libdivecomputer provides the support for divecomputers. Within
 the list of computers in the 'File - import' menu, you will see a listing
 of divecomputers. This list is covering a compatible set. Please check
 your users manual to check if your computer will be supported.
 
-   Supported divecomputers:
+   Supported divecomputers::
 
-	Atomics:
+	Atomics::
 		Cobalt
-	Cressi:
+
+	Cressi::
 		Edi
-	Mares:
+
+	Mares::
 		Icon HD
 		Nemo
 		Puck
 			Air
-	Oceanic:
+
+	Oceanic::
 		Veo250
 		VT Pro
-	OSTC: *
+
+	OSTC::
 		DR5
 		2N
-	Reefnet:
+
+	Reefnet::
 		Sensus
 		Sensus Pro
 		Sensus Ultra
-	Suunto:
+
+	Suunto::
 		Cobra
 			2
 			3
@@ -553,33 +599,37 @@ your users manual to check if your computer will be supported.
 		Vytec
 			DS
 		Zoop
-	Uwatec:
+
+	Uwatec::
 		Aladin
 		Memo Mouse
 		Smart
-	Zeagle:
+
+	Zeagle::
 		N2iTiON 3
 
 * OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
 
 
-Appendix B
+[[AppendixB]]
+Appendix B: Suunto Export Unpacking Script
+------------------------------------------
 
-#!/bin/bash
-#
-# Small basic example script to unpack Suunto Export files
-# for the use with Subsurface
-#
+	#!/bin/bash
+	#
+	# Small basic example script to unpack Suunto Export files
+	# for the use with Subsurface
+	#
 
-echo -n "Enter the directory where you stored your Suunto Divemanager export file: "
-read SuuntoExportDir
+	echo -n "Enter the directory where you stored your Suunto Divemanager export file: "
+	read SuuntoExportDir
 
-echo -n "Enter the name of your Suunto Divemanager export file: "
-read SuuntoExportFile
+	echo -n "Enter the name of your Suunto Divemanager export file: "
+	read SuuntoExportFile
 
-echo "You have entered: $SuuntoExportDir/$SuuntoExportFile"
+	echo "You have entered: $SuuntoExportDir/$SuuntoExportFile"
 
-cd $SuuntoExportDir
+	cd $SuuntoExportDir
 
 	if [ -e ./$SuuntoExportFile ]; then
 		mkdir SuuntoXML

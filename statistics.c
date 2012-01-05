@@ -171,7 +171,7 @@ void show_dive_stats(struct dive *dive)
 		end = cyl->end.mbar ? : cyl->sample_end.mbar;
 		if (!cylinder_none(cyl)) {
 			/* 0% O2 strangely means air, so 21% - I don't like that at all */
-			int o2 = cyl->gasmix.o2.permille ? : 209;
+			int o2 = cyl->gasmix.o2.permille ? : AIR_PERMILLE;
 			if (offset > 0) {
 				snprintf(buf+offset, 80-offset, ", ");
 				offset += 2;

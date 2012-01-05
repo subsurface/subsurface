@@ -2,6 +2,7 @@
 /* implements Linux specific functions */
 #include "display-gtk.h"
 #include <gconf/gconf-client.h>
+#define DIVELIST_DEFAULT_FONT "Sans 8"
 
 GConfClient *gconf;
 
@@ -50,4 +51,17 @@ void subsurface_close_conf(void)
 const char *subsurface_USB_name()
 {
 	return "/dev/ttyUSB0";
+}
+
+const char *subsurface_icon_name()
+{
+	return "subsurface.svg";
+}
+
+void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
+		GtkWidget *vbox, GtkUIManager *ui_manager)
+{
+	if (!divelist_font)
+		divelist_font = DIVELIST_DEFAULT_FONT;
+	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }

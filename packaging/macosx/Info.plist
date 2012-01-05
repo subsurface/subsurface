@@ -13,8 +13,8 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>subsurface.sh</string>
+	<string>subsurface</string>
 	<key>CFBundleIdentifier</key>
-	<string>torvalds.subsurface</string>
+	<string>org.hohndel.subsurface</string>
 </dict>
 </plist>

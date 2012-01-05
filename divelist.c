@@ -244,7 +244,7 @@ static void get_dive_gas(struct dive *dive, int *o2, int *he, int *o2low)
 		if (cylinder_none(cyl))
 			continue;
 		if (!o2)
-			o2 = 209;
+			o2 = AIR_PERMILLE;
 		if (o2 < mino2)
 			mino2 = o2;
 		if (he > maxhe)
@@ -258,7 +258,7 @@ newmax:
 		maxo2 = o2;
 	}
 	/* All air? Show/sort as "air"/zero */
-	if (!maxhe && maxo2 == 209 && mino2 == maxo2)
+	if (!maxhe && maxo2 == AIR_PERMILLE && mino2 == maxo2)
 		maxo2 = mino2 = 0;
 	*o2 = maxo2;
 	*he = maxhe;
@@ -392,8 +392,10 @@ static int calculate_otu(struct dive *dive)
 		struct sample *sample = dive->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		po2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille / 1000.0 *
-			(sample->depth.mm + 10000) / 10000.0;
+		int o2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
+		if (!o2)
+			o2 = AIR_PERMILLE;
+		po2 = o2 / 1000.0 * (sample->depth.mm + 10000) / 10000.0;
 		if (po2 >= 0.5)
 			otu += pow(po2 - 0.5, 0.83) * t / 30.0;
 	}

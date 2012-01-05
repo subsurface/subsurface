@@ -2,10 +2,10 @@
 /* implements Mac OS X specific functions */
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
+#include <mach-o/dyld.h>
+#include "gtkosxapplication.h"
 
-static CFURLRef fileURL;
-static CFPropertyListRef propertyList;
-static CFMutableDictionaryRef dict = NULL;
+static GtkOSXApplication *osx_app;
 
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
@@ -15,61 +15,45 @@ static CFMutableDictionaryRef dict = NULL;
 					(_var), kCFStringEncodingMacRoman,	\
 					kCFAllocatorNull)
 
+#define SUBSURFACE_PREFERENCES CFSTR("org.hohndel.subsurface")
+#define ICON_NAME "Subsurface.icns"
+#define UI_FONT "Arial Unicode MS 12"
+#define DIVELIST_MAC_DEFAULT_FONT "Arial Unicode MS 9"
+
 void subsurface_open_conf(void)
 {
-	CFStringRef errorString;
-	CFDataRef resourceData;
-	Boolean status;
-	SInt32 errorCode;
-
-	fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
-						CFSTR("subsurface.pref"),// file path name
-						kCFURLPOSIXPathStyle,    // interpret as POSIX path
-						false );                 // is it a directory?
-
-	status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault,
-							fileURL, &resourceData,
-							NULL, NULL, &errorCode);
-	if (status) {
-		propertyList = CFPropertyListCreateFromXMLData(kCFAllocatorDefault,
-							resourceData, kCFPropertyListImmutable,
-							&errorString);
-		CFRelease(resourceData);
-	}
+	/* nothing at this time */
 }
 
 void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 {
-	if (!dict)
-		dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 0,
-						&kCFTypeDictionaryKeyCallBacks,
-						&kCFTypeDictionaryValueCallBacks);
 	switch (type) {
 	case PREF_BOOL:
-		CFDictionarySetValue(dict, CFSTR_VAR(name), value == NULL ? CFSTR("0") : CFSTR("1"));
+		CFPreferencesSetAppValue(CFSTR_VAR(name),
+			value == NULL ? kCFBooleanFalse : kCFBooleanTrue, SUBSURFACE_PREFERENCES);
 		break;
 	case PREF_STRING:
-		CFDictionarySetValue(dict, CFSTR_VAR(name), CFSTR_VAR(value));
+		CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
 	}
 }
+
 const void *subsurface_get_conf(char *name, pref_type_t type)
 {
-	CFStringRef dict_entry;
-
-	/* if no settings exist, we return the value for FALSE */
-	if (!propertyList)
-		return NULL;
+	Boolean boolpref;
+	CFPropertyListRef strpref;
 
 	switch (type) {
 	case PREF_BOOL:
-		dict_entry = CFDictionaryGetValue(propertyList, CFSTR_VAR(name));
-		if (dict_entry && ! CFStringCompare(CFSTR("1"), dict_entry, 0))
+		boolpref = CFPreferencesGetAppBooleanValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES, FALSE);
+		if (boolpref)
 			return (void *) 1;
 		else
 			return NULL;
 	case PREF_STRING:
-		return CFStringGetCStringPtr(CFDictionaryGetValue(propertyList,
-						CFSTR_VAR(name)), kCFStringEncodingMacRoman);
+		strpref = CFPreferencesCopyAppValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES);
+		if (!strpref)
+			return NULL;
+		return CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman);
 	}
 	/* we shouldn't get here, but having this line makes the compiler happy */
 	return NULL;
@@ -77,20 +61,59 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 
 void subsurface_close_conf(void)
 {
-	Boolean status;
-	SInt32 errorCode;
-	CFDataRef xmlData;
-
-	propertyList = dict;
-	dict = NULL;
-	xmlData = CFPropertyListCreateXMLData(kCFAllocatorDefault, propertyList);
-	status = CFURLWriteDataAndPropertiesToResource (fileURL, xmlData, NULL, &errorCode);
-	// some error handling - but really, what can we do?
-	CFRelease(xmlData);
-	CFRelease(propertyList);
+	int ok = CFPreferencesAppSynchronize(SUBSURFACE_PREFERENCES);
+	if (!ok)
+		fprintf(stderr,"Could not save preferences\n");
 }
 
 const char *subsurface_USB_name()
 {
 	return "/dev/tty.SLAB_USBtoUART";
+}
+
+const char *subsurface_icon_name()
+{
+	static char path[1024];
+
+	snprintf(path, 1024, "%s/%s", quartz_application_get_resource_path(), ICON_NAME);
+
+	return path;
+}
+
+void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
+		GtkWidget *vbox, GtkUIManager *ui_manager)
+{
+	GtkWidget *menu_item, *sep;
+
+	if (!divelist_font)
+		divelist_font = DIVELIST_MAC_DEFAULT_FONT;
+	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
+
+	osx_app = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
+	gtk_widget_hide (menubar);
+	gtk_osxapplication_set_menu_bar(osx_app, GTK_MENU_SHELL(menubar));
+
+	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator3");
+	gtk_widget_destroy(sep);
+	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator2");
+	gtk_widget_destroy(sep);
+
+	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Quit");
+	gtk_widget_hide (menu_item);
+	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/Help/About");
+	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 0);
+
+	sep = gtk_separator_menu_item_new();
+	g_object_ref(sep);
+	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 1);
+
+	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Preferences");
+	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 2);
+
+	sep = gtk_separator_menu_item_new();
+	g_object_ref(sep);
+	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 3);
+
+	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
+	gtk_osxapplication_ready(osx_app);
 }
