@@ -101,7 +101,7 @@ static gboolean imported = FALSE;
  * This doesn't really report anything at all. We just sort the
  * dives, the GUI does the reporting
  */
-void report_dives(gboolean imported)
+void report_dives(gboolean is_imported)
 {
 	int i;
 	int preexisting = dive_table.preexisting;
@@ -135,7 +135,7 @@ void report_dives(gboolean imported)
 		i--;
 	}
 
-	if (imported) {
+	if (is_imported) {
 		/* Was the previous dive table state numbered? */
 		if (last && last->number)
 			try_to_renumber(last, preexisting);

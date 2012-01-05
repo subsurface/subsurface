@@ -98,16 +98,16 @@ const struct units IMPERIAL_units = {
 /*
  * Dive info as it is being built up..
  */
-static struct dive *dive;
-static struct sample *sample;
+static struct dive *cur_dive;
+static struct sample *cur_sample;
 static struct {
 	int active;
 	duration_t time;
 	int type, flags, value;
 	const char *name;
-} event;
-static struct tm tm;
-static int cylinder_index;
+} cur_event;
+static struct tm cur_tm;
+static int cur_cylinder_index;
 
 static enum import_source {
 	UNKNOWN,
@@ -153,22 +153,22 @@ static void divedate(char *buffer, void *_when)
 	time_t *when = _when;
 	int success = 0;
 
-	success = tm.tm_sec | tm.tm_min | tm.tm_hour;
+	success = cur_tm.tm_sec | cur_tm.tm_min | cur_tm.tm_hour;
 	if (sscanf(buffer, "%d.%d.%d", &d, &m, &y) == 3) {
-		tm.tm_year = y;
-		tm.tm_mon = m-1;
-		tm.tm_mday = d;
+		cur_tm.tm_year = y;
+		cur_tm.tm_mon = m-1;
+		cur_tm.tm_mday = d;
 	} else if (sscanf(buffer, "%d-%d-%d", &y, &m, &d) == 3) {
-		tm.tm_year = y;
-		tm.tm_mon = m-1;
-		tm.tm_mday = d;
+		cur_tm.tm_year = y;
+		cur_tm.tm_mon = m-1;
+		cur_tm.tm_mday = d;
 	} else {
 		fprintf(stderr, "Unable to parse date '%s'\n", buffer);
 		success = 0;
 	}
 
 	if (success)
-		*when = utc_mktime(&tm);
+		*when = utc_mktime(&cur_tm);
 
 	free(buffer);
 }
@@ -179,11 +179,11 @@ static void divetime(char *buffer, void *_when)
 	time_t *when = _when;
 
 	if (sscanf(buffer, "%d:%d:%d", &h, &m, &s) >= 2) {
-		tm.tm_hour = h;
-		tm.tm_min = m;
-		tm.tm_sec = s;
-		if (tm.tm_year)
-			*when = utc_mktime(&tm);
+		cur_tm.tm_hour = h;
+		cur_tm.tm_min = m;
+		cur_tm.tm_sec = s;
+		if (cur_tm.tm_year)
+			*when = utc_mktime(&cur_tm);
 	}
 	free(buffer);
 }
@@ -197,13 +197,13 @@ static void divedatetime(char *buffer, void *_when)
 
 	if (sscanf(buffer, "%d-%d-%d %d:%d:%d",
 		&y, &m, &d, &hr, &min, &sec) == 6) {
-		tm.tm_year = y;
-		tm.tm_mon = m-1;
-		tm.tm_mday = d;
-		tm.tm_hour = hr;
-		tm.tm_min = min;
-		tm.tm_sec = sec;
-		*when = utc_mktime(&tm);
+		cur_tm.tm_year = y;
+		cur_tm.tm_mon = m-1;
+		cur_tm.tm_mday = d;
+		cur_tm.tm_hour = hr;
+		cur_tm.tm_min = min;
+		cur_tm.tm_sec = sec;
+		*when = utc_mktime(&cur_tm);
 	}
 	free(buffer);
 }
@@ -378,7 +378,7 @@ static void gasmix(char *buffer, void *_fraction)
 	/* libdivecomputer does negative percentages. */
 	if (*buffer == '-')
 		return;
-	if (cylinder_index < MAX_CYLINDERS)
+	if (cur_cylinder_index < MAX_CYLINDERS)
 		percent(buffer, _fraction);
 }
 
@@ -575,8 +575,8 @@ static void eventtime(char *buffer, void *_duration)
 {
 	duration_t *duration = _duration;
 	sampletime(buffer, duration);
-	if (sample)
-		duration->seconds += sample->time.seconds;
+	if (cur_sample)
+		duration->seconds += cur_sample->time.seconds;
 }
 
 static void try_to_fill_event(const char *name, char *buf)
@@ -584,17 +584,17 @@ static void try_to_fill_event(const char *name, char *buf)
 	int len = strlen(name);
 
 	start_match("event", name, buf);
-	if (MATCH(".event", utf8_string, &event.name))
+	if (MATCH(".event", utf8_string, &cur_event.name))
 		return;
-	if (MATCH(".name", utf8_string, &event.name))
+	if (MATCH(".name", utf8_string, &cur_event.name))
 		return;
-	if (MATCH(".time", eventtime, &event.time))
+	if (MATCH(".time", eventtime, &cur_event.time))
 		return;
-	if (MATCH(".type", get_index, &event.type))
+	if (MATCH(".type", get_index, &cur_event.type))
 		return;
-	if (MATCH(".flags", get_index, &event.flags))
+	if (MATCH(".flags", get_index, &cur_event.flags))
 		return;
-	if (MATCH(".value", get_index, &event.value))
+	if (MATCH(".value", get_index, &cur_event.value))
 		return;
 	nonmatch("event", name, buf);
 }
@@ -806,7 +806,7 @@ static int uemis_gas_template;
 static int uemis_cylinder_index(void *_cylinder)
 {
 	cylinder_t *cylinder = _cylinder;
-	unsigned int index = cylinder - dive->cylinder;
+	unsigned int index = cylinder - cur_dive->cylinder;
 
 	if (index > 6) {
 		fprintf(stderr, "Uemis cylinder pointer calculations broken\n");
@@ -838,14 +838,14 @@ static void uemis_cylindersize(char *buffer, void *_cylinder)
 {
 	int index = uemis_cylinder_index(_cylinder);
 	if (index >= 0)
-		cylindersize(buffer, &dive->cylinder[index].type.size);
+		cylindersize(buffer, &cur_dive->cylinder[index].type.size);
 }
 
 static void uemis_percent(char *buffer, void *_cylinder)
 {
 	int index = uemis_cylinder_index(_cylinder);
 	if (index >= 0)
-		percent(buffer, &dive->cylinder[index].gasmix.o2);
+		percent(buffer, &cur_dive->cylinder[index].gasmix.o2);
 }
 
 static int uemis_dive_match(struct dive **divep, const char *name, int len, char *buf)
@@ -1028,22 +1028,22 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 		return;
 	if (MATCH(".rating", get_index, &dive->rating))
 		return;
-	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cylinder_index].type.size))
+	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
 		return;
-	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cylinder_index].type.workingpressure))
+	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))
 		return;
-	if (MATCH(".cylinder.description", utf8_string, &dive->cylinder[cylinder_index].type.description))
+	if (MATCH(".cylinder.description", utf8_string, &dive->cylinder[cur_cylinder_index].type.description))
 		return;
-	if (MATCH(".cylinder.start", pressure, &dive->cylinder[cylinder_index].start))
+	if (MATCH(".cylinder.start", pressure, &dive->cylinder[cur_cylinder_index].start))
 		return;
-	if (MATCH(".cylinder.end", pressure, &dive->cylinder[cylinder_index].end))
+	if (MATCH(".cylinder.end", pressure, &dive->cylinder[cur_cylinder_index].end))
 		return;
 
-	if (MATCH(".o2", gasmix, &dive->cylinder[cylinder_index].gasmix.o2))
+	if (MATCH(".o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
 		return;
-	if (MATCH(".n2", gasmix_nitrogen, &dive->cylinder[cylinder_index].gasmix))
+	if (MATCH(".n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
 		return;
-	if (MATCH(".he", gasmix, &dive->cylinder[cylinder_index].gasmix.he))
+	if (MATCH(".he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
 		return;
 
 	nonmatch("dive", name, buf);
@@ -1057,32 +1057,34 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
  */
 static void dive_start(void)
 {
-	if (dive)
+	if (cur_dive)
 		return;
-	dive = alloc_dive();
-	memset(&tm, 0, sizeof(tm));
+	cur_dive = alloc_dive();
+	memset(&cur_tm, 0, sizeof(cur_tm));
 }
 
 static void dive_end(void)
 {
-	if (!dive)
+	if (!cur_dive)
 		return;
-	record_dive(dive);
-	dive = NULL;
-	cylinder_index = 0;
+	record_dive(cur_dive);
+	cur_dive = NULL;
+	cur_cylinder_index = 0;
 }
 
 static void event_start(void)
 {
-	memset(&event, 0, sizeof(event));
-	event.active = 1;
+	memset(&cur_event, 0, sizeof(cur_event));
+	cur_event.active = 1;
 }
 
 static void event_end(void)
 {
-	if (event.name && strcmp(event.name, "surface") != 0)
-		add_event(dive, event.time.seconds, event.type, event.flags, event.value, event.name);
-	event.active = 0;
+	if (cur_event.name && strcmp(cur_event.name, "surface") != 0)
+		add_event(cur_dive, cur_event.time.seconds,
+			cur_event.type, cur_event.flags,
+			cur_event.value, cur_event.name);
+	cur_event.active = 0;
 }
 
 static void cylinder_start(void)
@@ -1091,21 +1093,21 @@ static void cylinder_start(void)
 
 static void cylinder_end(void)
 {
-	cylinder_index++;
+	cur_cylinder_index++;
 }
 
 static void sample_start(void)
 {
-	sample = prepare_sample(&dive);
+	cur_sample = prepare_sample(&cur_dive);
 }
 
 static void sample_end(void)
 {
-	if (!dive)
+	if (!cur_dive)
 		return;
 
-	finish_sample(dive);
-	sample = NULL;
+	finish_sample(cur_dive);
+	cur_sample = NULL;
 }
 
 static void entry(const char *name, int size, const char *raw)
@@ -1116,16 +1118,16 @@ static void entry(const char *name, int size, const char *raw)
 		return;
 	memcpy(buf, raw, size);
 	buf[size] = 0;
-	if (event.active) {
+	if (cur_event.active) {
 		try_to_fill_event(name, buf);
 		return;
 	}
-	if (sample) {
-		try_to_fill_sample(sample, name, buf);
+	if (cur_sample) {
+		try_to_fill_sample(cur_sample, name, buf);
 		return;
 	}
-	if (dive) {
-		try_to_fill_dive(&dive, name, buf);
+	if (cur_dive) {
+		try_to_fill_dive(&cur_dive, name, buf);
 		return;
 	}
 }

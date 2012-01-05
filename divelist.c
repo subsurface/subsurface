@@ -230,7 +230,7 @@ static void temperature_data_func(GtkTreeViewColumn *col,
  *  - Nitrox trumps air (even if hypoxic)
  * These are the same rules as the inter-dive sorting rules.
  */
-static void get_dive_gas(struct dive *dive, int *o2, int *he, int *o2low)
+static void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 {
 	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
@@ -260,9 +260,9 @@ newmax:
 	/* All air? Show/sort as "air"/zero */
 	if (!maxhe && maxo2 == AIR_PERMILLE && mino2 == maxo2)
 		maxo2 = mino2 = 0;
-	*o2 = maxo2;
-	*he = maxhe;
-	*o2low = mino2;
+	*o2_p = maxo2;
+	*he_p = maxhe;
+	*o2low_p = mino2;
 }
 
 static gint nitrox_sort_func(GtkTreeModel *model,
@@ -625,7 +625,7 @@ static struct divelist_column {
 	sort_func_t sort;
 	unsigned int flags;
 	int *visible;
-} column[] = {
+} dl_column[] = {
 	[DIVE_NR] = { "#", NULL, NULL, ALIGN_RIGHT | UNSORTABLE },
 	[DIVE_DATE] = { "Date", date_data_func, NULL, ALIGN_LEFT },
 	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
@@ -642,7 +642,7 @@ static struct divelist_column {
 
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, struct divelist_column *col)
 {
-	int index = col - &column[0];
+	int index = col - &dl_column[0];
 	const char *title = col->header;
 	data_func_t data_func = col->data;
 	sort_func_t sort_func = col->sort;
@@ -709,17 +709,17 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_MULTIPLE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
-	dive_list.nr = divelist_column(&dive_list, column + DIVE_NR);
-	dive_list.date = divelist_column(&dive_list, column + DIVE_DATE);
-	dive_list.stars = divelist_column(&dive_list, column + DIVE_RATING);
-	dive_list.depth = divelist_column(&dive_list, column + DIVE_DEPTH);
-	dive_list.duration = divelist_column(&dive_list, column + DIVE_DURATION);
-	dive_list.temperature = divelist_column(&dive_list, column + DIVE_TEMPERATURE);
-	dive_list.cylinder = divelist_column(&dive_list, column + DIVE_CYLINDER);
-	dive_list.nitrox = divelist_column(&dive_list, column + DIVE_NITROX);
-	dive_list.sac = divelist_column(&dive_list, column + DIVE_SAC);
-	dive_list.otu = divelist_column(&dive_list, column + DIVE_OTU);
-	dive_list.location = divelist_column(&dive_list, column + DIVE_LOCATION);
+	dive_list.nr = divelist_column(&dive_list, dl_column + DIVE_NR);
+	dive_list.date = divelist_column(&dive_list, dl_column + DIVE_DATE);
+	dive_list.stars = divelist_column(&dive_list, dl_column + DIVE_RATING);
+	dive_list.depth = divelist_column(&dive_list, dl_column + DIVE_DEPTH);
+	dive_list.duration = divelist_column(&dive_list, dl_column + DIVE_DURATION);
+	dive_list.temperature = divelist_column(&dive_list, dl_column + DIVE_TEMPERATURE);
+	dive_list.cylinder = divelist_column(&dive_list, dl_column + DIVE_CYLINDER);
+	dive_list.nitrox = divelist_column(&dive_list, dl_column + DIVE_NITROX);
+	dive_list.sac = divelist_column(&dive_list, dl_column + DIVE_SAC);
+	dive_list.otu = divelist_column(&dive_list, dl_column + DIVE_OTU);
+	dive_list.location = divelist_column(&dive_list, dl_column + DIVE_LOCATION);
 
 	fill_dive_list();
 
