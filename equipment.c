@@ -303,7 +303,7 @@ int cylinder_none(cylinder_t *cyl)
 		!cyl->end.mbar;
 }
 
-static void set_one_cylinder(int index, cylinder_t *cyl, GtkListStore *model, GtkTreeIter *iter)
+static void set_one_cylinder(cylinder_t *cyl, GtkListStore *model, GtkTreeIter *iter)
 {
 	unsigned int start, end;
 
@@ -346,7 +346,7 @@ void show_dive_equipment(struct dive *dive)
 		cylinder_t *cyl = dive->cylinder+i;
 
 		gtk_list_store_append(model, &iter);
-		set_one_cylinder(i, cyl, model, &iter);
+		set_one_cylinder(cyl, model, &iter);
 	}
 }
 
@@ -740,7 +740,7 @@ static void edit_cb(GtkButton *button, GtkTreeView *tree_view)
 	if (!edit_cylinder_dialog(index, &cyl))
 		return;
 
-	set_one_cylinder(index, &cyl, model, &iter);
+	set_one_cylinder(&cyl, model, &iter);
 	repaint_dive();
 }
 
@@ -756,7 +756,7 @@ static void add_cb(GtkButton *button, GtkTreeView *tree_view)
 		return;
 
 	gtk_list_store_append(model, &iter);
-	set_one_cylinder(index, &cyl, model, &iter);
+	set_one_cylinder(&cyl, model, &iter);
 
 	selection = gtk_tree_view_get_selection(tree_view);
 	gtk_tree_selection_select_iter(selection, &iter);
