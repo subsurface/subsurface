@@ -160,7 +160,7 @@ struct sample *prepare_sample(struct dive **divep)
 	return NULL;
 }
 
-void finish_sample(struct dive *dive, struct sample *sample)
+void finish_sample(struct dive *dive)
 {
 	dive->samples++;
 }
@@ -490,7 +490,7 @@ static struct dive *add_sample(struct sample *sample, int time, struct dive *div
 		return NULL;
 	*p = *sample;
 	p->time.seconds = time;
-	finish_sample(dive, p);
+	finish_sample(dive);
 	return dive;
 }
 

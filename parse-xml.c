@@ -1104,7 +1104,7 @@ static void sample_end(void)
 	if (!dive)
 		return;
 
-	finish_sample(dive, sample);
+	finish_sample(dive);
 	sample = NULL;
 }
 
