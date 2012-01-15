@@ -65,12 +65,12 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
 static int divename(char *buf, size_t size, struct dive *dive)
 {
 	struct tm *tm = gmtime(&dive->when);
-	return snprintf(buf, size, "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
-		dive->number,
-		weekday(tm->tm_wday),
-		tm->tm_mon+1, tm->tm_mday,
-		tm->tm_year+1900,
-		tm->tm_hour, tm->tm_min);
+	int len;
+
+	len = snprintf(buf, size, "Dive #%d - ", dive->number);
+	len += strftime(buf + len, size - len, time_format, tm);
+
+	return len;
 }
 
 void show_dive_info(struct dive *dive)

@@ -31,7 +31,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	int len, decimals, width, height, maxwidth, maxheight;
 	PangoLayout *layout;
 	struct tm *tm;
-	char buffer[80], divenr[20], *people;
+	char buffer[80], *people;
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
@@ -40,18 +40,14 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w, double h, P
 	pango_layout_set_width(layout, maxwidth);
 	pango_layout_set_height(layout, maxheight);
 
-	*divenr = 0;
+	*buffer = '\0';
 	if (dive->number)
-		snprintf(divenr, sizeof(divenr), "Dive #%d - ", dive->number);
+		len = snprintf(buffer, sizeof(buffer), "Dive #%d - ", dive->number);
+	else
+		len = 0;
 
 	tm = gmtime(&dive->when);
-	len = snprintf(buffer, sizeof(buffer),
-		"%s%s, %s %d, %d   %d:%02d",
-		divenr,
-		weekday(tm->tm_wday),
-		monthname(tm->tm_mon),
-		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min);
+	len += strftime(buffer + len, sizeof(buffer) - len, time_format, tm);
 
 	set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
 	pango_layout_set_text(layout, buffer, len);

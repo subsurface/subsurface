@@ -45,6 +45,7 @@ extern const char *subsurface_icon_name(void);
 extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager);
 
+extern const char *time_format;
 extern const char *divelist_font;
 
 extern visible_cols_t visible_cols;

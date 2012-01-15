@@ -132,12 +132,7 @@ static void date_data_func(GtkTreeViewColumn *col,
 	when = val;
 
 	tm = gmtime(&when);
-	snprintf(buffer, sizeof(buffer),
-		"%s, %s %d, %d %02d:%02d",
-		weekday(tm->tm_wday),
-		monthname(tm->tm_mon),
-		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min);
+	strftime(buffer, sizeof(buffer), time_format, tm);
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
