@@ -23,6 +23,8 @@ GtkWidget *error_label;
 GtkWidget *vpane, *hpane;
 int        error_count;
 
+#define DEFAULT_TIME_FORMAT "%a, %b %e, %Y %H:%M"
+const char *time_format;
 const char *divelist_font;
 
 struct units output_units;
@@ -319,7 +321,7 @@ static void event_toggle(GtkWidget *w, gpointer _data)
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *font, *frame, *box, *vbox, *button;
+	GtkWidget *dialog, *font, *frame, *box, *vbox, *button, *time_format_entry;
 
 	menu_units = output_units;
 
@@ -388,6 +390,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
 
+	frame = gtk_frame_new("Time format (http://linux.die.net/man/3/strftime)");
+	time_format_entry = gtk_entry_new();
+	gtk_entry_set_text(GTK_ENTRY(time_format_entry), time_format);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(frame), time_format_entry);
+
 	font = gtk_font_button_new_with_font(divelist_font);
 	gtk_box_pack_start(GTK_BOX(vbox), font, FALSE, FALSE, 5);
 
@@ -399,6 +407,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 		divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
 		set_divelist_font(divelist_font);
+
+		time_format = strdup(gtk_entry_get_text(GTK_ENTRY(time_format_entry)));
 
 		output_units = menu_units;
 		update_dive_list_units();
@@ -415,6 +425,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
+		subsurface_set_conf("time_format", PREF_STRING, time_format);
 		subsurface_close_conf();
 	}
 	gtk_widget_destroy(dialog);
@@ -680,6 +691,10 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
+
+	time_format = subsurface_get_conf("time_format", PREF_STRING);
+	if (!time_format)
+		time_format = DEFAULT_TIME_FORMAT;
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
