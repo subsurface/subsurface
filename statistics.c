@@ -37,7 +37,10 @@ static single_stat_widget_t single_w;
 typedef struct {
 	GtkWidget *total_time,
 		*avg_time,
+		*shortest_time,
+		*longest_time,
 		*max_overall_depth,
+		*min_overall_depth,
 		*avg_overall_depth,
 		*min_sac,
 		*avg_sac,
@@ -49,7 +52,10 @@ static total_stats_widget_t stats_w;
 typedef struct {
 	duration_t total_time;
 	/* avg_time is simply total_time / nr -- let's not keep this */
+	duration_t shortest_time;
+	duration_t longest_time;
 	depth_t max_depth;
+	depth_t min_depth;
 	depth_t avg_depth;
 	volume_t max_sac;
 	volume_t min_sac;
@@ -66,6 +72,10 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
+	if (dive_table.nr > 0) {
+		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
+		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
+	}
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
 	for (idx = 0; idx < dive_table.nr; idx++) {
@@ -77,8 +87,14 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		}
 		old_tt = stats.total_time.seconds;
 		stats.total_time.seconds += dp->duration.seconds;
+		if (dp->duration.seconds > stats.longest_time.seconds)
+			stats.longest_time.seconds = dp->duration.seconds;
+		if (dp->duration.seconds < stats.shortest_time.seconds)
+			stats.shortest_time.seconds = dp->duration.seconds;
 		if (dp->maxdepth.mm > stats.max_depth.mm)
 			stats.max_depth.mm = dp->maxdepth.mm;
+		if (dp->maxdepth.mm < stats.min_depth.mm)
+			stats.min_depth.mm = dp->maxdepth.mm;
 		stats.avg_depth.mm = (1.0 * old_tt * stats.avg_depth.mm +
 				dp->duration.seconds * dp->meandepth.mm) / stats.total_time.seconds;
 		if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
@@ -206,8 +222,12 @@ static void show_total_dive_stats(struct dive *dive)
 
 	set_label(stats_w.total_time, get_time_string(stats.total_time.seconds, 0));
 	set_label(stats_w.avg_time, get_time_string(stats.total_time.seconds / dive_table.nr, 0));
+	set_label(stats_w.longest_time, get_time_string(stats.longest_time.seconds, 0));
+	set_label(stats_w.shortest_time, get_time_string(stats.shortest_time.seconds, 0));
 	value = get_depth_units(stats.max_depth.mm, &decimals, &unit);
 	set_label(stats_w.max_overall_depth, "%.*f %s", decimals, value, unit);
+	value = get_depth_units(stats.min_depth.mm, &decimals, &unit);
+	set_label(stats_w.min_overall_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(stats.avg_depth.mm, &decimals, &unit);
 	set_label(stats_w.avg_overall_depth, "%.*f %s", decimals, value, unit);
 	value = get_volume_units(stats.max_sac.mliter, &decimals, &unit);
@@ -220,6 +240,8 @@ static void show_total_dive_stats(struct dive *dive)
 
 void show_dive_stats(struct dive *dive)
 {
+	/* they have to be called in this order, as 'total' depends on
+	 * calculations done in 'single' */
 	show_single_dive_stats(dive);
 	show_total_dive_stats(dive);
 }
@@ -259,10 +281,18 @@ GtkWidget *total_stats_widget(void)
 
 	stats_w.total_time = new_info_label_in_frame(hbox, "Total Time");
 	stats_w.avg_time = new_info_label_in_frame(hbox, "Avg Time");
-	stats_w.max_overall_depth = new_info_label_in_frame(hbox, "Max Depth");
-	stats_w.avg_overall_depth = new_info_label_in_frame(hbox, "Avg Depth");
+	stats_w.longest_time = new_info_label_in_frame(hbox, "Longest Dive");
+	stats_w.shortest_time = new_info_label_in_frame(hbox, "Shortest Dive");
 
 	/* second row */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	stats_w.max_overall_depth = new_info_label_in_frame(hbox, "Max Depth");
+	stats_w.min_overall_depth = new_info_label_in_frame(hbox, "Min Depth");
+	stats_w.avg_overall_depth = new_info_label_in_frame(hbox, "Avg Depth");
+
+	/* third row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
