@@ -242,10 +242,11 @@ static GtkWidget *new_info_label_in_frame(GtkWidget *box, const char *label)
 	return label_widget;
 }
 
-static GtkWidget *total_stats_widget(GtkWidget *vbox)
+GtkWidget *total_stats_widget(void)
 {
+	GtkWidget *vbox, *hbox, *statsframe, *framebox;
 
-	GtkWidget *hbox, *statsframe, *framebox;
+	vbox = gtk_vbox_new(FALSE, 3);
 
 	statsframe = gtk_frame_new("Statistics");
 	gtk_box_pack_start(GTK_BOX(vbox), statsframe, TRUE, FALSE, 3);
@@ -272,9 +273,8 @@ static GtkWidget *total_stats_widget(GtkWidget *vbox)
 	return vbox;
 }
 
-static GtkWidget *single_stats_widget(void)
+GtkWidget *single_stats_widget(void)
 {
-
 	GtkWidget *vbox, *hbox, *infoframe, *framebox;
 
 	vbox = gtk_vbox_new(FALSE, 3);
@@ -310,10 +310,4 @@ static GtkWidget *single_stats_widget(void)
 	single_w.gas_used = new_info_label_in_frame(hbox, "Gas Used");
 
 	return vbox;
-}
-
-GtkWidget* stats_widget(void)
-{
-  GtkWidget *vbox = single_stats_widget();
-  return total_stats_widget(vbox);
 }
