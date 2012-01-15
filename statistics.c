@@ -29,17 +29,22 @@ typedef struct {
 		*sac,
 		*otu,
 		*o2he,
-		*gas_used,
-		*total_time,
+		*gas_used;
+} single_stat_widget_t;
+
+static single_stat_widget_t single_w;
+
+typedef struct {
+	GtkWidget *total_time,
 		*avg_time,
 		*max_overall_depth,
 		*avg_overall_depth,
 		*min_sac,
 		*avg_sac,
 		*max_sac;
-} info_stat_widget_t;
+} total_stats_widget_t;
 
-static info_stat_widget_t info_stat_w;
+static total_stats_widget_t stats_w;
 
 typedef struct {
 	duration_t total_time;
@@ -49,9 +54,9 @@ typedef struct {
 	volume_t max_sac;
 	volume_t min_sac;
 	volume_t avg_sac;
-} info_stat_t;
+} stats_t;
 
-static info_stat_t info_stat;
+static stats_t stats;
 
 static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 {
@@ -60,7 +65,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	int old_tt, sac_time = 0;
 
 	*prev_dive = NULL;
-	memset(&info_stat, 0, sizeof(info_stat));
+	memset(&stats, 0, sizeof(stats));
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
 	for (idx = 0; idx < dive_table.nr; idx++) {
@@ -70,21 +75,21 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 			if (idx > 0)
 				*prev_dive = dive_table.dives[idx-1];
 		}
-		old_tt = info_stat.total_time.seconds;
-		info_stat.total_time.seconds += dp->duration.seconds;
-		if (dp->maxdepth.mm > info_stat.max_depth.mm)
-			info_stat.max_depth.mm = dp->maxdepth.mm;
-		info_stat.avg_depth.mm = (1.0 * old_tt * info_stat.avg_depth.mm +
-				dp->duration.seconds * dp->meandepth.mm) / info_stat.total_time.seconds;
+		old_tt = stats.total_time.seconds;
+		stats.total_time.seconds += dp->duration.seconds;
+		if (dp->maxdepth.mm > stats.max_depth.mm)
+			stats.max_depth.mm = dp->maxdepth.mm;
+		stats.avg_depth.mm = (1.0 * old_tt * stats.avg_depth.mm +
+				dp->duration.seconds * dp->meandepth.mm) / stats.total_time.seconds;
 		if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
 			int old_sac_time = sac_time;
 			sac_time += dp->duration.seconds;
-			info_stat.avg_sac.mliter = (1.0 * old_sac_time * info_stat.avg_sac.mliter +
+			stats.avg_sac.mliter = (1.0 * old_sac_time * stats.avg_sac.mliter +
 						dp->duration.seconds * dp->sac) / sac_time ;
-			if (dp->sac > info_stat.max_sac.mliter)
-				info_stat.max_sac.mliter = dp->sac;
-			if (info_stat.min_sac.mliter == 0 || dp->sac < info_stat.min_sac.mliter)
-				info_stat.min_sac.mliter = dp->sac;
+			if (dp->sac > stats.max_sac.mliter)
+				stats.max_sac.mliter = dp->sac;
+			if (stats.min_sac.mliter == 0 || dp->sac < stats.min_sac.mliter)
+				stats.min_sac.mliter = dp->sac;
 		}
 	}
 }
@@ -117,7 +122,7 @@ static char * get_time_string(int seconds, int maxdays)
 	return buf;
 }
 
-void show_dive_stats(struct dive *dive)
+static void show_single_dive_stats(struct dive *dive)
 {
 	char buf[80];
 	double value;
@@ -137,28 +142,28 @@ void show_dive_stats(struct dive *dive)
 		tm->tm_mday, tm->tm_year + 1900,
 		tm->tm_hour, tm->tm_min);
 
-	set_label(info_stat_w.date, buf);
-	set_label(info_stat_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);
+	set_label(single_w.date, buf);
+	set_label(single_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);
 	if (prev_dive)
-		set_label(info_stat_w.surf_intv, 
+		set_label(single_w.surf_intv, 
 			get_time_string(dive->when - (prev_dive->when + prev_dive->duration.seconds), 4));
 	else
-		set_label(info_stat_w.surf_intv, "unknown");
+		set_label(single_w.surf_intv, "unknown");
 	value = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
-	set_label(info_stat_w.max_depth, "%.*f %s", decimals, value, unit);
+	set_label(single_w.max_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(dive->meandepth.mm, &decimals, &unit);
-	set_label(info_stat_w.avg_depth, "%.*f %s", decimals, value, unit);
+	set_label(single_w.avg_depth, "%.*f %s", decimals, value, unit);
 	if (dive->watertemp.mkelvin) {
 		value = get_temp_units(dive->watertemp.mkelvin, &unit);
-		set_label(info_stat_w.water_temp, "%.1f %s", value, unit);
+		set_label(single_w.water_temp, "%.1f %s", value, unit);
 	} else
-		set_label(info_stat_w.water_temp, "");
+		set_label(single_w.water_temp, "");
 	value = get_volume_units(dive->sac, &decimals, &unit);
 	if (value > 0) {
-		set_label(info_stat_w.sac, "%.*f %s/min", decimals, value, unit);
+		set_label(single_w.sac, "%.*f %s/min", decimals, value, unit);
 	} else
-		set_label(info_stat_w.sac, "");
-	set_label(info_stat_w.otu, "%d", dive->otu);
+		set_label(single_w.sac, "");
+	set_label(single_w.otu, "%d", dive->otu);
 	offset = 0;
 	gas_used = 0;
 	buf[0] = '\0';
@@ -185,25 +190,38 @@ void show_dive_stats(struct dive *dive)
 		if (cyl->type.size.mliter && start && end)
 			gas_used += cyl->type.size.mliter / 1000.0 * (start - end);
 	}
-	set_label(info_stat_w.o2he, buf);
+	set_label(single_w.o2he, buf);
 	if (gas_used) {
 		value = get_volume_units(gas_used, &decimals, &unit);
-		set_label(info_stat_w.gas_used, "%.*f %s", decimals, value, unit);
+		set_label(single_w.gas_used, "%.*f %s", decimals, value, unit);
 	} else
-		set_label(info_stat_w.gas_used, "");
-	/* and now do the statistics */
-	set_label(info_stat_w.total_time, get_time_string(info_stat.total_time.seconds, 0));
-	set_label(info_stat_w.avg_time, get_time_string(info_stat.total_time.seconds / dive_table.nr, 0));
-	value = get_depth_units(info_stat.max_depth.mm, &decimals, &unit);
-	set_label(info_stat_w.max_overall_depth, "%.*f %s", decimals, value, unit);
-	value = get_depth_units(info_stat.avg_depth.mm, &decimals, &unit);
-	set_label(info_stat_w.avg_overall_depth, "%.*f %s", decimals, value, unit);
-	value = get_volume_units(info_stat.max_sac.mliter, &decimals, &unit);
-	set_label(info_stat_w.max_sac, "%.*f %s/min", decimals, value, unit);
-	value = get_volume_units(info_stat.min_sac.mliter, &decimals, &unit);
-	set_label(info_stat_w.min_sac, "%.*f %s/min", decimals, value, unit);
-	value = get_volume_units(info_stat.avg_sac.mliter, &decimals, &unit);
-	set_label(info_stat_w.avg_sac, "%.*f %s/min", decimals, value, unit);
+		set_label(single_w.gas_used, "");
+}
+
+static void show_total_dive_stats(struct dive *dive)
+{
+	double value;
+	int decimals;
+	const char *unit;
+
+	set_label(stats_w.total_time, get_time_string(stats.total_time.seconds, 0));
+	set_label(stats_w.avg_time, get_time_string(stats.total_time.seconds / dive_table.nr, 0));
+	value = get_depth_units(stats.max_depth.mm, &decimals, &unit);
+	set_label(stats_w.max_overall_depth, "%.*f %s", decimals, value, unit);
+	value = get_depth_units(stats.avg_depth.mm, &decimals, &unit);
+	set_label(stats_w.avg_overall_depth, "%.*f %s", decimals, value, unit);
+	value = get_volume_units(stats.max_sac.mliter, &decimals, &unit);
+	set_label(stats_w.max_sac, "%.*f %s/min", decimals, value, unit);
+	value = get_volume_units(stats.min_sac.mliter, &decimals, &unit);
+	set_label(stats_w.min_sac, "%.*f %s/min", decimals, value, unit);
+	value = get_volume_units(stats.avg_sac.mliter, &decimals, &unit);
+	set_label(stats_w.avg_sac, "%.*f %s/min", decimals, value, unit);
+}
+
+void show_dive_stats(struct dive *dive)
+{
+	show_single_dive_stats(dive);
+	show_total_dive_stats(dive);
 }
 
 void flush_dive_stats_changes(struct dive *dive)
@@ -224,10 +242,40 @@ static GtkWidget *new_info_label_in_frame(GtkWidget *box, const char *label)
 	return label_widget;
 }
 
-GtkWidget *stats_widget(void)
+static GtkWidget *total_stats_widget(GtkWidget *vbox)
 {
 
-	GtkWidget *vbox, *hbox, *infoframe, *statsframe, *framebox;
+	GtkWidget *hbox, *statsframe, *framebox;
+
+	statsframe = gtk_frame_new("Statistics");
+	gtk_box_pack_start(GTK_BOX(vbox), statsframe, TRUE, FALSE, 3);
+	framebox = gtk_vbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(statsframe), framebox);
+
+	/* first row */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	stats_w.total_time = new_info_label_in_frame(hbox, "Total Time");
+	stats_w.avg_time = new_info_label_in_frame(hbox, "Avg Time");
+	stats_w.max_overall_depth = new_info_label_in_frame(hbox, "Max Depth");
+	stats_w.avg_overall_depth = new_info_label_in_frame(hbox, "Avg Depth");
+
+	/* second row */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	stats_w.max_sac = new_info_label_in_frame(hbox, "Max SAC");
+	stats_w.min_sac = new_info_label_in_frame(hbox, "Min SAC");
+	stats_w.avg_sac = new_info_label_in_frame(hbox, "Avg SAC");
+
+	return vbox;
+}
+
+static GtkWidget *single_stats_widget(void)
+{
+
+	GtkWidget *vbox, *hbox, *infoframe, *framebox;
 
 	vbox = gtk_vbox_new(FALSE, 3);
 
@@ -240,48 +288,32 @@ GtkWidget *stats_widget(void)
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	info_stat_w.date = new_info_label_in_frame(hbox, "Date");
-	info_stat_w.dive_time = new_info_label_in_frame(hbox, "Dive Time");
-	info_stat_w.surf_intv = new_info_label_in_frame(hbox, "Surf Intv");
+	single_w.date = new_info_label_in_frame(hbox, "Date");
+	single_w.dive_time = new_info_label_in_frame(hbox, "Dive Time");
+	single_w.surf_intv = new_info_label_in_frame(hbox, "Surf Intv");
 
 	/* second row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	info_stat_w.max_depth = new_info_label_in_frame(hbox, "Max Depth");
-	info_stat_w.avg_depth = new_info_label_in_frame(hbox, "Avg Depth");
-	info_stat_w.water_temp = new_info_label_in_frame(hbox, "Water Temp");
+	single_w.max_depth = new_info_label_in_frame(hbox, "Max Depth");
+	single_w.avg_depth = new_info_label_in_frame(hbox, "Avg Depth");
+	single_w.water_temp = new_info_label_in_frame(hbox, "Water Temp");
 
 	/* third row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	info_stat_w.sac = new_info_label_in_frame(hbox, "SAC");
-	info_stat_w.otu = new_info_label_in_frame(hbox, "OTU");
-	info_stat_w.o2he = new_info_label_in_frame(hbox, "O" UTF8_SUBSCRIPT_2 " / He");
-	info_stat_w.gas_used = new_info_label_in_frame(hbox, "Gas Used");
-
-	statsframe = gtk_frame_new("Statistics");
-	gtk_box_pack_start(GTK_BOX(vbox), statsframe, TRUE, FALSE, 3);
-	framebox = gtk_vbox_new(FALSE, 3);
-	gtk_container_add(GTK_CONTAINER(statsframe), framebox);
-
-	/* first row */
-	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
-
-	info_stat_w.total_time = new_info_label_in_frame(hbox, "Total Time");
-	info_stat_w.avg_time = new_info_label_in_frame(hbox, "Avg Time");
-	info_stat_w.max_overall_depth = new_info_label_in_frame(hbox, "Max Depth");
-	info_stat_w.avg_overall_depth = new_info_label_in_frame(hbox, "Avg Depth");
-
-	/* second row */
-	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
-
-	info_stat_w.max_sac = new_info_label_in_frame(hbox, "Max SAC");
-	info_stat_w.min_sac = new_info_label_in_frame(hbox, "Min SAC");
-	info_stat_w.avg_sac = new_info_label_in_frame(hbox, "Avg SAC");
+	single_w.sac = new_info_label_in_frame(hbox, "SAC");
+	single_w.otu = new_info_label_in_frame(hbox, "OTU");
+	single_w.o2he = new_info_label_in_frame(hbox, "O" UTF8_SUBSCRIPT_2 " / He");
+	single_w.gas_used = new_info_label_in_frame(hbox, "Gas Used");
 
 	return vbox;
+}
+
+GtkWidget* stats_widget(void)
+{
+  GtkWidget *vbox = single_stats_widget();
+  return total_stats_widget(vbox);
 }
