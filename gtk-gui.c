@@ -646,10 +646,8 @@ void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
 	GtkWidget *notebook;
-	GtkWidget *dive_info;
+	GtkWidget *nb_page;
 	GtkWidget *dive_list;
-	GtkWidget *equipment;
-	GtkWidget *stats;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
 	GdkScreen *screen;
@@ -735,16 +733,20 @@ void init_ui(int *argcp, char ***argvp)
 	gtk_paned_add2(GTK_PANED(hpane), dive_profile);
 
 	/* Frame for extended dive info */
-	dive_info = extended_dive_info_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dive_info, gtk_label_new("Dive Notes"));
+	nb_page = extended_dive_info_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Dive Notes"));
 
 	/* Frame for dive equipment */
-	equipment = equipment_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), equipment, gtk_label_new("Equipment"));
+	nb_page = equipment_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Equipment"));
 
-	/* Frame for dive statistics */
-	stats = stats_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), stats, gtk_label_new("Info & Stats"));
+	/* Frame for single dive statistics */
+	nb_page = single_stats_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Dive Info"));
+
+	/* Frame for total dive statistics */
+	nb_page = total_stats_widget();
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Overall Stats"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
