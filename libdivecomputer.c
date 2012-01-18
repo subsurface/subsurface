@@ -175,7 +175,7 @@ sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata
 	case SAMPLE_TYPE_TIME:
 		sample = prepare_sample(divep);
 		sample->time.seconds = value.time;
-		finish_sample(*divep, sample);
+		finish_sample(*divep);
 		break;
 	case SAMPLE_TYPE_DEPTH:
 		sample->depth.mm = value.depth * 1000 + 0.5;

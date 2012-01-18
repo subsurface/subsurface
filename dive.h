@@ -281,7 +281,7 @@ extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
 
 extern struct sample *prepare_sample(struct dive **divep);
-extern void finish_sample(struct dive *dive, struct sample *sample);
+extern void finish_sample(struct dive *dive);
 
 extern void report_dives(gboolean imported);
 extern struct dive *fixup_dive(struct dive *dive);

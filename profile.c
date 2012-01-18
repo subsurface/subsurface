@@ -1014,8 +1014,7 @@ static void dump_pr_track(pr_track_t **track_pr)
 	}
 }
 
-static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
-					pr_track_t **track_pr)
+static void fill_missing_tank_pressures(struct plot_info *pi, pr_track_t **track_pr)
 {
 	pr_track_t *list = NULL;
 	pr_track_t *nlist = NULL;
@@ -1338,7 +1337,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->meandepth = dive->meandepth.mm;
 
 	if (missing_pr) {
-		fill_missing_tank_pressures(dive, pi, track_pr);
+		fill_missing_tank_pressures(pi, track_pr);
 	}
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++)
 		list_free(track_pr[cyl]);

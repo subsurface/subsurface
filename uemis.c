@@ -231,7 +231,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		sample->cylinderindex = u_sample->active_tank;
 		sample->cylinderpressure.mbar= u_sample->tank_pressure * 10;
 		uemis_event(dive, sample, u_sample);
-		finish_sample(dive, sample);
+		finish_sample(dive);
 		i += 0x25;
 		u_sample++;
 	}

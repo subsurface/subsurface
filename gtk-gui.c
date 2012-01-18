@@ -245,7 +245,7 @@ GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char 
 	return col;
 }
 
-static void create_radio(GtkWidget *vbox, const char *name, ...)
+static void create_radio(GtkWidget *vbox, const char *w_name, ...)
 {
 	va_list args;
 	GtkRadioButton *group = NULL;
@@ -254,10 +254,10 @@ static void create_radio(GtkWidget *vbox, const char *name, ...)
 	box = gtk_hbox_new(TRUE, 10);
 	gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
 
-	label = gtk_label_new(name);
+	label = gtk_label_new(w_name);
 	gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
 
-	va_start(args, name);
+	va_start(args, w_name);
 	for (;;) {
 		int enabled;
 		const char *name;

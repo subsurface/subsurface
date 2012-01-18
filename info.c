@@ -258,13 +258,13 @@ void add_location(const char *string)
 
 static int get_rating(const char *string)
 {
-	int rating = 0;
+	int rating_val = 0;
 	int i;
 
 	for (i = 0; i <= 5; i++)
 		if (!strcmp(star_strings[i],string))
-			rating = i;
-	return rating;
+			rating_val = i;
+	return rating_val;
 }
 
 struct dive_info {
