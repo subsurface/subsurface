@@ -114,7 +114,7 @@ static void file_open(GtkWidget *w, gpointer data)
 		GError *error = NULL;
 		while(filenames != NULL) {
 			filename = filenames->data;
-			parse_xml_file(filename, &error);
+			parse_file(filename, &error);
 			if (error != NULL)
 			{
 				report_error(error);
@@ -961,7 +961,7 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
 static void do_import_file(gpointer data, gpointer user_data)
 {
 	GError *error = NULL;
-	parse_xml_file(data, &error);
+	parse_file(data, &error);
 
 	if (error != NULL)
 	{

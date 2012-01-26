@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
 #define __USE_XOPEN
 #include <time.h>
 #include <libxml/parser.h>
@@ -1304,84 +1302,25 @@ static void reset_all(void)
 	import_source = UNKNOWN;
 }
 
-struct memblock {
-	void *buffer;
-	size_t size;
-};
-
-static int readfile(const char *filename, struct memblock *mem)
-{
-	int ret, fd = open(filename, O_RDONLY);
-	struct stat st;
-
-	mem->buffer = NULL;
-	mem->size = 0;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return fd;
-	ret = fstat(fd, &st);
-	if (ret < 0)
-		goto out;
-	ret = -EINVAL;
-	if (!S_ISREG(st.st_mode))
-		goto out;
-	ret = 0;
-	if (!st.st_size)
-		goto out;
-	mem->buffer = malloc(st.st_size);
-	ret = -1;
-	errno = ENOMEM;
-	if (!mem->buffer)
-		goto out;
-	mem->size = st.st_size;
-	ret = read(fd, mem->buffer, mem->size);
-	if (ret < 0)
-		goto free;
-	if (ret == mem->size)
-		goto out;
-	errno = EIO;
-	ret = -1;
-free:
-	free(mem->buffer);
-	mem->buffer = NULL;
-	mem->size = 0;
-out:
-	close(fd);
-	return ret;
-}
-
-void parse_xml_file(const char *filename, GError **error)
+void parse_xml_buffer(const char *url, const char *buffer, int size, GError **error)
 {
 	xmlDoc *doc;
-	struct memblock mem;
 
-	if (readfile(filename, &mem) < 0) {
-		fprintf(stderr, "Failed to read '%s'.\n", filename);
-		if (error) {
-			*error = g_error_new(g_quark_from_string("subsurface"),
-					     DIVE_ERROR_PARSE,
-					     "Failed to read '%s'",
-					     filename);
-		}
-		return;
-	}
-
-	doc = xmlReadMemory(mem.buffer, mem.size, filename, NULL, 0);
+	doc = xmlReadMemory(buffer, size, url, NULL, 0);
 	if (!doc) {
-		fprintf(stderr, "Failed to parse '%s'.\n", filename);
+		fprintf(stderr, "Failed to parse '%s'.\n", url);
 		if (error != NULL)
 		{
 			*error = g_error_new(g_quark_from_string("subsurface"),
 					     DIVE_ERROR_PARSE,
 					     "Failed to parse '%s'",
-					     filename);
+					     url);
 		}
 		return;
 	}
 	/* we assume that the last (or only) filename passed as argument is a 
 	 * great filename to use as default when saving the dives */ 
-	set_filename(filename);
+	set_filename(url);
 	reset_all();
 	dive_start();
 #ifdef XSLT

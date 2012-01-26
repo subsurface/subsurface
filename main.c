@@ -226,7 +226,7 @@ int main(int argc, char **argv)
 			continue;
 		}
 		GError *error = NULL;
-		parse_xml_file(a, &error);
+		parse_file(a, &error);
 		
 		if (error != NULL)
 		{

@@ -254,8 +254,10 @@ static inline struct dive *get_dive(unsigned int nr)
 }
 
 extern void parse_xml_init(void);
-extern void parse_xml_file(const char *filename, GError **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
 extern void set_filename(const char *filename);
+
+extern void parse_file(const char *filename, GError **error);
 
 #ifdef XSLT
 extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
