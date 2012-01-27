@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 
 #include "dive.h"
@@ -53,9 +54,63 @@ out:
 	return ret;
 }
 
+#ifdef LIBZIP
+#include <zip.h>
+
+static void suunto_read(struct zip_file *file, GError **error)
+{
+	int size = 1024, n, read = 0;
+	char *mem = malloc(size);
+
+	while ((n = zip_fread(file, mem+read, size-read)) > 0) {
+		read += n;
+		size = read * 3 / 2;
+		mem = realloc(mem, size);
+	}
+	parse_xml_buffer("SDE file", mem, read, error);
+	free(mem);
+}
+#endif
+
+static int try_to_open_suundo(const char *filename, GError **error)
+{
+	int success = 0;
+#ifdef LIBZIP
+	struct zip *zip = zip_open(filename, ZIP_CHECKCONS, NULL);
+
+	if (zip) {
+		int index;
+		for (index = 0; ;index++) {
+			struct zip_file *file = zip_fopen_index(zip, index, 0);
+			if (!file)
+				break;
+			suunto_read(file, error);
+			zip_fclose(file);
+			success++;
+		}
+		zip_close(zip);
+	}
+#endif
+	return success;
+}
+
+static int open_by_filename(const char *filename, const char *fmt, GError **error)
+{
+	/* Suunto Dive Manager files: SDE */
+	if (!strcasecmp(fmt, "SDE"))
+		return try_to_open_suundo(filename, error);
+
+	return 0;
+}
+
 void parse_file(const char *filename, GError **error)
 {
+	char *fmt;
 	struct memblock mem;
+
+	fmt = strrchr(filename, '.');
+	if (fmt && open_by_filename(filename, fmt+1, error))
+		return;
 
 	if (readfile(filename, &mem) < 0) {
 		fprintf(stderr, "Failed to read '%s'.\n", filename);

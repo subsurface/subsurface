@@ -87,6 +87,11 @@ GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 
+LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
+ifneq ($(strip $(LIBZIP)),)
+	ZIP = -DLIBZIP $(shell $(PKGCONFIG) --cflags libzip)
+endif
+
 ifeq ($(UNAME), linux)
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
@@ -111,7 +116,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) -lpthread -lm
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
@@ -148,7 +153,7 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
 
 file.o: file.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) -c file.c
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c file.c
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) -c parse-xml.c
