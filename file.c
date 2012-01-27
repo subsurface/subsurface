@@ -16,6 +16,7 @@ static int readfile(const char *filename, struct memblock *mem)
 {
 	int ret, fd = open(filename, O_RDONLY);
 	struct stat st;
+	char *buf;
 
 	mem->buffer = NULL;
 	mem->size = 0;
@@ -32,15 +33,17 @@ static int readfile(const char *filename, struct memblock *mem)
 	ret = 0;
 	if (!st.st_size)
 		goto out;
-	mem->buffer = malloc(st.st_size);
+	buf = malloc(st.st_size+1);
 	ret = -1;
 	errno = ENOMEM;
-	if (!mem->buffer)
+	if (!buf)
 		goto out;
+	mem->buffer = buf;
 	mem->size = st.st_size;
-	ret = read(fd, mem->buffer, mem->size);
+	ret = read(fd, buf, mem->size);
 	if (ret < 0)
 		goto free;
+	buf[ret] = 0;
 	if (ret == mem->size)
 		goto out;
 	errno = EIO;
@@ -72,10 +75,11 @@ static void suunto_read(struct zip_file *file, GError **error)
 }
 #endif
 
-static int try_to_open_suunto(const char *filename, GError **error)
+static int try_to_open_suunto(const char *filename, struct memblock *mem, GError **error)
 {
 	int success = 0;
 #ifdef LIBZIP
+	/* Grr. libzip needs to re-open the file, it can't take a buffer */
 	struct zip *zip = zip_open(filename, ZIP_CHECKCONS, NULL);
 
 	if (zip) {
@@ -94,23 +98,27 @@ static int try_to_open_suunto(const char *filename, GError **error)
 	return success;
 }
 
-static int open_by_filename(const char *filename, const char *fmt, GError **error)
+static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, GError **error)
 {
 	/* Suunto Dive Manager files: SDE */
 	if (!strcasecmp(fmt, "SDE"))
-		return try_to_open_suunto(filename, error);
+		return try_to_open_suunto(filename, mem, error);
 
 	return 0;
 }
 
+static void parse_file_buffer(const char *filename, struct memblock *mem, GError **error)
+{
+	char *fmt = strrchr(filename, '.');
+	if (fmt && open_by_filename(filename, fmt+1, mem, error))
+		return;
+
+	parse_xml_buffer(filename, mem->buffer, mem->size, error);
+}
+
 void parse_file(const char *filename, GError **error)
 {
-	char *fmt;
 	struct memblock mem;
-
-	fmt = strrchr(filename, '.');
-	if (fmt && open_by_filename(filename, fmt+1, error))
-		return;
 
 	if (readfile(filename, &mem) < 0) {
 		fprintf(stderr, "Failed to read '%s'.\n", filename);
@@ -123,6 +131,6 @@ void parse_file(const char *filename, GError **error)
 		return;
 	}
 
-	parse_xml_buffer(filename, mem.buffer, mem.size, error);
+	parse_file_buffer(filename, &mem, error);
 	free(mem.buffer);
 }
