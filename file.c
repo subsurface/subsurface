@@ -72,7 +72,7 @@ static void suunto_read(struct zip_file *file, GError **error)
 }
 #endif
 
-static int try_to_open_suundo(const char *filename, GError **error)
+static int try_to_open_suunto(const char *filename, GError **error)
 {
 	int success = 0;
 #ifdef LIBZIP
@@ -98,7 +98,7 @@ static int open_by_filename(const char *filename, const char *fmt, GError **erro
 {
 	/* Suunto Dive Manager files: SDE */
 	if (!strcasecmp(fmt, "SDE"))
-		return try_to_open_suundo(filename, error);
+		return try_to_open_suunto(filename, error);
 
 	return 0;
 }
