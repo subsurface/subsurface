@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -76,20 +77,50 @@ static int figure_out_modulus(const unsigned char *decode, const unsigned char *
 	return best;
 }
 
-static void cochran_debug_write(int dive, const unsigned char *data, unsigned size)
-{
-	char buffer[60];
-	int fd;
+#define hexchar(n) ("0123456789abcdef"[(n)&15])
 
-	snprintf(buffer, sizeof(buffer), "cochran.%d.out", dive);
-	fd = open(buffer, O_CREAT | O_TRUNC | O_WRONLY, 0666);
-	if (fd >= 0) {
-		write(fd, data, size);
-		close(fd);
+static void show_line(unsigned offset, const unsigned char *data, unsigned size)
+{
+	unsigned char bits;
+	int i, off;
+	char buffer[120];
+
+	if (size > 16)
+		size = 16;
+
+	bits = 0;
+	memset(buffer, ' ', sizeof(buffer));
+	off = sprintf(buffer, "%06x ", offset);
+	for (i = 0; i < size; i++) {
+		char *hex = buffer + off + 3*i;
+		char *asc = buffer + off + 50 + i;
+		unsigned char byte = data[i];
+
+		hex[0] = hexchar(byte>>4);
+		hex[1] = hexchar(byte);
+		bits |= byte;
+		if (byte < 32 || byte > 126)
+			byte = '.';
+		asc[0] = byte;
+		asc[1] = 0;
+	}
+
+	if (bits)
+		puts(buffer);
+}
+
+static void cochran_debug_write(const char *filename, int dive, const unsigned char *data, unsigned size)
+{
+	int i;
+	printf("\n%s, dive %d\n\n", filename, dive);
+
+	for (i = 0; i < size; i += 16) {
+		show_line(i, data + i, size - i);
 	}
 }
 
-static void parse_cochran_dive(int dive, const unsigned char *decode, unsigned mod,
+static void parse_cochran_dive(const char *filename, int dive,
+		const unsigned char *decode, unsigned mod,
 		const unsigned char *in, unsigned size)
 {
 	char *buf = malloc(size);
@@ -117,7 +148,7 @@ static void parse_cochran_dive(int dive, const unsigned char *decode, unsigned m
 	 */
 	partial_decode(0x48ff, size, decode, 0, mod, in, size, buf);
 
-	cochran_debug_write(dive, buf, size);
+	cochran_debug_write(filename, dive, buf, size);
 
 	free(buf);
 }
@@ -146,8 +177,8 @@ int try_to_open_cochran(const char *filename, struct memblock *mem, GError **err
 			break;
 		if (dive2 > mem->size)
 			break;
-		parse_cochran_dive(i, decode, mod, mem->buffer + dive1, dive2 - dive1);
+		parse_cochran_dive(filename, i, decode, mod, mem->buffer + dive1, dive2 - dive1);
 	}
 
-	return 1;
+	exit(0);
 }
