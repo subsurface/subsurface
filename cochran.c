@@ -146,7 +146,9 @@ static void parse_cochran_dive(const char *filename, int dive,
 	 * scrambled, but there seems to be size differences in the data,
 	 * so this just descrambles part of it:
 	 */
-	partial_decode(0x48ff, size, decode, 0, mod, in, size, buf);
+	partial_decode(0x48ff, 0x4a14, decode, 0, mod, in, size, buf);
+	partial_decode(0x4a14, 0xc9bd, decode, 0, mod, in, size, buf);
+	partial_decode(0xc9bd,   size, decode, 0, mod, in, size, buf);
 
 	cochran_debug_write(filename, dive, buf, size);
 
