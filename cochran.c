@@ -79,7 +79,7 @@ static int figure_out_modulus(const unsigned char *decode, const unsigned char *
 
 #define hexchar(n) ("0123456789abcdef"[(n)&15])
 
-static void show_line(unsigned offset, const unsigned char *data, unsigned size)
+static int show_line(unsigned offset, const unsigned char *data, unsigned size, int show_empty)
 {
 	unsigned char bits;
 	int i, off;
@@ -105,18 +105,51 @@ static void show_line(unsigned offset, const unsigned char *data, unsigned size)
 		asc[1] = 0;
 	}
 
-	if (bits)
+	if (bits) {
 		puts(buffer);
+		return 1;
+	}
+	if (show_empty)
+		puts("...");
+	return 0;
 }
 
-static void cochran_debug_write(const char *filename, int dive, const unsigned char *data, unsigned size)
+static void cochran_debug_write(const char *filename, const unsigned char *data, unsigned size)
 {
-	int i;
-	printf("\n%s, dive %d\n\n", filename, dive);
+	int i, show = 1;
 
-	for (i = 0; i < size; i += 16) {
-		show_line(i, data + i, size - i);
-	}
+	for (i = 0; i < size; i += 16)
+		show = show_line(i, data + i, size - i, show);
+}
+
+static void parse_cochran_header(const char *filename,
+		const unsigned char *decode, unsigned mod,
+		const unsigned char *in, unsigned size)
+{
+	char *buf = malloc(size);
+
+	/* Do the "null decode" using a one-byte decode array of '\0' */
+	partial_decode(0    , 0x0b14, "", 0, 1, in, size, buf);
+
+	/*
+	 * The header scrambling is different form the dive
+	 * scrambling. Oh yay!
+	 */
+#if 0 // Alex
+	partial_decode(0x058c, 0x0b14, decode, 0, mod, in, size, buf);
+#else // Don
+	partial_decode(0x05a0, 0x0b14, decode, 0, mod, in, size, buf);
+#endif
+	partial_decode(0x0b14, 0x1b14, decode, 0, mod, in, size, buf);
+	partial_decode(0x1b14, 0x2b14, decode, 0, mod, in, size, buf);
+	partial_decode(0x2b14, 0x3b14, decode, 0, mod, in, size, buf);
+	partial_decode(0x3b14, 0x5414, decode, 0, mod, in, size, buf);
+	partial_decode(0x5414,   size, decode, 0, mod, in, size, buf);
+
+	printf("\n%s, header\n\n", filename);
+	cochran_debug_write(filename, buf, size);
+
+	free(buf);
 }
 
 static void parse_cochran_dive(const char *filename, int dive,
@@ -150,7 +183,8 @@ static void parse_cochran_dive(const char *filename, int dive,
 	partial_decode(0x4a14, 0xc9bd, decode, 0, mod, in, size, buf);
 	partial_decode(0xc9bd,   size, decode, 0, mod, in, size, buf);
 
-	cochran_debug_write(filename, dive, buf, size);
+	printf("\n%s, dive %d\n\n", filename, dive);
+	cochran_debug_write(filename, buf, size);
 
 	free(buf);
 }
@@ -172,6 +206,8 @@ int try_to_open_cochran(const char *filename, struct memblock *mem, GError **err
 
 	mod = figure_out_modulus(decode, mem->buffer + dive1, dive2 - dive1);
 
+	parse_cochran_header(filename, decode, mod, mem->buffer + 0x40000, dive1 - 0x40000);
+
 	for (i = 0; i < 65534; i++) {
 		dive1 = offsets[i];
 		dive2 = offsets[i+1];
@@ -179,7 +215,7 @@ int try_to_open_cochran(const char *filename, struct memblock *mem, GError **err
 			break;
 		if (dive2 > mem->size)
 			break;
-		parse_cochran_dive(filename, i, decode, mod, mem->buffer + dive1, dive2 - dive1);
+		parse_cochran_dive(filename, i+1, decode, mod, mem->buffer + dive1, dive2 - dive1);
 	}
 
 	exit(0);
