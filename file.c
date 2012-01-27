@@ -6,11 +6,7 @@
 #include <errno.h>
 
 #include "dive.h"
-
-struct memblock {
-	void *buffer;
-	size_t size;
-};
+#include "file.h"
 
 static int readfile(const char *filename, struct memblock *mem)
 {
@@ -103,6 +99,10 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	/* Suunto Dive Manager files: SDE */
 	if (!strcasecmp(fmt, "SDE"))
 		return try_to_open_suunto(filename, mem, error);
+
+	/* Truly nasty intentionally obfuscated Cochran Anal software */
+	if (!strcasecmp(fmt, "CAN"))
+		return try_to_open_cochran(filename, mem, error);
 
 	return 0;
 }
