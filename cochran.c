@@ -135,11 +135,7 @@ static void parse_cochran_header(const char *filename,
 	 * The header scrambling is different form the dive
 	 * scrambling. Oh yay!
 	 */
-#if 0 // Alex
-	partial_decode(0x058c, 0x0b14, decode, 0, mod, in, size, buf);
-#else // Don
-	partial_decode(0x05a0, 0x0b14, decode, 0, mod, in, size, buf);
-#endif
+	partial_decode(0x010e, 0x0b14, decode, 0, mod, in, size, buf);
 	partial_decode(0x0b14, 0x1b14, decode, 0, mod, in, size, buf);
 	partial_decode(0x1b14, 0x2b14, decode, 0, mod, in, size, buf);
 	partial_decode(0x2b14, 0x3b14, decode, 0, mod, in, size, buf);
