@@ -8,6 +8,8 @@
 #include "dive.h"
 #include "file.h"
 
+#define DON
+
 /*
  * The Cochran file format is designed to be annoying to read. It's roughly:
  *
@@ -153,6 +155,11 @@ static void parse_cochran_dive(const char *filename, int dive,
 		const unsigned char *in, unsigned size)
 {
 	char *buf = malloc(size);
+#ifdef DON
+	unsigned int offset = 0x4a14;
+#else
+	unsigned int offset = 0x4b14;
+#endif
 
 	/*
 	 * The scrambling has odd boundaries. I think the boundaries
@@ -175,9 +182,8 @@ static void parse_cochran_dive(const char *filename, int dive,
 	 * scrambled, but there seems to be size differences in the data,
 	 * so this just descrambles part of it:
 	 */
-	partial_decode(0x48ff, 0x4a14, decode, 0, mod, in, size, buf);
-	partial_decode(0x4a14, 0xc9bd, decode, 0, mod, in, size, buf);
-	partial_decode(0xc9bd,   size, decode, 0, mod, in, size, buf);
+	partial_decode(0x48ff, offset, decode, 0, mod, in, size, buf);
+	partial_decode(offset,   size, decode, 0, mod, in, size, buf);
 
 	printf("\n%s, dive %d\n\n", filename, dive);
 	cochran_debug_write(filename, buf, size);
