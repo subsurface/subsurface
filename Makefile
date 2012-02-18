@@ -87,6 +87,11 @@ GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 
+LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
+ifneq ($(strip $(LIBZIP)),)
+	ZIP = -DLIBZIP $(shell $(PKGCONFIG) --cflags libzip)
+endif
+
 ifeq ($(UNAME), linux)
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
@@ -111,11 +116,11 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) -lpthread -lm
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
 OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
-	gtk-gui.o statistics.o $(OSSUPPORT).o $(RESFILE)
+	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -146,6 +151,12 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
+
+file.o: file.c dive.h file.h
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c file.c
+
+cochran.o: cochran.c dive.h file.h
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c cochran.c
 
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) -c parse-xml.c
