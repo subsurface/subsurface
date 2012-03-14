@@ -746,7 +746,7 @@ void init_ui(int *argcp, char ***argvp)
 
 	/* Frame for total dive statistics */
 	nb_page = total_stats_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Overall Stats"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Stats"));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);

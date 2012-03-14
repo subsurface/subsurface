@@ -73,6 +73,7 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 		return;
 	case 1:	
 		/* just pick that dive as selected */
+		amount_selected = 1;
 		path = g_list_nth_data(selected_dives, 0);
 		if (gtk_tree_model_get_iter(model, &iter, path)) {
 			gtk_tree_model_get_value(model, &iter, DIVE_INDEX, &value);
@@ -86,6 +87,9 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 		  * is the most intuitive solution.
 		  * I do however want to keep around which dives have
 		  * been selected */
+		amount_selected = g_list_length(selected_dives);
+		process_selected_dives(selected_dives, model);
+		repaint_dive();
 		return;
 	}
 }

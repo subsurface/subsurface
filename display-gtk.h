@@ -67,6 +67,10 @@ extern GtkWidget *cylinder_list_widget(void);
 
 extern GtkWidget *dive_list_create(void);
 
+unsigned int amount_selected;
+
+extern void process_selected_dives(GList *, GtkTreeModel *);
+
 typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    GtkCellRenderer *renderer,
 			    GtkTreeModel *model,
