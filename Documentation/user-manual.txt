@@ -1,7 +1,7 @@
 Subsurface 1.2 User Manual
 ==========================
 Jacco van_Koll <jko@haringstad.com>
-v0.0.7, January 2021
+v0.0.7, January 2012
 :Author Initials: JKO
 :toc:
 :icons:
@@ -280,7 +280,7 @@ I will give an example here:
 
 I am a diver in The Netherlands, using the Metric System. Therefor, I
 go to the menu File, choose Preferences here. In the Units section, I
-use the folowing:
+use the following:
 
  - Depth:	Meter
  - Pressure:	Bar
@@ -347,7 +347,7 @@ Maybe you have been using JDivelog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
 Subsurface, because you can import your divelogs from JDivelog.
 
-JDivelog stores its information into files with the extention of .jlb.
+JDivelog stores its information into files with the extension of .jlb.
 These .jlb contain all the information that has been stored, except your
 images in xml format.
 
@@ -377,7 +377,7 @@ Information that is merged into the location or notes field:
  - Type of dive
  - Dive activity
 
-Alternatively, you can start subsurface with the --import comand line
+Alternatively, you can start subsurface with the --import command line
 which will have the same effect:
 
       subsurface MyDives.xml --import JDivelogDives.jlb
@@ -449,7 +449,7 @@ Unpacking the Divelogs.SDE on Linux
 
 The assumption is that you have exported your Divelogs.SDE on a Windows
 system. You have to transfer the file to a location where you can read it
-from within your Linux environment. You can use file-tranfer, shared
+from within your Linux environment. You can use file-transfer, shared
 storage or an USB storage device to do this.
 The example uses an USB storage:
 
