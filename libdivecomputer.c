@@ -67,6 +67,9 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 	case DEVICE_TYPE_OCEANIC_ATOM2:
 		return oceanic_atom2_parser_create(parser, devdata->devinfo.model);
 
+	case DEVICE_TYPE_MARES_DARWIN:
+		return mares_darwin_parser_create(parser, devdata->devinfo.model);
+
 	case DEVICE_TYPE_MARES_NEMO:
 	case DEVICE_TYPE_MARES_PUCK:
 		return mares_nemo_parser_create(parser, devdata->devinfo.model);
@@ -385,6 +388,9 @@ static device_status_t device_open(const char *devname,
 	case DEVICE_TYPE_OCEANIC_ATOM2:
 		return oceanic_atom2_device_open(device, devname);
 
+	case DEVICE_TYPE_MARES_DARWIN:
+		return mares_darwin_device_open(device, devname, 0); /// last parameter is model type (taken from example), 0 seems to be standard, 1 is DARWIN_AIR => Darwin Air wont work if this is fixed here?
+
 	case DEVICE_TYPE_MARES_NEMO:
 		return mares_nemo_device_open(device, devname);
 
@@ -533,8 +539,9 @@ struct device_list device_list[] = {
 	{ "Oceanic VT Pro",	DEVICE_TYPE_OCEANIC_VTPRO },
 	{ "Oceanic Veo250",	DEVICE_TYPE_OCEANIC_VEO250 },
 	{ "Oceanic Atom 2",	DEVICE_TYPE_OCEANIC_ATOM2 },
-	{ "Mares Nemo",		DEVICE_TYPE_MARES_NEMO },
-	{ "Mares Puck",		DEVICE_TYPE_MARES_PUCK },
+	{ "Mares Darwin, M1, M2, Airlab",	DEVICE_TYPE_MARES_DARWIN },
+	{ "Mares Nemo, Excel, Apneist",	DEVICE_TYPE_MARES_NEMO },
+	{ "Mares Puck, Nemo Air, Nemo Wide",	DEVICE_TYPE_MARES_PUCK },
 	{ "Mares Icon HD",	DEVICE_TYPE_MARES_ICONHD },
 	{ "OSTC",		DEVICE_TYPE_HW_OSTC },
 	{ "Cressi Edy",		DEVICE_TYPE_CRESSI_EDY },
