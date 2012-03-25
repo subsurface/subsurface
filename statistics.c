@@ -44,7 +44,11 @@ typedef struct {
 		*avg_overall_depth,
 		*min_sac,
 		*avg_sac,
-		*max_sac;
+		*max_sac,
+		*selection_size,
+		*max_temp,
+		*avg_temp,
+		*min_temp;
 } total_stats_widget_t;
 
 static total_stats_widget_t stats_w;
@@ -60,21 +64,65 @@ typedef struct {
 	volume_t max_sac;
 	volume_t min_sac;
 	volume_t avg_sac;
+	int max_temp;
+	int min_temp;
+	unsigned int combined_temp;
+	unsigned int combined_count;
+	unsigned int selection_size;
 } stats_t;
 
 static stats_t stats;
+static stats_t stats_selection;
+
+
+static void process_dive(struct dive *dp, stats_t *stats)
+{
+	int old_tt, sac_time = 0;
+	const char *unit;
+
+	old_tt = stats->total_time.seconds;
+	stats->total_time.seconds += dp->duration.seconds;
+	if (dp->duration.seconds > stats->longest_time.seconds)
+		stats->longest_time.seconds = dp->duration.seconds;
+	if (stats->shortest_time.seconds == 0 || dp->duration.seconds < stats->shortest_time.seconds)
+		stats->shortest_time.seconds = dp->duration.seconds;
+	if (dp->maxdepth.mm > stats->max_depth.mm)
+		stats->max_depth.mm = dp->maxdepth.mm;
+	if (stats->min_depth.mm == 0 || dp->maxdepth.mm < stats->min_depth.mm)
+		stats->min_depth.mm = dp->maxdepth.mm;
+	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
+			dp->duration.seconds * dp->meandepth.mm) / stats->total_time.seconds;
+	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
+		int old_sac_time = sac_time;
+		sac_time += dp->duration.seconds;
+		stats->avg_sac.mliter = (1.0 * old_sac_time * stats->avg_sac.mliter +
+				dp->duration.seconds * dp->sac) / sac_time ;
+		if (dp->sac > stats->max_sac.mliter)
+			stats->max_sac.mliter = dp->sac;
+		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
+			stats->min_sac.mliter = dp->sac;
+	}
+	if (dp->watertemp.mkelvin) {
+		if (stats->min_temp == 0 || dp->watertemp.mkelvin < stats->min_temp)
+			stats->min_temp = dp->watertemp.mkelvin;
+		if (dp->watertemp.mkelvin > stats->max_temp)
+			stats->max_temp = dp->watertemp.mkelvin;
+		stats->combined_temp += get_temp_units(dp->watertemp.mkelvin, &unit);
+		stats->combined_count++;
+	}
+}
 
 static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 {
 	int idx;
 	struct dive *dp;
-	int old_tt, sac_time = 0;
 
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
 		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
 		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
+		stats.selection_size = dive_table.nr;
 	}
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -85,28 +133,28 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 			if (idx > 0)
 				*prev_dive = dive_table.dives[idx-1];
 		}
-		old_tt = stats.total_time.seconds;
-		stats.total_time.seconds += dp->duration.seconds;
-		if (dp->duration.seconds > stats.longest_time.seconds)
-			stats.longest_time.seconds = dp->duration.seconds;
-		if (dp->duration.seconds < stats.shortest_time.seconds)
-			stats.shortest_time.seconds = dp->duration.seconds;
-		if (dp->maxdepth.mm > stats.max_depth.mm)
-			stats.max_depth.mm = dp->maxdepth.mm;
-		if (dp->maxdepth.mm < stats.min_depth.mm)
-			stats.min_depth.mm = dp->maxdepth.mm;
-		stats.avg_depth.mm = (1.0 * old_tt * stats.avg_depth.mm +
-				dp->duration.seconds * dp->meandepth.mm) / stats.total_time.seconds;
-		if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
-			int old_sac_time = sac_time;
-			sac_time += dp->duration.seconds;
-			stats.avg_sac.mliter = (1.0 * old_sac_time * stats.avg_sac.mliter +
-						dp->duration.seconds * dp->sac) / sac_time ;
-			if (dp->sac > stats.max_sac.mliter)
-				stats.max_sac.mliter = dp->sac;
-			if (stats.min_sac.mliter == 0 || dp->sac < stats.min_sac.mliter)
-				stats.min_sac.mliter = dp->sac;
+		process_dive(dp, &stats);
+	}
+}
+
+void process_selected_dives(GList *selected_dives, GtkTreeModel *model)
+{
+	struct dive *dp;
+	unsigned int i;
+	GtkTreeIter iter;
+	GtkTreePath *path;
+
+	memset(&stats_selection, 0, sizeof(stats_selection));
+	stats_selection.selection_size = amount_selected;
+
+	for (i = 0; i < amount_selected; ++i) {
+		GValue value = {0, };
+		path = g_list_nth_data(selected_dives, i);
+		if (gtk_tree_model_get_iter(model, &iter, path)) {
+			gtk_tree_model_get_value(model, &iter, 0, &value);
+			dp = get_dive(g_value_get_int(&value));
 		}
+		process_dive(dp, &stats_selection);
 	}
 }
 
@@ -219,22 +267,39 @@ static void show_total_dive_stats(struct dive *dive)
 	double value;
 	int decimals;
 	const char *unit;
+	stats_t *stats_ptr;
 
-	set_label(stats_w.total_time, get_time_string(stats.total_time.seconds, 0));
-	set_label(stats_w.avg_time, get_time_string(stats.total_time.seconds / dive_table.nr, 0));
-	set_label(stats_w.longest_time, get_time_string(stats.longest_time.seconds, 0));
-	set_label(stats_w.shortest_time, get_time_string(stats.shortest_time.seconds, 0));
-	value = get_depth_units(stats.max_depth.mm, &decimals, &unit);
+	if (amount_selected < 2)
+		stats_ptr = &stats;
+	else
+		stats_ptr = &stats_selection;
+
+	set_label(stats_w.selection_size, "%d", stats_ptr->selection_size);
+	if (stats_ptr->min_temp) {
+		value = get_temp_units(stats_ptr->min_temp, &unit);
+		set_label(stats_w.min_temp, "%.1f %s", value, unit);
+	}
+	if (stats_ptr->combined_temp && stats_ptr->combined_count)
+		set_label(stats_w.avg_temp, "%.1f %s", stats_ptr->combined_temp / (stats_ptr->combined_count * 1.0), unit);
+	if (stats_ptr->max_temp) {
+		value = get_temp_units(stats_ptr->max_temp, &unit);
+		set_label(stats_w.max_temp, "%.1f %s", value, unit);
+	}
+	set_label(stats_w.total_time, get_time_string(stats_ptr->total_time.seconds, 0));
+	set_label(stats_w.avg_time, get_time_string(stats_ptr->total_time.seconds / stats_ptr->selection_size, 0));
+	set_label(stats_w.longest_time, get_time_string(stats_ptr->longest_time.seconds, 0));
+	set_label(stats_w.shortest_time, get_time_string(stats_ptr->shortest_time.seconds, 0));
+	value = get_depth_units(stats_ptr->max_depth.mm, &decimals, &unit);
 	set_label(stats_w.max_overall_depth, "%.*f %s", decimals, value, unit);
-	value = get_depth_units(stats.min_depth.mm, &decimals, &unit);
+	value = get_depth_units(stats_ptr->min_depth.mm, &decimals, &unit);
 	set_label(stats_w.min_overall_depth, "%.*f %s", decimals, value, unit);
-	value = get_depth_units(stats.avg_depth.mm, &decimals, &unit);
+	value = get_depth_units(stats_ptr->avg_depth.mm, &decimals, &unit);
 	set_label(stats_w.avg_overall_depth, "%.*f %s", decimals, value, unit);
-	value = get_volume_units(stats.max_sac.mliter, &decimals, &unit);
+	value = get_volume_units(stats_ptr->max_sac.mliter, &decimals, &unit);
 	set_label(stats_w.max_sac, "%.*f %s/min", decimals, value, unit);
-	value = get_volume_units(stats.min_sac.mliter, &decimals, &unit);
+	value = get_volume_units(stats_ptr->min_sac.mliter, &decimals, &unit);
 	set_label(stats_w.min_sac, "%.*f %s/min", decimals, value, unit);
-	value = get_volume_units(stats.avg_sac.mliter, &decimals, &unit);
+	value = get_volume_units(stats_ptr->avg_sac.mliter, &decimals, &unit);
 	set_label(stats_w.avg_sac, "%.*f %s/min", decimals, value, unit);
 }
 
@@ -278,13 +343,21 @@ GtkWidget *total_stats_widget(void)
 	/* first row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+	stats_w.selection_size = new_info_label_in_frame(hbox, "Dives");
+	stats_w.max_temp = new_info_label_in_frame(hbox, "Max Temp");
+	stats_w.min_temp = new_info_label_in_frame(hbox, "Min Temp");
+	stats_w.avg_temp = new_info_label_in_frame(hbox, "Avg Temp");
+
+	/* second row */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
 	stats_w.total_time = new_info_label_in_frame(hbox, "Total Time");
 	stats_w.avg_time = new_info_label_in_frame(hbox, "Avg Time");
 	stats_w.longest_time = new_info_label_in_frame(hbox, "Longest Dive");
 	stats_w.shortest_time = new_info_label_in_frame(hbox, "Shortest Dive");
 
-	/* second row */
+	/* third row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
@@ -292,7 +365,7 @@ GtkWidget *total_stats_widget(void)
 	stats_w.min_overall_depth = new_info_label_in_frame(hbox, "Min Depth");
 	stats_w.avg_overall_depth = new_info_label_in_frame(hbox, "Avg Depth");
 
-	/* third row */
+	/* fourth row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 

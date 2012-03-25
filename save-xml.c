@@ -218,6 +218,26 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 	}
 }
 
+static void save_weightsystem_info(FILE *f, struct dive *dive)
+{
+	int i;
+
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		weightsystem_t *ws = dive->weightsystem+i;
+		int grams = ws->weight.grams;
+		const char *description = ws->description;
+
+		/* No weight information at all? */
+		if (grams == 0)
+			return;
+		fprintf(f, "  <weightsystem");
+		show_milli(f, " weight='", grams, " kg", "'");
+		if (description && *description)
+			fprintf(f, " description='%s'", description);
+		fprintf(f, " />\n");
+	}
+}
+
 static void show_index(FILE *f, int value, const char *pre, const char *post)
 {
 	if (value)
@@ -272,6 +292,7 @@ static void save_dive(FILE *f, struct dive *dive)
 		FRACTION(dive->duration.seconds, 60));
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
+	save_weightsystem_info(f, dive);
 	save_events(f, dive->events);
 	for (i = 0; i < dive->samples; i++)
 		save_sample(f, dive->sample+i);
