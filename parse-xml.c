@@ -39,6 +39,40 @@ void record_dive(struct dive *dive)
 	dive_table.nr = nr+1;
 }
 
+static void delete_dive_renumber(struct dive **dives, int i, int nr)
+{
+	struct dive *dive = dives[i];
+	int number = dive->number, j;
+
+	if (!number)
+		return;
+
+	/*
+	 * Check that all numbered dives after the deleted
+	 * ones are consecutive, return without renumbering
+	 * if that is not the case.
+	 */
+	for (j = i+1; j < nr; j++) {
+		struct dive *next = dives[j];
+		if (!next->number)
+			break;
+		number++;
+		if (next->number != number)
+			return;
+	}
+
+	/*
+	 * Ok, we hit the end of the dives or a unnumbered
+	 * dive - renumber.
+	 */
+	for (j = i+1 ; j < nr; j++) {
+		struct dive *next = dives[j];
+		if (!next->number)
+			break;
+		next->number--;
+	}
+}
+
 /*
  * Remove a dive from the dive_table array
  */
@@ -55,6 +89,8 @@ void delete_dive(struct dive *dive)
 		struct dive *d = dives[i];
 		if (d != dive)
 			continue;
+		/* should we re-number? */
+		delete_dive_renumber(dives, i, nr);
 		memmove(dives+i, dives+i+1, sizeof(struct dive *)*(nr-i-1));
 		dives[nr] = NULL;
 		dive_table.nr = nr-1;
