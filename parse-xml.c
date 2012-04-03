@@ -39,6 +39,29 @@ void record_dive(struct dive *dive)
 	dive_table.nr = nr+1;
 }
 
+/*
+ * Remove a dive from the dive_table array
+ */
+void delete_dive(struct dive *dive)
+{
+	int nr = dive_table.nr, i;
+	struct dive **dives = dive_table.dives;
+
+	/*
+	 * Stupid. We know the dive table is sorted by date,
+	 * we could do a binary lookup. Sue me.
+	 */
+	for (i = 0; i < nr; i++) {
+		struct dive *d = dives[i];
+		if (d != dive)
+			continue;
+		memmove(dives+i, dives+i+1, sizeof(struct dive *)*(nr-i-1));
+		dives[nr] = NULL;
+		dive_table.nr = nr-1;
+		break;
+	}
+}
+
 static void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
