@@ -299,6 +299,7 @@ extern time_t utc_mktime(struct tm *tm);
 
 extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
+extern void delete_dive(struct dive *dive);
 
 extern struct sample *prepare_sample(struct dive **divep);
 extern void finish_sample(struct dive *dive);

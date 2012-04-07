@@ -100,17 +100,56 @@ void show_dive_info(struct dive *dive)
 		dive && dive->notes ? dive->notes : "", -1);
 }
 
+static int delete_dive_info(struct dive *dive)
+{
+	int success;
+	GtkWidget *dialog;
+
+	if (!dive)
+		return 0;
+
+	dialog = gtk_dialog_new_with_buttons("Delete Dive",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (success) {
+		delete_dive(dive);
+		mark_divelist_changed(TRUE);
+		dive_list_update_dives();
+	}
+
+	gtk_widget_destroy(dialog);
+
+	return success;
+}
+
 static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
 	edit_dive_info(current_dive);
 }
 
-static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
+static void info_menu_delete_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-	GtkWidget *item = gtk_menu_item_new_with_label("Edit");
-	g_signal_connect(item, "activate", G_CALLBACK(info_menu_edit_cb), NULL);
+	delete_dive_info(current_dive);
+}
+
+static void add_menu_item(GtkMenu *menu, const char *label, void (*cb)(GtkMenuItem *, gpointer))
+{
+	GtkWidget *item = gtk_menu_item_new_with_label(label);
+	g_signal_connect(item, "activate", G_CALLBACK(cb), NULL);
 	gtk_widget_show(item); /* Yes, really */
 	gtk_menu_prepend(menu, item);
+}
+
+static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
+{
+	add_menu_item(menu, "Delete", info_menu_delete_cb);
+	add_menu_item(menu, "Edit", info_menu_edit_cb);
 }
 
 static GtkEntry *text_value(GtkWidget *box, const char *label)

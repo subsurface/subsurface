@@ -69,6 +69,7 @@ typedef struct {
 	unsigned int combined_temp;
 	unsigned int combined_count;
 	unsigned int selection_size;
+	unsigned int total_sac_time;
 } stats_t;
 
 static stats_t stats;
@@ -93,14 +94,14 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
 			dp->duration.seconds * dp->meandepth.mm) / stats->total_time.seconds;
 	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
-		int old_sac_time = sac_time;
-		sac_time += dp->duration.seconds;
-		stats->avg_sac.mliter = (1.0 * old_sac_time * stats->avg_sac.mliter +
+		sac_time = stats->total_sac_time + dp->duration.seconds;
+		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +
 				dp->duration.seconds * dp->sac) / sac_time ;
 		if (dp->sac > stats->max_sac.mliter)
 			stats->max_sac.mliter = dp->sac;
 		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
 			stats->min_sac.mliter = dp->sac;
+		stats->total_sac_time = sac_time;
 	}
 	if (dp->watertemp.mkelvin) {
 		if (stats->min_temp == 0 || dp->watertemp.mkelvin < stats->min_temp)

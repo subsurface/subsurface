@@ -664,10 +664,10 @@ static struct tank_info {
 	{ "AL100", .cuft = 100, .psi = 3300 },
 
 	/* Somewhat common LP steel cylinders */
-	{ "LP85",  .cuft =  85, 2640 },
-	{ "LP95",  .cuft =  95, 2640 },
-	{ "LP108", .cuft = 108, 2640 },
-	{ "LP121", .cuft = 121, 2640 },
+	{ "LP85",  .cuft =  85, .psi = 2640 },
+	{ "LP95",  .cuft =  95, .psi = 2640 },
+	{ "LP108", .cuft = 108, .psi = 2640 },
+	{ "LP121", .cuft = 121, .psi = 2640 },
 
 	/* Somewhat common HP steel cylinders */
 	{ "HP65",  .cuft =  65, .psi = 3442 },
@@ -696,23 +696,29 @@ static void fill_tank_list(GtkListStore *store)
 	GtkTreeIter iter;
 	struct tank_info *info = tank_info;
 
-	while (info->name) {
+	for (info = tank_info ; info->name; info++) {
 		int ml = info->ml;
 		int cuft = info->cuft;
 		int psi = info->psi;
 		int mbar;
 		double bar = info->bar;
 
+		if (psi && bar)
+			goto bad_tank_info;
+		if (ml && cuft)
+			goto bad_tank_info;
+		if (cuft && !psi)
+			goto bad_tank_info;
+
 		/* Is it in cuft and psi? */
-		if (psi) {
+		if (psi)
 			bar = psi_to_bar(psi);
 
-			if (cuft) {
-				double airvolume = cuft_to_l(cuft) * 1000.0;
-				double atm = bar_to_atm(bar);
+		if (cuft) {
+			double airvolume = cuft_to_l(cuft) * 1000.0;
+			double atm = bar_to_atm(bar);
 
-				ml = airvolume / atm + 0.5;
-			}
+			ml = airvolume / atm + 0.5;
 		}
 
 		mbar = bar * 1000 + 0.5;
@@ -723,7 +729,10 @@ static void fill_tank_list(GtkListStore *store)
 			1, ml,
 			2, mbar,
 			-1);
-		info++;
+		continue;
+
+bad_tank_info:
+		fprintf(stderr, "Bad tank info for '%s'\n", info->name);
 	}
 }
 
