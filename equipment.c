@@ -1343,6 +1343,14 @@ static void row_activated_cb(GtkTreeView *tree_view,
 	edit_cb(NULL, tree_view);
 }
 
+static void ws_row_activated_cb(GtkTreeView *tree_view,
+			GtkTreePath *path,
+			GtkTreeViewColumn *column,
+			GtkTreeModel *model)
+{
+	ws_edit_cb(NULL, tree_view);
+}
+
 GtkWidget *cylinder_list_widget(void)
 {
 	GtkListStore *model = cylinder_list.model;
@@ -1380,7 +1388,7 @@ GtkWidget *weightsystem_list_widget(void)
 
 	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
 	gtk_widget_set_can_focus(tree_view, FALSE);
-	g_signal_connect(tree_view, "row-activated", G_CALLBACK(row_activated_cb), model);
+	g_signal_connect(tree_view, "row-activated", G_CALLBACK(ws_row_activated_cb), model);
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_BROWSE);
