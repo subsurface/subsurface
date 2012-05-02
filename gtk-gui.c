@@ -31,6 +31,23 @@ static GtkWidget *dive_profile;
 
 visible_cols_t visible_cols = {TRUE, FALSE};
 
+static const char *default_dive_computer;
+
+static int is_default_dive_computer(const char *name)
+{
+	return default_dive_computer && !strcmp(name, default_dive_computer);
+}
+
+static void set_default_dive_computer(const char *name)
+{
+	if (!name || !*name)
+		return;
+	if (is_default_dive_computer(name))
+		return;
+	default_dive_computer = name;
+	subsurface_set_conf("dive_computer", PREF_STRING, name);
+}
+
 void repaint_dive(void)
 {
 	update_dive(current_dive);
@@ -691,6 +708,8 @@ void init_ui(int *argcp, char ***argvp)
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
+	default_dive_computer = subsurface_get_conf("dive_computer", PREF_STRING);
+
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_set_application_name ("subsurface");
@@ -874,19 +893,22 @@ int process_ui_events(void)
 	return ret;
 }
 
-
-static void fill_computer_list(GtkListStore *store)
+static int fill_computer_list(GtkListStore *store)
 {
+	int index = -1, i;
 	GtkTreeIter iter;
 	struct device_list *list = device_list;
 
-	for (list = device_list ; list->name ; list++) {
+	for (list = device_list, i = 0 ; list->name ; list++, i++) {
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			0, list->name,
 			1, list->type,
 			-1);
+		if (is_default_dive_computer(list->name))
+			index = i;
 	}
+	return index;
 }
 
 static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
@@ -894,12 +916,13 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	GtkWidget *hbox, *combo_box, *frame;
 	GtkListStore *model;
 	GtkCellRenderer *renderer;
+	int default_index;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
-	fill_computer_list(model);
+	default_index = fill_computer_list(model);
 
 	frame = gtk_frame_new("Dive computer");
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
@@ -910,6 +933,8 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	renderer = gtk_cell_renderer_text_new();
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
 	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo_box), renderer, "text", 0, NULL);
+
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
 
 	return GTK_COMBO_BOX(combo_box);
 }
@@ -1040,6 +1065,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 			devicedata.type = type;
 			devicedata.name = comp;
 			devicedata.devname = gtk_entry_get_text(device);
+			set_default_dive_computer(devicedata.name);
 			do_import(&devicedata);
 		} else {
 			g_slist_foreach(list,do_import_file,NULL);
