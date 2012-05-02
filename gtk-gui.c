@@ -423,7 +423,9 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
-		subsurface_close_conf();
+
+		/* Flush the changes out to the system */
+		subsurface_flush_conf();
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -767,6 +769,11 @@ void init_ui(int *argcp, char ***argvp)
 void run_ui(void)
 {
 	gtk_main();
+}
+
+void exit_ui(void)
+{
+	subsurface_close_conf();
 }
 
 typedef struct {

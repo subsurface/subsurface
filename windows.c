@@ -73,10 +73,15 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 	return NULL;
 }
 
-void subsurface_close_conf(void)
+void subsurface_flush_conf(void)
 {
+	/* I wonder if we should even do this - it's apparently very expensive */
 	if (RegFlushKey(hkey) != ERROR_SUCCESS)
 		printf("RegFlushKey failed \n");
+}
+
+void subsurface_close_conf(void)
+{
 	RegCloseKey(hkey);
 }
 

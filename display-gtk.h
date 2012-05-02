@@ -38,6 +38,7 @@ typedef enum {
 extern void subsurface_open_conf(void);
 extern void subsurface_set_conf(char *name, pref_type_t type, const void *value);
 extern const void *subsurface_get_conf(char *name, pref_type_t type);
+extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
 extern const char *subsurface_USB_name(void);

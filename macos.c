@@ -59,11 +59,16 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 	return NULL;
 }
 
-void subsurface_close_conf(void)
+void subsurface_flush_conf(void)
 {
 	int ok = CFPreferencesAppSynchronize(SUBSURFACE_PREFERENCES);
 	if (!ok)
 		fprintf(stderr,"Could not save preferences\n");
+}
+
+void subsurface_close_conf(void)
+{
+	/* Nothing */
 }
 
 const char *subsurface_USB_name()
