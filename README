@@ -38,7 +38,7 @@ just do
 	make
 	./subsurface
 
-and select "Import" from the File menu, tell it what dive computer you
+and select "Import" from the Log menu, tell it what dive computer you
 have (and where it is connected if you need to), and hit "OK".
 
 NOTE! There are often multiple models of dive computers that import

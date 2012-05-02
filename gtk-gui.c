@@ -624,13 +624,13 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
-				<menuitem name=\"Import\" action=\"Import\" /> \
-				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
-				<separator name=\"Separator3\"/> \
+				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
+				<menuitem name=\"Import\" action=\"Import\" /> \
+				<separator name=\"Separator\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<menu name=\"View\" action=\"ViewMenuAction\"> \
 					<menuitem name=\"List\" action=\"ViewList\" /> \
