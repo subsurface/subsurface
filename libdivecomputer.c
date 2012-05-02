@@ -10,6 +10,14 @@
 
 #include "libdivecomputer.h"
 
+/* Christ. Libdivecomputer has the worst configuration system ever. */
+#ifdef HW_FROG_H
+  #define NOT_FROG , 0
+  #define LIBDIVECOMPUTER_SUPPORTS_FROG
+#else
+  #define NOT_FROG
+#endif
+
 static void error(const char *fmt, ...)
 {
 	va_list args;
@@ -78,7 +86,12 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 		return mares_iconhd_parser_create(parser, devdata->devinfo.model);
 
 	case DEVICE_TYPE_HW_OSTC:
-		return hw_ostc_parser_create(parser);
+		return hw_ostc_parser_create(parser NOT_FROG);
+
+#ifdef LIBDIVECOMPUTER_SUPPORTS_FROG
+	case DEVICE_TYPE_HW_FROG:
+		return hw_ostc_parser_create(parser, 1);
+#endif
 
 	case DEVICE_TYPE_CRESSI_EDY:
 	case DEVICE_TYPE_ZEAGLE_N2ITION3:
@@ -544,6 +557,9 @@ struct device_list device_list[] = {
 	{ "Mares Puck, Nemo Air, Nemo Wide",	DEVICE_TYPE_MARES_PUCK },
 	{ "Mares Icon HD",	DEVICE_TYPE_MARES_ICONHD },
 	{ "OSTC",		DEVICE_TYPE_HW_OSTC },
+#ifdef LIBDIVECOMPUTER_SUPPORTS_FROG
+	{ "OSTC Frog",		DEVICE_TYPE_HW_FROG },
+#endif
 	{ "Cressi Edy",		DEVICE_TYPE_CRESSI_EDY },
 	{ "Zeagle N2iTiON 3",	DEVICE_TYPE_ZEAGLE_N2ITION3 },
 	{ "Atomics Cobalt",	DEVICE_TYPE_ATOMICS_COBALT },
