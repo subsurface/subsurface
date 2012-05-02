@@ -1013,10 +1013,27 @@ static void do_import_file(gpointer data, gpointer user_data)
 	}
 }
 
+static GtkWidget *import_dive_computer(device_data_t *data, GtkBox *vbox)
+{
+	GError *error;
+	GtkWidget *info, *container, *label;
+
+	error = do_import(data);
+	if (!error)
+		return NULL;
+
+	info = gtk_info_bar_new();
+	container = gtk_info_bar_get_content_area(GTK_INFO_BAR(info));
+	label = gtk_label_new(error->message);
+	gtk_container_add(GTK_CONTAINER(container), label);
+	gtk_box_pack_start(vbox, info, FALSE, FALSE, 0);
+	return info;
+}
+
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *hbox, *vbox, *label;
+	GtkWidget *dialog, *hbox, *vbox, *label, *info = NULL;
 	GtkComboBox *computer;
 	GtkEntry *device;
 	GtkWidget *XMLchooser;
@@ -1042,6 +1059,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
+repeat:
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	switch (result) {
@@ -1053,6 +1071,8 @@ void import_dialog(GtkWidget *w, gpointer data)
 	case GTK_RESPONSE_ACCEPT:
 		/* what happened - did the user pick a file? In that case
 		 * we ignore whether a dive computer model was picked */
+		if (info)
+			gtk_widget_destroy(info);
 		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
 		if (g_slist_length(list) == 0) {
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
@@ -1066,7 +1086,9 @@ void import_dialog(GtkWidget *w, gpointer data)
 			devicedata.name = comp;
 			devicedata.devname = gtk_entry_get_text(device);
 			set_default_dive_computer(devicedata.name);
-			do_import(&devicedata);
+			info = import_dive_computer(&devicedata, GTK_BOX(vbox));
+			if (info)
+				goto repeat;
 		} else {
 			g_slist_foreach(list,do_import_file,NULL);
 			g_slist_free(list);

@@ -18,7 +18,7 @@
   #define NOT_FROG
 #endif
 
-static void error(const char *fmt, ...)
+static GError *error(const char *fmt, ...)
 {
 	va_list args;
 	GError *error;
@@ -28,8 +28,7 @@ static void error(const char *fmt, ...)
 		g_quark_from_string("subsurface"),
 		DIVE_ERROR_PARSE, fmt, args);
 	va_end(args);
-	report_error(error);
-	g_error_free(error);
+	return error;
 }
 
 static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
@@ -512,7 +511,7 @@ static void *pthread_wrapper(void *_data)
 	return (void *)err_string;
 }
 
-void do_import(device_data_t *data)
+GError *do_import(device_data_t *data)
 {
 	pthread_t pthread;
 	void *retval;
@@ -527,7 +526,8 @@ void do_import(device_data_t *data)
 	if (pthread_join(pthread, &retval) < 0)
 		retval = "Odd pthread error return";
 	if (retval)
-		error(retval, data->name, data->devname);
+		return error(retval, data->name, data->devname);
+	return NULL;
 }
 
 /*
