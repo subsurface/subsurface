@@ -1013,20 +1013,26 @@ static void do_import_file(gpointer data, gpointer user_data)
 	}
 }
 
-static GtkWidget *import_dive_computer(device_data_t *data, GtkBox *vbox)
+static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 {
 	GError *error;
-	GtkWidget *info, *container, *label;
+	GtkWidget *vbox, *info, *container, *label, *button;
 
 	error = do_import(data);
 	if (!error)
 		return NULL;
 
+	button = gtk_dialog_get_widget_for_response(dialog, GTK_RESPONSE_ACCEPT);
+	gtk_button_set_use_stock(GTK_BUTTON(button), 0);
+	gtk_button_set_label(GTK_BUTTON(button), "Retry");
+
+	vbox = gtk_dialog_get_content_area(dialog);
+
 	info = gtk_info_bar_new();
 	container = gtk_info_bar_get_content_area(GTK_INFO_BAR(info));
 	label = gtk_label_new(error->message);
 	gtk_container_add(GTK_CONTAINER(container), label);
-	gtk_box_pack_start(vbox, info, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), info, FALSE, FALSE, 0);
 	return info;
 }
 
@@ -1086,7 +1092,7 @@ repeat:
 			devicedata.name = comp;
 			devicedata.devname = gtk_entry_get_text(device);
 			set_default_dive_computer(devicedata.name);
-			info = import_dive_computer(&devicedata, GTK_BOX(vbox));
+			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 			if (info)
 				goto repeat;
 		} else {
