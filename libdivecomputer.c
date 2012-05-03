@@ -261,6 +261,15 @@ static int find_dive(struct dive *dive, device_data_t *devdata)
 	return 0;
 }
 
+static inline int year(int year)
+{
+	if (year < 70)
+		return year + 2000;
+	if (year < 100)
+		return year + 1900;
+	return year;
+}
+
 static int dive_cb(const unsigned char *data, unsigned int size,
 	const unsigned char *fingerprint, unsigned int fsize,
 	void *userdata)
@@ -303,7 +312,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->when = utc_mktime(&tm);
 
 	// Parse the divetime.
-	dev_info(devdata, "Parsing dive %d", import_dive_number);
+	dev_info(devdata, "Dive %d: %s %d %04d", import_dive_number,
+		monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
 	unsigned int divetime = 0;
 	rc = parser_get_field (parser, FIELD_TYPE_DIVETIME, 0, &divetime);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
