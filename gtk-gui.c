@@ -1113,6 +1113,10 @@ void update_progressbar(progressbar_t *progress, double value)
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress->bar), value);
 }
 
+void update_progressbar_text(progressbar_t *progress, const char *text)
+{
+	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->bar), text);
+}
 
 void set_filename(const char *filename)
 {

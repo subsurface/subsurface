@@ -57,6 +57,7 @@ extern void import_dialog(GtkWidget *, gpointer);
 extern void report_error(GError* error);
 extern int process_ui_events(void);
 extern void update_progressbar(progressbar_t *progress, double value);
+extern void update_progressbar_text(progressbar_t *progress, const char *text);
 
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
