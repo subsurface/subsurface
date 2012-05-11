@@ -62,9 +62,14 @@
         </xsl:otherwise>
       </xsl:choose>
 
+      <notes>
       <xsl:if test="LOGNOTES != ''">
         <xsl:value-of select="LOGNOTES" />
       </xsl:if>
+      <xsl:if test="WEATHER != ''">
+        Weather: <xsl:value-of select="WEATHER" />
+      </xsl:if>
+      </notes>
 
 <!-- FIXME: add support for multiple cylinders, need sample data -->
       <cylinder>
