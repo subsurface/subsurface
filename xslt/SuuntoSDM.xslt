@@ -86,10 +86,15 @@
           <xsl:value-of select="concat(HEPCT, '%')"/>
         </xsl:attribute>
       </xsl:if>
+      <xsl:if test="CYLINDERDESCRIPTION != ''">
+        <xsl:attribute name="description">
+          <xsl:value-of select="CYLINDERDESCRIPTION"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:if test="CYLINDERSIZE != ''">
         <xsl:attribute name="size">
             <xsl:choose>
-              <xsl:when test="CYLINDERWORKPRESSURE = '0'">
+              <xsl:when test="CYLINDERUNITS = '0'">
                 <xsl:value-of select="concat(CYLINDERSIZE, ' l')"/>
               </xsl:when>
               <xsl:otherwise>
@@ -219,7 +224,12 @@
   <xsl:template name="cuft2l">
     <xsl:param name="size"/>
     <xsl:param name="pressure"/>
-    <xsl:value-of select="concat(format-number((($size*28.3168466) div ($pressure div 1013.25)), '0.000'), ' l')" />
+    <xsl:choose>
+      <xsl:when test="$pressure != '0'">
+        <xsl:value-of select="concat(format-number((($size*28.3168466) div ($pressure div 1013.25)), '0.000'), ' l')" />
+      </xsl:when>
+      <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <!-- end cuft2l -->
 
