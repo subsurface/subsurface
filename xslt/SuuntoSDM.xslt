@@ -62,12 +62,23 @@
         </xsl:otherwise>
       </xsl:choose>
 
+      <xsl:if test="WEIGTH != ''">
+        <weightsystem>
+          <xsl:attribute name="weight">
+            <xsl:value-of select="concat(WEIGTH, ' kg')"/>
+          </xsl:attribute>
+        </weightsystem>
+      </xsl:if>
+
       <notes>
       <xsl:if test="LOGNOTES != ''">
         <xsl:value-of select="LOGNOTES" />
       </xsl:if>
       <xsl:if test="WEATHER != ''">
         Weather: <xsl:value-of select="WEATHER" />
+      </xsl:if>
+      <xsl:if test="WATERVISIBILITYDESC != ''">
+        Visibility: <xsl:value-of select="WATERVISIBILITYDESC" />
       </xsl:if>
       </notes>
 
