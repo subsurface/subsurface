@@ -80,6 +80,9 @@
       <xsl:if test="WATERVISIBILITYDESC != ''">
         Visibility: <xsl:value-of select="WATERVISIBILITYDESC" />
       </xsl:if>
+      <xsl:if test="BOATNAME != ''">
+        Boat name: <xsl:value-of select="BOATNAME" />
+      </xsl:if>
       </notes>
 
 <!-- FIXME: add support for multiple cylinders, need sample data -->
