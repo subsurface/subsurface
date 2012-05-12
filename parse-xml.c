@@ -1462,7 +1462,11 @@ static xsltStylesheetPtr try_get_stylesheet(const char *path, int len, const cha
 
 static xsltStylesheetPtr get_stylesheet(const char *name)
 {
-	const char *path = xslt_path, *next;
+	const char *path, *next;
+
+	path = getenv("SUBSURFACE_XSLT_PATH");
+	if (!path)
+		path = xslt_path;
 
 	do {
 		int len;
