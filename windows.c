@@ -73,10 +73,13 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 	return NULL;
 }
 
+void subsurface_flush_conf(void)
+{
+	/* this is a no-op */
+}
+
 void subsurface_close_conf(void)
 {
-	if (RegFlushKey(hkey) != ERROR_SUCCESS)
-		printf("RegFlushKey failed \n");
 	RegCloseKey(hkey);
 }
 

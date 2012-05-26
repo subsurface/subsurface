@@ -34,6 +34,6 @@ struct device_list {
 };
 
 extern struct device_list device_list[];
-extern void do_import(device_data_t *data);
+extern GError *do_import(device_data_t *data);
 
 #endif

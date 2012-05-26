@@ -31,6 +31,23 @@ static GtkWidget *dive_profile;
 
 visible_cols_t visible_cols = {TRUE, FALSE};
 
+static const char *default_dive_computer;
+
+static int is_default_dive_computer(const char *name)
+{
+	return default_dive_computer && !strcmp(name, default_dive_computer);
+}
+
+static void set_default_dive_computer(const char *name)
+{
+	if (!name || !*name)
+		return;
+	if (is_default_dive_computer(name))
+		return;
+	default_dive_computer = name;
+	subsurface_set_conf("dive_computer", PREF_STRING, name);
+}
+
 void repaint_dive(void)
 {
 	update_dive(current_dive);
@@ -423,7 +440,9 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
-		subsurface_close_conf();
+
+		/* Flush the changes out to the system */
+		subsurface_flush_conf();
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -605,13 +624,13 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
-				<menuitem name=\"Import\" action=\"Import\" /> \
-				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
-				<separator name=\"Separator3\"/> \
+				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
+				<menuitem name=\"Import\" action=\"Import\" /> \
+				<separator name=\"Separator\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<menu name=\"View\" action=\"ViewMenuAction\"> \
 					<menuitem name=\"List\" action=\"ViewList\" /> \
@@ -688,6 +707,8 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
+
+	default_dive_computer = subsurface_get_conf("dive_computer", PREF_STRING);
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -767,6 +788,11 @@ void init_ui(int *argcp, char ***argvp)
 void run_ui(void)
 {
 	gtk_main();
+}
+
+void exit_ui(void)
+{
+	subsurface_close_conf();
 }
 
 typedef struct {
@@ -867,19 +893,22 @@ int process_ui_events(void)
 	return ret;
 }
 
-
-static void fill_computer_list(GtkListStore *store)
+static int fill_computer_list(GtkListStore *store)
 {
+	int index = -1, i;
 	GtkTreeIter iter;
 	struct device_list *list = device_list;
 
-	for (list = device_list ; list->name ; list++) {
+	for (list = device_list, i = 0 ; list->name ; list++, i++) {
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 			0, list->name,
 			1, list->type,
 			-1);
+		if (is_default_dive_computer(list->name))
+			index = i;
 	}
+	return index;
 }
 
 static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
@@ -887,12 +916,13 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	GtkWidget *hbox, *combo_box, *frame;
 	GtkListStore *model;
 	GtkCellRenderer *renderer;
+	int default_index;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
 	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
-	fill_computer_list(model);
+	default_index = fill_computer_list(model);
 
 	frame = gtk_frame_new("Dive computer");
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
@@ -903,6 +933,8 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	renderer = gtk_cell_renderer_text_new();
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
 	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo_box), renderer, "text", 0, NULL);
+
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
 
 	return GTK_COMBO_BOX(combo_box);
 }
@@ -981,10 +1013,33 @@ static void do_import_file(gpointer data, gpointer user_data)
 	}
 }
 
+static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
+{
+	GError *error;
+	GtkWidget *vbox, *info, *container, *label, *button;
+
+	error = do_import(data);
+	if (!error)
+		return NULL;
+
+	button = gtk_dialog_get_widget_for_response(dialog, GTK_RESPONSE_ACCEPT);
+	gtk_button_set_use_stock(GTK_BUTTON(button), 0);
+	gtk_button_set_label(GTK_BUTTON(button), "Retry");
+
+	vbox = gtk_dialog_get_content_area(dialog);
+
+	info = gtk_info_bar_new();
+	container = gtk_info_bar_get_content_area(GTK_INFO_BAR(info));
+	label = gtk_label_new(error->message);
+	gtk_container_add(GTK_CONTAINER(container), label);
+	gtk_box_pack_start(GTK_BOX(vbox), info, FALSE, FALSE, 0);
+	return info;
+}
+
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *hbox, *vbox, *label;
+	GtkWidget *dialog, *hbox, *vbox, *label, *info = NULL;
 	GtkComboBox *computer;
 	GtkEntry *device;
 	GtkWidget *XMLchooser;
@@ -1010,6 +1065,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
+repeat:
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	switch (result) {
@@ -1021,6 +1077,8 @@ void import_dialog(GtkWidget *w, gpointer data)
 	case GTK_RESPONSE_ACCEPT:
 		/* what happened - did the user pick a file? In that case
 		 * we ignore whether a dive computer model was picked */
+		if (info)
+			gtk_widget_destroy(info);
 		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
 		if (g_slist_length(list) == 0) {
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
@@ -1033,7 +1091,10 @@ void import_dialog(GtkWidget *w, gpointer data)
 			devicedata.type = type;
 			devicedata.name = comp;
 			devicedata.devname = gtk_entry_get_text(device);
-			do_import(&devicedata);
+			set_default_dive_computer(devicedata.name);
+			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
+			if (info)
+				goto repeat;
 		} else {
 			g_slist_foreach(list,do_import_file,NULL);
 			g_slist_free(list);
@@ -1052,6 +1113,10 @@ void update_progressbar(progressbar_t *progress, double value)
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress->bar), value);
 }
 
+void update_progressbar_text(progressbar_t *progress, const char *text)
+{
+	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->bar), text);
+}
 
 void set_filename(const char *filename)
 {

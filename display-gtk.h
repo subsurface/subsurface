@@ -38,6 +38,7 @@ typedef enum {
 extern void subsurface_open_conf(void);
 extern void subsurface_set_conf(char *name, pref_type_t type, const void *value);
 extern const void *subsurface_get_conf(char *name, pref_type_t type);
+extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
 extern const char *subsurface_USB_name(void);
@@ -56,6 +57,7 @@ extern void import_dialog(GtkWidget *, gpointer);
 extern void report_error(GError* error);
 extern int process_ui_events(void);
 extern void update_progressbar(progressbar_t *progress, double value);
+extern void update_progressbar_text(progressbar_t *progress, const char *text);
 
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);

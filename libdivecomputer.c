@@ -10,7 +10,15 @@
 
 #include "libdivecomputer.h"
 
-static void error(const char *fmt, ...)
+/* Christ. Libdivecomputer has the worst configuration system ever. */
+#ifdef HW_FROG_H
+  #define NOT_FROG , 0
+  #define LIBDIVECOMPUTER_SUPPORTS_FROG
+#else
+  #define NOT_FROG
+#endif
+
+static GError *error(const char *fmt, ...)
 {
 	va_list args;
 	GError *error;
@@ -20,8 +28,7 @@ static void error(const char *fmt, ...)
 		g_quark_from_string("subsurface"),
 		DIVE_ERROR_PARSE, fmt, args);
 	va_end(args);
-	report_error(error);
-	g_error_free(error);
+	return error;
 }
 
 static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
@@ -78,7 +85,12 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 		return mares_iconhd_parser_create(parser, devdata->devinfo.model);
 
 	case DEVICE_TYPE_HW_OSTC:
-		return hw_ostc_parser_create(parser);
+		return hw_ostc_parser_create(parser NOT_FROG);
+
+#ifdef LIBDIVECOMPUTER_SUPPORTS_FROG
+	case DEVICE_TYPE_HW_FROG:
+		return hw_ostc_parser_create(parser, 1);
+#endif
 
 	case DEVICE_TYPE_CRESSI_EDY:
 	case DEVICE_TYPE_ZEAGLE_N2ITION3:
@@ -92,7 +104,7 @@ static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
 	}
 }
 
-static int parse_gasmixes(struct dive *dive, parser_t *parser, int ngases)
+static int parse_gasmixes(device_data_t *devdata, struct dive *dive, parser_t *parser, int ngases)
 {
 	int i;
 
@@ -213,11 +225,22 @@ sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata
 	}
 }
 
+static void dev_info(device_data_t *devdata, const char *fmt, ...)
+{
+	char buffer[32];
+	va_list ap;
 
-static int parse_samples(struct dive **divep, parser_t *parser)
+	va_start(ap, fmt);
+	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	va_end(ap);
+	update_progressbar_text(&devdata->progress, buffer);
+}
+
+static int import_dive_number = 0;
+
+static int parse_samples(device_data_t *devdata, struct dive **divep, parser_t *parser)
 {
 	// Parse the sample data.
-	printf("Parsing the sample data.\n");
 	return parser_samples_foreach(parser, sample_cb, divep);
 }
 
@@ -238,6 +261,15 @@ static int find_dive(struct dive *dive, device_data_t *devdata)
 	return 0;
 }
 
+static inline int year(int year)
+{
+	if (year < 70)
+		return year + 2000;
+	if (year < 100)
+		return year + 1900;
+	return year;
+}
+
 static int dive_cb(const unsigned char *data, unsigned int size,
 	const unsigned char *fingerprint, unsigned int fsize,
 	void *userdata)
@@ -251,21 +283,22 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = create_parser(devdata, &parser);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		fprintf(stderr, "Unable to create parser for %s", devdata->name);
+		dev_info(devdata, "Unable to create parser for %s", devdata->name);
 		return rc;
 	}
 
 	rc = parser_set_data(parser, data, size);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		fprintf(stderr, "Error registering the data.");
+		dev_info(devdata, "Error registering the data");
 		parser_destroy(parser);
 		return rc;
 	}
 
+	import_dive_number++;
 	dive = alloc_dive();
 	rc = parser_get_datetime(parser, &dt);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		fprintf(stderr, "Error parsing the datetime.");
+		dev_info(devdata, "Error parsing the datetime");
 		parser_destroy (parser);
 		return rc;
 	}
@@ -279,48 +312,47 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->when = utc_mktime(&tm);
 
 	// Parse the divetime.
-	printf("Parsing the divetime.\n");
+	dev_info(devdata, "Dive %d: %s %d %04d", import_dive_number,
+		monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
 	unsigned int divetime = 0;
 	rc = parser_get_field (parser, FIELD_TYPE_DIVETIME, 0, &divetime);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		fprintf(stderr, "Error parsing the divetime.");
+		dev_info(devdata, "Error parsing the divetime");
 		parser_destroy(parser);
 		return rc;
 	}
 	dive->duration.seconds = divetime;
 
 	// Parse the maxdepth.
-	printf("Parsing the maxdepth.\n");
 	double maxdepth = 0.0;
 	rc = parser_get_field(parser, FIELD_TYPE_MAXDEPTH, 0, &maxdepth);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		fprintf(stderr, "Error parsing the maxdepth.");
+		dev_info(devdata, "Error parsing the maxdepth");
 		parser_destroy(parser);
 		return rc;
 	}
 	dive->maxdepth.mm = maxdepth * 1000 + 0.5;
 
 	// Parse the gas mixes.
-	printf("Parsing the gas mixes.\n");
 	unsigned int ngases = 0;
 	rc = parser_get_field(parser, FIELD_TYPE_GASMIX_COUNT, 0, &ngases);
 	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
-		fprintf(stderr, "Error parsing the gas mix count.");
+		dev_info(devdata, "Error parsing the gas mix count");
 		parser_destroy(parser);
 		return rc;
 	}
 
-	rc = parse_gasmixes(dive, parser, ngases);
+	rc = parse_gasmixes(devdata, dive, parser, ngases);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		fprintf(stderr, "Error parsing the gas mix.");
+		dev_info(devdata, "Error parsing the gas mix");
 		parser_destroy(parser);
 		return rc;
 	}
 
 	// Initialize the sample data.
-	rc = parse_samples(&dive, parser);
+	rc = parse_samples(devdata, &dive, parser);
 	if (rc != PARSER_STATUS_SUCCESS) {
-		fprintf(stderr, "Error parsing the samples.");
+		dev_info(devdata, "Error parsing the samples");
 		parser_destroy(parser);
 		return rc;
 	}
@@ -417,6 +449,7 @@ static device_status_t device_open(const char *devname,
 	}
 }
 
+
 static void event_cb(device_t *device, device_event_t event, const void *data, void *userdata)
 {
 	const device_progress_t *progress = data;
@@ -426,7 +459,7 @@ static void event_cb(device_t *device, device_event_t event, const void *data, v
 
 	switch (event) {
 	case DEVICE_EVENT_WAITING:
-		printf("Event: waiting for user action\n");
+		dev_info(devdata, "Event: waiting for user action");
 		break;
 	case DEVICE_EVENT_PROGRESS:
 		update_progressbar(&devdata->progress,
@@ -434,14 +467,14 @@ static void event_cb(device_t *device, device_event_t event, const void *data, v
 		break;
 	case DEVICE_EVENT_DEVINFO:
 		devdata->devinfo = *devinfo;
-		printf("Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
+		dev_info(devdata, "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)",
 			devinfo->model, devinfo->model,
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
 		break;
 	case DEVICE_EVENT_CLOCK:
 		devdata->clock = *clock;
-		printf("Event: systime=%"PRId64", devtime=%u\n",
+		dev_info(devdata, "Event: systime=%"PRId64", devtime=%u\n",
 			(uint64_t)clock->systime, clock->devtime);
 		break;
 	default:
@@ -462,6 +495,7 @@ static const char *do_libdivecomputer_import(device_data_t *data)
 	device_t *device = NULL;
 	device_status_t rc;
 
+	import_dive_number = 0;
 	rc = device_open(data->devname, data->type, &device);
 	if (rc != DEVICE_STATUS_SUCCESS)
 		return "Unable to open %s (%s)";
@@ -499,7 +533,7 @@ static void *pthread_wrapper(void *_data)
 	return (void *)err_string;
 }
 
-void do_import(device_data_t *data)
+GError *do_import(device_data_t *data)
 {
 	pthread_t pthread;
 	void *retval;
@@ -514,7 +548,8 @@ void do_import(device_data_t *data)
 	if (pthread_join(pthread, &retval) < 0)
 		retval = "Odd pthread error return";
 	if (retval)
-		error(retval, data->name, data->devname);
+		return error(retval, data->name, data->devname);
+	return NULL;
 }
 
 /*
@@ -544,6 +579,9 @@ struct device_list device_list[] = {
 	{ "Mares Puck, Nemo Air, Nemo Wide",	DEVICE_TYPE_MARES_PUCK },
 	{ "Mares Icon HD",	DEVICE_TYPE_MARES_ICONHD },
 	{ "OSTC",		DEVICE_TYPE_HW_OSTC },
+#ifdef LIBDIVECOMPUTER_SUPPORTS_FROG
+	{ "OSTC Frog",		DEVICE_TYPE_HW_FROG },
+#endif
 	{ "Cressi Edy",		DEVICE_TYPE_CRESSI_EDY },
 	{ "Zeagle N2iTiON 3",	DEVICE_TYPE_ZEAGLE_N2ITION3 },
 	{ "Atomics Cobalt",	DEVICE_TYPE_ATOMICS_COBALT },

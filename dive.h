@@ -317,6 +317,7 @@ extern void add_event(struct dive *dive, int time, int type, int flags, int valu
 extern void init_ui(int *argcp, char ***argvp);
 
 extern void run_ui(void);
+extern void exit_ui(void);
 
 extern void report_error(GError* error);
 

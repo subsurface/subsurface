@@ -352,7 +352,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive_info *info)
 
 	if (changed) {
 		mark_divelist_changed(TRUE);
-		flush_divelist(dive);
+		update_dive(dive);
 	}
 }
 

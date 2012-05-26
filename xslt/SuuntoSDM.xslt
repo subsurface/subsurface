@@ -62,9 +62,28 @@
         </xsl:otherwise>
       </xsl:choose>
 
+      <xsl:if test="WEIGTH != ''">
+        <weightsystem>
+          <xsl:attribute name="weight">
+            <xsl:value-of select="concat(WEIGTH, ' kg')"/>
+          </xsl:attribute>
+        </weightsystem>
+      </xsl:if>
+
+      <notes>
       <xsl:if test="LOGNOTES != ''">
         <xsl:value-of select="LOGNOTES" />
       </xsl:if>
+      <xsl:if test="WEATHER != ''">
+        Weather: <xsl:value-of select="WEATHER" />
+      </xsl:if>
+      <xsl:if test="WATERVISIBILITYDESC != ''">
+        Visibility: <xsl:value-of select="WATERVISIBILITYDESC" />
+      </xsl:if>
+      <xsl:if test="BOATNAME != ''">
+        Boat name: <xsl:value-of select="BOATNAME" />
+      </xsl:if>
+      </notes>
 
 <!-- FIXME: add support for multiple cylinders, need sample data -->
       <cylinder>
@@ -81,10 +100,15 @@
           <xsl:value-of select="concat(HEPCT, '%')"/>
         </xsl:attribute>
       </xsl:if>
+      <xsl:if test="CYLINDERDESCRIPTION != ''">
+        <xsl:attribute name="description">
+          <xsl:value-of select="CYLINDERDESCRIPTION"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:if test="CYLINDERSIZE != ''">
         <xsl:attribute name="size">
             <xsl:choose>
-              <xsl:when test="CYLINDERWORKPRESSURE = '0'">
+              <xsl:when test="CYLINDERUNITS = '0'">
                 <xsl:value-of select="concat(CYLINDERSIZE, ' l')"/>
               </xsl:when>
               <xsl:otherwise>
@@ -214,7 +238,12 @@
   <xsl:template name="cuft2l">
     <xsl:param name="size"/>
     <xsl:param name="pressure"/>
-    <xsl:value-of select="concat(format-number((($size*28.3168466) div ($pressure div 1013.25)), '0.000'), ' l')" />
+    <xsl:choose>
+      <xsl:when test="$pressure != '0'">
+        <xsl:value-of select="concat(format-number((($size*28.3168466) div ($pressure div 1013.25)), '0.000'), ' l')" />
+      </xsl:when>
+      <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <!-- end cuft2l -->
 

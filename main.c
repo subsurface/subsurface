@@ -239,5 +239,6 @@ int main(int argc, char **argv)
 	report_dives(imported);
 
 	run_ui();
+	exit_ui();
 	return 0;
 }
