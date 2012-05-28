@@ -607,7 +607,7 @@ static void view_info(GtkWidget *w, gpointer data)
 static void view_three(GtkWidget *w, gpointer data)
 {
 	gtk_paned_set_position(GTK_PANED(hpane), 400);
-	gtk_paned_set_position(GTK_PANED(vpane), 200);
+	gtk_paned_set_position(GTK_PANED(vpane), 250);
 }
 
 static GtkActionEntry menu_items[] = {
