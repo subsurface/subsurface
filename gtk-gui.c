@@ -32,10 +32,16 @@ static GtkWidget *dive_profile;
 visible_cols_t visible_cols = {TRUE, FALSE};
 
 static const char *default_dive_computer;
+static const char *default_dive_computer_device;
 
 static int is_default_dive_computer(const char *name)
 {
 	return default_dive_computer && !strcmp(name, default_dive_computer);
+}
+
+static int is_default_dive_computer_device(const char *name)
+{
+	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
 }
 
 static void set_default_dive_computer(const char *name)
@@ -46,6 +52,16 @@ static void set_default_dive_computer(const char *name)
 		return;
 	default_dive_computer = name;
 	subsurface_set_conf("dive_computer", PREF_STRING, name);
+}
+
+static void set_default_dive_computer_device(const char *name)
+{
+	if (!name || !*name)
+		return;
+	if (is_default_dive_computer_device(name))
+		return;
+	default_dive_computer_device = name;
+	subsurface_set_conf("dive_computer_device", PREF_STRING, name);
 }
 
 void repaint_dive(void)
@@ -709,6 +725,7 @@ void init_ui(int *argcp, char ***argvp)
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
 	default_dive_computer = subsurface_get_conf("dive_computer", PREF_STRING);
+	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
 
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -939,6 +956,14 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	return GTK_COMBO_BOX(combo_box);
 }
 
+const char *subsurface_device_name()
+{
+	if (!default_dive_computer_device || !*default_dive_computer_device)
+		return subsurface_USB_name();
+	else
+		return default_dive_computer_device;
+}
+
 static GtkEntry *dive_computer_device(GtkWidget *vbox)
 {
 	GtkWidget *hbox, *entry, *frame;
@@ -951,7 +976,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 
 	entry = gtk_entry_new();
 	gtk_container_add(GTK_CONTAINER(frame), entry);
-	gtk_entry_set_text(GTK_ENTRY(entry), subsurface_USB_name());
+	gtk_entry_set_text(GTK_ENTRY(entry), subsurface_device_name());
 
 	return GTK_ENTRY(entry);
 }
@@ -1092,6 +1117,7 @@ repeat:
 			devicedata.name = comp;
 			devicedata.devname = gtk_entry_get_text(device);
 			set_default_dive_computer(devicedata.name);
+			set_default_dive_computer_device(devicedata.devname);
 			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 			if (info)
 				goto repeat;
