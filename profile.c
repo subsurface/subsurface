@@ -181,14 +181,22 @@ static void dump_pi (struct plot_info *pi)
  * current dive. However, we don't scale past less than
  * 30 minutes or 90 ft, just so that small dives show
  * up as such.
+ * If the dive time is shorter than 10 minutes we assume that
+ * this has been an apnea dive and display it accordingly.
  * we also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
 static int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
-	/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
-	return MAX(30*60, ROUND_UP(seconds+150, 60*5));
+  if (seconds < 600)
+  {
+    /* Possible apnea dive, we scale accordingly */
+    return ROUND_UP(seconds+seconds/4, 60);
+  } else {
+    /* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
+    return MAX(30*60, ROUND_UP(seconds+150, 60*5));
+  }
 }
 
 static int get_maxdepth(struct plot_info *pi)
@@ -448,7 +456,15 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
 	maxdepth = get_maxdepth(pi);
-
+  /* We check whether this has been an apnea dive and overwrite
+   * the increments in order to get reasonable time markers */
+  if (maxtime < 600)
+  {
+    increments[0] = 10;
+    increments[1] = 30;
+    increments[2] = 60;
+    increments[3] = 5*60;
+  }
 	/* Time markers: at most every 5 min, but no more than 12 markers
 	 * and for convenience we do 5, 10, 15 or 30 min intervals.
 	 * This allows for 6h dives - enough (I hope) for even the craziest
@@ -473,11 +489,18 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	}
 	cairo_stroke(cr);
 
-	/* now the text on every second time marker */
+	/* now the text on the time markers */
 	text_render_options_t tro = {10, TIME_TEXT, CENTER, TOP};
-	for (i = incr; i < maxtime; i += 2 * incr)
-		plot_text(gc, &tro, i, 1, "%d", i/60);
-
+  if (maxtime < 600)
+  {
+    /* Be a bit more verbose with shorter (apnea) dives */
+	  for (i = incr; i < maxtime; i += incr)
+		  plot_text(gc, &tro, i, 1, "%d:%d", i/60, i%60);
+  } else {
+    /* Only render the time on every second marker for normal dives */
+  	for (i = incr; i < maxtime; i += 2 * incr)
+		  plot_text(gc, &tro, i, 1, "%d", i/60);
+  }
 	/* Depth markers: every 30 ft or 10 m*/
 	gc->leftx = 0; gc->rightx = 1.0;
 	gc->topy = 0; gc->bottomy = maxdepth;
