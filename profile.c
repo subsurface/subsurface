@@ -461,9 +461,9 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
   if (maxtime < 600)
   {
     increments[0] = 10;
-    increments[1] = 30;
-    increments[2] = 60;
-    increments[3] = 5*60;
+    increments[1] = 20;
+    increments[2] = 30;
+    increments[3] = 60;
   }
 	/* Time markers: at most every 5 min, but no more than 12 markers
 	 * and for convenience we do 5, 10, 15 or 30 min intervals.
