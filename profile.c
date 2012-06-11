@@ -468,7 +468,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	maxtime = get_maxtime(pi);
 	maxdepth = get_maxdepth(pi);
 
-	/* Time markers: at most every 5 min, but no more than 12 markers.
+	/* Time markers: at most every 10 seconds, but no more than 12 markers.
 	 * We start out with 10 seconds and increment up to 30 minutes,
 	 * depending on the dive time.
 	 * This allows for 6h dives - enough (I hope) for even the craziest
