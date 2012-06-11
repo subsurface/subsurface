@@ -14,6 +14,7 @@
 #include "color.h"
 
 int selected_dive = 0;
+char zoomed_plot = 0;
 
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
@@ -180,18 +181,24 @@ static void dump_pi (struct plot_info *pi)
  * When showing dive profiles, we scale things to the
  * current dive. However, we don't scale past less than
  * 30 minutes or 90 ft, just so that small dives show
- * up as such.
- * If the dive time is shorter than 10 minutes we assume that
- * this has been an apnea dive and display it accordingly.
- * we also need to add 180 seconds at the end so the min/max
+ * up as such unless zoom is enabled.
+ * We also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
 static int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
-	if (seconds < 600) {
-		/* Possible apnea dive, we scale accordingly */
-		return ROUND_UP(seconds+seconds/4, 60);
+	if (zoomed_plot) {
+		/* Rounded up to one minute, with at least 2.5 minutes to
+		 * spare.
+		 * For dive times shorter than 10 minutes, we use seconds/4 to
+		 * calculate the space dynamically.
+		 * This is seamless since 600/4 = 150.
+		 */
+		if ( seconds < 600 )
+			return ROUND_UP(seconds+seconds/4, 60);
+		else
+			return ROUND_UP(seconds+150, 60);
 	} else {
 		/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
 		return MAX(30*60, ROUND_UP(seconds+150, 60*5));
@@ -201,8 +208,13 @@ static int get_maxtime(struct plot_info *pi)
 static int get_maxdepth(struct plot_info *pi)
 {
 	unsigned mm = pi->maxdepth;
-	/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
-	return MAX(30000, ROUND_UP(mm+3000, 10000));
+	if (zoomed_plot) {
+		/* Rounded up to 10m, with at least 3m to spare */
+		return ROUND_UP(mm+3000, 10000);
+	} else {
+		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
+		return MAX(30000, ROUND_UP(mm+3000, 10000));
+	}
 }
 
 typedef struct {
@@ -450,27 +462,21 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	int sec, depth;
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
-	int increments[4] = { 5*60, 10*60, 15*60, 30*60 };
+	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
 	maxdepth = get_maxdepth(pi);
-	/* We check whether this has been an apnea dive and overwrite
-	* the increments in order to get reasonable time markers */
-	if (maxtime < 600) {
-		increments[0] = 10;
-		increments[1] = 20;
-		increments[2] = 30;
-		increments[3] = 60;
-	}
-	/* Time markers: at most every 5 min, but no more than 12 markers
-	 * and for convenience we do 5, 10, 15 or 30 min intervals.
+
+	/* Time markers: at most every 5 min, but no more than 12 markers.
+	 * We start out with 10 seconds and increment up to 30 minutes,
+	 * depending on the dive time.
 	 * This allows for 6h dives - enough (I hope) for even the craziest
 	 * divers - but just in case, for those 8h depth-record-breaking dives,
 	 * we double the interval if this still doesn't get us to 12 or fewer
 	 * time markers */
 	i = 0;
-	while (maxtime / increments[i] > 12 && i < 4)
+	while (maxtime / increments[i] > 12 && i < 8)
 		i++;
 	incr = increments[i];
 	while (maxtime / incr > 12)
@@ -490,13 +496,13 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	/* now the text on the time markers */
 	text_render_options_t tro = {10, TIME_TEXT, CENTER, TOP};
 	if (maxtime < 600) {
-		/* Be a bit more verbose with shorter (apnea) dives */
+		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-		plot_text(gc, &tro, i, 1, "%d:%d", i/60, i%60);
+			plot_text(gc, &tro, i, 1, "%d:%d", i/60, i%60);
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
-		plot_text(gc, &tro, i, 1, "%d", i/60);
+			plot_text(gc, &tro, i, 1, "%d", i/60);
 	}
 	/* Depth markers: every 30 ft or 10 m*/
 	gc->leftx = 0; gc->rightx = 1.0;

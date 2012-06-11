@@ -22,6 +22,7 @@ GtkWidget *error_info_bar;
 GtkWidget *error_label;
 GtkWidget *vpane, *hpane;
 int        error_count;
+extern char zoomed_plot;
 
 const char *divelist_font;
 
@@ -610,6 +611,13 @@ static void view_three(GtkWidget *w, gpointer data)
 	gtk_paned_set_position(GTK_PANED(vpane), 200);
 }
 
+static void toggle_zoom(GtkWidget *w, gpointer data)
+{
+	zoomed_plot = (zoomed_plot)?0 : 1;
+	/*Update dive*/
+	repaint_dive();
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
 	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
@@ -628,7 +636,8 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewList",       NULL, "List",  CTRLCHAR "1", NULL, G_CALLBACK(view_list) },
 	{ "ViewProfile",    NULL, "Profile", CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
 	{ "ViewInfo",       NULL, "Info", CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
-	{ "ViewThree",       NULL, "Three", CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
+	{ "ViewThree",      NULL, "Three", CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
+	{ "ToggleZoom",     NULL, "Toggle Zoom", CTRLCHAR "0", NULL, G_CALLBACK(toggle_zoom) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -648,6 +657,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Import\" action=\"Import\" /> \
 				<separator name=\"Separator\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
+				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
 				<menu name=\"View\" action=\"ViewMenuAction\"> \
 					<menuitem name=\"List\" action=\"ViewList\" /> \
 					<menuitem name=\"Profile\" action=\"ViewProfile\" /> \
