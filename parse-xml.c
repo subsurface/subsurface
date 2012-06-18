@@ -647,6 +647,7 @@ static int uddf_fill_sample(struct sample *sample, const char *name, int len, ch
 	return	MATCH(".divetime", sampletime, &sample->time) ||
 		MATCH(".depth", depth, &sample->depth) ||
 		MATCH(".temperature", temperature, &sample->temperature) ||
+		MATCH(".tankpressure", pressure, &sample->cylinderpressure) ||
 		0;
 }
 
