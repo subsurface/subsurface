@@ -152,7 +152,7 @@ static void parse_cochran_header(const char *filename,
 
 /*
  * Cochran export files show that depths seem to be in
- * tenth of feet.
+ * quarter feet (rounded up to tenths).
  *
  * Temperature seems to be exported in Fahrenheit.
  *
