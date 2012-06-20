@@ -140,7 +140,7 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		sample->temperature.mkelvin = F_to_mkelvin(val);
 		break;
 	case CSV_PRESSURE:
-		sample->cylinderpressure.mbar = psi_to_mbar(val);
+		sample->cylinderpressure.mbar = psi_to_mbar(val*4);
 		break;
 	}
 }
