@@ -125,19 +125,29 @@ static inline double mm_to_feet(int mm)
 	return mm * 0.00328084;
 }
 
+static inline unsigned long feet_to_mm(double feet)
+{
+	return feet * 304.8 + 0.5;
+}
+
 static inline int to_feet(depth_t depth)
 {
 	return mm_to_feet(depth.mm) + 0.5;
 }
 
-static double mkelvin_to_C(int mkelvin)
+static inline double mkelvin_to_C(int mkelvin)
 {
 	return (mkelvin - 273150) / 1000.0;
 }
 
-static double mkelvin_to_F(int mkelvin)
+static inline double mkelvin_to_F(int mkelvin)
 {
 	return mkelvin * 9 / 5000.0 - 459.670;
+}
+
+static inline unsigned long F_to_mkelvin(double f)
+{
+	return (f-32) * 1000 / 1.8 + 273150.5;
 }
 
 static inline int to_C(temperature_t temp)
@@ -165,6 +175,12 @@ static inline double psi_to_bar(double psi)
 {
 	return psi / 14.5037738;
 }
+
+static inline unsigned long psi_to_mbar(double psi)
+{
+	return psi_to_bar(psi)*1000 + 0.5;
+}
+
 static inline int to_PSI(pressure_t pressure)
 {
 	return pressure.mbar * 0.0145037738 + 0.5;
