@@ -31,90 +31,22 @@ static GError *error(const char *fmt, ...)
 	return error;
 }
 
-static parser_status_t create_parser(device_data_t *devdata, parser_t **parser)
+static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 {
-	switch (devdata->type) {
-	case DEVICE_TYPE_SUUNTO_SOLUTION:
-		return suunto_solution_parser_create(parser);
-
-	case DEVICE_TYPE_SUUNTO_EON:
-		return suunto_eon_parser_create(parser, 0);
-
-	case DEVICE_TYPE_SUUNTO_VYPER:
-		if (devdata->devinfo.model == 0x01)
-			return suunto_eon_parser_create(parser, 1);
-		return suunto_vyper_parser_create(parser);
-
-	case DEVICE_TYPE_SUUNTO_VYPER2:
-	case DEVICE_TYPE_SUUNTO_D9:
-		return suunto_d9_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_UWATEC_ALADIN:
-	case DEVICE_TYPE_UWATEC_MEMOMOUSE:
-		return uwatec_memomouse_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
-
-	case DEVICE_TYPE_UWATEC_SMART:
-		return uwatec_smart_parser_create(parser, devdata->devinfo.model, devdata->clock.devtime, devdata->clock.systime);
-
-	case DEVICE_TYPE_REEFNET_SENSUS:
-		return reefnet_sensus_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
-
-	case DEVICE_TYPE_REEFNET_SENSUSPRO:
-		return reefnet_sensuspro_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
-
-	case DEVICE_TYPE_REEFNET_SENSUSULTRA:
-		return reefnet_sensusultra_parser_create(parser, devdata->clock.devtime, devdata->clock.systime);
-
-	case DEVICE_TYPE_OCEANIC_VTPRO:
-		return oceanic_vtpro_parser_create(parser);
-
-	case DEVICE_TYPE_OCEANIC_VEO250:
-		return oceanic_veo250_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_OCEANIC_ATOM2:
-		return oceanic_atom2_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_MARES_DARWIN:
-		return mares_darwin_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_MARES_NEMO:
-	case DEVICE_TYPE_MARES_PUCK:
-		return mares_nemo_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_MARES_ICONHD:
-		return mares_iconhd_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_HW_OSTC:
-		return hw_ostc_parser_create(parser NOT_FROG);
-
-#ifdef LIBDIVECOMPUTER_SUPPORTS_FROG
-	case DEVICE_TYPE_HW_FROG:
-		return hw_ostc_parser_create(parser, 1);
-#endif
-
-	case DEVICE_TYPE_CRESSI_EDY:
-	case DEVICE_TYPE_ZEAGLE_N2ITION3:
-		return cressi_edy_parser_create(parser, devdata->devinfo.model);
-
-	case DEVICE_TYPE_ATOMICS_COBALT:
-		return atomics_cobalt_parser_create(parser);
-
-	default:
-		return PARSER_STATUS_ERROR;
-	}
+	return dc_parser_new(parser, devdata->device);
 }
 
-static int parse_gasmixes(device_data_t *devdata, struct dive *dive, parser_t *parser, int ngases)
+static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases)
 {
 	int i;
 
 	for (i = 0; i < ngases; i++) {
 		int rc;
-		gasmix_t gasmix = {0};
+		dc_gasmix_t gasmix = {0};
 		int o2, he;
 
-		rc = parser_get_field(parser, FIELD_TYPE_GASMIX, i, &gasmix);
-		if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED)
+		rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
+		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED)
 			return rc;
 
 		if (i >= MAX_CYLINDERS)
@@ -132,10 +64,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, parser_t *p
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
 	}
-	return PARSER_STATUS_SUCCESS;
+	return DC_STATUS_SUCCESS;
 }
 
-static void handle_event(struct dive *dive, struct sample *sample, parser_sample_value_t value)
+static void handle_event(struct dive *dive, struct sample *sample, dc_sample_value_t value)
 {
 	int type, time;
 	static const char *events[] = {
@@ -173,7 +105,7 @@ static void handle_event(struct dive *dive, struct sample *sample, parser_sample
 }
 
 void
-sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata)
+sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
 	int i;
 	struct dive **divep = userdata;
@@ -181,40 +113,40 @@ sample_cb(parser_sample_type_t type, parser_sample_value_t value, void *userdata
 	struct sample *sample;
 
 	/*
-	 * We fill in the "previous" sample - except for SAMPLE_TYPE_TIME,
+	 * We fill in the "previous" sample - except for DC_SAMPLE_TIME,
 	 * which creates a new one.
 	 */
 	sample = dive->samples ? dive->sample+dive->samples-1 : NULL;
 
 	switch (type) {
-	case SAMPLE_TYPE_TIME:
+	case DC_SAMPLE_TIME:
 		sample = prepare_sample(divep);
 		sample->time.seconds = value.time;
 		finish_sample(*divep);
 		break;
-	case SAMPLE_TYPE_DEPTH:
+	case DC_SAMPLE_DEPTH:
 		sample->depth.mm = value.depth * 1000 + 0.5;
 		break;
-	case SAMPLE_TYPE_PRESSURE:
+	case DC_SAMPLE_PRESSURE:
 		sample->cylinderindex = value.pressure.tank;
 		sample->cylinderpressure.mbar = value.pressure.value * 1000 + 0.5;
 		break;
-	case SAMPLE_TYPE_TEMPERATURE:
+	case DC_SAMPLE_TEMPERATURE:
 		sample->temperature.mkelvin = (value.temperature + 273.15) * 1000 + 0.5;
 		break;
-	case SAMPLE_TYPE_EVENT:
+	case DC_SAMPLE_EVENT:
 		handle_event(dive, sample, value);
 		break;
-	case SAMPLE_TYPE_RBT:
+	case DC_SAMPLE_RBT:
 		printf("   <rbt>%u</rbt>\n", value.rbt);
 		break;
-	case SAMPLE_TYPE_HEARTBEAT:
+	case DC_SAMPLE_HEARTBEAT:
 		printf("   <heartbeat>%u</heartbeat>\n", value.heartbeat);
 		break;
-	case SAMPLE_TYPE_BEARING:
+	case DC_SAMPLE_BEARING:
 		printf("   <bearing>%u</bearing>\n", value.bearing);
 		break;
-	case SAMPLE_TYPE_VENDOR:
+	case DC_SAMPLE_VENDOR:
 		printf("   <vendor type=\"%u\" size=\"%u\">", value.vendor.type, value.vendor.size);
 		for (i = 0; i < value.vendor.size; ++i)
 			printf("%02X", ((unsigned char *) value.vendor.data)[i]);
@@ -238,10 +170,10 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 
 static int import_dive_number = 0;
 
-static int parse_samples(device_data_t *devdata, struct dive **divep, parser_t *parser)
+static int parse_samples(device_data_t *devdata, struct dive **divep, dc_parser_t *parser)
 {
 	// Parse the sample data.
-	return parser_samples_foreach(parser, sample_cb, divep);
+	return dc_parser_samples_foreach(parser, sample_cb, divep);
 }
 
 /*
@@ -275,31 +207,31 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	void *userdata)
 {
 	int rc;
-	parser_t *parser = NULL;
+	dc_parser_t *parser = NULL;
 	device_data_t *devdata = userdata;
 	dc_datetime_t dt = {0};
 	struct tm tm;
 	struct dive *dive;
 
 	rc = create_parser(devdata, &parser);
-	if (rc != PARSER_STATUS_SUCCESS) {
-		dev_info(devdata, "Unable to create parser for %s", devdata->name);
+	if (rc != DC_STATUS_SUCCESS) {
+		dev_info(devdata, "Unable to create parser for %s %s", devdata->vendor, devdata->product);
 		return rc;
 	}
 
-	rc = parser_set_data(parser, data, size);
-	if (rc != PARSER_STATUS_SUCCESS) {
+	rc = dc_parser_set_data(parser, data, size);
+	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, "Error registering the data");
-		parser_destroy(parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 
 	import_dive_number++;
 	dive = alloc_dive();
-	rc = parser_get_datetime(parser, &dt);
-	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+	rc = dc_parser_get_datetime(parser, &dt);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, "Error parsing the datetime");
-		parser_destroy (parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 
@@ -315,49 +247,49 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dev_info(devdata, "Dive %d: %s %d %04d", import_dive_number,
 		monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
 	unsigned int divetime = 0;
-	rc = parser_get_field (parser, FIELD_TYPE_DIVETIME, 0, &divetime);
-	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+	rc = dc_parser_get_field (parser, DC_FIELD_DIVETIME, 0, &divetime);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, "Error parsing the divetime");
-		parser_destroy(parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 	dive->duration.seconds = divetime;
 
 	// Parse the maxdepth.
 	double maxdepth = 0.0;
-	rc = parser_get_field(parser, FIELD_TYPE_MAXDEPTH, 0, &maxdepth);
-	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, "Error parsing the maxdepth");
-		parser_destroy(parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 	dive->maxdepth.mm = maxdepth * 1000 + 0.5;
 
 	// Parse the gas mixes.
 	unsigned int ngases = 0;
-	rc = parser_get_field(parser, FIELD_TYPE_GASMIX_COUNT, 0, &ngases);
-	if (rc != PARSER_STATUS_SUCCESS && rc != PARSER_STATUS_UNSUPPORTED) {
+	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, "Error parsing the gas mix count");
-		parser_destroy(parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases);
-	if (rc != PARSER_STATUS_SUCCESS) {
+	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, "Error parsing the gas mix");
-		parser_destroy(parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive, parser);
-	if (rc != PARSER_STATUS_SUCCESS) {
+	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, "Error parsing the samples");
-		parser_destroy(parser);
+		dc_parser_destroy(parser);
 		return rc;
 	}
 
-	parser_destroy(parser);
+	dc_parser_destroy(parser);
 
 	/* If we already saw this dive, abort. */
 	if (find_dive(dive, devdata))
@@ -368,112 +300,41 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 }
 
 
-static device_status_t import_device_data(device_t *device, device_data_t *devicedata)
+static dc_status_t import_device_data(dc_device_t *device, device_data_t *devicedata)
 {
-	return device_foreach(device, dive_cb, devicedata);
+	return dc_device_foreach(device, dive_cb, devicedata);
 }
 
-static device_status_t device_open(const char *devname,
-	device_type_t type,
-	device_t **device)
+static dc_status_t device_open(const char *devname,
+	dc_descriptor_t *descriptor,
+	dc_device_t **device)
 {
-	switch (type) {
-	case DEVICE_TYPE_SUUNTO_SOLUTION:
-		return suunto_solution_device_open(device, devname);
-
-	case DEVICE_TYPE_SUUNTO_EON:
-		return suunto_eon_device_open(device, devname);
-
-	case DEVICE_TYPE_SUUNTO_VYPER:
-		return suunto_vyper_device_open(device, devname);
-
-	case DEVICE_TYPE_SUUNTO_VYPER2:
-		return suunto_vyper2_device_open(device, devname);
-
-	case DEVICE_TYPE_SUUNTO_D9:
-		return suunto_d9_device_open(device, devname);
-
-	case DEVICE_TYPE_UWATEC_ALADIN:
-		return uwatec_aladin_device_open(device, devname);
-
-	case DEVICE_TYPE_UWATEC_MEMOMOUSE:
-		return uwatec_memomouse_device_open(device, devname);
-
-	case DEVICE_TYPE_UWATEC_SMART:
-		return uwatec_smart_device_open(device);
-
-	case DEVICE_TYPE_REEFNET_SENSUS:
-		return reefnet_sensus_device_open(device, devname);
-
-	case DEVICE_TYPE_REEFNET_SENSUSPRO:
-		return reefnet_sensuspro_device_open(device, devname);
-
-	case DEVICE_TYPE_REEFNET_SENSUSULTRA:
-		return reefnet_sensusultra_device_open(device, devname);
-
-	case DEVICE_TYPE_OCEANIC_VTPRO:
-		return oceanic_vtpro_device_open(device, devname);
-
-	case DEVICE_TYPE_OCEANIC_VEO250:
-		return oceanic_veo250_device_open(device, devname);
-
-	case DEVICE_TYPE_OCEANIC_ATOM2:
-		return oceanic_atom2_device_open(device, devname);
-
-	case DEVICE_TYPE_MARES_DARWIN:
-		return mares_darwin_device_open(device, devname, 0); /// last parameter is model type (taken from example), 0 seems to be standard, 1 is DARWIN_AIR => Darwin Air wont work if this is fixed here?
-
-	case DEVICE_TYPE_MARES_NEMO:
-		return mares_nemo_device_open(device, devname);
-
-	case DEVICE_TYPE_MARES_PUCK:
-		return mares_puck_device_open(device, devname);
-
-	case DEVICE_TYPE_MARES_ICONHD:
-		return mares_iconhd_device_open(device, devname);
-
-	case DEVICE_TYPE_HW_OSTC:
-		return hw_ostc_device_open(device, devname);
-
-	case DEVICE_TYPE_CRESSI_EDY:
-		return cressi_edy_device_open(device, devname);
-
-	case DEVICE_TYPE_ZEAGLE_N2ITION3:
-		return zeagle_n2ition3_device_open(device, devname);
-
-	case DEVICE_TYPE_ATOMICS_COBALT:
-		return atomics_cobalt_device_open(device);
-
-	default:
-		return DEVICE_STATUS_ERROR;
-	}
+	return dc_device_open(device, descriptor, devname);
 }
 
 
-static void event_cb(device_t *device, device_event_t event, const void *data, void *userdata)
+static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
-	const device_progress_t *progress = data;
-	const device_devinfo_t *devinfo = data;
-	const device_clock_t *clock = data;
+	const dc_event_progress_t *progress = data;
+	const dc_event_devinfo_t *devinfo = data;
+	const dc_event_clock_t *clock = data;
 	device_data_t *devdata = userdata;
 
 	switch (event) {
-	case DEVICE_EVENT_WAITING:
+	case DC_EVENT_WAITING:
 		dev_info(devdata, "Event: waiting for user action");
 		break;
-	case DEVICE_EVENT_PROGRESS:
+	case DC_EVENT_PROGRESS:
 		update_progressbar(&devdata->progress,
 			(double) progress->current / (double) progress->maximum);
 		break;
-	case DEVICE_EVENT_DEVINFO:
-		devdata->devinfo = *devinfo;
+	case DC_EVENT_DEVINFO:
 		dev_info(devdata, "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)",
 			devinfo->model, devinfo->model,
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
 		break;
-	case DEVICE_EVENT_CLOCK:
-		devdata->clock = *clock;
+	case DC_EVENT_CLOCK:
 		dev_info(devdata, "Event: systime=%"PRId64", devtime=%u\n",
 			(uint64_t)clock->systime, clock->devtime);
 		break;
@@ -492,36 +353,37 @@ cancel_cb(void *userdata)
 
 static const char *do_libdivecomputer_import(device_data_t *data)
 {
-	device_t *device = NULL;
-	device_status_t rc;
+	dc_device_t *device = NULL;
+	dc_status_t rc;
 
 	import_dive_number = 0;
-	rc = device_open(data->devname, data->type, &device);
-	if (rc != DEVICE_STATUS_SUCCESS)
-		return "Unable to open %s (%s)";
+	rc = device_open(data->devname, data->descriptor, &device);
+	if (rc != DC_STATUS_SUCCESS)
+		return "Unable to open %s %s (%s)";
+	data->device = device;
 
 	// Register the event handler.
-	int events = DEVICE_EVENT_WAITING | DEVICE_EVENT_PROGRESS | DEVICE_EVENT_DEVINFO | DEVICE_EVENT_CLOCK;
-	rc = device_set_events(device, events, event_cb, data);
-	if (rc != DEVICE_STATUS_SUCCESS) {
-		device_close(device);
+	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK;
+	rc = dc_device_set_events(device, events, event_cb, data);
+	if (rc != DC_STATUS_SUCCESS) {
+		dc_device_close(device);
 		return "Error registering the event handler.";
 	}
 
 	// Register the cancellation handler.
-	rc = device_set_cancel(device, cancel_cb, data);
-	if (rc != DEVICE_STATUS_SUCCESS) {
-		device_close(device);
+	rc = dc_device_set_cancel(device, cancel_cb, data);
+	if (rc != DC_STATUS_SUCCESS) {
+		dc_device_close(device);
 		return "Error registering the cancellation handler.";
 	}
 
 	rc = import_device_data(device, data);
-	if (rc != DEVICE_STATUS_SUCCESS) {
-		device_close(device);
+	if (rc != DC_STATUS_SUCCESS) {
+		dc_device_close(device);
 		return "Dive data import error";
 	}
 
-	device_close(device);
+	dc_device_close(device);
 	return NULL;
 }
 
@@ -548,42 +410,6 @@ GError *do_import(device_data_t *data)
 	if (pthread_join(pthread, &retval) < 0)
 		retval = "Odd pthread error return";
 	if (retval)
-		return error(retval, data->name, data->devname);
+		return error(retval, data->vendor, data->product, data->devname);
 	return NULL;
 }
-
-/*
- * Taken from 'example.c' in libdivecomputer.
- *
- * I really wish there was some way to just have
- * libdivecomputer tell us what devices it supports,
- * rather than have the application have to know..
- */
-struct device_list device_list[] = {
-	{ "Suunto Solution",	DEVICE_TYPE_SUUNTO_SOLUTION },
-	{ "Suunto Eon",		DEVICE_TYPE_SUUNTO_EON },
-	{ "Suunto Vyper",	DEVICE_TYPE_SUUNTO_VYPER },
-	{ "Suunto Vyper Air",	DEVICE_TYPE_SUUNTO_VYPER2 },
-	{ "Suunto D9",		DEVICE_TYPE_SUUNTO_D9 },
-	{ "Uwatec Aladin",	DEVICE_TYPE_UWATEC_ALADIN },
-	{ "Uwatec Memo Mouse",	DEVICE_TYPE_UWATEC_MEMOMOUSE },
-	{ "Uwatec Smart",	DEVICE_TYPE_UWATEC_SMART },
-	{ "ReefNet Sensus",	DEVICE_TYPE_REEFNET_SENSUS },
-	{ "ReefNet Sensus Pro",	DEVICE_TYPE_REEFNET_SENSUSPRO },
-	{ "ReefNet Sensus Ultra",DEVICE_TYPE_REEFNET_SENSUSULTRA },
-	{ "Oceanic VT Pro",	DEVICE_TYPE_OCEANIC_VTPRO },
-	{ "Oceanic Veo250",	DEVICE_TYPE_OCEANIC_VEO250 },
-	{ "Oceanic Atom 2",	DEVICE_TYPE_OCEANIC_ATOM2 },
-	{ "Mares Darwin, M1, M2, Airlab",	DEVICE_TYPE_MARES_DARWIN },
-	{ "Mares Nemo, Excel, Apneist",	DEVICE_TYPE_MARES_NEMO },
-	{ "Mares Puck, Nemo Air, Nemo Wide",	DEVICE_TYPE_MARES_PUCK },
-	{ "Mares Icon HD",	DEVICE_TYPE_MARES_ICONHD },
-	{ "OSTC",		DEVICE_TYPE_HW_OSTC },
-#ifdef LIBDIVECOMPUTER_SUPPORTS_FROG
-	{ "OSTC Frog",		DEVICE_TYPE_HW_FROG },
-#endif
-	{ "Cressi Edy",		DEVICE_TYPE_CRESSI_EDY },
-	{ "Zeagle N2iTiON 3",	DEVICE_TYPE_ZEAGLE_N2ITION3 },
-	{ "Atomics Cobalt",	DEVICE_TYPE_ATOMICS_COBALT },
-	{ NULL }
-};

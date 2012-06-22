@@ -20,20 +20,13 @@
 /* don't forget to include the UI toolkit specific display-XXX.h first
    to get the definition of progressbar_t */
 typedef struct device_data_t {
-	device_type_t type;
-	const char *name, *devname;
+	dc_descriptor_t *descriptor;
+	const char *vendor, *product, *devname;
+	dc_device_t *device;
 	progressbar_t progress;
-	device_devinfo_t devinfo;
-	device_clock_t clock;
 	int preexisting;
 } device_data_t;
 
-struct device_list {
-	const char *name;
-	device_type_t type;
-};
-
-extern struct device_list device_list[];
 extern GError *do_import(device_data_t *data);
 
 #endif

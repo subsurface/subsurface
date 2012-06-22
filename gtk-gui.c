@@ -31,12 +31,14 @@ static GtkWidget *dive_profile;
 
 visible_cols_t visible_cols = {TRUE, FALSE};
 
-static const char *default_dive_computer;
+static const char *default_dive_computer_vendor;
+static const char *default_dive_computer_product;
 static const char *default_dive_computer_device;
 
-static int is_default_dive_computer(const char *name)
+static int is_default_dive_computer(const char *vendor, const char *product)
 {
-	return default_dive_computer && !strcmp(name, default_dive_computer);
+	return default_dive_computer_vendor && !strcmp(vendor, default_dive_computer_vendor) &&
+		default_dive_computer_product && !strcmp(product, default_dive_computer_product);
 }
 
 static int is_default_dive_computer_device(const char *name)
@@ -44,14 +46,18 @@ static int is_default_dive_computer_device(const char *name)
 	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
 }
 
-static void set_default_dive_computer(const char *name)
+static void set_default_dive_computer(const char *vendor, const char *product)
 {
-	if (!name || !*name)
+	if (!vendor || !*vendor)
 		return;
-	if (is_default_dive_computer(name))
+	if (!product || !*product)
 		return;
-	default_dive_computer = name;
-	subsurface_set_conf("dive_computer", PREF_STRING, name);
+	if (is_default_dive_computer(vendor, product))
+		return;
+	default_dive_computer_vendor = vendor;
+	default_dive_computer_product = product;
+	subsurface_set_conf("dive_computer_vendor", PREF_STRING, vendor);
+	subsurface_set_conf("dive_computer_product", PREF_STRING, product);
 }
 
 static void set_default_dive_computer_device(const char *name)
@@ -724,7 +730,8 @@ void init_ui(int *argcp, char ***argvp)
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
-	default_dive_computer = subsurface_get_conf("dive_computer", PREF_STRING);
+	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
+	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
 	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
 
 	error_info_bar = NULL;
@@ -914,19 +921,44 @@ static int fill_computer_list(GtkListStore *store)
 {
 	int index = -1, i;
 	GtkTreeIter iter;
-	struct device_list *list = device_list;
+	dc_iterator_t *iterator = NULL;
+	dc_descriptor_t *descriptor = NULL;
 
-	for (list = device_list, i = 0 ; list->name ; list++, i++) {
+	i = 0;
+	dc_descriptor_iterator(&iterator);
+	while (dc_iterator_next (iterator, &descriptor) == DC_STATUS_SUCCESS) {
+		const char *vendor = dc_descriptor_get_vendor(descriptor);
+		const char *product = dc_descriptor_get_product(descriptor);
+
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
-			0, list->name,
-			1, list->type,
+			0, descriptor,
 			-1);
-		if (is_default_dive_computer(list->name))
+		if (is_default_dive_computer(vendor, product))
 			index = i;
+		i++;
 	}
+	dc_iterator_free(iterator);
 	return index;
 }
+
+void render_dive_computer(GtkCellLayout *cell,
+		GtkCellRenderer *renderer,
+		GtkTreeModel *model,
+		GtkTreeIter *iter,
+		gpointer data)
+{
+	char buffer[40];
+	dc_descriptor_t *descriptor = NULL;
+	const char *vendor, *product;
+
+	gtk_tree_model_get(model, iter, 0, &descriptor, -1);
+	vendor = dc_descriptor_get_vendor(descriptor);
+	product = dc_descriptor_get_product(descriptor);
+	snprintf(buffer, sizeof(buffer), "%s %s", vendor, product);
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
 
 static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 {
@@ -938,7 +970,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+	model = gtk_list_store_new(1, G_TYPE_POINTER);
 	default_index = fill_computer_list(model);
 
 	frame = gtk_frame_new("Dive computer");
@@ -949,7 +981,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
-	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo_box), renderer, "text", 0, NULL);
+	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(combo_box), renderer, render_dive_computer, NULL, NULL);
 
 	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
 
@@ -1094,10 +1126,9 @@ repeat:
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	switch (result) {
-		int type;
+		dc_descriptor_t *descriptor;
 		GtkTreeIter iter;
 		GtkTreeModel *model;
-		const char *comp;
 		GSList *list;
 	case GTK_RESPONSE_ACCEPT:
 		/* what happened - did the user pick a file? In that case
@@ -1106,17 +1137,23 @@ repeat:
 			gtk_widget_destroy(info);
 		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
 		if (g_slist_length(list) == 0) {
+			const char *vendor, *product;
+
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
 				break;
 			model = gtk_combo_box_get_model(computer);
 			gtk_tree_model_get(model, &iter,
-					0, &comp,
-					1, &type,
+					0, &descriptor,
 					-1);
-			devicedata.type = type;
-			devicedata.name = comp;
+
+			vendor = dc_descriptor_get_vendor(descriptor);
+			product = dc_descriptor_get_product(descriptor);
+
+			devicedata.descriptor = descriptor;
+			devicedata.vendor = vendor;
+			devicedata.product = product;
 			devicedata.devname = gtk_entry_get_text(device);
-			set_default_dive_computer(devicedata.name);
+			set_default_dive_computer(vendor, product);
 			set_default_dive_computer_device(devicedata.devname);
 			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 			if (info)
