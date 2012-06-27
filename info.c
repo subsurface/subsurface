@@ -426,11 +426,12 @@ static time_t dive_time_widget(struct dive *dive)
 	GtkWidget *dialog;
 	GtkWidget *cal, *hbox, *vbox;
 	GtkWidget *h, *m;
-	GtkWidget *duration;
+	GtkWidget *duration, *depth;
 	GtkWidget *label;
 	guint yval, mval, dval;
 	struct tm tm;
 	int success;
+	double depthinterval, val;
 
 	dialog = gtk_dialog_new_with_buttons("Date and Time",
 		GTK_WINDOW(main_window),
@@ -469,6 +470,22 @@ static time_t dive_time_widget(struct dive *dive)
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), duration, FALSE, FALSE, 0);
 
+	/* Depth box */
+	hbox = gtk_hbox_new(0, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	if (output_units.length == FEET) {
+		depthinterval = 1.0;
+	} else {
+		depthinterval = 0.1;
+	}
+	depth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
+
+	label = gtk_label_new("Depth: ");
+	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), depth, FALSE, FALSE, 0);
+
+	/* All done, show it and wait for editing */
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (!success) {
@@ -484,6 +501,13 @@ static time_t dive_time_widget(struct dive *dive)
 
 	tm.tm_hour = gtk_spin_button_get_value(GTK_SPIN_BUTTON(h));
 	tm.tm_min = gtk_spin_button_get_value(GTK_SPIN_BUTTON(m));
+
+	val = gtk_spin_button_get_value(GTK_SPIN_BUTTON(depth));
+	if (output_units.length == FEET) {
+		dive->maxdepth.mm = feet_to_mm(val);
+	} else {
+		dive->maxdepth.mm = val * 1000 + 0.5;
+	}
 
 	dive->duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
 
