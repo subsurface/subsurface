@@ -343,6 +343,7 @@ extern void add_location(const char *string);
 extern void remember_event(const char *eventname);
 extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 
+extern int add_new_dive(struct dive *dive);
 extern int edit_dive_info(struct dive *dive);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);

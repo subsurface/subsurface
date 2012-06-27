@@ -420,6 +420,90 @@ int edit_dive_info(struct dive *dive)
 	return success;
 }
 
+/* Fixme - should do at least depths too - a dive without a depth is kind of pointless */
+static time_t dive_time_widget(struct dive *dive)
+{
+	GtkWidget *dialog;
+	GtkWidget *cal, *hbox, *vbox;
+	GtkWidget *h, *m;
+	GtkWidget *duration;
+	GtkWidget *label;
+	guint yval, mval, dval;
+	struct tm tm;
+	int success;
+
+	dialog = gtk_dialog_new_with_buttons("Date and Time",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+	/* Calendar hbox */
+	hbox = gtk_hbox_new(0, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	cal = gtk_calendar_new();
+	gtk_box_pack_start(GTK_BOX(hbox), cal, FALSE, TRUE, 0);
+
+	/* Time/duration hbox */
+	hbox = gtk_hbox_new(0, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
+	m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
+
+	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(h), TRUE);
+	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(m), TRUE);
+
+	duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
+
+	gtk_box_pack_start(GTK_BOX(hbox), h, FALSE, FALSE, 0);
+	label = gtk_label_new(":");
+	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), m, FALSE, FALSE, 0);
+
+	label = gtk_label_new("   Duration:");
+	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), duration, FALSE, FALSE, 0);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (!success) {
+		gtk_widget_destroy(dialog);
+		return 0;
+	}
+
+	memset(&tm, 0, sizeof(tm));
+	gtk_calendar_get_date(GTK_CALENDAR(cal), &yval, &mval, &dval);
+	tm.tm_year = yval;
+	tm.tm_mon = mval;
+	tm.tm_mday = dval;
+
+	tm.tm_hour = gtk_spin_button_get_value(GTK_SPIN_BUTTON(h));
+	tm.tm_min = gtk_spin_button_get_value(GTK_SPIN_BUTTON(m));
+
+	dive->duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
+
+	gtk_widget_destroy(dialog);
+	dive->when = utc_mktime(&tm);
+
+	return 1;
+}
+
+int add_new_dive(struct dive *dive)
+{
+	if (!dive)
+		return 0;
+
+	if (!dive_time_widget(dive))
+		return 0;
+
+	return edit_dive_info(dive);
+}
+
 GtkWidget *extended_dive_info_widget(void)
 {
 	GtkWidget *vbox, *hbox;

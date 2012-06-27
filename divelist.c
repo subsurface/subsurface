@@ -687,6 +687,49 @@ static void row_activated_cb(GtkTreeView *tree_view,
 	edit_dive_info(get_dive(index));
 }
 
+static void add_dive_cb(GtkWidget *menuitem, GtkTreeModel *model)
+{
+	struct dive *dive;
+
+	dive = alloc_dive();
+	if (add_new_dive(dive)) {
+		record_dive(dive);
+		report_dives(TRUE);
+		return;
+	}
+	free(dive);
+}
+
+static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button)
+{
+	GtkWidget *menu, *menuitem;
+
+	menu = gtk_menu_new();
+	menuitem = gtk_menu_item_new_with_label("Add dive");
+	g_signal_connect(menuitem, "activate", G_CALLBACK(add_dive_cb), model);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	gtk_widget_show_all(menu);
+
+	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
+		button, gtk_get_current_event_time());
+}
+
+static void popup_menu_cb(GtkTreeView *tree_view,
+			GtkTreeModel *model)
+{
+	popup_divelist_menu(tree_view, model, 0);
+}
+
+static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, GtkTreeModel *model)
+{
+	/* Right-click? Bring up the menu */
+	if (event->type == GDK_BUTTON_PRESS  &&  event->button == 3) {
+		popup_divelist_menu(GTK_TREE_VIEW(treeview), model, 3);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 GtkWidget *dive_list_create(void)
 {
 	GtkTreeSelection  *selection;
@@ -734,6 +777,8 @@ GtkWidget *dive_list_create(void)
 
 	g_signal_connect_after(dive_list.tree_view, "realize", G_CALLBACK(realize_cb), NULL);
 	g_signal_connect(dive_list.tree_view, "row-activated", G_CALLBACK(row_activated_cb), dive_list.model);
+	g_signal_connect(dive_list.tree_view, "button-press-event", G_CALLBACK(button_press_cb), dive_list.model);
+	g_signal_connect(dive_list.tree_view, "popup-menu", G_CALLBACK(popup_menu_cb), dive_list.model);
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
