@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+#include <sys/time.h>
 
 #include "dive.h"
 #include "display.h"
@@ -420,16 +421,35 @@ int edit_dive_info(struct dive *dive)
 	return success;
 }
 
+static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
+{
+	va_list ap;
+	char buffer[64];
+	GtkWidget *frame, *hbox;
+
+	va_start(ap, fmt);
+	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	va_end(ap);
+
+	frame = gtk_frame_new(buffer);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+	hbox = gtk_hbox_new(0, 3);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
+	return hbox;
+}
+
 /* Fixme - should do at least depths too - a dive without a depth is kind of pointless */
 static time_t dive_time_widget(struct dive *dive)
 {
 	GtkWidget *dialog;
-	GtkWidget *cal, *hbox, *vbox;
+	GtkWidget *cal, *hbox, *vbox, *box;
 	GtkWidget *h, *m;
 	GtkWidget *duration, *depth;
 	GtkWidget *label;
 	guint yval, mval, dval;
-	struct tm tm;
+	struct tm tm, *tmp;
+	struct timeval tv;
+	time_t time;
 	int success;
 	double depthinterval, val;
 
@@ -443,47 +463,47 @@ static time_t dive_time_widget(struct dive *dive)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
 	/* Calendar hbox */
-	hbox = gtk_hbox_new(0, 3);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
-
+	hbox = frame_box(vbox, "Date:");
 	cal = gtk_calendar_new();
 	gtk_box_pack_start(GTK_BOX(hbox), cal, FALSE, TRUE, 0);
 
-	/* Time/duration hbox */
-	hbox = gtk_hbox_new(0, 3);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+	/* Time hbox */
+	hbox = frame_box(vbox, "Time");
 
 	h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
 	m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
 
+	gettimeofday(&tv, NULL);
+	time = tv.tv_sec;
+	tmp = localtime(&time);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(h), tmp->tm_hour);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(m), (tmp->tm_min / 5)*5);
+
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(h), TRUE);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(m), TRUE);
 
-	duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
-
-	gtk_box_pack_start(GTK_BOX(hbox), h, FALSE, FALSE, 0);
+	gtk_box_pack_end(GTK_BOX(hbox), m, FALSE, FALSE, 0);
 	label = gtk_label_new(":");
-	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(hbox), m, FALSE, FALSE, 0);
+	gtk_box_pack_end(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_end(GTK_BOX(hbox), h, FALSE, FALSE, 0);
 
-	label = gtk_label_new("   Duration:");
-	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(hbox), duration, FALSE, FALSE, 0);
+	hbox = gtk_hbox_new(TRUE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+
+	/* Duration hbox */
+	box = frame_box(hbox, "Duration (min)");
+	duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
+	gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
 
 	/* Depth box */
-	hbox = gtk_hbox_new(0, 3);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
-
+	box = frame_box(hbox, "Depth (%s):", output_units.length == FEET ? "ft" : "m");
 	if (output_units.length == FEET) {
 		depthinterval = 1.0;
 	} else {
 		depthinterval = 0.1;
 	}
 	depth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
-
-	label = gtk_label_new("Depth: ");
-	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(hbox), depth, FALSE, FALSE, 0);
+	gtk_box_pack_end(GTK_BOX(box), depth, FALSE, FALSE, 0);
 
 	/* All done, show it and wait for editing */
 	gtk_widget_show_all(dialog);
