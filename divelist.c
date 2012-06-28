@@ -687,7 +687,7 @@ static void row_activated_cb(GtkTreeView *tree_view,
 	edit_dive_info(get_dive(index));
 }
 
-static void add_dive_cb(GtkWidget *menuitem, GtkTreeModel *model)
+void add_dive_cb(GtkWidget *menuitem, gpointer data)
 {
 	struct dive *dive;
 
