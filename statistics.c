@@ -287,7 +287,9 @@ static void show_total_dive_stats(struct dive *dive)
 		set_label(stats_w.max_temp, "%.1f %s", value, unit);
 	}
 	set_label(stats_w.total_time, get_time_string(stats_ptr->total_time.seconds, 0));
-	set_label(stats_w.avg_time, get_time_string(stats_ptr->total_time.seconds / stats_ptr->selection_size, 0));
+	if (stats_ptr->selection_size) {
+		set_label(stats_w.avg_time, get_time_string(stats_ptr->total_time.seconds / stats_ptr->selection_size, 0));
+	}
 	set_label(stats_w.longest_time, get_time_string(stats_ptr->longest_time.seconds, 0));
 	set_label(stats_w.shortest_time, get_time_string(stats_ptr->shortest_time.seconds, 0));
 	value = get_depth_units(stats_ptr->max_depth.mm, &decimals, &unit);
