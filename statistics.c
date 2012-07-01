@@ -91,6 +91,18 @@ static void process_dive(struct dive *dp, stats_t *stats)
 		stats->max_depth.mm = dp->maxdepth.mm;
 	if (stats->min_depth.mm == 0 || dp->maxdepth.mm < stats->min_depth.mm)
 		stats->min_depth.mm = dp->maxdepth.mm;
+	if (dp->watertemp.mkelvin) {
+		if (stats->min_temp == 0 || dp->watertemp.mkelvin < stats->min_temp)
+			stats->min_temp = dp->watertemp.mkelvin;
+		if (dp->watertemp.mkelvin > stats->max_temp)
+			stats->max_temp = dp->watertemp.mkelvin;
+		stats->combined_temp += get_temp_units(dp->watertemp.mkelvin, &unit);
+		stats->combined_count++;
+	}
+
+	/* Maybe we should drop zero-duration dives */
+	if (!dp->duration.seconds)
+		return;
 	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
 			dp->duration.seconds * dp->meandepth.mm) / stats->total_time.seconds;
 	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
@@ -102,14 +114,6 @@ static void process_dive(struct dive *dp, stats_t *stats)
 		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
 			stats->min_sac.mliter = dp->sac;
 		stats->total_sac_time = sac_time;
-	}
-	if (dp->watertemp.mkelvin) {
-		if (stats->min_temp == 0 || dp->watertemp.mkelvin < stats->min_temp)
-			stats->min_temp = dp->watertemp.mkelvin;
-		if (dp->watertemp.mkelvin > stats->max_temp)
-			stats->max_temp = dp->watertemp.mkelvin;
-		stats->combined_temp += get_temp_units(dp->watertemp.mkelvin, &unit);
-		stats->combined_count++;
 	}
 }
 
@@ -266,7 +270,7 @@ static void show_single_dive_stats(struct dive *dive)
 static void show_total_dive_stats(struct dive *dive)
 {
 	double value;
-	int decimals;
+	int decimals, seconds;
 	const char *unit;
 	stats_t *stats_ptr;
 
@@ -287,7 +291,10 @@ static void show_total_dive_stats(struct dive *dive)
 		set_label(stats_w.max_temp, "%.1f %s", value, unit);
 	}
 	set_label(stats_w.total_time, get_time_string(stats_ptr->total_time.seconds, 0));
-	set_label(stats_w.avg_time, get_time_string(stats_ptr->total_time.seconds / stats_ptr->selection_size, 0));
+	seconds = stats_ptr->total_time.seconds;
+	if (stats_ptr->selection_size)
+		seconds /= stats_ptr->selection_size;
+	set_label(stats_w.avg_time, get_time_string(seconds, 0));
 	set_label(stats_w.longest_time, get_time_string(stats_ptr->longest_time.seconds, 0));
 	set_label(stats_w.shortest_time, get_time_string(stats_ptr->shortest_time.seconds, 0));
 	value = get_depth_units(stats_ptr->max_depth.mm, &decimals, &unit);
