@@ -609,11 +609,14 @@ static void view_info(GtkWidget *w, gpointer data)
 	gtk_paned_set_position(GTK_PANED(hpane), 65535);
 }
 
-/* Ooh. I don't know how to get the half-way size. So I'm just using random numbers */
 static void view_three(GtkWidget *w, gpointer data)
 {
-	gtk_paned_set_position(GTK_PANED(hpane), 400);
-	gtk_paned_set_position(GTK_PANED(vpane), 200);
+	/* Centre hpane and vpane. */
+	gint max_pos = 0;
+	g_object_get(G_OBJECT(hpane), "max-position", &max_pos, NULL);
+	gtk_paned_set_position(GTK_PANED(hpane), max_pos/2);
+	g_object_get(G_OBJECT(vpane), "max-position", &max_pos, NULL);
+	gtk_paned_set_position(GTK_PANED(vpane), max_pos/2);
 }
 
 static GtkActionEntry menu_items[] = {
