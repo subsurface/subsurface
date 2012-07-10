@@ -2,17 +2,9 @@
 #define LIBDIVECOMPUTER_H
 
 /* libdivecomputer */
-#include <device.h>
-#include <suunto.h>
-#include <reefnet.h>
-#include <uwatec.h>
-#include <oceanic.h>
-#include <mares.h>
-#include <hw.h>
-#include <cressi.h>
-#include <zeagle.h>
-#include <atomics.h>
-#include <utils.h>
+#include <libdivecomputer/device.h>
+#include <libdivecomputer/parser.h>
+#include <libdivecomputer/utils.h>
 
 /* handling uemis Zurich SDA files */
 #include "uemis.h"
