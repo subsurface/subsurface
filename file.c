@@ -10,7 +10,7 @@
 
 static int readfile(const char *filename, struct memblock *mem)
 {
-	int ret, fd = open(filename, O_RDONLY);
+	int ret, fd;
 	struct stat st;
 	char *buf;
 
