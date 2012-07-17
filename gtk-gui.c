@@ -197,13 +197,15 @@ static void file_save(GtkWidget *w, gpointer data)
 	}
 }
 
-static void ask_save_changes()
+static gboolean ask_save_changes()
 {
 	GtkWidget *dialog, *label, *content;
+	gboolean quit = TRUE;
 	dialog = gtk_dialog_new_with_buttons("Save Changes?",
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_NO, GTK_RESPONSE_NO,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		NULL);
 	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 
@@ -221,10 +223,14 @@ static void ask_save_changes()
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+	gint *outcode = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (outcode == GTK_RESPONSE_ACCEPT) {
 		file_save(NULL,NULL);
+	} else if (outcode == GTK_RESPONSE_CANCEL) {
+		quit = FALSE;
 	}
 	gtk_widget_destroy(dialog);
+	return quit;
 }
 
 static gboolean on_delete(GtkWidget* w, gpointer data)
@@ -232,10 +238,15 @@ static gboolean on_delete(GtkWidget* w, gpointer data)
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
+	gboolean quit = TRUE;
 	if (unsaved_changes())
-		ask_save_changes();
+		quit = ask_save_changes();
 
-	return FALSE; /* go ahead, kill the program, we're good now */
+	if (quit){
+		return FALSE; /* go ahead, kill the program, we're good now */
+	} else {
+		return TRUE; /* We are not leaving */
+	}
 }
 
 static void on_destroy(GtkWidget* w, gpointer data)
@@ -248,9 +259,13 @@ static void quit(GtkWidget *w, gpointer data)
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
+	gboolean quit = TRUE;
 	if (unsaved_changes())
-		ask_save_changes();
-	gtk_main_quit();
+		quit = ask_save_changes();
+
+	if (quit){
+		gtk_main_quit();
+	}
 }
 
 GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
