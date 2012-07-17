@@ -173,26 +173,28 @@ static void file_open(GtkWidget *w, gpointer data)
 static void file_save(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
-	dialog = gtk_file_chooser_dialog_new("Save File",
+	char *filename;
+	if (!existing_filename) {
+		dialog = gtk_file_chooser_dialog_new("Save File",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		NULL);
-	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
-	if (!existing_filename) {
-		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
-	} else
-		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), existing_filename);
+		gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		char *filename;
-		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
+		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		}
+		gtk_widget_destroy(dialog);
+	} else {
+		filename = existing_filename;
+	}
+	if (filename){
 		save_dives(filename);
-		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
-	gtk_widget_destroy(dialog);
 }
 
 static void ask_save_changes()
@@ -204,7 +206,18 @@ static void ask_save_changes()
 		GTK_STOCK_NO, GTK_RESPONSE_NO,
 		NULL);
 	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
+
+	if (!existing_filename){
+		label = gtk_label_new (
+			"You have unsaved changes\nWould you like to save those before exiting the program?");
+	} else {
+		char *label_text = (char*) malloc(sizeof(char) * (92 + strlen(existing_filename)));
+		sprintf(label_text,
+			"You have unsaved changes to file: %s \nWould you like to save those before exiting the program?",
+			existing_filename);
+		label = gtk_label_new (label_text);
+		g_free(label_text);
+	}
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
