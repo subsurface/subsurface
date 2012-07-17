@@ -197,6 +197,30 @@ static void file_save(GtkWidget *w, gpointer data)
 	}
 }
 
+static void file_save_as(GtkWidget *w, gpointer data)
+{
+	GtkWidget *dialog;
+	char *filename;
+	dialog = gtk_file_chooser_dialog_new("Save File As",
+	GTK_WINDOW(main_window),
+	GTK_FILE_CHOOSER_ACTION_SAVE,
+	GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+	GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+	NULL);
+	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), existing_filename);
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	}
+	gtk_widget_destroy(dialog);
+
+	if (filename){
+		save_dives(filename);
+		mark_divelist_changed(FALSE);
+	}
+}
+
 static gboolean ask_save_changes()
 {
 	GtkWidget *dialog, *label, *content;
@@ -666,6 +690,7 @@ static GtkActionEntry menu_items[] = {
 	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
+	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
 	{ "AddDive",        NULL, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
@@ -687,6 +712,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \

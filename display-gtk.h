@@ -31,9 +31,11 @@ typedef enum {
 
 #if defined __APPLE__
 #define CTRLCHAR "<Meta>"
+#define SHIFTCHAR "<Shift>"
 #define PREFERENCE_ACCEL "<Meta>comma"
 #else
 #define CTRLCHAR "<Control>"
+#define SHIFTCHAR "<Shift>"
 #define PREFERENCE_ACCEL NULL
 #endif
 
