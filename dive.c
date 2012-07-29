@@ -451,7 +451,12 @@ struct dive *fixup_dive(struct dive *dive)
 		}
 	}
 	if (end < 0)
+	{
+		/* Assume an ascent/descent rate of 9 m/min */
+		int asc_desc_time = dive->maxdepth.mm*60/9000;
+		dive->meandepth.mm = dive->maxdepth.mm*(dive->duration.seconds-asc_desc_time)/dive->duration.seconds;
 		return dive;
+	}
 
 	update_duration(&dive->duration, end - start);
 	if (start != end)

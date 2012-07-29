@@ -1354,12 +1354,15 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	int nr = dive->samples;
 
 	if (!nr) {
+		/* The dive has no samples, so create a few fake ones.  This assumes an
+		ascent/descent rate of 9 m/min, which is just below the limit for FAST. */
 		int duration = dive->duration.seconds;
 		int maxdepth = dive->maxdepth.mm;
+		int asc_desc_time = dive->maxdepth.mm*60/9000;
 		sample = fake;
-		fake[1].time.seconds = duration * 0.05;
+		fake[1].time.seconds = asc_desc_time;
 		fake[1].depth.mm = maxdepth;
-		fake[2].time.seconds = duration * 0.95;
+		fake[2].time.seconds = duration - asc_desc_time;
 		fake[2].depth.mm = maxdepth;
 		fake[3].time.seconds = duration * 1.00;
 		nr = 4;
