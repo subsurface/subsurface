@@ -702,10 +702,12 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 
 static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button)
 {
-	GtkWidget *menu, *menuitem;
+	GtkWidget *menu, *menuitem, *image;
 
 	menu = gtk_menu_new();
-	menuitem = gtk_menu_item_new_with_label("Add dive");
+	menuitem = gtk_image_menu_item_new_with_label("Add dive");
+	image = gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
 	g_signal_connect(menuitem, "activate", G_CALLBACK(add_dive_cb), model);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);
