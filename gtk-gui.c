@@ -170,7 +170,7 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
-static void file_save(GtkWidget *w, gpointer data)
+static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
 	dialog = gtk_file_chooser_dialog_new("Save File",
@@ -189,10 +189,19 @@ static void file_save(GtkWidget *w, gpointer data)
 		char *filename;
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		save_dives(filename);
+		set_filename(filename);
 		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
 	gtk_widget_destroy(dialog);
+}
+
+static void file_save(GtkWidget *w, gpointer data)
+{
+	if (!existing_filename)
+		return file_save_as(w, data);
+
+	save_dives(existing_filename);
 }
 
 static void ask_save_changes()
@@ -626,6 +635,7 @@ static GtkActionEntry menu_items[] = {
 	{ "HelpMenuAction", NULL, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
+	{ "SaveFileAs",     GTK_STOCK_SAVE_AS, NULL,   CTRLCHAR "<Shift>S", NULL, G_CALLBACK(file_save_as) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
@@ -647,6 +657,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<menuitem name=\"Save as\" action=\"SaveFileAs\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
@@ -1187,7 +1198,9 @@ void update_progressbar_text(progressbar_t *progress, const char *text)
 
 void set_filename(const char *filename)
 {
-	if (!existing_filename && filename)
+	if (existing_filename)
+		free(existing_filename);
+	existing_filename = NULL;
+	if (filename)
 		existing_filename = strdup(filename);
-	return;
 }
