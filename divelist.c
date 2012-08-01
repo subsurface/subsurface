@@ -556,6 +556,9 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_OTU, dive->otu,
 		DIVE_TOTALWEIGHT, total_weight(dive),
 		-1);
+
+	free(location);
+	free(cylinder);
 }
 
 static gboolean set_one_dive(GtkTreeModel *model,
