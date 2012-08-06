@@ -338,6 +338,7 @@ extern void exit_ui(void);
 extern void report_error(GError* error);
 
 extern void add_cylinder_description(cylinder_type_t *);
+extern void add_weightsystem_description(weightsystem_t *);
 extern void add_people(const char *string);
 extern void add_location(const char *string);
 extern void remember_event(const char *eventname);

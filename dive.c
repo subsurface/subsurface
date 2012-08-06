@@ -472,6 +472,10 @@ struct dive *fixup_dive(struct dive *dive)
 		if (same_rounded_pressure(cyl->sample_end, cyl->end))
 			cyl->end.mbar = 0;
 	}
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		weightsystem_t *ws = dive->weightsystem + i;
+		add_weightsystem_description(ws);
+	}
 
 	return dive;
 }
