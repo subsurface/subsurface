@@ -308,13 +308,15 @@ static GtkTreeIter *add_weightsystem_type(const char *desc, int weight, GtkTreeI
 	model = GTK_TREE_MODEL(weightsystem_model);
 	gtk_tree_model_foreach(model, match_desc, (void *)desc);
 
-	if (!found_match) {
-		GtkListStore *store = GTK_LIST_STORE(model);
-
-		gtk_list_store_append(store, iter);
-		gtk_list_store_set(store, iter,
-			0, desc,
-			1, weight,
+	if (found_match) {
+		gtk_list_store_set(GTK_LIST_STORE(model), found_match,
+				WS_WEIGHT, weight,
+				-1);
+	} else {
+		gtk_list_store_append(GTK_LIST_STORE(model), iter);
+		gtk_list_store_set(GTK_LIST_STORE(model), iter,
+			WS_DESC, desc,
+			WS_WEIGHT, weight,
 			-1);
 		return iter;
 	}
@@ -623,6 +625,7 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
 	GtkComboBox *box;
 	int grams;
 	double value;
+	GtkTreeIter iter;
 
 	/* Ignore uninitialized cylinder widgets */
 	box = weightsystem_widget->description;
@@ -638,6 +641,7 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
 		grams = value * 1000;
 	ws->weight.grams = grams;
 	ws->description = desc;
+	add_weightsystem_type(desc, grams, &iter);
 }
 
 /*
