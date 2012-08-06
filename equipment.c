@@ -312,7 +312,7 @@ static GtkTreeIter *add_weightsystem_type(const char *desc, int weight, GtkTreeI
 		gtk_list_store_set(GTK_LIST_STORE(model), found_match,
 				WS_WEIGHT, weight,
 				-1);
-	} else {
+	} else if (desc && desc[0]) {
 		gtk_list_store_append(GTK_LIST_STORE(model), iter);
 		gtk_list_store_set(GTK_LIST_STORE(model), iter,
 			WS_DESC, desc,
@@ -748,8 +748,6 @@ static struct ws_info {
 	const char *name;
 	int grams;
 } ws_info[100] = {
-	/* Need an empty entry for the no weight system case */
-	{ "", },
 	{ "integrated", 0 },
 	{ "belt", 0 },
 	{ "ankle", 0 },
