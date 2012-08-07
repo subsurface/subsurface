@@ -120,6 +120,28 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	return d;
 }
 
+double get_weight_units(unsigned int grams, int *frac, const char **units)
+{
+	int decimals;
+	double value;
+	const char* unit;
+
+	if (output_units.weight == LBS) {
+		value = grams_to_lbs(grams);
+		unit = "lbs";
+		decimals = 0;
+	} else {
+		value = grams / 1000.0;
+		unit = "kg";
+		decimals = 1;
+	}
+	if (frac)
+		*frac = decimals;
+	if (units)
+		*units = unit;
+	return value;
+}
+
 struct dive *alloc_dive(void)
 {
 	const int initial_samples = 5;

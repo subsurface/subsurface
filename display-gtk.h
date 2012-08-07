@@ -14,6 +14,7 @@ typedef struct {
 typedef struct {
 	gboolean cylinder;
 	gboolean temperature;
+	gboolean totalweight;
 	gboolean nitrox;
 	gboolean sac;
 	gboolean otu;

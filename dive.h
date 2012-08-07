@@ -97,8 +97,9 @@ extern int weightsystem_none(void *_data);
 
 extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
-extern double get_volume_units(unsigned int mm, int *frac, const char **units);
-extern double get_temp_units(unsigned int mm, const char **units);
+extern double get_volume_units(unsigned int ml, int *frac, const char **units);
+extern double get_temp_units(unsigned int mk, const char **units);
+extern double get_weight_units(unsigned int grams, int *frac, const char **units);
 
 static inline double grams_to_lbs(int grams)
 {

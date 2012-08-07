@@ -26,7 +26,7 @@ struct DiveList {
 	GtkWidget    *container_widget;
 	GtkListStore *model;
 	GtkTreeViewColumn *nr, *date, *stars, *depth, *duration, *location;
-	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac, *otu;
+	GtkTreeViewColumn *temperature, *cylinder, *totalweight, *nitrox, *sac, *otu;
 	int changed;
 };
 
@@ -44,6 +44,7 @@ enum {
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
+	DIVE_TOTALWEIGHT,	/* int: in grams */
 	DIVE_CYLINDER,
 	DIVE_NITROX,		/* int: dummy */
 	DIVE_SAC,		/* int: in ml/min */
@@ -267,6 +268,35 @@ newmax:
 	*o2_p = maxo2;
 	*he_p = maxhe;
 	*o2low_p = mino2;
+}
+
+static int total_weight(struct dive *dive)
+{
+	int i, total_grams = 0;
+
+	if (dive)
+		for (i=0; i< MAX_WEIGHTSYSTEMS; i++)
+			total_grams += dive->weightsystem[i].weight.grams;
+	return total_grams;
+}
+
+static void weight_data_func(GtkTreeViewColumn *col,
+			     GtkCellRenderer *renderer,
+			     GtkTreeModel *model,
+			     GtkTreeIter *iter,
+			     gpointer data)
+{
+	int indx, decimals;
+	double value;
+	char buffer[80];
+	struct dive *dive;
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &indx, -1);
+	dive = get_dive(indx);
+	value = get_weight_units(total_weight(dive), &decimals, NULL);
+	snprintf(buffer, sizeof(buffer), "%.*f", decimals, value);
+
+	g_object_set(renderer, "text", buffer, NULL);
 }
 
 static gint nitrox_sort_func(GtkTreeModel *model,
@@ -521,6 +551,7 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_RATING, dive->rating,
 		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
+		DIVE_TOTALWEIGHT, total_weight(dive),
 		-1);
 }
 
@@ -569,6 +600,9 @@ void update_dive_list_units(void)
 	(void) get_temp_units(0, &unit);
 	gtk_tree_view_column_set_title(dive_list.temperature, unit);
 
+	(void) get_weight_units(0, NULL, &unit);
+	gtk_tree_view_column_set_title(dive_list.totalweight, unit);
+
 	gtk_tree_model_foreach(model, set_one_dive, NULL);
 }
 
@@ -576,6 +610,7 @@ void update_dive_list_col_visibility(void)
 {
 	gtk_tree_view_column_set_visible(dive_list.cylinder, visible_cols.cylinder);
 	gtk_tree_view_column_set_visible(dive_list.temperature, visible_cols.temperature);
+	gtk_tree_view_column_set_visible(dive_list.totalweight, visible_cols.totalweight);
 	gtk_tree_view_column_set_visible(dive_list.nitrox, visible_cols.nitrox);
 	gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
 	gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
@@ -604,6 +639,7 @@ static void fill_dive_list(void)
 			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, "location",
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
+			DIVE_TOTALWEIGHT, 0,
 			DIVE_SAC, 0,
 			-1);
 	}
@@ -636,6 +672,7 @@ static struct divelist_column {
 	[DIVE_DEPTH] = { "ft", depth_data_func, NULL, ALIGN_RIGHT },
 	[DIVE_DURATION] = { "min", duration_data_func, NULL, ALIGN_RIGHT },
 	[DIVE_TEMPERATURE] = { UTF8_DEGREE "F", temperature_data_func, NULL, ALIGN_RIGHT, &visible_cols.temperature },
+	[DIVE_TOTALWEIGHT] = { "lbs", weight_data_func, NULL, ALIGN_RIGHT, &visible_cols.totalweight },
 	[DIVE_CYLINDER] = { "Cyl", NULL, NULL, 0, &visible_cols.cylinder },
 	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &visible_cols.nitrox },
 	[DIVE_SAC] = { "SAC", sac_data_func, NULL, 0, &visible_cols.sac },
@@ -742,6 +779,7 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
 				G_TYPE_INT,			/* Temperature */
+				G_TYPE_INT,			/* Total weight */
 				G_TYPE_STRING,			/* Cylinder */
 				G_TYPE_INT,			/* Nitrox */
 				G_TYPE_INT,			/* SAC */
@@ -762,6 +800,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.depth = divelist_column(&dive_list, dl_column + DIVE_DEPTH);
 	dive_list.duration = divelist_column(&dive_list, dl_column + DIVE_DURATION);
 	dive_list.temperature = divelist_column(&dive_list, dl_column + DIVE_TEMPERATURE);
+	dive_list.totalweight = divelist_column(&dive_list, dl_column + DIVE_TOTALWEIGHT);
 	dive_list.cylinder = divelist_column(&dive_list, dl_column + DIVE_CYLINDER);
 	dive_list.nitrox = divelist_column(&dive_list, dl_column + DIVE_NITROX);
 	dive_list.sac = divelist_column(&dive_list, dl_column + DIVE_SAC);
