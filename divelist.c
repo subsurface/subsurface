@@ -24,7 +24,7 @@
 struct DiveList {
 	GtkWidget    *tree_view;
 	GtkWidget    *container_widget;
-	GtkListStore *model;
+	GtkTreeStore *model;
 	GtkTreeViewColumn *nr, *date, *stars, *depth, *duration, *location;
 	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac, *otu;
 	int changed;
@@ -52,6 +52,26 @@ enum {
 	DIVELIST_COLUMNS
 };
 
+#ifdef DEBUG_MODEL
+static gboolean dump_model_entry(GtkTreeModel *model, GtkTreePath *path,
+				GtkTreeIter *iter, gpointer data)
+{
+	char *location;
+	int idx, nr, rating, depth;
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_NR, &nr, DIVE_RATING, &rating, DIVE_DEPTH, &depth, DIVE_LOCATION, &location, -1);
+	printf("entry #%d : nr %d rating %d depth %d location %s \n", idx, nr, rating, depth, location);
+	free(location);
+
+	return FALSE;
+}
+
+static void dump_model(GtkListStore *store)
+{
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store), dump_model_entry, NULL);
+}
+#endif
+
 static GList *selected_dives;
 
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
@@ -77,6 +97,8 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 		path = g_list_nth_data(selected_dives, 0);
 		if (gtk_tree_model_get_iter(model, &iter, path)) {
 			gtk_tree_model_get_value(model, &iter, DIVE_INDEX, &value);
+			/* an index of -1 should mean select all dives from that day
+			 * ===> still needs to be implemented */
 			selected_dive = g_value_get_int(&value);
 			repaint_dive();
 		}
@@ -109,13 +131,17 @@ static void star_data_func(GtkTreeViewColumn *col,
 			   GtkTreeIter *iter,
 			   gpointer data)
 {
-	int nr_stars;
+	int nr_stars, idx;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_RATING, &nr_stars, -1);
-	if (nr_stars < 0 || nr_stars > 5)
-		nr_stars = 0;
-	snprintf(buffer, sizeof(buffer), "%s", star_strings[nr_stars]);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_RATING, &nr_stars, -1);
+	if (idx == -1) {
+		*buffer = '\0';
+	} else {
+		if (nr_stars < 0 || nr_stars > 5)
+			nr_stars = 0;
+		snprintf(buffer, sizeof(buffer), "%s", star_strings[nr_stars]);
+	}
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -125,23 +151,30 @@ static void date_data_func(GtkTreeViewColumn *col,
 			   GtkTreeIter *iter,
 			   gpointer data)
 {
-	int val;
+	int val, idx;
 	struct tm *tm;
 	time_t when;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_DATE, &val, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &val, -1);
 
 	/* 2038 problem */
 	when = val;
 
 	tm = gmtime(&when);
-	snprintf(buffer, sizeof(buffer),
-		"%s, %s %d, %d %02d:%02d",
-		weekday(tm->tm_wday),
-		monthname(tm->tm_mon),
-		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min);
+	if (idx == -1)
+		snprintf(buffer, sizeof(buffer),
+			"%s, %s %d, %d",
+			weekday(tm->tm_wday),
+			monthname(tm->tm_mon),
+			tm->tm_mday, tm->tm_year + 1900);
+	else
+		snprintf(buffer, sizeof(buffer),
+			"%s, %s %d, %d %02d:%02d",
+			weekday(tm->tm_wday),
+			monthname(tm->tm_mon),
+			tm->tm_mday, tm->tm_year + 1900,
+			tm->tm_hour, tm->tm_min);
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -151,34 +184,37 @@ static void depth_data_func(GtkTreeViewColumn *col,
 			    GtkTreeIter *iter,
 			    gpointer data)
 {
-	int depth, integer, frac, len;
+	int depth, integer, frac, len, idx;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_DEPTH, &depth, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DEPTH, &depth, -1);
 
-	switch (output_units.length) {
-	case METERS:
-		/* To tenths of meters */
-		depth = (depth + 49) / 100;
-		integer = depth / 10;
-		frac = depth % 10;
-		if (integer < 20)
+	if (idx == -1) {
+		*buffer = '\0';
+	} else {
+		switch (output_units.length) {
+		case METERS:
+			/* To tenths of meters */
+			depth = (depth + 49) / 100;
+			integer = depth / 10;
+			frac = depth % 10;
+			if (integer < 20)
+				break;
+			if (frac >= 5)
+				integer++;
+			frac = -1;
 			break;
-		if (frac >= 5)
-			integer++;
-		frac = -1;
-		break;
-	case FEET:
-		integer = mm_to_feet(depth) + 0.5;
-		frac = -1;
-		break;
-	default:
-		return;
+		case FEET:
+			integer = mm_to_feet(depth) + 0.5;
+			frac = -1;
+			break;
+		default:
+			return;
+		}
+		len = snprintf(buffer, sizeof(buffer), "%d", integer);
+		if (frac >= 0)
+			len += snprintf(buffer+len, sizeof(buffer)-len, ".%d", frac);
 	}
-	len = snprintf(buffer, sizeof(buffer), "%d", integer);
-	if (frac >= 0)
-		len += snprintf(buffer+len, sizeof(buffer)-len, ".%d", frac);
-
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -188,11 +224,14 @@ static void duration_data_func(GtkTreeViewColumn *col,
 			       GtkTreeIter *iter,
 			       gpointer data)
 {
-	unsigned int sec;
+	unsigned int sec, idx;
 	char buffer[16];
 
-	gtk_tree_model_get(model, iter, DIVE_DURATION, &sec, -1);
-	snprintf(buffer, sizeof(buffer), "%d:%02d", sec / 60, sec % 60);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DURATION, &sec, -1);
+	if (idx == -1)
+		*buffer = '\0';
+	else
+		snprintf(buffer, sizeof(buffer), "%d:%02d", sec / 60, sec % 60);
 
 	g_object_set(renderer, "text", buffer, NULL);
 }
@@ -203,13 +242,13 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 				  GtkTreeIter *iter,
 				  gpointer data)
 {
-	int value;
+	int value, idx;
 	char buffer[80];
 
-	gtk_tree_model_get(model, iter, DIVE_TEMPERATURE, &value, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_TEMPERATURE, &value, -1);
 
 	*buffer = 0;
-	if (value) {
+	if (idx != -1 && value) {
 		double deg;
 		switch (output_units.temperature) {
 		case CELSIUS:
@@ -224,6 +263,23 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 		snprintf(buffer, sizeof(buffer), "%.1f", deg);
 	}
 
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
+static void nr_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int idx, nr;
+	char buffer[40];
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_NR, &nr, -1);
+	if (idx == -1)
+		*buffer = '\0';
+	else
+		snprintf(buffer, sizeof(buffer), "%d", nr);
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -309,6 +365,10 @@ static void nitrox_data_func(GtkTreeViewColumn *col,
 	struct dive *dive;
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &index, -1);
+	if (index == -1) {
+		*buffer = '\0';
+		goto exit;
+	}
 	dive = get_dive(index);
 	get_dive_gas(dive, &o2, &he, &o2low);
 	o2 = (o2 + 5) / 10;
@@ -324,7 +384,7 @@ static void nitrox_data_func(GtkTreeViewColumn *col,
 			snprintf(buffer, sizeof(buffer), "%d" UTF8_ELLIPSIS "%d", o2low, o2);
 	else
 		strcpy(buffer, "air");
-
+exit:
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -335,16 +395,16 @@ static void sac_data_func(GtkTreeViewColumn *col,
 			  GtkTreeIter *iter,
 			  gpointer data)
 {
-	int value;
+	int value, idx;
 	const char *fmt;
 	char buffer[16];
 	double sac;
 
-	gtk_tree_model_get(model, iter, DIVE_SAC, &value, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_SAC, &value, -1);
 
-	if (!value) {
-		g_object_set(renderer, "text", "", NULL);
-		return;
+	if (idx == -1 || !value) {
+		*buffer = '\0';
+		goto exit;
 	}
 
 	sac = value / 1000.0;
@@ -358,7 +418,7 @@ static void sac_data_func(GtkTreeViewColumn *col,
 		break;
 	}
 	snprintf(buffer, sizeof(buffer), fmt, sac);
-
+exit:
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -369,17 +429,15 @@ static void otu_data_func(GtkTreeViewColumn *col,
 			  GtkTreeIter *iter,
 			  gpointer data)
 {
-	int value;
+	int value, idx;
 	char buffer[16];
 
-	gtk_tree_model_get(model, iter, DIVE_OTU, &value, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_OTU, &value, -1);
 
-	if (!value) {
-		g_object_set(renderer, "text", "", NULL);
-		return;
-	}
-
-	snprintf(buffer, sizeof(buffer), "%d", value);
+	if (idx == -1 || !value)
+		*buffer = '\0';
+	else
+		snprintf(buffer, sizeof(buffer), "%d", value);
 
 	g_object_set(renderer, "text", buffer, NULL);
 }
@@ -514,7 +572,7 @@ static void fill_one_dive(struct dive *dive,
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
 
-	gtk_list_store_set(GTK_LIST_STORE(model), iter,
+	gtk_tree_store_set(GTK_TREE_STORE(model), iter,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
 		DIVE_CYLINDER, cylinder,
@@ -529,12 +587,14 @@ static gboolean set_one_dive(GtkTreeModel *model,
 			     GtkTreeIter *iter,
 			     gpointer data)
 {
-	GValue value = {0, };
+	int idx;
 	struct dive *dive;
 
 	/* Get the dive number */
-	gtk_tree_model_get_value(model, iter, DIVE_INDEX, &value);
-	dive = get_dive(g_value_get_int(&value));
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
+	if (idx == -1)
+		return TRUE;
+	dive = get_dive(idx);
 	if (!dive)
 		return TRUE;
 	if (data && dive != data)
@@ -582,27 +642,79 @@ void update_dive_list_col_visibility(void)
 	return;
 }
 
+static int new_day(struct dive *dive, struct dive **last_dive, time_t *tm_date)
+{
+	if (!last_dive)
+		return TRUE;
+	if (!*last_dive) {
+		*last_dive = dive;
+		if (tm_date) {
+			struct tm *tm1 = gmtime(&dive->when);
+			tm1->tm_sec = 0;
+			tm1->tm_min = 0;
+			tm1->tm_hour = 0;
+			*tm_date = mktime(tm1);
+		}
+		return TRUE;
+	} else {
+		struct dive *ldive = *last_dive;
+		struct tm tm1, tm2;
+		(void) gmtime_r(&dive->when, &tm1);
+		(void) gmtime_r(&ldive->when, &tm2);
+		if (tm1.tm_year != tm2.tm_year ||
+		    tm1.tm_mon != tm2.tm_mon ||
+		    tm1.tm_mday != tm2.tm_mday) {
+			*last_dive = dive;
+			if (tm_date) {
+				tm1.tm_sec = 0;
+				tm1.tm_min = 0;
+				tm1.tm_hour = 0;
+				*tm_date = mktime(&tm1);
+			}
+			return TRUE;
+		}
+	}
+	return FALSE;
+
+}
+
 static void fill_dive_list(void)
 {
 	int i;
-	GtkTreeIter iter;
-	GtkListStore *store;
+	GtkTreeIter iter, parent_iter, *parent = NULL;
+	GtkTreeStore *store;
+	struct dive *last_dive = NULL;
+	time_t dive_date;
 
-	store = GTK_LIST_STORE(dive_list.model);
+	store = GTK_TREE_STORE(dive_list.model);
 
 	i = dive_table.nr;
 	while (--i >= 0) {
 		struct dive *dive = dive_table.dives[i];
 
+		if (new_day(dive, &last_dive, &dive_date))
+		{
+			gtk_tree_store_append(store, &parent_iter, NULL);
+			parent = &parent_iter;
+			gtk_tree_store_set(store, parent,
+				DIVE_INDEX, -1,
+				DIVE_NR, -1,
+				DIVE_DATE, dive_date,
+				DIVE_LOCATION, "",
+				DIVE_TEMPERATURE, 0,
+				DIVE_SAC, 0,
+				-1);
+		}
 		update_cylinder_related_info(dive);
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
+		gtk_tree_store_append(store, &iter, parent);
+		gtk_tree_store_set(store, &iter,
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATION, dive->duration.seconds,
-			DIVE_LOCATION, "location",
+			DIVE_LOCATION, dive->location,
+			DIVE_RATING, dive->rating,
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_SAC, 0,
 			-1);
@@ -618,7 +730,7 @@ static void fill_dive_list(void)
 
 void dive_list_update_dives(void)
 {
-	gtk_list_store_clear(GTK_LIST_STORE(dive_list.model));
+	gtk_tree_store_clear(GTK_TREE_STORE(dive_list.model));
 	fill_dive_list();
 	repaint_dive();
 }
@@ -630,7 +742,7 @@ static struct divelist_column {
 	unsigned int flags;
 	int *visible;
 } dl_column[] = {
-	[DIVE_NR] = { "#", NULL, NULL, ALIGN_RIGHT | UNSORTABLE },
+	[DIVE_NR] = { "#", nr_data_func, NULL, ALIGN_RIGHT | UNSORTABLE },
 	[DIVE_DATE] = { "Date", date_data_func, NULL, ALIGN_LEFT },
 	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
 	[DIVE_DEPTH] = { "ft", depth_data_func, NULL, ALIGN_RIGHT },
@@ -653,7 +765,7 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, struct divelist_c
 	unsigned int flags = col->flags;
 	int *visible = col->visible;
 	GtkWidget *tree_view = dl->tree_view;
-	GtkListStore *model = dl->model;
+	GtkTreeStore *model = dl->model;
 	GtkTreeViewColumn *ret;
 
 	if (visible && !*visible)
@@ -684,7 +796,9 @@ static void row_activated_cb(GtkTreeView *tree_view,
 	if (!gtk_tree_model_get_iter(model, &iter, path))
 		return;
 	gtk_tree_model_get(model, &iter, DIVE_INDEX, &index, -1);
-	edit_dive_info(get_dive(index));
+	/* an index of -1 is special for the "group by date" entries */
+	if (index != -1)
+		edit_dive_info(get_dive(index));
 }
 
 void add_dive_cb(GtkWidget *menuitem, gpointer data)
@@ -734,7 +848,7 @@ GtkWidget *dive_list_create(void)
 {
 	GtkTreeSelection  *selection;
 
-	dive_list.model = gtk_list_store_new(DIVELIST_COLUMNS,
+	dive_list.model = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
 				G_TYPE_INT,			/* Date */
