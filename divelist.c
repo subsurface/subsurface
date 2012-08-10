@@ -294,7 +294,10 @@ static void weight_data_func(GtkTreeViewColumn *col,
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &indx, -1);
 	dive = get_dive(indx);
 	value = get_weight_units(total_weight(dive), &decimals, NULL);
-	snprintf(buffer, sizeof(buffer), "%.*f", decimals, value);
+	if (value == 0.0)
+		*buffer = '\0';
+	else
+		snprintf(buffer, sizeof(buffer), "%.*f", decimals, value);
 
 	g_object_set(renderer, "text", buffer, NULL);
 }
