@@ -81,6 +81,30 @@ static void dump_model(GtkListStore *store)
 static GList *selected_dives;
 static int *selectiontracker;
 
+/* if we are sorting by date and are using a tree model, we don't want the selection
+   to be a summary entry, but instead the first child below that entry. So we descend
+   down the tree until we find a leaf (entry with non-negative index)
+ */
+static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
+{
+	GtkTreeIter parent;
+	GtkTreePath *tpath;
+
+	while (*diveidx < 0) {
+		memcpy(&parent, iter, sizeof(parent));
+		tpath = gtk_tree_model_get_path(model, &parent);
+		if (!gtk_tree_model_iter_children(model, iter, &parent))
+			/* we should never have a parent without child */
+			return;
+		/* clicking on a parent should toggle expand status */
+		if(gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
+			gtk_tree_view_collapse_row(GTK_TREE_VIEW(dive_list.tree_view), tpath);
+		else
+			gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
+		gtk_tree_model_get(GTK_TREE_MODEL(model), iter, DIVE_INDEX, diveidx, -1);
+	}
+}
+
 static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 {
 	GtkTreeIter iter;
@@ -104,22 +128,8 @@ static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 		path = g_list_nth_data(selected_dives, 0);
 		if (gtk_tree_model_get_iter(GTK_TREE_MODEL(dive_list.model), &iter, path)) {
 			gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
-			/* a negative index means we picked a summary entry;
-			   expand that entry and use first real child instead */
-			while (selected_dive < 0) {
-				GtkTreeIter parent;
-				GtkTreePath *tpath;
-				memcpy(&parent, &iter, sizeof(parent));
-				tpath = gtk_tree_model_get_path(GTK_TREE_MODEL(dive_list.model), &parent);
-				if (!gtk_tree_model_iter_children(GTK_TREE_MODEL(dive_list.model), &iter, &parent))
-					/* we should never have a parent without child */
-					return;
-				if(gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
-					gtk_tree_view_collapse_row(GTK_TREE_VIEW(dive_list.tree_view), tpath);
-				else
-					gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
-				gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
-			}
+			/* make sure we're not on a summary entry */
+			first_leaf (GTK_TREE_MODEL(dive_list.model), &iter, &selected_dive);
 			selectiontracker[0] = selected_dive;
 			repaint_dive();
 		}
@@ -781,10 +791,14 @@ static void fill_dive_list(void)
 	update_dive_list_units();
 	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(dive_list.model), &iter)) {
 		GtkTreeSelection *selection;
+
+		gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
+		/* make sure it's an actual dive that is selected */
+		first_leaf(GTK_TREE_MODEL(dive_list.model), &iter, &selected_dive);
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 		gtk_tree_selection_select_iter(selection, &iter);
 		selectiontracker = realloc(selectiontracker, sizeof(int));
-		gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, selectiontracker, -1);
+		*selectiontracker = selected_dive;
 	}
 }
 
@@ -826,14 +840,20 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, struct divelist_c
 	unsigned int flags = col->flags;
 	int *visible = col->visible;
 	GtkWidget *tree_view = dl->tree_view;
-	GtkTreeStore *model = dl->model;
+	GtkTreeStore *treemodel = dl->treemodel;
+	GtkTreeStore *listmodel = dl->listmodel;
 	GtkTreeViewColumn *ret;
 
 	if (visible && !*visible)
 		flags |= INVISIBLE;
 	ret = tree_view_column(tree_view, index, title, data_func, flags);
-	if (sort_func)
-		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(model), index, sort_func, NULL, NULL);
+	if (sort_func) {
+		/* the sort functions are needed in the corresponding models */
+		if (index == DIVE_DATE)
+			gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(treemodel), index, sort_func, NULL, NULL);
+		else
+			gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(listmodel), index, sort_func, NULL, NULL);
+	}
 	return ret;
 }
 
@@ -906,9 +926,14 @@ static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, gpoi
 
 /* we need to have a temporary copy of the selected dives while
    switching model as the selection_cb function keeps getting called
-   by when gtk_tree_selection_select_path is called. */
+   when gtk_tree_selection_select_path is called.  We also need to
+   keep copies of the sort order so we can restore that as well after
+   switching models. */
 static int *oldselection;
 static int old_nr_selected;
+static gboolean second_call = FALSE;
+static GtkSortType sortorder[] = { [0 ... DIVELIST_COLUMNS - 1] = GTK_SORT_DESCENDING, };
+static int lastcol = DIVE_DATE;
 
 /* Check if this dive was selected previously and select it again in the new model;
  * This is used after we switch models to maintain consistent selections.
@@ -931,38 +956,71 @@ static gboolean select_selected(GtkTreeModel *model, GtkTreePath *path,
 
 }
 
+static void update_column_and_order(int colid)
+{
+	/* Careful: the index into treecolumns is off by one as we don't have a
+	   tree_view column for DIVE_INDEX */
+	GtkTreeViewColumn **treecolumns = &dive_list.nr;
+
+	/* this will trigger a second call into sort_column_change_cb,
+	   so make sure we don't start an infinite recursion... */
+	second_call = TRUE;
+	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(dive_list.model), colid, sortorder[colid]);
+	gtk_tree_view_column_set_sort_order(treecolumns[colid - 1], sortorder[colid]);
+	second_call = FALSE;
+}
+
 /* If the sort column is date (default), show the tree model.
    For every other sort column only show the list model.
    If the model changed, inform the new model of the chosen sort column and make
-   sure the same dives are still selected. */
+   sure the same dives are still selected.
+
+   The challenge with this function is that once we change the model
+   we also need to change the sort column again (as it was changed in
+   the other model) and that causes this function to be called
+   recursively - so we need to catch that.
+*/
 static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 {
 	int colid;
 	GtkSortType order;
 	GtkTreeStore *currentmodel = dive_list.model;
 
+	if (second_call)
+		return;
+
 	gtk_tree_sortable_get_sort_column_id(treeview, &colid, &order);
+	if(colid == lastcol) {
+		/* we just changed sort order */
+		sortorder[colid] = order;
+		return;
+	} else {
+		lastcol = colid;
+	}
 	if(colid == DIVE_DATE)
 		dive_list.model = dive_list.treemodel;
 	else
 		dive_list.model = dive_list.listmodel;
 	if (dive_list.model != currentmodel) {
-		/* TODO
-		   we should remember the sort order we had for each column */
 		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
 		/* remember what is currently selected, switch models and reselect the selected rows */
 		old_nr_selected = amount_selected;
 		oldselection = malloc(old_nr_selected * sizeof(int));
-		memcpy(oldselection, selectiontracker, amount_selected * sizeof(int));
-
+		if (amount_selected)
+			memcpy(oldselection, selectiontracker, amount_selected * sizeof(int));
 		gtk_tree_view_set_model(GTK_TREE_VIEW(dive_list.tree_view), GTK_TREE_MODEL(dive_list.model));
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(dive_list.model), colid, order);
+
+		update_column_and_order(colid);
 
 		if (old_nr_selected) {
 			/* we need to select all the dives that were selected */
 			/* this is fundamentally an n^2 algorithm as implemented - YUCK */
 			gtk_tree_model_foreach(GTK_TREE_MODEL(dive_list.model), select_selected, selection);
+		}
+	} else {
+		if (order != sortorder[colid]) {
+			update_column_and_order(colid);
 		}
 	}
 }
