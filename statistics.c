@@ -142,10 +142,11 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	}
 }
 
-void process_selected_dives(GList *selected_dives, GtkTreeModel *model)
+void process_selected_dives(GList *selected_dives, int *selectiontracker, GtkTreeModel *model)
 {
 	struct dive *dp;
 	unsigned int i;
+	int idx;
 	GtkTreeIter iter;
 	GtkTreePath *path;
 
@@ -157,9 +158,13 @@ void process_selected_dives(GList *selected_dives, GtkTreeModel *model)
 		path = g_list_nth_data(selected_dives, i);
 		if (gtk_tree_model_get_iter(model, &iter, path)) {
 			gtk_tree_model_get_value(model, &iter, 0, &value);
-			dp = get_dive(g_value_get_int(&value));
+			idx = g_value_get_int(&value);
+			dp = get_dive(idx);
+			if (dp) {
+				selectiontracker[i] = idx;
+				process_dive(dp, &stats_selection);
+			}
 		}
-		process_dive(dp, &stats_selection);
 	}
 }
 

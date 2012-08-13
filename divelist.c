@@ -79,6 +79,7 @@ static void dump_model(GtkListStore *store)
 #endif
 
 static GList *selected_dives;
+static int *selectiontracker;
 
 static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 {
@@ -92,6 +93,7 @@ static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 		g_list_free (selected_dives);
 	}
 	selected_dives = gtk_tree_selection_get_selected_rows(selection, NULL);
+	selectiontracker = realloc(selectiontracker, nr_selected * sizeof(int));
 
 	switch (nr_selected) {
 	case 0: /* keep showing the last selected dive */
@@ -118,6 +120,7 @@ static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 					gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
 				gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
 			}
+			selectiontracker[0] = selected_dive;
 			repaint_dive();
 		}
 		return;
@@ -127,8 +130,11 @@ static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 		  * is the most intuitive solution.
 		  * I do however want to keep around which dives have
 		  * been selected */
+		 /* TODO:
+		    this also does not handle the case if a summary row is selected;
+		    We should iterate and select all dives under that row */
 		amount_selected = g_list_length(selected_dives);
-		process_selected_dives(selected_dives, GTK_TREE_MODEL(dive_list.model));
+		process_selected_dives(selected_dives, selectiontracker, GTK_TREE_MODEL(dive_list.model));
 		repaint_dive();
 		return;
 	}
@@ -777,6 +783,8 @@ static void fill_dive_list(void)
 		GtkTreeSelection *selection;
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 		gtk_tree_selection_select_iter(selection, &iter);
+		selectiontracker = realloc(selectiontracker, sizeof(int));
+		gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, selectiontracker, -1);
 	}
 }
 
@@ -896,9 +904,37 @@ static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, gpoi
 	return FALSE;
 }
 
+/* we need to have a temporary copy of the selected dives while
+   switching model as the selection_cb function keeps getting called
+   by when gtk_tree_selection_select_path is called. */
+static int *oldselection;
+static int old_nr_selected;
+
+/* Check if this dive was selected previously and select it again in the new model;
+ * This is used after we switch models to maintain consistent selections.
+ * We always return FALSE to iterate through all dives */
+static gboolean select_selected(GtkTreeModel *model, GtkTreePath *path,
+				GtkTreeIter *iter, gpointer data)
+{
+	int i, idx;
+	GtkTreeSelection *selection = GTK_TREE_SELECTION(data);
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
+	for (i = 0; i < old_nr_selected; i++)
+		if (oldselection[i] == idx) {
+			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), path);
+			gtk_tree_selection_select_path(selection, path);
+
+			return FALSE;
+		}
+	return FALSE;
+
+}
+
 /* If the sort column is date (default), show the tree model.
    For every other sort column only show the list model.
-   If the model changed, inform the new model of the chosen sort column. */
+   If the model changed, inform the new model of the chosen sort column and make
+   sure the same dives are still selected. */
 static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 {
 	int colid;
@@ -911,8 +947,23 @@ static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 	else
 		dive_list.model = dive_list.listmodel;
 	if (dive_list.model != currentmodel) {
+		/* TODO
+		   we should remember the sort order we had for each column */
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+
+		/* remember what is currently selected, switch models and reselect the selected rows */
+		old_nr_selected = amount_selected;
+		oldselection = malloc(old_nr_selected * sizeof(int));
+		memcpy(oldselection, selectiontracker, amount_selected * sizeof(int));
+
 		gtk_tree_view_set_model(GTK_TREE_VIEW(dive_list.tree_view), GTK_TREE_MODEL(dive_list.model));
 		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(dive_list.model), colid, order);
+
+		if (old_nr_selected) {
+			/* we need to select all the dives that were selected */
+			/* this is fundamentally an n^2 algorithm as implemented - YUCK */
+			gtk_tree_model_foreach(GTK_TREE_MODEL(dive_list.model), select_selected, selection);
+		}
 	}
 }
 
