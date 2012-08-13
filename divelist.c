@@ -24,7 +24,7 @@
 struct DiveList {
 	GtkWidget    *tree_view;
 	GtkWidget    *container_widget;
-	GtkTreeStore *model;
+	GtkTreeStore *model, *listmodel, *treemodel;
 	GtkTreeViewColumn *nr, *date, *stars, *depth, *duration, *location;
 	GtkTreeViewColumn *temperature, *cylinder, *nitrox, *sac, *otu;
 	int changed;
@@ -80,7 +80,7 @@ static void dump_model(GtkListStore *store)
 
 static GList *selected_dives;
 
-static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
+static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 {
 	GtkTreeIter iter;
 	GtkTreePath *path;
@@ -100,23 +100,23 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 		/* just pick that dive as selected */
 		amount_selected = 1;
 		path = g_list_nth_data(selected_dives, 0);
-		if (gtk_tree_model_get_iter(model, &iter, path)) {
-			gtk_tree_model_get(model, &iter, DIVE_INDEX, &selected_dive, -1);
+		if (gtk_tree_model_get_iter(GTK_TREE_MODEL(dive_list.model), &iter, path)) {
+			gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
 			/* a negative index means we picked a summary entry;
 			   expand that entry and use first real child instead */
 			while (selected_dive < 0) {
 				GtkTreeIter parent;
 				GtkTreePath *tpath;
 				memcpy(&parent, &iter, sizeof(parent));
-				tpath = gtk_tree_model_get_path(model, &parent);
-				if (!gtk_tree_model_iter_children(model, &iter, &parent))
+				tpath = gtk_tree_model_get_path(GTK_TREE_MODEL(dive_list.model), &parent);
+				if (!gtk_tree_model_iter_children(GTK_TREE_MODEL(dive_list.model), &iter, &parent))
 					/* we should never have a parent without child */
 					return;
 				if(gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
 					gtk_tree_view_collapse_row(GTK_TREE_VIEW(dive_list.tree_view), tpath);
 				else
 					gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
-				gtk_tree_model_get(model, &iter, DIVE_INDEX, &selected_dive, -1);
+				gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
 			}
 			repaint_dive();
 		}
@@ -128,7 +128,7 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 		  * I do however want to keep around which dives have
 		  * been selected */
 		amount_selected = g_list_length(selected_dives);
-		process_selected_dives(selected_dives, model);
+		process_selected_dives(selected_dives, GTK_TREE_MODEL(dive_list.model));
 		repaint_dive();
 		return;
 	}
@@ -593,13 +593,21 @@ static void get_cylinder(struct dive *dive, char **str)
 
 /*
  * Set up anything that could have changed due to editing
- * of dive information
+ * of dive information; we need to do this for both models,
+ * so we simply call set_one_dive again with the non-current model
  */
+/* forward declaration for recursion */
+static gboolean set_one_dive(GtkTreeModel *model,
+			     GtkTreePath *path,
+			     GtkTreeIter *iter,
+			     gpointer data);
+
 static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
 {
 	char *location, *cylinder;
+	GtkTreeStore *othermodel;
 
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
@@ -612,6 +620,13 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
 		-1);
+	if (model == GTK_TREE_MODEL(dive_list.treemodel))
+		othermodel = dive_list.listmodel;
+	else
+		othermodel = dive_list.treemodel;
+	if (othermodel != dive_list.model)
+		/* recursive call */
+		gtk_tree_model_foreach(GTK_TREE_MODEL(othermodel), set_one_dive, dive);
 }
 
 static gboolean set_one_dive(GtkTreeModel *model,
@@ -704,11 +719,12 @@ static void fill_dive_list(void)
 {
 	int i, j;
 	GtkTreeIter iter, parent_iter[NEW_YR + 2], *parents[NEW_YR + 2] = {NULL, };
-	GtkTreeStore *store;
+	GtkTreeStore *liststore, *treestore;
 	struct dive *last_dive = NULL;
 	time_t dive_date;
 
-	store = GTK_TREE_STORE(dive_list.model);
+	treestore = GTK_TREE_STORE(dive_list.treemodel);
+	liststore = GTK_TREE_STORE(dive_list.listmodel);
 
 	i = dive_table.nr;
 	while (--i >= 0) {
@@ -717,9 +733,9 @@ static void fill_dive_list(void)
 		for (j = NEW_YR; j >= NEW_DAY; j--) {
 			if (new_date(dive, &last_dive, j, &dive_date))
 			{
-				gtk_tree_store_append(store, &parent_iter[j], parents[j+1]);
+				gtk_tree_store_append(treestore, &parent_iter[j], parents[j+1]);
 				parents[j] = &parent_iter[j];
-				gtk_tree_store_set(store, parents[j],
+				gtk_tree_store_set(treestore, parents[j],
 						DIVE_INDEX, -j,
 						DIVE_NR, -j,
 						DIVE_DATE, dive_date,
@@ -730,8 +746,20 @@ static void fill_dive_list(void)
 			}
 		}
 		update_cylinder_related_info(dive);
-		gtk_tree_store_append(store, &iter, parents[NEW_DAY]);
-		gtk_tree_store_set(store, &iter,
+		gtk_tree_store_append(treestore, &iter, parents[NEW_DAY]);
+		gtk_tree_store_set(treestore, &iter,
+			DIVE_INDEX, i,
+			DIVE_NR, dive->number,
+			DIVE_DATE, dive->when,
+			DIVE_DEPTH, dive->maxdepth,
+			DIVE_DURATION, dive->duration.seconds,
+			DIVE_LOCATION, dive->location,
+			DIVE_RATING, dive->rating,
+			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
+			DIVE_SAC, 0,
+			-1);
+		gtk_tree_store_append(liststore, &iter, NULL);
+		gtk_tree_store_set(liststore, &iter,
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
@@ -754,7 +782,8 @@ static void fill_dive_list(void)
 
 void dive_list_update_dives(void)
 {
-	gtk_tree_store_clear(GTK_TREE_STORE(dive_list.model));
+	gtk_tree_store_clear(GTK_TREE_STORE(dive_list.treemodel));
+	gtk_tree_store_clear(GTK_TREE_STORE(dive_list.listmodel));
 	fill_dive_list();
 	repaint_dive();
 }
@@ -812,14 +841,14 @@ static void realize_cb(GtkWidget *tree_view, gpointer userdata)
 static void row_activated_cb(GtkTreeView *tree_view,
 			GtkTreePath *path,
 			GtkTreeViewColumn *column,
-			GtkTreeModel *model)
+			gpointer userdata)
 {
 	int index;
 	GtkTreeIter iter;
 
-	if (!gtk_tree_model_get_iter(model, &iter, path))
+	if (!gtk_tree_model_get_iter(GTK_TREE_MODEL(dive_list.model), &iter, path))
 		return;
-	gtk_tree_model_get(model, &iter, DIVE_INDEX, &index, -1);
+	gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &index, -1);
 	/* a negative index is special for the "group by date" entries */
 	if (index >= 0)
 		edit_dive_info(get_dive(index));
@@ -844,7 +873,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 
 	menu = gtk_menu_new();
 	menuitem = gtk_menu_item_new_with_label("Add dive");
-	g_signal_connect(menuitem, "activate", G_CALLBACK(add_dive_cb), model);
+	g_signal_connect(menuitem, "activate", G_CALLBACK(add_dive_cb), NULL);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);
 
@@ -852,27 +881,46 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		button, gtk_get_current_event_time());
 }
 
-static void popup_menu_cb(GtkTreeView *tree_view,
-			GtkTreeModel *model)
+static void popup_menu_cb(GtkTreeView *tree_view, gpointer userdata)
 {
-	popup_divelist_menu(tree_view, model, 0);
+	popup_divelist_menu(tree_view, GTK_TREE_MODEL(dive_list.model), 0);
 }
 
-static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, GtkTreeModel *model)
+static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, gpointer userdata)
 {
 	/* Right-click? Bring up the menu */
 	if (event->type == GDK_BUTTON_PRESS  &&  event->button == 3) {
-		popup_divelist_menu(GTK_TREE_VIEW(treeview), model, 3);
+		popup_divelist_menu(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(dive_list.model), 3);
 		return TRUE;
 	}
 	return FALSE;
+}
+
+/* If the sort column is date (default), show the tree model.
+   For every other sort column only show the list model.
+   If the model changed, inform the new model of the chosen sort column. */
+static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
+{
+	int colid;
+	GtkSortType order;
+	GtkTreeStore *currentmodel = dive_list.model;
+
+	gtk_tree_sortable_get_sort_column_id(treeview, &colid, &order);
+	if(colid == DIVE_DATE)
+		dive_list.model = dive_list.treemodel;
+	else
+		dive_list.model = dive_list.listmodel;
+	if (dive_list.model != currentmodel) {
+		gtk_tree_view_set_model(GTK_TREE_VIEW(dive_list.tree_view), GTK_TREE_MODEL(dive_list.model));
+		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(dive_list.model), colid, order);
+	}
 }
 
 GtkWidget *dive_list_create(void)
 {
 	GtkTreeSelection  *selection;
 
-	dive_list.model = gtk_tree_store_new(DIVELIST_COLUMNS,
+	dive_list.listmodel = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
 				G_TYPE_INT,			/* Date */
@@ -886,6 +934,21 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* OTU */
 				G_TYPE_STRING			/* Location */
 				);
+	dive_list.treemodel = gtk_tree_store_new(DIVELIST_COLUMNS,
+				G_TYPE_INT,			/* index */
+				G_TYPE_INT,			/* nr */
+				G_TYPE_INT,			/* Date */
+				G_TYPE_INT,			/* Star rating */
+				G_TYPE_INT, 			/* Depth */
+				G_TYPE_INT,			/* Duration */
+				G_TYPE_INT,			/* Temperature */
+				G_TYPE_STRING,			/* Cylinder */
+				G_TYPE_INT,			/* Nitrox */
+				G_TYPE_INT,			/* SAC */
+				G_TYPE_INT,			/* OTU */
+				G_TYPE_STRING			/* Location */
+				);
+	dive_list.model = dive_list.treemodel;
 	dive_list.tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dive_list.model));
 	set_divelist_font(divelist_font);
 
@@ -914,10 +977,12 @@ GtkWidget *dive_list_create(void)
 					  NULL);
 
 	g_signal_connect_after(dive_list.tree_view, "realize", G_CALLBACK(realize_cb), NULL);
-	g_signal_connect(dive_list.tree_view, "row-activated", G_CALLBACK(row_activated_cb), dive_list.model);
-	g_signal_connect(dive_list.tree_view, "button-press-event", G_CALLBACK(button_press_cb), dive_list.model);
-	g_signal_connect(dive_list.tree_view, "popup-menu", G_CALLBACK(popup_menu_cb), dive_list.model);
-	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
+	g_signal_connect(dive_list.tree_view, "row-activated", G_CALLBACK(row_activated_cb), NULL);
+	g_signal_connect(dive_list.tree_view, "button-press-event", G_CALLBACK(button_press_cb), NULL);
+	g_signal_connect(dive_list.tree_view, "popup-menu", G_CALLBACK(popup_menu_cb), NULL);
+	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), NULL);
+	g_signal_connect(dive_list.listmodel, "sort-column-changed", G_CALLBACK(sort_column_change_cb), NULL);
+	g_signal_connect(dive_list.treemodel, "sort-column-changed", G_CALLBACK(sort_column_change_cb), NULL);
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dive_list.container_widget),
