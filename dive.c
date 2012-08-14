@@ -486,6 +486,7 @@ struct dive *fixup_dive(struct dive *dive)
 	add_people(dive->buddy);
 	add_people(dive->divemaster);
 	add_location(dive->location);
+	add_suit(dive->suit);
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);
@@ -703,6 +704,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_TXT(res, a, b, buddy);
 	MERGE_TXT(res, a, b, divemaster);
 	MERGE_MAX(res, a, b, rating);
+	MERGE_TXT(res, a, b, suit);
 	MERGE_MAX(res, a, b, number);
 	MERGE_MAX(res, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;

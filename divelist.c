@@ -26,7 +26,7 @@ struct DiveList {
 	GtkWidget    *container_widget;
 	GtkListStore *model;
 	GtkTreeViewColumn *nr, *date, *stars, *depth, *duration, *location;
-	GtkTreeViewColumn *temperature, *cylinder, *totalweight, *nitrox, *sac, *otu;
+	GtkTreeViewColumn *temperature, *cylinder, *totalweight, *suit, *nitrox, *sac, *otu;
 	int changed;
 };
 
@@ -45,6 +45,7 @@ enum {
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
 	DIVE_TOTALWEIGHT,	/* int: in grams */
+	DIVE_SUIT,		/* "wet, 3mm" */
 	DIVE_CYLINDER,
 	DIVE_NITROX,		/* int: dummy */
 	DIVE_SAC,		/* int: in ml/min */
@@ -534,6 +535,11 @@ static void get_cylinder(struct dive *dive, char **str)
 	get_string(str, dive->cylinder[0].type.description);
 }
 
+static void get_suit(struct dive *dive, char **str)
+{
+	get_string(str, dive->suit);
+}
+
 /*
  * Set up anything that could have changed due to editing
  * of dive information
@@ -542,10 +548,11 @@ static void fill_one_dive(struct dive *dive,
 			  GtkTreeModel *model,
 			  GtkTreeIter *iter)
 {
-	char *location, *cylinder;
+	char *location, *cylinder, *suit;
 
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
+	get_suit(dive, &suit);
 
 	gtk_list_store_set(GTK_LIST_STORE(model), iter,
 		DIVE_NR, dive->number,
@@ -555,7 +562,11 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
 		DIVE_TOTALWEIGHT, total_weight(dive),
+		DIVE_SUIT, suit,
 		-1);
+
+	/* this will create a merge conflict with the memory leak patches */
+	free(suit);
 }
 
 static gboolean set_one_dive(GtkTreeModel *model,
@@ -614,6 +625,7 @@ void update_dive_list_col_visibility(void)
 	gtk_tree_view_column_set_visible(dive_list.cylinder, visible_cols.cylinder);
 	gtk_tree_view_column_set_visible(dive_list.temperature, visible_cols.temperature);
 	gtk_tree_view_column_set_visible(dive_list.totalweight, visible_cols.totalweight);
+	gtk_tree_view_column_set_visible(dive_list.suit, visible_cols.suit);
 	gtk_tree_view_column_set_visible(dive_list.nitrox, visible_cols.nitrox);
 	gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
 	gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
@@ -643,6 +655,7 @@ static void fill_dive_list(void)
 			DIVE_LOCATION, "location",
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_TOTALWEIGHT, 0,
+			DIVE_SUIT, dive->suit,
 			DIVE_SAC, 0,
 			-1);
 	}
@@ -676,6 +689,7 @@ static struct divelist_column {
 	[DIVE_DURATION] = { "min", duration_data_func, NULL, ALIGN_RIGHT },
 	[DIVE_TEMPERATURE] = { UTF8_DEGREE "F", temperature_data_func, NULL, ALIGN_RIGHT, &visible_cols.temperature },
 	[DIVE_TOTALWEIGHT] = { "lbs", weight_data_func, NULL, ALIGN_RIGHT, &visible_cols.totalweight },
+	[DIVE_SUIT] = { "Suit", NULL, NULL, ALIGN_LEFT, &visible_cols.suit },
 	[DIVE_CYLINDER] = { "Cyl", NULL, NULL, 0, &visible_cols.cylinder },
 	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &visible_cols.nitrox },
 	[DIVE_SAC] = { "SAC", sac_data_func, NULL, 0, &visible_cols.sac },
@@ -783,6 +797,7 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* Duration */
 				G_TYPE_INT,			/* Temperature */
 				G_TYPE_INT,			/* Total weight */
+				G_TYPE_STRING,			/* Suit */
 				G_TYPE_STRING,			/* Cylinder */
 				G_TYPE_INT,			/* Nitrox */
 				G_TYPE_INT,			/* SAC */
@@ -804,6 +819,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.duration = divelist_column(&dive_list, dl_column + DIVE_DURATION);
 	dive_list.temperature = divelist_column(&dive_list, dl_column + DIVE_TEMPERATURE);
 	dive_list.totalweight = divelist_column(&dive_list, dl_column + DIVE_TOTALWEIGHT);
+	dive_list.suit = divelist_column(&dive_list, dl_column + DIVE_SUIT);
 	dive_list.cylinder = divelist_column(&dive_list, dl_column + DIVE_CYLINDER);
 	dive_list.nitrox = divelist_column(&dive_list, dl_column + DIVE_NITROX);
 	dive_list.sac = divelist_column(&dive_list, dl_column + DIVE_SAC);
