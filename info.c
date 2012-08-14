@@ -242,6 +242,8 @@ static gboolean match_string_entry(GtkTreeModel *model, GtkTreePath *path, GtkTr
 
 	gtk_tree_model_get(model, iter, 0, &entry, -1);
 	cmp = strcmp(entry, string);
+	if (entry)
+		free(entry);
 
 	/* Stop. The entry is bigger than the new one */
 	if (cmp > 0)
