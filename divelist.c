@@ -81,10 +81,9 @@ static void dump_model(GtkListStore *store)
 static GList *selected_dives;
 static int *selectiontracker;
 
-/* if we are sorting by date and are using a tree model, we don't want the selection
-   to be a summary entry, but instead the first child below that entry. So we descend
-   down the tree until we find a leaf (entry with non-negative index)
- */
+/* when subsurface starts we want to have the last dive selected. So we simply
+   walk to the first leaf (and skip the summary entries - which have negative
+   DIVE_INDEX) */
 static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 {
 	GtkTreeIter parent;
@@ -96,15 +95,57 @@ static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 		if (!gtk_tree_model_iter_children(model, iter, &parent))
 			/* we should never have a parent without child */
 			return;
-		/* clicking on a parent should toggle expand status */
-		if(gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
-			gtk_tree_view_collapse_row(GTK_TREE_VIEW(dive_list.tree_view), tpath);
-		else
+		if(!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
 			gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
 		gtk_tree_model_get(GTK_TREE_MODEL(model), iter, DIVE_INDEX, diveidx, -1);
 	}
 }
 
+/* if we click on a summary dive, we actually want to select / unselect
+   all the dives "below" it */
+static void select_children(GtkTreeModel *model, GtkTreeSelection * selection,
+			GtkTreeIter *iter, gboolean was_selected)
+{
+	int i, nr_children;
+	GtkTreeIter parent;
+	GtkTreePath *tpath;
+
+	memcpy(&parent, iter, sizeof(parent));
+
+	tpath = gtk_tree_model_get_path(model, &parent);
+	if(!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
+		gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
+
+	nr_children = gtk_tree_model_iter_n_children(model, &parent);
+	for (i = 0; i < nr_children; i++) {
+		gtk_tree_model_iter_nth_child(model, iter, &parent, i);
+		if (was_selected)
+			gtk_tree_selection_unselect_iter(selection, iter);
+		else
+			gtk_tree_selection_select_iter(selection, iter);
+	}
+}
+
+/* this is called _before_ the selection is changed, for every single entry;
+ * we simply have it call down the tree to make sure that summary items toggle
+ * their children */
+gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *model,
+			GtkTreePath *path, gboolean was_selected, gpointer userdata)
+{
+	GtkTreeIter iter;
+	int dive_idx;
+
+	if (gtk_tree_model_get_iter(model, &iter, path)) {
+		gtk_tree_model_get(model, &iter, DIVE_INDEX, &dive_idx, -1);
+		if (dive_idx < 0) {
+			select_children(model, selection, &iter, was_selected);
+		}
+	}
+	/* allow this selection to proceed */
+	return TRUE;
+}
+
+/* this is called when gtk thinks that the selection has changed */
 static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 {
 	GtkTreeIter iter;
@@ -120,7 +161,9 @@ static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 	selectiontracker = realloc(selectiontracker, nr_selected * sizeof(int));
 
 	switch (nr_selected) {
-	case 0: /* keep showing the last selected dive */
+	case 0: /* there is no clear way to figure out which dive to show */
+		amount_selected = 0;
+		selected_dive = -1;
 		return;
 	case 1:	
 		/* just pick that dive as selected */
@@ -128,21 +171,21 @@ static void selection_cb(GtkTreeSelection *selection, gpointer userdata)
 		path = g_list_nth_data(selected_dives, 0);
 		if (gtk_tree_model_get_iter(GTK_TREE_MODEL(dive_list.model), &iter, path)) {
 			gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
-			/* make sure we're not on a summary entry */
-			first_leaf (GTK_TREE_MODEL(dive_list.model), &iter, &selected_dive);
+			/* due to the way this callback gets invoked it is possible that
+			   in the process of unselecting a summary dive we get here with
+			   just one summary dive selected - ignore that case */
+			if (selected_dive < 0) {
+				amount_selected = 0;
+				return;
+			}
 			selectiontracker[0] = selected_dive;
 			repaint_dive();
 		}
 		return;
-	default: /* multiple selections - what now? At this point I
-		  * don't want to change the selected dive unless
-		  * there is exactly one dive selected; not sure this
+	default: /* multiple selections - what now?
+		  * We don't change the selected dive unless there is exactly one dive selected; not sure this
 		  * is the most intuitive solution.
-		  * I do however want to keep around which dives have
-		  * been selected */
-		 /* TODO:
-		    this also does not handle the case if a summary row is selected;
-		    We should iterate and select all dives under that row */
+		  * The dives that have been selected are processed */
 		amount_selected = g_list_length(selected_dives);
 		process_selected_dives(selected_dives, selectiontracker, GTK_TREE_MODEL(dive_list.model));
 		repaint_dive();
@@ -792,8 +835,8 @@ static void fill_dive_list(void)
 	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(dive_list.model), &iter)) {
 		GtkTreeSelection *selection;
 
+		/* select the last dive (and make sure it's an actual dive that is selected) */
 		gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &selected_dive, -1);
-		/* make sure it's an actual dive that is selected */
 		first_leaf(GTK_TREE_MODEL(dive_list.model), &iter, &selected_dive);
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 		gtk_tree_selection_select_iter(selection, &iter);
@@ -1092,6 +1135,8 @@ GtkWidget *dive_list_create(void)
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), NULL);
 	g_signal_connect(dive_list.listmodel, "sort-column-changed", G_CALLBACK(sort_column_change_cb), NULL);
 	g_signal_connect(dive_list.treemodel, "sort-column-changed", G_CALLBACK(sort_column_change_cb), NULL);
+
+	gtk_tree_selection_set_select_function(selection, modify_selection_cb, NULL, NULL);
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dive_list.container_widget),
