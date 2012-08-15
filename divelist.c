@@ -938,14 +938,27 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 	free(dive);
 }
 
+void edit_dive_cb(GtkWidget *menuitem, gpointer data)
+{
+	edit_multi_dive_info(amount_selected, selectiontracker);
+}
+
 static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button)
 {
 	GtkWidget *menu, *menuitem;
+	char editlabel[] = "Edit dives";
 
 	menu = gtk_menu_new();
 	menuitem = gtk_menu_item_new_with_label("Add dive");
 	g_signal_connect(menuitem, "activate", G_CALLBACK(add_dive_cb), NULL);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	if (amount_selected) {
+		if (amount_selected == 1)
+			editlabel[strlen(editlabel) - 1] = '\0';
+		menuitem = gtk_menu_item_new_with_label(editlabel);
+		g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_cb), model);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	}
 	gtk_widget_show_all(menu);
 
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,

@@ -344,25 +344,27 @@ static void save_dive_info_changes(struct dive *dive, struct dive_info *info)
 		changed =1;
 	}
 
-	old_text = dive->notes;
-	dive->notes = get_text(info->notes);
-	if (text_changed(old_text,dive->notes))
-		changed = 1;
-	if (old_text)
-		g_free(old_text);
-
+	if (info->notes) {
+		old_text = dive->notes;
+		dive->notes = get_text(info->notes);
+		if (text_changed(old_text,dive->notes))
+			changed = 1;
+		if (old_text)
+			g_free(old_text);
+	}
 	if (changed) {
 		mark_divelist_changed(TRUE);
 		update_dive(dive);
 	}
 }
 
-static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info)
+static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
-	GtkWidget *hbox, *label, *cylinder, *frame;
-	char buffer[80];
+	GtkWidget *hbox, *label, *frame, *equipment;
+	char buffer[80] = "Edit multiple dives";
 
-	divename(buffer, sizeof(buffer), dive);
+	if (!multi)
+		divename(buffer, sizeof(buffer), dive);
 	label = gtk_label_new(buffer);
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
@@ -379,28 +381,57 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	info->rating = text_entry(hbox, "Rating", star_list, star_strings[dive->rating]);
 
-	info->notes = text_view(box, "Notes", READ_WRITE);
-	if (dive->notes && *dive->notes)
-		gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
-
+	/* only show notes if editing a single dive */
+	if (multi) {
+		info->notes = NULL;
+	} else {
+		info->notes = text_view(box, "Notes", READ_WRITE);
+		if (dive->notes && *dive->notes)
+			gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
+	}
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
-	frame = gtk_frame_new("Cylinder");
-	cylinder = cylinder_list_widget();
-	gtk_container_add(GTK_CONTAINER(frame), cylinder);
+	/* create a secondary Equipment widget */
+	frame = gtk_frame_new("Equipment");
+	equipment = equipment_widget(W_IDX_SECONDARY);
+	gtk_container_add(GTK_CONTAINER(frame), equipment);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 }
 
-int edit_dive_info(struct dive *dive)
+/* we use these to find out if we edited the cylinder or weightsystem entries */
+static cylinder_t remember_cyl[MAX_CYLINDERS];
+static weightsystem_t remember_ws[MAX_WEIGHTSYSTEMS];
+
+void save_equipment_data(struct dive *dive)
 {
-	int success;
+	if (dive) {
+		memcpy(remember_cyl, dive->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS);
+		memcpy(remember_ws, dive->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS);
+	}
+}
+
+void update_equipment_data(struct dive *dive, struct dive *master)
+{
+	if (dive == master)
+		return;
+	if (memcmp(remember_cyl, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS)) {
+		memcpy(dive->cylinder, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS);
+	}
+	if (memcmp(remember_ws, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS)) {
+		memcpy(dive->weightsystem, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS);
+	}
+}
+
+int edit_multi_dive_info(int nr, int *indices)
+{
+	int success, i;
 	GtkWidget *dialog, *vbox;
 	struct dive_info info;
+	struct dive *dive;
 
-	if (!dive)
+	if (!nr)
 		return 0;
-
 	dialog = gtk_dialog_new_with_buttons("Dive Info",
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -409,16 +440,42 @@ int edit_dive_info(struct dive *dive)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	dive_info_widget(vbox, dive, &info);
-
+	/* SCARY STUFF - IS THIS THE BEST WAY TO DO THIS???
+	 *
+	 * current_dive is one of our selected dives - and that is
+	 * the one that is used to pre-fill the edit widget. Its
+	 * data is used as the starting point for all selected dives
+	 * I think it would be better to somehow collect and combine
+	 * info from all the selected dives */
+	dive = current_dive;
+	dive_info_widget(vbox, dive, &info, (nr > 1));
+	show_dive_equipment(dive, W_IDX_SECONDARY);
+	save_equipment_data(dive);
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (success)
-		save_dive_info_changes(dive, &info);
-
+		for (i = 0; i < nr; i++) {
+			/* copy all "info" fields */
+			save_dive_info_changes(get_dive(indices[i]), &info);
+			/* copy the cylinders / weightsystems */
+			update_equipment_data(get_dive(indices[i]), dive);
+			/* this is extremely inefficient... it loops through all
+			   dives to find the right one - but we KNOW the index already */
+			flush_divelist(get_dive(indices[i]));
+		}
 	gtk_widget_destroy(dialog);
 
 	return success;
+}
+
+int edit_dive_info(struct dive *dive)
+{
+	int idx;
+
+	if (!dive)
+		return 0;
+	idx = dive->number;
+	return edit_multi_dive_info(1, &idx);
 }
 
 static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
