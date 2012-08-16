@@ -53,10 +53,8 @@ enum {
 };
 
 /* magic numbers that indicate (as negative values) model entries that
- * are summary entries for day / month / year */
-#define NEW_DAY 1
-#define NEW_MON 2
-#define NEW_YR  3
+ * are summary entries for a divetrip */
+#define NEW_TRIP 1
 
 #ifdef DEBUG_MODEL
 static gboolean dump_model_entry(GtkTreeModel *model, GtkTreePath *path,
@@ -240,22 +238,12 @@ static void date_data_func(GtkTreeViewColumn *col,
 
 	tm = gmtime(&when);
 	switch(idx) {
-	case -NEW_DAY:
+	case -NEW_TRIP:
 		snprintf(buffer, sizeof(buffer),
-			"%s, %s %d, %d",
+			"Trip %s, %s %d, %d",
 			weekday(tm->tm_wday),
 			monthname(tm->tm_mon),
 			tm->tm_mday, tm->tm_year + 1900);
-		break;
-	case -NEW_MON:
-		snprintf(buffer, sizeof(buffer),
-			"%s %d",
-			monthname(tm->tm_mon),
-			tm->tm_year + 1900);
-		break;
-	case -NEW_YR:
-		snprintf(buffer, sizeof(buffer),
-			"%d", tm->tm_year + 1900);
 		break;
 	default:
 		snprintf(buffer, sizeof(buffer),
@@ -748,22 +736,20 @@ void update_dive_list_col_visibility(void)
 	return;
 }
 
-static int new_date(struct dive *dive, struct dive **last_dive, const int flag, time_t *tm_date)
+/* random heuristic - not diving in three days implies new dive trip */
+#define TRIP_THRESHOLD 3600*24*3
+static int new_group(struct dive *dive, struct dive **last_dive, time_t *tm_date)
 {
 	if (!last_dive)
 		return TRUE;
 	if (*last_dive) {
 		struct dive *ldive = *last_dive;
-		struct tm tm1, tm2;
-		(void) gmtime_r(&dive->when, &tm1);
-		(void) gmtime_r(&ldive->when, &tm2);
-		if (tm1.tm_year == tm2.tm_year &&
-			(tm1.tm_mon == tm2.tm_mon || flag > NEW_MON) &&
-			(tm1.tm_mday == tm2.tm_mday || flag > NEW_DAY))
+		if (abs(dive->when - ldive->when) < TRIP_THRESHOLD) {
+			*last_dive = dive;
 			return FALSE;
+		}
 	}
-	if (flag == NEW_DAY)
-		*last_dive = dive;
+	*last_dive = dive;
 	if (tm_date) {
 		struct tm *tm1 = gmtime(&dive->when);
 		tm1->tm_sec = 0;
@@ -776,10 +762,12 @@ static int new_date(struct dive *dive, struct dive **last_dive, const int flag, 
 
 static void fill_dive_list(void)
 {
-	int i, j;
-	GtkTreeIter iter, parent_iter[NEW_YR + 2], *parents[NEW_YR + 2] = {NULL, };
+	int i;
+	GtkTreeIter iter, parent_iter;
 	GtkTreeStore *liststore, *treestore;
 	struct dive *last_dive = NULL;
+	struct dive *first_trip_dive = NULL;
+	struct dive *last_trip_dive = NULL;
 	time_t dive_date;
 
 	treestore = GTK_TREE_STORE(dive_list.treemodel);
@@ -789,23 +777,29 @@ static void fill_dive_list(void)
 	while (--i >= 0) {
 		struct dive *dive = dive_table.dives[i];
 
-		for (j = NEW_YR; j >= NEW_DAY; j--) {
-			if (new_date(dive, &last_dive, j, &dive_date))
-			{
-				gtk_tree_store_append(treestore, &parent_iter[j], parents[j+1]);
-				parents[j] = &parent_iter[j];
-				gtk_tree_store_set(treestore, parents[j],
-						DIVE_INDEX, -j,
-						DIVE_NR, -j,
-						DIVE_DATE, dive_date,
-						DIVE_LOCATION, "",
-						DIVE_TEMPERATURE, 0,
-						DIVE_SAC, 0,
+		if (new_group(dive, &last_dive, &dive_date))
+		{
+			/* make sure we display the first date of the trip in previous summary */
+			if (first_trip_dive && last_trip_dive && last_trip_dive->when < first_trip_dive->when)
+				gtk_tree_store_set(treestore, &parent_iter,
+						DIVE_DATE, last_trip_dive->when,
+						DIVE_LOCATION, last_trip_dive->location,
 						-1);
-			}
+			first_trip_dive = dive;
+
+			gtk_tree_store_append(treestore, &parent_iter, NULL);
+			gtk_tree_store_set(treestore, &parent_iter,
+					DIVE_INDEX, -NEW_TRIP,
+					DIVE_NR, -NEW_TRIP,
+					DIVE_DATE, dive_date,
+					DIVE_LOCATION, dive->location,
+					DIVE_TEMPERATURE, 0,
+					DIVE_SAC, 0,
+					-1);
 		}
+		last_trip_dive = dive;
 		update_cylinder_related_info(dive);
-		gtk_tree_store_append(treestore, &iter, parents[NEW_DAY]);
+		gtk_tree_store_append(treestore, &iter, &parent_iter);
 		gtk_tree_store_set(treestore, &iter,
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
