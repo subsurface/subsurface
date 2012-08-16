@@ -146,34 +146,20 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 void process_selected_dives(GList *selected_dives, int *selectiontracker, GtkTreeModel *model)
 {
 	struct dive *dp;
-	unsigned int i, j;
+	unsigned int i;
 	int idx;
-	GtkTreeIter iter;
-	GtkTreePath *path;
 
 	memset(&stats_selection, 0, sizeof(stats_selection));
 
-	/* adjust amount_selected and remove negative index entries from list */
-	for (i = 0, j = 0; j < amount_selected; ++i) {
-		GValue value = {0, };
-		path = g_list_nth_data(selected_dives, i);
-		if (gtk_tree_model_get_iter(model, &iter, path)) {
-			gtk_tree_model_get_value(model, &iter, 0, &value);
-			idx = g_value_get_int(&value);
-			if (idx > 0) {
-				dp = get_dive(idx);
-				if (dp) {
-					selectiontracker[j] = idx;
-					process_dive(dp, &stats_selection);
-					j++;
-					continue;
-				}
+	for (i = 0; i < amount_selected; ++i) {
+		idx = selectiontracker[i];
+		if (idx > 0) {
+			dp = get_dive(idx);
+			if (dp) {
+				process_dive(dp, &stats_selection);
 			}
 		}
-		/* we didn't process it, so shorten the list */
-		amount_selected--;
 	}
-	/* record the actual number of dives selected */
 	stats_selection.selection_size = amount_selected;
 }
 
