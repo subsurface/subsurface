@@ -183,6 +183,7 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n");
 	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n");
 	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
+	show_utf8(f, dive->suit, "  <suit>","</suit>\n");
 }
 
 static void save_cylinder_info(FILE *f, struct dive *dive)

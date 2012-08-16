@@ -349,6 +349,7 @@ OPTIONCALLBACK(sac_toggle, visible_cols.sac)
 OPTIONCALLBACK(nitrox_toggle, visible_cols.nitrox)
 OPTIONCALLBACK(temperature_toggle, visible_cols.temperature)
 OPTIONCALLBACK(totalweight_toggle, visible_cols.totalweight)
+OPTIONCALLBACK(suit_toggle, visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
@@ -440,6 +441,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(totalweight_toggle), NULL);
 
+	button = gtk_check_button_new_with_label("Show Suit");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.suit);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(suit_toggle), NULL);
+
 	font = gtk_font_button_new_with_font(divelist_font);
 	gtk_box_pack_start(GTK_BOX(vbox), font, FALSE, FALSE, 5);
 
@@ -464,6 +470,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(output_units.weight == LBS));
 		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(visible_cols.temperature));
 		subsurface_set_conf("TOTALWEIGHT", PREF_BOOL, BOOL_TO_PTR(visible_cols.totalweight));
+		subsurface_set_conf("SUIT", PREF_BOOL, BOOL_TO_PTR(visible_cols.suit));
 		subsurface_set_conf("CYLINDER", PREF_BOOL, BOOL_TO_PTR(visible_cols.cylinder));
 		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(visible_cols.nitrox));
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
@@ -734,6 +741,7 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.cylinder = PTR_TO_BOOL(subsurface_get_conf("CYLINDER", PREF_BOOL));
 	visible_cols.temperature = PTR_TO_BOOL(subsurface_get_conf("TEMPERATURE", PREF_BOOL));
 	visible_cols.totalweight = PTR_TO_BOOL(subsurface_get_conf("TOTALWEIGHT", PREF_BOOL));
+	visible_cols.suit = PTR_TO_BOOL(subsurface_get_conf("SUIT", PREF_BOOL));
 	visible_cols.nitrox = PTR_TO_BOOL(subsurface_get_conf("NITROX", PREF_BOOL));
 	visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));

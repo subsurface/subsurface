@@ -243,6 +243,7 @@ struct dive {
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
+	char *suit;
 	int sac, otu;
 	struct event *events;
 	int samples, alloc_samples;
@@ -342,6 +343,7 @@ extern void add_cylinder_description(cylinder_type_t *);
 extern void add_weightsystem_description(weightsystem_t *);
 extern void add_people(const char *string);
 extern void add_location(const char *string);
+extern void add_suit(const char *string);
 extern void remember_event(const char *eventname);
 extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 

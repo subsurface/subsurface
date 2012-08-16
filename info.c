@@ -19,9 +19,9 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
-static GtkEntry *location, *buddy, *divemaster, *rating;
+static GtkEntry *location, *buddy, *divemaster, *rating, *suit;
 static GtkTextView *notes;
-static GtkListStore *location_list, *people_list, *star_list;
+static GtkListStore *location_list, *people_list, *star_list, *suit_list;
 
 static char *get_text(GtkTextView *view)
 {
@@ -96,6 +96,7 @@ void show_dive_info(struct dive *dive)
 	SET_TEXT_VALUE(divemaster);
 	SET_TEXT_VALUE(buddy);
 	SET_TEXT_VALUE(location);
+	SET_TEXT_VALUE(suit);
 	gtk_entry_set_text(rating, star_strings[dive->rating]);
 	gtk_text_buffer_set_text(gtk_text_view_get_buffer(notes),
 		dive && dive->notes ? dive->notes : "", -1);
@@ -298,6 +299,11 @@ void add_location(const char *string)
 	add_string_list_entry(string, location_list);
 }
 
+void add_suit(const char *string)
+{
+	add_string_list_entry(string, suit_list);
+}
+
 static int get_rating(const char *string)
 {
 	int rating_val = 0;
@@ -310,7 +316,7 @@ static int get_rating(const char *string)
 }
 
 struct dive_info {
-	GtkComboBoxEntry *location, *divemaster, *buddy, *rating;
+	GtkComboBoxEntry *location, *divemaster, *buddy, *rating, *suit;
 	GtkTextView *notes;
 };
 
@@ -335,6 +341,12 @@ static void save_dive_info_changes(struct dive *dive, struct dive_info *info)
 	new_text = get_combo_box_entry_text(info->buddy, &dive->buddy);
 	if (new_text) {
 		add_people(new_text);
+		changed = 1;
+	}
+
+	new_text = get_combo_box_entry_text(info->suit, &dive->suit);
+	if (new_text) {
+		add_suit(new_text);
 		changed = 1;
 	}
 
@@ -380,6 +392,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
 	info->rating = text_entry(hbox, "Rating", star_list, star_strings[dive->rating]);
+	info->suit = text_entry(hbox, "Suit", suit_list, dive->suit);
 
 	info->notes = text_view(box, "Notes", READ_WRITE);
 	if (dive->notes && *dive->notes)
@@ -564,6 +577,7 @@ GtkWidget *extended_dive_info_widget(void)
 	add_string_list_entry(THREE_STARS, star_list);
 	add_string_list_entry(FOUR_STARS, star_list);
 	add_string_list_entry(FIVE_STARS, star_list);
+	suit_list = gtk_list_store_new(1, G_TYPE_STRING);
 
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 	location = text_value(vbox, "Location");
@@ -578,6 +592,7 @@ GtkWidget *extended_dive_info_widget(void)
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
 	rating = text_value(hbox, "Rating");
+	suit = text_value(hbox, "Suit");
 
 	notes = text_view(vbox, "Notes", READ_ONLY);
 	return vbox;
