@@ -228,6 +228,8 @@ struct event {
 
 #define MAX_CYLINDERS (8)
 #define MAX_WEIGHTSYSTEMS (4)
+#define W_IDX_PRIMARY 0
+#define W_IDX_SECONDARY 1
 
 struct dive {
 	int number;
@@ -284,7 +286,7 @@ extern int selected_dive;
 
 static inline struct dive *get_dive(unsigned int nr)
 {
-	if (nr >= dive_table.nr)
+	if (nr >= dive_table.nr || nr < 0)
 		return NULL;
 	return dive_table.dives[nr];
 }
@@ -301,7 +303,7 @@ extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
 
 extern void show_dive_info(struct dive *);
 
-extern void show_dive_equipment(struct dive *);
+extern void show_dive_equipment(struct dive *, int w_idx);
 
 extern void show_dive_stats(struct dive *);
 
@@ -349,6 +351,7 @@ extern void evn_foreach(void (*callback)(const char *, int *, void *), void *dat
 
 extern int add_new_dive(struct dive *dive);
 extern int edit_dive_info(struct dive *dive);
+extern int edit_multi_dive_info(int nr, int *indices);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 

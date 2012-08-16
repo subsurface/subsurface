@@ -65,16 +65,17 @@ extern void update_progressbar_text(progressbar_t *progress, const char *text);
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *extended_dive_info_widget(void);
-extern GtkWidget *equipment_widget(void);
+extern GtkWidget *equipment_widget(int w_idx);
 extern GtkWidget *single_stats_widget(void);
 extern GtkWidget *total_stats_widget(void);
-extern GtkWidget *cylinder_list_widget(void);
+extern GtkWidget *cylinder_list_widget(int w_idx);
+extern GtkWidget *weightsystem_list_widget(int w_idx);
 
 extern GtkWidget *dive_list_create(void);
 
 unsigned int amount_selected;
 
-extern void process_selected_dives(GList *, GtkTreeModel *);
+extern void process_selected_dives(GList *, int *, GtkTreeModel *);
 
 typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    GtkCellRenderer *renderer,

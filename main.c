@@ -190,7 +190,7 @@ void update_dive(struct dive *new_dive)
 	}
 	if (new_dive) {
 		show_dive_info(new_dive);
-		show_dive_equipment(new_dive);
+		show_dive_equipment(new_dive, W_IDX_PRIMARY);
 		show_dive_stats(new_dive);
 	}
 	buffered_dive = new_dive;

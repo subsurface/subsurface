@@ -810,7 +810,7 @@ void init_ui(int *argcp, char ***argvp)
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Dive Notes"));
 
 	/* Frame for dive equipment */
-	nb_page = equipment_widget();
+	nb_page = equipment_widget(W_IDX_PRIMARY);
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Equipment"));
 
 	/* Frame for single dive statistics */
