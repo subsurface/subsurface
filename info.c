@@ -470,13 +470,18 @@ int edit_multi_dive_info(int nr, int *indices)
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (success)
 		for (i = 0; i < nr; i++) {
+			int idx = indices[i];
+			struct dive *n = get_dive(idx);
+
+			if (!n)
+				continue;
 			/* copy all "info" fields */
-			save_dive_info_changes(get_dive(indices[i]), &info);
+			save_dive_info_changes(n, &info);
 			/* copy the cylinders / weightsystems */
-			update_equipment_data(get_dive(indices[i]), dive);
+			update_equipment_data(n, dive);
 			/* this is extremely inefficient... it loops through all
 			   dives to find the right one - but we KNOW the index already */
-			flush_divelist(get_dive(indices[i]));
+			flush_divelist(n);
 		}
 	gtk_widget_destroy(dialog);
 
