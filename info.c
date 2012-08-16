@@ -132,11 +132,12 @@ static int delete_dive_info(struct dive *dive)
 
 static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-	edit_dive_info(current_dive);
+	edit_multi_dive_info(amount_selected, selectiontracker);
 }
 
 static void info_menu_delete_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
+	/* this needs to delete all the selected dives as well, I guess? */
 	delete_dive_info(current_dive);
 }
 

@@ -79,7 +79,6 @@ static void dump_model(GtkListStore *store)
 #endif
 
 static GList *selected_dives;
-static int *selectiontracker;
 
 /* when subsurface starts we want to have the last dive selected. So we simply
    walk to the first leaf (and skip the summary entries - which have negative

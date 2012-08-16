@@ -281,6 +281,7 @@ struct dive_table {
 
 extern struct dive_table dive_table;
 
+extern int *selectiontracker;
 extern int selected_dive;
 #define current_dive (get_dive(selected_dive))
 
