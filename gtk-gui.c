@@ -405,43 +405,43 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		"lbs",  set_lbs, (output_units.weight == LBS),
 		NULL);
 
-	frame = gtk_frame_new("Columns");
+	frame = gtk_frame_new("Show Columns");
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	button = gtk_check_button_new_with_label("Show Temp");
+	button = gtk_check_button_new_with_label("Temp");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.temperature);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(temperature_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show Cyl");
+	button = gtk_check_button_new_with_label("Cyl");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.cylinder);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(cylinder_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show O" UTF8_SUBSCRIPT_2 "%");
+	button = gtk_check_button_new_with_label("O" UTF8_SUBSCRIPT_2 "%");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.nitrox);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(nitrox_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show SAC");
+	button = gtk_check_button_new_with_label("SAC");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.sac);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(sac_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show OTU");
+	button = gtk_check_button_new_with_label("OTU");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show Weight");
+	button = gtk_check_button_new_with_label("Weight");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.totalweight);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(totalweight_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show Suit");
+	button = gtk_check_button_new_with_label("Suit");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.suit);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(suit_toggle), NULL);
