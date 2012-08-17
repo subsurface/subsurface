@@ -43,7 +43,7 @@ static int text_changed(const char *old, const char *new)
 		(!old && strcmp("",new));
 }
 
-static char *skip_space(char *str)
+static const char *skip_space(const char *str)
 {
 	if (str) {
 		while (isspace(*str))
@@ -60,13 +60,14 @@ static char *skip_space(char *str)
  * The "master" string is the string of the current dive - we only consider it
  * changed if the old string is either empty, or matches that master string.
  */
-static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp, char *master)
+static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp, const char *master)
 {
 	char *old = *textp;
+	const char *old_text;
 	const gchar *new;
 	GtkEntry *entry;
 
-	old = skip_space(old);
+	old_text = skip_space(old);
 	master = skip_space(master);
 
 	/*
@@ -75,8 +76,8 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp,
 	 * we're editing another dive's info that already had a
 	 * valid value).
 	 */
-	if (master && old)
-		if (strcmp(master, old))
+	if (master && old_text)
+		if (strcmp(master, old_text))
 			return NULL;
 
 	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
