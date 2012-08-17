@@ -43,11 +43,41 @@ static int text_changed(const char *old, const char *new)
 		(!old && strcmp("",new));
 }
 
-static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp)
+static char *skip_space(char *str)
+{
+	if (str) {
+		while (isspace(*str))
+			str++;
+		if (!*str)
+			str = NULL;
+	}
+	return str;
+}
+
+/*
+ * Get the string from a combo box.
+ *
+ * The "master" string is the string of the current dive - we only consider it
+ * changed if the old string is either empty, or matches that master string.
+ */
+static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp, char *master)
 {
 	char *old = *textp;
 	const gchar *new;
 	GtkEntry *entry;
+
+	old = skip_space(old);
+	master = skip_space(master);
+
+	/*
+	 * If we had a master string, and it doesn't match our old
+	 * string, we will always pick the old value (it means that
+	 * we're editing another dive's info that already had a
+	 * valid value).
+	 */
+	if (master && old)
+		if (strcmp(master, old))
+			return NULL;
 
 	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
 	new = gtk_entry_get_text(entry);
@@ -321,38 +351,38 @@ struct dive_info {
 	GtkTextView *notes;
 };
 
-static void save_dive_info_changes(struct dive *dive, struct dive_info *info)
+static void save_dive_info_changes(struct dive *dive, struct dive *master, struct dive_info *info)
 {
 	char *old_text, *new_text;
 	char *rating_string;
 	int changed = 0;
 
-	new_text = get_combo_box_entry_text(info->location, &dive->location);
+	new_text = get_combo_box_entry_text(info->location, &dive->location, master->location);
 	if (new_text) {
 		add_location(new_text);
 		changed = 1;
 	}
 
-	new_text = get_combo_box_entry_text(info->divemaster, &dive->divemaster);
+	new_text = get_combo_box_entry_text(info->divemaster, &dive->divemaster, master->divemaster);
 	if (new_text) {
 		add_people(new_text);
 		changed = 1;
 	}
 
-	new_text = get_combo_box_entry_text(info->buddy, &dive->buddy);
+	new_text = get_combo_box_entry_text(info->buddy, &dive->buddy, master->buddy);
 	if (new_text) {
 		add_people(new_text);
 		changed = 1;
 	}
 
-	new_text = get_combo_box_entry_text(info->suit, &dive->suit);
+	new_text = get_combo_box_entry_text(info->suit, &dive->suit, master->suit);
 	if (new_text) {
 		add_suit(new_text);
 		changed = 1;
 	}
 
 	rating_string = strdup(star_strings[dive->rating]);
-	new_text = get_combo_box_entry_text(info->rating, &rating_string);
+	new_text = get_combo_box_entry_text(info->rating, &rating_string, star_strings[master->rating]);
 	if (new_text) {
 		dive->rating = get_rating(rating_string);
 		free(rating_string);
@@ -444,7 +474,7 @@ int edit_multi_dive_info(int nr, int *indices)
 	int success, i;
 	GtkWidget *dialog, *vbox;
 	struct dive_info info;
-	struct dive *dive;
+	struct dive *master;
 
 	if (!nr)
 		return 0;
@@ -463,27 +493,34 @@ int edit_multi_dive_info(int nr, int *indices)
 	 * data is used as the starting point for all selected dives
 	 * I think it would be better to somehow collect and combine
 	 * info from all the selected dives */
-	dive = current_dive;
-	dive_info_widget(vbox, dive, &info, (nr > 1));
-	show_dive_equipment(dive, W_IDX_SECONDARY);
-	save_equipment_data(dive);
+	master = current_dive;
+	dive_info_widget(vbox, master, &info, (nr > 1));
+	show_dive_equipment(master, W_IDX_SECONDARY);
+	save_equipment_data(master);
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
-	if (success)
+	if (success) {
+		/* Update the other non-current dives first */
 		for (i = 0; i < nr; i++) {
 			int idx = indices[i];
-			struct dive *n = get_dive(idx);
+			struct dive *dive = get_dive(idx);
 
-			if (!n)
+			if (!dive || dive == master)
 				continue;
 			/* copy all "info" fields */
-			save_dive_info_changes(n, &info);
+			save_dive_info_changes(dive, master, &info);
 			/* copy the cylinders / weightsystems */
-			update_equipment_data(n, dive);
+			update_equipment_data(dive, master);
 			/* this is extremely inefficient... it loops through all
 			   dives to find the right one - but we KNOW the index already */
-			flush_divelist(n);
+			flush_divelist(dive);
 		}
+
+		/* Update the master dive last! */
+		save_dive_info_changes(master, master, &info);
+		update_equipment_data(master, master);
+		flush_divelist(master);
+	}
 	gtk_widget_destroy(dialog);
 
 	return success;
