@@ -83,6 +83,9 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp,
 	new = gtk_entry_get_text(entry);
 	while (isspace(*new))
 		new++;
+	/* If the master string didn't change, don't change other dives either! */
+	if (!text_changed(master,new))
+		return NULL;
 	if (!text_changed(old,new))
 		return NULL;
 	free(old);
