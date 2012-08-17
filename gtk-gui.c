@@ -173,45 +173,88 @@ static void file_open(GtkWidget *w, gpointer data)
 static void file_save(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
-	dialog = gtk_file_chooser_dialog_new("Save File",
+	char *filename;
+	if (!existing_filename) {
+		dialog = gtk_file_chooser_dialog_new("Save File",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		NULL);
-	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
-	if (!existing_filename) {
-		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
-	} else
-		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), existing_filename);
+		gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		char *filename;
-		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
+		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		}
+		gtk_widget_destroy(dialog);
+	} else {
+		filename = existing_filename;
+	}
+	if (filename){
 		save_dives(filename);
-		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
-	gtk_widget_destroy(dialog);
 }
 
-static void ask_save_changes()
+static void file_save_as(GtkWidget *w, gpointer data)
+{
+	GtkWidget *dialog;
+	char *filename;
+	dialog = gtk_file_chooser_dialog_new("Save File As",
+	GTK_WINDOW(main_window),
+	GTK_FILE_CHOOSER_ACTION_SAVE,
+	GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+	GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+	NULL);
+	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), existing_filename);
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	}
+	gtk_widget_destroy(dialog);
+
+	if (filename){
+		save_dives(filename);
+		mark_divelist_changed(FALSE);
+	}
+}
+
+static gboolean ask_save_changes()
 {
 	GtkWidget *dialog, *label, *content;
+	gboolean quit = TRUE;
 	dialog = gtk_dialog_new_with_buttons("Save Changes?",
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_NO, GTK_RESPONSE_NO,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		NULL);
 	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
+
+	if (!existing_filename){
+		label = gtk_label_new (
+			"You have unsaved changes\nWould you like to save those before exiting the program?");
+	} else {
+		char *label_text = (char*) malloc(sizeof(char) * (92 + strlen(existing_filename)));
+		sprintf(label_text,
+			"You have unsaved changes to file: %s \nWould you like to save those before exiting the program?",
+			existing_filename);
+		label = gtk_label_new (label_text);
+		g_free(label_text);
+	}
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+	gint *outcode = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (outcode == GTK_RESPONSE_ACCEPT) {
 		file_save(NULL,NULL);
+	} else if (outcode == GTK_RESPONSE_CANCEL) {
+		quit = FALSE;
 	}
 	gtk_widget_destroy(dialog);
+	return quit;
 }
 
 static gboolean on_delete(GtkWidget* w, gpointer data)
@@ -219,10 +262,15 @@ static gboolean on_delete(GtkWidget* w, gpointer data)
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
+	gboolean quit = TRUE;
 	if (unsaved_changes())
-		ask_save_changes();
+		quit = ask_save_changes();
 
-	return FALSE; /* go ahead, kill the program, we're good now */
+	if (quit){
+		return FALSE; /* go ahead, kill the program, we're good now */
+	} else {
+		return TRUE; /* We are not leaving */
+	}
 }
 
 static void on_destroy(GtkWidget* w, gpointer data)
@@ -235,9 +283,13 @@ static void quit(GtkWidget *w, gpointer data)
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
+	gboolean quit = TRUE;
 	if (unsaved_changes())
-		ask_save_changes();
-	gtk_main_quit();
+		quit = ask_save_changes();
+
+	if (quit){
+		gtk_main_quit();
+	}
 }
 
 GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
@@ -638,6 +690,7 @@ static GtkActionEntry menu_items[] = {
 	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
+	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
 	{ "AddDive",        NULL, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
@@ -659,6 +712,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
