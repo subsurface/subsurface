@@ -152,6 +152,11 @@ void track_unselect(int idx)
 #endif
 }
 
+void clear_tracker(void)
+{
+	amount_selected = 0;
+}
+
 /* when subsurface starts we want to have the last dive selected. So we simply
    walk to the first leaf (and skip the summary entries - which have negative
    DIVE_INDEX) */
@@ -169,7 +174,6 @@ static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 		if(!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
 			gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
 		gtk_tree_model_get(GTK_TREE_MODEL(model), iter, DIVE_INDEX, diveidx, -1);
-		track_select(*diveidx);
 	}
 }
 
@@ -179,31 +183,36 @@ static void select_children(GtkTreeModel *model, GtkTreeSelection * selection,
 			GtkTreeIter *iter, gboolean was_selected)
 {
 	int i, nr_children;
-	gboolean unexpand = FALSE;
+	gboolean expanded = FALSE;
 	GtkTreeIter parent;
 	GtkTreePath *tpath;
 
 	memcpy(&parent, iter, sizeof(parent));
 
 	tpath = gtk_tree_model_get_path(model, &parent);
-
-	/* stupid gtk doesn't allow us to select rows that are invisible; so if the
-	   user clicks on a row that isn't expanded, we briefly expand it, select the
-	   children, and then unexpand it again */
-	if(!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath)) {
-		unexpand = TRUE;
-		gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
-	}
+	expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath);
 	nr_children = gtk_tree_model_iter_n_children(model, &parent);
 	for (i = 0; i < nr_children; i++) {
 		gtk_tree_model_iter_nth_child(model, iter, &parent, i);
-		if (was_selected)
-			gtk_tree_selection_unselect_iter(selection, iter);
-		else
-			gtk_tree_selection_select_iter(selection, iter);
+
+		/* if the parent is expanded, just (un)select the children and we'll
+		   track their selection status in the callback
+		   otherwise  just change the selection status directly without
+		   bothering gtk */
+		if (expanded) {
+			if (was_selected)
+				gtk_tree_selection_unselect_iter(selection, iter);
+			else
+				gtk_tree_selection_select_iter(selection, iter);
+		} else {
+			int idx;
+			gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
+			if (was_selected)
+				track_unselect(idx);
+			else
+				track_select(idx);
+		}
 	}
-	if (unexpand)
-		gtk_tree_view_collapse_row(GTK_TREE_VIEW(dive_list.tree_view), tpath);
 }
 
 /* make sure that if we expand a summary row that is selected, the children show
@@ -225,14 +234,29 @@ gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *model,
 	GtkTreeIter iter;
 	int dive_idx;
 
+	/* if gtk thinks nothing is selected we should clear out our
+	   tracker as well - otherwise hidden selected rows can stay
+	   "stuck". The down side is that we now have a different bug:
+	   If you select a dive, collapse the dive trip and ctrl-click
+	   another dive trip, the initial dive is no longer selected.
+	   Just don't do that, ok? */
+	if (gtk_tree_selection_count_selected_rows(selection) == 0)
+		clear_tracker();
+
 	if (gtk_tree_model_get_iter(model, &iter, path)) {
 		gtk_tree_model_get(model, &iter, DIVE_INDEX, &dive_idx, -1);
 		/* turns out we need to move the selectiontracker here */
-		if (was_selected)
-			track_unselect(dive_idx);
-		else
-			track_select(dive_idx);
-		if (dive_idx < 0) {
+
+#if DEBUG_SELECTION_TRACKING
+		printf("modify_selection_cb with idx %d (according to gtk was %sselected)\n",
+			dive_idx, was_selected ? "" : "un");
+#endif
+		if (dive_idx >= 0) {
+			if (was_selected)
+				track_unselect(dive_idx);
+			else
+				track_select(dive_idx);
+		} else {
 			select_children(model, selection, &iter, was_selected);
 		}
 	}
