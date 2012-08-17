@@ -152,6 +152,11 @@ void track_unselect(int idx)
 #endif
 }
 
+void clear_tracker(void)
+{
+	amount_selected = 0;
+}
+
 /* when subsurface starts we want to have the last dive selected. So we simply
    walk to the first leaf (and skip the summary entries - which have negative
    DIVE_INDEX) */
@@ -229,12 +234,21 @@ gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *model,
 	GtkTreeIter iter;
 	int dive_idx;
 
+	/* if gtk thinks nothing is selected we should clear out our
+	   tracker as well - otherwise hidden selected rows can stay
+	   "stuck". The down side is that we now have a different bug:
+	   If you select a dive, collapse the dive trip and ctrl-click
+	   another dive trip, the initial dive is no longer selected.
+	   Just don't do that, ok? */
+	if (gtk_tree_selection_count_selected_rows(selection) == 0)
+		clear_tracker();
+
 	if (gtk_tree_model_get_iter(model, &iter, path)) {
 		gtk_tree_model_get(model, &iter, DIVE_INDEX, &dive_idx, -1);
 		/* turns out we need to move the selectiontracker here */
 
 #if DEBUG_SELECTION_TRACKING
-		printf("modify_selection_cb with idx %d (according to gtk was %sselected) - ",
+		printf("modify_selection_cb with idx %d (according to gtk was %sselected)\n",
 			dive_idx, was_selected ? "" : "un");
 #endif
 		if (dive_idx >= 0) {
