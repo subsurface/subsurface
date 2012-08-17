@@ -170,43 +170,16 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
-static void file_save(GtkWidget *w, gpointer data)
-{
-	GtkWidget *dialog;
-	char *filename;
-	if (!existing_filename) {
-		dialog = gtk_file_chooser_dialog_new("Save File",
-		GTK_WINDOW(main_window),
-		GTK_FILE_CHOOSER_ACTION_SAVE,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-		NULL);
-		gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
-
-		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
-		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		}
-		gtk_widget_destroy(dialog);
-	} else {
-		filename = existing_filename;
-	}
-	if (filename){
-		save_dives(filename);
-		mark_divelist_changed(FALSE);
-	}
-}
-
 static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
 	char *filename;
 	dialog = gtk_file_chooser_dialog_new("Save File As",
-	GTK_WINDOW(main_window),
-	GTK_FILE_CHOOSER_ACTION_SAVE,
-	GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-	GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-	NULL);
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_SAVE,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+		NULL);
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), existing_filename);
@@ -217,8 +190,19 @@ static void file_save_as(GtkWidget *w, gpointer data)
 
 	if (filename){
 		save_dives(filename);
+		set_filename(filename);
+		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
+}
+
+static void file_save(GtkWidget *w, gpointer data)
+{
+	if (!existing_filename)
+		return file_save_as(w, data);
+
+	save_dives(existing_filename);
+	mark_divelist_changed(FALSE);
 }
 
 static gboolean ask_save_changes()
@@ -247,7 +231,7 @@ static gboolean ask_save_changes()
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
-	gint *outcode = gtk_dialog_run(GTK_DIALOG(dialog));
+	gint outcode = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (outcode == GTK_RESPONSE_ACCEPT) {
 		file_save(NULL,NULL);
 	} else if (outcode == GTK_RESPONSE_CANCEL) {
@@ -675,26 +659,28 @@ static void view_info(GtkWidget *w, gpointer data)
 	gtk_paned_set_position(GTK_PANED(hpane), 65535);
 }
 
-/* Ooh. I don't know how to get the half-way size. So I'm just using random numbers */
 static void view_three(GtkWidget *w, gpointer data)
 {
-	gtk_paned_set_position(GTK_PANED(hpane), 400);
-	gtk_paned_set_position(GTK_PANED(vpane), 200);
+	GtkAllocation alloc;
+	gtk_widget_get_allocation(hpane, &alloc);
+	gtk_paned_set_position(GTK_PANED(hpane), alloc.width/2);
+	gtk_widget_get_allocation(vpane, &alloc);
+	gtk_paned_set_position(GTK_PANED(vpane), alloc.height/2);
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
-	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
-	{ "ViewMenuAction",  GTK_STOCK_FILE, "View", NULL, NULL, NULL},
-	{ "FilterMenuAction",  GTK_STOCK_FILE, "Filter", NULL, NULL, NULL},
-	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
+	{ "FileMenuAction", NULL, "File", NULL, NULL, NULL},
+	{ "LogMenuAction",  NULL, "Log", NULL, NULL, NULL},
+	{ "ViewMenuAction",  NULL, "View", NULL, NULL, NULL},
+	{ "FilterMenuAction",  NULL, "Filter", NULL, NULL, NULL},
+	{ "HelpMenuAction", NULL, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
-	{ "AddDive",        NULL, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
-	{ "Preferences",    NULL, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
+	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
+	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
@@ -1255,7 +1241,9 @@ void update_progressbar_text(progressbar_t *progress, const char *text)
 
 void set_filename(const char *filename)
 {
-	if (!existing_filename && filename)
+	if (existing_filename)
+		free(existing_filename);
+	existing_filename = NULL;
+	if (filename)
 		existing_filename = strdup(filename);
-	return;
 }

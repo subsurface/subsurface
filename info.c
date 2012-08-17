@@ -175,9 +175,17 @@ static void info_menu_delete_cb(GtkMenuItem *menuitem, gpointer user_data)
 	delete_dive_info(current_dive);
 }
 
-static void add_menu_item(GtkMenu *menu, const char *label, void (*cb)(GtkMenuItem *, gpointer))
+static void add_menu_item(GtkMenu *menu, const char *label, const char *icon, void (*cb)(GtkMenuItem *, gpointer))
 {
-	GtkWidget *item = gtk_menu_item_new_with_label(label);
+	GtkWidget *item;
+	if (icon) {
+		GtkWidget *image;
+		item = gtk_image_menu_item_new_with_label(label);
+		image = gtk_image_new_from_stock(icon, GTK_ICON_SIZE_MENU);
+		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item), image);
+	} else {
+		item = gtk_menu_item_new_with_label(label);
+	}
 	g_signal_connect(item, "activate", G_CALLBACK(cb), NULL);
 	gtk_widget_show(item); /* Yes, really */
 	gtk_menu_prepend(menu, item);
@@ -185,8 +193,8 @@ static void add_menu_item(GtkMenu *menu, const char *label, void (*cb)(GtkMenuIt
 
 static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
 {
-	add_menu_item(menu, "Delete", info_menu_delete_cb);
-	add_menu_item(menu, "Edit", info_menu_edit_cb);
+	add_menu_item(menu, "Delete", GTK_STOCK_DELETE, info_menu_delete_cb);
+	add_menu_item(menu, "Edit", GTK_STOCK_EDIT, info_menu_edit_cb);
 }
 
 static GtkEntry *text_value(GtkWidget *box, const char *label)
