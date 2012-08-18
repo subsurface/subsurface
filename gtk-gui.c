@@ -755,6 +755,7 @@ void init_ui(int *argcp, char ***argvp)
 	GtkWidget *dive_list;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
+	GtkWidget *scrolled;
 	GdkScreen *screen;
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
@@ -826,13 +827,16 @@ void init_ui(int *argcp, char ***argvp)
 
 	vpane = gtk_vpaned_new();
 	gtk_box_pack_start(GTK_BOX(vbox), vpane, TRUE, TRUE, 3);
-
 	hpane = gtk_hpaned_new();
 	gtk_paned_add1(GTK_PANED(vpane), hpane);
+	g_signal_connect_after(G_OBJECT(vbox), "realize", G_CALLBACK(view_three), NULL);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
-	gtk_paned_add1(GTK_PANED(hpane), notebook);
+	scrolled = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_paned_add1(GTK_PANED(hpane), scrolled);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), notebook);
 	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 
 	/* Create the actual divelist */
