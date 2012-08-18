@@ -473,12 +473,12 @@ void update_equipment_data(struct dive *dive, struct dive *master)
 {
 	if (dive == master)
 		return;
-	if (memcmp(remember_cyl, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS)) {
+	if (memcmp(remember_cyl, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS) &&
+		cylinder_none(dive->cylinder))
 		memcpy(dive->cylinder, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS);
-	}
-	if (memcmp(remember_ws, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS)) {
+	if (memcmp(remember_ws, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS) &&
+		weightsystem_none(dive->weightsystem))
 		memcpy(dive->weightsystem, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS);
-	}
 }
 
 int edit_multi_dive_info(int nr, int *indices)
