@@ -428,7 +428,7 @@ static void show_weightsystem(weightsystem_t *ws, struct ws_widget *weightsystem
 	set_weight_weight_spinbutton(weightsystem_widget, ws->weight.grams);
 }
 
-int cylinder_none(void *_data)
+gboolean cylinder_none(void *_data)
 {
 	cylinder_t *cyl = _data;
 	return	!cyl->type.size.mliter &&
@@ -442,10 +442,75 @@ int cylinder_none(void *_data)
 		!cyl->end.mbar;
 }
 
-int weightsystem_none(void *_data)
+gboolean no_cylinders(cylinder_t *cyl)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		if (!cylinder_none(cyl + i))
+			return FALSE;
+	return TRUE;
+}
+
+/* descriptions are equal if they are both NULL or both non-NULL
+   and the same text */
+gboolean description_equal(const char *desc1, const char *desc2)
+{
+		return ((! desc1 && ! desc2) ||
+			(desc1 && desc2 && strcmp(desc1, desc2) == 0));
+}
+
+/* when checking for the same cylinder we want the size and description to match
+   but don't compare the start and end pressures */
+static gboolean one_cylinder_equal(cylinder_t *cyl1, cylinder_t *cyl2)
+{
+	return cyl1->type.size.mliter == cyl2->type.size.mliter &&
+		cyl1->type.workingpressure.mbar == cyl2->type.workingpressure.mbar &&
+		cyl1->gasmix.o2.permille == cyl2->gasmix.o2.permille &&
+		cyl1->gasmix.he.permille == cyl2->gasmix.he.permille &&
+		description_equal(cyl1->type.description, cyl2->type.description);
+}
+
+gboolean cylinders_equal(cylinder_t *cyl1, cylinder_t *cyl2)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		if (!one_cylinder_equal(cyl1 + i, cyl2 + i))
+			return FALSE;
+	return TRUE;
+}
+
+static gboolean weightsystem_none(void *_data)
 {
 	weightsystem_t *ws = _data;
 	return !ws->weight.grams && !ws->description;
+}
+
+gboolean no_weightsystems(weightsystem_t *ws)
+{
+	int i;
+
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		if (!weightsystem_none(ws + i))
+			return FALSE;
+	return TRUE;
+}
+
+static gboolean one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
+{
+	return ws1->weight.grams == ws2->weight.grams &&
+		description_equal(ws1->description, ws2->description);
+}
+
+gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
+{
+	int i;
+
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		if (!one_weightsystem_equal(ws1 + i, ws2 + i))
+			return FALSE;
+	return TRUE;
 }
 
 static void set_one_cylinder(void *_data, GtkListStore *model, GtkTreeIter *iter)
@@ -493,7 +558,7 @@ static void *ws_ptr(struct dive *dive, int idx)
 static void show_equipment(struct dive *dive, int max,
 			struct equipment_list *equipment_list,
 			void*(*ptr_function)(struct dive*, int),
-			int(*none_function)(void *),
+			gboolean(*none_function)(void *),
 			void(*set_one_function)(void*, GtkListStore*, GtkTreeIter *))
 {
 	int i, used;

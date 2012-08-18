@@ -92,8 +92,11 @@ typedef struct {
 	const char *description;	/* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
-extern int cylinder_none(void *_data);
-extern int weightsystem_none(void *_data);
+extern gboolean cylinder_none(void *_data);
+extern gboolean no_cylinders(cylinder_t *cyl);
+extern gboolean cylinders_equal(cylinder_t *cyl1, cylinder_t *cyl2);
+extern gboolean no_weightsystems(weightsystem_t *ws);
+extern gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 
 extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);

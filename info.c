@@ -460,25 +460,33 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 /* we use these to find out if we edited the cylinder or weightsystem entries */
 static cylinder_t remember_cyl[MAX_CYLINDERS];
 static weightsystem_t remember_ws[MAX_WEIGHTSYSTEMS];
+#define CYL_BYTES sizeof(cylinder_t) * MAX_CYLINDERS
+#define WS_BYTES sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS
 
 void save_equipment_data(struct dive *dive)
 {
 	if (dive) {
-		memcpy(remember_cyl, dive->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS);
-		memcpy(remember_ws, dive->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS);
+		memcpy(remember_cyl, dive->cylinder, CYL_BYTES);
+		memcpy(remember_ws, dive->weightsystem, WS_BYTES);
 	}
 }
 
+/* the editing happens on the master dive; we copy the equipment
+   data if it has changed in the master dive and the other dive
+   either has no entries for the equipment or the same entries
+   as the master dive had before it was edited */
 void update_equipment_data(struct dive *dive, struct dive *master)
 {
 	if (dive == master)
 		return;
-	if (memcmp(remember_cyl, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS) &&
-		cylinder_none(dive->cylinder))
-		memcpy(dive->cylinder, master->cylinder, sizeof(cylinder_t) * MAX_CYLINDERS);
-	if (memcmp(remember_ws, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS) &&
-		weightsystem_none(dive->weightsystem))
-		memcpy(dive->weightsystem, master->weightsystem, sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS);
+	if ( ! cylinders_equal(remember_cyl, master->cylinder) &&
+		(no_cylinders(dive->cylinder) ||
+			cylinders_equal(dive->cylinder, remember_cyl)))
+		memcpy(dive->cylinder, master->cylinder, CYL_BYTES);
+	if (! weightsystems_equal(remember_ws, master->weightsystem) &&
+		(no_weightsystems(dive->weightsystem) ||
+			weightsystems_equal(dive->weightsystem, remember_ws)))
+		memcpy(dive->weightsystem, master->weightsystem, WS_BYTES);
 }
 
 int edit_multi_dive_info(int nr, int *indices)
