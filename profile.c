@@ -1049,16 +1049,18 @@ static void fill_missing_tank_pressures(struct plot_info *pi, pr_track_t **track
 				/* there may be multiple segments - so
 				 * let's assemble the length */
 				nlist = list;
-				pt = list->pressure_time;
-				while (!nlist->end) {
-					nlist = nlist->next;
-					if (!nlist) {
-						/* oops - we have no end pressure,
-						 * so this means this is a tank without
-						 * gas consumption information */
-						break;
+				if (list) {
+					pt = list->pressure_time;
+					while (!nlist->end) {
+						nlist = nlist->next;
+						if (!nlist) {
+							/* oops - we have no end pressure,
+							 * so this means this is a tank without
+							 * gas consumption information */
+							break;
+						}
+						pt += nlist->pressure_time;
 					}
-					pt += nlist->pressure_time;
 				}
 				if (!nlist) {
 					/* just continue without calculating
