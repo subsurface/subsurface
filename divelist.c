@@ -306,12 +306,12 @@ static void date_data_func(GtkTreeViewColumn *col,
 			   GtkTreeIter *iter,
 			   gpointer data)
 {
-	int val, idx;
+	int val, idx, nr;
 	struct tm *tm;
 	time_t when;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &val, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &val, DIVE_NR, &nr, -1);
 
 	/* 2038 problem */
 	when = val;
@@ -320,10 +320,11 @@ static void date_data_func(GtkTreeViewColumn *col,
 	switch(idx) {
 	case -NEW_TRIP:
 		snprintf(buffer, sizeof(buffer),
-			"Trip %s, %s %d, %d",
+			"Trip %s, %s %d, %d (%d dive%s)",
 			weekday(tm->tm_wday),
 			monthname(tm->tm_mon),
-			tm->tm_mday, tm->tm_year + 1900);
+			tm->tm_mday, tm->tm_year + 1900,
+			nr, nr > 1 ? "s" : "");
 		break;
 	default:
 		snprintf(buffer, sizeof(buffer),
@@ -892,12 +893,12 @@ static int new_group(struct dive *dive, struct dive **last_dive, time_t *tm_date
 
 static void fill_dive_list(void)
 {
-	int i;
+	int i, group_size;
 	GtkTreeIter iter, parent_iter;
 	GtkTreeStore *liststore, *treestore;
 	struct dive *last_dive = NULL;
-	struct dive *first_trip_dive = NULL;
 	struct dive *last_trip_dive = NULL;
+	const char *last_location = NULL;
 	time_t dive_date;
 
 	treestore = GTK_TREE_STORE(dive_list.treemodel);
@@ -910,24 +911,29 @@ static void fill_dive_list(void)
 		if (new_group(dive, &last_dive, &dive_date))
 		{
 			/* make sure we display the first date of the trip in previous summary */
-			if (first_trip_dive && last_trip_dive && last_trip_dive->when < first_trip_dive->when)
+			if (last_trip_dive)
 				gtk_tree_store_set(treestore, &parent_iter,
-						DIVE_DATE, last_trip_dive->when,
-						DIVE_LOCATION, last_trip_dive->location,
-						-1);
-			first_trip_dive = dive;
+					DIVE_NR, group_size,
+					DIVE_DATE, last_trip_dive->when,
+					DIVE_LOCATION, last_location,
+					-1);
 
 			gtk_tree_store_append(treestore, &parent_iter, NULL);
 			gtk_tree_store_set(treestore, &parent_iter,
 					DIVE_INDEX, -NEW_TRIP,
-					DIVE_NR, -NEW_TRIP,
-					DIVE_DATE, dive_date,
-					DIVE_LOCATION, dive->location,
+					DIVE_NR, 1,
 					DIVE_TEMPERATURE, 0,
 					DIVE_SAC, 0,
 					-1);
+
+			group_size = 0;
+			/* This might be NULL */
+			last_location = dive->location;
 		}
+		group_size++;
 		last_trip_dive = dive;
+		if (dive->location)
+			last_location = dive->location;
 		update_cylinder_related_info(dive);
 		gtk_tree_store_append(treestore, &iter, &parent_iter);
 		gtk_tree_store_set(treestore, &iter,
@@ -956,6 +962,14 @@ static void fill_dive_list(void)
 			DIVE_SAC, 0,
 			-1);
 	}
+
+	/* make sure we display the first date of the trip in previous summary */
+	if (last_trip_dive)
+		gtk_tree_store_set(treestore, &parent_iter,
+				DIVE_NR, group_size,
+				DIVE_DATE, last_trip_dive->when,
+				DIVE_LOCATION, last_location,
+				-1);
 
 	update_dive_list_units();
 	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(dive_list.model), &iter)) {
@@ -1035,6 +1049,20 @@ static void realize_cb(GtkWidget *tree_view, gpointer userdata)
 	gtk_widget_grab_focus(tree_view);
 }
 
+/*
+ * Double-clicking on a group entry will expand a collapsed group
+ * and vice versa.
+ */
+static void collapse_expand(GtkTreeView *tree_view, GtkTreePath *path)
+{
+	if (!gtk_tree_view_row_expanded(tree_view, path))
+		gtk_tree_view_expand_row(tree_view, path, FALSE);
+	else
+		gtk_tree_view_collapse_row(tree_view, path);
+
+}
+
+/* Double-click on a dive list */
 static void row_activated_cb(GtkTreeView *tree_view,
 			GtkTreePath *path,
 			GtkTreeViewColumn *column,
@@ -1045,10 +1073,14 @@ static void row_activated_cb(GtkTreeView *tree_view,
 
 	if (!gtk_tree_model_get_iter(GTK_TREE_MODEL(dive_list.model), &iter, path))
 		return;
+
 	gtk_tree_model_get(GTK_TREE_MODEL(dive_list.model), &iter, DIVE_INDEX, &index, -1);
 	/* a negative index is special for the "group by date" entries */
-	if (index >= 0)
-		edit_dive_info(get_dive(index));
+	if (index < 0) {
+		collapse_expand(tree_view, path);
+		return;
+	}
+	edit_dive_info(get_dive(index));
 }
 
 void add_dive_cb(GtkWidget *menuitem, gpointer data)
