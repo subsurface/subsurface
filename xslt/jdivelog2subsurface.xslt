@@ -64,6 +64,21 @@
         </buddy>
       </xsl:if>
 
+      <xsl:if test="Equipment/Suit != ''">
+	<suit>
+          <xsl:value-of select="Equipment/Suit"/>
+	</suit>
+        <xsl:value-of select="Equipment/Suit"/>
+      </xsl:if>
+
+      <xsl:if test="Equipment/Weight != ''">
+        <weightsystem>
+          <xsl:attribute name="weight">
+            <xsl:value-of select="Equipment/Weight"/>
+          </xsl:attribute>
+        </weightsystem>
+      </xsl:if>
+
       <notes>
         <xsl:if test="DiveActivity != ''">
 Diveactivity: <xsl:value-of select="DiveActivity"/>
@@ -74,14 +89,8 @@ Divetype: <xsl:value-of select="DiveType"/>
         <xsl:if test="Equipment/Visibility != ''">
 Visibility: <xsl:value-of select="Equipment/Visibility"/>
         </xsl:if>
-        <xsl:if test="Equipment/Suit != ''">
-Suit: <xsl:value-of select="Equipment/Suit"/>
-        </xsl:if>
         <xsl:if test="Equipment/Gloves != ''">
 Gloves: <xsl:value-of select="Equipment/Gloves"/>
-        </xsl:if>
-        <xsl:if test="Equipment/Weight != ''">
-Weight: <xsl:value-of select="Equipment/Weight"/>
         </xsl:if>
         <xsl:if test="Comment != ''">
 Comment: <xsl:value-of select="Comment"/>
