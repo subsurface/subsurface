@@ -173,7 +173,7 @@ static void file_open(GtkWidget *w, gpointer data)
 static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
-	char *filename;
+	char *filename = NULL;
 	dialog = gtk_file_chooser_dialog_new("Save File As",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
