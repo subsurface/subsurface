@@ -582,9 +582,7 @@ static time_t dive_time_widget(struct dive *dive)
 	GtkWidget *duration, *depth;
 	GtkWidget *label;
 	guint yval, mval, dval;
-	struct tm tm, *tmp;
-	struct timeval tv;
-	time_t time;
+	struct tm tm, *time;
 	int success;
 	double depthinterval, val;
 
@@ -608,11 +606,27 @@ static time_t dive_time_widget(struct dive *dive)
 	h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
 	m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
 
-	gettimeofday(&tv, NULL);
-	time = tv.tv_sec;
-	tmp = localtime(&time);
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(h), tmp->tm_hour);
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(m), (tmp->tm_min / 5)*5);
+	/*
+	 * If we have a dive selected, 'add dive' will default
+	 * to one hour after the end of that dive. Otherwise,
+	 * we'll just take the current time.
+	 */
+	if (amount_selected == 1) {
+		time_t when = current_dive->when;
+		when += current_dive->duration.seconds;
+		when += 60*60;
+		time = gmtime(&when);
+	} else {
+		time_t now;
+		struct timeval tv;
+		gettimeofday(&tv, NULL);
+		now = tv.tv_sec;
+		time = localtime(&now);
+	}
+	gtk_calendar_select_month(GTK_CALENDAR(cal), time->tm_mon, time->tm_year + 1900);
+	gtk_calendar_select_day(GTK_CALENDAR(cal), time->tm_mday);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(h), time->tm_hour);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(m), (time->tm_min / 5)*5);
 
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(h), TRUE);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(m), TRUE);
