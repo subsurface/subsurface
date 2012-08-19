@@ -274,10 +274,7 @@ static void show_total_dive_stats(struct dive *dive)
 	const char *unit;
 	stats_t *stats_ptr;
 
-	if (amount_selected < 2)
-		stats_ptr = &stats;
-	else
-		stats_ptr = &stats_selection;
+	stats_ptr = &stats_selection;
 
 	set_label(stats_w.selection_size, "%d", stats_ptr->selection_size);
 	if (stats_ptr->min_temp) {
