@@ -21,6 +21,8 @@ GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
 GtkWidget *error_label;
 GtkWidget *vpane, *hpane;
+GtkWidget *notebook;
+
 int        error_count;
 
 const char *divelist_font;
@@ -662,10 +664,14 @@ static void view_info(GtkWidget *w, gpointer data)
 static void view_three(GtkWidget *w, gpointer data)
 {
 	GtkAllocation alloc;
+	GtkRequisition requisition;
+
 	gtk_widget_get_allocation(hpane, &alloc);
 	gtk_paned_set_position(GTK_PANED(hpane), alloc.width/2);
 	gtk_widget_get_allocation(vpane, &alloc);
-	gtk_paned_set_position(GTK_PANED(vpane), alloc.height/2);
+	gtk_widget_size_request(notebook, &requisition);
+	/* pick the requested size for the notebook plus 6 pixels for frame */
+	gtk_paned_set_position(GTK_PANED(vpane), requisition.height + 6);
 }
 
 static GtkActionEntry menu_items[] = {
@@ -750,7 +756,6 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
-	GtkWidget *notebook;
 	GtkWidget *nb_page;
 	GtkWidget *dive_list;
 	GtkWidget *menubar;
