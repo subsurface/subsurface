@@ -1101,6 +1101,16 @@ void edit_dive_cb(GtkWidget *menuitem, gpointer data)
 	edit_multi_dive_info(amount_selected, selectiontracker);
 }
 
+static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
+{
+	gtk_tree_view_expand_all(tree_view);
+}
+
+static void collapse_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
+{
+	gtk_tree_view_collapse_all(tree_view);
+}
+
 static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button)
 {
 	GtkWidget *menu, *menuitem, *image;
@@ -1119,6 +1129,12 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_cb), model);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	}
+	menuitem = gtk_menu_item_new_with_label("Expand all");
+	g_signal_connect(menuitem, "activate", G_CALLBACK(expand_all_cb), tree_view);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	menuitem = gtk_menu_item_new_with_label("Collapse all");
+	g_signal_connect(menuitem, "activate", G_CALLBACK(collapse_all_cb), tree_view);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);
 
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
