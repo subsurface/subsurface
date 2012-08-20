@@ -166,7 +166,7 @@ static int delete_dive_info(struct dive *dive)
 
 static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-	edit_multi_dive_info(amount_selected, selectiontracker);
+	edit_multi_dive_info(-1);
 }
 
 static void info_menu_delete_cb(GtkMenuItem *menuitem, gpointer user_data)
@@ -489,15 +489,14 @@ void update_equipment_data(struct dive *dive, struct dive *master)
 		memcpy(dive->weightsystem, master->weightsystem, WS_BYTES);
 }
 
-int edit_multi_dive_info(int nr, int *indices)
+/* A negative index means "all selected" */
+int edit_multi_dive_info(int index)
 {
-	int success, i;
+	int success;
 	GtkWidget *dialog, *vbox;
 	struct dive_info info;
 	struct dive *master;
 
-	if (!nr)
-		return 0;
 	dialog = gtk_dialog_new_with_buttons("Dive Info",
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -506,34 +505,31 @@ int edit_multi_dive_info(int nr, int *indices)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	/* SCARY STUFF - IS THIS THE BEST WAY TO DO THIS???
-	 *
-	 * current_dive is one of our selected dives - and that is
-	 * the one that is used to pre-fill the edit widget. Its
-	 * data is used as the starting point for all selected dives
-	 * I think it would be better to somehow collect and combine
-	 * info from all the selected dives */
-	master = current_dive;
-	dive_info_widget(vbox, master, &info, (nr > 1));
+	master = get_dive(index);
+	if (!master)
+		master = current_dive;
+	dive_info_widget(vbox, master, &info, index < 0);
 	show_dive_equipment(master, W_IDX_SECONDARY);
 	save_equipment_data(master);
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (success) {
-		/* Update the other non-current dives first */
-		for (i = 0; i < nr; i++) {
-			int idx = indices[i];
-			struct dive *dive = get_dive(idx);
+		/* Update the non-current selected dives first */
+		if (index < 0) {
+			int i;
+			struct dive *dive;
 
-			if (!dive || dive == master)
-				continue;
-			/* copy all "info" fields */
-			save_dive_info_changes(dive, master, &info);
-			/* copy the cylinders / weightsystems */
-			update_equipment_data(dive, master);
-			/* this is extremely inefficient... it loops through all
-			   dives to find the right one - but we KNOW the index already */
-			flush_divelist(dive);
+			for (i = 0; (dive = get_dive(i)) != NULL; i++) {
+				if (dive == master || !dive->selected)
+					continue;
+				/* copy all "info" fields */
+				save_dive_info_changes(dive, master, &info);
+				/* copy the cylinders / weightsystems */
+				update_equipment_data(dive, master);
+				/* this is extremely inefficient... it loops through all
+				   dives to find the right one - but we KNOW the index already */
+				flush_divelist(dive);
+			}
 		}
 
 		/* Update the master dive last! */
@@ -553,7 +549,7 @@ int edit_dive_info(struct dive *dive)
 	if (!dive)
 		return 0;
 	idx = dive->number;
-	return edit_multi_dive_info(1, &idx);
+	return edit_multi_dive_info(idx);
 }
 
 static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)

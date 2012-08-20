@@ -236,6 +236,7 @@ struct event {
 
 struct dive {
 	int number;
+	int selected;
 	time_t when;
 	char *location;
 	char *notes;
@@ -284,7 +285,6 @@ struct dive_table {
 
 extern struct dive_table dive_table;
 
-extern int *selectiontracker;
 extern int selected_dive;
 #define current_dive (get_dive(selected_dive))
 
@@ -355,7 +355,7 @@ extern void evn_foreach(void (*callback)(const char *, int *, void *), void *dat
 
 extern int add_new_dive(struct dive *dive);
 extern int edit_dive_info(struct dive *dive);
-extern int edit_multi_dive_info(int nr, int *indices);
+extern int edit_multi_dive_info(int idx);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 

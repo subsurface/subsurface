@@ -143,24 +143,21 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 }
 
 /* make sure we skip the selected summary entries */
-void process_selected_dives(GList *selected_dives, int *selectiontracker, GtkTreeModel *model)
+void process_selected_dives(void)
 {
-	struct dive *dp;
-	unsigned int i;
-	int idx;
+	struct dive *dive;
+	unsigned int i, nr;
 
 	memset(&stats_selection, 0, sizeof(stats_selection));
 
-	for (i = 0; i < amount_selected; ++i) {
-		idx = selectiontracker[i];
-		if (idx > 0) {
-			dp = get_dive(idx);
-			if (dp) {
-				process_dive(dp, &stats_selection);
-			}
+	nr = 0;
+	for (i = 0; (dive = get_dive(i)) != NULL; ++i) {
+		if (dive->selected) {
+			process_dive(dive, &stats_selection);
+			nr++;
 		}
 	}
-	stats_selection.selection_size = amount_selected;
+	stats_selection.selection_size = nr;
 }
 
 static void set_label(GtkWidget *w, const char *fmt, ...)

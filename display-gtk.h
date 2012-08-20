@@ -77,7 +77,7 @@ extern GtkWidget *dive_list_create(void);
 
 unsigned int amount_selected;
 
-extern void process_selected_dives(GList *, int *, GtkTreeModel *);
+extern void process_selected_dives(void);
 
 typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    GtkCellRenderer *renderer,

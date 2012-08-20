@@ -14,7 +14,6 @@
 #include "color.h"
 
 int selected_dive = 0;
-int *selectiontracker;
 
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
