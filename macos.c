@@ -98,6 +98,9 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 	gtk_widget_hide (menubar);
 	gtk_osxapplication_set_menu_bar(osx_app, GTK_MENU_SHELL(menubar));
 
+	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator1");
+	if (sep)
+		gtk_widget_destroy(sep);
 	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator2");
 	if (sep)
 		gtk_widget_destroy(sep);
