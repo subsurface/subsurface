@@ -138,6 +138,37 @@ void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *pat
 	} while (gtk_tree_model_iter_next(model, &child));
 }
 
+static int selected_children(GtkTreeModel *model, GtkTreeIter *iter)
+{
+	GtkTreeIter child;
+
+	if (!gtk_tree_model_iter_children(model, &child, iter))
+		return FALSE;
+
+	do {
+		int idx;
+		struct dive *dive;
+
+		gtk_tree_model_get(model, &child, DIVE_INDEX, &idx, -1);
+		dive = get_dive(idx);
+
+		if (dive->selected)
+			return TRUE;
+	} while (gtk_tree_model_iter_next(model, &child));
+	return FALSE;
+}
+
+/* Make sure that if we collapse a summary row with any selected children, the row
+   shows up as selected too */
+void row_collapsed_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+
+	if (selected_children(model, iter))
+		gtk_tree_selection_select_iter(selection, iter);
+}
+
 static GList *selection_changed = NULL;
 
 /*
@@ -178,6 +209,9 @@ static void select_dive_group(GtkTreeModel *model, GtkTreeSelection *selection, 
 {
 	int first = 1;
 	GtkTreeIter child;
+
+	if (selected == selected_children(model, iter))
+		return;
 
 	if (!gtk_tree_model_iter_children(model, &child, iter))
 		return;
@@ -1296,6 +1330,7 @@ GtkWidget *dive_list_create(void)
 	g_signal_connect_after(dive_list.tree_view, "realize", G_CALLBACK(realize_cb), NULL);
 	g_signal_connect(dive_list.tree_view, "row-activated", G_CALLBACK(row_activated_cb), NULL);
 	g_signal_connect(dive_list.tree_view, "row-expanded", G_CALLBACK(row_expanded_cb), NULL);
+	g_signal_connect(dive_list.tree_view, "row-collapsed", G_CALLBACK(row_collapsed_cb), NULL);
 	g_signal_connect(dive_list.tree_view, "button-press-event", G_CALLBACK(button_press_cb), NULL);
 	g_signal_connect(dive_list.tree_view, "popup-menu", G_CALLBACK(popup_menu_cb), NULL);
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
