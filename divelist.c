@@ -226,7 +226,7 @@ static void select_dive_group(GtkTreeModel *model, GtkTreeSelection *selection, 
 		first = 0;
 		dive = get_dive(idx);
 		if (dive->selected == selected)
-			break;
+			continue;
 
 		select_dive(dive, selected);
 		if (selected)
