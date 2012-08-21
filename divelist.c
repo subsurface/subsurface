@@ -1108,7 +1108,7 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 
 void edit_dive_cb(GtkWidget *menuitem, gpointer data)
 {
-	edit_multi_dive_info(-1);
+	edit_multi_dive_info(NULL);
 }
 
 static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)

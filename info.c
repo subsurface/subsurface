@@ -166,7 +166,7 @@ static int delete_dive_info(struct dive *dive)
 
 static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-	edit_multi_dive_info(-1);
+	edit_multi_dive_info(NULL);
 }
 
 static void info_menu_delete_cb(GtkMenuItem *menuitem, gpointer user_data)
@@ -490,7 +490,7 @@ void update_equipment_data(struct dive *dive, struct dive *master)
 }
 
 /* A negative index means "all selected" */
-int edit_multi_dive_info(int index)
+int edit_multi_dive_info(struct dive *single_dive)
 {
 	int success;
 	GtkWidget *dialog, *vbox;
@@ -505,17 +505,17 @@ int edit_multi_dive_info(int index)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	master = get_dive(index);
+	master = single_dive;
 	if (!master)
 		master = current_dive;
-	dive_info_widget(vbox, master, &info, index < 0);
+	dive_info_widget(vbox, master, &info, !single_dive);
 	show_dive_equipment(master, W_IDX_SECONDARY);
 	save_equipment_data(master);
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (success) {
 		/* Update the non-current selected dives first */
-		if (index < 0) {
+		if (!single_dive) {
 			int i;
 			struct dive *dive;
 
@@ -544,12 +544,9 @@ int edit_multi_dive_info(int index)
 
 int edit_dive_info(struct dive *dive)
 {
-	int idx;
-
 	if (!dive)
 		return 0;
-	idx = dive->number;
-	return edit_multi_dive_info(idx);
+	return edit_multi_dive_info(dive);
 }
 
 static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
