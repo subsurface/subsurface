@@ -519,7 +519,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 			int i;
 			struct dive *dive;
 
-			for (i = 0; (dive = get_dive(i)) != NULL; i++) {
+			for_each_dive(i, dive) {
 				if (dive == master || !dive->selected)
 					continue;
 				/* copy all "info" fields */

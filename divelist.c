@@ -85,7 +85,7 @@ void dump_selection(void)
 	struct dive *dive;
 
 	printf("currently selected are %d dives:", amount_selected);
-	for (i = 0; (dive = get_dive(i)) != NULL; i++) {
+	for_each_dive(i, dive) {
 		if (dive->selected)
 			printf(" %d", i);
 	}

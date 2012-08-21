@@ -295,6 +295,16 @@ static inline struct dive *get_dive(unsigned int nr)
 	return dive_table.dives[nr];
 }
 
+/*
+ * Iterate over each dive, with the first parameter being the index
+ * iterator variable, and the second one being the dive one.
+ *
+ * I don't think anybody really wants the index, and we could make
+ * it local to the for-loop, but that would make us requires C99.
+ */
+#define for_each_dive(_i,_x) \
+	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
+
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
 extern void set_filename(const char *filename);

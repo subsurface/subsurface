@@ -151,7 +151,7 @@ void process_selected_dives(void)
 	memset(&stats_selection, 0, sizeof(stats_selection));
 
 	nr = 0;
-	for (i = 0; (dive = get_dive(i)) != NULL; ++i) {
+	for_each_dive(i, dive) {
 		if (dive->selected) {
 			process_dive(dive, &stats_selection);
 			nr++;
