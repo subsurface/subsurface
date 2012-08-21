@@ -498,7 +498,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(gc, &tro, i, 1, "%d:%d", i/60, i%60);
+			plot_text(gc, &tro, i, 1, "%02d:%02d", i/60, i%60);
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
