@@ -120,6 +120,28 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	return d;
 }
 
+double get_weight_units(unsigned int grams, int *frac, const char **units)
+{
+	int decimals;
+	double value;
+	const char* unit;
+
+	if (output_units.weight == LBS) {
+		value = grams_to_lbs(grams);
+		unit = "lbs";
+		decimals = 0;
+	} else {
+		value = grams / 1000.0;
+		unit = "kg";
+		decimals = 1;
+	}
+	if (frac)
+		*frac = decimals;
+	if (units)
+		*units = unit;
+	return value;
+}
+
 struct dive *alloc_dive(void)
 {
 	const int initial_samples = 5;
@@ -450,8 +472,20 @@ struct dive *fixup_dive(struct dive *dive)
 			cyl->sample_end.mbar = 0;
 		}
 	}
-	if (end < 0)
+	if (end < 0) {
+		/* Assume an ascent/descent rate of 9 m/min */
+		int depth = dive->maxdepth.mm;
+		int asc_desc_time = depth*60/9000;
+		int duration = dive->duration.seconds;
+
+		/* Protect against insane dives - make mean be half of max */
+		if (duration <= asc_desc_time) {
+			duration = 2;
+			asc_desc_time = 1;
+		}
+		dive->meandepth.mm = depth*(duration-asc_desc_time)/duration;
 		return dive;
+	}
 
 	update_duration(&dive->duration, end - start);
 	if (start != end)
@@ -464,6 +498,7 @@ struct dive *fixup_dive(struct dive *dive)
 	add_people(dive->buddy);
 	add_people(dive->divemaster);
 	add_location(dive->location);
+	add_suit(dive->suit);
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);
@@ -471,6 +506,10 @@ struct dive *fixup_dive(struct dive *dive)
 			cyl->start.mbar = 0;
 		if (same_rounded_pressure(cyl->sample_end, cyl->end))
 			cyl->end.mbar = 0;
+	}
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		weightsystem_t *ws = dive->weightsystem + i;
+		add_weightsystem_description(ws);
 	}
 
 	return dive;
@@ -677,6 +716,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_TXT(res, a, b, buddy);
 	MERGE_TXT(res, a, b, divemaster);
 	MERGE_MAX(res, a, b, rating);
+	MERGE_TXT(res, a, b, suit);
 	MERGE_MAX(res, a, b, number);
 	MERGE_MAX(res, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;

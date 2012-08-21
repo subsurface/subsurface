@@ -150,6 +150,64 @@ static void parse_cochran_header(const char *filename,
 	free(buf);
 }
 
+/*
+ * Cochran export files show that depths seem to be in
+ * quarter feet (rounded up to tenths).
+ *
+ * Temperature seems to be exported in Fahrenheit.
+ *
+ * Cylinder pressure seems to be in multiples of 4 psi.
+ *
+ * The data seems to be some byte-stream where the pattern
+ * appears to be that the two high bits indicate type of
+ * data.
+ *
+ * For '00', the low six bits seem to be positive
+ * values with a distribution towards zero, probably depth
+ * deltas. '0 0' exists, but is very rare ("surface"?). 63
+ * exists, but is rare.
+ *
+ * For '01', the low six bits seem to be a signed binary value,
+ * with the most common being 0, and 1 and -1 (63) being the
+ * next most common values.
+ *
+ * NOTE! Don's CAN data is different. It shows the reverse pattern
+ * for 00 and 01 above: 00 looks like signed data, with 01 looking
+ * like unsigned data.
+ *
+ * For '10', there seems to be another positive value distribution,
+ * but unlike '00' the value 0 is common, and I see examples of 63
+ * too ("overflow"?) and a spike at '7'.
+ *
+ * Again, Don's data is different.
+ *
+ * The values for '11' seem to be some exception case. Possibly
+ * overflow handling, possibly warning events. It doesn't have
+ * any clear distribution: values 0, 1, 16, 33, 35, 48, 51, 55
+ * and 63 are common.
+ *
+ * For David and Don's data, '01' is the most common, with '00'
+ * and '10' not uncommon. '11' is two orders of magnitude less
+ * common.
+ *
+ * For Alex, '00' is the most common, with 01 about a third as
+ * common, and 02 a third of that. 11 is least common.
+ *
+ * There clearly are variations in the format here. And Alex has
+ * a different data offset than Don/David too (see the #ifdef DON).
+ * Christ. Maybe I've misread the patterns entirely.
+ */
+static void cochran_profile_write(const unsigned char *buf, int size)
+{
+	int i;
+
+	for (i = 0; i < size; i++) {
+		unsigned char c = buf[i];
+		printf("%d %d\n",
+			c >> 6, c & 0x3f);
+	}
+}
+
 static void parse_cochran_dive(const char *filename, int dive,
 		const unsigned char *decode, unsigned mod,
 		const unsigned char *in, unsigned size)
@@ -187,6 +245,7 @@ static void parse_cochran_dive(const char *filename, int dive,
 
 	printf("\n%s, dive %d\n\n", filename, dive);
 	cochran_debug_write(filename, buf, size);
+	cochran_profile_write(buf + offset, size - offset);
 
 	free(buf);
 }

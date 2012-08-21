@@ -21,6 +21,8 @@ GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
 GtkWidget *error_label;
 GtkWidget *vpane, *hpane;
+GtkWidget *notebook;
+
 int        error_count;
 extern char zoomed_plot;
 
@@ -32,12 +34,14 @@ static GtkWidget *dive_profile;
 
 visible_cols_t visible_cols = {TRUE, FALSE};
 
-static const char *default_dive_computer;
+static const char *default_dive_computer_vendor;
+static const char *default_dive_computer_product;
 static const char *default_dive_computer_device;
 
-static int is_default_dive_computer(const char *name)
+static int is_default_dive_computer(const char *vendor, const char *product)
 {
-	return default_dive_computer && !strcmp(name, default_dive_computer);
+	return default_dive_computer_vendor && !strcmp(vendor, default_dive_computer_vendor) &&
+		default_dive_computer_product && !strcmp(product, default_dive_computer_product);
 }
 
 static int is_default_dive_computer_device(const char *name)
@@ -45,14 +49,18 @@ static int is_default_dive_computer_device(const char *name)
 	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
 }
 
-static void set_default_dive_computer(const char *name)
+static void set_default_dive_computer(const char *vendor, const char *product)
 {
-	if (!name || !*name)
+	if (!vendor || !*vendor)
 		return;
-	if (is_default_dive_computer(name))
+	if (!product || !*product)
 		return;
-	default_dive_computer = name;
-	subsurface_set_conf("dive_computer", PREF_STRING, name);
+	if (is_default_dive_computer(vendor, product))
+		return;
+	default_dive_computer_vendor = vendor;
+	default_dive_computer_product = product;
+	subsurface_set_conf("dive_computer_vendor", PREF_STRING, vendor);
+	subsurface_set_conf("dive_computer_product", PREF_STRING, product);
 }
 
 static void set_default_dive_computer_device(const char *name)
@@ -165,48 +173,75 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
-static void file_save(GtkWidget *w, gpointer data)
+static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
-	dialog = gtk_file_chooser_dialog_new("Save File",
+	char *filename = NULL;
+	dialog = gtk_file_chooser_dialog_new("Save File As",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		NULL);
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
-	if (!existing_filename) {
-		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "Untitled document");
-	} else
-		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), existing_filename);
 
+	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), existing_filename);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		char *filename;
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	}
+	gtk_widget_destroy(dialog);
+
+	if (filename){
 		save_dives(filename);
+		set_filename(filename);
 		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
-	gtk_widget_destroy(dialog);
 }
 
-static void ask_save_changes()
+static void file_save(GtkWidget *w, gpointer data)
+{
+	if (!existing_filename)
+		return file_save_as(w, data);
+
+	save_dives(existing_filename);
+	mark_divelist_changed(FALSE);
+}
+
+static gboolean ask_save_changes()
 {
 	GtkWidget *dialog, *label, *content;
+	gboolean quit = TRUE;
 	dialog = gtk_dialog_new_with_buttons("Save Changes?",
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_NO, GTK_RESPONSE_NO,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		NULL);
 	content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	label = gtk_label_new ("You have unsaved changes\nWould you like to save those before exiting the program?");
+
+	if (!existing_filename){
+		label = gtk_label_new (
+			"You have unsaved changes\nWould you like to save those before exiting the program?");
+	} else {
+		char *label_text = (char*) malloc(sizeof(char) * (92 + strlen(existing_filename)));
+		sprintf(label_text,
+			"You have unsaved changes to file: %s \nWould you like to save those before exiting the program?",
+			existing_filename);
+		label = gtk_label_new (label_text);
+		g_free(label_text);
+	}
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+	gint outcode = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (outcode == GTK_RESPONSE_ACCEPT) {
 		file_save(NULL,NULL);
+	} else if (outcode == GTK_RESPONSE_CANCEL) {
+		quit = FALSE;
 	}
 	gtk_widget_destroy(dialog);
+	return quit;
 }
 
 static gboolean on_delete(GtkWidget* w, gpointer data)
@@ -214,10 +249,15 @@ static gboolean on_delete(GtkWidget* w, gpointer data)
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
+	gboolean quit = TRUE;
 	if (unsaved_changes())
-		ask_save_changes();
+		quit = ask_save_changes();
 
-	return FALSE; /* go ahead, kill the program, we're good now */
+	if (quit){
+		return FALSE; /* go ahead, kill the program, we're good now */
+	} else {
+		return TRUE; /* We are not leaving */
+	}
 }
 
 static void on_destroy(GtkWidget* w, gpointer data)
@@ -230,9 +270,13 @@ static void quit(GtkWidget *w, gpointer data)
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
 
+	gboolean quit = TRUE;
 	if (unsaved_changes())
-		ask_save_changes();
-	gtk_main_quit();
+		quit = ask_save_changes();
+
+	if (quit){
+		gtk_main_quit();
+	}
 }
 
 GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
@@ -343,6 +387,8 @@ OPTIONCALLBACK(otu_toggle, visible_cols.otu)
 OPTIONCALLBACK(sac_toggle, visible_cols.sac)
 OPTIONCALLBACK(nitrox_toggle, visible_cols.nitrox)
 OPTIONCALLBACK(temperature_toggle, visible_cols.temperature)
+OPTIONCALLBACK(totalweight_toggle, visible_cols.totalweight)
+OPTIONCALLBACK(suit_toggle, visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
@@ -398,36 +444,46 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		"lbs",  set_lbs, (output_units.weight == LBS),
 		NULL);
 
-	frame = gtk_frame_new("Columns");
+	frame = gtk_frame_new("Show Columns");
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	button = gtk_check_button_new_with_label("Show Temp");
+	button = gtk_check_button_new_with_label("Temp");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.temperature);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(temperature_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show Cyl");
+	button = gtk_check_button_new_with_label("Cyl");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.cylinder);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(cylinder_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show O" UTF8_SUBSCRIPT_2 "%");
+	button = gtk_check_button_new_with_label("O" UTF8_SUBSCRIPT_2 "%");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.nitrox);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(nitrox_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show SAC");
+	button = gtk_check_button_new_with_label("SAC");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.sac);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(sac_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Show OTU");
+	button = gtk_check_button_new_with_label("OTU");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
+
+	button = gtk_check_button_new_with_label("Weight");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.totalweight);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(totalweight_toggle), NULL);
+
+	button = gtk_check_button_new_with_label("Suit");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.suit);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(suit_toggle), NULL);
 
 	font = gtk_font_button_new_with_font(divelist_font);
 	gtk_box_pack_start(GTK_BOX(vbox), font, FALSE, FALSE, 5);
@@ -452,6 +508,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(output_units.temperature == FAHRENHEIT));
 		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(output_units.weight == LBS));
 		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(visible_cols.temperature));
+		subsurface_set_conf("TOTALWEIGHT", PREF_BOOL, BOOL_TO_PTR(visible_cols.totalweight));
+		subsurface_set_conf("SUIT", PREF_BOOL, BOOL_TO_PTR(visible_cols.suit));
 		subsurface_set_conf("CYLINDER", PREF_BOOL, BOOL_TO_PTR(visible_cols.cylinder));
 		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(visible_cols.nitrox));
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
@@ -604,11 +662,17 @@ static void view_info(GtkWidget *w, gpointer data)
 	gtk_paned_set_position(GTK_PANED(hpane), 65535);
 }
 
-/* Ooh. I don't know how to get the half-way size. So I'm just using random numbers */
 static void view_three(GtkWidget *w, gpointer data)
 {
-	gtk_paned_set_position(GTK_PANED(hpane), 400);
-	gtk_paned_set_position(GTK_PANED(vpane), 200);
+	GtkAllocation alloc;
+	GtkRequisition requisition;
+
+	gtk_widget_get_allocation(hpane, &alloc);
+	gtk_paned_set_position(GTK_PANED(hpane), alloc.width/2);
+	gtk_widget_get_allocation(vpane, &alloc);
+	gtk_widget_size_request(notebook, &requisition);
+	/* pick the requested size for the notebook plus 6 pixels for frame */
+	gtk_paned_set_position(GTK_PANED(vpane), requisition.height + 6);
 }
 
 static void toggle_zoom(GtkWidget *w, gpointer data)
@@ -619,16 +683,18 @@ static void toggle_zoom(GtkWidget *w, gpointer data)
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", GTK_STOCK_FILE, "File", NULL, NULL, NULL},
-	{ "LogMenuAction",  GTK_STOCK_FILE, "Log", NULL, NULL, NULL},
-	{ "ViewMenuAction",  GTK_STOCK_FILE, "View", NULL, NULL, NULL},
-	{ "FilterMenuAction",  GTK_STOCK_FILE, "Filter", NULL, NULL, NULL},
-	{ "HelpMenuAction", GTK_STOCK_HELP, "Help", NULL, NULL, NULL},
+	{ "FileMenuAction", NULL, "File", NULL, NULL, NULL},
+	{ "LogMenuAction",  NULL, "Log", NULL, NULL, NULL},
+	{ "ViewMenuAction",  NULL, "View", NULL, NULL, NULL},
+	{ "FilterMenuAction",  NULL, "Filter", NULL, NULL, NULL},
+	{ "HelpMenuAction", NULL, "Help", NULL, NULL, NULL},
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
+	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
-	{ "Preferences",    NULL, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
+	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
+	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
@@ -647,6 +713,7 @@ static const gchar* ui_string = " \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
+				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
@@ -655,6 +722,7 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Import\" action=\"Import\" /> \
+				<menuitem name=\"Add Dive\" action=\"AddDive\" /> \
 				<separator name=\"Separator\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
@@ -698,11 +766,11 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
-	GtkWidget *notebook;
 	GtkWidget *nb_page;
 	GtkWidget *dive_list;
 	GtkWidget *menubar;
 	GtkWidget *vbox;
+	GtkWidget *scrolled;
 	GdkScreen *screen;
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
@@ -728,13 +796,16 @@ void init_ui(int *argcp, char ***argvp)
 	/* an unset key is FALSE - all these are hidden by default */
 	visible_cols.cylinder = PTR_TO_BOOL(subsurface_get_conf("CYLINDER", PREF_BOOL));
 	visible_cols.temperature = PTR_TO_BOOL(subsurface_get_conf("TEMPERATURE", PREF_BOOL));
+	visible_cols.totalweight = PTR_TO_BOOL(subsurface_get_conf("TOTALWEIGHT", PREF_BOOL));
+	visible_cols.suit = PTR_TO_BOOL(subsurface_get_conf("SUIT", PREF_BOOL));
 	visible_cols.nitrox = PTR_TO_BOOL(subsurface_get_conf("NITROX", PREF_BOOL));
 	visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
-	default_dive_computer = subsurface_get_conf("dive_computer", PREF_STRING);
+	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
+	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
 	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
 
 	error_info_bar = NULL;
@@ -771,13 +842,16 @@ void init_ui(int *argcp, char ***argvp)
 
 	vpane = gtk_vpaned_new();
 	gtk_box_pack_start(GTK_BOX(vbox), vpane, TRUE, TRUE, 3);
-
 	hpane = gtk_hpaned_new();
 	gtk_paned_add1(GTK_PANED(vpane), hpane);
+	g_signal_connect_after(G_OBJECT(vbox), "realize", G_CALLBACK(view_three), NULL);
 
 	/* Notebook for dive info vs profile vs .. */
 	notebook = gtk_notebook_new();
-	gtk_paned_add1(GTK_PANED(hpane), notebook);
+	scrolled = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_paned_add1(GTK_PANED(hpane), scrolled);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), notebook);
 	g_signal_connect(notebook, "switch-page", G_CALLBACK(switch_page), NULL);
 
 	/* Create the actual divelist */
@@ -795,7 +869,7 @@ void init_ui(int *argcp, char ***argvp)
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Dive Notes"));
 
 	/* Frame for dive equipment */
-	nb_page = equipment_widget();
+	nb_page = equipment_widget(W_IDX_PRIMARY);
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Equipment"));
 
 	/* Frame for single dive statistics */
@@ -924,19 +998,44 @@ static int fill_computer_list(GtkListStore *store)
 {
 	int index = -1, i;
 	GtkTreeIter iter;
-	struct device_list *list = device_list;
+	dc_iterator_t *iterator = NULL;
+	dc_descriptor_t *descriptor = NULL;
 
-	for (list = device_list, i = 0 ; list->name ; list++, i++) {
+	i = 0;
+	dc_descriptor_iterator(&iterator);
+	while (dc_iterator_next (iterator, &descriptor) == DC_STATUS_SUCCESS) {
+		const char *vendor = dc_descriptor_get_vendor(descriptor);
+		const char *product = dc_descriptor_get_product(descriptor);
+
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
-			0, list->name,
-			1, list->type,
+			0, descriptor,
 			-1);
-		if (is_default_dive_computer(list->name))
+		if (is_default_dive_computer(vendor, product))
 			index = i;
+		i++;
 	}
+	dc_iterator_free(iterator);
 	return index;
 }
+
+void render_dive_computer(GtkCellLayout *cell,
+		GtkCellRenderer *renderer,
+		GtkTreeModel *model,
+		GtkTreeIter *iter,
+		gpointer data)
+{
+	char buffer[40];
+	dc_descriptor_t *descriptor = NULL;
+	const char *vendor, *product;
+
+	gtk_tree_model_get(model, iter, 0, &descriptor, -1);
+	vendor = dc_descriptor_get_vendor(descriptor);
+	product = dc_descriptor_get_product(descriptor);
+	snprintf(buffer, sizeof(buffer), "%s %s", vendor, product);
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
 
 static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 {
@@ -948,7 +1047,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	model = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+	model = gtk_list_store_new(1, G_TYPE_POINTER);
 	default_index = fill_computer_list(model);
 
 	frame = gtk_frame_new("Dive computer");
@@ -959,7 +1058,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
-	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo_box), renderer, "text", 0, NULL);
+	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(combo_box), renderer, render_dive_computer, NULL, NULL);
 
 	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
 
@@ -1104,10 +1203,9 @@ repeat:
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	switch (result) {
-		int type;
+		dc_descriptor_t *descriptor;
 		GtkTreeIter iter;
 		GtkTreeModel *model;
-		const char *comp;
 		GSList *list;
 	case GTK_RESPONSE_ACCEPT:
 		/* what happened - did the user pick a file? In that case
@@ -1116,17 +1214,23 @@ repeat:
 			gtk_widget_destroy(info);
 		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
 		if (g_slist_length(list) == 0) {
+			const char *vendor, *product;
+
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
 				break;
 			model = gtk_combo_box_get_model(computer);
 			gtk_tree_model_get(model, &iter,
-					0, &comp,
-					1, &type,
+					0, &descriptor,
 					-1);
-			devicedata.type = type;
-			devicedata.name = comp;
+
+			vendor = dc_descriptor_get_vendor(descriptor);
+			product = dc_descriptor_get_product(descriptor);
+
+			devicedata.descriptor = descriptor;
+			devicedata.vendor = vendor;
+			devicedata.product = product;
 			devicedata.devname = gtk_entry_get_text(device);
-			set_default_dive_computer(devicedata.name);
+			set_default_dive_computer(vendor, product);
 			set_default_dive_computer_device(devicedata.devname);
 			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 			if (info)
@@ -1156,7 +1260,9 @@ void update_progressbar_text(progressbar_t *progress, const char *text)
 
 void set_filename(const char *filename)
 {
-	if (!existing_filename && filename)
+	if (existing_filename)
+		free(existing_filename);
+	existing_filename = NULL;
+	if (filename)
 		existing_filename = strdup(filename);
-	return;
 }

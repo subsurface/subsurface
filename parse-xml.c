@@ -647,6 +647,7 @@ static int uddf_fill_sample(struct sample *sample, const char *name, int len, ch
 	return	MATCH(".divetime", sampletime, &sample->time) ||
 		MATCH(".depth", depth, &sample->depth) ||
 		MATCH(".temperature", temperature, &sample->temperature) ||
+		MATCH(".tankpressure", pressure, &sample->cylinderpressure) ||
 		0;
 }
 
@@ -1098,6 +1099,10 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 	if (MATCH(".gps", gps_location, dive))
 		return;
 	if (MATCH(".location", utf8_string, &dive->location))
+		return;
+	if (MATCH(".suit", utf8_string, &dive->suit))
+		return;
+	if (MATCH(".divesuit", utf8_string, &dive->suit))
 		return;
 	if (MATCH(".notes", utf8_string, &dive->notes))
 		return;

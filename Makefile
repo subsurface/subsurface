@@ -51,19 +51,19 @@ libdc-usr64 := $(wildcard /usr/lib64/libdivecomputer.a)
 
 ifneq ($(strip $(libdc-local)),)
 	LIBDIVECOMPUTERDIR = /usr/local
-	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 else ifneq ($(strip $(libdc-local64)),)
 	LIBDIVECOMPUTERDIR = /usr/local
-	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib64/libdivecomputer.a
 else ifneq ($(strip $(libdc-usr)),)
 	LIBDIVECOMPUTERDIR = /usr
-	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
 else ifneq ($(strip $(libdc-usr64)),)
 	LIBDIVECOMPUTERDIR = /usr
-	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include/libdivecomputer
+	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib64/libdivecomputer.a
 else
 $(error Cannot find libdivecomputer - please edit Makefile)

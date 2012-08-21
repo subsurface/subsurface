@@ -14,6 +14,8 @@ typedef struct {
 typedef struct {
 	gboolean cylinder;
 	gboolean temperature;
+	gboolean totalweight;
+	gboolean suit;
 	gboolean nitrox;
 	gboolean sac;
 	gboolean otu;
@@ -29,9 +31,11 @@ typedef enum {
 
 #if defined __APPLE__
 #define CTRLCHAR "<Meta>"
+#define SHIFTCHAR "<Shift>"
 #define PREFERENCE_ACCEL "<Meta>comma"
 #else
 #define CTRLCHAR "<Control>"
+#define SHIFTCHAR "<Shift>"
 #define PREFERENCE_ACCEL NULL
 #endif
 
@@ -54,6 +58,7 @@ extern const char *divelist_font;
 extern void set_divelist_font(const char *);
 
 extern void import_dialog(GtkWidget *, gpointer);
+extern void add_dive_cb(GtkWidget *, gpointer);
 extern void report_error(GError* error);
 extern int process_ui_events(void);
 extern void update_progressbar(progressbar_t *progress, double value);
@@ -62,16 +67,17 @@ extern void update_progressbar_text(progressbar_t *progress, const char *text);
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *extended_dive_info_widget(void);
-extern GtkWidget *equipment_widget(void);
+extern GtkWidget *equipment_widget(int w_idx);
 extern GtkWidget *single_stats_widget(void);
 extern GtkWidget *total_stats_widget(void);
-extern GtkWidget *cylinder_list_widget(void);
+extern GtkWidget *cylinder_list_widget(int w_idx);
+extern GtkWidget *weightsystem_list_widget(int w_idx);
 
 extern GtkWidget *dive_list_create(void);
 
 unsigned int amount_selected;
 
-extern void process_selected_dives(GList *, GtkTreeModel *);
+extern void process_selected_dives(void);
 
 typedef void (*data_func_t)(GtkTreeViewColumn *col,
 			    GtkCellRenderer *renderer,

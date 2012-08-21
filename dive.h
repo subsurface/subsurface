@@ -92,13 +92,17 @@ typedef struct {
 	const char *description;	/* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
-extern int cylinder_none(void *_data);
-extern int weightsystem_none(void *_data);
+extern gboolean cylinder_none(void *_data);
+extern gboolean no_cylinders(cylinder_t *cyl);
+extern gboolean cylinders_equal(cylinder_t *cyl1, cylinder_t *cyl2);
+extern gboolean no_weightsystems(weightsystem_t *ws);
+extern gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 
 extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
-extern double get_volume_units(unsigned int mm, int *frac, const char **units);
-extern double get_temp_units(unsigned int mm, const char **units);
+extern double get_volume_units(unsigned int ml, int *frac, const char **units);
+extern double get_temp_units(unsigned int mk, const char **units);
+extern double get_weight_units(unsigned int grams, int *frac, const char **units);
 
 static inline double grams_to_lbs(int grams)
 {
@@ -125,19 +129,29 @@ static inline double mm_to_feet(int mm)
 	return mm * 0.00328084;
 }
 
+static inline unsigned long feet_to_mm(double feet)
+{
+	return feet * 304.8 + 0.5;
+}
+
 static inline int to_feet(depth_t depth)
 {
 	return mm_to_feet(depth.mm) + 0.5;
 }
 
-static double mkelvin_to_C(int mkelvin)
+static inline double mkelvin_to_C(int mkelvin)
 {
 	return (mkelvin - 273150) / 1000.0;
 }
 
-static double mkelvin_to_F(int mkelvin)
+static inline double mkelvin_to_F(int mkelvin)
 {
 	return mkelvin * 9 / 5000.0 - 459.670;
+}
+
+static inline unsigned long F_to_mkelvin(double f)
+{
+	return (f-32) * 1000 / 1.8 + 273150.5;
 }
 
 static inline int to_C(temperature_t temp)
@@ -165,6 +179,12 @@ static inline double psi_to_bar(double psi)
 {
 	return psi / 14.5037738;
 }
+
+static inline unsigned long psi_to_mbar(double psi)
+{
+	return psi_to_bar(psi)*1000 + 0.5;
+}
+
 static inline int to_PSI(pressure_t pressure)
 {
 	return pressure.mbar * 0.0145037738 + 0.5;
@@ -211,9 +231,12 @@ struct event {
 
 #define MAX_CYLINDERS (8)
 #define MAX_WEIGHTSYSTEMS (4)
+#define W_IDX_PRIMARY 0
+#define W_IDX_SECONDARY 1
 
 struct dive {
 	int number;
+	int selected;
 	time_t when;
 	char *location;
 	char *notes;
@@ -226,6 +249,7 @@ struct dive {
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
+	char *suit;
 	int sac, otu;
 	struct event *events;
 	int samples, alloc_samples;
@@ -266,10 +290,20 @@ extern int selected_dive;
 
 static inline struct dive *get_dive(unsigned int nr)
 {
-	if (nr >= dive_table.nr)
+	if (nr >= dive_table.nr || nr < 0)
 		return NULL;
 	return dive_table.dives[nr];
 }
+
+/*
+ * Iterate over each dive, with the first parameter being the index
+ * iterator variable, and the second one being the dive one.
+ *
+ * I don't think anybody really wants the index, and we could make
+ * it local to the for-loop, but that would make us requires C99.
+ */
+#define for_each_dive(_i,_x) \
+	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
 
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
@@ -283,7 +317,7 @@ extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
 
 extern void show_dive_info(struct dive *);
 
-extern void show_dive_equipment(struct dive *);
+extern void show_dive_equipment(struct dive *, int w_idx);
 
 extern void show_dive_stats(struct dive *);
 
@@ -322,12 +356,16 @@ extern void exit_ui(void);
 extern void report_error(GError* error);
 
 extern void add_cylinder_description(cylinder_type_t *);
+extern void add_weightsystem_description(weightsystem_t *);
 extern void add_people(const char *string);
 extern void add_location(const char *string);
+extern void add_suit(const char *string);
 extern void remember_event(const char *eventname);
 extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 
+extern int add_new_dive(struct dive *dive);
 extern int edit_dive_info(struct dive *dive);
+extern int edit_multi_dive_info(struct dive *single_dive);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 

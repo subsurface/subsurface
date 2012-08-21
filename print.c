@@ -196,6 +196,22 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 {
 }
 
+static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
+{
+	GtkWidget *vbox, *hbox, *label;
+	gtk_print_operation_set_custom_tab_label(operation, "Dive details");
+
+	vbox = gtk_vbox_new(TRUE, 5);
+	label = gtk_label_new("Print Dive details");
+	gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
+	gtk_widget_show_all(vbox);
+	return vbox;
+}
+
+static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
+{
+}
+
 static GtkPrintSettings *settings = NULL;
 
 void do_print(void)
@@ -210,6 +226,8 @@ void do_print(void)
 		gtk_print_operation_set_print_settings(print, settings);
 	pages = (dive_table.nr + 5) / 6;
 	gtk_print_operation_set_n_pages(print, pages);
+	g_signal_connect(print, "create-custom-widget", G_CALLBACK(print_dialog), NULL);
+	g_signal_connect(print, "custom-widget-apply", G_CALLBACK(print_dialog_apply), NULL);
 	g_signal_connect(print, "begin_print", G_CALLBACK(begin_print), NULL);
 	g_signal_connect(print, "draw_page", G_CALLBACK(draw_page), NULL);
 	res = gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
