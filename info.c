@@ -496,6 +496,7 @@ int edit_multi_dive_info(int index)
 	GtkWidget *dialog, *vbox;
 	struct dive_info info;
 	struct dive *master;
+	gboolean multi;
 
 	dialog = gtk_dialog_new_with_buttons("Dive Info",
 		GTK_WINDOW(main_window),
@@ -508,7 +509,23 @@ int edit_multi_dive_info(int index)
 	master = get_dive(index);
 	if (!master)
 		master = current_dive;
-	dive_info_widget(vbox, master, &info, index < 0);
+
+	/* See if we should use multi dive mode */
+	multi = FALSE;
+	if (index < 0)
+	{
+		int i;
+		struct dive *dive;
+
+		for (i = 0; (dive = get_dive(i)) != NULL; i++) {
+			if (dive != master && dive->selected) {
+				multi = TRUE;
+				break;
+			}
+		}
+	}
+
+	dive_info_widget(vbox, master, &info, multi);
 	show_dive_equipment(master, W_IDX_SECONDARY);
 	save_equipment_data(master);
 	gtk_widget_show_all(dialog);
