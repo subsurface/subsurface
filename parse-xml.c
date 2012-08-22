@@ -39,6 +39,11 @@ void record_dive(struct dive *dive)
 	dive_table.nr = nr+1;
 }
 
+void record_trip(struct dive *trip)
+{
+	dive_trip_list = INSERT_TRIP(trip, dive_trip_list);
+}
+
 static void delete_dive_renumber(struct dive **dives, int i, int nr)
 {
 	struct dive *dive = dives[i];
@@ -156,7 +161,7 @@ const struct units IMPERIAL_units = {
 /*
  * Dive info as it is being built up..
  */
-static struct dive *cur_dive;
+static struct dive *cur_dive, *cur_trip = NULL;
 static struct sample *cur_sample;
 static struct {
 	int active;
@@ -533,6 +538,17 @@ static void get_index(char *buffer, void *_i)
 	int *i = _i;
 	*i = atoi(buffer);
 	free(buffer);
+}
+
+static void get_tripflag(char *buffer, void *_tf)
+{
+	tripflag_t *tf = _tf;
+	tripflag_t i;
+
+	*tf = TF_NONE;
+	for (i = NO_TRIP; i < NUM_TRIPFLAGS; i++)
+		if(! strcmp(buffer, tripflag_names[i]))
+			*tf = i;
 }
 
 static void centibar(char *buffer, void *_pressure)
@@ -1062,6 +1078,8 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 
 	if (MATCH(".number", get_index, &dive->number))
 		return;
+	if (MATCH(".tripflag", get_tripflag, &dive->tripflag))
+		return;
 	if (MATCH(".date", divedate, &dive->when))
 		return;
 	if (MATCH(".time", divetime, &dive->when))
@@ -1138,6 +1156,27 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 	nonmatch("dive", name, buf);
 }
 
+/* We're in the top-level trip xml. Try to convert whatever value to a trip value */
+static void try_to_fill_trip(struct dive **divep, const char *name, char *buf)
+{
+	int len = strlen(name);
+
+	start_match("trip", name, buf);
+
+	struct dive *dive = *divep;
+
+	if (MATCH(".date", divedate, &dive->when)) {
+		dive->when = utc_mktime(&cur_tm);
+		return;
+	}
+	if (MATCH(".location", utf8_string, &dive->location))
+		return;
+	if (MATCH(".notes", utf8_string, &dive->notes))
+		return;
+
+	nonmatch("trip", name, buf);
+}
+
 /*
  * File boundaries are dive boundaries. But sometimes there are
  * multiple dives per file, so there can be other events too that
@@ -1160,6 +1199,22 @@ static void dive_end(void)
 	cur_dive = NULL;
 	cur_cylinder_index = 0;
 	cur_ws_index = 0;
+}
+
+static void trip_start(void)
+{
+	if (cur_trip)
+		return;
+	cur_trip = alloc_dive();
+	memset(&cur_tm, 0, sizeof(cur_tm));
+}
+
+static void trip_end(void)
+{
+	if (!cur_trip)
+		return;
+	record_trip(cur_trip);
+	cur_trip = NULL;
 }
 
 static void event_start(void)
@@ -1223,6 +1278,10 @@ static void entry(const char *name, int size, const char *raw)
 	}
 	if (cur_sample) {
 		try_to_fill_sample(cur_sample, name, buf);
+		return;
+	}
+	if (cur_trip) {
+		try_to_fill_trip(&cur_trip, name, buf);
 		return;
 	}
 	if (cur_dive) {
@@ -1350,6 +1409,7 @@ static struct nesting {
 } nesting[] = {
 	{ "dive", dive_start, dive_end },
 	{ "Dive", dive_start, dive_end },
+	{ "trip", trip_start, trip_end },
 	{ "sample", sample_start, sample_end },
 	{ "waypoint", sample_start, sample_end },
 	{ "SAMPLE", sample_start, sample_end },

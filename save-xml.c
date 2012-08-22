@@ -97,6 +97,12 @@ static void quote(FILE *f, const char *text)
 		case '&':
 			escape = "&amp;";
 			break;
+		case '\'':
+			escape = "&apos;";
+			break;
+		case '\"':
+			escape = "&quot;";
+			break;
 		}
 		fwrite(text, (p - text - 1), 1, f);
 		if (!escape)
@@ -275,6 +281,18 @@ static void save_events(FILE *f, struct event *ev)
 	}
 }
 
+static void save_trip(FILE *f, struct dive *trip)
+{
+	struct tm *tm = gmtime(&trip->when);
+
+	fprintf(f, "<trip");
+	fprintf(f, " date='%04u-%02u-%02u'",
+		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+	if (trip->location)
+		show_utf8(f, trip->location, " location=\'","\'");
+	fprintf(f, " />\n");
+}
+
 static void save_dive(FILE *f, struct dive *dive)
 {
 	int i;
@@ -283,6 +301,8 @@ static void save_dive(FILE *f, struct dive *dive)
 	fputs("<dive", f);
 	if (dive->number)
 		fprintf(f, " number='%d'", dive->number);
+	if (dive->tripflag != TF_NONE)
+		fprintf(f, " tripflag='%s'", tripflag_names[dive->tripflag]);
 	if (dive->rating)
 		fprintf(f, " rating='%d'", dive->rating);
 	fprintf(f, " date='%04u-%02u-%02u'",
@@ -305,6 +325,8 @@ static void save_dive(FILE *f, struct dive *dive)
 void save_dives(const char *filename)
 {
 	int i;
+	GList *trip = NULL;
+
 	FILE *f = fopen(filename, "w");
 
 	if (!f)
@@ -314,6 +336,12 @@ void save_dives(const char *filename)
 	update_dive(current_dive);
 
 	fprintf(f, "<dives>\n<program name='subsurface' version='%d'></program>\n", VERSION);
+
+	/* save the trips */
+	while ((trip = NEXT_TRIP(trip, dive_trip_list)) != 0)
+		save_trip(f, trip->data);
+
+	/* save the dives */
 	for (i = 0; i < dive_table.nr; i++)
 		save_dive(f, get_dive(i));
 	fprintf(f, "</dives>\n");

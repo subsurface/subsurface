@@ -389,6 +389,7 @@ OPTIONCALLBACK(temperature_toggle, visible_cols.temperature)
 OPTIONCALLBACK(totalweight_toggle, visible_cols.totalweight)
 OPTIONCALLBACK(suit_toggle, visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
+OPTIONCALLBACK(autogroup_toggle, autogroup)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
 {
@@ -484,8 +485,22 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(suit_toggle), NULL);
 
+	frame = gtk_frame_new("Divelist Font");
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+
 	font = gtk_font_button_new_with_font(divelist_font);
-	gtk_box_pack_start(GTK_BOX(vbox), font, FALSE, FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(frame),font);
+
+	frame = gtk_frame_new("Misc. Options");
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+
+	button = gtk_check_button_new_with_label("Automatically group dives in trips");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), autogroup);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(autogroup_toggle), NULL);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -514,6 +529,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
+		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
 
 		/* Flush the changes out to the system */
 		subsurface_flush_conf();
@@ -793,6 +809,8 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
+
+	autogroup = PTR_TO_BOOL(subsurface_get_conf("autogroup", PREF_BOOL));
 
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
