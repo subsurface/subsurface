@@ -24,7 +24,6 @@ GtkWidget *vpane, *hpane;
 GtkWidget *notebook;
 
 int        error_count;
-extern char zoomed_plot;
 
 const char *divelist_font;
 
