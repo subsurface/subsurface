@@ -8,6 +8,11 @@
 #include "dive.h"
 #include "file.h"
 
+/* Crazy windows sh*t */
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 static int readfile(const char *filename, struct memblock *mem)
 {
 	int ret, fd;
@@ -17,7 +22,7 @@ static int readfile(const char *filename, struct memblock *mem)
 	mem->buffer = NULL;
 	mem->size = 0;
 
-	fd = open(filename, O_RDONLY);
+	fd = open(filename, O_RDONLY | O_BINARY);
 	if (fd < 0)
 		return fd;
 	ret = fstat(fd, &st);
