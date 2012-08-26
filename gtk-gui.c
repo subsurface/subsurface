@@ -172,10 +172,29 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+/* return the path and the file component contained in the full path */
+static char *path_and_file(char *pathin, char **fileout) {
+	char *slash = pathin, *next;
+
+	if (! pathin) {
+		*fileout = strdup("");
+		return strdup("");
+	}
+	while ((next = strpbrk(slash + 1, "\\/")))
+		slash = next;
+	if (pathin != slash)
+		slash++;
+	*fileout = strdup(slash);
+        return strndup(pathin, slash - pathin);
+}
+
 static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
 	char *filename = NULL;
+	char *current_file;
+	char *current_dir;
+
 	dialog = gtk_file_chooser_dialog_new("Save File As",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -184,7 +203,9 @@ static void file_save_as(GtkWidget *w, gpointer data)
 		NULL);
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), existing_filename);
+	current_dir = path_and_file(existing_filename, &current_file);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
+	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), current_file);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 	}
