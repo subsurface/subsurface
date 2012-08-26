@@ -95,6 +95,7 @@ typedef struct {
 extern gboolean cylinder_none(void *_data);
 extern gboolean no_cylinders(cylinder_t *cyl);
 extern gboolean cylinders_equal(cylinder_t *cyl1, cylinder_t *cyl2);
+extern void copy_cylinders(cylinder_t *cyl1, cylinder_t *cyl2);
 extern gboolean no_weightsystems(weightsystem_t *ws);
 extern gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 

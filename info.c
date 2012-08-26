@@ -482,7 +482,7 @@ void update_equipment_data(struct dive *dive, struct dive *master)
 	if ( ! cylinders_equal(remember_cyl, master->cylinder) &&
 		(no_cylinders(dive->cylinder) ||
 			cylinders_equal(dive->cylinder, remember_cyl)))
-		memcpy(dive->cylinder, master->cylinder, CYL_BYTES);
+		copy_cylinders(master->cylinder, dive->cylinder);
 	if (! weightsystems_equal(remember_ws, master->weightsystem) &&
 		(no_weightsystems(dive->weightsystem) ||
 			weightsystems_equal(dive->weightsystem, remember_ws)))

@@ -461,13 +461,11 @@ gboolean description_equal(const char *desc1, const char *desc2)
 }
 
 /* when checking for the same cylinder we want the size and description to match
-   but don't compare the start and end pressures */
+   but don't compare the start and end pressures, nor the Nitrox/He values */
 static gboolean one_cylinder_equal(cylinder_t *cyl1, cylinder_t *cyl2)
 {
 	return cyl1->type.size.mliter == cyl2->type.size.mliter &&
 		cyl1->type.workingpressure.mbar == cyl2->type.workingpressure.mbar &&
-		cyl1->gasmix.o2.permille == cyl2->gasmix.o2.permille &&
-		cyl1->gasmix.he.permille == cyl2->gasmix.he.permille &&
 		description_equal(cyl1->type.description, cyl2->type.description);
 }
 
@@ -479,6 +477,21 @@ gboolean cylinders_equal(cylinder_t *cyl1, cylinder_t *cyl2)
 		if (!one_cylinder_equal(cyl1 + i, cyl2 + i))
 			return FALSE;
 	return TRUE;
+}
+
+/* copy size and description of all cylinders from cyl1 to cyl2 */
+void copy_cylinders(cylinder_t *cyl1, cylinder_t *cyl2)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cyl2[i].type.size.mliter = cyl1[i].type.size.mliter;
+		cyl2[i].type.workingpressure.mbar = cyl1[i].type.workingpressure.mbar;
+		if (cyl1[i].type.description)
+			cyl2[i].type.description = strdup(cyl1[i].type.description);
+		else
+			cyl2[i].type.description = NULL;
+	}
 }
 
 static gboolean weightsystem_none(void *_data)
