@@ -175,6 +175,8 @@ static void file_open(GtkWidget *w, gpointer data)
 /* return the path and the file component contained in the full path */
 static char *path_and_file(char *pathin, char **fileout) {
 	char *slash = pathin, *next;
+	char *result;
+	size_t len, n;
 
 	if (! pathin) {
 		*fileout = strdup("");
@@ -185,7 +187,19 @@ static char *path_and_file(char *pathin, char **fileout) {
 	if (pathin != slash)
 		slash++;
 	*fileout = strdup(slash);
-        return strndup(pathin, slash - pathin);
+
+	/* strndup(pathin, slash - pathin) */
+	n = slash - pathin;
+	len = strlen(pathin);
+	if (n < len)
+		len = n;
+
+	result = (char *)malloc(len + 1);
+	if (!result)
+		return 0;
+
+	result[len] = '\0';
+	return (char *)memcpy(result, pathin, len);
 }
 
 static void file_save_as(GtkWidget *w, gpointer data)
@@ -206,6 +220,9 @@ static void file_save_as(GtkWidget *w, gpointer data)
 	current_dir = path_and_file(existing_filename, &current_file);
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), current_file);
+
+	free(current_dir);
+
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 	}
