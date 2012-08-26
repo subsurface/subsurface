@@ -1,5 +1,5 @@
 /* profile.c */
-/* creates all the necessary data for drawing the dive profile 
+/* creates all the necessary data for drawing the dive profile
  * uses cairo to draw it
  */
 #include <stdio.h>
@@ -873,7 +873,7 @@ static velocity_t velocity(int speed)
 	else if (speed < -25) /* -5ft/min */
 		v = SLOW;
 	else if (speed < 25) /* very hard to find data, but it appears that the recommendations
-				for descent are usually about 2x ascent rate; still, we want 
+				for descent are usually about 2x ascent rate; still, we want
 				stable to mean stable */
 		v = STABLE;
 	else if (speed < 152) /* between 5 and 30ft/min is considered slow */
@@ -929,7 +929,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 				int past = -2;
 				while (i+past > 0 && entry[0].sec - entry[past].sec < 15)
 					past--;
-				entry->velocity = velocity((entry[0].depth - entry[past].depth) / 
+				entry->velocity = velocity((entry[0].depth - entry[past].depth) /
 							(entry[0].sec - entry[past].sec));
 			}
 		} else
@@ -941,7 +941,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 		struct plot_data *entry = pi->entry +i;
 		analyze_plot_info_minmax(entry, pi->entry, pi->entry+nr);
 	}
-	
+
 	return pi;
 }
 

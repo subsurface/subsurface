@@ -211,7 +211,7 @@ static void show_single_dive_stats(struct dive *dive)
 	set_label(single_w.date, buf);
 	set_label(single_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);
 	if (prev_dive)
-		set_label(single_w.surf_intv, 
+		set_label(single_w.surf_intv,
 			get_time_string(dive->when - (prev_dive->when + prev_dive->duration.seconds), 4));
 	else
 		set_label(single_w.surf_intv, "unknown");

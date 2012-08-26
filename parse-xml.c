@@ -1420,8 +1420,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size, GError **er
 		}
 		return;
 	}
-	/* we assume that the last (or only) filename passed as argument is a 
-	 * great filename to use as default when saving the dives */ 
+	/* we assume that the last (or only) filename passed as argument is a
+	 * great filename to use as default when saving the dives */
 	set_filename(url);
 	reset_all();
 	dive_start();

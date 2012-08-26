@@ -172,7 +172,7 @@ static void parse_argument(const char *arg)
 			if (strncmp(arg, "-psn_", 5) == 0) {
 				return;
 			}
-			/* fallthrough */ 
+			/* fallthrough */
 		default:
 			fprintf(stderr, "Bad argument '%s'\n", arg);
 			exit(1);
@@ -217,7 +217,7 @@ int main(int argc, char **argv)
 	parse_xml_init();
 
 	init_ui(&argc, &argv);
-	
+
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];
 
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
 		}
 		GError *error = NULL;
 		parse_file(a, &error);
-		
+
 		if (error != NULL)
 		{
 			report_error(error);

@@ -28,7 +28,7 @@ typedef struct {
 	uint16_t	consumption;		// (units unclear)
 	uint8_t		rgt;			// (remaining gas time in minutes)
 	uint8_t		cns;
-	uint8_t		flags[8]; 
+	uint8_t		flags[8];
 } __attribute((packed)) uemis_sample_t;
 
 #endif /* DIVE_H */

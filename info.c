@@ -1,7 +1,7 @@
 /* info.c */
-/* creates the UI for the info frame - 
+/* creates the UI for the info frame -
  * controlled through the following interfaces:
- * 
+ *
  * void show_dive_info(struct dive *dive)
  *
  * called from gtk-ui:

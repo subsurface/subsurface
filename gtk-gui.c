@@ -98,7 +98,7 @@ void report_error(GError* error)
 	{
 		return;
 	}
-	
+
 	if (error_info_bar == NULL)
 	{
 		error_count = 1;
@@ -108,11 +108,11 @@ void report_error(GError* error)
 		g_signal_connect(error_info_bar, "response", G_CALLBACK(on_info_bar_response), NULL);
 		gtk_info_bar_set_message_type(GTK_INFO_BAR(error_info_bar),
 		                              GTK_MESSAGE_ERROR);
-		
+
 		error_label = gtk_label_new(error->message);
 		GtkWidget *container = gtk_info_bar_get_content_area(GTK_INFO_BAR(error_info_bar));
 		gtk_container_add(GTK_CONTAINER(container), error_label);
-		
+
 		gtk_box_pack_start(GTK_BOX(main_vbox), error_info_bar, FALSE, FALSE, 0);
 		gtk_widget_show_all(main_vbox);
 	}
@@ -151,7 +151,7 @@ static void file_open(GtkWidget *w, gpointer data)
 		GSList *filenames, *fn_glist;
 		char *filename;
 		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
-		
+
 		GError *error = NULL;
 		while(filenames != NULL) {
 			filename = filenames->data;
@@ -162,7 +162,7 @@ static void file_open(GtkWidget *w, gpointer data)
 				g_error_free(error);
 				error = NULL;
 			}
-			
+
 			g_free(filename);
 			filenames = g_slist_next(filenames);
 		}
