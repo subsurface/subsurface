@@ -222,6 +222,7 @@ static void file_save_as(GtkWidget *w, gpointer data)
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), current_file);
 
 	free(current_dir);
+	free(current_file);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
