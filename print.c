@@ -300,6 +300,7 @@ void do_print(void)
 
 	repaint_dive();
 	print = gtk_print_operation_new();
+	gtk_print_operation_set_unit(print, GTK_UNIT_POINTS);
 	if (settings != NULL)
 		gtk_print_operation_set_print_settings(print, settings);
 	g_signal_connect(print, "create-custom-widget", G_CALLBACK(print_dialog), NULL);
