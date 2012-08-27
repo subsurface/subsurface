@@ -67,10 +67,9 @@ static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const c
  * characters, but at least libxml2 doesn't like them. It doesn't even
  * allow them quoted. So we just skip them and replace them with '?'.
  *
- * Nothing else (and if we ever do this using attributes, we'd need to
- * quote the quotes we use too).
+ * If we do this for attributes, we need to quote the quotes we use too.
  */
-static void quote(FILE *f, const char *text)
+static void quote(FILE *f, const char *text, int is_attribute)
 {
 	const char *p = text;
 
@@ -98,9 +97,13 @@ static void quote(FILE *f, const char *text)
 			escape = "&amp;";
 			break;
 		case '\'':
+			if (!is_attribute)
+				continue;
 			escape = "&apos;";
 			break;
 		case '\"':
+			if (!is_attribute)
+				continue;
 			escape = "&quot;";
 			break;
 		}
@@ -112,7 +115,7 @@ static void quote(FILE *f, const char *text)
 	}
 }
 
-static void show_utf8(FILE *f, const char *text, const char *pre, const char *post)
+static void show_utf8(FILE *f, const char *text, const char *pre, const char *post, int is_attribute)
 {
 	int len;
 
@@ -127,7 +130,7 @@ static void show_utf8(FILE *f, const char *text, const char *pre, const char *po
 		len--;
 	/* FIXME! Quoting! */
 	fputs(pre, f);
-	quote(f, text);
+	quote(f, text, is_attribute);
 	fputs(post, f);
 }
 
@@ -177,7 +180,7 @@ static void show_location(FILE *f, struct dive *dive)
 		}
 		prefix = buffer;
 	}
-	show_utf8(f, dive->location, prefix,"</location>\n");
+	show_utf8(f, dive->location, prefix,"</location>\n", 0);
 }
 
 static void save_overview(FILE *f, struct dive *dive)
@@ -186,10 +189,10 @@ static void save_overview(FILE *f, struct dive *dive)
 	save_temperatures(f, dive);
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_location(f, dive);
-	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n");
-	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n");
-	show_utf8(f, dive->notes, "  <notes>","</notes>\n");
-	show_utf8(f, dive->suit, "  <suit>","</suit>\n");
+	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n", 0);
+	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n", 0);
+	show_utf8(f, dive->notes, "  <notes>","</notes>\n", 0);
+	show_utf8(f, dive->suit, "  <suit>","</suit>\n", 0);
 }
 
 static void save_cylinder_info(FILE *f, struct dive *dive)
@@ -268,7 +271,7 @@ static void save_one_event(FILE *f, struct event *ev)
 	show_index(f, ev->type, "type='", "'");
 	show_index(f, ev->flags, "flags='", "'");
 	show_index(f, ev->value, "value='", "'");
-	show_utf8(f, ev->name, " name='", "'");
+	show_utf8(f, ev->name, " name='", "'", 1);
 	fprintf(f, " />\n");
 }
 
