@@ -235,8 +235,12 @@ struct event {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
+typedef enum { TF_NONE, NO_TRIP, IN_TRIP, NUM_TRIPFLAGS } tripflag_t;
+extern const char *tripflag_names[NUM_TRIPFLAGS];
+
 struct dive {
 	int number;
+	tripflag_t tripflag;
 	int selected;
 	time_t when;
 	char *location;
@@ -256,6 +260,58 @@ struct dive {
 	int samples, alloc_samples;
 	struct sample sample[];
 };
+
+extern GList *dive_trip_list;
+extern gboolean autogroup;
+/* random threashold: three days without diving -> new trip
+ * this works very well for people who usually dive as part of a trip and don't
+ * regularly dive at a local facility; this is why trips are an optional feature */
+#define TRIP_THRESHOLD 3600*24*3
+
+#define UNGROUPED_DIVE(_dive) ((_dive)->tripflag == NO_TRIP)
+#define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP)
+#define NEXT_TRIP(_entry, _list) ((_entry) ? g_list_next(_entry) : (_list))
+#define PREV_TRIP(_entry, _list) ((_entry) ? g_list_previous(_entry) : g_list_last(_list))
+#define DIVE_TRIP(_trip) ((struct dive *)(_trip)->data)
+#define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
+
+static inline int dive_date_cmp(gconstpointer _a, gconstpointer _b) {
+	return ((struct dive *)(_a))->when - ((struct dive *)(_b))->when;
+}
+
+#define FIND_TRIP(_trip, _list) g_list_find_custom((_list), (_trip), dive_date_cmp)
+
+#ifdef DEBUG_TRIP
+static void dump_trip_list(void)
+{
+	GList *p = NULL;
+	int i=0;
+	while ((p = NEXT_TRIP(p, dive_trip_list))) {
+		struct tm *tm = gmtime(&DIVE_TRIP(p)->when);
+		printf("trip %d to \"%s\" on %04u-%02u-%02u\n", ++i, DIVE_TRIP(p)->location,
+			tm->tm_year + 1900, tm->tm_mon+1, tm->tm_mday);
+	}
+	printf("-----\n");
+}
+#endif
+
+/* insert the trip into the list - but ensure you don't have two trips
+ * for the same date; but if you have, make sure you don't keep the
+ * one with less information */
+static inline GList *insert_trip(struct dive *_trip, GList *_list)
+{
+	GList *result = FIND_TRIP(_trip, _list);
+	if (result) {
+		if (! DIVE_TRIP(result)->location)
+			DIVE_TRIP(result)->location = _trip->location;
+	} else {
+		result = g_list_insert_sorted((_list), (_trip), dive_date_cmp);
+	}
+#ifdef DEBUG_TRIP
+	dump_trip_list();
+#endif
+	return result;
+}
 
 /*
  * We keep our internal data in well-specified units, but
