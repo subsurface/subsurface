@@ -97,6 +97,12 @@ static void quote(FILE *f, const char *text)
 		case '&':
 			escape = "&amp;";
 			break;
+		case '\'':
+			escape = "&apos;";
+			break;
+		case '\"':
+			escape = "&quot;";
+			break;
 		}
 		fwrite(text, (p - text - 1), 1, f);
 		if (!escape)
