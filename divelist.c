@@ -893,8 +893,6 @@ static void fill_dive_list(void)
 
 	/* if we have pre-existing trips, start on the last one */
 	trip = g_list_last(dive_trip_list);
-	if (trip)
-		dive_trip = DIVE_TRIP(trip);
 
 	treestore = GTK_TREE_STORE(dive_list.treemodel);
 	liststore = GTK_TREE_STORE(dive_list.listmodel);
@@ -911,6 +909,9 @@ static void fill_dive_list(void)
 					DIVE_LOCATION, dive_trip->location,
 					-1);
 		}
+		/* the dive_trip info might have been killed by a previous UNGROUPED dive */
+		if (trip)
+			dive_trip = DIVE_TRIP(trip);
 		/* tripflag defines how dives are handled;
 		 * TF_NONE "not handled yet" - create time based group if autogroup == TRUE
 		 * NO_TRIP "set as no group" - simply leave at top level
@@ -925,7 +926,7 @@ static void fill_dive_list(void)
 				/* allocate new trip - all fields default to 0
 				   and get filled in further down */
 				dive_trip = alloc_dive();
-				dive_trip_list = INSERT_TRIP(dive_trip, dive_trip_list);
+				dive_trip_list = insert_trip(dive_trip, dive_trip_list);
 				trip = FIND_TRIP(dive_trip, dive_trip_list);
 			}
 		} else { /* either the dive has a trip or we aren't creating trips */
@@ -938,7 +939,7 @@ static void fill_dive_list(void)
 					 * Otherwise we need to create a new trip */
 					if (autogroup) {
 						dive_trip = alloc_dive();
-						dive_trip_list = INSERT_TRIP(dive_trip, dive_trip_list);
+						dive_trip_list = insert_trip(dive_trip, dive_trip_list);
 						trip = FIND_TRIP(dive_trip, dive_trip_list);
 					} else {
 						/* let's go back to the last valid trip */

@@ -278,8 +278,39 @@ static inline int dive_date_cmp(gconstpointer _a, gconstpointer _b) {
 	return ((struct dive *)(_a))->when - ((struct dive *)(_b))->when;
 }
 
-#define INSERT_TRIP(_trip, _list) g_list_insert_sorted((_list), (_trip), dive_date_cmp)
 #define FIND_TRIP(_trip, _list) g_list_find_custom((_list), (_trip), dive_date_cmp)
+
+#ifdef DEBUG_TRIP
+static void dump_trip_list(void)
+{
+	GList *p = NULL;
+	int i=0;
+	while ((p = NEXT_TRIP(p, dive_trip_list))) {
+		struct tm *tm = gmtime(&DIVE_TRIP(p)->when);
+		printf("trip %d to \"%s\" on %04u-%02u-%02u\n", ++i, DIVE_TRIP(p)->location,
+			tm->tm_year + 1900, tm->tm_mon+1, tm->tm_mday);
+	}
+	printf("-----\n");
+}
+#endif
+
+/* insert the trip into the list - but ensure you don't have two trips
+ * for the same date; but if you have, make sure you don't keep the
+ * one with less information */
+static inline GList *insert_trip(struct dive *_trip, GList *_list)
+{
+	GList *result = FIND_TRIP(_trip, _list);
+	if (result) {
+		if (! DIVE_TRIP(result)->location)
+			DIVE_TRIP(result)->location = _trip->location;
+	} else {
+		result = g_list_insert_sorted((_list), (_trip), dive_date_cmp);
+	}
+#ifdef DEBUG_TRIP
+	dump_trip_list();
+#endif
+	return result;
+}
 
 /*
  * We keep our internal data in well-specified units, but

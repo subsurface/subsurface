@@ -41,7 +41,7 @@ void record_dive(struct dive *dive)
 
 void record_trip(struct dive *trip)
 {
-	dive_trip_list = INSERT_TRIP(trip, dive_trip_list);
+	dive_trip_list = insert_trip(trip, dive_trip_list);
 }
 
 static void delete_dive_renumber(struct dive **dives, int i, int nr)
