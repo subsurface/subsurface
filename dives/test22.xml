@@ -1,0 +1,9 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<trip date='2011-12-02' location='trip location' />
+<dive number='21' tripflag='INTRIP' date='2011-12-02' time='15:00:00' duration='30:00 min'>
+  <depth max='20.0 m' mean='15.0 m' />
+  <location>21st test dive - this should be in a trip with a trip location</location>
+  <notes>We are testing that the location of the dive is not picked up in the trip if the trip has a location</notes>
+</dive>
+</dives>
