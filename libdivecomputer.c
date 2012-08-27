@@ -305,13 +305,6 @@ static dc_status_t import_device_data(dc_device_t *device, device_data_t *device
 	return dc_device_foreach(device, dive_cb, devicedata);
 }
 
-static dc_status_t device_open(const char *devname,
-	dc_descriptor_t *descriptor,
-	dc_device_t **device)
-{
-	return dc_device_open(device, descriptor, devname);
-}
-
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
@@ -351,40 +344,51 @@ cancel_cb(void *userdata)
 	return import_thread_cancelled;
 }
 
-static const char *do_libdivecomputer_import(device_data_t *data)
+static const char *do_device_import(device_data_t *data)
 {
-	dc_device_t *device = NULL;
 	dc_status_t rc;
-
-	import_dive_number = 0;
-	rc = device_open(data->devname, data->descriptor, &device);
-	if (rc != DC_STATUS_SUCCESS)
-		return "Unable to open %s %s (%s)";
-	data->device = device;
+	dc_device_t *device = data->device;
 
 	// Register the event handler.
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK;
 	rc = dc_device_set_events(device, events, event_cb, data);
-	if (rc != DC_STATUS_SUCCESS) {
-		dc_device_close(device);
+	if (rc != DC_STATUS_SUCCESS)
 		return "Error registering the event handler.";
-	}
 
 	// Register the cancellation handler.
 	rc = dc_device_set_cancel(device, cancel_cb, data);
-	if (rc != DC_STATUS_SUCCESS) {
-		dc_device_close(device);
+	if (rc != DC_STATUS_SUCCESS)
 		return "Error registering the cancellation handler.";
-	}
 
 	rc = import_device_data(device, data);
-	if (rc != DC_STATUS_SUCCESS) {
-		dc_device_close(device);
+	if (rc != DC_STATUS_SUCCESS)
 		return "Dive data import error";
-	}
 
-	dc_device_close(device);
+	/* All good */
 	return NULL;
+}
+
+static const char *do_libdivecomputer_import(device_data_t *data)
+{
+	dc_status_t rc;
+	const char *err;
+
+	import_dive_number = 0;
+	data->device = NULL;
+	data->context = NULL;
+
+	rc = dc_context_new(&data->context);
+	if (rc != DC_STATUS_SUCCESS)
+		return "Unable to create libdivecomputer context";
+
+	err = "Unable to open %s %s (%s)";
+	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
+	if (rc == DC_STATUS_SUCCESS) {
+		err = do_device_import(data);
+		dc_device_close(data->device);
+	}
+	dc_context_free(data->context);
+	return err;
 }
 
 static void *pthread_wrapper(void *_data)
