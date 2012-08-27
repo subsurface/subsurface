@@ -11,6 +11,15 @@
 #define FONT_SMALL (FONT_NORMAL / 1.2)
 #define FONT_LARGE (FONT_NORMAL * 1.2)
 
+#define OPTIONCALLBACK(name, option) \
+static void name(GtkWidget *w, gpointer data) \
+{ \
+	option = GTK_TOGGLE_BUTTON(w)->active; \
+}
+
+OPTIONCALLBACK(print_profiles_toggle, visible_cols.print_profiles)
+
+
 static void set_font(PangoLayout *layout, PangoFontDescription *font, double size, int align)
 {
 	pango_font_description_set_size(font, size * PANGO_SCALE);
@@ -165,6 +174,28 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w, double 
 	cairo_restore(cr);
 }
 
+static void print_table(int divenr, cairo_t *cr, double x, double y, double w, double h, PangoFontDescription *font)
+{
+	struct dive *dive;
+
+	dive = get_dive(divenr);
+	if (!dive)
+		return;
+	cairo_save(cr);
+	cairo_translate(cr, x, y);
+
+	/* Plus 5% on all sides */
+	cairo_translate(cr, w/20, h/20);
+	w *= 0.9; h *= 0.9;
+
+	/* We actually want to scale the text and the lines now */
+	cairo_scale(cr, 0.5, 0.5);
+
+	show_dive_text(dive, cr, w*2, h*2, font);
+
+	cairo_restore(cr);
+}
+
 static void draw_page(GtkPrintOperation *operation,
 			GtkPrintContext *context,
 			gint page_nr,
@@ -192,24 +223,71 @@ static void draw_page(GtkPrintOperation *operation,
 	pango_font_description_free(font);
 }
 
+static void draw_page_table(GtkPrintOperation *operation,
+			GtkPrintContext *context,
+			gint page_nr,
+			gpointer user_data)
+{
+	int nr;
+	cairo_t *cr;
+	double w, h;
+	PangoFontDescription *font;
+
+	cr = gtk_print_context_get_cairo_context(context);
+	font = pango_font_description_from_string("Sans");
+
+	w = gtk_print_context_get_width(context);
+	h = gtk_print_context_get_height(context)/15;
+
+	nr = page_nr*15;
+	int i;
+	for (i = 0; i < 15; i++) {
+		print_table(nr+i, cr, 0,   0+h*i, w, h, font);
+	}
+
+	pango_font_description_free(font);
+}
+
 static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 {
+	int pages;
+	if (visible_cols.print_profiles){
+		pages = (dive_table.nr + 5) / 6;
+		gtk_print_operation_set_n_pages(operation, pages);
+	} else {
+		pages = (dive_table.nr + 9) / 15;
+		gtk_print_operation_set_n_pages(operation, pages);
+	}
 }
 
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
-	GtkWidget *vbox, *hbox, *label;
+	GtkWidget *vbox, *button, *frame, *box;
 	gtk_print_operation_set_custom_tab_label(operation, "Dive details");
 
 	vbox = gtk_vbox_new(TRUE, 5);
-	label = gtk_label_new("Print Dive details");
-	gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
+
+	frame = gtk_frame_new("Print options");
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
+
+	box = gtk_hbox_new(FALSE, 1);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+	button = gtk_check_button_new_with_label("Show profiles");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.print_profiles);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(print_profiles_toggle), NULL);
+
 	gtk_widget_show_all(vbox);
 	return vbox;
 }
 
 static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
 {
+	if (visible_cols.print_profiles){
+		g_signal_connect(operation, "draw_page", G_CALLBACK(draw_page), NULL);
+	} else {
+		g_signal_connect(operation, "draw_page", G_CALLBACK(draw_page_table), NULL);
+	}
 }
 
 static GtkPrintSettings *settings = NULL;
@@ -224,12 +302,9 @@ void do_print(void)
 	print = gtk_print_operation_new();
 	if (settings != NULL)
 		gtk_print_operation_set_print_settings(print, settings);
-	pages = (dive_table.nr + 5) / 6;
-	gtk_print_operation_set_n_pages(print, pages);
 	g_signal_connect(print, "create-custom-widget", G_CALLBACK(print_dialog), NULL);
 	g_signal_connect(print, "custom-widget-apply", G_CALLBACK(print_dialog_apply), NULL);
 	g_signal_connect(print, "begin_print", G_CALLBACK(begin_print), NULL);
-	g_signal_connect(print, "draw_page", G_CALLBACK(draw_page), NULL);
 	res = gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
 					 GTK_WINDOW(main_window), NULL);
 	if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
