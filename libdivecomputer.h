@@ -4,7 +4,6 @@
 /* libdivecomputer */
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
-#include <libdivecomputer/utils.h>
 
 /* handling uemis Zurich SDA files */
 #include "uemis.h"
