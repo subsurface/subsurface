@@ -31,4 +31,6 @@ struct options {
 	gboolean print_profiles;
 };
 
+extern char zoomed_plot;
+
 #endif
