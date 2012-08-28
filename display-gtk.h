@@ -19,7 +19,6 @@ typedef struct {
 	gboolean nitrox;
 	gboolean sac;
 	gboolean otu;
-    gboolean print_profiles;
 } visible_cols_t;
 
 typedef enum {
