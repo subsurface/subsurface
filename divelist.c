@@ -1293,7 +1293,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.listmodel = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
-				G_TYPE_INT,			/* Date */
+				G_TYPE_LONG,			/* Date */
 				G_TYPE_INT,			/* Star rating */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
@@ -1309,7 +1309,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.treemodel = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
-				G_TYPE_INT,			/* Date */
+				G_TYPE_LONG,			/* Date */
 				G_TYPE_INT,			/* Star rating */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
