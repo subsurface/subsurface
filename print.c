@@ -141,27 +141,40 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 static void show_table_header(cairo_t *cr, double w, double h,
 	PangoFontDescription *font)
 {
-	int len, width, height, maxwidth, maxheight;
+	int maxwidth, maxheight, colwidth, i, curwidth;
 	PangoLayout *layout;
-	char buffer[160];
+	char headers[7][80]= { "Dive#", "Date", "Depth", "Time", "Master",
+		"Buddy", "Location" };
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
+	colwidth = maxwidth / 7;
 
 	layout = pango_cairo_create_layout(cr);
-	pango_layout_set_width(layout, maxwidth);
+
+	cairo_move_to(cr, 0, 0);
 	pango_layout_set_height(layout, maxheight);
-
-	len = snprintf(buffer, sizeof(buffer),
-		"Dive# -  Date              - Depth - Time - Master"
-		" Buddy -- Location");
-
 	set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
-	pango_layout_set_text(layout, buffer, len);
-	pango_layout_get_size(layout, &width, &height);
 
-	//cairo_move_to(cr, 0, 0);
-	pango_cairo_show_layout(cr, layout);
+
+	curwidth = 0;
+	for (i = 0; i < 7; i++) {
+		cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
+		if (i == 0 || i == 2 || i == 3 ){
+			// Column 0, 2 and 3 (Dive #, Depth and Time) get 1/2 width
+			pango_layout_set_width(layout, colwidth/ (double) 2);
+			curwidth = curwidth + (colwidth / 2);
+		} else {
+			pango_layout_set_width(layout, colwidth);
+			curwidth = curwidth + colwidth;
+		}
+		pango_layout_set_text(layout, headers[i], -1);
+		pango_layout_set_justify(layout, 1);
+		pango_cairo_show_layout(cr, layout);
+	}
+
+	cairo_move_to(cr, 0, 0);
+	g_object_unref(layout);
 }
 
 static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
@@ -169,7 +182,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 {
 	double depth;
 	const char *unit;
-	int len, decimals, width, height, maxwidth, maxheight;
+	int len, decimals, maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
 	struct tm *tm;
 	char buffer[160], divenr[20];
@@ -177,59 +190,86 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
 
-	layout = pango_cairo_create_layout(cr);
-	pango_layout_set_width(layout, maxwidth);
-	pango_layout_set_height(layout, maxheight);
+	colwidth = maxwidth / 7;
 
+	layout = pango_cairo_create_layout(cr);
+
+	cairo_move_to(cr, 0, 0);
+	pango_layout_set_width(layout, colwidth);
+	pango_layout_set_height(layout, maxheight);
+	set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+	cairo_move_to(cr, 0, 0);
+	curwidth = 0;
+
+	// Col 1: Dive #
 	*divenr = 0;
 	if (dive->number)
-		snprintf(divenr, sizeof(divenr), "#%d -", dive->number);
+		snprintf(divenr, sizeof(divenr), "#%d", dive->number);
+	pango_layout_set_width(layout, colwidth/ (double) 2);
+	pango_layout_set_text(layout, divenr, -1);
+	pango_layout_set_justify(layout, 1);
+	pango_cairo_show_layout(cr, layout);
+	curwidth = curwidth + (colwidth / 2);
 
-	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
-
+	// Col 2: Date #
+	pango_layout_set_width(layout, colwidth);
 	tm = gmtime(&dive->when);
 	len = snprintf(buffer, sizeof(buffer),
-		"%s %s, %s %d, %d   %dh%02d  - %.*f %s - %d min - %s %s --  %s",
-		divenr,
+		"%s, %s %d, %d   %dh%02d",
 		weekday(tm->tm_wday),
 		monthname(tm->tm_mon),
 		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min,
-		decimals,
-		depth,
-		unit,
-		(dive->duration.seconds+59) / 60,
-		dive->divemaster ? : " ",
-		dive->buddy ? : " ",
-		dive->location ? : " "
+		tm->tm_hour, tm->tm_min
 		);
-
-	set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_text(layout, buffer, len);
-	pango_layout_get_size(layout, &width, &height);
+	pango_layout_set_justify(layout, 1);
+	pango_cairo_show_layout(cr, layout);
+	curwidth = curwidth + colwidth;
 
-	cairo_move_to(cr, 0, 0);
+	// Col 3: Depth
+	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
+	len = snprintf(buffer, sizeof(buffer),
+		"%.*f %s", decimals, depth, unit);
+	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
+	pango_layout_set_width(layout, colwidth/ (double) 2);
+	pango_layout_set_text(layout, buffer, len);
+	pango_layout_set_justify(layout, 1);
+	pango_cairo_show_layout(cr, layout);
+	curwidth = curwidth + (colwidth / 2);
+	
+	// Col 4: Time
+	len = snprintf(buffer, sizeof(buffer),
+		"%d min",(dive->duration.seconds+59) / 60);
+	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
+	pango_layout_set_width(layout, colwidth/ (double) 2);
+	pango_layout_set_text(layout, buffer, len);
+	pango_layout_set_justify(layout, 1);
+	pango_cairo_show_layout(cr, layout);
+	curwidth = curwidth + (colwidth / 2);
+
+	// Col 5: Master
+	pango_layout_set_width(layout, colwidth);
+	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
+	pango_layout_set_text(layout, dive->divemaster ? : " ", -1);
+	pango_layout_set_justify(layout, 1);
+	pango_cairo_show_layout(cr, layout);
+	curwidth = curwidth + colwidth;
+
+	// Col 6: Buddy
+	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
+	pango_layout_set_text(layout, dive->buddy ? : " ", -1);
+	pango_layout_set_justify(layout, 1);
+	pango_cairo_show_layout(cr, layout);
+	curwidth = curwidth + colwidth;
+
+	// Col 7: Location
+	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
+	pango_layout_set_width(layout, maxwidth - curwidth);
+	pango_layout_set_text(layout, dive->location ? : " ", -1);
+	pango_layout_set_justify(layout, 1);
 	pango_cairo_show_layout(cr, layout);
 
-	///*
-	 //* Show the dive notes
-	 //*/
-	if (dive->notes) {
-		/* Move down by the size of the location (x2) */
-		height = height * 1.3;
-		cairo_translate(cr, 20, height / (double) PANGO_SCALE);
-		maxheight -= height;
-
-		/* Use the full width and remaining height for notes */
-		pango_layout_set_height(layout, maxheight);
-		pango_layout_set_width(layout, maxwidth);
-		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-		pango_layout_set_justify(layout, 1);
-		pango_layout_set_text(layout, dive->notes, -1);
-
-		cairo_move_to(cr, 0, 0);
-		pango_cairo_show_layout(cr, layout);
-	}
 	g_object_unref(layout);
 }
 
@@ -412,6 +452,7 @@ static void draw_table(GtkPrintOperation *operation,
 	print_table_header(cr, 0, 0+h, w, h, font);
 	int i;
 	for (i = 0; i < n_dive_per_page; i++) {
+	//for (i = 0; i < 1; i++) {
 		print_table(nr+i, cr, 0,   h*1.5+h*i, w, h, font);
 	}
 
