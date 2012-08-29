@@ -490,6 +490,9 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), print_options.print_profiles);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 2);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(print_profiles_toggle), NULL);
+    if (print_options.type == TABLE)
+		// type == table - disable the profile option
+		gtk_widget_set_sensitive(button, FALSE);
 
 	g_signal_connect(radio1, "toggled", G_CALLBACK(set_pretty), button);
 	g_signal_connect(radio2, "toggled", G_CALLBACK(set_table), button);
