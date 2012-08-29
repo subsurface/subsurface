@@ -28,7 +28,7 @@ extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 
 struct options {
 	enum { PRETTY, TABLE } type;
-	gboolean print_profiles;
+	gboolean print_no_profiles;
 };
 
 extern char zoomed_plot;
