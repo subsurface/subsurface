@@ -1387,6 +1387,8 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 		int duration = dive->duration.seconds;
 		int maxdepth = dive->maxdepth.mm;
 		int asc_desc_time = dive->maxdepth.mm*60/9000;
+		if (asc_desc_time * 2 >= duration)
+			asc_desc_time = duration / 2;
 		sample = fake;
 		fake[1].time.seconds = asc_desc_time;
 		fake[1].depth.mm = maxdepth;

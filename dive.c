@@ -478,11 +478,12 @@ struct dive *fixup_dive(struct dive *dive)
 		int asc_desc_time = depth*60/9000;
 		int duration = dive->duration.seconds;
 
-		/* Protect against insane dives - make mean be half of max */
-		if (duration <= asc_desc_time) {
+		/* Some sanity checks against insane dives */
+		if (duration < 2)
 			duration = 2;
-			asc_desc_time = 1;
-		}
+		if (asc_desc_time * 2 >= duration)
+			asc_desc_time = duration/2;
+
 		dive->meandepth.mm = depth*(duration-asc_desc_time)/duration;
 		return dive;
 	}
