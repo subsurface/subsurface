@@ -328,8 +328,8 @@ static void date_data_func(GtkTreeViewColumn *col,
 	time_t when;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &val, DIVE_NR, &nr, -1);
-
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &val, -1);
+	nr = gtk_tree_model_iter_n_children(model, iter);
 	/* 2038 problem */
 	when = val;
 
@@ -904,7 +904,6 @@ static void fill_dive_list(void)
 		/* make sure we display the first date of the trip in previous summary */
 		if (dive_trip && parent_ptr) {
 			gtk_tree_store_set(treestore, parent_ptr,
-					DIVE_NR, dive_trip->number,
 					DIVE_DATE, dive_trip->when,
 					DIVE_LOCATION, dive_trip->location,
 					-1);
@@ -947,15 +946,12 @@ static void fill_dive_list(void)
 					}
 				} else {
 					dive_trip = trip->data;
-					dive_trip->number = 0;
 				}
 			}
 		}
-		/* update dive_trip to include this dive, increase number of dives in
-		   the trip and update location if necessary */
+		/* update dive_trip time and (if necessary) location */
 		if (dive_trip) {
 			dive->tripflag = IN_TRIP;
-			dive_trip->number++;
 			dive_trip->when = dive->when;
 			if (!dive_trip->location && dive->location)
 				dive_trip->location = dive->location;
@@ -967,7 +963,6 @@ static void fill_dive_list(void)
 				/* a duration of 0 (and negative index) identifies a group */
 				gtk_tree_store_set(treestore, parent_ptr,
 						DIVE_INDEX, -1,
-						DIVE_NR, dive_trip->number,
 						DIVE_DATE, dive_trip->when,
 						DIVE_LOCATION, dive_trip->location,
 						DIVE_DURATION, 0,
@@ -1008,7 +1003,6 @@ static void fill_dive_list(void)
 	/* make sure we display the first date of the trip in previous summary */
 	if (parent_ptr && dive_trip)
 		gtk_tree_store_set(treestore, parent_ptr,
-				DIVE_NR, dive_trip->number,
 				DIVE_DATE, dive_trip->when,
 				DIVE_LOCATION, dive_trip->location,
 				-1);
