@@ -13,6 +13,23 @@
 
 static struct options print_options;
 
+/* Return the 'i'th dive for printing, taking our dive selection into account */
+static struct dive *get_dive_for_printing(int idx)
+{
+	if (print_options.print_selected) {
+		int i;
+		struct dive *dive;
+		for_each_dive(i, dive) {
+			if (!dive->selected)
+				continue;
+			if (!idx)
+				return dive;
+			idx--;
+		}
+		return NULL;
+	}
+	return get_dive(idx);
+}
 
 static void set_font(PangoLayout *layout, PangoFontDescription *font,
 	double size, int align)
@@ -21,7 +38,6 @@ static void set_font(PangoLayout *layout, PangoFontDescription *font,
 	pango_layout_set_font_description(layout, font);
 	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
 	pango_layout_set_alignment(layout, align);
-
 }
 
 /*
@@ -283,7 +299,7 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 {
 	struct dive *dive;
 
-	dive = get_dive(divenr);
+	dive = get_dive_for_printing(divenr);
 	if (!dive)
 		return;
 	cairo_save(cr);
@@ -330,7 +346,7 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 {
 	struct dive *dive;
 
-	dive = get_dive(divenr);
+	dive = get_dive_for_printing(divenr);
 	if (!dive)
 		return;
 	cairo_save(cr);
@@ -380,7 +396,7 @@ static void draw_table(GtkPrintOperation *operation,
 			gint page_nr,
 			gpointer user_data)
 {
-	int nr;
+	int i, nr;
 	int n_dive_per_page = 25;
 	cairo_t *cr;
 	double w, h;
@@ -394,7 +410,6 @@ static void draw_table(GtkPrintOperation *operation,
 
 	nr = page_nr*n_dive_per_page;
 	print_table_header(cr, 0, 0+h, w, h, font);
-	int i;
 	for (i = 0; i < n_dive_per_page; i++) {
 		print_table(nr+i, cr, 0,   h*1.5+h*i, w, h, font);
 	}
@@ -402,17 +417,34 @@ static void draw_table(GtkPrintOperation *operation,
 	pango_font_description_free(font);
 }
 
+static int nr_selected_dives(void)
+{
+	int i, dives;
+	struct dive *dive;
+
+	dives = 0;
+	for_each_dive(i, dive)
+		dives += dive->selected;
+	return dives;
+}
+
 static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 {
-	int dives_per_page = 1;
+	int pages, dives;
+	int dives_per_page;
+
+	dives = nr_selected_dives();
+	print_options.print_selected = dives > 1;
+	if (dives <= 1)
+		dives = dive_table.nr;
+
 	if (print_options.type == PRETTY) {
-        dives_per_page = 6;
+	        dives_per_page = 6;
 	} else {
 		dives_per_page = 25;
 	}
-	int pages;
-	pages = (dive_table.nr + dives_per_page - 1) / dives_per_page;
-		gtk_print_operation_set_n_pages(operation, pages);
+	pages = (dives + dives_per_page - 1) / dives_per_page;
+	gtk_print_operation_set_n_pages(operation, pages);
 }
 
 
