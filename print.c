@@ -13,14 +13,6 @@
 
 static struct options print_options;
 
-#define PRETTYOPTIONCALLBACK(name, option) \
-static void name(GtkWidget *w, gpointer data) \
-{ \
-	option = GTK_TOGGLE_BUTTON(w)->active; \
-}
-
-PRETTYOPTIONCALLBACK(print_profiles_toggle, print_options.print_no_profiles)
-
 
 static void set_font(PangoLayout *layout, PangoFontDescription *font,
 	double size, int align)
@@ -315,29 +307,6 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	cairo_restore(cr);
 }
 
-static void print_pretty_table(int divenr, cairo_t *cr, double x, double y,
-	double w, double h, PangoFontDescription *font)
-{
-	struct dive *dive;
-
-	dive = get_dive(divenr);
-	if (!dive)
-		return;
-	cairo_save(cr);
-	cairo_translate(cr, x, y);
-
-	/* Plus 5% on all sides */
-	cairo_translate(cr, w/20, h/20);
-	w *= 0.9; h *= 0.9;
-
-	/* We actually want to scale the text and the lines now */
-	cairo_scale(cr, 0.5, 0.5);
-
-	show_dive_text(dive, cr, w*2, h*2, font);
-
-	cairo_restore(cr);
-}
-
 static void print_table_header(cairo_t *cr, double x, double y,
 	double w, double h, PangoFontDescription *font)
 {
@@ -406,31 +375,6 @@ static void draw_page(GtkPrintOperation *operation,
 	pango_font_description_free(font);
 }
 
-static void draw_pretty_table(GtkPrintOperation *operation,
-			GtkPrintContext *context,
-			gint page_nr,
-			gpointer user_data)
-{
-	int nr;
-	cairo_t *cr;
-	double w, h;
-	PangoFontDescription *font;
-
-	cr = gtk_print_context_get_cairo_context(context);
-	font = pango_font_description_from_string("Sans");
-
-	w = gtk_print_context_get_width(context);
-	h = gtk_print_context_get_height(context)/15;
-
-	nr = page_nr*15;
-	int i;
-	for (i = 0; i < 15; i++) {
-		print_pretty_table(nr+i, cr, 0,   0+h*i, w, h, font);
-	}
-
-	pango_font_description_free(font);
-}
-
 static void draw_table(GtkPrintOperation *operation,
 			GtkPrintContext *context,
 			gint page_nr,
@@ -452,7 +396,6 @@ static void draw_table(GtkPrintOperation *operation,
 	print_table_header(cr, 0, 0+h, w, h, font);
 	int i;
 	for (i = 0; i < n_dive_per_page; i++) {
-	//for (i = 0; i < 1; i++) {
 		print_table(nr+i, cr, 0,   h*1.5+h*i, w, h, font);
 	}
 
@@ -463,11 +406,7 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 {
 	int dives_per_page = 1;
 	if (print_options.type == PRETTY) {
-		if (print_options.print_no_profiles){
-			dives_per_page = 15;
-		} else {
-			dives_per_page = 6;
-		}
+        dives_per_page = 6;
 	} else {
 		dives_per_page = 25;
 	}
@@ -476,22 +415,12 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 		gtk_print_operation_set_n_pages(operation, pages);
 }
 
-static void update_print_window(GtkWidget *w) {
-	if (print_options.type == TABLE) {
-		// type == table - disable the profile option
-		gtk_widget_set_sensitive(w, FALSE);
-	} else {
-		// type == pretty - enable the profile option
-		gtk_widget_set_sensitive(w, TRUE);
-	}
-}
 
 #define OPTIONCALLBACK(name, type, value) \
 static void name(GtkWidget *w, gpointer data) \
 {\
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w))) \
 		print_options.type = value; \
-	update_print_window(data); \
 }
 
 OPTIONCALLBACK(set_pretty, type, PRETTY)
@@ -499,7 +428,7 @@ OPTIONCALLBACK(set_table, type, TABLE)
 
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
-	GtkWidget *vbox, *button, *radio1, *radio2, *frame, *box;
+	GtkWidget *vbox, *radio1, *radio2, *frame, *box;
 	gtk_print_operation_set_custom_tab_label(operation, "Dive details");
 
 	vbox = gtk_vbox_new(TRUE, 5);
@@ -520,25 +449,8 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (box), radio2, TRUE, TRUE, 0);
 
-
-	frame = gtk_frame_new("Print options");
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
-
-	box = gtk_hbox_new(FALSE, 3);
-	gtk_container_add(GTK_CONTAINER(frame), box);
-
-	button = gtk_check_button_new_with_label("No dive profiles");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),
-		print_options.print_no_profiles);
-	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 2);
-	g_signal_connect(G_OBJECT(button), "toggled",
-		G_CALLBACK(print_profiles_toggle), NULL);
-	if (print_options.type == TABLE)
-		// type == table - disable the profile option
-		gtk_widget_set_sensitive(button, FALSE);
-
-	g_signal_connect(radio1, "toggled", G_CALLBACK(set_pretty), button);
-	g_signal_connect(radio2, "toggled", G_CALLBACK(set_table), button);
+	g_signal_connect(radio1, "toggled", G_CALLBACK(set_pretty), NULL);
+	g_signal_connect(radio2, "toggled", G_CALLBACK(set_table), NULL);
 
 	gtk_widget_show_all(vbox);
 	return vbox;
@@ -547,13 +459,8 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
 {
 	if (print_options.type == PRETTY) {
-		if (print_options.print_no_profiles == TRUE){
-			g_signal_connect(operation, "draw_page",
-				G_CALLBACK(draw_pretty_table), NULL);
-		} else {
-			g_signal_connect(operation, "draw_page",
-				G_CALLBACK(draw_page), NULL);
-		}
+        g_signal_connect(operation, "draw_page",
+            G_CALLBACK(draw_page), NULL);
 	} else {
 		g_signal_connect(operation, "draw_page",
 			G_CALLBACK(draw_table), NULL);
