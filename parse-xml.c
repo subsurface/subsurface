@@ -41,7 +41,7 @@ void record_dive(struct dive *dive)
 
 void record_trip(struct dive *trip)
 {
-	dive_trip_list = insert_trip(trip, dive_trip_list);
+	insert_trip(trip);
 }
 
 static void delete_dive_renumber(struct dive **dives, int i, int nr)
@@ -1165,10 +1165,10 @@ static void try_to_fill_trip(struct dive **divep, const char *name, char *buf)
 
 	struct dive *dive = *divep;
 
-	if (MATCH(".date", divedate, &dive->when)) {
-		dive->when = utc_mktime(&cur_tm);
+	if (MATCH(".date", divedate, &dive->when))
 		return;
-	}
+	if (MATCH(".time", divetime, &dive->when))
+		return;
 	if (MATCH(".location", utf8_string, &dive->location))
 		return;
 	if (MATCH(".notes", utf8_string, &dive->notes))

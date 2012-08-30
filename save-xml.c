@@ -291,6 +291,8 @@ static void save_trip(FILE *f, struct dive *trip)
 	fprintf(f, "<trip");
 	fprintf(f, " date='%04u-%02u-%02u'",
 		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+	fprintf(f, " time='%02u:%02u:%02u'",
+		tm->tm_hour, tm->tm_min, tm->tm_sec);
 	if (trip->location)
 		show_utf8(f, trip->location, " location=\'","\'", 1);
 	fprintf(f, " />\n");
@@ -341,7 +343,7 @@ void save_dives(const char *filename)
 	fprintf(f, "<dives>\n<program name='subsurface' version='%d'></program>\n", VERSION);
 
 	/* save the trips */
-	while ((trip = NEXT_TRIP(trip, dive_trip_list)) != 0)
+	while ((trip = NEXT_TRIP(trip)) != NULL)
 		save_trip(f, trip->data);
 
 	/* save the dives */

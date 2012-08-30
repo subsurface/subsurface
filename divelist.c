@@ -31,6 +31,11 @@ struct DiveList {
 };
 
 static struct DiveList dive_list;
+#define TREEMODEL(_dl) GTK_TREE_MODEL((_dl).treemodel)
+#define TREESTORE(_dl) GTK_TREE_STORE((_dl).treemodel)
+#define LISTMODEL(_dl) GTK_TREE_MODEL((_dl).listmodel)
+#define LISTSTORE(_dl) GTK_TREE_STORE((_dl).listmodel)
+
 GList *dive_trip_list;
 gboolean autogroup = FALSE;
 
@@ -65,9 +70,17 @@ static gboolean dump_model_entry(GtkTreeModel *model, GtkTreePath *path,
 	char *location;
 	int idx, nr, duration;
 	struct dive *dive;
+	time_t when;
+	struct tm *tm;
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_NR, &nr, DIVE_DURATION, &duration, DIVE_LOCATION, &location, -1);
-	printf("entry #%d : nr %d duration %d location %s ", idx, nr, duration, location);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_NR, &nr, DIVE_DATE, &when,
+			DIVE_DURATION, &duration, DIVE_LOCATION, &location, -1);
+	tm = gmtime(&when);
+	printf("iter %x:%x entry #%d : nr %d @ %04d-%02d-%02d %02d:%02d:%02d duration %d location %s ",
+		iter->stamp, iter->user_data, idx, nr,
+		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
+		tm->tm_hour, tm->tm_min, tm->tm_sec,
+		duration, location);
 	dive = get_dive(idx);
 	if (dive)
 		printf("tripflag %d\n", dive->tripflag);
@@ -82,6 +95,7 @@ static gboolean dump_model_entry(GtkTreeModel *model, GtkTreePath *path,
 static void dump_model(GtkListStore *store)
 {
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store), dump_model_entry, NULL);
+	printf("\n---\n\n");
 }
 #endif
 
@@ -125,7 +139,7 @@ static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
 {
 	GtkTreeIter child;
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
+	GtkTreeModel *model = TREEMODEL(dive_list);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
 	if (!gtk_tree_model_iter_children(model, &child, iter))
@@ -169,7 +183,7 @@ static int selected_children(GtkTreeModel *model, GtkTreeIter *iter)
    shows up as selected too */
 void row_collapsed_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
+	GtkTreeModel *model = TREEMODEL(dive_list);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
 	if (selected_children(model, iter))
@@ -253,7 +267,7 @@ static void select_dive_group(GtkTreeModel *model, GtkTreeSelection *selection, 
  */
 static void check_selection_cb(GtkTreeIter *iter, GtkTreeSelection *selection)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
+	GtkTreeModel *model = TREEMODEL(dive_list);
 	struct dive *dive;
 	int idx, gtk_selected;
 
@@ -449,13 +463,20 @@ static void nr_data_func(GtkTreeViewColumn *col,
 {
 	int idx, nr;
 	char buffer[40];
+	struct dive *dive;
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_NR, &nr, -1);
-	if (idx < 0)
+	if (idx < 0) {
 		*buffer = '\0';
-	else
-		snprintf(buffer, sizeof(buffer), "%d", nr);
-	g_object_set(renderer, "text", buffer, NULL);
+	} else {
+		/* make dives that are not in trips stand out */
+		dive = get_dive(idx);
+		if (!DIVE_IN_TRIP(dive))
+			snprintf(buffer, sizeof(buffer), "<b>%d</b>", nr);
+		else
+			snprintf(buffer, sizeof(buffer), "%d", nr);
+	}
+	g_object_set(renderer, "markup", buffer, NULL);
 }
 
 /*
@@ -808,7 +829,7 @@ static void fill_one_dive(struct dive *dive,
 	free(cylinder);
 	free(suit);
 
-	if (model == GTK_TREE_MODEL(dive_list.treemodel))
+	if (model == TREEMODEL(dive_list))
 		othermodel = dive_list.listmodel;
 	else
 		othermodel = dive_list.treemodel;
@@ -841,7 +862,7 @@ static gboolean set_one_dive(GtkTreeModel *model,
 
 void flush_divelist(struct dive *dive)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
+	GtkTreeModel *model = TREEMODEL(dive_list);
 
 	gtk_tree_model_foreach(model, set_one_dive, dive);
 }
@@ -856,7 +877,7 @@ void set_divelist_font(const char *font)
 void update_dive_list_units(void)
 {
 	const char *unit;
-	GtkTreeModel *model = GTK_TREE_MODEL(dive_list.model);
+	GtkTreeModel *model = TREEMODEL(dive_list);
 
 	(void) get_depth_units(0, NULL, &unit);
 	gtk_tree_view_column_set_title(dive_list.depth, unit);
@@ -894,8 +915,8 @@ static void fill_dive_list(void)
 	/* if we have pre-existing trips, start on the last one */
 	trip = g_list_last(dive_trip_list);
 
-	treestore = GTK_TREE_STORE(dive_list.treemodel);
-	liststore = GTK_TREE_STORE(dive_list.listmodel);
+	treestore = TREESTORE(dive_list);
+	liststore = LISTSTORE(dive_list);
 
 	i = dive_table.nr;
 	while (--i >= 0) {
@@ -925,21 +946,21 @@ static void fill_dive_list(void)
 				/* allocate new trip - all fields default to 0
 				   and get filled in further down */
 				dive_trip = alloc_dive();
-				dive_trip_list = insert_trip(dive_trip, dive_trip_list);
-				trip = FIND_TRIP(dive_trip, dive_trip_list);
+				insert_trip(dive_trip);
+				trip = FIND_TRIP(dive_trip->when);
 			}
 		} else { /* either the dive has a trip or we aren't creating trips */
 			if (! (trip && DIVE_FITS_TRIP(dive, DIVE_TRIP(trip)))) {
 				GList *last_trip = trip;
-				trip = PREV_TRIP(trip, dive_trip_list);
+				trip = PREV_TRIP(trip);
 				if (! (trip && DIVE_FITS_TRIP(dive, DIVE_TRIP(trip)))) {
 					/* we could get here if there are no trips in the XML file
 					 * and we aren't creating trips, either.
 					 * Otherwise we need to create a new trip */
 					if (autogroup) {
 						dive_trip = alloc_dive();
-						dive_trip_list = insert_trip(dive_trip, dive_trip_list);
-						trip = FIND_TRIP(dive_trip, dive_trip_list);
+						insert_trip(dive_trip);
+						trip = FIND_TRIP(dive_trip->when);
 					} else {
 						/* let's go back to the last valid trip */
 						trip = last_trip;
@@ -1020,8 +1041,8 @@ static void fill_dive_list(void)
 
 void dive_list_update_dives(void)
 {
-	gtk_tree_store_clear(GTK_TREE_STORE(dive_list.treemodel));
-	gtk_tree_store_clear(GTK_TREE_STORE(dive_list.listmodel));
+	gtk_tree_store_clear(TREESTORE(dive_list));
+	gtk_tree_store_clear(LISTSTORE(dive_list));
 	fill_dive_list();
 	repaint_dive();
 }
