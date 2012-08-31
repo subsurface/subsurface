@@ -415,6 +415,24 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 	}
 }
 
+static void dive_trip_widget(GtkWidget *box, struct dive *trip, struct dive_info *info)
+{
+	GtkWidget *hbox, *label;
+	char buffer[80] = "Edit trip summary";
+
+	label = gtk_label_new(buffer);
+	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
+
+	info->location = text_entry(box, "Location", location_list, trip->location);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
+
+	info->notes = text_view(box, "Notes", READ_WRITE);
+	if (trip->notes && *trip->notes)
+		gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), trip->notes, -1);
+}
+
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
 	GtkWidget *hbox, *label, *frame, *equipment;
@@ -489,7 +507,49 @@ void update_equipment_data(struct dive *dive, struct dive *master)
 		memcpy(dive->weightsystem, master->weightsystem, WS_BYTES);
 }
 
-/* A negative index means "all selected" */
+gboolean edit_trip(struct dive *trip)
+{
+	GtkWidget *dialog, *vbox;
+	int success;
+	gboolean changed = FALSE;
+	char *old_text, *new_text;
+	struct dive_info info;
+
+	memset(&info, 0, sizeof(struct dive_info));
+	dialog = gtk_dialog_new_with_buttons("Edit Trip Info",
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	dive_trip_widget(vbox, trip, &info);
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (success) {
+		/* we need to store the edited location and notes */
+		new_text = get_combo_box_entry_text(info.location, &trip->location, trip->location);
+		if (new_text) {
+			add_location(new_text);
+			changed = 1;
+		}
+		if (info.notes) {
+			old_text = trip->notes;
+			trip->notes = get_text(info.notes);
+			if (text_changed(old_text, trip->notes))
+				changed = 1;
+			if (old_text)
+				g_free(old_text);
+		}
+		if (changed) {
+			mark_divelist_changed(TRUE);
+			flush_divelist(trip);
+		}
+	}
+	gtk_widget_destroy(dialog);
+	return changed;
+}
+
 int edit_multi_dive_info(struct dive *single_dive)
 {
 	int success;

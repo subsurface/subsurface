@@ -241,6 +241,7 @@ extern const char *tripflag_names[NUM_TRIPFLAGS];
 struct dive {
 	int number;
 	tripflag_t tripflag;
+	struct dive *divetrip;
 	int selected;
 	time_t when;
 	char *location;
@@ -433,6 +434,7 @@ extern void remember_event(const char *eventname);
 extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 
 extern int add_new_dive(struct dive *dive);
+extern gboolean edit_trip(struct dive *trip);
 extern int edit_dive_info(struct dive *dive);
 extern int edit_multi_dive_info(struct dive *single_dive);
 extern void dive_list_update_dives(void);
