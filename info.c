@@ -531,13 +531,13 @@ gboolean edit_trip(struct dive *trip)
 		new_text = get_combo_box_entry_text(info.location, &trip->location, trip->location);
 		if (new_text) {
 			add_location(new_text);
-			changed = 1;
+			changed = TRUE;
 		}
 		if (info.notes) {
 			old_text = trip->notes;
 			trip->notes = get_text(info.notes);
 			if (text_changed(old_text, trip->notes))
-				changed = 1;
+				changed = TRUE;
 			if (old_text)
 				g_free(old_text);
 		}
