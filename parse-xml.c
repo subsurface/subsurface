@@ -294,7 +294,7 @@ static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 	/* Looks like it might be floating point? */
 	if (*end == '.') {
 		errno = 0;
-		fp = strtod(buffer, &end);
+		fp = g_ascii_strtod(buffer, &end);
 		if (!errno) {
 			res->fp = fp;
 			return FLOAT;

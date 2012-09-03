@@ -197,7 +197,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		struct sample *sample;
 
 		errno = 0;
-		val = strtod(p,&end);
+		val = g_ascii_strtod(p,&end);
 		if (end == p)
 			break;
 		if (errno)
