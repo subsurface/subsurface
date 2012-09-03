@@ -970,11 +970,16 @@ static void fill_dive_list(void)
 				/* allocate new trip - all fields default to 0
 				   and get filled in further down */
 				dive_trip = create_and_hookup_trip_from_dive(dive);
+				dive_trip->tripflag = IN_TRIP; /* this marks an autogen trip */
 				trip = FIND_TRIP(dive_trip->when);
 			}
 		} else if (DIVE_IN_TRIP(dive)) {
 				trip = find_matching_trip(dive->when);
 				dive_trip = DIVE_TRIP(trip);
+		} else {
+			/* dive is not in a trip and we aren't autogrouping */
+			dive_trip = NULL;
+			parent_ptr = NULL;
 		}
 		/* update dive as part of dive_trip and
 		 * (if necessary) update dive_trip time and location */
@@ -1427,7 +1432,7 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 	dive->divetrip = NULL;
 }
 
-void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
+void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 {
 	GtkTreeIter newiter, parent, child, *lastiter = &parent;
 	struct dive *dive, *dive_trip = NULL;
@@ -1450,7 +1455,10 @@ void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 		dive = get_dive(idx);
 		if (dive->selected)
 			gtk_tree_selection_select_iter(selection, &newiter);
-		dive->tripflag = NO_TRIP;
+		if (force_no_trip)
+			dive->tripflag = NO_TRIP;
+		else
+			dive->tripflag = TF_NONE;
 		if (!dive_trip)
 			dive_trip = dive->divetrip;
 		dive->divetrip = NULL;
@@ -1462,6 +1470,11 @@ void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	gtk_tree_store_remove(STORE(dive_list), &parent);
 	delete_trip(FIND_TRIP(dive_trip->when));
 	free(dive_trip);
+}
+
+void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
+{
+	remove_trip(trippath, TRUE);
 }
 
 void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
@@ -1783,4 +1796,27 @@ void mark_divelist_changed(int changed)
 int unsaved_changes()
 {
 	return dive_list.changed;
+}
+
+void remove_autogen_trips()
+{
+	GtkTreeIter iter;
+	GtkTreePath *path;
+	time_t when;
+	int idx;
+	GList *trip;
+
+	/* start with the first top level entry and walk all of them */
+	path = gtk_tree_path_new_from_string("0");
+	while(gtk_tree_model_get_iter(TREEMODEL(dive_list), &iter, path)) {
+		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+		if (idx < 0) {
+			trip = FIND_TRIP(when);
+			if (DIVE_TRIP(trip)->tripflag == IN_TRIP) { /* this was autogen */
+				remove_trip(path, FALSE);
+				continue;
+			}
+		}
+		gtk_tree_path_next(path);
+	}
 }

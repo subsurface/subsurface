@@ -634,6 +634,14 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void autogroup_cb(GtkWidget *w, gpointer data)
+{
+	autogroup = !autogroup;
+	if (! autogroup)
+		remove_autogen_trips();
+	dive_list_update_dives();
+}
+
 static void renumber_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -757,9 +765,14 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewProfile",    NULL, "Profile", CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
 	{ "ViewInfo",       NULL, "Info", CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
 	{ "ViewThree",      NULL, "Three", CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
-	{ "ToggleZoom",     NULL, "Toggle Zoom", CTRLCHAR "0", NULL, G_CALLBACK(toggle_zoom) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
+
+static GtkToggleActionEntry toggle_items[] = {
+	{ "Autogroup",      NULL, "Autogroup", NULL, NULL, G_CALLBACK(autogroup_cb), FALSE },
+	{ "ToggleZoom",     NULL, "Toggle Zoom", CTRLCHAR "0", NULL, G_CALLBACK(toggle_zoom), FALSE },
+};
+static gint ntoggle_items = sizeof (toggle_items) / sizeof (toggle_items[0]);
 
 static const gchar* ui_string = " \
 	<ui> \
@@ -779,6 +792,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Add Dive\" action=\"AddDive\" /> \
 				<separator name=\"Separator\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
+				<menuitem name=\"Autogroup\" action=\"Autogroup\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
 				<menu name=\"View\" action=\"ViewMenuAction\"> \
 					<menuitem name=\"List\" action=\"ViewList\" /> \
@@ -801,6 +815,7 @@ static GtkWidget *get_menubar_menu(GtkWidget *window, GtkUIManager *ui_manager)
 {
 	GtkActionGroup *action_group = gtk_action_group_new("Menu");
 	gtk_action_group_add_actions(action_group, menu_items, nmenu_items, 0);
+	gtk_action_group_add_toggle_actions(action_group, toggle_items, ntoggle_items, 0);
 
 	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
 	GError* error = 0;

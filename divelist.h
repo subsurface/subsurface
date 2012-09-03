@@ -10,4 +10,5 @@ extern void flush_divelist(struct dive *);
 extern void update_cylinder_related_info(struct dive *);
 extern void mark_divelist_changed(int);
 extern int unsaved_changes(void);
+extern void remove_autogen_trips(void);
 #endif
