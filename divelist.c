@@ -1258,7 +1258,8 @@ static void update_trip_timestamp(GtkTreeIter *parent, struct dive *divetrip)
 	int nr;
 	time_t t1, t2, tnew;
 
-	if (gtk_tree_store_iter_depth(STORE(dive_list), parent) != 0)
+	if (gtk_tree_store_iter_depth(STORE(dive_list), parent) != 0 ||
+		gtk_tree_model_iter_n_children(MODEL(dive_list), parent) == 0)
 		return;
 	nr = gtk_tree_model_iter_n_children(MODEL(dive_list), parent);
 	gtk_tree_model_iter_nth_child(MODEL(dive_list), &first_child, parent, 0);
