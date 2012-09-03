@@ -815,6 +815,7 @@ static GtkWidget *get_menubar_menu(GtkWidget *window, GtkUIManager *ui_manager)
 {
 	GtkActionGroup *action_group = gtk_action_group_new("Menu");
 	gtk_action_group_add_actions(action_group, menu_items, nmenu_items, 0);
+	toggle_items[0].is_active = autogroup;
 	gtk_action_group_add_toggle_actions(action_group, toggle_items, ntoggle_items, 0);
 
 	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
