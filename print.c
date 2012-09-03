@@ -434,12 +434,11 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 	int dives_per_page;
 
 	dives = nr_selected_dives();
-	print_options.print_selected = dives > 1;
-	if (dives <= 1)
+	if (!print_options.print_selected)
 		dives = dive_table.nr;
 
 	if (print_options.type == PRETTY) {
-	        dives_per_page = 6;
+		dives_per_page = 6;
 	} else {
 		dives_per_page = 25;
 	}
@@ -458,9 +457,19 @@ static void name(GtkWidget *w, gpointer data) \
 OPTIONCALLBACK(set_pretty, type, PRETTY)
 OPTIONCALLBACK(set_table, type, TABLE)
 
+#define OPTIONSELECTEDCALLBACK(name, option) \
+static void name(GtkWidget *w, gpointer data) \
+{ \
+	option = GTK_TOGGLE_BUTTON(w)->active; \
+}
+
+OPTIONSELECTEDCALLBACK(print_selection_toggle, print_options.print_selected)
+
+
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
 	GtkWidget *vbox, *radio1, *radio2, *frame, *box;
+	int dives;
 	gtk_print_operation_set_custom_tab_label(operation, "Dive details");
 
 	vbox = gtk_vbox_new(TRUE, 5);
@@ -484,6 +493,22 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	g_signal_connect(radio1, "toggled", G_CALLBACK(set_pretty), NULL);
 	g_signal_connect(radio2, "toggled", G_CALLBACK(set_table), NULL);
 
+	dives = nr_selected_dives();
+	print_options.print_selected = dives >= 1;
+	if (print_options.print_selected) {
+        frame = gtk_frame_new("Print selection");
+        gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
+        box = gtk_hbox_new(FALSE, 1);
+        gtk_container_add(GTK_CONTAINER(frame), box);
+		GtkWidget *button;
+		button = gtk_check_button_new_with_label("Print only selected dives");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),
+			print_options.print_selected);
+		gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 2);
+		g_signal_connect(G_OBJECT(button), "toggled",
+			G_CALLBACK(print_selection_toggle), NULL);
+	}
+
 	gtk_widget_show_all(vbox);
 	return vbox;
 }
@@ -491,8 +516,8 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
 {
 	if (print_options.type == PRETTY) {
-        g_signal_connect(operation, "draw_page",
-            G_CALLBACK(draw_page), NULL);
+		g_signal_connect(operation, "draw_page",
+			G_CALLBACK(draw_page), NULL);
 	} else {
 		g_signal_connect(operation, "draw_page",
 			G_CALLBACK(draw_table), NULL);
