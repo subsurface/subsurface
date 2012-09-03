@@ -1,6 +1,6 @@
 <dives>
 <program name='subsurface' version='1'></program>
-<trip date='2011-12-02' />
+<trip date='2011-12-02' time='14:00:00' />
 <dive number='20' tripflag='INTRIP' date='2011-12-02' time='14:00:00' duration='30:00 min'>
   <depth max='20.0 m' mean='15.0 m' />
   <location>20th test dive - this should be in a trip with same location</location>
