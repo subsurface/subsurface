@@ -1517,9 +1517,9 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 {
 	GtkWidget *menu, *menuitem, *image;
 	char editlabel[] = "Edit dives";
-	GtkTreePath *path, *prevpath;
-	GtkTreeIter iter, previter;
-	int idx, previdx;
+	GtkTreePath *path, *prevpath, *nextpath;
+	GtkTreeIter iter, previter, nextiter;
+	int idx, previdx, nextidx;
 	struct dive *dive;
 
 	if (!gtk_tree_view_get_path_at_pos(tree_view, event->x, event->y, &path, NULL, NULL, NULL))
@@ -1544,8 +1544,18 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		    gtk_tree_model_get_iter(MODEL(dive_list), &previter, prevpath)) {
 			gtk_tree_model_get(MODEL(dive_list), &previter, DIVE_INDEX, &previdx, -1);
 			if (previdx < 0) {
-				menuitem = gtk_menu_item_new_with_label("Merge trip with previous");
+				menuitem = gtk_menu_item_new_with_label("Merge trip with trip above");
 				g_signal_connect(menuitem, "activate", G_CALLBACK(merge_trips_cb), path);
+				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+			}
+		}
+		nextpath = gtk_tree_path_copy(path);
+		gtk_tree_path_next(nextpath);
+		if (gtk_tree_model_get_iter(MODEL(dive_list), &nextiter, nextpath)) {
+			gtk_tree_model_get(MODEL(dive_list), &nextiter, DIVE_INDEX, &nextidx, -1);
+			if (nextidx < 0) {
+				menuitem = gtk_menu_item_new_with_label("Merge trip with trip below");
+				g_signal_connect(menuitem, "activate", G_CALLBACK(merge_trips_cb), nextpath);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
 		}
