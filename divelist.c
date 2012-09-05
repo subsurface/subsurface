@@ -921,7 +921,7 @@ static struct dive *create_and_hookup_trip_from_dive(struct dive *dive)
 	dive_trip->when = dive->when;
 	if (dive->location)
 		dive_trip->location = strdup(dive->location);
-	insert_trip(dive_trip);
+	insert_trip(&dive_trip);
 	dive->divetrip = dive_trip;
 	dive->tripflag = IN_TRIP;
 	return dive_trip;

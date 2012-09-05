@@ -305,14 +305,16 @@ static void dump_trip_list(void)
 /* insert the trip into the dive_trip_list - but ensure you don't have
  * two trips for the same date; but if you have, make sure you don't
  * keep the one with less information */
-static inline void insert_trip(struct dive *_trip)
+static void inline insert_trip(struct dive **trip)
 {
-	GList *result = FIND_TRIP(_trip->when);
+	struct dive *dive_trip = *trip;
+	GList *result = FIND_TRIP(dive_trip->when);
 	if (result) {
 		if (! DIVE_TRIP(result)->location)
-			DIVE_TRIP(result)->location = _trip->location;
+			DIVE_TRIP(result)->location = dive_trip->location;
+		*trip = DIVE_TRIP(result);
 	} else {
-		dive_trip_list = g_list_insert_sorted(dive_trip_list, (_trip), dive_date_cmp);
+		dive_trip_list = g_list_insert_sorted(dive_trip_list, dive_trip, dive_date_cmp);
 	}
 #ifdef DEBUG_TRIP
 	dump_trip_list();

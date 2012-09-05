@@ -39,11 +39,6 @@ void record_dive(struct dive *dive)
 	dive_table.nr = nr+1;
 }
 
-void record_trip(struct dive *trip)
-{
-	insert_trip(trip);
-}
-
 static void delete_dive_renumber(struct dive **dives, int i, int nr)
 {
 	struct dive *dive = dives[i];
@@ -1213,7 +1208,7 @@ static void trip_end(void)
 {
 	if (!cur_trip)
 		return;
-	record_trip(cur_trip);
+	insert_trip(&cur_trip);
 	cur_trip = NULL;
 }
 
