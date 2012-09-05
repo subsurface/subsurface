@@ -1396,7 +1396,7 @@ static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
 		turn_dive_into_trip(path);
 }
 
-static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
+static void remove_from_trip(GtkTreePath *path)
 {
 	GtkTreeIter iter, nextiter, *newiter, parent;
 	GtkTreePath *nextpath;
@@ -1406,7 +1406,6 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 	if (!gtk_tree_model_iter_parent(MODEL(dive_list), &parent, &iter))
 		return;
-
 	/* if this isn't the last dive in a trip we simply split the trip
 	   in two right after this dive */
 	nextpath = gtk_tree_path_copy(path);
@@ -1433,6 +1432,66 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
+}
+
+static void remove_rowref_from_trip(gpointer data, gpointer user_data)
+{
+	GtkTreeRowReference *rowref = data;
+	GtkTreePath *path = gtk_tree_row_reference_get_path(rowref);
+	if (path)
+		remove_from_trip(path);
+}
+
+static gboolean add_rowref_if_selected(GtkTreeModel *model, GtkTreePath *path,
+					GtkTreeIter *iter, gpointer data)
+{
+	GList **rowref_list = data;
+	int idx;
+	struct dive *dive;
+
+	gtk_tree_model_get(MODEL(dive_list), iter, DIVE_INDEX, &idx, -1);
+	if (idx >=0 ) {
+		dive = get_dive(idx);
+		if (dive->selected) {
+			/* we need to store the Row References as those
+			   stay valid across modifications of the model */
+			GtkTreeRowReference *rowref;
+			rowref = gtk_tree_row_reference_new(TREEMODEL(dive_list), path);
+			*rowref_list = g_list_append(*rowref_list, rowref);
+		}
+	}
+	return FALSE; /* continue foreach loop */
+}
+
+static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	GtkTreeIter iter, parent;
+	struct dive *dive;
+	int idx;
+
+	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
+	if (!gtk_tree_model_iter_parent(MODEL(dive_list), &parent, &iter))
+		return;
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	if (idx < 0 )
+		return;
+	dive = get_dive(idx);
+	if (dive->selected) {
+		/* remove all the selected dives
+		   since removing the dives from trips changes the model we need to
+		   take the extra step of acquiring rowrefs before actually moving dives */
+		GList *rowref_list = NULL;
+		gtk_tree_model_foreach(MODEL(dive_list), add_rowref_if_selected, &rowref_list);
+		/* We need to walk that list backwards as otherwise
+		   the newly insered trips below dives that were
+		   removed also mess with the validity */
+		rowref_list = g_list_reverse(rowref_list);
+		g_list_foreach(rowref_list, remove_rowref_from_trip, NULL);
+
+	} else {
+		/* just remove the dive the mouse pointer is on */
+		remove_from_trip(path);
+	}
 }
 
 void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
@@ -1588,7 +1647,10 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
 			if (DIVE_IN_TRIP(dive)) {
-				menuitem = gtk_menu_item_new_with_label("Remove from trip");
+				if (dive->selected && amount_selected > 1)
+					menuitem = gtk_menu_item_new_with_label("Remove selected dives from trip");
+				else
+					menuitem = gtk_menu_item_new_with_label("Remove dive from trip");
 				g_signal_connect(menuitem, "activate", G_CALLBACK(remove_from_trip_cb), path);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
