@@ -697,10 +697,10 @@ static void about_dialog(GtkWidget *w, gpointer data)
 
 	gtk_show_about_dialog(NULL,
 		"program-name", "SubSurface",
-		"comments", "Half-arsed divelog software in C",
+		"comments", "Multi-platform divelog software in C",
 		"license", "GPLv2",
 		"version", VERSION_STRING,
-		"copyright", "Linus Torvalds 2011",
+		"copyright", "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012",
 		"logo-icon-name", "subsurface",
 		/* Must be last: */
 		logo_property, logo,
