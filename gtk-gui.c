@@ -1174,6 +1174,7 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
 {
 	GtkWidget *hbox, *frame, *chooser, *dialog;
 	GtkFileFilter *filter;
+	char *current_file, *current_dir;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
@@ -1187,7 +1188,10 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
-
+	current_dir = path_and_file(existing_filename, &current_file);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
+	free(current_dir);
+	free(current_file);
 	filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
 	gtk_file_filter_add_pattern(filter, "*.XML");
