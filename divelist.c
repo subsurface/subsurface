@@ -1310,6 +1310,47 @@ static GtkTreeIter *move_dive_between_trips(GtkTreeIter *dive_iter, GtkTreeIter 
 	return new_iter;
 }
 
+/* this gets called when we are on a top level dive and we know that the previous
+ * top level node is a trip; if multiple consecutive dives are selected, they are
+ * all merged into the previous trip*/
+static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	int idx;
+	GtkTreeIter dive_iter, trip_iter, prev_iter;
+	GtkTreePath *trip_path;
+	struct dive *dive, *prev_dive;
+
+	/* get the path and iter for the trip and the last dive of that trip */
+	trip_path = gtk_tree_path_copy(path);
+	(void)gtk_tree_path_prev(trip_path);
+	gtk_tree_model_get_iter(MODEL(dive_list), &trip_iter, trip_path);
+	gtk_tree_model_get_iter(MODEL(dive_list), &dive_iter, path);
+	gtk_tree_model_iter_nth_child(MODEL(dive_list), &prev_iter, &trip_iter,
+				gtk_tree_model_iter_n_children(MODEL(dive_list), &trip_iter) - 1);
+	gtk_tree_model_get(MODEL(dive_list), &dive_iter, DIVE_INDEX, &idx, -1);
+	dive = get_dive(idx);
+	gtk_tree_model_get(MODEL(dive_list), &prev_iter, DIVE_INDEX, &idx, -1);
+	prev_dive = get_dive(idx);
+	/* add the dive to the trip */
+	for (;;) {
+		dive->divetrip = prev_dive->divetrip;
+		dive->tripflag = IN_TRIP;
+		(void)move_dive_between_trips(&dive_iter, NULL, &trip_iter, NULL, TRUE);
+		prev_dive = dive;
+		/* by merging the dive into the trip above the path now points to the next
+		   top level entry. If that iter exists, it's also a dive and both this dive
+		   and that next dive are selected, continue merging dives into the trip */
+		if (!gtk_tree_model_get_iter(MODEL(dive_list), &dive_iter, path))
+			break;
+		gtk_tree_model_get(MODEL(dive_list), &dive_iter, DIVE_INDEX, &idx, -1);
+		if (idx < 0)
+			break;
+		dive = get_dive(idx);
+		if (!dive->selected || !prev_dive->selected)
+			break;
+	}
+}
+
 static void turn_dive_into_trip(GtkTreePath *path)
 {
 	GtkTreeIter iter, *newiter, newparent;
@@ -1640,10 +1681,20 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		if (dive_list.model == dive_list.treemodel) {
 			int depth;
 			int *indices = gtk_tree_path_get_indices_with_depth(path, &depth);
-
+			/* top level dive or child dive that is not the first child */
 			if (depth == 1 || indices[1] > 0) {
-				menuitem = gtk_menu_item_new_with_label("Add new trip above");
+				menuitem = gtk_menu_item_new_with_label("Create new trip above");
 				g_signal_connect(menuitem, "activate", G_CALLBACK(insert_trip_before_cb), path);
+				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+			}
+			prevpath = gtk_tree_path_copy(path);
+			/* top level dive with a trip right before it */
+			if (depth == 1 &&
+			    gtk_tree_path_prev(prevpath) &&
+			    gtk_tree_model_get_iter(MODEL(dive_list), &previter, prevpath) &&
+			    gtk_tree_model_iter_n_children(model, &previter)) {
+				menuitem = gtk_menu_item_new_with_label("Add to trip above");
+				g_signal_connect(menuitem, "activate", G_CALLBACK(merge_dive_into_trip_above_cb), path);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
 			if (DIVE_IN_TRIP(dive)) {
