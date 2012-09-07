@@ -271,6 +271,7 @@ extern gboolean autogroup;
 
 #define UNGROUPED_DIVE(_dive) ((_dive)->tripflag == NO_TRIP)
 #define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP)
+#define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
 #define NEXT_TRIP(_entry) ((_entry) ? g_list_next(_entry) : (dive_trip_list))
 #define PREV_TRIP(_entry) ((_entry) ? g_list_previous(_entry) : g_list_last(dive_trip_list))
 #define DIVE_TRIP(_trip) ((struct dive *)(_trip)->data)
