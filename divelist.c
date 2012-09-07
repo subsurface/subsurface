@@ -161,6 +161,17 @@ static GtkTreePath *get_path_from(struct dive *dive)
 	return path_match;
 }
 
+static struct dive *dive_from_path(GtkTreePath *path)
+{
+	GtkTreeIter iter;
+	int idx;
+
+	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	return get_dive(idx);
+
+}
+
 /* make sure that if we expand a summary row that is selected, the children show
    up as selected, too */
 void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
@@ -1260,13 +1271,7 @@ void edit_selected_dives_cb(GtkWidget *menuitem, gpointer data)
 
 void edit_dive_from_path_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
-	GtkTreeIter iter;
-	int idx;
-	struct dive *dive;
-
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-	dive = get_dive(idx);
+	struct dive *dive = dive_from_path(path);
 
 	edit_multi_dive_info(dive);
 }
@@ -1503,10 +1508,24 @@ static void insert_trip_before(GtkTreePath *path)
 static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
 	/* is this splitting a trip or turning a dive into a trip? */
-	if (gtk_tree_path_get_depth(path) == 2)
+	if (gtk_tree_path_get_depth(path) == 2) {
 		insert_trip_before(path);
-	else
+	} else { /* this is a top level dive */
+		struct dive *dive, *next_dive;
+		GtkTreePath *next_path;
+
+		dive = dive_from_path(path);
 		turn_dive_into_trip(path);
+		/* if the dive was selected and the next dive was selected, too,
+		 * then all of them should be part of the new trip */
+		if (dive->selected) {
+			next_path = gtk_tree_path_copy(path);
+			gtk_tree_path_next(next_path);
+			next_dive = dive_from_path(next_path);
+			if (next_dive && next_dive->selected)
+				merge_dive_into_trip_above_cb(menuitem, next_path);
+		}
+	}
 }
 
 static void remove_from_trip(GtkTreePath *path)
