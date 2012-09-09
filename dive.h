@@ -459,6 +459,8 @@ const char *monthname(int mon);
 #define FIVE_STARS	UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR
 extern const char *star_strings[];
 
+extern const char *default_filename;
+extern const char *subsurface_default_filename(void);
 #define AIR_PERMILLE 209
 
 #endif /* DIVE_H */

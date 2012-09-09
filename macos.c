@@ -1,5 +1,6 @@
 /* macos.c */
 /* implements Mac OS X specific functions */
+#include "dive.h"
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
 #include <mach-o/dyld.h>
@@ -83,6 +84,24 @@ const char *subsurface_icon_name()
 	snprintf(path, 1024, "%s/%s", quartz_application_get_resource_path(), ICON_NAME);
 
 	return path;
+}
+
+const char *subsurface_default_filename()
+{
+	if (default_filename) {
+		return default_filename;
+	} else {
+		const char *home, *user;
+		char *buffer;
+		int len;
+
+		home = g_get_home_dir();
+		user = g_get_user_name();
+		len = strlen(home) + strlen(user) + 45;
+		buffer = malloc(len);
+		snprintf(buffer, len, "%s/Library/Application Support/Subsurface/%s.xml", home, user);
+		return buffer;
+	}
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
