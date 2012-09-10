@@ -1826,8 +1826,8 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		}
 		/* only offer trip editing options when we are displaying the tree model */
 		if (dive_list.model == dive_list.treemodel) {
-			int depth;
-			int *indices = gtk_tree_path_get_indices_with_depth(path, &depth);
+			int depth = gtk_tree_path_get_depth(path);
+			int *indices = gtk_tree_path_get_indices(path);
 			/* top level dive or child dive that is not the first child */
 			if (depth == 1 || indices[1] > 0) {
 				menuitem = gtk_menu_item_new_with_label("Create new trip above");

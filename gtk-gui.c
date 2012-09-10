@@ -971,7 +971,7 @@ void exit_ui(void)
 }
 
 typedef struct {
-	cairo_rectangle_int_t rect;
+	cairo_rectangle_t rect;
 	const char *text;
 } tooltip_record_t;
 
@@ -980,7 +980,7 @@ static int tooltips;
 
 void attach_tooltip(int x, int y, int w, int h, const char *text)
 {
-	cairo_rectangle_int_t *rect;
+	cairo_rectangle_t *rect;
 	tooltip_rects = realloc(tooltip_rects, (tooltips + 1) * sizeof(tooltip_record_t));
 	rect = &tooltip_rects[tooltips].rect;
 	rect->x = x;
@@ -998,7 +998,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 			gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data)
 {
 	int i;
-	cairo_rectangle_int_t *drawing_area = user_data;
+	cairo_rectangle_t *drawing_area = user_data;
 	gint tx = x - drawing_area->x; /* get transformed coordinates */
 	gint ty = y - drawing_area->y;
 
