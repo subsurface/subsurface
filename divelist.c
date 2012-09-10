@@ -963,6 +963,49 @@ static struct dive *create_and_hookup_trip_from_dive(struct dive *dive)
 	return dive_trip;
 }
 
+/* check that a dive should be in a trip starting at 'when'
+ * first the regular check (dive is before the trip start, but within the
+ * threshold)
+ * then for dives that are after the trip start we walk back to the dive
+ * that starts at when and check on the way that there is no ungrouped
+ * dive and no break beyond the 3 day threshold between dives that
+ * haven't already been assigned to this trip */
+static gboolean dive_can_be_in_trip(int idx, struct dive *dive_trip)
+{
+	struct dive *dive, *pdive;
+	int i = idx;
+	time_t when = dive_trip->when;
+
+	dive = get_dive(idx);
+	/* if the dive is before the trip start but within the threshold
+	 * then just accept it, otherwise reject it */
+	if (dive->when < when) {
+		if (DIVE_FITS_TRIP(dive, dive_trip))
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+	while (--i >= 0) {
+		pdive = get_dive(i);
+		/* an ungrouped dive cannot be in the middle of a trip
+		 * also, if there are two consecutive dives that are too far apart
+		 * that aren't both already labeled as 'in trip' (which shows that
+		 * this was manually done so we shouldn't override that) */
+		if ( UNGROUPED_DIVE(pdive) ||
+			(! (DIVE_IN_TRIP(pdive) && DIVE_IN_TRIP(dive)) &&
+			 dive->when - pdive->when > TRIP_THRESHOLD)) {
+			return FALSE;
+		}
+		if (pdive->when == when)
+			/* done - we have reached the first dive in the trip */
+			return TRUE;
+		dive = pdive;
+	}
+	/* we should never get here */
+	return TRUE;
+}
+
 static void fill_dive_list(void)
 {
 	int i;
@@ -971,7 +1014,6 @@ static void fill_dive_list(void)
 	struct dive *last_trip = NULL;
 	GList *trip;
 	struct dive *dive_trip = NULL;
-	gboolean need_scan = FALSE;
 
 	/* if we have pre-existing trips, start on the last one */
 	trip = g_list_last(dive_trip_list);
@@ -1002,30 +1044,31 @@ static void fill_dive_list(void)
 			/* first dives that go to the top level */
 			parent_ptr = NULL;
 			dive_trip = NULL;
-		} else if (autogroup && !DIVE_IN_TRIP(dive)) {
-			if ( ! dive_trip || ! DIVE_FITS_TRIP(dive, dive_trip)) {
-				/* allocate new trip - all fields default to 0
-				   and get filled in further down */
-				dive_trip = create_and_hookup_trip_from_dive(dive);
-				dive_trip->tripflag = IN_TRIP; /* this marks an autogen trip */
-				trip = FIND_TRIP(dive_trip->when);
+		} else if (autogroup && DIVE_NEEDS_TRIP(dive)){
+			/* if we already have existing trips there are up to two trips that this
+			 * could potentially be part of. Let's try the one we are on, first */
+			if (! (dive_trip && dive_can_be_in_trip(i, dive_trip))) {
+				/* there could be a better trip in our list already */
+				trip = find_matching_trip(dive->when);
+				if (! (trip && dive_can_be_in_trip(i, DIVE_TRIP(trip)))) {
+					/* seems like neither of these trips work, so create
+					 * a new one; all fields default to 0 and get filled
+					 * in further down */
+					parent_ptr = NULL;
+					dive_trip = create_and_hookup_trip_from_dive(dive);
+					dive_trip->tripflag = IN_TRIP;
+					trip = FIND_TRIP(dive_trip->when);
+				}
+				if (trip)
+					dive_trip = DIVE_TRIP(trip);
 			}
 		} else if (DIVE_IN_TRIP(dive)) {
-				trip = find_matching_trip(dive->when);
-				dive_trip = DIVE_TRIP(trip);
+			trip = find_matching_trip(dive->when);
+			dive_trip = DIVE_TRIP(trip);
 		} else {
 			/* dive is not in a trip and we aren't autogrouping */
 			dive_trip = NULL;
 			parent_ptr = NULL;
-		}
-		/* if we have an new dive and the dive_trip date is earlier than the
-		 * dive then this is an existing trip and a new dive; as we are walking the
-		 * dive_list oldest first it's very hard right now to know if this dive
-		 * should be in that trip; so postpone this decision until the 'forward'
-		 * scan at the end of this function */
-		if (DIVE_NEEDS_TRIP(dive) && dive_trip && dive_trip->when < dive->when) {
-			dive_trip = NULL;
-			need_scan = TRUE;
 		}
 		/* update dive as part of dive_trip and
 		 * (if necessary) update dive_trip time and location */
@@ -1087,43 +1130,6 @@ static void fill_dive_list(void)
 				DIVE_DATE, dive_trip->when,
 				DIVE_LOCATION, dive_trip->location,
 				-1);
-	/* now walk the dive list one more time to make sure any new
-	 * dives that fit into an existing dive_trip have been added
-	 * to the matching trips */
-	if (autogroup && need_scan) {
-		struct dive *dive;
-		time_t last_trip_dive_when;
-		GtkTreePath *path;
-
-		trip = dive_trip_list;
-		last_trip_dive_when = DIVE_TRIP(trip)->when;
-		for (i = 0; i < dive_table.nr; i++) {
-			dive = get_dive(i);
-			if (UNGROUPED_DIVE(dive)) {
-				/* this ends any trip */
-				trip = NULL;
-				last_trip_dive_when = 0;
-			} else if (DIVE_IN_TRIP(dive)) {
-				trip = find_matching_trip(dive->when);
-				if (dive->when > last_trip_dive_when)
-					last_trip_dive_when = dive->when;
-			} else { /* DIVE_NEEDS_TRIP */
-				if (dive->when - last_trip_dive_when < TRIP_THRESHOLD) {
-					/* dive should be in this trip */
-					dive->tripflag = IN_TRIP;
-					dive->divetrip = DIVE_TRIP(trip);
-					/* now move the tree node into place */
-					path = get_path_from(dive);
-					merge_dive_into_trip_above_cb(NULL, path);
-
-				} else {
-					/* we did need a new trip for this dive */
-					path = get_path_from(dive);
-					turn_dive_into_trip(path);
-				}
-			}
-		}
-	}
 	update_dive_list_units();
 	if (gtk_tree_model_get_iter_first(MODEL(dive_list), &iter)) {
 		GtkTreeSelection *selection;
