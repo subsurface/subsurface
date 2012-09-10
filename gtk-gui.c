@@ -313,7 +313,11 @@ static void file_close(GtkWidget *w, gpointer data)
 		free(get_dive(i));
 	dive_table.nr = 0;
 	dive_table.preexisting = 0;
-	g_list_free_full(dive_trip_list, free);
+
+	/* inlined version of g_list_free_full(dive_trip_list, free); */
+	g_list_foreach(dive_trip_list, (GFunc)free, NULL);
+	g_list_free(dive_trip_list);
+
 	dive_trip_list = NULL;
 
 	/* clear the selection and the statistics */
