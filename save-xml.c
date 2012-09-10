@@ -7,8 +7,6 @@
 
 #include "dive.h"
 
-#define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
-
 static void show_milli(FILE *f, const char *pre, int value, const char *unit, const char *post)
 {
 	int i;

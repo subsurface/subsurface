@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "dive.h"
 #include "display.h"
@@ -54,6 +55,7 @@ typedef struct {
 static total_stats_widget_t stats_w;
 
 typedef struct {
+	int period;
 	duration_t total_time;
 	/* avg_time is simply total_time / nr -- let's not keep this */
 	duration_t shortest_time;
@@ -74,7 +76,31 @@ typedef struct {
 
 static stats_t stats;
 static stats_t stats_selection;
+static stats_t *stats_monthly = NULL;
+static stats_t *stats_yearly = NULL;
 
+GtkTreeIter yearly_iter;
+
+enum {
+	YEAR,
+	DIVES,
+	TOTAL_TIME,
+	AVERAGE_TIME,
+	SHORTEST_TIME,
+	LONGEST_TIME,
+	AVG_DEPTH,
+	MIN_DEPTH,
+	MAX_DEPTH,
+	AVG_SAC,
+	MIN_SAC,
+	MAX_SAC,
+	AVG_TEMP,
+	MIN_TEMP,
+	MAX_TEMP,
+	N_COLUMNS
+};
+
+static char * get_time_string(int seconds, int maxdays);
 
 static void process_dive(struct dive *dp, stats_t *stats)
 {
@@ -117,10 +143,201 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	}
 }
 
+static void init_tree(GtkWidget *tree)
+{
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+	GtkTreeStore *store;
+	int i;
+	PangoFontDescription *font_desc = pango_font_description_from_string(divelist_font);
+
+	gtk_widget_modify_font(tree, font_desc);
+	pango_font_description_free(font_desc);
+
+	renderer = gtk_cell_renderer_text_new ();
+	char *columns[] = {
+		"Year\n > Month", "#", "Duration\nTotal", "\nAverage",
+		"\nShortest", "\nLongest", "Depth\nAverage", "\nMinimum",
+		"\nMaximum", "SAC\nAverage", "\nMinimum", "\nMaximum", "Temperature\nAverage",
+		"\nMinimum", "\nMaximum" };
+
+	/* Add all the columns to the tree view */
+	for (i = 0; i < N_COLUMNS; ++i) {
+		column = gtk_tree_view_column_new();
+		gtk_tree_view_column_set_title(column, columns[i]);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(tree), column);
+		renderer = gtk_cell_renderer_text_new();
+		gtk_tree_view_column_pack_start(column, renderer, TRUE);
+		gtk_tree_view_column_add_attribute(column, renderer, "text", i);
+		gtk_tree_view_column_set_resizable(column, TRUE);
+	}
+
+	/* Field types */
+	store = gtk_tree_store_new (
+			N_COLUMNS,	// Columns in structure
+			G_TYPE_STRING,	// Period (year or month)
+			G_TYPE_STRING,	// Number of dives
+			G_TYPE_STRING,	// Total duration
+			G_TYPE_STRING,	// Average dive duation
+			G_TYPE_STRING,	// Shortest dive
+			G_TYPE_STRING,	// Longest dive
+			G_TYPE_STRING,	// Average depth
+			G_TYPE_STRING,	// Shallowest dive
+			G_TYPE_STRING,	// Deepest dive
+			G_TYPE_STRING,	// Average air consumption (SAC)
+			G_TYPE_STRING,	// Minimum SAC
+			G_TYPE_STRING,	// Maximum SAC
+			G_TYPE_STRING,	// Average temperature
+			G_TYPE_STRING,	// Minimum temperature
+			G_TYPE_STRING	// Maximum temperature
+			);
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW (tree), GTK_TREE_MODEL (store));
+	g_object_unref (store);
+}
+
+static void add_cell_to_tree(GtkTreeStore *store, char *value, int index, gboolean row, GtkTreeIter *parent)
+{
+	if (row)
+		gtk_tree_store_append(store, &yearly_iter, parent);
+	gtk_tree_store_set(store, &yearly_iter, index, value, -1);
+}
+
+static char * get_minutes(int seconds)
+{
+	static char buf[80];
+	snprintf(buf, sizeof(buf), "%d:%.2d", FRACTION(seconds, 60));
+	return buf;
+}
+
+void add_cell(GtkTreeStore *store, GtkTreeIter *parent, unsigned int val, int cell, gboolean depth_not_volume)
+{
+	double value;
+	int decimals;
+	const char *unit;
+	char value_str[40];
+
+	if (depth_not_volume) {
+		value = get_depth_units(val, &decimals, &unit);
+		snprintf(value_str, sizeof(value_str), "%.*f %s", decimals, value, unit);
+	} else {
+		value = get_volume_units(val, &decimals, &unit);
+		snprintf(value_str, sizeof(value_str), "%.*f %s/min", decimals, value, unit);
+	}
+	add_cell_to_tree(store, value_str, cell, FALSE, parent);
+}
+
+void process_interval_stats(GtkWidget *tree, stats_t stats_interval, GtkTreeIter *parent)
+{
+	double value;
+	const char *unit;
+	char value_str[40];
+	GtkTreeStore *store;
+
+	store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(tree)));
+
+	/* Year or month */
+	snprintf(value_str, sizeof(value_str), "%d", stats_interval.period);
+	add_cell_to_tree(store, value_str, 0, TRUE, parent);
+	/* Dives */
+	snprintf(value_str, sizeof(value_str), "%d", stats_interval.selection_size);
+	add_cell_to_tree(store, value_str, 1, FALSE, parent);
+	/* Total duration */
+	add_cell_to_tree(store, get_time_string(stats_interval.total_time.seconds, 0), 2, FALSE, parent);
+	/* Average dive duration */
+	add_cell_to_tree(store, get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size), 3, FALSE, parent);
+	/* Shortest duration */
+	add_cell_to_tree(store, get_minutes(stats_interval.shortest_time.seconds), 4, FALSE, parent);
+	/* Longest duration */
+	add_cell_to_tree(store, get_minutes(stats_interval.longest_time.seconds), 5, FALSE, parent);
+	/* Average depth */
+	add_cell(store, parent, stats_interval.avg_depth.mm, 6, TRUE);
+	/* Smallest maximum depth */
+	add_cell(store, parent, stats_interval.min_depth.mm, 7, TRUE);
+	/* Deepest maximum depth */
+	add_cell(store, parent, stats_interval.max_depth.mm, 8, TRUE);
+	/* Average air consumption */
+	add_cell(store, parent, stats_interval.avg_sac.mliter, 9, FALSE);
+	/* Smallest average air consumption */
+	add_cell(store, parent, stats_interval.min_sac.mliter, 10, FALSE);
+	/* Biggest air consumption */
+	add_cell(store, parent, stats_interval.max_sac.mliter, 11, FALSE);
+	/* Average water temperature */
+	value = get_temp_units(stats_interval.min_temp, &unit);
+	if (stats_interval.combined_temp && stats_interval.combined_count) {
+		snprintf(value_str, sizeof(value_str), "%.1f %s", stats_interval.combined_temp / (stats_interval.combined_count * 1.0), unit);
+		add_cell_to_tree(store, value_str, 12, FALSE, parent);
+	} else {
+		add_cell_to_tree(store, "", 12, FALSE, parent);
+	}
+	/* Coldest water temperature */
+	snprintf(value_str, sizeof(value_str), "%.1f %s\t", value, unit);
+	add_cell_to_tree(store, value_str, 13, FALSE, parent);
+	/* Warmest water temperature */
+	value = get_temp_units(stats_interval.max_temp, &unit);
+	snprintf(value_str, sizeof(value_str), "%.1f %s", value, unit);
+	add_cell_to_tree(store, value_str, 14, FALSE, parent);
+}
+
+static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data)
+{
+	if ((event->string != NULL && event->keyval == GDK_Escape) ||
+			(event->string != NULL && event->keyval == GDK_w && event->state & GDK_CONTROL_MASK))
+		gtk_widget_destroy(window);
+}
+
+
+void show_yearly_stats()
+{
+	int i, j, combined_months, month_iter = 0;
+	GtkWidget *window;
+	GtkWidget *tree, *sw;
+	GtkTreeIter parent_iter;
+
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	tree = gtk_tree_view_new ();
+
+	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+	gtk_window_set_default_size(GTK_WINDOW(window), 640, 480);
+	gtk_window_set_title(GTK_WINDOW(window), "Yearly Statistics");
+	gtk_container_set_border_width(GTK_CONTAINER(window), 5);
+	GTK_WINDOW(window)->allow_shrink = TRUE;
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_ETCHED_IN);
+
+	gtk_container_add (GTK_CONTAINER (sw), tree);
+	gtk_container_add (GTK_CONTAINER (window), sw);
+
+	/* Display the yearly statistics on top level
+	 * Monthly statistics are available by expanding a year */
+	init_tree(tree);
+	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i) {
+		process_interval_stats(tree, stats_yearly[i], NULL);
+		parent_iter = yearly_iter;
+		combined_months = 0;
+
+		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
+			combined_months += stats_monthly[month_iter].selection_size;
+			process_interval_stats(tree, stats_monthly[month_iter++], &parent_iter);
+		}
+	}
+
+	g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (key_press_event), NULL);
+	gtk_widget_show_all(window);
+}
+
 static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 {
 	int idx;
 	struct dive *dp;
+	struct tm *tm;
+	int current_year = 0;
+	int current_month = 0;
+	int year_iter = 0;
+	int month_iter = 0;
+	int prev_month = 0, prev_year = 0;
+	unsigned int size;
 
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
@@ -129,6 +346,23 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
 		stats.selection_size = dive_table.nr;
 	}
+
+	/* allocate sufficient space to hold the worst
+	 * case (one dive per year or all dives during
+	 * one month) for yearly and monthly statistics*/
+
+	if (stats_yearly != NULL) {
+		free(stats_yearly);
+		free(stats_monthly);
+	}
+	size = sizeof(stats_t) * (dive_table.nr + 1);
+	stats_yearly = malloc(size);
+	stats_monthly = malloc(size);
+	if (!stats_yearly || !stats_monthly)
+		return;
+	memset(stats_yearly, 0, size);
+	memset(stats_monthly, 0, size);
+
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
 	for (idx = 0; idx < dive_table.nr; idx++) {
@@ -139,6 +373,36 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 				*prev_dive = dive_table.dives[idx-1];
 		}
 		process_dive(dp, &stats);
+
+		/* yearly statistics */
+		tm = gmtime(&dp->when);
+		if (current_year == 0)
+			current_year = tm->tm_year + 1900;
+
+		if (current_year != tm->tm_year + 1900) {
+			current_year = tm->tm_year + 1900;
+			process_dive(dp, &(stats_yearly[++year_iter]));
+		} else
+			process_dive(dp, &(stats_yearly[year_iter]));
+
+		stats_yearly[year_iter].selection_size++;
+		stats_yearly[year_iter].period = current_year;
+
+		/* monthly statistics */
+		if (current_month == 0) {
+			current_month = tm->tm_mon + 1;
+		} else {
+			if (current_month != tm->tm_mon + 1)
+				current_month = tm->tm_mon + 1;
+			if (prev_month != current_month || prev_year != current_year)
+				month_iter++;
+		}
+
+		process_dive(dp, &(stats_monthly[month_iter]));
+		stats_monthly[month_iter].selection_size++;
+		stats_monthly[month_iter].period = current_month;
+		prev_month = current_month;
+		prev_year = current_year;
 	}
 }
 

@@ -758,6 +758,7 @@ static GtkActionEntry menu_items[] = {
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
+	{ "YearlyStats",    NULL, "Yearly Statistics", NULL, NULL, G_CALLBACK(show_yearly_stats) },
 	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
@@ -794,6 +795,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<menuitem name=\"Autogroup\" action=\"Autogroup\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
+				<menuitem name=\"YearlyStats\" action=\"YearlyStats\" /> \
 				<menu name=\"View\" action=\"ViewMenuAction\"> \
 					<menuitem name=\"List\" action=\"ViewList\" /> \
 					<menuitem name=\"Profile\" action=\"ViewProfile\" /> \

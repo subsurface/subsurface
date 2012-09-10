@@ -394,6 +394,8 @@ extern void show_dive_equipment(struct dive *, int w_idx);
 
 extern void show_dive_stats(struct dive *);
 
+extern void show_yearly_stats(void);
+
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
 
@@ -461,5 +463,7 @@ const char *monthname(int mon);
 extern const char *star_strings[];
 
 #define AIR_PERMILLE 209
+
+#define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 
 #endif /* DIVE_H */
