@@ -1612,3 +1612,9 @@ GtkWidget *equipment_widget(int w_idx)
 
 	return vbox;
 }
+
+void clear_equipment_widgets()
+{
+	gtk_list_store_clear(cylinder_list[W_IDX_PRIMARY].model);
+	gtk_list_store_clear(weightsystem_list[W_IDX_PRIMARY].model);
+}

@@ -113,6 +113,17 @@ void show_dive_info(struct dive *dive)
 	const char *text;
 	char buffer[80];
 
+	if (!dive) {
+		gtk_window_set_title(GTK_WINDOW(main_window), "Subsurface");
+		SET_TEXT_VALUE(divemaster);
+		SET_TEXT_VALUE(buddy);
+		SET_TEXT_VALUE(location);
+		SET_TEXT_VALUE(suit);
+		gtk_entry_set_text(rating, star_strings[0]);
+		gtk_text_buffer_set_text(gtk_text_view_get_buffer(notes), "", -1);
+		return;
+	}
+
 	/* dive number and location (or lacking that, the date) go in the window title */
 	text = dive->location;
 	if (!text)

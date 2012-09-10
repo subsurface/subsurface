@@ -390,8 +390,10 @@ extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
 extern void show_dive_info(struct dive *);
 
 extern void show_dive_equipment(struct dive *, int w_idx);
+extern void clear_equipment_widgets(void);
 
 extern void show_dive_stats(struct dive *);
+extern void clear_stats_widgets(void);
 
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);

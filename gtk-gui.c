@@ -277,11 +277,11 @@ static gboolean ask_save_changes()
 
 	if (!existing_filename){
 		label = gtk_label_new (
-			"You have unsaved changes\nWould you like to save those before exiting the program?");
+			"You have unsaved changes\nWould you like to save those before closing the datafile?");
 	} else {
 		char *label_text = (char*) malloc(sizeof(char) * (93 + strlen(existing_filename)));
 		sprintf(label_text,
-			"You have unsaved changes to file: %s \nWould you like to save those before exiting the program?",
+			"You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?",
 			existing_filename);
 		label = gtk_label_new (label_text);
 		g_free(label_text);
@@ -297,6 +297,37 @@ static gboolean ask_save_changes()
 	}
 	gtk_widget_destroy(dialog);
 	return quit;
+}
+
+static void file_close(GtkWidget *w, gpointer data)
+{
+	int i;
+
+	if (unsaved_changes())
+		if (ask_save_changes() == FALSE)
+			return;
+	existing_filename = NULL;
+
+	/* free the dives and trips */
+	for (i = 0; i < dive_table.nr; i++)
+		free(get_dive(i));
+	dive_table.nr = 0;
+	dive_table.preexisting = 0;
+	g_list_free_full(dive_trip_list, free);
+	dive_trip_list = NULL;
+
+	/* clear the selection and the statistics */
+	amount_selected = 0;
+	selected_dive = 0;
+	process_selected_dives();
+	clear_stats_widgets();
+
+	/* clear the equipment page */
+	clear_equipment_widgets();
+
+	/* redraw the screen */
+	dive_list_update_dives();
+	show_dive_info(NULL);
 }
 
 static gboolean on_delete(GtkWidget* w, gpointer data)
@@ -842,6 +873,7 @@ static GtkActionEntry menu_items[] = {
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
+	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
@@ -870,6 +902,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
+				<menuitem name=\"Close\" action=\"CloseFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
