@@ -233,7 +233,7 @@ static void file_save_as(GtkWidget *w, gpointer data)
 
 	if (filename){
 		save_dives(filename);
-		set_filename(filename);
+		set_filename(filename, TRUE);
 		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
@@ -1419,11 +1419,11 @@ void update_progressbar_text(progressbar_t *progress, const char *text)
 	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->bar), text);
 }
 
-void set_filename(const char *filename)
+void set_filename(const char *filename, gboolean force)
 {
-	if (existing_filename)
-		free(existing_filename);
-	existing_filename = NULL;
+	if (!force && existing_filename)
+		return;
+	free(existing_filename);
 	if (filename)
 		existing_filename = strdup(filename);
 }

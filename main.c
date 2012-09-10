@@ -243,7 +243,7 @@ int main(int argc, char **argv)
 		parse_file(filename, &error);
 		/* don't report errors - this file may not exist, but make
 		   sure we remember this as the filename in use */
-		set_filename(filename);
+		set_filename(filename, FALSE);
 	}
 	report_dives(imported);
 
