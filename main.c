@@ -140,8 +140,8 @@ void report_dives(gboolean is_imported)
 		if (last && last->number)
 			try_to_renumber(last, preexisting);
 
-		/* did we have dives in the table and added more? */
-		if (last && preexisting != dive_table.nr)
+		/* did we add dives to the dive table? */
+		if (preexisting != dive_table.nr)
 			mark_divelist_changed(TRUE);
 	}
 	dive_table.preexisting = dive_table.nr;
