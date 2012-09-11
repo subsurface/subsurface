@@ -46,6 +46,7 @@ struct equipment_list {
 
 static struct equipment_list cylinder_list[2], weightsystem_list[2];
 
+struct dive edit_dive;
 
 struct cylinder_widget {
 	int index, changed;
@@ -1047,7 +1048,7 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	ws_widget->weight = GTK_SPIN_BUTTON(widget);
 }
 
-static int edit_cylinder_dialog(int index, cylinder_t *cyl)
+static int edit_cylinder_dialog(int index, cylinder_t *cyl, int w_idx)
 {
 	int success;
 	GtkWidget *dialog, *vbox;
@@ -1057,7 +1058,10 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 	cylinder.index = index;
 	cylinder.changed = 0;
 
-	dive = current_dive;
+	if (w_idx == W_IDX_PRIMARY)
+		dive = current_dive;
+	else
+		dive = &edit_dive;
 	if (!dive)
 		return 0;
 	*cyl = dive->cylinder[index];
@@ -1079,9 +1083,11 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 	if (success) {
 		record_cylinder_changes(cyl, &cylinder);
 		dive->cylinder[index] = *cyl;
-		mark_divelist_changed(TRUE);
-		update_cylinder_related_info(dive);
-		flush_divelist(dive);
+		if (w_idx == W_IDX_PRIMARY) {
+			mark_divelist_changed(TRUE);
+			update_cylinder_related_info(dive);
+			flush_divelist(dive);
+		}
 	}
 
 	gtk_widget_destroy(dialog);
@@ -1089,7 +1095,7 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl)
 	return success;
 }
 
-static int edit_weightsystem_dialog(int index, weightsystem_t *ws)
+static int edit_weightsystem_dialog(int index, weightsystem_t *ws, int w_idx)
 {
 	int success;
 	GtkWidget *dialog, *vbox;
@@ -1099,7 +1105,10 @@ static int edit_weightsystem_dialog(int index, weightsystem_t *ws)
 	weightsystem_widget.index = index;
 	weightsystem_widget.changed = 0;
 
-	dive = current_dive;
+	if (w_idx == W_IDX_PRIMARY)
+		dive = current_dive;
+	else
+		dive = &edit_dive;
 	if (!dive)
 		return 0;
 	*ws = dive->weightsystem[index];
@@ -1121,8 +1130,10 @@ static int edit_weightsystem_dialog(int index, weightsystem_t *ws)
 	if (success) {
 		record_weightsystem_changes(ws, &weightsystem_widget);
 		dive->weightsystem[index] = *ws;
-		mark_divelist_changed(TRUE);
-		flush_divelist(dive);
+		if (w_idx == W_IDX_PRIMARY) {
+			mark_divelist_changed(TRUE);
+			flush_divelist(dive);
+		}
 	}
 
 	gtk_widget_destroy(dialog);
@@ -1158,7 +1169,7 @@ static void edit_cb(GtkButton *button, int w_idx)
 		return;
 
 	index = get_model_index(model, &iter);
-	if (!edit_cylinder_dialog(index, &cyl))
+	if (!edit_cylinder_dialog(index, &cyl, w_idx))
 		return;
 
 	set_one_cylinder(&cyl, model, &iter);
@@ -1174,7 +1185,7 @@ static void add_cb(GtkButton *button, int w_idx)
 	GtkTreeSelection *selection;
 	cylinder_t cyl;
 
-	if (!edit_cylinder_dialog(index, &cyl))
+	if (!edit_cylinder_dialog(index, &cyl, w_idx))
 		return;
 
 	gtk_list_store_append(model, &iter);
@@ -1241,7 +1252,7 @@ static void ws_edit_cb(GtkButton *button, int w_idx)
 		return;
 
 	index = get_model_index(model, &iter);
-	if (!edit_weightsystem_dialog(index, &ws))
+	if (!edit_weightsystem_dialog(index, &ws, w_idx))
 		return;
 
 	set_one_weightsystem(&ws, model, &iter);
@@ -1257,7 +1268,7 @@ static void ws_add_cb(GtkButton *button, int w_idx)
 	GtkTreeSelection *selection;
 	weightsystem_t ws;
 
-	if (!edit_weightsystem_dialog(index, &ws))
+	if (!edit_weightsystem_dialog(index, &ws, w_idx))
 		return;
 
 	gtk_list_store_append(model, &iter);

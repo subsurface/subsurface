@@ -481,7 +481,7 @@ static weightsystem_t remember_ws[MAX_WEIGHTSYSTEMS];
 #define CYL_BYTES sizeof(cylinder_t) * MAX_CYLINDERS
 #define WS_BYTES sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS
 
-void save_equipment_data(struct dive *dive)
+static void save_equipment_data(struct dive *dive)
 {
 	if (dive) {
 		memcpy(remember_cyl, dive->cylinder, CYL_BYTES);
@@ -583,13 +583,19 @@ int edit_multi_dive_info(struct dive *single_dive)
 			}
 		}
 	}
+	/* edit a temporary copy of the master dive;
+	 * edit_dive is a global dive structure that is modified by the
+	 * cylinder / weightsystem dialogs if we open W_IDX_SECONDARY
+	 * edit widgets as we do here */
+	memcpy(&edit_dive, master, sizeof(struct dive));
 
-	dive_info_widget(vbox, master, &info, multi);
-	show_dive_equipment(master, W_IDX_SECONDARY);
-	save_equipment_data(master);
+	dive_info_widget(vbox, &edit_dive, &info, multi);
+	show_dive_equipment(&edit_dive, W_IDX_SECONDARY);
+	save_equipment_data(&edit_dive);
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (success) {
+		mark_divelist_changed(TRUE);
 		/* Update the non-current selected dives first */
 		if (!single_dive) {
 			int i;
@@ -599,19 +605,23 @@ int edit_multi_dive_info(struct dive *single_dive)
 				if (dive == master || !dive->selected)
 					continue;
 				/* copy all "info" fields */
-				save_dive_info_changes(dive, master, &info);
+				save_dive_info_changes(dive, &edit_dive, &info);
 				/* copy the cylinders / weightsystems */
-				update_equipment_data(dive, master);
+				update_equipment_data(dive, &edit_dive);
 				/* this is extremely inefficient... it loops through all
 				   dives to find the right one - but we KNOW the index already */
+				update_cylinder_related_info(dive);
 				flush_divelist(dive);
 			}
 		}
 
 		/* Update the master dive last! */
-		save_dive_info_changes(master, master, &info);
-		update_equipment_data(master, master);
+		save_dive_info_changes(master, &edit_dive, &info);
+		update_equipment_data(master, &edit_dive);
+		update_cylinder_related_info(master);
 		flush_divelist(master);
+		process_selected_dives();
+		update_dive(master);
 	}
 	gtk_widget_destroy(dialog);
 

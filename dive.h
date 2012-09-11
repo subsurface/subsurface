@@ -262,6 +262,10 @@ struct dive {
 	struct sample sample[];
 };
 
+/* this is a global spot for a temporary dive structure that we use to
+ * be able to edit a dive without unintended side effects */
+extern struct dive edit_dive;
+
 extern GList *dive_trip_list;
 extern gboolean autogroup;
 /* random threashold: three days without diving -> new trip
