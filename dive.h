@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <libxml/tree.h>
 
 /*

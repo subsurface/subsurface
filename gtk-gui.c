@@ -255,7 +255,7 @@ static void file_save(GtkWidget *w, gpointer data)
 
 		current_def_dir = path_and_file(existing_filename, &current_def_file);
 		if (stat(current_def_dir, &sb) != 0) {
-			mkdir(current_def_dir, S_IRWXU);
+			g_mkdir(current_def_dir, S_IRWXU);
 		}
 	}
 	free((void *)current_default);
@@ -507,7 +507,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	 * For gtk's file select box to make sense we create it if needed and then remove
 	 * it after the dialog has run */
 	if (stat(current_def_dir, &sb) != 0) {
-		if (mkdir(current_def_dir, S_IRWXU) == 0)
+		if (g_mkdir(current_def_dir, S_IRWXU) == 0)
 			need_rmdir = TRUE;
 	}
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
