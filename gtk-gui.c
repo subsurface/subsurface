@@ -1014,7 +1014,7 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 {
 	struct dive *dive = current_dive;
 	struct graphics_context gc = { .printer = 0 };
-	static cairo_rectangle_int_t drawing_area;
+	static cairo_rectangle_t drawing_area;
 
 	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
 	 * so effective drawing area is width-2x * height-2y */
@@ -1035,7 +1035,7 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 			tooltip_rects = NULL;
 		}
 		tooltips = 0;
-		plot(&gc, &drawing_area, dive);
+		plot(&gc, &drawing_area, dive, SC_SCREEN);
 	}
 	cairo_destroy(gc.cr);
 

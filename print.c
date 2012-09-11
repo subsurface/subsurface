@@ -34,7 +34,7 @@ static struct dive *get_dive_for_printing(int idx)
 static void set_font(PangoLayout *layout, PangoFontDescription *font,
 	double size, int align)
 {
-	pango_font_description_set_size(font, size * PANGO_SCALE);
+	pango_font_description_set_size(font, size * PANGO_SCALE * SCALE_PRINT);
 	pango_layout_set_font_description(layout, font);
 	pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
 	pango_layout_set_alignment(layout, align);
@@ -149,7 +149,8 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 static void show_table_header(cairo_t *cr, double w, double h,
 	PangoFontDescription *font)
 {
-	int maxwidth, maxheight, colwidth, i, curwidth;
+	int i;
+	double maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
 	char headers[7][80]= { "Dive#", "Date", "Depth", "Time", "Master",
 		"Buddy", "Location" };
@@ -190,7 +191,8 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 {
 	double depth;
 	const char *unit;
-	int len, decimals, maxwidth, maxheight, colwidth, curwidth;
+	int len, decimals;
+	double maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
 	struct tm *tm;
 	char buffer[160], divenr[20];
@@ -245,7 +247,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 1);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
-	
+
 	// Col 4: Time
 	len = snprintf(buffer, sizeof(buffer),
 		"%d min",(dive->duration.seconds+59) / 60);
@@ -284,13 +286,13 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 static void show_dive_profile(struct dive *dive, cairo_t *cr, double w,
 	double h)
 {
-	cairo_rectangle_int_t drawing_area = { w/20.0, h/20.0, w, h};
+	cairo_rectangle_t drawing_area = { w/20.0, h/20.0, w, h};
 	struct graphics_context gc = {
 		.printer = 1,
 		.cr = cr
 	};
 	cairo_save(cr);
-	plot(&gc, &drawing_area, dive);
+	plot(&gc, &drawing_area, dive, SC_PRINT);
 	cairo_restore(cr);
 }
 
@@ -533,7 +535,7 @@ void do_print(void)
 
 	repaint_dive();
 	print = gtk_print_operation_new();
-	gtk_print_operation_set_unit(print, GTK_UNIT_POINTS);
+	gtk_print_operation_set_unit(print, GTK_UNIT_INCH);
 	if (settings != NULL)
 		gtk_print_operation_set_print_settings(print, settings);
 	g_signal_connect(print, "create-custom-widget", G_CALLBACK(print_dialog), NULL);

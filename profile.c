@@ -16,6 +16,11 @@
 int selected_dive = 0;
 char zoomed_plot = 0;
 
+static double plot_scale = SCALE_SCREEN;
+
+#define cairo_set_line_width_scaled(cr, w) \
+	cairo_set_line_width((cr), (w) * plot_scale);
+
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
 /* Plot info with smoothing, velocity indication
@@ -245,7 +250,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	vsnprintf(buffer, sizeof(buffer), fmt, args);
 	va_end(args);
 
-	cairo_set_font_size(cr, tro->size);
+	cairo_set_font_size(cr, tro->size * plot_scale);
 	cairo_font_extents(cr, &fe);
 	cairo_text_extents(cr, buffer, &extents);
 	dx = tro->hpos * extents.width + extents.x_bearing;
@@ -485,7 +490,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	gc->leftx = 0; gc->rightx = maxtime;
 	gc->topy = 0; gc->bottomy = 1.0;
 	set_source_rgba(gc, TIME_GRID);
-	cairo_set_line_width(gc->cr, 2);
+	cairo_set_line_width_scaled(gc->cr, 2);
 
 	for (i = incr; i < maxtime; i += incr) {
 		move_to(gc, i, 0);
@@ -542,13 +547,13 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	gc->topy = 0; gc->bottomy = maxdepth;
 
 	cairo_pattern_t *pat;
-	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0);
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
 	pattern_add_color_stop_rgba (gc, pat, 1, DEPTH_BOTTOM);
 	pattern_add_color_stop_rgba (gc, pat, 0, DEPTH_TOP);
 
 	cairo_set_source(gc->cr, pat);
 	cairo_pattern_destroy(pat);
-	cairo_set_line_width(gc->cr, 2);
+	cairo_set_line_width_scaled(gc->cr, 2);
 
 	entry = pi->entry;
 	move_to(gc, 0, 0);
@@ -655,7 +660,7 @@ static void plot_temperature_profile(struct graphics_context *gc, struct plot_in
 	if (!setup_temperature_limits(gc, pi))
 		return;
 
-	cairo_set_line_width(gc->cr, 2);
+	cairo_set_line_width_scaled(gc->cr, 2);
 	set_source_rgba(gc, TEMP_PLOT);
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
@@ -730,7 +735,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
-	cairo_set_line_width(gc->cr, 2);
+	cairo_set_line_width_scaled(gc->cr, 2);
 
 	for (i = 0; i < pi->nr; i++) {
 		int mbar;
@@ -1374,12 +1379,27 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	return analyze_plot_info(pi);
 }
 
-void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive)
+static void plot_set_scale(scale_mode_t scale)
+{
+	switch (scale) {
+	default:
+	case SC_SCREEN:
+		plot_scale = SCALE_SCREEN;
+		break;
+	case SC_PRINT:
+		plot_scale = SCALE_PRINT;
+		break;
+	}
+}
+
+void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct dive *dive, scale_mode_t scale)
 {
 	struct plot_info *pi;
 	static struct sample fake[4];
 	struct sample *sample = dive->sample;
 	int nr = dive->samples;
+
+	plot_set_scale(scale);
 
 	if (!nr) {
 		/* The dive has no samples, so create a few fake ones.  This assumes an
@@ -1401,7 +1421,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	pi = create_plot_info(dive, nr, sample);
 
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
-	cairo_set_line_width(gc->cr, 1);
+	cairo_set_line_width_scaled(gc->cr, 1);
 	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
 
@@ -1435,7 +1455,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, stru
 	gc->topy = 0; gc->bottomy = 1.0;
 
 	set_source_rgba(gc, BOUNDING_BOX);
-	cairo_set_line_width(gc->cr, 1);
+	cairo_set_line_width_scaled(gc->cr, 1);
 	move_to(gc, 0, 0);
 	line_to(gc, 0, 1);
 	line_to(gc, 1, 1);

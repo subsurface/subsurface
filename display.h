@@ -3,6 +3,10 @@
 
 #include <cairo.h>
 
+#define DPI_SCREEN 72.0
+#define SCALE_SCREEN 1.0
+#define SCALE_PRINT (1.0 / DPI_SCREEN)
+
 extern void repaint_dive(void);
 extern void do_print(void);
 
@@ -22,7 +26,9 @@ struct graphics_context {
 	double topy, bottomy;
 };
 
-extern void plot(struct graphics_context *gc, cairo_rectangle_int_t *drawing_area, struct dive *dive);
+typedef enum { SC_SCREEN, SC_PRINT } scale_mode_t;
+
+extern void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct dive *dive, scale_mode_t scale);
 extern void init_profile_background(struct graphics_context *gc);
 extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 
