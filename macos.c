@@ -54,7 +54,7 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 		strpref = CFPreferencesCopyAppValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES);
 		if (!strpref)
 			return NULL;
-		return CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman);
+		return strdup(CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman));
 	}
 	/* we shouldn't get here, but having this line makes the compiler happy */
 	return NULL;
