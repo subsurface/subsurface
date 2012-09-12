@@ -258,7 +258,6 @@ static void file_save(GtkWidget *w, gpointer data)
 			g_mkdir(current_def_dir, S_IRWXU);
 		}
 	}
-	free((void *)current_default);
 	save_dives(existing_filename);
 	mark_divelist_changed(FALSE);
 }
@@ -492,11 +491,10 @@ static void event_toggle(GtkWidget *w, gpointer _data)
 static void pick_default_file(GtkWidget *w, GtkButton *button)
 {
 	GtkWidget *fs_dialog;
-	const char *current_default, *new_default = NULL;
+	const char *current_default;
 	char *current_def_file, *current_def_dir;
 	GtkFileFilter *filter;
 	struct stat sb;
-	gboolean need_rmdir = FALSE;
 
 	fs_dialog = gtk_file_chooser_dialog_new("Choose Default XML File",
 		GTK_WINDOW(main_window),
@@ -506,14 +504,12 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 		NULL);
 	current_default = subsurface_default_filename();
 	current_def_dir = path_and_file(current_default, &current_def_file);
-	free((void *)current_default);
+
 	/* it's possible that the directory doesn't exist (especially for the default)
-	 * For gtk's file select box to make sense we create it if needed and then remove
-	 * it after the dialog has run */
-	if (stat(current_def_dir, &sb) != 0) {
-		if (g_mkdir(current_def_dir, S_IRWXU) == 0)
-			need_rmdir = TRUE;
-	}
+	 * For gtk's file select box to make sense we create it */
+	if (stat(current_def_dir, &sb) != 0)
+		g_mkdir(current_def_dir, S_IRWXU);
+
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(fs_dialog), current_def_file);
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(fs_dialog), FALSE);
@@ -530,15 +526,11 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 		GSList *list;
 
 		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
-		if (g_slist_length(list) == 1) {
-			new_default = strdup(list->data);
-		}
+		if (g_slist_length(list) == 1)
+			gtk_button_set_label(button, list->data);
 		g_slist_free(list);
-		if (new_default)
-			gtk_button_set_label(button, new_default);
 	}
-	if (need_rmdir)
-		rmdir(current_def_dir);
+
 	free(current_def_dir);
 	free(current_def_file);
 	gtk_widget_destroy(fs_dialog);
@@ -687,6 +679,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
 		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(button)));
+
+		/* if we opened the default file and are changing its name,
+		 * update existing_filename */
+		if (strcmp(current_default, existing_filename) == 0)
+			existing_filename = (char *)new_default;
+
 		if (strcmp(current_default, new_default)) {
 			subsurface_set_conf("default_filename", PREF_STRING, new_default);
 			free((void *)default_filename);
@@ -697,7 +695,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_flush_conf();
 	}
 	gtk_widget_destroy(dialog);
-	free((void *)current_default);
 }
 
 static void create_toggle(const char* label, int *on, void *_data)
@@ -1092,6 +1089,8 @@ void run_ui(void)
 void exit_ui(void)
 {
 	subsurface_close_conf();
+	if (default_filename)
+		free((char *)default_filename);
 }
 
 typedef struct {
