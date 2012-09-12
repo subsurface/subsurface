@@ -104,6 +104,12 @@ const char *subsurface_default_filename()
 	}
 }
 
+static void show_main_window(GtkWidget *w, gpointer data)
+{
+	gtk_widget_show(main_window);
+	gtk_window_present(GTK_WINDOW(main_window));
+}
+
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
@@ -141,5 +147,8 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 3);
 
 	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
+	g_signal_connect(osx_app,"NSApplicationDidBecomeActive",G_CALLBACK(show_main_window),NULL);
+	g_signal_connect(osx_app,"NSApplicationWillTerminate",G_CALLBACK(quit),NULL);
+
 	gtk_osxapplication_ready(osx_app);
 }

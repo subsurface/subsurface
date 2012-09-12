@@ -355,7 +355,7 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	gtk_main_quit();
 }
 
-static void quit(GtkWidget *w, gpointer data)
+void quit(GtkWidget *w, gpointer data)
 {
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);

@@ -49,6 +49,7 @@ extern const char *subsurface_USB_name(void);
 extern const char *subsurface_icon_name(void);
 extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager);
+extern void quit(GtkWidget *w, gpointer data);
 
 extern visible_cols_t visible_cols;
 
