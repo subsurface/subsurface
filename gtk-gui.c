@@ -174,36 +174,6 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
-/* return the path and the file component contained in the full path */
-static char *path_and_file(const char *pathin, char **fileout) {
-	const char *slash = pathin, *next;
-	char *result;
-	size_t len, n;
-
-	if (! pathin) {
-		*fileout = strdup("");
-		return strdup("");
-	}
-	while ((next = strpbrk(slash + 1, "\\/")))
-		slash = next;
-	if (pathin != slash)
-		slash++;
-	*fileout = strdup(slash);
-
-	/* strndup(pathin, slash - pathin) */
-	n = slash - pathin;
-	len = strlen(pathin);
-	if (n < len)
-		len = n;
-
-	result = (char *)malloc(len + 1);
-	if (!result)
-		return 0;
-
-	result[len] = '\0';
-	return (char *)memcpy(result, pathin, len);
-}
-
 static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
@@ -219,7 +189,8 @@ static void file_save_as(GtkWidget *w, gpointer data)
 		NULL);
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-	current_dir = path_and_file(existing_filename, &current_file);
+	current_dir = g_path_get_dirname(existing_filename);
+	current_file = g_path_get_basename(existing_filename);
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), current_file);
 
@@ -250,13 +221,14 @@ static void file_save(GtkWidget *w, gpointer data)
 	if (strcmp(existing_filename, current_default) ==  0) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
-		char *current_def_dir, *current_def_file;
+		char *current_def_dir;
 		struct stat sb;
 
-		current_def_dir = path_and_file(existing_filename, &current_def_file);
+		current_def_dir = g_path_get_dirname(existing_filename);
 		if (stat(current_def_dir, &sb) != 0) {
 			g_mkdir(current_def_dir, S_IRWXU);
 		}
+		free(current_def_dir);
 	}
 	save_dives(existing_filename);
 	mark_divelist_changed(FALSE);
@@ -509,7 +481,8 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_window_set_accept_focus(GTK_WINDOW(preferences), FALSE);
 
 	current_default = subsurface_default_filename();
-	current_def_dir = path_and_file(current_default, &current_def_file);
+	current_def_dir = g_path_get_dirname(current_default);
+	current_def_file = g_path_get_basename(current_default);
 
 	/* it's possible that the directory doesn't exist (especially for the default)
 	 * For gtk's file select box to make sense we create it */
