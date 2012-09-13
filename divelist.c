@@ -1432,6 +1432,7 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 		if (!dive->selected || !prev_dive->selected)
 			break;
 	}
+	mark_divelist_changed(TRUE);
 }
 
 static void turn_dive_into_trip(GtkTreePath *path)
@@ -1532,6 +1533,7 @@ static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
 				merge_dive_into_trip_above_cb(menuitem, next_path);
 		}
 	}
+	mark_divelist_changed(TRUE);
 }
 
 static void remove_from_trip(GtkTreePath *path)
@@ -1630,6 +1632,7 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 		/* just remove the dive the mouse pointer is on */
 		remove_from_trip(path);
 	}
+	mark_divelist_changed(TRUE);
 }
 
 void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
@@ -1678,6 +1681,7 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 {
 	remove_trip(trippath, TRUE);
+	mark_divelist_changed(TRUE);
 }
 
 void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
@@ -1708,6 +1712,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	free(DIVE_TRIP(trip));
 	delete_trip(trip);
 	gtk_tree_store_remove(STORE(dive_list), &thistripiter);
+	mark_divelist_changed(TRUE);
 }
 
 /* this gets called with path pointing to a dive, either in the top level
@@ -1755,6 +1760,7 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 			gtk_tree_selection_select_path(selection, path);
 		}
 	}
+	mark_divelist_changed(TRUE);
 }
 
 static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button, GdkEventButton *event)
