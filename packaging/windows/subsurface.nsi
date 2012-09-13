@@ -17,12 +17,16 @@
 #--------------------------------
 # General
 
-    !define VERSION "1.2"
+    # Program version
+    !define SUBSURFACE_VERSION "1.2"
+
+    # VIProductVersion requires version in x.x.x.x format
+    !define SUBSURFACE_VIPRODUCTVERSION "1.2.0.0"
 
     # Installer name and filename
     Name "Subsurface"
-    Caption "Subsurface ${VERSION} Setup"
-    OutFile "subsurface-${VERSION}.exe"
+    Caption "Subsurface ${SUBSURFACE_VERSION} Setup"
+    OutFile "subsurface-${SUBSURFACE_VERSION}.exe"
 
     # Icon to use for the installer
     !define MUI_ICON "subsurface.ico"
@@ -39,12 +43,12 @@
 #--------------------------------
 # Version information
 
-    VIProductVersion "${VERSION}"
+    VIProductVersion "${SUBSURFACE_VIPRODUCTVERSION}"
     VIAddVersionKey "ProductName" "Subsurface"
     VIAddVersionKey "FileDescription" "Subsurface - an open source dive log program."
-    VIAddVersionKey "FileVersion" "${VERSION}"
+    VIAddVersionKey "FileVersion" "${SUBSURFACE_VERSION}"
     VIAddVersionKey "LegalCopyright" "GPL v.2"
-    VIAddVersionKey "ProductVersion" "${VERSION}"
+    VIAddVersionKey "ProductVersion" "${SUBSURFACE_VERSION}"
 
 #--------------------------------
 # Settings
@@ -87,6 +91,10 @@ Section
 
     # Installation path
     SetOutPath "$INSTDIR"
+
+    # Delete any already installed DLLs to avoid buildup of various
+    # versions of the same library when upgrading
+    Delete "$INSTDIR\*.dll"
 
     # Files to include in installer
     file /oname=subsurface.exe ..\..\subsurface.exe
