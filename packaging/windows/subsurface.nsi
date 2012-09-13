@@ -151,6 +151,7 @@ Section "Uninstall"
     Delete "$INSTDIR\subsurface.exe"
     Delete "$INSTDIR\subsurface.ico"
     Delete "$INSTDIR\subsurface.svg"
+    Delete "$INSTDIR\Uninstall.exe"
     RMDir "$INSTDIR"
 
     # Remove shortcuts
