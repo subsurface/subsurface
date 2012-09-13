@@ -493,7 +493,7 @@ static void event_toggle(GtkWidget *w, gpointer _data)
 
 static void pick_default_file(GtkWidget *w, GtkButton *button)
 {
-	GtkWidget *fs_dialog;
+	GtkWidget *fs_dialog, *preferences;
 	const char *current_default;
 	char *current_def_file, *current_def_dir;
 	GtkFileFilter *filter;
@@ -505,6 +505,9 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		NULL);
+	preferences = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	gtk_window_set_accept_focus(GTK_WINDOW(preferences), FALSE);
+
 	current_default = subsurface_default_filename();
 	current_def_dir = path_and_file(current_default, &current_def_file);
 
@@ -537,6 +540,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	free(current_def_dir);
 	free(current_def_file);
 	gtk_widget_destroy(fs_dialog);
+	gtk_window_set_accept_focus(GTK_WINDOW(preferences), TRUE);
 }
 
 static void preferences_dialog(GtkWidget *w, gpointer data)
