@@ -209,4 +209,4 @@ doc:
 	$(MAKE) -C Documentation doc
 
 clean:
-	rm -f $(OBJS) *~ $(NAME)
+	rm -f $(OBJS) *~ $(NAME) $(NAME).exe
