@@ -305,6 +305,9 @@ static void file_close(GtkWidget *w, gpointer data)
 	if (unsaved_changes())
 		if (ask_save_changes() == FALSE)
 			return;
+
+	if (existing_filename)
+		free(existing_filename);
 	existing_filename = NULL;
 
 	/* free the dives and trips */
@@ -682,8 +685,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 		/* if we opened the default file and are changing its name,
 		 * update existing_filename */
-		if (strcmp(current_default, existing_filename) == 0)
-			existing_filename = (char *)new_default;
+		if (existing_filename) {
+			if (strcmp(current_default, existing_filename) == 0) {
+				free(existing_filename);
+				existing_filename = strdup(new_default);
+			}
+		}
 
 		if (strcmp(current_default, new_default)) {
 			subsurface_set_conf("default_filename", PREF_STRING, new_default);
@@ -1091,6 +1098,8 @@ void exit_ui(void)
 	subsurface_close_conf();
 	if (default_filename)
 		free((char *)default_filename);
+	if (existing_filename)
+		free(existing_filename);
 }
 
 typedef struct {
