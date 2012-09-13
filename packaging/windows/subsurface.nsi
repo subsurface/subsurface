@@ -17,7 +17,7 @@
 #--------------------------------
 # General
 
-    !define VERSION "1.1"
+    !define VERSION "1.2"
 
     # Installer name and filename
     Name "Subsurface"
@@ -35,6 +35,16 @@
 
     # Request application privileges
     RequestExecutionLevel user
+
+#--------------------------------
+# Version information
+
+    VIProductVersion "${VERSION}"
+    VIAddVersionKey "ProductName" "Subsurface"
+    VIAddVersionKey "FileDescription" "Subsurface - an open source dive log program."
+    VIAddVersionKey "FileVersion" "${VERSION}"
+    VIAddVersionKey "LegalCopyright" "GPL v.2"
+    VIAddVersionKey "ProductVersion" "${VERSION}"
 
 #--------------------------------
 # Settings
