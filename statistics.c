@@ -79,7 +79,6 @@ static stats_t stats_selection;
 static stats_t *stats_monthly = NULL;
 static stats_t *stats_yearly = NULL;
 
-GtkTreeIter yearly_iter;
 GtkWidget *yearly_tree = NULL;
 
 enum {
@@ -197,13 +196,16 @@ static void init_tree()
 	g_object_unref (store);
 }
 
-static void add_cell_to_tree(GtkTreeStore *store, char *value, int index, gboolean row, GtkTreeIter *parent)
+static void add_row_to_tree(GtkTreeStore *store, char *value, int index, GtkTreeIter *row_iter, GtkTreeIter *parent)
 {
-	if (row)
-		gtk_tree_store_append(store, &yearly_iter, parent);
-	gtk_tree_store_set(store, &yearly_iter, index, value, -1);
+	gtk_tree_store_append(store, row_iter, parent);
+	gtk_tree_store_set(store, row_iter, index, value, -1);
 }
 
+static void add_cell_to_tree(GtkTreeStore *store, char *value, int index, GtkTreeIter *parent)
+{
+	gtk_tree_store_set(store, parent, index, value, -1);
+}
 static char * get_minutes(int seconds)
 {
 	static char buf[80];
@@ -211,7 +213,7 @@ static char * get_minutes(int seconds)
 	return buf;
 }
 
-void add_cell(GtkTreeStore *store, GtkTreeIter *parent, unsigned int val, int cell, gboolean depth_not_volume)
+static void add_cell(GtkTreeStore *store, GtkTreeIter *parent, unsigned int val, int cell, gboolean depth_not_volume)
 {
 	double value;
 	int decimals;
@@ -225,10 +227,10 @@ void add_cell(GtkTreeStore *store, GtkTreeIter *parent, unsigned int val, int ce
 		value = get_volume_units(val, &decimals, &unit);
 		snprintf(value_str, sizeof(value_str), "%.*f %s/min", decimals, value, unit);
 	}
-	add_cell_to_tree(store, value_str, cell, FALSE, parent);
+	add_cell_to_tree(store, value_str, cell, parent);
 }
 
-void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent)
+static void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent, GtkTreeIter *row)
 {
 	double value;
 	const char *unit;
@@ -239,45 +241,45 @@ void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent)
 
 	/* Year or month */
 	snprintf(value_str, sizeof(value_str), "%d", stats_interval.period);
-	add_cell_to_tree(store, value_str, 0, TRUE, parent);
+	add_row_to_tree(store, value_str, 0, row, parent);
 	/* Dives */
 	snprintf(value_str, sizeof(value_str), "%d", stats_interval.selection_size);
-	add_cell_to_tree(store, value_str, 1, FALSE, parent);
+	add_cell_to_tree(store, value_str, 1,  row);
 	/* Total duration */
-	add_cell_to_tree(store, get_time_string(stats_interval.total_time.seconds, 0), 2, FALSE, parent);
+	add_cell_to_tree(store, get_time_string(stats_interval.total_time.seconds, 0), 2, row);
 	/* Average dive duration */
-	add_cell_to_tree(store, get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size), 3, FALSE, parent);
+	add_cell_to_tree(store, get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size), 3, row);
 	/* Shortest duration */
-	add_cell_to_tree(store, get_minutes(stats_interval.shortest_time.seconds), 4, FALSE, parent);
+	add_cell_to_tree(store, get_minutes(stats_interval.shortest_time.seconds), 4, row);
 	/* Longest duration */
-	add_cell_to_tree(store, get_minutes(stats_interval.longest_time.seconds), 5, FALSE, parent);
+	add_cell_to_tree(store, get_minutes(stats_interval.longest_time.seconds), 5, row);
 	/* Average depth */
-	add_cell(store, parent, stats_interval.avg_depth.mm, 6, TRUE);
+	add_cell(store, row, stats_interval.avg_depth.mm, 6, TRUE);
 	/* Smallest maximum depth */
-	add_cell(store, parent, stats_interval.min_depth.mm, 7, TRUE);
+	add_cell(store, row, stats_interval.min_depth.mm, 7, TRUE);
 	/* Deepest maximum depth */
-	add_cell(store, parent, stats_interval.max_depth.mm, 8, TRUE);
+	add_cell(store, row, stats_interval.max_depth.mm, 8, TRUE);
 	/* Average air consumption */
-	add_cell(store, parent, stats_interval.avg_sac.mliter, 9, FALSE);
+	add_cell(store, row, stats_interval.avg_sac.mliter, 9, FALSE);
 	/* Smallest average air consumption */
-	add_cell(store, parent, stats_interval.min_sac.mliter, 10, FALSE);
+	add_cell(store, row, stats_interval.min_sac.mliter, 10, FALSE);
 	/* Biggest air consumption */
-	add_cell(store, parent, stats_interval.max_sac.mliter, 11, FALSE);
+	add_cell(store, row, stats_interval.max_sac.mliter, 11, FALSE);
 	/* Average water temperature */
 	value = get_temp_units(stats_interval.min_temp, &unit);
 	if (stats_interval.combined_temp && stats_interval.combined_count) {
 		snprintf(value_str, sizeof(value_str), "%.1f %s", stats_interval.combined_temp / (stats_interval.combined_count * 1.0), unit);
-		add_cell_to_tree(store, value_str, 12, FALSE, parent);
+		add_cell_to_tree(store, value_str, 12, row);
 	} else {
-		add_cell_to_tree(store, "", 12, FALSE, parent);
+		add_cell_to_tree(store, "", 12, row);
 	}
 	/* Coldest water temperature */
 	snprintf(value_str, sizeof(value_str), "%.1f %s\t", value, unit);
-	add_cell_to_tree(store, value_str, 13, FALSE, parent);
+	add_cell_to_tree(store, value_str, 13, row);
 	/* Warmest water temperature */
 	value = get_temp_units(stats_interval.max_temp, &unit);
 	snprintf(value_str, sizeof(value_str), "%.1f %s", value, unit);
-	add_cell_to_tree(store, value_str, 14, FALSE, parent);
+	add_cell_to_tree(store, value_str, 14, row);
 }
 
 void clear_statistics()
@@ -307,21 +309,20 @@ static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data
 
 void update_yearly_stats()
 {
-	int i, j, combined_months, month_iter = 0;
-	GtkTreeIter parent_iter;
+	int i, j, combined_months, month = 0;
+	GtkTreeIter year_iter, month_iter;
 	GtkTreeStore *store;
 
 	store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(yearly_tree)));
 	gtk_tree_store_clear(store);
 
 	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i) {
-		process_interval_stats(stats_yearly[i], NULL);
-		parent_iter = yearly_iter;
+		process_interval_stats(stats_yearly[i], NULL, &year_iter);
 		combined_months = 0;
 
 		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
-			combined_months += stats_monthly[month_iter].selection_size;
-			process_interval_stats(stats_monthly[month_iter++], &parent_iter);
+			combined_months += stats_monthly[month].selection_size;
+			process_interval_stats(stats_monthly[month++], &year_iter, &month_iter);
 		}
 	}
 }
