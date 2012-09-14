@@ -56,6 +56,7 @@ struct cylinder_widget {
 	GtkSpinButton *size, *pressure;
 	GtkWidget *start, *end, *pressure_button;
 	GtkWidget *o2, *he, *gasmix_button;
+	int w_idx;
 };
 
 struct ws_widget {
@@ -64,6 +65,7 @@ struct ws_widget {
 	GtkWidget *hbox;
 	GtkComboBox *description;
 	GtkSpinButton *weight;
+	int w_idx;
 };
 
 /* we want bar - so let's not use our unit functions */
@@ -207,7 +209,14 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
 	int ml, mbar;
 	struct cylinder_widget *cylinder = data;
-	cylinder_t *cyl = current_dive->cylinder + cylinder->index;
+	struct dive *dive;
+	cylinder_t *cyl;
+
+	if (cylinder->w_idx == W_IDX_PRIMARY)
+		dive = current_dive;
+	else
+		dive = &edit_dive;
+	cyl = dive->cylinder + cylinder->index;
 
 	/* Did the user set it to some non-standard value? */
 	if (!get_active_item(combo_box, &iter, cylinder_model)) {
@@ -245,7 +254,13 @@ static void weight_cb(GtkComboBox *combo_box, gpointer data)
 	GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
 	int weight;
 	struct ws_widget *ws_widget = data;
-	weightsystem_t *ws = current_dive->weightsystem + ws_widget->index;
+	struct dive *dive;
+	weightsystem_t *ws;
+	if (ws_widget->w_idx == W_IDX_PRIMARY)
+		dive = current_dive;
+	else
+		dive = &edit_dive;
+	ws = dive->weightsystem + ws_widget->index;
 
 	/* Did the user set it to some non-standard value? */
 	if (!get_active_item(combo_box, &iter, weightsystem_model)) {
@@ -1056,6 +1071,7 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl, int w_idx)
 	struct dive *dive;
 
 	cylinder.index = index;
+	cylinder.w_idx = w_idx;
 	cylinder.changed = 0;
 
 	if (w_idx == W_IDX_PRIMARY)
@@ -1103,6 +1119,7 @@ static int edit_weightsystem_dialog(int index, weightsystem_t *ws, int w_idx)
 	struct dive *dive;
 
 	weightsystem_widget.index = index;
+	weightsystem_widget.w_idx = w_idx;
 	weightsystem_widget.changed = 0;
 
 	if (w_idx == W_IDX_PRIMARY)
@@ -1216,7 +1233,10 @@ static void del_cb(GtkButton *button, int w_idx)
 
 	index = get_model_index(model, &iter);
 
-	dive = current_dive;
+	if (w_idx == W_IDX_PRIMARY)
+		dive = current_dive;
+	else
+		dive = &edit_dive;
 	if (!dive)
 		return;
 	cyl = dive->cylinder + index;
@@ -1299,7 +1319,10 @@ static void ws_del_cb(GtkButton *button, int w_idx)
 
 	index = get_model_index(model, &iter);
 
-	dive = current_dive;
+	if (w_idx == W_IDX_PRIMARY)
+		dive = current_dive;
+	else
+		dive = &edit_dive;
 	if (!dive)
 		return;
 	ws = dive->weightsystem + index;
