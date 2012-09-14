@@ -80,6 +80,7 @@ static stats_t *stats_monthly = NULL;
 static stats_t *stats_yearly = NULL;
 
 GtkTreeIter yearly_iter;
+GtkWidget *yearly_tree = NULL;
 
 enum {
 	YEAR,
@@ -143,7 +144,7 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	}
 }
 
-static void init_tree(GtkWidget *tree)
+static void init_tree()
 {
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
@@ -151,7 +152,7 @@ static void init_tree(GtkWidget *tree)
 	int i;
 	PangoFontDescription *font_desc = pango_font_description_from_string(divelist_font);
 
-	gtk_widget_modify_font(tree, font_desc);
+	gtk_widget_modify_font(yearly_tree, font_desc);
 	pango_font_description_free(font_desc);
 
 	renderer = gtk_cell_renderer_text_new ();
@@ -165,7 +166,7 @@ static void init_tree(GtkWidget *tree)
 	for (i = 0; i < N_COLUMNS; ++i) {
 		column = gtk_tree_view_column_new();
 		gtk_tree_view_column_set_title(column, columns[i]);
-		gtk_tree_view_append_column(GTK_TREE_VIEW(tree), column);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(yearly_tree), column);
 		renderer = gtk_cell_renderer_text_new();
 		gtk_tree_view_column_pack_start(column, renderer, TRUE);
 		gtk_tree_view_column_add_attribute(column, renderer, "text", i);
@@ -192,7 +193,7 @@ static void init_tree(GtkWidget *tree)
 			G_TYPE_STRING	// Maximum temperature
 			);
 
-	gtk_tree_view_set_model (GTK_TREE_VIEW (tree), GTK_TREE_MODEL (store));
+	gtk_tree_view_set_model (GTK_TREE_VIEW (yearly_tree), GTK_TREE_MODEL (store));
 	g_object_unref (store);
 }
 
@@ -227,14 +228,14 @@ void add_cell(GtkTreeStore *store, GtkTreeIter *parent, unsigned int val, int ce
 	add_cell_to_tree(store, value_str, cell, FALSE, parent);
 }
 
-void process_interval_stats(GtkWidget *tree, stats_t stats_interval, GtkTreeIter *parent)
+void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent)
 {
 	double value;
 	const char *unit;
 	char value_str[40];
 	GtkTreeStore *store;
 
-	store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(tree)));
+	store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(yearly_tree)));
 
 	/* Year or month */
 	snprintf(value_str, sizeof(value_str), "%d", stats_interval.period);
@@ -279,24 +280,63 @@ void process_interval_stats(GtkWidget *tree, stats_t stats_interval, GtkTreeIter
 	add_cell_to_tree(store, value_str, 14, FALSE, parent);
 }
 
+void clear_statistics()
+{
+	GtkTreeStore *store;
+
+	store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(yearly_tree)));
+	gtk_tree_store_clear(store);
+	yearly_tree = NULL;
+}
+
+static gboolean on_delete(GtkWidget *window, GdkEvent *event, gpointer data)
+{
+	clear_statistics();
+	gtk_widget_destroy(window);
+	return TRUE;
+}
+
 static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data)
 {
 	if ((event->string != NULL && event->keyval == GDK_Escape) ||
-			(event->string != NULL && event->keyval == GDK_w && event->state & GDK_CONTROL_MASK))
+			(event->string != NULL && event->keyval == GDK_w && event->state & GDK_CONTROL_MASK)) {
+		clear_statistics();
 		gtk_widget_destroy(window);
+	}
 }
 
+void update_yearly_stats()
+{
+	int i, j, combined_months, month_iter = 0;
+	GtkTreeIter parent_iter;
+	GtkTreeStore *store;
+
+	store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(yearly_tree)));
+	gtk_tree_store_clear(store);
+
+	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i) {
+		process_interval_stats(stats_yearly[i], NULL);
+		parent_iter = yearly_iter;
+		combined_months = 0;
+
+		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
+			combined_months += stats_monthly[month_iter].selection_size;
+			process_interval_stats(stats_monthly[month_iter++], &parent_iter);
+		}
+	}
+}
 
 void show_yearly_stats()
 {
-	int i, j, combined_months, month_iter = 0;
 	GtkWidget *window;
-	GtkWidget *tree, *sw;
-	GtkTreeIter parent_iter;
+	GtkWidget *sw;
+
+	if (yearly_tree)
+		return;
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	sw = gtk_scrolled_window_new (NULL, NULL);
-	tree = gtk_tree_view_new ();
+	yearly_tree = gtk_tree_view_new ();
 
 	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(window), 640, 480);
@@ -306,24 +346,16 @@ void show_yearly_stats()
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_ETCHED_IN);
 
-	gtk_container_add (GTK_CONTAINER (sw), tree);
+	gtk_container_add (GTK_CONTAINER (sw), yearly_tree);
 	gtk_container_add (GTK_CONTAINER (window), sw);
 
 	/* Display the yearly statistics on top level
 	 * Monthly statistics are available by expanding a year */
-	init_tree(tree);
-	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i) {
-		process_interval_stats(tree, stats_yearly[i], NULL);
-		parent_iter = yearly_iter;
-		combined_months = 0;
-
-		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
-			combined_months += stats_monthly[month_iter].selection_size;
-			process_interval_stats(tree, stats_monthly[month_iter++], &parent_iter);
-		}
-	}
+	init_tree();
+	update_yearly_stats();
 
 	g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (key_press_event), NULL);
+	g_signal_connect (G_OBJECT (window), "delete-event", G_CALLBACK (on_delete), NULL);
 	gtk_widget_show_all(window);
 }
 
@@ -404,6 +436,8 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		prev_month = current_month;
 		prev_year = current_year;
 	}
+	if (yearly_tree)
+		update_yearly_stats();
 }
 
 /* make sure we skip the selected summary entries */
