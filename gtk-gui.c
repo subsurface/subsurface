@@ -25,7 +25,7 @@ GtkWidget *vpane, *hpane;
 GtkWidget *notebook;
 
 int        error_count;
-
+char *existing_filename;
 const char *divelist_font;
 const char *default_filename;
 
@@ -81,7 +81,6 @@ void repaint_dive(void)
 		gtk_widget_queue_draw(dive_profile);
 }
 
-static char *existing_filename;
 static gboolean need_icon = TRUE;
 
 static void on_info_bar_response(GtkWidget *widget, gint response,
