@@ -126,53 +126,6 @@ void report_error(GError* error)
 	}
 }
 
-static void file_open(GtkWidget *w, gpointer data)
-{
-	GtkWidget *dialog;
-	GtkFileFilter *filter;
-
-	dialog = gtk_file_chooser_dialog_new("Open File",
-		GTK_WINDOW(main_window),
-		GTK_FILE_CHOOSER_ACTION_OPEN,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-		NULL);
-	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
-
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_pattern(filter, "*.xml");
-	gtk_file_filter_add_pattern(filter, "*.XML");
-	gtk_file_filter_add_pattern(filter, "*.sda");
-	gtk_file_filter_add_pattern(filter, "*.SDA");
-	gtk_file_filter_add_mime_type(filter, "text/xml");
-	gtk_file_filter_set_name(filter, "XML file");
-	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
-
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		GSList *filenames, *fn_glist;
-		char *filename;
-		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
-
-		GError *error = NULL;
-		while(filenames != NULL) {
-			filename = filenames->data;
-			parse_file(filename, &error);
-			if (error != NULL)
-			{
-				report_error(error);
-				g_error_free(error);
-				error = NULL;
-			}
-
-			g_free(filename);
-			filenames = g_slist_next(filenames);
-		}
-		g_slist_free(fn_glist);
-		report_dives(FALSE);
-	}
-	gtk_widget_destroy(dialog);
-}
-
 static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
@@ -305,6 +258,56 @@ static void file_close(GtkWidget *w, gpointer data)
 	/* redraw the screen */
 	dive_list_update_dives();
 	show_dive_info(NULL);
+}
+
+static void file_open(GtkWidget *w, gpointer data)
+{
+	GtkWidget *dialog;
+	GtkFileFilter *filter;
+
+	/* first, close the existing file, if any */
+	file_close(w, data);
+
+	dialog = gtk_file_chooser_dialog_new("Open File",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_OPEN,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	filter = gtk_file_filter_new();
+	gtk_file_filter_add_pattern(filter, "*.xml");
+	gtk_file_filter_add_pattern(filter, "*.XML");
+	gtk_file_filter_add_pattern(filter, "*.sda");
+	gtk_file_filter_add_pattern(filter, "*.SDA");
+	gtk_file_filter_add_mime_type(filter, "text/xml");
+	gtk_file_filter_set_name(filter, "XML file");
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		GSList *filenames, *fn_glist;
+		char *filename;
+		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+
+		GError *error = NULL;
+		while(filenames != NULL) {
+			filename = filenames->data;
+			parse_file(filename, &error);
+			if (error != NULL)
+			{
+				report_error(error);
+				g_error_free(error);
+				error = NULL;
+			}
+
+			g_free(filename);
+			filenames = g_slist_next(filenames);
+		}
+		g_slist_free(fn_glist);
+		report_dives(FALSE);
+	}
+	gtk_widget_destroy(dialog);
 }
 
 static gboolean on_delete(GtkWidget* w, gpointer data)
