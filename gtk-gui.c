@@ -126,6 +126,19 @@ void report_error(GError* error)
 	}
 }
 
+static GtkFileFilter *setup_filter(void)
+{
+	GtkFileFilter *filter = gtk_file_filter_new();
+	gtk_file_filter_add_pattern(filter, "*.xml");
+	gtk_file_filter_add_pattern(filter, "*.XML");
+	gtk_file_filter_add_pattern(filter, "*.sda");
+	gtk_file_filter_add_pattern(filter, "*.SDA");
+	gtk_file_filter_add_mime_type(filter, "text/xml");
+	gtk_file_filter_set_name(filter, "XML file");
+
+	return filter;
+}
+
 static void file_save_as(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
@@ -277,13 +290,7 @@ static void file_open(GtkWidget *w, gpointer data)
 	/* when opening the data file we should allow only one file to be chosen */
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
 
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_pattern(filter, "*.xml");
-	gtk_file_filter_add_pattern(filter, "*.XML");
-	gtk_file_filter_add_pattern(filter, "*.sda");
-	gtk_file_filter_add_pattern(filter, "*.SDA");
-	gtk_file_filter_add_mime_type(filter, "text/xml");
-	gtk_file_filter_set_name(filter, "XML file");
+	filter = setup_filter();
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -495,13 +502,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(fs_dialog), current_def_file);
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(fs_dialog), FALSE);
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_pattern(filter, "*.xml");
-	gtk_file_filter_add_pattern(filter, "*.XML");
-	gtk_file_filter_add_pattern(filter, "*.sda");
-	gtk_file_filter_add_pattern(filter, "*.SDA");
-	gtk_file_filter_add_mime_type(filter, "text/xml");
-	gtk_file_filter_set_name(filter, "XML file");
+	filter = setup_filter();
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(fs_dialog), filter);
 	gtk_widget_show_all(fs_dialog);
 	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -1310,13 +1311,7 @@ static void pick_import_files(GtkWidget *w, GSList **filelist)
 
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(fs_dialog), TRUE);
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_pattern(filter, "*.xml");
-	gtk_file_filter_add_pattern(filter, "*.XML");
-	gtk_file_filter_add_pattern(filter, "*.sda");
-	gtk_file_filter_add_pattern(filter, "*.SDA");
-	gtk_file_filter_add_mime_type(filter, "text/xml");
-	gtk_file_filter_set_name(filter, "XML file");
+	filter = setup_filter();
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(fs_dialog), filter);
 	gtk_widget_show_all(fs_dialog);
 	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT)
