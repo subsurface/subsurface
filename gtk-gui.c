@@ -1276,32 +1276,40 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	return GTK_ENTRY(entry);
 }
 
-/* once a file is selected in the FileChooserButton we want to exit the import dialog */
-static void on_file_set(GtkFileChooserButton *widget, gpointer _data)
+static void pick_import_files(GtkWidget *w, GSList **filelist)
 {
-	GtkDialog *main_dialog = _data;
-
-	gtk_dialog_response(main_dialog, GTK_RESPONSE_ACCEPT);
-}
-
-static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
-{
-	GtkWidget *hbox, *frame, *chooser, *dialog;
+	GtkWidget *fs_dialog, *import;
+	const char *current_default;
+	char *current_def_dir;
 	GtkFileFilter *filter;
+	struct stat sb;
 
-	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
-
-	frame = gtk_frame_new("XML file name");
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
-	dialog = gtk_file_chooser_dialog_new("Open XML File",
+	*filelist = NULL;
+	fs_dialog = gtk_file_chooser_dialog_new("Choose Files to import",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
-	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
+	import = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	gtk_window_set_accept_focus(GTK_WINDOW(import), FALSE);
 
+	/* I'm not sure what the best default path should be... */
+	if (existing_filename) {
+		current_def_dir = g_path_get_dirname(existing_filename);
+	} else {
+		current_default = subsurface_default_filename();
+		current_def_dir = g_path_get_dirname(current_default);
+		free((void *)current_default);
+	}
+
+	/* it's possible that the directory doesn't exist (especially for the default)
+	 * For gtk's file select box to make sense we create it */
+	if (stat(current_def_dir, &sb) != 0)
+		g_mkdir(current_def_dir, S_IRWXU);
+
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(fs_dialog), TRUE);
 	filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
 	gtk_file_filter_add_pattern(filter, "*.XML");
@@ -1309,15 +1317,33 @@ static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
 	gtk_file_filter_add_pattern(filter, "*.SDA");
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, "XML file");
-	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(fs_dialog), filter);
+	gtk_widget_show_all(fs_dialog);
+	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT)
+		*filelist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
+	free(current_def_dir);
+	gtk_widget_destroy(fs_dialog);
+	gtk_window_set_accept_focus(GTK_WINDOW(import), TRUE);
+	/* if we selected one or more files, pretent that we clicked OK in the import dialog */
+	if (*filelist != NULL)
+		gtk_dialog_response(GTK_DIALOG(import), GTK_RESPONSE_ACCEPT);
+}
 
-	chooser = gtk_file_chooser_button_new_with_dialog(dialog);
-	g_signal_connect(G_OBJECT(chooser), "file-set", G_CALLBACK(on_file_set), main_dialog);
+static void xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog, GSList **list)
+{
+	GtkWidget *hbox, *frame, *chooser, *box;
 
-	gtk_file_chooser_button_set_width_chars(GTK_FILE_CHOOSER_BUTTON(chooser), 30);
-	gtk_container_add(GTK_CONTAINER(frame), chooser);
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	return chooser;
+	frame = gtk_frame_new("XML file name");
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+	chooser = gtk_button_new_with_label("Pick XML file to import");
+	g_signal_connect(G_OBJECT(chooser), "clicked", G_CALLBACK(pick_import_files), list);
+	gtk_box_pack_start(GTK_BOX(box), chooser, FALSE, FALSE, 6);
 }
 
 static void do_import_file(gpointer data, gpointer user_data)
@@ -1360,9 +1386,9 @@ void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *hbox, *vbox, *label, *info = NULL;
+	GSList *filenames;
 	GtkComboBox *computer;
 	GtkEntry *device;
-	GtkWidget *XMLchooser;
 	device_data_t devicedata = {
 		.devname = NULL,
 	};
@@ -1377,7 +1403,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	label = gtk_label_new("Import: \nLoad XML file or import directly from dive computer");
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
-	XMLchooser = xml_file_selector(vbox, dialog);
+	xml_file_selector(vbox, dialog, &filenames);
 	computer = dive_computer_selector(vbox);
 	device = dive_computer_device(vbox);
 	hbox = gtk_hbox_new(FALSE, 6);
@@ -1392,14 +1418,13 @@ repeat:
 		dc_descriptor_t *descriptor;
 		GtkTreeIter iter;
 		GtkTreeModel *model;
-		GSList *list;
+
 	case GTK_RESPONSE_ACCEPT:
 		/* what happened - did the user pick a file? In that case
 		 * we ignore whether a dive computer model was picked */
 		if (info)
 			gtk_widget_destroy(info);
-		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
-		if (g_slist_length(list) == 0) {
+		if (g_slist_length(filenames) == 0) {
 			const char *vendor, *product;
 
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
@@ -1422,8 +1447,8 @@ repeat:
 			if (info)
 				goto repeat;
 		} else {
-			g_slist_foreach(list,do_import_file,NULL);
-			g_slist_free(list);
+			g_slist_foreach(filenames,do_import_file,NULL);
+			g_slist_free(filenames);
 		}
 		break;
 	default:
