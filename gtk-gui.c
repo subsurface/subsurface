@@ -869,6 +869,7 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewMenuAction",  NULL, "View", NULL, NULL, NULL},
 	{ "FilterMenuAction",  NULL, "Filter", NULL, NULL, NULL},
 	{ "HelpMenuAction", NULL, "Help", NULL, NULL, NULL},
+	{ "NewFile",        GTK_STOCK_NEW, NULL,   CTRLCHAR "N", NULL, G_CALLBACK(file_close) },
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
@@ -899,6 +900,7 @@ static const gchar* ui_string = " \
 	<ui> \
 		<menubar name=\"MainMenu\"> \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
+				<menuitem name=\"New\" action=\"NewFile\" /> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
