@@ -1402,7 +1402,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		.devname = NULL,
 	};
 
-	dialog = gtk_dialog_new_with_buttons("Import from dive computer",
+	dialog = gtk_dialog_new_with_buttons("Import",
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1410,7 +1410,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	label = gtk_label_new("Import: \nLoad XML file or import directly from dive computer");
+	label = gtk_label_new("Load XML file or import directly from dive computer");
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
 	xml_file_selector(vbox, dialog, &filenames);
 	computer = dive_computer_selector(vbox);
