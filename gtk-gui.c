@@ -286,11 +286,6 @@ static void file_open(GtkWidget *w, gpointer data)
 	GtkFileFilter *filter;
 	const char *current_default;
 
-	/* first, close the existing file, if any, and forget its name */
-	file_close(w, data);
-	free((void *)existing_filename);
-	existing_filename = NULL;
-
 	dialog = gtk_file_chooser_dialog_new("Open File",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -308,6 +303,12 @@ static void file_open(GtkWidget *w, gpointer data)
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		GSList *filenames, *fn_glist;
 		char *filename;
+
+		/* first, close the existing file, if any, and forget its name */
+		file_close(w, data);
+		free((void *)existing_filename);
+		existing_filename = NULL;
+
 		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 
 		GError *error = NULL;
