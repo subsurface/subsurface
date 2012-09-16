@@ -1173,11 +1173,23 @@ static void try_to_fill_trip(struct dive **divep, const char *name, char *buf)
 }
 
 /*
- * File boundaries are dive boundaries. But sometimes there are
+ * While in some formats file boundaries are dive boundaries, in many
+ * others (as for example in our native format) there are
  * multiple dives per file, so there can be other events too that
  * trigger a "new dive" marker and you may get some nesting due
  * to that. Just ignore nesting levels.
+ * On the flipside it is possible that we start an XML file that ends
+ * up having no dives in it at all - don't create a bogus empty dive
+ * for those. It's not entirely clear what is the minimum set of data
+ * to make a dive valid, but if it has no location, no date and no
+ * samples I'm pretty sure it's useless.
  */
+static gboolean is_dive(void)
+{
+	return (cur_dive &&
+		(cur_dive->location || cur_dive->when || cur_dive->samples));
+}
+
 static void dive_start(void)
 {
 	if (cur_dive)
@@ -1188,7 +1200,7 @@ static void dive_start(void)
 
 static void dive_end(void)
 {
-	if (!cur_dive)
+	if (!is_dive())
 		return;
 	record_dive(cur_dive);
 	cur_dive = NULL;
