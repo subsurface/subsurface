@@ -874,7 +874,7 @@ static GtkActionEntry menu_items[] = {
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "Import",         NULL, "Import", SHIFTCHAR CTRLCHAR "O", NULL, G_CALLBACK(import_dialog) },
+	{ "Import",         GTK_STOCK_GO_BACK, "Import", SHIFTCHAR CTRLCHAR "O", NULL, G_CALLBACK(import_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
@@ -900,14 +900,16 @@ static const gchar* ui_string = " \
 		<menubar name=\"MainMenu\"> \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
-				<menuitem name=\"Import\" action=\"Import\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
 				<menuitem name=\"Close\" action=\"CloseFile\" /> \
-				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
-				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
+				<menuitem name=\"Import\" action=\"Import\" /> \
 				<separator name=\"Separator2\"/> \
+				<menuitem name=\"Print\" action=\"Print\" /> \
+				<separator name=\"Separator3\"/> \
+				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
+				<separator name=\"Separator4\"/> \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
