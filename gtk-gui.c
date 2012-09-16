@@ -301,7 +301,7 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		GSList *filenames, *fn_glist;
+		GSList *fn_glist;
 		char *filename;
 
 		/* first, close the existing file, if any, and forget its name */
@@ -309,22 +309,19 @@ static void file_open(GtkWidget *w, gpointer data)
 		free((void *)existing_filename);
 		existing_filename = NULL;
 
-		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+		/* we know there is only one filename */
+		fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 
 		GError *error = NULL;
-		while(filenames != NULL) {
-			filename = filenames->data;
-			parse_file(filename, &error);
-			if (error != NULL)
-			{
-				report_error(error);
-				g_error_free(error);
-				error = NULL;
-			}
-
-			g_free(filename);
-			filenames = g_slist_next(filenames);
+		filename = fn_glist->data;
+		parse_file(filename, &error);
+		if (error != NULL)
+		{
+			report_error(error);
+			g_error_free(error);
+			error = NULL;
 		}
+		g_free(filename);
 		g_slist_free(fn_glist);
 		report_dives(FALSE);
 	}
