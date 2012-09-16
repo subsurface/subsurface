@@ -252,6 +252,7 @@ static void file_close(GtkWidget *w, gpointer data)
 		free(get_dive(i));
 	dive_table.nr = 0;
 	dive_table.preexisting = 0;
+	mark_divelist_changed(FALSE);
 
 	/* inlined version of g_list_free_full(dive_trip_list, free); */
 	g_list_foreach(dive_trip_list, (GFunc)free, NULL);
