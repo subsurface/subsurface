@@ -125,6 +125,9 @@ void report_dives(gboolean is_imported)
 		if (!merged)
 			continue;
 
+		/* careful - we might free the dive that last points to. Oops... */
+		if (last == prev || last == dive)
+			last = merged;
 		free(prev);
 		free(dive);
 		*pp = merged;
