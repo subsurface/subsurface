@@ -463,7 +463,7 @@ const char *monthname(int mon);
 extern const char *star_strings[];
 
 extern const char *default_filename;
-extern char *existing_filename;
+extern const char *existing_filename;
 extern const char *subsurface_default_filename(void);
 #define AIR_PERMILLE 209
 

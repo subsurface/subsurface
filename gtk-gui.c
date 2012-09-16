@@ -25,7 +25,7 @@ GtkWidget *vpane, *hpane;
 GtkWidget *notebook;
 
 int        error_count;
-char *existing_filename;
+const char *existing_filename;
 const char *divelist_font;
 const char *default_filename;
 
@@ -154,8 +154,14 @@ static void file_save_as(GtkWidget *w, gpointer data)
 		NULL);
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-	current_dir = g_path_get_dirname(existing_filename);
-	current_file = g_path_get_basename(existing_filename);
+	if (existing_filename) {
+		current_dir = g_path_get_dirname(existing_filename);
+		current_file = g_path_get_basename(existing_filename);
+	} else {
+		const char *current_default = subsurface_default_filename();
+		current_dir = g_path_get_dirname(current_default);
+		current_file = g_path_get_basename(current_default);
+	}
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), current_file);
 
@@ -244,7 +250,7 @@ static void file_close(GtkWidget *w, gpointer data)
 			return;
 
 	if (existing_filename)
-		free(existing_filename);
+		free((void *)existing_filename);
 	existing_filename = NULL;
 
 	/* free the dives and trips */
@@ -278,9 +284,12 @@ static void file_open(GtkWidget *w, gpointer data)
 {
 	GtkWidget *dialog;
 	GtkFileFilter *filter;
+	const char *current_default;
 
-	/* first, close the existing file, if any */
+	/* first, close the existing file, if any, and forget its name */
 	file_close(w, data);
+	free((void *)existing_filename);
+	existing_filename = NULL;
 
 	dialog = gtk_file_chooser_dialog_new("Open File",
 		GTK_WINDOW(main_window),
@@ -288,6 +297,8 @@ static void file_open(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
+	current_default = subsurface_default_filename();
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), current_default);
 	/* when opening the data file we should allow only one file to be chosen */
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
 
@@ -669,7 +680,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		 * update existing_filename */
 		if (existing_filename) {
 			if (strcmp(current_default, existing_filename) == 0) {
-				free(existing_filename);
+				free((void *)existing_filename);
 				existing_filename = strdup(new_default);
 			}
 		}
@@ -1081,7 +1092,7 @@ void exit_ui(void)
 	if (default_filename)
 		free((char *)default_filename);
 	if (existing_filename)
-		free(existing_filename);
+		free((void *)existing_filename);
 }
 
 typedef struct {
@@ -1469,7 +1480,7 @@ void set_filename(const char *filename, gboolean force)
 {
 	if (!force && existing_filename)
 		return;
-	free(existing_filename);
+	free((void *)existing_filename);
 	if (filename)
 		existing_filename = strdup(filename);
 }

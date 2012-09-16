@@ -89,7 +89,7 @@ const char *subsurface_icon_name()
 const char *subsurface_default_filename()
 {
 	if (default_filename) {
-		return default_filename;
+		return strdup(default_filename);
 	} else {
 		const char *home, *user;
 		char *buffer;
