@@ -246,7 +246,7 @@ int main(int argc, char **argv)
 		set_filename(filename, FALSE);
 	}
 	report_dives(imported);
-
+	show_dive_info(NULL);
 	run_ui();
 	exit_ui();
 	return 0;
