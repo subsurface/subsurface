@@ -1754,13 +1754,16 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	dive_table.nr--;
 	free(dive);
 	dive_list_update_dives();
-	/* now make sure the same dives stay selected and if necessary their trips are expanded */
+	/* now make sure the same dives stay selected and if necessary their trips are expanded
+	 * also make sure that amount_selected stays consistent */
+	amount_selected = 0;
 	for_each_dive(i, dive) {
 		if (dive->selected) {
 			GtkTreePath *path = get_path_from(dive);
 			if (MODEL(dive_list) == TREEMODEL(dive_list))
 				gtk_tree_view_expand_to_path(tree_view, path);
 			gtk_tree_selection_select_path(selection, path);
+			amount_selected++;
 		}
 	}
 	mark_divelist_changed(TRUE);
