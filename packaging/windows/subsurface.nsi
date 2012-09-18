@@ -38,7 +38,7 @@
     InstallDirRegKey HKCU "Software\Subsurface" ""
 
     # Request application privileges
-    RequestExecutionLevel user
+    RequestExecutionLevel admin
 
 #--------------------------------
 # Version information
