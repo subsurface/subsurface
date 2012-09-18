@@ -166,9 +166,12 @@ static struct dive *dive_from_path(GtkTreePath *path)
 	GtkTreeIter iter;
 	int idx;
 
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-	return get_dive(idx);
+	if (gtk_tree_model_get_iter(MODEL(dive_list), &iter, path)) {
+		gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+		return get_dive(idx);
+	} else {
+		return NULL;
+	}
 
 }
 
