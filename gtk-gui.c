@@ -1395,7 +1395,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *hbox, *vbox, *label, *info = NULL;
-	GSList *filenames;
+	GSList *filenames = NULL;
 	GtkComboBox *computer;
 	GtkEntry *device;
 	device_data_t devicedata = {
@@ -1433,7 +1433,7 @@ repeat:
 		 * we ignore whether a dive computer model was picked */
 		if (info)
 			gtk_widget_destroy(info);
-		if (g_slist_length(filenames) == 0) {
+		if (!filenames || g_slist_length(filenames) == 0) {
 			const char *vendor, *product;
 
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
@@ -1455,7 +1455,7 @@ repeat:
 			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 			if (info)
 				goto repeat;
-		} else {
+		} else if (filenames) {
 			g_slist_foreach(filenames,do_import_file,NULL);
 			g_slist_free(filenames);
 		}
