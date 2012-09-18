@@ -97,41 +97,41 @@ Section
     Delete "$INSTDIR\*.dll"
 
     # Files to include in installer
-    file /oname=subsurface.exe ..\..\subsurface.exe
-    file /oname=subsurface.ico subsurface.ico
-    file /oname=subsurface.svg ..\..\subsurface.svg
-    file /oname=libatk-1.0-0.dll dll\libatk-1.0-0.dll
-    file /oname=libcairo-2.dll dll\libcairo-2.dll
-    file /oname=libdivecomputer-0.dll dll\libdivecomputer-0.dll
-    file /oname=libffi-6.dll dll\libffi-6.dll
-    file /oname=libfontconfig-1.dll dll\libfontconfig-1.dll
-    file /oname=libfreetype-6.dll dll\libfreetype-6.dll
-    file /oname=libgdk_pixbuf-2.0-0.dll dll\libgdk_pixbuf-2.0-0.dll
-    file /oname=libgdk-win32-2.0-0.dll dll\libgdk-win32-2.0-0.dll
-    file /oname=libgio-2.0-0.dll dll\libgio-2.0-0.dll
-    file /oname=libglib-2.0-0.dll dll\libglib-2.0-0.dll
-    file /oname=libgmodule-2.0-0.dll dll\libgmodule-2.0-0.dll
-    file /oname=libgobject-2.0-0.dll dll\libgobject-2.0-0.dll
-    file /oname=libgthread-2.0-0.dll dll\libgthread-2.0-0.dll
-    file /oname=libgtk-win32-2.0-0.dll dll\libgtk-win32-2.0-0.dll
-    file /oname=libintl-8.dll dll\libintl-8.dll
-    file /oname=libjasper-1.dll dll\libjasper-1.dll
-    file /oname=libjpeg-62.dll dll\libjpeg-62.dll
-    file /oname=libpango-1.0-0.dll dll\libpango-1.0-0.dll
-    file /oname=libpangocairo-1.0-0.dll dll\libpangocairo-1.0-0.dll
-    file /oname=libpangoft2-1.0-0.dll dll\libpangoft2-1.0-0.dll
-    file /oname=libpangowin32-1.0-0.dll dll\libpangowin32-1.0-0.dll
-    file /oname=libpixman-1-0.dll dll\libpixman-1-0.dll
-    file /oname=libpng15-15.dll dll\libpng15-15.dll
-    file /oname=libtiff-3.dll dll\libtiff-3.dll
-    file /oname=libxml2-2.dll dll\libxml2-2.dll
-    file /oname=libxslt-1.dll dll\libxslt-1.dll
-    file /oname=pthreadGC2.dll dll\pthreadGC2.dll
-    file /oname=zlib1.dll dll\zlib1.dll
-    file /oname=libusb-1.0.dll dll\libusb-1.0.dll
-    file /oname=SuuntoSDM.xslt ..\..\xslt\SuuntoSDM.xslt
-    file /oname=jdivelog2subsurface.xslt ..\..\xslt\jdivelog2subsurface.xslt
-    file /oname=iconv.dll dll\iconv.dll
+    File ..\..\subsurface.exe
+    File ..\..\subsurface.svg
+    File ..\..\xslt\jdivelog2subsurface.xslt
+    File ..\..\xslt\SuuntoSDM.xslt
+    File dll\iconv.dll
+    File dll\libatk-1.0-0.dll
+    File dll\libcairo-2.dll
+    File dll\libdivecomputer-0.dll
+    File dll\libffi-6.dll
+    File dll\libfontconfig-1.dll
+    File dll\libfreetype-6.dll
+    File dll\libgdk-win32-2.0-0.dll
+    File dll\libgdk_pixbuf-2.0-0.dll
+    File dll\libgio-2.0-0.dll
+    File dll\libglib-2.0-0.dll
+    File dll\libgmodule-2.0-0.dll
+    File dll\libgobject-2.0-0.dll
+    File dll\libgthread-2.0-0.dll
+    File dll\libgtk-win32-2.0-0.dll
+    File dll\libintl-8.dll
+    File dll\libjasper-1.dll
+    File dll\libjpeg-62.dll
+    File dll\libpango-1.0-0.dll
+    File dll\libpangocairo-1.0-0.dll
+    File dll\libpangoft2-1.0-0.dll
+    File dll\libpangowin32-1.0-0.dll
+    File dll\libpixman-1-0.dll
+    File dll\libpng15-15.dll
+    File dll\libtiff-3.dll
+    File dll\libusb-1.0.dll
+    File dll\libxml2-2.dll
+    File dll\libxslt-1.dll
+    File dll\pthreadGC2.dll
+    File dll\zlib1.dll
+    File subsurface.ico
 
     # Store installation folder in registry
     WriteRegStr HKCU "Software\Subsurface" "" $INSTDIR
