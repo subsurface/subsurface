@@ -1497,12 +1497,16 @@ void parse_xml_buffer(const char *url, const char *buffer, int size, GError **er
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
-	xmlCleanupParser();
 }
 
 void parse_xml_init(void)
 {
 	LIBXML_TEST_VERSION
+}
+
+void parse_xml_exit(void)
+{
+	xmlCleanupParser();
 }
 
 #ifdef XSLT

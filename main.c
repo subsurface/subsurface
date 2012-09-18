@@ -253,5 +253,8 @@ int main(int argc, char **argv)
 		show_dive_info(NULL);
 	run_ui();
 	exit_ui();
+
+	parse_xml_exit();
+
 	return 0;
 }

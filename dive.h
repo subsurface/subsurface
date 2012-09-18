@@ -385,6 +385,7 @@ static inline struct dive *get_dive(unsigned int nr)
 
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
+extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, gboolean force);
 
 extern void parse_file(const char *filename, GError **error);
