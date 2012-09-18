@@ -526,6 +526,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 
 	free(current_def_dir);
 	free(current_def_file);
+	free((void *)current_default);
 	gtk_widget_destroy(fs_dialog);
 	gtk_window_set_accept_focus(GTK_WINDOW(preferences), TRUE);
 }

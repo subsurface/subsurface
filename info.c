@@ -113,10 +113,13 @@ void show_dive_info(struct dive *dive)
 	const char *text;
 	char buffer[80];
 	char title[80];
+	char *basename;
 
 	if (!dive) {
 		if (existing_filename) {
-			snprintf(title, 80, "Subsurface: %s", g_path_get_basename(existing_filename));
+			basename = g_path_get_basename(existing_filename);
+			snprintf(title, 80, "Subsurface: %s", basename);
+			free(basename);
 			gtk_window_set_title(GTK_WINDOW(main_window), title);
 		} else {
 			gtk_window_set_title(GTK_WINDOW(main_window), "Subsurface");
@@ -145,7 +148,9 @@ void show_dive_info(struct dive *dive)
 
 	/* put it all together */
 	if (existing_filename) {
-		snprintf(title, 80, "%s: %s", g_path_get_basename(existing_filename), text);
+		basename = g_path_get_basename(existing_filename);
+		snprintf(title, 80, "%s: %s", basename, text);
+		free(basename);
 		gtk_window_set_title(GTK_WINDOW(main_window), title);
 	} else {
 		gtk_window_set_title(GTK_WINDOW(main_window), text);
