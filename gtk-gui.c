@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -24,8 +25,9 @@ GtkWidget *vpane, *hpane;
 GtkWidget *notebook;
 
 int        error_count;
-
+const char *existing_filename;
 const char *divelist_font;
+const char *default_filename;
 
 struct units output_units;
 
@@ -79,7 +81,6 @@ void repaint_dive(void)
 		gtk_widget_queue_draw(dive_profile);
 }
 
-static char *existing_filename;
 static gboolean need_icon = TRUE;
 
 static void on_info_bar_response(GtkWidget *widget, gint response,
@@ -125,81 +126,17 @@ void report_error(GError* error)
 	}
 }
 
-static void file_open(GtkWidget *w, gpointer data)
+static GtkFileFilter *setup_filter(void)
 {
-	GtkWidget *dialog;
-	GtkFileFilter *filter;
-
-	dialog = gtk_file_chooser_dialog_new("Open File",
-		GTK_WINDOW(main_window),
-		GTK_FILE_CHOOSER_ACTION_OPEN,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-		NULL);
-	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
-
-	filter = gtk_file_filter_new();
+	GtkFileFilter *filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
 	gtk_file_filter_add_pattern(filter, "*.XML");
 	gtk_file_filter_add_pattern(filter, "*.sda");
 	gtk_file_filter_add_pattern(filter, "*.SDA");
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, "XML file");
-	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
-	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-		GSList *filenames, *fn_glist;
-		char *filename;
-		filenames = fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
-
-		GError *error = NULL;
-		while(filenames != NULL) {
-			filename = filenames->data;
-			parse_file(filename, &error);
-			if (error != NULL)
-			{
-				report_error(error);
-				g_error_free(error);
-				error = NULL;
-			}
-
-			g_free(filename);
-			filenames = g_slist_next(filenames);
-		}
-		g_slist_free(fn_glist);
-		report_dives(FALSE);
-	}
-	gtk_widget_destroy(dialog);
-}
-
-/* return the path and the file component contained in the full path */
-static char *path_and_file(char *pathin, char **fileout) {
-	char *slash = pathin, *next;
-	char *result;
-	size_t len, n;
-
-	if (! pathin) {
-		*fileout = strdup("");
-		return strdup("");
-	}
-	while ((next = strpbrk(slash + 1, "\\/")))
-		slash = next;
-	if (pathin != slash)
-		slash++;
-	*fileout = strdup(slash);
-
-	/* strndup(pathin, slash - pathin) */
-	n = slash - pathin;
-	len = strlen(pathin);
-	if (n < len)
-		len = n;
-
-	result = (char *)malloc(len + 1);
-	if (!result)
-		return 0;
-
-	result[len] = '\0';
-	return (char *)memcpy(result, pathin, len);
+	return filter;
 }
 
 static void file_save_as(GtkWidget *w, gpointer data)
@@ -217,7 +154,14 @@ static void file_save_as(GtkWidget *w, gpointer data)
 		NULL);
 	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-	current_dir = path_and_file(existing_filename, &current_file);
+	if (existing_filename) {
+		current_dir = g_path_get_dirname(existing_filename);
+		current_file = g_path_get_basename(existing_filename);
+	} else {
+		const char *current_default = subsurface_default_filename();
+		current_dir = g_path_get_dirname(current_default);
+		current_file = g_path_get_basename(current_default);
+	}
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), current_file);
 
@@ -231,7 +175,7 @@ static void file_save_as(GtkWidget *w, gpointer data)
 
 	if (filename){
 		save_dives(filename);
-		set_filename(filename);
+		set_filename(filename, TRUE);
 		g_free(filename);
 		mark_divelist_changed(FALSE);
 	}
@@ -239,9 +183,24 @@ static void file_save_as(GtkWidget *w, gpointer data)
 
 static void file_save(GtkWidget *w, gpointer data)
 {
+	const char *current_default;
+
 	if (!existing_filename)
 		return file_save_as(w, data);
 
+	current_default = subsurface_default_filename();
+	if (strcmp(existing_filename, current_default) ==  0) {
+		/* if we are using the default filename the directory
+		 * that we are creating the file in may not exist */
+		char *current_def_dir;
+		struct stat sb;
+
+		current_def_dir = g_path_get_dirname(existing_filename);
+		if (stat(current_def_dir, &sb) != 0) {
+			g_mkdir(current_def_dir, S_IRWXU);
+		}
+		free(current_def_dir);
+	}
 	save_dives(existing_filename);
 	mark_divelist_changed(FALSE);
 }
@@ -260,11 +219,11 @@ static gboolean ask_save_changes()
 
 	if (!existing_filename){
 		label = gtk_label_new (
-			"You have unsaved changes\nWould you like to save those before exiting the program?");
+			"You have unsaved changes\nWould you like to save those before closing the datafile?");
 	} else {
 		char *label_text = (char*) malloc(sizeof(char) * (93 + strlen(existing_filename)));
 		sprintf(label_text,
-			"You have unsaved changes to file: %s \nWould you like to save those before exiting the program?",
+			"You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?",
 			existing_filename);
 		label = gtk_label_new (label_text);
 		g_free(label_text);
@@ -280,6 +239,93 @@ static gboolean ask_save_changes()
 	}
 	gtk_widget_destroy(dialog);
 	return quit;
+}
+
+static void file_close(GtkWidget *w, gpointer data)
+{
+	int i;
+
+	if (unsaved_changes())
+		if (ask_save_changes() == FALSE)
+			return;
+
+	if (existing_filename)
+		free((void *)existing_filename);
+	existing_filename = NULL;
+
+	/* free the dives and trips */
+	for (i = 0; i < dive_table.nr; i++)
+		free(get_dive(i));
+	dive_table.nr = 0;
+	dive_table.preexisting = 0;
+	mark_divelist_changed(FALSE);
+
+	/* inlined version of g_list_free_full(dive_trip_list, free); */
+	g_list_foreach(dive_trip_list, (GFunc)free, NULL);
+	g_list_free(dive_trip_list);
+
+	dive_trip_list = NULL;
+
+	/* clear the selection and the statistics */
+	amount_selected = 0;
+	selected_dive = 0;
+	process_selected_dives();
+	clear_stats_widgets();
+
+	/* clear the equipment page */
+	clear_equipment_widgets();
+
+	/* redraw the screen */
+	dive_list_update_dives();
+	show_dive_info(NULL);
+}
+
+static void file_open(GtkWidget *w, gpointer data)
+{
+	GtkWidget *dialog;
+	GtkFileFilter *filter;
+	const char *current_default;
+
+	dialog = gtk_file_chooser_dialog_new("Open File",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_OPEN,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+		NULL);
+	current_default = subsurface_default_filename();
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), current_default);
+	/* when opening the data file we should allow only one file to be chosen */
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
+
+	filter = setup_filter();
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		GSList *fn_glist;
+		char *filename;
+
+		/* first, close the existing file, if any, and forget its name */
+		file_close(w, data);
+		free((void *)existing_filename);
+		existing_filename = NULL;
+
+		/* we know there is only one filename */
+		fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+
+		GError *error = NULL;
+		filename = fn_glist->data;
+		parse_file(filename, &error);
+		if (error != NULL)
+		{
+			report_error(error);
+			g_error_free(error);
+			error = NULL;
+		}
+		g_free(filename);
+		g_slist_free(fn_glist);
+		report_dives(FALSE);
+	}
+	gtk_widget_destroy(dialog);
 }
 
 static gboolean on_delete(GtkWidget* w, gpointer data)
@@ -303,7 +349,7 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	gtk_main_quit();
 }
 
-static void quit(GtkWidget *w, gpointer data)
+void quit(GtkWidget *w, gpointer data)
 {
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
@@ -437,10 +483,58 @@ static void event_toggle(GtkWidget *w, gpointer _data)
 	*plot_ev = GTK_TOGGLE_BUTTON(w)->active;
 }
 
+static void pick_default_file(GtkWidget *w, GtkButton *button)
+{
+	GtkWidget *fs_dialog, *preferences;
+	const char *current_default;
+	char *current_def_file, *current_def_dir;
+	GtkFileFilter *filter;
+	struct stat sb;
+
+	fs_dialog = gtk_file_chooser_dialog_new("Choose Default XML File",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_SAVE,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		NULL);
+	preferences = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	gtk_window_set_accept_focus(GTK_WINDOW(preferences), FALSE);
+
+	current_default = subsurface_default_filename();
+	current_def_dir = g_path_get_dirname(current_default);
+	current_def_file = g_path_get_basename(current_default);
+
+	/* it's possible that the directory doesn't exist (especially for the default)
+	 * For gtk's file select box to make sense we create it */
+	if (stat(current_def_dir, &sb) != 0)
+		g_mkdir(current_def_dir, S_IRWXU);
+
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
+	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(fs_dialog), current_def_file);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(fs_dialog), FALSE);
+	filter = setup_filter();
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(fs_dialog), filter);
+	gtk_widget_show_all(fs_dialog);
+	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT) {
+		GSList *list;
+
+		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
+		if (g_slist_length(list) == 1)
+			gtk_button_set_label(button, list->data);
+		g_slist_free(list);
+	}
+
+	free(current_def_dir);
+	free(current_def_file);
+	gtk_widget_destroy(fs_dialog);
+	gtk_window_set_accept_focus(GTK_WINDOW(preferences), TRUE);
+}
+
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *font, *frame, *box, *vbox, *button;
+	const char *current_default, *new_default;
 
 	menu_units = output_units;
 
@@ -541,6 +635,15 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(autogroup_toggle), NULL);
 
+	frame = gtk_frame_new("Default XML Data File");
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+	current_default = subsurface_default_filename();
+	button = gtk_button_new_with_label(current_default);
+	g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(pick_default_file), button);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
@@ -569,6 +672,22 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
 		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
+		new_default = strdup(gtk_button_get_label(GTK_BUTTON(button)));
+
+		/* if we opened the default file and are changing its name,
+		 * update existing_filename */
+		if (existing_filename) {
+			if (strcmp(current_default, existing_filename) == 0) {
+				free((void *)existing_filename);
+				existing_filename = strdup(new_default);
+			}
+		}
+
+		if (strcmp(current_default, new_default)) {
+			subsurface_set_conf("default_filename", PREF_STRING, new_default);
+			free((void *)default_filename);
+			default_filename = new_default;
+		}
 
 		/* Flush the changes out to the system */
 		subsurface_flush_conf();
@@ -753,8 +872,9 @@ static GtkActionEntry menu_items[] = {
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
+	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "Import",         NULL, "Import", NULL, NULL, G_CALLBACK(import_dialog) },
+	{ "Import",         NULL, "Import", SHIFTCHAR CTRLCHAR "O", NULL, G_CALLBACK(import_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
@@ -780,8 +900,10 @@ static const gchar* ui_string = " \
 		<menubar name=\"MainMenu\"> \
 			<menu name=\"FileMenu\" action=\"FileMenuAction\"> \
 				<menuitem name=\"Open\" action=\"OpenFile\" /> \
+				<menuitem name=\"Import\" action=\"Import\" /> \
 				<menuitem name=\"Save\" action=\"SaveFile\" /> \
 				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
+				<menuitem name=\"Close\" action=\"CloseFile\" /> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Preferences\" action=\"Preferences\" /> \
@@ -789,7 +911,6 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
-				<menuitem name=\"Import\" action=\"Import\" /> \
 				<menuitem name=\"Add Dive\" action=\"AddDive\" /> \
 				<separator name=\"Separator\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
@@ -875,8 +996,8 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
-
 	autogroup = PTR_TO_BOOL(subsurface_get_conf("autogroup", PREF_BOOL));
+	default_filename = subsurface_get_conf("default_filename", PREF_STRING);
 
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
@@ -968,6 +1089,10 @@ void run_ui(void)
 void exit_ui(void)
 {
 	subsurface_close_conf();
+	if (default_filename)
+		free((char *)default_filename);
+	if (existing_filename)
+		free((void *)existing_filename);
 }
 
 typedef struct {
@@ -1164,52 +1289,68 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	return GTK_ENTRY(entry);
 }
 
-/* once a file is selected in the FileChooserButton we want to exit the import dialog */
-static void on_file_set(GtkFileChooserButton *widget, gpointer _data)
+static void pick_import_files(GtkWidget *w, GSList **filelist)
 {
-	GtkDialog *main_dialog = _data;
+	GtkWidget *fs_dialog, *import;
+	const char *current_default;
+	char *current_def_dir;
+	GtkFileFilter *filter;
+	struct stat sb;
 
-	gtk_dialog_response(main_dialog, GTK_RESPONSE_ACCEPT);
+	*filelist = NULL;
+	fs_dialog = gtk_file_chooser_dialog_new("Choose Files to import",
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_OPEN,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+		NULL);
+	import = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	gtk_window_set_accept_focus(GTK_WINDOW(import), FALSE);
+
+	/* I'm not sure what the best default path should be... */
+	if (existing_filename) {
+		current_def_dir = g_path_get_dirname(existing_filename);
+	} else {
+		current_default = subsurface_default_filename();
+		current_def_dir = g_path_get_dirname(current_default);
+		free((void *)current_default);
+	}
+
+	/* it's possible that the directory doesn't exist (especially for the default)
+	 * For gtk's file select box to make sense we create it */
+	if (stat(current_def_dir, &sb) != 0)
+		g_mkdir(current_def_dir, S_IRWXU);
+
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fs_dialog), current_def_dir);
+	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(fs_dialog), TRUE);
+	filter = setup_filter();
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(fs_dialog), filter);
+	gtk_widget_show_all(fs_dialog);
+	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT)
+		*filelist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
+	free(current_def_dir);
+	gtk_widget_destroy(fs_dialog);
+	gtk_window_set_accept_focus(GTK_WINDOW(import), TRUE);
+	/* if we selected one or more files, pretent that we clicked OK in the import dialog */
+	if (*filelist != NULL)
+		gtk_dialog_response(GTK_DIALOG(import), GTK_RESPONSE_ACCEPT);
 }
 
-static GtkWidget *xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog)
+static void xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog, GSList **list)
 {
-	GtkWidget *hbox, *frame, *chooser, *dialog;
-	GtkFileFilter *filter;
-	char *current_file, *current_dir;
+	GtkWidget *hbox, *frame, *chooser, *box;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
 	frame = gtk_frame_new("XML file name");
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
-	dialog = gtk_file_chooser_dialog_new("Open XML File",
-		GTK_WINDOW(main_window),
-		GTK_FILE_CHOOSER_ACTION_OPEN,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-		NULL);
-	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
-	current_dir = path_and_file(existing_filename, &current_file);
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), current_dir);
-	free(current_dir);
-	free(current_file);
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_pattern(filter, "*.xml");
-	gtk_file_filter_add_pattern(filter, "*.XML");
-	gtk_file_filter_add_pattern(filter, "*.sda");
-	gtk_file_filter_add_pattern(filter, "*.SDA");
-	gtk_file_filter_add_mime_type(filter, "text/xml");
-	gtk_file_filter_set_name(filter, "XML file");
-	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter);
 
-	chooser = gtk_file_chooser_button_new_with_dialog(dialog);
-	g_signal_connect(G_OBJECT(chooser), "file-set", G_CALLBACK(on_file_set), main_dialog);
-
-	gtk_file_chooser_button_set_width_chars(GTK_FILE_CHOOSER_BUTTON(chooser), 30);
-	gtk_container_add(GTK_CONTAINER(frame), chooser);
-
-	return chooser;
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+	chooser = gtk_button_new_with_label("Pick XML file to import");
+	g_signal_connect(G_OBJECT(chooser), "clicked", G_CALLBACK(pick_import_files), list);
+	gtk_box_pack_start(GTK_BOX(box), chooser, FALSE, FALSE, 6);
 }
 
 static void do_import_file(gpointer data, gpointer user_data)
@@ -1252,9 +1393,9 @@ void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *hbox, *vbox, *label, *info = NULL;
+	GSList *filenames;
 	GtkComboBox *computer;
 	GtkEntry *device;
-	GtkWidget *XMLchooser;
 	device_data_t devicedata = {
 		.devname = NULL,
 	};
@@ -1269,7 +1410,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	label = gtk_label_new("Import: \nLoad XML file or import directly from dive computer");
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
-	XMLchooser = xml_file_selector(vbox, dialog);
+	xml_file_selector(vbox, dialog, &filenames);
 	computer = dive_computer_selector(vbox);
 	device = dive_computer_device(vbox);
 	hbox = gtk_hbox_new(FALSE, 6);
@@ -1284,14 +1425,13 @@ repeat:
 		dc_descriptor_t *descriptor;
 		GtkTreeIter iter;
 		GtkTreeModel *model;
-		GSList *list;
+
 	case GTK_RESPONSE_ACCEPT:
 		/* what happened - did the user pick a file? In that case
 		 * we ignore whether a dive computer model was picked */
 		if (info)
 			gtk_widget_destroy(info);
-		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(XMLchooser));
-		if (g_slist_length(list) == 0) {
+		if (g_slist_length(filenames) == 0) {
 			const char *vendor, *product;
 
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
@@ -1314,8 +1454,8 @@ repeat:
 			if (info)
 				goto repeat;
 		} else {
-			g_slist_foreach(list,do_import_file,NULL);
-			g_slist_free(list);
+			g_slist_foreach(filenames,do_import_file,NULL);
+			g_slist_free(filenames);
 		}
 		break;
 	default:
@@ -1336,11 +1476,11 @@ void update_progressbar_text(progressbar_t *progress, const char *text)
 	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->bar), text);
 }
 
-void set_filename(const char *filename)
+void set_filename(const char *filename, gboolean force)
 {
-	if (existing_filename)
-		free(existing_filename);
-	existing_filename = NULL;
+	if (!force && existing_filename)
+		return;
+	free((void *)existing_filename);
 	if (filename)
 		existing_filename = strdup(filename);
 }

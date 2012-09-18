@@ -125,6 +125,9 @@ void report_dives(gboolean is_imported)
 		if (!merged)
 			continue;
 
+		/* careful - we might free the dive that last points to. Oops... */
+		if (last == prev || last == dive)
+			last = merged;
 		free(prev);
 		free(dive);
 		*pp = merged;
@@ -140,8 +143,8 @@ void report_dives(gboolean is_imported)
 		if (last && last->number)
 			try_to_renumber(last, preexisting);
 
-		/* did we have dives in the table and added more? */
-		if (last && preexisting != dive_table.nr)
+		/* did we add dives to the dive table? */
+		if (preexisting != dive_table.nr)
 			mark_divelist_changed(TRUE);
 	}
 	dive_table.preexisting = dive_table.nr;
@@ -211,6 +214,7 @@ void renumber_dives(int nr)
 int main(int argc, char **argv)
 {
 	int i;
+	gboolean no_filenames = TRUE;
 
 	output_units = SI_units;
 
@@ -225,6 +229,7 @@ int main(int argc, char **argv)
 			parse_argument(a);
 			continue;
 		}
+		no_filenames = FALSE;
 		GError *error = NULL;
 		parse_file(a, &error);
 
@@ -235,9 +240,17 @@ int main(int argc, char **argv)
 			error = NULL;
 		}
 	}
-
+	if (no_filenames) {
+		GError *error = NULL;
+		const char *filename = subsurface_default_filename();
+		parse_file(filename, &error);
+		/* don't report errors - this file may not exist, but make
+		   sure we remember this as the filename in use */
+		set_filename(filename, FALSE);
+	}
 	report_dives(imported);
-
+	if (dive_table.nr == 0)
+		show_dive_info(NULL);
 	run_ui();
 	exit_ui();
 	return 0;

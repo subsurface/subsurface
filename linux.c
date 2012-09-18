@@ -1,7 +1,10 @@
 /* linux.c */
 /* implements Linux specific functions */
+#include "dive.h"
 #include "display-gtk.h"
 #include <gconf/gconf-client.h>
+#include <string.h>
+
 #define DIVELIST_DEFAULT_FONT "Sans 8"
 
 GConfClient *gconf;
@@ -61,6 +64,24 @@ const char *subsurface_USB_name()
 const char *subsurface_icon_name()
 {
 	return "subsurface.svg";
+}
+
+const char *subsurface_default_filename()
+{
+	if (default_filename) {
+		return strdup(default_filename);
+	} else {
+		const char *home, *user;
+		char *buffer;
+		int len;
+
+		home = g_get_home_dir();
+		user = g_get_user_name();
+		len = strlen(home) + strlen(user) + 17;
+		buffer = malloc(len);
+		snprintf(buffer, len, "%s/subsurface/%s.xml", home, user);
+		return buffer;
+	}
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,

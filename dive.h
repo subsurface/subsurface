@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <libxml/tree.h>
 
 /*
@@ -384,7 +385,7 @@ static inline struct dive *get_dive(unsigned int nr)
 
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
-extern void set_filename(const char *filename);
+extern void set_filename(const char *filename, gboolean force);
 
 extern void parse_file(const char *filename, GError **error);
 
@@ -395,8 +396,10 @@ extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
 extern void show_dive_info(struct dive *);
 
 extern void show_dive_equipment(struct dive *, int w_idx);
+extern void clear_equipment_widgets(void);
 
 extern void show_dive_stats(struct dive *);
+extern void clear_stats_widgets(void);
 
 extern void show_yearly_stats(void);
 
@@ -466,6 +469,9 @@ const char *monthname(int mon);
 #define FIVE_STARS	UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR
 extern const char *star_strings[];
 
+extern const char *default_filename;
+extern const char *existing_filename;
+extern const char *subsurface_default_filename(void);
 #define AIR_PERMILLE 209
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))

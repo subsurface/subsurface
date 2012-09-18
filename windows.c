@@ -1,7 +1,9 @@
 /* windows.c */
 /* implements Windows specific functions */
+#include "dive.h"
 #include "display-gtk.h"
 #include <windows.h>
+#include <shlobj.h>
 #define DIVELIST_DEFAULT_FONT "Sans 8"
 
 static HKEY hkey;
@@ -91,6 +93,28 @@ const char *subsurface_USB_name()
 const char *subsurface_icon_name()
 {
 	return "subsurface.ico";
+}
+
+const char *subsurface_default_filename()
+{
+	if (default_filename) {
+		return strdup(default_filename);
+	} else {
+		char datapath[MAX_PATH];
+		const char *user;
+		char *buffer;
+		int len;
+
+		user = g_get_user_name();
+		if (! SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, datapath))) {
+			datapath[0] = '.';
+			datapath[1] = '\0';
+		}
+		len = strlen(datapath) + strlen(user) + 17;
+		buffer = malloc(len);
+		snprintf(buffer, len, "%s\\Subsurface\\%s.xml", datapath, user);
+		return buffer;
+	}
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,

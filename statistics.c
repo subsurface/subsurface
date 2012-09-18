@@ -715,3 +715,32 @@ GtkWidget *single_stats_widget(void)
 
 	return vbox;
 }
+
+void clear_stats_widgets(void)
+{
+	set_label(single_w.date, "");
+	set_label(single_w.dive_time, "");
+	set_label(single_w.surf_intv, "");
+	set_label(single_w.max_depth, "");
+	set_label(single_w.avg_depth, "");
+	set_label(single_w.water_temp, "");
+	set_label(single_w.sac, "");
+	set_label(single_w.sac, "");
+	set_label(single_w.otu, "");
+	set_label(single_w.o2he, "");
+	set_label(single_w.gas_used, "");
+	set_label(stats_w.total_time,"");
+	set_label(stats_w.avg_time,"");
+	set_label(stats_w.shortest_time,"");
+	set_label(stats_w.longest_time,"");
+	set_label(stats_w.max_overall_depth,"");
+	set_label(stats_w.min_overall_depth,"");
+	set_label(stats_w.avg_overall_depth,"");
+	set_label(stats_w.min_sac,"");
+	set_label(stats_w.avg_sac,"");
+	set_label(stats_w.max_sac,"");
+	set_label(stats_w.selection_size,"");
+	set_label(stats_w.max_temp,"");
+	set_label(stats_w.avg_temp,"");
+	set_label(stats_w.min_temp,"");
+}

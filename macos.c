@@ -1,5 +1,6 @@
 /* macos.c */
 /* implements Mac OS X specific functions */
+#include "dive.h"
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
 #include <mach-o/dyld.h>
@@ -53,7 +54,7 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 		strpref = CFPreferencesCopyAppValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES);
 		if (!strpref)
 			return NULL;
-		return CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman);
+		return strdup(CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman));
 	}
 	/* we shouldn't get here, but having this line makes the compiler happy */
 	return NULL;
@@ -83,6 +84,30 @@ const char *subsurface_icon_name()
 	snprintf(path, 1024, "%s/%s", quartz_application_get_resource_path(), ICON_NAME);
 
 	return path;
+}
+
+const char *subsurface_default_filename()
+{
+	if (default_filename) {
+		return strdup(default_filename);
+	} else {
+		const char *home, *user;
+		char *buffer;
+		int len;
+
+		home = g_get_home_dir();
+		user = g_get_user_name();
+		len = strlen(home) + strlen(user) + 45;
+		buffer = malloc(len);
+		snprintf(buffer, len, "%s/Library/Application Support/Subsurface/%s.xml", home, user);
+		return buffer;
+	}
+}
+
+static void show_main_window(GtkWidget *w, gpointer data)
+{
+	gtk_widget_show(main_window);
+	gtk_window_present(GTK_WINDOW(main_window));
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
@@ -122,5 +147,8 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 3);
 
 	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
+	g_signal_connect(osx_app,"NSApplicationDidBecomeActive",G_CALLBACK(show_main_window),NULL);
+	g_signal_connect(osx_app,"NSApplicationWillTerminate",G_CALLBACK(quit),NULL);
+
 	gtk_osxapplication_ready(osx_app);
 }

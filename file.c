@@ -253,6 +253,10 @@ void parse_file(const char *filename, GError **error)
 	struct memblock mem;
 
 	if (readfile(filename, &mem) < 0) {
+		/* we don't want to display an error if this was the default file */
+		if (default_filename && ! strcmp(filename, default_filename))
+			return;
+
 		fprintf(stderr, "Failed to read '%s'.\n", filename);
 		if (error) {
 			*error = g_error_new(g_quark_from_string("subsurface"),
