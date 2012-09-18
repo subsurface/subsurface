@@ -226,7 +226,7 @@ static gboolean ask_save_changes()
 			"You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?",
 			existing_filename);
 		label = gtk_label_new (label_text);
-		g_free(label_text);
+		free(label_text);
 	}
 	gtk_container_add (GTK_CONTAINER (content), label);
 	gtk_widget_show_all (dialog);

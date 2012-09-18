@@ -277,7 +277,7 @@ static void sanitize_gasmix(struct gasmix *mix)
 	/* Sane mix? */
 	if (o2 <= 1000 && he <= 1000 && o2+he <= 1000)
 		return;
-	fprintf(stderr, "Odd gasmix: %d O2 %d He\n", o2, he);
+	fprintf(stderr, "Odd gasmix: %u O2 %u He\n", o2, he);
 	memset(mix, 0, sizeof(*mix));
 }
 

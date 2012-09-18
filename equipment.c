@@ -96,13 +96,13 @@ static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 			volume *= bar_to_atm(mbar / 1000.0);
 		}
 
-		if (output_units.pressure == PSI) {
+		if (output_units.pressure == PSI)
 			pressure = mbar_to_PSI(mbar);
-		} else
+		else
 			pressure = mbar / 1000.0;
+		*p = pressure;
 	}
 	*v = volume;
-	*p = pressure;
 }
 
 static int convert_weight(int grams, double *m)

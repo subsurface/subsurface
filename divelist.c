@@ -110,7 +110,7 @@ void dump_selection(void)
 	int i;
 	struct dive *dive;
 
-	printf("currently selected are %d dives:", amount_selected);
+	printf("currently selected are %u dives:", amount_selected);
 	for_each_dive(i, dive) {
 		if (dive->selected)
 			printf(" %d", i);
