@@ -378,15 +378,16 @@ static void date_data_func(GtkTreeViewColumn *col,
 			   GtkTreeIter *iter,
 			   gpointer data)
 {
-	int val, idx, nr;
+	int idx, nr;
+	long date;
 	struct tm *tm;
 	time_t when;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &val, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &date, -1);
 	nr = gtk_tree_model_iter_n_children(model, iter);
 	/* 2038 problem */
-	when = val;
+	when = date;
 
 	tm = gmtime(&when);
 	if (idx < 0) {
