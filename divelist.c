@@ -1067,7 +1067,8 @@ static void fill_dive_list(void)
 			}
 		} else if (DIVE_IN_TRIP(dive)) {
 			trip = find_matching_trip(dive->when);
-			dive_trip = DIVE_TRIP(trip);
+			if (trip)
+				dive_trip = DIVE_TRIP(trip);
 		} else {
 			/* dive is not in a trip and we aren't autogrouping */
 			dive_trip = NULL;
