@@ -727,7 +727,7 @@ static timestamp_t dive_time_widget(struct dive *dive)
 		utc_mkdate(when, &tm);
 		time = &tm;
 	} else {
-		timestamp_t now;
+		time_t now;
 		struct timeval tv;
 		gettimeofday(&tv, NULL);
 		now = tv.tv_sec;
