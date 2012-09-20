@@ -290,70 +290,8 @@ extern gboolean autogroup;
 #define DIVE_TRIP(_trip) ((dive_trip_t *)(_trip)->data)
 #define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
 
-/* compare two dives by when they happened */
-static inline int dive_date_cmp(gconstpointer _a, gconstpointer _b) {
-	return ((dive_trip_t *)_a)->when - ((dive_trip_t *)_b)->when;
-}
+extern void insert_trip(dive_trip_t **trip);
 
-/* returns 0 if the dive happened exactly at time */
-static inline int dive_when_find(gconstpointer _dive_trip, gconstpointer _time) {
-	return ((dive_trip_t *)_dive_trip)->when != (time_t) _time;
-}
-
-#define FIND_TRIP(_when) g_list_find_custom(dive_trip_list, (gconstpointer)(_when), dive_when_find)
-
-#ifdef DEBUG_TRIP
-static void dump_trip_list(void)
-{
-	GList *p = NULL;
-	int i=0;
-	time_t last_time = 0;
-	while ((p = NEXT_TRIP(p))) {
-		dive_trip_t *dive_trip = DIVE_TRIP(p);
-		struct tm *tm = gmtime(&dive_trip->when);
-		if (dive_trip->when < last_time)
-			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
-		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u\n",
-			dive_trip->tripflag == AUTOGEN_TRIP ? "autogen " : "",
-			++i, dive_trip->location,
-			tm->tm_year + 1900, tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
-		if (dive_trip->when_from_file && dive_trip->when != dive_trip->when_from_file) {
-			tm = gmtime(&dive_trip->when_from_file);
-			printf("originally on %04u-%02u-%02u %02u:%02u:%02u\n",	tm->tm_year + 1900,
-				tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
-		}
-		last_time = dive_trip->when;
-	}
-	printf("-----\n");
-}
-#endif
-
-/* insert the trip into the dive_trip_list - but ensure you don't have
- * two trips for the same date; but if you have, make sure you don't
- * keep the one with less information */
-static void inline insert_trip(dive_trip_t **trip)
-{
-	dive_trip_t *dive_trip = *trip;
-	GList *result = FIND_TRIP(dive_trip->when);
-	if (result) {
-		if (! DIVE_TRIP(result)->location)
-			DIVE_TRIP(result)->location = dive_trip->location;
-		*trip = DIVE_TRIP(result);
-	} else {
-		dive_trip_list = g_list_insert_sorted(dive_trip_list, dive_trip, dive_date_cmp);
-	}
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
-
-static inline void delete_trip(GList *trip)
-{
-	dive_trip_list = g_list_delete_link(dive_trip_list, trip);
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
 /*
  * We keep our internal data in well-specified units, but
  * the input and output may come in some random format. This
