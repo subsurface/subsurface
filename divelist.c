@@ -1177,10 +1177,6 @@ static void fill_dive_list(void)
 			trip = find_matching_trip(dive->when);
 			if (trip)
 				dive_trip = DIVE_TRIP(trip);
-			else
-				printf ("data seems inconsistent - dive claims to be in dive trip "
-					"yet there appears to be no matching trip\n"
-					"Trying to recover\n");
 		} else {
 			/* dive is not in a trip and we aren't autogrouping */
 			dive_trip = NULL;
@@ -1538,6 +1534,9 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 	/* add the dive to the trip */
 	for (;;) {
 		dive->divetrip = prev_dive->divetrip;
+		/* we intentionally changed the dive_trip, so update the time
+		 * stamp that we fall back to when toggling autogroup */
+		dive->divetrip->when_from_file = dive->divetrip->when;
 		dive->tripflag = IN_TRIP;
 		(void)move_dive_between_trips(&dive_iter, NULL, &trip_iter, NULL, TRUE);
 		prev_dive = dive;
