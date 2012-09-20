@@ -282,7 +282,7 @@ static void save_events(FILE *f, struct event *ev)
 	}
 }
 
-static void save_trip(FILE *f, struct dive *trip)
+static void save_trip(FILE *f, dive_trip_t *trip)
 {
 	struct tm tm;
 
