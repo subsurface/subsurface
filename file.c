@@ -99,7 +99,7 @@ static int try_to_open_suunto(const char *filename, struct memblock *mem, GError
 	return success;
 }
 
-static time_t parse_date(const char *date)
+static timestamp_t parse_date(const char *date)
 {
 	int hour, min, sec;
 	struct tm tm;
@@ -171,7 +171,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 	char *p = mem->buffer;
 	char *header[8];
 	int i, time;
-	time_t date;
+	timestamp_t date;
 	struct dive *dive;
 
 	for (i = 0; i < 8; i++) {

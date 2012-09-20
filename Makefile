@@ -118,7 +118,7 @@ endif
 
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
-OBJS =	main.o dive.o profile.o info.o equipment.o divelist.o \
+OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
 	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
@@ -166,6 +166,9 @@ save-xml.o: save-xml.c dive.h
 
 dive.o: dive.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c dive.c
+
+time.o: time.c dive.h
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c time.c
 
 main.o: main.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) -c main.c

@@ -236,6 +236,7 @@ struct event {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
+typedef gint64 timestamp_t;
 typedef enum { TF_NONE, NO_TRIP, IN_TRIP, NUM_TRIPFLAGS } tripflag_t;
 extern const char *tripflag_names[NUM_TRIPFLAGS];
 
@@ -244,7 +245,7 @@ struct dive {
 	tripflag_t tripflag;
 	struct dive *divetrip;
 	int selected;
-	time_t when;
+	timestamp_t when;
 	char *location;
 	char *notes;
 	char *divemaster, *buddy;
@@ -289,7 +290,7 @@ static inline int dive_date_cmp(gconstpointer _a, gconstpointer _b) {
 
 /* returns 0 if the dive happened exactly at time */
 static inline int dive_when_find(gconstpointer _dive, gconstpointer _time) {
-	return ((struct dive *)_dive)->when != (time_t) _time;
+	return ((struct dive *)_dive)->when != (timestamp_t) _time;
 }
 
 #define FIND_TRIP(_when) g_list_find_custom(dive_trip_list, (gconstpointer)(_when), dive_when_find)
@@ -300,9 +301,10 @@ static void dump_trip_list(void)
 	GList *p = NULL;
 	int i=0;
 	while ((p = NEXT_TRIP(p))) {
-		struct tm *tm = gmtime(&DIVE_TRIP(p)->when);
+		struct tm tm;
+		utc_mkdate(DIVE_TRIP(p)->when, &tm);
 		printf("trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u\n", ++i, DIVE_TRIP(p)->location,
-			tm->tm_year + 1900, tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+			tm.tm_year + 1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 	}
 	printf("-----\n");
 }
@@ -412,7 +414,8 @@ static inline unsigned int dive_size(int samples)
 	return sizeof(struct dive) + samples*sizeof(struct sample);
 }
 
-extern time_t utc_mktime(struct tm *tm);
+extern timestamp_t utc_mktime(struct tm *tm);
+extern void utc_mkdate(timestamp_t, struct tm *tm);
 
 extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);

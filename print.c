@@ -51,7 +51,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 	const char *unit;
 	int len, decimals, width, height, maxwidth, maxheight;
 	PangoLayout *layout;
-	struct tm *tm;
+	struct tm tm;
 	char buffer[80], divenr[20], *people;
 
 	maxwidth = w * PANGO_SCALE;
@@ -65,14 +65,14 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 	if (dive->number)
 		snprintf(divenr, sizeof(divenr), "Dive #%d - ", dive->number);
 
-	tm = gmtime(&dive->when);
+	utc_mkdate(dive->when, &tm);
 	len = snprintf(buffer, sizeof(buffer),
 		"%s%s, %s %d, %d   %d:%02d",
 		divenr,
-		weekday(tm->tm_wday),
-		monthname(tm->tm_mon),
-		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min);
+		weekday(tm.tm_wday),
+		monthname(tm.tm_mon),
+		tm.tm_mday, tm.tm_year + 1900,
+		tm.tm_hour, tm.tm_min);
 
 	set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
 	pango_layout_set_text(layout, buffer, len);
@@ -194,7 +194,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	int len, decimals;
 	double maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
-	struct tm *tm;
+	struct tm tm;
 	char buffer[160], divenr[20];
 
 	maxwidth = w * PANGO_SCALE;
@@ -223,13 +223,13 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 
 	// Col 2: Date #
 	pango_layout_set_width(layout, colwidth);
-	tm = gmtime(&dive->when);
+	utc_mkdate(dive->when, &tm);
 	len = snprintf(buffer, sizeof(buffer),
 		"%s, %s %d, %d   %dh%02d",
-		weekday(tm->tm_wday),
-		monthname(tm->tm_mon),
-		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min
+		weekday(tm.tm_wday),
+		monthname(tm.tm_mon),
+		tm.tm_mday, tm.tm_year + 1900,
+		tm.tm_hour, tm.tm_min
 		);
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_text(layout, buffer, len);

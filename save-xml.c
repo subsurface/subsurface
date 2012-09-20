@@ -284,13 +284,15 @@ static void save_events(FILE *f, struct event *ev)
 
 static void save_trip(FILE *f, struct dive *trip)
 {
-	struct tm *tm = gmtime(&trip->when);
+	struct tm tm;
+
+	utc_mkdate(trip->when, &tm);
 
 	fprintf(f, "<trip");
 	fprintf(f, " date='%04u-%02u-%02u'",
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday);
 	fprintf(f, " time='%02u:%02u:%02u'",
-		tm->tm_hour, tm->tm_min, tm->tm_sec);
+		tm.tm_hour, tm.tm_min, tm.tm_sec);
 	if (trip->location)
 		show_utf8(f, trip->location, " location=\'","\'", 1);
 	fprintf(f, " />\n");
@@ -299,7 +301,9 @@ static void save_trip(FILE *f, struct dive *trip)
 static void save_dive(FILE *f, struct dive *dive)
 {
 	int i;
-	struct tm *tm = gmtime(&dive->when);
+	struct tm tm;
+
+	utc_mkdate(dive->when, &tm);
 
 	fputs("<dive", f);
 	if (dive->number)
@@ -309,9 +313,9 @@ static void save_dive(FILE *f, struct dive *dive)
 	if (dive->rating)
 		fprintf(f, " rating='%d'", dive->rating);
 	fprintf(f, " date='%04u-%02u-%02u'",
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday);
+		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday);
 	fprintf(f, " time='%02u:%02u:%02u'",
-		tm->tm_hour, tm->tm_min, tm->tm_sec);
+		tm.tm_hour, tm.tm_min, tm.tm_sec);
 	fprintf(f, " duration='%u:%02u min'>\n",
 		FRACTION(dive->duration.seconds, 60));
 	save_overview(f, dive);

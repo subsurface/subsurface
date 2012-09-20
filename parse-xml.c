@@ -175,40 +175,10 @@ static enum import_source {
 	UDDF,
 } import_source;
 
-time_t utc_mktime(struct tm *tm)
-{
-	static const int mdays[] = {
-	    0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
-	};
-	int year = tm->tm_year;
-	int month = tm->tm_mon;
-	int day = tm->tm_mday;
-
-	/* First normalize relative to 1900 */
-	if (year < 70)
-		year += 100;
-	else if (year > 1900)
-		year -= 1900;
-
-	/* Normalized to Jan 1, 1970: unix time */
-	year -= 70;
-
-	if (year < 0 || year > 129) /* algo only works for 1970-2099 */
-		return -1;
-	if (month < 0 || month > 11) /* array bounds */
-		return -1;
-	if (month < 2 || (year + 2) % 4)
-		day--;
-	if (tm->tm_hour < 0 || tm->tm_min < 0 || tm->tm_sec < 0)
-		return -1;
-	return (year * 365 + (year + 1) / 4 + mdays[month] + day) * 24*60*60UL +
-		tm->tm_hour * 60*60 + tm->tm_min * 60 + tm->tm_sec;
-}
-
 static void divedate(char *buffer, void *_when)
 {
 	int d,m,y;
-	time_t *when = _when;
+	timestamp_t *when = _when;
 	int success = 0;
 
 	success = cur_tm.tm_sec | cur_tm.tm_min | cur_tm.tm_hour;
@@ -234,7 +204,7 @@ static void divedate(char *buffer, void *_when)
 static void divetime(char *buffer, void *_when)
 {
 	int h,m,s = 0;
-	time_t *when = _when;
+	timestamp_t *when = _when;
 
 	if (sscanf(buffer, "%d:%d:%d", &h, &m, &s) >= 2) {
 		cur_tm.tm_hour = h;
@@ -251,7 +221,7 @@ static void divedatetime(char *buffer, void *_when)
 {
 	int y,m,d;
 	int hr,min,sec;
-	time_t *when = _when;
+	timestamp_t *when = _when;
 
 	if (sscanf(buffer, "%d-%d-%d %d:%d:%d",
 		&y, &m, &d, &hr, &min, &sec) == 6) {
@@ -822,7 +792,7 @@ static void uemis_date_unit(char *buffer, void *_unused)
 /* Modified julian day, yay! */
 static void uemis_date_time(char *buffer, void *_when)
 {
-	time_t *when = _when;
+	timestamp_t *when = _when;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -847,7 +817,7 @@ static void uemis_time_zone(char *buffer, void *_when)
 #if 0 /* seems like this is only used to display it correctly
        * the stored time appears to be UTC */
 
-	time_t *when = _when;
+	timestamp_t *when = _when;
 	signed char tz = atoi(buffer);
 
 	*when += tz * 3600;
@@ -857,7 +827,7 @@ static void uemis_time_zone(char *buffer, void *_when)
 static void uemis_ts(char *buffer, void *_when)
 {
 	struct tm tm;
-	time_t *when = _when;
+	timestamp_t *when = _when;
 
 	memset(&tm, 0, sizeof(tm));
 	sscanf(buffer,"%d-%d-%dT%d:%d:%d",
@@ -983,7 +953,7 @@ static void uddf_datetime(char *buffer, void *_when)
 {
 	char c;
 	int y,m,d,hh,mm,ss;
-	time_t *when = _when;
+	timestamp_t *when = _when;
 	struct tm tm = { 0 };
 	int i;
 
