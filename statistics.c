@@ -412,7 +412,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		if (current_year == 0)
 			current_year = tm.tm_year + 1900;
 
-		if (current_year != tm.tm_year) {
+		if (current_year != tm.tm_year + 1900) {
 			current_year = tm.tm_year + 1900;
 			process_dive(dp, &(stats_yearly[++year_iter]));
 		} else
