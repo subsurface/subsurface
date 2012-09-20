@@ -156,7 +156,8 @@ const struct units IMPERIAL_units = {
 /*
  * Dive info as it is being built up..
  */
-static struct dive *cur_dive, *cur_trip = NULL;
+static struct dive *cur_dive;
+static dive_trip_t *cur_trip = NULL;
 static struct sample *cur_sample;
 static struct {
 	int active;
@@ -542,8 +543,10 @@ static void get_tripflag(char *buffer, void *_tf)
 
 	*tf = TF_NONE;
 	for (i = NO_TRIP; i < NUM_TRIPFLAGS; i++)
-		if(! strcmp(buffer, tripflag_names[i]))
+		if(! strcmp(buffer, tripflag_names[i])) {
 			*tf = i;
+			break;
+		}
 }
 
 static void centibar(char *buffer, void *_pressure)
@@ -1152,21 +1155,23 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 }
 
 /* We're in the top-level trip xml. Try to convert whatever value to a trip value */
-static void try_to_fill_trip(struct dive **divep, const char *name, char *buf)
+static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *buf)
 {
 	int len = strlen(name);
 
 	start_match("trip", name, buf);
 
-	struct dive *dive = *divep;
+	dive_trip_t *dive_trip = *dive_trip_p;
 
-	if (MATCH(".date", divedate, &dive->when))
+	if (MATCH(".date", divedate, &dive_trip->when))
 		return;
-	if (MATCH(".time", divetime, &dive->when))
+	if (MATCH(".time", divetime, &dive_trip->when)) {
+		dive_trip->when_from_file = dive_trip->when;
 		return;
-	if (MATCH(".location", utf8_string, &dive->location))
+	}
+	if (MATCH(".location", utf8_string, &dive_trip->location))
 		return;
-	if (MATCH(".notes", utf8_string, &dive->notes))
+	if (MATCH(".notes", utf8_string, &dive_trip->notes))
 		return;
 
 	nonmatch("trip", name, buf);
@@ -1212,7 +1217,7 @@ static void trip_start(void)
 {
 	if (cur_trip)
 		return;
-	cur_trip = alloc_dive();
+	cur_trip = calloc(sizeof(dive_trip_t),1);
 	memset(&cur_tm, 0, sizeof(cur_tm));
 }
 

@@ -710,6 +710,11 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	res = alloc_dive();
 
 	res->when = a->when;
+	/* the larger tripflag is more relevant */
+	if(a->tripflag > b->tripflag)
+		res->tripflag = a->tripflag;
+	else
+		res->tripflag = b->tripflag;
 	MERGE_NONZERO(res, a, b, latitude);
 	MERGE_NONZERO(res, a, b, longitude);
 	MERGE_TXT(res, a, b, location);
