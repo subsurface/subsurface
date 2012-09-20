@@ -237,13 +237,21 @@ struct event {
 #define W_IDX_SECONDARY 1
 
 typedef gint64 timestamp_t;
-typedef enum { TF_NONE, NO_TRIP, IN_TRIP, NUM_TRIPFLAGS } tripflag_t;
+typedef enum { TF_NONE, NO_TRIP, IN_TRIP, ASSIGNED_TRIP, AUTOGEN_TRIP, NUM_TRIPFLAGS } tripflag_t;
 extern const char *tripflag_names[NUM_TRIPFLAGS];
+
+typedef struct dive_trip {
+	tripflag_t tripflag;
+	timestamp_t when;
+	timestamp_t when_from_file;
+	char *location;
+	char *notes;
+} dive_trip_t;
 
 struct dive {
 	int number;
 	tripflag_t tripflag;
-	struct dive *divetrip;
+	dive_trip_t *divetrip;
 	int selected;
 	timestamp_t when;
 	char *location;
@@ -276,72 +284,15 @@ extern gboolean autogroup;
 #define TRIP_THRESHOLD 3600*24*3
 
 #define UNGROUPED_DIVE(_dive) ((_dive)->tripflag == NO_TRIP)
-#define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP)
+#define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP || (_dive)->tripflag == ASSIGNED_TRIP)
 #define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
 #define NEXT_TRIP(_entry) ((_entry) ? g_list_next(_entry) : (dive_trip_list))
 #define PREV_TRIP(_entry) ((_entry) ? g_list_previous(_entry) : g_list_last(dive_trip_list))
-#define DIVE_TRIP(_trip) ((struct dive *)(_trip)->data)
+#define DIVE_TRIP(_trip) ((dive_trip_t *)(_trip)->data)
 #define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
 
-/* compare two dives by when they happened */
-static inline int dive_date_cmp(gconstpointer _a, gconstpointer _b) {
-	return ((struct dive *)_a)->when - ((struct dive *)_b)->when;
-}
+extern void insert_trip(dive_trip_t **trip);
 
-/* returns 0 if the dive happened exactly at time */
-static inline int dive_when_find(gconstpointer _listentry, gconstpointer _when)
-{
-	const struct dive *dive = _listentry;
-	const timestamp_t *tsp = _when;
-	return dive->when != *tsp;
-}
-
-static inline GList *FIND_TRIP(timestamp_t *when)
-{
-	return g_list_find_custom(dive_trip_list, when, dive_when_find);
-}
-
-#ifdef DEBUG_TRIP
-static void dump_trip_list(void)
-{
-	GList *p = NULL;
-	int i=0;
-	while ((p = NEXT_TRIP(p))) {
-		struct tm tm;
-		utc_mkdate(DIVE_TRIP(p)->when, &tm);
-		printf("trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u\n", ++i, DIVE_TRIP(p)->location,
-			tm.tm_year + 1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-	}
-	printf("-----\n");
-}
-#endif
-
-/* insert the trip into the dive_trip_list - but ensure you don't have
- * two trips for the same date; but if you have, make sure you don't
- * keep the one with less information */
-static void inline insert_trip(struct dive **trip)
-{
-	struct dive *dive_trip = *trip;
-	GList *result = FIND_TRIP(&dive_trip->when);
-	if (result) {
-		if (! DIVE_TRIP(result)->location)
-			DIVE_TRIP(result)->location = dive_trip->location;
-		*trip = DIVE_TRIP(result);
-	} else {
-		dive_trip_list = g_list_insert_sorted(dive_trip_list, dive_trip, dive_date_cmp);
-	}
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
-
-static inline void delete_trip(GList *trip)
-{
-	dive_trip_list = g_list_delete_link(dive_trip_list, trip);
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
 /*
  * We keep our internal data in well-specified units, but
  * the input and output may come in some random format. This
@@ -456,7 +407,7 @@ extern void remember_event(const char *eventname);
 extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 
 extern int add_new_dive(struct dive *dive);
-extern gboolean edit_trip(struct dive *trip);
+extern gboolean edit_trip(dive_trip_t *trip);
 extern int edit_dive_info(struct dive *dive);
 extern int edit_multi_dive_info(struct dive *single_dive);
 extern void dive_list_update_dives(void);

@@ -445,7 +445,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 	}
 }
 
-static void dive_trip_widget(GtkWidget *box, struct dive *trip, struct dive_info *info)
+static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info *info)
 {
 	GtkWidget *hbox, *label;
 	char buffer[80] = "Edit trip summary";
@@ -537,7 +537,7 @@ void update_equipment_data(struct dive *dive, struct dive *master)
 		memcpy(dive->weightsystem, master->weightsystem, WS_BYTES);
 }
 
-gboolean edit_trip(struct dive *trip)
+gboolean edit_trip(dive_trip_t *trip)
 {
 	GtkWidget *dialog, *vbox;
 	int success;
@@ -571,10 +571,8 @@ gboolean edit_trip(struct dive *trip)
 			if (old_text)
 				g_free(old_text);
 		}
-		if (changed) {
+		if (changed)
 			mark_divelist_changed(TRUE);
-			flush_divelist(trip);
-		}
 	}
 	gtk_widget_destroy(dialog);
 	return changed;
