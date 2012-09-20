@@ -957,17 +957,18 @@ static void dump_trip_list(void)
 	timestamp_t last_time = 0;
 	while ((p = NEXT_TRIP(p))) {
 		dive_trip_t *dive_trip = DIVE_TRIP(p);
-		struct tm *tm = gmtime(&dive_trip->when);
+		struct tm tm;
+		utc_mkdate(dive_trip->when, &tm);
 		if (dive_trip->when < last_time)
 			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u\n",
 			dive_trip->tripflag == AUTOGEN_TRIP ? "autogen " : "",
 			++i, dive_trip->location,
-			tm->tm_year + 1900, tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+			tm.tm_year + 1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 		if (dive_trip->when_from_file && dive_trip->when != dive_trip->when_from_file) {
-			tm = gmtime(&dive_trip->when_from_file);
-			printf("originally on %04u-%02u-%02u %02u:%02u:%02u\n",	tm->tm_year + 1900,
-				tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+			utc_mkdate(dive_trip->when_from_file, &tm);
+			printf("originally on %04u-%02u-%02u %02u:%02u:%02u\n",	tm.tm_year + 1900,
+				tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 		}
 		last_time = dive_trip->when;
 	}
@@ -983,11 +984,11 @@ static GList *find_trip(timestamp_t when)
 		trip = trip->next;
 	if (DIVE_TRIP(trip)->when == when) {
 #ifdef DEBUG_TRIP
-		struct tm *tm;
-		tm = gmtime(&DIVE_TRIP(trip)->when);
+		struct tm tm;
+		utc_mkdate(DIVE_TRIP(trip)->when, &tm);
 		printf("found trip @ %04d-%02d-%02d %02d:%02d:%02d\n",
-			tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-			tm->tm_hour, tm->tm_min, tm->tm_sec);
+			tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+			tm.tm_hour, tm.tm_min, tm.tm_sec);
 #endif
 		return trip;
 	}
@@ -1011,11 +1012,11 @@ static GList *find_matching_trip(timestamp_t when)
 		trip = trip->next;
 #ifdef DEBUG_TRIP
 	{
-		struct tm *tm;
-		tm = gmtime(&DIVE_TRIP(trip)->when);
+		struct tm tm;
+		utc_mkdate(DIVE_TRIP(trip)->when, &tm);
 		printf("found trip @ %04d-%02d-%02d %02d:%02d:%02d\n",
-			tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-			tm->tm_hour, tm->tm_min, tm->tm_sec);
+			tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+			tm.tm_hour, tm.tm_min, tm.tm_sec);
 	}
 #endif
 	return trip;
