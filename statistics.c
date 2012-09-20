@@ -364,7 +364,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 {
 	int idx;
 	struct dive *dp;
-	struct tm *tm;
+	struct tm tm;
 	int current_year = 0;
 	int current_month = 0;
 	int year_iter = 0;
@@ -408,12 +408,12 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		process_dive(dp, &stats);
 
 		/* yearly statistics */
-		tm = gmtime(&dp->when);
+		utc_mkdate(dp->when, &tm);
 		if (current_year == 0)
-			current_year = tm->tm_year + 1900;
+			current_year = tm.tm_year + 1900;
 
-		if (current_year != tm->tm_year + 1900) {
-			current_year = tm->tm_year + 1900;
+		if (current_year != tm.tm_year) {
+			current_year = tm.tm_year + 1900;
 			process_dive(dp, &(stats_yearly[++year_iter]));
 		} else
 			process_dive(dp, &(stats_yearly[year_iter]));
@@ -423,10 +423,10 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 
 		/* monthly statistics */
 		if (current_month == 0) {
-			current_month = tm->tm_mon + 1;
+			current_month = tm.tm_mon + 1;
 		} else {
-			if (current_month != tm->tm_mon + 1)
-				current_month = tm->tm_mon + 1;
+			if (current_month != tm.tm_mon + 1)
+				current_month = tm.tm_mon + 1;
 			if (prev_month != current_month || prev_year != current_year)
 				month_iter++;
 		}
@@ -495,17 +495,17 @@ static void show_single_dive_stats(struct dive *dive)
 	const char *unit;
 	int idx, offset, gas_used;
 	struct dive *prev_dive;
-	struct tm *tm;
+	struct tm tm;
 
 	process_all_dives(dive, &prev_dive);
 
-	tm = gmtime(&dive->when);
+	utc_mkdate(dive->when, &tm);
 	snprintf(buf, sizeof(buf),
 		"%s, %s %d, %d %2d:%02d",
-		weekday(tm->tm_wday),
-		monthname(tm->tm_mon),
-		tm->tm_mday, tm->tm_year + 1900,
-		tm->tm_hour, tm->tm_min);
+		weekday(tm.tm_wday),
+		monthname(tm.tm_mon),
+		tm.tm_mday, tm.tm_year + 1900,
+		tm.tm_hour, tm.tm_min);
 
 	set_label(single_w.date, buf);
 	set_label(single_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);

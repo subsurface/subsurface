@@ -99,13 +99,15 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp,
 
 static int divename(char *buf, size_t size, struct dive *dive)
 {
-	struct tm *tm = gmtime(&dive->when);
+	struct tm tm;
+
+	utc_mkdate(dive->when, &tm);
 	return snprintf(buf, size, "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
 		dive->number,
-		weekday(tm->tm_wday),
-		tm->tm_mon+1, tm->tm_mday,
-		tm->tm_year+1900,
-		tm->tm_hour, tm->tm_min);
+		weekday(tm.tm_wday),
+		tm.tm_mon+1, tm.tm_mday,
+		tm.tm_year+1900,
+		tm.tm_hour, tm.tm_min);
 }
 
 void show_dive_info(struct dive *dive)
@@ -681,7 +683,7 @@ static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
 }
 
 /* Fixme - should do at least depths too - a dive without a depth is kind of pointless */
-static time_t dive_time_widget(struct dive *dive)
+static timestamp_t dive_time_widget(struct dive *dive)
 {
 	GtkWidget *dialog;
 	GtkWidget *cal, *hbox, *vbox, *box;
@@ -719,10 +721,11 @@ static time_t dive_time_widget(struct dive *dive)
 	 * we'll just take the current time.
 	 */
 	if (amount_selected == 1) {
-		time_t when = current_dive->when;
+		timestamp_t when = current_dive->when;
 		when += current_dive->duration.seconds;
 		when += 60*60;
-		time = gmtime(&when);
+		utc_mkdate(when, &tm);
+		time = &tm;
 	} else {
 		time_t now;
 		struct timeval tv;

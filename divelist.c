@@ -50,7 +50,7 @@ const char *tripflag_names[NUM_TRIPFLAGS] = { "TF_NONE", "NOTRIP", "INTRIP" };
 enum {
 	DIVE_INDEX = 0,
 	DIVE_NR,		/* int: dive->nr */
-	DIVE_DATE,		/* time_t: dive->when */
+	DIVE_DATE,		/* timestamp_t: dive->when */
 	DIVE_RATING,		/* int: 0-5 stars */
 	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
@@ -75,16 +75,16 @@ static gboolean dump_model_entry(GtkTreeModel *model, GtkTreePath *path,
 	char *location;
 	int idx, nr, duration;
 	struct dive *dive;
-	time_t when;
-	struct tm *tm;
+	timestamp_t when;
+	struct tm tm;
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_NR, &nr, DIVE_DATE, &when,
 			DIVE_DURATION, &duration, DIVE_LOCATION, &location, -1);
-	tm = gmtime(&when);
+	utc_mkdate(when, &tm);
 	printf("iter %x:%x entry #%d : nr %d @ %04d-%02d-%02d %02d:%02d:%02d duration %d location %s ",
 		iter->stamp, iter->user_data, idx, nr,
-		tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-		tm->tm_hour, tm->tm_min, tm->tm_sec,
+		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+		tm.tm_hour, tm.tm_min, tm.tm_sec,
 		duration, location);
 	dive = get_dive(idx);
 	if (dive)
@@ -379,31 +379,28 @@ static void date_data_func(GtkTreeViewColumn *col,
 			   gpointer data)
 {
 	int idx, nr;
-	long date;
-	struct tm *tm;
-	time_t when;
+	struct tm tm;
+	timestamp_t when;
 	char buffer[40];
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &date, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	nr = gtk_tree_model_iter_n_children(model, iter);
-	/* 2038 problem */
-	when = date;
 
-	tm = gmtime(&when);
+	utc_mkdate(when, &tm);
 	if (idx < 0) {
 		snprintf(buffer, sizeof(buffer),
 			"Trip %s, %s %d, %d (%d dive%s)",
-			weekday(tm->tm_wday),
-			monthname(tm->tm_mon),
-			tm->tm_mday, tm->tm_year + 1900,
+			weekday(tm.tm_wday),
+			monthname(tm.tm_mon),
+			tm.tm_mday, tm.tm_year + 1900,
 			nr, nr > 1 ? "s" : "");
 	} else {
 		snprintf(buffer, sizeof(buffer),
 			"%s, %s %d, %d %02d:%02d",
-			weekday(tm->tm_wday),
-			monthname(tm->tm_mon),
-			tm->tm_mday, tm->tm_year + 1900,
-			tm->tm_hour, tm->tm_min);
+			weekday(tm.tm_wday),
+			monthname(tm.tm_mon),
+			tm.tm_mday, tm.tm_year + 1900,
+			tm.tm_hour, tm.tm_min);
 	}
 	g_object_set(renderer, "text", buffer, NULL);
 }
@@ -945,7 +942,7 @@ void update_dive_list_col_visibility(void)
 	return;
 }
 
-static GList *find_matching_trip(time_t when)
+static GList *find_matching_trip(timestamp_t when)
 {
 	GList *trip = dive_trip_list;
 	if (!trip || DIVE_TRIP(trip)->when > when)
@@ -978,7 +975,7 @@ static gboolean dive_can_be_in_trip(int idx, struct dive *dive_trip)
 {
 	struct dive *dive, *pdive;
 	int i = idx;
-	time_t when = dive_trip->when;
+	timestamp_t when = dive_trip->when;
 
 	dive = get_dive(idx);
 	/* if the dive is before the trip start but within the threshold
@@ -1061,7 +1058,7 @@ static void fill_dive_list(void)
 					parent_ptr = NULL;
 					dive_trip = create_and_hookup_trip_from_dive(dive);
 					dive_trip->tripflag = IN_TRIP;
-					trip = FIND_TRIP(dive_trip->when);
+					trip = FIND_TRIP(&dive_trip->when);
 				}
 				if (trip)
 					dive_trip = DIVE_TRIP(trip);
@@ -1262,13 +1259,13 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
 	GtkTreeIter iter;
-	time_t when;
+	timestamp_t when;
 	struct dive *dive_trip;
 	GList *trip;
 
 	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_DATE, &when, -1);
-	trip = FIND_TRIP(when);
+	trip = FIND_TRIP(&when);
 	dive_trip = DIVE_TRIP(trip);
 	if (edit_trip(dive_trip))
 		gtk_tree_store_set(STORE(dive_list), &iter, DIVE_LOCATION, dive_trip->location, -1);
@@ -1337,13 +1334,13 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 }
 
 /* to avoid complicated special cases based on ordering or number of children,
-   we always take the first and last child and pick the smaller time_t (which
+   we always take the first and last child and pick the smaller timestamp_t (which
    works regardless of ordering and also with just one child) */
 static void update_trip_timestamp(GtkTreeIter *parent, struct dive *divetrip)
 {
 	GtkTreeIter first_child, last_child;
 	int nr;
-	time_t t1, t2, tnew;
+	timestamp_t t1, t2, tnew;
 
 	if (gtk_tree_store_iter_depth(STORE(dive_list), parent) != 0 ||
 		gtk_tree_model_iter_n_children(MODEL(dive_list), parent) == 0)
@@ -1368,7 +1365,7 @@ static GtkTreeIter *move_dive_between_trips(GtkTreeIter *dive_iter, GtkTreeIter 
 					GtkTreeIter *sibling, gboolean before)
 {
 	int idx;
-	time_t old_when, new_when;
+	timestamp_t old_when, new_when;
 	struct dive *dive, *old_divetrip, *new_divetrip;
 	GtkTreeIter *new_iter = malloc(sizeof(GtkTreeIter));
 
@@ -1443,7 +1440,7 @@ static void turn_dive_into_trip(GtkTreePath *path)
 {
 	GtkTreeIter iter, *newiter, newparent;
 	GtkTreePath *treepath;
-	time_t when;
+	timestamp_t when;
 	char *location;
 	int idx;
 	struct dive *dive;
@@ -1485,7 +1482,7 @@ static void insert_trip_before(GtkTreePath *path)
 	copy_tree_node(&parent, &newparent);
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 	dive = get_dive(idx);
-	/* make sure that the time_t of the previous divetrip is correct before
+	/* make sure that the timestamp_t of the previous divetrip is correct before
 	 * inserting a new one */
 	if (dive->when < prev_dive->when)
 		if (prev_dive->divetrip && prev_dive->divetrip->when < prev_dive->when)
@@ -1567,7 +1564,7 @@ static void remove_from_trip(GtkTreePath *path)
 	/* if this was the last dive on the trip, remove the trip */
 	if (! gtk_tree_model_iter_has_child(MODEL(dive_list), &parent)) {
 		gtk_tree_store_remove(STORE(dive_list), &parent);
-		delete_trip(FIND_TRIP(dive->divetrip->when));
+		delete_trip(FIND_TRIP(&dive->divetrip->when));
 		free(dive->divetrip);
 	}
 	/* mark the dive as intentionally at the top level */
@@ -1675,7 +1672,7 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 	}
 	/* finally, remove the trip */
 	gtk_tree_store_remove(STORE(dive_list), &parent);
-	delete_trip(FIND_TRIP(dive_trip->when));
+	delete_trip(FIND_TRIP(&dive_trip->when));
 	free(dive_trip);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
@@ -1694,7 +1691,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	GtkTreeIter thistripiter, prevtripiter, newiter, iter;
 	GtkTreeModel *tm = MODEL(dive_list);
 	GList *trip, *prevtrip;
-	time_t when;
+	timestamp_t when;
 
 	/* this only gets called when we are on a trip and there is another trip right before */
 	prevpath = gtk_tree_path_copy(trippath);
@@ -1996,7 +1993,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.listmodel = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
-				G_TYPE_LONG,			/* Date */
+				G_TYPE_INT64,			/* Date */
 				G_TYPE_INT,			/* Star rating */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
@@ -2012,7 +2009,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.treemodel = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
 				G_TYPE_INT,			/* nr */
-				G_TYPE_LONG,			/* Date */
+				G_TYPE_INT64,			/* Date */
 				G_TYPE_INT,			/* Star rating */
 				G_TYPE_INT, 			/* Depth */
 				G_TYPE_INT,			/* Duration */
@@ -2091,7 +2088,7 @@ void remove_autogen_trips()
 {
 	GtkTreeIter iter;
 	GtkTreePath *path;
-	time_t when;
+	timestamp_t when;
 	int idx;
 	GList *trip;
 
@@ -2100,7 +2097,7 @@ void remove_autogen_trips()
 	while(gtk_tree_model_get_iter(TREEMODEL(dive_list), &iter, path)) {
 		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 		if (idx < 0) {
-			trip = FIND_TRIP(when);
+			trip = FIND_TRIP(&when);
 			if (DIVE_TRIP(trip)->tripflag == IN_TRIP) { /* this was autogen */
 				remove_trip(path, FALSE);
 				continue;
