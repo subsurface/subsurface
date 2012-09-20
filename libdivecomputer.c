@@ -18,6 +18,9 @@
   #define NOT_FROG
 #endif
 
+static const char *progress_bar_text = "";
+static double progress_bar_fraction = 0.0;
+
 static GError *error(const char *fmt, ...)
 {
 	va_list args;
@@ -159,13 +162,13 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 static void dev_info(device_data_t *devdata, const char *fmt, ...)
 {
-	char buffer[32];
+	static char buffer[32];
 	va_list ap;
 
 	va_start(ap, fmt);
 	vsnprintf(buffer, sizeof(buffer), fmt, ap);
 	va_end(ap);
-	update_progressbar_text(&devdata->progress, buffer);
+	progress_bar_text = buffer;
 }
 
 static int import_dive_number = 0;
@@ -318,8 +321,9 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		dev_info(devdata, "Event: waiting for user action");
 		break;
 	case DC_EVENT_PROGRESS:
-		update_progressbar(&devdata->progress,
-			(double) progress->current / (double) progress->maximum);
+		if (!progress->maximum)
+			break;
+		progress_bar_fraction = (double) progress->current / (double) progress->maximum;
 		break;
 	case DC_EVENT_DEVINFO:
 		dev_info(devdata, "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)",
@@ -406,9 +410,13 @@ GError *do_import(device_data_t *data)
 
 	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
 	import_thread_done = 0;
+	progress_bar_text = "";
+	progress_bar_fraction = 0.0;
 	pthread_create(&pthread, NULL, pthread_wrapper, data);
 	while (!import_thread_done) {
 		import_thread_cancelled = process_ui_events();
+		update_progressbar(&data->progress, progress_bar_fraction);
+		update_progressbar_text(&data->progress, progress_bar_text);
 		usleep(100000);
 	}
 	if (pthread_join(pthread, &retval) < 0)
