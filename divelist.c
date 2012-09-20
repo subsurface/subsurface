@@ -1247,7 +1247,7 @@ static void fill_dive_list(void)
 				DIVE_LOCATION, dive_trip->location,
 				-1);
 	update_dive_list_units();
-	if (gtk_tree_model_get_iter_first(MODEL(dive_list), &iter)) {
+	if (amount_selected == 0 && gtk_tree_model_get_iter_first(MODEL(dive_list), &iter)) {
 		GtkTreeSelection *selection;
 
 		/* select the last dive (and make sure it's an actual dive that is selected) */
@@ -1876,18 +1876,21 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	for (i = idx; i < dive_table.nr - 1; i++)
 		dive_table.dives[i] = dive_table.dives[i+1];
 	dive_table.nr--;
+	if (dive->selected)
+		amount_selected--;
 	free(dive);
+	/* now make sure the correct dive list is displayed, the same
+	 * dives stay selected and if necessary their trips are
+	 * expanded. If no selected dives are left then fill_dive_list()
+	 * (which gets called from dive_list_update_dives()) will once
+	 * again select the last dive in the dive list */
 	dive_list_update_dives();
-	/* now make sure the same dives stay selected and if necessary their trips are expanded
-	 * also make sure that amount_selected stays consistent */
-	amount_selected = 0;
 	for_each_dive(i, dive) {
 		if (dive->selected) {
 			GtkTreePath *path = get_path_from(dive);
 			if (MODEL(dive_list) == TREEMODEL(dive_list))
 				gtk_tree_view_expand_to_path(tree_view, path);
 			gtk_tree_selection_select_path(selection, path);
-			amount_selected++;
 		}
 	}
 	mark_divelist_changed(TRUE);
