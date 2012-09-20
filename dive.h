@@ -289,11 +289,17 @@ static inline int dive_date_cmp(gconstpointer _a, gconstpointer _b) {
 }
 
 /* returns 0 if the dive happened exactly at time */
-static inline int dive_when_find(gconstpointer _dive, gconstpointer _time) {
-	return ((struct dive *)_dive)->when != (timestamp_t) _time;
+static inline int dive_when_find(gconstpointer _listentry, gconstpointer _when)
+{
+	const struct dive *dive = _listentry;
+	const timestamp_t *tsp = _when;
+	return dive->when != *tsp;
 }
 
-#define FIND_TRIP(_when) g_list_find_custom(dive_trip_list, (gconstpointer)(_when), dive_when_find)
+static inline GList *FIND_TRIP(timestamp_t *when)
+{
+	return g_list_find_custom(dive_trip_list, when, dive_when_find);
+}
 
 #ifdef DEBUG_TRIP
 static void dump_trip_list(void)
@@ -316,7 +322,7 @@ static void dump_trip_list(void)
 static void inline insert_trip(struct dive **trip)
 {
 	struct dive *dive_trip = *trip;
-	GList *result = FIND_TRIP(dive_trip->when);
+	GList *result = FIND_TRIP(&dive_trip->when);
 	if (result) {
 		if (! DIVE_TRIP(result)->location)
 			DIVE_TRIP(result)->location = dive_trip->location;

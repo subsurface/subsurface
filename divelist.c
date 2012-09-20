@@ -1058,7 +1058,7 @@ static void fill_dive_list(void)
 					parent_ptr = NULL;
 					dive_trip = create_and_hookup_trip_from_dive(dive);
 					dive_trip->tripflag = IN_TRIP;
-					trip = FIND_TRIP(dive_trip->when);
+					trip = FIND_TRIP(&dive_trip->when);
 				}
 				if (trip)
 					dive_trip = DIVE_TRIP(trip);
@@ -1265,7 +1265,7 @@ void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 
 	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_DATE, &when, -1);
-	trip = FIND_TRIP(when);
+	trip = FIND_TRIP(&when);
 	dive_trip = DIVE_TRIP(trip);
 	if (edit_trip(dive_trip))
 		gtk_tree_store_set(STORE(dive_list), &iter, DIVE_LOCATION, dive_trip->location, -1);
@@ -1564,7 +1564,7 @@ static void remove_from_trip(GtkTreePath *path)
 	/* if this was the last dive on the trip, remove the trip */
 	if (! gtk_tree_model_iter_has_child(MODEL(dive_list), &parent)) {
 		gtk_tree_store_remove(STORE(dive_list), &parent);
-		delete_trip(FIND_TRIP(dive->divetrip->when));
+		delete_trip(FIND_TRIP(&dive->divetrip->when));
 		free(dive->divetrip);
 	}
 	/* mark the dive as intentionally at the top level */
@@ -1672,7 +1672,7 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 	}
 	/* finally, remove the trip */
 	gtk_tree_store_remove(STORE(dive_list), &parent);
-	delete_trip(FIND_TRIP(dive_trip->when));
+	delete_trip(FIND_TRIP(&dive_trip->when));
 	free(dive_trip);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
@@ -2097,7 +2097,7 @@ void remove_autogen_trips()
 	while(gtk_tree_model_get_iter(TREEMODEL(dive_list), &iter, path)) {
 		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 		if (idx < 0) {
-			trip = FIND_TRIP(when);
+			trip = FIND_TRIP(&when);
 			if (DIVE_TRIP(trip)->tripflag == IN_TRIP) { /* this was autogen */
 				remove_trip(path, FALSE);
 				continue;
