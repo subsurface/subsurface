@@ -1312,7 +1312,7 @@ static void pick_import_files(GtkWidget *w, GSList **filelist)
 	struct stat sb;
 
 	*filelist = NULL;
-	fs_dialog = gtk_file_chooser_dialog_new("Choose Files to import",
+	fs_dialog = gtk_file_chooser_dialog_new("Choose Files To Import",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -1357,12 +1357,12 @@ static void xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog, GSList **
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new("XML file name");
+	frame = gtk_frame_new("XML files");
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
-	chooser = gtk_button_new_with_label("Pick XML file to import");
+	chooser = gtk_button_new_with_label("Choose Files To Import");
 	g_signal_connect(G_OBJECT(chooser), "clicked", G_CALLBACK(pick_import_files), list);
 	gtk_box_pack_start(GTK_BOX(box), chooser, FALSE, FALSE, 6);
 }
@@ -1423,7 +1423,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	label = gtk_label_new("Load XML file or import directly from dive computer");
+	label = gtk_label_new("Choose what to import:");
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
 	xml_file_selector(vbox, dialog, &filenames);
 	computer = dive_computer_selector(vbox);
