@@ -485,7 +485,7 @@ static void event_toggle(GtkWidget *w, gpointer _data)
 
 static void pick_default_file(GtkWidget *w, GtkButton *button)
 {
-	GtkWidget *fs_dialog, *preferences;
+	GtkWidget *fs_dialog, *parent;
 	const char *current_default;
 	char *current_def_file, *current_def_dir;
 	GtkFileFilter *filter;
@@ -497,8 +497,10 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		NULL);
-	preferences = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
-	gtk_window_set_accept_focus(GTK_WINDOW(preferences), FALSE);
+	parent = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	gtk_widget_set_sensitive(parent, FALSE);
+	gtk_window_set_decorated(GTK_WINDOW(parent), FALSE);
+	gtk_window_set_transient_for(GTK_WINDOW(fs_dialog), GTK_WINDOW(parent));
 
 	current_default = subsurface_default_filename();
 	current_def_dir = g_path_get_dirname(current_default);
@@ -528,7 +530,9 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	free(current_def_file);
 	free((void *)current_default);
 	gtk_widget_destroy(fs_dialog);
-	gtk_window_set_accept_focus(GTK_WINDOW(preferences), TRUE);
+
+	gtk_widget_set_sensitive(parent, TRUE);
+	gtk_window_set_decorated(GTK_WINDOW(parent), TRUE);
 }
 
 static void preferences_dialog(GtkWidget *w, gpointer data)
@@ -1305,7 +1309,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 
 static void pick_import_files(GtkWidget *w, GSList **filelist)
 {
-	GtkWidget *fs_dialog, *import;
+	GtkWidget *fs_dialog, *parent;
 	const char *current_default;
 	char *current_def_dir;
 	GtkFileFilter *filter;
@@ -1318,8 +1322,10 @@ static void pick_import_files(GtkWidget *w, GSList **filelist)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
-	import = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
-	gtk_window_set_accept_focus(GTK_WINDOW(import), FALSE);
+	parent = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	gtk_widget_set_sensitive(parent, FALSE);
+	gtk_window_set_decorated(GTK_WINDOW(parent), FALSE);
+	gtk_window_set_transient_for(GTK_WINDOW(fs_dialog), GTK_WINDOW(parent));
 
 	/* I'm not sure what the best default path should be... */
 	if (existing_filename) {
@@ -1344,10 +1350,13 @@ static void pick_import_files(GtkWidget *w, GSList **filelist)
 		*filelist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
 	free(current_def_dir);
 	gtk_widget_destroy(fs_dialog);
-	gtk_window_set_accept_focus(GTK_WINDOW(import), TRUE);
+
+	gtk_widget_set_sensitive(parent, TRUE);
+	gtk_window_set_decorated(GTK_WINDOW(parent), TRUE);
+
 	/* if we selected one or more files, pretent that we clicked OK in the import dialog */
 	if (*filelist != NULL)
-		gtk_dialog_response(GTK_DIALOG(import), GTK_RESPONSE_ACCEPT);
+		gtk_dialog_response(GTK_DIALOG(parent), GTK_RESPONSE_ACCEPT);
 }
 
 static void xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog, GSList **list)
