@@ -93,6 +93,8 @@ typedef struct {
 	const char *description;	/* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
+extern gboolean cylinder_nodata(cylinder_t *cyl);
+extern gboolean cylinder_nosamples(cylinder_t *cyl);
 extern gboolean cylinder_none(void *_data);
 extern gboolean no_cylinders(cylinder_t *cyl);
 extern gboolean cylinders_equal(cylinder_t *cyl1, cylinder_t *cyl2);

@@ -444,18 +444,27 @@ static void show_weightsystem(weightsystem_t *ws, struct ws_widget *weightsystem
 	set_weight_weight_spinbutton(weightsystem_widget, ws->weight.grams);
 }
 
-gboolean cylinder_none(void *_data)
+gboolean cylinder_nodata(cylinder_t *cyl)
 {
-	cylinder_t *cyl = _data;
 	return	!cyl->type.size.mliter &&
 		!cyl->type.workingpressure.mbar &&
 		!cyl->type.description &&
 		!cyl->gasmix.o2.permille &&
 		!cyl->gasmix.he.permille &&
-		!cyl->sample_start.mbar &&
-		!cyl->sample_end.mbar &&
 		!cyl->start.mbar &&
 		!cyl->end.mbar;
+}
+
+gboolean cylinder_nosamples(cylinder_t *cyl)
+{
+	return	!cyl->sample_start.mbar &&
+		!cyl->sample_end.mbar;
+}
+
+gboolean cylinder_none(void *_data)
+{
+	cylinder_t *cyl = _data;
+	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
 }
 
 gboolean no_cylinders(cylinder_t *cyl)

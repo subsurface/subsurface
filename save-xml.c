@@ -193,22 +193,31 @@ static void save_overview(FILE *f, struct dive *dive)
 	show_utf8(f, dive->suit, "  <suit>","</suit>\n", 0);
 }
 
+static int nr_cylinders(struct dive *dive)
+{
+	int nr;
+
+	for (nr = MAX_CYLINDERS; nr; --nr) {
+		cylinder_t *cylinder = dive->cylinder+nr-1;
+		if (!cylinder_nodata(cylinder))
+			break;
+	}
+	return nr;
+}
+
 static void save_cylinder_info(FILE *f, struct dive *dive)
 {
-	int i;
+	int i, nr;
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
+	nr = nr_cylinders(dive);
+
+	for (i = 0; i < nr; i++) {
 		cylinder_t *cylinder = dive->cylinder+i;
 		int volume = cylinder->type.size.mliter;
 		const char *description = cylinder->type.description;
 		int o2 = cylinder->gasmix.o2.permille;
 		int he = cylinder->gasmix.he.permille;
-		int start = cylinder->start.mbar;
-		int end = cylinder->end.mbar;
 
-		/* No cylinder information at all? */
-		if (!o2 && !volume && !start && !end)
-			return;
 		fprintf(f, "  <cylinder");
 		if (volume)
 			show_milli(f, " size='", volume, " l", "'");
