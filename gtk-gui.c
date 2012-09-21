@@ -1240,6 +1240,14 @@ void render_dive_computer(GtkCellLayout *cell,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+static void dive_computer_selector_changed(GtkWidget *combo, gpointer data)
+{
+	GtkWidget *import, *button;
+
+	import = gtk_widget_get_ancestor(combo, GTK_TYPE_DIALOG);
+	button = gtk_dialog_get_widget_for_response(GTK_DIALOG(import), GTK_RESPONSE_ACCEPT);
+	gtk_widget_set_sensitive(button, TRUE);
+}
 
 static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 {
@@ -1258,6 +1266,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
 	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
+	g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(dive_computer_selector_changed), NULL);
 	gtk_container_add(GTK_CONTAINER(frame), combo_box);
 
 	renderer = gtk_cell_renderer_text_new();
@@ -1397,9 +1406,10 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 void import_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *hbox, *vbox, *label, *info = NULL;
+	GtkWidget *dialog, *button, *hbox, *vbox, *label, *info = NULL;
 	GSList *filenames = NULL;
 	GtkComboBox *computer;
+	GtkTreeIter iter;
 	GtkEntry *device;
 	device_data_t devicedata = {
 		.devname = NULL,
@@ -1423,12 +1433,15 @@ void import_dialog(GtkWidget *w, gpointer data)
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
+	button = gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+	if (!gtk_combo_box_get_active_iter(computer, &iter))
+		gtk_widget_set_sensitive(button, FALSE);
+
 repeat:
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	switch (result) {
 		dc_descriptor_t *descriptor;
-		GtkTreeIter iter;
 		GtkTreeModel *model;
 
 	case GTK_RESPONSE_ACCEPT:
@@ -1441,6 +1454,7 @@ repeat:
 
 			if (!gtk_combo_box_get_active_iter(computer, &iter))
 				break;
+
 			model = gtk_combo_box_get_model(computer);
 			gtk_tree_model_get(model, &iter,
 					0, &descriptor,
@@ -1462,13 +1476,12 @@ repeat:
 			g_slist_foreach(filenames,do_import_file,NULL);
 			g_slist_free(filenames);
 		}
+		report_dives(TRUE);
 		break;
 	default:
 		break;
 	}
 	gtk_widget_destroy(dialog);
-
-	report_dives(TRUE);
 }
 
 void update_progressbar(progressbar_t *progress, double value)
