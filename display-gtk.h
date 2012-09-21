@@ -56,6 +56,7 @@ extern visible_cols_t visible_cols;
 extern const char *divelist_font;
 extern void set_divelist_font(const char *);
 
+extern void import_files(GtkWidget *, gpointer);
 extern void download_dialog(GtkWidget *, gpointer);
 extern void add_dive_cb(GtkWidget *, gpointer);
 extern void report_error(GError* error);

@@ -880,7 +880,7 @@ static GtkActionEntry menu_items[] = {
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File", CTRLCHAR "I", NULL, NULL },
+	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File", CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
 	{ "DownloadLog",    GTK_STOCK_GO_DOWN, "Download From Dive Computer", CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
@@ -1310,25 +1310,34 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	return GTK_ENTRY(entry);
 }
 
-static void pick_import_files(GtkWidget *w, GSList **filelist)
+static void do_import_file(gpointer data, gpointer user_data)
 {
-	GtkWidget *fs_dialog, *parent;
+	GError *error = NULL;
+	parse_file(data, &error);
+
+	if (error != NULL)
+	{
+		report_error(error);
+		g_error_free(error);
+		error = NULL;
+	}
+}
+
+void import_files(GtkWidget *w, gpointer data)
+{
+	GtkWidget *fs_dialog;
 	const char *current_default;
 	char *current_def_dir;
 	GtkFileFilter *filter;
 	struct stat sb;
+	GSList *filenames = NULL;
 
-	*filelist = NULL;
-	fs_dialog = gtk_file_chooser_dialog_new("Choose Files To Import",
+	fs_dialog = gtk_file_chooser_dialog_new("Choose XML Files To Import Into Current Data File",
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
-	parent = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
-	gtk_widget_set_sensitive(parent, FALSE);
-	gtk_window_set_decorated(GTK_WINDOW(parent), FALSE);
-	gtk_window_set_transient_for(GTK_WINDOW(fs_dialog), GTK_WINDOW(parent));
 
 	/* I'm not sure what the best default path should be... */
 	if (existing_filename) {
@@ -1349,47 +1358,18 @@ static void pick_import_files(GtkWidget *w, GSList **filelist)
 	filter = setup_filter();
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(fs_dialog), filter);
 	gtk_widget_show_all(fs_dialog);
-	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT)
-		*filelist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
+	if (gtk_dialog_run(GTK_DIALOG(fs_dialog)) == GTK_RESPONSE_ACCEPT) {
+		/* grab the selected file list, import each file and update the list */
+		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
+		if (filenames) {
+			g_slist_foreach(filenames, do_import_file, NULL);
+			report_dives(TRUE);
+			g_slist_free(filenames);
+		}
+	}
+
 	free(current_def_dir);
 	gtk_widget_destroy(fs_dialog);
-
-	gtk_widget_set_sensitive(parent, TRUE);
-	gtk_window_set_decorated(GTK_WINDOW(parent), TRUE);
-
-	/* if we selected one or more files, pretent that we clicked OK in the import dialog */
-	if (*filelist != NULL)
-		gtk_dialog_response(GTK_DIALOG(parent), GTK_RESPONSE_ACCEPT);
-}
-
-static void xml_file_selector(GtkWidget *vbox, GtkWidget *main_dialog, GSList **list)
-{
-	GtkWidget *hbox, *frame, *chooser, *box;
-
-	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
-
-	frame = gtk_frame_new("XML files");
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
-
-	box = gtk_hbox_new(FALSE, 6);
-	gtk_container_add(GTK_CONTAINER(frame), box);
-	chooser = gtk_button_new_with_label("Choose Files To Import");
-	g_signal_connect(G_OBJECT(chooser), "clicked", G_CALLBACK(pick_import_files), list);
-	gtk_box_pack_start(GTK_BOX(box), chooser, FALSE, FALSE, 6);
-}
-
-static void do_import_file(gpointer data, gpointer user_data)
-{
-	GError *error = NULL;
-	parse_file(data, &error);
-
-	if (error != NULL)
-	{
-		report_error(error);
-		g_error_free(error);
-		error = NULL;
-	}
 }
 
 static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
