@@ -880,7 +880,8 @@ static GtkActionEntry menu_items[] = {
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "Import",         GTK_STOCK_GO_BACK, "Import", SHIFTCHAR CTRLCHAR "O", NULL, G_CALLBACK(import_dialog) },
+	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File", CTRLCHAR "I", NULL, NULL },
+	{ "DownloadLog",    GTK_STOCK_GO_DOWN, "Download From Dive Computer", CTRLCHAR "D", NULL, NULL },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
@@ -911,7 +912,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Save As\" action=\"SaveAsFile\" /> \
 				<menuitem name=\"Close\" action=\"CloseFile\" /> \
 				<separator name=\"Separator1\"/> \
-				<menuitem name=\"Import\" action=\"Import\" /> \
+				<menuitem name=\"Import XML File\" action=\"ImportFile\" /> \
 				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator3\"/> \
@@ -920,8 +921,10 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Quit\" action=\"Quit\" /> \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
+				<menuitem name=\"Download From Dive Computer\" action=\"DownloadLog\" /> \
+				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Add Dive\" action=\"AddDive\" /> \
-				<separator name=\"Separator\"/> \
+				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<menuitem name=\"Autogroup\" action=\"Autogroup\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
