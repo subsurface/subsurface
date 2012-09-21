@@ -881,7 +881,7 @@ static GtkActionEntry menu_items[] = {
 	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File", CTRLCHAR "I", NULL, NULL },
-	{ "DownloadLog",    GTK_STOCK_GO_DOWN, "Download From Dive Computer", CTRLCHAR "D", NULL, NULL },
+	{ "DownloadLog",    GTK_STOCK_GO_DOWN, "Download From Dive Computer", CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
@@ -1415,11 +1415,10 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 	return info;
 }
 
-void import_dialog(GtkWidget *w, gpointer data)
+void download_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *button, *hbox, *vbox, *label, *info = NULL;
-	GSList *filenames = NULL;
 	GtkComboBox *computer;
 	GtkTreeIter iter;
 	GtkEntry *device;
@@ -1427,7 +1426,7 @@ void import_dialog(GtkWidget *w, gpointer data)
 		.devname = NULL,
 	};
 
-	dialog = gtk_dialog_new_with_buttons("Import",
+	dialog = gtk_dialog_new_with_buttons("Download From Dive Computer",
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1435,9 +1434,8 @@ void import_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	label = gtk_label_new("Choose what to import:");
+	label = gtk_label_new(" Please select dive computer and device. ");
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
-	xml_file_selector(vbox, dialog, &filenames);
 	computer = dive_computer_selector(vbox);
 	device = dive_computer_device(vbox);
 	hbox = gtk_hbox_new(FALSE, 6);
@@ -1457,37 +1455,31 @@ repeat:
 		GtkTreeModel *model;
 
 	case GTK_RESPONSE_ACCEPT:
-		/* what happened - did the user pick a file? In that case
-		 * we ignore whether a dive computer model was picked */
 		if (info)
 			gtk_widget_destroy(info);
-		if (!filenames || g_slist_length(filenames) == 0) {
-			const char *vendor, *product;
+		const char *vendor, *product;
 
-			if (!gtk_combo_box_get_active_iter(computer, &iter))
-				break;
+		if (!gtk_combo_box_get_active_iter(computer, &iter))
+			break;
 
-			model = gtk_combo_box_get_model(computer);
-			gtk_tree_model_get(model, &iter,
-					0, &descriptor,
-					-1);
+		model = gtk_combo_box_get_model(computer);
+		gtk_tree_model_get(model, &iter,
+				0, &descriptor,
+				-1);
 
-			vendor = dc_descriptor_get_vendor(descriptor);
-			product = dc_descriptor_get_product(descriptor);
+		vendor = dc_descriptor_get_vendor(descriptor);
+		product = dc_descriptor_get_product(descriptor);
 
-			devicedata.descriptor = descriptor;
-			devicedata.vendor = vendor;
-			devicedata.product = product;
-			devicedata.devname = gtk_entry_get_text(device);
-			set_default_dive_computer(vendor, product);
-			set_default_dive_computer_device(devicedata.devname);
-			info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
-			if (info)
-				goto repeat;
-		} else if (filenames) {
-			g_slist_foreach(filenames,do_import_file,NULL);
-			g_slist_free(filenames);
-		}
+		devicedata.descriptor = descriptor;
+		devicedata.vendor = vendor;
+		devicedata.product = product;
+		devicedata.devname = gtk_entry_get_text(device);
+		set_default_dive_computer(vendor, product);
+		set_default_dive_computer_device(devicedata.devname);
+		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
+		if (info)
+			goto repeat;
+
 		report_dives(TRUE);
 		break;
 	default:
