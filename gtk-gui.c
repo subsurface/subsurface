@@ -822,7 +822,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	}
 
 	gtk_show_about_dialog(NULL,
-		"program-name", "SubSurface",
+		"program-name", "Subsurface",
 		"comments", "Multi-platform divelog software in C",
 		"license", "GPLv2",
 		"version", VERSION_STRING,
