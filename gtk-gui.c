@@ -70,7 +70,9 @@ static void set_default_dive_computer_device(const char *name)
 		return;
 	if (is_default_dive_computer_device(name))
 		return;
-	default_dive_computer_device = name;
+	if (default_dive_computer_device)
+		free((void *)default_dive_computer_device);
+	default_dive_computer_device = strdup(name);
 	subsurface_set_conf("dive_computer_device", PREF_STRING, name);
 }
 
@@ -1105,6 +1107,8 @@ void exit_ui(void)
 		free((char *)default_filename);
 	if (existing_filename)
 		free((void *)existing_filename);
+	if (default_dive_computer_device)
+		free((void *)default_dive_computer_device);
 }
 
 typedef struct {
