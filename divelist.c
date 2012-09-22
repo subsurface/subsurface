@@ -1900,6 +1900,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 {
 	GtkWidget *menu, *menuitem, *image;
 	char editlabel[] = "Edit dives";
+	char deletelabel[] = "Delete dives";
 	GtkTreePath *path, *prevpath, *nextpath;
 	GtkTreeIter iter, previter, nextiter;
 	int idx, previdx, nextidx;
@@ -1946,18 +1947,26 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		g_signal_connect(menuitem, "activate", G_CALLBACK(remove_trip_cb), path);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	} else {
-		menuitem = gtk_menu_item_new_with_label("Delete Dive");
-		g_signal_connect(menuitem, "activate", G_CALLBACK(delete_dive_cb), path);
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		dive = get_dive(idx);
-		/* if we right click on selected dive(s), edit those */
+		/* if we right click on selected dive(s), edit or delete those */
 		if (dive->selected) {
-			if (amount_selected == 1)
+			if (amount_selected == 1) {
+				deletelabel[strlen(deletelabel) - 1] = '\0';
 				editlabel[strlen(editlabel) - 1] = '\0';
+			}
+			menuitem = gtk_menu_item_new_with_label(deletelabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(NULL), path);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_selected_dives_cb), NULL);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		} else {
+			deletelabel[strlen(deletelabel) - 1] = '\0';
+			menuitem = gtk_menu_item_new_with_label(deletelabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_dive_cb), path);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 			editlabel[strlen(editlabel) - 1] = '\0';
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
