@@ -815,7 +815,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	if (need_icon) {
 		GtkWidget *image = gtk_image_new_from_file(subsurface_icon_name());
 
-		if (image) {
+		if (gtk_image_get_storage_type(GTK_IMAGE(image)) == GTK_IMAGE_PIXBUF) {
 			logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
 			logo_property = "logo";
 		}
