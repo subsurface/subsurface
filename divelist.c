@@ -1847,6 +1847,7 @@ static void delete_single_dive(GtkTreeIter *iter)
 {
 	int i, idx;
 	struct dive *dive, *pdive, *ndive;
+	GtkTreeIter parent;
 
 	gtk_tree_model_get(MODEL(dive_list), iter, DIVE_INDEX, &idx, -1);
 	dive = get_dive(idx);
@@ -1865,8 +1866,10 @@ static void delete_single_dive(GtkTreeIter *iter)
 			GList *trip = find_matching_trip(dive->when);
 			delete_trip(trip);
 			free(dive->divetrip);
+			dive->divetrip = NULL;
 		}
 	}
+
 	/* simply remove the dive and recreate the divelist
 	 * (we can't just manipulate the tree_view as the indices for dives change) */
 	for (i = idx; i < dive_table.nr - 1; i++)
@@ -1874,22 +1877,48 @@ static void delete_single_dive(GtkTreeIter *iter)
 	dive_table.nr--;
 	if (dive->selected)
 		amount_selected--;
+
+	/* once the dive is deleted, update the 'when' flag of the trip it was part of
+	 * to the 'when' flag of the earliest dive left in the same trip */
+	if (dive->divetrip) {
+		gtk_tree_model_iter_parent(MODEL(dive_list), &parent, iter);
+		gtk_tree_store_remove(STORE(dive_list), iter);
+		update_trip_timestamp(&parent, dive->divetrip);
+	}
+
 	free(dive);
 }
 
-/* much simpler to use compared to gtk_tree_selection_get_selected_rows() */
-static void delete_selected_foreach(GtkTreeModel *model, GtkTreePath *path,
-																		GtkTreeIter *iter, gpointer userdata)
+/* workaround for not using gtk_tree_selection_get_selected_rows() or modifying the tree
+ * directly from the gtk_tree_selection_selected_foreach() callback function */
+struct tree_selected_st {
+	GtkTreeIter *list;
+	int total;
+};
+
+static void tree_selected_foreach(GtkTreeModel *model, GtkTreePath *path,
+                                  GtkTreeIter *iter, gpointer userdata)
 {
-	delete_single_dive(iter);
+	struct tree_selected_st *st = (struct tree_selected_st *)userdata;
+
+	st->total++;
+	st->list = (GtkTreeIter *)realloc(st->list, sizeof(GtkTreeIter) * st->total);
+	memcpy(&st->list[st->total - 1], iter, sizeof(GtkTreeIter));
 }
 
 /* called when multiple dives are selected and one of these is right-clicked for delete */
 static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
+	int i;
 	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
-	gtk_tree_selection_selected_foreach(selection, delete_selected_foreach, NULL);
+	struct tree_selected_st st = {NULL, 0};
+
+	gtk_tree_selection_selected_foreach(selection, tree_selected_foreach, &st);
+
+	for (i = 0; i < st.total; i++)
+	  delete_single_dive(&st.list[i]);
+	free(st.list);
 
 	dive_list_update_dives();
 	mark_divelist_changed(TRUE);
