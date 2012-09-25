@@ -14,6 +14,7 @@
 #include "divelist.h"
 #include "display.h"
 #include "display-gtk.h"
+#include "uemis.h"
 
 #include "libdivecomputer.h"
 
@@ -38,6 +39,7 @@ visible_cols_t visible_cols = {TRUE, FALSE};
 static const char *default_dive_computer_vendor;
 static const char *default_dive_computer_product;
 static const char *default_dive_computer_device;
+static char *uemis_max_dive_data;
 
 static int is_default_dive_computer(const char *vendor, const char *product)
 {
@@ -72,6 +74,12 @@ static void set_default_dive_computer_device(const char *name)
 		return;
 	default_dive_computer_device = name;
 	subsurface_set_conf("dive_computer_device", PREF_STRING, name);
+}
+
+static void set_uemis_last_dive(char *data)
+{
+	uemis_max_dive_data = data;
+	subsurface_set_conf("uemis_max_dive_data", PREF_STRING, data);
 }
 
 void repaint_dive(void)
@@ -980,6 +988,7 @@ void init_ui(int *argcp, char ***argvp)
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
 	GtkUIManager *ui_manager;
+	const char *conf_value;
 
 	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();
@@ -1014,7 +1023,11 @@ void init_ui(int *argcp, char ***argvp)
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
 	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
-
+	conf_value = subsurface_get_conf("uemis_max_dive_data", PREF_STRING);
+	if (!conf_value)
+		uemis_max_dive_data = strdup("");
+	else
+		uemis_max_dive_data = strdup(conf_value);
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_set_application_name ("subsurface");
@@ -1205,12 +1218,20 @@ int process_ui_events(void)
 	return ret;
 }
 
+struct mydescriptor {
+	const char *vendor;
+	const char *product;
+	dc_family_t type;
+	unsigned int model;
+};
+
 static int fill_computer_list(GtkListStore *store)
 {
 	int index = -1, i;
 	GtkTreeIter iter;
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
+	struct mydescriptor *mydescriptor;
 
 	i = 0;
 	dc_descriptor_iterator(&iterator);
@@ -1227,6 +1248,21 @@ static int fill_computer_list(GtkListStore *store)
 		i++;
 	}
 	dc_iterator_free(iterator);
+	/* and add the Uemis Zurich which we are handling internally
+	   THIS IS A HACK as we use the internal of libdivecomputer
+	   data structures... eventually the UEMIS code needs to move
+	   into libdivecomputer, I guess */
+	mydescriptor = malloc(sizeof(mydescriptor));
+	mydescriptor->vendor = "Uemis";
+	mydescriptor->product = "Zurich";
+	mydescriptor->type = DC_FAMILY_NULL;
+	mydescriptor->model = 0;
+	gtk_list_store_append(store, &iter);
+	gtk_list_store_set(store, &iter,
+			0, mydescriptor, -1);
+	if (is_default_dive_computer("Uemis", "Zurich"))
+		index = i;
+
 	return index;
 }
 
@@ -1372,12 +1408,48 @@ void import_files(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(fs_dialog);
 }
 
+static GError *setup_uemis_import(device_data_t *data)
+{
+	GError *error = NULL;
+
+	for (;;) {
+		char *buf;
+		error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress);
+		if (buf && strlen(buf) > 1) {
+#ifdef DEBUGFILE
+			fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
+#endif
+			parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
+			set_uemis_last_dive(uemis_max_dive_data);
+#if UEMIS_DEBUG
+			fprintf(debugfile, "%s\n", uemis_max_dive_data);
+#endif
+			/* this function is set up to download all the remaining dives
+			 * yet this can fail in odd ways if we run out of ANS files on
+			 * the dive computer (basically, its file system is only 6MB and
+			 * no more than 2MB can be used for communication responses).
+			 * So in order to avoid this issue we break out here as well,
+			 * but once we understand how to reset the Uemis Zurich from
+			 * software the following break statement should be removed */
+			break;
+		} else {
+			break;
+		}
+	}
+	return error;
+}
+
 static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 {
 	GError *error;
 	GtkWidget *vbox, *info, *container, *label, *button;
 
-	error = do_import(data);
+	/* HACK to simply include the Uemis Zurich in the list */
+	if (! strcmp(data->vendor, "Uemis") && ! strcmp(data->product, "Zurich")) {
+		error = setup_uemis_import(data);
+	} else {
+		error = do_import(data);
+	}
 	if (!error)
 		return NULL;
 
@@ -1459,7 +1531,6 @@ repeat:
 		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 		if (info)
 			goto repeat;
-
 		report_dives(TRUE);
 		break;
 	default:

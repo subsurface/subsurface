@@ -119,7 +119,7 @@ endif
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
-	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o \
+	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS)
@@ -204,6 +204,9 @@ gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
 
 uemis.o: uemis.c dive.h uemis.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis.c
+
+uemis-downloader.o: uemis-downloader.c dive.h uemis.h
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis-downloader.c
 
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
