@@ -439,4 +439,8 @@ extern const char *subsurface_default_filename(void);
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 
+#ifdef DEBUGFILE
+extern char *debugfilename;
+extern FILE *debugfile;
+#endif
 #endif /* DIVE_H */
