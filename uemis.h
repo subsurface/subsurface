@@ -24,8 +24,14 @@ typedef struct {
 	uint16_t	hold_depth;
 	uint16_t	hold_time;
 	uint8_t		active_tank;
-	uint16_t	tank_pressure;		// (in cbar)
-	uint16_t	consumption;		// (units unclear)
+	// bloody glib, when compiled for Windows, forces the whole program to use
+	// the Windows packing rules. So to avoid problems on Windows (and since
+	// only tank_pressure is currently used and that exactly once) I give in and
+	// make this silly low byte / high byte 8bit entries
+	uint8_t		tank_pressure_low;	// (in cbar)
+	uint8_t		tank_pressure_high;
+	uint8_t		consumption_low;	// (units unclear)
+	uint8_t		consumption_high;
 	uint8_t		rgt;			// (remaining gas time in minutes)
 	uint8_t		cns;
 	uint8_t		flags[8];

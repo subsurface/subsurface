@@ -7,6 +7,11 @@
 #include "dive.h"
 #include "divelist.h"
 
+#ifdef DEBUGFILE
+char *debugfilename;
+FILE *debugfile;
+#endif
+
 struct units output_units;
 
 /* random helper functions, used here or elsewhere */
@@ -222,6 +227,13 @@ int main(int argc, char **argv)
 
 	init_ui(&argc, &argv);
 
+#ifdef DEBUGFILE
+	debugfilename = (char *)subsurface_default_filename();
+	strncpy(debugfilename + strlen(debugfilename) - 3, "log", 3);
+	if (g_mkdir_with_parents(g_path_get_dirname(debugfilename), 0664) != 0 ||
+	    (debugfile = g_fopen(debugfilename, "w")) == NULL)
+		printf("oh boy, can't create debugfile");
+#endif
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];
 
@@ -256,5 +268,9 @@ int main(int argc, char **argv)
 
 	parse_xml_exit();
 
+#ifdef DEBUGFILE
+	if (debugfile)
+		fclose(debugfile);
+#endif
 	return 0;
 }
