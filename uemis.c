@@ -229,7 +229,8 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		sample->depth.mm = pressure_to_depth(u_sample->water_pressure);
 		sample->temperature.mkelvin = (u_sample->dive_temperature * 100) + 273150;
 		sample->cylinderindex = u_sample->active_tank;
-		sample->cylinderpressure.mbar= u_sample->tank_pressure * 10;
+		sample->cylinderpressure.mbar =
+			(u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
 		uemis_event(dive, sample, u_sample);
 		finish_sample(dive);
 		i += 0x25;
