@@ -1842,19 +1842,16 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	mark_divelist_changed(TRUE);
 }
 
-/* this gets called with path pointing to a dive, either in the top level
- * or as part of a trip */
-static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
+/* delete a dive by passing a tree iterator */
+static void delete_single_dive(GtkTreeIter *iter)
 {
-	GtkTreeIter iter;
-	int idx, i;
+	int i, idx;
 	struct dive *dive, *pdive, *ndive;
-	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
-	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
+	GtkTreeIter parent;
 
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	gtk_tree_model_get(MODEL(dive_list), iter, DIVE_INDEX, &idx, -1);
 	dive = get_dive(idx);
+
 	if (dive->divetrip) {
 		/* we could be displaying the list model, in which case we can't find out
 		 * if this is part of a trip and the only dive in that trip from the model,
@@ -1869,8 +1866,10 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 			GList *trip = find_matching_trip(dive->when);
 			delete_trip(trip);
 			free(dive->divetrip);
+			dive->divetrip = NULL;
 		}
 	}
+
 	/* simply remove the dive and recreate the divelist
 	 * (we can't just manipulate the tree_view as the indices for dives change) */
 	for (i = idx; i < dive_table.nr - 1; i++)
@@ -1878,7 +1877,69 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	dive_table.nr--;
 	if (dive->selected)
 		amount_selected--;
+
+	/* once the dive is deleted, update the 'when' flag of the trip it was part of
+	 * to the 'when' flag of the earliest dive left in the same trip */
+	if (dive->divetrip) {
+		gtk_tree_model_iter_parent(MODEL(dive_list), &parent, iter);
+		gtk_tree_store_remove(STORE(dive_list), iter);
+		update_trip_timestamp(&parent, dive->divetrip);
+	}
+
 	free(dive);
+}
+
+/* workaround for not using gtk_tree_selection_get_selected_rows() or modifying the tree
+ * directly from the gtk_tree_selection_selected_foreach() callback function */
+struct tree_selected_st {
+	GtkTreeIter *list;
+	int total;
+};
+
+static void tree_selected_foreach(GtkTreeModel *model, GtkTreePath *path,
+                                  GtkTreeIter *iter, gpointer userdata)
+{
+	struct tree_selected_st *st = (struct tree_selected_st *)userdata;
+
+	st->total++;
+	st->list = (GtkTreeIter *)realloc(st->list, sizeof(GtkTreeIter) * st->total);
+	memcpy(&st->list[st->total - 1], iter, sizeof(GtkTreeIter));
+}
+
+/* called when multiple dives are selected and one of these is right-clicked for delete */
+static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	int i;
+	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
+	struct tree_selected_st st = {NULL, 0};
+
+	gtk_tree_selection_selected_foreach(selection, tree_selected_foreach, &st);
+
+	for (i = 0; i < st.total; i++)
+	  delete_single_dive(&st.list[i]);
+	free(st.list);
+
+	dive_list_update_dives();
+	mark_divelist_changed(TRUE);
+}
+
+/* this gets called with path pointing to a dive, either in the top level
+ * or as part of a trip */
+static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	GtkTreeIter iter;
+	int i, idx;
+	struct dive *dive;
+	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
+
+	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
+	delete_single_dive(&iter);
+
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	dive = get_dive(idx);
+
 	/* now make sure the correct dive list is displayed, the same
 	 * dives stay selected and if necessary their trips are
 	 * expanded. If no selected dives are left then fill_dive_list()
@@ -1900,6 +1961,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 {
 	GtkWidget *menu, *menuitem, *image;
 	char editlabel[] = "Edit dives";
+	char deletelabel[] = "Delete dives";
 	GtkTreePath *path, *prevpath, *nextpath;
 	GtkTreeIter iter, previter, nextiter;
 	int idx, previdx, nextidx;
@@ -1946,18 +2008,26 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		g_signal_connect(menuitem, "activate", G_CALLBACK(remove_trip_cb), path);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	} else {
-		menuitem = gtk_menu_item_new_with_label("Delete Dive");
-		g_signal_connect(menuitem, "activate", G_CALLBACK(delete_dive_cb), path);
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		dive = get_dive(idx);
-		/* if we right click on selected dive(s), edit those */
+		/* if we right click on selected dive(s), edit or delete those */
 		if (dive->selected) {
-			if (amount_selected == 1)
+			if (amount_selected == 1) {
+				deletelabel[strlen(deletelabel) - 1] = '\0';
 				editlabel[strlen(editlabel) - 1] = '\0';
+			}
+			menuitem = gtk_menu_item_new_with_label(deletelabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_selected_dives_cb), path);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_selected_dives_cb), NULL);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		} else {
+			deletelabel[strlen(deletelabel) - 1] = '\0';
+			menuitem = gtk_menu_item_new_with_label(deletelabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_dive_cb), path);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 			editlabel[strlen(editlabel) - 1] = '\0';
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
