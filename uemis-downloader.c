@@ -88,6 +88,7 @@ static int number_of_file(char *path)
 	GDir *dir = g_dir_open(path, 0, NULL);
 	while (g_dir_read_name(dir))
 		count++;
+	g_dir_close(dir);
 	return count;
 }
 
