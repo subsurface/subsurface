@@ -28,6 +28,7 @@
 #define ERR_FS_SHORT_WRITE "Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?"
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 6
+#define UEMIS_TIMEOUT 100000
 static char *param_buff[NUM_PARAM_BUFS];
 static char *reqtxt_path;
 static int reqtxt_file;
@@ -217,19 +218,19 @@ static char *next_segment(char *buf, int *offset, int size)
 
 /* a dynamically growing buffer to store the potentially massive responses.
  * The binary data block can be more than 100k in size (base64 encoded) */
-static void mbuf_add(char *buf)
+static void buffer_add(char **buffer, int *buffer_size, char *buf)
 {
 	if (buf) {
-		if (!mbuf) {
-			mbuf = strdup(buf);
-			mbuf_size = strlen(mbuf) + 1;
+		if (! *buffer) {
+			*buffer = strdup(buf);
+			*buffer_size = strlen(*buffer) + 1;
 		} else {
-			mbuf_size += strlen(buf);
-			mbuf = realloc(mbuf, mbuf_size);
-			strcat(mbuf, buf);
+			*buffer_size += strlen(buf);
+			*buffer = realloc(*buffer, *buffer_size);
+			strcat(*buffer, buf);
 		}
 #if UEMIS_DEBUG > 5
-		fprintf(debugfile,"added \"%s\" to mbuf - new length %d\n", buf, mbuf_size);
+		fprintf(debugfile,"added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
 #endif
 	}
 }
@@ -272,7 +273,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	int i = 0, file_length;
 	char sb[BUFLEN];
 	char fl[13];
-	char tmp[100];
+	char tmp[101];
 	gboolean searching = TRUE;
 	gboolean assembling_mbuf = FALSE;
 	gboolean ismulti = FALSE;
@@ -307,7 +308,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		more_files = FALSE;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
-	usleep(100000);
+	usleep(UEMIS_TIMEOUT);
 	mbuf = NULL;
 	mbuf_size = 0;
 	while (searching || assembling_mbuf) {
@@ -318,6 +319,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		read(ans_file, tmp, 100);
 		close(ans_file);
 #if UEMIS_DEBUG > 3
+		tmp[100]='\0';
 		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
 #endif
 		g_free(ans_path);
@@ -347,7 +349,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 			}
 			reqtxt_file = g_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 			trigger_response(reqtxt_file, "r", filenr, file_length);
-			usleep(100000);
+			usleep(UEMIS_TIMEOUT);
 		}
 		if (ismulti && more_files && tmp[0] == '1') {
 			int size;
@@ -360,12 +362,13 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				lseek(ans_file, 3, SEEK_CUR);
 				read(ans_file, buf, size - 3);
 				buf[size -3 ] = '\0';
-				mbuf_add(buf);
+				buffer_add(&mbuf, &mbuf_size, buf);
 				show_progress(buf);
 				free(buf);
+				param_buff[3]++;
 			}
 			close(ans_file);
-			usleep(100000);
+			usleep(UEMIS_TIMEOUT);
 		}
 	}
 	if (more_files) {
@@ -386,6 +389,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				fprintf(debugfile, "::r %s \"%s\"\n", ans_path, buf);
 #endif
 			}
+			size -= 3;
 			close(ans_file);
 			free(ans_path);
 		} else {
@@ -401,7 +405,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	}
 #if UEMIS_DEBUG
 	for (i = 0; i < n_param_out; i++)
-		fprintf(debugfile,"::: %d: %s\n", i, paarm_buff[i]);
+		fprintf(debugfile,"::: %d: %s\n", i, param_buff[i]);
 #endif
 	return found_answer;
 }
@@ -412,16 +416,14 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
  * approximation of a last dive number */
 static char *process_raw_buffer(char *inbuf, char **max_divenr)
 {
-	/* we'll just reuse the mbuf infrastructure to assemble the xml buffer */
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
 	gboolean done = FALSE;
 	int inbuflen = strlen(inbuf);
 	char *endptr = buf + inbuflen;
+	char *conv_buffer = NULL;
+	int conv_buffer_size = 0;
 
-	mbuf = NULL;
-	mbuf_size = 0;
-	mbuf_add("<dives type='uemis'><string></string>\n<list>\n");
 	bp = buf + 1;
 	tp = next_token(&bp);
 	if (strcmp(tp,"divelog") != 0)
@@ -429,7 +431,8 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 	tp = next_token(&bp);
 	if (strcmp(tp,"1.0") != 0)
 		return NULL;
-	mbuf_add("<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
+	buffer_add(&conv_buffer, &conv_buffer_size,
+		"<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
 	while (!done) {
 		char *tmp;
 		int tmp_size;
@@ -449,7 +452,7 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 		tmp = malloc(tmp_size);
 		snprintf(tmp, tmp_size,"<val key=\"%s\">\n<%s>%s</%s>\n</val>\n",
 			tag, type, val, type);
-		mbuf_add(tmp);
+		buffer_add(&conv_buffer, &conv_buffer_size, tmp);
 		free(tmp);
 		/* done with one dive (got the file_content tag), but there could be more:
 		 * a '{' indicates the end of the record - but we need to see another "{{"
@@ -457,13 +460,13 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 		 * be a short read because of some error */
 		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
 			done = FALSE;
-			mbuf_add("</dive>\n");
-			mbuf_add("<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
+			buffer_add(&conv_buffer, &conv_buffer_size,
+				"</dive>\n<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
 		}
 	}
-	mbuf_add("</dive>\n</list></dives>");
+	buffer_add(&conv_buffer, &conv_buffer_size, "</dive>\n");
 	free(buf);
-	return strdup(mbuf);
+	return strdup(conv_buffer);
 }
 
 /* to keep track of multiple computers we simply encode the last dive read
@@ -539,13 +542,15 @@ static char *do_uemis_download(struct argument_block *args)
 	const char *mountpath = args->mountpath;
 	char **max_dive_data = args->max_dive_data;
 	char **xml_buffer = args->xml_buffer;
+	int xml_buffer_size;
 	char *error_text = "";
 	char *newmax = NULL;
 	char *deviceid;
 	char *result = NULL;
+	char *endptr;
 	gboolean success;
 
-	*xml_buffer = NULL;
+	buffer_add(xml_buffer, &xml_buffer_size, "<dives type='uemis'><string></string>\n<list>\n");
 	uemis_info("Init Communication");
 	if (! uemis_init(mountpath))
 		return "Uemis init failed";
@@ -565,23 +570,30 @@ static char *do_uemis_download(struct argument_block *args)
 	newmax = get_divenr(*max_dive_data, deviceid);
 	for (;;) {
 		param_buff[2] = newmax;
+		param_buff[3] = 0;
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &error_text);
-		/* if we got a buffer back, try to process it */
-		if (mbuf)
-			*xml_buffer = process_raw_buffer(mbuf, &newmax);
+		/* process the buffer we have assembled */
+		if (mbuf) {
+			char *next_seg = process_raw_buffer(mbuf, &newmax);
+			buffer_add(xml_buffer, &xml_buffer_size, next_seg);
+		}
 		/* if we got an error, deal with it */
 		if (!success) {
 			result = error_text;
 			break;
 		}
 		/* also, if we got nothing back, we should stop trying */
-		if (!mbuf)
+		if (!param_buff[3])
 			break;
 		/* finally, if the memory is getting too full, maybe we better stop, too */
 		if (progress_bar_fraction > 0.85) {
 			result = ERR_FS_ALMOST_FULL;
 			break;
 		}
+		/* clean up mbuf */
+		endptr = strstr(mbuf, "{{{");
+		if (endptr)
+			*(endptr + 2) = '\0';
 	}
 	*args->max_dive_data = update_max_dive_data(*max_dive_data, deviceid, newmax);
 	free(newmax);
@@ -593,6 +605,10 @@ static char *do_uemis_download(struct argument_block *args)
 		else
 			result = param_buff[2];
 	}
+	buffer_add(xml_buffer, &xml_buffer_size, "</list></dives>");
+#if UEMIS_DEBUG > 5
+	fprintf(debugfile, "XML buffer \"%s\"", *xml_buffer);
+#endif
 	return result;
 }
 

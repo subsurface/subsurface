@@ -1256,7 +1256,7 @@ static int fill_computer_list(GtkListStore *store)
 	   THIS IS A HACK as we use the internal of libdivecomputer
 	   data structures... eventually the UEMIS code needs to move
 	   into libdivecomputer, I guess */
-	mydescriptor = malloc(sizeof(mydescriptor));
+	mydescriptor = malloc(sizeof(struct mydescriptor));
 	mydescriptor->vendor = "Uemis";
 	mydescriptor->product = "Zurich";
 	mydescriptor->type = DC_FAMILY_NULL;
@@ -1415,7 +1415,7 @@ void import_files(GtkWidget *w, gpointer data)
 static GError *setup_uemis_import(device_data_t *data)
 {
 	GError *error = NULL;
-	char *buf;
+	char *buf = NULL;
 
 	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress);
 	if (buf && strlen(buf) > 1) {
