@@ -1415,30 +1415,18 @@ void import_files(GtkWidget *w, gpointer data)
 static GError *setup_uemis_import(device_data_t *data)
 {
 	GError *error = NULL;
+	char *buf;
 
-	for (;;) {
-		char *buf;
-		error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress);
-		if (buf && strlen(buf) > 1) {
+	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress);
+	if (buf && strlen(buf) > 1) {
 #ifdef DEBUGFILE
-			fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
+		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
 #endif
-			parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
-			set_uemis_last_dive(uemis_max_dive_data);
+		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
+		set_uemis_last_dive(uemis_max_dive_data);
 #if UEMIS_DEBUG
-			fprintf(debugfile, "%s\n", uemis_max_dive_data);
+		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);
 #endif
-			/* this function is set up to download all the remaining dives
-			 * yet this can fail in odd ways if we run out of ANS files on
-			 * the dive computer (basically, its file system is only 6MB and
-			 * no more than 2MB can be used for communication responses).
-			 * So in order to avoid this issue we break out here as well,
-			 * but once we understand how to reset the Uemis Zurich from
-			 * software the following break statement should be removed */
-			break;
-		} else {
-			break;
-		}
 	}
 	return error;
 }
@@ -1538,6 +1526,8 @@ repeat:
 		report_dives(TRUE);
 		break;
 	default:
+		/* it's possible that some dives were downloaded */
+		report_dives(TRUE);
 		break;
 	}
 	gtk_widget_destroy(dialog);

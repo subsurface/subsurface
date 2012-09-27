@@ -23,6 +23,9 @@
 #include "display.h"
 #include "display-gtk.h"
 
+#define ERR_FS_ALMOST_FULL "Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand try again"
+#define ERR_FS_FULL "Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again"
+#define ERR_FS_SHORT_WRITE "Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?"
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 6
 static char *param_buff[NUM_PARAM_BUFS];
@@ -173,7 +176,10 @@ static void trigger_response(int file, char *command, int nr, long tailpos)
 static char *next_token(char **buf)
 {
 	char *q, *p = strchr(*buf, '{');
-	*p = '\0';
+	if (p)
+		*p = '\0';
+	else
+		p = *buf + strlen(*buf) - 1;
 	q = *buf;
 	*buf = p + 1;
 	return q;
@@ -293,11 +299,11 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	fprintf(debugfile,"::w req.txt \"%s\"\n", sb);
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
-		*error_text = "short write to req.txt file";
+		*error_text = ERR_FS_SHORT_WRITE;
 		return FALSE;
 	}
 	if (! next_file(number_of_files)) {
-		*error_text = "out of files";
+		*error_text = ERR_FS_FULL;
 		more_files = FALSE;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -325,7 +331,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				assembling_mbuf = FALSE;
 			if (assembling_mbuf) {
 				if (! next_file(number_of_files)) {
-					*error_text = "Out of files";
+					*error_text = ERR_FS_FULL;
 					more_files = FALSE;
 					assembling_mbuf = FALSE;
 				}
@@ -334,7 +340,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 			}
 		} else {
 			if (! next_file(number_of_files - 1)) {
-				*error_text = "Out of files";
+				*error_text = ERR_FS_FULL;
 				more_files = FALSE;
 				assembling_mbuf = FALSE;
 				searching = FALSE;
@@ -445,8 +451,11 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 			tag, type, val, type);
 		mbuf_add(tmp);
 		free(tmp);
-		/* done with one dive (got the file_content tag), but there could be more */
-		if (done && ++bp < endptr && *bp != '{') {
+		/* done with one dive (got the file_content tag), but there could be more:
+		 * a '{' indicates the end of the record - but we need to see another "{{"
+		 * later in the buffer to know that the next record is complete (it could
+		 * be a short read because of some error */
+		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
 			done = FALSE;
 			mbuf_add("</dive>\n");
 			mbuf_add("<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
@@ -476,10 +485,10 @@ static char *find_deviceid(char *max_dive_data, char *deviceid)
 static char *get_divenr(char *max_dive_data, char *deviceid)
 {
 	char *q, *p = max_dive_data;
-	char *result = "0";
+	char *result = NULL;
 
 	if (!p || !deviceid)
-		return result;
+		return strdup("0");
 	p = find_deviceid(max_dive_data, deviceid);
 	if (p) {
 		p += strlen(deviceid) + 2;
@@ -490,6 +499,8 @@ static char *get_divenr(char *max_dive_data, char *deviceid)
 		strncpy(result, p, q - p);
 		result[q - p] = '\0';
 	}
+	if (!result)
+		result = strdup("0");
 	return result;
 }
 
@@ -531,6 +542,8 @@ static char *do_uemis_download(struct argument_block *args)
 	char *error_text = "";
 	char *newmax = NULL;
 	char *deviceid;
+	char *result = NULL;
+	gboolean success;
 
 	*xml_buffer = NULL;
 	uemis_info("Init Communication");
@@ -549,19 +562,38 @@ static char *do_uemis_download(struct argument_block *args)
 	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &error_text))
 		return error_text;
 	param_buff[1] = "notempty";
-	param_buff[2] = get_divenr(*max_dive_data, deviceid);
-	if (uemis_get_answer(mountpath, "getDivelogs", 3, 0, &error_text)) {
+	newmax = get_divenr(*max_dive_data, deviceid);
+	for (;;) {
+		param_buff[2] = newmax;
+		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &error_text);
+		/* if we got a buffer back, try to process it */
 		if (mbuf)
 			*xml_buffer = process_raw_buffer(mbuf, &newmax);
-	} else {
-		return error_text;
+		/* if we got an error, deal with it */
+		if (!success) {
+			result = error_text;
+			break;
+		}
+		/* also, if we got nothing back, we should stop trying */
+		if (!mbuf)
+			break;
+		/* finally, if the memory is getting too full, maybe we better stop, too */
+		if (progress_bar_fraction > 0.85) {
+			result = ERR_FS_ALMOST_FULL;
+			break;
+		}
 	}
 	*args->max_dive_data = update_max_dive_data(*max_dive_data, deviceid, newmax);
 	free(newmax);
-	if (! uemis_get_answer(mountpath, "terminateSync", 0, 1, &error_text))
+	if (! uemis_get_answer(mountpath, "terminateSync", 0, 3, &error_text))
 		return error_text;
-
-	return NULL;
+	if (! strcmp(param_buff[0], "error")) {
+		if (! strcmp(param_buff[2],"Out of Memory"))
+			result = ERR_FS_FULL;
+		else
+			result = param_buff[2];
+	}
+	return result;
 }
 
 static void *pthread_wrapper(void *_data)
