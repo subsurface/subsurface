@@ -246,6 +246,7 @@ typedef struct dive_trip {
 	timestamp_t when_from_file;
 	char *location;
 	char *notes;
+	int expanded:1, selected:1;
 } dive_trip_t;
 
 struct dive {

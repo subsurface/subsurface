@@ -142,28 +142,6 @@ static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 	}
 }
 
-static GtkTreePath *path_match;
-
-static gboolean match_dive(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
-{
-	int idx;
-	struct dive *dive = data;
-
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
-	if (idx >= 0)
-		if (get_dive(idx)->when == dive->when) {
-			path_match = gtk_tree_path_copy(path);
-			return TRUE;
-		}
-	return FALSE;
-}
-
-static GtkTreePath *get_path_from(struct dive *dive)
-{
-	gtk_tree_model_foreach(TREEMODEL(dive_list), match_dive, dive);
-	return path_match;
-}
-
 static struct dive *dive_from_path(GtkTreePath *path)
 {
 	GtkTreeIter iter;
@@ -1842,85 +1820,120 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	mark_divelist_changed(TRUE);
 }
 
-/* delete a dive by passing a tree iterator */
-static void delete_single_dive(GtkTreeIter *iter)
+/* this implements the mechanics of removing the dive from the table,
+ * but doesn't deal with updating dive trips, etc */
+static void delete_single_dive(int idx)
 {
-	int i, idx;
-	struct dive *dive, *pdive, *ndive;
-	GtkTreeIter parent;
-
-	gtk_tree_model_get(MODEL(dive_list), iter, DIVE_INDEX, &idx, -1);
-	dive = get_dive(idx);
-
-	if (dive->divetrip) {
-		/* we could be displaying the list model, in which case we can't find out
-		 * if this is part of a trip and the only dive in that trip from the model,
-		 * so let's do this the manual way */
-		pdive = get_dive(idx - 1);
-		ndive = get_dive(idx + 1);
-		if (! (pdive && pdive->divetrip == dive->divetrip) &&
-		    ! (ndive && ndive->divetrip == dive->divetrip)) {
-			/* if this is the only dive in the trip, remove the trip - the
-			 * dive list update below will deal with making sure the treemodel
-			 * is correct */
-			GList *trip = find_matching_trip(dive->when);
-			delete_trip(trip);
-			free(dive->divetrip);
-			dive->divetrip = NULL;
-		}
-	}
-
-	/* simply remove the dive and recreate the divelist
-	 * (we can't just manipulate the tree_view as the indices for dives change) */
+	int i;
+	struct dive *dive = get_dive(idx);
+	if (!dive)
+		return; /* this should never happen */
 	for (i = idx; i < dive_table.nr - 1; i++)
 		dive_table.dives[i] = dive_table.dives[i+1];
 	dive_table.nr--;
 	if (dive->selected)
 		amount_selected--;
-
-	/* once the dive is deleted, update the 'when' flag of the trip it was part of
-	 * to the 'when' flag of the earliest dive left in the same trip */
-	if (dive->divetrip) {
-		gtk_tree_model_iter_parent(MODEL(dive_list), &parent, iter);
-		gtk_tree_store_remove(STORE(dive_list), iter);
-		update_trip_timestamp(&parent, dive->divetrip);
-	}
-
 	free(dive);
 }
 
-/* workaround for not using gtk_tree_selection_get_selected_rows() or modifying the tree
- * directly from the gtk_tree_selection_selected_foreach() callback function */
-struct tree_selected_st {
-	GtkTreeIter *list;
-	int total;
-};
-
-static void tree_selected_foreach(GtkTreeModel *model, GtkTreePath *path,
-                                  GtkTreeIter *iter, gpointer userdata)
+/* remember expanded state */
+static void remember_tree_state()
 {
-	struct tree_selected_st *st = (struct tree_selected_st *)userdata;
+	GtkTreeIter iter;
+	if (!gtk_tree_model_get_iter_first(TREEMODEL(dive_list), &iter))
+		return;
+	do {
+		int idx;
+		timestamp_t when;
+		GtkTreePath *path;
 
-	st->total++;
-	st->list = (GtkTreeIter *)realloc(st->list, sizeof(GtkTreeIter) * st->total);
-	memcpy(&st->list[st->total - 1], iter, sizeof(GtkTreeIter));
+		gtk_tree_model_get(TREEMODEL(dive_list), &iter,
+				   DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+		if (idx >= 0)
+			continue;
+		path = gtk_tree_model_get_path(TREEMODEL(dive_list), &iter);
+		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path))
+			DIVE_TRIP(find_trip(when))->expanded = TRUE;
+	} while (gtk_tree_model_iter_next(TREEMODEL(dive_list), &iter));
+}
+
+static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
+{
+	int idx;
+	timestamp_t when;
+	struct dive *dive;
+	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+	if (idx < 0) {
+		if (DIVE_TRIP(find_trip(when))->expanded)
+			gtk_tree_view_expand_row(tree_view, path, FALSE);
+		if (DIVE_TRIP(find_trip(when))->selected)
+			gtk_tree_selection_select_iter(selection, iter);
+	} else {
+		dive = get_dive(idx);
+		if (dive->selected)
+			gtk_tree_selection_select_iter(selection, iter);
+	}
+	/* continue foreach */
+	return FALSE;
+}
+
+/* restore expanded and selected state */
+static void restore_tree_state()
+{
+	gtk_tree_model_foreach(MODEL(dive_list), restore_node_state, NULL);
 }
 
 /* called when multiple dives are selected and one of these is right-clicked for delete */
 static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
 	int i;
-	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
-	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
-	struct tree_selected_st st = {NULL, 0};
+	gboolean divetrip_needs_update = FALSE;
+	dive_trip_t *divetrip_to_update = NULL;
+	struct dive *dive;
 
-	gtk_tree_selection_selected_foreach(selection, tree_selected_foreach, &st);
+	remember_tree_state();
+	/* walk the dive list in chronological order */
+	for (i = 0; i < dive_table.nr; i++) {
+		dive = get_dive(i);
+		if (!dive)
+			continue;
+		if (! dive->selected) {
+			if (divetrip_needs_update) {
+				divetrip_needs_update = FALSE;
+				/* this is the first unselected dive since we found the
+				 * trip that needed to be updated; if we are still on the
+				 * same trip, update the time, else delete the trip */
+				if (dive->divetrip == divetrip_to_update)
+					divetrip_to_update->when = dive->when;
+				else
+					delete_trip(find_trip(divetrip_to_update->when));
+			}
+			continue;
+		}
 
-	for (i = 0; i < st.total; i++)
-	  delete_single_dive(&st.list[i]);
-	free(st.list);
-
+		/* this is a selected (i.e., to be deleted) dive; if we have a divetrip
+		 * that needs to be updated, check if this dive is still in that trip;
+		 * if not, delete the trip */
+		if (divetrip_needs_update && dive->divetrip != divetrip_to_update) {
+			delete_trip(find_trip(divetrip_to_update->when));
+			divetrip_needs_update = FALSE;
+		}
+		/* if this dive is part of a divetrip and is the first dive that
+		 * determines the timestamp, then remember that divetrip for updating */
+		if (dive->divetrip && dive->when == dive->divetrip->when) {
+			divetrip_needs_update = TRUE;
+			divetrip_to_update = dive->divetrip;
+		}
+		/* now remove the dive from the table and free it. also move the iterator back,
+		 * so that we don't skip a dive */
+		delete_single_dive(i);
+		i--;
+	}
 	dive_list_update_dives();
+	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -1928,32 +1941,26 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
  * or as part of a trip */
 static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
-	GtkTreeIter iter;
-	int i, idx;
+	int idx;
 	struct dive *dive;
-	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
-	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
+	GtkTreeIter iter;
 
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	delete_single_dive(&iter);
-
+	remember_tree_state();
+	if (!gtk_tree_model_get_iter(MODEL(dive_list), &iter, path))
+		return;
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 	dive = get_dive(idx);
-
-	/* now make sure the correct dive list is displayed, the same
-	 * dives stay selected and if necessary their trips are
-	 * expanded. If no selected dives are left then fill_dive_list()
-	 * (which gets called from dive_list_update_dives()) will once
-	 * again select the last dive in the dive list */
-	dive_list_update_dives();
-	for_each_dive(i, dive) {
-		if (dive->selected) {
-			GtkTreePath *path = get_path_from(dive);
-			if (MODEL(dive_list) == TREEMODEL(dive_list))
-				gtk_tree_view_expand_to_path(tree_view, path);
-			gtk_tree_selection_select_path(selection, path);
-		}
+	/* do we need to update the trip this dive is part of? */
+	if (dive->divetrip && dive->when == dive->divetrip->when) {
+		struct dive *next_dive = get_dive(idx + 1);
+		if (!next_dive || next_dive->divetrip != dive->divetrip)
+			delete_trip(find_trip(dive->when));
+		else
+			next_dive->divetrip->when = next_dive->when;
 	}
+	delete_single_dive(idx);
+	dive_list_update_dives();
+	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
