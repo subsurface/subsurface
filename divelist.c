@@ -1934,6 +1934,15 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	}
 	dive_list_update_dives();
 	restore_tree_state();
+
+	/* if no dives are selected at this point clear the display widgets */
+	if (!amount_selected) {
+		selected_dive = 0;
+		process_selected_dives();
+		clear_stats_widgets();
+		clear_equipment_widgets();
+		show_dive_info(NULL);
+	}
 	mark_divelist_changed(TRUE);
 }
 
