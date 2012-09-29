@@ -1009,7 +1009,9 @@ void init_ui(int *argcp, char ***argvp)
 
 	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();
-	gtk_settings_set_long_property(settings, "gtk_tooltip_timeout", 10, "subsurface setting");
+	gtk_settings_set_long_property(settings, "gtk-tooltip-timeout", 10, "subsurface setting");
+	gtk_settings_set_long_property(settings, "gtk-menu-images", 1, "subsurface setting");
+	gtk_settings_set_long_property(settings, "gtk-button-images", 1, "subsurface setting");
 
 	g_type_init();
 
