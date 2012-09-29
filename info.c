@@ -629,6 +629,7 @@ gboolean edit_trip(dive_trip_t *trip)
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
+	gtk_window_set_default_size(GTK_WINDOW(dialog), 400, 300);
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	dive_trip_widget(vbox, trip, &info);
 	gtk_widget_show_all(dialog);
