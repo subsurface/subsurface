@@ -509,7 +509,6 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 		NULL);
 	parent = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
 	gtk_widget_set_sensitive(parent, FALSE);
-	gtk_window_set_decorated(GTK_WINDOW(parent), FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(fs_dialog), GTK_WINDOW(parent));
 
 	current_default = subsurface_default_filename();
@@ -542,7 +541,6 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_widget_destroy(fs_dialog);
 
 	gtk_widget_set_sensitive(parent, TRUE);
-	gtk_window_set_decorated(GTK_WINDOW(parent), TRUE);
 }
 
 static void preferences_dialog(GtkWidget *w, gpointer data)
