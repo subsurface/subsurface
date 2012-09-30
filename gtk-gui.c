@@ -1028,7 +1028,7 @@ void init_ui(int *argcp, char ***argvp)
 		uemis_max_dive_data = strdup("");
 	else
 		uemis_max_dive_data = strdup(conf_value);
-	free(conf_value);
+	free((char *)conf_value);
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_set_application_name ("subsurface");
