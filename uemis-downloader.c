@@ -403,6 +403,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 			for (i = 0; i < n_param_out && j < size; i++)
 				param_buff[i] = next_segment(buf, &j, size);
 		found_answer = TRUE;
+		free(buf);
 	}
 #if UEMIS_DEBUG
 	for (i = 0; i < n_param_out; i++)
@@ -544,9 +545,8 @@ static char *do_uemis_download(struct argument_block *args)
 	char **max_dive_data = args->max_dive_data;
 	char **xml_buffer = args->xml_buffer;
 	int xml_buffer_size;
-	char *error_text = "";
 	char *newmax = NULL;
-	char *deviceid;
+	char *deviceid = NULL;
 	char *result = NULL;
 	char *endptr;
 	gboolean success;
@@ -555,34 +555,33 @@ static char *do_uemis_download(struct argument_block *args)
 	uemis_info("Init Communication");
 	if (! uemis_init(mountpath))
 		return "Uemis init failed";
-	if (! uemis_get_answer(mountpath, "getDeviceId", 0, 1, &error_text))
-		return error_text;
+	if (! uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
+		goto bail;
 	deviceid = strdup(param_buff[0]);
 	/* the answer from the DeviceId call becomes the input parameter for getDeviceData */
-	if (! uemis_get_answer(mountpath, "getDeviceData", 1, 0, &error_text))
-		return error_text;
+	if (! uemis_get_answer(mountpath, "getDeviceData", 1, 0, &result))
+		goto bail;
 	/* param_buff[0] is still valid */
-	if (! uemis_get_answer(mountpath, "initSession", 1, 6, &error_text))
-		return error_text;
+	if (! uemis_get_answer(mountpath, "initSession", 1, 6, &result))
+		goto bail;
 	uemis_info("Start download");
-	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &error_text))
-		return error_text;
+	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &result))
+		goto bail;
 	param_buff[1] = "notempty";
 	newmax = get_divenr(*max_dive_data, deviceid);
 	for (;;) {
 		param_buff[2] = newmax;
 		param_buff[3] = 0;
-		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &error_text);
+		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		/* process the buffer we have assembled */
 		if (mbuf) {
 			char *next_seg = process_raw_buffer(mbuf, &newmax);
 			buffer_add(xml_buffer, &xml_buffer_size, next_seg);
+			free(next_seg);
 		}
 		/* if we got an error, deal with it */
-		if (!success) {
-			result = error_text;
+		if (!success)
 			break;
-		}
 		/* also, if we got nothing back, we should stop trying */
 		if (!param_buff[3])
 			break;
@@ -598,8 +597,8 @@ static char *do_uemis_download(struct argument_block *args)
 	}
 	*args->max_dive_data = update_max_dive_data(*max_dive_data, deviceid, newmax);
 	free(newmax);
-	if (! uemis_get_answer(mountpath, "terminateSync", 0, 3, &error_text))
-		return error_text;
+	if (! uemis_get_answer(mountpath, "terminateSync", 0, 3, &result))
+		goto bail;
 	if (! strcmp(param_buff[0], "error")) {
 		if (! strcmp(param_buff[2],"Out of Memory"))
 			result = ERR_FS_FULL;
@@ -610,6 +609,8 @@ static char *do_uemis_download(struct argument_block *args)
 #if UEMIS_DEBUG > 5
 	fprintf(debugfile, "XML buffer \"%s\"", *xml_buffer);
 #endif
+bail:
+	free(deviceid);
 	return result;
 }
 

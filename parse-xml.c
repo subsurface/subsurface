@@ -1270,6 +1270,7 @@ static void entry(const char *name, int size, const char *raw)
 		try_to_fill_dive(&cur_dive, name, buf);
 		return;
 	}
+	free(buf);
 }
 
 static const char *nodename(xmlNode *node, char *buf, int len)

@@ -1423,6 +1423,9 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_OTU, store_dive.otu,
 		DIVE_LOCATION, store_dive.location,
 		-1);
+	free(cylinder_text);
+	free(store_dive.location);
+	free(store_dive.suit);
 	return idx;
 }
 

@@ -259,6 +259,7 @@ int main(int argc, char **argv)
 		/* don't report errors - this file may not exist, but make
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);
+		free((void *)filename);
 	}
 	report_dives(imported);
 	if (dive_table.nr == 0)
