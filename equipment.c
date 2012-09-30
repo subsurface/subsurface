@@ -1038,10 +1038,10 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	ws_widget->weight = GTK_SPIN_BUTTON(widget);
 }
 
-static int edit_cylinder_dialog(int index, cylinder_t *cyl, int w_idx)
+static int edit_cylinder_dialog(GtkWidget *w, int index, cylinder_t *cyl, int w_idx)
 {
 	int success;
-	GtkWidget *dialog, *vbox;
+	GtkWidget *dialog, *vbox, *parent;
 	struct cylinder_widget cylinder;
 	struct dive *dive;
 
@@ -1064,6 +1064,12 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl, int w_idx)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
+	parent = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	if (parent) {
+		gtk_widget_set_sensitive(parent, FALSE);
+		gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(parent));
+	}
+
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	cylinder_widget(vbox, &cylinder, cylinder_model);
 
@@ -1082,14 +1088,15 @@ static int edit_cylinder_dialog(int index, cylinder_t *cyl, int w_idx)
 	}
 
 	gtk_widget_destroy(dialog);
-
+	if (parent)
+		gtk_widget_set_sensitive(parent, TRUE);
 	return success;
 }
 
-static int edit_weightsystem_dialog(int index, weightsystem_t *ws, int w_idx)
+static int edit_weightsystem_dialog(GtkWidget *w, int index, weightsystem_t *ws, int w_idx)
 {
 	int success;
-	GtkWidget *dialog, *vbox;
+	GtkWidget *dialog, *vbox, *parent;
 	struct ws_widget weightsystem_widget;
 	struct dive *dive;
 
@@ -1112,6 +1119,12 @@ static int edit_weightsystem_dialog(int index, weightsystem_t *ws, int w_idx)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
+	parent = gtk_widget_get_ancestor(w, GTK_TYPE_DIALOG);
+	if (parent) {
+		gtk_widget_set_sensitive(parent, FALSE);
+		gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(parent));
+	}
+
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	ws_widget(vbox, &weightsystem_widget, weightsystem_model);
 
@@ -1129,7 +1142,8 @@ static int edit_weightsystem_dialog(int index, weightsystem_t *ws, int w_idx)
 	}
 
 	gtk_widget_destroy(dialog);
-
+	if (parent)
+		gtk_widget_set_sensitive(parent, TRUE);
 	return success;
 }
 
@@ -1145,7 +1159,7 @@ static int get_model_index(GtkListStore *model, GtkTreeIter *iter)
 	return index;
 }
 
-static void edit_cb(GtkButton *button, int w_idx)
+static void edit_cb(GtkWidget *w, int w_idx)
 {
 	int index;
 	GtkTreeIter iter;
@@ -1161,14 +1175,14 @@ static void edit_cb(GtkButton *button, int w_idx)
 		return;
 
 	index = get_model_index(model, &iter);
-	if (!edit_cylinder_dialog(index, &cyl, w_idx))
+	if (!edit_cylinder_dialog(w, index, &cyl, w_idx))
 		return;
 
 	set_one_cylinder(&cyl, model, &iter);
 	repaint_dive();
 }
 
-static void add_cb(GtkButton *button, int w_idx)
+static void add_cb(GtkWidget *w, int w_idx)
 {
 	int index = cylinder_list[w_idx].max_index;
 	GtkTreeIter iter;
@@ -1177,7 +1191,7 @@ static void add_cb(GtkButton *button, int w_idx)
 	GtkTreeSelection *selection;
 	cylinder_t cyl;
 
-	if (!edit_cylinder_dialog(index, &cyl, w_idx))
+	if (!edit_cylinder_dialog(w, index, &cyl, w_idx))
 		return;
 
 	gtk_list_store_append(model, &iter);
@@ -1231,7 +1245,7 @@ static void del_cb(GtkButton *button, int w_idx)
 	gtk_widget_set_sensitive(cylinder_list[w_idx].add, 1);
 }
 
-static void ws_edit_cb(GtkButton *button, int w_idx)
+static void ws_edit_cb(GtkWidget *w, int w_idx)
 {
 	int index;
 	GtkTreeIter iter;
@@ -1247,14 +1261,14 @@ static void ws_edit_cb(GtkButton *button, int w_idx)
 		return;
 
 	index = get_model_index(model, &iter);
-	if (!edit_weightsystem_dialog(index, &ws, w_idx))
+	if (!edit_weightsystem_dialog(w, index, &ws, w_idx))
 		return;
 
 	set_one_weightsystem(&ws, model, &iter);
 	repaint_dive();
 }
 
-static void ws_add_cb(GtkButton *button, int w_idx)
+static void ws_add_cb(GtkWidget *w, int w_idx)
 {
 	int index = weightsystem_list[w_idx].max_index;
 	GtkTreeIter iter;
@@ -1263,7 +1277,7 @@ static void ws_add_cb(GtkButton *button, int w_idx)
 	GtkTreeSelection *selection;
 	weightsystem_t ws;
 
-	if (!edit_weightsystem_dialog(index, &ws, w_idx))
+	if (!edit_weightsystem_dialog(w, index, &ws, w_idx))
 		return;
 
 	gtk_list_store_append(model, &iter);
@@ -1436,7 +1450,7 @@ static void row_activated_cb(GtkTreeView *tree_view,
 			GtkTreeViewColumn *column,
 			int w_idx)
 {
-	edit_cb(NULL, w_idx);
+	edit_cb(GTK_WIDGET(tree_view), w_idx);
 }
 
 static void ws_row_activated_cb(GtkTreeView *tree_view,
@@ -1444,7 +1458,7 @@ static void ws_row_activated_cb(GtkTreeView *tree_view,
 			GtkTreeViewColumn *column,
 			int w_idx)
 {
-	ws_edit_cb(NULL, w_idx);
+	ws_edit_cb(GTK_WIDGET(tree_view), w_idx);
 }
 
 GtkWidget *cylinder_list_widget(int w_idx)
