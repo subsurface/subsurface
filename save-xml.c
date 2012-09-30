@@ -304,7 +304,9 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 		tm.tm_hour, tm.tm_min, tm.tm_sec);
 	if (trip->location)
 		show_utf8(f, trip->location, " location=\'","\'", 1);
-	fprintf(f, " />\n");
+	fprintf(f, ">\n");
+	if (trip->notes)
+		show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
 }
 
 static void save_dive(FILE *f, struct dive *dive)
@@ -317,7 +319,13 @@ static void save_dive(FILE *f, struct dive *dive)
 	fputs("<dive", f);
 	if (dive->number)
 		fprintf(f, " number='%d'", dive->number);
-	if (dive->tripflag != TF_NONE)
+	/*
+	 * TF_NONE is the default for dives with no trips
+	 * IN_TRIP is the default for dives with trips
+	 * ASSIGNED_TRIP is an in-memory thing and gets converted
+	 *    to IN_TRIP by the save code.
+	 */
+	if (dive->tripflag != TF_NONE && dive->tripflag != IN_TRIP && dive->tripflag != ASSIGNED_TRIP)
 		fprintf(f, " tripflag='%s'", tripflag_names[dive->tripflag]);
 	if (dive->rating)
 		fprintf(f, " rating='%d'", dive->rating);
@@ -341,7 +349,8 @@ static void save_dive(FILE *f, struct dive *dive)
 void save_dives(const char *filename)
 {
 	int i;
-	GList *trip = NULL;
+	struct dive *dive;
+	dive_trip_t *trip = NULL;
 
 	FILE *f = fopen(filename, "w");
 
@@ -353,13 +362,22 @@ void save_dives(const char *filename)
 
 	fprintf(f, "<dives>\n<program name='subsurface' version='%d'></program>\n", VERSION);
 
-	/* save the trips */
-	while ((trip = NEXT_TRIP(trip)) != NULL)
-		save_trip(f, trip->data);
-
 	/* save the dives */
-	for (i = 0; i < dive_table.nr; i++)
+	for_each_dive(i, dive) {
+		dive_trip_t *thistrip = dive->divetrip;
+		if (trip != thistrip) {
+			/* Close the old trip? */
+			if (trip)
+				fprintf(f, "</trip>\n");
+			/* Open the new one */
+			if (thistrip)
+				save_trip(f, thistrip);
+			trip = thistrip;
+		}
 		save_dive(f, get_dive(i));
+	}
+	if (trip)
+		fprintf(f, "</trip>\n");
 	fprintf(f, "</dives>\n");
 	fclose(f);
 }

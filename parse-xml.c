@@ -1171,13 +1171,20 @@ static void dive_start(void)
 		return;
 	cur_dive = alloc_dive();
 	memset(&cur_tm, 0, sizeof(cur_tm));
+	if (cur_trip) {
+		cur_dive->divetrip = cur_trip;
+		cur_dive->tripflag = IN_TRIP;
+	}
 }
 
 static void dive_end(void)
 {
-	if (!is_dive())
+	if (!cur_dive)
 		return;
-	record_dive(cur_dive);
+	if (!is_dive())
+		free(cur_dive);
+	else
+		record_dive(cur_dive);
 	cur_dive = NULL;
 	cur_cylinder_index = 0;
 	cur_ws_index = 0;
@@ -1187,6 +1194,7 @@ static void trip_start(void)
 {
 	if (cur_trip)
 		return;
+	dive_end();
 	cur_trip = calloc(sizeof(dive_trip_t),1);
 	memset(&cur_tm, 0, sizeof(cur_tm));
 }
@@ -1262,12 +1270,12 @@ static void entry(const char *name, int size, const char *raw)
 		try_to_fill_sample(cur_sample, name, buf);
 		return;
 	}
-	if (cur_trip) {
-		try_to_fill_trip(&cur_trip, name, buf);
-		return;
-	}
 	if (cur_dive) {
 		try_to_fill_dive(&cur_dive, name, buf);
+		return;
+	}
+	if (cur_trip) {
+		try_to_fill_trip(&cur_trip, name, buf);
 		return;
 	}
 	free(buf);
