@@ -264,6 +264,7 @@ static GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListSt
 	gtk_entry_completion_set_inline_selection(completion, TRUE);
 	gtk_entry_completion_set_popup_single_match(completion, FALSE);
 	gtk_entry_set_completion(entry, completion);
+	g_object_unref(completion);
 
 	return GTK_COMBO_BOX_ENTRY(combo_box);
 }
@@ -427,9 +428,9 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 	new_text = get_combo_box_entry_text(info->rating, &rating_string, star_strings[master->rating]);
 	if (new_text) {
 		dive->rating = get_rating(rating_string);
-		free(rating_string);
-		changed =1;
+		changed = 1;
 	}
+	free(rating_string);
 
 	if (info->notes) {
 		old_text = dive->notes;

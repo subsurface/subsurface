@@ -705,6 +705,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		/* Flush the changes out to the system */
 		subsurface_flush_conf();
 	}
+	free((void *)current_default);
 	gtk_widget_destroy(dialog);
 }
 

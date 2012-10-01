@@ -941,6 +941,7 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
 	g_signal_connect(completion, "match-selected", G_CALLBACK(completion_cb), cylinder);
 	gtk_entry_set_completion(entry, completion);
+	g_object_unref(completion);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
