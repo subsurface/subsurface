@@ -74,6 +74,7 @@ extern GtkWidget *cylinder_list_widget(int w_idx);
 extern GtkWidget *weightsystem_list_widget(int w_idx);
 
 extern GtkWidget *dive_list_create(void);
+extern void dive_list_destroy(void);
 
 unsigned int amount_selected;
 

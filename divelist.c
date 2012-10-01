@@ -2294,6 +2294,11 @@ GtkWidget *dive_list_create(void)
 	return dive_list.container_widget;
 }
 
+void dive_list_destroy(void)
+{
+	gtk_widget_destroy(dive_list.tree_view);
+}
+
 void mark_divelist_changed(int changed)
 {
 	dive_list.changed = changed;
