@@ -251,6 +251,14 @@ static gboolean ask_save_changes()
 	return quit;
 }
 
+static void dive_trip_unref(gpointer data, gpointer user_data)
+{
+	dive_trip_t *dive_trip = (dive_trip_t *)data;
+	if (dive_trip->location)
+		free(dive_trip->location);
+	free(data);
+}
+
 static void file_close(GtkWidget *w, gpointer data)
 {
 	int i;
@@ -271,7 +279,7 @@ static void file_close(GtkWidget *w, gpointer data)
 	mark_divelist_changed(FALSE);
 
 	/* inlined version of g_list_free_full(dive_trip_list, free); */
-	g_list_foreach(dive_trip_list, (GFunc)free, NULL);
+	g_list_foreach(dive_trip_list, (GFunc)dive_trip_unref, NULL);
 	g_list_free(dive_trip_list);
 
 	dive_trip_list = NULL;

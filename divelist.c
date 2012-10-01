@@ -1023,6 +1023,9 @@ void insert_trip(dive_trip_t **dive_trip_p)
 
 static inline void delete_trip(GList *trip)
 {
+	dive_trip_t *dive_trip = (dive_trip_t *)g_list_nth_data(trip, 0);
+	if (dive_trip->location)
+		free(dive_trip->location);
 	dive_trip_list = g_list_delete_link(dive_trip_list, trip);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
@@ -1169,7 +1172,7 @@ static void fill_dive_list(void)
 			if (dive_trip->when > dive->when)
 				dive_trip->when = dive->when;
 			if (!dive_trip->location && dive->location)
-				dive_trip->location = dive->location;
+				dive_trip->location = strdup(dive->location);
 			if (dive_trip != last_trip) {
 				last_trip = dive_trip;
 				/* create trip entry */
