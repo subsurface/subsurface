@@ -1519,7 +1519,7 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 		 * stamp that we fall back to when toggling autogroup */
 		dive->divetrip->when_from_file = dive->divetrip->when;
 		dive->tripflag = IN_TRIP;
-		(void)move_dive_between_trips(&dive_iter, NULL, &trip_iter, NULL, TRUE);
+		free(move_dive_between_trips(&dive_iter, NULL, &trip_iter, NULL, TRUE));
 		prev_dive = dive;
 		/* by merging the dive into the trip above the path now points to the next
 		   top level entry. If that iter exists, it's also a dive and both this dive
@@ -1563,6 +1563,7 @@ static void turn_dive_into_trip(GtkTreePath *path)
 	 * it was read from a file */
 	dive_trip = create_and_hookup_trip_from_dive(dive);
 	dive_trip->when_from_file = dive_trip->when;
+	free(newiter);
 }
 
 /* we know that path is pointing at a dive in a trip and are asked to split this trip into two */
@@ -1605,7 +1606,7 @@ static void insert_trip_before(GtkTreePath *path)
 		dive->divetrip = new_divetrip;
 		if (dive->when < dive->divetrip->when)
 			dive->divetrip->when = dive->when;
-		(void) move_dive_between_trips(&nextsibling, &parent, &newparent, NULL, FALSE);
+		free(move_dive_between_trips(&nextsibling, &parent, &newparent, NULL, FALSE));
 		if (gtk_tree_path_compare(path, treepath) == 0)
 			/* we copied the dive we were called with; we are done */
 			break;
@@ -1679,6 +1680,7 @@ static void remove_from_trip(GtkTreePath *path)
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
+	free(newiter);
 }
 
 static void remove_rowref_from_trip(gpointer data, gpointer user_data)
