@@ -1,0 +1,16 @@
+Creating a Subsurface bundle
+
+install gtk-mac-bundler (this has been tested with version 0.7.0) and run
+
+gtk-mac-bundler subsurface.bundle
+
+This should install a self-contained Subsurface application under /Applications/Subsurface.app
+You still need to manually build a DMG if you want to easily distribute this.
+
+One important caveat is that (at least with MacPorts) you need to build pango like this:
+
+sudo port install pango +builtin_modules +no_x11 +quart
+
+Without the builtin modules the installed application fails to find the modules and doesn't render any text.
+
+

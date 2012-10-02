@@ -3,18 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIconFile</key>
-	<string>Subsurface</string>
+	<string>Subsurface.icns</string>
 	<key>CFBundleName</key>
 	<string>Subsurface</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
         <key>CFBundleGetInfoString</key>
-	<string>Rough divelog in C and Gtk</string>
+	<string>Multi Platform Divelog in C and Gtk</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
 	<string>subsurface</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.hohndel.subsurface</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>CFBundleVersionString</key>
+	<string>2.0-rc1</string>
+	<key>CFBundleVersion</key>
+	<string>2.0</string>
 </dict>
 </plist>
