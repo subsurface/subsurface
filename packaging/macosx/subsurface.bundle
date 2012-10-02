@@ -74,9 +74,9 @@
   </binary>
 
 <!-- Starting with 2.24, gdk-pixbuf installs into its own directory. -->
-  <binary>
-    ${prefix}/lib/gdk-pixbuf-2.0/${pkg:${gtk}:gtk_binary_version}/*.so
-  </binary>
+  <data>
+    ${prefix}/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so
+  </data>
 
   <!-- Translation filenames, one for each program or library that you
        want to copy in to the bundle. The "dest" attribute is
@@ -116,7 +116,7 @@
        change the source path. -->
 
   <data dest="${bundle}/Contents/Resources/etc/${gtkdir}/gtkrc">
-    ${project}/gtkrc
+    ${prefix}/share/themes/Mac/gtk-2.0-key/gtkrc
   </data>
 
   <!-- Icon themes to copy. The "icons" property can be either of
