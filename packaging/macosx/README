@@ -9,7 +9,7 @@ You still need to manually build a DMG if you want to easily distribute this.
 
 One important caveat is that (at least with MacPorts) you need to build pango like this:
 
-sudo port install pango +builtin_modules +no_x11 +quart
+sudo port install pango +builtin_modules +no_x11 +quartz
 
 Without the builtin modules the installed application fails to find the modules and doesn't render any text.
 

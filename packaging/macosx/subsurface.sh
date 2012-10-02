@@ -96,7 +96,7 @@ elif test -z $LANG -a -f "$I18NDIR/${APPLELOCALE:0:2}/LC_MESSAGES/$APP.mo"; then
     export LANG="${APPLELOCALE:0:2}"
 fi
 
-#Next we need to set LC_MESSAGES. If at all possilbe, we want a full
+#Next we need to set LC_MESSAGES. If at all possible, we want a full
 #5-character locale to avoid the "Locale not supported by C library"
 #warning from Gtk -- even though Gtk will translate with a
 #two-character code.
