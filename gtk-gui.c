@@ -899,7 +899,7 @@ static GtkActionEntry menu_items[] = {
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File", CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
+	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File(s)", CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
 	{ "DownloadLog",    GTK_STOCK_GO_DOWN, "Download From Dive Computer", CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
