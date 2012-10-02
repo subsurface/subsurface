@@ -788,12 +788,11 @@ static void get_string(char **str, const char *s)
 
 	if (!s)
 		s = "";
-	len = strlen(s);
+	len = g_utf8_strlen(s, -1);
 	if (len > 60)
 		len = 60;
-	n = malloc(len+1);
-	memcpy(n, s, len);
-	n[len] = 0;
+	n = malloc(len * sizeof(gunichar) + 1);
+	g_utf8_strncpy(n, s, len);
 	*str = n;
 }
 
