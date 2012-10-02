@@ -384,6 +384,10 @@ struct dive *fixup_dive(struct dive *dive)
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
 
+	add_people(dive->buddy);
+	add_people(dive->divemaster);
+	add_location(dive->location);
+	add_suit(dive->suit);
 	sanitize_cylinder_info(dive);
 	for (i = 0; i < dive->samples; i++) {
 		struct sample *sample = dive->sample + i;
@@ -496,10 +500,6 @@ struct dive *fixup_dive(struct dive *dive)
 	update_temperature(&dive->watertemp, mintemp);
 	update_depth(&dive->maxdepth, maxdepth);
 
-	add_people(dive->buddy);
-	add_people(dive->divemaster);
-	add_location(dive->location);
-	add_suit(dive->suit);
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);
