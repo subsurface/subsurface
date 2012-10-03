@@ -352,7 +352,7 @@ void save_dives(const char *filename)
 	struct dive *dive;
 	dive_trip_t *trip = NULL;
 
-	FILE *f = fopen(filename, "w");
+	FILE *f = g_fopen(filename, "w");
 
 	if (!f)
 		return;

@@ -22,7 +22,7 @@ static int readfile(const char *filename, struct memblock *mem)
 	mem->buffer = NULL;
 	mem->size = 0;
 
-	fd = open(filename, O_RDONLY | O_BINARY);
+	fd = g_open(filename, O_RDONLY | O_BINARY, 0);
 	if (fd < 0)
 		return fd;
 	ret = fstat(fd, &st);
@@ -257,7 +257,7 @@ void parse_file(const char *filename, GError **error)
 		if (default_filename && ! strcmp(filename, default_filename))
 			return;
 
-		fprintf(stderr, "Failed to read '%s'.\n", filename);
+		g_warning("Failed to read '%s'.\n", filename);
 		if (error) {
 			*error = g_error_new(g_quark_from_string("subsurface"),
 					     DIVE_ERROR_PARSE,
