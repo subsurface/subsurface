@@ -60,6 +60,10 @@ static void set_default_dive_computer(const char *vendor, const char *product)
 		return;
 	if (is_default_dive_computer(vendor, product))
 		return;
+	if (default_dive_computer_vendor)
+		free((void *)default_dive_computer_vendor);
+	if (default_dive_computer_product)
+		free((void *)default_dive_computer_product);
 	default_dive_computer_vendor = vendor;
 	default_dive_computer_product = product;
 	subsurface_set_conf("dive_computer_vendor", PREF_STRING, vendor);
@@ -673,6 +677,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 
+		if (divelist_font)
+			free((void *)divelist_font);
 		divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
 		set_divelist_font(divelist_font);
 
