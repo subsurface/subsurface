@@ -91,3 +91,13 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		divelist_font = DIVELIST_DEFAULT_FONT;
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
+
+void subsurface_command_line_init(gint *argc, gchar ***argv)
+{
+	/* this is a no-op */
+}
+
+void subsurface_command_line_exit(gint *argc, gchar ***argv)
+{
+	/* this is a no-op */
+}

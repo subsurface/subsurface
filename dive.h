@@ -434,6 +434,8 @@ extern const char *star_strings[];
 extern const char *default_filename;
 extern const char *existing_filename;
 extern const char *subsurface_default_filename(void);
+extern void subsurface_command_line_init(gint *, gchar ***);
+extern void subsurface_command_line_exit(gint *, gchar ***);
 #define AIR_PERMILLE 209
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))

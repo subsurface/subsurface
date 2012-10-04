@@ -223,6 +223,7 @@ int main(int argc, char **argv)
 
 	output_units = SI_units;
 
+	subsurface_command_line_init(&argc, &argv);
 	parse_xml_init();
 
 	init_ui(&argc, &argv);
@@ -268,6 +269,7 @@ int main(int argc, char **argv)
 	exit_ui();
 
 	parse_xml_exit();
+	subsurface_command_line_exit(&argc, &argv);
 
 #ifdef DEBUGFILE
 	if (debugfile)

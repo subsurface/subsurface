@@ -149,3 +149,13 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 
 	gtk_osxapplication_ready(osx_app);
 }
+
+void subsurface_command_line_init(gint *argc, gchar ***argv)
+{
+	/* this is a no-op */
+}
+
+void subsurface_command_line_exit(gint *argc, gchar ***argv)
+{
+	/* this is a no-op */
+}
