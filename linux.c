@@ -88,7 +88,7 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	if (!divelist_font)
-		divelist_font = DIVELIST_DEFAULT_FONT;
+		divelist_font = strdup(DIVELIST_DEFAULT_FONT);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
 

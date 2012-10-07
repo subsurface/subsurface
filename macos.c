@@ -116,7 +116,7 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 	GtkWidget *menu_item, *sep;
 
 	if (!divelist_font)
-		divelist_font = DIVELIST_MAC_DEFAULT_FONT;
+		divelist_font = strdup(DIVELIST_MAC_DEFAULT_FONT);
 	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
 
 	osx_app = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
