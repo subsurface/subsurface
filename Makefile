@@ -104,6 +104,7 @@ else ifeq ($(UNAME), darwin)
 	MACOSXFILES = packaging/macosx
 	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation
 	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
+	LDFLAGS += -headerpad_max_install_names
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
