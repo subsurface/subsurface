@@ -1632,6 +1632,21 @@ static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
 		GtkTreePath *next_path;
 
 		dive = dive_from_path(path);
+		if (dive->selected) {
+			next_path = gtk_tree_path_copy(path);
+			for (;;) {
+				/* let's find the first dive in a block of selected dives */
+				if (gtk_tree_path_prev(next_path)) {
+					next_dive = dive_from_path(next_path);
+					if (next_dive && next_dive->selected) {
+						path = gtk_tree_path_copy(next_path);
+						continue;
+					}
+				}
+				break;
+			}
+		}
+		/* now path points at the first selected dive in a consecutive block */
 		turn_dive_into_trip(path);
 		/* if the dive was selected and the next dive was selected, too,
 		 * then all of them should be part of the new trip */
