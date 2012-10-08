@@ -88,6 +88,7 @@
 # Default installer section
 
 Section
+    SetShellVarContext all
 
     # Installation path
     SetOutPath "$INSTDIR"
@@ -152,6 +153,7 @@ SectionEnd
 # Uninstaller section
 
 Section "Uninstall"
+    SetShellVarContext all
 
     # Delete installed files
     Delete "$INSTDIR\*.dll"
