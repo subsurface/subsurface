@@ -244,7 +244,7 @@ int main(int argc, char **argv)
 		}
 		no_filenames = FALSE;
 		GError *error = NULL;
-		parse_file(a, &error);
+		parse_file(a, &error, TRUE);
 
 		if (error != NULL)
 		{
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
 	if (no_filenames) {
 		GError *error = NULL;
 		const char *filename = subsurface_default_filename();
-		parse_file(filename, &error);
+		parse_file(filename, &error, TRUE);
 		/* don't report errors - this file may not exist, but make
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);

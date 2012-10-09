@@ -336,7 +336,7 @@ static void file_open(GtkWidget *w, gpointer data)
 
 		GError *error = NULL;
 		filename = fn_glist->data;
-		parse_file(filename, &error);
+		parse_file(filename, &error, TRUE);
 		if (error != NULL)
 		{
 			report_error(error);
@@ -1371,7 +1371,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 static void do_import_file(gpointer data, gpointer user_data)
 {
 	GError *error = NULL;
-	parse_file(data, &error);
+	parse_file(data, &error, FALSE);
 
 	if (error != NULL)
 	{
@@ -1440,7 +1440,7 @@ static GError *setup_uemis_import(device_data_t *data)
 #ifdef DEBUGFILE
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
 #endif
-		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
+		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error, FALSE);
 		set_uemis_last_dive(uemis_max_dive_data);
 #if UEMIS_DEBUG
 		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);

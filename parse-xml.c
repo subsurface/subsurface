@@ -1455,7 +1455,8 @@ static void reset_all(void)
 	import_source = UNKNOWN;
 }
 
-void parse_xml_buffer(const char *url, const char *buffer, int size, GError **error)
+void parse_xml_buffer(const char *url, const char *buffer, int size, GError **error,
+		gboolean possible_default_filename)
 {
 	xmlDoc *doc;
 
@@ -1472,7 +1473,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size, GError **er
 		return;
 	}
 	/* remember, if necessary, that this is the filename to store to */
-	set_filename(url, FALSE);
+	if (possible_default_filename)
+		set_filename(url, FALSE);
 	reset_all();
 	dive_start();
 #ifdef XSLT

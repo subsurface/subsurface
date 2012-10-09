@@ -344,11 +344,12 @@ static inline struct dive *get_dive(int nr)
 	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
 
 extern void parse_xml_init(void);
-extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error,
+			gboolean possible_default_filename);
 extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, gboolean force);
 
-extern void parse_file(const char *filename, GError **error);
+extern void parse_file(const char *filename, GError **error, gboolean possible_default_filename);
 
 #ifdef XSLT
 extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
