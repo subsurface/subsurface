@@ -573,6 +573,14 @@ static int uemis_fill_sample(struct sample *sample, const char *name, int len, c
  * what Diving Log uses for "no temperature".
  *
  * So throw away crap like that.
+ *
+ * It gets worse. Sometimes the sample temperatures are in
+ * Celsius, which apparently happens if you are in a SI
+ * locale. So we now do:
+ *
+ * - temperatures < 32.0 == Celsius
+ * - temperature == 32.0  -> garbage, it's a missing temperature (zero converted from C to F)
+ * - temperatures > 32.0 == Fahrenheit
  */
 static void fahrenheit(char *buffer, void *_temperature)
 {
@@ -584,7 +592,10 @@ static void fahrenheit(char *buffer, void *_temperature)
 		/* Floating point equality is evil, but works for small integers */
 		if (val.fp == 32.0)
 			break;
-		temperature->mkelvin = (val.fp + 459.67) * 5000/9;
+		if (val.fp < 32.0)
+			temperature->mkelvin = C_to_mkelvin(val.fp);
+		else
+			temperature->mkelvin = F_to_mkelvin(val.fp);
 		break;
 	default:
 		fprintf(stderr, "Crazy Diving Log temperature reading %s\n", buffer);
@@ -601,15 +612,28 @@ static void fahrenheit(char *buffer, void *_temperature)
  * these inconvenient typed structures, and you have to say
  * "pressure->mbar" to get the actual value. Exactly so that
  * you can never have unit confusion.
+ *
+ * It gets worse: sometimes apparently the pressures are in
+ * bar, sometimes in psi. Dirk suspects that this may be a
+ * DivingLog Uemis importer bug, and that they are always
+ * supposed to be in bar, but that the importer got the
+ * sample importing wrong.
+ *
+ * Sadly, there's no way to really tell. So I think we just
+ * have to have some arbitrary cut-off point where we assume
+ * that smaller values mean bar.. Not good.
  */
-static void psi(char *buffer, void *_pressure)
+static void psi_or_bar(char *buffer, void *_pressure)
 {
 	pressure_t *pressure = _pressure;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		pressure->mbar = val.fp * 68.95 + 0.5;
+		if (val.fp > 400)
+			pressure->mbar = psi_to_mbar(val.fp);
+		else
+			pressure->mbar = val.fp * 1000 + 0.5;
 		break;
 	default:
 		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);
@@ -622,7 +646,7 @@ static int divinglog_fill_sample(struct sample *sample, const char *name, int le
 	return	MATCH(".p.time", sampletime, &sample->time) ||
 		MATCH(".p.depth", depth, &sample->depth) ||
 		MATCH(".p.temp", fahrenheit, &sample->temperature) ||
-		MATCH(".p.press1", psi, &sample->cylinderpressure) ||
+		MATCH(".p.press1", psi_or_bar, &sample->cylinderpressure) ||
 		0;
 }
 
@@ -740,8 +764,11 @@ static int divinglog_dive_match(struct dive **divep, const char *name, int len, 
 	return	MATCH(".divedate", divedate, &dive->when) ||
 		MATCH(".entrytime", divetime, &dive->when) ||
 		MATCH(".depth", depth, &dive->maxdepth) ||
+		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
 		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
+		MATCH(".press", pressure, &dive->cylinder[0].start) ||
+		MATCH(".prese", pressure, &dive->cylinder[0].end) ||
 		MATCH(".comments", utf8_string, &dive->notes) ||
 		MATCH(".buddy.names", utf8_string, &dive->buddy) ||
 		MATCH(".country.name", utf8_string, &country) ||

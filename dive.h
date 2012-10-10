@@ -156,6 +156,11 @@ static inline unsigned long F_to_mkelvin(double f)
 	return (f-32) * 1000 / 1.8 + 273150.5;
 }
 
+static inline unsigned long C_to_mkelvin(double c)
+{
+	return c * 1000 + 273150.5;
+}
+
 static inline int to_C(temperature_t temp)
 {
 	if (!temp.mkelvin)
