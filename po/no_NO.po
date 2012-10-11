@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 07:42+0900\n"
+"POT-Creation-Date: 2012-10-11 23:06+0900\n"
 "PO-Revision-Date: 2012-10-11 11:16+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
@@ -88,6 +88,10 @@ msgstr "%dt %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) eller (%s)"
 
+#: gtk-gui.c:918
+msgid "About"
+msgstr ""
+
 #: gtk-gui.c:912
 msgid "Add Dive"
 msgstr "Nytt dykk"
@@ -100,11 +104,11 @@ msgstr "Nytt dykk"
 msgid "Add to trip above"
 msgstr "Slå sammen med turen over"
 
-#: main.c:47
+#: main.c:46
 msgid "Apr"
 msgstr "apr"
 
-#: main.c:48
+#: main.c:47
 msgid "Aug"
 msgstr "aug"
 
@@ -152,6 +156,10 @@ msgstr "Velg standard XML-fil"
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Velg hvilke XML-filer du vil importere"
 
+#: gtk-gui.c:908
+msgid "Close"
+msgstr ""
+
 #: divelist.c:2115
 msgid "Collapse all"
 msgstr "Slå sammen alle"
@@ -188,7 +196,7 @@ msgstr "Dato og tid"
 msgid "Date:"
 msgstr "Dato:"
 
-#: main.c:48
+#: main.c:47
 msgid "Dec"
 msgstr "des"
 
@@ -393,7 +401,7 @@ msgstr "Kunne ikke åpne '%s'"
 msgid "Failed to read '%s'.\n"
 msgstr "Kunne ikke åpne '%s'.\n"
 
-#: main.c:47
+#: main.c:46
 msgid "Feb"
 msgstr "feb"
 
@@ -409,7 +417,7 @@ msgstr "Fil"
 msgid "Filter"
 msgstr "Filter"
 
-#: main.c:38
+#: main.c:37
 msgid "Fri"
 msgstr "fre"
 
@@ -433,16 +441,16 @@ msgstr "Importer XML-fil(er)"
 msgid "Info"
 msgstr "Info"
 
-#. ++GETTEXT: these are three character months
-#: main.c:47
+#. ++GETTEXT: these are three letter months - we allow up to six code bytes
+#: main.c:46
 msgid "Jan"
 msgstr "jan"
 
-#: main.c:48
+#: main.c:47
 msgid "Jul"
 msgstr "jul"
 
-#: main.c:47
+#: main.c:46
 msgid "Jun"
 msgstr "jun"
 
@@ -478,7 +486,7 @@ msgstr "Alarm: dårlig batteri"
 msgid "Low Battery Warning"
 msgstr "Advarsel: dårlig batteri"
 
-#: main.c:47
+#: main.c:46
 msgid "Mar"
 msgstr "mar"
 
@@ -521,7 +529,7 @@ msgstr ""
 msgid "MaxPress"
 msgstr "Maks. trykk"
 
-#: main.c:47
+#: main.c:46
 msgid "May"
 msgstr "mai"
 
@@ -553,13 +561,17 @@ msgstr "Min. temp"
 msgid "Misc. Options"
 msgstr "Ymse valg"
 
-#: main.c:38
+#: main.c:37
 msgid "Mon"
 msgstr "man"
 
 #: gtk-gui.c:851
 msgid "Multi-platform divelog software in C"
 msgstr "Dykkelogg i C for flere plattformer"
+
+#: gtk-gui.c:904
+msgid "New"
+msgstr ""
 
 #: gtk-gui.c:811
 msgid "New starting number"
@@ -573,7 +585,7 @@ msgstr "Ingen tankinformasjon"
 msgid "Notes"
 msgstr "Notater"
 
-#: main.c:48
+#: main.c:47
 msgid "Nov"
 msgstr "nov"
 
@@ -581,9 +593,14 @@ msgstr "nov"
 msgid "OTU"
 msgstr "OTU"
 
-#: main.c:48
+#: main.c:47
 msgid "Oct"
 msgstr "okt"
+
+#: gtk-gui.c:905
+#, fuzzy
+msgid "Open"
+msgstr "Åpne fil"
 
 #: gtk-gui.c:313
 msgid "Open File"
@@ -621,6 +638,11 @@ msgstr "Trykk:"
 msgid "Pretty print"
 msgstr "Pen utskrift"
 
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Print"
+msgstr "Utskriftstype"
+
 #: print.c:505
 msgid "Print only selected dives"
 msgstr "Skriv ut valgte dykk"
@@ -636,6 +658,10 @@ msgstr "Utskriftstype"
 #: gtk-gui.c:920
 msgid "Profile"
 msgstr "Profil"
+
+#: gtk-gui.c:917
+msgid "Quit"
+msgstr ""
 
 #: uemis.c:152
 msgid "RGT Alert"
@@ -694,9 +720,18 @@ msgstr "SDE-fil"
 msgid "Safety Stop Violation"
 msgstr "Brudd på sikkerhetsstopp"
 
-#: main.c:38
+#: main.c:37
 msgid "Sat"
 msgstr "lør"
+
+#: gtk-gui.c:906
+msgid "Save"
+msgstr ""
+
+#: gtk-gui.c:907
+#, fuzzy
+msgid "Save As"
+msgstr "Lagre fil som"
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -710,7 +745,7 @@ msgstr "Lagre fil som"
 msgid "SelectEvents"
 msgstr "Velg hendelser"
 
-#: main.c:48
+#: main.c:47
 msgid "Sep"
 msgstr "sep"
 
@@ -758,8 +793,8 @@ msgstr "Statistikk"
 msgid "Suit"
 msgstr "Drakt"
 
-#. ++GETTEXT: these are three character days
-#: main.c:38
+#. ++GETTEXT: these are three letter days - we allow up to six code bytes
+#: main.c:37
 msgid "Sun"
 msgstr "søn"
 
@@ -799,7 +834,7 @@ msgstr "Temperatur:"
 msgid "Three"
 msgstr "Alle"
 
-#: main.c:38
+#: main.c:37
 msgid "Thu"
 msgstr "tor"
 
@@ -815,7 +850,7 @@ msgstr "Zoom av/på"
 msgid "Total Time"
 msgstr "Total tid"
 
-#: main.c:38
+#: main.c:37
 msgid "Tue"
 msgstr "tir"
 
@@ -863,7 +898,7 @@ msgstr "Volum:"
 msgid "Water Temp"
 msgstr "Vanntemperatur"
 
-#: main.c:38
+#: main.c:37
 msgid "Wed"
 msgstr "ons"
 

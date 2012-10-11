@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 07:42+0900\n"
+"POT-Creation-Date: 2012-10-11 23:06+0900\n"
 "PO-Revision-Date: 2012-10-10 16:27+0900\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
@@ -87,6 +87,10 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) oder (%s)"
 
+#: gtk-gui.c:918
+msgid "About"
+msgstr ""
+
 #: gtk-gui.c:912
 msgid "Add Dive"
 msgstr "Tauchgang hinzufügen"
@@ -99,11 +103,11 @@ msgstr "Tauchgang hinzufügen"
 msgid "Add to trip above"
 msgstr "Zum obigen Trip hinzufügen"
 
-#: main.c:47
+#: main.c:46
 msgid "Apr"
 msgstr "Apr"
 
-#: main.c:48
+#: main.c:47
 msgid "Aug"
 msgstr "Aug"
 
@@ -153,6 +157,10 @@ msgstr ""
 "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden "
 "sollen"
 
+#: gtk-gui.c:908
+msgid "Close"
+msgstr ""
+
 #: divelist.c:2115
 msgid "Collapse all"
 msgstr "Alle einfalten"
@@ -189,7 +197,7 @@ msgstr "Datum und Zeit"
 msgid "Date:"
 msgstr "Datum:"
 
-#: main.c:48
+#: main.c:47
 msgid "Dec"
 msgstr "Dez"
 
@@ -394,7 +402,7 @@ msgstr "Fehler beim Lesen von '%s'"
 msgid "Failed to read '%s'.\n"
 msgstr "Fehler beim Lesen von '%s'.\n"
 
-#: main.c:47
+#: main.c:46
 msgid "Feb"
 msgstr "Feb"
 
@@ -410,7 +418,7 @@ msgstr "Datei"
 msgid "Filter"
 msgstr "Filter"
 
-#: main.c:38
+#: main.c:37
 msgid "Fri"
 msgstr "Fr"
 
@@ -434,16 +442,16 @@ msgstr "XML Datei(en) einlesen"
 msgid "Info"
 msgstr "Informatinen"
 
-#. ++GETTEXT: these are three character months
-#: main.c:47
+#. ++GETTEXT: these are three letter months - we allow up to six code bytes
+#: main.c:46
 msgid "Jan"
 msgstr "Jan"
 
-#: main.c:48
+#: main.c:47
 msgid "Jul"
 msgstr "Jul"
 
-#: main.c:47
+#: main.c:46
 msgid "Jun"
 msgstr "Jun"
 
@@ -479,7 +487,7 @@ msgstr "Alarm: Batterie schwach"
 msgid "Low Battery Warning"
 msgstr "Warnung: Batterie schwach"
 
-#: main.c:47
+#: main.c:46
 msgid "Mar"
 msgstr "Mär"
 
@@ -522,7 +530,7 @@ msgstr ""
 msgid "MaxPress"
 msgstr "Max.Druck"
 
-#: main.c:47
+#: main.c:46
 msgid "May"
 msgstr "Mai"
 
@@ -554,13 +562,17 @@ msgstr "Min. Temp."
 msgid "Misc. Options"
 msgstr "Verschiedene Optionen"
 
-#: main.c:38
+#: main.c:37
 msgid "Mon"
 msgstr "Mo"
 
 #: gtk-gui.c:851
 msgid "Multi-platform divelog software in C"
 msgstr "Multi-Platform Tauchprogram in C"
+
+#: gtk-gui.c:904
+msgid "New"
+msgstr ""
 
 #: gtk-gui.c:811
 msgid "New starting number"
@@ -574,7 +586,7 @@ msgstr "Keine Tank Informationen"
 msgid "Notes"
 msgstr "Notizen"
 
-#: main.c:48
+#: main.c:47
 msgid "Nov"
 msgstr "Nov"
 
@@ -582,9 +594,14 @@ msgstr "Nov"
 msgid "OTU"
 msgstr "OTU"
 
-#: main.c:48
+#: main.c:47
 msgid "Oct"
 msgstr "Okt"
+
+#: gtk-gui.c:905
+#, fuzzy
+msgid "Open"
+msgstr "Datei öffnen"
 
 #: gtk-gui.c:313
 msgid "Open File"
@@ -622,6 +639,11 @@ msgstr "Druck:"
 msgid "Pretty print"
 msgstr "Schön drucken"
 
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Print"
+msgstr "Art des Ausdrucks"
+
 #: print.c:505
 msgid "Print only selected dives"
 msgstr "Nur ausgewählte Tauchgänge drucken"
@@ -637,6 +659,10 @@ msgstr "Art des Ausdrucks"
 #: gtk-gui.c:920
 msgid "Profile"
 msgstr "Profil"
+
+#: gtk-gui.c:917
+msgid "Quit"
+msgstr ""
 
 #: uemis.c:152
 msgid "RGT Alert"
@@ -695,9 +721,18 @@ msgstr "SDE Datei"
 msgid "Safety Stop Violation"
 msgstr "Verletzung des Sicherheitsstops"
 
-#: main.c:38
+#: main.c:37
 msgid "Sat"
 msgstr "Sa"
+
+#: gtk-gui.c:906
+msgid "Save"
+msgstr ""
+
+#: gtk-gui.c:907
+#, fuzzy
+msgid "Save As"
+msgstr "Datei speichern unter"
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -711,7 +746,7 @@ msgstr "Datei speichern unter"
 msgid "SelectEvents"
 msgstr "Ereignisse auswählen"
 
-#: main.c:48
+#: main.c:47
 msgid "Sep"
 msgstr "Sep"
 
@@ -759,8 +794,8 @@ msgstr "Statistiken"
 msgid "Suit"
 msgstr "Taucheranzug"
 
-#. ++GETTEXT: these are three character days
-#: main.c:38
+#. ++GETTEXT: these are three letter days - we allow up to six code bytes
+#: main.c:37
 msgid "Sun"
 msgstr "So"
 
@@ -800,7 +835,7 @@ msgstr "Temperatur:"
 msgid "Three"
 msgstr "Drei"
 
-#: main.c:38
+#: main.c:37
 msgid "Thu"
 msgstr "Do"
 
@@ -816,7 +851,7 @@ msgstr "Zoom ein-/ausschalten"
 msgid "Total Time"
 msgstr "Gesamtzeit"
 
-#: main.c:38
+#: main.c:37
 msgid "Tue"
 msgstr "Di"
 
@@ -864,7 +899,7 @@ msgstr "Volumen:"
 msgid "Water Temp"
 msgstr "Wassertemperatur"
 
-#: main.c:38
+#: main.c:37
 msgid "Wed"
 msgstr "Mi"
 
