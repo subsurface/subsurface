@@ -1273,7 +1273,7 @@ static struct divelist_column {
 static GtkTreeViewColumn *divelist_column(struct DiveList *dl, struct divelist_column *col)
 {
 	int index = col - &dl_column[0];
-	const char *title = col->header;
+	const char *title = _(col->header);
 	data_func_t data_func = col->data;
 	sort_func_t sort_func = col->sort;
 	unsigned int flags = col->flags;
