@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-11 23:06+0900\n"
-"PO-Revision-Date: 2012-10-11 11:16+0100\n"
+"PO-Revision-Date: 2012-10-11 19:44+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -90,7 +90,7 @@ msgstr "(%s) eller (%s)"
 
 #: gtk-gui.c:918
 msgid "About"
-msgstr ""
+msgstr "Om"
 
 #: gtk-gui.c:912
 msgid "Add Dive"
@@ -158,7 +158,7 @@ msgstr "Velg hvilke XML-filer du vil importere"
 
 #: gtk-gui.c:908
 msgid "Close"
-msgstr ""
+msgstr "Lukk"
 
 #: divelist.c:2115
 msgid "Collapse all"
@@ -571,7 +571,7 @@ msgstr "Dykkelogg i C for flere plattformer"
 
 #: gtk-gui.c:904
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: gtk-gui.c:811
 msgid "New starting number"
@@ -598,9 +598,8 @@ msgid "Oct"
 msgstr "okt"
 
 #: gtk-gui.c:905
-#, fuzzy
 msgid "Open"
-msgstr "Åpne fil"
+msgstr "Åpne"
 
 #: gtk-gui.c:313
 msgid "Open File"
@@ -639,9 +638,8 @@ msgid "Pretty print"
 msgstr "Pen utskrift"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Print"
-msgstr "Utskriftstype"
+msgstr "Skriv ut"
 
 #: print.c:505
 msgid "Print only selected dives"
@@ -661,7 +659,7 @@ msgstr "Profil"
 
 #: gtk-gui.c:917
 msgid "Quit"
-msgstr ""
+msgstr "Avslutt"
 
 #: uemis.c:152
 msgid "RGT Alert"
@@ -726,12 +724,11 @@ msgstr "lør"
 
 #: gtk-gui.c:906
 msgid "Save"
-msgstr ""
+msgstr "Lagre"
 
 #: gtk-gui.c:907
-#, fuzzy
 msgid "Save As"
-msgstr "Lagre fil som"
+msgstr "Lagre som"
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -1002,4 +999,4 @@ msgstr "ikke spesifisert"
 
 #: equipment.c:1514
 msgid "weight"
-msgstr "vekt"
+msgstr "Vekt"
