@@ -1,0 +1,970 @@
+# Norwegian translations for 2.0.1 package
+# Norwegian messages for 2.0.1.
+# Copyright (C) 2012 THE 2.0.1'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the 2.0.1 package.
+# Henrik Brautaset Aronsen <subsurface@henrik.synth.no>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-11 07:42+0900\n"
+"PO-Revision-Date: 2012-10-11 11:16+0100\n"
+"Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
+"Language-Team: Norwegian Bokmål\n"
+"Language: nb_NO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: statistics.c:160
+msgid ""
+"\n"
+"Average"
+msgstr ""
+"\n"
+"Gjennomsnitt"
+
+#: statistics.c:161
+msgid ""
+"\n"
+"Longest"
+msgstr ""
+"\n"
+"Lengste"
+
+#: statistics.c:162 statistics.c:163
+msgid ""
+"\n"
+"Maximum"
+msgstr ""
+"\n"
+"Maksimum"
+
+#: statistics.c:161 statistics.c:162 statistics.c:163
+msgid ""
+"\n"
+"Minimum"
+msgstr ""
+"\n"
+"Minimum"
+
+#: statistics.c:161
+msgid ""
+"\n"
+"Shortest"
+msgstr ""
+"\n"
+"Korteste"
+
+#: gtk-gui.c:1502
+msgid " Please select dive computer and device. "
+msgstr " Velg dykkecomputer og enhet"
+
+#: statistics.c:601 statistics.c:603 statistics.c:605
+#, c-format
+msgid "%.*f %s/min"
+msgstr "%.*f %s/min"
+
+#: print.c:252 statistics.c:512
+#, c-format
+msgid "%d min"
+msgstr "%d min"
+
+#: statistics.c:484
+#, c-format
+msgid "%dd %dh %dmin"
+msgstr "%dt %dt %dmin"
+
+#: statistics.c:486
+#, c-format
+msgid "%dh %dmin"
+msgstr "%dt %dmin"
+
+#: dive.c:618
+#, c-format
+msgid "(%s) or (%s)"
+msgstr "(%s) eller (%s)"
+
+#: gtk-gui.c:912
+msgid "Add Dive"
+msgstr "Nytt dykk"
+
+#: divelist.c:2019
+msgid "Add dive"
+msgstr "Nytt dykk"
+
+#: divelist.c:2098
+msgid "Add to trip above"
+msgstr "Slå sammen med turen over"
+
+#: main.c:47
+msgid "Apr"
+msgstr "apr"
+
+#: main.c:48
+msgid "Aug"
+msgstr "aug"
+
+#: gtk-gui.c:927
+msgid "Autogroup"
+msgstr "Grupper automatisk"
+
+#: gtk-gui.c:662
+msgid "Automatically group dives in trips"
+msgstr "Grupper dykk som turer automatisk"
+
+#: statistics.c:668 statistics.c:705
+msgid "Avg Depth"
+msgstr "Snittdybde"
+
+#: statistics.c:676
+msgid "Avg SAC"
+msgstr "Snitt-SAC"
+
+#: statistics.c:651
+msgid "Avg Temp"
+msgstr "Snitt-temp."
+
+#: statistics.c:658
+msgid "Avg Time"
+msgstr "Snitt-tid"
+
+#: gtk-gui.c:590
+msgid "Bar"
+msgstr "bar"
+
+#: info.c:484 info.c:911 print.c:155
+msgid "Buddy"
+msgstr "Buddy"
+
+#: gtk-gui.c:600
+msgid "Celsius"
+msgstr "Celsius"
+
+#: gtk-gui.c:520
+msgid "Choose Default XML File"
+msgstr "Velg standard XML-fil"
+
+#: gtk-gui.c:1396
+msgid "Choose XML Files To Import Into Current Data File"
+msgstr "Velg hvilke XML-filer du vil importere"
+
+#: divelist.c:2115
+msgid "Collapse all"
+msgstr "Slå sammen alle"
+
+#: divelist.c:2088
+msgid "Create new trip above"
+msgstr "Lag ny tur over denne"
+
+#: gtk-gui.c:596
+msgid "CuFt"
+msgstr "ft^3"
+
+#: divelist.c:1265 gtk-gui.c:620
+msgid "Cyl"
+msgstr "Flaske"
+
+#: equipment.c:926 equipment.c:1062
+msgid "Cylinder"
+msgstr "Flaske"
+
+#: equipment.c:1572
+msgid "Cylinders"
+msgstr "Flasker"
+
+#: divelist.c:1258 print.c:154 statistics.c:696
+msgid "Date"
+msgstr "Dato"
+
+#: info.c:776
+msgid "Date and Time"
+msgstr "Dato og tid"
+
+#: info.c:786
+msgid "Date:"
+msgstr "Dato:"
+
+#: main.c:48
+msgid "Dec"
+msgstr "des"
+
+#: gtk-gui.c:667
+msgid "Default XML Data File"
+msgstr "Standard XML-fil"
+
+#: info.c:227
+msgid "Delete"
+msgstr "Slett"
+
+#: info.c:178
+msgid "Delete Dive"
+msgstr "Slett dykk"
+
+#: divelist.c:2006
+msgid "Delete dive"
+msgstr "Slett dykk"
+
+#: divelist.c:2005
+msgid "Delete dives"
+msgstr "Slett dykk"
+
+#: print.c:154
+msgid "Depth"
+msgstr "Dybde"
+
+#: statistics.c:161
+msgid ""
+"Depth\n"
+"Average"
+msgstr ""
+"Dybde\n"
+"Gjennomsnitt"
+
+#: info.c:836
+#, c-format
+msgid "Depth (%s):"
+msgstr "Dybde (%s):"
+
+#: uemis.c:156
+msgid "Depth Limit Exceeded"
+msgstr "Maksgrense for dybde overskredet"
+
+#: gtk-gui.c:584
+msgid "Depth:"
+msgstr "Dybde:"
+
+#: gtk-gui.c:1364
+msgid "Device name"
+msgstr "Enhetsnavn"
+
+#: print.c:67
+#, c-format
+msgid "Dive #%d - "
+msgstr "Dykk #%d - "
+
+#: info.c:144
+#, c-format
+msgid "Dive #%d - %s"
+msgstr "Dykk #%d - %s"
+
+#: info.c:106
+#, c-format
+msgid "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
+msgstr "Dykk #%d - %s %02d-%02d-%04d,  %d:%02d"
+
+#: gtk-gui.c:1120 info.c:669 statistics.c:687
+msgid "Dive Info"
+msgstr "Informasjon"
+
+#: gtk-gui.c:1112
+msgid "Dive Notes"
+msgstr "Dykk"
+
+#: statistics.c:697
+msgid "Dive Time"
+msgstr "Starttid"
+
+#: uemis.c:162
+msgid "Dive Time Alert"
+msgstr "Alarm: dykketid"
+
+#: uemis.c:160
+msgid "Dive Time Info"
+msgstr "Info: dykketid"
+
+#: gtk-gui.c:1333
+msgid "Dive computer"
+msgstr "Dykkecomputer"
+
+#: print.c:474
+msgid "Dive details"
+msgstr "Detaljer"
+
+#: info.c:483
+msgid "Dive master"
+msgstr "Divemaster"
+
+#: print.c:154
+msgid "Dive#"
+msgstr "Dykk nr."
+
+#: gtk-gui.c:650
+msgid "Divelist Font"
+msgstr "Skrifttype for liste"
+
+#: info.c:910
+msgid "Divemaster"
+msgstr "Divemaster"
+
+#: statistics.c:648
+msgid "Dives"
+msgstr "Dykk"
+
+#: gtk-gui.c:911 gtk-gui.c:1494
+msgid "Download From Dive Computer"
+msgstr "Last ned fra dykkecomputer"
+
+#: statistics.c:160
+msgid ""
+"Duration\n"
+"Total"
+msgstr ""
+"Varighet\n"
+"Total"
+
+#: info.c:831
+msgid "Duration (min)"
+msgstr "Varighet (min)"
+
+#: info.c:228
+msgid "Edit"
+msgstr "Rediger"
+
+#: info.c:628
+msgid "Edit Trip Info"
+msgstr "Rediger turinformasjon"
+
+#: divelist.c:2027
+msgid "Edit Trip Summary"
+msgstr "Rediger tursammendrag"
+
+#: divelist.c:2003
+msgid "Edit dive"
+msgstr "Rediger dykk"
+
+#: divelist.c:2002
+msgid "Edit dives"
+msgstr "Rediger dykk"
+
+#: info.c:471
+msgid "Edit multiple dives"
+msgstr "Rediger flere dykk"
+
+#: info.c:453
+msgid "Edit trip summary"
+msgstr "Rediger tursammendrag"
+
+#: gtk-gui.c:771
+msgid "Enable / Disable Events"
+msgstr "Skru på/av hendelser"
+
+#: equipment.c:965 equipment.c:1489
+msgid "End"
+msgstr "Slutt"
+
+#: gtk-gui.c:1116 info.c:504
+msgid "Equipment"
+msgstr "Utstyr"
+
+#: divelist.c:2112
+msgid "Expand all"
+msgstr "Ekspander alle"
+
+#: gtk-gui.c:601
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
+
+#: gtk-gui.c:140
+#, c-format
+msgid "Failed to open %i files."
+msgstr "Fikk ikke åpnet %i filer."
+
+#: parse-xml.c:1471
+#, c-format
+msgid "Failed to parse '%s'"
+msgstr "Kunne ikke lese '%s'"
+
+#: parse-xml.c:1466
+#, c-format
+msgid "Failed to parse '%s'.\n"
+msgstr "Kunne ikke lese '%s'.\n"
+
+#: file.c:266
+#, c-format
+msgid "Failed to read '%s'"
+msgstr "Kunne ikke åpne '%s'"
+
+#: file.c:262
+#, c-format
+msgid "Failed to read '%s'.\n"
+msgstr "Kunne ikke åpne '%s'.\n"
+
+#: main.c:47
+msgid "Feb"
+msgstr "feb"
+
+#: gtk-gui.c:586
+msgid "Feet"
+msgstr "fot"
+
+#: gtk-gui.c:899
+msgid "File"
+msgstr "Fil"
+
+#: gtk-gui.c:902
+msgid "Filter"
+msgstr "Filter"
+
+#: main.c:38
+msgid "Fri"
+msgstr "fre"
+
+#: statistics.c:715
+msgid "Gas Used"
+msgstr "Gass brukt"
+
+#: equipment.c:975
+msgid "Gasmix"
+msgstr "Gassmiks"
+
+#: gtk-gui.c:903
+msgid "Help"
+msgstr "Hjelp"
+
+#: gtk-gui.c:910
+msgid "Import XML File(s)"
+msgstr "Importer XML-fil(er)"
+
+#: gtk-gui.c:921
+msgid "Info"
+msgstr "Info"
+
+#. ++GETTEXT: these are three character months
+#: main.c:47
+msgid "Jan"
+msgstr "jan"
+
+#: main.c:48
+msgid "Jul"
+msgstr "jul"
+
+#: main.c:47
+msgid "Jun"
+msgstr "jun"
+
+#: gtk-gui.c:854
+msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
+msgstr "Linus Torvalds, Dirk Hohndel med flere, 2011, 2012"
+
+#: gtk-gui.c:919
+msgid "List"
+msgstr "Liste"
+
+#: gtk-gui.c:595
+msgid "Liter"
+msgstr "liter"
+
+#: divelist.c:1269 info.c:458 info.c:478 info.c:905 print.c:155
+msgid "Location"
+msgstr "Sted"
+
+#: gtk-gui.c:900
+msgid "Log"
+msgstr "Logg"
+
+#: statistics.c:659
+msgid "Longest Dive"
+msgstr "Lengste dykk"
+
+#: uemis.c:170
+msgid "Low Battery Alert"
+msgstr "Alarm: dårlig batteri"
+
+#: uemis.c:168
+msgid "Low Battery Warning"
+msgstr "Advarsel: dårlig batteri"
+
+#: main.c:47
+msgid "Mar"
+msgstr "mar"
+
+#: uemis.c:164
+msgid "Marker"
+msgstr "markering"
+
+#: print.c:154
+msgid "Master"
+msgstr "master"
+
+#: uemis.c:158
+msgid "Max Deco Time Warning"
+msgstr "Advarsel: maks dekotid"
+
+#: statistics.c:666 statistics.c:704
+msgid "Max Depth"
+msgstr "Maks. dybde"
+
+#: statistics.c:674
+msgid "Max SAC"
+msgstr "Maks. SAC"
+
+#: statistics.c:649
+msgid "Max Temp"
+msgstr "Maks. temp."
+
+#: print.c:94
+#, c-format
+msgid ""
+"Max depth: %.*f %s\n"
+"Duration: %d min\n"
+"%s"
+msgstr ""
+"Maks. dybde: %.*f %s\n"
+"Tid: %d min\n"
+"%s"
+
+#: equipment.c:1487
+msgid "MaxPress"
+msgstr "Maks. trykk"
+
+#: main.c:47
+msgid "May"
+msgstr "mai"
+
+#: divelist.c:2035
+msgid "Merge trip with trip above"
+msgstr "Slå samme tur med turen over"
+
+#: divelist.c:2045
+msgid "Merge trip with trip below"
+msgstr "Slå sammen tur med turen under"
+
+#: gtk-gui.c:585
+msgid "Meter"
+msgstr "meter"
+
+#: statistics.c:667
+msgid "Min Depth"
+msgstr "Min. dybde"
+
+#: statistics.c:675
+msgid "Min SAC"
+msgstr "Min. SAC"
+
+#: statistics.c:650
+msgid "Min Temp"
+msgstr "Min. temp"
+
+#: gtk-gui.c:656
+msgid "Misc. Options"
+msgstr "Ymse valg"
+
+#: main.c:38
+msgid "Mon"
+msgstr "man"
+
+#: gtk-gui.c:851
+msgid "Multi-platform divelog software in C"
+msgstr "Dykkelogg i C for flere plattformer"
+
+#: gtk-gui.c:811
+msgid "New starting number"
+msgstr "Nytt startnummer"
+
+#: uemis.c:166
+msgid "No Tank Data"
+msgstr "Ingen tankinformasjon"
+
+#: info.c:463 info.c:496 info.c:919
+msgid "Notes"
+msgstr "Notater"
+
+#: main.c:48
+msgid "Nov"
+msgstr "nov"
+
+#: divelist.c:1268 gtk-gui.c:635 statistics.c:713
+msgid "OTU"
+msgstr "OTU"
+
+#: main.c:48
+msgid "Oct"
+msgstr "okt"
+
+#: gtk-gui.c:313
+msgid "Open File"
+msgstr "Åpne fil"
+
+#: uemis.c:144
+msgid "PO2 Ascend Alarm"
+msgstr "Alarm: oppstigning / PO2"
+
+#: uemis.c:142
+msgid "PO2 Ascend Warning"
+msgstr "Advarsel: oppstigning /PO2"
+
+#: uemis.c:139
+msgid "PO2 Green Warning"
+msgstr "Advarsel: grønn / PO2"
+
+#: gtk-gui.c:591
+msgid "PSI"
+msgstr "psi"
+
+#: gtk-gui.c:570 gtk-gui.c:913
+msgid "Preferences"
+msgstr "Valg"
+
+#: equipment.c:960
+msgid "Pressure"
+msgstr "Trykk"
+
+#: gtk-gui.c:589
+msgid "Pressure:"
+msgstr "Trykk:"
+
+#: print.c:484
+msgid "Pretty print"
+msgstr "Pen utskrift"
+
+#: print.c:505
+msgid "Print only selected dives"
+msgstr "Skriv ut valgte dykk"
+
+#: print.c:500
+msgid "Print selection"
+msgstr "Skriv ut valg"
+
+#: print.c:478
+msgid "Print type"
+msgstr "Utskriftstype"
+
+#: gtk-gui.c:920
+msgid "Profile"
+msgstr "Profil"
+
+#: uemis.c:152
+msgid "RGT Alert"
+msgstr "Alarm: gjenværende gasstid"
+
+#: uemis.c:150
+msgid "RGT Warning"
+msgstr "Advarsel: gjenværende gasstid"
+
+#: info.c:489 info.c:916
+msgid "Rating"
+msgstr "Vurdering"
+
+#: uemis-downloader.c:267
+#, c-format
+msgid "Reading dive %s"
+msgstr "Leser dykk %s"
+
+#: divelist.c:2050
+msgid "Remove Trip"
+msgstr "Fjern tur"
+
+#: divelist.c:2106
+msgid "Remove dive from trip"
+msgstr "Fjern dykk fra tur"
+
+#: divelist.c:2104
+msgid "Remove selected dives from trip"
+msgstr "Fjern valgte dykk fra tur"
+
+#: gtk-gui.c:802 gtk-gui.c:914
+msgid "Renumber"
+msgstr "Oppdater nummerering"
+
+#: gtk-gui.c:1471
+msgid "Retry"
+msgstr "Prøv igjen"
+
+#: divelist.c:1267 gtk-gui.c:630 statistics.c:712
+msgid "SAC"
+msgstr "SAC"
+
+#: statistics.c:162
+msgid ""
+"SAC\n"
+"Average"
+msgstr ""
+"SAC\n"
+"Gjennomsnitt"
+
+#: file.c:75
+msgid "SDE file"
+msgstr "SDE-fil"
+
+#: uemis.c:132
+msgid "Safety Stop Violation"
+msgstr "Brudd på sikkerhetsstopp"
+
+#: main.c:38
+msgid "Sat"
+msgstr "lør"
+
+#: gtk-gui.c:228
+msgid "Save Changes?"
+msgstr "Lagre endringer?"
+
+#: gtk-gui.c:165
+msgid "Save File As"
+msgstr "Lagre fil som"
+
+#: gtk-gui.c:762 gtk-gui.c:916
+msgid "SelectEvents"
+msgstr "Velg hendelser"
+
+#: main.c:48
+msgid "Sep"
+msgstr "sep"
+
+#: uemis-downloader.c:30
+msgid ""
+"Short write to req.txt file\n"
+"Is the Uemis Zurich plugged in correctly?"
+msgstr ""
+"Fikk ikke skrevet ferdig req.txt\n"
+"Er Uemis Zurich plugget i ordentlig?"
+
+#: statistics.c:660
+msgid "Shortest Dive"
+msgstr "Korteste dykk"
+
+#: gtk-gui.c:609
+msgid "Show Columns"
+msgstr "Vis kolonner"
+
+#: equipment.c:1486
+msgid "Size"
+msgstr "Størrelse"
+
+#: uemis.c:134
+msgid "Speed Alarm"
+msgstr "Alarm: oppstigningshastighet"
+
+#: uemis.c:137
+msgid "Speed Warning"
+msgstr "Advarsel: oppstigningshastighet"
+
+#: equipment.c:962 equipment.c:1488
+msgid "Start"
+msgstr "Start"
+
+#: statistics.c:640
+msgid "Statistics"
+msgstr "Statistikk"
+
+#: gtk-gui.c:1124
+msgid "Stats"
+msgstr "Statistikk"
+
+#: divelist.c:1264 gtk-gui.c:645 info.c:490 info.c:917
+msgid "Suit"
+msgstr "Drakt"
+
+#. ++GETTEXT: these are three character days
+#: main.c:38
+msgid "Sun"
+msgstr "søn"
+
+#: statistics.c:698
+msgid "Surf Intv"
+msgstr "Overflateintervall"
+
+#: print.c:488
+msgid "Table print"
+msgstr "Tabellutskrift"
+
+#: uemis.c:154
+msgid "Tank Change Suggested"
+msgstr "Tankbytte foreslått"
+
+#: uemis.c:148
+msgid "Tank Pressure Info"
+msgstr "Info: trykk"
+
+#: gtk-gui.c:615
+msgid "Temp"
+msgstr "Temp"
+
+#: statistics.c:162
+msgid ""
+"Temperature\n"
+"Average"
+msgstr ""
+"Temperatur\n"
+"Gjennomsnitt"
+
+#: gtk-gui.c:599
+msgid "Temperature:"
+msgstr "Temperatur:"
+
+#: gtk-gui.c:922
+msgid "Three"
+msgstr "Alle"
+
+#: main.c:38
+msgid "Thu"
+msgstr "tor"
+
+#: info.c:791 print.c:154
+msgid "Time"
+msgstr "Tid"
+
+#: gtk-gui.c:928
+msgid "Toggle Zoom"
+msgstr "Zoom av/på"
+
+#: statistics.c:657
+msgid "Total Time"
+msgstr "Total tid"
+
+#: main.c:38
+msgid "Tue"
+msgstr "tir"
+
+#: equipment.c:1485 equipment.c:1513
+msgid "Type"
+msgstr "Type"
+
+#: uemis-downloader.c:28
+msgid ""
+"Uemis Zurich: File System is almost full\n"
+"Disconnect/reconnect the dive computer\n"
+"and try again"
+msgstr ""
+"Uemis Zurich: Filsystem er nesten fullt\n"
+"Koble fra og til dykkecomputeren og\n"
+"prøv igjen"
+
+#: uemis-downloader.c:29
+msgid ""
+"Uemis Zurich: File System is full\n"
+"Disconnect/reconnect the dive computer\n"
+"and try again"
+msgstr ""
+"Uemis Zurich: Fullt filsystem\n"
+"Koble fra og til dykkecomputeren\n"
+"og prøv igjen"
+
+#: uemis-downloader.c:559
+msgid "Uemis init failed"
+msgstr "Klarer ikke å lese fra Uemis"
+
+#: gtk-gui.c:577
+msgid "Units"
+msgstr "Enheter"
+
+#: gtk-gui.c:901
+msgid "View"
+msgstr "Vis"
+
+#: gtk-gui.c:594
+msgid "Volume:"
+msgstr "Volum:"
+
+#: statistics.c:706
+msgid "Water Temp"
+msgstr "Vanntemperatur"
+
+#: main.c:38
+msgid "Wed"
+msgstr "ons"
+
+#: equipment.c:1012 equipment.c:1609 gtk-gui.c:640
+msgid "Weight"
+msgstr "Vekt"
+
+#: equipment.c:1117
+msgid "Weight System"
+msgstr "Vektsystem"
+
+#: gtk-gui.c:604
+msgid "Weight:"
+msgstr "Vekt:"
+
+#: gtk-gui.c:153
+msgid "XML file"
+msgstr "XML-fil"
+
+#: statistics.c:160
+msgid ""
+"Year\n"
+" > Month"
+msgstr ""
+"År\n"
+" > Måned"
+
+#: gtk-gui.c:915 statistics.c:345
+msgid "Yearly Statistics"
+msgstr "Årsstatistikk"
+
+#: gtk-gui.c:238
+msgid ""
+"You have unsaved changes\n"
+"Would you like to save those before closing the datafile?"
+msgstr ""
+"Du har endringer som ikke er lagret.\n"
+"Vil du lagre disse før du lukker datafila?"
+
+#: gtk-gui.c:242
+#, c-format
+msgid ""
+"You have unsaved changes to file: %s \n"
+"Would you like to save those before closing the datafile?"
+msgstr ""
+"Du har endringer som ikke er lagret i %s.\n"
+"Vil du lagre disse før du lukker fila?"
+
+#: equipment.c:824
+msgid "ankle"
+msgstr "ankel"
+
+#: equipment.c:825
+msgid "bar"
+msgstr "bar"
+
+#: equipment.c:823
+msgid "belt"
+msgstr "belte"
+
+#: equipment.c:826
+msgid "clip-on"
+msgstr "clip-on"
+
+#: divelist.c:1260
+msgid "ft"
+msgstr "ft"
+
+#: equipment.c:822
+msgid "integrated"
+msgstr "integrert"
+
+#: gtk-gui.c:605
+msgid "kg"
+msgstr "kg"
+
+#: divelist.c:1263 gtk-gui.c:606
+msgid "lbs"
+msgstr "pund"
+
+#: divelist.c:1261
+msgid "min"
+msgstr "Min"
+
+#: statistics.c:478
+#, c-format
+msgid "more than %d days"
+msgstr "mer enn %d dager"
+
+#: equipment.c:1378 equipment.c:1398
+msgid "unkn"
+msgstr "ukjent"
+
+#: statistics.c:517
+msgid "unknown"
+msgstr "ukjent"
+
+#: equipment.c:544
+msgid "unspecified"
+msgstr "ikke spesifisert"
+
+#: equipment.c:1514
+msgid "weight"
+msgstr "vekt"
