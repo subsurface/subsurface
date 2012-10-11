@@ -122,7 +122,7 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) gettext
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
@@ -211,8 +211,16 @@ uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
+gettext: po/*.po
+	@for MSG in $(wildcard po/*.po); do \
+	  LOC=`basename $$MSG .po`; \
+	  mkdir -p locale/$$LOC.UTF-8/LC_MESSAGES; \
+	  msgfmt -c -o locale/$$LOC.UTF-8/LC_MESSAGES/subsurface.mo $$MSG; \
+	done
+
 doc:
 	$(MAKE) -C Documentation doc
 
 clean:
 	rm -f $(OBJS) *~ $(NAME) $(NAME).exe
+	rm -rf locale
