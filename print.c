@@ -1,3 +1,4 @@
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
@@ -63,7 +64,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 
 	*divenr = 0;
 	if (dive->number)
-		snprintf(divenr, sizeof(divenr), "Dive #%d - ", dive->number);
+		snprintf(divenr, sizeof(divenr), _("Dive #%d - "), dive->number);
 
 	utc_mkdate(dive->when, &tm);
 	len = snprintf(buffer, sizeof(buffer),
@@ -90,9 +91,7 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 
 	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	snprintf(buffer, sizeof(buffer),
-		"Max depth: %.*f %s\n"
-		"Duration: %d min\n"
-		"%s",
+		_("Max depth: %.*f %s\nDuration: %d min\n%s"),
 		decimals, depth, unit,
 		(dive->duration.seconds+59) / 60,
 		people);
@@ -152,8 +151,8 @@ static void show_table_header(cairo_t *cr, double w, double h,
 	int i;
 	double maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
-	char headers[7][80]= { "Dive#", "Date", "Depth", "Time", "Master",
-		"Buddy", "Location" };
+	char headers[7][80]= { N_("Dive#"), N_("Date"), N_("Depth"), N_("Time"), N_("Master"),
+			       N_("Buddy"), N_("Location") };
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
@@ -177,7 +176,7 @@ static void show_table_header(cairo_t *cr, double w, double h,
 			pango_layout_set_width(layout, colwidth);
 			curwidth = curwidth + colwidth;
 		}
-		pango_layout_set_text(layout, headers[i], -1);
+		pango_layout_set_text(layout, _(headers[i]), -1);
 		pango_layout_set_justify(layout, 1);
 		pango_cairo_show_layout(cr, layout);
 	}
@@ -250,7 +249,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 
 	// Col 4: Time
 	len = snprintf(buffer, sizeof(buffer),
-		"%d min",(dive->duration.seconds+59) / 60);
+		_("%d min"),(dive->duration.seconds+59) / 60);
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_width(layout, colwidth/ (double) 2);
 	pango_layout_set_text(layout, buffer, len);
@@ -472,21 +471,21 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
 	GtkWidget *vbox, *radio1, *radio2, *frame, *box;
 	int dives;
-	gtk_print_operation_set_custom_tab_label(operation, "Dive details");
+	gtk_print_operation_set_custom_tab_label(operation, _("Dive details"));
 
 	vbox = gtk_vbox_new(TRUE, 5);
 
-	frame = gtk_frame_new("Print type");
+	frame = gtk_frame_new(_("Print type"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
 
 	box = gtk_hbox_new(FALSE, 2);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	radio1 = gtk_radio_button_new_with_label (NULL, "Pretty print");
+	radio1 = gtk_radio_button_new_with_label (NULL, _("Pretty print"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio1),
 		print_options.type == PRETTY);
 	radio2 = gtk_radio_button_new_with_label_from_widget (
-		GTK_RADIO_BUTTON (radio1), "Table print");
+		GTK_RADIO_BUTTON (radio1), _("Table print"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio2),
 		print_options.type == TABLE);
 	gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
@@ -498,12 +497,12 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	dives = nr_selected_dives();
 	print_options.print_selected = dives >= 1;
 	if (print_options.print_selected) {
-        frame = gtk_frame_new("Print selection");
-        gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
-        box = gtk_hbox_new(FALSE, 1);
-        gtk_container_add(GTK_CONTAINER(frame), box);
+		frame = gtk_frame_new(_("Print selection"));
+		gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
+		box = gtk_hbox_new(FALSE, 1);
+		gtk_container_add(GTK_CONTAINER(frame), box);
 		GtkWidget *button;
-		button = gtk_check_button_new_with_label("Print only selected dives");
+		button = gtk_check_button_new_with_label(_("Print only selected dives"));
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),
 			print_options.print_selected);
 		gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 2);

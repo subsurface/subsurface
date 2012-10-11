@@ -8,6 +8,7 @@
  * called from gtk-ui:
  * GtkWidget *stats_widget(void)
  */
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -156,15 +157,15 @@ static void init_tree()
 
 	renderer = gtk_cell_renderer_text_new ();
 	char *columns[] = {
-		"Year\n > Month", "#", "Duration\nTotal", "\nAverage",
-		"\nShortest", "\nLongest", "Depth\nAverage", "\nMinimum",
-		"\nMaximum", "SAC\nAverage", "\nMinimum", "\nMaximum", "Temperature\nAverage",
-		"\nMinimum", "\nMaximum" };
+		N_("Year\n > Month"), "#", N_("Duration\nTotal"), N_("\nAverage"),
+		N_("\nShortest"), N_("\nLongest"), N_("Depth\nAverage"), N_("\nMinimum"),
+		N_("\nMaximum"), N_("SAC\nAverage"), N_("\nMinimum"), N_("\nMaximum"), N_("Temperature\nAverage"),
+		N_("\nMinimum"), N_("\nMaximum") };
 
 	/* Add all the columns to the tree view */
 	for (i = 0; i < N_COLUMNS; ++i) {
 		column = gtk_tree_view_column_new();
-		gtk_tree_view_column_set_title(column, columns[i]);
+		gtk_tree_view_column_set_title(column, _(columns[i]));
 		gtk_tree_view_append_column(GTK_TREE_VIEW(yearly_tree), column);
 		renderer = gtk_cell_renderer_text_new();
 		gtk_tree_view_column_pack_start(column, renderer, TRUE);
@@ -341,7 +342,7 @@ void show_yearly_stats()
 
 	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(window), 640, 480);
-	gtk_window_set_title(GTK_WINDOW(window), "Yearly Statistics");
+	gtk_window_set_title(GTK_WINDOW(window), _("Yearly Statistics"));
 	gtk_container_set_border_width(GTK_CONTAINER(window), 5);
 	GTK_WINDOW(window)->allow_shrink = TRUE;
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -474,15 +475,15 @@ static char * get_time_string(int seconds, int maxdays)
 {
 	static char buf[80];
 	if (maxdays && seconds > 3600 * 24 * maxdays)
-		snprintf(buf, sizeof(buf), "more than %d days", maxdays);
+		snprintf(buf, sizeof(buf), _("more than %d days"), maxdays);
 	else {
 		int days = seconds / 3600 / 24;
 		int hours = (seconds - days * 3600 * 24) / 3600;
 		int minutes = (seconds - days * 3600 * 24 - hours * 3600) / 60;
 		if (days > 0)
-			snprintf(buf, sizeof(buf), "%dd %dh %dmin", days, hours, minutes);
+			snprintf(buf, sizeof(buf), _("%dd %dh %dmin"), days, hours, minutes);
 		else
-			snprintf(buf, sizeof(buf), "%dh %dmin", hours, minutes);
+			snprintf(buf, sizeof(buf), _("%dh %dmin"), hours, minutes);
 	}
 	return buf;
 }
@@ -508,12 +509,12 @@ static void show_single_dive_stats(struct dive *dive)
 		tm.tm_hour, tm.tm_min);
 
 	set_label(single_w.date, buf);
-	set_label(single_w.dive_time, "%d min", (dive->duration.seconds + 30) / 60);
+	set_label(single_w.dive_time, _("%d min"), (dive->duration.seconds + 30) / 60);
 	if (prev_dive)
 		set_label(single_w.surf_intv,
 			get_time_string(dive->when - (prev_dive->when + prev_dive->duration.seconds), 4));
 	else
-		set_label(single_w.surf_intv, "unknown");
+		set_label(single_w.surf_intv, _("unknown"));
 	value = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	set_label(single_w.max_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(dive->meandepth.mm, &decimals, &unit);
@@ -597,11 +598,11 @@ static void show_total_dive_stats(struct dive *dive)
 	value = get_depth_units(stats_ptr->avg_depth.mm, &decimals, &unit);
 	set_label(stats_w.avg_overall_depth, "%.*f %s", decimals, value, unit);
 	value = get_volume_units(stats_ptr->max_sac.mliter, &decimals, &unit);
-	set_label(stats_w.max_sac, "%.*f %s/min", decimals, value, unit);
+	set_label(stats_w.max_sac, _("%.*f %s/min"), decimals, value, unit);
 	value = get_volume_units(stats_ptr->min_sac.mliter, &decimals, &unit);
-	set_label(stats_w.min_sac, "%.*f %s/min", decimals, value, unit);
+	set_label(stats_w.min_sac, _("%.*f %s/min"), decimals, value, unit);
 	value = get_volume_units(stats_ptr->avg_sac.mliter, &decimals, &unit);
-	set_label(stats_w.avg_sac, "%.*f %s/min", decimals, value, unit);
+	set_label(stats_w.avg_sac, _("%.*f %s/min"), decimals, value, unit);
 }
 
 void show_dive_stats(struct dive *dive)
@@ -636,7 +637,7 @@ GtkWidget *total_stats_widget(void)
 
 	vbox = gtk_vbox_new(FALSE, 3);
 
-	statsframe = gtk_frame_new("Statistics");
+	statsframe = gtk_frame_new(_("Statistics"));
 	gtk_box_pack_start(GTK_BOX(vbox), statsframe, TRUE, FALSE, 3);
 	framebox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(statsframe), framebox);
@@ -644,35 +645,35 @@ GtkWidget *total_stats_widget(void)
 	/* first row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
-	stats_w.selection_size = new_info_label_in_frame(hbox, "Dives");
-	stats_w.max_temp = new_info_label_in_frame(hbox, "Max Temp");
-	stats_w.min_temp = new_info_label_in_frame(hbox, "Min Temp");
-	stats_w.avg_temp = new_info_label_in_frame(hbox, "Avg Temp");
+	stats_w.selection_size = new_info_label_in_frame(hbox, _("Dives"));
+	stats_w.max_temp = new_info_label_in_frame(hbox, _("Max Temp"));
+	stats_w.min_temp = new_info_label_in_frame(hbox, _("Min Temp"));
+	stats_w.avg_temp = new_info_label_in_frame(hbox, _("Avg Temp"));
 
 	/* second row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	stats_w.total_time = new_info_label_in_frame(hbox, "Total Time");
-	stats_w.avg_time = new_info_label_in_frame(hbox, "Avg Time");
-	stats_w.longest_time = new_info_label_in_frame(hbox, "Longest Dive");
-	stats_w.shortest_time = new_info_label_in_frame(hbox, "Shortest Dive");
+	stats_w.total_time = new_info_label_in_frame(hbox, _("Total Time"));
+	stats_w.avg_time = new_info_label_in_frame(hbox, _("Avg Time"));
+	stats_w.longest_time = new_info_label_in_frame(hbox, _("Longest Dive"));
+	stats_w.shortest_time = new_info_label_in_frame(hbox, _("Shortest Dive"));
 
 	/* third row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	stats_w.max_overall_depth = new_info_label_in_frame(hbox, "Max Depth");
-	stats_w.min_overall_depth = new_info_label_in_frame(hbox, "Min Depth");
-	stats_w.avg_overall_depth = new_info_label_in_frame(hbox, "Avg Depth");
+	stats_w.max_overall_depth = new_info_label_in_frame(hbox, _("Max Depth"));
+	stats_w.min_overall_depth = new_info_label_in_frame(hbox, _("Min Depth"));
+	stats_w.avg_overall_depth = new_info_label_in_frame(hbox, _("Avg Depth"));
 
 	/* fourth row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	stats_w.max_sac = new_info_label_in_frame(hbox, "Max SAC");
-	stats_w.min_sac = new_info_label_in_frame(hbox, "Min SAC");
-	stats_w.avg_sac = new_info_label_in_frame(hbox, "Avg SAC");
+	stats_w.max_sac = new_info_label_in_frame(hbox, _("Max SAC"));
+	stats_w.min_sac = new_info_label_in_frame(hbox, _("Min SAC"));
+	stats_w.avg_sac = new_info_label_in_frame(hbox, _("Avg SAC"));
 
 	return vbox;
 }
@@ -683,7 +684,7 @@ GtkWidget *single_stats_widget(void)
 
 	vbox = gtk_vbox_new(FALSE, 3);
 
-	infoframe = gtk_frame_new("Dive Info");
+	infoframe = gtk_frame_new(_("Dive Info"));
 	gtk_box_pack_start(GTK_BOX(vbox), infoframe, TRUE, FALSE, 3);
 	framebox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(infoframe), framebox);
@@ -692,26 +693,26 @@ GtkWidget *single_stats_widget(void)
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	single_w.date = new_info_label_in_frame(hbox, "Date");
-	single_w.dive_time = new_info_label_in_frame(hbox, "Dive Time");
-	single_w.surf_intv = new_info_label_in_frame(hbox, "Surf Intv");
+	single_w.date = new_info_label_in_frame(hbox, _("Date"));
+	single_w.dive_time = new_info_label_in_frame(hbox, _("Dive Time"));
+	single_w.surf_intv = new_info_label_in_frame(hbox, _("Surf Intv"));
 
 	/* second row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	single_w.max_depth = new_info_label_in_frame(hbox, "Max Depth");
-	single_w.avg_depth = new_info_label_in_frame(hbox, "Avg Depth");
-	single_w.water_temp = new_info_label_in_frame(hbox, "Water Temp");
+	single_w.max_depth = new_info_label_in_frame(hbox, _("Max Depth"));
+	single_w.avg_depth = new_info_label_in_frame(hbox, _("Avg Depth"));
+	single_w.water_temp = new_info_label_in_frame(hbox, _("Water Temp"));
 
 	/* third row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	single_w.sac = new_info_label_in_frame(hbox, "SAC");
-	single_w.otu = new_info_label_in_frame(hbox, "OTU");
+	single_w.sac = new_info_label_in_frame(hbox, _("SAC"));
+	single_w.otu = new_info_label_in_frame(hbox, _("OTU"));
 	single_w.o2he = new_info_label_in_frame(hbox, "O" UTF8_SUBSCRIPT_2 " / He");
-	single_w.gas_used = new_info_label_in_frame(hbox, "Gas Used");
+	single_w.gas_used = new_info_label_in_frame(hbox, _("Gas Used"));
 
 	return vbox;
 }

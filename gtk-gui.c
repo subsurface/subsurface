@@ -3,6 +3,8 @@
 /* creates the window and overall layout
  * divelist, dive info, equipment and printing are handled in their own source files
  */
+#include <libintl.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -135,7 +137,7 @@ void report_error(GError* error)
 	{
 		error_count++;
 		char buffer[256];
-		snprintf(buffer, sizeof(buffer), "Failed to open %i files.", error_count);
+		snprintf(buffer, sizeof(buffer), _("Failed to open %i files."), error_count);
 		gtk_label_set(GTK_LABEL(error_label), buffer);
 	}
 }
@@ -148,7 +150,7 @@ static GtkFileFilter *setup_filter(void)
 	gtk_file_filter_add_pattern(filter, "*.sda");
 	gtk_file_filter_add_pattern(filter, "*.SDA");
 	gtk_file_filter_add_mime_type(filter, "text/xml");
-	gtk_file_filter_set_name(filter, "XML file");
+	gtk_file_filter_set_name(filter, _("XML file"));
 
 	return filter;
 }
@@ -160,7 +162,7 @@ static void file_save_as(GtkWidget *w, gpointer data)
 	char *current_file;
 	char *current_dir;
 
-	dialog = gtk_file_chooser_dialog_new("Save File As",
+	dialog = gtk_file_chooser_dialog_new(_("Save File As"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -223,7 +225,7 @@ static gboolean ask_save_changes()
 {
 	GtkWidget *dialog, *label, *content;
 	gboolean quit = TRUE;
-	dialog = gtk_dialog_new_with_buttons("Save Changes?",
+	dialog = gtk_dialog_new_with_buttons(_("Save Changes?"),
 		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_NO, GTK_RESPONSE_NO,
@@ -233,11 +235,11 @@ static gboolean ask_save_changes()
 
 	if (!existing_filename){
 		label = gtk_label_new (
-			"You have unsaved changes\nWould you like to save those before closing the datafile?");
+			_("You have unsaved changes\nWould you like to save those before closing the datafile?"));
 	} else {
 		char *label_text = (char*) malloc(sizeof(char) * (94 + strlen(existing_filename)));
 		sprintf(label_text,
-			"You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?",
+			_("You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?"),
 			existing_filename);
 		label = gtk_label_new (label_text);
 		free(label_text);
@@ -308,7 +310,7 @@ static void file_open(GtkWidget *w, gpointer data)
 	GtkFileFilter *filter;
 	const char *current_default;
 
-	dialog = gtk_file_chooser_dialog_new("Open File",
+	dialog = gtk_file_chooser_dialog_new(_("Open File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -515,7 +517,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	GtkFileFilter *filter;
 	struct stat sb;
 
-	fs_dialog = gtk_file_chooser_dialog_new("Choose Default XML File",
+	fs_dialog = gtk_file_chooser_dialog_new(_("Choose Default XML File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_SAVE,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -565,57 +567,57 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 	menu_units = output_units;
 
-	dialog = gtk_dialog_new_with_buttons("Preferences",
+	dialog = gtk_dialog_new_with_buttons(_("Preferences"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
-	frame = gtk_frame_new("Units");
+	frame = gtk_frame_new(_("Units"));
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_vbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	create_radio(box, "Depth:",
-		"Meter", set_meter, (output_units.length == METERS),
-		"Feet",  set_feet, (output_units.length == FEET),
+	create_radio(box, _("Depth:"),
+		_("Meter"), set_meter, (output_units.length == METERS),
+		_("Feet"),  set_feet, (output_units.length == FEET),
 		NULL);
 
-	create_radio(box, "Pressure:",
-		"Bar", set_bar, (output_units.pressure == BAR),
-		"PSI",  set_psi, (output_units.pressure == PSI),
+	create_radio(box, _("Pressure:"),
+		_("Bar"), set_bar, (output_units.pressure == BAR),
+		_("PSI"),  set_psi, (output_units.pressure == PSI),
 		NULL);
 
-	create_radio(box, "Volume:",
-		"Liter",  set_liter, (output_units.volume == LITER),
-		"CuFt", set_cuft, (output_units.volume == CUFT),
+	create_radio(box, _("Volume:"),
+		_("Liter"),  set_liter, (output_units.volume == LITER),
+		_("CuFt"), set_cuft, (output_units.volume == CUFT),
 		NULL);
 
-	create_radio(box, "Temperature:",
-		"Celsius", set_celsius, (output_units.temperature == CELSIUS),
-		"Fahrenheit",  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
+	create_radio(box, _("Temperature:"),
+		_("Celsius"), set_celsius, (output_units.temperature == CELSIUS),
+		_("Fahrenheit"),  set_fahrenheit, (output_units.temperature == FAHRENHEIT),
 		NULL);
 
-	create_radio(box, "Weight:",
-		"kg", set_kg, (output_units.weight == KG),
-		"lbs",  set_lbs, (output_units.weight == LBS),
+	create_radio(box, _("Weight:"),
+		_("kg"), set_kg, (output_units.weight == KG),
+		_("lbs"),  set_lbs, (output_units.weight == LBS),
 		NULL);
 
-	frame = gtk_frame_new("Show Columns");
+	frame = gtk_frame_new(_("Show Columns"));
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	button = gtk_check_button_new_with_label("Temp");
+	button = gtk_check_button_new_with_label(_("Temp"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.temperature);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(temperature_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Cyl");
+	button = gtk_check_button_new_with_label(_("Cyl"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.cylinder);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(cylinder_toggle), NULL);
@@ -625,44 +627,44 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(nitrox_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("SAC");
+	button = gtk_check_button_new_with_label(_("SAC"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.sac);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(sac_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("OTU");
+	button = gtk_check_button_new_with_label(_("OTU"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Weight");
+	button = gtk_check_button_new_with_label(_("Weight"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.totalweight);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(totalweight_toggle), NULL);
 
-	button = gtk_check_button_new_with_label("Suit");
+	button = gtk_check_button_new_with_label(_("Suit"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.suit);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(suit_toggle), NULL);
 
-	frame = gtk_frame_new("Divelist Font");
+	frame = gtk_frame_new(_("Divelist Font"));
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
 	font = gtk_font_button_new_with_font(divelist_font);
 	gtk_container_add(GTK_CONTAINER(frame),font);
 
-	frame = gtk_frame_new("Misc. Options");
+	frame = gtk_frame_new(_("Misc. Options"));
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	button = gtk_check_button_new_with_label("Automatically group dives in trips");
+	button = gtk_check_button_new_with_label(_("Automatically group dives in trips"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), autogroup);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(autogroup_toggle), NULL);
 
-	frame = gtk_frame_new("Default XML Data File");
+	frame = gtk_frame_new(_("Default XML Data File"));
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
@@ -757,7 +759,7 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 	int result;
 	GtkWidget *dialog, *frame, *vbox, *table;
 
-	dialog = gtk_dialog_new_with_buttons("SelectEvents",
+	dialog = gtk_dialog_new_with_buttons(_("SelectEvents"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -766,7 +768,7 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 	/* initialize the function that fills the table */
 	create_toggle(NULL, NULL, NULL);
 
-	frame = gtk_frame_new("Enable / Disable Events");
+	frame = gtk_frame_new(_("Enable / Disable Events"));
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
@@ -797,7 +799,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 	struct dive *dive;
 	GtkWidget *dialog, *frame, *button, *vbox;
 
-	dialog = gtk_dialog_new_with_buttons("Renumber",
+	dialog = gtk_dialog_new_with_buttons(_("Renumber"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -806,7 +808,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	frame = gtk_frame_new("New starting number");
+	frame = gtk_frame_new(_("New starting number"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	button = gtk_spin_button_new_with_range(1, 50000, 1);
@@ -846,10 +848,10 @@ static void about_dialog(GtkWidget *w, gpointer data)
 
 	gtk_show_about_dialog(NULL,
 		"program-name", "Subsurface",
-		"comments", "Multi-platform divelog software in C",
+		"comments", _("Multi-platform divelog software in C"),
 		"license", "GPLv2",
 		"version", VERSION_STRING,
-		"copyright", "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012",
+		"copyright", _("Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"),
 		"logo-icon-name", "subsurface",
 		/* Must be last: */
 		logo_property, logo,
@@ -894,36 +896,36 @@ static void toggle_zoom(GtkWidget *w, gpointer data)
 }
 
 static GtkActionEntry menu_items[] = {
-	{ "FileMenuAction", NULL, "File", NULL, NULL, NULL},
-	{ "LogMenuAction",  NULL, "Log", NULL, NULL, NULL},
-	{ "ViewMenuAction",  NULL, "View", NULL, NULL, NULL},
-	{ "FilterMenuAction",  NULL, "Filter", NULL, NULL, NULL},
-	{ "HelpMenuAction", NULL, "Help", NULL, NULL, NULL},
+	{ "FileMenuAction", NULL, N_("File"), NULL, NULL, NULL},
+	{ "LogMenuAction",  NULL, N_("Log"), NULL, NULL, NULL},
+	{ "ViewMenuAction",  NULL, N_("View"), NULL, NULL, NULL},
+	{ "FilterMenuAction",  NULL, N_("Filter"), NULL, NULL, NULL},
+	{ "HelpMenuAction", NULL, N_("Help"), NULL, NULL, NULL},
 	{ "NewFile",        GTK_STOCK_NEW, NULL,   CTRLCHAR "N", NULL, G_CALLBACK(file_close) },
 	{ "OpenFile",       GTK_STOCK_OPEN, NULL,   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
 	{ "SaveFile",       GTK_STOCK_SAVE, NULL,   CTRLCHAR "S", NULL, G_CALLBACK(file_save) },
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, NULL,   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "CloseFile",      GTK_STOCK_CLOSE, NULL, NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, NULL,  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "ImportFile",     GTK_STOCK_GO_BACK, "Import XML File(s)", CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
-	{ "DownloadLog",    GTK_STOCK_GO_DOWN, "Download From Dive Computer", CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
-	{ "AddDive",        GTK_STOCK_ADD, "Add Dive", NULL, NULL, G_CALLBACK(add_dive_cb) },
-	{ "Preferences",    GTK_STOCK_PREFERENCES, "Preferences", PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
-	{ "Renumber",       NULL, "Renumber", NULL, NULL, G_CALLBACK(renumber_dialog) },
-	{ "YearlyStats",    NULL, "Yearly Statistics", NULL, NULL, G_CALLBACK(show_yearly_stats) },
-	{ "SelectEvents",   NULL, "SelectEvents", NULL, NULL, G_CALLBACK(selectevents_dialog) },
+	{ "ImportFile",     GTK_STOCK_GO_BACK, N_("Import XML File(s)"), CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
+	{ "DownloadLog",    GTK_STOCK_GO_DOWN, N_("Download From Dive Computer"), CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
+	{ "AddDive",        GTK_STOCK_ADD, N_("Add Dive"), NULL, NULL, G_CALLBACK(add_dive_cb) },
+	{ "Preferences",    GTK_STOCK_PREFERENCES, N_("Preferences"), PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
+	{ "Renumber",       NULL, N_("Renumber"), NULL, NULL, G_CALLBACK(renumber_dialog) },
+	{ "YearlyStats",    NULL, N_("Yearly Statistics"), NULL, NULL, G_CALLBACK(show_yearly_stats) },
+	{ "SelectEvents",   NULL, N_("SelectEvents"), NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, NULL,   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, NULL,  NULL, NULL, G_CALLBACK(about_dialog) },
-	{ "ViewList",       NULL, "List",  CTRLCHAR "1", NULL, G_CALLBACK(view_list) },
-	{ "ViewProfile",    NULL, "Profile", CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
-	{ "ViewInfo",       NULL, "Info", CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
-	{ "ViewThree",      NULL, "Three", CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
+	{ "ViewList",       NULL, N_("List"),  CTRLCHAR "1", NULL, G_CALLBACK(view_list) },
+	{ "ViewProfile",    NULL, N_("Profile"), CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
+	{ "ViewInfo",       NULL, N_("Info"), CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
+	{ "ViewThree",      NULL, N_("Three"), CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
 static GtkToggleActionEntry toggle_items[] = {
-	{ "Autogroup",      NULL, "Autogroup", NULL, NULL, G_CALLBACK(autogroup_cb), FALSE },
-	{ "ToggleZoom",     NULL, "Toggle Zoom", CTRLCHAR "0", NULL, G_CALLBACK(toggle_zoom), FALSE },
+	{ "Autogroup",      NULL, N_("Autogroup"), NULL, NULL, G_CALLBACK(autogroup_cb), FALSE },
+	{ "ToggleZoom",     NULL, N_("Toggle Zoom"), CTRLCHAR "0", NULL, G_CALLBACK(toggle_zoom), FALSE },
 };
 static gint ntoggle_items = sizeof (toggle_items) / sizeof (toggle_items[0]);
 
@@ -974,6 +976,7 @@ static const gchar* ui_string = " \
 static GtkWidget *get_menubar_menu(GtkWidget *window, GtkUIManager *ui_manager)
 {
 	GtkActionGroup *action_group = gtk_action_group_new("Menu");
+	gtk_action_group_set_translation_domain(action_group, "subsurface");
 	gtk_action_group_add_actions(action_group, menu_items, nmenu_items, 0);
 	toggle_items[0].is_active = autogroup;
 	gtk_action_group_add_toggle_actions(action_group, toggle_items, ntoggle_items, 0);
@@ -1106,19 +1109,19 @@ void init_ui(int *argcp, char ***argvp)
 
 	/* Frame for extended dive info */
 	nb_page = extended_dive_info_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Dive Notes"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new(_("Dive Notes")));
 
 	/* Frame for dive equipment */
 	nb_page = equipment_widget(W_IDX_PRIMARY);
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Equipment"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new(_("Equipment")));
 
 	/* Frame for single dive statistics */
 	nb_page = single_stats_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Dive Info"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new(_("Dive Info")));
 
 	/* Frame for total dive statistics */
 	nb_page = total_stats_widget();
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new("Stats"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new(_("Stats")));
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
@@ -1327,7 +1330,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	model = gtk_list_store_new(1, G_TYPE_POINTER);
 	default_index = fill_computer_list(model);
 
-	frame = gtk_frame_new("Dive computer");
+	frame = gtk_frame_new(_("Dive computer"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
 	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
@@ -1358,7 +1361,7 @@ static GtkEntry *dive_computer_device(GtkWidget *vbox)
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new("Device name");
+	frame = gtk_frame_new(_("Device name"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
 	entry = gtk_entry_new();
@@ -1390,7 +1393,7 @@ void import_files(GtkWidget *w, gpointer data)
 	struct stat sb;
 	GSList *filenames = NULL;
 
-	fs_dialog = gtk_file_chooser_dialog_new("Choose XML Files To Import Into Current Data File",
+	fs_dialog = gtk_file_chooser_dialog_new(_("Choose XML Files To Import Into Current Data File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -1465,7 +1468,7 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 
 	button = gtk_dialog_get_widget_for_response(dialog, GTK_RESPONSE_ACCEPT);
 	gtk_button_set_use_stock(GTK_BUTTON(button), 0);
-	gtk_button_set_label(GTK_BUTTON(button), "Retry");
+	gtk_button_set_label(GTK_BUTTON(button), _("Retry"));
 
 	vbox = gtk_dialog_get_content_area(dialog);
 
@@ -1488,7 +1491,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 		.devname = NULL,
 	};
 
-	dialog = gtk_dialog_new_with_buttons("Download From Dive Computer",
+	dialog = gtk_dialog_new_with_buttons(_("Download From Dive Computer"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1496,7 +1499,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	label = gtk_label_new(" Please select dive computer and device. ");
+	label = gtk_label_new(_(" Please select dive computer and device. "));
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
 	computer = dive_computer_selector(vbox);
 	device = dive_computer_device(vbox);

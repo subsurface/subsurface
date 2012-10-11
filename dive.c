@@ -2,6 +2,7 @@
 /* maintains the internal dive list structure */
 #include <string.h>
 #include <stdio.h>
+#include <glib/gi18n.h>
 
 #include "dive.h"
 
@@ -614,7 +615,7 @@ static char *merge_text(const char *a, const char *b)
 	res = malloc(strlen(a) + strlen(b) + 9);
 	if (!res)
 		return (char *)a;
-	sprintf(res, "(%s) or (%s)", a, b);
+	sprintf(res, _("(%s) or (%s)"), a, b);
 	return res;
 }
 

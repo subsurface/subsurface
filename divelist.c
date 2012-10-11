@@ -15,6 +15,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <glib/gi18n.h>
 
 #include "divelist.h"
 #include "dive.h"
@@ -1254,18 +1255,18 @@ static struct divelist_column {
 	int *visible;
 } dl_column[] = {
 	[DIVE_NR] = { "#", nr_data_func, NULL, ALIGN_RIGHT | UNSORTABLE },
-	[DIVE_DATE] = { "Date", date_data_func, NULL, ALIGN_LEFT },
+	[DIVE_DATE] = { N_("Date"), date_data_func, NULL, ALIGN_LEFT },
 	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
-	[DIVE_DEPTH] = { "ft", depth_data_func, NULL, ALIGN_RIGHT },
-	[DIVE_DURATION] = { "min", duration_data_func, NULL, ALIGN_RIGHT },
+	[DIVE_DEPTH] = { N_("ft"), depth_data_func, NULL, ALIGN_RIGHT },
+	[DIVE_DURATION] = { N_("min"), duration_data_func, NULL, ALIGN_RIGHT },
 	[DIVE_TEMPERATURE] = { UTF8_DEGREE "F", temperature_data_func, NULL, ALIGN_RIGHT, &visible_cols.temperature },
-	[DIVE_TOTALWEIGHT] = { "lbs", weight_data_func, NULL, ALIGN_RIGHT, &visible_cols.totalweight },
-	[DIVE_SUIT] = { "Suit", NULL, NULL, ALIGN_LEFT, &visible_cols.suit },
-	[DIVE_CYLINDER] = { "Cyl", NULL, NULL, 0, &visible_cols.cylinder },
+	[DIVE_TOTALWEIGHT] = { N_("lbs"), weight_data_func, NULL, ALIGN_RIGHT, &visible_cols.totalweight },
+	[DIVE_SUIT] = { N_("Suit"), NULL, NULL, ALIGN_LEFT, &visible_cols.suit },
+	[DIVE_CYLINDER] = { N_("Cyl"), NULL, NULL, 0, &visible_cols.cylinder },
 	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &visible_cols.nitrox },
-	[DIVE_SAC] = { "SAC", sac_data_func, NULL, 0, &visible_cols.sac },
-	[DIVE_OTU] = { "OTU", otu_data_func, NULL, 0, &visible_cols.otu },
-	[DIVE_LOCATION] = { "Location", NULL, NULL, ALIGN_LEFT },
+	[DIVE_SAC] = { N_("SAC"), sac_data_func, NULL, 0, &visible_cols.sac },
+	[DIVE_OTU] = { N_("OTU"), otu_data_func, NULL, 0, &visible_cols.otu },
+	[DIVE_LOCATION] = { N_("Location"), NULL, NULL, ALIGN_LEFT },
 };
 
 
@@ -1998,8 +1999,12 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button, GdkEventButton *event)
 {
 	GtkWidget *menu, *menuitem, *image;
-	char editlabel[] = "Edit dives";
-	char deletelabel[] = "Delete dives";
+	char editplurallabel[] = N_("Edit dives");
+	char editsinglelabel[] = N_("Edit dive");
+	char *editlabel;
+	char deleteplurallabel[] = N_("Delete dives");
+	char deletesinglelabel[] = N_("Delete dive");
+	char *deletelabel;
 	GtkTreePath *path, *prevpath, *nextpath;
 	GtkTreeIter iter, previter, nextiter;
 	int idx, previdx, nextidx;
@@ -2011,7 +2016,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 
 	menu = gtk_menu_new();
-	menuitem = gtk_image_menu_item_new_with_label("Add dive");
+	menuitem = gtk_image_menu_item_new_with_label(_("Add dive"));
 	image = gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
 	g_signal_connect(menuitem, "activate", G_CALLBACK(add_dive_cb), NULL);
@@ -2019,7 +2024,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 
 	if (idx < 0) {
 		/* mouse pointer is on a trip summary entry */
-		menuitem = gtk_menu_item_new_with_label("Edit Trip Summary");
+		menuitem = gtk_menu_item_new_with_label(_("Edit Trip Summary"));
 		g_signal_connect(menuitem, "activate", G_CALLBACK(edit_trip_cb), path);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		prevpath = gtk_tree_path_copy(path);
@@ -2027,7 +2032,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		    gtk_tree_model_get_iter(MODEL(dive_list), &previter, prevpath)) {
 			gtk_tree_model_get(MODEL(dive_list), &previter, DIVE_INDEX, &previdx, -1);
 			if (previdx < 0) {
-				menuitem = gtk_menu_item_new_with_label("Merge trip with trip above");
+				menuitem = gtk_menu_item_new_with_label(_("Merge trip with trip above"));
 				g_signal_connect(menuitem, "activate", G_CALLBACK(merge_trips_cb), path);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
@@ -2037,12 +2042,12 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		if (gtk_tree_model_get_iter(MODEL(dive_list), &nextiter, nextpath)) {
 			gtk_tree_model_get(MODEL(dive_list), &nextiter, DIVE_INDEX, &nextidx, -1);
 			if (nextidx < 0) {
-				menuitem = gtk_menu_item_new_with_label("Merge trip with trip below");
+				menuitem = gtk_menu_item_new_with_label(_("Merge trip with trip below"));
 				g_signal_connect(menuitem, "activate", G_CALLBACK(merge_trips_cb), nextpath);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
 		}
-		menuitem = gtk_menu_item_new_with_label("Remove Trip");
+		menuitem = gtk_menu_item_new_with_label(_("Remove Trip"));
 		g_signal_connect(menuitem, "activate", G_CALLBACK(remove_trip_cb), path);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	} else {
@@ -2050,8 +2055,11 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		/* if we right click on selected dive(s), edit or delete those */
 		if (dive->selected) {
 			if (amount_selected == 1) {
-				deletelabel[strlen(deletelabel) - 1] = '\0';
-				editlabel[strlen(editlabel) - 1] = '\0';
+				deletelabel = _(deletesinglelabel);
+				editlabel = _(editsinglelabel);
+			} else {
+				deletelabel = _(deleteplurallabel);
+				editlabel = _(editplurallabel);
 			}
 			menuitem = gtk_menu_item_new_with_label(deletelabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_selected_dives_cb), path);
@@ -2061,12 +2069,12 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_selected_dives_cb), NULL);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		} else {
-			deletelabel[strlen(deletelabel) - 1] = '\0';
+			deletelabel = _(deletesinglelabel);
 			menuitem = gtk_menu_item_new_with_label(deletelabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_dive_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
-			editlabel[strlen(editlabel) - 1] = '\0';
+			editlabel = _(editsinglelabel);
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
@@ -2077,7 +2085,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			int *indices = gtk_tree_path_get_indices(path);
 			/* top level dive or child dive that is not the first child */
 			if (depth == 1 || indices[1] > 0) {
-				menuitem = gtk_menu_item_new_with_label("Create new trip above");
+				menuitem = gtk_menu_item_new_with_label(_("Create new trip above"));
 				g_signal_connect(menuitem, "activate", G_CALLBACK(insert_trip_before_cb), path);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
@@ -2087,24 +2095,24 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			    gtk_tree_path_prev(prevpath) &&
 			    gtk_tree_model_get_iter(MODEL(dive_list), &previter, prevpath) &&
 			    gtk_tree_model_iter_n_children(model, &previter)) {
-				menuitem = gtk_menu_item_new_with_label("Add to trip above");
+				menuitem = gtk_menu_item_new_with_label(_("Add to trip above"));
 				g_signal_connect(menuitem, "activate", G_CALLBACK(merge_dive_into_trip_above_cb), path);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
 			if (DIVE_IN_TRIP(dive)) {
 				if (dive->selected && amount_selected > 1)
-					menuitem = gtk_menu_item_new_with_label("Remove selected dives from trip");
+					menuitem = gtk_menu_item_new_with_label(_("Remove selected dives from trip"));
 				else
-					menuitem = gtk_menu_item_new_with_label("Remove dive from trip");
+					menuitem = gtk_menu_item_new_with_label(_("Remove dive from trip"));
 				g_signal_connect(menuitem, "activate", G_CALLBACK(remove_from_trip_cb), path);
 				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			}
 		}
 	}
-	menuitem = gtk_menu_item_new_with_label("Expand all");
+	menuitem = gtk_menu_item_new_with_label(_("Expand all"));
 	g_signal_connect(menuitem, "activate", G_CALLBACK(expand_all_cb), tree_view);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-	menuitem = gtk_menu_item_new_with_label("Collapse all");
+	menuitem = gtk_menu_item_new_with_label(_("Collapse all"));
 	g_signal_connect(menuitem, "activate", G_CALLBACK(collapse_all_cb), tree_view);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);

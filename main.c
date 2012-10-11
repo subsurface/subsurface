@@ -1,8 +1,11 @@
 /* main.c */
+#include <locale.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <libintl.h>
+#include <glib/gi18n.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -29,17 +32,19 @@ static int sortfn(const void *_a, const void *_b)
 
 const char *weekday(int wday)
 {
-	static const char wday_array[7][4] = {
-		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+	static const char wday_array[7][7] = {
+		/*++GETTEXT: these are three letter days - we allow up to six code bytes */
+		N_("Sun"), N_("Mon"), N_("Tue"), N_("Wed"), N_("Thu"), N_("Fri"), N_("Sat")
 	};
 	return wday_array[wday];
 }
 
 const char *monthname(int mon)
 {
-	static const char month_array[12][4] = {
-		"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-		"Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+	static const char month_array[12][7] = {
+		/*++GETTEXT: these are three letter months - we allow up to six code bytes*/
+		N_("Jan"), N_("Feb"), N_("Mar"), N_("Apr"), N_("May"), N_("Jun"),
+		N_("Jul"), N_("Aug"), N_("Sep"), N_("Oct"), N_("Nov"), N_("Dec"),
 	};
 	return month_array[mon];
 }
@@ -221,6 +226,13 @@ int main(int argc, char **argv)
 	int i;
 	gboolean no_filenames = TRUE;
 
+	/* set up l18n - the search directory needs to change
+	 * so that it uses the correct system directory when
+	 * subsurface isn't run from the local directory */
+	setlocale( LC_ALL, "" );
+	bindtextdomain("subsurface", "./locale");
+	bind_textdomain_codeset("subsurface", "utf-8");
+	textdomain("subsurface");
 	output_units = SI_units;
 
 	subsurface_command_line_init(&argc, &argv);

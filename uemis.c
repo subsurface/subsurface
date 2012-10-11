@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <glib/gi18n.h>
 #define __USE_XOPEN
 #include <time.h>
 
@@ -128,45 +129,45 @@ void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sam
 	uint8_t *flags = u_sample->flags;
 
 	if (flags[1] & 0x01)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Safety Stop Violation");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Safety Stop Violation"));
 	if (flags[1] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Speed Alarm");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Speed Alarm"));
 #if WANT_CRAZY_WARNINGS
 	if (flags[1] & 0x06) /* both bits 1 and 2 are a warning */
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Speed Warning");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Speed Warning"));
 	if (flags[1] & 0x10)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "PO2 Green Warning");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("PO2 Green Warning"));
 #endif
 	if (flags[1] & 0x20)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "PO2 Ascend Warning");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("PO2 Ascend Warning"));
 	if (flags[1] & 0x40)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "PO2 Ascend Alarm");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("PO2 Ascend Alarm"));
 	/* flags[2] reflects the deco / time bar
 	 * flags[3] reflects more display details on deco and pO2 */
 	if (flags[4] & 0x01)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Tank Pressure Info");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Tank Pressure Info"));
 	if (flags[4] & 0x04)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "RGT Warning");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("RGT Warning"));
 	if (flags[4] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "RGT Alert");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("RGT Alert"));
 	if (flags[4] & 0x40)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Tank Change Suggested");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Tank Change Suggested"));
 	if (flags[4] & 0x80)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Depth Limit Exceeded");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Depth Limit Exceeded"));
 	if (flags[5] & 0x01)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Max Deco Time Warning");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Max Deco Time Warning"));
 	if (flags[5] & 0x04)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Dive Time Info");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Dive Time Info"));
 	if (flags[5] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Dive Time Alert");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Dive Time Alert"));
 	if (flags[5] & 0x10)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Marker");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Marker"));
 	if (flags[6] & 0x02)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "No Tank Data");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("No Tank Data"));
 	if (flags[6] & 0x04)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Low Battery Warning");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Low Battery Warning"));
 	if (flags[6] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, "Low Battery Alert");
+		add_event(dive, sample->time.seconds, 0, 0, 0, _("Low Battery Alert"));
 	/* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
 }

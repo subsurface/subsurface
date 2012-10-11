@@ -11,6 +11,7 @@
 #ifdef XSLT
 #include <libxslt/transform.h>
 #endif
+#include <glib/gi18n.h>
 
 #include "dive.h"
 #include "uemis.h"
@@ -1462,12 +1463,12 @@ void parse_xml_buffer(const char *url, const char *buffer, int size, GError **er
 
 	doc = xmlReadMemory(buffer, size, url, NULL, 0);
 	if (!doc) {
-		fprintf(stderr, "Failed to parse '%s'.\n", url);
+		fprintf(stderr, _("Failed to parse '%s'.\n"), url);
 		if (error != NULL)
 		{
 			*error = g_error_new(g_quark_from_string("subsurface"),
 					     DIVE_ERROR_PARSE,
-					     "Failed to parse '%s'",
+					     _("Failed to parse '%s'"),
 					     url);
 		}
 		return;

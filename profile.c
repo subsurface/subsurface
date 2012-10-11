@@ -2,6 +2,7 @@
 /* creates all the necessary data for drawing the dive profile
  * uses cairo to draw it
  */
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
