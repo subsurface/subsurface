@@ -89,7 +89,7 @@ msgstr "(%s) oder (%s)"
 
 #: gtk-gui.c:918
 msgid "About"
-msgstr ""
+msgstr "Info"
 
 #: gtk-gui.c:912
 msgid "Add Dive"
@@ -159,7 +159,7 @@ msgstr ""
 
 #: gtk-gui.c:908
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: divelist.c:2115
 msgid "Collapse all"
@@ -572,7 +572,7 @@ msgstr "Multi-Platform Tauchprogram in C"
 
 #: gtk-gui.c:904
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: gtk-gui.c:811
 msgid "New starting number"
@@ -599,9 +599,8 @@ msgid "Oct"
 msgstr "Okt"
 
 #: gtk-gui.c:905
-#, fuzzy
 msgid "Open"
-msgstr "Datei öffnen"
+msgstr "Öffnen"
 
 #: gtk-gui.c:313
 msgid "Open File"
@@ -640,9 +639,8 @@ msgid "Pretty print"
 msgstr "Schön drucken"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Print"
-msgstr "Art des Ausdrucks"
+msgstr "Drucken"
 
 #: print.c:505
 msgid "Print only selected dives"
@@ -662,7 +660,7 @@ msgstr "Profil"
 
 #: gtk-gui.c:917
 msgid "Quit"
-msgstr ""
+msgstr "Beenden"
 
 #: uemis.c:152
 msgid "RGT Alert"
@@ -727,12 +725,11 @@ msgstr "Sa"
 
 #: gtk-gui.c:906
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: gtk-gui.c:907
-#, fuzzy
 msgid "Save As"
-msgstr "Datei speichern unter"
+msgstr "Speichern unter"
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
