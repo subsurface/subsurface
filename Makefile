@@ -118,11 +118,14 @@ endif
 
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
+MSGLANGS=$(notdir $(wildcard po/*po))
+MSGOBJS=$(addprefix locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
+
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
-$(NAME): $(OBJS) gettext
+$(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
@@ -211,12 +214,9 @@ uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
-gettext: po/*.po
-	@for MSG in $(wildcard po/*.po); do \
-	  LOC=`basename $$MSG .po`; \
-	  mkdir -p locale/$$LOC.UTF-8/LC_MESSAGES; \
-	  msgfmt -c -o locale/$$LOC.UTF-8/LC_MESSAGES/subsurface.mo $$MSG; \
-	done
+locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po
+	mkdir -p $(dir $@)
+	msgfmt -c -o $@ po/$*.po
 
 doc:
 	$(MAKE) -C Documentation doc
