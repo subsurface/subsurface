@@ -100,15 +100,15 @@ msgstr "Tietoja"
 
 #: gtk-gui.c:912
 msgid "Add Dive"
-msgstr "Lis‰‰ sukellus"
+msgstr "Lis√§√§ sukellus"
 
 #: divelist.c:2019
 msgid "Add dive"
-msgstr "Lis‰‰ sukellus"
+msgstr "Lis√§√§ sukellus"
 
 #: divelist.c:2098
 msgid "Add to trip above"
-msgstr "Liit‰ yll‰ olevaan retkeen"
+msgstr "Liit√§ yll√§ olevaan retkeen"
 
 #: main.c:46
 msgid "Apr"
@@ -137,7 +137,7 @@ msgstr "Pintakulutus"
 
 #: statistics.c:651
 msgid "Avg Temp"
-msgstr "Keskil‰mpˆtila"
+msgstr "Keskil√§mp√∂tila"
 
 #: statistics.c:658
 msgid "Avg Time"
@@ -163,7 +163,7 @@ msgstr "Valitse oletustiedosto"
 
 #: gtk-gui.c:1396
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Valitse tietoihin liitett‰v‰t XML-tiedostot"
+msgstr "Valitse tietoihin liitett√§v√§t XML-tiedostot"
 
 #: gtk-gui.c:908
 msgid "Close"
@@ -175,7 +175,7 @@ msgstr "Supista kaikki retket"
 
 #: divelist.c:2088
 msgid "Create new trip above"
-msgstr "Liit‰ uuteen retkeen"
+msgstr "Liit√§ uuteen retkeen"
 
 #: gtk-gui.c:596
 msgid "CuFt"
@@ -184,16 +184,16 @@ msgstr "kuutiojalka"
 #: divelist.c:1265
 #: gtk-gui.c:620
 msgid "Cyl"
-msgstr "S‰iliˆt"
+msgstr "S√§ili√∂t"
 
 #: equipment.c:926
 #: equipment.c:1062
 msgid "Cylinder"
-msgstr "S‰iliˆt"
+msgstr "S√§ili√∂t"
 
 #: equipment.c:1572
 msgid "Cylinders"
-msgstr "S‰iliˆt"
+msgstr "S√§ili√∂t"
 
 #: divelist.c:1258
 #: print.c:154
@@ -203,11 +203,11 @@ msgstr "Ajankohta"
 
 #: info.c:776
 msgid "Date and Time"
-msgstr "P‰iv‰ ja aika"
+msgstr "P√§iv√§ ja aika"
 
 #: info.c:786
 msgid "Date:"
-msgstr "P‰iv‰:"
+msgstr "P√§iv√§:"
 
 #: main.c:47
 msgid "Dec"
@@ -338,7 +338,7 @@ msgid ""
 "Total"
 msgstr ""
 "Kesto\n"
-"Yhteens‰"
+"Yhteens√§"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -374,7 +374,7 @@ msgstr "Muuta retken tietoja"
 
 #: gtk-gui.c:771
 msgid "Enable / Disable Events"
-msgstr "N‰yt‰ / piilota tapahtumamerkit"
+msgstr "N√§yt√§ / piilota tapahtumamerkit"
 
 #: equipment.c:965
 #: equipment.c:1489
@@ -397,27 +397,27 @@ msgstr "Fahrenheit"
 #: gtk-gui.c:140
 #, c-format
 msgid "Failed to open %i files."
-msgstr "%i tiedoston avaaminen ep‰onnistui."
+msgstr "%i tiedoston avaaminen ep√§onnistui."
 
 #: parse-xml.c:1471
 #, c-format
 msgid "Failed to parse '%s'"
-msgstr "Tiedoston '%s' lukeminen ep‰onnistui."
+msgstr "Tiedoston '%s' lukeminen ep√§onnistui."
 
 #: parse-xml.c:1466
 #, c-format
 msgid "Failed to parse '%s'.\n"
-msgstr "Tiedoston '%s' lukeminen ep‰onnistui.\n"
+msgstr "Tiedoston '%s' lukeminen ep√§onnistui.\n"
 
 #: file.c:266
 #, c-format
 msgid "Failed to read '%s'"
-msgstr "Tiedoston '%s' avaaminen ep‰onnistui"
+msgstr "Tiedoston '%s' avaaminen ep√§onnistui"
 
 #: file.c:262
 #, c-format
 msgid "Failed to read '%s'.\n"
-msgstr "Tiedoston '%s' lukeminen ep‰onnistui.\n"
+msgstr "Tiedoston '%s' lukeminen ep√§onnistui.\n"
 
 #: main.c:46
 msgid "Feb"
@@ -453,7 +453,7 @@ msgstr "Ohje"
 
 #: gtk-gui.c:910
 msgid "Import XML File(s)"
-msgstr "Liit‰ tiedot XML-tiedostosta"
+msgstr "Liit√§ tiedot XML-tiedostosta"
 
 #: gtk-gui.c:921
 msgid "Info"
@@ -466,11 +466,11 @@ msgstr "tammi"
 
 #: main.c:47
 msgid "Jul"
-msgstr "hein‰"
+msgstr "hein√§"
 
 #: main.c:46
 msgid "Jun"
-msgstr "kes‰"
+msgstr "kes√§"
 
 #: gtk-gui.c:854
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
@@ -522,7 +522,7 @@ msgstr "Sukellusvanhin"
 
 #: uemis.c:158
 msgid "Max Deco Time Warning"
-msgstr "Varoitus: etappipys‰hdysaika"
+msgstr "Varoitus: etappipys√§hdysaika"
 
 #: statistics.c:666
 #: statistics.c:704
@@ -535,7 +535,7 @@ msgstr "Suurin pintakulutus"
 
 #: statistics.c:649
 msgid "Max Temp"
-msgstr "Ylin l‰mpˆtila"
+msgstr "Ylin l√§mp√∂tila"
 
 #: print.c:94
 #, c-format
@@ -558,11 +558,11 @@ msgstr "touko"
 
 #: divelist.c:2035
 msgid "Merge trip with trip above"
-msgstr "Liit‰ retki yll‰ olevaan retkeen"
+msgstr "Liit√§ retki yll√§ olevaan retkeen"
 
 #: divelist.c:2045
 msgid "Merge trip with trip below"
-msgstr "Liit‰ retki alla olevaan retkeen"
+msgstr "Liit√§ retki alla olevaan retkeen"
 
 #: gtk-gui.c:585
 msgid "Meter"
@@ -578,7 +578,7 @@ msgstr "Pienin pintakulutus"
 
 #: statistics.c:650
 msgid "Min Temp"
-msgstr "Alin l‰mpˆtila"
+msgstr "Alin l√§mp√∂tila"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -590,7 +590,7 @@ msgstr "ma"
 
 #: gtk-gui.c:851
 msgid "Multi-platform divelog software in C"
-msgstr "Usean laitealustan sukellusp‰iv‰kirjaohjelma C-kielell‰"
+msgstr "Usean laitealustan sukellusp√§iv√§kirjaohjelma C-kielell√§"
 
 #: gtk-gui.c:904
 msgid "New"
@@ -602,7 +602,7 @@ msgstr "Uusi aloitusnumero"
 
 #: uemis.c:166
 msgid "No Tank Data"
-msgstr "Ei tietoja s‰iliˆist‰"
+msgstr "Ei tietoja s√§ili√∂ist√§"
 
 #: info.c:463
 #: info.c:496
@@ -618,7 +618,7 @@ msgstr "marras"
 #: gtk-gui.c:635
 #: statistics.c:713
 msgid "OTU"
-msgstr "Happikertym‰"
+msgstr "Happikertym√§"
 
 #: main.c:47
 msgid "Oct"
@@ -691,11 +691,11 @@ msgstr "Lopeta"
 
 #: uemis.c:152
 msgid "RGT Alert"
-msgstr "Huomautus: kaasum‰‰r‰"
+msgstr "Huomautus: kaasum√§√§r√§"
 
 #: uemis.c:150
 msgid "RGT Warning"
-msgstr "Varoitus: kaasum‰‰r‰"
+msgstr "Varoitus: kaasum√§√§r√§"
 
 #: info.c:489
 #: info.c:916
@@ -713,11 +713,11 @@ msgstr "Poista retki"
 
 #: divelist.c:2106
 msgid "Remove dive from trip"
-msgstr "Erota sukellus pois retkest‰"
+msgstr "Erota sukellus pois retkest√§"
 
 #: divelist.c:2104
 msgid "Remove selected dives from trip"
-msgstr "Erota valitut sukellukset pois retkest‰"
+msgstr "Erota valitut sukellukset pois retkest√§"
 
 #: gtk-gui.c:802
 #: gtk-gui.c:914
@@ -726,7 +726,7 @@ msgstr "Uudellennumeroi"
 
 #: gtk-gui.c:1471
 msgid "Retry"
-msgstr "Yrit‰ uudestaan"
+msgstr "Yrit√§ uudestaan"
 
 #: divelist.c:1267
 #: gtk-gui.c:630
@@ -748,7 +748,7 @@ msgstr "SDE-tiedosto"
 
 #: uemis.c:132
 msgid "Safety Stop Violation"
-msgstr "Turvapys‰hdyksen laiminlyˆnti"
+msgstr "Turvapys√§hdyksen laiminly√∂nti"
 
 #: main.c:37
 msgid "Sat"
@@ -760,7 +760,7 @@ msgstr "Tallenna"
 
 #: gtk-gui.c:907
 msgid "Save As"
-msgstr "Tallenna nimell‰..."
+msgstr "Tallenna nimell√§..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -768,7 +768,7 @@ msgstr "Tallenna muutokset?"
 
 #: gtk-gui.c:165
 msgid "Save File As"
-msgstr "Tallenna nimell‰"
+msgstr "Tallenna nimell√§"
 
 #: gtk-gui.c:762
 #: gtk-gui.c:916
@@ -784,7 +784,7 @@ msgid ""
 "Short write to req.txt file\n"
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
-"Tiedoston req.txt kirjoittaminen ep‰onnistui\n"
+"Tiedoston req.txt kirjoittaminen ep√§onnistui\n"
 "Onko Uemis Zurich kytketty oikein?"
 
 #: statistics.c:660
@@ -793,7 +793,7 @@ msgstr "Lyhin sukellus"
 
 #: gtk-gui.c:609
 msgid "Show Columns"
-msgstr "N‰yt‰ sarakkeet"
+msgstr "N√§yt√§ sarakkeet"
 
 #: equipment.c:1486
 msgid "Size"
@@ -842,27 +842,27 @@ msgstr "Taulukkotuloste"
 
 #: uemis.c:154
 msgid "Tank Change Suggested"
-msgstr "S‰iliˆnvaihtoehdotus"
+msgstr "S√§ili√∂nvaihtoehdotus"
 
 #: uemis.c:148
 msgid "Tank Pressure Info"
-msgstr "Tiedotus: s‰iliˆpaine"
+msgstr "Tiedotus: s√§ili√∂paine"
 
 #: gtk-gui.c:615
 msgid "Temp"
-msgstr "L‰mpˆtila"
+msgstr "L√§mp√∂tila"
 
 #: statistics.c:162
 msgid ""
 "Temperature\n"
 "Average"
 msgstr ""
-"L‰mpˆtila\n"
+"L√§mp√∂tila\n"
 "Keskim."
 
 #: gtk-gui.c:599
 msgid "Temperature:"
-msgstr "L‰mpˆtila:"
+msgstr "L√§mp√∂tila:"
 
 #: gtk-gui.c:922
 msgid "Three"
@@ -879,7 +879,7 @@ msgstr "Kello"
 
 #: gtk-gui.c:928
 msgid "Toggle Zoom"
-msgstr "Venyt‰ sukellusprofiilikuvaajaa"
+msgstr "Venyt√§ sukellusprofiilikuvaajaa"
 
 #: statistics.c:657
 msgid "Total Time"
@@ -900,9 +900,9 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: tiedostoj‰rjestelm‰ on l‰hes t‰ynn‰\n"
-"Liit‰ sukellustietokone uudestaan\n"
-"ja yrit‰ uudestaan"
+"Uemis Zurich: tiedostoj√§rjestelm√§ on l√§hes t√§ynn√§\n"
+"Liit√§ sukellustietokone uudestaan\n"
+"ja yrit√§ uudestaan"
 
 #: uemis-downloader.c:29
 msgid ""
@@ -910,21 +910,21 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: Tiedostoj‰rjestelm‰ t‰ynn‰\n"
-"Liit‰ sukellustietokone uudestaan\n"
-"ja yrit‰ uudestaan"
+"Uemis Zurich: Tiedostoj√§rjestelm√§ t√§ynn√§\n"
+"Liit√§ sukellustietokone uudestaan\n"
+"ja yrit√§ uudestaan"
 
 #: uemis-downloader.c:559
 msgid "Uemis init failed"
-msgstr "Uemiksen lukeminen ep‰onnistui"
+msgstr "Uemiksen lukeminen ep√§onnistui"
 
 #: gtk-gui.c:577
 msgid "Units"
-msgstr "Yksikˆt"
+msgstr "Yksik√∂t"
 
 #: gtk-gui.c:901
 msgid "View"
-msgstr "N‰yt‰"
+msgstr "N√§yt√§"
 
 #: gtk-gui.c:594
 msgid "Volume:"
@@ -932,7 +932,7 @@ msgstr "Tilavuus:"
 
 #: statistics.c:706
 msgid "Water Temp"
-msgstr "Veden l‰mpˆtila"
+msgstr "Veden l√§mp√∂tila"
 
 #: main.c:37
 msgid "Wed"
@@ -996,7 +996,7 @@ msgstr "bar"
 
 #: equipment.c:823
 msgid "belt"
-msgstr "vyˆpaino"
+msgstr "vy√∂paino"
 
 #: equipment.c:826
 msgid "clip-on"
@@ -1026,7 +1026,7 @@ msgstr "min"
 #: statistics.c:478
 #, c-format
 msgid "more than %d days"
-msgstr "yli %d p‰iv‰‰"
+msgstr "yli %d p√§iv√§√§"
 
 #: equipment.c:1378
 #: equipment.c:1398
@@ -1039,7 +1039,7 @@ msgstr "tuntematon"
 
 #: equipment.c:544
 msgid "unspecified"
-msgstr "m‰‰rittelem‰tˆn"
+msgstr "m√§√§rittelem√§t√∂n"
 
 #: equipment.c:1514
 msgid "weight"
