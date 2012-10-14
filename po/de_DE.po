@@ -24,7 +24,7 @@ msgid ""
 "Average"
 msgstr ""
 "\n"
-"Durchschnitt"
+"Ø"
 
 #: statistics.c:161
 msgid ""
@@ -32,7 +32,7 @@ msgid ""
 "Longest"
 msgstr ""
 "\n"
-"längster"
+"Max."
 
 #: statistics.c:162 statistics.c:163
 msgid ""
@@ -40,7 +40,7 @@ msgid ""
 "Maximum"
 msgstr ""
 "\n"
-"Grösste"
+"Max."
 
 #: statistics.c:161 statistics.c:162 statistics.c:163
 msgid ""
@@ -48,7 +48,7 @@ msgid ""
 "Minimum"
 msgstr ""
 "\n"
-"Kleinste"
+"Min."
 
 #: statistics.c:161
 msgid ""
@@ -56,7 +56,7 @@ msgid ""
 "Shortest"
 msgstr ""
 "\n"
-"Kürzeste"
+"Min."
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
@@ -101,7 +101,7 @@ msgstr "Tauchgang hinzufügen"
 
 #: divelist.c:2098
 msgid "Add to trip above"
-msgstr "Zum obigen Trip hinzufügen"
+msgstr "Zur obigen Gruppe hinzufügen"
 
 #: main.c:46
 msgid "Apr"
@@ -117,7 +117,7 @@ msgstr "Automatisch gruppieren"
 
 #: gtk-gui.c:662
 msgid "Automatically group dives in trips"
-msgstr "Automatisch die Tauchgänge in Trips gruppieren"
+msgstr "Automatisch die Tauchgänge gruppieren"
 
 #: statistics.c:668 statistics.c:705
 msgid "Avg Depth"
@@ -125,7 +125,7 @@ msgstr "Durchschn. Tiefe"
 
 #: statistics.c:676
 msgid "Avg SAC"
-msgstr "Durchschn. Gasverbrauch"
+msgstr "Ø AMV"
 
 #: statistics.c:651
 msgid "Avg Temp"
@@ -149,7 +149,7 @@ msgstr "Celsius"
 
 #: gtk-gui.c:520
 msgid "Choose Default XML File"
-msgstr "Default XML Datei auswählen"
+msgstr "Standard XML Datei auswählen"
 
 #: gtk-gui.c:1396
 msgid "Choose XML Files To Import Into Current Data File"
@@ -167,7 +167,7 @@ msgstr "Alle einfalten"
 
 #: divelist.c:2088
 msgid "Create new trip above"
-msgstr "Neuen Trip darüber einfügen"
+msgstr "Neuen Gruppe darüber einfügen"
 
 #: gtk-gui.c:596
 msgid "CuFt"
@@ -203,7 +203,7 @@ msgstr "Dez"
 
 #: gtk-gui.c:667
 msgid "Default XML Data File"
-msgstr "Default XML Datei"
+msgstr "Standard XML Datei"
 
 #: info.c:227
 msgid "Delete"
@@ -231,7 +231,7 @@ msgid ""
 "Average"
 msgstr ""
 "Tiefe\n"
-"Durchschnitt"
+"Ø"
 
 #: info.c:836
 #, c-format
@@ -240,7 +240,7 @@ msgstr "Tiefe (%s):"
 
 #: uemis.c:156
 msgid "Depth Limit Exceeded"
-msgstr "Tiefenschwelle überschritten"
+msgstr "Tiefenbegrenzung überschritten"
 
 #: gtk-gui.c:584
 msgid "Depth:"
@@ -248,7 +248,7 @@ msgstr "Tiefe:"
 
 #: gtk-gui.c:1364
 msgid "Device name"
-msgstr "Geräte Name"
+msgstr "Gerätename"
 
 #: print.c:67
 #, c-format
@@ -279,11 +279,11 @@ msgstr "Startzeit"
 
 #: uemis.c:162
 msgid "Dive Time Alert"
-msgstr "Alarm: Tauchgangdauer"
+msgstr "Alarm: Tauchgangsdauer"
 
 #: uemis.c:160
 msgid "Dive Time Info"
-msgstr "Info: Tauchgangdauer"
+msgstr "Info: Tauchgangsdauer"
 
 #: gtk-gui.c:1333
 msgid "Dive computer"
@@ -295,7 +295,7 @@ msgstr "Notizen zum Tauchgang"
 
 #: info.c:483
 msgid "Dive master"
-msgstr "Dive-Master"
+msgstr "Tauchgruppenführer"
 
 #: print.c:154
 msgid "Dive#"
@@ -331,31 +331,31 @@ msgstr "Dauer (min)"
 
 #: info.c:228
 msgid "Edit"
-msgstr "Editieren"
+msgstr "Bearbeiten"
 
 #: info.c:628
 msgid "Edit Trip Info"
-msgstr "Trip Informationen editieren"
+msgstr "Gruppen-Informationen bearbeiten"
 
 #: divelist.c:2027
 msgid "Edit Trip Summary"
-msgstr "Trip Übersicht editieren"
+msgstr "Gruppen-Übersicht bearbeiten"
 
 #: divelist.c:2003
 msgid "Edit dive"
-msgstr "Tauchgang editieren"
+msgstr "Tauchgang bearbeiten"
 
 #: divelist.c:2002
 msgid "Edit dives"
-msgstr "Tauchgänge editieren"
+msgstr "Tauchgänge bearbeiten"
 
 #: info.c:471
 msgid "Edit multiple dives"
-msgstr "Mehrere Tauchgänge editieren"
+msgstr "Mehrere Tauchgänge bearbeiten"
 
 #: info.c:453
 msgid "Edit trip summary"
-msgstr "Trip Übersicht editieren"
+msgstr "Gruppen-Übersicht bearbeiten"
 
 #: gtk-gui.c:771
 msgid "Enable / Disable Events"
@@ -497,7 +497,7 @@ msgstr "Markierung"
 
 #: print.c:154
 msgid "Master"
-msgstr "Master"
+msgstr "Führer"
 
 #: uemis.c:158
 msgid "Max Deco Time Warning"
@@ -509,7 +509,7 @@ msgstr "Max. Tiefe"
 
 #: statistics.c:674
 msgid "Max SAC"
-msgstr "Max. Gasverbrauch"
+msgstr "Max. AMV"
 
 #: statistics.c:649
 msgid "Max Temp"
@@ -536,11 +536,11 @@ msgstr "Mai"
 
 #: divelist.c:2035
 msgid "Merge trip with trip above"
-msgstr "Trip mit dem darüber verbinden"
+msgstr "Gruppe mit der darüber verbinden"
 
 #: divelist.c:2045
 msgid "Merge trip with trip below"
-msgstr "Trip mit dem darunter verbinden"
+msgstr "Gruppe mit der darunter verbinden"
 
 #: gtk-gui.c:585
 msgid "Meter"
@@ -552,7 +552,7 @@ msgstr "Min. Tiefe"
 
 #: statistics.c:675
 msgid "Min SAC"
-msgstr "Min. Gasverbrauch"
+msgstr "Min. AMV"
 
 #: statistics.c:650
 msgid "Min Temp"
@@ -608,7 +608,7 @@ msgstr "Datei öffnen"
 
 #: uemis.c:144
 msgid "PO2 Ascend Alarm"
-msgstr "Alarm: Aufstieg"
+msgstr "Alarm: Aufstieg / PO2"
 
 #: uemis.c:142
 msgid "PO2 Ascend Warning"
@@ -681,15 +681,15 @@ msgstr "Lese Tauchgang %s"
 
 #: divelist.c:2050
 msgid "Remove Trip"
-msgstr "Trip entfernen"
+msgstr "Gruppe entfernen"
 
 #: divelist.c:2106
 msgid "Remove dive from trip"
-msgstr "Tauchgang vom Trip entfernen"
+msgstr "Tauchgang aus Gruppe entfernen"
 
 #: divelist.c:2104
 msgid "Remove selected dives from trip"
-msgstr "Ausgewählte Tauchgänge vom Trip entfernen"
+msgstr "Ausgewählte Tauchgänge aus Gruppe entfernen"
 
 #: gtk-gui.c:802 gtk-gui.c:914
 msgid "Renumber"
@@ -701,15 +701,15 @@ msgstr "Wiederholen"
 
 #: divelist.c:1267 gtk-gui.c:630 statistics.c:712
 msgid "SAC"
-msgstr "Gasverbrauchsrate"
+msgstr "AMV"
 
 #: statistics.c:162
 msgid ""
 "SAC\n"
 "Average"
 msgstr ""
-"Gasverbrauchsrate\n"
-"Durchschnitt"
+"AMV\n"
+"Ø"
 
 #: file.c:75
 msgid "SDE file"
@@ -752,7 +752,7 @@ msgid ""
 "Short write to req.txt file\n"
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
-"Partieller Schreibvorgang der req.txt Datei\n"
+"Unvollständiger Schreibvorgang der req.txt Datei\n"
 "Ist der Uemis Zurich korrekt verbunden?"
 
 #: statistics.c:660
@@ -789,7 +789,7 @@ msgstr "Statistiken"
 
 #: divelist.c:1264 gtk-gui.c:645 info.c:490 info.c:917
 msgid "Suit"
-msgstr "Taucheranzug"
+msgstr "Anzug"
 
 #. ++GETTEXT: these are three letter days - we allow up to six code bytes
 #: main.c:37
@@ -798,7 +798,7 @@ msgstr "So"
 
 #: statistics.c:698
 msgid "Surf Intv"
-msgstr "Oberflächenzeit"
+msgstr "Oberflächenpause"
 
 #: print.c:488
 msgid "Table print"
@@ -806,7 +806,7 @@ msgstr "Tabellenausdruck"
 
 #: uemis.c:154
 msgid "Tank Change Suggested"
-msgstr "Tank-Wechsel Vorschlag"
+msgstr "Tankwechsel Vorschlag"
 
 #: uemis.c:148
 msgid "Tank Pressure Info"
@@ -822,7 +822,7 @@ msgid ""
 "Average"
 msgstr ""
 "Temperatur\n"
-"Durchschnitt"
+"Ø"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
