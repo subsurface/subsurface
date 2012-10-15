@@ -468,11 +468,13 @@ static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
 	GtkWidget *hbox, *label, *frame, *equipment;
-	char buffer[80] = N_("Edit multiple dives");
+	char buffer[80];
+
+	snprintf(buffer, sizeof(buffer), "%s", _("Edit multiple dives"));
 
 	if (!multi)
-		divename(_(buffer), sizeof(_(buffer)), dive);
-	label = gtk_label_new(_(buffer));
+		divename(buffer, sizeof(buffer), dive);
+	label = gtk_label_new(buffer);
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
