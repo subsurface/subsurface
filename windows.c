@@ -153,6 +153,9 @@ const char *subsurface_default_filename()
 
 const char *subsurface_gettext_domainpath()
 {
+	char buffer[80];
+	snprintf(buffer, sizeof(buffer), "LANGUAGE=%s.UTF-8", g_win32_getlocale());
+	putenv(buffer);
 	return "./locale";
 }
 
