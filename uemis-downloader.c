@@ -17,15 +17,17 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#include <glib/gi18n.h>
+
 #include "uemis.h"
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
 #include "display-gtk.h"
 
-#define ERR_FS_ALMOST_FULL "Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand try again"
-#define ERR_FS_FULL "Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again"
-#define ERR_FS_SHORT_WRITE "Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?"
+#define ERR_FS_ALMOST_FULL N_("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand try again")
+#define ERR_FS_FULL N_("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
+#define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 6
 #define UEMIS_TIMEOUT 100000
@@ -262,7 +264,7 @@ static void show_progress(char *buf)
 			while (*p != '{' && t < tmp + 9)
 				*t++ = *p++;
 			*t = '\0';
-			uemis_info("Reading dive %s", tmp);
+			uemis_info(_("Reading dive %s"), tmp);
 		}
 	}
 }
@@ -301,11 +303,11 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	fprintf(debugfile,"::w req.txt \"%s\"\n", sb);
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
-		*error_text = ERR_FS_SHORT_WRITE;
+		*error_text = _(ERR_FS_SHORT_WRITE);
 		return FALSE;
 	}
 	if (! next_file(number_of_files)) {
-		*error_text = ERR_FS_FULL;
+		*error_text = _(ERR_FS_FULL);
 		more_files = FALSE;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -334,7 +336,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				assembling_mbuf = FALSE;
 			if (assembling_mbuf) {
 				if (! next_file(number_of_files)) {
-					*error_text = ERR_FS_FULL;
+					*error_text = _(ERR_FS_FULL);
 					more_files = FALSE;
 					assembling_mbuf = FALSE;
 				}
@@ -343,7 +345,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 			}
 		} else {
 			if (! next_file(number_of_files - 1)) {
-				*error_text = ERR_FS_FULL;
+				*error_text = _(ERR_FS_FULL);
 				more_files = FALSE;
 				assembling_mbuf = FALSE;
 				searching = FALSE;
@@ -554,7 +556,7 @@ static char *do_uemis_download(struct argument_block *args)
 	buffer_add(xml_buffer, &xml_buffer_size, "<dives type='uemis'><string></string>\n<list>\n");
 	uemis_info("Init Communication");
 	if (! uemis_init(mountpath))
-		return "Uemis init failed";
+		return _("Uemis init failed");
 	if (! uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 		goto bail;
 	deviceid = strdup(param_buff[0]);
@@ -587,7 +589,7 @@ static char *do_uemis_download(struct argument_block *args)
 			break;
 		/* finally, if the memory is getting too full, maybe we better stop, too */
 		if (progress_bar_fraction > 0.85) {
-			result = ERR_FS_ALMOST_FULL;
+			result = _(ERR_FS_ALMOST_FULL);
 			break;
 		}
 		/* clean up mbuf */
@@ -601,7 +603,7 @@ static char *do_uemis_download(struct argument_block *args)
 		goto bail;
 	if (! strcmp(param_buff[0], "error")) {
 		if (! strcmp(param_buff[2],"Out of Memory"))
-			result = ERR_FS_FULL;
+			result = _(ERR_FS_FULL);
 		else
 			result = param_buff[2];
 	}

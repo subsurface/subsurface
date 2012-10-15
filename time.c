@@ -1,3 +1,4 @@
+#include <glib/gi18n.h>
 #include <string.h>
 #include "dive.h"
 

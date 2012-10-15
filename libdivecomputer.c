@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <inttypes.h>
+#include <glib/gi18n.h>
 
 #include "dive.h"
 #include "divelist.h"

@@ -13,6 +13,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <sys/time.h>
+#include <glib/gi18n.h>
 
 #include "dive.h"
 #include "display.h"
@@ -102,7 +103,7 @@ static int divename(char *buf, size_t size, struct dive *dive)
 	struct tm tm;
 
 	utc_mkdate(dive->when, &tm);
-	return snprintf(buf, size, "Dive #%d - %s %02d/%02d/%04d at %d:%02d",
+	return snprintf(buf, size, _("Dive #%d - %s %02d/%02d/%04d at %d:%02d"),
 		dive->number,
 		weekday(tm.tm_wday),
 		tm.tm_mon+1, tm.tm_mday,
@@ -140,7 +141,7 @@ void show_dive_info(struct dive *dive)
 	if (!text)
 		text = "";
 	if (*text) {
-		snprintf(buffer, sizeof(buffer), "Dive #%d - %s", dive->number, text);
+		snprintf(buffer, sizeof(buffer), _("Dive #%d - %s"), dive->number, text);
 	} else {
 		divename(buffer, sizeof(buffer), dive);
 	}
@@ -174,7 +175,7 @@ static int delete_dive_info(struct dive *dive)
 	if (!dive)
 		return 0;
 
-	dialog = gtk_dialog_new_with_buttons("Delete Dive",
+	dialog = gtk_dialog_new_with_buttons(_("Delete Dive"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -223,8 +224,8 @@ static void add_menu_item(GtkMenu *menu, const char *label, const char *icon, vo
 
 static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
 {
-	add_menu_item(menu, "Delete", GTK_STOCK_DELETE, info_menu_delete_cb);
-	add_menu_item(menu, "Edit", GTK_STOCK_EDIT, info_menu_edit_cb);
+	add_menu_item(menu, _("Delete"), GTK_STOCK_DELETE, info_menu_delete_cb);
+	add_menu_item(menu, _("Edit"), GTK_STOCK_EDIT, info_menu_edit_cb);
 }
 
 static GtkEntry *text_value(GtkWidget *box, const char *label)
@@ -449,17 +450,17 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info *info)
 {
 	GtkWidget *hbox, *label;
-	char buffer[80] = "Edit trip summary";
+	char buffer[80] = N_("Edit trip summary");
 
-	label = gtk_label_new(buffer);
+	label = gtk_label_new(_(buffer));
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
-	info->location = text_entry(box, "Location", location_list, trip->location);
+	info->location = text_entry(box, _("Location"), location_list, trip->location);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
-	info->notes = text_view(box, "Notes", READ_WRITE);
+	info->notes = text_view(box, _("Notes"), READ_WRITE);
 	if (trip->notes && *trip->notes)
 		gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), trip->notes, -1);
 }
@@ -467,32 +468,32 @@ static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
 	GtkWidget *hbox, *label, *frame, *equipment;
-	char buffer[80] = "Edit multiple dives";
+	char buffer[80] = N_("Edit multiple dives");
 
 	if (!multi)
-		divename(buffer, sizeof(buffer), dive);
-	label = gtk_label_new(buffer);
+		divename(_(buffer), sizeof(_(buffer)), dive);
+	label = gtk_label_new(_(buffer));
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
-	info->location = text_entry(box, "Location", location_list, dive->location);
+	info->location = text_entry(box, _("Location"), location_list, dive->location);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
-	info->divemaster = text_entry(hbox, "Dive master", people_list, dive->divemaster);
-	info->buddy = text_entry(hbox, "Buddy", people_list, dive->buddy);
+	info->divemaster = text_entry(hbox, _("Dive master"), people_list, dive->divemaster);
+	info->buddy = text_entry(hbox, _("Buddy"), people_list, dive->buddy);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
-	info->rating = text_entry(hbox, "Rating", star_list, star_strings[dive->rating]);
-	info->suit = text_entry(hbox, "Suit", suit_list, dive->suit);
+	info->rating = text_entry(hbox, _("Rating"), star_list, star_strings[dive->rating]);
+	info->suit = text_entry(hbox, _("Suit"), suit_list, dive->suit);
 
 	/* only show notes if editing a single dive */
 	if (multi) {
 		info->notes = NULL;
 	} else {
-		info->notes = text_view(box, "Notes", READ_WRITE);
+		info->notes = text_view(box, _("Notes"), READ_WRITE);
 		if (dive->notes && *dive->notes)
 			gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
 	}
@@ -500,7 +501,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
 	/* create a secondary Equipment widget */
-	frame = gtk_frame_new("Equipment");
+	frame = gtk_frame_new(_("Equipment"));
 	equipment = equipment_widget(W_IDX_SECONDARY);
 	gtk_container_add(GTK_CONTAINER(frame), equipment);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
@@ -624,7 +625,7 @@ gboolean edit_trip(dive_trip_t *trip)
 	struct dive_info info;
 
 	memset(&info, 0, sizeof(struct dive_info));
-	dialog = gtk_dialog_new_with_buttons("Edit Trip Info",
+	dialog = gtk_dialog_new_with_buttons(_("Edit Trip Info"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -665,7 +666,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 	struct dive *master;
 	gboolean multi;
 
-	dialog = gtk_dialog_new_with_buttons("Dive Info",
+	dialog = gtk_dialog_new_with_buttons(_("Dive Info"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -772,7 +773,7 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	int success;
 	double depthinterval, val;
 
-	dialog = gtk_dialog_new_with_buttons("Date and Time",
+	dialog = gtk_dialog_new_with_buttons(_("Date and Time"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -782,12 +783,12 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
 	/* Calendar hbox */
-	hbox = frame_box(vbox, "Date:");
+	hbox = frame_box(vbox, _("Date:"));
 	cal = gtk_calendar_new();
 	gtk_box_pack_start(GTK_BOX(hbox), cal, FALSE, TRUE, 0);
 
 	/* Time hbox */
-	hbox = frame_box(vbox, "Time");
+	hbox = frame_box(vbox, _("Time"));
 
 	h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
 	m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
@@ -827,12 +828,12 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
 	/* Duration hbox */
-	box = frame_box(hbox, "Duration (min)");
+	box = frame_box(hbox, _("Duration (min)"));
 	duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
 	gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
 
 	/* Depth box */
-	box = frame_box(hbox, "Depth (%s):", output_units.length == FEET ? "ft" : "m");
+	box = frame_box(hbox, _("Depth (%s):"), output_units.length == FEET ? "ft" : "m");
 	if (output_units.length == FEET) {
 		depthinterval = 1.0;
 	} else {
@@ -901,20 +902,20 @@ GtkWidget *extended_dive_info_widget(void)
 	suit_list = gtk_list_store_new(1, G_TYPE_STRING);
 
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
-	location = text_value(vbox, "Location");
+	location = text_value(vbox, _("Location"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	divemaster = text_value(hbox, "Divemaster");
-	buddy = text_value(hbox, "Buddy");
+	divemaster = text_value(hbox, _("Divemaster"));
+	buddy = text_value(hbox, _("Buddy"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 
-	rating = text_value(hbox, "Rating");
-	suit = text_value(hbox, "Suit");
+	rating = text_value(hbox, _("Rating"));
+	suit = text_value(hbox, _("Suit"));
 
-	notes = text_view(vbox, "Notes", READ_ONLY);
+	notes = text_view(vbox, _("Notes"), READ_ONLY);
 	return vbox;
 }

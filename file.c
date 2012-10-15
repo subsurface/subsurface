@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <glib/gi18n.h>
 
 #include "dive.h"
 #include "file.h"
@@ -71,7 +72,7 @@ static void suunto_read(struct zip_file *file, GError **error)
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
-	parse_xml_buffer("SDE file", mem, read, error, FALSE);
+	parse_xml_buffer(_("SDE file"), mem, read, error, FALSE);
 	free(mem);
 }
 #endif
@@ -258,11 +259,11 @@ void parse_file(const char *filename, GError **error, gboolean possible_default_
 		if (default_filename && ! strcmp(filename, default_filename))
 			return;
 
-		g_warning("Failed to read '%s'.\n", filename);
+		g_warning(_("Failed to read '%s'.\n"), filename);
 		if (error) {
 			*error = g_error_new(g_quark_from_string("subsurface"),
 					     DIVE_ERROR_PARSE,
-					     "Failed to read '%s'",
+					     _("Failed to read '%s'"),
 					     filename);
 		}
 		return;

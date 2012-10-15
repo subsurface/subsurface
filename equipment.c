@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
+#include <glib/gi18n.h>
 
 #include "dive.h"
 #include "display.h"
@@ -540,7 +541,7 @@ static void set_one_weightsystem(void *_data, GtkListStore *model, GtkTreeIter *
 	weightsystem_t *ws = _data;
 
 	gtk_list_store_set(model, iter,
-		WS_DESC, ws->description ? : "unspecified",
+		WS_DESC, ws->description ? : _("unspecified"),
 		WS_WEIGHT, ws->weight.grams,
 		-1);
 }
@@ -818,11 +819,11 @@ static struct ws_info {
 	const char *name;
 	int grams;
 } ws_info[100] = {
-	{ "integrated", 0 },
-	{ "belt", 0 },
-	{ "ankle", 0 },
-	{ "bar", 0 },
-	{ "clip-on", 0 },
+	{ N_("integrated"), 0 },
+	{ N_("belt"), 0 },
+	{ N_("ankle"), 0 },
+	{ N_("bar"), 0 },
+	{ N_("clip-on"), 0 },
 };
 
 static void fill_ws_list(GtkListStore *store)
@@ -833,7 +834,7 @@ static void fill_ws_list(GtkListStore *store)
 	while (info->name) {
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
-			0, info->name,
+			0, _(info->name),
 			1, info->grams,
 			-1);
 		info++;
@@ -922,7 +923,7 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	 * Cylinder type: description, size and
 	 * working pressure
 	 */
-	frame = gtk_frame_new("Cylinder");
+	frame = gtk_frame_new(_("Cylinder"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
@@ -947,21 +948,21 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	widget = create_spinbutton(hbox, "Size", 0, 300, 0.1);
+	widget = create_spinbutton(hbox, _("Size"), 0, 300, 0.1);
 	cylinder->size = GTK_SPIN_BUTTON(widget);
 
-	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
+	widget = create_spinbutton(hbox, _("Pressure"), 0, 5000, 1);
 	cylinder->pressure = GTK_SPIN_BUTTON(widget);
 
 	/*
 	 * Cylinder start/end pressures
 	 */
-	hbox = frame_box("Pressure", vbox);
+	hbox = frame_box(_("Pressure"), vbox);
 
-	widget = labeled_spinbutton(hbox, "Start", 0, 5000, 1);
+	widget = labeled_spinbutton(hbox, _("Start"), 0, 5000, 1);
 	cylinder->start = widget;
 
-	widget = labeled_spinbutton(hbox, "End", 0, 5000, 1);
+	widget = labeled_spinbutton(hbox, _("End"), 0, 5000, 1);
 	cylinder->end = widget;
 
 	cylinder->pressure_button = gtk_check_button_new();
@@ -971,7 +972,7 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	/*
 	 * Cylinder gas mix: Air, Nitrox or Trimix
 	 */
-	hbox = frame_box("Gasmix", vbox);
+	hbox = frame_box(_("Gasmix"), vbox);
 
 	widget = labeled_spinbutton(hbox, "O"UTF8_SUBSCRIPT_2 "%", 1, 100, 0.1);
 	cylinder->o2 = widget;
@@ -1008,7 +1009,7 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	/*
 	 * weight_system: description and weight
 	 */
-	frame = gtk_frame_new("Weight");
+	frame = gtk_frame_new(_("Weight"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
@@ -1058,7 +1059,7 @@ static int edit_cylinder_dialog(GtkWidget *w, int index, cylinder_t *cyl, int w_
 		return 0;
 	*cyl = dive->cylinder[index];
 
-	dialog = gtk_dialog_new_with_buttons("Cylinder",
+	dialog = gtk_dialog_new_with_buttons(_("Cylinder"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1113,7 +1114,7 @@ static int edit_weightsystem_dialog(GtkWidget *w, int index, weightsystem_t *ws,
 		return 0;
 	*ws = dive->weightsystem[index];
 
-	dialog = gtk_dialog_new_with_buttons("Weight System",
+	dialog = gtk_dialog_new_with_buttons(_("Weight System"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1374,7 +1375,7 @@ static void size_data_func(GtkTreeViewColumn *col,
 	if (size)
 		snprintf(buffer, sizeof(buffer), "%.1f", size);
 	else
-		strcpy(buffer, "unkn");
+		strcpy(buffer, _("unkn"));
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -1394,7 +1395,7 @@ static void weight_data_func(GtkTreeViewColumn *col,
 	if (grams)
 		snprintf(buffer, sizeof(buffer), "%.*f", decimals, value);
 	else
-		strcpy(buffer, "unkn");
+		strcpy(buffer, _("unkn"));
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
@@ -1481,11 +1482,11 @@ GtkWidget *cylinder_list_widget(int w_idx)
 					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
 					  NULL);
 
-	tree_view_column(tree_view, CYL_DESC, "Type", NULL, ALIGN_LEFT | UNSORTABLE);
-	tree_view_column(tree_view, CYL_SIZE, "Size", size_data_func, ALIGN_RIGHT | UNSORTABLE);
-	tree_view_column(tree_view, CYL_WORKP, "MaxPress", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
-	tree_view_column(tree_view, CYL_STARTP, "Start", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
-	tree_view_column(tree_view, CYL_ENDP, "End", pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_DESC, _("Type"), NULL, ALIGN_LEFT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_SIZE, _("Size"), size_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_WORKP, _("MaxPress"), pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_STARTP, _("Start"), pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
+	tree_view_column(tree_view, CYL_ENDP, _("End"), pressure_data_func, ALIGN_RIGHT | UNSORTABLE);
 	tree_view_column(tree_view, CYL_O2, "O" UTF8_SUBSCRIPT_2 "%", percentage_data_func, ALIGN_RIGHT | UNSORTABLE);
 	tree_view_column(tree_view, CYL_HE, "He%", percentage_data_func, ALIGN_RIGHT | UNSORTABLE);
 	return tree_view;
@@ -1509,8 +1510,8 @@ GtkWidget *weightsystem_list_widget(int w_idx)
 					  "enable-grid-lines", GTK_TREE_VIEW_GRID_LINES_BOTH,
 					  NULL);
 
-	tree_view_column(tree_view, WS_DESC, "Type", NULL, ALIGN_LEFT | UNSORTABLE);
-	tree_view_column(tree_view, WS_WEIGHT, "weight",
+	tree_view_column(tree_view, WS_DESC, _("Type"), NULL, ALIGN_LEFT | UNSORTABLE);
+	tree_view_column(tree_view, WS_WEIGHT, _("weight"),
 			weight_data_func, ALIGN_RIGHT | UNSORTABLE);
 
 	return tree_view;
@@ -1568,7 +1569,7 @@ GtkWidget *equipment_widget(int w_idx)
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new("Cylinders");
+	frame = gtk_frame_new(_("Cylinders"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, FALSE, 3);
 
 	framebox = gtk_vbox_new(FALSE, 3);
@@ -1605,7 +1606,7 @@ GtkWidget *equipment_widget(int w_idx)
 	tree_view = weightsystem_list_create(w_idx);
 	weightsystem_list[w_idx].tree_view = GTK_TREE_VIEW(tree_view);
 
-	frame = gtk_frame_new("Weight");
+	frame = gtk_frame_new(_("Weight"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, FALSE, 3);
 
 	framebox = gtk_vbox_new(FALSE, 3);
