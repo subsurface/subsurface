@@ -36,7 +36,7 @@ const char *weekday(int wday)
 		/*++GETTEXT: these are three letter days - we allow up to six code bytes */
 		N_("Sun"), N_("Mon"), N_("Tue"), N_("Wed"), N_("Thu"), N_("Fri"), N_("Sat")
 	};
-	return wday_array[wday];
+	return _(wday_array[wday]);
 }
 
 const char *monthname(int mon)
@@ -46,7 +46,7 @@ const char *monthname(int mon)
 		N_("Jan"), N_("Feb"), N_("Mar"), N_("Apr"), N_("May"), N_("Jun"),
 		N_("Jul"), N_("Aug"), N_("Sep"), N_("Oct"), N_("Nov"), N_("Dec"),
 	};
-	return month_array[mon];
+	return _(month_array[mon]);
 }
 
 /*
