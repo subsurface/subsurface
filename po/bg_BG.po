@@ -126,13 +126,13 @@ msgstr ""
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
-msgstr "Средна дълбочина"
+msgstr "Средна Дълбочина"
 
 #: statistics.c:691
 msgid "Avg SAC"
 msgstr "Средно ППК"
 
-# ППК = Повърхностно Потребление на Кислород 
+# ППК = Повърхностно Потребление на Кислород
 #: statistics.c:666
 msgid "Avg Temp"
 msgstr "Средна Темп."
@@ -143,7 +143,7 @@ msgstr "Средно Време"
 
 #: gtk-gui.c:590
 msgid "Bar"
-msgstr "бара"
+msgstr "Бара"
 
 #: info.c:484 info.c:911 print.c:155
 msgid "Buddy"
@@ -155,11 +155,11 @@ msgstr "Целзии"
 
 #: gtk-gui.c:520
 msgid "Choose Default XML File"
-msgstr "Моля изберете XML файл по подразибране"
+msgstr "Моля Изберете XML Файл По Подразбиране"
 
 #: gtk-gui.c:1396
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Моля изберете XML файлове за вмъкване"
+msgstr "Моля Изберете XML Файлове За Вмъкване"
 
 #: gtk-gui.c:908
 msgid "Close"
@@ -175,7 +175,7 @@ msgstr "Създай ново пътуване"
 
 #: gtk-gui.c:596
 msgid "CuFt"
-msgstr "кб.фута"
+msgstr "Кб.Фута"
 
 #: divelist.c:1265 gtk-gui.c:620
 msgid "Cyl"
@@ -207,7 +207,7 @@ msgstr "Дек"
 
 #: gtk-gui.c:667
 msgid "Default XML Data File"
-msgstr "XML файл по подразибране"
+msgstr "XML Файл По Подразибране"
 
 #: info.c:227
 msgid "Delete"
@@ -236,7 +236,7 @@ msgstr "Дълбочина (%s):"
 
 #: uemis.c:156
 msgid "Depth Limit Exceeded"
-msgstr "Надминат Лимит на Дълбочина"
+msgstr "Надминат Лимит На Дълбочина"
 
 #: gtk-gui.c:584
 msgid "Depth:"
@@ -458,7 +458,7 @@ msgstr "Лист"
 
 #: gtk-gui.c:595
 msgid "Liter"
-msgstr "Литър"
+msgstr "Литра"
 
 #: divelist.c:1269 info.c:458 info.c:478 info.c:905 print.c:155
 msgid "Location"
@@ -506,15 +506,15 @@ msgstr "Внимание: Максимално Време на Сигнал за
 
 #: statistics.c:681 statistics.c:719
 msgid "Max Depth"
-msgstr "Максимална Дълбочина"
+msgstr "Макс. Дълбочина"
 
 #: statistics.c:689
 msgid "Max SAC"
-msgstr "Максимално ППК"
+msgstr "Макс. ППК"
 
 #: statistics.c:664
 msgid "Max Temp"
-msgstr "Максимална Температура"
+msgstr "Макс. Темп."
 
 #: print.c:94
 #, c-format
@@ -529,7 +529,7 @@ msgstr ""
 
 #: equipment.c:1487
 msgid "MaxPress"
-msgstr "Максимално Налягане"
+msgstr "Макс. Налягане"
 
 #: statistics.c:170
 #, fuzzy
@@ -569,19 +569,19 @@ msgstr "Слей пътуване с долно пътуване"
 
 #: gtk-gui.c:585
 msgid "Meter"
-msgstr "Метър"
+msgstr "Метра"
 
 #: statistics.c:682
 msgid "Min Depth"
-msgstr "Минимална Дълбочина"
+msgstr "Мин. Дълбочина"
 
 #: statistics.c:690
 msgid "Min SAC"
-msgstr "Минимално ППК"
+msgstr "Мин. ППК"
 
 #: statistics.c:665
 msgid "Min Temp"
-msgstr "Минимална Температура"
+msgstr "Мин. Темп."
 
 #: statistics.c:169
 #, fuzzy
@@ -617,7 +617,7 @@ msgstr "Пон"
 
 #: gtk-gui.c:851
 msgid "Multi-platform divelog software in C"
-msgstr "Мулти-платформен, гмуркачески регистър софтуер написан на C"
+msgstr "Мултиплатформен, гмуркачески регистър-софтуер написан на C"
 
 #: gtk-gui.c:904
 msgid "New"
@@ -639,11 +639,11 @@ msgstr "Бележки"
 msgid "Nov"
 msgstr "Нов"
 
+# АЗПК = Апарат за Поносимост на Кислород
 #: divelist.c:1268 gtk-gui.c:635 statistics.c:728
 msgid "OTU"
-msgstr "Апарат за Поносимост на Кислород"
+msgstr "АЗПК"
 
-# Апарат За Поносимост На Кислород?
 #: main.c:47
 msgid "Oct"
 msgstr "Окт"
@@ -848,7 +848,7 @@ msgstr "Нед"
 
 #: statistics.c:713
 msgid "Surf Intv"
-msgstr "Време На Повърхността"
+msgstr "Време на Повърхността"
 
 #: print.c:488
 msgid "Table print"
@@ -947,7 +947,7 @@ msgstr "Обем:"
 
 #: statistics.c:721
 msgid "Water Temp"
-msgstr "Температура на Водата"
+msgstr "Темп. на Водата"
 
 #: main.c:37
 msgid "Wed"
@@ -955,11 +955,11 @@ msgstr "Ср"
 
 #: equipment.c:1012 equipment.c:1609 gtk-gui.c:640
 msgid "Weight"
-msgstr "Тегло"
+msgstr "Тежест"
 
 #: equipment.c:1117
 msgid "Weight System"
-msgstr "Система за Тегло"
+msgstr "Система за тежест"
 
 #: gtk-gui.c:604
 msgid "Weight:"
@@ -996,11 +996,11 @@ msgstr ""
 
 #: equipment.c:824
 msgid "ankle"
-msgstr "Глезен"
+msgstr "глезен"
 
 #: equipment.c:825
 msgid "bar"
-msgstr "Бара"
+msgstr "прът"
 
 #: equipment.c:823
 msgid "belt"
@@ -1016,7 +1016,7 @@ msgstr "фута"
 
 #: equipment.c:822
 msgid "integrated"
-msgstr "вграден"
+msgstr "вградена"
 
 #: gtk-gui.c:605
 msgid "kg"
@@ -1041,7 +1041,7 @@ msgstr "неизв."
 
 #: statistics.c:532
 msgid "unknown"
-msgstr "неизвестен"
+msgstr "неизвестно"
 
 #: equipment.c:544
 msgid "unspecified"
