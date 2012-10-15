@@ -75,7 +75,7 @@ msgstr "Ajouter une plongée"
 
 #: divelist.c:2098
 msgid "Add to trip above"
-msgstr "Ajoutée au group au-dessus"
+msgstr "Ajoutée au groupe au-dessus"
 
 #: main.c:46
 msgid "Apr"
@@ -131,7 +131,7 @@ msgstr "Profondeur moy."
 
 #: statistics.c:691
 msgid "Avg SAC"
-msgstr "Consomation d'air moyenne"
+msgstr "Consommation d'air moyenne"
 
 #: statistics.c:666
 msgid "Avg Temp"
@@ -167,11 +167,11 @@ msgstr "Fermer"
 
 #: divelist.c:2115
 msgid "Collapse all"
-msgstr "Réduire tous"
+msgstr "Réduire tout"
 
 #: divelist.c:2088
 msgid "Create new trip above"
-msgstr "Créer un nouveau group au-dessus"
+msgstr "Créer un nouveau groupe au-dessus"
 
 #: gtk-gui.c:596
 msgid "CuFt"
@@ -195,7 +195,7 @@ msgstr "Date"
 
 #: info.c:776
 msgid "Date and Time"
-msgstr "Datum et Heure"
+msgstr "Date et Heure"
 
 #: info.c:786
 msgid "Date:"
@@ -311,7 +311,7 @@ msgstr "Plongées"
 
 #: gtk-gui.c:911 gtk-gui.c:1494
 msgid "Download From Dive Computer"
-msgstr "Télécharger de l'ordinateur de plongée"
+msgstr "Télécharger depuis l'ordinateur de plongée"
 
 #: statistics.c:160
 #, fuzzy
@@ -328,7 +328,7 @@ msgstr "Éditer"
 
 #: info.c:628
 msgid "Edit Trip Info"
-msgstr "Éditer Information Groupe"
+msgstr "Éditer Informations Groupe"
 
 #: divelist.c:2027
 msgid "Edit Trip Summary"
@@ -364,7 +364,7 @@ msgstr "Équipment"
 
 #: divelist.c:2112
 msgid "Expand all"
-msgstr "Afficher tous"
+msgstr "Afficher tout"
 
 #: gtk-gui.c:601
 msgid "Fahrenheit"
@@ -401,7 +401,7 @@ msgstr "Fév"
 
 #: gtk-gui.c:586
 msgid "Feet"
-msgstr "Pied"
+msgstr "Pieds"
 
 #: gtk-gui.c:899
 msgid "File"
@@ -450,7 +450,7 @@ msgstr "Jun"
 
 #: gtk-gui.c:854
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
-msgstr "Linus Torvalds, Dirk Hohndel et autre, 2011, 2012"
+msgstr "Linus Torvalds, Dirk Hohndel et autres, 2011, 2012"
 
 #: gtk-gui.c:919
 msgid "List"
@@ -462,7 +462,7 @@ msgstr "Litre"
 
 #: divelist.c:1269 info.c:458 info.c:478 info.c:905 print.c:155
 msgid "Location"
-msgstr "Location"
+msgstr "Lieu"
 
 #: gtk-gui.c:900
 msgid "Log"
@@ -569,7 +569,7 @@ msgstr "Intégrer groupe dans le groupe en-dessous"
 
 #: gtk-gui.c:585
 msgid "Meter"
-msgstr "Metre"
+msgstr "Mètre"
 
 #: statistics.c:682
 msgid "Min Depth"
@@ -609,7 +609,7 @@ msgstr ""
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
-msgstr "Options divers"
+msgstr "Options diverses"
 
 #: main.c:37
 msgid "Mon"
@@ -625,7 +625,7 @@ msgstr "Nouveau"
 
 #: gtk-gui.c:811
 msgid "New starting number"
-msgstr "Nieuw begin nummer"
+msgstr "Nouveau numéro de départ"
 
 #: uemis.c:166
 msgid "No Tank Data"
@@ -674,7 +674,7 @@ msgstr "PSI"
 
 #: gtk-gui.c:570 gtk-gui.c:913
 msgid "Preferences"
-msgstr "Preferences"
+msgstr "Préférences"
 
 #: equipment.c:954 equipment.c:960
 msgid "Pressure"
@@ -707,7 +707,7 @@ msgstr "Type d'impression"
 
 #: gtk-gui.c:920
 msgid "Profile"
-msgstr "Profile"
+msgstr "Profil"
 
 #: gtk-gui.c:917
 msgid "Quit"
@@ -732,15 +732,15 @@ msgstr "Lecture plongée %s"
 
 #: divelist.c:2050
 msgid "Remove Trip"
-msgstr "Supprimer Group"
+msgstr "Supprimer Groupe"
 
 #: divelist.c:2106
 msgid "Remove dive from trip"
-msgstr "Retirer plongée du group"
+msgstr "Retirer plongée du groupe"
 
 #: divelist.c:2104
 msgid "Remove selected dives from trip"
-msgstr "Retirer les plongées sélectionné du group"
+msgstr "Retirer les plongées sélectionnées du groupe"
 
 #: gtk-gui.c:802 gtk-gui.c:914
 msgid "Renumber"
@@ -785,7 +785,7 @@ msgstr "Enregistrer Fichier sous"
 
 #: gtk-gui.c:762 gtk-gui.c:916
 msgid "SelectEvents"
-msgstr "Sélectionner évênement"
+msgstr "Sélectionner évênements"
 
 #: main.c:47
 msgid "Sep"
@@ -813,7 +813,7 @@ msgstr "Plongée la plus courte"
 
 #: gtk-gui.c:609
 msgid "Show Columns"
-msgstr "Affichier colonne"
+msgstr "Afficher colonne"
 
 #: equipment.c:951 equipment.c:1486
 msgid "Size"
@@ -850,7 +850,7 @@ msgstr "Dim"
 
 #: statistics.c:713
 msgid "Surf Intv"
-msgstr "Interval de surface"
+msgstr "Intervale de surface"
 
 #: print.c:488
 msgid "Table print"
@@ -917,9 +917,9 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: Disque dur est presque plein\n"
-"Débrancher et re-brancher l'ordinateur\n"
-"et re-essayer"
+"Uemis Zurich: Le disque dur est presque plein\n"
+"Débranchez et re-branchez l'ordinateur\n"
+"et re-essayez"
 
 #: uemis-downloader.c:29
 msgid ""
@@ -927,13 +927,13 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: Disque dur est plein\n"
-"Débrancher et re-brancher l'ordinateur\n"
-"et re-essayer"
+"Uemis Zurich: Le disque dur est plein\n"
+"Débranchez et re-branchez l'ordinateur\n"
+"et re-essayez"
 
 #: uemis-downloader.c:559
 msgid "Uemis init failed"
-msgstr "Uemis initialisation raté"
+msgstr "Uemis initialisation ratée"
 
 #: gtk-gui.c:577
 msgid "Units"
@@ -957,15 +957,15 @@ msgstr "Mer"
 
 #: equipment.c:1012 equipment.c:1609 gtk-gui.c:640
 msgid "Weight"
-msgstr "Poid"
+msgstr "Poids"
 
 #: equipment.c:1117
 msgid "Weight System"
-msgstr "Système de Poid"
+msgstr "Système de Poids"
 
 #: gtk-gui.c:604
 msgid "Weight:"
-msgstr "Poid:"
+msgstr "Poids:"
 
 #: gtk-gui.c:153
 msgid "XML file"
@@ -973,7 +973,7 @@ msgstr "Fichier XML"
 
 #: statistics.c:160
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: gtk-gui.c:915 statistics.c:360
 msgid "Yearly Statistics"
@@ -984,7 +984,7 @@ msgid ""
 "You have unsaved changes\n"
 "Would you like to save those before closing the datafile?"
 msgstr ""
-"Vous avez des changements non-enregistré.\n"
+"Vous avez des changements non-enregistrés.\n"
 "Souhaitez-vous enregistrer ces changements avant de fermer ?"
 
 #: gtk-gui.c:242
@@ -993,7 +993,7 @@ msgid ""
 "You have unsaved changes to file: %s \n"
 "Would you like to save those before closing the datafile?"
 msgstr ""
-"Vous avez des changements non-enregistré dans le fichier : %s \n"
+"Vous avez des changements non-enregistrés dans le fichier : %s \n"
 "Souhaitez-vous enregistrer ces changements avant de le fermer ?"
 
 #: equipment.c:824
@@ -1051,7 +1051,7 @@ msgstr "non-specifié"
 
 #: equipment.c:1514
 msgid "weight"
-msgstr "poid"
+msgstr "poids"
 
 #, fuzzy
 #~ msgctxt "Depth"
