@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-14 20:42-0700\n"
-"PO-Revision-Date: 2012-10-13 13:26+0200\n"
+"PO-Revision-Date: 2012-10-15 22:41+0300\n"
 "Last-Translator: Tommi Saviranta <wnd@iki.fi>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -20,12 +20,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: statistics.c:162
-#, fuzzy
 msgctxt "Stats"
 msgid " > Month"
-msgstr ""
-"Vuosi\n"
-" > Kuukausi"
+msgstr " > Kuukausi"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
@@ -33,7 +30,7 @@ msgstr "Valitse sukellustietokone ja laitenimi."
 
 #: statistics.c:160
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: statistics.c:616 statistics.c:618 statistics.c:620
 #, c-format
@@ -93,36 +90,24 @@ msgid "Automatically group dives in trips"
 msgstr "Ryhmittele sukellukset retkiin automaattisesti"
 
 #: statistics.c:168
-#, fuzzy
 msgctxt "Depth"
 msgid "Average"
-msgstr ""
-"\n"
-"Keskim."
+msgstr "Keskim."
 
 #: statistics.c:165
-#, fuzzy
 msgctxt "Duration"
 msgid "Average"
-msgstr ""
-"\n"
-"Keskim."
+msgstr "Keskim."
 
 #: statistics.c:171
-#, fuzzy
 msgctxt "SAC"
 msgid "Average"
-msgstr ""
-"\n"
-"Keskim."
+msgstr "Keskim."
 
 #: statistics.c:174
-#, fuzzy
 msgctxt "Temp"
 msgid "Average"
-msgstr ""
-"\n"
-"Keskim."
+msgstr "Keskim."
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
@@ -313,9 +298,8 @@ msgid "Download From Dive Computer"
 msgstr "Hae sukellustietokoneelta"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Duration"
-msgstr "Kesto (min)"
+msgstr "Kesto"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -468,12 +452,9 @@ msgid "Log"
 msgstr "Loki"
 
 #: statistics.c:167
-#, fuzzy
 msgctxt "Duration"
 msgid "Longest"
-msgstr ""
-"\n"
-"Pisin"
+msgstr "Pisin"
 
 #: statistics.c:674
 msgid "Longest Dive"
@@ -531,28 +512,19 @@ msgid "MaxPress"
 msgstr "Nimellispaine"
 
 #: statistics.c:170
-#, fuzzy
 msgctxt "Depth"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Suurin"
+msgstr "Suurin"
 
 #: statistics.c:173
-#, fuzzy
 msgctxt "SAC"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Suurin"
+msgstr "Suurin"
 
 #: statistics.c:176
-#, fuzzy
 msgctxt "Temp"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Suurin"
+msgstr "Korkein"
 
 #: main.c:46
 msgid "May"
@@ -583,28 +555,19 @@ msgid "Min Temp"
 msgstr "Alin lämpötila"
 
 #: statistics.c:169
-#, fuzzy
 msgctxt "Depth"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Pienin"
+msgstr "Pienin"
 
 #: statistics.c:172
-#, fuzzy
 msgctxt "SAC"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Pienin"
+msgstr "Pienin"
 
 #: statistics.c:175
-#, fuzzy
 msgctxt "Temp"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Pienin"
+msgstr "Alin"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -792,16 +755,13 @@ msgid ""
 "Short write to req.txt file\n"
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
-"Tiedoston req.txt kirjoittaminen epäonnistui\n"
+"Tiedoston req.txt kirjoittaminen epäonnistui.\n"
 "Onko Uemis Zurich kytketty oikein?"
 
 #: statistics.c:166
-#, fuzzy
 msgctxt "Duration"
 msgid "Shortest"
-msgstr ""
-"\n"
-"Lyhin"
+msgstr "Lyhin"
 
 #: statistics.c:675
 msgid "Shortest Dive"
@@ -865,9 +825,8 @@ msgid "Temp"
 msgstr "Lämpötila"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Temperature"
-msgstr "Lämpötila:"
+msgstr "Lämpötila"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
@@ -890,10 +849,9 @@ msgid "Toggle Zoom"
 msgstr "Venytä sukellusprofiilikuvaajaa"
 
 #: statistics.c:164
-#, fuzzy
 msgctxt "Duration"
 msgid "Total"
-msgstr "Kokonaisaika"
+msgstr "Yhteensä"
 
 #: statistics.c:672
 msgid "Total Time"
@@ -913,9 +871,9 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: tiedostojärjestelmä on lähes täynnä\n"
+"Uemis Zurich: tiedostojärjestelmä on lähes täynnä.\n"
 "Liitä sukellustietokone uudestaan\n"
-"ja yritä uudestaan"
+"ja yritä uudestaan."
 
 #: uemis-downloader.c:29
 msgid ""
@@ -923,9 +881,9 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: Tiedostojärjestelmä täynnä\n"
+"Uemis Zurich: Tiedostojärjestelmä on täynnä.\n"
 "Liitä sukellustietokone uudestaan\n"
-"ja yritä uudestaan"
+"ja yritä uudestaan."
 
 #: uemis-downloader.c:559
 msgid "Uemis init failed"
@@ -969,7 +927,7 @@ msgstr "XML-tiedosto"
 
 #: statistics.c:160
 msgid "Year"
-msgstr ""
+msgstr "Vuosi"
 
 #: gtk-gui.c:915 statistics.c:360
 msgid "Yearly Statistics"
@@ -1048,47 +1006,3 @@ msgstr "määrittelemätön"
 #: equipment.c:1514
 msgid "weight"
 msgstr "Massa"
-
-#, fuzzy
-#~ msgctxt "Depth"
-#~ msgid ""
-#~ "Depth\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Syvyys\n"
-#~ "Keskim."
-
-#, fuzzy
-#~ msgctxt "Duration"
-#~ msgid ""
-#~ "Duration\n"
-#~ "Total"
-#~ msgstr ""
-#~ "Kesto\n"
-#~ "Yhteensä"
-
-#, fuzzy
-#~ msgctxt "SAC"
-#~ msgid ""
-#~ "SAC\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Pintakulutus\n"
-#~ "Keskim."
-
-#, fuzzy
-#~ msgid ""
-#~ "SAC|\n"
-#~ "Minimum"
-#~ msgstr ""
-#~ "\n"
-#~ "Pienin"
-
-#, fuzzy
-#~ msgctxt "Temp"
-#~ msgid ""
-#~ "Temperature\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Lämpötila\n"
-#~ "Keskim."
