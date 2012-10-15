@@ -119,11 +119,14 @@ endif
 
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
+MSGLANGS=$(notdir $(wildcard po/*po))
+MSGOBJS=$(addprefix locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
+
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
@@ -152,6 +155,10 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
+	$(INSTALL) -d -m 755 $(addprefix $(MACOSXINSTALL)/Contents/Resources/,$(dir $(MSGOBJS)))
+	for MSG in $(MSGOBJS); do\
+		install $$MSG  $(MACOSXINSTALL)/Contents/Resources/$$MSG;\
+	done
 
 file.o: file.c dive.h file.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c file.c
@@ -212,8 +219,13 @@ uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
+locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po
+	mkdir -p $(dir $@)
+	msgfmt -c -o $@ po/$*.po
+
 doc:
 	$(MAKE) -C Documentation doc
 
 clean:
 	rm -f $(OBJS) *~ $(NAME) $(NAME).exe
+	rm -rf locale

@@ -133,6 +133,7 @@ Section
     File dll\pthreadGC2.dll
     File dll\zlib1.dll
     File subsurface.ico
+    File /r ..\..\locale
 
     # Store installation folder in registry
     WriteRegStr HKCU "Software\Subsurface" "" $INSTDIR

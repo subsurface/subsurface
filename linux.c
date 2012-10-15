@@ -84,6 +84,11 @@ const char *subsurface_default_filename()
 	}
 }
 
+const char *subsurface_gettext_domainpath()
+{
+	return "./locale";
+}
+
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
