@@ -104,6 +104,19 @@ const char *subsurface_default_filename()
 	}
 }
 
+const char *subsurface_gettext_domainpath()
+{
+	CFBundleRef mainBundle = CFBundleGetMainBundle();
+	CFURLRef localeURL = CFBundleCopyResourceURL(mainBundle, CFSTR("locale"), CFSTR(""), NULL);
+	if (localeURL) {
+		CFStringRef localePath = CFURLCopyFileSystemPath(localeURL, kCFURLPOSIXPathStyle);
+		CFStringEncoding encodingMethod = CFStringGetSystemEncoding();
+		const char *path = CFStringGetCStringPtr(localePath, encodingMethod);
+		return path;
+	}
+	return "./locale";
+}
+
 static void show_main_window(GtkWidget *w, gpointer data)
 {
 	gtk_widget_show(main_window);

@@ -225,12 +225,14 @@ int main(int argc, char **argv)
 {
 	int i;
 	gboolean no_filenames = TRUE;
+	const char *path;
 
 	/* set up l18n - the search directory needs to change
 	 * so that it uses the correct system directory when
 	 * subsurface isn't run from the local directory */
 	setlocale( LC_ALL, "" );
-	bindtextdomain("subsurface", "./locale");
+	path = subsurface_gettext_domainpath();
+	bindtextdomain("subsurface", path);
 	bind_textdomain_codeset("subsurface", "utf-8");
 	textdomain("subsurface");
 	output_units = SI_units;

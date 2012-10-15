@@ -154,6 +154,10 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
+	$(INSTALL) -d -m 755 $(addprefix $(MACOSXINSTALL)/Contents/Resources/,$(dir $(MSGOBJS)))
+	for MSG in $(MSGOBJS); do\
+		install $$MSG  $(MACOSXINSTALL)/Contents/Resources/$$MSG;\
+	done
 
 file.o: file.c dive.h file.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c file.c
