@@ -156,16 +156,31 @@ static void init_tree()
 	pango_font_description_free(font_desc);
 
 	renderer = gtk_cell_renderer_text_new ();
-	char *columns[] = {
-		N_("Year\n > Month"), "#", N_("Duration\nTotal"), N_("\nAverage"),
-		N_("\nShortest"), N_("\nLongest"), N_("Depth\nAverage"), N_("\nMinimum"),
-		N_("\nMaximum"), N_("SAC\nAverage"), N_("\nMinimum"), N_("\nMaximum"), N_("Temperature\nAverage"),
-		N_("\nMinimum"), N_("\nMaximum") };
+	/* don't use empty strings "" - they confuse gettext */
+	char *columnstop[] = { N_("Year"), N_("#"), N_("Duration"), " ", " ", " ", N_("Depth"), " ", " ", N_("SAC"), " ", " ", N_("Temperature"), " ", " " };
+	const char *columnsbot[15];
+	columnsbot[0] = C_("Stats", " > Month");
+	columnsbot[1] = " ";
+	columnsbot[2] = C_("Duration","Total");
+	columnsbot[3] = C_("Duration","Average");
+	columnsbot[4] = C_("Duration","Shortest");
+	columnsbot[5] = C_("Duration","Longest");
+	columnsbot[6] = C_("Depth", "Average");
+	columnsbot[7] = C_("Depth","Minimum");
+	columnsbot[8] = C_("Depth","Maximum");
+	columnsbot[9] = C_("SAC","Average");
+	columnsbot[10]= C_("SAC","Minimum");
+	columnsbot[11]= C_("SAC","Maximum");
+	columnsbot[12]= C_("Temp","Average");
+	columnsbot[13]= C_("Temp","Minimum");
+	columnsbot[14]= C_("Temp","Maximum");
 
 	/* Add all the columns to the tree view */
 	for (i = 0; i < N_COLUMNS; ++i) {
+		char buf[80];
 		column = gtk_tree_view_column_new();
-		gtk_tree_view_column_set_title(column, _(columns[i]));
+		snprintf(buf, sizeof(buf), "%s\n%s", _(columnstop[i]), columnsbot[i]);
+		gtk_tree_view_column_set_title(column, buf);
 		gtk_tree_view_append_column(GTK_TREE_VIEW(yearly_tree), column);
 		renderer = gtk_cell_renderer_text_new();
 		gtk_tree_view_column_pack_start(column, renderer, TRUE);

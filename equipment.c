@@ -948,10 +948,10 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	widget = create_spinbutton(hbox, "Size", 0, 300, 0.1);
+	widget = create_spinbutton(hbox, _("Size"), 0, 300, 0.1);
 	cylinder->size = GTK_SPIN_BUTTON(widget);
 
-	widget = create_spinbutton(hbox, "Pressure", 0, 5000, 1);
+	widget = create_spinbutton(hbox, _("Pressure"), 0, 5000, 1);
 	cylinder->pressure = GTK_SPIN_BUTTON(widget);
 
 	/*

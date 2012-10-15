@@ -1,15 +1,16 @@
-# Dutch translations for 2.0.1 package
-# Dutch messages for 2.0.1.
-# Copyright (C) 2012 THE 2.0.1'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the 2.0.1 package.
+# French translations for Subsurface package
+# French messages for Subsurface.
+# Copyright (C) 2012 Subsurface's COPYRIGHT HOLDER
+# This file is distributed under the same license as the Subsurface package.
 # Dirk Hohndel <dirk@hohndel.org>, 2012.
 # Jacco van Koll <jacco.van.koll@gmail.com>, 2012
+# Pierre-Yves Chibon <pingou@pingoured.fr>, 2012
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 23:06+0900\n"
+"POT-Creation-Date: 2012-10-14 20:42-0700\n"
 "PO-Revision-Date: 2012-12-11 09:58+0200\n"
 "Last-Translator: Pierre-Yves Chibon <pingou@pingoured.fr>\n"
 "Language-Team: French\n"
@@ -19,66 +20,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: statistics.c:160
-msgid ""
-"\n"
-"Average"
+#: statistics.c:162
+#, fuzzy
+msgctxt "Stats"
+msgid " > Month"
 msgstr ""
-"\n"
-"Moyenne"
-
-#: statistics.c:161
-msgid ""
-"\n"
-"Longest"
-msgstr ""
-"\n"
-"Plus longue"
-
-#: statistics.c:162 statistics.c:163
-msgid ""
-"\n"
-"Maximum"
-msgstr ""
-"\n"
-"Maximum"
-
-#: statistics.c:161 statistics.c:162 statistics.c:163
-msgid ""
-"\n"
-"Minimum"
-msgstr ""
-"\n"
-"Minimum"
-
-#: statistics.c:161
-msgid ""
-"\n"
-"Shortest"
-msgstr ""
-"\n"
-"Plus courte"
+"Année\n"
+" > Mois"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
 msgstr " Merci de choisir un ordinateur de plongée et un port "
 
-#: statistics.c:601 statistics.c:603 statistics.c:605
+#: statistics.c:160
+msgid "#"
+msgstr ""
+
+#: statistics.c:616 statistics.c:618 statistics.c:620
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: print.c:252 statistics.c:512
+#: print.c:252 statistics.c:527
 #, c-format
 msgid "%d min"
 msgstr "%d min"
 
-#: statistics.c:484
+#: statistics.c:499
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%dt %dh %dmin"
 
-#: statistics.c:486
+#: statistics.c:501
 #, c-format
 msgid "%dh %dmin"
 msgstr "%dh %dmin"
@@ -120,19 +93,51 @@ msgstr "Grouper automatiquement"
 msgid "Automatically group dives in trips"
 msgstr "Grouper automatiquement les plongées"
 
-#: statistics.c:668 statistics.c:705
+#: statistics.c:168
+#, fuzzy
+msgctxt "Depth"
+msgid "Average"
+msgstr ""
+"\n"
+"Moyenne"
+
+#: statistics.c:165
+#, fuzzy
+msgctxt "Duration"
+msgid "Average"
+msgstr ""
+"\n"
+"Moyenne"
+
+#: statistics.c:171
+#, fuzzy
+msgctxt "SAC"
+msgid "Average"
+msgstr ""
+"\n"
+"Moyenne"
+
+#: statistics.c:174
+#, fuzzy
+msgctxt "Temp"
+msgid "Average"
+msgstr ""
+"\n"
+"Moyenne"
+
+#: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
 msgstr "Profondeur moy."
 
-#: statistics.c:676
+#: statistics.c:691
 msgid "Avg SAC"
 msgstr "Consomation d'air moyenne"
 
-#: statistics.c:651
+#: statistics.c:666
 msgid "Avg Temp"
 msgstr "Température Moy."
 
-#: statistics.c:658
+#: statistics.c:673
 msgid "Avg Time"
 msgstr "Temps Moy."
 
@@ -184,7 +189,7 @@ msgstr "Block"
 msgid "Cylinders"
 msgstr "Blocks"
 
-#: divelist.c:1258 print.c:154 statistics.c:696
+#: divelist.c:1258 print.c:154 statistics.c:711
 msgid "Date"
 msgstr "Date"
 
@@ -220,17 +225,9 @@ msgstr "Supprimer plongée"
 msgid "Delete dives"
 msgstr "Supprimer plongées"
 
-#: print.c:154
+#: print.c:154 statistics.c:160
 msgid "Depth"
 msgstr "Profondeur"
-
-#: statistics.c:161
-msgid ""
-"Depth\n"
-"Average"
-msgstr ""
-"Profondeur\n"
-"Moyenne"
 
 #: info.c:836
 #, c-format
@@ -264,7 +261,7 @@ msgstr "Plongée #%d - %s"
 msgid "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
 msgstr "Plongée #%d - %s %02d/%02d/%04d à %d:%02d"
 
-#: gtk-gui.c:1120 info.c:669 statistics.c:687
+#: gtk-gui.c:1120 info.c:669 statistics.c:702
 msgid "Dive Info"
 msgstr "Détails Plongée"
 
@@ -272,7 +269,7 @@ msgstr "Détails Plongée"
 msgid "Dive Notes"
 msgstr "Notes de Plongée"
 
-#: statistics.c:697
+#: statistics.c:712
 msgid "Dive Time"
 msgstr "Temps de Plongée"
 
@@ -308,7 +305,7 @@ msgstr "Police pour la liste de plongée"
 msgid "Divemaster"
 msgstr "Chef de Palanquée"
 
-#: statistics.c:648
+#: statistics.c:663
 msgid "Dives"
 msgstr "Plongées"
 
@@ -317,12 +314,9 @@ msgid "Download From Dive Computer"
 msgstr "Télécharger de l'ordinateur de plongée"
 
 #: statistics.c:160
-msgid ""
-"Duration\n"
-"Total"
-msgstr ""
-"Durée\n"
-"Totale"
+#, fuzzy
+msgid "Duration"
+msgstr "Durée (min)"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -421,7 +415,7 @@ msgstr "Filtrer"
 msgid "Fri"
 msgstr "Ven"
 
-#: statistics.c:715
+#: statistics.c:730
 msgid "Gas Used"
 msgstr "Air Utilisé"
 
@@ -474,7 +468,15 @@ msgstr "Location"
 msgid "Log"
 msgstr "Journal"
 
-#: statistics.c:659
+#: statistics.c:167
+#, fuzzy
+msgctxt "Duration"
+msgid "Longest"
+msgstr ""
+"\n"
+"Plus longue"
+
+#: statistics.c:674
 msgid "Longest Dive"
 msgstr "Plongée la plus longue"
 
@@ -502,15 +504,15 @@ msgstr "Chef"
 msgid "Max Deco Time Warning"
 msgstr "Attention: Temps de Decopression Maximum"
 
-#: statistics.c:666 statistics.c:704
+#: statistics.c:681 statistics.c:719
 msgid "Max Depth"
 msgstr "Prof. Maximal"
 
-#: statistics.c:674
+#: statistics.c:689
 msgid "Max SAC"
 msgstr "Consommation d'air Max."
 
-#: statistics.c:649
+#: statistics.c:664
 msgid "Max Temp"
 msgstr "Temp. Max."
 
@@ -529,6 +531,30 @@ msgstr ""
 msgid "MaxPress"
 msgstr "PressionMax"
 
+#: statistics.c:170
+#, fuzzy
+msgctxt "Depth"
+msgid "Maximum"
+msgstr ""
+"\n"
+"Maximum"
+
+#: statistics.c:173
+#, fuzzy
+msgctxt "SAC"
+msgid "Maximum"
+msgstr ""
+"\n"
+"Maximum"
+
+#: statistics.c:176
+#, fuzzy
+msgctxt "Temp"
+msgid "Maximum"
+msgstr ""
+"\n"
+"Maximum"
+
 #: main.c:46
 msgid "May"
 msgstr "Mai"
@@ -545,17 +571,41 @@ msgstr "Intégrer groupe dans le groupe en-dessous"
 msgid "Meter"
 msgstr "Metre"
 
-#: statistics.c:667
+#: statistics.c:682
 msgid "Min Depth"
 msgstr "Profondeur Min."
 
-#: statistics.c:675
+#: statistics.c:690
 msgid "Min SAC"
 msgstr "Min. SAC"
 
-#: statistics.c:650
+#: statistics.c:665
 msgid "Min Temp"
 msgstr "Temp. Min."
+
+#: statistics.c:169
+#, fuzzy
+msgctxt "Depth"
+msgid "Minimum"
+msgstr ""
+"\n"
+"Minimum"
+
+#: statistics.c:172
+#, fuzzy
+msgctxt "SAC"
+msgid "Minimum"
+msgstr ""
+"\n"
+"Minimum"
+
+#: statistics.c:175
+#, fuzzy
+msgctxt "Temp"
+msgid "Minimum"
+msgstr ""
+"\n"
+"Minimum"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -589,7 +639,7 @@ msgstr "Notes"
 msgid "Nov"
 msgstr "Nov"
 
-#: divelist.c:1268 gtk-gui.c:635 statistics.c:713
+#: divelist.c:1268 gtk-gui.c:635 statistics.c:728
 msgid "OTU"
 msgstr "OTU"
 
@@ -626,7 +676,7 @@ msgstr "PSI"
 msgid "Preferences"
 msgstr "Preferences"
 
-#: equipment.c:960
+#: equipment.c:954 equipment.c:960
 msgid "Pressure"
 msgstr "Pression"
 
@@ -700,17 +750,9 @@ msgstr "Re-numéroter"
 msgid "Retry"
 msgstr "Re-essayer"
 
-#: divelist.c:1267 gtk-gui.c:630 statistics.c:712
+#: divelist.c:1267 gtk-gui.c:630 statistics.c:160 statistics.c:727
 msgid "SAC"
 msgstr "Consommation d'air"
-
-#: statistics.c:162
-msgid ""
-"SAC\n"
-"Average"
-msgstr ""
-"Consommation d'air moyenne\n"
-"Moyenne"
 
 #: file.c:75
 msgid "SDE file"
@@ -757,7 +799,15 @@ msgstr ""
 "Écriture partiel des progrès dans le fichier req.txt\n"
 "Est-ce que votre Uemis Zurich est branché correctement ?"
 
-#: statistics.c:660
+#: statistics.c:166
+#, fuzzy
+msgctxt "Duration"
+msgid "Shortest"
+msgstr ""
+"\n"
+"Plus courte"
+
+#: statistics.c:675
 msgid "Shortest Dive"
 msgstr "Plongée la plus courte"
 
@@ -765,7 +815,7 @@ msgstr "Plongée la plus courte"
 msgid "Show Columns"
 msgstr "Affichier colonne"
 
-#: equipment.c:1486
+#: equipment.c:951 equipment.c:1486
 msgid "Size"
 msgstr "Taille"
 
@@ -781,7 +831,7 @@ msgstr "Attention: vitesse"
 msgid "Start"
 msgstr "Début"
 
-#: statistics.c:640
+#: statistics.c:655
 msgid "Statistics"
 msgstr "Statistiques"
 
@@ -798,7 +848,7 @@ msgstr "Combinaison"
 msgid "Sun"
 msgstr "Dim"
 
-#: statistics.c:698
+#: statistics.c:713
 msgid "Surf Intv"
 msgstr "Interval de surface"
 
@@ -818,13 +868,10 @@ msgstr "Information: Pression block"
 msgid "Temp"
 msgstr "Température"
 
-#: statistics.c:162
-msgid ""
-"Temperature\n"
-"Average"
-msgstr ""
-"Température\n"
-"Moyenne"
+#: statistics.c:160
+#, fuzzy
+msgid "Temperature"
+msgstr "Température:"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
@@ -846,7 +893,13 @@ msgstr "Temps"
 msgid "Toggle Zoom"
 msgstr "Zoom avant/arrière"
 
-#: statistics.c:657
+#: statistics.c:164
+#, fuzzy
+msgctxt "Duration"
+msgid "Total"
+msgstr "Temps Total"
+
+#: statistics.c:672
 msgid "Total Time"
 msgstr "Temps Total"
 
@@ -894,7 +947,7 @@ msgstr "Vue"
 msgid "Volume:"
 msgstr "Volume:"
 
-#: statistics.c:706
+#: statistics.c:721
 msgid "Water Temp"
 msgstr "Température de l'eau"
 
@@ -919,14 +972,10 @@ msgid "XML file"
 msgstr "Fichier XML"
 
 #: statistics.c:160
-msgid ""
-"Year\n"
-" > Month"
+msgid "Year"
 msgstr ""
-"Année\n"
-" > Mois"
 
-#: gtk-gui.c:915 statistics.c:345
+#: gtk-gui.c:915 statistics.c:360
 msgid "Yearly Statistics"
 msgstr "Statistiques annuelles"
 
@@ -983,7 +1032,7 @@ msgstr "US Pond"
 msgid "min"
 msgstr "min"
 
-#: statistics.c:478
+#: statistics.c:493
 #, c-format
 msgid "more than %d days"
 msgstr "Plus de %d jours"
@@ -992,7 +1041,7 @@ msgstr "Plus de %d jours"
 msgid "unkn"
 msgstr "inconnu"
 
-#: statistics.c:517
+#: statistics.c:532
 msgid "unknown"
 msgstr "inconnu"
 
@@ -1003,3 +1052,47 @@ msgstr "non-specifié"
 #: equipment.c:1514
 msgid "weight"
 msgstr "poid"
+
+#, fuzzy
+#~ msgctxt "Depth"
+#~ msgid ""
+#~ "Depth\n"
+#~ "Average"
+#~ msgstr ""
+#~ "Profondeur\n"
+#~ "Moyenne"
+
+#, fuzzy
+#~ msgctxt "Duration"
+#~ msgid ""
+#~ "Duration\n"
+#~ "Total"
+#~ msgstr ""
+#~ "Durée\n"
+#~ "Totale"
+
+#, fuzzy
+#~ msgctxt "SAC"
+#~ msgid ""
+#~ "SAC\n"
+#~ "Average"
+#~ msgstr ""
+#~ "Consommation d'air moyenne\n"
+#~ "Moyenne"
+
+#, fuzzy
+#~ msgid ""
+#~ "SAC|\n"
+#~ "Minimum"
+#~ msgstr ""
+#~ "\n"
+#~ "Minimum"
+
+#, fuzzy
+#~ msgctxt "Temp"
+#~ msgid ""
+#~ "Temperature\n"
+#~ "Average"
+#~ msgstr ""
+#~ "Température\n"
+#~ "Moyenne"

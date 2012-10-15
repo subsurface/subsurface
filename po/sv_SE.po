@@ -1,7 +1,7 @@
-# Swedish translations for 2.0.1 package
-# Swedish messages for 2.0.1.
-# Copyright (C) 2012 THE 2.0.1'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the 2.0.1 package.
+# Swedish translations for Subsurface package
+# Swedish messages for Subsurface.
+# Copyright (C) 2012 Subsurface's COPYRIGHT HOLDER
+# This file is distributed under the same license as the Subsurface package.
 # based on the Norwegian translations by
 # Henrik Brautaset Aronsen <subsurface@henrik.synth.no>, 2012.
 #
@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 23:06+0900\n"
+"POT-Creation-Date: 2012-10-14 20:42-0700\n"
 "PO-Revision-Date: 2012-10-12 11:48+0900\n"
 "Last-Translator: Linus Torvalds <torvalds@linux-foundation.org>\n"
 "Language-Team: Swedish\n"
@@ -20,72 +20,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: statistics.c:160
-msgid ""
-"\n"
-"Average"
-msgstr ""
-"\n"
-"Genomsnitt"
-
-#: statistics.c:161
-msgid ""
-"\n"
-"Longest"
-msgstr ""
-"\n"
-"Längsta"
-
 #: statistics.c:162
-#: statistics.c:163
-msgid ""
-"\n"
-"Maximum"
+#, fuzzy
+msgctxt "Stats"
+msgid " > Month"
 msgstr ""
-"\n"
-"Maksimum"
-
-#: statistics.c:161
-#: statistics.c:162
-#: statistics.c:163
-msgid ""
-"\n"
-"Minimum"
-msgstr ""
-"\n"
-"Minimum"
-
-#: statistics.c:161
-msgid ""
-"\n"
-"Shortest"
-msgstr ""
-"\n"
-"Kortaste"
+"År\n"
+" > Månad"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
 msgstr " Välj dykdator och enhet"
 
-#: statistics.c:601
-#: statistics.c:603
-#: statistics.c:605
+#: statistics.c:160
+msgid "#"
+msgstr ""
+
+#: statistics.c:616 statistics.c:618 statistics.c:620
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: print.c:252
-#: statistics.c:512
+#: print.c:252 statistics.c:527
 #, c-format
 msgid "%d min"
 msgstr "%d min"
 
-#: statistics.c:484
+#: statistics.c:499
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%dd %dt %dmin"
 
-#: statistics.c:486
+#: statistics.c:501
 #, c-format
 msgid "%dh %dmin"
 msgstr "%dt %dmin"
@@ -127,20 +93,51 @@ msgstr "Gruppera automatiskt"
 msgid "Automatically group dives in trips"
 msgstr "Gruppera dykningar som resor automatisk"
 
-#: statistics.c:668
-#: statistics.c:705
+#: statistics.c:168
+#, fuzzy
+msgctxt "Depth"
+msgid "Average"
+msgstr ""
+"\n"
+"Genomsnitt"
+
+#: statistics.c:165
+#, fuzzy
+msgctxt "Duration"
+msgid "Average"
+msgstr ""
+"\n"
+"Genomsnitt"
+
+#: statistics.c:171
+#, fuzzy
+msgctxt "SAC"
+msgid "Average"
+msgstr ""
+"\n"
+"Genomsnitt"
+
+#: statistics.c:174
+#, fuzzy
+msgctxt "Temp"
+msgid "Average"
+msgstr ""
+"\n"
+"Genomsnitt"
+
+#: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
 msgstr "Medeldjup"
 
-#: statistics.c:676
+#: statistics.c:691
 msgid "Avg SAC"
 msgstr "Medel-SAC"
 
-#: statistics.c:651
+#: statistics.c:666
 msgid "Avg Temp"
 msgstr "Medel-temp."
 
-#: statistics.c:658
+#: statistics.c:673
 msgid "Avg Time"
 msgstr "Medel-tid"
 
@@ -148,9 +145,7 @@ msgstr "Medel-tid"
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:484
-#: info.c:911
-#: print.c:155
+#: info.c:484 info.c:911 print.c:155
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -182,13 +177,11 @@ msgstr "Ny resa innan"
 msgid "CuFt"
 msgstr "ft^3"
 
-#: divelist.c:1265
-#: gtk-gui.c:620
+#: divelist.c:1265 gtk-gui.c:620
 msgid "Cyl"
 msgstr "Cyl"
 
-#: equipment.c:926
-#: equipment.c:1062
+#: equipment.c:926 equipment.c:1062
 msgid "Cylinder"
 msgstr "Cylinder"
 
@@ -196,9 +189,7 @@ msgstr "Cylinder"
 msgid "Cylinders"
 msgstr "Cylindrar"
 
-#: divelist.c:1258
-#: print.c:154
-#: statistics.c:696
+#: divelist.c:1258 print.c:154 statistics.c:711
 msgid "Date"
 msgstr "Datum"
 
@@ -234,17 +225,9 @@ msgstr "Radera dykning"
 msgid "Delete dives"
 msgstr "Radera dykningar"
 
-#: print.c:154
+#: print.c:154 statistics.c:160
 msgid "Depth"
 msgstr "Djup"
-
-#: statistics.c:161
-msgid ""
-"Depth\n"
-"Average"
-msgstr ""
-"Djup\n"
-"Genomsnitt"
 
 #: info.c:836
 #, c-format
@@ -278,9 +261,7 @@ msgstr "Dykning #%d - %s"
 msgid "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
 msgstr "Dykning #%d - %s %02d-%02d-%04d,  %d:%02d"
 
-#: gtk-gui.c:1120
-#: info.c:669
-#: statistics.c:687
+#: gtk-gui.c:1120 info.c:669 statistics.c:702
 msgid "Dive Info"
 msgstr "Information"
 
@@ -288,7 +269,7 @@ msgstr "Information"
 msgid "Dive Notes"
 msgstr "Dykning"
 
-#: statistics.c:697
+#: statistics.c:712
 msgid "Dive Time"
 msgstr "Starttid"
 
@@ -324,22 +305,18 @@ msgstr "Font för dyklistan"
 msgid "Divemaster"
 msgstr "Divemaster"
 
-#: statistics.c:648
+#: statistics.c:663
 msgid "Dives"
 msgstr "Dykningar"
 
-#: gtk-gui.c:911
-#: gtk-gui.c:1494
+#: gtk-gui.c:911 gtk-gui.c:1494
 msgid "Download From Dive Computer"
 msgstr "Nedladda från dykdator"
 
 #: statistics.c:160
-msgid ""
-"Duration\n"
-"Total"
-msgstr ""
-"Tid\n"
-"Total"
+#, fuzzy
+msgid "Duration"
+msgstr "Tid (min)"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -377,13 +354,11 @@ msgstr "Redigera resesammandrag"
 msgid "Enable / Disable Events"
 msgstr "Aktivera / Inaktivera händelser"
 
-#: equipment.c:965
-#: equipment.c:1489
+#: equipment.c:965 equipment.c:1489
 msgid "End"
 msgstr "Slut"
 
-#: gtk-gui.c:1116
-#: info.c:504
+#: gtk-gui.c:1116 info.c:504
 msgid "Equipment"
 msgstr "Utrustning"
 
@@ -440,7 +415,7 @@ msgstr "Filter"
 msgid "Fri"
 msgstr "fre"
 
-#: statistics.c:715
+#: statistics.c:730
 msgid "Gas Used"
 msgstr "Gasanvändning"
 
@@ -485,11 +460,7 @@ msgstr "Lista"
 msgid "Liter"
 msgstr "liter"
 
-#: divelist.c:1269
-#: info.c:458
-#: info.c:478
-#: info.c:905
-#: print.c:155
+#: divelist.c:1269 info.c:458 info.c:478 info.c:905 print.c:155
 msgid "Location"
 msgstr "Ställe"
 
@@ -497,7 +468,15 @@ msgstr "Ställe"
 msgid "Log"
 msgstr "Log"
 
-#: statistics.c:659
+#: statistics.c:167
+#, fuzzy
+msgctxt "Duration"
+msgid "Longest"
+msgstr ""
+"\n"
+"Längsta"
+
+#: statistics.c:674
 msgid "Longest Dive"
 msgstr "Längsta dykning"
 
@@ -525,16 +504,15 @@ msgstr "master"
 msgid "Max Deco Time Warning"
 msgstr "Varning: max dekotid"
 
-#: statistics.c:666
-#: statistics.c:704
+#: statistics.c:681 statistics.c:719
 msgid "Max Depth"
 msgstr "Maxdjup"
 
-#: statistics.c:674
+#: statistics.c:689
 msgid "Max SAC"
 msgstr "Max SAC"
 
-#: statistics.c:649
+#: statistics.c:664
 msgid "Max Temp"
 msgstr "Max temp"
 
@@ -553,6 +531,30 @@ msgstr ""
 msgid "MaxPress"
 msgstr "Max tryck"
 
+#: statistics.c:170
+#, fuzzy
+msgctxt "Depth"
+msgid "Maximum"
+msgstr ""
+"\n"
+"Maksimum"
+
+#: statistics.c:173
+#, fuzzy
+msgctxt "SAC"
+msgid "Maximum"
+msgstr ""
+"\n"
+"Maksimum"
+
+#: statistics.c:176
+#, fuzzy
+msgctxt "Temp"
+msgid "Maximum"
+msgstr ""
+"\n"
+"Maksimum"
+
 #: main.c:46
 msgid "May"
 msgstr "mai"
@@ -569,17 +571,41 @@ msgstr "Sammanslå resa med senare resa"
 msgid "Meter"
 msgstr "meter"
 
-#: statistics.c:667
+#: statistics.c:682
 msgid "Min Depth"
 msgstr "Min. djup"
 
-#: statistics.c:675
+#: statistics.c:690
 msgid "Min SAC"
 msgstr "Min. SAC"
 
-#: statistics.c:650
+#: statistics.c:665
 msgid "Min Temp"
 msgstr "Min. temp"
+
+#: statistics.c:169
+#, fuzzy
+msgctxt "Depth"
+msgid "Minimum"
+msgstr ""
+"\n"
+"Minimum"
+
+#: statistics.c:172
+#, fuzzy
+msgctxt "SAC"
+msgid "Minimum"
+msgstr ""
+"\n"
+"Minimum"
+
+#: statistics.c:175
+#, fuzzy
+msgctxt "Temp"
+msgid "Minimum"
+msgstr ""
+"\n"
+"Minimum"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -605,9 +631,7 @@ msgstr "Nytt startnummer"
 msgid "No Tank Data"
 msgstr "Ingen tankinformation"
 
-#: info.c:463
-#: info.c:496
-#: info.c:919
+#: info.c:463 info.c:496 info.c:919
 msgid "Notes"
 msgstr "Anteckningar"
 
@@ -615,9 +639,7 @@ msgstr "Anteckningar"
 msgid "Nov"
 msgstr "nov"
 
-#: divelist.c:1268
-#: gtk-gui.c:635
-#: statistics.c:713
+#: divelist.c:1268 gtk-gui.c:635 statistics.c:728
 msgid "OTU"
 msgstr "OTU"
 
@@ -649,12 +671,11 @@ msgstr "Varning: grön PO2"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:570
-#: gtk-gui.c:913
+#: gtk-gui.c:570 gtk-gui.c:913
 msgid "Preferences"
 msgstr "Optioner"
 
-#: equipment.c:960
+#: equipment.c:954 equipment.c:960
 msgid "Pressure"
 msgstr "Tryck"
 
@@ -698,8 +719,7 @@ msgstr "Alarm: gastid"
 msgid "RGT Warning"
 msgstr "Varning: gastid"
 
-#: info.c:489
-#: info.c:916
+#: info.c:489 info.c:916
 msgid "Rating"
 msgstr "Värdering"
 
@@ -720,8 +740,7 @@ msgstr "Ta bort dykning från resa"
 msgid "Remove selected dives from trip"
 msgstr "Ta bort valda dykningar från resa"
 
-#: gtk-gui.c:802
-#: gtk-gui.c:914
+#: gtk-gui.c:802 gtk-gui.c:914
 msgid "Renumber"
 msgstr "Uppdatera numrering"
 
@@ -729,19 +748,9 @@ msgstr "Uppdatera numrering"
 msgid "Retry"
 msgstr "Pröva igen"
 
-#: divelist.c:1267
-#: gtk-gui.c:630
-#: statistics.c:712
+#: divelist.c:1267 gtk-gui.c:630 statistics.c:160 statistics.c:727
 msgid "SAC"
 msgstr "SAC"
-
-#: statistics.c:162
-msgid ""
-"SAC\n"
-"Average"
-msgstr ""
-"SAC\n"
-"Genomsnitt"
 
 #: file.c:75
 msgid "SDE file"
@@ -771,8 +780,7 @@ msgstr "Spara ändringar?"
 msgid "Save File As"
 msgstr "Spara fil som"
 
-#: gtk-gui.c:762
-#: gtk-gui.c:916
+#: gtk-gui.c:762 gtk-gui.c:916
 msgid "SelectEvents"
 msgstr "Välj händelser"
 
@@ -788,7 +796,15 @@ msgstr ""
 "Kunde inte skriva filen req.txt\n"
 "Är Uemis Zurich pluggad in ordentligt?"
 
-#: statistics.c:660
+#: statistics.c:166
+#, fuzzy
+msgctxt "Duration"
+msgid "Shortest"
+msgstr ""
+"\n"
+"Kortaste"
+
+#: statistics.c:675
 msgid "Shortest Dive"
 msgstr "Kortaste dykning"
 
@@ -796,7 +812,7 @@ msgstr "Kortaste dykning"
 msgid "Show Columns"
 msgstr "Visa kolumner"
 
-#: equipment.c:1486
+#: equipment.c:951 equipment.c:1486
 msgid "Size"
 msgstr "Storlek"
 
@@ -808,12 +824,11 @@ msgstr "Alarm: uppstigningshastighet"
 msgid "Speed Warning"
 msgstr "Varning: uppstigningshastighet"
 
-#: equipment.c:962
-#: equipment.c:1488
+#: equipment.c:962 equipment.c:1488
 msgid "Start"
 msgstr "Start"
 
-#: statistics.c:640
+#: statistics.c:655
 msgid "Statistics"
 msgstr "Statistik"
 
@@ -821,10 +836,7 @@ msgstr "Statistik"
 msgid "Stats"
 msgstr "Statistik"
 
-#: divelist.c:1264
-#: gtk-gui.c:645
-#: info.c:490
-#: info.c:917
+#: divelist.c:1264 gtk-gui.c:645 info.c:490 info.c:917
 msgid "Suit"
 msgstr "Dräkt"
 
@@ -833,7 +845,7 @@ msgstr "Dräkt"
 msgid "Sun"
 msgstr "sön"
 
-#: statistics.c:698
+#: statistics.c:713
 msgid "Surf Intv"
 msgstr "Ytintervall"
 
@@ -853,13 +865,10 @@ msgstr "Info: tryck"
 msgid "Temp"
 msgstr "Temp"
 
-#: statistics.c:162
-msgid ""
-"Temperature\n"
-"Average"
-msgstr ""
-"Temperatur\n"
-"Genomsnitt"
+#: statistics.c:160
+#, fuzzy
+msgid "Temperature"
+msgstr "Temperatur:"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
@@ -873,8 +882,7 @@ msgstr "Alla"
 msgid "Thu"
 msgstr "tor"
 
-#: info.c:791
-#: print.c:154
+#: info.c:791 print.c:154
 msgid "Time"
 msgstr "Tid"
 
@@ -882,7 +890,13 @@ msgstr "Tid"
 msgid "Toggle Zoom"
 msgstr "Zoom av/på"
 
-#: statistics.c:657
+#: statistics.c:164
+#, fuzzy
+msgctxt "Duration"
+msgid "Total"
+msgstr "Total tid"
+
+#: statistics.c:672
 msgid "Total Time"
 msgstr "Total tid"
 
@@ -890,8 +904,7 @@ msgstr "Total tid"
 msgid "Tue"
 msgstr "tis"
 
-#: equipment.c:1485
-#: equipment.c:1513
+#: equipment.c:1485 equipment.c:1513
 msgid "Type"
 msgstr "Typ"
 
@@ -931,7 +944,7 @@ msgstr "Visa"
 msgid "Volume:"
 msgstr "Volum:"
 
-#: statistics.c:706
+#: statistics.c:721
 msgid "Water Temp"
 msgstr "Vattentemperatur"
 
@@ -939,9 +952,7 @@ msgstr "Vattentemperatur"
 msgid "Wed"
 msgstr "ons"
 
-#: equipment.c:1012
-#: equipment.c:1609
-#: gtk-gui.c:640
+#: equipment.c:1012 equipment.c:1609 gtk-gui.c:640
 msgid "Weight"
 msgstr "Vikt"
 
@@ -958,15 +969,10 @@ msgid "XML file"
 msgstr "XML-fil"
 
 #: statistics.c:160
-msgid ""
-"Year\n"
-" > Month"
+msgid "Year"
 msgstr ""
-"År\n"
-" > Månad"
 
-#: gtk-gui.c:915
-#: statistics.c:345
+#: gtk-gui.c:915 statistics.c:360
 msgid "Yearly Statistics"
 msgstr "Årsstatistik"
 
@@ -1015,8 +1021,7 @@ msgstr "integrerat"
 msgid "kg"
 msgstr "kg"
 
-#: divelist.c:1263
-#: gtk-gui.c:606
+#: divelist.c:1263 gtk-gui.c:606
 msgid "lbs"
 msgstr "pund"
 
@@ -1024,17 +1029,16 @@ msgstr "pund"
 msgid "min"
 msgstr "Min"
 
-#: statistics.c:478
+#: statistics.c:493
 #, c-format
 msgid "more than %d days"
 msgstr "mer än %d dagar"
 
-#: equipment.c:1378
-#: equipment.c:1398
+#: equipment.c:1378 equipment.c:1398
 msgid "unkn"
 msgstr "okänd"
 
-#: statistics.c:517
+#: statistics.c:532
 msgid "unknown"
 msgstr "okänd"
 
@@ -1046,3 +1050,46 @@ msgstr "inte specifierad"
 msgid "weight"
 msgstr "Vikt"
 
+#, fuzzy
+#~ msgctxt "Depth"
+#~ msgid ""
+#~ "Depth\n"
+#~ "Average"
+#~ msgstr ""
+#~ "Djup\n"
+#~ "Genomsnitt"
+
+#, fuzzy
+#~ msgctxt "Duration"
+#~ msgid ""
+#~ "Duration\n"
+#~ "Total"
+#~ msgstr ""
+#~ "Tid\n"
+#~ "Total"
+
+#, fuzzy
+#~ msgctxt "SAC"
+#~ msgid ""
+#~ "SAC\n"
+#~ "Average"
+#~ msgstr ""
+#~ "SAC\n"
+#~ "Genomsnitt"
+
+#, fuzzy
+#~ msgid ""
+#~ "SAC|\n"
+#~ "Minimum"
+#~ msgstr ""
+#~ "\n"
+#~ "Minimum"
+
+#, fuzzy
+#~ msgctxt "Temp"
+#~ msgid ""
+#~ "Temperature\n"
+#~ "Average"
+#~ msgstr ""
+#~ "Temperatur\n"
+#~ "Genomsnitt"
