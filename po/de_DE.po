@@ -110,7 +110,7 @@ msgstr "Ø"
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
-msgstr "Durchschn. Tiefe"
+msgstr "Ø Tiefe"
 
 #: statistics.c:691
 msgid "Avg SAC"
@@ -118,11 +118,11 @@ msgstr "Ø AMV"
 
 #: statistics.c:666
 msgid "Avg Temp"
-msgstr "Durchschn. Temp"
+msgstr "Ø Temp"
 
 #: statistics.c:673
 msgid "Avg Time"
-msgstr "Duchschn. Dauer"
+msgstr "Ø Dauer"
 
 #: gtk-gui.c:590
 msgid "Bar"
@@ -276,7 +276,7 @@ msgstr "Notizen zum Tauchgang"
 
 #: info.c:483
 msgid "Dive master"
-msgstr "Tauchgruppenführer"
+msgstr "Tauchgruppenleiter"
 
 #: print.c:154
 msgid "Dive#"
@@ -288,7 +288,7 @@ msgstr "Schriftart für Tauchliste"
 
 #: info.c:910
 msgid "Divemaster"
-msgstr "Tauchgruppenführer"
+msgstr "Tauchgruppenleiter"
 
 #: statistics.c:663
 msgid "Dives"
@@ -479,7 +479,7 @@ msgstr "Markierung"
 
 #: print.c:154
 msgid "Master"
-msgstr "Führer"
+msgstr "Leiter"
 
 #: uemis.c:158
 msgid "Max Deco Time Warning"
