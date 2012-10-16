@@ -107,7 +107,7 @@ const char *subsurface_default_filename()
 const char *subsurface_gettext_domainpath()
 {
 	CFBundleRef mainBundle = CFBundleGetMainBundle();
-	CFURLRef localeURL = CFBundleCopyResourceURL(mainBundle, CFSTR("locale"), CFSTR(""), NULL);
+	CFURLRef localeURL = CFBundleCopyResourceURL(mainBundle, CFSTR("share/locale"), CFSTR(""), NULL);
 	if (localeURL) {
 		CFStringRef localePath = CFURLCopyFileSystemPath(localeURL, kCFURLPOSIXPathStyle);
 		CFStringEncoding encodingMethod = CFStringGetSystemEncoding();
