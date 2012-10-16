@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-14 20:42-0700\n"
 "PO-Revision-Date: 2012-10-11 13:08+0100\n"
-"Last-Translator: Jacco van Koll <jacco.van.koll@gmail.com>\n"
+"Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -20,12 +20,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: statistics.c:162
-#, fuzzy
 msgctxt "Stats"
 msgid " > Month"
-msgstr ""
-"Jaar\n"
-" > Maand"
+msgstr " > Maand"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
@@ -93,36 +90,24 @@ msgid "Automatically group dives in trips"
 msgstr "Automatisch de duiken in trips groeperen"
 
 #: statistics.c:168
-#, fuzzy
 msgctxt "Depth"
 msgid "Average"
-msgstr ""
-"\n"
-"Gemiddelde"
+msgstr "Gemiddelde"
 
 #: statistics.c:165
-#, fuzzy
 msgctxt "Duration"
 msgid "Average"
-msgstr ""
-"\n"
-"Gemiddelde"
+msgstr "Gemiddelde"
 
 #: statistics.c:171
-#, fuzzy
 msgctxt "SAC"
 msgid "Average"
-msgstr ""
-"\n"
-"Gemiddelde"
+msgstr "Gemiddelde"
 
 #: statistics.c:174
-#, fuzzy
 msgctxt "Temp"
 msgid "Average"
-msgstr ""
-"\n"
-"Gemiddelde"
+msgstr "Gemiddelde"
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
@@ -313,9 +298,8 @@ msgid "Download From Dive Computer"
 msgstr "Download uit duikcomputer"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Duration"
-msgstr "Duur (min)"
+msgstr "Duur"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -468,12 +452,9 @@ msgid "Log"
 msgstr "Log"
 
 #: statistics.c:167
-#, fuzzy
 msgctxt "Duration"
 msgid "Longest"
-msgstr ""
-"\n"
-"Langste"
+msgstr "Langste"
 
 #: statistics.c:674
 msgid "Longest Dive"
@@ -531,28 +512,19 @@ msgid "MaxPress"
 msgstr "Max.Druk"
 
 #: statistics.c:170
-#, fuzzy
 msgctxt "Depth"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Grootste"
+msgstr "Grootste"
 
 #: statistics.c:173
-#, fuzzy
 msgctxt "SAC"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Grootste"
+msgstr "Grootste"
 
 #: statistics.c:176
-#, fuzzy
 msgctxt "Temp"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Grootste"
+msgstr "Grootste"
 
 #: main.c:46
 msgid "May"
@@ -583,28 +555,19 @@ msgid "Min Temp"
 msgstr "Min. Temp."
 
 #: statistics.c:169
-#, fuzzy
 msgctxt "Depth"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Kleinste"
+msgstr "Kleinste"
 
 #: statistics.c:172
-#, fuzzy
 msgctxt "SAC"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Kleinste"
+msgstr "Kleinste"
 
 #: statistics.c:175
-#, fuzzy
 msgctxt "Temp"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Kleinste"
+msgstr "Kleinste"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -647,7 +610,6 @@ msgid "Oct"
 msgstr "Okt"
 
 #: gtk-gui.c:905
-#, fuzzy
 msgid "Open"
 msgstr "Bestand openen"
 
@@ -688,9 +650,8 @@ msgid "Pretty print"
 msgstr "Mooi afdrukken"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Print"
-msgstr "Print type"
+msgstr "Afdrukken"
 
 #: print.c:505
 msgid "Print only selected dives"
@@ -767,10 +728,9 @@ msgstr "Za"
 
 #: gtk-gui.c:906
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #: gtk-gui.c:907
-#, fuzzy
 msgid "Save As"
 msgstr "Bestand opslaan als"
 
@@ -799,12 +759,9 @@ msgstr ""
 "Is de Uemis Zurich correkt aangesloten?"
 
 #: statistics.c:166
-#, fuzzy
 msgctxt "Duration"
 msgid "Shortest"
-msgstr ""
-"\n"
-"Kortste"
+msgstr "Kortste"
 
 #: statistics.c:675
 msgid "Shortest Dive"
@@ -868,9 +825,8 @@ msgid "Temp"
 msgstr "Temperatuur"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Temperature"
-msgstr "Temperatuur:"
+msgstr "Temperatuur"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
@@ -893,10 +849,9 @@ msgid "Toggle Zoom"
 msgstr "Zoom in-/uitschakelen"
 
 #: statistics.c:164
-#, fuzzy
 msgctxt "Duration"
 msgid "Total"
-msgstr "Totale tijd"
+msgstr "Totale"
 
 #: statistics.c:672
 msgid "Total Time"
