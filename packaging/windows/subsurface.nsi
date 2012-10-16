@@ -136,7 +136,6 @@ Section
     File dll\pthreadGC2.dll
     File dll\zlib1.dll
     File subsurface.ico
-    File /r ..\..\locale
     File /r share
 
     # Store installation folder in registry
@@ -169,7 +168,6 @@ Section "Uninstall"
     Delete "$INSTDIR\subsurface.svg"
     Delete "$INSTDIR\Uninstall.exe"
     RMDir /r "$INSTDIR\share"
-    RMDir /r "$INSTDIR\locale"
     RMDir "$INSTDIR"
 
     # Remove shortcuts

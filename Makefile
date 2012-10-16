@@ -108,6 +108,8 @@ else ifeq ($(UNAME), darwin)
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
+	WINDOWSSTAGING = ./packaging/windows
+	WINMSGDIRS=$(addprefix locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
 endif
 
 ifneq ($(strip $(LIBXSLT)),)
@@ -158,6 +160,17 @@ install-macosx: $(NAME)
 	$(INSTALL) -d -m 755 $(addprefix $(MACOSXINSTALL)/Contents/Resources/,$(dir $(MSGOBJS)))
 	for MSG in $(MSGOBJS); do\
 		install $$MSG  $(MACOSXINSTALL)/Contents/Resources/$$MSG;\
+	done
+
+install-cross-windows: $(NAME)
+	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
+	for MSG in $(WINMSGDIRS); do\
+		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/$$MSG;\
+		$(INSTALL) $(CROSS_LOCALE_PATH)/$$MSG/* $(WINDOWSSTAGING)/share/$$MSG;\
+	done
+	for MSG in $(MSGOBJS); do\
+		$(INSTALL) -d -m 755 $$(dirname $(WINDOWSSTAGING)/share/$$MSG);\
+		$(INSTALL) $$MSG $(WINDOWSSTAGING)/share/$$MSG;\
 	done
 
 file.o: file.c dive.h file.h
