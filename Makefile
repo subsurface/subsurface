@@ -157,9 +157,9 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
-	$(INSTALL) -d -m 755 $(addprefix $(MACOSXINSTALL)/Contents/Resources/,$(dir $(MSGOBJS)))
-	for MSG in $(MSGOBJS); do\
-		install $$MSG  $(MACOSXINSTALL)/Contents/Resources/$$MSG;\
+	for LOC in $(wildcard locale/*/LC_MESSAGES); do \
+		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/$$LOC; \
+		$(INSTALL) $$LOC/subsurface.mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/subsurface.mo; \
 	done
 
 install-cross-windows: $(NAME)
@@ -235,6 +235,12 @@ $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po
 	mkdir -p $(dir $@)
 	msgfmt -c -o $@ po/$*.po
+	if test -s po/$*.aliases; then \
+		for ALIAS in `cat po/$*.aliases`; do \
+			mkdir -p locale/$$ALIAS/LC_MESSAGES; \
+			cp $@ locale/$$ALIAS/LC_MESSAGES; \
+		done; \
+	fi
 
 doc:
 	$(MAKE) -C Documentation doc
