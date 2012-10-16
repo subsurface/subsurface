@@ -237,7 +237,9 @@ static gboolean ask_save_changes()
 		label = gtk_label_new (
 			_("You have unsaved changes\nWould you like to save those before closing the datafile?"));
 	} else {
-		char *label_text = (char*) malloc(sizeof(char) * (94 + strlen(existing_filename)));
+		char *label_text = (char*) malloc(sizeof(char) *
+			(strlen(_("You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?")) +
+			 strlen(existing_filename)));
 		sprintf(label_text,
 			_("You have unsaved changes to file: %s \nWould you like to save those before closing the datafile?"),
 			existing_filename);
