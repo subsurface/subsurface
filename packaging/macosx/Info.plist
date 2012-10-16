@@ -19,8 +19,8 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>CFBundleVersionString</key>
-	<string>2.0.1</string>
+	<string>2.1-rc1</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.1</string>
+	<string>2.1-rc1</string>
 </dict>
 </plist>
