@@ -21,12 +21,9 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #: statistics.c:162
-#, fuzzy
 msgctxt "Stats"
 msgid " > Month"
-msgstr ""
-"År\n"
-" > Månad"
+msgstr " > Månad"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
@@ -94,36 +91,24 @@ msgid "Automatically group dives in trips"
 msgstr "Gruppera dykningar som resor automatisk"
 
 #: statistics.c:168
-#, fuzzy
 msgctxt "Depth"
 msgid "Average"
-msgstr ""
-"\n"
-"Genomsnitt"
+msgstr "Genomsnitt"
 
 #: statistics.c:165
-#, fuzzy
 msgctxt "Duration"
 msgid "Average"
-msgstr ""
-"\n"
-"Genomsnitt"
+msgstr "Genomsnitt"
 
 #: statistics.c:171
-#, fuzzy
 msgctxt "SAC"
 msgid "Average"
-msgstr ""
-"\n"
-"Genomsnitt"
+msgstr "Genomsnitt"
 
 #: statistics.c:174
-#, fuzzy
 msgctxt "Temp"
 msgid "Average"
-msgstr ""
-"\n"
-"Genomsnitt"
+msgstr "Genomsnitt"
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
@@ -314,9 +299,8 @@ msgid "Download From Dive Computer"
 msgstr "Nedladda från dykdator"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Duration"
-msgstr "Tid (min)"
+msgstr "Tid"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -469,12 +453,9 @@ msgid "Log"
 msgstr "Log"
 
 #: statistics.c:167
-#, fuzzy
 msgctxt "Duration"
 msgid "Longest"
-msgstr ""
-"\n"
-"Längsta"
+msgstr "Längsta"
 
 #: statistics.c:674
 msgid "Longest Dive"
@@ -532,28 +513,19 @@ msgid "MaxPress"
 msgstr "Max tryck"
 
 #: statistics.c:170
-#, fuzzy
 msgctxt "Depth"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Maksimum"
+msgstr "Maksimum"
 
 #: statistics.c:173
-#, fuzzy
 msgctxt "SAC"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Maksimum"
+msgstr "Maksimum"
 
 #: statistics.c:176
-#, fuzzy
 msgctxt "Temp"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Maksimum"
+msgstr "Maksimum"
 
 #: main.c:46
 msgid "May"
@@ -584,28 +556,19 @@ msgid "Min Temp"
 msgstr "Min. temp"
 
 #: statistics.c:169
-#, fuzzy
 msgctxt "Depth"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Minimum"
+msgstr "Minimum"
 
 #: statistics.c:172
-#, fuzzy
 msgctxt "SAC"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Minimum"
+msgstr "Minimum"
 
 #: statistics.c:175
-#, fuzzy
 msgctxt "Temp"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Minimum"
+msgstr "Minimum"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -797,12 +760,9 @@ msgstr ""
 "Är Uemis Zurich pluggad in ordentligt?"
 
 #: statistics.c:166
-#, fuzzy
 msgctxt "Duration"
 msgid "Shortest"
-msgstr ""
-"\n"
-"Kortaste"
+msgstr "Kortaste"
 
 #: statistics.c:675
 msgid "Shortest Dive"
@@ -866,9 +826,8 @@ msgid "Temp"
 msgstr "Temp"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Temperature"
-msgstr "Temperatur:"
+msgstr "Temperatur"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
@@ -891,10 +850,9 @@ msgid "Toggle Zoom"
 msgstr "Zoom av/på"
 
 #: statistics.c:164
-#, fuzzy
 msgctxt "Duration"
 msgid "Total"
-msgstr "Total tid"
+msgstr "Total"
 
 #: statistics.c:672
 msgid "Total Time"
@@ -1049,47 +1007,3 @@ msgstr "inte specifierad"
 #: equipment.c:1514
 msgid "weight"
 msgstr "Vikt"
-
-#, fuzzy
-#~ msgctxt "Depth"
-#~ msgid ""
-#~ "Depth\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Djup\n"
-#~ "Genomsnitt"
-
-#, fuzzy
-#~ msgctxt "Duration"
-#~ msgid ""
-#~ "Duration\n"
-#~ "Total"
-#~ msgstr ""
-#~ "Tid\n"
-#~ "Total"
-
-#, fuzzy
-#~ msgctxt "SAC"
-#~ msgid ""
-#~ "SAC\n"
-#~ "Average"
-#~ msgstr ""
-#~ "SAC\n"
-#~ "Genomsnitt"
-
-#, fuzzy
-#~ msgid ""
-#~ "SAC|\n"
-#~ "Minimum"
-#~ msgstr ""
-#~ "\n"
-#~ "Minimum"
-
-#, fuzzy
-#~ msgctxt "Temp"
-#~ msgid ""
-#~ "Temperature\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Temperatur\n"
-#~ "Genomsnitt"
