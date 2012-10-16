@@ -141,13 +141,14 @@ void show_dive_info(struct dive *dive)
 	if (!text)
 		text = "";
 	if (*text) {
-		snprintf(buffer, sizeof(buffer), _("Dive #%d - %s"), dive->number, text);
+		if (dive->number) {
+			snprintf(buffer, sizeof(buffer), _("Dive #%d - %s"), dive->number, text);
+			text = buffer;
+		}
 	} else {
 		divename(buffer, sizeof(buffer), dive);
+		text = buffer;
 	}
-	text = buffer;
-	if (!dive->number)
-		text += 10;     /* Skip the "Dive #0 - " part */
 
 	/* put it all together */
 	if (existing_filename) {
