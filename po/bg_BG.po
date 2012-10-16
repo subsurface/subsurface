@@ -20,12 +20,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: statistics.c:162
-#, fuzzy
 msgctxt "Stats"
 msgid " > Month"
-msgstr ""
-"Година\n"
-" > Месец"
+msgstr " > Месец"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
@@ -33,7 +30,7 @@ msgstr " Моля изберете леководолазен компютър �
 
 #: statistics.c:160
 msgid "#"
-msgstr ""
+msgstr "№"
 
 #: statistics.c:616 statistics.c:618 statistics.c:620
 #, c-format
@@ -93,36 +90,24 @@ msgid "Automatically group dives in trips"
 msgstr "Автоматично групиране на гмуркания в пътувания"
 
 #: statistics.c:168
-#, fuzzy
 msgctxt "Depth"
 msgid "Average"
-msgstr ""
-"\n"
-"Средно"
+msgstr "Средно"
 
 #: statistics.c:165
-#, fuzzy
 msgctxt "Duration"
 msgid "Average"
-msgstr ""
-"\n"
-"Средно"
+msgstr "Средно"
 
 #: statistics.c:171
-#, fuzzy
 msgctxt "SAC"
 msgid "Average"
-msgstr ""
-"\n"
-"Средно"
+msgstr "Средно"
 
 #: statistics.c:174
-#, fuzzy
 msgctxt "Temp"
 msgid "Average"
-msgstr ""
-"\n"
-"Средно"
+msgstr "Средно"
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
@@ -314,13 +299,12 @@ msgid "Download From Dive Computer"
 msgstr "Изтегли от Леководолазен Компютър"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Duration"
-msgstr "Продължителност (мин.)"
+msgstr "Продълж. (мин.)"
 
 #: info.c:831
 msgid "Duration (min)"
-msgstr "Продължителност (мин.)"
+msgstr "Продълж. (мин.)"
 
 #: info.c:228
 msgid "Edit"
@@ -454,7 +438,7 @@ msgstr "Линус Торвалдс, Дирк Хондел и други, 2011, 
 
 #: gtk-gui.c:919
 msgid "List"
-msgstr "Лист"
+msgstr "Списък"
 
 #: gtk-gui.c:595
 msgid "Liter"
@@ -469,12 +453,9 @@ msgid "Log"
 msgstr "Регистър"
 
 #: statistics.c:167
-#, fuzzy
 msgctxt "Duration"
 msgid "Longest"
-msgstr ""
-"\n"
-"Най-дълъг"
+msgstr "Най-дълго"
 
 #: statistics.c:674
 msgid "Longest Dive"
@@ -532,28 +513,19 @@ msgid "MaxPress"
 msgstr "Макс. Налягане"
 
 #: statistics.c:170
-#, fuzzy
 msgctxt "Depth"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Максимум"
+msgstr "Максимум"
 
 #: statistics.c:173
-#, fuzzy
 msgctxt "SAC"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Максимум"
+msgstr "Максимум"
 
 #: statistics.c:176
-#, fuzzy
 msgctxt "Temp"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Максимум"
+msgstr "Максимум"
 
 #: main.c:46
 msgid "May"
@@ -584,28 +556,19 @@ msgid "Min Temp"
 msgstr "Мин. Темп."
 
 #: statistics.c:169
-#, fuzzy
 msgctxt "Depth"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Минимум"
+msgstr "Минимум"
 
 #: statistics.c:172
-#, fuzzy
 msgctxt "SAC"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Минимум"
+msgstr "Минимум"
 
 #: statistics.c:175
-#, fuzzy
 msgctxt "Temp"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Минимум"
+msgstr "Минимум"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -798,12 +761,9 @@ msgstr ""
 "Uemis Zurich включен ли е правилно?"
 
 #: statistics.c:166
-#, fuzzy
 msgctxt "Duration"
 msgid "Shortest"
-msgstr ""
-"\n"
-"Най-къс"
+msgstr "Най-къс"
 
 #: statistics.c:675
 msgid "Shortest Dive"
@@ -867,7 +827,6 @@ msgid "Temp"
 msgstr "Температура"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Temperature"
 msgstr "Температура:"
 
@@ -877,7 +836,7 @@ msgstr "Температура:"
 
 #: gtk-gui.c:922
 msgid "Three"
-msgstr "Три"
+msgstr "Комбиниран"
 
 #: main.c:37
 msgid "Thu"
@@ -892,7 +851,6 @@ msgid "Toggle Zoom"
 msgstr "Превключване на Зуум"
 
 #: statistics.c:164
-#, fuzzy
 msgctxt "Duration"
 msgid "Total"
 msgstr "Общо Време"
@@ -971,7 +929,7 @@ msgstr "XML файл"
 
 #: statistics.c:160
 msgid "Year"
-msgstr ""
+msgstr "Година"
 
 #: gtk-gui.c:915 statistics.c:360
 msgid "Yearly Statistics"
@@ -1049,7 +1007,7 @@ msgstr "неопределен"
 
 #: equipment.c:1514
 msgid "weight"
-msgstr "тегло"
+msgstr "Тегло"
 
 #, fuzzy
 #~ msgctxt "Depth"
