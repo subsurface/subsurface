@@ -163,10 +163,13 @@ Section "Uninstall"
     # Delete installed files
     Delete "$INSTDIR\*.dll"
     Delete "$INSTDIR\*.xslt"
+    Delete "$INSTDIR\freetype-config"
     Delete "$INSTDIR\subsurface.exe"
     Delete "$INSTDIR\subsurface.ico"
     Delete "$INSTDIR\subsurface.svg"
     Delete "$INSTDIR\Uninstall.exe"
+    RMDir /r "$INSTDIR\share"
+    RMDir /r "$INSTDIR\locale"
     RMDir "$INSTDIR"
 
     # Remove shortcuts
