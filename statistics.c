@@ -290,12 +290,20 @@ static void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent, 
 		add_cell_to_tree(store, "", 12, row);
 	}
 	/* Coldest water temperature */
-	snprintf(value_str, sizeof(value_str), "%.1f %s\t", value, unit);
-	add_cell_to_tree(store, value_str, 13, row);
+	if (value > -100.0) {
+		snprintf(value_str, sizeof(value_str), "%.1f %s\t", value, unit);
+		add_cell_to_tree(store, value_str, 13, row);
+	} else {
+		add_cell_to_tree(store, "", 13, row);
+	}
 	/* Warmest water temperature */
 	value = get_temp_units(stats_interval.max_temp, &unit);
-	snprintf(value_str, sizeof(value_str), "%.1f %s", value, unit);
-	add_cell_to_tree(store, value_str, 14, row);
+	if (value > -100.0) {
+		snprintf(value_str, sizeof(value_str), "%.1f %s", value, unit);
+		add_cell_to_tree(store, value_str, 14, row);
+	} else {
+		add_cell_to_tree(store, "", 14, row);
+	}
 }
 
 void clear_statistics()
