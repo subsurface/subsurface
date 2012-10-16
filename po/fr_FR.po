@@ -5,6 +5,7 @@
 # Dirk Hohndel <dirk@hohndel.org>, 2012.
 # Jacco van Koll <jacco.van.koll@gmail.com>, 2012
 # Pierre-Yves Chibon <pingou@pingoured.fr>, 2012
+# Jean-Noël Rouchon <jnoel@sissiou.net>, 2012
 #
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-14 20:42-0700\n"
 "PO-Revision-Date: 2012-12-11 09:58+0200\n"
-"Last-Translator: Pierre-Yves Chibon <pingou@pingoured.fr>\n"
+"Last-Translator: Jean-Noël Rouchon <jnoel@sissiou.net>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -21,12 +22,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: statistics.c:162
-#, fuzzy
 msgctxt "Stats"
 msgid " > Month"
-msgstr ""
-"Année\n"
-" > Mois"
+msgstr " > Mois"
 
 #: gtk-gui.c:1502
 msgid " Please select dive computer and device. "
@@ -94,36 +92,24 @@ msgid "Automatically group dives in trips"
 msgstr "Grouper automatiquement les plongées"
 
 #: statistics.c:168
-#, fuzzy
 msgctxt "Depth"
 msgid "Average"
-msgstr ""
-"\n"
-"Moyenne"
+msgstr "Moyenne"
 
 #: statistics.c:165
-#, fuzzy
 msgctxt "Duration"
 msgid "Average"
-msgstr ""
-"\n"
-"Moyenne"
+msgstr "Moyenne"
 
 #: statistics.c:171
-#, fuzzy
 msgctxt "SAC"
 msgid "Average"
-msgstr ""
-"\n"
-"Moyenne"
+msgstr "Moyenne"
 
 #: statistics.c:174
-#, fuzzy
 msgctxt "Temp"
 msgid "Average"
-msgstr ""
-"\n"
-"Moyenne"
+msgstr "Moyenne"
 
 #: statistics.c:683 statistics.c:720
 msgid "Avg Depth"
@@ -314,9 +300,8 @@ msgid "Download From Dive Computer"
 msgstr "Télécharger depuis l'ordinateur de plongée"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Duration"
-msgstr "Durée (min)"
+msgstr "Durée"
 
 #: info.c:831
 msgid "Duration (min)"
@@ -469,12 +454,9 @@ msgid "Log"
 msgstr "Journal"
 
 #: statistics.c:167
-#, fuzzy
 msgctxt "Duration"
 msgid "Longest"
-msgstr ""
-"\n"
-"Plus longue"
+msgstr "Plus longue"
 
 #: statistics.c:674
 msgid "Longest Dive"
@@ -532,28 +514,19 @@ msgid "MaxPress"
 msgstr "PressionMax"
 
 #: statistics.c:170
-#, fuzzy
 msgctxt "Depth"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Maximum"
+msgstr "Maximum"
 
 #: statistics.c:173
-#, fuzzy
 msgctxt "SAC"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Maximum"
+msgstr "Maximum"
 
 #: statistics.c:176
-#, fuzzy
 msgctxt "Temp"
 msgid "Maximum"
-msgstr ""
-"\n"
-"Maximum"
+msgstr "Maximum"
 
 #: main.c:46
 msgid "May"
@@ -584,28 +557,19 @@ msgid "Min Temp"
 msgstr "Temp. Min."
 
 #: statistics.c:169
-#, fuzzy
 msgctxt "Depth"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Minimum"
+msgstr "Minimum"
 
 #: statistics.c:172
-#, fuzzy
 msgctxt "SAC"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Minimum"
+msgstr "Minimum"
 
 #: statistics.c:175
-#, fuzzy
 msgctxt "Temp"
 msgid "Minimum"
-msgstr ""
-"\n"
-"Minimum"
+msgstr "Minimum"
 
 #: gtk-gui.c:656
 msgid "Misc. Options"
@@ -648,7 +612,6 @@ msgid "Oct"
 msgstr "Oct"
 
 #: gtk-gui.c:905
-#, fuzzy
 msgid "Open"
 msgstr "Ouvrir"
 
@@ -689,7 +652,6 @@ msgid "Pretty print"
 msgstr "Jolie impression"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Print"
 msgstr "Imprimer"
 
@@ -771,7 +733,6 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: gtk-gui.c:907
-#, fuzzy
 msgid "Save As"
 msgstr "Enregistrer sous"
 
@@ -800,12 +761,9 @@ msgstr ""
 "Est-ce que votre Uemis Zurich est branché correctement ?"
 
 #: statistics.c:166
-#, fuzzy
 msgctxt "Duration"
 msgid "Shortest"
-msgstr ""
-"\n"
-"Plus courte"
+msgstr "Plus courte"
 
 #: statistics.c:675
 msgid "Shortest Dive"
@@ -869,9 +827,8 @@ msgid "Temp"
 msgstr "Température"
 
 #: statistics.c:160
-#, fuzzy
 msgid "Temperature"
-msgstr "Température:"
+msgstr "Température"
 
 #: gtk-gui.c:599
 msgid "Temperature:"
@@ -894,10 +851,9 @@ msgid "Toggle Zoom"
 msgstr "Zoom avant/arrière"
 
 #: statistics.c:164
-#, fuzzy
 msgctxt "Duration"
 msgid "Total"
-msgstr "Temps Total"
+msgstr "Total"
 
 #: statistics.c:672
 msgid "Total Time"
