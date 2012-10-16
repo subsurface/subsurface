@@ -109,6 +109,8 @@ Section
     File dll\libffi-6.dll
     File dll\libfontconfig-1.dll
     File dll\libfreetype-6.dll
+    File mydll\freetype6.dll
+    File mydll\freetype-config
     File dll\libgdk-win32-2.0-0.dll
     File dll\libgdk_pixbuf-2.0-0.dll
     File dll\libgio-2.0-0.dll
@@ -120,20 +122,22 @@ Section
     File dll\libintl-8.dll
     File dll\libjasper-1.dll
     File dll\libjpeg-62.dll
-    File dll\libpango-1.0-0.dll
-    File dll\libpangocairo-1.0-0.dll
-    File dll\libpangoft2-1.0-0.dll
-    File dll\libpangowin32-1.0-0.dll
+    File mydll\libpango-1.0-0.dll
+    File mydll\libpangocairo-1.0-0.dll
+    File mydll\libpangoft2-1.0-0.dll
+    File mydll\libpangowin32-1.0-0.dll
     File dll\libpixman-1-0.dll
     File dll\libpng15-15.dll
     File dll\libtiff-3.dll
     File dll\libusb-1.0.dll
     File dll\libxml2-2.dll
     File dll\libxslt-1.dll
+    File dll\libexpat-1.dll
     File dll\pthreadGC2.dll
     File dll\zlib1.dll
     File subsurface.ico
     File /r ..\..\locale
+    File /r share
 
     # Store installation folder in registry
     WriteRegStr HKCU "Software\Subsurface" "" $INSTDIR
