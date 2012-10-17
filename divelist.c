@@ -363,7 +363,8 @@ static void date_data_func(GtkTreeViewColumn *col,
 	int idx, nr;
 	struct tm tm;
 	timestamp_t when;
-	char buffer[60];
+	/* this should be enought for most languages. if not increase the value. */
+	char buffer[256];
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	nr = gtk_tree_model_iter_n_children(model, iter);

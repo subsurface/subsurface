@@ -452,7 +452,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info *info)
 {
 	GtkWidget *hbox, *label;
-	char buffer[80] = N_("Edit trip summary");
+	char buffer[128] = N_("Edit trip summary");
 
 	label = gtk_label_new(_(buffer));
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
@@ -470,7 +470,7 @@ static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
 	GtkWidget *hbox, *label, *frame, *equipment;
-	char buffer[80];
+	char buffer[128];
 
 	snprintf(buffer, sizeof(buffer), "%s", _("Edit multiple dives"));
 
