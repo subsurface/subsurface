@@ -114,17 +114,26 @@ static int divename(char *buf, size_t size, struct dive *dive)
 
 void show_dive_info(struct dive *dive)
 {
+	const char *subs = "Subsurface: ";
 	const char *text;
-	char buffer[80];
-	char title[80];
+	const int maxlen = 128;
 	char *basename;
+	char *title;
+	char *buffer = NULL;
+	int len1, len2, sz;
 
 	if (!dive) {
 		if (existing_filename) {
 			basename = g_path_get_basename(existing_filename);
-			snprintf(title, 80, "Subsurface: %s", basename);
-			free(basename);
+			len1 = strlen(subs);
+			len2 = g_utf8_strlen(basename, -1);
+			sz = (len1 + len2 + 1) * sizeof(gunichar);
+			title = malloc(sz);
+			strncpy(title, subs, len1);
+			g_utf8_strncpy(title + len1, basename, len2);
 			gtk_window_set_title(GTK_WINDOW(main_window), title);
+			free(basename);
+			free(title);
 		} else {
 			gtk_window_set_title(GTK_WINDOW(main_window), "Subsurface");
 		}
@@ -143,23 +152,40 @@ void show_dive_info(struct dive *dive)
 		text = "";
 	if (*text) {
 		if (dive->number) {
-			snprintf(buffer, sizeof(buffer), _("Dive #%d - %s"), dive->number, text);
+			len1 = g_utf8_strlen(text, -1);
+			sz = (len1 + 32) * sizeof(gunichar);
+			buffer = malloc(sz);
+			snprintf(buffer, sz, _("Dive #%d - "), dive->number);
+			g_utf8_strncpy(buffer + strlen(buffer), text, len1);
 			text = buffer;
 		}
 	} else {
-		divename(buffer, sizeof(buffer), dive);
+		sz = (maxlen + 32) * sizeof(gunichar);
+		buffer = malloc(sz);
+		divename(buffer, sz, dive);
 		text = buffer;
 	}
 
 	/* put it all together */
 	if (existing_filename) {
 		basename = g_path_get_basename(existing_filename);
-		snprintf(title, 80, "%s: %s", basename, text);
-		free(basename);
+		len1 = g_utf8_strlen(basename, -1);
+		len2 = g_utf8_strlen(text, -1);
+		if (len2 > maxlen)
+			len2 = maxlen;
+		sz = (len1 + len2 + 3) * sizeof(gunichar); /* reserver space for ": " */
+		title = malloc(sz);
+		g_utf8_strncpy(title, basename, len1);
+		strncpy(title + strlen(basename), (const char *)": ", 2);
+		g_utf8_strncpy(title + strlen(basename) + 2, text, len2);
 		gtk_window_set_title(GTK_WINDOW(main_window), title);
+		free(basename);
+		free(title);
 	} else {
 		gtk_window_set_title(GTK_WINDOW(main_window), text);
 	}
+	if (buffer)
+		free(buffer);
 	SET_TEXT_VALUE(divemaster);
 	SET_TEXT_VALUE(buddy);
 	SET_TEXT_VALUE(location);
