@@ -176,13 +176,13 @@ create-macosx-bundle: $(NAME)
 		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/$$LOC; \
 		$(INSTALL) $$LOC/subsurface.mo $(MACOSXSTAGING)/Contents/Resources/$$LOC/subsurface.mo; \
 	done
-	$(GTK_MAC_BUNDLER) packaging/macos/subsurface.bundle
+	$(GTK_MAC_BUNDLER) packaging/macosx/subsurface.bundle
 
 install-cross-windows: $(NAME)
 	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
 	for MSG in $(WINMSGDIRS); do\
 		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$MSG;\
-		$(INSTALL) $(CROSS_LOCALE_PATH)/$$MSG/* $(WINDOWSSTAGING)/$$MSG;\
+		$(INSTALL) $(CROSS_PATH)/$$MSG/* $(WINDOWSSTAGING)/$$MSG;\
 	done
 	for MSG in $(MSGOBJS); do\
 		$(INSTALL) -d -m 755 $$(dirname $(WINDOWSSTAGING)/$$MSG);\
