@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-17 01:14-0700\n"
-"PO-Revision-Date: 2012-10-15 08:14+0100\n"
+"PO-Revision-Date: 2012-10-17 10:41+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -41,25 +41,25 @@ msgstr "%.*f %s/min"
 #: print.c:72
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
-msgstr ""
+msgstr "%1$s%2$s, %4$d. %3$s %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
 #: print.c:229
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
-msgstr ""
+msgstr "%1$s, %3$d. %2$s %4$d   %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
 #: divelist.c:384
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
-msgstr ""
+msgstr "%1$s, %3$d. %2$s %4$d %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "Dykk #%d - %s %02d-%02d-%04d,  %d:%02d"
+msgstr "%1$s, %3$d. %2$s %4$d %5$2d:%6$02d"
 
 #: print.c:254 statistics.c:536
 #, c-format
@@ -159,7 +159,7 @@ msgstr "Buddy"
 
 #: gtk-gui.c:602
 msgid "Celsius"
-msgstr "Celsius"
+msgstr "celsius"
 
 #: gtk-gui.c:522
 msgid "Choose Default XML File"
@@ -256,9 +256,9 @@ msgstr "Enhetsnavn"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:107
-#, fuzzy, c-format
+#, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Dykk #%d - %s %02d-%02d-%04d,  %d:%02d"
+msgstr "Dykk #%1$d - %2$s %4$02d-%3$02d-%5$04d, %6$d:%7$02d"
 
 #: print.c:67
 #, c-format
@@ -376,7 +376,7 @@ msgstr "Ekspander alle"
 
 #: gtk-gui.c:603
 msgid "Fahrenheit"
-msgstr "Fahrenheit"
+msgstr "fahrenheit"
 
 #: gtk-gui.c:140
 #, c-format
@@ -887,8 +887,8 @@ msgstr "Total tid"
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tur %1$s, %3$d. %2$s %4$d (%5$d dykk)"
+msgstr[1] "Tur %1$s, %3$d. %2$s %4$d (%5$d dykk)"
 
 #: main.c:37
 msgid "Tue"
