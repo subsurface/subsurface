@@ -38,15 +38,15 @@ int get_pressure_units(unsigned int mb, const char **units)
 	switch (output_units.pressure) {
 	case PASCAL:
 		pressure = mb * 100;
-		unit = "pascal";
+		unit = _("pascal");
 		break;
 	case BAR:
 		pressure = (mb + 500) / 1000;
-		unit = "bar";
+		unit = _("bar");
 		break;
 	case PSI:
 		pressure = mbar_to_PSI(mb);
-		unit = "psi";
+		unit = _("psi");
 		break;
 	}
 	if (units)
@@ -80,12 +80,12 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	switch (output_units.volume) {
 	case LITER:
 		vol = ml / 1000.0;
-		unit = "l";
+		unit = _("l");
 		decimals = 1;
 		break;
 	case CUFT:
 		vol = ml_to_cuft(ml);
-		unit = "cuft";
+		unit = _("cuft");
 		decimals = 2;
 		break;
 	}
@@ -105,12 +105,12 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	switch (output_units.length) {
 	case METERS:
 		d = mm / 1000.0;
-		unit = "m";
+		unit = _("m");
 		decimals = d < 20;
 		break;
 	case FEET:
 		d = mm_to_feet(mm);
-		unit = "ft";
+		unit = _("ft");
 		decimals = 0;
 		break;
 	}
@@ -129,11 +129,11 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 
 	if (output_units.weight == LBS) {
 		value = grams_to_lbs(grams);
-		unit = "lbs";
+		unit = _("lbs");
 		decimals = 0;
 	} else {
 		value = grams / 1000.0;
-		unit = "kg";
+		unit = _("kg");
 		decimals = 1;
 	}
 	if (frac)
