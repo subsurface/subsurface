@@ -86,6 +86,9 @@
     ${prefix}/share/locale
   </translations>
 
+  <data dest="${bundle}/Contents/Resources/share/locale">
+    ${project}/Subsurface.app/Contents/Resources/share/locale
+  </data>
 
   <!-- Data to copy in, usually Glade/UI files, images, sounds files
        etc. The destination inside the bundle can be specified if the

@@ -86,7 +86,7 @@ const char *subsurface_default_filename()
 
 const char *subsurface_gettext_domainpath()
 {
-	return "./locale";
+	return "./share/locale";
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,

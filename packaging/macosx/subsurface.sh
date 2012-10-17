@@ -34,7 +34,8 @@ export GTK_IM_MODULE_FILE="$bundle_etc/gtk-2.0/gtk.immodules"
 export GDK_PIXBUF_MODULE_FILE="$bundle_etc/gtk-2.0/gdk-pixbuf.loaders"
 export PANGO_RC_FILE="$bundle_etc/pango/pangorc"
 
-APP=name
+APP=$name
+APPlower=`echo $APP | tr '[:upper:]' '[:lower:]'`
 I18NDIR="$bundle_data/locale"
 # Set the locale-related variables appropriately:
 unset LANG LC_MESSAGES LC_MONETARY LC_COLLATE
@@ -48,7 +49,7 @@ if test "$APPLELANGUAGES"; then
     # Test, item per item, to see whether there is an corresponding locale.
     for L in $APPLELANGUAGES; do
 	#test for exact matches:
-       if test -f "$I18NDIR/${L}/LC_MESSAGES/$APP.mo"; then
+       if test -f "$I18NDIR/${L}/LC_MESSAGES/${APPlower}.mo"; then
 	    export LANG=$L
             break
         fi

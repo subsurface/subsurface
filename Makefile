@@ -102,14 +102,16 @@ else ifeq ($(UNAME), darwin)
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
+	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
 	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation
 	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
 	LDFLAGS += -headerpad_max_install_names
+	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
 	WINDOWSSTAGING = ./packaging/windows
-	WINMSGDIRS=$(addprefix locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
+	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
 endif
 
 ifneq ($(strip $(LIBXSLT)),)
@@ -122,7 +124,7 @@ endif
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm
 
 MSGLANGS=$(notdir $(wildcard po/*po))
-MSGOBJS=$(addprefix locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
+MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
@@ -157,20 +159,34 @@ install-macosx: $(NAME)
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
 	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
-	for LOC in $(wildcard locale/*/LC_MESSAGES); do \
-		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/share/$$LOC; \
-		$(INSTALL) $$LOC/subsurface.mo $(MACOSXINSTALL)/Contents/Resources/share/$$LOC/subsurface.mo; \
+	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
+		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/$$LOC; \
+		$(INSTALL) $$LOC/subsurface.mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/subsurface.mo; \
 	done
+
+create-macosx-bundle: $(NAME)
+	$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources
+	$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/MacOS
+	$(INSTALL) $(NAME) $(MACOSXSTAGING)/Contents/MacOS/
+	$(INSTALL) $(MACOSXFILES)/PkgInfo $(MACOSXSTAGING)/Contents/
+	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXSTAGING)/Contents/
+	$(INSTALL) $(ICONFILE) $(MACOSXSTAGING)/Contents/Resources/
+	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXSTAGING)/Contents/Resources/
+	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
+		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/$$LOC; \
+		$(INSTALL) $$LOC/subsurface.mo $(MACOSXSTAGING)/Contents/Resources/$$LOC/subsurface.mo; \
+	done
+	$(GTK_MAC_BUNDLER) packaging/macos/subsurface.bundle
 
 install-cross-windows: $(NAME)
 	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
 	for MSG in $(WINMSGDIRS); do\
-		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/$$MSG;\
-		$(INSTALL) $(CROSS_LOCALE_PATH)/$$MSG/* $(WINDOWSSTAGING)/share/$$MSG;\
+		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$MSG;\
+		$(INSTALL) $(CROSS_LOCALE_PATH)/$$MSG/* $(WINDOWSSTAGING)/$$MSG;\
 	done
 	for MSG in $(MSGOBJS); do\
-		$(INSTALL) -d -m 755 $$(dirname $(WINDOWSSTAGING)/share/$$MSG);\
-		$(INSTALL) $$MSG $(WINDOWSSTAGING)/share/$$MSG;\
+		$(INSTALL) -d -m 755 $$(dirname $(WINDOWSSTAGING)/$$MSG);\
+		$(INSTALL) $$MSG $(WINDOWSSTAGING)/$$MSG;\
 	done
 
 file.o: file.c dive.h file.h
@@ -232,13 +248,13 @@ uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
-locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po
+share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po
 	mkdir -p $(dir $@)
 	msgfmt -c -o $@ po/$*.po
 	@-if test -s po/$*.aliases; then \
 		for ALIAS in `cat po/$*.aliases`; do \
-			mkdir -p locale/$$ALIAS/LC_MESSAGES; \
-			cp $@ locale/$$ALIAS/LC_MESSAGES; \
+			mkdir -p share/locale/$$ALIAS/LC_MESSAGES; \
+			cp $@ share/locale/$$ALIAS/LC_MESSAGES; \
 		done; \
 	fi
 
@@ -247,4 +263,4 @@ doc:
 
 clean:
 	rm -f $(OBJS) *~ $(NAME) $(NAME).exe
-	rm -rf locale
+	rm -rf share

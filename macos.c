@@ -106,15 +106,13 @@ const char *subsurface_default_filename()
 
 const char *subsurface_gettext_domainpath()
 {
-	CFBundleRef mainBundle = CFBundleGetMainBundle();
-	CFURLRef localeURL = CFBundleCopyResourceURL(mainBundle, CFSTR("share/locale"), CFSTR(""), NULL);
-	if (localeURL) {
-		CFStringRef localePath = CFURLCopyFileSystemPath(localeURL, kCFURLPOSIXPathStyle);
-		CFStringEncoding encodingMethod = CFStringGetSystemEncoding();
-		const char *path = CFStringGetCStringPtr(localePath, encodingMethod);
-		return path;
+	static char buffer[256];
+	const char *resource_path = quartz_application_get_resource_path();
+	if (resource_path) {
+		snprintf(buffer, sizeof(buffer), "%s/share/locale", resource_path);
+		return buffer;
 	}
-	return "./locale";
+	return "./share/locale";
 }
 
 static void show_main_window(GtkWidget *w, gpointer data)
