@@ -837,7 +837,7 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
 
 	/* Depth box */
-	box = frame_box(hbox, _("Depth (%s):"), output_units.length == FEET ? "ft" : "m");
+	box = frame_box(hbox, _("Depth (%s):"), output_units.length == FEET ? _("ft") : _("m"));
 	if (output_units.length == FEET) {
 		depthinterval = 1.0;
 	} else {
