@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-13 20:06+0100\n"
+"POT-Creation-Date: 2012-10-17 01:14-0700\n"
 "PO-Revision-Date: 2012-10-15 09:16+0100\n"
 "Last-Translator: Ivan <ivan@velikibijeli.hr>\n"
 "Language-Team: Croatian\n"
@@ -25,7 +25,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Mjesec"
 
-#: gtk-gui.c:1502
+#: gtk-gui.c:1504
 msgid " Please select dive computer and device. "
 msgstr "Odaberite ronilačko računalo i naziv uređaja."
 
@@ -33,22 +33,46 @@ msgstr "Odaberite ronilačko računalo i naziv uređaja."
 msgid "#"
 msgstr ""
 
-#: statistics.c:616 statistics.c:618 statistics.c:620
+#: statistics.c:625 statistics.c:627 statistics.c:629
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: print.c:252 statistics.c:527
+#. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
+#: print.c:72
+#, c-format
+msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
+msgstr ""
+
+#. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
+#: print.c:229
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
+msgstr ""
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
+#: divelist.c:384
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
+msgstr ""
+
+#. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
+#: statistics.c:529
+#, fuzzy, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
+msgstr "Uron #%d - %s %02d/%02d/%04d u %d:%02d"
+
+#: print.c:254 statistics.c:536
 #, c-format
 msgid "%d min"
 msgstr "%d min"
 
-#: statistics.c:499
+#: statistics.c:507
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%dt %dst %dmin"
 
-#: statistics.c:501
+#: statistics.c:509
 #, c-format
 msgid "%dh %dmin"
 msgstr "%dst %dmin"
@@ -58,19 +82,19 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) ili (%s)"
 
-#: gtk-gui.c:918
+#: gtk-gui.c:920
 msgid "About"
 msgstr "O programu"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:914
 msgid "Add Dive"
 msgstr "Dodaj uron"
 
-#: divelist.c:2019
+#: divelist.c:2022
 msgid "Add dive"
 msgstr "Dodaj uron"
 
-#: divelist.c:2098
+#: divelist.c:2101
 msgid "Add to trip above"
 msgstr "Dodaj u gornju grupu"
 
@@ -82,11 +106,11 @@ msgstr "Tra"
 msgid "Aug"
 msgstr "Kol"
 
-#: gtk-gui.c:927
+#: gtk-gui.c:929
 msgid "Autogroup"
 msgstr "Automatsko grupiranje"
 
-#: gtk-gui.c:662
+#: gtk-gui.c:664
 msgid "Automatically group dives in trips"
 msgstr "Automatski grupiraj urone"
 
@@ -110,59 +134,59 @@ msgctxt "Temp"
 msgid "Average"
 msgstr "Ø"
 
-#: statistics.c:683 statistics.c:720
+#: statistics.c:692 statistics.c:729
 msgid "Avg Depth"
 msgstr "Prosječna dubina"
 
-#: statistics.c:691
+#: statistics.c:700
 msgid "Avg SAC"
 msgstr "Prosječni SAC"
 
-#: statistics.c:666
+#: statistics.c:675
 msgid "Avg Temp"
 msgstr "Prosječna temperatura"
 
-#: statistics.c:673
+#: statistics.c:682
 msgid "Avg Time"
 msgstr "Prosječno vrijeme"
 
-#: gtk-gui.c:590
+#: gtk-gui.c:592
 msgid "Bar"
 msgstr "Bar"
 
-#: info.c:484 info.c:911 print.c:155
+#: info.c:488 info.c:915 print.c:156
 msgid "Buddy"
 msgstr "Buddy"
 
-#: gtk-gui.c:600
+#: gtk-gui.c:602
 msgid "Celsius"
 msgstr "Celzijus"
 
-#: gtk-gui.c:520
+#: gtk-gui.c:522
 msgid "Choose Default XML File"
 msgstr "Odaberite defaultnu XML datoteku"
 
-#: gtk-gui.c:1396
+#: gtk-gui.c:1398
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Odaberite XML datoteke za uvoz u trenutačnu datoteku"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:910
 msgid "Close"
 msgstr "Zatvori"
 
-#: divelist.c:2115
+#: divelist.c:2118
 msgid "Collapse all"
 msgstr "Zatvori sve grupe"
 
-#: divelist.c:2088
+#: divelist.c:2091
 msgid "Create new trip above"
 msgstr "Kreiraj novu grupu iznad"
 
-#: gtk-gui.c:596
+#: gtk-gui.c:598
 msgid "CuFt"
 msgstr "CuSt"
 
-#: divelist.c:1265 gtk-gui.c:620
+#: divelist.c:1268 gtk-gui.c:622
 msgid "Cyl"
 msgstr "Boca"
 
@@ -174,15 +198,15 @@ msgstr "Boca"
 msgid "Cylinders"
 msgstr "Boce"
 
-#: divelist.c:1258 print.c:154 statistics.c:711
+#: divelist.c:1261 print.c:155 statistics.c:720
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:776
+#: info.c:780
 msgid "Date and Time"
 msgstr "Datum i vrijeme"
 
-#: info.c:786
+#: info.c:790
 msgid "Date:"
 msgstr "Datum:"
 
@@ -190,31 +214,31 @@ msgstr "Datum:"
 msgid "Dec"
 msgstr "Pro"
 
-#: gtk-gui.c:667
+#: gtk-gui.c:669
 msgid "Default XML Data File"
 msgstr "Defaultna XML datoteka"
 
-#: info.c:227
+#: info.c:229
 msgid "Delete"
 msgstr "Obriši"
 
-#: info.c:178
+#: info.c:180
 msgid "Delete Dive"
 msgstr "Obriši uron"
 
-#: divelist.c:2006
+#: divelist.c:2009
 msgid "Delete dive"
 msgstr "Obriši uron"
 
-#: divelist.c:2005
+#: divelist.c:2008
 msgid "Delete dives"
 msgstr "Obriši urone"
 
-#: print.c:154 statistics.c:160
+#: print.c:155 statistics.c:160
 msgid "Depth"
 msgstr "Dubina"
 
-#: info.c:836
+#: info.c:840
 #, c-format
 msgid "Depth (%s):"
 msgstr "Dubina (%s):"
@@ -223,38 +247,39 @@ msgstr "Dubina (%s):"
 msgid "Depth Limit Exceeded"
 msgstr "Premašeno ograničenje dubine"
 
-#: gtk-gui.c:584
+#: gtk-gui.c:586
 msgid "Depth:"
 msgstr "Dubina:"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1366
 msgid "Device name"
 msgstr "Naziv uređaja"
+
+#. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
+#: info.c:107
+#, fuzzy, c-format
+msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
+msgstr "Uron #%d - %s %02d/%02d/%04d u %d:%02d"
 
 #: print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Uron #%d - "
 
-#: info.c:144
+#: info.c:146
 #, c-format
 msgid "Dive #%d - %s"
 msgstr "Uron #%d - %s"
 
-#: info.c:106
-#, c-format
-msgid "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
-msgstr "Uron #%d - %s %02d/%02d/%04d u %d:%02d"
-
-#: gtk-gui.c:1120 info.c:669 statistics.c:702
+#: gtk-gui.c:1122 info.c:673 statistics.c:711
 msgid "Dive Info"
 msgstr "Informacije o uronu"
 
-#: gtk-gui.c:1112
+#: gtk-gui.c:1114
 msgid "Dive Notes"
 msgstr "Bilješke"
 
-#: statistics.c:712
+#: statistics.c:721
 msgid "Dive Time"
 msgstr "Vrijeme urona"
 
@@ -266,35 +291,35 @@ msgstr "Alarm: Trajanje urona"
 msgid "Dive Time Info"
 msgstr "Info: Trajanje urona"
 
-#: gtk-gui.c:1333
+#: gtk-gui.c:1335
 msgid "Dive computer"
 msgstr "Ronilačko računalo"
 
-#: print.c:474
+#: print.c:476
 msgid "Dive details"
 msgstr "Podaci o uronu"
 
-#: info.c:483
+#: info.c:487
 msgid "Dive master"
 msgstr "Voditelj"
 
-#: print.c:154
+#: print.c:155
 msgid "Dive#"
 msgstr "Uron br."
 
-#: gtk-gui.c:650
+#: gtk-gui.c:652
 msgid "Divelist Font"
 msgstr "Font za listu urona"
 
-#: info.c:910
+#: info.c:914
 msgid "Divemaster"
 msgstr "Voditelj"
 
-#: statistics.c:663
+#: statistics.c:672
 msgid "Dives"
 msgstr "Uroni"
 
-#: gtk-gui.c:911 gtk-gui.c:1494
+#: gtk-gui.c:913 gtk-gui.c:1496
 msgid "Download From Dive Computer"
 msgstr "Preuzmi s ronilačkog računala"
 
@@ -302,39 +327,39 @@ msgstr "Preuzmi s ronilačkog računala"
 msgid "Duration"
 msgstr "Trajanje"
 
-#: info.c:831
+#: info.c:835
 msgid "Duration (min)"
 msgstr "Trajanje (min)"
 
-#: info.c:228
+#: info.c:230
 msgid "Edit"
 msgstr "Uredi"
 
-#: info.c:628
+#: info.c:632
 msgid "Edit Trip Info"
 msgstr "Uredi informacije o grupi"
 
-#: divelist.c:2027
+#: divelist.c:2030
 msgid "Edit Trip Summary"
 msgstr "Uredi sažetak grupe"
 
-#: divelist.c:2003
+#: divelist.c:2006
 msgid "Edit dive"
 msgstr "Uredi uron"
 
-#: divelist.c:2002
+#: divelist.c:2005
 msgid "Edit dives"
 msgstr "Uredi urone"
 
-#: info.c:471
+#: info.c:475
 msgid "Edit multiple dives"
 msgstr "Uredi više urona"
 
-#: info.c:453
+#: info.c:455
 msgid "Edit trip summary"
 msgstr "Uredi sažetak urona"
 
-#: gtk-gui.c:771
+#: gtk-gui.c:773
 msgid "Enable / Disable Events"
 msgstr "Uključi/isključi događaje"
 
@@ -342,15 +367,15 @@ msgstr "Uključi/isključi događaje"
 msgid "End"
 msgstr "Kraj"
 
-#: gtk-gui.c:1116 info.c:504
+#: gtk-gui.c:1118 info.c:508
 msgid "Equipment"
 msgstr "Oprema"
 
-#: divelist.c:2112
+#: divelist.c:2115
 msgid "Expand all"
 msgstr "Otvori sve"
 
-#: gtk-gui.c:601
+#: gtk-gui.c:603
 msgid "Fahrenheit"
 msgstr "Fahrenheit"
 
@@ -359,12 +384,12 @@ msgstr "Fahrenheit"
 msgid "Failed to open %i files."
 msgstr "Nije uspjelo otvaranje %i datoteka"
 
-#: parse-xml.c:1471
+#: parse-xml.c:1498
 #, c-format
 msgid "Failed to parse '%s'"
 msgstr "Nije uspjelo parsiranje '%s'"
 
-#: parse-xml.c:1466
+#: parse-xml.c:1493
 #, c-format
 msgid "Failed to parse '%s'.\n"
 msgstr "Nije uspjelo parsiranje '%s'.\n"
@@ -383,15 +408,15 @@ msgstr "Nije uspjelo čitanje '%s'.\n"
 msgid "Feb"
 msgstr "Velj"
 
-#: gtk-gui.c:586
+#: gtk-gui.c:588
 msgid "Feet"
 msgstr "Stope"
 
-#: gtk-gui.c:899
+#: gtk-gui.c:901
 msgid "File"
 msgstr "Datoteka"
 
-#: gtk-gui.c:902
+#: gtk-gui.c:904
 msgid "Filter"
 msgstr "Filter"
 
@@ -399,7 +424,7 @@ msgstr "Filter"
 msgid "Fri"
 msgstr "Pet"
 
-#: statistics.c:730
+#: statistics.c:739
 msgid "Gas Used"
 msgstr "Potrošeno plina"
 
@@ -407,15 +432,15 @@ msgstr "Potrošeno plina"
 msgid "Gasmix"
 msgstr "Mješavina"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:905
 msgid "Help"
 msgstr "Pomoć"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:912
 msgid "Import XML File(s)"
 msgstr "Uvezi XML datoteke"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:923
 msgid "Info"
 msgstr "Informacije"
 
@@ -432,23 +457,23 @@ msgstr "Srp"
 msgid "Jun"
 msgstr "Lip"
 
-#: gtk-gui.c:854
+#: gtk-gui.c:856
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel i drugi, 2011, 2012"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:921
 msgid "List"
 msgstr "Popis"
 
-#: gtk-gui.c:595
+#: gtk-gui.c:597
 msgid "Liter"
 msgstr "Litra"
 
-#: divelist.c:1269 info.c:458 info.c:478 info.c:905 print.c:155
+#: divelist.c:1272 info.c:460 info.c:482 info.c:909 print.c:156
 msgid "Location"
 msgstr "Lokacija"
 
-#: gtk-gui.c:900
+#: gtk-gui.c:902
 msgid "Log"
 msgstr "Dnevnik"
 
@@ -457,7 +482,7 @@ msgctxt "Duration"
 msgid "Longest"
 msgstr "Max."
 
-#: statistics.c:674
+#: statistics.c:683
 msgid "Longest Dive"
 msgstr "Najduži uron"
 
@@ -477,7 +502,7 @@ msgstr "Ožu"
 msgid "Marker"
 msgstr "Oznaka"
 
-#: print.c:154
+#: print.c:155
 msgid "Master"
 msgstr "Master"
 
@@ -485,19 +510,19 @@ msgstr "Master"
 msgid "Max Deco Time Warning"
 msgstr "Upozorenje: Max. vrijeme dekompresije"
 
-#: statistics.c:681 statistics.c:719
+#: statistics.c:690 statistics.c:728
 msgid "Max Depth"
 msgstr "Najveća dubina"
 
-#: statistics.c:689
+#: statistics.c:698
 msgid "Max SAC"
 msgstr "Najveći SAC"
 
-#: statistics.c:664
+#: statistics.c:673
 msgid "Max Temp"
 msgstr "Najveća temperatura"
 
-#: print.c:94
+#: print.c:95
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -531,27 +556,27 @@ msgstr "Max."
 msgid "May"
 msgstr "Svi"
 
-#: divelist.c:2035
+#: divelist.c:2038
 msgid "Merge trip with trip above"
 msgstr "Spoji s grupom iznad"
 
-#: divelist.c:2045
+#: divelist.c:2048
 msgid "Merge trip with trip below"
 msgstr "Spoji s grupom ispod"
 
-#: gtk-gui.c:585
+#: gtk-gui.c:587
 msgid "Meter"
 msgstr "Metar"
 
-#: statistics.c:682
+#: statistics.c:691
 msgid "Min Depth"
 msgstr "Najmanja dubina"
 
-#: statistics.c:690
+#: statistics.c:699
 msgid "Min SAC"
 msgstr "Najmanji SAC"
 
-#: statistics.c:665
+#: statistics.c:674
 msgid "Min Temp"
 msgstr "Min. temp."
 
@@ -570,7 +595,7 @@ msgctxt "Temp"
 msgid "Minimum"
 msgstr "Min."
 
-#: gtk-gui.c:656
+#: gtk-gui.c:658
 msgid "Misc. Options"
 msgstr "Ostale opcije"
 
@@ -578,15 +603,15 @@ msgstr "Ostale opcije"
 msgid "Mon"
 msgstr "Pon"
 
-#: gtk-gui.c:851
+#: gtk-gui.c:853
 msgid "Multi-platform divelog software in C"
 msgstr "Višeplatformski program za vođenje ronilačkog dnevnika pisan u C-u"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:906
 msgid "New"
 msgstr "Novi"
 
-#: gtk-gui.c:811
+#: gtk-gui.c:813
 msgid "New starting number"
 msgstr "Novi početni broj"
 
@@ -594,7 +619,7 @@ msgstr "Novi početni broj"
 msgid "No Tank Data"
 msgstr "Nema podatka o boci"
 
-#: info.c:463 info.c:496 info.c:919
+#: info.c:465 info.c:500 info.c:923
 msgid "Notes"
 msgstr "Bilješke"
 
@@ -602,7 +627,7 @@ msgstr "Bilješke"
 msgid "Nov"
 msgstr "Stu"
 
-#: divelist.c:1268 gtk-gui.c:635 statistics.c:728
+#: divelist.c:1271 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
 msgstr "OTU"
 
@@ -610,11 +635,11 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Lis"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:907
 msgid "Open"
 msgstr "Otvori"
 
-#: gtk-gui.c:313
+#: gtk-gui.c:315
 msgid "Open File"
 msgstr "Otvori datoteku"
 
@@ -630,11 +655,11 @@ msgstr "PO2 Upozorenje: Prebrzi izron"
 msgid "PO2 Green Warning"
 msgstr "PO2 Upozorenje: Zeleno"
 
-#: gtk-gui.c:591
+#: gtk-gui.c:593
 msgid "PSI"
 msgstr "PSI"
 
-#: gtk-gui.c:570 gtk-gui.c:913
+#: gtk-gui.c:572 gtk-gui.c:915
 msgid "Preferences"
 msgstr "Postavke"
 
@@ -642,35 +667,35 @@ msgstr "Postavke"
 msgid "Pressure"
 msgstr "Pritisak"
 
-#: gtk-gui.c:589
+#: gtk-gui.c:591
 msgid "Pressure:"
 msgstr "Pritisak:"
 
-#: print.c:484
+#: print.c:486
 msgid "Pretty print"
 msgstr "Lijep ispis"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:911
 msgid "Print"
 msgstr "Ispis"
 
-#: print.c:505
+#: print.c:507
 msgid "Print only selected dives"
 msgstr "Ispiši odabrane urone"
 
-#: print.c:500
+#: print.c:502
 msgid "Print selection"
 msgstr "Ispiši odabrano"
 
-#: print.c:478
+#: print.c:480
 msgid "Print type"
 msgstr "Vrsta ispisa"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:922
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:917
+#: gtk-gui.c:919
 msgid "Quit"
 msgstr "Izlaz"
 
@@ -682,7 +707,7 @@ msgstr "RTG Alarm"
 msgid "RGT Warning"
 msgstr "RTG Upozorenje"
 
-#: info.c:489 info.c:916
+#: info.c:493 info.c:920
 msgid "Rating"
 msgstr "Ocjena"
 
@@ -691,27 +716,27 @@ msgstr "Ocjena"
 msgid "Reading dive %s"
 msgstr "Čitanje urona %s"
 
-#: divelist.c:2050
+#: divelist.c:2053
 msgid "Remove Trip"
 msgstr "Obriši grupu"
 
-#: divelist.c:2106
+#: divelist.c:2109
 msgid "Remove dive from trip"
 msgstr "Ukloni uron iz grupe"
 
-#: divelist.c:2104
+#: divelist.c:2107
 msgid "Remove selected dives from trip"
 msgstr "Ukloni odabrane urone iz grupe"
 
-#: gtk-gui.c:802 gtk-gui.c:914
+#: gtk-gui.c:804 gtk-gui.c:916
 msgid "Renumber"
 msgstr "Renumeriraj"
 
-#: gtk-gui.c:1471
+#: gtk-gui.c:1473
 msgid "Retry"
 msgstr "Pokušaj ponovo"
 
-#: divelist.c:1267 gtk-gui.c:630 statistics.c:160 statistics.c:727
+#: divelist.c:1270 gtk-gui.c:632 statistics.c:160 statistics.c:736
 msgid "SAC"
 msgstr "SAC"
 
@@ -727,11 +752,11 @@ msgstr "Kršenje sigurnosne stanke"
 msgid "Sat"
 msgstr "Sub"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:908
 msgid "Save"
 msgstr "Spremi"
 
-#: gtk-gui.c:907
+#: gtk-gui.c:909
 msgid "Save As"
 msgstr "Spremi kao"
 
@@ -743,7 +768,7 @@ msgstr "Spremi promjene?"
 msgid "Save File As"
 msgstr "Spremi datoteku kao"
 
-#: gtk-gui.c:762 gtk-gui.c:916
+#: gtk-gui.c:764 gtk-gui.c:918
 msgid "SelectEvents"
 msgstr "Odaberi događaje"
 
@@ -764,11 +789,11 @@ msgctxt "Duration"
 msgid "Shortest"
 msgstr "Min."
 
-#: statistics.c:675
+#: statistics.c:684
 msgid "Shortest Dive"
 msgstr "Najkraći uron"
 
-#: gtk-gui.c:609
+#: gtk-gui.c:611
 msgid "Show Columns"
 msgstr "Prikaži stupce"
 
@@ -788,15 +813,15 @@ msgstr "Upozorenje: Brzina"
 msgid "Start"
 msgstr "Početak"
 
-#: statistics.c:655
+#: statistics.c:664
 msgid "Statistics"
 msgstr "Statistike"
 
-#: gtk-gui.c:1124
+#: gtk-gui.c:1126
 msgid "Stats"
 msgstr "Statistike"
 
-#: divelist.c:1264 gtk-gui.c:645 info.c:490 info.c:917
+#: divelist.c:1267 gtk-gui.c:647 info.c:494 info.c:921
 msgid "Suit"
 msgstr "Odijelo"
 
@@ -805,11 +830,11 @@ msgstr "Odijelo"
 msgid "Sun"
 msgstr "Ned"
 
-#: statistics.c:713
+#: statistics.c:722
 msgid "Surf Intv"
 msgstr "Površinski interval"
 
-#: print.c:488
+#: print.c:490
 msgid "Table print"
 msgstr "Tablični ispis"
 
@@ -821,7 +846,7 @@ msgstr "Preporučena izmjena boce"
 msgid "Tank Pressure Info"
 msgstr "Podaci od pritisku u boci"
 
-#: gtk-gui.c:615
+#: gtk-gui.c:617
 msgid "Temp"
 msgstr "Temp"
 
@@ -829,11 +854,11 @@ msgstr "Temp"
 msgid "Temperature"
 msgstr "Temperatura"
 
-#: gtk-gui.c:599
+#: gtk-gui.c:601
 msgid "Temperature:"
 msgstr "Temperatura:"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:924
 msgid "Three"
 msgstr "Tri"
 
@@ -841,11 +866,11 @@ msgstr "Tri"
 msgid "Thu"
 msgstr "Čet"
 
-#: info.c:791 print.c:154
+#: info.c:795 print.c:155
 msgid "Time"
 msgstr "Vrijeme"
 
-#: gtk-gui.c:928
+#: gtk-gui.c:930
 msgid "Toggle Zoom"
 msgstr "Uključi/isključi povećanje"
 
@@ -854,9 +879,17 @@ msgctxt "Duration"
 msgid "Total"
 msgstr "Ukupno"
 
-#: statistics.c:672
+#: statistics.c:681
 msgid "Total Time"
 msgstr "Lokalno vrijeme"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
+#: divelist.c:375
+#, c-format
+msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
+msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
+msgstr[0] ""
+msgstr[1] ""
 
 #: main.c:37
 msgid "Tue"
@@ -890,19 +923,19 @@ msgstr ""
 msgid "Uemis init failed"
 msgstr "Uemis greška pri inicijalizaciji"
 
-#: gtk-gui.c:577
+#: gtk-gui.c:579
 msgid "Units"
 msgstr "Jedinice"
 
-#: gtk-gui.c:901
+#: gtk-gui.c:903
 msgid "View"
 msgstr "Pregled"
 
-#: gtk-gui.c:594
+#: gtk-gui.c:596
 msgid "Volume:"
 msgstr "Zapremnina:"
 
-#: statistics.c:721
+#: statistics.c:730
 msgid "Water Temp"
 msgstr "Temperatura vode"
 
@@ -910,7 +943,7 @@ msgstr "Temperatura vode"
 msgid "Wed"
 msgstr "Sri"
 
-#: equipment.c:1012 equipment.c:1609 gtk-gui.c:640
+#: equipment.c:1012 equipment.c:1609 gtk-gui.c:642
 msgid "Weight"
 msgstr "Težina"
 
@@ -918,7 +951,7 @@ msgstr "Težina"
 msgid "Weight System"
 msgstr "Težina"
 
-#: gtk-gui.c:604
+#: gtk-gui.c:606
 msgid "Weight:"
 msgstr "Težina:"
 
@@ -930,7 +963,7 @@ msgstr "XML datoteka"
 msgid "Year"
 msgstr "Godina"
 
-#: gtk-gui.c:915 statistics.c:360
+#: gtk-gui.c:917 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Godišnje statistike"
 
@@ -942,7 +975,7 @@ msgstr ""
 "Imate promjena koje nisu spremljene\n"
 "Želite li ih spremiti prije zatvaranja datoteke?"
 
-#: gtk-gui.c:242
+#: gtk-gui.c:241 gtk-gui.c:244
 #, c-format
 msgid ""
 "You have unsaved changes to file: %s \n"
@@ -967,7 +1000,7 @@ msgstr "pojas"
 msgid "clip-on"
 msgstr "clip-on"
 
-#: divelist.c:1260
+#: divelist.c:1263
 msgid "ft"
 msgstr "ft"
 
@@ -975,19 +1008,19 @@ msgstr "ft"
 msgid "integrated"
 msgstr "integrirani"
 
-#: gtk-gui.c:605
+#: gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
-#: divelist.c:1263 gtk-gui.c:606
+#: divelist.c:1266 gtk-gui.c:608
 msgid "lbs"
 msgstr "funte"
 
-#: divelist.c:1261
+#: divelist.c:1264
 msgid "min"
 msgstr "min"
 
-#: statistics.c:493
+#: statistics.c:501
 #, c-format
 msgid "more than %d days"
 msgstr "više od %d dana"
@@ -996,7 +1029,7 @@ msgstr "više od %d dana"
 msgid "unkn"
 msgstr "nepoznat"
 
-#: statistics.c:532
+#: statistics.c:541
 msgid "unknown"
 msgstr "nepoznato"
 

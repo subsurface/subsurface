@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-14 20:42-0700\n"
+"POT-Creation-Date: 2012-10-17 01:14-0700\n"
 "PO-Revision-Date: 2012-10-15 14:02+0100\n"
 "Last-Translator: Martin Gysel <me@bearsh.org>\n"
 "Language-Team: German\n"
@@ -23,7 +23,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Monat"
 
-#: gtk-gui.c:1502
+#: gtk-gui.c:1504
 msgid " Please select dive computer and device. "
 msgstr " Bitte Tauchcomputer und Gerät auswählen. "
 
@@ -31,25 +31,46 @@ msgstr " Bitte Tauchcomputer und Gerät auswählen. "
 msgid "#"
 msgstr "#"
 
-#: statistics.c:616
-#: statistics.c:618
-#: statistics.c:620
+#: statistics.c:625 statistics.c:627 statistics.c:629
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: print.c:252
-#: statistics.c:527
+#. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
+#: print.c:72
+#, c-format
+msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
+msgstr "%1$s%2$s %4$d. %3$s %5$d   %6$d:%7$02d"
+
+#. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
+#: print.c:229
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
+msgstr "%1$s %3$d. %2$s %4$d   %5$dh%6$02d"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
+#: divelist.c:384
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
+msgstr "%1$s %3$d. %2$s %4$d %5$02d:%6$02d"
+
+#. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
+#: statistics.c:529
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
+msgstr "%1$s %3$d. %2$s %4$d %5$2d:%6$02d"
+
+#: print.c:254 statistics.c:536
 #, c-format
 msgid "%d min"
 msgstr "%d min"
 
-#: statistics.c:499
+#: statistics.c:507
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%dt %dst %dmin"
 
-#: statistics.c:501
+#: statistics.c:509
 #, c-format
 msgid "%dh %dmin"
 msgstr "%dst %dmin"
@@ -59,21 +80,21 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) oder (%s)"
 
-#: gtk-gui.c:918
+#: gtk-gui.c:920
 msgid "About"
 msgstr "Info"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:914
 msgid "Add Dive"
 msgstr "Tauchgang hinzufügen"
 
-#: divelist.c:2019
+#: divelist.c:2022
 msgid "Add dive"
 msgstr "Tauchgang hinzufügen"
 
-#: divelist.c:2098
+#: divelist.c:2101
 msgid "Add to trip above"
-msgstr "Zur obigen Gruppe hinzufügen"
+msgstr "Zur obigen Reise hinzufügen"
 
 #: main.c:46
 msgid "Apr"
@@ -83,11 +104,11 @@ msgstr "Apr"
 msgid "Aug"
 msgstr "Aug"
 
-#: gtk-gui.c:927
+#: gtk-gui.c:929
 msgid "Autogroup"
 msgstr "Automatisch gruppieren"
 
-#: gtk-gui.c:662
+#: gtk-gui.c:664
 msgid "Automatically group dives in trips"
 msgstr "Automatisch die Tauchgänge gruppieren"
 
@@ -111,68 +132,65 @@ msgctxt "Temp"
 msgid "Average"
 msgstr "Ø"
 
-#: statistics.c:683
-#: statistics.c:720
+#: statistics.c:692 statistics.c:729
 msgid "Avg Depth"
 msgstr "Durchschn. Tiefe"
 
-#: statistics.c:691
+#: statistics.c:700
 msgid "Avg SAC"
 msgstr "Ø SAC"
 
-#: statistics.c:666
+#: statistics.c:675
 msgid "Avg Temp"
 msgstr "Durchschn. Temp"
 
-#: statistics.c:673
+#: statistics.c:682
 msgid "Avg Time"
 msgstr "Duchschn. Dauer"
 
-#: gtk-gui.c:590
+#: gtk-gui.c:592
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:484
-#: info.c:911
-#: print.c:155
+#: info.c:488 info.c:915 print.c:156
 msgid "Buddy"
 msgstr "Partner"
 
-#: gtk-gui.c:600
+#: gtk-gui.c:602
 msgid "Celsius"
 msgstr "Celsius"
 
-#: gtk-gui.c:520
+#: gtk-gui.c:522
 msgid "Choose Default XML File"
 msgstr "Standard XML Datei auswählen"
 
-#: gtk-gui.c:1396
+#: gtk-gui.c:1398
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden sollen"
+msgstr ""
+"Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden "
+"sollen"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:910
 msgid "Close"
 msgstr "Schliessen"
 
-#: divelist.c:2115
+#: divelist.c:2118
 msgid "Collapse all"
 msgstr "Alle einfalten"
 
-#: divelist.c:2088
+#: divelist.c:2091
 msgid "Create new trip above"
-msgstr "Neuen Gruppe darüber einfügen"
+msgstr "Neue Reise darüber einfügen"
 
-#: gtk-gui.c:596
+#: gtk-gui.c:598
 msgid "CuFt"
 msgstr "cuft"
 
-#: divelist.c:1265
-#: gtk-gui.c:620
+#: divelist.c:1268 gtk-gui.c:622
 msgid "Cyl"
 msgstr "Tank"
 
-#: equipment.c:926
-#: equipment.c:1062
+#: equipment.c:926 equipment.c:1062
 msgid "Cylinder"
 msgstr "Tank"
 
@@ -180,17 +198,15 @@ msgstr "Tank"
 msgid "Cylinders"
 msgstr "Tanks"
 
-#: divelist.c:1258
-#: print.c:154
-#: statistics.c:711
+#: divelist.c:1261 print.c:155 statistics.c:720
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:776
+#: info.c:780
 msgid "Date and Time"
 msgstr "Datum und Zeit"
 
-#: info.c:786
+#: info.c:790
 msgid "Date:"
 msgstr "Datum:"
 
@@ -198,32 +214,31 @@ msgstr "Datum:"
 msgid "Dec"
 msgstr "Dez"
 
-#: gtk-gui.c:667
+#: gtk-gui.c:669
 msgid "Default XML Data File"
 msgstr "Standard XML Datei"
 
-#: info.c:227
+#: info.c:229
 msgid "Delete"
 msgstr "Löschen"
 
-#: info.c:178
+#: info.c:180
 msgid "Delete Dive"
 msgstr "Tauchgang löschen"
 
-#: divelist.c:2006
+#: divelist.c:2009
 msgid "Delete dive"
 msgstr "Tauchgang löschen"
 
-#: divelist.c:2005
+#: divelist.c:2008
 msgid "Delete dives"
 msgstr "Tauchgänge löschen"
 
-#: print.c:154
-#: statistics.c:160
+#: print.c:155 statistics.c:160
 msgid "Depth"
 msgstr "Tiefe"
 
-#: info.c:836
+#: info.c:840
 #, c-format
 msgid "Depth (%s):"
 msgstr "Tiefe (%s):"
@@ -232,42 +247,41 @@ msgstr "Tiefe (%s):"
 msgid "Depth Limit Exceeded"
 msgstr "Tiefenlimit überschritten"
 
-#: gtk-gui.c:584
+#: gtk-gui.c:586
 msgid "Depth:"
 msgstr "Tiefe:"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1366
 msgid "Device name"
 msgstr "Gerätename"
+
+#. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
+#: info.c:107
+#, c-format
+msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
+msgstr "Tauchgang #%1$d - %2$s %4$02d.%3$02d.%5$04d um %6$d:%7$02d"
 
 #: print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Tauchgang #%d - "
 
-#: info.c:144
+#: info.c:146
 #, c-format
 msgid "Dive #%d - %s"
 msgstr "Tauchgang #%d - %s"
 
-#: info.c:106
-#, c-format
-msgid "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
-msgstr "Tauchgang #%d - %s %02d/%02d/%04d um %d:%02d"
-
-#: gtk-gui.c:1120
-#: info.c:669
-#: statistics.c:702
+#: gtk-gui.c:1122 info.c:673 statistics.c:711
 msgid "Dive Info"
 msgstr "Informationen"
 
-#: gtk-gui.c:1112
+#: gtk-gui.c:1114
 msgid "Dive Notes"
 msgstr "Notizen"
 
-#: statistics.c:712
+#: statistics.c:721
 msgid "Dive Time"
-msgstr "Startzeit"
+msgstr "Dauer"
 
 #: uemis.c:162
 msgid "Dive Time Alert"
@@ -277,36 +291,35 @@ msgstr "Alarm: Tauchgangsdauer"
 msgid "Dive Time Info"
 msgstr "Info: Tauchgangsdauer"
 
-#: gtk-gui.c:1333
+#: gtk-gui.c:1335
 msgid "Dive computer"
 msgstr "Tauchcomputer"
 
-#: print.c:474
+#: print.c:476
 msgid "Dive details"
 msgstr "Notizen zum Tauchgang"
 
-#: info.c:483
+#: info.c:487
 msgid "Dive master"
 msgstr "Dive guide"
 
-#: print.c:154
+#: print.c:155
 msgid "Dive#"
 msgstr "Tauchgang Nr."
 
-#: gtk-gui.c:650
+#: gtk-gui.c:652
 msgid "Divelist Font"
 msgstr "Schriftart für Tauchliste"
 
-#: info.c:910
+#: info.c:914
 msgid "Divemaster"
 msgstr "Diveguide"
 
-#: statistics.c:663
+#: statistics.c:672
 msgid "Dives"
 msgstr "Tauchgänge"
 
-#: gtk-gui.c:911
-#: gtk-gui.c:1494
+#: gtk-gui.c:913 gtk-gui.c:1496
 msgid "Download From Dive Computer"
 msgstr "Vom Tauchcomputer runterladen"
 
@@ -314,57 +327,55 @@ msgstr "Vom Tauchcomputer runterladen"
 msgid "Duration"
 msgstr "Dauer"
 
-#: info.c:831
+#: info.c:835
 msgid "Duration (min)"
 msgstr "Dauer (min)"
 
-#: info.c:228
+#: info.c:230
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: info.c:628
+#: info.c:632
 msgid "Edit Trip Info"
-msgstr "Gruppen-Informationen bearbeiten"
+msgstr "Reisen-Informationen bearbeiten"
 
-#: divelist.c:2027
+#: divelist.c:2030
 msgid "Edit Trip Summary"
-msgstr "Gruppen-Übersicht bearbeiten"
+msgstr "Reisen-Übersicht bearbeiten"
 
-#: divelist.c:2003
+#: divelist.c:2006
 msgid "Edit dive"
 msgstr "Tauchgang bearbeiten"
 
-#: divelist.c:2002
+#: divelist.c:2005
 msgid "Edit dives"
 msgstr "Tauchgänge bearbeiten"
 
-#: info.c:471
+#: info.c:475
 msgid "Edit multiple dives"
 msgstr "Mehrere Tauchgänge bearbeiten"
 
-#: info.c:453
+#: info.c:455
 msgid "Edit trip summary"
-msgstr "Gruppen-Übersicht bearbeiten"
+msgstr "Reisen-Übersicht bearbeiten"
 
-#: gtk-gui.c:771
+#: gtk-gui.c:773
 msgid "Enable / Disable Events"
 msgstr "Ereignisse Ein-/Ausblenden"
 
-#: equipment.c:965
-#: equipment.c:1489
+#: equipment.c:965 equipment.c:1489
 msgid "End"
 msgstr "Ende"
 
-#: gtk-gui.c:1116
-#: info.c:504
+#: gtk-gui.c:1118 info.c:508
 msgid "Equipment"
 msgstr "Ausrüstung"
 
-#: divelist.c:2112
+#: divelist.c:2115
 msgid "Expand all"
 msgstr "Alle ausfalten"
 
-#: gtk-gui.c:601
+#: gtk-gui.c:603
 msgid "Fahrenheit"
 msgstr "Fahrenheit"
 
@@ -373,12 +384,12 @@ msgstr "Fahrenheit"
 msgid "Failed to open %i files."
 msgstr "Fehler beim Öffnen von %i Dateien."
 
-#: parse-xml.c:1471
+#: parse-xml.c:1498
 #, c-format
 msgid "Failed to parse '%s'"
 msgstr "Fehler beim Analysieren von '%s'"
 
-#: parse-xml.c:1466
+#: parse-xml.c:1493
 #, c-format
 msgid "Failed to parse '%s'.\n"
 msgstr "Fehler beim Analysieren von '%s'.\n"
@@ -397,15 +408,15 @@ msgstr "Fehler beim Lesen von '%s'.\n"
 msgid "Feb"
 msgstr "Feb"
 
-#: gtk-gui.c:586
+#: gtk-gui.c:588
 msgid "Feet"
 msgstr "Fuss"
 
-#: gtk-gui.c:899
+#: gtk-gui.c:901
 msgid "File"
 msgstr "Datei"
 
-#: gtk-gui.c:902
+#: gtk-gui.c:904
 msgid "Filter"
 msgstr "Filter"
 
@@ -413,7 +424,7 @@ msgstr "Filter"
 msgid "Fri"
 msgstr "Fr"
 
-#: statistics.c:730
+#: statistics.c:739
 msgid "Gas Used"
 msgstr "Gasverbrauch"
 
@@ -421,15 +432,15 @@ msgstr "Gasverbrauch"
 msgid "Gasmix"
 msgstr "Gasmischung"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:905
 msgid "Help"
 msgstr "Hilfe"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:912
 msgid "Import XML File(s)"
 msgstr "XML Datei(en) einlesen"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:923
 msgid "Info"
 msgstr "Informationen"
 
@@ -446,27 +457,23 @@ msgstr "Jul"
 msgid "Jun"
 msgstr "Jun"
 
-#: gtk-gui.c:854
+#: gtk-gui.c:856
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel und andere, 2011, 2012"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:921
 msgid "List"
 msgstr "Liste"
 
-#: gtk-gui.c:595
+#: gtk-gui.c:597
 msgid "Liter"
 msgstr "Liter"
 
-#: divelist.c:1269
-#: info.c:458
-#: info.c:478
-#: info.c:905
-#: print.c:155
+#: divelist.c:1272 info.c:460 info.c:482 info.c:909 print.c:156
 msgid "Location"
 msgstr "Ort"
 
-#: gtk-gui.c:900
+#: gtk-gui.c:902
 msgid "Log"
 msgstr "Log"
 
@@ -475,7 +482,7 @@ msgctxt "Duration"
 msgid "Longest"
 msgstr "Max."
 
-#: statistics.c:674
+#: statistics.c:683
 msgid "Longest Dive"
 msgstr "Längster Tauchgang"
 
@@ -495,7 +502,7 @@ msgstr "Mär"
 msgid "Marker"
 msgstr "Markierung"
 
-#: print.c:154
+#: print.c:155
 msgid "Master"
 msgstr "Guide"
 
@@ -503,20 +510,19 @@ msgstr "Guide"
 msgid "Max Deco Time Warning"
 msgstr "Warnung: Maximale Deco Zeit"
 
-#: statistics.c:681
-#: statistics.c:719
+#: statistics.c:690 statistics.c:728
 msgid "Max Depth"
 msgstr "Max. Tiefe"
 
-#: statistics.c:689
+#: statistics.c:698
 msgid "Max SAC"
 msgstr "Max. AMV"
 
-#: statistics.c:664
+#: statistics.c:673
 msgid "Max Temp"
 msgstr "Max. Temp."
 
-#: print.c:94
+#: print.c:95
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -550,27 +556,27 @@ msgstr "Max."
 msgid "May"
 msgstr "Mai"
 
-#: divelist.c:2035
+#: divelist.c:2038
 msgid "Merge trip with trip above"
-msgstr "Gruppe mit der darüber verbinden"
+msgstr "Reise mit der darüber verbinden"
 
-#: divelist.c:2045
+#: divelist.c:2048
 msgid "Merge trip with trip below"
-msgstr "Gruppe mit der darunter verbinden"
+msgstr "Reise mit der darunter verbinden"
 
-#: gtk-gui.c:585
+#: gtk-gui.c:587
 msgid "Meter"
 msgstr "Meter"
 
-#: statistics.c:682
+#: statistics.c:691
 msgid "Min Depth"
 msgstr "Min. Tiefe"
 
-#: statistics.c:690
+#: statistics.c:699
 msgid "Min SAC"
 msgstr "Min. SAC"
 
-#: statistics.c:665
+#: statistics.c:674
 msgid "Min Temp"
 msgstr "Min. Temp."
 
@@ -589,7 +595,7 @@ msgctxt "Temp"
 msgid "Minimum"
 msgstr "Min."
 
-#: gtk-gui.c:656
+#: gtk-gui.c:658
 msgid "Misc. Options"
 msgstr "Verschiedene Optionen"
 
@@ -597,15 +603,15 @@ msgstr "Verschiedene Optionen"
 msgid "Mon"
 msgstr "Mo"
 
-#: gtk-gui.c:851
+#: gtk-gui.c:853
 msgid "Multi-platform divelog software in C"
 msgstr "Multi-Platform Tauchprogram in C"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:906
 msgid "New"
 msgstr "Neu"
 
-#: gtk-gui.c:811
+#: gtk-gui.c:813
 msgid "New starting number"
 msgstr "Neue erste Nummer"
 
@@ -613,9 +619,7 @@ msgstr "Neue erste Nummer"
 msgid "No Tank Data"
 msgstr "Keine Tank Informationen"
 
-#: info.c:463
-#: info.c:496
-#: info.c:919
+#: info.c:465 info.c:500 info.c:923
 msgid "Notes"
 msgstr "Notizen"
 
@@ -623,9 +627,7 @@ msgstr "Notizen"
 msgid "Nov"
 msgstr "Nov"
 
-#: divelist.c:1268
-#: gtk-gui.c:635
-#: statistics.c:728
+#: divelist.c:1271 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
 msgstr "OTU"
 
@@ -633,11 +635,11 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Okt"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:907
 msgid "Open"
 msgstr "Öffnen"
 
-#: gtk-gui.c:313
+#: gtk-gui.c:315
 msgid "Open File"
 msgstr "Datei öffnen"
 
@@ -653,49 +655,47 @@ msgstr "Warnung: Aufstieg / PO2"
 msgid "PO2 Green Warning"
 msgstr "Warnung: PO2 Grün"
 
-#: gtk-gui.c:591
+#: gtk-gui.c:593
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:570
-#: gtk-gui.c:913
+#: gtk-gui.c:572 gtk-gui.c:915
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: equipment.c:954
-#: equipment.c:960
+#: equipment.c:954 equipment.c:960
 msgid "Pressure"
 msgstr "Druck"
 
-#: gtk-gui.c:589
+#: gtk-gui.c:591
 msgid "Pressure:"
 msgstr "Druck:"
 
-#: print.c:484
+#: print.c:486
 msgid "Pretty print"
 msgstr "Schön drucken"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:911
 msgid "Print"
 msgstr "Drucken"
 
-#: print.c:505
+#: print.c:507
 msgid "Print only selected dives"
 msgstr "Nur ausgewählte Tauchgänge drucken"
 
-#: print.c:500
+#: print.c:502
 msgid "Print selection"
 msgstr "Auswahl drucken"
 
-#: print.c:478
+#: print.c:480
 msgid "Print type"
 msgstr "Art des Ausdrucks"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:922
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:917
+#: gtk-gui.c:919
 msgid "Quit"
 msgstr "Beenden"
 
@@ -707,8 +707,7 @@ msgstr "Alarm: verbleibende Gas-Zeit"
 msgid "RGT Warning"
 msgstr "Warnung: verbleibende Gas-Zeit"
 
-#: info.c:489
-#: info.c:916
+#: info.c:493 info.c:920
 msgid "Rating"
 msgstr "Bewertung"
 
@@ -717,31 +716,27 @@ msgstr "Bewertung"
 msgid "Reading dive %s"
 msgstr "Lese Tauchgang %s"
 
-#: divelist.c:2050
+#: divelist.c:2053
 msgid "Remove Trip"
-msgstr "Gruppe entfernen"
+msgstr "Reise entfernen"
 
-#: divelist.c:2106
+#: divelist.c:2109
 msgid "Remove dive from trip"
-msgstr "Tauchgang aus Gruppe entfernen"
+msgstr "Tauchgang aus Reise entfernen"
 
-#: divelist.c:2104
+#: divelist.c:2107
 msgid "Remove selected dives from trip"
-msgstr "Ausgewählte Tauchgänge aus Gruppe entfernen"
+msgstr "Ausgewählte Tauchgänge aus Reise entfernen"
 
-#: gtk-gui.c:802
-#: gtk-gui.c:914
+#: gtk-gui.c:804 gtk-gui.c:916
 msgid "Renumber"
 msgstr "Neu nummerieren"
 
-#: gtk-gui.c:1471
+#: gtk-gui.c:1473
 msgid "Retry"
 msgstr "Wiederholen"
 
-#: divelist.c:1267
-#: gtk-gui.c:630
-#: statistics.c:160
-#: statistics.c:727
+#: divelist.c:1270 gtk-gui.c:632 statistics.c:160 statistics.c:736
 msgid "SAC"
 msgstr "AMV"
 
@@ -757,11 +752,11 @@ msgstr "Verletzung des Sicherheitsstops"
 msgid "Sat"
 msgstr "Sa"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:908
 msgid "Save"
 msgstr "Speichern"
 
-#: gtk-gui.c:907
+#: gtk-gui.c:909
 msgid "Save As"
 msgstr "Speichern unter"
 
@@ -773,8 +768,7 @@ msgstr "Änderungen speichern?"
 msgid "Save File As"
 msgstr "Datei speichern unter"
 
-#: gtk-gui.c:762
-#: gtk-gui.c:916
+#: gtk-gui.c:764 gtk-gui.c:918
 msgid "SelectEvents"
 msgstr "Ereignisse auswählen"
 
@@ -795,16 +789,15 @@ msgctxt "Duration"
 msgid "Shortest"
 msgstr "Min."
 
-#: statistics.c:675
+#: statistics.c:684
 msgid "Shortest Dive"
 msgstr "Kürzester Tauchgang"
 
-#: gtk-gui.c:609
+#: gtk-gui.c:611
 msgid "Show Columns"
 msgstr "Spalten anzeigen"
 
-#: equipment.c:951
-#: equipment.c:1486
+#: equipment.c:951 equipment.c:1486
 msgid "Size"
 msgstr "Grösse"
 
@@ -816,23 +809,19 @@ msgstr "Alarm: Geschwindigkeit"
 msgid "Speed Warning"
 msgstr "Warnung: Geschwindigkeit"
 
-#: equipment.c:962
-#: equipment.c:1488
+#: equipment.c:962 equipment.c:1488
 msgid "Start"
 msgstr "Start"
 
-#: statistics.c:655
+#: statistics.c:664
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: gtk-gui.c:1124
+#: gtk-gui.c:1126
 msgid "Stats"
 msgstr "Statistiken"
 
-#: divelist.c:1264
-#: gtk-gui.c:645
-#: info.c:490
-#: info.c:917
+#: divelist.c:1267 gtk-gui.c:647 info.c:494 info.c:921
 msgid "Suit"
 msgstr "Anzug"
 
@@ -841,11 +830,11 @@ msgstr "Anzug"
 msgid "Sun"
 msgstr "So"
 
-#: statistics.c:713
+#: statistics.c:722
 msgid "Surf Intv"
 msgstr "Oberflächenpause"
 
-#: print.c:488
+#: print.c:490
 msgid "Table print"
 msgstr "Tabellenausdruck"
 
@@ -857,7 +846,7 @@ msgstr "Tankwechsel Vorschlag"
 msgid "Tank Pressure Info"
 msgstr "Info: Tankdruck"
 
-#: gtk-gui.c:615
+#: gtk-gui.c:617
 msgid "Temp"
 msgstr "Temperatur"
 
@@ -865,11 +854,11 @@ msgstr "Temperatur"
 msgid "Temperature"
 msgstr "Temperatur"
 
-#: gtk-gui.c:599
+#: gtk-gui.c:601
 msgid "Temperature:"
 msgstr "Temperatur:"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:924
 msgid "Three"
 msgstr "Drei"
 
@@ -877,12 +866,11 @@ msgstr "Drei"
 msgid "Thu"
 msgstr "Do"
 
-#: info.c:791
-#: print.c:154
+#: info.c:795 print.c:155
 msgid "Time"
 msgstr "Zeit"
 
-#: gtk-gui.c:928
+#: gtk-gui.c:930
 msgid "Toggle Zoom"
 msgstr "Zoom ein-/ausschalten"
 
@@ -891,16 +879,23 @@ msgctxt "Duration"
 msgid "Total"
 msgstr "Gesamt"
 
-#: statistics.c:672
+#: statistics.c:681
 msgid "Total Time"
 msgstr "Gesamtzeit"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
+#: divelist.c:375
+#, c-format
+msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
+msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
+msgstr[0] "Reise ab %1$s, %3$d. %2$s %4$d (%5$d Tauchgang)"
+msgstr[1] "Reise ab %1$s, %3$d. %2$s %4$d (%5$d Tauchgänge)"
 
 #: main.c:37
 msgid "Tue"
 msgstr "Di"
 
-#: equipment.c:1485
-#: equipment.c:1513
+#: equipment.c:1485 equipment.c:1513
 msgid "Type"
 msgstr "Typ"
 
@@ -928,19 +923,19 @@ msgstr ""
 msgid "Uemis init failed"
 msgstr "Uemis Initialisierung fehlgeschlagen"
 
-#: gtk-gui.c:577
+#: gtk-gui.c:579
 msgid "Units"
 msgstr "Einheiten"
 
-#: gtk-gui.c:901
+#: gtk-gui.c:903
 msgid "View"
 msgstr "Ansicht"
 
-#: gtk-gui.c:594
+#: gtk-gui.c:596
 msgid "Volume:"
 msgstr "Volumen:"
 
-#: statistics.c:721
+#: statistics.c:730
 msgid "Water Temp"
 msgstr "Wassertemperatur"
 
@@ -948,9 +943,7 @@ msgstr "Wassertemperatur"
 msgid "Wed"
 msgstr "Mi"
 
-#: equipment.c:1012
-#: equipment.c:1609
-#: gtk-gui.c:640
+#: equipment.c:1012 equipment.c:1609 gtk-gui.c:642
 msgid "Weight"
 msgstr "Gewicht"
 
@@ -958,7 +951,7 @@ msgstr "Gewicht"
 msgid "Weight System"
 msgstr "Gewicht"
 
-#: gtk-gui.c:604
+#: gtk-gui.c:606
 msgid "Weight:"
 msgstr "Gewicht:"
 
@@ -970,8 +963,7 @@ msgstr "XML Datei"
 msgid "Year"
 msgstr "Jahr"
 
-#: gtk-gui.c:915
-#: statistics.c:360
+#: gtk-gui.c:917 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Jährliche Statistiken"
 
@@ -983,7 +975,7 @@ msgstr ""
 "Nicht alle Änderungen wurden gespeichert.\n"
 "Sollen Änderungen vor dem Schliessen der Datei gespeichert werden?"
 
-#: gtk-gui.c:242
+#: gtk-gui.c:241 gtk-gui.c:244
 #, c-format
 msgid ""
 "You have unsaved changes to file: %s \n"
@@ -1008,7 +1000,7 @@ msgstr "Gürtel"
 msgid "clip-on"
 msgstr "clip-on"
 
-#: divelist.c:1260
+#: divelist.c:1263
 msgid "ft"
 msgstr "ft"
 
@@ -1016,30 +1008,28 @@ msgstr "ft"
 msgid "integrated"
 msgstr "integriert"
 
-#: gtk-gui.c:605
+#: gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
-#: divelist.c:1263
-#: gtk-gui.c:606
+#: divelist.c:1266 gtk-gui.c:608
 msgid "lbs"
 msgstr "US Pfund"
 
-#: divelist.c:1261
+#: divelist.c:1264
 msgid "min"
 msgstr "min"
 
-#: statistics.c:493
+#: statistics.c:501
 #, c-format
 msgid "more than %d days"
 msgstr "mehr als %d Tage"
 
-#: equipment.c:1378
-#: equipment.c:1398
+#: equipment.c:1378 equipment.c:1398
 msgid "unkn"
 msgstr "unbk"
 
-#: statistics.c:532
+#: statistics.c:541
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -1052,23 +1042,22 @@ msgid "weight"
 msgstr "Gewicht"
 
 #~ msgctxt "Depth"
-
 #~ msgid ""
 #~ "Depth\n"
 #~ "Average"
 #~ msgstr ""
 #~ "Tiefe\n"
 #~ "Ø"
-#~ msgctxt "Duration"
 
+#~ msgctxt "Duration"
 #~ msgid ""
 #~ "Duration\n"
 #~ "Total"
 #~ msgstr ""
 #~ "Dauer\n"
 #~ "Gesamt"
-#~ msgctxt "SAC"
 
+#~ msgctxt "SAC"
 #~ msgid ""
 #~ "SAC\n"
 #~ "Average"
@@ -1083,8 +1072,8 @@ msgstr "Gewicht"
 #~ msgstr ""
 #~ "\n"
 #~ "Min."
-#~ msgctxt "Temp"
 
+#~ msgctxt "Temp"
 #~ msgid ""
 #~ "Temperature\n"
 #~ "Average"

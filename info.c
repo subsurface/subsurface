@@ -103,7 +103,8 @@ static int divename(char *buf, size_t size, struct dive *dive)
 	struct tm tm;
 
 	utc_mkdate(dive->when, &tm);
-	return snprintf(buf, size, _("Dive #%d - %s %02d/%02d/%04d at %d:%02d"),
+	/*++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min */
+	return snprintf(buf, size, _("Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"),
 		dive->number,
 		weekday(tm.tm_wday),
 		tm.tm_mon+1, tm.tm_mday,

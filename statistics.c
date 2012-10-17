@@ -525,7 +525,8 @@ static void show_single_dive_stats(struct dive *dive)
 
 	utc_mkdate(dive->when, &tm);
 	snprintf(buf, sizeof(buf),
-		"%s, %s %d, %d %2d:%02d",
+		/*++GETTEXT 80 chars: weekday, monthname, day, year, hour, min */
+		_("%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"),
 		weekday(tm.tm_wday),
 		monthname(tm.tm_mon),
 		tm.tm_mday, tm.tm_year + 1900,

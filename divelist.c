@@ -363,7 +363,7 @@ static void date_data_func(GtkTreeViewColumn *col,
 	int idx, nr;
 	struct tm tm;
 	timestamp_t when;
-	char buffer[40];
+	char buffer[60];
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	nr = gtk_tree_model_iter_n_children(model, iter);
@@ -371,14 +371,17 @@ static void date_data_func(GtkTreeViewColumn *col,
 	utc_mkdate(when, &tm);
 	if (idx < 0) {
 		snprintf(buffer, sizeof(buffer),
-			"Trip %s, %s %d, %d (%d dive%s)",
+			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives */
+			ngettext("Trip %1$s, %2$s %3$d, %4$d (%5$d dive)",
+				"Trip %1$s, %2$s %3$d, %4$d (%5$d dives)", nr),
 			weekday(tm.tm_wday),
 			monthname(tm.tm_mon),
 			tm.tm_mday, tm.tm_year + 1900,
-			nr, nr > 1 ? "s" : "");
+			nr);
 	} else {
 		snprintf(buffer, sizeof(buffer),
-			"%s, %s %d, %d %02d:%02d",
+			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min */
+			_("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
 			weekday(tm.tm_wday),
 			monthname(tm.tm_mon),
 			tm.tm_mday, tm.tm_year + 1900,

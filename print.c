@@ -68,7 +68,8 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 
 	utc_mkdate(dive->when, &tm);
 	len = snprintf(buffer, sizeof(buffer),
-		"%s%s, %s %d, %d   %d:%02d",
+		/*++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min */
+		_("%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"),
 		divenr,
 		weekday(tm.tm_wday),
 		monthname(tm.tm_mon),
@@ -224,7 +225,8 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_width(layout, colwidth);
 	utc_mkdate(dive->when, &tm);
 	len = snprintf(buffer, sizeof(buffer),
-		"%s, %s %d, %d   %dh%02d",
+		/*++GETTEXT 160 chars: weekday, monthname, day, year, hour, min */
+		_("%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"),
 		weekday(tm.tm_wday),
 		monthname(tm.tm_mon),
 		tm.tm_mday, tm.tm_year + 1900,
