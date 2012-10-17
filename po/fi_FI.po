@@ -41,25 +41,24 @@ msgstr "%.*f %s/min"
 #: print.c:72
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
-msgstr ""
+msgstr "%1$s %2$s. %4$d %3$skuuta %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
 #: print.c:229
 #, c-format
-msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
-msgstr ""
+msgid "%1$s, %3$s.%2$d.%4$04d   %5$dh%6$02d"
+msgstr "%1$s, %2$d. %3$skuuta %4$04d   %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
 #: divelist.c:384
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
-msgstr ""
+msgstr "%1$s %3$d. %2$skuuta %4$d %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
-#, fuzzy, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "Sukellus #%d - %s %02d-%02d-%04d, %d:%02d"
+msgstr "%1$s, %3$d. %2$skuuta %4$d, %5$d:%6$02d"
 
 #: print.c:254 statistics.c:536
 #, c-format
@@ -256,9 +255,8 @@ msgstr "Laitenimi"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:107
-#, fuzzy, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Sukellus #%d - %s %02d-%02d-%04d, %d:%02d"
+msgstr "Sukellus #%1$d - %2$s %4$d.%3$d.%5$04d, %6$d:%7$02d"
 
 #: print.c:67
 #, c-format
@@ -887,8 +885,8 @@ msgstr "Kokonaisaika"
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Retki %1$s, %3$d. %2$skuuta %4$04d (%5$d sukellus)"
+msgstr[1] "Retki %1$s, %3$d. %2$skuuta %4$04d (%5$d sukellusta)"
 
 #: main.c:37
 msgid "Tue"
