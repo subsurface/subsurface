@@ -150,6 +150,11 @@ install: $(NAME)
 		$(INSTALL) -d -m 755 $(XSLTDIR); \
 		$(INSTALL) -m 644 $(XSLTFILES) $(XSLTDIR); \
 	fi
+	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
+		$(INSTALL) -d -m 755 $(prefix)/$$LOC; \
+		$(INSTALL) $$LOC/subsurface.mo $(prefix)/$$LOC/subsurface.mo; \
+	done
+
 
 install-macosx: $(NAME)
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
@@ -184,9 +189,9 @@ install-cross-windows: $(NAME)
 		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$MSG;\
 		$(INSTALL) $(CROSS_PATH)/$$MSG/* $(WINDOWSSTAGING)/$$MSG;\
 	done
-	for MSG in $(MSGOBJS); do\
-		$(INSTALL) -d -m 755 $$(dirname $(WINDOWSSTAGING)/$$MSG);\
-		$(INSTALL) $$MSG $(WINDOWSSTAGING)/$$MSG;\
+	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
+		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$LOC; \
+		$(INSTALL) $$LOC/subsurface.mo $(WINDOWSSTAGING)/$$LOC/subsurface.mo; \
 	done
 
 file.o: file.c dive.h file.h
