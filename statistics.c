@@ -550,7 +550,7 @@ static void show_single_dive_stats(struct dive *dive)
 		set_label(single_w.water_temp, "");
 	value = get_volume_units(dive->sac, &decimals, &unit);
 	if (value > 0) {
-		set_label(single_w.sac, "%.*f %s/min", decimals, value, unit);
+		set_label(single_w.sac, _("%.*f %s/min"), decimals, value, unit);
 	} else
 		set_label(single_w.sac, "");
 	set_label(single_w.otu, "%d", dive->otu);
