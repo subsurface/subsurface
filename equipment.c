@@ -1034,9 +1034,9 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
 	if ( output_units.weight == KG)
-		widget = create_spinbutton(hbox, "kg", 0, 50, 0.5);
+		widget = create_spinbutton(hbox, _("kg"), 0, 50, 0.5);
 	else
-		widget = create_spinbutton(hbox, "lbs", 0, 110, 1);
+		widget = create_spinbutton(hbox, _("lbs"), 0, 110, 1);
 	ws_widget->weight = GTK_SPIN_BUTTON(widget);
 }
 
