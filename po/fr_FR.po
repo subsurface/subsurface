@@ -59,7 +59,7 @@ msgstr "%1$s %3$d %2$s %4$d, %5$02d:%6$02d"
 #: statistics.c:529
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "%1$s 3$d %2$s %4$d, %5$2d:%6$02d"
+msgstr "%1$s %3$d %2$s %4$d, %5$2d:%6$02d"
 
 #: print.c:254 statistics.c:536
 #, c-format
