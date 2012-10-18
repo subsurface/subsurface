@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 09:28-0700\n"
+"POT-Creation-Date: 2012-10-18 14:52-0700\n"
 "PO-Revision-Date: 2012-10-18 15:00+0100\n"
 "Last-Translator: Ivan Habunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian\n"
@@ -1006,7 +1006,7 @@ msgstr "ft"
 msgid "integrated"
 msgstr "integrirani"
 
-#: dive.c:136 gtk-gui.c:607
+#: dive.c:136 equipment.c:1037 gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
@@ -1014,7 +1014,7 @@ msgstr "kg"
 msgid "l"
 msgstr ""
 
-#: dive.c:132 divelist.c:1267 gtk-gui.c:608
+#: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
 msgid "lbs"
 msgstr "US funte"
 

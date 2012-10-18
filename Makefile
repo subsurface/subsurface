@@ -194,6 +194,12 @@ install-cross-windows: $(NAME)
 		$(INSTALL) $$LOC/subsurface.mo $(WINDOWSSTAGING)/$$LOC/subsurface.mo; \
 	done
 
+update-po-files:
+	xgettext -o subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
+	for i in po/*.po; do \
+		msgmerge -s -U $$i subsurface-new.pot ; \
+	done
+
 file.o: file.c dive.h file.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c file.c
 
