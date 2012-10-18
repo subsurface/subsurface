@@ -10,15 +10,14 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-17 01:14-0700\n"
-"PO-Revision-Date: 2012-10-15 09:16+0100\n"
-"Last-Translator: Ivan <ivan@velikibijeli.hr>\n"
+"PO-Revision-Date: 2012-10-18 15:00+0100\n"
+"Last-Translator: Ivan Habunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #: statistics.c:162
 msgctxt "Stats"
@@ -31,7 +30,7 @@ msgstr "Odaberite ronilačko računalo i naziv uređaja."
 
 #: statistics.c:160
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: statistics.c:625 statistics.c:627 statistics.c:629
 #, c-format
@@ -42,25 +41,25 @@ msgstr "%.*f %s/min"
 #: print.c:72
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
-msgstr ""
+msgstr "%1$s%2$s %4$d. %3$s %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
 #: print.c:229
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
-msgstr ""
+msgstr "%1$s %3$d. %2$s %4$d   %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
 #: divelist.c:384
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
-msgstr ""
+msgstr "%1$s %3$d. %2$s %4$d %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "Uron #%d - %s %02d/%02d/%04d u %d:%02d"
+msgstr "%1$s %3$d. %2$s %4$d %5$2d:%6$02d"
 
 #: print.c:254 statistics.c:536
 #, c-format
@@ -70,7 +69,7 @@ msgstr "%d min"
 #: statistics.c:507
 #, c-format
 msgid "%dd %dh %dmin"
-msgstr "%dt %dst %dmin"
+msgstr "%dd %dh %dmin"
 
 #: statistics.c:509
 #, c-format
@@ -136,19 +135,19 @@ msgstr "Ø"
 
 #: statistics.c:692 statistics.c:729
 msgid "Avg Depth"
-msgstr "Prosječna dubina"
+msgstr "Prosj. dubina"
 
 #: statistics.c:700
 msgid "Avg SAC"
-msgstr "Prosječni SAC"
+msgstr "Prosj. SAC"
 
 #: statistics.c:675
 msgid "Avg Temp"
-msgstr "Prosječna temperatura"
+msgstr "Prosj. temp."
 
 #: statistics.c:682
 msgid "Avg Time"
-msgstr "Prosječno vrijeme"
+msgstr "Prosj. trajanje"
 
 #: gtk-gui.c:592
 msgid "Bar"
@@ -259,7 +258,7 @@ msgstr "Naziv uređaja"
 #: info.c:107
 #, fuzzy, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Uron #%d - %s %02d/%02d/%04d u %d:%02d"
+msgstr "Uron #%1$d - %2$s %4$02d.%3$02d.%5$04d u %6$d:%7$02d"
 
 #: print.c:67
 #, c-format
@@ -480,7 +479,7 @@ msgstr "Dnevnik"
 #: statistics.c:167
 msgctxt "Duration"
 msgid "Longest"
-msgstr "Max."
+msgstr "Maks."
 
 #: statistics.c:683
 msgid "Longest Dive"
@@ -512,7 +511,7 @@ msgstr "Upozorenje: Max. vrijeme dekompresije"
 
 #: statistics.c:690 statistics.c:728
 msgid "Max Depth"
-msgstr "Najveća dubina"
+msgstr "Maks. dubina"
 
 #: statistics.c:698
 msgid "Max SAC"
@@ -520,7 +519,7 @@ msgstr "Najveći SAC"
 
 #: statistics.c:673
 msgid "Max Temp"
-msgstr "Najveća temperatura"
+msgstr "Maks. temp."
 
 #: print.c:95
 #, c-format
@@ -535,7 +534,7 @@ msgstr ""
 
 #: equipment.c:1487
 msgid "MaxPress"
-msgstr "Max.pritisak"
+msgstr "Maks. pritisak"
 
 #: statistics.c:170
 msgctxt "Depth"
@@ -815,11 +814,11 @@ msgstr "Početak"
 
 #: statistics.c:664
 msgid "Statistics"
-msgstr "Statistike"
+msgstr "Statistika"
 
 #: gtk-gui.c:1126
 msgid "Stats"
-msgstr "Statistike"
+msgstr "Statistika"
 
 #: divelist.c:1267 gtk-gui.c:647 info.c:494 info.c:921
 msgid "Suit"
@@ -881,15 +880,15 @@ msgstr "Ukupno"
 
 #: statistics.c:681
 msgid "Total Time"
-msgstr "Lokalno vrijeme"
+msgstr "Ukupno trajanje"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:375
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Grupa %1$s, %3$d. %2$s %4$d (%5$d uron)"
+msgstr[1] "Grupa %1$s, %3$d. %2$s %4$d (%5$d urona)"
 
 #: main.c:37
 msgid "Tue"
@@ -897,7 +896,7 @@ msgstr "Uto"
 
 #: equipment.c:1485 equipment.c:1513
 msgid "Type"
-msgstr "Tip"
+msgstr "Vrsta"
 
 #: uemis-downloader.c:28
 msgid ""
@@ -1014,7 +1013,7 @@ msgstr "kg"
 
 #: divelist.c:1266 gtk-gui.c:608
 msgid "lbs"
-msgstr "funte"
+msgstr "US funte"
 
 #: divelist.c:1264
 msgid "min"
@@ -1041,6 +1040,7 @@ msgstr "nije specificirano"
 msgid "weight"
 msgstr "težina"
 
+#, fuzzy
 #~ msgctxt "Depth"
 #~ msgid ""
 #~ "Depth\n"
@@ -1049,6 +1049,7 @@ msgstr "težina"
 #~ "Prosječna\n"
 #~ "dubina"
 
+#, fuzzy
 #~ msgctxt "Duration"
 #~ msgid ""
 #~ "Duration\n"
@@ -1057,6 +1058,7 @@ msgstr "težina"
 #~ "Ukupno\n"
 #~ "Trajanje"
 
+#, fuzzy
 #~ msgctxt "SAC"
 #~ msgid ""
 #~ "SAC\n"
@@ -1073,6 +1075,7 @@ msgstr "težina"
 #~ "Najmanji\n"
 #~ "SAC"
 
+#, fuzzy
 #~ msgctxt "Temp"
 #~ msgid ""
 #~ "Temperature\n"
