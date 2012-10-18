@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-17 01:14-0700\n"
 "PO-Revision-Date: 2012-12-11 09:58+0200\n"
-"Last-Translator: Jean-Noël Rouchon <jnoel@sissiou.net>\n"
+"Last-Translator: Pierre-Yves Chibon <pingou@pingoured.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr " Merci de choisir un ordinateur de plongée et un port "
 
 #: statistics.c:160
 msgid "#"
-msgstr ""
+msgstr "N°"
 
 #: statistics.c:625 statistics.c:627 statistics.c:629
 #, c-format
@@ -41,25 +41,24 @@ msgstr "%.*f %s/min"
 #: print.c:72
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
-msgstr ""
+msgstr "%1$s%2$s %4$d %3$s %5$d,   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
 #: print.c:229
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
-msgstr ""
+msgstr "%1$s %3$d %2$s, %4$d,   %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
 #: divelist.c:384
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
-msgstr ""
+msgstr "%1$s %3$d %2$s %4$d, %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
-#, fuzzy, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "Plongée #%d - %s %02d/%02d/%04d à %d:%02d"
+msgstr "%1$s 3$d %2$s %4$d, %5$2d:%6$02d"
 
 #: print.c:254 statistics.c:536
 #, c-format
@@ -183,7 +182,7 @@ msgstr "Créer un nouveau groupe au-dessus"
 
 #: gtk-gui.c:598
 msgid "CuFt"
-msgstr "CuFt"
+msgstr "Pieds³"
 
 #: divelist.c:1268 gtk-gui.c:622
 msgid "Cyl"
@@ -256,19 +255,18 @@ msgstr "Nom de l'appareil"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:107
-#, fuzzy, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Plongée #%d - %s %02d/%02d/%04d à %d:%02d"
+msgstr "Plongée n°%1$d - %2$s %4$02d/%3$02d/%5$04d at %6$d:%7$02d"
 
 #: print.c:67
 #, c-format
 msgid "Dive #%d - "
-msgstr "Plongée #%d - "
+msgstr "Plongée n°%d - "
 
 #: info.c:146
 #, c-format
 msgid "Dive #%d - %s"
-msgstr "Plongée #%d - %s"
+msgstr "Plongée n°%d - %s"
 
 #: gtk-gui.c:1122 info.c:673 statistics.c:711
 msgid "Dive Info"
@@ -304,7 +302,7 @@ msgstr "Chef de Palanquée"
 
 #: print.c:155
 msgid "Dive#"
-msgstr "Plongée N°."
+msgstr "Plongée n°"
 
 #: gtk-gui.c:652
 msgid "Divelist Font"
@@ -700,7 +698,7 @@ msgstr "Quitter"
 
 #: uemis.c:152
 msgid "RGT Alert"
-msgstr "Alarm: resterende Gas-tijd"
+msgstr "Alarme: Temps d'air restant"
 
 #: uemis.c:150
 msgid "RGT Warning"
@@ -887,8 +885,8 @@ msgstr "Temps Total"
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Groupe %1$s %3$d %2$s %4$d (%5$d plongée)"
+msgstr[1] "Groupe %1$s %3$d %2$s %4$d (%5$d plongées)"
 
 #: main.c:37
 msgid "Tue"
@@ -1013,7 +1011,7 @@ msgstr "kg"
 
 #: divelist.c:1266 gtk-gui.c:608
 msgid "lbs"
-msgstr "US Pond"
+msgstr "Livre US"
 
 #: divelist.c:1264
 msgid "min"
@@ -1039,47 +1037,3 @@ msgstr "non-specifié"
 #: equipment.c:1514
 msgid "weight"
 msgstr "poids"
-
-#, fuzzy
-#~ msgctxt "Depth"
-#~ msgid ""
-#~ "Depth\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Profondeur\n"
-#~ "Moyenne"
-
-#, fuzzy
-#~ msgctxt "Duration"
-#~ msgid ""
-#~ "Duration\n"
-#~ "Total"
-#~ msgstr ""
-#~ "Durée\n"
-#~ "Totale"
-
-#, fuzzy
-#~ msgctxt "SAC"
-#~ msgid ""
-#~ "SAC\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Consommation d'air moyenne\n"
-#~ "Moyenne"
-
-#, fuzzy
-#~ msgid ""
-#~ "SAC|\n"
-#~ "Minimum"
-#~ msgstr ""
-#~ "\n"
-#~ "Minimum"
-
-#, fuzzy
-#~ msgctxt "Temp"
-#~ msgid ""
-#~ "Temperature\n"
-#~ "Average"
-#~ msgstr ""
-#~ "Température\n"
-#~ "Moyenne"
