@@ -1,0 +1,1091 @@
+# Italian translations for Subsurface package
+# Italian messages for Subsurface.
+# Copyright (C) 2012 Subsurface's COPYRIGHT HOLDER
+# This file is distributed under the same license as the Subsurface package.
+# Filippo Moser <filippom@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-17 01:14-0700\n"
+"PO-Revision-Date: 2012-10-18 14:16+0100\n"
+"Last-Translator: Filippo Moser <filippom@gmail.com>\n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: statistics.c:162
+msgctxt "Stats"
+msgid " > Month"
+msgstr " > Mese"
+
+#: gtk-gui.c:1504
+msgid " Please select dive computer and device. "
+msgstr " Selezionare il computer e la periferica"
+
+#: statistics.c:160
+msgid "#"
+msgstr "#"
+
+#: statistics.c:625
+#: statistics.c:627
+#: statistics.c:629
+#, c-format
+msgid "%.*f %s/min"
+msgstr "%.*f %s/min"
+
+#. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
+#: print.c:72
+#, c-format
+msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
+msgstr "%1$s%2$s %4$d. %3$s %5$d   %6$d:%7$02d"
+
+#. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
+#: print.c:229
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
+msgstr "%1$s %3$d. %2$s %4$d   %5$dh%6$02d"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
+#: divelist.c:384
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
+msgstr "%1$s %3$d. %2$s %4$d %5$02d:%6$02d"
+
+#. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
+#: statistics.c:529
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
+msgstr "%1$s %3$d. %2$s %4$d %5$2d:%6$02d"
+
+#: print.c:254
+#: statistics.c:536
+#, c-format
+msgid "%d min"
+msgstr "%d min"
+
+#: statistics.c:507
+#, c-format
+msgid "%dd %dh %dmin"
+msgstr "%dt %dst %dmin"
+
+#: statistics.c:509
+#, c-format
+msgid "%dh %dmin"
+msgstr "%dst %dmin"
+
+#: dive.c:618
+#, c-format
+msgid "(%s) or (%s)"
+msgstr "(%s) oder (%s)"
+
+#: gtk-gui.c:920
+msgid "About"
+msgstr "Informazioni"
+
+#: gtk-gui.c:914
+msgid "Add Dive"
+msgstr "Aggiungi Immersione"
+
+#: divelist.c:2022
+msgid "Add dive"
+msgstr "Aggiungi immersione"
+
+#: divelist.c:2101
+msgid "Add to trip above"
+msgstr "Aggiungi al viaggio sopra"
+
+#: main.c:46
+msgid "Apr"
+msgstr "Apr"
+
+#: main.c:47
+msgid "Aug"
+msgstr "Ago"
+
+#: gtk-gui.c:929
+msgid "Autogroup"
+msgstr "Raggruppa"
+
+#: gtk-gui.c:664
+msgid "Automatically group dives in trips"
+msgstr "Raggruppa automaticamente immersioni in viaggi"
+
+#: statistics.c:168
+msgctxt "Depth"
+msgid "Average"
+msgstr "Media"
+
+#: statistics.c:165
+msgctxt "Duration"
+msgid "Average"
+msgstr "Media"
+
+#: statistics.c:171
+msgctxt "SAC"
+msgid "Average"
+msgstr "Media"
+
+#: statistics.c:174
+msgctxt "Temp"
+msgid "Average"
+msgstr "Media"
+
+#: statistics.c:692
+#: statistics.c:729
+msgid "Avg Depth"
+msgstr "Profondità media"
+
+# surface air consumption (SAC)
+# consumo d'aria in superficie (CAS)
+#: statistics.c:700
+msgid "Avg SAC"
+msgstr "CAS Medio"
+
+#: statistics.c:675
+msgid "Avg Temp"
+msgstr "Temperatura Media"
+
+#: statistics.c:682
+msgid "Avg Time"
+msgstr "Tempo Medio"
+
+#: gtk-gui.c:592
+msgid "Bar"
+msgstr "Bar"
+
+#: info.c:488
+#: info.c:915
+#: print.c:156
+msgid "Buddy"
+msgstr "Compagno"
+
+#: gtk-gui.c:602
+msgid "Celsius"
+msgstr "Celsius"
+
+#: gtk-gui.c:522
+msgid "Choose Default XML File"
+msgstr "Selezionare il file XML di default"
+
+#: gtk-gui.c:1398
+msgid "Choose XML Files To Import Into Current Data File"
+msgstr "Selezionare i files XML da importare nel file dei dati"
+
+#: gtk-gui.c:910
+msgid "Close"
+msgstr "Chiudi"
+
+#: divelist.c:2118
+msgid "Collapse all"
+msgstr "Minimizza tutto"
+
+#: divelist.c:2091
+msgid "Create new trip above"
+msgstr "Crea un nuovo viaggio sopra"
+
+# Cubic foot
+#: gtk-gui.c:598
+msgid "CuFt"
+msgstr "Piedi cubi"
+
+#: divelist.c:1268
+#: gtk-gui.c:622
+msgid "Cyl"
+msgstr "Bombola"
+
+#: equipment.c:926
+#: equipment.c:1062
+msgid "Cylinder"
+msgstr "Bombola"
+
+#: equipment.c:1572
+msgid "Cylinders"
+msgstr "Bombole"
+
+#: divelist.c:1261
+#: print.c:155
+#: statistics.c:720
+msgid "Date"
+msgstr "Data"
+
+#: info.c:780
+msgid "Date and Time"
+msgstr "Data e Tempo"
+
+#: info.c:790
+msgid "Date:"
+msgstr "Data:"
+
+#: main.c:47
+msgid "Dec"
+msgstr "Dic"
+
+#: gtk-gui.c:669
+msgid "Default XML Data File"
+msgstr "File XML di default"
+
+#: info.c:229
+msgid "Delete"
+msgstr "Cancella"
+
+#: info.c:180
+msgid "Delete Dive"
+msgstr "Cancella Immersione"
+
+#: divelist.c:2009
+msgid "Delete dive"
+msgstr "Cancella immersione"
+
+#: divelist.c:2008
+msgid "Delete dives"
+msgstr "Cancella immersioni"
+
+#: print.c:155
+#: statistics.c:160
+msgid "Depth"
+msgstr "Profondità"
+
+#: info.c:840
+#, c-format
+msgid "Depth (%s):"
+msgstr "Profondità (%s):"
+
+#: uemis.c:156
+msgid "Depth Limit Exceeded"
+msgstr "Limite Profondità Superato"
+
+#: gtk-gui.c:586
+msgid "Depth:"
+msgstr "Profondità:"
+
+#: gtk-gui.c:1366
+msgid "Device name"
+msgstr "Nome periferica"
+
+#. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
+#: info.c:107
+#, c-format
+msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
+msgstr "Immersione #%1$d - %2$s %4$02d.%3$02d.%5$04d a %6$d:%7$02d"
+
+#: print.c:67
+#, c-format
+msgid "Dive #%d - "
+msgstr "Immersione #%d - "
+
+#: info.c:146
+#, c-format
+msgid "Dive #%d - %s"
+msgstr "Immersione #%d - %s"
+
+#: gtk-gui.c:1122
+#: info.c:673
+#: statistics.c:711
+msgid "Dive Info"
+msgstr "Informazioni sull'immersione"
+
+#: gtk-gui.c:1114
+msgid "Dive Notes"
+msgstr "Note d'Immersione"
+
+#: statistics.c:721
+msgid "Dive Time"
+msgstr "Tempo d'Immersione"
+
+#: uemis.c:162
+msgid "Dive Time Alert"
+msgstr "Allarme: Tempo d'Immersione"
+
+#: uemis.c:160
+msgid "Dive Time Info"
+msgstr "Info: Tempo d'Immersione"
+
+#: gtk-gui.c:1335
+msgid "Dive computer"
+msgstr "Computer"
+
+#: print.c:476
+msgid "Dive details"
+msgstr "Dettagli immersione"
+
+#: info.c:487
+msgid "Dive master"
+msgstr "Dive master"
+
+#: print.c:155
+msgid "Dive#"
+msgstr "Immersione n."
+
+#: gtk-gui.c:652
+msgid "Divelist Font"
+msgstr "Carattere Immersione"
+
+#: info.c:914
+msgid "Divemaster"
+msgstr "Divemaster"
+
+#: statistics.c:672
+msgid "Dives"
+msgstr "Immersioni"
+
+#: gtk-gui.c:913
+#: gtk-gui.c:1496
+msgid "Download From Dive Computer"
+msgstr "Scarica dal Computer"
+
+#: statistics.c:160
+msgid "Duration"
+msgstr "Durata"
+
+#: info.c:835
+msgid "Duration (min)"
+msgstr "Durata (min)"
+
+#: info.c:230
+msgid "Edit"
+msgstr "Modifica"
+
+#: info.c:632
+msgid "Edit Trip Info"
+msgstr "Modifica Informazioni Viaggio"
+
+#: divelist.c:2030
+msgid "Edit Trip Summary"
+msgstr "Modifica Riepilogo Viaggio"
+
+#: divelist.c:2006
+msgid "Edit dive"
+msgstr "Modifica Immersione"
+
+#: divelist.c:2005
+msgid "Edit dives"
+msgstr "Modifica Immersioni"
+
+#: info.c:475
+msgid "Edit multiple dives"
+msgstr "Modifica più immerisoni"
+
+#: info.c:455
+msgid "Edit trip summary"
+msgstr "Modifica il riepilogo di viaggio"
+
+#: gtk-gui.c:773
+msgid "Enable / Disable Events"
+msgstr "Abilita / Disabilita Eventi"
+
+#: equipment.c:965
+#: equipment.c:1489
+msgid "End"
+msgstr "Fine"
+
+#: gtk-gui.c:1118
+#: info.c:508
+msgid "Equipment"
+msgstr "Attrezzatura"
+
+#: divelist.c:2115
+msgid "Expand all"
+msgstr "Espandi tutto"
+
+#: gtk-gui.c:603
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
+
+#: gtk-gui.c:140
+#, c-format
+msgid "Failed to open %i files."
+msgstr "Impossibile aprire i file %i"
+
+#: parse-xml.c:1498
+#, c-format
+msgid "Failed to parse '%s'"
+msgstr "Impossibile analizzare  '%s'"
+
+#: parse-xml.c:1493
+#, c-format
+msgid "Failed to parse '%s'.\n"
+msgstr "Impossibile analizzare '%s'.\n"
+
+#: file.c:266
+#, c-format
+msgid "Failed to read '%s'"
+msgstr "Impossibile leggere '%s'"
+
+#: file.c:262
+#, c-format
+msgid "Failed to read '%s'.\n"
+msgstr "Impossibile leggere '%s'.\n"
+
+#: main.c:46
+msgid "Feb"
+msgstr "Feb"
+
+#: gtk-gui.c:588
+msgid "Feet"
+msgstr "Piedi"
+
+#: gtk-gui.c:901
+msgid "File"
+msgstr "File"
+
+#: gtk-gui.c:904
+msgid "Filter"
+msgstr "Filtro"
+
+#: main.c:37
+msgid "Fri"
+msgstr "Ven"
+
+#: statistics.c:739
+msgid "Gas Used"
+msgstr "Gas Usato"
+
+#: equipment.c:975
+msgid "Gasmix"
+msgstr "Miscela di gas"
+
+#: gtk-gui.c:905
+msgid "Help"
+msgstr "Aiuto"
+
+#: gtk-gui.c:912
+msgid "Import XML File(s)"
+msgstr "Importa file(s) XML"
+
+#: gtk-gui.c:923
+msgid "Info"
+msgstr "Informazioni"
+
+#. ++GETTEXT: these are three letter months - we allow up to six code bytes
+#: main.c:46
+msgid "Jan"
+msgstr "Gen"
+
+#: main.c:47
+msgid "Jul"
+msgstr "Lug"
+
+#: main.c:46
+msgid "Jun"
+msgstr "Giu"
+
+#: gtk-gui.c:856
+msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
+msgstr "Linus Torvalds, Dirk Hohndel, and altri, 2011, 2012"
+
+#: gtk-gui.c:921
+msgid "List"
+msgstr "Lista"
+
+#: gtk-gui.c:597
+msgid "Liter"
+msgstr "Litri"
+
+#: divelist.c:1272
+#: info.c:460
+#: info.c:482
+#: info.c:909
+#: print.c:156
+msgid "Location"
+msgstr "Luogo"
+
+#: gtk-gui.c:902
+msgid "Log"
+msgstr "Log"
+
+#: statistics.c:167
+msgctxt "Duration"
+msgid "Longest"
+msgstr "Più lunga"
+
+#: statistics.c:683
+msgid "Longest Dive"
+msgstr "Immersione più lunga"
+
+#: uemis.c:170
+msgid "Low Battery Alert"
+msgstr "Allarme: Batteria scarica"
+
+#: uemis.c:168
+msgid "Low Battery Warning"
+msgstr "Avviso: Batteria Scarica"
+
+#: main.c:46
+msgid "Mar"
+msgstr "Mar"
+
+#: uemis.c:164
+msgid "Marker"
+msgstr "Marcatore"
+
+#: print.c:155
+msgid "Master"
+msgstr "Master"
+
+#: uemis.c:158
+msgid "Max Deco Time Warning"
+msgstr "Avviso: Massimo tempo di decompressione"
+
+#: statistics.c:690
+#: statistics.c:728
+msgid "Max Depth"
+msgstr "Profondità Massima"
+
+#: statistics.c:698
+msgid "Max SAC"
+msgstr "CAS Massimo"
+
+#: statistics.c:673
+msgid "Max Temp"
+msgstr "Temperatura Massima"
+
+#: print.c:95
+#, c-format
+msgid ""
+"Max depth: %.*f %s\n"
+"Duration: %d min\n"
+"%s"
+msgstr ""
+"Profontià massima: %.*f %s\n"
+"Durata: %d min\n"
+"%s"
+
+#: equipment.c:1487
+msgid "MaxPress"
+msgstr "Pressione Massima"
+
+#: statistics.c:170
+msgctxt "Depth"
+msgid "Maximum"
+msgstr "Massimo"
+
+#: statistics.c:173
+msgctxt "SAC"
+msgid "Maximum"
+msgstr "Massimo"
+
+#: statistics.c:176
+msgctxt "Temp"
+msgid "Maximum"
+msgstr "Massimo"
+
+#: main.c:46
+msgid "May"
+msgstr "Mag"
+
+#: divelist.c:2038
+msgid "Merge trip with trip above"
+msgstr "Raggruppa il viaggio con il viaggio sopra"
+
+#: divelist.c:2048
+msgid "Merge trip with trip below"
+msgstr "Raggruppa il viaggio con il viaggio sotto"
+
+#: gtk-gui.c:587
+msgid "Meter"
+msgstr "Metro"
+
+#: statistics.c:691
+msgid "Min Depth"
+msgstr "Profondità Minima"
+
+#: statistics.c:699
+msgid "Min SAC"
+msgstr "Min. CAS"
+
+#: statistics.c:674
+msgid "Min Temp"
+msgstr "Temperatura Minima"
+
+#: statistics.c:169
+msgctxt "Depth"
+msgid "Minimum"
+msgstr "Minimo"
+
+#: statistics.c:172
+msgctxt "SAC"
+msgid "Minimum"
+msgstr "Minimo"
+
+#: statistics.c:175
+msgctxt "Temp"
+msgid "Minimum"
+msgstr "Minimo"
+
+#: gtk-gui.c:658
+msgid "Misc. Options"
+msgstr "Opzioni"
+
+#: main.c:37
+msgid "Mon"
+msgstr "Lun"
+
+#: gtk-gui.c:853
+msgid "Multi-platform divelog software in C"
+msgstr "Programma Multi-piattaforma in C per il log delle immersioni"
+
+#: gtk-gui.c:906
+msgid "New"
+msgstr "Nuovo"
+
+#: gtk-gui.c:813
+msgid "New starting number"
+msgstr "Nuovo numero di inizio"
+
+#: uemis.c:166
+msgid "No Tank Data"
+msgstr "Nessun dato sulla bombola"
+
+#: info.c:465
+#: info.c:500
+#: info.c:923
+msgid "Notes"
+msgstr "Note"
+
+#: main.c:47
+msgid "Nov"
+msgstr "Nov"
+
+#: divelist.c:1271
+#: gtk-gui.c:637
+#: statistics.c:737
+msgid "OTU"
+msgstr "OTU"
+
+#: main.c:47
+msgid "Oct"
+msgstr "Ott"
+
+#: gtk-gui.c:907
+msgid "Open"
+msgstr "Aprire"
+
+#: gtk-gui.c:315
+msgid "Open File"
+msgstr "Apri File"
+
+#: uemis.c:144
+msgid "PO2 Ascend Alarm"
+msgstr "Allarme Incremento PO2"
+
+#: uemis.c:142
+msgid "PO2 Ascend Warning"
+msgstr "Avviso Incremento PO2"
+
+#: uemis.c:139
+msgid "PO2 Green Warning"
+msgstr "Avviso PO2 Verde"
+
+#: gtk-gui.c:593
+msgid "PSI"
+msgstr "PSI"
+
+#: gtk-gui.c:572
+#: gtk-gui.c:915
+msgid "Preferences"
+msgstr "Preferenze"
+
+#: equipment.c:954
+#: equipment.c:960
+msgid "Pressure"
+msgstr "Pressione"
+
+#: gtk-gui.c:591
+msgid "Pressure:"
+msgstr "Pressione:"
+
+#: print.c:486
+msgid "Pretty print"
+msgstr "Stampa Formattata"
+
+#: gtk-gui.c:911
+msgid "Print"
+msgstr "Stampa"
+
+#: print.c:507
+msgid "Print only selected dives"
+msgstr "Stampa solo le immersioni selezionate"
+
+#: print.c:502
+msgid "Print selection"
+msgstr "Stampa selezione"
+
+#: print.c:480
+msgid "Print type"
+msgstr "Stampa tipo"
+
+#: gtk-gui.c:922
+msgid "Profile"
+msgstr "Profilo"
+
+#: gtk-gui.c:919
+msgid "Quit"
+msgstr "Esci"
+
+# remaining gas time (RGT)
+#: uemis.c:152
+msgid "RGT Alert"
+msgstr "Allarme RGT"
+
+#: uemis.c:150
+msgid "RGT Warning"
+msgstr "Avviso RGT"
+
+#: info.c:493
+#: info.c:920
+msgid "Rating"
+msgstr "Valutazione"
+
+#: uemis-downloader.c:267
+#, c-format
+msgid "Reading dive %s"
+msgstr "Lettura immersione %s in corso"
+
+#: divelist.c:2053
+msgid "Remove Trip"
+msgstr "Rimuovi Viaggio"
+
+#: divelist.c:2109
+msgid "Remove dive from trip"
+msgstr "Rimuovi immersione dal viaggio"
+
+#: divelist.c:2107
+msgid "Remove selected dives from trip"
+msgstr "Rimuovi le immersioni selezionate dal viaggio"
+
+#: gtk-gui.c:804
+#: gtk-gui.c:916
+msgid "Renumber"
+msgstr "Rinumera"
+
+#: gtk-gui.c:1473
+msgid "Retry"
+msgstr "Riprova"
+
+# SAC surface air consumption
+#: divelist.c:1270
+#: gtk-gui.c:632
+#: statistics.c:160
+#: statistics.c:736
+msgid "SAC"
+msgstr "CAS"
+
+#: file.c:75
+msgid "SDE file"
+msgstr "SDE File"
+
+#: uemis.c:132
+msgid "Safety Stop Violation"
+msgstr "Violazione della tappa di sicurezza"
+
+#: main.c:37
+msgid "Sat"
+msgstr "Sab"
+
+#: gtk-gui.c:908
+msgid "Save"
+msgstr "Salva"
+
+#: gtk-gui.c:909
+msgid "Save As"
+msgstr "Salva Come"
+
+#: gtk-gui.c:228
+msgid "Save Changes?"
+msgstr "Salvare le modifiche?"
+
+#: gtk-gui.c:165
+msgid "Save File As"
+msgstr "Salvare il File come"
+
+#: gtk-gui.c:764
+#: gtk-gui.c:918
+msgid "SelectEvents"
+msgstr "Seleziona Eventi"
+
+#: main.c:47
+msgid "Sep"
+msgstr "Set"
+
+#: uemis-downloader.c:30
+msgid ""
+"Short write to req.txt file\n"
+"Is the Uemis Zurich plugged in correctly?"
+msgstr ""
+"Scrittura breve sul file req.txt\n"
+"Lo Uemis Zurich e' collegato correttamente?"
+
+#: statistics.c:166
+msgctxt "Duration"
+msgid "Shortest"
+msgstr "Più corto"
+
+#: statistics.c:684
+msgid "Shortest Dive"
+msgstr "Immersione più corta"
+
+#: gtk-gui.c:611
+msgid "Show Columns"
+msgstr "Visualizza Colonne"
+
+#: equipment.c:951
+#: equipment.c:1486
+msgid "Size"
+msgstr "Dimensione"
+
+#: uemis.c:134
+msgid "Speed Alarm"
+msgstr "Allarme Risalita Veloce"
+
+#: uemis.c:137
+msgid "Speed Warning"
+msgstr "Avviso Risalita Veloce"
+
+#: equipment.c:962
+#: equipment.c:1488
+msgid "Start"
+msgstr "Inizio"
+
+#: statistics.c:664
+msgid "Statistics"
+msgstr "Statistiche"
+
+#: gtk-gui.c:1126
+msgid "Stats"
+msgstr "Statistiche"
+
+#: divelist.c:1267
+#: gtk-gui.c:647
+#: info.c:494
+#: info.c:921
+msgid "Suit"
+msgstr "Muta"
+
+#. ++GETTEXT: these are three letter days - we allow up to six code bytes
+#: main.c:37
+msgid "Sun"
+msgstr "Dom"
+
+#: statistics.c:722
+msgid "Surf Intv"
+msgstr "Intervallo di Superficie"
+
+#: print.c:490
+msgid "Table print"
+msgstr "Stampa Tabella"
+
+#: uemis.c:154
+msgid "Tank Change Suggested"
+msgstr "Suggerito Cambio Bombola"
+
+#: uemis.c:148
+msgid "Tank Pressure Info"
+msgstr "Informazione Pressione della bombola"
+
+#: gtk-gui.c:617
+msgid "Temp"
+msgstr "Temperatura"
+
+#: statistics.c:160
+msgid "Temperature"
+msgstr "Temperatura"
+
+#: gtk-gui.c:601
+msgid "Temperature:"
+msgstr "Temperatura:"
+
+#: gtk-gui.c:924
+msgid "Three"
+msgstr "tre"
+
+#: main.c:37
+msgid "Thu"
+msgstr "Gio"
+
+#: info.c:795
+#: print.c:155
+msgid "Time"
+msgstr "Tempo"
+
+#: gtk-gui.c:930
+msgid "Toggle Zoom"
+msgstr "Zoom Alternativo"
+
+#: statistics.c:164
+msgctxt "Duration"
+msgid "Total"
+msgstr "Totale"
+
+#: statistics.c:681
+msgid "Total Time"
+msgstr "Tempo Totale"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
+#: divelist.c:375
+#, c-format
+msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
+msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
+msgstr[0] "Viaggio %1$s, %3$d. %2$s %4$d (%5$d Immersione)"
+msgstr[1] "Viaggio %1$s, %3$d. %2$s %4$d (%5$d Immersioni)"
+
+#: main.c:37
+msgid "Tue"
+msgstr "Mar"
+
+#: equipment.c:1485
+#: equipment.c:1513
+msgid "Type"
+msgstr "Tipo"
+
+#: uemis-downloader.c:28
+msgid ""
+"Uemis Zurich: File System is almost full\n"
+"Disconnect/reconnect the dive computer\n"
+"and try again"
+msgstr ""
+"Uemis Zurich: Il File System è quasi pieno\n"
+"Disconnettere/Riconnettere il computer\n"
+"e riprovare"
+
+#: uemis-downloader.c:29
+msgid ""
+"Uemis Zurich: File System is full\n"
+"Disconnect/reconnect the dive computer\n"
+"and try again"
+msgstr ""
+"Uemis Zurich: File System pieno\n"
+"Disconnettere/connettere il computer\n"
+"e riprovare"
+
+#: uemis-downloader.c:559
+msgid "Uemis init failed"
+msgstr "Impossibile inizializzare l'Uemis"
+
+#: gtk-gui.c:579
+msgid "Units"
+msgstr "Unità"
+
+#: gtk-gui.c:903
+msgid "View"
+msgstr "Visualizza"
+
+#: gtk-gui.c:596
+msgid "Volume:"
+msgstr "Volume:"
+
+#: statistics.c:730
+msgid "Water Temp"
+msgstr "Temperatura dell'acqua"
+
+#: main.c:37
+msgid "Wed"
+msgstr "Mer"
+
+#: equipment.c:1012
+#: equipment.c:1609
+#: gtk-gui.c:642
+msgid "Weight"
+msgstr "Peso"
+
+#: equipment.c:1117
+msgid "Weight System"
+msgstr "Sistema di Zavorra"
+
+#: gtk-gui.c:606
+msgid "Weight:"
+msgstr "Peso:"
+
+#: gtk-gui.c:153
+msgid "XML file"
+msgstr "File XML"
+
+#: statistics.c:160
+msgid "Year"
+msgstr "Anno"
+
+#: gtk-gui.c:917
+#: statistics.c:368
+msgid "Yearly Statistics"
+msgstr "Statistiche Annuali"
+
+#: gtk-gui.c:238
+msgid ""
+"You have unsaved changes\n"
+"Would you like to save those before closing the datafile?"
+msgstr ""
+"Non hai salvato le modifiche.\n"
+"Vuoi salvare prima di chiudere il file dei dati?"
+
+#: gtk-gui.c:241
+#: gtk-gui.c:244
+#, c-format
+msgid ""
+"You have unsaved changes to file: %s \n"
+"Would you like to save those before closing the datafile?"
+msgstr ""
+"Non hai salvato le modifiche al file %s.\n"
+"Vuoi salvare prima di chiudere il file dei dati?"
+
+#: equipment.c:824
+msgid "ankle"
+msgstr "caviglia"
+
+#: equipment.c:825
+msgid "bar"
+msgstr "bar"
+
+#: equipment.c:823
+msgid "belt"
+msgstr "cintura"
+
+#: equipment.c:826
+msgid "clip-on"
+msgstr "clip-on"
+
+#: divelist.c:1263
+msgid "ft"
+msgstr "ft"
+
+#: equipment.c:822
+msgid "integrated"
+msgstr "integrato"
+
+#: gtk-gui.c:607
+msgid "kg"
+msgstr "kg"
+
+#: divelist.c:1266
+#: gtk-gui.c:608
+msgid "lbs"
+msgstr "lbs"
+
+#: divelist.c:1264
+msgid "min"
+msgstr "min"
+
+#: statistics.c:501
+#, c-format
+msgid "more than %d days"
+msgstr "più di %d giorni"
+
+#: equipment.c:1378
+#: equipment.c:1398
+msgid "unkn"
+msgstr "sconosciuto"
+
+#: statistics.c:541
+msgid "unknown"
+msgstr "sconosciuto"
+
+#: equipment.c:544
+msgid "unspecified"
+msgstr "non specificato"
+
+#: equipment.c:1514
+msgid "weight"
+msgstr "peso"
