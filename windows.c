@@ -151,11 +151,14 @@ const char *subsurface_default_filename()
 	}
 }
 
-const char *subsurface_gettext_domainpath()
+const char *subsurface_gettext_domainpath(char *argv0)
 {
+	/* first hackishly make sure that the LANGUAGE information is correctly set up
+	 * in the environment */
 	char buffer[80];
 	snprintf(buffer, sizeof(buffer), "LANGUAGE=%s.UTF-8", g_win32_getlocale());
 	putenv(buffer);
+	/* always use translation directory relative to install location, regardless of argv0 */
 	return "./share/locale";
 }
 

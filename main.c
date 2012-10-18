@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 	/* set up l18n - the search directory needs to change
 	 * so that it uses the correct system directory when
 	 * subsurface isn't run from the local directory */
-	path = subsurface_gettext_domainpath();
+	path = subsurface_gettext_domainpath(argv[0]);
 	setlocale( LC_ALL, "" );
 	bindtextdomain("subsurface", path);
 	bind_textdomain_codeset("subsurface", "utf-8");

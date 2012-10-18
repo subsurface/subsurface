@@ -84,9 +84,15 @@ const char *subsurface_default_filename()
 	}
 }
 
-const char *subsurface_gettext_domainpath()
+const char *subsurface_gettext_domainpath(char *argv0)
 {
-	return "./share/locale";
+	if (argv0[0] == '.') {
+		/* we're starting a local copy */
+		return "./share/locale";
+	} else {
+		/* subsurface is installed, so system dir should be fine */
+		return NULL;
+	}
 }
 
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,

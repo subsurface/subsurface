@@ -104,8 +104,10 @@ const char *subsurface_default_filename()
 	}
 }
 
-const char *subsurface_gettext_domainpath()
+const char *subsurface_gettext_domainpath(char *argv0)
 {
+	/* on a Mac we ignore the argv0 argument and instead use the resource_path
+	 * to figure out where to find the translation files */
 	static char buffer[256];
 	const char *resource_path = quartz_application_get_resource_path();
 	if (resource_path) {
