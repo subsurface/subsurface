@@ -88,11 +88,11 @@ msgstr "Om"
 
 #: gtk-gui.c:914
 msgid "Add Dive"
-msgstr "Ny dykning"
+msgstr "Nytt dyk"
 
 #: divelist.c:2023
 msgid "Add dive"
-msgstr "Ny dykning"
+msgstr "Nytt dyk"
 
 #: divelist.c:2102
 msgid "Add to trip above"
@@ -112,7 +112,7 @@ msgstr "Gruppera automatiskt"
 
 #: gtk-gui.c:664
 msgid "Automatically group dives in trips"
-msgstr "Gruppera dykningar som resor automatisk"
+msgstr "Gruppera dyk som resor automatisk"
 
 #: statistics.c:168
 msgctxt "Depth"
@@ -168,7 +168,7 @@ msgstr "Välj standard XML-fil"
 
 #: gtk-gui.c:1398
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Välj vilken XML-filer du vill importera"
+msgstr "Välj vilka XML-filer du vill importera"
 
 #: gtk-gui.c:910
 msgid "Close"
@@ -224,15 +224,15 @@ msgstr "Radera"
 
 #: info.c:206
 msgid "Delete Dive"
-msgstr "Radera dykning"
+msgstr "Radera dyk"
 
 #: divelist.c:2010
 msgid "Delete dive"
-msgstr "Radera dykning"
+msgstr "Radera dyk"
 
 #: divelist.c:2009
 msgid "Delete dives"
-msgstr "Radera dykningar"
+msgstr "Radera dyk"
 
 #: print.c:155 statistics.c:160
 msgid "Depth"
@@ -245,7 +245,7 @@ msgstr "Djup (%s):"
 
 #: uemis.c:156
 msgid "Depth Limit Exceeded"
-msgstr "Maxdjup Överskridits"
+msgstr "Maxdjup överskridits"
 
 #: gtk-gui.c:586
 msgid "Depth:"
@@ -264,7 +264,7 @@ msgstr "Dyk #%1$d - %2$s %4$02d.%3$02d.%5$04d kl %6$d:%7$02d"
 #: info.c:158 print.c:67
 #, c-format
 msgid "Dive #%d - "
-msgstr "Dykning #%d - "
+msgstr "Dyk #%d - "
 
 #: gtk-gui.c:1122 info.c:699 statistics.c:711
 msgid "Dive Info"
@@ -272,7 +272,7 @@ msgstr "Information"
 
 #: gtk-gui.c:1114
 msgid "Dive Notes"
-msgstr "Dykning"
+msgstr "Dykanteckningar"
 
 #: statistics.c:721
 msgid "Dive Time"
@@ -280,7 +280,7 @@ msgstr "Dyktid"
 
 #: uemis.c:162
 msgid "Dive Time Alert"
-msgstr "Dyktidslarm"
+msgstr "Dyktidsvarning"
 
 #: uemis.c:160
 msgid "Dive Time Info"
@@ -312,19 +312,19 @@ msgstr "Divemaster"
 
 #: statistics.c:672
 msgid "Dives"
-msgstr "Dykningar"
+msgstr "Dyk"
 
 #: gtk-gui.c:913 gtk-gui.c:1496
 msgid "Download From Dive Computer"
-msgstr "Nedladda från dykdator"
+msgstr "Ladda ned från dykdator"
 
 #: statistics.c:160
 msgid "Duration"
-msgstr "Tid"
+msgstr "Varaktighet"
 
 #: info.c:861
 msgid "Duration (min)"
-msgstr "Tid (min)"
+msgstr "Varaktighet (min)"
 
 #: info.c:256
 msgid "Edit"
@@ -340,15 +340,15 @@ msgstr "Redigera resesammandrag"
 
 #: divelist.c:2007
 msgid "Edit dive"
-msgstr "Redigera dykning"
+msgstr "Redigera dyk"
 
 #: divelist.c:2006
 msgid "Edit dives"
-msgstr "Redigera dykning"
+msgstr "Redigera dyk"
 
 #: info.c:501
 msgid "Edit multiple dives"
-msgstr "Redigera flera dykningar"
+msgstr "Redigera flera dyk"
 
 #: info.c:481
 msgid "Edit trip summary"
@@ -392,12 +392,12 @@ msgstr "Kunde inte läsa '%s'.\n"
 #: file.c:266
 #, c-format
 msgid "Failed to read '%s'"
-msgstr "Kunne inte öppna '%s'"
+msgstr "Kunde inte öppna '%s'"
 
 #: file.c:262
 #, c-format
 msgid "Failed to read '%s'.\n"
-msgstr "Kunne inte öppna '%s'.\n"
+msgstr "Kunde inte öppna '%s'.\n"
 
 #: main.c:46
 msgid "Feb"
@@ -466,7 +466,7 @@ msgstr "liter"
 
 #: divelist.c:1273 info.c:486 info.c:508 info.c:935 print.c:156
 msgid "Location"
-msgstr "Ställe"
+msgstr "Plats"
 
 #: gtk-gui.c:902
 msgid "Log"
@@ -479,11 +479,11 @@ msgstr "Längsta"
 
 #: statistics.c:683
 msgid "Longest Dive"
-msgstr "Längsta dykning"
+msgstr "Längsta dyk"
 
 #: uemis.c:170
 msgid "Low Battery Alert"
-msgstr "Alarm: lågt batteri"
+msgstr "Varning: lågt batteri"
 
 #: uemis.c:168
 msgid "Low Battery Warning"
@@ -535,29 +535,29 @@ msgstr "Max tryck"
 #: statistics.c:170
 msgctxt "Depth"
 msgid "Maximum"
-msgstr "Maksimum"
+msgstr "Maximum"
 
 #: statistics.c:173
 msgctxt "SAC"
 msgid "Maximum"
-msgstr "Maksimum"
+msgstr "Maximum"
 
 #: statistics.c:176
 msgctxt "Temp"
 msgid "Maximum"
-msgstr "Maksimum"
+msgstr "Maximum"
 
 #: main.c:46
 msgid "May"
-msgstr "mai"
+msgstr "maj"
 
 #: divelist.c:2039
 msgid "Merge trip with trip above"
-msgstr "Sammanslå resa med tidigare resa"
+msgstr "Sammanfoga resa med tidigare resa"
 
 #: divelist.c:2049
 msgid "Merge trip with trip below"
-msgstr "Sammanslå resa med senare resa"
+msgstr "Sammanfoga resa med senare resa"
 
 #: gtk-gui.c:587
 msgid "Meter"
@@ -592,7 +592,7 @@ msgstr "Minimum"
 
 #: gtk-gui.c:658
 msgid "Misc. Options"
-msgstr "Diverse optioner"
+msgstr "Diverse inställningar"
 
 #: main.c:37
 msgid "Mon"
@@ -600,7 +600,7 @@ msgstr "mån"
 
 #: gtk-gui.c:853
 msgid "Multi-platform divelog software in C"
-msgstr "Dykningslog i C for flera platformer"
+msgstr "Dyklogg i C for flera platformer"
 
 #: gtk-gui.c:906
 msgid "New"
@@ -676,11 +676,11 @@ msgstr "Skriv ut"
 
 #: print.c:507
 msgid "Print only selected dives"
-msgstr "Skriv ut valda dykningar"
+msgstr "Skriv ut valda dyk"
 
 #: print.c:502
 msgid "Print selection"
-msgstr "Skriv ut valda dykningar"
+msgstr "Skriv ut valda dyk"
 
 #: print.c:480
 msgid "Print type"
@@ -696,7 +696,7 @@ msgstr "Avsluta"
 
 #: uemis.c:152
 msgid "RGT Alert"
-msgstr "Alarm: gastid"
+msgstr "Varning: gastid"
 
 #: uemis.c:150
 msgid "RGT Warning"
@@ -704,12 +704,12 @@ msgstr "Varning: gastid"
 
 #: info.c:519 info.c:946
 msgid "Rating"
-msgstr "Värdering"
+msgstr "Ranking"
 
 #: uemis-downloader.c:267
 #, c-format
 msgid "Reading dive %s"
-msgstr "Läser dykning %s"
+msgstr "Läser dyk %s"
 
 #: divelist.c:2054
 msgid "Remove Trip"
@@ -717,11 +717,11 @@ msgstr "Radera resa"
 
 #: divelist.c:2110
 msgid "Remove dive from trip"
-msgstr "Ta bort dykning från resa"
+msgstr "Ta bort dyk från resa"
 
 #: divelist.c:2108
 msgid "Remove selected dives from trip"
-msgstr "Ta bort valda dykningar från resa"
+msgstr "Ta bort valda dyk från resa"
 
 #: gtk-gui.c:804 gtk-gui.c:916
 msgid "Renumber"
@@ -741,7 +741,7 @@ msgstr "SDE-fil"
 
 #: uemis.c:132
 msgid "Safety Stop Violation"
-msgstr "Brott på säkerhetsstop"
+msgstr "Säkerhetsstopp ej uppfyllt"
 
 #: main.c:37
 msgid "Sat"
@@ -777,7 +777,7 @@ msgid ""
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
 "Kunde inte skriva filen req.txt\n"
-"Är Uemis Zurich pluggad in ordentligt?"
+"Är Uemis Zurich ordentligt ansluten?"
 
 #: statistics.c:166
 msgctxt "Duration"
@@ -786,7 +786,7 @@ msgstr "Kortaste"
 
 #: statistics.c:684
 msgid "Shortest Dive"
-msgstr "Kortaste dykning"
+msgstr "Kortaste dyk"
 
 #: gtk-gui.c:611
 msgid "Show Columns"
@@ -835,11 +835,11 @@ msgstr "Tabellutskrift"
 
 #: uemis.c:154
 msgid "Tank Change Suggested"
-msgstr "Tankbyte föreslått"
+msgstr "Tankbyte rekommenderat"
 
 #: uemis.c:148
 msgid "Tank Pressure Info"
-msgstr "Info: tryck"
+msgstr "Info: cylindertryck"
 
 #: gtk-gui.c:617
 msgid "Temp"
@@ -883,8 +883,8 @@ msgstr "Total tid"
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] "Resa %1$s, %3$d %2$s, %4$d (%5$d dykning)"
-msgstr[1] "Resa %1$s, %3$d %2$s, %4$d (%5$d dykningar)"
+msgstr[0] "Resa %1$s, %3$d %2$s, %4$d (%5$d dyk)"
+msgstr[1] "Resa %1$s, %3$d %2$s, %4$d (%5$d dyk)"
 
 #: main.c:37
 msgid "Tue"
@@ -901,7 +901,7 @@ msgid ""
 "and try again"
 msgstr ""
 "Uemis Zurich: Filsystem är nästan fullt\n"
-"Återkoppla dykdatorn och försök\n"
+"Återanslut dykdatorn och försök\n"
 "igen"
 
 #: uemis-downloader.c:29
@@ -911,7 +911,7 @@ msgid ""
 "and try again"
 msgstr ""
 "Uemis Zurich: Fullt filsystem\n"
-"Återkoppla dykdatorn och försök\n"
+"Återanslut dykdatorn och försök\n"
 "igen"
 
 #: uemis-downloader.c:559
@@ -928,7 +928,7 @@ msgstr "Visa"
 
 #: gtk-gui.c:596
 msgid "Volume:"
-msgstr "Volum:"
+msgstr "Volym:"
 
 #: statistics.c:730
 msgid "Water Temp"
@@ -968,7 +968,7 @@ msgid ""
 "Would you like to save those before closing the datafile?"
 msgstr ""
 "Du har ändringer som inte är sparade.\n"
-"Vill du spara dem förrän du stänger datafilen?"
+"Vill du spara dem innan du stänger datafilen?"
 
 #: gtk-gui.c:241 gtk-gui.c:244
 #, c-format
@@ -1057,4 +1057,4 @@ msgid "weight"
 msgstr "Vikt"
 
 #~ msgid "Dive #%d - %s"
-#~ msgstr "Dykning #%d - %s"
+#~ msgstr "Dyk #%d - %s"
