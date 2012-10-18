@@ -57,7 +57,7 @@ msgstr "%1$s %3$d %2$s %4$d, %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
 msgstr "%1$s 3$d %2$s %4$d, %5$2d:%6$02d"
 
@@ -996,7 +996,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr ""
+msgstr "pied³"
 
 #: dive.c:113 divelist.c:1264 info.c:866
 msgid "ft"
@@ -1012,7 +1012,7 @@ msgstr "kg"
 
 #: dive.c:83
 msgid "l"
-msgstr ""
+msgstr "l"
 
 #: dive.c:132 divelist.c:1267 gtk-gui.c:608
 msgid "lbs"
@@ -1020,7 +1020,7 @@ msgstr "Livre US"
 
 #: dive.c:108 info.c:866
 msgid "m"
-msgstr ""
+msgstr "m"
 
 #: divelist.c:1265
 msgid "min"
@@ -1033,11 +1033,11 @@ msgstr "Plus de %d jours"
 
 #: dive.c:41
 msgid "pascal"
-msgstr ""
+msgstr "pascal"
 
 #: dive.c:49
 msgid "psi"
-msgstr ""
+msgstr "psi"
 
 #: equipment.c:1378 equipment.c:1398
 msgid "unkn"
