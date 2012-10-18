@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 01:14-0700\n"
+"POT-Creation-Date: 2012-10-18 09:28-0700\n"
 "PO-Revision-Date: 2012-10-18 15:00+0100\n"
 "Last-Translator: Ivan Habunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian\n"
@@ -32,7 +32,7 @@ msgstr "Odaberite ronilačko računalo i naziv uređaja."
 msgid "#"
 msgstr "#"
 
-#: statistics.c:625 statistics.c:627 statistics.c:629
+#: statistics.c:553 statistics.c:625 statistics.c:627 statistics.c:629
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
@@ -50,7 +50,7 @@ msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
 msgstr "%1$s %3$d. %2$s %4$d   %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
-#: divelist.c:384
+#: divelist.c:385
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
 msgstr "%1$s %3$d. %2$s %4$d %5$02d:%6$02d"
@@ -89,11 +89,11 @@ msgstr "O programu"
 msgid "Add Dive"
 msgstr "Dodaj uron"
 
-#: divelist.c:2022
+#: divelist.c:2023
 msgid "Add dive"
 msgstr "Dodaj uron"
 
-#: divelist.c:2101
+#: divelist.c:2102
 msgid "Add to trip above"
 msgstr "Dodaj u gornju grupu"
 
@@ -153,7 +153,7 @@ msgstr "Prosj. trajanje"
 msgid "Bar"
 msgstr "Bar"
 
-#: info.c:488 info.c:915 print.c:156
+#: info.c:514 info.c:941 print.c:156
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -173,11 +173,11 @@ msgstr "Odaberite XML datoteke za uvoz u trenutačnu datoteku"
 msgid "Close"
 msgstr "Zatvori"
 
-#: divelist.c:2118
+#: divelist.c:2119
 msgid "Collapse all"
 msgstr "Zatvori sve grupe"
 
-#: divelist.c:2091
+#: divelist.c:2092
 msgid "Create new trip above"
 msgstr "Kreiraj novu grupu iznad"
 
@@ -185,7 +185,7 @@ msgstr "Kreiraj novu grupu iznad"
 msgid "CuFt"
 msgstr "CuSt"
 
-#: divelist.c:1268 gtk-gui.c:622
+#: divelist.c:1269 gtk-gui.c:622
 msgid "Cyl"
 msgstr "Boca"
 
@@ -197,15 +197,15 @@ msgstr "Boca"
 msgid "Cylinders"
 msgstr "Boce"
 
-#: divelist.c:1261 print.c:155 statistics.c:720
+#: divelist.c:1262 print.c:155 statistics.c:720
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:780
+#: info.c:806
 msgid "Date and Time"
 msgstr "Datum i vrijeme"
 
-#: info.c:790
+#: info.c:816
 msgid "Date:"
 msgstr "Datum:"
 
@@ -217,19 +217,19 @@ msgstr "Pro"
 msgid "Default XML Data File"
 msgstr "Defaultna XML datoteka"
 
-#: info.c:229
+#: info.c:255
 msgid "Delete"
 msgstr "Obriši"
 
-#: info.c:180
+#: info.c:206
 msgid "Delete Dive"
 msgstr "Obriši uron"
 
-#: divelist.c:2009
+#: divelist.c:2010
 msgid "Delete dive"
 msgstr "Obriši uron"
 
-#: divelist.c:2008
+#: divelist.c:2009
 msgid "Delete dives"
 msgstr "Obriši urone"
 
@@ -237,7 +237,7 @@ msgstr "Obriši urone"
 msgid "Depth"
 msgstr "Dubina"
 
-#: info.c:840
+#: info.c:866
 #, c-format
 msgid "Depth (%s):"
 msgstr "Dubina (%s):"
@@ -260,17 +260,12 @@ msgstr "Naziv uređaja"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Uron #%1$d - %2$s %4$02d.%3$02d.%5$04d u %6$d:%7$02d"
 
-#: print.c:67
+#: info.c:158 print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Uron #%d - "
 
-#: info.c:146
-#, c-format
-msgid "Dive #%d - %s"
-msgstr "Uron #%d - %s"
-
-#: gtk-gui.c:1122 info.c:673 statistics.c:711
+#: gtk-gui.c:1122 info.c:699 statistics.c:711
 msgid "Dive Info"
 msgstr "Informacije o uronu"
 
@@ -298,7 +293,7 @@ msgstr "Ronilačko računalo"
 msgid "Dive details"
 msgstr "Podaci o uronu"
 
-#: info.c:487
+#: info.c:513
 msgid "Dive master"
 msgstr "Voditelj"
 
@@ -310,7 +305,7 @@ msgstr "Uron br."
 msgid "Divelist Font"
 msgstr "Font za listu urona"
 
-#: info.c:914
+#: info.c:940
 msgid "Divemaster"
 msgstr "Voditelj"
 
@@ -326,35 +321,35 @@ msgstr "Preuzmi s ronilačkog računala"
 msgid "Duration"
 msgstr "Trajanje"
 
-#: info.c:835
+#: info.c:861
 msgid "Duration (min)"
 msgstr "Trajanje (min)"
 
-#: info.c:230
+#: info.c:256
 msgid "Edit"
 msgstr "Uredi"
 
-#: info.c:632
+#: info.c:658
 msgid "Edit Trip Info"
 msgstr "Uredi informacije o grupi"
 
-#: divelist.c:2030
+#: divelist.c:2031
 msgid "Edit Trip Summary"
 msgstr "Uredi sažetak grupe"
 
-#: divelist.c:2006
+#: divelist.c:2007
 msgid "Edit dive"
 msgstr "Uredi uron"
 
-#: divelist.c:2005
+#: divelist.c:2006
 msgid "Edit dives"
 msgstr "Uredi urone"
 
-#: info.c:475
+#: info.c:501
 msgid "Edit multiple dives"
 msgstr "Uredi više urona"
 
-#: info.c:455
+#: info.c:481
 msgid "Edit trip summary"
 msgstr "Uredi sažetak urona"
 
@@ -366,11 +361,11 @@ msgstr "Uključi/isključi događaje"
 msgid "End"
 msgstr "Kraj"
 
-#: gtk-gui.c:1118 info.c:508
+#: gtk-gui.c:1118 info.c:534
 msgid "Equipment"
 msgstr "Oprema"
 
-#: divelist.c:2115
+#: divelist.c:2116
 msgid "Expand all"
 msgstr "Otvori sve"
 
@@ -468,7 +463,7 @@ msgstr "Popis"
 msgid "Liter"
 msgstr "Litra"
 
-#: divelist.c:1272 info.c:460 info.c:482 info.c:909 print.c:156
+#: divelist.c:1273 info.c:486 info.c:508 info.c:935 print.c:156
 msgid "Location"
 msgstr "Lokacija"
 
@@ -555,11 +550,11 @@ msgstr "Max."
 msgid "May"
 msgstr "Svi"
 
-#: divelist.c:2038
+#: divelist.c:2039
 msgid "Merge trip with trip above"
 msgstr "Spoji s grupom iznad"
 
-#: divelist.c:2048
+#: divelist.c:2049
 msgid "Merge trip with trip below"
 msgstr "Spoji s grupom ispod"
 
@@ -618,7 +613,7 @@ msgstr "Novi početni broj"
 msgid "No Tank Data"
 msgstr "Nema podatka o boci"
 
-#: info.c:465 info.c:500 info.c:923
+#: info.c:491 info.c:526 info.c:949
 msgid "Notes"
 msgstr "Bilješke"
 
@@ -626,7 +621,7 @@ msgstr "Bilješke"
 msgid "Nov"
 msgstr "Stu"
 
-#: divelist.c:1271 gtk-gui.c:637 statistics.c:737
+#: divelist.c:1272 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
 msgstr "OTU"
 
@@ -706,7 +701,7 @@ msgstr "RTG Alarm"
 msgid "RGT Warning"
 msgstr "RTG Upozorenje"
 
-#: info.c:493 info.c:920
+#: info.c:519 info.c:946
 msgid "Rating"
 msgstr "Ocjena"
 
@@ -715,15 +710,15 @@ msgstr "Ocjena"
 msgid "Reading dive %s"
 msgstr "Čitanje urona %s"
 
-#: divelist.c:2053
+#: divelist.c:2054
 msgid "Remove Trip"
 msgstr "Obriši grupu"
 
-#: divelist.c:2109
+#: divelist.c:2110
 msgid "Remove dive from trip"
 msgstr "Ukloni uron iz grupe"
 
-#: divelist.c:2107
+#: divelist.c:2108
 msgid "Remove selected dives from trip"
 msgstr "Ukloni odabrane urone iz grupe"
 
@@ -735,7 +730,7 @@ msgstr "Renumeriraj"
 msgid "Retry"
 msgstr "Pokušaj ponovo"
 
-#: divelist.c:1270 gtk-gui.c:632 statistics.c:160 statistics.c:736
+#: divelist.c:1271 gtk-gui.c:632 statistics.c:160 statistics.c:736
 msgid "SAC"
 msgstr "SAC"
 
@@ -820,7 +815,7 @@ msgstr "Statistika"
 msgid "Stats"
 msgstr "Statistika"
 
-#: divelist.c:1267 gtk-gui.c:647 info.c:494 info.c:921
+#: divelist.c:1268 gtk-gui.c:647 info.c:520 info.c:947
 msgid "Suit"
 msgstr "Odijelo"
 
@@ -865,7 +860,7 @@ msgstr "Tri"
 msgid "Thu"
 msgstr "Čet"
 
-#: info.c:795 print.c:155
+#: info.c:821 print.c:155
 msgid "Time"
 msgstr "Vrijeme"
 
@@ -883,7 +878,7 @@ msgid "Total Time"
 msgstr "Ukupno trajanje"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
-#: divelist.c:375
+#: divelist.c:376
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
@@ -987,7 +982,7 @@ msgstr ""
 msgid "ankle"
 msgstr "gležanj"
 
-#: equipment.c:825
+#: dive.c:45 equipment.c:825
 msgid "bar"
 msgstr "bar"
 
@@ -999,7 +994,11 @@ msgstr "pojas"
 msgid "clip-on"
 msgstr "clip-on"
 
-#: divelist.c:1263
+#: dive.c:88
+msgid "cuft"
+msgstr ""
+
+#: dive.c:113 divelist.c:1264 info.c:866
 msgid "ft"
 msgstr "ft"
 
@@ -1007,15 +1006,23 @@ msgstr "ft"
 msgid "integrated"
 msgstr "integrirani"
 
-#: gtk-gui.c:607
+#: dive.c:136 gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
-#: divelist.c:1266 gtk-gui.c:608
+#: dive.c:83
+msgid "l"
+msgstr ""
+
+#: dive.c:132 divelist.c:1267 gtk-gui.c:608
 msgid "lbs"
 msgstr "US funte"
 
-#: divelist.c:1264
+#: dive.c:108 info.c:866
+msgid "m"
+msgstr ""
+
+#: divelist.c:1265
 msgid "min"
 msgstr "min"
 
@@ -1023,6 +1030,14 @@ msgstr "min"
 #, c-format
 msgid "more than %d days"
 msgstr "više od %d dana"
+
+#: dive.c:41
+msgid "pascal"
+msgstr ""
+
+#: dive.c:49
+msgid "psi"
+msgstr ""
 
 #: equipment.c:1378 equipment.c:1398
 msgid "unkn"
@@ -1048,6 +1063,9 @@ msgstr "težina"
 #~ msgstr ""
 #~ "Prosječna\n"
 #~ "dubina"
+
+#~ msgid "Dive #%d - %s"
+#~ msgstr "Uron #%d - %s"
 
 #, fuzzy
 #~ msgctxt "Duration"
