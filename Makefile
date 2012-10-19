@@ -1,4 +1,4 @@
-VERSION=2.1-rc1
+VERSION=2.1-rc2
 
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g
