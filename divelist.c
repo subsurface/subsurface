@@ -2280,6 +2280,10 @@ GtkWidget *dive_list_create(void)
 	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_MULTIPLE);
 	gtk_widget_set_size_request(dive_list.tree_view, 200, 200);
 
+	/* check if utf8 stars are available as a default OS feature */
+	if (!subsurface_os_feature_available(UTF8_FONT_WITH_STARS))
+		dl_column[3].header = "*";
+
 	dive_list.nr = divelist_column(&dive_list, dl_column + DIVE_NR);
 	dive_list.date = divelist_column(&dive_list, dl_column + DIVE_DATE);
 	dive_list.stars = divelist_column(&dive_list, dl_column + DIVE_RATING);

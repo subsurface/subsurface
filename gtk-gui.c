@@ -1018,6 +1018,15 @@ void init_ui(int *argcp, char ***argvp)
 	gtk_settings_set_long_property(settings, "gtk-menu-images", 1, "subsurface setting");
 	gtk_settings_set_long_property(settings, "gtk-button-images", 1, "subsurface setting");
 
+	/* check if utf8 stars are available as a default OS feature */
+	if (!subsurface_os_feature_available(UTF8_FONT_WITH_STARS)) {
+		star_strings[0] = "     ";
+		star_strings[1] = "*    ";
+		star_strings[2] = "**   ";
+		star_strings[3] = "***  ";
+		star_strings[4] = "**** ";
+		star_strings[5] = "*****";
+	}
 	g_type_init();
 
 	subsurface_open_conf();
