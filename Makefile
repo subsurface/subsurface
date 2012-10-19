@@ -195,9 +195,9 @@ install-cross-windows: $(NAME)
 	done
 
 update-po-files:
-	xgettext -o subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
+	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
 	for i in po/*.po; do \
-		msgmerge -s -U $$i subsurface-new.pot ; \
+		msgmerge -s -U $$i po/subsurface-new.pot ; \
 	done
 
 file.o: file.c dive.h file.h
@@ -273,5 +273,5 @@ doc:
 	$(MAKE) -C Documentation doc
 
 clean:
-	rm -f $(OBJS) *~ $(NAME) $(NAME).exe
+	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot
 	rm -rf share
