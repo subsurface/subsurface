@@ -986,11 +986,11 @@ msgstr "глезен"
 
 #: equipment.c:825
 msgid "backplate weight"
-msgstr ""
+msgstr "нагръбна"
 
 #: dive.c:45
 msgid "bar"
-msgstr "прът"
+msgstr "бара"
 
 #: equipment.c:823
 msgid "belt"
