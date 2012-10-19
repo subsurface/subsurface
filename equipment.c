@@ -571,6 +571,14 @@ static void show_equipment(struct dive *dive, int max,
 	GtkTreeIter iter;
 	GtkListStore *model = equipment_list->model;
 
+	if (! model)
+		return;
+	if (! dive) {
+		gtk_widget_set_sensitive(equipment_list->edit, 0);
+		gtk_widget_set_sensitive(equipment_list->del, 0);
+		gtk_widget_set_sensitive(equipment_list->add, 0);
+		return;
+	}
 	gtk_list_store_clear(model);
 	used = max;
 	do {
@@ -1586,6 +1594,9 @@ GtkWidget *equipment_widget(int w_idx)
 	edit = gtk_button_new_from_stock(GTK_STOCK_EDIT);
 	add = gtk_button_new_from_stock(GTK_STOCK_ADD);
 	del = gtk_button_new_from_stock(GTK_STOCK_DELETE);
+	gtk_widget_set_sensitive(edit, FALSE);
+	gtk_widget_set_sensitive(add, FALSE);
+	gtk_widget_set_sensitive(del, FALSE);
 	gtk_box_pack_start(GTK_BOX(hbox), edit, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), add, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), del, FALSE, FALSE, 0);
@@ -1623,6 +1634,9 @@ GtkWidget *equipment_widget(int w_idx)
 	edit = gtk_button_new_from_stock(GTK_STOCK_EDIT);
 	add = gtk_button_new_from_stock(GTK_STOCK_ADD);
 	del = gtk_button_new_from_stock(GTK_STOCK_DELETE);
+	gtk_widget_set_sensitive(edit, FALSE);
+	gtk_widget_set_sensitive(add, FALSE);
+	gtk_widget_set_sensitive(del, FALSE);
 	gtk_box_pack_start(GTK_BOX(hbox), edit, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), add, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), del, FALSE, FALSE, 0);

@@ -143,6 +143,7 @@ void show_dive_info(struct dive *dive)
 		SET_TEXT_VALUE(suit);
 		gtk_entry_set_text(rating, star_strings[0]);
 		gtk_text_buffer_set_text(gtk_text_view_get_buffer(notes), "", -1);
+		show_dive_equipment(NULL, W_IDX_PRIMARY);
 		return;
 	}
 
