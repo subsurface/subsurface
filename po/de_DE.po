@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 14:52-0700\n"
+"POT-Creation-Date: 2012-10-18 19:44-0700\n"
 "PO-Revision-Date: 2012-10-10 16:27+0900\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
@@ -983,7 +983,11 @@ msgstr ""
 msgid "ankle"
 msgstr "Fuß"
 
-#: dive.c:45 equipment.c:825
+#: equipment.c:825
+msgid "backplate weight"
+msgstr "Rückenplatten-Gewicht"
+
+#: dive.c:45
 msgid "bar"
 msgstr "bar"
 

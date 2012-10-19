@@ -822,7 +822,7 @@ static struct ws_info {
 	{ N_("integrated"), 0 },
 	{ N_("belt"), 0 },
 	{ N_("ankle"), 0 },
-	{ N_("bar"), 0 },
+	{ N_("backplate weight"), 0 },
 	{ N_("clip-on"), 0 },
 };
 

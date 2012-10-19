@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 14:52-0700\n"
+"POT-Creation-Date: 2012-10-18 19:44-0700\n"
 "PO-Revision-Date: 2012-11-10 16:27+0300\n"
 "Last-Translator: Lubomir I. Ivanov <neolit123@gmail.com>>\n"
 "Language-Team: Bulgarian\n"
@@ -984,7 +984,11 @@ msgstr ""
 msgid "ankle"
 msgstr "глезен"
 
-#: dive.c:45 equipment.c:825
+#: equipment.c:825
+msgid "backplate weight"
+msgstr ""
+
+#: dive.c:45
 msgid "bar"
 msgstr "прът"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 14:52-0700\n"
+"POT-Creation-Date: 2012-10-18 19:44-0700\n"
 "PO-Revision-Date: 2012-10-16 00:12+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
@@ -982,7 +982,11 @@ msgstr ""
 msgid "ankle"
 msgstr "členok"
 
-#: dive.c:45 equipment.c:825
+#: equipment.c:825
+msgid "backplate weight"
+msgstr ""
+
+#: dive.c:45
 msgid "bar"
 msgstr "bar"
 
