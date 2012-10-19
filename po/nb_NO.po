@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-19 08:42-0700\n"
-"PO-Revision-Date: 2012-10-19 17:33+0100\n"
+"PO-Revision-Date: 2012-10-19 19:51+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -47,19 +47,19 @@ msgstr "%1$s%2$s, %4$d. %3$s %5$d   %6$d:%7$02d"
 #: print.c:229
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
-msgstr "%1$s, %3$d. %2$s %4$d   %5$dh%6$02d"
+msgstr "%1$s. %3$d. %2$s %4$d  %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
 #: divelist.c:385
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
-msgstr "%1$s, %3$d. %2$s %4$d %5$02d:%6$02d"
+msgstr "%1$s. %3$d. %2$s %4$d %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "%1$s, %3$d. %2$s %4$d %5$2d:%6$02d"
+msgstr "%1$s. %3$d. %2$s %4$d %5$2d:%6$02d"
 
 #: print.c:254 statistics.c:536
 #, c-format
@@ -183,7 +183,7 @@ msgstr "Lag ny tur over denne"
 
 #: gtk-gui.c:598
 msgid "CuFt"
-msgstr "ft^3"
+msgstr "ft³"
 
 #: divelist.c:1269 gtk-gui.c:622
 msgid "Cyl"
@@ -295,7 +295,7 @@ msgstr "Detaljer"
 
 #: info.c:514
 msgid "Dive master"
-msgstr "Divemaster"
+msgstr "Dykkeleder"
 
 #: print.c:155
 msgid "Dive#"
@@ -307,7 +307,7 @@ msgstr "Skrifttype for liste"
 
 #: info.c:941
 msgid "Divemaster"
-msgstr "Divemaster"
+msgstr "Dykkeleder"
 
 #: statistics.c:672
 msgid "Dives"
@@ -882,8 +882,8 @@ msgstr "Total tid"
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] "Tur %1$s, %3$d. %2$s %4$d (%5$d dykk)"
-msgstr[1] "Tur %1$s, %3$d. %2$s %4$d (%5$d dykk)"
+msgstr[0] "Tur %1$s. %3$d. %2$s %4$d (%5$d dykk)"
+msgstr[1] "Tur %1$s. %3$d. %2$s %4$d (%5$d dykk)"
 
 #: main.c:37
 msgid "Tue"
@@ -1004,7 +1004,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr "ft^3"
+msgstr "ft³"
 
 #: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
