@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 19:44-0700\n"
+"POT-Creation-Date: 2012-10-19 08:42-0700\n"
 "PO-Revision-Date: 2012-10-18 14:16+0100\n"
 "Last-Translator: Filippo Moser <filippom@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -154,7 +154,7 @@ msgstr "Tempo Medio"
 msgid "Bar"
 msgstr "Bar"
 
-#: info.c:514 info.c:941 print.c:156
+#: info.c:515 info.c:942 print.c:156
 msgid "Buddy"
 msgstr "Compagno"
 
@@ -191,11 +191,11 @@ msgstr "Piedi cubi"
 msgid "Cyl"
 msgstr "Bombola"
 
-#: equipment.c:926 equipment.c:1062
+#: equipment.c:934 equipment.c:1070
 msgid "Cylinder"
 msgstr "Bombola"
 
-#: equipment.c:1572
+#: equipment.c:1580
 msgid "Cylinders"
 msgstr "Bombole"
 
@@ -203,11 +203,11 @@ msgstr "Bombole"
 msgid "Date"
 msgstr "Data"
 
-#: info.c:806
+#: info.c:807
 msgid "Date and Time"
 msgstr "Data e Tempo"
 
-#: info.c:816
+#: info.c:817
 msgid "Date:"
 msgstr "Data:"
 
@@ -219,11 +219,11 @@ msgstr "Dic"
 msgid "Default XML Data File"
 msgstr "File XML di default"
 
-#: info.c:255
+#: info.c:256
 msgid "Delete"
 msgstr "Cancella"
 
-#: info.c:206
+#: info.c:207
 msgid "Delete Dive"
 msgstr "Cancella Immersione"
 
@@ -239,7 +239,7 @@ msgstr "Cancella immersioni"
 msgid "Depth"
 msgstr "Profondità"
 
-#: info.c:866
+#: info.c:867
 #, c-format
 msgid "Depth (%s):"
 msgstr "Profondità (%s):"
@@ -262,12 +262,12 @@ msgstr "Nome periferica"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Immersione #%1$d - %2$s %4$02d.%3$02d.%5$04d a %6$d:%7$02d"
 
-#: info.c:158 print.c:67
+#: info.c:159 print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Immersione #%d - "
 
-#: gtk-gui.c:1122 info.c:699 statistics.c:711
+#: gtk-gui.c:1122 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informazioni sull'immersione"
 
@@ -295,7 +295,7 @@ msgstr "Computer"
 msgid "Dive details"
 msgstr "Dettagli immersione"
 
-#: info.c:513
+#: info.c:514
 msgid "Dive master"
 msgstr "Dive master"
 
@@ -307,7 +307,7 @@ msgstr "Immersione n."
 msgid "Divelist Font"
 msgstr "Carattere Immersione"
 
-#: info.c:940
+#: info.c:941
 msgid "Divemaster"
 msgstr "Divemaster"
 
@@ -323,15 +323,15 @@ msgstr "Scarica dal Computer"
 msgid "Duration"
 msgstr "Durata"
 
-#: info.c:861
+#: info.c:862
 msgid "Duration (min)"
 msgstr "Durata (min)"
 
-#: info.c:256
+#: info.c:257
 msgid "Edit"
 msgstr "Modifica"
 
-#: info.c:658
+#: info.c:659
 msgid "Edit Trip Info"
 msgstr "Modifica Informazioni Viaggio"
 
@@ -347,11 +347,11 @@ msgstr "Modifica Immersione"
 msgid "Edit dives"
 msgstr "Modifica Immersioni"
 
-#: info.c:501
+#: info.c:502
 msgid "Edit multiple dives"
 msgstr "Modifica più immerisoni"
 
-#: info.c:481
+#: info.c:482
 msgid "Edit trip summary"
 msgstr "Modifica il riepilogo di viaggio"
 
@@ -359,11 +359,11 @@ msgstr "Modifica il riepilogo di viaggio"
 msgid "Enable / Disable Events"
 msgstr "Abilita / Disabilita Eventi"
 
-#: equipment.c:965 equipment.c:1489
+#: equipment.c:973 equipment.c:1497
 msgid "End"
 msgstr "Fine"
 
-#: gtk-gui.c:1118 info.c:534
+#: gtk-gui.c:1118 info.c:535
 msgid "Equipment"
 msgstr "Attrezzatura"
 
@@ -424,7 +424,7 @@ msgstr "Ven"
 msgid "Gas Used"
 msgstr "Gas Usato"
 
-#: equipment.c:975
+#: equipment.c:983
 msgid "Gasmix"
 msgstr "Miscela di gas"
 
@@ -465,7 +465,7 @@ msgstr "Lista"
 msgid "Liter"
 msgstr "Litri"
 
-#: divelist.c:1273 info.c:486 info.c:508 info.c:935 print.c:156
+#: divelist.c:1273 info.c:487 info.c:509 info.c:936 print.c:156
 msgid "Location"
 msgstr "Luogo"
 
@@ -529,7 +529,7 @@ msgstr ""
 "Durata: %d min\n"
 "%s"
 
-#: equipment.c:1487
+#: equipment.c:1495
 msgid "MaxPress"
 msgstr "Pressione Massima"
 
@@ -615,7 +615,7 @@ msgstr "Nuovo numero di inizio"
 msgid "No Tank Data"
 msgstr "Nessun dato sulla bombola"
 
-#: info.c:491 info.c:526 info.c:949
+#: info.c:492 info.c:527 info.c:950
 msgid "Notes"
 msgstr "Note"
 
@@ -659,7 +659,7 @@ msgstr "PSI"
 msgid "Preferences"
 msgstr "Preferenze"
 
-#: equipment.c:954 equipment.c:960
+#: equipment.c:962 equipment.c:968
 msgid "Pressure"
 msgstr "Pressione"
 
@@ -704,7 +704,7 @@ msgstr "Allarme RGT"
 msgid "RGT Warning"
 msgstr "Avviso RGT"
 
-#: info.c:519 info.c:946
+#: info.c:520 info.c:947
 msgid "Rating"
 msgstr "Valutazione"
 
@@ -795,7 +795,7 @@ msgstr "Immersione più corta"
 msgid "Show Columns"
 msgstr "Visualizza Colonne"
 
-#: equipment.c:951 equipment.c:1486
+#: equipment.c:959 equipment.c:1494
 msgid "Size"
 msgstr "Dimensione"
 
@@ -807,7 +807,7 @@ msgstr "Allarme Risalita Veloce"
 msgid "Speed Warning"
 msgstr "Avviso Risalita Veloce"
 
-#: equipment.c:962 equipment.c:1488
+#: equipment.c:970 equipment.c:1496
 msgid "Start"
 msgstr "Inizio"
 
@@ -819,7 +819,7 @@ msgstr "Statistiche"
 msgid "Stats"
 msgstr "Statistiche"
 
-#: divelist.c:1268 gtk-gui.c:647 info.c:520 info.c:947
+#: divelist.c:1268 gtk-gui.c:647 info.c:521 info.c:948
 msgid "Suit"
 msgstr "Muta"
 
@@ -864,7 +864,7 @@ msgstr "tre"
 msgid "Thu"
 msgstr "Gio"
 
-#: info.c:821 print.c:155
+#: info.c:822 print.c:155
 msgid "Time"
 msgstr "Tempo"
 
@@ -893,7 +893,7 @@ msgstr[1] "Viaggio %1$s, %3$d. %2$s %4$d (%5$d Immersioni)"
 msgid "Tue"
 msgstr "Mar"
 
-#: equipment.c:1485 equipment.c:1513
+#: equipment.c:1493 equipment.c:1521
 msgid "Type"
 msgstr "Tipo"
 
@@ -941,11 +941,11 @@ msgstr "Temperatura dell'acqua"
 msgid "Wed"
 msgstr "Mer"
 
-#: equipment.c:1012 equipment.c:1609 gtk-gui.c:642
+#: equipment.c:1020 equipment.c:1620 gtk-gui.c:642
 msgid "Weight"
 msgstr "Peso"
 
-#: equipment.c:1117
+#: equipment.c:1125
 msgid "Weight System"
 msgstr "Sistema di Zavorra"
 
@@ -982,11 +982,16 @@ msgstr ""
 "Non hai salvato le modifiche al file %s.\n"
 "Vuoi salvare prima di chiudere il file dei dati?"
 
-#: equipment.c:824
+#: divelist.c:639
+#, fuzzy
+msgid "air"
+msgstr "Bar"
+
+#: equipment.c:832
 msgid "ankle"
 msgstr "caviglia"
 
-#: equipment.c:825
+#: equipment.c:833
 msgid "backplate weight"
 msgstr ""
 
@@ -994,11 +999,11 @@ msgstr ""
 msgid "bar"
 msgstr "bar"
 
-#: equipment.c:823
+#: equipment.c:831
 msgid "belt"
 msgstr "cintura"
 
-#: equipment.c:826
+#: equipment.c:834
 msgid "clip-on"
 msgstr "clip-on"
 
@@ -1006,15 +1011,15 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
-#: dive.c:113 divelist.c:1264 info.c:866
+#: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
 msgstr "ft"
 
-#: equipment.c:822
+#: equipment.c:830
 msgid "integrated"
 msgstr "integrato"
 
-#: dive.c:136 equipment.c:1037 gtk-gui.c:607
+#: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
@@ -1022,11 +1027,11 @@ msgstr "kg"
 msgid "l"
 msgstr ""
 
-#: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
+#: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
 msgid "lbs"
 msgstr "lbs"
 
-#: dive.c:108 info.c:866
+#: dive.c:108 info.c:867
 msgid "m"
 msgstr ""
 
@@ -1047,7 +1052,7 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: equipment.c:1378 equipment.c:1398
+#: equipment.c:1386 equipment.c:1406
 msgid "unkn"
 msgstr "sconosciuto"
 
@@ -1059,7 +1064,7 @@ msgstr "sconosciuto"
 msgid "unspecified"
 msgstr "non specificato"
 
-#: equipment.c:1514
+#: equipment.c:1522
 msgid "weight"
 msgstr "peso"
 

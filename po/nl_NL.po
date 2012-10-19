@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 19:44-0700\n"
+"POT-Creation-Date: 2012-10-19 08:42-0700\n"
 "PO-Revision-Date: 2012-10-11 13:08+0100\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: Dutch\n"
@@ -153,7 +153,7 @@ msgstr "Gemiddelde tijd"
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:514 info.c:941 print.c:156
+#: info.c:515 info.c:942 print.c:156
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -189,11 +189,11 @@ msgstr "cuft"
 msgid "Cyl"
 msgstr "Fles"
 
-#: equipment.c:926 equipment.c:1062
+#: equipment.c:934 equipment.c:1070
 msgid "Cylinder"
 msgstr "Fles"
 
-#: equipment.c:1572
+#: equipment.c:1580
 msgid "Cylinders"
 msgstr "Flessen"
 
@@ -201,11 +201,11 @@ msgstr "Flessen"
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:806
+#: info.c:807
 msgid "Date and Time"
 msgstr "Datum en tijd"
 
-#: info.c:816
+#: info.c:817
 msgid "Date:"
 msgstr "Datum:"
 
@@ -217,11 +217,11 @@ msgstr "Dec"
 msgid "Default XML Data File"
 msgstr "Standaard XML bestand"
 
-#: info.c:255
+#: info.c:256
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: info.c:206
+#: info.c:207
 msgid "Delete Dive"
 msgstr "Duik verwijderen"
 
@@ -237,7 +237,7 @@ msgstr "Duiken verwijderen"
 msgid "Depth"
 msgstr "Diepte"
 
-#: info.c:866
+#: info.c:867
 #, c-format
 msgid "Depth (%s):"
 msgstr "Diepte (%s):"
@@ -260,12 +260,12 @@ msgstr "Apparaatnaam"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Duik #%d - %s %02d/%02d/%04d om %d:%02d"
 
-#: info.c:158 print.c:67
+#: info.c:159 print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Duik #%d - "
 
-#: gtk-gui.c:1122 info.c:699 statistics.c:711
+#: gtk-gui.c:1122 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Duik informatie"
 
@@ -293,7 +293,7 @@ msgstr "Duikcomputer"
 msgid "Dive details"
 msgstr "Duikdetails"
 
-#: info.c:513
+#: info.c:514
 msgid "Dive master"
 msgstr "Duik-instructeur"
 
@@ -305,7 +305,7 @@ msgstr "Duik Nr."
 msgid "Divelist Font"
 msgstr "Duiklijst Font"
 
-#: info.c:940
+#: info.c:941
 msgid "Divemaster"
 msgstr "Duik-instructeur"
 
@@ -321,15 +321,15 @@ msgstr "Download uit duikcomputer"
 msgid "Duration"
 msgstr "Duur"
 
-#: info.c:861
+#: info.c:862
 msgid "Duration (min)"
 msgstr "Duur (min)"
 
-#: info.c:256
+#: info.c:257
 msgid "Edit"
 msgstr "Bewerken"
 
-#: info.c:658
+#: info.c:659
 msgid "Edit Trip Info"
 msgstr "Trip informatie bewerken"
 
@@ -345,11 +345,11 @@ msgstr "Duik bewerken"
 msgid "Edit dives"
 msgstr "Duiken bewerken"
 
-#: info.c:501
+#: info.c:502
 msgid "Edit multiple dives"
 msgstr "Bewerk meerdere duiken"
 
-#: info.c:481
+#: info.c:482
 msgid "Edit trip summary"
 msgstr "Trip overzicht bewerken"
 
@@ -357,11 +357,11 @@ msgstr "Trip overzicht bewerken"
 msgid "Enable / Disable Events"
 msgstr "Inschakelen / uitschakelen Evenementen"
 
-#: equipment.c:965 equipment.c:1489
+#: equipment.c:973 equipment.c:1497
 msgid "End"
 msgstr "Einde"
 
-#: gtk-gui.c:1118 info.c:534
+#: gtk-gui.c:1118 info.c:535
 msgid "Equipment"
 msgstr "Uitrusting"
 
@@ -422,7 +422,7 @@ msgstr "Vr"
 msgid "Gas Used"
 msgstr "Gas verbruikt"
 
-#: equipment.c:975
+#: equipment.c:983
 msgid "Gasmix"
 msgstr "Gasmengsel"
 
@@ -463,7 +463,7 @@ msgstr "Lijst"
 msgid "Liter"
 msgstr "Liter"
 
-#: divelist.c:1273 info.c:486 info.c:508 info.c:935 print.c:156
+#: divelist.c:1273 info.c:487 info.c:509 info.c:936 print.c:156
 msgid "Location"
 msgstr "Locatie"
 
@@ -527,7 +527,7 @@ msgstr ""
 "Duur: %d min\n"
 "%s"
 
-#: equipment.c:1487
+#: equipment.c:1495
 msgid "MaxPress"
 msgstr "Max.Druk"
 
@@ -613,7 +613,7 @@ msgstr "Nieuw begin nummer"
 msgid "No Tank Data"
 msgstr "Geen fles informatie"
 
-#: info.c:491 info.c:526 info.c:949
+#: info.c:492 info.c:527 info.c:950
 msgid "Notes"
 msgstr "Notities"
 
@@ -657,7 +657,7 @@ msgstr "psi"
 msgid "Preferences"
 msgstr "Instellingen"
 
-#: equipment.c:954 equipment.c:960
+#: equipment.c:962 equipment.c:968
 msgid "Pressure"
 msgstr "Druk"
 
@@ -701,7 +701,7 @@ msgstr "Alarm: resterende Gas-tijd"
 msgid "RGT Warning"
 msgstr "Warnung: resterende Gas-tijd"
 
-#: info.c:519 info.c:946
+#: info.c:520 info.c:947
 msgid "Rating"
 msgstr "Waardering"
 
@@ -791,7 +791,7 @@ msgstr "Kortste duik"
 msgid "Show Columns"
 msgstr "Kolommen afbeelden"
 
-#: equipment.c:951 equipment.c:1486
+#: equipment.c:959 equipment.c:1494
 msgid "Size"
 msgstr "Grootte"
 
@@ -803,7 +803,7 @@ msgstr "Alarm: snelheid"
 msgid "Speed Warning"
 msgstr "Warnung: snelheid"
 
-#: equipment.c:962 equipment.c:1488
+#: equipment.c:970 equipment.c:1496
 msgid "Start"
 msgstr "Start"
 
@@ -815,7 +815,7 @@ msgstr "Statistieken"
 msgid "Stats"
 msgstr "Statistieken"
 
-#: divelist.c:1268 gtk-gui.c:647 info.c:520 info.c:947
+#: divelist.c:1268 gtk-gui.c:647 info.c:521 info.c:948
 msgid "Suit"
 msgstr "Pak"
 
@@ -860,7 +860,7 @@ msgstr "Drie"
 msgid "Thu"
 msgstr "Do"
 
-#: info.c:821 print.c:155
+#: info.c:822 print.c:155
 msgid "Time"
 msgstr "Tijd"
 
@@ -889,7 +889,7 @@ msgstr[1] ""
 msgid "Tue"
 msgstr "Di"
 
-#: equipment.c:1485 equipment.c:1513
+#: equipment.c:1493 equipment.c:1521
 msgid "Type"
 msgstr "Type"
 
@@ -937,11 +937,11 @@ msgstr "Watertemperatuur"
 msgid "Wed"
 msgstr "Wo"
 
-#: equipment.c:1012 equipment.c:1609 gtk-gui.c:642
+#: equipment.c:1020 equipment.c:1620 gtk-gui.c:642
 msgid "Weight"
 msgstr "Gewicht"
 
-#: equipment.c:1117
+#: equipment.c:1125
 msgid "Weight System"
 msgstr "Gewichtssysteem"
 
@@ -978,11 +978,16 @@ msgstr ""
 "U hebt niet opgeslagen veranderingen in bestand: %s \n"
 "Wilt u deze nu opslaan voordat u het data bestand afsluit?"
 
-#: equipment.c:824
+#: divelist.c:639
+#, fuzzy
+msgid "air"
+msgstr "bar"
+
+#: equipment.c:832
 msgid "ankle"
 msgstr "enkel"
 
-#: equipment.c:825
+#: equipment.c:833
 msgid "backplate weight"
 msgstr ""
 
@@ -990,11 +995,11 @@ msgstr ""
 msgid "bar"
 msgstr "bar"
 
-#: equipment.c:823
+#: equipment.c:831
 msgid "belt"
 msgstr "riem"
 
-#: equipment.c:826
+#: equipment.c:834
 msgid "clip-on"
 msgstr "clip-on"
 
@@ -1002,15 +1007,15 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
-#: dive.c:113 divelist.c:1264 info.c:866
+#: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
 msgstr "ft"
 
-#: equipment.c:822
+#: equipment.c:830
 msgid "integrated"
 msgstr "Geintergreerd"
 
-#: dive.c:136 equipment.c:1037 gtk-gui.c:607
+#: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
@@ -1018,11 +1023,11 @@ msgstr "kg"
 msgid "l"
 msgstr ""
 
-#: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
+#: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
 msgid "lbs"
 msgstr "US Pond"
 
-#: dive.c:108 info.c:866
+#: dive.c:108 info.c:867
 msgid "m"
 msgstr ""
 
@@ -1043,7 +1048,7 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: equipment.c:1378 equipment.c:1398
+#: equipment.c:1386 equipment.c:1406
 msgid "unkn"
 msgstr "Onbek"
 
@@ -1055,7 +1060,7 @@ msgstr "Onbekend"
 msgid "unspecified"
 msgstr "Niet gespecificeert"
 
-#: equipment.c:1514
+#: equipment.c:1522
 msgid "weight"
 msgstr "Gewicht"
 

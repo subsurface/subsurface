@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 19:44-0700\n"
+"POT-Creation-Date: 2012-10-19 08:42-0700\n"
 "PO-Revision-Date: 2012-10-12 11:48+0900\n"
 "Last-Translator: Linus Torvalds <torvalds@linux-foundation.org>\n"
 "Language-Team: Swedish\n"
@@ -154,7 +154,7 @@ msgstr "Medel-tid"
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:514 info.c:941 print.c:156
+#: info.c:515 info.c:942 print.c:156
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -190,11 +190,11 @@ msgstr "ft^3"
 msgid "Cyl"
 msgstr "Cyl"
 
-#: equipment.c:926 equipment.c:1062
+#: equipment.c:934 equipment.c:1070
 msgid "Cylinder"
 msgstr "Cylinder"
 
-#: equipment.c:1572
+#: equipment.c:1580
 msgid "Cylinders"
 msgstr "Cylindrar"
 
@@ -202,11 +202,11 @@ msgstr "Cylindrar"
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:806
+#: info.c:807
 msgid "Date and Time"
 msgstr "Datum och tid"
 
-#: info.c:816
+#: info.c:817
 msgid "Date:"
 msgstr "Datum:"
 
@@ -218,11 +218,11 @@ msgstr "dec"
 msgid "Default XML Data File"
 msgstr "Standard XML-fil"
 
-#: info.c:255
+#: info.c:256
 msgid "Delete"
 msgstr "Radera"
 
-#: info.c:206
+#: info.c:207
 msgid "Delete Dive"
 msgstr "Radera dyk"
 
@@ -238,7 +238,7 @@ msgstr "Radera dyk"
 msgid "Depth"
 msgstr "Djup"
 
-#: info.c:866
+#: info.c:867
 #, c-format
 msgid "Depth (%s):"
 msgstr "Djup (%s):"
@@ -261,12 +261,12 @@ msgstr "Enhetsnamn"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Dyk #%1$d - %2$s %4$02d.%3$02d.%5$04d kl %6$d:%7$02d"
 
-#: info.c:158 print.c:67
+#: info.c:159 print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Dyk #%d - "
 
-#: gtk-gui.c:1122 info.c:699 statistics.c:711
+#: gtk-gui.c:1122 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Information"
 
@@ -294,7 +294,7 @@ msgstr "Dykdator"
 msgid "Dive details"
 msgstr "Detaljer"
 
-#: info.c:513
+#: info.c:514
 msgid "Dive master"
 msgstr "Divemaster"
 
@@ -306,7 +306,7 @@ msgstr "Dyknr"
 msgid "Divelist Font"
 msgstr "Font för dyklistan"
 
-#: info.c:940
+#: info.c:941
 msgid "Divemaster"
 msgstr "Divemaster"
 
@@ -322,15 +322,15 @@ msgstr "Ladda ned från dykdator"
 msgid "Duration"
 msgstr "Varaktighet"
 
-#: info.c:861
+#: info.c:862
 msgid "Duration (min)"
 msgstr "Varaktighet (min)"
 
-#: info.c:256
+#: info.c:257
 msgid "Edit"
 msgstr "Redigera"
 
-#: info.c:658
+#: info.c:659
 msgid "Edit Trip Info"
 msgstr "Redigera reseinformation"
 
@@ -346,11 +346,11 @@ msgstr "Redigera dyk"
 msgid "Edit dives"
 msgstr "Redigera dyk"
 
-#: info.c:501
+#: info.c:502
 msgid "Edit multiple dives"
 msgstr "Redigera flera dyk"
 
-#: info.c:481
+#: info.c:482
 msgid "Edit trip summary"
 msgstr "Redigera resesammandrag"
 
@@ -358,11 +358,11 @@ msgstr "Redigera resesammandrag"
 msgid "Enable / Disable Events"
 msgstr "Aktivera / Inaktivera händelser"
 
-#: equipment.c:965 equipment.c:1489
+#: equipment.c:973 equipment.c:1497
 msgid "End"
 msgstr "Slut"
 
-#: gtk-gui.c:1118 info.c:534
+#: gtk-gui.c:1118 info.c:535
 msgid "Equipment"
 msgstr "Utrustning"
 
@@ -423,7 +423,7 @@ msgstr "fre"
 msgid "Gas Used"
 msgstr "Gasanvändning"
 
-#: equipment.c:975
+#: equipment.c:983
 msgid "Gasmix"
 msgstr "Gasmix"
 
@@ -464,7 +464,7 @@ msgstr "Lista"
 msgid "Liter"
 msgstr "liter"
 
-#: divelist.c:1273 info.c:486 info.c:508 info.c:935 print.c:156
+#: divelist.c:1273 info.c:487 info.c:509 info.c:936 print.c:156
 msgid "Location"
 msgstr "Plats"
 
@@ -528,7 +528,7 @@ msgstr ""
 "Tid: %d min\n"
 "%s"
 
-#: equipment.c:1487
+#: equipment.c:1495
 msgid "MaxPress"
 msgstr "Max tryck"
 
@@ -614,7 +614,7 @@ msgstr "Nytt startnummer"
 msgid "No Tank Data"
 msgstr "Ingen tankinformation"
 
-#: info.c:491 info.c:526 info.c:949
+#: info.c:492 info.c:527 info.c:950
 msgid "Notes"
 msgstr "Anteckningar"
 
@@ -658,7 +658,7 @@ msgstr "psi"
 msgid "Preferences"
 msgstr "Optioner"
 
-#: equipment.c:954 equipment.c:960
+#: equipment.c:962 equipment.c:968
 msgid "Pressure"
 msgstr "Tryck"
 
@@ -702,7 +702,7 @@ msgstr "Varning: gastid"
 msgid "RGT Warning"
 msgstr "Varning: gastid"
 
-#: info.c:519 info.c:946
+#: info.c:520 info.c:947
 msgid "Rating"
 msgstr "Ranking"
 
@@ -792,7 +792,7 @@ msgstr "Kortaste dyk"
 msgid "Show Columns"
 msgstr "Visa kolumner"
 
-#: equipment.c:951 equipment.c:1486
+#: equipment.c:959 equipment.c:1494
 msgid "Size"
 msgstr "Storlek"
 
@@ -804,7 +804,7 @@ msgstr "Alarm: uppstigningshastighet"
 msgid "Speed Warning"
 msgstr "Varning: uppstigningshastighet"
 
-#: equipment.c:962 equipment.c:1488
+#: equipment.c:970 equipment.c:1496
 msgid "Start"
 msgstr "Start"
 
@@ -816,7 +816,7 @@ msgstr "Statistik"
 msgid "Stats"
 msgstr "Statistik"
 
-#: divelist.c:1268 gtk-gui.c:647 info.c:520 info.c:947
+#: divelist.c:1268 gtk-gui.c:647 info.c:521 info.c:948
 msgid "Suit"
 msgstr "Dräkt"
 
@@ -861,7 +861,7 @@ msgstr "Alla"
 msgid "Thu"
 msgstr "tor"
 
-#: info.c:821 print.c:155
+#: info.c:822 print.c:155
 msgid "Time"
 msgstr "Tid"
 
@@ -890,7 +890,7 @@ msgstr[1] "Resa %1$s, %3$d %2$s, %4$d (%5$d dyk)"
 msgid "Tue"
 msgstr "tis"
 
-#: equipment.c:1485 equipment.c:1513
+#: equipment.c:1493 equipment.c:1521
 msgid "Type"
 msgstr "Typ"
 
@@ -938,11 +938,11 @@ msgstr "Vattentemperatur"
 msgid "Wed"
 msgstr "ons"
 
-#: equipment.c:1012 equipment.c:1609 gtk-gui.c:642
+#: equipment.c:1020 equipment.c:1620 gtk-gui.c:642
 msgid "Weight"
 msgstr "Vikt"
 
-#: equipment.c:1117
+#: equipment.c:1125
 msgid "Weight System"
 msgstr "Viktsystem"
 
@@ -979,11 +979,16 @@ msgstr ""
 "Du har ändringer som inte är sparade i %s.\n"
 "Vill du spara dem innan du stänger datafilen?"
 
-#: equipment.c:824
+#: divelist.c:639
+#, fuzzy
+msgid "air"
+msgstr "bar"
+
+#: equipment.c:832
 msgid "ankle"
 msgstr "ankel"
 
-#: equipment.c:825
+#: equipment.c:833
 msgid "backplate weight"
 msgstr ""
 
@@ -991,11 +996,11 @@ msgstr ""
 msgid "bar"
 msgstr "bar"
 
-#: equipment.c:823
+#: equipment.c:831
 msgid "belt"
 msgstr "bälte"
 
-#: equipment.c:826
+#: equipment.c:834
 msgid "clip-on"
 msgstr "clip-on"
 
@@ -1003,15 +1008,15 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
-#: dive.c:113 divelist.c:1264 info.c:866
+#: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
 msgstr "ft"
 
-#: equipment.c:822
+#: equipment.c:830
 msgid "integrated"
 msgstr "integrerat"
 
-#: dive.c:136 equipment.c:1037 gtk-gui.c:607
+#: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
@@ -1019,11 +1024,11 @@ msgstr "kg"
 msgid "l"
 msgstr ""
 
-#: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
+#: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
 msgid "lbs"
 msgstr "pund"
 
-#: dive.c:108 info.c:866
+#: dive.c:108 info.c:867
 msgid "m"
 msgstr ""
 
@@ -1044,7 +1049,7 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: equipment.c:1378 equipment.c:1398
+#: equipment.c:1386 equipment.c:1406
 msgid "unkn"
 msgstr "okänd"
 
@@ -1056,7 +1061,7 @@ msgstr "okänd"
 msgid "unspecified"
 msgstr "inte specifierad"
 
-#: equipment.c:1514
+#: equipment.c:1522
 msgid "weight"
 msgstr "Vikt"
 

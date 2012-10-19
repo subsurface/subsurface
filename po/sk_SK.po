@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 19:44-0700\n"
+"POT-Creation-Date: 2012-10-19 08:42-0700\n"
 "PO-Revision-Date: 2012-10-16 00:12+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
@@ -153,7 +153,7 @@ msgstr "Priemerný čas"
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:514 info.c:941 print.c:156
+#: info.c:515 info.c:942 print.c:156
 msgid "Buddy"
 msgstr "Partner"
 
@@ -189,11 +189,11 @@ msgstr "kubická stopa"
 msgid "Cyl"
 msgstr "Fľaša"
 
-#: equipment.c:926 equipment.c:1062
+#: equipment.c:934 equipment.c:1070
 msgid "Cylinder"
 msgstr "Fľaša"
 
-#: equipment.c:1572
+#: equipment.c:1580
 msgid "Cylinders"
 msgstr "Fľaše"
 
@@ -201,11 +201,11 @@ msgstr "Fľaše"
 msgid "Date"
 msgstr "Dátum"
 
-#: info.c:806
+#: info.c:807
 msgid "Date and Time"
 msgstr "Dátum a čas"
 
-#: info.c:816
+#: info.c:817
 msgid "Date:"
 msgstr "Dátum:"
 
@@ -217,11 +217,11 @@ msgstr "Dec"
 msgid "Default XML Data File"
 msgstr "Default XML Súbor"
 
-#: info.c:255
+#: info.c:256
 msgid "Delete"
 msgstr "Zmazať"
 
-#: info.c:206
+#: info.c:207
 msgid "Delete Dive"
 msgstr "Zmazať Ponor"
 
@@ -237,7 +237,7 @@ msgstr "Zmazať ponory"
 msgid "Depth"
 msgstr "Hĺbka"
 
-#: info.c:866
+#: info.c:867
 #, c-format
 msgid "Depth (%s):"
 msgstr "Hĺbka (%s):"
@@ -260,12 +260,12 @@ msgstr "Názov zariadenia"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Ponor #%d - %s %02d/%02d/%04d um %d:%02d"
 
-#: info.c:158 print.c:67
+#: info.c:159 print.c:67
 #, c-format
 msgid "Dive #%d - "
 msgstr "Ponor #%d - "
 
-#: gtk-gui.c:1122 info.c:699 statistics.c:711
+#: gtk-gui.c:1122 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informácie"
 
@@ -293,7 +293,7 @@ msgstr "Počítač"
 msgid "Dive details"
 msgstr "Detaily ponoru"
 
-#: info.c:513
+#: info.c:514
 msgid "Dive master"
 msgstr "Divemaster"
 
@@ -305,7 +305,7 @@ msgstr "Ponor č."
 msgid "Divelist Font"
 msgstr "Font pre ponory"
 
-#: info.c:940
+#: info.c:941
 msgid "Divemaster"
 msgstr "Divemaster"
 
@@ -321,15 +321,15 @@ msgstr "Nahratie údajov z počítača"
 msgid "Duration"
 msgstr "Dĺžka (min)"
 
-#: info.c:861
+#: info.c:862
 msgid "Duration (min)"
 msgstr "Dĺžka (min)"
 
-#: info.c:256
+#: info.c:257
 msgid "Edit"
 msgstr "Editovať"
 
-#: info.c:658
+#: info.c:659
 msgid "Edit Trip Info"
 msgstr "Editovať akciu"
 
@@ -345,11 +345,11 @@ msgstr "Editovať ponor"
 msgid "Edit dives"
 msgstr "Editovať ponory"
 
-#: info.c:501
+#: info.c:502
 msgid "Edit multiple dives"
 msgstr "Editovať viac ponorov"
 
-#: info.c:481
+#: info.c:482
 msgid "Edit trip summary"
 msgstr "Editovať sumár"
 
@@ -357,11 +357,11 @@ msgstr "Editovať sumár"
 msgid "Enable / Disable Events"
 msgstr "Povolit / zakázať udalosti"
 
-#: equipment.c:965 equipment.c:1489
+#: equipment.c:973 equipment.c:1497
 msgid "End"
 msgstr "Koniec"
 
-#: gtk-gui.c:1118 info.c:534
+#: gtk-gui.c:1118 info.c:535
 msgid "Equipment"
 msgstr "Výstroj"
 
@@ -422,7 +422,7 @@ msgstr "Pi"
 msgid "Gas Used"
 msgstr "Použitá zmes"
 
-#: equipment.c:975
+#: equipment.c:983
 msgid "Gasmix"
 msgstr "Zmes"
 
@@ -463,7 +463,7 @@ msgstr "Zoznam"
 msgid "Liter"
 msgstr "liter"
 
-#: divelist.c:1273 info.c:486 info.c:508 info.c:935 print.c:156
+#: divelist.c:1273 info.c:487 info.c:509 info.c:936 print.c:156
 msgid "Location"
 msgstr "Miesto"
 
@@ -527,7 +527,7 @@ msgstr ""
 "Dĺžka: %d min\n"
 "%s"
 
-#: equipment.c:1487
+#: equipment.c:1495
 msgid "MaxPress"
 msgstr "Max. tlak"
 
@@ -613,7 +613,7 @@ msgstr "Nové začiatočné číslo"
 msgid "No Tank Data"
 msgstr "Žiadne informácie o fľaši"
 
-#: info.c:491 info.c:526 info.c:949
+#: info.c:492 info.c:527 info.c:950
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -657,7 +657,7 @@ msgstr "psi"
 msgid "Preferences"
 msgstr "Nastavenia"
 
-#: equipment.c:954 equipment.c:960
+#: equipment.c:962 equipment.c:968
 msgid "Pressure"
 msgstr "Tlak"
 
@@ -701,7 +701,7 @@ msgstr "Alarm: zostávajúci čas plynu"
 msgid "RGT Warning"
 msgstr "Upozornenie: zostávajúci čas plynu"
 
-#: info.c:519 info.c:946
+#: info.c:520 info.c:947
 msgid "Rating"
 msgstr "Rating"
 
@@ -791,7 +791,7 @@ msgstr "Najkratší ponor"
 msgid "Show Columns"
 msgstr "Zobraz stĺpce"
 
-#: equipment.c:951 equipment.c:1486
+#: equipment.c:959 equipment.c:1494
 msgid "Size"
 msgstr "Veľkosť"
 
@@ -803,7 +803,7 @@ msgstr "Alarm: Rýchlosť"
 msgid "Speed Warning"
 msgstr "Upozornenie: Rýchlosť"
 
-#: equipment.c:962 equipment.c:1488
+#: equipment.c:970 equipment.c:1496
 msgid "Start"
 msgstr "Štart"
 
@@ -815,7 +815,7 @@ msgstr "Štatistika"
 msgid "Stats"
 msgstr "Štatistiky"
 
-#: divelist.c:1268 gtk-gui.c:647 info.c:520 info.c:947
+#: divelist.c:1268 gtk-gui.c:647 info.c:521 info.c:948
 msgid "Suit"
 msgstr "Oblek"
 
@@ -860,7 +860,7 @@ msgstr "Strom"
 msgid "Thu"
 msgstr "Št"
 
-#: info.c:821 print.c:155
+#: info.c:822 print.c:155
 msgid "Time"
 msgstr "Čas"
 
@@ -889,7 +889,7 @@ msgstr[1] ""
 msgid "Tue"
 msgstr "Ut"
 
-#: equipment.c:1485 equipment.c:1513
+#: equipment.c:1493 equipment.c:1521
 msgid "Type"
 msgstr "Typ"
 
@@ -937,11 +937,11 @@ msgstr "Teplota vody"
 msgid "Wed"
 msgstr "St"
 
-#: equipment.c:1012 equipment.c:1609 gtk-gui.c:642
+#: equipment.c:1020 equipment.c:1620 gtk-gui.c:642
 msgid "Weight"
 msgstr "Závažie"
 
-#: equipment.c:1117
+#: equipment.c:1125
 msgid "Weight System"
 msgstr "Závažie"
 
@@ -978,11 +978,16 @@ msgstr ""
 "Máš neuložené zmeny v súbore %s \n"
 "Chceš ich uložiť pred zatvorením súboru?"
 
-#: equipment.c:824
+#: divelist.c:639
+#, fuzzy
+msgid "air"
+msgstr "bar"
+
+#: equipment.c:832
 msgid "ankle"
 msgstr "členok"
 
-#: equipment.c:825
+#: equipment.c:833
 msgid "backplate weight"
 msgstr ""
 
@@ -990,11 +995,11 @@ msgstr ""
 msgid "bar"
 msgstr "bar"
 
-#: equipment.c:823
+#: equipment.c:831
 msgid "belt"
 msgstr "opasok"
 
-#: equipment.c:826
+#: equipment.c:834
 msgid "clip-on"
 msgstr "clip-on"
 
@@ -1002,15 +1007,15 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
-#: dive.c:113 divelist.c:1264 info.c:866
+#: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
 msgstr "ft"
 
-#: equipment.c:822
+#: equipment.c:830
 msgid "integrated"
 msgstr "integrované"
 
-#: dive.c:136 equipment.c:1037 gtk-gui.c:607
+#: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
 msgstr "kg"
 
@@ -1018,11 +1023,11 @@ msgstr "kg"
 msgid "l"
 msgstr ""
 
-#: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
+#: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
 msgid "lbs"
 msgstr "US libra"
 
-#: dive.c:108 info.c:866
+#: dive.c:108 info.c:867
 msgid "m"
 msgstr ""
 
@@ -1043,7 +1048,7 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: equipment.c:1378 equipment.c:1398
+#: equipment.c:1386 equipment.c:1406
 msgid "unkn"
 msgstr "nez."
 
@@ -1055,7 +1060,7 @@ msgstr "neznámy"
 msgid "unspecified"
 msgstr "nešpecifikovaný"
 
-#: equipment.c:1514
+#: equipment.c:1522
 msgid "weight"
 msgstr "hmotnosť"
 
