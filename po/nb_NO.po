@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-18 19:44-0700\n"
-"PO-Revision-Date: 2012-10-17 10:41+0100\n"
+"PO-Revision-Date: 2012-10-19 17:33+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -978,13 +978,17 @@ msgstr ""
 "Du har endringer som ikke er lagret i %s.\n"
 "Vil du lagre disse før du lukker fila?"
 
+#: divelist.c:639
+msgid "air"
+msgstr "luft"
+
 #: equipment.c:824
 msgid "ankle"
 msgstr "ankel"
 
 #: equipment.c:825
 msgid "backplate weight"
-msgstr ""
+msgstr "p-vekt"
 
 #: dive.c:45
 msgid "bar"
@@ -1000,7 +1004,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr ""
+msgstr "ft^3"
 
 #: dive.c:113 divelist.c:1264 info.c:866
 msgid "ft"
@@ -1016,7 +1020,7 @@ msgstr "kg"
 
 #: dive.c:83
 msgid "l"
-msgstr ""
+msgstr "l"
 
 #: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
 msgid "lbs"
@@ -1024,7 +1028,7 @@ msgstr "pund"
 
 #: dive.c:108 info.c:866
 msgid "m"
-msgstr ""
+msgstr "m"
 
 #: divelist.c:1265
 msgid "min"
@@ -1037,11 +1041,11 @@ msgstr "mer enn %d dager"
 
 #: dive.c:41
 msgid "pascal"
-msgstr ""
+msgstr "pascal"
 
 #: dive.c:49
 msgid "psi"
-msgstr ""
+msgstr "psi"
 
 #: equipment.c:1378 equipment.c:1398
 msgid "unkn"
