@@ -172,3 +172,8 @@ void subsurface_command_line_exit(gint *argc, gchar ***argv)
 {
 	/* this is a no-op */
 }
+
+gboolean subsurface_os_feature_available(os_feature_t f)
+{
+	return TRUE;
+}

@@ -437,10 +437,16 @@ const char *monthname(int mon);
 #define FIVE_STARS	UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR
 extern const char *star_strings[];
 
+/* enum holding list of OS features */
+typedef enum {
+	UTF8_FONT_WITH_STARS
+} os_feature_t;
+
 extern const char *default_filename;
 extern const char *existing_filename;
 extern const char *subsurface_default_filename(void);
 extern const char *subsurface_gettext_domainpath(char *);
+extern gboolean subsurface_os_feature_available(os_feature_t);
 extern void subsurface_command_line_init(gint *, gchar ***);
 extern void subsurface_command_line_exit(gint *, gchar ***);
 #define AIR_PERMILLE 209

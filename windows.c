@@ -223,3 +223,18 @@ void subsurface_command_line_exit(gint *argc, gchar ***argv)
 		g_free((*argv)[i]);
 	g_free(*argv);
 }
+
+/* check if we are running a newer OS version */
+gboolean subsurface_os_feature_available(os_feature_t f)
+{
+	switch (f) {
+	case UTF8_FONT_WITH_STARS:
+		if ((GetVersion() & 0xff) < 6)
+			return FALSE; /* version less than Vista */
+		else
+			return TRUE;
+		break;
+	default:
+		return TRUE;
+	}
+}
