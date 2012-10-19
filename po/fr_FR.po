@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-18 19:44-0700\n"
-"PO-Revision-Date: 2012-12-11 09:58+0200\n"
+"PO-Revision-Date: 2012-10-19 10:43+0100\n"
 "Last-Translator: Pierre-Yves Chibon <pingou@pingoured.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -887,7 +887,7 @@ msgstr[1] "Groupe %1$s %3$d %2$s %4$d (%5$d plongées)"
 
 #: main.c:37
 msgid "Tue"
-msgstr "MAr"
+msgstr "Mar"
 
 #: equipment.c:1485 equipment.c:1513
 msgid "Type"
@@ -984,7 +984,7 @@ msgstr "cheville"
 
 #: equipment.c:825
 msgid "backplate weight"
-msgstr ""
+msgstr "poids dorsaux"
 
 #: dive.c:45
 msgid "bar"
@@ -1004,7 +1004,7 @@ msgstr "pied³"
 
 #: dive.c:113 divelist.c:1264 info.c:866
 msgid "ft"
-msgstr "ft"
+msgstr "pied"
 
 #: equipment.c:822
 msgid "integrated"
