@@ -980,9 +980,8 @@ msgstr ""
 "Sollen Änderungen vor dem Schliessen der Datei gespeichert werden?"
 
 #: divelist.c:639
-#, fuzzy
 msgid "air"
-msgstr "bar"
+msgstr "Luft"
 
 #: equipment.c:832
 msgid "ankle"
