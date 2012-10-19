@@ -981,9 +981,8 @@ msgstr ""
 "Желаете ли да ги запишете преди затваряне на файла?"
 
 #: divelist.c:639
-#, fuzzy
 msgid "air"
-msgstr "Бара"
+msgstr "въздух"
 
 #: equipment.c:832
 msgid "ankle"
