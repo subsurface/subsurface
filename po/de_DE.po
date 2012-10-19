@@ -29,7 +29,7 @@ msgstr " Bitte Tauchcomputer und Gerät auswählen. "
 
 #: statistics.c:160
 msgid "#"
-msgstr ""
+msgstr "Nr."
 
 #: statistics.c:553 statistics.c:625 statistics.c:627 statistics.c:629
 #, c-format
@@ -188,15 +188,15 @@ msgstr "cuft"
 
 #: divelist.c:1269 gtk-gui.c:622
 msgid "Cyl"
-msgstr "Tank"
+msgstr "Flasche"
 
 #: equipment.c:926 equipment.c:1062
 msgid "Cylinder"
-msgstr "Tank"
+msgstr "Flasche"
 
 #: equipment.c:1572
 msgid "Cylinders"
-msgstr "Tanks"
+msgstr "Flaschen"
 
 #: divelist.c:1262 print.c:155 statistics.c:720
 msgid "Date"
@@ -316,7 +316,7 @@ msgstr "Tauchgänge"
 
 #: gtk-gui.c:913 gtk-gui.c:1496
 msgid "Download From Dive Computer"
-msgstr "Vom Tauchcomputer runterladen"
+msgstr "Von Tauchcomputer laden"
 
 #: statistics.c:160
 msgid "Duration"
@@ -612,7 +612,7 @@ msgstr "Neue erste Nummer"
 
 #: uemis.c:166
 msgid "No Tank Data"
-msgstr "Keine Tank Informationen"
+msgstr "Keine Flaschen Informationen"
 
 #: info.c:491 info.c:526 info.c:949
 msgid "Notes"
@@ -835,11 +835,11 @@ msgstr "Tabellenausdruck"
 
 #: uemis.c:154
 msgid "Tank Change Suggested"
-msgstr "Tankwechsel Vorschlag"
+msgstr "Flaschenwechsel Vorschlag"
 
 #: uemis.c:148
 msgid "Tank Pressure Info"
-msgstr "Info: Tankdruck"
+msgstr "Info: Flaschendruck"
 
 #: gtk-gui.c:617
 msgid "Temp"
@@ -956,7 +956,7 @@ msgstr "XML Datei"
 
 #: statistics.c:160
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 #: gtk-gui.c:917 statistics.c:368
 msgid "Yearly Statistics"
@@ -997,7 +997,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr ""
+msgstr "cu.ft."
 
 #: dive.c:113 divelist.c:1264 info.c:866
 msgid "ft"
@@ -1013,7 +1013,7 @@ msgstr "kg"
 
 #: dive.c:83
 msgid "l"
-msgstr ""
+msgstr "l"
 
 #: dive.c:132 divelist.c:1267 equipment.c:1039 gtk-gui.c:608
 msgid "lbs"
@@ -1021,7 +1021,7 @@ msgstr "US Pfund"
 
 #: dive.c:108 info.c:866
 msgid "m"
-msgstr ""
+msgstr "m"
 
 #: divelist.c:1265
 msgid "min"
@@ -1034,11 +1034,11 @@ msgstr "mehr als %d Tage"
 
 #: dive.c:41
 msgid "pascal"
-msgstr ""
+msgstr "Pa"
 
 #: dive.c:49
 msgid "psi"
-msgstr ""
+msgstr "psi"
 
 #: equipment.c:1378 equipment.c:1398
 msgid "unkn"
