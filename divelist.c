@@ -636,7 +636,7 @@ static void nitrox_data_func(GtkTreeViewColumn *col,
 		else
 			snprintf(buffer, sizeof(buffer), "%d" UTF8_ELLIPSIS "%d", o2low, o2);
 	else
-		strcpy(buffer, "air");
+		strcpy(buffer, _("air"));
 exit:
 	g_object_set(renderer, "text", buffer, NULL);
 }
