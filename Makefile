@@ -259,7 +259,7 @@ uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
 
-share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po
+share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
 	msgfmt -c -o $@ po/$*.po
 	@-if test -s po/$*.aliases; then \

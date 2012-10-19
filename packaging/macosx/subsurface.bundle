@@ -12,13 +12,13 @@
          defined by jhbuild, so it you are not using jhbuild you can
          either define your own or just hardcode the path here.
     -->
-    <prefix name="default">/opt/local</prefix>
+    <prefix name="default">/Applications/Subsurface.app/Contents/Resources</prefix>
 
     <!-- The project directory is the default location of the created
          app. If you leave out the path, the current directory is
          used. Note the usage of an environment variable here again.
     -->
-    <destination overwrite="yes">/Applications</destination>
+    <destination overwrite="yes">./staging</destination>
 
     <image>
       <!-- Not implemented yet (DMG image). -->
@@ -82,14 +82,18 @@
        want to copy in to the bundle. The "dest" attribute is
        optional, as usual. Bundler will find all translations of that
        library/program under the indicated directory and copy them.-->
+  <translations name="subsurface">
+    ${prefix}/share/locale
+  </translations>
   <translations name="gtk20">
     ${prefix}/share/locale
   </translations>
 
+  <!--
   <data dest="${bundle}/Contents/Resources/share/locale">
     ${project}/Subsurface.app/Contents/Resources/share/locale
   </data>
-
+  -->
   <!-- Data to copy in, usually Glade/UI files, images, sounds files
        etc. The destination inside the bundle can be specified if the
        files should end up at a different location, by using the
