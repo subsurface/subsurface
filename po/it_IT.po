@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-19 08:42-0700\n"
-"PO-Revision-Date: 2012-10-18 14:16+0100\n"
+"PO-Revision-Date: 2012-10-20 16:23+0100\n"
 "Last-Translator: Filippo Moser <filippom@gmail.com>\n"
 "Language-Team: Italian\n"
 "Language: it\n"
@@ -273,7 +273,7 @@ msgstr "Informazioni sull'immersione"
 
 #: gtk-gui.c:1114
 msgid "Dive Notes"
-msgstr "Note d'Immersione"
+msgstr "Note dell'immersione"
 
 #: statistics.c:721
 msgid "Dive Time"
@@ -455,7 +455,7 @@ msgstr "Giu"
 
 #: gtk-gui.c:856
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
-msgstr "Linus Torvalds, Dirk Hohndel, and altri, 2011, 2012"
+msgstr "Linus Torvalds, Dirk Hohndel e altri, 2011, 2012"
 
 #: gtk-gui.c:921
 msgid "List"
@@ -633,7 +633,7 @@ msgstr "Ott"
 
 #: gtk-gui.c:907
 msgid "Open"
-msgstr "Aprire"
+msgstr "Apri"
 
 #: gtk-gui.c:315
 msgid "Open File"
@@ -858,7 +858,7 @@ msgstr "Temperatura:"
 
 #: gtk-gui.c:924
 msgid "Three"
-msgstr "tre"
+msgstr "Albero"
 
 #: main.c:37
 msgid "Thu"
@@ -983,9 +983,8 @@ msgstr ""
 "Vuoi salvare prima di chiudere il file dei dati?"
 
 #: divelist.c:639
-#, fuzzy
 msgid "air"
-msgstr "Bar"
+msgstr "aria"
 
 #: equipment.c:832
 msgid "ankle"
@@ -993,7 +992,7 @@ msgstr "caviglia"
 
 #: equipment.c:833
 msgid "backplate weight"
-msgstr ""
+msgstr "peso della piastra"
 
 #: dive.c:45
 msgid "bar"
@@ -1009,7 +1008,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr ""
+msgstr "piedi cubi"
 
 #: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
@@ -1025,7 +1024,7 @@ msgstr "kg"
 
 #: dive.c:83
 msgid "l"
-msgstr ""
+msgstr "l"
 
 #: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
 msgid "lbs"
@@ -1033,7 +1032,7 @@ msgstr "lbs"
 
 #: dive.c:108 info.c:867
 msgid "m"
-msgstr ""
+msgstr "m"
 
 #: divelist.c:1265
 msgid "min"
@@ -1046,11 +1045,11 @@ msgstr "più di %d giorni"
 
 #: dive.c:41
 msgid "pascal"
-msgstr ""
+msgstr "pascal"
 
 #: dive.c:49
 msgid "psi"
-msgstr ""
+msgstr "psi"
 
 #: equipment.c:1386 equipment.c:1406
 msgid "unkn"
