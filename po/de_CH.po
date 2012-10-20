@@ -297,7 +297,7 @@ msgstr "Tauchcomputer"
 
 #: libdivecomputer.c:371
 msgid "Dive data import error"
-msgstr ""
+msgstr "Fehler beim Importieren der Daten des Tauchgangs"
 
 #: print.c:476
 msgid "Dive details"
@@ -377,48 +377,48 @@ msgstr "Ausrüstung"
 
 #: libdivecomputer.c:238
 msgid "Error parsing the datetime"
-msgstr ""
+msgstr "Fehler beim Analysieren des Datums"
 
 #: libdivecomputer.c:257
 msgid "Error parsing the divetime"
-msgstr ""
+msgstr "Fehler beim Analysieren der Dauer"
 
 #: libdivecomputer.c:284
 msgid "Error parsing the gas mix"
-msgstr ""
+msgstr "Fehler beim Analysieren der Gas Informationen"
 
 #: libdivecomputer.c:277
 msgid "Error parsing the gas mix count"
-msgstr ""
+msgstr "Fehler beim Analysieren der Gas Informationen"
 
 #: libdivecomputer.c:267
 msgid "Error parsing the maxdepth"
-msgstr ""
+msgstr "Fehler beim Analysieren der maximalen Tiefe"
 
 #: libdivecomputer.c:292
 msgid "Error parsing the samples"
-msgstr ""
+msgstr "Fehler beim Auswerten der Samples"
 
 #: libdivecomputer.c:367
 msgid "Error registering the cancellation handler."
-msgstr ""
+msgstr "Fehler bei der Registrierung der Abbruchbehandlung"
 
 #: libdivecomputer.c:229
 msgid "Error registering the data"
-msgstr ""
+msgstr "Fehler beim Registrieren der Daten"
 
 #: libdivecomputer.c:362
 msgid "Error registering the event handler."
-msgstr ""
+msgstr "Fehler beim Registrieren der Ereignisbehandlung"
 
 #: libdivecomputer.c:337
 #, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
-msgstr ""
+msgstr "Ereignis: systime=%<PRId64>, devtime=%u\n"
 
 #: libdivecomputer.c:323
 msgid "Event: waiting for user action"
-msgstr ""
+msgstr "Ereignis: warte auf Benutzer Aktion"
 
 #: divelist.c:2116
 msgid "Expand all"
@@ -678,7 +678,7 @@ msgstr "Nov"
 
 #: libdivecomputer.c:82
 msgid "OLF"
-msgstr ""
+msgstr "OLF"
 
 #: divelist.c:1272 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
@@ -690,7 +690,7 @@ msgstr "Okt"
 
 #: libdivecomputer.c:425
 msgid "Odd pthread error return"
-msgstr ""
+msgstr "Unbekannter pthread Fehlercode"
 
 #: gtk-gui.c:907
 msgid "Open"
@@ -702,7 +702,7 @@ msgstr "Datei öffnen"
 
 #: libdivecomputer.c:82
 msgid "PO2"
-msgstr ""
+msgstr "PO2"
 
 #: uemis.c:144
 msgid "PO2 Ascend Alarm"
@@ -986,17 +986,17 @@ msgstr "Uemis Initialisierung fehlgeschlagen"
 
 #: libdivecomputer.c:388
 msgid "Unable to create libdivecomputer context"
-msgstr ""
+msgstr "Fehler beim Erzeugen des libdivecomputer Contexts"
 
 #: libdivecomputer.c:223
 #, c-format
 msgid "Unable to create parser for %s %s"
-msgstr ""
+msgstr "Nicht in der Lage, einen Parser für %s %s zu erstellen"
 
 #: libdivecomputer.c:390
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open %s %s (%s)"
-msgstr "Fehler beim Öffnen von %i Dateien."
+msgstr "Fehler beim Öffnen von %s %s (%s)"
 
 #: gtk-gui.c:579
 msgid "Units"
@@ -1065,7 +1065,7 @@ msgstr "Luft"
 
 #: libdivecomputer.c:82
 msgid "airtime"
-msgstr ""
+msgstr "verbleibende Atemzeit"
 
 #: equipment.c:832
 msgid "ankle"
@@ -1073,7 +1073,7 @@ msgstr "Fuss"
 
 #: libdivecomputer.c:78
 msgid "ascent"
-msgstr ""
+msgstr "Aufstieg"
 
 #: equipment.c:833
 msgid "backplate weight"
@@ -1089,15 +1089,15 @@ msgstr "Gürtel"
 
 #: libdivecomputer.c:79
 msgid "bookmark"
-msgstr ""
+msgstr "Markierung"
 
 #: libdivecomputer.c:78
 msgid "ceiling"
-msgstr ""
+msgstr "Minimaltiefe"
 
 #: libdivecomputer.c:81
 msgid "ceiling (safety stop)"
-msgstr ""
+msgstr "Minimaltiefe (Sicherheitsstopp)"
 
 #: equipment.c:834
 msgid "clip-on"
@@ -1109,15 +1109,15 @@ msgstr ""
 
 #: libdivecomputer.c:78
 msgid "deco"
-msgstr ""
+msgstr "Deko"
 
 #: libdivecomputer.c:81
 msgid "deepstop"
-msgstr ""
+msgstr "tiefer Stopp"
 
 #: libdivecomputer.c:81
 msgid "divetime"
-msgstr ""
+msgstr "Dauer"
 
 #: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
@@ -1125,11 +1125,11 @@ msgstr "ft"
 
 #: libdivecomputer.c:80
 msgid "gaschange"
-msgstr ""
+msgstr "Flaschenwechsel"
 
 #: libdivecomputer.c:82
 msgid "heading"
-msgstr ""
+msgstr "Richtung"
 
 #: equipment.c:830
 msgid "integrated"
@@ -1137,7 +1137,7 @@ msgstr "integriert"
 
 #: libdivecomputer.c:101
 msgid "invalid event number"
-msgstr ""
+msgstr "ungültige Ereignisnummer"
 
 #: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
@@ -1156,7 +1156,6 @@ msgid "m"
 msgstr ""
 
 #: libdivecomputer.c:82
-#, fuzzy
 msgid "maxdepth"
 msgstr "Max. Tiefe"
 
@@ -1167,7 +1166,7 @@ msgstr "min"
 #: libdivecomputer.c:331
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
-msgstr ""
+msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 
 #: statistics.c:501
 #, c-format
@@ -1176,7 +1175,7 @@ msgstr "mehr als %d Tage"
 
 #: libdivecomputer.c:78
 msgid "none"
-msgstr ""
+msgstr "keine"
 
 #: dive.c:41
 msgid "pascal"
@@ -1188,35 +1187,35 @@ msgstr ""
 
 #: libdivecomputer.c:78
 msgid "rbt"
-msgstr ""
+msgstr "rbt"
 
 #: libdivecomputer.c:82
 msgid "rgbm"
-msgstr ""
+msgstr "rgbm"
 
 #: libdivecomputer.c:79
 msgid "safety stop"
-msgstr ""
+msgstr "Sicherheitsstopp"
 
 #: libdivecomputer.c:80
 msgid "safety stop (mandatory)"
-msgstr ""
+msgstr "Sicherheitsstopp (verpflichtend)"
 
 #: libdivecomputer.c:80
 msgid "safety stop (voluntary)"
-msgstr ""
+msgstr "Sicherheitsstopp (freiwillig)"
 
 #: libdivecomputer.c:79
 msgid "surface"
-msgstr ""
+msgstr "Oberfläche"
 
 #: libdivecomputer.c:83
 msgid "tissue level warning"
-msgstr ""
+msgstr "Warnung auf Gewebe-Ebene"
 
 #: libdivecomputer.c:79
 msgid "transmitter"
-msgstr ""
+msgstr "Sender"
 
 #: equipment.c:1386 equipment.c:1406
 msgid "unkn"
@@ -1231,9 +1230,8 @@ msgid "unspecified"
 msgstr "nicht angegeben"
 
 #: libdivecomputer.c:79
-#, fuzzy
 msgid "violation"
-msgstr "Ort"
+msgstr "Verletzung"
 
 #: equipment.c:1522
 msgid "weight"
@@ -1241,7 +1239,7 @@ msgstr "Gewicht"
 
 #: libdivecomputer.c:78
 msgid "workload"
-msgstr ""
+msgstr "Arbeit"
 
 #~ msgctxt "Depth"
 #~ msgid ""
