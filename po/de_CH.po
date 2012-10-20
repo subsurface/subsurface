@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-19 08:42-0700\n"
+"POT-Creation-Date: 2012-10-20 14:22-0700\n"
 "PO-Revision-Date: 2012-10-15 14:02+0100\n"
 "Last-Translator: Martin Gysel <me@bearsh.org>\n"
 "Language-Team: German\n"
@@ -23,7 +23,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Monat"
 
-#: gtk-gui.c:1504
+#: gtk-gui.c:1513
 msgid " Please select dive computer and device. "
 msgstr " Bitte Tauchcomputer und Gerät auswählen. "
 
@@ -164,7 +164,7 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Standard XML Datei auswählen"
 
-#: gtk-gui.c:1398
+#: gtk-gui.c:1407
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr ""
 "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden "
@@ -251,7 +251,7 @@ msgstr "Tiefenlimit überschritten"
 msgid "Depth:"
 msgstr "Tiefe:"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1375
 msgid "Device name"
 msgstr "Gerätename"
 
@@ -266,11 +266,16 @@ msgstr "Tauchgang #%1$d - %2$s %4$02d.%3$02d.%5$04d um %6$d:%7$02d"
 msgid "Dive #%d - "
 msgstr "Tauchgang #%d - "
 
-#: gtk-gui.c:1122 info.c:700 statistics.c:711
+#: libdivecomputer.c:252
+#, fuzzy, c-format
+msgid "Dive %d: %s %d %04d"
+msgstr "Tauchgang #%d - %s"
+
+#: gtk-gui.c:1131 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informationen"
 
-#: gtk-gui.c:1114
+#: gtk-gui.c:1123
 msgid "Dive Notes"
 msgstr "Notizen"
 
@@ -286,9 +291,13 @@ msgstr "Alarm: Tauchgangsdauer"
 msgid "Dive Time Info"
 msgstr "Info: Tauchgangsdauer"
 
-#: gtk-gui.c:1335
+#: gtk-gui.c:1344
 msgid "Dive computer"
 msgstr "Tauchcomputer"
+
+#: libdivecomputer.c:371
+msgid "Dive data import error"
+msgstr ""
 
 #: print.c:476
 msgid "Dive details"
@@ -314,7 +323,7 @@ msgstr "Diveguide"
 msgid "Dives"
 msgstr "Tauchgänge"
 
-#: gtk-gui.c:913 gtk-gui.c:1496
+#: gtk-gui.c:913 gtk-gui.c:1505
 msgid "Download From Dive Computer"
 msgstr "Vom Tauchcomputer runterladen"
 
@@ -362,9 +371,54 @@ msgstr "Ereignisse Ein-/Ausblenden"
 msgid "End"
 msgstr "Ende"
 
-#: gtk-gui.c:1118 info.c:535
+#: gtk-gui.c:1127 info.c:535
 msgid "Equipment"
 msgstr "Ausrüstung"
+
+#: libdivecomputer.c:238
+msgid "Error parsing the datetime"
+msgstr ""
+
+#: libdivecomputer.c:257
+msgid "Error parsing the divetime"
+msgstr ""
+
+#: libdivecomputer.c:284
+msgid "Error parsing the gas mix"
+msgstr ""
+
+#: libdivecomputer.c:277
+msgid "Error parsing the gas mix count"
+msgstr ""
+
+#: libdivecomputer.c:267
+msgid "Error parsing the maxdepth"
+msgstr ""
+
+#: libdivecomputer.c:292
+msgid "Error parsing the samples"
+msgstr ""
+
+#: libdivecomputer.c:367
+msgid "Error registering the cancellation handler."
+msgstr ""
+
+#: libdivecomputer.c:229
+msgid "Error registering the data"
+msgstr ""
+
+#: libdivecomputer.c:362
+msgid "Error registering the event handler."
+msgstr ""
+
+#: libdivecomputer.c:337
+#, c-format
+msgid "Event: systime=%<PRId64>, devtime=%u\n"
+msgstr ""
+
+#: libdivecomputer.c:323
+msgid "Event: waiting for user action"
+msgstr ""
 
 #: divelist.c:2116
 msgid "Expand all"
@@ -622,6 +676,10 @@ msgstr "Notizen"
 msgid "Nov"
 msgstr "Nov"
 
+#: libdivecomputer.c:82
+msgid "OLF"
+msgstr ""
+
 #: divelist.c:1272 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
 msgstr "OTU"
@@ -630,6 +688,10 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Okt"
 
+#: libdivecomputer.c:425
+msgid "Odd pthread error return"
+msgstr ""
+
 #: gtk-gui.c:907
 msgid "Open"
 msgstr "Öffnen"
@@ -637,6 +699,10 @@ msgstr "Öffnen"
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Datei öffnen"
+
+#: libdivecomputer.c:82
+msgid "PO2"
+msgstr ""
 
 #: uemis.c:144
 msgid "PO2 Ascend Alarm"
@@ -727,7 +793,7 @@ msgstr "Ausgewählte Tauchgänge aus Reise entfernen"
 msgid "Renumber"
 msgstr "Neu nummerieren"
 
-#: gtk-gui.c:1473
+#: gtk-gui.c:1482
 msgid "Retry"
 msgstr "Wiederholen"
 
@@ -812,7 +878,7 @@ msgstr "Start"
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: gtk-gui.c:1126
+#: gtk-gui.c:1135
 msgid "Stats"
 msgstr "Statistiken"
 
@@ -918,6 +984,20 @@ msgstr ""
 msgid "Uemis init failed"
 msgstr "Uemis Initialisierung fehlgeschlagen"
 
+#: libdivecomputer.c:388
+msgid "Unable to create libdivecomputer context"
+msgstr ""
+
+#: libdivecomputer.c:223
+#, c-format
+msgid "Unable to create parser for %s %s"
+msgstr ""
+
+#: libdivecomputer.c:390
+#, fuzzy, c-format
+msgid "Unable to open %s %s (%s)"
+msgstr "Fehler beim Öffnen von %i Dateien."
+
 #: gtk-gui.c:579
 msgid "Units"
 msgstr "Einheiten"
@@ -983,9 +1063,17 @@ msgstr ""
 msgid "air"
 msgstr "Luft"
 
+#: libdivecomputer.c:82
+msgid "airtime"
+msgstr ""
+
 #: equipment.c:832
 msgid "ankle"
 msgstr "Fuss"
+
+#: libdivecomputer.c:78
+msgid "ascent"
+msgstr ""
 
 #: equipment.c:833
 msgid "backplate weight"
@@ -999,6 +1087,18 @@ msgstr "bar"
 msgid "belt"
 msgstr "Gürtel"
 
+#: libdivecomputer.c:79
+msgid "bookmark"
+msgstr ""
+
+#: libdivecomputer.c:78
+msgid "ceiling"
+msgstr ""
+
+#: libdivecomputer.c:81
+msgid "ceiling (safety stop)"
+msgstr ""
+
 #: equipment.c:834
 msgid "clip-on"
 msgstr "clip-on"
@@ -1007,13 +1107,37 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
+#: libdivecomputer.c:78
+msgid "deco"
+msgstr ""
+
+#: libdivecomputer.c:81
+msgid "deepstop"
+msgstr ""
+
+#: libdivecomputer.c:81
+msgid "divetime"
+msgstr ""
+
 #: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
 msgstr "ft"
 
+#: libdivecomputer.c:80
+msgid "gaschange"
+msgstr ""
+
+#: libdivecomputer.c:82
+msgid "heading"
+msgstr ""
+
 #: equipment.c:830
 msgid "integrated"
 msgstr "integriert"
+
+#: libdivecomputer.c:101
+msgid "invalid event number"
+msgstr ""
 
 #: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
@@ -1031,14 +1155,28 @@ msgstr "US Pfund"
 msgid "m"
 msgstr ""
 
+#: libdivecomputer.c:82
+#, fuzzy
+msgid "maxdepth"
+msgstr "Max. Tiefe"
+
 #: divelist.c:1265
 msgid "min"
 msgstr "min"
+
+#: libdivecomputer.c:331
+#, c-format
+msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
+msgstr ""
 
 #: statistics.c:501
 #, c-format
 msgid "more than %d days"
 msgstr "mehr als %d Tage"
+
+#: libdivecomputer.c:78
+msgid "none"
+msgstr ""
 
 #: dive.c:41
 msgid "pascal"
@@ -1048,11 +1186,43 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
+#: libdivecomputer.c:78
+msgid "rbt"
+msgstr ""
+
+#: libdivecomputer.c:82
+msgid "rgbm"
+msgstr ""
+
+#: libdivecomputer.c:79
+msgid "safety stop"
+msgstr ""
+
+#: libdivecomputer.c:80
+msgid "safety stop (mandatory)"
+msgstr ""
+
+#: libdivecomputer.c:80
+msgid "safety stop (voluntary)"
+msgstr ""
+
+#: libdivecomputer.c:79
+msgid "surface"
+msgstr ""
+
+#: libdivecomputer.c:83
+msgid "tissue level warning"
+msgstr ""
+
+#: libdivecomputer.c:79
+msgid "transmitter"
+msgstr ""
+
 #: equipment.c:1386 equipment.c:1406
 msgid "unkn"
 msgstr "unbk"
 
-#: statistics.c:541
+#: libdivecomputer.c:81 statistics.c:541
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -1060,9 +1230,18 @@ msgstr "unbekannt"
 msgid "unspecified"
 msgstr "nicht angegeben"
 
+#: libdivecomputer.c:79
+#, fuzzy
+msgid "violation"
+msgstr "Ort"
+
 #: equipment.c:1522
 msgid "weight"
 msgstr "Gewicht"
+
+#: libdivecomputer.c:78
+msgid "workload"
+msgstr ""
 
 #~ msgctxt "Depth"
 #~ msgid ""
@@ -1071,9 +1250,6 @@ msgstr "Gewicht"
 #~ msgstr ""
 #~ "Tiefe\n"
 #~ "Ø"
-
-#~ msgid "Dive #%d - %s"
-#~ msgstr "Tauchgang #%d - %s"
 
 #~ msgctxt "Duration"
 #~ msgid ""

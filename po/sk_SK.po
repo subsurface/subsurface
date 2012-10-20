@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-19 08:42-0700\n"
+"POT-Creation-Date: 2012-10-20 14:22-0700\n"
 "PO-Revision-Date: 2012-10-16 00:12+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Mesiac"
 
-#: gtk-gui.c:1504
+#: gtk-gui.c:1513
 msgid " Please select dive computer and device. "
 msgstr "Voľba typu počítača a zariadia. "
 
@@ -165,7 +165,7 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Vyber default XML súbor"
 
-#: gtk-gui.c:1398
+#: gtk-gui.c:1407
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Vyber XML súbor pre import do aktuálneho data súboru"
 
@@ -250,7 +250,7 @@ msgstr "Prekročená Maximálna Hĺbka"
 msgid "Depth:"
 msgstr "Hĺbka:"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1375
 msgid "Device name"
 msgstr "Názov zariadenia"
 
@@ -265,11 +265,16 @@ msgstr "Ponor #%d - %s %02d/%02d/%04d um %d:%02d"
 msgid "Dive #%d - "
 msgstr "Ponor #%d - "
 
-#: gtk-gui.c:1122 info.c:700 statistics.c:711
+#: libdivecomputer.c:252
+#, fuzzy, c-format
+msgid "Dive %d: %s %d %04d"
+msgstr "Ponor #%d - %s"
+
+#: gtk-gui.c:1131 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informácie"
 
-#: gtk-gui.c:1114
+#: gtk-gui.c:1123
 msgid "Dive Notes"
 msgstr "Poznámky"
 
@@ -285,9 +290,13 @@ msgstr "Alarm Času Ponoru"
 msgid "Dive Time Info"
 msgstr "Info: Čas Ponoru"
 
-#: gtk-gui.c:1335
+#: gtk-gui.c:1344
 msgid "Dive computer"
 msgstr "Počítač"
+
+#: libdivecomputer.c:371
+msgid "Dive data import error"
+msgstr ""
 
 #: print.c:476
 msgid "Dive details"
@@ -313,7 +322,7 @@ msgstr "Divemaster"
 msgid "Dives"
 msgstr "Ponory"
 
-#: gtk-gui.c:913 gtk-gui.c:1496
+#: gtk-gui.c:913 gtk-gui.c:1505
 msgid "Download From Dive Computer"
 msgstr "Nahratie údajov z počítača"
 
@@ -361,9 +370,54 @@ msgstr "Povolit / zakázať udalosti"
 msgid "End"
 msgstr "Koniec"
 
-#: gtk-gui.c:1118 info.c:535
+#: gtk-gui.c:1127 info.c:535
 msgid "Equipment"
 msgstr "Výstroj"
+
+#: libdivecomputer.c:238
+msgid "Error parsing the datetime"
+msgstr ""
+
+#: libdivecomputer.c:257
+msgid "Error parsing the divetime"
+msgstr ""
+
+#: libdivecomputer.c:284
+msgid "Error parsing the gas mix"
+msgstr ""
+
+#: libdivecomputer.c:277
+msgid "Error parsing the gas mix count"
+msgstr ""
+
+#: libdivecomputer.c:267
+msgid "Error parsing the maxdepth"
+msgstr ""
+
+#: libdivecomputer.c:292
+msgid "Error parsing the samples"
+msgstr ""
+
+#: libdivecomputer.c:367
+msgid "Error registering the cancellation handler."
+msgstr ""
+
+#: libdivecomputer.c:229
+msgid "Error registering the data"
+msgstr ""
+
+#: libdivecomputer.c:362
+msgid "Error registering the event handler."
+msgstr ""
+
+#: libdivecomputer.c:337
+#, c-format
+msgid "Event: systime=%<PRId64>, devtime=%u\n"
+msgstr ""
+
+#: libdivecomputer.c:323
+msgid "Event: waiting for user action"
+msgstr ""
 
 #: divelist.c:2116
 msgid "Expand all"
@@ -621,6 +675,10 @@ msgstr "Poznámky"
 msgid "Nov"
 msgstr "Nov"
 
+#: libdivecomputer.c:82
+msgid "OLF"
+msgstr ""
+
 #: divelist.c:1272 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
 msgstr "OTU"
@@ -629,6 +687,10 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Okt"
 
+#: libdivecomputer.c:425
+msgid "Odd pthread error return"
+msgstr ""
+
 #: gtk-gui.c:907
 msgid "Open"
 msgstr "Otvoriť"
@@ -636,6 +698,10 @@ msgstr "Otvoriť"
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Otvoriť súbor"
+
+#: libdivecomputer.c:82
+msgid "PO2"
+msgstr ""
 
 #: uemis.c:144
 msgid "PO2 Ascend Alarm"
@@ -726,7 +792,7 @@ msgstr "Vymaž vybrané ponory z akcie"
 msgid "Renumber"
 msgstr "Prečíslovanie"
 
-#: gtk-gui.c:1473
+#: gtk-gui.c:1482
 msgid "Retry"
 msgstr "Skús znovu"
 
@@ -811,7 +877,7 @@ msgstr "Štart"
 msgid "Statistics"
 msgstr "Štatistika"
 
-#: gtk-gui.c:1126
+#: gtk-gui.c:1135
 msgid "Stats"
 msgstr "Štatistiky"
 
@@ -917,6 +983,20 @@ msgstr ""
 msgid "Uemis init failed"
 msgstr "Uemis - inicializácia neúspešná"
 
+#: libdivecomputer.c:388
+msgid "Unable to create libdivecomputer context"
+msgstr ""
+
+#: libdivecomputer.c:223
+#, c-format
+msgid "Unable to create parser for %s %s"
+msgstr ""
+
+#: libdivecomputer.c:390
+#, fuzzy, c-format
+msgid "Unable to open %s %s (%s)"
+msgstr "Chyba pri otváraní %i súborov"
+
 #: gtk-gui.c:579
 msgid "Units"
 msgstr "Jednotky"
@@ -983,9 +1063,17 @@ msgstr ""
 msgid "air"
 msgstr "bar"
 
+#: libdivecomputer.c:82
+msgid "airtime"
+msgstr ""
+
 #: equipment.c:832
 msgid "ankle"
 msgstr "členok"
+
+#: libdivecomputer.c:78
+msgid "ascent"
+msgstr ""
 
 #: equipment.c:833
 msgid "backplate weight"
@@ -999,6 +1087,18 @@ msgstr "bar"
 msgid "belt"
 msgstr "opasok"
 
+#: libdivecomputer.c:79
+msgid "bookmark"
+msgstr ""
+
+#: libdivecomputer.c:78
+msgid "ceiling"
+msgstr ""
+
+#: libdivecomputer.c:81
+msgid "ceiling (safety stop)"
+msgstr ""
+
 #: equipment.c:834
 msgid "clip-on"
 msgstr "clip-on"
@@ -1007,13 +1107,37 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
+#: libdivecomputer.c:78
+msgid "deco"
+msgstr ""
+
+#: libdivecomputer.c:81
+msgid "deepstop"
+msgstr ""
+
+#: libdivecomputer.c:81
+msgid "divetime"
+msgstr ""
+
 #: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
 msgstr "ft"
 
+#: libdivecomputer.c:80
+msgid "gaschange"
+msgstr ""
+
+#: libdivecomputer.c:82
+msgid "heading"
+msgstr ""
+
 #: equipment.c:830
 msgid "integrated"
 msgstr "integrované"
+
+#: libdivecomputer.c:101
+msgid "invalid event number"
+msgstr ""
 
 #: dive.c:136 equipment.c:1045 gtk-gui.c:607
 msgid "kg"
@@ -1031,14 +1155,28 @@ msgstr "US libra"
 msgid "m"
 msgstr ""
 
+#: libdivecomputer.c:82
+#, fuzzy
+msgid "maxdepth"
+msgstr "Max. hĺbka"
+
 #: divelist.c:1265
 msgid "min"
 msgstr "min"
+
+#: libdivecomputer.c:331
+#, c-format
+msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
+msgstr ""
 
 #: statistics.c:501
 #, c-format
 msgid "more than %d days"
 msgstr "viac než %d dní"
+
+#: libdivecomputer.c:78
+msgid "none"
+msgstr ""
 
 #: dive.c:41
 msgid "pascal"
@@ -1048,11 +1186,43 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
+#: libdivecomputer.c:78
+msgid "rbt"
+msgstr ""
+
+#: libdivecomputer.c:82
+msgid "rgbm"
+msgstr ""
+
+#: libdivecomputer.c:79
+msgid "safety stop"
+msgstr ""
+
+#: libdivecomputer.c:80
+msgid "safety stop (mandatory)"
+msgstr ""
+
+#: libdivecomputer.c:80
+msgid "safety stop (voluntary)"
+msgstr ""
+
+#: libdivecomputer.c:79
+msgid "surface"
+msgstr ""
+
+#: libdivecomputer.c:83
+msgid "tissue level warning"
+msgstr ""
+
+#: libdivecomputer.c:79
+msgid "transmitter"
+msgstr ""
+
 #: equipment.c:1386 equipment.c:1406
 msgid "unkn"
 msgstr "nez."
 
-#: statistics.c:541
+#: libdivecomputer.c:81 statistics.c:541
 msgid "unknown"
 msgstr "neznámy"
 
@@ -1060,9 +1230,18 @@ msgstr "neznámy"
 msgid "unspecified"
 msgstr "nešpecifikovaný"
 
+#: libdivecomputer.c:79
+#, fuzzy
+msgid "violation"
+msgstr "Miesto"
+
 #: equipment.c:1522
 msgid "weight"
 msgstr "hmotnosť"
+
+#: libdivecomputer.c:78
+msgid "workload"
+msgstr ""
 
 #, fuzzy
 #~ msgctxt "Depth"
@@ -1072,9 +1251,6 @@ msgstr "hmotnosť"
 #~ msgstr ""
 #~ "Priemerná\n"
 #~ "Hĺbka"
-
-#~ msgid "Dive #%d - %s"
-#~ msgstr "Ponor #%d - %s"
 
 #, fuzzy
 #~ msgctxt "Duration"
