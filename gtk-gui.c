@@ -847,13 +847,15 @@ static void about_dialog(GtkWidget *w, gpointer data)
 			logo_property = "logo";
 		}
 	}
-
 	gtk_show_about_dialog(NULL,
+		"title", _("About Subsurface"),
 		"program-name", "Subsurface",
 		"comments", _("Multi-platform divelog software in C"),
-		"license", "GPLv2",
+		"website", "http://subsurface.hohndel.org",
+		"license", "GNU General Public License, version 2\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
 		"version", VERSION_STRING,
 		"copyright", _("Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"),
+		"translator_credits", _("translator-credits"),
 		"logo-icon-name", "subsurface",
 		/* Must be last: */
 		logo_property, logo,
