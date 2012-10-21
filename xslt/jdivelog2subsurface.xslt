@@ -160,7 +160,23 @@ Comment: <xsl:value-of select="Comment"/>
       <!-- events -->
       <xsl:for-each select="DIVE/SAMPLES/ALARM">
         <xsl:if test=". != 'SURFACE'">
-          <event type="" name="{.}">
+	  <event type="">
+            <xsl:attribute name="name">
+              <xsl:choose>
+                <xsl:when test=". = 'SLOW'">
+                  <xsl:value-of select="'ascent'"/>
+                </xsl:when>
+                <xsl:when test=". = 'ATTENTION'">
+                  <xsl:value-of select="'violation'"/>
+                </xsl:when>
+                <xsl:when test=". = 'DECO'">
+                  <xsl:value-of select="'deco'"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
+	    </xsl:attribute>
             <xsl:attribute name="time">
               <xsl:call-template name="timeConvert">
                 <xsl:with-param name="timeSec" select="count(preceding-sibling::D) * $delta"/>
