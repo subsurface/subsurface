@@ -34,6 +34,10 @@ On Debian the package names are different; try libxml2-dev libgtk2.0-dev
 glib-2.0 libgconf2-dev, but it seems the cairo package at least in
 Squeeze is too old.
 
+For debian/ubuntu distribution:
+sudo apt-get install libxml2-dev libgtk2.0-dev  gconf2 libtool libgconf2-dev
+ 
+
 You also need to have libdivecomputer installed, which goes something like this:
 
 git clone \
