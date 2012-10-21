@@ -74,6 +74,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 static void handle_event(struct dive *dive, struct sample *sample, dc_sample_value_t value)
 {
 	int type, time;
+	/* we mark these for translation here, but we store the untranslated strings
+	 * and only translate them when they are displayed on screen */
 	static const char *events[] = {
 		N_("none"), N_("deco"), N_("rbt"), N_("ascent"), N_("ceiling"), N_("workload"),
 		N_("transmitter"), N_("violation"), N_("bookmark"), N_("surface"), N_("safety stop"),
@@ -98,9 +100,9 @@ static void handle_event(struct dive *dive, struct sample *sample, dc_sample_val
 	 * Other evens might be more interesting, but for now we just print them out.
 	 */
 	type = value.event.type;
-	name = _("invalid event number");
+	name = N_("invalid event number");
 	if (type < nr_events)
-		name = _(events[type]);
+		name = events[type];
 
 	time = value.event.time;
 	if (sample)

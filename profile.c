@@ -284,7 +284,8 @@ void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 	int i;
 
 	for (i = 0; i < evn_used; i++) {
-		callback(ev_namelist[i].ev_name, &ev_namelist[i].plot_ev, data);
+		/* here we display an event name on screen - so translate */
+		callback(_(ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
 	}
 }
 
@@ -349,7 +350,8 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	cairo_move_to(gc->cr, x-9, y+4);
 	cairo_line_to(gc->cr, x-9, y+4);
 	cairo_stroke(gc->cr);
-	attach_tooltip(x-15, y-6, 12, 12, event->name);
+	/* we display the event on screen - so translate */
+	attach_tooltip(x-15, y-6, 12, 12, _(event->name));
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
