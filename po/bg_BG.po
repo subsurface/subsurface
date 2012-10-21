@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 22:40-0700\n"
+"POT-Creation-Date: 2012-10-21 00:50-0700\n"
 "PO-Revision-Date: 2012-11-10 16:27+0300\n"
 "Last-Translator: Lubomir I. Ivanov <neolit123@gmail.com>>\n"
 "Language-Team: Bulgarian\n"
@@ -81,16 +81,13 @@ msgstr "%dч %dмин"
 msgid "(%s) or (%s)"
 msgstr "(%s) или (%s)"
 
-#: gtk-gui.c:922
-msgid "About"
-msgstr "Информация"
-
-#: gtk-gui.c:851
+#: gtk-gui.c:851 gtk-gui.c:922
 msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-msgid "Add Dive"
+#, fuzzy
+msgid "Add Dive..."
 msgstr "Добави Гмуркане"
 
 #: divelist.c:2023
@@ -327,8 +324,13 @@ msgstr "Водач"
 msgid "Dives"
 msgstr "Гмуркания"
 
-#: gtk-gui.c:915 gtk-gui.c:1507
+#: gtk-gui.c:1507
 msgid "Download From Dive Computer"
+msgstr "Изтегли от Леководолазен Компютър"
+
+#: gtk-gui.c:915
+#, fuzzy
+msgid "Download From Dive Computer..."
 msgstr "Изтегли от Леководолазен Компютър"
 
 #: statistics.c:160
@@ -490,7 +492,8 @@ msgid "Help"
 msgstr "Помощ"
 
 #: gtk-gui.c:914
-msgid "Import XML File(s)"
+#, fuzzy
+msgid "Import XML File(s)..."
 msgstr "Вмъкване на XML файл(ове)"
 
 #: gtk-gui.c:925
@@ -697,13 +700,14 @@ msgstr "Окт"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:909
-msgid "Open"
-msgstr "Отвори"
-
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Отвори Файл"
+
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Open..."
+msgstr "Отвори"
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -725,8 +729,13 @@ msgstr "Внимание: Парциално О2 Налягане в Зелен�
 msgid "PSI"
 msgstr "PSI"
 
-#: gtk-gui.c:572 gtk-gui.c:917
+#: gtk-gui.c:572
 msgid "Preferences"
+msgstr "Настройки"
+
+#: gtk-gui.c:917
+#, fuzzy
+msgid "Preferences..."
 msgstr "Настройки"
 
 #: equipment.c:962 equipment.c:968
@@ -741,10 +750,6 @@ msgstr "Налягане:"
 msgid "Pretty print"
 msgstr "Красив печат"
 
-#: gtk-gui.c:913
-msgid "Print"
-msgstr "Напечатай"
-
 #: print.c:507
 msgid "Print only selected dives"
 msgstr "Напечатай само избраните гмуркания"
@@ -756,6 +761,11 @@ msgstr "Напечатай селекцията"
 #: print.c:480
 msgid "Print type"
 msgstr "Тип на печата"
+
+#: gtk-gui.c:913
+#, fuzzy
+msgid "Print..."
+msgstr "Напечатай"
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -794,8 +804,13 @@ msgstr "Изтрий гмуркане от пътуване"
 msgid "Remove selected dives from trip"
 msgstr "Изтрий избраните гмуркания от пътуване"
 
-#: gtk-gui.c:804 gtk-gui.c:918
+#: gtk-gui.c:804
 msgid "Renumber"
+msgstr "Преномерирай"
+
+#: gtk-gui.c:918
+#, fuzzy
+msgid "Renumber..."
 msgstr "Преномерирай"
 
 #: gtk-gui.c:1484
@@ -818,12 +833,9 @@ msgstr "Нарушение на Безопасно Спиране"
 msgid "Sat"
 msgstr "Съб"
 
-#: gtk-gui.c:910
-msgid "Save"
-msgstr "Запиши"
-
 #: gtk-gui.c:911
-msgid "Save As"
+#, fuzzy
+msgid "Save As..."
 msgstr "Запиши като"
 
 #: gtk-gui.c:228
@@ -834,8 +846,18 @@ msgstr "Запиши Промените?"
 msgid "Save File As"
 msgstr "Запиши Файл Като?"
 
-#: gtk-gui.c:764 gtk-gui.c:920
+#: gtk-gui.c:910
+#, fuzzy
+msgid "Save..."
+msgstr "Запиши"
+
+#: gtk-gui.c:764
 msgid "SelectEvents"
+msgstr "Избери Събития"
+
+#: gtk-gui.c:920
+#, fuzzy
+msgid "SelectEvents..."
 msgstr "Избери Събития"
 
 #: main.c:47
@@ -1251,6 +1273,9 @@ msgstr "Тегло"
 #: libdivecomputer.c:78
 msgid "workload"
 msgstr ""
+
+#~ msgid "About"
+#~ msgstr "Информация"
 
 #, fuzzy
 #~ msgctxt "Depth"

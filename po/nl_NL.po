@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 22:40-0700\n"
+"POT-Creation-Date: 2012-10-21 00:50-0700\n"
 "PO-Revision-Date: 2012-10-11 13:08+0100\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: Dutch\n"
@@ -81,16 +81,13 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) of (%s)"
 
-#: gtk-gui.c:922
-msgid "About"
-msgstr ""
-
-#: gtk-gui.c:851
+#: gtk-gui.c:851 gtk-gui.c:922
 msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-msgid "Add Dive"
+#, fuzzy
+msgid "Add Dive..."
 msgstr "Duik toevoegen"
 
 #: divelist.c:2023
@@ -326,8 +323,13 @@ msgstr "Duik-instructeur"
 msgid "Dives"
 msgstr "Duiken"
 
-#: gtk-gui.c:915 gtk-gui.c:1507
+#: gtk-gui.c:1507
 msgid "Download From Dive Computer"
+msgstr "Download uit duikcomputer"
+
+#: gtk-gui.c:915
+#, fuzzy
+msgid "Download From Dive Computer..."
 msgstr "Download uit duikcomputer"
 
 #: statistics.c:160
@@ -489,7 +491,8 @@ msgid "Help"
 msgstr "Help"
 
 #: gtk-gui.c:914
-msgid "Import XML File(s)"
+#, fuzzy
+msgid "Import XML File(s)..."
 msgstr "Import XML bestand(en)"
 
 #: gtk-gui.c:925
@@ -695,12 +698,13 @@ msgstr "Okt"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:909
-msgid "Open"
-msgstr "Bestand openen"
-
 #: gtk-gui.c:315
 msgid "Open File"
+msgstr "Bestand openen"
+
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Open..."
 msgstr "Bestand openen"
 
 #: libdivecomputer.c:82
@@ -723,8 +727,13 @@ msgstr "Waarschuwing: PO2 Groen"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:917
+#: gtk-gui.c:572
 msgid "Preferences"
+msgstr "Instellingen"
+
+#: gtk-gui.c:917
+#, fuzzy
+msgid "Preferences..."
 msgstr "Instellingen"
 
 #: equipment.c:962 equipment.c:968
@@ -739,10 +748,6 @@ msgstr "Druk:"
 msgid "Pretty print"
 msgstr "Mooi afdrukken"
 
-#: gtk-gui.c:913
-msgid "Print"
-msgstr "Afdrukken"
-
 #: print.c:507
 msgid "Print only selected dives"
 msgstr "Alleen de geselecteerde duiken printen"
@@ -754,6 +759,11 @@ msgstr "Selectie afdrukken"
 #: print.c:480
 msgid "Print type"
 msgstr "Print type"
+
+#: gtk-gui.c:913
+#, fuzzy
+msgid "Print..."
+msgstr "Afdrukken"
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -792,8 +802,13 @@ msgstr "Duik uit trip verwijderen"
 msgid "Remove selected dives from trip"
 msgstr "Geselecteerde duiken uit trip verwijderen"
 
-#: gtk-gui.c:804 gtk-gui.c:918
+#: gtk-gui.c:804
 msgid "Renumber"
+msgstr "Hernummeren"
+
+#: gtk-gui.c:918
+#, fuzzy
+msgid "Renumber..."
 msgstr "Hernummeren"
 
 #: gtk-gui.c:1484
@@ -816,12 +831,9 @@ msgstr "veiligheidsstop overtreding"
 msgid "Sat"
 msgstr "Za"
 
-#: gtk-gui.c:910
-msgid "Save"
-msgstr "Opslaan"
-
 #: gtk-gui.c:911
-msgid "Save As"
+#, fuzzy
+msgid "Save As..."
 msgstr "Bestand opslaan als"
 
 #: gtk-gui.c:228
@@ -832,8 +844,18 @@ msgstr "Aanpassingen opslaan?"
 msgid "Save File As"
 msgstr "Bestand opslaan als"
 
-#: gtk-gui.c:764 gtk-gui.c:920
+#: gtk-gui.c:910
+#, fuzzy
+msgid "Save..."
+msgstr "Opslaan"
+
+#: gtk-gui.c:764
 msgid "SelectEvents"
+msgstr "gebeurtenissen selecteren"
+
+#: gtk-gui.c:920
+#, fuzzy
+msgid "SelectEvents..."
 msgstr "gebeurtenissen selecteren"
 
 #: main.c:47

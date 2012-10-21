@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 22:40-0700\n"
+"POT-Creation-Date: 2012-10-21 00:50-0700\n"
 "PO-Revision-Date: 2012-10-19 19:51+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
@@ -81,16 +81,13 @@ msgstr "%dt %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) eller (%s)"
 
-#: gtk-gui.c:922
-msgid "About"
-msgstr "Om"
-
-#: gtk-gui.c:851
+#: gtk-gui.c:851 gtk-gui.c:922
 msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-msgid "Add Dive"
+#, fuzzy
+msgid "Add Dive..."
 msgstr "Nytt dykk"
 
 #: divelist.c:2023
@@ -326,8 +323,13 @@ msgstr "Dykkeleder"
 msgid "Dives"
 msgstr "Dykk"
 
-#: gtk-gui.c:915 gtk-gui.c:1507
+#: gtk-gui.c:1507
 msgid "Download From Dive Computer"
+msgstr "Last ned fra dykkecomputer"
+
+#: gtk-gui.c:915
+#, fuzzy
+msgid "Download From Dive Computer..."
 msgstr "Last ned fra dykkecomputer"
 
 #: statistics.c:160
@@ -489,7 +491,8 @@ msgid "Help"
 msgstr "Hjelp"
 
 #: gtk-gui.c:914
-msgid "Import XML File(s)"
+#, fuzzy
+msgid "Import XML File(s)..."
 msgstr "Importer XML-fil(er)"
 
 #: gtk-gui.c:925
@@ -695,13 +698,14 @@ msgstr "okt"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:909
-msgid "Open"
-msgstr "Åpne"
-
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Åpne fil"
+
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Open..."
+msgstr "Åpne"
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -723,8 +727,13 @@ msgstr "Advarsel: grønn / PO2"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:917
+#: gtk-gui.c:572
 msgid "Preferences"
+msgstr "Valg"
+
+#: gtk-gui.c:917
+#, fuzzy
+msgid "Preferences..."
 msgstr "Valg"
 
 #: equipment.c:962 equipment.c:968
@@ -739,10 +748,6 @@ msgstr "Trykk:"
 msgid "Pretty print"
 msgstr "Pen utskrift"
 
-#: gtk-gui.c:913
-msgid "Print"
-msgstr "Skriv ut"
-
 #: print.c:507
 msgid "Print only selected dives"
 msgstr "Skriv ut valgte dykk"
@@ -754,6 +759,11 @@ msgstr "Skriv ut valg"
 #: print.c:480
 msgid "Print type"
 msgstr "Utskriftstype"
+
+#: gtk-gui.c:913
+#, fuzzy
+msgid "Print..."
+msgstr "Skriv ut"
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -792,8 +802,13 @@ msgstr "Fjern dykk fra tur"
 msgid "Remove selected dives from trip"
 msgstr "Fjern valgte dykk fra tur"
 
-#: gtk-gui.c:804 gtk-gui.c:918
+#: gtk-gui.c:804
 msgid "Renumber"
+msgstr "Oppdater nummerering"
+
+#: gtk-gui.c:918
+#, fuzzy
+msgid "Renumber..."
 msgstr "Oppdater nummerering"
 
 #: gtk-gui.c:1484
@@ -816,12 +831,9 @@ msgstr "Brudd på sikkerhetsstopp"
 msgid "Sat"
 msgstr "lør"
 
-#: gtk-gui.c:910
-msgid "Save"
-msgstr "Lagre"
-
 #: gtk-gui.c:911
-msgid "Save As"
+#, fuzzy
+msgid "Save As..."
 msgstr "Lagre som"
 
 #: gtk-gui.c:228
@@ -832,8 +844,18 @@ msgstr "Lagre endringer?"
 msgid "Save File As"
 msgstr "Lagre fil som"
 
-#: gtk-gui.c:764 gtk-gui.c:920
+#: gtk-gui.c:910
+#, fuzzy
+msgid "Save..."
+msgstr "Lagre"
+
+#: gtk-gui.c:764
 msgid "SelectEvents"
+msgstr "Velg hendelser"
+
+#: gtk-gui.c:920
+#, fuzzy
+msgid "SelectEvents..."
 msgstr "Velg hendelser"
 
 #: main.c:47
@@ -1249,6 +1271,9 @@ msgstr "Vekt"
 #: libdivecomputer.c:78
 msgid "workload"
 msgstr ""
+
+#~ msgid "About"
+#~ msgstr "Om"
 
 #, fuzzy
 #~ msgctxt "Depth"

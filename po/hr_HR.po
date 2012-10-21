@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 22:40-0700\n"
+"POT-Creation-Date: 2012-10-21 00:50-0700\n"
 "PO-Revision-Date: 2012-10-18 15:00+0100\n"
 "Last-Translator: Ivan Habunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian\n"
@@ -81,16 +81,13 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) ili (%s)"
 
-#: gtk-gui.c:922
-msgid "About"
-msgstr "O programu"
-
-#: gtk-gui.c:851
+#: gtk-gui.c:851 gtk-gui.c:922
 msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-msgid "Add Dive"
+#, fuzzy
+msgid "Add Dive..."
 msgstr "Dodaj uron"
 
 #: divelist.c:2023
@@ -326,8 +323,13 @@ msgstr "Voditelj"
 msgid "Dives"
 msgstr "Uroni"
 
-#: gtk-gui.c:915 gtk-gui.c:1507
+#: gtk-gui.c:1507
 msgid "Download From Dive Computer"
+msgstr "Preuzmi s ronilačkog računala"
+
+#: gtk-gui.c:915
+#, fuzzy
+msgid "Download From Dive Computer..."
 msgstr "Preuzmi s ronilačkog računala"
 
 #: statistics.c:160
@@ -489,7 +491,8 @@ msgid "Help"
 msgstr "Pomoć"
 
 #: gtk-gui.c:914
-msgid "Import XML File(s)"
+#, fuzzy
+msgid "Import XML File(s)..."
 msgstr "Uvezi XML datoteke"
 
 #: gtk-gui.c:925
@@ -695,13 +698,14 @@ msgstr "Lis"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:909
-msgid "Open"
-msgstr "Otvori"
-
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Otvori datoteku"
+
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Open..."
+msgstr "Otvori"
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -723,8 +727,13 @@ msgstr "PO2 Upozorenje: Zeleno"
 msgid "PSI"
 msgstr "PSI"
 
-#: gtk-gui.c:572 gtk-gui.c:917
+#: gtk-gui.c:572
 msgid "Preferences"
+msgstr "Postavke"
+
+#: gtk-gui.c:917
+#, fuzzy
+msgid "Preferences..."
 msgstr "Postavke"
 
 #: equipment.c:962 equipment.c:968
@@ -739,10 +748,6 @@ msgstr "Pritisak:"
 msgid "Pretty print"
 msgstr "Lijep ispis"
 
-#: gtk-gui.c:913
-msgid "Print"
-msgstr "Ispis"
-
 #: print.c:507
 msgid "Print only selected dives"
 msgstr "Ispiši odabrane urone"
@@ -754,6 +759,11 @@ msgstr "Ispiši odabrano"
 #: print.c:480
 msgid "Print type"
 msgstr "Vrsta ispisa"
+
+#: gtk-gui.c:913
+#, fuzzy
+msgid "Print..."
+msgstr "Ispis"
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -792,8 +802,13 @@ msgstr "Ukloni uron iz grupe"
 msgid "Remove selected dives from trip"
 msgstr "Ukloni odabrane urone iz grupe"
 
-#: gtk-gui.c:804 gtk-gui.c:918
+#: gtk-gui.c:804
 msgid "Renumber"
+msgstr "Renumeriraj"
+
+#: gtk-gui.c:918
+#, fuzzy
+msgid "Renumber..."
 msgstr "Renumeriraj"
 
 #: gtk-gui.c:1484
@@ -816,12 +831,9 @@ msgstr "Kršenje sigurnosne stanke"
 msgid "Sat"
 msgstr "Sub"
 
-#: gtk-gui.c:910
-msgid "Save"
-msgstr "Spremi"
-
 #: gtk-gui.c:911
-msgid "Save As"
+#, fuzzy
+msgid "Save As..."
 msgstr "Spremi kao"
 
 #: gtk-gui.c:228
@@ -832,8 +844,18 @@ msgstr "Spremi promjene?"
 msgid "Save File As"
 msgstr "Spremi datoteku kao"
 
-#: gtk-gui.c:764 gtk-gui.c:920
+#: gtk-gui.c:910
+#, fuzzy
+msgid "Save..."
+msgstr "Spremi"
+
+#: gtk-gui.c:764
 msgid "SelectEvents"
+msgstr "Odaberi događaje"
+
+#: gtk-gui.c:920
+#, fuzzy
+msgid "SelectEvents..."
 msgstr "Odaberi događaje"
 
 #: main.c:47
@@ -1250,6 +1272,9 @@ msgstr "težina"
 #: libdivecomputer.c:78
 msgid "workload"
 msgstr ""
+
+#~ msgid "About"
+#~ msgstr "O programu"
 
 #, fuzzy
 #~ msgctxt "Depth"

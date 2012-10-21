@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 22:40-0700\n"
+"POT-Creation-Date: 2012-10-21 00:50-0700\n"
 "PO-Revision-Date: 2012-10-15 14:02+0100\n"
 "Last-Translator: Martin Gysel <me@bearsh.org>\n"
 "Language-Team: German\n"
@@ -81,16 +81,13 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) oder (%s)"
 
-#: gtk-gui.c:922
-msgid "About"
-msgstr "Info"
-
-#: gtk-gui.c:851
+#: gtk-gui.c:851 gtk-gui.c:922
 msgid "About Subsurface"
 msgstr "Info zu Subsurface"
 
 #: gtk-gui.c:916
-msgid "Add Dive"
+#, fuzzy
+msgid "Add Dive..."
 msgstr "Tauchgang hinzufügen"
 
 #: divelist.c:2023
@@ -328,8 +325,13 @@ msgstr "Diveguide"
 msgid "Dives"
 msgstr "Tauchgänge"
 
-#: gtk-gui.c:915 gtk-gui.c:1507
+#: gtk-gui.c:1507
 msgid "Download From Dive Computer"
+msgstr "Vom Tauchcomputer runterladen"
+
+#: gtk-gui.c:915
+#, fuzzy
+msgid "Download From Dive Computer..."
 msgstr "Vom Tauchcomputer runterladen"
 
 #: statistics.c:160
@@ -491,7 +493,8 @@ msgid "Help"
 msgstr "Hilfe"
 
 #: gtk-gui.c:914
-msgid "Import XML File(s)"
+#, fuzzy
+msgid "Import XML File(s)..."
 msgstr "XML Datei(en) einlesen"
 
 #: gtk-gui.c:925
@@ -697,13 +700,14 @@ msgstr "Okt"
 msgid "Odd pthread error return"
 msgstr "Unbekannter pthread Fehlercode"
 
-#: gtk-gui.c:909
-msgid "Open"
-msgstr "Öffnen"
-
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Datei öffnen"
+
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Open..."
+msgstr "Öffnen"
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -725,8 +729,13 @@ msgstr "Warnung: PO2 Grün"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:917
+#: gtk-gui.c:572
 msgid "Preferences"
+msgstr "Einstellungen"
+
+#: gtk-gui.c:917
+#, fuzzy
+msgid "Preferences..."
 msgstr "Einstellungen"
 
 #: equipment.c:962 equipment.c:968
@@ -741,10 +750,6 @@ msgstr "Druck:"
 msgid "Pretty print"
 msgstr "Schön drucken"
 
-#: gtk-gui.c:913
-msgid "Print"
-msgstr "Drucken"
-
 #: print.c:507
 msgid "Print only selected dives"
 msgstr "Nur ausgewählte Tauchgänge drucken"
@@ -756,6 +761,11 @@ msgstr "Auswahl drucken"
 #: print.c:480
 msgid "Print type"
 msgstr "Art des Ausdrucks"
+
+#: gtk-gui.c:913
+#, fuzzy
+msgid "Print..."
+msgstr "Drucken"
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -794,8 +804,13 @@ msgstr "Tauchgang aus Reise entfernen"
 msgid "Remove selected dives from trip"
 msgstr "Ausgewählte Tauchgänge aus Reise entfernen"
 
-#: gtk-gui.c:804 gtk-gui.c:918
+#: gtk-gui.c:804
 msgid "Renumber"
+msgstr "Neu nummerieren"
+
+#: gtk-gui.c:918
+#, fuzzy
+msgid "Renumber..."
 msgstr "Neu nummerieren"
 
 #: gtk-gui.c:1484
@@ -818,12 +833,9 @@ msgstr "Verletzung des Sicherheitsstops"
 msgid "Sat"
 msgstr "Sa"
 
-#: gtk-gui.c:910
-msgid "Save"
-msgstr "Speichern"
-
 #: gtk-gui.c:911
-msgid "Save As"
+#, fuzzy
+msgid "Save As..."
 msgstr "Speichern unter"
 
 #: gtk-gui.c:228
@@ -834,8 +846,18 @@ msgstr "Änderungen speichern?"
 msgid "Save File As"
 msgstr "Datei speichern unter"
 
-#: gtk-gui.c:764 gtk-gui.c:920
+#: gtk-gui.c:910
+#, fuzzy
+msgid "Save..."
+msgstr "Speichern"
+
+#: gtk-gui.c:764
 msgid "SelectEvents"
+msgstr "Ereignisse auswählen"
+
+#: gtk-gui.c:920
+#, fuzzy
+msgid "SelectEvents..."
 msgstr "Ereignisse auswählen"
 
 #: main.c:47
@@ -1220,7 +1242,9 @@ msgstr "Warnung auf Gewebe-Ebene"
 
 #: gtk-gui.c:858
 msgid "translator-credits"
-msgstr "Dirk Hohndel\nMartin Gysel"
+msgstr ""
+"Dirk Hohndel\n"
+"Martin Gysel"
 
 #: libdivecomputer.c:79
 msgid "transmitter"
@@ -1249,6 +1273,9 @@ msgstr "Gewicht"
 #: libdivecomputer.c:78
 msgid "workload"
 msgstr "Arbeit"
+
+#~ msgid "About"
+#~ msgstr "Info"
 
 #~ msgctxt "Depth"
 #~ msgid ""

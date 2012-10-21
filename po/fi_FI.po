@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 22:40-0700\n"
+"POT-Creation-Date: 2012-10-21 00:50-0700\n"
 "PO-Revision-Date: 2012-10-15 22:41+0300\n"
 "Last-Translator: Tommi Saviranta <wnd@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -81,16 +81,13 @@ msgstr "%d t %d min"
 msgid "(%s) or (%s)"
 msgstr "(%s) tai (%s)"
 
-#: gtk-gui.c:922
-msgid "About"
-msgstr "Tietoja"
-
-#: gtk-gui.c:851
+#: gtk-gui.c:851 gtk-gui.c:922
 msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-msgid "Add Dive"
+#, fuzzy
+msgid "Add Dive..."
 msgstr "Lisää sukellus"
 
 #: divelist.c:2023
@@ -326,8 +323,13 @@ msgstr "Sukellusvanhin"
 msgid "Dives"
 msgstr "Sukelluskerrat"
 
-#: gtk-gui.c:915 gtk-gui.c:1507
+#: gtk-gui.c:1507
 msgid "Download From Dive Computer"
+msgstr "Hae sukellustietokoneelta"
+
+#: gtk-gui.c:915
+#, fuzzy
+msgid "Download From Dive Computer..."
 msgstr "Hae sukellustietokoneelta"
 
 #: statistics.c:160
@@ -489,7 +491,8 @@ msgid "Help"
 msgstr "Ohje"
 
 #: gtk-gui.c:914
-msgid "Import XML File(s)"
+#, fuzzy
+msgid "Import XML File(s)..."
 msgstr "Liitä tiedot XML-tiedostosta"
 
 #: gtk-gui.c:925
@@ -695,13 +698,14 @@ msgstr "loka"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:909
-msgid "Open"
-msgstr "Avaa"
-
 #: gtk-gui.c:315
 msgid "Open File"
 msgstr "Avaa tiedosto"
+
+#: gtk-gui.c:909
+#, fuzzy
+msgid "Open..."
+msgstr "Avaa"
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -723,8 +727,13 @@ msgstr "Varoitus: hapen osapaine (green) TODO"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:917
+#: gtk-gui.c:572
 msgid "Preferences"
+msgstr "Asetukset"
+
+#: gtk-gui.c:917
+#, fuzzy
+msgid "Preferences..."
 msgstr "Asetukset"
 
 #: equipment.c:962 equipment.c:968
@@ -739,10 +748,6 @@ msgstr "Paine:"
 msgid "Pretty print"
 msgstr "Hieno tuloste"
 
-#: gtk-gui.c:913
-msgid "Print"
-msgstr "Tulosta"
-
 #: print.c:507
 msgid "Print only selected dives"
 msgstr "Tulosta valitut sukellukset"
@@ -754,6 +759,11 @@ msgstr "Tulosteen valinta"
 #: print.c:480
 msgid "Print type"
 msgstr "Tulosteen tyyppi"
+
+#: gtk-gui.c:913
+#, fuzzy
+msgid "Print..."
+msgstr "Tulosta"
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -792,8 +802,13 @@ msgstr "Erota sukellus pois retkestä"
 msgid "Remove selected dives from trip"
 msgstr "Erota valitut sukellukset pois retkestä"
 
-#: gtk-gui.c:804 gtk-gui.c:918
+#: gtk-gui.c:804
 msgid "Renumber"
+msgstr "Uudellennumeroi"
+
+#: gtk-gui.c:918
+#, fuzzy
+msgid "Renumber..."
 msgstr "Uudellennumeroi"
 
 #: gtk-gui.c:1484
@@ -816,12 +831,9 @@ msgstr "Turvapysähdyksen laiminlyönti"
 msgid "Sat"
 msgstr "la"
 
-#: gtk-gui.c:910
-msgid "Save"
-msgstr "Tallenna"
-
 #: gtk-gui.c:911
-msgid "Save As"
+#, fuzzy
+msgid "Save As..."
 msgstr "Tallenna nimellä..."
 
 #: gtk-gui.c:228
@@ -832,8 +844,18 @@ msgstr "Tallenna muutokset?"
 msgid "Save File As"
 msgstr "Tallenna nimellä"
 
-#: gtk-gui.c:764 gtk-gui.c:920
+#: gtk-gui.c:910
+#, fuzzy
+msgid "Save..."
+msgstr "Tallenna"
+
+#: gtk-gui.c:764
 msgid "SelectEvents"
+msgstr "Valitse tapahtumat"
+
+#: gtk-gui.c:920
+#, fuzzy
+msgid "SelectEvents..."
 msgstr "Valitse tapahtumat"
 
 #: main.c:47
@@ -1253,3 +1275,6 @@ msgstr ""
 
 #~ msgid "%1$s, %3$s.%2$d.%4$04d   %5$dh%6$02d"
 #~ msgstr "%1$s, %2$d. %3$skuuta %4$04d   %5$dh%6$02d"
+
+#~ msgid "About"
+#~ msgstr "Tietoja"
