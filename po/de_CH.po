@@ -1,8 +1,9 @@
 # German translations for Subsurface package
-# German messages for Subsurface.
+# Swiss German messages for Subsurface.
 # Copyright (C) 2012 Subsurface's COPYRIGHT HOLDER
 # This file is distributed under the same license as the Subsurface package.
 # Dirk Hohndel <dirk@hohndel.org>, 2012.
+# Martin Gysel <me@bearsh.org>, 2012
 #
 msgid ""
 msgstr ""
@@ -85,9 +86,8 @@ msgid "About"
 msgstr "Info"
 
 #: gtk-gui.c:851
-#, fuzzy
 msgid "About Subsurface"
-msgstr "Oberfläche"
+msgstr "Info zu Subsurface"
 
 #: gtk-gui.c:916
 msgid "Add Dive"
@@ -272,9 +272,9 @@ msgid "Dive #%d - "
 msgstr "Tauchgang #%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Tauchgang #%d - %s"
+msgstr "Tauchgang Nr. %d: %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -1220,7 +1220,7 @@ msgstr "Warnung auf Gewebe-Ebene"
 
 #: gtk-gui.c:858
 msgid "translator-credits"
-msgstr ""
+msgstr "Dirk Hohndel\nMartin Gysel"
 
 #: libdivecomputer.c:79
 msgid "transmitter"

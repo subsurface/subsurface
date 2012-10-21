@@ -85,9 +85,8 @@ msgid "About"
 msgstr "Info"
 
 #: gtk-gui.c:851
-#, fuzzy
 msgid "About Subsurface"
-msgstr "Oberfläche"
+msgstr "Info zu Subsurface"
 
 #: gtk-gui.c:916
 msgid "Add Dive"
@@ -272,9 +271,9 @@ msgid "Dive #%d - "
 msgstr "Tauchgang #%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Tauchgang #%d - %s"
+msgstr "Tauchgang Nr. %d: %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -1220,7 +1219,7 @@ msgstr "Warnung auf Gewebe-Ebene"
 
 #: gtk-gui.c:858
 msgid "translator-credits"
-msgstr ""
+msgstr "Dirk Hohndel"
 
 #: libdivecomputer.c:79
 msgid "transmitter"
