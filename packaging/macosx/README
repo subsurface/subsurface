@@ -1,6 +1,9 @@
 Creating a Subsurface bundle
 ============================
 
+(we now have a small shell script that should automate this process;
+ look for make-package.sh)
+
 install gtk-mac-bundler (this has been tested with version 0.7.0) and run
 
   $ gtk-mac-bundler subsurface.bundle
@@ -19,6 +22,7 @@ Worse, gtk-mac-bundler misses fails to catch the .so files that
 are part of the gdk-pixbuf loader infrastructure. So we need to
 manually adjust the load paths in them:
 
+cd packaging/macosx/staging/Subsurface.app/Contents
 for i in Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders/* ; do \
 	~/gtk-mac-bundler/bundler/run-install-name-tool-change.sh $i \
 	/Applications/Subsurface.app/Contents/Resources Resources change ; \
@@ -26,12 +30,12 @@ done
 
 Finally, you need to change the IDs of the libraries:
 
-cd packagin/macosx/staging/Subsurface.app/Contents
 for i in Resources/lib/*.dylib; do install_name_tool -id "@executable_path/../$i" $i; done
 
 You still need to manually build a DMG if you want to easily distribute this.
 
- hdiutil create -volname Subsurface -srcfolder staging Subsurface-<version>.dmg
+cd ../../..
+hdiutil create -volname Subsurface -srcfolder staging Subsurface-<version>.dmg
 
 Caveats
 -------
