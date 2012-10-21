@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Ajouter une plongée"
+msgstr "Ajouter une plongée..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -267,9 +266,9 @@ msgid "Dive #%d - "
 msgstr "Plongée n°%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Plongée n°%d - %s"
+msgstr "Plongée n°%d - %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -328,9 +327,8 @@ msgid "Download From Dive Computer"
 msgstr "Télécharger depuis l'ordinateur de plongée"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Télécharger depuis l'ordinateur de plongée"
+msgstr "Télécharger depuis l'ordinateur de plongée..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -491,9 +489,8 @@ msgid "Help"
 msgstr "Aide"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Importer fichier(s) XML"
+msgstr "Importer fichier(s) XML..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -703,9 +700,8 @@ msgid "Open File"
 msgstr "Ouvrir Fichier"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Ouvrir"
+msgstr "Ouvrir..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -732,9 +728,8 @@ msgid "Preferences"
 msgstr "Préférences"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Préférences"
+msgstr "Préférences..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -761,9 +756,8 @@ msgid "Print type"
 msgstr "Type d'impression"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Imprimer"
+msgstr "Imprimer..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -807,9 +801,8 @@ msgid "Renumber"
 msgstr "Re-numéroter"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Re-numéroter"
+msgstr "Re-numéroter..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -832,9 +825,8 @@ msgid "Sat"
 msgstr "Sam"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Enregistrer sous"
+msgstr "Enregistrer sous..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -845,18 +837,16 @@ msgid "Save File As"
 msgstr "Enregistrer Fichier sous"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Enregistrer"
+msgstr "Enregistrer..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Sélectionner évênements"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Sélectionner évênements"
+msgstr "Sélectionner évênements..."
 
 #: main.c:47
 msgid "Sep"
@@ -1085,9 +1075,8 @@ msgstr ""
 "Souhaitez-vous enregistrer ces changements avant de le fermer ?"
 
 #: divelist.c:639
-#, fuzzy
 msgid "air"
-msgstr "bar"
+msgstr "air"
 
 #: libdivecomputer.c:82
 msgid "airtime"
@@ -1099,7 +1088,7 @@ msgstr "cheville"
 
 #: libdivecomputer.c:78
 msgid "ascent"
-msgstr ""
+msgstr "ascension"
 
 #: equipment.c:833
 msgid "backplate weight"
@@ -1182,9 +1171,8 @@ msgid "m"
 msgstr "m"
 
 #: libdivecomputer.c:82
-#, fuzzy
 msgid "maxdepth"
-msgstr "Prof. Maximal"
+msgstr "prof. maximal"
 
 #: divelist.c:1265
 msgid "min"
@@ -1261,9 +1249,8 @@ msgid "unspecified"
 msgstr "non-specifié"
 
 #: libdivecomputer.c:79
-#, fuzzy
 msgid "violation"
-msgstr "Lieu"
+msgstr "violation"
 
 #: equipment.c:1522
 msgid "weight"

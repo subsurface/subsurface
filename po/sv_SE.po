@@ -87,9 +87,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Nytt dyk"
+msgstr "Nytt dyk..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -268,9 +267,9 @@ msgid "Dive #%d - "
 msgstr "Dyk #%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Dyk #%d - %s"
+msgstr "Dyk #%d: %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -329,9 +328,8 @@ msgid "Download From Dive Computer"
 msgstr "Ladda ned från dykdator"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Ladda ned från dykdator"
+msgstr "Ladda ned från dykdator..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -492,9 +490,8 @@ msgid "Help"
 msgstr "Hjälp"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Importera XML-fil(er)"
+msgstr "Importera XML-fil(er)..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -704,9 +701,8 @@ msgid "Open File"
 msgstr "Öppna fil"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Öppna"
+msgstr "Öppna..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -733,9 +729,8 @@ msgid "Preferences"
 msgstr "Optioner"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Optioner"
+msgstr "Optioner..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -762,9 +757,8 @@ msgid "Print type"
 msgstr "Utskriftstyp"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Skriv ut"
+msgstr "Skriv ut..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -808,9 +802,8 @@ msgid "Renumber"
 msgstr "Uppdatera numrering"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Uppdatera numrering"
+msgstr "Uppdatera numrering..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -833,9 +826,8 @@ msgid "Sat"
 msgstr "lör"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Spara som"
+msgstr "Spara som..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -846,18 +838,16 @@ msgid "Save File As"
 msgstr "Spara fil som"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Spara"
+msgstr "Spara..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Välj händelser"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Välj händelser"
+msgstr "Välj händelser..."
 
 #: main.c:47
 msgid "Sep"

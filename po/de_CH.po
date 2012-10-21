@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr "Info zu Subsurface"
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Tauchgang hinzufügen"
+msgstr "Tauchgang hinzufügen..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -327,12 +326,11 @@ msgstr "Tauchgänge"
 
 #: gtk-gui.c:1507
 msgid "Download From Dive Computer"
-msgstr "Vom Tauchcomputer runterladen"
+msgstr "Von Tauchcomputer "
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Vom Tauchcomputer runterladen"
+msgstr "Von Tauchcomputer laden..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -493,9 +491,8 @@ msgid "Help"
 msgstr "Hilfe"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "XML Datei(en) einlesen"
+msgstr "XML Datei(en) einlesen..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -705,9 +702,8 @@ msgid "Open File"
 msgstr "Datei öffnen"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Öffnen"
+msgstr "Öffnen..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -734,9 +730,8 @@ msgid "Preferences"
 msgstr "Einstellungen"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Einstellungen"
+msgstr "Einstellungen..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -763,9 +758,8 @@ msgid "Print type"
 msgstr "Art des Ausdrucks"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Drucken"
+msgstr "Drucken..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -809,9 +803,8 @@ msgid "Renumber"
 msgstr "Neu nummerieren"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Neu nummerieren"
+msgstr "Neu nummerieren..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -834,9 +827,8 @@ msgid "Sat"
 msgstr "Sa"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Speichern unter"
+msgstr "Speichern unter..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -847,18 +839,16 @@ msgid "Save File As"
 msgstr "Datei speichern unter"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Speichern"
+msgstr "Speichern..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Ereignisse auswählen"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Ereignisse auswählen"
+msgstr "Ereignisse auswählen..."
 
 #: main.c:47
 msgid "Sep"

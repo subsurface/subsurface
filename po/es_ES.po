@@ -57,9 +57,9 @@ msgstr ""
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
 #: statistics.c:529
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
-msgstr "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
+msgstr ""
 
 #: print.c:254 statistics.c:536
 #, c-format
@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Añadir buceo"
+msgstr "Añadir buceo..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -257,9 +256,9 @@ msgstr "Nombre del dispositivo"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:107
-#, fuzzy, c-format
+#, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Dive #%d - %s %02d/%02d/%04d at %d:%02d"
+msgstr ""
 
 #: info.c:159 print.c:67
 #, c-format
@@ -267,9 +266,9 @@ msgid "Dive #%d - "
 msgstr "Dive #%d -"
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Dive #%d - %s"
+msgstr "Dive #%d:%s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -328,9 +327,8 @@ msgid "Download From Dive Computer"
 msgstr "Descargar desde el ordenador de buceo"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Descargar desde el ordenador de buceo"
+msgstr "Descargar desde el ordenador de buceo..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -476,7 +474,7 @@ msgstr "filtros"
 
 #: main.c:37
 msgid "Fri"
-msgstr "Sun"
+msgstr "Vi"
 
 #: statistics.c:739
 msgid "Gas Used"
@@ -491,9 +489,8 @@ msgid "Help"
 msgstr "Ayuda"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Importar XML File(s)"
+msgstr "Importar XML File(s)..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -578,14 +575,15 @@ msgid "Max Temp"
 msgstr "Max. Temp."
 
 #: print.c:95
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Max depth: %.*f %s\n"
 "Duration: %d min\n"
 "%s"
 msgstr ""
-"%sProfundidad Máxima:.%.*f %s\n"
+"Profundidad Máxima: %.*f %s\n"
 "Duración :%d minutos\n"
+"%s"
 
 #: equipment.c:1495
 msgid "MaxPress"
@@ -655,7 +653,7 @@ msgstr "Opciones Misc."
 
 #: main.c:37
 msgid "Mon"
-msgstr "Mon"
+msgstr "Lu"
 
 #: gtk-gui.c:853
 msgid "Multi-platform divelog software in C"
@@ -702,9 +700,8 @@ msgid "Open File"
 msgstr "Abrir archivo"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Abrir"
+msgstr "Abrir..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -731,9 +728,8 @@ msgid "Preferences"
 msgstr "Preferencias"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Preferencias"
+msgstr "Preferencias..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -760,9 +756,8 @@ msgid "Print type"
 msgstr "Imprimir escriba"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Imprimir"
+msgstr "Imprimir..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -806,9 +801,8 @@ msgid "Renumber"
 msgstr "Renumerar"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Renumerar"
+msgstr "Renumerar..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -828,12 +822,11 @@ msgstr "Seguridad Violación Stop"
 
 #: main.c:37
 msgid "Sat"
-msgstr "satélite"
+msgstr "Sab"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Guardar como"
+msgstr "Guardar como..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -844,18 +837,16 @@ msgid "Save File As"
 msgstr "Guardar archivo como"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Guardar"
+msgstr "Guardar..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Seleccionar eventos"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Seleccionar eventos"
+msgstr "Seleccionar eventos..."
 
 #: main.c:47
 msgid "Sep"
@@ -913,7 +904,7 @@ msgstr "Suit"
 #. ++GETTEXT: these are three letter days - we allow up to six code bytes
 #: main.c:37
 msgid "Sun"
-msgstr "Sun"
+msgstr "Dom"
 
 #: statistics.c:722
 msgid "Surf Intv"
@@ -949,7 +940,7 @@ msgstr "Three"
 
 #: main.c:37
 msgid "Thu"
-msgstr "Jue"
+msgstr "Ju"
 
 #: info.c:822 print.c:155
 msgid "Time"
@@ -977,9 +968,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: main.c:37
-#, fuzzy
 msgid "Tue"
-msgstr "Jue"
+msgstr "Ma"
 
 #: equipment.c:1493 equipment.c:1521
 msgid "Type"
@@ -1019,9 +1009,9 @@ msgid "Unable to create parser for %s %s"
 msgstr ""
 
 #: libdivecomputer.c:390
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open %s %s (%s)"
-msgstr "No se pudo abrir %i archivos."
+msgstr "No se pudo abrir  %s %s (%s)"
 
 #: gtk-gui.c:579
 msgid "Units"
@@ -1041,7 +1031,7 @@ msgstr "Water Temp"
 
 #: main.c:37
 msgid "Wed"
-msgstr "Wed"
+msgstr "Mx"
 
 #: equipment.c:1020 equipment.c:1620 gtk-gui.c:642
 msgid "Weight"
@@ -1085,9 +1075,8 @@ msgstr ""
 "¿Te gustaría salvar a aquellos antes de cerrar el archivo de datos?"
 
 #: divelist.c:639
-#, fuzzy
 msgid "air"
-msgstr "Bar"
+msgstr "aire"
 
 #: libdivecomputer.c:82
 msgid "airtime"
@@ -1099,7 +1088,7 @@ msgstr "tobillo"
 
 #: libdivecomputer.c:78
 msgid "ascent"
-msgstr ""
+msgstr "ascenso"
 
 #: equipment.c:833
 msgid "backplate weight"
@@ -1182,7 +1171,6 @@ msgid "m"
 msgstr ""
 
 #: libdivecomputer.c:82
-#, fuzzy
 msgid "maxdepth"
 msgstr "Profundidad Max"
 
@@ -1261,9 +1249,8 @@ msgid "unspecified"
 msgstr "no especificado"
 
 #: libdivecomputer.c:79
-#, fuzzy
 msgid "violation"
-msgstr "Ubicación"
+msgstr "violación"
 
 #: equipment.c:1522
 msgid "weight"

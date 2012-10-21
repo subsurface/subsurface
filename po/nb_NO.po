@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Nytt dykk"
+msgstr "Nytt dykk..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -267,9 +266,9 @@ msgid "Dive #%d - "
 msgstr "Dykk #%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Dykk #%d - %s"
+msgstr "Dykk #%d: %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -328,9 +327,8 @@ msgid "Download From Dive Computer"
 msgstr "Last ned fra dykkecomputer"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Last ned fra dykkecomputer"
+msgstr "Last ned fra dykkecomputer..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -491,9 +489,8 @@ msgid "Help"
 msgstr "Hjelp"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Importer XML-fil(er)"
+msgstr "Importer XML-fil(er)..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -703,9 +700,8 @@ msgid "Open File"
 msgstr "Åpne fil"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Åpne"
+msgstr "Åpne..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -732,9 +728,8 @@ msgid "Preferences"
 msgstr "Valg"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Valg"
+msgstr "Valg..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -761,9 +756,8 @@ msgid "Print type"
 msgstr "Utskriftstype"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Skriv ut"
+msgstr "Skriv ut..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -807,9 +801,8 @@ msgid "Renumber"
 msgstr "Oppdater nummerering"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Oppdater nummerering"
+msgstr "Oppdater nummerering..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -832,9 +825,8 @@ msgid "Sat"
 msgstr "lør"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Lagre som"
+msgstr "Lagre som..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -845,18 +837,16 @@ msgid "Save File As"
 msgstr "Lagre fil som"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Lagre"
+msgstr "Lagre..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Velg hendelser"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Velg hendelser"
+msgstr "Velg hendelser..."
 
 #: main.c:47
 msgid "Sep"
@@ -1260,9 +1250,8 @@ msgid "unspecified"
 msgstr "ikke spesifisert"
 
 #: libdivecomputer.c:79
-#, fuzzy
 msgid "violation"
-msgstr "Sted"
+msgstr "brudd"
 
 #: equipment.c:1522
 msgid "weight"

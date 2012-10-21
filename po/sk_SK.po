@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Pridať Ponor"
+msgstr "Pridať Ponor..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -267,9 +266,9 @@ msgid "Dive #%d - "
 msgstr "Ponor #%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Ponor #%d - %s"
+msgstr "Ponor #%d: %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -328,9 +327,8 @@ msgid "Download From Dive Computer"
 msgstr "Nahratie údajov z počítača"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Nahratie údajov z počítača"
+msgstr "Nahratie údajov z počítača..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -491,9 +489,8 @@ msgid "Help"
 msgstr "Pomoc"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Import XML súboru"
+msgstr "Import XML súboru..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -703,9 +700,8 @@ msgid "Open File"
 msgstr "Otvoriť súbor"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Otvoriť"
+msgstr "Otvoriť..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -732,9 +728,8 @@ msgid "Preferences"
 msgstr "Nastavenia"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Nastavenia"
+msgstr "Nastavenia..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -761,9 +756,8 @@ msgid "Print type"
 msgstr "Druh tlače"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Tlačiť"
+msgstr "Tlačiť..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -807,9 +801,8 @@ msgid "Renumber"
 msgstr "Prečíslovanie"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Prečíslovanie"
+msgstr "Prečíslovanie..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -832,9 +825,8 @@ msgid "Sat"
 msgstr "So"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Uložiť ako"
+msgstr "Uložiť ako..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -845,18 +837,16 @@ msgid "Save File As"
 msgstr "Uložiť súbor ako"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Uložiť"
+msgstr "Uložiť..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Voľba udalosti"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Voľba udalosti"
+msgstr "Voľba udalosti..."
 
 #: main.c:47
 msgid "Sep"

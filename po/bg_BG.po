@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Добави Гмуркане"
+msgstr "Добави Гмуркане..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -329,9 +328,8 @@ msgid "Download From Dive Computer"
 msgstr "Изтегли от Леководолазен Компютър"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Изтегли от Леководолазен Компютър"
+msgstr "Изтегли от Леководолазен Компютър..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -492,9 +490,8 @@ msgid "Help"
 msgstr "Помощ"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Вмъкване на XML файл(ове)"
+msgstr "Вмъкване на XML файл(ове)..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -705,9 +702,8 @@ msgid "Open File"
 msgstr "Отвори Файл"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Отвори"
+msgstr "Отвори..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -734,9 +730,8 @@ msgid "Preferences"
 msgstr "Настройки"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Настройки"
+msgstr "Настройки..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -763,9 +758,8 @@ msgid "Print type"
 msgstr "Тип на печата"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Напечатай"
+msgstr "Напечатай..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -809,9 +803,8 @@ msgid "Renumber"
 msgstr "Преномерирай"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Преномерирай"
+msgstr "Преномерирай..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -834,9 +827,8 @@ msgid "Sat"
 msgstr "Съб"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Запиши като"
+msgstr "Запиши като..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -847,18 +839,16 @@ msgid "Save File As"
 msgstr "Запиши Файл Като?"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Запиши"
+msgstr "Запиши..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Избери Събития"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Избери Събития"
+msgstr "Избери Събития..."
 
 #: main.c:47
 msgid "Sep"

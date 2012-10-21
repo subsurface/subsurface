@@ -1,7 +1,7 @@
-# Croatian translations for PACKAGE package
-# Croatian messages for PACKAGE.
-# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Croatian translations for Subsurface package
+# Croatian messages for Subsurface.
+# Copyright (C) 2012 THE Subsurface'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Subsurface package.
 # Dirk Hohndel <dirk@hohndel.org>, 2012.
 # Ivan Habunek <ivan.habunek@gmail.com>, 2012.
 #
@@ -86,9 +86,8 @@ msgid "About Subsurface"
 msgstr ""
 
 #: gtk-gui.c:916
-#, fuzzy
 msgid "Add Dive..."
-msgstr "Dodaj uron"
+msgstr "Dodaj uron..."
 
 #: divelist.c:2023
 msgid "Add dive"
@@ -267,9 +266,9 @@ msgid "Dive #%d - "
 msgstr "Uron #%d - "
 
 #: libdivecomputer.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Dive %d: %s %d %04d"
-msgstr "Uron #%d - %s"
+msgstr "Uron #%d - %s %d %04d"
 
 #: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
@@ -328,9 +327,8 @@ msgid "Download From Dive Computer"
 msgstr "Preuzmi s ronilačkog računala"
 
 #: gtk-gui.c:915
-#, fuzzy
 msgid "Download From Dive Computer..."
-msgstr "Preuzmi s ronilačkog računala"
+msgstr "Preuzmi s ronilačkog računala..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -491,9 +489,8 @@ msgid "Help"
 msgstr "Pomoć"
 
 #: gtk-gui.c:914
-#, fuzzy
 msgid "Import XML File(s)..."
-msgstr "Uvezi XML datoteke"
+msgstr "Uvezi XML datoteke..."
 
 #: gtk-gui.c:925
 msgid "Info"
@@ -703,9 +700,8 @@ msgid "Open File"
 msgstr "Otvori datoteku"
 
 #: gtk-gui.c:909
-#, fuzzy
 msgid "Open..."
-msgstr "Otvori"
+msgstr "Otvori..."
 
 #: libdivecomputer.c:82
 msgid "PO2"
@@ -732,9 +728,8 @@ msgid "Preferences"
 msgstr "Postavke"
 
 #: gtk-gui.c:917
-#, fuzzy
 msgid "Preferences..."
-msgstr "Postavke"
+msgstr "Postavke..."
 
 #: equipment.c:962 equipment.c:968
 msgid "Pressure"
@@ -761,9 +756,8 @@ msgid "Print type"
 msgstr "Vrsta ispisa"
 
 #: gtk-gui.c:913
-#, fuzzy
 msgid "Print..."
-msgstr "Ispis"
+msgstr "Ispis..."
 
 #: gtk-gui.c:924
 msgid "Profile"
@@ -807,9 +801,8 @@ msgid "Renumber"
 msgstr "Renumeriraj"
 
 #: gtk-gui.c:918
-#, fuzzy
 msgid "Renumber..."
-msgstr "Renumeriraj"
+msgstr "Renumeriraj..."
 
 #: gtk-gui.c:1484
 msgid "Retry"
@@ -832,9 +825,8 @@ msgid "Sat"
 msgstr "Sub"
 
 #: gtk-gui.c:911
-#, fuzzy
 msgid "Save As..."
-msgstr "Spremi kao"
+msgstr "Spremi kao..."
 
 #: gtk-gui.c:228
 msgid "Save Changes?"
@@ -845,18 +837,16 @@ msgid "Save File As"
 msgstr "Spremi datoteku kao"
 
 #: gtk-gui.c:910
-#, fuzzy
 msgid "Save..."
-msgstr "Spremi"
+msgstr "Spremi..."
 
 #: gtk-gui.c:764
 msgid "SelectEvents"
 msgstr "Odaberi događaje"
 
 #: gtk-gui.c:920
-#, fuzzy
 msgid "SelectEvents..."
-msgstr "Odaberi događaje"
+msgstr "Odaberi događaje..."
 
 #: main.c:47
 msgid "Sep"
@@ -1085,9 +1075,8 @@ msgstr ""
 "Želite li ih spremiti prije zatvaranja datoteke?"
 
 #: divelist.c:639
-#, fuzzy
 msgid "air"
-msgstr "Bar"
+msgstr "zrak"
 
 #: libdivecomputer.c:82
 msgid "airtime"
@@ -1261,9 +1250,8 @@ msgid "unspecified"
 msgstr "nije specificirano"
 
 #: libdivecomputer.c:79
-#, fuzzy
 msgid "violation"
-msgstr "Lokacija"
+msgstr "povreda"
 
 #: equipment.c:1522
 msgid "weight"
