@@ -1,8 +1,8 @@
-Subsurface 1.2 User Manual
+Subsurface 2.1 User Manual
 ==========================
-Jacco van_Koll <jko@haringstad.com>
-v0.0.7, January 2012
-:Author Initials: JKO
+Jacco_van_Koll_and_Dirk_Hohndel
+v0.1.0, October 2012
+:Author Initials: JKO & DH
 :toc:
 :icons:
 :numbered:
@@ -22,7 +22,7 @@ Introduction:
 Subsurface was started because of a lack of viable dive log software
 on Linux. It turns out that the resulting software was easily ported
 to Windows and Mac, but it clearly is a native Linux program first.
-Right now, the program is under development and from version 1.1 it is
+The program is under active development and at version 2.1 it is
 already very usable for divers with supported dive-computers.
 
 In this manual the Suunto Viper will be used for all examples.
@@ -53,7 +53,7 @@ There is a menu, containing 'File', 'Log', 'Filter' and Help.
 
 The screen is devided in 3 area's:
 
- - Area with 3 tabs: Dive Notes, Equipment, Info & Stats
+ - Area with 4 tabs: Dive Notes, Equipment, Dive Info, and Stats
  - Area next to the 3 tabs which will contain the dive profile
  - Area with the dives (usually called dive list) which can be sorted by number, date, etc.
 
@@ -70,7 +70,7 @@ Suunto Viper does not recharge trough the USB connection. Please
 consult the manual of your divecomputer if you are unsure if it will
 be recharged when connected to the USB port.
 
-Now it is time to hook up your divecomputer to your Linux system:
+Now it is time to hook up your divecomputer to your PC:
 
  - Make sure that your OS has the required drivers installed
 
@@ -91,7 +91,7 @@ Now it is time to hook up your divecomputer to your Linux system:
  - Put your divecomputer into PC Communication mode. (For Suunto Viper, press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific divecomputer for your brand and type)
 
- - Go in Subsurface to 'File - Import'
+ - Go in Subsurface to 'Log - Download From Dive Computer'
 	* Within the popup, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
 	* Change the devicename under which your interface is connected.
 	       ** On Linux, default is /dev/ttyUSB0
@@ -152,6 +152,7 @@ the following:
  *Dive Master*:: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
  *Buddy*::	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
  *Rating*::	 A pull-down where you can rate your dive.
+ *Suit*::	 An input where you can track the exposure protection suit you were wearing
  *Notes*::	 A free input where you can enter information about your dive. What you've seen, etc.
 
 In this example we use the following information:
@@ -160,6 +161,7 @@ In this example we use the following information:
  *Dive Master*::	S. de Vries
  *Buddy*::		S. de Vries
  *Rating*::		3 stars
+ *Suit*::		7mm wet
  *Notes*::		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive. +
                         Made movie with headcam.
 
@@ -198,6 +200,18 @@ Now tick the option for Start & End pressure
  - End Pressure:	60
  - Press Ok
 
+In very much the same way you can enter the weight you were carrying on
+the dive. Subsurface tracks the following:
+
+ - Type:      Specific type of weight system, like weight belt, integrated pockets
+ - Weight:    Amount of weight (by default in kg, but can be switched to use lbs)
+
+Enter the following data:
+
+ - Type:      Integrated
+ - weight:    13kg
+ - Press Ok
+
 Now your dive information for this dive is complete. You can now press
 ok in the Dive Info screen and view the results.
 
@@ -206,7 +220,8 @@ Adding equipment info
 ---------------------
 
 In Area with the 3 tabs there is the tab Equipment. With this tab, you
-can add Cylinders.  We are going to add an additional Cylinder:
+can add Cylinders and Weight Systems (just like in the previous dialog).
+We are going to add an additional Cylinder:
 
  - In the main screen, click on the Equipment tab.  This shows your
    Cylinder you added in 7.
@@ -221,8 +236,8 @@ can add Cylinders.  We are going to add an additional Cylinder:
 View info & Stats
 -----------------
 
-After adding all the information, you can use the tab Info &
-Stats. This tab will provide you with all the (statistical and
+After adding all the information, you can use the tab Dive Info and
+the Stats tab. These tabs will provide you with all the (statistical and
 calculated) information regarding your dive.
 
 The information contains:
@@ -242,13 +257,12 @@ The information contains:
 
  - Statistics:
 
-	** Total time:	Total time of all your dives together, calculated
-	** Avg Time:	The average divetime of your dives, calculated
-	** Max Depth:	The maximum depth of all your dives
-	** Avg Depth:	The average depth of all your dives, calculated
-	** Max SAC:	Highest of Surface Air Consumption of all your dives
-	** Min SAC:	Lowest of Surface Air Consumption of all your dives
-	** Avg SAC:	Average Surface Air Consuption of all your dives, calculated
+	** Dive:                Number of dives covered (usually one, unless you select more dives)
+	** Max/Min/Avg Temp:    Corresponding temperature of the dives covered
+	** Total time:	        Total time of the covered dives together, calculated
+	** Avg/Long/Short Time:	The average / longest / shortes divetime of the covered dives, calculated
+	** Max/Min/Avg Depth:	The maximum / minimum / average depth of the covered dives
+	** Max SAC:		Highest / lowest / average Surface Air Consumption of your covered dives
 
 [[S_SettingUpPreferences]]
 Setting up preferences
@@ -264,6 +278,7 @@ You can set the following options:
  - Pressure:	The pressure of your tank(s) in Bar/Ato or PSI (Pressure Square Inch)
  - Volume:	The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
  - Temperature:	The temperature of the water in Celcius or Fahrenheit
+ - Weight:	The weight of your weightsystem in kg or lbs
 
 In the main screen, you did see in Area 3, some information. In the
 Columns options, you can enable/disable options you would like to show
@@ -273,8 +288,14 @@ there:
  - Show O2%:	Shows the O2% of your dive
  - Show SAC:	Shows the SAC of your dive (Surface Air Consumption)
  - Show OTU:	Shows the OTU of your dive (Oxygen Toxicity Units)
+ - Show Weight: Shows the total weight carried
+ - Show Suit:   Shows the suit you were wearing
 
-And, you can change the font usage of the program.
+You can also change the default setting whether your dives are grouped
+by dive trips (the algorithm maskes educated guesses) or whether you'd
+prefer to do any grouping of dive trips manually
+
+And, you can change the font used in the dive list,
 
 I will give an example here:
 
@@ -286,6 +307,7 @@ use the following:
  - Pressure:	Bar
  - Volume:	Liter
  - Temperature:	Celcius
+ - Weight:	kg
 
 I would like to see the:
 
@@ -351,13 +373,10 @@ JDivelog stores its information into files with the extension of .jlb.
 These .jlb contain all the information that has been stored, except your
 images in xml format.
 
-By using the menu 'File - Import' you get the popup, like described in
-<<S_ImportNewDives, chapter 4>>, Importing new dives. Within this
-popup there is the option to import existing files which are already
-on your computer. To import your JDivelog file(s) do the following:
+By using the menu 'File - Import XML File(s)' you get a popup asking
+for the filename.  To import your JDivelog file(s) do the following:
 
- - Open 'File - Import' on the menu
- - Use the file locator under XML file name
+ - Open 'File - Import XML Files(s)' on the menu
  - Browse your directories to the location where your *.jlb file is
  - Select your existing *.jlb file and click 'open'
  - Click the OK button in the popup
@@ -501,21 +520,32 @@ The file menu
 
 The file menu is used for the following menu options:
 
+ - New::      	        Close your current divelog (saving if necessary) and start a new empty dive list
  - Open::		Open your saved Subsurface xml file(s)
  - Save::		Save your current divelogs or changes you made to your divelogs
+ - Save As::		Save your current divelogs or changes you made to your divelogs under a different name
+ - Close::		Close your current divelog, saving as necessary
+ - Import XML File(s)::	Import your dives from files exported by other divelogs
  - Print::		Print your current divelog profiles and information about the dive
- - Import::	Import your dives from your divecomputer, JDivelogs or Suunto Divemanager
  - Preferences::	Set your preferences as described in <<S_SettingUpPreferences,chapter 10>>
  - Quit::		Quit the program
 
 The Log menu
 ~~~~~~~~~~~~
 
-Within the Log menu, there are only 2 sub-items:
+Within the Log menu, you will find the following sub-items:
 
+ - Download From Dive Computer::   Allows you to download dive information from your dive computer
+ - Add Dive::	      		   Manually add a dive that you cannot download from an existing computer
  - Renumber::	This option provides you with a popup. Within this
 			popup you can choose what the first number of your dives should be
 			for this set of dives.
+ - Autogroup::		Toggle the auto group setting (see the discussion in the <<S_SettingUpPreferences,chapter 10>>)
+
+ - Toggle Zoom::        The dive profile tries to convey some first glance information about
+			the depth of a dive - so the vertical scaling of the profile always
+			show a minimum of 30m / 90ft. This can be changed to be only 10m / 30ft.
+ - Yearly Statistics:	Contrary to the Statistics in the main display, these are purely calendar based.
  - View::		This is a submenu containing:
 	* List::		Show only the list of dives you have made
 	* Profile::	Show only the dive profile of the selected dive
@@ -599,6 +629,9 @@ your users manual to check if your computer will be supported.
 		Vytec
 			DS
 		Zoop
+
+	Uemis::
+		Zurich
 
 	Uwatec::
 		Aladin
