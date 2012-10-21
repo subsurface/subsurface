@@ -1011,7 +1011,7 @@ msgstr "Incapable de créer une analyse pour %s %s"
 #: libdivecomputer.c:390
 #, c-format
 msgid "Unable to open %s %s (%s)"
-msgstr "Échec de l'ouverture du fichier %i."
+msgstr "Échec de l'ouverture du fichier %s %s (%s)"
 
 #: gtk-gui.c:579
 msgid "Units"
