@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 14:22-0700\n"
+"POT-Creation-Date: 2012-10-20 22:40-0700\n"
 "PO-Revision-Date: 2012-10-16 00:12+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Mesiac"
 
-#: gtk-gui.c:1513
+#: gtk-gui.c:1515
 msgid " Please select dive computer and device. "
 msgstr "Voľba typu počítača a zariadia. "
 
@@ -81,11 +81,15 @@ msgstr "%dh %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) alebo (%s)"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:922
 msgid "About"
 msgstr "Info"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:851
+msgid "About Subsurface"
+msgstr ""
+
+#: gtk-gui.c:916
 msgid "Add Dive"
 msgstr "Pridať Ponor"
 
@@ -105,7 +109,7 @@ msgstr "Apr"
 msgid "Aug"
 msgstr "Aug"
 
-#: gtk-gui.c:929
+#: gtk-gui.c:931
 msgid "Autogroup"
 msgstr "Automatické zgrupovanie"
 
@@ -165,11 +169,11 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Vyber default XML súbor"
 
-#: gtk-gui.c:1407
+#: gtk-gui.c:1409
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Vyber XML súbor pre import do aktuálneho data súboru"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:912
 msgid "Close"
 msgstr "Zatvoriť"
 
@@ -250,7 +254,7 @@ msgstr "Prekročená Maximálna Hĺbka"
 msgid "Depth:"
 msgstr "Hĺbka:"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1377
 msgid "Device name"
 msgstr "Názov zariadenia"
 
@@ -270,11 +274,11 @@ msgstr "Ponor #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Ponor #%d - %s"
 
-#: gtk-gui.c:1131 info.c:700 statistics.c:711
+#: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informácie"
 
-#: gtk-gui.c:1123
+#: gtk-gui.c:1125
 msgid "Dive Notes"
 msgstr "Poznámky"
 
@@ -290,7 +294,7 @@ msgstr "Alarm Času Ponoru"
 msgid "Dive Time Info"
 msgstr "Info: Čas Ponoru"
 
-#: gtk-gui.c:1344
+#: gtk-gui.c:1346
 msgid "Dive computer"
 msgstr "Počítač"
 
@@ -322,7 +326,7 @@ msgstr "Divemaster"
 msgid "Dives"
 msgstr "Ponory"
 
-#: gtk-gui.c:913 gtk-gui.c:1505
+#: gtk-gui.c:915 gtk-gui.c:1507
 msgid "Download From Dive Computer"
 msgstr "Nahratie údajov z počítača"
 
@@ -370,7 +374,7 @@ msgstr "Povolit / zakázať udalosti"
 msgid "End"
 msgstr "Koniec"
 
-#: gtk-gui.c:1127 info.c:535
+#: gtk-gui.c:1129 info.c:535
 msgid "Equipment"
 msgstr "Výstroj"
 
@@ -460,11 +464,11 @@ msgstr "Feb"
 msgid "Feet"
 msgstr "stopa"
 
-#: gtk-gui.c:901
+#: gtk-gui.c:903
 msgid "File"
 msgstr "Súbor"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:906
 msgid "Filter"
 msgstr "Filter"
 
@@ -480,15 +484,15 @@ msgstr "Použitá zmes"
 msgid "Gasmix"
 msgstr "Zmes"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:907
 msgid "Help"
 msgstr "Pomoc"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:914
 msgid "Import XML File(s)"
 msgstr "Import XML súboru"
 
-#: gtk-gui.c:923
+#: gtk-gui.c:925
 msgid "Info"
 msgstr "Info"
 
@@ -505,11 +509,11 @@ msgstr "Jul"
 msgid "Jun"
 msgstr "Jun"
 
-#: gtk-gui.c:856
+#: gtk-gui.c:857
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel a ďalší, 2011, 2012"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:923
 msgid "List"
 msgstr "Zoznam"
 
@@ -521,7 +525,7 @@ msgstr "liter"
 msgid "Location"
 msgstr "Miesto"
 
-#: gtk-gui.c:902
+#: gtk-gui.c:904
 msgid "Log"
 msgstr "Log"
 
@@ -655,7 +659,7 @@ msgstr "Po"
 msgid "Multi-platform divelog software in C"
 msgstr "Multiplatformový SW na správu ponorov v C"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:908
 msgid "New"
 msgstr "Nový"
 
@@ -691,7 +695,7 @@ msgstr "Okt"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:907
+#: gtk-gui.c:909
 msgid "Open"
 msgstr "Otvoriť"
 
@@ -719,7 +723,7 @@ msgstr "PO2 Upozornenie: Zelená"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:915
+#: gtk-gui.c:572 gtk-gui.c:917
 msgid "Preferences"
 msgstr "Nastavenia"
 
@@ -735,7 +739,7 @@ msgstr "Tlak:"
 msgid "Pretty print"
 msgstr "Pekná tlač"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:913
 msgid "Print"
 msgstr "Tlačiť"
 
@@ -751,11 +755,11 @@ msgstr "Tlačiť výber"
 msgid "Print type"
 msgstr "Druh tlače"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:924
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:921
 msgid "Quit"
 msgstr "Koniec"
 
@@ -788,11 +792,11 @@ msgstr "Vymaž ponor z akcie"
 msgid "Remove selected dives from trip"
 msgstr "Vymaž vybrané ponory z akcie"
 
-#: gtk-gui.c:804 gtk-gui.c:916
+#: gtk-gui.c:804 gtk-gui.c:918
 msgid "Renumber"
 msgstr "Prečíslovanie"
 
-#: gtk-gui.c:1482
+#: gtk-gui.c:1484
 msgid "Retry"
 msgstr "Skús znovu"
 
@@ -812,11 +816,11 @@ msgstr "Nedodržaná bezpečnostná zastávka"
 msgid "Sat"
 msgstr "So"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:910
 msgid "Save"
 msgstr "Uložiť"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:911
 msgid "Save As"
 msgstr "Uložiť ako"
 
@@ -828,7 +832,7 @@ msgstr "Uložiť zmeny?"
 msgid "Save File As"
 msgstr "Uložiť súbor ako"
 
-#: gtk-gui.c:764 gtk-gui.c:918
+#: gtk-gui.c:764 gtk-gui.c:920
 msgid "SelectEvents"
 msgstr "Voľba udalosti"
 
@@ -877,7 +881,7 @@ msgstr "Štart"
 msgid "Statistics"
 msgstr "Štatistika"
 
-#: gtk-gui.c:1135
+#: gtk-gui.c:1137
 msgid "Stats"
 msgstr "Štatistiky"
 
@@ -918,7 +922,7 @@ msgstr "Teplota"
 msgid "Temperature:"
 msgstr "Teplota:"
 
-#: gtk-gui.c:924
+#: gtk-gui.c:926
 msgid "Three"
 msgstr "Strom"
 
@@ -930,7 +934,7 @@ msgstr "Št"
 msgid "Time"
 msgstr "Čas"
 
-#: gtk-gui.c:930
+#: gtk-gui.c:932
 msgid "Toggle Zoom"
 msgstr "Zmeň zoom"
 
@@ -1001,7 +1005,7 @@ msgstr "Chyba pri otváraní %i súborov"
 msgid "Units"
 msgstr "Jednotky"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:905
 msgid "View"
 msgstr "Náhľad"
 
@@ -1037,7 +1041,7 @@ msgstr "XML súbor"
 msgid "Year"
 msgstr "Rok"
 
-#: gtk-gui.c:917 statistics.c:368
+#: gtk-gui.c:919 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Ročná štatistika"
 
@@ -1212,6 +1216,10 @@ msgstr ""
 
 #: libdivecomputer.c:83
 msgid "tissue level warning"
+msgstr ""
+
+#: gtk-gui.c:858
+msgid "translator-credits"
 msgstr ""
 
 #: libdivecomputer.c:79

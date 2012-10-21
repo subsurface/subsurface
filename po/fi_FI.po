@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 14:22-0700\n"
+"POT-Creation-Date: 2012-10-20 22:40-0700\n"
 "PO-Revision-Date: 2012-10-15 22:41+0300\n"
 "Last-Translator: Tommi Saviranta <wnd@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Kuukausi"
 
-#: gtk-gui.c:1513
+#: gtk-gui.c:1515
 msgid " Please select dive computer and device. "
 msgstr "Valitse sukellustietokone ja laitenimi."
 
@@ -81,11 +81,15 @@ msgstr "%d t %d min"
 msgid "(%s) or (%s)"
 msgstr "(%s) tai (%s)"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:922
 msgid "About"
 msgstr "Tietoja"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:851
+msgid "About Subsurface"
+msgstr ""
+
+#: gtk-gui.c:916
 msgid "Add Dive"
 msgstr "Lisää sukellus"
 
@@ -105,7 +109,7 @@ msgstr "huhti"
 msgid "Aug"
 msgstr "elo"
 
-#: gtk-gui.c:929
+#: gtk-gui.c:931
 msgid "Autogroup"
 msgstr "Automaattinen ryhmittely"
 
@@ -165,11 +169,11 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Valitse oletustiedosto"
 
-#: gtk-gui.c:1407
+#: gtk-gui.c:1409
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Valitse tietoihin liitettävät XML-tiedostot"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:912
 msgid "Close"
 msgstr "Sulje"
 
@@ -250,7 +254,7 @@ msgstr "Syvyysraja ylitetty"
 msgid "Depth:"
 msgstr "Syvyys:"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1377
 msgid "Device name"
 msgstr "Laitenimi"
 
@@ -270,11 +274,11 @@ msgstr "Sukellus #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Sukellus #%d - %s"
 
-#: gtk-gui.c:1131 info.c:700 statistics.c:711
+#: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Tiedot"
 
-#: gtk-gui.c:1123
+#: gtk-gui.c:1125
 msgid "Dive Notes"
 msgstr "Muistiinpanot"
 
@@ -290,7 +294,7 @@ msgstr "Huomautus: sukellusaika"
 msgid "Dive Time Info"
 msgstr "Tiedotus: sukellusaika"
 
-#: gtk-gui.c:1344
+#: gtk-gui.c:1346
 msgid "Dive computer"
 msgstr "Sukellustietokone"
 
@@ -322,7 +326,7 @@ msgstr "Sukellusvanhin"
 msgid "Dives"
 msgstr "Sukelluskerrat"
 
-#: gtk-gui.c:913 gtk-gui.c:1505
+#: gtk-gui.c:915 gtk-gui.c:1507
 msgid "Download From Dive Computer"
 msgstr "Hae sukellustietokoneelta"
 
@@ -370,7 +374,7 @@ msgstr "Näytä / piilota tapahtumamerkit"
 msgid "End"
 msgstr "Loppu"
 
-#: gtk-gui.c:1127 info.c:535
+#: gtk-gui.c:1129 info.c:535
 msgid "Equipment"
 msgstr "Varusteet"
 
@@ -460,11 +464,11 @@ msgstr "helmi"
 msgid "Feet"
 msgstr "jalka"
 
-#: gtk-gui.c:901
+#: gtk-gui.c:903
 msgid "File"
 msgstr "Tiedosto"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:906
 msgid "Filter"
 msgstr "Suodattimet"
 
@@ -480,15 +484,15 @@ msgstr "Kulutus"
 msgid "Gasmix"
 msgstr "Kaasuseos"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:907
 msgid "Help"
 msgstr "Ohje"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:914
 msgid "Import XML File(s)"
 msgstr "Liitä tiedot XML-tiedostosta"
 
-#: gtk-gui.c:923
+#: gtk-gui.c:925
 msgid "Info"
 msgstr "Tiedot"
 
@@ -505,11 +509,11 @@ msgstr "heinä"
 msgid "Jun"
 msgstr "kesä"
 
-#: gtk-gui.c:856
+#: gtk-gui.c:857
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel et al., 2011, 2012"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:923
 msgid "List"
 msgstr "Sukelluslista"
 
@@ -521,7 +525,7 @@ msgstr "litra"
 msgid "Location"
 msgstr "Kohde"
 
-#: gtk-gui.c:902
+#: gtk-gui.c:904
 msgid "Log"
 msgstr "Loki"
 
@@ -655,7 +659,7 @@ msgstr "ma"
 msgid "Multi-platform divelog software in C"
 msgstr "Usean laitealustan sukelluspäiväkirjaohjelma C-kielellä"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:908
 msgid "New"
 msgstr "Uusi"
 
@@ -691,7 +695,7 @@ msgstr "loka"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:907
+#: gtk-gui.c:909
 msgid "Open"
 msgstr "Avaa"
 
@@ -719,7 +723,7 @@ msgstr "Varoitus: hapen osapaine (green) TODO"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:915
+#: gtk-gui.c:572 gtk-gui.c:917
 msgid "Preferences"
 msgstr "Asetukset"
 
@@ -735,7 +739,7 @@ msgstr "Paine:"
 msgid "Pretty print"
 msgstr "Hieno tuloste"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:913
 msgid "Print"
 msgstr "Tulosta"
 
@@ -751,11 +755,11 @@ msgstr "Tulosteen valinta"
 msgid "Print type"
 msgstr "Tulosteen tyyppi"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:924
 msgid "Profile"
 msgstr "Profiilikuvaaja"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:921
 msgid "Quit"
 msgstr "Lopeta"
 
@@ -788,11 +792,11 @@ msgstr "Erota sukellus pois retkestä"
 msgid "Remove selected dives from trip"
 msgstr "Erota valitut sukellukset pois retkestä"
 
-#: gtk-gui.c:804 gtk-gui.c:916
+#: gtk-gui.c:804 gtk-gui.c:918
 msgid "Renumber"
 msgstr "Uudellennumeroi"
 
-#: gtk-gui.c:1482
+#: gtk-gui.c:1484
 msgid "Retry"
 msgstr "Yritä uudestaan"
 
@@ -812,11 +816,11 @@ msgstr "Turvapysähdyksen laiminlyönti"
 msgid "Sat"
 msgstr "la"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:910
 msgid "Save"
 msgstr "Tallenna"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:911
 msgid "Save As"
 msgstr "Tallenna nimellä..."
 
@@ -828,7 +832,7 @@ msgstr "Tallenna muutokset?"
 msgid "Save File As"
 msgstr "Tallenna nimellä"
 
-#: gtk-gui.c:764 gtk-gui.c:918
+#: gtk-gui.c:764 gtk-gui.c:920
 msgid "SelectEvents"
 msgstr "Valitse tapahtumat"
 
@@ -877,7 +881,7 @@ msgstr "Alku"
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: gtk-gui.c:1135
+#: gtk-gui.c:1137
 msgid "Stats"
 msgstr "Tilastot"
 
@@ -918,7 +922,7 @@ msgstr "Lämpötila"
 msgid "Temperature:"
 msgstr "Lämpötila:"
 
-#: gtk-gui.c:924
+#: gtk-gui.c:926
 msgid "Three"
 msgstr "Kaikki"
 
@@ -930,7 +934,7 @@ msgstr "to"
 msgid "Time"
 msgstr "Kello"
 
-#: gtk-gui.c:930
+#: gtk-gui.c:932
 msgid "Toggle Zoom"
 msgstr "Venytä sukellusprofiilikuvaajaa"
 
@@ -1001,7 +1005,7 @@ msgstr "%i tiedoston avaaminen epäonnistui."
 msgid "Units"
 msgstr "Yksiköt"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:905
 msgid "View"
 msgstr "Näytä"
 
@@ -1037,7 +1041,7 @@ msgstr "XML-tiedosto"
 msgid "Year"
 msgstr "Vuosi"
 
-#: gtk-gui.c:917 statistics.c:368
+#: gtk-gui.c:919 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Vuositilastot"
 
@@ -1212,6 +1216,10 @@ msgstr ""
 
 #: libdivecomputer.c:83
 msgid "tissue level warning"
+msgstr ""
+
+#: gtk-gui.c:858
+msgid "translator-credits"
 msgstr ""
 
 #: libdivecomputer.c:79

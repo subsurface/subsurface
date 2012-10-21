@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 14:22-0700\n"
+"POT-Creation-Date: 2012-10-20 22:40-0700\n"
 "PO-Revision-Date: 2012-11-10 16:27+0300\n"
 "Last-Translator: Lubomir I. Ivanov <neolit123@gmail.com>>\n"
 "Language-Team: Bulgarian\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Месец"
 
-#: gtk-gui.c:1513
+#: gtk-gui.c:1515
 msgid " Please select dive computer and device. "
 msgstr " Моля изберете леководолазен компютър и устройство. "
 
@@ -81,11 +81,15 @@ msgstr "%dч %dмин"
 msgid "(%s) or (%s)"
 msgstr "(%s) или (%s)"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:922
 msgid "About"
 msgstr "Информация"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:851
+msgid "About Subsurface"
+msgstr ""
+
+#: gtk-gui.c:916
 msgid "Add Dive"
 msgstr "Добави Гмуркане"
 
@@ -105,7 +109,7 @@ msgstr "Апр"
 msgid "Aug"
 msgstr "Авг"
 
-#: gtk-gui.c:929
+#: gtk-gui.c:931
 msgid "Autogroup"
 msgstr "Автоматично групиране"
 
@@ -166,11 +170,11 @@ msgstr "Целзии"
 msgid "Choose Default XML File"
 msgstr "Моля Изберете XML Файл По Подразбиране"
 
-#: gtk-gui.c:1407
+#: gtk-gui.c:1409
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Моля Изберете XML Файлове За Вмъкване"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:912
 msgid "Close"
 msgstr "Затвори"
 
@@ -251,7 +255,7 @@ msgstr "Надминат Лимит На Дълбочина"
 msgid "Depth:"
 msgstr "Дълбочина:"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1377
 msgid "Device name"
 msgstr "Име на устройство"
 
@@ -271,11 +275,11 @@ msgstr "Гмуркане №%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Гмуркане №%d - %s"
 
-#: gtk-gui.c:1131 info.c:700 statistics.c:711
+#: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Информация"
 
-#: gtk-gui.c:1123
+#: gtk-gui.c:1125
 msgid "Dive Notes"
 msgstr "Бележки"
 
@@ -291,7 +295,7 @@ msgstr "Тревога: Време за Гмуркане"
 msgid "Dive Time Info"
 msgstr "Времева Информация за Гмуркане"
 
-#: gtk-gui.c:1344
+#: gtk-gui.c:1346
 msgid "Dive computer"
 msgstr "Леководолазен Компютър"
 
@@ -323,7 +327,7 @@ msgstr "Водач"
 msgid "Dives"
 msgstr "Гмуркания"
 
-#: gtk-gui.c:913 gtk-gui.c:1505
+#: gtk-gui.c:915 gtk-gui.c:1507
 msgid "Download From Dive Computer"
 msgstr "Изтегли от Леководолазен Компютър"
 
@@ -371,7 +375,7 @@ msgstr "Включване / Изключване на Събития"
 msgid "End"
 msgstr "Край"
 
-#: gtk-gui.c:1127 info.c:535
+#: gtk-gui.c:1129 info.c:535
 msgid "Equipment"
 msgstr "Екипировка"
 
@@ -461,11 +465,11 @@ msgstr "Фев"
 msgid "Feet"
 msgstr "Фута"
 
-#: gtk-gui.c:901
+#: gtk-gui.c:903
 msgid "File"
 msgstr "Файл"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:906
 msgid "Filter"
 msgstr "Филтър"
 
@@ -481,15 +485,15 @@ msgstr "Използван Газ"
 msgid "Gasmix"
 msgstr "Газ Микс"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:907
 msgid "Help"
 msgstr "Помощ"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:914
 msgid "Import XML File(s)"
 msgstr "Вмъкване на XML файл(ове)"
 
-#: gtk-gui.c:923
+#: gtk-gui.c:925
 msgid "Info"
 msgstr "Информация"
 
@@ -506,11 +510,11 @@ msgstr "Юли"
 msgid "Jun"
 msgstr "Юни"
 
-#: gtk-gui.c:856
+#: gtk-gui.c:857
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Линус Торвалдс, Дирк Хондел и други, 2011, 2012"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:923
 msgid "List"
 msgstr "Списък"
 
@@ -522,7 +526,7 @@ msgstr "Литра"
 msgid "Location"
 msgstr "Местоположение"
 
-#: gtk-gui.c:902
+#: gtk-gui.c:904
 msgid "Log"
 msgstr "Регистър"
 
@@ -656,7 +660,7 @@ msgstr "Пон"
 msgid "Multi-platform divelog software in C"
 msgstr "Мултиплатформен, гмуркачески регистър-софтуер написан на C"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:908
 msgid "New"
 msgstr "Нов"
 
@@ -693,7 +697,7 @@ msgstr "Окт"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:907
+#: gtk-gui.c:909
 msgid "Open"
 msgstr "Отвори"
 
@@ -721,7 +725,7 @@ msgstr "Внимание: Парциално О2 Налягане в Зелен�
 msgid "PSI"
 msgstr "PSI"
 
-#: gtk-gui.c:572 gtk-gui.c:915
+#: gtk-gui.c:572 gtk-gui.c:917
 msgid "Preferences"
 msgstr "Настройки"
 
@@ -737,7 +741,7 @@ msgstr "Налягане:"
 msgid "Pretty print"
 msgstr "Красив печат"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:913
 msgid "Print"
 msgstr "Напечатай"
 
@@ -753,11 +757,11 @@ msgstr "Напечатай селекцията"
 msgid "Print type"
 msgstr "Тип на печата"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:924
 msgid "Profile"
 msgstr "Профил"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:921
 msgid "Quit"
 msgstr "Изход"
 
@@ -790,11 +794,11 @@ msgstr "Изтрий гмуркане от пътуване"
 msgid "Remove selected dives from trip"
 msgstr "Изтрий избраните гмуркания от пътуване"
 
-#: gtk-gui.c:804 gtk-gui.c:916
+#: gtk-gui.c:804 gtk-gui.c:918
 msgid "Renumber"
 msgstr "Преномерирай"
 
-#: gtk-gui.c:1482
+#: gtk-gui.c:1484
 msgid "Retry"
 msgstr "Опитай пак"
 
@@ -814,11 +818,11 @@ msgstr "Нарушение на Безопасно Спиране"
 msgid "Sat"
 msgstr "Съб"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:910
 msgid "Save"
 msgstr "Запиши"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:911
 msgid "Save As"
 msgstr "Запиши като"
 
@@ -830,7 +834,7 @@ msgstr "Запиши Промените?"
 msgid "Save File As"
 msgstr "Запиши Файл Като?"
 
-#: gtk-gui.c:764 gtk-gui.c:918
+#: gtk-gui.c:764 gtk-gui.c:920
 msgid "SelectEvents"
 msgstr "Избери Събития"
 
@@ -879,7 +883,7 @@ msgstr "Старт"
 msgid "Statistics"
 msgstr "Статистика"
 
-#: gtk-gui.c:1135
+#: gtk-gui.c:1137
 msgid "Stats"
 msgstr "Статистики"
 
@@ -920,7 +924,7 @@ msgstr "Температура:"
 msgid "Temperature:"
 msgstr "Температура:"
 
-#: gtk-gui.c:924
+#: gtk-gui.c:926
 msgid "Three"
 msgstr "Комбиниран"
 
@@ -932,7 +936,7 @@ msgstr "Чет"
 msgid "Time"
 msgstr "Време"
 
-#: gtk-gui.c:930
+#: gtk-gui.c:932
 msgid "Toggle Zoom"
 msgstr "Превключване на Зуум"
 
@@ -1003,7 +1007,7 @@ msgstr "Немогат да бъдат отворени %i файла"
 msgid "Units"
 msgstr "Единици"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:905
 msgid "View"
 msgstr "Изглед"
 
@@ -1039,7 +1043,7 @@ msgstr "XML файл"
 msgid "Year"
 msgstr "Година"
 
-#: gtk-gui.c:917 statistics.c:368
+#: gtk-gui.c:919 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Годишни статистики"
 
@@ -1213,6 +1217,10 @@ msgstr ""
 
 #: libdivecomputer.c:83
 msgid "tissue level warning"
+msgstr ""
+
+#: gtk-gui.c:858
+msgid "translator-credits"
 msgstr ""
 
 #: libdivecomputer.c:79

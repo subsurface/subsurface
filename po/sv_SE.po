@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 14:22-0700\n"
+"POT-Creation-Date: 2012-10-20 22:40-0700\n"
 "PO-Revision-Date: 2012-10-12 11:48+0900\n"
 "Last-Translator: Linus Torvalds <torvalds@linux-foundation.org>\n"
 "Language-Team: Swedish\n"
@@ -25,7 +25,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Månad"
 
-#: gtk-gui.c:1513
+#: gtk-gui.c:1515
 msgid " Please select dive computer and device. "
 msgstr " Välj dykdator och enhet"
 
@@ -82,11 +82,15 @@ msgstr "%dt %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) eller (%s)"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:922
 msgid "About"
 msgstr "Om"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:851
+msgid "About Subsurface"
+msgstr ""
+
+#: gtk-gui.c:916
 msgid "Add Dive"
 msgstr "Nytt dyk"
 
@@ -106,7 +110,7 @@ msgstr "apr"
 msgid "Aug"
 msgstr "aug"
 
-#: gtk-gui.c:929
+#: gtk-gui.c:931
 msgid "Autogroup"
 msgstr "Gruppera automatiskt"
 
@@ -166,11 +170,11 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Välj standard XML-fil"
 
-#: gtk-gui.c:1407
+#: gtk-gui.c:1409
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Välj vilka XML-filer du vill importera"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:912
 msgid "Close"
 msgstr "Stäng"
 
@@ -251,7 +255,7 @@ msgstr "Maxdjup överskridits"
 msgid "Depth:"
 msgstr "Djup:"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1377
 msgid "Device name"
 msgstr "Enhetsnamn"
 
@@ -271,11 +275,11 @@ msgstr "Dyk #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Dyk #%d - %s"
 
-#: gtk-gui.c:1131 info.c:700 statistics.c:711
+#: gtk-gui.c:1133 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Information"
 
-#: gtk-gui.c:1123
+#: gtk-gui.c:1125
 msgid "Dive Notes"
 msgstr "Dykanteckningar"
 
@@ -291,7 +295,7 @@ msgstr "Dyktidsvarning"
 msgid "Dive Time Info"
 msgstr "Dyktidsnot"
 
-#: gtk-gui.c:1344
+#: gtk-gui.c:1346
 msgid "Dive computer"
 msgstr "Dykdator"
 
@@ -323,7 +327,7 @@ msgstr "Divemaster"
 msgid "Dives"
 msgstr "Dyk"
 
-#: gtk-gui.c:913 gtk-gui.c:1505
+#: gtk-gui.c:915 gtk-gui.c:1507
 msgid "Download From Dive Computer"
 msgstr "Ladda ned från dykdator"
 
@@ -371,7 +375,7 @@ msgstr "Aktivera / Inaktivera händelser"
 msgid "End"
 msgstr "Slut"
 
-#: gtk-gui.c:1127 info.c:535
+#: gtk-gui.c:1129 info.c:535
 msgid "Equipment"
 msgstr "Utrustning"
 
@@ -461,11 +465,11 @@ msgstr "feb"
 msgid "Feet"
 msgstr "fot"
 
-#: gtk-gui.c:901
+#: gtk-gui.c:903
 msgid "File"
 msgstr "Fil"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:906
 msgid "Filter"
 msgstr "Filter"
 
@@ -481,15 +485,15 @@ msgstr "Gasanvändning"
 msgid "Gasmix"
 msgstr "Gasmix"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:907
 msgid "Help"
 msgstr "Hjälp"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:914
 msgid "Import XML File(s)"
 msgstr "Importera XML-fil(er)"
 
-#: gtk-gui.c:923
+#: gtk-gui.c:925
 msgid "Info"
 msgstr "Info"
 
@@ -506,11 +510,11 @@ msgstr "jul"
 msgid "Jun"
 msgstr "jun"
 
-#: gtk-gui.c:856
+#: gtk-gui.c:857
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel med flera, 2011, 2012"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:923
 msgid "List"
 msgstr "Lista"
 
@@ -522,7 +526,7 @@ msgstr "liter"
 msgid "Location"
 msgstr "Plats"
 
-#: gtk-gui.c:902
+#: gtk-gui.c:904
 msgid "Log"
 msgstr "Log"
 
@@ -656,7 +660,7 @@ msgstr "mån"
 msgid "Multi-platform divelog software in C"
 msgstr "Dyklogg i C for flera platformer"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:908
 msgid "New"
 msgstr "Ny"
 
@@ -692,7 +696,7 @@ msgstr "okt"
 msgid "Odd pthread error return"
 msgstr ""
 
-#: gtk-gui.c:907
+#: gtk-gui.c:909
 msgid "Open"
 msgstr "Öppna"
 
@@ -720,7 +724,7 @@ msgstr "Varning: grön PO2"
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572 gtk-gui.c:915
+#: gtk-gui.c:572 gtk-gui.c:917
 msgid "Preferences"
 msgstr "Optioner"
 
@@ -736,7 +740,7 @@ msgstr "Tryck:"
 msgid "Pretty print"
 msgstr "Prydlig utskrift"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:913
 msgid "Print"
 msgstr "Skriv ut"
 
@@ -752,11 +756,11 @@ msgstr "Skriv ut valda dyk"
 msgid "Print type"
 msgstr "Utskriftstyp"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:924
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:921
 msgid "Quit"
 msgstr "Avsluta"
 
@@ -789,11 +793,11 @@ msgstr "Ta bort dyk från resa"
 msgid "Remove selected dives from trip"
 msgstr "Ta bort valda dyk från resa"
 
-#: gtk-gui.c:804 gtk-gui.c:916
+#: gtk-gui.c:804 gtk-gui.c:918
 msgid "Renumber"
 msgstr "Uppdatera numrering"
 
-#: gtk-gui.c:1482
+#: gtk-gui.c:1484
 msgid "Retry"
 msgstr "Pröva igen"
 
@@ -813,11 +817,11 @@ msgstr "Säkerhetsstopp ej uppfyllt"
 msgid "Sat"
 msgstr "lör"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:910
 msgid "Save"
 msgstr "Spara"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:911
 msgid "Save As"
 msgstr "Spara som"
 
@@ -829,7 +833,7 @@ msgstr "Spara ändringar?"
 msgid "Save File As"
 msgstr "Spara fil som"
 
-#: gtk-gui.c:764 gtk-gui.c:918
+#: gtk-gui.c:764 gtk-gui.c:920
 msgid "SelectEvents"
 msgstr "Välj händelser"
 
@@ -878,7 +882,7 @@ msgstr "Start"
 msgid "Statistics"
 msgstr "Statistik"
 
-#: gtk-gui.c:1135
+#: gtk-gui.c:1137
 msgid "Stats"
 msgstr "Statistik"
 
@@ -919,7 +923,7 @@ msgstr "Temperatur"
 msgid "Temperature:"
 msgstr "Temperatur:"
 
-#: gtk-gui.c:924
+#: gtk-gui.c:926
 msgid "Three"
 msgstr "Alla"
 
@@ -931,7 +935,7 @@ msgstr "tor"
 msgid "Time"
 msgstr "Tid"
 
-#: gtk-gui.c:930
+#: gtk-gui.c:932
 msgid "Toggle Zoom"
 msgstr "Zoom av/på"
 
@@ -1002,7 +1006,7 @@ msgstr "Kunde inte öppna %i filer."
 msgid "Units"
 msgstr "Enheter"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:905
 msgid "View"
 msgstr "Visa"
 
@@ -1038,7 +1042,7 @@ msgstr "XML-fil"
 msgid "Year"
 msgstr ""
 
-#: gtk-gui.c:917 statistics.c:368
+#: gtk-gui.c:919 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Årsstatistik"
 
@@ -1213,6 +1217,10 @@ msgstr ""
 
 #: libdivecomputer.c:83
 msgid "tissue level warning"
+msgstr ""
+
+#: gtk-gui.c:858
+msgid "translator-credits"
 msgstr ""
 
 #: libdivecomputer.c:79
