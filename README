@@ -1,5 +1,4 @@
-Subsurface - an Open Source Divelog
-===================================
+Subsurface - an Open Source Divelog ===================================
 
 In fall of 2011, when a forced lull in kernel development gave him an
 opportunity to start on a new endeavor, Linus Torvalds decided to tackle
@@ -34,11 +33,13 @@ On Debian the package names are different; try libxml2-dev libgtk2.0-dev
 glib-2.0 libgconf2-dev, but it seems the cairo package at least in
 Squeeze is too old.
 
-You also need to have libdivecomputer installed, which goes something like this:
+You also need to have libdivecomputer version 0.2 installed, which goes
+something like this:
 
 git clone \
 git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
 cd libdivecomputer
+git checkout v0.2.0
 autoreconf --install
 ./configure
 make
@@ -64,25 +65,14 @@ mingw32-configure
 mingw32-make
 sudo mingw32-make install
 
-Jef Driesen, the developer behind libdivecomputer, provided his build
-instructions on Windows (which are different from what I use):
+Once you have built and installed libdivecomputer you can use 
 
-./configure --host=i586-mingw32msvc --prefix=$HOME/local
-PKG_CONFIG_LIBDIR='/opt/i586-mingw32msvc/lib/pkgconfig'
-make
-make install
+sh packaging/Windows/mingw-make.sh 
 
-These use different paths than what I get on Fedora. To do this the way
-Jef does I would need
-
-PKG_CONFIG_LIBDIR='/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig'
-
-Either way, once you have built libdivecomputer you can use sh
-packaging/Windows/mingw-make.sh to then build subsurface.
+to then build subsurface.
 
 Building subsurface on a Mac
-
-Provided by Henrik Brautaset Aronsen
+----------------------------
 Install MacPorts and install the dependencies from MacPorts:
 sudo port install gtk2 +no_x11 +quartz -x11 libusb gtk-osx-application \
      automake autoconf libtool
@@ -101,9 +91,12 @@ cd subsurface
 PKG_CONFIG_PATH="/usr/local/lib/pkgconfig/" make
 sudo make install-macosx
 
+More instructions on how to create a Subsurface DMG can be found in
+packaging/macosx/README
+
 
 Usage:
-------
+======
 
 Install and start from the desktop (or you can run it locally from the
 build directory).
@@ -192,6 +185,8 @@ Atomic Aquatics:
  * Cobalt
 
 
+More detailed end user instructions can be found at Documentation/user-manual.html
+
 
 Contributing:
 -------------
@@ -230,3 +225,13 @@ where that header line really should be meaningful, and really should be
 just one line.  That header line is what is shown by tools like gitk and
 shortlog, and should summarize the change in one readable line of text,
 independently of the longer explanation.
+
+
+
+CREDITS:
+========
+
+This file was originally started by Linus.
+The initial instructions for building on a Mac were provided by Henrik Brautaset Aronsen
+Jef Driessen helped creating the cross-building instructions for Windows
+
