@@ -135,15 +135,15 @@ msgstr "Moyenne"
 
 #: statistics.c:692 statistics.c:729
 msgid "Avg Depth"
-msgstr "Profondeur moy."
+msgstr "Profondeur Moy."
 
 #: statistics.c:700
 msgid "Avg SAC"
-msgstr "Consommation d'air moyenne"
+msgstr "Consommation d'air Moy."
 
 #: statistics.c:675
 msgid "Avg Temp"
-msgstr "Température Moy."
+msgstr "Temp. Moy."
 
 #: statistics.c:682
 msgid "Avg Time"
@@ -564,7 +564,7 @@ msgstr "Attention: Temps de Decopression Maximum"
 
 #: statistics.c:690 statistics.c:728
 msgid "Max Depth"
-msgstr "Prof. Maximal"
+msgstr "Profondeur Max."
 
 #: statistics.c:698
 msgid "Max SAC"
@@ -626,7 +626,7 @@ msgstr "Profondeur Min."
 
 #: statistics.c:699
 msgid "Min SAC"
-msgstr "Min. SAC"
+msgstr "Consommation d'air Min."
 
 #: statistics.c:674
 msgid "Min Temp"
