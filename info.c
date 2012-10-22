@@ -924,12 +924,12 @@ GtkWidget *extended_dive_info_widget(void)
 	people_list = gtk_list_store_new(1, G_TYPE_STRING);
 	location_list = gtk_list_store_new(1, G_TYPE_STRING);
 	star_list = gtk_list_store_new(1, G_TYPE_STRING);
-	add_string_list_entry(ZERO_STARS, star_list);
-	add_string_list_entry(ONE_STARS, star_list);
-	add_string_list_entry(TWO_STARS, star_list);
-	add_string_list_entry(THREE_STARS, star_list);
-	add_string_list_entry(FOUR_STARS, star_list);
-	add_string_list_entry(FIVE_STARS, star_list);
+	add_string_list_entry(star_strings[0], star_list);
+	add_string_list_entry(star_strings[1], star_list);
+	add_string_list_entry(star_strings[2], star_list);
+	add_string_list_entry(star_strings[3], star_list);
+	add_string_list_entry(star_strings[4], star_list);
+	add_string_list_entry(star_strings[5], star_list);
 	suit_list = gtk_list_store_new(1, G_TYPE_STRING);
 
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
