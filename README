@@ -1,4 +1,5 @@
-Subsurface - an Open Source Divelog ===================================
+Subsurface - an Open Source Divelog
+===================================
 
 In fall of 2011, when a forced lull in kernel development gave him an
 opportunity to start on a new endeavor, Linus Torvalds decided to tackle
@@ -65,9 +66,9 @@ mingw32-configure
 mingw32-make
 sudo mingw32-make install
 
-Once you have built and installed libdivecomputer you can use 
+Once you have built and installed libdivecomputer you can use
 
-sh packaging/Windows/mingw-make.sh 
+sh packaging/Windows/mingw-make.sh
 
 to then build subsurface.
 
@@ -234,4 +235,3 @@ CREDITS:
 This file was originally started by Linus.
 The initial instructions for building on a Mac were provided by Henrik Brautaset Aronsen
 Jef Driessen helped creating the cross-building instructions for Windows
-
