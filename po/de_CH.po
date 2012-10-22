@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-21 00:50-0700\n"
+"POT-Creation-Date: 2012-10-21 20:59-0700\n"
 "PO-Revision-Date: 2012-10-15 14:02+0100\n"
 "Last-Translator: Martin Gysel <me@bearsh.org>\n"
 "Language-Team: German\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Monat"
 
-#: gtk-gui.c:1515
+#: gtk-gui.c:1516
 msgid " Please select dive computer and device. "
 msgstr " Bitte Tauchcomputer und Gerät auswählen. "
 
@@ -81,11 +81,11 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) oder (%s)"
 
-#: gtk-gui.c:851 gtk-gui.c:922
+#: gtk-gui.c:851 gtk-gui.c:923
 msgid "About Subsurface"
 msgstr "Info zu Subsurface"
 
-#: gtk-gui.c:916
+#: gtk-gui.c:917
 msgid "Add Dive..."
 msgstr "Tauchgang hinzufügen..."
 
@@ -105,7 +105,7 @@ msgstr "Apr"
 msgid "Aug"
 msgstr "Aug"
 
-#: gtk-gui.c:931
+#: gtk-gui.c:932
 msgid "Autogroup"
 msgstr "Automatisch gruppieren"
 
@@ -165,13 +165,13 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Standard XML Datei auswählen"
 
-#: gtk-gui.c:1409
+#: gtk-gui.c:1410
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr ""
 "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden "
 "sollen"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:913
 msgid "Close"
 msgstr "Schliessen"
 
@@ -244,7 +244,7 @@ msgstr "Tiefe"
 msgid "Depth (%s):"
 msgstr "Tiefe (%s):"
 
-#: uemis.c:156
+#: uemis.c:161
 msgid "Depth Limit Exceeded"
 msgstr "Tiefenlimit überschritten"
 
@@ -252,7 +252,7 @@ msgstr "Tiefenlimit überschritten"
 msgid "Depth:"
 msgstr "Tiefe:"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1378
 msgid "Device name"
 msgstr "Gerätename"
 
@@ -267,16 +267,16 @@ msgstr "Tauchgang #%1$d - %2$s %4$02d.%3$02d.%5$04d um %6$d:%7$02d"
 msgid "Dive #%d - "
 msgstr "Tauchgang #%d - "
 
-#: libdivecomputer.c:252
+#: libdivecomputer.c:254
 #, c-format
 msgid "Dive %d: %s %d %04d"
 msgstr "Tauchgang Nr. %d: %s %d %04d"
 
-#: gtk-gui.c:1133 info.c:700 statistics.c:711
+#: gtk-gui.c:1134 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informationen"
 
-#: gtk-gui.c:1125
+#: gtk-gui.c:1126
 msgid "Dive Notes"
 msgstr "Notizen"
 
@@ -284,19 +284,19 @@ msgstr "Notizen"
 msgid "Dive Time"
 msgstr "Dauer"
 
-#: uemis.c:162
+#: uemis.c:167
 msgid "Dive Time Alert"
 msgstr "Alarm: Tauchgangsdauer"
 
-#: uemis.c:160
+#: uemis.c:165
 msgid "Dive Time Info"
 msgstr "Info: Tauchgangsdauer"
 
-#: gtk-gui.c:1346
+#: gtk-gui.c:1347
 msgid "Dive computer"
 msgstr "Tauchcomputer"
 
-#: libdivecomputer.c:371
+#: libdivecomputer.c:373
 msgid "Dive data import error"
 msgstr "Fehler beim Importieren der Daten des Tauchgangs"
 
@@ -324,11 +324,11 @@ msgstr "Diveguide"
 msgid "Dives"
 msgstr "Tauchgänge"
 
-#: gtk-gui.c:1507
+#: gtk-gui.c:1508
 msgid "Download From Dive Computer"
 msgstr "Von Tauchcomputer "
 
-#: gtk-gui.c:915
+#: gtk-gui.c:916
 msgid "Download From Dive Computer..."
 msgstr "Von Tauchcomputer laden..."
 
@@ -376,52 +376,52 @@ msgstr "Ereignisse Ein-/Ausblenden"
 msgid "End"
 msgstr "Ende"
 
-#: gtk-gui.c:1129 info.c:535
+#: gtk-gui.c:1130 info.c:535
 msgid "Equipment"
 msgstr "Ausrüstung"
 
-#: libdivecomputer.c:238
+#: libdivecomputer.c:240
 msgid "Error parsing the datetime"
 msgstr "Fehler beim Analysieren des Datums"
 
-#: libdivecomputer.c:257
+#: libdivecomputer.c:259
 msgid "Error parsing the divetime"
 msgstr "Fehler beim Analysieren der Dauer"
 
-#: libdivecomputer.c:284
+#: libdivecomputer.c:286
 msgid "Error parsing the gas mix"
 msgstr "Fehler beim Analysieren der Gas Informationen"
 
-#: libdivecomputer.c:277
+#: libdivecomputer.c:279
 msgid "Error parsing the gas mix count"
 msgstr "Fehler beim Analysieren der Gas Informationen"
 
-#: libdivecomputer.c:267
+#: libdivecomputer.c:269
 msgid "Error parsing the maxdepth"
 msgstr "Fehler beim Analysieren der maximalen Tiefe"
 
-#: libdivecomputer.c:292
+#: libdivecomputer.c:294
 msgid "Error parsing the samples"
 msgstr "Fehler beim Auswerten der Samples"
 
-#: libdivecomputer.c:367
+#: libdivecomputer.c:369
 msgid "Error registering the cancellation handler."
 msgstr "Fehler bei der Registrierung der Abbruchbehandlung"
 
-#: libdivecomputer.c:229
+#: libdivecomputer.c:231
 msgid "Error registering the data"
 msgstr "Fehler beim Registrieren der Daten"
 
-#: libdivecomputer.c:362
+#: libdivecomputer.c:364
 msgid "Error registering the event handler."
 msgstr "Fehler beim Registrieren der Ereignisbehandlung"
 
-#: libdivecomputer.c:337
+#: libdivecomputer.c:339
 #, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
 msgstr "Ereignis: systime=%<PRId64>, devtime=%u\n"
 
-#: libdivecomputer.c:323
+#: libdivecomputer.c:325
 msgid "Event: waiting for user action"
 msgstr "Ereignis: warte auf Benutzer Aktion"
 
@@ -466,11 +466,11 @@ msgstr "Feb"
 msgid "Feet"
 msgstr "Fuss"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:904
 msgid "File"
 msgstr "Datei"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:907
 msgid "Filter"
 msgstr "Filter"
 
@@ -486,15 +486,15 @@ msgstr "Gasverbrauch"
 msgid "Gasmix"
 msgstr "Gasmischung"
 
-#: gtk-gui.c:907
+#: gtk-gui.c:908
 msgid "Help"
 msgstr "Hilfe"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:915
 msgid "Import XML File(s)..."
 msgstr "XML Datei(en) einlesen..."
 
-#: gtk-gui.c:925
+#: gtk-gui.c:926
 msgid "Info"
 msgstr "Informationen"
 
@@ -515,7 +515,7 @@ msgstr "Jun"
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel und andere, 2011, 2012"
 
-#: gtk-gui.c:923
+#: gtk-gui.c:924
 msgid "List"
 msgstr "Liste"
 
@@ -527,7 +527,7 @@ msgstr "Liter"
 msgid "Location"
 msgstr "Ort"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:905
 msgid "Log"
 msgstr "Log"
 
@@ -540,11 +540,11 @@ msgstr "Max."
 msgid "Longest Dive"
 msgstr "Längster Tauchgang"
 
-#: uemis.c:170
+#: uemis.c:175
 msgid "Low Battery Alert"
 msgstr "Alarm: Batterie schwach"
 
-#: uemis.c:168
+#: uemis.c:173
 msgid "Low Battery Warning"
 msgstr "Warnung: Batterie schwach"
 
@@ -552,7 +552,7 @@ msgstr "Warnung: Batterie schwach"
 msgid "Mar"
 msgstr "Mär"
 
-#: uemis.c:164
+#: uemis.c:169
 msgid "Marker"
 msgstr "Markierung"
 
@@ -560,7 +560,7 @@ msgstr "Markierung"
 msgid "Master"
 msgstr "Guide"
 
-#: uemis.c:158
+#: uemis.c:163
 msgid "Max Deco Time Warning"
 msgstr "Warnung: Maximale Deco Zeit"
 
@@ -661,7 +661,7 @@ msgstr "Mo"
 msgid "Multi-platform divelog software in C"
 msgstr "Multi-Platform Tauchprogram in C"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:909
 msgid "New"
 msgstr "Neu"
 
@@ -669,7 +669,7 @@ msgstr "Neu"
 msgid "New starting number"
 msgstr "Neue erste Nummer"
 
-#: uemis.c:166
+#: uemis.c:171
 msgid "No Tank Data"
 msgstr "Keine Tank Informationen"
 
@@ -681,7 +681,7 @@ msgstr "Notizen"
 msgid "Nov"
 msgstr "Nov"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "OLF"
 msgstr "OLF"
 
@@ -693,7 +693,7 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Okt"
 
-#: libdivecomputer.c:425
+#: libdivecomputer.c:427
 msgid "Odd pthread error return"
 msgstr "Unbekannter pthread Fehlercode"
 
@@ -701,23 +701,23 @@ msgstr "Unbekannter pthread Fehlercode"
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:910
 msgid "Open..."
 msgstr "Öffnen..."
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "PO2"
 msgstr "PO2"
 
-#: uemis.c:144
+#: uemis.c:149
 msgid "PO2 Ascend Alarm"
 msgstr "Alarm: Aufstieg / PO2"
 
-#: uemis.c:142
+#: uemis.c:147
 msgid "PO2 Ascend Warning"
 msgstr "Warnung: Aufstieg / PO2"
 
-#: uemis.c:139
+#: uemis.c:144
 msgid "PO2 Green Warning"
 msgstr "Warnung: PO2 Grün"
 
@@ -729,7 +729,7 @@ msgstr "psi"
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: gtk-gui.c:917
+#: gtk-gui.c:918
 msgid "Preferences..."
 msgstr "Einstellungen..."
 
@@ -757,23 +757,23 @@ msgstr "Auswahl drucken"
 msgid "Print type"
 msgstr "Art des Ausdrucks"
 
-#: gtk-gui.c:913
+#: gtk-gui.c:914
 msgid "Print..."
 msgstr "Drucken..."
 
-#: gtk-gui.c:924
+#: gtk-gui.c:925
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:922
 msgid "Quit"
 msgstr "Beenden"
 
-#: uemis.c:152
+#: uemis.c:157
 msgid "RGT Alert"
 msgstr "Alarm: verbleibende Gas-Zeit"
 
-#: uemis.c:150
+#: uemis.c:155
 msgid "RGT Warning"
 msgstr "Warnung: verbleibende Gas-Zeit"
 
@@ -802,11 +802,11 @@ msgstr "Ausgewählte Tauchgänge aus Reise entfernen"
 msgid "Renumber"
 msgstr "Neu nummerieren"
 
-#: gtk-gui.c:918
+#: gtk-gui.c:919
 msgid "Renumber..."
 msgstr "Neu nummerieren..."
 
-#: gtk-gui.c:1484
+#: gtk-gui.c:1485
 msgid "Retry"
 msgstr "Wiederholen"
 
@@ -818,7 +818,7 @@ msgstr "AMV"
 msgid "SDE file"
 msgstr "SDE Datei"
 
-#: uemis.c:132
+#: uemis.c:137
 msgid "Safety Stop Violation"
 msgstr "Verletzung des Sicherheitsstops"
 
@@ -826,7 +826,7 @@ msgstr "Verletzung des Sicherheitsstops"
 msgid "Sat"
 msgstr "Sa"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:912
 msgid "Save As..."
 msgstr "Speichern unter..."
 
@@ -838,7 +838,7 @@ msgstr "Änderungen speichern?"
 msgid "Save File As"
 msgstr "Datei speichern unter"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:911
 msgid "Save..."
 msgstr "Speichern..."
 
@@ -846,7 +846,7 @@ msgstr "Speichern..."
 msgid "SelectEvents"
 msgstr "Ereignisse auswählen"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:921
 msgid "SelectEvents..."
 msgstr "Ereignisse auswählen..."
 
@@ -879,11 +879,11 @@ msgstr "Spalten anzeigen"
 msgid "Size"
 msgstr "Grösse"
 
-#: uemis.c:134
+#: uemis.c:139
 msgid "Speed Alarm"
 msgstr "Alarm: Geschwindigkeit"
 
-#: uemis.c:137
+#: uemis.c:142
 msgid "Speed Warning"
 msgstr "Warnung: Geschwindigkeit"
 
@@ -895,7 +895,7 @@ msgstr "Start"
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: gtk-gui.c:1137
+#: gtk-gui.c:1138
 msgid "Stats"
 msgstr "Statistiken"
 
@@ -916,11 +916,11 @@ msgstr "Oberflächenpause"
 msgid "Table print"
 msgstr "Tabellenausdruck"
 
-#: uemis.c:154
+#: uemis.c:159
 msgid "Tank Change Suggested"
 msgstr "Tankwechsel Vorschlag"
 
-#: uemis.c:148
+#: uemis.c:153
 msgid "Tank Pressure Info"
 msgstr "Info: Tankdruck"
 
@@ -936,7 +936,7 @@ msgstr "Temperatur"
 msgid "Temperature:"
 msgstr "Temperatur:"
 
-#: gtk-gui.c:926
+#: gtk-gui.c:927
 msgid "Three"
 msgstr "Drei"
 
@@ -948,7 +948,7 @@ msgstr "Do"
 msgid "Time"
 msgstr "Zeit"
 
-#: gtk-gui.c:932
+#: gtk-gui.c:933
 msgid "Toggle Zoom"
 msgstr "Zoom ein-/ausschalten"
 
@@ -1001,16 +1001,16 @@ msgstr ""
 msgid "Uemis init failed"
 msgstr "Uemis Initialisierung fehlgeschlagen"
 
-#: libdivecomputer.c:388
+#: libdivecomputer.c:390
 msgid "Unable to create libdivecomputer context"
 msgstr "Fehler beim Erzeugen des libdivecomputer Contexts"
 
-#: libdivecomputer.c:223
+#: libdivecomputer.c:225
 #, c-format
 msgid "Unable to create parser for %s %s"
 msgstr "Nicht in der Lage, einen Parser für %s %s zu erstellen"
 
-#: libdivecomputer.c:390
+#: libdivecomputer.c:392
 #, c-format
 msgid "Unable to open %s %s (%s)"
 msgstr "Fehler beim Öffnen von %s %s (%s)"
@@ -1019,7 +1019,7 @@ msgstr "Fehler beim Öffnen von %s %s (%s)"
 msgid "Units"
 msgstr "Einheiten"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:906
 msgid "View"
 msgstr "Ansicht"
 
@@ -1055,7 +1055,7 @@ msgstr "XML Datei"
 msgid "Year"
 msgstr "Jahr"
 
-#: gtk-gui.c:919 statistics.c:368
+#: gtk-gui.c:920 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Jährliche Statistiken"
 
@@ -1080,7 +1080,7 @@ msgstr ""
 msgid "air"
 msgstr "Luft"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "airtime"
 msgstr "verbleibende Atemzeit"
 
@@ -1088,7 +1088,7 @@ msgstr "verbleibende Atemzeit"
 msgid "ankle"
 msgstr "Fuss"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "ascent"
 msgstr "Aufstieg"
 
@@ -1104,15 +1104,15 @@ msgstr "bar"
 msgid "belt"
 msgstr "Gürtel"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "bookmark"
 msgstr "Markierung"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "ceiling"
 msgstr "Minimaltiefe"
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:83
 msgid "ceiling (safety stop)"
 msgstr "Minimaltiefe (Sicherheitsstopp)"
 
@@ -1124,15 +1124,15 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "deco"
 msgstr "Deko"
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:83
 msgid "deepstop"
 msgstr "tiefer Stopp"
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:83
 msgid "divetime"
 msgstr "Dauer"
 
@@ -1140,11 +1140,11 @@ msgstr "Dauer"
 msgid "ft"
 msgstr "ft"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:82
 msgid "gaschange"
 msgstr "Flaschenwechsel"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "heading"
 msgstr "Richtung"
 
@@ -1152,7 +1152,7 @@ msgstr "Richtung"
 msgid "integrated"
 msgstr "integriert"
 
-#: libdivecomputer.c:101
+#: libdivecomputer.c:103
 msgid "invalid event number"
 msgstr "ungültige Ereignisnummer"
 
@@ -1172,7 +1172,7 @@ msgstr "US Pfund"
 msgid "m"
 msgstr ""
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "maxdepth"
 msgstr "Max. Tiefe"
 
@@ -1180,7 +1180,7 @@ msgstr "Max. Tiefe"
 msgid "min"
 msgstr "min"
 
-#: libdivecomputer.c:331
+#: libdivecomputer.c:333
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
@@ -1190,7 +1190,7 @@ msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgid "more than %d days"
 msgstr "mehr als %d Tage"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "none"
 msgstr "keine"
 
@@ -1202,41 +1202,42 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "rbt"
 msgstr "rbt"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "rgbm"
 msgstr "rgbm"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "safety stop"
 msgstr "Sicherheitsstopp"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:82
 msgid "safety stop (mandatory)"
 msgstr "Sicherheitsstopp (verpflichtend)"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:82
 msgid "safety stop (voluntary)"
 msgstr "Sicherheitsstopp (freiwillig)"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "surface"
 msgstr "Oberfläche"
 
-#: libdivecomputer.c:83
+#: libdivecomputer.c:85
 msgid "tissue level warning"
 msgstr "Warnung auf Gewebe-Ebene"
 
-#: gtk-gui.c:858
+#. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
+#: gtk-gui.c:859
 msgid "translator-credits"
 msgstr ""
 "Dirk Hohndel\n"
 "Martin Gysel"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "transmitter"
 msgstr "Sender"
 
@@ -1244,7 +1245,7 @@ msgstr "Sender"
 msgid "unkn"
 msgstr "unbk"
 
-#: libdivecomputer.c:81 statistics.c:541
+#: libdivecomputer.c:83 statistics.c:541
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -1252,7 +1253,7 @@ msgstr "unbekannt"
 msgid "unspecified"
 msgstr "nicht angegeben"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "violation"
 msgstr "Verletzung"
 
@@ -1260,7 +1261,7 @@ msgstr "Verletzung"
 msgid "weight"
 msgstr "Gewicht"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "workload"
 msgstr "Arbeit"
 

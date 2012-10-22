@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-21 00:50-0700\n"
+"POT-Creation-Date: 2012-10-21 20:59-0700\n"
 "PO-Revision-Date: 2012-10-18 15:00+0100\n"
 "Last-Translator: Ivan Habunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Mjesec"
 
-#: gtk-gui.c:1515
+#: gtk-gui.c:1516
 msgid " Please select dive computer and device. "
 msgstr "Odaberite ronilačko računalo i naziv uređaja."
 
@@ -81,11 +81,11 @@ msgstr "%dst %dmin"
 msgid "(%s) or (%s)"
 msgstr "(%s) ili (%s)"
 
-#: gtk-gui.c:851 gtk-gui.c:922
+#: gtk-gui.c:851 gtk-gui.c:923
 msgid "About Subsurface"
 msgstr ""
 
-#: gtk-gui.c:916
+#: gtk-gui.c:917
 msgid "Add Dive..."
 msgstr "Dodaj uron..."
 
@@ -105,7 +105,7 @@ msgstr "Tra"
 msgid "Aug"
 msgstr "Kol"
 
-#: gtk-gui.c:931
+#: gtk-gui.c:932
 msgid "Autogroup"
 msgstr "Automatsko grupiranje"
 
@@ -165,11 +165,11 @@ msgstr "Celzijus"
 msgid "Choose Default XML File"
 msgstr "Odaberite defaultnu XML datoteku"
 
-#: gtk-gui.c:1409
+#: gtk-gui.c:1410
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Odaberite XML datoteke za uvoz u trenutačnu datoteku"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:913
 msgid "Close"
 msgstr "Zatvori"
 
@@ -242,7 +242,7 @@ msgstr "Dubina"
 msgid "Depth (%s):"
 msgstr "Dubina (%s):"
 
-#: uemis.c:156
+#: uemis.c:161
 msgid "Depth Limit Exceeded"
 msgstr "Premašeno ograničenje dubine"
 
@@ -250,7 +250,7 @@ msgstr "Premašeno ograničenje dubine"
 msgid "Depth:"
 msgstr "Dubina:"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1378
 msgid "Device name"
 msgstr "Naziv uređaja"
 
@@ -265,16 +265,16 @@ msgstr "Uron #%1$d - %2$s %4$02d.%3$02d.%5$04d u %6$d:%7$02d"
 msgid "Dive #%d - "
 msgstr "Uron #%d - "
 
-#: libdivecomputer.c:252
+#: libdivecomputer.c:254
 #, c-format
 msgid "Dive %d: %s %d %04d"
 msgstr "Uron #%d - %s %d %04d"
 
-#: gtk-gui.c:1133 info.c:700 statistics.c:711
+#: gtk-gui.c:1134 info.c:700 statistics.c:711
 msgid "Dive Info"
 msgstr "Informacije o uronu"
 
-#: gtk-gui.c:1125
+#: gtk-gui.c:1126
 msgid "Dive Notes"
 msgstr "Bilješke"
 
@@ -282,19 +282,19 @@ msgstr "Bilješke"
 msgid "Dive Time"
 msgstr "Vrijeme urona"
 
-#: uemis.c:162
+#: uemis.c:167
 msgid "Dive Time Alert"
 msgstr "Alarm: Trajanje urona"
 
-#: uemis.c:160
+#: uemis.c:165
 msgid "Dive Time Info"
 msgstr "Info: Trajanje urona"
 
-#: gtk-gui.c:1346
+#: gtk-gui.c:1347
 msgid "Dive computer"
 msgstr "Ronilačko računalo"
 
-#: libdivecomputer.c:371
+#: libdivecomputer.c:373
 msgid "Dive data import error"
 msgstr ""
 
@@ -322,11 +322,11 @@ msgstr "Voditelj"
 msgid "Dives"
 msgstr "Uroni"
 
-#: gtk-gui.c:1507
+#: gtk-gui.c:1508
 msgid "Download From Dive Computer"
 msgstr "Preuzmi s ronilačkog računala"
 
-#: gtk-gui.c:915
+#: gtk-gui.c:916
 msgid "Download From Dive Computer..."
 msgstr "Preuzmi s ronilačkog računala..."
 
@@ -374,52 +374,52 @@ msgstr "Uključi/isključi događaje"
 msgid "End"
 msgstr "Kraj"
 
-#: gtk-gui.c:1129 info.c:535
+#: gtk-gui.c:1130 info.c:535
 msgid "Equipment"
 msgstr "Oprema"
 
-#: libdivecomputer.c:238
+#: libdivecomputer.c:240
 msgid "Error parsing the datetime"
 msgstr ""
 
-#: libdivecomputer.c:257
+#: libdivecomputer.c:259
 msgid "Error parsing the divetime"
 msgstr ""
 
-#: libdivecomputer.c:284
+#: libdivecomputer.c:286
 msgid "Error parsing the gas mix"
 msgstr ""
 
-#: libdivecomputer.c:277
+#: libdivecomputer.c:279
 msgid "Error parsing the gas mix count"
 msgstr ""
 
-#: libdivecomputer.c:267
+#: libdivecomputer.c:269
 msgid "Error parsing the maxdepth"
 msgstr ""
 
-#: libdivecomputer.c:292
+#: libdivecomputer.c:294
 msgid "Error parsing the samples"
 msgstr ""
 
-#: libdivecomputer.c:367
+#: libdivecomputer.c:369
 msgid "Error registering the cancellation handler."
 msgstr ""
 
-#: libdivecomputer.c:229
+#: libdivecomputer.c:231
 msgid "Error registering the data"
 msgstr ""
 
-#: libdivecomputer.c:362
+#: libdivecomputer.c:364
 msgid "Error registering the event handler."
 msgstr ""
 
-#: libdivecomputer.c:337
+#: libdivecomputer.c:339
 #, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
 msgstr ""
 
-#: libdivecomputer.c:323
+#: libdivecomputer.c:325
 msgid "Event: waiting for user action"
 msgstr ""
 
@@ -464,11 +464,11 @@ msgstr "Velj"
 msgid "Feet"
 msgstr "Stope"
 
-#: gtk-gui.c:903
+#: gtk-gui.c:904
 msgid "File"
 msgstr "Datoteka"
 
-#: gtk-gui.c:906
+#: gtk-gui.c:907
 msgid "Filter"
 msgstr "Filter"
 
@@ -484,15 +484,15 @@ msgstr "Potrošeno plina"
 msgid "Gasmix"
 msgstr "Mješavina"
 
-#: gtk-gui.c:907
+#: gtk-gui.c:908
 msgid "Help"
 msgstr "Pomoć"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:915
 msgid "Import XML File(s)..."
 msgstr "Uvezi XML datoteke..."
 
-#: gtk-gui.c:925
+#: gtk-gui.c:926
 msgid "Info"
 msgstr "Informacije"
 
@@ -513,7 +513,7 @@ msgstr "Lip"
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
 msgstr "Linus Torvalds, Dirk Hohndel i drugi, 2011, 2012"
 
-#: gtk-gui.c:923
+#: gtk-gui.c:924
 msgid "List"
 msgstr "Popis"
 
@@ -525,7 +525,7 @@ msgstr "Litra"
 msgid "Location"
 msgstr "Lokacija"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:905
 msgid "Log"
 msgstr "Dnevnik"
 
@@ -538,11 +538,11 @@ msgstr "Maks."
 msgid "Longest Dive"
 msgstr "Najduži uron"
 
-#: uemis.c:170
+#: uemis.c:175
 msgid "Low Battery Alert"
 msgstr "Alarm: Baterija pri izmaku"
 
-#: uemis.c:168
+#: uemis.c:173
 msgid "Low Battery Warning"
 msgstr "Upozorenje: Baterija pri izmaku"
 
@@ -550,7 +550,7 @@ msgstr "Upozorenje: Baterija pri izmaku"
 msgid "Mar"
 msgstr "Ožu"
 
-#: uemis.c:164
+#: uemis.c:169
 msgid "Marker"
 msgstr "Oznaka"
 
@@ -558,7 +558,7 @@ msgstr "Oznaka"
 msgid "Master"
 msgstr "Master"
 
-#: uemis.c:158
+#: uemis.c:163
 msgid "Max Deco Time Warning"
 msgstr "Upozorenje: Max. vrijeme dekompresije"
 
@@ -659,7 +659,7 @@ msgstr "Pon"
 msgid "Multi-platform divelog software in C"
 msgstr "Višeplatformski program za vođenje ronilačkog dnevnika pisan u C-u"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:909
 msgid "New"
 msgstr "Novi"
 
@@ -667,7 +667,7 @@ msgstr "Novi"
 msgid "New starting number"
 msgstr "Novi početni broj"
 
-#: uemis.c:166
+#: uemis.c:171
 msgid "No Tank Data"
 msgstr "Nema podatka o boci"
 
@@ -679,7 +679,7 @@ msgstr "Bilješke"
 msgid "Nov"
 msgstr "Stu"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "OLF"
 msgstr ""
 
@@ -691,7 +691,7 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Lis"
 
-#: libdivecomputer.c:425
+#: libdivecomputer.c:427
 msgid "Odd pthread error return"
 msgstr ""
 
@@ -699,23 +699,23 @@ msgstr ""
 msgid "Open File"
 msgstr "Otvori datoteku"
 
-#: gtk-gui.c:909
+#: gtk-gui.c:910
 msgid "Open..."
 msgstr "Otvori..."
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "PO2"
 msgstr ""
 
-#: uemis.c:144
+#: uemis.c:149
 msgid "PO2 Ascend Alarm"
 msgstr "PO2 Alarm: Prebrzi izron"
 
-#: uemis.c:142
+#: uemis.c:147
 msgid "PO2 Ascend Warning"
 msgstr "PO2 Upozorenje: Prebrzi izron"
 
-#: uemis.c:139
+#: uemis.c:144
 msgid "PO2 Green Warning"
 msgstr "PO2 Upozorenje: Zeleno"
 
@@ -727,7 +727,7 @@ msgstr "PSI"
 msgid "Preferences"
 msgstr "Postavke"
 
-#: gtk-gui.c:917
+#: gtk-gui.c:918
 msgid "Preferences..."
 msgstr "Postavke..."
 
@@ -755,23 +755,23 @@ msgstr "Ispiši odabrano"
 msgid "Print type"
 msgstr "Vrsta ispisa"
 
-#: gtk-gui.c:913
+#: gtk-gui.c:914
 msgid "Print..."
 msgstr "Ispis..."
 
-#: gtk-gui.c:924
+#: gtk-gui.c:925
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:921
+#: gtk-gui.c:922
 msgid "Quit"
 msgstr "Izlaz"
 
-#: uemis.c:152
+#: uemis.c:157
 msgid "RGT Alert"
 msgstr "RTG Alarm"
 
-#: uemis.c:150
+#: uemis.c:155
 msgid "RGT Warning"
 msgstr "RTG Upozorenje"
 
@@ -800,11 +800,11 @@ msgstr "Ukloni odabrane urone iz grupe"
 msgid "Renumber"
 msgstr "Renumeriraj"
 
-#: gtk-gui.c:918
+#: gtk-gui.c:919
 msgid "Renumber..."
 msgstr "Renumeriraj..."
 
-#: gtk-gui.c:1484
+#: gtk-gui.c:1485
 msgid "Retry"
 msgstr "Pokušaj ponovo"
 
@@ -816,7 +816,7 @@ msgstr "SAC"
 msgid "SDE file"
 msgstr "SDE Datoteka"
 
-#: uemis.c:132
+#: uemis.c:137
 msgid "Safety Stop Violation"
 msgstr "Kršenje sigurnosne stanke"
 
@@ -824,7 +824,7 @@ msgstr "Kršenje sigurnosne stanke"
 msgid "Sat"
 msgstr "Sub"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:912
 msgid "Save As..."
 msgstr "Spremi kao..."
 
@@ -836,7 +836,7 @@ msgstr "Spremi promjene?"
 msgid "Save File As"
 msgstr "Spremi datoteku kao"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:911
 msgid "Save..."
 msgstr "Spremi..."
 
@@ -844,7 +844,7 @@ msgstr "Spremi..."
 msgid "SelectEvents"
 msgstr "Odaberi događaje"
 
-#: gtk-gui.c:920
+#: gtk-gui.c:921
 msgid "SelectEvents..."
 msgstr "Odaberi događaje..."
 
@@ -877,11 +877,11 @@ msgstr "Prikaži stupce"
 msgid "Size"
 msgstr "Veličina"
 
-#: uemis.c:134
+#: uemis.c:139
 msgid "Speed Alarm"
 msgstr "Alarm: Brzina"
 
-#: uemis.c:137
+#: uemis.c:142
 msgid "Speed Warning"
 msgstr "Upozorenje: Brzina"
 
@@ -893,7 +893,7 @@ msgstr "Početak"
 msgid "Statistics"
 msgstr "Statistika"
 
-#: gtk-gui.c:1137
+#: gtk-gui.c:1138
 msgid "Stats"
 msgstr "Statistika"
 
@@ -914,11 +914,11 @@ msgstr "Površinski interval"
 msgid "Table print"
 msgstr "Tablični ispis"
 
-#: uemis.c:154
+#: uemis.c:159
 msgid "Tank Change Suggested"
 msgstr "Preporučena izmjena boce"
 
-#: uemis.c:148
+#: uemis.c:153
 msgid "Tank Pressure Info"
 msgstr "Podaci od pritisku u boci"
 
@@ -934,7 +934,7 @@ msgstr "Temperatura"
 msgid "Temperature:"
 msgstr "Temperatura:"
 
-#: gtk-gui.c:926
+#: gtk-gui.c:927
 msgid "Three"
 msgstr "Tri"
 
@@ -946,7 +946,7 @@ msgstr "Čet"
 msgid "Time"
 msgstr "Vrijeme"
 
-#: gtk-gui.c:932
+#: gtk-gui.c:933
 msgid "Toggle Zoom"
 msgstr "Uključi/isključi povećanje"
 
@@ -999,16 +999,16 @@ msgstr ""
 msgid "Uemis init failed"
 msgstr "Uemis greška pri inicijalizaciji"
 
-#: libdivecomputer.c:388
+#: libdivecomputer.c:390
 msgid "Unable to create libdivecomputer context"
 msgstr ""
 
-#: libdivecomputer.c:223
+#: libdivecomputer.c:225
 #, c-format
 msgid "Unable to create parser for %s %s"
 msgstr ""
 
-#: libdivecomputer.c:390
+#: libdivecomputer.c:392
 #, fuzzy, c-format
 msgid "Unable to open %s %s (%s)"
 msgstr "Nije uspjelo otvaranje %i datoteka"
@@ -1017,7 +1017,7 @@ msgstr "Nije uspjelo otvaranje %i datoteka"
 msgid "Units"
 msgstr "Jedinice"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:906
 msgid "View"
 msgstr "Pregled"
 
@@ -1053,7 +1053,7 @@ msgstr "XML datoteka"
 msgid "Year"
 msgstr "Godina"
 
-#: gtk-gui.c:919 statistics.c:368
+#: gtk-gui.c:920 statistics.c:368
 msgid "Yearly Statistics"
 msgstr "Godišnje statistike"
 
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "air"
 msgstr "zrak"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "airtime"
 msgstr ""
 
@@ -1086,7 +1086,7 @@ msgstr ""
 msgid "ankle"
 msgstr "gležanj"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "ascent"
 msgstr ""
 
@@ -1102,15 +1102,15 @@ msgstr "bar"
 msgid "belt"
 msgstr "pojas"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "bookmark"
 msgstr ""
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "ceiling"
 msgstr ""
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:83
 msgid "ceiling (safety stop)"
 msgstr ""
 
@@ -1122,15 +1122,15 @@ msgstr "clip-on"
 msgid "cuft"
 msgstr ""
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "deco"
 msgstr ""
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:83
 msgid "deepstop"
 msgstr ""
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:83
 msgid "divetime"
 msgstr ""
 
@@ -1138,11 +1138,11 @@ msgstr ""
 msgid "ft"
 msgstr "ft"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:82
 msgid "gaschange"
 msgstr ""
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "heading"
 msgstr ""
 
@@ -1150,7 +1150,7 @@ msgstr ""
 msgid "integrated"
 msgstr "integrirani"
 
-#: libdivecomputer.c:101
+#: libdivecomputer.c:103
 msgid "invalid event number"
 msgstr ""
 
@@ -1170,7 +1170,7 @@ msgstr "US funte"
 msgid "m"
 msgstr ""
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 #, fuzzy
 msgid "maxdepth"
 msgstr "Maks. dubina"
@@ -1179,7 +1179,7 @@ msgstr "Maks. dubina"
 msgid "min"
 msgstr "min"
 
-#: libdivecomputer.c:331
+#: libdivecomputer.c:333
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr ""
@@ -1189,7 +1189,7 @@ msgstr ""
 msgid "more than %d days"
 msgstr "više od %d dana"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "none"
 msgstr ""
 
@@ -1201,39 +1201,40 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "rbt"
 msgstr ""
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:84
 msgid "rgbm"
 msgstr ""
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "safety stop"
 msgstr ""
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:82
 msgid "safety stop (mandatory)"
 msgstr ""
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:82
 msgid "safety stop (voluntary)"
 msgstr ""
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "surface"
 msgstr ""
 
-#: libdivecomputer.c:83
+#: libdivecomputer.c:85
 msgid "tissue level warning"
 msgstr ""
 
-#: gtk-gui.c:858
+#. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
+#: gtk-gui.c:859
 msgid "translator-credits"
-msgstr ""
+msgstr "Ivan Habunek"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "transmitter"
 msgstr ""
 
@@ -1241,7 +1242,7 @@ msgstr ""
 msgid "unkn"
 msgstr "nepoznat"
 
-#: libdivecomputer.c:81 statistics.c:541
+#: libdivecomputer.c:83 statistics.c:541
 msgid "unknown"
 msgstr "nepoznato"
 
@@ -1249,7 +1250,7 @@ msgstr "nepoznato"
 msgid "unspecified"
 msgstr "nije specificirano"
 
-#: libdivecomputer.c:79
+#: libdivecomputer.c:81
 msgid "violation"
 msgstr "povreda"
 
@@ -1257,7 +1258,7 @@ msgstr "povreda"
 msgid "weight"
 msgstr "težina"
 
-#: libdivecomputer.c:78
+#: libdivecomputer.c:80
 msgid "workload"
 msgstr ""
 
