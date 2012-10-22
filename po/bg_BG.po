@@ -994,7 +994,7 @@ msgid ""
 msgstr ""
 "Uemis Zurich: Файловата система е пълна\n"
 "Излючете/Свържете на ново леководолазния компютър\n"
-"и опитайте отново"
+"и опитайте пак"
 
 #: uemis-downloader.c:559
 msgid "Uemis init failed"
