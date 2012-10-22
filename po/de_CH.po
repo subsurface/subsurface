@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-21 20:59-0700\n"
-"PO-Revision-Date: 2012-10-15 14:02+0100\n"
+"PO-Revision-Date: 2012-10-22 17:37+0100\n"
 "Last-Translator: Martin Gysel <me@bearsh.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -570,7 +570,7 @@ msgstr "Max. Tiefe"
 
 #: statistics.c:698
 msgid "Max SAC"
-msgstr "Max. AMV"
+msgstr "Max. SAC"
 
 #: statistics.c:673
 msgid "Max Temp"
@@ -707,19 +707,19 @@ msgstr "Öffnen..."
 
 #: libdivecomputer.c:84
 msgid "PO2"
-msgstr "PO2"
+msgstr "PO₂"
 
 #: uemis.c:149
 msgid "PO2 Ascend Alarm"
-msgstr "Alarm: Aufstieg / PO2"
+msgstr "Alarm: Aufstieg / PO₂"
 
 #: uemis.c:147
 msgid "PO2 Ascend Warning"
-msgstr "Warnung: Aufstieg / PO2"
+msgstr "Warnung: Aufstieg / PO₂"
 
 #: uemis.c:144
 msgid "PO2 Green Warning"
-msgstr "Warnung: PO2 Grün"
+msgstr "Warnung: PO₂ Grün"
 
 #: gtk-gui.c:593
 msgid "PSI"
@@ -812,7 +812,7 @@ msgstr "Wiederholen"
 
 #: divelist.c:1271 gtk-gui.c:632 statistics.c:160 statistics.c:736
 msgid "SAC"
-msgstr "AMV"
+msgstr "SAC"
 
 #: file.c:75
 msgid "SDE file"
@@ -1122,7 +1122,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr ""
+msgstr "cuft"
 
 #: libdivecomputer.c:80
 msgid "deco"
@@ -1130,7 +1130,7 @@ msgstr "Deko"
 
 #: libdivecomputer.c:83
 msgid "deepstop"
-msgstr "tiefer Stopp"
+msgstr "Tiefenstopp"
 
 #: libdivecomputer.c:83
 msgid "divetime"
@@ -1162,7 +1162,7 @@ msgstr "kg"
 
 #: dive.c:83
 msgid "l"
-msgstr ""
+msgstr "l"
 
 #: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
 msgid "lbs"
@@ -1170,7 +1170,7 @@ msgstr "US Pfund"
 
 #: dive.c:108 info.c:867
 msgid "m"
-msgstr ""
+msgstr "m"
 
 #: libdivecomputer.c:84
 msgid "maxdepth"
@@ -1196,11 +1196,11 @@ msgstr "keine"
 
 #: dive.c:41
 msgid "pascal"
-msgstr ""
+msgstr "Pascal"
 
 #: dive.c:49
 msgid "psi"
-msgstr ""
+msgstr "psi"
 
 #: libdivecomputer.c:80
 msgid "rbt"
