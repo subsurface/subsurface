@@ -1231,7 +1231,9 @@ msgstr "kudoskertymän varoitus"
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:859
 msgid "translator-credits"
-msgstr "Miika Turkia"
+msgstr ""
+"Tommi Saviranta\n"
+"Miika Turkia"
 
 #: libdivecomputer.c:81
 msgid "transmitter"
