@@ -18,10 +18,10 @@
 # General
 
     # Program version
-    !define SUBSURFACE_VERSION "2.1-rc3"
+    !define SUBSURFACE_VERSION "2.1"
 
     # VIProductVersion requires version in x.x.x.x format
-    !define SUBSURFACE_VIPRODUCTVERSION "2.0.99.3"
+    !define SUBSURFACE_VIPRODUCTVERSION "2.1.0.0"
 
     # Installer name and filename
     Name "Subsurface"
