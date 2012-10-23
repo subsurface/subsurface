@@ -226,13 +226,15 @@ static int delete_dive_info(struct dive *dive)
 
 static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-	edit_multi_dive_info(NULL);
+	if (amount_selected)
+		edit_multi_dive_info(NULL);
 }
 
 static void info_menu_delete_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
 	/* this needs to delete all the selected dives as well, I guess? */
 	delete_dive_info(current_dive);
+	amount_selected = 0;
 }
 
 static void add_menu_item(GtkMenu *menu, const char *label, const char *icon, void (*cb)(GtkMenuItem *, gpointer))
@@ -253,8 +255,10 @@ static void add_menu_item(GtkMenu *menu, const char *label, const char *icon, vo
 
 static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
 {
-	add_menu_item(menu, _("Delete"), GTK_STOCK_DELETE, info_menu_delete_cb);
-	add_menu_item(menu, _("Edit"), GTK_STOCK_EDIT, info_menu_edit_cb);
+	if (amount_selected) {
+		add_menu_item(menu, _("Delete"), GTK_STOCK_DELETE, info_menu_delete_cb);
+		add_menu_item(menu, _("Edit"), GTK_STOCK_EDIT, info_menu_edit_cb);
+	}
 }
 
 static GtkEntry *text_value(GtkWidget *box, const char *label)
@@ -769,7 +773,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 
 int edit_dive_info(struct dive *dive)
 {
-	if (!dive)
+	if (!dive || !amount_selected)
 		return 0;
 	return edit_multi_dive_info(dive);
 }
