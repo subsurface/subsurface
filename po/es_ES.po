@@ -1231,7 +1231,11 @@ msgstr "Alarma de nivel de tejidos"
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:859
 msgid "translator-credits"
-msgstr "Henrik Brautaset Aronsen (who doesn't speak Spanish)"
+msgstr "Pablo Garcia Castro\n"
+"Matthias Kaehlcke\n"
+"Sergio Schvezov\n"
+"Auni Somero\n"
+"and Henrik Brautaset Aronsen (who doesn't speak Spanish)"
 
 #: libdivecomputer.c:81
 msgid "transmitter"
