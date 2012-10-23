@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-21 20:59-0700\n"
-"PO-Revision-Date: 2012-10-22 12:06+0100\n"
-"Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
+"PO-Revision-Date: 2012-10-23 22:30+0100\n"
+"Last-Translator: Ďoďo Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -392,7 +392,7 @@ msgstr "Chyba spracovania zmesi plynu"
 
 #: libdivecomputer.c:279
 msgid "Error parsing the gas mix count"
-msgstr ""
+msgstr "Chyba spracovania dýchacích zmesí"
 
 #: libdivecomputer.c:269
 msgid "Error parsing the maxdepth"
@@ -936,7 +936,7 @@ msgstr "Teplota:"
 
 #: gtk-gui.c:927
 msgid "Three"
-msgstr "Strom"
+msgstr "Kombinovaný"
 
 #: main.c:37
 msgid "Thu"
@@ -948,7 +948,7 @@ msgstr "Čas"
 
 #: gtk-gui.c:933
 msgid "Toggle Zoom"
-msgstr "Zmeň zoom"
+msgstr "Zmeň veľkosť"
 
 #: statistics.c:164
 msgctxt "Duration"
@@ -1080,7 +1080,7 @@ msgstr "vzduch"
 
 #: libdivecomputer.c:84
 msgid "airtime"
-msgstr ""
+msgstr "čas na vzduchu"
 
 #: equipment.c:832
 msgid "ankle"
@@ -1120,7 +1120,7 @@ msgstr "clip-on"
 
 #: dive.c:88
 msgid "cuft"
-msgstr ""
+msgstr "cuft"
 
 #: libdivecomputer.c:80
 msgid "deco"
@@ -1226,7 +1226,7 @@ msgstr "povrch"
 
 #: libdivecomputer.c:85
 msgid "tissue level warning"
-msgstr ""
+msgstr "upozornenie nasýtenia tkanív"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:859
