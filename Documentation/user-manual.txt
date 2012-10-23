@@ -1,7 +1,7 @@
 Subsurface 2.1 User Manual
 ==========================
 Jacco_van_Koll_and_Dirk_Hohndel
-v0.1.0, October 2012
+v0.1.1, October 2012
 :Author Initials: JKO & DH
 :toc:
 :icons:
@@ -51,7 +51,7 @@ already available dive-log files.
 
 There is a menu, containing 'File', 'Log', 'Filter' and Help.
 
-The screen is devided in 3 area's:
+The screen is divided in 3 area's:
 
  - Area with 4 tabs: Dive Notes, Equipment, Dive Info, and Stats
  - Area next to the 3 tabs which will contain the dive profile
@@ -62,7 +62,7 @@ The screen is devided in 3 area's:
 Import new dives from your divecomputer
 ---------------------------------------
 
-Before you start fiddeling around with your divecomputer, note that
+Before you start fiddling around with your divecomputer, note that
 there are divecomputers that consume more power when they are in the
 PC-Communication mode. This could drain your battery. Therefor, ensure
 if your computer is recharging when connecting to the USB port. The
@@ -92,8 +92,8 @@ Now it is time to hook up your divecomputer to your PC:
 	(You should consult the manual of your specific divecomputer for your brand and type)
 
  - Go in Subsurface to 'Log - Download From Dive Computer'
-	* Within the popup, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
-	* Change the devicename under which your interface is connected.
+	* Within the pop-up, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
+	* Change the device name under which your interface is connected.
 	       ** On Linux, default is /dev/ttyUSB0
 	       ** On Windows, default is COM3
 	       ** On Mac, default is ... specific to the dive computer
@@ -104,6 +104,36 @@ Now it is time to hook up your divecomputer to your PC:
    Depending on your type of computer and/or number of dives, this
    could take some time. Please be patient.
 
+[[S_ImportUemis]]
+Import new dives from a Uemis Zurich
+------------------------------------
+
+Things are very similar when downloading dives from a Uemis Zurich
+divecomputer (which certainly is one of the ones that DO recharge when
+connected to the USB port). The main difference is that you don't enter a
+device name, but instead the location where the UEMISSDA file system is
+mounted once you connect the divecomputer.
+
+On Windows this is a drive letter (often 'E:' or 'F:'), on a Mac this is
+'/Volumes/UEMISSDA' and on Linux systems this differs depending on the
+distribution that you use. On Fedora it usually is
+'/var/run/media/<your_username>/UEMISSDA'.
+
+So once you have selected this as device name you can download the dives
+from the Uemis Zurich. One current issue is that you cannot download more
+than about 40-50 dives without running out of memory on the SDA. This will
+usually only happen the very first time you download dives from the Uemis
+Zurich - normally when downloading at the end of a day or even after a
+dive trip, the capacity is sufficient. If Subsurface displays and error
+that the divecomputer ran out of space the solution is straight forward.
+Disconnect the SDA, turn it off and on again, and reconnect it. You can
+now start a new download session and it will continue where it stopped the
+last time you tried. You may have to do this more than once, depending on
+how many dives you have stored on your divecomputer.
+
+At this point Subsurface doesn't download all the information that is
+stored on the SDA. Information about dive spots, buddies, and equipment is
+not yet downloaded.
 
 [[S_ViewingLogs]]
 Viewing and completing your logs
@@ -150,7 +180,7 @@ the following:
 [horizontal]
  *Location*::	 An input where you can enter your new location, or you can choose with the pull-down previous locations
  *Dive Master*:: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
- *Buddy*::	 An input where you can enter het name of you Buddy, or you can choose with the pull-down a previous name
+ *Buddy*::	 An input where you can enter the name of you Buddy, or you can choose with the pull-down a previous name
  *Rating*::	 A pull-down where you can rate your dive.
  *Suit*::	 An input where you can track the exposure protection suit you were wearing
  *Notes*::	 A free input where you can enter information about your dive. What you've seen, etc.
@@ -175,10 +205,10 @@ You also want to edit your Cylinder information. And in the
 <<S_EditDiveInfo, previous chapter>>, this was not edited. There is
 still another item to edit in the Dive Info screen:
 
- - Cylinder:	 A double-click fieldset. Here you can edit your Cylinder information
+ - Cylinder:	 A double-click field set. Here you can edit your Cylinder information
 
 So, when you double click on the cylinder info, you get another
-popup. This popup gives you the following:
+pop-up. This pop-up gives you the following:
 
  - Cylinder:	Pull-down where you can choose your Cylinder, or add your own
  - Size:	The volume if not `filled'
@@ -226,7 +256,7 @@ We are going to add an additional Cylinder:
  - In the main screen, click on the Equipment tab.  This shows your
    Cylinder you added in 7.
 
- - Now press the Add button and the Cylinder popup comes back.
+ - Now press the Add button and the Cylinder pop-up comes back.
 
  - Just like you added your Cylinder information in 7.  Edit equipment
    info, you add your cylinder information for the second Cylinder.
@@ -260,7 +290,7 @@ The information contains:
 	** Dive:                Number of dives covered (usually one, unless you select more dives)
 	** Max/Min/Avg Temp:    Corresponding temperature of the dives covered
 	** Total time:	        Total time of the covered dives together, calculated
-	** Avg/Long/Short Time:	The average / longest / shortes divetime of the covered dives, calculated
+	** Avg/Long/Short Time:	The average / longest / shortest dive time of the covered dives, calculated
 	** Max/Min/Avg Depth:	The maximum / minimum / average depth of the covered dives
 	** Max SAC:		Highest / lowest / average Surface Air Consumption of your covered dives
 
@@ -269,7 +299,7 @@ Setting up preferences
 ----------------------
 
 Subsurface has the ability to modify the preferences you want. By
-using menu 'File - Preferences' you will be presented a popup with the
+using menu 'File - Preferences' you will be presented a pop-up with the
 'Units'. You are free to choose what is your preference, with other
 words, use Metric or Imperial.
 
@@ -277,8 +307,8 @@ You can set the following options:
  - Depth:	Your diving depth in Meters or Feet
  - Pressure:	The pressure of your tank(s) in Bar/Ato or PSI (Pressure Square Inch)
  - Volume:	The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
- - Temperature:	The temperature of the water in Celcius or Fahrenheit
- - Weight:	The weight of your weightsystem in kg or lbs
+ - Temperature:	The temperature of the water in Celsius or Fahrenheit
+ - Weight:	The weight of your weight system in kg or lbs
 
 In the main screen, you did see in Area 3, some information. In the
 Columns options, you can enable/disable options you would like to show
@@ -292,7 +322,7 @@ there:
  - Show Suit:   Shows the suit you were wearing
 
 You can also change the default setting whether your dives are grouped
-by dive trips (the algorithm maskes educated guesses) or whether you'd
+by dive trips (the algorithm makes educated guesses) or whether you'd
 prefer to do any grouping of dive trips manually
 
 And, you can change the font used in the dive list,
@@ -306,7 +336,7 @@ use the following:
  - Depth:	Meter
  - Pressure:	Bar
  - Volume:	Liter
- - Temperature:	Celcius
+ - Temperature:	Celsius
  - Weight:	kg
 
 I would like to see the:
@@ -332,13 +362,13 @@ already in use.
 
 One of the ways to find out what your dive name is:
 
- - Disconnect your usb cable of your dive computer
+ - Disconnect your USB cable of your dive computer
  - Open a terminal
  - Type the command: 'dmesg' and press enter
- - Plug in your usb cable of your divecomputer
+ - Plug in your USB cable of your divecomputer
  - Type the command: 'dmesg' and press enter
 
-Within your terminal you should see a message similair to this one:
+Within your terminal you should see a message similar to this one:
 
 	usb 2-1.1: new full speed USB device number 14 using ehci_hcd
 	usbcore: registered new interface driver usbserial
@@ -356,7 +386,7 @@ Within your terminal you should see a message similair to this one:
 	usbcore: registered new interface driver ftdi_sio
 	ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver
 
-You see that in the third line from the bottom, the usb adapter is
+You see that in the third line from the bottom, the USB adapter is
 detected and is connected to 'ttyUSB3'. Now you use this information in
 the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
@@ -433,14 +463,14 @@ Export from Suunto Divemanager
 	* To select certain dives: hold ctrl and point & click the dive
 	* To select all dives:  Select the first dive, hold down shift and select the last dive
  - With the dives marked, use the program menu 'File - Export'
- - The export popup will show
- - Within this popup, there is one field called Export Path.
+ - The export pop-up will show
+ - Within this pop-up, there is one field called Export Path.
 	* Click the button browse next to the field Export Path
 		** A file-manager like window pops up
 		** Navigate to the directory where you want to store the Divelog.SDE file
 		** Optional change the name of the file you want to save
 		** Click 'Save'
-	* You are back in the Export popup. Press the button 'Export'
+	* You are back in the Export pop-up. Press the button 'Export'
  - Your dives are now exported to the file Divelogs.SDE.
 
 Unpacking the Divelogs.SDE on Windows
@@ -451,7 +481,7 @@ Renaming your file to a .zip:
  - Use the filemanager (explorer) and navigate to your Divelogs.SDE file
  - Right click on the Divelogs.SDE file and choose 'Rename'
 	* Change the name into Divelogs.SDE.zip
-	* Press enter when done. A warning popup shows:
+	* Press enter when done. A warning pop-up shows:
 
 		The file could be unusable when changing the extension. Are you sure:
 		Press OK.
@@ -481,13 +511,13 @@ The example uses an USB storage:
 	* Press Ctrl+v
  - Disconnect your USB storage by right clicking your USB storage in the explorer and choose Eject
  - Insert your USB storage into your Linux computer
- - Use your favourite filemanager to navigate to your USB storage
+ - Use your favorite filemanager to navigate to your USB storage
  - Copy the file to /tmp by:
 	* Right click on the file
 	* select copy
 	* navigate to /tmp
 	* press Ctrl+v or use the menu 'Edit - Paste'
- - The file is now transfered to /tmp
+ - The file is now transferred to /tmp
 
 Now the file is in /tmp, we can extract the xml files from it. You can do
 this by hand, or use the example script in <<AppendixB,Appendix B>>.
@@ -537,8 +567,8 @@ Within the Log menu, you will find the following sub-items:
 
  - Download From Dive Computer::   Allows you to download dive information from your dive computer
  - Add Dive::	      		   Manually add a dive that you cannot download from an existing computer
- - Renumber::	This option provides you with a popup. Within this
-			popup you can choose what the first number of your dives should be
+ - Renumber::	This option provides you with a pop-up. Within this
+			pop-up you can choose what the first number of your dives should be
 			for this set of dives.
  - Autogroup::		Toggle the auto group setting (see the discussion in the <<S_SettingUpPreferences,chapter 10>>)
 
@@ -559,7 +589,7 @@ This menu gives you the choice to enable or disable Events for the
 selected divelog(s). At this time, you can enable or disable ascent.
 When you enable ascent for your dives, within the dive profile, a yellow
 marker with exclamation sign (!) will show on the points where you have
-ascented.
+ascended.
 
 The Help menu
 ~~~~~~~~~~~~~
