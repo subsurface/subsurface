@@ -1812,6 +1812,22 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 
 void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 {
+	int success;
+	GtkWidget *dialog;
+
+	dialog = gtk_dialog_new_with_buttons(_("Remove Trip"),
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	gtk_widget_destroy(dialog);
+	if (!success)
+		return;
+
 	remove_trip(trippath, TRUE);
 	mark_divelist_changed(TRUE);
 }
@@ -1920,6 +1936,29 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	gboolean divetrip_needs_update = FALSE;
 	dive_trip_t *divetrip_to_update = NULL;
 	struct dive *dive;
+	int success;
+	GtkWidget *dialog;
+	char *dialog_title;
+
+	if (!amount_selected)
+		return;
+	if (amount_selected == 1)
+		dialog_title = _("Delete dive");
+	else
+		dialog_title = _("Delete dives");
+
+	dialog = gtk_dialog_new_with_buttons(dialog_title,
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	gtk_widget_destroy(dialog);
+	if (!success)
+		return;
 
 	remember_tree_state();
 	/* walk the dive list in chronological order */
@@ -1980,6 +2019,21 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	int idx;
 	struct dive *dive;
 	GtkTreeIter iter;
+	int success;
+	GtkWidget *dialog;
+
+	dialog = gtk_dialog_new_with_buttons(_("Delete dive"),
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	gtk_widget_destroy(dialog);
+	if (!success)
+		return;
 
 	remember_tree_state();
 	if (!gtk_tree_model_get_iter(MODEL(dive_list), &iter, path))
