@@ -5,8 +5,25 @@ In fall of 2011, when a forced lull in kernel development gave him an
 opportunity to start on a new endeavor, Linus Torvalds decided to tackle
 his frustration with the lack of decent divelog software on Linux.
 
-Subsurface is the result of the work of him and a team of developers
-since then.
+Subsurface is the result of the work of him and a team of developers since
+then. It now supports Linux, Windows and MacOS and allows data import from
+a large number of dive computers and several existing divelog programs. It
+provides advanced visualization of the key information provided by a
+modern dive computer and allows the user to track a wide variety of data
+about their diving.
+
+Subsurface is able to track multi-tank dives with air, Nitrox or TriMix,
+weights and exposure protection used, dive masters and dive buddies and
+allows the user to rate dives and provide additional dive notes. It
+calculates a wide variety of statistics of the user's diving and
+calculates and tracks information like SAC rate or OTU.
+
+Subsurface allows the user to print out a detailed log book including dive
+profiles and other relevant information. The program is localized in about
+a dozen languages and well supported by an active developer community. In
+fall of 2012 Dirk Hohndel has taken over as Subsurface maintainer.
+
+The latest version is Subsurface 2.1, released in October of 2012.
 
 License: GPLv2
 
