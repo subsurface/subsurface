@@ -761,7 +761,7 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 	int result;
 	GtkWidget *dialog, *frame, *vbox, *table;
 
-	dialog = gtk_dialog_new_with_buttons(_("SelectEvents"),
+	dialog = gtk_dialog_new_with_buttons(_("Select Events"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -918,7 +918,7 @@ static GtkActionEntry menu_items[] = {
 	{ "Preferences",    GTK_STOCK_PREFERENCES, N_("Preferences..."), PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, N_("Renumber..."), NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "YearlyStats",    NULL, N_("Yearly Statistics"), NULL, NULL, G_CALLBACK(show_yearly_stats) },
-	{ "SelectEvents",   NULL, N_("SelectEvents..."), NULL, NULL, G_CALLBACK(selectevents_dialog) },
+	{ "SelectEvents",   NULL, N_("Select Events..."), NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, N_("Quit"),   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, N_("About Subsurface"),  NULL, NULL, G_CALLBACK(about_dialog) },
 	{ "ViewList",       NULL, N_("List"),  CTRLCHAR "1", NULL, G_CALLBACK(view_list) },
