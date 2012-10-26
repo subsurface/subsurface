@@ -29,7 +29,7 @@
 #define ERR_FS_FULL N_("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
 #define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
-#define NUM_PARAM_BUFS 6
+#define NUM_PARAM_BUFS 10
 #define UEMIS_TIMEOUT 100000
 static char *param_buff[NUM_PARAM_BUFS];
 static char *reqtxt_path;
@@ -223,19 +223,197 @@ static char *next_segment(char *buf, int *offset, int size)
  * The binary data block can be more than 100k in size (base64 encoded) */
 static void buffer_add(char **buffer, int *buffer_size, char *buf)
 {
-	if (buf) {
-		if (! *buffer) {
-			*buffer = strdup(buf);
-			*buffer_size = strlen(*buffer) + 1;
-		} else {
-			*buffer_size += strlen(buf);
-			*buffer = realloc(*buffer, *buffer_size);
-			strcat(*buffer, buf);
-		}
-#if UEMIS_DEBUG > 5
-		fprintf(debugfile,"added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
-#endif
+	if (!buf)
+		return;
+	if (! *buffer) {
+		*buffer = strdup(buf);
+		*buffer_size = strlen(*buffer) + 1;
+	} else {
+		*buffer_size += strlen(buf);
+		*buffer = realloc(*buffer, *buffer_size);
+		strcat(*buffer, buf);
 	}
+#if UEMIS_DEBUG > 5
+	fprintf(debugfile,"added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
+#endif
+}
+
+#define PATTERN1 "<val key=\"%s\">%s"
+#define PATTERN2 "\n<int>%d</int>"
+static gboolean get_tag_int_value(char *buffer, char *tag, int *value, char **next_ptr)
+{
+	char *ptr = buffer;
+	int len;
+	char *format;
+
+	if (!ptr || !value)
+		return FALSE;
+	len = strlen(PATTERN1) + strlen(PATTERN2) + strlen(tag);
+	format = malloc(len);
+	snprintf(format, len, PATTERN1, tag, "");
+	ptr = strstr(ptr, format);
+	if (!ptr)
+		return FALSE;
+	snprintf(format, len, PATTERN1, tag, PATTERN2);
+	if (sscanf(ptr, format, value) != 1)
+		return FALSE;
+	if (next_ptr)
+		*next_ptr = ptr + 1;
+	return TRUE;
+}
+
+static gboolean get_tag_string_value(char *buffer, char *tag, char **value)
+{
+	char *eptr, *ptr = buffer;
+	int len;
+	char *format;
+
+	if (!ptr || !value)
+		return FALSE;
+	len = strlen(PATTERN1) + strlen(tag);
+	format = malloc(len);
+	snprintf(format, len, PATTERN1, tag, "");
+	ptr = strstr(ptr, format);
+	if (!ptr)
+		return FALSE;
+	eptr = strstr(ptr, "</string>");
+	if (!eptr)
+		return FALSE;
+	*eptr = '\0';
+	*value = strdup(ptr + strlen(format) + 9);
+	*eptr = '<';
+	return TRUE;
+}
+
+#define PATTERN4 "\n<float>%lf</float>"
+static gboolean get_tag_double_value(char *buffer, char *tag, double *value, char **next_ptr)
+{
+	char *ptr = buffer;
+	int len;
+	char *format;
+
+	if (!ptr || !value)
+		return FALSE;
+	len = strlen(PATTERN1) + strlen(PATTERN4) + strlen(tag);
+	format = malloc(len);
+	snprintf(format, len, PATTERN1, tag, "");
+	ptr = strstr(ptr, format);
+	if (!ptr)
+		return FALSE;
+	snprintf(format, len, PATTERN1, tag, PATTERN4);
+	if (sscanf(ptr, format, value) != 1)
+		return FALSE;
+	if (next_ptr)
+		*next_ptr = ptr + 1;
+	return TRUE;
+}
+
+static char *get_xml_for_int(char *buf, char *tag)
+{
+	int value;
+	char *xml;
+	if (get_tag_int_value(buf, tag, &value, NULL)) {
+		int len = 20 + 2 * strlen(tag);
+		xml = malloc(len);
+		snprintf(xml, len, "<%s>%d</%s>\n", tag, value, tag);
+	}
+	return xml;
+}
+
+static const char *suit[] = { "", "wetsuit", "semidry", "drysuit" };
+static const char *suit_type[] = { "", "shorty", "vest", "long john", "jacket", "full suit", "2 pcs full suit" };
+static const char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", "membrane" };
+static char *convert_dive_details(char *buf, uint8_t *hdr)
+{
+	char *conv_buffer = NULL;
+	int conv_size = 0;
+	char *ptr, *eptr;
+	double doublevalue;
+	double weight;
+	char *stringvalue;
+	char textbuf[200];
+	int suit_idx, suit_type_idx, suit_thickness_idx;
+
+	/* we want to throw away what is duplicate and clean up and
+	 * parse the userful entries */
+	ptr = strstr(buf, "<val key=\"logfilenr\">");
+	if (!ptr)
+		return NULL;
+	eptr = strstr(ptr + 1, "<val");
+	*eptr = '\0';
+	buffer_add(&conv_buffer, &conv_size, ptr);
+	*eptr = '<';
+	buffer_add(&conv_buffer, &conv_size, get_xml_for_int(eptr, "altitude"));
+	buffer_add(&conv_buffer, &conv_size, get_xml_for_int(eptr, "decoindex"));
+	buffer_add(&conv_buffer, &conv_size, get_xml_for_int(eptr, "consumption"));
+	if (get_tag_double_value(eptr, "f32Weight", &doublevalue, NULL)) {
+		weight = hdr[24] ? lbs_to_grams(doublevalue) / 1000.0 : doublevalue;
+		snprintf(textbuf, sizeof(textbuf),
+			"<weightsystem weight='%.3lf' description='unknown' />\n", weight);
+		buffer_add(&conv_buffer, &conv_size, textbuf);
+	}
+	if (get_tag_string_value(eptr, "notes", &stringvalue)) {
+		buffer_add(&conv_buffer, &conv_size, "<notes>");
+		buffer_add(&conv_buffer, &conv_size, stringvalue);
+		buffer_add(&conv_buffer, &conv_size, "</notes>\n");
+	}
+	if (get_tag_int_value(eptr, "u8DiveSuit", &suit_idx, NULL) &&
+	    get_tag_int_value(eptr, "u8DiveSuitType", &suit_type_idx, NULL) &&
+	    get_tag_int_value(eptr, "u8SuitThickness", &suit_thickness_idx, NULL) &&
+	    suit_idx >= 0 && suit_idx < sizeof(suit) &&
+	    suit_type_idx >= 0 && suit_type_idx < sizeof(suit_type) &&
+	    suit_thickness_idx >= 0 && suit_thickness_idx < sizeof(suit_thickness)) {
+		snprintf(textbuf, sizeof(textbuf), "<suit>%s %s %s</suit>\n",
+			suit[suit_idx], suit_type[suit_type_idx], suit_thickness[suit_thickness_idx]);
+		buffer_add(&conv_buffer, &conv_size, textbuf);
+	}
+	return conv_buffer;
+}
+
+/* this is more interesting - insert the additional data in the dive
+ * it belongs to - no idea why Uemis splits out the dive data in this
+ * odd way, but we have to re-assemble it here */
+static void buffer_insert(char **buffer, int *buffer_size, char *buf)
+{
+	char *ptr, *endptr, *b64, *cbuf;
+	int obj_dive;
+	int obj_log;
+	int offset, len;
+	uint8_t hdr[24];
+
+	/* since we want to insert into the buffer... if there's
+	 * nothing there, this makes absolutely no sense so just
+	 * bail */
+	if (!buf || !*buffer)
+		return;
+	endptr = *buffer + strlen(*buffer);
+	/* now figure out the object_id of buf and find the matching
+	 * spot in buffer */
+	if (!get_tag_int_value(buf, "logfilenr", &obj_dive, NULL))
+		return;
+	ptr = *buffer;
+	while (ptr < endptr) {
+		if (!get_tag_int_value(ptr, "object_id", &obj_log, &ptr))
+			return;
+		if (obj_dive == obj_log)
+			break;
+	}
+	ptr = strstr(ptr, "<val key=\"file_content\">");
+	if (!ptr)
+		return;
+	/* this is where the base64 data starts; we need to extract
+	 * some info from that in order to make sense of the data in
+	 * the dive info */
+	b64 = strstr(ptr, "<bin>") + 5;
+	decode(b64, hdr, 32);
+	cbuf = convert_dive_details(buf, hdr);
+	offset = ptr - *buffer;
+	len = strlen(cbuf);
+	*buffer_size += len;
+	*buffer = realloc(*buffer, *buffer_size);
+	ptr = *buffer + offset;
+	memmove(ptr + len, ptr, strlen(*buffer) - offset);
+	memmove(ptr, cbuf, len);
 }
 
 /* are there more ANS files we can check? */
@@ -291,7 +469,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	str_append_with_delim(sb, request);
 	for (i = 0; i < n_param_in; i++)
 		str_append_with_delim(sb, param_buff[i]);
-	if (! strcmp(request, "getDivelogs") || ! strcmp(request, "getDeviceData")) {
+	if (! strcmp(request, "getDivelogs") || ! strcmp(request, "getDeviceData") || ! strcmp(request, "getDirectory")) {
 		answer_in_mbuf = TRUE;
 		str_append_with_delim(sb, "");
 	}
@@ -414,9 +592,9 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	return found_answer;
 }
 
-/* Turn what we get from the dive computer into something
- * that we can pass to the parse_xml function.
- * The last 'object_id' that we see is returned as our current
+/* Turn what we get from the dive computer into something that we can
+ * pass to the parse_xml function.  If this is a divelog, then the
+ * last 'object_id' that we see is returned as our current
  * approximation of a last dive number */
 static char *process_raw_buffer(char *inbuf, char **max_divenr)
 {
@@ -427,34 +605,71 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 	char *endptr = buf + inbuflen;
 	char *conv_buffer = NULL;
 	int conv_buffer_size = 0;
+	gboolean log = FALSE;
+	char *sections[10];
+	int s, nr_sections = 0;
 
 	bp = buf + 1;
 	tp = next_token(&bp);
-	if (strcmp(tp,"divelog") != 0)
+	if (strcmp(tp, "divelog") == 0) {
+		/* this is a divelog */
+		log = TRUE;
+		tp = next_token(&bp);
+		if (strcmp(tp,"1.0") != 0)
+			return NULL;
+	} else if (strcmp(tp, "dive") == 0) {
+		/* this is dive detail */
+		tp = next_token(&bp);
+		if (strcmp(tp,"1.0") != 0)
+			return NULL;
+	} else {
+		/* don't understand the buffer */
 		return NULL;
-	tp = next_token(&bp);
-	if (strcmp(tp,"1.0") != 0)
-		return NULL;
-	buffer_add(&conv_buffer, &conv_buffer_size,
-		"<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
+	}
+	if (log)
+		buffer_add(&conv_buffer, &conv_buffer_size,
+			"<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
 	while (!done) {
 		char *tmp;
 		int tmp_size;
+
+		/* the valid buffer ends with a series of delimiters */
+		if (bp >= endptr - 2 || !strcmp(bp, "{{"))
+			break;
 		tag = next_token(&bp);
+		/* we also end if we get an empty tag */
+		if (*tag == '\0')
+			break;
+		for (s = 0; s < nr_sections; s++)
+			if (!strcmp(tag, sections[s])) {
+				tag = next_token(&bp);
+				break;
+			}
 		type = next_token(&bp);
+		if (!strcmp(type, "1.0")) {
+			/* this tells us the sections that will follow; the tag here
+			 * is of the format dive-<section> */
+			sections[nr_sections] = strchr(tag, '-') + 1;
+#if UEMIS_DEBUG > 2
+			fprintf(debugfile, "Expect to find section %s\n", sections[nr_sections]);
+#endif
+			if (nr_sections < sizeof(sections) - 1)
+				nr_sections++;
+			continue;
+		}
 		val = next_token(&bp);
-		if (! strcmp(tag, "object_id")) {
+		if (log && ! strcmp(tag, "object_id")) {
 			free(*max_divenr);
 			*max_divenr = strdup(val);
 		}
 		if (! strcmp(tag, "file_content")) {
-			tmp_size = 44 + strlen(tag) + strlen(val);
+			tmp_size = 45 + strlen(tag) + strlen(val);
 			done = TRUE;
 		} else {
-			tmp_size = 27 + strlen(tag) + 2 * strlen(type) + strlen(val);
+			tmp_size = 28 + strlen(tag) + 2 * strlen(type) + strlen(val);
 		}
 		tmp = malloc(tmp_size);
-		snprintf(tmp, tmp_size,"<val key=\"%s\">\n<%s>%s</%s>\n</val>\n",
+		snprintf(tmp, tmp_size, "<val key=\"%s\">\n<%s>%s</%s>\n</val>\n",
 			tag, type, val, type);
 		buffer_add(&conv_buffer, &conv_buffer_size, tmp);
 		free(tmp);
@@ -468,8 +683,13 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 				"</dive>\n<dive type=\"uemis\" ref=\"divelog\" version=\"1.0\">\n");
 		}
 	}
-	buffer_add(&conv_buffer, &conv_buffer_size, "</dive>\n");
+	if (log) {
+		buffer_add(&conv_buffer, &conv_buffer_size, "</dive>\n");
+	}
 	free(buf);
+#if UEMIS_DEBUG > 2
+	fprintf(debugfile,"converted to \"%s\"\n", conv_buffer);
+#endif
 	return strdup(conv_buffer);
 }
 
@@ -548,6 +768,8 @@ static char *do_uemis_download(struct argument_block *args)
 	char **xml_buffer = args->xml_buffer;
 	int xml_buffer_size;
 	char *newmax = NULL;
+	int start, end, i;
+	char objectid[10];
 	char *deviceid = NULL;
 	char *result = NULL;
 	char *endptr;
@@ -571,6 +793,8 @@ static char *do_uemis_download(struct argument_block *args)
 		goto bail;
 	param_buff[1] = "notempty";
 	newmax = get_divenr(*max_dive_data, deviceid);
+	if (sscanf(newmax, "%d", &start) != 1)
+		start = 0;
 	for (;;) {
 		param_buff[2] = newmax;
 		param_buff[3] = 0;
@@ -598,7 +822,25 @@ static char *do_uemis_download(struct argument_block *args)
 			*(endptr + 2) = '\0';
 	}
 	*args->max_dive_data = update_max_dive_data(*max_dive_data, deviceid, newmax);
+	if (sscanf(newmax, "%d", &end) != 1)
+		end = start;
+#if UEMIS_DEBUG > 2
+	fprintf(debugfile, "done: read from object_id %d to %d\n", start, end);
+#endif
 	free(newmax);
+	for (i = start; i < end; i++) {
+		snprintf(objectid, sizeof(objectid), "%d", i);
+		param_buff[2] = objectid;
+		param_buff[3] = 0;
+		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
+		if (mbuf) {
+			char *next_detail = process_raw_buffer(mbuf, &newmax);
+			buffer_insert(xml_buffer, &xml_buffer_size, next_detail);
+			free(next_detail);
+		}
+		if (!success)
+			break;
+	}
 	if (! uemis_get_answer(mountpath, "terminateSync", 0, 3, &result))
 		goto bail;
 	if (! strcmp(param_buff[0], "error")) {
