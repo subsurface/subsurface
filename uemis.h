@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 void uemis_parse_divelog_binary(char *base64, void *divep);
+void decode(uint8_t *in, uint8_t *out, int len);
 
 typedef struct {
 	uint16_t	dive_time;

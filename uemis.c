@@ -43,7 +43,7 @@ static void decodeblock( unsigned char in[4], unsigned char out[3] ) {
 /*
  * decode a base64 encoded stream discarding padding, line breaks and noise
  */
-static void decode( uint8_t *inbuf, uint8_t *outbuf, int inbuf_len ) {
+void decode( uint8_t *inbuf, uint8_t *outbuf, int inbuf_len ) {
 	uint8_t in[4], out[3], v;
 	int i,len,indx_in=0,indx_out=0;
 
