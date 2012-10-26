@@ -242,7 +242,9 @@ int main(int argc, char **argv)
 
 	init_ui(&argc, &argv);
 
-#ifdef DEBUGFILE
+#if DEBUGFILE > 1
+	debugfile = stderr;
+#elif defined(DEBUGFILE)
 	debugfilename = (char *)subsurface_default_filename();
 	strncpy(debugfilename + strlen(debugfilename) - 3, "log", 3);
 	if (g_mkdir_with_parents(g_path_get_dirname(debugfilename), 0664) != 0 ||
