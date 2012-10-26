@@ -119,9 +119,18 @@ void subsurface_close_conf(void)
 	RegCloseKey(hkey);
 }
 
-const char *subsurface_USB_name()
+int subsurface_fill_device_list(GtkListStore *store)
 {
-	return "COM3";
+	GtkTreeIter iter;
+	int index = -1;
+
+	/* if we can't find anything, use the default */
+	gtk_list_store_append(store, &iter);
+	gtk_list_store_set(store, &iter,
+			0, "COM3", -1);
+	if (is_default_dive_computer_device("COM3"))
+		index = 0;
+	return index;
 }
 
 const char *subsurface_icon_name()

@@ -72,9 +72,57 @@ void subsurface_close_conf(void)
 	/* Nothing */
 }
 
-const char *subsurface_USB_name()
+Int subsurface_fill_device_list(GtkListStore *store)
 {
-	return "/dev/tty.SLAB_USBtoUART";
+	int i = 0;
+	int index = -1;
+	GtkTreeIter iter;
+	GDir *dev;
+	const char *name;
+	char *buffer;
+	gsize length;
+
+	dev = g_dir_open("/dev", 0, NULL);
+	while (dev && (name = g_dir_read_name(dev)) != NULL) {
+		if (strstr(name, "usbserial")) {
+			int len = strlen(name) + 6;
+			char *devicename = malloc(len);
+			snprintf(devicename, len, "/dev/%s", name);
+			gtk_list_store_append(store, &iter);
+			gtk_list_store_set(store, &iter,
+					0, devicename, -1);
+			if (is_default_dive_computer_device(devicename))
+				index = i;
+			i++;
+		}
+	}
+	if (dev)
+		g_dir_close(dev);
+	dev = g_dir_open("/Volumes", 0, NULL);
+	while (dev && (name = g_dir_read_name(dev)) != NULL) {
+		if (strstr(name, "UEMISSDA")) {
+			int len = strlen(name) + 10;
+			char *devicename = malloc(len);
+			snprintf(devicename, len, "/Volumes/%s", name);
+			gtk_list_store_append(store, &iter);
+			gtk_list_store_set(store, &iter,
+					0, devicename, -1);
+			if (is_default_dive_computer_device(devicename))
+				index = i;
+			i++;
+		}
+	}
+	if (dev)
+		g_dir_close(dev);
+	if (i == 0) {
+		/* if we can't find anything, use the default */
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+				0, "/dev/tty.SLAB_USBtoUART", -1);
+		if (is_default_dive_computer_device("/dev/tty.SLAB_USBtoUART"))
+			index = i;
+	}
+	return index;
 }
 
 const char *subsurface_icon_name()

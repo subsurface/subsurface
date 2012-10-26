@@ -45,11 +45,13 @@ extern const void *subsurface_get_conf(char *name, pref_type_t type);
 extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
-extern const char *subsurface_USB_name(void);
+extern int subsurface_fill_device_list(GtkListStore *store);
 extern const char *subsurface_icon_name(void);
 extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager);
 extern void quit(GtkWidget *w, gpointer data);
+
+extern int is_default_dive_computer_device(const char *name);
 
 extern visible_cols_t visible_cols;
 

@@ -49,7 +49,7 @@ static int is_default_dive_computer(const char *vendor, const char *product)
 		default_dive_computer_product && !strcmp(product, default_dive_computer_product);
 }
 
-static int is_default_dive_computer_device(const char *name)
+int is_default_dive_computer_device(const char *name)
 {
 	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
 }
@@ -1360,29 +1360,31 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	return GTK_COMBO_BOX(combo_box);
 }
 
-const char *subsurface_device_name()
+static GtkComboBox *dc_device_selector(GtkWidget *vbox)
 {
-	if (!default_dive_computer_device || !*default_dive_computer_device)
-		return subsurface_USB_name();
-	else
-		return default_dive_computer_device;
-}
-
-static GtkEntry *dive_computer_device(GtkWidget *vbox)
-{
-	GtkWidget *hbox, *entry, *frame;
+	GtkWidget *hbox, *combo_box, *frame;
+	GtkListStore *model;
+	GtkCellRenderer *renderer;
+	int default_index;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	frame = gtk_frame_new(_("Device name"));
+	model = gtk_list_store_new(1, G_TYPE_STRING);
+	default_index = subsurface_fill_device_list(model);
+
+	frame = gtk_frame_new(_("Device or mount point"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
-	entry = gtk_entry_new();
-	gtk_container_add(GTK_CONTAINER(frame), entry);
-	gtk_entry_set_text(GTK_ENTRY(entry), subsurface_device_name());
+	combo_box = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	gtk_container_add(GTK_CONTAINER(frame), combo_box);
 
-	return GTK_ENTRY(entry);
+	renderer = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
+
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
+
+	return GTK_COMBO_BOX(combo_box);
 }
 
 static void do_import_file(gpointer data, gpointer user_data)
@@ -1498,9 +1500,8 @@ void download_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *button, *hbox, *vbox, *label, *info = NULL;
-	GtkComboBox *computer;
+	GtkComboBox *computer, *device;
 	GtkTreeIter iter;
-	GtkEntry *device;
 	device_data_t devicedata = {
 		.devname = NULL,
 	};
@@ -1516,7 +1517,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 	label = gtk_label_new(_(" Please select dive computer and device. "));
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
 	computer = dive_computer_selector(vbox);
-	device = dive_computer_device(vbox);
+	device = dc_device_selector(vbox);
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
 	devicedata.progress.bar = gtk_progress_bar_new();
@@ -1552,7 +1553,14 @@ repeat:
 		devicedata.descriptor = descriptor;
 		devicedata.vendor = vendor;
 		devicedata.product = product;
-		devicedata.devname = gtk_entry_get_text(device);
+
+		if (!gtk_combo_box_get_active_iter(device, &iter))
+			break;
+
+		model = gtk_combo_box_get_model(device);
+		gtk_tree_model_get(model, &iter,
+				0, &devicedata.devname,
+				-1);
 		set_default_dive_computer(vendor, product);
 		set_default_dive_computer_device(devicedata.devname);
 		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
