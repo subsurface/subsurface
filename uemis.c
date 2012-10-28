@@ -192,6 +192,8 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 
 	datalen = uemis_convert_base64(base64, &data);
 
+	dive->airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + 273150;
+
 	/* dive template in use:
 	   0 = air
 	   1 = nitrox (B)

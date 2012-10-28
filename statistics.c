@@ -28,6 +28,7 @@ typedef struct {
 		*max_depth,
 		*avg_depth,
 		*water_temp,
+		*air_temp,
 		*sac,
 		*otu,
 		*o2he,
@@ -548,6 +549,11 @@ static void show_single_dive_stats(struct dive *dive)
 		set_label(single_w.water_temp, "%.1f %s", value, unit);
 	} else
 		set_label(single_w.water_temp, "");
+	if (dive->airtemp.mkelvin) {
+		value = get_temp_units(dive->airtemp.mkelvin, &unit);
+		set_label(single_w.air_temp, "%.1f %s", value, unit);
+	} else
+		set_label(single_w.air_temp, "");
 	value = get_volume_units(dive->sac, &decimals, &unit);
 	if (value > 0) {
 		set_label(single_w.sac, _("%.*f %s/min"), decimals, value, unit);
@@ -728,6 +734,7 @@ GtkWidget *single_stats_widget(void)
 	single_w.max_depth = new_info_label_in_frame(hbox, _("Max Depth"));
 	single_w.avg_depth = new_info_label_in_frame(hbox, _("Avg Depth"));
 	single_w.water_temp = new_info_label_in_frame(hbox, _("Water Temp"));
+	single_w.air_temp = new_info_label_in_frame(hbox, _("Air Temp"));
 
 	/* third row */
 	hbox = gtk_hbox_new(FALSE, 3);
@@ -749,6 +756,7 @@ void clear_stats_widgets(void)
 	set_label(single_w.max_depth, "");
 	set_label(single_w.avg_depth, "");
 	set_label(single_w.water_temp, "");
+	set_label(single_w.air_temp, "");
 	set_label(single_w.sac, "");
 	set_label(single_w.sac, "");
 	set_label(single_w.otu, "");
