@@ -60,7 +60,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		he = gasmix.helium * 1000 + 0.5;
 
 		/* Ignore bogus data - libdivecomputer does some crazy stuff */
-		if (o2 <= AIR_PERMILLE || o2 >= 1000)
+		if (o2 + he <= AIR_PERMILLE || o2 >= 1000)
 			o2 = 0;
 		if (he < 0 || he >= 800 || o2+he >= 1000)
 			he = 0;
