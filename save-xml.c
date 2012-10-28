@@ -329,6 +329,8 @@ static void save_dive(FILE *f, struct dive *dive)
 		fprintf(f, " tripflag='%s'", tripflag_names[dive->tripflag]);
 	if (dive->rating)
 		fprintf(f, " rating='%d'", dive->rating);
+	if (dive->visibility)
+		fprintf(f, " visibility='%d'", dive->visibility);
 	fprintf(f, " date='%04u-%02u-%02u'",
 		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday);
 	fprintf(f, " time='%02u:%02u:%02u'",

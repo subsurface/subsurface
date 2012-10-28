@@ -267,7 +267,7 @@ struct dive {
 	double latitude, longitude;
 	depth_t maxdepth, meandepth;
 	duration_t duration, surfacetime;
-	depth_t visibility;
+	int visibility; /* 0 - 5 star rating */
 	temperature_t airtemp, watertemp;
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];

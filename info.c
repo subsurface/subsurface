@@ -238,6 +238,19 @@ static GtkEntry *text_value(GtkWidget *box, const char *label)
 	return GTK_ENTRY(widget);
 }
 
+static GtkEntry *single_text_entry(GtkWidget *box, const char *label, const char *text)
+{
+	GtkEntry *entry;
+	GtkWidget *frame = gtk_frame_new(label);
+
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
+	entry = GTK_ENTRY(gtk_entry_new());
+	gtk_container_add(GTK_CONTAINER(frame), GTK_WIDGET(entry));
+	if (text && *text)
+		gtk_entry_set_text(entry, text);
+	return entry;
+}
+
 static GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions, const char *text)
 {
 	GtkEntry *entry;
@@ -387,7 +400,8 @@ static int get_rating(const char *string)
 }
 
 struct dive_info {
-	GtkComboBoxEntry *location, *divemaster, *buddy, *rating, *suit;
+	GtkComboBoxEntry *location, *divemaster, *buddy, *rating, *suit, *viz;
+	GtkEntry *airtemp;
 	GtkTextView *notes;
 };
 
@@ -395,6 +409,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 {
 	char *old_text, *new_text;
 	char *rating_string;
+	double newtemp;
 	int changed = 0;
 
 	new_text = get_combo_box_entry_text(info->location, &dive->location, master->location);
@@ -428,6 +443,33 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		changed = 1;
 	}
 	free(rating_string);
+
+	rating_string = strdup(star_strings[dive->visibility]);
+	new_text = get_combo_box_entry_text(info->viz, &rating_string, star_strings[master->visibility]);
+	if (new_text) {
+		dive->visibility = get_rating(rating_string);
+		changed = 1;
+	}
+	free(rating_string);
+
+	new_text = (char *)gtk_entry_get_text(info->airtemp);
+	if(sscanf(new_text, "%lf", &newtemp) == 1) {
+		unsigned long mkelvin;
+		switch (output_units.temperature) {
+		case CELSIUS:
+			mkelvin = C_to_mkelvin(newtemp);
+			break;
+		case FAHRENHEIT:
+			mkelvin = F_to_mkelvin(newtemp);
+			break;
+		default:
+			mkelvin = 0;
+		}
+		if (mkelvin != dive->airtemp.mkelvin) {
+			dive->airtemp.mkelvin = mkelvin;
+			changed = 1;
+		}
+	}
 
 	if (info->notes) {
 		old_text = dive->notes;
@@ -465,6 +507,9 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 {
 	GtkWidget *hbox, *label, *frame, *equipment;
 	char buffer[128];
+	char airtemp[6];
+	const char *unit;
+	double value;
 
 	snprintf(buffer, sizeof(buffer), "%s", _("Edit multiple dives"));
 
@@ -486,6 +531,19 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	info->rating = text_entry(hbox, _("Rating"), star_list, star_strings[dive->rating]);
 	info->suit = text_entry(hbox, _("Suit"), suit_list, dive->suit);
+
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
+
+	info->viz = text_entry(hbox, _("Visibility"), star_list, star_strings[dive->visibility]);
+
+	value = get_temp_units(dive->airtemp.mkelvin, &unit);
+	snprintf(buffer, sizeof(buffer), _("Air Temp in %s"), unit);
+	if (dive->airtemp.mkelvin)
+		snprintf(airtemp, sizeof(airtemp), "%.1f", value);
+	else
+		airtemp[0] = '\0';
+	info->airtemp = single_text_entry(hbox, buffer, airtemp);
 
 	/* only show notes if editing a single dive */
 	if (multi) {

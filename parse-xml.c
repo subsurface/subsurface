@@ -1126,6 +1126,8 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 		return;
 	if (MATCH(".rating", get_index, &dive->rating))
 		return;
+	if (MATCH(".visibility", get_index, &dive->visibility))
+		return;
 	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
 		return;
 	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))

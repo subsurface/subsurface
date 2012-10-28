@@ -27,6 +27,7 @@ typedef struct {
 		*surf_intv,
 		*max_depth,
 		*avg_depth,
+		*viz,
 		*water_temp,
 		*air_temp,
 		*sac,
@@ -544,6 +545,7 @@ static void show_single_dive_stats(struct dive *dive)
 	set_label(single_w.max_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(dive->meandepth.mm, &decimals, &unit);
 	set_label(single_w.avg_depth, "%.*f %s", decimals, value, unit);
+	set_label(single_w.viz, star_strings[dive->visibility]);
 	if (dive->watertemp.mkelvin) {
 		value = get_temp_units(dive->watertemp.mkelvin, &unit);
 		set_label(single_w.water_temp, "%.1f %s", value, unit);
@@ -733,10 +735,16 @@ GtkWidget *single_stats_widget(void)
 
 	single_w.max_depth = new_info_label_in_frame(hbox, _("Max Depth"));
 	single_w.avg_depth = new_info_label_in_frame(hbox, _("Avg Depth"));
+	single_w.viz = new_info_label_in_frame(hbox, _("Visibility"));
+
+	/* third row */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
 	single_w.water_temp = new_info_label_in_frame(hbox, _("Water Temp"));
 	single_w.air_temp = new_info_label_in_frame(hbox, _("Air Temp"));
 
-	/* third row */
+	/* fourth row */
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
@@ -755,6 +763,7 @@ void clear_stats_widgets(void)
 	set_label(single_w.surf_intv, "");
 	set_label(single_w.max_depth, "");
 	set_label(single_w.avg_depth, "");
+	set_label(single_w.viz, "");
 	set_label(single_w.water_temp, "");
 	set_label(single_w.air_temp, "");
 	set_label(single_w.sac, "");
