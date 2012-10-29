@@ -1211,8 +1211,8 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	 * so effective drawing area is width-2x * height-2y */
 	drawing_area.width = widget->allocation.width;
 	drawing_area.height = widget->allocation.height;
-	drawing_area.x = drawing_area.width / 20.0;
-	drawing_area.y = drawing_area.height / 20.0;
+	drawing_area.x = MIN(50,drawing_area.width / 20.0);
+	drawing_area.y = MIN(50,drawing_area.height / 20.0);
 
 	gc.cr = gdk_cairo_create(widget->window);
 	g_object_set(widget, "has-tooltip", TRUE, NULL);

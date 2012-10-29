@@ -254,9 +254,8 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_set_font_size(cr, tro->size * plot_scale);
 	cairo_font_extents(cr, &fe);
 	cairo_text_extents(cr, buffer, &extents);
-	dx = tro->hpos * extents.width + extents.x_bearing;
-	dy = tro->vpos * extents.height + fe.descent;
-
+	dx = tro->hpos * (extents.width + extents.x_bearing);
+	dy = tro->vpos * (extents.height + fe.descent);
 	move_to(gc, x, y);
 	cairo_rel_move_to(cr, dx, dy);
 
@@ -461,6 +460,26 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 	plot_minmax_profile_minute(gc, pi, 2);
 	plot_minmax_profile_minute(gc, pi, 1);
 	plot_minmax_profile_minute(gc, pi, 0);
+}
+
+static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
+{
+	int i, maxdepth, marker;
+	static const text_render_options_t tro = {10, SAMPLE_DEEP, RIGHT, MIDDLE};
+
+	/* Depth markers: every 30 ft or 10 m*/
+	maxdepth = get_maxdepth(pi);
+	gc->topy = 0; gc->bottomy = maxdepth;
+
+	switch (output_units.length) {
+	case METERS: marker = 10000; break;
+	case FEET: marker = 9144; break;	/* 30 ft */
+	}
+	set_source_rgba(gc, DEPTH_GRID);
+	for (i = marker; i < maxdepth; i += marker) {
+		double d = get_depth_units(i, NULL, NULL);
+		plot_text(gc, &tro, -0.002, i, "%.0f", d);
+	}
 }
 
 static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -1423,13 +1442,14 @@ void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct d
 
 	pi = create_plot_info(dive, nr, sample);
 
+	/* shift the drawing area so we have a nice margin around it */
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
 	cairo_set_line_width_scaled(gc->cr, 1);
 	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
 
 	/*
-	 * We can use "cairo_translate()" because that doesn't
+	 * We don't use "cairo_translate()" because that doesn't
 	 * scale line width etc. But the actual scaling we need
 	 * do set up ourselves..
 	 *
@@ -1465,6 +1485,15 @@ void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct d
 	line_to(gc, 1, 0);
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
+
+	/* now shift the translation back by half the margin;
+	 * this way we can draw the vertical scales on both sides */
+	cairo_translate(gc->cr, -drawing_area->x / 2.0, 0);
+	gc->maxx += drawing_area->x;
+	gc->leftx = -(drawing_area->x / drawing_area->width) / 2.0;
+	gc->rightx = 1.0 - gc->leftx;
+
+	plot_depth_scale(gc, pi);
 
 	free(pi);
 }
