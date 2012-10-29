@@ -695,6 +695,23 @@ static void merge_cylinder_info(cylinder_t *res, cylinder_t *a, cylinder_t *b)
 	MERGE_MIN(res, a, b, end.mbar);
 }
 
+static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weightsystem_t *b)
+{
+	if (!a->weight.grams)
+		a = b;
+	*res = *a;
+}
+
+static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		merge_weightsystem_info(res->weightsystem+i, a->weightsystem + i, b->weightsystem + i);
+}
+
 /*
  * This could do a lot more merging. Right now it really only
  * merges almost exact duplicates - something that happens easily
@@ -702,7 +719,6 @@ static void merge_cylinder_info(cylinder_t *res, cylinder_t *a, cylinder_t *b)
  */
 struct dive *try_to_merge(struct dive *a, struct dive *b)
 {
-	int i;
 	struct dive *res;
 
 	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
@@ -734,8 +750,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	MERGE_MAX(res, a, b, surfacetime.seconds);
 	MERGE_MAX(res, a, b, airtemp.mkelvin);
 	MERGE_MIN(res, a, b, watertemp.mkelvin);
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
+	merge_equipment(res, a, b);
 	merge_events(res, a, b, 0);
 	return merge_samples(res, a, b, 0);
 }
