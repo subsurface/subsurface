@@ -121,15 +121,66 @@ void subsurface_close_conf(void)
 
 int subsurface_fill_device_list(GtkListStore *store)
 {
+	const int bufdef = 512;
+	const char *dlabels[] = {"UEMISSDA", NULL};
+	const char *devdef = "COM1";
 	GtkTreeIter iter;
-	int index = -1;
+	int index = -1, nentries = 0, ret, i;
+	char bufname[bufdef], bufval[bufdef], *p;
+	DWORD nvalues, bufval_len, bufname_len;
+	HKEY key;
 
+	/* add serial ports */
+	ret = RegOpenKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM",
+	                    0, KEY_READ, &key);
+	if (ret == ERROR_SUCCESS) {
+		ret = RegQueryInfoKeyA(key,  NULL, NULL, NULL, NULL, NULL, NULL, &nvalues,
+		                       NULL, NULL, NULL, NULL);
+		if (ret == ERROR_SUCCESS)
+			for (i = 0; i < nvalues; i++) {
+				memset(bufval, 0, bufdef);
+				memset(bufname, 0, bufdef);
+				bufname_len = bufdef;
+				bufval_len = bufdef;
+				ret = RegEnumValueA(key, i, bufname, &bufname_len, NULL, NULL, bufval,
+				                    &bufval_len);
+				if (ret == ERROR_SUCCESS) {
+					gtk_list_store_append(store, &iter);
+					gtk_list_store_set(store, &iter, 0, bufval, -1);
+					if (is_default_dive_computer_device(bufval))
+						index = nentries;
+					nentries++;
+				}
+			}
+	}
+	/* add drive letters that match labels */
+	memset(bufname, 0, bufdef);
+	bufname_len = bufdef;
+	if (GetLogicalDriveStringsA(bufname_len, bufname)) {
+		p = bufname;
+		while (*p) {
+			memset(bufval, 0, bufdef);
+			if (GetVolumeInformationA(p, bufval, bufdef, NULL, NULL, NULL, NULL, 0)) {
+				for (i = 0; dlabels[i] != NULL; i++)
+					if (!strcmp(bufval, dlabels[i])) {
+						gtk_list_store_append(store, &iter);
+						gtk_list_store_set(store, &iter, 0, p, -1);
+						if (is_default_dive_computer_device(p))
+							index = nentries;
+						nentries++;
+					}
+			}
+			p = &p[strlen(p) + 1];
+		}
+	}
 	/* if we can't find anything, use the default */
-	gtk_list_store_append(store, &iter);
-	gtk_list_store_set(store, &iter,
-			0, "COM3", -1);
-	if (is_default_dive_computer_device("COM3"))
-		index = 0;
+	if (!nentries) {
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+				0, devdef, -1);
+		if (is_default_dive_computer_device(devdef))
+			index = 0;
+	}
 	return index;
 }
 
