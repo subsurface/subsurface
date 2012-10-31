@@ -56,9 +56,64 @@ void subsurface_close_conf(void)
 	/* this is a no-op */
 }
 
-const char *subsurface_USB_name()
+int subsurface_fill_device_list(GtkListStore *store)
 {
-	return "/dev/ttyUSB0";
+	int i = 0;
+	int index = -1;
+	GtkTreeIter iter;
+	GDir *dev;
+	const char *name;
+	char *buffer;
+	gsize length;
+
+	dev = g_dir_open("/dev", 0, NULL);
+	while (dev && (name = g_dir_read_name(dev)) != NULL) {
+		if (strstr(name, "USB")) {
+			int len = strlen(name) + 6;
+			char *devicename = malloc(len);
+			snprintf(devicename, len, "/dev/%s", name);
+			gtk_list_store_append(store, &iter);
+			gtk_list_store_set(store, &iter,
+					0, devicename, -1);
+			if (is_default_dive_computer_device(devicename))
+				index = i;
+			i++;
+		}
+	}
+	if (dev)
+		g_dir_close(dev);
+	if (g_file_get_contents("/proc/mounts", &buffer, &length, NULL) &&
+		length > 0) {
+		char *ptr = strstr(buffer, "UEMISSDA");
+		if (ptr) {
+			char *end = ptr, *start = ptr;
+			while (start > buffer && *start != ' ')
+				start--;
+			if (*start == ' ')
+				start++;
+			while (*end != ' ' && *end != '\0')
+				end++;
+			*end = '\0';
+			name = strdup(start);
+			gtk_list_store_append(store, &iter);
+			gtk_list_store_set(store, &iter,
+					0, name, -1);
+			if (is_default_dive_computer_device(name))
+				index = i;
+			i++;
+			free((void *)name);
+		}
+		g_free(buffer);
+	}
+	if (i == 0) {
+		/* if we can't find anything, use the default */
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+				0, "/dev/ttyUSB0", -1);
+		if (is_default_dive_computer_device("/dev/ttyUSB0"))
+			index = i;
+	}
+	return index;
 }
 
 const char *subsurface_icon_name()
