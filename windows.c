@@ -163,8 +163,10 @@ int subsurface_fill_device_list(GtkListStore *store)
 			if (GetVolumeInformationA(p, bufval, bufdef, NULL, NULL, NULL, NULL, 0)) {
 				for (i = 0; dlabels[i] != NULL; i++)
 					if (!strcmp(bufval, dlabels[i])) {
+						char name[80];
+						snprintf(name, sizeof(name), "%s (%s)", p, dlabels[i]);
 						gtk_list_store_append(store, &iter);
-						gtk_list_store_set(store, &iter, 0, p, -1);
+						gtk_list_store_set(store, &iter, 0, name, -1);
 						if (is_default_dive_computer_device(p))
 							index = nentries;
 						nentries++;
