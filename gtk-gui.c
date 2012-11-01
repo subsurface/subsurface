@@ -1382,7 +1382,11 @@ static GtkComboBox *dc_device_selector(GtkWidget *vbox)
 	renderer = gtk_cell_renderer_text_new();
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
 
-	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
+	if (default_index != -1)
+		gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
+	else
+		gtk_entry_set_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box))),
+		                   default_dive_computer_device);
 
 	return GTK_COMBO_BOX(combo_box);
 }
@@ -1499,6 +1503,7 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 void download_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
+	char *devname, *ns, *ne;
 	GtkWidget *dialog, *button, *hbox, *vbox, *label, *info = NULL;
 	GtkComboBox *computer, *device;
 	GtkTreeIter iter;
@@ -1553,17 +1558,26 @@ repeat:
 		devicedata.descriptor = descriptor;
 		devicedata.vendor = vendor;
 		devicedata.product = product;
-
-		if (!gtk_combo_box_get_active_iter(device, &iter))
-			break;
-
-		model = gtk_combo_box_get_model(device);
-		gtk_tree_model_get(model, &iter,
-				0, &devicedata.devname,
-				-1);
 		set_default_dive_computer(vendor, product);
-		set_default_dive_computer_device(devicedata.devname);
+
+		/* get the device name from the combo box entry and set as default */
+		devname = strdup(gtk_entry_get_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(device)))));
+		set_default_dive_computer_device(devname);
+		/* clear leading and trailing white space from the device name and also
+		 * everything after (and including) the first '(' char. */
+		ns = devname;
+		while (*ns == ' ' || *ns == '\t')
+			ns++;
+		ne = ns;
+		while (*ne && *ne != '(')
+			ne++;
+		*ne = '\0';
+		if (ne > ns)
+			while (*(--ne) == ' ' || *ne == '\t')
+				*ne = '\0';
+		devicedata.devname = ns;
 		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
+		free((void *)devname);
 		if (info)
 			goto repeat;
 		report_dives(TRUE);
