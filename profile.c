@@ -220,16 +220,28 @@ static int get_maxtime(struct plot_info *pi)
 	}
 }
 
+/* get the maximum depth to which we want to plot
+ * take into account the additional verical space needed to plot
+ * partial pressure graphs */
 static int get_maxdepth(struct plot_info *pi)
 {
 	unsigned mm = pi->maxdepth;
+	int md;
+
 	if (zoomed_plot) {
 		/* Rounded up to 10m, with at least 3m to spare */
-		return ROUND_UP(mm+3000, 10000);
+		md = ROUND_UP(mm+3000, 10000);
 	} else {
 		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
-		return MAX(30000, ROUND_UP(mm+3000, 10000));
+		md = MAX(30000, ROUND_UP(mm+3000, 10000));
 	}
+	if (GRAPHS_ENABLED) {
+		if (md <= 20000)
+			md += 10000;
+		else
+			md += ROUND_UP(md / 3, 10000);
+	}
+	return md;
 }
 
 typedef struct {
