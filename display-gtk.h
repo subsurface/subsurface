@@ -60,6 +60,7 @@ extern void quit(GtkWidget *w, gpointer data);
 extern int is_default_dive_computer_device(const char *name);
 
 extern visible_cols_t visible_cols;
+extern enabled_graphs_t enabled_graphs;
 
 extern const char *divelist_font;
 extern void set_divelist_font(const char *);

@@ -11,6 +11,7 @@
 
 #include "dive.h"
 #include "display.h"
+#include "display-gtk.h"
 #include "divelist.h"
 #include "color.h"
 
@@ -43,7 +44,7 @@ struct plot_info {
 		/* Depth info */
 		int depth;
 		int smoothed;
-		double po2;
+		double po2, pn2, phe;
 		velocity_t velocity;
 		struct plot_data *min[3];
 		struct plot_data *max[3];
@@ -1527,7 +1528,7 @@ void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct d
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
 
-//	if (graphs_enabled.po2)
+	if (enabled_graphs.po2)
 		plot_po2_profile(gc, pi);
 
 	/* now shift the translation back by half the margin;

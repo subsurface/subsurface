@@ -36,7 +36,8 @@ struct units output_units;
 
 static GtkWidget *dive_profile;
 
-visible_cols_t visible_cols = {TRUE, FALSE};
+visible_cols_t visible_cols = {TRUE, FALSE, };
+enabled_graphs_t enabled_graphs = { FALSE, };
 
 static const char *default_dive_computer_vendor;
 static const char *default_dive_computer_product;
@@ -503,6 +504,9 @@ OPTIONCALLBACK(totalweight_toggle, visible_cols.totalweight)
 OPTIONCALLBACK(suit_toggle, visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
 OPTIONCALLBACK(autogroup_toggle, autogroup)
+OPTIONCALLBACK(po2_toggle, enabled_graphs.po2)
+OPTIONCALLBACK(pn2_toggle, enabled_graphs.pn2)
+OPTIONCALLBACK(phe_toggle, enabled_graphs.phe)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
 {
@@ -564,7 +568,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *font, *frame, *box, *vbox, *button;
+	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button;
 	const char *current_default, *new_default;
 
 	menu_units = output_units;
@@ -576,8 +580,15 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
 
+	/* create the notebook for the preferences and attach it to dialog */
+	notebook = gtk_notebook_new();
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), notebook, FALSE, FALSE, 5);
+
+	/* vbox that holds the first notebook page */
+	vbox = gtk_vbox_new(FALSE, 6);
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox,
+				gtk_label_new(_("General Settings")));
 	frame = gtk_frame_new(_("Units"));
-	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_vbox_new(FALSE, 6);
@@ -609,7 +620,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		NULL);
 
 	frame = gtk_frame_new(_("Show Columns"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
@@ -634,11 +645,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(sac_toggle), NULL);
 
-	button = gtk_check_button_new_with_label(_("OTU"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
-	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
-	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
-
 	button = gtk_check_button_new_with_label(_("Weight"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.totalweight);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
@@ -650,13 +656,13 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(suit_toggle), NULL);
 
 	frame = gtk_frame_new(_("Divelist Font"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	font = gtk_font_button_new_with_font(divelist_font);
 	gtk_container_add(GTK_CONTAINER(frame),font);
 
 	frame = gtk_frame_new(_("Misc. Options"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
@@ -674,6 +680,43 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	button = gtk_button_new_with_label(current_default);
 	g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(pick_default_file), button);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+
+	/* vbox that holds the second notebook page */
+	vbox = gtk_vbox_new(FALSE, 6);
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox,
+				gtk_label_new(_("Tec Settings")));
+
+	frame = gtk_frame_new(_("Show Columns"));
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+
+	button = gtk_check_button_new_with_label(_("OTU"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.otu);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
+
+	frame = gtk_frame_new(_("Show Partial Pressure Graphs in Profile"));
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+
+	button = gtk_check_button_new_with_label(_("pO" UTF8_SUBSCRIPT_2));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled_graphs.po2);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(po2_toggle), NULL);
+
+	button = gtk_check_button_new_with_label(_("pN" UTF8_SUBSCRIPT_2));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled_graphs.pn2);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(pn2_toggle), NULL);
+
+	button = gtk_check_button_new_with_label(_("pHe"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled_graphs.phe);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(phe_toggle), NULL);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -696,6 +739,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("cuft", PREF_BOOL, BOOL_TO_PTR(output_units.volume == CUFT));
 		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(output_units.temperature == FAHRENHEIT));
 		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(output_units.weight == LBS));
+
 		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(visible_cols.temperature));
 		subsurface_set_conf("TOTALWEIGHT", PREF_BOOL, BOOL_TO_PTR(visible_cols.totalweight));
 		subsurface_set_conf("SUIT", PREF_BOOL, BOOL_TO_PTR(visible_cols.suit));
@@ -703,8 +747,14 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(visible_cols.nitrox));
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
+
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
 		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
+
+		subsurface_set_conf("po2graph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.po2));
+		subsurface_set_conf("pn2graph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.pn2));
+		subsurface_set_conf("phegraph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.phe));
+
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(button)));
 
 		/* if we opened the default file and are changing its name,
@@ -1051,6 +1101,10 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.nitrox = PTR_TO_BOOL(subsurface_get_conf("NITROX", PREF_BOOL));
 	visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
+
+	enabled_graphs.po2 = PTR_TO_BOOL(subsurface_get_conf("po2graph", PREF_BOOL));
+	enabled_graphs.pn2 = PTR_TO_BOOL(subsurface_get_conf("pn2graph", PREF_BOOL));
+	enabled_graphs.phe = PTR_TO_BOOL(subsurface_get_conf("phegraph", PREF_BOOL));
 
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 	autogroup = PTR_TO_BOOL(subsurface_get_conf("autogroup", PREF_BOOL));
