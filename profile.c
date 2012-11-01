@@ -43,6 +43,7 @@ struct plot_info {
 		/* Depth info */
 		int depth;
 		int smoothed;
+		double po2;
 		velocity_t velocity;
 		struct plot_data *min[3];
 		struct plot_data *max[3];
@@ -67,6 +68,9 @@ typedef enum {
 
 	/* Velocity colors.  Order is still important, ref VELOCITY_COLORS_START_IDX. */
 	VELO_STABLE, VELO_SLOW, VELO_MODERATE, VELO_FAST, VELO_CRAZY,
+
+	/* gas colors */
+	PO2, PN2, PHE,
 
 	/* Other colors */
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
@@ -98,6 +102,10 @@ static const color_t profile_color[] = {
 	[VELO_MODERATE]   = {{RIOGRANDE1, BLACK1_LOW_TRANS}},
 	[VELO_FAST]       = {{PIRATEGOLD1, BLACK1_LOW_TRANS}},
 	[VELO_CRAZY]      = {{RED1, BLACK1_LOW_TRANS}},
+
+	[PO2]             = {{APPLE1, APPLE1_MED_TRANS}},
+	[PN2]             = {{ROYALBLUE2, ROYALBLUE2_LOW_TRANS}},
+	[PHE]             = {{PEANUT, PEANUT_MED_TRANS}},
 
 	[TEXT_BACKGROUND] = {{CONCRETE1_LOWER_TRANS, WHITE1}},
 	[ALERT_BG]        = {{BROOM1_LOWER_TRANS, BLACK1_LOW_TRANS}},
@@ -480,6 +488,27 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 		double d = get_depth_units(i, NULL, NULL);
 		plot_text(gc, &tro, -0.002, i, "%.0f", d);
 	}
+}
+
+static void plot_po2_profile(struct graphics_context *gc, struct plot_info *pi)
+{
+	int i;
+	struct plot_data *entry;
+
+	gc->leftx = 0;
+	gc->rightx = get_maxtime(pi);
+	/* let's hope no one gets close to the top of that graph... */
+	gc->topy = 3.0; gc->bottomy = 0.0;
+
+	set_source_rgba(gc, PO2);
+
+	entry = pi->entry;
+	move_to(gc, entry->sec, entry->po2);
+	for (i = 1; i < pi->nr; i++) {
+		entry++;
+		line_to(gc, entry->sec, entry->po2);
+	}
+	cairo_stroke(gc->cr);
 }
 
 static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -1257,6 +1286,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	lastdepth = -1;
 	for (i = 0; i < nr_samples; i++) {
 		int depth;
+		double fo2, pressure;
 		int delay = 0;
 		struct sample *sample = dive_sample+i;
 
@@ -1297,6 +1327,10 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		depth = entry->depth = sample->depth.mm;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
+		pressure = (depth + 10000) / 10000.0 * 1.01325;
+		fo2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille / 1000.0;
+		entry->po2 = fo2 * pressure;
+
 		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
@@ -1367,10 +1401,17 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->entry[i].same_cylinder = 1;
 	pi->entry[i].cylinderindex = pi->entry[i-1].cylinderindex;
 	INTERPOLATED_PRESSURE(pi->entry + i) = GET_PRESSURE(pi->entry + i - 1);
+	pi->entry[i].po2 = pi->entry[i-1].po2;
 	pi->entry[i+1].sec = sec + 40;
 	pi->entry[i+1].same_cylinder = 1;
 	pi->entry[i+1].cylinderindex = pi->entry[i-1].cylinderindex;
 	INTERPOLATED_PRESSURE(pi->entry + i + 1) = GET_PRESSURE(pi->entry + i - 1);
+	pi->entry[i+1].po2 = pi->entry[i-1].po2;
+	/* make sure the first two pi entries have a sane po2 */
+	if (pi->entry[1].po2 < 0.01)
+		pi->entry[1].po2 = pi->entry[2].po2;
+	if (pi->entry[0].po2 < 0.01)
+		pi->entry[0].po2 = pi->entry[1].po2;
 	/* the number of actual entries - some computers have lots of
 	 * depth 0 samples at the end of a dive, we want to make sure
 	 * we have exactly one of them at the end */
@@ -1485,6 +1526,9 @@ void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct d
 	line_to(gc, 1, 0);
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
+
+//	if (graphs_enabled.po2)
+		plot_po2_profile(gc, pi);
 
 	/* now shift the translation back by half the margin;
 	 * this way we can draw the vertical scales on both sides */

@@ -21,6 +21,12 @@ typedef struct {
 	gboolean otu;
 } visible_cols_t;
 
+typedef struct {
+	gboolean po2;
+	gboolean pn2;
+	gboolean phe;
+} enabled_graphs_t;
+
 typedef enum {
 	PREF_BOOL,
 	PREF_STRING

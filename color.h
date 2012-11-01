@@ -9,6 +9,7 @@
 #define FUNGREEN1    { 0.0, 0.4, 0.2, 1 }
 #define KILLARNEY1   { 0.2, 0.4, 0.2, 1 }
 #define APPLE1       { 0.2, 0.6, 0.2, 1 }
+#define APPLE1_MED_TRANS { 0.2, 0.6, 0.2, 0.5 }
 #define LIMENADE1    { 0.4, 0.8, 0.0, 1 }
 #define ATLANTIS1    { 0.4, 0.8, 0.2, 1 }
 #define ATLANTIS2    { 0.6, 0.8, 0.2, 1 }
@@ -38,12 +39,14 @@
 // Blues
 #define GOVERNORBAY2           { 0.2, 0.2, 0.7, 1 }
 #define GOVERNORBAY1_MED_TRANS { 0.2, 0.2, 0.8, 0.5 }
+#define ROYALBLUE2             { 0.2, 0.2, 0.9, 1 }
 #define ROYALBLUE2_LOW_TRANS   { 0.2, 0.2, 0.9, 0.75 }
 
-// Yellows
+// Yellows / BROWNS
 #define SPRINGWOOD1        { 0.95, 0.95, 0.9, 1 }
 #define BROOM1_LOWER_TRANS { 1.0, 1.0, 0.1, 0.9 }
-
+#define PEANUT             { 0.5, 0.2, 0.1, 1.0 }
+#define PEANUT_MED_TRANS   {  0.5, 0.2, 0.1, 0.5 }
 // Magentas
 #define MEDIUMREDVIOLET1_HIGHER_TRANS { 0.7, 0.2, 0.7, 0.1 }
 
