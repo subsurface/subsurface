@@ -87,11 +87,11 @@ msgstr "Sobre Subsurface"
 
 #: gtk-gui.c:917
 msgid "Add Dive..."
-msgstr "Añadir buceo..."
+msgstr "Añadir inmersión ..."
 
 #: divelist.c:2023
 msgid "Add dive"
-msgstr "Añadir buceo"
+msgstr "Añadir inmersión"
 
 #: divelist.c:2102
 msgid "Add to trip above"
@@ -272,23 +272,23 @@ msgstr "Inmersión #%d:%s %d %04d"
 
 #: gtk-gui.c:1134 info.c:700 statistics.c:711
 msgid "Dive Info"
-msgstr "Info de inmersión"
+msgstr "Información de la inmersión"
 
 #: gtk-gui.c:1126
 msgid "Dive Notes"
-msgstr "Notas de Inmersión"
+msgstr "Notas de la inmersión"
 
 #: statistics.c:721
 msgid "Dive Time"
-msgstr "Tiempo de innmersión"
+msgstr "Duración de la inmersión"
 
 #: uemis.c:167
 msgid "Dive Time Alert"
-msgstr "Alerta de Tiempo de inmersión"
+msgstr "Alerta de duración de inmersión"
 
 #: uemis.c:165
 msgid "Dive Time Info"
-msgstr "Información sobre el Tiempo de inmersión"
+msgstr "Información sobre la ruración de lainmersión"
 
 #: gtk-gui.c:1347
 msgid "Dive computer"
@@ -324,11 +324,11 @@ msgstr "Inmersiones"
 
 #: gtk-gui.c:1508
 msgid "Download From Dive Computer"
-msgstr "Descargar desde el Ordenador de Buceo"
+msgstr "Descargar desde el ordenador de Buceo"
 
 #: gtk-gui.c:916
 msgid "Download From Dive Computer..."
-msgstr "Descargar desde el Ordenador de Buceo..."
+msgstr "Descargar desde el ordenador de Buceo..."
 
 #: statistics.c:160
 msgid "Duration"
@@ -348,19 +348,19 @@ msgstr "Editar el viaje"
 
 #: divelist.c:2031
 msgid "Edit Trip Summary"
-msgstr "Editar Resumen del Viaje"
+msgstr "Editar resumen del viaje"
 
 #: divelist.c:2007
 msgid "Edit dive"
-msgstr "Editar buceo"
+msgstr "Editar inmersión"
 
 #: divelist.c:2006
 msgid "Edit dives"
-msgstr "Editar buceos"
+msgstr "Editar inmersiones"
 
 #: info.c:502
 msgid "Edit multiple dives"
-msgstr "Editar multiples buceos"
+msgstr "Editar múltiples inmersiones"
 
 #: info.c:482
 msgid "Edit trip summary"
@@ -368,7 +368,7 @@ msgstr "Editar resumen del viaje"
 
 #: gtk-gui.c:773
 msgid "Enable / Disable Events"
-msgstr "Activar / Desactivar Eventos"
+msgstr "Activar / Desactivar eventos"
 
 #: equipment.c:973 equipment.c:1497
 msgid "End"
@@ -478,11 +478,11 @@ msgstr "Vi"
 
 #: statistics.c:739
 msgid "Gas Used"
-msgstr "Gas Usado"
+msgstr "Gas usado"
 
 #: equipment.c:983
 msgid "Gasmix"
-msgstr "Mezcla de Gas"
+msgstr "Mezcla de gas"
 
 #: gtk-gui.c:908
 msgid "Help"
@@ -556,15 +556,15 @@ msgstr "Marcador"
 
 #: print.c:155
 msgid "Master"
-msgstr "Maestro"
+msgstr "Guía"
 
 #: uemis.c:163
 msgid "Max Deco Time Warning"
-msgstr "Advertencia de Tiempo Max Deco"
+msgstr "Advertencia de tiempo max deco"
 
 #: statistics.c:690 statistics.c:728
 msgid "Max Depth"
-msgstr "Profundidad Max"
+msgstr "Profundidad max"
 
 #: statistics.c:698
 msgid "Max SAC"
@@ -592,7 +592,7 @@ msgstr "Pres. max."
 #: statistics.c:170
 msgctxt "Depth"
 msgid "Maximum"
-msgstr "Máximo"
+msgstr "Máxima"
 
 #: statistics.c:173
 msgctxt "SAC"
@@ -602,7 +602,7 @@ msgstr "Máximo"
 #: statistics.c:176
 msgctxt "Temp"
 msgid "Maximum"
-msgstr "Máximo"
+msgstr "Máxima"
 
 #: main.c:46
 msgid "May"
@@ -635,7 +635,7 @@ msgstr "Min Temp"
 #: statistics.c:169
 msgctxt "Depth"
 msgid "Minimum"
-msgstr "Mínimo"
+msgstr "Mínima"
 
 #: statistics.c:172
 msgctxt "SAC"
@@ -645,7 +645,7 @@ msgstr "Mínimo"
 #: statistics.c:175
 msgctxt "Temp"
 msgid "Minimum"
-msgstr "Mínimo"
+msgstr "Mínima"
 
 #: gtk-gui.c:658
 msgid "Misc. Options"
@@ -669,7 +669,7 @@ msgstr "Nuevo número de partida"
 
 #: uemis.c:171
 msgid "No Tank Data"
-msgstr "No se Registran Datos de Botella"
+msgstr "No se degistran datos de botella"
 
 #: info.c:492 info.c:527 info.c:950
 msgid "Notes"
@@ -681,11 +681,11 @@ msgstr "Nov"
 
 #: libdivecomputer.c:84
 msgid "OLF"
-msgstr "Límite de presión parcial de oxígeno"
+msgstr "OLF"
 
 #: divelist.c:1272 gtk-gui.c:637 statistics.c:737
 msgid "OTU"
-msgstr "Unidad de toxicidad por oxígeno"
+msgstr "OTU"
 
 #: main.c:47
 msgid "Oct"
@@ -709,15 +709,15 @@ msgstr ""
 
 #: uemis.c:149
 msgid "PO2 Ascend Alarm"
-msgstr "Alarma de Ascenso PO2"
+msgstr "Alarma de Ascenso PpO2"
 
 #: uemis.c:147
 msgid "PO2 Ascend Warning"
-msgstr "Alerta de Ascenso PO2"
+msgstr "Aviso de Ascenso PpO2"
 
 #: uemis.c:144
 msgid "PO2 Green Warning"
-msgstr "Alerta Verde PO2"
+msgstr "Aviso Verde PpO2"
 
 #: gtk-gui.c:593
 msgid "PSI"
@@ -741,11 +741,11 @@ msgstr "Presión:"
 
 #: print.c:486
 msgid "Pretty print"
-msgstr "Impresión Bonita"
+msgstr "Impresión gráfica"
 
 #: print.c:507
 msgid "Print only selected dives"
-msgstr "Imprimir sólo nimersiones seleccionadas"
+msgstr "Imprimir sólo inmersiones seleccionadas"
 
 #: print.c:502
 msgid "Print selection"
@@ -753,7 +753,7 @@ msgstr "Imprimir selección"
 
 #: print.c:480
 msgid "Print type"
-msgstr "Tipo de Impresión"
+msgstr "Tipo de impresión"
 
 #: gtk-gui.c:914
 msgid "Print..."
@@ -769,11 +769,11 @@ msgstr "Salir"
 
 #: uemis.c:157
 msgid "RGT Alert"
-msgstr "Alerta RGT"
+msgstr "Alerta tiempo de gas restante"
 
 #: uemis.c:155
 msgid "RGT Warning"
-msgstr "Alerta RGT"
+msgstr "Aviso tiempo de gas restante"
 
 #: info.c:520 info.c:947
 msgid "Rating"
@@ -786,15 +786,15 @@ msgstr "Leyendo inmersiones %s"
 
 #: divelist.c:2054
 msgid "Remove Trip"
-msgstr "Eliminar Viaje"
+msgstr "Eliminar viaje"
 
 #: divelist.c:2110
 msgid "Remove dive from trip"
-msgstr "Eliminar inmersion del Viaje"
+msgstr "Eliminar inmersión del viaje"
 
 #: divelist.c:2108
 msgid "Remove selected dives from trip"
-msgstr "Eliminar Selección de inmersiones del Viaje"
+msgstr "Eliminar selección de inmersiones del viaje"
 
 #: gtk-gui.c:804
 msgid "Renumber"
@@ -818,7 +818,7 @@ msgstr "SDE archivo"
 
 #: uemis.c:137
 msgid "Safety Stop Violation"
-msgstr "Violación de Parada de Seguridad"
+msgstr "Violación de parada de seguridad"
 
 #: main.c:37
 msgid "Sat"
@@ -863,11 +863,11 @@ msgstr ""
 #: statistics.c:166
 msgctxt "Duration"
 msgid "Shortest"
-msgstr "Menos Prolongado"
+msgstr "Más corta"
 
 #: statistics.c:684
 msgid "Shortest Dive"
-msgstr "Inmersión menos prolongada"
+msgstr "Inmersión más corta"
 
 #: gtk-gui.c:611
 msgid "Show Columns"
@@ -883,7 +883,7 @@ msgstr "Alarma de Velocidad"
 
 #: uemis.c:142
 msgid "Speed Warning"
-msgstr "Advertencia de Velocidad`"
+msgstr "Advertencia de velocidad`"
 
 #: equipment.c:970 equipment.c:1496
 msgid "Start"
@@ -912,15 +912,15 @@ msgstr "Interv. Superf."
 
 #: print.c:490
 msgid "Table print"
-msgstr "Impresión de Tabla"
+msgstr "Impresión de tabla"
 
 #: uemis.c:159
 msgid "Tank Change Suggested"
-msgstr "Cambio de Botella Sugerido"
+msgstr "Sugerencia de cambio de botella"
 
 #: uemis.c:153
 msgid "Tank Pressure Info"
-msgstr "Información sobre Presión de Botella"
+msgstr "Información sobre presión de botella"
 
 #: gtk-gui.c:617
 msgid "Temp"
@@ -948,7 +948,7 @@ msgstr "Tiempo"
 
 #: gtk-gui.c:933
 msgid "Toggle Zoom"
-msgstr "Alternar Zoom"
+msgstr "Activar / Desactivar Zoom"
 
 #: statistics.c:164
 msgctxt "Duration"
@@ -1039,7 +1039,7 @@ msgstr "Peso"
 
 #: equipment.c:1125
 msgid "Weight System"
-msgstr "Sistema de Peso"
+msgstr "Sistema de lastre"
 
 #: gtk-gui.c:606
 msgid "Weight:"
@@ -1055,7 +1055,7 @@ msgstr "Año"
 
 #: gtk-gui.c:920 statistics.c:368
 msgid "Yearly Statistics"
-msgstr "Estadísticas Anuales"
+msgstr "Estadísticas anuales"
 
 #: gtk-gui.c:238
 msgid ""
@@ -1092,7 +1092,7 @@ msgstr "ascenso"
 
 #: equipment.c:833
 msgid "backplate weight"
-msgstr "peso en el arnes"
+msgstr "lastre en el arnes"
 
 #: dive.c:45
 msgid "bar"
@@ -1132,7 +1132,7 @@ msgstr "parada de profundidad"
 
 #: libdivecomputer.c:83
 msgid "divetime"
-msgstr "tiempo de inmersión"
+msgstr "duración de inmersión"
 
 #: dive.c:113 divelist.c:1264 info.c:867
 msgid "ft"
@@ -1231,7 +1231,8 @@ msgstr "Alarma de nivel de tejidos"
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:859
 msgid "translator-credits"
-msgstr "Pablo Garcia Castro\n"
+msgstr "José Ángel Tortosa Delfa\n"
+"Pablo García Castro\n"
 "Matthias Kaehlcke\n"
 "Sergio Schvezov\n"
 "Auni Somero\n"
@@ -1243,7 +1244,7 @@ msgstr "transmisor"
 
 #: equipment.c:1386 equipment.c:1406
 msgid "unkn"
-msgstr "DESC"
+msgstr "desc"
 
 #: libdivecomputer.c:83 statistics.c:541
 msgid "unknown"
