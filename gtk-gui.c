@@ -1500,6 +1500,12 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 	return info;
 }
 
+/* this prevents clicking the [x] button, while the import thread is still running */
+static void download_dialog_delete(GtkWidget *w, gpointer data)
+{
+	/* a no-op */
+}
+
 void download_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -1517,6 +1523,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 		NULL);
+	g_signal_connect(dialog, "delete-event", G_CALLBACK(download_dialog_delete), NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	label = gtk_label_new(_(" Please select dive computer and device. "));
@@ -1540,6 +1547,9 @@ repeat:
 		GtkTreeModel *model;
 
 	case GTK_RESPONSE_ACCEPT:
+		/* once the accept event is triggered the dialog becomes non-modal.
+		 * lets re-set that */
+		gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 		if (info)
 			gtk_widget_destroy(info);
 		const char *vendor, *product;
