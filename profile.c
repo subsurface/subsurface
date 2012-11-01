@@ -105,7 +105,7 @@ static const color_t profile_color[] = {
 	[VELO_CRAZY]      = {{RED1, BLACK1_LOW_TRANS}},
 
 	[PO2]             = {{APPLE1, APPLE1_MED_TRANS}},
-	[PN2]             = {{ROYALBLUE2, ROYALBLUE2_LOW_TRANS}},
+	[PN2]             = {{BLACK1_LOW_TRANS, BLACK1_LOW_TRANS}},
 	[PHE]             = {{PEANUT, PEANUT_MED_TRANS}},
 
 	[TEXT_BACKGROUND] = {{CONCRETE1_LOWER_TRANS, WHITE1}},
@@ -184,11 +184,13 @@ static void dump_pi (struct plot_info *pi)
 		pi->maxpressure, pi->mintemp, pi->maxtemp);
 	for (i = 0; i < pi->nr; i++)
 		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
-			"                time:%d:%02d temperature:%d depth:%d smoothed:%d}\n",
+			"                time:%d:%02d temperature:%d depth:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
 			i, pi->entry[i].same_cylinder, pi->entry[i].cylinderindex, pi->entry[i].sec,
 			pi->entry[i].pressure[0], pi->entry[i].pressure[1],
 			pi->entry[i].sec / 60, pi->entry[i].sec % 60,
-			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].smoothed);
+			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].smoothed,
+			pi->entry[i].po2, pi->entry[i].phe, pi->entry[i].pn2,
+			pi->entry[i].po2 + pi->entry[i].phe + pi->entry[i].pn2);
 	printf("   }\n");
 }
 
@@ -503,25 +505,55 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 	}
 }
 
-static void plot_po2_profile(struct graphics_context *gc, struct plot_info *pi)
+static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
+	int maxdepth;
 	struct plot_data *entry;
 
 	gc->leftx = 0;
 	gc->rightx = get_maxtime(pi);
-	/* let's hope no one gets close to the top of that graph... */
-	gc->topy = 3.0; gc->bottomy = 0.0;
 
-	set_source_rgba(gc, PO2);
+	/* the maxdepth already includes extra vertical space - and if
+	 * we take the corresponding pressure as maximum partial
+	 * pressure the graph seems to look fine*/
+	maxdepth = get_maxdepth(pi);
+	gc->topy = (maxdepth + 10000) / 10000.0 * 1.01325;
+	gc->bottomy = 0.0;
 
-	entry = pi->entry;
-	move_to(gc, entry->sec, entry->po2);
-	for (i = 1; i < pi->nr; i++) {
-		entry++;
-		line_to(gc, entry->sec, entry->po2);
+	if (enabled_graphs.po2) {
+		set_source_rgba(gc, PO2);
+
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->po2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			line_to(gc, entry->sec, entry->po2);
+		}
+		cairo_stroke(gc->cr);
 	}
-	cairo_stroke(gc->cr);
+	if (enabled_graphs.pn2) {
+		set_source_rgba(gc, PN2);
+
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->pn2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			line_to(gc, entry->sec, entry->pn2);
+		}
+		cairo_stroke(gc->cr);
+	}
+	if (enabled_graphs.phe) {
+		set_source_rgba(gc, PHE);
+
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->phe);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			line_to(gc, entry->sec, entry->phe);
+		}
+		cairo_stroke(gc->cr);
+	}
 }
 
 static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -656,13 +688,15 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 	/* Show temperatures in roughly the lower third, but make sure the scale
 	   is at least somewhat reasonable */
 	delta = maxtemp - mintemp;
-	if (delta > 3000) { /* more than 3K in fluctuation */
+	if (delta > 3000) /* more than 3K in fluctuation */
 		gc->topy = maxtemp + delta*2;
-		gc->bottomy = mintemp - delta/2;
-	} else {
+	else
 		gc->topy = maxtemp + 1500 + delta*2;
+
+	if (GRAPHS_ENABLED)
+		gc->bottomy = mintemp - delta * 1.5;
+	else
 		gc->bottomy = mintemp - delta/2;
-	}
 
 	return maxtemp > mintemp;
 }
@@ -1298,7 +1332,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	lastindex = 0;
 	lastdepth = -1;
 	for (i = 0; i < nr_samples; i++) {
-		int depth, fo2;
+		int depth, fo2, fhe;
 		double pressure;
 		int delay = 0;
 		struct sample *sample = dive_sample+i;
@@ -1342,9 +1376,13 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		pressure = (depth + 10000) / 10000.0 * 1.01325;
 		fo2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
+		fhe = dive->cylinder[sample->cylinderindex].gasmix.he.permille;
+
 		if (!fo2)
 			fo2 = AIR_PERMILLE;
 		entry->po2 = fo2 / 1000.0 * pressure;
+		entry->phe = fhe / 1000.0 * pressure;
+		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * pressure;
 
 		entry->temperature = sample->temperature.mkelvin;
 
@@ -1416,17 +1454,28 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->entry[i].same_cylinder = 1;
 	pi->entry[i].cylinderindex = pi->entry[i-1].cylinderindex;
 	INTERPOLATED_PRESSURE(pi->entry + i) = GET_PRESSURE(pi->entry + i - 1);
-	pi->entry[i].po2 = pi->entry[i-1].po2;
+	pi->entry[i].po2 = pi->entry[i-1].po2 / (pi->entry[i].depth + 10000.0) * 10000.0;
+	pi->entry[i].phe = pi->entry[i-1].phe / (pi->entry[i].depth + 10000.0) * 10000.0;
+	pi->entry[i].pn2 = 1.01325 - pi->entry[i].po2 - pi->entry[i].phe;
 	pi->entry[i+1].sec = sec + 40;
 	pi->entry[i+1].same_cylinder = 1;
 	pi->entry[i+1].cylinderindex = pi->entry[i-1].cylinderindex;
 	INTERPOLATED_PRESSURE(pi->entry + i + 1) = GET_PRESSURE(pi->entry + i - 1);
-	pi->entry[i+1].po2 = pi->entry[i-1].po2;
-	/* make sure the first two pi entries have a sane po2 */
+	pi->entry[i+1].po2 = pi->entry[i].po2;
+	pi->entry[i+1].phe = pi->entry[i].phe;
+	pi->entry[i+1].pn2 = pi->entry[i].pn2;
+	/* make sure the first two pi entries have a sane po2 / phe / pn2 */
 	if (pi->entry[1].po2 < 0.01)
-		pi->entry[1].po2 = pi->entry[2].po2;
+		pi->entry[1].po2 = pi->entry[2].po2 / (pi->entry[2].depth + 10000.0) * 10000.0;
+	if (pi->entry[1].phe < 0.01)
+		pi->entry[1].phe = pi->entry[2].phe / (pi->entry[2].depth + 10000.0) * 10000.0;
+	pi->entry[1].pn2 = 1.01325 - pi->entry[1].po2 - pi->entry[1].phe;
 	if (pi->entry[0].po2 < 0.01)
-		pi->entry[0].po2 = pi->entry[1].po2;
+		pi->entry[0].po2 = pi->entry[1].po2 / (pi->entry[1].depth + 10000.0) * 10000.0;
+	if (pi->entry[0].phe < 0.01)
+		pi->entry[0].phe = pi->entry[1].phe / (pi->entry[1].depth + 10000.0) * 10000.0;
+	pi->entry[0].pn2 = 1.01325 - pi->entry[0].po2 - pi->entry[0].phe;
+
 	/* the number of actual entries - some computers have lots of
 	 * depth 0 samples at the end of a dive, we want to make sure
 	 * we have exactly one of them at the end */
@@ -1542,8 +1591,8 @@ void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct d
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
 
-	if (enabled_graphs.po2)
-		plot_po2_profile(gc, pi);
+	if (GRAPHS_ENABLED)
+		plot_pp_gas_profile(gc, pi);
 
 	/* now shift the translation back by half the margin;
 	 * this way we can draw the vertical scales on both sides */
