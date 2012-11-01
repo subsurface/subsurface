@@ -1298,8 +1298,8 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	lastindex = 0;
 	lastdepth = -1;
 	for (i = 0; i < nr_samples; i++) {
-		int depth;
-		double fo2, pressure;
+		int depth, fo2;
+		double pressure;
 		int delay = 0;
 		struct sample *sample = dive_sample+i;
 
@@ -1341,8 +1341,10 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		pressure = (depth + 10000) / 10000.0 * 1.01325;
-		fo2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille / 1000.0;
-		entry->po2 = fo2 * pressure;
+		fo2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
+		if (!fo2)
+			fo2 = AIR_PERMILLE;
+		entry->po2 = fo2 / 1000.0 * pressure;
 
 		entry->temperature = sample->temperature.mkelvin;
 
