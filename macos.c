@@ -72,7 +72,7 @@ void subsurface_close_conf(void)
 	/* Nothing */
 }
 
-Int subsurface_fill_device_list(GtkListStore *store)
+int subsurface_fill_device_list(GtkListStore *store)
 {
 	int i = 0;
 	int index = -1;
