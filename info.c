@@ -792,10 +792,11 @@ int edit_multi_dive_info(struct dive *single_dive)
 	return success;
 }
 
-int edit_dive_info(struct dive *dive)
+int edit_dive_info(struct dive *dive, gboolean newdive)
 {
-	if (!dive || !amount_selected)
+	if (!dive || (!newdive && !amount_selected))
 		return 0;
+
 	return edit_multi_dive_info(dive);
 }
 
@@ -938,7 +939,7 @@ int add_new_dive(struct dive *dive)
 	if (!dive_time_widget(dive))
 		return 0;
 
-	return edit_dive_info(dive);
+	return edit_dive_info(dive, TRUE);
 }
 
 GtkWidget *extended_dive_info_widget(void)

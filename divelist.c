@@ -1340,7 +1340,7 @@ static void row_activated_cb(GtkTreeView *tree_view,
 		collapse_expand(tree_view, path);
 		return;
 	}
-	edit_dive_info(get_dive(index));
+	edit_dive_info(get_dive(index), FALSE);
 }
 
 void add_dive_cb(GtkWidget *menuitem, gpointer data)

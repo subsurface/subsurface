@@ -415,7 +415,7 @@ extern void evn_foreach(void (*callback)(const char *, int *, void *), void *dat
 
 extern int add_new_dive(struct dive *dive);
 extern gboolean edit_trip(dive_trip_t *trip);
-extern int edit_dive_info(struct dive *dive);
+extern int edit_dive_info(struct dive *dive, gboolean newdive);
 extern int edit_multi_dive_info(struct dive *single_dive);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
