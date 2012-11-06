@@ -696,9 +696,6 @@ static void plot_single_pp_text(struct graphics_context *gc, int sec, double pp,
 {
 	text_render_options_t tro = {12, color, CENTER, vpos};
 	plot_text(gc, &tro, sec, pp, "%.1lf", pp);
-
-	if (color == PN2)
-		printf("pN2 %lf\n", pp);
 }
 
 #define MAXPP(_mpp, _pp) { _mpp = 0;			\
@@ -722,12 +719,14 @@ static double phe_value(int idx, struct plot_info *pi)
 	return pi->entry[idx].phe;
 }
 
-static void plot_single_gas_pp_text(struct graphics_context *gc, struct plot_info *pi,
+static double plot_single_gas_pp_text(struct graphics_context *gc, struct plot_info *pi,
 				double (*value_func)(int, struct plot_info *),
 				double value_threshold, int color)
 {
 	int *pois, *pois_vpos;
 	int i, two_minutes = 1;
+	double maxpp = 0.0;
+
 	/* don't bother with local min/max if the dive is under two minutes */
 	if (pi->entry[pi->nr - 1].sec > 120) {
 		int idx = 0;
@@ -741,27 +740,50 @@ static void plot_single_gas_pp_text(struct graphics_context *gc, struct plot_inf
 	find_points_of_interest(pi, value_func, two_minutes, value_threshold, &pois, &pois_vpos);
 	for (i = 0; pois[i] != -1; i++) {
 		struct plot_data *entry = pi->entry + pois[i];
+		double value = value_func(pois[i], pi);
+
 #if DEBUG_PROFILE > 1
 		fprintf(debugfile, "POI at %d sec value %lf\n", entry->sec, entry->po2);
 #endif
-		plot_single_pp_text(gc, entry->sec, value_func(pois[i], pi), pois_vpos[i], color);
+		plot_single_pp_text(gc, entry->sec, value, pois_vpos[i], color);
+		if (value > maxpp)
+			maxpp = value;
 	}
 	free(pois);
 	free(pois_vpos);
+
+	return maxpp;
 }
 
 static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 {
+	double pp, dpp, m, maxpp = 0.0;
+	int hpos;
+	static const text_render_options_t tro = {11, PN2, LEFT, MIDDLE};
+
 	setup_pp_limits(gc, pi);
 
 	if (enabled_graphs.po2) {
-		plot_single_gas_pp_text(gc, pi, po2_value, 0.4, PO2);
+		maxpp = plot_single_gas_pp_text(gc, pi, po2_value, 0.4, PO2);
 	}
 	if (enabled_graphs.pn2) {
-		plot_single_gas_pp_text(gc, pi, pn2_value, 0.6, PN2);
+		m = plot_single_gas_pp_text(gc, pi, pn2_value, 0.6, PN2);
+		if (m > maxpp)
+			maxpp = m;
 	}
 	if (enabled_graphs.phe) {
-		plot_single_gas_pp_text(gc, pi, phe_value, 0.4, PHE);
+		m = plot_single_gas_pp_text(gc, pi, phe_value, 0.4, PHE);
+		if (m > maxpp)
+			maxpp = m;
+	}
+	/* while this is somewhat useful, I don't like the way it looks...
+	 * for now I'll leave the code here, but disable it */
+	if (0) {
+		pp = floor(maxpp * 10.0) / 10.0 + 0.2;
+		dpp = floor(2.0 * pp) / 10.0;
+		hpos = pi->entry[pi->nr - 1].sec + 30;
+		for (m = 0.0; m <= pp; m += dpp)
+			plot_text(gc, &tro, hpos, m, "%.1f", m);
 	}
 }
 
