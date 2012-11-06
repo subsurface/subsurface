@@ -656,9 +656,9 @@ static void find_points_of_interest(struct plot_info *pi, double (*value_func)(i
 				data_max[i] = data[j];
 		}
 		/* is i the overall minimum or maximum */
-		if (data[i] == max)
+		if (data[i] == max && (i == 0 || data[i - 1] != max))
 			add_index(i, deltax, poip, poip_vpos, BOTTOM);
-		if (data[i] == min)
+		if (data[i] == min && (i == 0 || data[i - 1] != min))
 			add_index(i, deltax, poip, poip_vpos, TOP);
 		/* is i a spike? */
 		if (fabs(spk_data[i]) > 0.01 && ! higher_spike(spk_data, i, nr, deltax)) {
