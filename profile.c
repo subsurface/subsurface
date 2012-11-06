@@ -242,7 +242,7 @@ static int get_maxdepth(struct plot_info *pi)
 		if (md <= 20000)
 			md += 10000;
 		else
-			md += ROUND_UP(md / 3, 10000);
+			md += ROUND_UP(md / 2, 10000);
 	}
 	return md;
 }
@@ -684,16 +684,17 @@ static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
 	gc->rightx = get_maxtime(pi);
 
 	/* the maxdepth already includes extra vertical space - and if
-	 * we take the corresponding pressure as maximum partial
+	 * we use 1.5 times the corresponding pressure as maximum partial
 	 * pressure the graph seems to look fine*/
 	maxdepth = get_maxdepth(pi);
-	gc->topy = (maxdepth + 10000) / 10000.0 * 1.01325;
+	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * 1.01325;
 	gc->bottomy = 0.0;
 }
 
-static void plot_single_pp_text(struct graphics_context *gc, int sec, double pp, color_indice_t color)
+static void plot_single_pp_text(struct graphics_context *gc, int sec, double pp,
+				double vpos, color_indice_t color)
 {
-	text_render_options_t tro = {12, color, CENTER, BOTTOM};
+	text_render_options_t tro = {12, color, CENTER, vpos};
 	plot_text(gc, &tro, sec, pp, "%.1lf", pp);
 
 	if (color == PN2)
@@ -743,7 +744,7 @@ static void plot_single_gas_pp_text(struct graphics_context *gc, struct plot_inf
 #if DEBUG_PROFILE > 1
 		fprintf(debugfile, "POI at %d sec value %lf\n", entry->sec, entry->po2);
 #endif
-		plot_single_pp_text(gc, entry->sec, value_func(pois[i], pi), color);
+		plot_single_pp_text(gc, entry->sec, value_func(pois[i], pi), pois_vpos[i], color);
 	}
 	free(pois);
 	free(pois_vpos);
@@ -757,7 +758,7 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 		plot_single_gas_pp_text(gc, pi, po2_value, 0.4, PO2);
 	}
 	if (enabled_graphs.pn2) {
-		plot_single_gas_pp_text(gc, pi, pn2_value, 0.4, PN2);
+		plot_single_gas_pp_text(gc, pi, pn2_value, 0.6, PN2);
 	}
 	if (enabled_graphs.phe) {
 		plot_single_gas_pp_text(gc, pi, phe_value, 0.4, PHE);
@@ -767,18 +768,9 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i;
-	int maxdepth;
 	struct plot_data *entry;
 
-	gc->leftx = 0;
-	gc->rightx = get_maxtime(pi);
-
-	/* the maxdepth already includes extra vertical space - and if
-	 * we take the corresponding pressure as maximum partial
-	 * pressure the graph seems to look fine*/
-	maxdepth = get_maxdepth(pi);
-	gc->topy = (maxdepth + 10000) / 10000.0 * 1.01325;
-	gc->bottomy = 0.0;
+	setup_pp_limits(gc, pi);
 
 	if (enabled_graphs.po2) {
 		set_source_rgba(gc, PO2);
@@ -953,9 +945,9 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 		gc->topy = maxtemp + 1500 + delta*2;
 
 	if (GRAPHS_ENABLED)
-		gc->bottomy = mintemp - delta * 1.5;
+		gc->bottomy = mintemp - delta * 2;
 	else
-		gc->bottomy = mintemp - delta/2;
+		gc->bottomy = mintemp - delta / 2;
 
 	return maxtemp > mintemp;
 }
@@ -1043,7 +1035,11 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	gc->leftx = 0;
 	gc->rightx = get_maxtime(pi);
 
-	gc->bottomy = 0; gc->topy = pi->maxpressure * 1.5;
+	if (GRAPHS_ENABLED)
+		gc->bottomy = -pi->maxpressure * 0.75;
+	else
+		gc->bottomy = 0;
+	gc->topy = pi->maxpressure * 1.5;
 	return pi->maxpressure != 0;
 }
 
