@@ -21,6 +21,17 @@ typedef struct {
 	gboolean otu;
 } visible_cols_t;
 
+typedef struct {
+	gboolean po2;
+	gboolean pn2;
+	gboolean phe;
+} enabled_graphs_t;
+
+extern visible_cols_t visible_cols;
+extern enabled_graphs_t enabled_graphs;
+
+#define GRAPHS_ENABLED (enabled_graphs.po2 || enabled_graphs.pn2 || enabled_graphs.phe)
+
 typedef enum {
 	PREF_BOOL,
 	PREF_STRING
@@ -52,8 +63,6 @@ extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 extern void quit(GtkWidget *w, gpointer data);
 
 extern int is_default_dive_computer_device(const char *name);
-
-extern visible_cols_t visible_cols;
 
 extern const char *divelist_font;
 extern void set_divelist_font(const char *);
