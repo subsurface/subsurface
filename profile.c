@@ -871,15 +871,15 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	}
 	cairo_stroke(cr);
 
+	gc->leftx = 0; gc->rightx = maxtime;
+
 	/* Show mean depth */
 	if (! gc->printer) {
 		set_source_rgba(gc, MEAN_DEPTH);
 		move_to(gc, 0, pi->meandepth);
-		line_to(gc, 1, pi->meandepth);
+		line_to(gc, pi->entry[pi->nr - 1].sec, pi->meandepth);
 		cairo_stroke(cr);
 	}
-
-	gc->leftx = 0; gc->rightx = maxtime;
 
 	/*
 	 * These are good for debugging text placement etc,
