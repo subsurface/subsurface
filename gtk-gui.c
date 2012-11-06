@@ -568,7 +568,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button;
+	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
 	const char *current_default, *new_default;
 
 	menu_units = output_units;
@@ -677,9 +677,10 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 	current_default = subsurface_default_filename();
-	button = gtk_button_new_with_label(current_default);
-	g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(pick_default_file), button);
-	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	xmlfile_button = gtk_button_new_with_label(current_default);
+	g_signal_connect(G_OBJECT(xmlfile_button), "clicked",
+			 G_CALLBACK(pick_default_file), xmlfile_button);
+	gtk_box_pack_start(GTK_BOX(box), xmlfile_button, FALSE, FALSE, 6);
 
 	/* vbox that holds the second notebook page */
 	vbox = gtk_vbox_new(FALSE, 6);
@@ -755,7 +756,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("pn2graph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.pn2));
 		subsurface_set_conf("phegraph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.phe));
 
-		new_default = strdup(gtk_button_get_label(GTK_BUTTON(button)));
+		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
 		/* if we opened the default file and are changing its name,
 		 * update existing_filename */
