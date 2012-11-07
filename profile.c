@@ -1609,8 +1609,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	lastindex = 0;
 	lastdepth = -1;
 	for (i = 0; i < nr_samples; i++) {
-		int depth, fo2, fhe;
-		double pressure;
+		int depth;
 		int delay = 0;
 		struct sample *sample = dive_sample+i;
 
@@ -1651,16 +1650,6 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		depth = entry->depth = sample->depth.mm;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
-		pressure = (depth + 10000) / 10000.0 * 1.01325;
-		fo2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
-		fhe = dive->cylinder[sample->cylinderindex].gasmix.he.permille;
-
-		if (!fo2)
-			fo2 = AIR_PERMILLE;
-		entry->po2 = fo2 / 1000.0 * pressure;
-		entry->phe = fhe / 1000.0 * pressure;
-		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * pressure;
-
 		entry->temperature = sample->temperature.mkelvin;
 
 		if (depth || lastdepth)
@@ -1686,6 +1675,9 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
 	current = track_pr[pi->entry[2].cylinderindex];
 	for (i = 0; i < nr + 1; i++) {
+		int fo2, fhe;
+		double pressure;
+
 		entry = pi->entry + i + 1;
 
 		entry->same_cylinder = entry->cylinderindex == cylinderindex;
@@ -1708,6 +1700,16 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 					list_add(track_pr[cylinderindex], current);
 			}
 		}
+		pressure = (entry->depth + 10000) / 10000.0 * 1.01325;
+		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille;
+		fhe = dive->cylinder[cylinderindex].gasmix.he.permille;
+
+		if (!fo2)
+			fo2 = AIR_PERMILLE;
+		entry->po2 = fo2 / 1000.0 * pressure;
+		entry->phe = fhe / 1000.0 * pressure;
+		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * pressure;
+
 		/* finally, do the discrete integration to get the SAC rate equivalent */
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
 			(1 + (entry->depth + (entry-1)->depth) / 20000.0);
