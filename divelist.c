@@ -1025,7 +1025,7 @@ void insert_trip(dive_trip_t **dive_trip_p)
 #endif
 }
 
-static inline void delete_trip(GList *trip)
+static inline void delete_trip_list_entry(GList *trip)
 {
 	dive_trip_t *dive_trip = (dive_trip_t *)g_list_nth_data(trip, 0);
 	if (dive_trip->location)
@@ -1035,6 +1035,12 @@ static inline void delete_trip(GList *trip)
 	dump_trip_list();
 #endif
 }
+
+void delete_trip(dive_trip_t *trip)
+{
+	delete_trip_list_entry(find_trip(trip->when));
+}
+
 static dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 {
 	dive_trip_t *dive_trip = calloc(sizeof(dive_trip_t),1);
@@ -1693,7 +1699,7 @@ static void remove_from_trip(GtkTreePath *path)
 	/* if this was the last dive on the trip, remove the trip */
 	if (! gtk_tree_model_iter_has_child(MODEL(dive_list), &parent)) {
 		gtk_tree_store_remove(STORE(dive_list), &parent);
-		delete_trip(find_trip(dive->divetrip->when));
+		delete_trip(dive->divetrip);
 		free(dive->divetrip);
 	}
 	/* mark the dive as intentionally at the top level */
@@ -1803,7 +1809,7 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 	}
 	/* finally, remove the trip */
 	gtk_tree_store_remove(STORE(dive_list), &parent);
-	delete_trip(find_trip(dive_trip->when));
+	delete_trip(dive_trip);
 	free(dive_trip);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
@@ -1858,7 +1864,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	}
 	update_trip_timestamp(&prevtripiter, DIVE_TRIP(prevtrip));
 	free(DIVE_TRIP(trip));
-	delete_trip(trip);
+	delete_trip_list_entry(trip);
 	gtk_tree_store_remove(STORE(dive_list), &thistripiter);
 	mark_divelist_changed(TRUE);
 }
@@ -1975,7 +1981,7 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 				if (dive->divetrip == divetrip_to_update)
 					divetrip_to_update->when = dive->when;
 				else
-					delete_trip(find_trip(divetrip_to_update->when));
+					delete_trip(divetrip_to_update);
 			}
 			continue;
 		}
@@ -1984,7 +1990,7 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		 * that needs to be updated, check if this dive is still in that trip;
 		 * if not, delete the trip */
 		if (divetrip_needs_update && dive->divetrip != divetrip_to_update) {
-			delete_trip(find_trip(divetrip_to_update->when));
+			delete_trip(divetrip_to_update);
 			divetrip_needs_update = FALSE;
 		}
 		/* if this dive is part of a divetrip and is the first dive that
@@ -2044,7 +2050,7 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	if (dive->divetrip && dive->when == dive->divetrip->when) {
 		struct dive *next_dive = get_dive(idx + 1);
 		if (!next_dive || next_dive->divetrip != dive->divetrip)
-			delete_trip(find_trip(dive->when));
+			delete_trip(dive->divetrip);
 		else
 			next_dive->divetrip->when = next_dive->when;
 	}

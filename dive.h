@@ -242,7 +242,7 @@ struct event {
 #define W_IDX_SECONDARY 1
 
 typedef gint64 timestamp_t;
-typedef enum { TF_NONE, NO_TRIP, IN_TRIP, ASSIGNED_TRIP, AUTOGEN_TRIP, NUM_TRIPFLAGS } tripflag_t;
+typedef enum { TF_NONE, NO_TRIP, IN_TRIP, AUTOGEN_TRIP, ASSIGNED_TRIP, NUM_TRIPFLAGS } tripflag_t;
 extern const char *tripflag_names[NUM_TRIPFLAGS];
 
 typedef struct dive_trip {
@@ -298,6 +298,7 @@ extern gboolean autogroup;
 #define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
 
 extern void insert_trip(dive_trip_t **trip);
+extern void delete_trip(dive_trip_t *trip);
 
 /*
  * We keep our internal data in well-specified units, but
@@ -390,7 +391,7 @@ extern void finish_sample(struct dive *dive);
 
 extern void report_dives(gboolean imported);
 extern struct dive *fixup_dive(struct dive *dive);
-extern struct dive *try_to_merge(struct dive *a, struct dive *b);
+extern struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next);
 
 extern void renumber_dives(int nr);
 

@@ -713,11 +713,94 @@ static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
 }
 
 /*
+ * When merging two dives, this picks the trip from one, and removes it
+ * from the other.
+ *
+ * The 'next' dive is not involved in the dive merging, but is the dive
+ * that will be the next dive after the merged dive.
+ */
+static void pick_and_delete_trip(struct dive *res, struct dive *pick, struct dive *remove, struct dive *next)
+{
+	tripflag_t tripflag = pick->tripflag;
+	dive_trip_t *trip = pick->divetrip;
+
+	res->tripflag = tripflag;
+	res->divetrip = trip;
+
+	/*
+	 * We may have to change the trip date if we picked an earlier
+	 * date for the dive that now uses it.
+	 */
+	if (res->when < trip->when)
+		trip->when = res->when;
+
+	/* Was it the same trip as the removed dive? All good*/
+	if (trip == remove->divetrip)
+		return;
+
+	/* Ok, we're dropping a dive. We may need to fix up the date on it */
+	trip = remove->divetrip;
+	if (trip->when != remove->when)
+		return;
+
+	if (next && next->divetrip == trip) {
+		trip->when = next->when;
+		return;
+	}
+
+	delete_trip(trip);
+}
+
+/*
+ * Pick a trip for a dive
+ */
+static void merge_trip(struct dive *res, struct dive *a, struct dive *b, struct dive *next)
+{
+	/*
+	 * The larger tripflag is more relevant: we prefer
+	 * take manually assigned trips over auto-generated
+	 * ones.
+	 */
+	if (a->tripflag > b->tripflag)
+		goto pick_a;
+
+	if (a->tripflag < b->tripflag)
+		goto pick_b;
+
+	/*
+	 * Ok, so the divetrips are equally "important".
+	 * Pick the one with the better description.
+	 */
+	if (!a->location)
+		goto pick_b;
+	if (!b->location)
+		goto pick_a;
+	if (!a->notes)
+		goto pick_b;
+	if (!b->notes)
+		goto pick_a;
+
+	/*
+	 * Ok, so both have location and notes.
+	 * Pick the earlier one.
+	 */
+	if (a->when < b->when)
+		goto pick_a;
+	goto pick_b;
+
+pick_a:
+	pick_and_delete_trip(res, a, b, next);
+	return;
+pick_b:
+	pick_and_delete_trip(res, b, a, next);
+}
+
+/*
  * This could do a lot more merging. Right now it really only
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
  */
-struct dive *try_to_merge(struct dive *a, struct dive *b)
+struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next)
 {
 	struct dive *res;
 
@@ -727,14 +810,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	res = alloc_dive();
 
 	res->when = a->when;
-	/* the larger tripflag is more relevant */
-	if(a->tripflag > b->tripflag) {
-		res->tripflag = a->tripflag;
-		res->divetrip = a->divetrip;
-	} else {
-		res->tripflag = b->tripflag;
-		res->divetrip = b->divetrip;
-	}
+	merge_trip(res, a, b, next);
 	MERGE_NONZERO(res, a, b, latitude);
 	MERGE_NONZERO(res, a, b, longitude);
 	MERGE_TXT(res, a, b, location);
