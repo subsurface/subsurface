@@ -78,7 +78,8 @@ typedef enum {
 	/* Other colors */
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
 	SMOOTHED, MINUTE, TIME_GRID, TIME_TEXT, DEPTH_GRID, MEAN_DEPTH, DEPTH_TOP,
-	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND
+	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND,
+	CEILING_SHALLOW, CEILING_DEEP
 } color_indice_t;
 
 typedef struct {
@@ -130,6 +131,9 @@ static const color_t profile_color[] = {
 	[BOUNDING_BOX]    = {{WHITE1, BLACK1_LOW_TRANS}},
 	[PRESSURE_TEXT]   = {{KILLARNEY1, BLACK1_LOW_TRANS}},
 	[BACKGROUND]      = {{SPRINGWOOD1, BLACK1_LOW_TRANS}},
+	[CEILING_SHALLOW] = {{REDORANGE1_HIGH_TRANS, REDORANGE1_HIGH_TRANS}},
+	[CEILING_DEEP]    = {{RED1_MED_TRANS, RED1_MED_TRANS}},
+
 };
 
 #define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
@@ -839,6 +843,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
 	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
+	gboolean plotting = FALSE;
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
@@ -947,6 +952,36 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		move_to(gc, entry[-1].sec, entry[-1].depth);
 		line_to(gc, sec, depth);
 		cairo_stroke(cr);
+	}
+
+	/* now on top of this the ceiling plot */
+	entry = pi->entry;
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+	pattern_add_color_stop_rgba (gc, pat, 0.5, CEILING_DEEP);
+	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
+	cairo_set_source(gc->cr, pat);
+	cairo_pattern_destroy(pat);
+	cairo_set_line_width_scaled(gc->cr, 2);
+	for (i = 0; i < pi->nr; i++, entry++) {
+		if (entry->ceiling > 0) {
+			if (!plotting) {
+				move_to(gc, entry->sec, 0);
+				plotting = TRUE;
+			}
+			line_to(gc, entry->sec, entry->ceiling);
+		} else {
+			if (plotting) {
+				line_to(gc, entry->sec, 0);
+				cairo_close_path(gc->cr);
+				cairo_fill(gc->cr);
+				plotting = FALSE;
+			}
+		}
+	}
+	if (plotting) {
+		line_to(gc, entry->sec, 0);
+		cairo_close_path(gc->cr);
+		cairo_fill(gc->cr);
 	}
 }
 
@@ -1621,14 +1656,14 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 
 		entry = pi->entry + i + pi_idx;
 		while (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
-			struct event *next_ceil_ev = get_next_event(dive->events, "ceiling");
+			struct event *next_ceil_ev = get_next_event(ceil_ev->next, "ceiling");
 			if (!next_ceil_ev || next_ceil_ev->time.seconds > sample->time.seconds)
 				break;
 			ceil_ev = next_ceil_ev;
 		}
 		if (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
 			ceiling = ceil_ev->value;
-			ceil_ev = get_next_event(dive->events, "ceiling");
+			ceil_ev = get_next_event(ceil_ev->next, "ceiling");
 		}
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
@@ -1636,7 +1671,6 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 			if (ev->time.seconds == sample->time.seconds - 1) {
 				entry->sec = ev->time.seconds - 1;
 				(entry+1)->sec = ev->time.seconds;
-			} else {
 				entry->sec = ev->time.seconds;
 				(entry+1)->sec = ev->time.seconds + 1;
 			}

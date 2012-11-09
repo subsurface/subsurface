@@ -26,6 +26,7 @@
 #define REDORANGE1            { 1.0, 0.2, 0.2, 1 }
 #define REDORANGE1_HIGH_TRANS { 1.0, 0.2, 0.2, 0.25 }
 #define REDORANGE1_MED_TRANS  { 1.0, 0.2, 0.2, 0.5 }
+#define RED1_MED_TRANS        { 1.0, 0.0, 0.0, 0.5 }
 #define RED1                  { 1.0, 0.0, 0.0, 1 }
 
 // Monochromes
