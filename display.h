@@ -33,7 +33,7 @@ extern void init_profile_background(struct graphics_context *gc);
 extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 
 struct options {
-	enum { PRETTY, TABLE } type;
+	enum { PRETTY, TABLE, ONEPERPAGE } type;
 	int print_selected;
 };
 

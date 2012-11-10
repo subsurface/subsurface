@@ -76,7 +76,11 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 		tm.tm_mday, tm.tm_year + 1900,
 		tm.tm_hour, tm.tm_min);
 
-	set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
+	if (print_options.type == ONEPERPAGE){
+		set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
+	} else {
+		set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+	}
 	pango_layout_set_text(layout, buffer, len);
 	pango_layout_get_size(layout, &width, &height);
 
@@ -116,7 +120,11 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_height(layout, 1);
 	pango_layout_set_width(layout, width);
 
-	set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+	if (print_options.type == ONEPERPAGE){
+		set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
+	} else {
+		set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+	}
 	pango_layout_set_text(layout, dive->location ? : " ", -1);
 
 	cairo_move_to(cr, 0, 0);
@@ -136,6 +144,11 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 		/* Use the full width and remaining height for notes */
 		pango_layout_set_height(layout, maxheight);
 		pango_layout_set_width(layout, maxwidth);
+		if (print_options.type == ONEPERPAGE){
+			set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
+		} else {
+			set_font(layout, font, FONT_SMALL, PANGO_ALIGN_LEFT);
+		}
 		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
 		pango_layout_set_justify(layout, 1);
 		pango_layout_set_text(layout, dive->notes, -1);
@@ -306,6 +319,12 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	if (!dive)
 		return;
 	cairo_save(cr);
+
+	/*Create a frame for each print x,y are provided in draw_page()*/
+	cairo_rectangle(cr, x, y, w, h);
+	cairo_set_line_width(cr, 0.01);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
+	cairo_stroke(cr);
 	cairo_translate(cr, x, y);
 
 	/* Plus 5% on all sides */
@@ -394,6 +413,31 @@ static void draw_page(GtkPrintOperation *operation,
 	pango_font_description_free(font);
 }
 
+static void draw_oneperpage(GtkPrintOperation *operation,
+			GtkPrintContext *context,
+			gint page_nr,
+			gpointer user_data)
+{
+	int nr;
+	cairo_t *cr;
+	double w, h;
+	PangoFontDescription *font;
+
+	cr = gtk_print_context_get_cairo_context(context);
+	font = pango_font_description_from_string("Sans");
+
+	/*Get bigger area reducing the divisors */
+	w = gtk_print_context_get_width(context)/1.8;
+	h = gtk_print_context_get_height(context)/1.6;
+
+	/*only one page, only one print*/
+	nr = page_nr;
+	print(nr, cr, 0,   0, w, h, font);
+	pango_font_description_free(font);
+}
+
+
+
 static void draw_table(GtkPrintOperation *operation,
 			GtkPrintContext *context,
 			gint page_nr,
@@ -442,6 +486,8 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 
 	if (print_options.type == PRETTY) {
 		dives_per_page = 6;
+	} else if (print_options.type == ONEPERPAGE) {
+		dives_per_page = 1;
 	} else {
 		dives_per_page = 25;
 	}
@@ -459,6 +505,7 @@ static void name(GtkWidget *w, gpointer data) \
 
 OPTIONCALLBACK(set_pretty, type, PRETTY)
 OPTIONCALLBACK(set_table, type, TABLE)
+OPTIONCALLBACK(set_oneperpage, type, ONEPERPAGE)
 
 #define OPTIONSELECTEDCALLBACK(name, option) \
 static void name(GtkWidget *w, gpointer data) \
@@ -471,7 +518,7 @@ OPTIONSELECTEDCALLBACK(print_selection_toggle, print_options.print_selected)
 
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
-	GtkWidget *vbox, *radio1, *radio2, *frame, *box;
+	GtkWidget *vbox, *radio1, *radio2, *radio3, *frame, *box;
 	int dives;
 	gtk_print_operation_set_custom_tab_label(operation, _("Dive details"));
 
@@ -483,18 +530,24 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	box = gtk_hbox_new(FALSE, 2);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	radio1 = gtk_radio_button_new_with_label (NULL, _("Pretty print"));
+	radio1 = gtk_radio_button_new_with_label (NULL, _("6 dives per page"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio1),
 		print_options.type == PRETTY);
 	radio2 = gtk_radio_button_new_with_label_from_widget (
-		GTK_RADIO_BUTTON (radio1), _("Table print"));
+		GTK_RADIO_BUTTON (radio1), _("1 dive per page"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio2),
+		print_options.type == ONEPERPAGE);
+	radio3 = gtk_radio_button_new_with_label_from_widget (
+		GTK_RADIO_BUTTON (radio1), _("Table print"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio3),
 		print_options.type == TABLE);
 	gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (box), radio2, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (box), radio3, TRUE, TRUE, 0);
 
 	g_signal_connect(radio1, "toggled", G_CALLBACK(set_pretty), NULL);
-	g_signal_connect(radio2, "toggled", G_CALLBACK(set_table), NULL);
+	g_signal_connect(radio2, "toggled", G_CALLBACK(set_oneperpage), NULL);
+	g_signal_connect(radio3, "toggled", G_CALLBACK(set_table), NULL);
 
 	dives = nr_selected_dives();
 	print_options.print_selected = dives >= 1;
@@ -522,8 +575,13 @@ static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, 
 		g_signal_connect(operation, "draw_page",
 			G_CALLBACK(draw_page), NULL);
 	} else {
-		g_signal_connect(operation, "draw_page",
+		if (print_options.type == ONEPERPAGE) {
+			g_signal_connect(operation, "draw_page",
+			G_CALLBACK(draw_oneperpage), NULL);
+		} else {
+			g_signal_connect(operation, "draw_page",
 			G_CALLBACK(draw_table), NULL);
+		}
 	}
 }
 
