@@ -843,7 +843,6 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	struct plot_data *entry;
 	int maxtime, maxdepth, marker;
 	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
-	gboolean plotting = FALSE;
 
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
@@ -935,8 +934,37 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	move_to(gc, 0, 0);
 	for (i = 0; i < pi->nr; i++, entry++)
 		line_to(gc, entry->sec, entry->depth);
-	cairo_close_path(gc->cr);
 
+	/* Show any ceiling we may have encountered */
+	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+		if (entry->ceiling < entry->depth) {
+			line_to(gc, entry->sec, entry->ceiling);
+		} else {
+			line_to(gc, entry->sec, entry->depth);
+		}
+	}
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
+
+	/* next show where we have been bad and crossed the ceiling */
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
+	pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
+	cairo_set_source(gc->cr, pat);
+	cairo_pattern_destroy(pat);
+	entry = pi->entry;
+	move_to(gc, 0, 0);
+	for (i = 0; i < pi->nr; i++, entry++)
+		line_to(gc, entry->sec, entry->depth);
+
+	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+		if (entry->ceiling > entry->depth) {
+			line_to(gc, entry->sec, entry->ceiling);
+		} else {
+			line_to(gc, entry->sec, entry->depth);
+		}
+	}
+	cairo_close_path(gc->cr);
 	cairo_fill(gc->cr);
 
 	/* Now do it again for the velocity colors */
@@ -952,36 +980,6 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		move_to(gc, entry[-1].sec, entry[-1].depth);
 		line_to(gc, sec, depth);
 		cairo_stroke(cr);
-	}
-
-	/* now on top of this the ceiling plot */
-	entry = pi->entry;
-	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-	pattern_add_color_stop_rgba (gc, pat, 0.5, CEILING_DEEP);
-	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
-	cairo_set_source(gc->cr, pat);
-	cairo_pattern_destroy(pat);
-	cairo_set_line_width_scaled(gc->cr, 2);
-	for (i = 0; i < pi->nr; i++, entry++) {
-		if (entry->ceiling > 0) {
-			if (!plotting) {
-				move_to(gc, entry->sec, 0);
-				plotting = TRUE;
-			}
-			line_to(gc, entry->sec, entry->ceiling);
-		} else {
-			if (plotting) {
-				line_to(gc, entry->sec, 0);
-				cairo_close_path(gc->cr);
-				cairo_fill(gc->cr);
-				plotting = FALSE;
-			}
-		}
-	}
-	if (plotting) {
-		line_to(gc, entry->sec, 0);
-		cairo_close_path(gc->cr);
-		cairo_fill(gc->cr);
 	}
 }
 
