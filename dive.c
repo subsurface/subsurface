@@ -606,6 +606,21 @@ static struct dive *merge_samples(struct dive *res, struct dive *a, struct dive 
 	struct sample *as = a->sample;
 	struct sample *bs = b->sample;
 
+	/*
+	 * We want a positive sample offset, so that sample
+	 * times are always positive. So if the samples for
+	 * 'b' are before the samples for 'a' (so the offset
+	 * is negative), we switch a and b around, and use
+	 * the reverse offset.
+	 */
+	if (offset < 0) {
+		offset = -offset;
+		asamples = bsamples;
+		bsamples = a->samples;
+		as = bs;
+		bs = a->sample;
+	}
+
 	for (;;) {
 		int at, bt;
 		struct sample sample;
@@ -696,6 +711,16 @@ static void merge_events(struct dive *res, struct dive *src1, struct dive *src2,
 {
 	struct event *a, *b;
 	struct event **p = &res->events;
+
+	/* Always use positive offsets */
+	if (offset < 0) {
+		struct dive *tmp;
+
+		offset = -offset;
+		tmp = src1;
+		src1 = src2;
+		src2 = tmp;
+	}
 
 	a = src1->events;
 	b = src2->events;
@@ -857,6 +882,165 @@ pick_b:
 }
 
 /*
+ * Sample 's' is between samples 'a' and 'b'. It is 'offset' seconds before 'b'.
+ *
+ * If 's' and 'a' are at the same time, offset is 0, and b is NULL.
+ */
+static int compare_sample(struct sample *s, struct sample *a, struct sample *b, int offset)
+{
+	unsigned int depth = a->depth.mm;
+	int diff;
+
+	if (offset) {
+		unsigned int interval = b->time.seconds - a->time.seconds;
+		unsigned int depth_a = a->depth.mm;
+		unsigned int depth_b = b->depth.mm;
+
+		if (offset > interval)
+			return -1;
+
+		/* pick the average depth, scaled by the offset from 'b' */
+		depth = (depth_a * offset) + (depth_b * (interval - offset));
+		depth /= interval;
+	}
+	diff = s->depth.mm - depth;
+	if (diff < 0)
+		diff = -diff;
+	/* cut off at one meter difference */
+	if (diff > 1000)
+		diff = 1000;
+	return diff*diff;
+}
+
+/*
+ * Calculate a "difference" in samples between the two dives, given
+ * the offset in seconds between them. Use this to find the best
+ * match of samples between two different dive computers.
+ */
+static unsigned long sample_difference(struct dive *a, struct dive *b, int offset)
+{
+	int asamples = a->samples;
+	int bsamples = b->samples;
+	struct sample *as = a->sample;
+	struct sample *bs = b->sample;
+	unsigned long error = 0;
+	int start = -1;
+
+	if (!asamples || !bsamples)
+		return 0;
+
+	/*
+	 * skip the first sample - this way we know can always look at
+	 * as/bs[-1] to look at the samples around it in the loop.
+	 */
+	as++; bs++;
+	asamples--;
+	bsamples--;
+
+	for (;;) {
+		int at, bt, diff;
+
+
+		/* If we run out of samples, punt */
+		if (!asamples)
+			return INT_MAX;
+		if (!bsamples)
+			return INT_MAX;
+
+		at = as->time.seconds;
+		bt = bs->time.seconds + offset;
+
+		/* b hasn't started yet? Ignore it */
+		if (bt < 0) {
+			bs++;
+			bsamples--;
+			continue;
+		}
+
+		if (at < bt) {
+			diff = compare_sample(as, bs-1, bs, bt - at);
+			as++;
+			asamples--;
+		} else if (at > bt) {
+			diff = compare_sample(bs, as-1, as, at - bt);
+			bs++;
+			bsamples--;
+		} else {
+			diff = compare_sample(as, bs, NULL, 0);
+			as++; bs++;
+			asamples--; bsamples--;
+		}
+
+		/* Invalid comparison point? */
+		if (diff < 0)
+			continue;
+
+		if (start < 0)
+			start = at;
+
+		error += diff;
+
+		if (at - start > 120)
+			break;
+	}
+	return error;
+}
+
+/*
+ * Dive 'a' is 'offset' seconds before dive 'b'
+ *
+ * This is *not* because the dive computers clocks aren't in sync,
+ * it is because the dive computers may "start" the dive at different
+ * points in the dive, so the sample at time X in dive 'a' is the
+ * same as the sample at time X+offset in dive 'b'.
+ *
+ * For example, some dive computers take longer to "wake up" when
+ * they sense that you are under water (ie Uemis Zurich if it was off
+ * when the dive started). And other dive computers have different
+ * depths that they activate at, etc etc.
+ *
+ * If we cannot find a shared offset, don't try to merge.
+ */
+static int find_sample_offset(struct dive *a, struct dive *b)
+{
+	int offset, best;
+	unsigned long max;
+
+	/* No samples? Merge at any time (0 offset) */
+	if (!a->samples)
+		return 0;
+	if (!b->samples)
+		return 0;
+
+	/*
+	 * Common special-case: merging a dive that came from
+	 * the same dive computer, so the samples are identical.
+	 * Check this first, without wasting time trying to find
+	 * some minimal offset case.
+	 */
+	best = 0;
+	max = sample_difference(a, b, 0);
+	if (!max)
+		return 0;
+
+	/*
+	 * Otherwise, look if we can find anything better within
+	 * a thirty second window..
+	 */
+	for (offset = -30; offset <= 30; offset++) {
+		unsigned long diff;
+
+		diff = sample_difference(a, b, offset);
+		if (diff > max)
+			continue;
+		best = offset;
+		max = diff;
+	}
+
+	return best;
+}
+
+/*
  * This could do a lot more merging. Right now it really only
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
@@ -864,8 +1048,23 @@ pick_b:
 struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next)
 {
 	struct dive *res;
+	int offset;
 
+	/*
+	 * This assumes that the clocks on the dive computers are
+	 * roughly synchronized.
+	 *
+	 * We'll probably have to move this into the caller, and
+	 * allow people to override this ("manual merge dives") if
+	 * they have computers that they forgot to change the time
+	 * zone on etc..
+	 */
 	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
+		return NULL;
+
+	/* Dive 'a' is 'offset' seconds before dive 'b' */
+	offset = find_sample_offset(a, b);
+	if (offset > 120 || offset < -120)
 		return NULL;
 
 	res = alloc_dive();
@@ -888,6 +1087,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next)
 	MERGE_MAX(res, a, b, airtemp.mkelvin);
 	MERGE_MIN(res, a, b, watertemp.mkelvin);
 	merge_equipment(res, a, b);
-	merge_events(res, a, b, 0);
-	return merge_samples(res, a, b, 0);
+	merge_events(res, a, b, offset);
+	return merge_samples(res, a, b, offset);
 }
