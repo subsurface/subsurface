@@ -1202,7 +1202,7 @@ static void dive_start(void)
 	cur_dive = alloc_dive();
 	memset(&cur_tm, 0, sizeof(cur_tm));
 	if (cur_trip) {
-		cur_dive->divetrip = cur_trip;
+		add_dive_to_trip(cur_dive, cur_trip);
 		cur_dive->tripflag = IN_TRIP;
 	}
 }

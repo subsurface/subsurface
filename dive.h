@@ -252,6 +252,7 @@ typedef struct dive_trip {
 	timestamp_t when_from_file;
 	char *location;
 	char *notes;
+	int nrdives;
 	int expanded:1, selected:1;
 } dive_trip_t;
 
@@ -300,8 +301,10 @@ extern gboolean autogroup;
 #define DIVE_TRIP(_trip) ((dive_trip_t *)(_trip)->data)
 #define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
 
+extern void add_dive_to_trip(struct dive *, dive_trip_t *);
+extern void remove_dive_from_trip(struct dive *);
+
 extern void insert_trip(dive_trip_t **trip);
-extern void delete_trip(dive_trip_t *trip);
 
 /*
  * We keep our internal data in well-specified units, but

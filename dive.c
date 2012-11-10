@@ -811,30 +811,9 @@ static void pick_and_delete_trip(struct dive *res, struct dive *pick, struct div
 	dive_trip_t *trip = pick->divetrip;
 
 	res->tripflag = tripflag;
-	res->divetrip = trip;
-
-	/*
-	 * We may have to change the trip date if we picked an earlier
-	 * date for the dive that now uses it.
-	 */
-	if (res->when < trip->when)
-		trip->when = res->when;
-
-	/* Was it the same trip as the removed dive? All good*/
-	if (trip == remove->divetrip)
-		return;
-
-	/* Ok, we're dropping a dive. We may need to fix up the date on it */
-	trip = remove->divetrip;
-	if (trip->when != remove->when)
-		return;
-
-	if (next && next->divetrip == trip) {
-		trip->when = next->when;
-		return;
-	}
-
-	delete_trip(trip);
+	add_dive_to_trip(res, trip);
+	remove_dive_from_trip(pick);
+	remove_dive_from_trip(remove);
 }
 
 /*
