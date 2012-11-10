@@ -637,13 +637,13 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 		end = psi_to_bar(end);
 	}
 
-	if (pressure && output_units.volume == CUFT) {
+	mbar = pressure * 1000 + 0.5;
+	if (mbar && output_units.volume == CUFT) {
 		volume = cuft_to_l(volume);
 		volume /= bar_to_atm(pressure);
 	}
 
 	ml = volume * 1000 + 0.5;
-	mbar = pressure * 1000 + 0.5;
 
 	/* Ignore obviously crazy He values */
 	if (o2 + he > 1000)
