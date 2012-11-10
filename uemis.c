@@ -180,7 +180,9 @@ void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sam
 	 * warnings / alerts - not useful for events */
 
 	/* now add deco / ceiling events */
-	if (u_sample->p_amb_tol > 1013 && u_sample->hold_time && u_sample->hold_time < 99) {
+	if (u_sample->p_amb_tol > dive->surface_pressure.mbar &&
+	    u_sample->hold_time &&
+	    u_sample->hold_time < 99) {
 		add_event(dive, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_BEGIN,
 			u_sample->hold_depth * 10, N_("ceiling"));
 		add_event(dive, sample->time.seconds, SAMPLE_EVENT_DECOSTOP, 0,
@@ -210,7 +212,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	datalen = uemis_convert_base64(base64, &data);
 
 	dive->airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + 273150;
-
+	dive->surface_pressure.mbar = *(uint16_t *)(data +43);
 	/* dive template in use:
 	   0 = air
 	   1 = nitrox (B)
