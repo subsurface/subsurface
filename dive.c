@@ -1082,6 +1082,9 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next)
 	MERGE_MAX(res, a, b, number);
 	MERGE_MAX(res, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;
+	MERGE_NONZERO(res, a, b, salinity);
+	MERGE_NONZERO(res, a, b, visibility);
+	MERGE_NONZERO(res, a, b, surface_pressure.mbar);
 	MERGE_MAX(res, a, b, duration.seconds);
 	MERGE_MAX(res, a, b, surfacetime.seconds);
 	MERGE_MAX(res, a, b, airtemp.mkelvin);

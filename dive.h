@@ -267,6 +267,7 @@ struct dive {
 	int rating;
 	double latitude, longitude;
 	depth_t maxdepth, meandepth;
+	int salinity; // kg per 10000 l
 	duration_t duration, surfacetime;
 	int visibility; /* 0 - 5 star rating */
 	temperature_t airtemp, watertemp;
