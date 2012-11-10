@@ -378,6 +378,10 @@ static gboolean is_potentially_redundant(struct event *event)
 {
 	if (!strcmp(event->name, "gaschange"))
 		return FALSE;
+	if (!strcmp(event->name, "bookmark"))
+		return FALSE;
+	if (!strcmp(event->name, "heading"))
+		return FALSE;
 	return TRUE;
 }
 
