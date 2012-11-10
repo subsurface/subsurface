@@ -18,6 +18,7 @@
 
 #include "dive.h"
 #include "uemis.h"
+#include <libdivecomputer/parser.h>
 
 /*
  * following code is based on code found in at base64.sourceforge.net/b64.c
@@ -119,7 +120,9 @@ bail:
 	return datalen;
 }
 
-/* Create events from the flag bits;
+static gboolean in_deco;
+
+/* Create events from the flag bits and other data in the sample;
  * These bits basically represent what is displayed on screen at sample time.
  * Many of these 'warnings' are way hyper-active and seriously clutter the
  * profile plot - so these are disabled by default
@@ -175,6 +178,19 @@ void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sam
 		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Low Battery Alert"));
 	/* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
+
+	/* now add deco / ceiling events */
+	if (u_sample->p_amb_tol > 1013 && u_sample->hold_time && u_sample->hold_time < 99) {
+		add_event(dive, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_BEGIN,
+			u_sample->hold_depth * 10, N_("ceiling"));
+		add_event(dive, sample->time.seconds, SAMPLE_EVENT_DECOSTOP, 0,
+			u_sample->hold_time, N_("deco"));
+		in_deco = TRUE;
+	} else if (in_deco) {
+		in_deco = FALSE;
+		add_event(dive, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_END,
+			0, N_("ceiling"));
+	}
 }
 
 /*
@@ -190,6 +206,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	struct dive *dive = *divep;
 	int template, gasoffset;
 
+	in_deco = FALSE;
 	datalen = uemis_convert_base64(base64, &data);
 
 	dive->airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + 273150;
