@@ -372,6 +372,12 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 	if (!dive)
 		return;
 	cairo_save(cr);
+
+	/*Create a frame for each print x,y are provided in draw_page()*/
+	cairo_rectangle(cr, x, y, w, h);
+	cairo_set_line_width(cr, 0.01);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
+	cairo_stroke(cr);
 	cairo_translate(cr, x, y);
 
 	/* Plus 5% on all sides */
