@@ -186,7 +186,7 @@ void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sam
 		add_event(dive, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_BEGIN,
 			u_sample->hold_depth * 10, N_("ceiling"));
 		add_event(dive, sample->time.seconds, SAMPLE_EVENT_DECOSTOP, 0,
-			u_sample->hold_time, N_("deco"));
+			u_sample->hold_time * 60, N_("deco"));
 		in_deco = TRUE;
 	} else if (in_deco) {
 		in_deco = FALSE;
