@@ -1518,7 +1518,7 @@ static GError *setup_uemis_import(device_data_t *data)
 #ifdef DEBUGFILE
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
 #endif
-		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error, FALSE);
+		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
 		set_uemis_last_dive(uemis_max_dive_data);
 #if UEMIS_DEBUG
 		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);
@@ -1672,4 +1672,6 @@ void set_filename(const char *filename, gboolean force)
 	free((void *)existing_filename);
 	if (filename)
 		existing_filename = strdup(filename);
+	else
+		existing_filename = NULL;
 }

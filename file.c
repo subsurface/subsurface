@@ -72,7 +72,7 @@ static void suunto_read(struct zip_file *file, GError **error)
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
-	parse_xml_buffer(_("SDE file"), mem, read, error, FALSE);
+	parse_xml_buffer(_("SDE file"), mem, read, error);
 	free(mem);
 }
 #endif
@@ -240,14 +240,13 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	return 0;
 }
 
-static void parse_file_buffer(const char *filename, struct memblock *mem, GError **error,
-	gboolean possible_default_filename)
+static void parse_file_buffer(const char *filename, struct memblock *mem, GError **error)
 {
 	char *fmt = strrchr(filename, '.');
 	if (fmt && open_by_filename(filename, fmt+1, mem, error))
 		return;
 
-	parse_xml_buffer(filename, mem->buffer, mem->size, error, possible_default_filename);
+	parse_xml_buffer(filename, mem->buffer, mem->size, error);
 }
 
 void parse_file(const char *filename, GError **error, gboolean possible_default_filename)
@@ -266,9 +265,20 @@ void parse_file(const char *filename, GError **error, gboolean possible_default_
 					     _("Failed to read '%s'"),
 					     filename);
 		}
+
+		/*
+		 * We do *not* want to leave the old default_filename
+		 * just because the open failed.
+		 */
+		if (possible_default_filename)
+			set_filename(filename, TRUE);
+
 		return;
 	}
 
-	parse_file_buffer(filename, &mem, error, possible_default_filename);
+	if (possible_default_filename)
+		set_filename(filename, TRUE);
+
+	parse_file_buffer(filename, &mem, error);
 	free(mem.buffer);
 }
