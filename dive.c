@@ -373,6 +373,30 @@ static void sanitize_cylinder_info(struct dive *dive)
 	}
 }
 
+/* some events should never be thrown away */
+static gboolean is_potentially_redundant(struct event *event)
+{
+	if (!strcmp(event->name, "gaschange"))
+		return FALSE;
+	return TRUE;
+}
+
+/* match just by name - we compare the details in the code that uses this helper */
+static struct event *find_previous_event(struct dive *dive, struct event *event)
+{
+	struct event *ev = dive->events;
+	struct event *previous = NULL;
+
+	if (!event->name)
+		return NULL;
+	while (ev && ev != event) {
+		if(ev->name && !strcmp(ev->name, event->name))
+			previous = ev;
+		ev = ev->next;
+	}
+	return previous;
+}
+
 struct dive *fixup_dive(struct dive *dive)
 {
 	int i,j;
@@ -384,6 +408,7 @@ struct dive *fixup_dive(struct dive *dive)
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
+	struct event *event;
 
 	add_people(dive->buddy);
 	add_people(dive->divemaster);
@@ -512,6 +537,42 @@ struct dive *fixup_dive(struct dive *dive)
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 		weightsystem_t *ws = dive->weightsystem + i;
 		add_weightsystem_description(ws);
+	}
+
+	/* events are stored as a linked list, so the concept of
+	 * "consecutive, identical events" is somewhat hard to
+	 * implement correctly (especially given that on some dive
+	 * computers events are asynchronous, so they can come in
+	 * between what would be the non-constant sample rate).
+	 *
+	 * So what we do is that we throw away clearly redundant
+	 * events that are fewer than 61 seconds apart (assuming there
+	 * is no dive computer with a sample rate of more than 60
+	 * seconds... that would be pretty pointless to plot the
+	 * profile with)
+	 * We first only mark the events for deletion so that we
+	 * still know when the previous event happened. */
+	event = dive->events;
+	while (event) {
+		struct event *prev;
+		if (is_potentially_redundant(event)) {
+			prev = find_previous_event(dive, event);
+			if (prev && prev->value == event->value &&
+			    prev->flags == event->flags &&
+			    event->time.seconds - prev->time.seconds < 61)
+				event->deleted = TRUE;
+		}
+		event = event->next;
+	}
+	event = dive->events;
+	while (event) {
+		if (event->next && event->next->deleted) {
+			struct event *nextnext = event->next->next;
+			free(event->next);
+			event->next = nextnext;
+		} else {
+			event = event->next;
+		}
 	}
 
 	return dive;

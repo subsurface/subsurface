@@ -15,6 +15,7 @@
 #include "display-gtk.h"
 #include "divelist.h"
 #include "color.h"
+#include "libdivecomputer/parser.h"
 
 int selected_dive = 0;
 char zoomed_plot = 0;
@@ -345,6 +346,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 {
 	int i, depth = 0;
 	int x,y;
+	char buffer[80];
 
 	/* is plotting this event disabled? */
 	if (event->name) {
@@ -380,7 +382,11 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	cairo_line_to(gc->cr, x-9, y+4);
 	cairo_stroke(gc->cr);
 	/* we display the event on screen - so translate */
-	attach_tooltip(x-15, y-6, 12, 12, _(event->name));
+	if (event->value)
+		snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
+	else
+		snprintf(buffer, sizeof(buffer), "%s", _(event->name));
+	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
@@ -392,7 +398,8 @@ static void plot_events(struct graphics_context *gc, struct plot_info *pi, struc
 		return;
 
 	while (event) {
-		plot_one_event(gc, pi, event, &tro);
+		if (event->flags != SAMPLE_FLAGS_BEGIN && event->flags != SAMPLE_FLAGS_END)
+			plot_one_event(gc, pi, event, &tro);
 		event = event->next;
 	}
 }

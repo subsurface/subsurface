@@ -233,6 +233,7 @@ struct event {
 	struct event *next;
 	duration_t time;
 	int type, flags, value;
+	gboolean deleted;
 	char name[];
 };
 
