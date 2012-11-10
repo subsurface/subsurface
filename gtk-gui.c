@@ -1313,6 +1313,8 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 	return FALSE; /* don't show tooltip */
 }
 
+static int zoom_x = -1, zoom_y = -1;
+
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
 	struct dive *dive = current_dive;
@@ -1332,6 +1334,11 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	init_profile_background(&gc);
 	cairo_paint(gc.cr);
 
+	if (zoom_x >= 0) {
+		cairo_translate(gc.cr, -zoom_x, -zoom_y);
+		cairo_scale(gc.cr, 2.0, 2.0);
+	}
+
 	if (dive) {
 		if (tooltip_rects) {
 			free(tooltip_rects);
@@ -1345,6 +1352,44 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	return FALSE;
 }
 
+gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	switch (event->button) {
+	case 3:
+		zoom_x = event->x;
+		zoom_y = event->y;
+		break;
+	default:
+		return TRUE;
+	}
+	gtk_widget_queue_draw(widget);
+	return TRUE;
+}
+
+gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	switch (event->button) {
+	case 3:
+		zoom_x = zoom_y = -1;
+		break;
+	default:
+		return TRUE;
+	}
+	gtk_widget_queue_draw(widget);
+	return TRUE;
+}
+
+gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
+{
+	if (zoom_x < 0)
+		return TRUE;
+
+	zoom_x = event->x;
+	zoom_y = event->y;
+	gtk_widget_queue_draw(widget);
+	return TRUE;
+}
+
 GtkWidget *dive_profile_widget(void)
 {
 	GtkWidget *da;
@@ -1352,6 +1397,10 @@ GtkWidget *dive_profile_widget(void)
 	da = gtk_drawing_area_new();
 	gtk_widget_set_size_request(da, 350, 250);
 	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
+	g_signal_connect(da, "button-press-event", G_CALLBACK(clicked), NULL);
+	g_signal_connect(da, "button-release-event", G_CALLBACK(released), NULL);
+	g_signal_connect(da, "motion-notify-event", G_CALLBACK(motion), NULL);
+	gtk_widget_add_events(da, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
 
 	return da;
 }
