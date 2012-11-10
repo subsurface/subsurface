@@ -74,7 +74,7 @@ typedef enum {
 	VELO_STABLE, VELO_SLOW, VELO_MODERATE, VELO_FAST, VELO_CRAZY,
 
 	/* gas colors */
-	PO2, PN2, PHE,
+	PO2, PO2_ALERT, PN2, PN2_ALERT, PHE, PHE_ALERT,
 
 	/* Other colors */
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
@@ -109,8 +109,11 @@ static const color_t profile_color[] = {
 	[VELO_CRAZY]      = {{RED1, BLACK1_LOW_TRANS}},
 
 	[PO2]             = {{APPLE1, APPLE1_MED_TRANS}},
+	[PO2_ALERT]       = {{RED1, APPLE1_MED_TRANS}},
 	[PN2]             = {{BLACK1_LOW_TRANS, BLACK1_LOW_TRANS}},
+	[PN2_ALERT]       = {{RED1, BLACK1_LOW_TRANS}},
 	[PHE]             = {{PEANUT, PEANUT_MED_TRANS}},
+	[PHE_ALERT]       = {{RED1, PEANUT_MED_TRANS}},
 
 	[TEXT_BACKGROUND] = {{CONCRETE1_LOWER_TRANS, WHITE1}},
 	[ALERT_BG]        = {{BROOM1_LOWER_TRANS, BLACK1_LOW_TRANS}},
@@ -776,15 +779,15 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 
 	setup_pp_limits(gc, pi);
 
-	if (enabled_graphs.po2) {
+	if (partial_pressure_graphs.po2) {
 		maxpp = plot_single_gas_pp_text(gc, pi, po2_value, 0.4, PO2);
 	}
-	if (enabled_graphs.pn2) {
+	if (partial_pressure_graphs.pn2) {
 		m = plot_single_gas_pp_text(gc, pi, pn2_value, 0.6, PN2);
 		if (m > maxpp)
 			maxpp = m;
 	}
-	if (enabled_graphs.phe) {
+	if (partial_pressure_graphs.phe) {
 		m = plot_single_gas_pp_text(gc, pi, phe_value, 0.4, PHE);
 		if (m > maxpp)
 			maxpp = m;
@@ -807,36 +810,78 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 
 	setup_pp_limits(gc, pi);
 
-	if (enabled_graphs.po2) {
+	if (partial_pressure_graphs.po2) {
 		set_source_rgba(gc, PO2);
-
 		entry = pi->entry;
 		move_to(gc, entry->sec, entry->po2);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			line_to(gc, entry->sec, entry->po2);
+			if (entry->po2 < partial_pressure_graphs.po2_threshold)
+				line_to(gc, entry->sec, entry->po2);
+			else
+				move_to(gc, entry->sec, entry->po2);
+		}
+		cairo_stroke(gc->cr);
+
+		set_source_rgba(gc, PO2_ALERT);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->po2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 >= partial_pressure_graphs.po2_threshold)
+				line_to(gc, entry->sec, entry->po2);
+			else
+				move_to(gc, entry->sec, entry->po2);
 		}
 		cairo_stroke(gc->cr);
 	}
-	if (enabled_graphs.pn2) {
+	if (partial_pressure_graphs.pn2) {
 		set_source_rgba(gc, PN2);
-
 		entry = pi->entry;
 		move_to(gc, entry->sec, entry->pn2);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			line_to(gc, entry->sec, entry->pn2);
+			if (entry->pn2 < partial_pressure_graphs.pn2_threshold)
+				line_to(gc, entry->sec, entry->pn2);
+			else
+				move_to(gc, entry->sec, entry->pn2);
+		}
+		cairo_stroke(gc->cr);
+
+		set_source_rgba(gc, PN2_ALERT);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->pn2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->pn2 >= partial_pressure_graphs.pn2_threshold)
+				line_to(gc, entry->sec, entry->pn2);
+			else
+				move_to(gc, entry->sec, entry->pn2);
 		}
 		cairo_stroke(gc->cr);
 	}
-	if (enabled_graphs.phe) {
+	if (partial_pressure_graphs.phe) {
 		set_source_rgba(gc, PHE);
-
 		entry = pi->entry;
 		move_to(gc, entry->sec, entry->phe);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			line_to(gc, entry->sec, entry->phe);
+			if (entry->phe < partial_pressure_graphs.phe_threshold)
+				line_to(gc, entry->sec, entry->phe);
+			else
+				move_to(gc, entry->sec, entry->phe);
+		}
+		cairo_stroke(gc->cr);
+
+		set_source_rgba(gc, PHE_ALERT);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->phe);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->phe >= partial_pressure_graphs.phe_threshold)
+				line_to(gc, entry->sec, entry->phe);
+			else
+				move_to(gc, entry->sec, entry->phe);
 		}
 		cairo_stroke(gc->cr);
 	}

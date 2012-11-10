@@ -25,12 +25,15 @@ typedef struct {
 	gboolean po2;
 	gboolean pn2;
 	gboolean phe;
-} enabled_graphs_t;
+	double po2_threshold;
+	double pn2_threshold;
+	double phe_threshold;
+} partial_pressure_graphs_t;
 
 extern visible_cols_t visible_cols;
-extern enabled_graphs_t enabled_graphs;
+extern partial_pressure_graphs_t partial_pressure_graphs;
 
-#define GRAPHS_ENABLED (enabled_graphs.po2 || enabled_graphs.pn2 || enabled_graphs.phe)
+#define GRAPHS_ENABLED (partial_pressure_graphs.po2 || partial_pressure_graphs.pn2 || partial_pressure_graphs.phe)
 
 typedef enum {
 	PREF_BOOL,

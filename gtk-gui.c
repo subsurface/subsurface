@@ -37,7 +37,7 @@ struct units output_units;
 static GtkWidget *dive_profile;
 
 visible_cols_t visible_cols = {TRUE, FALSE, };
-enabled_graphs_t enabled_graphs = { FALSE, };
+partial_pressure_graphs_t partial_pressure_graphs = { FALSE, FALSE, FALSE, 1.6, 4.0, 10.0};
 
 static const char *default_dive_computer_vendor;
 static const char *default_dive_computer_product;
@@ -490,10 +490,13 @@ UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
 UNITCALLBACK(set_kg, weight, KG)
 UNITCALLBACK(set_lbs, weight, LBS)
 
-#define OPTIONCALLBACK(name, option) \
-static void name(GtkWidget *w, gpointer data) \
-{ \
-	option = GTK_TOGGLE_BUTTON(w)->active; \
+#define OPTIONCALLBACK(name, option)			\
+static void name(GtkWidget *w, gpointer data)		\
+{							\
+	GtkWidget **entry = data;			\
+	option = GTK_TOGGLE_BUTTON(w)->active;		\
+	if (entry)					\
+		gtk_widget_set_sensitive(*entry, option);\
 }
 
 OPTIONCALLBACK(otu_toggle, visible_cols.otu)
@@ -504,9 +507,9 @@ OPTIONCALLBACK(totalweight_toggle, visible_cols.totalweight)
 OPTIONCALLBACK(suit_toggle, visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, visible_cols.cylinder)
 OPTIONCALLBACK(autogroup_toggle, autogroup)
-OPTIONCALLBACK(po2_toggle, enabled_graphs.po2)
-OPTIONCALLBACK(pn2_toggle, enabled_graphs.pn2)
-OPTIONCALLBACK(phe_toggle, enabled_graphs.phe)
+OPTIONCALLBACK(po2_toggle, partial_pressure_graphs.po2)
+OPTIONCALLBACK(pn2_toggle, partial_pressure_graphs.pn2)
+OPTIONCALLBACK(phe_toggle, partial_pressure_graphs.phe)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
 {
@@ -569,7 +572,9 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
+	GtkWidget *entry_po2, *entry_pn2, *entry_phe;
 	const char *current_default, *new_default;
+	char threshold_text[10];
 
 	menu_units = output_units;
 
@@ -701,27 +706,63 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	frame = gtk_frame_new(_("Show Partial Pressure Graphs in Profile"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
+	vbox = gtk_vbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
 	box = gtk_hbox_new(FALSE, 6);
-	gtk_container_add(GTK_CONTAINER(frame), box);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
 
 	button = gtk_check_button_new_with_label(_("pO" UTF8_SUBSCRIPT_2));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled_graphs.po2);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), partial_pressure_graphs.po2);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
-	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(po2_toggle), NULL);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(po2_toggle), &entry_po2);
+
+	frame = gtk_frame_new(_("pO" UTF8_SUBSCRIPT_2 " threshold"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
+	entry_po2 = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(entry_po2), 4);
+	snprintf(threshold_text, sizeof(threshold_text), "%.1f", partial_pressure_graphs.po2_threshold);
+	gtk_entry_set_text(GTK_ENTRY(entry_po2), threshold_text);
+	gtk_widget_set_sensitive(entry_po2, partial_pressure_graphs.po2);
+	gtk_container_add(GTK_CONTAINER(frame), entry_po2);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
 
 	button = gtk_check_button_new_with_label(_("pN" UTF8_SUBSCRIPT_2));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled_graphs.pn2);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), partial_pressure_graphs.pn2);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
-	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(pn2_toggle), NULL);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(pn2_toggle), &entry_pn2);
+
+	frame = gtk_frame_new(_("pN" UTF8_SUBSCRIPT_2 " threshold"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
+	entry_pn2 = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(entry_pn2), 4);
+	snprintf(threshold_text, sizeof(threshold_text), "%.1f", partial_pressure_graphs.pn2_threshold);
+	gtk_entry_set_text(GTK_ENTRY(entry_pn2), threshold_text);
+	gtk_widget_set_sensitive(entry_pn2, partial_pressure_graphs.pn2);
+	gtk_container_add(GTK_CONTAINER(frame), entry_pn2);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
 
 	button = gtk_check_button_new_with_label(_("pHe"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled_graphs.phe);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), partial_pressure_graphs.phe);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
-	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(phe_toggle), NULL);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(phe_toggle), &entry_phe);
+
+	frame = gtk_frame_new(_("pHe threshold"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
+	entry_phe = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(entry_phe), 4);
+	snprintf(threshold_text, sizeof(threshold_text), "%.1f", partial_pressure_graphs.phe_threshold);
+	gtk_entry_set_text(GTK_ENTRY(entry_phe), threshold_text);
+	gtk_widget_set_sensitive(entry_phe, partial_pressure_graphs.phe);
+	gtk_container_add(GTK_CONTAINER(frame), entry_phe);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
+		const char *po2_threshold_text, *pn2_threshold_text, *phe_threshold_text;
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 
@@ -729,7 +770,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 			free((void *)divelist_font);
 		divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
 		set_divelist_font(divelist_font);
-
+		po2_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_po2));
+		sscanf(po2_threshold_text, "%lf", &partial_pressure_graphs.po2_threshold);
+		pn2_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_pn2));
+		sscanf(pn2_threshold_text, "%lf", &partial_pressure_graphs.pn2_threshold);
+		phe_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_phe));
+		sscanf(phe_threshold_text, "%lf", &partial_pressure_graphs.phe_threshold);
 		output_units = menu_units;
 		update_dive_list_units();
 		repaint_dive();
@@ -752,9 +798,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
 		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
 
-		subsurface_set_conf("po2graph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.po2));
-		subsurface_set_conf("pn2graph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.pn2));
-		subsurface_set_conf("phegraph", PREF_BOOL, BOOL_TO_PTR(enabled_graphs.phe));
+		subsurface_set_conf("po2graph", PREF_BOOL, BOOL_TO_PTR(partial_pressure_graphs.po2));
+		subsurface_set_conf("pn2graph", PREF_BOOL, BOOL_TO_PTR(partial_pressure_graphs.pn2));
+		subsurface_set_conf("phegraph", PREF_BOOL, BOOL_TO_PTR(partial_pressure_graphs.phe));
+		subsurface_set_conf("po2threshold", PREF_STRING, po2_threshold_text);
+		subsurface_set_conf("pn2threshold", PREF_STRING, pn2_threshold_text);
+		subsurface_set_conf("phethreshold", PREF_STRING, phe_threshold_text);
 
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
@@ -1103,10 +1152,18 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
-	enabled_graphs.po2 = PTR_TO_BOOL(subsurface_get_conf("po2graph", PREF_BOOL));
-	enabled_graphs.pn2 = PTR_TO_BOOL(subsurface_get_conf("pn2graph", PREF_BOOL));
-	enabled_graphs.phe = PTR_TO_BOOL(subsurface_get_conf("phegraph", PREF_BOOL));
-
+	partial_pressure_graphs.po2 = PTR_TO_BOOL(subsurface_get_conf("po2graph", PREF_BOOL));
+	partial_pressure_graphs.pn2 = PTR_TO_BOOL(subsurface_get_conf("pn2graph", PREF_BOOL));
+	partial_pressure_graphs.phe = PTR_TO_BOOL(subsurface_get_conf("phegraph", PREF_BOOL));
+	conf_value = subsurface_get_conf("po2threshold", PREF_STRING);
+	if (conf_value)
+		sscanf(conf_value, "%lf", &partial_pressure_graphs.po2_threshold);
+	conf_value = subsurface_get_conf("pn2threshold", PREF_STRING);
+	if (conf_value)
+		sscanf(conf_value, "%lf", &partial_pressure_graphs.pn2_threshold);
+	conf_value = subsurface_get_conf("phethreshold", PREF_STRING);
+	if (conf_value)
+		sscanf(conf_value, "%lf", &partial_pressure_graphs.phe_threshold);
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 	autogroup = PTR_TO_BOOL(subsurface_get_conf("autogroup", PREF_BOOL));
 	default_filename = subsurface_get_conf("default_filename", PREF_STRING);
