@@ -233,6 +233,7 @@ struct event {
 	struct event *next;
 	duration_t time;
 	int type, flags, value;
+	gboolean deleted;
 	char name[];
 };
 
@@ -269,6 +270,7 @@ struct dive {
 	duration_t duration, surfacetime;
 	int visibility; /* 0 - 5 star rating */
 	temperature_t airtemp, watertemp;
+	pressure_t surface_pressure;
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	char *suit;

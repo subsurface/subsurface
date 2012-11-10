@@ -1231,7 +1231,7 @@ void attach_tooltip(int x, int y, int w, int h, const char *text)
 	rect->y = y;
 	rect->width = w;
 	rect->height = h;
-	tooltip_rects[tooltips].text = text;
+	tooltip_rects[tooltips].text = strdup(text);
 	tooltips++;
 }
 

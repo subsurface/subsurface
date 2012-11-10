@@ -252,7 +252,7 @@ gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h
 			-c gtk-gui.c
 
 uemis.o: uemis.c dive.h uemis.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBDIVECOMPUTERCFLAGS) -c uemis.c
 
 uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis-downloader.c

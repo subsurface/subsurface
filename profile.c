@@ -15,6 +15,7 @@
 #include "display-gtk.h"
 #include "divelist.h"
 #include "color.h"
+#include "libdivecomputer/parser.h"
 
 int selected_dive = 0;
 char zoomed_plot = 0;
@@ -44,6 +45,7 @@ struct plot_info {
 		int temperature;
 		/* Depth info */
 		int depth;
+		int ceiling;
 		int smoothed;
 		double po2, pn2, phe;
 		velocity_t velocity;
@@ -77,7 +79,8 @@ typedef enum {
 	/* Other colors */
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
 	SMOOTHED, MINUTE, TIME_GRID, TIME_TEXT, DEPTH_GRID, MEAN_DEPTH, DEPTH_TOP,
-	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND
+	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND,
+	CEILING_SHALLOW, CEILING_DEEP
 } color_indice_t;
 
 typedef struct {
@@ -129,6 +132,9 @@ static const color_t profile_color[] = {
 	[BOUNDING_BOX]    = {{WHITE1, BLACK1_LOW_TRANS}},
 	[PRESSURE_TEXT]   = {{KILLARNEY1, BLACK1_LOW_TRANS}},
 	[BACKGROUND]      = {{SPRINGWOOD1, BLACK1_LOW_TRANS}},
+	[CEILING_SHALLOW] = {{REDORANGE1_HIGH_TRANS, REDORANGE1_HIGH_TRANS}},
+	[CEILING_DEEP]    = {{RED1_MED_TRANS, RED1_MED_TRANS}},
+
 };
 
 #define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
@@ -185,11 +191,11 @@ static void dump_pi (struct plot_info *pi)
 		pi->maxpressure, pi->mintemp, pi->maxtemp);
 	for (i = 0; i < pi->nr; i++)
 		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
-			"                time:%d:%02d temperature:%d depth:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
+			"                time:%d:%02d temperature:%d depth:%d ceiling:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
 			i, pi->entry[i].same_cylinder, pi->entry[i].cylinderindex, pi->entry[i].sec,
 			pi->entry[i].pressure[0], pi->entry[i].pressure[1],
 			pi->entry[i].sec / 60, pi->entry[i].sec % 60,
-			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].smoothed,
+			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].ceiling, pi->entry[i].smoothed,
 			pi->entry[i].po2, pi->entry[i].phe, pi->entry[i].pn2,
 			pi->entry[i].po2 + pi->entry[i].phe + pi->entry[i].pn2);
 	printf("   }\n");
@@ -294,6 +300,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_show_text(cr, buffer);
 }
 
+/* collect all event names and whether we display them */
 struct ev_select {
 	char *ev_name;
 	gboolean plot_ev;
@@ -314,12 +321,12 @@ void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 
 void remember_event(const char *eventname)
 {
-	int i=0, len;
+	int i = 0, len;
 
 	if (!eventname || (len = strlen(eventname)) == 0)
 		return;
 	while (i < evn_used) {
-		if (!strncmp(eventname,ev_namelist[i].ev_name,len))
+		if (!strncmp(eventname, ev_namelist[i].ev_name, len))
 			return;
 		i++;
 	}
@@ -339,6 +346,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 {
 	int i, depth = 0;
 	int x,y;
+	char buffer[80];
 
 	/* is plotting this event disabled? */
 	if (event->name) {
@@ -374,7 +382,11 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	cairo_line_to(gc->cr, x-9, y+4);
 	cairo_stroke(gc->cr);
 	/* we display the event on screen - so translate */
-	attach_tooltip(x-15, y-6, 12, 12, _(event->name));
+	if (event->value)
+		snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
+	else
+		snprintf(buffer, sizeof(buffer), "%s", _(event->name));
+	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
@@ -386,7 +398,8 @@ static void plot_events(struct graphics_context *gc, struct plot_info *pi, struc
 		return;
 
 	while (event) {
-		plot_one_event(gc, pi, event, &tro);
+		if (event->flags != SAMPLE_FLAGS_BEGIN && event->flags != SAMPLE_FLAGS_END)
+			plot_one_event(gc, pi, event, &tro);
 		event = event->next;
 	}
 }
@@ -928,8 +941,37 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	move_to(gc, 0, 0);
 	for (i = 0; i < pi->nr; i++, entry++)
 		line_to(gc, entry->sec, entry->depth);
-	cairo_close_path(gc->cr);
 
+	/* Show any ceiling we may have encountered */
+	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+		if (entry->ceiling < entry->depth) {
+			line_to(gc, entry->sec, entry->ceiling);
+		} else {
+			line_to(gc, entry->sec, entry->depth);
+		}
+	}
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
+
+	/* next show where we have been bad and crossed the ceiling */
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
+	pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
+	cairo_set_source(gc->cr, pat);
+	cairo_pattern_destroy(pat);
+	entry = pi->entry;
+	move_to(gc, 0, 0);
+	for (i = 0; i < pi->nr; i++, entry++)
+		line_to(gc, entry->sec, entry->depth);
+
+	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+		if (entry->ceiling > entry->depth) {
+			line_to(gc, entry->sec, entry->ceiling);
+		} else {
+			line_to(gc, entry->sec, entry->depth);
+		}
+	}
+	cairo_close_path(gc->cr);
 	cairo_fill(gc->cr);
 
 	/* Now do it again for the velocity colors */
@@ -1509,10 +1551,12 @@ static int get_cylinder_index(struct dive *dive, struct event *ev)
 	return 0;
 }
 
-static struct event *get_next_gaschange(struct event *event)
+static struct event *get_next_event(struct event *event, char *name)
 {
+	if (!name || !*name)
+		return NULL;
 	while (event) {
-		if (!strcmp(event->name, "gaschange"))
+		if (!strcmp(event->name, name))
 			return event;
 		event = event->next;
 	}
@@ -1537,7 +1581,7 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, un
 static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
 {
 	int i = 0, cylinderindex = 0;
-	struct event *ev = get_next_gaschange(dive->events);
+	struct event *ev = get_next_event(dive->events, "gaschange");
 
 	if (!ev)
 		return;
@@ -1545,7 +1589,7 @@ static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
 	do {
 		i = set_cylinder_index(pi, i, cylinderindex, ev->time.seconds);
 		cylinderindex = get_cylinder_index(dive, ev);
-		ev = get_next_gaschange(ev->next);
+		ev = get_next_event(ev->next, "gaschange");
 	} while (ev);
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
 }
@@ -1554,11 +1598,11 @@ static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
 static int count_gas_change_events(struct dive *dive)
 {
 	int count = 0;
-	struct event *ev = get_next_gaschange(dive->events);
+	struct event *ev = get_next_event(dive->events, "gaschange");
 
 	while (ev) {
 		count++;
-		ev = get_next_gaschange(ev->next);
+		ev = get_next_event(ev->next, "gaschange");
 	}
 	return count;
 }
@@ -1574,14 +1618,14 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, pi_idx, nr, sec, cyl;
+	int i, pi_idx, nr, sec, cyl, ceiling = 0;
 	size_t alloc_size;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
-	struct event *ev;
+	struct event *ev, *ceil_ev;
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = nr_samples + 4 + 2 * count_gas_change_events(dive);
@@ -1593,18 +1637,20 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->nr = nr;
 	pi_idx = 2; /* the two extra events at the start */
 	/* check for gas changes before the samples start */
-	ev = get_next_gaschange(dive->events);
+	ev = get_next_event(dive->events, "gaschange");
 	while (ev && ev->time.seconds < dive_sample->time.seconds) {
 		entry = pi->entry + pi_idx;
 		entry->sec = ev->time.seconds;
 		entry->depth = 0; /* is that always correct ? */
 		pi_idx++;
-		ev = get_next_gaschange(ev->next);
+		ev = get_next_event(ev->next, "gaschange");
 	}
 	if (ev && ev->time.seconds == dive_sample->time.seconds) {
 		/* we already have a sample at the time of the event */
-		ev = get_next_gaschange(ev->next);
+		ev = get_next_event(ev->next, "gaschange");
 	}
+	/* find the first deco/ceiling event (if any) */
+	ceil_ev = get_next_event(dive->events, "ceiling");
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
@@ -1614,13 +1660,22 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		struct sample *sample = dive_sample+i;
 
 		entry = pi->entry + i + pi_idx;
+		while (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
+			struct event *next_ceil_ev = get_next_event(ceil_ev->next, "ceiling");
+			if (!next_ceil_ev || next_ceil_ev->time.seconds > sample->time.seconds)
+				break;
+			ceil_ev = next_ceil_ev;
+		}
+		if (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
+			ceiling = ceil_ev->value;
+			ceil_ev = get_next_event(ceil_ev->next, "ceiling");
+		}
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
 			 * the old tank and the start of the new tank */
 			if (ev->time.seconds == sample->time.seconds - 1) {
 				entry->sec = ev->time.seconds - 1;
 				(entry+1)->sec = ev->time.seconds;
-			} else {
 				entry->sec = ev->time.seconds;
 				(entry+1)->sec = ev->time.seconds + 1;
 			}
@@ -1630,10 +1685,12 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 					(sample->depth.mm - (sample-1)->depth.mm) / 2;
 			} else
 				entry->depth = sample->depth.mm;
-			(entry+1)->depth = entry->depth;
+			(entry + 1)->depth = entry->depth;
+			entry->ceiling = ceiling;
+			(entry + 1)->ceiling = ceiling;
 			pi_idx += 2;
 			entry = pi->entry + i + pi_idx;
-			ev = get_next_gaschange(ev->next);
+			ev = get_next_event(ev->next, "gaschange");
 		}
 		if (ev && ev->time.seconds == sample->time.seconds) {
 			/* we already have a sample at the time of the event
@@ -1641,13 +1698,15 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 			 * real even by one second (to keep time monotonous) */
 			entry->sec = ev->time.seconds;
 			entry->depth = sample->depth.mm;
+			entry->ceiling = ceiling;
 			pi_idx++;
 			entry = pi->entry + i + pi_idx;
-			ev = get_next_gaschange(ev->next);
+			ev = get_next_event(ev->next, "gaschange");
 			delay = 1;
 		}
 		sec = entry->sec = sample->time.seconds + delay;
 		depth = entry->depth = sample->depth.mm;
+		entry->ceiling = ceiling;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
@@ -1666,7 +1725,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		entry->depth = 0; /* why are there gas changes after the dive is over? */
 		pi_idx++;
 		entry = pi->entry + i + pi_idx;
-		ev = get_next_gaschange(ev->next);
+		ev = get_next_event(ev->next, "gaschange");
 	}
 	nr = nr_samples + pi_idx - 2;
 	check_gas_change_events(dive, pi);

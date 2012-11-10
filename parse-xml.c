@@ -545,7 +545,7 @@ static void decicelsius(char *buffer, void *_temp)
 		temp->mkelvin = (val.fp/10 + 273.15) * 1000 + 0.5;
 		break;
 	default:
-		fprintf(stderr, "Strange julian date: %s", buffer);
+		fprintf(stderr, "Strange temperature: %s", buffer);
 	}
 	free(buffer);
 }

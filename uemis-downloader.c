@@ -792,7 +792,15 @@ static char *do_uemis_download(struct argument_block *args)
 	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &result))
 		goto bail;
 	param_buff[1] = "notempty";
-	newmax = get_divenr(*max_dive_data, deviceid);
+	/* if we have an empty divelist then the user will almost
+	 * certainly want to start downloading from the first dive on
+	 * the Uemis; otherwise check which was the last dive
+	 * downloaded */
+	if (dive_table.nr > 0)
+		newmax = get_divenr(*max_dive_data, deviceid);
+	else
+		newmax = strdup("0");
+
 	if (sscanf(newmax, "%d", &start) != 1)
 		start = 0;
 	for (;;) {
