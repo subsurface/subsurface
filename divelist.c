@@ -1938,6 +1938,8 @@ void add_single_dive(int idx, struct dive *dive)
 {
 	int i;
 	dive_table.nr++;
+	if (dive->selected)
+		amount_selected++;
 	for (i = idx; i < dive_table.nr ; i++) {
 		struct dive *tmp = dive_table.dives[i];
 		dive_table.dives[i] = dive;
@@ -2090,6 +2092,7 @@ static void merge_dive_index(int i, struct dive *a)
 	if (!res)
 		return;
 
+	remember_tree_state();
 	add_single_dive(i, res);
 	delete_single_dive(i+1);
 	delete_single_dive(i+1);

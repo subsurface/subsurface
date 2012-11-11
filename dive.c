@@ -1051,6 +1051,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset)
 	struct dive *res = alloc_dive();
 
 	res->when = a->when;
+	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
 	MERGE_NONZERO(res, a, b, latitude);
 	MERGE_NONZERO(res, a, b, longitude);
