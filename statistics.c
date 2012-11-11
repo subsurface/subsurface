@@ -71,7 +71,7 @@ typedef struct {
 	volume_t avg_sac;
 	int max_temp;
 	int min_temp;
-	unsigned int combined_temp;
+	double combined_temp;
 	unsigned int combined_count;
 	unsigned int selection_size;
 	unsigned int total_sac_time;
@@ -286,7 +286,7 @@ static void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent, 
 	/* Average water temperature */
 	value = get_temp_units(stats_interval.min_temp, &unit);
 	if (stats_interval.combined_temp && stats_interval.combined_count) {
-		snprintf(value_str, sizeof(value_str), "%.1f %s", stats_interval.combined_temp / (stats_interval.combined_count * 1.0), unit);
+		snprintf(value_str, sizeof(value_str), "%.1f %s", stats_interval.combined_temp / stats_interval.combined_count, unit);
 		add_cell_to_tree(store, value_str, 12, row);
 	} else {
 		add_cell_to_tree(store, "", 12, row);
@@ -611,7 +611,7 @@ static void show_total_dive_stats(struct dive *dive)
 		set_label(stats_w.min_temp, "%.1f %s", value, unit);
 	}
 	if (stats_ptr->combined_temp && stats_ptr->combined_count)
-		set_label(stats_w.avg_temp, "%.1f %s", stats_ptr->combined_temp / (stats_ptr->combined_count * 1.0), unit);
+		set_label(stats_w.avg_temp, "%.1f %s", stats_ptr->combined_temp / stats_ptr->combined_count, unit);
 	if (stats_ptr->max_temp) {
 		value = get_temp_units(stats_ptr->max_temp, &unit);
 		set_label(stats_w.max_temp, "%.1f %s", value, unit);
