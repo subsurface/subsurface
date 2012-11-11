@@ -2005,33 +2005,60 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	}
 }
 
-static void plot_string(struct plot_data *entry, char *buf, size_t bufsize)
+static void plot_string(struct plot_data *entry, char *buf, size_t bufsize, int depth, int pressure, int temp)
 {
-	int depth_decimals, pressure;
-	const char *depth_unit, *pressure_unit;
-	double depth;
+	int pressurevalue;
+	const char *depth_unit, *pressure_unit, *temp_unit;
+	char *buf2 = malloc(bufsize);
+	double depthvalue, tempvalue;
 
-	depth = get_depth_units(entry->depth, &depth_decimals, &depth_unit);
-	pressure = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
-
-	snprintf(buf, bufsize, "%.*f %s\n%d %s",
-		depth_decimals, depth, depth_unit,
-		pressure, pressure_unit);
+	depthvalue = get_depth_units(depth, NULL, &depth_unit);
+	snprintf(buf, bufsize, "D:%.1f %s", depthvalue, depth_unit);
+	if (pressure) {
+		pressurevalue = get_pressure_units(pressure, &pressure_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nP:%d %s", buf2, pressurevalue, pressure_unit);
+	}
+	if (temp) {
+		tempvalue = get_temp_units(temp, &temp_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nT:%.1f %s", buf2, tempvalue, temp_unit);
+	}
+	if (partial_pressure_graphs.po2) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->po2);
+	}
+	if (partial_pressure_graphs.pn2) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->pn2);
+	}
+	if (partial_pressure_graphs.phe) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\npHe:%.1f", buf2, entry->phe);
+	}
+	free(buf2);
 }
 
 void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize)
 {
 	struct plot_info *pi = gc->plot_info;
+	int pressure = 0, temp = 0;
+	struct plot_data *entry;
 
 	*buf = 0;
 	if (pi) {
 		int i;
 		for (i = 0; i < pi->nr; i++) {
-			struct plot_data *entry = pi->entry + i;
+			entry = pi->entry + i;
+			if (entry->temperature)
+				temp = entry->temperature;
+			if (GET_PRESSURE(entry))
+				pressure = GET_PRESSURE(entry);
 			if (entry->sec >= time) {
-				plot_string(entry, buf, bufsize);
-				break;
+				plot_string(entry, buf, bufsize, entry->depth, pressure, temp);
+				return;
 			}
 		}
+		plot_string(entry, buf, bufsize, entry->depth, pressure, temp);
 	}
 }

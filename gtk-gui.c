@@ -1332,7 +1332,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 	}
 	get_plot_details(gc, time, plot, sizeof(plot));
 
-	snprintf(buffer, sizeof(buffer), " %d:%02d%c%s%c%s", time / 60, time % 60,
+	snprintf(buffer, sizeof(buffer), "@ %d:%02d%c%s%c%s", time / 60, time % 60,
 		*plot ? '\n' : ' ', plot,
 		*event ? '\n' : ' ', event);
 	gtk_tooltip_set_text(tooltip, buffer);
