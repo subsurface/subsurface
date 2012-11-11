@@ -910,7 +910,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	 * we double the interval if this still doesn't get us to 12 or fewer
 	 * time markers */
 	i = 0;
-	while (maxtime / increments[i] > 12 && i < 8)
+	while (maxtime / increments[i] > 12 && i < 7)
 		i++;
 	incr = increments[i];
 	while (maxtime / incr > 12)
