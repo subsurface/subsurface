@@ -282,6 +282,20 @@ struct dive {
 	struct sample sample[];
 };
 
+/* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
+ * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
+ * and add that to the surface pressure (or to 1013 if that's unknown) */
+static inline int depth_to_mbar(int depth, struct dive *dive)
+{
+	double specific_weight = 1.03 * 0.981;
+	int surface_pressure = 1013;
+	if (dive->salinity)
+		specific_weight = dive->salinity / 10000.0 * 0.981;
+	if (dive->surface_pressure.mbar)
+		surface_pressure = dive->surface_pressure.mbar;
+	return depth / 10.0 * specific_weight + surface_pressure + 0.5;
+}
+
 /* this is a global spot for a temporary dive structure that we use to
  * be able to edit a dive without unintended side effects */
 extern struct dive edit_dive;

@@ -711,7 +711,7 @@ static int calculate_otu(struct dive *dive)
 		int o2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
 		if (!o2)
 			o2 = AIR_PERMILLE;
-		po2 = o2 / 1000.0 * (sample->depth.mm + 10000) / 10000.0;
+		po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive) / 1000.0;
 		if (po2 >= 0.5)
 			otu += pow(po2 - 0.5, 0.83) * t / 30.0;
 	}
@@ -771,8 +771,8 @@ static int calculate_sac(struct dive *dive)
 			}
 		}
 	}
-	/* Mean pressure in atm: 1 atm per 10m */
-	pressure = 1 + (dive->meandepth.mm / 10000.0);
+	/* Mean pressure in bar (SAC calculations are in bar*l/min) */
+	pressure = depth_to_mbar(dive->meandepth.mm, dive) / 1000.0;
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */

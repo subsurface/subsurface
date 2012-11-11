@@ -1179,8 +1179,7 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 	((GET_PRESSURE((_entry1)) - GET_PRESSURE((_entry2))) *			\
 		(_dive)->cylinder[(_entry1)->cylinderindex].type.size.mliter /	\
 		(((_entry2)->sec - (_entry1)->sec) / 60.0) /			\
-		(1 + ((_entry1)->depth + (_entry2)->depth) / 20000.0) /		\
-		1000.0)
+		depth_to_mbar(((_entry1)->depth + (_entry2)->depth) / 2.0, (_dive)))
 
 #define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
 
@@ -1671,6 +1670,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
 	struct event *ev, *ceil_ev;
+	double amb_pressure;
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = nr_samples + 4 + 2 * count_gas_change_events(dive);
@@ -1780,7 +1780,6 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	current = track_pr[pi->entry[2].cylinderindex];
 	for (i = 0; i < nr + 1; i++) {
 		int fo2, fhe;
-		double pressure;
 
 		entry = pi->entry + i + 1;
 
@@ -1804,19 +1803,19 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 					list_add(track_pr[cylinderindex], current);
 			}
 		}
-		pressure = (entry->depth + 10000) / 10000.0 * 1.01325;
+		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille;
 		fhe = dive->cylinder[cylinderindex].gasmix.he.permille;
 
 		if (!fo2)
 			fo2 = AIR_PERMILLE;
-		entry->po2 = fo2 / 1000.0 * pressure;
-		entry->phe = fhe / 1000.0 * pressure;
-		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * pressure;
+		entry->po2 = fo2 / 1000.0 * amb_pressure;
+		entry->phe = fhe / 1000.0 * amb_pressure;
+		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
 
 		/* finally, do the discrete integration to get the SAC rate equivalent */
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
-			(1 + (entry->depth + (entry-1)->depth) / 20000.0);
+			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
 		missing_pr |= !SENSOR_PRESSURE(entry);
 	}
 
@@ -1837,8 +1836,9 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->entry[i].same_cylinder = 1;
 	pi->entry[i].cylinderindex = pi->entry[i-1].cylinderindex;
 	INTERPOLATED_PRESSURE(pi->entry + i) = GET_PRESSURE(pi->entry + i - 1);
-	pi->entry[i].po2 = pi->entry[i-1].po2 / (pi->entry[i].depth + 10000.0) * 10000.0;
-	pi->entry[i].phe = pi->entry[i-1].phe / (pi->entry[i].depth + 10000.0) * 10000.0;
+	amb_pressure = depth_to_mbar(pi->entry[i - 1].depth, dive) / 1000.0;
+	pi->entry[i].po2 = pi->entry[i-1].po2 / amb_pressure;
+	pi->entry[i].phe = pi->entry[i-1].phe / amb_pressure;
 	pi->entry[i].pn2 = 1.01325 - pi->entry[i].po2 - pi->entry[i].phe;
 	pi->entry[i+1].sec = sec + 40;
 	pi->entry[i+1].same_cylinder = 1;
@@ -1848,15 +1848,17 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->entry[i+1].phe = pi->entry[i].phe;
 	pi->entry[i+1].pn2 = pi->entry[i].pn2;
 	/* make sure the first two pi entries have a sane po2 / phe / pn2 */
+	amb_pressure = depth_to_mbar(pi->entry[2].depth, dive) / 1000.0;
 	if (pi->entry[1].po2 < 0.01)
-		pi->entry[1].po2 = pi->entry[2].po2 / (pi->entry[2].depth + 10000.0) * 10000.0;
+		pi->entry[1].po2 = pi->entry[2].po2 / amb_pressure;
 	if (pi->entry[1].phe < 0.01)
-		pi->entry[1].phe = pi->entry[2].phe / (pi->entry[2].depth + 10000.0) * 10000.0;
+		pi->entry[1].phe = pi->entry[2].phe / amb_pressure;
 	pi->entry[1].pn2 = 1.01325 - pi->entry[1].po2 - pi->entry[1].phe;
+	amb_pressure = depth_to_mbar(pi->entry[1].depth, dive) / 1000.0;
 	if (pi->entry[0].po2 < 0.01)
-		pi->entry[0].po2 = pi->entry[1].po2 / (pi->entry[1].depth + 10000.0) * 10000.0;
+		pi->entry[0].po2 = pi->entry[1].po2 / amb_pressure;
 	if (pi->entry[0].phe < 0.01)
-		pi->entry[0].phe = pi->entry[1].phe / (pi->entry[1].depth + 10000.0) * 10000.0;
+		pi->entry[0].phe = pi->entry[1].phe / amb_pressure;
 	pi->entry[0].pn2 = 1.01325 - pi->entry[0].po2 - pi->entry[0].phe;
 
 	/* the number of actual entries - some computers have lots of
