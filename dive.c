@@ -449,10 +449,10 @@ struct dive *fixup_dive(struct dive *dive)
 		lastindex = index;
 		lastpressure = pressure;
 
-		if (lastdepth)
+		if (lastdepth > SURFACE_THRESHOLD)
 			end = time;
 
-		if (depth) {
+		if (depth > SURFACE_THRESHOLD) {
 			if (start < 0)
 				start = lasttime;
 			if (depth > maxdepth)
@@ -479,6 +479,8 @@ struct dive *fixup_dive(struct dive *dive)
 		lastdepth = depth;
 		lasttime = time;
 	}
+	dive->start = start;
+	dive->end = end;
 	/* if all the samples for a cylinder have pressure data that
 	 * is basically equidistant throw out the sample cylinder pressure
 	 * information but make sure we still have a valid start and end

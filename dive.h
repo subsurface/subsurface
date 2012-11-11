@@ -261,6 +261,7 @@ struct dive {
 	tripflag_t tripflag;
 	dive_trip_t *divetrip;
 	int selected;
+	int start, end;
 	timestamp_t when;
 	char *location;
 	char *notes;
@@ -295,6 +296,8 @@ static inline int depth_to_mbar(int depth, struct dive *dive)
 		surface_pressure = dive->surface_pressure.mbar;
 	return depth / 10.0 * specific_weight + surface_pressure + 0.5;
 }
+
+#define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
 /* this is a global spot for a temporary dive structure that we use to
  * be able to edit a dive without unintended side effects */

@@ -1704,6 +1704,10 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		int delay = 0;
 		struct sample *sample = dive_sample+i;
 
+		if (sample->time.seconds < dive->start || sample->time.seconds > dive->end) {
+			pi_idx--;
+			continue;
+		}
 		entry = pi->entry + i + pi_idx;
 		while (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
 			struct event *next_ceil_ev = get_next_event(ceil_ev->next, "ceiling");
