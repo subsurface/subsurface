@@ -44,6 +44,7 @@ struct argument_block {
 	char **max_dive_data;
 	char **xml_buffer;
 	progressbar_t *progress;
+	gboolean force_download;
 };
 
 static int import_thread_done = 0, import_thread_cancelled;
@@ -796,7 +797,7 @@ static char *do_uemis_download(struct argument_block *args)
 	 * certainly want to start downloading from the first dive on
 	 * the Uemis; otherwise check which was the last dive
 	 * downloaded */
-	if (dive_table.nr > 0)
+	if (!args->force_download && dive_table.nr > 0)
 		newmax = get_divenr(*max_dive_data, deviceid);
 	else
 		newmax = strdup("0");
@@ -874,11 +875,12 @@ static void *pthread_wrapper(void *_data)
 	return (void *)err_string;
 }
 
-GError *uemis_download(const char *mountpath, char **max_dive_data, char **xml_buffer, progressbar_t *progress)
+GError *uemis_download(const char *mountpath, char **max_dive_data, char **xml_buffer, progressbar_t *progress,
+			gboolean force_download)
 {
 	pthread_t pthread;
 	void *retval;
-	struct argument_block args = {mountpath, max_dive_data, xml_buffer, progress};
+	struct argument_block args = {mountpath, max_dive_data, xml_buffer, progress, force_download};
 
 	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
 	import_thread_done = 0;

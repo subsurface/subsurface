@@ -43,6 +43,8 @@ static const char *default_dive_computer_vendor;
 static const char *default_dive_computer_product;
 static const char *default_dive_computer_device;
 static char *uemis_max_dive_data;
+static gboolean force_download;
+static gboolean prefer_downloaded;
 
 static int is_default_dive_computer(const char *vendor, const char *product)
 {
@@ -350,7 +352,7 @@ static void file_open(GtkWidget *w, gpointer data)
 		}
 		g_free(filename);
 		g_slist_free(fn_glist);
-		report_dives(FALSE);
+		report_dives(FALSE, FALSE);
 	}
 	gtk_widget_destroy(dialog);
 }
@@ -510,6 +512,8 @@ OPTIONCALLBACK(autogroup_toggle, autogroup)
 OPTIONCALLBACK(po2_toggle, partial_pressure_graphs.po2)
 OPTIONCALLBACK(pn2_toggle, partial_pressure_graphs.pn2)
 OPTIONCALLBACK(phe_toggle, partial_pressure_graphs.phe)
+OPTIONCALLBACK(force_toggle, force_download)
+OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
 {
@@ -1605,7 +1609,7 @@ void import_files(GtkWidget *w, gpointer data)
 		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
 		if (filenames) {
 			g_slist_foreach(filenames, do_import_file, NULL);
-			report_dives(TRUE);
+			report_dives(TRUE, FALSE);
 			g_slist_free(filenames);
 		}
 	}
@@ -1619,7 +1623,7 @@ static GError *setup_uemis_import(device_data_t *data)
 	GError *error = NULL;
 	char *buf = NULL;
 
-	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress);
+	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress, data->force_download);
 	if (buf && strlen(buf) > 1) {
 #ifdef DEBUGFILE
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
@@ -1696,6 +1700,18 @@ void download_dialog(GtkWidget *w, gpointer data)
 	devicedata.progress.bar = gtk_progress_bar_new();
 	gtk_container_add(GTK_CONTAINER(hbox), devicedata.progress.bar);
 
+	force_download = FALSE;
+	button = gtk_check_button_new_with_label(_("Force download of all dives"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), FALSE);
+	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(force_toggle), NULL);
+
+	prefer_downloaded = FALSE;
+	button = gtk_check_button_new_with_label(_("Always prefer downloaded dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), FALSE);
+	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(prefer_dl_toggle), NULL);
+
 	button = gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	if (!gtk_combo_box_get_active_iter(computer, &iter))
 		gtk_widget_set_sensitive(button, FALSE);
@@ -1747,15 +1763,16 @@ repeat:
 			while (*(--ne) == ' ' || *ne == '\t')
 				*ne = '\0';
 		devicedata.devname = ns;
+		devicedata.force_download = force_download;
 		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 		free((void *)devname);
 		if (info)
 			goto repeat;
-		report_dives(TRUE);
+		report_dives(TRUE, prefer_downloaded);
 		break;
 	default:
 		/* it's possible that some dives were downloaded */
-		report_dives(TRUE);
+		report_dives(TRUE, prefer_downloaded);
 		break;
 	}
 	gtk_widget_destroy(dialog);

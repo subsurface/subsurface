@@ -17,6 +17,7 @@ typedef struct device_data_t {
 	dc_context_t *context;
 	progressbar_t progress;
 	int preexisting;
+	gboolean force_download;
 } device_data_t;
 
 extern GError *do_import(device_data_t *data);

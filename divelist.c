@@ -1417,7 +1417,7 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 	dive = alloc_dive();
 	if (add_new_dive(dive)) {
 		record_dive(dive);
-		report_dives(TRUE);
+		report_dives(TRUE, FALSE);
 		return;
 	}
 	free(dive);
@@ -2088,7 +2088,7 @@ static void merge_dive_index(int i, struct dive *a)
 	struct dive *b = get_dive(i+1);
 	struct dive *res;
 
-	res = merge_dives(a, b, b->when - a->when);
+	res = merge_dives(a, b, b->when - a->when, FALSE);
 	if (!res)
 		return;
 

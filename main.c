@@ -111,7 +111,7 @@ static gboolean imported = FALSE;
  * This doesn't really report anything at all. We just sort the
  * dives, the GUI does the reporting
  */
-void report_dives(gboolean is_imported)
+void report_dives(gboolean is_imported, gboolean prefer_imported)
 {
 	int i;
 	int preexisting = dive_table.preexisting;
@@ -131,7 +131,7 @@ void report_dives(gboolean is_imported)
 		if (prev->when + prev->duration.seconds < dive->when)
 			continue;
 
-		merged = try_to_merge(prev, dive);
+		merged = try_to_merge(prev, dive, prefer_imported);
 		if (!merged)
 			continue;
 
@@ -145,6 +145,9 @@ void report_dives(gboolean is_imported)
 		delete_single_dive(i+1);
 		delete_single_dive(i+1);
 	}
+	/* make sure no dives are still marked as downloaded */
+	for (i = 1; i < dive_table.nr; i++)
+		dive_table.dives[i]->downloaded = FALSE;
 
 	if (is_imported) {
 		/* Was the previous dive table state numbered? */
@@ -173,7 +176,7 @@ static void parse_argument(const char *arg)
 			if (strcmp(arg,"--import") == 0) {
 				/* mark the dives so far as the base,
 				 * everything after is imported */
-				report_dives(FALSE);
+				report_dives(FALSE, FALSE);
 				imported = TRUE;
 				return;
 			}
@@ -276,7 +279,7 @@ int main(int argc, char **argv)
 		set_filename(filename, FALSE);
 		free((void *)filename);
 	}
-	report_dives(imported);
+	report_dives(imported, FALSE);
 	if (dive_table.nr == 0)
 		show_dive_info(NULL);
 	run_ui();

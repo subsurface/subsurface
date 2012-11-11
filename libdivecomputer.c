@@ -311,9 +311,10 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_parser_destroy(parser);
 
 	/* If we already saw this dive, abort. */
-	if (find_dive(dive, devdata))
+	if (!devdata->force_download && find_dive(dive, devdata))
 		return 0;
 
+	dive->downloaded = TRUE;
 	record_dive(dive);
 	return 1;
 }

@@ -261,6 +261,7 @@ struct dive {
 	tripflag_t tripflag;
 	dive_trip_t *divetrip;
 	int selected;
+	gboolean downloaded;
 	int start, end;
 	timestamp_t when;
 	char *location;
@@ -414,10 +415,10 @@ extern void delete_dive(struct dive *dive);
 extern struct sample *prepare_sample(struct dive **divep);
 extern void finish_sample(struct dive *dive);
 
-extern void report_dives(gboolean imported);
+extern void report_dives(gboolean imported, gboolean prefer_imported);
 extern struct dive *fixup_dive(struct dive *dive);
-extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset);
-extern struct dive *try_to_merge(struct dive *a, struct dive *b);
+extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);
+extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded);
 
 extern void renumber_dives(int nr);
 

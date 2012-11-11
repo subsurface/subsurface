@@ -590,6 +590,9 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_TXT(res, a, b, n) res->n = merge_text(a->n, b->n)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
+#define MERGE_MAX_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : MAX(a->n, b->n)
+#define MERGE_MIN_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
+
 static struct dive *add_sample(struct sample *sample, int time, struct dive *dive)
 {
 	struct sample *p = prepare_sample(&dive);
@@ -682,6 +685,20 @@ add_sample_b:
 		asamples--;
 		bsamples--;
 	}
+}
+
+static struct dive *copy_samples(struct dive *res, struct dive *src)
+{
+	int samples = src->samples;
+	struct sample *s = src->sample;
+	while (samples) {
+		if (!res)
+			return NULL;
+		res = add_sample(s, s->time.seconds, res);
+		s++;
+		samples--;
+	}
+	return fixup_dive(res);
 }
 
 static char *merge_text(const char *a, const char *b)
@@ -1027,9 +1044,9 @@ static int find_sample_offset(struct dive *a, struct dive *b)
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
  */
-struct dive *try_to_merge(struct dive *a, struct dive *b)
+struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded)
 {
-	int offset;
+	int offset = 0;
 
 	/*
 	 * This assumes that the clocks on the dive computers are
@@ -1037,19 +1054,26 @@ struct dive *try_to_merge(struct dive *a, struct dive *b)
 	 */
 	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
 		return NULL;
-
-	/* Dive 'a' is 'offset' seconds before dive 'b' */
-	offset = find_sample_offset(a, b);
-	if (offset > 120 || offset < -120)
+	if (prefer_downloaded && a->when != b->when)
 		return NULL;
-
-	return merge_dives(a, b, offset);
+	if (!prefer_downloaded) {
+		/* Dive 'a' is 'offset' seconds before dive 'b' */
+		offset = find_sample_offset(a, b);
+		if (offset > 120 || offset < -120)
+			return NULL;
+	}
+	return merge_dives(a, b, offset, prefer_downloaded);
 }
 
-struct dive *merge_dives(struct dive *a, struct dive *b, int offset)
+struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
+	struct dive *dl = NULL;
 
+	if (a->downloaded)
+		dl = a;
+	else if (b->downloaded)
+		dl = b;
 	res->when = a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
@@ -1062,16 +1086,21 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset)
 	MERGE_MAX(res, a, b, rating);
 	MERGE_TXT(res, a, b, suit);
 	MERGE_MAX(res, a, b, number);
-	MERGE_MAX(res, a, b, maxdepth.mm);
+	MERGE_MAX_PREFDL(res, dl, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;
 	MERGE_NONZERO(res, a, b, salinity);
 	MERGE_NONZERO(res, a, b, visibility);
 	MERGE_NONZERO(res, a, b, surface_pressure.mbar);
-	MERGE_MAX(res, a, b, duration.seconds);
-	MERGE_MAX(res, a, b, surfacetime.seconds);
-	MERGE_MAX(res, a, b, airtemp.mkelvin);
-	MERGE_MIN(res, a, b, watertemp.mkelvin);
+	MERGE_MAX_PREFDL(res, dl, a, b, duration.seconds);
+	MERGE_MAX_PREFDL(res, dl, a, b, surfacetime.seconds);
+	MERGE_MAX_PREFDL(res, dl, a, b, airtemp.mkelvin);
+	MERGE_MIN_PREFDL(res, dl, a, b, watertemp.mkelvin);
 	merge_equipment(res, a, b);
-	merge_events(res, a, b, offset);
-	return merge_samples(res, a, b, offset);
+	if (dl) {
+		res->events = dl->events;
+		return copy_samples(res, dl);
+	} else {
+		merge_events(res, a, b, offset);
+		return merge_samples(res, a, b, offset);
+	}
 }
