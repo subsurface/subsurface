@@ -413,7 +413,8 @@ extern void finish_sample(struct dive *dive);
 
 extern void report_dives(gboolean imported);
 extern struct dive *fixup_dive(struct dive *dive);
-extern struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next);
+extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset);
+extern struct dive *try_to_merge(struct dive *a, struct dive *b);
 
 extern void renumber_dives(int nr);
 

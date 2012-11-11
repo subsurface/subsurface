@@ -811,7 +811,7 @@ static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
  * The 'next' dive is not involved in the dive merging, but is the dive
  * that will be the next dive after the merged dive.
  */
-static void pick_and_delete_trip(struct dive *res, struct dive *pick, struct dive *remove, struct dive *next)
+static void pick_and_delete_trip(struct dive *res, struct dive *pick, struct dive *remove)
 {
 	tripflag_t tripflag = pick->tripflag;
 	dive_trip_t *trip = pick->divetrip;
@@ -825,7 +825,7 @@ static void pick_and_delete_trip(struct dive *res, struct dive *pick, struct div
 /*
  * Pick a trip for a dive
  */
-static void merge_trip(struct dive *res, struct dive *a, struct dive *b, struct dive *next)
+static void merge_trip(struct dive *res, struct dive *a, struct dive *b)
 {
 	/*
 	 * The larger tripflag is more relevant: we prefer
@@ -860,10 +860,10 @@ static void merge_trip(struct dive *res, struct dive *a, struct dive *b, struct 
 	goto pick_b;
 
 pick_a:
-	pick_and_delete_trip(res, a, b, next);
+	pick_and_delete_trip(res, a, b);
 	return;
 pick_b:
-	pick_and_delete_trip(res, b, a, next);
+	pick_and_delete_trip(res, b, a);
 }
 
 /*
@@ -1030,19 +1030,13 @@ static int find_sample_offset(struct dive *a, struct dive *b)
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
  */
-struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next)
+struct dive *try_to_merge(struct dive *a, struct dive *b)
 {
-	struct dive *res;
 	int offset;
 
 	/*
 	 * This assumes that the clocks on the dive computers are
 	 * roughly synchronized.
-	 *
-	 * We'll probably have to move this into the caller, and
-	 * allow people to override this ("manual merge dives") if
-	 * they have computers that they forgot to change the time
-	 * zone on etc..
 	 */
 	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
 		return NULL;
@@ -1052,10 +1046,15 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, struct dive *next)
 	if (offset > 120 || offset < -120)
 		return NULL;
 
-	res = alloc_dive();
+	return merge_dives(a, b, offset);
+}
+
+struct dive *merge_dives(struct dive *a, struct dive *b, int offset)
+{
+	struct dive *res = alloc_dive();
 
 	res->when = a->when;
-	merge_trip(res, a, b, next);
+	merge_trip(res, a, b);
 	MERGE_NONZERO(res, a, b, latitude);
 	MERGE_NONZERO(res, a, b, longitude);
 	MERGE_TXT(res, a, b, location);

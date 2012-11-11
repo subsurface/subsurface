@@ -126,16 +126,12 @@ void report_dives(gboolean is_imported)
 		struct dive **pp = &dive_table.dives[i-1];
 		struct dive *prev = pp[0];
 		struct dive *dive = pp[1];
-		struct dive *next;
 		struct dive *merged;
 
 		if (prev->when + prev->duration.seconds < dive->when)
 			continue;
 
-		next = NULL;
-		if (i < dive_table.nr-1)
-			next = pp[2];
-		merged = try_to_merge(prev, dive, next);
+		merged = try_to_merge(prev, dive);
 		if (!merged)
 			continue;
 
