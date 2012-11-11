@@ -1361,8 +1361,8 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	cairo_paint(gc.cr);
 
 	if (zoom_x >= 0) {
-		cairo_translate(gc.cr, -zoom_x, -zoom_y);
-		cairo_scale(gc.cr, 2.0, 2.0);
+		cairo_translate(gc.cr, -1.5*zoom_x, -1.5*zoom_y);
+		cairo_scale(gc.cr, 2.5, 2.5);
 	}
 
 	if (dive) {
