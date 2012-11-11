@@ -2118,16 +2118,25 @@ static void merge_dives_cb(GtkWidget *menuitem, void *unused)
 /* Called if there are exactly two selected dives and the dive at idx is one of them */
 static void add_dive_merge_label(int idx, GtkMenuShell *menu)
 {
-	struct dive *d;
+	struct dive *a, *b;
 	GtkWidget *menuitem;
 
 	/* The other selected dive must be next to it.. */
-	if (!((d = get_dive(idx-1)) && d->selected) &&
-	    !((d = get_dive(idx+1)) && d->selected))
-		return;
+	a = get_dive(idx);
+	b = get_dive(idx+1);
+	if (!b || !b->selected) {
+		b = a;
+		a = get_dive(idx-1);
+		if (!a || !a->selected)
+			return;
+	}
 
 	/* .. and they had better be in the same dive trip */
-	if (d->divetrip != get_dive(idx)->divetrip)
+	if (a->divetrip != b->divetrip)
+		return;
+
+	/* .. and if the surface interval is excessive, you must be kidding us */
+	if (b->when > a->when + a->duration.seconds + 30*60)
 		return;
 
 	/* If so, we can add a "merge dive" menu entry */
