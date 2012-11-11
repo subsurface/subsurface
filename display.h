@@ -21,16 +21,20 @@ extern void do_print(void);
 struct graphics_context {
 	int printer;
 	cairo_t *cr;
+	cairo_rectangle_t drawing_area;
 	double maxx, maxy;
 	double leftx, rightx;
 	double topy, bottomy;
+	unsigned int maxtime;
+	void *plot_info;
 };
 
 typedef enum { SC_SCREEN, SC_PRINT } scale_mode_t;
 
-extern void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct dive *dive, scale_mode_t scale);
+extern void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale);
 extern void init_profile_background(struct graphics_context *gc);
 extern void attach_tooltip(int x, int y, int w, int h, const char *text);
+extern void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize);
 
 struct options {
 	enum { PRETTY, TABLE, ONEPERPAGE } type;

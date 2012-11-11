@@ -1300,21 +1300,44 @@ void attach_tooltip(int x, int y, int w, int h, const char *text)
 				(_r.y <= _y) && (_r.y + _r.height >= _y))
 
 static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
-			gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data)
+			gboolean keyboard_mode, GtkTooltip *tooltip, struct graphics_context *gc)
 {
 	int i;
-	cairo_rectangle_t *drawing_area = user_data;
+	cairo_rectangle_t *drawing_area = &gc->drawing_area;
 	gint tx = x - drawing_area->x; /* get transformed coordinates */
 	gint ty = y - drawing_area->y;
+	gint width, height, time = -1;
+	char buffer[80], plot[80];
+	const char *event = "";
+
+	if (tx < 0 || ty < 0)
+		return FALSE;
+
+	width = drawing_area->width - 2*drawing_area->x;
+	height = drawing_area->height - 2*drawing_area->y;
+	if (width <= 0 || height <= 0)
+		return FALSE;
+
+	if (tx > width || ty > height)
+		return FALSE;
+
+	time = (tx * gc->maxtime) / width;
 
 	/* are we over an event marker ? */
 	for (i = 0; i < tooltips; i++) {
 		if (INSIDE_RECT(tooltip_rects[i].rect, tx, ty)) {
-			gtk_tooltip_set_text(tooltip,tooltip_rects[i].text);
-			return TRUE; /* show tooltip */
+			event = tooltip_rects[i].text;
+			break;
 		}
 	}
-	return FALSE; /* don't show tooltip */
+	get_plot_details(gc, time, plot, sizeof(plot));
+
+	snprintf(buffer, sizeof(buffer), " %d:%02d%c%s%c%s", time / 60, time % 60,
+		*plot ? '\n' : ' ', plot,
+		*event ? '\n' : ' ', event);
+	gtk_tooltip_set_text(tooltip, buffer);
+	return TRUE;
+
 }
 
 static int zoom_x = -1, zoom_y = -1;
@@ -1322,19 +1345,18 @@ static int zoom_x = -1, zoom_y = -1;
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
 	struct dive *dive = current_dive;
-	struct graphics_context gc = { .printer = 0 };
-	static cairo_rectangle_t drawing_area;
+	static struct graphics_context gc = { .printer = 0 };
 
 	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
 	 * so effective drawing area is width-2x * height-2y */
-	drawing_area.width = widget->allocation.width;
-	drawing_area.height = widget->allocation.height;
-	drawing_area.x = MIN(50,drawing_area.width / 20.0);
-	drawing_area.y = MIN(50,drawing_area.height / 20.0);
+	gc.drawing_area.width = widget->allocation.width;
+	gc.drawing_area.height = widget->allocation.height;
+	gc.drawing_area.x = MIN(50,gc.drawing_area.width / 20.0);
+	gc.drawing_area.y = MIN(50,gc.drawing_area.height / 20.0);
 
 	gc.cr = gdk_cairo_create(widget->window);
 	g_object_set(widget, "has-tooltip", TRUE, NULL);
-	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), &drawing_area);
+	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), &gc);
 	init_profile_background(&gc);
 	cairo_paint(gc.cr);
 
@@ -1349,7 +1371,7 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 			tooltip_rects = NULL;
 		}
 		tooltips = 0;
-		plot(&gc, &drawing_area, dive, SC_SCREEN);
+		plot(&gc, dive, SC_SCREEN);
 	}
 	cairo_destroy(gc.cr);
 

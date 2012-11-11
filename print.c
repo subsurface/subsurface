@@ -300,13 +300,13 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 static void show_dive_profile(struct dive *dive, cairo_t *cr, double w,
 	double h)
 {
-	cairo_rectangle_t drawing_area = { w/20.0, h/20.0, w, h};
 	struct graphics_context gc = {
 		.printer = 1,
-		.cr = cr
+		.cr = cr,
+		.drawing_area = { w/20.0, h/20.0, w, h},
 	};
 	cairo_save(cr);
-	plot(&gc, &drawing_area, dive, SC_PRINT);
+	plot(&gc, dive, SC_PRINT);
 	cairo_restore(cr);
 }
 

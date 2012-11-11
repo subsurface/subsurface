@@ -900,6 +900,8 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	maxtime = get_maxtime(pi);
 	maxdepth = get_maxdepth(pi);
 
+	gc->maxtime = maxtime;
+
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
 	 * We start out with 10 seconds and increment up to 30 minutes,
 	 * depending on the dive time.
@@ -1908,11 +1910,12 @@ static void plot_set_scale(scale_mode_t scale)
 	}
 }
 
-void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct dive *dive, scale_mode_t scale)
+void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 {
 	struct plot_info *pi;
 	static struct sample fake[4];
 	struct sample *sample = dive->sample;
+	cairo_rectangle_t *drawing_area = &gc->drawing_area;
 	int nr = dive->samples;
 
 	plot_set_scale(scale);
@@ -1994,5 +1997,41 @@ void plot(struct graphics_context *gc, cairo_rectangle_t *drawing_area, struct d
 
 	plot_depth_scale(gc, pi);
 
-	free(pi);
+	if (gc->printer) {
+		free(pi);
+	} else {
+		free(gc->plot_info);
+		gc->plot_info = pi;
+	}
+}
+
+static void plot_string(struct plot_data *entry, char *buf, size_t bufsize)
+{
+	int depth_decimals, pressure;
+	const char *depth_unit, *pressure_unit;
+	double depth;
+
+	depth = get_depth_units(entry->depth, &depth_decimals, &depth_unit);
+	pressure = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
+
+	snprintf(buf, bufsize, "%.*f %s\n%d %s",
+		depth_decimals, depth, depth_unit,
+		pressure, pressure_unit);
+}
+
+void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize)
+{
+	struct plot_info *pi = gc->plot_info;
+
+	*buf = 0;
+	if (pi) {
+		int i;
+		for (i = 0; i < pi->nr; i++) {
+			struct plot_data *entry = pi->entry + i;
+			if (entry->sec >= time) {
+				plot_string(entry, buf, bufsize);
+				break;
+			}
+		}
+	}
 }
