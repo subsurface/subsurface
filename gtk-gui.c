@@ -1381,7 +1381,7 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	switch (event->button) {
-	case 3:
+	case 1:
 		zoom_x = event->x;
 		zoom_y = event->y;
 		break;
@@ -1395,7 +1395,7 @@ gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	switch (event->button) {
-	case 3:
+	case 1:
 		zoom_x = zoom_y = -1;
 		break;
 	default:
