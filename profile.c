@@ -1727,6 +1727,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 			if (ev->time.seconds == sample->time.seconds - 1) {
 				entry->sec = ev->time.seconds - 1;
 				(entry+1)->sec = ev->time.seconds;
+			} else {
 				entry->sec = ev->time.seconds;
 				(entry+1)->sec = ev->time.seconds + 1;
 			}
