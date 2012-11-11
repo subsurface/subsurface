@@ -1706,7 +1706,8 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		int delay = 0;
 		struct sample *sample = dive_sample+i;
 
-		if (sample->time.seconds < dive->start || sample->time.seconds > dive->end) {
+		if ((dive->start > -1 && sample->time.seconds < dive->start) ||
+		    (dive->end > -1 && sample->time.seconds > dive->end)) {
 			pi_idx--;
 			continue;
 		}
