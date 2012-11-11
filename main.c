@@ -138,14 +138,12 @@ void report_dives(gboolean is_imported)
 		/* careful - we might free the dive that last points to. Oops... */
 		if (last == prev || last == dive)
 			last = merged;
-		free(prev);
-		free(dive);
-		*pp = merged;
-		dive_table.nr--;
-		memmove(pp+1, pp+2, sizeof(*pp)*(dive_table.nr - i));
 
 		/* Redo the new 'i'th dive */
 		i--;
+		add_single_dive(i, merged);
+		delete_single_dive(i+1);
+		delete_single_dive(i+1);
 	}
 
 	if (is_imported) {

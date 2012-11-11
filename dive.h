@@ -321,6 +321,9 @@ extern gboolean autogroup;
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 extern void remove_dive_from_trip(struct dive *);
 
+extern void delete_single_dive(int idx);
+extern void add_single_dive(int idx, struct dive *dive);
+
 extern void insert_trip(dive_trip_t **trip);
 
 /*

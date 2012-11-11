@@ -1919,7 +1919,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 
 /* this implements the mechanics of removing the dive from the table,
  * but doesn't deal with updating dive trips, etc */
-static void delete_single_dive(int idx)
+void delete_single_dive(int idx)
 {
 	int i;
 	struct dive *dive = get_dive(idx);
@@ -1932,6 +1932,17 @@ static void delete_single_dive(int idx)
 	if (dive->selected)
 		amount_selected--;
 	free(dive);
+}
+
+void add_single_dive(int idx, struct dive *dive)
+{
+	int i;
+	dive_table.nr++;
+	for (i = idx; i < dive_table.nr ; i++) {
+		struct dive *tmp = dive_table.dives[i];
+		dive_table.dives[i] = dive;
+		dive = tmp;
+	}
 }
 
 /* remember expanded state */
@@ -2070,6 +2081,58 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	mark_divelist_changed(TRUE);
 }
 
+static void merge_dive_index(int i, struct dive *a)
+{
+	struct dive *b = get_dive(i+1);
+	struct dive *res;
+
+	res = merge_dives(a, b, b->when - a->when);
+	if (!res)
+		return;
+
+	add_single_dive(i, res);
+	delete_single_dive(i+1);
+	delete_single_dive(i+1);
+
+	dive_list_update_dives();
+	restore_tree_state();
+	mark_divelist_changed(TRUE);
+}
+
+static void merge_dives_cb(GtkWidget *menuitem, void *unused)
+{
+	int i;
+	struct dive *dive;
+
+	for_each_dive(i, dive) {
+		if (dive->selected) {
+			merge_dive_index(i, dive);
+			return;
+		}
+	}
+}
+
+/* Called if there are exactly two selected dives and the dive at idx is one of them */
+static void add_dive_merge_label(int idx, GtkMenuShell *menu)
+{
+	struct dive *d;
+	GtkWidget *menuitem;
+
+	/* The other selected dive must be next to it.. */
+	if (!((d = get_dive(idx-1)) && d->selected) &&
+	    !((d = get_dive(idx+1)) && d->selected))
+		return;
+
+	/* .. and they had better be in the same dive trip */
+	if (d->divetrip != get_dive(idx)->divetrip)
+		return;
+
+	/* If so, we can add a "merge dive" menu entry */
+	menuitem = gtk_menu_item_new_with_label(_("Merge dives"));
+	g_signal_connect(menuitem, "activate", G_CALLBACK(merge_dives_cb), NULL);
+	gtk_menu_shell_append(menu, menuitem);
+}
+
 static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int button, GdkEventButton *event)
 {
 	GtkWidget *menu, *menuitem, *image;
@@ -2142,6 +2205,10 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_selected_dives_cb), NULL);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+			/* Two contiguous selected dives? */
+			if (amount_selected == 2)
+				add_dive_merge_label(idx, GTK_MENU_SHELL(menu));
 		} else {
 			deletelabel = _(deletesinglelabel);
 			menuitem = gtk_menu_item_new_with_label(deletelabel);

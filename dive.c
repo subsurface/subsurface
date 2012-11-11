@@ -811,15 +811,13 @@ static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
  * The 'next' dive is not involved in the dive merging, but is the dive
  * that will be the next dive after the merged dive.
  */
-static void pick_and_delete_trip(struct dive *res, struct dive *pick, struct dive *remove)
+static void pick_trip(struct dive *res, struct dive *pick)
 {
 	tripflag_t tripflag = pick->tripflag;
 	dive_trip_t *trip = pick->divetrip;
 
 	res->tripflag = tripflag;
 	add_dive_to_trip(res, trip);
-	remove_dive_from_trip(pick);
-	remove_dive_from_trip(remove);
 }
 
 /*
@@ -860,10 +858,9 @@ static void merge_trip(struct dive *res, struct dive *a, struct dive *b)
 	goto pick_b;
 
 pick_a:
-	pick_and_delete_trip(res, a, b);
-	return;
+	b = a;
 pick_b:
-	pick_and_delete_trip(res, b, a);
+	pick_trip(res, b);
 }
 
 /*
