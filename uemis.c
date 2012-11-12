@@ -75,25 +75,6 @@ void decode( uint8_t *inbuf, uint8_t *outbuf, int inbuf_len ) {
 /* end code from Bob Trower */
 
 /*
- * pressure_to_depth: In centibar. And when converting to
- * depth, I'm just going to always use saltwater, because I
- * think "true depth" is just stupid. From a diving standpoint,
- * "true depth" is pretty much completely pointless, unless
- * you're doing some kind of underwater surveying work.
- *
- * So I give water depths in "pressure depth", always assuming
- * salt water. So one atmosphere per 10m.
- */
-static int pressure_to_depth(uint16_t value)
-{
-	double atm, cm;
-
-	atm = bar_to_atm(value / 100.0);
-	cm = 100 * atm + 0.5;
-	return (cm > 0) ? 10 * (long)cm : 0;
-}
-
-/*
  * convert the base64 data blog
  */
 int uemis_convert_base64(char *base64, uint8_t **data) {
@@ -212,7 +193,12 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	datalen = uemis_convert_base64(base64, &data);
 
 	dive->airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + 273150;
-	dive->surface_pressure.mbar = *(uint16_t *)(data +43);
+	dive->surface_pressure.mbar = *(uint16_t *)(data + 43);
+	if (*(uint8_t *)(data + 19))
+		dive->salinity = 10300; /* avg grams per 10l sea water */
+	else
+		dive->salinity = 10000; /* grams per 10l fresh water */
+
 	/* dive template in use:
 	   0 = air
 	   1 = nitrox (B)
@@ -253,7 +239,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		sample = prepare_sample(divep);
 		dive = *divep; /* prepare_sample might realloc the dive */
 		sample->time.seconds = u_sample->dive_time;
-		sample->depth.mm = pressure_to_depth(u_sample->water_pressure);
+		sample->depth.mm = rel_mbar_to_depth(u_sample->water_pressure, dive);
 		sample->temperature.mkelvin = (u_sample->dive_temperature * 100) + 273150;
 		sample->cylinderindex = u_sample->active_tank;
 		sample->cylinderpressure.mbar =

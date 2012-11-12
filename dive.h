@@ -298,6 +298,21 @@ static inline int depth_to_mbar(int depth, struct dive *dive)
 	return depth / 10.0 * specific_weight + surface_pressure + 0.5;
 }
 
+/* for the inverse calculation we use just the relative pressure
+ * (that's the one that some dive computers like the Uemis Zurich
+ * provide - for the other models that do this libdivecomputer has to
+ * take care of this, but the Uemis we support natively */
+static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
+{
+	int cm;
+	double specific_weight = 1.03 * 0.981;
+	if (dive->salinity)
+		specific_weight = dive->salinity / 10000.0 * 0.981;
+	/* whole mbar gives us cm precision */
+	cm = mbar / specific_weight + 0.5;
+	return cm * 10;
+}
+
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
 /* this is a global spot for a temporary dive structure that we use to
