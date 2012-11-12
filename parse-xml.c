@@ -308,6 +308,20 @@ static void pressure(char *buffer, void *_press)
 	free(buffer);
 }
 
+static void salinity(char *buffer, void *_salinity)
+{
+	int *salinity = _salinity;
+	union int_or_float val;
+	switch (integer_or_float(buffer, &val)) {
+	case FLOAT:
+		*salinity = val.fp * 10.0 + 0.5;
+		break;
+	default:
+		printf("Strange salinity reading %s\n", buffer);
+	}
+	free(buffer);
+}
+
 static void depth(char *buffer, void *_depth)
 {
 	depth_t *depth = _depth;
@@ -1105,6 +1119,10 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 	if (MATCH(".temperature.air", temperature, &dive->airtemp))
 		return;
 	if (MATCH(".temperature.water", temperature, &dive->watertemp))
+		return;
+	if (MATCH(".surface.pressure", pressure, &dive->surface_pressure))
+		return;
+	if (MATCH(".water.salinity", salinity, &dive->salinity))
 		return;
 	if (MATCH(".cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;

@@ -57,6 +57,11 @@ static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const c
 		show_milli(f, pre, pressure.mbar, " bar", post);
 }
 
+static void show_salinity(FILE *f, int salinity, const char *pre, const char *post)
+{
+	if (salinity)
+		fprintf(f, "%s%.1f kg/l%s", pre, salinity / 10.0, post);
+}
 /*
  * We're outputting utf8 in xml.
  * We need to quote the characters <, >, &.
@@ -154,6 +159,25 @@ static void save_temperatures(FILE *f, struct dive *dive)
 	fputs(" />\n", f);
 }
 
+static void save_airpressure(FILE *f, struct dive *dive)
+{
+	if (!dive->surface_pressure.mbar)
+		return;
+	fputs("  <surface", f);
+	show_pressure(f, dive->surface_pressure, " pressure='", "'");
+	fputs(" />\n", f);
+}
+
+static void save_salinity(FILE *f, struct dive *dive)
+{
+	if (!dive->salinity)
+		return;
+	fputs("  <water ", f);
+	show_salinity(f, dive->salinity, " salinity='", "'");
+	fputs(" />\n", f);
+}
+
+
 static void show_location(FILE *f, struct dive *dive)
 {
 	char buffer[80];
@@ -185,6 +209,8 @@ static void save_overview(FILE *f, struct dive *dive)
 {
 	save_depths(f, dive);
 	save_temperatures(f, dive);
+	save_airpressure(f, dive);
+	save_salinity(f, dive);
 	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_location(f, dive);
 	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n", 0);
