@@ -1340,6 +1340,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 
 }
 
+static double zoom_factor = 1.0;
 static int zoom_x = -1, zoom_y = -1;
 
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
@@ -1360,9 +1361,10 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	init_profile_background(&gc);
 	cairo_paint(gc.cr);
 
-	if (zoom_x >= 0) {
-		cairo_translate(gc.cr, -1.5*zoom_x, -1.5*zoom_y);
-		cairo_scale(gc.cr, 2.5, 2.5);
+	if (zoom_factor > 1.0) {
+		double n = -(zoom_factor-1);
+		cairo_translate(gc.cr, n*zoom_x, n*zoom_y);
+		cairo_scale(gc.cr, zoom_factor, zoom_factor);
 	}
 
 	if (dive) {
@@ -1378,12 +1380,41 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	return FALSE;
 }
 
+static void zoom_event(int x, int y, double inc)
+{
+	zoom_x = x;
+	zoom_y = y;
+	inc += zoom_factor;
+	if (inc < 1.0)
+		inc = 1.0;
+	else if (inc > 10)
+		inc = 10;
+	zoom_factor = inc;
+}
+
+gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
+{
+	switch (event->direction) {
+	case GDK_SCROLL_UP:
+		zoom_event(event->x, event->y, 0.1);
+		break;
+	case GDK_SCROLL_DOWN:
+		zoom_event(event->x, event->y, -0.1);
+		break;
+	default:
+		return TRUE;
+	}
+	gtk_widget_queue_draw(widget);
+	return TRUE;
+}
+
 gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	switch (event->button) {
 	case 1:
 		zoom_x = event->x;
 		zoom_y = event->y;
+		zoom_factor = 2.5;
 		break;
 	default:
 		return TRUE;
@@ -1397,6 +1428,7 @@ gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 	switch (event->button) {
 	case 1:
 		zoom_x = zoom_y = -1;
+		zoom_factor = 1.0;
 		break;
 	default:
 		return TRUE;
@@ -1424,9 +1456,10 @@ GtkWidget *dive_profile_widget(void)
 	gtk_widget_set_size_request(da, 350, 250);
 	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
 	g_signal_connect(da, "button-press-event", G_CALLBACK(clicked), NULL);
+	g_signal_connect(da, "scroll-event", G_CALLBACK(scroll_event), NULL);
 	g_signal_connect(da, "button-release-event", G_CALLBACK(released), NULL);
 	g_signal_connect(da, "motion-notify-event", G_CALLBACK(motion), NULL);
-	gtk_widget_add_events(da, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
+	gtk_widget_add_events(da, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK);
 
 	return da;
 }
