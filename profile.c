@@ -33,8 +33,9 @@ struct plot_info {
 	int nr;
 	int maxtime;
 	int meandepth, maxdepth;
-	int maxpressure;
-	int mintemp, maxtemp;
+	int endpressure, maxpressure;
+	int mintemp, maxtemp, endtemp;
+	double endtempcoord;
 	struct plot_data {
 		unsigned int same_cylinder:1;
 		unsigned int cylinderindex;
@@ -1050,16 +1051,16 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 	/* Show temperatures in roughly the lower third, but make sure the scale
 	   is at least somewhat reasonable */
 	delta = maxtemp - mintemp;
-	if (delta > 3000) /* more than 3K in fluctuation */
-		gc->topy = maxtemp + delta*2;
-	else
-		gc->topy = maxtemp + 1500 + delta*2;
+	if (delta < 3000) /* less than 3K in fluctuation */
+		delta = 3000;
+	gc->topy = maxtemp + delta*2;
 
 	if (GRAPHS_ENABLED)
 		gc->bottomy = mintemp - delta * 2;
 	else
-		gc->bottomy = mintemp - delta / 2;
+		gc->bottomy = mintemp - delta / 3;
 
+	pi->endtempcoord = SCALEY(gc, pi->endtemp);
 	return maxtemp > mintemp;
 }
 
@@ -1151,7 +1152,13 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	else
 		gc->bottomy = 0;
 	gc->topy = pi->maxpressure * 1.5;
-	return pi->maxpressure != 0;
+	if (!pi->maxpressure)
+		return FALSE;
+
+	while (pi->endtempcoord <= SCALEY(gc, pi->endpressure - (gc->topy) * 0.1))
+		gc->bottomy -=  gc->topy * 0.1;
+
+	return TRUE;
 }
 
 /* set the color for the pressure plot according to temporary sac rate
@@ -1395,6 +1402,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 		if (pressure) {
 			if (pressure > pi->maxpressure)
 				pi->maxpressure = pressure;
+			pi->endpressure = pressure;
 		}
 
 		if (temperature) {
@@ -1402,6 +1410,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 				pi->mintemp = temperature;
 			if (temperature > pi->maxtemp)
 				pi->maxtemp = temperature;
+			pi->endtemp = temperature;
 		}
 	}
 
