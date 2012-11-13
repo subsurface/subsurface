@@ -540,7 +540,11 @@ static void add_index(int idx, int margin, int **ap, int **a2p, int value)
 		i++;
 	if (a[i] == idx)
 		return;
-	if (a[i] != -1 && a[i - 1] != -1 && idx - a[i - 1] < margin)
+	/* already have a POI to the left with the same vertical positiom and too close */
+	if ((i > 0 && a[i - 1] != -1 && a2[i - 1] == value && idx - a[i - 1] < margin))
+		return;
+	/* already have a POI to the right with the same vertical positiom and too close */
+	if (a[i] != -1 && a2[i] == value && a[i] - idx < margin)
 		return;
 	if (a[i] != -1 && a[i] - idx < margin)
 		return;
@@ -615,12 +619,18 @@ static void calculate_spikyness(int nr, double *data, double *spk_data, int delt
 static gboolean higher_spike(double *spk_data, int idx, int nr, int deltax)
 {
 	int i;
-	double s = fabs(spk_data[idx]);
-	for (i = MAX(0, idx - deltax); i <= MIN(idx + deltax, nr - 1); i++)
-		if (fabs(spk_data[i]) > s)
+	double s = spk_data[idx];
+	for (i = MAX(0, idx - deltax); i <= MIN(idx + deltax, nr - 1); i++) {
+		if (s > 0) {
+			if (spk_data[i] > s)
+				return TRUE;
+		} else {
+			if (spk_data[i] < s)
+				return TRUE;
+		}
+		if (spk_data[i] == s && i < idx)
 			return TRUE;
-		else if (fabs(spk_data[i]) == s && i < idx)
-			return TRUE;
+	}
 	return FALSE;
 }
 
