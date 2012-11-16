@@ -191,7 +191,7 @@ static void show_table_header(cairo_t *cr, double w, double h,
 			curwidth = curwidth + colwidth;
 		}
 		pango_layout_set_text(layout, _(headers[i]), -1);
-		pango_layout_set_justify(layout, 1);
+		pango_layout_set_justify(layout, 0);
 		pango_cairo_show_layout(cr, layout);
 	}
 
@@ -230,7 +230,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 		snprintf(divenr, sizeof(divenr), "#%d", dive->number);
 	pango_layout_set_width(layout, colwidth/ (double) 2);
 	pango_layout_set_text(layout, divenr, -1);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
 
@@ -247,7 +247,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 		);
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_text(layout, buffer, len);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + colwidth;
 
@@ -258,7 +258,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_width(layout, colwidth/ (double) 2);
 	pango_layout_set_text(layout, buffer, len);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
 
@@ -268,7 +268,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_width(layout, colwidth/ (double) 2);
 	pango_layout_set_text(layout, buffer, len);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
 
@@ -276,14 +276,14 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_width(layout, colwidth);
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_text(layout, dive->divemaster ? : " ", -1);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + colwidth;
 
 	// Col 6: Buddy
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_text(layout, dive->buddy ? : " ", -1);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + colwidth;
 
@@ -291,7 +291,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_width(layout, maxwidth - curwidth);
 	pango_layout_set_text(layout, dive->location ? : " ", -1);
-	pango_layout_set_justify(layout, 1);
+	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 
 	g_object_unref(layout);
@@ -367,6 +367,8 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 	double w, double h, PangoFontDescription *font)
 {
 	struct dive *dive;
+	double maxwidth, curwidth;
+	int i;
 
 	dive = get_dive_for_printing(divenr);
 	if (!dive)
@@ -374,10 +376,25 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 	cairo_save(cr);
 
 	/*Create a frame for each print x,y are provided in draw_page()*/
-	cairo_rectangle(cr, x, y, w, h);
+	maxwidth = w * 0.90;
+	curwidth = w * 0.045;
+	cairo_rectangle(cr, curwidth, y, maxwidth, h);
 	cairo_set_line_width(cr, 0.01);
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
 	cairo_stroke(cr);
+	for (i = 0; i < 6; i++) {
+		if (i == 0 || i == 2 || i == 3 ){
+			// Column 0, 2 and 3 (Dive #, Depth and Time) get 1/2 width
+			curwidth = curwidth + (maxwidth/7/2);
+		} else {
+			curwidth = curwidth + (maxwidth/7);
+		}
+		cairo_move_to(cr, curwidth, y);
+		cairo_line_to(cr, curwidth, y + h);
+		cairo_set_line_width (cr, 0.01);
+		cairo_stroke(cr);
+	}
+
 	cairo_translate(cr, x, y);
 
 	/* Plus 5% on all sides */
