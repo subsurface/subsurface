@@ -2032,6 +2032,8 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		dive = get_dive(i);
 		if (!dive)
 			continue;
+		if (!dive->selected)
+			continue;
 		/* now remove the dive from the table and free it. also move the iterator back,
 		 * so that we don't skip a dive */
 		delete_single_dive(i);
