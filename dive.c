@@ -606,6 +606,29 @@ static struct dive *add_sample(struct sample *sample, int time, struct dive *div
 }
 
 /*
+ * This is like add_sample(), but if the distance from the last sample
+ * is excessive, we add two surface samples in between.
+ *
+ * This is so that if you merge two non-overlapping dives, we make sure
+ * that the time in between the dives is at the surface, not some "last
+ * sample that happened to be at a depth of 1.2m".
+ */
+static struct dive *merge_one_sample(struct sample *sample, int time, struct dive *dive)
+{
+	int last = dive->samples-1;
+	if (last >= 0) {
+		static struct sample surface;
+		int last_time = dive->sample[last].time.seconds;
+		if (time > last_time + 60) {
+			dive = add_sample(&surface, last_time+20, dive);
+			dive = add_sample(&surface, time - 20, dive);
+		}
+	}
+	return add_sample(sample, time, dive);
+}
+
+
+/*
  * Merge samples. Dive 'a' is "offset" seconds before Dive 'b'
  */
 static struct dive *merge_samples(struct dive *res, struct dive *a, struct dive *b, int offset)
@@ -647,7 +670,7 @@ static struct dive *merge_samples(struct dive *res, struct dive *a, struct dive 
 		/* Only samples from a? */
 		if (bt < 0) {
 add_sample_a:
-			res = add_sample(as, at, res);
+			res = merge_one_sample(as, at, res);
 			as++;
 			asamples--;
 			continue;
@@ -656,7 +679,7 @@ add_sample_a:
 		/* Only samples from b? */
 		if (at < 0) {
 add_sample_b:
-			res = add_sample(bs, bt, res);
+			res = merge_one_sample(bs, bt, res);
 			bs++;
 			bsamples--;
 			continue;
@@ -678,7 +701,7 @@ add_sample_b:
 		if (as->cylinderindex)
 			sample.cylinderindex = as->cylinderindex;
 
-		res = add_sample(&sample, at, res);
+		res = merge_one_sample(&sample, at, res);
 
 		as++;
 		bs++;
