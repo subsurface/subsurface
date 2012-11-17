@@ -316,6 +316,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	dive->downloaded = TRUE;
 	record_dive(dive);
+	mark_divelist_changed(TRUE);
 	return 1;
 }
 
