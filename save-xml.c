@@ -193,8 +193,14 @@ static void show_location(FILE *f, struct dive *dive)
 	 */
 	if (latitude || longitude) {
 		int len = snprintf(buffer, sizeof(buffer)-4,
-			"  <location gps='%.12g %.12g'>",
-			latitude, longitude);
+			"  <location gps=");
+		char *buf = buffer + len;
+
+		len = strlen(g_ascii_formatd(buf, 80, "'%.12g ", latitude));
+		buf += len;
+		len = strlen(g_ascii_formatd(buf, 80, "%.12g'>", longitude));
+		buf += len;
+		len = buf - buffer;
 		if (!dive->location) {
 			memcpy(&buffer[len-1], "/>\n", 4);
 			fputs(buffer, f);

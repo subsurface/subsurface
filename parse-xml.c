@@ -1045,15 +1045,11 @@ static int uddf_dive_match(struct dive **divep, const char *name, int len, char 
 
 static void gps_location(char *buffer, void *_dive)
 {
-	int i;
+	char *end;
 	struct dive *dive = _dive;
-	double latitude, longitude;
 
-	i = sscanf(buffer, "%lf %lf", &latitude, &longitude);
-	if (i == 2) {
-		dive->latitude = latitude;
-		dive->longitude = longitude;
-	}
+	dive->latitude = g_ascii_strtod(buffer, &end);
+	dive->longitude = g_ascii_strtod(end, &end);
 	free(buffer);
 }
 
