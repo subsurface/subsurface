@@ -1688,6 +1688,7 @@ static GError *setup_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG
 		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);
 #endif
+		mark_divelist_changed(TRUE);
 	}
 	return error;
 }
