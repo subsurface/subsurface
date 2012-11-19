@@ -1678,7 +1678,7 @@ static GError *setup_uemis_import(device_data_t *data)
 	GError *error = NULL;
 	char *buf = NULL;
 
-	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress, data->force_download);
+	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress, data->dialog, data->force_download);
 	if (buf && strlen(buf) > 1) {
 #if UEMIS_DEBUG > 3
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
@@ -1742,7 +1742,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		NULL);
 	g_signal_connect(dialog, "delete-event", G_CALLBACK(download_dialog_delete), NULL);
 
@@ -1819,6 +1819,7 @@ repeat:
 			while (*(--ne) == ' ' || *ne == '\t')
 				*ne = '\0';
 		devicedata.devname = ns;
+		devicedata.dialog = GTK_DIALOG(dialog);
 		devicedata.force_download = force_download;
 		force_download = FALSE; /* when retrying we don't want to restart */
 		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));

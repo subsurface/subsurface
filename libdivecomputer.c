@@ -423,21 +423,55 @@ static void *pthread_wrapper(void *_data)
 	return (void *)err_string;
 }
 
+/* this simply ends the dialog without a response and asks not to be fired again
+ * as we set this function up in every loop while uemis_download is waiting for
+ * the download to finish */
+static gboolean timeout_func(gpointer _data)
+{
+	GtkDialog *dialog = _data;
+	if (!import_thread_cancelled)
+		gtk_dialog_response(dialog, GTK_RESPONSE_NONE);
+	return FALSE;
+}
+
 GError *do_import(device_data_t *data)
 {
 	pthread_t pthread;
 	void *retval;
+	GtkDialog *dialog = data->dialog;
 
 	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
 	import_thread_done = 0;
 	progress_bar_text = "";
 	progress_bar_fraction = 0.0;
 	pthread_create(&pthread, NULL, pthread_wrapper, data);
+	/* loop here until the import is done or was cancelled by the user;
+	 * in order to get control back from gtk we register a timeout function
+	 * that ends the dialog with no response every 100ms; we then update the
+	 * progressbar and setup the timeout again - unless of course the user
+	 * pressed cancel, in which case we just wait for the download thread
+	 * to react to that and exit */
 	while (!import_thread_done) {
-		import_thread_cancelled = process_ui_events();
-		update_progressbar(&data->progress, progress_bar_fraction);
-		update_progressbar_text(&data->progress, progress_bar_text);
-		usleep(100000);
+		if (!import_thread_cancelled) {
+			int result;
+			g_timeout_add(100, timeout_func, dialog);
+			update_progressbar(&data->progress, progress_bar_fraction);
+			update_progressbar_text(&data->progress, progress_bar_text);
+			result = gtk_dialog_run(dialog);
+			switch (result) {
+			case GTK_RESPONSE_CANCEL:
+				import_thread_cancelled = TRUE;
+				progress_bar_text = "Cancelled...";
+				break;
+			default:
+				/* nothing */
+				break;
+			}
+		} else {
+			update_progressbar(&data->progress, progress_bar_fraction);
+			update_progressbar_text(&data->progress, progress_bar_text);
+			usleep(100000);
+		}
 	}
 	if (pthread_join(pthread, &retval) < 0)
 		retval = _("Odd pthread error return");

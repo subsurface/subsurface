@@ -18,6 +18,7 @@ typedef struct device_data_t {
 	progressbar_t progress;
 	int preexisting;
 	gboolean force_download;
+	GtkDialog *dialog;
 } device_data_t;
 
 extern GError *do_import(device_data_t *data);

@@ -510,6 +510,8 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	mbuf = NULL;
 	mbuf_size = 0;
 	while (searching || assembling_mbuf) {
+		if (import_thread_cancelled)
+			return FALSE;
 		progress_bar_fraction = filenr / 4000.0;
 		snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
 		ans_path = g_build_filename(path, "ANS", fl, NULL);
@@ -519,7 +521,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 #if UEMIS_DEBUG > 3
 		tmp[100]='\0';
 		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
-#elsif UEMIS_DEBUG > 1
+#elif UEMIS_DEBUG > 1
 		char pbuf[4];
 		pbuf[0] = tmp[0];
 		pbuf[1] = tmp[1];
@@ -816,6 +818,9 @@ static char *do_uemis_download(struct argument_block *args)
 	uemis_info("Start download");
 	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &result))
 		goto bail;
+	/* before starting the long download, check if user pressed cancel */
+	if (import_thread_cancelled)
+		goto bail;
 	param_buff[1] = "notempty";
 	/* if we have an empty divelist then the user will almost
 	 * certainly want to start downloading from the first dive on
@@ -841,6 +846,9 @@ static char *do_uemis_download(struct argument_block *args)
 		/* if we got an error, deal with it */
 		if (!success)
 			break;
+		/* if the user clicked cancel, exit gracefully but ignore everything read */
+		if (import_thread_cancelled)
+			goto bail;
 		/* also, if we got nothing back, we should stop trying */
 		if (!param_buff[3])
 			break;
@@ -871,22 +879,24 @@ static char *do_uemis_download(struct argument_block *args)
 			buffer_insert(xml_buffer, &xml_buffer_size, next_detail);
 			free(next_detail);
 		}
-		if (!success)
+		if (!success || import_thread_cancelled)
 			break;
 	}
-	if (! uemis_get_answer(mountpath, "terminateSync", 0, 3, &result))
-		goto bail;
+bail:
+	(void) uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 	if (! strcmp(param_buff[0], "error")) {
 		if (! strcmp(param_buff[2],"Out of Memory"))
 			result = _(ERR_FS_FULL);
 		else
 			result = param_buff[2];
 	}
-	buffer_add(xml_buffer, &xml_buffer_size, "</list></dives>");
+	if (import_thread_cancelled)
+		xml_buffer[0] = 0;
+	else
+		buffer_add(xml_buffer, &xml_buffer_size, "</list></dives>");
 #if UEMIS_DEBUG > 5
 	fprintf(debugfile, "XML buffer \"%s\"", *xml_buffer);
 #endif
-bail:
 	free(deviceid);
 	return result;
 }
@@ -899,8 +909,19 @@ static void *pthread_wrapper(void *_data)
 	return (void *)err_string;
 }
 
+/* this simply ends the dialog without a response and asks not to be fired again
+ * as we set this function up in every loop while uemis_download is waiting for
+ * the download to finish */
+static gboolean timeout_func(gpointer _data)
+{
+	GtkDialog *dialog = _data;
+	if (!import_thread_cancelled)
+		gtk_dialog_response(dialog, GTK_RESPONSE_NONE);
+	return FALSE;
+}
+
 GError *uemis_download(const char *mountpath, char **max_dive_data, char **xml_buffer, progressbar_t *progress,
-			gboolean force_download)
+			GtkDialog *dialog, gboolean force_download)
 {
 	pthread_t pthread;
 	void *retval;
@@ -911,11 +932,33 @@ GError *uemis_download(const char *mountpath, char **max_dive_data, char **xml_b
 	progress_bar_text = "";
 	progress_bar_fraction = 0.0;
 	pthread_create(&pthread, NULL, pthread_wrapper, &args);
+	/* loop here until the import is done or was cancelled by the user;
+	 * in order to get control back from gtk we register a timeout function
+	 * that ends the dialog with no response every 100ms; we then update the
+	 * progressbar and setup the timeout again - unless of course the user
+	 * pressed cancel, in which case we just wait for the download thread
+	 * to react to that and exit */
 	while (!import_thread_done) {
-		import_thread_cancelled = process_ui_events();
-		update_progressbar(args.progress, progress_bar_fraction);
-		update_progressbar_text(args.progress, progress_bar_text);
-		usleep(100000);
+		if (!import_thread_cancelled) {
+			int result;
+			g_timeout_add(100, timeout_func, dialog);
+			update_progressbar(args.progress, progress_bar_fraction);
+			update_progressbar_text(args.progress, progress_bar_text);
+			result = gtk_dialog_run(dialog);
+			switch (result) {
+			case GTK_RESPONSE_CANCEL:
+				import_thread_cancelled = TRUE;
+				progress_bar_text = "Cancelled...";
+				break;
+			default:
+				/* nothing */
+				break;
+			}
+		} else {
+			update_progressbar(args.progress, progress_bar_fraction);
+			update_progressbar_text(args.progress, progress_bar_text);
+			usleep(100000);
+		}
 	}
 	if (pthread_join(pthread, &retval) < 0)
 		return error("Pthread return with error");

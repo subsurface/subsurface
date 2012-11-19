@@ -114,6 +114,6 @@ extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, cons
 		data_func_t data_func, unsigned int flags);
 
 GError *uemis_download(const char *path, char **divenr, char **xml_buffer,
-			progressbar_t *progress, gboolean force_download);
+			progressbar_t *progress, GtkDialog *dialog, gboolean force_download);
 
 #endif
