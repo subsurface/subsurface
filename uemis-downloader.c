@@ -30,7 +30,10 @@
 #define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
-#define UEMIS_TIMEOUT 100000
+#define UEMIS_TIMEOUT 50000		/* 50ms */
+#define UEMIS_LONG_TIMEOUT 500000	/* 500ms */
+#define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
+
 static char *param_buff[NUM_PARAM_BUFS];
 static char *reqtxt_path;
 static int reqtxt_file;
@@ -452,6 +455,13 @@ static void show_progress(char *buf)
 	}
 }
 
+static void uemis_increased_timeout(int *timeout)
+{
+	if (*timeout < UEMIS_MAX_TIMEOUT)
+		*timeout += UEMIS_LONG_TIMEOUT;
+	usleep(*timeout);
+}
+
 /* send a request to the dive computer and collect the answer */
 static gboolean uemis_get_answer(const char *path, char *request, int n_param_in,
 			int n_param_out, char **error_text)
@@ -468,6 +478,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	gboolean answer_in_mbuf = FALSE;
 	char *ans_path;
 	int ans_file;
+	int timeout = UEMIS_LONG_TIMEOUT;
 
 	reqtxt_file = g_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 	snprintf(sb, BUFLEN, "n%04d12345678", filenr);
@@ -494,7 +505,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		more_files = FALSE;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
-	usleep(UEMIS_TIMEOUT);
+	usleep(timeout);
 	mbuf = NULL;
 	mbuf_size = 0;
 	while (searching || assembling_mbuf) {
@@ -542,7 +553,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 			}
 			reqtxt_file = g_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 			trigger_response(reqtxt_file, "r", filenr, file_length);
-			usleep(UEMIS_TIMEOUT);
+			uemis_increased_timeout(&timeout);
 		}
 		if (ismulti && more_files && tmp[0] == '1') {
 			int size;
@@ -561,6 +572,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				param_buff[3]++;
 			}
 			close(ans_file);
+			timeout = UEMIS_TIMEOUT;
 			usleep(UEMIS_TIMEOUT);
 		}
 	}
