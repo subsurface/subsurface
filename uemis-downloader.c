@@ -109,19 +109,23 @@ static gboolean uemis_init(const char *path)
 	/* let's check if this is indeed a Uemis DC */
 	reqtxt_path = g_build_filename(path, "/req.txt", NULL);
 	reqtxt_file = g_open(reqtxt_path, O_RDONLY, 0666);
-	if (!reqtxt_file)
+	if (!reqtxt_file) {
+#if UEMIS_DEBUG
+		fprintf(debugfile, ":EE req.txt can't be opened\n");
+#endif
 		return FALSE;
+	}
 	if (bytes_available(reqtxt_file) > 5) {
 		char tmp[6];
 		read(reqtxt_file, tmp, 5);
 		tmp[5] = '\0';
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG > 1
 		fprintf(debugfile, "::r req.txt \"%s\"\n", tmp);
 #endif
 		if (sscanf(tmp + 1, "%d", &filenr) != 1)
 			return FALSE;
 	}
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG > 1
 	else {
 		fprintf(debugfile, "::r req.txt skipped as there were fewer than 5 bytes\n");
 	}
@@ -166,7 +170,7 @@ static void trigger_response(int file, char *command, int nr, long tailpos)
 
 	snprintf(fl, 8, "%s%04d", command, nr);
 #if UEMIS_DEBUG > 2
-	fprintf(debugfile,"::: %s (after seeks)\n", fl);
+	fprintf(debugfile,":tr %s (after seeks)\n", fl);
 #endif
 	lseek(file, 0, SEEK_SET);
 	write(file, fl, strlen(fl));
@@ -503,6 +507,13 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 #if UEMIS_DEBUG > 3
 		tmp[100]='\0';
 		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
+#elsif UEMIS_DEBUG > 1
+		char pbuf[4];
+		pbuf[0] = tmp[0];
+		pbuf[1] = tmp[1];
+		pbuf[2] = tmp[2];
+		pbuf[3] = 0;
+		fprintf(debugfile, "::t %s \"%s...\"\n", ans_path, pbuf);
 #endif
 		g_free(ans_path);
 		if (tmp[0] == '1') {
@@ -567,7 +578,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				lseek(ans_file, 3, SEEK_CUR);
 				read(ans_file, buf, size - 3);
 				buf[size - 3] = '\0';
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG > 3
 				fprintf(debugfile, "::r %s \"%s\"\n", ans_path, buf);
 #endif
 			}
@@ -577,7 +588,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		} else {
 			ismulti = FALSE;
 		}
-#if UEMIS_DEBUG > 1
+#if UEMIS_DEBUG > 3
 		fprintf(debugfile,":r: %s\n", buf);
 #endif
 		if (!answer_in_mbuf)
@@ -688,7 +699,7 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 		buffer_add(&conv_buffer, &conv_buffer_size, "</dive>\n");
 	}
 	free(buf);
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG > 3
 	fprintf(debugfile,"converted to \"%s\"\n", conv_buffer);
 #endif
 	return strdup(conv_buffer);
@@ -833,7 +844,7 @@ static char *do_uemis_download(struct argument_block *args)
 	*args->max_dive_data = update_max_dive_data(*max_dive_data, deviceid, newmax);
 	if (sscanf(newmax, "%d", &end) != 1)
 		end = start;
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG > 1
 	fprintf(debugfile, "done: read from object_id %d to %d\n", start, end);
 #endif
 	free(newmax);

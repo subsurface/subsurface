@@ -1680,12 +1680,12 @@ static GError *setup_uemis_import(device_data_t *data)
 
 	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress, data->force_download);
 	if (buf && strlen(buf) > 1) {
-#ifdef DEBUGFILE
+#if UEMIS_DEBUG > 3
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
 #endif
 		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
 		set_uemis_last_dive(uemis_max_dive_data);
-#if UEMIS_DEBUG
+#if UEMIS_DEBUG > 2
 		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);
 #endif
 		mark_divelist_changed(TRUE);
