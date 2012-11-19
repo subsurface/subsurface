@@ -128,11 +128,12 @@ static gboolean uemis_init(const char *path)
 		if (sscanf(tmp + 1, "%d", &filenr) != 1)
 			return FALSE;
 	}
-#if UEMIS_DEBUG > 1
 	else {
+		filenr = 0;
+#if UEMIS_DEBUG > 1
 		fprintf(debugfile, "::r req.txt skipped as there were fewer than 5 bytes\n");
-	}
 #endif
+	}
 	close (reqtxt_file);
 
 	/* It would be nice if we could simply go back to the first set of
