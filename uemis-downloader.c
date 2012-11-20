@@ -380,7 +380,7 @@ static void buffer_insert(char **buffer, int *buffer_size, char *buf)
 	int obj_dive;
 	int obj_log;
 	int offset, len;
-	uint8_t hdr[24];
+	uint8_t hdr[27];
 
 	/* since we want to insert into the buffer... if there's
 	 * nothing there, this makes absolutely no sense so just
@@ -406,7 +406,7 @@ static void buffer_insert(char **buffer, int *buffer_size, char *buf)
 	 * some info from that in order to make sense of the data in
 	 * the dive info */
 	b64 = strstr(ptr, "<bin>") + 5;
-	decode(b64, hdr, 32);
+	decode(b64, hdr, 36);
 	cbuf = convert_dive_details(buf, hdr);
 	offset = ptr - *buffer;
 	len = strlen(cbuf);
