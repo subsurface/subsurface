@@ -413,7 +413,7 @@ static void buffer_insert(char **buffer, int *buffer_size, char *buf)
 	*buffer_size += len;
 	*buffer = realloc(*buffer, *buffer_size);
 	ptr = *buffer + offset;
-	memmove(ptr + len, ptr, strlen(*buffer) - offset);
+	memmove(ptr + len, ptr, strlen(*buffer) - offset + 1);
 	memmove(ptr, cbuf, len);
 }
 
