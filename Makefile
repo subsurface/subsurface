@@ -49,7 +49,11 @@ libdc-local64 := $(wildcard /usr/local/lib64/libdivecomputer.a)
 libdc-usr := $(wildcard /usr/lib/libdivecomputer.a)
 libdc-usr64 := $(wildcard /usr/lib64/libdivecomputer.a)
 
-ifneq ($(strip $(libdc-local)),)
+ifneq ($(LIBDCDEVEL),)
+	LIBDIVECOMPUTERDIR = ../libdivecomputer
+	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
+	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/src/.libs/libdivecomputer.a
+else ifneq ($(strip $(libdc-local)),)
 	LIBDIVECOMPUTERDIR = /usr/local
 	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
