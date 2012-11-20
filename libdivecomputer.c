@@ -193,7 +193,9 @@ static int find_dive(struct dive *dive, device_data_t *devdata)
 	for (i = 0; i < dive_table.preexisting; i++) {
 		struct dive *old = dive_table.dives[i];
 
-		if (dive->when != old->when)
+		if (dive->when > old->when + 60)
+			continue;
+		if (dive->when + 60 < old->when)
 			continue;
 		return 1;
 	}
