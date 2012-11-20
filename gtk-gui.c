@@ -1820,6 +1820,7 @@ repeat:
 				*ne = '\0';
 		devicedata.devname = ns;
 		devicedata.force_download = force_download;
+		force_download = FALSE; /* when retrying we don't want to restart */
 		info = import_dive_computer(&devicedata, GTK_DIALOG(dialog));
 		free((void *)devname);
 		if (info)
