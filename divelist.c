@@ -1948,7 +1948,7 @@ void add_single_dive(int idx, struct dive *dive)
 }
 
 /* remember expanded state */
-static void remember_tree_state()
+void remember_tree_state()
 {
 	GtkTreeIter iter;
 	if (!gtk_tree_model_get_iter_first(TREEMODEL(dive_list), &iter))
@@ -1992,7 +1992,7 @@ static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTr
 }
 
 /* restore expanded and selected state */
-static void restore_tree_state()
+void restore_tree_state()
 {
 	gtk_tree_model_foreach(MODEL(dive_list), restore_node_state, NULL);
 }

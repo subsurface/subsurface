@@ -1633,6 +1633,7 @@ void import_files(GtkWidget *w, gpointer data)
 	struct stat sb;
 	GSList *filenames = NULL;
 
+	remember_tree_state();
 	fs_dialog = gtk_file_chooser_dialog_new(_("Choose XML Files To Import Into Current Data File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -1671,6 +1672,7 @@ void import_files(GtkWidget *w, gpointer data)
 
 	free(current_def_dir);
 	gtk_widget_destroy(fs_dialog);
+	restore_tree_state();
 }
 
 static GError *setup_uemis_import(device_data_t *data)
@@ -1738,6 +1740,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 		.devname = NULL,
 	};
 
+	remember_tree_state();
 	dialog = gtk_dialog_new_with_buttons(_("Download From Dive Computer"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1834,6 +1837,7 @@ repeat:
 		break;
 	}
 	gtk_widget_destroy(dialog);
+	restore_tree_state();
 }
 
 void update_progressbar(progressbar_t *progress, double value)
