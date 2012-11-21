@@ -72,7 +72,7 @@ static void suunto_read(struct zip_file *file, GError **error)
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
-	parse_xml_buffer(_("SDE file"), mem, read, error);
+	parse_xml_buffer(_("SDE file"), mem, read, FALSE, error);
 	free(mem);
 }
 #endif
@@ -246,7 +246,7 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, GError
 	if (fmt && open_by_filename(filename, fmt+1, mem, error))
 		return;
 
-	parse_xml_buffer(filename, mem->buffer, mem->size, error);
+	parse_xml_buffer(filename, mem->buffer, mem->size, FALSE, error);
 }
 
 void parse_file(const char *filename, GError **error, gboolean possible_default_filename)

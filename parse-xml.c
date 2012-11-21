@@ -168,6 +168,7 @@ static struct {
 } cur_event;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
+static gboolean from_download;
 
 static enum import_source {
 	UNKNOWN,
@@ -1219,6 +1220,7 @@ static void dive_start(void)
 		add_dive_to_trip(cur_dive, cur_trip);
 		cur_dive->tripflag = IN_TRIP;
 	}
+	cur_dive->downloaded = from_download;
 }
 
 static void dive_end(void)
@@ -1499,9 +1501,10 @@ static void reset_all(void)
 	import_source = UNKNOWN;
 }
 
-void parse_xml_buffer(const char *url, const char *buffer, int size, GError **error)
+void parse_xml_buffer(const char *url, const char *buffer, int size, gboolean downloaded, GError **error)
 {
 	xmlDoc *doc;
+	from_download = downloaded;
 
 	doc = xmlReadMemory(buffer, size, url, NULL, 0);
 	if (!doc) {

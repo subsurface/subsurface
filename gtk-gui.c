@@ -1685,7 +1685,7 @@ static GError *setup_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG > 3
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
 #endif
-		parse_xml_buffer("Uemis Download", buf, strlen(buf), &error);
+		parse_xml_buffer("Uemis Download", buf, strlen(buf), TRUE, &error);
 		set_uemis_last_dive(uemis_max_dive_data);
 #if UEMIS_DEBUG > 2
 		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);

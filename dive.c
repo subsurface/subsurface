@@ -1077,8 +1077,6 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downlo
 	 */
 	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
 		return NULL;
-	if (prefer_downloaded && a->when != b->when)
-		return NULL;
 	if (!prefer_downloaded) {
 		/* Dive 'a' is 'offset' seconds before dive 'b' */
 		offset = find_sample_offset(a, b);
@@ -1093,10 +1091,12 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	struct dive *res = alloc_dive();
 	struct dive *dl = NULL;
 
-	if (a->downloaded)
-		dl = a;
-	else if (b->downloaded)
-		dl = b;
+	if (prefer_downloaded) {
+		if (a->downloaded)
+			dl = a;
+		else if (b->downloaded)
+			dl = b;
+	}
 	res->when = a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
