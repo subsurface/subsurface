@@ -362,7 +362,7 @@ static void weight(char *buffer, void *_weight)
 		}
 		break;
 	default:
-		printf("Strange depth reading %s\n", buffer);
+		printf("Strange weight reading %s\n", buffer);
 	}
 }
 
