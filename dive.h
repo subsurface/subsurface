@@ -237,6 +237,13 @@ struct event {
 	char name[];
 };
 
+struct divecomputer {
+	int samples, alloc_samples;
+	struct sample *sample;
+
+	struct event *events;
+};
+
 #define MAX_CYLINDERS (8)
 #define MAX_WEIGHTSYSTEMS (4)
 #define W_IDX_PRIMARY 0
@@ -279,9 +286,9 @@ struct dive {
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	char *suit;
 	int sac, otu;
-	struct event *events;
-	int samples, alloc_samples;
-	struct sample *sample;
+
+	/* Eventually we'll do multiple dive computers */
+	struct divecomputer dc;
 };
 
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
@@ -422,8 +429,8 @@ extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
 extern void delete_dive(struct dive *dive);
 
-extern struct sample *prepare_sample(struct dive *dive);
-extern void finish_sample(struct dive *dive);
+extern struct sample *prepare_sample(struct divecomputer *dc);
+extern void finish_sample(struct divecomputer *dc);
 
 extern void report_dives(gboolean imported, gboolean prefer_imported);
 extern struct dive *fixup_dive(struct dive *dive);
@@ -432,7 +439,7 @@ extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer
 
 extern void renumber_dives(int nr);
 
-extern void add_event(struct dive *dive, int time, int type, int flags, int value, const char *name);
+extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
 
 /* UI related protopypes */
 

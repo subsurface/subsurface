@@ -71,7 +71,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	return DC_STATUS_SUCCESS;
 }
 
-static void handle_event(struct dive *dive, struct sample *sample, dc_sample_value_t value)
+static void handle_event(struct divecomputer *dc, struct sample *sample, dc_sample_value_t value)
 {
 	int type, time;
 	/* we mark these for translation here, but we store the untranslated strings
@@ -108,27 +108,27 @@ static void handle_event(struct dive *dive, struct sample *sample, dc_sample_val
 	if (sample)
 		time += sample->time.seconds;
 
-	add_event(dive, time, type, value.event.flags, value.event.value, name);
+	add_event(dc, time, type, value.event.flags, value.event.value, name);
 }
 
 void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
 	int i;
-	struct dive *dive = userdata;
+	struct divecomputer *dc = userdata;
 	struct sample *sample;
 
 	/*
 	 * We fill in the "previous" sample - except for DC_SAMPLE_TIME,
 	 * which creates a new one.
 	 */
-	sample = dive->samples ? dive->sample+dive->samples-1 : NULL;
+	sample = dc->samples ? dc->sample+dc->samples-1 : NULL;
 
 	switch (type) {
 	case DC_SAMPLE_TIME:
-		sample = prepare_sample(dive);
+		sample = prepare_sample(dc);
 		sample->time.seconds = value.time;
-		finish_sample(dive);
+		finish_sample(dc);
 		break;
 	case DC_SAMPLE_DEPTH:
 		sample->depth.mm = value.depth * 1000 + 0.5;
@@ -141,7 +141,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->temperature.mkelvin = (value.temperature + 273.15) * 1000 + 0.5;
 		break;
 	case DC_SAMPLE_EVENT:
-		handle_event(dive, sample, value);
+		handle_event(dc, sample, value);
 		break;
 	case DC_SAMPLE_RBT:
 		printf("   <rbt>%u</rbt>\n", value.rbt);
@@ -176,10 +176,10 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 
 static int import_dive_number = 0;
 
-static int parse_samples(device_data_t *devdata, struct dive *dive, dc_parser_t *parser)
+static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_parser_t *parser)
 {
 	// Parse the sample data.
-	return dc_parser_samples_foreach(parser, sample_cb, dive);
+	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
 
 /*
@@ -302,7 +302,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	// Initialize the sample data.
-	rc = parse_samples(devdata, dive, parser);
+	rc = parse_samples(devdata, &dive->dc, parser);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, _("Error parsing the samples"));
 		dc_parser_destroy(parser);

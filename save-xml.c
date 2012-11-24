@@ -372,9 +372,9 @@ static void save_dive(FILE *f, struct dive *dive)
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
 	save_weightsystem_info(f, dive);
-	save_events(f, dive->events);
-	for (i = 0; i < dive->samples; i++)
-		save_sample(f, dive->sample+i);
+	save_events(f, dive->dc.events);
+	for (i = 0; i < dive->dc.samples; i++)
+		save_sample(f, dive->dc.sample+i);
 	fprintf(f, "</dive>\n");
 }
 

@@ -204,10 +204,10 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		if (errno)
 			break;
 
-		sample = prepare_sample(dive);
+		sample = prepare_sample(&dive->dc);
 		sample->time.seconds = time;
 		add_sample_data(sample, type, val);
-		finish_sample(dive);
+		finish_sample(&dive->dc);
 
 		time++;
 		dive->duration.seconds = time;

@@ -697,15 +697,15 @@ static void otu_data_func(GtkTreeViewColumn *col,
 }
 
 /* calculate OTU for a dive */
-static int calculate_otu(struct dive *dive)
+static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 {
 	int i;
 	double otu = 0.0;
 
-	for (i = 1; i < dive->samples; i++) {
+	for (i = 1; i < dc->samples; i++) {
 		int t;
 		double po2;
-		struct sample *sample = dive->sample + i;
+		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
 		int o2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
@@ -744,7 +744,7 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-static int calculate_sac(struct dive *dive)
+static int calculate_sac(struct dive *dive, struct divecomputer *dc)
 {
 	double airuse, pressure, sac;
 	int duration, i;
@@ -757,16 +757,16 @@ static int calculate_sac(struct dive *dive)
 
 	/* find and eliminate long surface intervals */
 	duration = dive->duration.seconds;
-	for (i = 0; i < dive->samples; i++) {
-		if (dive->sample[i].depth.mm < 100) { /* less than 10cm */
+	for (i = 0; i < dc->samples; i++) {
+		if (dc->sample[i].depth.mm < 100) { /* less than 10cm */
 			int end = i + 1;
-			while (end < dive->samples && dive->sample[end].depth.mm < 100)
+			while (end < dc->samples && dc->sample[end].depth.mm < 100)
 				end++;
 			/* we only want the actual surface time during a dive */
-			if (end < dive->samples) {
+			if (end < dc->samples) {
 				end--;
-				duration -= dive->sample[end].time.seconds -
-						dive->sample[i].time.seconds;
+				duration -= dc->sample[end].time.seconds -
+						dc->sample[i].time.seconds;
 				i = end + 1;
 			}
 		}
@@ -782,8 +782,8 @@ static int calculate_sac(struct dive *dive)
 void update_cylinder_related_info(struct dive *dive)
 {
 	if (dive != NULL) {
-		dive->sac = calculate_sac(dive);
-		dive->otu = calculate_otu(dive);
+		dive->sac = calculate_sac(dive, &dive->dc);
+		dive->otu = calculate_otu(dive, &dive->dc);
 	}
 }
 
@@ -1931,7 +1931,7 @@ void delete_single_dive(int idx)
 	dive_table.nr--;
 	if (dive->selected)
 		amount_selected--;
-	free(dive->sample);
+	free(dive->dc.sample);
 	free(dive);
 }
 

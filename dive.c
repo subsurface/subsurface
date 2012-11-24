@@ -6,7 +6,7 @@
 
 #include "dive.h"
 
-void add_event(struct dive *dive, int time, int type, int flags, int value, const char *name)
+void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev, **p;
 	unsigned int size, len = strlen(name);
@@ -23,7 +23,7 @@ void add_event(struct dive *dive, int time, int type, int flags, int value, cons
 	ev->value = value;
 	ev->next = NULL;
 
-	p = &dive->events;
+	p = &dc->events;
 	while (*p)
 		p = &(*p)->next;
 	*p = ev;
@@ -154,32 +154,32 @@ struct dive *alloc_dive(void)
 	return dive;
 }
 
-struct sample *prepare_sample(struct dive *dive)
+struct sample *prepare_sample(struct divecomputer *dc)
 {
-	if (dive) {
-		int nr = dive->samples;
-		int alloc_samples = dive->alloc_samples;
+	if (dc) {
+		int nr = dc->samples;
+		int alloc_samples = dc->alloc_samples;
 		struct sample *sample;
 		if (nr >= alloc_samples) {
 			struct sample *newsamples;
 
 			alloc_samples = (alloc_samples * 3)/2 + 10;
-			newsamples = realloc(dive->sample, alloc_samples * sizeof(struct sample));
+			newsamples = realloc(dc->sample, alloc_samples * sizeof(struct sample));
 			if (!newsamples)
 				return NULL;
-			dive->alloc_samples = alloc_samples;
-			dive->sample = newsamples;
+			dc->alloc_samples = alloc_samples;
+			dc->sample = newsamples;
 		}
-		sample = dive->sample + nr;
+		sample = dc->sample + nr;
 		memset(sample, 0, sizeof(*sample));
 		return sample;
 	}
 	return NULL;
 }
 
-void finish_sample(struct dive *dive)
+void finish_sample(struct divecomputer *dc)
 {
-	dive->samples++;
+	dc->samples++;
 }
 
 /*
@@ -380,9 +380,9 @@ static gboolean is_potentially_redundant(struct event *event)
 }
 
 /* match just by name - we compare the details in the code that uses this helper */
-static struct event *find_previous_event(struct dive *dive, struct event *event)
+static struct event *find_previous_event(struct divecomputer *dc, struct event *event)
 {
-	struct event *ev = dive->events;
+	struct event *ev = dc->events;
 	struct event *previous = NULL;
 
 	if (!event->name)
@@ -406,6 +406,7 @@ struct dive *fixup_dive(struct dive *dive)
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
+	struct divecomputer *dc;
 	struct event *event;
 
 	add_people(dive->buddy);
@@ -413,8 +414,9 @@ struct dive *fixup_dive(struct dive *dive)
 	add_location(dive->location);
 	add_suit(dive->suit);
 	sanitize_cylinder_info(dive);
-	for (i = 0; i < dive->samples; i++) {
-		struct sample *sample = dive->sample + i;
+	dc = &dive->dc;
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
 		int temp = sample->temperature.mkelvin;
@@ -491,9 +493,9 @@ struct dive *fixup_dive(struct dive *dive)
 	for (j = 0; j < MAX_CYLINDERS; j++) {
 		if (abs(pressure_delta[j]) != INT_MAX) {
 			cylinder_t *cyl = dive->cylinder + j;
-			for (i = 0; i < dive->samples; i++)
-				if (dive->sample[i].cylinderindex == j)
-					dive->sample[i].cylinderpressure.mbar = 0;
+			for (i = 0; i < dc->samples; i++)
+				if (dc->sample[i].cylinderindex == j)
+					dc->sample[i].cylinderpressure.mbar = 0;
 			if (! cyl->start.mbar)
 				cyl->start.mbar = cyl->sample_start.mbar;
 			if (! cyl->end.mbar)
@@ -552,11 +554,11 @@ struct dive *fixup_dive(struct dive *dive)
 	 * profile with)
 	 * We first only mark the events for deletion so that we
 	 * still know when the previous event happened. */
-	event = dive->events;
+	event = dc->events;
 	while (event) {
 		struct event *prev;
 		if (is_potentially_redundant(event)) {
-			prev = find_previous_event(dive, event);
+			prev = find_previous_event(dc, event);
 			if (prev && prev->value == event->value &&
 			    prev->flags == event->flags &&
 			    event->time.seconds - prev->time.seconds < 61)
@@ -564,7 +566,7 @@ struct dive *fixup_dive(struct dive *dive)
 		}
 		event = event->next;
 	}
-	event = dive->events;
+	event = dc->events;
 	while (event) {
 		if (event->next && event->next->deleted) {
 			struct event *nextnext = event->next->next;
@@ -587,14 +589,14 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_MAX_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : MAX(a->n, b->n)
 #define MERGE_MIN_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 
-static struct sample *add_sample(struct sample *sample, int time, struct dive *dive)
+static struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc)
 {
-	struct sample *p = prepare_sample(dive);
+	struct sample *p = prepare_sample(dc);
 
 	if (p) {
 		*p = *sample;
 		p->time.seconds = time;
-		finish_sample(dive);
+		finish_sample(dc);
 	}
 	return p;
 }
@@ -607,25 +609,25 @@ static struct sample *add_sample(struct sample *sample, int time, struct dive *d
  * that the time in between the dives is at the surface, not some "last
  * sample that happened to be at a depth of 1.2m".
  */
-static void merge_one_sample(struct sample *sample, int time, struct dive *dive)
+static void merge_one_sample(struct sample *sample, int time, struct divecomputer *dc)
 {
-	int last = dive->samples-1;
+	int last = dc->samples-1;
 	if (last >= 0) {
 		static struct sample surface;
-		int last_time = dive->sample[last].time.seconds;
+		int last_time = dc->sample[last].time.seconds;
 		if (time > last_time + 60) {
-			add_sample(&surface, last_time+20, dive);
-			add_sample(&surface, time - 20, dive);
+			add_sample(&surface, last_time+20, dc);
+			add_sample(&surface, time - 20, dc);
 		}
 	}
-	add_sample(sample, time, dive);
+	add_sample(sample, time, dc);
 }
 
 
 /*
  * Merge samples. Dive 'a' is "offset" seconds before Dive 'b'
  */
-static struct dive *merge_samples(struct dive *res, struct dive *a, struct dive *b, int offset)
+static void merge_samples(struct divecomputer *res, struct divecomputer *a, struct divecomputer *b, int offset)
 {
 	int asamples = a->samples;
 	int bsamples = b->samples;
@@ -652,14 +654,14 @@ static struct dive *merge_samples(struct dive *res, struct dive *a, struct dive 
 		struct sample sample;
 
 		if (!res)
-			return NULL;
+			return;
 
 		at = asamples ? as->time.seconds : -1;
 		bt = bsamples ? bs->time.seconds + offset : -1;
 
 		/* No samples? All done! */
 		if (at < 0 && bt < 0)
-			return fixup_dive(res);
+			return;
 
 		/* Only samples from a? */
 		if (bt < 0) {
@@ -704,20 +706,6 @@ add_sample_b:
 	}
 }
 
-static struct dive *copy_samples(struct dive *res, struct dive *src)
-{
-	int samples = src->samples;
-	struct sample *s = src->sample;
-	while (samples) {
-		if (!res)
-			return NULL;
-		add_sample(s, s->time.seconds, res);
-		s++;
-		samples--;
-	}
-	return fixup_dive(res);
-}
-
 static char *merge_text(const char *a, const char *b)
 {
 	char *res;
@@ -747,14 +735,14 @@ static int sort_event(struct event *a, struct event *b)
 	return strcmp(a->name, b->name);
 }
 
-static void merge_events(struct dive *res, struct dive *src1, struct dive *src2, int offset)
+static void merge_events(struct divecomputer *res, struct divecomputer *src1, struct divecomputer *src2, int offset)
 {
 	struct event *a, *b;
 	struct event **p = &res->events;
 
 	/* Always use positive offsets */
 	if (offset < 0) {
-		struct dive *tmp;
+		struct divecomputer *tmp;
 
 		offset = -offset;
 		tmp = src1;
@@ -933,7 +921,7 @@ static int compare_sample(struct sample *s, struct sample *a, struct sample *b, 
  * the offset in seconds between them. Use this to find the best
  * match of samples between two different dive computers.
  */
-static unsigned long sample_difference(struct dive *a, struct dive *b, int offset)
+static unsigned long sample_difference(struct divecomputer *a, struct divecomputer *b, int offset)
 {
 	int asamples = a->samples;
 	int bsamples = b->samples;
@@ -1017,7 +1005,7 @@ static unsigned long sample_difference(struct dive *a, struct dive *b, int offse
  *
  * If we cannot find a shared offset, don't try to merge.
  */
-static int find_sample_offset(struct dive *a, struct dive *b)
+static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
 {
 	int offset, best;
 	unsigned long max;
@@ -1073,7 +1061,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downlo
 		return NULL;
 	if (!prefer_downloaded) {
 		/* Dive 'a' is 'offset' seconds before dive 'b' */
-		offset = find_sample_offset(a, b);
+		offset = find_sample_offset(&a->dc, &b->dc);
 		if (offset > 120 || offset < -120)
 			return NULL;
 	}
@@ -1114,10 +1102,11 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_MIN_PREFDL(res, dl, a, b, watertemp.mkelvin);
 	merge_equipment(res, a, b);
 	if (dl) {
-		res->events = dl->events;
-		return copy_samples(res, dl);
+		res->dc = dl->dc;
 	} else {
-		merge_events(res, a, b, offset);
-		return merge_samples(res, a, b, offset);
+		merge_events(&res->dc, &a->dc, &b->dc, offset);
+		merge_samples(&res->dc, &a->dc, &b->dc, offset);
 	}
+	fixup_dive(res);
+	return res;
 }

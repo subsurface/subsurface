@@ -1199,7 +1199,7 @@ static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *
 static gboolean is_dive(void)
 {
 	return (cur_dive &&
-		(cur_dive->location || cur_dive->when || cur_dive->samples));
+		(cur_dive->location || cur_dive->when || cur_dive->dc.samples));
 }
 
 static void dive_start(void)
@@ -1254,7 +1254,7 @@ static void event_start(void)
 static void event_end(void)
 {
 	if (cur_event.name && strcmp(cur_event.name, "surface") != 0)
-		add_event(cur_dive, cur_event.time.seconds,
+		add_event(&cur_dive->dc, cur_event.time.seconds,
 			cur_event.type, cur_event.flags,
 			cur_event.value, cur_event.name);
 	cur_event.active = 0;
@@ -1280,7 +1280,7 @@ static void ws_end(void)
 
 static void sample_start(void)
 {
-	cur_sample = prepare_sample(cur_dive);
+	cur_sample = prepare_sample(&cur_dive->dc);
 }
 
 static void sample_end(void)
@@ -1288,7 +1288,7 @@ static void sample_end(void)
 	if (!cur_dive)
 		return;
 
-	finish_sample(cur_dive);
+	finish_sample(&cur_dive->dc);
 	cur_sample = NULL;
 }
 

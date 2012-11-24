@@ -113,50 +113,50 @@ static gboolean in_deco;
  * when we write them to the XML file we'll always have the English strings,
  * regardless of locale
  */
-void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sample)
+static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sample *sample, uemis_sample_t *u_sample)
 {
 	uint8_t *flags = u_sample->flags;
 
 	if (flags[1] & 0x01)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Safety Stop Violation"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Safety Stop Violation"));
 	if (flags[1] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Speed Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Speed Alarm"));
 #if WANT_CRAZY_WARNINGS
 	if (flags[1] & 0x06) /* both bits 1 and 2 are a warning */
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Speed Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Speed Warning"));
 	if (flags[1] & 0x10)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("PO2 Green Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("PO2 Green Warning"));
 #endif
 	if (flags[1] & 0x20)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("PO2 Ascend Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("PO2 Ascend Warning"));
 	if (flags[1] & 0x40)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("PO2 Ascend Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("PO2 Ascend Alarm"));
 	/* flags[2] reflects the deco / time bar
 	 * flags[3] reflects more display details on deco and pO2 */
 	if (flags[4] & 0x01)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Tank Pressure Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Tank Pressure Info"));
 	if (flags[4] & 0x04)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("RGT Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("RGT Warning"));
 	if (flags[4] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("RGT Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("RGT Alert"));
 	if (flags[4] & 0x40)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Tank Change Suggested"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Tank Change Suggested"));
 	if (flags[4] & 0x80)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Depth Limit Exceeded"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Depth Limit Exceeded"));
 	if (flags[5] & 0x01)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Max Deco Time Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Max Deco Time Warning"));
 	if (flags[5] & 0x04)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Dive Time Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Dive Time Info"));
 	if (flags[5] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Dive Time Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Dive Time Alert"));
 	if (flags[5] & 0x10)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Marker"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Marker"));
 	if (flags[6] & 0x02)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("No Tank Data"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("No Tank Data"));
 	if (flags[6] & 0x04)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Low Battery Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Low Battery Warning"));
 	if (flags[6] & 0x08)
-		add_event(dive, sample->time.seconds, 0, 0, 0, N_("Low Battery Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Low Battery Alert"));
 	/* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
 
@@ -164,14 +164,14 @@ void uemis_event(struct dive *dive, struct sample *sample, uemis_sample_t *u_sam
 	if (u_sample->p_amb_tol > dive->surface_pressure.mbar &&
 	    u_sample->hold_time &&
 	    u_sample->hold_time < 99) {
-		add_event(dive, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_BEGIN,
+		add_event(dc, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_BEGIN,
 			u_sample->hold_depth * 10, N_("ceiling"));
-		add_event(dive, sample->time.seconds, SAMPLE_EVENT_DECOSTOP, 0,
+		add_event(dc, sample->time.seconds, SAMPLE_EVENT_DECOSTOP, 0,
 			u_sample->hold_time * 60, N_("deco"));
 		in_deco = TRUE;
 	} else if (in_deco) {
 		in_deco = FALSE;
-		add_event(dive, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_END,
+		add_event(dc, sample->time.seconds, SAMPLE_EVENT_CEILING, SAMPLE_FLAGS_END,
 			0, N_("ceiling"));
 	}
 }
@@ -186,6 +186,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	struct sample *sample;
 	uemis_sample_t *u_sample;
 	struct dive *dive = datap;
+	struct divecomputer *dc = &dive->dc;
 	int template, gasoffset;
 
 	in_deco = FALSE;
@@ -235,15 +236,15 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		 * duration in the header is a) in minutes and b) up to 3 minutes short */
 		if (u_sample->dive_time > dive->duration.seconds + 180)
 			break;
-		sample = prepare_sample(dive);
+		sample = prepare_sample(dc);
 		sample->time.seconds = u_sample->dive_time;
 		sample->depth.mm = rel_mbar_to_depth(u_sample->water_pressure, dive);
 		sample->temperature.mkelvin = (u_sample->dive_temperature * 100) + 273150;
 		sample->cylinderindex = u_sample->active_tank;
 		sample->cylinderpressure.mbar =
 			(u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
-		uemis_event(dive, sample, u_sample);
-		finish_sample(dive);
+		uemis_event(dive, dc, sample, u_sample);
+		finish_sample(dc);
 		i += 0x25;
 		u_sample++;
 	}

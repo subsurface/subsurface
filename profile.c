@@ -393,10 +393,10 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
 
-static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct dive *dive)
+static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
 {
 	static const text_render_options_t tro = {14, EVENTS, CENTER, TOP};
-	struct event *event = dive->events;
+	struct event *event = dc->events;
 
 	if (gc->printer)
 		return;
@@ -1643,10 +1643,10 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, un
 	return i;
 }
 
-static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
+static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i = 0, cylinderindex = 0;
-	struct event *ev = get_next_event(dive->events, "gaschange");
+	struct event *ev = get_next_event(dc->events, "gaschange");
 
 	if (!ev)
 		return;
@@ -1660,10 +1660,10 @@ static void check_gas_change_events(struct dive *dive, struct plot_info *pi)
 }
 
 /* for computers that track gas changes through events */
-static int count_gas_change_events(struct dive *dive)
+static int count_gas_change_events(struct divecomputer *dc)
 {
 	int count = 0;
-	struct event *ev = get_next_event(dive->events, "gaschange");
+	struct event *ev = get_next_event(dc->events, "gaschange");
 
 	while (ev) {
 		count++;
@@ -1679,7 +1679,7 @@ static int count_gas_change_events(struct dive *dive)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, struct sample *dive_sample)
+static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc)
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
@@ -1694,7 +1694,7 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	double amb_pressure;
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
-	nr = nr_samples + 4 + 2 * count_gas_change_events(dive);
+	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
 	alloc_size = plot_info_size(nr);
 	pi = malloc(alloc_size);
 	if (!pi)
@@ -1703,27 +1703,27 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 	pi->nr = nr;
 	pi_idx = 2; /* the two extra events at the start */
 	/* check for gas changes before the samples start */
-	ev = get_next_event(dive->events, "gaschange");
-	while (ev && ev->time.seconds < dive_sample->time.seconds) {
+	ev = get_next_event(dive->dc.events, "gaschange");
+	while (ev && ev->time.seconds < dc->sample->time.seconds) {
 		entry = pi->entry + pi_idx;
 		entry->sec = ev->time.seconds;
 		entry->depth = 0; /* is that always correct ? */
 		pi_idx++;
 		ev = get_next_event(ev->next, "gaschange");
 	}
-	if (ev && ev->time.seconds == dive_sample->time.seconds) {
+	if (ev && ev->time.seconds == dc->sample->time.seconds) {
 		/* we already have a sample at the time of the event */
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	/* find the first deco/ceiling event (if any) */
-	ceil_ev = get_next_event(dive->events, "ceiling");
+	ceil_ev = get_next_event(dive->dc.events, "ceiling");
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
-	for (i = 0; i < nr_samples; i++) {
+	for (i = 0; i < dc->samples; i++) {
 		int depth;
 		int delay = 0;
-		struct sample *sample = dive_sample+i;
+		struct sample *sample = dc->sample+i;
 
 		if ((dive->start > -1 && sample->time.seconds < dive->start) ||
 		    (dive->end > -1 && sample->time.seconds > dive->end)) {
@@ -1799,8 +1799,8 @@ static struct plot_info *create_plot_info(struct dive *dive, int nr_samples, str
 		entry = pi->entry + i + pi_idx;
 		ev = get_next_event(ev->next, "gaschange");
 	}
-	nr = nr_samples + pi_idx - 2;
-	check_gas_change_events(dive, pi);
+	nr = dc->samples + pi_idx - 2;
+	check_gas_change_events(dive, dc, pi);
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
@@ -1934,14 +1934,18 @@ static void plot_set_scale(scale_mode_t scale)
 void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 {
 	struct plot_info *pi;
-	static struct sample fake[4];
-	struct sample *sample = dive->sample;
+	struct divecomputer *dc = &dive->dc;
 	cairo_rectangle_t *drawing_area = &gc->drawing_area;
-	int nr = dive->samples;
 
 	plot_set_scale(scale);
 
-	if (!nr) {
+	if (!dc->samples) {
+		static struct sample fake[4];
+		static struct divecomputer fakedc = {
+			.sample = fake,
+			.samples = 4
+		};
+
 		/* The dive has no samples, so create a few fake ones.  This assumes an
 		ascent/descent rate of 9 m/min, which is just below the limit for FAST. */
 		int duration = dive->duration.seconds;
@@ -1949,16 +1953,15 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 		int asc_desc_time = dive->maxdepth.mm*60/9000;
 		if (asc_desc_time * 2 >= duration)
 			asc_desc_time = duration / 2;
-		sample = fake;
 		fake[1].time.seconds = asc_desc_time;
 		fake[1].depth.mm = maxdepth;
 		fake[2].time.seconds = duration - asc_desc_time;
 		fake[2].depth.mm = maxdepth;
 		fake[3].time.seconds = duration * 1.00;
-		nr = 4;
+		dc = &fakedc;
 	}
 
-	pi = create_plot_info(dive, nr, sample);
+	pi = create_plot_info(dive, dc);
 
 	/* shift the drawing area so we have a nice margin around it */
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
@@ -1978,7 +1981,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
-	plot_events(gc, pi, dive);
+	plot_events(gc, pi, dc);
 
 	/* Temperature profile */
 	plot_temperature_profile(gc, pi);
