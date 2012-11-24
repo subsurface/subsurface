@@ -1103,6 +1103,13 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	merge_equipment(res, a, b);
 	if (dl) {
 		res->dc = dl->dc;
+		/*
+		 * Since we copied the events and samples,
+		 * we can't free them from the source when
+		 * we free it - so make sure the source
+		 * dive computer data is cleared out.
+		 */
+		memset(&dl->dc, 0, sizeof(dl->dc));
 	} else {
 		merge_events(&res->dc, &a->dc, &b->dc, offset);
 		merge_samples(&res->dc, &a->dc, &b->dc, offset);
