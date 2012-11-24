@@ -204,7 +204,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		if (errno)
 			break;
 
-		sample = prepare_sample(&dive);
+		sample = prepare_sample(dive);
 		sample->time.seconds = time;
 		add_sample_data(sample, type, val);
 		finish_sample(dive);

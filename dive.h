@@ -281,7 +281,7 @@ struct dive {
 	int sac, otu;
 	struct event *events;
 	int samples, alloc_samples;
-	struct sample sample[];
+	struct sample *sample;
 };
 
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
@@ -415,11 +415,6 @@ extern void show_yearly_stats(void);
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
 
-static inline unsigned int dive_size(int samples)
-{
-	return sizeof(struct dive) + samples*sizeof(struct sample);
-}
-
 extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
 
@@ -427,7 +422,7 @@ extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
 extern void delete_dive(struct dive *dive);
 
-extern struct sample *prepare_sample(struct dive **divep);
+extern struct sample *prepare_sample(struct dive *dive);
 extern void finish_sample(struct dive *dive);
 
 extern void report_dives(gboolean imported, gboolean prefer_imported);

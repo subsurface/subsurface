@@ -185,8 +185,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	uint8_t *data;
 	struct sample *sample;
 	uemis_sample_t *u_sample;
-	struct dive **divep = datap;
-	struct dive *dive = *divep;
+	struct dive *dive = datap;
 	int template, gasoffset;
 
 	in_deco = FALSE;
@@ -236,8 +235,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		 * duration in the header is a) in minutes and b) up to 3 minutes short */
 		if (u_sample->dive_time > dive->duration.seconds + 180)
 			break;
-		sample = prepare_sample(divep);
-		dive = *divep; /* prepare_sample might realloc the dive */
+		sample = prepare_sample(dive);
 		sample->time.seconds = u_sample->dive_time;
 		sample->depth.mm = rel_mbar_to_depth(u_sample->water_pressure, dive);
 		sample->temperature.mkelvin = (u_sample->dive_temperature * 100) + 273150;

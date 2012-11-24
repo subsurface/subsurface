@@ -1931,6 +1931,7 @@ void delete_single_dive(int idx)
 	dive_table.nr--;
 	if (dive->selected)
 		amount_selected--;
+	free(dive->sample);
 	free(dive);
 }
 

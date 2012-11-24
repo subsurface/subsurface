@@ -773,10 +773,8 @@ static void divinglog_place(char *place, void *_location)
 	country = NULL;
 }
 
-static int divinglog_dive_match(struct dive **divep, const char *name, int len, char *buf)
+static int divinglog_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
-	struct dive *dive = *divep;
-
 	return	MATCH(".divedate", divedate, &dive->when) ||
 		MATCH(".entrytime", divetime, &dive->when) ||
 		MATCH(".depth", depth, &dive->maxdepth) ||
@@ -955,10 +953,8 @@ static void uemis_percent(char *buffer, void *_cylinder)
 		percent(buffer, &cur_dive->cylinder[index].gasmix.o2);
 }
 
-static int uemis_dive_match(struct dive **divep, const char *name, int len, char *buf)
+static int uemis_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
-	struct dive *dive = *divep;
-
 	return	MATCH(".units.length", uemis_length_unit, &input_units) ||
 		MATCH(".units.volume", uemis_volume_unit, &input_units) ||
 		MATCH(".units.pressure", uemis_pressure_unit, &input_units) ||
@@ -986,7 +982,7 @@ static int uemis_dive_match(struct dive **divep, const char *name, int len, char
 		MATCH(".nitrox_3.travel_tank.oxygen", uemis_percent, dive->cylinder + 6) ||
 		MATCH(".dive.val.float", uemis_duration, &dive->duration) ||
 		MATCH(".dive.val.ts", uemis_ts, &dive->when) ||
-		MATCH(".dive.val.bin", uemis_parse_divelog_binary, divep) ||
+		MATCH(".dive.val.bin", uemis_parse_divelog_binary, dive) ||
 		0;
 }
 
@@ -1034,10 +1030,8 @@ success:
 	free(buffer);
 }
 
-static int uddf_dive_match(struct dive **divep, const char *name, int len, char *buf)
+static int uddf_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
-	struct dive *dive = *divep;
-
 	return	MATCH(".datetime", uddf_datetime, &dive->when) ||
 		MATCH(".diveduration", duration, &dive->duration) ||
 		MATCH(".greatestdepth", depth, &dive->maxdepth) ||
@@ -1055,7 +1049,7 @@ static void gps_location(char *buffer, void *_dive)
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
-static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
+static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
 	int len = strlen(name);
 
@@ -1063,25 +1057,23 @@ static void try_to_fill_dive(struct dive **divep, const char *name, char *buf)
 
 	switch (import_source) {
 	case UEMIS:
-		if (uemis_dive_match(divep, name, len, buf))
+		if (uemis_dive_match(dive, name, len, buf))
 			return;
 		break;
 
 	case DIVINGLOG:
-		if (divinglog_dive_match(divep, name, len, buf))
+		if (divinglog_dive_match(dive, name, len, buf))
 			return;
 		break;
 
 	case UDDF:
-		if (uddf_dive_match(divep, name, len, buf))
+		if (uddf_dive_match(dive, name, len, buf))
 			return;
 		break;
 
 	default:
 		break;
 	}
-
-	struct dive *dive = *divep;
 
 	if (MATCH(".number", get_index, &dive->number))
 		return;
@@ -1288,7 +1280,7 @@ static void ws_end(void)
 
 static void sample_start(void)
 {
-	cur_sample = prepare_sample(&cur_dive);
+	cur_sample = prepare_sample(cur_dive);
 }
 
 static void sample_end(void)
@@ -1317,7 +1309,7 @@ static void entry(const char *name, int size, const char *raw)
 		return;
 	}
 	if (cur_dive) {
-		try_to_fill_dive(&cur_dive, name, buf);
+		try_to_fill_dive(cur_dive, name, buf);
 		return;
 	}
 	if (cur_trip) {

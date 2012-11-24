@@ -115,8 +115,7 @@ void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
 	int i;
-	struct dive **divep = userdata;
-	struct dive *dive = *divep;
+	struct dive *dive = userdata;
 	struct sample *sample;
 
 	/*
@@ -127,9 +126,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 	switch (type) {
 	case DC_SAMPLE_TIME:
-		sample = prepare_sample(divep);
+		sample = prepare_sample(dive);
 		sample->time.seconds = value.time;
-		finish_sample(*divep);
+		finish_sample(dive);
 		break;
 	case DC_SAMPLE_DEPTH:
 		sample->depth.mm = value.depth * 1000 + 0.5;
@@ -177,10 +176,10 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 
 static int import_dive_number = 0;
 
-static int parse_samples(device_data_t *devdata, struct dive **divep, dc_parser_t *parser)
+static int parse_samples(device_data_t *devdata, struct dive *dive, dc_parser_t *parser)
 {
 	// Parse the sample data.
-	return dc_parser_samples_foreach(parser, sample_cb, divep);
+	return dc_parser_samples_foreach(parser, sample_cb, dive);
 }
 
 /*
@@ -303,7 +302,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	// Initialize the sample data.
-	rc = parse_samples(devdata, &dive, parser);
+	rc = parse_samples(devdata, dive, parser);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, _("Error parsing the samples"));
 		dc_parser_destroy(parser);

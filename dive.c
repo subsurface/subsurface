@@ -145,36 +145,30 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 
 struct dive *alloc_dive(void)
 {
-	const int initial_samples = 5;
-	unsigned int size;
 	struct dive *dive;
 
-	size = dive_size(initial_samples);
-	dive = malloc(size);
+	dive = malloc(sizeof(*dive));
 	if (!dive)
 		exit(1);
-	memset(dive, 0, size);
-	dive->alloc_samples = initial_samples;
+	memset(dive, 0, sizeof(*dive));
 	return dive;
 }
 
-struct sample *prepare_sample(struct dive **divep)
+struct sample *prepare_sample(struct dive *dive)
 {
-	struct dive *dive = *divep;
 	if (dive) {
 		int nr = dive->samples;
 		int alloc_samples = dive->alloc_samples;
 		struct sample *sample;
 		if (nr >= alloc_samples) {
-			unsigned int size;
+			struct sample *newsamples;
 
 			alloc_samples = (alloc_samples * 3)/2 + 10;
-			size = dive_size(alloc_samples);
-			dive = realloc(dive, size);
-			if (!dive)
+			newsamples = realloc(dive->sample, alloc_samples * sizeof(struct sample));
+			if (!newsamples)
 				return NULL;
 			dive->alloc_samples = alloc_samples;
-			*divep = dive;
+			dive->sample = newsamples;
 		}
 		sample = dive->sample + nr;
 		memset(sample, 0, sizeof(*sample));
@@ -593,16 +587,16 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_MAX_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : MAX(a->n, b->n)
 #define MERGE_MIN_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 
-static struct dive *add_sample(struct sample *sample, int time, struct dive *dive)
+static struct sample *add_sample(struct sample *sample, int time, struct dive *dive)
 {
-	struct sample *p = prepare_sample(&dive);
+	struct sample *p = prepare_sample(dive);
 
-	if (!p)
-		return NULL;
-	*p = *sample;
-	p->time.seconds = time;
-	finish_sample(dive);
-	return dive;
+	if (p) {
+		*p = *sample;
+		p->time.seconds = time;
+		finish_sample(dive);
+	}
+	return p;
 }
 
 /*
@@ -613,18 +607,18 @@ static struct dive *add_sample(struct sample *sample, int time, struct dive *div
  * that the time in between the dives is at the surface, not some "last
  * sample that happened to be at a depth of 1.2m".
  */
-static struct dive *merge_one_sample(struct sample *sample, int time, struct dive *dive)
+static void merge_one_sample(struct sample *sample, int time, struct dive *dive)
 {
 	int last = dive->samples-1;
 	if (last >= 0) {
 		static struct sample surface;
 		int last_time = dive->sample[last].time.seconds;
 		if (time > last_time + 60) {
-			dive = add_sample(&surface, last_time+20, dive);
-			dive = add_sample(&surface, time - 20, dive);
+			add_sample(&surface, last_time+20, dive);
+			add_sample(&surface, time - 20, dive);
 		}
 	}
-	return add_sample(sample, time, dive);
+	add_sample(sample, time, dive);
 }
 
 
@@ -670,7 +664,7 @@ static struct dive *merge_samples(struct dive *res, struct dive *a, struct dive 
 		/* Only samples from a? */
 		if (bt < 0) {
 add_sample_a:
-			res = merge_one_sample(as, at, res);
+			merge_one_sample(as, at, res);
 			as++;
 			asamples--;
 			continue;
@@ -679,7 +673,7 @@ add_sample_a:
 		/* Only samples from b? */
 		if (at < 0) {
 add_sample_b:
-			res = merge_one_sample(bs, bt, res);
+			merge_one_sample(bs, bt, res);
 			bs++;
 			bsamples--;
 			continue;
@@ -701,7 +695,7 @@ add_sample_b:
 		if (as->cylinderindex)
 			sample.cylinderindex = as->cylinderindex;
 
-		res = merge_one_sample(&sample, at, res);
+		merge_one_sample(&sample, at, res);
 
 		as++;
 		bs++;
@@ -717,7 +711,7 @@ static struct dive *copy_samples(struct dive *res, struct dive *src)
 	while (samples) {
 		if (!res)
 			return NULL;
-		res = add_sample(s, s->time.seconds, res);
+		add_sample(s, s->time.seconds, res);
 		s++;
 		samples--;
 	}
