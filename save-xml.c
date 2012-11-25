@@ -349,23 +349,19 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 {
 	int i;
-	const char *post = "";
 
-	if (dc->when || dc->vendor || dc->product) {
-		fprintf(f, "<divecomputer");
-		if (dc->vendor)
-			show_utf8(f, dc->vendor, " vendor='", "'", 1);
-		if (dc->product)
-			show_utf8(f, dc->product, " product='", "'", 1);
-		if (dc->when && dc->when != dive->when)
-			show_date(f, dc->when);
-		fprintf(f, ">\n");
-		post = "</divecomputer>\n";
-	}
+	fprintf(f, "  <divecomputer");
+	if (dc->vendor)
+		show_utf8(f, dc->vendor, " vendor='", "'", 1);
+	if (dc->product)
+		show_utf8(f, dc->product, " product='", "'", 1);
+	if (dc->when && dc->when != dive->when)
+		show_date(f, dc->when);
+	fprintf(f, ">\n");
 	save_events(f, dc->events);
 	for (i = 0; i < dc->samples; i++)
 		save_sample(f, dc->sample+i);
-	fprintf(f, post);
+	fprintf(f, "  </divecomputer>\n");
 }
 
 static void save_dive(FILE *f, struct dive *dive)

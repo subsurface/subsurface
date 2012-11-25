@@ -1051,21 +1051,100 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
  */
 struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded)
 {
-	int offset = 0;
-
 	/*
 	 * This assumes that the clocks on the dive computers are
 	 * roughly synchronized.
 	 */
 	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
 		return NULL;
-	if (!prefer_downloaded) {
-		/* Dive 'a' is 'offset' seconds before dive 'b' */
-		offset = find_sample_offset(&a->dc, &b->dc);
-		if (offset > 120 || offset < -120)
-			return NULL;
+	return merge_dives(a, b, 0, prefer_downloaded);
+}
+
+static void free_events(struct event *ev)
+{
+	while (ev) {
+		struct event *next = ev->next;
+		free(ev);
+		ev = next;
 	}
-	return merge_dives(a, b, offset, prefer_downloaded);
+}
+
+static void free_dc(struct divecomputer *dc)
+{
+	free(dc->sample);
+	free_events(dc->events);
+	free(dc);
+}
+
+static int same_event(struct event *a, struct event *b)
+{
+	if (a->time.seconds != b->time.seconds)
+		return 0;
+	if (a->type != b->type)
+		return 0;
+	if (a->flags != b->flags)
+		return 0;
+	if (a->value != b->value)
+		return 0;
+	return !strcmp(a->name, b->name);
+}
+
+static int same_sample(struct sample *a, struct sample *b)
+{
+	if (a->time.seconds != b->time.seconds)
+		return 0;
+	if (a->depth.mm != b->depth.mm)
+		return 0;
+	if (a->temperature.mkelvin != b->temperature.mkelvin)
+		return 0;
+	if (a->cylinderpressure.mbar != b->cylinderpressure.mbar)
+		return 0;
+	return a->cylinderindex == b->cylinderindex;
+}
+
+static int same_dc(struct divecomputer *a, struct divecomputer *b)
+{
+	int i;
+	struct event *eva, *evb;
+
+	if (a->when && b->when && a->when != b->when)
+		return 0;
+	if (a->samples != b->samples)
+		return 0;
+	for (i = 0; i < a->samples; i++)
+		if (!same_sample(a->sample+i, b->sample+i))
+			return 0;
+	eva = a->events;
+	evb = b->events;
+	while (eva && evb) {
+		if (!same_event(eva, evb))
+			return 0;
+		eva = eva->next;
+		evb = evb->next;
+	}
+	return eva == evb;
+}
+
+static void remove_redundant_dc(struct divecomputer *dc)
+{
+	do {
+		struct divecomputer **p = &dc->next;
+
+		/* Check this dc against all the following ones.. */
+		while (*p) {
+			struct divecomputer *check = *p;
+			if (same_dc(dc, check)) {
+				*p = check->next;
+				check->next = NULL;
+				free_dc(check);
+				continue;
+			}
+			p = &check->next;
+		}
+
+		/* .. and then continue down the chain */
+		dc = dc->next;
+	} while (dc);
 }
 
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded)
@@ -1079,7 +1158,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 		else if (b->downloaded)
 			dl = b;
 	}
-	res->when = a->when;
+	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
 	MERGE_NONZERO(res, a, b, latitude);
@@ -1110,9 +1189,39 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 		 * dive computer data is cleared out.
 		 */
 		memset(&dl->dc, 0, sizeof(dl->dc));
+	} else if (offset) {
+		struct divecomputer *a_dc = &a->dc;
+		struct divecomputer *b_dc = &b->dc;
+		struct divecomputer *res_dc = &res->dc;
+
+		/*
+		 * FIXME! We should try to match these things up some way,
+		 * now we just depend on the merged dives having the same
+		 * dive computers in the same order!
+		 */
+		for (;;) {
+			merge_events(res_dc, a_dc, b_dc, offset);
+			merge_samples(res_dc, a_dc, b_dc, offset);
+			a_dc = a_dc->next;
+			b_dc = b_dc->next;
+			if (!a_dc || !b_dc)
+				break;
+			res_dc->next = calloc(1, sizeof(*res_dc));
+			res_dc = res_dc->next;
+			if (!res_dc)
+				break;
+		}
 	} else {
-		merge_events(&res->dc, &a->dc, &b->dc, offset);
-		merge_samples(&res->dc, &a->dc, &b->dc, offset);
+		struct divecomputer *dc;
+		res->dc = a->dc;
+		memset(&a->dc, 0, sizeof(a->dc));
+		dc = &res->dc;
+		while (dc->next)
+			dc = dc->next;
+		dc->next = calloc(1, sizeof(*dc));
+		*dc->next = b->dc;
+		memset(&b->dc, 0,sizeof(b->dc));
+		remove_redundant_dc(&res->dc);
 	}
 	fixup_dive(res);
 	return res;
