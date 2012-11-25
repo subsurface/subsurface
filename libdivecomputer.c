@@ -332,17 +332,17 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return rc;
 	}
 
+#ifdef DC_FIELD_SALINITY
 	// Check if the libdivecomputer version already supports salinity
 	double salinity = 1.03;
-#ifdef DC_FIELD_SALINITY
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, _("Error obtaining water salinity"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
-#endif
 	dive->salinity = salinity * 10000.0 + 0.5;
+#endif
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases);
 	if (rc != DC_STATUS_SUCCESS) {
