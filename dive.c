@@ -885,6 +885,7 @@ pick_b:
 	pick_trip(res, b);
 }
 
+#if CURRENTLY_NOT_USED
 /*
  * Sample 's' is between samples 'a' and 'b'. It is 'offset' seconds before 'b'.
  *
@@ -1043,6 +1044,7 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
 
 	return best;
 }
+#endif
 
 /*
  * This could do a lot more merging. Right now it really only
