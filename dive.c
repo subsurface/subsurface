@@ -1147,6 +1147,110 @@ static void remove_redundant_dc(struct divecomputer *dc)
 	} while (dc);
 }
 
+static void clear_dc(struct divecomputer *dc)
+{
+	memset(dc, 0, sizeof(*dc));
+}
+
+static struct divecomputer *find_matching_computer(struct divecomputer *match, struct divecomputer *list)
+{
+	struct divecomputer *p;
+
+	while ((p = list) != NULL) {
+		list = list->next;
+
+		/* No dive computer model? That matches anything */
+		if (!match->model || !p->model)
+			break;
+
+		/* Otherwise at least the model names have to match */
+		if (strcasecmp(match->model, p->model))
+			continue;
+
+		/* No device ID? Match */
+		if (!match->deviceid || !p->deviceid)
+			break;
+
+		if (match->deviceid == p->deviceid)
+			break;
+	}
+	return p;
+}
+
+/*
+ * Join dive computers with a specific time offset between
+ * them.
+ *
+ * Use the dive computer ID's (or names, if ID's are missing)
+ * to match them up. If we find a matching dive computer, we
+ * merge them. If not, we just take the data from 'a'.
+ */
+static void interleave_dive_computers(struct divecomputer *res,
+	struct divecomputer *a, struct divecomputer *b, int offset)
+{
+	do {
+		struct divecomputer *match;
+
+		res->model = strdup(a->model);
+		res->deviceid = a->deviceid;
+		res->diveid = a->diveid;
+		res->next = NULL;
+
+		match = find_matching_computer(a, b);
+		if (match) {
+			merge_events(res, a, match, offset);
+			merge_samples(res, a, match, offset);
+		} else {
+			res->sample = a->sample;
+			res->samples = a->samples;
+			res->events = a->events;
+			a->sample = NULL;
+			a->samples = 0;
+			a->events = NULL;
+		}
+		a = a->next;
+		if (!a)
+			break;
+		res->next = calloc(1, sizeof(struct divecomputer));
+		res = res->next;
+	} while (res);
+}
+
+
+/*
+ * Join dive computer information.
+ *
+ * If we have old-style dive computer information (no model
+ * name etc), we will prefer a new-style one and just throw
+ * away the old. We're assuming it's a re-download.
+ *
+ * Otherwise, we'll just try to keep all the information.
+ */
+static void join_dive_computers(struct divecomputer *res, struct divecomputer *a, struct divecomputer *b)
+{
+	if (a->model && !b->model) {
+		*res = *a;
+		clear_dc(a);
+		return;
+	}
+	if (b->model && !a->model) {
+		*res = *b;
+		clear_dc(b);
+		return;
+	}
+
+	*res = *a;
+	clear_dc(a);
+	while (res->next)
+		res = res->next;
+
+	res->next = calloc(1, sizeof(*res));
+	*res->next = *b;
+	clear_dc(b);
+
+	remove_redundant_dc(res);
+}
+
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
@@ -1188,41 +1292,12 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 		 * we free it - so make sure the source
 		 * dive computer data is cleared out.
 		 */
-		memset(&dl->dc, 0, sizeof(dl->dc));
-	} else if (offset) {
-		struct divecomputer *a_dc = &a->dc;
-		struct divecomputer *b_dc = &b->dc;
-		struct divecomputer *res_dc = &res->dc;
+		clear_dc(&dl->dc);
+	} else if (offset)
+		interleave_dive_computers(&res->dc, &a->dc, &b->dc, offset);
+	else
+		join_dive_computers(&res->dc, &a->dc, &b->dc);
 
-		/*
-		 * FIXME! We should try to match these things up some way,
-		 * now we just depend on the merged dives having the same
-		 * dive computers in the same order!
-		 */
-		for (;;) {
-			merge_events(res_dc, a_dc, b_dc, offset);
-			merge_samples(res_dc, a_dc, b_dc, offset);
-			a_dc = a_dc->next;
-			b_dc = b_dc->next;
-			if (!a_dc || !b_dc)
-				break;
-			res_dc->next = calloc(1, sizeof(*res_dc));
-			res_dc = res_dc->next;
-			if (!res_dc)
-				break;
-		}
-	} else {
-		struct divecomputer *dc;
-		res->dc = a->dc;
-		memset(&a->dc, 0, sizeof(a->dc));
-		dc = &res->dc;
-		while (dc->next)
-			dc = dc->next;
-		dc->next = calloc(1, sizeof(*dc));
-		*dc->next = b->dc;
-		memset(&b->dc, 0,sizeof(b->dc));
-		remove_redundant_dc(&res->dc);
-	}
 	fixup_dive(res);
 	return res;
 }
