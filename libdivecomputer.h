@@ -13,6 +13,7 @@
 typedef struct device_data_t {
 	dc_descriptor_t *descriptor;
 	const char *vendor, *product, *devname;
+	unsigned int deviceid, diveid;
 	dc_device_t *device;
 	dc_context_t *context;
 	progressbar_t progress;

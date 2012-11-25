@@ -523,6 +523,13 @@ static void get_index(char *buffer, void *_i)
 	free(buffer);
 }
 
+static void hex_value(char *buffer, void *_i)
+{
+	uint32_t *i = _i;
+	*i = strtol(buffer, NULL, 16);
+	free(buffer);
+}
+
 static void get_tripflag(char *buffer, void *_tf)
 {
 	tripflag_t *tf = _tf;
@@ -715,9 +722,11 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 		return;
 	if (MATCH(".time", divetime, &dc->when))
 		return;
-	if (MATCH(".vendor", utf8_string, &dc->vendor))
+	if (MATCH(".model", utf8_string, &dc->model))
 		return;
-	if (MATCH(".product", utf8_string, &dc->product))
+	if (MATCH(".deviceid", hex_value, &dc->deviceid))
+		return;
+	if (MATCH(".diveid", hex_value, &dc->diveid))
 		return;
 
 	nonmatch("divecomputer", name, buf);
@@ -1333,7 +1342,7 @@ static void divecomputer_start(void)
 		dc = dc->next;
 
 	/* Did we already fill that in? */
-	if (dc->samples || dc->vendor || dc->product || dc->when) {
+	if (dc->samples || dc->model || dc->when) {
 		struct divecomputer *newdc = calloc(1, sizeof(*newdc));
 		if (newdc) {
 			dc->next = newdc;

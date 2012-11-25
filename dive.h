@@ -2,11 +2,13 @@
 #define DIVE_H
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <time.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <libxml/tree.h>
+#include <openssl/sha.h>
 
 /*
  * Some silly typedefs to make our units very explicit.
@@ -239,9 +241,23 @@ struct event {
 	char name[];
 };
 
+/*
+ * NOTE! The deviceid and diveid are model-specific *hashes* of
+ * whatever device identification that model may have. Different
+ * dive computers will have different identifying data, it could
+ * be a firmware number or a serial ID (in either string or in
+ * numeric format), and we do not care.
+ *
+ * The only thing we care about is that subsurface will hash
+ * that information the same way. So then you can check the ID
+ * of a dive computer by comparing the hashes for equality.
+ *
+ * A deviceid or diveid of zero is assumed to be "no ID".
+ */
 struct divecomputer {
 	timestamp_t when;
-	const char *vendor, *product;
+	const char *model;
+	uint32_t deviceid, diveid;
 	int samples, alloc_samples;
 	struct sample *sample;
 	struct event *events;

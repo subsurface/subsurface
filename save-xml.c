@@ -351,10 +351,12 @@ static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 	int i;
 
 	fprintf(f, "  <divecomputer");
-	if (dc->vendor)
-		show_utf8(f, dc->vendor, " vendor='", "'", 1);
-	if (dc->product)
-		show_utf8(f, dc->product, " product='", "'", 1);
+	if (dc->model)
+		show_utf8(f, dc->model, " model='", "'", 1);
+	if (dc->deviceid)
+		fprintf(f, " deviceid='%08x'", dc->deviceid);
+	if (dc->diveid)
+		fprintf(f, " diveid='%08x'", dc->diveid);
 	if (dc->when && dc->when != dive->when)
 		show_date(f, dc->when);
 	fprintf(f, ">\n");

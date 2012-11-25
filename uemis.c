@@ -199,6 +199,17 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	else
 		dive->salinity = 10000; /* grams per 10l fresh water */
 
+	dc->model = strdup("Uemis Zurich");
+
+	/*
+	 * FIXME:
+	 *  - make the deive ID  the first word of the SHA1 sum of the deviceid string
+	 *  - do we want to have a dive ID? Without one, we'll just use the dive date,
+	 *    which is likely fine.
+	 */
+	dc->deviceid = 0;
+	dc->diveid = 0;
+
 	/* dive template in use:
 	   0 = air
 	   1 = nitrox (B)

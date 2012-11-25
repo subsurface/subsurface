@@ -186,9 +186,7 @@ static inline int match_dc(struct divecomputer *a, struct divecomputer *b)
 {
 	if (a->when != b->when)
 		return 0;
-	if (a->vendor && b->vendor && strcasecmp(a->vendor, b->vendor))
-		return 0;
-	if (a->product && b->product && strcasecmp(a->product, b->product))
+	if (a->model && b->model && strcasecmp(a->model, b->model))
 		return 0;
 	return 1;
 }
@@ -226,6 +224,39 @@ static inline int year(int year)
 	return year;
 }
 
+/*
+ * Like g_strdup_printf(), but without the stupid g_malloc/g_free confusion.
+ * And we limit the string to some arbitrary size.
+ */
+static char *str_printf(const char *fmt, ...)
+{
+	va_list args;
+	char buf[80];
+
+	va_start(args, fmt);
+	vsnprintf(buf, sizeof(buf)-1, fmt, args);
+	va_end(args);
+	buf[sizeof(buf)-1] = 0;
+	return strdup(buf);
+}
+
+/*
+ * The dive ID for libdivecomputer dives is the first word of the
+ * SHA1 of the fingerprint, if it exists.
+ *
+ * NOTE! This is byte-order dependent, and I don't care.
+ */
+static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int fsize)
+{
+	uint32_t csum[5];
+
+	if (!fingerprint || !fsize)
+		return 0;
+
+	SHA1(fingerprint, fsize, (unsigned char *)csum);
+	return csum[0];
+}
+
 static int dive_cb(const unsigned char *data, unsigned int size,
 	const unsigned char *fingerprint, unsigned int fsize,
 	void *userdata)
@@ -258,8 +289,9 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->dc.vendor = strdup(devdata->vendor);
-	dive->dc.product = strdup(devdata->product);
+	dive->dc.model = str_printf("%s %s", devdata->vendor, devdata->product);
+	dive->dc.deviceid = devdata->deviceid;
+	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	tm.tm_year = dt.year;
 	tm.tm_mon = dt.month-1;
@@ -345,6 +377,25 @@ static dc_status_t import_device_data(dc_device_t *device, device_data_t *device
 	return dc_device_foreach(device, dive_cb, devicedata);
 }
 
+/*
+ * The device ID for libdivecomputer devices is the first 32-bit word
+ * of the SHA1 hash of the model/firmware/serial numbers.
+ *
+ * NOTE! This is byte-order-dependent. And I can't find it in myself to
+ * care.
+ */
+static uint32_t calculate_sha1(unsigned int model, unsigned int firmware, unsigned int serial)
+{
+	SHA_CTX ctx;
+	uint32_t csum[5];
+
+	SHA1_Init(&ctx);
+	SHA1_Update(&ctx, &model, sizeof(model));
+	SHA1_Update(&ctx, &firmware, sizeof(firmware));
+	SHA1_Update(&ctx, &serial, sizeof(serial));
+	SHA1_Final((unsigned char *)csum, &ctx);
+	return csum[0];
+}
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
@@ -367,6 +418,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			devinfo->model, devinfo->model,
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
+		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, devinfo->serial);
 		break;
 	case DC_EVENT_CLOCK:
 			dev_info(devdata, _("Event: systime=%"PRId64", devtime=%u\n"),
