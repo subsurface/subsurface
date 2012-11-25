@@ -43,6 +43,8 @@
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
+typedef gint64 timestamp_t;
+
 typedef struct {
 	int seconds;
 } duration_t;
@@ -238,10 +240,12 @@ struct event {
 };
 
 struct divecomputer {
+	timestamp_t when;
+	const char *vendor, *product;
 	int samples, alloc_samples;
 	struct sample *sample;
-
 	struct event *events;
+	struct divecomputer *next;
 };
 
 #define MAX_CYLINDERS (8)
@@ -249,7 +253,6 @@ struct divecomputer {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
-typedef gint64 timestamp_t;
 typedef enum { TF_NONE, NO_TRIP, IN_TRIP, AUTOGEN_TRIP, ASSIGNED_TRIP, NUM_TRIPFLAGS } tripflag_t;
 extern const char *tripflag_names[NUM_TRIPFLAGS];
 

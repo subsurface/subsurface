@@ -242,6 +242,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
+	dive->dc.vendor = strdup(devdata->vendor);
+	dive->dc.product = strdup(devdata->product);
 
 	tm.tm_year = dt.year;
 	tm.tm_mon = dt.month-1;
@@ -249,7 +251,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	tm.tm_hour = dt.hour;
 	tm.tm_min = dt.minute;
 	tm.tm_sec = dt.second;
-	dive->when = utc_mktime(&tm);
+	dive->when = dive->dc.when = utc_mktime(&tm);
 
 	// Parse the divetime.
 	dev_info(devdata, _("Dive %d: %s %d %04d"), import_dive_number,

@@ -157,6 +157,7 @@ const struct units IMPERIAL_units = {
 /*
  * Dive info as it is being built up..
  */
+static struct divecomputer *cur_dc;
 static struct dive *cur_dive;
 static dive_trip_t *cur_trip = NULL;
 static struct sample *cur_sample;
@@ -703,6 +704,25 @@ static void try_to_fill_event(const char *name, char *buf)
 	nonmatch("event", name, buf);
 }
 
+/* We're in the top-level dive xml. Try to convert whatever value to a dive value */
+static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
+{
+	int len = strlen(name);
+
+	start_match("divecomputer", name, buf);
+
+	if (MATCH(".date", divedate, &dc->when))
+		return;
+	if (MATCH(".time", divetime, &dc->when))
+		return;
+	if (MATCH(".vendor", utf8_string, &dc->vendor))
+		return;
+	if (MATCH(".product", utf8_string, &dc->product))
+		return;
+
+	nonmatch("divecomputer", name, buf);
+}
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
@@ -1224,6 +1244,7 @@ static void dive_end(void)
 	else
 		record_dive(cur_dive);
 	cur_dive = NULL;
+	cur_dc = NULL;
 	cur_cylinder_index = 0;
 	cur_ws_index = 0;
 }
@@ -1251,10 +1272,20 @@ static void event_start(void)
 	cur_event.active = 1;
 }
 
+/*
+ * If we don't have an explicit dive computer,
+ * we use the implicit one that every dive has..
+ */
+static struct divecomputer *get_dc(void)
+{
+	return cur_dc ? : &cur_dive->dc;
+}
+
 static void event_end(void)
 {
+	struct divecomputer *dc = get_dc();
 	if (cur_event.name && strcmp(cur_event.name, "surface") != 0)
-		add_event(&cur_dive->dc, cur_event.time.seconds,
+		add_event(dc, cur_event.time.seconds,
 			cur_event.type, cur_event.flags,
 			cur_event.value, cur_event.name);
 	cur_event.active = 0;
@@ -1280,7 +1311,7 @@ static void ws_end(void)
 
 static void sample_start(void)
 {
-	cur_sample = prepare_sample(&cur_dive->dc);
+	cur_sample = prepare_sample(get_dc());
 }
 
 static void sample_end(void)
@@ -1288,8 +1319,37 @@ static void sample_end(void)
 	if (!cur_dive)
 		return;
 
-	finish_sample(&cur_dive->dc);
+	finish_sample(get_dc());
 	cur_sample = NULL;
+}
+
+static void divecomputer_start(void)
+{
+	struct divecomputer *dc;
+
+	/* Start from the previous dive computer */
+	dc = &cur_dive->dc;
+	while (dc->next)
+		dc = dc->next;
+
+	/* Did we already fill that in? */
+	if (dc->samples || dc->vendor || dc->product || dc->when) {
+		struct divecomputer *newdc = calloc(1, sizeof(*newdc));
+		if (newdc) {
+			dc->next = newdc;
+			dc = newdc;
+		}
+	}
+
+	/* .. this is the one we'll use */
+	cur_dc = dc;
+}
+
+static void divecomputer_end(void)
+{
+	if (!cur_dc->when)
+		cur_dc->when = cur_dive->when;
+	cur_dc = NULL;
 }
 
 static void entry(const char *name, int size, const char *raw)
@@ -1306,6 +1366,10 @@ static void entry(const char *name, int size, const char *raw)
 	}
 	if (cur_sample) {
 		try_to_fill_sample(cur_sample, name, buf);
+		return;
+	}
+	if (cur_dc) {
+		try_to_fill_dc(cur_dc, name, buf);
 		return;
 	}
 	if (cur_dive) {
@@ -1447,6 +1511,7 @@ static struct nesting {
 	{ "gasmix", cylinder_start, cylinder_end },
 	{ "cylinder", cylinder_start, cylinder_end },
 	{ "weightsystem", ws_start, ws_end },
+	{ "divecomputer", divecomputer_start, divecomputer_end },
 	{ "P", sample_start, sample_end },
 
 	/* Import type recognition */

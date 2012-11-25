@@ -323,17 +323,22 @@ static void save_events(FILE *f, struct event *ev)
 	}
 }
 
-static void save_trip(FILE *f, dive_trip_t *trip)
+static void show_date(FILE *f, timestamp_t when)
 {
 	struct tm tm;
 
-	utc_mkdate(trip->when, &tm);
+	utc_mkdate(when, &tm);
 
-	fprintf(f, "<trip");
 	fprintf(f, " date='%04u-%02u-%02u'",
 		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday);
 	fprintf(f, " time='%02u:%02u:%02u'",
 		tm.tm_hour, tm.tm_min, tm.tm_sec);
+}
+
+static void save_trip(FILE *f, dive_trip_t *trip)
+{
+	fprintf(f, "<trip");
+	show_date(f, trip->when);
 	if (trip->location)
 		show_utf8(f, trip->location, " location=\'","\'", 1);
 	fprintf(f, ">\n");
@@ -341,12 +346,31 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 		show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
 }
 
-static void save_dive(FILE *f, struct dive *dive)
+static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 {
 	int i;
-	struct tm tm;
+	const char *post = "";
 
-	utc_mkdate(dive->when, &tm);
+	if (dc->when || dc->vendor || dc->product) {
+		fprintf(f, "<divecomputer");
+		if (dc->vendor)
+			show_utf8(f, dc->vendor, " vendor='", "'", 1);
+		if (dc->product)
+			show_utf8(f, dc->product, " product='", "'", 1);
+		if (dc->when && dc->when != dive->when)
+			show_date(f, dc->when);
+		fprintf(f, ">\n");
+		post = "</divecomputer>\n";
+	}
+	save_events(f, dc->events);
+	for (i = 0; i < dc->samples; i++)
+		save_sample(f, dc->sample+i);
+	fprintf(f, post);
+}
+
+static void save_dive(FILE *f, struct dive *dive)
+{
+	struct divecomputer *dc;
 
 	fputs("<dive", f);
 	if (dive->number)
@@ -363,18 +387,20 @@ static void save_dive(FILE *f, struct dive *dive)
 		fprintf(f, " rating='%d'", dive->rating);
 	if (dive->visibility)
 		fprintf(f, " visibility='%d'", dive->visibility);
-	fprintf(f, " date='%04u-%02u-%02u'",
-		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday);
-	fprintf(f, " time='%02u:%02u:%02u'",
-		tm.tm_hour, tm.tm_min, tm.tm_sec);
+	show_date(f, dive->when);
 	fprintf(f, " duration='%u:%02u min'>\n",
 		FRACTION(dive->duration.seconds, 60));
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
 	save_weightsystem_info(f, dive);
-	save_events(f, dive->dc.events);
-	for (i = 0; i < dive->dc.samples; i++)
-		save_sample(f, dive->dc.sample+i);
+
+	/* Save the dive computer data */
+	dc = &dive->dc;
+	do {
+		save_dc(f, dive, dc);
+		dc = dc->next;
+	} while (dc);
+
 	fprintf(f, "</dive>\n");
 }
 
