@@ -182,21 +182,37 @@ static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_par
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
 
+static inline int match_dc(struct divecomputer *a, struct divecomputer *b)
+{
+	if (a->when != b->when)
+		return 0;
+	if (a->vendor && b->vendor && strcasecmp(a->vendor, b->vendor))
+		return 0;
+	if (a->product && b->product && strcasecmp(a->product, b->product))
+		return 0;
+	return 1;
+}
+
 /*
  * Check if this dive already existed before the import
  */
-static int find_dive(struct dive *dive, device_data_t *devdata)
+static int find_dive(struct divecomputer *match)
 {
 	int i;
 
 	for (i = 0; i < dive_table.preexisting; i++) {
 		struct dive *old = dive_table.dives[i];
+		struct divecomputer *dc = &old->dc;
 
-		if (dive->when > old->when + 60)
-			continue;
-		if (dive->when + 60 < old->when)
-			continue;
-		return 1;
+		/* Old-style dive with no explicit divecomputer information? */
+		if (!dc->when && old->when == match->when)
+			return 1;
+
+		do {
+			if (match_dc(dc, match))
+				return 1;
+			dc = dc->next;
+		} while (dc);
 	}
 	return 0;
 }
@@ -314,7 +330,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_parser_destroy(parser);
 
 	/* If we already saw this dive, abort. */
-	if (!devdata->force_download && find_dive(dive, devdata))
+	if (!devdata->force_download && find_dive(&dive->dc))
 		return 0;
 
 	dive->downloaded = TRUE;
