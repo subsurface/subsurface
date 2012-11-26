@@ -1093,6 +1093,7 @@ void remove_dive_from_trip(struct dive *dive)
 		next->pprev = pprev;
 
 	dive->divetrip = NULL;
+	dive->tripflag = TF_NONE;
 	assert(trip->nrdives > 0);
 	if (!--trip->nrdives)
 		delete_trip(trip);
@@ -2513,37 +2514,13 @@ int unsaved_changes()
 
 void remove_autogen_trips()
 {
-	GtkTreeIter iter;
-	GtkTreePath *path;
-	timestamp_t when;
-	int idx;
-	GList *trip;
+	int i;
+	struct dive *dive;
 
-	/* start with the first top level entry and walk all of them */
-	path = gtk_tree_path_new_from_string("0");
-	while(gtk_tree_model_get_iter(TREEMODEL(dive_list), &iter, path)) {
-		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
-		if (idx < 0) {
-			trip = find_trip_by_time(when);
-			if (trip && DIVE_TRIP(trip)->tripflag == AUTOGEN_TRIP) { /* this was autogen */
-				remove_trip(path, FALSE);
-				continue;
-			}
-		}
-		gtk_tree_path_next(path);
-	}
-	/* now walk the remaining trips in the dive_trip_list and restore
-	 * their original time stamp; we don't do this in the loop above
-	 * to ensure that the list stays in chronological order */
-	trip = NULL;
-	while(NEXT_TRIP(trip)) {
-		trip = NEXT_TRIP(trip);
-		DIVE_TRIP(trip)->when = DIVE_TRIP(trip)->when_from_file;
-	}
-	/* finally walk the dives and remove the 'ASSIGNED_TRIP' designator */
-	for (idx = 0; idx < dive_table.nr; idx++) {
-		struct dive *dive = get_dive(idx);
-		if (dive->tripflag == ASSIGNED_TRIP)
-			dive->tripflag = TF_NONE;
+	for_each_dive(i, dive) {
+		dive_trip_t *trip = dive->divetrip;
+
+		if (trip && trip->tripflag == AUTOGEN_TRIP)
+			remove_dive_from_trip(dive);
 	}
 }
