@@ -262,18 +262,8 @@ static gboolean ask_save_changes()
 	return quit;
 }
 
-static void dive_trip_unref(gpointer data, gpointer user_data)
-{
-	dive_trip_t *dive_trip = (dive_trip_t *)data;
-	if (dive_trip->location)
-		free(dive_trip->location);
-	free(data);
-}
-
 static void file_close(GtkWidget *w, gpointer data)
 {
-	int i;
-
 	if (unsaved_changes())
 		if (ask_save_changes() == FALSE)
 			return;
@@ -283,20 +273,12 @@ static void file_close(GtkWidget *w, gpointer data)
 	existing_filename = NULL;
 
 	/* free the dives and trips */
-	for (i = 0; i < dive_table.nr; i++)
-		free(get_dive(i));
-	dive_table.nr = 0;
+	while (dive_table.nr)
+		delete_single_dive(0);
 	dive_table.preexisting = 0;
 	mark_divelist_changed(FALSE);
 
-	/* inlined version of g_list_free_full(dive_trip_list, free); */
-	g_list_foreach(dive_trip_list, (GFunc)dive_trip_unref, NULL);
-	g_list_free(dive_trip_list);
-
-	dive_trip_list = NULL;
-
 	/* clear the selection and the statistics */
-	amount_selected = 0;
 	selected_dive = 0;
 	process_selected_dives();
 	clear_stats_widgets();

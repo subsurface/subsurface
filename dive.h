@@ -280,7 +280,11 @@ typedef struct dive_trip {
 	struct dive *dives;
 	int nrdives;
 	int expanded:1, selected:1;
+	struct dive_trip *next;
 } dive_trip_t;
+
+/* List of dive trips (sorted by date) */
+extern dive_trip_t *dive_trip_list;
 
 struct dive {
 	int number;
@@ -346,7 +350,6 @@ static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
  * be able to edit a dive without unintended side effects */
 extern struct dive edit_dive;
 
-extern GList *dive_trip_list;
 extern gboolean autogroup;
 /* random threashold: three days without diving -> new trip
  * this works very well for people who usually dive as part of a trip and don't
@@ -356,8 +359,6 @@ extern gboolean autogroup;
 #define UNGROUPED_DIVE(_dive) ((_dive)->tripflag == NO_TRIP)
 #define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP || (_dive)->tripflag == ASSIGNED_TRIP)
 #define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
-#define NEXT_TRIP(_entry) ((_entry) ? g_list_next(_entry) : (dive_trip_list))
-#define PREV_TRIP(_entry) ((_entry) ? g_list_previous(_entry) : g_list_last(dive_trip_list))
 #define DIVE_TRIP(_trip) ((dive_trip_t *)(_trip)->data)
 #define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
 

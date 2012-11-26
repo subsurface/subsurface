@@ -40,7 +40,7 @@ static struct DiveList dive_list;
 #define TREESTORE(_dl) GTK_TREE_STORE((_dl).treemodel)
 #define LISTSTORE(_dl) GTK_TREE_STORE((_dl).listmodel)
 
-GList *dive_trip_list;
+dive_trip_t *dive_trip_list;
 gboolean autogroup = FALSE;
 
 /* this duplicate assignment of "INTRIP" causes the save_xml code
@@ -935,38 +935,39 @@ void update_dive_list_col_visibility(void)
 #ifdef DEBUG_TRIP
 static void dump_trip_list(void)
 {
-	GList *p = NULL;
+	dive_trip_t *trip;
 	int i=0;
 	timestamp_t last_time = 0;
-	while ((p = NEXT_TRIP(p))) {
-		dive_trip_t *dive_trip = DIVE_TRIP(p);
+
+	for (trip = dive_trip_list; trip; trip = trip->next) {
 		struct tm tm;
-		utc_mkdate(dive_trip->when, &tm);
-		if (dive_trip->when < last_time)
+		utc_mkdate(trip->when, &tm);
+		if (trip->when < last_time)
 			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
-			dive_trip->tripflag == AUTOGEN_TRIP ? "autogen " : "",
-			++i, dive_trip->location,
+			trip->tripflag == AUTOGEN_TRIP ? "autogen " : "",
+			++i, trip->location,
 			tm.tm_year + 1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
-			dive_trip->nrdives, dive_trip);
-		last_time = dive_trip->when;
+			trip->nrdives, trip);
+		last_time = trip->when;
 	}
 	printf("-----\n");
 }
 #endif
 
 /* this finds a trip that starts at precisely the time given */
-static GList *find_trip_by_time(timestamp_t when)
+static dive_trip_t *find_trip_by_time(timestamp_t when)
 {
-	GList *trip = dive_trip_list;
-	while (trip && DIVE_TRIP(trip)->when < when)
+	dive_trip_t *trip = dive_trip_list;
+
+	while (trip && trip->when < when)
 		trip = trip->next;
-	if (DIVE_TRIP(trip)->when == when) {
+	if (trip->when == when) {
 #ifdef DEBUG_TRIP
 		struct tm tm;
-		utc_mkdate(DIVE_TRIP(trip)->when, &tm);
+		utc_mkdate(trip->when, &tm);
 		printf("found trip %p @ %04d-%02d-%02d %02d:%02d:%02d\n",
-			DIVE_TRIP(trip),
+			trip,
 			tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 			tm.tm_hour, tm.tm_min, tm.tm_sec);
 #endif
@@ -978,36 +979,25 @@ static GList *find_trip_by_time(timestamp_t when)
 	return NULL;
 }
 
-/* this finds a trip that starts at precisely the time given */
-static GList *find_trip(dive_trip_t *target)
-{
-	GList *trip = dive_trip_list;
-	while (trip) {
-		if (DIVE_TRIP(trip) == target)
-			return trip;
-		trip = trip->next;
-	}
-	return NULL;
-}
-
 /* this finds the last trip that at or before the time given */
-static GList *find_matching_trip(timestamp_t when)
+static dive_trip_t *find_matching_trip(timestamp_t when)
 {
-	GList *trip = dive_trip_list;
-	if (!trip || DIVE_TRIP(trip)->when > when) {
+	dive_trip_t *trip = dive_trip_list;
+
+	if (!trip || trip->when > when) {
 #ifdef DEBUG_TRIP
 		printf("no matching trip\n");
 #endif
 		return NULL;
 	}
-	while (trip->next && DIVE_TRIP(trip->next)->when <= when)
+	while (trip->next && trip->next->when <= when)
 		trip = trip->next;
 #ifdef DEBUG_TRIP
 	{
 		struct tm tm;
-		utc_mkdate(DIVE_TRIP(trip)->when, &tm);
+		utc_mkdate(trip->when, &tm);
 		printf("found trip %p @ %04d-%02d-%02d %02d:%02d:%02d\n",
-			DIVE_TRIP(trip),
+			trip,
 			tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 			tm.tm_hour, tm.tm_min, tm.tm_sec);
 	}
@@ -1021,24 +1011,21 @@ static GList *find_matching_trip(timestamp_t when)
 void insert_trip(dive_trip_t **dive_trip_p)
 {
 	dive_trip_t *dive_trip = *dive_trip_p;
-	GList *trip = dive_trip_list;
-	while (trip && DIVE_TRIP(trip)->when < dive_trip->when)
-		trip = trip->next;
-	if (trip && DIVE_TRIP(trip)->when == dive_trip->when) {
-		if (! DIVE_TRIP(trip)->location)
-			DIVE_TRIP(trip)->location = dive_trip->location;
-		*dive_trip_p = DIVE_TRIP(trip);
-	} else {
-		dive_trip_list = g_list_insert_before(dive_trip_list, trip, *dive_trip_p);
-	}
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
+	dive_trip_t **p = &dive_trip_list;
+	dive_trip_t *trip;
 
-static inline void delete_trip_list_entry(GList *trip)
-{
-	dive_trip_list = g_list_delete_link(dive_trip_list, trip);
+	/* Walk the dive trip list looking for the right location.. */
+	while ((trip = *p) != NULL && trip->when < dive_trip->when)
+		p = &trip->next;
+
+	if (trip && trip->when == dive_trip->when) {
+		if (! trip->location)
+			trip->location = dive_trip->location;
+		*dive_trip_p = trip;
+	} else {
+		dive_trip->next = trip;
+		*p = dive_trip;
+	}
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -1046,15 +1033,21 @@ static inline void delete_trip_list_entry(GList *trip)
 
 static void delete_trip(dive_trip_t *trip)
 {
-	GList *trip_list = find_trip(trip);
+	dive_trip_t **p, *tmp;
 
 	assert(!trip->dives);
-	/*
-	 * The trip may not be on the list, if it had the
-	 * same time as another trip.
-	 */
-	if (trip_list)
-		delete_trip_list_entry(trip_list);
+
+	/* Remove the trip from the list of trips */
+	p = &dive_trip_list;
+	while ((tmp = *p) != NULL) {
+		if (tmp == trip) {
+			*p = trip->next;
+			break;
+		}
+		p = &tmp->next;
+	}
+
+	/* .. and free it */
 	if (trip->location)
 		free(trip->location);
 	free(trip);
@@ -1104,6 +1097,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	remove_dive_from_trip(dive);
 	trip->nrdives++;
 	dive->divetrip = trip;
+	dive->tripflag = ASSIGNED_TRIP;
 
 	/* Add it to the trip's list of dives*/
 	dive->next = trip->dives;
@@ -1129,47 +1123,45 @@ static dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 	return dive_trip;
 }
 
-/* check that a dive should be in a trip starting at 'when'
- * first the regular check (dive is before the trip start, but within the
- * threshold)
- * then for dives that are after the trip start we walk back to the dive
- * that starts at when and check on the way that there is no ungrouped
- * dive and no break beyond the 3 day threshold between dives that
- * haven't already been assigned to this trip */
-static gboolean dive_can_be_in_trip(int idx, dive_trip_t *dive_trip)
+/*
+ * Walk the dives from the oldest dive, and see if we can autogroup them
+ */
+static void autogroup_dives(void)
 {
-	struct dive *dive, *pdive;
-	int i = idx;
-	timestamp_t when = dive_trip->when;
+	int i;
+	struct dive *dive, *lastdive = NULL;
 
-	dive = get_dive(idx);
-	/* if the dive is before the trip start but within the threshold
-	 * then just accept it, otherwise reject it */
-	if (dive->when < when) {
-		if (DIVE_FITS_TRIP(dive, dive_trip))
-			return TRUE;
-		else
-			return FALSE;
-	}
+	for_each_dive(i, dive) {
+		dive_trip_t *trip;
 
-	while (--i >= 0) {
-		pdive = get_dive(i);
-		/* an ungrouped dive cannot be in the middle of a trip
-		 * also, if there are two consecutive dives that are too far apart
-		 * that aren't both already labeled as 'in trip' (which shows that
-		 * this was manually done so we shouldn't override that) */
-		if ( UNGROUPED_DIVE(pdive) ||
-			(! (DIVE_IN_TRIP(pdive) && DIVE_IN_TRIP(dive)) &&
-			 dive->when - pdive->when > TRIP_THRESHOLD)) {
-			return FALSE;
+		if (dive->divetrip) {
+			lastdive = dive;
+			continue;
 		}
-		if (pdive->when == when)
-			/* done - we have reached the first dive in the trip */
-			return TRUE;
-		dive = pdive;
+
+		if (!DIVE_NEEDS_TRIP(dive)) {
+			lastdive = NULL;
+			continue;
+		}
+
+		/* Do we have a trip we can combine this into? */
+		if (lastdive && dive->when < lastdive->when + TRIP_THRESHOLD) {
+			dive_trip_t *trip = lastdive->divetrip;
+			add_dive_to_trip(dive, trip);
+			if (dive->location && !trip->location)
+				trip->location = strdup(dive->location);
+			lastdive = dive;
+			continue;
+		}
+
+		lastdive = dive;
+		trip = create_and_hookup_trip_from_dive(dive);
+		trip->tripflag = AUTOGEN_TRIP;
 	}
-	/* we should never get here */
-	return TRUE;
+
+#ifdef DEBUG_TRIP
+	dump_trip_list();
+#endif
 }
 
 static void fill_dive_list(void)
@@ -1178,11 +1170,10 @@ static void fill_dive_list(void)
 	GtkTreeIter iter, parent_iter, *parent_ptr = NULL;
 	GtkTreeStore *liststore, *treestore;
 	dive_trip_t *last_trip = NULL;
-	GList *trip;
-	dive_trip_t *dive_trip = NULL;
 
-	/* if we have pre-existing trips, start on the last one */
-	trip = g_list_last(dive_trip_list);
+	/* Do we need to create any dive groups automatically? */
+	if (autogroup)
+		autogroup_dives();
 
 	treestore = TREESTORE(dive_list);
 	liststore = LISTSTORE(dive_list);
@@ -1190,85 +1181,23 @@ static void fill_dive_list(void)
 	i = dive_table.nr;
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
+		dive_trip_t *trip = dive->divetrip;
 
-		/* make sure we display the first date of the trip in previous summary */
-		if (dive_trip && parent_ptr) {
-			gtk_tree_store_set(treestore, parent_ptr,
-					DIVE_DATE, dive_trip->when,
-					DIVE_LOCATION, dive_trip->location,
-					-1);
-		}
-		/* the dive_trip info might have been killed by a previous UNGROUPED dive */
-		if (trip)
-			dive_trip = DIVE_TRIP(trip);
-		/* tripflag defines how dives are handled;
-		 * TF_NONE "not handled yet" - create time based group if autogroup == TRUE
-		 * NO_TRIP "set as no group" - simply leave at top level
-		 * IN_TRIP "use the trip with the largest trip time (when) that is <= this dive"
-		 */
-		if (UNGROUPED_DIVE(dive)) {
-			/* first dives that go to the top level */
-			parent_ptr = NULL;
-			dive_trip = NULL;
-		} else if (autogroup && DIVE_NEEDS_TRIP(dive)){
-			/* if we already have existing trips there are up to two trips that this
-			 * could potentially be part of.
-			 * Let's see if there is a matching one already */
-			GList *matching_trip;
-			matching_trip = find_matching_trip(dive->when);
-			if (matching_trip && dive_can_be_in_trip(i, DIVE_TRIP(matching_trip))) {
-				trip = matching_trip;
-			} else {
-				/* is there a trip we can extend ? */
-				if (! matching_trip && dive_trip) {
-					/* careful - this is before the first trip
-					   yet we have a trip we're looking at; make
-					   sure that is indeed the first trip */
-					dive_trip = DIVE_TRIP(dive_trip_list);
-					trip = dive_trip_list;
-				}
-				/* maybe we can extend the current trip */
-				if (! (dive_trip && dive_can_be_in_trip(i, dive_trip))) {
-					/* seems like neither of these trips work, so create
-					 * a new one; all fields default to 0 and get filled
-					 * in further down */
-					parent_ptr = NULL;
-					dive_trip = create_and_hookup_trip_from_dive(dive);
-					dive_trip->tripflag = AUTOGEN_TRIP;
-					trip = find_trip(dive_trip);
-				}
-			}
-			if (trip)
-				dive_trip = DIVE_TRIP(trip);
-		} else if (DIVE_IN_TRIP(dive)) {
-			trip = find_matching_trip(dive->when);
-			if (trip)
-				dive_trip = DIVE_TRIP(trip);
-		} else {
-			/* dive is not in a trip and we aren't autogrouping */
-			dive_trip = NULL;
-			parent_ptr = NULL;
-		}
-		/* update dive as part of dive_trip and
-		 * (if necessary) update dive_trip time and location */
-		if (dive_trip) {
-			if(DIVE_NEEDS_TRIP(dive))
-				dive->tripflag = ASSIGNED_TRIP;
-			add_dive_to_trip(dive, dive_trip);
-			if (!dive_trip->location && dive->location)
-				dive_trip->location = strdup(dive->location);
-			if (dive_trip != last_trip) {
-				last_trip = dive_trip;
+		if (trip != last_trip) {
+			last_trip = trip;
+			if (trip) {
 				/* create trip entry */
 				gtk_tree_store_append(treestore, &parent_iter, NULL);
 				parent_ptr = &parent_iter;
 				/* a duration of 0 (and negative index) identifies a group */
 				gtk_tree_store_set(treestore, parent_ptr,
 						DIVE_INDEX, -1,
-						DIVE_DATE, dive_trip->when,
-						DIVE_LOCATION, dive_trip->location,
+						DIVE_DATE, trip->when,
+						DIVE_LOCATION, trip->location,
 						DIVE_DURATION, 0,
 						-1);
+			} else {
+				parent_ptr = NULL;
 			}
 		}
 
@@ -1300,17 +1229,8 @@ static void fill_dive_list(void)
 			DIVE_SUIT, dive->suit,
 			DIVE_SAC, 0,
 			-1);
-#ifdef DEBUG_TRIP
-		dump_trip_list();
-#endif
 	}
 
-	/* make sure we display the first date of the trip in previous summary */
-	if (parent_ptr && dive_trip)
-		gtk_tree_store_set(treestore, parent_ptr,
-				DIVE_DATE, dive_trip->when,
-				DIVE_LOCATION, dive_trip->location,
-				-1);
 	update_dive_list_units();
 	if (amount_selected == 0 && gtk_tree_model_get_iter_first(MODEL(dive_list), &iter)) {
 		GtkTreeSelection *selection;
@@ -1441,12 +1361,10 @@ void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 	GtkTreeIter iter;
 	timestamp_t when;
 	dive_trip_t *dive_trip;
-	GList *trip;
 
 	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_DATE, &when, -1);
-	trip = find_trip_by_time(when);
-	dive_trip = DIVE_TRIP(trip);
+	dive_trip = find_trip_by_time(when);
 	if (edit_trip(dive_trip))
 		gtk_tree_store_set(STORE(dive_list), &iter, DIVE_LOCATION, dive_trip->location, -1);
 }
@@ -1563,7 +1481,7 @@ static GtkTreeIter *move_dive_between_trips(GtkTreeIter *dive_iter, GtkTreeIter 
 	gtk_tree_store_remove(STORE(dive_list), dive_iter);
 	if (old_trip) {
 		gtk_tree_model_get(MODEL(dive_list), old_trip, DIVE_DATE, &old_when, -1);
-		old_divetrip = DIVE_TRIP(find_matching_trip(old_when));
+		old_divetrip = find_matching_trip(old_when);
 		update_trip_timestamp(old_trip, old_divetrip);
 	}
 	if (new_trip) {
@@ -1902,7 +1820,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	GtkTreePath *prevpath;
 	GtkTreeIter thistripiter, prevtripiter, newiter, iter;
 	GtkTreeModel *tm = MODEL(dive_list);
-	GList *prevtrip;
+	dive_trip_t *prevtrip;
 	timestamp_t when;
 
 	/* this only gets called when we are on a trip and there is another trip right before */
@@ -1918,7 +1836,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 		gtk_tree_store_insert_before(STORE(dive_list), &newiter, &prevtripiter, NULL);
 		idx = copy_tree_node(&iter, &newiter);
 		gtk_tree_store_remove(STORE(dive_list), &iter);
-		add_dive_to_trip(get_dive(idx), DIVE_TRIP(prevtrip));
+		add_dive_to_trip(get_dive(idx), prevtrip);
 	}
 	gtk_tree_store_remove(STORE(dive_list), &thistripiter);
 	mark_divelist_changed(TRUE);
@@ -1972,7 +1890,7 @@ void remember_tree_state()
 			continue;
 		path = gtk_tree_model_get_path(TREEMODEL(dive_list), &iter);
 		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path))
-			DIVE_TRIP(find_trip_by_time(when))->expanded = TRUE;
+			find_trip_by_time(when)->expanded = TRUE;
 	} while (gtk_tree_model_iter_next(TREEMODEL(dive_list), &iter));
 }
 
@@ -1986,9 +1904,9 @@ static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTr
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	if (idx < 0) {
-		if (DIVE_TRIP(find_trip_by_time(when))->expanded)
+		if (find_trip_by_time(when)->expanded)
 			gtk_tree_view_expand_row(tree_view, path, FALSE);
-		if (DIVE_TRIP(find_trip_by_time(when))->selected)
+		if (find_trip_by_time(when)->selected)
 			gtk_tree_selection_select_iter(selection, iter);
 	} else {
 		dive = get_dive(idx);
