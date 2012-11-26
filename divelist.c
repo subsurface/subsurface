@@ -1053,6 +1053,7 @@ static void delete_trip(dive_trip_t *trip)
 {
 	GList *trip_list = find_trip(trip);
 
+	assert(!trip->dives);
 	/*
 	 * The trip may not be on the list, if it had the
 	 * same time as another trip.
@@ -1066,23 +1067,31 @@ static void delete_trip(dive_trip_t *trip)
 
 static void find_new_trip_start_time(dive_trip_t *trip)
 {
-	int i;
-	struct dive *dive;
+	struct dive *dive = trip->dives;
+	timestamp_t when = dive->when;
 
-	for_each_dive(i, dive) {
-		if (dive->divetrip != trip)
-			continue;
-		trip->when = dive->when;
-		break;
+	while ((dive = dive->next) != NULL) {
+		if (dive->when < when)
+			when = dive->when;
 	}
+	trip->when = when;
 }
 
 void remove_dive_from_trip(struct dive *dive)
 {
+	struct dive *next, **pprev;
 	dive_trip_t *trip = dive->divetrip;
 
 	if (!trip)
 		return;
+
+	/* Remove the dive from the trip's list of dives */
+	next = dive->next;
+	pprev = dive->pprev;
+	*pprev = next;
+	if (next)
+		next->pprev = pprev;
+
 	dive->divetrip = NULL;
 	assert(trip->nrdives > 0);
 	if (!--trip->nrdives)
@@ -1099,6 +1108,14 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	remove_dive_from_trip(dive);
 	trip->nrdives++;
 	dive->divetrip = trip;
+
+	/* Add it to the trip's list of dives*/
+	dive->next = trip->dives;
+	if (dive->next)
+		dive->next->pprev = &dive->next;
+	trip->dives = dive;
+	dive->pprev = &trip->dives;
+
 	if (dive->when && trip->when > dive->when)
 		trip->when = dive->when;
 }

@@ -278,6 +278,7 @@ typedef struct dive_trip {
 	timestamp_t when_from_file;
 	char *location;
 	char *notes;
+	struct dive *dives;
 	int nrdives;
 	int expanded:1, selected:1;
 } dive_trip_t;
@@ -286,6 +287,7 @@ struct dive {
 	int number;
 	tripflag_t tripflag;
 	dive_trip_t *divetrip;
+	struct dive *next, **pprev;
 	int selected;
 	gboolean downloaded;
 	int start, end;
