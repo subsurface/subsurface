@@ -46,7 +46,7 @@ gboolean autogroup = FALSE;
 /* this duplicate assignment of "INTRIP" causes the save_xml code
  * to convert an ASSIGNED_TRIP (which is temporary in memory) to
  * a statically assigned trip (INTRIP) in file */
-const char *tripflag_names[NUM_TRIPFLAGS] = { "TF_NONE", "NOTRIP", "INTRIP", "INTRIP", "AUTOGEN_TRIP" };
+const char *tripflag_names[NUM_TRIPFLAGS] = { "TF_NONE", "NOTRIP", "INTRIP", "INTRIP" };
 
 /*
  * The dive list has the dive data in both string format (for showing)
@@ -945,7 +945,7 @@ static void dump_trip_list(void)
 		if (trip->when < last_time)
 			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
-			trip->tripflag == AUTOGEN_TRIP ? "autogen " : "",
+			trip->autogen ? "autogen " : "",
 			++i, trip->location,
 			tm.tm_year + 1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 			trip->nrdives, trip);
@@ -1156,7 +1156,7 @@ static void autogroup_dives(void)
 
 		lastdive = dive;
 		trip = create_and_hookup_trip_from_dive(dive);
-		trip->tripflag = AUTOGEN_TRIP;
+		trip->autogen = 1;
 	}
 
 #ifdef DEBUG_TRIP
@@ -2427,7 +2427,7 @@ void remove_autogen_trips()
 	for_each_dive(i, dive) {
 		dive_trip_t *trip = dive->divetrip;
 
-		if (trip && trip->tripflag == AUTOGEN_TRIP)
+		if (trip && trip->autogen)
 			remove_dive_from_trip(dive);
 	}
 }

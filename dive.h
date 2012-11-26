@@ -269,17 +269,16 @@ struct divecomputer {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
-typedef enum { TF_NONE, NO_TRIP, IN_TRIP, AUTOGEN_TRIP, ASSIGNED_TRIP, NUM_TRIPFLAGS } tripflag_t;
+typedef enum { TF_NONE, NO_TRIP, IN_TRIP, ASSIGNED_TRIP, NUM_TRIPFLAGS } tripflag_t;
 extern const char *tripflag_names[NUM_TRIPFLAGS];
 
 typedef struct dive_trip {
-	tripflag_t tripflag;
 	timestamp_t when;
 	char *location;
 	char *notes;
 	struct dive *dives;
 	int nrdives;
-	int expanded:1, selected:1;
+	unsigned expanded:1, selected:1, autogen:1;
 	struct dive_trip *next;
 } dive_trip_t;
 
@@ -359,8 +358,6 @@ extern gboolean autogroup;
 #define UNGROUPED_DIVE(_dive) ((_dive)->tripflag == NO_TRIP)
 #define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP || (_dive)->tripflag == ASSIGNED_TRIP)
 #define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
-#define DIVE_TRIP(_trip) ((dive_trip_t *)(_trip)->data)
-#define DIVE_FITS_TRIP(_dive, _dive_trip) ((_dive_trip)->when - TRIP_THRESHOLD <= (_dive)->when)
 
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 extern void remove_dive_from_trip(struct dive *);
