@@ -533,14 +533,8 @@ static void hex_value(char *buffer, void *_i)
 static void get_tripflag(char *buffer, void *_tf)
 {
 	tripflag_t *tf = _tf;
-	tripflag_t i;
-
-	*tf = TF_NONE;
-	for (i = NO_TRIP; i < NUM_TRIPFLAGS; i++)
-		if(! strcmp(buffer, tripflag_names[i])) {
-			*tf = i;
-			break;
-		}
+	*tf = strcmp(buffer, "NOTRIP") ? TF_NONE : NO_TRIP;
+	free(buffer);
 }
 
 static void centibar(char *buffer, void *_pressure)

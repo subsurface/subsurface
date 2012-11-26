@@ -43,11 +43,6 @@ static struct DiveList dive_list;
 dive_trip_t *dive_trip_list;
 gboolean autogroup = FALSE;
 
-/* this duplicate assignment of "INTRIP" causes the save_xml code
- * to convert an ASSIGNED_TRIP (which is temporary in memory) to
- * a statically assigned trip (INTRIP) in file */
-const char *tripflag_names[NUM_TRIPFLAGS] = { "TF_NONE", "NOTRIP", "INTRIP", "INTRIP" };
-
 /*
  * The dive list has the dive data in both string format (for showing)
  * and in "raw" format (for sorting purposes)

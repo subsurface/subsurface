@@ -373,14 +373,8 @@ static void save_dive(FILE *f, struct dive *dive)
 	fputs("<dive", f);
 	if (dive->number)
 		fprintf(f, " number='%d'", dive->number);
-	/*
-	 * TF_NONE is the default for dives with no trips
-	 * IN_TRIP is the default for dives with trips
-	 * ASSIGNED_TRIP is an in-memory thing and gets converted
-	 *    to IN_TRIP by the save code.
-	 */
-	if (dive->tripflag != TF_NONE && dive->tripflag != IN_TRIP && dive->tripflag != ASSIGNED_TRIP)
-		fprintf(f, " tripflag='%s'", tripflag_names[dive->tripflag]);
+	if (dive->tripflag == NO_TRIP)
+		fprintf(f, " tripflag='NOTRIP'");
 	if (dive->rating)
 		fprintf(f, " rating='%d'", dive->rating);
 	if (dive->visibility)

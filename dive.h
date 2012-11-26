@@ -270,7 +270,6 @@ struct divecomputer {
 #define W_IDX_SECONDARY 1
 
 typedef enum { TF_NONE, NO_TRIP, IN_TRIP, ASSIGNED_TRIP, NUM_TRIPFLAGS } tripflag_t;
-extern const char *tripflag_names[NUM_TRIPFLAGS];
 
 typedef struct dive_trip {
 	timestamp_t when;
