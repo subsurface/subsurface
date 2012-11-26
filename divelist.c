@@ -949,11 +949,6 @@ static void dump_trip_list(void)
 			++i, dive_trip->location,
 			tm.tm_year + 1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 			dive_trip->nrdives, dive_trip);
-		if (dive_trip->when_from_file && dive_trip->when != dive_trip->when_from_file) {
-			utc_mkdate(dive_trip->when_from_file, &tm);
-			printf("originally on %04u-%02u-%02u %02u:%02u:%02u\n",	tm.tm_year + 1900,
-				tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-		}
 		last_time = dive_trip->when;
 	}
 	printf("-----\n");
@@ -1609,7 +1604,6 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 		add_dive_to_trip(dive, prev_dive->divetrip);
 		/* we intentionally changed the dive_trip, so update the time
 		 * stamp that we fall back to when toggling autogroup */
-		dive->divetrip->when_from_file = dive->divetrip->when;
 		dive->tripflag = IN_TRIP;
 		free(move_dive_between_trips(&dive_iter, NULL, &trip_iter, NULL, TRUE));
 		prev_dive = dive;
@@ -1636,7 +1630,6 @@ static void turn_dive_into_trip(GtkTreePath *path)
 	char *location;
 	int idx;
 	struct dive *dive;
-	dive_trip_t *dive_trip;
 
 	/* this is a dive on the top level, insert trip AFTER it, populate its date / location, and
 	 * then move the dive below that trip */
@@ -1651,10 +1644,7 @@ static void turn_dive_into_trip(GtkTreePath *path)
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), newiter);
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
 	dive = get_dive(idx);
-	/* this trip is intentionally created so it should be treated as if
-	 * it was read from a file */
-	dive_trip = create_and_hookup_trip_from_dive(dive);
-	dive_trip->when_from_file = dive_trip->when;
+	create_and_hookup_trip_from_dive(dive);
 	free(newiter);
 }
 
@@ -1702,7 +1692,6 @@ static void insert_trip_before(GtkTreePath *path)
 			break;
 	}
 	/* treat this divetrip as if it had been read from a file */
-	new_divetrip->when_from_file = new_divetrip->when;
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), &newparent);
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
 #ifdef DEBUG_TRIP

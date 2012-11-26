@@ -275,7 +275,6 @@ extern const char *tripflag_names[NUM_TRIPFLAGS];
 typedef struct dive_trip {
 	tripflag_t tripflag;
 	timestamp_t when;
-	timestamp_t when_from_file;
 	char *location;
 	char *notes;
 	struct dive *dives;
