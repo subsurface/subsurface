@@ -348,7 +348,14 @@ Comment: <xsl:value-of select="Comment"/>
           <xsl:value-of select="concat(floor(number($timeSec) div 60), ':',    format-number(floor(number($timeSec) mod 60), '00'), ' min')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat(substring-before($timeSec, '.'), ':',           format-number(substring-after($timeSec, '.'), '00'), ' min')"/>
+          <xsl:choose>
+            <xsl:when test="substring-after($timeSec, '.') >= 60">
+              <xsl:value-of select="concat(substring-before($timeSec, '.'), ':', round(substring-after(format-number($timeSec, '.00'), '.') * .6), ' min')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat(substring-before($timeSec, '.'), ':', format-number(substring-after($timeSec, '.'), '00'), ' min')"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
