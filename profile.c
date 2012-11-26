@@ -1703,7 +1703,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	pi->nr = nr;
 	pi_idx = 2; /* the two extra events at the start */
 	/* check for gas changes before the samples start */
-	ev = get_next_event(dive->dc.events, "gaschange");
+	ev = get_next_event(dc->events, "gaschange");
 	while (ev && ev->time.seconds < dc->sample->time.seconds) {
 		entry = pi->entry + pi_idx;
 		entry->sec = ev->time.seconds;
@@ -1716,7 +1716,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	/* find the first deco/ceiling event (if any) */
-	ceil_ev = get_next_event(dive->dc.events, "ceiling");
+	ceil_ev = get_next_event(dc->events, "ceiling");
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
@@ -1958,6 +1958,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 		fake[2].time.seconds = duration - asc_desc_time;
 		fake[2].depth.mm = maxdepth;
 		fake[3].time.seconds = duration * 1.00;
+		fakedc.events = dc->events;
 		dc = &fakedc;
 	}
 
