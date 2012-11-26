@@ -847,6 +847,8 @@ static void pick_trip(struct dive *res, struct dive *pick)
  */
 static void merge_trip(struct dive *res, struct dive *a, struct dive *b)
 {
+	dive_trip_t *atrip, *btrip;
+
 	/*
 	 * The larger tripflag is more relevant: we prefer
 	 * take manually assigned trips over auto-generated
@@ -858,17 +860,20 @@ static void merge_trip(struct dive *res, struct dive *a, struct dive *b)
 	if (a->tripflag < b->tripflag)
 		goto pick_b;
 
-	/*
-	 * Ok, so the divetrips are equally "important".
-	 * Pick the one with the better description.
-	 */
-	if (!a->location)
+	/* Otherwise, look at the trip data and pick the "better" one */
+	atrip = a->divetrip;
+	btrip = b->divetrip;
+	if (!atrip)
 		goto pick_b;
-	if (!b->location)
+	if (!btrip)
 		goto pick_a;
-	if (!a->notes)
+	if (!atrip->location)
 		goto pick_b;
-	if (!b->notes)
+	if (!btrip->location)
+		goto pick_a;
+	if (!atrip->notes)
+		goto pick_b;
+	if (!btrip->notes)
 		goto pick_a;
 
 	/*
