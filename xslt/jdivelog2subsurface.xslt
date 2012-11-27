@@ -349,7 +349,7 @@ Comment: <xsl:value-of select="Comment"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:choose>
-            <xsl:when test="substring-after($timeSec, '.') &gt;= 60 or substring-after($timeSec, '.') &lt; 10">
+            <xsl:when test="substring-after($timeSec, '.') &gt;= 60 or string-length(substring-after($timeSec, '.')) &lt; 2">
               <xsl:value-of select="concat(substring-before($timeSec, '.'), ':', format-number(round(substring-after(format-number($timeSec, '.00'), '.') * .6), '00'), ' min')"/>
             </xsl:when>
             <xsl:otherwise>
