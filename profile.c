@@ -16,6 +16,7 @@
 #include "divelist.h"
 #include "color.h"
 #include "libdivecomputer/parser.h"
+#include "libdivecomputer/version.h"
 
 int selected_dive = 0;
 char zoomed_plot = 0;
@@ -369,27 +370,50 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			break;
 		depth = data->depth;
 	}
-	/* draw a little tirangular marker and attach tooltip */
-	x = SCALEX(gc, event->time.seconds);
-	y = SCALEY(gc, depth);
-	set_source_rgba(gc, ALERT_BG);
-	cairo_move_to(gc->cr, x-15, y+6);
-	cairo_line_to(gc->cr, x-3  , y+6);
-	cairo_line_to(gc->cr, x-9, y-6);
-	cairo_line_to(gc->cr, x-15, y+6);
-	cairo_stroke_preserve(gc->cr);
-	cairo_fill(gc->cr);
-	set_source_rgba(gc, ALERT_FG);
-	cairo_move_to(gc->cr, x-9, y-3);
-	cairo_line_to(gc->cr, x-9, y+1);
-	cairo_move_to(gc->cr, x-9, y+4);
-	cairo_line_to(gc->cr, x-9, y+4);
-	cairo_stroke(gc->cr);
+	/* don't draw NDL event triangles */
+	if (strcmp(event->name, "non stop time")) {
+		/* draw a little triangular marker and attach tooltip */
+		x = SCALEX(gc, event->time.seconds);
+		y = SCALEY(gc, depth);
+		set_source_rgba(gc, ALERT_BG);
+		cairo_move_to(gc->cr, x-15, y+6);
+		cairo_line_to(gc->cr, x-3  , y+6);
+		cairo_line_to(gc->cr, x-9, y-6);
+		cairo_line_to(gc->cr, x-15, y+6);
+		cairo_stroke_preserve(gc->cr);
+		cairo_fill(gc->cr);
+		set_source_rgba(gc, ALERT_FG);
+		cairo_move_to(gc->cr, x-9, y-3);
+		cairo_line_to(gc->cr, x-9, y+1);
+		cairo_move_to(gc->cr, x-9, y+4);
+		cairo_line_to(gc->cr, x-9, y+4);
+		cairo_stroke(gc->cr);
+	}
 	/* we display the event on screen - so translate */
-	if (event->value)
-		snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
-	else
+	if (event->value) {
+		if (event->type == SAMPLE_EVENT_DECOSTOP) {
+			/* deal with the packed depth / time data */
+			int seconds = (event->value >> 16) % 60;
+			if (seconds)
+				snprintf(buffer, sizeof(buffer), "%s: %dmin %ds @ %dm", _(event->name), (event->value >> 16) / 60,
+					seconds, event->value & 0xFFFF);
+			else
+				snprintf(buffer, sizeof(buffer), "%s: %dmin @ %dm", _(event->name), (event->value >> 16) / 60,
+					event->value & 0xFFFF);
+#if DC_VERSION_CHECK(0, 3, 0)
+		} else if (event->type == SAMPLE_EVENT_NDL) {
+			int seconds = event->value % 60;
+			if (seconds)
+				snprintf(buffer, sizeof(buffer), "%s: %dmin %ds", _(event->name), event->value / 60, seconds);
+			else
+				snprintf(buffer, sizeof(buffer), "%s: %dmin", _(event->name), event->value / 60);
+#endif
+		} else {
+			snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
+		}
+	} else {
 		snprintf(buffer, sizeof(buffer), "%s", _(event->name));
+	}
 	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
 
@@ -1690,7 +1714,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
-	struct event *ev, *ceil_ev;
+	struct event *ev, *deco_ev, *ndl_ev;
 	double amb_pressure;
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
@@ -1716,7 +1740,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	/* find the first deco/ceiling event (if any) */
-	ceil_ev = get_next_event(dc->events, "ceiling");
+	deco_ev = get_next_event(dc->events, "deco stop");
+	ndl_ev = get_next_event(dc->events, "non stop time");
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
@@ -1731,15 +1756,21 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			continue;
 		}
 		entry = pi->entry + i + pi_idx;
-		while (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
-			struct event *next_ceil_ev = get_next_event(ceil_ev->next, "ceiling");
-			if (!next_ceil_ev || next_ceil_ev->time.seconds > sample->time.seconds)
+		while (deco_ev && deco_ev->time.seconds <= sample->time.seconds) {
+			struct event *next_deco_ev = get_next_event(deco_ev->next, "deco stop");
+			if (!next_deco_ev || next_deco_ev->time.seconds > sample->time.seconds)
 				break;
-			ceil_ev = next_ceil_ev;
+			deco_ev = next_deco_ev;
 		}
-		if (ceil_ev && ceil_ev->time.seconds <= sample->time.seconds) {
-			ceiling = ceil_ev->value;
-			ceil_ev = get_next_event(ceil_ev->next, "ceiling");
+		if (deco_ev)
+			ndl_ev = get_next_event(deco_ev, "non stop time");
+		/* if there is an NDL event that comes after the latest deco stop event but
+		 * prior to this sample, then deco has ended */
+		if (ndl_ev && ndl_ev->time.seconds <= sample->time.seconds) {
+			ceiling = 0;
+		} else if (deco_ev && deco_ev->time.seconds <= sample->time.seconds) {
+				ceiling = 1000 * (deco_ev->value & 0xffff);
+				deco_ev = get_next_event(deco_ev->next, "deco stop");
 		}
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
