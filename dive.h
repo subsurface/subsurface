@@ -405,6 +405,16 @@ static inline struct dive *get_dive(int nr)
 	return dive_table.dives[nr];
 }
 
+static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
+{
+	int i;
+	for (i = 0; i < dive_table.nr; i++)
+		if (dive_table.dives[i]->dc.diveid == diveid &&
+		    dive_table.dives[i]->dc.deviceid == deviceid)
+			return dive_table.dives[i];
+	return NULL;
+}
+
 /*
  * Iterate over each dive, with the first parameter being the index
  * iterator variable, and the second one being the dive one.

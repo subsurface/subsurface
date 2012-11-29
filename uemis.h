@@ -8,6 +8,10 @@
 #include <stdint.h>
 
 void uemis_parse_divelog_binary(char *base64, void *divep);
+int uemis_get_weight_unit(int diveid);
+void uemis_mark_divelocation(int diveid, int divespot, char **location, double *longitude, double *latitude);
+void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude);
+
 void decode(uint8_t *in, uint8_t *out, int len);
 
 typedef struct {

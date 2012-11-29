@@ -102,6 +102,79 @@ bail:
 	return datalen;
 }
 
+struct uemis_helper {
+	int diveid;
+	int lbs;
+	int divespot;
+	char **location;
+	double *latitude;
+	double *longitude;
+	struct uemis_helper *next;
+};
+static struct uemis_helper *uemis_helper = NULL;
+
+static struct uemis_helper *uemis_get_helper(int diveid)
+{
+	struct uemis_helper **php = &uemis_helper;
+	struct uemis_helper *hp = *php;
+
+	while(hp) {
+		if (hp->diveid == diveid)
+			return hp;
+		if (hp->next) {
+			hp = hp->next;
+			continue;
+		}
+		php = &hp->next;
+		break;
+	}
+	hp = *php = malloc(sizeof(struct uemis_helper));
+	hp->diveid = diveid;
+	hp->next = NULL;
+	return hp;
+}
+
+static void uemis_weight_unit(int diveid, int lbs)
+{
+	struct uemis_helper *hp = uemis_get_helper(diveid);
+	if (hp)
+		hp->lbs = lbs;
+}
+
+int uemis_get_weight_unit(int diveid)
+{
+	struct uemis_helper *hp = uemis_helper;
+	while (hp) {
+		if (hp->diveid == diveid)
+			return hp->lbs;
+		hp = hp->next;
+	}
+	/* odd - we should have found this; default to kg */
+	return 0;
+}
+
+void uemis_mark_divelocation(int diveid, int divespot, char **location, double *longitude, double *latitude)
+{
+	struct uemis_helper *hp = uemis_get_helper(diveid);
+	hp->divespot = divespot;
+	hp->location = location;
+	hp->longitude = longitude;
+	hp->latitude = latitude;
+}
+
+void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
+{
+	struct uemis_helper *hp = uemis_helper;
+	while (hp) {
+		if (hp->divespot == divespot && hp->location) {
+			*hp->location = text;
+			*hp->longitude = longitude;
+			*hp->latitude = latitude;
+		}
+		hp = hp->next;
+	}
+}
+
 /* Create events from the flag bits and other data in the sample;
  * These bits basically represent what is displayed on screen at sample time.
  * Many of these 'warnings' are way hyper-active and seriously clutter the
@@ -203,7 +276,9 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	dc->model = strdup("Uemis Zurich");
 	dc->deviceid = *(uint32_t *)(data + 9);
 	dc->diveid = *(uint16_t *)(data + 7);
-
+	/* remember the weight units used in this dive - we may need this later when
+	 * parsing the weight */
+	uemis_weight_unit(dc->diveid, *(uint8_t *)(data + 24));
 	/* dive template in use:
 	   0 = air
 	   1 = nitrox (B)

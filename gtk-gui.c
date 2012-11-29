@@ -1644,22 +1644,6 @@ void import_files(GtkWidget *w, gpointer data)
 	restore_tree_state();
 }
 
-static GError *setup_uemis_import(device_data_t *data)
-{
-	GError *error = NULL;
-	char *buf = NULL;
-
-	error = uemis_download(data->devname, &buf, &data->progress, data->dialog, data->force_download);
-	if (buf && strlen(buf) > 1) {
-#if UEMIS_DEBUG > 3
-		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
-#endif
-		parse_xml_buffer("Uemis Download", buf, strlen(buf), TRUE, &error);
-		mark_divelist_changed(TRUE);
-	}
-	return error;
-}
-
 static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 {
 	GError *error;
@@ -1667,7 +1651,7 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 
 	/* HACK to simply include the Uemis Zurich in the list */
 	if (! strcmp(data->vendor, "Uemis") && ! strcmp(data->product, "Zurich")) {
-		error = setup_uemis_import(data);
+		error = uemis_download(data->devname, &data->progress, data->dialog, data->force_download);
 	} else {
 		error = do_import(data);
 	}
