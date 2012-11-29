@@ -44,7 +44,6 @@ static int mbuf_size = 0;
 
 struct argument_block {
 	const char *mountpath;
-	char **max_dive_data;
 	char **xml_buffer;
 	progressbar_t *progress;
 	gboolean force_download;
@@ -720,78 +719,26 @@ static char *process_raw_buffer(char *inbuf, char **max_divenr)
 	return strdup(conv_buffer);
 }
 
-/* to keep track of multiple computers we simply encode the last dive read
-   in tuples "{deviceid,nr},{deviceid,nr}..." no spaces to make parsing easier */
-
-static char *find_deviceid(char *max_dive_data, char *deviceid)
+static char *get_divenr(char *deviceidstr)
 {
-	char *pattern;
-	char *result;
-	if (! deviceid || *deviceid == '\0')
-		return NULL;
-	pattern = malloc(3 + strlen(deviceid));
-	sprintf(pattern, "{%s,", deviceid);
-	result = strstr(max_dive_data, pattern);
-	free(pattern);
-	return result;
-}
+	int deviceid, i, maxdiveid = 0;
+	char divenr[10];
 
-static char *get_divenr(char *max_dive_data, char *deviceid)
-{
-	char *q, *p = max_dive_data;
-	char *result = NULL;
-
-	if (!p || !deviceid)
-		return strdup("0");
-	p = find_deviceid(max_dive_data, deviceid);
-	if (p) {
-		p += strlen(deviceid) + 2;
-		q = strchr(p, '}');
-		if (!q)
-			return result;
-		result = malloc(q - p + 1);
-		strncpy(result, p, q - p);
-		result[q - p] = '\0';
+	if (sscanf(deviceidstr, "%d", &deviceid) != 1)
+		return "0";
+	for (i = 0; i < dive_table.nr; i++) {
+		struct divecomputer *dc = &dive_table.dives[i]->dc;
+		if (dc->deviceid == deviceid && dc->diveid > maxdiveid)
+			maxdiveid = dc->diveid;
 	}
-	if (!result)
-		result = strdup("0");
-	return result;
-}
+	snprintf(divenr, 10, "%d", maxdiveid);
 
-static char *update_max_dive_data(char *max_dive_data, char *deviceid, char *newmax)
-{
-	char *p;
-	char *result;
-	int len;
-
-	if (! newmax || *newmax == '\0')
-		return max_dive_data;
-	p = find_deviceid(max_dive_data, deviceid);
-	if (p) {
-		/* if there are more entries after this one, copy them,
-		   otherwise just remove the existing entry for this device */
-		char *q = strstr(p, "},{");
-		if (q) {
-			memcpy(p + 1, q + 3, strlen(q + 3) + 1);
-		} else {
-			if (p > max_dive_data)
-				*(p-1) = '\0';
-			else
-				*p = '\0';
-		}
-	}
-	/* now add the new one at the end */
-	len = strlen(max_dive_data) + strlen(deviceid) + strlen(newmax) + 4 + (strlen(max_dive_data) ? 1 : 0);
-	result = malloc(len);
-	snprintf(result, len, "%s%s{%s,%s}", max_dive_data, strlen(max_dive_data) ? "," : "", deviceid, newmax);
-	free(max_dive_data);
-	return result;
+	return strdup(divenr);
 }
 
 static char *do_uemis_download(struct argument_block *args)
 {
 	const char *mountpath = args->mountpath;
-	char **max_dive_data = args->max_dive_data;
 	char **xml_buffer = args->xml_buffer;
 	int xml_buffer_size;
 	char *newmax = NULL;
@@ -827,7 +774,7 @@ static char *do_uemis_download(struct argument_block *args)
 	 * the Uemis; otherwise check which was the last dive
 	 * downloaded */
 	if (!args->force_download && dive_table.nr > 0)
-		newmax = get_divenr(*max_dive_data, deviceid);
+		newmax = get_divenr(deviceid);
 	else
 		newmax = strdup("0");
 
@@ -862,7 +809,6 @@ static char *do_uemis_download(struct argument_block *args)
 		if (endptr)
 			*(endptr + 2) = '\0';
 	}
-	*args->max_dive_data = update_max_dive_data(*max_dive_data, deviceid, newmax);
 	if (sscanf(newmax, "%d", &end) != 1)
 		end = start;
 #if UEMIS_DEBUG > 1
@@ -920,12 +866,12 @@ static gboolean timeout_func(gpointer _data)
 	return FALSE;
 }
 
-GError *uemis_download(const char *mountpath, char **max_dive_data, char **xml_buffer, progressbar_t *progress,
+GError *uemis_download(const char *mountpath, char **xml_buffer, progressbar_t *progress,
 			GtkDialog *dialog, gboolean force_download)
 {
 	pthread_t pthread;
 	void *retval;
-	struct argument_block args = {mountpath, max_dive_data, xml_buffer, progress, force_download};
+	struct argument_block args = {mountpath, xml_buffer, progress, force_download};
 
 	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
 	import_thread_done = 0;

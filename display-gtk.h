@@ -113,7 +113,7 @@ typedef gint (*sort_func_t)(GtkTreeModel *model,
 extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
 		data_func_t data_func, unsigned int flags);
 
-GError *uemis_download(const char *path, char **divenr, char **xml_buffer,
+GError *uemis_download(const char *path, char **xml_buffer,
 			progressbar_t *progress, GtkDialog *dialog, gboolean force_download);
 
 #endif

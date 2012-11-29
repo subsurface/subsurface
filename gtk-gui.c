@@ -42,7 +42,6 @@ partial_pressure_graphs_t partial_pressure_graphs = { FALSE, FALSE, FALSE, 1.6, 
 static const char *default_dive_computer_vendor;
 static const char *default_dive_computer_product;
 static const char *default_dive_computer_device;
-static char *uemis_max_dive_data;
 static gboolean force_download;
 static gboolean prefer_downloaded;
 
@@ -85,12 +84,6 @@ static void set_default_dive_computer_device(const char *name)
 		free((void *)default_dive_computer_device);
 	default_dive_computer_device = strdup(name);
 	subsurface_set_conf("dive_computer_device", PREF_STRING, name);
-}
-
-static void set_uemis_last_dive(char *data)
-{
-	uemis_max_dive_data = data;
-	subsurface_set_conf("uemis_max_dive_data", PREF_STRING, data);
 }
 
 void repaint_dive(void)
@@ -1157,12 +1150,6 @@ void init_ui(int *argcp, char ***argvp)
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
 	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
-	conf_value = subsurface_get_conf("uemis_max_dive_data", PREF_STRING);
-	if (!conf_value)
-		uemis_max_dive_data = strdup("");
-	else
-		uemis_max_dive_data = strdup(conf_value);
-	free((char *)conf_value);
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_set_application_name ("subsurface");
@@ -1662,16 +1649,12 @@ static GError *setup_uemis_import(device_data_t *data)
 	GError *error = NULL;
 	char *buf = NULL;
 
-	error = uemis_download(data->devname, &uemis_max_dive_data, &buf, &data->progress, data->dialog, data->force_download);
+	error = uemis_download(data->devname, &buf, &data->progress, data->dialog, data->force_download);
 	if (buf && strlen(buf) > 1) {
 #if UEMIS_DEBUG > 3
 		fprintf(debugfile, "xml buffer \"%s\"\n\n", buf);
 #endif
 		parse_xml_buffer("Uemis Download", buf, strlen(buf), TRUE, &error);
-		set_uemis_last_dive(uemis_max_dive_data);
-#if UEMIS_DEBUG > 2
-		fprintf(debugfile, "uemis_max_dive_data: %s\n", uemis_max_dive_data);
-#endif
 		mark_divelist_changed(TRUE);
 	}
 	return error;
