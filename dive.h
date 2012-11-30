@@ -426,7 +426,7 @@ static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
 	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
 
 extern void parse_xml_init(void);
-extern void parse_xml_buffer(const char *url, const char *buf, int size, gboolean downloaded, GError **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
 extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, gboolean force);
 
