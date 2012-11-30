@@ -143,8 +143,6 @@ static GtkFileFilter *setup_filter(void)
 	GtkFileFilter *filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
 	gtk_file_filter_add_pattern(filter, "*.XML");
-	gtk_file_filter_add_pattern(filter, "*.sda");
-	gtk_file_filter_add_pattern(filter, "*.SDA");
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, _("XML file"));
 

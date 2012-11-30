@@ -14,7 +14,6 @@
 #include <glib/gi18n.h>
 
 #include "dive.h"
-#include "uemis.h"
 
 int verbose;
 
@@ -174,7 +173,6 @@ static gboolean from_download;
 static enum import_source {
 	UNKNOWN,
 	LIBDIVECOMPUTER,
-	UEMIS,
 	DIVINGLOG,
 	UDDF,
 } import_source;
@@ -476,43 +474,6 @@ static void utf8_string(char *buffer, void *_res)
 	*(char **)_res = buffer;
 }
 
-/*
- * Uemis water_pressure. In centibar. And when converting to
- * depth, I'm just going to always use saltwater, because I
- * think "true depth" is just stupid. From a diving standpoint,
- * "true depth" is pretty much completely pointless, unless
- * you're doing some kind of underwater surveying work.
- *
- * So I give water depths in "pressure depth", always assuming
- * salt water. So one atmosphere per 10m.
- */
-static void water_pressure(char *buffer, void *_depth)
-{
-	depth_t *depth = _depth;
-	union int_or_float val;
-	double atm, cm;
-
-	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
-		if (!val.fp)
-			break;
-		/* cbar to atm */
-		atm = bar_to_atm(val.fp * 10);
-		/*
-		 * atm to cm. Why not mm? The precision just isn't
-		 * there.
-		 */
-		cm = 100 * atm + 0.5;
-		if (cm > 0) {
-			depth->mm = 10 * (long)cm;
-			break;
-		}
-	default:
-		fprintf(stderr, "Strange water pressure '%s'\n", buffer);
-	}
-	free(buffer);
-}
-
 #define MATCH(pattern, fn, dest) \
 	match(pattern, strlen(pattern), name, len, fn, buf, dest)
 
@@ -535,46 +496,6 @@ static void get_tripflag(char *buffer, void *_tf)
 	tripflag_t *tf = _tf;
 	*tf = strcmp(buffer, "NOTRIP") ? TF_NONE : NO_TRIP;
 	free(buffer);
-}
-
-static void centibar(char *buffer, void *_pressure)
-{
-	pressure_t *pressure = _pressure;
-	union int_or_float val;
-
-	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
-		pressure->mbar = val.fp * 10 + 0.5;
-		break;
-	default:
-		fprintf(stderr, "Strange centibar pressure '%s'\n", buffer);
-	}
-	free(buffer);
-}
-
-static void decicelsius(char *buffer, void *_temp)
-{
-	temperature_t *temp = _temp;
-	union int_or_float val;
-
-	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
-		temp->mkelvin = (val.fp/10 + 273.15) * 1000 + 0.5;
-		break;
-	default:
-		fprintf(stderr, "Strange temperature: %s", buffer);
-	}
-	free(buffer);
-}
-
-static int uemis_fill_sample(struct sample *sample, const char *name, int len, char *buf)
-{
-	return	MATCH(".reading.dive_time", sampletime, &sample->time) ||
-		MATCH(".reading.water_pressure", water_pressure, &sample->depth) ||
-		MATCH(".reading.active_tank", get_index, &sample->cylinderindex) ||
-		MATCH(".reading.tank_pressure", centibar, &sample->cylinderpressure) ||
-		MATCH(".reading.dive_temperature", decicelsius, &sample->temperature) ||
-		0;
 }
 
 /*
@@ -750,11 +671,6 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 
 	switch (import_source) {
-	case UEMIS:
-		if (uemis_fill_sample(sample, name, len, buf))
-			return;
-		break;
-
 	case DIVINGLOG:
 		if (divinglog_fill_sample(sample, name, len, buf))
 			return;
@@ -811,201 +727,6 @@ static int divinglog_dive_match(struct dive *dive, const char *name, int len, ch
 		MATCH(".country.name", utf8_string, &country) ||
 		MATCH(".city.name", utf8_string, &city) ||
 		MATCH(".place.name", divinglog_place, &dive->location) ||
-		0;
-}
-
-static int buffer_value(char *buffer)
-{
-	int val = atoi(buffer);
-	free(buffer);
-	return val;
-}
-
-static void uemis_length_unit(char *buffer, void *_unused)
-{
-	input_units.length = buffer_value(buffer) ? FEET : METERS;
-}
-
-static void uemis_volume_unit(char *buffer, void *_unused)
-{
-	input_units.volume = buffer_value(buffer) ? CUFT : LITER;
-}
-
-static void uemis_pressure_unit(char *buffer, void *_unused)
-{
-#if 0
-	input_units.pressure = buffer_value(buffer) ? PSI : BAR;
-#endif
-}
-
-static void uemis_temperature_unit(char *buffer, void *_unused)
-{
-	input_units.temperature = buffer_value(buffer) ? FAHRENHEIT : CELSIUS;
-}
-
-static void uemis_weight_unit(char *buffer, void *_unused)
-{
-	input_units.weight = buffer_value(buffer) ? LBS : KG;
-}
-
-static void uemis_time_unit(char *buffer, void *_unused)
-{
-}
-
-static void uemis_date_unit(char *buffer, void *_unused)
-{
-}
-
-/* Modified julian day, yay! */
-static void uemis_date_time(char *buffer, void *_when)
-{
-	timestamp_t *when = _when;
-	union int_or_float val;
-
-	switch (integer_or_float(buffer, &val)) {
-	case FLOAT:
-		*when = (val.fp - 40587) * 86400;
-		break;
-	default:
-		fprintf(stderr, "Strange julian date: %s", buffer);
-	}
-	free(buffer);
-}
-
-/*
- * Uemis doesn't know time zones. You need to do them as
- * minutes, not hours.
- *
- * But that's ok, we don't track timezones yet either. We
- * just turn everything into "localtime expressed as UTC".
- */
-static void uemis_time_zone(char *buffer, void *_when)
-{
-#if 0 /* seems like this is only used to display it correctly
-       * the stored time appears to be UTC */
-
-	timestamp_t *when = _when;
-	signed char tz = atoi(buffer);
-
-	*when += tz * 3600;
-#endif
-}
-
-static void uemis_ts(char *buffer, void *_when)
-{
-	struct tm tm;
-	timestamp_t *when = _when;
-
-	memset(&tm, 0, sizeof(tm));
-	sscanf(buffer,"%d-%d-%dT%d:%d:%d",
-		&tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-		&tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-	tm.tm_mon  -= 1;
-	tm.tm_year -= 1900;
-	*when = utc_mktime(&tm);
-
-}
-
-static void uemis_duration(char *buffer, void *_duration)
-{
-	duration_t *duration = _duration;
-	duration->seconds = atof(buffer) * 60 + 0.5;
-}
-
-/* 0 - air ; 1 - nitrox1 ; 2 - nitrox2 ; 3 = nitrox3 */
-static int uemis_gas_template;
-
-/*
- * Christ. Uemis tank data is a total mess.
- *
- * We're passed a "virtual cylinder" (0 - 6) for the different
- * Uemis tank cases ("air", "nitrox_1", "nitrox_2.{bottom,deco}"
- * and "nitrox_3.{bottom,deco,travel}". We need to turn that
- * into the actual cylinder data depending on the gas template,
- * and ignore the ones that are irrelevant for that template.
- *
- * So for "template 2" (nitrox_2), we ignore virtual tanks 0-1
- * (which are "air" and "nitrox_1" respectively), and tanks 4-6
- * (which are the three "nitrox_3" tanks), and we turn virtual
- * tanks 2/3 into actual tanks 0/1.
- *
- * Confused yet?
- */
-static int uemis_cylinder_index(void *_cylinder)
-{
-	cylinder_t *cylinder = _cylinder;
-	unsigned int index = cylinder - cur_dive->cylinder;
-
-	if (index > 6) {
-		fprintf(stderr, "Uemis cylinder pointer calculations broken\n");
-		return -1;
-	}
-	switch(uemis_gas_template) {
-	case 1:	/* Dive uses tank 1 */
-		index -= 1;
-	/* Fallthrough */
-	case 0:	/* Dive uses tank 0 */
-		if (index)
-			index = -1;
-		break;
-	case 2: /* Dive uses tanks 2-3 */
-		index -= 2;
-		if (index > 1)
-			index = -1;
-		break;
-	case 3: /* Dive uses tanks 4-6 */
-		index -= 4;
-		if (index > 2)
-			index = -1;
-		break;
-	}
-	return index;
-}
-
-static void uemis_cylindersize(char *buffer, void *_cylinder)
-{
-	int index = uemis_cylinder_index(_cylinder);
-	if (index >= 0)
-		cylindersize(buffer, &cur_dive->cylinder[index].type.size);
-}
-
-static void uemis_percent(char *buffer, void *_cylinder)
-{
-	int index = uemis_cylinder_index(_cylinder);
-	if (index >= 0)
-		percent(buffer, &cur_dive->cylinder[index].gasmix.o2);
-}
-
-static int uemis_dive_match(struct dive *dive, const char *name, int len, char *buf)
-{
-	return	MATCH(".units.length", uemis_length_unit, &input_units) ||
-		MATCH(".units.volume", uemis_volume_unit, &input_units) ||
-		MATCH(".units.pressure", uemis_pressure_unit, &input_units) ||
-		MATCH(".units.temperature", uemis_temperature_unit, &input_units) ||
-		MATCH(".units.weight", uemis_weight_unit, &input_units) ||
-		MATCH(".units.time", uemis_time_unit, &input_units) ||
-		MATCH(".units.date", uemis_date_unit, &input_units) ||
-		MATCH(".date_time", uemis_date_time, &dive->when) ||
-		MATCH(".time_zone", uemis_time_zone, &dive->when) ||
-		MATCH(".ambient.temperature", decicelsius, &dive->airtemp) ||
-		MATCH(".gas.template", get_index, &uemis_gas_template) ||
-		MATCH(".air.bottom_tank.size", uemis_cylindersize, dive->cylinder + 0) ||
-		MATCH(".air.bottom_tank.oxygen", uemis_percent, dive->cylinder + 0) ||
-		MATCH(".nitrox_1.bottom_tank.size", uemis_cylindersize, dive->cylinder + 1) ||
-		MATCH(".nitrox_1.bottom_tank.oxygen", uemis_percent, dive->cylinder + 1) ||
-		MATCH(".nitrox_2.bottom_tank.size", uemis_cylindersize, dive->cylinder + 2) ||
-		MATCH(".nitrox_2.bottom_tank.oxygen", uemis_percent, dive->cylinder + 2) ||
-		MATCH(".nitrox_2.deco_tank.size", uemis_cylindersize, dive->cylinder + 3) ||
-		MATCH(".nitrox_2.deco_tank.oxygen", uemis_percent, dive->cylinder + 3) ||
-		MATCH(".nitrox_3.bottom_tank.size", uemis_cylindersize, dive->cylinder + 4) ||
-		MATCH(".nitrox_3.bottom_tank.oxygen", uemis_percent, dive->cylinder + 4) ||
-		MATCH(".nitrox_3.deco_tank.size", uemis_cylindersize, dive->cylinder + 5) ||
-		MATCH(".nitrox_3.deco_tank.oxygen", uemis_percent, dive->cylinder + 5) ||
-		MATCH(".nitrox_3.travel_tank.size", uemis_cylindersize, dive->cylinder + 6) ||
-		MATCH(".nitrox_3.travel_tank.oxygen", uemis_percent, dive->cylinder + 6) ||
-		MATCH(".dive.val.float", uemis_duration, &dive->duration) ||
-		MATCH(".dive.val.ts", uemis_ts, &dive->when) ||
-		MATCH(".dive.val.bin", uemis_parse_divelog_binary, dive) ||
 		0;
 }
 
@@ -1079,11 +800,6 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	start_match("dive", name, buf);
 
 	switch (import_source) {
-	case UEMIS:
-		if (uemis_dive_match(dive, name, len, buf))
-			return;
-		break;
-
 	case DIVINGLOG:
 		if (divinglog_dive_match(dive, name, len, buf))
 			return;
@@ -1462,12 +1178,6 @@ static void visit(xmlNode *n)
 	traverse(n->children);
 }
 
-static void uemis_importer(void)
-{
-	import_source = UEMIS;
-	input_units = SI_units;
-}
-
 static void DivingLog_importer(void)
 {
 	import_source = DIVINGLOG;
@@ -1517,8 +1227,6 @@ static struct nesting {
 
 	/* Import type recognition */
 	{ "Divinglog", DivingLog_importer },
-	{ "pre_dive", uemis_importer },
-	{ "dives", uemis_importer },
 	{ "uddf", uddf_importer },
 
 	{ NULL, }
