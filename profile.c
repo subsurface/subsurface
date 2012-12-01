@@ -37,6 +37,7 @@ struct plot_info {
 	int endpressure, maxpressure;
 	int mintemp, maxtemp, endtemp;
 	double endtempcoord;
+	gboolean has_ndl;
 	struct plot_data {
 		unsigned int same_cylinder:1;
 		unsigned int cylinderindex;
@@ -47,7 +48,9 @@ struct plot_info {
 		int temperature;
 		/* Depth info */
 		int depth;
-		int ceiling;
+		int ndl;
+		int stoptime;
+		int stopdepth;
 		int smoothed;
 		double po2, pn2, phe;
 		velocity_t velocity;
@@ -194,15 +197,17 @@ static void dump_pi (struct plot_info *pi)
 		"    maxpressure:%d mintemp:%d maxtemp:%d\n",
 		pi->nr, pi->maxtime, pi->meandepth, pi->maxdepth,
 		pi->maxpressure, pi->mintemp, pi->maxtemp);
-	for (i = 0; i < pi->nr; i++)
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = &pi->entry[i];
 		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
-			"                time:%d:%02d temperature:%d depth:%d ceiling:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
-			i, pi->entry[i].same_cylinder, pi->entry[i].cylinderindex, pi->entry[i].sec,
-			pi->entry[i].pressure[0], pi->entry[i].pressure[1],
-			pi->entry[i].sec / 60, pi->entry[i].sec % 60,
-			pi->entry[i].temperature, pi->entry[i].depth, pi->entry[i].ceiling, pi->entry[i].smoothed,
-			pi->entry[i].po2, pi->entry[i].phe, pi->entry[i].pn2,
-			pi->entry[i].po2 + pi->entry[i].phe + pi->entry[i].pn2);
+			"                time:%d:%02d temperature:%d depth:%d stopdepth:%d stoptime:%d ndl:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
+			i, entry->same_cylinder, entry->cylinderindex, entry->sec,
+			entry->pressure[0], entry->pressure[1],
+			entry->sec / 60, entry->sec % 60,
+			entry->temperature, entry->depth, entry->stopdepth, entry->stoptime, entry->ndl, entry->smoothed,
+			entry->po2, entry->phe, entry->pn2,
+			entry->po2 + entry->phe + entry->pn2);
+	}
 	printf("   }\n");
 }
 
@@ -370,50 +375,27 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			break;
 		depth = data->depth;
 	}
-	/* don't draw NDL event triangles */
-	if (strcmp(event->name, "non stop time")) {
-		/* draw a little triangular marker and attach tooltip */
-		x = SCALEX(gc, event->time.seconds);
-		y = SCALEY(gc, depth);
-		set_source_rgba(gc, ALERT_BG);
-		cairo_move_to(gc->cr, x-15, y+6);
-		cairo_line_to(gc->cr, x-3  , y+6);
-		cairo_line_to(gc->cr, x-9, y-6);
-		cairo_line_to(gc->cr, x-15, y+6);
-		cairo_stroke_preserve(gc->cr);
-		cairo_fill(gc->cr);
-		set_source_rgba(gc, ALERT_FG);
-		cairo_move_to(gc->cr, x-9, y-3);
-		cairo_line_to(gc->cr, x-9, y+1);
-		cairo_move_to(gc->cr, x-9, y+4);
-		cairo_line_to(gc->cr, x-9, y+4);
-		cairo_stroke(gc->cr);
-	}
+	/* draw a little triangular marker and attach tooltip */
+	x = SCALEX(gc, event->time.seconds);
+	y = SCALEY(gc, depth);
+	set_source_rgba(gc, ALERT_BG);
+	cairo_move_to(gc->cr, x-15, y+6);
+	cairo_line_to(gc->cr, x-3  , y+6);
+	cairo_line_to(gc->cr, x-9, y-6);
+	cairo_line_to(gc->cr, x-15, y+6);
+	cairo_stroke_preserve(gc->cr);
+	cairo_fill(gc->cr);
+	set_source_rgba(gc, ALERT_FG);
+	cairo_move_to(gc->cr, x-9, y-3);
+	cairo_line_to(gc->cr, x-9, y+1);
+	cairo_move_to(gc->cr, x-9, y+4);
+	cairo_line_to(gc->cr, x-9, y+4);
+	cairo_stroke(gc->cr);
 	/* we display the event on screen - so translate */
-	if (event->value) {
-		if (event->type == SAMPLE_EVENT_DECOSTOP) {
-			/* deal with the packed depth / time data */
-			int seconds = (event->value >> 16) % 60;
-			if (seconds)
-				snprintf(buffer, sizeof(buffer), "%s: %dmin %ds @ %dm", _(event->name), (event->value >> 16) / 60,
-					seconds, event->value & 0xFFFF);
-			else
-				snprintf(buffer, sizeof(buffer), "%s: %dmin @ %dm", _(event->name), (event->value >> 16) / 60,
-					event->value & 0xFFFF);
-#if DC_VERSION_CHECK(0, 3, 0)
-		} else if (event->type == SAMPLE_EVENT_NDL) {
-			int seconds = event->value % 60;
-			if (seconds)
-				snprintf(buffer, sizeof(buffer), "%s: %dmin %ds", _(event->name), event->value / 60, seconds);
-			else
-				snprintf(buffer, sizeof(buffer), "%s: %dmin", _(event->name), event->value / 60);
-#endif
-		} else {
-			snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
-		}
-	} else {
+	if (event->value)
+		snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
+	else
 		snprintf(buffer, sizeof(buffer), "%s", _(event->name));
-	}
 	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
 
@@ -1026,8 +1008,11 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	/* Show any ceiling we may have encountered */
 	for (i = pi->nr - 1; i >= 0; i--, entry--) {
-		if (entry->ceiling < entry->depth) {
-			line_to(gc, entry->sec, entry->ceiling);
+		if (entry->ndl) {
+			/* non-zero NDL implies this is a safety stop, no ceiling */
+			line_to(gc, entry->sec, 0);
+		} else if (entry->stopdepth < entry->depth) {
+				line_to(gc, entry->sec, entry->stopdepth);
 		} else {
 			line_to(gc, entry->sec, entry->depth);
 		}
@@ -1047,8 +1032,8 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		line_to(gc, entry->sec, entry->depth);
 
 	for (i = pi->nr - 1; i >= 0; i--, entry--) {
-		if (entry->ceiling > entry->depth) {
-			line_to(gc, entry->sec, entry->ceiling);
+		if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
+			line_to(gc, entry->sec, entry->stopdepth);
 		} else {
 			line_to(gc, entry->sec, entry->depth);
 		}
@@ -1707,14 +1692,14 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, pi_idx, nr, sec, cyl, ceiling = 0;
+	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth;
 	size_t alloc_size;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
-	struct event *ev, *deco_ev, *ndl_ev;
+	struct event *ev;
 	double amb_pressure;
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
@@ -1739,9 +1724,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		/* we already have a sample at the time of the event */
 		ev = get_next_event(ev->next, "gaschange");
 	}
-	/* find the first deco/ceiling event (if any) */
-	deco_ev = get_next_event(dc->events, "deco stop");
-	ndl_ev = get_next_event(dc->events, "non stop time");
 	sec = 0;
 	lastindex = 0;
 	lastdepth = -1;
@@ -1756,22 +1738,10 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			continue;
 		}
 		entry = pi->entry + i + pi_idx;
-		while (deco_ev && deco_ev->time.seconds <= sample->time.seconds) {
-			struct event *next_deco_ev = get_next_event(deco_ev->next, "deco stop");
-			if (!next_deco_ev || next_deco_ev->time.seconds > sample->time.seconds)
-				break;
-			deco_ev = next_deco_ev;
-		}
-		if (deco_ev)
-			ndl_ev = get_next_event(deco_ev, "non stop time");
-		/* if there is an NDL event that comes after the latest deco stop event but
-		 * prior to this sample, then deco has ended */
-		if (ndl_ev && ndl_ev->time.seconds <= sample->time.seconds) {
-			ceiling = 0;
-		} else if (deco_ev && deco_ev->time.seconds <= sample->time.seconds) {
-				ceiling = 1000 * (deco_ev->value & 0xffff);
-				deco_ev = get_next_event(deco_ev->next, "deco stop");
-		}
+		ndl = sample->ndl.seconds;
+		pi->has_ndl |= ndl;
+		stopdepth = sample->stopdepth.mm;
+		stoptime = sample->stoptime.seconds;
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
 			 * the old tank and the start of the new tank */
@@ -1789,8 +1759,12 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			} else
 				entry->depth = sample->depth.mm;
 			(entry + 1)->depth = entry->depth;
-			entry->ceiling = ceiling;
-			(entry + 1)->ceiling = ceiling;
+			entry->stopdepth = stopdepth;
+			entry->stoptime = stoptime;
+			entry->ndl = ndl;
+			(entry + 1)->stopdepth = stopdepth;
+			(entry + 1)->stoptime = stoptime;
+			(entry + 1)->ndl = ndl;
 			pi_idx += 2;
 			entry = pi->entry + i + pi_idx;
 			ev = get_next_event(ev->next, "gaschange");
@@ -1801,7 +1775,9 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			 * real even by one second (to keep time monotonous) */
 			entry->sec = ev->time.seconds;
 			entry->depth = sample->depth.mm;
-			entry->ceiling = ceiling;
+			entry->stopdepth = stopdepth;
+			entry->stoptime = stoptime;
+			entry->ndl = ndl;
 			pi_idx++;
 			entry = pi->entry + i + pi_idx;
 			ev = get_next_event(ev->next, "gaschange");
@@ -1809,7 +1785,9 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		}
 		sec = entry->sec = sample->time.seconds + delay;
 		depth = entry->depth = sample->depth.mm;
-		entry->ceiling = ceiling;
+		entry->stopdepth = stopdepth;
+		entry->stoptime = stoptime;
+		entry->ndl = ndl;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
@@ -2061,7 +2039,8 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	}
 }
 
-static void plot_string(struct plot_data *entry, char *buf, size_t bufsize, int depth, int pressure, int temp)
+static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
+			int depth, int pressure, int temp, gboolean has_ndl)
 {
 	int pressurevalue;
 	const char *depth_unit, *pressure_unit, *temp_unit;
@@ -2079,6 +2058,30 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize, int 
 		tempvalue = get_temp_units(temp, &temp_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\nT:%.1f %s", buf2, tempvalue, temp_unit);
+	}
+	if (entry->stopdepth) {
+		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		if (entry->ndl) {
+			/* this is a safety stop as we still have ndl */
+			if (entry->stoptime)
+				snprintf(buf, bufsize, "%s\nSafetystop:%umin @ %.0f %s", buf2, entry->stoptime / 60,
+					depthvalue, depth_unit);
+			else
+				snprintf(buf, bufsize, "%s\nSafetystop:unkn time @ %.0f %s", buf2,
+					depthvalue, depth_unit);
+		} else {
+			/* actual deco stop */
+			if (entry->stoptime)
+				snprintf(buf, bufsize, "%s\nDeco:%umin @ %.0f %s", buf2, entry->stoptime / 60,
+					depthvalue, depth_unit);
+			else
+				snprintf(buf, bufsize, "%s\nDeco:unkn time @ %.0f %s", buf2,
+					depthvalue, depth_unit);
+		}
+	} else if (has_ndl) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nNDL:%umin", buf2, entry->ndl / 60);
 	}
 	if (partial_pressure_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
@@ -2110,11 +2113,9 @@ void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t b
 				temp = entry->temperature;
 			if (GET_PRESSURE(entry))
 				pressure = GET_PRESSURE(entry);
-			if (entry->sec >= time) {
-				plot_string(entry, buf, bufsize, entry->depth, pressure, temp);
-				return;
-			}
+			if (entry->sec >= time)
+				break;
 		}
-		plot_string(entry, buf, bufsize, entry->depth, pressure, temp);
+		plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
 	}
 }

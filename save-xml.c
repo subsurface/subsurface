@@ -293,7 +293,7 @@ static void show_index(FILE *f, int value, const char *pre, const char *post)
 		fprintf(f, " %s%d%s", pre, value, post);
 }
 
-static void save_sample(FILE *f, struct sample *sample)
+static void save_sample(FILE *f, struct sample *sample, const struct sample *prev)
 {
 	fprintf(f, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds,60));
 	show_milli(f, " depth='", sample->depth.mm, " m", "'");
@@ -301,6 +301,13 @@ static void save_sample(FILE *f, struct sample *sample)
 	show_pressure(f, sample->cylinderpressure, " pressure='", "'");
 	if (sample->cylinderindex)
 		fprintf(f, " cylinderindex='%d'", sample->cylinderindex);
+	/* the deco/ndl values are stored whenever they change */
+	if (sample->ndl.seconds != prev->ndl.seconds)
+		fprintf(f, " ndl='%u:%02u min'", FRACTION(sample->ndl.seconds, 60));
+	if (sample->stoptime.seconds != prev->stoptime.seconds)
+		fprintf(f, " stoptime='%u:%02u min'", FRACTION(sample->stoptime.seconds, 60));
+	if (sample->stopdepth.mm != prev->stopdepth.mm)
+		show_milli(f, " stopdepth='", sample->stopdepth.mm, " m", "'");
 	fprintf(f, " />\n");
 }
 
@@ -346,10 +353,20 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 		show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
 }
 
+static void save_samples(FILE *f, int nr, struct sample *s)
+{
+	static const struct sample empty_sample;
+	const struct sample *prev = &empty_sample;
+
+	while (--nr >= 0) {
+		save_sample(f, s, prev);
+		prev = s;
+		s++;
+	}
+}
+
 static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 {
-	int i;
-
 	fprintf(f, "  <divecomputer");
 	if (dc->model)
 		show_utf8(f, dc->model, " model='", "'", 1);
@@ -361,8 +378,8 @@ static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 		show_date(f, dc->when);
 	fprintf(f, ">\n");
 	save_events(f, dc->events);
-	for (i = 0; i < dc->samples; i++)
-		save_sample(f, dc->sample+i);
+	save_samples(f, dc->samples, dc->sample);
+
 	fprintf(f, "  </divecomputer>\n");
 }
 

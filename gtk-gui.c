@@ -1274,7 +1274,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 	gint tx = x - drawing_area->x; /* get transformed coordinates */
 	gint ty = y - drawing_area->y;
 	gint width, height, time = -1;
-	char buffer[80], plot[80];
+	char buffer[256], plot[256];
 	const char *event = "";
 
 	if (tx < 0 || ty < 0)

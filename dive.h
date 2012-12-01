@@ -223,6 +223,9 @@ struct sample {
 	temperature_t temperature;
 	pressure_t cylinderpressure;
 	int cylinderindex;
+	duration_t ndl;
+	duration_t stoptime;
+	depth_t stopdepth;
 };
 
 /*

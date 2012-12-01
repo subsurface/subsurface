@@ -10,6 +10,7 @@
 #include "display-gtk.h"
 
 #include "libdivecomputer.h"
+#include "libdivecomputer/version.h"
 
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H
@@ -86,7 +87,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
-
+	static int stoptime = 0, stopdepth = 0, ndl = 0;
 	/*
 	 * Just ignore surface events.  They are pointless.  What "surface"
 	 * means depends on the dive computer (and possibly even settings
@@ -95,6 +96,27 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	 */
 	if (value.event.type == SAMPLE_EVENT_SURFACE)
 		return;
+
+	/* libdivecomputer 0.3 provides us with deco / ndl information for at least
+	 * the OSTC. Sadly, it does so through events - so we convert this into our
+	 * preferred sample format here */
+#if DC_VERSION_CHECK(0, 3, 0)
+	if (value.event.type == SAMPLE_EVENT_DECOSTOP) {
+		/* packed value - time in seconds in high 16 bit
+		 * depth in m(!) in low 16 bits */
+		stoptime = value.event.value >> 16;
+		stopdepth = (value.event.value && 0xFFFF) * 1000;
+		ndl = 0;
+	}
+	if (value.event.type == SAMPLE_EVENT_NDL) {
+		stopdepth = 0;
+		stoptime = 0;
+		ndl = value.event.value;
+	}
+	sample->stoptime.seconds = stoptime;
+	sample->stopdepth.mm = stopdepth;
+	sample->ndl.seconds = ndl;
+#endif
 
 	/*
 	 * Other evens might be more interesting, but for now we just print them out.
