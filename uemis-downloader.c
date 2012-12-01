@@ -25,7 +25,7 @@
 #include "display.h"
 #include "display-gtk.h"
 
-#define ERR_FS_ALMOST_FULL N_("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand try again")
+#define ERR_FS_ALMOST_FULL N_("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
 #define ERR_FS_FULL N_("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
 #define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
@@ -136,7 +136,7 @@ static struct dive *uemis_start_dive(int deviceid)
 /* send text to the importer progress bar */
 static void uemis_info(const char *fmt, ...)
 {
-	static char buffer[32];
+	static char buffer[40];
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -375,7 +375,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		else if (!strcmp(request, "getDivespot"))
 			what = _("divespot data id");
 		else if (!strcmp(request, "getDive"))
-			what = _("additional data dive id");
+			what = _("more data dive id");
 	}
 	str_append_with_delim(sb, "");
 	file_length = strlen(sb);
