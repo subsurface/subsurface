@@ -367,7 +367,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	for (i = 0; i < n_param_in; i++)
 		str_append_with_delim(sb, param_buff[i]);
 	if (! strcmp(request, "getDivelogs") || ! strcmp(request, "getDeviceData") || ! strcmp(request, "getDirectory") ||
-		! strcmp(request, "getDivespot") || strcmp(request, "getDive")) {
+		! strcmp(request, "getDivespot") || ! strcmp(request, "getDive")) {
 		answer_in_mbuf = TRUE;
 		str_append_with_delim(sb, "");
 		if (! strcmp(request, "getDivelogs"))
