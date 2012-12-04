@@ -1052,19 +1052,113 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
 #endif
 
 /*
+ * Are a and b "similar" values, when given a reasonable lower end expected
+ * difference?
+ *
+ * So for example, we'd expect different dive computers to give different
+ * max depth readings. You might have them on different arms, and they
+ * have different pressure sensors and possibly different ideas about
+ * water salinity etc.
+ *
+ * So have an expected minimum difference, but also allow a larger relative
+ * error value.
+ */
+static int similar(unsigned long a, unsigned long b, unsigned long expected)
+{
+	if (a && b) {
+		unsigned long min, max, diff;
+
+		min = a; max = b;
+		if (a > b) {
+			min = b;
+			max = a;
+		}
+		diff = max - min;
+
+		/* Smaller than expected difference? */
+		if (diff < expected)
+			return 1;
+		/* Error less than 10% or the maximum */
+		if (diff*10 < max)
+			return 1;
+	}
+	return 0;
+}
+
+static int same_dive_computer(struct dive *a, struct dive *b)
+{
+	/* No model info in one or the other? Assume they're the same */
+	if (!a->dc.model || !b->dc.model)
+		return 1;
+	if (strcasecmp(a->dc.model, b->dc.model))
+		return 0;
+	/* No device ID? Assume same.. */
+	if (!a->dc.deviceid || !b->dc.deviceid)
+		return 1;
+	return 0;
+}
+
+/*
+ * Do we want to automatically try to merge two dives that
+ * look like they are the same dive?
+ *
+ * This happens quite commonly because you download a dive
+ * that you already had, or perhaps because you maintained
+ * multiple dive logs and want to load them all together
+ * (possibly one of them was imported from another dive log
+ * application entirely).
+ *
+ * NOTE! We mainly look at the dive time, but it can differ
+ * between two dives due to a few issues:
+ *
+ *  - rounding the dive date to the nearest minute in other dive
+ *    applications
+ *
+ *  - dive computers with "relative datestamps" (ie the dive
+ *    computer doesn't actually record an absolute date at all,
+ *    but instead at download-time syncronizes its internal
+ *    time with real-time on the downloading computer)
+ *
+ *  - using multiple dive computers with different real time on
+ *    the same dive
+ *
+ * We do not merge dives that look radically different, and if
+ * the dates are *too* far off the user will have to join two
+ * dives together manually. But this tries to handle the sane
+ * cases.
+ */
+static int likely_same_dive(struct dive *a, struct dive *b)
+{
+	int fuzz;
+
+	/*
+	 * Do some basic sanity testing of the values we
+	 * have filled in during 'fixup_dive()'
+	 */
+	if (!similar(a->maxdepth.mm, b->maxdepth.mm, 1000) ||
+	    !similar(a->meandepth.mm, b->meandepth.mm, 1000) ||
+	    !similar(a->duration.seconds, b->duration.seconds, 5*60))
+		return 0;
+
+	/*
+	 * Allow a minute difference by default (minute rounding etc),
+	 * and more if the dive computers are clearly different.
+	 */
+	fuzz = same_dive_computer(a, b) ? 60 : 5*60;
+
+	return ((a->when <= b->when + fuzz) && (a->when >= b->when - fuzz));
+}
+
+/*
  * This could do a lot more merging. Right now it really only
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
  */
 struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded)
 {
-	/*
-	 * This assumes that the clocks on the dive computers are
-	 * roughly synchronized.
-	 */
-	if ((a->when >= b->when + 60) || (a->when <= b->when - 60))
-		return NULL;
-	return merge_dives(a, b, 0, prefer_downloaded);
+	if (likely_same_dive(a, b))
+		return merge_dives(a, b, 0, prefer_downloaded);
+	return NULL;
 }
 
 static void free_events(struct event *ev)
