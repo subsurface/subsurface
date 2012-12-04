@@ -957,7 +957,7 @@ static dive_trip_t *find_trip_by_time(timestamp_t when)
 
 	while (trip && trip->when < when)
 		trip = trip->next;
-	if (trip->when == when) {
+	if (trip && trip->when == when) {
 #ifdef DEBUG_TRIP
 		struct tm tm;
 		utc_mkdate(trip->when, &tm);
@@ -1813,9 +1813,9 @@ void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 {
 	GtkTreePath *prevpath;
-	GtkTreeIter thistripiter, prevtripiter, newiter, iter;
+	GtkTreeIter thistripiter, prevtripiter;
 	GtkTreeModel *tm = MODEL(dive_list);
-	dive_trip_t *prevtrip;
+	dive_trip_t *thistrip, *prevtrip;
 	timestamp_t when;
 
 	/* this only gets called when we are on a trip and there is another trip right before */
@@ -1823,17 +1823,16 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	gtk_tree_path_prev(prevpath);
 	gtk_tree_model_get_iter(tm, &thistripiter, trippath);
 	gtk_tree_model_get(tm, &thistripiter, DIVE_DATE, &when, -1);
+	thistrip = find_matching_trip(when);
 	gtk_tree_model_get_iter(tm, &prevtripiter, prevpath);
 	gtk_tree_model_get(tm, &prevtripiter, DIVE_DATE, &when, -1);
 	prevtrip = find_matching_trip(when);
-	while (gtk_tree_model_iter_children(tm, &iter, &thistripiter)) {
-		int idx;
-		gtk_tree_store_insert_before(STORE(dive_list), &newiter, &prevtripiter, NULL);
-		idx = copy_tree_node(&iter, &newiter);
-		gtk_tree_store_remove(STORE(dive_list), &iter);
-		add_dive_to_trip(get_dive(idx), prevtrip);
-	}
-	gtk_tree_store_remove(STORE(dive_list), &thistripiter);
+	remember_tree_state();
+	/* move dives from trip */
+	while (thistrip->dives)
+		add_dive_to_trip(thistrip->dives, prevtrip);
+	dive_list_update_dives();
+	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -1871,6 +1870,7 @@ void add_single_dive(int idx, struct dive *dive)
 /* remember expanded state */
 void remember_tree_state()
 {
+	dive_trip_t *trip;
 	GtkTreeIter iter;
 	if (!gtk_tree_model_get_iter_first(TREEMODEL(dive_list), &iter))
 		return;
@@ -1884,8 +1884,11 @@ void remember_tree_state()
 		if (idx >= 0)
 			continue;
 		path = gtk_tree_model_get_path(TREEMODEL(dive_list), &iter);
-		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path))
-			find_trip_by_time(when)->expanded = TRUE;
+		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path)) {
+			trip = find_trip_by_time(when);
+			if (trip)
+				trip->expanded = TRUE;
+		}
 	} while (gtk_tree_model_iter_next(TREEMODEL(dive_list), &iter));
 }
 
