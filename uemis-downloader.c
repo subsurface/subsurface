@@ -92,7 +92,7 @@ static void uemis_ts(char *buffer, void *_when)
 /* float minutes */
 static void uemis_duration(char *buffer, duration_t *duration)
 {
-	duration->seconds = atof(buffer) * 60 + 0.5;
+	duration->seconds = g_ascii_strtod(buffer, NULL) * 60 + 0.5;
 }
 
 /* int cm */
@@ -127,7 +127,7 @@ static void uemis_add_string(char *buffer, char **text)
 static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
-				lbs_to_grams(atof(buffer)) : atof(buffer) * 1000;
+		lbs_to_grams(g_ascii_strtod(buffer, NULL)) : g_ascii_strtod(buffer, NULL) * 1000;
 	weight->description = strdup("unknown");
 }
 
@@ -545,9 +545,9 @@ static void parse_divespot(char *buf)
 					"%s%s", len ? ", " : "", val);
 		} else if (!strcmp(type, "float")) {
 			if (!strcmp(tag, "longitude"))
-				longitude = atof(val);
+				longitude = g_ascii_strtod(val, NULL);
 			else if (!strcmp(tag, "latitude"))
-				latitude = atof(val);
+				latitude = g_ascii_strtod(val, NULL);
 		}
 	} while (tag && *tag);
 	uemis_set_divelocation(divespot, strdup(locationstring), latitude, longitude);
