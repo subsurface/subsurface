@@ -553,7 +553,7 @@ static void parse_divespot(char *buf)
 	uemis_set_divelocation(divespot, strdup(locationstring), latitude, longitude);
 }
 
-static void track_divespot(char *val, int diveid, char **location, double *latitude, double *longitude)
+static void track_divespot(char *val, int diveid, char **location, degrees_t *latitude, degrees_t *longitude)
 {
 	int id = atoi(val);
 	if (id >= 0 && id > nr_divespots)

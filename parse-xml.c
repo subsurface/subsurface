@@ -788,13 +788,61 @@ static int uddf_dive_match(struct dive *dive, const char *name, int len, char *b
 		0;
 }
 
+/*
+ * This parses "floating point" into micro-degrees.
+ * We don't do exponentials etc, if somebody does
+ * gps locations in that format, they are insane.
+ */
+static degrees_t parse_degrees(char *buf, char **end)
+{
+	int sign = 1, decimals = 6, value = 0;
+	degrees_t ret;
+
+	while (isspace(*buf))
+		buf++;
+	switch (*buf) {
+	case '-':
+		sign = -1;
+		/* fallthrough */
+	case '+':
+		buf++;
+	}
+	while (isdigit(*buf)) {
+		value = 10*value + *buf - '0';
+		buf++;
+	}
+
+	/* Get the first six decimals if they exist */
+	if (*buf == '.')
+		buf++;
+	do {
+		value *= 10;
+		if (isdigit(*buf)) {
+			value += *buf - '0';
+			buf++;
+		}
+	} while (--decimals);
+
+	/* Rounding */
+	switch (*buf) {
+	case '5' ... '9':
+		value++;
+	}
+	while (isdigit(*buf))
+		buf++;
+
+	*end = buf;
+	ret.udeg = value * sign;
+	return ret;
+}
+
 static void gps_location(char *buffer, void *_dive)
 {
 	char *end;
 	struct dive *dive = _dive;
 
-	dive->latitude = g_ascii_strtod(buffer, &end);
-	dive->longitude = g_ascii_strtod(end, &end);
+	dive->latitude = parse_degrees(buffer, &end);
+	dive->longitude = parse_degrees(end, &end);
 	free(buffer);
 }
 

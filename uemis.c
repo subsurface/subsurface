@@ -15,6 +15,7 @@
 #include <glib/gi18n.h>
 #define __USE_XOPEN
 #include <time.h>
+#include <math.h>
 
 #include "dive.h"
 #include "uemis.h"
@@ -107,8 +108,8 @@ struct uemis_helper {
 	int lbs;
 	int divespot;
 	char **location;
-	double *latitude;
-	double *longitude;
+	degrees_t *latitude;
+	degrees_t *longitude;
 	struct uemis_helper *next;
 };
 static struct uemis_helper *uemis_helper = NULL;
@@ -153,7 +154,7 @@ int uemis_get_weight_unit(int diveid)
 	return 0;
 }
 
-void uemis_mark_divelocation(int diveid, int divespot, char **location, double *longitude, double *latitude)
+void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_t *longitude, degrees_t *latitude)
 {
 	struct uemis_helper *hp = uemis_get_helper(diveid);
 	hp->divespot = divespot;
@@ -168,8 +169,8 @@ void uemis_set_divelocation(int divespot, char *text, double longitude, double l
 	while (hp) {
 		if (hp->divespot == divespot && hp->location) {
 			*hp->location = text;
-			*hp->longitude = longitude;
-			*hp->latitude = latitude;
+			hp->longitude->udeg = round(longitude * 1000000);
+			hp->latitude->udeg = round(latitude * 1000000);
 		}
 		hp = hp->next;
 	}

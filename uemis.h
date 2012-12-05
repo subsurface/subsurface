@@ -6,10 +6,11 @@
 #define UEMIS_H
 
 #include <stdint.h>
+#include "dive.h"
 
 void uemis_parse_divelog_binary(char *base64, void *divep);
 int uemis_get_weight_unit(int diveid);
-void uemis_mark_divelocation(int diveid, int divespot, char **location, double *longitude, double *latitude);
+void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_t *longitude, degrees_t *latitude);
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude);
 
 typedef struct {

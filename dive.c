@@ -1366,8 +1366,8 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
-	MERGE_NONZERO(res, a, b, latitude);
-	MERGE_NONZERO(res, a, b, longitude);
+	MERGE_NONZERO(res, a, b, latitude.udeg);
+	MERGE_NONZERO(res, a, b, longitude.udeg);
 	MERGE_TXT(res, a, b, location);
 	MERGE_TXT(res, a, b, notes);
 	MERGE_TXT(res, a, b, buddy);

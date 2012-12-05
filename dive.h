@@ -75,6 +75,10 @@ typedef struct {
 	int grams;
 } weight_t;
 
+typedef struct {
+	int udeg;
+} degrees_t;
+
 struct gasmix {
 	fraction_t o2;
 	fraction_t he;
@@ -300,7 +304,7 @@ struct dive {
 	char *notes;
 	char *divemaster, *buddy;
 	int rating;
-	double latitude, longitude;
+	degrees_t latitude, longitude;
 	depth_t maxdepth, meandepth;
 	int salinity; // kg per 10000 l
 	duration_t duration, surfacetime;

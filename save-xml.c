@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
-#include <math.h>
 
 #include "dive.h"
 
@@ -183,9 +182,9 @@ static void save_salinity(FILE *f, struct dive *dive)
  * on a great circle (ie longitude at equator). And micro-degrees
  * is also enough to fit in a fixed-point 32-bit integer.
  */
-static int format_degrees(char *buffer, double value)
+static int format_degrees(char *buffer, degrees_t value)
 {
-	int udeg = round(value * 1000000.0);
+	int udeg = value.udeg;
 	const char *sign = "";
 
 	if (udeg < 0) {
@@ -196,7 +195,7 @@ static int format_degrees(char *buffer, double value)
 		sign, udeg / 1000000, udeg % 1000000);
 }
 
-static int format_location(char *buffer, double latitude, double longitude)
+static int format_location(char *buffer, degrees_t latitude, degrees_t longitude)
 {
 	int len = sprintf(buffer, "gps='");
 
@@ -212,8 +211,8 @@ static void show_location(FILE *f, struct dive *dive)
 {
 	char buffer[80];
 	const char *prefix = "  <location>";
-	double latitude = dive->latitude;
-	double longitude = dive->longitude;
+	degrees_t latitude = dive->latitude;
+	degrees_t longitude = dive->longitude;
 
 	/*
 	 * Ok, theoretically I guess you could dive at
@@ -221,7 +220,7 @@ static void show_location(FILE *f, struct dive *dive)
 	 * if you do, just fudge it a bit, and say that
 	 * you dove a few meters away.
 	 */
-	if (latitude || longitude) {
+	if (latitude.udeg || longitude.udeg) {
 		int len = sprintf(buffer, "  <location ");
 
 		len += format_location(buffer+len, latitude, longitude);
