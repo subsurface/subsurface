@@ -322,9 +322,10 @@ static gboolean next_file(int max)
 
 static char *first_object_id_val(char* buf)
 {
-	char *object;
+	char *object, *bufend;
 	if (!buf)
 		return NULL;
+	bufend = buf + strlen(buf);
 	object = strstr(buf, "object_id");
 	if (object) {
 		/* get the value */
@@ -332,12 +333,18 @@ static char *first_object_id_val(char* buf)
 		char *p = object + 14;
 		char *t = tmp;
 
-		if (p < buf + strlen(buf)) {
-			while (*p != '{' && t < tmp + 9)
-				*t++ = *p++;
+#if UEMIS_DEBUG & 2
+		char debugbuf[50];
+		strncpy(debugbuf, object, 49);
+		debugbuf[49] = '\0';
+		fprintf(debugfile, "buf |%s|\n", debugbuf);
+#endif
+		while (p < bufend && *p != '{' && t < tmp + 9)
+			*t++ = *p++;
+		if (*p == '{') {
 			*t = '\0';
+			return strdup(tmp);
 		}
-		return strdup(tmp);
 	}
 	return NULL;
 }
@@ -350,6 +357,9 @@ static void show_progress(char *buf, char *what)
 	char *val = first_object_id_val(buf);
 	if (val) {
 		/* let the user know what we are working on */
+#if UEMIS_DEBUG & 2
+		fprintf(debugfile,"reading %s %s\n", what, val);
+#endif
 		uemis_info(_("Reading %s %s"), what, val);
 		free(val);
 	}
