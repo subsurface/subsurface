@@ -188,6 +188,8 @@ void uemis_set_divelocation(int divespot, char *text, double longitude, double l
 static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sample *sample, uemis_sample_t *u_sample)
 {
 	uint8_t *flags = u_sample->flags;
+	int stopdepth;
+	static int lastndl;
 
 	if (flags[1] & 0x01)
 		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Safety Stop Violation"));
@@ -232,22 +234,45 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	/* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
 
-	/* now add deco / NDL
-	 * This will create an event for every sample (SUCK) but the
-	 * code in the parser will then do the right thing and just
-	 * keep the relevant ones */
-	if (u_sample->p_amb_tol > dive->surface_pressure.mbar) {
-		if (u_sample->hold_time && u_sample->hold_time < 99) {
-			int hold_depth = u_sample->hold_depth / 100.0 + 0.5;
-			add_event(dc, sample->time.seconds, SAMPLE_EVENT_DECOSTOP, 0,
-				hold_depth | (u_sample->hold_time * 60) << 16 , N_("deco stop"));
-		}
-#if DC_VERSION_CHECK(0, 3, 0)
-	} else {
-		add_event(dc, sample->time.seconds, SAMPLE_EVENT_NDL, 0,
-			u_sample->hold_time * 60, N_("non stop time"));
-#endif
+#if UEMIS_DEBUG & 32
+	int i, j;
+	for (i = 0; i < 8; i++) {
+		printf(" %d: ", 29 + i);
+		for (j = 7; j >= 0; j--)
+			printf ("%c", flags[i] &  1 << j ? '1' : '0');
 	}
+	printf("\n");
+#endif
+	/* now add deco / NDL
+	 * we don't use events but store this in the sample - that makes much more sense
+	 * for the way we display this information
+	 * What we know about the encoding so far:
+	 * flags[3].bit0 | flags[5].bit1 != 0 ==> in deco
+	 * flags[0].bit7 == 1 ==> Safety Stop
+	 * otherwise NDL */
+	stopdepth = rel_mbar_to_depth(u_sample->hold_depth, dive);
+	if ((flags[3] & 1) | (flags[5] & 2)) {
+		/* deco */
+		sample->stopdepth.mm = stopdepth;
+		sample->stoptime.seconds = u_sample->hold_time *60;
+		sample->ndl.seconds = 0;
+	} else if (flags[0] & 128) {
+		/* safety stop - distinguished from deco stop by having
+		 * both ndl and stop information */
+		sample->stopdepth.mm = stopdepth;
+		sample->stoptime.seconds = u_sample->hold_time *60;
+		sample->ndl.seconds = lastndl;
+	} else {
+		/* NDL */
+		lastndl = sample->ndl.seconds = u_sample->hold_time *60;
+		sample->stopdepth.mm = 0;
+		sample->stoptime.seconds = 0;
+	}
+#if UEMIS_DEBUG & 32
+	printf("%dm:%ds: p_amb_tol:%d surface:%d holdtime:%d holddepth:%d/%d ---> stopdepth:%d stoptime:%d ndl:%d\n",
+		sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->surface_pressure.mbar,
+		u_sample->hold_time, u_sample->hold_depth, stopdepth, sample->stopdepth.mm, sample->stoptime.seconds, sample->ndl.seconds);
+#endif
 }
 
 /*
