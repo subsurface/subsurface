@@ -55,6 +55,10 @@ const char *monthname(int mon)
  *
  * But we only do it if:
  *
+ *  - there are no dives in the dive table
+ *
+ *  OR
+ *
  *  - the last dive in the old dive table was numbered
  *
  *  - all the new dives are strictly at the end (so the
@@ -79,7 +83,7 @@ static void try_to_renumber(struct dive *last, int preexisting)
 	 * we're going to expect the user to do a manual
 	 * renumbering.
 	 */
-	if (get_dive(preexisting-1) != last)
+	if (preexisting && get_dive(preexisting-1) != last)
 		return;
 
 	/*
@@ -95,7 +99,10 @@ static void try_to_renumber(struct dive *last, int preexisting)
 	/*
 	 * Ok, renumber..
 	 */
-	nr = last->number;
+	if (last)
+		nr = last->number;
+	else
+		nr = 0;
 	for (i = preexisting; i < dive_table.nr; i++) {
 		struct dive *dive = get_dive(i);
 		dive->number = ++nr;
@@ -150,8 +157,8 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 		dive_table.dives[i]->downloaded = FALSE;
 
 	if (is_imported) {
-		/* Was the previous dive table state numbered? */
-		if (last && last->number)
+		/* If there are dives in the table, are they numbered */
+		if (!last || last->number)
 			try_to_renumber(last, preexisting);
 
 		/* did we add dives to the dive table? */
