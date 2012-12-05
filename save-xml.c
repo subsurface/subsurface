@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <math.h>
 
 #include "dive.h"
 
@@ -177,6 +178,35 @@ static void save_salinity(FILE *f, struct dive *dive)
 	fputs(" />\n", f);
 }
 
+/*
+ * Format degrees to within 6 decimal places. That's about 0.1m
+ * on a great circle (ie longitude at equator). And micro-degrees
+ * is also enough to fit in a fixed-point 32-bit integer.
+ */
+static int format_degrees(char *buffer, double value)
+{
+	int udeg = round(value * 1000000.0);
+	const char *sign = "";
+
+	if (udeg < 0) {
+		sign = "-";
+		udeg = -udeg;
+	}
+	return sprintf(buffer, "%s%u.%06u",
+		sign, udeg / 1000000, udeg % 1000000);
+}
+
+static int format_location(char *buffer, double latitude, double longitude)
+{
+	int len = sprintf(buffer, "gps='");
+
+	len += format_degrees(buffer+len, latitude);
+	buffer[len++] = ' ';
+	len += format_degrees(buffer+len, longitude);
+	buffer[len++] = '\'';
+
+	return len;
+}
 
 static void show_location(FILE *f, struct dive *dive)
 {
@@ -192,20 +222,16 @@ static void show_location(FILE *f, struct dive *dive)
 	 * you dove a few meters away.
 	 */
 	if (latitude || longitude) {
-		int len = snprintf(buffer, sizeof(buffer)-4,
-			"  <location gps=");
-		char *buf = buffer + len;
+		int len = sprintf(buffer, "  <location ");
 
-		len = strlen(g_ascii_formatd(buf, 80, "'%.12g ", latitude));
-		buf += len;
-		len = strlen(g_ascii_formatd(buf, 80, "%.12g'>", longitude));
-		buf += len;
-		len = buf - buffer;
+		len += format_location(buffer+len, latitude, longitude);
 		if (!dive->location) {
-			memcpy(&buffer[len-1], "/>\n", 4);
+			memcpy(buffer+len, "/>\n", 4);
 			fputs(buffer, f);
 			return;
 		}
+		buffer[len++] = '>';
+		buffer[len] = 0;
 		prefix = buffer;
 	}
 	show_utf8(f, dive->location, prefix,"</location>\n", 0);
