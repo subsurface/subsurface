@@ -22,6 +22,7 @@
 
 static const char *progress_bar_text = "";
 static double progress_bar_fraction = 0.0;
+static int stoptime, stopdepth, ndl;
 
 static GError *error(const char *fmt, ...)
 {
@@ -87,7 +88,6 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
-	static int stoptime = 0, stopdepth = 0, ndl = 0;
 	/*
 	 * Just ignore surface events.  They are pointless.  What "surface"
 	 * means depends on the dive computer (and possibly even settings
@@ -105,7 +105,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 		/* packed value - time in seconds in high 16 bit
 		 * depth in m(!) in low 16 bits */
 		stoptime = value.event.value >> 16;
-		stopdepth = (value.event.value && 0xFFFF) * 1000;
+		stopdepth = (value.event.value & 0xFFFF) * 1000;
 		ndl = 0;
 	}
 	if (value.event.type == SAMPLE_EVENT_NDL) {
@@ -113,9 +113,9 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 		stoptime = 0;
 		ndl = value.event.value;
 	}
-	sample->stoptime.seconds = stoptime;
-	sample->stopdepth.mm = stopdepth;
-	sample->ndl.seconds = ndl;
+	if (value.event.type == SAMPLE_EVENT_DECOSTOP || value.event.type == SAMPLE_EVENT_NDL)
+		/* don't create a Subsurface event for these */
+		return;
 #endif
 
 	/*
@@ -148,6 +148,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 	switch (type) {
 	case DC_SAMPLE_TIME:
+		if (sample) {
+			sample->ndl.seconds = ndl;
+			sample->stoptime.seconds = stoptime;
+			sample->stopdepth.mm = stopdepth;
+		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = value.time;
 		finish_sample(dc);
@@ -289,6 +294,9 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_datetime_t dt = {0};
 	struct tm tm;
 	struct dive *dive;
+
+	/* reset the deco / ndl data */
+	ndl = stoptime = stopdepth = 0;
 
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
