@@ -60,7 +60,7 @@ static void show_pressure(FILE *f, pressure_t pressure, const char *pre, const c
 static void show_salinity(FILE *f, int salinity, const char *pre, const char *post)
 {
 	if (salinity)
-		fprintf(f, "%s%.1f kg/l%s", pre, salinity / 10.0, post);
+		fprintf(f, "%s%d g/l%s", pre, salinity / 10, post);
 }
 /*
  * We're outputting utf8 in xml.
@@ -170,9 +170,10 @@ static void save_airpressure(FILE *f, struct dive *dive)
 
 static void save_salinity(FILE *f, struct dive *dive)
 {
-	if (!dive->salinity)
+	/* only save if we have a value that isn't the default of sea water */
+	if (!dive->salinity || dive->salinity == 10300)
 		return;
-	fputs("  <water ", f);
+	fputs("  <water", f);
 	show_salinity(f, dive->salinity, " salinity='", "'");
 	fputs(" />\n", f);
 }
