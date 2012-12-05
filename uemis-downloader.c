@@ -320,15 +320,14 @@ static gboolean next_file(int max)
 	return TRUE;
 }
 
-/* ultra-simplistic; it doesn't deal with the case when the object_id is
- * split across two chunks. It also doesn't deal with the discrepancy between
- * object_id and dive number as understood by the dive computer */
-static void show_progress(char *buf, char *what)
+static char *first_object_id_val(char* buf)
 {
 	char *object;
+	if (!buf)
+		return NULL;
 	object = strstr(buf, "object_id");
 	if (object) {
-		/* let the user know what we are working on */
+		/* get the value */
 		char tmp[10];
 		char *p = object + 14;
 		char *t = tmp;
@@ -337,8 +336,22 @@ static void show_progress(char *buf, char *what)
 			while (*p != '{' && t < tmp + 9)
 				*t++ = *p++;
 			*t = '\0';
-			uemis_info(_("Reading %s %s"), what, tmp);
 		}
+		return strdup(tmp);
+	}
+	return NULL;
+}
+
+/* ultra-simplistic; it doesn't deal with the case when the object_id is
+ * split across two chunks. It also doesn't deal with the discrepancy between
+ * object_id and dive number as understood by the dive computer */
+static void show_progress(char *buf, char *what)
+{
+	char *val = first_object_id_val(buf);
+	if (val) {
+		/* let the user know what we are working on */
+		uemis_info(_("Reading %s %s"), what, val);
+		free(val);
 	}
 }
 
@@ -415,7 +428,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 #if UEMIS_DEBUG & 8
 		tmp[100]='\0';
 		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
-#elif UEMIS_DEBUG & 2
+#elif UEMIS_DEBUG & 4
 		char pbuf[4];
 		pbuf[0] = tmp[0];
 		pbuf[1] = tmp[1];
@@ -723,7 +736,7 @@ static char *do_uemis_download(struct argument_block *args)
 	char *deviceid = NULL;
 	char *result = NULL;
 	char *endptr;
-	gboolean success, keep_number = FALSE;
+	gboolean success, keep_number = FALSE, once = TRUE;
 
 	if (dive_table.nr == 0)
 		keep_number = TRUE;
@@ -761,6 +774,13 @@ static char *do_uemis_download(struct argument_block *args)
 		/* process the buffer we have assembled */
 		if (mbuf)
 			process_raw_buffer(deviceidnr, mbuf, &newmax, keep_number);
+		if (once) {
+			char *t = first_object_id_val(mbuf);
+			if (t && atoi(t) > start)
+				start = atoi(t);
+			free(t);
+			once = FALSE;
+		}
 		/* if the user clicked cancel, exit gracefully */
 		if (import_thread_cancelled)
 			goto bail;
@@ -786,6 +806,9 @@ static char *do_uemis_download(struct argument_block *args)
 	for (i = start; i < end; i++) {
 		snprintf(objectid, sizeof(objectid), "%d", i);
 		param_buff[2] = objectid;
+#if UEMIS_DEBUG & 2
+		fprintf(debugfile, "getDive %d\n", i);
+#endif
 		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
 		if (mbuf)
 			process_raw_buffer(deviceidnr, mbuf, &newmax, FALSE);
@@ -797,6 +820,9 @@ static char *do_uemis_download(struct argument_block *args)
 		char divespotnr[10];
 		snprintf(divespotnr, sizeof(divespotnr), "%d", i);
 		param_buff[2] = divespotnr;
+#if UEMIS_DEBUG & 2
+		fprintf(debugfile, "getDivespot %d\n", i);
+#endif
 		success = uemis_get_answer(mountpath, "getDivespot", 3, 0, &result);
 		if (mbuf)
 			parse_divespot(mbuf);
