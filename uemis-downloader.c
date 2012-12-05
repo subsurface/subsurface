@@ -603,7 +603,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the adresses of those fields for every dive that references the divespot. */
-static void process_raw_buffer(int deviceid, char *inbuf, char **max_divenr)
+static void process_raw_buffer(int deviceid, char *inbuf, char **max_divenr, gboolean keep_number)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
@@ -664,6 +664,8 @@ static void process_raw_buffer(int deviceid, char *inbuf, char **max_divenr)
 			free(*max_divenr);
 			*max_divenr = strdup(val);
 			dive->dc.diveid = atoi(val);
+			if (keep_number)
+				dive->number = atoi(val);
 		} else if (!log && ! strcmp(tag, "logfilenr")) {
 			/* this one tells us which dive we are adding data to */
 			dive = get_dive_by_diveid(atoi(val), deviceid);
@@ -721,8 +723,10 @@ static char *do_uemis_download(struct argument_block *args)
 	char *deviceid = NULL;
 	char *result = NULL;
 	char *endptr;
-	gboolean success;
+	gboolean success, keep_number = FALSE;
 
+	if (dive_table.nr == 0)
+		keep_number = TRUE;
 	uemis_info("Init Communication");
 	if (! uemis_init(mountpath))
 		return _("Uemis init failed");
@@ -756,7 +760,7 @@ static char *do_uemis_download(struct argument_block *args)
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		/* process the buffer we have assembled */
 		if (mbuf)
-			process_raw_buffer(deviceidnr, mbuf, &newmax);
+			process_raw_buffer(deviceidnr, mbuf, &newmax, keep_number);
 		/* if the user clicked cancel, exit gracefully */
 		if (import_thread_cancelled)
 			goto bail;
@@ -784,7 +788,7 @@ static char *do_uemis_download(struct argument_block *args)
 		param_buff[2] = objectid;
 		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
 		if (mbuf)
-			process_raw_buffer(deviceidnr, mbuf, &newmax);
+			process_raw_buffer(deviceidnr, mbuf, &newmax, FALSE);
 		if (!success || import_thread_cancelled)
 			break;
 	}
