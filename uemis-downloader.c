@@ -30,9 +30,16 @@
 #define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
+
+#if UEMIS_DEBUG & 64  /* we are reading from a copy of the filesystem, not the device - no need to wait */
+#define UEMIS_TIMEOUT 50		/* 50ns */
+#define UEMIS_LONG_TIMEOUT 500		/* 500ns */
+#define UEMIS_MAX_TIMEOUT 2000		/* 2ms */
+#else
 #define UEMIS_TIMEOUT 50000		/* 50ms */
 #define UEMIS_LONG_TIMEOUT 500000	/* 500ms */
 #define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
+#endif
 
 static char *param_buff[NUM_PARAM_BUFS];
 static char *reqtxt_path;
@@ -179,7 +186,7 @@ static gboolean uemis_init(const char *path)
 	reqtxt_path = g_build_filename(path, "/req.txt", NULL);
 	reqtxt_file = g_open(reqtxt_path, O_RDONLY, 0666);
 	if (!reqtxt_file) {
-#if UEMIS_DEBUG
+#if UEMIS_DEBUG & 1
 		fprintf(debugfile, ":EE req.txt can't be opened\n");
 #endif
 		return FALSE;
@@ -188,7 +195,7 @@ static gboolean uemis_init(const char *path)
 		char tmp[6];
 		read(reqtxt_file, tmp, 5);
 		tmp[5] = '\0';
-#if UEMIS_DEBUG > 1
+#if UEMIS_DEBUG & 2
 		fprintf(debugfile, "::r req.txt \"%s\"\n", tmp);
 #endif
 		if (sscanf(tmp + 1, "%d", &filenr) != 1)
@@ -196,7 +203,7 @@ static gboolean uemis_init(const char *path)
 	}
 	else {
 		filenr = 0;
-#if UEMIS_DEBUG > 1
+#if UEMIS_DEBUG & 2
 		fprintf(debugfile, "::r req.txt skipped as there were fewer than 5 bytes\n");
 #endif
 	}
@@ -230,7 +237,7 @@ static void trigger_response(int file, char *command, int nr, long tailpos)
 	char fl[10];
 
 	snprintf(fl, 8, "%s%04d", command, nr);
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG & 4
 	fprintf(debugfile,":tr %s (after seeks)\n", fl);
 #endif
 	lseek(file, 0, SEEK_SET);
@@ -299,7 +306,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 		*buffer = realloc(*buffer, *buffer_size);
 		strcat(*buffer, buf);
 	}
-#if UEMIS_DEBUG > 5
+#if UEMIS_DEBUG & 16
 	fprintf(debugfile,"added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
 #endif
 }
@@ -381,7 +388,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	file_length = strlen(sb);
 	snprintf(fl, 10, "%08d", file_length - 13);
 	memcpy(sb + 5, fl, strlen(fl));
-#ifdef UEMIS_DEBUG
+#if UEMIS_DEBUG & 1
 	fprintf(debugfile,"::w req.txt \"%s\"\n", sb);
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
@@ -405,10 +412,10 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		ans_file = g_open(ans_path, O_RDONLY, 0666);
 		read(ans_file, tmp, 100);
 		close(ans_file);
-#if UEMIS_DEBUG > 3
+#if UEMIS_DEBUG & 8
 		tmp[100]='\0';
 		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
-#elif UEMIS_DEBUG > 1
+#elif UEMIS_DEBUG & 2
 		char pbuf[4];
 		pbuf[0] = tmp[0];
 		pbuf[1] = tmp[1];
@@ -482,7 +489,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				buf[size - 3] = '\0';
 				buffer_add(&mbuf, &mbuf_size, buf);
 				show_progress(buf, what);
-#if UEMIS_DEBUG > 3
+#if UEMIS_DEBUG & 8
 				fprintf(debugfile, "::r %s \"%s\"\n", ans_path, buf);
 #endif
 			}
@@ -492,7 +499,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		} else {
 			ismulti = FALSE;
 		}
-#if UEMIS_DEBUG > 3
+#if UEMIS_DEBUG & 8
 		fprintf(debugfile,":r: %s\n", buf);
 #endif
 		if (!answer_in_mbuf)
@@ -501,7 +508,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		found_answer = TRUE;
 		free(buf);
 	}
-#if UEMIS_DEBUG
+#if UEMIS_DEBUG & 1
 	for (i = 0; i < n_param_out; i++)
 		fprintf(debugfile,"::: %d: %s\n", i, param_buff[i]);
 #endif
@@ -645,7 +652,7 @@ static void process_raw_buffer(int deviceid, char *inbuf, char **max_divenr)
 			/* this tells us the sections that will follow; the tag here
 			 * is of the format dive-<section> */
 			sections[nr_sections] = strchr(tag, '-') + 1;
-#if UEMIS_DEBUG > 2
+#if UEMIS_DEBUG & 4
 			fprintf(debugfile, "Expect to find section %s\n", sections[nr_sections]);
 #endif
 			if (nr_sections < sizeof(sections) - 1)
@@ -768,7 +775,7 @@ static char *do_uemis_download(struct argument_block *args)
 	}
 	if (sscanf(newmax, "%d", &end) != 1)
 		end = start;
-#if UEMIS_DEBUG > 1
+#if UEMIS_DEBUG & 2
 	fprintf(debugfile, "done: read from object_id %d to %d\n", start, end);
 #endif
 	free(newmax);

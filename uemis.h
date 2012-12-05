@@ -40,4 +40,4 @@ typedef struct {
 	uint8_t		flags[8];
 } __attribute((packed)) uemis_sample_t;
 
-#endif /* DIVE_H */
+#endif /* UEMIS_H */
