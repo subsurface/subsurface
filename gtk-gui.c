@@ -1444,6 +1444,20 @@ int process_ui_events(void)
 	return ret;
 }
 
+struct vendor {
+	const char *vendor;
+	struct product *productlist;
+	struct vendor *next;
+};
+
+struct product {
+	const char *product;
+	dc_descriptor_t *descriptor;
+	struct product *next;
+};
+
+struct vendor *dc_list;
+
 struct mydescriptor {
 	const char *vendor;
 	const char *product;
@@ -1451,29 +1465,102 @@ struct mydescriptor {
 	unsigned int model;
 };
 
-static int fill_computer_list(GtkListStore *store)
+static void add_dc(const char *vendor, const char *product, dc_descriptor_t *descriptor)
 {
-	int index = -1, i;
+	struct vendor *dcl = dc_list;
+	struct vendor **dclp = &dc_list;
+	struct product *pl, **plp;
+
+	if (!vendor || !product)
+		return;
+	while (dcl && strcmp(dcl->vendor, vendor)) {
+		dclp = &dcl->next;
+		dcl = dcl->next;
+	}
+	if (!dcl) {
+		*dclp = calloc(sizeof(struct vendor), 1);
+		dcl = *dclp;
+		dcl->vendor = strdup(vendor);
+	}
+	/* we now have a pointer to the requested vendor */
+	plp = &dcl->productlist;
+	pl = *plp;
+	while (pl && strcmp(pl->product, product)) {
+		plp = &pl->next;
+		pl = pl->next;
+	}
+	if (!pl) {
+		*plp = calloc(sizeof(struct product), 1);
+		pl = *plp;
+		pl->product = strdup(product);
+	}
+	/* one would assume that the vendor / product combinations are unique,
+	 * but that is not the case. At the time of this writing, there are two
+	 * flavors of the Oceanic OC1 - but looking at the code in libdivecomputer
+	 * they are handled exactly the same, so we ignore this issue for now
+	 *
+	    if (pl->descriptor && memcmp(pl->descriptor, descriptor, sizeof(struct mydescriptor)))
+		printf("duplicate entry with different descriptor for %s - %s\n", vendor, product);
+	    else
+	 */
+	pl->descriptor = descriptor;
+}
+
+static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***productstore, int *product_index)
+{
+	int index = -1, i, j, numvendor;
 	GtkTreeIter iter;
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
 	struct mydescriptor *mydescriptor;
+	struct vendor *dcl;
+	struct product *pl;
+	GtkListStore **pstores;
 
-	i = 0;
 	dc_descriptor_iterator(&iterator);
 	while (dc_iterator_next (iterator, &descriptor) == DC_STATUS_SUCCESS) {
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
-
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter,
-			0, descriptor,
-			-1);
-		if (is_default_dive_computer(vendor, product))
-			index = i;
-		i++;
+		add_dc(vendor, product, descriptor);
 	}
 	dc_iterator_free(iterator);
+	dcl = dc_list;
+	numvendor = 0;
+	while (dcl) {
+		numvendor++;
+		dcl = dcl->next;
+	}
+	/* we need two extra vendors, Uemis and an empty one */
+	numvendor += 2;
+	dcl = dc_list;
+	i = 0;
+	*product_index = -1;
+	if (*productstore)
+		free(*productstore);
+	pstores = *productstore = malloc(numvendor * sizeof(GtkListStore *));
+	while (dcl) {
+		gtk_list_store_append(vendorstore, &iter);
+		gtk_list_store_set(vendorstore, &iter,
+			0, dcl->vendor,
+			-1);
+		pl = dcl->productlist;
+		pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
+		j = 0;
+		while (pl) {
+			gtk_list_store_append(pstores[i], &iter);
+			gtk_list_store_set(pstores[i], &iter,
+				0, pl->descriptor,
+				-1);
+			if (is_default_dive_computer(dcl->vendor, pl->product)) {
+				index = i;
+				*product_index = j;
+			}
+			j++;
+			pl = pl->next;
+		}
+		i++;
+		dcl = dcl->next;
+	}
 	/* and add the Uemis Zurich which we are handling internally
 	   THIS IS A HACK as we use the internal of libdivecomputer
 	   data structures... eventually the UEMIS code needs to move
@@ -1483,30 +1570,50 @@ static int fill_computer_list(GtkListStore *store)
 	mydescriptor->product = "Zurich";
 	mydescriptor->type = DC_FAMILY_NULL;
 	mydescriptor->model = 0;
-	gtk_list_store_append(store, &iter);
-	gtk_list_store_set(store, &iter,
+	gtk_list_store_append(vendorstore, &iter);
+	gtk_list_store_set(vendorstore, &iter,
+			0, mydescriptor->vendor, -1);
+	pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
+	gtk_list_store_append(pstores[i], &iter);
+	gtk_list_store_set(pstores[i], &iter,
 			0, mydescriptor, -1);
-	if (is_default_dive_computer("Uemis", "Zurich"))
+	if (is_default_dive_computer("Uemis", "Zurich")) {
 		index = i;
+		*product_index = 0;
+	}
+	/* now add the empty product list in case no vendor is selected */
+	i++;
+	pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
+	if (*product_index == -1)
+		*product_index = i;
 
 	return index;
 }
 
-void render_dive_computer(GtkCellLayout *cell,
+void render_dc_vendor(GtkCellLayout *cell,
 		GtkCellRenderer *renderer,
 		GtkTreeModel *model,
 		GtkTreeIter *iter,
 		gpointer data)
 {
-	char buffer[40];
+	const char *vendor;
+
+	gtk_tree_model_get(model, iter, 0, &vendor, -1);
+	g_object_set(renderer, "text", strdup(vendor), NULL);
+}
+
+void render_dc_product(GtkCellLayout *cell,
+		GtkCellRenderer *renderer,
+		GtkTreeModel *model,
+		GtkTreeIter *iter,
+		gpointer data)
+{
 	dc_descriptor_t *descriptor = NULL;
-	const char *vendor, *product;
+	const char *product;
 
 	gtk_tree_model_get(model, iter, 0, &descriptor, -1);
-	vendor = dc_descriptor_get_vendor(descriptor);
 	product = dc_descriptor_get_product(descriptor);
-	snprintf(buffer, sizeof(buffer), "%s %s", vendor, product);
-	g_object_set(renderer, "text", buffer, NULL);
+	g_object_set(renderer, "text", strdup(product), NULL);
 }
 
 static void dive_computer_selector_changed(GtkWidget *combo, gpointer data)
@@ -1518,33 +1625,54 @@ static void dive_computer_selector_changed(GtkWidget *combo, gpointer data)
 	gtk_widget_set_sensitive(button, TRUE);
 }
 
+static GtkListStore **product_model;
+static void dive_computer_vendor_changed(GtkComboBox *vendorcombo, GtkComboBox *productcombo)
+{
+	int vendor = gtk_combo_box_get_active(vendorcombo);
+	gtk_combo_box_set_model(productcombo, GTK_TREE_MODEL(product_model[vendor]));
+	gtk_combo_box_set_active(productcombo, -1);
+}
+
 static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 {
-	GtkWidget *hbox, *combo_box, *frame;
-	GtkListStore *model;
-	GtkCellRenderer *renderer;
-	int default_index;
+	GtkWidget *hbox, *vendor_combo_box, *product_combo_box, *frame;
+	GtkListStore *vendor_model;
+	GtkCellRenderer *vendor_renderer, *product_renderer;
+	int vendor_default_index, product_default_index;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
-	model = gtk_list_store_new(1, G_TYPE_POINTER);
-	default_index = fill_computer_list(model);
+	vendor_model = gtk_list_store_new(1, G_TYPE_POINTER);
 
-	frame = gtk_frame_new(_("Dive computer"));
+	vendor_default_index = fill_computer_list(vendor_model, &product_model, &product_default_index);
+
+	frame = gtk_frame_new(_("Dive computer vendor and product"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
-	combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(model));
-	g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(dive_computer_selector_changed), NULL);
-	gtk_container_add(GTK_CONTAINER(frame), combo_box);
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
-	renderer = gtk_cell_renderer_text_new();
-	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo_box), renderer, TRUE);
-	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(combo_box), renderer, render_dive_computer, NULL, NULL);
+	vendor_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(vendor_model));
+	product_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(product_model[product_default_index]));
 
-	gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
+	g_signal_connect(G_OBJECT(vendor_combo_box), "changed", G_CALLBACK(dive_computer_vendor_changed), product_combo_box);
+	g_signal_connect(G_OBJECT(product_combo_box), "changed", G_CALLBACK(dive_computer_selector_changed), NULL);
+	gtk_box_pack_start(GTK_BOX(hbox), vendor_combo_box, FALSE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(hbox), product_combo_box, FALSE, FALSE, 3);
 
-	return GTK_COMBO_BOX(combo_box);
+	vendor_renderer = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(vendor_combo_box), vendor_renderer, TRUE);
+	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(vendor_combo_box), vendor_renderer, render_dc_vendor, NULL, NULL);
+
+	product_renderer = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(product_combo_box), product_renderer, TRUE);
+	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(product_combo_box), product_renderer, render_dc_product, NULL, NULL);
+
+	gtk_combo_box_set_active(GTK_COMBO_BOX(vendor_combo_box), vendor_default_index);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(product_combo_box), product_default_index);
+
+	return GTK_COMBO_BOX(product_combo_box);
 }
 
 static GtkComboBox *dc_device_selector(GtkWidget *vbox)
