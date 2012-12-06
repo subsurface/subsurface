@@ -2017,6 +2017,12 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	cairo_close_path(gc->cr);
 	cairo_stroke(gc->cr);
 
+	/* Put the dive computer name in the lower left corner */
+	if (dc->model) {
+		static const text_render_options_t computer = {10, TIME_TEXT, LEFT, MIDDLE};
+		plot_text(gc, &computer, 0, 1, "%s", dc->model);
+	}
+
 	if (GRAPHS_ENABLED) {
 		plot_pp_gas_profile(gc, pi);
 		plot_pp_text(gc, pi);
