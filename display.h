@@ -10,6 +10,19 @@
 extern void repaint_dive(void);
 extern void do_print(void);
 
+/* Plot info with smoothing, velocity indication
+ * and one-, two- and three-minute minimums and maximums */
+struct plot_info {
+	int nr;
+	int maxtime;
+	int meandepth, maxdepth;
+	int endpressure, maxpressure;
+	int mintemp, maxtemp, endtemp;
+	double endtempcoord;
+	gboolean has_ndl;
+	struct plot_data *entry;
+};
+
 /*
  * Cairo scaling really is horribly horribly mis-designed.
  *
@@ -26,7 +39,7 @@ struct graphics_context {
 	double leftx, rightx;
 	double topy, bottomy;
 	unsigned int maxtime;
-	void *plot_info;
+	struct plot_info pi;
 };
 
 typedef enum { SC_SCREEN, SC_PRINT } scale_mode_t;

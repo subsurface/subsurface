@@ -28,36 +28,25 @@ static double plot_scale = SCALE_SCREEN;
 
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
-/* Plot info with smoothing, velocity indication
- * and one-, two- and three-minute minimums and maximums */
-struct plot_info {
-	int nr;
-	int maxtime;
-	int meandepth, maxdepth;
-	int endpressure, maxpressure;
-	int mintemp, maxtemp, endtemp;
-	double endtempcoord;
-	gboolean has_ndl;
-	struct plot_data {
-		unsigned int same_cylinder:1;
-		unsigned int cylinderindex;
-		int sec;
-		/* pressure[0] is sensor pressure
-		 * pressure[1] is interpolated pressure */
-		int pressure[2];
-		int temperature;
-		/* Depth info */
-		int depth;
-		int ndl;
-		int stoptime;
-		int stopdepth;
-		int smoothed;
-		double po2, pn2, phe;
-		velocity_t velocity;
-		struct plot_data *min[3];
-		struct plot_data *max[3];
-		int avg[3];
-	} entry[];
+struct plot_data {
+	unsigned int same_cylinder:1;
+	unsigned int cylinderindex;
+	int sec;
+	/* pressure[0] is sensor pressure
+	 * pressure[1] is interpolated pressure */
+	int pressure[2];
+	int temperature;
+	/* Depth info */
+	int depth;
+	int ndl;
+	int stoptime;
+	int stopdepth;
+	int smoothed;
+	double po2, pn2, phe;
+	velocity_t velocity;
+	struct plot_data *min[3];
+	struct plot_data *max[3];
+	int avg[3];
 };
 
 #define SENSOR_PR 0
@@ -144,8 +133,6 @@ static const color_t profile_color[] = {
 	[CEILING_DEEP]    = {{RED1_MED_TRANS, RED1_MED_TRANS}},
 
 };
-
-#define plot_info_size(nr) (sizeof(struct plot_info) + (nr)*sizeof(struct plot_data))
 
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
@@ -1688,12 +1675,11 @@ static int count_gas_change_events(struct divecomputer *dc)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc)
+static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
 	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth;
-	size_t alloc_size;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
@@ -1702,13 +1688,15 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	struct event *ev;
 	double amb_pressure;
 
+	/* The plot-info is embedded in the graphics context */
+	pi = &gc->pi;
+	memset(pi, 0, sizeof(*pi));
+
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
-	alloc_size = plot_info_size(nr);
-	pi = malloc(alloc_size);
-	if (!pi)
-		return pi;
-	memset(pi, 0, alloc_size);
+	pi->entry = calloc(nr, sizeof(struct plot_data));
+	if (!pi->entry)
+		return NULL;
 	pi->nr = nr;
 	pi_idx = 2; /* the two extra events at the start */
 	/* check for gas changes before the samples start */
@@ -1971,7 +1959,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 		dc = &fakedc;
 	}
 
-	pi = create_plot_info(dive, dc);
+	pi = create_plot_info(dive, dc, gc);
 
 	/* shift the drawing area so we have a nice margin around it */
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
@@ -2038,10 +2026,9 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	plot_depth_scale(gc, pi);
 
 	if (gc->printer) {
-		free(pi);
-	} else {
-		free(gc->plot_info);
-		gc->plot_info = pi;
+		free(pi->entry);
+		pi->entry = NULL;
+		pi->nr = 0;
 	}
 }
 
@@ -2106,22 +2093,19 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 
 void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize)
 {
-	struct plot_info *pi = gc->plot_info;
+	struct plot_info *pi = &gc->pi;
 	int pressure = 0, temp = 0;
 	struct plot_data *entry;
+	int i;
 
-	*buf = 0;
-	if (pi) {
-		int i;
-		for (i = 0; i < pi->nr; i++) {
-			entry = pi->entry + i;
-			if (entry->temperature)
-				temp = entry->temperature;
-			if (GET_PRESSURE(entry))
-				pressure = GET_PRESSURE(entry);
-			if (entry->sec >= time)
-				break;
-		}
-		plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
+	for (i = 0; i < pi->nr; i++) {
+		entry = pi->entry + i;
+		if (entry->temperature)
+			temp = entry->temperature;
+		if (GET_PRESSURE(entry))
+			pressure = GET_PRESSURE(entry);
+		if (entry->sec >= time)
+			break;
 	}
+	plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
 }
