@@ -1008,6 +1008,7 @@ void insert_trip(dive_trip_t **dive_trip_p)
 	dive_trip_t *dive_trip = *dive_trip_p;
 	dive_trip_t **p = &dive_trip_list;
 	dive_trip_t *trip;
+	struct dive *divep;
 
 	/* Walk the dive trip list looking for the right location.. */
 	while ((trip = *p) != NULL && trip->when < dive_trip->when)
@@ -1016,6 +1017,13 @@ void insert_trip(dive_trip_t **dive_trip_p)
 	if (trip && trip->when == dive_trip->when) {
 		if (! trip->location)
 			trip->location = dive_trip->location;
+		if (! trip->notes)
+			trip->notes = dive_trip->notes;
+		divep = dive_trip->dives;
+		while (divep) {
+			add_dive_to_trip(divep, trip);
+			divep = divep->next;
+		}
 		*dive_trip_p = trip;
 	} else {
 		dive_trip->next = trip;
@@ -1829,6 +1837,7 @@ void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	prevtrip = find_matching_trip(when);
 	remember_tree_state();
 	/* move dives from trip */
+	assert(thistrip != prevtrip);
 	while (thistrip->dives)
 		add_dive_to_trip(thistrip->dives, prevtrip);
 	dive_list_update_dives();
