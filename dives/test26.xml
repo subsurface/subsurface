@@ -1,0 +1,23 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<trip date='2011-12-06' time='6:00:00' location='First Trip'>
+<dive number='27' date='2011-12-02' time='6:35:00' duration='30:00 min'>
+  <depth max='24.3 m' mean='12.773 m' />
+  <temperature air='24.3 C' water='24.2 C' />
+  <surface pressure='0.981 bar' />
+  <water salinity='1000 g/l' />
+  <location>Same dive location</location>
+  <notes>New trip format + includes a divecomputer section - designed to be manually merged wiht previous dive.</notes>
+  <cylinder size='15.0 l' workpressure='202.6 bar' description='AL106' />
+  <divecomputer model='Model Product' deviceid='e04d0248' diveid='00000002'>
+  <event time='27:50 min' name='Speed Alarm' />
+  <sample time='0:06 min' depth='1.86 m' temp='24.3 C' ndl='99:00 min' />
+  <sample time='1:00 min' depth='20 m' temp='24.2 C' />
+  <sample time='27:00 min' depth='20 m' />
+  <sample time='28:00 min' depth='3 m' />
+  <sample time='29:00 min' depth='3 m' />
+  <sample time='30:00 min' depth='0.3 m' />
+  </divecomputer>
+</dive>
+</trip>
+</dives>
