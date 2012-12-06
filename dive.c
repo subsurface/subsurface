@@ -1292,7 +1292,7 @@ static void interleave_dive_computers(struct divecomputer *res,
 	do {
 		struct divecomputer *match;
 
-		res->model = strdup(a->model);
+		res->model = a->model ? strdup(a->model) : NULL;
 		res->deviceid = a->deviceid;
 		res->diveid = a->diveid;
 		res->next = NULL;
