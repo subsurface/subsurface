@@ -1700,7 +1700,8 @@ static GtkComboBox *dc_device_selector(GtkWidget *vbox)
 	if (default_index != -1)
 		gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
 	else
-		gtk_entry_set_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box))),
+		if (default_dive_computer_device)
+			gtk_entry_set_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box))),
 		                   default_dive_computer_device);
 
 	return GTK_COMBO_BOX(combo_box);
