@@ -742,9 +742,9 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_container_add(GTK_CONTAINER(vbox), box);
 
 	button = gtk_check_button_new_with_label(_("Show ceiling in red"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), partial_pressure_graphs.phe);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), profile_red_ceiling);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
-	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(red_ceiling_toggle), &entry_phe);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(red_ceiling_toggle), NULL);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
