@@ -708,7 +708,7 @@ static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
 	 * pressure the graph seems to look fine*/
 	maxdepth = get_maxdepth(pi);
 	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * 1.01325;
-	gc->bottomy = 0.0;
+	gc->bottomy = -gc->topy / 20;
 }
 
 static void plot_single_pp_text(struct graphics_context *gc, int sec, double pp,
