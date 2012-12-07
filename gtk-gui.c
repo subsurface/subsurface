@@ -1465,6 +1465,7 @@ struct mydescriptor {
 	unsigned int model;
 };
 
+/* create a list of lists and keep the elements sorted */
 static void add_dc(const char *vendor, const char *product, dc_descriptor_t *descriptor)
 {
 	struct vendor *dcl = dc_list;
@@ -1473,25 +1474,27 @@ static void add_dc(const char *vendor, const char *product, dc_descriptor_t *des
 
 	if (!vendor || !product)
 		return;
-	while (dcl && strcmp(dcl->vendor, vendor)) {
+	while (dcl && strcmp(dcl->vendor, vendor) < 0) {
 		dclp = &dcl->next;
 		dcl = dcl->next;
 	}
-	if (!dcl) {
-		*dclp = calloc(sizeof(struct vendor), 1);
-		dcl = *dclp;
+	if (!dcl || strcmp(dcl->vendor, vendor)) {
+		dcl = calloc(sizeof(struct vendor), 1);
+		dcl->next = *dclp;
+		*dclp = dcl;
 		dcl->vendor = strdup(vendor);
 	}
 	/* we now have a pointer to the requested vendor */
 	plp = &dcl->productlist;
 	pl = *plp;
-	while (pl && strcmp(pl->product, product)) {
+	while (pl && strcmp(pl->product, product) < 0) {
 		plp = &pl->next;
 		pl = pl->next;
 	}
-	if (!pl) {
-		*plp = calloc(sizeof(struct product), 1);
-		pl = *plp;
+	if (!pl || strcmp(pl->product, product)) {
+		pl = calloc(sizeof(struct product), 1);
+		pl->next = *plp;
+		*plp = pl;
 		pl->product = strdup(product);
 	}
 	/* one would assume that the vendor / product combinations are unique,
@@ -1506,9 +1509,11 @@ static void add_dc(const char *vendor, const char *product, dc_descriptor_t *des
 	pl->descriptor = descriptor;
 }
 
-static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***productstore, int *product_index)
+/* fill the vendors and create and fill the respective product stores; return the longest product name
+ * and also the indices of the default vendor / product */
+static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***productstore, int *vendor_index, int *product_index)
 {
-	int index = -1, i, j, numvendor;
+	int i, j, numvendor, width = 10;
 	GtkTreeIter iter;
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
@@ -1522,19 +1527,32 @@ static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***product
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
 		add_dc(vendor, product, descriptor);
+		if (product && strlen(product) > width)
+			width = strlen(product);
 	}
 	dc_iterator_free(iterator);
+	/* and add the Uemis Zurich which we are handling internally
+	   THIS IS A HACK as we magically have a data structure here that
+	   happens to match a data structure that is internal to libdivecomputer;
+	   this WILL BREAK if libdivecomputer changes the dc_descriptor struct...
+	   eventually the UEMIS code needs to move into libdivecomputer, I guess */
+	mydescriptor = malloc(sizeof(struct mydescriptor));
+	mydescriptor->vendor = "Uemis";
+	mydescriptor->product = "Zurich";
+	mydescriptor->type = DC_FAMILY_NULL;
+	mydescriptor->model = 0;
+	add_dc("Uemis", "Zurich", (dc_descriptor_t *)mydescriptor);
 	dcl = dc_list;
 	numvendor = 0;
 	while (dcl) {
 		numvendor++;
 		dcl = dcl->next;
 	}
-	/* we need two extra vendors, Uemis and an empty one */
-	numvendor += 2;
+	/* we need an extra vendor for the empty one */
+	numvendor += 1;
 	dcl = dc_list;
 	i = 0;
-	*product_index = -1;
+	*vendor_index = *product_index = -1;
 	if (*productstore)
 		free(*productstore);
 	pstores = *productstore = malloc(numvendor * sizeof(GtkListStore *));
@@ -1552,7 +1570,7 @@ static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***product
 				0, pl->descriptor,
 				-1);
 			if (is_default_dive_computer(dcl->vendor, pl->product)) {
-				index = i;
+				*vendor_index = i;
 				*product_index = j;
 			}
 			j++;
@@ -1561,33 +1579,13 @@ static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***product
 		i++;
 		dcl = dcl->next;
 	}
-	/* and add the Uemis Zurich which we are handling internally
-	   THIS IS A HACK as we use the internal of libdivecomputer
-	   data structures... eventually the UEMIS code needs to move
-	   into libdivecomputer, I guess */
-	mydescriptor = malloc(sizeof(struct mydescriptor));
-	mydescriptor->vendor = "Uemis";
-	mydescriptor->product = "Zurich";
-	mydescriptor->type = DC_FAMILY_NULL;
-	mydescriptor->model = 0;
-	gtk_list_store_append(vendorstore, &iter);
-	gtk_list_store_set(vendorstore, &iter,
-			0, mydescriptor->vendor, -1);
-	pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
-	gtk_list_store_append(pstores[i], &iter);
-	gtk_list_store_set(pstores[i], &iter,
-			0, mydescriptor, -1);
-	if (is_default_dive_computer("Uemis", "Zurich")) {
-		index = i;
-		*product_index = 0;
-	}
 	/* now add the empty product list in case no vendor is selected */
 	i++;
 	pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
 	if (*product_index == -1)
 		*product_index = i;
 
-	return index;
+	return width;
 }
 
 void render_dc_vendor(GtkCellLayout *cell,
@@ -1638,14 +1636,14 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	GtkWidget *hbox, *vendor_combo_box, *product_combo_box, *frame;
 	GtkListStore *vendor_model;
 	GtkCellRenderer *vendor_renderer, *product_renderer;
-	int vendor_default_index, product_default_index;
+	int vendor_default_index, product_default_index, width;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
 
 	vendor_model = gtk_list_store_new(1, G_TYPE_POINTER);
 
-	vendor_default_index = fill_computer_list(vendor_model, &product_model, &product_default_index);
+	width = fill_computer_list(vendor_model, &product_model, &vendor_default_index, &product_default_index);
 
 	frame = gtk_frame_new(_("Dive computer vendor and product"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
@@ -1666,6 +1664,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(vendor_combo_box), vendor_renderer, render_dc_vendor, NULL, NULL);
 
 	product_renderer = gtk_cell_renderer_text_new();
+	gtk_cell_renderer_set_fixed_size(product_renderer, 10 * width, -1);
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(product_combo_box), product_renderer, TRUE);
 	gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(product_combo_box), product_renderer, render_dc_product, NULL, NULL);
 
