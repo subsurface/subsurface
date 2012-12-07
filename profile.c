@@ -1007,6 +1007,31 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	cairo_close_path(gc->cr);
 	cairo_fill(gc->cr);
 
+	/* if the user wants the deco ceiling more visible, do that here (this
+	 * basically draws over the background that we had allowed to shine
+	 * through so far) */
+	if (profile_red_ceiling) {
+		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+		pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
+		pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
+		cairo_set_source(gc->cr, pat);
+		cairo_pattern_destroy(pat);
+		entry = pi->entry;
+		move_to(gc, 0, 0);
+		for (i = 0; i < pi->nr; i++, entry++) {
+			if (entry->ndl == 0 && entry->stopdepth) {
+				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
+					line_to(gc, entry->sec, entry->stopdepth);
+				} else {
+					line_to(gc, entry->sec, entry->depth);
+				}
+			} else {
+				line_to(gc, entry->sec, 0);
+			}
+		}
+		cairo_close_path(gc->cr);
+		cairo_fill(gc->cr);
+	}
 	/* next show where we have been bad and crossed the ceiling */
 	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
 	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);

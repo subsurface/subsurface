@@ -32,6 +32,7 @@ typedef struct {
 
 extern visible_cols_t visible_cols;
 extern partial_pressure_graphs_t partial_pressure_graphs;
+extern gboolean profile_red_ceiling;
 
 #define GRAPHS_ENABLED (partial_pressure_graphs.po2 || partial_pressure_graphs.pn2 || partial_pressure_graphs.phe)
 
