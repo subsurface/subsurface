@@ -1357,12 +1357,15 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	struct dive *res = alloc_dive();
 	struct dive *dl = NULL;
 
-	if (prefer_downloaded) {
-		if (a->downloaded)
-			dl = a;
-		else if (b->downloaded)
-			dl = b;
+	/* Aim for newly downloaded dives to be 'b' (keep old dive data first) */
+	if (a->downloaded && !b->downloaded) {
+		struct dive *tmp = a;
+		a = b;
+		b = tmp;
 	}
+	if (prefer_downloaded && b->downloaded)
+		dl = b;
+
 	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
