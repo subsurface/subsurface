@@ -2122,15 +2122,15 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	}
 	if (partial_pressure_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->po2);
+		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->po2);
 	}
 	if (partial_pressure_graphs.pn2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->pn2);
+		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->pn2);
 	}
 	if (partial_pressure_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npHe:%.1f", buf2, entry->phe);
+		snprintf(buf, bufsize, "%s\npHe:%.2f", buf2, entry->phe);
 	}
 	free(buf2);
 }
