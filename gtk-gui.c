@@ -1592,7 +1592,6 @@ static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***product
 		dcl = dcl->next;
 	}
 	/* now add the empty product list in case no vendor is selected */
-	i++;
 	pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
 	if (*product_index == -1)
 		*product_index = i;
