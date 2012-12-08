@@ -45,7 +45,11 @@ static void set_font(PangoLayout *layout, PangoFontDescription *font,
  * You know what? Maybe somebody can do a real Pango layout thing.
  * This is hacky.
  */
-static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
+
+/*
+ * Show a header for the dive containing minimal data
+ */
+static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 	double h, PangoFontDescription *font)
 {
 	double depth;
@@ -126,22 +130,25 @@ static void show_dive_text(struct dive *dive, cairo_t *cr, double w,
 		set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
 	}
 	pango_layout_set_text(layout, dive->location ? : " ", -1);
-
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
+	g_object_unref(layout);
+	/* If we have translations get back the coordinates to original*/
+	cairo_translate(cr,0, - ((h * PANGO_SCALE * 0.9) - maxheight) / PANGO_SCALE);
+}
+/*
+ * Show the dive notes
+ */
+static void show_dive_notes(struct dive *dive, cairo_t *cr, double w,
+	double h, PangoFontDescription *font)
+{
+	int maxwidth, maxheight;
+	PangoLayout *layout;
 
-	pango_layout_get_size(layout, &width, &height);
-
-	/*
-	 * Show the dive notes
-	 */
+	maxwidth = w * PANGO_SCALE;
+	maxheight = h * PANGO_SCALE * 0.9;
+	layout = pango_cairo_create_layout(cr);
 	if (dive->notes) {
-		/* Move down by the size of the location (x2) */
-		height = height * 2;
-		cairo_translate(cr, 0, height / (double) PANGO_SCALE);
-		maxheight -= height;
-
-		/* Use the full width and remaining height for notes */
 		pango_layout_set_height(layout, maxheight);
 		pango_layout_set_width(layout, maxwidth);
 		if (print_options.type == ONEPERPAGE){
@@ -339,8 +346,10 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 
 	/* Dive information in the lower third */
 	cairo_translate(cr, 0, h*1.33);
+	show_dive_header(dive, cr, w*2, h*0.20, font);
 
-	show_dive_text(dive, cr, w*2, h*0.67, font);
+	cairo_translate(cr, 0, h*0.20);
+	show_dive_notes(dive, cr, w*2, h*0.47, font);
 
 	cairo_restore(cr);
 }
