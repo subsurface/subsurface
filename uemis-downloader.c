@@ -327,7 +327,7 @@ static char *first_object_id_val(char* buf)
 		return NULL;
 	bufend = buf + strlen(buf);
 	object = strstr(buf, "object_id");
-	if (object) {
+	if (object && object + 14 < bufend) {
 		/* get the value */
 		char tmp[10];
 		char *p = object + 14;
