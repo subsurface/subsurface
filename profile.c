@@ -41,6 +41,7 @@ struct plot_data {
 	int ndl;
 	int stoptime;
 	int stopdepth;
+	int cns;
 	int smoothed;
 	double po2, pn2, phe;
 	velocity_t velocity;
@@ -1704,14 +1705,14 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth;
+	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth, cns;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
 	struct event *ev;
-	double amb_pressure;
+	double amb_pressure, po2;
 
 	/* The plot-info is embedded in the graphics context */
 	pi = &gc->pi;
@@ -1755,6 +1756,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		pi->has_ndl |= ndl;
 		stopdepth = sample->stopdepth.mm;
 		stoptime = sample->stoptime.seconds;
+		po2 = sample->po2 / 1000.0;
+		cns = sample->cns;
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
 			 * the old tank and the start of the new tank */
@@ -1775,9 +1778,13 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->stopdepth = stopdepth;
 			entry->stoptime = stoptime;
 			entry->ndl = ndl;
+			entry->cns = cns;
+			entry->po2 = po2;
 			(entry + 1)->stopdepth = stopdepth;
 			(entry + 1)->stoptime = stoptime;
 			(entry + 1)->ndl = ndl;
+			(entry + 1)->cns = cns;
+			(entry + 1)->po2 = po2;
 			pi_idx += 2;
 			entry = pi->entry + i + pi_idx;
 			ev = get_next_event(ev->next, "gaschange");
@@ -1791,6 +1798,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->stopdepth = stopdepth;
 			entry->stoptime = stoptime;
 			entry->ndl = ndl;
+			entry->cns = cns;
+			entry->po2 = po2;
 			pi_idx++;
 			entry = pi->entry + i + pi_idx;
 			ev = get_next_event(ev->next, "gaschange");
@@ -1801,6 +1810,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		entry->stopdepth = stopdepth;
 		entry->stoptime = stoptime;
 		entry->ndl = ndl;
+		entry->cns = cns;
+		entry->po2 = po2;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
@@ -1858,10 +1869,18 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 
 		if (!fo2)
 			fo2 = AIR_PERMILLE;
-		entry->po2 = fo2 / 1000.0 * amb_pressure;
-		entry->phe = fhe / 1000.0 * amb_pressure;
-		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
-
+		if (entry->po2) {
+			/* we have an O2 partial pressure in the sample - so this
+			 * is likely a CC dive... use that instead of the value
+			 * from the cylinder info */
+			double ratio = (double)fhe / (1000.0 - fo2);
+			entry->phe = (amb_pressure - entry->po2) * ratio;
+			entry->pn2 = amb_pressure - entry->po2 - entry->phe;
+		} else {
+			entry->po2 = fo2 / 1000.0 * amb_pressure;
+			entry->phe = fhe / 1000.0 * amb_pressure;
+			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
+		}
 		/* finally, do the discrete integration to get the SAC rate equivalent */
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
 			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
