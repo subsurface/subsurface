@@ -230,6 +230,8 @@ struct sample {
 	duration_t ndl;
 	duration_t stoptime;
 	depth_t stopdepth;
+	int cns;
+	int po2;
 };
 
 /*

@@ -703,6 +703,10 @@ add_sample_b:
 			sample.cylinderpressure = as->cylinderpressure;
 		if (as->cylinderindex)
 			sample.cylinderindex = as->cylinderindex;
+		if (as->cns)
+			sample.cns = as->cns;
+		if (as->po2)
+			sample.po2 = as->po2;
 
 		merge_one_sample(&sample, at, res);
 

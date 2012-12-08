@@ -185,6 +185,18 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			printf("%02X", ((unsigned char *) value.vendor.data)[i]);
 		printf("</vendor>\n");
 		break;
+#if DC_VERSION_CHECK(0, 3, 0)
+	case DC_SAMPLE_SETPOINT:
+		/* for us a setpoint means constant pO2 from here */
+		sample->po2 = value.setpoint * 1000 + 0.5;
+		break;
+	case DC_SAMPLE_PPO2:
+		sample->po2 = value.ppo2 * 1000 + 0.5;
+		break;
+	case DC_SAMPLE_CNS:
+		sample->cns = value.cns * 100 + 0.5;
+		break;
+#endif
 	default:
 		break;
 	}
