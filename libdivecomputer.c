@@ -22,7 +22,7 @@
 
 static const char *progress_bar_text = "";
 static double progress_bar_fraction = 0.0;
-static int stoptime, stopdepth, ndl;
+static int stoptime, stopdepth, ndl, po2, cns;
 
 static GError *error(const char *fmt, ...)
 {
@@ -152,6 +152,8 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->ndl.seconds = ndl;
 			sample->stoptime.seconds = stoptime;
 			sample->stopdepth.mm = stopdepth;
+			sample->po2 = po2;
+			sample->cns = cns;
 		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = value.time;
@@ -188,13 +190,13 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 #if DC_VERSION_CHECK(0, 3, 0)
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
-		sample->po2 = value.setpoint * 1000 + 0.5;
+		sample->po2 = po2 = value.setpoint * 1000 + 0.5;
 		break;
 	case DC_SAMPLE_PPO2:
-		sample->po2 = value.ppo2 * 1000 + 0.5;
+		sample->po2 = po2 = value.ppo2 * 1000 + 0.5;
 		break;
 	case DC_SAMPLE_CNS:
-		sample->cns = value.cns * 100 + 0.5;
+		sample->cns = cns = value.cns * 100 + 0.5;
 		break;
 #endif
 	default:
