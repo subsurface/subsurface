@@ -815,31 +815,6 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 
 	setup_pp_limits(gc, pi);
 
-	if (partial_pressure_graphs.po2) {
-		set_source_rgba(gc, PO2);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 < partial_pressure_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PO2_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 >= partial_pressure_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-	}
 	if (partial_pressure_graphs.pn2) {
 		set_source_rgba(gc, PN2);
 		entry = pi->entry;
@@ -887,6 +862,31 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 				line_to(gc, entry->sec, entry->phe);
 			else
 				move_to(gc, entry->sec, entry->phe);
+		}
+		cairo_stroke(gc->cr);
+	}
+	if (partial_pressure_graphs.po2) {
+		set_source_rgba(gc, PO2);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->po2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 < partial_pressure_graphs.po2_threshold)
+				line_to(gc, entry->sec, entry->po2);
+			else
+				move_to(gc, entry->sec, entry->po2);
+		}
+		cairo_stroke(gc->cr);
+
+		set_source_rgba(gc, PO2_ALERT);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->po2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 >= partial_pressure_graphs.po2_threshold)
+				line_to(gc, entry->sec, entry->po2);
+			else
+				move_to(gc, entry->sec, entry->po2);
 		}
 		cairo_stroke(gc->cr);
 	}
