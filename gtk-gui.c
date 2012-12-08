@@ -471,6 +471,7 @@ static void name(GtkWidget *w, gpointer data)		\
 {							\
 	GtkWidget **entry = data;			\
 	option = GTK_TOGGLE_BUTTON(w)->active;		\
+	dive_list_update_dives();			\
 	if (entry)					\
 		gtk_widget_set_sensitive(*entry, option);\
 }
