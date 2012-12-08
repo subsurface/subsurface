@@ -129,7 +129,7 @@ static struct uemis_helper *uemis_get_helper(int diveid)
 		php = &hp->next;
 		break;
 	}
-	hp = *php = malloc(sizeof(struct uemis_helper));
+	hp = *php = calloc(1, sizeof(struct uemis_helper));
 	hp->diveid = diveid;
 	hp->next = NULL;
 	return hp;
