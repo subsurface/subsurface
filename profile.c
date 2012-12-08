@@ -1627,14 +1627,20 @@ static int get_cylinder_index(struct dive *dive, struct event *ev)
 	 *
 	 * Crazy suunto gas change events. We really should do
 	 * this in libdivecomputer or something.
+	 *
+	 * There are two different gas change events that can get
+	 * us here - GASCHANGE2 has the He value in the high 16
+	 * bits; looking at the possible values we can actually
+	 * handle them with the same code since the high 16 bits
+	 * will be 0 with the GASCHANGE event - and that means no He
 	 */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder+i;
 		int o2 = (cyl->gasmix.o2.permille + 5) / 10;
-		if (o2 == ev->value)
+		int he = (cyl->gasmix.he.permille + 5) / 10;
+		if (o2 == (ev->value & 0xFFFF) && he == (ev->value >> 16))
 			return i;
 	}
-
 	return 0;
 }
 
