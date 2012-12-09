@@ -79,8 +79,6 @@ int subsurface_fill_device_list(GtkListStore *store)
 	GtkTreeIter iter;
 	GDir *dev;
 	const char *name;
-	char *buffer;
-	gsize length;
 
 	dev = g_dir_open("/dev", 0, NULL);
 	while (dev && (name = g_dir_read_name(dev)) != NULL) {
@@ -206,7 +204,7 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 
 	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
 	g_signal_connect(osx_app,"NSApplicationDidBecomeActive",G_CALLBACK(show_main_window),NULL);
-	g_signal_connect(osx_app,"NSApplicationWillTerminate",G_CALLBACK(quit),NULL);
+	g_signal_connect(osx_app, "NSApplicationBlockTermination", G_CALLBACK(on_delete), NULL);
 
 	gtk_osxapplication_ready(osx_app);
 }

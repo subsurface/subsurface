@@ -65,6 +65,7 @@ extern const char *subsurface_icon_name(void);
 extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager);
 extern void quit(GtkWidget *w, gpointer data);
+extern gboolean on_delete(GtkWidget* w, gpointer data);
 
 extern int is_default_dive_computer_device(const char *name);
 

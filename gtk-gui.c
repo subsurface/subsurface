@@ -331,7 +331,7 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
-static gboolean on_delete(GtkWidget* w, gpointer data)
+gboolean on_delete(GtkWidget* w, gpointer data)
 {
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
