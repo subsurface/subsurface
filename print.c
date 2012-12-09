@@ -166,6 +166,117 @@ static void show_dive_notes(struct dive *dive, cairo_t *cr, double w,
 	g_object_unref(layout);
 }
 
+/*
+ * Show the tanks used in the dive, the mix, and the gas consumed
+ * as pressures are shown in the plot
+ */
+static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
+	double h, PangoFontDescription *font)
+{
+	int maxwidth, maxheight, curwidth, height, decimals, n, i, z,
+	    cyl_wp, cyl_press, cyl_end;
+	double cyl_cap, cyl_cons_gas;
+	const char *unit_vol, *unit_press;
+	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), N_("Gas Used")};
+	PangoLayout *layout;
+
+	/*Create a frame to separate tank area, note the scaling*/
+	cairo_rectangle(cr, 0, 0 + h*0.05, w, h*0.9);
+	cairo_set_line_width(cr, 0.01);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
+	cairo_stroke(cr);
+
+	maxwidth = w * PANGO_SCALE;
+	maxheight = h * PANGO_SCALE * 0.9;
+
+	/* We need to know how many cylinders we used*/
+	for (z = 0; z < MAX_CYLINDERS; z++ ){
+		if (dive->cylinder[z].start.mbar == 0) {
+			break;
+		}
+	}
+
+	/* to determine the distance between lines*/
+	if (z == 0){
+		height = maxheight / 1;
+	} else {
+	height = maxheight / (z + 1);
+	}
+
+	/* Then create the layout.
+	 * First a header */
+	cairo_translate (cr, 0, height / (6 * (double) PANGO_SCALE));
+	maxheight -= height / 6;
+	curwidth = 0;
+	for (i = 0; i < 3; i++) {
+		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
+		layout = pango_cairo_create_layout(cr);
+		pango_layout_set_height(layout,maxheight);
+		pango_layout_set_width(layout, maxwidth / 3);
+		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		set_font(layout, font, FONT_SMALL * 0.10 *(11-z), PANGO_ALIGN_CENTER);
+		pango_layout_set_text(layout, _(dataheader1[i]), -1);
+		pango_layout_set_justify(layout, 0);
+		pango_cairo_show_layout(cr, layout);
+		curwidth = curwidth + maxwidth/ 3;
+	}
+
+	/* Now the relevant info*/
+	for (n = 0; n < z; n++) {
+		cairo_translate (cr, 0, height / (double) PANGO_SCALE);
+		cairo_move_to(cr, 0, 0);
+
+		cyl_cap = get_volume_units(dive->cylinder[n].type.size.mliter, &decimals, &unit_vol);
+		cyl_wp = get_pressure_units(dive->cylinder[n].type.workingpressure.mbar, &unit_press);
+		cyl_press= get_pressure_units(dive->cylinder[n].start.mbar, &unit_press);
+		cyl_end= get_pressure_units(dive->cylinder[n].end.mbar, &unit_press);
+		cyl_cons_gas = (cyl_press - cyl_end) * cyl_cap;
+
+		curwidth = 0;
+		i = 0;
+		while ( i < 3 ) {
+			cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
+			switch(i) {
+				case 0 : if (output_units.volume == CUFT) {
+						 cyl_cap *= cyl_wp / 14.7 ;
+					 }
+					 snprintf(buffer, sizeof(buffer), _("%.*f %s"),
+							 decimals,
+							 cyl_cap,
+							 unit_vol);
+					 break;
+				case 1 : cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
+					 if (dive->cylinder[n].gasmix.o2.permille == 0){
+						 snprintf(buffer, sizeof(buffer), _("air"));
+
+					 } else {
+						 snprintf(buffer, sizeof(buffer), _("%d/%d"),
+							 dive->cylinder[n].gasmix.o2.permille /10,
+							 dive->cylinder[n].gasmix.he.permille /10);
+					 }
+					 break;
+				case 2 : cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
+					 if (output_units.volume == CUFT) {
+						 cyl_cons_gas /= 14.7 ;
+					 }
+					 snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
+							 decimals,
+							 cyl_cons_gas,
+							 unit_vol);
+					 break;
+				default : snprintf(buffer, sizeof(buffer),"Error");
+			}
+			pango_layout_set_text(layout, buffer, -1);
+			pango_cairo_show_layout(cr, layout);
+			curwidth += (maxwidth/ 3);
+			i += 1;
+		}
+		maxheight -= height;
+	}
+	cairo_translate(cr,0, - ((h * PANGO_SCALE * 0.9) - maxheight) / PANGO_SCALE);
+	g_object_unref(layout);
+}
+
 static void show_table_header(cairo_t *cr, double w, double h,
 	PangoFontDescription *font)
 {
@@ -346,10 +457,13 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 
 	/* Dive information in the lower third */
 	cairo_translate(cr, 0, h*1.33);
-	show_dive_header(dive, cr, w*2, h*0.20, font);
+	show_dive_header(dive, cr, w*2, h*0.15, font);
+
+	cairo_translate(cr, 0, h*0.15);
+	show_dive_tanks (dive, cr, w*1, h*0.20, font);
 
 	cairo_translate(cr, 0, h*0.20);
-	show_dive_notes(dive, cr, w*2, h*0.47, font);
+	show_dive_notes(dive, cr, w*2, h*0.32, font);
 
 	cairo_restore(cr);
 }
