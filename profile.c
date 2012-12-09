@@ -357,6 +357,11 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			}
 		}
 	}
+	if (event->time.seconds < 30 && !strcmp(event->name, "gaschange"))
+		/* a gas change in the first 30 seconds is the way of some dive computers
+		 * to tell us the gas that is used; let's not plot a marker for that */
+		return;
+
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *data = pi->entry + i;
 		if (event->time.seconds < data->sec)
