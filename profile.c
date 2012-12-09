@@ -1879,9 +1879,11 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			/* we have an O2 partial pressure in the sample - so this
 			 * is likely a CC dive... use that instead of the value
 			 * from the cylinder info */
+			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
 			double ratio = (double)fhe / (1000.0 - fo2);
-			entry->phe = (amb_pressure - entry->po2) * ratio;
-			entry->pn2 = amb_pressure - entry->po2 - entry->phe;
+			entry->phe = (amb_pressure - po2) * ratio;
+			entry->pn2 = amb_pressure - po2 - entry->phe;
+			entry->po2 = po2;
 		} else {
 			entry->po2 = fo2 / 1000.0 * amb_pressure;
 			entry->phe = fhe / 1000.0 * amb_pressure;
