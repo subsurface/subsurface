@@ -1302,6 +1302,10 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 	if (tx < 0 || ty < 0)
 		return FALSE;
 
+	/* don't draw a tooltip if nothing is there */
+	if (gc->pi.nr == 0)
+		return FALSE;
+
 	width = drawing_area->width - 2*drawing_area->x;
 	height = drawing_area->height - 2*drawing_area->y;
 	if (width <= 0 || height <= 0)

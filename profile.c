@@ -2120,7 +2120,7 @@ void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t b
 {
 	struct plot_info *pi = &gc->pi;
 	int pressure = 0, temp = 0;
-	struct plot_data *entry;
+	struct plot_data *entry = NULL;
 	int i;
 
 	for (i = 0; i < pi->nr; i++) {
@@ -2132,5 +2132,6 @@ void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t b
 		if (entry->sec >= time)
 			break;
 	}
-	plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
+	if (entry)
+		plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
 }
