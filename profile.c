@@ -241,7 +241,7 @@ static int get_maxdepth(struct plot_info *pi)
 		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
 		md = MAX(30000, ROUND_UP(mm+3000, 10000));
 	}
-	if (GRAPHS_ENABLED) {
+	if (PP_GRAPHS_ENABLED) {
 		if (md <= 20000)
 			md += 10000;
 		else
@@ -505,7 +505,7 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 	maxdepth = get_maxdepth(pi);
 	gc->topy = 0; gc->bottomy = maxdepth;
 
-	switch (output_units.length) {
+	switch (prefs.output_units.length) {
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
@@ -783,15 +783,15 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 
 	setup_pp_limits(gc, pi);
 
-	if (partial_pressure_graphs.po2) {
+	if (prefs.pp_graphs.po2) {
 		maxpp = plot_single_gas_pp_text(gc, pi, po2_value, 0.4, PO2);
 	}
-	if (partial_pressure_graphs.pn2) {
+	if (prefs.pp_graphs.pn2) {
 		m = plot_single_gas_pp_text(gc, pi, pn2_value, 0.6, PN2);
 		if (m > maxpp)
 			maxpp = m;
 	}
-	if (partial_pressure_graphs.phe) {
+	if (prefs.pp_graphs.phe) {
 		m = plot_single_gas_pp_text(gc, pi, phe_value, 0.4, PHE);
 		if (m > maxpp)
 			maxpp = m;
@@ -814,13 +814,13 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 
 	setup_pp_limits(gc, pi);
 
-	if (partial_pressure_graphs.po2) {
+	if (prefs.pp_graphs.po2) {
 		set_source_rgba(gc, PO2);
 		entry = pi->entry;
 		move_to(gc, entry->sec, entry->po2);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->po2 < partial_pressure_graphs.po2_threshold)
+			if (entry->po2 < prefs.pp_graphs.po2_threshold)
 				line_to(gc, entry->sec, entry->po2);
 			else
 				move_to(gc, entry->sec, entry->po2);
@@ -832,20 +832,20 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 		move_to(gc, entry->sec, entry->po2);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->po2 >= partial_pressure_graphs.po2_threshold)
+			if (entry->po2 >= prefs.pp_graphs.po2_threshold)
 				line_to(gc, entry->sec, entry->po2);
 			else
 				move_to(gc, entry->sec, entry->po2);
 		}
 		cairo_stroke(gc->cr);
 	}
-	if (partial_pressure_graphs.pn2) {
+	if (prefs.pp_graphs.pn2) {
 		set_source_rgba(gc, PN2);
 		entry = pi->entry;
 		move_to(gc, entry->sec, entry->pn2);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->pn2 < partial_pressure_graphs.pn2_threshold)
+			if (entry->pn2 < prefs.pp_graphs.pn2_threshold)
 				line_to(gc, entry->sec, entry->pn2);
 			else
 				move_to(gc, entry->sec, entry->pn2);
@@ -857,20 +857,20 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 		move_to(gc, entry->sec, entry->pn2);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->pn2 >= partial_pressure_graphs.pn2_threshold)
+			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold)
 				line_to(gc, entry->sec, entry->pn2);
 			else
 				move_to(gc, entry->sec, entry->pn2);
 		}
 		cairo_stroke(gc->cr);
 	}
-	if (partial_pressure_graphs.phe) {
+	if (prefs.pp_graphs.phe) {
 		set_source_rgba(gc, PHE);
 		entry = pi->entry;
 		move_to(gc, entry->sec, entry->phe);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->phe < partial_pressure_graphs.phe_threshold)
+			if (entry->phe < prefs.pp_graphs.phe_threshold)
 				line_to(gc, entry->sec, entry->phe);
 			else
 				move_to(gc, entry->sec, entry->phe);
@@ -882,7 +882,7 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 		move_to(gc, entry->sec, entry->phe);
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->phe >= partial_pressure_graphs.phe_threshold)
+			if (entry->phe >= prefs.pp_graphs.phe_threshold)
 				line_to(gc, entry->sec, entry->phe);
 			else
 				move_to(gc, entry->sec, entry->phe);
@@ -945,7 +945,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	/* Depth markers: every 30 ft or 10 m*/
 	gc->leftx = 0; gc->rightx = 1.0;
 	gc->topy = 0; gc->bottomy = maxdepth;
-	switch (output_units.length) {
+	switch (prefs.output_units.length) {
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
@@ -1010,7 +1010,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	/* if the user wants the deco ceiling more visible, do that here (this
 	 * basically draws over the background that we had allowed to shine
 	 * through so far) */
-	if (profile_red_ceiling) {
+	if (prefs.profile_red_ceiling) {
 		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
 		pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
 		pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
@@ -1086,7 +1086,7 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 		delta = 3000;
 	gc->topy = maxtemp + delta*2;
 
-	if (GRAPHS_ENABLED)
+	if (PP_GRAPHS_ENABLED)
 		gc->bottomy = mintemp - delta * 2;
 	else
 		gc->bottomy = mintemp - delta / 3;
@@ -1178,7 +1178,7 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	gc->leftx = 0;
 	gc->rightx = get_maxtime(pi);
 
-	if (GRAPHS_ENABLED)
+	if (PP_GRAPHS_ENABLED)
 		gc->bottomy = -pi->maxpressure * 0.75;
 	else
 		gc->bottomy = 0;
@@ -2036,7 +2036,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 		plot_text(gc, &computer, 0, 1, "%s", dc->model);
 	}
 
-	if (GRAPHS_ENABLED) {
+	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile(gc, pi);
 		plot_pp_text(gc, pi);
 	}
@@ -2101,15 +2101,15 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\nNDL:%umin", buf2, entry->ndl / 60);
 	}
-	if (partial_pressure_graphs.po2) {
+	if (prefs.pp_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->po2);
 	}
-	if (partial_pressure_graphs.pn2) {
+	if (prefs.pp_graphs.pn2) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->pn2);
 	}
-	if (partial_pressure_graphs.phe) {
+	if (prefs.pp_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\npHe:%.1f", buf2, entry->phe);
 	}

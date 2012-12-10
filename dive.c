@@ -34,8 +34,9 @@ int get_pressure_units(unsigned int mb, const char **units)
 {
 	int pressure;
 	const char* unit;
+	struct units *output_units_p = get_output_units();
 
-	switch (output_units.pressure) {
+	switch (output_units_p->pressure) {
 	case PASCAL:
 		pressure = mb * 100;
 		unit = _("pascal");
@@ -58,8 +59,9 @@ double get_temp_units(unsigned int mk, const char **units)
 {
 	double deg;
 	const char *unit;
+	struct units *output_units_p = get_output_units();
 
-	if (output_units.temperature == FAHRENHEIT) {
+	if (output_units_p->temperature == FAHRENHEIT) {
 		deg = mkelvin_to_F(mk);
 		unit = UTF8_DEGREE "F";
 	} else {
@@ -76,8 +78,9 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	int decimals;
 	double vol;
 	const char *unit;
+	struct units *output_units_p = get_output_units();
 
-	switch (output_units.volume) {
+	switch (output_units_p->volume) {
 	case LITER:
 		vol = ml / 1000.0;
 		unit = _("l");
@@ -101,8 +104,9 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	int decimals;
 	double d;
 	const char *unit;
+	struct units *output_units_p = get_output_units();
 
-	switch (output_units.length) {
+	switch (output_units_p->length) {
 	case METERS:
 		d = mm / 1000.0;
 		unit = _("m");
@@ -126,8 +130,9 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 	int decimals;
 	double value;
 	const char* unit;
+	struct units *output_units_p = get_output_units();
 
-	if (output_units.weight == LBS) {
+	if (output_units_p->weight == LBS) {
 		value = grams_to_lbs(grams);
 		unit = _("lbs");
 		decimals = 0;

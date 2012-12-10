@@ -75,7 +75,7 @@ static int convert_pressure(int mbar, double *p)
 	int decimals = 1;
 	double pressure;
 
-	if (output_units.pressure == PSI) {
+	if (prefs.output_units.pressure == PSI) {
 		pressure = mbar_to_PSI(mbar);
 		decimals = 0;
 	} else {
@@ -92,12 +92,12 @@ static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 
 	volume = ml / 1000.0;
 	if (mbar) {
-		if (output_units.volume == CUFT) {
+		if (prefs.output_units.volume == CUFT) {
 			volume = ml_to_cuft(ml);
 			volume *= bar_to_atm(mbar / 1000.0);
 		}
 
-		if (output_units.pressure == PSI)
+		if (prefs.output_units.pressure == PSI)
 			pressure = mbar_to_PSI(mbar);
 		else
 			pressure = mbar / 1000.0;
@@ -111,7 +111,7 @@ static int convert_weight(int grams, double *m)
 	int decimals = 1; /* not sure - do people do less than whole lbs/kg ? */
 	double weight;
 
-	if (output_units.weight == LBS)
+	if (prefs.output_units.weight == LBS)
 		weight = grams_to_lbs(grams);
 	else
 		weight = grams / 1000.0;
@@ -631,14 +631,14 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 {
 	int mbar, ml;
 
-	if (output_units.pressure == PSI) {
+	if (prefs.output_units.pressure == PSI) {
 		pressure = psi_to_bar(pressure);
 		start = psi_to_bar(start);
 		end = psi_to_bar(end);
 	}
 
 	mbar = pressure * 1000 + 0.5;
-	if (mbar && output_units.volume == CUFT) {
+	if (mbar && prefs.output_units.volume == CUFT) {
 		volume = cuft_to_l(volume);
 		volume /= bar_to_atm(pressure);
 	}
@@ -714,7 +714,7 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
 	desc = gtk_combo_box_get_active_text(box);
 	value = gtk_spin_button_get_value(weightsystem_widget->weight);
 
-	if (output_units.weight == LBS)
+	if (prefs.output_units.weight == LBS)
 		grams = lbs_to_grams(value);
 	else
 		grams = value * 1000;
@@ -1041,7 +1041,7 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	if ( output_units.weight == KG)
+	if ( prefs.output_units.weight == KG)
 		widget = create_spinbutton(hbox, _("kg"), 0, 50, 0.5);
 	else
 		widget = create_spinbutton(hbox, _("lbs"), 0, 110, 1);

@@ -237,7 +237,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 		while ( i < 3 ) {
 			cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
 			switch(i) {
-				case 0 : if (output_units.volume == CUFT) {
+				case 0 : if (prefs.output_units.volume == CUFT) {
 						 cyl_cap *= cyl_wp / 14.7 ;
 					 }
 					 snprintf(buffer, sizeof(buffer), _("%.*f %s"),
@@ -256,7 +256,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 					 }
 					 break;
 				case 2 : cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
-					 if (output_units.volume == CUFT) {
+					 if (prefs.output_units.volume == CUFT) {
 						 cyl_cons_gas /= 14.7 ;
 					 }
 					 snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),

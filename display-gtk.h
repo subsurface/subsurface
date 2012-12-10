@@ -30,11 +30,16 @@ typedef struct {
 	double phe_threshold;
 } partial_pressure_graphs_t;
 
-extern visible_cols_t visible_cols;
-extern partial_pressure_graphs_t partial_pressure_graphs;
-extern gboolean profile_red_ceiling;
+struct preferences {
+	struct units output_units;
+	visible_cols_t visible_cols;
+	partial_pressure_graphs_t pp_graphs;
+	gboolean profile_red_ceiling;
+};
 
-#define GRAPHS_ENABLED (partial_pressure_graphs.po2 || partial_pressure_graphs.pn2 || partial_pressure_graphs.phe)
+extern struct preferences prefs;
+
+#define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
 typedef enum {
 	PREF_BOOL,

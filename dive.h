@@ -390,9 +390,32 @@ struct units {
 	enum { KG, LBS } weight;
 };
 
-extern const struct units SI_units, IMPERIAL_units;
-extern struct units input_units, output_units;
+/*
+ * We're going to default to SI units for input. Yes,
+ * technically the SI unit for pressure is Pascal, but
+ * we default to bar (10^5 pascal), which people
+ * actually use. Similarly, C instead of Kelvin.
+ * And kg instead of g.
+ */
+#define SI_UNITS {			\
+	.length = METERS,		\
+	.volume = LITER,		\
+	.pressure = BAR,		\
+	.temperature = CELSIUS,		\
+	.weight = KG			\
+}
 
+#define IMPERIAL_UNITS {		\
+	.length = FEET,			\
+	.volume = CUFT,			\
+	.pressure = PSI,		\
+	.temperature = FAHRENHEIT,	\
+	.weight = LBS			\
+}
+extern const struct units SI_units, IMPERIAL_units;
+extern struct units input_units;
+
+extern struct units *get_output_units(void);
 extern int verbose;
 
 struct dive_table {

@@ -401,7 +401,7 @@ static void depth_data_func(GtkTreeViewColumn *col,
 	if (idx < 0) {
 		*buffer = '\0';
 	} else {
-		switch (output_units.length) {
+		switch (prefs.output_units.length) {
 		case METERS:
 			/* To tenths of meters */
 			depth = (depth + 49) / 100;
@@ -460,7 +460,7 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 	*buffer = 0;
 	if (idx >= 0 && value) {
 		double deg;
-		switch (output_units.temperature) {
+		switch (prefs.output_units.temperature) {
 		case CELSIUS:
 			deg = mkelvin_to_C(value);
 			break;
@@ -657,7 +657,7 @@ static void sac_data_func(GtkTreeViewColumn *col,
 	}
 
 	sac = value / 1000.0;
-	switch (output_units.volume) {
+	switch (prefs.output_units.volume) {
 	case LITER:
 		fmt = "%4.1f";
 		break;
@@ -913,13 +913,13 @@ void update_dive_list_units(void)
 
 void update_dive_list_col_visibility(void)
 {
-	gtk_tree_view_column_set_visible(dive_list.cylinder, visible_cols.cylinder);
-	gtk_tree_view_column_set_visible(dive_list.temperature, visible_cols.temperature);
-	gtk_tree_view_column_set_visible(dive_list.totalweight, visible_cols.totalweight);
-	gtk_tree_view_column_set_visible(dive_list.suit, visible_cols.suit);
-	gtk_tree_view_column_set_visible(dive_list.nitrox, visible_cols.nitrox);
-	gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
-	gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
+	gtk_tree_view_column_set_visible(dive_list.cylinder, prefs.visible_cols.cylinder);
+	gtk_tree_view_column_set_visible(dive_list.temperature, prefs.visible_cols.temperature);
+	gtk_tree_view_column_set_visible(dive_list.totalweight, prefs.visible_cols.totalweight);
+	gtk_tree_view_column_set_visible(dive_list.suit, prefs.visible_cols.suit);
+	gtk_tree_view_column_set_visible(dive_list.nitrox, prefs.visible_cols.nitrox);
+	gtk_tree_view_column_set_visible(dive_list.sac, prefs.visible_cols.sac);
+	gtk_tree_view_column_set_visible(dive_list.otu, prefs.visible_cols.otu);
 	return;
 }
 
@@ -1266,13 +1266,13 @@ static struct divelist_column {
 	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
 	[DIVE_DEPTH] = { N_("ft"), depth_data_func, NULL, ALIGN_RIGHT },
 	[DIVE_DURATION] = { N_("min"), duration_data_func, NULL, ALIGN_RIGHT },
-	[DIVE_TEMPERATURE] = { UTF8_DEGREE "F", temperature_data_func, NULL, ALIGN_RIGHT, &visible_cols.temperature },
-	[DIVE_TOTALWEIGHT] = { N_("lbs"), weight_data_func, NULL, ALIGN_RIGHT, &visible_cols.totalweight },
-	[DIVE_SUIT] = { N_("Suit"), NULL, NULL, ALIGN_LEFT, &visible_cols.suit },
-	[DIVE_CYLINDER] = { N_("Cyl"), NULL, NULL, 0, &visible_cols.cylinder },
-	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &visible_cols.nitrox },
-	[DIVE_SAC] = { N_("SAC"), sac_data_func, NULL, 0, &visible_cols.sac },
-	[DIVE_OTU] = { N_("OTU"), otu_data_func, NULL, 0, &visible_cols.otu },
+	[DIVE_TEMPERATURE] = { UTF8_DEGREE "F", temperature_data_func, NULL, ALIGN_RIGHT, &prefs.visible_cols.temperature },
+	[DIVE_TOTALWEIGHT] = { N_("lbs"), weight_data_func, NULL, ALIGN_RIGHT, &prefs.visible_cols.totalweight },
+	[DIVE_SUIT] = { N_("Suit"), NULL, NULL, ALIGN_LEFT, &prefs.visible_cols.suit },
+	[DIVE_CYLINDER] = { N_("Cyl"), NULL, NULL, 0, &prefs.visible_cols.cylinder },
+	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &prefs.visible_cols.nitrox },
+	[DIVE_SAC] = { N_("SAC"), sac_data_func, NULL, 0, &prefs.visible_cols.sac },
+	[DIVE_OTU] = { N_("OTU"), otu_data_func, NULL, 0, &prefs.visible_cols.otu },
 	[DIVE_LOCATION] = { N_("Location"), NULL, NULL, ALIGN_LEFT },
 };
 

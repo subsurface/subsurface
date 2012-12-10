@@ -129,29 +129,8 @@ static int match(const char *pattern, int plen,
 
 
 struct units input_units;
-
-/*
- * We're going to default to SI units for input. Yes,
- * technically the SI unit for pressure is Pascal, but
- * we default to bar (10^5 pascal), which people
- * actually use. Similarly, C instead of Kelvin.
- * And kg instead of g.
- */
-const struct units SI_units = {
-	.length = METERS,
-	.volume = LITER,
-	.pressure = BAR,
-	.temperature = CELSIUS,
-	.weight = KG
-};
-
-const struct units IMPERIAL_units = {
-	.length = FEET,
-	.volume = CUFT,
-	.pressure = PSI,
-	.temperature = FAHRENHEIT,
-	.weight = LBS
-};
+const struct units SI_units = SI_UNITS;
+const struct units IMPERIAL_units = IMPERIAL_UNITS;
 
 /*
  * Dive info as it is being built up..
