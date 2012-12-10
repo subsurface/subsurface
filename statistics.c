@@ -317,7 +317,7 @@ void clear_statistics()
 	yearly_tree = NULL;
 }
 
-static gboolean on_delete(GtkWidget *window, GdkEvent *event, gpointer data)
+static gboolean stat_on_delete(GtkWidget *window, GdkEvent *event, gpointer data)
 {
 	clear_statistics();
 	gtk_widget_destroy(window);
@@ -382,7 +382,7 @@ void show_yearly_stats()
 	update_yearly_stats();
 
 	g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (key_press_event), NULL);
-	g_signal_connect (G_OBJECT (window), "delete-event", G_CALLBACK (on_delete), NULL);
+	g_signal_connect (G_OBJECT (window), "delete-event", G_CALLBACK (stat_on_delete), NULL);
 	gtk_widget_show_all(window);
 }
 
