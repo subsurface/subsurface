@@ -16,8 +16,8 @@ struct plot_info {
 	int nr;
 	int maxtime;
 	int meandepth, maxdepth;
-	int endpressure, maxpressure;
-	int mintemp, maxtemp, endtemp;
+	int minpressure, maxpressure;
+	int mintemp, maxtemp;
 	double endtempcoord;
 	gboolean has_ndl;
 	struct plot_data *entry;

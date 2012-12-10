@@ -1091,7 +1091,7 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 	else
 		gc->bottomy = mintemp - delta / 3;
 
-	pi->endtempcoord = SCALEY(gc, pi->endtemp);
+	pi->endtempcoord = SCALEY(gc, pi->mintemp);
 	return maxtemp > mintemp;
 }
 
@@ -1186,7 +1186,7 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
 	if (!pi->maxpressure)
 		return FALSE;
 
-	while (pi->endtempcoord <= SCALEY(gc, pi->endpressure - (gc->topy) * 0.1))
+	while (pi->endtempcoord <= SCALEY(gc, pi->minpressure - (gc->topy) * 0.1))
 		gc->bottomy -=  gc->topy * 0.1;
 
 	return TRUE;
@@ -1423,27 +1423,6 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 {
 	int i;
 	int nr = pi->nr;
-
-	/* Do pressure min/max based on the non-surface data */
-	for (i = 0; i < nr; i++) {
-		struct plot_data *entry = pi->entry+i;
-		int pressure = GET_PRESSURE(entry);
-		int temperature = entry->temperature;
-
-		if (pressure) {
-			if (pressure > pi->maxpressure)
-				pi->maxpressure = pressure;
-			pi->endpressure = pressure;
-		}
-
-		if (temperature) {
-			if (!pi->mintemp || temperature < pi->mintemp)
-				pi->mintemp = temperature;
-			if (temperature > pi->maxtemp)
-				pi->maxtemp = temperature;
-			pi->endtemp = temperature;
-		}
-	}
 
 	/* Smoothing function: 5-point triangular smooth */
 	for (i = 2; i < nr; i++) {
@@ -1693,6 +1672,73 @@ static int count_gas_change_events(struct divecomputer *dc)
 	return count;
 }
 
+static void calculate_max_limits(struct dive *dive, struct graphics_context *gc)
+{
+	struct divecomputer *dc;
+	struct plot_info *pi;
+	int maxdepth = 0;
+	int maxtime = 0;
+	int maxpressure = 0, minpressure = INT_MAX;
+	int mintemp = 0, maxtemp = 0;
+	int cyl;
+
+	/* The plot-info is embedded in the graphics context */
+	pi = &gc->pi;
+	memset(pi, 0, sizeof(*pi));
+
+	/* This should probably have been per-dive-computer */
+	maxdepth = dive->maxdepth.mm;
+	mintemp = maxtemp = dive->watertemp.mkelvin;
+
+	/* Get the per-cylinder maximum pressure if they are manual */
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		unsigned int mbar = dive->cylinder[cyl].start.mbar;
+		if (mbar > maxpressure)
+			maxpressure = mbar;
+	}
+
+	/* Then do all the samples from all the dive computers */
+	dc = &dive->dc;
+	do {
+		int i = dc->samples;
+		int lastdepth = 0;
+		struct sample *s = dc->sample;
+
+		while (--i >= 0) {
+			int depth = s->depth.mm;
+			int pressure = s->cylinderpressure.mbar;
+			int temperature = s->temperature.mkelvin;
+
+			if (!mintemp && temperature < mintemp)
+				mintemp = temperature;
+			if (temperature > maxtemp)
+				maxtemp = temperature;
+
+			if (pressure && pressure < minpressure)
+				minpressure = pressure;
+			if (pressure > maxpressure)
+				maxpressure = pressure;
+
+			if (depth > maxdepth)
+				maxdepth = s->depth.mm;
+			if ((depth || lastdepth) && s->time.seconds > maxtime)
+				maxtime = s->time.seconds;
+			lastdepth = depth;
+			s++;
+		}
+	} while ((dc = dc->next) != NULL);
+
+	if (minpressure > maxpressure)
+		minpressure = 0;
+
+	pi->maxdepth = maxdepth;
+	pi->maxtime = maxtime;
+	pi->maxpressure = maxpressure;
+	pi->minpressure = minpressure;
+	pi->mintemp = mintemp;
+	pi->maxtemp = maxtemp;
+}
+
 /*
  * Create a plot-info with smoothing and ranged min/max
  *
@@ -1715,7 +1761,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 
 	/* The plot-info is embedded in the graphics context */
 	pi = &gc->pi;
-	memset(pi, 0, sizeof(*pi));
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
@@ -1809,8 +1854,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			lastindex = i + pi_idx;
 
 		lastdepth = depth;
-		if (depth > pi->maxdepth)
-			pi->maxdepth = depth;
 	}
 	entry = pi->entry + i + pi_idx;
 	/* are there still unprocessed gas changes? that would be very strange */
@@ -1916,17 +1959,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	pi->nr = lastindex+1;
 	while (pi->nr <= i+2 && pi->entry[pi->nr-1].depth > 0)
 		pi->nr++;
-	pi->maxtime = pi->entry[lastindex].sec;
-
-	/* Analyze_plot_info() will do the sample max pressures,
-	 * this handles the manual pressures
-	 */
-	pi->maxpressure = 0;
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		unsigned int mbar = dive->cylinder[cyl].start.mbar;
-		if (mbar > pi->maxpressure)
-			pi->maxpressure = mbar;
-	}
 
 	pi->meandepth = dive->meandepth.mm;
 
@@ -1984,7 +2016,11 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 		dc = &fakedc;
 	}
 
-	pi = create_plot_info(dive, dc, gc);
+	/*
+	 * Set up limits that are independent of
+	 * the dive computer
+	 */
+	calculate_max_limits(dive, gc);
 
 	/* shift the drawing area so we have a nice margin around it */
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
@@ -2001,6 +2037,9 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	 */
 	gc->maxx = (drawing_area->width - 2*drawing_area->x);
 	gc->maxy = (drawing_area->height - 2*drawing_area->y);
+
+	/* This is per-dive-computer. Right now we just do the first one */
+	pi = create_plot_info(dive, dc, gc);
 
 	/* Depth profile */
 	plot_depth_profile(gc, pi);
