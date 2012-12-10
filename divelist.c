@@ -1384,6 +1384,48 @@ void edit_dive_from_path_cb(GtkWidget *menuitem, GtkTreePath *path)
 	edit_multi_dive_info(dive);
 }
 
+void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
+{
+	GtkWidget *dialog, *cal, *h, *m;
+	timestamp_t when;
+
+	guint yval, mval, dval;
+	int success;
+	struct tm tm;
+
+	if (!dive)
+		return;
+
+	when = dive->when;
+	utc_mkdate(when, &tm);
+	dialog = create_date_time_widget(&tm, &cal, &h, &m);
+
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (!success) {
+		gtk_widget_destroy(dialog);
+		return;
+	}
+	memset(&tm, 0, sizeof(tm));
+	gtk_calendar_get_date(GTK_CALENDAR(cal), &yval, &mval, &dval);
+	tm.tm_year = yval;
+	tm.tm_mon = mval;
+	tm.tm_mday = dval;
+	tm.tm_hour = gtk_spin_button_get_value(GTK_SPIN_BUTTON(h));
+	tm.tm_min = gtk_spin_button_get_value(GTK_SPIN_BUTTON(m));
+
+	gtk_widget_destroy(dialog);
+	when = utc_mktime(&tm);
+	if (dive->when != when) {
+		dive->when = when;
+		mark_divelist_changed(TRUE);
+		remember_tree_state();
+		report_dives(FALSE, FALSE);
+		dive_list_update_dives();
+		restore_tree_state();
+	}
+}
+
 static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
 {
 	gtk_tree_view_expand_all(tree_view);
@@ -2141,6 +2183,9 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			if (amount_selected == 1) {
 				deletelabel = _(deletesinglelabel);
 				editlabel = _(editsinglelabel);
+				menuitem = gtk_menu_item_new_with_label(_("Edit dive date/time"));
+				g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_when_cb), dive);
+				gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 			} else {
 				deletelabel = _(deleteplurallabel);
 				editlabel = _(editplurallabel);
@@ -2157,6 +2202,10 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			if (amount_selected == 2)
 				add_dive_merge_label(idx, GTK_MENU_SHELL(menu));
 		} else {
+			menuitem = gtk_menu_item_new_with_label(_("Edit dive date/time"));
+			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_when_cb), dive);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 			deletelabel = _(deletesinglelabel);
 			menuitem = gtk_menu_item_new_with_label(deletelabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_dive_cb), path);

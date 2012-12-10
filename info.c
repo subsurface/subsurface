@@ -817,18 +817,11 @@ static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
 	return hbox;
 }
 
-/* Fixme - should do at least depths too - a dive without a depth is kind of pointless */
-static timestamp_t dive_time_widget(struct dive *dive)
+GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget **h, GtkWidget **m)
 {
 	GtkWidget *dialog;
-	GtkWidget *cal, *hbox, *vbox, *box;
-	GtkWidget *h, *m;
-	GtkWidget *duration, *depth;
+	GtkWidget *hbox, *vbox;
 	GtkWidget *label;
-	guint yval, mval, dval;
-	struct tm tm, *time;
-	int success;
-	double depthinterval, val;
 
 	dialog = gtk_dialog_new_with_buttons(_("Date and Time"),
 		GTK_WINDOW(main_window),
@@ -841,14 +834,42 @@ static timestamp_t dive_time_widget(struct dive *dive)
 
 	/* Calendar hbox */
 	hbox = frame_box(vbox, _("Date:"));
-	cal = gtk_calendar_new();
-	gtk_box_pack_start(GTK_BOX(hbox), cal, FALSE, TRUE, 0);
+	*cal = gtk_calendar_new();
+	gtk_box_pack_start(GTK_BOX(hbox), *cal, FALSE, TRUE, 0);
 
 	/* Time hbox */
 	hbox = frame_box(vbox, _("Time"));
 
-	h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
-	m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
+	*h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
+	*m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
+
+
+	gtk_calendar_select_month(GTK_CALENDAR(*cal), time->tm_mon, time->tm_year + 1900);
+	gtk_calendar_select_day(GTK_CALENDAR(*cal), time->tm_mday);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(*h), time->tm_hour);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(*m), (time->tm_min / 5)*5);
+
+	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(*h), TRUE);
+	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(*m), TRUE);
+
+	gtk_box_pack_end(GTK_BOX(hbox), *m, FALSE, FALSE, 0);
+	label = gtk_label_new(":");
+	gtk_box_pack_end(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_end(GTK_BOX(hbox), *h, FALSE, FALSE, 0);
+
+	return dialog;
+}
+
+static timestamp_t dive_time_widget(struct dive *dive)
+{
+	GtkWidget *dialog;
+	GtkWidget *cal, *vbox, *hbox, *box;
+	GtkWidget *h, *m;
+	GtkWidget *duration, *depth;
+	guint yval, mval, dval;
+	struct tm tm, *time;
+	int success;
+	double depthinterval, val;
 
 	/*
 	 * If we have a dive selected, 'add dive' will default
@@ -868,19 +889,8 @@ static timestamp_t dive_time_widget(struct dive *dive)
 		now = tv.tv_sec;
 		time = localtime(&now);
 	}
-	gtk_calendar_select_month(GTK_CALENDAR(cal), time->tm_mon, time->tm_year + 1900);
-	gtk_calendar_select_day(GTK_CALENDAR(cal), time->tm_mday);
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(h), time->tm_hour);
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(m), (time->tm_min / 5)*5);
-
-	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(h), TRUE);
-	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(m), TRUE);
-
-	gtk_box_pack_end(GTK_BOX(hbox), m, FALSE, FALSE, 0);
-	label = gtk_label_new(":");
-	gtk_box_pack_end(GTK_BOX(hbox), label, FALSE, FALSE, 0);
-	gtk_box_pack_end(GTK_BOX(hbox), h, FALSE, FALSE, 0);
-
+	dialog = create_date_time_widget(time, &cal, &h, &m);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	hbox = gtk_hbox_new(TRUE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
