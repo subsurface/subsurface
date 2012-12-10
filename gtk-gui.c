@@ -451,11 +451,19 @@ static void create_radio(GtkWidget *vbox, const char *w_name, ...)
 	va_end(args);
 }
 
+static void update_screen()
+{
+	update_dive_list_units();
+	repaint_dive();
+	update_dive_list_col_visibility();
+}
+
 #define UNITCALLBACK(name, type, value)				\
 static void name(GtkWidget *w, gpointer data) 			\
 {								\
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))	\
 		prefs.output_units.type = value;		\
+	update_screen();					\
 }
 
 UNITCALLBACK(set_meter, length, METERS)
@@ -474,6 +482,7 @@ static void name(GtkWidget *w, gpointer data)		\
 {							\
 	GtkWidget **entry = data;			\
 	option = GTK_TOGGLE_BUTTON(w)->active;		\
+	update_screen();				\
 	if (entry)					\
 		gtk_widget_set_sensitive(*entry, option);\
 }
@@ -765,9 +774,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		sscanf(pn2_threshold_text, "%lf", &prefs.pp_graphs.pn2_threshold);
 		phe_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_phe));
 		sscanf(phe_threshold_text, "%lf", &prefs.pp_graphs.phe_threshold);
-		update_dive_list_units();
-		repaint_dive();
-		update_dive_list_col_visibility();
+		update_screen();
 
 		subsurface_set_conf("feet", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.length == FEET));
 		subsurface_set_conf("psi", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.pressure == PSI));
