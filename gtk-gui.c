@@ -1677,7 +1677,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
 	vendor_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(vendor_model));
-	product_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(product_model[product_default_index]));
+	product_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(product_model[vendor_default_index]));
 
 	g_signal_connect(G_OBJECT(vendor_combo_box), "changed", G_CALLBACK(dive_computer_vendor_changed), product_combo_box);
 	g_signal_connect(G_OBJECT(product_combo_box), "changed", G_CALLBACK(dive_computer_selector_changed), NULL);
