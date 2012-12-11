@@ -662,9 +662,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	if (MATCH(".sample.stopdepth", depth, &sample->stopdepth))
 		return;
 	if (MATCH(".sample.cns", get_index, &sample->cns))
-			return;
+		return;
 	if (MATCH(".sample.po2", double_to_permil, &sample->po2))
-			return;
+		return;
 
 	switch (import_source) {
 	case DIVINGLOG:
