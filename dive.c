@@ -715,6 +715,12 @@ add_sample_b:
 			sample.cns = as->cns;
 		if (as->po2)
 			sample.po2 = as->po2;
+		if (as->ndl.seconds)
+			sample.ndl = as->ndl;
+		if (as->stoptime.seconds)
+			sample.stoptime = as->stoptime;
+		if (as->stopdepth.mm)
+			sample.stopdepth = as->stopdepth;
 
 		merge_one_sample(&sample, at, res);
 
@@ -1400,6 +1406,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_MAX_PREFDL(res, dl, a, b, maxdepth.mm);
 	res->meandepth.mm = 0;
 	MERGE_NONZERO(res, a, b, salinity);
+	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
 	MERGE_NONZERO(res, a, b, surface_pressure.mbar);
 	MERGE_MAX_PREFDL(res, dl, a, b, duration.seconds);
