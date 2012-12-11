@@ -419,6 +419,7 @@ struct dive *fixup_dive(struct dive *dive)
 	add_location(dive->location);
 	add_suit(dive->suit);
 	sanitize_cylinder_info(dive);
+	dive->maxcns = dive->cns;
 	dc = &dive->dc;
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
@@ -479,6 +480,8 @@ struct dive *fixup_dive(struct dive *dive)
 		depthtime += (time - lasttime) * (lastdepth + depth) / 2;
 		lastdepth = depth;
 		lasttime = time;
+		if (sample->cns > dive->maxcns)
+			dive->maxcns = sample->cns;
 	}
 	dive->start = start;
 	dive->end = end;
@@ -708,6 +711,10 @@ add_sample_b:
 			sample.cylinderpressure = as->cylinderpressure;
 		if (as->cylinderindex)
 			sample.cylinderindex = as->cylinderindex;
+		if (as->cns)
+			sample.cns = as->cns;
+		if (as->po2)
+			sample.po2 = as->po2;
 
 		merge_one_sample(&sample, at, res);
 

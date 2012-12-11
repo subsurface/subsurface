@@ -41,6 +41,7 @@ struct plot_data {
 	int ndl;
 	int stoptime;
 	int stopdepth;
+	int cns;
 	int smoothed;
 	double po2, pn2, phe;
 	velocity_t velocity;
@@ -68,7 +69,7 @@ typedef enum {
 	VELO_STABLE, VELO_SLOW, VELO_MODERATE, VELO_FAST, VELO_CRAZY,
 
 	/* gas colors */
-	PO2, PO2_ALERT, PN2, PN2_ALERT, PHE, PHE_ALERT,
+	PO2, PO2_ALERT, PN2, PN2_ALERT, PHE, PHE_ALERT, PP_LINES,
 
 	/* Other colors */
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
@@ -108,6 +109,7 @@ static const color_t profile_color[] = {
 	[PN2_ALERT]       = {{RED1, BLACK1_LOW_TRANS}},
 	[PHE]             = {{PEANUT, PEANUT_MED_TRANS}},
 	[PHE_ALERT]       = {{RED1, PEANUT_MED_TRANS}},
+	[PP_LINES]        = {{BLACK1_HIGH_TRANS, BLACK1_HIGH_TRANS}},
 
 	[TEXT_BACKGROUND] = {{CONCRETE1_LOWER_TRANS, WHITE1}},
 	[ALERT_BG]        = {{BROOM1_LOWER_TRANS, BLACK1_LOW_TRANS}},
@@ -356,6 +358,11 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			}
 		}
 	}
+	if (event->time.seconds < 30 && !strcmp(event->name, "gaschange"))
+		/* a gas change in the first 30 seconds is the way of some dive computers
+		 * to tell us the gas that is used; let's not plot a marker for that */
+		return;
+
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *data = pi->entry + i;
 		if (event->time.seconds < data->sec)
@@ -516,186 +523,6 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 	}
 }
 
-/* ap points to an array of int with pi->nr + 1 elements that is
- * ininitialized with just one -1 entry
- * this adds entries (if they aren't too close to an existing one)
- * and keeps things sorted
- * we KNOW the array is big enough to hold all possible indices
- * a2p is a secondary array - we insert value at the same relative
- * positio as idx in ap */
-static void add_index(int idx, int margin, int **ap, int **a2p, int value)
-{
-	int j, i = 0;
-	int *a = *ap;
-	int *a2 = *a2p;
-
-	while (a[i] != -1 && a[i] < idx)
-		i++;
-	if (a[i] == idx)
-		return;
-	/* already have a POI to the left with the same vertical positiom and too close */
-	if ((i > 0 && a[i - 1] != -1 && a2[i - 1] == value && idx - a[i - 1] < margin))
-		return;
-	/* already have a POI to the right with the same vertical positiom and too close */
-	if (a[i] != -1 && a2[i] == value && a[i] - idx < margin)
-		return;
-	if (a[i] != -1 && a[i] - idx < margin)
-		return;
-	j = i;
-	while (a[j] != -1)
-		j++;
-	while (j >= i) {
-		a[j+1] = a[j];
-		a2[j+1] = a2[j];
-		j--;
-	}
-	a[i] = idx;
-	a2[i] = value;
-}
-
-#define LI(_i,_j) MAX((_i)-(_j), 0)
-#define RI(_i,_j) MIN((_i)+(_j), nr - 1)
-#define SPIKE(_i,_s) if (fabs(_s) > fabs(spk_data[_i])) spk_data[_i] = (_s)
-/* this is an attempt at a metric that finds spikes in a data series */
-static void calculate_spikyness(int nr, double *data, double *spk_data, int deltax, double deltay)
-{
-	int i, j;
-	double dminl, dminr, dmaxl, dmaxr;
-
-#if DEBUG_PROFILE > 2
-	printf("Spike data: \n 0 ");
-#endif
-	for (i = 0; i < nr; i++) {
-		dminl = dminr = dmaxl = dmaxr = data[i];
-		spk_data[i] = 0.0;
-		for (j = 1; j < deltax; j++) {
-			if (data[LI(i,j)] < dminl)
-				dminl = data[LI(i,j)];
-			if (data[LI(i,j)] > dmaxl)
-				dmaxl = data[LI(i,j)];
-
-			if (data[RI(i,j)] < dminr)
-				dminr = data[RI(i,j)];
-			if (data[RI(i,j)] > dmaxr)
-				dmaxr = data[RI(i,j)];
-
-			/* don't do super narrow */
-			if (j < deltax / 3)
-				continue;
-			/* falling edge on left */
-			if (dmaxl == data[i] && dmaxr - data[i] < 0.1 * (data[i] - dminl))
-				SPIKE(i,(data[i] - dminl) / j);
-			/* falling edge on right */
-			if (dmaxr == data[i] && dmaxl - data[i] < 0.1 * (data[i] - dminr))
-				SPIKE(i,(data[i] - dminr) / j);
-
-			/* minima get a negative spike value */
-			/* rising edge on left */
-			if (dminl == data[i] && data[i] - dminr < 0.1 * (dmaxl - data[i]))
-				SPIKE(i,(data[i] - dmaxl) / j);
-			/* rising edge on right */
-			if (dminr == data[i] && data[i] - dminl < 0.1 * (dmaxr - data[i]))
-				SPIKE(i,(data[i] - dmaxr) / j);
-		}
-#if DEBUG_PROFILE > 2
-		fprintf(debugfile, "%.4lf ", spk_data[i]);
-		if (i % 12 == 11)
-			fprintf(debugfile, "\n%2d ", (i + 1) / 12);
-#endif
-	}
-#if DEBUG_PROFILE > 2
-	printf("\n");
-#endif
-}
-
-/* only show one spike in a deltax wide region - pick the highest (and first if the same) */
-static gboolean higher_spike(double *spk_data, int idx, int nr, int deltax)
-{
-	int i;
-	double s = spk_data[idx];
-	for (i = MAX(0, idx - deltax); i <= MIN(idx + deltax, nr - 1); i++) {
-		if (s > 0) {
-			if (spk_data[i] > s)
-				return TRUE;
-		} else {
-			if (spk_data[i] < s)
-				return TRUE;
-		}
-		if (spk_data[i] == s && i < idx)
-			return TRUE;
-	}
-	return FALSE;
-}
-
-/* this figures out which time stamps provide "interesting" formations in the graphs;
- * this includes local minima and maxima as well as long plateaus.
- * pass in the function that returns the value at a certain point (as double),
- * the delta in time (expressed as number of data points of "significant time")
- * the delta at which the value is considered to have been "significantly changed" and
- * the number of points to cover
- * returns a list of indices that ends with a -1 of times that are "interesting" */
-static void find_points_of_interest(struct plot_info *pi, double (*value_func)(int, struct plot_info *),
-				int deltax, double deltay, int **poip, int **poip_vpos)
-{
-	int i, j, nr = pi->nr;
-	double *data, *data_max, *data_min, *spk_data;
-	double min, max;
-	int *pois;
-
-	/* avoid all the function calls by creating a local array and
-	 * have some helper arrays to make our lifes easier */
-
-	data = malloc(nr * sizeof(double));
-	data_max = malloc(nr * sizeof(double));
-	data_min = malloc(nr * sizeof(double));
-	spk_data = malloc(nr * sizeof(double));
-
-	pois = *poip = malloc((nr + 1) * sizeof(int));
-	*poip_vpos = malloc((nr + 1) * sizeof(int));
-	pois[0] = -1;
-	pois[1] = -1;
-
-	/* copy the data and get the absolute minimum and maximum while we do it */
-	for (i = 0; i < nr; i++) {
-		data_max[i] = data_min[i] = data[i] = value_func(i, pi);
-		if (i == 0 || data[i] < min)
-			min = data[i];
-		if (i == 0 || data[i] > max)
-			max = data[i];
-	}
-	/* next find out if there are real spikes in the graph */
-	calculate_spikyness(nr, data, spk_data, deltax, deltay);
-
-	/* now process all data points */
-	for (i = 0; i < nr; i++) {
-		/* get the local min/max */
-		for (j = MAX(0, i - deltax); j < i + deltax && j < nr; j++) {
-			if (data[j] < data[i])
-				data_min[i] = data[j];
-			if (data[j] > data[i])
-				data_max[i] = data[j];
-		}
-		/* is i the overall minimum or maximum */
-		if (data[i] == max && (i == 0 || data[i - 1] != max))
-			add_index(i, deltax, poip, poip_vpos, BOTTOM);
-		if (data[i] == min && (i == 0 || data[i - 1] != min))
-			add_index(i, deltax, poip, poip_vpos, TOP);
-		/* is i a spike? */
-		if (fabs(spk_data[i]) > 0.01 && ! higher_spike(spk_data, i, nr, deltax)) {
-			if (spk_data[i] > 0.0)
-				add_index(i, deltax, poip, poip_vpos, BOTTOM);
-			if (spk_data[i] < 0.0)
-				add_index(i, deltax, poip, poip_vpos, TOP);
-		}
-		/* is i a significant local minimum or maximum? */
-		if (data[i] == data_min[i] && data_max[i] - data[i] > deltay)
-			add_index(i, deltax, poip, poip_vpos, TOP);
-		if (data[i] == data_max[i] && data[i] - data_min[i] > deltay)
-			add_index(i, deltax, poip, poip_vpos, BOTTOM);
-	}
-	/* still need to search for plateaus */
-}
-
 static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
 {
 	int maxdepth;
@@ -711,99 +538,22 @@ static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
 	gc->bottomy = -gc->topy / 20;
 }
 
-static void plot_single_pp_text(struct graphics_context *gc, int sec, double pp,
-				double vpos, color_indice_t color)
-{
-	text_render_options_t tro = {12, color, CENTER, vpos};
-	plot_text(gc, &tro, sec, pp, "%.1lf", pp);
-}
-
-#define MAXPP(_mpp, _pp) { _mpp = 0;			\
-	for(i = 0; i< pi->nr; i++)			\
-		if (pi->entry[i]._pp > _mpp)		\
-			_mpp = pi->entry[i]._pp;	\
-	}
-
-static double po2_value(int idx, struct plot_info *pi)
-{
-	return pi->entry[idx].po2;
-}
-
-static double pn2_value(int idx, struct plot_info *pi)
-{
-	return pi->entry[idx].pn2;
-}
-
-static double phe_value(int idx, struct plot_info *pi)
-{
-	return pi->entry[idx].phe;
-}
-
-static double plot_single_gas_pp_text(struct graphics_context *gc, struct plot_info *pi,
-				double (*value_func)(int, struct plot_info *),
-				double value_threshold, int color)
-{
-	int *pois, *pois_vpos;
-	int i, two_minutes = 1;
-	double maxpp = 0.0;
-
-	/* don't bother with local min/max if the dive is under two minutes */
-	if (pi->entry[pi->nr - 1].sec > 120) {
-		int idx = 0;
-		while (pi->entry[idx].sec == 0)
-			idx++;
-		while (pi->entry[idx + two_minutes].sec < 120)
-			two_minutes++;
-	} else {
-		two_minutes = pi->nr;
-	}
-	find_points_of_interest(pi, value_func, two_minutes, value_threshold, &pois, &pois_vpos);
-	for (i = 0; pois[i] != -1; i++) {
-		struct plot_data *entry = pi->entry + pois[i];
-		double value = value_func(pois[i], pi);
-
-#if DEBUG_PROFILE > 1
-		fprintf(debugfile, "POI at %d sec value %lf\n", entry->sec, entry->po2);
-#endif
-		plot_single_pp_text(gc, entry->sec, value, pois_vpos[i], color);
-		if (value > maxpp)
-			maxpp = value;
-	}
-	free(pois);
-	free(pois_vpos);
-
-	return maxpp;
-}
-
 static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 {
-	double pp, dpp, m, maxpp = 0.0;
+	double pp, dpp, m;
 	int hpos;
-	static const text_render_options_t tro = {11, PN2, LEFT, MIDDLE};
+	static const text_render_options_t tro = {11, PP_LINES, LEFT, MIDDLE};
 
 	setup_pp_limits(gc, pi);
-
-	if (prefs.pp_graphs.po2) {
-		maxpp = plot_single_gas_pp_text(gc, pi, po2_value, 0.4, PO2);
-	}
-	if (prefs.pp_graphs.pn2) {
-		m = plot_single_gas_pp_text(gc, pi, pn2_value, 0.6, PN2);
-		if (m > maxpp)
-			maxpp = m;
-	}
-	if (prefs.pp_graphs.phe) {
-		m = plot_single_gas_pp_text(gc, pi, phe_value, 0.4, PHE);
-		if (m > maxpp)
-			maxpp = m;
-	}
-	/* while this is somewhat useful, I don't like the way it looks...
-	 * for now I'll leave the code here, but disable it */
-	if (0) {
-		pp = floor(maxpp * 10.0) / 10.0 + 0.2;
-		dpp = floor(2.0 * pp) / 10.0;
-		hpos = pi->entry[pi->nr - 1].sec + 30;
-		for (m = 0.0; m <= pp; m += dpp)
-			plot_text(gc, &tro, hpos, m, "%.1f", m);
+	pp = floor(pi->maxpp * 10.0) / 10.0 + 0.2;
+	dpp = floor(2.0 * pp) / 10.0;
+	hpos = pi->entry[pi->nr - 1].sec;
+	set_source_rgba(gc, PP_LINES);
+	for (m = 0.0; m <= pp; m += dpp) {
+		move_to(gc, 0, m);
+		line_to(gc, hpos, m);
+		cairo_stroke(gc->cr);
+		plot_text(gc, &tro, hpos + 30, m, "%.1f", m);
 	}
 }
 
@@ -814,31 +564,6 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 
 	setup_pp_limits(gc, pi);
 
-	if (prefs.pp_graphs.po2) {
-		set_source_rgba(gc, PO2);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 < prefs.pp_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PO2_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 >= prefs.pp_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-	}
 	if (prefs.pp_graphs.pn2) {
 		set_source_rgba(gc, PN2);
 		entry = pi->entry;
@@ -886,6 +611,31 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 				line_to(gc, entry->sec, entry->phe);
 			else
 				move_to(gc, entry->sec, entry->phe);
+		}
+		cairo_stroke(gc->cr);
+	}
+	if (prefs.pp_graphs.po2) {
+		set_source_rgba(gc, PO2);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->po2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 < prefs.pp_graphs.po2_threshold)
+				line_to(gc, entry->sec, entry->po2);
+			else
+				move_to(gc, entry->sec, entry->po2);
+		}
+		cairo_stroke(gc->cr);
+
+		set_source_rgba(gc, PO2_ALERT);
+		entry = pi->entry;
+		move_to(gc, entry->sec, entry->po2);
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 >= prefs.pp_graphs.po2_threshold)
+				line_to(gc, entry->sec, entry->po2);
+			else
+				move_to(gc, entry->sec, entry->po2);
 		}
 		cairo_stroke(gc->cr);
 	}
@@ -1605,14 +1355,20 @@ static int get_cylinder_index(struct dive *dive, struct event *ev)
 	 *
 	 * Crazy suunto gas change events. We really should do
 	 * this in libdivecomputer or something.
+	 *
+	 * There are two different gas change events that can get
+	 * us here - GASCHANGE2 has the He value in the high 16
+	 * bits; looking at the possible values we can actually
+	 * handle them with the same code since the high 16 bits
+	 * will be 0 with the GASCHANGE event - and that means no He
 	 */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder+i;
 		int o2 = (cyl->gasmix.o2.permille + 5) / 10;
-		if (o2 == ev->value)
+		int he = (cyl->gasmix.he.permille + 5) / 10;
+		if (o2 == (ev->value & 0xFFFF) && he == (ev->value >> 16))
 			return i;
 	}
-
 	return 0;
 }
 
@@ -1750,14 +1506,14 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 {
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
-	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth;
+	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth, cns;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
 	struct event *ev;
-	double amb_pressure;
+	double amb_pressure, po2;
 
 	/* The plot-info is embedded in the graphics context */
 	pi = &gc->pi;
@@ -1800,6 +1556,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		pi->has_ndl |= ndl;
 		stopdepth = sample->stopdepth.mm;
 		stoptime = sample->stoptime.seconds;
+		po2 = sample->po2 / 1000.0;
+		cns = sample->cns;
 		while (ev && ev->time.seconds < sample->time.seconds) {
 			/* insert two fake plot info structures for the end of
 			 * the old tank and the start of the new tank */
@@ -1820,9 +1578,13 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->stopdepth = stopdepth;
 			entry->stoptime = stoptime;
 			entry->ndl = ndl;
+			entry->cns = cns;
+			entry->po2 = po2;
 			(entry + 1)->stopdepth = stopdepth;
 			(entry + 1)->stoptime = stoptime;
 			(entry + 1)->ndl = ndl;
+			(entry + 1)->cns = cns;
+			(entry + 1)->po2 = po2;
 			pi_idx += 2;
 			entry = pi->entry + i + pi_idx;
 			ev = get_next_event(ev->next, "gaschange");
@@ -1836,6 +1598,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->stopdepth = stopdepth;
 			entry->stoptime = stoptime;
 			entry->ndl = ndl;
+			entry->cns = cns;
+			entry->po2 = po2;
 			pi_idx++;
 			entry = pi->entry + i + pi_idx;
 			ev = get_next_event(ev->next, "gaschange");
@@ -1846,6 +1610,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		entry->stopdepth = stopdepth;
 		entry->stoptime = stoptime;
 		entry->ndl = ndl;
+		entry->cns = cns;
+		entry->po2 = po2;
 		entry->cylinderindex = sample->cylinderindex;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
@@ -1901,10 +1667,26 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 
 		if (!fo2)
 			fo2 = AIR_PERMILLE;
-		entry->po2 = fo2 / 1000.0 * amb_pressure;
-		entry->phe = fhe / 1000.0 * amb_pressure;
-		entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
-
+		if (entry->po2) {
+			/* we have an O2 partial pressure in the sample - so this
+			 * is likely a CC dive... use that instead of the value
+			 * from the cylinder info */
+			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
+			double ratio = (double)fhe / (1000.0 - fo2);
+			entry->phe = (amb_pressure - po2) * ratio;
+			entry->pn2 = amb_pressure - po2 - entry->phe;
+			entry->po2 = po2;
+		} else {
+			entry->po2 = fo2 / 1000.0 * amb_pressure;
+			entry->phe = fhe / 1000.0 * amb_pressure;
+			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
+		}
+		if (entry->po2 > pi->maxpp)
+			pi->maxpp = entry->po2;
+		if (entry->phe > pi->maxpp)
+			pi->maxpp = entry->phe;
+		if (entry->pn2 > pi->maxpp)
+			pi->maxpp = entry->pn2;
 		/* finally, do the discrete integration to get the SAC rate equivalent */
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
 			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
@@ -2142,15 +1924,15 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	}
 	if (prefs.pp_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->po2);
+		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->po2);
 	}
 	if (prefs.pp_graphs.pn2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.1f", buf2, entry->pn2);
+		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->pn2);
 	}
 	if (prefs.pp_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npHe:%.1f", buf2, entry->phe);
+		snprintf(buf, bufsize, "%s\npHe:%.2f", buf2, entry->phe);
 	}
 	free(buf2);
 }

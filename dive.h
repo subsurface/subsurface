@@ -230,6 +230,8 @@ struct sample {
 	duration_t ndl;
 	duration_t stoptime;
 	depth_t stopdepth;
+	int cns;
+	int po2;
 };
 
 /*
@@ -314,7 +316,7 @@ struct dive {
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	char *suit;
-	int sac, otu;
+	int sac, otu, cns, maxcns;
 
 	/* Eventually we'll do multiple dive computers */
 	struct divecomputer dc;

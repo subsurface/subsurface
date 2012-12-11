@@ -147,7 +147,7 @@ static struct {
 } cur_event;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
-static int lastndl, laststoptime, laststopdepth;
+static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2;
 
 static enum import_source {
 	UNKNOWN,
@@ -463,6 +463,13 @@ static void get_index(char *buffer, void *_i)
 	free(buffer);
 }
 
+static void double_to_permil(char *buffer, void *_i)
+{
+	int *i = _i;
+	*i = g_ascii_strtod(buffer, NULL) * 1000.0 + 0.5;
+	free(buffer);
+}
+
 static void hex_value(char *buffer, void *_i)
 {
 	uint32_t *i = _i;
@@ -654,6 +661,10 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH(".sample.stopdepth", depth, &sample->stopdepth))
 		return;
+	if (MATCH(".sample.cns", get_index, &sample->cns))
+			return;
+	if (MATCH(".sample.po2", double_to_permil, &sample->po2))
+			return;
 
 	switch (import_source) {
 	case DIVINGLOG:
@@ -1064,6 +1075,8 @@ static void sample_start(void)
 	cur_sample->ndl.seconds = lastndl;
 	cur_sample->stoptime.seconds = laststoptime;
 	cur_sample->stopdepth.mm = laststopdepth;
+	cur_sample->cns = lastcns;
+	cur_sample->po2 = lastpo2;
 }
 
 static void sample_end(void)
@@ -1075,6 +1088,8 @@ static void sample_end(void)
 	lastndl = cur_sample->ndl.seconds;
 	laststoptime = cur_sample->stoptime.seconds;
 	laststopdepth = cur_sample->stopdepth.mm;
+	lastcns = cur_sample->cns;
+	lastpo2 = cur_sample->po2;
 	cur_sample = NULL;
 }
 
@@ -1099,7 +1114,7 @@ static void divecomputer_start(void)
 	/* .. this is the one we'll use */
 	cur_dc = dc;
 
-	lastndl = laststoptime = laststopdepth = 0;
+	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = 0;
 }
 
 static void divecomputer_end(void)

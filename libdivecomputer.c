@@ -22,7 +22,7 @@
 
 static const char *progress_bar_text = "";
 static double progress_bar_fraction = 0.0;
-static int stoptime, stopdepth, ndl;
+static int stoptime, stopdepth, ndl, po2, cns;
 
 static GError *error(const char *fmt, ...)
 {
@@ -97,10 +97,10 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	if (value.event.type == SAMPLE_EVENT_SURFACE)
 		return;
 
-	/* libdivecomputer 0.3 provides us with deco / ndl information for at least
-	 * the OSTC. Sadly, it does so through events - so we convert this into our
-	 * preferred sample format here */
-#if DC_VERSION_CHECK(0, 3, 0)
+	/* an early development version of libdivecomputer 0.3 provided us with deco / ndl information for
+	 * a couple of dive computers through events; this got fixed later in the release cycle but for a
+	 * short while I'll keep the code around that converts the events into our preferred sample format here */
+#if 0
 	if (value.event.type == SAMPLE_EVENT_DECOSTOP) {
 		/* packed value - time in seconds in high 16 bit
 		 * depth in m(!) in low 16 bits */
@@ -152,6 +152,8 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->ndl.seconds = ndl;
 			sample->stoptime.seconds = stoptime;
 			sample->stopdepth.mm = stopdepth;
+			sample->po2 = po2;
+			sample->cns = cns;
 		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = value.time;
@@ -185,6 +187,26 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			printf("%02X", ((unsigned char *) value.vendor.data)[i]);
 		printf("</vendor>\n");
 		break;
+#if DC_VERSION_CHECK(0, 3, 0)
+	case DC_SAMPLE_SETPOINT:
+		/* for us a setpoint means constant pO2 from here */
+		sample->po2 = po2 = value.setpoint * 1000 + 0.5;
+		break;
+	case DC_SAMPLE_PPO2:
+		sample->po2 = po2 = value.ppo2 * 1000 + 0.5;
+		break;
+	case DC_SAMPLE_CNS:
+		sample->cns = cns = value.cns * 100 + 0.5;
+		break;
+	case DC_SAMPLE_DECO:
+		if (value.deco.type == DC_DECO_NDL) {
+			ndl = value.deco.time;
+		} else if (value.deco.type == DC_DECO_DECOSTOP ||
+			   value.deco.type == DC_DECO_DEEPSTOP) {
+			stopdepth = value.deco.depth * 1000.0 + 0.5;
+			stoptime = value.deco.time;
+		}
+#endif
 	default:
 		break;
 	}

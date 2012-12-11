@@ -31,6 +31,7 @@
 
 // Monochromes
 #define BLACK1_LOW_TRANS      { 0.0, 0.0, 0.0, 0.75 }
+#define BLACK1_HIGH_TRANS     { 0.0, 0.0, 0.0, 0.25 }
 #define TUNDORA1_MED_TRANS    { 0.3, 0.3, 0.3, 0.5 }
 #define MERCURY1_MED_TRANS    { 0.9, 0.9, 0.9, 0.5 }
 #define CONCRETE1_LOWER_TRANS { 0.95, 0.95, 0.95, 0.9 }

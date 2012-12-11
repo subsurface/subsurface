@@ -334,6 +334,10 @@ static void save_sample(FILE *f, struct sample *sample, const struct sample *pre
 		fprintf(f, " stoptime='%u:%02u min'", FRACTION(sample->stoptime.seconds, 60));
 	if (sample->stopdepth.mm != prev->stopdepth.mm)
 		show_milli(f, " stopdepth='", sample->stopdepth.mm, " m", "'");
+	if (sample->cns != prev->cns)
+		fprintf(f, " cns='%u%%'", sample->cns);
+	if (sample->po2 != prev->po2)
+		fprintf(f, " po2='%u.%2u bar'", FRACTION(sample->po2, 1000));
 	fprintf(f, " />\n");
 }
 

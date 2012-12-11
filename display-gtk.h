@@ -19,6 +19,7 @@ typedef struct {
 	gboolean nitrox;
 	gboolean sac;
 	gboolean otu;
+	gboolean maxcns;
 } visible_cols_t;
 
 typedef struct {
