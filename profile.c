@@ -517,7 +517,12 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
 	set_source_rgba(gc, DEPTH_GRID);
-	for (i = marker; i < maxdepth; i += marker) {
+	/* don't write depth labels all the way to the bottom as
+	 * there may be other graphs below the depth plot (like
+	 * partial pressure graphs) where this would look out
+	 * of place - so we only make sure that we print the next
+	 * marker below the actual maxdepth of the dive */
+	for (i = marker; i <= pi->maxdepth + marker; i += marker) {
 		double d = get_depth_units(i, NULL, NULL);
 		plot_text(gc, &tro, -0.002, i, "%.0f", d);
 	}
