@@ -414,6 +414,7 @@ struct dive *fixup_dive(struct dive *dive)
 	add_location(dive->location);
 	add_suit(dive->suit);
 	sanitize_cylinder_info(dive);
+	dive->maxcns = dive->cns;
 	dc = &dive->dc;
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
@@ -474,6 +475,8 @@ struct dive *fixup_dive(struct dive *dive)
 		depthtime += (time - lasttime) * (lastdepth + depth) / 2;
 		lastdepth = depth;
 		lasttime = time;
+		if (sample->cns > dive->maxcns)
+			dive->maxcns = sample->cns;
 	}
 	dive->start = start;
 	dive->end = end;

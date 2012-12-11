@@ -28,7 +28,7 @@ struct DiveList {
 	GtkWidget    *container_widget;
 	GtkTreeStore *model, *listmodel, *treemodel;
 	GtkTreeViewColumn *nr, *date, *stars, *depth, *duration, *location;
-	GtkTreeViewColumn *temperature, *cylinder, *totalweight, *suit, *nitrox, *sac, *otu;
+	GtkTreeViewColumn *temperature, *cylinder, *totalweight, *suit, *nitrox, *sac, *otu, *maxcns;
 	int changed;
 };
 
@@ -61,6 +61,7 @@ enum {
 	DIVE_NITROX,		/* int: dummy */
 	DIVE_SAC,		/* int: in ml/min */
 	DIVE_OTU,		/* int: in OTUs */
+	DIVE_MAXCNS,		/* int: in % */
 	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
 	DIVELIST_COLUMNS
 };
@@ -691,6 +692,26 @@ static void otu_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+/* Render the CNS data (in full %) */
+static void cns_data_func(GtkTreeViewColumn *col,
+			  GtkCellRenderer *renderer,
+			  GtkTreeModel *model,
+			  GtkTreeIter *iter,
+			  gpointer data)
+{
+	int value, idx;
+	char buffer[16];
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_MAXCNS, &value, -1);
+
+	if (idx < 0 || !value)
+		*buffer = '\0';
+	else
+		snprintf(buffer, sizeof(buffer), "%d%%", value);
+
+	g_object_set(renderer, "text", buffer, NULL);
+}
+
 /* calculate OTU for a dive */
 static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 {
@@ -841,6 +862,7 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_RATING, dive->rating,
 		DIVE_SAC, dive->sac,
 		DIVE_OTU, dive->otu,
+		DIVE_MAXCNS, dive->maxcns,
 		DIVE_TOTALWEIGHT, total_weight(dive),
 		DIVE_SUIT, suit,
 		-1);
@@ -920,6 +942,7 @@ void update_dive_list_col_visibility(void)
 	gtk_tree_view_column_set_visible(dive_list.nitrox, visible_cols.nitrox);
 	gtk_tree_view_column_set_visible(dive_list.sac, visible_cols.sac);
 	gtk_tree_view_column_set_visible(dive_list.otu, visible_cols.otu);
+	gtk_tree_view_column_set_visible(dive_list.maxcns, visible_cols.maxcns);
 	return;
 }
 
@@ -1273,6 +1296,7 @@ static struct divelist_column {
 	[DIVE_NITROX] = { "O" UTF8_SUBSCRIPT_2 "%", nitrox_data_func, nitrox_sort_func, 0, &visible_cols.nitrox },
 	[DIVE_SAC] = { N_("SAC"), sac_data_func, NULL, 0, &visible_cols.sac },
 	[DIVE_OTU] = { N_("OTU"), otu_data_func, NULL, 0, &visible_cols.otu },
+	[DIVE_MAXCNS] = { N_("maxCNS"), cns_data_func, NULL, 0, &visible_cols.maxcns },
 	[DIVE_LOCATION] = { N_("Location"), NULL, NULL, ALIGN_LEFT },
 };
 
@@ -1414,6 +1438,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_CYLINDER, &cylinder_text,
 		DIVE_SAC, &store_dive.sac,
 		DIVE_OTU, &store_dive.otu,
+		DIVE_MAXCNS, &store_dive.maxcns,
 		DIVE_LOCATION, &store_dive.location,
 		-1);
 	gtk_tree_store_set(STORE(dive_list), b,
@@ -1429,6 +1454,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_CYLINDER, cylinder_text,
 		DIVE_SAC, store_dive.sac,
 		DIVE_OTU, store_dive.otu,
+		DIVE_MAXCNS, store_dive.maxcns,
 		DIVE_LOCATION, store_dive.location,
 		-1);
 	free(cylinder_text);
@@ -2337,6 +2363,7 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* Nitrox */
 				G_TYPE_INT,			/* SAC */
 				G_TYPE_INT,			/* OTU */
+				G_TYPE_INT,			/* MAXCNS */
 				G_TYPE_STRING			/* Location */
 				);
 	dive_list.treemodel = gtk_tree_store_new(DIVELIST_COLUMNS,
@@ -2353,6 +2380,7 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* Nitrox */
 				G_TYPE_INT,			/* SAC */
 				G_TYPE_INT,			/* OTU */
+				G_TYPE_INT,			/* MAXCNS */
 				G_TYPE_STRING			/* Location */
 				);
 	dive_list.model = dive_list.treemodel;
@@ -2380,6 +2408,7 @@ GtkWidget *dive_list_create(void)
 	dive_list.nitrox = divelist_column(&dive_list, dl_column + DIVE_NITROX);
 	dive_list.sac = divelist_column(&dive_list, dl_column + DIVE_SAC);
 	dive_list.otu = divelist_column(&dive_list, dl_column + DIVE_OTU);
+	dive_list.maxcns = divelist_column(&dive_list, dl_column + DIVE_MAXCNS);
 	dive_list.location = divelist_column(&dive_list, dl_column + DIVE_LOCATION);
 
 	fill_dive_list();

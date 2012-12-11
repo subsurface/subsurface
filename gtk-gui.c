@@ -477,6 +477,7 @@ static void name(GtkWidget *w, gpointer data)		\
 }
 
 OPTIONCALLBACK(otu_toggle, visible_cols.otu)
+OPTIONCALLBACK(maxcns_toggle, visible_cols.maxcns)
 OPTIONCALLBACK(sac_toggle, visible_cols.sac)
 OPTIONCALLBACK(nitrox_toggle, visible_cols.nitrox)
 OPTIONCALLBACK(temperature_toggle, visible_cols.temperature)
@@ -683,6 +684,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(otu_toggle), NULL);
 
+	button = gtk_check_button_new_with_label(_("maxCNS"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), visible_cols.maxcns);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(maxcns_toggle), NULL);
+
 	frame = gtk_frame_new(_("Profile Settings"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
@@ -782,6 +788,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(visible_cols.nitrox));
 		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(visible_cols.sac));
 		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(visible_cols.otu));
+		subsurface_set_conf("MAXCNS", PREF_BOOL, BOOL_TO_PTR(visible_cols.maxcns));
 
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
 		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
@@ -1139,6 +1146,7 @@ void init_ui(int *argcp, char ***argvp)
 	visible_cols.suit = PTR_TO_BOOL(subsurface_get_conf("SUIT", PREF_BOOL));
 	visible_cols.nitrox = PTR_TO_BOOL(subsurface_get_conf("NITROX", PREF_BOOL));
 	visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
+	visible_cols.maxcns = PTR_TO_BOOL(subsurface_get_conf("MAXCNS", PREF_BOOL));
 	visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
 
 	partial_pressure_graphs.po2 = PTR_TO_BOOL(subsurface_get_conf("po2graph", PREF_BOOL));
