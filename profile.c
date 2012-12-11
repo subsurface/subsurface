@@ -1922,6 +1922,10 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\nNDL:%umin", buf2, entry->ndl / 60);
 	}
+	if (entry->cns) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nCNS:%u%%", buf2, entry->cns);
+	}
 	if (prefs.pp_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->po2);
