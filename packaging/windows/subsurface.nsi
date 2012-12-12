@@ -135,6 +135,7 @@ Section
     File dll\libexpat-1.dll
     File dll\pthreadGC2.dll
     File dll\zlib1.dll
+    File dll\libcrypto-10.dll
     File subsurface.ico
     File /r share
 
