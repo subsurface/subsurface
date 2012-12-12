@@ -1596,11 +1596,11 @@ static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***product
 			0, dcl->vendor,
 			-1);
 		pl = dcl->productlist;
-		pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
+		pstores[i + 1] = gtk_list_store_new(1, G_TYPE_POINTER);
 		j = 0;
 		while (pl) {
-			gtk_list_store_append(pstores[i], &iter);
-			gtk_list_store_set(pstores[i], &iter,
+			gtk_list_store_append(pstores[i + 1], &iter);
+			gtk_list_store_set(pstores[i + 1], &iter,
 				0, pl->descriptor,
 				-1);
 			if (is_default_dive_computer(dcl->vendor, pl->product)) {
@@ -1614,9 +1614,7 @@ static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***product
 		dcl = dcl->next;
 	}
 	/* now add the empty product list in case no vendor is selected */
-	pstores[i] = gtk_list_store_new(1, G_TYPE_POINTER);
-	if (*product_index == -1)
-		*product_index = i;
+	pstores[0] = gtk_list_store_new(1, G_TYPE_POINTER);
 
 	return width;
 }
@@ -1660,7 +1658,7 @@ static GtkListStore **product_model;
 static void dive_computer_vendor_changed(GtkComboBox *vendorcombo, GtkComboBox *productcombo)
 {
 	int vendor = gtk_combo_box_get_active(vendorcombo);
-	gtk_combo_box_set_model(productcombo, GTK_TREE_MODEL(product_model[vendor]));
+	gtk_combo_box_set_model(productcombo, GTK_TREE_MODEL(product_model[vendor + 1]));
 	gtk_combo_box_set_active(productcombo, -1);
 }
 
@@ -1685,7 +1683,7 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
 	vendor_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(vendor_model));
-	product_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(product_model[vendor_default_index]));
+	product_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(product_model[vendor_default_index + 1]));
 
 	g_signal_connect(G_OBJECT(vendor_combo_box), "changed", G_CALLBACK(dive_computer_vendor_changed), product_combo_box);
 	g_signal_connect(G_OBJECT(product_combo_box), "changed", G_CALLBACK(dive_computer_selector_changed), NULL);
