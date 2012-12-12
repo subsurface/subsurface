@@ -74,8 +74,8 @@ static void set_default_dive_computer(const char *vendor, const char *product)
 		free((void *)default_dive_computer_vendor);
 	if (default_dive_computer_product)
 		free((void *)default_dive_computer_product);
-	default_dive_computer_vendor = vendor;
-	default_dive_computer_product = product;
+	default_dive_computer_vendor = strdup(vendor);
+	default_dive_computer_product = strdup(product);
 	subsurface_set_conf("dive_computer_vendor", PREF_STRING, vendor);
 	subsurface_set_conf("dive_computer_product", PREF_STRING, product);
 }
