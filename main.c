@@ -124,6 +124,16 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 	int preexisting = dive_table.preexisting;
 	struct dive *last;
 
+	/* set the nickname for the divecomputer for newly downloaded dives */
+	for (i = dive_table.preexisting; i < dive_table.nr; i++)
+		if (dive_table.dives[i]->downloaded) {
+			set_dc_nickname(dive_table.dives[i]);
+		} else {
+			struct divecomputer *dc = &dive_table.dives[i]->dc;
+			if (dc->nickname && *dc->nickname)
+				remember_dc(dc->deviceid, dc->nickname, TRUE);
+		}
+
 	/* This does the right thing for -1: NULL */
 	last = get_dive(preexisting-1);
 

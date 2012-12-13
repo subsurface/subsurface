@@ -400,6 +400,8 @@ static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 	fprintf(f, "  <divecomputer");
 	if (dc->model)
 		show_utf8(f, dc->model, " model='", "'", 1);
+	if (dc->nickname && *dc->nickname)
+		show_utf8(f, dc->nickname, " nickname='", "'", 1);
 	if (dc->deviceid)
 		fprintf(f, " deviceid='%08x'", dc->deviceid);
 	if (dc->diveid)

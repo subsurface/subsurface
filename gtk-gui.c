@@ -39,6 +39,14 @@ struct preferences prefs = {
 	FALSE
 };
 
+struct dcnicknamelist {
+	const char *nickname;
+	uint32_t deviceid;
+	struct dcnicknamelist *next;
+};
+static struct dcnicknamelist *nicknamelist;
+char *nicknamestring;
+
 static GtkWidget *dive_profile;
 static const char *default_dive_computer_vendor;
 static const char *default_dive_computer_product;
@@ -1178,6 +1186,33 @@ void init_ui(int *argcp, char ***argvp)
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
 	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
+	conf_value = subsurface_get_conf("dc_nicknames", PREF_STRING);
+	nicknamestring = strdup("");
+	if (conf_value) {
+		char *next_token, *nickname;
+		uint32_t deviceid;
+		int len;
+		next_token = strdup(conf_value);
+		len = strlen(next_token);
+		while ((next_token = g_utf8_strchr(next_token, len, '{')) != NULL) {
+			/* replace the '{' so we keep looking in case any test fails */
+			*next_token = '(';
+			/* the next 8 chars are the deviceid, after that we have the utf8 nickname */
+			if (sscanf(next_token, "(%8x,", &deviceid) > 0) {
+				char *namestart, *nameend;
+				namestart = g_utf8_strchr(next_token, len, ',');
+				nameend = g_utf8_strchr(next_token, len, '}');
+				if (!namestart || !nameend)
+					continue;
+				*nameend = '\0';
+				nickname = strdup(namestart + 1);
+				remember_dc(deviceid, nickname, FALSE);
+				next_token = nameend + 1;
+			};
+		}
+		free((void *)conf_value);
+		free(next_token);
+	}
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_set_application_name ("subsurface");
@@ -1965,4 +2000,106 @@ void set_filename(const char *filename, gboolean force)
 		existing_filename = strdup(filename);
 	else
 		existing_filename = NULL;
+}
+
+static const char *get_dc_nickname(uint32_t deviceid)
+{
+	struct dcnicknamelist *known = nicknamelist;
+	while (known) {
+		if (known->deviceid == deviceid)
+			return known->nickname;
+		known = known->next;
+	}
+	return NULL;
+}
+
+/* no curly braces or commas, please */
+static char *cleanedup_nickname(const char *nickname, int len)
+{
+	char *clean;
+	if (nickname) {
+		char *brace;
+
+		if (!g_utf8_validate(nickname, -1, NULL))
+			return strdup("");
+		brace = clean = strdup(nickname);
+		while (*brace) {
+			if (*brace == '{')
+				*brace = '(';
+			else if (*brace == '}')
+				*brace = ')';
+			else if (*brace == ',')
+				*brace = '.';
+			brace = g_utf8_next_char(brace);
+			if (*brace && g_utf8_next_char(brace) - clean >= len)
+				*brace = '\0';
+		}
+	} else {
+		clean = strdup("");
+	}
+	return clean;
+}
+
+void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
+{
+	if (!get_dc_nickname(deviceid)) {
+		char buffer[80];
+		struct dcnicknamelist *nn_entry = malloc(sizeof(struct dcnicknamelist));
+		nn_entry->deviceid = deviceid;
+		/* make sure there are no curly braces or commas in the string and that
+		 * it will fit in the buffer */
+		nn_entry->nickname = cleanedup_nickname(nickname, sizeof(buffer) - 12);
+		nn_entry->next = nicknamelist;
+		nicknamelist = nn_entry;
+		snprintf(buffer, 80, "{%08x,%s}", deviceid, nn_entry->nickname);
+		nicknamestring = realloc(nicknamestring, strlen(nicknamestring) + strlen(buffer) + 1);
+		strcat(nicknamestring, buffer);
+		if (change_conf)
+			subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
+	}
+}
+
+void set_dc_nickname(struct dive *dive)
+{
+	GtkWidget *dialog, *vbox, *entry, *frame, *label;
+	char nickname[68];
+	const char *name;
+
+	if (!dive)
+		return;
+
+	if ((name = get_dc_nickname(dive->dc.deviceid)) != NULL) {
+		dive->dc.nickname = strdup(name);
+	} else {
+		dialog = gtk_dialog_new_with_buttons(
+			_("Dive Computer Nickname"),
+			GTK_WINDOW(main_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			NULL);
+		vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+		label = gtk_label_new(_("Subsurface can use a nickname for your dive computer.\n"
+					"The default is the model and device ID as shown below.\n"
+					"If you don't want to name this dive computer click "
+					"'Cancel' and Subsurface will simply display its model "
+					"as nickname."));
+		gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+		gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
+		frame = gtk_frame_new(_("Nickname"));
+		gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 3);
+		entry = gtk_entry_new();
+		gtk_container_add(GTK_CONTAINER(frame), entry);
+		gtk_entry_set_max_length(GTK_ENTRY(entry), 68);
+		snprintf(nickname, 69, "%s (%08x)", dive->dc.model, dive->dc.deviceid);
+		gtk_entry_set_text(GTK_ENTRY(entry), nickname);
+		gtk_widget_show_all(dialog);
+		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+			if (strcmp(dive->dc.model, gtk_entry_get_text(GTK_ENTRY(entry))))
+				dive->dc.nickname = cleanedup_nickname(gtk_entry_get_text(GTK_ENTRY(entry)),
+									sizeof(nickname));
+		}
+		gtk_widget_destroy(dialog);
+		remember_dc(dive->dc.deviceid, dive->dc.nickname, TRUE);
+	}
 }
