@@ -2091,7 +2091,7 @@ void set_dc_nickname(struct dive *dive)
 		entry = gtk_entry_new();
 		gtk_container_add(GTK_CONTAINER(frame), entry);
 		gtk_entry_set_max_length(GTK_ENTRY(entry), 68);
-		snprintf(nickname, 69, "%s (%08x)", dive->dc.model, dive->dc.deviceid);
+		snprintf(nickname, sizeof(nickname), "%s (%08x)", dive->dc.model, dive->dc.deviceid);
 		gtk_entry_set_text(GTK_ENTRY(entry), nickname);
 		gtk_widget_show_all(dialog);
 		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
