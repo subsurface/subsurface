@@ -2043,7 +2043,7 @@ static char *cleanedup_nickname(const char *nickname, int len)
 void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
 {
 	if (!get_dc_nickname(deviceid)) {
-		char buffer[80];
+		char buffer[256];
 		struct dcnicknamelist *nn_entry = malloc(sizeof(struct dcnicknamelist));
 		nn_entry->deviceid = deviceid;
 		/* make sure there are no curly braces or commas in the string and that
@@ -2051,7 +2051,7 @@ void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
 		nn_entry->nickname = cleanedup_nickname(nickname, sizeof(buffer) - 12);
 		nn_entry->next = nicknamelist;
 		nicknamelist = nn_entry;
-		snprintf(buffer, 80, "{%08x,%s}", deviceid, nn_entry->nickname);
+		snprintf(buffer, sizeof(buffer), "{%08x,%s}", deviceid, nn_entry->nickname);
 		nicknamestring = realloc(nicknamestring, strlen(nicknamestring) + strlen(buffer) + 1);
 		strcat(nicknamestring, buffer);
 		if (change_conf)
