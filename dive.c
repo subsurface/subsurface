@@ -1110,17 +1110,62 @@ static int similar(unsigned long a, unsigned long b, unsigned long expected)
 	return 0;
 }
 
-static int same_dive_computer(struct dive *a, struct dive *b)
+/*
+ * Match two dive computer entries against each other, and
+ * tell if it's the same dive. Return 0 if "don't know",
+ * positive for "same dive" and negative for "definitely
+ * not the same dive"
+ */
+int match_one_dc(struct divecomputer *a, struct divecomputer *b)
 {
-	/* No model info in one or the other? Assume they're the same */
-	if (!a->dc.model || !b->dc.model)
-		return 1;
-	if (strcasecmp(a->dc.model, b->dc.model))
+	/* Not same model? Don't know if matching.. */
+	if (!a->model || !b->model)
 		return 0;
-	/* No device ID? Assume same.. */
-	if (!a->dc.deviceid || !b->dc.deviceid)
-		return 1;
+	if (strcasecmp(a->model, b->model))
+		return 0;
+
+	/* Different device ID's? Don't know */
+	if (a->deviceid != b->deviceid)
+		return 0;
+
+	/* Do we have dive IDs? */
+	if (!a->diveid || !b->diveid)
+		return 0;
+
+	/*
+	 * If they have different dive ID's on the same
+	 * dive computer, that's a definite "same or not"
+	 */
+	return a->diveid == b->diveid ? 1 : -1;
+}
+
+/*
+ * Match every dive computer against each other to see if
+ * we have a matching dive.
+ *
+ * Return values:
+ *  -1 for "is definitely *NOT* the same dive"
+ *   0 for "don't know"
+ *   1 for "is definitely the same dive"
+ */
+static int match_dc_dive(struct divecomputer *a, struct divecomputer *b)
+{
+	do {
+		struct divecomputer *tmp = b;
+		do {
+			int match = match_one_dc(a, tmp);
+			if (match)
+				return match;
+			tmp = tmp->next;
+		} while (tmp);
+		a = a->next;
+	} while (a);
 	return 0;
+}
+
+static int max_time(duration_t a, duration_t b)
+{
+	return a.seconds > b.seconds ? a.seconds : b.seconds;
 }
 
 /*
@@ -1154,7 +1199,7 @@ static int same_dive_computer(struct dive *a, struct dive *b)
  */
 static int likely_same_dive(struct dive *a, struct dive *b)
 {
-	int fuzz;
+	int fuzz, match;
 
 	/*
 	 * Do some basic sanity testing of the values we
@@ -1165,11 +1210,18 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	    !similar(a->duration.seconds, b->duration.seconds, 5*60))
 		return 0;
 
+	/* See if we can get an exact match on the dive computer */
+	match = match_dc_dive(&a->dc, &b->dc);
+	if (match)
+		return match > 0;
+
 	/*
-	 * Allow a minute difference by default (minute rounding etc),
-	 * and more if the dive computers are clearly different.
+	 * Allow a time difference due to dive computer time
+	 * setting etc. Check if they overlap.
 	 */
-	fuzz = same_dive_computer(a, b) ? 60 : 5*60;
+	fuzz = max_time(a->duration, b->duration) / 2;
+	if (fuzz < 60)
+		fuzz = 60;
 
 	return ((a->when <= b->when + fuzz) && (a->when >= b->when - fuzz));
 }

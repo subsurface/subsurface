@@ -448,6 +448,9 @@ static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
 	return NULL;
 }
 
+/* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
+extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
+
 /*
  * Iterate over each dive, with the first parameter being the index
  * iterator variable, and the second one being the dive one.
