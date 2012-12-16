@@ -1663,7 +1663,7 @@ void render_dc_vendor(GtkCellLayout *cell,
 	const char *vendor;
 
 	gtk_tree_model_get(model, iter, 0, &vendor, -1);
-	g_object_set(renderer, "text", strdup(vendor), NULL);
+	g_object_set(renderer, "text", vendor, NULL);
 }
 
 void render_dc_product(GtkCellLayout *cell,
@@ -1677,7 +1677,7 @@ void render_dc_product(GtkCellLayout *cell,
 
 	gtk_tree_model_get(model, iter, 0, &descriptor, -1);
 	product = dc_descriptor_get_product(descriptor);
-	g_object_set(renderer, "text", strdup(product), NULL);
+	g_object_set(renderer, "text", product, NULL);
 }
 
 static void dive_computer_selector_changed(GtkWidget *combo, gpointer data)
