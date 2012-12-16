@@ -231,13 +231,32 @@ static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_par
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
 
-static inline int match_dc(struct divecomputer *a, struct divecomputer *b)
+static int match_one_dive(struct divecomputer *a, struct dive *dive)
 {
-	if (a->when != b->when)
-		return 0;
-	if (a->model && b->model && strcasecmp(a->model, b->model))
-		return 0;
-	return 1;
+	struct divecomputer *b = &dive->dc;
+
+	/*
+	 * Walk the existing dive computer data,
+	 * see if we have a match (or an anti-match:
+	 * the same dive computer but a different
+	 * dive ID).
+	 */
+	do {
+		int match = match_one_dc(a, b);
+		if (match)
+			return match > 0;
+		b = b->next;
+	} while (b);
+
+	/* Ok, no exact dive computer match. Does the date match? */
+	b = &dive->dc;
+	do {
+		if (a->when == b->when)
+			return 1;
+		b = b->next;
+	} while (b);
+
+	return 0;
 }
 
 /*
@@ -249,17 +268,9 @@ static int find_dive(struct divecomputer *match)
 
 	for (i = 0; i < dive_table.preexisting; i++) {
 		struct dive *old = dive_table.dives[i];
-		struct divecomputer *dc = &old->dc;
 
-		/* Old-style dive with no explicit divecomputer information? */
-		if (!dc->when && old->when == match->when)
+		if (match_one_dive(match, old))
 			return 1;
-
-		do {
-			if (match_dc(dc, match))
-				return 1;
-			dc = dc->next;
-		} while (dc);
 	}
 	return 0;
 }
