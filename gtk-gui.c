@@ -2043,7 +2043,7 @@ static char *cleanedup_nickname(const char *nickname, int len)
 void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
 {
 	if (!get_dc_nickname(deviceid)) {
-		char buffer[256];
+		char buffer[160];
 		struct dcnicknamelist *nn_entry = malloc(sizeof(struct dcnicknamelist));
 		nn_entry->deviceid = deviceid;
 		/* make sure there are no curly braces or commas in the string and that
@@ -2062,7 +2062,7 @@ void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
 void set_dc_nickname(struct dive *dive)
 {
 	GtkWidget *dialog, *vbox, *entry, *frame, *label;
-	char nickname[68];
+	char nickname[160];
 	const char *name;
 
 	if (!dive)
