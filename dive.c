@@ -1285,6 +1285,10 @@ static int same_dc(struct divecomputer *a, struct divecomputer *b)
 	int i;
 	struct event *eva, *evb;
 
+	i = match_one_dc(a, b);
+	if (i)
+		return i > 0;
+
 	if (a->when && b->when && a->when != b->when)
 		return 0;
 	if (a->samples != b->samples)
@@ -1406,6 +1410,8 @@ static void interleave_dive_computers(struct divecomputer *res,
  */
 static void join_dive_computers(struct divecomputer *res, struct divecomputer *a, struct divecomputer *b)
 {
+	struct divecomputer *tmp;
+
 	if (a->model && !b->model) {
 		*res = *a;
 		clear_dc(a);
@@ -1419,11 +1425,12 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 
 	*res = *a;
 	clear_dc(a);
-	while (res->next)
-		res = res->next;
+	tmp = res;
+	while (tmp->next)
+		tmp = tmp->next;
 
-	res->next = calloc(1, sizeof(*res));
-	*res->next = *b;
+	tmp->next = calloc(1, sizeof(*tmp));
+	*tmp->next = *b;
 	clear_dc(b);
 
 	remove_redundant_dc(res);
