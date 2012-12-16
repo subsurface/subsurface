@@ -1387,6 +1387,7 @@ static int zoom_x = -1, zoom_y = -1;
 
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
+	int i = 0;
 	struct dive *dive = current_dive;
 	static struct graphics_context gc = { .printer = 0 };
 
@@ -1411,6 +1412,11 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 
 	if (dive) {
 		if (tooltip_rects) {
+			while (i < tooltips) {
+				if (tooltip_rects[i].text)
+					free((void *)tooltip_rects[i].text);
+				i++;
+			}
 			free(tooltip_rects);
 			tooltip_rects = NULL;
 		}
