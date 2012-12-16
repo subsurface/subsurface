@@ -1170,14 +1170,20 @@ void init_ui(int *argcp, char ***argvp)
 	prefs.pp_graphs.pn2 = PTR_TO_BOOL(subsurface_get_conf("pn2graph", PREF_BOOL));
 	prefs.pp_graphs.phe = PTR_TO_BOOL(subsurface_get_conf("phegraph", PREF_BOOL));
 	conf_value = subsurface_get_conf("po2threshold", PREF_STRING);
-	if (conf_value)
+	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.po2_threshold);
+		free((void *)conf_value);
+	}
 	conf_value = subsurface_get_conf("pn2threshold", PREF_STRING);
-	if (conf_value)
+	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.pn2_threshold);
+		free((void *)conf_value);
+	}
 	conf_value = subsurface_get_conf("phethreshold", PREF_STRING);
-	if (conf_value)
+	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.phe_threshold);
+		free((void *)conf_value);
+	}
 	prefs.profile_red_ceiling = PTR_TO_BOOL(subsurface_get_conf("redceiling", PREF_BOOL));
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 	autogroup = PTR_TO_BOOL(subsurface_get_conf("autogroup", PREF_BOOL));
