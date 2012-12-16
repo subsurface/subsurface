@@ -1441,6 +1441,14 @@ void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 	gtk_widget_destroy(dialog);
 	when = utc_mktime(&tm);
 	if (dive->when != when) {
+		/* if this is the only dive in the trip, just change the trip time */
+		if (dive->divetrip && dive->divetrip->nrdives == 1)
+			dive->divetrip->when = when;
+		/* if this is suddenly before the start of the trip, remove it from the trip */
+		else if (dive->divetrip && dive->divetrip->when > when)
+			remove_dive_from_trip(dive);
+		else if (find_matching_trip(when) != dive->divetrip)
+			remove_dive_from_trip(dive);
 		dive->when = when;
 		mark_divelist_changed(TRUE);
 		remember_tree_state();
