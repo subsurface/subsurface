@@ -22,6 +22,7 @@ int selected_dive = 0;
 char zoomed_plot = 0;
 
 static double plot_scale = SCALE_SCREEN;
+static struct plot_data *last_pi_entry = NULL;
 
 #define cairo_set_line_width_scaled(cr, w) \
 	cairo_set_line_width((cr), (w) * plot_scale);
@@ -1525,7 +1526,9 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
-	pi->entry = calloc(nr, sizeof(struct plot_data));
+	if (last_pi_entry)
+		free((void *)last_pi_entry);
+	last_pi_entry = pi->entry = calloc(nr, sizeof(struct plot_data));
 	if (!pi->entry)
 		return NULL;
 	pi->nr = nr;
@@ -1879,7 +1882,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 
 	if (gc->printer) {
 		free(pi->entry);
-		pi->entry = NULL;
+		last_pi_entry = pi->entry = NULL;
 		pi->nr = 0;
 	}
 }
