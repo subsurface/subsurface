@@ -20,6 +20,7 @@
 
 int selected_dive = 0;
 char zoomed_plot = 0;
+char dc_number = 0;
 
 static double plot_scale = SCALE_SCREEN;
 static struct plot_data *last_pi_entry = NULL;
@@ -1775,6 +1776,21 @@ static void plot_set_scale(scale_mode_t scale)
 	}
 }
 
+static struct divecomputer *select_dc(struct divecomputer *main)
+{
+	int i = dc_number;
+	struct divecomputer *dc = main;
+
+	do {
+		if (--i < 0)
+			return dc;
+	} while ((dc = dc->next) != NULL);
+
+	/* If we switched dives to one with fewer DC's, reset the dive computer counter */
+	dc_number = 0;
+	return main;
+}
+
 void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 {
 	struct plot_info *pi;
@@ -1827,6 +1843,8 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	 */
 	gc->maxx = (drawing_area->width - 2*drawing_area->x);
 	gc->maxy = (drawing_area->height - 2*drawing_area->y);
+
+	dc = select_dc(dc);
 
 	/* This is per-dive-computer. Right now we just do the first one */
 	pi = create_plot_info(dive, dc, gc);

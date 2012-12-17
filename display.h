@@ -55,6 +55,6 @@ struct options {
 	int print_selected;
 };
 
-extern char zoomed_plot;
+extern char zoomed_plot, dc_number;
 
 #endif

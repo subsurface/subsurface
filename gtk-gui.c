@@ -1014,6 +1014,13 @@ static void toggle_zoom(GtkWidget *w, gpointer data)
 	repaint_dive();
 }
 
+static void next_dc(GtkWidget *w, gpointer data)
+{
+	dc_number++;
+	/* If the dc number overflows, we'll "wrap around" and zero it */
+	repaint_dive();
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", NULL, N_("File"), NULL, NULL, NULL},
 	{ "LogMenuAction",  NULL, N_("Log"), NULL, NULL, NULL},
@@ -1039,6 +1046,7 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewProfile",    NULL, N_("Profile"), CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
 	{ "ViewInfo",       NULL, N_("Info"), CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
 	{ "ViewThree",      NULL, N_("Three"), CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
+	{ "NextDC",         NULL, N_("Next DC"), CTRLCHAR "C", NULL, G_CALLBACK(next_dc) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -1080,6 +1088,7 @@ static const gchar* ui_string = " \
 					<menuitem name=\"Profile\" action=\"ViewProfile\" /> \
 					<menuitem name=\"Info\" action=\"ViewInfo\" /> \
 					<menuitem name=\"Paned\" action=\"ViewThree\" /> \
+					<menuitem name=\"NextDC\" action=\"NextDC\" /> \
 				</menu> \
 			</menu> \
 			<menu name=\"FilterMenu\" action=\"FilterMenuAction\"> \
