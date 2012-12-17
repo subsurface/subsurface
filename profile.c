@@ -552,7 +552,7 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 
 	setup_pp_limits(gc, pi);
 	pp = floor(pi->maxpp * 10.0) / 10.0 + 0.2;
-	dpp = floor(2.0 * pp) / 10.0;
+	dpp = pp > 4 ? 1.0 : 0.5;
 	hpos = pi->entry[pi->nr - 1].sec;
 	set_source_rgba(gc, PP_LINES);
 	for (m = 0.0; m <= pp; m += dpp) {
@@ -653,7 +653,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	cairo_t *cr = gc->cr;
 	int sec, depth;
 	struct plot_data *entry;
-	int maxtime, maxdepth, marker;
+	int maxtime, maxdepth, marker, maxline;
 	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
 
 	/* Get plot scaling limits */
@@ -705,9 +705,9 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
-
+	maxline = MAX(pi->maxdepth + marker, maxdepth * 2 / 3);
 	set_source_rgba(gc, DEPTH_GRID);
-	for (i = marker; i < maxdepth; i += marker) {
+	for (i = marker; i < maxline; i += marker) {
 		move_to(gc, 0, i);
 		line_to(gc, 1, i);
 	}
