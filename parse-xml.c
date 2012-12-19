@@ -985,11 +985,17 @@ static gboolean is_dive(void)
 		(cur_dive->location || cur_dive->when || cur_dive->dc.samples));
 }
 
+static void reset_dc_info(struct divecomputer *dc)
+{
+	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = 0;
+}
+
 static void dive_start(void)
 {
 	if (cur_dive)
 		return;
 	cur_dive = alloc_dive();
+	reset_dc_info(&cur_dive->dc);
 	memset(&cur_tm, 0, sizeof(cur_tm));
 	if (cur_trip) {
 		add_dive_to_trip(cur_dive, cur_trip);
@@ -1115,8 +1121,7 @@ static void divecomputer_start(void)
 
 	/* .. this is the one we'll use */
 	cur_dc = dc;
-
-	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = 0;
+	reset_dc_info(dc);
 }
 
 static void divecomputer_end(void)
