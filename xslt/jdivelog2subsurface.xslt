@@ -43,7 +43,7 @@
       <xsl:if test="TEMPERATURE != ''">
         <xsl:choose>
           <xsl:when test="$units = 'si'">
-            <temperature water="{concat(format-number(TEMPERATURE - 273.15, '00.0'), ' C')}"/>
+            <temperature water="{concat(format-number(TEMPERATURE - 273.15, '0.0'), ' C')}"/>
           </xsl:when>
           <xsl:otherwise>
             <temperature water="{concat(TEMPERATURE, ' C')}"/>
@@ -240,61 +240,65 @@ Comment: <xsl:value-of select="Comment"/>
       <!-- end gas change -->
 
       <!-- dive sample - all the depth and temp readings -->
-      <xsl:choose>
-        <xsl:when test="$delta != '0'">
-          <xsl:for-each select="DIVE/SAMPLES/D">
-            <xsl:variable name="timeSec" select="(position() - 1) * $delta"/>
-            <xsl:variable name="time" select="concat(floor($timeSec div 60), ':',
-              format-number(floor($timeSec mod 60), '00'), ' min')"/>
-            <xsl:choose>
-              <xsl:when test="name(following-sibling::*[1]) = 'TEMPERATURE'">
-                <sample time="{$time}" depth="{concat(., ' m')}">
-                  <xsl:attribute name="temp">
-                    <xsl:choose>
-                      <xsl:when test="$units = 'si'">
-                        <xsl:value-of select="concat(format-number(following-sibling::TEMPERATURE - 273.15, '00.0'), ' C')"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="concat(following-sibling::TEMPERATURE, ' C')"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:attribute>
-                </sample>
-              </xsl:when>
-              <xsl:otherwise>
-                <sample time="{$time}" depth="{concat(., ' m')}"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="DIVE/SAMPLES/D">
-            <sample>
+      <xsl:for-each select="DIVE/SAMPLES/D">
+        <sample>
+          <xsl:choose>
+            <xsl:when test="$delta != '0'">
+              <xsl:variable name="timeSec" select="(position() - 1) * $delta"/>
+              <xsl:attribute name="time">
+                <xsl:value-of select="concat(floor($timeSec div 60), ':',
+                  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+              </xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
               <xsl:attribute name="time">
                 <xsl:call-template name="timeConvert">
                   <xsl:with-param name="timeSec" select="preceding-sibling::T[1]"/>
                   <xsl:with-param name="units" select="$units"/>
                 </xsl:call-template>
               </xsl:attribute>
-              <xsl:if test="name(following-sibling::*[1]) = 'TEMPERATURE'">
-                <xsl:attribute name="temp">
-                  <xsl:choose>
-                    <xsl:when test="$units = 'si'">
-                      <xsl:value-of select="concat(format-number(following-sibling::TEMPERATURE - 273.15, '00.0'), ' C')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="concat(following-sibling::TEMPERATURE, ' C')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:attribute name="depth">
+            <xsl:value-of select="concat(., ' m')"/>
+          </xsl:attribute>
+          <xsl:if test="name(following-sibling::*[1]) = 'TEMPERATURE'">
+            <xsl:attribute name="temp">
+              <xsl:choose>
+                <xsl:when test="$units = 'si'">
+                  <xsl:value-of select="concat(format-number(following-sibling::TEMPERATURE - 273.15, '0.0'), ' C')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat(following-sibling::TEMPERATURE, ' C')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="(name(following-sibling::*[1]) = 'DECOINFO') or (name(following-sibling::*[2]) = 'DECOINFO')">
+            <xsl:choose>
+              <xsl:when test="following-sibling::DECOINFO[1] = '0.0'">
+                <xsl:attribute name="ndl">
+                  <xsl:call-template name="timeConvertMin">
+                    <xsl:with-param name="timeMin" select="following-sibling::DECOINFO[1]/@tfs"/>
+                    <xsl:with-param name="units" select="$units"/>
+                  </xsl:call-template>
                 </xsl:attribute>
-              </xsl:if>
-              <xsl:attribute name="depth">
-                <xsl:value-of select="concat(., ' m')"/>
-              </xsl:attribute>
-            </sample>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="stoptime">
+                  <xsl:call-template name="timeConvertMin">
+                    <xsl:with-param name="timeMin" select="following-sibling::DECOINFO[1]/@tfs"/>
+                    <xsl:with-param name="units" select="$units"/>
+                  </xsl:call-template>
+                </xsl:attribute>
+                <xsl:attribute name="stopdepth">
+                  <xsl:value-of select="concat(following-sibling::DECOINFO[1], ' m')"/>
+                </xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </sample>
+      </xsl:for-each>
       <!-- dive sample -->
 
     </dive>
@@ -362,4 +366,28 @@ Comment: <xsl:value-of select="Comment"/>
   </xsl:template>
   <!-- end convert time -->
 
+  <!-- convert time in minutes.decimal to minutes:seconds -->
+  <xsl:template name="timeConvertMin">
+    <xsl:param name="timeMin"/>
+    <xsl:param name="units"/>
+
+    <xsl:if test="$timeMin != ''">
+      <xsl:choose>
+        <xsl:when test="$units = 'si'">
+          <xsl:value-of select="concat(substring-before($timeMin, '.'), ':',    format-number(substring-after($timeMin, '.'), '00'), ' min')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="substring-after($timeMin, '.') &gt;= 60 or string-length(substring-after($timeMin, '.')) &lt; 2">
+              <xsl:value-of select="concat(substring-before($timeMin, '.'), ':', format-number(round(substring-after(format-number($timeMin, '.00'), '.') * .6), '00'), ' min')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat(substring-before($timeMin, '.'), ':', format-number(substring-after($timeMin, '.'), '00'), ' min')"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+  <!-- end convert time -->
 </xsl:stylesheet>
