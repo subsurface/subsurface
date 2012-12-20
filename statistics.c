@@ -9,6 +9,7 @@
  * GtkWidget *stats_widget(void)
  */
 #include <glib/gi18n.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -52,7 +53,8 @@ typedef struct {
 		*selection_size,
 		*max_temp,
 		*avg_temp,
-		*min_temp;
+		*min_temp,
+		*framelabel;
 } total_stats_widget_t;
 
 static total_stats_widget_t stats_w;
@@ -596,15 +598,85 @@ static void show_single_dive_stats(struct dive *dive)
 		set_label(single_w.gas_used, "");
 }
 
+/* this gets called when at least two but not all dives are selected */
+static void get_ranges(char *buffer, int size)
+{
+	int i, len;
+	int first, last = -1;
+
+	snprintf(buffer, size, "for dives #");
+	for (i = 0; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		if (! dive->selected)
+			continue;
+		if (dive->number < 1) {
+			/* uhh - weird numbers - bail */
+			snprintf(buffer, size, "for selected dives");
+			return;
+		}
+		len = strlen(buffer);
+		if (last == -1) {
+			snprintf(buffer + len, size - len, "%d", dive->number);
+			first = last = dive->number;
+		} else {
+			if (dive->number == last + 1) {
+				last++;
+				continue;
+			} else {
+				if (first == last)
+					snprintf(buffer + len, size - len, ", %d", dive->number);
+				else if (first + 1 == last)
+					snprintf(buffer + len, size - len, ", %d, %d", last, dive->number);
+				else
+					snprintf(buffer + len, size - len, "-%d, %d", last, dive->number);
+				first = last = dive->number;
+			}
+		}
+	}
+	if (first != last) {
+		if (first + 1 == last)
+			snprintf(buffer + len, size - len, ", %d", last);
+		else
+			snprintf(buffer + len, size - len, "-%d", last);
+	}
+}
+
+static void get_selected_dives_text(char *buffer, int size)
+{
+	if (amount_selected == 1) {
+		if (current_dive)
+			snprintf(buffer, size, "for dive #%d", current_dive->number);
+		else
+			snprintf(buffer, size, "for selected dive");
+	} else if (amount_selected == dive_table.nr) {
+		snprintf(buffer, size, "for all dives");
+	} else if (amount_selected == 0) {
+		snprintf(buffer, size, "(no dives)");
+	} else {
+		get_ranges(buffer, size);
+		if (strlen(buffer) == size -1) {
+			/* add our own ellipse... the way Pango does this is ugly
+			 * as it will leave partial numbers there which I don't like */
+			int offset = 4;
+			while (offset < size && isdigit(buffer[size - offset]))
+				offset++;
+			strcpy(buffer + size - offset, "...");
+		}
+	}
+}
+
 static void show_total_dive_stats(struct dive *dive)
 {
 	double value;
 	int decimals, seconds;
 	const char *unit;
+	char buffer[60];
 	stats_t *stats_ptr;
 
 	stats_ptr = &stats_selection;
 
+	get_selected_dives_text(buffer, sizeof(buffer));
+	set_label(stats_w.framelabel, "Statistics %s", buffer);
 	set_label(stats_w.selection_size, "%d", stats_ptr->selection_size);
 	if (stats_ptr->min_temp) {
 		value = get_temp_units(stats_ptr->min_temp, &unit);
@@ -670,6 +742,8 @@ GtkWidget *total_stats_widget(void)
 	vbox = gtk_vbox_new(FALSE, 3);
 
 	statsframe = gtk_frame_new(_("Statistics"));
+	stats_w.framelabel = gtk_frame_get_label_widget(GTK_FRAME(statsframe));
+	gtk_label_set_max_width_chars(GTK_LABEL(stats_w.framelabel), 60);
 	gtk_box_pack_start(GTK_BOX(vbox), statsframe, TRUE, FALSE, 3);
 	framebox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(statsframe), framebox);
