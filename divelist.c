@@ -724,10 +724,14 @@ static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		int o2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
-		if (!o2)
-			o2 = AIR_PERMILLE;
-		po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive) / 1000.0;
+		if (sample->po2) {
+			po2 = sample->po2;
+		} else {
+			int o2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
+			if (!o2)
+				o2 = AIR_PERMILLE;
+			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive) / 1000.0;
+		}
 		if (po2 >= 0.5)
 			otu += pow(po2 - 0.5, 0.83) * t / 30.0;
 	}
