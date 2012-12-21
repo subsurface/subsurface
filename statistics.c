@@ -678,6 +678,10 @@ static void show_total_dive_stats(struct dive *dive)
 	get_selected_dives_text(buffer, sizeof(buffer));
 	set_label(stats_w.framelabel, "Statistics %s", buffer);
 	set_label(stats_w.selection_size, "%d", stats_ptr->selection_size);
+	if (stats_ptr->selection_size == 0) {
+		clear_stats_widgets();
+		return;
+	}
 	if (stats_ptr->min_temp) {
 		value = get_temp_units(stats_ptr->min_temp, &unit);
 		set_label(stats_w.min_temp, "%.1f %s", value, unit);
