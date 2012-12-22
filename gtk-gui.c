@@ -41,6 +41,7 @@ struct preferences prefs = {
 
 struct dcnicknamelist {
 	const char *nickname;
+	const char *model;
 	uint32_t deviceid;
 	struct dcnicknamelist *next;
 };
@@ -1204,7 +1205,7 @@ void init_ui(int *argcp, char ***argvp)
 	conf_value = subsurface_get_conf("dc_nicknames", PREF_STRING);
 	nicknamestring = strdup("");
 	if (conf_value) {
-		char *next_token, *nickname;
+		char *next_token, *nickname, *model;
 		uint32_t deviceid;
 		int len;
 		next_token = strdup(conf_value);
@@ -1212,16 +1213,35 @@ void init_ui(int *argcp, char ***argvp)
 		while ((next_token = g_utf8_strchr(next_token, len, '{')) != NULL) {
 			/* replace the '{' so we keep looking in case any test fails */
 			*next_token = '(';
-			/* the next 8 chars are the deviceid, after that we have the utf8 nickname */
+			/* the next 8 chars are the deviceid, after that we have the model
+			 * and the utf8 nickname (if set) */
 			if (sscanf(next_token, "(%8x,", &deviceid) > 0) {
-				char *namestart, *nameend;
+				char *namestart, *nameend, *tupleend;
 				namestart = g_utf8_strchr(next_token, len, ',');
-				nameend = g_utf8_strchr(next_token, len, '}');
-				if (!namestart || !nameend)
-					continue;
+				/* we know that namestart isn't NULL based on the sscanf succeeding */
+				len = strlen(namestart + 1);
+				nameend = g_utf8_strchr(namestart + 1, len, ',');
+				tupleend = g_utf8_strchr(namestart + 1, len, '}');
+				if (!nameend && !tupleend)
+					/* the config entry is messed up - bail */
+					break;
+				if (!nameend || tupleend < nameend)
+					nameend = tupleend;
 				*nameend = '\0';
-				nickname = strdup(namestart + 1);
-				remember_dc(deviceid, nickname, FALSE);
+				model = strdup(namestart + 1);
+				if (tupleend == nameend) {
+					/* no nickname */
+					nickname = strdup("");
+				} else {
+					namestart = nameend + 1;
+					len = strlen(namestart);
+					nameend = g_utf8_strchr(namestart, len, '}');
+					if (!nameend)
+						break;
+					*nameend = '\0';
+					nickname = strdup(namestart);
+				}
+				remember_dc(deviceid, model, nickname, FALSE);
 				next_token = nameend + 1;
 			};
 		}
@@ -2027,11 +2047,28 @@ const char *get_dc_nickname(uint32_t deviceid)
 {
 	struct dcnicknamelist *known = nicknamelist;
 	while (known) {
-		if (known->deviceid == deviceid)
-			return known->nickname;
+		if (known->deviceid == deviceid) {
+			if (known->nickname && *known->nickname)
+				return known->nickname;
+			else
+				return known->model;
+		}
 		known = known->next;
 	}
 	return NULL;
+}
+
+/* do we have a DIFFERENT divecomputer of the same model? */
+static gboolean dc_model_exists(struct divecomputer *dc)
+{
+	struct dcnicknamelist *known = nicknamelist;
+	while (known) {
+		if (known->model && dc->model && !strcmp(known->model, dc->model) &&
+		    known->deviceid != dc->deviceid)
+			return TRUE;
+		known = known->next;
+	}
+	return FALSE;
 }
 
 /* no curly braces or commas, please */
@@ -2061,66 +2098,96 @@ static char *cleanedup_nickname(const char *nickname, int len)
 	return clean;
 }
 
-void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
+void remember_dc(uint32_t deviceid, const char *model, const char *nickname, gboolean change_conf)
 {
 	if (!get_dc_nickname(deviceid)) {
 		char buffer[160];
 		struct dcnicknamelist *nn_entry = malloc(sizeof(struct dcnicknamelist));
 		nn_entry->deviceid = deviceid;
+		nn_entry->model = model;
 		/* make sure there are no curly braces or commas in the string and that
 		 * it will fit in the buffer */
-		nn_entry->nickname = cleanedup_nickname(nickname, sizeof(buffer) - 12);
+		nn_entry->nickname = cleanedup_nickname(nickname, sizeof(buffer) - 13 - strlen(model));
 		nn_entry->next = nicknamelist;
 		nicknamelist = nn_entry;
-		snprintf(buffer, sizeof(buffer), "{%08x,%s}", deviceid, nn_entry->nickname);
+		if (*nickname != '\0')
+			snprintf(buffer, sizeof(buffer), "{%08x,%s,%s}", deviceid, model, nn_entry->nickname);
+		else
+			snprintf(buffer, sizeof(buffer), "{%08x,%s}", deviceid, model);
 		nicknamestring = realloc(nicknamestring, strlen(nicknamestring) + strlen(buffer) + 1);
 		strcat(nicknamestring, buffer);
 		if (change_conf)
 			subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
 	}
+#if defined(NICKNAME_DEBUG)
+	struct dcnicknamelist *nn_entry = nicknamelist;
+	fprintf(debugfile, "nicknames:\n");
+	while (nn_entry) {
+		fprintf(debugfile, "id %8x model %s nickname %s\n", nn_entry->deviceid, nn_entry->model,
+			nn_entry->nickname && *nn_entry->nickname ? nn_entry->nickname : "(none)");
+		nn_entry = nn_entry->next;
+	}
+	fprintf(debugfile, "----------\n");
+#endif
 }
 
 void set_dc_nickname(struct dive *dive)
 {
 	GtkWidget *dialog, *vbox, *entry, *frame, *label;
 	char nickname[160] = "";
+	char dialogtext[1024];
 	const char *name = nickname;
+	struct divecomputer *dc = &dive->dc;
 
 	if (!dive)
 		return;
-
-	/* we should only do this if we already have a different dive computer
-	 * with the same model -- TBI */
-	if (get_dc_nickname(dive->dc.deviceid) == NULL) {
-		dialog = gtk_dialog_new_with_buttons(
-			_("Dive Computer Nickname"),
-			GTK_WINDOW(main_window),
-			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			NULL);
-		vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-		label = gtk_label_new(_("Subsurface can use a nickname for your dive computer.\n"
-					"The default is the model and device ID as shown below.\n"
-					"If you don't want to name this dive computer click "
-					"'Cancel' and Subsurface will simply display its model "
-					"as nickname."));
-		gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
-		gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
-		frame = gtk_frame_new(_("Nickname"));
-		gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 3);
-		entry = gtk_entry_new();
-		gtk_container_add(GTK_CONTAINER(frame), entry);
-		gtk_entry_set_max_length(GTK_ENTRY(entry), 68);
-		snprintf(nickname, sizeof(nickname), "%s (%08x)", dive->dc.model, dive->dc.deviceid);
-		gtk_entry_set_text(GTK_ENTRY(entry), nickname);
-		gtk_widget_show_all(dialog);
-		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-			if (strcmp(dive->dc.model, gtk_entry_get_text(GTK_ENTRY(entry))))
-				name = cleanedup_nickname(gtk_entry_get_text(GTK_ENTRY(entry)),
-							  sizeof(nickname));
+	while (dc) {
+#if NICKNAME_DEBUG & 16
+		fprintf(debugfile, "set_dc_nickname for model %s deviceid %8x\n", dc->model ? : "", dc->deviceid);
+#endif
+		if (get_dc_nickname(dc->deviceid) == NULL) {
+			if (!dc_model_exists(dc)) {
+				/* just remember the dive computer without setting a nickname */
+				if (dc->model)
+					remember_dc(dc->deviceid, dc->model, "", TRUE);
+			} else {
+				dialog = gtk_dialog_new_with_buttons(
+					_("Dive Computer Nickname"),
+					GTK_WINDOW(main_window),
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					NULL);
+				vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+				snprintf(dialogtext, sizeof(dialogtext),
+					 _("You already have a dive computer of model %s\n"
+					   "Subsurface can maintain a nickname for this device to "
+					   "distinguish it from the existing one. "
+					   "The default is the model and device ID as shown below.\n"
+					   "If you don't want to name this dive computer click "
+					   "'Cancel' and Subsurface will simply display its model "
+					   "as its name (which may mean that you cannot tell the two "
+					   "dive computers apart in the logs."),
+					   dc->model ? dc->model : "(unset)");
+				label = gtk_label_new(dialogtext);
+				gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+				gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
+				frame = gtk_frame_new(_("Nickname"));
+				gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 3);
+				entry = gtk_entry_new();
+				gtk_container_add(GTK_CONTAINER(frame), entry);
+				gtk_entry_set_max_length(GTK_ENTRY(entry), 68);
+				snprintf(nickname, sizeof(nickname), "%s (%08x)", dc->model, dc->deviceid);
+				gtk_entry_set_text(GTK_ENTRY(entry), nickname);
+				gtk_widget_show_all(dialog);
+				if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+					if (strcmp(dc->model, gtk_entry_get_text(GTK_ENTRY(entry))))
+						name = cleanedup_nickname(gtk_entry_get_text(GTK_ENTRY(entry)),	sizeof(nickname));
+				}
+				gtk_widget_destroy(dialog);
+				remember_dc(dc->deviceid, dc->model, name, TRUE);
+			}
 		}
-		gtk_widget_destroy(dialog);
-		remember_dc(dive->dc.deviceid, name, TRUE);
+		dc = dc->next;
 	}
 }

@@ -129,6 +129,10 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 	 * first one */
 	if (preexisting < dive_table.nr && dive_table.dives[preexisting]->downloaded)
 		set_dc_nickname(dive_table.dives[preexisting]);
+	else
+		/* they aren't downloaded, so record / check all new ones */
+		for (i = preexisting; i < dive_table.nr; i++)
+			set_dc_nickname(dive_table.dives[i]);
 
 	/* This does the right thing for -1: NULL */
 	last = get_dive(preexisting-1);
@@ -251,11 +255,6 @@ int main(int argc, char **argv)
 	textdomain("subsurface");
 	output_units = SI_units;
 
-	subsurface_command_line_init(&argc, &argv);
-	parse_xml_init();
-
-	init_ui(&argc, &argv);
-
 #if DEBUGFILE > 1
 	debugfile = stderr;
 #elif defined(DEBUGFILE)
@@ -265,6 +264,12 @@ int main(int argc, char **argv)
 	    (debugfile = g_fopen(debugfilename, "w")) == NULL)
 		printf("oh boy, can't create debugfile");
 #endif
+
+	subsurface_command_line_init(&argc, &argv);
+	parse_xml_init();
+
+	init_ui(&argc, &argv);
+
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];
 
