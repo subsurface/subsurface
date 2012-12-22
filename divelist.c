@@ -131,11 +131,14 @@ static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 	while (*diveidx < 0) {
 		memcpy(&parent, iter, sizeof(parent));
 		tpath = gtk_tree_model_get_path(model, &parent);
-		if (!gtk_tree_model_iter_children(model, iter, &parent))
+		if (!gtk_tree_model_iter_children(model, iter, &parent)) {
 			/* we should never have a parent without child */
+			gtk_tree_path_free(tpath);
 			return;
+		}
 		if(!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
 			gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
+		gtk_tree_path_free(tpath);
 		gtk_tree_model_get(model, iter, DIVE_INDEX, diveidx, -1);
 	}
 }
@@ -1644,6 +1647,7 @@ static void turn_dive_into_trip(GtkTreePath *path)
 	newiter = move_dive_between_trips(&iter, NULL, &newparent, NULL, FALSE);
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), newiter);
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_path_free(treepath);
 	dive = get_dive(idx);
 	create_and_hookup_trip_from_dive(dive);
 	free(newiter);
@@ -1688,13 +1692,17 @@ static void insert_trip_before(GtkTreePath *path)
 		dive = get_dive(idx);
 		add_dive_to_trip(dive, new_divetrip);
 		free(move_dive_between_trips(&nextsibling, &parent, &newparent, NULL, FALSE));
-		if (gtk_tree_path_compare(path, treepath) == 0)
+		if (gtk_tree_path_compare(path, treepath) == 0) {
 			/* we copied the dive we were called with; we are done */
+			gtk_tree_path_free(treepath);
 			break;
+		}
+		gtk_tree_path_free(treepath);
 	}
 	/* treat this divetrip as if it had been read from a file */
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), &newparent);
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_path_free(treepath);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -1978,6 +1986,7 @@ void remember_tree_state()
 			if (trip)
 				trip->expanded = TRUE;
 		}
+		gtk_tree_path_free(path);
 	} while (gtk_tree_model_iter_next(TREEMODEL(dive_list), &iter));
 }
 
