@@ -575,7 +575,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
 	GtkWidget *entry_po2, *entry_pn2, *entry_phe;
 	const char *current_default, *new_default;
-	char threshold_text[10];
+	char threshold_text[10], utf8_buf[128];
 	struct preferences oldprefs = prefs;
 
 	dialog = gtk_dialog_new_with_buttons(_("Preferences"),
@@ -716,12 +716,14 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(vbox), box);
 
-	button = gtk_check_button_new_with_label(_("Show pO" UTF8_SUBSCRIPT_2 " graph"));
+	sprintf(utf8_buf, _("Show pO%s graph"), UTF8_SUBSCRIPT_2);
+	button = gtk_check_button_new_with_label(utf8_buf);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.pp_graphs.po2);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(po2_toggle), &entry_po2);
 
-	frame = gtk_frame_new(_("pO" UTF8_SUBSCRIPT_2 " threshold"));
+	sprintf(utf8_buf, _("pO%s threshold"), UTF8_SUBSCRIPT_2);
+	frame = gtk_frame_new(utf8_buf);
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
 	entry_po2 = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(entry_po2), 4);
@@ -733,12 +735,14 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(vbox), box);
 
-	button = gtk_check_button_new_with_label(_("Show pN" UTF8_SUBSCRIPT_2 " graph"));
+	sprintf(utf8_buf, _("Show pN%s graph"), UTF8_SUBSCRIPT_2);
+	button = gtk_check_button_new_with_label(utf8_buf);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.pp_graphs.pn2);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(pn2_toggle), &entry_pn2);
 
-	frame = gtk_frame_new(_("pN" UTF8_SUBSCRIPT_2 " threshold"));
+	sprintf(utf8_buf, _("pN%s threshold"), UTF8_SUBSCRIPT_2);
+	frame = gtk_frame_new(utf8_buf);
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
 	entry_pn2 = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(entry_pn2), 4);
