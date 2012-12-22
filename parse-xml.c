@@ -625,8 +625,6 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 		return;
 	if (MATCH(".model", utf8_string, &dc->model))
 		return;
-	if (MATCH(".nickname", utf8_string, &dc->nickname))
-		return;
 	if (MATCH(".deviceid", hex_value, &dc->deviceid))
 		return;
 	if (MATCH(".diveid", hex_value, &dc->diveid))

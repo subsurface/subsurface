@@ -2023,7 +2023,7 @@ void set_filename(const char *filename, gboolean force)
 		existing_filename = NULL;
 }
 
-static const char *get_dc_nickname(uint32_t deviceid)
+const char *get_dc_nickname(uint32_t deviceid)
 {
 	struct dcnicknamelist *known = nicknamelist;
 	while (known) {
@@ -2083,15 +2083,15 @@ void remember_dc(uint32_t deviceid, const char *nickname, gboolean change_conf)
 void set_dc_nickname(struct dive *dive)
 {
 	GtkWidget *dialog, *vbox, *entry, *frame, *label;
-	char nickname[160];
-	const char *name;
+	char nickname[160] = "";
+	const char *name = nickname;
 
 	if (!dive)
 		return;
 
-	if ((name = get_dc_nickname(dive->dc.deviceid)) != NULL) {
-		dive->dc.nickname = strdup(name);
-	} else {
+	/* we should only do this if we already have a different dive computer
+	 * with the same model -- TBI */
+	if (get_dc_nickname(dive->dc.deviceid) == NULL) {
 		dialog = gtk_dialog_new_with_buttons(
 			_("Dive Computer Nickname"),
 			GTK_WINDOW(main_window),
@@ -2117,10 +2117,10 @@ void set_dc_nickname(struct dive *dive)
 		gtk_widget_show_all(dialog);
 		if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 			if (strcmp(dive->dc.model, gtk_entry_get_text(GTK_ENTRY(entry))))
-				dive->dc.nickname = cleanedup_nickname(gtk_entry_get_text(GTK_ENTRY(entry)),
-									sizeof(nickname));
+				name = cleanedup_nickname(gtk_entry_get_text(GTK_ENTRY(entry)),
+							  sizeof(nickname));
 		}
 		gtk_widget_destroy(dialog);
-		remember_dc(dive->dc.deviceid, dive->dc.nickname, TRUE);
+		remember_dc(dive->dc.deviceid, name, TRUE);
 	}
 }
