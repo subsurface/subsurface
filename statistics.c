@@ -604,14 +604,14 @@ static void get_ranges(char *buffer, int size)
 	int i, len;
 	int first, last = -1;
 
-	snprintf(buffer, size, "for dives #");
+	snprintf(buffer, size, _("for dives #"));
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = get_dive(i);
 		if (! dive->selected)
 			continue;
 		if (dive->number < 1) {
 			/* uhh - weird numbers - bail */
-			snprintf(buffer, size, "for selected dives");
+			snprintf(buffer, size, _("for selected dives"));
 			return;
 		}
 		len = strlen(buffer);
@@ -645,13 +645,13 @@ static void get_selected_dives_text(char *buffer, int size)
 {
 	if (amount_selected == 1) {
 		if (current_dive)
-			snprintf(buffer, size, "for dive #%d", current_dive->number);
+			snprintf(buffer, size, _("for dive #%d"), current_dive->number);
 		else
-			snprintf(buffer, size, "for selected dive");
+			snprintf(buffer, size, _("for selected dive"));
 	} else if (amount_selected == dive_table.nr) {
-		snprintf(buffer, size, "for all dives");
+		snprintf(buffer, size, _("for all dives"));
 	} else if (amount_selected == 0) {
-		snprintf(buffer, size, "(no dives)");
+		snprintf(buffer, size, _("(no dives)"));
 	} else {
 		get_ranges(buffer, size);
 		if (strlen(buffer) == size -1) {
@@ -676,7 +676,7 @@ static void show_total_dive_stats(struct dive *dive)
 	stats_ptr = &stats_selection;
 
 	get_selected_dives_text(buffer, sizeof(buffer));
-	set_label(stats_w.framelabel, "Statistics %s", buffer);
+	set_label(stats_w.framelabel, _("Statistics %s"), buffer);
 	set_label(stats_w.selection_size, "%d", stats_ptr->selection_size);
 	if (stats_ptr->selection_size == 0) {
 		clear_stats_widgets();
