@@ -1205,10 +1205,10 @@ void init_ui(int *argcp, char ***argvp)
 	conf_value = subsurface_get_conf("dc_nicknames", PREF_STRING);
 	nicknamestring = strdup("");
 	if (conf_value) {
-		char *next_token, *nickname, *model;
+		char *next_token, *nickname, *model, *conf_copy;
 		uint32_t deviceid;
 		int len;
-		next_token = strdup(conf_value);
+		next_token = conf_copy = strdup(conf_value);
 		len = strlen(next_token);
 		while ((next_token = g_utf8_strchr(next_token, len, '{')) != NULL) {
 			/* replace the '{' so we keep looking in case any test fails */
@@ -1246,7 +1246,7 @@ void init_ui(int *argcp, char ***argvp)
 			};
 		}
 		free((void *)conf_value);
-		free(next_token);
+		free(conf_copy);
 	}
 	error_info_bar = NULL;
 	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
