@@ -1251,6 +1251,8 @@ static void free_events(struct event *ev)
 static void free_dc(struct divecomputer *dc)
 {
 	free(dc->sample);
+	if (dc->model)
+		free((void *)dc->model);
 	free_events(dc->events);
 	free(dc);
 }
