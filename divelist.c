@@ -1947,7 +1947,18 @@ void delete_single_dive(int idx)
 	dive_table.nr--;
 	if (dive->selected)
 		amount_selected--;
+	/* free all allocations */
 	free(dive->dc.sample);
+	if (dive->location)
+		free((void *)dive->location);
+	if (dive->notes)
+		free((void *)dive->notes);
+	if (dive->divemaster)
+		free((void *)dive->divemaster);
+	if (dive->buddy)
+		free((void *)dive->buddy);
+	if (dive->suit)
+		free((void *)dive->suit);
 	free(dive);
 }
 

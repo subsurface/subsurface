@@ -734,13 +734,14 @@ add_sample_b:
 static char *merge_text(const char *a, const char *b)
 {
 	char *res;
-
+	if (!a && !b)
+		return NULL;
 	if (!a || !*a)
-		return (char *)b;
+		return strdup(b);
 	if (!b || !*b)
-		return (char *)a;
+		return strdup(a);
 	if (!strcmp(a,b))
-		return (char *)a;
+		return strdup(a);
 	res = malloc(strlen(a) + strlen(b) + 9);
 	if (!res)
 		return (char *)a;
