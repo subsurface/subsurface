@@ -1096,10 +1096,13 @@ static struct divecomputer *get_dc(void)
 static void event_end(void)
 {
 	struct divecomputer *dc = get_dc();
-	if (cur_event.name && strcmp(cur_event.name, "surface") != 0)
-		add_event(dc, cur_event.time.seconds,
-			cur_event.type, cur_event.flags,
-			cur_event.value, cur_event.name);
+	if (cur_event.name) {
+		if (strcmp(cur_event.name, "surface") != 0)
+			add_event(dc, cur_event.time.seconds,
+				cur_event.type, cur_event.flags,
+				cur_event.value, cur_event.name);
+		free((void *)cur_event.name);
+	}
 	cur_event.active = 0;
 }
 
