@@ -815,8 +815,13 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 /* Pick whichever has any info (if either). Prefer 'a' */
 static void merge_cylinder_type(cylinder_type_t *res, cylinder_type_t *a, cylinder_type_t *b)
 {
-	if (a->size.mliter)
+	cylinder_type_t *clean = a;
+	if (a->size.mliter) {
+		clean = b;
 		b = a;
+	}
+	if (clean->description)
+		free((void *)clean->description);
 	*res = *b;
 }
 
