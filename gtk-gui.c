@@ -1245,7 +1245,7 @@ void init_ui(int *argcp, char ***argvp)
 					*nameend = '\0';
 					nickname = strdup(namestart);
 				}
-				remember_dc(deviceid, model, nickname, FALSE);
+				remember_dc(model, deviceid, nickname, FALSE);
 				next_token = nameend + 1;
 			};
 		}
@@ -2047,17 +2047,28 @@ void set_filename(const char *filename, gboolean force)
 		existing_filename = NULL;
 }
 
-const char *get_dc_nickname(uint32_t deviceid)
+/* just find the entry for this divecomputer */
+static struct dcnicknamelist *get_dc_nicknameentry(const char *model, int deviceid)
 {
 	struct dcnicknamelist *known = nicknamelist;
+	if (!model)
+		model = "";
 	while (known) {
-		if (known->deviceid == deviceid) {
-			if (known->nickname && *known->nickname)
-				return known->nickname;
-			else
-				return known->model;
-		}
+		if (!strcmp(known->model, model) && known->deviceid == deviceid)
+			return known;
 		known = known->next;
+	}
+	return NULL;
+}
+
+const char *get_dc_nickname(const char *model, uint32_t deviceid)
+{
+	struct dcnicknamelist *known = get_dc_nicknameentry(model, deviceid);
+	if (known) {
+		if (known->nickname && *known->nickname)
+			return known->nickname;
+		else
+			return known->model;
 	}
 	return NULL;
 }
@@ -2066,21 +2077,11 @@ const char *get_dc_nickname(uint32_t deviceid)
 static struct dcnicknamelist *get_different_dc_nicknameentry(const char *model, int deviceid)
 {
 	struct dcnicknamelist *known = nicknamelist;
+	if (!model)
+		model = "";
 	while (known) {
-		if (known->model && model && !strcmp(known->model, model) &&
+		if (known->model && !strcmp(known->model, model) &&
 		    known->deviceid != deviceid)
-			return known;
-		known = known->next;
-	}
-	return NULL;
-}
-
-/* just fine the entry for this divecomputer */
-static struct dcnicknamelist *get_dc_nicknameentry(int deviceid)
-{
-	struct dcnicknamelist *known = nicknamelist;
-	while (known) {
-		if (known->deviceid == deviceid)
 			return known;
 		known = known->next;
 	}
@@ -2114,16 +2115,18 @@ static char *cleanedup_nickname(const char *nickname, int len)
 	return clean;
 }
 
-void replace_nickname_nicknamestring(int deviceid, const char *nickname)
+void replace_nickname_nicknamestring(const char *model, int deviceid, const char *nickname)
 {
 	char buf[11];
 	char *entry, *comma1, *comma2, *brace, *new_nn;
 	int len;
 
+	if (!nickname)
+		nickname = "";
 	snprintf(buf, sizeof(buf), "{%08x,", deviceid);
 	entry = strstr(nicknamestring, buf);
 	if (!entry)
-		/* this cannot happen as we know have an entry for this deviceid */
+		/* this cannot happen as we know we have an entry for this deviceid */
 		goto bail;
 	len = strlen(entry);
 	comma1 = g_utf8_strchr(entry, len, ',');
@@ -2145,9 +2148,9 @@ void replace_nickname_nicknamestring(int deviceid, const char *nickname)
 	}
 	new_nn = malloc(len);
 	if (strlen(nickname))
-		snprintf(new_nn, len, "%s,%s}%s", entry, nickname, brace + 1);
+		snprintf(new_nn, len, "%s,%s}%s", nicknamestring, nickname, brace + 1);
 	else
-		snprintf(new_nn, len, "%s}%s", entry, brace + 1);
+		snprintf(new_nn, len, "%s}%s", nicknamestring, brace + 1);
 	free(nicknamestring);
 	nicknamestring = new_nn;
 	return;
@@ -2158,9 +2161,11 @@ bail:
 
 }
 
-void remember_dc(uint32_t deviceid, const char *model, const char *nickname, gboolean change_conf)
+void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gboolean change_conf)
 {
-	if (!get_dc_nickname(deviceid)) {
+	if (!nickname)
+		nickname = "";
+	if (!get_dc_nickname(model, deviceid)) {
 		char buffer[160];
 		struct dcnicknamelist *nn_entry = malloc(sizeof(struct dcnicknamelist));
 		nn_entry->deviceid = deviceid;
@@ -2180,11 +2185,11 @@ void remember_dc(uint32_t deviceid, const char *model, const char *nickname, gbo
 			subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
 	} else {
 		/* modify existing entry */
-		struct dcnicknamelist *nn_entry = get_dc_nicknameentry(deviceid);
+		struct dcnicknamelist *nn_entry = get_dc_nicknameentry(model, deviceid);
 		if (!nn_entry->model || !*nn_entry->model)
 			nn_entry->model = model;
 		nn_entry->nickname = nickname;
-		replace_nickname_nicknamestring(deviceid, nickname);
+		replace_nickname_nicknamestring(model, deviceid, nickname);
 	}
 #if defined(NICKNAME_DEBUG)
 	struct dcnicknamelist *nn_entry = nicknamelist;
@@ -2212,12 +2217,12 @@ void set_dc_nickname(struct dive *dive)
 #if NICKNAME_DEBUG & 16
 		fprintf(debugfile, "set_dc_nickname for model %s deviceid %8x\n", dc->model ? : "", dc->deviceid);
 #endif
-		if (get_dc_nickname(dc->deviceid) == NULL) {
+		if (get_dc_nickname(dc->model, dc->deviceid) == NULL) {
 			struct dcnicknamelist *nn_entry = get_different_dc_nicknameentry(dc->model, dc->deviceid);
 			if (!nn_entry) {
 				/* just remember the dive computer without setting a nickname */
 				if (dc->model)
-					remember_dc(dc->deviceid, dc->model, "", TRUE);
+					remember_dc(dc->model, dc->deviceid, "", TRUE);
 			} else {
 				dialog = gtk_dialog_new_with_buttons(
 					_("Dive Computer Nickname"),
@@ -2255,9 +2260,43 @@ void set_dc_nickname(struct dive *dive)
 						name = cleanedup_nickname(gtk_entry_get_text(GTK_ENTRY(entry)),	sizeof(nickname));
 				}
 				gtk_widget_destroy(dialog);
-				remember_dc(dc->deviceid, dc->model, name, TRUE);
+				remember_dc(dc->model, dc->deviceid, name, TRUE);
 			}
 		}
 		dc = dc->next;
 	}
+}
+
+void add_dc_to_string(char **dc_xml, struct divecomputer *dc)
+{
+	char *pattern, *tmp;
+	const char *nickname;
+	int len;
+
+	if (!dc || !dc->model || !*dc->model)
+		/* we have no dc or no model information... nothing to do here */
+		return;
+	len = sizeof(" model='' deviceid=''") + strlen(dc->model) + 8;
+	pattern = malloc(len);
+	snprintf(pattern, len, " model='%s' deviceid='%08x'", dc->model, dc->deviceid);
+	if (*dc_xml && strstr(*dc_xml, pattern)) {
+		/* already have that one */
+		free(pattern);
+		return;
+	}
+	nickname = get_dc_nickname(dc->model, dc->deviceid);
+	if (!nickname || !*nickname || !strcmp(dc->model, nickname)) {
+		/* we still want to store this entry as it explicitly tells us
+		 * "no nickname needed, use model" */
+		len += strlen(*dc_xml) + sizeof("<divecomputerid/>\n");
+		tmp = malloc(len);
+		snprintf(tmp, len, "%s<divecomputerid%s/>\n", *dc_xml, pattern);
+	} else {
+		len += strlen(*dc_xml) + strlen(nickname) + sizeof("<divecomputerid nickname=''/>\n");
+		tmp = malloc(len);
+		snprintf(tmp, len, "%s<divecomputerid%s nickname='%s'/>\n", *dc_xml, pattern, nickname);
+	}
+	free(pattern);
+	free(*dc_xml);
+	*dc_xml = tmp;
 }

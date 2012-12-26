@@ -145,6 +145,14 @@ static struct {
 	int type, flags, value;
 	const char *name;
 } cur_event;
+static struct {
+struct {
+	const char *model;
+	uint32_t deviceid;
+	const char *nickname;
+} dc;
+} cur_settings;
+static gboolean in_settings = FALSE;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2;
@@ -592,6 +600,21 @@ static void eventtime(char *buffer, void *_duration)
 		duration->seconds += cur_sample->time.seconds;
 }
 
+static void try_to_fill_dc_settings(const char *name, char *buf)
+{
+	int len = strlen(name);
+
+	start_match("divecomputerid", name, buf);
+	if (MATCH(".model", utf8_string, &cur_settings.dc.model))
+		return;
+	if (MATCH(".deviceid", hex_value, &cur_settings.dc.deviceid))
+		return;
+	if (MATCH(".nickname", utf8_string, &cur_settings.dc.nickname))
+		return;
+
+	nonmatch("divecomputerid", name, buf);
+}
+
 static void try_to_fill_event(const char *name, char *buf)
 {
 	int len = strlen(name);
@@ -988,6 +1011,29 @@ static void reset_dc_info(struct divecomputer *dc)
 	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = 0;
 }
 
+static void reset_dc_settings(void)
+{
+	free((void *)cur_settings.dc.model);
+	free((void *)cur_settings.dc.nickname);
+	cur_settings.dc.model = NULL;
+	cur_settings.dc.nickname = NULL;
+	cur_settings.dc.deviceid = 0;
+}
+
+static void dc_settings_start(void)
+{
+	in_settings = TRUE;
+	reset_dc_settings();
+}
+
+static void dc_settings_end(void)
+{
+	in_settings = FALSE;
+	if (cur_settings.dc.model)
+		remember_dc(cur_settings.dc.model, cur_settings.dc.deviceid, cur_settings.dc.nickname, TRUE);
+	reset_dc_settings();
+}
+
 static void dive_start(void)
 {
 	if (cur_dive)
@@ -1137,6 +1183,10 @@ static void entry(const char *name, int size, const char *raw)
 		return;
 	memcpy(buf, raw, size);
 	buf[size] = 0;
+	if (in_settings) {
+		try_to_fill_dc_settings(name, buf);
+		return;
+	}
 	if (cur_event.active) {
 		try_to_fill_event(name, buf);
 		return;
@@ -1271,6 +1321,7 @@ static struct nesting {
 	const char *name;
 	void (*start)(void), (*end)(void);
 } nesting[] = {
+	{ "divecomputerid", dc_settings_start, dc_settings_end },
 	{ "dive", dive_start, dive_end },
 	{ "Dive", dive_start, dive_end },
 	{ "trip", trip_start, trip_end },

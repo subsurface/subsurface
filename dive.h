@@ -528,8 +528,9 @@ extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 
 extern void set_dc_nickname(struct dive *dive);
-extern const char *get_dc_nickname(uint32_t deviceid);
-extern void remember_dc(uint32_t deviceid, const char *model, const char *nickname, gboolean change_conf);
+extern const char *get_dc_nickname(const char *model, uint32_t deviceid);
+extern void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gboolean change_conf);
+extern void add_dc_to_string(char **dc_xml, struct divecomputer *dc);
 
 #define DIVE_ERROR_PARSE 1
 

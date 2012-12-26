@@ -1879,7 +1879,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	cairo_stroke(gc->cr);
 
 	/* Put the dive computer name in the lower left corner */
-	nickname = get_dc_nickname(dc->deviceid);
+	nickname = get_dc_nickname(dc->model, dc->deviceid);
 	if (!nickname || *nickname == '\0')
 		nickname = dc->model;
 	if (nickname) {

@@ -443,13 +443,14 @@ static void save_dive(FILE *f, struct dive *dive)
 	fprintf(f, "</dive>\n");
 }
 
-#define VERSION 1
+#define VERSION 2
 
 void save_dives(const char *filename)
 {
 	int i;
 	struct dive *dive;
 	dive_trip_t *trip = NULL;
+	char *dc_xml = strdup("");
 
 	FILE *f = g_fopen(filename, "w");
 
@@ -459,8 +460,16 @@ void save_dives(const char *filename)
 	/* Flush any edits of current dives back to the dives! */
 	update_dive(current_dive);
 
-	fprintf(f, "<dives>\n<program name='subsurface' version='%d'></program>\n", VERSION);
-
+	fprintf(f, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
+	for_each_dive(i, dive) {
+		struct divecomputer *dc = &dive->dc;
+		while (dc) {
+			add_dc_to_string(&dc_xml, dc);
+			dc = dc->next;
+		}
+	}
+	fprintf(f, dc_xml);
+	fprintf(f, "</settings>\n<dives>\n");
 	/* save the dives */
 	for_each_dive(i, dive) {
 		dive_trip_t *thistrip = dive->divetrip;
@@ -477,6 +486,6 @@ void save_dives(const char *filename)
 	}
 	if (trip)
 		fprintf(f, "</trip>\n");
-	fprintf(f, "</dives>\n");
+	fprintf(f, "</dives>\n</divelog>\n");
 	fclose(f);
 }
