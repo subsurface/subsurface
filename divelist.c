@@ -1995,18 +1995,20 @@ static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTr
 	int idx;
 	timestamp_t when;
 	struct dive *dive;
+	dive_trip_t *trip;
 	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	if (idx < 0) {
-		if (find_trip_by_time(when)->expanded)
+		trip = find_trip_by_time(when);
+		if (trip && trip->expanded)
 			gtk_tree_view_expand_row(tree_view, path, FALSE);
-		if (find_trip_by_time(when)->selected)
+		if (trip && trip->selected)
 			gtk_tree_selection_select_iter(selection, iter);
 	} else {
 		dive = get_dive(idx);
-		if (dive->selected)
+		if (dive && dive->selected)
 			gtk_tree_selection_select_iter(selection, iter);
 	}
 	/* continue foreach */
