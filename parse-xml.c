@@ -110,7 +110,6 @@ static void nonmatch(const char *type, const char *name, char *buffer)
 	if (verbose > 1)
 		printf("Unable to match %s '%s' (%s)\n",
 			type, name, buffer);
-	free(buffer);
 }
 
 typedef void (*matchfn_t)(char *buffer, void *);
@@ -186,8 +185,6 @@ static void divedate(char *buffer, void *_when)
 
 	if (success)
 		*when = utc_mktime(&cur_tm);
-
-	free(buffer);
 }
 
 static void divetime(char *buffer, void *_when)
@@ -202,7 +199,6 @@ static void divetime(char *buffer, void *_when)
 		if (cur_tm.tm_year)
 			*when = utc_mktime(&cur_tm);
 	}
-	free(buffer);
 }
 
 /* Libdivecomputer: "2011-03-20 10:22:38" */
@@ -222,7 +218,6 @@ static void divedatetime(char *buffer, void *_when)
 		cur_tm.tm_sec = sec;
 		*when = utc_mktime(&cur_tm);
 	}
-	free(buffer);
 }
 
 union int_or_float {
@@ -292,7 +287,6 @@ static void pressure(char *buffer, void *_press)
 	default:
 		printf("Strange pressure reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 static void salinity(char *buffer, void *_salinity)
@@ -306,7 +300,6 @@ static void salinity(char *buffer, void *_salinity)
 	default:
 		printf("Strange salinity reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 static void depth(char *buffer, void *_depth)
@@ -328,7 +321,6 @@ static void depth(char *buffer, void *_depth)
 	default:
 		printf("Strange depth reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 static void weight(char *buffer, void *_weight)
@@ -378,7 +370,6 @@ static void temperature(char *buffer, void *_temperature)
 	default:
 		printf("Strange temperature reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 static void sampletime(char *buffer, void *_time)
@@ -399,7 +390,6 @@ static void sampletime(char *buffer, void *_time)
 	default:
 		printf("Strange sample time reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 static void duration(char *buffer, void *_time)
@@ -422,7 +412,6 @@ static void percent(char *buffer, void *_fraction)
 		printf("Strange percentage reading %s\n", buffer);
 		break;
 	}
-	free(buffer);
 }
 
 static void gasmix(char *buffer, void *_fraction)
@@ -453,12 +442,23 @@ static void cylindersize(char *buffer, void *_volume)
 		printf("Strange volume reading %s\n", buffer);
 		break;
 	}
-	free(buffer);
 }
 
 static void utf8_string(char *buffer, void *_res)
 {
-	*(char **)_res = buffer;
+	int size;
+	char *res;
+	while (isspace(*buffer))
+		buffer++;
+	size = strlen(buffer);
+	while (size && isspace(buffer[size-1]))
+		size--;
+	if (!size)
+		return;
+	res = malloc(size + 1);
+	memcpy(res, buffer, size);
+	res[size] = 0;
+	*(char **)_res = res;
 }
 
 #define MATCH(pattern, fn, dest) \
@@ -468,28 +468,24 @@ static void get_index(char *buffer, void *_i)
 {
 	int *i = _i;
 	*i = atoi(buffer);
-	free(buffer);
 }
 
 static void double_to_permil(char *buffer, void *_i)
 {
 	int *i = _i;
 	*i = g_ascii_strtod(buffer, NULL) * 1000.0 + 0.5;
-	free(buffer);
 }
 
 static void hex_value(char *buffer, void *_i)
 {
 	uint32_t *i = _i;
 	*i = strtol(buffer, NULL, 16);
-	free(buffer);
 }
 
 static void get_tripflag(char *buffer, void *_tf)
 {
 	tripflag_t *tf = _tf;
 	*tf = strcmp(buffer, "NOTRIP") ? TF_NONE : NO_TRIP;
-	free(buffer);
 }
 
 /*
@@ -533,7 +529,6 @@ static void fahrenheit(char *buffer, void *_temperature)
 	default:
 		fprintf(stderr, "Crazy Diving Log temperature reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 /*
@@ -571,7 +566,6 @@ static void psi_or_bar(char *buffer, void *_pressure)
 	default:
 		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);
 	}
-	free(buffer);
 }
 
 static int divinglog_fill_sample(struct sample *sample, const char *name, int len, char *buf)
@@ -777,7 +771,6 @@ static void uddf_datetime(char *buffer, void *_when)
 		goto success;
 bad_date:
 	printf("Bad date time %s\n", buffer);
-	free(buffer);
 	return;
 
 success:
@@ -790,7 +783,6 @@ success:
 	tm.tm_min = mm;
 	tm.tm_sec = ss;
 	*when = utc_mktime(&tm);
-	free(buffer);
 }
 
 static int uddf_dive_match(struct dive *dive, const char *name, int len, char *buf)
@@ -856,7 +848,6 @@ static void gps_location(char *buffer, void *_dive)
 
 	dive->latitude = parse_degrees(buffer, &end);
 	dive->longitude = parse_degrees(end, &end);
-	free(buffer);
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
@@ -1178,14 +1169,8 @@ static void divecomputer_end(void)
 	cur_dc = NULL;
 }
 
-static void entry(const char *name, int size, const char *raw)
+static void entry(const char *name, char *buf)
 {
-	char *buf = malloc(size+1);
-
-	if (!buf)
-		return;
-	memcpy(buf, raw, size);
-	buf[size] = 0;
 	if (in_settings) {
 		try_to_fill_dc_settings(name, buf);
 		return;
@@ -1210,7 +1195,6 @@ static void entry(const char *name, int size, const char *raw)
 		try_to_fill_trip(&cur_trip, name, buf);
 		return;
 	}
-	free(buf);
 }
 
 static const char *nodename(xmlNode *node, char *buf, int len)
@@ -1244,25 +1228,12 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 
 static void visit_one_node(xmlNode *node)
 {
-	int len;
-	const unsigned char *content;
+	char *content;
 	char buffer[MAXNAME];
 	const char *name;
 
 	content = node->content;
-	if (!content)
-		return;
-
-	/* Trim whitespace at beginning */
-	while (isspace(*content))
-		content++;
-
-	/* Trim whitespace at end */
-	len = strlen(content);
-	while (len && isspace(content[len-1]))
-		len--;
-
-	if (!len)
+	if (!content || xmlIsBlankNode(node))
 		return;
 
 	/* Don't print out the node name if it is "text" */
@@ -1271,7 +1242,7 @@ static void visit_one_node(xmlNode *node)
 
 	name = nodename(node, buffer, sizeof(buffer));
 
-	entry(name, len, content);
+	entry(name, content);
 }
 
 static void traverse(xmlNode *root);
