@@ -443,6 +443,38 @@ static void save_dive(FILE *f, struct dive *dive)
 	fprintf(f, "</dive>\n");
 }
 
+static char *add_dc_to_string(char *dc_xml, struct divecomputer *dc)
+{
+	char *pattern, *tmp;
+	const char *nickname;
+	int len;
+
+	/* we have no dc or no model or no deviceid information... nothing to do here */
+	if (!dc || !dc->model || !*dc->model || !dc->deviceid)
+		return dc_xml;
+
+	nickname = get_dc_nickname(dc->model, dc->deviceid);
+	/* We have no nickname, or it is the same as the model ID - nothing interesting */
+	if (!nickname || !*nickname || !strcmp(dc->model, nickname))
+		return dc_xml;
+
+	len = sizeof(" model='' deviceid=''") + strlen(dc->model) + 8;
+	pattern = malloc(len);
+	snprintf(pattern, len, " model='%s' deviceid='%08x'", dc->model, dc->deviceid);
+	if (dc_xml && strstr(dc_xml, pattern)) {
+		/* already have that one */
+		free(pattern);
+		return dc_xml;
+	}
+
+	len += strlen(dc_xml) + strlen(nickname) + sizeof("<divecomputerid nickname=''/>\n");
+	tmp = malloc(len);
+	snprintf(tmp, len, "%s<divecomputerid%s nickname='%s'/>\n", dc_xml, pattern, nickname);
+	free(pattern);
+	free(dc_xml);
+	return tmp;
+}
+
 #define VERSION 2
 
 void save_dives(const char *filename)
@@ -464,7 +496,7 @@ void save_dives(const char *filename)
 	for_each_dive(i, dive) {
 		struct divecomputer *dc = &dive->dc;
 		while (dc) {
-			add_dc_to_string(&dc_xml, dc);
+			dc_xml = add_dc_to_string(dc_xml, dc);
 			dc = dc->next;
 		}
 	}

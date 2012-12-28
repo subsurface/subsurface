@@ -2281,37 +2281,3 @@ void set_dc_nickname(struct dive *dive)
 		dc = dc->next;
 	}
 }
-
-void add_dc_to_string(char **dc_xml, struct divecomputer *dc)
-{
-	char *pattern, *tmp;
-	const char *nickname;
-	int len;
-
-	if (!dc || !dc->model || !*dc->model || !dc->deviceid)
-		/* we have no dc or no model or no deviceid information... nothing to do here */
-		return;
-	len = sizeof(" model='' deviceid=''") + strlen(dc->model) + 8;
-	pattern = malloc(len);
-	snprintf(pattern, len, " model='%s' deviceid='%08x'", dc->model, dc->deviceid);
-	if (*dc_xml && strstr(*dc_xml, pattern)) {
-		/* already have that one */
-		free(pattern);
-		return;
-	}
-	nickname = get_dc_nickname(dc->model, dc->deviceid);
-	if (!nickname || !*nickname || !strcmp(dc->model, nickname)) {
-		/* we still want to store this entry as it explicitly tells us
-		 * "no nickname needed, use model" */
-		len += strlen(*dc_xml) + sizeof("<divecomputerid/>\n");
-		tmp = malloc(len);
-		snprintf(tmp, len, "%s<divecomputerid%s/>\n", *dc_xml, pattern);
-	} else {
-		len += strlen(*dc_xml) + strlen(nickname) + sizeof("<divecomputerid nickname=''/>\n");
-		tmp = malloc(len);
-		snprintf(tmp, len, "%s<divecomputerid%s nickname='%s'/>\n", *dc_xml, pattern, nickname);
-	}
-	free(pattern);
-	free(*dc_xml);
-	*dc_xml = tmp;
-}
