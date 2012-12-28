@@ -742,7 +742,7 @@ static char *merge_text(const char *a, const char *b)
 		return strdup(a);
 	if (!strcmp(a,b))
 		return strdup(a);
-	res = malloc(strlen(a) + strlen(b) + 9);
+	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
 	sprintf(res, _("(%s) or (%s)"), a, b);
