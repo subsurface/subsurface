@@ -296,6 +296,17 @@ static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_par
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
 
+static int might_be_same_dc(struct divecomputer *a, struct divecomputer *b)
+{
+	if (!a->model || !b->model)
+		return 1;
+	if (strcasecmp(a->model, b->model))
+		return 0;
+	if (!a->deviceid || !b->deviceid)
+		return 1;
+	return a->deviceid == b->deviceid;
+}
+
 static int match_one_dive(struct divecomputer *a, struct dive *dive)
 {
 	struct divecomputer *b = &dive->dc;
@@ -316,7 +327,7 @@ static int match_one_dive(struct divecomputer *a, struct dive *dive)
 	/* Ok, no exact dive computer match. Does the date match? */
 	b = &dive->dc;
 	do {
-		if (a->when == b->when)
+		if (a->when == b->when && might_be_same_dc(a, b))
 			return 1;
 		b = b->next;
 	} while (b);
