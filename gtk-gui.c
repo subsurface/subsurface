@@ -2051,6 +2051,11 @@ void set_filename(const char *filename, gboolean force)
 static struct dcnicknamelist *get_dc_nicknameentry(const char *model, int deviceid)
 {
 	struct dcnicknamelist *known = nicknamelist;
+
+	/* a 0 deviceid doesn't get a nickname - those come from development
+	 * versions of Subsurface that didn't store the deviceid in the divecomputer entries */
+	if (!deviceid)
+		return NULL;
 	if (!model)
 		model = "";
 	while (known) {
@@ -2077,6 +2082,11 @@ const char *get_dc_nickname(const char *model, uint32_t deviceid)
 static struct dcnicknamelist *get_different_dc_nicknameentry(const char *model, int deviceid)
 {
 	struct dcnicknamelist *known = nicknamelist;
+
+	/* a 0 deviceid matches any DC of the same model - those come from development
+	 * versions of Subsurface that didn't store the deviceid in the divecomputer entries */
+	if (!deviceid)
+		return NULL;
 	if (!model)
 		model = "";
 	while (known) {
@@ -2163,6 +2173,11 @@ bail:
 
 void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gboolean change_conf)
 {
+	/* we don't want to record entries with a deviceid of 0; those are from earlier
+	 * development versions of Subsurface before we stored the hash in the divecomputer
+	 * entries... we don't know which actual divecomputer those entries are from */
+	if (!deviceid)
+		return;
 	if (!nickname)
 		nickname = "";
 	if (!get_dc_nickname(model, deviceid)) {
@@ -2273,8 +2288,8 @@ void add_dc_to_string(char **dc_xml, struct divecomputer *dc)
 	const char *nickname;
 	int len;
 
-	if (!dc || !dc->model || !*dc->model)
-		/* we have no dc or no model information... nothing to do here */
+	if (!dc || !dc->model || !*dc->model || !dc->deviceid)
+		/* we have no dc or no model or no deviceid information... nothing to do here */
 		return;
 	len = sizeof(" model='' deviceid=''") + strlen(dc->model) + 8;
 	pattern = malloc(len);
