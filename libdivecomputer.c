@@ -42,7 +42,70 @@ static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 	return dc_parser_new(parser, devdata->device);
 }
 
-static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases)
+/* Atomics Aquatics Cobalt specific parsing of tank information
+ * realistically this REALLY needs to be done in libdivecomputer - but the
+ * current API doesn't even have the notion of tank size, so for now I do
+ * this here, but I need to work with Jef to make sure this gets added in
+ * the new libdivecomputer API */
+#define COBALT_HEADER 228
+struct atomics_gas_info {
+	uint8_t gas_nr;
+	uint8_t po2imit;
+	uint8_t tankspecmethod;	/* 1: CF@psi 2: CF@bar 3: wet vol in deciliter */
+	uint8_t gasmixtype;
+	uint8_t fo2;
+	uint8_t fhe;
+	uint16_t startpressure;	/* in psi */
+	uint16_t tanksize;	/* CF or dl */
+	uint16_t workingpressure;
+	uint16_t sensorid;
+	uint16_t endpressure;	/* in psi */
+	uint16_t totalconsumption;	/* in liters */
+};
+#define COBALT_CFATPSI 1
+#define COBALT_CFATBAR 2
+#define COBALT_WETINDL 3
+
+static void get_tanksize(device_data_t *devdata, const unsigned char *data, cylinder_t *cyl, int idx)
+{
+	/* I don't like this kind of match... I'd love to have an ID and
+	 * a firmware version or... something; and even better, just get
+	 * this from libdivecomputer */
+	if (!strcmp(devdata->vendor, "Atomic Aquatics") &&
+	    !strcmp(devdata->product, "Cobalt")) {
+		struct atomics_gas_info *atomics_gas_info;
+		double airvolume;
+		int mbar;
+
+		/* at least some quick sanity check to make sure this is the
+		 * right data */
+		if (*(uint32_t *)data != 0xFFFEFFFE) {
+			printf("incorrect header for Atomics dive\n");
+			return;
+		}
+		atomics_gas_info = (void*)(data + COBALT_HEADER);
+		switch (atomics_gas_info[idx].tankspecmethod) {
+		case COBALT_CFATPSI:
+			airvolume = cuft_to_l(atomics_gas_info[idx].tanksize) * 1000.0;
+			mbar = psi_to_mbar(atomics_gas_info[idx].workingpressure);
+			cyl[idx].type.size.mliter = airvolume / bar_to_atm(mbar / 1000.0) + 0.5;
+			cyl[idx].type.workingpressure.mbar = mbar;
+			break;
+		case COBALT_CFATBAR:
+			airvolume = cuft_to_l(atomics_gas_info[idx].tanksize) * 1000.0;
+			mbar = atomics_gas_info[idx].workingpressure * 1000;
+			cyl[idx].type.size.mliter = airvolume / bar_to_atm(mbar / 1000.0) + 0.5;
+			cyl[idx].type.workingpressure.mbar = mbar;
+			break;
+		case COBALT_WETINDL:
+			cyl[idx].type.size.mliter = atomics_gas_info[idx].tanksize * 100;
+			break;
+		}
+	}
+}
+
+static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
+	const unsigned char *data)
 {
 	int i;
 
@@ -69,6 +132,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
+
+		get_tanksize(devdata, data, dive->cylinder, i);
 	}
 	return DC_STATUS_SUCCESS;
 }
@@ -407,7 +472,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->salinity = salinity * 10000.0 + 0.5;
 #endif
 
-	rc = parse_gasmixes(devdata, dive, parser, ngases);
+	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, _("Error parsing the gas mix"));
 		dc_parser_destroy(parser);
