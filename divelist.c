@@ -1083,6 +1083,8 @@ static void delete_trip(dive_trip_t *trip)
 	/* .. and free it */
 	if (trip->location)
 		free(trip->location);
+	if (trip->notes)
+		free(trip->notes);
 	free(trip);
 }
 
