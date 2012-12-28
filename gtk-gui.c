@@ -2188,7 +2188,7 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 		struct dcnicknamelist *nn_entry = get_dc_nicknameentry(model, deviceid);
 		if (!nn_entry->model || !*nn_entry->model)
 			nn_entry->model = model;
-		nn_entry->nickname = nickname;
+		nn_entry->nickname = cleanedup_nickname(nickname, 80);
 		replace_nickname_nicknamestring(model, deviceid, nickname);
 	}
 #if defined(NICKNAME_DEBUG)
