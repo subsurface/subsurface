@@ -1286,6 +1286,49 @@ void dive_list_update_dives(void)
 	repaint_dive();
 }
 
+static gint dive_nr_sort(GtkTreeModel *model,
+	GtkTreeIter *iter_a,
+	GtkTreeIter *iter_b,
+	gpointer user_data)
+{
+	int idx_a, idx_b;
+	timestamp_t when_a, when_b;
+	struct dive *a, *b;
+	dive_trip_t *tripa,*tripb;
+
+	gtk_tree_model_get(model, iter_a, DIVE_INDEX, &idx_a, DIVE_DATE, &when_a, -1);
+	gtk_tree_model_get(model, iter_b, DIVE_INDEX, &idx_b, DIVE_DATE, &when_b, -1);
+
+	if (idx_a < 0) {
+		a = NULL;
+		tripa = find_trip_by_time(when_a);
+	} else {
+		a = get_dive(idx_a);
+		if (a)
+			tripa = a->divetrip;
+	}
+
+	if (idx_b < 0) {
+		b = NULL;
+		tripb = find_trip_by_time(when_b);
+	} else {
+		b = get_dive(idx_b);
+		if (b)
+			tripb = b->divetrip;
+	}
+
+	if (!tripa || !tripb)
+		return 0;
+	if (tripa->when < tripb->when)
+		return -1;
+	if (tripa->when > tripb->when)
+		return 1;
+	if (a && b)
+		return a->when - b->when;
+	return 0;
+}
+
+
 static struct divelist_column {
 	const char *header;
 	data_func_t data;
@@ -1293,7 +1336,7 @@ static struct divelist_column {
 	unsigned int flags;
 	int *visible;
 } dl_column[] = {
-	[DIVE_NR] = { "#", nr_data_func, NULL, ALIGN_RIGHT | UNSORTABLE },
+	[DIVE_NR] = { "#", nr_data_func, dive_nr_sort, ALIGN_RIGHT },
 	[DIVE_DATE] = { N_("Date"), date_data_func, NULL, ALIGN_LEFT },
 	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
 	[DIVE_DEPTH] = { N_("ft"), depth_data_func, NULL, ALIGN_RIGHT },
@@ -1328,7 +1371,7 @@ static GtkTreeViewColumn *divelist_column(struct DiveList *dl, struct divelist_c
 	ret = tree_view_column(tree_view, index, title, data_func, flags);
 	if (sort_func) {
 		/* the sort functions are needed in the corresponding models */
-		if (index == DIVE_DATE)
+		if (index == DIVE_NR)
 			gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(treemodel), index, sort_func, NULL, NULL);
 		else
 			gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(listmodel), index, sort_func, NULL, NULL);
@@ -2342,7 +2385,7 @@ static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, gpoi
    switching models. */
 static gboolean second_call = FALSE;
 static GtkSortType sortorder[] = { [0 ... DIVELIST_COLUMNS - 1] = GTK_SORT_DESCENDING, };
-static int lastcol = DIVE_DATE;
+static int lastcol = DIVE_NR;
 
 /* Check if this dive was selected previously and select it again in the new model;
  * This is used after we switch models to maintain consistent selections.
@@ -2386,7 +2429,7 @@ static void update_column_and_order(int colid)
 	second_call = FALSE;
 }
 
-/* If the sort column is date (default), show the tree model.
+/* If the sort column is nr (default), show the tree model.
    For every other sort column only show the list model.
    If the model changed, inform the new model of the chosen sort column and make
    sure the same dives are still selected.
@@ -2413,7 +2456,7 @@ static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 	} else {
 		lastcol = colid;
 	}
-	if(colid == DIVE_DATE)
+	if(colid == DIVE_NR)
 		dive_list.model = dive_list.treemodel;
 	else
 		dive_list.model = dive_list.listmodel;
