@@ -109,7 +109,9 @@ static void uemis_get_index(char *buffer, int *idx)
 /* space separated */
 static void uemis_add_string(char *buffer, char **text)
 {
-	if (!buffer || !*buffer)
+	/* do nothing if this is an empty buffer (Uemis sometimes returns a single
+	 * space for empty buffers) */
+	if (!buffer || !*buffer || (*buffer == ' ' && *(buffer + 1) == '\0'))
 		return;
 	if (!*text) {
 		*text = strdup(buffer);
