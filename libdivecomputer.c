@@ -270,6 +270,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			   value.deco.type == DC_DECO_DEEPSTOP) {
 			stopdepth = value.deco.depth * 1000.0 + 0.5;
 			stoptime = value.deco.time;
+			ndl = 0;
 		}
 #endif
 	default:
