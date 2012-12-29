@@ -388,10 +388,27 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	cairo_line_to(gc->cr, x-9, y+4);
 	cairo_stroke(gc->cr);
 	/* we display the event on screen - so translate */
-	if (event->value)
-		snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
-	else
+	if (event->value) {
+		if (event->name && !strcmp(event->name, "gaschange")) {
+			unsigned int he = event->value >> 16;
+			unsigned int o2 = event->value & 0xffff;
+			if (he) {
+				snprintf(buffer, sizeof(buffer), "%s: (%d/%d)",
+					_(event->name), o2, he);
+			} else {
+				if (o2 == 21)
+					snprintf(buffer, sizeof(buffer), "%s: %s",
+						_(event->name), _("air"));
+				else
+					snprintf(buffer, sizeof(buffer), "%s: %d%% %s",
+						_(event->name), o2, _("O" UTF8_SUBSCRIPT_2));
+			}
+		} else {
+			snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
+		}
+	} else {
 		snprintf(buffer, sizeof(buffer), "%s", _(event->name));
+	}
 	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
 
