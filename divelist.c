@@ -1199,12 +1199,19 @@ static void autogroup_dives(void)
 #endif
 }
 
+static void clear_trip_indexes(void)
+{
+	dive_trip_t *trip;
+
+	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
+		trip->index = 0;
+}
+
 static void fill_dive_list(void)
 {
-	int i;
-	GtkTreeIter iter, parent_iter, *parent_ptr = NULL;
+	int i, trip_index = 0;
+	GtkTreeIter iter, parent_iter, lookup, *parent_ptr = NULL;
 	GtkTreeStore *liststore, *treestore;
-	dive_trip_t *last_trip = NULL;
 
 	/* Do we need to create any dive groups automatically? */
 	if (autogroup)
@@ -1213,27 +1220,36 @@ static void fill_dive_list(void)
 	treestore = TREESTORE(dive_list);
 	liststore = LISTSTORE(dive_list);
 
+	clear_trip_indexes();
+
 	i = dive_table.nr;
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
 		dive_trip_t *trip = dive->divetrip;
 
-		if (trip != last_trip) {
-			last_trip = trip;
-			if (trip) {
-				/* create trip entry */
-				gtk_tree_store_append(treestore, &parent_iter, NULL);
-				parent_ptr = &parent_iter;
-				/* a duration of 0 (and negative index) identifies a group */
-				gtk_tree_store_set(treestore, parent_ptr,
-						DIVE_INDEX, -1,
-						DIVE_DATE, trip->when,
-						DIVE_LOCATION, trip->location,
-						DIVE_DURATION, 0,
-						-1);
-			} else {
-				parent_ptr = NULL;
-			}
+		if (!trip) {
+			parent_ptr = NULL;
+		} else if (!trip->index) {
+			trip->index = ++trip_index;
+
+			/* Create new trip entry */
+			gtk_tree_store_append(treestore, &parent_iter, NULL);
+			parent_ptr = &parent_iter;
+
+			/* a duration of 0 (and negative index) identifies a group */
+			gtk_tree_store_set(treestore, parent_ptr,
+					DIVE_INDEX, -trip_index,
+					DIVE_DATE, trip->when,
+					DIVE_LOCATION, trip->location,
+					DIVE_DURATION, 0,
+					-1);
+		} else {
+			int index = trip->index;
+			GtkTreeModel *model = TREEMODEL(dive_list);
+			gtk_tree_model_get_iter_first(model, &lookup);
+			while (--index)
+				gtk_tree_model_iter_next(model, &lookup);
+			parent_ptr = &lookup;
 		}
 
 		/* store dive */

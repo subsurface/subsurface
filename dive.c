@@ -1209,6 +1209,10 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 {
 	int fuzz, match;
 
+	/* Don't try to merge dives in different trips */
+	if (a->divetrip && b->divetrip && a->divetrip != b->divetrip)
+		return 0;
+
 	/*
 	 * Do some basic sanity testing of the values we
 	 * have filled in during 'fixup_dive()'

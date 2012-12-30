@@ -374,17 +374,6 @@ static void show_date(FILE *f, timestamp_t when)
 		tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
-static void save_trip(FILE *f, dive_trip_t *trip)
-{
-	fprintf(f, "<trip");
-	show_date(f, trip->when);
-	if (trip->location)
-		show_utf8(f, trip->location, " location=\'","\'", 1);
-	fprintf(f, ">\n");
-	if (trip->notes)
-		show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
-}
-
 static void save_samples(FILE *f, int nr, struct sample *s)
 {
 	static const struct sample empty_sample;
@@ -445,6 +434,33 @@ static void save_dive(FILE *f, struct dive *dive)
 	fprintf(f, "</dive>\n");
 }
 
+static void save_trip(FILE *f, dive_trip_t *trip)
+{
+	int i;
+	struct dive *dive;
+
+	fprintf(f, "<trip");
+	show_date(f, trip->when);
+	if (trip->location)
+		show_utf8(f, trip->location, " location=\'","\'", 1);
+	fprintf(f, ">\n");
+	if (trip->notes)
+		show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
+
+	/*
+	 * Incredibly cheesy: we want to save the dives sorted, and they
+	 * are sorted in the dive array.. So instead of using the dive
+	 * list in the trip, we just traverse the global dive array and
+	 * check the divetrip pointer..
+	 */
+	for_each_dive(i, dive) {
+		if (dive->divetrip == trip)
+			save_dive(f, dive);
+	}
+
+	fprintf(f, "</trip>\n");
+}
+
 static char *add_dc_to_string(char *dc_xml, struct divecomputer *dc)
 {
 	char *pattern, *tmp;
@@ -483,7 +499,7 @@ void save_dives(const char *filename)
 {
 	int i;
 	struct dive *dive;
-	dive_trip_t *trip = NULL;
+	dive_trip_t *trip;
 	char *dc_xml = strdup("");
 
 	FILE *f = g_fopen(filename, "w");
@@ -504,22 +520,28 @@ void save_dives(const char *filename)
 	}
 	fprintf(f, dc_xml);
 	fprintf(f, "</settings>\n<dives>\n");
+
+	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
+		trip->index = 0;
+
 	/* save the dives */
 	for_each_dive(i, dive) {
-		dive_trip_t *thistrip = dive->divetrip;
-		if (trip != thistrip) {
-			/* Close the old trip? */
-			if (trip)
-				fprintf(f, "</trip>\n");
-			/* Open the new one */
-			if (thistrip)
-				save_trip(f, thistrip);
-			trip = thistrip;
+		trip = dive->divetrip;
+
+		/* Bare dive without a trip? */
+		if (!trip) {
+			save_dive(f, dive);
+			continue;
 		}
-		save_dive(f, get_dive(i));
+
+		/* Have we already seen this trip (and thus saved this dive?) */
+		if (trip->index)
+			continue;
+
+		/* We haven't seen this trip before - save it and all dives */
+		trip->index = 1;
+		save_trip(f, trip);
 	}
-	if (trip)
-		fprintf(f, "</trip>\n");
 	fprintf(f, "</dives>\n</divelog>\n");
 	fclose(f);
 }

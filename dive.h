@@ -287,6 +287,7 @@ typedef struct dive_trip {
 	char *notes;
 	struct dive *dives;
 	int nrdives;
+	int index;
 	unsigned expanded:1, selected:1, autogen:1;
 	struct dive_trip *next;
 } dive_trip_t;
