@@ -31,7 +31,7 @@ static struct plot_data *last_pi_entry = NULL;
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
 struct plot_data {
-	unsigned int same_cylinder:1;
+	unsigned int same_cylinder:1, in_deco:1;
 	unsigned int cylinderindex;
 	int sec;
 	/* pressure[0] is sensor pressure
@@ -1531,6 +1531,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	int cylinderindex = -1;
 	int lastdepth, lastindex;
 	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth, cns;
+	gboolean in_deco;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
@@ -1578,6 +1579,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			continue;
 		}
 		entry = pi->entry + i + pi_idx;
+		in_deco = sample->in_deco;
 		ndl = sample->ndl.seconds;
 		pi->has_ndl |= ndl;
 		stopdepth = sample->stopdepth.mm;
@@ -1606,9 +1608,11 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->ndl = ndl;
 			entry->cns = cns;
 			entry->po2 = po2;
+			entry->in_deco = in_deco;
 			(entry + 1)->stopdepth = stopdepth;
 			(entry + 1)->stoptime = stoptime;
 			(entry + 1)->ndl = ndl;
+			(entry + 1)->in_deco = in_deco;
 			(entry + 1)->cns = cns;
 			(entry + 1)->po2 = po2;
 			pi_idx += 2;
@@ -1624,6 +1628,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->stopdepth = stopdepth;
 			entry->stoptime = stoptime;
 			entry->ndl = ndl;
+			entry->in_deco = in_deco;
 			entry->cns = cns;
 			entry->po2 = po2;
 			pi_idx++;
@@ -1636,6 +1641,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		entry->stopdepth = stopdepth;
 		entry->stoptime = stoptime;
 		entry->ndl = ndl;
+		entry->in_deco = in_deco;
 		entry->cns = cns;
 		entry->po2 = po2;
 		entry->cylinderindex = sample->cylinderindex;
@@ -1965,6 +1971,10 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 				snprintf(buf, bufsize, "%s\nDeco:unkn time @ %.0f %s", buf2,
 					depthvalue, depth_unit);
 		}
+	} else if (entry->in_deco) {
+		/* this means we had in_deco set but don't have a stop depth */
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nIn deco", buf2);
 	} else if (has_ndl) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\nNDL:%umin", buf2, entry->ndl / 60);

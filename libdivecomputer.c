@@ -23,6 +23,7 @@
 static const char *progress_bar_text = "";
 static double progress_bar_fraction = 0.0;
 static int stoptime, stopdepth, ndl, po2, cns;
+static gboolean in_deco;
 
 static GError *error(const char *fmt, ...)
 {
@@ -162,27 +163,6 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	if (value.event.type == SAMPLE_EVENT_SURFACE)
 		return;
 
-	/* an early development version of libdivecomputer 0.3 provided us with deco / ndl information for
-	 * a couple of dive computers through events; this got fixed later in the release cycle but for a
-	 * short while I'll keep the code around that converts the events into our preferred sample format here */
-#if 0
-	if (value.event.type == SAMPLE_EVENT_DECOSTOP) {
-		/* packed value - time in seconds in high 16 bit
-		 * depth in m(!) in low 16 bits */
-		stoptime = value.event.value >> 16;
-		stopdepth = (value.event.value & 0xFFFF) * 1000;
-		ndl = 0;
-	}
-	if (value.event.type == SAMPLE_EVENT_NDL) {
-		stopdepth = 0;
-		stoptime = 0;
-		ndl = value.event.value;
-	}
-	if (value.event.type == SAMPLE_EVENT_DECOSTOP || value.event.type == SAMPLE_EVENT_NDL)
-		/* don't create a Subsurface event for these */
-		return;
-#endif
-
 	/*
 	 * Other evens might be more interesting, but for now we just print them out.
 	 */
@@ -214,6 +194,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	switch (type) {
 	case DC_SAMPLE_TIME:
 		if (sample) {
+			sample->in_deco = in_deco;
 			sample->ndl.seconds = ndl;
 			sample->stoptime.seconds = stoptime;
 			sample->stopdepth.mm = stopdepth;
@@ -266,12 +247,18 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		break;
 	case DC_SAMPLE_DECO:
 		if (value.deco.type == DC_DECO_NDL) {
-			ndl = value.deco.time;
+			sample->ndl.seconds = ndl = value.deco.time;
+			sample->in_deco = in_deco = FALSE;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
-			stopdepth = value.deco.depth * 1000.0 + 0.5;
-			stoptime = value.deco.time;
+			sample->in_deco = in_deco = TRUE;
+			sample->stopdepth.mm = stopdepth = value.deco.depth * 1000.0 + 0.5;
+			sample->stoptime.seconds = stoptime = value.deco.time;
 			ndl = 0;
+		} else if (value.deco.type == DC_DECO_SAFETYSTOP) {
+			sample->in_deco = in_deco = FALSE;
+			sample->stopdepth.mm = stopdepth = value.deco.depth * 1000.0 + 0.5;
+			sample->stoptime.seconds = stoptime = value.deco.time;
 		}
 #endif
 	default:
@@ -408,6 +395,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	/* reset the deco / ndl data */
 	ndl = stoptime = stopdepth = 0;
+	in_deco = FALSE;
 
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {

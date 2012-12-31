@@ -721,6 +721,8 @@ add_sample_b:
 			sample.stoptime = as->stoptime;
 		if (as->stopdepth.mm)
 			sample.stopdepth = as->stopdepth;
+		if (as->in_deco)
+			sample.in_deco = TRUE;
 
 		merge_one_sample(&sample, at, res);
 

@@ -330,6 +330,8 @@ static void save_sample(FILE *f, struct sample *sample, const struct sample *pre
 	/* the deco/ndl values are stored whenever they change */
 	if (sample->ndl.seconds != prev->ndl.seconds)
 		fprintf(f, " ndl='%u:%02u min'", FRACTION(sample->ndl.seconds, 60));
+	if (sample->in_deco != prev->in_deco)
+		fprintf(f, " in_deco='%d'", sample->in_deco ? 1 : 0);
 	if (sample->stoptime.seconds != prev->stoptime.seconds)
 		fprintf(f, " stoptime='%u:%02u min'", FRACTION(sample->stoptime.seconds, 60));
 	if (sample->stopdepth.mm != prev->stopdepth.mm)

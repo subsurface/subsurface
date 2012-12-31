@@ -154,7 +154,7 @@ struct {
 static gboolean in_settings = FALSE;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
-static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2;
+static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
 
 static enum import_source {
 	UNKNOWN,
@@ -654,6 +654,7 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
 	int len = strlen(name);
+	int in_deco;
 
 	start_match("sample", name, buf);
 	if (MATCH(".sample.pressure", pressure, &sample->cylinderpressure))
@@ -674,6 +675,10 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH(".sample.ndl", sampletime, &sample->ndl))
 		return;
+	if (MATCH(".sample.in_deco", get_index, &in_deco)) {
+		sample->in_deco = (in_deco == 1);
+		return;
+	}
 	if (MATCH(".sample.stoptime", sampletime, &sample->stoptime))
 		return;
 	if (MATCH(".sample.stopdepth", depth, &sample->stopdepth))
@@ -999,7 +1004,7 @@ static gboolean is_dive(void)
 
 static void reset_dc_info(struct divecomputer *dc)
 {
-	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = 0;
+	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = lastindeco = 0;
 }
 
 static void reset_dc_settings(void)
@@ -1119,6 +1124,7 @@ static void sample_start(void)
 {
 	cur_sample = prepare_sample(get_dc());
 	cur_sample->ndl.seconds = lastndl;
+	cur_sample->in_deco = lastindeco;
 	cur_sample->stoptime.seconds = laststoptime;
 	cur_sample->stopdepth.mm = laststopdepth;
 	cur_sample->cns = lastcns;
@@ -1132,6 +1138,7 @@ static void sample_end(void)
 
 	finish_sample(get_dc());
 	lastndl = cur_sample->ndl.seconds;
+	lastindeco = cur_sample->in_deco;
 	laststoptime = cur_sample->stoptime.seconds;
 	laststopdepth = cur_sample->stopdepth.mm;
 	lastcns = cur_sample->cns;
