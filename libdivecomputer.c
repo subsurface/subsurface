@@ -247,7 +247,8 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		printf("   <bearing>%u</bearing>\n", value.bearing);
 		break;
 	case DC_SAMPLE_VENDOR:
-		printf("   <vendor type=\"%u\" size=\"%u\">", value.vendor.type, value.vendor.size);
+		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
+			value.vendor.type, value.vendor.size);
 		for (i = 0; i < value.vendor.size; ++i)
 			printf("%02X", ((unsigned char *) value.vendor.data)[i]);
 		printf("</vendor>\n");
