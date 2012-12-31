@@ -1644,7 +1644,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		entry->in_deco = in_deco;
 		entry->cns = cns;
 		entry->po2 = po2;
-		entry->cylinderindex = sample->cylinderindex;
+		/* FIXME! sensor index -> cylinder index translation! */
+		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
 

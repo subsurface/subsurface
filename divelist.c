@@ -715,6 +715,24 @@ static void cns_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time)
+{
+	int o2permille = dive->cylinder[0].gasmix.o2.permille;
+	struct event *event = dc->events;
+
+	if (!o2permille)
+		o2permille = AIR_PERMILLE;
+
+	for (event = dc->events; event; event = event->next) {
+		if (event->time.seconds > time.seconds)
+			break;
+		if (strcmp(event->name, "gaschange"))
+			continue;
+		o2permille = 10*(event->value & 0xffff);
+	}
+	return o2permille;
+}
+
 /* calculate OTU for a dive */
 static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 {
@@ -730,9 +748,7 @@ static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 		if (sample->po2) {
 			po2 = sample->po2;
 		} else {
-			int o2 = dive->cylinder[sample->cylinderindex].gasmix.o2.permille;
-			if (!o2)
-				o2 = AIR_PERMILLE;
+			int o2 = active_o2(dive, dc, sample->time);
 			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive) / 1000.0;
 		}
 		if (po2 >= 0.5)

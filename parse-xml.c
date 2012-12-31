@@ -155,6 +155,7 @@ static gboolean in_settings = FALSE;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
+static int lastcylinderindex, lastsensor;
 
 static enum import_source {
 	UNKNOWN,
@@ -650,6 +651,39 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 	nonmatch("divecomputer", name, buf);
 }
 
+void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+{
+	/* The gas switch event format is insane. It will be fixed, I think */
+	int o2 = dive->cylinder[idx].gasmix.o2.permille;
+	int he = dive->cylinder[idx].gasmix.he.permille;
+	int value;
+
+	if (!o2)
+		o2 = AIR_PERMILLE;
+	o2 = (o2+5) / 10;
+	he = (he+5) / 10;
+	value = o2 + (he << 16);
+
+	add_event(dc, seconds, 11, 0, value, "gaschange");
+}
+
+static void get_cylinderindex(char *buffer, void *_i)
+{
+	int *i = _i;
+	*i = atoi(buffer);
+	if (lastcylinderindex != *i) {
+		add_gas_switch_event(cur_dive, cur_dc, cur_sample->time.seconds, *i);
+		lastcylinderindex = *i;
+	}
+}
+
+static void get_sensor(char *buffer, void *_i)
+{
+	int *i = _i;
+	*i = atoi(buffer);
+	lastsensor = *i;
+}
+
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
@@ -661,7 +695,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH(".sample.cylpress", pressure, &sample->cylinderpressure))
 		return;
-	if (MATCH(".sample.cylinderindex", get_index, &sample->cylinderindex))
+	if (MATCH(".sample.cylinderindex", get_cylinderindex, &sample->sensor))
+		return;
+	if (MATCH(".sample.sensor", get_sensor, &sample->sensor))
 		return;
 	if (MATCH(".sample.depth", depth, &sample->depth))
 		return;
@@ -1005,6 +1041,7 @@ static gboolean is_dive(void)
 static void reset_dc_info(struct divecomputer *dc)
 {
 	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = lastindeco = 0;
+	lastsensor = lastcylinderindex = 0;
 }
 
 static void reset_dc_settings(void)
@@ -1129,6 +1166,7 @@ static void sample_start(void)
 	cur_sample->stopdepth.mm = laststopdepth;
 	cur_sample->cns = lastcns;
 	cur_sample->po2 = lastpo2;
+	cur_sample->sensor = lastsensor;
 }
 
 static void sample_end(void)

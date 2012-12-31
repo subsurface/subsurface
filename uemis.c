@@ -291,6 +291,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	struct dive *dive = datap;
 	struct divecomputer *dc = &dive->dc;
 	int template, gasoffset;
+	int active = 0;
 
 	datalen = uemis_convert_base64(base64, &data);
 
@@ -345,11 +346,15 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		 * duration in the header is a) in minutes and b) up to 3 minutes short */
 		if (u_sample->dive_time > dive->duration.seconds + 180)
 			break;
+		if (u_sample->active_tank != active) {
+			active = u_sample->active_tank;
+			add_gas_switch_event(dive, dc, u_sample->dive_time, active);
+		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = u_sample->dive_time;
 		sample->depth.mm = rel_mbar_to_depth(u_sample->water_pressure, dive);
 		sample->temperature.mkelvin = (u_sample->dive_temperature * 100) + 273150;
-		sample->cylinderindex = u_sample->active_tank;
+		sample->sensor = active;
 		sample->cylinderpressure.mbar =
 			(u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
 		sample->cns = u_sample->cns;

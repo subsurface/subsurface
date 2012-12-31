@@ -319,27 +319,50 @@ static void show_index(FILE *f, int value, const char *pre, const char *post)
 		fprintf(f, " %s%d%s", pre, value, post);
 }
 
-static void save_sample(FILE *f, struct sample *sample, const struct sample *prev)
+static void save_sample(FILE *f, struct sample *sample, struct sample *old)
 {
 	fprintf(f, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds,60));
 	show_milli(f, " depth='", sample->depth.mm, " m", "'");
 	show_temperature(f, sample->temperature, " temp='", "'");
 	show_pressure(f, sample->cylinderpressure, " pressure='", "'");
-	if (sample->cylinderindex)
-		fprintf(f, " cylinderindex='%d'", sample->cylinderindex);
+
+	/*
+	 * We only show sensor information for samples with pressure, and only if it
+	 * changed from the previous sensor we showed.
+	 */
+	if (sample->cylinderpressure.mbar && sample->sensor != old->sensor) {
+		fprintf(f, " sensor='%d'", sample->sensor);
+		old->sensor = sample->sensor;
+	}
+
 	/* the deco/ndl values are stored whenever they change */
-	if (sample->ndl.seconds != prev->ndl.seconds)
+	if (sample->ndl.seconds != old->ndl.seconds) {
 		fprintf(f, " ndl='%u:%02u min'", FRACTION(sample->ndl.seconds, 60));
-	if (sample->in_deco != prev->in_deco)
+		old->ndl = sample->ndl;
+	}
+	if (sample->in_deco != old->in_deco) {
 		fprintf(f, " in_deco='%d'", sample->in_deco ? 1 : 0);
-	if (sample->stoptime.seconds != prev->stoptime.seconds)
+		old->in_deco = sample->in_deco;
+	}
+	if (sample->stoptime.seconds != old->stoptime.seconds) {
 		fprintf(f, " stoptime='%u:%02u min'", FRACTION(sample->stoptime.seconds, 60));
-	if (sample->stopdepth.mm != prev->stopdepth.mm)
+		old->stoptime = sample->stoptime;
+	}
+
+	if (sample->stopdepth.mm != old->stopdepth.mm) {
 		show_milli(f, " stopdepth='", sample->stopdepth.mm, " m", "'");
-	if (sample->cns != prev->cns)
+		old->stopdepth = sample->stopdepth;
+	}
+
+	if (sample->cns != old->cns) {
 		fprintf(f, " cns='%u%%'", sample->cns);
-	if (sample->po2 != prev->po2)
+		old->cns = sample->cns;
+	}
+
+	if (sample->po2 != old->po2) {
 		fprintf(f, " po2='%u.%2u bar'", FRACTION(sample->po2, 1000));
+		old->po2 = sample->po2;
+	}
 	fprintf(f, " />\n");
 }
 
@@ -376,12 +399,10 @@ static void show_date(FILE *f, timestamp_t when)
 
 static void save_samples(FILE *f, int nr, struct sample *s)
 {
-	static const struct sample empty_sample;
-	const struct sample *prev = &empty_sample;
+	struct sample dummy = { };
 
 	while (--nr >= 0) {
-		save_sample(f, s, prev);
-		prev = s;
+		save_sample(f, s, &dummy);
 		s++;
 	}
 }

@@ -237,7 +237,9 @@ static void fixup_pressure(struct dive *dive, struct sample *sample)
 	pressure = sample->cylinderpressure.mbar;
 	if (!pressure)
 		return;
-	index = sample->cylinderindex;
+	index = sample->sensor;
+
+	/* FIXME! sensor -> cylinder mapping? */
 	if (index >= MAX_CYLINDERS)
 		return;
 	cyl = dive->cylinder + index;
@@ -427,7 +429,7 @@ struct dive *fixup_dive(struct dive *dive)
 		int depth = sample->depth.mm;
 		int temp = sample->temperature.mkelvin;
 		int pressure = sample->cylinderpressure.mbar;
-		int index = sample->cylinderindex;
+		int index = sample->sensor;
 
 		if (index == lastindex) {
 			/* Remove duplicate redundant pressure information */
@@ -502,7 +504,7 @@ struct dive *fixup_dive(struct dive *dive)
 		if (abs(pressure_delta[j]) != INT_MAX) {
 			cylinder_t *cyl = dive->cylinder + j;
 			for (i = 0; i < dc->samples; i++)
-				if (dc->sample[i].cylinderindex == j)
+				if (dc->sample[i].sensor == j)
 					dc->sample[i].cylinderpressure.mbar = 0;
 			if (! cyl->start.mbar)
 				cyl->start.mbar = cyl->sample_start.mbar;
@@ -709,8 +711,8 @@ add_sample_b:
 			sample.temperature = as->temperature;
 		if (as->cylinderpressure.mbar)
 			sample.cylinderpressure = as->cylinderpressure;
-		if (as->cylinderindex)
-			sample.cylinderindex = as->cylinderindex;
+		if (as->sensor)
+			sample.sensor = as->sensor;
 		if (as->cns)
 			sample.cns = as->cns;
 		if (as->po2)
@@ -1291,7 +1293,7 @@ static int same_sample(struct sample *a, struct sample *b)
 		return 0;
 	if (a->cylinderpressure.mbar != b->cylinderpressure.mbar)
 		return 0;
-	return a->cylinderindex == b->cylinderindex;
+	return a->sensor == b->sensor;
 }
 
 static int same_dc(struct divecomputer *a, struct divecomputer *b)

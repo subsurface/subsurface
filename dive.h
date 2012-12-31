@@ -226,7 +226,7 @@ struct sample {
 	depth_t depth;
 	temperature_t temperature;
 	pressure_t cylinderpressure;
-	int cylinderindex;
+	int sensor;		/* Cylinder pressure sensor index */
 	duration_t ndl;
 	duration_t stoptime;
 	depth_t stopdepth;
@@ -503,6 +503,7 @@ extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer
 
 extern void renumber_dives(int nr);
 
+extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
 
 /* UI related protopypes */

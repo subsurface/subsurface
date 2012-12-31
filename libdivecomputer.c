@@ -209,7 +209,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->depth.mm = value.depth * 1000 + 0.5;
 		break;
 	case DC_SAMPLE_PRESSURE:
-		sample->cylinderindex = value.pressure.tank;
+		sample->sensor = value.pressure.tank;
 		sample->cylinderpressure.mbar = value.pressure.value * 1000 + 0.5;
 		break;
 	case DC_SAMPLE_TEMPERATURE:
