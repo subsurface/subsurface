@@ -44,6 +44,7 @@ struct dcnicknamelist {
 	const char *model;
 	uint32_t deviceid;
 	struct dcnicknamelist *next;
+	gboolean saved;
 };
 static struct dcnicknamelist *nicknamelist;
 char *nicknamestring;
@@ -2076,6 +2077,29 @@ const char *get_dc_nickname(const char *model, uint32_t deviceid)
 			return known->model;
 	}
 	return NULL;
+}
+
+gboolean dc_was_saved(struct divecomputer *dc)
+{
+	struct dcnicknamelist *nn_entry = get_dc_nicknameentry(dc->model, dc->deviceid);
+	return nn_entry && nn_entry->saved;
+}
+
+void mark_dc_saved(struct divecomputer *dc)
+{
+	struct dcnicknamelist *nn_entry = get_dc_nicknameentry(dc->model, dc->deviceid);
+	if (nn_entry)
+		nn_entry->saved = TRUE;
+}
+
+void clear_dc_saved_status()
+{
+	struct dcnicknamelist *nn_entry = nicknamelist;
+
+	while (nn_entry) {
+		nn_entry->saved = FALSE;
+		nn_entry = nn_entry->next;
+	}
 }
 
 /* do we have a DIFFERENT divecomputer of the same model? */
