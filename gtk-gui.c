@@ -5,6 +5,7 @@
  */
 #include <libintl.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -1130,6 +1131,21 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 	repaint_dive();
 }
 
+static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *divelist)
+{
+	if (event->type != GDK_KEY_PRESS)
+		return FALSE;
+	switch (event->keyval) {
+	case GDK_KEY_Up:
+		select_prev_dive();
+		return TRUE;
+	case GDK_KEY_Down:
+		select_next_dive();
+		return TRUE;
+	}
+	return FALSE;
+}
+
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -1324,6 +1340,9 @@ void init_ui(int *argcp, char ***argvp)
 	/* Frame for total dive statistics */
 	nb_page = total_stats_widget();
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new(_("Stats")));
+
+	/* handle some keys globally (to deal with gtk focus issues) */
+	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (on_key_press), dive_list);
 
 	gtk_widget_set_app_paintable(win, TRUE);
 	gtk_widget_show_all(win);
