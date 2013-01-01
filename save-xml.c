@@ -522,6 +522,9 @@ void save_dives(const char *filename)
 	update_dive(current_dive);
 
 	fprintf(f, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
+
+	/* save the dive computer nicknames, if any */
+	clear_dc_saved_status();
 	for_each_dive(i, dive) {
 		struct divecomputer *dc = &dive->dc;
 		while (dc) {
