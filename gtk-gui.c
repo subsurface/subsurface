@@ -2229,6 +2229,53 @@ bail:
 
 }
 
+void remove_dc(const char *model, uint32_t deviceid, gboolean change_conf)
+{
+	struct dcnicknamelist *nn_entry, **prevp = &nicknamelist;
+	char pattern[160];
+	char *nnstring, *brace;
+
+	if (!deviceid || !model || !*model)
+		return;
+	nn_entry = get_dc_nicknameentry(model, deviceid);
+	if (!nn_entry)
+		return;
+	while (prevp && *prevp != nn_entry)
+		prevp = &(*prevp)->next;
+	if (!prevp)
+		/* that should be impossible */
+		goto bail;
+	(*prevp) = nn_entry->next;
+
+	/* now remove it from the config string */
+	snprintf(pattern, sizeof(pattern), "{%08x,%s", deviceid, model);
+	nnstring = strstr(nicknamestring, pattern);
+	if (!nnstring)
+		goto bail;
+	brace = strchr(nnstring, '}');
+	if (!brace)
+		goto bail;
+	brace++;
+	memmove(nnstring, brace, strlen(brace) + 1);
+
+	if (change_conf)
+		subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
+
+#if defined(NICKNAME_DEBUG)
+	struct dcnicknamelist *nn_entry = nicknamelist;
+	fprintf(debugfile, "nicknames:\n");
+	while (nn_entry) {
+		fprintf(debugfile, "id %8x model %s nickname %s\n", nn_entry->deviceid, nn_entry->model,
+			nn_entry->nickname && *nn_entry->nickname ? nn_entry->nickname : "(none)");
+		nn_entry = nn_entry->next;
+	}
+	fprintf(debugfile, "----------\n");
+#endif
+
+bail:
+	free(nn_entry);
+}
+
 void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gboolean change_conf)
 {
 	/* we don't want to record entries with a deviceid of 0; those are from earlier
@@ -2254,8 +2301,6 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 			snprintf(buffer, sizeof(buffer), "{%08x,%s}", deviceid, model);
 		nicknamestring = realloc(nicknamestring, strlen(nicknamestring) + strlen(buffer) + 1);
 		strcat(nicknamestring, buffer);
-		if (change_conf)
-			subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
 	} else {
 		/* modify existing entry */
 		struct dcnicknamelist *nn_entry = get_dc_nicknameentry(model, deviceid);
@@ -2264,6 +2309,9 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 		nn_entry->nickname = cleanedup_nickname(nickname, 80);
 		replace_nickname_nicknamestring(model, deviceid, nickname);
 	}
+	if (change_conf)
+		subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
+
 #if defined(NICKNAME_DEBUG)
 	struct dcnicknamelist *nn_entry = nicknamelist;
 	fprintf(debugfile, "nicknames:\n");
