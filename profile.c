@@ -1800,11 +1800,24 @@ static void plot_set_scale(scale_mode_t scale)
 	}
 }
 
+/* make sure you pass this the FIRST dc - it just walks the list */
+static int nr_dcs(struct divecomputer *main)
+{
+	int i = 1;
+	struct divecomputer *dc = main;
+
+	while ((dc = dc->next) != NULL)
+		i++;
+	return i;
+}
+
 static struct divecomputer *select_dc(struct divecomputer *main)
 {
 	int i = dc_number;
 	struct divecomputer *dc = main;
 
+	while (i < 0)
+		i += nr_dcs(main);
 	do {
 		if (--i < 0)
 			return dc;
