@@ -2627,3 +2627,102 @@ void remove_autogen_trips()
 			remove_dive_from_trip(dive);
 	}
 }
+
+struct iteridx {
+	int idx;
+	GtkTreeIter *iter;
+};
+
+static gboolean iter_has_idx(GtkTreeModel *model, GtkTreePath *path,
+			     GtkTreeIter *iter, gpointer _data)
+{
+	struct iteridx *iteridx = _data;
+	int idx;
+	/* Get the dive number */
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
+	if (idx == iteridx->idx) {
+		iteridx->iter = gtk_tree_iter_copy(iter);
+		return TRUE; /* end foreach */
+	}
+	return FALSE;
+}
+
+static GtkTreeIter *get_iter_from_idx(int idx)
+{
+	struct iteridx iteridx = {idx, };
+	gtk_tree_model_foreach(MODEL(dive_list), iter_has_idx, &iteridx);
+	return iteridx.iter;
+}
+
+void select_next_dive(void)
+{
+	GtkTreeIter *nextiter;
+	GtkTreeIter *iter = get_iter_from_idx(selected_dive);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+	GtkTreePath *treepath;
+	int idx;
+
+	if (!iter)
+		return;
+	nextiter = gtk_tree_iter_copy(iter);
+	if (!gtk_tree_model_iter_next(MODEL(dive_list), nextiter)) {
+		if (!gtk_tree_model_iter_parent(MODEL(dive_list), nextiter, iter))
+			/* we're at the last top level node */
+			return;
+		if (!gtk_tree_model_iter_next(MODEL(dive_list), nextiter))
+			/* last trip */
+			return;
+		gtk_tree_model_get(MODEL(dive_list), nextiter, DIVE_INDEX, &idx, -1);
+		if (idx < 0) {
+			/* need the first child */
+			GtkTreeIter *parent = gtk_tree_iter_copy(nextiter);
+			if (! gtk_tree_model_iter_children(MODEL(dive_list), nextiter, parent))
+				return;
+		}
+	}
+	treepath = gtk_tree_model_get_path(MODEL(dive_list), nextiter);
+	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_selection_select_iter(selection, nextiter);
+	gtk_tree_selection_unselect_iter(selection, iter);
+	gtk_tree_path_free(treepath);
+}
+
+void select_prev_dive(void)
+{
+	GtkTreeIter previter;
+	GtkTreeIter *iter = get_iter_from_idx(selected_dive);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+	GtkTreePath *treepath;
+	int idx;
+
+	if (!iter)
+		return;
+	treepath = gtk_tree_model_get_path(MODEL(dive_list), iter);
+	if (!gtk_tree_path_prev(treepath)) {
+		if (!gtk_tree_model_iter_parent(MODEL(dive_list), &previter, iter))
+			/* we're at the last top level node */
+			return;
+		treepath = gtk_tree_model_get_path(MODEL(dive_list), &previter);
+		if (!gtk_tree_path_prev(treepath))
+			/* first trip */
+			return;
+		if (!gtk_tree_model_get_iter(MODEL(dive_list), &previter, treepath))
+			return;
+		gtk_tree_model_get(MODEL(dive_list), &previter, DIVE_INDEX, &idx, -1);
+		if (idx < 0) {
+			/* need the last child */
+			GtkTreeIter *parent = gtk_tree_iter_copy(&previter);
+			if (! gtk_tree_model_iter_nth_child(MODEL(dive_list), &previter, parent,
+					gtk_tree_model_iter_n_children(MODEL(dive_list), parent) - 1))
+				return;
+		}
+		treepath = gtk_tree_model_get_path(MODEL(dive_list), &previter);
+	} else {
+		if (!gtk_tree_model_get_iter(MODEL(dive_list), &previter, treepath))
+			return;
+	}
+	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_selection_select_iter(selection, &previter);
+	gtk_tree_selection_unselect_iter(selection, iter);
+	gtk_tree_path_free(treepath);
+}
