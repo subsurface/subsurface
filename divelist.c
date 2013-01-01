@@ -2682,6 +2682,7 @@ void select_next_dive(void)
 	}
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), nextiter);
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), treepath, NULL, FALSE, 0, 0);
 	gtk_tree_selection_select_iter(selection, nextiter);
 	gtk_tree_selection_unselect_iter(selection, iter);
 	gtk_tree_path_free(treepath);
@@ -2722,6 +2723,7 @@ void select_prev_dive(void)
 			return;
 	}
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), treepath, NULL, FALSE, 0, 0);
 	gtk_tree_selection_select_iter(selection, &previter);
 	gtk_tree_selection_unselect_iter(selection, iter);
 	gtk_tree_path_free(treepath);
