@@ -5,7 +5,6 @@
  */
 #include <libintl.h>
 #include <glib/gi18n.h>
-#include <gdk/gdkkeysyms.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -1151,16 +1150,16 @@ static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *diveli
 	if (event->type != GDK_KEY_PRESS)
 		return FALSE;
 	switch (event->keyval) {
-	case GDK_KEY_Up:
+	case GDK_Up:
 		select_prev_dive();
 		return TRUE;
-	case GDK_KEY_Down:
+	case GDK_Down:
 		select_next_dive();
 		return TRUE;
-	case GDK_KEY_Left:
+	case GDK_Left:
 		prev_dc(NULL, NULL);
 		return TRUE;
-	case GDK_KEY_Right:
+	case GDK_Right:
 		next_dc(NULL, NULL);
 		return TRUE;
 	}

@@ -3,6 +3,10 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include <gdk/gdkkeysyms.h>
+#if GTK_CHECK_VERSION(2,22,0)
+#include <gdk/gdkkeysyms-compat.h>
+#endif
 
 extern GtkWidget *main_window;
 
