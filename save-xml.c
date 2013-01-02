@@ -532,6 +532,8 @@ void save_dives(const char *filename)
 			dc = dc->next;
 		}
 	}
+	if (autogroup)
+		fprintf(f, "<autogroup state='1' />\n");
 	fprintf(f, "</settings>\n<dives>\n");
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)

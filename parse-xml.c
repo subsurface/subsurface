@@ -595,16 +595,29 @@ static void eventtime(char *buffer, void *_duration)
 		duration->seconds += cur_sample->time.seconds;
 }
 
+static void try_to_match_autogroup(const char *name, char *buf)
+{
+	int len = strlen(name);
+	int autogroupvalue;
+
+	start_match("autogroup", name, buf);
+	if (MATCH(".autogroup.state", get_index, &autogroupvalue)) {
+		set_autogroup(autogroupvalue);
+		return;
+	}
+	nonmatch("autogroup", name, buf);
+}
+
 static void try_to_fill_dc_settings(const char *name, char *buf)
 {
 	int len = strlen(name);
 
 	start_match("divecomputerid", name, buf);
-	if (MATCH(".model", utf8_string, &cur_settings.dc.model))
+	if (MATCH("divecomputerid.model", utf8_string, &cur_settings.dc.model))
 		return;
-	if (MATCH(".deviceid", hex_value, &cur_settings.dc.deviceid))
+	if (MATCH("divecomputerid.deviceid", hex_value, &cur_settings.dc.deviceid))
 		return;
-	if (MATCH(".nickname", utf8_string, &cur_settings.dc.nickname))
+	if (MATCH("divecomputerid.nickname", utf8_string, &cur_settings.dc.nickname))
 		return;
 
 	nonmatch("divecomputerid", name, buf);
@@ -1053,15 +1066,23 @@ static void reset_dc_settings(void)
 	cur_settings.dc.deviceid = 0;
 }
 
-static void dc_settings_start(void)
+static void settings_start(void)
 {
 	in_settings = TRUE;
+}
+
+static void settings_end(void)
+{
+	in_settings = FALSE;
+}
+
+static void dc_settings_start(void)
+{
 	reset_dc_settings();
 }
 
 static void dc_settings_end(void)
 {
-	in_settings = FALSE;
 	if (cur_settings.dc.model)
 		remember_dc(cur_settings.dc.model, cur_settings.dc.deviceid, cur_settings.dc.nickname, TRUE);
 	reset_dc_settings();
@@ -1218,6 +1239,7 @@ static void entry(const char *name, char *buf)
 {
 	if (in_settings) {
 		try_to_fill_dc_settings(name, buf);
+		try_to_match_autogroup(name, buf);
 		return;
 	}
 	if (cur_event.active) {
@@ -1341,6 +1363,7 @@ static struct nesting {
 	void (*start)(void), (*end)(void);
 } nesting[] = {
 	{ "divecomputerid", dc_settings_start, dc_settings_end },
+	{ "settings", settings_start, settings_end },
 	{ "dive", dive_start, dive_end },
 	{ "Dive", dive_start, dive_end },
 	{ "trip", trip_start, trip_end },

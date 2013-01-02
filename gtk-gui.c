@@ -57,6 +57,8 @@ static const char *default_dive_computer_device;
 static gboolean force_download;
 static gboolean prefer_downloaded;
 
+GtkActionGroup *action_group;
+
 struct units *get_output_units()
 {
 	return &prefs.output_units;
@@ -506,7 +508,6 @@ OPTIONCALLBACK(temperature_toggle, prefs.visible_cols.temperature)
 OPTIONCALLBACK(totalweight_toggle, prefs.visible_cols.totalweight)
 OPTIONCALLBACK(suit_toggle, prefs.visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, prefs.visible_cols.cylinder)
-OPTIONCALLBACK(autogroup_toggle, autogroup)
 OPTIONCALLBACK(po2_toggle, prefs.pp_graphs.po2)
 OPTIONCALLBACK(pn2_toggle, prefs.pp_graphs.pn2)
 OPTIONCALLBACK(phe_toggle, prefs.pp_graphs.phe)
@@ -674,11 +675,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	button = gtk_check_button_new_with_label(_("Automatically group dives in trips"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), autogroup);
-	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
-	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(autogroup_toggle), NULL);
-
 	frame = gtk_frame_new(_("Default XML Data File"));
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
 	box = gtk_hbox_new(FALSE, 6);
@@ -814,7 +810,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("MAXCNS", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.maxcns));
 
 		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
-		subsurface_set_conf("autogroup", PREF_BOOL, BOOL_TO_PTR(autogroup));
 
 		subsurface_set_conf("po2graph", PREF_BOOL, BOOL_TO_PTR(prefs.pp_graphs.po2));
 		subsurface_set_conf("pn2graph", PREF_BOOL, BOOL_TO_PTR(prefs.pp_graphs.pn2));
@@ -914,6 +909,17 @@ static void autogroup_cb(GtkWidget *w, gpointer data)
 	if (! autogroup)
 		remove_autogen_trips();
 	dive_list_update_dives();
+}
+
+void set_autogroup(gboolean value)
+{
+	GtkAction *autogroup_action;
+
+	if (value == autogroup)
+		return;
+
+	autogroup_action = gtk_action_group_get_action(action_group, "Autogroup");
+	gtk_action_activate(autogroup_action);
 }
 
 static void renumber_dialog(GtkWidget *w, gpointer data)
@@ -1119,7 +1125,7 @@ static const gchar* ui_string = " \
 
 static GtkWidget *get_menubar_menu(GtkWidget *window, GtkUIManager *ui_manager)
 {
-	GtkActionGroup *action_group = gtk_action_group_new("Menu");
+	action_group = gtk_action_group_new("Menu");
 	gtk_action_group_set_translation_domain(action_group, "subsurface");
 	gtk_action_group_add_actions(action_group, menu_items, nmenu_items, 0);
 	toggle_items[0].is_active = autogroup;
@@ -1232,7 +1238,7 @@ void init_ui(int *argcp, char ***argvp)
 	}
 	prefs.profile_red_ceiling = PTR_TO_BOOL(subsurface_get_conf("redceiling", PREF_BOOL));
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
-	autogroup = PTR_TO_BOOL(subsurface_get_conf("autogroup", PREF_BOOL));
+
 	default_filename = subsurface_get_conf("default_filename", PREF_STRING);
 
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
