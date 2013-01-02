@@ -1260,12 +1260,19 @@ static void fill_dive_list(void)
 					DIVE_DURATION, 0,
 					-1);
 		} else {
-			int index = trip->index;
+			int idx, ok;
 			GtkTreeModel *model = TREEMODEL(dive_list);
-			gtk_tree_model_get_iter_first(model, &lookup);
-			while (--index)
-				gtk_tree_model_iter_next(model, &lookup);
-			parent_ptr = &lookup;
+
+			parent_ptr = NULL;
+			ok = gtk_tree_model_get_iter_first(model, &lookup);
+			while (ok) {
+				gtk_tree_model_get(model, &lookup, DIVE_INDEX, &idx, -1);
+				if (idx == -trip->index) {
+					parent_ptr = &lookup;
+					break;
+				}
+				ok = gtk_tree_model_iter_next(model, &lookup);
+			}
 		}
 
 		/* store dive */
