@@ -165,47 +165,39 @@ static void show_dive_notes(struct dive *dive, cairo_t *cr, double w,
 	}
 	g_object_unref(layout);
 }
+/* Print the used gas mix */
+static void print_ean_trimix (cairo_t *cr, PangoLayout *layout, int O2, int He){
 
-/*
- * Show the tanks used in the dive, the mix, and the gas consumed
- * as pressures are shown in the plot
- */
-static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
-	double h, PangoFontDescription *font)
+	char buffer[8];
+
+	if (He){
+		snprintf(buffer, sizeof(buffer), "Tx%d/%d", O2, He);
+	}else{
+		if (O2){
+			if (O2 == 100){
+				snprintf(buffer, sizeof(buffer), _("Oxygen"));
+			}else{
+				snprintf(buffer, sizeof(buffer), "EAN%d", O2);
+			}
+		}else{
+			snprintf(buffer, sizeof(buffer), _("air"));
+		}
+	}
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+}
+
+/* Print the tank data */
+static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
+		int height, int tank_count, int first_tank, PangoFontDescription *font)
 {
-	int maxwidth, maxheight, curwidth, height, decimals, n, i, z,
-	    cyl_wp, cyl_press, cyl_end;
+	int curwidth, decimals, n, i, counter, cyl_press, cyl_end;
 	double cyl_cap, cyl_cons_gas;
 	const char *unit_vol, *unit_press;
 	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), N_("Gas Used")};
+
 	PangoLayout *layout;
-
-	/*Create a frame to separate tank area, note the scaling*/
-	cairo_rectangle(cr, 0, 0 + h*0.05, w, h*0.9);
-	cairo_set_line_width(cr, 0.01);
-	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
-	cairo_stroke(cr);
-
-	maxwidth = w * PANGO_SCALE;
-	maxheight = h * PANGO_SCALE * 0.9;
-
-	/* We need to know how many cylinders we used*/
-	for (z = 0; z < MAX_CYLINDERS; z++ ){
-		if (dive->cylinder[z].start.mbar == 0) {
-			break;
-		}
-	}
-
-	/* to determine the distance between lines*/
-	if (z == 0){
-		height = maxheight / 1;
-	} else {
-	height = maxheight / (z + 1);
-	}
-
-	/* Then create the layout.
-	 * First a header */
-	cairo_translate (cr, 0, height / (6 * (double) PANGO_SCALE));
+	/* First create a header */
 	maxheight -= height / 6;
 	curwidth = 0;
 	for (i = 0; i < 3; i++) {
@@ -214,67 +206,236 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 		pango_layout_set_height(layout,maxheight);
 		pango_layout_set_width(layout, maxwidth / 3);
 		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-		set_font(layout, font, FONT_SMALL * 0.10 *(11-z), PANGO_ALIGN_CENTER);
+		if (tank_count < 4) {
+			set_font(layout, font, FONT_SMALL - (0.5 * tank_count), PANGO_ALIGN_CENTER);
+		} else {
+			set_font(layout, font, FONT_SMALL - 2, PANGO_ALIGN_CENTER);
+		}
 		pango_layout_set_text(layout, _(dataheader1[i]), -1);
 		pango_layout_set_justify(layout, 0);
 		pango_cairo_show_layout(cr, layout);
 		curwidth = curwidth + maxwidth/ 3;
 	}
-
-	/* Now the relevant info*/
-	for (n = 0; n < z; n++) {
+	/* Then the cylinder stuff */
+	n = first_tank;
+	counter = 0;
+	while ( n < tank_count && n < first_tank + 4){
 		cairo_translate (cr, 0, height / (double) PANGO_SCALE);
 		cairo_move_to(cr, 0, 0);
-
 		cyl_cap = get_volume_units(dive->cylinder[n].type.size.mliter, &decimals, &unit_vol);
-		cyl_wp = get_pressure_units(dive->cylinder[n].type.workingpressure.mbar, &unit_press);
 		cyl_press= get_pressure_units(dive->cylinder[n].start.mbar, &unit_press);
 		cyl_end= get_pressure_units(dive->cylinder[n].end.mbar, &unit_press);
 		cyl_cons_gas = (cyl_press - cyl_end) * cyl_cap;
 
 		curwidth = 0;
-		i = 0;
-		while ( i < 3 ) {
-			cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
-			switch(i) {
-				case 0 : if (prefs.output_units.volume == CUFT) {
-						 cyl_cap *= cyl_wp / 14.7 ;
-					 }
-					 snprintf(buffer, sizeof(buffer), _("%.*f %s"),
-							 decimals,
-							 cyl_cap,
-							 unit_vol);
-					 break;
-				case 1 : cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
-					 if (dive->cylinder[n].gasmix.o2.permille == 0){
-						 snprintf(buffer, sizeof(buffer), _("air"));
+		cairo_move_to (cr, curwidth / (double) PANGO_SCALE, 0);
+		snprintf(buffer, sizeof(buffer), "%s", dive->cylinder[n].type.description);
+		pango_layout_set_text(layout, buffer, -1);
+		pango_cairo_show_layout(cr, layout);
+		curwidth += (maxwidth/ 3);
 
-					 } else {
-						 snprintf(buffer, sizeof(buffer), _("%d/%d"),
-							 dive->cylinder[n].gasmix.o2.permille /10,
-							 dive->cylinder[n].gasmix.he.permille /10);
-					 }
-					 break;
-				case 2 : cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
-					 if (prefs.output_units.volume == CUFT) {
-						 cyl_cons_gas /= 14.7 ;
-					 }
-					 snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
-							 decimals,
-							 cyl_cons_gas,
-							 unit_vol);
-					 break;
-				default : snprintf(buffer, sizeof(buffer),"Error");
-			}
+		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
+		print_ean_trimix (cr, layout,
+				dive->cylinder[n].gasmix.o2.permille/10,
+				dive->cylinder[n].gasmix.he.permille/10);
+		curwidth += (maxwidth/ 3);
+
+		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
+		if (prefs.output_units.pressure == PSI) {
+				cyl_cons_gas = (psi_to_bar(cyl_press) - psi_to_bar(cyl_end)) * cyl_cap;
+		}
+		snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
+			decimals,
+			cyl_cons_gas,
+			unit_vol);
+		pango_layout_set_text(layout, buffer, -1);
+		pango_cairo_show_layout(cr, layout);
+		curwidth += (maxwidth/ 3);
+
+		maxheight -= height;
+		n++;
+		counter++;
+	}
+	cairo_translate(cr, 0, -(height * counter)/ (double) PANGO_SCALE);
+	g_object_unref (layout);
+}
+
+/* Print weight system */
+static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
+		int height, PangoFontDescription *font)
+{
+	int decimals,i;
+	double totalweight, systemweight, weightsystemcounter;
+	const char *unit_weight;
+	char buffer[80];
+	PangoLayout *layout;
+
+	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_height(layout,maxheight);
+	pango_layout_set_width(layout, maxwidth);
+	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_CENTER);
+
+	/* Header for the weight system */
+	cairo_move_to(cr, 0, 0);
+	snprintf (buffer, sizeof(buffer),_("Weight System"));
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+
+	/* Detail of the weight */
+	cairo_translate (cr, 0, height / (3 * (double) PANGO_SCALE));
+	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	weightsystemcounter = 0;
+	for (i=0; i<  MAX_WEIGHTSYSTEMS; i++){
+		systemweight = get_weight_units(dive->weightsystem[i].weight.grams, &decimals, &unit_weight);
+		if (systemweight != 0){
+			cairo_move_to(cr, 0, 0);
+			snprintf(buffer, sizeof(buffer), _("%s"),dive->weightsystem[i].description);
 			pango_layout_set_text(layout, buffer, -1);
 			pango_cairo_show_layout(cr, layout);
-			curwidth += (maxwidth/ 3);
-			i += 1;
+			cairo_move_to(cr,(2 * maxwidth) / (3 * (double) PANGO_SCALE), 0);
+			snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
+					decimals,
+					systemweight,
+					unit_weight);
+			pango_layout_set_text(layout, buffer, -1);
+			pango_cairo_show_layout(cr, layout);
+			weightsystemcounter++;
+			cairo_translate (cr, 0, height / (4 * (double) PANGO_SCALE));
 		}
-		maxheight -= height;
 	}
-	cairo_translate(cr,0, - ((h * PANGO_SCALE * 0.9) - maxheight) / PANGO_SCALE);
-	g_object_unref(layout);
+	/* Total weight of the system */
+	totalweight = get_weight_units(total_weight(dive), &decimals, &unit_weight);
+	cairo_translate (cr, 0, height / (4 * (double) PANGO_SCALE));
+	cairo_move_to (cr, 0, 0);
+	snprintf(buffer, sizeof(buffer), _("Total Weight:"));
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	cairo_move_to(cr,(2 * maxwidth) / (3 * (double) PANGO_SCALE), 0);
+	snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
+			decimals,
+			totalweight,
+			unit_weight);
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	/* undo translations */
+	cairo_translate (cr, 0, -(weightsystemcounter * height) / (4 * (double) PANGO_SCALE));
+	cairo_translate (cr, 0, -height / (3 * (double) PANGO_SCALE));
+	g_object_unref (layout);
+}
+
+/* Print the dive OTUs */
+static void print_otus (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight, PangoFontDescription *font)
+{
+	char buffer[20];
+	PangoLayout *layout;
+
+	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_width(layout, maxwidth);
+	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
+	snprintf(buffer, sizeof(buffer), _("OTU"));
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	cairo_move_to (cr, (2 * maxwidth) / (3 * (double) PANGO_SCALE), 0);
+	snprintf(buffer, sizeof(buffer), "%d", dive->otu);
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	g_object_unref (layout);
+}
+
+/* Print the dive maxCNS */
+static void print_cns (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight, PangoFontDescription *font)
+{
+	char buffer[20];
+	PangoLayout *layout;
+
+	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_width(layout, maxwidth);
+	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
+	snprintf(buffer, sizeof(buffer), _("Max. CNS"));
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	cairo_move_to (cr, (2 * maxwidth) / (3 * (double) PANGO_SCALE), 0);
+	snprintf(buffer, sizeof(buffer), "%d", dive->maxcns);
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	g_object_unref (layout);
+}
+
+/*
+ * Show the tanks used in the dive, the mix, and the gas consumed
+ * as pressures are shown in the plot. And other data if we used
+ * less than four cilynders.
+ */
+static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
+	double h, PangoFontDescription *font)
+{
+	int maxwidth, maxheight, height, tank_count;
+
+	maxwidth = w * PANGO_SCALE;
+	maxheight = h * PANGO_SCALE * 0.9;
+
+	/* We need to know how many cylinders we used*/
+	for ( tank_count = 0; tank_count < MAX_CYLINDERS; tank_count++ ){
+		if (dive->cylinder[tank_count].start.mbar == 0) {
+			break;
+		}
+	}
+
+	/* and determine the distance between lines*/
+	if (tank_count == 0) {
+		height = maxheight;
+	} else {
+		if ( tank_count<=4 ) {
+			height = maxheight / (tank_count + 1);
+		} else {
+			height = maxheight / 5;
+		}
+	}
+
+	/*Create a frame to separate tank area, note the scaling*/
+	cairo_set_line_width(cr, 0.01);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
+	cairo_rectangle(cr, 0, h*0.02, 2*w, h*0.95);
+	cairo_move_to(cr, w, h*0.02);
+	cairo_line_to(cr, w, h*0.97);
+	cairo_stroke(cr);
+	cairo_translate (cr, 0, height / (6 * (double) PANGO_SCALE));
+
+	print_tanks (dive, cr, maxwidth, maxheight, height, tank_count, 0, font);
+
+	cairo_translate (cr, 0, -height / (6 * (double) PANGO_SCALE));
+
+	/* If there are more than 4 tanks use the full width, else print other data*/
+	if (tank_count > 4){
+		cairo_translate (cr, w, height / (6 * (double) PANGO_SCALE));
+		print_tanks (dive, cr, maxwidth, maxheight, height, tank_count, 4, font);
+		cairo_translate (cr, -w, -height / (6 * (double) PANGO_SCALE));
+	} else {
+		/* Plot a grid for the data */
+		cairo_move_to(cr, 3*w/2, h*0.02);
+		cairo_line_to (cr, 3*w/2, h*0.97);
+		cairo_move_to (cr, w, ((h * 0.9)/4) + (h*0.05));
+		cairo_line_to (cr, 3*w/2, ((h * 0.9)/4) + (h*0.05));
+		cairo_move_to (cr, w, ((h * 0.9)*2/4) + (h*0.05));
+		cairo_line_to (cr, 3*w/2, ((h * 0.9)*2/4) + (h*0.05));
+		cairo_stroke (cr);
+		/* and print OTUs, CNS and weight */
+		cairo_translate (cr, (3.05*w/2), height / (6 * (double) PANGO_SCALE));
+		print_weight_data (dive, cr, maxwidth * 0.90/2 , maxheight, maxheight / 2, font);
+		cairo_translate (cr, -(3.05*w/2), -height / (6 * (double) PANGO_SCALE));
+		cairo_translate (cr, w, 0);
+		print_otus (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		cairo_translate (cr, 0, h/4);
+		print_cns (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		cairo_translate (cr, -w, -h/4);
+	}
 }
 
 static void show_table_header(cairo_t *cr, double w, double h,
@@ -453,17 +614,17 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	cairo_scale(cr, 0.5, 0.5);
 
 	/* Dive plot in the upper two thirds - note the scaling */
-	show_dive_profile(dive, cr, w*2, h*1.33);
+	show_dive_profile(dive, cr, w*2, h*1.30);
 
 	/* Dive information in the lower third */
-	cairo_translate(cr, 0, h*1.33);
+	cairo_translate(cr, 0, h*1.30);
 	show_dive_header(dive, cr, w*2, h*0.15, font);
 
 	cairo_translate(cr, 0, h*0.15);
-	show_dive_tanks (dive, cr, w*1, h*0.20, font);
+	show_dive_tanks (dive, cr, w*1, h*0.25, font);
 
-	cairo_translate(cr, 0, h*0.20);
-	show_dive_notes(dive, cr, w*2, h*0.32, font);
+	cairo_translate(cr, 0, h*0.25);
+	show_dive_notes(dive, cr, w*2, h*0.30, font);
 
 	cairo_restore(cr);
 }

@@ -537,6 +537,7 @@ extern gboolean dc_was_saved(struct divecomputer *dc);
 extern void mark_dc_saved(struct divecomputer *dc);
 extern void clear_dc_saved_status(void);
 extern void set_autogroup(gboolean value);
+extern int total_weight(struct dive *);
 
 #define DIVE_ERROR_PARSE 1
 

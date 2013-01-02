@@ -546,7 +546,7 @@ newmax:
 	*o2low_p = mino2;
 }
 
-static int total_weight(struct dive *dive)
+int total_weight(struct dive *dive)
 {
 	int i, total_grams = 0;
 
