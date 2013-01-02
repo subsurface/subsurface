@@ -2289,7 +2289,7 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 		char buffer[160];
 		struct dcnicknamelist *nn_entry = malloc(sizeof(struct dcnicknamelist));
 		nn_entry->deviceid = deviceid;
-		nn_entry->model = model;
+		nn_entry->model = strdup(model);
 		/* make sure there are no curly braces or commas in the string and that
 		 * it will fit in the buffer */
 		nn_entry->nickname = cleanedup_nickname(nickname, sizeof(buffer) - 13 - strlen(model));
