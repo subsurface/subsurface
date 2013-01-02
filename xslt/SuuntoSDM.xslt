@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:strip-space elements="*"/>
-  <xsl:output method="xml" indent="yes"/>
+  <xsl:output method="xml" indent="yes" encoding="ASCII"/>
 
   <xsl:template match="/">
     <dives>
@@ -199,6 +199,19 @@
                 </xsl:call-template>
               </xsl:attribute>
             </sample>
+          </xsl:when>
+          <xsl:when test="substring-before(BOOKMARK, ':') = 'Heading'">
+              <event name="heading">
+                <xsl:attribute name="value">
+                  <xsl:value-of select="substring-before(substring-after(BOOKMARK, ': '), '°')"/>
+                </xsl:attribute>
+                <xsl:attribute name="time">
+                  <xsl:call-template name="timeConvert">
+                    <xsl:with-param name="timeSec" select="SAMPLETIME"/>
+                    <xsl:with-param name="units" select="'si'"/>
+                  </xsl:call-template>
+                </xsl:attribute>
+              </event>
           </xsl:when>
           <xsl:otherwise>
             <xsl:if test="BOOKMARK != 'Surface'">
