@@ -78,7 +78,7 @@ typedef enum {
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
 	SMOOTHED, MINUTE, TIME_GRID, TIME_TEXT, DEPTH_GRID, MEAN_DEPTH, DEPTH_TOP,
 	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND,
-	CEILING_SHALLOW, CEILING_DEEP
+	CEILING_SHALLOW, CEILING_DEEP, CALC_CEILING_SHALLOW, CALC_CEILING_DEEP
 } color_indice_t;
 
 typedef struct {
@@ -136,6 +136,8 @@ static const color_t profile_color[] = {
 	[BACKGROUND]      = {{SPRINGWOOD1, BLACK1_LOW_TRANS}},
 	[CEILING_SHALLOW] = {{REDORANGE1_HIGH_TRANS, REDORANGE1_HIGH_TRANS}},
 	[CEILING_DEEP]    = {{RED1_MED_TRANS, RED1_MED_TRANS}},
+	[CALC_CEILING_SHALLOW] = {{FUNGREEN1_HIGH_TRANS, FUNGREEN1_HIGH_TRANS}},
+	[CALC_CEILING_DEEP]    = {{APPLE1_HIGH_TRANS, APPLE1_HIGH_TRANS}},
 
 };
 
@@ -803,6 +805,24 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 			} else {
 				line_to(gc, entry->sec, 0);
 			}
+		}
+		cairo_close_path(gc->cr);
+		cairo_fill(gc->cr);
+	}
+	/* finally, plot the calculated ceiling over all this */
+	if (prefs.profile_calc_ceiling) {
+		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+		pattern_add_color_stop_rgba (gc, pat, 0, CALC_CEILING_SHALLOW);
+		pattern_add_color_stop_rgba (gc, pat, 1, CALC_CEILING_DEEP);
+		cairo_set_source(gc->cr, pat);
+		cairo_pattern_destroy(pat);
+		entry = pi->entry;
+		move_to(gc, 0, 0);
+		for (i = 0; i < pi->nr; i++, entry++) {
+			if (entry->ceiling)
+				line_to(gc, entry->sec, entry->ceiling);
+			else
+				line_to(gc, entry->sec, 0);
 		}
 		cairo_close_path(gc->cr);
 		cairo_fill(gc->cr);

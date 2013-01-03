@@ -7,9 +7,11 @@
 // Greens
 #define CAMARONE1    { 0.0, 0.4, 0.0, 1 }
 #define FUNGREEN1    { 0.0, 0.4, 0.2, 1 }
+#define FUNGREEN1_HIGH_TRANS    { 0.0, 0.4, 0.2, 0.25 }
 #define KILLARNEY1   { 0.2, 0.4, 0.2, 1 }
 #define APPLE1       { 0.2, 0.6, 0.2, 1 }
 #define APPLE1_MED_TRANS { 0.2, 0.6, 0.2, 0.5 }
+#define APPLE1_HIGH_TRANS { 0.2, 0.6, 0.2, 0.25 }
 #define LIMENADE1    { 0.4, 0.8, 0.0, 1 }
 #define ATLANTIS1    { 0.4, 0.8, 0.2, 1 }
 #define ATLANTIS2    { 0.6, 0.8, 0.2, 1 }

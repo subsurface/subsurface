@@ -40,6 +40,7 @@ struct preferences {
 	visible_cols_t visible_cols;
 	partial_pressure_graphs_t pp_graphs;
 	gboolean profile_red_ceiling;
+	gboolean profile_calc_ceiling;
 };
 
 extern struct preferences prefs;

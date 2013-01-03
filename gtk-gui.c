@@ -511,6 +511,7 @@ OPTIONCALLBACK(po2_toggle, prefs.pp_graphs.po2)
 OPTIONCALLBACK(pn2_toggle, prefs.pp_graphs.pn2)
 OPTIONCALLBACK(phe_toggle, prefs.pp_graphs.phe)
 OPTIONCALLBACK(red_ceiling_toggle, prefs.profile_red_ceiling)
+OPTIONCALLBACK(calc_ceiling_toggle, prefs.profile_calc_ceiling)
 OPTIONCALLBACK(force_toggle, force_download)
 OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
 
@@ -768,10 +769,15 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(vbox), box);
 
-	button = gtk_check_button_new_with_label(_("Show ceiling in red"));
+	button = gtk_check_button_new_with_label(_("Show dc reported ceiling in red"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.profile_red_ceiling);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(red_ceiling_toggle), NULL);
+
+	button = gtk_check_button_new_with_label(_("Show calculated ceiling"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.profile_calc_ceiling);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(calc_ceiling_toggle), NULL);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -817,6 +823,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("pn2threshold", PREF_STRING, pn2_threshold_text);
 		subsurface_set_conf("phethreshold", PREF_STRING, phe_threshold_text);
 		subsurface_set_conf("redceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_red_ceiling));
+		subsurface_set_conf("calcceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_calc_ceiling));
 
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
@@ -1236,6 +1243,7 @@ void init_ui(int *argcp, char ***argvp)
 		free((void *)conf_value);
 	}
 	prefs.profile_red_ceiling = PTR_TO_BOOL(subsurface_get_conf("redceiling", PREF_BOOL));
+	prefs.profile_calc_ceiling = PTR_TO_BOOL(subsurface_get_conf("calcceiling", PREF_BOOL));
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
 	default_filename = subsurface_get_conf("default_filename", PREF_STRING);
