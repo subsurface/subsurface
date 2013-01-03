@@ -2190,40 +2190,29 @@ static char *cleanedup_nickname(const char *nickname, int len)
 
 void replace_nickname_nicknamestring(const char *model, int deviceid, const char *nickname)
 {
-	char buf[11];
-	char *entry, *comma1, *comma2, *brace, *new_nn;
+	char pattern[160];
+	char *entry, *brace, *new_nn;
 	int len;
 
 	if (!nickname)
 		nickname = "";
-	snprintf(buf, sizeof(buf), "{%08x,", deviceid);
-	entry = strstr(nicknamestring, buf);
+	snprintf(pattern, sizeof(pattern), "{%08x,%s", deviceid, model);
+	entry = strstr(nicknamestring, pattern);
 	if (!entry)
 		/* this cannot happen as we know we have an entry for this deviceid */
 		goto bail;
+
 	len = strlen(entry);
-	comma1 = g_utf8_strchr(entry, len, ',');
-	if (!comma1)
-		goto bail;
-	len = strlen(comma1);
-	comma2 = g_utf8_strchr(comma1, len, ',');
-	brace = g_utf8_strchr(comma1, len, '}');
+	brace = g_utf8_strchr(entry, len, '}');
 	if (!brace)
 		goto bail;
-	if (!comma2 || brace < comma2) {
-		/* didn't have a nickname, so add one */
-		len = strlen(nicknamestring) + strlen(nickname) + 2;
-		*brace = '\0';
-	} else {
-		/* replace the nickname */
-		len = strlen(nicknamestring) + strlen(nickname) - (brace - comma2) + 1;
-		*comma2 = '\0';
-	}
+	*entry =  *brace = '\0';
+	len = strlen(nicknamestring) + strlen(brace + 1) + strlen(pattern) + strlen(nickname) + 3;
 	new_nn = malloc(len);
 	if (strlen(nickname))
-		snprintf(new_nn, len, "%s,%s}%s", nicknamestring, nickname, brace + 1);
+		snprintf(new_nn, len, "%s%s,%s}%s", nicknamestring, pattern, nickname, brace + 1);
 	else
-		snprintf(new_nn, len, "%s}%s", nicknamestring, brace + 1);
+		snprintf(new_nn, len, "%s%s}%s", nicknamestring, pattern, brace + 1);
 	free(nicknamestring);
 	nicknamestring = new_nn;
 	return;
