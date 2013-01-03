@@ -512,6 +512,7 @@ OPTIONCALLBACK(pn2_toggle, prefs.pp_graphs.pn2)
 OPTIONCALLBACK(phe_toggle, prefs.pp_graphs.phe)
 OPTIONCALLBACK(red_ceiling_toggle, prefs.profile_red_ceiling)
 OPTIONCALLBACK(calc_ceiling_toggle, prefs.profile_calc_ceiling)
+OPTIONCALLBACK(calc_ceiling_3m_toggle, prefs.calc_ceiling_3m_incr)
 OPTIONCALLBACK(force_toggle, force_download)
 OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
 
@@ -779,6 +780,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(calc_ceiling_toggle), NULL);
 
+	button = gtk_check_button_new_with_label(_("3m increments for calculated ceiling"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.calc_ceiling_3m_incr);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(calc_ceiling_3m_toggle), NULL);
+
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
@@ -824,6 +830,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("phethreshold", PREF_STRING, phe_threshold_text);
 		subsurface_set_conf("redceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_red_ceiling));
 		subsurface_set_conf("calcceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_calc_ceiling));
+		subsurface_set_conf("calcceiling3m", PREF_BOOL, BOOL_TO_PTR(prefs.calc_ceiling_3m_incr));
 
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
@@ -1244,6 +1251,7 @@ void init_ui(int *argcp, char ***argvp)
 	}
 	prefs.profile_red_ceiling = PTR_TO_BOOL(subsurface_get_conf("redceiling", PREF_BOOL));
 	prefs.profile_calc_ceiling = PTR_TO_BOOL(subsurface_get_conf("calcceiling", PREF_BOOL));
+	prefs.calc_ceiling_3m_incr = PTR_TO_BOOL(subsurface_get_conf("calcceiling3m", PREF_BOOL));
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
 	default_filename = subsurface_get_conf("default_filename", PREF_STRING);

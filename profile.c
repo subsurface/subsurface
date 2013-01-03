@@ -1560,7 +1560,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	struct plot_data *entry = NULL;
 	struct event *ev;
 	double amb_pressure, po2;
-	int surface_pressure = dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013;
+	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
 
 	/* The plot-info is embedded in the graphics context */
 	pi = &gc->pi;
@@ -1760,11 +1760,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 				if (min_pressure > ceiling_pressure)
 					ceiling_pressure = min_pressure;
 			}
-			ceiling_pressure = ceiling_pressure * 1000.0 + 0.5;
-			if (ceiling_pressure > surface_pressure)
-				entry->ceiling = rel_mbar_to_depth(ceiling_pressure - surface_pressure, dive);
-			else
-				entry->ceiling = 0;
+			entry->ceiling = deco_allowed_depth(ceiling_pressure, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		}
 	}
 

@@ -574,7 +574,7 @@ extern void subsurface_command_line_exit(gint *, gchar ***);
 
 extern double add_segment(double pressure, struct gasmix *gasmix);
 extern void clear_deco(void);
-
+extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth);
 #ifdef DEBUGFILE
 extern char *debugfilename;
 extern FILE *debugfile;

@@ -41,6 +41,7 @@ struct preferences {
 	partial_pressure_graphs_t pp_graphs;
 	gboolean profile_red_ceiling;
 	gboolean profile_calc_ceiling;
+	gboolean calc_ceiling_3m_incr;
 };
 
 extern struct preferences prefs;

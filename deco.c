@@ -8,6 +8,8 @@
  *
  * clear_deco()  - call to initialize for a new deco calculation
  * add_segment(pressure, gasmix) - add 1 second at the given pressure, breathing gasmix
+ * deco_allowed_depth(tissues_tolerance, surface_pressure, dive, smooth)
+ *				- ceiling based on lead tissue, surface pressure, 3m increments or smooth
  */
 #include "dive.h"
 
@@ -24,9 +26,8 @@ struct buehlmann_config {
   double  gf_high_emergency;	//! emergency gf factors
   double  gf_low_emergency;	//! gradient factor low (at bottom/start of deco calculation).
 };
-
-struct dive_data
-{
+struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0.5, 3, 75.0, 35.0, 10.0, 30.0, 95.0, 95.0 };
+struct dive_data {
         double pressure;	//! pesent ambient pressure
         double surface;		//! pressure at water surface
         struct gasmix *gasmix;	//! current selected gas
@@ -75,14 +76,50 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005};
 
 #define WV_PRESSURE 0.0627 /* water vapor pressure */
+#define DIST_FROM_3_MTR 0.28
+#define PRESSURE_CHANGE_3M 0.3
+#define TOLERANCE 0.02
 
 double tissue_n2_sat[16];
 double tissue_he_sat[16];
 double tissue_tolerated_ambient_pressure[16];
 int ci_pointing_to_guiding_tissue;
+double gf_low_position_this_dive;
 int divetime;
 
-struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0.5, 3, 95.0, 95.0, 10.0, 30.0, 95.0, 95.0 };
+
+
+static double actual_gradient_limit(const struct dive_data *data)
+{
+	double pressure_diff, limit_at_position;
+	double gf_high = buehlmann_config.gf_high;
+	double gf_low = buehlmann_config.gf_low;
+
+	pressure_diff = data->pressure - data->surface;
+
+	if (pressure_diff > TOLERANCE) {
+		if (pressure_diff < gf_low_position_this_dive)
+			limit_at_position = gf_high - ((gf_high - gf_low) * pressure_diff / gf_low_position_this_dive);
+		else
+			limit_at_position = gf_low;
+	} else {
+		limit_at_position = gf_high;
+	}
+	return limit_at_position;
+}
+
+static double gradient_factor_calculation(const struct dive_data *data)
+{
+	double tissue_inertgas_saturation;
+
+	tissue_inertgas_saturation = tissue_n2_sat[ci_pointing_to_guiding_tissue] +
+					tissue_he_sat[ci_pointing_to_guiding_tissue];
+	if (tissue_inertgas_saturation < data->pressure)
+		return 0.0;
+	else
+		return (tissue_inertgas_saturation - data->pressure) /
+			(tissue_inertgas_saturation - tissue_tolerated_ambient_pressure[ci_pointing_to_guiding_tissue]);
+}
 
 static double tissue_tolerance_calc(void)
 {
@@ -104,7 +141,6 @@ static double tissue_tolerance_calc(void)
 			ret_tolerance_limit_ambient_pressure = tissue_tolerated_ambient_pressure[ci];
 		}
 	}
-	printf("%d:%02u %lf\n",FRACTION(divetime, 60), ret_tolerance_limit_ambient_pressure);
 	return (ret_tolerance_limit_ambient_pressure);
 }
 
@@ -116,7 +152,6 @@ double add_segment(double pressure, struct gasmix *gasmix)
 	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
 
 	divetime++;
-	printf("%2d:%02u N2 %2.3lf He %2.3lf",FRACTION(divetime, 60), ppn2, pphe);
 	/* right now we just do OC */
 	for (ci = 0; ci < 16; ci++) {
 		if (ppn2 - tissue_n2_sat[ci] > 0)
@@ -140,4 +175,37 @@ void clear_deco()
 		tissue_tolerated_ambient_pressure[ci] = 0.0;
 	}
 	divetime = 0;
+}
+
+unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth)
+{
+	unsigned int depth, multiples_of_3m;
+	gboolean below_gradient_limit;
+	double new_gradient_factor;
+	double pressure_delta = tissues_tolerance - surface_pressure;
+	struct dive_data mydata;
+
+	if (pressure_delta > 0) {
+		if (!smooth) {
+			multiples_of_3m = (pressure_delta + DIST_FROM_3_MTR) / 0.3;
+			depth = 3000 * multiples_of_3m;
+		} else {
+			depth = rel_mbar_to_depth(pressure_delta * 1000, dive);
+		}
+	} else {
+		depth = 0;
+	}
+	mydata.pressure = surface_pressure + depth / 10000.0;
+	mydata.surface = surface_pressure;
+
+	new_gradient_factor = gradient_factor_calculation(&mydata);
+	below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata));
+	while(!below_gradient_limit)
+	{
+		mydata.pressure += PRESSURE_CHANGE_3M;
+		new_gradient_factor = gradient_factor_calculation(&mydata);
+		below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata));
+	}
+
+	return depth;
 }
