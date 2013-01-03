@@ -572,6 +572,9 @@ extern void subsurface_command_line_exit(gint *, gchar ***);
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 
+extern double add_segment(double pressure, struct gasmix *gasmix);
+extern void clear_deco(void);
+
 #ifdef DEBUGFILE
 extern char *debugfilename;
 extern FILE *debugfile;

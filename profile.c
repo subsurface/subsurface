@@ -40,6 +40,7 @@ struct plot_data {
 	int temperature;
 	/* Depth info */
 	int depth;
+	int ceiling;
 	int ndl;
 	int stoptime;
 	int stopdepth;
@@ -1539,10 +1540,13 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	struct plot_data *entry = NULL;
 	struct event *ev;
 	double amb_pressure, po2;
+	int surface_pressure = dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013;
 
 	/* The plot-info is embedded in the graphics context */
 	pi = &gc->pi;
 
+	/* reset deco information to start the calculation */
+	clear_deco();
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
 	if (last_pi_entry)
@@ -1724,6 +1728,24 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
 			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
 		missing_pr |= !SENSOR_PRESSURE(entry);
+		/* and now let's try to do some deco calculations */
+		if (i > 0) {
+			int j;
+			int t0 = (entry - 1)->sec;
+			int t1 = entry->sec;
+			float ceiling_pressure = 0;
+			for (j = t0; j < t1; j++) {
+				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
+				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0, &dive->cylinder[cylinderindex].gasmix);
+				if (min_pressure > ceiling_pressure)
+					ceiling_pressure = min_pressure;
+			}
+			ceiling_pressure = ceiling_pressure * 1000.0 + 0.5;
+			if (ceiling_pressure > surface_pressure)
+				entry->ceiling = rel_mbar_to_depth(ceiling_pressure - surface_pressure, dive);
+			else
+				entry->ceiling = 0;
+		}
 	}
 
 	if (entry)
@@ -1964,6 +1986,11 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		tempvalue = get_temp_units(temp, &temp_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\nT:%.1f %s", buf2, tempvalue, temp_unit);
+	}
+	if (entry->ceiling) {
+		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nCalculated ceiling %.0f %s", buf2, depthvalue, depth_unit);
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);

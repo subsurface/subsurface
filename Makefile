@@ -130,7 +130,7 @@ LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALI
 MSGLANGS=$(notdir $(wildcard po/*po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
-OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o \
+OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
 
@@ -243,6 +243,9 @@ divelist.o: divelist.c dive.h display.h divelist.h
 
 print.o: print.c dive.h display.h display-gtk.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c print.c
+
+deco.o: deco.c dive.h
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c deco.c
 
 libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
