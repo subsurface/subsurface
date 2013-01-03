@@ -1147,7 +1147,7 @@ static void switch_page(GtkNotebook *notebook, gint arg1, gpointer user_data)
 
 static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *divelist)
 {
-	if (event->type != GDK_KEY_PRESS)
+	if (event->type != GDK_KEY_PRESS || event->state != 0)
 		return FALSE;
 	switch (event->keyval) {
 	case GDK_Up:
