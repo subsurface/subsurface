@@ -187,13 +187,21 @@ static void print_ean_trimix (cairo_t *cr, PangoLayout *layout, int O2, int He){
 	pango_cairo_show_layout(cr, layout);
 }
 
+static unsigned start_pressure(cylinder_t *cyl)
+{
+	return cyl->start.mbar ? : cyl->sample_start.mbar;
+}
+
+static unsigned end_pressure(cylinder_t *cyl)
+{
+	return cyl->end.mbar ? : cyl->sample_end.mbar;
+}
+
 /* Print the tank data */
 static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
 		int height, int tank_count, int first_tank, PangoFontDescription *font)
 {
-	int curwidth, decimals, n, i, counter, cyl_press, cyl_end;
-	double cyl_cap, cyl_cons_gas;
-	const char *unit_vol, *unit_press;
+	int curwidth, n, i, counter;
 	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), N_("Gas Used")};
 
 	PangoLayout *layout;
@@ -219,13 +227,26 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 	/* Then the cylinder stuff */
 	n = first_tank;
 	counter = 0;
-	while ( n < tank_count && n < first_tank + 4){
+	while ( n < tank_count && n < first_tank + 4) {
+		int decimals;
+		const char *unit;
+		double gas_usage;
+		cylinder_t *cyl = dive->cylinder + n;
+
 		cairo_translate (cr, 0, height / (double) PANGO_SCALE);
 		cairo_move_to(cr, 0, 0);
-		cyl_cap = get_volume_units(dive->cylinder[n].type.size.mliter, &decimals, &unit_vol);
-		cyl_press= get_pressure_units(dive->cylinder[n].start.mbar, &unit_press);
-		cyl_end= get_pressure_units(dive->cylinder[n].end.mbar, &unit_press);
-		cyl_cons_gas = (cyl_press - cyl_end) * cyl_cap;
+
+		/* Get the cylinder gas use in mbar */
+		gas_usage = start_pressure(cyl) - end_pressure(cyl);
+
+		/* Can we turn it into a volume? */
+		if (cyl->type.size.mliter) {
+			gas_usage = bar_to_atm(gas_usage / 1000);
+			gas_usage *= dive->cylinder[n].type.size.mliter;
+			gas_usage = get_volume_units(gas_usage, &decimals, &unit);
+		} else {
+			gas_usage = get_pressure_units(gas_usage, &unit);
+		}
 
 		curwidth = 0;
 		cairo_move_to (cr, curwidth / (double) PANGO_SCALE, 0);
@@ -241,13 +262,10 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 		curwidth += (maxwidth/ 3);
 
 		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
-		if (prefs.output_units.pressure == PSI) {
-				cyl_cons_gas = (psi_to_bar(cyl_press) - psi_to_bar(cyl_end)) * cyl_cap;
-		}
 		snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
 			decimals,
-			cyl_cons_gas,
-			unit_vol);
+			gas_usage,
+			unit);
 		pango_layout_set_text(layout, buffer, -1);
 		pango_cairo_show_layout(cr, layout);
 		curwidth += (maxwidth/ 3);
@@ -383,7 +401,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 
 	/* We need to know how many cylinders we used*/
 	for ( tank_count = 0; tank_count < MAX_CYLINDERS; tank_count++ ){
-		if (dive->cylinder[tank_count].start.mbar == 0) {
+		if (cylinder_nodata(dive->cylinder+tank_count)) {
 			break;
 		}
 	}
