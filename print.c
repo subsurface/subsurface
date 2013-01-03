@@ -229,7 +229,7 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 	counter = 0;
 	while ( n < tank_count && n < first_tank + 4) {
 		int decimals;
-		const char *unit;
+		const char *unit, *desc;
 		double gas_usage;
 		cylinder_t *cyl = dive->cylinder + n;
 
@@ -242,23 +242,25 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 		/* Can we turn it into a volume? */
 		if (cyl->type.size.mliter) {
 			gas_usage = bar_to_atm(gas_usage / 1000);
-			gas_usage *= dive->cylinder[n].type.size.mliter;
+			gas_usage *= cyl->type.size.mliter;
 			gas_usage = get_volume_units(gas_usage, &decimals, &unit);
 		} else {
 			gas_usage = get_pressure_units(gas_usage, &unit);
+			decimals = 0;
 		}
 
 		curwidth = 0;
 		cairo_move_to (cr, curwidth / (double) PANGO_SCALE, 0);
-		snprintf(buffer, sizeof(buffer), "%s", dive->cylinder[n].type.description);
+		desc = cyl->type.description ? : "";
+		snprintf(buffer, sizeof(buffer), "%s", desc);
 		pango_layout_set_text(layout, buffer, -1);
 		pango_cairo_show_layout(cr, layout);
 		curwidth += (maxwidth/ 3);
 
 		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
 		print_ean_trimix (cr, layout,
-				dive->cylinder[n].gasmix.o2.permille/10,
-				dive->cylinder[n].gasmix.he.permille/10);
+				cyl->gasmix.o2.permille/10,
+				cyl->gasmix.he.permille/10);
 		curwidth += (maxwidth/ 3);
 
 		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
