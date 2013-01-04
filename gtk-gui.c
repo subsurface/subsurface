@@ -36,7 +36,7 @@ struct preferences prefs = {
 	SI_UNITS,
 	{ TRUE, FALSE, },
 	{ FALSE, FALSE, FALSE, 1.6, 4.0, 13.0},
-	FALSE
+	FALSE, FALSE, FALSE, 30.0, 90.0
 };
 
 struct dcnicknamelist {
@@ -511,8 +511,28 @@ OPTIONCALLBACK(po2_toggle, prefs.pp_graphs.po2)
 OPTIONCALLBACK(pn2_toggle, prefs.pp_graphs.pn2)
 OPTIONCALLBACK(phe_toggle, prefs.pp_graphs.phe)
 OPTIONCALLBACK(red_ceiling_toggle, prefs.profile_red_ceiling)
+OPTIONCALLBACK(calc_ceiling_toggle, prefs.profile_calc_ceiling)
+OPTIONCALLBACK(calc_ceiling_3m_toggle, prefs.calc_ceiling_3m_incr)
 OPTIONCALLBACK(force_toggle, force_download)
 OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
+
+static void gflow_edit(GtkWidget *w, gpointer _data)
+{
+	double gflow;
+	const char *buf;
+	buf = gtk_entry_get_text(GTK_ENTRY(w));
+	sscanf(buf, "%lf", &gflow);
+	set_gf(prefs.gflow, -1.0);
+}
+
+static void gfhigh_edit(GtkWidget *w, gpointer _data)
+{
+	double gfhigh;
+	const char *buf;
+	buf = gtk_entry_get_text(GTK_ENTRY(w));
+	sscanf(buf, "%lf", &gfhigh);
+	set_gf(-1.0, prefs.gfhigh);
+}
 
 static void event_toggle(GtkWidget *w, gpointer _data)
 {
@@ -575,7 +595,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
-	GtkWidget *entry_po2, *entry_pn2, *entry_phe;
+	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_gflow, *entry_gfhigh;
 	const char *current_default, *new_default;
 	char threshold_text[10], utf8_buf[128];
 	struct preferences oldprefs = prefs;
@@ -768,15 +788,49 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(vbox), box);
 
-	button = gtk_check_button_new_with_label(_("Show ceiling in red"));
+	button = gtk_check_button_new_with_label(_("Show dc reported ceiling in red"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.profile_red_ceiling);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(red_ceiling_toggle), NULL);
 
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
+
+	button = gtk_check_button_new_with_label(_("Show calculated ceiling"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.profile_calc_ceiling);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(calc_ceiling_toggle), NULL);
+
+	button = gtk_check_button_new_with_label(_("3m increments for calculated ceiling"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.calc_ceiling_3m_incr);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(calc_ceiling_3m_toggle), NULL);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
+
+	frame = gtk_frame_new(_("GFlow"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
+	entry_gflow = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(entry_gflow), 4);
+	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gflow);
+	gtk_entry_set_text(GTK_ENTRY(entry_gflow), threshold_text);
+	gtk_container_add(GTK_CONTAINER(frame), entry_gflow);
+	g_signal_connect(G_OBJECT(entry_gflow), "changed", G_CALLBACK(gflow_edit), NULL);
+
+	frame = gtk_frame_new(_("GFhigh"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
+	entry_gfhigh = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(entry_gfhigh), 4);
+	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gfhigh);
+	gtk_entry_set_text(GTK_ENTRY(entry_gfhigh), threshold_text);
+	gtk_container_add(GTK_CONTAINER(frame), entry_gfhigh);
+	g_signal_connect(G_OBJECT(entry_gflow), "changed", G_CALLBACK(gfhigh_edit), NULL);
+
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
-		const char *po2_threshold_text, *pn2_threshold_text, *phe_threshold_text;
+		const char *po2_threshold_text, *pn2_threshold_text, *phe_threshold_text, *gflow_text, *gfhigh_text;
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 
@@ -790,6 +844,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		sscanf(pn2_threshold_text, "%lf", &prefs.pp_graphs.pn2_threshold);
 		phe_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_phe));
 		sscanf(phe_threshold_text, "%lf", &prefs.pp_graphs.phe_threshold);
+		gflow_text = gtk_entry_get_text(GTK_ENTRY(entry_gflow));
+		sscanf(gflow_text, "%lf", &prefs.gflow);
+		gfhigh_text = gtk_entry_get_text(GTK_ENTRY(entry_gfhigh));
+		sscanf(gfhigh_text, "%lf", &prefs.gfhigh);
+		set_gf(prefs.gflow, prefs.gfhigh);
 
 		update_screen();
 
@@ -817,6 +876,10 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_set_conf("pn2threshold", PREF_STRING, pn2_threshold_text);
 		subsurface_set_conf("phethreshold", PREF_STRING, phe_threshold_text);
 		subsurface_set_conf("redceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_red_ceiling));
+		subsurface_set_conf("calcceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_calc_ceiling));
+		subsurface_set_conf("calcceiling3m", PREF_BOOL, BOOL_TO_PTR(prefs.calc_ceiling_3m_incr));
+		subsurface_set_conf("gflow", PREF_STRING, gflow_text);
+		subsurface_set_conf("gfhigh", PREF_STRING, gfhigh_text);
 
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
@@ -1236,6 +1299,20 @@ void init_ui(int *argcp, char ***argvp)
 		free((void *)conf_value);
 	}
 	prefs.profile_red_ceiling = PTR_TO_BOOL(subsurface_get_conf("redceiling", PREF_BOOL));
+	prefs.profile_calc_ceiling = PTR_TO_BOOL(subsurface_get_conf("calcceiling", PREF_BOOL));
+	prefs.calc_ceiling_3m_incr = PTR_TO_BOOL(subsurface_get_conf("calcceiling3m", PREF_BOOL));
+	conf_value = subsurface_get_conf("gflow", PREF_STRING);
+	if (conf_value) {
+		sscanf(conf_value, "%lf", &prefs.gflow);
+		set_gf(prefs.gflow, -1.0);
+		free((void *)conf_value);
+	}
+	conf_value = subsurface_get_conf("gfhigh", PREF_STRING);
+	if (conf_value) {
+		sscanf(conf_value, "%lf", &prefs.gfhigh);
+		set_gf(-1.0, prefs.gfhigh);
+		free((void *)conf_value);
+	}
 	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
 
 	default_filename = subsurface_get_conf("default_filename", PREF_STRING);

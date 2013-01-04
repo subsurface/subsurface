@@ -40,6 +40,7 @@ struct plot_data {
 	int temperature;
 	/* Depth info */
 	int depth;
+	int ceiling;
 	int ndl;
 	int stoptime;
 	int stopdepth;
@@ -77,7 +78,7 @@ typedef enum {
 	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
 	SMOOTHED, MINUTE, TIME_GRID, TIME_TEXT, DEPTH_GRID, MEAN_DEPTH, DEPTH_TOP,
 	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND,
-	CEILING_SHALLOW, CEILING_DEEP
+	CEILING_SHALLOW, CEILING_DEEP, CALC_CEILING_SHALLOW, CALC_CEILING_DEEP
 } color_indice_t;
 
 typedef struct {
@@ -135,6 +136,8 @@ static const color_t profile_color[] = {
 	[BACKGROUND]      = {{SPRINGWOOD1, BLACK1_LOW_TRANS}},
 	[CEILING_SHALLOW] = {{REDORANGE1_HIGH_TRANS, REDORANGE1_HIGH_TRANS}},
 	[CEILING_DEEP]    = {{RED1_MED_TRANS, RED1_MED_TRANS}},
+	[CALC_CEILING_SHALLOW] = {{FUNGREEN1_HIGH_TRANS, FUNGREEN1_HIGH_TRANS}},
+	[CALC_CEILING_DEEP]    = {{APPLE1_HIGH_TRANS, APPLE1_HIGH_TRANS}},
 
 };
 
@@ -802,6 +805,24 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 			} else {
 				line_to(gc, entry->sec, 0);
 			}
+		}
+		cairo_close_path(gc->cr);
+		cairo_fill(gc->cr);
+	}
+	/* finally, plot the calculated ceiling over all this */
+	if (prefs.profile_calc_ceiling) {
+		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+		pattern_add_color_stop_rgba (gc, pat, 0, CALC_CEILING_SHALLOW);
+		pattern_add_color_stop_rgba (gc, pat, 1, CALC_CEILING_DEEP);
+		cairo_set_source(gc->cr, pat);
+		cairo_pattern_destroy(pat);
+		entry = pi->entry;
+		move_to(gc, 0, 0);
+		for (i = 0; i < pi->nr; i++, entry++) {
+			if (entry->ceiling)
+				line_to(gc, entry->sec, entry->ceiling);
+			else
+				line_to(gc, entry->sec, 0);
 		}
 		cairo_close_path(gc->cr);
 		cairo_fill(gc->cr);
@@ -1539,9 +1560,13 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	struct plot_data *entry = NULL;
 	struct event *ev;
 	double amb_pressure, po2;
+	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
 
 	/* The plot-info is embedded in the graphics context */
 	pi = &gc->pi;
+
+	/* reset deco information to start the calculation */
+	init_decompression(dive);
 
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
@@ -1724,7 +1749,25 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 		current->pressure_time += (entry->sec - (entry-1)->sec) *
 			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
 		missing_pr |= !SENSOR_PRESSURE(entry);
+		/* and now let's try to do some deco calculations */
+		if (i > 0) {
+			int j;
+			int t0 = (entry - 1)->sec;
+			int t1 = entry->sec;
+			float ceiling_pressure = 0;
+			for (j = t0; j < t1; j++) {
+				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
+				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
+								&dive->cylinder[cylinderindex].gasmix, 1);
+				if (min_pressure > ceiling_pressure)
+					ceiling_pressure = min_pressure;
+			}
+			entry->ceiling = deco_allowed_depth(ceiling_pressure, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+		}
 	}
+#if DECO_CALC_DEBUG
+	dump_tissues();
+#endif
 
 	if (entry)
 		current->t_end = entry->sec;
@@ -1964,6 +2007,11 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		tempvalue = get_temp_units(temp, &temp_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\nT:%.1f %s", buf2, tempvalue, temp_unit);
+	}
+	if (entry->ceiling) {
+		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nCalculated ceiling %.0f %s", buf2, depthvalue, depth_unit);
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
