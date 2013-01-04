@@ -10,6 +10,7 @@
  * add_segment(pressure, gasmix, seconds) - add <seconds> at the given pressure, breathing gasmix
  * deco_allowed_depth(tissues_tolerance, surface_pressure, dive, smooth)
  *				- ceiling based on lead tissue, surface pressure, 3m increments or smooth
+ * set_gf(gflow, gfhigh) - set Buehlmann gradient factors
  */
 #include <math.h>
 #include "dive.h"
@@ -243,4 +244,12 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 	}
 
 	return depth;
+}
+
+void set_gf(double gflow, double gfhigh)
+{
+	if (gflow != -1.0)
+		buehlmann_config.gf_low = gflow;
+	if (gfhigh != -1.0)
+		buehlmann_config.gf_high = gfhigh;
 }

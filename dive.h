@@ -576,6 +576,7 @@ extern double add_segment(double pressure, struct gasmix *gasmix, int period_in_
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth);
+extern void set_gf(double gflow, double gfhigh);
 #ifdef DEBUGFILE
 extern char *debugfilename;
 extern FILE *debugfile;
