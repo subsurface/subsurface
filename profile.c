@@ -824,6 +824,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 			else
 				line_to(gc, entry->sec, 0);
 		}
+		line_to(gc, (entry-1)->sec, 0); /* make sure we end at 0 */
 		cairo_close_path(gc->cr);
 		cairo_fill(gc->cr);
 	}
