@@ -818,6 +818,83 @@ static int calculate_sac(struct dive *dive, struct divecomputer *dc)
 	return sac * 1000;
 }
 
+/* for now we do this based on the first divecomputer */
+static void add_dive_to_deco(struct dive *dive)
+{
+	struct divecomputer *dc = &dive->dc;
+	int i;
+
+	if (!dc)
+		return;
+	for (i = 1; i < dive->dc.samples; i++) {
+		struct sample *psample = dc->sample + i - 1;
+		struct sample *sample = dc->sample + i;
+		int t0 = psample->time.seconds;
+		int t1 = sample->time.seconds;
+		int j;
+
+		for (j = t0; j < t1; j++) {
+			int depth = 0.5 + psample->depth.mm + (j - t0) * (sample->depth.mm - psample->depth.mm) / (t1 - t0);
+			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0, &dive->cylinder[sample->sensor].gasmix, 1);
+		}
+	}
+}
+
+static struct gasmix air = { .o2.permille = 209 };
+
+/* take into account previous dives until there is a 48h gap between dives */
+void init_decompression(struct dive *dive)
+{
+	int i, divenr = -1;
+	timestamp_t when;
+	gboolean deco_init = FALSE;
+
+	if (!dive)
+		return;
+	while (++divenr < dive_table.nr && get_dive(divenr) != dive)
+		;
+	when = dive->when;
+	i = divenr;
+	while (--i) {
+		struct dive* pdive = get_dive(i);
+		if (!pdive || pdive->when > when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
+			break;
+		when = pdive->when;
+	}
+
+	while (++i < divenr) {
+		struct dive* pdive = get_dive(i);
+		double surface_pressure = pdive->surface_pressure.mbar ? pdive->surface_pressure.mbar / 1000.0 : 1.013;
+		unsigned int surface_time = get_dive(i+1)->when - pdive->when - pdive->duration.seconds;
+
+		if (!deco_init) {
+			clear_deco(surface_pressure);
+			deco_init = TRUE;
+#if DEBUG & 16
+			dump_tissues();
+#endif
+		}
+		add_dive_to_deco(pdive);
+#if DEBUG & 16
+		printf("added dive #%d\n", pdive->number);
+		dump_tissues();
+#endif
+		add_segment(surface_pressure, &air, surface_time);
+#if DEBUG & 16
+		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
+		dump_tissues();
+#endif
+	}
+	if (!deco_init) {
+		double surface_pressure = dive->surface_pressure.mbar ? dive->surface_pressure.mbar / 1000.0 : 1.013;
+		clear_deco(surface_pressure);
+#if DEBUG & 16
+		printf("no previous dive\n");
+		dump_tissues();
+#endif
+	}
+}
+
 void update_cylinder_related_info(struct dive *dive)
 {
 	if (dive != NULL) {

@@ -1566,7 +1566,8 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	pi = &gc->pi;
 
 	/* reset deco information to start the calculation */
-	clear_deco();
+	init_decompression(dive);
+
 	/* we want to potentially add synthetic plot_info elements for the gas changes */
 	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
 	if (last_pi_entry)
@@ -1756,13 +1757,17 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			float ceiling_pressure = 0;
 			for (j = t0; j < t1; j++) {
 				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
-				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0, &dive->cylinder[cylinderindex].gasmix);
+				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
+								&dive->cylinder[cylinderindex].gasmix, 1);
 				if (min_pressure > ceiling_pressure)
 					ceiling_pressure = min_pressure;
 			}
 			entry->ceiling = deco_allowed_depth(ceiling_pressure, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		}
 	}
+#if DECO_CALC_DEBUG
+	dump_tissues();
+#endif
 
 	if (entry)
 		current->t_end = entry->sec;

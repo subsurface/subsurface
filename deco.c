@@ -7,10 +7,11 @@
  * The implementation below is (C) Dirk Hohndel 2012 and released under the GPLv2
  *
  * clear_deco()  - call to initialize for a new deco calculation
- * add_segment(pressure, gasmix) - add 1 second at the given pressure, breathing gasmix
+ * add_segment(pressure, gasmix, seconds) - add <seconds> at the given pressure, breathing gasmix
  * deco_allowed_depth(tissues_tolerance, surface_pressure, dive, smooth)
  *				- ceiling based on lead tissue, surface pressure, 3m increments or smooth
  */
+#include <math.h>
 #include "dive.h"
 
 //! Option structure for Buehlmann decompression.
@@ -76,6 +77,7 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005};
 
 #define WV_PRESSURE 0.0627 /* water vapor pressure */
+#define N2_IN_AIR 0.7902
 #define DIST_FROM_3_MTR 0.28
 #define PRESSURE_CHANGE_3M 0.3
 #define TOLERANCE 0.02
@@ -145,32 +147,65 @@ static double tissue_tolerance_calc(void)
 }
 
 /* add a second at the given pressure and gas to the deco calculation */
-double add_segment(double pressure, struct gasmix *gasmix)
+double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds)
 {
 	int ci;
 	double ppn2 = (pressure - WV_PRESSURE) * (1000 - gasmix->o2.permille - gasmix->he.permille) / 1000.0;
 	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
 
-	divetime++;
 	/* right now we just do OC */
-	for (ci = 0; ci < 16; ci++) {
-		if (ppn2 - tissue_n2_sat[ci] > 0)
-			tissue_n2_sat[ci] += buehlmann_config.satmult * (ppn2 - tissue_n2_sat[ci]) * buehlmann_N2_factor_expositon_one_second[ci];
-		else
-			tissue_n2_sat[ci] += buehlmann_config.desatmult * (ppn2 - tissue_n2_sat[ci]) * buehlmann_N2_factor_expositon_one_second[ci];
-		if (pphe - tissue_he_sat[ci] > 0)
-			tissue_he_sat[ci] += buehlmann_config.satmult * (pphe - tissue_he_sat[ci]) * buehlmann_He_factor_expositon_one_second[ci];
-		else
-			tissue_he_sat[ci] += buehlmann_config.desatmult * (pphe - tissue_he_sat[ci]) * buehlmann_He_factor_expositon_one_second[ci];
+	if (period_in_seconds == 1) { /* that's what we do during the dive */
+		for (ci = 0; ci < 16; ci++) {
+			if (ppn2 - tissue_n2_sat[ci] > 0)
+				tissue_n2_sat[ci] += buehlmann_config.satmult * (ppn2 - tissue_n2_sat[ci]) *
+								buehlmann_N2_factor_expositon_one_second[ci];
+			else
+				tissue_n2_sat[ci] += buehlmann_config.desatmult * (ppn2 - tissue_n2_sat[ci]) *
+								buehlmann_N2_factor_expositon_one_second[ci];
+			if (pphe - tissue_he_sat[ci] > 0)
+				tissue_he_sat[ci] += buehlmann_config.satmult * (pphe - tissue_he_sat[ci]) *
+								buehlmann_He_factor_expositon_one_second[ci];
+			else
+				tissue_he_sat[ci] += buehlmann_config.desatmult * (pphe - tissue_he_sat[ci]) *
+								buehlmann_He_factor_expositon_one_second[ci];
+		}
+	} else { /* all other durations */
+		for (ci = 0; ci < 16; ci++)
+		{
+			if (ppn2 - tissue_n2_sat[ci] > 0)
+				tissue_n2_sat[ci] += buehlmann_config.satmult * (ppn2 - tissue_n2_sat[ci]) *
+					(1 - pow(2.0,(- period_in_seconds / (buehlmann_N2_t_halflife[ci] * 60))));
+			else
+				tissue_n2_sat[ci] += buehlmann_config.desatmult * (ppn2 - tissue_n2_sat[ci]) *
+					(1 - pow(2.0,(- period_in_seconds / (buehlmann_N2_t_halflife[ci] * 60))));
+			if (pphe - tissue_he_sat[ci] > 0)
+				tissue_he_sat[ci] += buehlmann_config.satmult * (pphe - tissue_he_sat[ci]) *
+					(1 - pow(2.0,(- period_in_seconds / (buehlmann_He_t_halflife[ci] * 60))));
+			else
+				tissue_he_sat[ci] += buehlmann_config.desatmult * (pphe - tissue_he_sat[ci]) *
+					(1 - pow(2.0,(- period_in_seconds / (buehlmann_He_t_halflife[ci] * 60))));
+		}
 	}
 	return tissue_tolerance_calc();
 }
 
-void clear_deco()
+void dump_tissues()
+{
+	int ci;
+	printf("N2 tissues:");
+	for (ci = 0; ci < 16; ci++)
+		printf(" %6.3e", tissue_n2_sat[ci]);
+	printf("\nHe tissues:");
+	for (ci = 0; ci < 16; ci++)
+		printf(" %6.3e", tissue_he_sat[ci]);
+	printf("\n");
+}
+
+void clear_deco(double surface_pressure)
 {
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
-		tissue_n2_sat[ci] = 0.0;
+		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR;
 		tissue_he_sat[ci] = 0.0;
 		tissue_tolerated_ambient_pressure[ci] = 0.0;
 	}
