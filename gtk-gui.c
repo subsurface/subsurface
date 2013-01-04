@@ -516,22 +516,30 @@ OPTIONCALLBACK(calc_ceiling_3m_toggle, prefs.calc_ceiling_3m_incr)
 OPTIONCALLBACK(force_toggle, force_download)
 OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
 
-static void gflow_edit(GtkWidget *w, gpointer _data)
+static gboolean gflow_edit(GtkWidget *w, GdkEvent *event, gpointer _data)
 {
 	double gflow;
 	const char *buf;
-	buf = gtk_entry_get_text(GTK_ENTRY(w));
-	sscanf(buf, "%lf", &gflow);
-	set_gf(prefs.gflow, -1.0);
+	if (event->type == GDK_FOCUS_CHANGE) {
+		buf = gtk_entry_get_text(GTK_ENTRY(w));
+		sscanf(buf, "%lf", &gflow);
+		set_gf(gflow / 100.0, -1.0);
+		update_screen();
+	}
+	return FALSE;
 }
 
-static void gfhigh_edit(GtkWidget *w, gpointer _data)
+static gboolean gfhigh_edit(GtkWidget *w, GdkEvent *event, gpointer _data)
 {
 	double gfhigh;
 	const char *buf;
-	buf = gtk_entry_get_text(GTK_ENTRY(w));
-	sscanf(buf, "%lf", &gfhigh);
-	set_gf(-1.0, prefs.gfhigh);
+	if (event->type == GDK_FOCUS_CHANGE) {
+		buf = gtk_entry_get_text(GTK_ENTRY(w));
+		sscanf(buf, "%lf", &gfhigh);
+		set_gf(-1.0, gfhigh / 100.0);
+		update_screen();
+	}
+	return FALSE;
 }
 
 static void event_toggle(GtkWidget *w, gpointer _data)
@@ -816,7 +824,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gflow);
 	gtk_entry_set_text(GTK_ENTRY(entry_gflow), threshold_text);
 	gtk_container_add(GTK_CONTAINER(frame), entry_gflow);
-	g_signal_connect(G_OBJECT(entry_gflow), "changed", G_CALLBACK(gflow_edit), NULL);
+	gtk_widget_add_events(entry_gflow, GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(G_OBJECT(entry_gflow), "event", G_CALLBACK(gflow_edit), NULL);
 
 	frame = gtk_frame_new(_("GFhigh"));
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
@@ -825,7 +834,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gfhigh);
 	gtk_entry_set_text(GTK_ENTRY(entry_gfhigh), threshold_text);
 	gtk_container_add(GTK_CONTAINER(frame), entry_gfhigh);
-	g_signal_connect(G_OBJECT(entry_gflow), "changed", G_CALLBACK(gfhigh_edit), NULL);
+	gtk_widget_add_events(entry_gfhigh, GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(G_OBJECT(entry_gfhigh), "event", G_CALLBACK(gfhigh_edit), NULL);
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -902,6 +912,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		subsurface_flush_conf();
 	} else if (result == GTK_RESPONSE_CANCEL) {
 		prefs = oldprefs;
+		set_gf(prefs.gflow, prefs.gfhigh);
+		update_screen();
 	}
 	free((void *)current_default);
 	gtk_widget_destroy(dialog);
