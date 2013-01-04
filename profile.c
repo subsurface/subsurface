@@ -1766,7 +1766,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->ceiling = deco_allowed_depth(ceiling_pressure, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		}
 	}
-#if DECO_CALC_DEBUG
+#if DECO_CALC_DEBUG & 1
 	dump_tissues();
 #endif
 

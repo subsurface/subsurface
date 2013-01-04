@@ -872,17 +872,17 @@ void init_decompression(struct dive *dive)
 		if (!deco_init) {
 			clear_deco(surface_pressure);
 			deco_init = TRUE;
-#if DEBUG & 16
+#if DECO_CALC_DEBUG & 2
 			dump_tissues();
 #endif
 		}
 		add_dive_to_deco(pdive);
-#if DEBUG & 16
+#if DECO_CALC_DEBUG & 2
 		printf("added dive #%d\n", pdive->number);
 		dump_tissues();
 #endif
 		add_segment(surface_pressure, &air, surface_time, 0.0);
-#if DEBUG & 16
+#if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
 		dump_tissues();
 #endif
@@ -890,7 +890,7 @@ void init_decompression(struct dive *dive)
 	if (!deco_init) {
 		double surface_pressure = dive->surface_pressure.mbar ? dive->surface_pressure.mbar / 1000.0 : 1.013;
 		clear_deco(surface_pressure);
-#if DEBUG & 16
+#if DECO_CALC_DEBUG & 2
 		printf("no previous dive\n");
 		dump_tissues();
 #endif
