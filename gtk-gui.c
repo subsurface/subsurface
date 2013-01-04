@@ -36,7 +36,7 @@ struct preferences prefs = {
 	SI_UNITS,
 	{ TRUE, FALSE, },
 	{ FALSE, FALSE, FALSE, 1.6, 4.0, 13.0},
-	FALSE, FALSE, FALSE, 30.0, 90.0
+	FALSE, FALSE, FALSE, 0.30, 0.75
 };
 
 struct dcnicknamelist {
@@ -821,7 +821,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
 	entry_gflow = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(entry_gflow), 4);
-	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gflow);
+	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gflow * 100);
 	gtk_entry_set_text(GTK_ENTRY(entry_gflow), threshold_text);
 	gtk_container_add(GTK_CONTAINER(frame), entry_gflow);
 	gtk_widget_add_events(entry_gflow, GDK_FOCUS_CHANGE_MASK);
@@ -831,7 +831,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
 	entry_gfhigh = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(entry_gfhigh), 4);
-	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gfhigh);
+	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gfhigh * 100);
 	gtk_entry_set_text(GTK_ENTRY(entry_gfhigh), threshold_text);
 	gtk_container_add(GTK_CONTAINER(frame), entry_gfhigh);
 	gtk_widget_add_events(entry_gfhigh, GDK_FOCUS_CHANGE_MASK);
@@ -858,6 +858,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		sscanf(gflow_text, "%lf", &prefs.gflow);
 		gfhigh_text = gtk_entry_get_text(GTK_ENTRY(entry_gfhigh));
 		sscanf(gfhigh_text, "%lf", &prefs.gfhigh);
+		prefs.gflow /= 100.0;
+		prefs.gfhigh /= 100.0;
 		set_gf(prefs.gflow, prefs.gfhigh);
 
 		update_screen();
@@ -1316,12 +1318,14 @@ void init_ui(int *argcp, char ***argvp)
 	conf_value = subsurface_get_conf("gflow", PREF_STRING);
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.gflow);
+		prefs.gflow /= 100.0;
 		set_gf(prefs.gflow, -1.0);
 		free((void *)conf_value);
 	}
 	conf_value = subsurface_get_conf("gfhigh", PREF_STRING);
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.gfhigh);
+		prefs.gfhigh /= 100.0;
 		set_gf(-1.0, prefs.gfhigh);
 		free((void *)conf_value);
 	}

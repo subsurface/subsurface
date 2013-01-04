@@ -1758,7 +1758,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			for (j = t0; j < t1; j++) {
 				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
 				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-								&dive->cylinder[cylinderindex].gasmix, 1);
+								&dive->cylinder[cylinderindex].gasmix, 1, entry->po2);
 				if (min_pressure > ceiling_pressure)
 					ceiling_pressure = min_pressure;
 			}

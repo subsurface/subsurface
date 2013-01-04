@@ -834,8 +834,10 @@ static void add_dive_to_deco(struct dive *dive)
 		int j;
 
 		for (j = t0; j < t1; j++) {
-			int depth = 0.5 + psample->depth.mm + (j - t0) * (sample->depth.mm - psample->depth.mm) / (t1 - t0);
-			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0, &dive->cylinder[sample->sensor].gasmix, 1);
+			int depth = 0.5 + psample->depth.mm + (j - t0) *
+					(sample->depth.mm - psample->depth.mm) / (t1 - t0);
+			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0,
+					&dive->cylinder[sample->sensor].gasmix, 1, sample->po2 / 1000.0);
 		}
 	}
 }
@@ -879,7 +881,7 @@ void init_decompression(struct dive *dive)
 		printf("added dive #%d\n", pdive->number);
 		dump_tissues();
 #endif
-		add_segment(surface_pressure, &air, surface_time);
+		add_segment(surface_pressure, &air, surface_time, 0.0);
 #if DEBUG & 16
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
 		dump_tissues();
