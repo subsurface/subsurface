@@ -1474,9 +1474,8 @@ static int count_gas_change_events(struct divecomputer *dc)
 	return count;
 }
 
-static void calculate_max_limits(struct dive *dive, struct graphics_context *gc)
+static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
-	struct divecomputer *dc;
 	struct plot_info *pi;
 	int maxdepth = 0;
 	int maxtime = 0;
@@ -1500,7 +1499,6 @@ static void calculate_max_limits(struct dive *dive, struct graphics_context *gc)
 	}
 
 	/* Then do all the samples from all the dive computers */
-	dc = &dive->dc;
 	do {
 		int i = dc->samples;
 		int lastdepth = 0;
@@ -1908,7 +1906,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	 * Set up limits that are independent of
 	 * the dive computer
 	 */
-	calculate_max_limits(dive, gc);
+	calculate_max_limits(dive, dc, gc);
 
 	/* shift the drawing area so we have a nice margin around it */
 	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
