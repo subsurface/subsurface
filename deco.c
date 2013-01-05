@@ -148,13 +148,14 @@ static double tissue_tolerance_calc(void)
 double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, double ccpo2)
 {
 	int ci;
-	double ppn2 = (pressure - WV_PRESSURE) * (1000 - gasmix->o2.permille - gasmix->he.permille) / 1000.0;
+	int fo2 = gasmix->o2.permille ? gasmix->o2.permille : 209;
+	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - gasmix->he.permille) / 1000.0;
 	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
 
 	if (ccpo2 > 0.0) { /* CC */
 		double rel_o2_amb, f_dilutent;
 		rel_o2_amb = ccpo2 / pressure;
-		f_dilutent = (1 - rel_o2_amb) / (1 - gasmix->o2.permille / 1000.0);
+		f_dilutent = (1 - rel_o2_amb) / (1 - fo2 / 1000.0);
 		if (f_dilutent < 0) { /* setpoint is higher than ambient pressure -> pure O2 */
 			ppn2 = 0.0;
 			pphe = 0.0;
