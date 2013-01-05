@@ -247,7 +247,10 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 	below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata));
 	while(!below_gradient_limit)
 	{
-		mydata.pressure += PRESSURE_CHANGE_3M;
+		if (!smooth)
+			mydata.pressure += PRESSURE_CHANGE_3M;
+		else
+			mydata.pressure += PRESSURE_CHANGE_3M / 30; /* 4in / 10cm instead */
 		new_gradient_factor = gradient_factor_calculation(&mydata);
 		below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata));
 	}
