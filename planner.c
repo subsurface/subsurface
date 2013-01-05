@@ -10,20 +10,6 @@
 
 int stoplevels[] = { 3000, 6000, 9000, 12000, 15000, 21000, 30000, 42000, 60000, 90000 };
 
-struct divedatapoint {
-	int time;
-	int depth;
-	int o2;
-	int he;
-	struct divedatapoint *next;
-};
-
-struct diveplan {
-	timestamp_t when;
-	int surface_pressure;
-	struct divedatapoint *dp;
-};
-
 /* returns the tissue tolerance at the end of this (partial) dive */
 double tissue_at_end(struct dive *dive)
 {
@@ -189,6 +175,8 @@ void plan(struct diveplan *diveplan)
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = 1013;
 	dive = create_dive_from_plan(diveplan);
+	if (!dive)
+		return;
 	record_dive(dive);
 
 	sample = &dive->dc.sample[dive->dc.samples - 1];

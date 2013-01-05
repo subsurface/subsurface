@@ -578,7 +578,23 @@ extern void dump_tissues(void);
 extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth);
 extern void set_gf(double gflow, double gfhigh);
 
+struct divedatapoint {
+	int time;
+	int depth;
+	int o2;
+	int he;
+	struct divedatapoint *next;
+};
+
+struct diveplan {
+	timestamp_t when;
+	int surface_pressure;
+	struct divedatapoint *dp;
+};
+
 extern void test_planner(void);
+void plan(struct diveplan *diveplan);
+void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he);
 
 #ifdef DEBUGFILE
 extern char *debugfilename;
