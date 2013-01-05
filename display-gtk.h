@@ -127,6 +127,7 @@ typedef gint (*sort_func_t)(GtkTreeModel *model,
 #define ALIGN_RIGHT 2
 #define INVISIBLE 4
 #define UNSORTABLE 8
+#define EDITABLE 16
 
 extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
 		data_func_t data_func, unsigned int flags);

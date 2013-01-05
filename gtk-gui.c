@@ -11,6 +11,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -401,6 +402,12 @@ GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char 
 
 	renderer = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new();
+
+	if (flags & EDITABLE) {
+		g_object_set(renderer, "editable", TRUE, NULL);
+		g_signal_connect(renderer, "edited", (GCallback) data_func, tree_view);
+		data_func = NULL;
+	}
 
 	gtk_tree_view_column_set_title(col, title);
 	if (!(flags & UNSORTABLE))
@@ -1122,27 +1129,231 @@ static void test_planner_cb(GtkWidget *w, gpointer data)
 	test_planner();
 }
 
-static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
+/*
+ * Get a value in tenths (so "10.2" == 102, "9" = 90)
+ *
+ * Return negative for errors.
+ */
+static int get_tenths(char *begin, char **end)
 {
-	GtkWidget *entry, *frame;
+	int value = strtol(begin, end, 10);
+	if (begin == *end)
+		return -1;
+	value *= 10;
 
-	frame = gtk_frame_new(label);
-	entry = gtk_entry_new();
-	gtk_container_add(GTK_CONTAINER(frame), entry);
-	gtk_entry_set_max_length(GTK_ENTRY(entry), 4);
-
-	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
-	return entry;
+	/* Fraction? We only look at the first digit */
+	if (**end == '.') {
+		++*end;
+		if (!isdigit(**end))
+			return -1;
+		value += **end - '0';
+		do {
+			++*end;
+		} while (isdigit(**end));
+	}
+	return value;
 }
 
-#define MAX_WAYPOINTS 8
+static int get_permille(char *begin, char **end)
+{
+	int value = get_tenths(begin, end);
+	if (value >= 0) {
+		/* Allow a percentage sign */
+		if (**end == '%')
+			++*end;
+	}
+	return value;
+}
+
+static int get_gas(char *text, int *o2_p, int *he_p)
+{
+	int o2, he;
+
+	while (isspace(*text))
+		text++;
+
+	if (!*text) {
+		o2 = AIR_PERMILLE; he = 0;
+	} else if (!strcasecmp(text, "air")) {
+		o2 = AIR_PERMILLE; he = 0; text += 3;
+	} else if (!strncasecmp(text, "ean", 3)) {
+		o2 = get_permille(text+3, &text); he = 0;
+	} else {
+		o2 = get_permille(text, &text); he = 0;
+		if (*text == '/')
+			he = get_permille(text+1, &text);
+	}
+
+	/* We don't want any extra crud */
+	while (isspace(*text))
+		text++;
+	if (*text)
+		return 0;
+
+	/* Validate the gas mix */
+	if (*text || o2 < 1 || o2 > 1000 || he < 0 || o2+he > 1000)
+		return 0;
+
+	/* Let it rip */
+	*o2_p = o2;
+	*he_p = he;
+	return 1;
+}
+
+static void plan_gas_cb(GtkCellRendererText *cell, gchar *path, gchar *text, gpointer user_data)
+{
+	GtkTreeView *view = user_data;
+	GtkTreeModel *model = gtk_tree_view_get_model(view);
+	GtkTreeIter iter;
+	int o2, he;
+
+	/* Get the tree store iterator */
+	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
+		return;
+
+	/* Verify that it's an acceptable gas */
+	if (!get_gas(text, &o2, &he))
+		return;
+
+	/* Ok, looks fine, accept the string */
+	gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, text, -1);
+}
+
+static int validate_time(char *text, int *sec_p, int *rel_p)
+{
+	int min, sec, rel;
+	char *end;
+
+	while (isspace(*text))
+		text++;
+
+	rel = 0;
+	if (*text == '+') {
+		rel = 1;
+		text++;
+		while (isspace(*text))
+			text++;
+	}
+
+	min = strtol(text, &end, 10);
+	if (text == end)
+		return 0;
+
+	if (min < 0 || min > 1000)
+		return 0;
+
+	/* Ok, minutes look ok */
+	text = end;
+	sec = 0;
+	if (*text == ':') {
+		text++;
+		sec = strtol(text, &end, 10);
+		if (end != text+2)
+			return 0;
+		if (sec < 0)
+			return 0;
+		text = end;
+		if (*text == ':') {
+			if (sec >= 60)
+				return 0;
+			min = min*60 + sec;
+			text++;
+			sec = strtol(text, &end, 10);
+			if (end != text+2)
+				return 0;
+			if (sec < 0)
+				return 0;
+			text = end;
+		}
+	}
+
+	/* Maybe we should accept 'min' at the end? */
+	if (isspace(*text))
+		text++;
+	if (*text)
+		return 0;
+
+	*sec_p = min*60 + sec;
+	*rel_p = rel;
+	return 1;
+}
+
+static void plan_time_cb(GtkCellRendererText *cell, gchar *path, gchar *text, gpointer user_data)
+{
+	GtkTreeView *view = user_data;
+	GtkTreeModel *model = gtk_tree_view_get_model(view);
+	GtkTreeIter iter;
+	int relative, seconds;
+
+	/* Get the tree store iterator */
+	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
+		return;
+
+	/* Verify that it's an acceptable time */
+	if (!validate_time(text, &seconds, &relative))
+		return;
+
+	/* Ok, looks fine, accept the string */
+	gtk_list_store_set(GTK_LIST_STORE(model), &iter, 0, text, -1);
+}
+
+static int validate_depth(char *text, int *mm_p)
+{
+	int depth, imperial;
+
+	depth = get_tenths(text, &text);
+	if (depth < 0)
+		return 0;
+
+	while (isspace(*text))
+		text++;
+
+	imperial = get_output_units()->length == FEET;
+	if (*text == 'm') {
+		imperial = 0;
+		text++;
+	} else if (!strcasecmp(text, "ft")) {
+		imperial = 1;
+		text += 2;
+	}
+	while (isspace(*text))
+		text++;
+	if (*text)
+		return 0;
+
+	if (imperial) {
+		depth = feet_to_mm(depth / 10.0);
+	} else {
+		depth *= 100;
+	}
+	*mm_p = depth;
+	return 1;
+}
+
+static void plan_depth_cb(GtkCellRendererText *cell, gchar *path, gchar *text, gpointer user_data)
+{
+	GtkTreeView *view = user_data;
+	GtkTreeModel *model = gtk_tree_view_get_model(view);
+	GtkTreeIter iter;
+	int mm;
+
+	if (!validate_depth(text, &mm))
+		return;
+
+	/* Get the tree store iterator */
+	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
+		return;
+
+	/* Ok, looks fine, accept the string */
+	gtk_list_store_set(GTK_LIST_STORE(model), &iter, 1, text, -1);
+}
+
 
 void input_plan()
 {
-	int i;
-	GtkWidget *planner, *content, *notebook, *innervbox, *hbox;
-	GtkWidget *entry_o2[MAX_CYLINDERS], *entry_he[MAX_CYLINDERS], *entry_po2[MAX_CYLINDERS];
-	GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS];
+	GtkWidget *planner, *container, *view;
+	GtkListStore *store;
+	GtkTreeIter iter;
 
 	planner = gtk_dialog_new_with_buttons(_("Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"),
 					GTK_WINDOW(main_window),
@@ -1151,31 +1362,24 @@ void input_plan()
 					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					NULL);
 
-	content = gtk_dialog_get_content_area (GTK_DIALOG (planner));
-	notebook = gtk_notebook_new();
-	gtk_container_add (GTK_CONTAINER (content), notebook);
-	innervbox = gtk_vbox_new(FALSE, 6);
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), innervbox,
-				gtk_label_new(_("Gases available")));
+	container = gtk_dialog_get_content_area(GTK_DIALOG(planner));
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		hbox = gtk_hbox_new(FALSE, 6);
-		gtk_box_pack_start(GTK_BOX(innervbox), hbox, FALSE, FALSE, 3);
-		entry_o2[i] = add_entry_to_box(hbox, _("O2"));
-		entry_he[i] = add_entry_to_box(hbox, _("He"));
-		entry_po2[i] = add_entry_to_box(hbox, _("pO2"));
-	}
-	innervbox = gtk_vbox_new(FALSE, 6);
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), innervbox,
-				gtk_label_new(_("Waypoints")));
+	store = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_list_store_append(store, &iter);
+	gtk_list_store_set(store, &iter,
+		0, "7:30",
+		1, "100 ft",
+		2, "20/30",
+		-1);
 
-	for (i = 0; i < MAX_WAYPOINTS; i++) {
-		hbox = gtk_hbox_new(FALSE, 6);
-		gtk_box_pack_start(GTK_BOX(innervbox), hbox, FALSE, FALSE, 3);
-		entry_depth[i] = add_entry_to_box(hbox, _("Ending Depth"));
-		entry_duration[i] = add_entry_to_box(hbox, _("Segment Duration"));
-		entry_gas[i] = add_entry_to_box(hbox, _("Gas Used"));
-	}
+	view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
+	g_object_unref(store);
+
+	tree_view_column(view, 0, "Time", (data_func_t) plan_time_cb, EDITABLE);
+	tree_view_column(view, 1, "Depth", (data_func_t) plan_depth_cb, EDITABLE);
+	tree_view_column(view, 2, "Gas", (data_func_t) plan_gas_cb, EDITABLE);
+
+	gtk_container_add(GTK_CONTAINER(container), view);
 
 	gtk_widget_show_all(planner);
 	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
