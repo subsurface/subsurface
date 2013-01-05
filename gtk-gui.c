@@ -1122,6 +1122,68 @@ static void test_planner_cb(GtkWidget *w, gpointer data)
 	test_planner();
 }
 
+static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
+{
+	GtkWidget *entry, *frame;
+
+	frame = gtk_frame_new(label);
+	entry = gtk_entry_new();
+	gtk_container_add(GTK_CONTAINER(frame), entry);
+	gtk_entry_set_max_length(GTK_ENTRY(entry), 4);
+
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
+	return entry;
+}
+
+#define MAX_WAYPOINTS 8
+
+void input_plan()
+{
+	int i;
+	GtkWidget *planner, *content, *notebook, *innervbox, *hbox;
+	GtkWidget *entry_o2[MAX_CYLINDERS], *entry_he[MAX_CYLINDERS], *entry_po2[MAX_CYLINDERS];
+	GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS];
+
+	planner = gtk_dialog_new_with_buttons(_("Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"),
+					GTK_WINDOW(main_window),
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					NULL);
+
+	content = gtk_dialog_get_content_area (GTK_DIALOG (planner));
+	notebook = gtk_notebook_new();
+	gtk_container_add (GTK_CONTAINER (content), notebook);
+	innervbox = gtk_vbox_new(FALSE, 6);
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), innervbox,
+				gtk_label_new(_("Gases available")));
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		hbox = gtk_hbox_new(FALSE, 6);
+		gtk_box_pack_start(GTK_BOX(innervbox), hbox, FALSE, FALSE, 3);
+		entry_o2[i] = add_entry_to_box(hbox, _("O2"));
+		entry_he[i] = add_entry_to_box(hbox, _("He"));
+		entry_po2[i] = add_entry_to_box(hbox, _("pO2"));
+	}
+	innervbox = gtk_vbox_new(FALSE, 6);
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), innervbox,
+				gtk_label_new(_("Waypoints")));
+
+	for (i = 0; i < MAX_WAYPOINTS; i++) {
+		hbox = gtk_hbox_new(FALSE, 6);
+		gtk_box_pack_start(GTK_BOX(innervbox), hbox, FALSE, FALSE, 3);
+		entry_depth[i] = add_entry_to_box(hbox, _("Ending Depth"));
+		entry_duration[i] = add_entry_to_box(hbox, _("Segment Duration"));
+		entry_gas[i] = add_entry_to_box(hbox, _("Gas Used"));
+	}
+
+	gtk_widget_show_all(planner);
+	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
+		// run plan
+	}
+	gtk_widget_destroy(planner);
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", NULL, N_("File"), NULL, NULL, NULL},
 	{ "LogMenuAction",  NULL, N_("Log"), NULL, NULL, NULL},
@@ -1150,7 +1212,8 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewThree",      NULL, N_("Three"), CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
 	{ "PrevDC",         NULL, N_("Prev DC"), NULL, NULL, G_CALLBACK(prev_dc) },
 	{ "NextDC",         NULL, N_("Next DC"), NULL, NULL, G_CALLBACK(next_dc) },
-	{ "TestPlan", NULL, N_("Test Planner"), NULL, NULL, G_CALLBACK(test_planner_cb) }
+	{ "TestPlan",       NULL, N_("Test Planner"), NULL, NULL, G_CALLBACK(test_planner_cb) },
+	{ "InputPlan",      NULL, N_("Input Plan"), NULL, NULL, G_CALLBACK(input_plan) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -1201,6 +1264,7 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"PlannerMenu\" action=\"PlannerMenuAction\"> \
 				<menuitem name=\"TestPlan\" action=\"TestPlan\" /> \
+				<menuitem name=\"InputPlan\" action=\"InputPlan\" /> \
 			</menu> \
 			<menu name=\"Help\" action=\"HelpMenuAction\"> \
 				<menuitem name=\"About\" action=\"About\" /> \
