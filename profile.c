@@ -1755,15 +1755,15 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			int j;
 			int t0 = (entry - 1)->sec;
 			int t1 = entry->sec;
-			float ceiling_pressure = 0;
+			double tissue_tolerance = 0;
 			for (j = t0; j < t1; j++) {
 				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
 				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 								&dive->cylinder[cylinderindex].gasmix, 1, entry->po2);
-				if (min_pressure > ceiling_pressure)
-					ceiling_pressure = min_pressure;
+				if (min_pressure > tissue_tolerance)
+					tissue_tolerance = min_pressure;
 			}
-			entry->ceiling = deco_allowed_depth(ceiling_pressure, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		}
 	}
 #if DECO_CALC_DEBUG & 1

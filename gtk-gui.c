@@ -1117,11 +1117,17 @@ static void next_dc(GtkWidget *w, gpointer data)
 	repaint_dive();
 }
 
+static void test_planner_cb(GtkWidget *w, gpointer data)
+{
+	test_planner();
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", NULL, N_("File"), NULL, NULL, NULL},
 	{ "LogMenuAction",  NULL, N_("Log"), NULL, NULL, NULL},
 	{ "ViewMenuAction",  NULL, N_("View"), NULL, NULL, NULL},
 	{ "FilterMenuAction",  NULL, N_("Filter"), NULL, NULL, NULL},
+	{ "PlannerMenuAction",  NULL, N_("Planner"), NULL, NULL, NULL},
 	{ "HelpMenuAction", NULL, N_("Help"), NULL, NULL, NULL},
 	{ "NewFile",        GTK_STOCK_NEW, N_("New"),   CTRLCHAR "N", NULL, G_CALLBACK(file_close) },
 	{ "OpenFile",       GTK_STOCK_OPEN, N_("Open..."),   CTRLCHAR "O", NULL, G_CALLBACK(file_open) },
@@ -1144,6 +1150,7 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewThree",      NULL, N_("Three"), CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
 	{ "PrevDC",         NULL, N_("Prev DC"), NULL, NULL, G_CALLBACK(prev_dc) },
 	{ "NextDC",         NULL, N_("Next DC"), NULL, NULL, G_CALLBACK(next_dc) },
+	{ "TestPlan", NULL, N_("Test Planner"), NULL, NULL, G_CALLBACK(test_planner_cb) }
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
@@ -1191,6 +1198,9 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"FilterMenu\" action=\"FilterMenuAction\"> \
 				<menuitem name=\"SelectEvents\" action=\"SelectEvents\" /> \
+			</menu> \
+			<menu name=\"PlannerMenu\" action=\"PlannerMenuAction\"> \
+				<menuitem name=\"TestPlan\" action=\"TestPlan\" /> \
 			</menu> \
 			<menu name=\"Help\" action=\"HelpMenuAction\"> \
 				<menuitem name=\"About\" action=\"About\" /> \

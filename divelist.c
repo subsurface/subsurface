@@ -845,14 +845,15 @@ static void add_dive_to_deco(struct dive *dive)
 static struct gasmix air = { .o2.permille = 209 };
 
 /* take into account previous dives until there is a 48h gap between dives */
-void init_decompression(struct dive *dive)
+double init_decompression(struct dive *dive)
 {
 	int i, divenr = -1;
 	timestamp_t when;
 	gboolean deco_init = FALSE;
+	double tissue_tolerance;
 
 	if (!dive)
-		return;
+		return 0.0;
 	while (++divenr < dive_table.nr && get_dive(divenr) != dive)
 		;
 	when = dive->when;
@@ -881,7 +882,7 @@ void init_decompression(struct dive *dive)
 		printf("added dive #%d\n", pdive->number);
 		dump_tissues();
 #endif
-		add_segment(surface_pressure, &air, surface_time, 0.0);
+		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
 		dump_tissues();
@@ -895,6 +896,7 @@ void init_decompression(struct dive *dive)
 		dump_tissues();
 #endif
 	}
+	return tissue_tolerance;
 }
 
 void update_cylinder_related_info(struct dive *dive)

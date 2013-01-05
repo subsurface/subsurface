@@ -15,5 +15,5 @@ extern void remember_tree_state(void);
 extern void restore_tree_state(void);
 extern void select_next_dive(void);
 extern void select_prev_dive(void);
-extern void init_decompression(struct dive * dive);
+extern double init_decompression(struct dive * dive);
 #endif
