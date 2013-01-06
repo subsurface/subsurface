@@ -1130,22 +1130,6 @@ static void test_planner_cb(GtkWidget *w, gpointer data)
 	test_planner();
 }
 
-static void check_last_not_empty(GtkTreeModel *model, GtkTreeIter *iter, const char *text)
-{
-	/* We only add a new empty entry if the current one isn't empty.. */
-	while (isspace(*text))
-		text++;
-	if (!*text)
-		return;
-
-	/* Is there a 'next' entry? */
-	if (gtk_tree_model_iter_next(model, iter))
-		return;
-
-	/* Ok, let's add a new empty entry at the end, then.. */
-	gtk_list_store_append(GTK_LIST_STORE(model), iter);
-}
-
 /*
  * Get a value in tenths (so "10.2" == 102, "9" = 90)
  *
@@ -1220,26 +1204,6 @@ static int validate_gas(char *text, int *o2_p, int *he_p)
 	return 1;
 }
 
-static void plan_gas_cb(GtkCellRendererText *cell, gchar *path, gchar *text, gpointer user_data)
-{
-	GtkTreeView *view = user_data;
-	GtkTreeModel *model = gtk_tree_view_get_model(view);
-	GtkTreeIter iter;
-	int o2, he;
-
-	/* Get the tree store iterator */
-	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
-		return;
-
-	/* Verify that it's an acceptable gas */
-	if (!validate_gas(text, &o2, &he))
-		return;
-
-	/* Ok, looks fine, accept the string */
-	gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, text, -1);
-	check_last_not_empty(model, &iter, text);
-}
-
 static int validate_time(char *text, int *sec_p, int *rel_p)
 {
 	int min, sec, rel;
@@ -1302,26 +1266,6 @@ static int validate_time(char *text, int *sec_p, int *rel_p)
 	return 1;
 }
 
-static void plan_time_cb(GtkCellRendererText *cell, gchar *path, gchar *text, gpointer user_data)
-{
-	GtkTreeView *view = user_data;
-	GtkTreeModel *model = gtk_tree_view_get_model(view);
-	GtkTreeIter iter;
-	int relative, seconds;
-
-	/* Get the tree store iterator */
-	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
-		return;
-
-	/* Verify that it's an acceptable time */
-	if (!validate_time(text, &seconds, &relative))
-		return;
-
-	/* Ok, looks fine, accept the string */
-	gtk_list_store_set(GTK_LIST_STORE(model), &iter, 0, text, -1);
-	check_last_not_empty(model, &iter, text);
-}
-
 static int validate_depth(char *text, int *mm_p)
 {
 	int depth, imperial;
@@ -1357,102 +1301,6 @@ static int validate_depth(char *text, int *mm_p)
 	*mm_p = depth;
 	return 1;
 }
-
-static void plan_depth_cb(GtkCellRendererText *cell, gchar *path, gchar *text, gpointer user_data)
-{
-	GtkTreeView *view = user_data;
-	GtkTreeModel *model = gtk_tree_view_get_model(view);
-	GtkTreeIter iter;
-	int mm;
-
-	if (!validate_depth(text, &mm))
-		return;
-
-	/* Get the tree store iterator */
-	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
-		return;
-
-	/* Ok, looks fine, accept the string */
-	gtk_list_store_set(GTK_LIST_STORE(model), &iter, 1, text, -1);
-	check_last_not_empty(model, &iter, text);
-}
-
-static void run_diveplan(GtkListStore *store)
-{
-	GtkTreeModel *model = GTK_TREE_MODEL(store);
-	struct diveplan diveplan = {};
-	struct timeval tv;
-	GtkTreeIter iter;
-	int ok;
-	int lasttime = 0;
-
-	gettimeofday(&tv, NULL);
-	diveplan.when = tv.tv_sec;
-	diveplan.surface_pressure = 1013;
-
-	ok = gtk_tree_model_get_iter_first(model, &iter);
-	while (ok) {
-		gchar *time, *depth, *gas;
-		int sec, rel, mm, o2, he;
-
-		gtk_tree_model_get(model, &iter,
-			0, &time,
-			1, &depth,
-			2, &gas,
-			-1);
-		if (!validate_time(time, &sec, &rel))
-			goto next;
-		if (rel)
-			sec += lasttime;
-		if (!validate_depth(depth, &mm))
-			goto next;
-		if (!validate_gas(gas, &o2, &he))
-			goto next;
-
-		plan_add_segment(&diveplan, sec, mm, o2, he);
-next:
-		lasttime = sec;
-		g_free(time); g_free(depth); g_free(gas);
-		ok = gtk_tree_model_iter_next(model, &iter);
-	}
-	plan(&diveplan);
-}
-
-void input_plan_linus()
-{
-	GtkWidget *planner, *container, *view;
-	GtkListStore *store;
-	GtkTreeIter iter;
-
-	planner = gtk_dialog_new_with_buttons(_("Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"),
-					GTK_WINDOW(main_window),
-					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					NULL);
-
-	container = gtk_dialog_get_content_area(GTK_DIALOG(planner));
-
-	store = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-	/* We always have an empty entry at the end */
-	gtk_list_store_append(store, &iter);
-
-	view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
-	g_object_unref(store);
-
-	tree_view_column(view, 0, "Time", (data_func_t) plan_time_cb, EDITABLE);
-	tree_view_column(view, 1, "Depth", (data_func_t) plan_depth_cb, EDITABLE);
-	tree_view_column(view, 2, "Gas", (data_func_t) plan_gas_cb, EDITABLE);
-
-	gtk_container_add(GTK_CONTAINER(container), view);
-
-	gtk_widget_show_all(planner);
-	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
-		run_diveplan(store);
-	}
-	gtk_widget_destroy(planner);
-}
-
 
 static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
 {
