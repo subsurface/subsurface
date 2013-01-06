@@ -1461,19 +1461,6 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
 }
 
-/* for computers that track gas changes through events */
-static int count_gas_change_events(struct divecomputer *dc)
-{
-	int count = 0;
-	struct event *ev = get_next_event(dc->events, "gaschange");
-
-	while (ev) {
-		count++;
-		ev = get_next_event(ev->next, "gaschange");
-	}
-	return count;
-}
-
 static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
@@ -1539,6 +1526,98 @@ static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, str
 	pi->maxtemp = maxtemp;
 }
 
+/* Average between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
+static int average_depth(int a, int b, int part, int whole)
+{
+	double x;
+
+	x = (a * (whole - part) + b * part) / whole;
+	return rint(x);
+}
+
+static struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+{
+	int idx, maxtime, nr, i;
+	int lastdepth, lasttime;
+	struct plot_data *plot_data;
+
+	maxtime = get_maxtime(pi);
+	if (dive->end > 0)
+		maxtime = dive->end;
+
+	/*
+	 * We want to have a plot_info event at least every 10s (so "maxtime/10"),
+	 * but samples could be more dense than that (so add in dc->samples), and
+	 * additionally we want two surface events around the whole thing (thus the
+	 * additional 4).
+	 */
+	nr = dc->samples + 4 + maxtime / 10;
+	plot_data = calloc(nr, sizeof(struct plot_data));
+	pi->entry = plot_data;
+	if (!plot_data)
+		return NULL;
+	pi->nr = nr;
+	idx = 2; /* the two extra events at the start */
+
+	lastdepth = 0;
+	lasttime = 0;
+	for (i = 0; i < dc->samples; i++) {
+		struct plot_data *entry = plot_data + idx;
+		struct sample *sample = dc->sample+i;
+		int time = sample->time.seconds;
+		int depth = sample->depth.mm;
+		int offset, delta;
+
+		/* Add intermediate plot entries if required */
+		delta = time - lasttime;
+		for (offset = 10; offset < delta; offset += 10) {
+			if (lasttime + offset > maxtime)
+				break;
+
+			/* Use the data from the previous plot entry */
+			*entry = entry[-1];
+
+			/* .. but update depth and time, obviously */
+			entry->sec = lasttime + offset;
+			entry->depth = average_depth(lastdepth, depth, offset, delta);
+
+			/* And clear out the sensor pressure, since we'll interpolate */
+			SENSOR_PRESSURE(entry) = 0;
+
+			idx++; entry++;
+		}
+
+		if (time > maxtime)
+			break;
+
+		entry->sec = time;
+		entry->depth = depth;
+
+		entry->stopdepth = sample->stopdepth.mm;
+		entry->stoptime = sample->stoptime.seconds;
+		entry->ndl = sample->ndl.seconds;
+		pi->has_ndl |= sample->ndl.seconds;
+		entry->in_deco = sample->in_deco;
+		entry->cns = sample->cns;
+		entry->po2 = sample->po2 / 1000.0;
+		/* FIXME! sensor index -> cylinder index translation! */
+		entry->cylinderindex = sample->sensor;
+		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
+		entry->temperature = sample->temperature.mkelvin;
+
+		lasttime = time;
+		lastdepth = depth;
+		idx++;
+	}
+
+	/* Add two final surface events */
+	plot_data[idx++].sec = lasttime+10;
+	plot_data[idx++].sec = lasttime+20;
+	pi->nr = idx;
+
+	return plot_data;
+}
+
 /*
  * Create a plot-info with smoothing and ranged min/max
  *
@@ -1549,16 +1628,13 @@ static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, str
 static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	int cylinderindex = -1;
-	int lastdepth, lastindex;
-	int i, pi_idx, nr, sec, cyl, stoptime, ndl, stopdepth, cns;
-	gboolean in_deco;
+	int i, nr, cyl;
 	struct plot_info *pi;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *pr_track, *current;
 	gboolean missing_pr = FALSE;
 	struct plot_data *entry = NULL;
-	struct event *ev;
-	double amb_pressure, po2;
+	double amb_pressure;
 	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
 
 	/* The plot-info is embedded in the graphics context */
@@ -1567,128 +1643,15 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	/* reset deco information to start the calculation */
 	init_decompression(dive);
 
-	/* we want to potentially add synthetic plot_info elements for the gas changes */
-	nr = dc->samples + 4 + 2 * count_gas_change_events(dc);
+	/* Create the new plot data */
 	if (last_pi_entry)
 		free((void *)last_pi_entry);
-	last_pi_entry = pi->entry = calloc(nr, sizeof(struct plot_data));
-	if (!pi->entry)
-		return NULL;
-	pi->nr = nr;
-	pi_idx = 2; /* the two extra events at the start */
-	/* check for gas changes before the samples start */
-	ev = get_next_event(dc->events, "gaschange");
-	while (ev && ev->time.seconds < dc->sample->time.seconds) {
-		entry = pi->entry + pi_idx;
-		entry->sec = ev->time.seconds;
-		entry->depth = 0; /* is that always correct ? */
-		pi_idx++;
-		ev = get_next_event(ev->next, "gaschange");
-	}
-	if (ev && ev->time.seconds == dc->sample->time.seconds) {
-		/* we already have a sample at the time of the event */
-		ev = get_next_event(ev->next, "gaschange");
-	}
-	sec = 0;
-	lastindex = 0;
-	lastdepth = -1;
-	for (i = 0; i < dc->samples; i++) {
-		int depth;
-		int delay = 0;
-		struct sample *sample = dc->sample+i;
+	last_pi_entry = populate_plot_entries(dive, dc, pi);
 
-		if ((dive->start > -1 && sample->time.seconds < dive->start) ||
-		    (dive->end > -1 && sample->time.seconds > dive->end)) {
-			pi_idx--;
-			continue;
-		}
-		entry = pi->entry + i + pi_idx;
-		in_deco = sample->in_deco;
-		ndl = sample->ndl.seconds;
-		pi->has_ndl |= ndl;
-		stopdepth = sample->stopdepth.mm;
-		stoptime = sample->stoptime.seconds;
-		po2 = sample->po2 / 1000.0;
-		cns = sample->cns;
-		while (ev && ev->time.seconds < sample->time.seconds) {
-			/* insert two fake plot info structures for the end of
-			 * the old tank and the start of the new tank */
-			if (ev->time.seconds == sample->time.seconds - 1) {
-				entry->sec = ev->time.seconds - 1;
-				(entry+1)->sec = ev->time.seconds;
-			} else {
-				entry->sec = ev->time.seconds;
-				(entry+1)->sec = ev->time.seconds + 1;
-			}
-			/* we need a fake depth - let's interpolate */
-			if (i) {
-				entry->depth = sample->depth.mm -
-					(sample->depth.mm - (sample-1)->depth.mm) / 2;
-			} else
-				entry->depth = sample->depth.mm;
-			(entry + 1)->depth = entry->depth;
-			entry->stopdepth = stopdepth;
-			entry->stoptime = stoptime;
-			entry->ndl = ndl;
-			entry->cns = cns;
-			entry->po2 = po2;
-			entry->in_deco = in_deco;
-			(entry + 1)->stopdepth = stopdepth;
-			(entry + 1)->stoptime = stoptime;
-			(entry + 1)->ndl = ndl;
-			(entry + 1)->in_deco = in_deco;
-			(entry + 1)->cns = cns;
-			(entry + 1)->po2 = po2;
-			pi_idx += 2;
-			entry = pi->entry + i + pi_idx;
-			ev = get_next_event(ev->next, "gaschange");
-		}
-		if (ev && ev->time.seconds == sample->time.seconds) {
-			/* we already have a sample at the time of the event
-			 * just add a new one for the old tank and delay the
-			 * real even by one second (to keep time monotonous) */
-			entry->sec = ev->time.seconds;
-			entry->depth = sample->depth.mm;
-			entry->stopdepth = stopdepth;
-			entry->stoptime = stoptime;
-			entry->ndl = ndl;
-			entry->in_deco = in_deco;
-			entry->cns = cns;
-			entry->po2 = po2;
-			pi_idx++;
-			entry = pi->entry + i + pi_idx;
-			ev = get_next_event(ev->next, "gaschange");
-			delay = 1;
-		}
-		sec = entry->sec = sample->time.seconds + delay;
-		depth = entry->depth = sample->depth.mm;
-		entry->stopdepth = stopdepth;
-		entry->stoptime = stoptime;
-		entry->ndl = ndl;
-		entry->in_deco = in_deco;
-		entry->cns = cns;
-		entry->po2 = po2;
-		/* FIXME! sensor index -> cylinder index translation! */
-		entry->cylinderindex = sample->sensor;
-		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
-		entry->temperature = sample->temperature.mkelvin;
-
-		if (depth || lastdepth)
-			lastindex = i + pi_idx;
-
-		lastdepth = depth;
-	}
-	entry = pi->entry + i + pi_idx;
-	/* are there still unprocessed gas changes? that would be very strange */
-	while (ev) {
-		entry->sec = ev->time.seconds;
-		entry->depth = 0; /* why are there gas changes after the dive is over? */
-		pi_idx++;
-		entry = pi->entry + i + pi_idx;
-		ev = get_next_event(ev->next, "gaschange");
-	}
-	nr = dc->samples + pi_idx - 2;
+	/* Populate the gas index from the gas change events */
 	check_gas_change_events(dive, dc, pi);
+
+	nr = pi->nr-2;
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
 		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
@@ -1778,24 +1741,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			pr_track->end = pr;
 		}
 	}
-	/* Fill in the last two entries with empty values but valid times
-	 * without creating a false cylinder change event */
-	i = nr + 2;
-	pi->entry[i].sec = sec + 20;
-	pi->entry[i].same_cylinder = 1;
-	pi->entry[i].cylinderindex = pi->entry[i-1].cylinderindex;
-	INTERPOLATED_PRESSURE(pi->entry + i) = GET_PRESSURE(pi->entry + i - 1);
-	amb_pressure = depth_to_mbar(pi->entry[i - 1].depth, dive) / 1000.0;
-	pi->entry[i].po2 = pi->entry[i-1].po2 / amb_pressure;
-	pi->entry[i].phe = pi->entry[i-1].phe / amb_pressure;
-	pi->entry[i].pn2 = 1.01325 - pi->entry[i].po2 - pi->entry[i].phe;
-	pi->entry[i+1].sec = sec + 40;
-	pi->entry[i+1].same_cylinder = 1;
-	pi->entry[i+1].cylinderindex = pi->entry[i-1].cylinderindex;
-	INTERPOLATED_PRESSURE(pi->entry + i + 1) = GET_PRESSURE(pi->entry + i - 1);
-	pi->entry[i+1].po2 = pi->entry[i].po2;
-	pi->entry[i+1].phe = pi->entry[i].phe;
-	pi->entry[i+1].pn2 = pi->entry[i].pn2;
 	/* make sure the first two pi entries have a sane po2 / phe / pn2 */
 	amb_pressure = depth_to_mbar(pi->entry[2].depth, dive) / 1000.0;
 	if (pi->entry[1].po2 < 0.01)
@@ -1809,13 +1754,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	if (pi->entry[0].phe < 0.01)
 		pi->entry[0].phe = pi->entry[1].phe / amb_pressure;
 	pi->entry[0].pn2 = 1.01325 - pi->entry[0].po2 - pi->entry[0].phe;
-
-	/* the number of actual entries - some computers have lots of
-	 * depth 0 samples at the end of a dive, we want to make sure
-	 * we have exactly one of them at the end */
-	pi->nr = lastindex+1;
-	while (pi->nr <= i+2 && pi->entry[pi->nr-1].depth > 0)
-		pi->nr++;
 
 	pi->meandepth = dive->meandepth.mm;
 
