@@ -95,6 +95,7 @@ extern void update_progressbar(progressbar_t *progress, double value);
 extern void update_progressbar_text(progressbar_t *progress, const char *text);
 
 extern GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget **h, GtkWidget **m);
+extern void add_string_list_entry(const char *string, GtkListStore *list);
 
 extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);

@@ -1470,12 +1470,27 @@ static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
 #define MAX_WAYPOINTS 8
 GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS];
 int nr_waypoints = 0;
+static GtkListStore *gas_model = NULL;
+
+static gboolean gas_changed_cb(GtkComboBox *combo, GdkEventKey *event, gpointer data)
+{
+	char *gastext;
+	int o2, he;
+	GtkWidget *entry;
+
+	if (event->type == GDK_KEY_PRESS && event->keyval == GDK_Tab) {
+		entry = gtk_bin_get_child(GTK_BIN(combo));
+		gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+		if (validate_gas(gastext, &o2, &he))
+			add_string_list_entry(gastext, gas_model);
+		free(gastext);
+	}
+	return FALSE;
+}
 
 static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
 {
-	static GtkListStore *gas_model = NULL;
 	GtkWidget *frame, *combo;
-	GtkTreeIter iter;
 	GtkEntryCompletion *completion;
 	GtkEntry *entry;
 
@@ -1484,14 +1499,14 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
 
 	if (!gas_model) {
 		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
-		gtk_list_store_append(gas_model, &iter);
-		gtk_list_store_set(gas_model, &iter, 0, "air", -1);
-		gtk_list_store_append(gas_model, &iter);
-		gtk_list_store_set(gas_model, &iter, 0, "EAN32", -1);
-		gtk_list_store_append(gas_model, &iter);
-		gtk_list_store_set(gas_model, &iter, 0, "EAN36 @ 1.6", -1);
+		add_string_list_entry("AIR", gas_model);
+		add_string_list_entry("EAN32", gas_model);
+		add_string_list_entry("EAN36 @ 1.6", gas_model);
 	}
 	combo = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(gas_model), 0);
+	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(G_OBJECT(combo), "event", G_CALLBACK(gas_changed_cb), NULL);
+
 	gtk_container_add(GTK_CONTAINER(frame), combo);
 	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo)));
 
@@ -1588,13 +1603,15 @@ void input_plan()
 				duration -= lasttime;
 			entry = gtk_bin_get_child(GTK_BIN(entry_gas[i]));
 			gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
-			// still need to add pO2
 			if (!validate_gas(gastext, &o2, &he)) {
 				// mark error and redo?
 				free(gastext);
 				continue;
 			}
-			// still need to add pO2
+			/* just in case this didn't get added by the callback */
+			add_string_list_entry(gastext, gas_model);
+
+			// still need to handle desired pO2 and a setpoint (for CC)
 
 			if (duration == 0)
 				break;

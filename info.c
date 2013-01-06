@@ -352,7 +352,7 @@ static int match_list(GtkListStore *list, const char *string)
 	return found_string_entry;
 }
 
-static void add_string_list_entry(const char *string, GtkListStore *list)
+void add_string_list_entry(const char *string, GtkListStore *list)
 {
 	GtkTreeIter *iter, loc;
 
