@@ -1527,7 +1527,7 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 		nr_waypoints++;
 		ovbox = gtk_widget_get_parent(GTK_WIDGET(button));
 		dialog = gtk_widget_get_parent(ovbox);
-		gtk_widget_queue_draw(dialog);
+		gtk_widget_show_all(dialog);
 	} else {
 		// some error
 	}
