@@ -1458,12 +1458,15 @@ static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
 {
 	GtkWidget *entry, *frame;
 
-	frame = gtk_frame_new(label);
 	entry = gtk_entry_new();
-	gtk_container_add(GTK_CONTAINER(frame), entry);
-	gtk_entry_set_max_length(GTK_ENTRY(entry), 12);
-
-	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
+	gtk_entry_set_max_length(GTK_ENTRY(entry), 16);
+	if (label) {
+		frame = gtk_frame_new(label);
+		gtk_container_add(GTK_CONTAINER(frame), entry);
+		gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
+	} else {
+		gtk_box_pack_start(GTK_BOX(box), entry, FALSE, FALSE, 2);
+	}
 	return entry;
 }
 
@@ -1494,9 +1497,6 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
 	GtkEntryCompletion *completion;
 	GtkEntry *entry;
 
-	frame = gtk_frame_new(label);
-	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
-
 	if (!gas_model) {
 		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
 		add_string_list_entry("AIR", gas_model);
@@ -1507,9 +1507,14 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(G_OBJECT(combo), "event", G_CALLBACK(gas_changed_cb), NULL);
 
-	gtk_container_add(GTK_CONTAINER(frame), combo);
+	if (label) {
+		frame = gtk_frame_new(label);
+		gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
+		gtk_container_add(GTK_CONTAINER(frame), combo);
+	} else {
+		gtk_box_pack_start(GTK_BOX(box), combo, FALSE, FALSE, 2);
+	}
 	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo)));
-
 	completion = gtk_entry_completion_new();
 	gtk_entry_completion_set_text_column(completion, 0);
 	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(gas_model));
@@ -1526,11 +1531,17 @@ static void add_waypoint_widgets(GtkWidget *box, int idx)
 {
 	GtkWidget *hbox;
 
-	hbox = gtk_hbox_new(FALSE, 6);
-	gtk_box_pack_start(GTK_BOX(box), hbox, TRUE, FALSE, 1);
-	entry_depth[idx] = add_entry_to_box(hbox, _("Ending Depth"));
-	entry_duration[idx] = add_entry_to_box(hbox, _("Segment Time (abs or +rel)"));
-	entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"));
+	hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, FALSE, 0);
+	if (idx == 0) {
+		entry_depth[idx] = add_entry_to_box(hbox, _("Ending Depth"));
+		entry_duration[idx] = add_entry_to_box(hbox, _("Segment Time"));
+		entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"));
+	} else {
+		entry_depth[idx] = add_entry_to_box(hbox, NULL);
+		entry_duration[idx] = add_entry_to_box(hbox, NULL);
+		entry_gas[idx] = add_gas_combobox_to_box(hbox, NULL);
+	}
 }
 
 static void add_waypoint_cb(GtkButton *button, gpointer _data)
@@ -1564,8 +1575,8 @@ void input_plan()
 	content = gtk_dialog_get_content_area (GTK_DIALOG (planner));
 	outervbox = gtk_vbox_new(FALSE, 2);
 	gtk_container_add (GTK_CONTAINER (content), outervbox);
-	vbox = gtk_vbox_new(TRUE, 2);
-	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 2);
+	vbox = gtk_vbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 0);
 	deltat = add_entry_to_box(vbox, _("Dive starts in how many minutes?"));
 	nr_waypoints = 4;
 	add_waypoint_widgets(vbox, 0);
@@ -1574,7 +1585,7 @@ void input_plan()
 	add_waypoint_widgets(vbox, 3);
 	add_row = gtk_button_new_with_label(_("Add waypoint"));
 	g_signal_connect(G_OBJECT(add_row), "clicked", G_CALLBACK(add_waypoint_cb), vbox);
-	gtk_box_pack_start(GTK_BOX(outervbox), add_row, FALSE, FALSE, 2);
+	gtk_box_pack_start(GTK_BOX(outervbox), add_row, FALSE, FALSE, 0);
 	gtk_widget_show_all(planner);
 	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
 		int i;
