@@ -1475,19 +1475,15 @@ GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_ga
 int nr_waypoints = 0;
 static GtkListStore *gas_model = NULL;
 
-static gboolean gas_changed_cb(GtkComboBox *combo, GdkEventKey *event, gpointer data)
+static gboolean gas_focus_out_cb(GtkWidget *entry, gpointer data)
 {
 	char *gastext;
 	int o2, he;
-	GtkWidget *entry;
 
-	if (event->type == GDK_KEY_PRESS && event->keyval == GDK_Tab) {
-		entry = gtk_bin_get_child(GTK_BIN(combo));
-		gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
-		if (validate_gas(gastext, &o2, &he))
-			add_string_list_entry(gastext, gas_model);
-		free(gastext);
-	}
+	gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	if (validate_gas(gastext, &o2, &he))
+		add_string_list_entry(gastext, gas_model);
+	free(gastext);
 	return FALSE;
 }
 
@@ -1505,7 +1501,7 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
 	}
 	combo = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(gas_model), 0);
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
-	g_signal_connect(G_OBJECT(combo), "event", G_CALLBACK(gas_changed_cb), NULL);
+	g_signal_connect(gtk_bin_get_child(GTK_BIN(combo)), "focus-out-event", G_CALLBACK(gas_focus_out_cb), NULL);
 
 	if (label) {
 		frame = gtk_frame_new(label);
