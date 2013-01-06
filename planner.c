@@ -11,7 +11,7 @@
 int stoplevels[] = { 3000, 6000, 9000, 12000, 15000, 21000, 30000, 42000, 60000, 90000 };
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-double tissue_at_end(struct dive *dive)
+double tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -20,11 +20,15 @@ double tissue_at_end(struct dive *dive)
 
 	if (!dive)
 		return 0.0;
-	tissue_tolerance = init_decompression(dive);
-
+	if (*cached_datap) {
+		tissue_tolerance = restore_deco_state(*cached_datap);
+	} else {
+		tissue_tolerance = init_decompression(dive);
+		cache_deco_state(tissue_tolerance, cached_datap);
+	}
 	dc = &dive->dc;
 	if (!dc->samples)
-		return 0.0;
+		return tissue_tolerance;
 	psample = sample = dc->sample;
 	t0 = 0;
 	for (i = 0; i < dc->samples; i++, sample++) {
@@ -41,7 +45,7 @@ double tissue_at_end(struct dive *dive)
 }
 
 /* how many seconds until we can ascend to the next stop? */
-int time_at_last_depth(struct dive *dive, int next_stop)
+int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 {
 	int depth;
 	double surface_pressure, tissue_tolerance;
@@ -51,7 +55,7 @@ int time_at_last_depth(struct dive *dive, int next_stop)
 	if (!dive)
 		return 0;
 	surface_pressure = dive->surface_pressure.mbar / 1000.0;
-	tissue_tolerance = tissue_at_end(dive);
+	tissue_tolerance = tissue_at_end(dive, cached_data_p);
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
@@ -171,6 +175,7 @@ void plan(struct diveplan *diveplan)
 	int ceiling, depth, transitiontime;
 	int stopidx;
 	double tissue_tolerance;
+	char *cached_data = NULL;
 
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = 1013;
@@ -183,7 +188,7 @@ void plan(struct diveplan *diveplan)
 	o2 = dive->cylinder[sample->sensor].gasmix.o2.permille;
 	he = dive->cylinder[sample->sensor].gasmix.he.permille;
 
-	tissue_tolerance = tissue_at_end(dive);
+	tissue_tolerance = tissue_at_end(dive, &cached_data);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
 
 	for (stopidx = 0; stopidx < sizeof(stoplevels) / sizeof(int); stopidx++)
@@ -200,7 +205,7 @@ void plan(struct diveplan *diveplan)
 			dive = create_dive_from_plan(diveplan);
 			record_dive(dive);
 		}
-		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1]);
+		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], &cached_data);
 		if (wait_time)
 			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he);
 		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
@@ -212,6 +217,7 @@ void plan(struct diveplan *diveplan)
 		stopidx--;
 	}
 	/* now make the dive visible as last dive of the dive list */
+	free(cached_data);
 	report_dives(FALSE, FALSE);
 }
 

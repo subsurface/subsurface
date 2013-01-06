@@ -11,8 +11,11 @@
  * deco_allowed_depth(tissues_tolerance, surface_pressure, dive, smooth)
  *				- ceiling based on lead tissue, surface pressure, 3m increments or smooth
  * set_gf(gflow, gfhigh) - set Buehlmann gradient factors
+ * void cache_deco_state(tissue_tolerance, char **datap) - cache the relevant data allocate memory if needed
+ * double restore_deco_state(char *data) - restore the state and return the tissue_tolerance
  */
 #include <math.h>
+#include <string.h>
 #include "dive.h"
 
 //! Option structure for Buehlmann decompression.
@@ -88,6 +91,7 @@ double tissue_he_sat[16];
 double tissue_tolerated_ambient_pressure[16];
 int ci_pointing_to_guiding_tissue;
 double gf_low_position_this_dive;
+#define TISSUE_ARRAY_SZ sizeof(tissue_n2_sat)
 
 static double actual_gradient_limit(const struct dive_data *data)
 {
@@ -220,6 +224,46 @@ void clear_deco(double surface_pressure)
 		tissue_tolerated_ambient_pressure[ci] = 0.0;
 	}
 	gf_low_position_this_dive = buehlmann_config.gf_low_position_min;
+}
+
+void cache_deco_state(double tissue_tolerance, char **cached_datap)
+{
+	char *data = *cached_datap;
+
+	if (!data) {
+		data = malloc(3 * TISSUE_ARRAY_SZ + 2 * sizeof(double) + sizeof(int));
+		*cached_datap = data;
+	}
+	memcpy(data, tissue_n2_sat, TISSUE_ARRAY_SZ);
+	data += TISSUE_ARRAY_SZ;
+	memcpy(data, tissue_he_sat, TISSUE_ARRAY_SZ);
+	data += TISSUE_ARRAY_SZ;
+	memcpy(data, tissue_tolerated_ambient_pressure, TISSUE_ARRAY_SZ);
+	data += TISSUE_ARRAY_SZ;
+	memcpy(data, &gf_low_position_this_dive, sizeof(double));
+	data += sizeof(double);
+	memcpy(data, &tissue_tolerance, sizeof(double));
+	data += sizeof(double);
+	memcpy(data, &ci_pointing_to_guiding_tissue, sizeof(int));
+}
+
+double restore_deco_state(char *data)
+{
+	double tissue_tolerance;
+
+	memcpy(tissue_n2_sat, data, TISSUE_ARRAY_SZ);
+	data += TISSUE_ARRAY_SZ;
+	memcpy(tissue_he_sat, data, TISSUE_ARRAY_SZ);
+	data += TISSUE_ARRAY_SZ;
+	memcpy(tissue_tolerated_ambient_pressure, data, TISSUE_ARRAY_SZ);
+	data += TISSUE_ARRAY_SZ;
+	memcpy(&gf_low_position_this_dive, data, sizeof(double));
+	data += sizeof(double);
+	memcpy(&tissue_tolerance, data, sizeof(double));
+	data += sizeof(double);
+	memcpy(&ci_pointing_to_guiding_tissue, data, sizeof(int));
+
+	return tissue_tolerance;
 }
 
 unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth)
