@@ -1418,7 +1418,7 @@ next:
 	plan(&diveplan);
 }
 
-void input_plan()
+void input_plan_linus()
 {
 	GtkWidget *planner, *container, *view;
 	GtkListStore *store;
@@ -1450,6 +1450,162 @@ void input_plan()
 	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
 		run_diveplan(store);
 	}
+	gtk_widget_destroy(planner);
+}
+
+
+static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
+{
+	GtkWidget *entry, *frame;
+
+	frame = gtk_frame_new(label);
+	entry = gtk_entry_new();
+	gtk_container_add(GTK_CONTAINER(frame), entry);
+	gtk_entry_set_max_length(GTK_ENTRY(entry), 12);
+
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
+	return entry;
+}
+
+#define MAX_WAYPOINTS 8
+GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS];
+int nr_waypoints = 0;
+
+static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
+{
+	static GtkListStore *gas_model = NULL;
+	GtkWidget *frame, *combo;
+	GtkTreeIter iter;
+	GtkEntryCompletion *completion;
+	GtkEntry *entry;
+
+	frame = gtk_frame_new(label);
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
+
+	if (!gas_model) {
+		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
+		gtk_list_store_append(gas_model, &iter);
+		gtk_list_store_set(gas_model, &iter, 0, "air", -1);
+		gtk_list_store_append(gas_model, &iter);
+		gtk_list_store_set(gas_model, &iter, 0, "EAN32", -1);
+		gtk_list_store_append(gas_model, &iter);
+		gtk_list_store_set(gas_model, &iter, 0, "EAN36 @ 1.6", -1);
+	}
+	combo = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(gas_model), 0);
+	gtk_container_add(GTK_CONTAINER(frame), combo);
+	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo)));
+
+	completion = gtk_entry_completion_new();
+	gtk_entry_completion_set_text_column(completion, 0);
+	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(gas_model));
+	gtk_entry_completion_set_inline_completion(completion, TRUE);
+	gtk_entry_completion_set_inline_selection(completion, TRUE);
+	gtk_entry_completion_set_popup_single_match(completion, FALSE);
+	gtk_entry_set_completion(entry, completion);
+	g_object_unref(completion);
+
+	return combo;
+}
+
+static void add_waypoint_widgets(GtkWidget *box, int idx)
+{
+	GtkWidget *hbox;
+
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(box), hbox, TRUE, FALSE, 1);
+	entry_depth[idx] = add_entry_to_box(hbox, _("Ending Depth"));
+	entry_duration[idx] = add_entry_to_box(hbox, _("Segment Time (abs or +rel)"));
+	entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"));
+}
+
+static void add_waypoint_cb(GtkButton *button, gpointer _data)
+{
+	GtkWidget *vbox = _data;
+	if (nr_waypoints < MAX_WAYPOINTS) {
+		GtkWidget *ovbox, *dialog;
+		add_waypoint_widgets(vbox, nr_waypoints);
+		nr_waypoints++;
+		ovbox = gtk_widget_get_parent(GTK_WIDGET(button));
+		dialog = gtk_widget_get_parent(ovbox);
+		gtk_widget_queue_draw(dialog);
+	} else {
+		// some error
+	}
+}
+
+void input_plan()
+{
+	GtkWidget *planner, *content, *vbox, *outervbox, *add_row, *deltat;
+	int lasttime = 0;
+	struct diveplan diveplan = {};
+
+	planner = gtk_dialog_new_with_buttons(_("Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"),
+					GTK_WINDOW(main_window),
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					NULL);
+
+	content = gtk_dialog_get_content_area (GTK_DIALOG (planner));
+	outervbox = gtk_vbox_new(FALSE, 2);
+	gtk_container_add (GTK_CONTAINER (content), outervbox);
+	vbox = gtk_vbox_new(TRUE, 2);
+	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 2);
+	deltat = add_entry_to_box(vbox, _("Dive starts in how many minutes?"));
+	nr_waypoints = 4;
+	add_waypoint_widgets(vbox, 0);
+	add_waypoint_widgets(vbox, 1);
+	add_waypoint_widgets(vbox, 2);
+	add_waypoint_widgets(vbox, 3);
+	add_row = gtk_button_new_with_label(_("Add waypoint"));
+	g_signal_connect(G_OBJECT(add_row), "clicked", G_CALLBACK(add_waypoint_cb), vbox);
+	gtk_box_pack_start(GTK_BOX(outervbox), add_row, FALSE, FALSE, 2);
+	gtk_widget_show_all(planner);
+	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
+		int i;
+		const char *deltattext;
+
+		deltattext = gtk_entry_get_text(GTK_ENTRY(deltat));
+		diveplan.when = time(NULL) + 60 * atoi(deltattext);
+		for (i = 0; i < nr_waypoints; i++) {
+			char *depthtext, *durationtext, *gastext;
+			int depth, duration, o2, he, is_rel;
+			GtkWidget *entry;
+
+			depthtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry_depth[i])));
+			if (!validate_depth(depthtext, &depth)) {
+				// mark error and redo?
+				free(depthtext);
+				continue;
+			}
+			durationtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry_duration[i])));
+			if (!validate_time(durationtext, &duration, &is_rel)) {
+				// mark error and redo?
+				free(durationtext);
+				continue;
+			}
+			if (!is_rel)
+				duration -= lasttime;
+			entry = gtk_bin_get_child(GTK_BIN(entry_gas[i]));
+			gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+			// still need to add pO2
+			if (!validate_gas(gastext, &o2, &he)) {
+				// mark error and redo?
+				free(gastext);
+				continue;
+			}
+			// still need to add pO2
+
+			if (duration == 0)
+				break;
+			plan_add_segment(&diveplan, duration, depth, o2, he);
+			lasttime += duration;
+			free(depthtext);
+			free(durationtext);
+			free(gastext);
+		}
+	}
+	plan(&diveplan);
 	gtk_widget_destroy(planner);
 }
 
