@@ -388,6 +388,38 @@ static void print_cns (struct dive *dive, cairo_t *cr, int maxwidth, int maxheig
 	g_object_unref (layout);
 }
 
+/* Print the SAC */
+static void print_SAC (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight, PangoFontDescription *font)
+{
+	double sac;
+	int decimals;
+	const char *unit;
+	char buffer[20];
+	PangoLayout *layout;
+
+	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_width(layout, maxwidth);
+	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
+	snprintf(buffer, sizeof(buffer), _("SAC"));
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	cairo_move_to (cr, maxwidth / (3 * (double) PANGO_SCALE), 0);
+	/* Need to change the width, and align because of the size of units string */
+	pango_layout_set_width(layout, 3*maxwidth/4);
+	pango_layout_set_alignment(layout, PANGO_ALIGN_CENTER);
+	sac = get_volume_units(dive->sac, &decimals, &unit);
+	snprintf(buffer, sizeof(buffer), "%.*f %s/min",
+			decimals,
+			sac,
+			unit);
+	pango_layout_set_text(layout, buffer, -1);
+	pango_cairo_show_layout(cr, layout);
+	g_object_unref (layout);
+}
+
 /*
  * Show the tanks used in the dive, the mix, and the gas consumed
  * as pressures are shown in the plot. And other data if we used
@@ -397,6 +429,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 	double h, PangoFontDescription *font)
 {
 	int maxwidth, maxheight, height, tank_count;
+	double line_height, line_width;
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
@@ -439,22 +472,28 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 		cairo_translate (cr, -w, -height / (6 * (double) PANGO_SCALE));
 	} else {
 		/* Plot a grid for the data */
-		cairo_move_to(cr, 3*w/2, h*0.02);
-		cairo_line_to (cr, 3*w/2, h*0.97);
-		cairo_move_to (cr, w, ((h * 0.9)/4) + (h*0.05));
-		cairo_line_to (cr, 3*w/2, ((h * 0.9)/4) + (h*0.05));
-		cairo_move_to (cr, w, ((h * 0.9)*2/4) + (h*0.05));
-		cairo_line_to (cr, 3*w/2, ((h * 0.9)*2/4) + (h*0.05));
+		line_height = h * 0.90 / 4;
+		line_width = w / 2;
+		cairo_move_to(cr, 3 * line_width, h * 0.02);
+		cairo_line_to (cr, 3 * line_width, h * 0.97);
+		cairo_move_to (cr, w, line_height + (h * 0.05));
+		cairo_line_to (cr, 3 * line_width, line_height + (h * 0.05));
+		cairo_move_to (cr, w, 2 * line_height + (h * 0.05));
+		cairo_line_to (cr, 3 * line_width, 2 * line_height + (h * 0.05));
+		cairo_move_to (cr, w, 3 * line_height + (h * 0.05));
+		cairo_line_to (cr, 3 * line_width, 3 * line_height + (h * 0.05));
 		cairo_stroke (cr);
 		/* and print OTUs, CNS and weight */
-		cairo_translate (cr, (3.05*w/2), height / (6 * (double) PANGO_SCALE));
+		cairo_translate (cr, (3.05 * line_width), height / (6 * (double) PANGO_SCALE));
 		print_weight_data (dive, cr, maxwidth * 0.90/2 , maxheight, maxheight / 2, font);
-		cairo_translate (cr, -(3.05*w/2), -height / (6 * (double) PANGO_SCALE));
+		cairo_translate (cr, -(3.05 * line_width), -height / (6 * (double) PANGO_SCALE));
 		cairo_translate (cr, w, 0);
-		print_otus (dive, cr, maxwidth * 0.90/2, maxheight, font);
-		cairo_translate (cr, 0, h/4);
+		print_SAC (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		cairo_translate (cr, 0, line_height);
 		print_cns (dive, cr, maxwidth * 0.90/2, maxheight, font);
-		cairo_translate (cr, -w, -h/4);
+		cairo_translate (cr,0, line_height);
+		print_otus (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		cairo_translate (cr, -w, -2 * line_height);
 	}
 }
 
