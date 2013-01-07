@@ -1264,7 +1264,7 @@ struct pr_track_struct {
 	int end;
 	int t_start;
 	int t_end;
-	double pressure_time;
+	int pressure_time;
 	pr_track_t *next;
 };
 
@@ -1274,7 +1274,7 @@ static pr_track_t *pr_track_alloc(int start, int t_start) {
 	pt->t_start = t_start;
 	pt->end = 0;
 	pt->t_end = 0;
-	pt->pressure_time = 0.0;
+	pt->pressure_time = 0;
 	pt->next = NULL;
 	return pt;
 }
@@ -1316,7 +1316,7 @@ static void dump_pr_track(pr_track_t **track_pr)
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		list = track_pr[cyl];
 		while (list) {
-			printf("cyl%d: start %d end %d t_start %d t_end %d pt %6.3f\n", cyl,
+			printf("cyl%d: start %d end %d t_start %d t_end %d pt %d\n", cyl,
 				list->start, list->end, list->t_start, list->t_end, list->pressure_time);
 			list = list->next;
 		}
@@ -1346,7 +1346,7 @@ static void fill_missing_segment_pressures(pr_track_t *list)
 	while (list) {
 		int start = list->start, end;
 		pr_track_t *tmp = list;
-		double pt_sum = 0.0, pt = 0.0;
+		int pt_sum = 0, pt = 0;
 
 		for (;;) {
 			pt_sum += tmp->pressure_time;
@@ -1377,7 +1377,7 @@ static void fill_missing_segment_pressures(pr_track_t *list)
 			pt += list->pressure_time;
 			pressure = start;
 			if (pt_sum)
-				pressure -= (start-end)*pt/pt_sum;
+				pressure -= (start-end)*(double)pt/pt_sum;
 			list->end = pressure;
 			if (list == tmp)
 				break;
@@ -1401,7 +1401,7 @@ static void fill_missing_segment_pressures(pr_track_t *list)
  * scale pressures, so it ends up being a unitless scaling
  * factor.
  */
-static inline double pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
+static inline int pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
 {
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth)/2;
@@ -1451,7 +1451,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		}
 
 		/* Overall pressure change over total pressure-time for this segment*/
-		magic = (segment->end - segment->start) / segment->pressure_time;
+		magic = (segment->end - segment->start) / (double) segment->pressure_time;
 
 		/* Use that overall pressure change to update the current pressure */
 		cur_pt = pressure_time(dive, entry-1, entry);
