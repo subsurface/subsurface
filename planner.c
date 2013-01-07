@@ -124,10 +124,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct dive *dive;
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
-	struct sample *sample;
-	int gasused = 0;
-	int t = 0;
-	int lastdepth = 0;
+	int oldo2 = AIR_PERMILLE, oldhe = 0;
 
 	if (!diveplan || !diveplan->dp)
 		return NULL;
@@ -137,35 +134,39 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	dc = &dive->dc;
 	dc->model = "Simulated Dive";
 	dp = diveplan->dp;
-	/* let's start with the gas given on the first segment */
-	if(dp)
-		add_gas(dive, dp->o2, dp->he);
-	while (dp && dp->time) {
-		int i, depth;
 
-		if (dp->o2 != dive->cylinder[gasused].gasmix.o2.permille ||
-		    dp->he != dive->cylinder[gasused].gasmix.he.permille) {
-			int value;
-			gasused = add_gas(dive, dp->o2, dp->he);
-			value = dp->o2 / 10 | (dp->he / 10) << 16;
-			add_event(dc, dp->time, 11, 0, value, "gaschange");
+	/* let's start with the gas given on the first segment */
+	if (dp->o2 || dp->he) {
+		oldo2 = dp->o2;
+		oldhe = dp->he;
+	}
+	add_gas(dive, oldo2, oldhe);
+	while (dp) {
+		int o2 = dp->o2, he = dp->he;
+		int time = dp->time;
+		int depth = dp->depth;
+		struct sample *sample;
+
+		if (!o2 && !he) {
+			o2 = oldo2;
+			he = oldhe;
 		}
-		for (i = t; i < dp->time; i += 10) {
-			depth = lastdepth + (i - t) * (dp->depth - lastdepth) / (dp->time - t);
-			sample = prepare_sample(dc);
-			sample->time.seconds = i;
-			sample->depth.mm = depth;
-			sample->sensor = gasused;
-			dc->samples++;
+
+		/* Create new gas, and gas change event if necessary */
+		if (o2 != oldo2 || he != oldhe) {
+			int value = (o2 / 10) | (he / 10 << 16);
+			add_gas(dive, o2, he);
+			add_event(dc, time, 11, 0, value, "gaschange");
+			oldo2 = o2; oldhe = he;
 		}
+
+		/* Create sample */
 		sample = prepare_sample(dc);
-		sample->time.seconds = dp->time;
-		sample->depth.mm = dp->depth;
-		sample->sensor = gasused;
-		lastdepth = dp->depth;
-		t = dp->time;
+		sample->time.seconds = time;
+		sample->depth.mm = depth;
+		finish_sample(dc);
+
 		dp = dp->next;
-		dc->samples++;
 	}
 	if (dc->samples == 0) {
 		/* not enough there yet to create a dive - most likely the first time is missing */
@@ -233,13 +234,8 @@ void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth)
 void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he)
 {
 	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
-	if (o2 > 206 && o2 < 213 && he == 0) {
-		/* we treat air in a special case */
-		dp->o2 = dp->he = 0;
-	} else {
-		dp->o2 = o2;
-		dp->he = he;
-	}
+	dp->o2 = o2;
+	dp->he = he;
 }
 void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
@@ -322,27 +318,30 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
  *
  * Return negative for errors.
  */
-static int get_tenths(char *begin, char **end)
+static int get_tenths(const char *begin, const char **endp)
 {
-	int value = strtol(begin, end, 10);
-	if (begin == *end)
+	char *end;
+	int value = strtol(begin, &end, 10);
+
+	*endp = end;
+	if (begin == end)
 		return -1;
 	value *= 10;
 
 	/* Fraction? We only look at the first digit */
-	if (**end == '.') {
+	if (*end == '.') {
 		++*end;
-		if (!isdigit(**end))
+		if (!isdigit(*end))
 			return -1;
-		value += **end - '0';
+		value += *end - '0';
 		do {
 			++*end;
-		} while (isdigit(**end));
+		} while (isdigit(*end));
 	}
 	return value;
 }
 
-static int get_permille(char *begin, char **end)
+static int get_permille(const char *begin, const char **end)
 {
 	int value = get_tenths(begin, end);
 	if (value >= 0) {
@@ -353,7 +352,7 @@ static int get_permille(char *begin, char **end)
 	return value;
 }
 
-static int validate_gas(char *text, int *o2_p, int *he_p)
+static int validate_gas(const char *text, int *o2_p, int *he_p)
 {
 	int o2, he;
 
@@ -363,9 +362,10 @@ static int validate_gas(char *text, int *o2_p, int *he_p)
 	while (isspace(*text))
 		text++;
 
-	if (!*text) {
-		o2 = AIR_PERMILLE; he = 0;
-	} else if (!strcasecmp(text, "air")) {
+	if (!*text)
+		return 0;
+
+	if (!strcasecmp(text, "air")) {
 		o2 = AIR_PERMILLE; he = 0; text += 3;
 	} else if (!strncasecmp(text, "ean", 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
@@ -391,7 +391,7 @@ static int validate_gas(char *text, int *o2_p, int *he_p)
 	return 1;
 }
 
-static int validate_time(char *text, int *sec_p, int *rel_p)
+static int validate_time(const char *text, int *sec_p, int *rel_p)
 {
 	int min, sec, rel;
 	char *end;
@@ -453,7 +453,7 @@ static int validate_time(char *text, int *sec_p, int *rel_p)
 	return 1;
 }
 
-static int validate_depth(char *text, int *mm_p)
+static int validate_depth(const char *text, int *mm_p)
 {
 	int depth, imperial;
 
@@ -542,48 +542,43 @@ void show_planned_dive(void)
 
 static gboolean gas_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer data)
 {
-	char *gastext;
+	const char *gastext;
 	int o2, he;
 	int idx = data - NULL;
 
-	gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
-	if (validate_gas(gastext, &o2, &he)) {
+	gastext = gtk_entry_get_text(GTK_ENTRY(entry));
+	o2 = he = 0;
+	if (validate_gas(gastext, &o2, &he))
 		add_string_list_entry(gastext, gas_model);
-		add_gas_to_nth_dp(&diveplan, idx, o2, he);
-		show_planned_dive();
-	} else {
-		/* we need to instead change the color of the input field or something */
-		printf("invalid gas for row %d\n",idx);
-	}
-	free(gastext);
+	add_gas_to_nth_dp(&diveplan, idx, o2, he);
+	show_planned_dive();
 	return FALSE;
 }
 
 static void gas_changed_cb(GtkWidget *combo, gpointer data)
 {
-	char *gastext;
+	const char *gastext;
 	int o2, he;
 	int idx = data - NULL;
 
-	gastext = strdup(gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo)));
-	if (validate_gas(gastext, &o2, &he)) {
-		add_gas_to_nth_dp(&diveplan, idx, o2, he);
-		show_planned_dive();
-	} else {
+	gastext = gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo));
+	o2 = he = 0;
+	if (!validate_gas(gastext, &o2, &he)) {
 		/* this should never happen as only validated texts should be
 		 * in the dropdown */
 		printf("invalid gas for row %d\n",idx);
 	}
-	free(gastext);
+	add_gas_to_nth_dp(&diveplan, idx, o2, he);
+	show_planned_dive();
 }
 
 static gboolean depth_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer data)
 {
-	char *depthtext;
+	const char *depthtext;
 	int depth;
 	int idx = data - NULL;
 
-	depthtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	depthtext = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (validate_depth(depthtext, &depth)) {
 		add_depth_to_nth_dp(&diveplan, idx, depth);
 		show_planned_dive();
@@ -591,17 +586,16 @@ static gboolean depth_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer d
 		/* we need to instead change the color of the input field or something */
 		printf("invalid depth for row %d\n", idx);
 	}
-	free(depthtext);
 	return FALSE;
 }
 
 static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
 {
-	char *durationtext;
+	const char *durationtext;
 	int duration, is_rel;
 	int idx = data - NULL;
 
-	durationtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	durationtext = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (validate_time(durationtext, &duration, &is_rel)) {
 		add_duration_to_nth_dp(&diveplan, idx, duration, is_rel);
 		show_planned_dive();
@@ -609,16 +603,15 @@ static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoint
 		/* we need to instead change the color of the input field or something */
 		printf("invalid duration for row %d\n", idx);
 	}
-	free(durationtext);
 	return FALSE;
 }
 
 static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
 {
-	char *starttimetext;
+	const char *starttimetext;
 	int starttime, is_rel;
 
-	starttimetext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	starttimetext = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (validate_time(starttimetext, &starttime, &is_rel)) {
 		/* we alway make this relative for now */
 		diveplan.when = time(NULL) + starttime;
@@ -626,7 +619,6 @@ static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoin
 		/* we need to instead change the color of the input field or something */
 		printf("invalid starttime\n");
 	}
-	free(starttimetext);
 	return FALSE;
 }
 
@@ -705,7 +697,6 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *outervbox, *add_row, *deltat;
-	int lasttime = 0;
 	char starttimebuf[64] = "+60:00";
 
 	if (diveplan.dp)
@@ -740,53 +731,7 @@ void input_plan()
 	gtk_box_pack_start(GTK_BOX(outervbox), add_row, FALSE, FALSE, 0);
 	gtk_widget_show_all(planner);
 	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
-		int i;
-		const char *deltattext;
-
-		deltattext = gtk_entry_get_text(GTK_ENTRY(deltat));
-		diveplan.when = time(NULL) + 60 * atoi(deltattext);
-		free_dps(diveplan.dp);
-		diveplan.dp = 0;
-		for (i = 0; i < nr_waypoints; i++) {
-			char *depthtext, *durationtext, *gastext;
-			int depth, duration, o2, he, is_rel;
-			GtkWidget *entry;
-
-			depthtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry_depth[i])));
-			if (!validate_depth(depthtext, &depth)) {
-				// mark error and redo?
-				free(depthtext);
-				continue;
-			}
-			durationtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry_duration[i])));
-			if (!validate_time(durationtext, &duration, &is_rel)) {
-				// mark error and redo?
-				free(durationtext);
-				continue;
-			}
-			if (!is_rel)
-				duration -= lasttime;
-			entry = gtk_bin_get_child(GTK_BIN(entry_gas[i]));
-			gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
-			if (!validate_gas(gastext, &o2, &he)) {
-				// mark error and redo?
-				free(gastext);
-				continue;
-			}
-			/* just in case this didn't get added by the callback */
-			add_string_list_entry(gastext, gas_model);
-
-			// still need to handle desired pO2 and a setpoint (for CC)
-
-			if (duration == 0)
-				break;
-			plan_add_segment(&diveplan, duration, depth, o2, he);
-			lasttime += duration;
-			free(depthtext);
-			free(durationtext);
-			free(gastext);
-		}
+		plan(&diveplan, &cache_data, &planned_dive);
 	}
-	show_planned_dive();
 	gtk_widget_destroy(planner);
 }
