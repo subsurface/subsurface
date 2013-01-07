@@ -1395,7 +1395,7 @@ static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoint
 
 	durationtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
 	if (validate_time(durationtext, &duration, &is_rel)) {
-		add_duration_to_nth_dp(&diveplan, idx, duration);
+		add_duration_to_nth_dp(&diveplan, idx, duration, is_rel);
 		show_planned_dive();
 	} else {
 		/* we need to instead change the color of the input field or something */

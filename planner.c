@@ -179,9 +179,13 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 	return dp;
 }
 
-void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration)
+void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gboolean is_rel)
 {
-	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
+	struct divedatapoint *pdp, *dp = get_nth_dp(diveplan, idx);
+	if (idx > 0 && is_rel) {
+		pdp = get_nth_dp(diveplan, idx - 1);
+		duration += pdp->time;
+	}
 	dp->time = duration;
 }
 
