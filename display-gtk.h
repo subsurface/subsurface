@@ -135,4 +135,7 @@ extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, cons
 
 GError *uemis_download(const char *path, progressbar_t *progress, GtkDialog *dialog, gboolean force_download);
 
+/* from planner.c */
+extern void input_plan(void);
+
 #endif

@@ -247,8 +247,8 @@ print.o: print.c dive.h display.h display-gtk.h
 deco.o: deco.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c deco.c
 
-planner.o: planner.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c planner.c
+planner.o: planner.c dive.h divelist.h display-gtk.h
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c planner.c
 
 libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
