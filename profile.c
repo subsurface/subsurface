@@ -1323,11 +1323,89 @@ static void dump_pr_track(pr_track_t **track_pr)
 	}
 }
 
-static void fill_missing_tank_pressures(struct plot_info *pi, pr_track_t **track_pr)
+/*
+ * This looks at the pressures for one cylinder, and
+ * calculates any missing beginning/end pressures for
+ * each segment by taking the over-all SAC-rate into
+ * account for that cylinder.
+ *
+ * NOTE! Many segments have full pressure information
+ * (both beginning and ending pressure). But if we have
+ * switched away from a cylinder, we will have the
+ * beginning pressure for the first segment with a
+ * missing end pressure. We may then have one or more
+ * segments without beginning or end pressures, until
+ * we finally have a segment with an end pressure.
+ *
+ * We want to spread out the pressure over these missing
+ * segments according to how big of a time_pressure area
+ * they have.
+ */
+static void fill_missing_segment_pressures(pr_track_t *list)
 {
-	pr_track_t *list = NULL;
-	pr_track_t *nlist = NULL;
-	double pt, magic;
+	while (list) {
+		int start = list->start, end;
+		pr_track_t *tmp = list;
+		double pt_sum = 0.0, pt = 0.0;
+
+		for (;;) {
+			pt_sum += tmp->pressure_time;
+			end = tmp->end;
+			if (end)
+				break;
+			end = start;
+			if (!tmp->next)
+				break;
+			tmp = tmp->next;
+		}
+
+		if (!start)
+			start = end;
+
+		/*
+		 * Now 'start' and 'end' contain the pressure values
+		 * for the set of segments described by 'list'..'tmp'.
+		 * pt_sum is the sum of all the pressure-times of the
+		 * segments.
+		 *
+		 * Now dole out the pressures relative to pressure-time.
+		 */
+		list->start = start;
+		tmp->end = end;
+		for (;;) {
+			int pressure;
+			pt += list->pressure_time;
+			pressure = start;
+			if (pt_sum)
+				pressure -= (start-end)*pt/pt_sum;
+			list->end = pressure;
+			if (list == tmp)
+				break;
+			list = list->next;
+			list->start = pressure;
+		}
+
+		/* Ok, we've done that set of segments */
+		list = list->next;
+	}
+}
+
+/*
+ * What's the pressure-time between two plot data entries?
+ * We're calculating the integral of pressure over time by
+ * adding these up.
+ */
+static inline double pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
+{
+	int time = b->sec - a->sec;
+	int depth = (a->depth + b->depth)/2;
+	int mbar = depth_to_mbar(depth, dive);
+
+	return bar_to_atm(mbar / 1000.0) * time;
+}
+
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr)
+{
 	int cyl, i;
 	struct plot_data *entry;
 	int cur_pr[MAX_CYLINDERS];
@@ -1337,57 +1415,44 @@ static void fill_missing_tank_pressures(struct plot_info *pi, pr_track_t **track
 		dump_pr_track(track_pr);
 	}
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		fill_missing_segment_pressures(track_pr[cyl]);
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
 
 	/* The first two are "fillers", but in case we don't have a sample
 	 * at time 0 we need to process the second of them here */
 	for (i = 1; i < pi->nr; i++) {
+		double magic, cur_pt;
+		pr_track_t *segment;
+		int pressure;
+
 		entry = pi->entry + i;
+		cyl = entry->cylinderindex;
+
 		if (SENSOR_PRESSURE(entry)) {
-			cur_pr[entry->cylinderindex] = SENSOR_PRESSURE(entry);
-		} else {
-			if(!list || list->t_end < entry->sec) {
-				nlist = track_pr[entry->cylinderindex];
-				list = NULL;
-				while (nlist && nlist->t_start <= entry->sec) {
-					list = nlist;
-					nlist = list->next;
-				}
-				/* there may be multiple segments - so
-				 * let's assemble the length */
-				nlist = list;
-				if (list) {
-					pt = list->pressure_time;
-					while (!nlist->end) {
-						nlist = nlist->next;
-						if (!nlist) {
-							/* oops - we have no end pressure,
-							 * so this means this is a tank without
-							 * gas consumption information */
-							break;
-						}
-						pt += nlist->pressure_time;
-					}
-				}
-				if (!nlist) {
-					/* just continue without calculating
-					 * interpolated values */
-					INTERPOLATED_PRESSURE(entry) = cur_pr[entry->cylinderindex];
-					list = NULL;
-					continue;
-				}
-				magic = (nlist->end - cur_pr[entry->cylinderindex]) / pt;
-			}
-			if (pt != 0.0) {
-				double cur_pt = (entry->sec - (entry-1)->sec) *
-					(1 + (entry->depth + (entry-1)->depth) / 20000.0);
-				INTERPOLATED_PRESSURE(entry) =
-					cur_pr[entry->cylinderindex] + cur_pt * magic + 0.5;
-				cur_pr[entry->cylinderindex] = INTERPOLATED_PRESSURE(entry);
-			} else
-				INTERPOLATED_PRESSURE(entry) = cur_pr[entry->cylinderindex];
+			cur_pr[cyl] = SENSOR_PRESSURE(entry);
+			continue;
 		}
+
+		/* Find the right pressure segment for this entry.. */
+		segment = track_pr[cyl];
+		while (segment && segment->t_end < entry->sec)
+			segment = segment->next;
+
+		/* No (or empty) segment? Just use our current pressure */
+		if (!segment || !segment->pressure_time) {
+			SENSOR_PRESSURE(entry) = cur_pr[cyl];
+			continue;
+		}
+
+		/* Overall pressure change over total pressure-time for this segment*/
+		magic = (segment->end - segment->start) / segment->pressure_time;
+
+		/* Use that overall pressure change to update the current pressure */
+		cur_pt = pressure_time(dive, entry-1, entry);
+		pressure = cur_pr[cyl] + cur_pt * magic + 0.5;
+		INTERPOLATED_PRESSURE(entry) = pressure;
+		cur_pr[cyl] = pressure;
 	}
 }
 
@@ -1546,12 +1611,12 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 		maxtime = dive->end;
 
 	/*
-	 * We want to have a plot_info event at least every 10s (so "maxtime/10"),
+	 * We want to have a plot_info event at least every 10s (so "maxtime/10+1"),
 	 * but samples could be more dense than that (so add in dc->samples), and
 	 * additionally we want two surface events around the whole thing (thus the
 	 * additional 4).
 	 */
-	nr = dc->samples + 4 + maxtime / 10;
+	nr = dc->samples + 5 + maxtime / 10;
 	plot_data = calloc(nr, sizeof(struct plot_data));
 	pi->entry = plot_data;
 	if (!plot_data)
@@ -1685,20 +1750,6 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 	} while ((secondary = secondary->next) != NULL);
 }
 
-/*
- * What's the pressure-time between two plot data entries?
- * We're calculating the integral of pressure over time by
- * adding these up.
- */
-static inline double pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
-{
-	int time = b->sec - a->sec;
-	int depth = (a->depth + b->depth)/2;
-	int mbar = depth_to_mbar(depth, dive);
-
-	return bar_to_atm(mbar / 1000.0) * time;
-}
-
 static void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i, cylinderindex;
@@ -1759,7 +1810,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 	}
 
 	if (missing_pr) {
-		fill_missing_tank_pressures(pi, track_pr);
+		fill_missing_tank_pressures(dive, pi, track_pr);
 	}
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		list_free(track_pr[i]);
