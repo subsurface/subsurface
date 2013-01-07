@@ -273,6 +273,7 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 	double new_gradient_factor;
 	double pressure_delta = tissues_tolerance - surface_pressure;
 	struct dive_data mydata;
+	int bail = 1000;
 
 	if (pressure_delta > 0) {
 		if (!smooth) {
@@ -291,6 +292,12 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 	below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata));
 	while(!below_gradient_limit)
 	{
+		/* we run into bugs where this turns into an infinite loop; so add
+		 * some bailout code that prints a warning but prevents the code from hanging */
+		if (--bail == 0) {
+			printf("WARNING!!!\n==========\nThe deco_allowed_depth() loop appears to hang.\nBailing out.\n");
+			break;
+		}
 		if (!smooth)
 			mydata.pressure += PRESSURE_CHANGE_3M;
 		else
