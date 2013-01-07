@@ -595,8 +595,12 @@ struct diveplan {
 };
 
 extern void test_planner(void);
-void plan(struct diveplan *diveplan);
+void plan(struct diveplan *diveplan, char **cache_datap, struct dive **divep);
 void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he);
+void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration);
+void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth);
+void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he);
+void free_dps(struct divedatapoint *dp);
 
 #ifdef DEBUGFILE
 extern char *debugfilename;

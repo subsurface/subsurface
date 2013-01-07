@@ -8,7 +8,7 @@
 #include "dive.h"
 #include "divelist.h"
 
-int stoplevels[] = { 3000, 6000, 9000, 12000, 15000, 21000, 30000, 42000, 60000, 90000 };
+int stoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 21000, 30000, 42000, 60000, 90000 };
 
 /* returns the tissue tolerance at the end of this (partial) dive */
 double tissue_at_end(struct dive *dive, char **cached_datap)
@@ -108,7 +108,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	dc = &dive->dc;
 	dc->model = "Simulated Dive";
 	dp = diveplan->dp;
-	while (dp) {
+	while (dp && dp->time) {
 		int i, depth;
 
 		if (dp->o2 != dive->cylinder[gasused].gasmix.o2.permille ||
@@ -132,7 +132,21 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		dp = dp->next;
 		dc->samples++;
 	}
+	if (dc->samples == 0) {
+		/* not enough there yet to create a dive - most likely the first time is missing */
+		free(dive);
+		dive = NULL;
+	}
 	return dive;
+}
+
+void free_dps(struct divedatapoint *dp)
+{
+	while (dp) {
+		struct divedatapoint *ndp = dp->next;
+		free(dp);
+		dp = ndp;
+	}
 }
 
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he)
@@ -148,6 +162,41 @@ struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he)
 	return dp;
 }
 
+struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
+{
+	struct divedatapoint **ldpp, *dp = diveplan->dp;
+	int i = 0;
+	ldpp = &diveplan->dp;
+
+	while (dp && i++ < idx) {
+		ldpp = &dp->next;
+		dp = dp->next;
+	}
+	while (i++ <= idx) {
+		*ldpp = dp = create_dp(0, 0, 0, 0);
+		ldpp = &((*ldpp)->next);
+	}
+	return dp;
+}
+
+void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration)
+{
+	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
+	dp->time = duration;
+}
+
+void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth)
+{
+	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
+	dp->depth = depth;
+}
+
+void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he)
+{
+	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
+	dp->o2 = o2;
+	dp->he = he;
+}
 void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
 	struct divedatapoint **lastdp = &diveplan->dp;
@@ -167,7 +216,7 @@ void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2
 	add_to_end_of_diveplan(diveplan, dp);
 }
 
-void plan(struct diveplan *diveplan)
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 {
 	struct dive *dive;
 	struct sample *sample;
@@ -175,11 +224,12 @@ void plan(struct diveplan *diveplan)
 	int ceiling, depth, transitiontime;
 	int stopidx;
 	double tissue_tolerance;
-	char *cached_data = NULL;
 
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = 1013;
-	dive = create_dive_from_plan(diveplan);
+	if (*divep)
+		delete_single_dive(dive_table.nr - 1);
+	*divep = dive = create_dive_from_plan(diveplan);
 	if (!dive)
 		return;
 	record_dive(dive);
@@ -188,42 +238,44 @@ void plan(struct diveplan *diveplan)
 	o2 = dive->cylinder[sample->sensor].gasmix.o2.permille;
 	he = dive->cylinder[sample->sensor].gasmix.he.permille;
 
-	tissue_tolerance = tissue_at_end(dive, &cached_data);
+	tissue_tolerance = tissue_at_end(dive, cached_datap);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
 
-	for (stopidx = 0; stopidx < sizeof(stoplevels) / sizeof(int); stopidx++)
+	for (stopidx = 1; stopidx < sizeof(stoplevels) / sizeof(int); stopidx++)
 		if (stoplevels[stopidx] >= ceiling)
 			break;
 
-	while (stopidx >= 0) {
+	while (stopidx > 0) {
 		depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 		if (depth > stoplevels[stopidx]) {
 			transitiontime = (depth - stoplevels[stopidx]) / 150;
 			plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he);
 			/* re-create the dive */
 			delete_single_dive(dive_table.nr - 1);
-			dive = create_dive_from_plan(diveplan);
+			*divep = dive = create_dive_from_plan(diveplan);
 			record_dive(dive);
 		}
-		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], &cached_data);
+		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], cached_datap);
 		if (wait_time)
 			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he);
 		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
 		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
-		dive = create_dive_from_plan(diveplan);
+		*divep = dive = create_dive_from_plan(diveplan);
 		record_dive(dive);
 		stopidx--;
 	}
 	/* now make the dive visible as last dive of the dive list */
-	free(cached_data);
 	report_dives(FALSE, FALSE);
+	select_last_dive();
 }
 
 void test_planner()
 {
+	struct dive *dive = NULL;
 	struct diveplan diveplan = {};
+	char *cache_data;
 	int end_of_last_dive = dive_table.dives[dive_table.nr - 1]->when + dive_table.dives[dive_table.nr -1]->duration.seconds;
 	diveplan.when = end_of_last_dive + 50 * 3600; /* don't take previous dives into account for deco calculation */
 	diveplan.surface_pressure = 1013;
@@ -232,5 +284,7 @@ void test_planner()
 	plan_add_segment(&diveplan, 59, 27000, 209, 0);
 	plan_add_segment(&diveplan, 1, 27000, 400, 0);
 
-	plan(&diveplan);
+	plan(&diveplan, &cache_data, &dive);
+	/* we are not rerunning the plan, so free the cache right away */
+	free(cache_data);
 }

@@ -1304,6 +1304,30 @@ static void clear_trip_indexes(void)
 		trip->index = 0;
 }
 
+void select_last_dive(void)
+{
+	GtkTreeSelection *selection;
+	GtkTreeIter iter;
+	struct dive *dive;
+	int i;
+
+	/* select the last dive (and make sure it's an actual dive that is selected) */
+	/* WARNING - this only works when sorted by date!!!
+	 *
+	 *
+	 *
+	 */
+	gtk_tree_model_get_iter_first(MODEL(dive_list), &iter);
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+	gtk_tree_selection_unselect_all(selection);
+	for_each_dive(i, dive)
+		dive->selected = FALSE;
+	amount_selected = 0;
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &selected_dive, -1);
+	first_leaf(MODEL(dive_list), &iter, &selected_dive);
+	gtk_tree_selection_select_iter(selection, &iter);
+}
+
 static void fill_dive_list(void)
 {
 	int i, trip_index = 0;

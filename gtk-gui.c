@@ -1322,16 +1322,103 @@ static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
 GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS];
 int nr_waypoints = 0;
 static GtkListStore *gas_model = NULL;
+struct diveplan diveplan = {};
+char *cache_data = NULL;
+struct dive *planned_dive = NULL;
 
-static gboolean gas_focus_out_cb(GtkWidget *entry, gpointer data)
+/* make a copy of the diveplan so far and display the corresponding dive */
+void show_planned_dive(void)
+{
+	struct diveplan tempplan;
+	struct divedatapoint *dp, **dpp;
+
+	memcpy(&tempplan, &diveplan, sizeof(struct diveplan));
+	dpp = &tempplan.dp;
+	dp = diveplan.dp;
+	while(*dpp) {
+		*dpp = malloc(sizeof(struct divedatapoint));
+		memcpy(*dpp, dp, sizeof(struct divedatapoint));
+		dp = dp->next;
+		if (dp && !dp->time) {
+			/* we have an incomplete entry - stop before it */
+			(*dpp)->next = NULL;
+			break;
+		}
+		dpp = &(*dpp)->next;
+	}
+	plan(&tempplan, &cache_data, &planned_dive);
+	free_dps(tempplan.dp);
+}
+
+static gboolean gas_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer data)
 {
 	char *gastext;
 	int o2, he;
+	int idx = data - NULL;
 
 	gastext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
-	if (validate_gas(gastext, &o2, &he))
+	if (validate_gas(gastext, &o2, &he)) {
 		add_string_list_entry(gastext, gas_model);
+		add_gas_to_nth_dp(&diveplan, idx, o2, he);
+		show_planned_dive();
+	} else {
+		/* we need to instead change the color of the input field or something */
+		printf("invalid gas for row %d\n",idx);
+	}
 	free(gastext);
+	return FALSE;
+}
+
+static gboolean depth_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer data)
+{
+	char *depthtext;
+	int depth;
+	int idx = data - NULL;
+
+	depthtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	if (validate_depth(depthtext, &depth)) {
+		add_depth_to_nth_dp(&diveplan, idx, depth);
+		show_planned_dive();
+	} else {
+		/* we need to instead change the color of the input field or something */
+		printf("invalid depth for row %d\n", idx);
+	}
+	free(depthtext);
+	return FALSE;
+}
+
+static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	char *durationtext;
+	int duration, is_rel;
+	int idx = data - NULL;
+
+	durationtext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	if (validate_time(durationtext, &duration, &is_rel)) {
+		add_duration_to_nth_dp(&diveplan, idx, duration);
+		show_planned_dive();
+	} else {
+		/* we need to instead change the color of the input field or something */
+		printf("invalid duration for row %d\n", idx);
+	}
+	free(durationtext);
+	return FALSE;
+}
+
+static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	char *starttimetext;
+	int starttime, is_rel;
+
+	starttimetext = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+	if (validate_time(starttimetext, &starttime, &is_rel)) {
+		/* we alway make this relative for now */
+		diveplan.when = time(NULL) + starttime;
+	} else {
+		/* we need to instead change the color of the input field or something */
+		printf("invalid starttime\n");
+	}
+	free(starttimetext);
 	return FALSE;
 }
 
@@ -1386,6 +1473,10 @@ static void add_waypoint_widgets(GtkWidget *box, int idx)
 		entry_duration[idx] = add_entry_to_box(hbox, NULL);
 		entry_gas[idx] = add_gas_combobox_to_box(hbox, NULL);
 	}
+	gtk_widget_add_events(entry_depth[idx], GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(entry_depth[idx], "focus-out-event", G_CALLBACK(depth_focus_out_cb), NULL + idx);
+	gtk_widget_add_events(entry_duration[idx], GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(entry_duration[idx], "focus-out-event", G_CALLBACK(duration_focus_out_cb), NULL + idx);
 }
 
 static void add_waypoint_cb(GtkButton *button, gpointer _data)
@@ -1407,8 +1498,12 @@ void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *outervbox, *add_row, *deltat;
 	int lasttime = 0;
-	struct diveplan diveplan = {};
+	char starttimebuf[64] = "+60:00";
 
+	if (diveplan.dp)
+		free_dps(diveplan.dp);
+	memset(&diveplan, 0, sizeof(diveplan));
+	planned_dive = NULL;
 	planner = gtk_dialog_new_with_buttons(_("Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"),
 					GTK_WINDOW(main_window),
 					GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1422,6 +1517,11 @@ void input_plan()
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 0);
 	deltat = add_entry_to_box(vbox, _("Dive starts in how many minutes?"));
+	gtk_entry_set_max_length(GTK_ENTRY(deltat), 12);
+	gtk_entry_set_text(GTK_ENTRY(deltat), starttimebuf);
+	gtk_widget_add_events(deltat, GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(deltat, "focus-out-event", G_CALLBACK(starttime_focus_out_cb), NULL);
+	diveplan.when = time(NULL) + 3600;
 	nr_waypoints = 4;
 	add_waypoint_widgets(vbox, 0);
 	add_waypoint_widgets(vbox, 1);
@@ -1437,6 +1537,8 @@ void input_plan()
 
 		deltattext = gtk_entry_get_text(GTK_ENTRY(deltat));
 		diveplan.when = time(NULL) + 60 * atoi(deltattext);
+		free_dps(diveplan.dp);
+		diveplan.dp = 0;
 		for (i = 0; i < nr_waypoints; i++) {
 			char *depthtext, *durationtext, *gastext;
 			int depth, duration, o2, he, is_rel;
@@ -1477,7 +1579,7 @@ void input_plan()
 			free(gastext);
 		}
 	}
-	plan(&diveplan);
+	show_planned_dive();
 	gtk_widget_destroy(planner);
 }
 
