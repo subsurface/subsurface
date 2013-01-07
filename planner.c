@@ -732,6 +732,14 @@ void input_plan()
 	gtk_widget_show_all(planner);
 	if (gtk_dialog_run(GTK_DIALOG(planner)) == GTK_RESPONSE_ACCEPT) {
 		plan(&diveplan, &cache_data, &planned_dive);
+	} else {
+		if (planned_dive) {
+			/* we have added a dive during the dynamic construction
+			 * in the dialog; get rid of it */
+			delete_single_dive(dive_table.nr - 1);
+			report_dives(FALSE, FALSE);
+			planned_dive = NULL;
+		}
 	}
 	gtk_widget_destroy(planner);
 }
