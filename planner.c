@@ -108,13 +108,19 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	dc = &dive->dc;
 	dc->model = "Simulated Dive";
 	dp = diveplan->dp;
+	/* let's start with the gas given on the first segment */
+	if(dp)
+		add_gas(dive, dp->o2, dp->he);
 	while (dp && dp->time) {
 		int i, depth;
 
 		if (dp->o2 != dive->cylinder[gasused].gasmix.o2.permille ||
-		    dp->he != dive->cylinder[gasused].gasmix.he.permille)
+		    dp->he != dive->cylinder[gasused].gasmix.he.permille) {
+			int value;
 			gasused = add_gas(dive, dp->o2, dp->he);
-
+			value = dp->o2 / 10 | (dp->he / 10) << 16;
+			add_event(dc, dp->time, 11, 0, value, "gaschange");
+		}
 		for (i = t; i < dp->time; i += 10) {
 			depth = lastdepth + (i - t) * (dp->depth - lastdepth) / (dp->time - t);
 			sample = prepare_sample(dc);
@@ -198,8 +204,13 @@ void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth)
 void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he)
 {
 	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
-	dp->o2 = o2;
-	dp->he = he;
+	if (o2 > 206 && o2 < 213 && he == 0) {
+		/* we treat air in a special case */
+		dp->o2 = dp->he = 0;
+	} else {
+		dp->o2 = o2;
+		dp->he = he;
+	}
 }
 void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
