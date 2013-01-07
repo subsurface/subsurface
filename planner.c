@@ -14,6 +14,31 @@
 
 int stoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 21000, 30000, 42000, 60000, 90000 };
 
+#if DEBUG_PLAN
+void dump_plan(struct diveplan *diveplan)
+{
+	struct divedatapoint *dp;
+	struct tm tm;
+
+	if (!diveplan) {
+		printf ("Diveplan NULL\n");
+		return;
+	}
+	utc_mkdate(diveplan->when, &tm);
+
+	printf("Diveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
+		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+		tm.tm_hour, tm.tm_min, tm.tm_sec,
+		diveplan->surface_pressure);
+	dp = diveplan->dp;
+	while (dp) {
+		printf("\t%3u:%02u: %dmm gas: %d o2 %d h2\n", FRACTION(dp->time, 60), dp->depth, dp->o2, dp->he);
+		dp = dp->next;
+	}
+
+}
+#endif
+
 /* returns the tissue tolerance at the end of this (partial) dive */
 double tissue_at_end(struct dive *dive, char **cached_datap)
 {
@@ -508,6 +533,9 @@ void show_planned_dive(void)
 		}
 		dpp = &(*dpp)->next;
 	}
+#if DEBUG_PLAN & 1
+	dump_plan(&tempplan);
+#endif
 	plan(&tempplan, &cache_data, &planned_dive);
 	free_dps(tempplan.dp);
 }
