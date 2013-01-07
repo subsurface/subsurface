@@ -1394,14 +1394,19 @@ static void fill_missing_segment_pressures(pr_track_t *list)
  * What's the pressure-time between two plot data entries?
  * We're calculating the integral of pressure over time by
  * adding these up.
+ *
+ * The units won't matter as long as everybody agrees about
+ * them, since they'll cancel out - we use this to calculate
+ * a constant SAC-rate-equivalent, but we only use it to
+ * scale pressures, so it ends up being a unitless scaling
+ * factor.
  */
 static inline double pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
 {
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth)/2;
-	int mbar = depth_to_mbar(depth, dive);
 
-	return bar_to_atm(mbar / 1000.0) * time;
+	return depth_to_mbar(depth, dive) * time;
 }
 
 static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr)
