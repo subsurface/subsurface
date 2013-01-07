@@ -1640,6 +1640,10 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 
 		/* Add intermediate plot entries if required */
 		delta = time - lasttime;
+		if (delta < 0) {
+			time = lasttime;
+			delta = 0;
+		}
 		for (offset = 10; offset < delta; offset += 10) {
 			if (lasttime + offset > maxtime)
 				break;
