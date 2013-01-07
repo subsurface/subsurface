@@ -285,21 +285,3 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	report_dives(FALSE, FALSE);
 	select_last_dive();
 }
-
-void test_planner()
-{
-	struct dive *dive = NULL;
-	struct diveplan diveplan = {};
-	char *cache_data;
-	int end_of_last_dive = dive_table.dives[dive_table.nr - 1]->when + dive_table.dives[dive_table.nr -1]->duration.seconds;
-	diveplan.when = end_of_last_dive + 50 * 3600; /* don't take previous dives into account for deco calculation */
-	diveplan.surface_pressure = 1013;
-	plan_add_segment(&diveplan, 120, 36000, 209, 0);
-	plan_add_segment(&diveplan, 1800, 36000, 209, 0);
-	plan_add_segment(&diveplan, 59, 27000, 209, 0);
-	plan_add_segment(&diveplan, 1, 27000, 400, 0);
-
-	plan(&diveplan, &cache_data, &dive);
-	/* we are not rerunning the plan, so free the cache right away */
-	free(cache_data);
-}

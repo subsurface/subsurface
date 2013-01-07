@@ -1125,11 +1125,6 @@ static void next_dc(GtkWidget *w, gpointer data)
 	repaint_dive();
 }
 
-static void test_planner_cb(GtkWidget *w, gpointer data)
-{
-	test_planner();
-}
-
 /*
  * Get a value in tenths (so "10.2" == 102, "9" = 90)
  *
@@ -1611,7 +1606,6 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewThree",      NULL, N_("Three"), CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
 	{ "PrevDC",         NULL, N_("Prev DC"), NULL, NULL, G_CALLBACK(prev_dc) },
 	{ "NextDC",         NULL, N_("Next DC"), NULL, NULL, G_CALLBACK(next_dc) },
-	{ "TestPlan",       NULL, N_("Test Planner"), NULL, NULL, G_CALLBACK(test_planner_cb) },
 	{ "InputPlan",      NULL, N_("Input Plan"), NULL, NULL, G_CALLBACK(input_plan) },
 };
 static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
@@ -1662,7 +1656,6 @@ static const gchar* ui_string = " \
 				<menuitem name=\"SelectEvents\" action=\"SelectEvents\" /> \
 			</menu> \
 			<menu name=\"PlannerMenu\" action=\"PlannerMenuAction\"> \
-				<menuitem name=\"TestPlan\" action=\"TestPlan\" /> \
 				<menuitem name=\"InputPlan\" action=\"InputPlan\" /> \
 			</menu> \
 			<menu name=\"Help\" action=\"HelpMenuAction\"> \
