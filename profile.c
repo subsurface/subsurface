@@ -1685,6 +1685,20 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 	} while ((secondary = secondary->next) != NULL);
 }
 
+/*
+ * What's the pressure-time between two plot data entries?
+ * We're calculating the integral of pressure over time by
+ * adding these up.
+ */
+static inline double pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
+{
+	int time = b->sec - a->sec;
+	int depth = (a->depth + b->depth)/2;
+	int mbar = depth_to_mbar(depth, dive);
+
+	return bar_to_atm(mbar / 1000.0) * time;
+}
+
 static void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i, cylinderindex;
@@ -1709,6 +1723,9 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 		entry->same_cylinder = entry->cylinderindex == cylinderindex;
 		cylinderindex = entry->cylinderindex;
 
+		/* discrete integration of pressure over time to get the SAC rate equivalent */
+		current->pressure_time += pressure_time(dive, entry-1, entry);
+
 		/* track the segments per cylinder and their pressure/time integral */
 		if (!entry->same_cylinder) {
 			current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
@@ -1724,8 +1741,6 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 			}
 		}
 		/* finally, do the discrete integration to get the SAC rate equivalent */
-		current->pressure_time += (entry->sec - (entry-1)->sec) *
-			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
 		if (SENSOR_PRESSURE(entry)) {
 			current->end = SENSOR_PRESSURE(entry);
 			current->t_end = entry->sec;
