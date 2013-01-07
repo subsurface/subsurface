@@ -1461,15 +1461,18 @@ static gint dive_nr_sort(GtkTreeModel *model,
 			tripb = b->divetrip;
 	}
 
-	if (!tripa || !tripb)
-		return 0;
-	if (tripa->when < tripb->when)
-		return -1;
-	if (tripa->when > tripb->when)
-		return 1;
-	if (a && b)
-		return a->when - b->when;
-	return 0;
+	/*
+	 * Compare dive dates within the same trip (or when there
+	 * are no trips involved at all). But if we have two
+	 * different trips use the trip dates for comparison
+	 */
+	if (tripa != tripb) {
+		if (tripa)
+			when_a = tripa->when;
+		if (tripb)
+			when_b = tripb->when;
+	}
+	return when_a - when_b;
 }
 
 
