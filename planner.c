@@ -559,6 +559,24 @@ static gboolean gas_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer dat
 	return FALSE;
 }
 
+static void gas_changed_cb(GtkWidget *combo, gpointer data)
+{
+	char *gastext;
+	int o2, he;
+	int idx = data - NULL;
+
+	gastext = strdup(gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo)));
+	if (validate_gas(gastext, &o2, &he)) {
+		add_gas_to_nth_dp(&diveplan, idx, o2, he);
+		show_planned_dive();
+	} else {
+		/* this should never happen as only validated texts should be
+		 * in the dropdown */
+		printf("invalid gas for row %d\n",idx);
+	}
+	free(gastext);
+}
+
 static gboolean depth_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer data)
 {
 	char *depthtext;
@@ -612,7 +630,7 @@ static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoin
 	return FALSE;
 }
 
-static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
+static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int idx)
 {
 	GtkWidget *frame, *combo;
 	GtkEntryCompletion *completion;
@@ -626,8 +644,8 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label)
 	}
 	combo = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(gas_model), 0);
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
-	g_signal_connect(gtk_bin_get_child(GTK_BIN(combo)), "focus-out-event", G_CALLBACK(gas_focus_out_cb), NULL);
-
+	g_signal_connect(gtk_bin_get_child(GTK_BIN(combo)), "focus-out-event", G_CALLBACK(gas_focus_out_cb), NULL + idx);
+	g_signal_connect(combo, "changed", G_CALLBACK(gas_changed_cb), NULL + idx);
 	if (label) {
 		frame = gtk_frame_new(label);
 		gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
@@ -657,11 +675,11 @@ static void add_waypoint_widgets(GtkWidget *box, int idx)
 	if (idx == 0) {
 		entry_depth[idx] = add_entry_to_box(hbox, _("Ending Depth"));
 		entry_duration[idx] = add_entry_to_box(hbox, _("Segment Time"));
-		entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"));
+		entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"), idx);
 	} else {
 		entry_depth[idx] = add_entry_to_box(hbox, NULL);
 		entry_duration[idx] = add_entry_to_box(hbox, NULL);
-		entry_gas[idx] = add_gas_combobox_to_box(hbox, NULL);
+		entry_gas[idx] = add_gas_combobox_to_box(hbox, NULL, idx);
 	}
 	gtk_widget_add_events(entry_depth[idx], GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(entry_depth[idx], "focus-out-event", G_CALLBACK(depth_focus_out_cb), NULL + idx);
