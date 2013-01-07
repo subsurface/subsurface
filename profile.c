@@ -1618,75 +1618,153 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 	return plot_data;
 }
 
-/*
- * Create a plot-info with smoothing and ranged min/max
- *
- * This also makes sure that we have extra empty events on both
- * sides, so that you can do end-points without having to worry
- * about it.
- */
-static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi)
 {
-	int cylinderindex = -1;
-	int i, nr, cyl;
-	struct plot_info *pi;
+	int i;
+
+	/* First: check that none of the entries has sensor pressure for this cylinder index */
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry+i;
+		if (entry->cylinderindex != idx)
+			continue;
+		if (SENSOR_PRESSURE(entry))
+			return;
+	}
+
+	/* Then: populate the first entry with the beginning cylinder pressure */
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry+i;
+		if (entry->cylinderindex != idx)
+			continue;
+		SENSOR_PRESSURE(entry) = start;
+		break;
+	}
+
+	/* .. and the last entry with the ending cylinder pressure */
+	for (i = pi->nr; --i >= 0; ) {
+		struct plot_data *entry = pi->entry+i;
+		if (entry->cylinderindex != idx)
+			continue;
+		SENSOR_PRESSURE(entry) = end;
+		break;
+	}
+}
+
+static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_info *pi)
+{
+	/* We should try to see if it has interesting pressure data here */
+}
+
+static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+{
+	int i;
+	struct divecomputer *secondary;
+
+	/* First, populate the pressures with the manual cylinder data.. */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder+i;
+		int start = cyl->start.mbar ? : cyl->sample_start.mbar;
+		int end = cyl->end.mbar ? : cyl->sample_end.mbar;
+
+		if (!start || !end)
+			continue;
+
+		populate_cylinder_pressure_data(i, start, end, pi);
+	}
+
+	/*
+	 * Here, we should try to walk through all the dive computers,
+	 * and try to see if they have sensor data different from the
+	 * primary dive computer (dc).
+	 */
+	secondary = &dive->dc;
+	do {
+		if (secondary == dc)
+			continue;
+		populate_secondary_sensor_data(dc, pi);
+	} while ((secondary = secondary->next) != NULL);
+}
+
+static void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+{
+	int i, cylinderindex;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
-	pr_track_t *pr_track, *current;
+	pr_track_t *current;
 	gboolean missing_pr = FALSE;
-	struct plot_data *entry = NULL;
-	double amb_pressure;
-	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
 
-	/* The plot-info is embedded in the graphics context */
-	pi = &gc->pi;
+	/* Set up the pressure tracking data structures */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder + i;
+		int mbar = cyl->start.mbar ? : cyl->sample_start.mbar;
+		track_pr[i] = pr_track_alloc(mbar, 0);
+	}
 
-	/* reset deco information to start the calculation */
-	init_decompression(dive);
+	cylinderindex = pi->entry[0].cylinderindex;
+	current = track_pr[cylinderindex];
+	for (i = 1; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
 
-	/* Create the new plot data */
-	if (last_pi_entry)
-		free((void *)last_pi_entry);
-	last_pi_entry = populate_plot_entries(dive, dc, pi);
-
-	/* Populate the gas index from the gas change events */
-	check_gas_change_events(dive, dc, pi);
-
-	nr = pi->nr-2;
-
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) /* initialize the start pressures */
-		track_pr[cyl] = pr_track_alloc(dive->cylinder[cyl].start.mbar, -1);
-	current = track_pr[pi->entry[2].cylinderindex];
-	for (i = 0; i < nr + 1; i++) {
-		int fo2, fhe;
-
-		entry = pi->entry + i + 1;
+		entry = pi->entry + i;
 
 		entry->same_cylinder = entry->cylinderindex == cylinderindex;
 		cylinderindex = entry->cylinderindex;
 
 		/* track the segments per cylinder and their pressure/time integral */
 		if (!entry->same_cylinder) {
-			current->end = SENSOR_PRESSURE(entry-1);
-			current->t_end = (entry-1)->sec;
 			current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
 			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 		} else { /* same cylinder */
-			if ((!SENSOR_PRESSURE(entry) && SENSOR_PRESSURE(entry-1)) ||
-				(SENSOR_PRESSURE(entry) && !SENSOR_PRESSURE(entry-1))) {
+			if (SENSOR_PRESSURE(entry) && !SENSOR_PRESSURE(entry-1)) {
 				/* transmitter changed its working status */
-				current->end = SENSOR_PRESSURE(entry-1);
-				current->t_end = (entry-1)->sec;
+				current->end = SENSOR_PRESSURE(entry);
+				current->t_end = entry->sec;
 				current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
 				track_pr[cylinderindex] =
 					list_add(track_pr[cylinderindex], current);
 			}
 		}
+		/* finally, do the discrete integration to get the SAC rate equivalent */
+		current->pressure_time += (entry->sec - (entry-1)->sec) *
+			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
+		if (SENSOR_PRESSURE(entry)) {
+			current->end = SENSOR_PRESSURE(entry);
+			current->t_end = entry->sec;
+		}
+		missing_pr |= !SENSOR_PRESSURE(entry);
+	}
+
+	/* initialize the end pressures */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder + i;
+		int pr = cyl->end.mbar ? : cyl->sample_end.mbar;
+		if (pr && track_pr[i]) {
+			pr_track_t *pr_track = list_last(track_pr[i]);
+			pr_track->end = pr;
+		}
+	}
+
+	if (missing_pr) {
+		fill_missing_tank_pressures(pi, track_pr);
+	}
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		list_free(track_pr[i]);
+}
+
+static void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+{
+	int i;
+	double amb_pressure;
+	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
+
+	for (i = 1; i < pi->nr; i++) {
+		int fo2, fhe;
+		struct plot_data *entry = pi->entry + i;
+		int cylinderindex = entry->cylinderindex;
+
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
-		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille;
+		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille ? : AIR_PERMILLE;
 		fhe = dive->cylinder[cylinderindex].gasmix.he.permille;
 
-		if (!fo2)
-			fo2 = AIR_PERMILLE;
 		if (entry->po2) {
 			/* we have an O2 partial pressure in the sample - so this
 			 * is likely a CC dive... use that instead of the value
@@ -1707,10 +1785,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			pi->maxpp = entry->phe;
 		if (entry->pn2 > pi->maxpp)
 			pi->maxpp = entry->pn2;
-		/* finally, do the discrete integration to get the SAC rate equivalent */
-		current->pressure_time += (entry->sec - (entry-1)->sec) *
-			depth_to_mbar((entry->depth + (entry-1)->depth) / 2, dive) / 1000.0;
-		missing_pr |= !SENSOR_PRESSURE(entry);
+
 		/* and now let's try to do some deco calculations */
 		if (i > 0) {
 			int j;
@@ -1727,41 +1802,47 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		}
 	}
+
 #if DECO_CALC_DEBUG & 1
 	dump_tissues();
 #endif
+}
 
-	if (entry)
-		current->t_end = entry->sec;
+/*
+ * Create a plot-info with smoothing and ranged min/max
+ *
+ * This also makes sure that we have extra empty events on both
+ * sides, so that you can do end-points without having to worry
+ * about it.
+ */
+static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+{
+	struct plot_info *pi;
 
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) { /* initialize the end pressures */
-		int pr = dive->cylinder[cyl].end.mbar;
-		if (pr && track_pr[cyl]) {
-			pr_track = list_last(track_pr[cyl]);
-			pr_track->end = pr;
-		}
-	}
-	/* make sure the first two pi entries have a sane po2 / phe / pn2 */
-	amb_pressure = depth_to_mbar(pi->entry[2].depth, dive) / 1000.0;
-	if (pi->entry[1].po2 < 0.01)
-		pi->entry[1].po2 = pi->entry[2].po2 / amb_pressure;
-	if (pi->entry[1].phe < 0.01)
-		pi->entry[1].phe = pi->entry[2].phe / amb_pressure;
-	pi->entry[1].pn2 = 1.01325 - pi->entry[1].po2 - pi->entry[1].phe;
-	amb_pressure = depth_to_mbar(pi->entry[1].depth, dive) / 1000.0;
-	if (pi->entry[0].po2 < 0.01)
-		pi->entry[0].po2 = pi->entry[1].po2 / amb_pressure;
-	if (pi->entry[0].phe < 0.01)
-		pi->entry[0].phe = pi->entry[1].phe / amb_pressure;
-	pi->entry[0].pn2 = 1.01325 - pi->entry[0].po2 - pi->entry[0].phe;
+	/* The plot-info is embedded in the graphics context */
+	pi = &gc->pi;
 
+	/* reset deco information to start the calculation */
+	init_decompression(dive);
+
+	/* Create the new plot data */
+	if (last_pi_entry)
+		free((void *)last_pi_entry);
+	last_pi_entry = populate_plot_entries(dive, dc, pi);
+
+	/* Populate the gas index from the gas change events */
+	check_gas_change_events(dive, dc, pi);
+
+	/* Try to populate our gas pressure knowledge */
+	setup_gas_sensor_pressure(dive, dc, pi);
+
+	/* .. calculate missing pressure entries */
+	populate_pressure_information(dive, dc, pi);
+
+	/* Then, calculate partial pressures and deco information */
+	calculate_deco_information(dive, dc, pi);
 	pi->meandepth = dive->meandepth.mm;
 
-	if (missing_pr) {
-		fill_missing_tank_pressures(pi, track_pr);
-	}
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++)
-		list_free(track_pr[cyl]);
 	if (0) /* awesome for debugging - not useful otherwise */
 		dump_pi(pi);
 	return analyze_plot_info(pi);
