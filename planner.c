@@ -128,11 +128,14 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 
 	if (!diveplan || !diveplan->dp)
 		return NULL;
+#if DEBUG_PLAN & 4
+	dump_plan(diveplan);
+#endif
 	dive = alloc_dive();
 	dive->when = diveplan->when;
 	dive->surface_pressure.mbar = diveplan->surface_pressure;
 	dc = &dive->dc;
-	dc->model = "Simulated Dive";
+	dc->model = strdup("Simulated Dive");
 	dp = diveplan->dp;
 
 	/* let's start with the gas given on the first segment */
@@ -257,6 +260,18 @@ void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2
 	add_to_end_of_diveplan(diveplan, dp);
 }
 
+void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
+{
+	struct event *event = dc->events;
+	while (event && event->time.seconds <= time) {
+		if (!strcmp(event->name, "gaschange")) {
+			*o2 = 10 * event->value & 0xffff;
+			*he = 10 * event->value >> 16;
+		}
+		event = event->next;
+	}
+}
+
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 {
 	struct dive *dive;
@@ -276,16 +291,25 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	record_dive(dive);
 
 	sample = &dive->dc.sample[dive->dc.samples - 1];
-	o2 = dive->cylinder[sample->sensor].gasmix.o2.permille;
-	he = dive->cylinder[sample->sensor].gasmix.he.permille;
-
+	/* we start with gas 0, then check if that was changed */
+	o2 = dive->cylinder[0].gasmix.o2.permille;
+	he = dive->cylinder[0].gasmix.he.permille;
+	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
+#if DEBUG_PLAN & 2
+	printf("gas %d/%d\n", o2, he);
+#endif
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
-
+#if DEBUG_PLAN & 2
+	printf("ceiling %5.2lfm\n", ceiling / 1000.0);
+#endif
 	for (stopidx = 1; stopidx < sizeof(stoplevels) / sizeof(int); stopidx++)
 		if (stoplevels[stopidx] >= ceiling)
 			break;
 
+#if DEBUG_PLAN & 2
+	printf("first stop at %5.2lfm\n", stoplevels[stopidx] / 1000.0);
+#endif
 	while (stopidx > 0) {
 		depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 		if (depth > stoplevels[stopidx]) {
@@ -297,9 +321,15 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 			record_dive(dive);
 		}
 		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], cached_datap);
+#if DEBUG_PLAN & 2
+		printf("waittime %d:%2d\n", FRACTION(wait_time, 60));
+#endif
 		if (wait_time)
 			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he);
 		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
+#if DEBUG_PLAN & 2
+		printf("transitiontime %d:%2d to depth %5.2lfm\n", FRACTION(wait_time, 60), stoplevels[stopidx - 1] / 1000.0);
+#endif
 		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
