@@ -28,7 +28,7 @@ struct buehlmann_config {
   double  gf_low;		//! gradient factor low (at bottom/start of deco calculation).
   double  gf_low_position_min;	//! gf_low_position below surface_min_shallow.
 };
-struct buehlmann_config buehlmann_config = { 1.0, 1.01, 3, 0.75, 0.35, 2.0 };
+struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 2.0 };
 struct dive_data {
         double pressure;	//! pesent ambient pressure
         double surface;		//! pressure at water surface
