@@ -1870,7 +1870,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			for (j = t0; j < t1; j++) {
 				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
 				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-								&dive->cylinder[cylinderindex].gasmix, 1, entry->po2);
+								  &dive->cylinder[cylinderindex].gasmix, 1, entry->po2, dive);
 				if (min_pressure > tissue_tolerance)
 					tissue_tolerance = min_pressure;
 			}
