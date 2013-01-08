@@ -312,11 +312,6 @@ static GtkTextView *text_view(GtkWidget *box, const char *label, enum writable w
 	return GTK_TEXT_VIEW(view);
 }
 
-static enum {
-	MATCH_EXACT,
-	MATCH_PREPEND,
-	MATCH_AFTER
-} found_string_entry;
 static GtkTreeIter string_entry_location;
 
 static gboolean match_string_entry(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
@@ -345,7 +340,7 @@ static gboolean match_string_entry(GtkTreeModel *model, GtkTreePath *path, GtkTr
 	return FALSE;
 }
 
-static int match_list(GtkListStore *list, const char *string)
+int match_list(GtkListStore *list, const char *string)
 {
 	found_string_entry = MATCH_PREPEND;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(list), match_string_entry, (void *)string);

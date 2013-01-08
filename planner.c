@@ -563,6 +563,14 @@ static void gas_changed_cb(GtkWidget *combo, gpointer data)
 	int idx = data - NULL;
 
 	gastext = gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo));
+	/* stupidly this gets called for two reasons:
+	 * a) any keystroke into the entry field
+	 * b) mouse selection of a dropdown
+	 * we only care about b) (a) is handled much better with the focus-out event)
+	 * so let's check that the text returned is actually in our model before going on
+	 */
+	if (match_list(gas_model, gastext) != MATCH_EXACT)
+		return;
 	o2 = he = 0;
 	if (!validate_gas(gastext, &o2, &he)) {
 		/* this should never happen as only validated texts should be
