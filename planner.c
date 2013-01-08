@@ -156,6 +156,13 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		int depth = dp->depth;
 		struct sample *sample;
 
+		if (time == 0) {
+			/* special entries that just inform the algorithm about
+			 * additional gases that are available */
+			add_gas(dive, o2, he);
+			dp = dp->next;
+			continue;
+		}
 		if (!o2 && !he) {
 			o2 = oldo2;
 			he = oldhe;
@@ -229,7 +236,7 @@ void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gb
 	struct divedatapoint *pdp, *dp = get_nth_dp(diveplan, idx);
 	if (idx > 0) {
 		pdp = get_nth_dp(diveplan, idx - 1);
-		if (is_rel || duration <= pdp->time)
+		if (duration && (is_rel || duration <= pdp->time))
 			duration += pdp->time;
 	}
 	dp->time = duration;
@@ -251,13 +258,16 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
 	struct divedatapoint **lastdp = &diveplan->dp;
 	struct divedatapoint *ldp = *lastdp;
+	int lasttime = 0;
 	while(*lastdp) {
 		ldp = *lastdp;
+		if (ldp->time > lasttime)
+			lasttime = ldp->time;
 		lastdp = &(*lastdp)->next;
 	}
 	*lastdp = dp;
 	if (ldp)
-		dp->time += ldp->time;
+		dp->time += lasttime;
 }
 
 void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he)
