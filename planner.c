@@ -30,7 +30,7 @@ void dump_plan(struct diveplan *diveplan)
 	}
 	utc_mkdate(diveplan->when, &tm);
 
-	printf("Diveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
+	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 		tm.tm_hour, tm.tm_min, tm.tm_sec,
 		diveplan->surface_pressure);
@@ -301,12 +301,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	o2 = dive->cylinder[0].gasmix.o2.permille;
 	he = dive->cylinder[0].gasmix.he.permille;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
-#if DEBUG_PLAN & 2
+#if DEBUG_PLAN & 4
 	printf("gas %d/%d\n", o2, he);
 #endif
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
-#if DEBUG_PLAN & 2
+#if DEBUG_PLAN & 4
 	printf("ceiling %5.2lfm\n", ceiling / 1000.0);
 #endif
 	for (stopidx = 0; stopidx < sizeof(stoplevels) / sizeof(int); stopidx++)
@@ -773,6 +773,7 @@ void input_plan()
 	gtk_widget_add_events(deltat, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(deltat, "focus-out-event", G_CALLBACK(starttime_focus_out_cb), NULL);
 	diveplan.when = time(NULL) + 3600;
+	diveplan.surface_pressure = 1013;
 	nr_waypoints = 4;
 	add_waypoint_widgets(vbox, 0);
 	add_waypoint_widgets(vbox, 1);
