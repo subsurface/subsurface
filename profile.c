@@ -1832,7 +1832,8 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
 
 	for (i = 1; i < pi->nr; i++) {
-		int fo2, fhe;
+		int fo2, fhe, j, t0, t1;
+		double tissue_tolerance;
 		struct plot_data *entry = pi->entry + i;
 		int cylinderindex = entry->cylinderindex;
 
@@ -1862,23 +1863,20 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			pi->maxpp = entry->pn2;
 
 		/* and now let's try to do some deco calculations */
-		if (i > 0) {
-			int j;
-			int t0 = (entry - 1)->sec;
-			int t1 = entry->sec;
-			double tissue_tolerance = 0;
-			for (j = t0; j < t1; j++) {
-				int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
-				double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-								  &dive->cylinder[cylinderindex].gasmix, 1, entry->po2, dive);
-				if (min_pressure > tissue_tolerance)
-					tissue_tolerance = min_pressure;
-			}
-			if (t0 == t1)
-				entry->ceiling = (entry - 1)->ceiling;
-			else
-				entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+		t0 = (entry - 1)->sec;
+		t1 = entry->sec;
+		tissue_tolerance = 0;
+		for (j = t0; j < t1; j++) {
+			int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
+			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
+							&dive->cylinder[cylinderindex].gasmix, 1, entry->po2, dive);
+			if (min_pressure > tissue_tolerance)
+				tissue_tolerance = min_pressure;
 		}
+		if (t0 == t1)
+			entry->ceiling = (entry - 1)->ceiling;
+		else
+			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 	}
 
 #if DECO_CALC_DEBUG & 1

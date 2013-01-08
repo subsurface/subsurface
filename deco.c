@@ -129,7 +129,7 @@ double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds
 	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - gasmix->he.permille) / 1000.0;
 	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
 
-	if(pressure > gf_low_pressure_this_dive)
+	if (pressure > gf_low_pressure_this_dive)
 	        gf_low_pressure_this_dive = pressure;
 
 	if (ccpo2 > 0.0) { /* CC */
