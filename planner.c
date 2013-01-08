@@ -331,6 +331,9 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	}
 	while (stopidx > 0) { /* this indicates that we had a non-zero first ceiling */
 		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], cached_datap);
+		/* typically deco plans are done in one minute increments; we may want to
+		 * make this configurable at some point */
+		wait_time = ((wait_time + 59) / 60) * 60;
 #if DEBUG_PLAN & 2
 		printf("waittime %d:%02d at depth %5.2lfm\n", FRACTION(wait_time, 60), stoplevels[stopidx] / 1000.0);
 #endif
