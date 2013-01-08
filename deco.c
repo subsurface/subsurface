@@ -1,18 +1,19 @@
 /* calculate deco values
  * based on Bühlmann ZHL-16b
  * based on an implemention by heinrichs weikamp for the DR5
- * the original file doesn't carry a license and is used here with
- * the permission of Matthias Heinrichs
+ * the original file was given to Subsurface under the GPLv2
+ * by Matthias Heinrichs
  *
- * The implementation below is (C) Dirk Hohndel 2012 and released under the GPLv2
+ * The implementation below is a fairly complete rewrite since then
+ * (C) Robert C. Helling 2013 and released under the GPLv2
  *
- * clear_deco()  - call to initialize for a new deco calculation
- * add_segment(pressure, gasmix, seconds) - add <seconds> at the given pressure, breathing gasmix
- * deco_allowed_depth(tissues_tolerance, surface_pressure, dive, smooth)
- *				- ceiling based on lead tissue, surface pressure, 3m increments or smooth
- * set_gf(gflow, gfhigh) - set Buehlmann gradient factors
- * void cache_deco_state(tissue_tolerance, char **datap) - cache the relevant data allocate memory if needed
- * double restore_deco_state(char *data) - restore the state and return the tissue_tolerance
+ * add_segment()	- add <seconds> at the given pressure, breathing gasmix
+ * deco_allowed_depth() - ceiling based on lead tissue, surface pressure, 3m increments or smooth
+ * set_gf()		- set Buehlmann gradient factors
+ * clear_deco()
+ * cache_deco_state()
+ * restore_deco_state()
+ * dump_tissues()
  */
 #include <math.h>
 #include <string.h>
@@ -22,16 +23,12 @@
 struct buehlmann_config {
   double  satmult;		//! safety at inert gas accumulation as percentage of effect (more than 100).
   double  desatmult;		//! safety at inert gas depletion as percentage of effect (less than 100).
-  double  safety_dist_deco_stop;//! assumed distance to official decompression where decompression takes places.
   int  last_deco_stop_in_mtr;	//! depth of last_deco_stop.
   double  gf_high;		//! gradient factor high (at surface).
   double  gf_low;		//! gradient factor low (at bottom/start of deco calculation).
   double  gf_low_position_min;	//! gf_low_position below surface_min_shallow.
-  double  gf_low_position_max;	//! gf_low_position below surface_max_depth.
-  double  gf_high_emergency;	//! emergency gf factors
-  double  gf_low_emergency;	//! gradient factor low (at bottom/start of deco calculation).
 };
-struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0.5, 0, 0.75, 0.35, 3.0, 6.0, 0.95, 0.95 };
+struct buehlmann_config buehlmann_config = { 1.0, 1.01, 3, 0.75, 0.35, 2.0 };
 struct dive_data {
         double pressure;	//! pesent ambient pressure
         double surface;		//! pressure at water surface
@@ -82,10 +79,6 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 
 #define WV_PRESSURE 0.0627 /* water vapor pressure */
 #define N2_IN_AIR 0.7902
-#define DIST_FROM_3_MTR 0.28
-#define PRESSURE_CHANGE_3M 0.3
-#define TOLERANCE 0.02
-
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 
 double tissue_n2_sat[16];
@@ -94,38 +87,6 @@ double tissue_tolerated_ambient_pressure[16];
 int ci_pointing_to_guiding_tissue;
 double gf_low_pressure_this_dive;
 #define TISSUE_ARRAY_SZ sizeof(tissue_n2_sat)
-
-/* static double actual_gradient_limit_obsolete(const struct dive_data *data) */
-/* { */
-/* 	double pressure_diff, limit_at_position; */
-/* 	double gf_high = buehlmann_config.gf_high; */
-/* 	double gf_low = buehlmann_config.gf_low; */
-
-/* 	pressure_diff = data->pressure - data->surface; */
-
-/* 	if (pressure_diff > TOLERANCE) { */
-/* 		if (pressure_diff < gf_low_position_this_dive) */
-/* 			limit_at_position = gf_high - ((gf_high - gf_low) * pressure_diff / gf_low_position_this_dive); */
-/* 		else */
-/* 			limit_at_position = gf_low; */
-/* 	} else { */
-/* 		limit_at_position = gf_high; */
-/* 	} */
-/* 	return limit_at_position; */
-/* } */
-
-/* static double gradient_factor_calculation_obsolete(const struct dive_data *data) */
-/* { */
-/* 	double tissue_inertgas_saturation; */
-
-/* 	tissue_inertgas_saturation = tissue_n2_sat[ci_pointing_to_guiding_tissue] + */
-/* 					tissue_he_sat[ci_pointing_to_guiding_tissue]; */
-/* 	if (tissue_inertgas_saturation < data->pressure) */
-/* 		return 0.0; */
-/* 	else */
-/* 		return (tissue_inertgas_saturation - data->pressure) / */
-/* 			(tissue_inertgas_saturation - tissue_tolerated_ambient_pressure[ci_pointing_to_guiding_tissue]); */
-/* } */
 
 static double tissue_tolerance_calc(const struct dive *dive)
 {
@@ -144,13 +105,12 @@ static double tissue_tolerance_calc(const struct dive *dive)
 
 		/* tissue_tolerated_ambient_pressure[ci] = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
 
-		tissue_tolerated_ambient_pressure[ci] = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface)
-							 - (1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface
-							 + buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation)
-		                                       /
-		  (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high - gf_low)
-		   + (1.0 - buehlmann_inertgas_b)*(gf_low * gf_low_pressure_this_dive - gf_high * surface)
-		   + buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
+		tissue_tolerated_ambient_pressure[ci] = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
+								(1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
+								buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation) /
+							(-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high - gf_low) +
+								(1.0 - buehlmann_inertgas_b)*(gf_low * gf_low_pressure_this_dive - gf_high * surface) +
+								buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
 
 		if (tissue_tolerated_ambient_pressure[ci] > ret_tolerance_limit_ambient_pressure)
 		{
@@ -161,7 +121,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	return ret_tolerance_limit_ambient_pressure;
 }
 
-/* add a second at the given pressure and gas to the deco calculation */
+/* add period_in_seconds at the given pressure and gas to the deco calculation */
 double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, double ccpo2, const struct dive *dive)
 {
 	int ci;
@@ -239,7 +199,7 @@ void clear_deco(double surface_pressure)
 		tissue_he_sat[ci] = 0.0;
 		tissue_tolerated_ambient_pressure[ci] = 0.0;
 	}
-	gf_low_pressure_this_dive = surface_pressure+ buehlmann_config.gf_low_position_min;
+	gf_low_pressure_this_dive = surface_pressure + buehlmann_config.gf_low_position_min;
 }
 
 void cache_deco_state(double tissue_tolerance, char **cached_datap)
@@ -287,58 +247,19 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 	unsigned int depth;
 	double pressure_delta;
 
-	pressure_delta = tissues_tolerance > surface_pressure ? tissues_tolerance - surface_pressure : 0.0;  /* Avoid negative depths */
-
-
-	/* gboolean below_gradient_limit; */
-	/* double new_gradient_factor; */
-	/* double pressure_delta = tissues_tolerance - surface_pressure; */
-	/* struct dive_data mydata; */
-	/* int bail = 1000; */
-
-	/* if (pressure_delta > 0) { */
-	/* 	if (!smooth) { */
-	/* 		multiples_of_3m = (pressure_delta + DIST_FROM_3_MTR) / 0.3; */
-	/* 		depth = 3000 * multiples_of_3m; */
-	/* 	} else { */
-	/* 		depth = rel_mbar_to_depth(pressure_delta * 1000, dive); */
-	/* 	} */
-	/* } else { */
-	/* 	depth = 0; */
-	/* } */
-	/* mydata.pressure = depth_to_mbar(depth, dive) / 1000.0; */
-	/* mydata.surface = surface_pressure; */
-
-	/* new_gradient_factor = gradient_factor_calculation(&mydata); */
-	/* below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata)); */
-	/* while(!below_gradient_limit) */
-	/* { */
-	/* 	/\* we run into bugs where this turns into an infinite loop; so add */
-	/* 	 * some bailout code that prints a warning but prevents the code from hanging *\/ */
-	/* 	if (--bail == 0) { */
-	/* 		printf("WARNING!!!\n==========\nThe deco_allowed_depth() loop appears to hang.\nBailing out.\n"); */
-	/* 		break; */
-	/* 	} */
-	/* 	if (!smooth) */
-	/* 		mydata.pressure += PRESSURE_CHANGE_3M; */
-	/* 	else */
-	/* 		mydata.pressure += PRESSURE_CHANGE_3M / 30; /\* 4in / 10cm instead *\/ */
-	/* 	new_gradient_factor = gradient_factor_calculation(&mydata); */
-	/* 	below_gradient_limit = (new_gradient_factor < actual_gradient_limit(&mydata)); */
-	/* } */
-	/* depth = rel_mbar_to_depth((mydata.pressure - surface_pressure) * 1000, dive); */
+	/* Avoid negative depths */
+	pressure_delta = tissues_tolerance > surface_pressure ? tissues_tolerance - surface_pressure : 0.0;
 
 	depth = rel_mbar_to_depth(pressure_delta * 1000, dive);
 
 	if(!smooth)
-	  depth = ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM;
+		depth = ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM;
 
 	if(depth > 0 && depth < buehlmann_config.last_deco_stop_in_mtr * 1000)
-	  depth = buehlmann_config.last_deco_stop_in_mtr * 1000;
+		depth = buehlmann_config.last_deco_stop_in_mtr * 1000;
 
 	return depth;
 }
-
 
 void set_gf(double gflow, double gfhigh)
 {
