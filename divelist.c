@@ -834,8 +834,7 @@ static void add_dive_to_deco(struct dive *dive)
 		int j;
 
 		for (j = t0; j < t1; j++) {
-			int depth = 0.5 + psample->depth.mm + (j - t0) *
-					(sample->depth.mm - psample->depth.mm) / (t1 - t0);
+			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0,
 					   &dive->cylinder[sample->sensor].gasmix, 1, sample->po2 / 1000.0, dive);
 		}

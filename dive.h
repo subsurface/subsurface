@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
+#include <math.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -219,6 +220,14 @@ static inline int mbar_to_PSI(int mbar)
 {
 	pressure_t p = {mbar};
 	return to_PSI(p);
+}
+
+/* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
+static inline int interpolate(int a, int b, int part, int whole)
+{
+	/* It is doubtful that we actually need floating point for this, but whatever */
+	double x = (double) a * (whole - part) + (double) b * part;
+	return rint(x / whole);
 }
 
 struct sample {

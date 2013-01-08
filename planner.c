@@ -99,7 +99,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		if (i > 0)
 			lastdepth = psample->depth.mm;
 		for (j = t0; j < t1; j++) {
-			int depth = lastdepth + (j - t0) * (sample->depth.mm - lastdepth) / (t1 - t0);
+			int depth = interpolate(lastdepth, sample->depth.mm, j - t0, t1 - t0);
 			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 						       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 		}

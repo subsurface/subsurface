@@ -8,7 +8,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
 
 #include "dive.h"
 #include "display.h"
@@ -1596,15 +1595,6 @@ static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, str
 	pi->maxtemp = maxtemp;
 }
 
-/* Average between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
-static int average_depth(int a, int b, int part, int whole)
-{
-	double x;
-
-	x = (a * (whole - part) + b * part) / whole;
-	return rint(x);
-}
-
 static struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int idx, maxtime, nr, i;
@@ -1653,7 +1643,7 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 
 			/* .. but update depth and time, obviously */
 			entry->sec = lasttime + offset;
-			entry->depth = average_depth(lastdepth, depth, offset, delta);
+			entry->depth = interpolate(lastdepth, depth, offset, delta);
 
 			/* And clear out the sensor pressure, since we'll interpolate */
 			SENSOR_PRESSURE(entry) = 0;
@@ -1867,7 +1857,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		t1 = entry->sec;
 		tissue_tolerance = 0;
 		for (j = t0; j < t1; j++) {
-			int depth = 0.5 + (entry - 1)->depth + (j - t0) * (entry->depth - (entry - 1)->depth) / (t1 - t0);
+			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 							&dive->cylinder[cylinderindex].gasmix, 1, entry->po2, dive);
 			if (min_pressure > tissue_tolerance)
