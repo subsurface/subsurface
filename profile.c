@@ -1874,7 +1874,10 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 				if (min_pressure > tissue_tolerance)
 					tissue_tolerance = min_pressure;
 			}
-			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+			if (t0 == t1)
+				entry->ceiling = (entry - 1)->ceiling;
+			else
+				entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		}
 	}
 
