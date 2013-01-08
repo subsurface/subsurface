@@ -218,9 +218,10 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gboolean is_rel)
 {
 	struct divedatapoint *pdp, *dp = get_nth_dp(diveplan, idx);
-	if (idx > 0 && is_rel) {
+	if (idx > 0) {
 		pdp = get_nth_dp(diveplan, idx - 1);
-		duration += pdp->time;
+		if (is_rel || dp->time <= pdp->time)
+			duration += pdp->time;
 	}
 	dp->time = duration;
 }
