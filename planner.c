@@ -48,7 +48,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
-	int i, j, t0, t1;
+	int i, j, t0, t1, lastdepth;
 	double tissue_tolerance;
 
 	if (!dive)
@@ -63,11 +63,13 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	if (!dc->samples)
 		return tissue_tolerance;
 	psample = sample = dc->sample;
-	t0 = 0;
+	lastdepth = t0 = 0;
 	for (i = 0; i < dc->samples; i++, sample++) {
 		t1 = sample->time.seconds;
+		if (i > 0)
+			lastdepth = psample->depth.mm;
 		for (j = t0; j < t1; j++) {
-			int depth = psample->depth.mm + (j - t0) * (sample->depth.mm - psample->depth.mm) / (t1 - t0);
+			int depth = lastdepth + (j - t0) * (sample->depth.mm - lastdepth) / (t1 - t0);
 			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 						       &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
 		}
