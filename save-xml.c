@@ -6,6 +6,7 @@
 #include <time.h>
 
 #include "dive.h"
+#include "device.h"
 
 static void show_milli(FILE *f, const char *pre, int value, const char *unit, const char *post)
 {
@@ -524,7 +525,7 @@ void save_dives(const char *filename)
 	fprintf(f, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
 
 	/* save the dive computer nicknames, if any */
-	clear_dc_saved_status();
+	clear_device_saved_status();
 	for_each_dive(i, dive) {
 		struct divecomputer *dc = &dive->dc;
 		while (dc) {

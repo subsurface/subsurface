@@ -19,6 +19,7 @@
 #include "display.h"
 #include "display-gtk.h"
 #include "uemis.h"
+#include "device.h"
 
 #include "libdivecomputer.h"
 
@@ -41,15 +42,6 @@ struct preferences prefs = {
 	FALSE, FALSE, FALSE, 0.30, 0.75
 };
 
-struct device_info {
-	const char *model;
-	uint32_t deviceid;
-
-	const char *nickname;
-	struct device_info *next;
-	gboolean saved;
-};
-static struct device_info *device_info_list;
 char *nicknamestring;
 
 static GtkWidget *dive_profile;
@@ -2194,25 +2186,6 @@ void set_filename(const char *filename, gboolean force)
 		existing_filename = NULL;
 }
 
-/* just find the entry for this divecomputer */
-static struct device_info *get_device_info(const char *model, int deviceid)
-{
-	struct device_info *known = device_info_list;
-
-	/* a 0 deviceid doesn't get a nickname - those come from development
-	 * versions of Subsurface that didn't store the deviceid in the divecomputer entries */
-	if (!deviceid)
-		return NULL;
-	if (!model)
-		model = "";
-	while (known) {
-		if (!strcmp(known->model, model) && known->deviceid == deviceid)
-			return known;
-		known = known->next;
-	}
-	return NULL;
-}
-
 const char *get_dc_nickname(const char *model, uint32_t deviceid)
 {
 	struct device_info *known = get_device_info(model, deviceid);
@@ -2236,36 +2209,6 @@ void mark_dc_saved(struct divecomputer *dc)
 	struct device_info *nn_entry = get_device_info(dc->model, dc->deviceid);
 	if (nn_entry)
 		nn_entry->saved = TRUE;
-}
-
-void clear_dc_saved_status()
-{
-	struct device_info *nn_entry = device_info_list;
-
-	while (nn_entry) {
-		nn_entry->saved = FALSE;
-		nn_entry = nn_entry->next;
-	}
-}
-
-/* do we have a DIFFERENT divecomputer of the same model? */
-static struct device_info *get_different_dc_nicknameentry(const char *model, int deviceid)
-{
-	struct device_info *known = device_info_list;
-
-	/* a 0 deviceid matches any DC of the same model - those come from development
-	 * versions of Subsurface that didn't store the deviceid in the divecomputer entries */
-	if (!deviceid)
-		return NULL;
-	if (!model)
-		model = "";
-	while (known) {
-		if (known->model && !strcmp(known->model, model) &&
-		    known->deviceid != deviceid)
-			return known;
-		known = known->next;
-	}
-	return NULL;
 }
 
 /* no curly braces or commas, please */
@@ -2332,21 +2275,13 @@ bail:
 
 void remove_dc(const char *model, uint32_t deviceid, gboolean change_conf)
 {
-	struct device_info *nn_entry, **prevp = &device_info_list;
 	char pattern[160];
 	char *nnstring, *brace;
+	struct device_info *entry;
 
-	if (!deviceid || !model || !*model)
+	entry = remove_device_info(model, deviceid);
+	if (!entry)
 		return;
-	nn_entry = get_device_info(model, deviceid);
-	if (!nn_entry)
-		return;
-	while (prevp && *prevp != nn_entry)
-		prevp = &(*prevp)->next;
-	if (!prevp)
-		/* that should be impossible */
-		goto bail;
-	(*prevp) = nn_entry->next;
 
 	/* now remove it from the config string */
 	snprintf(pattern, sizeof(pattern), "{%08x,%s", deviceid, model);
@@ -2362,40 +2297,24 @@ void remove_dc(const char *model, uint32_t deviceid, gboolean change_conf)
 	if (change_conf)
 		subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
 
-#if defined(NICKNAME_DEBUG)
-	struct device_info *nn_entry = device_info_list;
-	fprintf(debugfile, "nicknames:\n");
-	while (nn_entry) {
-		fprintf(debugfile, "id %8x model %s nickname %s\n", nn_entry->deviceid, nn_entry->model,
-			nn_entry->nickname && *nn_entry->nickname ? nn_entry->nickname : "(none)");
-		nn_entry = nn_entry->next;
-	}
-	fprintf(debugfile, "----------\n");
-#endif
-
 bail:
-	free(nn_entry);
+	free(entry);
 }
 
 void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gboolean change_conf)
 {
-	/* we don't want to record entries with a deviceid of 0; those are from earlier
-	 * development versions of Subsurface before we stored the hash in the divecomputer
-	 * entries... we don't know which actual divecomputer those entries are from */
-	if (!deviceid)
+	struct device_info *nn_entry;
+
+	nn_entry = create_device_info(model, deviceid);
+	if (!nn_entry)
 		return;
-	if (!nickname)
-		nickname = "";
-	if (!get_dc_nickname(model, deviceid)) {
+
+	/* No existing nickname? */
+	if (!nn_entry->nickname) {
 		char buffer[160];
-		struct device_info *nn_entry = malloc(sizeof(struct device_info));
-		nn_entry->deviceid = deviceid;
-		nn_entry->model = strdup(model);
 		/* make sure there are no curly braces or commas in the string and that
 		 * it will fit in the buffer */
 		nn_entry->nickname = cleanedup_nickname(nickname, sizeof(buffer) - 13 - strlen(model));
-		nn_entry->next = device_info_list;
-		device_info_list = nn_entry;
 		if (*nickname != '\0')
 			snprintf(buffer, sizeof(buffer), "{%08x,%s,%s}", deviceid, model, nn_entry->nickname);
 		else
@@ -2403,26 +2322,11 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 		nicknamestring = realloc(nicknamestring, strlen(nicknamestring) + strlen(buffer) + 1);
 		strcat(nicknamestring, buffer);
 	} else {
-		/* modify existing entry */
-		struct device_info *nn_entry = get_device_info(model, deviceid);
-		if (!nn_entry->model || !*nn_entry->model)
-			nn_entry->model = model;
 		nn_entry->nickname = cleanedup_nickname(nickname, 80);
 		replace_nickname_nicknamestring(model, deviceid, nickname);
 	}
 	if (change_conf)
 		subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
-
-#if defined(NICKNAME_DEBUG)
-	struct device_info *nn_entry = device_info_list;
-	fprintf(debugfile, "nicknames:\n");
-	while (nn_entry) {
-		fprintf(debugfile, "id %8x model %s nickname %s\n", nn_entry->deviceid, nn_entry->model,
-			nn_entry->nickname && *nn_entry->nickname ? nn_entry->nickname : "(none)");
-		nn_entry = nn_entry->next;
-	}
-	fprintf(debugfile, "----------\n");
-#endif
 }
 
 void set_dc_nickname(struct dive *dive)
@@ -2440,7 +2344,7 @@ void set_dc_nickname(struct dive *dive)
 		fprintf(debugfile, "set_dc_nickname for model %s deviceid %8x\n", dc->model ? : "", dc->deviceid);
 #endif
 		if (get_dc_nickname(dc->model, dc->deviceid) == NULL) {
-			struct device_info *nn_entry = get_different_dc_nicknameentry(dc->model, dc->deviceid);
+			struct device_info *nn_entry = get_different_device_info(dc->model, dc->deviceid);
 			if (!nn_entry) {
 				/* just remember the dive computer without setting a nickname */
 				if (dc->model)

@@ -132,7 +132,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	gtk-gui.o statistics.o file.o cochran.o $(OSSUPPORT).o $(RESFILE)
+	gtk-gui.o statistics.o file.o cochran.o device.o $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -214,7 +214,7 @@ cochran.o: cochran.c dive.h file.h
 parse-xml.o: parse-xml.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) -c parse-xml.c
 
-save-xml.o: save-xml.c dive.h
+save-xml.o: save-xml.c dive.h device.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c save-xml.c
 
 dive.o: dive.c dive.h
@@ -250,12 +250,12 @@ deco.o: deco.c dive.h
 planner.o: planner.c dive.h divelist.h display-gtk.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c planner.c
 
-libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h
+libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h device.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-c libdivecomputer.c
 
-gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h Makefile
+gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h device.h Makefile
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-DVERSION_STRING='"v$(VERSION)"' \
@@ -266,6 +266,9 @@ uemis.o: uemis.c dive.h uemis.h
 
 uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis-downloader.c
+
+device.o: device.c device.h dive.h
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c device.c
 
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c

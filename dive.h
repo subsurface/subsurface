@@ -544,7 +544,6 @@ extern const char *get_dc_nickname(const char *model, uint32_t deviceid);
 extern void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gboolean change_conf);
 extern gboolean dc_was_saved(struct divecomputer *dc);
 extern void mark_dc_saved(struct divecomputer *dc);
-extern void clear_dc_saved_status(void);
 extern void set_autogroup(gboolean value);
 extern int total_weight(struct dive *);
 
