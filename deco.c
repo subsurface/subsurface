@@ -81,6 +81,8 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 #define N2_IN_AIR 0.7902
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 
+#define GF_LOW_AT_MAXDEPTH 0
+
 double tissue_n2_sat[16];
 double tissue_he_sat[16];
 double tissue_tolerated_ambient_pressure[16];
@@ -96,6 +98,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	double gf_high = buehlmann_config.gf_high;
 	double gf_low = buehlmann_config.gf_low;
 	double surface = dive->surface_pressure.mbar / 1000.0;
+	double lowest_ceiling;
 
 	for (ci = 0; ci < 16; ci++)
 	{
@@ -104,6 +107,13 @@ static double tissue_tolerance_calc(const struct dive *dive)
 		buehlmann_inertgas_b = ((buehlmann_N2_b[ci] * tissue_n2_sat[ci]) + (buehlmann_He_b[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation;
 
 		/* tissue_tolerated_ambient_pressure[ci] = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
+
+#if !GF_LOW_AT_MAXDEPTH
+		lowest_ceiling = (buehlmann_inertgas_b * tissue_inertgas_saturation - gf_low * buehlmann_inertgas_a * buehlmann_inertgas_b) /
+		  ((1.0 - buehlmann_inertgas_b) * gf_low + buehlmann_inertgas_b);
+		if(lowest_ceiling > gf_low_pressure_this_dive)
+		  gf_low_pressure_this_dive = lowest_ceiling;
+#endif
 
 		tissue_tolerated_ambient_pressure[ci] = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
 								(1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
@@ -129,8 +139,10 @@ double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds
 	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - gasmix->he.permille) / 1000.0;
 	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
 
+#if GF_LOW_AT_MAXDEPTH
 	if (pressure > gf_low_pressure_this_dive)
 	        gf_low_pressure_this_dive = pressure;
+#endif
 
 	if (ccpo2 > 0.0) { /* CC */
 		double rel_o2_amb, f_dilutent;
