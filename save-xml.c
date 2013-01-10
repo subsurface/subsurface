@@ -425,7 +425,7 @@ static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 	fprintf(f, "  </divecomputer>\n");
 }
 
-static void save_dive(FILE *f, struct dive *dive)
+void save_dive(FILE *f, struct dive *dive)
 {
 	struct divecomputer *dc;
 

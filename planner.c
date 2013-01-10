@@ -13,7 +13,7 @@
 #include "display-gtk.h"
 
 
-int stoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
+int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
 		     90000};
@@ -43,12 +43,36 @@ void dump_plan(struct diveplan *diveplan)
 }
 #endif
 
+void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
+{
+	struct event *event = dc->events;
+	while (event && event->time.seconds <= time) {
+		if (!strcmp(event->name, "gaschange")) {
+			*o2 = 10 * event->value & 0xffff;
+			*he = 10 * event->value >> 16;
+		}
+		event = event->next;
+	}
+}
+
+
+static int get_gasidx(struct dive *dive, int o2, int he)
+{
+	int gasidx = -1;
+
+	while (++gasidx < MAX_CYLINDERS)
+		if (dive->cylinder[gasidx].gasmix.o2.permille == o2 &&
+		    dive->cylinder[gasidx].gasmix.he.permille == he)
+			return gasidx;
+	return -1;
+}
+
 /* returns the tissue tolerance at the end of this (partial) dive */
 double tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
-	int i, j, t0, t1, lastdepth;
+	int i, j, t0, t1, gasidx, lastdepth;
 	double tissue_tolerance;
 
 	if (!dive)
@@ -65,13 +89,19 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	psample = sample = dc->sample;
 	lastdepth = t0 = 0;
 	for (i = 0; i < dc->samples; i++, sample++) {
+		int o2 = 0, he = 0;
 		t1 = sample->time.seconds;
+		get_gas_from_events(&dive->dc, t0, &o2, &he);
+		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
+			printf("can't find gas %d/%d\n", o2/10, he/10);
+			gasidx = 0;
+		}
 		if (i > 0)
 			lastdepth = psample->depth.mm;
 		for (j = t0; j < t1; j++) {
 			int depth = lastdepth + (j - t0) * (sample->depth.mm - lastdepth) / (t1 - t0);
 			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-						       &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
+						       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 		}
 		psample = sample;
 		t0 = t1;
@@ -82,7 +112,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 /* how many seconds until we can ascend to the next stop? */
 int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 {
-	int depth;
+	int depth, gasidx, o2 = 0, he = 0;
 	double surface_pressure, tissue_tolerance;
 	int wait = 0;
 	struct sample *sample;
@@ -93,10 +123,12 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	tissue_tolerance = tissue_at_end(dive, cached_data_p);
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
+	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
+	gasidx = get_gasidx(dive, o2, he);
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
 		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					       &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
+					       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 	}
 	return wait;
 }
@@ -131,10 +163,12 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
 	int oldo2 = AIR_PERMILLE, oldhe = 0;
+	int lasttime = 0;
 
 	if (!diveplan || !diveplan->dp)
 		return NULL;
 #if DEBUG_PLAN & 4
+	printf("in create_dive_from_plan\n");
 	dump_plan(diveplan);
 #endif
 	dive = alloc_dive();
@@ -172,7 +206,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		if (o2 != oldo2 || he != oldhe) {
 			int value = (o2 / 10) | (he / 10 << 16);
 			add_gas(dive, o2, he);
-			add_event(dc, time, 11, 0, value, "gaschange");
+			add_event(dc, lasttime, 11, 0, value, "gaschange");
 			oldo2 = o2; oldhe = he;
 		}
 
@@ -181,7 +215,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		sample->time.seconds = time;
 		sample->depth.mm = depth;
 		finish_sample(dc);
-
+		lasttime = time;
 		dp = dp->next;
 	}
 	if (dc->samples == 0) {
@@ -189,6 +223,10 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		free(dive);
 		dive = NULL;
 	}
+#if DEBUG_PLAN & 32
+	if (dive)
+		save_dive(stdout, dive);
+#endif
 	return dive;
 }
 
@@ -276,16 +314,102 @@ void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2
 	add_to_end_of_diveplan(diveplan, dp);
 }
 
-void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
+struct gaschanges {
+	int depth;
+	int gasidx;
+};
+
+static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr)
 {
-	struct event *event = dc->events;
-	while (event && event->time.seconds <= time) {
-		if (!strcmp(event->name, "gaschange")) {
-			*o2 = 10 * event->value & 0xffff;
-			*he = 10 * event->value >> 16;
+	int nr = 0;
+	struct gaschanges *gaschanges = NULL;
+	struct divedatapoint *dp = diveplan->dp;
+
+	while (dp) {
+		if (dp->time == 0) {
+			int i = 0, j = 0;
+			nr++;
+			gaschanges = realloc(gaschanges, nr * sizeof(struct gaschanges));
+			while (i < nr - 1) {
+				if (dp->depth < gaschanges[i].depth) {
+					memmove(gaschanges + i + 1, gaschanges + i, (nr - i - 1) * sizeof(struct gaschanges));
+					break;
+				}
+				i++;
+			}
+			gaschanges[i].depth = dp->depth;
+			do {
+				if (dive->cylinder[j].gasmix.o2.permille == dp->o2 &&
+				    dive->cylinder[j].gasmix.he.permille == dp->he) {
+					gaschanges[i].gasidx = j;
+					break;
+				}
+				j++;
+			} while (j < MAX_CYLINDERS);
 		}
-		event = event->next;
+		dp = dp->next;
 	}
+	*gaschangenr = nr;
+#if DEBUG_PLAN & 16
+	for (nr = 0; nr < *gaschangenr; nr++)
+		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%d/%d)\n", nr, gaschanges[nr].depth / 1000.0,
+			gaschanges[nr].gasidx, dive->cylinder[gaschanges[nr].gasidx].gasmix.o2.permille / 10,
+			dive->cylinder[gaschanges[nr].gasidx].gasmix.he.permille / 10);
+#endif
+	return gaschanges;
+}
+
+/* sort all the stops into one ordered list */
+static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
+{
+	int i, gi, di;
+	int total = dnr + gnr;
+	int *stoplevels = malloc(total * sizeof(int));
+
+	/* no gaschanges */
+	if (gnr == 0) {
+		memcpy(stoplevels, dstops, dnr * sizeof(int));
+		return stoplevels;
+	}
+	i = total - 1;
+	gi = gnr - 1;
+	di = dnr - 1;
+	while (i >= 0) {
+		if (dstops[di] > gstops[gi].depth) {
+			stoplevels[i] = dstops[di];
+			di--;
+		} else if (dstops[di] == gstops[gi].depth) {
+			stoplevels[i] = dstops[di];
+			di--;
+			gi--;
+		} else {
+			stoplevels[i] = gstops[gi].depth;
+			gi--;
+		}
+		i--;
+		if (di < 0) {
+			while (gi >= 0)
+				stoplevels[i--] = gstops[gi--].depth;
+			break;
+		}
+		if (gi < 0) {
+			while (di >= 0)
+				stoplevels[i--] = dstops[di--];
+			break;
+		}
+	}
+	while (i >= 0)
+		stoplevels[i--] = 0;
+
+#if DEBUG_PLAN & 16
+	int k;
+	for (k = gnr + dnr -1; k >= 0; k--) {
+		printf("stoplevel[%d]: %5.2lfm\n", k, stoplevels[k]/1000.0);
+		if (stoplevels[k] == 0)
+			break;
+	}
+#endif
+	return stoplevels;
 }
 
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
@@ -294,8 +418,11 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	struct sample *sample;
 	int wait_time, o2, he;
 	int ceiling, depth, transitiontime;
-	int stopidx;
+	int stopidx, gi;
 	double tissue_tolerance;
+	struct gaschanges *gaschanges;
+	int gaschangenr;
+	int *stoplevels;
 
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = 1013;
@@ -311,23 +438,31 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	o2 = dive->cylinder[0].gasmix.o2.permille;
 	he = dive->cylinder[0].gasmix.he.permille;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
-#if DEBUG_PLAN & 4
-	printf("gas %d/%d\n", o2, he);
-#endif
+	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
 #if DEBUG_PLAN & 4
-	printf("ceiling %5.2lfm\n", ceiling / 1000.0);
+	printf("gas %d/%d\n", o2, he);
+	printf("depth %5.2lfm ceiling %5.2lfm\n", depth / 1000.0, ceiling / 1000.0);
 #endif
-	for (stopidx = 0; stopidx < sizeof(stoplevels) / sizeof(int); stopidx++)
-		if (stoplevels[stopidx] >= ceiling)
+	if (depth < ceiling) /* that's not good... */
+		depth = ceiling;
+	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
+		if (decostoplevels[stopidx] >= depth)
 			break;
+	stopidx--;
 
-	/* now get us to the first stop - NOTE, this could be 0m! */
-#if DEBUG_PLAN & 2
-	printf("first stop at %5.2lfm\n", stoplevels[stopidx] / 1000.0);
-#endif
-	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
+	/* so now we now the first decostop level above us
+	 * NOTE, this could be the surface or a long list of potential stops
+	 * we do NOT start only at the ceiling, as the ceiling may come down
+	 * further during the ascent.
+	 * Next we need to figure out if there are better gases available
+	 * and at which depths we are supposed to switch to them */
+	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr);
+	stoplevels = sort_stops(decostoplevels, stopidx + 1, gaschanges, gaschangenr);
+
+	gi = gaschangenr - 1;
+	stopidx += gaschangenr;
 	if (depth > stoplevels[stopidx]) {
 		transitiontime = (depth - stoplevels[stopidx]) / 150;
 #if DEBUG_PLAN & 2
@@ -339,7 +474,16 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 		*divep = dive = create_dive_from_plan(diveplan);
 		record_dive(dive);
 	}
-	while (stopidx > 0) { /* this indicates that we had a non-zero first ceiling */
+	while (stopidx > 0) { /* this indicates that we aren't surfacing directly */
+		if (gi >= 0 && stoplevels[stopidx] == gaschanges[gi].depth) {
+			o2 = dive->cylinder[gaschanges[gi].gasidx].gasmix.o2.permille;
+			he = dive->cylinder[gaschanges[gi].gasidx].gasmix.he.permille;
+#if DEBUG_PLAN & 16
+			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
+				o2 / 10, he / 10, gaschanges[gi].depth / 1000.0);
+#endif
+			gi--;
+		}
 		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], cached_datap);
 		/* typically deco plans are done in one minute increments; we may want to
 		 * make this configurable at some point */
@@ -363,6 +507,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	/* now make the dive visible as last dive of the dive list */
 	report_dives(FALSE, FALSE);
 	select_last_dive();
+	free(stoplevels);
+	free(gaschanges);
 }
 
 
@@ -576,18 +722,14 @@ void show_planned_dive(void)
 	memcpy(&tempplan, &diveplan, sizeof(struct diveplan));
 	dpp = &tempplan.dp;
 	dp = diveplan.dp;
-	while(*dpp) {
+	while(dp && *dpp) {
 		*dpp = malloc(sizeof(struct divedatapoint));
 		memcpy(*dpp, dp, sizeof(struct divedatapoint));
 		dp = dp->next;
-		if (dp && !dp->time) {
-			/* we have an incomplete entry - stop before it */
-			(*dpp)->next = NULL;
-			break;
-		}
 		dpp = &(*dpp)->next;
 	}
 #if DEBUG_PLAN & 1
+	printf("in show_planned_dive:\n");
 	dump_plan(&tempplan);
 #endif
 	plan(&tempplan, &cache_data, &planned_dive);
@@ -658,13 +800,9 @@ static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoint
 	int idx = data - NULL;
 
 	durationtext = gtk_entry_get_text(GTK_ENTRY(entry));
-	if (validate_time(durationtext, &duration, &is_rel)) {
+	if (validate_time(durationtext, &duration, &is_rel))
 		add_duration_to_nth_dp(&diveplan, idx, duration, is_rel);
-		show_planned_dive();
-	} else {
-		/* we need to instead change the color of the input field or something */
-		printf("invalid duration for row %d\n", idx);
-	}
+	show_planned_dive();
 	return FALSE;
 }
 
@@ -677,10 +815,21 @@ static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoin
 	if (validate_time(starttimetext, &starttime, &is_rel)) {
 		/* we alway make this relative for now */
 		diveplan.when = time(NULL) + starttime;
+		show_planned_dive();
 	} else {
 		/* we need to instead change the color of the input field or something */
 		printf("invalid starttime\n");
 	}
+	return FALSE;
+}
+
+static gboolean surfpres_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	const char *surfprestext;
+
+	surfprestext = gtk_entry_get_text(GTK_ENTRY(entry));
+	diveplan.surface_pressure = atoi(surfprestext);
+	show_planned_dive();
 	return FALSE;
 }
 
@@ -758,8 +907,9 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 
 void input_plan()
 {
-	GtkWidget *planner, *content, *vbox, *outervbox, *add_row, *deltat;
+	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *deltat, *label, *surfpres;
 	char starttimebuf[64] = "+60:00";
+	char pressurebuf[64] = "1013";
 
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
@@ -771,17 +921,34 @@ void input_plan()
 					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					NULL);
-
 	content = gtk_dialog_get_content_area (GTK_DIALOG (planner));
 	outervbox = gtk_vbox_new(FALSE, 2);
 	gtk_container_add (GTK_CONTAINER (content), outervbox);
+	label = gtk_label_new(_("<small>Add segments below.\nEach line describes part of the planned dive.\n"
+						"An entry with depth, time and gas describes a segment that ends "
+						"at the given depth, takes the given time (if relative, e.g. '+3:30') "
+						"or ends at the given time (if absolute), and uses the given gas.\n"
+						"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
+						"An entry that has a depth and a gas given but no time is special; it "
+						"informs the planner that the gas specified is available for the ascent "
+						"once the depth given has been reached.</small>"));
+	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+	gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
+	gtk_box_pack_start(GTK_BOX(outervbox), label, TRUE, TRUE, 0);
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 0);
-	deltat = add_entry_to_box(vbox, _("Dive starts in how many minutes?"));
+	hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
+	deltat = add_entry_to_box(hbox, _("Dive starts in how many minutes?"));
 	gtk_entry_set_max_length(GTK_ENTRY(deltat), 12);
 	gtk_entry_set_text(GTK_ENTRY(deltat), starttimebuf);
 	gtk_widget_add_events(deltat, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(deltat, "focus-out-event", G_CALLBACK(starttime_focus_out_cb), NULL);
+	surfpres = add_entry_to_box(hbox, _("Surface Pressure (mbar)"));
+	gtk_entry_set_max_length(GTK_ENTRY(surfpres), 12);
+	gtk_entry_set_text(GTK_ENTRY(surfpres), pressurebuf);
+	gtk_widget_add_events(surfpres, GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(surfpres, "focus-out-event", G_CALLBACK(surfpres_focus_out_cb), NULL);
 	diveplan.when = time(NULL) + 3600;
 	diveplan.surface_pressure = 1013;
 	nr_waypoints = 4;
