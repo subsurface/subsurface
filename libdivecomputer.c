@@ -5,6 +5,7 @@
 #include <glib/gi18n.h>
 
 #include "dive.h"
+#include "device.h"
 #include "divelist.h"
 #include "display.h"
 #include "display-gtk.h"
@@ -418,7 +419,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->dc.model = str_printf("%s %s", devdata->vendor, devdata->product);
+	dive->dc.model = devdata->model;
 	dive->dc.deviceid = devdata->deviceid;
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
@@ -526,6 +527,35 @@ static uint32_t calculate_sha1(unsigned int model, unsigned int firmware, unsign
 	return csum[0];
 }
 
+static void fixup_suunto_versions(device_data_t *devdata, const dc_event_devinfo_t *devinfo)
+{
+	struct device_info *info;
+
+	info = create_device_info(devdata->model, devdata->deviceid);
+	if (!info)
+		return;
+
+	if (!info->serial_nr && devinfo->serial) {
+		char serial_nr[13];
+
+		snprintf(serial_nr, sizeof(serial_nr), "%02d%02d%02d%02d",
+			(devinfo->serial >> 24) & 0xff,
+			(devinfo->serial >> 16) & 0xff,
+			(devinfo->serial >> 8)  & 0xff,
+			(devinfo->serial >> 0)  & 0xff);
+		info->serial_nr = strdup(serial_nr);
+	}
+
+	if (!info->firmware && devinfo->firmware) {
+		char firmware[13];
+		snprintf(firmware, sizeof(firmware), "%d.%d.%d",
+			(devinfo->firmware >> 16) & 0xff,
+			(devinfo->firmware >> 8)  & 0xff,
+			(devinfo->firmware >> 0)  & 0xff);
+		info->firmware = strdup(firmware);
+	}
+}
+
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
 	const dc_event_progress_t *progress = data;
@@ -548,6 +578,13 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
 		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, devinfo->serial);
+
+		/*
+		 * libdivecomputer doesn't give serial numbers in the proper string form,
+		 * so we have to see if we can do some vendor-specific munging.
+		 */
+		if (!strcmp(devdata->vendor, "Suunto"))
+			fixup_suunto_versions(devdata, devinfo);
 		break;
 	case DC_EVENT_CLOCK:
 			dev_info(devdata, _("Event: systime=%"PRId64", devtime=%u\n"),
@@ -570,6 +607,8 @@ static const char *do_device_import(device_data_t *data)
 {
 	dc_status_t rc;
 	dc_device_t *device = data->device;
+
+	data->model = str_printf("%s %s", data->vendor, data->product);
 
 	// Register the event handler.
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK;

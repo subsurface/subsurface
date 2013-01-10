@@ -5,6 +5,8 @@ struct device_info {
 	const char *model;
 	uint32_t deviceid;
 
+	const char *serial_nr;
+	const char *firmware;
 	const char *nickname;
 	struct device_info *next;
 	gboolean saved;

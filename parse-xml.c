@@ -14,6 +14,7 @@
 #include <glib/gi18n.h>
 
 #include "dive.h"
+#include "device.h"
 
 int verbose;
 
@@ -148,7 +149,7 @@ static struct {
 struct {
 	const char *model;
 	uint32_t deviceid;
-	const char *nickname;
+	const char *nickname, *serial_nr, *firmware;
 } dc;
 } cur_settings;
 static gboolean in_settings = FALSE;
@@ -619,6 +620,10 @@ static void try_to_fill_dc_settings(const char *name, char *buf)
 		return;
 	if (MATCH("divecomputerid.nickname", utf8_string, &cur_settings.dc.nickname))
 		return;
+	if (MATCH("divecomputerid.serial", utf8_string, &cur_settings.dc.serial_nr))
+		return;
+	if (MATCH("divecomputerid.firmware", utf8_string, &cur_settings.dc.firmware))
+		return;
 
 	nonmatch("divecomputerid", name, buf);
 }
@@ -1061,8 +1066,12 @@ static void reset_dc_settings(void)
 {
 	free((void *)cur_settings.dc.model);
 	free((void *)cur_settings.dc.nickname);
+	free((void *)cur_settings.dc.serial_nr);
+	free((void *)cur_settings.dc.firmware);
 	cur_settings.dc.model = NULL;
 	cur_settings.dc.nickname = NULL;
+	cur_settings.dc.serial_nr = NULL;
+	cur_settings.dc.firmware = NULL;
 	cur_settings.dc.deviceid = 0;
 }
 
@@ -1083,8 +1092,20 @@ static void dc_settings_start(void)
 
 static void dc_settings_end(void)
 {
+	struct device_info *info;
+
 	if (cur_settings.dc.model)
 		remember_dc(cur_settings.dc.model, cur_settings.dc.deviceid, cur_settings.dc.nickname, TRUE);
+
+	info = create_device_info(cur_settings.dc.model, cur_settings.dc.deviceid);
+	if (info) {
+		if (!info->serial_nr && cur_settings.dc.serial_nr)
+			info->serial_nr = strdup(cur_settings.dc.serial_nr);
+		if (!info->firmware && cur_settings.dc.firmware)
+			info->firmware = strdup(cur_settings.dc.firmware);
+		if (!info->nickname && cur_settings.dc.nickname)
+			info->nickname = strdup(cur_settings.dc.nickname);
+	}
 	reset_dc_settings();
 }
 

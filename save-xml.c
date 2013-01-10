@@ -485,23 +485,42 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 
 static void save_dc_if_needed(FILE *f, struct divecomputer *dc)
 {
-	const char *nickname;
+	struct device_info *info = get_device_info(dc->model, dc->deviceid);
+	const char *nickname, *serial_nr, *firmware;
 
 	/* we have no dc or no model or no deviceid information... nothing to do here */
-	if (!dc || !dc->model || !*dc->model || !dc->deviceid)
+	if (!info || info->saved)
 		return;
+	info->saved = 1;
 
-	if (dc_was_saved(dc))
-		return;
+	/* Nicknames that are empty or the same as the device model are not interesting */
+	nickname = info->nickname;
+	if (nickname) {
+		if (!*nickname || !strcmp(dc->model, nickname))
+			nickname = NULL;
+	}
 
-	mark_dc_saved(dc);
-	nickname = get_dc_nickname(dc->model, dc->deviceid);
-	/* We have no nickname, or it is the same as the model ID - nothing interesting */
-	if (!nickname || !*nickname || !strcmp(dc->model, nickname))
+	/* Serial numbers that are empty are not interesting */
+	serial_nr = info->serial_nr;
+	if (serial_nr && !*serial_nr)
+		serial_nr = NULL;
+
+	/* Firmware strings that are empty are not interesting */
+	firmware = info->firmware;
+	if (firmware && !*firmware)
+		firmware = NULL;
+
+	/* Do we have anything interesting about this dive computer to save? */
+	if (!serial_nr && !nickname && !firmware)
 		return;
 
 	fprintf(f, "<divecomputerid model='%s' deviceid='%08x'", dc->model, dc->deviceid);
-	show_utf8(f, nickname, " nickname='", "'", 1);
+	if (serial_nr)
+		show_utf8(f, serial_nr, " serial='", "'", 1);
+	if (firmware)
+		show_utf8(f, firmware, " firmware='", "'", 1);
+	if (nickname)
+		show_utf8(f, nickname, " nickname='", "'", 1);
 	fprintf(f, "/>\n");
 	return;
 }
