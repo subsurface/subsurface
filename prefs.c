@@ -144,16 +144,15 @@ void load_preferences(void)
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.gflow);
 		prefs.gflow /= 100.0;
-		set_gf(prefs.gflow, -1.0);
 		free((void *)conf_value);
 	}
 	conf_value = subsurface_get_conf("gfhigh");
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.gfhigh);
 		prefs.gfhigh /= 100.0;
-		set_gf(-1.0, prefs.gfhigh);
 		free((void *)conf_value);
 	}
+	set_gf(prefs.gflow, prefs.gfhigh);
 	divelist_font = subsurface_get_conf("divelist_font");
 
 	default_filename = subsurface_get_conf("default_filename");
