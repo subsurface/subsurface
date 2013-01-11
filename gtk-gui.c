@@ -1737,6 +1737,9 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 	if (!nn_entry)
 		return;
 
+	if (!nickname)
+		nickname = "";
+
 	/* No existing nickname? */
 	if (!nn_entry->nickname) {
 		char buffer[160];
