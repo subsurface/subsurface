@@ -31,12 +31,12 @@ void subsurface_unset_conf(char *name)
 	CFPreferencesSetAppValue(CFSTR_VAR(name), NULL, SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf(char *name, const void *value)
+void subsurface_set_conf(char *name, const char *value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf(char *name, int value)
+void subsurface_set_conf_bool(char *name, int value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name),
 		value ? kCFBooleanTrue : kCFBooleanFalse, SUBSURFACE_PREFERENCES);
@@ -55,7 +55,6 @@ const void *subsurface_get_conf(char *name)
 int subsurface_get_conf_bool(char *name)
 {
 	Boolean boolpref, exists;
-	CFPropertyListRef strpref;
 
 	boolpref = CFPreferencesGetAppBooleanValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES, &exists);
 	if (!exists)
