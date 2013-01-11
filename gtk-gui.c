@@ -35,13 +35,6 @@ const char *existing_filename;
 const char *divelist_font;
 const char *default_filename;
 
-struct preferences prefs = {
-	SI_UNITS,
-	{ TRUE, FALSE, },
-	{ FALSE, FALSE, FALSE, 1.6, 4.0, 13.0},
-	FALSE, FALSE, FALSE, 0.30, 0.75
-};
-
 char *nicknamestring;
 
 static GtkWidget *dive_profile;

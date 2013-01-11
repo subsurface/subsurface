@@ -15,7 +15,24 @@ char *debugfilename;
 FILE *debugfile;
 #endif
 
-struct units units;
+struct preferences prefs;
+struct preferences default_prefs = {
+	.units = SI_UNITS,
+	.visible_cols = { TRUE, FALSE, },
+	.pp_graphs = {
+		.po2 = FALSE,
+		.pn2 = FALSE,
+		.phe = FALSE,
+		.po2_threshold =  1.6,
+		.pn2_threshold =  4.0,
+		.phe_threshold = 13.0,
+	},
+	.profile_red_ceiling  = FALSE,
+	.profile_calc_ceiling = FALSE,
+	.calc_ceiling_3m_incr = FALSE,
+	.gflow = 0.30,
+	.gfhigh = 0.75,
+};
 
 /* random helper functions, used here or elsewhere */
 static int sortfn(const void *_a, const void *_b)
@@ -239,6 +256,36 @@ void renumber_dives(int nr)
 	mark_divelist_changed(TRUE);
 }
 
+/*
+ * Under a POSIX setup, the locale string should have a format
+ * like [language[_territory][.codeset][@modifier]].
+ *
+ * So search for the underscore, and see if the "territory" is
+ * US, and turn on imperial units by default.
+ *
+ * I guess Burma and Liberia should trigger this too. I'm too
+ * lazy to look up the territory names, though.
+ */
+static void setup_system_prefs(void)
+{
+	const char *env = getenv("LC_MEASUREMENT");
+
+	if (!env)
+		env = getenv("LC_ALL");
+	if (!env)
+		env = getenv("LANG");
+	if (!env)
+		return;
+	env = strchr(env, '_');
+	if (!env)
+		return;
+	env++;
+	if (strncmp(env, "US", 2))
+		return;
+
+	default_prefs.units = IMPERIAL_units;
+}
+
 int main(int argc, char **argv)
 {
 	int i;
@@ -253,7 +300,9 @@ int main(int argc, char **argv)
 	bindtextdomain("subsurface", path);
 	bind_textdomain_codeset("subsurface", "utf-8");
 	textdomain("subsurface");
-	units = SI_units;
+
+	setup_system_prefs();
+	prefs = default_prefs;
 
 #if DEBUGFILE > 1
 	debugfile = stderr;
