@@ -132,7 +132,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	gtk-gui.o statistics.o file.o cochran.o device.o $(OSSUPPORT).o $(RESFILE)
+	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -250,12 +250,15 @@ deco.o: deco.c dive.h
 planner.o: planner.c dive.h divelist.h display-gtk.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c planner.c
 
+download-dialog.o: download-dialog.c dive.h divelist.h display-gtk.h callbacks-gtk.h
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c download-dialog.c
+
 libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h device.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-c libdivecomputer.c
 
-gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h device.h Makefile
+gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h device.h callbacks-gtk.h Makefile
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-DVERSION_STRING='"v$(VERSION)"' \
