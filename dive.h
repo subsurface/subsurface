@@ -426,9 +426,9 @@ struct units {
 	.weight = LBS			\
 }
 extern const struct units SI_units, IMPERIAL_units;
-extern struct units input_units;
+extern struct units xml_parsing_units;
 
-extern struct units *get_output_units(void);
+extern struct units *get_units(void);
 extern int verbose;
 
 struct dive_table {
@@ -613,4 +613,7 @@ void free_dps(struct divedatapoint *dp);
 extern char *debugfilename;
 extern FILE *debugfile;
 #endif
+
+#include "pref.h"
+
 #endif /* DIVE_H */

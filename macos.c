@@ -26,6 +26,11 @@ void subsurface_open_conf(void)
 	/* nothing at this time */
 }
 
+void subsurface_unset_conf(char *name)
+{
+	CFPreferencesSetAppValue(CFSTR_VAR(name), NULL, SUBSURFACE_PREFERENCES);
+}
+
 void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 {
 	switch (type) {

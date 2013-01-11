@@ -15,7 +15,7 @@ char *debugfilename;
 FILE *debugfile;
 #endif
 
-struct units output_units;
+struct units units;
 
 /* random helper functions, used here or elsewhere */
 static int sortfn(const void *_a, const void *_b)
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 	bindtextdomain("subsurface", path);
 	bind_textdomain_codeset("subsurface", "utf-8");
 	textdomain("subsurface");
-	output_units = SI_units;
+	units = SI_units;
 
 #if DEBUGFILE > 1
 	debugfile = stderr;

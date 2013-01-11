@@ -32,6 +32,16 @@ void subsurface_open_conf(void)
 		printf("CreateKey Software\\subsurface failed %ld\n", success);
 }
 
+void subsurface_unset_conf(char *name)
+{
+	wchar_t *wname;
+
+	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
+	if (!wname)
+		return;
+	RegDeleteKey(hkey, (LPCWSTR)wname);
+}
+
 void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 {
 	/* since we are using the pointer 'value' as both an actual

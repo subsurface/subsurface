@@ -128,7 +128,7 @@ static int match(const char *pattern, int plen,
 }
 
 
-struct units input_units;
+struct units xml_parsing_units;
 const struct units SI_units = SI_UNITS;
 const struct units IMPERIAL_units = IMPERIAL_UNITS;
 
@@ -267,7 +267,7 @@ static void pressure(char *buffer, void *_press)
 		/* Just ignore zero values */
 		if (!val.fp)
 			break;
-		switch (input_units.pressure) {
+		switch (xml_parsing_units.pressure) {
 		case PASCAL:
 			mbar = val.fp / 100;
 			break;
@@ -311,7 +311,7 @@ static void depth(char *buffer, void *_depth)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		switch (input_units.length) {
+		switch (xml_parsing_units.length) {
 		case METERS:
 			depth->mm = val.fp * 1000 + 0.5;
 			break;
@@ -332,7 +332,7 @@ static void weight(char *buffer, void *_weight)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		switch (input_units.weight) {
+		switch (xml_parsing_units.weight) {
 		case KG:
 			weight->grams = val.fp * 1000 + 0.5;
 			break;
@@ -357,7 +357,7 @@ static void temperature(char *buffer, void *_temperature)
 		if (!val.fp)
 			break;
 		/* Celsius */
-		switch (input_units.temperature) {
+		switch (xml_parsing_units.temperature) {
 		case KELVIN:
 			temperature->mkelvin = val.fp * 1000;
 			break;
@@ -1364,15 +1364,15 @@ static void DivingLog_importer(void)
 	 *
 	 * Crazy f*%^ morons.
 	 */
-	input_units = SI_units;
+	xml_parsing_units = SI_units;
 }
 
 static void uddf_importer(void)
 {
 	import_source = UDDF;
-	input_units = SI_units;
-	input_units.pressure = PASCAL;
-	input_units.temperature = KELVIN;
+	xml_parsing_units = SI_units;
+	xml_parsing_units.pressure = PASCAL;
+	xml_parsing_units.temperature = KELVIN;
 }
 
 /*
@@ -1437,7 +1437,7 @@ static void reset_all(void)
 	 * data within one file, we might have to reset it per
 	 * dive for that format.
 	 */
-	input_units = SI_units;
+	xml_parsing_units = SI_units;
 	import_source = UNKNOWN;
 }
 

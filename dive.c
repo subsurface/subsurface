@@ -34,9 +34,9 @@ int get_pressure_units(unsigned int mb, const char **units)
 {
 	int pressure;
 	const char* unit;
-	struct units *output_units_p = get_output_units();
+	struct units *units_p = get_units();
 
-	switch (output_units_p->pressure) {
+	switch (units_p->pressure) {
 	case PASCAL:
 		pressure = mb * 100;
 		unit = _("pascal");
@@ -59,9 +59,9 @@ double get_temp_units(unsigned int mk, const char **units)
 {
 	double deg;
 	const char *unit;
-	struct units *output_units_p = get_output_units();
+	struct units *units_p = get_units();
 
-	if (output_units_p->temperature == FAHRENHEIT) {
+	if (units_p->temperature == FAHRENHEIT) {
 		deg = mkelvin_to_F(mk);
 		unit = UTF8_DEGREE "F";
 	} else {
@@ -78,9 +78,9 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	int decimals;
 	double vol;
 	const char *unit;
-	struct units *output_units_p = get_output_units();
+	struct units *units_p = get_units();
 
-	switch (output_units_p->volume) {
+	switch (units_p->volume) {
 	case LITER:
 		vol = ml / 1000.0;
 		unit = _("l");
@@ -104,9 +104,9 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	int decimals;
 	double d;
 	const char *unit;
-	struct units *output_units_p = get_output_units();
+	struct units *units_p = get_units();
 
-	switch (output_units_p->length) {
+	switch (units_p->length) {
 	case METERS:
 		d = mm / 1000.0;
 		unit = _("m");
@@ -130,9 +130,9 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 	int decimals;
 	double value;
 	const char* unit;
-	struct units *output_units_p = get_output_units();
+	struct units *units_p = get_units();
 
-	if (output_units_p->weight == LBS) {
+	if (units_p->weight == LBS) {
 		value = grams_to_lbs(grams);
 		unit = _("lbs");
 		decimals = 0;
@@ -352,7 +352,7 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 	if (!type->size.mliter)
 		return;
 
-	if (input_units.volume == CUFT) {
+	if (xml_parsing_units.volume == CUFT) {
 		/* confusing - we don't really start from ml but millicuft !*/
 		volume_of_air = cuft_to_l(type->size.mliter);
 		atm = to_ATM(type->workingpressure);		/* working pressure in atm */

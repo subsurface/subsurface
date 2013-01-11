@@ -53,9 +53,9 @@ static gboolean prefer_downloaded;
 
 GtkActionGroup *action_group;
 
-struct units *get_output_units()
+struct units *get_units()
 {
-	return &prefs.output_units;
+	return &prefs.units;
 }
 
 static int is_default_dive_computer(const char *vendor, const char *product)
@@ -475,7 +475,7 @@ static void update_screen()
 static void name(GtkWidget *w, gpointer data) 			\
 {								\
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)))	\
-		prefs.output_units.type = value;		\
+		prefs.units.type = value;		\
 	update_screen();					\
 }
 
@@ -631,28 +631,28 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
 	create_radio(box, _("Depth:"),
-		_("Meter"), set_meter, (prefs.output_units.length == METERS),
-		_("Feet"),  set_feet, (prefs.output_units.length == FEET),
+		_("Meter"), set_meter, (prefs.units.length == METERS),
+		_("Feet"),  set_feet, (prefs.units.length == FEET),
 		NULL);
 
 	create_radio(box, _("Pressure:"),
-		_("Bar"), set_bar, (prefs.output_units.pressure == BAR),
-		_("PSI"),  set_psi, (prefs.output_units.pressure == PSI),
+		_("Bar"), set_bar, (prefs.units.pressure == BAR),
+		_("PSI"),  set_psi, (prefs.units.pressure == PSI),
 		NULL);
 
 	create_radio(box, _("Volume:"),
-		_("Liter"),  set_liter, (prefs.output_units.volume == LITER),
-		_("CuFt"), set_cuft, (prefs.output_units.volume == CUFT),
+		_("Liter"),  set_liter, (prefs.units.volume == LITER),
+		_("CuFt"), set_cuft, (prefs.units.volume == CUFT),
 		NULL);
 
 	create_radio(box, _("Temperature:"),
-		_("Celsius"), set_celsius, (prefs.output_units.temperature == CELSIUS),
-		_("Fahrenheit"),  set_fahrenheit, (prefs.output_units.temperature == FAHRENHEIT),
+		_("Celsius"), set_celsius, (prefs.units.temperature == CELSIUS),
+		_("Fahrenheit"),  set_fahrenheit, (prefs.units.temperature == FAHRENHEIT),
 		NULL);
 
 	create_radio(box, _("Weight:"),
-		_("kg"), set_kg, (prefs.output_units.weight == KG),
-		_("lbs"),  set_lbs, (prefs.output_units.weight == LBS),
+		_("kg"), set_kg, (prefs.units.weight == KG),
+		_("lbs"),  set_lbs, (prefs.units.weight == LBS),
 		NULL);
 
 	frame = gtk_frame_new(_("Show Columns"));
@@ -865,11 +865,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 		update_screen();
 
-		subsurface_set_conf("feet", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.length == FEET));
-		subsurface_set_conf("psi", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.pressure == PSI));
-		subsurface_set_conf("cuft", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.volume == CUFT));
-		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.temperature == FAHRENHEIT));
-		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(prefs.output_units.weight == LBS));
+		subsurface_set_conf("feet", PREF_BOOL, BOOL_TO_PTR(prefs.units.length == FEET));
+		subsurface_set_conf("psi", PREF_BOOL, BOOL_TO_PTR(prefs.units.pressure == PSI));
+		subsurface_set_conf("cuft", PREF_BOOL, BOOL_TO_PTR(prefs.units.volume == CUFT));
+		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(prefs.units.temperature == FAHRENHEIT));
+		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(prefs.units.weight == LBS));
 
 		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.temperature));
 		subsurface_set_conf("TOTALWEIGHT", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.totalweight));
@@ -1282,15 +1282,15 @@ void init_ui(int *argcp, char ***argvp)
 
 	subsurface_open_conf();
 	if (subsurface_get_conf("feet", PREF_BOOL))
-		prefs.output_units.length = FEET;
+		prefs.units.length = FEET;
 	if (subsurface_get_conf("psi", PREF_BOOL))
-		prefs.output_units.pressure = PSI;
+		prefs.units.pressure = PSI;
 	if (subsurface_get_conf("cuft", PREF_BOOL))
-		prefs.output_units.volume = CUFT;
+		prefs.units.volume = CUFT;
 	if (subsurface_get_conf("fahrenheit", PREF_BOOL))
-		prefs.output_units.temperature = FAHRENHEIT;
+		prefs.units.temperature = FAHRENHEIT;
 	if (subsurface_get_conf("lbs", PREF_BOOL))
-		prefs.output_units.weight = LBS;
+		prefs.units.weight = LBS;
 	/* an unset key is FALSE - all these are hidden by default */
 	prefs.visible_cols.cylinder = PTR_TO_BOOL(subsurface_get_conf("CYLINDER", PREF_BOOL));
 	prefs.visible_cols.temperature = PTR_TO_BOOL(subsurface_get_conf("TEMPERATURE", PREF_BOOL));

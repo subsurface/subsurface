@@ -405,7 +405,7 @@ static void depth_data_func(GtkTreeViewColumn *col,
 	if (idx < 0) {
 		*buffer = '\0';
 	} else {
-		switch (prefs.output_units.length) {
+		switch (prefs.units.length) {
 		case METERS:
 			/* To tenths of meters */
 			depth = (depth + 49) / 100;
@@ -464,7 +464,7 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 	*buffer = 0;
 	if (idx >= 0 && value) {
 		double deg;
-		switch (prefs.output_units.temperature) {
+		switch (prefs.units.temperature) {
 		case CELSIUS:
 			deg = mkelvin_to_C(value);
 			break;
@@ -661,7 +661,7 @@ static void sac_data_func(GtkTreeViewColumn *col,
 	}
 
 	sac = value / 1000.0;
-	switch (prefs.output_units.volume) {
+	switch (prefs.units.volume) {
 	case LITER:
 		fmt = "%4.1f";
 		break;

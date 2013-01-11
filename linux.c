@@ -23,6 +23,11 @@ void subsurface_open_conf(void)
 	gconf = gconf_client_get_default();
 }
 
+void subsurface_unset_conf(char *name)
+{
+	gconf_client_unset(gconf, gconf_name(name), NULL);
+}
+
 void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 {
 	switch (type) {

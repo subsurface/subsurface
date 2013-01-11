@@ -450,7 +450,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 	new_text = (char *)gtk_entry_get_text(info->airtemp);
 	if(sscanf(new_text, "%lf", &newtemp) == 1) {
 		unsigned long mkelvin;
-		switch (prefs.output_units.temperature) {
+		switch (prefs.units.temperature) {
 		case CELSIUS:
 			mkelvin = C_to_mkelvin(newtemp);
 			break;
@@ -895,8 +895,8 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
 
 	/* Depth box */
-	box = frame_box(hbox, _("Depth (%s):"), prefs.output_units.length == FEET ? _("ft") : _("m"));
-	if (prefs.output_units.length == FEET) {
+	box = frame_box(hbox, _("Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
+	if (prefs.units.length == FEET) {
 		depthinterval = 1.0;
 	} else {
 		depthinterval = 0.1;
@@ -922,7 +922,7 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	tm.tm_min = gtk_spin_button_get_value(GTK_SPIN_BUTTON(m));
 
 	val = gtk_spin_button_get_value(GTK_SPIN_BUTTON(depth));
-	if (prefs.output_units.length == FEET) {
+	if (prefs.units.length == FEET) {
 		dive->maxdepth.mm = feet_to_mm(val);
 	} else {
 		dive->maxdepth.mm = val * 1000 + 0.5;

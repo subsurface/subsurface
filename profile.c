@@ -533,7 +533,7 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 	maxdepth = get_maxdepth(pi);
 	gc->topy = 0; gc->bottomy = maxdepth;
 
-	switch (prefs.output_units.length) {
+	switch (prefs.units.length) {
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}
@@ -721,7 +721,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	/* Depth markers: every 30 ft or 10 m*/
 	gc->leftx = 0; gc->rightx = 1.0;
 	gc->topy = 0; gc->bottomy = maxdepth;
-	switch (prefs.output_units.length) {
+	switch (prefs.units.length) {
 	case METERS: marker = 10000; break;
 	case FEET: marker = 9144; break;	/* 30 ft */
 	}

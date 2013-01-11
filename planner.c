@@ -667,7 +667,7 @@ static int validate_depth(const char *text, int *mm_p)
 	while (isspace(*text))
 		text++;
 
-	imperial = get_output_units()->length == FEET;
+	imperial = get_units()->length == FEET;
 	if (*text == 'm') {
 		imperial = 0;
 		text++;
