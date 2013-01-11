@@ -40,10 +40,10 @@ void subsurface_unset_conf(char *name)
 	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
 	if (!wname)
 		return;
-	RegDeleteKey(hkey, (LPCWSTR)wname);
+	RegDeleteKey(hkey, (LPCTSTR)wname);
 }
 
-void subsurface_set_conf(char *name, const void *value)
+void subsurface_set_conf(char *name, const char *value)
 {
 	/* since we are using the pointer 'value' as both an actual
 	 * pointer to the string setting and as a way to pass the
