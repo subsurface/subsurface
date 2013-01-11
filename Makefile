@@ -132,7 +132,8 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o $(OSSUPPORT).o $(RESFILE)
+	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
+	$(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -272,6 +273,9 @@ uemis-downloader.o: uemis-downloader.c dive.h uemis.h
 
 device.o: device.c device.h dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c device.c
+
+prefs.o: prefs.c dive.h pref.h
+	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c prefs.c
 
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c

@@ -528,19 +528,6 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_widget_set_sensitive(parent, TRUE);
 }
 
-static void set_bool_conf(char *name, gboolean value, gboolean def)
-{
-	if (value == def) {
-		subsurface_unset_conf(name);
-		return;
-	}
-	subsurface_set_conf_bool(name, value);
-}
-#define __SAVE_BOOLEAN(name, field, value) \
-	set_bool_conf(name, prefs.field == value, default_prefs.field == value)
-#define SAVE_UNIT(name, field, value) __SAVE_BOOLEAN(name, units.field, value)
-#define SAVE_BOOL(name, field) __SAVE_BOOLEAN(name, field, TRUE)
-
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -806,40 +793,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 		update_screen();
 
-		SAVE_UNIT("feet", length, FEET);
-		SAVE_UNIT("psi", pressure, PSI);
-		SAVE_UNIT("cuft", volume, CUFT);
-		SAVE_UNIT("fahrenheit", temperature, FAHRENHEIT);
-		SAVE_UNIT("lbs", weight, LBS);
-
-		SAVE_BOOL("TEMPERATURE", visible_cols.temperature);
-		SAVE_BOOL("TOTALWEIGHT", visible_cols.totalweight);
-		SAVE_BOOL("SUIT", visible_cols.suit);
-		SAVE_BOOL("CYLINDER", visible_cols.cylinder);
-		SAVE_BOOL("NITROX", visible_cols.nitrox);
-		SAVE_BOOL("SAC", visible_cols.sac);
-		SAVE_BOOL("OTU", visible_cols.otu);
-		SAVE_BOOL("MAXCNS", visible_cols.maxcns);
-
-		subsurface_set_conf("divelist_font", divelist_font);
-
-		SAVE_BOOL("po2graph", pp_graphs.po2);
-		SAVE_BOOL("pn2graph", pp_graphs.pn2);
-		SAVE_BOOL("phegraph", pp_graphs.phe);
-
-		/* Fixme! Only save if different-from-default. unset if default */
-		subsurface_set_conf("po2threshold", po2_threshold_text);
-		subsurface_set_conf("pn2threshold", pn2_threshold_text);
-		subsurface_set_conf("phethreshold", phe_threshold_text);
-
-		SAVE_BOOL("redceiling", profile_red_ceiling);
-		SAVE_BOOL("calcceiling", profile_calc_ceiling);
-		SAVE_BOOL("calcceiling3m", calc_ceiling_3m_incr);
-
-		/* Fixme! Only save if different-from-default. unset if default */
-		subsurface_set_conf("gflow", gflow_text);
-		subsurface_set_conf("gfhigh", gfhigh_text);
-
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
 		/* if we opened the default file and are changing its name,
@@ -852,13 +805,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		}
 
 		if (strcmp(current_default, new_default)) {
-			subsurface_set_conf("default_filename", new_default);
 			free((void *)default_filename);
 			default_filename = new_default;
 		}
 
-		/* Flush the changes out to the system */
-		subsurface_flush_conf();
+		save_preferences();
 	} else if (result == GTK_RESPONSE_CANCEL) {
 		prefs = oldprefs;
 		set_gf(prefs.gflow, prefs.gfhigh);
@@ -1195,18 +1146,6 @@ static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *diveli
 	return FALSE;
 }
 
-static gboolean get_bool(char *name, gboolean def)
-{
-	int val = subsurface_get_conf_bool(name);
-	if (val < 0)
-		return def;
-	return val;
-}
-#define GET_UNIT(name, field, f, t) \
-	prefs.units.field = get_bool(name, default_prefs.units.field) ? (t) : (f)
-#define GET_BOOL(name, field) \
-	prefs.field = get_bool(name, default_prefs.field)
-
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -1240,60 +1179,7 @@ void init_ui(int *argcp, char ***argvp)
 
 	subsurface_open_conf();
 
-	GET_UNIT("feet", length, METERS, FEET);
-	GET_UNIT("psi", pressure, BAR, PSI);
-	GET_UNIT("cuft", volume, LITER, CUFT);
-	GET_UNIT("fahrenheit", temperature, CELSIUS, FAHRENHEIT);
-	GET_UNIT("lbs", weight, KG, LBS);
-
-	/* an unset key is 'default' */
-	GET_BOOL("CYLINDER", visible_cols.cylinder);
-	GET_BOOL("TEMPERATURE", visible_cols.temperature);
-	GET_BOOL("TOTALWEIGHT", visible_cols.totalweight);
-	GET_BOOL("SUIT", visible_cols.suit);
-	GET_BOOL("NITROX", visible_cols.nitrox);
-	GET_BOOL("OTU", visible_cols.otu);
-	GET_BOOL("MAXCNS", visible_cols.maxcns);
-	GET_BOOL("SAC", visible_cols.sac);
-	GET_BOOL("po2graph", pp_graphs.po2);
-	GET_BOOL("pn2graph", pp_graphs.pn2);
-	GET_BOOL("phegraph", pp_graphs.phe);
-
-	conf_value = subsurface_get_conf("po2threshold");
-	if (conf_value) {
-		sscanf(conf_value, "%lf", &prefs.pp_graphs.po2_threshold);
-		free((void *)conf_value);
-	}
-	conf_value = subsurface_get_conf("pn2threshold");
-	if (conf_value) {
-		sscanf(conf_value, "%lf", &prefs.pp_graphs.pn2_threshold);
-		free((void *)conf_value);
-	}
-	conf_value = subsurface_get_conf("phethreshold");
-	if (conf_value) {
-		sscanf(conf_value, "%lf", &prefs.pp_graphs.phe_threshold);
-		free((void *)conf_value);
-	}
-	GET_BOOL("redceiling", profile_red_ceiling);
-	GET_BOOL("calcceiling", profile_calc_ceiling);
-	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);
-	conf_value = subsurface_get_conf("gflow");
-	if (conf_value) {
-		sscanf(conf_value, "%lf", &prefs.gflow);
-		prefs.gflow /= 100.0;
-		set_gf(prefs.gflow, -1.0);
-		free((void *)conf_value);
-	}
-	conf_value = subsurface_get_conf("gfhigh");
-	if (conf_value) {
-		sscanf(conf_value, "%lf", &prefs.gfhigh);
-		prefs.gfhigh /= 100.0;
-		set_gf(-1.0, prefs.gfhigh);
-		free((void *)conf_value);
-	}
-	divelist_font = subsurface_get_conf("divelist_font");
-
-	default_filename = subsurface_get_conf("default_filename");
+	load_preferences();
 
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor");
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product");

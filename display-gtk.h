@@ -32,7 +32,6 @@ extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 extern void quit(GtkWidget *w, gpointer data);
 extern gboolean on_delete(GtkWidget* w, gpointer data);
 
-extern const char *divelist_font;
 extern void set_divelist_font(const char *);
 
 extern void import_files(GtkWidget *, gpointer);

@@ -45,4 +45,10 @@ extern int subsurface_get_conf_bool(char *name);
 extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
+/* Misc preferences - should we have defaults for these too? */
+extern const char *divelist_font;
+
+extern void load_preferences(void);
+extern void save_preferences(void);
+
 #endif /* PREF_H */
