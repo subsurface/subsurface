@@ -76,8 +76,8 @@ static void set_default_dive_computer(const char *vendor, const char *product)
 		free((void *)default_dive_computer_product);
 	default_dive_computer_vendor = strdup(vendor);
 	default_dive_computer_product = strdup(product);
-	subsurface_set_conf("dive_computer_vendor", PREF_STRING, vendor);
-	subsurface_set_conf("dive_computer_product", PREF_STRING, product);
+	subsurface_set_conf("dive_computer_vendor", vendor);
+	subsurface_set_conf("dive_computer_product", product);
 }
 
 static void set_default_dive_computer_device(const char *name)
@@ -89,7 +89,7 @@ static void set_default_dive_computer_device(const char *name)
 	if (default_dive_computer_device)
 		free((void *)default_dive_computer_device);
 	default_dive_computer_device = strdup(name);
-	subsurface_set_conf("dive_computer_device", PREF_STRING, name);
+	subsurface_set_conf("dive_computer_device", name);
 }
 
 void repaint_dive(void)
@@ -593,6 +593,19 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_widget_set_sensitive(parent, TRUE);
 }
 
+static void set_bool_conf(char *name, gboolean value, gboolean def)
+{
+	if (value == def) {
+		subsurface_unset_conf(name);
+		return;
+	}
+	subsurface_set_conf_bool(name, value);
+}
+#define __SAVE_BOOLEAN(name, field, value) \
+	set_bool_conf(name, prefs.field == value, default_prefs.field == value)
+#define SAVE_UNIT(name, field, value) __SAVE_BOOLEAN(name, units.field, value)
+#define SAVE_BOOL(name, field) __SAVE_BOOLEAN(name, field, TRUE)
+
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -858,34 +871,39 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 		update_screen();
 
-		subsurface_set_conf("feet", PREF_BOOL, BOOL_TO_PTR(prefs.units.length == FEET));
-		subsurface_set_conf("psi", PREF_BOOL, BOOL_TO_PTR(prefs.units.pressure == PSI));
-		subsurface_set_conf("cuft", PREF_BOOL, BOOL_TO_PTR(prefs.units.volume == CUFT));
-		subsurface_set_conf("fahrenheit", PREF_BOOL, BOOL_TO_PTR(prefs.units.temperature == FAHRENHEIT));
-		subsurface_set_conf("lbs", PREF_BOOL, BOOL_TO_PTR(prefs.units.weight == LBS));
+		SAVE_UNIT("feet", length, FEET);
+		SAVE_UNIT("psi", pressure, PSI);
+		SAVE_UNIT("cuft", volume, CUFT);
+		SAVE_UNIT("fahrenheit", temperature, FAHRENHEIT);
+		SAVE_UNIT("lbs", weight, LBS);
 
-		subsurface_set_conf("TEMPERATURE", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.temperature));
-		subsurface_set_conf("TOTALWEIGHT", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.totalweight));
-		subsurface_set_conf("SUIT", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.suit));
-		subsurface_set_conf("CYLINDER", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.cylinder));
-		subsurface_set_conf("NITROX", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.nitrox));
-		subsurface_set_conf("SAC", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.sac));
-		subsurface_set_conf("OTU", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.otu));
-		subsurface_set_conf("MAXCNS", PREF_BOOL, BOOL_TO_PTR(prefs.visible_cols.maxcns));
+		SAVE_BOOL("TEMPERATURE", visible_cols.temperature);
+		SAVE_BOOL("TOTALWEIGHT", visible_cols.totalweight);
+		SAVE_BOOL("SUIT", visible_cols.suit);
+		SAVE_BOOL("CYLINDER", visible_cols.cylinder);
+		SAVE_BOOL("NITROX", visible_cols.nitrox);
+		SAVE_BOOL("SAC", visible_cols.sac);
+		SAVE_BOOL("OTU", visible_cols.otu);
+		SAVE_BOOL("MAXCNS", visible_cols.maxcns);
 
-		subsurface_set_conf("divelist_font", PREF_STRING, divelist_font);
+		subsurface_set_conf("divelist_font", divelist_font);
 
-		subsurface_set_conf("po2graph", PREF_BOOL, BOOL_TO_PTR(prefs.pp_graphs.po2));
-		subsurface_set_conf("pn2graph", PREF_BOOL, BOOL_TO_PTR(prefs.pp_graphs.pn2));
-		subsurface_set_conf("phegraph", PREF_BOOL, BOOL_TO_PTR(prefs.pp_graphs.phe));
-		subsurface_set_conf("po2threshold", PREF_STRING, po2_threshold_text);
-		subsurface_set_conf("pn2threshold", PREF_STRING, pn2_threshold_text);
-		subsurface_set_conf("phethreshold", PREF_STRING, phe_threshold_text);
-		subsurface_set_conf("redceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_red_ceiling));
-		subsurface_set_conf("calcceiling", PREF_BOOL, BOOL_TO_PTR(prefs.profile_calc_ceiling));
-		subsurface_set_conf("calcceiling3m", PREF_BOOL, BOOL_TO_PTR(prefs.calc_ceiling_3m_incr));
-		subsurface_set_conf("gflow", PREF_STRING, gflow_text);
-		subsurface_set_conf("gfhigh", PREF_STRING, gfhigh_text);
+		SAVE_BOOL("po2graph", pp_graphs.po2);
+		SAVE_BOOL("pn2graph", pp_graphs.pn2);
+		SAVE_BOOL("phegraph", pp_graphs.phe);
+
+		/* Fixme! Only save if different-from-default. unset if default */
+		subsurface_set_conf("po2threshold", po2_threshold_text);
+		subsurface_set_conf("pn2threshold", pn2_threshold_text);
+		subsurface_set_conf("phethreshold", phe_threshold_text);
+
+		SAVE_BOOL("redceiling", profile_red_ceiling);
+		SAVE_BOOL("calcceiling", profile_calc_ceiling);
+		SAVE_BOOL("calcceiling3m", calc_ceiling_3m_incr);
+
+		/* Fixme! Only save if different-from-default. unset if default */
+		subsurface_set_conf("gflow", gflow_text);
+		subsurface_set_conf("gfhigh", gfhigh_text);
 
 		new_default = strdup(gtk_button_get_label(GTK_BUTTON(xmlfile_button)));
 
@@ -899,7 +917,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		}
 
 		if (strcmp(current_default, new_default)) {
-			subsurface_set_conf("default_filename", PREF_STRING, new_default);
+			subsurface_set_conf("default_filename", new_default);
 			free((void *)default_filename);
 			default_filename = new_default;
 		}
@@ -1242,6 +1260,18 @@ static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *diveli
 	return FALSE;
 }
 
+static gboolean get_bool(char *name, gboolean def)
+{
+	int val = subsurface_get_conf_bool(name);
+	if (val < 0)
+		return def;
+	return val;
+}
+#define GET_UNIT(name, field, f, t) \
+	prefs.units.field = get_bool(name, default_prefs.units.field) ? (t) : (f)
+#define GET_BOOL(name, field) \
+	prefs.field = get_bool(name, default_prefs.field)
+
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -1274,68 +1304,66 @@ void init_ui(int *argcp, char ***argvp)
 	g_type_init();
 
 	subsurface_open_conf();
-	if (subsurface_get_conf("feet", PREF_BOOL))
-		prefs.units.length = FEET;
-	if (subsurface_get_conf("psi", PREF_BOOL))
-		prefs.units.pressure = PSI;
-	if (subsurface_get_conf("cuft", PREF_BOOL))
-		prefs.units.volume = CUFT;
-	if (subsurface_get_conf("fahrenheit", PREF_BOOL))
-		prefs.units.temperature = FAHRENHEIT;
-	if (subsurface_get_conf("lbs", PREF_BOOL))
-		prefs.units.weight = LBS;
-	/* an unset key is FALSE - all these are hidden by default */
-	prefs.visible_cols.cylinder = PTR_TO_BOOL(subsurface_get_conf("CYLINDER", PREF_BOOL));
-	prefs.visible_cols.temperature = PTR_TO_BOOL(subsurface_get_conf("TEMPERATURE", PREF_BOOL));
-	prefs.visible_cols.totalweight = PTR_TO_BOOL(subsurface_get_conf("TOTALWEIGHT", PREF_BOOL));
-	prefs.visible_cols.suit = PTR_TO_BOOL(subsurface_get_conf("SUIT", PREF_BOOL));
-	prefs.visible_cols.nitrox = PTR_TO_BOOL(subsurface_get_conf("NITROX", PREF_BOOL));
-	prefs.visible_cols.otu = PTR_TO_BOOL(subsurface_get_conf("OTU", PREF_BOOL));
-	prefs.visible_cols.maxcns = PTR_TO_BOOL(subsurface_get_conf("MAXCNS", PREF_BOOL));
-	prefs.visible_cols.sac = PTR_TO_BOOL(subsurface_get_conf("SAC", PREF_BOOL));
-	prefs.pp_graphs.po2 = PTR_TO_BOOL(subsurface_get_conf("po2graph", PREF_BOOL));
-	prefs.pp_graphs.pn2 = PTR_TO_BOOL(subsurface_get_conf("pn2graph", PREF_BOOL));
-	prefs.pp_graphs.phe = PTR_TO_BOOL(subsurface_get_conf("phegraph", PREF_BOOL));
-	conf_value = subsurface_get_conf("po2threshold", PREF_STRING);
+
+	GET_UNIT("feet", length, METERS, FEET);
+	GET_UNIT("psi", pressure, BAR, PSI);
+	GET_UNIT("cuft", volume, LITER, CUFT);
+	GET_UNIT("fahrenheit", temperature, CELSIUS, FAHRENHEIT);
+	GET_UNIT("lbs", weight, KG, LBS);
+
+	/* an unset key is 'default' */
+	GET_BOOL("CYLINDER", visible_cols.cylinder);
+	GET_BOOL("TEMPERATURE", visible_cols.temperature);
+	GET_BOOL("TOTALWEIGHT", visible_cols.totalweight);
+	GET_BOOL("SUIT", visible_cols.suit);
+	GET_BOOL("NITROX", visible_cols.nitrox);
+	GET_BOOL("OTU", visible_cols.otu);
+	GET_BOOL("MAXCNS", visible_cols.maxcns);
+	GET_BOOL("SAC", visible_cols.sac);
+	GET_BOOL("po2graph", pp_graphs.po2);
+	GET_BOOL("pn2graph", pp_graphs.pn2);
+	GET_BOOL("phegraph", pp_graphs.phe);
+
+	conf_value = subsurface_get_conf("po2threshold");
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.po2_threshold);
 		free((void *)conf_value);
 	}
-	conf_value = subsurface_get_conf("pn2threshold", PREF_STRING);
+	conf_value = subsurface_get_conf("pn2threshold");
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.pn2_threshold);
 		free((void *)conf_value);
 	}
-	conf_value = subsurface_get_conf("phethreshold", PREF_STRING);
+	conf_value = subsurface_get_conf("phethreshold");
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.phe_threshold);
 		free((void *)conf_value);
 	}
-	prefs.profile_red_ceiling = PTR_TO_BOOL(subsurface_get_conf("redceiling", PREF_BOOL));
-	prefs.profile_calc_ceiling = PTR_TO_BOOL(subsurface_get_conf("calcceiling", PREF_BOOL));
-	prefs.calc_ceiling_3m_incr = PTR_TO_BOOL(subsurface_get_conf("calcceiling3m", PREF_BOOL));
-	conf_value = subsurface_get_conf("gflow", PREF_STRING);
+	GET_BOOL("redceiling", profile_red_ceiling);
+	GET_BOOL("calcceiling", profile_calc_ceiling);
+	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);
+	conf_value = subsurface_get_conf("gflow");
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.gflow);
 		prefs.gflow /= 100.0;
 		set_gf(prefs.gflow, -1.0);
 		free((void *)conf_value);
 	}
-	conf_value = subsurface_get_conf("gfhigh", PREF_STRING);
+	conf_value = subsurface_get_conf("gfhigh");
 	if (conf_value) {
 		sscanf(conf_value, "%lf", &prefs.gfhigh);
 		prefs.gfhigh /= 100.0;
 		set_gf(-1.0, prefs.gfhigh);
 		free((void *)conf_value);
 	}
-	divelist_font = subsurface_get_conf("divelist_font", PREF_STRING);
+	divelist_font = subsurface_get_conf("divelist_font");
 
-	default_filename = subsurface_get_conf("default_filename", PREF_STRING);
+	default_filename = subsurface_get_conf("default_filename");
 
-	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor", PREF_STRING);
-	default_dive_computer_product = subsurface_get_conf("dive_computer_product", PREF_STRING);
-	default_dive_computer_device = subsurface_get_conf("dive_computer_device", PREF_STRING);
-	conf_value = subsurface_get_conf("dc_nicknames", PREF_STRING);
+	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor");
+	default_dive_computer_product = subsurface_get_conf("dive_computer_product");
+	default_dive_computer_device = subsurface_get_conf("dive_computer_device");
+	conf_value = subsurface_get_conf("dc_nicknames");
 	nicknamestring = strdup("");
 	if (conf_value) {
 		char *next_token, *nickname, *model, *conf_copy;
@@ -2288,7 +2316,7 @@ void remove_dc(const char *model, uint32_t deviceid, gboolean change_conf)
 	memmove(nnstring, brace, strlen(brace) + 1);
 
 	if (change_conf)
-		subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
+		subsurface_set_conf("dc_nicknames", nicknamestring);
 
 bail:
 	free(entry);
@@ -2319,7 +2347,7 @@ void remember_dc(const char *model, uint32_t deviceid, const char *nickname, gbo
 		replace_nickname_nicknamestring(model, deviceid, nickname);
 	}
 	if (change_conf)
-		subsurface_set_conf("dc_nicknames", PREF_STRING, nicknamestring);
+		subsurface_set_conf("dc_nicknames", nicknamestring);
 }
 
 void set_dc_nickname(struct dive *dive)

@@ -8,6 +8,7 @@
 
 static HKEY hkey;
 
+/* Return "boolean" 0/1, or -1 if nonexistent */
 static int get_from_registry(HKEY hkey, const char *key)
 {
 	DWORD value;
@@ -17,8 +18,8 @@ static int get_from_registry(HKEY hkey, const char *key)
 	success = RegQueryValueEx(hkey, (LPCTSTR)TEXT(key), NULL, NULL,
 	                         (LPBYTE) &value, (LPDWORD)&len );
 	if (success != ERROR_SUCCESS)
-		return FALSE; /* that's what happens the first time we start */
-	return value;
+		return -1;
+	return value != 0;
 }
 
 void subsurface_open_conf(void)
@@ -42,7 +43,7 @@ void subsurface_unset_conf(char *name)
 	RegDeleteKey(hkey, (LPCWSTR)wname);
 }
 
-void subsurface_set_conf(char *name, pref_type_t type, const void *value)
+void subsurface_set_conf(char *name, const void *value)
 {
 	/* since we are using the pointer 'value' as both an actual
 	 * pointer to the string setting and as a way to pass the
@@ -56,26 +57,33 @@ void subsurface_set_conf(char *name, pref_type_t type, const void *value)
 	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
 	if (!wname)
 		return;
-	switch (type) {
-	case PREF_BOOL:
-		/* we simply store the value as DWORD */
-		RegSetValueExW(hkey, (LPCWSTR)wname, 0, REG_DWORD, (const BYTE *)&value, 4);
-		break;
-	case PREF_STRING:
-		wlen = g_utf8_strlen((char *)value, -1);
-		wstring = (wchar_t *)g_utf8_to_utf16((char *)value, -1, NULL, NULL, NULL);
-		if (!wstring || !wlen) {
-			free(wname);
-			return;
-		}
-		RegSetValueExW(hkey, (LPCWSTR)wname, 0, REG_SZ, (const BYTE *)wstring,
-		               wlen * sizeof(wchar_t));
-		free(wstring);
+
+	wlen = g_utf8_strlen((char *)value, -1);
+	wstring = (wchar_t *)g_utf8_to_utf16((char *)value, -1, NULL, NULL, NULL);
+	if (!wstring || !wlen) {
+		free(wname);
+		return;
 	}
+	RegSetValueExW(hkey, (LPCWSTR)wname, 0, REG_SZ, (const BYTE *)wstring,
+	               wlen * sizeof(wchar_t));
+	free(wstring);
 	free(wname);
 }
 
-const void *subsurface_get_conf(char *name, pref_type_t type)
+void subsurface_set_conf_bool(char *name, int value)
+{
+	wchar_t *wname = NULL;
+
+	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
+	if (!wname)
+		return;
+
+	/* we simply store the value as DWORD */
+	RegSetValueExW(hkey, (LPCWSTR)wname, 0, REG_DWORD, (const BYTE *)&value, 4);
+	free(wname);
+}
+
+const void *subsurface_get_conf(char *name)
 {
 	const int csize = 64;
 	int blen = 0;
@@ -83,40 +91,39 @@ const void *subsurface_get_conf(char *name, pref_type_t type)
 	wchar_t *wstring = NULL, *wname = NULL;
 	char *utf8_string;
 
-	switch (type) {
-	case PREF_BOOL:
-		return get_from_registry(hkey, name) ? (void *) 1 : NULL;
-	case PREF_STRING:
-		wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
-		if (!wname)
-			return NULL;
-		blen = 0;
-		/* lest try to load the string in chunks of 'csize' bytes until it fits */
-		while(ret == ERROR_MORE_DATA) {
-			blen += csize;
-			wstring = (wchar_t *)realloc(wstring, blen * sizeof(wchar_t));
-			ret = RegQueryValueExW(hkey, (LPCWSTR)wname, NULL, NULL,
-			                     (LPBYTE)wstring, (LPDWORD)&blen);
-		}
-		/* that's what happens the first time we start - just return NULL */
-		if (ret != ERROR_SUCCESS) {
-			free(wname);
-			free(wstring);
-			return NULL;
-		}
-		/* convert the returned string into utf-8 */
-		utf8_string = g_utf16_to_utf8(wstring, -1, NULL, NULL, NULL);
-		free(wstring);
-		free(wname);
-		if (!utf8_string)
-			return NULL;
-		if (!g_utf8_validate(utf8_string, -1, NULL)) {
-			free(utf8_string);
-			return NULL;
-		}
-		return utf8_string;
+	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
+	if (!wname)
+		return NULL;
+	blen = 0;
+	/* lest try to load the string in chunks of 'csize' bytes until it fits */
+	while(ret == ERROR_MORE_DATA) {
+		blen += csize;
+		wstring = (wchar_t *)realloc(wstring, blen * sizeof(wchar_t));
+		ret = RegQueryValueExW(hkey, (LPCWSTR)wname, NULL, NULL,
+		                     (LPBYTE)wstring, (LPDWORD)&blen);
 	}
-	return NULL; /* we shouldn't get here */
+	/* that's what happens the first time we start - just return NULL */
+	if (ret != ERROR_SUCCESS) {
+		free(wname);
+		free(wstring);
+		return NULL;
+	}
+	/* convert the returned string into utf-8 */
+	utf8_string = g_utf16_to_utf8(wstring, -1, NULL, NULL, NULL);
+	free(wstring);
+	free(wname);
+	if (!utf8_string)
+		return NULL;
+	if (!g_utf8_validate(utf8_string, -1, NULL)) {
+		free(utf8_string);
+		return NULL;
+	}
+	return utf8_string;
+}
+
+int subsurface_get_conf_bool(char *name)
+{
+	return get_from_registry(hkey, name);
 }
 
 void subsurface_flush_conf(void)

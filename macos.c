@@ -31,38 +31,36 @@ void subsurface_unset_conf(char *name)
 	CFPreferencesSetAppValue(CFSTR_VAR(name), NULL, SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf(char *name, pref_type_t type, const void *value)
+void subsurface_set_conf(char *name, const void *value)
 {
-	switch (type) {
-	case PREF_BOOL:
-		CFPreferencesSetAppValue(CFSTR_VAR(name),
-			value == NULL ? kCFBooleanFalse : kCFBooleanTrue, SUBSURFACE_PREFERENCES);
-		break;
-	case PREF_STRING:
-		CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
-	}
+	CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
 }
 
-const void *subsurface_get_conf(char *name, pref_type_t type)
+void subsurface_set_conf(char *name, int value)
 {
-	Boolean boolpref;
+	CFPreferencesSetAppValue(CFSTR_VAR(name),
+		value ? kCFBooleanTrue : kCFBooleanFalse, SUBSURFACE_PREFERENCES);
+}
+
+const void *subsurface_get_conf(char *name)
+{
 	CFPropertyListRef strpref;
 
-	switch (type) {
-	case PREF_BOOL:
-		boolpref = CFPreferencesGetAppBooleanValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES, FALSE);
-		if (boolpref)
-			return (void *) 1;
-		else
-			return NULL;
-	case PREF_STRING:
-		strpref = CFPreferencesCopyAppValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES);
-		if (!strpref)
-			return NULL;
-		return strdup(CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman));
-	}
-	/* we shouldn't get here, but having this line makes the compiler happy */
-	return NULL;
+	strpref = CFPreferencesCopyAppValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES);
+	if (!strpref)
+		return NULL;
+	return strdup(CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman));
+}
+
+int subsurface_get_conf_bool(char *name)
+{
+	Boolean boolpref, exists;
+	CFPropertyListRef strpref;
+
+	boolpref = CFPreferencesGetAppBooleanValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES, &exists);
+	if (!exists)
+		return -1;
+	return boolpref;
 }
 
 void subsurface_flush_conf(void)

@@ -28,27 +28,32 @@ void subsurface_unset_conf(char *name)
 	gconf_client_unset(gconf, gconf_name(name), NULL);
 }
 
-void subsurface_set_conf(char *name, pref_type_t type, const void *value)
+void subsurface_set_conf(char *name, const char *value)
 {
-	switch (type) {
-	case PREF_BOOL:
-		gconf_client_set_bool(gconf, gconf_name(name), value != NULL, NULL);
-		break;
-	case PREF_STRING:
-		gconf_client_set_string(gconf, gconf_name(name), value, NULL);
-	}
+	gconf_client_set_string(gconf, gconf_name(name), value, NULL);
 }
 
-const void *subsurface_get_conf(char *name, pref_type_t type)
+void subsurface_set_conf_bool(char *name, int value)
 {
-	switch (type) {
-	case PREF_BOOL:
-		return gconf_client_get_bool(gconf, gconf_name(name), NULL) ? (void *) 1 : NULL;
-	case PREF_STRING:
-		return gconf_client_get_string(gconf, gconf_name(name), NULL);
-	}
-	/* we shouldn't get here */
-	return NULL;
+	gconf_client_set_bool(gconf, gconf_name(name), value > 0, NULL);
+}
+
+const void *subsurface_get_conf(char *name)
+{
+	return gconf_client_get_string(gconf, gconf_name(name), NULL);
+}
+
+int subsurface_get_conf_bool(char *name)
+{
+	GConfValue *val;
+	gboolean ret;
+
+	val = gconf_client_get(gconf, gconf_name(name), NULL);
+	if (!val)
+		return -1;
+	ret = gconf_value_get_bool(val);
+	gconf_value_free(val);
+	return ret;
 }
 
 void subsurface_flush_conf(void)
