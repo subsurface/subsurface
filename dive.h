@@ -569,9 +569,7 @@ typedef enum {
 	UTF8_FONT_WITH_STARS
 } os_feature_t;
 
-extern const char *default_filename;
 extern const char *existing_filename;
-extern const char *subsurface_default_filename(void);
 extern const char *subsurface_gettext_domainpath(char *);
 extern gboolean subsurface_os_feature_available(os_feature_t);
 extern void subsurface_command_line_init(gint *, gchar ***);

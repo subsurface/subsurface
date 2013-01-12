@@ -2659,7 +2659,7 @@ GtkWidget *dive_list_create(void)
 				);
 	dive_list.model = dive_list.treemodel;
 	dive_list.tree_view = gtk_tree_view_new_with_model(TREEMODEL(dive_list));
-	set_divelist_font(divelist_font);
+	set_divelist_font(prefs.divelist_font);
 
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 

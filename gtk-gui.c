@@ -33,8 +33,6 @@ GtkWidget *notebook;
 
 int        error_count;
 const char *existing_filename;
-const char *divelist_font;
-const char *default_filename;
 
 char *nicknamestring;
 
@@ -129,7 +127,7 @@ static void file_save_as(GtkWidget *w, gpointer data)
 		current_dir = g_path_get_dirname(existing_filename);
 		current_file = g_path_get_basename(existing_filename);
 	} else {
-		const char *current_default = subsurface_default_filename();
+		const char *current_default = prefs.default_filename;
 		current_dir = g_path_get_dirname(current_default);
 		current_file = g_path_get_basename(current_default);
 	}
@@ -159,7 +157,7 @@ static void file_save(GtkWidget *w, gpointer data)
 	if (!existing_filename)
 		return file_save_as(w, data);
 
-	current_default = subsurface_default_filename();
+	current_default = prefs.default_filename;
 	if (strcmp(existing_filename, current_default) ==  0) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
@@ -255,7 +253,7 @@ static void file_open(GtkWidget *w, gpointer data)
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 		GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 		NULL);
-	current_default = subsurface_default_filename();
+	current_default = prefs.default_filename;
 	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), current_default);
 	/* when opening the data file we should allow only one file to be chosen */
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), FALSE);
@@ -496,7 +494,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_widget_set_sensitive(parent, FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(fs_dialog), GTK_WINDOW(parent));
 
-	current_default = subsurface_default_filename();
+	current_default = prefs.default_filename;
 	current_def_dir = g_path_get_dirname(current_default);
 	current_def_file = g_path_get_basename(current_default);
 
@@ -522,7 +520,6 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 
 	free(current_def_dir);
 	free(current_def_file);
-	free((void *)current_default);
 	gtk_widget_destroy(fs_dialog);
 
 	gtk_widget_set_sensitive(parent, TRUE);
@@ -622,7 +619,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	frame = gtk_frame_new(_("Divelist Font"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
-	font = gtk_font_button_new_with_font(divelist_font);
+	font = gtk_font_button_new_with_font(prefs.divelist_font);
 	gtk_container_add(GTK_CONTAINER(frame),font);
 
 	frame = gtk_frame_new(_("Misc. Options"));
@@ -635,7 +632,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
-	current_default = subsurface_default_filename();
+	current_default = prefs.default_filename;
 	xmlfile_button = gtk_button_new_with_label(current_default);
 	g_signal_connect(G_OBJECT(xmlfile_button), "clicked",
 			 G_CALLBACK(pick_default_file), xmlfile_button);
@@ -773,10 +770,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 
-		if (divelist_font)
-			free((void *)divelist_font);
-		divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
-		set_divelist_font(divelist_font);
+		prefs.divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
+		set_divelist_font(prefs.divelist_font);
 		po2_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_po2));
 		sscanf(po2_threshold_text, "%lf", &prefs.pp_graphs.po2_threshold);
 		pn2_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_pn2));
@@ -805,8 +800,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		}
 
 		if (strcmp(current_default, new_default)) {
-			free((void *)default_filename);
-			default_filename = new_default;
+			prefs.default_filename = new_default;
 		}
 
 		save_preferences();
@@ -815,7 +809,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		set_gf(prefs.gflow, prefs.gfhigh);
 		update_screen();
 	}
-	free((void *)current_default);
 	gtk_widget_destroy(dialog);
 }
 
@@ -1319,8 +1312,6 @@ void run_ui(void)
 void exit_ui(void)
 {
 	subsurface_close_conf();
-	if (default_filename)
-		free((char *)default_filename);
 	if (existing_filename)
 		free((void *)existing_filename);
 	if (default_dive_computer_device)
@@ -1573,9 +1564,8 @@ void import_files(GtkWidget *w, gpointer data)
 	if (existing_filename) {
 		current_def_dir = g_path_get_dirname(existing_filename);
 	} else {
-		current_default = subsurface_default_filename();
+		current_default = prefs.default_filename;
 		current_def_dir = g_path_get_dirname(current_default);
-		free((void *)current_default);
 	}
 
 	/* it's possible that the directory doesn't exist (especially for the default)

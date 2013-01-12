@@ -154,7 +154,7 @@ static void init_tree()
 	GtkTreeViewColumn *column;
 	GtkTreeStore *store;
 	int i;
-	PangoFontDescription *font_desc = pango_font_description_from_string(divelist_font);
+	PangoFontDescription *font_desc = pango_font_description_from_string(prefs.divelist_font);
 
 	gtk_widget_modify_font(yearly_tree, font_desc);
 	pango_font_description_free(font_desc);

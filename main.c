@@ -268,8 +268,12 @@ void renumber_dives(int nr)
  */
 static void setup_system_prefs(void)
 {
-	const char *env = getenv("LC_MEASUREMENT");
+	const char *env;
 
+	default_prefs.divelist_font = strdup(system_divelist_default_font);
+	default_prefs.default_filename = strdup(system_default_filename());
+
+	env = getenv("LC_MEASUREMENT");
 	if (!env)
 		env = getenv("LC_ALL");
 	if (!env)
@@ -307,7 +311,7 @@ int main(int argc, char **argv)
 #if DEBUGFILE > 1
 	debugfile = stderr;
 #elif defined(DEBUGFILE)
-	debugfilename = (char *)subsurface_default_filename();
+	debugfilename = strdup(prefs.default_filename);
 	strncpy(debugfilename + strlen(debugfilename) - 3, "log", 3);
 	if (g_mkdir_with_parents(g_path_get_dirname(debugfilename), 0664) != 0 ||
 	    (debugfile = g_fopen(debugfilename, "w")) == NULL)
@@ -339,12 +343,11 @@ int main(int argc, char **argv)
 	}
 	if (no_filenames) {
 		GError *error = NULL;
-		const char *filename = subsurface_default_filename();
+		const char *filename = prefs.default_filename;
 		parse_file(filename, &error, TRUE);
 		/* don't report errors - this file may not exist, but make
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);
-		free((void *)filename);
 	}
 	report_dives(imported, FALSE);
 	if (dive_table.nr == 0)

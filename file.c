@@ -255,7 +255,7 @@ void parse_file(const char *filename, GError **error, gboolean possible_default_
 
 	if (readfile(filename, &mem) < 0) {
 		/* we don't want to display an error if this was the default file */
-		if (default_filename && ! strcmp(filename, default_filename))
+		if (prefs.default_filename && ! strcmp(filename, prefs.default_filename))
 			return;
 
 		g_warning(_("Failed to read '%s'.\n"), filename);

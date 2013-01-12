@@ -19,7 +19,8 @@ static GtkOSXApplication *osx_app;
 #define SUBSURFACE_PREFERENCES CFSTR("org.hohndel.subsurface")
 #define ICON_NAME "Subsurface.icns"
 #define UI_FONT "Arial Unicode MS 12"
-#define DIVELIST_MAC_DEFAULT_FONT "Arial Unicode MS 9"
+
+const char system_divelist_default_font[] = "Arial Unicode MS 9";
 
 void subsurface_open_conf(void)
 {
@@ -134,22 +135,18 @@ const char *subsurface_icon_name()
 	return path;
 }
 
-const char *subsurface_default_filename()
+const char *system_default_filename(void)
 {
-	if (default_filename) {
-		return strdup(default_filename);
-	} else {
-		const char *home, *user;
-		char *buffer;
-		int len;
+	const char *home, *user;
+	char *buffer;
+	int len;
 
-		home = g_get_home_dir();
-		user = g_get_user_name();
-		len = strlen(home) + strlen(user) + 45;
-		buffer = malloc(len);
-		snprintf(buffer, len, "%s/Library/Application Support/Subsurface/%s.xml", home, user);
-		return buffer;
-	}
+	home = g_get_home_dir();
+	user = g_get_user_name();
+	len = strlen(home) + strlen(user) + 45;
+	buffer = malloc(len);
+	snprintf(buffer, len, "%s/Library/Application Support/Subsurface/%s.xml", home, user);
+	return buffer;
 }
 
 const char *subsurface_gettext_domainpath(char *argv0)
@@ -176,8 +173,6 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 {
 	GtkWidget *menu_item, *sep;
 
-	if (!divelist_font)
-		divelist_font = strdup(DIVELIST_MAC_DEFAULT_FONT);
 	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
 
 	osx_app = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);

@@ -4,7 +4,8 @@
 #include "display-gtk.h"
 #include <windows.h>
 #include <shlobj.h>
-#define DIVELIST_DEFAULT_FONT "Sans 8"
+
+const char system_divelist_default_font[] = "Sans 8";
 
 static HKEY hkey;
 
@@ -208,26 +209,22 @@ const char *subsurface_icon_name()
 	return "subsurface.ico";
 }
 
-const char *subsurface_default_filename()
+const char *system_default_filename(void)
 {
-	if (default_filename) {
-		return strdup(default_filename);
-	} else {
-		char datapath[MAX_PATH];
-		const char *user;
-		char *buffer;
-		int len;
+	char datapath[MAX_PATH];
+	const char *user;
+	char *buffer;
+	int len;
 
-		user = g_get_user_name();
-		if (! SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, datapath))) {
-			datapath[0] = '.';
-			datapath[1] = '\0';
-		}
-		len = strlen(datapath) + strlen(user) + 17;
-		buffer = malloc(len);
-		snprintf(buffer, len, "%s\\Subsurface\\%s.xml", datapath, user);
-		return buffer;
+	user = g_get_user_name();
+	if (! SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, datapath))) {
+		datapath[0] = '.';
+		datapath[1] = '\0';
 	}
+	len = strlen(datapath) + strlen(user) + 17;
+	buffer = malloc(len);
+	snprintf(buffer, len, "%s\\Subsurface\\%s.xml", datapath, user);
+	return buffer;
 }
 
 const char *subsurface_gettext_domainpath(char *argv0)
@@ -244,8 +241,6 @@ const char *subsurface_gettext_domainpath(char *argv0)
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
-	if (!divelist_font)
-		divelist_font = strdup(DIVELIST_DEFAULT_FONT);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
 

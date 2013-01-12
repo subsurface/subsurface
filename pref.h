@@ -30,6 +30,8 @@ struct preferences {
 	gboolean calc_ceiling_3m_incr;
 	double gflow;
 	double gfhigh;
+	const char *divelist_font;
+	const char *default_filename;
 };
 
 extern struct preferences prefs, default_prefs;
@@ -45,8 +47,8 @@ extern int subsurface_get_conf_bool(char *name);
 extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
-/* Misc preferences - should we have defaults for these too? */
-extern const char *divelist_font;
+extern const char system_divelist_default_font[];
+extern const char *system_default_filename();
 
 extern void load_preferences(void);
 extern void save_preferences(void);

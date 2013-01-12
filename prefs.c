@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "dive.h"
 
 static void set_bool_conf(char *name, gboolean value, gboolean def)
@@ -12,6 +14,16 @@ static void set_bool_conf(char *name, gboolean value, gboolean def)
 	set_bool_conf(name, prefs.field == value, default_prefs.field == value)
 #define SAVE_UNIT(name, field, value) __SAVE_BOOLEAN(name, units.field, value)
 #define SAVE_BOOL(name, field) __SAVE_BOOLEAN(name, field, TRUE)
+
+static void set_string_conf(char *name, const char *value, const char *def)
+{
+	if (!strcmp(value, def)) {
+		subsurface_unset_conf(name);
+		return;
+	}
+	subsurface_set_conf(name, value);
+}
+#define SAVE_STRING(name, field) set_string_conf(name, prefs.field, default_prefs.field)
 
 /* We don't really save doubles */
 static void save_double_conf(char *name, double _val, double _def)
@@ -63,7 +75,7 @@ void save_preferences(void)
 	SAVE_BOOL("OTU", visible_cols.otu);
 	SAVE_BOOL("MAXCNS", visible_cols.maxcns);
 
-	subsurface_set_conf("divelist_font", divelist_font);
+	SAVE_STRING("divelist_font", divelist_font);
 
 	SAVE_BOOL("po2graph", pp_graphs.po2);
 	SAVE_BOOL("pn2graph", pp_graphs.pn2);
@@ -80,7 +92,7 @@ void save_preferences(void)
 	SAVE_PERCENT("gflow", gflow);
 	SAVE_PERCENT("gfhigh", gfhigh);
 
-	subsurface_set_conf("default_filename", default_filename);
+	SAVE_STRING("default_filename", default_filename);
 
 	/* Flush the changes out to the system */
 	subsurface_flush_conf();
@@ -153,7 +165,13 @@ void load_preferences(void)
 		free((void *)conf_value);
 	}
 	set_gf(prefs.gflow, prefs.gfhigh);
-	divelist_font = subsurface_get_conf("divelist_font");
 
-	default_filename = subsurface_get_conf("default_filename");
+	conf_value = subsurface_get_conf("divelist_font");
+	if (conf_value)
+		prefs.divelist_font = conf_value;
+
+
+	conf_value = subsurface_get_conf("default_filename");
+	if (conf_value)
+		prefs.default_filename = conf_value;
 }
