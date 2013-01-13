@@ -247,12 +247,7 @@ static int get_maxdepth(struct plot_info *pi)
 		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
 		md = MAX(30000, ROUND_UP(mm+3000, 10000));
 	}
-	if (PP_GRAPHS_ENABLED) {
-		if (md <= 20000)
-			md += 10000;
-		else
-			md += ROUND_UP(md / 2, 10000);
-	}
+	md += pi->maxpp * 9000;
 	return md;
 }
 
@@ -1845,11 +1840,11 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->phe = fhe / 1000.0 * amb_pressure;
 			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
 		}
-		if (entry->po2 > pi->maxpp)
+		if (entry->po2 > pi->maxpp && prefs.pp_graphs.po2)
 			pi->maxpp = entry->po2;
-		if (entry->phe > pi->maxpp)
+		if (entry->phe > pi->maxpp && prefs.pp_graphs.phe)
 			pi->maxpp = entry->phe;
-		if (entry->pn2 > pi->maxpp)
+		if (entry->pn2 > pi->maxpp && prefs.pp_graphs.pn2)
 			pi->maxpp = entry->pn2;
 
 		/* and now let's try to do some deco calculations */
