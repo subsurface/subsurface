@@ -4,6 +4,7 @@
   <depth max='70.0 m' mean='25.0 m' />
   <temperature air='2.0 C' water='6.0 C' />
   <location>18th test dive - trimix</location>
+  <gps>27.041458 33.907237</gps>
   <notes>Nothing of value, just getting something for the divelist</notes>
   <cylinder size='12.0 l' workpressure='232.009 bar' description='15L 232 bar' start='227.527 bar' end='96.527 bar' />
   <cylinder size='15.0 l' workpressure='232.009 bar' description='15L 232 bar' o2='18.0%' he='50.0%' start='227.527 bar' end='75.842 bar' />

@@ -4,6 +4,7 @@
   <depth max='30.0 m' mean='15.0 m' />
   <temperature air='27.0 C' water='26.0 C' />
   <location>10th test dive, 3 tanks, 1 tank change</location>
+  <gps>63.01043 7.31243</gps>
   <notes>Shows two pressure plots, each from 200 to 100bar and gaschange event at 10 min mark.</notes>
   <cylinder o2='33.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />
   <cylinder o2='50.0%' size='9.987 l' workpressure='206.843 bar' description='AL72' start='200.0 bar' end='100.0 bar' />

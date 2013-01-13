@@ -4,6 +4,7 @@
   <depth max='36.27 m' mean='27.429 m' />
   <temperature water='25.2 C' />
   <location>16th test dive - temperatures</location>
+  <gps>60.39697 11.23468</gps>
   <notes>Making sure a crazy and wide temperature plot is readable </notes>
   <sample time='0:06 min' depth='2.21 m' temp='26.8 C' />
   <sample time='0:11 min' depth='3.1 m' temp='24.6 C' />

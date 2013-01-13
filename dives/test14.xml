@@ -4,6 +4,7 @@
   <depth max='30.0 m' mean='15.0 m' />
   <temperature air='27.0 C' water='26.0 C' />
   <location>14th test dive - no depth 0 samples</location>
+  <gps>27.141032 33.958742</gps>
   <notes>This should show 1m depth at the 30min mark and then a tick up to the surface 20sec later</notes>
   <sample time='1:00 min' temp='27.0 C' depth='5 m' />
   <sample time='2:00 min' temp='26.0 C' depth='10 m' />
