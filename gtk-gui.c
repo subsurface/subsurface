@@ -1027,6 +1027,7 @@ static GtkActionEntry menu_items[] = {
 	{ "Preferences",    GTK_STOCK_PREFERENCES, N_("Preferences..."), PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, N_("Renumber..."), NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "YearlyStats",    NULL, N_("Yearly Statistics"), NULL, NULL, G_CALLBACK(show_yearly_stats) },
+	{ "DivesLocations", NULL, N_("Dives Locations"), CTRLCHAR "M", NULL, G_CALLBACK(show_gps_locations) },
 	{ "SelectEvents",   NULL, N_("Select Events..."), NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, N_("Quit"),   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, N_("About Subsurface"),  NULL, NULL, G_CALLBACK(about_dialog) },
@@ -1073,6 +1074,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Autogroup\" action=\"Autogroup\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
 				<menuitem name=\"YearlyStats\" action=\"YearlyStats\" /> \
+				<menuitem name=\"DivesLocations\" action=\"DivesLocations\" /> \
 				<menu name=\"View\" action=\"ViewMenuAction\"> \
 					<menuitem name=\"List\" action=\"ViewList\" /> \
 					<menuitem name=\"Profile\" action=\"ViewProfile\" /> \

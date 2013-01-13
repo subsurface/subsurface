@@ -90,6 +90,7 @@ XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
+OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap)
 
 LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
 ifneq ($(strip $(LIBZIP)),)
@@ -125,7 +126,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm -lssl -lcrypto
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm -lssl -lcrypto -losmgpsmap
 
 MSGLANGS=$(notdir $(wildcard po/*po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
@@ -133,7 +134,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	$(OSSUPPORT).o $(RESFILE)
+	gps.o $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -238,6 +239,9 @@ equipment.o: equipment.c dive.h display.h divelist.h
 
 statistics.o: statistics.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c statistics.c
+
+gps.o: gps.c dive.h display.h divelist.h
+		$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(OSMGPSMAPFLAGS) -c gps.c
 
 divelist.o: divelist.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c divelist.c
