@@ -422,7 +422,7 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	o2 = cyl->gasmix.o2.permille / 10.0;
 	he = cyl->gasmix.he.permille / 10.0;
 	if (!o2)
-		o2 = AIR_PERMILLE / 10.0;
+		o2 = O2_IN_AIR / 10.0;
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->o2), o2);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->he), he);
 }

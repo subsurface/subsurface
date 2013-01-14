@@ -531,7 +531,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
-	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_mod, *entry_ead, *entry_gflow, *entry_gfhigh;
+	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_mod, *entry_gflow, *entry_gfhigh;
 	const char *current_default, *new_default;
 	char threshold_text[10], mod_text[10], utf8_buf[128];
 	struct preferences oldprefs = prefs;

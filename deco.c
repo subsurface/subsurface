@@ -134,7 +134,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, double ccpo2, const struct dive *dive)
 {
 	int ci;
-	int fo2 = gasmix->o2.permille ? gasmix->o2.permille : 209;
+	int fo2 = gasmix->o2.permille ? gasmix->o2.permille : O2_IN_AIR;
 	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - gasmix->he.permille) / 1000.0;
 	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
 
@@ -206,7 +206,7 @@ void clear_deco(double surface_pressure)
 {
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
-		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR;
+		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;
 		tissue_tolerated_ambient_pressure[ci] = 0.0;
 	}

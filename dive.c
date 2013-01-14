@@ -269,8 +269,8 @@ static void sanitize_gasmix(struct gasmix *mix)
 	if (!he) {
 		if (!o2)
 			return;
-		/* 20.9% or 21% O2 is just air */
-		if (o2 >= 209 && o2 <= 210) {
+		/* 20.8% to 21% O2 is just air */
+		if (o2 >= (O2_IN_AIR - 1) && o2 <= (O2_IN_AIR + 1)) {
 			mix->o2.permille = 0;
 			return;
 		}

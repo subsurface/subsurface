@@ -556,7 +556,7 @@ static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
 	 * we use 1.5 times the corresponding pressure as maximum partial
 	 * pressure the graph seems to look fine*/
 	maxdepth = get_maxdepth(pi);
-	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * 1.01325;
+	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
 	gc->bottomy = -gc->topy / 20;
 }
 
@@ -1815,7 +1815,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 {
 	int i;
 	double amb_pressure;
-	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : 1013) / 1000.0;
+	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : SURFACE_PRESSURE) / 1000.0;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fo2, fhe, j, t0, t1;
@@ -1824,36 +1824,37 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		int cylinderindex = entry->cylinderindex;
 
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
-		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille ? : AIR_PERMILLE;
+		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille ? : O2_IN_AIR;
 		fhe = dive->cylinder[cylinderindex].gasmix.he.permille;
+		double ratio = (double)fhe / (1000.0 - fo2);
 
 		if (entry->po2) {
 			/* we have an O2 partial pressure in the sample - so this
 			 * is likely a CC dive... use that instead of the value
 			 * from the cylinder info */
 			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
-			double ratio = (double)fhe / (1000.0 - fo2);
+			entry->po2 = po2;
 			entry->phe = (amb_pressure - po2) * ratio;
 			entry->pn2 = amb_pressure - po2 - entry->phe;
-			entry->po2 = po2;
-                        entry->ead  = (entry->depth + 10000) *
-				(entry->po2+(amb_pressure-entry->po2)*(1-ratio))/amb_pressure - 10000;
-                        entry->end  = (entry->depth + 10000) *
-				(amb_pressure-entry->po2)*(1-ratio)/amb_pressure/N2_IN_AIR - 10000;
-                        entry->eadd = (entry->depth + 10000) *
-				(entry->po2/amb_pressure * O2_DENSITY + entry->pn2/amb_pressure * N2_DENSITY +
-					entry->phe/amb_pressure * HE_DENSITY) /
-				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) -10000;
 		} else {
 			entry->po2 = fo2 / 1000.0 * amb_pressure;
 			entry->phe = fhe / 1000.0 * amb_pressure;
 			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
-
-                        entry->ead = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
-                        entry->end = (entry->depth + 10000) * (1000 - fo2 - fhe) / 1000.0 / N2_IN_AIR - 10000;
-                        entry->eadd = (entry->depth + 10000) * (fo2 * O2_DENSITY + (1-fo2-fhe) * N2_DENSITY + fhe * HE_DENSITY) / (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) -10000;
 		}
-		entry->mod = (prefs.mod_ppO2/fo2*1000 - 1) * 10000;
+
+                /* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
+                 * so there is no difference in calculating between OC and CC
+                 * EAD takes O2 + N2 (air) into account
+                 * END just uses N2 */
+		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
+		entry->ead = (entry->depth + 10000) *
+			(entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
+		entry->end = (entry->depth + 10000) *
+			(amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
+		entry->eadd = (entry->depth + 10000) *
+			(entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
+                                N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
+				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -10000;
 		if(entry->mod <0)
 			entry->mod=0;
 		if(entry->ead <0)
@@ -1862,6 +1863,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->end=0;
 		if(entry->eadd <0)
 			entry->eadd=0;
+
 		if (entry->po2 > pi->maxpp && prefs.pp_graphs.po2)
 			pi->maxpp = entry->po2;
 		if (entry->phe > pi->maxpp && prefs.pp_graphs.phe)

@@ -11,11 +11,13 @@
 #include <libxml/tree.h>
 #include <openssl/sha.h>
 
-#define O2_IN_AIR 0.20942
-#define N2_IN_AIR 0.78084 // has been set to 0.7902 before to ignore other components of air
-#define O2_DENSITY 1.429  // Gramm/Liter
-#define N2_DENSITY 1.251
-#define HE_DENSITY 0.1786
+#define O2_IN_AIR        209     // permille
+#define N2_IN_AIR        781
+#define O2_DENSITY       1429    // mg/Liter
+#define N2_DENSITY       1251
+#define HE_DENSITY       179
+#define SURFACE_PRESSURE 1013    // mbar
+#define SURFACE_PRESSURE_STRING "1013"
 
 
 /*
@@ -215,12 +217,12 @@ static inline int to_PSI(pressure_t pressure)
 
 static inline double bar_to_atm(double bar)
 {
-	return bar / 1.01325;
+	return bar / SURFACE_PRESSURE * 1000;
 }
 
 static inline double to_ATM(pressure_t pressure)
 {
-	return pressure.mbar / 1013.25;
+	return pressure.mbar / SURFACE_PRESSURE;
 }
 
 static inline int mbar_to_PSI(int mbar)
@@ -346,7 +348,7 @@ struct dive {
 static inline int depth_to_mbar(int depth, struct dive *dive)
 {
 	double specific_weight = 1.03 * 0.981;
-	int surface_pressure = 1013;
+	int surface_pressure = SURFACE_PRESSURE;
 	if (dive->salinity)
 		specific_weight = dive->salinity / 10000.0 * 0.981;
 	if (dive->surface_pressure.mbar)
@@ -583,7 +585,6 @@ extern const char *subsurface_gettext_domainpath(char *);
 extern gboolean subsurface_os_feature_available(os_feature_t);
 extern void subsurface_command_line_init(gint *, gchar ***);
 extern void subsurface_command_line_exit(gint *, gchar ***);
-#define AIR_PERMILLE 209
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 

@@ -677,7 +677,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	int value;
 
 	if (!o2)
-		o2 = AIR_PERMILLE;
+		o2 = O2_IN_AIR;
 	o2 = (o2+5) / 10;
 	he = (he+5) / 10;
 	value = o2 + (he << 16);

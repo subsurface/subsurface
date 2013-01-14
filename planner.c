@@ -162,7 +162,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct dive *dive;
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
-	int oldo2 = AIR_PERMILLE, oldhe = 0;
+	int oldo2 = O2_IN_AIR, oldhe = 0;
 	int lasttime = 0;
 
 	if (!diveplan || !diveplan->dp)
@@ -425,7 +425,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	int *stoplevels;
 
 	if (!diveplan->surface_pressure)
-		diveplan->surface_pressure = 1013;
+		diveplan->surface_pressure = SURFACE_PRESSURE;
 	if (*divep)
 		delete_single_dive(dive_table.nr - 1);
 	*divep = dive = create_dive_from_plan(diveplan);
@@ -566,7 +566,7 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 		return 0;
 
 	if (!strcasecmp(text, "air")) {
-		o2 = AIR_PERMILLE; he = 0; text += 3;
+		o2 = O2_IN_AIR; he = 0; text += 3;
 	} else if (!strncasecmp(text, "ean", 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
 	} else {
@@ -909,7 +909,7 @@ void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *deltat, *label, *surfpres;
 	char starttimebuf[64] = "+60:00";
-	char pressurebuf[64] = "1013";
+	char pressurebuf[64] = SURFACE_PRESSURE_STRING;
 
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
@@ -950,7 +950,7 @@ void input_plan()
 	gtk_widget_add_events(surfpres, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(surfpres, "focus-out-event", G_CALLBACK(surfpres_focus_out_cb), NULL);
 	diveplan.when = time(NULL) + 3600;
-	diveplan.surface_pressure = 1013;
+	diveplan.surface_pressure = SURFACE_PRESSURE;
 	nr_waypoints = 4;
 	add_waypoint_widgets(vbox, 0);
 	add_waypoint_widgets(vbox, 1);
