@@ -847,9 +847,10 @@ static struct gasmix air = { .o2.permille = 209 };
 double init_decompression(struct dive *dive)
 {
 	int i, divenr = -1;
-	timestamp_t when;
+	unsigned int surface_time;
+	timestamp_t when, lasttime = 0;
 	gboolean deco_init = FALSE;
-	double tissue_tolerance;
+	double tissue_tolerance, surface_pressure;
 
 	if (!dive)
 		return 0.0;
@@ -859,16 +860,21 @@ double init_decompression(struct dive *dive)
 	i = divenr;
 	while (--i) {
 		struct dive* pdive = get_dive(i);
+		/* we don't want to mix dives from different trips as we keep looking
+		 * for how far back we need to go */
+		if (dive->divetrip && pdive->divetrip != dive->divetrip)
+			continue;
 		if (!pdive || pdive->when > when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
 			break;
 		when = pdive->when;
+		lasttime = when + pdive->duration.seconds;
 	}
-
 	while (++i < divenr) {
 		struct dive* pdive = get_dive(i);
-		double surface_pressure = pdive->surface_pressure.mbar ? pdive->surface_pressure.mbar / 1000.0 : 1.013;
-		unsigned int surface_time = get_dive(i+1)->when - pdive->when - pdive->duration.seconds;
-
+		/* again skip dives from different trips */
+		if (dive->divetrip && dive->divetrip != pdive->divetrip)
+			continue;
+		surface_pressure = pdive->surface_pressure.mbar ? pdive->surface_pressure.mbar / 1000.0 : 1.013;
 		if (!deco_init) {
 			clear_deco(surface_pressure);
 			deco_init = TRUE;
@@ -881,6 +887,20 @@ double init_decompression(struct dive *dive)
 		printf("added dive #%d\n", pdive->number);
 		dump_tissues();
 #endif
+		if (pdive->when > lasttime) {
+			surface_time = pdive->when - lasttime;
+			lasttime = pdive->when + pdive->duration.seconds;
+			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0, dive);
+#if DECO_CALC_DEBUG & 2
+			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
+			dump_tissues();
+#endif
+		}
+	}
+	/* add the final surface time */
+	if (lasttime && dive->when > lasttime) {
+		surface_time = dive->when - lasttime;
+		surface_pressure = dive->surface_pressure.mbar ? dive->surface_pressure.mbar / 1000.0 : 1.013;
 		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0, dive);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
