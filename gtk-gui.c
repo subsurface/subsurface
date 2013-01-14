@@ -957,6 +957,11 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void about_dialog_link_cb(GtkAboutDialog *dialog, const gchar *link, gpointer data)
+{
+	subsurface_launch_for_uri(link);
+}
+
 static void about_dialog(GtkWidget *w, gpointer data)
 {
 	const char *logo_property = NULL;
@@ -984,6 +989,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		/* Must be last: */
 		logo_property, logo,
 		NULL);
+	gtk_about_dialog_set_url_hook(about_dialog_link_cb, NULL, NULL);
 }
 
 static void view_list(GtkWidget *w, gpointer data)
