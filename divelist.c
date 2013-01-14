@@ -858,7 +858,7 @@ double init_decompression(struct dive *dive)
 		;
 	when = dive->when;
 	i = divenr;
-	while (--i) {
+	while (i && --i) {
 		struct dive* pdive = get_dive(i);
 		/* we don't want to mix dives from different trips as we keep looking
 		 * for how far back we need to go */
