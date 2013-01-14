@@ -2771,6 +2771,15 @@ static GtkTreeIter *get_iter_from_idx(int idx)
 	return iteridx.iter;
 }
 
+void scroll_to_selected(GtkTreeIter *iter)
+{
+	GtkTreePath *treepath;
+	treepath = gtk_tree_model_get_path(MODEL(dive_list), iter);
+	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
+	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), treepath, NULL, FALSE, 0, 0);
+	gtk_tree_path_free(treepath);
+}
+
 void show_and_select_dive(struct dive *dive)
 {
 	GtkTreeSelection *selection;
@@ -2790,6 +2799,7 @@ void show_and_select_dive(struct dive *dive)
 	amount_selected = 1;
 	dive->selected = TRUE;
 	gtk_tree_selection_select_iter(selection, iter);
+	scroll_to_selected(iter);
 }
 
 void select_next_dive(void)
@@ -2797,7 +2807,6 @@ void select_next_dive(void)
 	GtkTreeIter *nextiter, *parent;
 	GtkTreeIter *iter = get_iter_from_idx(selected_dive);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
-	GtkTreePath *treepath;
 	int idx;
 
 	if (!iter)
@@ -2820,12 +2829,9 @@ void select_next_dive(void)
 		if (! gtk_tree_model_iter_children(MODEL(dive_list), nextiter, parent))
 			return;
 	}
-	treepath = gtk_tree_model_get_path(MODEL(dive_list), nextiter);
-	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
-	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), treepath, NULL, FALSE, 0, 0);
+	scroll_to_selected(nextiter);
 	gtk_tree_selection_unselect_all(selection);
 	gtk_tree_selection_select_iter(selection, nextiter);
-	gtk_tree_path_free(treepath);
 }
 
 void select_prev_dive(void)
@@ -2861,12 +2867,9 @@ void select_prev_dive(void)
 				gtk_tree_model_iter_n_children(MODEL(dive_list), parent) - 1))
 			goto free_path;
 	}
-	gtk_tree_path_free(treepath);
-	treepath = gtk_tree_model_get_path(MODEL(dive_list), &previter);
-	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
-	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), treepath, NULL, FALSE, 0, 0);
+	scroll_to_selected(&previter);
 	gtk_tree_selection_unselect_all(selection);
 	gtk_tree_selection_select_iter(selection, &previter);
-	free_path:
-		gtk_tree_path_free(treepath);
+free_path:
+	gtk_tree_path_free(treepath);
 }
