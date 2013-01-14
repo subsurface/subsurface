@@ -85,6 +85,9 @@ void save_preferences(void)
 	SAVE_DOUBLE("pn2threshold", pp_graphs.pn2_threshold);
 	SAVE_DOUBLE("phethreshold", pp_graphs.phe_threshold);
 
+	SAVE_BOOL("mod", mod);
+	SAVE_DOUBLE("modppO2", mod_ppO2);
+	SAVE_BOOL("ead", ead);
 	SAVE_BOOL("redceiling", profile_red_ceiling);
 	SAVE_BOOL("calcceiling", profile_calc_ceiling);
 	SAVE_BOOL("calcceiling3m", calc_ceiling_3m_incr);
@@ -149,6 +152,13 @@ void load_preferences(void)
 		sscanf(conf_value, "%lf", &prefs.pp_graphs.phe_threshold);
 		free((void *)conf_value);
 	}
+	GET_BOOL("mod", mod);
+	conf_value = subsurface_get_conf("modppO2");
+	if (conf_value) {
+		sscanf(conf_value, "%lf", &prefs.mod_ppO2);
+		free((void *)conf_value);
+	}
+	GET_BOOL("ead", ead);
 	GET_BOOL("redceiling", profile_red_ceiling);
 	GET_BOOL("calcceiling", profile_calc_ceiling);
 	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);

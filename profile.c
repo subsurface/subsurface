@@ -46,6 +46,7 @@ struct plot_data {
 	int cns;
 	int smoothed;
 	double po2, pn2, phe;
+	double mod, ead, end, eadd;
 	velocity_t velocity;
 	struct plot_data *min[3];
 	struct plot_data *max[3];
@@ -1835,11 +1836,32 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->phe = (amb_pressure - po2) * ratio;
 			entry->pn2 = amb_pressure - po2 - entry->phe;
 			entry->po2 = po2;
+                        entry->ead  = (entry->depth + 10000) *
+				(entry->po2+(amb_pressure-entry->po2)*(1-ratio))/amb_pressure - 10000;
+                        entry->end  = (entry->depth + 10000) *
+				(amb_pressure-entry->po2)*(1-ratio)/amb_pressure/N2_IN_AIR - 10000;
+                        entry->eadd = (entry->depth + 10000) *
+				(entry->po2/amb_pressure * O2_DENSITY + entry->pn2/amb_pressure * N2_DENSITY +
+					entry->phe/amb_pressure * HE_DENSITY) /
+				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) -10000;
 		} else {
 			entry->po2 = fo2 / 1000.0 * amb_pressure;
 			entry->phe = fhe / 1000.0 * amb_pressure;
 			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
+
+                        entry->ead = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
+                        entry->end = (entry->depth + 10000) * (1000 - fo2 - fhe) / 1000.0 / N2_IN_AIR - 10000;
+                        entry->eadd = (entry->depth + 10000) * (fo2 * O2_DENSITY + (1-fo2-fhe) * N2_DENSITY + fhe * HE_DENSITY) / (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) -10000;
 		}
+		entry->mod = (prefs.mod_ppO2/fo2*1000 - 1) * 10000;
+		if(entry->mod <0)
+			entry->mod=0;
+		if(entry->ead <0)
+			entry->ead=0;
+		if(entry->end <0)
+			entry->end=0;
+		if(entry->eadd <0)
+			entry->eadd=0;
 		if (entry->po2 > pi->maxpp && prefs.pp_graphs.po2)
 			pi->maxpp = entry->po2;
 		if (entry->phe > pi->maxpp && prefs.pp_graphs.phe)
@@ -2070,7 +2092,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 			int depth, int pressure, int temp, gboolean has_ndl)
 {
-	int pressurevalue;
+	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit;
 	char *buf2 = malloc(bufsize);
 	double depthvalue, tempvalue;
@@ -2135,6 +2157,18 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	if (prefs.pp_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, "%s\npHe:%.2f", buf2, entry->phe);
+	}
+	if (prefs.mod) {
+		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nMOD:%d%s", buf2, mod, depth_unit);
+	}
+	if (prefs.ead) {
+		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
+		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
+		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, "%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s", buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
 	}
 	free(buf2);
 }

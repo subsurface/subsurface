@@ -78,7 +78,6 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005};
 
 #define WV_PRESSURE 0.0627 /* water vapor pressure */
-#define N2_IN_AIR 0.7902
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 
 #define GF_LOW_AT_MAXDEPTH 0

@@ -11,6 +11,13 @@
 #include <libxml/tree.h>
 #include <openssl/sha.h>
 
+#define O2_IN_AIR 0.20942
+#define N2_IN_AIR 0.78084 // has been set to 0.7902 before to ignore other components of air
+#define O2_DENSITY 1.429  // Gramm/Liter
+#define N2_DENSITY 1.251
+#define HE_DENSITY 0.1786
+
+
 /*
  * Some silly typedefs to make our units very explicit.
  *

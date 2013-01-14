@@ -25,6 +25,9 @@ struct preferences {
 	struct units units;
 	visible_cols_t visible_cols;
 	partial_pressure_graphs_t pp_graphs;
+	gboolean mod;
+	double mod_ppO2;
+	gboolean ead;
 	gboolean profile_red_ceiling;
 	gboolean profile_calc_ceiling;
 	gboolean calc_ceiling_3m_incr;

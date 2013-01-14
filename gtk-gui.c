@@ -439,6 +439,8 @@ OPTIONCALLBACK(cylinder_toggle, prefs.visible_cols.cylinder)
 OPTIONCALLBACK(po2_toggle, prefs.pp_graphs.po2)
 OPTIONCALLBACK(pn2_toggle, prefs.pp_graphs.pn2)
 OPTIONCALLBACK(phe_toggle, prefs.pp_graphs.phe)
+OPTIONCALLBACK(mod_toggle, prefs.mod)
+OPTIONCALLBACK(ead_toggle, prefs.ead)
 OPTIONCALLBACK(red_ceiling_toggle, prefs.profile_red_ceiling)
 OPTIONCALLBACK(calc_ceiling_toggle, prefs.profile_calc_ceiling)
 OPTIONCALLBACK(calc_ceiling_3m_toggle, prefs.calc_ceiling_3m_incr)
@@ -529,9 +531,9 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
-	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_gflow, *entry_gfhigh;
+	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_mod, *entry_ead, *entry_gflow, *entry_gfhigh;
 	const char *current_default, *new_default;
-	char threshold_text[10], utf8_buf[128];
+	char threshold_text[10], mod_text[10], utf8_buf[128];
 	struct preferences oldprefs = prefs;
 
 	dialog = gtk_dialog_new_with_buttons(_("Preferences"),
@@ -722,6 +724,31 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(vbox), box);
 
+	button = gtk_check_button_new_with_label(_("Show MOD"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.mod);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(mod_toggle), &entry_mod);
+
+	frame = gtk_frame_new(_("max ppO2"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 6);
+	entry_mod = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(entry_mod), 4);
+	snprintf(mod_text, sizeof(mod_text), "%.1f", prefs.mod_ppO2);
+	gtk_entry_set_text(GTK_ENTRY(entry_mod), mod_text);
+	gtk_widget_set_sensitive(entry_mod, prefs.mod);
+	gtk_container_add(GTK_CONTAINER(frame), entry_mod);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
+
+	button = gtk_check_button_new_with_label(_("Show EAD, END, EADD"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.ead);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(ead_toggle), NULL);
+
+	box = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(vbox), box);
+
 	button = gtk_check_button_new_with_label(_("Show dc reported ceiling in red"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.profile_red_ceiling);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 6);
@@ -766,7 +793,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
-		const char *po2_threshold_text, *pn2_threshold_text, *phe_threshold_text, *gflow_text, *gfhigh_text;
+		const char *po2_threshold_text, *pn2_threshold_text, *phe_threshold_text, *mod_text, *gflow_text, *gfhigh_text;
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 
@@ -778,6 +805,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		sscanf(pn2_threshold_text, "%lf", &prefs.pp_graphs.pn2_threshold);
 		phe_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_phe));
 		sscanf(phe_threshold_text, "%lf", &prefs.pp_graphs.phe_threshold);
+		mod_text = gtk_entry_get_text(GTK_ENTRY(entry_mod));
+		sscanf(mod_text, "%lf", &prefs.mod_ppO2);
 		gflow_text = gtk_entry_get_text(GTK_ENTRY(entry_gflow));
 		sscanf(gflow_text, "%lf", &prefs.gflow);
 		gfhigh_text = gtk_entry_get_text(GTK_ENTRY(entry_gfhigh));
