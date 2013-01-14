@@ -176,3 +176,15 @@ gboolean subsurface_os_feature_available(os_feature_t f)
 {
 	return TRUE;
 }
+
+gboolean subsurface_launch_for_uri(const char* uri)
+{
+	GError *err = NULL;
+	gtk_show_uri(NULL, uri, gtk_get_current_event_time(), &err);
+	if (err) {
+		g_message("%s: %s", err->message, uri);
+		g_error_free(err);
+		return FALSE;
+	}
+	return TRUE;
+}

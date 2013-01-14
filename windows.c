@@ -298,6 +298,14 @@ void subsurface_command_line_exit(gint *argc, gchar ***argv)
 	g_free(*argv);
 }
 
+gboolean subsurface_launch_for_uri(const char* uri)
+{
+	if ((INT_PTR)ShellExecute(NULL, "open", uri, NULL, NULL, SW_SHOWNORMAL) > 32)
+		return TRUE;
+	g_message("ShellExecute failed for: %s", uri);
+	return FALSE;
+}
+
 /* check if we are running a newer OS version */
 gboolean subsurface_os_feature_available(os_feature_t f)
 {

@@ -583,6 +583,7 @@ typedef enum {
 extern const char *existing_filename;
 extern const char *subsurface_gettext_domainpath(char *);
 extern gboolean subsurface_os_feature_available(os_feature_t);
+extern gboolean subsurface_launch_for_uri(const char *);
 extern void subsurface_command_line_init(gint *, gchar ***);
 extern void subsurface_command_line_exit(gint *, gchar ***);
 
