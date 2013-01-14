@@ -504,9 +504,9 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 		record_dive(dive);
 		stopidx--;
 	}
-	/* now make the dive visible as last dive of the dive list */
+	/* now make the dive visible in the dive list */
 	report_dives(FALSE, FALSE);
-	select_last_dive();
+	show_and_select_dive(dive);
 	free(stoplevels);
 	free(gaschanges);
 }

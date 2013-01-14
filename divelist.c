@@ -841,6 +841,14 @@ static void add_dive_to_deco(struct dive *dive)
 	}
 }
 
+static int get_divenr(struct dive *dive)
+{
+	int divenr = -1;
+	while (++divenr < dive_table.nr && get_dive(divenr) != dive)
+		;
+	return divenr;
+}
+
 static struct gasmix air = { .o2.permille = 209 };
 
 /* take into account previous dives until there is a 48h gap between dives */
@@ -854,8 +862,7 @@ double init_decompression(struct dive *dive)
 
 	if (!dive)
 		return 0.0;
-	while (++divenr < dive_table.nr && get_dive(divenr) != dive)
-		;
+	divenr = get_divenr(dive);
 	when = dive->when;
 	i = divenr;
 	while (i && --i) {
@@ -1321,30 +1328,6 @@ static void clear_trip_indexes(void)
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;
-}
-
-void select_last_dive(void)
-{
-	GtkTreeSelection *selection;
-	GtkTreeIter iter;
-	struct dive *dive;
-	int i;
-
-	/* select the last dive (and make sure it's an actual dive that is selected) */
-	/* WARNING - this only works when sorted by date!!!
-	 *
-	 *
-	 *
-	 */
-	gtk_tree_model_get_iter_first(MODEL(dive_list), &iter);
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
-	gtk_tree_selection_unselect_all(selection);
-	for_each_dive(i, dive)
-		dive->selected = FALSE;
-	amount_selected = 0;
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &selected_dive, -1);
-	first_leaf(MODEL(dive_list), &iter, &selected_dive);
-	gtk_tree_selection_select_iter(selection, &iter);
 }
 
 static void fill_dive_list(void)
@@ -2786,6 +2769,27 @@ static GtkTreeIter *get_iter_from_idx(int idx)
 	struct iteridx iteridx = {idx, };
 	gtk_tree_model_foreach(MODEL(dive_list), iter_has_idx, &iteridx);
 	return iteridx.iter;
+}
+
+void show_and_select_dive(struct dive *dive)
+{
+	GtkTreeSelection *selection;
+	GtkTreeIter *iter;
+	struct dive *odive;
+	int i, divenr;
+
+	divenr = get_divenr(dive);
+	if (divenr < 0)
+		/* we failed to find the dive */
+		return;
+	iter = get_iter_from_idx(divenr);
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+	gtk_tree_selection_unselect_all(selection);
+	for_each_dive(i, odive)
+		odive->selected = FALSE;
+	amount_selected = 1;
+	dive->selected = TRUE;
+	gtk_tree_selection_select_iter(selection, iter);
 }
 
 void select_next_dive(void)
