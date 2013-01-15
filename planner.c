@@ -806,6 +806,17 @@ static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoint
 	return FALSE;
 }
 
+/* Subsurface follows the lead of most divecomputers to use times
+ * without timezone - so all times are implicitly assumed to be
+ * local time of the dive location; so in order to give the current
+ * time in that way we actually need to add the timezone offset */
+static timestamp_t current_time_notz(void)
+{
+	timestamp_t now = time(NULL);
+	int offset = g_time_zone_get_offset(g_time_zone_new_local(), 1);
+	return now + offset;
+}
+
 static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
 {
 	const char *starttimetext;
@@ -814,7 +825,7 @@ static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoin
 	starttimetext = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (validate_time(starttimetext, &starttime, &is_rel)) {
 		/* we alway make this relative for now */
-		diveplan.when = time(NULL) + starttime;
+		diveplan.when = current_time_notz() + starttime;
 		show_planned_dive();
 	} else {
 		/* we need to instead change the color of the input field or something */
@@ -905,6 +916,7 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 	}
 }
 
+/* set up the dialog where the user can input their dive plan */
 void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *deltat, *label, *surfpres;
@@ -949,7 +961,7 @@ void input_plan()
 	gtk_entry_set_text(GTK_ENTRY(surfpres), pressurebuf);
 	gtk_widget_add_events(surfpres, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(surfpres, "focus-out-event", G_CALLBACK(surfpres_focus_out_cb), NULL);
-	diveplan.when = time(NULL) + 3600;
+	diveplan.when = current_time_notz() + 3600;
 	diveplan.surface_pressure = SURFACE_PRESSURE;
 	nr_waypoints = 4;
 	add_waypoint_widgets(vbox, 0);
