@@ -286,7 +286,7 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 {
 	int decimals,i;
 	double totalweight, systemweight, weightsystemcounter;
-	const char *unit_weight;
+	const char *unit_weight, *desc;
 	char buffer[80];
 	PangoLayout *layout;
 
@@ -310,7 +310,8 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 		systemweight = get_weight_units(dive->weightsystem[i].weight.grams, &decimals, &unit_weight);
 		if (systemweight != 0){
 			cairo_move_to(cr, 0, 0);
-			snprintf(buffer, sizeof(buffer), _("%s"),dive->weightsystem[i].description);
+			desc = dive->weightsystem[i].description ? : _("unknown");
+			snprintf(buffer, sizeof(buffer), _("%s"), desc);
 			pango_layout_set_text(layout, buffer, -1);
 			pango_cairo_show_layout(cr, layout);
 			cairo_move_to(cr,(2 * maxwidth) / (3 * (double) PANGO_SCALE), 0);
