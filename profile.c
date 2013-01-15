@@ -2149,15 +2149,15 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	}
 	if (prefs.pp_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->po2);
+		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.2fbar", buf2, entry->po2);
 	}
 	if (prefs.pp_graphs.pn2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.2f", buf2, entry->pn2);
+		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.2fbar", buf2, entry->pn2);
 	}
 	if (prefs.pp_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npHe:%.2f", buf2, entry->phe);
+		snprintf(buf, bufsize, "%s\npHe:%.2fbar", buf2, entry->phe);
 	}
 	if (prefs.mod) {
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);

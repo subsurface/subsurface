@@ -921,7 +921,6 @@ void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *deltat, *label, *surfpres;
 	char starttimebuf[64] = "+60:00";
-	char pressurebuf[64] = SURFACE_PRESSURE_STRING;
 
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
@@ -958,7 +957,7 @@ void input_plan()
 	g_signal_connect(deltat, "focus-out-event", G_CALLBACK(starttime_focus_out_cb), NULL);
 	surfpres = add_entry_to_box(hbox, _("Surface Pressure (mbar)"));
 	gtk_entry_set_max_length(GTK_ENTRY(surfpres), 12);
-	gtk_entry_set_text(GTK_ENTRY(surfpres), pressurebuf);
+	gtk_entry_set_text(GTK_ENTRY(surfpres), SURFACE_PRESSURE_STRING);
 	gtk_widget_add_events(surfpres, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(surfpres, "focus-out-event", G_CALLBACK(surfpres_focus_out_cb), NULL);
 	diveplan.when = current_time_notz() + 3600;
