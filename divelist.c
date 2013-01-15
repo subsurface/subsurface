@@ -1659,6 +1659,11 @@ void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 	}
 }
 
+static void show_gps_location_cb(GtkWidget *menuitem, struct dive *dive)
+{
+	show_gps_location(dive);
+}
+
 static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
 {
 	gtk_tree_view_expand_all(tree_view);
@@ -2470,6 +2475,10 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		}
+		menuitem = gtk_menu_item_new_with_label(_("Show in map"));
+		g_signal_connect(menuitem, "activate", G_CALLBACK(show_gps_location_cb), dive);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 		/* only offer trip editing options when we are displaying the tree model */
 		if (dive_list.model == dive_list.treemodel) {
 			int depth = gtk_tree_path_get_depth(path);
@@ -2503,9 +2512,11 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 	menuitem = gtk_menu_item_new_with_label(_("Expand all"));
 	g_signal_connect(menuitem, "activate", G_CALLBACK(expand_all_cb), tree_view);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 	menuitem = gtk_menu_item_new_with_label(_("Collapse all"));
 	g_signal_connect(menuitem, "activate", G_CALLBACK(collapse_all_cb), tree_view);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 	gtk_widget_show_all(menu);
 
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,

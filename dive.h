@@ -500,6 +500,7 @@ extern void show_dive_stats(struct dive *);
 extern void clear_stats_widgets(void);
 
 extern void show_gps_locations(void);
+extern void show_gps_location(struct dive *);
 
 extern void show_yearly_stats(void);
 
