@@ -342,6 +342,11 @@ struct dive {
 	struct divecomputer dc;
 };
 
+static inline int dive_has_location(struct dive *dive)
+{
+	return dive->latitude.udeg || dive->longitude.udeg;
+}
+
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */

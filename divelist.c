@@ -2475,9 +2475,13 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		}
-		menuitem = gtk_menu_item_new_with_label(_("Show in map"));
-		g_signal_connect(menuitem, "activate", G_CALLBACK(show_gps_location_cb), dive);
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+		/* Only offer to show on map if it has a location. */
+		if (dive_has_location(dive)) {
+			menuitem = gtk_menu_item_new_with_label(_("Show in map"));
+			g_signal_connect(menuitem, "activate", G_CALLBACK(show_gps_location_cb), dive);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+		}
 
 		/* only offer trip editing options when we are displaying the tree model */
 		if (dive_list.model == dive_list.treemodel) {
