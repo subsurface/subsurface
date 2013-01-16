@@ -618,6 +618,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	add_plan_to_notes(diveplan, dive);
 	/* now make the dive visible in the dive list */
 	report_dives(FALSE, FALSE);
+	mark_divelist_changed(TRUE);
 	show_and_select_dive(dive);
 	free(stoplevels);
 	free(gaschanges);
