@@ -916,11 +916,20 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 	}
 }
 
+static void add_entry_with_callback(GtkWidget *box, int length, char *label, char *initialtext,
+				gboolean (*callback)(GtkWidget *, GdkEvent *, gpointer ))
+{
+	GtkWidget *entry = add_entry_to_box(box, label);
+	gtk_entry_set_max_length(GTK_ENTRY(entry), length);
+	gtk_entry_set_text(GTK_ENTRY(entry), initialtext);
+	gtk_widget_add_events(entry, GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(entry, "focus-out-event", G_CALLBACK(callback), NULL);
+}
+
 /* set up the dialog where the user can input their dive plan */
 void input_plan()
 {
-	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *deltat, *label, *surfpres;
-	char starttimebuf[64] = "+60:00";
+	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *label;
 
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
@@ -950,16 +959,9 @@ void input_plan()
 	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 0);
 	hbox = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
-	deltat = add_entry_to_box(hbox, _("Dive starts in how many minutes?"));
-	gtk_entry_set_max_length(GTK_ENTRY(deltat), 12);
-	gtk_entry_set_text(GTK_ENTRY(deltat), starttimebuf);
-	gtk_widget_add_events(deltat, GDK_FOCUS_CHANGE_MASK);
-	g_signal_connect(deltat, "focus-out-event", G_CALLBACK(starttime_focus_out_cb), NULL);
-	surfpres = add_entry_to_box(hbox, _("Surface Pressure (mbar)"));
-	gtk_entry_set_max_length(GTK_ENTRY(surfpres), 12);
-	gtk_entry_set_text(GTK_ENTRY(surfpres), SURFACE_PRESSURE_STRING);
-	gtk_widget_add_events(surfpres, GDK_FOCUS_CHANGE_MASK);
-	g_signal_connect(surfpres, "focus-out-event", G_CALLBACK(surfpres_focus_out_cb), NULL);
+	add_entry_with_callback(hbox, 12, _("Dive starts when?"), "+60:00", starttime_focus_out_cb);
+	add_entry_with_callback(hbox, 12, _("Surface Pressure (mbar)"), SURFACE_PRESSURE_STRING, surfpres_focus_out_cb);
+
 	diveplan.when = current_time_notz() + 3600;
 	diveplan.surface_pressure = SURFACE_PRESSURE;
 	nr_waypoints = 4;
