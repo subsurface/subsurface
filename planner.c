@@ -17,6 +17,7 @@ int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
 		     90000};
+double plangflow, plangfhigh;
 
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
@@ -440,7 +441,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		return;
 
 	snprintf(buffer, sizeof(buffer), "Subsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n",
-						prefs.gflow * 100, prefs.gfhigh * 100);
+						plangflow * 100, plangfhigh * 100);
 	/* we start with gas 0, then check if that was changed */
 	o2 = dive->cylinder[0].gasmix.o2.permille;
 	he = dive->cylinder[0].gasmix.he.permille;
@@ -535,6 +536,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	int gaschangenr;
 	int *stoplevels;
 
+	set_gf(plangflow, plangfhigh);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	if (*divep)
@@ -1026,6 +1028,20 @@ static gboolean sac_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer da
 	return FALSE;
 }
 
+static gboolean gf_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	const char *gftext;
+	int gf;
+	double *gfp = data;
+
+	gftext = gtk_entry_get_text(GTK_ENTRY(entry));
+	if (sscanf(gftext, "%d", &gf) == 1) {
+		*gfp = gf / 100.0;
+		show_planned_dive();
+	}
+	return FALSE;
+}
+
 static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int idx)
 {
 	GtkWidget *frame, *combo;
@@ -1112,11 +1128,13 @@ static void add_entry_with_callback(GtkWidget *box, int length, char *label, cha
 void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *label;
-	char *bottom_sac, *deco_sac;
+	char *bottom_sac, *deco_sac, gflowstring[4], gfhighstring[4];
 
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
 	memset(&diveplan, 0, sizeof(diveplan));
+	free(cache_data);
+	cache_data = NULL;
 	planned_dive = NULL;
 	planner = gtk_dialog_new_with_buttons(_("Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"),
 					GTK_WINDOW(main_window),
@@ -1144,6 +1162,9 @@ void input_plan()
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 	add_entry_with_callback(hbox, 12, _("Dive starts when?"), "+60:00", starttime_focus_out_cb, NULL);
 	add_entry_with_callback(hbox, 12, _("Surface Pressure (mbar)"), SURFACE_PRESSURE_STRING, surfpres_focus_out_cb, NULL);
+
+	hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 	if (get_units()->volume == CUFT) {
 		bottom_sac = "0.7 cuft/min";
 		deco_sac = "0.6 cuft/min";
@@ -1157,7 +1178,12 @@ void input_plan()
 	}
 	add_entry_with_callback(hbox, 12, _("SAC during dive"), bottom_sac, sac_focus_out_cb, &diveplan.bottomsac);
 	add_entry_with_callback(hbox, 12, _("SAC during decostop"), deco_sac, sac_focus_out_cb, &diveplan.decosac);
-
+	plangflow = prefs.gflow;
+	plangfhigh = prefs.gfhigh;
+	snprintf(gflowstring, sizeof(gflowstring), "%3.0f", 100 * plangflow);
+	snprintf(gfhighstring, sizeof(gflowstring), "%3.0f", 100 * plangfhigh);
+	add_entry_with_callback(hbox, 5, _("GFlow for plan"), gflowstring, gf_focus_out_cb, &plangflow);
+	add_entry_with_callback(hbox, 5, _("GFhigh for plan"), gfhighstring, gf_focus_out_cb, &plangfhigh);
 	diveplan.when = current_time_notz() + 3600;
 	diveplan.surface_pressure = SURFACE_PRESSURE;
 	nr_waypoints = 4;
@@ -1182,4 +1208,5 @@ void input_plan()
 		}
 	}
 	gtk_widget_destroy(planner);
+	set_gf(prefs.gflow, prefs.gfhigh);
 }
