@@ -523,21 +523,45 @@ static int get_tenths(const char *begin, const char **endp)
 	char *end;
 	int value = strtol(begin, &end, 10);
 
-	*endp = end;
 	if (begin == end)
 		return -1;
 	value *= 10;
 
 	/* Fraction? We only look at the first digit */
 	if (*end == '.') {
-		++*end;
+		end++;
 		if (!isdigit(*end))
 			return -1;
 		value += *end - '0';
 		do {
-			++*end;
+			end++;
 		} while (isdigit(*end));
 	}
+	*endp = end;
+	return value;
+}
+
+static int get_thousandths(const char *begin, const char **endp)
+{
+	char *end;
+	int value = strtol(begin, &end, 10);
+
+	if (begin == end)
+		return -1;
+	value *= 1000;
+
+	/* now deal with up to three more digits after decimal point */
+	if (*end == '.') {
+		int factor = 100;
+		do {
+			++end;
+			if (!isdigit(*end))
+				break;
+			value += (*end - '0') * factor;
+			factor /= 10;
+		} while (factor);
+	}
+	*endp = end;
 	return value;
 }
 
@@ -686,6 +710,42 @@ static int validate_depth(const char *text, int *mm_p)
 		depth *= 100;
 	}
 	*mm_p = depth;
+	return 1;
+}
+
+static int validate_volume(const char *text, int *sac)
+{
+	int volume, imperial;
+
+	if (!text)
+		return 0;
+
+	volume = get_thousandths(text, &text);
+	if (volume < 0)
+		return 0;
+
+	while (isspace(*text))
+		text++;
+
+	imperial = get_units()->volume == CUFT;
+	if (*text == 'l') {
+		imperial = 0;
+		text++;
+	} else if (!strncasecmp(text, "cuft", 4)) {
+		imperial = 1;
+		text += 4;
+	}
+	while (isspace(*text) || *text == '/')
+		text++;
+	if (!strncasecmp(text, "min", 3))
+		text += 3;
+	while (isspace(*text))
+		text++;
+	if (*text)
+		return 0;
+	if (imperial)
+		volume = cuft_to_l(volume) + 0.5;	/* correct for mcuft -> ml */
+	*sac = volume;
 	return 1;
 }
 
@@ -844,6 +904,16 @@ static gboolean surfpres_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoint
 	return FALSE;
 }
 
+static gboolean sac_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	const char *sactext;
+
+	sactext = gtk_entry_get_text(GTK_ENTRY(entry));
+	if (validate_volume(sactext, data))
+		show_planned_dive();
+	return FALSE;
+}
+
 static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int idx)
 {
 	GtkWidget *frame, *combo;
@@ -917,19 +987,20 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 }
 
 static void add_entry_with_callback(GtkWidget *box, int length, char *label, char *initialtext,
-				gboolean (*callback)(GtkWidget *, GdkEvent *, gpointer ))
+				gboolean (*callback)(GtkWidget *, GdkEvent *, gpointer ), gpointer data)
 {
 	GtkWidget *entry = add_entry_to_box(box, label);
 	gtk_entry_set_max_length(GTK_ENTRY(entry), length);
 	gtk_entry_set_text(GTK_ENTRY(entry), initialtext);
 	gtk_widget_add_events(entry, GDK_FOCUS_CHANGE_MASK);
-	g_signal_connect(entry, "focus-out-event", G_CALLBACK(callback), NULL);
+	g_signal_connect(entry, "focus-out-event", G_CALLBACK(callback), data);
 }
 
 /* set up the dialog where the user can input their dive plan */
 void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *label;
+	char *bottom_sac, *deco_sac;
 
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
@@ -959,8 +1030,21 @@ void input_plan()
 	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 0);
 	hbox = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
-	add_entry_with_callback(hbox, 12, _("Dive starts when?"), "+60:00", starttime_focus_out_cb);
-	add_entry_with_callback(hbox, 12, _("Surface Pressure (mbar)"), SURFACE_PRESSURE_STRING, surfpres_focus_out_cb);
+	add_entry_with_callback(hbox, 12, _("Dive starts when?"), "+60:00", starttime_focus_out_cb, NULL);
+	add_entry_with_callback(hbox, 12, _("Surface Pressure (mbar)"), SURFACE_PRESSURE_STRING, surfpres_focus_out_cb, NULL);
+	if (get_units()->volume == CUFT) {
+		bottom_sac = "0.7 cuft/min";
+		deco_sac = "0.6 cuft/min";
+		diveplan.bottomsac = 1000 * cuft_to_l(0.7);
+		diveplan.decosac = 1000 * cuft_to_l(0.6);
+	} else {
+		bottom_sac = "20 l/min";
+		deco_sac = "17 l/min";
+		diveplan.bottomsac = 20000;
+		diveplan.decosac = 17000;
+	}
+	add_entry_with_callback(hbox, 12, _("SAC during dive"), bottom_sac, sac_focus_out_cb, &diveplan.bottomsac);
+	add_entry_with_callback(hbox, 12, _("SAC during decostop"), deco_sac, sac_focus_out_cb, &diveplan.decosac);
 
 	diveplan.when = current_time_notz() + 3600;
 	diveplan.surface_pressure = SURFACE_PRESSURE;
