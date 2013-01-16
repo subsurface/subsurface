@@ -602,6 +602,7 @@ struct divedatapoint {
 	int depth;
 	int o2;
 	int he;
+	gboolean entered;
 	struct divedatapoint *next;
 };
 

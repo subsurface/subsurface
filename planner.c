@@ -67,6 +67,16 @@ static int get_gasidx(struct dive *dive, int o2, int he)
 	return -1;
 }
 
+static void get_gas_string(int o2, int he, char *text, int len)
+{
+	if (he == 0 && (o2 == 0 || (o2 >= O2_IN_AIR - 1 && o2 <= O2_IN_AIR + 1)))
+		snprintf(text, len, _("air"));
+	else if (he == 0)
+		snprintf(text, len, _("EAN%d"), (o2 + 5) / 10);
+	else
+		snprintf(text, len, "(%d/%d)",  (o2 + 5) / 10, (he + 5) / 10);
+}
+
 /* returns the tissue tolerance at the end of this (partial) dive */
 double tissue_at_end(struct dive *dive, char **cached_datap)
 {
@@ -248,6 +258,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he)
 	dp->depth = depth;
 	dp->o2 = o2;
 	dp->he = he;
+	dp->entered = FALSE;
 	dp->next = NULL;
 	return dp;
 }
@@ -280,10 +291,15 @@ void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gb
 	dp->time = duration;
 }
 
+/* this function is ONLY called from the dialog callback - so it
+ * marks this entry as 'entered'.
+ * Do NOT call from other parts of the planning code without changing
+ * that logic */
 void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth)
 {
 	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
 	dp->depth = depth;
+	dp->entered = TRUE;
 }
 
 void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he)
@@ -412,6 +428,78 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 	return stoplevels;
 }
 
+static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
+{
+	char buffer[2000];
+	int len, lastdepth = 0, lasttime = 0;
+	struct divedatapoint *dp = diveplan->dp;
+	int o2, he;
+
+	if (!dp)
+		return;
+
+	snprintf(buffer, sizeof(buffer), "Subsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n",
+						prefs.gflow * 100, prefs.gfhigh * 100);
+	/* we start with gas 0, then check if that was changed */
+	o2 = dive->cylinder[0].gasmix.o2.permille;
+	he = dive->cylinder[0].gasmix.he.permille;
+	do {
+		const char *depth_unit;
+		char gas[12];
+		double depthvalue;
+		int decimals;
+		int newo2 = o2, newhe = he;
+		struct divedatapoint *nextdp;
+
+		if (dp->time == 0)
+			continue;
+		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
+		/* do we change gas after this segment? We need to look at the gas
+		 * for the next segment (that isn't just a record of available gas !!)
+		 * to find out */
+		nextdp = dp->next;
+		while (nextdp && nextdp->time == 0)
+			nextdp = nextdp->next;
+		if (nextdp) {
+			newo2 = nextdp->o2;
+			newhe = nextdp->he;
+			if (newhe == 0 && newo2 == 0) {
+				/* same as last segment */
+				newo2 = o2;
+				newhe = he;
+			}
+		}
+		/* do we want to skip this leg as it is devoid of anything useful? */
+		if (!dp->entered && o2 == newo2 && he == newhe && nextdp && dp->depth != lastdepth && nextdp->depth != dp->depth)
+			continue;
+		get_gas_string(o2, he, gas, 12);
+		len = strlen(buffer);
+		if (dp->depth != lastdepth) {
+			snprintf(buffer + len, sizeof(buffer) - len, "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n",
+							decimals, depthvalue, depth_unit,
+							FRACTION(dp->time - lasttime, 60),
+							FRACTION(dp->time, 60),
+							gas);
+		} else {
+			snprintf(buffer + len, sizeof(buffer) - len, "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n",
+							decimals, depthvalue, depth_unit,
+							FRACTION(dp->time - lasttime, 60),
+							FRACTION(dp->time, 60),
+							gas);
+		}
+		get_gas_string(newo2, newhe, gas, 12);
+		if (o2 != newo2 || he != newhe) {
+			len = strlen(buffer);
+			snprintf(buffer + len, sizeof(buffer) - len, "Switch gas to %s\n", gas);
+		}
+		o2 = newo2;
+		he = newhe;
+		lasttime = dp->time;
+		lastdepth = dp->depth;
+	} while((dp = dp->next) != NULL);
+	dive->notes = strdup(buffer);
+}
+
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 {
 	struct dive *dive;
@@ -504,6 +592,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 		record_dive(dive);
 		stopidx--;
 	}
+	add_plan_to_notes(diveplan, dive);
 	/* now make the dive visible in the dive list */
 	report_dives(FALSE, FALSE);
 	show_and_select_dive(dive);
