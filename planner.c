@@ -431,7 +431,8 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 {
 	char buffer[2000];
-	int len, lastdepth = 0, lasttime = 0;
+	int consumption[MAX_CYLINDERS] = { 0, };
+	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	int o2, he;
 
@@ -448,6 +449,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		char gas[12];
 		double depthvalue;
 		int decimals;
+		double used;
 		int newo2 = o2, newhe = he;
 		struct divedatapoint *nextdp;
 
@@ -473,20 +475,27 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		if (!dp->entered && o2 == newo2 && he == newhe && nextdp && dp->depth != lastdepth && nextdp->depth != dp->depth)
 			continue;
 		get_gas_string(o2, he, gas, 12);
+		gasidx = get_gasidx(dive, o2, he);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth) {
+			used = diveplan->bottomsac / 1000.0 * depth_to_mbar((dp->depth + lastdepth) / 2, dive) *
+						(dp->time - lasttime) / 60;
 			snprintf(buffer + len, sizeof(buffer) - len, "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n",
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
 							FRACTION(dp->time, 60),
 							gas);
 		} else {
+			/* we use deco SAC rate during the calculated deco stops, bottom SAC rate everywhere else */
+			int sac = dp->entered ? diveplan->bottomsac : diveplan->decosac;
+			used = sac / 1000.0 * depth_to_mbar(dp->depth, dive) * (dp->time - lasttime) / 60;
 			snprintf(buffer + len, sizeof(buffer) - len, "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n",
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
 							FRACTION(dp->time, 60),
 							gas);
 		}
+		consumption[gasidx] += used;
 		get_gas_string(newo2, newhe, gas, 12);
 		if (o2 != newo2 || he != newhe) {
 			len = strlen(buffer);
@@ -497,6 +506,20 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		lasttime = dp->time;
 		lastdepth = dp->depth;
 	} while((dp = dp->next) != NULL);
+	len = strlen(buffer);
+	snprintf(buffer + len, sizeof(buffer) - len, "Gas consumption:\n");
+	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
+		double volume;
+		const char *unit;
+		char gas[12];
+		if (consumption[gasidx] == 0)
+			continue;
+		len = strlen(buffer);
+		volume = get_volume_units(consumption[gasidx], NULL, &unit);
+		get_gas_string(dive->cylinder[gasidx].gasmix.o2.permille,
+				dive->cylinder[gasidx].gasmix.he.permille, gas, 12);
+		snprintf(buffer + len, sizeof(buffer) - len, "%.0f%s of %s\n", volume, unit, gas);
+	}
 	dive->notes = strdup(buffer);
 }
 
