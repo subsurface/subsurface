@@ -91,6 +91,11 @@ GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap)
+LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
+ifneq ($(strip $(LIBOSMGPSMAP)),)
+	GPSOBJ = gps.o
+	CFLAGS += -DHAVE_OSM_GPS_MAP
+endif
 
 LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
 ifneq ($(strip $(LIBZIP)),)
@@ -126,7 +131,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm -lssl -lcrypto -losmgpsmap
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm -lssl -lcrypto $(LIBOSMGPSMAP)
 
 MSGLANGS=$(notdir $(wildcard po/*po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
@@ -134,7 +139,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	gps.o $(OSSUPPORT).o $(RESFILE)
+	$(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)

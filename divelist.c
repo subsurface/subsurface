@@ -1659,10 +1659,12 @@ void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 	}
 }
 
+#if HAVE_OSM_GPS_MAP
 static void show_gps_location_cb(GtkWidget *menuitem, struct dive *dive)
 {
 	show_gps_location(dive);
 }
+#endif
 
 static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
 {
@@ -2475,14 +2477,14 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		}
-
+#if HAVE_OSM_GPS_MAP
 		/* Only offer to show on map if it has a location. */
 		if (dive_has_location(dive)) {
 			menuitem = gtk_menu_item_new_with_label(_("Show in map"));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(show_gps_location_cb), dive);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		}
-
+#endif
 		/* only offer trip editing options when we are displaying the tree model */
 		if (dive_list.model == dive_list.treemodel) {
 			int depth = gtk_tree_path_get_depth(path);
