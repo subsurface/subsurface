@@ -36,6 +36,22 @@ int        error_count;
 const char *existing_filename;
 
 char *nicknamestring;
+static struct device_info *nicknamelist;
+static struct device_info *holdnicknames = NULL;
+
+void remove_dc(const char *model, uint32_t deviceid, gboolean change_conf);
+
+void dump_nickname_list_entry(struct device_info *nnl){
+
+	  printf("\n");
+	  printf("Address of entry is %p root is at %p\n", nnl, nicknamelist);
+	  printf("Model = %s\n",nnl->model);
+	  printf("Device = %x\n", nnl->deviceid);
+	  printf("Nickname = %s\n", nnl->nickname);
+	  printf("Address of next entry is %p\n",nnl->next);
+	  printf("\n");
+
+}
 
 static GtkWidget *dive_profile;
 
@@ -1044,6 +1060,238 @@ static void next_dc(GtkWidget *w, gpointer data)
 	repaint_dive();
 }
 
+
+/* list columns for nickname edit treeview */
+enum {
+	NE_MODEL,
+	NE_ID_STR,
+	NE_NICKNAME,
+	NE_NCOL
+};
+
+/* delete a selection of nicknames */
+static void edit_dc_delete_rows(GtkTreeView *view)
+{
+	GtkTreeModel *model;
+	GtkTreePath *path;
+	GtkTreeIter iter;
+	GtkTreeRowReference *ref;
+	GtkTreeSelection *selection;
+	GList *selected_rows, *list, *row_references = NULL;
+	guint len;
+	/* params for delete op */
+	const char *model_str;
+	const char *deviceid_string; /* convert to deviceid */
+	uint32_t deviceid;
+
+	selection = gtk_tree_view_get_selection(view);
+	selected_rows = gtk_tree_selection_get_selected_rows(selection, &model);
+
+	for (list = selected_rows; list; list = g_list_next(list)) {
+		path = list->data;
+		ref = gtk_tree_row_reference_new(model, path);
+		row_references = g_list_append(row_references, ref);
+	}
+	len = g_list_length(row_references);
+	if (len == 0)
+		/* Warn about empty selection? */
+		return;
+
+	for (list = row_references; list; list = g_list_next(list)) {
+		path = gtk_tree_row_reference_get_path((GtkTreeRowReference *)(list->data));
+		gtk_tree_model_get_iter(model, &iter, path);
+		gtk_tree_model_get(GTK_TREE_MODEL(model), &iter,
+					NE_MODEL, &model_str,
+					NE_ID_STR, &deviceid_string,
+					-1);
+		if (sscanf(deviceid_string, "0x%x8", &deviceid) == 1)
+			remove_dc(model_str,  deviceid, TRUE);
+
+		gtk_list_store_remove(GTK_LIST_STORE (model), &iter);
+		gtk_tree_path_free(path);
+	}
+	g_list_free(selected_rows);
+	g_list_free(row_references);
+	g_list_free(list);
+
+	if (gtk_tree_model_get_iter_first(model, &iter))
+		gtk_tree_selection_select_iter(selection, &iter);
+}
+
+/* repopulate the edited nickname cell of a DC */
+static void cell_edited_cb(GtkCellRendererText *cell, gchar *path,
+				gchar *new_text, gpointer store)
+{
+	GtkTreeIter iter;
+	const char *model;
+	const char *deviceid_string;
+	uint32_t deviceid;
+	int matched;
+
+	gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(store), &iter, path);
+	/* display new text */
+	gtk_list_store_set(GTK_LIST_STORE(store), &iter, NE_NICKNAME, new_text, -1);
+	/* and new_text */
+	gtk_tree_model_get(GTK_TREE_MODEL(store), &iter,
+					  NE_MODEL, &model,
+					  NE_ID_STR, &deviceid_string,
+					  -1);
+	/* extract deviceid */
+	matched = sscanf(deviceid_string, "0x%x8", &deviceid);
+
+	/* remember pending commit
+	 * Need to extend list rather than wipe and store only one result */
+	if(matched == 1){
+		if (holdnicknames == NULL){
+			holdnicknames = (struct device_info *) malloc(sizeof( struct device_info ));
+			holdnicknames->model = strdup(model);
+			holdnicknames->deviceid = deviceid;
+			holdnicknames->serial_nr = NULL;
+			holdnicknames->firmware = NULL;
+			holdnicknames->nickname = strdup(new_text);
+			holdnicknames->next = NULL;
+			holdnicknames->saved = FALSE;
+		} else {
+			struct device_info * top = NULL;
+			struct device_info * last = holdnicknames;
+			top = (struct device_info *) malloc(sizeof( struct device_info ));
+			top->model = strdup(model);
+			top->deviceid = deviceid;
+			top->serial_nr = NULL;
+			top->firmware = NULL;
+			top->nickname = strdup(new_text);
+			top->next = last;
+			top->saved = FALSE;
+			holdnicknames = top;
+		}
+	}
+}
+
+#define SUB_RESPONSE_DELETE 1	/* no delete response in gtk+2 */
+#define SUB_DONE 2		/* enable escape when done */
+
+/* show the dialog to edit dc nicknames */
+static void edit_dc_nicknames(GtkWidget *w, gpointer data)
+{
+	const gchar *C_INACTIVE = "#e8e8ee", *C_ACTIVE = "#ffffff";	/* cell colours */
+	GtkWidget *dialog, *confirm, *view, *scroll, *vbox;
+	GtkCellRenderer *renderer;
+	GtkTreeSelection *selection;
+	GtkTreeModel *model;
+	GtkListStore *store;
+	GtkTreeIter iter;
+	gint res = -1;
+	char id_string[11] = {0};
+	struct device_info * nnl;
+
+	dialog = gtk_dialog_new_with_buttons( _("Edit Dive Computer Nicknames"),
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_DELETE,
+		SUB_RESPONSE_DELETE,
+		GTK_STOCK_CANCEL,
+		GTK_RESPONSE_CANCEL,
+		GTK_STOCK_APPLY,
+		GTK_RESPONSE_APPLY,
+		NULL);
+	gtk_widget_set_size_request(dialog, 700, 400);
+
+	scroll = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+
+	view = gtk_tree_view_new();
+	store = gtk_list_store_new(NE_NCOL, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+	model = GTK_TREE_MODEL(store);
+
+	/* columns */
+	renderer = gtk_cell_renderer_text_new();
+	g_object_set(renderer, "background", C_INACTIVE, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "Model",
+							renderer, "text", NE_MODEL, NULL);
+
+	renderer = gtk_cell_renderer_text_new();
+	g_object_set(renderer, "background", C_INACTIVE, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "Device Id",
+							renderer, "text", NE_ID_STR, NULL);
+
+	renderer = gtk_cell_renderer_text_new();
+	g_object_set(renderer, "background", C_INACTIVE, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "Nickname",
+							renderer, "text", NE_NICKNAME, NULL);
+	g_object_set(renderer, "editable", TRUE, NULL);
+	g_object_set(renderer, "background", C_ACTIVE, NULL);
+	g_signal_connect(renderer, "edited", G_CALLBACK(cell_edited_cb), store);
+
+	gtk_tree_view_set_model(GTK_TREE_VIEW(view), model);
+	g_object_unref(model);
+
+	/* populate list store from device_info_list */
+	nnl = head_of_device_info_list();
+	while( nnl ) {
+		sprintf(&id_string[0], "%#08x", nnl->deviceid);
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter,
+				NE_MODEL, nnl->model,
+				NE_ID_STR, id_string,
+				NE_NICKNAME, nnl->nickname,
+				-1);
+		nnl = nnl->next;
+	}
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(view));
+	gtk_tree_selection_set_mode(GTK_TREE_SELECTION(selection), GTK_SELECTION_SINGLE);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_container_add(GTK_CONTAINER(scroll), view);
+	gtk_container_add(GTK_CONTAINER(vbox),
+			gtk_label_new(_("Edit a dive computer nickname by double-clicking the in the relevant nickname field")));
+	gtk_container_add(GTK_CONTAINER(vbox), scroll);
+	gtk_widget_set_size_request(scroll, 500, 300);
+	gtk_widget_show_all(dialog);
+
+	do {
+		res = gtk_dialog_run(GTK_DIALOG(dialog));
+		if (res == SUB_RESPONSE_DELETE) {
+			confirm = gtk_dialog_new_with_buttons(_("Delete a dive computer information entry"),
+							GTK_WINDOW(dialog),
+							GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+							GTK_STOCK_YES,
+							GTK_RESPONSE_YES,
+							GTK_STOCK_NO,
+							GTK_RESPONSE_NO,
+							NULL);
+			gtk_widget_set_size_request(confirm, 350, 90);
+			vbox = gtk_dialog_get_content_area(GTK_DIALOG(confirm));
+			gtk_container_add(GTK_CONTAINER(vbox),
+					gtk_label_new(_("Ok to delete the selected entry?")));
+			gtk_widget_show_all(confirm);
+			if (gtk_dialog_run(GTK_DIALOG(confirm)) == GTK_RESPONSE_YES) {
+				edit_dc_delete_rows(GTK_TREE_VIEW(view));
+				res = SUB_DONE; /* want to close ** both ** dialogs now */
+			}
+			gtk_widget_destroy(confirm);
+		}
+		if (res == GTK_RESPONSE_APPLY && holdnicknames->model != NULL ) {
+			struct device_info * walk = holdnicknames;
+			struct device_info * release = holdnicknames;
+			struct device_info * track = holdnicknames->next;
+			while(walk) {
+				remember_dc(walk->model, walk->deviceid, walk->nickname, TRUE);
+				walk = walk->next;
+			}
+			/* clear down list */
+			while (release){
+				free(release);
+				release = track;
+				if(track)
+					track = track->next;
+			}
+			holdnicknames = NULL;
+		}
+	} while (res != SUB_DONE && res != GTK_RESPONSE_CANCEL && res != GTK_RESPONSE_DELETE_EVENT && res != GTK_RESPONSE_APPLY);
+	gtk_widget_destroy(dialog);
+}
+
 static GtkActionEntry menu_items[] = {
 	{ "FileMenuAction", NULL, N_("File"), NULL, NULL, NULL},
 	{ "LogMenuAction",  NULL, N_("Log"), NULL, NULL, NULL},
@@ -1074,6 +1322,7 @@ static GtkActionEntry menu_items[] = {
 	{ "ViewProfile",    NULL, N_("Profile"), CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
 	{ "ViewInfo",       NULL, N_("Info"), CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
 	{ "ViewThree",      NULL, N_("Three"), CTRLCHAR "4", NULL, G_CALLBACK(view_three) },
+	{ "EditNames",      NULL, N_("Edit Device Names"), CTRLCHAR "E", NULL, G_CALLBACK(edit_dc_nicknames) },
 	{ "PrevDC",         NULL, N_("Prev DC"), NULL, NULL, G_CALLBACK(prev_dc) },
 	{ "NextDC",         NULL, N_("Next DC"), NULL, NULL, G_CALLBACK(next_dc) },
 	{ "InputPlan",      NULL, N_("Input Plan"), NULL, NULL, G_CALLBACK(input_plan) },
@@ -1107,6 +1356,7 @@ static const gchar* ui_string = " \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Download From Dive Computer\" action=\"DownloadLog\" /> \
 				<menuitem name=\"Download From Web Service\" action=\"DownloadWeb\" /> \
+				<menuitem name=\"Edit Dive Computer Names\" action=\"EditNames\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Add Dive\" action=\"AddDive\" /> \
 				<separator name=\"Separator2\"/> \

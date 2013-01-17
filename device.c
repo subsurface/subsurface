@@ -4,6 +4,11 @@
 
 static struct device_info *device_info_list;
 
+struct device_info *head_of_device_info_list(void)
+{
+	return device_info_list;
+}
+
 static int match_device_info(struct device_info *entry, const char *model, uint32_t deviceid)
 {
 	return !strcmp(entry->model, model) && entry->deviceid == deviceid;
