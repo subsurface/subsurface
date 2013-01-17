@@ -6,7 +6,7 @@
 #include <mach-o/dyld.h>
 #include "gtkosxapplication.h"
 
-static GtkOSXApplication *osx_app;
+static GtkosxApplication *osx_app;
 
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
@@ -130,7 +130,7 @@ const char *subsurface_icon_name()
 {
 	static char path[1024];
 
-	snprintf(path, 1024, "%s/%s", quartz_application_get_resource_path(), ICON_NAME);
+	snprintf(path, 1024, "%s/%s", gtkosx_application_get_resource_path(), ICON_NAME);
 
 	return path;
 }
@@ -154,7 +154,7 @@ const char *subsurface_gettext_domainpath(char *argv0)
 	/* on a Mac we ignore the argv0 argument and instead use the resource_path
 	 * to figure out where to find the translation files */
 	static char buffer[256];
-	const char *resource_path = quartz_application_get_resource_path();
+	const char *resource_path = gtkosx_application_get_resource_path();
 	if (resource_path) {
 		snprintf(buffer, sizeof(buffer), "%s/share/locale", resource_path);
 		return buffer;
@@ -175,9 +175,9 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 
 	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
 
-	osx_app = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
+	osx_app = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
 	gtk_widget_hide (menubar);
-	gtk_osxapplication_set_menu_bar(osx_app, GTK_MENU_SHELL(menubar));
+	gtkosx_application_set_menu_bar(osx_app, GTK_MENU_SHELL(menubar));
 
 	sep = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Separator3");
 	if (sep)
@@ -186,24 +186,24 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Quit");
 	gtk_widget_hide (menu_item);
 	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/Help/About");
-	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 0);
+	gtkosx_application_insert_app_menu_item(osx_app, menu_item, 0);
 
 	sep = gtk_separator_menu_item_new();
 	g_object_ref(sep);
-	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 1);
+	gtkosx_application_insert_app_menu_item (osx_app, sep, 1);
 
 	menu_item = gtk_ui_manager_get_widget(ui_manager, "/MainMenu/FileMenu/Preferences");
-	gtk_osxapplication_insert_app_menu_item(osx_app, menu_item, 2);
+	gtkosx_application_insert_app_menu_item(osx_app, menu_item, 2);
 
 	sep = gtk_separator_menu_item_new();
 	g_object_ref(sep);
-	gtk_osxapplication_insert_app_menu_item (osx_app, sep, 3);
+	gtkosx_application_insert_app_menu_item (osx_app, sep, 3);
 
-	gtk_osxapplication_set_use_quartz_accelerators(osx_app, TRUE);
+	gtkosx_application_set_use_quartz_accelerators(osx_app, TRUE);
 	g_signal_connect(osx_app,"NSApplicationDidBecomeActive",G_CALLBACK(show_main_window),NULL);
 	g_signal_connect(osx_app, "NSApplicationBlockTermination", G_CALLBACK(on_delete), NULL);
 
-	gtk_osxapplication_ready(osx_app);
+	gtkosx_application_ready(osx_app);
 }
 
 void subsurface_command_line_init(gint *argc, gchar ***argv)
