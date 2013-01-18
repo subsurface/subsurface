@@ -648,6 +648,15 @@ static void try_to_fill_event(const char *name, char *buf)
 	nonmatch("event", name, buf);
 }
 
+/*
+ * If we don't have an explicit dive computer,
+ * we use the implicit one that every dive has..
+ */
+static struct divecomputer *get_dc(void)
+{
+	return cur_dc ? : &cur_dive->dc;
+}
+
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 {
@@ -690,7 +699,7 @@ static void get_cylinderindex(char *buffer, void *_i)
 	int *i = _i;
 	*i = atoi(buffer);
 	if (lastcylinderindex != *i) {
-		add_gas_switch_event(cur_dive, cur_dc, cur_sample->time.seconds, *i);
+		add_gas_switch_event(cur_dive, get_dc(), cur_sample->time.seconds, *i);
 		lastcylinderindex = *i;
 	}
 }
@@ -1157,15 +1166,6 @@ static void event_start(void)
 {
 	memset(&cur_event, 0, sizeof(cur_event));
 	cur_event.active = 1;
-}
-
-/*
- * If we don't have an explicit dive computer,
- * we use the implicit one that every dive has..
- */
-static struct divecomputer *get_dc(void)
-{
-	return cur_dc ? : &cur_dive->dc;
 }
 
 static void event_end(void)
