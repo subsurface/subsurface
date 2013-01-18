@@ -133,7 +133,7 @@ static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 	weight->description = strdup("unknown");
 }
 
-static struct dive *uemis_start_dive(int deviceid)
+static struct dive *uemis_start_dive(uint32_t deviceid)
 {
 	struct dive *dive = alloc_dive();
 	dive->downloaded = TRUE;
@@ -628,7 +628,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the adresses of those fields for every dive that references the divespot. */
-static void process_raw_buffer(int deviceid, char *inbuf, char **max_divenr, gboolean keep_number)
+static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr, gboolean keep_number)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
@@ -726,7 +726,8 @@ static void process_raw_buffer(int deviceid, char *inbuf, char **max_divenr, gbo
 
 static char *get_divenr(char *deviceidstr)
 {
-	int deviceid, i, maxdiveid = 0;
+	uint32_t deviceid, maxdiveid = 0;
+	int i;
 	char divenr[10];
 
 	deviceid = atoi(deviceidstr);
@@ -747,7 +748,8 @@ static char *do_uemis_download(struct argument_block *args)
 {
 	const char *mountpath = args->mountpath;
 	char *newmax = NULL;
-	int start, end, i, deviceidnr;
+	int start, end, i;
+	uint32_t deviceidnr;
 	char objectid[10];
 	char *deviceid = NULL;
 	char *result = NULL;

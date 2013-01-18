@@ -1950,7 +1950,7 @@ static char *cleanedup_nickname(const char *nickname, int len)
 	return clean;
 }
 
-void replace_nickname_nicknamestring(const char *model, int deviceid, const char *nickname)
+void replace_nickname_nicknamestring(const char *model, uint32_t deviceid, const char *nickname)
 {
 	char pattern[160];
 	char *entry, *brace, *new_nn;
