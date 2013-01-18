@@ -96,6 +96,8 @@ ifneq ($(strip $(LIBOSMGPSMAP)),)
 	GPSOBJ = gps.o
 	CFLAGS += -DHAVE_OSM_GPS_MAP
 endif
+LIBSOUPCFLAGS = $(shell $(PKGCONFIG) --cflags libsoup-2.4)
+LIBSOUP = $(shell $(PKGCONFIG) --libs libsoup-2.4)
 
 LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
 ifneq ($(strip $(LIBZIP)),)
@@ -131,7 +133,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	endif
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm -lssl -lcrypto $(LIBOSMGPSMAP)
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm -lssl -lcrypto $(LIBOSMGPSMAP) $(LIBSOUP)
 
 MSGLANGS=$(notdir $(wildcard po/*po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
@@ -139,7 +141,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	$(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
+	webservice.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
 
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -285,6 +287,9 @@ device.o: device.c device.h dive.h
 
 prefs.o: prefs.c dive.h pref.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c prefs.c
+
+webservice.o: webservice.c webservice.h dive.h display-gtk.h
+	$(CC) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBSOUPCFLAGS) -c webservice.c
 
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
