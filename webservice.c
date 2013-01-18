@@ -18,17 +18,15 @@ static const gchar *download_dialog_status_text(const gint status)
 	switch (status)	{
 	case DD_STATUS_ERROR_CONNECT:
 		return _("Connection Error: ");
-		break;
 	case DD_STATUS_ERROR_ID:
-		_("Invalid user identifier!");
-		break;
+		return _("Invalid user identifier!");
 	case DD_STATUS_ERROR_PARSE:
-		_("Cannot parse response!");
+		return _("Cannot parse response!");
 	}
 	return _("Download Success!");
 }
 
-/* provides a state of the download dialog contents and the download xml */
+/* provides a state of the download dialog contents and the downloaded xml */
 struct download_dialog_state {
 	GtkWidget *uid;
 	GtkWidget *status;
@@ -69,20 +67,18 @@ gboolean webservice_request_user_xml(const gchar *user_id,
 	return ret;
 }
 
-static void download_dialog_traverse_xml(xmlNodePtr node, gboolean *download_status)
+/* requires that there is a <download> or <error> tag under the <root> tag */
+static void download_dialog_traverse_xml(xmlNodePtr node, guint *download_status)
 {
 	xmlNodePtr cur_node;
-
 	for (cur_node = node; cur_node; cur_node = cur_node->next) {
-		if (!strcmp(cur_node->name, (const gchar *)"download")) {
-			if (!strcmp(xmlNodeGetContent(cur_node), (const gchar *)"ok")) {
-				*download_status = DD_STATUS_OK;
-				return;
-			}
-		} else if (!strcmp(cur_node->name, (const gchar *)"error")) {
+		if ((!strcmp(cur_node->name, (const gchar *)"download")) &&
+			  (!strcmp(xmlNodeGetContent(cur_node), (const gchar *)"ok"))) {
+			*download_status = DD_STATUS_OK;
+			return;
+		}	else if (!strcmp(cur_node->name, (const gchar *)"error")) {
 			*download_status = DD_STATUS_ERROR_ID;
-		} else {
-			download_dialog_traverse_xml(cur_node->children, download_status);
+			return;
 		}
 	}
 }
@@ -100,7 +96,8 @@ static guint download_dialog_parse_response(gchar *xmldata, guint len)
 		status = DD_STATUS_ERROR_PARSE;
 		goto end;
 	}
-	download_dialog_traverse_xml(root, &status);
+	if (root->children)
+		download_dialog_traverse_xml(root->children, &status);
 	end:
 		xmlFreeDoc(doc);
 		return status;
@@ -177,6 +174,7 @@ void webservice_download_dialog(void)
 	gtk_box_pack_start(GTK_BOX(vbox), frame_uid, FALSE, TRUE, pad);
 	uid = gtk_entry_new();
 	gtk_container_add(GTK_CONTAINER(frame_uid), uid);
+	gtk_entry_set_max_length(GTK_ENTRY(uid), 30);
 	gtk_entry_set_text(GTK_ENTRY(uid), current_uid);
 
 	download = gtk_button_new_with_label(_(" Download"));
