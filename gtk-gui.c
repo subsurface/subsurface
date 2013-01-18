@@ -21,6 +21,7 @@
 #include "callbacks-gtk.h"
 #include "uemis.h"
 #include "device.h"
+#include "webservice.h"
 
 #include "libdivecomputer.h"
 
@@ -1058,6 +1059,7 @@ static GtkActionEntry menu_items[] = {
 	{ "Print",          GTK_STOCK_PRINT, N_("Print..."),  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "ImportFile",     GTK_STOCK_GO_BACK, N_("Import XML File(s)..."), CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
 	{ "DownloadLog",    GTK_STOCK_GO_DOWN, N_("Download From Dive Computer..."), CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
+	{ "DownloadWeb",    GTK_STOCK_CONNECT, N_("Download From Web Service..."), NULL, NULL, G_CALLBACK(webservice_download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, N_("Add Dive..."), NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, N_("Preferences..."), PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, N_("Renumber..."), NULL, NULL, G_CALLBACK(renumber_dialog) },
@@ -1104,6 +1106,7 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"LogMenu\" action=\"LogMenuAction\"> \
 				<menuitem name=\"Download From Dive Computer\" action=\"DownloadLog\" /> \
+				<menuitem name=\"Download From Web Service\" action=\"DownloadWeb\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Add Dive\" action=\"AddDive\" /> \
 				<separator name=\"Separator2\"/> \
