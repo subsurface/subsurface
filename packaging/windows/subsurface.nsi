@@ -136,6 +136,7 @@ Section
     File dll\pthreadGC2.dll
     File dll\zlib1.dll
     File dll\libcrypto-10.dll
+    File dll\libsoup-2.4-1.dll
     File subsurface.ico
     File /r share
 
