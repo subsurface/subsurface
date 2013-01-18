@@ -735,7 +735,8 @@ static char *get_divenr(char *deviceidstr)
 		struct divecomputer *dc = &dive_table.dives[i]->dc;
 		while (dc) {
 			if (dc->model && !strcmp(dc->model, "Uemis Zurich") &&
-			    dc->deviceid == deviceid && dc->diveid > maxdiveid)
+			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid) &&
+			    dc->diveid > maxdiveid)
 				maxdiveid = dc->diveid;
 			dc = dc->next;
 		}
