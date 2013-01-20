@@ -289,7 +289,7 @@ prefs.o: prefs.c dive.h pref.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c prefs.c
 
 webservice.o: webservice.c webservice.h dive.h display-gtk.h
-	$(CC) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBSOUPCFLAGS) -c webservice.c
+	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBSOUPCFLAGS) -c webservice.c
 
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
