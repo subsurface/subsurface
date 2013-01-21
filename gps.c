@@ -17,7 +17,7 @@
 static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_GOOGLE_STREET;
 
 
-static void on_close (GtkWidget *widget, gpointer user_data)
+static void on_close(GtkWidget *widget, gpointer user_data)
 {
 	GtkWidget **window = user_data;
 	gtk_widget_destroy(widget);
@@ -40,14 +40,14 @@ static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer dat
 
 static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 {
-	OsmGpsMapTrack * track = osm_gps_map_track_new ();
-	OsmGpsMapPoint * point = osm_gps_map_point_new_degrees (latitude, longitude);
+	OsmGpsMapTrack * track = osm_gps_map_track_new();
+	OsmGpsMapPoint * point = osm_gps_map_point_new_degrees(latitude, longitude);
 	osm_gps_map_track_add_point(track, point);
-	osm_gps_map_track_add (map, track);
+	osm_gps_map_track_add(map, track);
 }
 
 
-OsmGpsMap *init_map()
+OsmGpsMap *init_map(void)
 {
 	OsmGpsMap *map;
 	OsmGpsMapLayer *osd;
@@ -56,20 +56,20 @@ OsmGpsMap *init_map()
 	cachebasedir = osm_gps_map_get_default_cache_directory();
 	cachedir = g_strdup(OSM_GPS_MAP_CACHE_AUTO);
 
-	map = g_object_new (OSM_TYPE_GPS_MAP,
-				"map-source",opt_map_provider,
-				"tile-cache",cachedir,
+	map = g_object_new(OSM_TYPE_GPS_MAP,
+				"map-source", opt_map_provider,
+				"tile-cache", cachedir,
 				"tile-cache-base", cachebasedir,
-				"proxy-uri",g_getenv("http_proxy"),
+				"proxy-uri", g_getenv("http_proxy"),
 				NULL);
-	osd = g_object_new (OSM_TYPE_GPS_MAP_OSD,
-				"show-scale",TRUE,
-				"show-coordinates",TRUE,
-				"show-crosshair",TRUE,
-				"show-dpad",TRUE,
-				"show-zoom",TRUE,
-				"show-gps-in-dpad",TRUE,
-				"show-gps-in-zoom",FALSE,
+	osd = g_object_new(OSM_TYPE_GPS_MAP_OSD,
+				"show-scale", TRUE,
+				"show-coordinates", TRUE,
+				"show-crosshair", TRUE,
+				"show-dpad", TRUE,
+				"show-zoom", TRUE,
+				"show-gps-in-dpad", TRUE,
+				"show-gps-in-zoom", FALSE,
 				"dpad-radius", 30,
 				NULL);
 
@@ -94,8 +94,8 @@ void show_map(OsmGpsMap *map, GtkWidget **window)
 		gtk_window_set_title(GTK_WINDOW(*window), _("Dives locations"));
 		gtk_container_set_border_width(GTK_CONTAINER(*window), 5);
 		GTK_WINDOW(*window)->allow_shrink = TRUE;
-		gtk_container_add(GTK_CONTAINER (*window), GTK_WIDGET(map));
-		g_signal_connect(*window, "destroy", G_CALLBACK (on_close), (gpointer)window);
+		gtk_container_add(GTK_CONTAINER(*window), GTK_WIDGET(map));
+		g_signal_connect(*window, "destroy", G_CALLBACK(on_close), (gpointer)window);
 		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);
 	}
 	gtk_widget_show_all(*window);
