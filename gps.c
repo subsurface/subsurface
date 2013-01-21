@@ -24,6 +24,20 @@ static void on_close (GtkWidget *widget, gpointer user_data)
 	*window = NULL;
 }
 
+/* the osm gps map default is to scroll-and-recenter around the mouse position
+ * that is BAT SHIT CRAZY.
+ * So let's do our own scroll handling instead */
+static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer data)
+{
+	OsmGpsMap *map = (OsmGpsMap *)widget;
+	if (event->direction == GDK_SCROLL_UP)
+		osm_gps_map_zoom_in(map);
+	else if (event->direction == GDK_SCROLL_DOWN)
+		osm_gps_map_zoom_out(map);
+	/* don't allow the insane default handler to get its hands on this event */
+	return TRUE;
+}
+
 static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 {
 	OsmGpsMapTrack * track = osm_gps_map_track_new ();
@@ -82,6 +96,7 @@ void show_map(OsmGpsMap *map, GtkWidget **window)
 		GTK_WINDOW(*window)->allow_shrink = TRUE;
 		gtk_container_add(GTK_CONTAINER (*window), GTK_WIDGET(map));
 		g_signal_connect(*window, "destroy", G_CALLBACK (on_close), (gpointer)window);
+		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);
 	}
 	gtk_widget_show_all(*window);
 	gtk_window_present(GTK_WINDOW(*window));
