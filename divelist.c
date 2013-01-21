@@ -480,6 +480,30 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
+static void location_data_func(GtkTreeViewColumn *col,
+			   GtkCellRenderer *renderer,
+			   GtkTreeModel *model,
+			   GtkTreeIter *iter,
+			   gpointer data)
+{
+	int idx;
+	char *location;
+	char buffer[512];
+	struct dive *dive;
+	gboolean hasgps = FALSE;
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_LOCATION, &location, -1);
+	if (idx >0 ) {
+		/* make locations with GPS data stand out */
+		dive = get_dive(idx);
+		if (dive && (dive->latitude.udeg || dive->longitude.udeg)) {
+			hasgps = TRUE;
+		}
+	}
+	snprintf(buffer, sizeof(buffer), "%s%s%s", hasgps ? "<i>" : "", location, hasgps ? "</i>" : "");
+	g_object_set(renderer, "markup", buffer, NULL);
+}
+
 static void nr_data_func(GtkTreeViewColumn *col,
 			   GtkCellRenderer *renderer,
 			   GtkTreeModel *model,
@@ -1498,7 +1522,7 @@ static struct divelist_column {
 	[DIVE_SAC] = { N_("SAC"), sac_data_func, NULL, 0, &prefs.visible_cols.sac },
 	[DIVE_OTU] = { N_("OTU"), otu_data_func, NULL, 0, &prefs.visible_cols.otu },
 	[DIVE_MAXCNS] = { N_("maxCNS"), cns_data_func, NULL, 0, &prefs.visible_cols.maxcns },
-	[DIVE_LOCATION] = { N_("Location"), NULL, NULL, ALIGN_LEFT },
+	[DIVE_LOCATION] = { N_("Location"), location_data_func, NULL, ALIGN_LEFT },
 };
 
 
