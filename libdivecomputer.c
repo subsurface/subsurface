@@ -527,15 +527,58 @@ static uint32_t calculate_sha1(unsigned int model, unsigned int firmware, unsign
 	return csum[0];
 }
 
-static void fixup_suunto_versions(device_data_t *devdata, const dc_event_devinfo_t *devinfo)
+/*
+ * libdivecomputer has returned two different serial numbers for the
+ * same device in different versions. First it used to just do the four
+ * bytes as one 32-bit number, then it turned it into a decimal number
+ * with each byte giving two digits (0-99).
+ *
+ * The only way we can tell is by looking at the format of the number,
+ * so we'll just fix it to the first format.
+ */
+static unsigned int undo_libdivecomputer_suunto_nr_changes(unsigned int serial)
+{
+	unsigned char b0, b1, b2, b3;
+
+	/*
+	 * The second format will never have more than 8 decimal
+	 * digits, so do a cheap check first
+	 */
+	if (serial >= 100000000)
+		return serial;
+
+	/* The original format seems to be four bytes of values 00-99 */
+	b0 = (serial >> 0) & 0xff;
+	b1 = (serial >> 8) & 0xff;
+	b2 = (serial >> 16) & 0xff;
+	b3 = (serial >> 24) & 0xff;
+
+	/* Looks like an old-style libdivecomputer serial number */
+	if ((b0 < 100) && (b1 < 100) && (b2 < 100) && (b3 < 100))
+		return serial;
+
+	/* Nope, it was converted. */
+	b0 = serial % 100; serial /= 100;
+	b1 = serial % 100; serial /= 100;
+	b2 = serial % 100; serial /= 100;
+	b3 = serial % 100; serial /= 100;
+
+	serial = b0 + (b1 << 8) + (b2 << 16) + (b3 << 24);
+	return serial;
+}
+
+static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event_devinfo_t *devinfo)
 {
 	struct device_info *info;
+	unsigned int serial = devinfo->serial;
+
+	serial = undo_libdivecomputer_suunto_nr_changes(serial);
 
 	info = create_device_info(devdata->model, devdata->deviceid);
 	if (!info)
-		return;
+		return serial;
 
-	if (!info->serial_nr && devinfo->serial) {
+	if (!info->serial_nr && serial) {
 		char serial_nr[13];
 
 		snprintf(serial_nr, sizeof(serial_nr), "%02d%02d%02d%02d",
@@ -554,6 +597,7 @@ static void fixup_suunto_versions(device_data_t *devdata, const dc_event_devinfo
 			(devinfo->firmware >> 0)  & 0xff);
 		info->firmware = strdup(firmware);
 	}
+	return serial;
 }
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
@@ -562,6 +606,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	const dc_event_devinfo_t *devinfo = data;
 	const dc_event_clock_t *clock = data;
 	device_data_t *devdata = userdata;
+	unsigned int serial;
 
 	switch (event) {
 	case DC_EVENT_WAITING:
@@ -577,14 +622,15 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			devinfo->model, devinfo->model,
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
-		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, devinfo->serial);
-
 		/*
 		 * libdivecomputer doesn't give serial numbers in the proper string form,
 		 * so we have to see if we can do some vendor-specific munging.
 		 */
+		serial = devinfo->serial;
 		if (!strcmp(devdata->vendor, "Suunto"))
-			fixup_suunto_versions(devdata, devinfo);
+			serial = fixup_suunto_versions(devdata, devinfo);
+		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, serial);
+
 		break;
 	case DC_EVENT_CLOCK:
 			dev_info(devdata, _("Event: systime=%"PRId64", devtime=%u\n"),
