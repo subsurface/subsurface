@@ -657,6 +657,40 @@ static struct divecomputer *get_dc(void)
 	return cur_dc ? : &cur_dive->dc;
 }
 
+static int match_dc_data_fields(struct divecomputer *dc, const char *name, int len, char *buf)
+{
+	if (MATCH(".maxdepth", depth, &dc->maxdepth))
+		return 1;
+	if (MATCH(".meandepth", depth, &dc->meandepth))
+		return 1;
+	if (MATCH(".depth.max", depth, &dc->maxdepth))
+		return 1;
+	if (MATCH(".depth.mean", depth, &dc->meandepth))
+		return 1;
+	if (MATCH(".duration", duration, &dc->duration))
+		return 1;
+	if (MATCH(".divetime", duration, &dc->duration))
+		return 1;
+	if (MATCH(".divetimesec", duration, &dc->duration))
+		return 1;
+	if (MATCH(".surfacetime", duration, &dc->surfacetime))
+		return 1;
+	if (MATCH(".airtemp", temperature, &dc->airtemp))
+		return 1;
+	if (MATCH(".watertemp", temperature, &dc->watertemp))
+		return 1;
+	if (MATCH(".temperature.air", temperature, &dc->airtemp))
+		return 1;
+	if (MATCH(".temperature.water", temperature, &dc->watertemp))
+		return 1;
+	if (MATCH(".surface.pressure", pressure, &dc->surface_pressure))
+		return 1;
+	if (MATCH(".water.salinity", salinity, &dc->salinity))
+		return 1;
+
+	return 0;
+}
+
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 {
@@ -673,6 +707,9 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 	if (MATCH(".deviceid", hex_value, &dc->deviceid))
 		return;
 	if (MATCH(".diveid", hex_value, &dc->diveid))
+		return;
+
+	if (match_dc_data_fields(dc, name, len, buf))
 		return;
 
 	nonmatch("divecomputer", name, buf);
@@ -797,7 +834,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, int len, ch
 {
 	return	MATCH(".divedate", divedate, &dive->when) ||
 		MATCH(".entrytime", divetime, &dive->when) ||
-		MATCH(".depth", depth, &dive->maxdepth) ||
+		MATCH(".depth", depth, &dive->dc.maxdepth) ||
 		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
 		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
@@ -856,8 +893,8 @@ success:
 static int uddf_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
 	return	MATCH(".datetime", uddf_datetime, &dive->when) ||
-		MATCH(".diveduration", duration, &dive->duration) ||
-		MATCH(".greatestdepth", depth, &dive->maxdepth) ||
+		MATCH(".diveduration", duration, &dive->dc.duration) ||
+		MATCH(".greatestdepth", depth, &dive->dc.maxdepth) ||
 		0;
 }
 
@@ -950,34 +987,13 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".datetime", divedatetime, &dive->when))
 		return;
-	if (MATCH(".maxdepth", depth, &dive->maxdepth))
+	/*
+	 * Legacy format note: per-dive depths and duration get saved
+	 * in the first dive computer entry
+	 */
+	if (match_dc_data_fields(&dive->dc, name, len, buf))
 		return;
-	if (MATCH(".meandepth", depth, &dive->meandepth))
-		return;
-	if (MATCH(".depth.max", depth, &dive->maxdepth))
-		return;
-	if (MATCH(".depth.mean", depth, &dive->meandepth))
-		return;
-	if (MATCH(".duration", duration, &dive->duration))
-		return;
-	if (MATCH(".divetime", duration, &dive->duration))
-		return;
-	if (MATCH(".divetimesec", duration, &dive->duration))
-		return;
-	if (MATCH(".surfacetime", duration, &dive->surfacetime))
-		return;
-	if (MATCH(".airtemp", temperature, &dive->airtemp))
-		return;
-	if (MATCH(".watertemp", temperature, &dive->watertemp))
-		return;
-	if (MATCH(".temperature.air", temperature, &dive->airtemp))
-		return;
-	if (MATCH(".temperature.water", temperature, &dive->watertemp))
-		return;
-	if (MATCH(".surface.pressure", pressure, &dive->surface_pressure))
-		return;
-	if (MATCH(".water.salinity", salinity, &dive->salinity))
-		return;
+
 	if (MATCH(".cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
 	if (MATCH(".cylinderendpressure", pressure, &dive->cylinder[0].end))

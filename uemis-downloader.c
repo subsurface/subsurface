@@ -598,13 +598,13 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	if (! strcmp(tag, "date"))
 		uemis_ts(val, &dive->when);
 	else if (!strcmp(tag, "duration"))
-		uemis_duration(val, &dive->duration);
+		uemis_duration(val, &dive->dc.duration);
 	else if (!strcmp(tag, "depth"))
-		uemis_depth(val, &dive->maxdepth);
+		uemis_depth(val, &dive->dc.maxdepth);
 	else if (!strcmp(tag, "file_content"))
 		uemis_parse_divelog_binary(val, dive);
 	else if (!strcmp(tag, "altitude"))
-		uemis_get_index(val, &dive->surface_pressure.mbar);
+		uemis_get_index(val, &dive->dc.surface_pressure.mbar);
 	else if (!strcmp(tag, "f32Weight"))
 		uemis_get_weight(val, &dive->weightsystem[0], dive->dc.diveid);
 	else if (!strcmp(tag, "notes"))

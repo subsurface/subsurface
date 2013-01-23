@@ -165,7 +165,7 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 		struct dive *dive = pp[1];
 		struct dive *merged;
 
-		if (prev->when + prev->duration.seconds < dive->when)
+		if (prev->when + prev->dc.duration.seconds < dive->when)
 			continue;
 
 		merged = try_to_merge(prev, dive, prefer_imported);

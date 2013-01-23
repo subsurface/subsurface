@@ -96,7 +96,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	double ret_tolerance_limit_ambient_pressure = 0.0;
 	double gf_high = buehlmann_config.gf_high;
 	double gf_low = buehlmann_config.gf_low;
-	double surface = dive->surface_pressure.mbar / 1000.0;
+	double surface = dive->dc.surface_pressure.mbar / 1000.0;
 	double lowest_ceiling;
 
 	for (ci = 0; ci < 16; ci++)

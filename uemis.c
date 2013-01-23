@@ -276,7 +276,7 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	}
 #if UEMIS_DEBUG & 32
 	printf("%dm:%ds: p_amb_tol:%d surface:%d holdtime:%d holddepth:%d/%d ---> stopdepth:%d stoptime:%d ndl:%d\n",
-		sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->surface_pressure.mbar,
+		sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->dc.surface_pressure.mbar,
 		u_sample->hold_time, u_sample->hold_depth, stopdepth, sample->stopdepth.mm, sample->stoptime.seconds, sample->ndl.seconds);
 #endif
 }
@@ -297,12 +297,12 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 
 	datalen = uemis_convert_base64(base64, &data);
 
-	dive->airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + 273150;
-	dive->surface_pressure.mbar = *(uint16_t *)(data + 43);
+	dive->dc.airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + 273150;
+	dive->dc.surface_pressure.mbar = *(uint16_t *)(data + 43);
 	if (*(uint8_t *)(data + 19))
-		dive->salinity = 10300; /* avg grams per 10l sea water */
+		dive->dc.salinity = 10300; /* avg grams per 10l sea water */
 	else
-		dive->salinity = 10000; /* grams per 10l fresh water */
+		dive->dc.salinity = 10000; /* grams per 10l fresh water */
 
 	/* this will allow us to find the last dive read so far from this computer */
 	dc->model = strdup("Uemis Zurich");
@@ -346,7 +346,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		/* the SDA usually records more samples after the end of the dive --
 		 * we want to discard those, but not cut the dive short; sadly the dive
 		 * duration in the header is a) in minutes and b) up to 3 minutes short */
-		if (u_sample->dive_time > dive->duration.seconds + 180)
+		if (u_sample->dive_time > dive->dc.duration.seconds + 180)
 			break;
 		if (u_sample->active_tank != active) {
 			active = u_sample->active_tank;
@@ -365,6 +365,6 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		i += 0x25;
 		u_sample++;
 	}
-	dive->duration.seconds = sample->time.seconds - 1;
+	dive->dc.duration.seconds = sample->time.seconds - 1;
 	return;
 }

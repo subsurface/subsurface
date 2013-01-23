@@ -441,7 +441,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->duration.seconds = divetime;
+	dive->dc.duration.seconds = divetime;
 
 	// Parse the maxdepth.
 	double maxdepth = 0.0;
@@ -451,7 +451,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->maxdepth.mm = maxdepth * 1000 + 0.5;
+	dive->dc.maxdepth.mm = maxdepth * 1000 + 0.5;
 
 	// Parse the gas mixes.
 	unsigned int ngases = 0;
@@ -497,7 +497,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	/* Various libdivecomputer interface fixups */
 	if (first_temp_is_air && dive->dc.samples) {
-		dive->airtemp = dive->dc.sample[0].temperature;
+		dive->dc.airtemp = dive->dc.sample[0].temperature;
 		dive->dc.sample[0].temperature.mkelvin = 0;
 	}
 

@@ -1540,8 +1540,8 @@ static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, str
 	memset(pi, 0, sizeof(*pi));
 
 	/* This should probably have been per-dive-computer */
-	maxdepth = dive->maxdepth.mm;
-	mintemp = maxtemp = dive->watertemp.mkelvin;
+	maxdepth = dive->dc.maxdepth.mm;
+	mintemp = maxtemp = dive->dc.watertemp.mkelvin;
 
 	/* Get the per-cylinder maximum pressure if they are manual */
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
@@ -1815,7 +1815,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 {
 	int i;
 	double amb_pressure;
-	double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : SURFACE_PRESSURE) / 1000.0;
+	double surface_pressure = (dive->dc.surface_pressure.mbar ? dive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000.0;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fo2, fhe, j, t0, t1;
@@ -1925,7 +1925,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 
 	/* Then, calculate partial pressures and deco information */
 	calculate_deco_information(dive, dc, pi);
-	pi->meandepth = dive->meandepth.mm;
+	pi->meandepth = dive->dc.meandepth.mm;
 
 	if (0) /* awesome for debugging - not useful otherwise */
 		dump_pi(pi);
@@ -1991,9 +1991,9 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 
 		/* The dive has no samples, so create a few fake ones.  This assumes an
 		ascent/descent rate of 9 m/min, which is just below the limit for FAST. */
-		int duration = dive->duration.seconds;
-		int maxdepth = dive->maxdepth.mm;
-		int asc_desc_time = dive->maxdepth.mm*60/9000;
+		int duration = dive->dc.duration.seconds;
+		int maxdepth = dive->dc.maxdepth.mm;
+		int asc_desc_time = dive->dc.maxdepth.mm*60/9000;
 		if (asc_desc_time * 2 >= duration)
 			asc_desc_time = duration / 2;
 		fake[1].time.seconds = asc_desc_time;

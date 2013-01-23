@@ -460,8 +460,8 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		default:
 			mkelvin = 0;
 		}
-		if (mkelvin != dive->airtemp.mkelvin) {
-			dive->airtemp.mkelvin = mkelvin;
+		if (mkelvin != dive->dc.airtemp.mkelvin) {
+			dive->dc.airtemp.mkelvin = mkelvin;
 			changed = 1;
 		}
 	}
@@ -532,9 +532,9 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	info->viz = text_entry(hbox, _("Visibility"), star_list, star_strings[dive->visibility]);
 
-	value = get_temp_units(dive->airtemp.mkelvin, &unit);
+	value = get_temp_units(dive->dc.airtemp.mkelvin, &unit);
 	snprintf(buffer, sizeof(buffer), _("Air Temp in %s"), unit);
-	if (dive->airtemp.mkelvin)
+	if (dive->dc.airtemp.mkelvin)
 		snprintf(airtemp, sizeof(airtemp), "%.1f", value);
 	else
 		airtemp[0] = '\0';
@@ -873,7 +873,7 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	 */
 	if (amount_selected == 1) {
 		timestamp_t when = current_dive->when;
-		when += current_dive->duration.seconds;
+		when += current_dive->dc.duration.seconds;
 		when += 60*60;
 		utc_mkdate(when, &tm);
 		time = &tm;
@@ -923,12 +923,12 @@ static timestamp_t dive_time_widget(struct dive *dive)
 
 	val = gtk_spin_button_get_value(GTK_SPIN_BUTTON(depth));
 	if (prefs.units.length == FEET) {
-		dive->maxdepth.mm = feet_to_mm(val);
+		dive->dc.maxdepth.mm = feet_to_mm(val);
 	} else {
-		dive->maxdepth.mm = val * 1000 + 0.5;
+		dive->dc.maxdepth.mm = val * 1000 + 0.5;
 	}
 
-	dive->duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
+	dive->dc.duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
 
 	gtk_widget_destroy(dialog);
 	dive->when = utc_mktime(&tm);

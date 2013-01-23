@@ -284,6 +284,11 @@ struct event {
  */
 struct divecomputer {
 	timestamp_t when;
+	duration_t duration, surfacetime;
+	depth_t maxdepth, meandepth;
+	temperature_t airtemp, watertemp;
+	pressure_t surface_pressure;
+	int salinity; // kg per 10000 l
 	const char *model;
 	uint32_t deviceid, diveid;
 	int samples, alloc_samples;
@@ -327,12 +332,7 @@ struct dive {
 	char *divemaster, *buddy;
 	int rating;
 	degrees_t latitude, longitude;
-	depth_t maxdepth, meandepth;
-	int salinity; // kg per 10000 l
-	duration_t duration, surfacetime;
 	int visibility; /* 0 - 5 star rating */
-	temperature_t airtemp, watertemp;
-	pressure_t surface_pressure;
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	char *suit;
@@ -354,10 +354,10 @@ static inline int depth_to_mbar(int depth, struct dive *dive)
 {
 	double specific_weight = 1.03 * 0.981;
 	int surface_pressure = SURFACE_PRESSURE;
-	if (dive->salinity)
-		specific_weight = dive->salinity / 10000.0 * 0.981;
-	if (dive->surface_pressure.mbar)
-		surface_pressure = dive->surface_pressure.mbar;
+	if (dive->dc.salinity)
+		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
+	if (dive->dc.surface_pressure.mbar)
+		surface_pressure = dive->dc.surface_pressure.mbar;
 	return depth / 10.0 * specific_weight + surface_pressure + 0.5;
 }
 
@@ -369,8 +369,8 @@ static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
 {
 	int cm;
 	double specific_weight = 1.03 * 0.981;
-	if (dive->salinity)
-		specific_weight = dive->salinity / 10000.0 * 0.981;
+	if (dive->dc.salinity)
+		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
 	/* whole mbar gives us cm precision */
 	cm = mbar / specific_weight + 0.5;
 	return cm * 10;

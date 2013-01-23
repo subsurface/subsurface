@@ -210,7 +210,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		finish_sample(&dive->dc);
 
 		time++;
-		dive->duration.seconds = time;
+		dive->dc.duration.seconds = time;
 		if (*end != ',')
 			break;
 		p = end+1;

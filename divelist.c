@@ -55,7 +55,7 @@ enum {
 	DIVE_NR,		/* int: dive->nr */
 	DIVE_DATE,		/* timestamp_t: dive->when */
 	DIVE_RATING,		/* int: 0-5 stars */
-	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
+	DIVE_DEPTH,		/* int: dive->dc.maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
 	DIVE_TOTALWEIGHT,	/* int: in grams */
@@ -808,11 +808,11 @@ static int calculate_sac(struct dive *dive, struct divecomputer *dc)
 	airuse = calculate_airuse(dive);
 	if (!airuse)
 		return 0;
-	if (!dive->duration.seconds)
+	if (!dive->dc.duration.seconds)
 		return 0;
 
 	/* find and eliminate long surface intervals */
-	duration = dive->duration.seconds;
+	duration = dive->dc.duration.seconds;
 	for (i = 0; i < dc->samples; i++) {
 		if (dc->sample[i].depth.mm < 100) { /* less than 10cm */
 			int end = i + 1;
@@ -828,7 +828,7 @@ static int calculate_sac(struct dive *dive, struct divecomputer *dc)
 		}
 	}
 	/* Mean pressure in bar (SAC calculations are in bar*l/min) */
-	pressure = depth_to_mbar(dive->meandepth.mm, dive) / 1000.0;
+	pressure = depth_to_mbar(dive->dc.meandepth.mm, dive) / 1000.0;
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -888,17 +888,17 @@ double init_decompression(struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip)
 			continue;
-		if (!pdive || pdive->when > when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
+		if (!pdive || pdive->when > when || pdive->when + pdive->dc.duration.seconds + 48 * 60 * 60 < when)
 			break;
 		when = pdive->when;
-		lasttime = when + pdive->duration.seconds;
+		lasttime = when + pdive->dc.duration.seconds;
 	}
 	while (++i < divenr) {
 		struct dive* pdive = get_dive(i);
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip)
 			continue;
-		surface_pressure = (pdive->surface_pressure.mbar ? pdive->surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
+		surface_pressure = (pdive->dc.surface_pressure.mbar ? pdive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
 		if (!deco_init) {
 			clear_deco(surface_pressure);
 			deco_init = TRUE;
@@ -913,7 +913,7 @@ double init_decompression(struct dive *dive)
 #endif
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
-			lasttime = pdive->when + pdive->duration.seconds;
+			lasttime = pdive->when + pdive->dc.duration.seconds;
 			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0, dive);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
@@ -924,7 +924,7 @@ double init_decompression(struct dive *dive)
 	/* add the final surface time */
 	if (lasttime && dive->when > lasttime) {
 		surface_time = dive->when - lasttime;
-		surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
+		surface_pressure = (dive->dc.surface_pressure.mbar ? dive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
 		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0, dive);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
@@ -932,7 +932,7 @@ double init_decompression(struct dive *dive)
 #endif
 	}
 	if (!deco_init) {
-		double surface_pressure = (dive->surface_pressure.mbar ? dive->surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
+		double surface_pressure = (dive->dc.surface_pressure.mbar ? dive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
 		clear_deco(surface_pressure);
 #if DECO_CALC_DEBUG & 2
 		printf("no previous dive\n");
@@ -1418,12 +1418,12 @@ static void fill_dive_list(void)
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
-			DIVE_DEPTH, dive->maxdepth,
-			DIVE_DURATION, dive->duration.seconds,
+			DIVE_DEPTH, dive->dc.maxdepth,
+			DIVE_DURATION, dive->dc.duration.seconds,
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
-			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
+			DIVE_TEMPERATURE, dive->dc.watertemp.mkelvin,
 			DIVE_SAC, 0,
 			-1);
 		gtk_tree_store_append(liststore, &iter, NULL);
@@ -1431,12 +1431,12 @@ static void fill_dive_list(void)
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
-			DIVE_DEPTH, dive->maxdepth,
-			DIVE_DURATION, dive->duration.seconds,
+			DIVE_DEPTH, dive->dc.maxdepth,
+			DIVE_DURATION, dive->dc.duration.seconds,
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
-			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
+			DIVE_TEMPERATURE, dive->dc.watertemp.mkelvin,
 			DIVE_TOTALWEIGHT, 0,
 			DIVE_SUIT, dive->suit,
 			DIVE_SAC, 0,
@@ -1748,9 +1748,9 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_NR, &store_dive.number,
 		DIVE_DATE, &store_dive.when,
 		DIVE_RATING, &store_dive.rating,
-		DIVE_DEPTH, &store_dive.maxdepth,
-		DIVE_DURATION, &store_dive.duration,
-		DIVE_TEMPERATURE, &store_dive.watertemp.mkelvin,
+		DIVE_DEPTH, &store_dive.dc.maxdepth,
+		DIVE_DURATION, &store_dive.dc.duration,
+		DIVE_TEMPERATURE, &store_dive.dc.watertemp.mkelvin,
 		DIVE_TOTALWEIGHT, &totalweight,
 		DIVE_SUIT, &store_dive.suit,
 		DIVE_CYLINDER, &cylinder_text,
@@ -1765,9 +1765,9 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_NR, store_dive.number,
 		DIVE_DATE, store_dive.when,
 		DIVE_RATING, store_dive.rating,
-		DIVE_DEPTH, store_dive.maxdepth,
-		DIVE_DURATION, store_dive.duration,
-		DIVE_TEMPERATURE, store_dive.watertemp.mkelvin,
+		DIVE_DEPTH, store_dive.dc.maxdepth,
+		DIVE_DURATION, store_dive.dc.duration,
+		DIVE_TEMPERATURE, store_dive.dc.watertemp.mkelvin,
 		DIVE_TOTALWEIGHT, totalweight,
 		DIVE_SUIT, store_dive.suit,
 		DIVE_CYLINDER, cylinder_text,
@@ -2436,7 +2436,7 @@ static void add_dive_merge_label(int idx, GtkMenuShell *menu)
 		return;
 
 	/* .. and if the surface interval is excessive, you must be kidding us */
-	if (b->when > a->when + a->duration.seconds + 30*60)
+	if (b->when > a->when + a->dc.duration.seconds + 30*60)
 		return;
 
 	/* If so, we can add a "merge dive" menu entry */

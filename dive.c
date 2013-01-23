@@ -516,9 +516,9 @@ struct dive *fixup_dive(struct dive *dive)
 	}
 	if (end < 0) {
 		/* Assume an ascent/descent rate of 9 m/min */
-		int depth = dive->maxdepth.mm;
+		int depth = dive->dc.maxdepth.mm;
 		int asc_desc_time = depth*60/9000;
-		int duration = dive->duration.seconds;
+		int duration = dive->dc.duration.seconds;
 
 		/* Some sanity checks against insane dives */
 		if (duration < 2)
@@ -526,17 +526,17 @@ struct dive *fixup_dive(struct dive *dive)
 		if (asc_desc_time * 2 >= duration)
 			asc_desc_time = duration/2;
 
-		dive->meandepth.mm = depth*(duration-asc_desc_time)/duration;
+		dive->dc.meandepth.mm = depth*(duration-asc_desc_time)/duration;
 		return dive;
 	}
 
-	update_duration(&dive->duration, end - start);
+	update_duration(&dive->dc.duration, end - start);
 	if (start != end)
 		depthtime /= (end - start);
 
-	update_depth(&dive->meandepth, depthtime);
-	update_temperature(&dive->watertemp, mintemp);
-	update_depth(&dive->maxdepth, maxdepth);
+	update_depth(&dive->dc.meandepth, depthtime);
+	update_temperature(&dive->dc.watertemp, mintemp);
+	update_depth(&dive->dc.maxdepth, maxdepth);
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
@@ -595,9 +595,6 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_MIN(res, a, b, n) res->n = (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 #define MERGE_TXT(res, a, b, n) res->n = merge_text(a->n, b->n)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
-
-#define MERGE_MAX_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : MAX(a->n, b->n)
-#define MERGE_MIN_PREFDL(res, dl, a, b, n) res->n = (dl && dl->n) ? dl->n : (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
 
 static struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc)
 {
@@ -1219,9 +1216,9 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	 * Do some basic sanity testing of the values we
 	 * have filled in during 'fixup_dive()'
 	 */
-	if (!similar(a->maxdepth.mm, b->maxdepth.mm, 1000) ||
-	    !similar(a->meandepth.mm, b->meandepth.mm, 1000) ||
-	    !similar(a->duration.seconds, b->duration.seconds, 5*60))
+	if (!similar(a->dc.maxdepth.mm, b->dc.maxdepth.mm, 1000) ||
+	    !similar(a->dc.meandepth.mm, b->dc.meandepth.mm, 1000) ||
+	    !similar(a->dc.duration.seconds, b->dc.duration.seconds, 5*60))
 		return 0;
 
 	/* See if we can get an exact match on the dive computer */
@@ -1233,7 +1230,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	 * Allow a time difference due to dive computer time
 	 * setting etc. Check if they overlap.
 	 */
-	fuzz = max_time(a->duration, b->duration) / 2;
+	fuzz = max_time(a->dc.duration, b->dc.duration) / 2;
 	if (fuzz < 60)
 		fuzz = 60;
 
@@ -1395,9 +1392,8 @@ static void interleave_dive_computers(struct divecomputer *res,
 	do {
 		struct divecomputer *match;
 
+		*res = *a;
 		res->model = a->model ? strdup(a->model) : NULL;
-		res->deviceid = a->deviceid;
-		res->diveid = a->diveid;
 		res->next = NULL;
 
 		match = find_matching_computer(a, b);
@@ -1488,16 +1484,9 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_MAX(res, a, b, rating);
 	MERGE_TXT(res, a, b, suit);
 	MERGE_MAX(res, a, b, number);
-	MERGE_MAX_PREFDL(res, dl, a, b, maxdepth.mm);
-	res->meandepth.mm = 0;
-	MERGE_NONZERO(res, a, b, salinity);
+	res->dc.meandepth.mm = 0;
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
-	MERGE_NONZERO(res, a, b, surface_pressure.mbar);
-	MERGE_MAX_PREFDL(res, dl, a, b, duration.seconds);
-	MERGE_MAX_PREFDL(res, dl, a, b, surfacetime.seconds);
-	MERGE_MAX_PREFDL(res, dl, a, b, airtemp.mkelvin);
-	MERGE_MIN_PREFDL(res, dl, a, b, watertemp.mkelvin);
 	merge_equipment(res, a, b);
 	if (dl) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */

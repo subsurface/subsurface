@@ -34,7 +34,7 @@ void dump_plan(struct diveplan *diveplan)
 	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 		tm.tm_hour, tm.tm_min, tm.tm_sec,
-		diveplan->surface_pressure);
+		diveplan->dc.surface_pressure);
 	dp = diveplan->dp;
 	while (dp) {
 		printf("\t%3u:%02u: %dmm gas: %d o2 %d h2\n", FRACTION(dp->time, 60), dp->depth, dp->o2, dp->he);
@@ -130,7 +130,7 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 
 	if (!dive)
 		return 0;
-	surface_pressure = dive->surface_pressure.mbar / 1000.0;
+	surface_pressure = dive->dc.surface_pressure.mbar / 1000.0;
 	tissue_tolerance = tissue_at_end(dive, cached_data_p);
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
@@ -184,7 +184,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 #endif
 	dive = alloc_dive();
 	dive->when = diveplan->when;
-	dive->surface_pressure.mbar = diveplan->surface_pressure;
+	dive->dc.surface_pressure.mbar = diveplan->surface_pressure;
 	dc = &dive->dc;
 	dc->model = strdup("Simulated Dive");
 	dp = diveplan->dp;

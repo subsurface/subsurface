@@ -138,44 +138,44 @@ static void show_utf8(FILE *f, const char *text, const char *pre, const char *po
 	fputs(post, f);
 }
 
-static void save_depths(FILE *f, struct dive *dive)
+static void save_depths(FILE *f, struct divecomputer *dc)
 {
 	/* What's the point of this dive entry again? */
-	if (!dive->maxdepth.mm && !dive->meandepth.mm)
+	if (!dc->maxdepth.mm && !dc->meandepth.mm)
 		return;
 
 	fputs("  <depth", f);
-	show_depth(f, dive->maxdepth, " max='", "'");
-	show_depth(f, dive->meandepth, " mean='", "'");
+	show_depth(f, dc->maxdepth, " max='", "'");
+	show_depth(f, dc->meandepth, " mean='", "'");
 	fputs(" />\n", f);
 }
 
-static void save_temperatures(FILE *f, struct dive *dive)
+static void save_temperatures(FILE *f, struct divecomputer *dc)
 {
-	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
+	if (!dc->airtemp.mkelvin && !dc->watertemp.mkelvin)
 		return;
 	fputs("  <temperature", f);
-	show_temperature(f, dive->airtemp, " air='", "'");
-	show_temperature(f, dive->watertemp, " water='", "'");
+	show_temperature(f, dc->airtemp, " air='", "'");
+	show_temperature(f, dc->watertemp, " water='", "'");
 	fputs(" />\n", f);
 }
 
-static void save_airpressure(FILE *f, struct dive *dive)
+static void save_airpressure(FILE *f, struct divecomputer *dc)
 {
-	if (!dive->surface_pressure.mbar)
+	if (!dc->surface_pressure.mbar)
 		return;
 	fputs("  <surface", f);
-	show_pressure(f, dive->surface_pressure, " pressure='", "'");
+	show_pressure(f, dc->surface_pressure, " pressure='", "'");
 	fputs(" />\n", f);
 }
 
-static void save_salinity(FILE *f, struct dive *dive)
+static void save_salinity(FILE *f, struct divecomputer *dc)
 {
 	/* only save if we have a value that isn't the default of sea water */
-	if (!dive->salinity || dive->salinity == 10300)
+	if (!dc->salinity || dc->salinity == 10300)
 		return;
 	fputs("  <water", f);
-	show_salinity(f, dive->salinity, " salinity='", "'");
+	show_salinity(f, dc->salinity, " salinity='", "'");
 	fputs(" />\n", f);
 }
 
@@ -240,11 +240,6 @@ static void show_location(FILE *f, struct dive *dive)
 
 static void save_overview(FILE *f, struct dive *dive)
 {
-	save_depths(f, dive);
-	save_temperatures(f, dive);
-	save_airpressure(f, dive);
-	save_salinity(f, dive);
-	show_duration(f, dive->surfacetime, "  <surfacetime>", "</surfacetime>\n");
 	show_location(f, dive);
 	show_utf8(f, dive->divemaster, "  <divemaster>","</divemaster>\n", 0);
 	show_utf8(f, dive->buddy, "  <buddy>","</buddy>\n", 0);
@@ -419,7 +414,15 @@ static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 		fprintf(f, " diveid='%08x'", dc->diveid);
 	if (dc->when && dc->when != dive->when)
 		show_date(f, dc->when);
+	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
+		show_duration(f, dc->duration, " duration='", "'");
 	fprintf(f, ">\n");
+	save_depths(f, dc);
+	save_temperatures(f, dc);
+	save_airpressure(f, dc);
+	save_salinity(f, dc);
+	show_duration(f, dc->surfacetime, "  <surfacetime>", "</surfacetime>\n");
+
 	save_events(f, dc->events);
 	save_samples(f, dc->samples, dc->sample);
 
@@ -441,7 +444,7 @@ void save_dive(FILE *f, struct dive *dive)
 		fprintf(f, " visibility='%d'", dive->visibility);
 	show_date(f, dive->when);
 	fprintf(f, " duration='%u:%02u min'>\n",
-		FRACTION(dive->duration.seconds, 60));
+		FRACTION(dive->dc.duration.seconds, 60));
 	save_overview(f, dive);
 	save_cylinder_info(f, dive);
 	save_weightsystem_info(f, dive);

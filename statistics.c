@@ -113,33 +113,33 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	const char *unit;
 
 	old_tt = stats->total_time.seconds;
-	stats->total_time.seconds += dp->duration.seconds;
-	if (dp->duration.seconds > stats->longest_time.seconds)
-		stats->longest_time.seconds = dp->duration.seconds;
-	if (stats->shortest_time.seconds == 0 || dp->duration.seconds < stats->shortest_time.seconds)
-		stats->shortest_time.seconds = dp->duration.seconds;
-	if (dp->maxdepth.mm > stats->max_depth.mm)
-		stats->max_depth.mm = dp->maxdepth.mm;
-	if (stats->min_depth.mm == 0 || dp->maxdepth.mm < stats->min_depth.mm)
-		stats->min_depth.mm = dp->maxdepth.mm;
-	if (dp->watertemp.mkelvin) {
-		if (stats->min_temp == 0 || dp->watertemp.mkelvin < stats->min_temp)
-			stats->min_temp = dp->watertemp.mkelvin;
-		if (dp->watertemp.mkelvin > stats->max_temp)
-			stats->max_temp = dp->watertemp.mkelvin;
-		stats->combined_temp += get_temp_units(dp->watertemp.mkelvin, &unit);
+	stats->total_time.seconds += dp->dc.duration.seconds;
+	if (dp->dc.duration.seconds > stats->longest_time.seconds)
+		stats->longest_time.seconds = dp->dc.duration.seconds;
+	if (stats->shortest_time.seconds == 0 || dp->dc.duration.seconds < stats->shortest_time.seconds)
+		stats->shortest_time.seconds = dp->dc.duration.seconds;
+	if (dp->dc.maxdepth.mm > stats->max_depth.mm)
+		stats->max_depth.mm = dp->dc.maxdepth.mm;
+	if (stats->min_depth.mm == 0 || dp->dc.maxdepth.mm < stats->min_depth.mm)
+		stats->min_depth.mm = dp->dc.maxdepth.mm;
+	if (dp->dc.watertemp.mkelvin) {
+		if (stats->min_temp == 0 || dp->dc.watertemp.mkelvin < stats->min_temp)
+			stats->min_temp = dp->dc.watertemp.mkelvin;
+		if (dp->dc.watertemp.mkelvin > stats->max_temp)
+			stats->max_temp = dp->dc.watertemp.mkelvin;
+		stats->combined_temp += get_temp_units(dp->dc.watertemp.mkelvin, &unit);
 		stats->combined_count++;
 	}
 
 	/* Maybe we should drop zero-duration dives */
-	if (!dp->duration.seconds)
+	if (!dp->dc.duration.seconds)
 		return;
 	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
-			dp->duration.seconds * dp->meandepth.mm) / stats->total_time.seconds;
+			dp->dc.duration.seconds * dp->dc.meandepth.mm) / stats->total_time.seconds;
 	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
-		sac_time = stats->total_sac_time + dp->duration.seconds;
+		sac_time = stats->total_sac_time + dp->dc.duration.seconds;
 		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +
-				dp->duration.seconds * dp->sac) / sac_time ;
+				dp->dc.duration.seconds * dp->sac) / sac_time ;
 		if (dp->sac > stats->max_sac.mliter)
 			stats->max_sac.mliter = dp->sac;
 		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
@@ -403,8 +403,8 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
-		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
-		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
+		stats.shortest_time.seconds = dive_table.dives[0]->dc.duration.seconds;
+		stats.min_depth.mm = dive_table.dives[0]->dc.maxdepth.mm;
 		stats.selection_size = dive_table.nr;
 	}
 
@@ -537,24 +537,24 @@ static void show_single_dive_stats(struct dive *dive)
 		tm.tm_hour, tm.tm_min);
 
 	set_label(single_w.date, buf);
-	set_label(single_w.dive_time, _("%d min"), (dive->duration.seconds + 30) / 60);
+	set_label(single_w.dive_time, _("%d min"), (dive->dc.duration.seconds + 30) / 60);
 	if (prev_dive)
 		set_label(single_w.surf_intv,
-			get_time_string(dive->when - (prev_dive->when + prev_dive->duration.seconds), 4));
+			get_time_string(dive->when - (prev_dive->when + prev_dive->dc.duration.seconds), 4));
 	else
 		set_label(single_w.surf_intv, _("unknown"));
-	value = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
+	value = get_depth_units(dive->dc.maxdepth.mm, &decimals, &unit);
 	set_label(single_w.max_depth, "%.*f %s", decimals, value, unit);
-	value = get_depth_units(dive->meandepth.mm, &decimals, &unit);
+	value = get_depth_units(dive->dc.meandepth.mm, &decimals, &unit);
 	set_label(single_w.avg_depth, "%.*f %s", decimals, value, unit);
 	set_label(single_w.viz, star_strings[dive->visibility]);
-	if (dive->watertemp.mkelvin) {
-		value = get_temp_units(dive->watertemp.mkelvin, &unit);
+	if (dive->dc.watertemp.mkelvin) {
+		value = get_temp_units(dive->dc.watertemp.mkelvin, &unit);
 		set_label(single_w.water_temp, "%.1f %s", value, unit);
 	} else
 		set_label(single_w.water_temp, "");
-	if (dive->airtemp.mkelvin) {
-		value = get_temp_units(dive->airtemp.mkelvin, &unit);
+	if (dive->dc.airtemp.mkelvin) {
+		value = get_temp_units(dive->dc.airtemp.mkelvin, &unit);
 		set_label(single_w.air_temp, "%.1f %s", value, unit);
 	} else
 		set_label(single_w.air_temp, "");
