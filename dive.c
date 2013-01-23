@@ -1323,7 +1323,24 @@ static int same_dc(struct divecomputer *a, struct divecomputer *b)
 	return eva == evb;
 }
 
-static void remove_redundant_dc(struct divecomputer *dc)
+static int might_be_same_device(struct divecomputer *a, struct divecomputer *b)
+{
+	/* No dive computer model? That matches anything */
+	if (!a->model || !b->model)
+		return 1;
+
+	/* Otherwise at least the model names have to match */
+	if (strcasecmp(a->model, b->model))
+		return 0;
+
+	/* No device ID? Match */
+	if (!a->deviceid || !b->deviceid)
+		return 1;
+
+	return a->deviceid == b->deviceid;
+}
+
+static void remove_redundant_dc(struct divecomputer *dc, int prefer_downloaded)
 {
 	do {
 		struct divecomputer **p = &dc->next;
@@ -1331,7 +1348,7 @@ static void remove_redundant_dc(struct divecomputer *dc)
 		/* Check this dc against all the following ones.. */
 		while (*p) {
 			struct divecomputer *check = *p;
-			if (same_dc(dc, check)) {
+			if (same_dc(dc, check) || (prefer_downloaded && might_be_same_device(dc, check))) {
 				*p = check->next;
 				check->next = NULL;
 				free_dc(check);
@@ -1340,7 +1357,8 @@ static void remove_redundant_dc(struct divecomputer *dc)
 			p = &check->next;
 		}
 
-		/* .. and then continue down the chain */
+		/* .. and then continue down the chain, but we */
+		prefer_downloaded = 0;
 		dc = dc->next;
 	} while (dc);
 }
@@ -1357,19 +1375,7 @@ static struct divecomputer *find_matching_computer(struct divecomputer *match, s
 	while ((p = list) != NULL) {
 		list = list->next;
 
-		/* No dive computer model? That matches anything */
-		if (!match->model || !p->model)
-			break;
-
-		/* Otherwise at least the model names have to match */
-		if (strcasecmp(match->model, p->model))
-			continue;
-
-		/* No device ID? Match */
-		if (!match->deviceid || !p->deviceid)
-			break;
-
-		if (match->deviceid == p->deviceid)
+		if (might_be_same_device(match, p))
 			break;
 	}
 	return p;
@@ -1422,9 +1428,13 @@ static void interleave_dive_computers(struct divecomputer *res,
  * name etc), we will prefer a new-style one and just throw
  * away the old. We're assuming it's a re-download.
  *
- * Otherwise, we'll just try to keep all the information.
+ * Otherwise, we'll just try to keep all the information,
+ * unless the user has specified that they prefer the
+ * downloaded computer, in which case we'll aggressively
+ * try to throw out old information that *might* be from
+ * that one.
  */
-static void join_dive_computers(struct divecomputer *res, struct divecomputer *a, struct divecomputer *b)
+static void join_dive_computers(struct divecomputer *res, struct divecomputer *a, struct divecomputer *b, int prefer_downloaded)
 {
 	struct divecomputer *tmp;
 
@@ -1449,7 +1459,7 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 	*tmp->next = *b;
 	clear_dc(b);
 
-	remove_redundant_dc(res);
+	remove_redundant_dc(res, prefer_downloaded);
 }
 
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded)
@@ -1490,18 +1500,12 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_MIN_PREFDL(res, dl, a, b, watertemp.mkelvin);
 	merge_equipment(res, a, b);
 	if (dl) {
-		res->dc = dl->dc;
-		/*
-		 * Since we copied the events and samples,
-		 * we can't free them from the source when
-		 * we free it - so make sure the source
-		 * dive computer data is cleared out.
-		 */
-		clear_dc(&dl->dc);
+		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
+		join_dive_computers(&res->dc, &dl->dc, &a->dc, 1);
 	} else if (offset)
 		interleave_dive_computers(&res->dc, &a->dc, &b->dc, offset);
 	else
-		join_dive_computers(&res->dc, &a->dc, &b->dc);
+		join_dive_computers(&res->dc, &a->dc, &b->dc, 0);
 
 	fixup_dive(res);
 	return res;
