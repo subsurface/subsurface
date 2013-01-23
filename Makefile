@@ -250,7 +250,11 @@ statistics.o: statistics.c dive.h display.h divelist.h
 gps.o: gps.c dive.h display.h divelist.h
 		$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(OSMGPSMAPFLAGS) -c gps.c
 
-#satellite.h: satellite.png
+# this should work but it doesn't preserve the transparancy - so I manually converted with gimp
+# satellite.png: satellite.svg
+#	convert -resize 11x16 -depth 8 satellite.svg satellite.png
+
+# satellite.h: satellite.png
 #	gdk-pixbuf-csource --struct satellite.png > satellite.h
 
 divelist.o: divelist.c dive.h display.h divelist.h satellite.h
