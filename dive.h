@@ -179,27 +179,6 @@ static inline unsigned long C_to_mkelvin(double c)
 	return c * 1000 + 273150.5;
 }
 
-static inline int to_C(temperature_t temp)
-{
-	if (!temp.mkelvin)
-		return 0;
-	return mkelvin_to_C(temp.mkelvin) + 0.5;
-}
-
-static inline int to_F(temperature_t temp)
-{
-	if (!temp.mkelvin)
-		return 0;
-	return mkelvin_to_F(temp.mkelvin) + 0.5;
-}
-
-static inline int to_K(temperature_t temp)
-{
-	if (!temp.mkelvin)
-		return 0;
-	return (temp.mkelvin + 499)/1000;
-}
-
 static inline double psi_to_bar(double psi)
 {
 	return psi / 14.5037738;

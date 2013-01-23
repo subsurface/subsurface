@@ -894,7 +894,7 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 
 	deg = get_temp_units(mkelvin, &unit);
 
-	plot_text(gc, &tro, sec, mkelvin, "%d%s", (int)(deg + 0.5), unit);
+	plot_text(gc, &tro, sec, mkelvin, "%.2g%s", deg, unit);
 }
 
 static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
