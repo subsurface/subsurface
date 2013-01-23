@@ -166,9 +166,11 @@ void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
 	struct uemis_helper *hp = uemis_helper;
+	if (!g_utf8_validate(text, -1, NULL))
+		return;
 	while (hp) {
 		if (hp->divespot == divespot && hp->location) {
-			*hp->location = text;
+			*hp->location = strdup(text);
 			hp->longitude->udeg = round(longitude * 1000000);
 			hp->latitude->udeg = round(latitude * 1000000);
 		}

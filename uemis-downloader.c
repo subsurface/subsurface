@@ -575,7 +575,7 @@ static void parse_divespot(char *buf)
 				latitude = g_ascii_strtod(val, NULL);
 		}
 	} while (tag && *tag);
-	uemis_set_divelocation(divespot, strdup(locationstring), latitude, longitude);
+	uemis_set_divelocation(divespot, locationstring, latitude, longitude);
 }
 
 static void track_divespot(char *val, int diveid, char **location, degrees_t *latitude, degrees_t *longitude)
