@@ -139,9 +139,8 @@ void show_gps_locations()
 	if (!window || !map)
 		map = init_map();
 
-	for (idx = 0; idx < dive_table.nr; idx++) {
-		dp = dive_table.dives[idx];
-		if (dp->latitude.udeg != 0 || dp->longitude.udeg != 0){
+	for_each_dive(idx, dp) {
+		if (dive_has_location(dp)) {
 			add_gps_point(map, dp->latitude.udeg / 1000000.0,
 				dp->longitude.udeg / 1000000.0);
 		}

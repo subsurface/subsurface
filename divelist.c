@@ -982,7 +982,7 @@ static void get_suit(struct dive *dive, char **str)
 
 static GdkPixbuf *get_gps_icon(struct dive *dive)
 {
-	if (dive->latitude.udeg || dive->longitude.udeg)
+	if (dive_has_location(dive))
 		return gdk_pixbuf_from_pixdata(&my_pixbuf, TRUE, NULL);
 	else
 		return NULL;
@@ -1714,7 +1714,7 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 			gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 			gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 			dive = get_dive(idx);
-			if (dive && (dive->latitude.udeg || dive->longitude.udeg))
+			if (dive && dive_has_location(dive))
 				show_gps_location(dive);
 		}
 		gtk_tree_path_free(path);
