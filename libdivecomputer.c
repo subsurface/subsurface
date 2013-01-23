@@ -24,7 +24,7 @@
 static const char *progress_bar_text = "";
 static double progress_bar_fraction = 0.0;
 static int stoptime, stopdepth, ndl, po2, cns;
-static gboolean in_deco;
+static gboolean in_deco, first_temp_is_air;
 
 static GError *error(const char *fmt, ...)
 {
@@ -495,6 +495,12 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	if (!devdata->force_download && find_dive(&dive->dc))
 		return 0;
 
+	/* Various libdivecomputer interface fixups */
+	if (first_temp_is_air && dive->dc.samples) {
+		dive->airtemp = dive->dc.sample[0].temperature;
+		dive->dc.sample[0].temperature.mkelvin = 0;
+	}
+
 	dive->downloaded = TRUE;
 	record_dive(dive);
 	mark_divelist_changed(TRUE);
@@ -571,6 +577,8 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 {
 	struct device_info *info;
 	unsigned int serial = devinfo->serial;
+
+	first_temp_is_air = 1;
 
 	serial = undo_libdivecomputer_suunto_nr_changes(serial);
 
@@ -681,6 +689,7 @@ static const char *do_libdivecomputer_import(device_data_t *data)
 	const char *err;
 
 	import_dive_number = 0;
+	first_temp_is_air = 0;
 	data->device = NULL;
 	data->context = NULL;
 
