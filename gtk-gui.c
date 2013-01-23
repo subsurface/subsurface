@@ -1283,7 +1283,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 			}
 			gtk_widget_destroy(confirm);
 		}
-		if (res == GTK_RESPONSE_APPLY && holdnicknames->model != NULL ) {
+		if (res == GTK_RESPONSE_APPLY && holdnicknames && holdnicknames->model != NULL ) {
 			struct device_info * walk = holdnicknames;
 			struct device_info * release = holdnicknames;
 			struct device_info * track = holdnicknames->next;
