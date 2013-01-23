@@ -30,10 +30,53 @@ static void on_close(GtkWidget *widget, gpointer user_data)
 static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer data)
 {
 	OsmGpsMap *map = (OsmGpsMap *)widget;
-	if (event->direction == GDK_SCROLL_UP)
+	OsmGpsMapPoint *pt, *lt, *rb, *target;
+	float target_lat, target_lon;
+	gint ltx, lty, rbx, rby, target_x, target_y;
+	gint zoom, max_zoom, min_zoom;
+
+	g_object_get(widget, "max-zoom", &max_zoom, "zoom", &zoom, "min-zoom", &min_zoom, NULL);
+
+	pt = osm_gps_map_point_new_degrees(0.0, 0.0);
+	lt = osm_gps_map_point_new_degrees(0.0, 0.0);
+	rb = osm_gps_map_point_new_degrees(0.0, 0.0);
+	target = osm_gps_map_point_new_degrees(0.0, 0.0);
+
+	osm_gps_map_convert_screen_to_geographic(map, event->x, event->y, pt);
+
+	osm_gps_map_get_bbox(map, lt, rb);
+	osm_gps_map_convert_geographic_to_screen(map, lt, &ltx, &lty);
+	osm_gps_map_convert_geographic_to_screen(map, rb, &rbx, &rby);
+
+	if (event->direction == GDK_SCROLL_UP) {
+	        if (zoom == max_zoom)
+		      return TRUE;
+
+		target_x = event->x + ((ltx + rbx) / 2.0 - (gint)(event->x)) / 2;
+		target_y = event->y + ((lty + rby) / 2.0 - (gint)(event->y)) / 2;
+
+		osm_gps_map_convert_screen_to_geographic(map, target_x, target_y, target);
+		osm_gps_map_point_get_degrees(target, &target_lat, &target_lon);
+
 		osm_gps_map_zoom_in(map);
-	else if (event->direction == GDK_SCROLL_DOWN)
+	} else if (event->direction == GDK_SCROLL_DOWN) {
+	        if(zoom == min_zoom)
+		      return TRUE;
+
+		target_x = event->x + ((ltx + rbx) / 2.0 - (gint)(event->x)) * 2;
+		target_y = event->y + ((lty + rby) / 2.0 - (gint)(event->y)) * 2;
+
+		osm_gps_map_convert_screen_to_geographic(map, target_x, target_y, target);
+		osm_gps_map_point_get_degrees(target, &target_lat, &target_lon);
+
 		osm_gps_map_zoom_out(map);
+	}
+
+	/* There is no OSM interface to do this afaik. Hack something together */
+	/* set_map_pt_at_xy(map, pt, event->x, event->y); */
+
+	osm_gps_map_set_center(map, target_lat, target_lon);
+
 	/* don't allow the insane default handler to get its hands on this event */
 	return TRUE;
 }
