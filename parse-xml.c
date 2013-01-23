@@ -234,26 +234,16 @@ enum number_type {
 static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 {
 	char *end;
-	long val;
 	double fp;
 
-	/* Integer or floating point? */
-	val = strtol(buffer, &end, 10);
-	if (val < 0 || end == buffer)
-		return NEITHER;
-
-	/* Looks like it might be floating point? */
-	if (*end == '.') {
-		errno = 0;
-		fp = g_ascii_strtod(buffer, &end);
-		if (!errno) {
-			res->fp = fp;
-			return FLOAT;
-		}
+	errno = 0;
+	fp = g_ascii_strtod(buffer, &end);
+	if (!errno && end != buffer) {
+		res->fp = fp;
+		return FLOAT;
 	}
 
-	res->fp = val;
-	return FLOAT;
+	return NEITHER;
 }
 
 static void pressure(char *buffer, void *_press)
@@ -353,10 +343,6 @@ static void temperature(char *buffer, void *_temperature)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		/* Ignore zero. It means "none" */
-		if (!val.fp)
-			break;
-		/* Celsius */
 		switch (xml_parsing_units.temperature) {
 		case KELVIN:
 			temperature->mkelvin = val.fp * 1000;
