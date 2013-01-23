@@ -1700,15 +1700,15 @@ static void show_gps_location_cb(GtkWidget *menuitem, struct dive *dive)
 gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 {
 #if HAVE_OSM_GPS_MAP
-	GtkTreePath *path;
+	GtkTreePath *path = NULL;
 	GtkTreeIter iter;
 	GtkTreeViewColumn *col;
 	int idx;
 	struct dive *dive;
 
 	/* left click ? */
-	if (event->button == 1) {
-		gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(dive_list.tree_view), event->x, event->y, &path, &col, NULL, NULL);
+	if (event->button == 1 &&
+	    gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(dive_list.tree_view), event->x, event->y, &path, &col, NULL, NULL)) {
 		/* is it the icon column ? (we passed the correct column in when registering the callback) */
 		if (col == data) {
 			gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
@@ -1717,7 +1717,8 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 			if (dive && dive_has_location(dive))
 				show_gps_location(dive);
 		}
-		gtk_tree_path_free(path);
+		if (path)
+			gtk_tree_path_free(path);
 	}
 #endif
 	/* keep processing the click */
