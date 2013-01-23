@@ -1714,7 +1714,7 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 			gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 			gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 			dive = get_dive(idx);
-			if (dive->latitude.udeg || dive->longitude.udeg)
+			if (dive && (dive->latitude.udeg || dive->longitude.udeg))
 				show_gps_location(dive);
 		}
 		gtk_tree_path_free(path);
