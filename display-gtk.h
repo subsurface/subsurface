@@ -72,6 +72,8 @@ extern GtkWidget *weightsystem_list_widget(int w_idx);
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);
 
+extern gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data);
+
 unsigned int amount_selected;
 
 extern void process_selected_dives(void);
@@ -95,6 +97,7 @@ typedef gint (*sort_func_t)(GtkTreeModel *model,
 
 extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
 		data_func_t data_func, unsigned int flags);
+extern GtkTreeViewColumn *tree_view_column_add_pixbuf(GtkWidget *tree_view, data_func_t data_func, GtkTreeViewColumn *col);
 
 GError *uemis_download(const char *path, progressbar_t *progress, GtkDialog *dialog, gboolean force_download);
 

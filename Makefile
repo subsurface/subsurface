@@ -250,7 +250,10 @@ statistics.o: statistics.c dive.h display.h divelist.h
 gps.o: gps.c dive.h display.h divelist.h
 		$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(OSMGPSMAPFLAGS) -c gps.c
 
-divelist.o: divelist.c dive.h display.h divelist.h
+#satellite.h: satellite.png
+#	gdk-pixbuf-csource --struct satellite.png > satellite.h
+
+divelist.o: divelist.c dive.h display.h divelist.h satellite.h
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c divelist.c
 
 print.o: print.c dive.h display.h display-gtk.h

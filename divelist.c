@@ -23,6 +23,9 @@
 #include "display.h"
 #include "display-gtk.h"
 
+#include <gdk-pixbuf/gdk-pixdata.h>
+#include "satellite.h"
+
 struct DiveList {
 	GtkWidget    *tree_view;
 	GtkWidget    *container_widget;
@@ -63,6 +66,7 @@ enum {
 	DIVE_OTU,		/* int: in OTUs */
 	DIVE_MAXCNS,		/* int: in % */
 	DIVE_LOCATION,		/* "2nd Cathedral, Lanai" */
+	DIVE_LOC_ICON,		/* pixbuf for gps icon */
 	DIVELIST_COLUMNS
 };
 
@@ -480,28 +484,17 @@ static void temperature_data_func(GtkTreeViewColumn *col,
 	g_object_set(renderer, "text", buffer, NULL);
 }
 
-static void location_data_func(GtkTreeViewColumn *col,
+static void gpsicon_data_func(GtkTreeViewColumn *col,
 			   GtkCellRenderer *renderer,
 			   GtkTreeModel *model,
 			   GtkTreeIter *iter,
 			   gpointer data)
 {
 	int idx;
-	char *location;
-	char buffer[512];
-	struct dive *dive;
-	gboolean hasgps = FALSE;
+	GdkPixbuf *icon;
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_LOCATION, &location, -1);
-	if (idx >0 ) {
-		/* make locations with GPS data stand out */
-		dive = get_dive(idx);
-		if (dive && (dive->latitude.udeg || dive->longitude.udeg)) {
-			hasgps = TRUE;
-		}
-	}
-	snprintf(buffer, sizeof(buffer), "%s%s%s", hasgps ? "<i>" : "", location, hasgps ? "</i>" : "");
-	g_object_set(renderer, "markup", buffer, NULL);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_LOC_ICON, &icon, -1);
+	g_object_set(renderer, "pixbuf", icon, NULL);
 }
 
 static void nr_data_func(GtkTreeViewColumn *col,
@@ -987,6 +980,14 @@ static void get_suit(struct dive *dive, char **str)
 	get_string(str, dive->suit);
 }
 
+static GdkPixbuf *get_gps_icon(struct dive *dive)
+{
+	if (dive->latitude.udeg || dive->longitude.udeg)
+		return gdk_pixbuf_from_pixdata(&my_pixbuf, TRUE, NULL);
+	else
+		return NULL;
+}
+
 /*
  * Set up anything that could have changed due to editing
  * of dive information; we need to do this for both models,
@@ -1004,14 +1005,16 @@ static void fill_one_dive(struct dive *dive,
 {
 	char *location, *cylinder, *suit;
 	GtkTreeModel *othermodel;
+	GdkPixbuf *icon;
 
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
 	get_suit(dive, &suit);
-
+	icon = get_gps_icon(dive);
 	gtk_tree_store_set(GTK_TREE_STORE(model), iter,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
+		DIVE_LOC_ICON, icon,
 		DIVE_CYLINDER, cylinder,
 		DIVE_RATING, dive->rating,
 		DIVE_SAC, dive->sac,
@@ -1359,6 +1362,7 @@ static void fill_dive_list(void)
 	int i, trip_index = 0;
 	GtkTreeIter iter, parent_iter, lookup, *parent_ptr = NULL;
 	GtkTreeStore *liststore, *treestore;
+	GdkPixbuf *icon;
 
 	/* Do we need to create any dive groups automatically? */
 	if (autogroup)
@@ -1409,6 +1413,7 @@ static void fill_dive_list(void)
 		/* store dive */
 		update_cylinder_related_info(dive);
 		gtk_tree_store_append(treestore, &iter, parent_ptr);
+		icon = get_gps_icon(dive);
 		gtk_tree_store_set(treestore, &iter,
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
@@ -1416,6 +1421,7 @@ static void fill_dive_list(void)
 			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, dive->location,
+			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_SAC, 0,
@@ -1428,6 +1434,7 @@ static void fill_dive_list(void)
 			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, dive->location,
+			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_TOTALWEIGHT, 0,
@@ -1522,7 +1529,7 @@ static struct divelist_column {
 	[DIVE_SAC] = { N_("SAC"), sac_data_func, NULL, 0, &prefs.visible_cols.sac },
 	[DIVE_OTU] = { N_("OTU"), otu_data_func, NULL, 0, &prefs.visible_cols.otu },
 	[DIVE_MAXCNS] = { N_("maxCNS"), cns_data_func, NULL, 0, &prefs.visible_cols.maxcns },
-	[DIVE_LOCATION] = { N_("Location"), location_data_func, NULL, ALIGN_LEFT },
+	[DIVE_LOCATION] = { N_("Location"), NULL, NULL, ALIGN_LEFT },
 };
 
 
@@ -1690,6 +1697,33 @@ static void show_gps_location_cb(GtkWidget *menuitem, struct dive *dive)
 }
 #endif
 
+gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
+{
+#if HAVE_OSM_GPS_MAP
+	GtkTreePath *path;
+	GtkTreeIter iter;
+	GtkTreeViewColumn *col;
+	int idx;
+	struct dive *dive;
+
+	/* left click ? */
+	if (event->button == 1) {
+		gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(dive_list.tree_view), event->x, event->y, &path, &col, NULL, NULL);
+		/* is it the icon column ? (we passed the correct column in when registering the callback) */
+		if (col == data) {
+			gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
+			gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+			dive = get_dive(idx);
+			if (dive->latitude.udeg || dive->longitude.udeg)
+				show_gps_location(dive);
+		}
+		gtk_tree_path_free(path);
+	}
+#endif
+	/* keep processing the click */
+	return FALSE;
+}
+
 static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
 {
 	gtk_tree_view_expand_all(tree_view);
@@ -1706,6 +1740,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 	struct dive store_dive;
 	int totalweight, idx;
 	char *cylinder_text;
+	GdkPixbuf *icon;
 
 	gtk_tree_model_get(MODEL(dive_list), a,
 		DIVE_INDEX, &idx,
@@ -1722,6 +1757,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_OTU, &store_dive.otu,
 		DIVE_MAXCNS, &store_dive.maxcns,
 		DIVE_LOCATION, &store_dive.location,
+		DIVE_LOC_ICON, &icon,
 		-1);
 	gtk_tree_store_set(STORE(dive_list), b,
 		DIVE_INDEX, idx,
@@ -1738,6 +1774,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_OTU, store_dive.otu,
 		DIVE_MAXCNS, store_dive.maxcns,
 		DIVE_LOCATION, store_dive.location,
+		DIVE_LOC_ICON, &icon,
 		-1);
 	free(cylinder_text);
 	free(store_dive.location);
@@ -2682,7 +2719,8 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* SAC */
 				G_TYPE_INT,			/* OTU */
 				G_TYPE_INT,			/* MAXCNS */
-				G_TYPE_STRING			/* Location */
+				G_TYPE_STRING,			/* Location */
+				GDK_TYPE_PIXBUF			/* GPS icon */
 				);
 	dive_list.treemodel = gtk_tree_store_new(DIVELIST_COLUMNS,
 				G_TYPE_INT,			/* index */
@@ -2699,7 +2737,8 @@ GtkWidget *dive_list_create(void)
 				G_TYPE_INT,			/* SAC */
 				G_TYPE_INT,			/* OTU */
 				G_TYPE_INT,			/* MAXCNS */
-				G_TYPE_STRING			/* Location */
+				G_TYPE_STRING,			/* Location */
+				GDK_TYPE_PIXBUF			/* GPS icon */
 				);
 	dive_list.model = dive_list.treemodel;
 	dive_list.tree_view = gtk_tree_view_new_with_model(TREEMODEL(dive_list));
@@ -2728,6 +2767,8 @@ GtkWidget *dive_list_create(void)
 	dive_list.otu = divelist_column(&dive_list, dl_column + DIVE_OTU);
 	dive_list.maxcns = divelist_column(&dive_list, dl_column + DIVE_MAXCNS);
 	dive_list.location = divelist_column(&dive_list, dl_column + DIVE_LOCATION);
+	/* now add the GPS icon to the location column */
+	tree_view_column_add_pixbuf(dive_list.tree_view, gpsicon_data_func, dive_list.location);
 
 	fill_dive_list();
 

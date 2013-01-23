@@ -343,6 +343,15 @@ void quit(GtkWidget *w, gpointer data)
 	}
 }
 
+GtkTreeViewColumn *tree_view_column_add_pixbuf(GtkWidget *tree_view, data_func_t data_func, GtkTreeViewColumn *col)
+{
+	GtkCellRenderer *renderer = gtk_cell_renderer_pixbuf_new();
+	gtk_tree_view_column_pack_start(col, renderer, FALSE);
+	gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, NULL, NULL);
+	g_signal_connect(tree_view, "button-press-event", G_CALLBACK(icon_click_cb), col);
+	return col;
+}
+
 GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
 				data_func_t data_func, unsigned int flags)
 {
@@ -370,7 +379,10 @@ GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char 
 	if (!(flags & UNSORTABLE))
 		gtk_tree_view_column_set_sort_column_id(col, index);
 	gtk_tree_view_column_set_resizable(col, TRUE);
-	gtk_tree_view_column_pack_start(col, renderer, TRUE);
+	/* all but one column have only one renderer - so packing from the end
+	 * makes no difference; for the location column we want to be able to
+	 * prepend the icon in front of the text - so this works perfectly */
+	gtk_tree_view_column_pack_end(col, renderer, TRUE);
 	if (data_func)
 		gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, (void *)(long)index, NULL);
 	else
