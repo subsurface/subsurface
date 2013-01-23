@@ -32,6 +32,7 @@ struct download_dialog_state {
 	GtkWidget *status;
 	GtkWidget *apply;
 	gchar *xmldata;
+	guint xmldata_len;
 };
 
 /* this method uses libsoup as a backend. if there are some portability,
@@ -125,6 +126,7 @@ static void download_dialog_connect_cb(GtkWidget *w, gpointer data)
 		gtk_label_set_text(GTK_LABEL(state->status), err);
 	}
 	state->xmldata = xmldata;
+	state->xmldata_len = len;
 	gtk_widget_set_sensitive(state->apply, ret);
 }
 
@@ -144,11 +146,14 @@ void webservice_download_dialog(void)
 {
 	const guint pad = 6;
 	/* user entered value should be stored in the config */
-	const gchar *current_uid = "41TFEC8ZMVD5DBE0JPBBU5JDDA2Y6T";
+	const gchar *current_uid = subsurface_get_conf("webservice_uid");
 	GtkWidget *dialog, *vbox, *status, *info, *uid;
 	GtkWidget *frame_uid, *frame_status, *download, *image, *apply;
 	struct download_dialog_state state = {NULL};
 	int result;
+
+	if (!current_uid)
+		current_uid = "";
 
 	dialog = gtk_dialog_new_with_buttons(_("Download From Web Service"),
 		GTK_WINDOW(main_window),
@@ -198,9 +203,10 @@ void webservice_download_dialog(void)
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		/* apply download */
-		/* g_message("\napply download should happen here: \n\n %s", state.xmldata); */
-		parse_xml_buffer(_("Webservice"), state.xmldata, strlen(state.xmldata), NULL);
+		parse_xml_buffer(_("Webservice"), state.xmldata, state.xmldata_len, NULL);
 		report_dives(TRUE, FALSE);
+		/* store last entered uid in config */
+		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(uid)));
 	}
 	download_dialog_release_xml(&state);
 	gtk_widget_destroy(dialog);
