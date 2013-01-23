@@ -1209,12 +1209,17 @@ static int max_time(duration_t a, duration_t b)
  */
 static int likely_same_dive(struct dive *a, struct dive *b)
 {
-	int fuzz, match;
+	int match, fuzz = 20 * 60;
 
 	/* Don't try to merge dives in different trips */
 	if (a->divetrip && b->divetrip && a->divetrip != b->divetrip)
 		return 0;
 
+	/* if one of the dives has no depth and duration this could be
+	 * a location marker from the webservice */
+	if ((!a->maxdepth.mm && !a->duration.seconds) ||
+	    (!b->maxdepth.mm && !b->duration.seconds))
+		return ((a->when <= b->when + fuzz) && (a->when >= b->when - fuzz));
 	/*
 	 * Do some basic sanity testing of the values we
 	 * have filled in during 'fixup_dive()'

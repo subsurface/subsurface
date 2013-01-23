@@ -909,6 +909,22 @@ static degrees_t parse_degrees(char *buf, char **end)
 	return ret;
 }
 
+static void gps_lat(char *buffer, void *_dive)
+{
+	char *end;
+	struct dive *dive = _dive;
+
+	dive->latitude = parse_degrees(buffer, &end);
+}
+
+static void gps_long(char *buffer, void *_dive)
+{
+	char *end;
+	struct dive *dive = _dive;
+
+	dive->longitude = parse_degrees(buffer, &end);
+}
+
 static void gps_location(char *buffer, void *_dive)
 {
 	char *end;
@@ -984,7 +1000,13 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".gps", gps_location, dive))
 		return;
+	if (MATCH(".latitude", gps_lat, dive))
+		return;
+	if (MATCH(".longitude", gps_long, dive))
+		return;
 	if (MATCH(".location", utf8_string, &dive->location))
+		return;
+	if (MATCH(".name", utf8_string, &dive->location))
 		return;
 	if (MATCH(".suit", utf8_string, &dive->suit))
 		return;

@@ -165,7 +165,10 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 		struct dive *dive = pp[1];
 		struct dive *merged;
 
-		if (prev->when + prev->duration.seconds < dive->when)
+		/* only try to merge overlapping dives - or if one of the dives has
+		 * zero duration (that might be a gps marker from the webservice) */
+		if (prev->duration.seconds && dive->duration.seconds &&
+		    prev->when + prev->duration.seconds < dive->when)
 			continue;
 
 		merged = try_to_merge(prev, dive, prefer_imported);
