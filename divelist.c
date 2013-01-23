@@ -1457,6 +1457,7 @@ static void fill_dive_list(void)
 
 void dive_list_update_dives(void)
 {
+	dive_table.preexisting = dive_table.nr;
 	gtk_tree_store_clear(TREESTORE(dive_list));
 	gtk_tree_store_clear(LISTSTORE(dive_list));
 	fill_dive_list();
@@ -2207,7 +2208,7 @@ void delete_single_dive(int idx)
 	remove_dive_from_trip(dive);
 	for (i = idx; i < dive_table.nr - 1; i++)
 		dive_table.dives[i] = dive_table.dives[i+1];
-	dive_table.nr--;
+	dive_table.dives[--dive_table.nr] = NULL;
 	if (dive->selected)
 		amount_selected--;
 	/* free all allocations */

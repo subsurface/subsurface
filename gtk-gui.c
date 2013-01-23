@@ -242,7 +242,6 @@ static void file_close(GtkWidget *w, gpointer data)
 	/* free the dives and trips */
 	while (dive_table.nr)
 		delete_single_dive(0);
-	dive_table.preexisting = 0;
 	mark_divelist_changed(FALSE);
 
 	/* clear the selection and the statistics */
