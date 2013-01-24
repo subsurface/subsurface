@@ -11,13 +11,14 @@
 #include <libxml/tree.h>
 #include <openssl/sha.h>
 
-#define O2_IN_AIR        209     // permille
-#define N2_IN_AIR        781
-#define O2_DENSITY       1429    // mg/Liter
-#define N2_DENSITY       1251
-#define HE_DENSITY       179
-#define SURFACE_PRESSURE 1013    // mbar
+#define O2_IN_AIR		209     // permille
+#define N2_IN_AIR		781
+#define O2_DENSITY		1429    // mg/Liter
+#define N2_DENSITY		1251
+#define HE_DENSITY		179
+#define SURFACE_PRESSURE	1013    // mbar
 #define SURFACE_PRESSURE_STRING "1013"
+#define ZERO_C_IN_MKELVIN	273150  // mKelvin
 
 
 /*
@@ -161,7 +162,7 @@ static inline int to_feet(depth_t depth)
 
 static inline double mkelvin_to_C(int mkelvin)
 {
-	return (mkelvin - 273150) / 1000.0;
+	return (mkelvin - ZERO_C_IN_MKELVIN) / 1000.0;
 }
 
 static inline double mkelvin_to_F(int mkelvin)
@@ -171,12 +172,12 @@ static inline double mkelvin_to_F(int mkelvin)
 
 static inline unsigned long F_to_mkelvin(double f)
 {
-	return (f-32) * 1000 / 1.8 + 273150.5;
+	return (f-32) * 1000 / 1.8 + ZERO_C_IN_MKELVIN + 0.5;
 }
 
 static inline unsigned long C_to_mkelvin(double c)
 {
-	return c * 1000 + 273150.5;
+	return c * 1000 + ZERO_C_IN_MKELVIN + 0.5;
 }
 
 static inline double psi_to_bar(double psi)

@@ -348,7 +348,7 @@ static void temperature(char *buffer, void *_temperature)
 			temperature->mkelvin = val.fp * 1000;
 			break;
 		case CELSIUS:
-			temperature->mkelvin = (val.fp + 273.15) * 1000 + 0.5;
+			temperature->mkelvin = val.fp * 1000 + ZERO_C_IN_MKELVIN + 0.5;
 			break;
 		case FAHRENHEIT:
 			temperature->mkelvin = (val.fp + 459.67) * 5000/9;

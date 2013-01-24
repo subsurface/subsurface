@@ -37,7 +37,7 @@ static void show_milli(FILE *f, const char *pre, int value, const char *unit, co
 static void show_temperature(FILE *f, temperature_t temp, const char *pre, const char *post)
 {
 	if (temp.mkelvin)
-		show_milli(f, pre, temp.mkelvin - 273150, " C", post);
+		show_milli(f, pre, temp.mkelvin - ZERO_C_IN_MKELVIN, " C", post);
 }
 
 static void show_depth(FILE *f, depth_t depth, const char *pre, const char *post)
