@@ -1008,7 +1008,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".location", utf8_string, &dive->location))
 		return;
-	if (MATCH(".name", utf8_string, &dive->location))
+	if (MATCH("dive.name", utf8_string, &dive->location))
 		return;
 	if (MATCH(".suit", utf8_string, &dive->suit))
 		return;
