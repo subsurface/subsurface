@@ -1,0 +1,18 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<dive number='28' date='2011-12-12' time='6:35:00' duration='30:00 min'>
+  <temperature air='30.0 C' water='20.0 C' />
+  <surface pressure='0.981 bar' />
+  <water salinity='1000 g/l' />
+  <location>different dive location</location>
+  <notes>Constant temperature in the samples - should still be shown</notes>
+  <divecomputer model='Model Product' deviceid='e04d0248' diveid='00000002'>
+  <sample time='0:06 min' depth='1.86 m' temp='20.0 C' ndl='99:00 min' />
+  <sample time='1:00 min' depth='20 m' />
+  <sample time='27:00 min' depth='20 m' />
+  <sample time='28:00 min' depth='3 m' />
+  <sample time='29:00 min' depth='3 m' />
+  <sample time='30:00 min' depth='0.3 m' />
+  </divecomputer>
+</dive>
+</dives>
