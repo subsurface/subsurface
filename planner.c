@@ -34,7 +34,7 @@ void dump_plan(struct diveplan *diveplan)
 	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 		tm.tm_hour, tm.tm_min, tm.tm_sec,
-		diveplan->dc.surface_pressure);
+		diveplan->surface_pressure);
 	dp = diveplan->dp;
 	while (dp) {
 		printf("\t%3u:%02u: %dmm gas: %d o2 %d h2\n", FRACTION(dp->time, 60), dp->depth, dp->o2, dp->he);
