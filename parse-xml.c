@@ -1127,9 +1127,6 @@ static void dc_settings_end(void)
 {
 	struct device_info *info;
 
-	if (cur_settings.dc.model)
-		remember_dc(cur_settings.dc.model, cur_settings.dc.deviceid, cur_settings.dc.nickname, TRUE);
-
 	info = create_device_info(cur_settings.dc.model, cur_settings.dc.deviceid);
 	if (info) {
 		if (!info->serial_nr && cur_settings.dc.serial_nr)
