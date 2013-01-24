@@ -107,7 +107,7 @@ enum {
 
 static char * get_time_string(int seconds, int maxdays);
 
-static void process_temperatures(struct dive *dp, stats_t *stats, const char *unit)
+static void process_temperatures(struct dive *dp, stats_t *stats)
 {
 	int min_temp, mean_temp, max_temp = 0;
 
@@ -133,7 +133,7 @@ static void process_temperatures(struct dive *dp, stats_t *stats, const char *un
 			mean_temp = (mean_temp + max_temp) / 2;
 		else
 			mean_temp = max_temp;
-		stats->combined_temp += get_temp_units(mean_temp, &unit);
+		stats->combined_temp += get_temp_units(mean_temp, NULL);
 		stats->combined_count++;
 	}
 }
@@ -141,7 +141,6 @@ static void process_temperatures(struct dive *dp, stats_t *stats, const char *un
 static void process_dive(struct dive *dp, stats_t *stats)
 {
 	int old_tt, sac_time = 0;
-	const char *unit;
 
 	old_tt = stats->total_time.seconds;
 	stats->total_time.seconds += dp->dc.duration.seconds;
@@ -154,7 +153,7 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	if (stats->min_depth.mm == 0 || dp->dc.maxdepth.mm < stats->min_depth.mm)
 		stats->min_depth.mm = dp->dc.maxdepth.mm;
 
-	process_temperatures(dp, stats, unit);
+	process_temperatures(dp, stats);
 
 	/* Maybe we should drop zero-duration dives */
 	if (!dp->dc.duration.seconds)
