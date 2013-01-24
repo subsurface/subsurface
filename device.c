@@ -51,16 +51,6 @@ struct device_info *create_device_info(const char *model, uint32_t deviceid)
 	return entry;
 }
 
-void clear_device_saved_status(void)
-{
-	struct device_info *nn_entry = device_info_list;
-
-	while (nn_entry) {
-		nn_entry->saved = FALSE;
-		nn_entry = nn_entry->next;
-	}
-}
-
 /* do we have a DIFFERENT divecomputer of the same model? */
 struct device_info *get_different_device_info(const char *model, uint32_t deviceid)
 {

@@ -486,20 +486,14 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 	fprintf(f, "</trip>\n");
 }
 
-static void save_dc_if_needed(FILE *f, struct divecomputer *dc)
+static void save_one_device(FILE *f, struct device_info *info)
 {
-	struct device_info *info = get_device_info(dc->model, dc->deviceid);
 	const char *nickname, *serial_nr, *firmware;
-
-	/* we have no dc or no model or no deviceid information... nothing to do here */
-	if (!info || info->saved)
-		return;
-	info->saved = 1;
 
 	/* Nicknames that are empty or the same as the device model are not interesting */
 	nickname = info->nickname;
 	if (nickname) {
-		if (!*nickname || !strcmp(dc->model, nickname))
+		if (!*nickname || !strcmp(info->model, nickname))
 			nickname = NULL;
 	}
 
@@ -517,7 +511,7 @@ static void save_dc_if_needed(FILE *f, struct divecomputer *dc)
 	if (!serial_nr && !nickname && !firmware)
 		return;
 
-	fprintf(f, "<divecomputerid model='%s' deviceid='%08x'", dc->model, dc->deviceid);
+	fprintf(f, "<divecomputerid model='%s' deviceid='%08x'", info->model, info->deviceid);
 	if (serial_nr)
 		show_utf8(f, serial_nr, " serial='", "'", 1);
 	if (firmware)
@@ -525,7 +519,17 @@ static void save_dc_if_needed(FILE *f, struct divecomputer *dc)
 	if (nickname)
 		show_utf8(f, nickname, " nickname='", "'", 1);
 	fprintf(f, "/>\n");
-	return;
+}
+
+static void save_device_info(FILE *f)
+{
+	struct device_info *info;
+
+	info = head_of_device_info_list();
+	while (info) {
+		save_one_device(f, info);
+		info = info->next;
+	}
 }
 
 #define VERSION 2
@@ -547,14 +551,7 @@ void save_dives(const char *filename)
 	fprintf(f, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
 
 	/* save the dive computer nicknames, if any */
-	clear_device_saved_status();
-	for_each_dive(i, dive) {
-		struct divecomputer *dc = &dive->dc;
-		while (dc) {
-			save_dc_if_needed(f, dc);
-			dc = dc->next;
-		}
-	}
+	save_device_info(f);
 	if (autogroup)
 		fprintf(f, "<autogroup state='1' />\n");
 	fprintf(f, "</settings>\n<dives>\n");

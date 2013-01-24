@@ -1161,7 +1161,6 @@ static void cell_edited_cb(GtkCellRendererText *cell, gchar *path,
 			holdnicknames->firmware = NULL;
 			holdnicknames->nickname = strdup(new_text);
 			holdnicknames->next = NULL;
-			holdnicknames->saved = FALSE;
 		} else {
 			struct device_info * top = NULL;
 			struct device_info * last = holdnicknames;
@@ -1172,7 +1171,6 @@ static void cell_edited_cb(GtkCellRendererText *cell, gchar *path,
 			top->firmware = NULL;
 			top->nickname = strdup(new_text);
 			top->next = last;
-			top->saved = FALSE;
 			holdnicknames = top;
 		}
 	}
@@ -1919,19 +1917,6 @@ const char *get_dc_nickname(const char *model, uint32_t deviceid)
 			return known->model;
 	}
 	return NULL;
-}
-
-gboolean dc_was_saved(struct divecomputer *dc)
-{
-	struct device_info *nn_entry = get_device_info(dc->model, dc->deviceid);
-	return nn_entry && nn_entry->saved;
-}
-
-void mark_dc_saved(struct divecomputer *dc)
-{
-	struct device_info *nn_entry = get_device_info(dc->model, dc->deviceid);
-	if (nn_entry)
-		nn_entry->saved = TRUE;
 }
 
 /* no curly braces or commas, please */
