@@ -27,6 +27,7 @@ XSLTFILES = xslt/*.xslt
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 VERSION_STRING := $(shell git describe --tags --abbrev=12 || echo "v$(VERSION)")
+PRODVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3.0/' || echo "$(VERSION).0.0")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
@@ -125,6 +126,10 @@ else
 	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
 	WINDOWSSTAGING = ./packaging/windows
 	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
+	NSIINPUTFILE = $(WINDOWSSTAGING)/subsurface.nsi.in
+	NSIFILE = $(WINDOWSSTAGING)/subsurface.nsi
+	MAKENSIS = makensis
+
 endif
 
 ifneq ($(strip $(LIBXSLT)),)
@@ -208,6 +213,13 @@ install-cross-windows: $(NAME)
 		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$LOC; \
 		$(INSTALL) $$LOC/subsurface.mo $(WINDOWSSTAGING)/$$LOC/subsurface.mo; \
 	done
+
+create-windows-installer: $(NAME) $(NSIFILE) install-cross-windows
+	$(MAKENSIS) $(NSIFILE)
+
+$(NSIFILE): $(NSIINPUTFILE)
+	$(shell cat $(NSIINPUTFILE) | sed -e 's/VERSIONTOKEN/$(VERSION_STRING)/;s/PRODVTOKEN/$(PRODVERSION_STRING)/' > $(NSIFILE))
+
 
 update-po-files:
 	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c

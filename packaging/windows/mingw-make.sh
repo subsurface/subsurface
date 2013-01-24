@@ -12,4 +12,4 @@ make CC=i686-w64-mingw32-gcc \
 	PKG_CONFIG_PATH=/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig/ \
 	CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw/ \
 	XSLTCONFIG=/usr/i686-w64-mingw32/sys-root/mingw/bin/xslt-config \
-	XML2CONFIG=/usr/i686-w64-mingw32/sys-root/mingw/bin/xml2-config NAME=subsurface.exe install-cross-windows
+	XML2CONFIG=/usr/i686-w64-mingw32/sys-root/mingw/bin/xml2-config NAME=subsurface.exe install-cross-windows $@
