@@ -1026,7 +1026,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		"website", "http://subsurface.hohndel.org",
 		"license", "GNU General Public License, version 2\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
 		"version", VERSION_STRING,
-		"copyright", _("Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"),
+		"copyright", _("Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"),
 		/*++GETTEXT the term translator-credits is magic - list the names of the tranlators here */
 		"translator_credits", _("translator-credits"),
 		"logo-icon-name", "subsurface",
