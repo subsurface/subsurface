@@ -26,6 +26,7 @@ MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
+VERSION_STRING := $(shell git describe --tags --abbrev=12 || echo "v$(VERSION)")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
@@ -280,7 +281,7 @@ libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecompu
 gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h device.h callbacks-gtk.h Makefile
 	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
-			-DVERSION_STRING='"v$(VERSION)"' \
+			-DVERSION_STRING='"$(VERSION_STRING)"' \
 			-c gtk-gui.c
 
 uemis.o: uemis.c dive.h uemis.h
