@@ -883,7 +883,7 @@ static int setup_temperature_limits(struct graphics_context *gc, struct plot_inf
 		gc->bottomy = mintemp - delta / 3;
 
 	pi->endtempcoord = SCALEY(gc, pi->mintemp);
-	return maxtemp > mintemp;
+	return maxtemp >= mintemp;
 }
 
 static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkelvin)
