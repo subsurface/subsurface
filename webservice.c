@@ -198,7 +198,9 @@ void webservice_download_dialog(void)
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		/* apply download */
-		g_message("\napply download should happen here: \n\n %s", state.xmldata);
+		/* g_message("\napply download should happen here: \n\n %s", state.xmldata); */
+		parse_xml_buffer(_("Webservice"), state.xmldata, strlen(state.xmldata), NULL);
+		report_dives(TRUE, FALSE);
 	}
 	download_dialog_release_xml(&state);
 	gtk_widget_destroy(dialog);
