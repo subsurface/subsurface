@@ -107,6 +107,37 @@ enum {
 
 static char * get_time_string(int seconds, int maxdays);
 
+static void process_temperatures(struct dive *dp, stats_t *stats, const char *unit)
+{
+	int min_temp, mean_temp, max_temp = 0;
+
+	if (dp->maxtemp.mkelvin)
+		max_temp = dp->maxtemp.mkelvin;
+	else
+		max_temp = dp->dc.watertemp.mkelvin;
+
+	if (max_temp && (!stats->max_temp || max_temp > stats->max_temp))
+		stats->max_temp = max_temp;
+
+	if (dp->mintemp.mkelvin)
+		min_temp = dp->mintemp.mkelvin;
+	else
+		min_temp = dp->dc.watertemp.mkelvin;
+
+	if (min_temp && (!stats->min_temp || min_temp < stats->min_temp))
+		stats->min_temp = min_temp;
+
+	if (min_temp || max_temp) {
+		mean_temp = min_temp;
+		if (mean_temp)
+			mean_temp = (mean_temp + max_temp) / 2;
+		else
+			mean_temp = max_temp;
+		stats->combined_temp += get_temp_units(mean_temp, &unit);
+		stats->combined_count++;
+	}
+}
+
 static void process_dive(struct dive *dp, stats_t *stats)
 {
 	int old_tt, sac_time = 0;
@@ -122,14 +153,8 @@ static void process_dive(struct dive *dp, stats_t *stats)
 		stats->max_depth.mm = dp->dc.maxdepth.mm;
 	if (stats->min_depth.mm == 0 || dp->dc.maxdepth.mm < stats->min_depth.mm)
 		stats->min_depth.mm = dp->dc.maxdepth.mm;
-	if (dp->dc.watertemp.mkelvin) {
-		if (stats->min_temp == 0 || dp->dc.watertemp.mkelvin < stats->min_temp)
-			stats->min_temp = dp->dc.watertemp.mkelvin;
-		if (dp->dc.watertemp.mkelvin > stats->max_temp)
-			stats->max_temp = dp->dc.watertemp.mkelvin;
-		stats->combined_temp += get_temp_units(dp->dc.watertemp.mkelvin, &unit);
-		stats->combined_count++;
-	}
+
+	process_temperatures(dp, stats, unit);
 
 	/* Maybe we should drop zero-duration dives */
 	if (!dp->dc.duration.seconds)

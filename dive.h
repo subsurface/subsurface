@@ -316,6 +316,7 @@ struct dive {
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	char *suit;
 	int sac, otu, cns, maxcns;
+	temperature_t mintemp, maxtemp;
 
 	/* Eventually we'll do multiple dive computers */
 	struct divecomputer dc;

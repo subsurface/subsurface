@@ -248,6 +248,17 @@ static void fixup_pressure(struct dive *dive, struct sample *sample)
 	cyl->sample_end.mbar = pressure;
 }
 
+static void update_min_max_temperatures(struct dive *dive, struct sample *sample)
+{
+	if (sample->temperature.mkelvin) {
+		if (!dive->maxtemp.mkelvin || sample->temperature.mkelvin > dive->maxtemp.mkelvin)
+			dive->maxtemp = sample->temperature;
+		if (!dive->mintemp.mkelvin || sample->temperature.mkelvin < dive->mintemp.mkelvin)
+			dive->mintemp = sample->temperature;
+	}
+}
+
+
 /*
  * If the cylinder tank pressures are within half a bar
  * (about 8 PSI) of the sample pressures, we consider it
@@ -479,6 +490,8 @@ struct dive *fixup_dive(struct dive *dive)
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
 		}
+		update_min_max_temperatures(dive, sample);
+
 		depthtime += (time - lasttime) * (lastdepth + depth) / 2;
 		lastdepth = depth;
 		lasttime = time;
