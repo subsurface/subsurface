@@ -184,7 +184,6 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 		add_single_dive(i, merged);
 		delete_single_dive(i+1);
 		delete_single_dive(i+1);
-		mark_divelist_changed(TRUE);
 	}
 	/* make sure no dives are still marked as downloaded */
 	for (i = 1; i < dive_table.nr; i++)
