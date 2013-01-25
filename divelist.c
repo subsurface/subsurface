@@ -1472,7 +1472,7 @@ static gint dive_nr_sort(GtkTreeModel *model,
 	int idx_a, idx_b;
 	timestamp_t when_a, when_b;
 	struct dive *a, *b;
-	dive_trip_t *tripa,*tripb;
+	dive_trip_t *tripa = NULL, *tripb = NULL;
 
 	gtk_tree_model_get(model, iter_a, DIVE_INDEX, &idx_a, DIVE_DATE, &when_a, -1);
 	gtk_tree_model_get(model, iter_b, DIVE_INDEX, &idx_b, DIVE_DATE, &when_b, -1);
