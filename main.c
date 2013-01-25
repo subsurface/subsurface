@@ -335,10 +335,12 @@ int main(int argc, char **argv)
 			parse_argument(a);
 			continue;
 		}
-		no_filenames = FALSE;
 		GError *error = NULL;
-		parse_file(a, &error, TRUE);
-
+		/* if we have exactly one filename, parse_file will set
+		 * that to be the default. Otherwise there will be no default filename */
+		set_filename(NULL, TRUE);
+		parse_file(a, &error, no_filenames);
+		no_filenames = FALSE;
 		if (error != NULL)
 		{
 			report_error(error);
