@@ -1935,7 +1935,7 @@ void set_dc_nickname(struct dive *dive)
 				gtk_widget_show_all(dialog);
 				if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 					if (strcmp(dc->model, gtk_entry_get_text(GTK_ENTRY(entry)))) {
-						name = strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+						name = gtk_entry_get_text(GTK_ENTRY(entry));
 						remember_dc(dc->model, dc->deviceid, name);
 						mark_divelist_changed(TRUE);
 					}
