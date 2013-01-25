@@ -2,6 +2,11 @@
 
 #include "dive.h"
 
+struct units *get_units()
+{
+	return &prefs.units;
+}
+
 static void set_bool_conf(char *name, gboolean value, gboolean def)
 {
 	if (value == def) {

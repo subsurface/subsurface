@@ -73,11 +73,6 @@ static GtkWidget *dive_profile;
 
 GtkActionGroup *action_group;
 
-struct units *get_units()
-{
-	return &prefs.units;
-}
-
 void repaint_dive(void)
 {
 	update_dive(current_dive);
