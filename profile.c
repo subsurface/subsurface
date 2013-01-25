@@ -30,7 +30,7 @@ static struct plot_data *last_pi_entry = NULL;
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
 struct plot_data {
-	unsigned int same_cylinder:1, in_deco:1;
+	unsigned int in_deco:1;
 	unsigned int cylinderindex;
 	int sec;
 	/* pressure[0] is sensor pressure
@@ -193,9 +193,9 @@ static void dump_pi (struct plot_info *pi)
 		pi->maxpressure, pi->mintemp, pi->maxtemp);
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = &pi->entry[i];
-		printf("    entry[%d]:{same_cylinder:%d cylinderindex:%d sec:%d pressure:{%d,%d}\n"
+		printf("    entry[%d]:{cylinderindex:%d sec:%d pressure:{%d,%d}\n"
 			"                time:%d:%02d temperature:%d depth:%d stopdepth:%d stoptime:%d ndl:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
-			i, entry->same_cylinder, entry->cylinderindex, entry->sec,
+			i, entry->cylinderindex, entry->sec,
 			entry->pressure[0], entry->pressure[1],
 			entry->sec / 60, entry->sec % 60,
 			entry->temperature, entry->depth, entry->stopdepth, entry->stoptime, entry->ndl, entry->smoothed,
@@ -1018,7 +1018,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 				struct dive *dive)
 {
 	int i;
-	int last = -1;
+	int last = -1, last_index = -1;
 	int lift_pen = FALSE;
 	int first_plot = TRUE;
 	int sac = 0;
@@ -1034,7 +1034,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		struct plot_data *entry = pi->entry + i;
 
 		mbar = GET_PRESSURE(entry);
-		if (!entry->same_cylinder) {
+		if (entry->cylinderindex != last_index) {
 			lift_pen = TRUE;
 			last_entry = NULL;
 		}
@@ -1059,7 +1059,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		}
 		set_sac_color(gc, sac, dive->sac);
 		if (lift_pen) {
-			if (!first_plot && entry->same_cylinder) {
+			if (!first_plot && entry->cylinderindex == last_index) {
 				/* if we have a previous event from the same tank,
 				 * draw at least a short line */
 				int prev_pr;
@@ -1076,6 +1076,7 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		}
 		cairo_stroke(gc->cr);
 		move_to(gc, entry->sec, mbar);
+		last_index = entry->cylinderindex;
 	}
 }
 
@@ -1102,37 +1103,23 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 	if (!get_cylinder_pressure_range(gc, pi))
 		return;
 
-	/* only loop over the actual events from the dive computer
-	 * plus the second synthetic event at the start (to make sure
-	 * we get "time=0" right)
-	 * sadly with a recent change that first entry may no longer
-	 * have any pressure reading - in that case just grab the
-	 * pressure from the second entry */
-	if (GET_PRESSURE(pi->entry + 1) == 0 && GET_PRESSURE(pi->entry + 2) !=0)
-		INTERPOLATED_PRESSURE(pi->entry + 1) = GET_PRESSURE(pi->entry + 2);
-	for (i = 1; i < pi->nr; i++) {
+	cyl = -1;
+	for (i = 0; i < pi->nr; i++) {
 		entry = pi->entry + i;
+		mbar = GET_PRESSURE(entry);
 
-		if (!entry->same_cylinder) {
+		if (!mbar)
+			continue;
+		if (cyl != entry->cylinderindex) {
 			cyl = entry->cylinderindex;
 			if (!seen_cyl[cyl]) {
-				mbar = GET_PRESSURE(entry);
 				plot_pressure_value(gc, mbar, entry->sec, LEFT, BOTTOM);
 				seen_cyl[cyl] = TRUE;
 			}
-			if (i > 2) {
-				/* remember the last pressure and time of
-				 * the previous cylinder */
-				cyl = (entry - 1)->cylinderindex;
-				last_pressure[cyl] = GET_PRESSURE(entry - 1);
-				last_time[cyl] = (entry - 1)->sec;
-			}
 		}
+		last_pressure[cyl] = mbar;
+		last_time[cyl] = entry->sec;
 	}
-	cyl = entry->cylinderindex;
-	if (GET_PRESSURE(entry))
-		last_pressure[cyl] = GET_PRESSURE(entry);
-	last_time[cyl] = entry->sec;
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
@@ -1766,14 +1753,12 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 
 		entry = pi->entry + i;
 
-		entry->same_cylinder = entry->cylinderindex == cylinderindex;
-		cylinderindex = entry->cylinderindex;
-
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		current->pressure_time += pressure_time(dive, entry-1, entry);
 
 		/* track the segments per cylinder and their pressure/time integral */
-		if (!entry->same_cylinder) {
+		if (entry->cylinderindex != cylinderindex) {
+			cylinderindex = entry->cylinderindex;
 			current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
 			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 		} else { /* same cylinder */
