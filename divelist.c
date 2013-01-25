@@ -1776,7 +1776,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_OTU, store_dive.otu,
 		DIVE_MAXCNS, store_dive.maxcns,
 		DIVE_LOCATION, store_dive.location,
-		DIVE_LOC_ICON, &icon,
+		DIVE_LOC_ICON, icon,
 		-1);
 	free(cylinder_text);
 	free(store_dive.location);
