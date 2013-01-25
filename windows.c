@@ -300,10 +300,16 @@ void subsurface_command_line_exit(gint *argc, gchar ***argv)
 
 gboolean subsurface_launch_for_uri(const char* uri)
 {
-	if ((INT_PTR)ShellExecute(NULL, "open", uri, NULL, NULL, SW_SHOWNORMAL) > 32)
-		return TRUE;
-	g_message("ShellExecute failed for: %s", uri);
-	return FALSE;
+	gboolean ret = FALSE;
+	wchar_t *wuri = (wchar_t *)g_utf8_to_utf16(uri, -1, NULL, NULL, NULL);
+	if (wuri) {
+		if ((INT_PTR)ShellExecuteW(NULL, L"open", wuri, NULL, NULL, SW_SHOWNORMAL) > 32)
+			ret = TRUE;
+		free(wuri);
+	}
+	if (!ret)
+		g_message("ShellExecute failed for: %s", uri);
+	return ret;
 }
 
 /* check if we are running a newer OS version */
