@@ -1173,7 +1173,7 @@ static void cell_edited_cb(GtkCellRendererText *cell, gchar *path,
 			holdnicknames->nickname = strdup(new_text);
 			holdnicknames->next = NULL;
 		} else {
-			struct device_info * top = NULL;
+			struct device_info * top;
 			struct device_info * last = holdnicknames;
 			top = (struct device_info *) malloc(sizeof( struct device_info ));
 			top->model = strdup(model);

@@ -169,7 +169,7 @@ static void divedate(char *buffer, void *_when)
 {
 	int d,m,y;
 	timestamp_t *when = _when;
-	int success = 0;
+	int success;
 
 	success = cur_tm.tm_sec | cur_tm.tm_min | cur_tm.tm_hour;
 	if (sscanf(buffer, "%d.%d.%d", &d, &m, &y) == 3) {

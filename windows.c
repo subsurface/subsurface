@@ -53,7 +53,7 @@ void subsurface_set_conf(char *name, const char *value)
 	 * to pass the boolean value), the other one passes value (the
 	 * address of the string. */
 	int wlen;
-	wchar_t *wname = NULL, *wstring = NULL;
+	wchar_t *wname, *wstring;
 
 	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
 	if (!wname)
@@ -73,7 +73,7 @@ void subsurface_set_conf(char *name, const char *value)
 
 void subsurface_set_conf_bool(char *name, int value)
 {
-	wchar_t *wname = NULL;
+	wchar_t *wname;
 
 	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
 	if (!wname)
@@ -89,7 +89,7 @@ const void *subsurface_get_conf(char *name)
 	const int csize = 64;
 	int blen = 0;
 	LONG ret = ERROR_MORE_DATA;
-	wchar_t *wstring = NULL, *wname = NULL;
+	wchar_t *wstring = NULL, *wname;
 	char *utf8_string;
 
 	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);

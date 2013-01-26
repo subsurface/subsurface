@@ -391,14 +391,14 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			unsigned int he = event->value >> 16;
 			unsigned int o2 = event->value & 0xffff;
 			if (he) {
-				snprintf(buffer, sizeof(buffer), "%s: (%d/%d)",
+				snprintf(buffer, sizeof(buffer), "%s: (%u/%u)",
 					_(event->name), o2, he);
 			} else {
 				if (o2 == 21)
 					snprintf(buffer, sizeof(buffer), "%s: %s",
 						_(event->name), _("air"));
 				else
-					snprintf(buffer, sizeof(buffer), "%s: %d%% %s",
+					snprintf(buffer, sizeof(buffer), "%s: %u%% %s",
 						_(event->name), o2, _("O" UTF8_SUBSCRIPT_2));
 			}
 		} else {
@@ -1516,10 +1516,10 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
-	int maxdepth = 0;
+	int maxdepth;
 	int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
-	int mintemp = 0, maxtemp = 0;
+	int mintemp, maxtemp;
 	int cyl;
 
 	/* The plot-info is embedded in the graphics context */
@@ -1750,8 +1750,6 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 	current = track_pr[cylinderindex];
 	for (i = 1; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-
-		entry = pi->entry + i;
 
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		current->pressure_time += pressure_time(dive, entry-1, entry);
