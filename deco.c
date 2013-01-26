@@ -29,11 +29,6 @@ struct buehlmann_config {
   double  gf_low_position_min;	//! gf_low_position below surface_min_shallow.
 };
 struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 2.0 };
-struct dive_data {
-        double pressure;	//! pesent ambient pressure
-        double surface;		//! pressure at water surface
-        struct gasmix *gasmix;	//! current selected gas
-};
 
 const double buehlmann_N2_a[] = {1.1696, 1.0, 0.8618, 0.7562,
 				 0.62, 0.5043, 0.441, 0.4,
