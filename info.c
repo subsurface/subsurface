@@ -394,6 +394,26 @@ static int get_rating(const char *string)
 	return rating_val;
 }
 
+static gboolean parse_gps_text(const char *gps_text, double *latitude, double *longitude)
+{
+	const char *text = gps_text;
+
+	while (isspace(*text))
+		text++;
+
+	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
+	if (!*text) {
+		*latitude = 0.0;
+		*longitude = 0.0;
+		return TRUE;
+	}
+	/* WGS84 style decimal degrees */
+	if (sscanf(text, "%lf,%lf", latitude, longitude) == 2)
+		return TRUE;
+
+	return FALSE;
+}
+
 static gboolean gps_changed(struct dive *dive, struct dive *master, const char *gps_text)
 {
 	double latitude, longitude;
@@ -404,8 +424,10 @@ static gboolean gps_changed(struct dive *dive, struct dive *master, const char *
 	if (master && (master->latitude.udeg != dive->latitude.udeg ||
 		       master->longitude.udeg != dive->longitude.udeg))
 		return FALSE;
-	if (sscanf(gps_text, "%lf,%lf", &latitude, &longitude) != 2)
+
+	if (!parse_gps_text(gps_text, &latitude, &longitude))
 		return FALSE;
+
 	latudeg = 1000000 * latitude + 0.5;
 	longudeg = 1000000 * longitude + 0.5;
 
