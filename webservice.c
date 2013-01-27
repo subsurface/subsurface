@@ -48,10 +48,10 @@ gboolean webservice_request_user_xml(const gchar *user_id,
 	gchar url[80] = {0};
 
 	session = soup_session_async_new();
-	strcat(url, "http://api.hohndel.org/api/mydives/");
+	strcat(url, "http://api.hohndel.org/api/dive/get/?login=");
 	strcat(url, user_id);
-	strcat(url, "/xml");
 	msg = soup_message_new("GET", url);
+	soup_message_headers_append(msg->request_headers, "Accept", "text/xml");
 	soup_session_send_message(session, msg);
 	if SOUP_STATUS_IS_SUCCESSFUL(msg->status_code) {
 		*len = (guint)msg->response_body->length;
