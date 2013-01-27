@@ -1,7 +1,7 @@
 VERSION=2.1
 
 CC=gcc
-CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS)
+CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE
 INSTALL=install
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config

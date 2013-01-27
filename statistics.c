@@ -395,7 +395,7 @@ void show_yearly_stats()
 	gtk_window_set_default_size(GTK_WINDOW(window), 640, 480);
 	gtk_window_set_title(GTK_WINDOW(window), _("Yearly Statistics"));
 	gtk_container_set_border_width(GTK_CONTAINER(window), 5);
-	GTK_WINDOW(window)->allow_shrink = TRUE;
+	gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_ETCHED_IN);
 

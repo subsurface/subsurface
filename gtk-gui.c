@@ -514,7 +514,7 @@ static void event_toggle(GtkWidget *w, gpointer _data)
 {
 	gboolean *plot_ev = _data;
 
-	*plot_ev = GTK_TOGGLE_BUTTON(w)->active;
+	*plot_ev = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w));
 }
 
 static void pick_default_file(GtkWidget *w, GtkButton *button)
@@ -584,7 +584,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 	/* create the notebook for the preferences and attach it to dialog */
 	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), notebook, FALSE, FALSE, 5);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), notebook, FALSE, FALSE, 5);
 
 	/* vbox that holds the first notebook page */
 	vbox = gtk_vbox_new(FALSE, 6);
@@ -1663,16 +1664,18 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 {
 	int i = 0;
 	struct dive *dive = current_dive;
+	GtkAllocation allocation;
 	static struct graphics_context gc = { .printer = 0 };
 
 	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
 	 * so effective drawing area is width-2x * height-2y */
-	gc.drawing_area.width = widget->allocation.width;
-	gc.drawing_area.height = widget->allocation.height;
+	gtk_widget_get_allocation(widget, &allocation);
+	gc.drawing_area.width = allocation.width;
+	gc.drawing_area.height = allocation.height;
 	gc.drawing_area.x = MIN(50,gc.drawing_area.width / 20.0);
 	gc.drawing_area.y = MIN(50,gc.drawing_area.height / 20.0);
 
-	gc.cr = gdk_cairo_create(widget->window);
+	gc.cr = gdk_cairo_create(gtk_widget_get_window(widget));
 	g_object_set(widget, "has-tooltip", TRUE, NULL);
 	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), &gc);
 	init_profile_background(&gc);

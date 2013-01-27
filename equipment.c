@@ -942,7 +942,7 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	cylinder->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
 
-	entry = GTK_ENTRY(GTK_BIN(widget)->child);
+	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(widget)));
 	g_signal_connect(entry, "activate", G_CALLBACK(cylinder_activate_cb), cylinder);
 
 	completion = gtk_entry_completion_new();
@@ -1028,7 +1028,7 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	ws_widget->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(weight_cb), ws_widget);
 
-	entry = GTK_ENTRY(GTK_BIN(widget)->child);
+	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(widget)));
 	g_signal_connect(entry, "activate", G_CALLBACK(weight_activate_cb), ws_widget);
 
 	completion = gtk_entry_completion_new();

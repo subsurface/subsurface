@@ -132,7 +132,7 @@ void show_map(OsmGpsMap *map, GtkWidget **window)
 		gtk_window_set_default_size(GTK_WINDOW(*window), 640, 480);
 		gtk_window_set_title(GTK_WINDOW(*window), _("Dives locations"));
 		gtk_container_set_border_width(GTK_CONTAINER(*window), 5);
-		GTK_WINDOW(*window)->allow_shrink = TRUE;
+		gtk_window_set_resizable(GTK_WINDOW(*window), TRUE);
 		gtk_container_add(GTK_CONTAINER(*window), GTK_WIDGET(map));
 		g_signal_connect(*window, "destroy", G_CALLBACK(on_close), (gpointer)window);
 		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);

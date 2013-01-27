@@ -877,7 +877,7 @@ OPTIONCALLBACK(set_oneperpage, type, ONEPERPAGE)
 #define OPTIONSELECTEDCALLBACK(name, option) \
 static void name(GtkWidget *w, gpointer data) \
 { \
-	option = GTK_TOGGLE_BUTTON(w)->active; \
+	option = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)); \
 }
 
 OPTIONSELECTEDCALLBACK(print_selection_toggle, print_options.print_selected)
