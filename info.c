@@ -394,12 +394,19 @@ static int get_rating(const char *string)
 	return rating_val;
 }
 
+/* this has to be done with UTF8 as people might want to enter the degree symbol */
 static gboolean parse_gps_text(const char *gps_text, double *latitude, double *longitude)
 {
 	const char *text = gps_text;
+	char *endptr;
+	gboolean south = FALSE;
+	gboolean west = FALSE;
+	double parselat, parselong;
+	gunichar degrees = UCS4_DEGREE;
+	gunichar c;
 
-	while (isspace(*text))
-		text++;
+	while (g_unichar_isspace(g_utf8_get_char(text)))
+		text = g_utf8_next_char(text);
 
 	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
 	if (!*text) {
@@ -407,11 +414,78 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		*longitude = 0.0;
 		return TRUE;
 	}
-	/* WGS84 style decimal degrees */
-	if (sscanf(text, "%lf,%lf", latitude, longitude) == 2)
-		return TRUE;
+	/* ok, let's parse by hand - first degrees of latitude */
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'N')
+		text++;
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'S') {
+		text++;
+		south = TRUE;
+	}
+	parselat = strtod(text, &endptr);
+	if (text == endptr)
+		return FALSE;
+	text = endptr;
+	if (parselat < 0.0) {
+		south = TRUE;
+		parselat *= -1;
+	}
 
-	return FALSE;
+	/* next optional minutes as decimal, skipping degree symbol */
+	while (g_unichar_isspace(c = g_utf8_get_char(text)) || c == degrees)
+		text = g_utf8_next_char(text);
+	if (g_unichar_toupper(c) != 'E' && g_unichar_toupper(c) != 'W' && c != ';' && c != ',') {
+		parselat += strtod(text, &endptr) / 60.0;
+		if (text == endptr)
+			return FALSE;
+		text = endptr;
+		/* skip trailing minute symbol */
+		if (g_utf8_get_char(text) == '\'')
+			text = g_utf8_next_char(text);
+	}
+	/* skip seperator between latitude and longitude */
+	while (g_unichar_isspace(c = g_utf8_get_char(text)) || c == ';' || c == ',')
+		text = g_utf8_next_char(text);
+
+	/* next degrees of longitude */
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'E')
+		text++;
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'W') {
+		text++;
+		west = TRUE;
+	}
+	parselong = strtod(text, &endptr);
+	if (text == endptr)
+		return FALSE;
+	text = endptr;
+	if (parselong < 0.0) {
+		west = TRUE;
+		parselong *= -1;
+	}
+
+	/* next optional minutes as decimal, skipping degree symbol */
+	while (g_unichar_isspace(c = g_utf8_get_char(text)) || c == degrees)
+		text = g_utf8_next_char(text);
+	if (*text) {
+		parselong += strtod(text, &endptr) / 60.0;
+		if (text == endptr)
+			return FALSE;
+		text = endptr;
+		/* skip trailing minute symbol */
+		if (g_utf8_get_char(text) == '\'')
+			text = g_utf8_next_char(text);
+		/* make sure there's nothing else left on the input */
+		while (g_unichar_isspace(g_utf8_get_char(text)))
+			text = g_utf8_next_char(text);
+		if (*text)
+			return FALSE;
+	}
+	if (west && parselong > 0.0)
+		parselong *= -1;
+	if (south && parselat > 0.0)
+		parselat *= -1;
+	*latitude = parselat;
+	*longitude = parselong;
+	return TRUE;
 }
 
 static gboolean gps_changed(struct dive *dive, struct dive *master, const char *gps_text)
@@ -571,9 +645,9 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
 
 	if (dive_has_location(dive))
-		snprintf(gps_text, sizeof(gps_text), "%3.5lf,%3.5lf", dive->latitude.udeg / 1000000.0,
+		snprintf(gps_text, sizeof(gps_text), "%3.5lf;%3.5lf", dive->latitude.udeg / 1000000.0,
 								      dive->longitude.udeg / 1000000.0);
-	info->gps = single_text_entry(box, _("GPS"), gps_text);
+	info->gps = single_text_entry(box, _("GPS (WGS84 or GPS format - use ';' as separator)"), gps_text);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);

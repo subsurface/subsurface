@@ -548,6 +548,7 @@ const char *weekday(int wday);
 const char *monthname(int mon);
 
 #define UTF8_DEGREE "\xc2\xb0"
+#define UCS4_DEGREE 0xb0
 #define UTF8_SUBSCRIPT_2 "\xe2\x82\x82"
 #define UTF8_WHITESTAR "\xe2\x98\x86"
 #define UTF8_BLACKSTAR "\xe2\x98\x85"
