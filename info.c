@@ -394,15 +394,43 @@ static int get_rating(const char *string)
 	return rating_val;
 }
 
+static gboolean gps_changed(struct dive *dive, struct dive *master, const char *gps_text)
+{
+	double latitude, longitude;
+	int latudeg, longudeg;
+
+	/* if we have a master and the dive's gps address is different from it,
+	 * don't change the dive */
+	if (master && (master->latitude.udeg != dive->latitude.udeg ||
+		       master->longitude.udeg != dive->longitude.udeg))
+		return FALSE;
+	if (sscanf(gps_text, "%lf,%lf", &latitude, &longitude) != 2)
+		return FALSE;
+	latudeg = 1000000 * latitude + 0.5;
+	longudeg = 1000000 * longitude + 0.5;
+
+	/* if master gps didn't change, don't change dive */
+	if (master && master->latitude.udeg == latudeg && master->longitude.udeg == longudeg)
+		return FALSE;
+	/* if dive gps didn't change, nothing changed */
+	if (dive->latitude.udeg == latudeg && dive->longitude.udeg == longudeg)
+		return FALSE;
+	/* ok, update the dive and mark things changed */
+	dive->latitude.udeg = latudeg;
+	dive->longitude.udeg = longudeg;
+	return TRUE;
+}
+
 struct dive_info {
 	GtkComboBoxEntry *location, *divemaster, *buddy, *rating, *suit, *viz;
-	GtkEntry *airtemp;
+	GtkEntry *airtemp, *gps;
 	GtkTextView *notes;
 };
 
 static void save_dive_info_changes(struct dive *dive, struct dive *master, struct dive_info *info)
 {
 	char *old_text, *new_text;
+	const char *gps_text;
 	char *rating_string;
 	double newtemp;
 	int changed = 0;
@@ -412,6 +440,10 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		add_location(new_text);
 		changed = 1;
 	}
+
+	gps_text = gtk_entry_get_text(info->gps);
+	if (gps_changed(dive, master, gps_text))
+		changed = 1;
 
 	new_text = get_combo_box_entry_text(info->divemaster, &dive->divemaster, master->divemaster);
 	if (new_text) {
@@ -503,6 +535,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	GtkWidget *hbox, *label, *frame, *equipment;
 	char buffer[128];
 	char airtemp[6];
+	char gps_text[25] = "";
 	const char *unit;
 	double value;
 
@@ -514,6 +547,11 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
+
+	if (dive_has_location(dive))
+		snprintf(gps_text, sizeof(gps_text), "%3.5lf,%3.5lf", dive->latitude.udeg / 1000000.0,
+								      dive->longitude.udeg / 1000000.0);
+	info->gps = single_text_entry(box, _("GPS"), gps_text);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
