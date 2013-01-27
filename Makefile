@@ -90,7 +90,7 @@ LIBXML2 = $(shell $(XML2CONFIG) --libs)
 LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
-GTK2CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
+GTKCFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
 OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap)
 LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
@@ -110,10 +110,10 @@ ifeq ($(UNAME), linux)
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
-	OSSUPPORT_CFLAGS = $(GTK2CFLAGS) $(GCONF2CFLAGS)
+	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
 else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
-	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
+	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
@@ -123,7 +123,7 @@ else ifeq ($(UNAME), darwin)
 	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 else
 	OSSUPPORT = windows
-	OSSUPPORT_CFLAGS = $(GTK2CFLAGS)
+	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	WINDOWSSTAGING = ./packaging/windows
 	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
 	NSIINPUTFILE = $(WINDOWSSTAGING)/subsurface.nsi.in
@@ -249,19 +249,19 @@ main.o: main.c dive.h display.h divelist.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) -c main.c
 
 profile.o: profile.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c profile.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c profile.c
 
 info.o: info.c dive.h display.h display-gtk.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c info.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c info.c
 
 equipment.o: equipment.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c equipment.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c equipment.c
 
 statistics.o: statistics.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c statistics.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c statistics.c
 
 gps.o: gps.c dive.h display.h divelist.h
-		$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(OSMGPSMAPFLAGS) -c gps.c
+		$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(OSMGPSMAPFLAGS) -c gps.c
 
 # this should work but it doesn't preserve the transparancy - so I manually converted with gimp
 # satellite.png: satellite.svg
@@ -271,36 +271,36 @@ gps.o: gps.c dive.h display.h divelist.h
 #	gdk-pixbuf-csource --struct satellite.png > satellite.h
 
 divelist.o: divelist.c dive.h display.h divelist.h satellite.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c divelist.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c divelist.c
 
 print.o: print.c dive.h display.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c print.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c print.c
 
 deco.o: deco.c dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c deco.c
 
 planner.o: planner.c dive.h divelist.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c planner.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) -c planner.c
 
 download-dialog.o: download-dialog.c dive.h divelist.h display-gtk.h callbacks-gtk.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) -c download-dialog.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) -c download-dialog.c
 
 libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h device.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-c libdivecomputer.c
 
 gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h device.h callbacks-gtk.h Makefile
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
 			$(LIBDIVECOMPUTERCFLAGS) \
 			-DVERSION_STRING='"$(VERSION_STRING)"' \
 			-c gtk-gui.c
 
 uemis.o: uemis.c dive.h uemis.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBDIVECOMPUTERCFLAGS) -c uemis.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBDIVECOMPUTERCFLAGS) -c uemis.c
 
 uemis-downloader.o: uemis-downloader.c dive.h uemis.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis-downloader.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis-downloader.c
 
 device.o: device.c device.h dive.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c device.c
@@ -309,7 +309,7 @@ prefs.o: prefs.c dive.h pref.h
 	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c prefs.c
 
 webservice.o: webservice.c webservice.h dive.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTK2CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBSOUPCFLAGS) -c webservice.c
+	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBSOUPCFLAGS) -c webservice.c
 
 $(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
 	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
