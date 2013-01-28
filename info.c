@@ -520,6 +520,7 @@ static gboolean gps_changed(struct dive *dive, struct dive *master, const char *
 struct dive_info {
 	GtkComboBoxEntry *location, *divemaster, *buddy, *rating, *suit, *viz;
 	GtkEntry *airtemp, *gps;
+	GtkWidget *gps_icon;
 	GtkTextView *notes;
 };
 
@@ -626,12 +627,52 @@ static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info
 		gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), trip->notes, -1);
 }
 
+struct location_update {
+	GtkEntry *entry;
+	struct dive *dive;
+	void (*callback)(float, float);
+} location_update;
+
+void print_gps_coordinates(char *buffer, int len, float lat, float lon)
+{
+	unsigned int latdeg, londeg;
+	float latmin, lonmin;
+	char *lath, *lonh;
+
+	lath = lat >= 0.0 ? "N" : "S";
+	lonh = lon >= 0.0 ? "E" : "W";
+	lat = fabs(lat);
+	lon = fabs(lon);
+	latdeg = lat;
+	londeg = lon;
+	latmin = (lat - latdeg) * 60.0;
+	lonmin = (lon - londeg) * 60.0;
+	snprintf(buffer, len, "%s%u%s %6.3f\' , %s%u%s %6.3f\'",
+		lath, latdeg, UTF8_DEGREE, latmin,
+		lonh, londeg, UTF8_DEGREE, lonmin);
+}
+
+void update_gps_entry(float lat, float lon)
+{
+	char gps_text[45];
+
+	print_gps_coordinates(gps_text, 45, lat, lon);
+	gtk_entry_set_text(location_update.entry, gps_text);
+}
+
+static gboolean gps_map_callback(GtkWidget *w, gpointer data)
+{
+	struct dive *dive = location_update.dive;
+	show_gps_location(dive, update_gps_entry);
+	return TRUE;
+}
+
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
-	GtkWidget *hbox, *label, *frame, *equipment;
+	GtkWidget *hbox, *label, *frame, *equipment, *image;
 	char buffer[128];
 	char airtemp[6];
-	char gps_text[25] = "";
+	char gps_text[45] = "";
 	const char *unit;
 	double value;
 
@@ -645,9 +686,21 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
 
 	if (dive_has_location(dive))
-		snprintf(gps_text, sizeof(gps_text), "%3.5lf;%3.5lf", dive->latitude.udeg / 1000000.0,
-								      dive->longitude.udeg / 1000000.0);
-	info->gps = single_text_entry(box, _("GPS (WGS84 or GPS format - use ';' as separator)"), gps_text);
+		print_gps_coordinates(gps_text, sizeof(gps_text), dive->latitude.udeg / 1000000.0,
+								  dive->longitude.udeg / 1000000.0);
+	hbox = gtk_hbox_new(FALSE, 2);
+	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
+	info->gps = single_text_entry(hbox, _("GPS (WGS84 or GPS format)"), gps_text);
+	gtk_entry_set_width_chars(info->gps, 30);
+	info->gps_icon = gtk_button_new_with_label(_("Pick on map"));
+	gtk_box_pack_start(GTK_BOX(hbox), info->gps_icon, FALSE, FALSE, 6);
+	image = gtk_image_new_from_pixbuf(get_gps_icon());
+	gtk_image_set_pixel_size(GTK_IMAGE(image), 128);
+	gtk_button_set_image(GTK_BUTTON(info->gps_icon), image);
+
+	location_update.entry = info->gps;
+	location_update.dive = dive;
+	g_signal_connect(G_OBJECT(info->gps_icon), "clicked", G_CALLBACK(gps_map_callback), NULL);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);

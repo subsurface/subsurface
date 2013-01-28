@@ -71,6 +71,7 @@ extern GtkWidget *weightsystem_list_widget(int w_idx);
 
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);
+extern GdkPixbuf *get_gps_icon(void);
 
 extern gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data);
 
