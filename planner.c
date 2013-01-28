@@ -931,7 +931,7 @@ static void gas_changed_cb(GtkWidget *combo, gpointer data)
 	int o2, he;
 	int idx = data - NULL;
 
-	gastext = gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo));
+	gastext = get_active_text(GTK_COMBO_BOX(combo));
 	/* stupidly this gets called for two reasons:
 	 * a) any keystroke into the entry field
 	 * b) mouse selection of a dropdown
@@ -1045,8 +1045,6 @@ static gboolean gf_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer dat
 static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int idx)
 {
 	GtkWidget *frame, *combo;
-	GtkEntryCompletion *completion;
-	GtkEntry *entry;
 
 	if (!gas_model) {
 		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
@@ -1054,7 +1052,7 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int
 		add_string_list_entry("EAN32", gas_model);
 		add_string_list_entry("EAN36 @ 1.6", gas_model);
 	}
-	combo = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(gas_model), 0);
+	combo = combo_box_with_model_and_entry(gas_model);
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(gtk_bin_get_child(GTK_BIN(combo)), "focus-out-event", G_CALLBACK(gas_focus_out_cb), NULL + idx);
 	g_signal_connect(combo, "changed", G_CALLBACK(gas_changed_cb), NULL + idx);
@@ -1065,15 +1063,6 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int
 	} else {
 		gtk_box_pack_start(GTK_BOX(box), combo, FALSE, FALSE, 2);
 	}
-	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo)));
-	completion = gtk_entry_completion_new();
-	gtk_entry_completion_set_text_column(completion, 0);
-	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(gas_model));
-	gtk_entry_completion_set_inline_completion(completion, TRUE);
-	gtk_entry_completion_set_inline_selection(completion, TRUE);
-	gtk_entry_completion_set_popup_single_match(completion, FALSE);
-	gtk_entry_set_completion(entry, completion);
-	g_object_unref(completion);
 
 	return combo;
 }

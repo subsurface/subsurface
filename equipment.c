@@ -119,6 +119,12 @@ static int convert_weight(int grams, double *m)
 	return decimals;
 }
 
+static void set_cylinder_description(struct cylinder_widget *cylinder, const char *desc)
+{
+	set_active_text(cylinder->description, desc);
+}
+
+
 static void set_cylinder_type_spinbuttons(struct cylinder_widget *cylinder, int ml, int mbar)
 {
 	double volume, pressure;
@@ -149,6 +155,11 @@ static void set_cylinder_pressure_spinbuttons(struct cylinder_widget *cylinder, 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->start), pressure);
 	convert_pressure(end, &pressure);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cylinder->end), pressure);
+}
+
+static void set_weight_description(struct ws_widget *ws_widget, const char *desc)
+{
+	set_active_text(ws_widget->description, desc);
 }
 
 static void set_weight_weight_spinbutton(struct ws_widget *ws_widget, int grams)
@@ -185,17 +196,16 @@ static gboolean match_desc(GtkTreeModel *model,	GtkTreePath *path,
 
 static int get_active_item(GtkComboBox *combo_box, GtkTreeIter *iter, GtkListStore *model)
 {
-	char *desc;
+	const char *desc;
 
 	if (gtk_combo_box_get_active_iter(combo_box, iter))
 		return TRUE;
 
-	desc = gtk_combo_box_get_active_text(combo_box);
+	desc = get_active_text(combo_box);
 
 	found_match = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(model), match_desc, (void *)desc);
 
-	g_free(desc);
 	if (!found_match)
 		return FALSE;
 
@@ -232,10 +242,9 @@ static void cylinder_cb(GtkComboBox *combo_box, gpointer data)
 	 */
 	if (!cylinder->changed && cyl->type.description) {
 		int same;
-		char *desc = gtk_combo_box_get_active_text(combo_box);
+		const char *desc = get_active_text(combo_box);
 
 		same = !strcmp(desc, cyl->type.description);
-		g_free(desc);
 		if (same)
 			return;
 	}
@@ -276,10 +285,9 @@ static void weight_cb(GtkComboBox *combo_box, gpointer data)
 	 */
 	if (!ws_widget->changed && ws->description) {
 		int same;
-		char *desc = gtk_combo_box_get_active_text(combo_box);
+		const char *desc = get_active_text(combo_box);
 
 		same = !strcmp(desc, ws->description);
-		g_free(desc);
 		if (same)
 			return;
 	}
@@ -361,12 +369,10 @@ void add_cylinder_description(cylinder_type_t *type)
 
 static void add_cylinder(struct cylinder_widget *cylinder, const char *desc, int ml, int mbar)
 {
-	GtkTreeIter iter, *match;
+	GtkTreeIter iter;
 
 	cylinder->name = desc;
-	match = add_cylinder_type(desc, ml, mbar, &iter);
-	if (match)
-		gtk_combo_box_set_active_iter(cylinder->description, match);
+	add_cylinder_type(desc, ml, mbar, &iter);
 }
 
 void add_weightsystem_description(weightsystem_t *weightsystem)
@@ -384,12 +390,10 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 
 static void add_weightsystem(struct ws_widget *ws_widget, const char *desc, int weight)
 {
-	GtkTreeIter iter, *match;
+	GtkTreeIter iter;
 
 	ws_widget->name = desc;
-	match = add_weightsystem_type(desc, weight, &iter);
-	if (match)
-		gtk_combo_box_set_active_iter(ws_widget->description, match);
+	add_weightsystem_type(desc, weight, &iter);
 }
 
 static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
@@ -410,6 +414,7 @@ static void show_cylinder(cylinder_t *cyl, struct cylinder_widget *cylinder)
 	mbar = cyl->type.workingpressure.mbar;
 	add_cylinder(cylinder, desc, ml, mbar);
 
+	set_cylinder_description(cylinder, desc);
 	set_cylinder_type_spinbuttons(cylinder,
 		cyl->type.size.mliter, cyl->type.workingpressure.mbar);
 	set_cylinder_pressure_spinbuttons(cylinder, cyl);
@@ -442,6 +447,7 @@ static void show_weightsystem(weightsystem_t *ws, struct ws_widget *weightsystem
 	grams = ws->weight.grams;
 	add_weightsystem(weightsystem_widget, desc, grams);
 
+	set_weight_description(weightsystem_widget, desc);
 	set_weight_weight_spinbutton(weightsystem_widget, ws->weight.grams);
 }
 
@@ -679,7 +685,7 @@ static void record_cylinder_changes(cylinder_t *cyl, struct cylinder_widget *cyl
 	if (!box)
 		return;
 
-	desc = gtk_combo_box_get_active_text(box);
+	desc = strdup(get_active_text(box));
 	volume = gtk_spin_button_get_value(cylinder->size);
 	pressure = gtk_spin_button_get_value(cylinder->pressure);
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cylinder->pressure_button))) {
@@ -711,7 +717,7 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
 	if (!box)
 		return;
 
-	desc = gtk_combo_box_get_active_text(box);
+	desc = strdup(get_active_text(box));
 	value = gtk_spin_button_get_value(weightsystem_widget->weight);
 
 	if (prefs.units.weight == LBS)
@@ -869,16 +875,6 @@ static void pressure_cb(GtkToggleButton *button, gpointer data)
 	gtk_widget_set_sensitive(cylinder->end, state);
 }
 
-static gboolean completion_cb(GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, struct cylinder_widget *cylinder)
-{
-	const char *desc;
-	unsigned int ml, mbar;
-
-	gtk_tree_model_get(model, iter, CYL_DESC, &desc, CYL_SIZE, &ml, CYL_WORKP, &mbar, -1);
-	add_cylinder(cylinder, desc, ml, mbar);
-	return TRUE;
-}
-
 static void cylinder_activate_cb(GtkComboBox *combo_box, gpointer data)
 {
 	struct cylinder_widget *cylinder = data;
@@ -923,8 +919,6 @@ static GtkWidget *labeled_spinbutton(GtkWidget *box, const char *name, double mi
 static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, GtkListStore *model)
 {
 	GtkWidget *frame, *hbox;
-	GtkEntry *entry;
-	GtkEntryCompletion *completion;
 	GtkWidget *widget;
 
 	/*
@@ -936,21 +930,13 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
-	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	widget = combo_box_with_model_and_entry(model);
 	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
 
 	cylinder->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(cylinder_cb), cylinder);
 
-	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(widget)));
-	g_signal_connect(entry, "activate", G_CALLBACK(cylinder_activate_cb), cylinder);
-
-	completion = gtk_entry_completion_new();
-	gtk_entry_completion_set_text_column(completion, 0);
-	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
-	g_signal_connect(completion, "match-selected", G_CALLBACK(completion_cb), cylinder);
-	gtk_entry_set_completion(entry, completion);
-	g_object_unref(completion);
+	g_signal_connect(get_entry(GTK_COMBO_BOX(widget)), "activate", G_CALLBACK(cylinder_activate_cb), cylinder);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
@@ -991,16 +977,6 @@ static void cylinder_widget(GtkWidget *vbox, struct cylinder_widget *cylinder, G
 	g_signal_connect(cylinder->gasmix_button, "toggled", G_CALLBACK(gasmix_cb), cylinder);
 }
 
-static gboolean weight_completion_cb(GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, struct ws_widget *ws_widget)
-{
-	const char *desc;
-	unsigned int weight;
-
-	gtk_tree_model_get(model, iter, WS_DESC, &desc, WS_WEIGHT, &weight, -1);
-	add_weightsystem(ws_widget, desc, weight);
-	return TRUE;
-}
-
 static void weight_activate_cb(GtkComboBox *combo_box, gpointer data)
 {
 	struct ws_widget *ws_widget = data;
@@ -1010,7 +986,6 @@ static void weight_activate_cb(GtkComboBox *combo_box, gpointer data)
 static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore *model)
 {
 	GtkWidget *frame, *hbox;
-	GtkEntryCompletion *completion;
 	GtkWidget *widget;
 	GtkEntry *entry;
 
@@ -1022,20 +997,14 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), hbox);
 
-	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	widget = combo_box_with_model_and_entry(model);
 	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
 
 	ws_widget->description = GTK_COMBO_BOX(widget);
 	g_signal_connect(widget, "changed", G_CALLBACK(weight_cb), ws_widget);
 
-	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(widget)));
+	entry = get_entry(GTK_COMBO_BOX(widget));
 	g_signal_connect(entry, "activate", G_CALLBACK(weight_activate_cb), ws_widget);
-
-	completion = gtk_entry_completion_new();
-	gtk_entry_completion_set_text_column(completion, 0);
-	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
-	g_signal_connect(completion, "match-selected", G_CALLBACK(weight_completion_cb), ws_widget);
-	gtk_entry_set_completion(entry, completion);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);

@@ -61,12 +61,11 @@ static const char *skip_space(const char *str)
  * The "master" string is the string of the current dive - we only consider it
  * changed if the old string is either empty, or matches that master string.
  */
-static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp, const char *master)
+static char *get_combo_box_entry_text(GtkComboBox *combo_box, char **textp, const char *master)
 {
 	char *old = *textp;
 	const char *old_text;
 	const gchar *new;
-	GtkEntry *entry;
 
 	old_text = skip_space(old);
 	master = skip_space(master);
@@ -81,8 +80,7 @@ static char *get_combo_box_entry_text(GtkComboBoxEntry *combo_box, char **textp,
 		if (strcmp(master, old_text))
 			return NULL;
 
-	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
-	new = gtk_entry_get_text(entry);
+	new = get_active_text(combo_box);
 	while (isspace(*new))
 		new++;
 	/* If the master string didn't change, don't change other dives either! */
@@ -202,7 +200,7 @@ static void info_menu_edit_cb(GtkMenuItem *menuitem, gpointer user_data)
 		edit_multi_dive_info(NULL);
 }
 
-static void add_menu_item(GtkMenu *menu, const char *label, const char *icon, void (*cb)(GtkMenuItem *, gpointer))
+static void add_menu_item(GtkMenuShell *menu, const char *label, const char *icon, void (*cb)(GtkMenuItem *, gpointer))
 {
 	GtkWidget *item;
 	if (icon) {
@@ -215,10 +213,10 @@ static void add_menu_item(GtkMenu *menu, const char *label, const char *icon, vo
 	}
 	g_signal_connect(item, "activate", G_CALLBACK(cb), NULL);
 	gtk_widget_show(item); /* Yes, really */
-	gtk_menu_prepend(menu, item);
+	gtk_menu_shell_prepend(menu, item);
 }
 
-static void populate_popup_cb(GtkTextView *entry, GtkMenu *menu, gpointer user_data)
+static void populate_popup_cb(GtkTextView *entry, GtkMenuShell *menu, gpointer user_data)
 {
 	if (amount_selected)
 		add_menu_item(menu, _("Edit"), GTK_STOCK_EDIT, info_menu_edit_cb);
@@ -251,32 +249,20 @@ static GtkEntry *single_text_entry(GtkWidget *box, const char *label, const char
 	return entry;
 }
 
-static GtkComboBoxEntry *text_entry(GtkWidget *box, const char *label, GtkListStore *completions, const char *text)
+static GtkComboBox *text_entry(GtkWidget *box, const char *label, GtkListStore *completions, const char *text)
 {
-	GtkEntry *entry;
 	GtkWidget *combo_box;
 	GtkWidget *frame = gtk_frame_new(label);
-	GtkEntryCompletion *completion;
 
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, TRUE, 0);
 
-	combo_box = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(completions), 0);
+	combo_box = combo_box_with_model_and_entry(completions);
 	gtk_container_add(GTK_CONTAINER(frame), combo_box);
 
-	entry = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
 	if (text && *text)
-		gtk_entry_set_text(entry, text);
+		set_active_text(GTK_COMBO_BOX(combo_box), text);
 
-	completion = gtk_entry_completion_new();
-	gtk_entry_completion_set_text_column(completion, 0);
-	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(completions));
-	gtk_entry_completion_set_inline_completion(completion, TRUE);
-	gtk_entry_completion_set_inline_selection(completion, TRUE);
-	gtk_entry_completion_set_popup_single_match(completion, FALSE);
-	gtk_entry_set_completion(entry, completion);
-	g_object_unref(completion);
-
-	return GTK_COMBO_BOX_ENTRY(combo_box);
+	return GTK_COMBO_BOX(combo_box);
 }
 
 enum writable {
@@ -518,7 +504,7 @@ static gboolean gps_changed(struct dive *dive, struct dive *master, const char *
 }
 
 struct dive_info {
-	GtkComboBoxEntry *location, *divemaster, *buddy, *rating, *suit, *viz;
+	GtkComboBox *location, *divemaster, *buddy, *rating, *suit, *viz;
 	GtkEntry *airtemp, *gps;
 	GtkTextView *notes;
 };

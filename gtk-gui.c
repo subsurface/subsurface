@@ -415,6 +415,42 @@ GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char 
 	return col;
 }
 
+/* Helper functions for gtk combo boxes */
+GtkEntry *get_entry(GtkComboBox *combo_box)
+{
+	return GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box)));
+}
+
+const char *get_active_text(GtkComboBox *combo_box)
+{
+	return gtk_entry_get_text(get_entry(combo_box));
+}
+
+void set_active_text(GtkComboBox *combo_box, const char *text)
+{
+	gtk_entry_set_text(get_entry(combo_box), text);
+}
+
+GtkWidget *combo_box_with_model_and_entry(GtkListStore *model)
+{
+	GtkWidget *widget;
+	GtkEntryCompletion *completion;
+
+	widget = gtk_combo_box_new_with_model_and_entry(GTK_TREE_MODEL(model));
+	gtk_combo_box_set_entry_text_column(GTK_COMBO_BOX(widget), 0);
+
+	completion = gtk_entry_completion_new();
+	gtk_entry_completion_set_text_column(completion, 0);
+	gtk_entry_completion_set_model(completion, GTK_TREE_MODEL(model));
+	gtk_entry_completion_set_inline_completion(completion, TRUE);
+	gtk_entry_completion_set_inline_selection(completion, TRUE);
+	gtk_entry_completion_set_popup_single_match(completion, FALSE);
+	gtk_entry_set_completion(get_entry(GTK_COMBO_BOX(widget)), completion);
+	g_object_unref(completion);
+
+	return widget;
+}
+
 static void create_radio(GtkWidget *vbox, const char *w_name, ...)
 {
 	va_list args;

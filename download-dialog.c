@@ -330,7 +330,7 @@ static GtkComboBox *dc_device_selector(GtkWidget *vbox)
 	frame = gtk_frame_new(_("Device or mount point"));
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 3);
 
-	combo_box = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	combo_box = combo_box_with_model_and_entry(model);
 	gtk_container_add(GTK_CONTAINER(frame), combo_box);
 
 	renderer = gtk_cell_renderer_text_new();
@@ -340,8 +340,7 @@ static GtkComboBox *dc_device_selector(GtkWidget *vbox)
 		gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), default_index);
 	else
 		if (default_dive_computer_device)
-			gtk_entry_set_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(combo_box))),
-		                   default_dive_computer_device);
+			set_active_text(GTK_COMBO_BOX(combo_box), default_dive_computer_device);
 
 	return GTK_COMBO_BOX(combo_box);
 }
@@ -430,7 +429,7 @@ repeat:
 		set_default_dive_computer(vendor, product);
 
 		/* get the device name from the combo box entry and set as default */
-		devname = strdup(gtk_entry_get_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(device)))));
+		devname = strdup(get_active_text(device));
 		set_default_dive_computer_device(devname);
 		/* clear leading and trailing white space from the device name and also
 		 * everything after (and including) the first '(' char. */

@@ -72,6 +72,12 @@ extern GtkWidget *weightsystem_list_widget(int w_idx);
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);
 
+/* Helper functions for gtk combo boxes */
+extern GtkEntry *get_entry(GtkComboBox *);
+extern const char *get_active_text(GtkComboBox *);
+extern void set_active_text(GtkComboBox *, const char *);
+extern GtkWidget *combo_box_with_model_and_entry(GtkListStore *);
+
 extern gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data);
 
 unsigned int amount_selected;
