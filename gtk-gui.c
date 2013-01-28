@@ -121,7 +121,7 @@ void report_error(GError* error)
 		error_count++;
 		char buffer[256];
 		snprintf(buffer, sizeof(buffer), _("Failed to open %i files."), error_count);
-		gtk_label_set(GTK_LABEL(error_label), buffer);
+		gtk_label_set_text(GTK_LABEL(error_label), buffer);
 	}
 }
 
@@ -397,7 +397,6 @@ GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char 
 		gtk_tree_view_column_set_cell_data_func(col, renderer, data_func, (void *)(long)index, NULL);
 	else
 		gtk_tree_view_column_add_attribute(col, renderer, "text", index);
-	gtk_object_set(GTK_OBJECT(renderer), "alignment", align, NULL);
 	switch (align) {
 	case PANGO_ALIGN_LEFT:
 		xalign = 0.0;
@@ -1042,6 +1041,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 {
 	const char *logo_property = NULL;
 	GdkPixbuf *logo = NULL;
+	GtkWidget * dialog;
 
 	if (need_icon) {
 		GtkWidget *image = gtk_image_new_from_file(subsurface_icon_name());
@@ -1051,6 +1051,12 @@ static void about_dialog(GtkWidget *w, gpointer data)
 			logo_property = "logo";
 		}
 	}
+	dialog = gtk_about_dialog_new();
+#if !GTK_CHECK_VERSION(2,24,0) /* F*cking gtk */
+	gtk_about_dialog_set_url_hook(about_dialog_link_cb, NULL, NULL);
+#else
+	g_signal_connect(GTK_ABOUT_DIALOG(dialog), "activate-link", G_CALLBACK(about_dialog_link_cb), NULL);
+#endif
 	gtk_show_about_dialog(NULL,
 		"title", _("About Subsurface"),
 		"program-name", "Subsurface",
@@ -1065,7 +1071,6 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		/* Must be last: */
 		logo_property, logo,
 		NULL);
-	gtk_about_dialog_set_url_hook(about_dialog_link_cb, NULL, NULL);
 }
 
 static void view_list(GtkWidget *w, gpointer data)
@@ -1696,31 +1701,23 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 static double zoom_factor = 1.0;
 static int zoom_x = -1, zoom_y = -1;
 
-static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean common_drawing_function(GtkWidget *widget, struct graphics_context *gc)
 {
 	int i = 0;
 	struct dive *dive = current_dive;
-	GtkAllocation allocation;
-	static struct graphics_context gc = { .printer = 0 };
 
-	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
-	 * so effective drawing area is width-2x * height-2y */
-	gtk_widget_get_allocation(widget, &allocation);
-	gc.drawing_area.width = allocation.width;
-	gc.drawing_area.height = allocation.height;
-	gc.drawing_area.x = MIN(50,gc.drawing_area.width / 20.0);
-	gc.drawing_area.y = MIN(50,gc.drawing_area.height / 20.0);
+	gc->drawing_area.x = MIN(50,gc->drawing_area.width / 20.0);
+	gc->drawing_area.y = MIN(50,gc->drawing_area.height / 20.0);
 
-	gc.cr = gdk_cairo_create(gtk_widget_get_window(widget));
 	g_object_set(widget, "has-tooltip", TRUE, NULL);
-	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), &gc);
-	init_profile_background(&gc);
-	cairo_paint(gc.cr);
+	g_signal_connect(widget, "query-tooltip", G_CALLBACK(profile_tooltip), gc);
+	init_profile_background(gc);
+	cairo_paint(gc->cr);
 
 	if (zoom_factor > 1.0) {
 		double n = -(zoom_factor-1);
-		cairo_translate(gc.cr, n*zoom_x, n*zoom_y);
-		cairo_scale(gc.cr, zoom_factor, zoom_factor);
+		cairo_translate(gc->cr, n*zoom_x, n*zoom_y);
+		cairo_scale(gc->cr, zoom_factor, zoom_factor);
 	}
 
 	if (dive) {
@@ -1734,12 +1731,47 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 			tooltip_rects = NULL;
 		}
 		tooltips = 0;
-		plot(&gc, dive, SC_SCREEN);
+		plot(gc, dive, SC_SCREEN);
 	}
-	cairo_destroy(gc.cr);
 
 	return FALSE;
 }
+
+#if GTK_CHECK_VERSION(3,0,0)
+
+static gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
+{
+	guint width, height;
+	static struct graphics_context gc = { .printer = 0 };
+
+	width = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
+
+	gc.drawing_area.width = width;
+	gc.drawing_area.height = height;
+	gc.cr = cr;
+
+	return common_drawing_function(widget, &gc);
+}
+
+#else /* gtk2 */
+
+static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
+	GtkAllocation allocation;
+	static struct graphics_context gc = { .printer = 0 };
+
+	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
+	 * so effective drawing area is width-2x * height-2y */
+	gtk_widget_get_allocation(widget, &allocation);
+	gc.drawing_area.width = allocation.width;
+	gc.drawing_area.height = allocation.height;
+	gc.cr = gdk_cairo_create(gtk_widget_get_window(widget));
+
+	return common_drawing_function(widget, &gc);
+}
+
+#endif
 
 static void zoom_event(int x, int y, double inc)
 {
@@ -1815,7 +1847,11 @@ GtkWidget *dive_profile_widget(void)
 
 	da = gtk_drawing_area_new();
 	gtk_widget_set_size_request(da, 350, 250);
+#if GTK_CHECK_VERSION(3,0,0)
+	g_signal_connect(da, "draw", G_CALLBACK (draw_callback), NULL);
+#else
 	g_signal_connect(da, "expose_event", G_CALLBACK(expose_event), NULL);
+#endif
 	g_signal_connect(da, "button-press-event", G_CALLBACK(clicked), NULL);
 	g_signal_connect(da, "scroll-event", G_CALLBACK(scroll_event), NULL);
 	g_signal_connect(da, "button-release-event", G_CALLBACK(released), NULL);
