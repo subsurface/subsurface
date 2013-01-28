@@ -646,12 +646,14 @@ void update_gps_entry(float lat, float lon)
 	gtk_entry_set_text(location_update.entry, gps_text);
 }
 
+#if HAVE_OSM_GPS_MAP
 static gboolean gps_map_callback(GtkWidget *w, gpointer data)
 {
 	struct dive *dive = location_update.dive;
 	show_gps_location(dive, update_gps_entry);
 	return TRUE;
 }
+#endif
 
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
@@ -678,6 +680,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 	info->gps = single_text_entry(hbox, _("GPS (WGS84 or GPS format)"), gps_text);
 	gtk_entry_set_width_chars(info->gps, 30);
+#if HAVE_OSM_GPS_MAP
 	info->gps_icon = gtk_button_new_with_label(_("Pick on map"));
 	gtk_box_pack_start(GTK_BOX(hbox), info->gps_icon, FALSE, FALSE, 6);
 	image = gtk_image_new_from_pixbuf(get_gps_icon());
@@ -687,7 +690,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	location_update.entry = info->gps;
 	location_update.dive = dive;
 	g_signal_connect(G_OBJECT(info->gps_icon), "clicked", G_CALLBACK(gps_map_callback), NULL);
-
+#endif
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 
