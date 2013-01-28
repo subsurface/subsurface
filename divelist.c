@@ -980,10 +980,15 @@ static void get_suit(struct dive *dive, char **str)
 	get_string(str, dive->suit);
 }
 
-static GdkPixbuf *get_gps_icon(struct dive *dive)
+GdkPixbuf *get_gps_icon(void)
+{
+	return gdk_pixbuf_from_pixdata(&my_pixbuf, TRUE, NULL);
+}
+
+GdkPixbuf *get_gps_icon_for_dive(struct dive *dive)
 {
 	if (dive_has_location(dive))
-		return gdk_pixbuf_from_pixdata(&my_pixbuf, TRUE, NULL);
+		return get_gps_icon();
 	else
 		return NULL;
 }
@@ -1010,7 +1015,7 @@ static void fill_one_dive(struct dive *dive,
 	get_cylinder(dive, &cylinder);
 	get_location(dive, &location);
 	get_suit(dive, &suit);
-	icon = get_gps_icon(dive);
+	icon = get_gps_icon_for_dive(dive);
 	gtk_tree_store_set(GTK_TREE_STORE(model), iter,
 		DIVE_NR, dive->number,
 		DIVE_LOCATION, location,
@@ -1413,7 +1418,7 @@ static void fill_dive_list(void)
 		/* store dive */
 		update_cylinder_related_info(dive);
 		gtk_tree_store_append(treestore, &iter, parent_ptr);
-		icon = get_gps_icon(dive);
+		icon = get_gps_icon_for_dive(dive);
 		gtk_tree_store_set(treestore, &iter,
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
@@ -1694,7 +1699,7 @@ void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 #if HAVE_OSM_GPS_MAP
 static void show_gps_location_cb(GtkWidget *menuitem, struct dive *dive)
 {
-	show_gps_location(dive);
+	show_gps_location(dive, NULL);
 }
 #endif
 
@@ -1716,7 +1721,7 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 			gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 			dive = get_dive(idx);
 			if (dive && dive_has_location(dive))
-				show_gps_location(dive);
+				show_gps_location(dive, NULL);
 		}
 		if (path)
 			gtk_tree_path_free(path);

@@ -20,8 +20,58 @@ static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_GOOGLE_STREET;
 static void on_close(GtkWidget *widget, gpointer user_data)
 {
 	GtkWidget **window = user_data;
+	gtk_grab_remove(widget);
 	gtk_widget_destroy(widget);
 	*window = NULL;
+}
+
+struct maplocation {
+	OsmGpsMap *map;
+	double x,y;
+	void (* callback)(float, float);
+	GtkWidget *mapwindow;
+};
+
+static void add_location_cb(GtkWidget *widget, gpointer data)
+{
+	struct maplocation *maplocation = data;
+	OsmGpsMap *map = maplocation->map;
+	OsmGpsMapPoint *pt = osm_gps_map_point_new_degrees(0.0, 0.0);
+	float mark_lat, mark_lon;
+
+	osm_gps_map_convert_screen_to_geographic(map, maplocation->x, maplocation->y, pt);
+	osm_gps_map_point_get_degrees(pt, &mark_lat, &mark_lon);
+	maplocation->callback(mark_lat, mark_lon);
+	gtk_widget_destroy(gtk_widget_get_parent(maplocation->mapwindow));
+}
+
+static void map_popup_menu_cb(GtkWidget *w, gpointer data)
+{
+	GtkWidget *menu, *menuitem, *image;
+
+	menu = gtk_menu_new();
+	menuitem = gtk_image_menu_item_new_with_label(_("Mark location here"));
+	image = gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
+	g_signal_connect(menuitem, "activate", G_CALLBACK(add_location_cb), data);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	gtk_widget_show_all(menu);
+	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
+		3, gtk_get_current_event_time());
+}
+
+static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer data)
+{
+	static struct maplocation maplocation = {};
+	if (data && event->type == GDK_BUTTON_PRESS && event->button == 3) {
+		maplocation.map = (OsmGpsMap *)widget;
+		maplocation.x = event->x;
+		maplocation.y = event->y;
+		maplocation.callback = data;
+		maplocation.mapwindow = widget;
+		map_popup_menu_cb(widget, &maplocation);
+	}
+	return FALSE;
 }
 
 /* the osm gps map default is to scroll-and-recenter around the mouse position
@@ -85,7 +135,6 @@ static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 	osm_gps_map_track_add(map, track);
 }
 
-
 OsmGpsMap *init_map(void)
 {
 	OsmGpsMap *map;
@@ -117,7 +166,7 @@ OsmGpsMap *init_map(void)
 	return map;
 }
 
-void show_map(OsmGpsMap *map, GtkWidget **window)
+void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*callback)(float, float))
 {
 	if (!*window) {
 		/* Enable keyboard navigation */
@@ -137,19 +186,23 @@ void show_map(OsmGpsMap *map, GtkWidget **window)
 		g_signal_connect(*window, "destroy", G_CALLBACK(on_close), (gpointer)window);
 		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);
 	}
+	if (callback)
+		g_signal_connect(G_OBJECT(map), "button-press-event", G_CALLBACK(button_cb), callback);
 	gtk_widget_show_all(*window);
 	gtk_window_present(GTK_WINDOW(*window));
+	if (callback)
+		gtk_grab_add(*window);
 }
 
-void show_gps_location(struct dive *dp)
+void show_gps_location(struct dive *dive, void (*callback)(float, float))
 {
 	static GtkWidget *window = NULL;
 	static OsmGpsMap *map = NULL;
 	GdkPixbuf *picture;
 	GError *gerror = NULL;
 
-	double lat = dp->latitude.udeg / 1000000.0;
-	double lng = dp->longitude.udeg / 1000000.0;
+	double lat = dive->latitude.udeg / 1000000.0;
+	double lng = dive->longitude.udeg / 1000000.0;
 
 	if (!map || !window)
 		map = init_map();
@@ -165,26 +218,26 @@ void show_gps_location(struct dive *dp)
 	} else {
 		osm_gps_map_set_center_and_zoom(map, 0, 0, 2);
 	}
-	show_map(map, &window);
+	show_map(map, &window, dive, callback);
 }
 
 void show_gps_locations()
 {
 	static OsmGpsMap *map = NULL;
 	static GtkWidget *window = NULL;
-	struct dive *dp;
+	struct dive *dive;
 	int idx;
 
 	if (!window || !map)
 		map = init_map();
 
-	for_each_dive(idx, dp) {
-		if (dive_has_location(dp)) {
-			add_gps_point(map, dp->latitude.udeg / 1000000.0,
-				dp->longitude.udeg / 1000000.0);
+	for_each_dive(idx, dive) {
+		if (dive_has_location(dive)) {
+			add_gps_point(map, dive->latitude.udeg / 1000000.0,
+				dive->longitude.udeg / 1000000.0);
 		}
 	}
 	osm_gps_map_set_center_and_zoom(map, 0, 0, 2);
 
-	show_map(map, &window);
+	show_map(map, &window, NULL, NULL);
 }

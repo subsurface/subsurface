@@ -71,6 +71,7 @@ extern GtkWidget *weightsystem_list_widget(int w_idx);
 
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);
+extern GdkPixbuf *get_gps_icon(void);
 
 /* Helper functions for gtk combo boxes */
 extern GtkEntry *get_entry(GtkComboBox *);
