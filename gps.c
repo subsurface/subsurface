@@ -59,6 +59,7 @@ static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer dat
 		osm_gps_map_point_get_degrees(target, &target_lat, &target_lon);
 
 		osm_gps_map_zoom_in(map);
+		osm_gps_map_set_center(map, target_lat, target_lon);
 	} else if (event->direction == GDK_SCROLL_DOWN) {
 	        if(zoom == min_zoom)
 		      return TRUE;
@@ -70,13 +71,8 @@ static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer dat
 		osm_gps_map_point_get_degrees(target, &target_lat, &target_lon);
 
 		osm_gps_map_zoom_out(map);
+		osm_gps_map_set_center(map, target_lat, target_lon);
 	}
-
-	/* There is no OSM interface to do this afaik. Hack something together */
-	/* set_map_pt_at_xy(map, pt, event->x, event->y); */
-
-	osm_gps_map_set_center(map, target_lat, target_lon);
-
 	/* don't allow the insane default handler to get its hands on this event */
 	return TRUE;
 }
