@@ -183,13 +183,14 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 		gtk_container_set_border_width(GTK_CONTAINER(*window), 5);
 		gtk_window_set_resizable(GTK_WINDOW(*window), TRUE);
 		gtk_container_add(GTK_CONTAINER(*window), GTK_WIDGET(map));
+		gtk_window_set_transient_for(GTK_WINDOW(*window), GTK_WINDOW(main_window));
+		gtk_window_set_modal(GTK_WINDOW(*window), TRUE);
 		g_signal_connect(*window, "destroy", G_CALLBACK(on_close), (gpointer)window);
 		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);
 	}
 	if (callback)
 		g_signal_connect(G_OBJECT(map), "button-press-event", G_CALLBACK(button_cb), callback);
 	gtk_widget_show_all(*window);
-	gtk_window_present(GTK_WINDOW(*window));
 	if (callback)
 		gtk_grab_add(*window);
 }

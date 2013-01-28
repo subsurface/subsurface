@@ -642,8 +642,10 @@ void update_gps_entry(float lat, float lon)
 {
 	char gps_text[45];
 
-	print_gps_coordinates(gps_text, 45, lat, lon);
-	gtk_entry_set_text(location_update.entry, gps_text);
+	if (location_update.entry) {
+		print_gps_coordinates(gps_text, 45, lat, lon);
+		gtk_entry_set_text(location_update.entry, gps_text);
+	}
 }
 
 #if HAVE_OSM_GPS_MAP
@@ -959,6 +961,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 		update_dive(master);
 	}
 	gtk_widget_destroy(dialog);
+	location_update.entry = NULL;
 
 	return success;
 }
