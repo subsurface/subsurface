@@ -31,6 +31,7 @@ typedef struct {
 		*viz,
 		*water_temp,
 		*air_temp,
+		*air_press,
 		*sac,
 		*otu,
 		*o2he,
@@ -575,13 +576,20 @@ static void show_single_dive_stats(struct dive *dive)
 	if (dive->dc.watertemp.mkelvin) {
 		value = get_temp_units(dive->dc.watertemp.mkelvin, &unit);
 		set_label(single_w.water_temp, "%.1f %s", value, unit);
-	} else
+	} else {
 		set_label(single_w.water_temp, "");
+	}
 	if (dive->dc.airtemp.mkelvin) {
 		value = get_temp_units(dive->dc.airtemp.mkelvin, &unit);
 		set_label(single_w.air_temp, "%.1f %s", value, unit);
-	} else
+	} else {
 		set_label(single_w.air_temp, "");
+	}
+	if (dive->dc.surface_pressure.mbar) {
+		set_label(single_w.air_press, "%d mbar", dive->dc.surface_pressure.mbar);
+	} else {
+		set_label(single_w.air_press, _("unknown"));
+	}
 	value = get_volume_units(dive->sac, &decimals, &unit);
 	if (value > 0) {
 		set_label(single_w.sac, _("%.*f %s/min"), decimals, value, unit);
@@ -845,6 +853,7 @@ GtkWidget *single_stats_widget(void)
 
 	single_w.water_temp = new_info_label_in_frame(hbox, _("Water Temp"));
 	single_w.air_temp = new_info_label_in_frame(hbox, _("Air Temp"));
+	single_w.air_press = new_info_label_in_frame(hbox, _("Air Press"));
 
 	/* fourth row */
 	hbox = gtk_hbox_new(FALSE, 3);
@@ -868,6 +877,7 @@ void clear_stats_widgets(void)
 	set_label(single_w.viz, "");
 	set_label(single_w.water_temp, "");
 	set_label(single_w.air_temp, "");
+	set_label(single_w.air_press, "");
 	set_label(single_w.sac, "");
 	set_label(single_w.sac, "");
 	set_label(single_w.otu, "");
