@@ -2611,8 +2611,22 @@ static void deselect_dive(int idx)
 	if (dive && dive->selected) {
 		dive->selected = 0;
 		amount_selected--;
-		if (selected_dive > idx)
-			selected_dive--;
+		if (selected_dive == idx && amount_selected > 0) {
+			/* pick a different dive as selected */
+			while(--selected_dive >= 0) {
+				dive = get_dive(selected_dive);
+				if (dive && dive->selected)
+					return;
+			}
+			selected_dive = idx;
+			while(++selected_dive < dive_table.nr) {
+				dive = get_dive(selected_dive);
+				if (dive && dive->selected)
+					return;
+			}
+		}
+		if (amount_selected == 0)
+			selected_dive = -1;
 	}
 }
 
