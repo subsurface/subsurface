@@ -458,6 +458,15 @@ static void get_index(char *buffer, void *_i)
 	*i = atoi(buffer);
 }
 
+static void get_rating(char *buffer, void *_i)
+{
+	int *i = _i;
+	int j = atoi(buffer);
+	if (j >= 0 && j <= 5) {
+		*i = j;
+	}
+}
+
 static void double_to_permil(char *buffer, void *_i)
 {
 	int *i = _i;
@@ -1024,9 +1033,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".buddy", utf8_string, &dive->buddy))
 		return;
-	if (MATCH(".rating", get_index, &dive->rating))
+	if (MATCH("dive.rating", get_rating, &dive->rating))
 		return;
-	if (MATCH(".visibility", get_index, &dive->visibility))
+	if (MATCH("dive.visibility", get_rating, &dive->visibility))
 		return;
 	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
 		return;
