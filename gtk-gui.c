@@ -526,7 +526,8 @@ static gboolean gflow_edit(GtkWidget *w, GdkEvent *event, gpointer _data)
 	if (event->type == GDK_FOCUS_CHANGE) {
 		buf = gtk_entry_get_text(GTK_ENTRY(w));
 		sscanf(buf, "%lf", &gflow);
-		set_gf(gflow / 100.0, -1.0);
+		prefs.gflow = gflow / 100.0;
+		set_gf(prefs.gflow, -1.0);
 		update_screen();
 	}
 	return FALSE;
@@ -539,7 +540,8 @@ static gboolean gfhigh_edit(GtkWidget *w, GdkEvent *event, gpointer _data)
 	if (event->type == GDK_FOCUS_CHANGE) {
 		buf = gtk_entry_get_text(GTK_ENTRY(w));
 		sscanf(buf, "%lf", &gfhigh);
-		set_gf(-1.0, gfhigh / 100.0);
+		prefs.gfhigh = gfhigh / 100.0;
+		set_gf(-1.0, prefs.gfhigh);
 		update_screen();
 	}
 	return FALSE;

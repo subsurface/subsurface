@@ -822,7 +822,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 		cairo_close_path(gc->cr);
 		cairo_fill(gc->cr);
 	}
-	/* next show where we have been bad and crossed the ceiling */
+	/* next show where we have been bad and crossed the dc's ceiling */
 	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
 	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
 	pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
@@ -1124,6 +1124,18 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 		if (last_time[cyl]) {
 			plot_pressure_value(gc, last_pressure[cyl], last_time[cyl], CENTER, TOP);
 		}
+	}
+}
+
+static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
+{
+	if (prefs.profile_calc_ceiling) {
+		text_render_options_t tro = {10, PRESSURE_TEXT, CENTER, -0.2};
+		gc->leftx = 0;
+		gc->rightx = gc->maxtime = 1.0;
+		gc->topy = 0;
+		gc->bottomy = 1.0;
+		plot_text(gc, &tro, 0.5, 0, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
 	}
 }
 
@@ -2028,6 +2040,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	plot_temperature_text(gc, pi);
 	plot_depth_text(gc, pi);
 	plot_cylinder_pressure_text(gc, pi);
+	plot_deco_text(gc, pi);
 
 	/* Bounding box last */
 	gc->leftx = 0; gc->rightx = 1.0;
