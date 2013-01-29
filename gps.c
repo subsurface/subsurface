@@ -111,7 +111,7 @@ static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer dat
 		osm_gps_map_zoom_in(map);
 		osm_gps_map_set_center(map, target_lat, target_lon);
 	} else if (event->direction == GDK_SCROLL_DOWN) {
-	        if(zoom == min_zoom)
+	        if (zoom == min_zoom)
 		      return TRUE;
 
 		target_x = event->x + ((ltx + rbx) / 2.0 - (gint)(event->x)) * 2;

@@ -332,7 +332,7 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 	struct divedatapoint **lastdp = &diveplan->dp;
 	struct divedatapoint *ldp = *lastdp;
 	int lasttime = 0;
-	while(*lastdp) {
+	while (*lastdp) {
 		ldp = *lastdp;
 		if (ldp->time > lasttime)
 			lasttime = ldp->time;
@@ -524,7 +524,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		he = newhe;
 		lasttime = dp->time;
 		lastdepth = dp->depth;
-	} while((dp = dp->next) != NULL);
+	} while ((dp = dp->next) != NULL);
 	len = strlen(buffer);
 	snprintf(buffer + len, sizeof(buffer) - len, _("Gas consumption:\n"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
@@ -938,7 +938,7 @@ void show_planned_dive(void)
 	memcpy(&tempplan, &diveplan, sizeof(struct diveplan));
 	dpp = &tempplan.dp;
 	dp = diveplan.dp;
-	while(dp && *dpp) {
+	while (dp && *dpp) {
 		*dpp = malloc(sizeof(struct divedatapoint));
 		memcpy(*dpp, dp, sizeof(struct divedatapoint));
 		dp = dp->next;
@@ -1163,7 +1163,7 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 }
 
 static void add_entry_with_callback(GtkWidget *box, int length, char *label, char *initialtext,
-				gboolean (*callback)(GtkWidget *, GdkEvent *, gpointer ), gpointer data)
+				gboolean (*callback)(GtkWidget *, GdkEvent *, gpointer), gpointer data)
 {
 	GtkWidget *entry = add_entry_to_box(box, label);
 	gtk_entry_set_max_length(GTK_ENTRY(entry), length);

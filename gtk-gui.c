@@ -35,8 +35,9 @@ GtkWidget *notebook;
 int        error_count;
 const char *existing_filename;
 
-static struct device_info *nicknamelist;
 static struct device_info *holdnicknames = NULL;
+static GtkWidget *dive_profile_widget(void);
+static void import_files(GtkWidget *, gpointer);
 
 static void remember_dc(const char *model, uint32_t deviceid, const char *nickname)
 {
@@ -55,18 +56,6 @@ static void remember_dc(const char *model, uint32_t deviceid, const char *nickna
 static void remove_dc(const char *model, uint32_t deviceid)
 {
 	free(remove_device_info(model, deviceid));
-}
-
-void dump_nickname_list_entry(struct device_info *nnl){
-
-	  printf("\n");
-	  printf("Address of entry is %p root is at %p\n", nnl, nicknamelist);
-	  printf("Model = %s\n",nnl->model);
-	  printf("Device = %x\n", nnl->deviceid);
-	  printf("Nickname = %s\n", nnl->nickname);
-	  printf("Address of next entry is %p\n",nnl->next);
-	  printf("\n");
-
 }
 
 static GtkWidget *dive_profile;
@@ -338,7 +327,7 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	gtk_main_quit();
 }
 
-void quit(GtkWidget *w, gpointer data)
+static void quit(GtkWidget *w, gpointer data)
 {
 	/* Make sure to flush any modified dive data */
 	update_dive(NULL);
@@ -1207,9 +1196,9 @@ static void cell_edited_cb(GtkCellRendererText *cell, gchar *path,
 
 	/* remember pending commit
 	 * Need to extend list rather than wipe and store only one result */
-	if(matched == 1){
+	if (matched == 1){
 		if (holdnicknames == NULL){
-			holdnicknames = (struct device_info *) malloc(sizeof( struct device_info ));
+			holdnicknames = (struct device_info *) malloc(sizeof(struct device_info));
 			holdnicknames->model = strdup(model);
 			holdnicknames->deviceid = deviceid;
 			holdnicknames->serial_nr = NULL;
@@ -1219,7 +1208,7 @@ static void cell_edited_cb(GtkCellRendererText *cell, gchar *path,
 		} else {
 			struct device_info * top;
 			struct device_info * last = holdnicknames;
-			top = (struct device_info *) malloc(sizeof( struct device_info ));
+			top = (struct device_info *) malloc(sizeof(struct device_info));
 			top->model = strdup(model);
 			top->deviceid = deviceid;
 			top->serial_nr = NULL;
@@ -1248,7 +1237,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 	char id_string[11] = {0};
 	struct device_info * nnl;
 
-	dialog = gtk_dialog_new_with_buttons( _("Edit Dive Computer Nicknames"),
+	dialog = gtk_dialog_new_with_buttons(_("Edit Dive Computer Nicknames"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_DELETE,
@@ -1291,7 +1280,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 
 	/* populate list store from device_info_list */
 	nnl = head_of_device_info_list();
-	while( nnl ) {
+	while (nnl) {
 		sprintf(&id_string[0], "%#08x", nnl->deviceid);
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
@@ -1336,11 +1325,11 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 			mark_divelist_changed(TRUE);
 			gtk_widget_destroy(confirm);
 		}
-		if (res == GTK_RESPONSE_APPLY && holdnicknames && holdnicknames->model != NULL ) {
+		if (res == GTK_RESPONSE_APPLY && holdnicknames && holdnicknames->model != NULL) {
 			struct device_info * walk = holdnicknames;
 			struct device_info * release = holdnicknames;
 			struct device_info * track = holdnicknames->next;
-			while(walk) {
+			while (walk) {
 				remember_dc(walk->model, walk->deviceid, walk->nickname);
 				walk = walk->next;
 			}
@@ -1348,7 +1337,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 			while (release){
 				free(release);
 				release = track;
-				if(track)
+				if (track)
 					track = track->next;
 			}
 			holdnicknames = NULL;
@@ -1787,7 +1776,7 @@ static void zoom_event(int x, int y, double inc)
 	zoom_factor = inc;
 }
 
-gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
+static gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
 {
 	switch (event->direction) {
 	case GDK_SCROLL_UP:
@@ -1803,7 +1792,7 @@ gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_da
 	return TRUE;
 }
 
-gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+static gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	switch (event->button) {
 	case 1:
@@ -1818,7 +1807,7 @@ gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 	return TRUE;
 }
 
-gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+static gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	switch (event->button) {
 	case 1:
@@ -1832,7 +1821,7 @@ gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 	return TRUE;
 }
 
-gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
+static gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
 {
 	if (zoom_x < 0)
 		return TRUE;
@@ -1843,7 +1832,7 @@ gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
 	return TRUE;
 }
 
-GtkWidget *dive_profile_widget(void)
+static GtkWidget *dive_profile_widget(void)
 {
 	GtkWidget *da;
 
@@ -1863,19 +1852,6 @@ GtkWidget *dive_profile_widget(void)
 	return da;
 }
 
-int process_ui_events(void)
-{
-	int ret=0;
-
-	while (gtk_events_pending()) {
-		if (gtk_main_iteration_do(0)) {
-			ret = 1;
-			break;
-		}
-	}
-	return ret;
-}
-
 static void do_import_file(gpointer data, gpointer user_data)
 {
 	GError *error = NULL;
@@ -1889,7 +1865,7 @@ static void do_import_file(gpointer data, gpointer user_data)
 	}
 }
 
-void import_files(GtkWidget *w, gpointer data)
+static void import_files(GtkWidget *w, gpointer data)
 {
 	GtkWidget *fs_dialog;
 	const char *current_default;

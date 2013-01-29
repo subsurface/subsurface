@@ -37,21 +37,21 @@ static const char cd64[]="|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$
 /*
  * decodeblock -- decode 4 '6-bit' characters into 3 8-bit binary bytes
  */
-static void decodeblock( unsigned char in[4], unsigned char out[3] ) {
-	out[ 0 ] = (unsigned char ) (in[0] << 2 | in[1] >> 4);
-	out[ 1 ] = (unsigned char ) (in[1] << 4 | in[2] >> 2);
-	out[ 2 ] = (unsigned char ) (((in[2] << 6) & 0xc0) | in[3]);
+static void decodeblock (unsigned char in[4], unsigned char out[3]) {
+	out[0] = (unsigned char) (in[0] << 2 | in[1] >> 4);
+	out[1] = (unsigned char) (in[1] << 4 | in[2] >> 2);
+	out[2] = (unsigned char) (((in[2] << 6) & 0xc0) | in[3]);
 }
 
 /*
  * decode a base64 encoded stream discarding padding, line breaks and noise
  */
-static void decode( uint8_t *inbuf, uint8_t *outbuf, int inbuf_len ) {
+static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len) {
 	uint8_t in[4], out[3], v;
 	int i,len,indx_in=0,indx_out=0;
 
 	while (indx_in < inbuf_len) {
-		for (len = 0, i = 0; i < 4 && (indx_in < inbuf_len); i++ ) {
+		for (len = 0, i = 0; i < 4 && (indx_in < inbuf_len); i++) {
 			v = 0;
 			while ((indx_in < inbuf_len) && v == 0) {
 				v = inbuf[indx_in++];
@@ -67,9 +67,9 @@ static void decode( uint8_t *inbuf, uint8_t *outbuf, int inbuf_len ) {
 			else
 				in[i] = 0;
 		}
-		if( len ) {
-			decodeblock( in, out );
-			for( i = 0; i < len - 1; i++ )
+		if (len) {
+			decodeblock(in, out);
+			for(i = 0; i < len - 1; i++)
 				outbuf[indx_out++] = out[i];
 		}
 	}
@@ -119,7 +119,7 @@ static struct uemis_helper *uemis_get_helper(int diveid)
 	struct uemis_helper **php = &uemis_helper;
 	struct uemis_helper *hp = *php;
 
-	while(hp) {
+	while (hp) {
 		if (hp->diveid == diveid)
 			return hp;
 		if (hp->next) {

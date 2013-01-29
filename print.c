@@ -227,7 +227,7 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 	/* Then the cylinder stuff */
 	n = first_tank;
 	counter = 0;
-	while ( n < tank_count && n < first_tank + 4) {
+	while (n < tank_count && n < first_tank + 4) {
 		int decimals;
 		const char *unit, *desc;
 		double gas_usage;
@@ -436,7 +436,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 	maxheight = h * PANGO_SCALE * 0.9;
 
 	/* We need to know how many cylinders we used*/
-	for ( tank_count = 0; tank_count < MAX_CYLINDERS; tank_count++ ){
+	for (tank_count = 0; tank_count < MAX_CYLINDERS; tank_count++){
 		if (cylinder_nodata(dive->cylinder+tank_count)) {
 			break;
 		}
@@ -446,7 +446,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 	if (tank_count == 0) {
 		height = maxheight;
 	} else {
-		if ( tank_count<=4 ) {
+		if (tank_count<=4) {
 			height = maxheight / (tank_count + 1);
 		} else {
 			height = maxheight / 5;
@@ -521,7 +521,7 @@ static void show_table_header(cairo_t *cr, double w, double h,
 	curwidth = 0;
 	for (i = 0; i < 7; i++) {
 		cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
-		if (i == 0 || i == 2 || i == 3 ){
+		if (i == 0 || i == 2 || i == 3){
 			// Column 0, 2 and 3 (Dive #, Depth and Time) get 1/2 width
 			pango_layout_set_width(layout, colwidth/ (double) 2);
 			curwidth = curwidth + (colwidth / 2);
@@ -727,7 +727,7 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
 	cairo_stroke(cr);
 	for (i = 0; i < 6; i++) {
-		if (i == 0 || i == 2 || i == 3 ){
+		if (i == 0 || i == 2 || i == 3){
 			// Column 0, 2 and 3 (Dive #, Depth and Time) get 1/2 width
 			curwidth = curwidth + (maxwidth/7/2);
 		} else {

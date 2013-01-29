@@ -17,7 +17,7 @@ static int get_from_registry(HKEY hkey, const char *key)
 	LONG success;
 
 	success = RegQueryValueEx(hkey, (LPCTSTR)TEXT(key), NULL, NULL,
-	                         (LPBYTE) &value, (LPDWORD)&len );
+	                         (LPBYTE) &value, (LPDWORD)&len);
 	if (success != ERROR_SUCCESS)
 		return -1;
 	return value != 0;
@@ -97,7 +97,7 @@ const void *subsurface_get_conf(char *name)
 		return NULL;
 	blen = 0;
 	/* lest try to load the string in chunks of 'csize' bytes until it fits */
-	while(ret == ERROR_MORE_DATA) {
+	while (ret == ERROR_MORE_DATA) {
 		blen += csize;
 		wstring = (wchar_t *)realloc(wstring, blen * sizeof(wchar_t));
 		ret = RegQueryValueExW(hkey, (LPCWSTR)wname, NULL, NULL,

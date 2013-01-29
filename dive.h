@@ -113,9 +113,7 @@ typedef struct {
 } weightsystem_t;
 
 extern gboolean cylinder_nodata(cylinder_t *cyl);
-extern gboolean cylinder_nosamples(cylinder_t *cyl);
 extern gboolean cylinder_none(void *_data);
-extern gboolean no_cylinders(cylinder_t *cyl);
 extern gboolean no_weightsystems(weightsystem_t *ws);
 extern gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 
@@ -374,7 +372,6 @@ extern gboolean autogroup;
 #define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
 
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
-extern void remove_dive_from_trip(struct dive *);
 
 extern void delete_single_dive(int idx);
 extern void add_single_dive(int idx, struct dive *dive);

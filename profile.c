@@ -3,11 +3,6 @@
  * uses cairo to draw it
  */
 #include <glib/gi18n.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <time.h>
 
 #include "dive.h"
 #include "display.h"
@@ -173,7 +168,7 @@ void init_profile_background(struct graphics_context *gc)
 	set_source_rgba(gc, BACKGROUND);
 }
 
-void pattern_add_color_stop_rgba(struct graphics_context *gc, cairo_pattern_t *pat, double o, color_indice_t c)
+static void pattern_add_color_stop_rgba(struct graphics_context *gc, cairo_pattern_t *pat, double o, color_indice_t c)
 {
 	const color_t *col = &profile_color[c];
 	struct rgba rgb = col->media[gc->printer];
@@ -223,7 +218,7 @@ static int get_maxtime(struct plot_info *pi)
 		 * calculate the space dynamically.
 		 * This is seamless since 600/4 = 150.
 		 */
-		if ( seconds < 600 )
+		if (seconds < 600)
 			return ROUND_UP(seconds+seconds/4, 60);
 		else
 			return ROUND_UP(seconds+150, 60);
@@ -1234,8 +1229,9 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 				entry->velocity = velocity((entry[0].depth - entry[past].depth) /
 							(entry[0].sec - entry[past].sec));
 			}
-		} else
+		} else {
 			entry->velocity = STABLE;
+		}
 	}
 
 	/* One-, two- and three-minute minmax data */
@@ -1699,7 +1695,7 @@ static void populate_cylinder_pressure_data(int idx, int start, int end, struct 
 	}
 
 	/* .. and the last entry with the ending cylinder pressure */
-	for (i = pi->nr; --i >= 0; ) {
+	for (i = pi->nr; --i >= 0; /* nothing */) {
 		struct plot_data *entry = pi->entry+i;
 		if (entry->cylinderindex != idx)
 			continue;
@@ -1849,14 +1845,14 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			(entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
                                 N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
 				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -10000;
-		if(entry->mod <0)
-			entry->mod=0;
-		if(entry->ead <0)
-			entry->ead=0;
-		if(entry->end <0)
-			entry->end=0;
-		if(entry->eadd <0)
-			entry->eadd=0;
+		if (entry->mod < 0)
+			entry->mod = 0;
+		if (entry->ead < 0)
+			entry->ead = 0;
+		if (entry->end < 0)
+			entry->end = 0;
+		if (entry->eadd < 0)
+			entry->eadd = 0;
 
 		if (entry->po2 > pi->maxpp && prefs.pp_graphs.po2)
 			pi->maxpp = entry->po2;

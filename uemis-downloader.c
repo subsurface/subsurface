@@ -202,8 +202,7 @@ static gboolean uemis_init(const char *path)
 #endif
 		if (sscanf(tmp + 1, "%d", &filenr) != 1)
 			return FALSE;
-	}
-	else {
+	} else {
 		filenr = 0;
 #if UEMIS_DEBUG & 2
 		fprintf(debugfile, "::r req.txt skipped as there were fewer than 5 bytes\n");

@@ -29,19 +29,15 @@ extern int subsurface_fill_device_list(GtkListStore *store);
 extern const char *subsurface_icon_name(void);
 extern void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager);
-extern void quit(GtkWidget *w, gpointer data);
 extern gboolean on_delete(GtkWidget* w, gpointer data);
 
 extern void set_divelist_font(const char *);
 
-extern void import_files(GtkWidget *, gpointer);
 extern void update_screen(void);
 extern void download_dialog(GtkWidget *, gpointer);
 extern int is_default_dive_computer_device(const char *);
 extern int is_default_dive_computer(const char *, const char *);
 extern void add_dive_cb(GtkWidget *, gpointer);
-extern void report_error(GError* error);
-extern int process_ui_events(void);
 extern void update_progressbar(progressbar_t *progress, double value);
 extern void update_progressbar_text(progressbar_t *progress, const char *text);
 
@@ -60,14 +56,11 @@ extern GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkW
 extern void add_string_list_entry(const char *string, GtkListStore *list);
 extern int match_list(GtkListStore *list, const char *string);
 
-extern GtkWidget *dive_profile_widget(void);
 extern GtkWidget *dive_info_frame(void);
 extern GtkWidget *extended_dive_info_widget(void);
 extern GtkWidget *equipment_widget(int w_idx);
 extern GtkWidget *single_stats_widget(void);
 extern GtkWidget *total_stats_widget(void);
-extern GtkWidget *cylinder_list_widget(int w_idx);
-extern GtkWidget *weightsystem_list_widget(int w_idx);
 
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);

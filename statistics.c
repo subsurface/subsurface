@@ -3,19 +3,12 @@
  * controlled through the following interfaces:
  *
  * void show_dive_stats(struct dive *dive)
- * void flush_dive_stats_changes(struct dive *dive)
  *
  * called from gtk-ui:
  * GtkWidget *stats_widget(void)
  */
 #include <glib/gi18n.h>
 #include <ctype.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <time.h>
-#include <gdk/gdkkeysyms.h>
 
 #include "dive.h"
 #include "display.h"
@@ -106,7 +99,7 @@ enum {
 	N_COLUMNS
 };
 
-static char * get_time_string(int seconds, int maxdays);
+static char *get_time_string(int seconds, int maxdays);
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
@@ -251,7 +244,7 @@ static void add_cell_to_tree(GtkTreeStore *store, char *value, int index, GtkTre
 {
 	gtk_tree_store_set(store, parent, index, value, -1);
 }
-static char * get_minutes(int seconds)
+static char *get_minutes(int seconds)
 {
 	static char buf[80];
 	snprintf(buf, sizeof(buf), "%d:%.2d", FRACTION(seconds, 60));
@@ -335,7 +328,7 @@ static void process_interval_stats(stats_t stats_interval, GtkTreeIter *parent, 
 	}
 }
 
-void clear_statistics()
+static void clear_statistics()
 {
 	GtkTreeStore *store;
 
@@ -360,7 +353,7 @@ static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data
 	}
 }
 
-void update_yearly_stats()
+static void update_yearly_stats()
 {
 	int i, j, combined_months, month = 0;
 	GtkTreeIter year_iter, month_iter;
@@ -468,9 +461,9 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		if (current_year != tm.tm_year + 1900) {
 			current_year = tm.tm_year + 1900;
 			process_dive(dp, &(stats_yearly[++year_iter]));
-		} else
+		} else {
 			process_dive(dp, &(stats_yearly[year_iter]));
-
+		}
 		stats_yearly[year_iter].selection_size++;
 		stats_yearly[year_iter].period = current_year;
 
@@ -483,7 +476,6 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 			if (prev_month != current_month || prev_year != current_year)
 				month_iter++;
 		}
-
 		process_dive(dp, &(stats_monthly[month_iter]));
 		stats_monthly[month_iter].selection_size++;
 		stats_monthly[month_iter].period = current_month;
@@ -523,12 +515,12 @@ static void set_label(GtkWidget *w, const char *fmt, ...)
 	gtk_label_set_text(GTK_LABEL(w), buf);
 }
 
-static char * get_time_string(int seconds, int maxdays)
+static char *get_time_string(int seconds, int maxdays)
 {
 	static char buf[80];
-	if (maxdays && seconds > 3600 * 24 * maxdays)
+	if (maxdays && seconds > 3600 * 24 * maxdays) {
 		snprintf(buf, sizeof(buf), _("more than %d days"), maxdays);
-	else {
+	} else {
 		int days = seconds / 3600 / 24;
 		int hours = (seconds - days * 3600 * 24) / 3600;
 		int minutes = (seconds - days * 3600 * 24 - hours * 3600) / 60;
@@ -591,9 +583,9 @@ static void show_single_dive_stats(struct dive *dive)
 		set_label(single_w.air_press, _("unknown"));
 	}
 	value = get_volume_units(dive->sac, &decimals, &unit);
-	if (value > 0) {
+	if (value > 0)
 		set_label(single_w.sac, _("%.*f %s/min"), decimals, value, unit);
-	} else
+	else
 		set_label(single_w.sac, "");
 	set_label(single_w.otu, "%d", dive->otu);
 	offset = 0;
@@ -626,8 +618,9 @@ static void show_single_dive_stats(struct dive *dive)
 	if (gas_used) {
 		value = get_volume_units(gas_used, &decimals, &unit);
 		set_label(single_w.gas_used, "%.*f %s", decimals, value, unit);
-	} else
+	} else {
 		set_label(single_w.gas_used, "");
+	}
 }
 
 /* this gets called when at least two but not all dives are selected */
@@ -751,11 +744,6 @@ void show_dive_stats(struct dive *dive)
 	 * calculations done in 'single' */
 	show_single_dive_stats(dive);
 	show_total_dive_stats(dive);
-}
-
-void flush_dive_stats_changes(struct dive *dive)
-{
-	/* We do nothing: we require the "Ok" button press */
 }
 
 static GtkWidget *new_info_label_in_frame(GtkWidget *box, const char *label)

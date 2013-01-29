@@ -462,7 +462,7 @@ gboolean cylinder_nodata(cylinder_t *cyl)
 		!cyl->end.mbar;
 }
 
-gboolean cylinder_nosamples(cylinder_t *cyl)
+static gboolean cylinder_nosamples(cylinder_t *cyl)
 {
 	return	!cyl->sample_start.mbar &&
 		!cyl->sample_end.mbar;
@@ -474,19 +474,9 @@ gboolean cylinder_none(void *_data)
 	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
 }
 
-gboolean no_cylinders(cylinder_t *cyl)
-{
-	int i;
-
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		if (!cylinder_none(cyl + i))
-			return FALSE;
-	return TRUE;
-}
-
 /* descriptions are equal if they are both NULL or both non-NULL
    and the same text */
-gboolean description_equal(const char *desc1, const char *desc2)
+static gboolean description_equal(const char *desc1, const char *desc2)
 {
 		return ((! desc1 && ! desc2) ||
 			(desc1 && desc2 && strcmp(desc1, desc2) == 0));
@@ -1010,7 +1000,7 @@ static void ws_widget(GtkWidget *vbox, struct ws_widget *ws_widget, GtkListStore
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	if ( prefs.units.weight == KG)
+	if (prefs.units.weight == KG)
 		widget = create_spinbutton(hbox, _("kg"), 0, 50, 0.5);
 	else
 		widget = create_spinbutton(hbox, _("lbs"), 0, 110, 1);
@@ -1440,7 +1430,7 @@ static void ws_row_activated_cb(GtkTreeView *tree_view,
 	ws_edit_cb(GTK_WIDGET(tree_view), w_idx);
 }
 
-GtkWidget *cylinder_list_widget(int w_idx)
+static GtkWidget *cylinder_list_widget(int w_idx)
 {
 	GtkListStore *model = cylinder_list[w_idx].model;
 	GtkWidget *tree_view;
@@ -1469,7 +1459,7 @@ GtkWidget *cylinder_list_widget(int w_idx)
 	return tree_view;
 }
 
-GtkWidget *weightsystem_list_widget(int w_idx)
+static GtkWidget *weightsystem_list_widget(int w_idx)
 {
 	GtkListStore *model = weightsystem_list[w_idx].model;
 	GtkWidget *tree_view;

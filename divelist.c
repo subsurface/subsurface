@@ -140,7 +140,7 @@ static void first_leaf(GtkTreeModel *model, GtkTreeIter *iter, int *diveidx)
 			gtk_tree_path_free(tpath);
 			return;
 		}
-		if(!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
+		if (!gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), tpath))
 			gtk_tree_view_expand_row(GTK_TREE_VIEW(dive_list.tree_view), tpath, FALSE);
 		gtk_tree_path_free(tpath);
 		gtk_tree_model_get(model, iter, DIVE_INDEX, diveidx, -1);
@@ -163,7 +163,7 @@ static struct dive *dive_from_path(GtkTreePath *path)
 
 /* make sure that if we expand a summary row that is selected, the children show
    up as selected, too */
-void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
+static void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
 {
 	GtkTreeIter child;
 	GtkTreeModel *model = MODEL(dive_list);
@@ -208,7 +208,7 @@ static int selected_children(GtkTreeModel *model, GtkTreeIter *iter)
 
 /* Make sure that if we collapse a summary row with any selected children, the row
    shows up as selected too */
-void row_collapsed_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
+static void row_collapsed_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
 {
 	GtkTreeModel *model = MODEL(dive_list);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
@@ -873,7 +873,7 @@ GdkPixbuf *get_gps_icon(void)
 	return gdk_pixbuf_from_pixdata(&my_pixbuf, TRUE, NULL);
 }
 
-GdkPixbuf *get_gps_icon_for_dive(struct dive *dive)
+static GdkPixbuf *get_gps_icon_for_dive(struct dive *dive)
 {
 	if (dive_has_location(dive))
 		return get_gps_icon();
@@ -1143,7 +1143,7 @@ static void find_new_trip_start_time(dive_trip_t *trip)
 	trip->when = when;
 }
 
-void remove_dive_from_trip(struct dive *dive)
+static void remove_dive_from_trip(struct dive *dive)
 {
 	struct dive *next, **pprev;
 	dive_trip_t *trip = dive->divetrip;
@@ -1509,7 +1509,7 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 	free(dive);
 }
 
-void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
+static void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
 	GtkTreeIter iter;
 	timestamp_t when;
@@ -1522,19 +1522,19 @@ void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 		gtk_tree_store_set(STORE(dive_list), &iter, DIVE_LOCATION, dive_trip->location, -1);
 }
 
-void edit_selected_dives_cb(GtkWidget *menuitem, gpointer data)
+static void edit_selected_dives_cb(GtkWidget *menuitem, gpointer data)
 {
 	edit_multi_dive_info(NULL);
 }
 
-void edit_dive_from_path_cb(GtkWidget *menuitem, GtkTreePath *path)
+static void edit_dive_from_path_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
 	struct dive *dive = dive_from_path(path);
 
 	edit_multi_dive_info(dive);
 }
 
-void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
+static void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 {
 	GtkWidget *dialog, *cal, *h, *m;
 	timestamp_t when;
@@ -1957,7 +1957,7 @@ static gboolean add_rowref_if_selected(GtkTreeModel *model, GtkTreePath *path,
 	struct dive *dive;
 
 	gtk_tree_model_get(MODEL(dive_list), iter, DIVE_INDEX, &idx, -1);
-	if (idx >=0 ) {
+	if (idx >=0) {
 		dive = get_dive(idx);
 		if (dive->selected) {
 			/* we need to store the Row References as those
@@ -1980,7 +1980,7 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 	if (!gtk_tree_model_iter_parent(MODEL(dive_list), &parent, &iter))
 		return;
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-	if (idx < 0 )
+	if (idx < 0)
 		return;
 	dive = get_dive(idx);
 	if (dive->selected) {
@@ -2002,7 +2002,7 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 	mark_divelist_changed(TRUE);
 }
 
-void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
+static void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 {
 	GtkTreeIter newiter, parent, child, *lastiter = &parent;
 	struct dive *dive;
@@ -2016,7 +2016,7 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 	childpath = gtk_tree_path_copy(trippath);
 	gtk_tree_path_down(childpath);
 	for (;;) {
-		if( ! gtk_tree_model_get_iter(MODEL(dive_list), &child, childpath))
+		if ( ! gtk_tree_model_get_iter(MODEL(dive_list), &child, childpath))
 			break;
 		gtk_tree_store_insert_after(STORE(dive_list), &newiter, NULL, lastiter);
 		copy_tree_node(&child, &newiter);
@@ -2041,7 +2041,7 @@ void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
 #endif
 }
 
-void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
+static void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 {
 	int success;
 	GtkWidget *dialog;
@@ -2063,7 +2063,7 @@ void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	mark_divelist_changed(TRUE);
 }
 
-void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
+static void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 {
 	GtkTreePath *prevpath;
 	GtkTreeIter thistripiter, prevtripiter;
@@ -2571,14 +2571,14 @@ static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 		return;
 
 	gtk_tree_sortable_get_sort_column_id(treeview, &colid, &order);
-	if(colid == lastcol) {
+	if (colid == lastcol) {
 		/* we just changed sort order */
 		sortorder[colid] = order;
 		return;
 	} else {
 		lastcol = colid;
 	}
-	if(colid == DIVE_NR)
+	if (colid == DIVE_NR)
 		dive_list.model = dive_list.treemodel;
 	else
 		dive_list.model = dive_list.listmodel;
@@ -2613,13 +2613,13 @@ static void deselect_dive(int idx)
 		amount_selected--;
 		if (selected_dive == idx && amount_selected > 0) {
 			/* pick a different dive as selected */
-			while(--selected_dive >= 0) {
+			while (--selected_dive >= 0) {
 				dive = get_dive(selected_dive);
 				if (dive && dive->selected)
 					return;
 			}
 			selected_dive = idx;
-			while(++selected_dive < dive_table.nr) {
+			while (++selected_dive < dive_table.nr) {
 				dive = get_dive(selected_dive);
 				if (dive && dive->selected)
 					return;
@@ -2630,7 +2630,7 @@ static void deselect_dive(int idx)
 	}
 }
 
-gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *model,
+static gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *model,
 				GtkTreePath *path, gboolean was_selected, gpointer userdata)
 {
 	int idx;
@@ -2845,7 +2845,7 @@ static GtkTreeIter *get_iter_from_idx(int idx)
 	return iteridx.iter;
 }
 
-void scroll_to_selected(GtkTreeIter *iter)
+static void scroll_to_selected(GtkTreeIter *iter)
 {
 	GtkTreePath *treepath;
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), iter);

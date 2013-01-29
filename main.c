@@ -305,7 +305,7 @@ int main(int argc, char **argv)
 	 * so that it uses the correct system directory when
 	 * subsurface isn't run from the local directory */
 	path = subsurface_gettext_domainpath(argv[0]);
-	setlocale( LC_ALL, "" );
+	setlocale(LC_ALL, "");
 	bindtextdomain("subsurface", path);
 	bind_textdomain_codeset("subsurface", "utf-8");
 	textdomain("subsurface");

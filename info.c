@@ -563,7 +563,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 	free(rating_string);
 
 	new_text = (char *)gtk_entry_get_text(info->airtemp);
-	if(sscanf(new_text, "%lf", &newtemp) == 1) {
+	if (sscanf(new_text, "%lf", &newtemp) == 1) {
 		unsigned long mkelvin;
 		switch (prefs.units.temperature) {
 		case CELSIUS:
@@ -619,7 +619,7 @@ struct location_update {
 	void (*callback)(float, float);
 } location_update;
 
-void print_gps_coordinates(char *buffer, int len, float lat, float lon)
+static void print_gps_coordinates(char *buffer, int len, float lat, float lon)
 {
 	unsigned int latdeg, londeg;
 	float latmin, lonmin;
@@ -638,7 +638,7 @@ void print_gps_coordinates(char *buffer, int len, float lat, float lon)
 		lonh, londeg, UTF8_DEGREE, lonmin);
 }
 
-void update_gps_entry(float lat, float lon)
+static void update_gps_entry(float lat, float lon)
 {
 	char gps_text[45];
 
@@ -831,7 +831,7 @@ static void update_cylinder(cylinder_t *dst, cylinder_t *src, cylinder_t *orig)
    data if it has changed in the master dive and the other dive
    either has no entries for the equipment or the same entries
    as the master dive had before it was edited */
-void update_equipment_data(struct dive *dive, struct dive *master)
+static void update_equipment_data(struct dive *dive, struct dive *master)
 {
 	int i;
 

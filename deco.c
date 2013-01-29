@@ -104,9 +104,9 @@ static double tissue_tolerance_calc(const struct dive *dive)
 
 #if !GF_LOW_AT_MAXDEPTH
 		lowest_ceiling = (buehlmann_inertgas_b * tissue_inertgas_saturation - gf_low * buehlmann_inertgas_a * buehlmann_inertgas_b) /
-		  ((1.0 - buehlmann_inertgas_b) * gf_low + buehlmann_inertgas_b);
-		if(lowest_ceiling > gf_low_pressure_this_dive)
-		  gf_low_pressure_this_dive = lowest_ceiling;
+			((1.0 - buehlmann_inertgas_b) * gf_low + buehlmann_inertgas_b);
+		if (lowest_ceiling > gf_low_pressure_this_dive)
+			gf_low_pressure_this_dive = lowest_ceiling;
 #endif
 
 		tissue_tolerated_ambient_pressure[ci] = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
@@ -258,10 +258,10 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 
 	depth = rel_mbar_to_depth(pressure_delta * 1000, dive);
 
-	if(!smooth)
+	if (!smooth)
 		depth = ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM;
 
-	if(depth > 0 && depth < buehlmann_config.last_deco_stop_in_mtr * 1000)
+	if (depth > 0 && depth < buehlmann_config.last_deco_stop_in_mtr * 1000)
 		depth = buehlmann_config.last_deco_stop_in_mtr * 1000;
 
 	return depth;
