@@ -135,6 +135,14 @@ static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 	osm_gps_map_track_add(map, track);
 }
 
+static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data)
+{
+	if ((event->string != NULL && event->keyval == GDK_Escape) ||
+			(event->string != NULL && event->keyval == GDK_w && event->state & GDK_CONTROL_MASK)) {
+		gtk_widget_destroy(window);
+	}
+}
+
 OsmGpsMap *init_map(void)
 {
 	OsmGpsMap *map;
@@ -187,6 +195,7 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 		gtk_window_set_modal(GTK_WINDOW(*window), TRUE);
 		g_signal_connect(*window, "destroy", G_CALLBACK(on_close), (gpointer)window);
 		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);
+        g_signal_connect(*window, "key_press_event", G_CALLBACK (key_press_event), NULL);
 	}
 	if (callback)
 		g_signal_connect(G_OBJECT(map), "button-press-event", G_CALLBACK(button_cb), callback);
