@@ -440,19 +440,6 @@ static inline struct dive *get_dive(int nr)
 	return dive_table.dives[nr];
 }
 
-static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
-{
-	int i;
-	for (i = 0; i < dive_table.nr; i++)
-		if (dive_table.dives[i]->dc.diveid == diveid &&
-		    dive_table.dives[i]->dc.deviceid == deviceid)
-			return dive_table.dives[i];
-	return NULL;
-}
-
-/* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
-extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
-
 /*
  * Iterate over each dive, with the first parameter being the index
  * iterator variable, and the second one being the dive one.
@@ -462,6 +449,24 @@ extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
  */
 #define for_each_dive(_i,_x) \
 	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
+
+static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
+{
+	int i;
+	struct dive *dive;
+
+	for_each_dive(i, dive) {
+		struct divecomputer *dc = &dive->dc;
+		do {
+			if (dc->diveid == diveid && dc->deviceid == deviceid)
+				return dive;
+		} while ((dc = dc->next) != NULL);
+	}
+	return NULL;
+}
+
+/* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
+extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
