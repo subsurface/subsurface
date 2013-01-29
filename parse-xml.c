@@ -168,25 +168,26 @@ static enum import_source {
 static void divedate(char *buffer, void *_when)
 {
 	int d,m,y;
+	int hh,mm,ss;
 	timestamp_t *when = _when;
-	int success;
 
-	success = cur_tm.tm_sec | cur_tm.tm_min | cur_tm.tm_hour;
-	if (sscanf(buffer, "%d.%d.%d", &d, &m, &y) == 3) {
-		cur_tm.tm_year = y;
-		cur_tm.tm_mon = m-1;
-		cur_tm.tm_mday = d;
-	} else if (sscanf(buffer, "%d-%d-%d", &y, &m, &d) == 3) {
-		cur_tm.tm_year = y;
-		cur_tm.tm_mon = m-1;
-		cur_tm.tm_mday = d;
+	hh = 0; mm = 0; ss = 0;
+	if (sscanf(buffer, "%d.%d.%d %d:%d:%d", &d, &m, &y, &hh, &mm, &ss) >= 3) {
+		/* This is ok, and we got at least the date */
+	} else if (sscanf(buffer, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) >= 3) {
+		/* This is also ok */
 	} else {
 		fprintf(stderr, "Unable to parse date '%s'\n", buffer);
-		success = 0;
+		return;
 	}
+	cur_tm.tm_year = y;
+	cur_tm.tm_mon = m-1;
+	cur_tm.tm_mday = d;
+	cur_tm.tm_hour = hh;
+	cur_tm.tm_min = mm;
+	cur_tm.tm_sec = ss;
 
-	if (success)
-		*when = utc_mktime(&cur_tm);
+	*when = utc_mktime(&cur_tm);
 }
 
 static void divetime(char *buffer, void *_when)
@@ -198,8 +199,7 @@ static void divetime(char *buffer, void *_when)
 		cur_tm.tm_hour = h;
 		cur_tm.tm_min = m;
 		cur_tm.tm_sec = s;
-		if (cur_tm.tm_year)
-			*when = utc_mktime(&cur_tm);
+		*when = utc_mktime(&cur_tm);
 	}
 }
 
