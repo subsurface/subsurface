@@ -2595,11 +2595,13 @@ static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 	}
 }
 
-static void select_dive(struct dive *dive)
+static void select_dive(int idx)
 {
+	struct dive *dive = get_dive(idx);
 	if (dive && !dive->selected) {
 		dive->selected = 1;
 		amount_selected++;
+		selected_dive = idx;
 	}
 }
 
@@ -2624,10 +2626,10 @@ static void entry_selected(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 		/* Otherwise, consider each dive under it selected */
 		for_each_dive(i, dive) {
 			if (dive->divetrip == trip)
-				select_dive(dive);
+				select_dive(i);
 		}
 	} else {
-		select_dive(get_dive(idx));
+		select_dive(idx);
 	}
 }
 
