@@ -1350,7 +1350,7 @@ static void visit_one_node(xmlNode *node)
 		return;
 
 	/* Don't print out the node name if it is "text" */
-	if (!strcmp(node->name, "text"))
+	while (!node->name || !strcmp(node->name, "text"))
 		node = node->parent;
 
 	name = nodename(node, buffer, sizeof(buffer));
@@ -1437,6 +1437,11 @@ static void traverse(xmlNode *root)
 
 	for (n = root; n; n = n->next) {
 		struct nesting *rule = nesting;
+
+		if (!n->name) {
+			visit(n);
+			continue;
+		}
 
 		do {
 			if (!strcmp(rule->name, n->name))
