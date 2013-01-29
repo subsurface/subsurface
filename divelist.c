@@ -763,7 +763,7 @@ static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
 		if (sample->po2) {
-			po2 = sample->po2;
+			po2 = sample->po2 / 1000.0;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
 			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive) / 1000.0;

@@ -112,7 +112,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(lastdepth, sample->depth.mm, j - t0, t1 - t0);
 			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-						       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
+						       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000.0, dive);
 		}
 		psample = sample;
 		t0 = t1;
@@ -139,7 +139,7 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
 		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
+					       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000.0, dive);
 	}
 	return wait;
 }
@@ -173,7 +173,9 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct dive *dive;
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
+	struct sample *sample;
 	int oldo2 = O2_IN_AIR, oldhe = 0;
+	int oldpo2 = 0;
 	int lasttime = 0;
 
 	if (!diveplan || !diveplan->dp)
@@ -194,12 +196,15 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		oldo2 = dp->o2;
 		oldhe = dp->he;
 	}
+	sample = prepare_sample(dc);
+	sample->po2 = dp->po2;
+	finish_sample(dc);
 	add_gas(dive, oldo2, oldhe);
 	while (dp) {
 		int o2 = dp->o2, he = dp->he;
+		int po2 = dp->po2 ? : oldpo2;
 		int time = dp->time;
 		int depth = dp->depth;
-		struct sample *sample;
 
 		if (time == 0) {
 			/* special entries that just inform the algorithm about
@@ -223,13 +228,18 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 
 		/* Create sample */
 		sample = prepare_sample(dc);
+		/* set po2 at beginning of this segment */
+		/* and keep it valid for last sample - where it likely doesn't matter */
+		sample[-1].po2 = po2;
+		sample->po2 = po2;
 		sample->time.seconds = time;
 		sample->depth.mm = depth;
 		finish_sample(dc);
 		lasttime = time;
+		oldpo2 = po2;
 		dp = dp->next;
 	}
-	if (dc->samples == 0) {
+	if (dc->samples <= 1) {
 		/* not enough there yet to create a dive - most likely the first time is missing */
 		free(dive);
 		dive = NULL;
@@ -250,7 +260,7 @@ void free_dps(struct divedatapoint *dp)
 	}
 }
 
-struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he)
+struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2)
 {
 	struct divedatapoint *dp;
 
@@ -259,6 +269,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he)
 	dp->depth = depth;
 	dp->o2 = o2;
 	dp->he = he;
+	dp->po2 = po2;
 	dp->entered = FALSE;
 	dp->next = NULL;
 	return dp;
@@ -275,7 +286,7 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 		dp = dp->next;
 	}
 	while (i++ <= idx) {
-		*ldpp = dp = create_dp(0, 0, 0, 0);
+		*ldpp = dp = create_dp(0, 0, 0, 0, 0);
 		ldpp = &((*ldpp)->next);
 	}
 	return dp;
@@ -309,6 +320,13 @@ void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he)
 	dp->o2 = o2;
 	dp->he = he;
 }
+
+void add_po2_to_nth_dp(struct diveplan *diveplan, int idx, int po2)
+{
+	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
+	dp->po2 = po2;
+}
+
 void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
 	struct divedatapoint **lastdp = &diveplan->dp;
@@ -325,9 +343,9 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		dp->time += lasttime;
 }
 
-void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he)
+void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2)
 {
-	struct divedatapoint *dp = create_dp(duration, depth, o2, he);
+	struct divedatapoint *dp = create_dp(duration, depth, o2, he, po2);
 	add_to_end_of_diveplan(diveplan, dp);
 }
 
@@ -528,7 +546,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 {
 	struct dive *dive;
 	struct sample *sample;
-	int wait_time, o2, he;
+	int wait_time, o2, he, po2;
 	int ceiling, depth, transitiontime;
 	int stopidx, gi;
 	double tissue_tolerance;
@@ -551,6 +569,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 	o2 = dive->cylinder[0].gasmix.o2.permille;
 	he = dive->cylinder[0].gasmix.he.permille;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
+	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
@@ -581,7 +600,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 #if DEBUG_PLAN & 2
 		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx] / 1000.0);
 #endif
-		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he);
+		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
 		*divep = dive = create_dive_from_plan(diveplan);
@@ -605,12 +624,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 		printf("waittime %d:%02d at depth %5.2lfm\n", FRACTION(wait_time, 60), stoplevels[stopidx] / 1000.0);
 #endif
 		if (wait_time)
-			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he);
+			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he, po2);
 		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
 #if DEBUG_PLAN & 2
 		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx - 1] / 1000.0);
 #endif
-		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he);
+		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
 		*divep = dive = create_dive_from_plan(diveplan);
@@ -827,6 +846,29 @@ static int validate_depth(const char *text, int *mm_p)
 	return 1;
 }
 
+static int validate_po2(const char *text, int *mbar_po2)
+{
+	int po2;
+
+	if (!text)
+		return 0;
+
+	po2 = get_tenths(text, &text);
+	if (po2 < 0)
+		return 0;
+
+	while (isspace(*text))
+		text++;
+
+	while (isspace(*text))
+		text++;
+	if (*text)
+		return 0;
+
+	*mbar_po2 = po2 * 100;
+	return 1;
+}
+
 static int validate_volume(const char *text, int *sac)
 {
 	int volume, imperial;
@@ -880,7 +922,7 @@ static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
 }
 
 #define MAX_WAYPOINTS 8
-GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS];
+GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS], *entry_po2[MAX_WAYPOINTS];
 int nr_waypoints = 0;
 static GtkListStore *gas_model = NULL;
 struct diveplan diveplan = {};
@@ -980,6 +1022,19 @@ static gboolean duration_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoint
 	return FALSE;
 }
 
+static gboolean po2_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	const char *po2text;
+	int po2;
+	int idx = data - NULL;
+
+	po2text = gtk_entry_get_text(GTK_ENTRY(entry));
+	if (validate_po2(po2text, &po2))
+		add_po2_to_nth_dp(&diveplan, idx, po2);
+	show_planned_dive();
+	return FALSE;
+}
+
 /* Subsurface follows the lead of most divecomputers to use times
  * without timezone - so all times are implicitly assumed to be
  * local time of the dive location; so in order to give the current
@@ -1050,7 +1105,7 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int
 		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
 		add_string_list_entry("AIR", gas_model);
 		add_string_list_entry("EAN32", gas_model);
-		add_string_list_entry("EAN36 @ 1.6", gas_model);
+		add_string_list_entry("EAN36", gas_model);
 	}
 	combo = combo_box_with_model_and_entry(gas_model);
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
@@ -1077,15 +1132,19 @@ static void add_waypoint_widgets(GtkWidget *box, int idx)
 		entry_depth[idx] = add_entry_to_box(hbox, _("Ending Depth"));
 		entry_duration[idx] = add_entry_to_box(hbox, _("Segment Time"));
 		entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"), idx);
+		entry_po2[idx] = add_entry_to_box(hbox, _("CC SetPoint"));
 	} else {
 		entry_depth[idx] = add_entry_to_box(hbox, NULL);
 		entry_duration[idx] = add_entry_to_box(hbox, NULL);
 		entry_gas[idx] = add_gas_combobox_to_box(hbox, NULL, idx);
+		entry_po2[idx] = add_entry_to_box(hbox, NULL);
 	}
 	gtk_widget_add_events(entry_depth[idx], GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(entry_depth[idx], "focus-out-event", G_CALLBACK(depth_focus_out_cb), NULL + idx);
 	gtk_widget_add_events(entry_duration[idx], GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(entry_duration[idx], "focus-out-event", G_CALLBACK(duration_focus_out_cb), NULL + idx);
+	gtk_widget_add_events(entry_po2[idx], GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(entry_po2[idx], "focus-out-event", G_CALLBACK(po2_focus_out_cb), NULL + idx);
 }
 
 static void add_waypoint_cb(GtkButton *button, gpointer _data)
@@ -1141,7 +1200,8 @@ void input_plan()
 						"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
 						"An entry that has a depth and a gas given but no time is special; it "
 						"informs the planner that the gas specified is available for the ascent "
-						"once the depth given has been reached.</small>"));
+						"once the depth given has been reached.\n"
+						"CC SetPoint specifies CC dives, leave empty for OC.</small>"));
 	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
 	gtk_box_pack_start(GTK_BOX(outervbox), label, TRUE, TRUE, 0);
