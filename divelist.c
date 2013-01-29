@@ -2605,6 +2605,38 @@ static void select_dive(int idx)
 	}
 }
 
+static void deselect_dive(int idx)
+{
+	struct dive *dive = get_dive(idx);
+	if (dive && dive->selected) {
+		dive->selected = 0;
+		amount_selected--;
+		if (selected_dive > idx)
+			selected_dive--;
+	}
+}
+
+gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *model,
+				GtkTreePath *path, gboolean was_selected, gpointer userdata)
+{
+	int idx;
+	timestamp_t when;
+	GtkTreeIter iter;
+
+	if (!was_selected)
+		return TRUE;
+	gtk_tree_model_get_iter(model, &iter, path);
+	gtk_tree_model_get(model, &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+	if (idx < 0) {
+		dive_trip_t *trip = find_trip_by_time(when);
+		if (trip)
+			trip->selected = 0;
+	} else {
+		deselect_dive(idx);
+	}
+	return TRUE;
+}
+
 /* This gets called for each selected entry after a selection has changed */
 static void entry_selected(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
@@ -2636,13 +2668,6 @@ static void entry_selected(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 /* this is called when gtk thinks that the selection has changed */
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
-	int i;
-	struct dive *dive;
-
-	amount_selected = 0;
-	for_each_dive(i, dive)
-		dive->selected = 0;
-
 	gtk_tree_selection_selected_foreach(selection, entry_selected, model);
 
 #if DEBUG_SELECTION_TRACKING
@@ -2739,6 +2764,8 @@ GtkWidget *dive_list_create(void)
 	g_signal_connect(selection, "changed", G_CALLBACK(selection_cb), dive_list.model);
 	g_signal_connect(dive_list.listmodel, "sort-column-changed", G_CALLBACK(sort_column_change_cb), NULL);
 	g_signal_connect(dive_list.treemodel, "sort-column-changed", G_CALLBACK(sort_column_change_cb), NULL);
+
+	gtk_tree_selection_set_select_function(selection, modify_selection_cb, NULL, NULL);
 
 	dive_list.container_widget = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dive_list.container_widget),
