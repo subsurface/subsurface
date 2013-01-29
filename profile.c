@@ -419,8 +419,7 @@ static void plot_events(struct graphics_context *gc, struct plot_info *pi, struc
 		return;
 
 	while (event) {
-		if (event->flags != SAMPLE_FLAGS_BEGIN && event->flags != SAMPLE_FLAGS_END)
-			plot_one_event(gc, pi, event, &tro);
+		plot_one_event(gc, pi, event, &tro);
 		event = event->next;
 	}
 }
