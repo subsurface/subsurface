@@ -1004,7 +1004,11 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".latitude", gps_lat, dive))
 		return;
+	if (MATCH(".sitelat", gps_lat, dive))
+		return;
 	if (MATCH(".longitude", gps_long, dive))
+		return;
+	if (MATCH(".sitelon", gps_long, dive))
 		return;
 	if (MATCH(".location", utf8_string, &dive->location))
 		return;
