@@ -112,7 +112,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(lastdepth, sample->depth.mm, j - t0, t1 - t0);
 			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-						       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000, dive);
+						       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000.0, dive);
 		}
 		psample = sample;
 		t0 = t1;
@@ -139,7 +139,7 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
 		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					       &dive->cylinder[gasidx].gasmix, 1, 1.1, dive);
+					       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000.0, dive);
 	}
 	return wait;
 }
@@ -173,7 +173,9 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct dive *dive;
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
+	struct sample *sample;
 	int oldo2 = O2_IN_AIR, oldhe = 0;
+	int oldpo2 = 0;
 	int lasttime = 0;
 
 	if (!diveplan || !diveplan->dp)
@@ -194,13 +196,15 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		oldo2 = dp->o2;
 		oldhe = dp->he;
 	}
+	sample = prepare_sample(dc);
+	sample->po2 = dp->po2;
+	finish_sample(dc);
 	add_gas(dive, oldo2, oldhe);
 	while (dp) {
 		int o2 = dp->o2, he = dp->he;
-		int po2 = dp->po2;
+		int po2 = dp->po2 ? : oldpo2;
 		int time = dp->time;
 		int depth = dp->depth;
-		struct sample *sample;
 
 		if (time == 0) {
 			/* special entries that just inform the algorithm about
@@ -224,14 +228,18 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 
 		/* Create sample */
 		sample = prepare_sample(dc);
+		/* set po2 at beginning of this segment */
+		/* and keep it valid for last sample - where it likely doesn't matter */
+		sample[-1].po2 = po2;
 		sample->po2 = po2;
 		sample->time.seconds = time;
 		sample->depth.mm = depth;
 		finish_sample(dc);
 		lasttime = time;
+		oldpo2 = po2;
 		dp = dp->next;
 	}
-	if (dc->samples == 0) {
+	if (dc->samples <= 1) {
 		/* not enough there yet to create a dive - most likely the first time is missing */
 		free(dive);
 		dive = NULL;
@@ -1097,7 +1105,7 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int
 		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
 		add_string_list_entry("AIR", gas_model);
 		add_string_list_entry("EAN32", gas_model);
-		add_string_list_entry("EAN36 @ 1.6", gas_model);
+		add_string_list_entry("EAN36", gas_model);
 	}
 	combo = combo_box_with_model_and_entry(gas_model);
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
