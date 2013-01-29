@@ -753,7 +753,7 @@ GError *do_import(device_data_t *data)
 			switch (result) {
 			case GTK_RESPONSE_CANCEL:
 				import_thread_cancelled = TRUE;
-				progress_bar_text = "Cancelled...";
+				progress_bar_text = _("Cancelled...");
 				break;
 			default:
 				/* nothing */

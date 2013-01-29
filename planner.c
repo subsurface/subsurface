@@ -188,7 +188,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	dive->when = diveplan->when;
 	dive->dc.surface_pressure.mbar = diveplan->surface_pressure;
 	dc = &dive->dc;
-	dc->model = strdup("Simulated Dive");
+	dc->model = strdup(_("Simulated Dive"));
 	dp = diveplan->dp;
 
 	/* let's start with the gas given on the first segment */
@@ -458,7 +458,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	if (!dp)
 		return;
 
-	snprintf(buffer, sizeof(buffer), "Subsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n",
+	snprintf(buffer, sizeof(buffer), _("Subsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
 						plangflow * 100, plangfhigh * 100);
 	/* we start with gas 0, then check if that was changed */
 	o2 = dive->cylinder[0].gasmix.o2.permille;
@@ -499,7 +499,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		if (dp->depth != lastdepth) {
 			used = diveplan->bottomsac / 1000.0 * depth_to_mbar((dp->depth + lastdepth) / 2, dive) *
 						(dp->time - lasttime) / 60;
-			snprintf(buffer + len, sizeof(buffer) - len, "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n",
+			snprintf(buffer + len, sizeof(buffer) - len, _("Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
 							FRACTION(dp->time, 60),
@@ -508,7 +508,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 			/* we use deco SAC rate during the calculated deco stops, bottom SAC rate everywhere else */
 			int sac = dp->entered ? diveplan->bottomsac : diveplan->decosac;
 			used = sac / 1000.0 * depth_to_mbar(dp->depth, dive) * (dp->time - lasttime) / 60;
-			snprintf(buffer + len, sizeof(buffer) - len, "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n",
+			snprintf(buffer + len, sizeof(buffer) - len, _("Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
 							FRACTION(dp->time, 60),
@@ -518,7 +518,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		get_gas_string(newo2, newhe, gas, 12);
 		if (o2 != newo2 || he != newhe) {
 			len = strlen(buffer);
-			snprintf(buffer + len, sizeof(buffer) - len, "Switch gas to %s\n", gas);
+			snprintf(buffer + len, sizeof(buffer) - len, _("Switch gas to %s\n"), gas);
 		}
 		o2 = newo2;
 		he = newhe;
@@ -526,7 +526,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		lastdepth = dp->depth;
 	} while((dp = dp->next) != NULL);
 	len = strlen(buffer);
-	snprintf(buffer + len, sizeof(buffer) - len, "Gas consumption:\n");
+	snprintf(buffer + len, sizeof(buffer) - len, _("Gas consumption:\n"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
@@ -537,7 +537,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		volume = get_volume_units(consumption[gasidx], NULL, &unit);
 		get_gas_string(dive->cylinder[gasidx].gasmix.o2.permille,
 				dive->cylinder[gasidx].gasmix.he.permille, gas, 12);
-		snprintf(buffer + len, sizeof(buffer) - len, "%.0f%s of %s\n", volume, unit, gas);
+		snprintf(buffer + len, sizeof(buffer) - len, _("%.0f%s of %s\n"), volume, unit, gas);
 	}
 	dive->notes = strdup(buffer);
 }
@@ -722,9 +722,9 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 	if (!*text)
 		return 0;
 
-	if (!strcasecmp(text, "air")) {
+	if (!strcasecmp(text, _("air"))) {
 		o2 = O2_IN_AIR; he = 0; text += 3;
-	} else if (!strncasecmp(text, "ean", 3)) {
+	} else if (!strncasecmp(text, _("ean"), 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
 	} else {
 		o2 = get_permille(text, &text); he = 0;
@@ -828,7 +828,7 @@ static int validate_depth(const char *text, int *mm_p)
 	if (*text == 'm') {
 		imperial = 0;
 		text++;
-	} else if (!strcasecmp(text, "ft")) {
+	} else if (!strcasecmp(text, _("ft"))) {
 		imperial = 1;
 		text += 2;
 	}
@@ -887,13 +887,13 @@ static int validate_volume(const char *text, int *sac)
 	if (*text == 'l') {
 		imperial = 0;
 		text++;
-	} else if (!strncasecmp(text, "cuft", 4)) {
+	} else if (!strncasecmp(text, _("cuft"), 4)) {
 		imperial = 1;
 		text += 4;
 	}
 	while (isspace(*text) || *text == '/')
 		text++;
-	if (!strncasecmp(text, "min", 3))
+	if (!strncasecmp(text, _("min"), 3))
 		text += 3;
 	while (isspace(*text))
 		text++;
@@ -1103,9 +1103,9 @@ static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int
 
 	if (!gas_model) {
 		gas_model = gtk_list_store_new(1, G_TYPE_STRING);
-		add_string_list_entry("AIR", gas_model);
-		add_string_list_entry("EAN32", gas_model);
-		add_string_list_entry("EAN36", gas_model);
+		add_string_list_entry(_("AIR"), gas_model);
+		add_string_list_entry(_("EAN32"), gas_model);
+		add_string_list_entry(_("EAN36"), gas_model);
 	}
 	combo = combo_box_with_model_and_entry(gas_model);
 	gtk_widget_add_events(combo, GDK_FOCUS_CHANGE_MASK);
@@ -1201,7 +1201,7 @@ void input_plan()
 						"An entry that has a depth and a gas given but no time is special; it "
 						"informs the planner that the gas specified is available for the ascent "
 						"once the depth given has been reached.\n"
-						"CC SetPoint specifies CC dives, leave empty for OC.</small>"));
+						"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>"));
 	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
 	gtk_box_pack_start(GTK_BOX(outervbox), label, TRUE, TRUE, 0);
@@ -1215,13 +1215,13 @@ void input_plan()
 	hbox = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 	if (get_units()->volume == CUFT) {
-		bottom_sac = "0.7 cuft/min";
-		deco_sac = "0.6 cuft/min";
+		bottom_sac = _("0.7 cuft/min");
+		deco_sac = _("0.6 cuft/min");
 		diveplan.bottomsac = 1000 * cuft_to_l(0.7);
 		diveplan.decosac = 1000 * cuft_to_l(0.6);
 	} else {
-		bottom_sac = "20 l/min";
-		deco_sac = "17 l/min";
+		bottom_sac = _("20 l/min");
+		deco_sac = _("17 l/min");
 		diveplan.bottomsac = 20000;
 		diveplan.decosac = 17000;
 	}

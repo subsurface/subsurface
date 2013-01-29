@@ -1268,17 +1268,17 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 	/* columns */
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "background", C_INACTIVE, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "Model",
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, _("Model"),
 							renderer, "text", NE_MODEL, NULL);
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "background", C_INACTIVE, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "Device Id",
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, _("Device Id"),
 							renderer, "text", NE_ID_STR, NULL);
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "background", C_INACTIVE, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "Nickname",
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, _("Nickname"),
 							renderer, "text", NE_NICKNAME, NULL);
 	g_object_set(renderer, "editable", TRUE, NULL);
 	g_object_set(renderer, "background", C_ACTIVE, NULL);

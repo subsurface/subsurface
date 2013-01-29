@@ -179,7 +179,7 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 		*window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_window_set_position(GTK_WINDOW(*window), GTK_WIN_POS_MOUSE);
 		gtk_window_set_default_size(GTK_WINDOW(*window), 640, 480);
-		gtk_window_set_title(GTK_WINDOW(*window), _("Dives locations"));
+		gtk_window_set_title(GTK_WINDOW(*window), _("Dive locations"));
 		gtk_container_set_border_width(GTK_CONTAINER(*window), 5);
 		gtk_window_set_resizable(GTK_WINDOW(*window), TRUE);
 		gtk_container_add(GTK_CONTAINER(*window), GTK_WIDGET(map));

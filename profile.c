@@ -399,7 +399,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 						_(event->name), _("air"));
 				else
 					snprintf(buffer, sizeof(buffer), "%s: %u%% %s",
-						_(event->name), o2, _("O" UTF8_SUBSCRIPT_2));
+						_(event->name), o2, "O" UTF8_SUBSCRIPT_2);
 			}
 		} else {
 			snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
@@ -2081,21 +2081,21 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	double depthvalue, tempvalue;
 
 	depthvalue = get_depth_units(depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, "D:%.1f %s", depthvalue, depth_unit);
+	snprintf(buf, bufsize, _("D:%.1f %s"), depthvalue, depth_unit);
 	if (pressure) {
 		pressurevalue = get_pressure_units(pressure, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nP:%d %s", buf2, pressurevalue, pressure_unit);
+		snprintf(buf, bufsize, _("%s\nP:%d %s"), buf2, pressurevalue, pressure_unit);
 	}
 	if (temp) {
 		tempvalue = get_temp_units(temp, &temp_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nT:%.1f %s", buf2, tempvalue, temp_unit);
+		snprintf(buf, bufsize, _("%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nCalculated ceiling %.0f %s", buf2, depthvalue, depth_unit);
+		snprintf(buf, bufsize, _("%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
@@ -2103,55 +2103,55 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		if (entry->ndl) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				snprintf(buf, bufsize, "%s\nSafetystop:%umin @ %.0f %s", buf2, entry->stoptime / 60,
+				snprintf(buf, bufsize, _("%s\nSafetystop:%umin @ %.0f %s"), buf2, entry->stoptime / 60,
 					depthvalue, depth_unit);
 			else
-				snprintf(buf, bufsize, "%s\nSafetystop:unkn time @ %.0f %s", buf2,
+				snprintf(buf, bufsize, _("%s\nSafetystop:unkn time @ %.0f %s"), buf2,
 					depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				snprintf(buf, bufsize, "%s\nDeco:%umin @ %.0f %s", buf2, entry->stoptime / 60,
+				snprintf(buf, bufsize, _("%s\nDeco:%umin @ %.0f %s"), buf2, entry->stoptime / 60,
 					depthvalue, depth_unit);
 			else
-				snprintf(buf, bufsize, "%s\nDeco:unkn time @ %.0f %s", buf2,
+				snprintf(buf, bufsize, _("%s\nDeco:unkn time @ %.0f %s"), buf2,
 					depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
 		/* this means we had in_deco set but don't have a stop depth */
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nIn deco", buf2);
+		snprintf(buf, bufsize, _("%s\nIn deco"), buf2);
 	} else if (has_ndl) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nNDL:%umin", buf2, entry->ndl / 60);
+		snprintf(buf, bufsize, _("%s\nNDL:%umin"), buf2, entry->ndl / 60);
 	}
 	if (entry->cns) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nCNS:%u%%", buf2, entry->cns);
+		snprintf(buf, bufsize, _("%s\nCNS:%u%%"), buf2, entry->cns);
 	}
 	if (prefs.pp_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npO" UTF8_SUBSCRIPT_2 ":%.2fbar", buf2, entry->po2);
+		snprintf(buf, bufsize, _("%s\npO%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->po2);
 	}
 	if (prefs.pp_graphs.pn2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npN" UTF8_SUBSCRIPT_2 ":%.2fbar", buf2, entry->pn2);
+		snprintf(buf, bufsize, _("%s\npN%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->pn2);
 	}
 	if (prefs.pp_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\npHe:%.2fbar", buf2, entry->phe);
+		snprintf(buf, bufsize, _("%s\npHe:%.2fbar"), buf2, entry->phe);
 	}
 	if (prefs.mod) {
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nMOD:%d%s", buf2, mod, depth_unit);
+		snprintf(buf, bufsize, _("%s\nMOD:%d%s"), buf2, mod, depth_unit);
 	}
 	if (prefs.ead) {
 		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
 		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
 		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, "%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s", buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
+		snprintf(buf, bufsize, _("%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"), buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
 	}
 	free(buf2);
 }

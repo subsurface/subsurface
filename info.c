@@ -625,8 +625,8 @@ void print_gps_coordinates(char *buffer, int len, float lat, float lon)
 	float latmin, lonmin;
 	char *lath, *lonh;
 
-	lath = lat >= 0.0 ? "N" : "S";
-	lonh = lon >= 0.0 ? "E" : "W";
+	lath = lat >= 0.0 ? _("N") : _("S");
+	lonh = lon >= 0.0 ? _("E") : _("W");
 	lat = fabs(lat);
 	lon = fabs(lon);
 	latdeg = lat;

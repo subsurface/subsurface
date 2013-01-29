@@ -130,7 +130,7 @@ static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
 		lbs_to_grams(g_ascii_strtod(buffer, NULL)) : g_ascii_strtod(buffer, NULL) * 1000;
-	weight->description = strdup("unknown");
+	weight->description = strdup(_("unknown"));
 }
 
 static struct dive *uemis_start_dive(uint32_t deviceid)
@@ -587,9 +587,9 @@ static void track_divespot(char *val, int diveid, char **location, degrees_t *la
 	return;
 }
 
-static char *suit[] = { "", "wetsuit", "semidry", "drysuit" };
-static char *suit_type[] = { "", "shorty", "vest", "long john", "jacket", "full suit", "2 pcs full suit" };
-static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", "membrane" };
+static char *suit[] = { "", N_("wetsuit"), N_("semidry"), N_("drysuit") };
+static char *suit_type[] = { "", N_("shorty"), N_("vest"), N_("long john"), N_("jacket"), N_("full suit"), N_("2 pcs full suit") };
+static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", N_("membrane") };
 
 static void parse_tag(struct dive *dive, char *tag, char *val)
 {
@@ -610,11 +610,11 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	else if (!strcmp(tag, "notes"))
 		uemis_add_string(val, &dive->notes);
 	else if (!strcmp(tag, "u8DiveSuit"))
-		uemis_add_string(suit[atoi(val)], &dive->suit);
+		uemis_add_string(_(suit[atoi(val)]), &dive->suit);
 	else if (!strcmp(tag, "u8DiveSuitType"))
-		uemis_add_string(suit_type[atoi(val)], &dive->suit);
+		uemis_add_string(_(suit_type[atoi(val)]), &dive->suit);
 	else if (!strcmp(tag, "u8SuitThickness"))
-		uemis_add_string(suit_thickness[atoi(val)], &dive->suit);
+		uemis_add_string(_(suit_thickness[atoi(val)]), &dive->suit);
 }
 
 /* This function is called for both divelog and dive information that we get
@@ -759,7 +759,7 @@ static char *do_uemis_download(struct argument_block *args)
 
 	if (dive_table.nr == 0)
 		keep_number = TRUE;
-	uemis_info("Init Communication");
+	uemis_info(_("Init Communication"));
 	if (! uemis_init(mountpath))
 		return _("Uemis init failed");
 	if (! uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
@@ -772,7 +772,7 @@ static char *do_uemis_download(struct argument_block *args)
 	/* param_buff[0] is still valid */
 	if (! uemis_get_answer(mountpath, "initSession", 1, 6, &result))
 		goto bail;
-	uemis_info("Start download");
+	uemis_info(_("Start download"));
 	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &result))
 		goto bail;
 	/* before starting the long download, check if user pressed cancel */
@@ -906,7 +906,7 @@ GError *uemis_download(const char *mountpath, progressbar_t *progress,
 				import_thread_cancelled = TRUE;
 		} else {
 			update_progressbar(args.progress, progress_bar_fraction);
-			update_progressbar_text(args.progress, "Cancelled, exiting cleanly...");
+			update_progressbar_text(args.progress, _("Cancelled, exiting cleanly..."));
 			usleep(100000);
 		}
 	}
