@@ -400,7 +400,9 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
 		}
 	} else {
-		snprintf(buffer, sizeof(buffer), "%s", _(event->name));
+		snprintf(buffer, sizeof(buffer), "%s%s", _(event->name),
+			event->flags == SAMPLE_FLAGS_BEGIN ? " begin" :
+			event->flags == SAMPLE_FLAGS_END ? " end" : "");
 	}
 	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
