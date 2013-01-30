@@ -1692,7 +1692,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 static double zoom_factor = 1.0;
 static int zoom_x = -1, zoom_y = -1;
 
-static gboolean common_drawing_function(GtkWidget *widget, struct graphics_context *gc)
+static void common_drawing_function(GtkWidget *widget, struct graphics_context *gc)
 {
 	int i = 0;
 	struct dive *dive = current_dive;
@@ -1724,8 +1724,6 @@ static gboolean common_drawing_function(GtkWidget *widget, struct graphics_conte
 		tooltips = 0;
 		plot(gc, dive, SC_SCREEN);
 	}
-
-	return FALSE;
 }
 
 #if GTK_CHECK_VERSION(3,0,0)
@@ -1742,7 +1740,8 @@ static gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
 	gc.drawing_area.height = height;
 	gc.cr = cr;
 
-	return common_drawing_function(widget, &gc);
+	common_drawing_function(widget, &gc);
+	return FALSE;
 }
 
 #else /* gtk2 */
@@ -1759,7 +1758,9 @@ static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer 
 	gc.drawing_area.height = allocation.height;
 	gc.cr = gdk_cairo_create(gtk_widget_get_window(widget));
 
-	return common_drawing_function(widget, &gc);
+	common_drawing_function(widget, &gc);
+	cairo_destroy(gc.cr);
+	return FALSE;
 }
 
 #endif
