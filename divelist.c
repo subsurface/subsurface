@@ -2502,6 +2502,13 @@ static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, gpoi
 	return FALSE;
 }
 
+static void scroll_to_path(GtkTreePath *path)
+{
+	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), path);
+	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE, 0, 0);
+	gtk_tree_view_set_cursor(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE);
+}
+
 /* we need to have a temporary copy of the selected dives while
    switching model as the selection_cb function keeps getting called
    when gtk_tree_selection_select_path is called.  We also need to
@@ -2521,9 +2528,7 @@ static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
 	int idx, selected;
 	struct dive *dive;
 
-	gtk_tree_model_get(model, iter,
-		DIVE_INDEX, &idx,
-		-1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
 	if (idx < 0) {
 		GtkTreeIter child;
 		if (gtk_tree_model_iter_children(model, &child, iter))
@@ -2539,6 +2544,27 @@ static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
 
 }
 
+static gboolean scroll_to_this(GtkTreeModel *model, GtkTreePath *path,
+				GtkTreeIter *iter, gpointer data)
+{
+	int idx;
+	struct dive *dive;
+
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
+	dive = get_dive(idx);
+	if (dive == current_dive) {
+		scroll_to_path(path);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+static void scroll_to_current(GtkTreeModel *model)
+{
+	if (current_dive)
+		gtk_tree_model_foreach(model, scroll_to_this, current_dive);
+}
+
 static void update_column_and_order(int colid)
 {
 	/* Careful: the index into treecolumns is off by one as we don't have a
@@ -2551,6 +2577,7 @@ static void update_column_and_order(int colid)
 	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(dive_list.model), colid, sortorder[colid]);
 	gtk_tree_view_column_set_sort_order(treecolumns[colid - 1], sortorder[colid]);
 	second_call = FALSE;
+	scroll_to_current(GTK_TREE_MODEL(dive_list.model));
 }
 
 /* If the sort column is nr (default), show the tree model.
@@ -2851,22 +2878,15 @@ static void scroll_to_selected(GtkTreeIter *iter)
 {
 	GtkTreePath *treepath;
 	treepath = gtk_tree_model_get_path(MODEL(dive_list), iter);
-	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
-	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), treepath, NULL, FALSE, 0, 0);
+	scroll_to_path(treepath);
 	gtk_tree_path_free(treepath);
 }
 
 static void go_to_iter(GtkTreeSelection *selection, GtkTreeIter *iter)
 {
-	GtkTreePath *path;
-
-	scroll_to_selected(iter);
 	gtk_tree_selection_unselect_all(selection);
 	gtk_tree_selection_select_iter(selection, iter);
-
-	path = gtk_tree_model_get_path(GTK_TREE_MODEL(dive_list.model), iter);
-	gtk_tree_view_set_cursor(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE);
-	gtk_tree_path_free(path);
+	scroll_to_selected(iter);
 }
 
 void show_and_select_dive(struct dive *dive)
