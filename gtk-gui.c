@@ -1488,6 +1488,17 @@ static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *diveli
 	return FALSE;
 }
 
+static gboolean notebook_tooltip (GtkWidget *widget, gint x, gint y,
+			gboolean keyboard_mode, GtkTooltip *tooltip, gpointer data)
+{
+	if (gtk_notebook_get_current_page(GTK_NOTEBOOK(widget)) == 0) {
+		gtk_tooltip_set_text(tooltip, _("To edit dive information\ndouble click on it in the dive list"));
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -1596,6 +1607,10 @@ void init_ui(int *argcp, char ***argvp)
 	/* Frame for total dive statistics */
 	nb_page = total_stats_widget();
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), nb_page, gtk_label_new(_("Stats")));
+
+	/* add tooltip that tells people how to edit things */
+	g_object_set(notebook, "has-tooltip", TRUE, NULL);
+	g_signal_connect(notebook, "query-tooltip", G_CALLBACK(notebook_tooltip), NULL);
 
 	/* handle some keys globally (to deal with gtk focus issues) */
 	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (on_key_press), dive_list);
