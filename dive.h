@@ -321,9 +321,17 @@ struct dive {
 	struct divecomputer dc;
 };
 
-static inline int dive_has_location(struct dive *dive)
+static inline int dive_has_gps_location(struct dive *dive)
 {
 	return dive->latitude.udeg || dive->longitude.udeg;
+}
+
+static inline void copy_gps_location(struct dive *from, struct dive *to)
+{
+	if (from && to) {
+		to->latitude.udeg = from->latitude.udeg;
+		to->longitude.udeg = from->longitude.udeg;
+	}
 }
 
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
@@ -433,6 +441,13 @@ extern struct dive_table dive_table;
 extern int selected_dive;
 #define current_dive (get_dive(selected_dive))
 
+static inline struct dive *get_gps_location(int nr, struct dive_table *table)
+{
+	if (nr >= table->nr || nr < 0)
+		return NULL;
+	return table->dives[nr];
+}
+
 static inline struct dive *get_dive(int nr)
 {
 	if (nr >= dive_table.nr || nr < 0)
@@ -450,6 +465,9 @@ static inline struct dive *get_dive(int nr)
 #define for_each_dive(_i,_x) \
 	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
 
+#define for_each_gps_location(_i,_x) \
+	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
+
 static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
 {
 	int i;
@@ -464,12 +482,15 @@ static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
 	}
 	return NULL;
 }
+extern struct dive *find_dive_including(timestamp_t when);
+extern gboolean dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
+struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
 extern void parse_xml_init(void);
-extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, GError **error);
 extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, gboolean force);
 
@@ -500,11 +521,11 @@ extern void utc_mkdate(timestamp_t, struct tm *tm);
 
 extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
-extern void delete_dive(struct dive *dive);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
 
+extern void sort_table(struct dive_table *table);
 extern void report_dives(gboolean imported, gboolean prefer_imported);
 extern struct dive *fixup_dive(struct dive *dive);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
+#include <assert.h>
 #define __USE_XOPEN
 #include <time.h>
 #include <libxml/parser.h>
@@ -18,85 +19,34 @@
 
 int verbose;
 
+/* the dive table holds the overall dive list; target table points at
+ * the table we are currently filling */
 struct dive_table dive_table;
-
+struct dive_table *target_table = NULL;
 /*
  * Add a dive into the dive_table array
  */
-void record_dive(struct dive *dive)
+static void record_dive_to_table(struct dive *dive, struct dive_table *table)
 {
-	int nr = dive_table.nr, allocated = dive_table.allocated;
-	struct dive **dives = dive_table.dives;
+	assert(table != NULL);
+	int nr = table->nr, allocated = table->allocated;
+	struct dive **dives = table->dives;
 
 	if (nr >= allocated) {
 		allocated = (nr + 32) * 3 / 2;
 		dives = realloc(dives, allocated * sizeof(struct dive *));
 		if (!dives)
 			exit(1);
-		dive_table.dives = dives;
-		dive_table.allocated = allocated;
+		table->dives = dives;
+		table->allocated = allocated;
 	}
 	dives[nr] = fixup_dive(dive);
-	dive_table.nr = nr+1;
+	table->nr = nr+1;
 }
 
-static void delete_dive_renumber(struct dive **dives, int i, int nr)
+void record_dive(struct dive *dive)
 {
-	struct dive *dive = dives[i];
-	int number = dive->number, j;
-
-	if (!number)
-		return;
-
-	/*
-	 * Check that all numbered dives after the deleted
-	 * ones are consecutive, return without renumbering
-	 * if that is not the case.
-	 */
-	for (j = i+1; j < nr; j++) {
-		struct dive *next = dives[j];
-		if (!next->number)
-			break;
-		number++;
-		if (next->number != number)
-			return;
-	}
-
-	/*
-	 * Ok, we hit the end of the dives or a unnumbered
-	 * dive - renumber.
-	 */
-	for (j = i+1 ; j < nr; j++) {
-		struct dive *next = dives[j];
-		if (!next->number)
-			break;
-		next->number--;
-	}
-}
-
-/*
- * Remove a dive from the dive_table array
- */
-void delete_dive(struct dive *dive)
-{
-	int nr = dive_table.nr, i;
-	struct dive **dives = dive_table.dives;
-
-	/*
-	 * Stupid. We know the dive table is sorted by date,
-	 * we could do a binary lookup. Sue me.
-	 */
-	for (i = 0; i < nr; i++) {
-		struct dive *d = dives[i];
-		if (d != dive)
-			continue;
-		/* should we re-number? */
-		delete_dive_renumber(dives, i, nr);
-		memmove(dives+i, dives+i+1, sizeof(struct dive *)*(nr-i-1));
-		dives[nr] = NULL;
-		dive_table.nr = nr-1;
-		break;
-	}
+	record_dive_to_table(dive, &dive_table);
 }
 
 static void start_match(const char *type, const char *name, char *buffer)
@@ -1172,7 +1122,7 @@ static void dive_end(void)
 	if (!is_dive())
 		free(cur_dive);
 	else
-		record_dive(cur_dive);
+		record_dive_to_table(cur_dive, target_table);
 	cur_dive = NULL;
 	cur_dc = NULL;
 	cur_cylinder_index = 0;
@@ -1480,10 +1430,12 @@ static void reset_all(void)
 	import_source = UNKNOWN;
 }
 
-void parse_xml_buffer(const char *url, const char *buffer, int size, GError **error)
+void parse_xml_buffer(const char *url, const char *buffer, int size,
+			struct dive_table *table, GError **error)
 {
 	xmlDoc *doc;
 
+	target_table = table;
 	doc = xmlReadMemory(buffer, size, url, NULL, 0);
 	if (!doc) {
 		fprintf(stderr, _("Failed to parse '%s'.\n"), url);

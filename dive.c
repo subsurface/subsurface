@@ -1519,3 +1519,38 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	fixup_dive(res);
 	return res;
 }
+
+struct dive *find_dive_including(timestamp_t when)
+{
+	int i;
+	struct dive *dive;
+
+	/* binary search, anyone? Too lazy for now;
+	 * also we always use the duration from the first divecomputer
+	 *     could this ever be a problem? */
+	for_each_dive(i, dive) {
+		if (dive->when <= when && when <= dive->when + dive->dc.duration.seconds)
+			return dive;
+	}
+	return NULL;
+}
+
+gboolean dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
+{
+	return when - offset <= dive->when && dive->when + dive->dc.duration.seconds <= when + offset;
+}
+
+/* find the n-th dive that is part of a group of dives within the offset around 'when'.
+ *  How is that for a vague definition of what this function should do... */
+struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset)
+{
+	int i, j = 0;
+	struct dive *dive;
+
+	for_each_dive(i, dive) {
+		if (dive_within_time_range(dive, when, offset))
+			if (++j == n)
+				return dive;
+	}
+	return NULL;
+}
