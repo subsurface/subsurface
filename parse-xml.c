@@ -1005,6 +1005,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
 		return;
+	if (MATCH(".o2percent", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
+		return;
 	if (MATCH(".n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
 		return;
 	if (MATCH(".he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
