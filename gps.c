@@ -186,7 +186,7 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 
 		*window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_window_set_position(GTK_WINDOW(*window), GTK_WIN_POS_MOUSE);
-		gtk_window_set_default_size(GTK_WINDOW(*window), 640, 480);
+		gtk_window_set_default_size(GTK_WINDOW(*window), 560, 360);
 		gtk_window_set_title(GTK_WINDOW(*window), _("Dive locations"));
 		gtk_container_set_border_width(GTK_CONTAINER(*window), 5);
 		gtk_window_set_resizable(GTK_WINDOW(*window), TRUE);
@@ -218,7 +218,7 @@ void show_gps_location(struct dive *dive, void (*callback)(float, float))
 		map = init_map();
 	if (lat != 0 || lng != 0) {
 		add_gps_point(map, lat, lng);
-		osm_gps_map_set_center_and_zoom(map, lat, lng, 8);
+		osm_gps_map_set_center_and_zoom(map, lat, lng, 9);
 		picture = gdk_pixbuf_new_from_file("./flag.png", &gerror);
 		if (picture) {
 			osm_gps_map_image_add_with_alignment(map, lat, lng, picture, 0, 1);
@@ -226,7 +226,7 @@ void show_gps_location(struct dive *dive, void (*callback)(float, float))
 			printf("error message: %s\n", gerror->message);
 		}
 	} else {
-		osm_gps_map_set_center_and_zoom(map, 0, 0, 2);
+		osm_gps_map_set_center_and_zoom(map, 0, 0, 1);
 	}
 	show_map(map, &window, dive, callback);
 }
@@ -247,7 +247,7 @@ void show_gps_locations()
 				dive->longitude.udeg / 1000000.0);
 		}
 	}
-	osm_gps_map_set_center_and_zoom(map, 0, 0, 2);
+	osm_gps_map_set_center_and_zoom(map, 0, 0, 1);
 
 	show_map(map, &window, NULL, NULL);
 }
