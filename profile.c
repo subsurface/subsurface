@@ -1127,12 +1127,10 @@ static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot
 static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	if (prefs.profile_calc_ceiling) {
+		float x = gc->leftx + (gc->rightx - gc->leftx) / 2;
+		float y = gc->topy;
 		text_render_options_t tro = {10, PRESSURE_TEXT, CENTER, -0.2};
-		gc->leftx = 0;
-		gc->rightx = gc->maxtime = 1.0;
-		gc->topy = 0;
-		gc->bottomy = 1.0;
-		plot_text(gc, &tro, 0.5, 0, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
+		plot_text(gc, &tro, x, y, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
 	}
 }
 
