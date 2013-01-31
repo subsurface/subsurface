@@ -675,7 +675,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
 
-	if (dive_has_location(dive))
+	if (dive_has_gps_location(dive))
 		print_gps_coordinates(gps_text, sizeof(gps_text), dive->latitude.udeg / 1000000.0,
 								  dive->longitude.udeg / 1000000.0);
 	hbox = gtk_hbox_new(FALSE, 2);

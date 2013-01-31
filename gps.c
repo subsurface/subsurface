@@ -242,7 +242,7 @@ void show_gps_locations()
 		map = init_map();
 
 	for_each_dive(idx, dive) {
-		if (dive_has_location(dive)) {
+		if (dive_has_gps_location(dive)) {
 			add_gps_point(map, dive->latitude.udeg / 1000000.0,
 				dive->longitude.udeg / 1000000.0);
 		}

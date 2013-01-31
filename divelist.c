@@ -875,7 +875,7 @@ GdkPixbuf *get_gps_icon(void)
 
 static GdkPixbuf *get_gps_icon_for_dive(struct dive *dive)
 {
-	if (dive_has_location(dive))
+	if (dive_has_gps_location(dive))
 		return get_gps_icon();
 	else
 		return NULL;
@@ -1608,7 +1608,7 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 			gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 			gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 			dive = get_dive(idx);
-			if (dive && dive_has_location(dive))
+			if (dive && dive_has_gps_location(dive))
 				show_gps_location(dive, NULL);
 		}
 		if (path)
@@ -2435,7 +2435,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		}
 #if HAVE_OSM_GPS_MAP
 		/* Only offer to show on map if it has a location. */
-		if (dive_has_location(dive)) {
+		if (dive_has_gps_location(dive)) {
 			menuitem = gtk_menu_item_new_with_label(_("Show in map"));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(show_gps_location_cb), dive);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);

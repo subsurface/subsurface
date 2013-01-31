@@ -4,6 +4,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include "dive.h"
+#include "divelist.h"
 #include "display-gtk.h"
 
 struct dive_table gps_location_table;
@@ -144,6 +145,52 @@ static void download_dialog_delete(GtkWidget *w, gpointer data)
 	download_dialog_release_xml(state);
 }
 
+static gboolean is_automatic_fix(struct dive *gpsfix)
+{
+	if (gpsfix && gpsfix->location && !strcmp(gpsfix->location, "automatic fix"))
+		return TRUE;
+	return FALSE;
+}
+
+#define SAME_GROUP 6 * 3600   // six hours
+
+static void merge_locations_into_dives(void)
+{
+	int i, nr = 0;
+	struct dive *gpsfix, *last_named_fix = NULL, *dive;
+
+	sort_table(&gps_location_table);
+
+	for_each_gps_location(i, gpsfix) {
+		if (is_automatic_fix(gpsfix)) {
+			dive = find_dive_including(gpsfix->when);
+			if (dive && !dive_has_gps_location(dive))
+				copy_gps_location(gpsfix, dive);
+		} else {
+			if (last_named_fix && dive_within_time_range(last_named_fix, gpsfix->when, SAME_GROUP)) {
+				nr++;
+			} else {
+				nr = 1;
+				last_named_fix = gpsfix;
+			}
+			dive = find_dive_n_near(gpsfix->when, nr, SAME_GROUP);
+			if (dive) {
+				if (!dive_has_gps_location(dive))
+					copy_gps_location(gpsfix, dive);
+				if (!dive->location)
+					dive->location = strdup(gpsfix->location);
+			} else {
+				struct tm tm;
+				utc_mkdate(gpsfix->when, &tm);
+				printf("didn't find dive matching gps fix named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
+					gpsfix->location,
+					tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+					tm.tm_hour, tm.tm_min, tm.tm_sec);
+			}
+		}
+	}
+}
+
 void webservice_download_dialog(void)
 {
 	const guint pad = 6;
@@ -207,7 +254,9 @@ void webservice_download_dialog(void)
 		/* apply download */
 		parse_xml_buffer(_("Webservice"), state.xmldata, state.xmldata_len, &gps_location_table, NULL);
 		/* now merge the data in the gps_location table into the dive_table */
-		// TBD
+		merge_locations_into_dives();
+		mark_divelist_changed(TRUE);
+		dive_list_update_dives();
 		/* store last entered uid in config */
 		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(uid)));
 	}

@@ -50,6 +50,11 @@ static int sortfn(const void *_a, const void *_b)
 	return 0;
 }
 
+void sort_table(struct dive_table *table)
+{
+	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
+}
+
 const char *weekday(int wday)
 {
 	static const char wday_array[7][7] = {
@@ -157,7 +162,7 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 	/* This does the right thing for -1: NULL */
 	last = get_dive(preexisting-1);
 
-	qsort(dive_table.dives, dive_table.nr, sizeof(struct dive *), sortfn);
+	sort_table(&dive_table);
 
 	for (i = 1; i < dive_table.nr; i++) {
 		struct dive **pp = &dive_table.dives[i-1];
