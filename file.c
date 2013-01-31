@@ -246,7 +246,7 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, GError
 	if (fmt && open_by_filename(filename, fmt+1, mem, error))
 		return;
 
-	parse_xml_buffer(filename, mem->buffer, mem->size, error);
+	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, error);
 }
 
 void parse_file(const char *filename, GError **error, gboolean possible_default_filename)

@@ -6,6 +6,8 @@
 #include "dive.h"
 #include "display-gtk.h"
 
+struct dive_table gps_location_table;
+
 enum {
 	DD_STATUS_OK,
 	DD_STATUS_ERROR_CONNECT,
@@ -203,8 +205,9 @@ void webservice_download_dialog(void)
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		/* apply download */
-		parse_xml_buffer(_("Webservice"), state.xmldata, state.xmldata_len, NULL);
-		report_dives(TRUE, FALSE);
+		parse_xml_buffer(_("Webservice"), state.xmldata, state.xmldata_len, &gps_location_table, NULL);
+		/* now merge the data in the gps_location table into the dive_table */
+		// TBD
 		/* store last entered uid in config */
 		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(uid)));
 	}

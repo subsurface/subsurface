@@ -469,7 +469,7 @@ static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
 extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
 extern void parse_xml_init(void);
-extern void parse_xml_buffer(const char *url, const char *buf, int size, GError **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, GError **error);
 extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, gboolean force);
 
@@ -500,7 +500,6 @@ extern void utc_mkdate(timestamp_t, struct tm *tm);
 
 extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
-extern void delete_dive(struct dive *dive);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
