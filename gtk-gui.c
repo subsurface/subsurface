@@ -248,6 +248,7 @@ static void file_close(GtkWidget *w, gpointer data)
 	selected_dive = 0;
 	process_selected_dives();
 	clear_stats_widgets();
+	clear_events();
 
 	/* clear the equipment page */
 	clear_equipment_widgets();

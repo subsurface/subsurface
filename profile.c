@@ -313,6 +313,11 @@ void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 	}
 }
 
+void clear_events(void)
+{
+	evn_used = 0;
+}
+
 void remember_event(const char *eventname)
 {
 	int i = 0, len;
