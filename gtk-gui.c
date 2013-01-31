@@ -1491,7 +1491,7 @@ static gboolean on_key_press(GtkWidget *w, GdkEventKey *event, GtkWidget *diveli
 static gboolean notebook_tooltip (GtkWidget *widget, gint x, gint y,
 			gboolean keyboard_mode, GtkTooltip *tooltip, gpointer data)
 {
-	if (gtk_notebook_get_current_page(GTK_NOTEBOOK(widget)) == 0) {
+	if (amount_selected > 0 && gtk_notebook_get_current_page(GTK_NOTEBOOK(widget)) == 0) {
 		gtk_tooltip_set_text(tooltip, _("To edit dive information\ndouble click on it in the dive list"));
 		return TRUE;
 	} else {
@@ -1674,7 +1674,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 		return FALSE;
 
 	/* don't draw a tooltip if nothing is there */
-	if (gc->pi.nr == 0)
+	if (amount_selected == 0 || gc->pi.nr == 0)
 		return FALSE;
 
 	width = drawing_area->width - 2*drawing_area->x;
