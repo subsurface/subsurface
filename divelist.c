@@ -1250,6 +1250,8 @@ static void clear_trip_indexes(void)
 		trip->index = 0;
 }
 
+/* Select the iter asked for, and set the keyboard focus on it */
+static void go_to_iter(GtkTreeSelection *selection, GtkTreeIter *iter);
 static void fill_dive_list(void)
 {
 	int i, trip_index = 0;
@@ -1344,7 +1346,7 @@ static void fill_dive_list(void)
 		gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &selected_dive, -1);
 		first_leaf(MODEL(dive_list), &iter, &selected_dive);
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
-		gtk_tree_selection_select_iter(selection, &iter);
+		go_to_iter(selection, &iter);
 	}
 }
 
@@ -2876,6 +2878,19 @@ void show_and_select_dive(struct dive *dive)
 	scroll_to_selected(iter);
 }
 
+static void go_to_iter(GtkTreeSelection *selection, GtkTreeIter *iter)
+{
+	GtkTreePath *path;
+
+	scroll_to_selected(iter);
+	gtk_tree_selection_unselect_all(selection);
+	gtk_tree_selection_select_iter(selection, iter);
+
+	path = gtk_tree_model_get_path(GTK_TREE_MODEL(dive_list.model), iter);
+	gtk_tree_view_set_cursor(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE);
+	gtk_tree_path_free(path);
+}
+
 void select_next_dive(void)
 {
 	GtkTreeIter *nextiter, *parent;
@@ -2903,9 +2918,7 @@ void select_next_dive(void)
 		if (! gtk_tree_model_iter_children(MODEL(dive_list), nextiter, parent))
 			return;
 	}
-	scroll_to_selected(nextiter);
-	gtk_tree_selection_unselect_all(selection);
-	gtk_tree_selection_select_iter(selection, nextiter);
+	go_to_iter(selection, nextiter);
 }
 
 void select_prev_dive(void)
@@ -2941,9 +2954,7 @@ void select_prev_dive(void)
 				gtk_tree_model_iter_n_children(MODEL(dive_list), parent) - 1))
 			goto free_path;
 	}
-	scroll_to_selected(&previter);
-	gtk_tree_selection_unselect_all(selection);
-	gtk_tree_selection_select_iter(selection, &previter);
+	go_to_iter(selection, &previter);
 free_path:
 	gtk_tree_path_free(treepath);
 }
