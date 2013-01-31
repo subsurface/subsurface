@@ -2856,6 +2856,19 @@ static void scroll_to_selected(GtkTreeIter *iter)
 	gtk_tree_path_free(treepath);
 }
 
+static void go_to_iter(GtkTreeSelection *selection, GtkTreeIter *iter)
+{
+	GtkTreePath *path;
+
+	scroll_to_selected(iter);
+	gtk_tree_selection_unselect_all(selection);
+	gtk_tree_selection_select_iter(selection, iter);
+
+	path = gtk_tree_model_get_path(GTK_TREE_MODEL(dive_list.model), iter);
+	gtk_tree_view_set_cursor(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE);
+	gtk_tree_path_free(path);
+}
+
 void show_and_select_dive(struct dive *dive)
 {
 	GtkTreeSelection *selection;
@@ -2869,26 +2882,12 @@ void show_and_select_dive(struct dive *dive)
 		return;
 	iter = get_iter_from_idx(divenr);
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
-	gtk_tree_selection_unselect_all(selection);
 	for_each_dive(i, odive)
 		odive->selected = FALSE;
 	amount_selected = 1;
+	selected_dive = divenr;
 	dive->selected = TRUE;
-	gtk_tree_selection_select_iter(selection, iter);
-	scroll_to_selected(iter);
-}
-
-static void go_to_iter(GtkTreeSelection *selection, GtkTreeIter *iter)
-{
-	GtkTreePath *path;
-
-	scroll_to_selected(iter);
-	gtk_tree_selection_unselect_all(selection);
-	gtk_tree_selection_select_iter(selection, iter);
-
-	path = gtk_tree_model_get_path(GTK_TREE_MODEL(dive_list.model), iter);
-	gtk_tree_view_set_cursor(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE);
-	gtk_tree_path_free(path);
+	go_to_iter(selection, iter);
 }
 
 void select_next_dive(void)

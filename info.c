@@ -906,7 +906,8 @@ int edit_multi_dive_info(struct dive *single_dive)
 	master = single_dive;
 	if (!master)
 		master = current_dive;
-
+	if (!master)
+		return 0;
 	/* See if we should use multi dive mode */
 	multi = FALSE;
 	if (!single_dive) {
