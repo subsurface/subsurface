@@ -768,7 +768,7 @@ GtkWidget *total_stats_widget(void)
 	statsframe = gtk_frame_new(_("Statistics"));
 	stats_w.framelabel = gtk_frame_get_label_widget(GTK_FRAME(statsframe));
 	gtk_label_set_max_width_chars(GTK_LABEL(stats_w.framelabel), 60);
-	gtk_box_pack_start(GTK_BOX(vbox), statsframe, TRUE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), statsframe, FALSE, FALSE, 3);
 	framebox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(statsframe), framebox);
 
@@ -815,7 +815,7 @@ GtkWidget *single_stats_widget(void)
 	vbox = gtk_vbox_new(FALSE, 3);
 
 	infoframe = gtk_frame_new(_("Dive Info"));
-	gtk_box_pack_start(GTK_BOX(vbox), infoframe, TRUE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), infoframe, FALSE, FALSE, 3);
 	framebox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(infoframe), framebox);
 
