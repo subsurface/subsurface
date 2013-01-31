@@ -92,7 +92,7 @@ XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTKCFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
-OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap)
+OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap 2> /dev/null)
 LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
 ifneq ($(strip $(LIBOSMGPSMAP)),)
 	GPSOBJ = gps.o
