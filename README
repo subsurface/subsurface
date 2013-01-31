@@ -48,8 +48,8 @@ you obviously already have it installed). Check with your Linux
 distribution how to install these packages.
 
 On Debian the package names are different; try libxml2-dev libgtk2.0-dev
-glib-2.0 libgconf2-dev, but it seems the cairo package at least in
-Squeeze is too old.
+libglib2.0-dev libgconf2-dev libssl-dev libsoup2.4-dev, but it seems
+the cairo package at least in Squeeze is too old.
 
 You also need to have libdivecomputer version 0.2 installed, which goes
 something like this:
