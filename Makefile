@@ -149,6 +149,8 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o plann
 	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
 	webservice.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
 
+DEPS = $(wildcard .dep/*.dep)
+
 $(NAME): $(OBJS) $(MSGOBJS)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
@@ -227,92 +229,15 @@ update-po-files:
 		msgmerge -s -U $$i po/subsurface-new.pot ; \
 	done
 
-file.o: file.c dive.h file.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c file.c
+EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
+		$(XSLT) $(ZIP) $(LIBDIVECOMPUTERCFLAGS) \
+		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS) \
+		-DVERSION_STRING='"$(VERSION_STRING)"'
 
-cochran.o: cochran.c dive.h file.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) $(ZIP) -c cochran.c
-
-parse-xml.o: parse-xml.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(XSLT) -c parse-xml.c
-
-save-xml.o: save-xml.c dive.h device.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c save-xml.c
-
-dive.o: dive.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c dive.c
-
-time.o: time.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c time.c
-
-main.o: main.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) -c main.c
-
-profile.o: profile.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c profile.c
-
-info.o: info.c dive.h display.h display-gtk.h divelist.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c info.c
-
-equipment.o: equipment.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c equipment.c
-
-statistics.o: statistics.c dive.h display.h divelist.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c statistics.c
-
-gps.o: gps.c dive.h display.h divelist.h
-		$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(OSMGPSMAPFLAGS) -c gps.c
-
-# this should work but it doesn't preserve the transparancy - so I manually converted with gimp
-# satellite.png: satellite.svg
-#	convert -resize 11x16 -depth 8 satellite.svg satellite.png
-
-# satellite.h: satellite.png
-#	gdk-pixbuf-csource --struct satellite.png > satellite.h
-
-divelist.o: divelist.c dive.h display.h divelist.h satellite.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c divelist.c
-
-print.o: print.c dive.h display.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c print.c
-
-deco.o: deco.c dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c deco.c
-
-planner.o: planner.c dive.h divelist.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) -c planner.c
-
-download-dialog.o: download-dialog.c dive.h divelist.h display-gtk.h callbacks-gtk.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) -c download-dialog.c
-
-libdivecomputer.o: libdivecomputer.c dive.h display.h display-gtk.h libdivecomputer.h device.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
-			$(LIBDIVECOMPUTERCFLAGS) \
-			-c libdivecomputer.c
-
-gtk-gui.o: gtk-gui.c dive.h display.h divelist.h display-gtk.h libdivecomputer.h device.h callbacks-gtk.h Makefile
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(GCONF2CFLAGS) $(XML2CFLAGS) \
-			$(LIBDIVECOMPUTERCFLAGS) \
-			-DVERSION_STRING='"$(VERSION_STRING)"' \
-			-c gtk-gui.c
-
-uemis.o: uemis.c dive.h uemis.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBDIVECOMPUTERCFLAGS) -c uemis.c
-
-uemis-downloader.o: uemis-downloader.c dive.h uemis.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) -c uemis-downloader.c
-
-device.o: device.c device.h dive.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c device.c
-
-prefs.o: prefs.c dive.h pref.h
-	$(CC) $(CFLAGS) $(GLIB2CFLAGS) -c prefs.c
-
-webservice.o: webservice.c webservice.h dive.h display-gtk.h
-	$(CC) $(CFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) $(LIBSOUPCFLAGS) -c webservice.c
-
-$(OSSUPPORT).o: $(OSSUPPORT).c display-gtk.h
-	$(CC) $(CFLAGS) $(OSSUPPORT_CFLAGS) -c $(OSSUPPORT).c
+%.o: %.c
+	@echo '    CC' $<
+	@mkdir -p .dep
+	@$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
@@ -329,4 +254,6 @@ doc:
 
 clean:
 	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot
-	rm -rf share
+	rm -rf share .dep
+
+-include $(DEPS)
