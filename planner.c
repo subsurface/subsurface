@@ -1053,8 +1053,15 @@ static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoin
 
 	starttimetext = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (validate_time(starttimetext, &starttime, &is_rel)) {
-		/* we alway make this relative for now */
-		diveplan.when = current_time_notz() + starttime;
+		/* we alway make this relative - either from the current time or from the
+		 * end of the last dive, whichever is later */
+		timestamp_t cur = current_time_notz();
+		if (dive_table.nr) {
+			struct dive *last_dive = get_dive(dive_table.nr - 1);
+			if (last_dive && last_dive->when + last_dive->dc.duration.seconds > cur)
+				cur = last_dive->when + last_dive->dc.duration.seconds;
+		}
+		diveplan.when = cur + starttime;
 		show_planned_dive();
 	} else {
 		/* we need to instead change the color of the input field or something */
