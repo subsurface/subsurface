@@ -543,7 +543,8 @@ static void show_single_dive_stats(struct dive *dive)
 	struct tm tm;
 
 	process_all_dives(dive, &prev_dive);
-
+	if (!dive)
+		return;
 	utc_mkdate(dive->when, &tm);
 	snprintf(buf, sizeof(buf),
 		/*++GETTEXT 80 chars: weekday, monthname, day, year, hour, min */
