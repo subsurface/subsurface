@@ -27,7 +27,7 @@ XSLTFILES = xslt/*.xslt
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 VERSION_STRING := $(shell git describe --tags --abbrev=12 || echo "v$(VERSION)")
-PRODVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3.0/' || echo "$(VERSION).0.0")
+PRODVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3.0/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0.0/' || echo "$(VERSION).0.0")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
@@ -219,7 +219,7 @@ install-cross-windows: $(NAME)
 create-windows-installer: $(NAME) $(NSIFILE) install-cross-windows
 	$(MAKENSIS) $(NSIFILE)
 
-$(NSIFILE): $(NSIINPUTFILE)
+$(NSIFILE): $(NSIINPUTFILE) Makefile
 	$(shell cat $(NSIINPUTFILE) | sed -e 's/VERSIONTOKEN/$(VERSION_STRING)/;s/PRODVTOKEN/$(PRODVERSION_STRING)/' > $(NSIFILE))
 
 
