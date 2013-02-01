@@ -289,6 +289,7 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 	const char *unit_weight, *desc;
 	char buffer[80];
 	PangoLayout *layout;
+	PangoRectangle ink_extents, logical_extents;
 
 	cairo_save(cr);
 
@@ -305,7 +306,8 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 	pango_cairo_show_layout(cr, layout);
 
 	/* Detail of the weight */
-	cairo_translate (cr, 0, height / (3 * (double) PANGO_SCALE));
+	pango_layout_get_extents(layout, &ink_extents, &logical_extents);
+	cairo_translate (cr, 0, logical_extents.height / (double) PANGO_SCALE);
 	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
 	weightsystemcounter = 0;
 	for (i=0; i<  MAX_WEIGHTSYSTEMS; i++){
@@ -317,19 +319,19 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 			pango_layout_set_text(layout, buffer, -1);
 			pango_cairo_show_layout(cr, layout);
 			cairo_move_to(cr,(2 * maxwidth) / (3 * (double) PANGO_SCALE), 0);
-			snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
+			snprintf(buffer, sizeof(buffer), _("%.*f %s"),
 					decimals,
 					systemweight,
 					unit_weight);
 			pango_layout_set_text(layout, buffer, -1);
 			pango_cairo_show_layout(cr, layout);
 			weightsystemcounter++;
-			cairo_translate (cr, 0, height / (4 * (double) PANGO_SCALE));
+			pango_layout_get_extents(layout, &ink_extents, &logical_extents);
+			cairo_translate (cr, 0, logical_extents.height / (double) PANGO_SCALE);
 		}
 	}
 	/* Total weight of the system */
 	totalweight = get_weight_units(total_weight(dive), &decimals, &unit_weight);
-	cairo_translate (cr, 0, height / (4 * (double) PANGO_SCALE));
 	cairo_move_to (cr, 0, 0);
 	snprintf(buffer, sizeof(buffer), _("Total Weight:"));
 	pango_layout_set_text(layout, buffer, -1);
