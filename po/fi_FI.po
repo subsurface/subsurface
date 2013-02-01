@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-21 20:59-0700\n"
+"POT-Creation-Date: 2013-02-01 18:08+1100\n"
 "PO-Revision-Date: 2012-10-21 16:31+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -19,562 +19,944 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: statistics.c:162
+#: statistics.c:184
 msgctxt "Stats"
 msgid " > Month"
 msgstr " > Kuukausi"
 
-#: gtk-gui.c:1516
+#: webservice.c:234
+msgid " Download"
+msgstr ""
+
+#: download-dialog.c:375
 msgid " Please select dive computer and device. "
 msgstr "Valitse sukellustietokone ja laitenimi."
 
-#: statistics.c:160
+#: statistics.c:182
 msgid "#"
 msgstr "#"
 
-#: statistics.c:553 statistics.c:625 statistics.c:627 statistics.c:629
+#: print.c:322
+#, fuzzy, c-format
+msgid "%.*f %s"
+msgstr "%.*f %s/min"
+
+#: print.c:267 print.c:340
+#, fuzzy, c-format
+msgid "%.*f %s\n"
+msgstr "%.*f %s/min"
+
+#: statistics.c:588 statistics.c:735 statistics.c:737 statistics.c:739
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
+#: planner.c:540
+#, c-format
+msgid "%.0f%s of %s\n"
+msgstr ""
+
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
-#: print.c:72
+#: print.c:76
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
 msgstr "%1$s %2$s. %4$d. %3$skuuta %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
-#: print.c:229
+#: print.c:584
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
 msgstr "%1$s, %3$d. %2$skuuta %4$d, %5$d:%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
-#: divelist.c:385
+#: divelist.c:277
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
 msgstr "%1$s %3$d. %2$skuuta %4$d %5$2d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
-#: statistics.c:529
+#: statistics.c:551
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
 msgstr "%1$s, %3$d. %2$skuuta %4$d, %5$d:%6$02d"
 
-#: print.c:254 statistics.c:536
+#: print.c:609 statistics.c:558
 #, c-format
 msgid "%d min"
 msgstr "%d min"
 
-#: statistics.c:507
+#: statistics.c:528
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%d pv %d t %d min"
 
-#: statistics.c:509
+#: statistics.c:530
 #, c-format
 msgid "%dh %dmin"
 msgstr "%d t %d min"
 
-#: dive.c:618
+#: print.c:318
+#, c-format
+msgid "%s"
+msgstr ""
+
+#: profile.c:2144
+#, c-format
+msgid ""
+"%s\n"
+"CNS:%u%%"
+msgstr ""
+
+#: profile.c:2112
+#, c-format
+msgid ""
+"%s\n"
+"Calculated ceiling %.0f %s"
+msgstr ""
+
+#: profile.c:2128
+#, c-format
+msgid ""
+"%s\n"
+"Deco:%umin @ %.0f %s"
+msgstr ""
+
+#: profile.c:2131
+#, c-format
+msgid ""
+"%s\n"
+"Deco:unkn time @ %.0f %s"
+msgstr ""
+
+#: profile.c:2168
+#, c-format
+msgid ""
+"%s\n"
+"EAD:%d%s\n"
+"END:%d%s\n"
+"EADD:%d%s"
+msgstr ""
+
+#: profile.c:2137
+#, c-format
+msgid ""
+"%s\n"
+"In deco"
+msgstr ""
+
+#: profile.c:2161
+#, c-format
+msgid ""
+"%s\n"
+"MOD:%d%s"
+msgstr ""
+
+#: profile.c:2140
+#, c-format
+msgid ""
+"%s\n"
+"NDL:%umin"
+msgstr ""
+
+#: profile.c:2102
+#, c-format
+msgid ""
+"%s\n"
+"P:%d %s"
+msgstr ""
+
+#: profile.c:2120
+#, c-format
+msgid ""
+"%s\n"
+"Safetystop:%umin @ %.0f %s"
+msgstr ""
+
+#: profile.c:2123
+#, c-format
+msgid ""
+"%s\n"
+"Safetystop:unkn time @ %.0f %s"
+msgstr ""
+
+#: profile.c:2107
+#, c-format
+msgid ""
+"%s\n"
+"T:%.1f %s"
+msgstr ""
+
+#: profile.c:2156
+#, c-format
+msgid ""
+"%s\n"
+"pHe:%.2fbar"
+msgstr ""
+
+#: profile.c:2152
+#, c-format
+msgid ""
+"%s\n"
+"pN%s:%.2fbar"
+msgstr ""
+
+#: profile.c:2148
+#, c-format
+msgid ""
+"%s\n"
+"pO%s:%.2fbar"
+msgstr ""
+
+#: dive.c:762
 #, c-format
 msgid "(%s) or (%s)"
 msgstr "(%s) tai (%s)"
 
-#: gtk-gui.c:851 gtk-gui.c:923
+#: statistics.c:680
+#, fuzzy, c-format
+msgid "(no dives)"
+msgstr "Muuta sukelluksen tietoja"
+
+#: gtk-gui.c:1995
+msgid "(nothing)"
+msgstr ""
+
+#: planner.c:1226
+msgid "0.6 cuft/min"
+msgstr ""
+
+#: planner.c:1225
+msgid "0.7 cuft/min"
+msgstr ""
+
+#: print.c:907
+msgid "1 dive per page"
+msgstr ""
+
+#: planner.c:1231
+msgid "17 l/min"
+msgstr ""
+
+#: uemis-downloader.c:590
+msgid "2 pcs full suit"
+msgstr ""
+
+#: planner.c:1230
+msgid "20 l/min"
+msgstr ""
+
+#: gtk-gui.c:833
+msgid "3m increments for calculated ceiling"
+msgstr ""
+
+#: print.c:903
+msgid "6 dives per page"
+msgstr ""
+
+#: planner.c:1203
+msgid ""
+"<small>Add segments below.\n"
+"Each line describes part of the planned dive.\n"
+"An entry with depth, time and gas describes a segment that ends at the given "
+"depth, takes the given time (if relative, e.g. '+3:30') or ends at the given "
+"time (if absolute), and uses the given gas.\n"
+"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
+"An entry that has a depth and a gas given but no time is special; it informs "
+"the planner that the gas specified is available for the ascent once the "
+"depth given has been reached.\n"
+"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>"
+msgstr ""
+
+#: planner.c:1113
+msgid "AIR"
+msgstr ""
+
+#: gtk-gui.c:1054 gtk-gui.c:1377
 msgid "About Subsurface"
 msgstr "Tietoja Subsurfacesta"
 
-#: gtk-gui.c:917
+#: gtk-gui.c:1368
 msgid "Add Dive..."
 msgstr "Lisää sukellus..."
 
-#: divelist.c:2023
+#: divelist.c:2364
 msgid "Add dive"
 msgstr "Lisää sukellus"
 
-#: divelist.c:2102
+#: divelist.c:2462
 msgid "Add to trip above"
 msgstr "Liitä yllä olevaan retkeen"
 
-#: main.c:46
+#: planner.c:1250
+msgid "Add waypoint"
+msgstr ""
+
+#: statistics.c:845
+msgid "Air Press"
+msgstr ""
+
+#: statistics.c:844
+#, fuzzy
+msgid "Air Temp"
+msgstr "Keskilämpötila"
+
+#: info.c:714
+#, c-format
+msgid "Air Temp in %s"
+msgstr ""
+
+#: download-dialog.c:391
+msgid "Always prefer downloaded dive"
+msgstr ""
+
+#: main.c:71
 msgid "Apr"
 msgstr "huhti"
 
-#: main.c:47
+#: main.c:72
 msgid "Aug"
 msgstr "elo"
 
-#: gtk-gui.c:932
+#: gtk-gui.c:1390
 msgid "Autogroup"
 msgstr "Automaattinen ryhmittely"
 
-#: gtk-gui.c:664
-msgid "Automatically group dives in trips"
-msgstr "Ryhmittele sukellukset retkiin automaattisesti"
-
-#: statistics.c:168
+#: statistics.c:190
 msgctxt "Depth"
 msgid "Average"
 msgstr "Keskim."
 
-#: statistics.c:165
+#: statistics.c:187
 msgctxt "Duration"
 msgid "Average"
 msgstr "Keskim."
 
-#: statistics.c:171
+#: statistics.c:193
 msgctxt "SAC"
 msgid "Average"
 msgstr "Keskim."
 
-#: statistics.c:174
+#: statistics.c:196
 msgctxt "Temp"
 msgid "Average"
 msgstr "Keskim."
 
-#: statistics.c:692 statistics.c:729
+#: statistics.c:799 statistics.c:836
 msgid "Avg Depth"
 msgstr "Keskisyvyys"
 
-#: statistics.c:700
+#: statistics.c:807
 msgid "Avg SAC"
 msgstr "Pintakulutus"
 
-#: statistics.c:675
+#: statistics.c:782
 msgid "Avg Temp"
 msgstr "Keskilämpötila"
 
-#: statistics.c:682
+#: statistics.c:789
 msgid "Avg Time"
 msgstr "Keskipituus"
 
-#: gtk-gui.c:592
+#: gtk-gui.c:634
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:515 info.c:942 print.c:156
+#: info.c:700 info.c:1153 print.c:511
 msgid "Buddy"
 msgstr "Sukelluspari"
 
-#: gtk-gui.c:602
+#: planner.c:1142
+msgid "CC SetPoint"
+msgstr ""
+
+#: uemis-downloader.c:908
+msgid "Cancelled, exiting cleanly..."
+msgstr ""
+
+#: libdivecomputer.c:756
+msgid "Cancelled..."
+msgstr ""
+
+#: webservice.c:27
+msgid "Cannot parse response!"
+msgstr ""
+
+#: gtk-gui.c:644
 msgid "Celsius"
 msgstr "Celsius"
 
-#: gtk-gui.c:522
+#: gtk-gui.c:556
 msgid "Choose Default XML File"
 msgstr "Valitse oletustiedosto"
 
-#: gtk-gui.c:1410
+#: gtk-gui.c:1896
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Valitse tietoihin liitettävät XML-tiedostot"
 
-#: gtk-gui.c:913
+#: gtk-gui.c:1363
 msgid "Close"
 msgstr "Sulje"
 
-#: divelist.c:2119
+#: divelist.c:2480
 msgid "Collapse all"
 msgstr "Supista kaikki retket"
 
-#: divelist.c:2092
+#: webservice.c:119
+msgid "Connecting..."
+msgstr ""
+
+#: webservice.c:23
+msgid "Connection Error: "
+msgstr ""
+
+#: divelist.c:2452
 msgid "Create new trip above"
 msgstr "Liitä uuteen retkeen"
 
-#: gtk-gui.c:598
+#: gtk-gui.c:640
 msgid "CuFt"
 msgstr "kuutiojalka"
 
-#: divelist.c:1269 gtk-gui.c:622
+#: divelist.c:1423 gtk-gui.c:664
 msgid "Cyl"
 msgstr "Säiliöt"
 
-#: equipment.c:934 equipment.c:1070
+#: equipment.c:918 equipment.c:1029 print.c:205
 msgid "Cylinder"
 msgstr "Säiliöt"
 
-#: equipment.c:1580
+#: equipment.c:1539
 msgid "Cylinders"
 msgstr "Säiliöt"
 
-#: divelist.c:1262 print.c:155 statistics.c:720
+#: profile.c:2098
+#, fuzzy, c-format
+msgid "D:%.1f %s"
+msgstr "%.*f %s/min"
+
+#: divelist.c:1416 print.c:510 statistics.c:827
 msgid "Date"
 msgstr "Ajankohta"
 
-#: info.c:807
+#: info.c:1001
 msgid "Date and Time"
 msgstr "Päivä ja aika"
 
-#: info.c:817
+#: info.c:1011
 msgid "Date:"
 msgstr "Päivä:"
 
-#: main.c:47
+#: main.c:72
 msgid "Dec"
 msgstr "joulu"
 
-#: gtk-gui.c:669
+#: gtk-gui.c:701
 msgid "Default XML Data File"
 msgstr "Oletustiedosto"
 
-#: info.c:256
-msgid "Delete"
-msgstr "Poista"
+#: gtk-gui.c:1310
+msgid "Delete a dive computer information entry"
+msgstr ""
 
-#: info.c:207
-msgid "Delete Dive"
-msgstr "Poista sukellus"
-
-#: divelist.c:2010
+#: divelist.c:2206 divelist.c:2259 divelist.c:2351
 msgid "Delete dive"
 msgstr "Poista sukellus"
 
-#: divelist.c:2009
+#: divelist.c:2208 divelist.c:2350
 msgid "Delete dives"
 msgstr "Poista sukellukset"
 
-#: print.c:155 statistics.c:160
+#: print.c:510 statistics.c:182
 msgid "Depth"
 msgstr "Syvyys"
 
-#: info.c:867
+#: info.c:1078
 #, c-format
 msgid "Depth (%s):"
 msgstr "Syvyys (%s):"
 
-#: uemis.c:161
+#: uemis.c:222
 msgid "Depth Limit Exceeded"
 msgstr "Syvyysraja ylitetty"
 
-#: gtk-gui.c:586
+#: gtk-gui.c:628
 msgid "Depth:"
 msgstr "Syvyys:"
 
-#: gtk-gui.c:1378
-msgid "Device name"
+#: gtk-gui.c:1269
+#, fuzzy
+msgid "Device Id"
 msgstr "Laitenimi"
 
+#: download-dialog.c:330
+msgid "Device or mount point"
+msgstr ""
+
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
-#: info.c:107
+#: info.c:105
 #, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Sukellus #%1$d - %2$s %4$d.%3$d.%5$04d, %6$d:%7$02d"
 
-#: info.c:159 print.c:67
+#: info.c:157 print.c:71
 #, c-format
 msgid "Dive #%d - "
 msgstr "Sukellus #%d - "
 
-#: libdivecomputer.c:254
+#: libdivecomputer.c:435
 #, c-format
 msgid "Dive %d: %s %d %04d"
 msgstr "Sukellus %1$d: %3$d. %2$skuuta %4$04d"
 
-#: gtk-gui.c:1134 info.c:700 statistics.c:711
+#: gtk-gui.c:1977
+#, fuzzy
+msgid "Dive Computer Nickname"
+msgstr "Sukellustietokone"
+
+#: gtk-gui.c:1607 info.c:898 statistics.c:818
 msgid "Dive Info"
 msgstr "Tiedot"
 
-#: gtk-gui.c:1126
+#: gtk-gui.c:1599
 msgid "Dive Notes"
 msgstr "Muistiinpanot"
 
-#: statistics.c:721
+#: planner.c:1194
+msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
+msgstr ""
+
+#: statistics.c:828
 msgid "Dive Time"
 msgstr "Sukellusaika"
 
-#: uemis.c:167
+#: uemis.c:228
 msgid "Dive Time Alert"
 msgstr "Huomautus: sukellusaika"
 
-#: uemis.c:165
+#: uemis.c:226
 msgid "Dive Time Info"
 msgstr "Tiedotus: sukellusaika"
 
-#: gtk-gui.c:1347
-msgid "Dive computer"
-msgstr "Sukellustietokone"
+#: download-dialog.c:288
+msgid "Dive computer vendor and product"
+msgstr ""
 
-#: libdivecomputer.c:373
+#: libdivecomputer.c:680
 msgid "Dive data import error"
 msgstr "Virhe sukellusten jäsentämisessä"
 
-#: print.c:476
+#: print.c:893
 msgid "Dive details"
 msgstr "Tiedot"
 
-#: info.c:514
+#: gps.c:193
+#, fuzzy
+msgid "Dive locations"
+msgstr "Muistiinpanot"
+
+#: info.c:699
 msgid "Dive master"
 msgstr "Sukellusvanhin"
 
-#: print.c:155
+#: planner.c:1219
+msgid "Dive starts when?"
+msgstr ""
+
+#: print.c:510
 msgid "Dive#"
 msgstr "Sukellus"
 
-#: gtk-gui.c:652
+#: gtk-gui.c:689
 msgid "Divelist Font"
 msgstr "Sukelluslistan kirjasin"
 
-#: info.c:941
+#: info.c:1152
 msgid "Divemaster"
 msgstr "Sukellusvanhin"
 
-#: statistics.c:672
+#: statistics.c:779
 msgid "Dives"
 msgstr "Sukelluskerrat"
 
-#: gtk-gui.c:1508
+#: gtk-gui.c:1373
+#, fuzzy
+msgid "Dives Locations"
+msgstr "Kohde"
+
+#: download-dialog.c:366
 msgid "Download From Dive Computer"
 msgstr "Hae sukellustietokoneelta"
 
-#: gtk-gui.c:916
+#: gtk-gui.c:1366
 msgid "Download From Dive Computer..."
 msgstr "Hae sukellustietokoneelta..."
 
-#: statistics.c:160
+#: webservice.c:207
+#, fuzzy
+msgid "Download From Web Service"
+msgstr "Hae sukellustietokoneelta"
+
+#: gtk-gui.c:1367
+#, fuzzy
+msgid "Download From Web Service..."
+msgstr "Hae sukellustietokoneelta..."
+
+#: webservice.c:29
+msgid "Download Success!"
+msgstr ""
+
+#: statistics.c:182
 msgid "Duration"
 msgstr "Kesto"
 
-#: info.c:862
+#: info.c:1073
 msgid "Duration (min)"
 msgstr "Kesto (min)"
 
-#: info.c:257
+#: info.c:629
+msgid "E"
+msgstr ""
+
+#: planner.c:76
+#, c-format
+msgid "EAN%d"
+msgstr ""
+
+#: planner.c:1114
+msgid "EAN32"
+msgstr ""
+
+#: planner.c:1115
+msgid "EAN36"
+msgstr ""
+
+#: info.c:222
 msgid "Edit"
 msgstr "Muuta"
 
-#: info.c:659
+#: gtk-gui.c:1382
+#, fuzzy
+msgid "Edit Device Names"
+msgstr "Laitenimi"
+
+#: gtk-gui.c:1242
+msgid "Edit Dive Computer Nicknames"
+msgstr ""
+
+#: info.c:857
 msgid "Edit Trip Info"
 msgstr "Muuta retken tietoja"
 
-#: divelist.c:2031
+#: divelist.c:2372
 msgid "Edit Trip Summary"
 msgstr "Muuta retken tietoja"
 
-#: divelist.c:2007
+#: gtk-gui.c:1302
+msgid ""
+"Edit a dive computer nickname by double-clicking the in the relevant "
+"nickname field"
+msgstr ""
+
+#: divelist.c:2348
 msgid "Edit dive"
 msgstr "Muuta sukelluksen tietoja"
 
-#: divelist.c:2006
+#: divelist.c:2405 divelist.c:2424
+#, fuzzy
+msgid "Edit dive date/time"
+msgstr "Muuta sukelluksen tietoja"
+
+#: divelist.c:2347
 msgid "Edit dives"
 msgstr "Muuta sukelluksen tietoja"
 
-#: info.c:502
+#: info.c:669
 msgid "Edit multiple dives"
 msgstr "Muuta valittujen sukellusten tietoja"
 
-#: info.c:482
+#: info.c:601
 msgid "Edit trip summary"
 msgstr "Muuta retken tietoja"
 
-#: gtk-gui.c:773
+#: gtk-gui.c:953
 msgid "Enable / Disable Events"
 msgstr "Näytä / piilota tapahtumamerkit"
 
-#: equipment.c:973 equipment.c:1497
+#: equipment.c:949 equipment.c:1456
 msgid "End"
 msgstr "Loppu"
 
-#: gtk-gui.c:1130 info.c:535
+#: planner.c:1139
+#, fuzzy
+msgid "Ending Depth"
+msgstr "Pienin syvyys"
+
+#: webservice.c:220
+msgid ""
+"Enter a user identifier and press 'Download'. Once the download is complete "
+"you can press 'Apply' if you wish to apply the changes."
+msgstr ""
+
+#: gtk-gui.c:1603 info.c:733
 msgid "Equipment"
 msgstr "Varusteet"
 
-#: libdivecomputer.c:240
+#: libdivecomputer.c:470
+#, fuzzy
+msgid "Error obtaining water salinity"
+msgstr "Virhe näytteiden tulkinnassa"
+
+#: libdivecomputer.c:418
 msgid "Error parsing the datetime"
 msgstr "Virhe ajan jäsentämisessä"
 
-#: libdivecomputer.c:259
+#: libdivecomputer.c:440
 msgid "Error parsing the divetime"
 msgstr "Virhe sukelluksen keston jäsentämisessä"
 
-#: libdivecomputer.c:286
+#: libdivecomputer.c:479
 msgid "Error parsing the gas mix"
 msgstr "Virhe kaasuseoksen jäsentämisessä"
 
-#: libdivecomputer.c:279
+#: libdivecomputer.c:460
 msgid "Error parsing the gas mix count"
 msgstr "Virhe kaasuseosten määrän jäsentämisessä"
 
-#: libdivecomputer.c:269
+#: libdivecomputer.c:450
 msgid "Error parsing the maxdepth"
 msgstr "Virhe maksimisyvyyden jäsentämisessä"
 
-#: libdivecomputer.c:294
+#: libdivecomputer.c:487
 msgid "Error parsing the samples"
 msgstr "Virhe näytteiden tulkinnassa"
 
-#: libdivecomputer.c:369
+#: libdivecomputer.c:676
 msgid "Error registering the cancellation handler."
 msgstr "Virhe perumiskäsittelijän rekisteröinnissä."
 
-#: libdivecomputer.c:231
+#: libdivecomputer.c:409
 msgid "Error registering the data"
 msgstr "Virhe tiedon rekisteröinnissä"
 
-#: libdivecomputer.c:364
+#: libdivecomputer.c:671
 msgid "Error registering the event handler."
 msgstr "Virhe tapahtumakäsittelijän rekisteröinnissä."
 
-#: libdivecomputer.c:339
+#: libdivecomputer.c:644
 #, fuzzy, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
 msgstr "Tapahtuma: systime=%<PRId64>, devtime=%u\n"
 
-#: libdivecomputer.c:325
+#: libdivecomputer.c:621
 msgid "Event: waiting for user action"
 msgstr "Tapahtuma: odotetaan käyttäjän toimia"
 
-#: divelist.c:2116
+#: divelist.c:2476
 msgid "Expand all"
 msgstr "Laajenna kaikki retket"
 
-#: gtk-gui.c:603
+#: gtk-gui.c:645
 msgid "Fahrenheit"
 msgstr "Fahrenheit"
 
-#: gtk-gui.c:140
+#: gtk-gui.c:112
 #, c-format
 msgid "Failed to open %i files."
 msgstr "%i tiedoston avaaminen epäonnistui."
 
-#: parse-xml.c:1498
+#: parse-xml.c:1448
 #, c-format
 msgid "Failed to parse '%s'"
 msgstr "Tiedoston '%s' lukeminen epäonnistui."
 
-#: parse-xml.c:1493
+#: parse-xml.c:1443
 #, c-format
 msgid "Failed to parse '%s'.\n"
 msgstr "Tiedoston '%s' lukeminen epäonnistui.\n"
 
-#: file.c:266
+#: file.c:265
 #, c-format
 msgid "Failed to read '%s'"
 msgstr "Tiedoston '%s' avaaminen epäonnistui"
 
-#: file.c:262
+#: file.c:261
 #, c-format
 msgid "Failed to read '%s'.\n"
 msgstr "Tiedoston '%s' lukeminen epäonnistui.\n"
 
-#: main.c:46
+#: main.c:71
 msgid "Feb"
 msgstr "helmi"
 
-#: gtk-gui.c:588
+#: gtk-gui.c:630
 msgid "Feet"
 msgstr "jalka"
 
-#: gtk-gui.c:904
+#: gtk-gui.c:1353
 msgid "File"
 msgstr "Tiedosto"
 
-#: gtk-gui.c:907
+#: gtk-gui.c:1356
 msgid "Filter"
 msgstr "Suodattimet"
 
-#: main.c:37
+#: download-dialog.c:385
+msgid "Force download of all dives"
+msgstr ""
+
+#: main.c:62
 msgid "Fri"
 msgstr "pe"
 
-#: statistics.c:739
+#: gtk-gui.c:851
+msgid "GFhigh"
+msgstr ""
+
+#: planner.c:1242
+msgid "GFhigh for plan"
+msgstr ""
+
+#: gtk-gui.c:841
+msgid "GFlow"
+msgstr ""
+
+#: planner.c:1241
+msgid "GFlow for plan"
+msgstr ""
+
+#: info.c:683
+msgid "GPS (WGS84 or GPS format)"
+msgstr ""
+
+#: planner.c:1141 print.c:205 statistics.c:854
 msgid "Gas Used"
 msgstr "Kulutus"
 
-#: equipment.c:983
+#: planner.c:529
+#, c-format
+msgid "Gas consumption:\n"
+msgstr ""
+
+#: equipment.c:959 print.c:205
 msgid "Gasmix"
 msgstr "Kaasuseos"
 
-#: gtk-gui.c:908
+#: gtk-gui.c:621
+msgid "General Settings"
+msgstr ""
+
+#: gtk-gui.c:1358
 msgid "Help"
 msgstr "Ohje"
 
-#: gtk-gui.c:915
+#: webservice.c:241
+msgid "Idle"
+msgstr ""
+
+#: gtk-gui.c:1365
 msgid "Import XML File(s)..."
 msgstr "Liitä tiedot XML-tiedostosta..."
 
-#: gtk-gui.c:926
+#: gtk-gui.c:1380
 msgid "Info"
 msgstr "Tiedot"
 
+#: uemis-downloader.c:761
+msgid "Init Communication"
+msgstr ""
+
+#: gtk-gui.c:1385
+msgid "Input Plan"
+msgstr ""
+
+#: webservice.c:25
+msgid "Invalid user identifier!"
+msgstr ""
+
 #. ++GETTEXT: these are three letter months - we allow up to six code bytes
-#: main.c:46
+#: main.c:71
 msgid "Jan"
 msgstr "tammi"
 
-#: main.c:47
+#: main.c:72
 msgid "Jul"
 msgstr "heinä"
 
-#: main.c:46
+#: main.c:71
 msgid "Jun"
 msgstr "kesä"
 
-#: gtk-gui.c:857
-msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012"
+#: gtk-gui.c:1060
+#, fuzzy
+msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 msgstr "Linus Torvalds, Dirk Hohndel et al., 2011, 2012"
 
-#: gtk-gui.c:924
+#: gtk-gui.c:1378
 msgid "List"
 msgstr "Sukelluslista"
 
-#: gtk-gui.c:597
+#: gtk-gui.c:639
 msgid "Liter"
 msgstr "litra"
 
-#: divelist.c:1273 info.c:487 info.c:509 info.c:936 print.c:156
+#: divelist.c:1428 info.c:606 info.c:676 info.c:1147 print.c:511
 msgid "Location"
 msgstr "Kohde"
 
-#: gtk-gui.c:905
+#: gtk-gui.c:1354
 msgid "Log"
 msgstr "Loki"
 
-#: statistics.c:167
+#: statistics.c:189
 msgctxt "Duration"
 msgid "Longest"
 msgstr "Pisin"
 
-#: statistics.c:683
+#: statistics.c:790
 msgid "Longest Dive"
 msgstr "Pisin sukellus"
 
-#: uemis.c:175
+#: uemis.c:236
 msgid "Low Battery Alert"
 msgstr "Huomautus: heikko paristo"
 
-#: uemis.c:173
+#: uemis.c:234
 msgid "Low Battery Warning"
 msgstr "Varoitus: heikko paristo"
 
-#: main.c:46
+#: main.c:71
 msgid "Mar"
 msgstr "maalis"
 
-#: uemis.c:169
+#: gps.c:56
+msgid "Mark location here"
+msgstr ""
+
+#: uemis.c:230
 msgid "Marker"
 msgstr "merkki"
 
-#: print.c:155
+#: print.c:510
 msgid "Master"
 msgstr "Sukellusvanhin"
 
-#: uemis.c:163
+#: uemis.c:224
 msgid "Max Deco Time Warning"
 msgstr "Varoitus: etappipysähdysaika"
 
-#: statistics.c:690 statistics.c:728
+#: statistics.c:797 statistics.c:835
 msgid "Max Depth"
 msgstr "Suurin syvyys"
 
-#: statistics.c:698
+#: statistics.c:805
 msgid "Max SAC"
 msgstr "Suurin pintakulutus"
 
-#: statistics.c:673
+#: statistics.c:780
 msgid "Max Temp"
 msgstr "Ylin lämpötila"
 
-#: print.c:95
+#: print.c:103
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -585,270 +967,341 @@ msgstr ""
 "Kesto: %d min\n"
 "%s"
 
-#: equipment.c:1495
+#: print.c:385
+#, c-format
+msgid "Max. CNS"
+msgstr ""
+
+#: equipment.c:1454
 msgid "MaxPress"
 msgstr "Nimellispaine"
 
-#: statistics.c:170
+#: statistics.c:192
 msgctxt "Depth"
 msgid "Maximum"
 msgstr "Suurin"
 
-#: statistics.c:173
+#: statistics.c:195
 msgctxt "SAC"
 msgid "Maximum"
 msgstr "Suurin"
 
-#: statistics.c:176
+#: statistics.c:198
 msgctxt "Temp"
 msgid "Maximum"
 msgstr "Korkein"
 
-#: main.c:46
+#: main.c:71
 msgid "May"
 msgstr "touko"
 
-#: divelist.c:2039
+#: divelist.c:2339
+#, fuzzy
+msgid "Merge dives"
+msgstr "Poista sukellukset"
+
+#: divelist.c:2380
 msgid "Merge trip with trip above"
 msgstr "Liitä retki yllä olevaan retkeen"
 
-#: divelist.c:2049
+#: divelist.c:2390
 msgid "Merge trip with trip below"
 msgstr "Liitä retki alla olevaan retkeen"
 
-#: gtk-gui.c:587
+#: gtk-gui.c:629
 msgid "Meter"
 msgstr "metri"
 
-#: statistics.c:691
+#: statistics.c:798
 msgid "Min Depth"
 msgstr "Pienin syvyys"
 
-#: statistics.c:699
+#: statistics.c:806
 msgid "Min SAC"
 msgstr "Pienin pintakulutus"
 
-#: statistics.c:674
+#: statistics.c:781
 msgid "Min Temp"
 msgstr "Alin lämpötila"
 
-#: statistics.c:169
+#: statistics.c:191
 msgctxt "Depth"
 msgid "Minimum"
 msgstr "Pienin"
 
-#: statistics.c:172
+#: statistics.c:194
 msgctxt "SAC"
 msgid "Minimum"
 msgstr "Pienin"
 
-#: statistics.c:175
+#: statistics.c:197
 msgctxt "Temp"
 msgid "Minimum"
 msgstr "Alin"
 
-#: gtk-gui.c:658
+#: gtk-gui.c:695
 msgid "Misc. Options"
 msgstr "Sekalaiset asetukset"
 
-#: main.c:37
+#: gtk-gui.c:1264
+msgid "Model"
+msgstr ""
+
+#: main.c:62
 msgid "Mon"
 msgstr "ma"
 
-#: gtk-gui.c:853
+#: gtk-gui.c:1056
 msgid "Multi-platform divelog software in C"
 msgstr "Usean laitealustan sukelluspäiväkirjaohjelma C-kielellä"
 
-#: gtk-gui.c:909
+#: info.c:628
+msgid "N"
+msgstr ""
+
+#: gtk-gui.c:1359
 msgid "New"
 msgstr "Uusi"
 
-#: gtk-gui.c:813
+#: gtk-gui.c:1004
 msgid "New starting number"
 msgstr "Uusi aloitusnumero"
 
-#: uemis.c:171
+#: gtk-gui.c:1384
+msgid "Next DC"
+msgstr ""
+
+#: gtk-gui.c:1274 gtk-gui.c:1999
+#, fuzzy
+msgid "Nickname"
+msgstr "Laitenimi"
+
+#: uemis.c:232
 msgid "No Tank Data"
 msgstr "Ei tietoja säiliöistä"
 
-#: info.c:492 info.c:527 info.c:950
+#: info.c:611 info.c:725 info.c:1161
 msgid "Notes"
 msgstr "Muistiinpanot"
 
-#: main.c:47
+#: main.c:72
 msgid "Nov"
 msgstr "marras"
 
-#: libdivecomputer.c:84
+#: libdivecomputer.c:153
 msgid "OLF"
 msgstr "Happikertymä"
 
-#: divelist.c:1272 gtk-gui.c:637 statistics.c:737
+#: divelist.c:1426 gtk-gui.c:722 print.c:363 statistics.c:852
+#, c-format
 msgid "OTU"
 msgstr "Happikertymä"
 
-#: main.c:47
+#: main.c:72
 msgid "Oct"
 msgstr "loka"
 
-#: libdivecomputer.c:427
+#: libdivecomputer.c:769
 msgid "Odd pthread error return"
 msgstr "Outo pthread-virheen paluukoodi"
 
-#: gtk-gui.c:315
+#: gtk-gui.c:1321
+msgid "Ok to delete the selected entry?"
+msgstr ""
+
+#: gtk-gui.c:268
 msgid "Open File"
 msgstr "Avaa tiedosto"
 
-#: gtk-gui.c:910
+#: gtk-gui.c:1360
 msgid "Open..."
 msgstr "Avaa..."
 
-#: libdivecomputer.c:84
+#: print.c:178
+#, c-format
+msgid "Oxygen"
+msgstr ""
+
+#: libdivecomputer.c:153
 msgid "PO2"
 msgstr "PO2"
 
-#: uemis.c:149
+#: uemis.c:210
 msgid "PO2 Ascend Alarm"
 msgstr "Huomautus: hapen osapaine"
 
-#: uemis.c:147
+#: uemis.c:208
 msgid "PO2 Ascend Warning"
 msgstr "Varoitus: hapen osapaine"
 
-#: uemis.c:144
+#: uemis.c:205
 msgid "PO2 Green Warning"
 msgstr "Varoitus: hapen osapaine (green) TODO"
 
-#: gtk-gui.c:593
+#: gtk-gui.c:635
 msgid "PSI"
 msgstr "psi"
 
-#: gtk-gui.c:572
+#: info.c:686
+msgid "Pick on map"
+msgstr ""
+
+#: gtk-gui.c:1357
+msgid "Planner"
+msgstr ""
+
+#: gtk-gui.c:606
 msgid "Preferences"
 msgstr "Asetukset"
 
-#: gtk-gui.c:918
+#: gtk-gui.c:1369
 msgid "Preferences..."
 msgstr "Asetukset..."
 
-#: equipment.c:962 equipment.c:968
+#: equipment.c:938 equipment.c:944
 msgid "Pressure"
 msgstr "Paine"
 
-#: gtk-gui.c:591
+#: gtk-gui.c:633
 msgid "Pressure:"
 msgstr "Paine:"
 
-#: print.c:486
-msgid "Pretty print"
-msgstr "Hieno tuloste"
+#: gtk-gui.c:1383
+msgid "Prev DC"
+msgstr ""
 
-#: print.c:507
+#: print.c:930
 msgid "Print only selected dives"
 msgstr "Tulosta valitut sukellukset"
 
-#: print.c:502
+#: print.c:925
 msgid "Print selection"
 msgstr "Tulosteen valinta"
 
-#: print.c:480
+#: print.c:897
 msgid "Print type"
 msgstr "Tulosteen tyyppi"
 
-#: gtk-gui.c:914
+#: gtk-gui.c:1364
 msgid "Print..."
 msgstr "Tulosta..."
 
-#: gtk-gui.c:925
+#: gtk-gui.c:1379
 msgid "Profile"
 msgstr "Profiilikuvaaja"
 
-#: gtk-gui.c:922
+#: gtk-gui.c:732
+#, fuzzy
+msgid "Profile Settings"
+msgstr "Profiilikuvaaja"
+
+#: gtk-gui.c:1376
 msgid "Quit"
 msgstr "Lopeta"
 
-#: uemis.c:157
+#: uemis.c:218
 msgid "RGT Alert"
 msgstr "Huomautus: kaasumäärä"
 
-#: uemis.c:155
+#: uemis.c:216
 msgid "RGT Warning"
 msgstr "Varoitus: kaasumäärä"
 
-#: info.c:520 info.c:947
+#: info.c:705 info.c:1158
 msgid "Rating"
 msgstr "Yleisarvio"
 
-#: uemis-downloader.c:267
-#, c-format
-msgid "Reading dive %s"
+#: uemis-downloader.c:364
+#, fuzzy, c-format
+msgid "Reading %s %s"
 msgstr "Luetaan sukellusta %s"
 
-#: divelist.c:2054
+#: divelist.c:2051 divelist.c:2395
 msgid "Remove Trip"
 msgstr "Poista retki"
 
-#: divelist.c:2110
+#: divelist.c:2470
 msgid "Remove dive from trip"
 msgstr "Erota sukellus pois retkestä"
 
-#: divelist.c:2108
+#: divelist.c:2468
 msgid "Remove selected dives from trip"
 msgstr "Erota valitut sukellukset pois retkestä"
 
-#: gtk-gui.c:804
+#: gtk-gui.c:995
 msgid "Renumber"
 msgstr "Uudellennumeroi"
 
-#: gtk-gui.c:919
+#: gtk-gui.c:1370
 msgid "Renumber..."
 msgstr "Uudellennumeroi..."
 
-#: gtk-gui.c:1485
+#: download-dialog.c:141
 msgid "Retry"
 msgstr "Yritä uudestaan"
 
-#: divelist.c:1271 gtk-gui.c:632 statistics.c:160 statistics.c:736
+#: info.c:628
+msgid "S"
+msgstr ""
+
+#: divelist.c:1425 gtk-gui.c:674 print.c:410 statistics.c:182 statistics.c:851
+#, c-format
 msgid "SAC"
 msgstr "Pintakulutus"
+
+#: planner.c:1236
+msgid "SAC during decostop"
+msgstr ""
+
+#: planner.c:1235
+#, fuzzy
+msgid "SAC during dive"
+msgstr "Lisää sukellus"
 
 #: file.c:75
 msgid "SDE file"
 msgstr "SDE-tiedosto"
 
-#: uemis.c:137
+#: uemis.c:198
 msgid "Safety Stop Violation"
 msgstr "Turvapysähdyksen laiminlyönti"
 
-#: main.c:37
+#: main.c:62
 msgid "Sat"
 msgstr "la"
 
-#: gtk-gui.c:912
+#: gtk-gui.c:1362
 msgid "Save As..."
 msgstr "Tallenna nimellä..."
 
-#: gtk-gui.c:228
+#: gtk-gui.c:198
 msgid "Save Changes?"
 msgstr "Tallenna muutokset?"
 
-#: gtk-gui.c:165
+#: gtk-gui.c:135
 msgid "Save File As"
 msgstr "Tallenna nimellä"
 
-#: gtk-gui.c:911
+#: gtk-gui.c:1361
 msgid "Save..."
 msgstr "Tallenna..."
 
-#: gtk-gui.c:764
-msgid "SelectEvents"
+#: planner.c:1140
+#, fuzzy
+msgid "Segment Time"
+msgstr "Keskipituus"
+
+#: gtk-gui.c:944
+#, fuzzy
+msgid "Select Events"
 msgstr "Valitse tapahtumat"
 
-#: gtk-gui.c:921
-msgid "SelectEvents..."
+#: gtk-gui.c:1375
+#, fuzzy
+msgid "Select Events..."
 msgstr "Valitse tapahtumat..."
 
-#: main.c:47
+#: main.c:72
 msgid "Sep"
 msgstr "syys"
 
@@ -860,126 +1313,222 @@ msgstr ""
 "Tiedoston req.txt kirjoittaminen epäonnistui.\n"
 "Onko Uemis Zurich kytketty oikein?"
 
-#: statistics.c:166
+#: statistics.c:188
 msgctxt "Duration"
 msgid "Shortest"
 msgstr "Lyhin"
 
-#: statistics.c:684
+#: statistics.c:791
 msgid "Shortest Dive"
 msgstr "Lyhin sukellus"
 
-#: gtk-gui.c:611
+#: gtk-gui.c:653 gtk-gui.c:716
 msgid "Show Columns"
 msgstr "Näytä sarakkeet"
 
-#: equipment.c:959 equipment.c:1494
+#: gtk-gui.c:812
+msgid "Show EAD, END, EADD"
+msgstr ""
+
+#: gtk-gui.c:795
+msgid "Show MOD"
+msgstr ""
+
+#: gtk-gui.c:828
+msgid "Show calculated ceiling"
+msgstr ""
+
+#: gtk-gui.c:820
+msgid "Show dc reported ceiling in red"
+msgstr ""
+
+#: divelist.c:2441
+msgid "Show in map"
+msgstr ""
+
+#: gtk-gui.c:778
+msgid "Show pHe graph"
+msgstr ""
+
+#: gtk-gui.c:759
+#, c-format
+msgid "Show pN%s graph"
+msgstr ""
+
+#: gtk-gui.c:740
+#, c-format
+msgid "Show pO%s graph"
+msgstr ""
+
+#: planner.c:191
+#, fuzzy
+msgid "Simulated Dive"
+msgstr "Poista sukellus"
+
+#: equipment.c:935 equipment.c:1453
 msgid "Size"
 msgstr "Tilavuus"
 
-#: uemis.c:139
+#: uemis.c:200
 msgid "Speed Alarm"
 msgstr "Huomautus: nousunopeus"
 
-#: uemis.c:142
+#: uemis.c:203
 msgid "Speed Warning"
 msgstr "Varoitus: nousunopeus"
 
-#: equipment.c:970 equipment.c:1496
+#: equipment.c:946 equipment.c:1455
 msgid "Start"
 msgstr "Alku"
 
-#: statistics.c:664
+#: uemis-downloader.c:774
+msgid "Start download"
+msgstr ""
+
+#: statistics.c:769
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: gtk-gui.c:1138
+#: statistics.c:705
+#, fuzzy, c-format
+msgid "Statistics %s"
+msgstr "Tilastot"
+
+#: gtk-gui.c:1611
 msgid "Stats"
 msgstr "Tilastot"
 
-#: divelist.c:1268 gtk-gui.c:647 info.c:521 info.c:948
+#: webservice.c:240
+#, fuzzy
+msgid "Status"
+msgstr "Tilastot"
+
+#: planner.c:511
+#, c-format
+msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
+msgstr ""
+
+#: planner.c:461
+#, c-format
+msgid ""
+"Subsurface dive plan\n"
+"based on GFlow = %.0f and GFhigh = %.0f\n"
+"\n"
+msgstr ""
+
+#: divelist.c:1422 gtk-gui.c:684 info.c:706 info.c:1159
 msgid "Suit"
 msgstr "Puku"
 
 #. ++GETTEXT: these are three letter days - we allow up to six code bytes
-#: main.c:37
+#: main.c:62
 msgid "Sun"
 msgstr "su"
 
-#: statistics.c:722
+#: statistics.c:829
 msgid "Surf Intv"
 msgstr "Pinta-aika"
 
-#: print.c:490
+#: planner.c:1220
+msgid "Surface Pressure (mbar)"
+msgstr ""
+
+#: planner.c:521
+#, c-format
+msgid "Switch gas to %s\n"
+msgstr ""
+
+#: print.c:911
 msgid "Table print"
 msgstr "Taulukkotuloste"
 
-#: uemis.c:159
+#: uemis.c:220
 msgid "Tank Change Suggested"
 msgstr "Säiliönvaihtoehdotus"
 
-#: uemis.c:153
+#: uemis.c:214
 msgid "Tank Pressure Info"
 msgstr "Tiedotus: säiliöpaine"
 
-#: gtk-gui.c:617
+#: gtk-gui.c:714
+msgid "Tec Settings"
+msgstr ""
+
+#: gtk-gui.c:659
 msgid "Temp"
 msgstr "Lämpötila"
 
-#: statistics.c:160
+#: statistics.c:182
 msgid "Temperature"
 msgstr "Lämpötila"
 
-#: gtk-gui.c:601
+#: gtk-gui.c:643
 msgid "Temperature:"
 msgstr "Lämpötila:"
 
-#: gtk-gui.c:927
+#: gtk-gui.c:1381
 msgid "Three"
 msgstr "Kaikki"
 
-#: main.c:37
+#: main.c:62
 msgid "Thu"
 msgstr "to"
 
-#: info.c:822 print.c:155
+#: info.c:1016 print.c:510
 msgid "Time"
 msgstr "Kello"
 
-#: gtk-gui.c:933
+#: gtk-gui.c:1497
+msgid ""
+"To edit dive information\n"
+"double click on it in the dive list"
+msgstr ""
+
+#: gtk-gui.c:1391
 msgid "Toggle Zoom"
 msgstr "Venytä sukellusprofiilikuvaajaa"
 
-#: statistics.c:164
+#: statistics.c:186
 msgctxt "Duration"
 msgid "Total"
 msgstr "Yhteensä"
 
-#: statistics.c:681
+#: statistics.c:788
 msgid "Total Time"
 msgstr "Kokonaisaika"
 
+#: print.c:336
+#, fuzzy, c-format
+msgid "Total Weight:"
+msgstr "Massa:"
+
+#: planner.c:502
+#, c-format
+msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
+msgstr ""
+
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
-#: divelist.c:376
+#: divelist.c:268
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
 msgstr[0] "Retki %1$s, %3$d. %2$skuuta %4$04d (%5$d sukellus)"
 msgstr[1] "Retki %1$s, %3$d. %2$skuuta %4$04d (%5$d sukellusta)"
 
-#: main.c:37
+#: main.c:62
 msgid "Tue"
 msgstr "ti"
 
-#: equipment.c:1493 equipment.c:1521
+#: equipment.c:1452 equipment.c:1480
 msgid "Type"
 msgstr "Tyyppi"
 
 #: uemis-downloader.c:28
+#, fuzzy
 msgid ""
 "Uemis Zurich: File System is almost full\n"
 "Disconnect/reconnect the dive computer\n"
-"and try again"
+"and click 'Retry'"
 msgstr ""
 "Uemis Zurich: tiedostojärjestelmä on lähes täynnä.\n"
 "Liitä sukellustietokone uudestaan\n"
@@ -995,69 +1544,98 @@ msgstr ""
 "Liitä sukellustietokone uudestaan\n"
 "ja yritä uudestaan."
 
-#: uemis-downloader.c:559
+#: uemis-downloader.c:763
 msgid "Uemis init failed"
 msgstr "Uemiksen lukeminen epäonnistui"
 
-#: libdivecomputer.c:390
+#: libdivecomputer.c:698
 msgid "Unable to create libdivecomputer context"
 msgstr "libdivecomputer kontekstin luominen epäonnistui"
 
-#: libdivecomputer.c:225
+#: libdivecomputer.c:403
 #, c-format
 msgid "Unable to create parser for %s %s"
 msgstr "Jäsentäjän luominen %s %s epäonnistui"
 
-#: libdivecomputer.c:392
+#: libdivecomputer.c:700
 #, fuzzy, c-format
 msgid "Unable to open %s %s (%s)"
 msgstr "Avaaminen epäonnistui %s %s (%s)"
 
-#: gtk-gui.c:579
+#: gtk-gui.c:622
 msgid "Units"
 msgstr "Yksiköt"
 
-#: gtk-gui.c:906
+#: webservice.c:227
+msgid "User Identifier"
+msgstr ""
+
+#: gtk-gui.c:1355
 msgid "View"
 msgstr "Näytä"
 
-#: gtk-gui.c:596
+#: info.c:711 statistics.c:837
+msgid "Visibility"
+msgstr ""
+
+#: gtk-gui.c:638
 msgid "Volume:"
 msgstr "Tilavuus:"
 
-#: statistics.c:730
+#: info.c:629
+msgid "W"
+msgstr ""
+
+#: statistics.c:843
 msgid "Water Temp"
 msgstr "Veden lämpötila"
 
-#: main.c:37
+#: webservice.c:255
+msgid "Webservice"
+msgstr ""
+
+#: main.c:62
 msgid "Wed"
 msgstr "ke"
 
-#: equipment.c:1020 equipment.c:1620 gtk-gui.c:642
+#: equipment.c:985 equipment.c:1579 gtk-gui.c:679
 msgid "Weight"
 msgstr "Painot"
 
-#: equipment.c:1125
+#: equipment.c:1084 print.c:304
+#, c-format
 msgid "Weight System"
 msgstr "Painot"
 
-#: gtk-gui.c:606
+#: gtk-gui.c:648
 msgid "Weight:"
 msgstr "Massa:"
 
-#: gtk-gui.c:153
+#: gtk-gui.c:123
 msgid "XML file"
 msgstr "XML-tiedosto"
 
-#: statistics.c:160
+#: statistics.c:182
 msgid "Year"
 msgstr "Vuosi"
 
-#: gtk-gui.c:920 statistics.c:368
+#: gtk-gui.c:1371 statistics.c:390
 msgid "Yearly Statistics"
 msgstr "Vuositilastot"
 
-#: gtk-gui.c:238
+#: gtk-gui.c:1985
+#, c-format
+msgid ""
+"You already have a dive computer of this model\n"
+"named %s\n"
+"Subsurface can maintain a nickname for this device to distinguish it from "
+"the existing one. The default is the model and device ID as shown below.\n"
+"If you don't want to name this dive computer click 'Cancel' and Subsurface "
+"will simply display its model as its name (which may mean that you cannot "
+"tell the two dive computers apart in the logs)."
+msgstr ""
+
+#: gtk-gui.c:208
 msgid ""
 "You have unsaved changes\n"
 "Would you like to save those before closing the datafile?"
@@ -1065,7 +1643,7 @@ msgstr ""
 "Sinulla on tallentamattomia muutoksia.\n"
 "Haluatko tallentaa muutokset ennen tietojen sulkemista?"
 
-#: gtk-gui.c:241 gtk-gui.c:244
+#: gtk-gui.c:211 gtk-gui.c:214
 #, c-format
 msgid ""
 "You have unsaved changes to file: %s \n"
@@ -1074,192 +1652,304 @@ msgstr ""
 "Tiedosto %s on muuttunut.\n"
 "Haluatko tallentaa muutokset ennen tietojen sulkemista?"
 
-#: divelist.c:639
+#: divelist.c:544 planner.c:74 planner.c:725 print.c:183 profile.c:399
+#, c-format
 msgid "air"
 msgstr "ilma"
 
-#: libdivecomputer.c:84
+#: libdivecomputer.c:153
 msgid "airtime"
 msgstr "Ilma-aika"
 
-#: equipment.c:832
+#: equipment.c:828
 msgid "ankle"
 msgstr "nilkkapaino"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:149
 msgid "ascent"
 msgstr "Nousu"
 
-#: equipment.c:833
+#: equipment.c:829
 msgid "backplate weight"
 msgstr "selkäpaino"
 
-#: dive.c:45
+#: dive.c:46
 msgid "bar"
 msgstr "bar"
 
-#: equipment.c:831
+#: equipment.c:827
 msgid "belt"
 msgstr "vyöpaino"
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:150
 msgid "bookmark"
 msgstr "kirjanmerkki"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:149
 msgid "ceiling"
 msgstr "katto"
 
-#: libdivecomputer.c:83
+#: libdivecomputer.c:152
 msgid "ceiling (safety stop)"
 msgstr "katto (turvapysähdys)"
 
-#: equipment.c:834
+#: equipment.c:830
 msgid "clip-on"
 msgstr "clip-on"
 
-#: dive.c:88
+#: dive.c:91 planner.c:890
 msgid "cuft"
 msgstr "ft³"
 
-#: libdivecomputer.c:80
-msgid "deco"
-msgstr "etappipysähdys"
+#: uemis-downloader.c:384
+msgid "data"
+msgstr ""
 
-#: libdivecomputer.c:83
+#: libdivecomputer.c:149
+#, fuzzy
+msgid "deco stop"
+msgstr "syväpysähdys"
+
+#: libdivecomputer.c:152
 msgid "deepstop"
 msgstr "syväpysähdys"
 
-#: libdivecomputer.c:83
+#: uemis-downloader.c:405
+msgid "divelog entry id"
+msgstr ""
+
+#: uemis-downloader.c:407
+msgid "divespot data id"
+msgstr ""
+
+#: libdivecomputer.c:152
 msgid "divetime"
 msgstr "sukellusaika"
 
-#: dive.c:113 divelist.c:1264 info.c:867
+#: uemis-downloader.c:589
+msgid "drysuit"
+msgstr ""
+
+#: planner.c:727
+#, fuzzy
+msgid "ean"
+msgstr "tammi"
+
+#: statistics.c:678
+#, c-format
+msgid "for all dives"
+msgstr ""
+
+#: statistics.c:674
+#, fuzzy, c-format
+msgid "for dive #%d"
+msgstr "Sukellus #%d - "
+
+#: statistics.c:633
+#, c-format
+msgid "for dives #"
+msgstr ""
+
+#: statistics.c:676
+#, fuzzy, c-format
+msgid "for selected dive"
+msgstr "Tulosta valitut sukellukset"
+
+#: statistics.c:640
+#, fuzzy, c-format
+msgid "for selected dives"
+msgstr "Tulosta valitut sukellukset"
+
+#: dive.c:117 divelist.c:1418 info.c:1078 planner.c:831
 msgid "ft"
 msgstr "ft"
 
-#: libdivecomputer.c:82
+#: uemis-downloader.c:590
+msgid "full suit"
+msgstr ""
+
+#: libdivecomputer.c:151 libdivecomputer.c:154
 msgid "gaschange"
 msgstr "kaasun vaihto"
 
-#: libdivecomputer.c:84
+#: libdivecomputer.c:153
 msgid "heading"
 msgstr "suunta"
 
-#: equipment.c:830
+#: equipment.c:826
 msgid "integrated"
 msgstr "integroitu"
 
-#: libdivecomputer.c:103
+#: libdivecomputer.c:171
 msgid "invalid event number"
 msgstr "tuntematon tapahtumanumero"
 
-#: dive.c:136 equipment.c:1045 gtk-gui.c:607
+#: uemis-downloader.c:590
+msgid "jacket"
+msgstr ""
+
+#: dive.c:141 equipment.c:1004 gtk-gui.c:649
 msgid "kg"
 msgstr "kg"
 
-#: dive.c:83
+#: dive.c:86
 msgid "l"
 msgstr "l"
 
-#: dive.c:132 divelist.c:1267 equipment.c:1047 gtk-gui.c:608
+#: dive.c:137 divelist.c:1421 equipment.c:1006 gtk-gui.c:650
 msgid "lbs"
 msgstr "pauna"
 
-#: dive.c:108 info.c:867
+#: uemis-downloader.c:590
+msgid "long john"
+msgstr ""
+
+#: dive.c:112 info.c:1078
 msgid "m"
 msgstr "m"
 
-#: libdivecomputer.c:84
+#: gtk-gui.c:800
+msgid "max ppO2"
+msgstr ""
+
+#: divelist.c:1427 gtk-gui.c:727
+msgid "maxCNS"
+msgstr ""
+
+#: libdivecomputer.c:153
 msgid "maxdepth"
 msgstr "Suurin syvyys"
 
-#: divelist.c:1265
+#: uemis-downloader.c:591
+msgid "membrane"
+msgstr ""
+
+#: divelist.c:1419 planner.c:896
 msgid "min"
 msgstr "min"
 
-#: libdivecomputer.c:333
+#: libdivecomputer.c:629
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr "malli=%u (0x%08x), firmware=%u (0x%08x), sarjanumero=%u (0x%08x)"
 
-#: statistics.c:501
+#: uemis-downloader.c:409
+#, fuzzy
+msgid "more data dive id"
+msgstr "yli %d päivää"
+
+#: statistics.c:522
 #, c-format
 msgid "more than %d days"
 msgstr "yli %d päivää"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:154
+msgid "non stop time"
+msgstr ""
+
+#: libdivecomputer.c:149
 msgid "none"
 msgstr "ei mitään"
 
-#: dive.c:41
+#: gtk-gui.c:783
+msgid "pHe threshold"
+msgstr ""
+
+#: gtk-gui.c:765
+#, c-format
+msgid "pN%s threshold"
+msgstr ""
+
+#: gtk-gui.c:746
+#, c-format
+msgid "pO%s threshold"
+msgstr ""
+
+#: dive.c:42
 msgid "pascal"
 msgstr "Pa"
 
-#: dive.c:49
+#: dive.c:50
 msgid "psi"
 msgstr "psi"
 
-#: libdivecomputer.c:80
+#: libdivecomputer.c:149
 msgid "rbt"
 msgstr ""
 
-#: libdivecomputer.c:84
+#: libdivecomputer.c:153
 msgid "rgbm"
 msgstr ""
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:150
 msgid "safety stop"
 msgstr "turvapysähdys"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:151
 msgid "safety stop (mandatory)"
 msgstr "turvapysähdys (pakollinen)"
 
-#: libdivecomputer.c:82
+#: libdivecomputer.c:151
 msgid "safety stop (voluntary)"
 msgstr "turvapysähdys (vapaaehtoinen)"
 
-#: libdivecomputer.c:81
+#: uemis-downloader.c:589
+msgid "semidry"
+msgstr ""
+
+#: uemis-downloader.c:590
+msgid "shorty"
+msgstr ""
+
+#: libdivecomputer.c:150
 msgid "surface"
 msgstr "pinta"
 
-#: libdivecomputer.c:85
+#: libdivecomputer.c:154
 msgid "tissue level warning"
 msgstr "kudoskertymän varoitus"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
-#: gtk-gui.c:859
+#: gtk-gui.c:1062
 msgid "translator-credits"
 msgstr ""
 "Tommi Saviranta\n"
 "Miika Turkia"
 
-#: libdivecomputer.c:81
+#: libdivecomputer.c:150
 msgid "transmitter"
 msgstr "lähetin"
 
-#: equipment.c:1386 equipment.c:1406
+#: equipment.c:1345 equipment.c:1365
 msgid "unkn"
 msgstr "tuntematon"
 
-#: libdivecomputer.c:83 statistics.c:541
+#: libdivecomputer.c:152 print.c:317 statistics.c:563 statistics.c:584
+#: uemis-downloader.c:133
 msgid "unknown"
 msgstr "tuntematon"
 
-#: equipment.c:544
+#: equipment.c:540
 msgid "unspecified"
 msgstr "määrittelemätön"
 
-#: libdivecomputer.c:81
+#: uemis-downloader.c:590
+msgid "vest"
+msgstr ""
+
+#: libdivecomputer.c:150
 msgid "violation"
 msgstr "rike"
 
-#: equipment.c:1522
+#: equipment.c:1481
 msgid "weight"
 msgstr "Massa"
 
-#: libdivecomputer.c:80
+#: uemis-downloader.c:589
+msgid "wetsuit"
+msgstr ""
+
+#: libdivecomputer.c:149
 msgid "workload"
 msgstr "työmäärä"
 
@@ -1268,3 +1958,15 @@ msgstr "työmäärä"
 
 #~ msgid "About"
 #~ msgstr "Tietoja"
+
+#~ msgid "Automatically group dives in trips"
+#~ msgstr "Ryhmittele sukellukset retkiin automaattisesti"
+
+#~ msgid "Delete"
+#~ msgstr "Poista"
+
+#~ msgid "Pretty print"
+#~ msgstr "Hieno tuloste"
+
+#~ msgid "deco"
+#~ msgstr "etappipysähdys"
