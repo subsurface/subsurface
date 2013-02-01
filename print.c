@@ -290,6 +290,8 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 	char buffer[80];
 	PangoLayout *layout;
 
+	cairo_save(cr);
+
 	layout = pango_cairo_create_layout(cr);
 	pango_layout_set_height(layout,maxheight);
 	pango_layout_set_width(layout, maxwidth);
@@ -339,10 +341,9 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 			unit_weight);
 	pango_layout_set_text(layout, buffer, -1);
 	pango_cairo_show_layout(cr, layout);
-	/* undo translations */
-	cairo_translate (cr, 0, -(weightsystemcounter * height) / (4 * (double) PANGO_SCALE));
-	cairo_translate (cr, 0, -height / (3 * (double) PANGO_SCALE));
 	g_object_unref (layout);
+
+	cairo_restore(cr);
 }
 
 /* Print the dive OTUs */
