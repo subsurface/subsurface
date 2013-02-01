@@ -870,7 +870,7 @@ static void get_suit(struct dive *dive, char **str)
 
 GdkPixbuf *get_gps_icon(void)
 {
-	return gdk_pixbuf_from_pixdata(&my_pixbuf, TRUE, NULL);
+	return gdk_pixbuf_from_pixdata(&satellite_pixbuf, TRUE, NULL);
 }
 
 static GdkPixbuf *get_gps_icon_for_dive(struct dive *dive)

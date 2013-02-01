@@ -249,6 +249,16 @@ share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 		done; \
 	fi
 
+# this should work but it doesn't preserve the transparancy - so I manually converted with gimp
+# satellite.png: satellite.svg
+#      convert -resize 11x16 -depth 8 satellite.svg satellite.png
+#
+# the following creates the pixbuf data in .h files with the basename followed by '_pixmap'
+# as name of the data structure
+%.h: %.png
+	@echo '    gdk-pixbuf-csource' $<
+	@gdk-pixbuf-csource --struct --name $*_pixbuf $< > $@
+
 doc:
 	$(MAKE) -C Documentation doc
 

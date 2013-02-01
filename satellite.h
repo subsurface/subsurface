@@ -1,6 +1,6 @@
 /* GdkPixbuf RGBA C-Source image dump 1-byte-run-length-encoded */
 
-static const GdkPixdata my_pixbuf = {
+static const GdkPixdata satellite_pixbuf = {
   0x47646b50, /* Pixbuf magic: 'GdkP' */
   24 + 445, /* header length + pixel_data length */
   0x2010002, /* pixdata_type */

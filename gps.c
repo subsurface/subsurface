@@ -2,7 +2,6 @@
 /* Creates the UI displaying the dives locations on a map.
  */
 #include <glib/gi18n.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "osm-gps-map.h"
 
@@ -10,6 +9,10 @@
 #include "display.h"
 #include "display-gtk.h"
 #include "divelist.h"
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gdk-pixbuf/gdk-pixdata.h>
+#include "flag.h"
 
 /* Several map providers are available, such as OSM_GPS_MAP_SOURCE_OPENSTREETMAP
    and OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_SATELLITE. We should make more of
@@ -219,7 +222,7 @@ void show_gps_location(struct dive *dive, void (*callback)(float, float))
 	if (lat != 0 || lng != 0) {
 		add_gps_point(map, lat, lng);
 		osm_gps_map_set_center_and_zoom(map, lat, lng, 9);
-		picture = gdk_pixbuf_new_from_file("./flag.png", &gerror);
+		picture = gdk_pixbuf_from_pixdata(&flag_pixbuf, TRUE, NULL);
 		if (picture) {
 			osm_gps_map_image_add_with_alignment(map, lat, lng, picture, 0, 1);
 		} else {
