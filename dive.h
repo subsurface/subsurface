@@ -515,6 +515,7 @@ extern void show_yearly_stats(void);
 
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
+extern void save_dives_logic(const char *filename, gboolean select_only);
 
 extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);

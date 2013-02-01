@@ -536,6 +536,11 @@ static void save_device_info(FILE *f)
 
 void save_dives(const char *filename)
 {
+	save_dives_logic(filename, FALSE);
+}
+
+void save_dives_logic(const char *filename, const gboolean select_only)
+{
 	int i;
 	struct dive *dive;
 	dive_trip_t *trip;
@@ -561,21 +566,30 @@ void save_dives(const char *filename)
 
 	/* save the dives */
 	for_each_dive(i, dive) {
-		trip = dive->divetrip;
 
-		/* Bare dive without a trip? */
-		if (!trip) {
+		if (select_only) {
+
+			if(!dive->selected)
+				continue;
 			save_dive(f, dive);
-			continue;
+
+		} else {
+			trip = dive->divetrip;
+
+			/* Bare dive without a trip? */
+			if (!trip) {
+				save_dive(f, dive);
+				continue;
+			}
+
+			/* Have we already seen this trip (and thus saved this dive?) */
+			if (trip->index)
+				continue;
+
+			/* We haven't seen this trip before - save it and all dives */
+			trip->index = 1;
+			save_trip(f, trip);
 		}
-
-		/* Have we already seen this trip (and thus saved this dive?) */
-		if (trip->index)
-			continue;
-
-		/* We haven't seen this trip before - save it and all dives */
-		trip->index = 1;
-		save_trip(f, trip);
 	}
 	fprintf(f, "</dives>\n</divelog>\n");
 	fclose(f);

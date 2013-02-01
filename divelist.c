@@ -1621,6 +1621,31 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 	return FALSE;
 }
 
+static void save_as_cb(GtkWidget *menuitem, struct dive *dive)
+{
+	GtkWidget *dialog;
+	char *filename = NULL;
+
+	dialog = gtk_file_chooser_dialog_new(_("Save File As"),
+		GTK_WINDOW(main_window),
+		GTK_FILE_CHOOSER_ACTION_SAVE,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	}
+	gtk_widget_destroy(dialog);
+
+	if (filename){
+		set_filename(filename, TRUE);
+		save_dives_logic(filename, TRUE);
+		g_free(filename);
+	}
+}
+
 static void expand_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
 {
 	gtk_tree_view_expand_all(tree_view);
@@ -2409,6 +2434,10 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 				deletelabel = _(deleteplurallabel);
 				editlabel = _(editplurallabel);
 			}
+			menuitem = gtk_menu_item_new_with_label(_("Save as"));
+			g_signal_connect(menuitem, "activate", G_CALLBACK(save_as_cb), dive);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 			menuitem = gtk_menu_item_new_with_label(deletelabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_selected_dives_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
