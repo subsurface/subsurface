@@ -471,7 +471,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	he = dive->cylinder[0].gasmix.he.permille;
 	do {
 		const char *depth_unit;
-		char gas[12];
+		char gas[64];
 		double depthvalue;
 		int decimals;
 		double used;
@@ -499,7 +499,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered && o2 == newo2 && he == newhe && nextdp && dp->depth != lastdepth && nextdp->depth != dp->depth)
 			continue;
-		get_gas_string(o2, he, gas, 12);
+		get_gas_string(o2, he, gas, sizeof(gas));
 		gasidx = get_gasidx(dive, o2, he);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth) {
@@ -521,7 +521,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 							gas);
 		}
 		consumption[gasidx] += used;
-		get_gas_string(newo2, newhe, gas, 12);
+		get_gas_string(newo2, newhe, gas, sizeof(gas));
 		if (o2 != newo2 || he != newhe) {
 			len = strlen(buffer);
 			snprintf(buffer + len, sizeof(buffer) - len, _("Switch gas to %s\n"), gas);
@@ -542,7 +542,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		len = strlen(buffer);
 		volume = get_volume_units(consumption[gasidx], NULL, &unit);
 		get_gas_string(dive->cylinder[gasidx].gasmix.o2.permille,
-				dive->cylinder[gasidx].gasmix.he.permille, gas, 12);
+				dive->cylinder[gasidx].gasmix.he.permille, gas, sizeof(gas));
 		snprintf(buffer + len, sizeof(buffer) - len, _("%.0f%s of %s\n"), volume, unit, gas);
 	}
 	dive->notes = strdup(buffer);
