@@ -487,17 +487,20 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 		cairo_move_to (cr, w, 3 * line_height + (h * 0.05));
 		cairo_line_to (cr, 3 * line_width, 3 * line_height + (h * 0.05));
 		cairo_stroke (cr);
+		cairo_save (cr);
+
 		/* and print OTUs, CNS and weight */
 		cairo_translate (cr, (3.05 * line_width), height / (6 * (double) PANGO_SCALE));
 		print_weight_data (dive, cr, maxwidth * 0.90/2 , maxheight, maxheight / 2, font);
-		cairo_translate (cr, -(3.05 * line_width), -height / (6 * (double) PANGO_SCALE));
-		cairo_translate (cr, w, 0);
+		cairo_restore (cr);
+		cairo_save(cr);
+		cairo_translate (cr, w, line_height/4);
 		print_SAC (dive, cr, maxwidth * 0.90/2, maxheight, font);
 		cairo_translate (cr, 0, line_height);
 		print_cns (dive, cr, maxwidth * 0.90/2, maxheight, font);
 		cairo_translate (cr,0, line_height);
 		print_otus (dive, cr, maxwidth * 0.90/2, maxheight, font);
-		cairo_translate (cr, -w, -2 * line_height);
+		cairo_restore (cr);
 	}
 }
 
