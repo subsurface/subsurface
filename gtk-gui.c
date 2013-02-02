@@ -25,6 +25,10 @@
 
 #include "libdivecomputer.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gdk-pixbuf/gdk-pixdata.h>
+#include "subsurface-icon.h"
+
 GtkWidget *main_window;
 GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
@@ -1037,12 +1041,8 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	GtkWidget * dialog;
 
 	if (need_icon) {
-		GtkWidget *image = gtk_image_new_from_file(subsurface_icon_name());
-
-		if (gtk_image_get_storage_type(GTK_IMAGE(image)) == GTK_IMAGE_PIXBUF) {
-			logo = gtk_image_get_pixbuf(GTK_IMAGE(image));
-			logo_property = "logo";
-		}
+		logo_property = "logo";
+		logo = gdk_pixbuf_from_pixdata(&subsurface_icon_pixbuf, TRUE, NULL);
 	}
 	dialog = gtk_about_dialog_new();
 #if !GTK_CHECK_VERSION(2,24,0) /* F*cking gtk */

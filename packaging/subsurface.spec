@@ -37,7 +37,7 @@ rm %{buildroot}/%{_datadir}/icons/hicolor/icon-theme.cache
 %defattr(-,root,root)
 %{_bindir}/subsurface
 %{_datadir}/applications/subsurface.desktop
-%{_datadir}/icons/hicolor/scalable/apps/subsurface.svg
+%{_datadir}/icons/hicolor/scalable/apps/subsurface-icon.svg
 %{_datadir}/man/man1/subsurface.1.gz
 
 

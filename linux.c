@@ -128,7 +128,7 @@ int subsurface_fill_device_list(GtkListStore *store)
 
 const char *subsurface_icon_name()
 {
-	return "subsurface.svg";
+	return "subsurface-icon.svg";
 }
 
 const char *system_default_filename(void)

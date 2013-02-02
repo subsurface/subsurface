@@ -43,7 +43,7 @@ make CC=%{_mingw32_target}-gcc PKGCONFIG=%{_mingw32_target}-pkg-config XML2CONFI
 mkdir -p $RPM_BUILD_ROOT/%{_mingw32_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mingw32_datadir}
 install -m 755 subsurface.exe $RPM_BUILD_ROOT/%{_mingw32_bindir}/subsurface.exe
-install -m 644 subsurface.svg $RPM_BUILD_ROOT/%{_mingw32_datadir}/subsurface.svg
+install -m 644 subsurface-icon.svg $RPM_BUILD_ROOT/%{_mingw32_datadir}/subsurface-icon.svg
 # this seems like a really ugly hack
 install -m 755 %{_mingw32_bindir}/libdivecomputer-0.dll $RPM_BUILD_ROOT/%{_mingw32_bindir}/libdivecomputer-0.dll
 install -m 755 %{_mingw32_bindir}/libcairo-2.dll $RPM_BUILD_ROOT/%{_mingw32_bindir}/libcairo-2.dll
@@ -106,7 +106,7 @@ install -m 755 %{_mingw32_bindir}/libatk-1.0-0.dll $RPM_BUILD_ROOT/%{_mingw32_bi
 %{_mingw32_bindir}/libpangowin32-1.0-0.dll
 %{_mingw32_bindir}/libatk-1.0-0.dll
 
-%{_mingw32_datadir}/subsurface.svg
+%{_mingw32_datadir}/subsurface-icon.svg
 
 
 %changelog

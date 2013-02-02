@@ -20,7 +20,7 @@ XSLTDIR = $(DATADIR)/subsurface/xslt
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
 
 NAME = subsurface
-ICONFILE = $(NAME).svg
+ICONFILE = $(NAME)-icon.svg
 DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt
@@ -249,15 +249,17 @@ share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 		done; \
 	fi
 
-# this should work but it doesn't preserve the transparancy - so I manually converted with gimp
-# satellite.png: satellite.svg
-#      convert -resize 11x16 -depth 8 satellite.svg satellite.png
+satellite.png: satellite.svg
+	convert -transparent white -resize 11x16 -depth 8 $< $@
+
+# This should work, but it doesn't get the colors quite right - so I manually converted with Gimp
+#	convert -colorspace RGB -transparent white -resize 256x256 subsurface-icon.svg subsurface-icon.png
 #
-# the following creates the pixbuf data in .h files with the basename followed by '_pixmap'
+# The following creates the pixbuf data in .h files with the basename followed by '_pixmap'
 # as name of the data structure
 %.h: %.png
 	@echo '    gdk-pixbuf-csource' $<
-	@gdk-pixbuf-csource --struct --name $*_pixbuf $< > $@
+	@gdk-pixbuf-csource --struct --name `echo $* | sed 's/-/_/g'`_pixbuf $< > $@
 
 doc:
 	$(MAKE) -C Documentation doc

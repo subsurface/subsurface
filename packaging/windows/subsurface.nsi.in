@@ -99,7 +99,7 @@ Section
 
     # Files to include in installer
     File ..\..\subsurface.exe
-    File ..\..\subsurface.svg
+    File ..\..\subsurface-icon.svg
     File ..\..\xslt\jdivelog2subsurface.xslt
     File ..\..\xslt\SuuntoSDM.xslt
     File dll\iconv.dll
@@ -167,7 +167,7 @@ Section "Uninstall"
     Delete "$INSTDIR\freetype-config"
     Delete "$INSTDIR\subsurface.exe"
     Delete "$INSTDIR\subsurface.ico"
-    Delete "$INSTDIR\subsurface.svg"
+    Delete "$INSTDIR\subsurface-icon.svg"
     Delete "$INSTDIR\Uninstall.exe"
     RMDir /r "$INSTDIR\share"
     RMDir "$INSTDIR"
