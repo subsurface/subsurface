@@ -112,7 +112,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(lastdepth, sample->depth.mm, j - t0, t1 - t0);
 			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-						       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000.0, dive);
+						       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 		}
 		psample = sample;
 		t0 = t1;
@@ -139,7 +139,7 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
 		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					       &dive->cylinder[gasidx].gasmix, 1, sample->po2 / 1000.0, dive);
+					       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 	}
 	return wait;
 }

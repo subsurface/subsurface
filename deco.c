@@ -72,7 +72,7 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 	2.80360036664540E-004, 2.09299583354805E-004, 1.63410794820518E-004, 1.27869320250551E-004,
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005};
 
-#define WV_PRESSURE 0.0627 /* water vapor pressure */
+#define WV_PRESSURE 0.0627 // water vapor pressure in bar
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 
 #define GF_LOW_AT_MAXDEPTH 0
@@ -126,7 +126,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, double ccpo2, const struct dive *dive)
+double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive)
 {
 	int ci;
 	int fo2 = gasmix->o2.permille ? gasmix->o2.permille : O2_IN_AIR;
@@ -138,9 +138,9 @@ double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds
 	        gf_low_pressure_this_dive = pressure;
 #endif
 
-	if (ccpo2 > 0.0) { /* CC */
+	if (ccpo2) { /* CC */
 		double rel_o2_amb, f_dilutent;
-		rel_o2_amb = ccpo2 / pressure;
+		rel_o2_amb = ccpo2 / pressure / 1000;
 		f_dilutent = (1 - rel_o2_amb) / (1 - fo2 / 1000.0);
 		if (f_dilutent < 0) { /* setpoint is higher than ambient pressure -> pure O2 */
 			ppn2 = 0.0;

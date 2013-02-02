@@ -646,18 +646,18 @@ static int calculate_otu(struct dive *dive, struct divecomputer *dc)
 
 	for (i = 1; i < dc->samples; i++) {
 		int t;
-		double po2;
+		int po2;
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
 		if (sample->po2) {
-			po2 = sample->po2 / 1000.0;
+			po2 = sample->po2;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
-			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive) / 1000.0;
+			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive);
 		}
-		if (po2 >= 0.5)
-			otu += pow(po2 - 0.5, 0.83) * t / 30.0;
+		if (po2 >= 500)
+			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
 	}
 	return otu + 0.5;
 }
@@ -741,7 +741,7 @@ static void add_dive_to_deco(struct dive *dive)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					   &dive->cylinder[sample->sensor].gasmix, 1, sample->po2 / 1000.0, dive);
+					   &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
 		}
 	}
 }
@@ -802,7 +802,7 @@ double init_decompression(struct dive *dive)
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
 			lasttime = pdive->when + pdive->dc.duration.seconds;
-			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0, dive);
+			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
 			dump_tissues();
@@ -813,7 +813,7 @@ double init_decompression(struct dive *dive)
 	if (lasttime && dive->when > lasttime) {
 		surface_time = dive->when - lasttime;
 		surface_pressure = (dive->dc.surface_pressure.mbar ? dive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
-		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0.0, dive);
+		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
 		dump_tissues();

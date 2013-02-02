@@ -599,7 +599,7 @@ extern void subsurface_command_line_exit(gint *, gchar ***);
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 
-extern double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, double setpoint, const struct dive *dive);
+extern double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth);
