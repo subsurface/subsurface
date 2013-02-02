@@ -202,7 +202,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	add_gas(dive, oldo2, oldhe);
 	while (dp) {
 		int o2 = dp->o2, he = dp->he;
-		int po2 = dp->po2 ? : oldpo2;
+		int po2 = dp->po2;
 		int time = dp->time;
 		int depth = dp->depth;
 
@@ -218,11 +218,17 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 			he = oldhe;
 		}
 
+		if (oldpo2 != po2) {
+			if (lasttime)
+				add_event(dc, lasttime, 20, 0, po2/1000, "SP change"); // SAMPLE_EVENT_PO2
+			oldpo2 = po2;
+		}
+
 		/* Create new gas, and gas change event if necessary */
 		if (o2 != oldo2 || he != oldhe) {
 			int value = (o2 / 10) | (he / 10 << 16);
 			add_gas(dive, o2, he);
-			add_event(dc, lasttime, 11, 0, value, "gaschange");
+			add_event(dc, lasttime, 25, 0, value, "gaschange"); // SAMPLE_EVENT_GASCHANGE2
 			oldo2 = o2; oldhe = he;
 		}
 
@@ -236,7 +242,6 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		sample->depth.mm = depth;
 		finish_sample(dc);
 		lasttime = time;
-		oldpo2 = po2;
 		dp = dp->next;
 	}
 	if (dc->samples <= 1) {
