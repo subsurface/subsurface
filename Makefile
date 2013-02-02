@@ -20,7 +20,7 @@ XSLTDIR = $(DATADIR)/subsurface/xslt
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
 
 NAME = subsurface
-ICONFILE = $(NAME).svg
+ICONFILE = $(NAME)-icon.svg
 DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt
