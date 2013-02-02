@@ -218,9 +218,10 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 			he = oldhe;
 		}
 
+		/* Check for SetPoint change */
 		if (oldpo2 != po2) {
 			if (lasttime)
-				add_event(dc, lasttime, 20, 0, po2/1000, "SP change"); // SAMPLE_EVENT_PO2
+				add_event(dc, lasttime, 20, 0, po2, "SP change"); // SAMPLE_EVENT_PO2
 			oldpo2 = po2;
 		}
 

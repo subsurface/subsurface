@@ -391,19 +391,23 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			unsigned int he = event->value >> 16;
 			unsigned int o2 = event->value & 0xffff;
 			if (he) {
-				snprintf(buffer, sizeof(buffer), "%s: (%u/%u)",
+				snprintf(buffer, sizeof(buffer), "%s:%u/%u",
 					_(event->name), o2, he);
 			} else {
 				if (o2 == 21)
-					snprintf(buffer, sizeof(buffer), "%s: %s",
+					snprintf(buffer, sizeof(buffer), "%s:%s",
 						_(event->name), _("air"));
 				else
-					snprintf(buffer, sizeof(buffer), "%s: %u%% %s",
+					snprintf(buffer, sizeof(buffer), "%s:%u%% %s",
 						_(event->name), o2, "O" UTF8_SUBSCRIPT_2);
 			}
+		} else if (event->name && !strcmp(event->name, "SP change")) {
+			snprintf(buffer, sizeof(buffer), "%s:%0.1f", _(event->name), (double) event->value / 1000);
 		} else {
-			snprintf(buffer, sizeof(buffer), "%s: %d", _(event->name), event->value);
+			snprintf(buffer, sizeof(buffer), "%s:%d", _(event->name), event->value);
 		}
+	} else if (event->name && !strcmp(event->name, "SP change")) {
+		snprintf(buffer, sizeof(buffer), "Bailing out to OC");
 	} else {
 		snprintf(buffer, sizeof(buffer), "%s%s", _(event->name),
 			event->flags == SAMPLE_FLAGS_BEGIN ? " begin" :
