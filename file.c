@@ -72,7 +72,7 @@ static void suunto_read(struct zip_file *file, GError **error)
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
-	parse_xml_buffer(_("SDE file"), mem, read, error);
+	parse_xml_buffer(_("SDE file"), mem, read, &dive_table, error);
 	free(mem);
 }
 #endif
