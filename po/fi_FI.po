@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-01 18:08+1100\n"
+"POT-Creation-Date: 2013-02-03 18:00+1100\n"
 "PO-Revision-Date: 2012-10-21 16:31+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -828,7 +828,15 @@ msgstr ""
 msgid "GPS (WGS84 or GPS format)"
 msgstr ""
 
-#: planner.c:1141 print.c:205 statistics.c:854
+#: statistics.c:854
+#, fuzzy
+msgctxt "Amount"
+msgid "Gas Used"
+msgstr "Kulutus"
+
+#: planner.c:1141
+#, fuzzy
+msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Kulutus"
 
@@ -1964,6 +1972,9 @@ msgstr "työmäärä"
 
 #~ msgid "Delete"
 #~ msgstr "Poista"
+
+#~ msgid "Gas Used"
+#~ msgstr "Kulutus"
 
 #~ msgid "Pretty print"
 #~ msgstr "Hieno tuloste"
