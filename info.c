@@ -579,7 +579,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		default:
 			mkelvin = 0;
 		}
-		if (mkelvin != dive->dc.airtemp.mkelvin) {
+		if (mkelvin != dive->dc.airtemp.mkelvin && dive->dc.airtemp.mkelvin == master->dc.airtemp.mkelvin) {
 			dive->dc.airtemp.mkelvin = mkelvin;
 			changed = 1;
 		}
