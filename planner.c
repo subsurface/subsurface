@@ -536,7 +536,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
-		char gas[12];
+		char gas[64];
 		if (consumption[gasidx] == 0)
 			continue;
 		len = strlen(buffer);
@@ -729,7 +729,7 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 		return 0;
 
 	if (!strcasecmp(text, _("air"))) {
-		o2 = O2_IN_AIR; he = 0; text += 3;
+		o2 = O2_IN_AIR; he = 0; text += strlen(_("air"));
 	} else if (!strncasecmp(text, _("ean"), 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
 	} else {
