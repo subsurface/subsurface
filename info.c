@@ -660,7 +660,12 @@ static void update_gps_entry(float lat, float lon)
 #if HAVE_OSM_GPS_MAP
 static gboolean gps_map_callback(GtkWidget *w, gpointer data)
 {
+	const char *gps_text = NULL;
 	struct dive *dive = location_update.dive;
+	if (location_update.entry) {
+		gps_text = gtk_entry_get_text(location_update.entry);
+		(void)gps_changed(dive, NULL, gps_text);
+	}
 	show_gps_location(dive, update_gps_entry);
 	location_update.set_by_hand = 1;
 	return TRUE;
