@@ -202,7 +202,7 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 		int height, int tank_count, int first_tank, PangoFontDescription *font)
 {
 	int curwidth, n, i, counter;
-	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), N_("Gas Used")};
+	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), NC_("Amount","Gas Used")};
 
 	PangoLayout *layout;
 	/* First create a header */

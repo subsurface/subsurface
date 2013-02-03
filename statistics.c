@@ -851,7 +851,7 @@ GtkWidget *single_stats_widget(void)
 	single_w.sac = new_info_label_in_frame(hbox, _("SAC"));
 	single_w.otu = new_info_label_in_frame(hbox, _("OTU"));
 	single_w.o2he = new_info_label_in_frame(hbox, "O" UTF8_SUBSCRIPT_2 " / He");
-	single_w.gas_used = new_info_label_in_frame(hbox, _("Gas Used"));
+	single_w.gas_used = new_info_label_in_frame(hbox, C_("Amount","Gas Used"));
 
 	return vbox;
 }
