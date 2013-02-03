@@ -1138,7 +1138,7 @@ static void add_waypoint_widgets(GtkWidget *box, int idx)
 	if (idx == 0) {
 		entry_depth[idx] = add_entry_to_box(hbox, _("Ending Depth"));
 		entry_duration[idx] = add_entry_to_box(hbox, _("Segment Time"));
-		entry_gas[idx] = add_gas_combobox_to_box(hbox, _("Gas Used"), idx);
+		entry_gas[idx] = add_gas_combobox_to_box(hbox, C_("Type of","Gas Used"), idx);
 		entry_po2[idx] = add_entry_to_box(hbox, _("CC SetPoint"));
 	} else {
 		entry_depth[idx] = add_entry_to_box(hbox, NULL);
