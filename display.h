@@ -51,7 +51,7 @@ extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 extern void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize);
 
 struct options {
-	enum { PRETTY, TABLE, ONEPERPAGE } type;
+	enum { PRETTY, TABLE, TWOPERPAGE } type;
 	int print_selected;
 };
 

@@ -14,6 +14,11 @@
 
 static struct options print_options;
 
+typedef struct _Print_params {
+	int rotation, dives;
+	double w_scale, h_scale;
+} Print_params;
+
 /* Return the 'i'th dive for printing, taking our dive selection into account */
 static struct dive *get_dive_for_printing(int idx)
 {
@@ -50,7 +55,7 @@ static void set_font(PangoLayout *layout, PangoFontDescription *font,
  * Show a header for the dive containing minimal data
  */
 static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
-	double h, PangoFontDescription *font)
+	double h, PangoFontDescription *font, double w_scale_factor)
 {
 	double depth;
 	const char *unit;
@@ -79,15 +84,9 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 		monthname(tm.tm_mon),
 		tm.tm_mday, tm.tm_year + 1900,
 		tm.tm_hour, tm.tm_min);
-
-	if (print_options.type == ONEPERPAGE){
-		set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
-	} else {
-		set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
-	}
+	set_font(layout, font, FONT_LARGE *(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 	pango_layout_set_text(layout, buffer, len);
 	pango_layout_get_size(layout, &width, &height);
-
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
 
@@ -104,10 +103,8 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 		decimals, depth, unit,
 		(dive->dc.duration.seconds+59) / 60,
 		people);
-
-	set_font(layout, font, FONT_SMALL, PANGO_ALIGN_RIGHT);
+	set_font(layout, font, FONT_NORMAL*(1.5/w_scale_factor), PANGO_ALIGN_RIGHT);
 	pango_layout_set_text(layout, buffer, -1);
-
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
 
@@ -123,12 +120,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 	maxheight -= height;
 	pango_layout_set_height(layout, 1);
 	pango_layout_set_width(layout, width);
-
-	if (print_options.type == ONEPERPAGE){
-		set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
-	} else {
-		set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
-	}
+	set_font(layout, font, FONT_LARGE*(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 	pango_layout_set_text(layout, dive->location ? : " ", -1);
 	cairo_move_to(cr, 0, 0);
 	pango_cairo_show_layout(cr, layout);
@@ -140,7 +132,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
  * Show the dive notes
  */
 static void show_dive_notes(struct dive *dive, cairo_t *cr, double w,
-	double h, PangoFontDescription *font)
+	double h, PangoFontDescription *font, double w_scale_factor)
 {
 	int maxwidth, maxheight;
 	PangoLayout *layout;
@@ -151,11 +143,7 @@ static void show_dive_notes(struct dive *dive, cairo_t *cr, double w,
 	if (dive->notes) {
 		pango_layout_set_height(layout, maxheight);
 		pango_layout_set_width(layout, maxwidth);
-		if (print_options.type == ONEPERPAGE){
-			set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
-		} else {
-			set_font(layout, font, FONT_SMALL, PANGO_ALIGN_LEFT);
-		}
+		set_font(layout, font, FONT_NORMAL*(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
 		pango_layout_set_justify(layout, 1);
 		pango_layout_set_text(layout, dive->notes, -1);
@@ -199,7 +187,8 @@ static unsigned end_pressure(cylinder_t *cyl)
 
 /* Print the tank data */
 static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
-		int height, int tank_count, int first_tank, PangoFontDescription *font)
+		int height, int tank_count, int first_tank, PangoFontDescription *font,
+        double w_scale_factor)
 {
 	int curwidth, n, i, counter;
 	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), NC_("Amount","Gas Used")};
@@ -214,11 +203,7 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 		pango_layout_set_height(layout,maxheight);
 		pango_layout_set_width(layout, maxwidth / 3);
 		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-		if (tank_count < 4) {
-			set_font(layout, font, FONT_SMALL - (0.5 * tank_count), PANGO_ALIGN_CENTER);
-		} else {
-			set_font(layout, font, FONT_SMALL - 2, PANGO_ALIGN_CENTER);
-		}
+		set_font(layout, font, (FONT_SMALL*(1.5/w_scale_factor)), PANGO_ALIGN_CENTER);
 		pango_layout_set_text(layout, _(dataheader1[i]), -1);
 		pango_layout_set_justify(layout, 0);
 		pango_cairo_show_layout(cr, layout);
@@ -282,7 +267,7 @@ static void print_tanks (struct dive *dive, cairo_t *cr, int maxwidth, int maxhe
 
 /* Print weight system */
 static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
-		int height, PangoFontDescription *font)
+		int height, PangoFontDescription *font, double w_scale_factor)
 {
 	int decimals,i;
 	double totalweight, systemweight, weightsystemcounter;
@@ -297,7 +282,7 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 	pango_layout_set_height(layout,maxheight);
 	pango_layout_set_width(layout, maxwidth);
 	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_CENTER);
+	set_font(layout, font, FONT_SMALL*(1.5/w_scale_factor), PANGO_ALIGN_CENTER);
 
 	/* Header for the weight system */
 	cairo_move_to(cr, 0, 0);
@@ -308,7 +293,7 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 	/* Detail of the weight */
 	pango_layout_get_extents(layout, &ink_extents, &logical_extents);
 	cairo_translate (cr, 0, logical_extents.height / (double) PANGO_SCALE);
-	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	set_font(layout, font, FONT_SMALL*(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 	weightsystemcounter = 0;
 	for (i=0; i<  MAX_WEIGHTSYSTEMS; i++){
 		systemweight = get_weight_units(dive->weightsystem[i].weight.grams, &decimals, &unit_weight);
@@ -349,7 +334,8 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 }
 
 /* Print the dive OTUs */
-static void print_otus (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight, PangoFontDescription *font)
+static void print_otus (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
+                        PangoFontDescription *font, double w_scale_factor)
 {
 	char buffer[20];
 	PangoLayout *layout;
@@ -358,7 +344,7 @@ static void print_otus (struct dive *dive, cairo_t *cr, int maxwidth, int maxhei
 	pango_layout_set_height(layout, maxheight);
 	pango_layout_set_width(layout, maxwidth);
 	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	set_font(layout, font, FONT_SMALL*(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("OTU"));
 	pango_layout_set_text(layout, buffer, -1);
@@ -371,7 +357,8 @@ static void print_otus (struct dive *dive, cairo_t *cr, int maxwidth, int maxhei
 }
 
 /* Print the dive maxCNS */
-static void print_cns (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight, PangoFontDescription *font)
+static void print_cns (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
+                       PangoFontDescription *font, double w_scale_factor)
 {
 	char buffer[20];
 	PangoLayout *layout;
@@ -380,7 +367,7 @@ static void print_cns (struct dive *dive, cairo_t *cr, int maxwidth, int maxheig
 	pango_layout_set_height(layout, maxheight);
 	pango_layout_set_width(layout, maxwidth);
 	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	set_font(layout, font, FONT_SMALL*(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("Max. CNS"));
 	pango_layout_set_text(layout, buffer, -1);
@@ -393,7 +380,8 @@ static void print_cns (struct dive *dive, cairo_t *cr, int maxwidth, int maxheig
 }
 
 /* Print the SAC */
-static void print_SAC (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight, PangoFontDescription *font)
+static void print_SAC (struct dive *dive, cairo_t *cr, int maxwidth, int maxheight,
+                       PangoFontDescription *font, double w_scale_factor)
 {
 	double sac;
 	int decimals;
@@ -405,7 +393,7 @@ static void print_SAC (struct dive *dive, cairo_t *cr, int maxwidth, int maxheig
 	pango_layout_set_height(layout, maxheight);
 	pango_layout_set_width(layout, maxwidth);
 	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-	set_font(layout, font, FONT_SMALL - 3, PANGO_ALIGN_LEFT);
+	set_font(layout, font, FONT_SMALL*(1.5/w_scale_factor), PANGO_ALIGN_LEFT);
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("SAC"));
 	pango_layout_set_text(layout, buffer, -1);
@@ -430,7 +418,7 @@ static void print_SAC (struct dive *dive, cairo_t *cr, int maxwidth, int maxheig
  * less than four cilynders.
  */
 static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
-	double h, PangoFontDescription *font)
+	double h, PangoFontDescription *font, double w_scale_factor)
 {
 	int maxwidth, maxheight, height, tank_count;
 	double line_height, line_width;
@@ -465,14 +453,14 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 	cairo_stroke(cr);
 	cairo_translate (cr, 0, height / (6 * (double) PANGO_SCALE));
 
-	print_tanks (dive, cr, maxwidth, maxheight, height, tank_count, 0, font);
+	print_tanks (dive, cr, maxwidth, maxheight, height, tank_count, 0, font, w_scale_factor);
 
 	cairo_translate (cr, 0, -height / (6 * (double) PANGO_SCALE));
 
 	/* If there are more than 4 tanks use the full width, else print other data*/
 	if (tank_count > 4){
 		cairo_translate (cr, w, height / (6 * (double) PANGO_SCALE));
-		print_tanks (dive, cr, maxwidth, maxheight, height, tank_count, 4, font);
+		print_tanks (dive, cr, maxwidth, maxheight, height, tank_count, 4, font, w_scale_factor);
 		cairo_translate (cr, -w, -height / (6 * (double) PANGO_SCALE));
 	} else {
 		/* Plot a grid for the data */
@@ -491,15 +479,15 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 
 		/* and print OTUs, CNS and weight */
 		cairo_translate (cr, (3.05 * line_width), height / (6 * (double) PANGO_SCALE));
-		print_weight_data (dive, cr, maxwidth * 0.90/2 , maxheight, maxheight / 2, font);
+		print_weight_data (dive, cr, maxwidth * 0.90/2 , maxheight, maxheight / 2, font, w_scale_factor);
 		cairo_restore (cr);
 		cairo_save(cr);
 		cairo_translate (cr, w, line_height/4);
-		print_SAC (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		print_SAC (dive, cr, maxwidth * 0.90/2, maxheight, font, w_scale_factor);
 		cairo_translate (cr, 0, line_height);
-		print_cns (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		print_cns (dive, cr, maxwidth * 0.90/2, maxheight, font, w_scale_factor);
 		cairo_translate (cr,0, line_height);
-		print_otus (dive, cr, maxwidth * 0.90/2, maxheight, font);
+		print_otus (dive, cr, maxwidth * 0.90/2, maxheight, font, w_scale_factor);
 		cairo_restore (cr);
 	}
 }
@@ -656,7 +644,7 @@ static void show_dive_profile(struct dive *dive, cairo_t *cr, double w,
 }
 
 static void print(int divenr, cairo_t *cr, double x, double y, double w,
-	double h, PangoFontDescription *font)
+	double h, PangoFontDescription *font, double w_scale_factor)
 {
 	struct dive *dive;
 
@@ -684,13 +672,13 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 
 	/* Dive information in the lower third */
 	cairo_translate(cr, 0, h*1.30);
-	show_dive_header(dive, cr, w*2, h*0.15, font);
+	show_dive_header(dive, cr, w*2, h*0.15, font, w_scale_factor);
 
 	cairo_translate(cr, 0, h*0.15);
-	show_dive_tanks (dive, cr, w*1, h*0.25, font);
+	show_dive_tanks (dive, cr, w*1, h*0.25, font, w_scale_factor);
 
 	cairo_translate(cr, 0, h*0.25);
-	show_dive_notes(dive, cr, w*2, h*0.30, font);
+	show_dive_notes(dive, cr, w*2, h*0.30, font, w_scale_factor);
 
 	cairo_restore(cr);
 }
@@ -759,57 +747,84 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 	cairo_restore(cr);
 }
 
+/* Positioning factor for height 0,0,1,1,2 ... */
+static int pos_h_factor (int z)
+{
+	int factor = z/2;
+	return (factor);
+}
+
+/* Positioning factor for width 0,1,0,1 ... */
+static int pos_w_factor (int z)
+{
+	int factor;
+	if (z == 0 || z==2 || z==4){
+		factor = 0;
+	} else {
+		factor = 1;
+	}
+	return (factor);
+}
+
+static void cutting_line (cairo_t *cr, double x, double y, double w, double h)
+{
+	const double dashes[] = {0.05, 0.10};
+
+	cairo_save (cr);
+	cairo_translate (cr, x, y);
+	cairo_set_line_width (cr,0.01);
+	cairo_set_dash (cr, dashes,1,0);
+	cairo_move_to (cr, w*1.05,0);
+	cairo_line_to (cr, w*1.05, h*1.05);
+	cairo_move_to (cr, 0, h*1.05);
+	cairo_line_to (cr, w*1.05, h*1.05);
+	cairo_stroke (cr);
+	cairo_set_dash(cr,0,0,0);
+	cairo_restore (cr);
+}
+
 static void draw_page(GtkPrintOperation *operation,
 			GtkPrintContext *context,
 			gint page_nr,
-			gpointer user_data)
+			Print_params *print_params)
 {
-	int nr;
+	int nr, i, dives_per_print;
 	cairo_t *cr;
 	double w, h;
 	PangoFontDescription *font;
 
 	cr = gtk_print_context_get_cairo_context(context);
 	font = pango_font_description_from_string("Sans");
+	/* scale the width and height by defined factors */
+	w = gtk_print_context_get_width(context)/print_params->w_scale;
+	h = gtk_print_context_get_height(context)/print_params->h_scale;
+	/* set the nº of dives to show */
+	dives_per_print = print_params->dives;
+	nr = page_nr * dives_per_print;
+	/* choose if rotate the layouts 90º in rad */
+	if (print_params->rotation == 1){
+		cairo_translate (cr, 0, h*print_params->h_scale);
+		cairo_rotate (cr, -1.57);
+	}
 
-	w = gtk_print_context_get_width(context)/2;
-	h = gtk_print_context_get_height(context)/3;
+	/*
+	 * Calls print () as many times as defined.
+	 * In two prints option leaves room between prints and plot
+	 * a dashed line for cutting.
+	 */
+	for (i = 0; i < dives_per_print; i++)
+	{
+		double pos_w = pos_w_factor(i);
+		double pos_h = pos_h_factor(i);
 
-	nr = page_nr*6;
-	print(nr+0, cr, 0,   0, w, h, font);
-	print(nr+1, cr, w,   0, w, h, font);
-	print(nr+2, cr, 0,   h, w, h, font);
-	print(nr+3, cr, w,   h, w, h, font);
-	print(nr+4, cr, 0, 2*h, w, h, font);
-	print(nr+5, cr, w, 2*h, w, h, font);
-
+		if (i == 1 && dives_per_print == 2)
+			pos_w = 1.1;
+		if (dives_per_print == 2)
+			cutting_line (cr, w*pos_w, h*pos_h, w, h);
+		print(nr+i, cr, w*pos_w, h*pos_h, w, h, font, print_params->w_scale);
+	}
 	pango_font_description_free(font);
 }
-
-static void draw_oneperpage(GtkPrintOperation *operation,
-			GtkPrintContext *context,
-			gint page_nr,
-			gpointer user_data)
-{
-	int nr;
-	cairo_t *cr;
-	double w, h;
-	PangoFontDescription *font;
-
-	cr = gtk_print_context_get_cairo_context(context);
-	font = pango_font_description_from_string("Sans");
-
-	/*Get bigger area reducing the divisors */
-	w = gtk_print_context_get_width(context)/1.8;
-	h = gtk_print_context_get_height(context)/1.6;
-
-	/*only one page, only one print*/
-	nr = page_nr;
-	print(nr, cr, 0,   0, w, h, font);
-	pango_font_description_free(font);
-}
-
-
 
 static void draw_table(GtkPrintOperation *operation,
 			GtkPrintContext *context,
@@ -859,15 +874,14 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 
 	if (print_options.type == PRETTY) {
 		dives_per_page = 6;
-	} else if (print_options.type == ONEPERPAGE) {
-		dives_per_page = 1;
+	} else if (print_options.type == TWOPERPAGE) {
+		dives_per_page = 2;
 	} else {
 		dives_per_page = 25;
 	}
 	pages = (dives + dives_per_page - 1) / dives_per_page;
 	gtk_print_operation_set_n_pages(operation, pages);
 }
-
 
 #define OPTIONCALLBACK(name, type, value) \
 static void name(GtkWidget *w, gpointer data) \
@@ -878,7 +892,7 @@ static void name(GtkWidget *w, gpointer data) \
 
 OPTIONCALLBACK(set_pretty, type, PRETTY)
 OPTIONCALLBACK(set_table, type, TABLE)
-OPTIONCALLBACK(set_oneperpage, type, ONEPERPAGE)
+OPTIONCALLBACK(set_twoperpage, type, TWOPERPAGE)
 
 #define OPTIONSELECTEDCALLBACK(name, option) \
 static void name(GtkWidget *w, gpointer data) \
@@ -907,9 +921,9 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio1),
 		print_options.type == PRETTY);
 	radio2 = gtk_radio_button_new_with_label_from_widget (
-		GTK_RADIO_BUTTON (radio1), _("1 dive per page"));
+		GTK_RADIO_BUTTON (radio1), _("2 dives per page"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio2),
-		print_options.type == ONEPERPAGE);
+		print_options.type == TWOPERPAGE);
 	radio3 = gtk_radio_button_new_with_label_from_widget (
 		GTK_RADIO_BUTTON (radio1), _("Table print"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio3),
@@ -919,7 +933,7 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_box_pack_start (GTK_BOX (box), radio3, TRUE, TRUE, 0);
 
 	g_signal_connect(radio1, "toggled", G_CALLBACK(set_pretty), NULL);
-	g_signal_connect(radio2, "toggled", G_CALLBACK(set_oneperpage), NULL);
+	g_signal_connect(radio2, "toggled", G_CALLBACK(set_twoperpage), NULL);
 	g_signal_connect(radio3, "toggled", G_CALLBACK(set_table), NULL);
 
 	dives = nr_selected_dives();
@@ -944,16 +958,23 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 
 static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
 {
+	Print_params *print_params = g_slice_new(Print_params);
+
 	if (print_options.type == PRETTY) {
-		g_signal_connect(operation, "draw_page",
-			G_CALLBACK(draw_page), NULL);
+		print_params->dives = 6;
+		print_params->h_scale = 3;
+		print_params->w_scale = 2;
+		print_params->rotation = 0;
+		g_signal_connect(operation, "draw_page", G_CALLBACK(draw_page), print_params);
 	} else {
-		if (print_options.type == ONEPERPAGE) {
-			g_signal_connect(operation, "draw_page",
-			G_CALLBACK(draw_oneperpage), NULL);
+		if (print_options.type == TWOPERPAGE) {
+			print_params->dives = 2;
+			print_params->h_scale = 1.6;
+			print_params->w_scale = 1.8;
+			print_params->rotation = 1;
+			g_signal_connect(operation, "draw_page", G_CALLBACK(draw_page), print_params);
 		} else {
-			g_signal_connect(operation, "draw_page",
-			G_CALLBACK(draw_table), NULL);
+			g_signal_connect(operation, "draw_page", G_CALLBACK(draw_table), NULL);
 		}
 	}
 }
