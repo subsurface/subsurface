@@ -618,6 +618,8 @@ static void dive_trip_widget(GtkWidget *box, dive_trip_t *trip, struct dive_info
 }
 
 struct location_update {
+	char text[45];
+	char set_by_hand;
 	GtkEntry *entry;
 	struct dive *dive;
 	void (*callback)(float, float);
@@ -628,6 +630,11 @@ static void print_gps_coordinates(char *buffer, int len, float lat, float lon)
 	unsigned int latdeg, londeg;
 	float latmin, lonmin;
 	char *lath, *lonh;
+
+	if (!lat && !lon) {
+		*buffer = 0;
+		return;
+	}
 
 	lath = lat >= 0.0 ? _("N") : _("S");
 	lonh = lon >= 0.0 ? _("E") : _("W");
@@ -644,11 +651,9 @@ static void print_gps_coordinates(char *buffer, int len, float lat, float lon)
 
 static void update_gps_entry(float lat, float lon)
 {
-	char gps_text[45];
-
 	if (location_update.entry) {
-		print_gps_coordinates(gps_text, 45, lat, lon);
-		gtk_entry_set_text(location_update.entry, gps_text);
+		print_gps_coordinates(location_update.text, 45, lat, lon);
+		gtk_entry_set_text(location_update.entry, location_update.text);
 	}
 }
 
@@ -657,16 +662,76 @@ static gboolean gps_map_callback(GtkWidget *w, gpointer data)
 {
 	struct dive *dive = location_update.dive;
 	show_gps_location(dive, update_gps_entry);
+	location_update.set_by_hand = 1;
 	return TRUE;
 }
 #endif
+
+/*
+ * If somebody sets the string by editing the text entry,
+ * we consider a clear string an opportunity to set things
+ * automatically.
+ *
+ * A non-empty string, on the other hand, means that we
+ * should *not* touch it when we change the location field.
+ */
+static gboolean gps_entry_change_cb(GtkEntry *gps, GdkEvent *event, gpointer userdata)
+{
+	const char *string = gtk_entry_get_text(gps);
+
+	/* A clear string is never considered to be "set" */
+	if (!string) {
+		location_update.set_by_hand = 0;
+		return FALSE;
+	}
+
+	/*
+	 * If it wasn't set by hand, and it hasn't changed,
+	 * it's still not set by hand
+	 */
+	if (!location_update.set_by_hand) {
+		if (!strcmp(location_update.text, string))
+			return FALSE;
+	}
+
+	/* Otherwise, check if it's all empty.. */
+	while (isspace(*string))
+		string++;
+	location_update.set_by_hand = !!*string;
+
+	return FALSE;
+}
+
+static void location_entry_change_cb(GtkComboBox *location, gpointer *userdata)
+{
+	int i;
+	struct dive *dive;
+	const char *name;
+
+	/*
+	 * Don't do any automatic gps changes of entries that have been
+	 * explicitly set to some value!
+	 */
+	if (location_update.set_by_hand)
+		return;
+
+	name = get_active_text(location);
+	for_each_dive(i, dive) {
+		if (!dive_has_gps_location(dive))
+			continue;
+		if (!dive->location || strcasecmp(dive->location, name))
+			continue;
+		update_gps_entry(dive->latitude.udeg / 1000000.0, dive->longitude.udeg / 1000000.0);
+		return;
+	}
+	update_gps_entry(0, 0);
+}
 
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
 	GtkWidget *hbox, *label, *frame, *equipment, *image;
 	char buffer[128];
 	char airtemp[6];
-	char gps_text[45] = "";
 	const char *unit;
 	double value;
 
@@ -678,13 +743,19 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
 
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
+	g_signal_connect(G_OBJECT(info->location), "changed", G_CALLBACK(location_entry_change_cb), NULL);
 
-	if (dive_has_gps_location(dive))
-		print_gps_coordinates(gps_text, sizeof(gps_text), dive->latitude.udeg / 1000000.0,
-								  dive->longitude.udeg / 1000000.0);
 	hbox = gtk_hbox_new(FALSE, 2);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
-	info->gps = single_text_entry(hbox, _("GPS (WGS84 or GPS format)"), gps_text);
+	info->gps = single_text_entry(hbox, _("GPS (WGS84 or GPS format)"), NULL);
+
+	location_update.entry = info->gps;
+	location_update.dive = dive;
+	update_gps_entry(dive->latitude.udeg / 1000000.0, dive->longitude.udeg / 1000000.0);
+	location_update.set_by_hand = !!location_update.text[0];
+
+	gtk_widget_add_events(GTK_WIDGET(info->gps), GDK_FOCUS_CHANGE_MASK);
+	g_signal_connect(G_OBJECT(info->gps), "focus-out-event", G_CALLBACK(gps_entry_change_cb), NULL);
 	gtk_entry_set_width_chars(info->gps, 30);
 #if HAVE_OSM_GPS_MAP
 	info->gps_icon = gtk_button_new_with_label(_("Pick on map"));
@@ -693,8 +764,6 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	gtk_image_set_pixel_size(GTK_IMAGE(image), 128);
 	gtk_button_set_image(GTK_BUTTON(info->gps_icon), image);
 
-	location_update.entry = info->gps;
-	location_update.dive = dive;
 	g_signal_connect(G_OBJECT(info->gps_icon), "clicked", G_CALLBACK(gps_map_callback), NULL);
 #endif
 	hbox = gtk_hbox_new(FALSE, 3);
