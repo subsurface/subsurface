@@ -249,6 +249,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	case DC_SAMPLE_DECO:
 		if (value.deco.type == DC_DECO_NDL) {
 			sample->ndl.seconds = ndl = value.deco.time;
+			sample->stopdepth.mm = stopdepth = value.deco.depth * 1000.0 + 0.5;
 			sample->in_deco = in_deco = FALSE;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
