@@ -380,6 +380,24 @@ static int get_rating(const char *string)
 	return rating_val;
 }
 
+/* this is used to skip the cardinal directions (or check if they are
+ * present). You pass in the text and a STRING with the direction.
+ * This checks for both the standard english text (just one character)
+ * and the translated text (possibly longer) and returns 0 if not found
+ * and the number of chars to skip otherwise. */
+static int string_advance_cardinal(const char *text, const char *look)
+{
+	char *trans;
+	int len = strlen(look);
+	if (!strncasecmp(text, look, len))
+		return len;
+	trans = _(look);
+	len = strlen(trans);
+	if (!strncasecmp(text, trans, len))
+		return len;
+	return 0;
+}
+
 /* this has to be done with UTF8 as people might want to enter the degree symbol */
 static gboolean parse_gps_text(const char *gps_text, double *latitude, double *longitude)
 {
@@ -390,6 +408,7 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 	double parselat, parselong;
 	gunichar degrees = UCS4_DEGREE;
 	gunichar c;
+	int incr;
 
 	while (g_unichar_isspace(g_utf8_get_char(text)))
 		text = g_utf8_next_char(text);
@@ -401,12 +420,9 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		return TRUE;
 	}
 	/* ok, let's parse by hand - first degrees of latitude */
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'N' ||
-	    !strncmp(text, _("N"), strlen(_("N"))))
-		text++;
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'S' ||
-	    !strncmp(text, _("S"), strlen(_("S")))) {
-		text++;
+	text += string_advance_cardinal(text, "N");
+	if ((incr = string_advance_cardinal(text, "S")) > 0) {
+		text += incr;
 		south = TRUE;
 	}
 	parselat = strtod(text, &endptr);
@@ -421,7 +437,8 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 	/* next optional minutes as decimal, skipping degree symbol */
 	while (g_unichar_isspace(c = g_utf8_get_char(text)) || c == degrees)
 		text = g_utf8_next_char(text);
-	if (g_unichar_toupper(c) != 'E' && g_unichar_toupper(c) != 'W' && c != ';' && c != ',') {
+	incr = string_advance_cardinal(text, "E") + string_advance_cardinal(text, "W");
+	if (!incr && c != ';' && c != ',') {
 		parselat += strtod(text, &endptr) / 60.0;
 		if (text == endptr)
 			return FALSE;
@@ -435,12 +452,9 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		text = g_utf8_next_char(text);
 
 	/* next degrees of longitude */
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'E' ||
-	    !strncmp(text, _("E"), strlen(_("E"))))
-		text++;
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'W' ||
-	    !strncmp(text, _("W"), strlen(_("W")))) {
-		text++;
+	text += string_advance_cardinal(text, "E");
+	if ((incr = string_advance_cardinal(text, "W")) > 0) {
+		text += incr;
 		west = TRUE;
 	}
 	parselong = strtod(text, &endptr);
