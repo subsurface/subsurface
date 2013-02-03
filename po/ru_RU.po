@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-03 18:00+1100\n"
-"PO-Revision-Date: 2013-02-02 21:54+0300\n"
+"PO-Revision-Date: 2013-02-03 11:36+0200\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -303,7 +303,7 @@ msgstr ""
 
 #: planner.c:1113
 msgid "AIR"
-msgstr "AIR"
+msgstr "воздух"
 
 #: gtk-gui.c:1054
 #: gtk-gui.c:1377
@@ -867,16 +867,14 @@ msgid "GPS (WGS84 or GPS format)"
 msgstr "GPS (формат WGS84 или GPS)"
 
 #: statistics.c:854
-#, fuzzy
 msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Расход"
 
 #: planner.c:1141
-#, fuzzy
 msgctxt "Type of"
 msgid "Gas Used"
-msgstr "Расход"
+msgstr "Смесь"
 
 #: planner.c:529
 #, c-format
@@ -1733,7 +1731,7 @@ msgstr ""
 #: profile.c:399
 #, c-format
 msgid "air"
-msgstr "air"
+msgstr "воздух"
 
 #: libdivecomputer.c:153
 msgid "airtime"
