@@ -401,9 +401,11 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		return TRUE;
 	}
 	/* ok, let's parse by hand - first degrees of latitude */
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'N')
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'N' ||
+	    !strncmp(text, _("N"), strlen(_("N"))))
 		text++;
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'S') {
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'S' ||
+	    !strncmp(text, _("S"), strlen(_("S")))) {
 		text++;
 		south = TRUE;
 	}
@@ -433,9 +435,11 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		text = g_utf8_next_char(text);
 
 	/* next degrees of longitude */
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'E')
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'E' ||
+	    !strncmp(text, _("E"), strlen(_("E"))))
 		text++;
-	if (g_unichar_toupper(g_utf8_get_char(text)) == 'W') {
+	if (g_unichar_toupper(g_utf8_get_char(text)) == 'W' ||
+	    !strncmp(text, _("W"), strlen(_("W")))) {
 		text++;
 		west = TRUE;
 	}
