@@ -865,16 +865,14 @@ msgid "GPS (WGS84 or GPS format)"
 msgstr "GPS (WGS84 oder GPS Format)"
 
 #: statistics.c:854
-#, fuzzy
 msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Gasverbrauch"
 
 #: planner.c:1141
-#, fuzzy
 msgctxt "Type of"
 msgid "Gas Used"
-msgstr "Gasverbrauch"
+msgstr "Verw. Gas"
 
 #: planner.c:529
 #, c-format
