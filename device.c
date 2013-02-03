@@ -31,6 +31,29 @@ struct device_info *get_device_info(const char *model, uint32_t deviceid)
 	return NULL;
 }
 
+/*
+ * Sort the device_info list, so that we write it out
+ * in a stable order. Otherwise we'll end up having the
+ * XML file have the devices listed in some arbitrary
+ * order, which is annoying.
+ */
+static void add_entry_sorted(struct device_info *entry)
+{
+	struct device_info *p, **pp = &device_info_list;
+
+	while ((p = *pp) != NULL) {
+		int cmp = strcmp(p->model, entry->model);
+		if (cmp > 0)
+			break;
+		if (!cmp && p->deviceid > entry->deviceid)
+			break;
+		pp = &p->next;
+	}
+
+	entry->next = p;
+	*pp = entry;
+}
+
 /* Get an existing device info model or create a new one if valid */
 struct device_info *create_device_info(const char *model, uint32_t deviceid)
 {
@@ -45,8 +68,7 @@ struct device_info *create_device_info(const char *model, uint32_t deviceid)
 	if (entry) {
 		entry->model = strdup(model);
 		entry->deviceid = deviceid;
-		entry->next = device_info_list;
-		device_info_list = entry;
+		add_entry_sorted(entry);
 	}
 	return entry;
 }
