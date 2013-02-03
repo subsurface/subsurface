@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-03 18:00+1100\n"
-"PO-Revision-Date: 2013-02-01 12:30+0100\n"
+"PO-Revision-Date: 2013-02-03 09:01+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -332,7 +332,7 @@ msgstr "Slå sammen med turen over"
 
 #: planner.c:1250
 msgid "Add waypoint"
-msgstr "Legg til punkt"
+msgstr "Legg til rad"
 
 #: statistics.c:845
 msgid "Air Press"
@@ -563,7 +563,7 @@ msgstr "Dykk"
 
 #: planner.c:1194
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
-msgstr "Dykkeplan - DETTE ER KUN EN SIMULERING, IKKE BRUK FOR DYKKING"
+msgstr "Dykkeplan - DETTE ER KUN EN SIMULERING, IKKE BRUK TIL DYKKING"
 
 #: statistics.c:828
 msgid "Dive Time"
@@ -863,16 +863,14 @@ msgid "GPS (WGS84 or GPS format)"
 msgstr "GPS (WGS84- eller GPS-format)"
 
 #: statistics.c:854
-#, fuzzy
 msgctxt "Amount"
 msgid "Gas Used"
-msgstr "Gass brukt"
+msgstr "Gassforbruk"
 
 #: planner.c:1141
-#, fuzzy
 msgctxt "Type of"
 msgid "Gas Used"
-msgstr "Gass brukt"
+msgstr "Gass"
 
 #: planner.c:529
 #, c-format
