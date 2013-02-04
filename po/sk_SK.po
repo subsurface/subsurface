@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-03 18:00+1100\n"
+"POT-Creation-Date: 2013-02-04 17:58+1100\n"
 "PO-Revision-Date: 2012-10-23 22:30+0100\n"
 "Last-Translator: Ďoďo Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
@@ -31,6 +31,16 @@ msgstr ""
 #: download-dialog.c:375
 msgid " Please select dive computer and device. "
 msgstr "Voľba typu počítača a zariadia. "
+
+#: profile.c:412
+msgctxt "Starts with space!"
+msgid " begin"
+msgstr ""
+
+#: profile.c:413
+msgctxt "Starts with space!"
+msgid " end"
+msgstr ""
 
 #: statistics.c:182
 msgid "#"
@@ -356,6 +366,11 @@ msgstr "Priemerná teplota"
 #: statistics.c:789
 msgid "Avg Time"
 msgstr "Priemerný čas"
+
+#: profile.c:408
+#, c-format
+msgid "Bailing out to OC"
+msgstr ""
 
 #: gtk-gui.c:634
 msgid "Bar"

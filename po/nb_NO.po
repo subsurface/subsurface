@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-03 18:00+1100\n"
+"POT-Creation-Date: 2013-02-04 17:58+1100\n"
 "PO-Revision-Date: 2013-02-03 09:01+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
@@ -31,6 +31,16 @@ msgstr "Last ned"
 #: download-dialog.c:375
 msgid " Please select dive computer and device. "
 msgstr " Velg dykkecomputer og enhet"
+
+#: profile.c:412
+msgctxt "Starts with space!"
+msgid " begin"
+msgstr ""
+
+#: profile.c:413
+msgctxt "Starts with space!"
+msgid " end"
+msgstr ""
 
 #: statistics.c:182
 msgid "#"
@@ -398,6 +408,11 @@ msgstr "Snitt-temp."
 #: statistics.c:789
 msgid "Avg Time"
 msgstr "Snitt-tid"
+
+#: profile.c:408
+#, c-format
+msgid "Bailing out to OC"
+msgstr ""
 
 #: gtk-gui.c:634
 msgid "Bar"
