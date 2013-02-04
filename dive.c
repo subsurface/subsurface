@@ -1397,6 +1397,17 @@ static struct divecomputer *find_matching_computer(struct divecomputer *match, s
 	return p;
 }
 
+
+static void copy_dive_computer(struct divecomputer *res, struct divecomputer *a)
+{
+	*res = *a;
+	res->model = a->model ? strdup(a->model) : NULL;
+	res->samples = res->alloc_samples = 0;
+	res->sample = NULL;
+	res->events = NULL;
+	res->next = NULL;
+}
+
 /*
  * Join dive computers with a specific time offset between
  * them.
@@ -1411,9 +1422,7 @@ static void interleave_dive_computers(struct divecomputer *res,
 	do {
 		struct divecomputer *match;
 
-		*res = *a;
-		res->model = a->model ? strdup(a->model) : NULL;
-		res->next = NULL;
+		copy_dive_computer(res, a);
 
 		match = find_matching_computer(a, b);
 		if (match) {
