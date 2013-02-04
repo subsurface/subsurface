@@ -407,11 +407,11 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			snprintf(buffer, sizeof(buffer), "%s:%d", _(event->name), event->value);
 		}
 	} else if (event->name && !strcmp(event->name, "SP change")) {
-		snprintf(buffer, sizeof(buffer), "Bailing out to OC");
+		snprintf(buffer, sizeof(buffer), _("Bailing out to OC"));
 	} else {
 		snprintf(buffer, sizeof(buffer), "%s%s", _(event->name),
-			event->flags == SAMPLE_FLAGS_BEGIN ? " begin" :
-			event->flags == SAMPLE_FLAGS_END ? " end" : "");
+			event->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
+			event->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "");
 	}
 	attach_tooltip(x-15, y-6, 12, 12, buffer);
 }
