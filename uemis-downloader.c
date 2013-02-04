@@ -594,26 +594,30 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 {
 	/* we can ignore computer_id, water and gas as those are redundant
 	 * with the binary data and would just get overwritten */
-	if (! strcmp(tag, "date"))
+	if (! strcmp(tag, "date")) {
 		uemis_ts(val, &dive->when);
-	else if (!strcmp(tag, "duration"))
+	} else if (!strcmp(tag, "duration")) {
 		uemis_duration(val, &dive->dc.duration);
-	else if (!strcmp(tag, "depth"))
+	} else if (!strcmp(tag, "depth")) {
 		uemis_depth(val, &dive->dc.maxdepth);
-	else if (!strcmp(tag, "file_content"))
+	} else if (!strcmp(tag, "file_content")) {
 		uemis_parse_divelog_binary(val, dive);
-	else if (!strcmp(tag, "altitude"))
+	} else if (!strcmp(tag, "altitude")) {
 		uemis_get_index(val, &dive->dc.surface_pressure.mbar);
-	else if (!strcmp(tag, "f32Weight"))
+	} else if (!strcmp(tag, "f32Weight")) {
 		uemis_get_weight(val, &dive->weightsystem[0], dive->dc.diveid);
-	else if (!strcmp(tag, "notes"))
+	} else if (!strcmp(tag, "notes")) {
 		uemis_add_string(val, &dive->notes);
-	else if (!strcmp(tag, "u8DiveSuit"))
-		uemis_add_string(_(suit[atoi(val)]), &dive->suit);
-	else if (!strcmp(tag, "u8DiveSuitType"))
-		uemis_add_string(_(suit_type[atoi(val)]), &dive->suit);
-	else if (!strcmp(tag, "u8SuitThickness"))
-		uemis_add_string(_(suit_thickness[atoi(val)]), &dive->suit);
+	} else if (!strcmp(tag, "u8DiveSuit")) {
+		if (*suit[atoi(val)])
+			uemis_add_string(_(suit[atoi(val)]), &dive->suit);
+	} else if (!strcmp(tag, "u8DiveSuitType")) {
+		if (*suit_type[atoi(val)])
+			uemis_add_string(_(suit_type[atoi(val)]), &dive->suit);
+	} else if (!strcmp(tag, "u8SuitThickness")) {
+		if (*suit_thickness[atoi(val)])
+			uemis_add_string(_(suit_thickness[atoi(val)]), &dive->suit);
+	}
 }
 
 /* This function is called for both divelog and dive information that we get
