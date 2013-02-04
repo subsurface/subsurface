@@ -303,7 +303,6 @@ struct dive {
 	struct dive *next, **pprev;
 	int selected;
 	gboolean downloaded;
-	int start, end;
 	timestamp_t when;
 	char *location;
 	char *notes;

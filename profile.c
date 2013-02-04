@@ -1577,7 +1577,8 @@ static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, str
 
 			if (depth > maxdepth)
 				maxdepth = s->depth.mm;
-			if ((depth || lastdepth) && s->time.seconds > maxtime)
+			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) &&
+			    s->time.seconds > maxtime)
 				maxtime = s->time.seconds;
 			lastdepth = depth;
 			s++;
@@ -1601,9 +1602,7 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 	int lastdepth, lasttime;
 	struct plot_data *plot_data;
 
-	maxtime = get_maxtime(pi);
-	if (dive->end > 0)
-		maxtime = dive->end;
+	maxtime = pi->maxtime;
 
 	/*
 	 * We want to have a plot_info event at least every 10s (so "maxtime/10+1"),

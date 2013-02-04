@@ -498,8 +498,7 @@ struct dive *fixup_dive(struct dive *dive)
 		if (sample->cns > dive->maxcns)
 			dive->maxcns = sample->cns;
 	}
-	dive->start = start;
-	dive->end = end;
+
 	/* if all the samples for a cylinder have pressure data that
 	 * is basically equidistant throw out the sample cylinder pressure
 	 * information but make sure we still have a valid start and end
