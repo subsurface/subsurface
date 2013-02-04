@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-04 17:58+1100\n"
-"PO-Revision-Date: 2013-02-03 11:36+0200\n"
+"PO-Revision-Date: 2013-02-04 21:49+0200\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -28,12 +28,12 @@ msgstr "Выберите модель компьютера и устройств
 #: profile.c:412
 msgctxt "Starts with space!"
 msgid " begin"
-msgstr ""
+msgstr " начало"
 
 #: profile.c:413
 msgctxt "Starts with space!"
 msgid " end"
-msgstr ""
+msgstr " конец"
 
 #: statistics.c:182
 msgid "#"
@@ -405,7 +405,7 @@ msgstr "Ср. время"
 #: profile.c:408
 #, c-format
 msgid "Bailing out to OC"
-msgstr ""
+msgstr "Переход на Откр. Цикл"
 
 #: gtk-gui.c:634
 msgid "Bar"
