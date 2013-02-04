@@ -18,9 +18,9 @@ static GtkosxApplication *osx_app;
 
 #define SUBSURFACE_PREFERENCES CFSTR("org.hohndel.subsurface")
 #define ICON_NAME "Subsurface.icns"
-#define UI_FONT "Arial Unicode MS 12"
+#define UI_FONT "Arial 12"
 
-const char system_divelist_default_font[] = "Arial Unicode MS 9";
+const char system_divelist_default_font[] = "Arial 10";
 
 void subsurface_open_conf(void)
 {
