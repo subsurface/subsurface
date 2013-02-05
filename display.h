@@ -3,12 +3,12 @@
 
 #include <cairo.h>
 
-#define DPI_SCREEN 72.0
 #define SCALE_SCREEN 1.0
-#define SCALE_PRINT (1.0 / DPI_SCREEN)
+#define SCALE_PRINT (1.0 / get_screen_dpi())
 
 extern void repaint_dive(void);
 extern void do_print(void);
+extern gdouble get_screen_dpi(void);
 
 /* Plot info with smoothing, velocity indication
  * and one-, two- and three-minute minimums and maximums */

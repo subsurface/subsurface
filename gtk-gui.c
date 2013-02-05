@@ -2020,3 +2020,13 @@ void set_dc_nickname(struct dive *dive)
 		dc = dc->next;
 	}
 }
+
+gdouble get_screen_dpi(void)
+{
+	const gdouble mm_per_inch = 25.4;
+	GdkScreen *scr = gdk_screen_get_default();
+	gdouble h_mm = gdk_screen_get_height_mm(scr);
+	gdouble h = gdk_screen_get_height(scr);
+	gdouble dpi_h = floor((h / h_mm) * mm_per_inch);
+	return dpi_h;
+}
