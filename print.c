@@ -62,7 +62,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 	int len, decimals, width, height, maxwidth, maxheight;
 	PangoLayout *layout;
 	struct tm tm;
-	char buffer[80], divenr[20], *people;
+	char buffer[160], divenr[20], *people;
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
