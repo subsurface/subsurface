@@ -914,11 +914,11 @@ static void plot_temperature_text(struct graphics_context *gc, struct plot_info 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry+i;
 		int mkelvin = entry->temperature;
+		sec = entry->sec;
 
 		if (!mkelvin)
 			continue;
 		last_temperature = mkelvin;
-		sec = entry->sec;
 		/* don't print a temperature
 		 * if it's been less than 5min and less than a 2K change OR
 		 * if it's been less than 2min OR if the change from the
