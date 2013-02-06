@@ -420,7 +420,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->dc.model = devdata->model;
+	dive->dc.model = strdup(devdata->model);
 	dive->dc.deviceid = devdata->deviceid;
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
