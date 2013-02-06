@@ -1528,6 +1528,7 @@ static struct xslt_files {
 } xslt_files[] = {
 	{ "SUUNTO", "SuuntoSDM.xslt" },
 	{ "JDiveLog", "jdivelog2subsurface.xslt" },
+	{ "dives", "MacDive.xslt" },
 	{ NULL, }
 };
 
