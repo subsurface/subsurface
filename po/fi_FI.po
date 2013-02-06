@@ -68,7 +68,7 @@ msgstr "%.*f %s/min"
 #: planner.c:540
 #, fuzzy, c-format
 msgid "%.0f%s of %s\n"
-msgstr "%.0f%s %s:sta\n"
+msgstr "%.0f %s (%s)\n"
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
 #: print.c:76
@@ -122,7 +122,7 @@ msgid ""
 "CNS:%u%%"
 msgstr ""
 "%s\n"
-"CNS:%u%%"
+"CNS: %u %%"
 
 #: profile.c:2112
 #, c-format
@@ -140,7 +140,7 @@ msgid ""
 "Deco:%umin @ %.0f %s"
 msgstr ""
 "%s\n"
-"Deco:%umin @ %.0f %s"
+"Deco: %u min @ %.0f %s"
 
 #: profile.c:2131
 #, fuzzy, c-format
@@ -149,7 +149,7 @@ msgid ""
 "Deco:unkn time @ %.0f %s"
 msgstr ""
 "%s\n"
-"Deco:tuntem. aika @ %.0f %s"
+"Deco: tuntem. aika @ %.0f %s"
 
 #: profile.c:2168
 #, c-format
@@ -159,6 +159,10 @@ msgid ""
 "END:%d%s\n"
 "EADD:%d%s"
 msgstr ""
+"%s\n"
+"EAD: %d %s\n"
+"END: %d %s\n"
+"EADD: %d %s"
 
 #: profile.c:2137
 #, c-format
@@ -174,7 +178,7 @@ msgid ""
 "MOD:%d%s"
 msgstr ""
 "%s\n"
-"MOD:%d%s"
+"MOD: %d %s"
 
 #: profile.c:2140
 #, fuzzy, c-format
@@ -183,7 +187,7 @@ msgid ""
 "NDL:%umin"
 msgstr ""
 "%s\n"
-"NDL:%umin"
+"NDL: %u min"
 
 #: profile.c:2102
 #, c-format
@@ -191,6 +195,8 @@ msgid ""
 "%s\n"
 "P:%d %s"
 msgstr ""
+"%s\n"
+"P: %d %s"
 
 #: profile.c:2120
 #, c-format
@@ -199,7 +205,7 @@ msgid ""
 "Safetystop:%umin @ %.0f %s"
 msgstr ""
 "%s\n"
-"Turvapysähdys:%umin @ %.0f %s"
+"Turvapysähdys: %u min @ %.0f %s"
 
 #: profile.c:2123
 #, fuzzy, c-format
@@ -208,7 +214,7 @@ msgid ""
 "Safetystop:unkn time @ %.0f %s"
 msgstr ""
 "%s\n"
-"Turvapysähdys:tuntemat. aika @ %.0f %s"
+"Turvapysähdys: tuntemat. aika @ %.0f %s"
 
 #: profile.c:2107
 #, c-format
@@ -216,6 +222,8 @@ msgid ""
 "%s\n"
 "T:%.1f %s"
 msgstr ""
+"%s\n"
+"T: %.1f %s"
 
 #: profile.c:2156
 #, c-format
@@ -223,6 +231,8 @@ msgid ""
 "%s\n"
 "pHe:%.2fbar"
 msgstr ""
+"%s\n"
+"pHe: %.2f bar"
 
 #: profile.c:2152
 #, c-format
@@ -230,6 +240,8 @@ msgid ""
 "%s\n"
 "pN%s:%.2fbar"
 msgstr ""
+"%s\n"
+"pN%s: %.2f bar"
 
 #: profile.c:2148
 #, c-format
@@ -237,6 +249,8 @@ msgid ""
 "%s\n"
 "pO%s:%.2fbar"
 msgstr ""
+"%s\n"
+"pO%s: %.2f bar"
 
 #: dive.c:762
 #, c-format
@@ -270,7 +284,7 @@ msgstr "17 l/min"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
-msgstr "2 osainen kokopuku"
+msgstr "Kaksiosainen kokopuku"
 
 #: planner.c:1230
 msgid "20 l/min"
@@ -279,11 +293,11 @@ msgstr "20 l/min"
 #: gtk-gui.c:833
 #, fuzzy
 msgid "3m increments for calculated ceiling"
-msgstr "3 metrin portaat laskennalliselle kattosyvyydelle"
+msgstr "Kolmen metrin portaat laskennalliselle kattosyvyydelle"
 
 #: print.c:903
 msgid "6 dives per page"
-msgstr "6 sukellusta sivulle"
+msgstr "Kuusi sukellusta sivulle"
 
 #: planner.c:1203
 msgid ""
@@ -294,16 +308,15 @@ msgid ""
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>"
 msgstr ""
-"<small>Lisää segmenttejä alle.\n"
-"Jokainen rivi kuvaa osaa suunnitellusta sukelluksesta.\n"
-"Kukin rivi kuvaa jaksoa/segmenttiä, joka päättyy annettuun syvyyteen, aikaan ja käytettyyn kaasuseokseen. Aika voi olla joko suhteellinen (+3:30 ) tai absoluuttinen (3:30). Suhteellinen aika kertoo segmentin keston, absoluuttinen kertoo koska kyseinen segmentti päättyy koko sukelluksen kestoon verrattuna.\n"
-"Mikäli kaasu jätetään tyhjäksi, käytetään edellistä seosta (tai ilmaa, mikäli kaasuseosta ei ole ollenkaan määritelty).\n"
-"Nousun automaattista suunnittelua varten voidaan kertoa myös kaasu, jota ei muuten käytetä. Tällöin ilmoitetaan syvyys ja kaasuseos, mutta ei aikaa ja sitä voidaan käyttää sen jälkeen, kun on noustu ilmoitettuun syvyyteen.\n"
-"CC-saraketta käytetään \"rebreather\" -sukelluksiin ja jätetään tyhjäksi avoimen kierron suunnittelussa."
+"<small>Syötä suunnitellun sukelluksen vaiheet alla olevaan listaan.\n"
+"Kukin rivi kuvaa yhtä sukelluksen vaihetta, joka päättyy annettuun syvyyteen ja aikaan sekä käyttää annettua kaasua. Aika voidaan määritellä joko suhteellisena edellisen vaiheen päättymisestä (+3:30) tai absoluuttisena sukelluksen alusta (3:30).\n"
+"Jos vaiheen kaasua ei ole määritelty, vaiheessa käytetään edellisen vaiheen kaasua. Suunnitelman alussa oletetaan käytettäväksi ilmaa ellei kaasua ole määritelty lainkaan.\n"
+"Voit määritellä nousun automaattiselle suunnittelulle kaasun, joka otetaan käyttöön tietyllä syvyydellä. Jätä tällöin vaiheen kesto tyhjäksi ja syötä syvyys ja kaasu normaalisti.\n"
+"Saraketta CC käytetään ainoastaan suljetun kierron sukelluslaitteiden kanssa. Jos käytät avoimen kierron laitteita, jätä sarake tyhjäksi.</small>"
 
 #: planner.c:1113
 msgid "AIR"
-msgstr "ILMA"
+msgstr "Ilma"
 
 #: gtk-gui.c:1054
 #: gtk-gui.c:1377
@@ -325,11 +338,11 @@ msgstr "Liitä yllä olevaan retkeen"
 #: planner.c:1250
 #, fuzzy
 msgid "Add waypoint"
-msgstr "Lisää kiintopiste"
+msgstr "Lisää uusi jakso"
 
 #: statistics.c:845
 msgid "Air Press"
-msgstr "Ilman paine"
+msgstr "Ilmanpaine"
 
 #: statistics.c:844
 msgid "Air Temp"
@@ -543,7 +556,7 @@ msgstr "Laitenimi"
 
 #: download-dialog.c:330
 msgid "Device or mount point"
-msgstr ""
+msgstr "Laite- tai hakemistopolku"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:105
@@ -579,7 +592,7 @@ msgstr "Muistiinpanot"
 
 #: planner.c:1194
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
-msgstr "Sukelluksen suunnittelu - TÄMÄ ON VAIN SIMULAATIO; ÄLÄ KÄYTÄ SUKELLUKSEEN"
+msgstr "Sukelluksen suunnittelu - TÄMÄ ON SIMULAATIO; ÄLÄ KÄYTÄ SUKELLUKSEEN"
 
 #: statistics.c:828
 msgid "Dive Time"
@@ -615,7 +628,7 @@ msgstr "Sukellusvanhin"
 
 #: planner.c:1219
 msgid "Dive starts when?"
-msgstr "Milloin sukellus alkaa?"
+msgstr "Aloitusaika"
 
 #: print.c:510
 msgid "Dive#"
@@ -704,7 +717,7 @@ msgstr "Muuta retken tietoja"
 
 #: gtk-gui.c:1302
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
-msgstr "Muokkaa sukellustietokoneen lempinimeä tuplaklikkaamalla muokattavaa kenttää"
+msgstr "Muokkaa sukellustietokoneen lempinimeä kaksoisnäpäyttämällä muokattavaa kenttää"
 
 #: divelist.c:2348
 msgid "Edit dive"
@@ -738,11 +751,11 @@ msgstr "Loppu"
 
 #: planner.c:1139
 msgid "Ending Depth"
-msgstr "Lopullinen syvyys"
+msgstr "Kohdesyvyys"
 
 #: webservice.c:220
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
-msgstr "Syötä käyttäjätunnus ja paina 'Lataa' -painiketta. Kun tiedot on ladattu, voit painaa 'Hyväksy', jos haluat ottaa muutokset käyttöön."
+msgstr "Syötä käyttäjätunnus ja paina \"Lataa\"-painiketta. Kun tiedot on ladattu, voit painaa 'Hyväksy', jos haluat ottaa muutokset käyttöön."
 
 #: gtk-gui.c:1603
 #: info.c:733
@@ -861,7 +874,7 @@ msgstr ""
 
 #: planner.c:1242
 msgid "GFhigh for plan"
-msgstr ""
+msgstr "GFhigh"
 
 #: gtk-gui.c:841
 msgid "GFlow"
@@ -869,7 +882,7 @@ msgstr ""
 
 #: planner.c:1241
 msgid "GFlow for plan"
-msgstr ""
+msgstr "GFlow"
 
 #: info.c:683
 msgid "GPS (WGS84 or GPS format)"
@@ -884,12 +897,12 @@ msgstr "Ilmankulutus"
 #, fuzzy
 msgctxt "Type of"
 msgid "Gas Used"
-msgstr "Käytettävä kaasu"
+msgstr "Kaasu"
 
 #: planner.c:529
 #, c-format
 msgid "Gas consumption:\n"
-msgstr "Ilman kulutus:\n"
+msgstr "Kaasun kulutus:\n"
 
 #: equipment.c:959
 #: print.c:205
@@ -906,7 +919,7 @@ msgstr "Ohje"
 
 #: webservice.c:241
 msgid "Idle"
-msgstr ""
+msgstr "Toimeton"
 
 #: gtk-gui.c:1365
 msgid "Import XML File(s)..."
@@ -988,7 +1001,7 @@ msgstr "maalis"
 
 #: gps.c:56
 msgid "Mark location here"
-msgstr "Merkitse sijainti tänne"
+msgstr "Valitse sijainti"
 
 #: uemis.c:230
 msgid "Marker"
@@ -1200,7 +1213,7 @@ msgstr "Varoitus: hapen osapaine"
 
 #: uemis.c:205
 msgid "PO2 Green Warning"
-msgstr "Varoitus: hapen osapaine (green) TODO"
+msgstr "Varoitus: hapen osapaine (green)"
 
 #: gtk-gui.c:635
 msgid "PSI"
@@ -1322,11 +1335,11 @@ msgstr "Pintakulutus"
 
 #: planner.c:1236
 msgid "SAC during decostop"
-msgstr "Ilman kulutus deco-pysähdyksessä"
+msgstr "Pintakulutus deko-pysähdyksessä"
 
 #: planner.c:1235
 msgid "SAC during dive"
-msgstr "Ilmankulutus sukelluksen aikana"
+msgstr "Pintakulutus sukelluksen aikana"
 
 #: file.c:75
 msgid "SDE file"
@@ -1358,7 +1371,7 @@ msgstr "Tallenna..."
 
 #: planner.c:1140
 msgid "Segment Time"
-msgstr "Segmentin kesto"
+msgstr "Aika"
 
 #: gtk-gui.c:944
 #, fuzzy
@@ -1399,7 +1412,7 @@ msgstr "Näytä sarakkeet"
 #: gtk-gui.c:812
 #, fuzzy
 msgid "Show EAD, END, EADD"
-msgstr "Näytä EAD, END, EADD"
+msgstr "Näytä EAD, END sekä EADD"
 
 #: gtk-gui.c:795
 #, fuzzy
@@ -1421,17 +1434,17 @@ msgstr "Näytä kartalla"
 #: gtk-gui.c:778
 #, fuzzy
 msgid "Show pHe graph"
-msgstr "Näytä pHe -graafi"
+msgstr "Näytä pHe-kuvaaja"
 
 #: gtk-gui.c:759
 #, fuzzy, c-format
 msgid "Show pN%s graph"
-msgstr "Näytä pN%s -graafi"
+msgstr "Näytä pN%s-kuvaaja"
 
 #: gtk-gui.c:740
 #, c-format
 msgid "Show pO%s graph"
-msgstr "Näytä pO%s -graafi"
+msgstr "Näytä pO%s-kuvaaja"
 
 #: planner.c:191
 msgid "Simulated Dive"
@@ -1480,7 +1493,7 @@ msgstr "Tila"
 #: planner.c:511
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
-msgstr ""
+msgstr "Pysy %.*f %s:n syvyydessä %d:%02d min - aika %d:%02u kaasulla %s\n"
 
 #: planner.c:461
 #, fuzzy, c-format
@@ -1489,8 +1502,8 @@ msgid ""
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
-"Subsurfacen sukellusten suunnittelu\n"
-"perustuu GFlow = %.0f ja GFhigh = %.0f -arvoihin\n"
+"Subsurfacen laskema sukellussuunnitelma\n"
+"perustuu arvoihin GFlow = %.0f ja GFhigh = %.0f\n"
 "\n"
 
 #: divelist.c:1422
@@ -1512,7 +1525,7 @@ msgstr "Pinta-aika"
 #: planner.c:1220
 #, fuzzy
 msgid "Surface Pressure (mbar)"
-msgstr "Pintapaine (mbar)"
+msgstr "Ilmanpaine pinnalla (mbar)"
 
 #: planner.c:521
 #, c-format
@@ -1565,8 +1578,8 @@ msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
 msgstr ""
-"Muokataksesi sukelluksen tietoja\n"
-"tuplaklikkaa sitä listalla"
+"Avaa sukellustietojen muokkausikkuna\n"
+"kaksoisnäpäyttämällä sukellusta listalla"
 
 #: gtk-gui.c:1391
 msgid "Toggle Zoom"
@@ -1589,7 +1602,7 @@ msgstr "Kokonaismassa:"
 #: planner.c:502
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
-msgstr ""
+msgstr "Siirtymä %.*f %s:n syvyyteen ajassa %d:%02d - aika %d:%02u kaasulla %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:268
@@ -1635,7 +1648,7 @@ msgstr "Uemiksen lukeminen epäonnistui"
 
 #: libdivecomputer.c:698
 msgid "Unable to create libdivecomputer context"
-msgstr "libdivecomputer kontekstin luominen epäonnistui"
+msgstr "libdivecomputer-kontekstin luominen epäonnistui"
 
 #: libdivecomputer.c:403
 #, c-format
@@ -1723,9 +1736,9 @@ msgid ""
 "If you don't want to name this dive computer click 'Cancel' and Subsurface will simply display its model as its name (which may mean that you cannot tell the two dive computers apart in the logs)."
 msgstr ""
 "Sinulla on jo tämän mallinen sukellustietokone\n"
-"nimeltään %s\n"
-"Uudelle laitteelle voidaan antaa lempinimi, jotta se voidaan erottaa entisestä laitteesta. Oletuksena käytetään laitteen mallia ja tunnistetta, kuten alla näytetään.\n"
-"Mikäli et halua nimetä uutta sukellustietokonetta, paina 'Peru' -painiketta ja jatkossa näytetään laitteen malli sen nimenä (jolloin et voine erottaa kahden eri sukellustietokoneen lokeja toisistaan)."
+"nimellä %s\n"
+"Voit halutessasi antaa laitteelle lempinimen. Lempinimen antaminen helpottaa sukellustietokoneen sekä sen lokien tunnistamisessa. Oletuksena laitteen nimenä käytetään sen mallia ja tunnistetta.\n"
+"Jos et halua antaa laitteelle lempinimeä, paina \"Peru\"-painiketta."
 
 #: gtk-gui.c:208
 msgid ""
@@ -1844,7 +1857,7 @@ msgstr "Sukellus #%d - "
 #: statistics.c:633
 #, c-format
 msgid "for dives #"
-msgstr "sukellukselle numero"
+msgstr "sukellukselle numero "
 
 #: statistics.c:676
 #, c-format
@@ -1870,7 +1883,7 @@ msgstr "kokopuku"
 #: libdivecomputer.c:151
 #: libdivecomputer.c:154
 msgid "gaschange"
-msgstr "kaasun vaihto"
+msgstr "Kaasun vaihto"
 
 #: libdivecomputer.c:153
 msgid "heading"
@@ -1963,17 +1976,17 @@ msgstr "ei mitään"
 #: gtk-gui.c:783
 #, fuzzy
 msgid "pHe threshold"
-msgstr "pHe -kynnys"
+msgstr "pHe-kynnys"
 
 #: gtk-gui.c:765
 #, fuzzy, c-format
 msgid "pN%s threshold"
-msgstr "pN%s -kynnys"
+msgstr "pN%s-kynnys"
 
 #: gtk-gui.c:746
 #, fuzzy, c-format
 msgid "pO%s threshold"
-msgstr "pO%s -kynnys"
+msgstr "pO%s-kynnys"
 
 #: dive.c:42
 msgid "pascal"
