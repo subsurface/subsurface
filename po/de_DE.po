@@ -124,7 +124,7 @@ msgid ""
 "Calculated ceiling %.0f %s"
 msgstr ""
 "%s\n"
-"berechnete Obergrenze %.0f %s"
+"berechneter tiefster Deko-Stopp %.0f %s"
 
 #: profile.c:2128
 #, c-format
@@ -286,7 +286,7 @@ msgstr "20 l/min"
 
 #: gtk-gui.c:833
 msgid "3m increments for calculated ceiling"
-msgstr "3m Stufen für berechnete Obergrenze"
+msgstr "3m Stufen für berechnete Deko-Stopps"
 
 #: print.c:903
 msgid "6 dives per page"
@@ -1384,11 +1384,11 @@ msgstr "MOD anzeigen"
 
 #: gtk-gui.c:828
 msgid "Show calculated ceiling"
-msgstr "Berechnete Obergrenze anzeigen"
+msgstr "Berechnete tiefste Deko-Stopps anzeigen"
 
 #: gtk-gui.c:820
 msgid "Show dc reported ceiling in red"
-msgstr "Vom TC ausgelesene Obergrenze in rot anzeigen"
+msgstr "Vom TC ausgelesene tiefste Deko-Stopps in rot anzeigen"
 
 #: divelist.c:2441
 msgid "Show in map"
@@ -1743,11 +1743,11 @@ msgstr "Markierung"
 
 #: libdivecomputer.c:149
 msgid "ceiling"
-msgstr "Minimaltiefe"
+msgstr "tiefster Deko-Stopp"
 
 #: libdivecomputer.c:152
 msgid "ceiling (safety stop)"
-msgstr "Minimaltiefe (Sicherheitsstopp)"
+msgstr "Sicherheits-Stopp"
 
 #: equipment.c:830
 msgid "clip-on"
