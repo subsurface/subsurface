@@ -702,3 +702,51 @@ Appendix B: Suunto Export Unpacking Script
 	else
 		echo "Nothing found! Try again!"
 	fi
+
+
+[[AppendixC]]
+Appendix C: Mac OSX Driver Installation
+---------------------------------------
+
+Working out which driver to use for a Mac requires for a particular dive computer can
+require some experimentation. The libdivecomputer website provides a useful point from
+which to start: http://www.divesoftware.org/libdc/drivers.html. It lists a number of
+sites for manufacturers of the serial to usb chips which provide the necessary conversions.
+
+Here you have two alternatives. Either you try each of the major drivers in turn until
+you find the right one, or you follow some further steps to try and identify the right
+driver up front. To determine the required driver up front, first attach the usd to device
+connector cable. Next open a terminal window and run the command:
+
+	system_profiler SPUSBDataType > usb.txt
+
+you should end up with a file (usb.txt in this example) which contains the VID/PID information
+which can then be used with the url above to narrow the field. Just open the text file and
+compare the information with the table in the drivers section of the web page. This should
+point you to the relevant driver manufacturer.  Typically, one then needs to navigate to the
+relevant sub page for "drivers" and then the one for "VCP drivers."  VCP stands for Virtual
+Com Port. You want VCP rather than D2XX drivers, for example. Make sure to download the correct
+version for your particular version of OS X.
+
+These can be downloaded to the Mac and installed in the usual way. Details on how to
+install on OS X 10.8 differ from earlier versions due to the new security functions.
+Put simply, unless the driver has been digitally signed in an approved way OS X will
+block the installation. You can either make some changes to your system security settings
+or manually override the block. The latter seems more sensible and only involves
+control-clicking the installation package and answering some standard dialogs. The sequence
+goes like this:
+
+- download the driver .dmg package to your downloads folder
+- right click the downloads folder an navigate to the new dmg package
+- control-click the package: a dialog will open stating that the package has not been signed
+  and is from an unknown developer and asking whether you really want to proceed
+- if happy, you accept the dialog and the package opens and may show you one or more versions
+- select the relevant version, click the package installer and that should be it.
+
+You can find a high-level explanation of the new security features from apple here:
+https://www.apple.com/osx/what-is/security.html.
+
+Until you have the correct driver installed, subsurface will not connect to your dive
+computer. If you try one VCP driver and it still doesn't work, try the next manufacturer
+until it does. If you run out of drivers and still can't get things working perhaps
+it is time to contact us via the subsurface mail lists.
