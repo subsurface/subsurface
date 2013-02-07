@@ -124,7 +124,7 @@ msgid ""
 "Calculated ceiling %.0f %s"
 msgstr ""
 "%s\n"
-"berechneter tiefster Deko-Stopp %.0f %s"
+"Berechneter tiefster Deko-Stopp %.0f %s"
 
 #: profile.c:2128
 #, c-format
