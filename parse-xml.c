@@ -1538,12 +1538,17 @@ xmlDoc *test_xslt_transforms(xmlDoc *doc)
 	xmlDoc *transformed;
 	xsltStylesheetPtr xslt = NULL;
 	xmlNode *root_element = xmlDocGetRootElement(doc);
+	char *attribute;
 
 	while ((info->root) && (strcasecmp(root_element->name, info->root) != 0)) {
 		info++;
 	}
 
 	if (info->root) {
+		attribute = xmlGetProp(xmlFirstElementChild(root_element), "name");
+		if (attribute && (strcasecmp(attribute, "subsurface") == 0))
+			return doc;
+
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL)
