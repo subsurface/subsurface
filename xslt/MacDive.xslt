@@ -114,12 +114,18 @@
           </xsl:if>
           <xsl:if test="pressureStart != ''">
             <xsl:attribute name="start">
-              <xsl:value-of select="concat(pressureStart, ' bar')"/>
+              <xsl:call-template name="pressureConvert">
+                <xsl:with-param name="number" select="pressureStart"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="pressureEnd != ''">
             <xsl:attribute name="end">
-              <xsl:value-of select="concat(pressureEnd, ' bar')"/>
+              <xsl:call-template name="pressureConvert">
+                <xsl:with-param name="number" select="pressureEnd"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="tankSize != ''">
@@ -129,7 +135,10 @@
           </xsl:if>
           <xsl:if test="workingPressure != ''">
             <xsl:attribute name="workpressure">
-              <xsl:value-of select="concat(workingPressure, ' bar')"/>
+              <xsl:call-template name="pressureConvert">
+                <xsl:with-param name="number" select="workingPressure"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
         </cylinder>
@@ -241,6 +250,22 @@
 
     </dive>
   </xsl:template>
+
+  <!-- convert pressure to bars -->
+  <xsl:template name="pressureConvert">
+    <xsl:param name="number"/>
+    <xsl:param name="units"/>
+
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:value-of select="concat(round($number div 14.5037738007), ' bar')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat($number, ' bar')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!-- end convert pressure -->
 
   <!-- convert time in seconds to minutes:seconds -->
   <xsl:template name="timeConvert">
