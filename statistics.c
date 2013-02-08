@@ -579,7 +579,7 @@ static void show_single_dive_stats(struct dive *dive)
 	} else {
 		set_label(single_w.air_temp, "");
 	}
-	if (dive->dc.surface_pressure.mbar) {
+	if (get_surface_pressure_in_mbar(dive, FALSE)) {
 		set_label(single_w.air_press, "%d mbar", dive->dc.surface_pressure.mbar);
 	} else {
 		set_label(single_w.air_press, _("unknown"));

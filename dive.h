@@ -333,17 +333,21 @@ static inline void copy_gps_location(struct dive *from, struct dive *to)
 	}
 }
 
+extern int get_surface_pressure_in_mbar(const struct dive *dive, gboolean non_null);
+
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
-static inline int depth_to_mbar(int depth, struct dive *dive)
+static inline int depth_to_mbar(int depth, struct dive *dive, struct divecomputer *dc)
 {
 	double specific_weight = 1.03 * 0.981;
-	int surface_pressure = SURFACE_PRESSURE;
-	if (dive->dc.salinity)
-		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
-	if (dive->dc.surface_pressure.mbar)
-		surface_pressure = dive->dc.surface_pressure.mbar;
+	int surface_pressure;
+	if (dc->salinity)
+		specific_weight = dc->salinity / 10000.0 * 0.981;
+	if (dc->surface_pressure.mbar)
+		surface_pressure = dc->surface_pressure.mbar;
+	else
+		surface_pressure = get_surface_pressure_in_mbar(dive, TRUE);
 	return depth / 10.0 * specific_weight + surface_pressure + 0.5;
 }
 

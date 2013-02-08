@@ -112,7 +112,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 			lastdepth = psample->depth.mm;
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(lastdepth, sample->depth.mm, j - t0, t1 - t0);
-			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
+			tissue_tolerance = add_segment(depth_to_mbar(depth, dive, &dive->dc) / 1000.0,
 						       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 		}
 		psample = sample;
@@ -139,7 +139,7 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	gasidx = get_gasidx(dive, o2, he);
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
-		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
+		tissue_tolerance = add_segment(depth_to_mbar(depth, dive, &dive->dc) / 1000.0,
 					       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
 	}
 	return wait;
@@ -504,7 +504,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		gasidx = get_gasidx(dive, o2, he);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth) {
-			used = diveplan->bottomsac / 1000.0 * depth_to_mbar((dp->depth + lastdepth) / 2, dive) *
+			used = diveplan->bottomsac / 1000.0 * depth_to_mbar((dp->depth + lastdepth) / 2, dive, &dive->dc) *
 						(dp->time - lasttime) / 60;
 			snprintf(buffer + len, sizeof(buffer) - len, _("Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
 							decimals, depthvalue, depth_unit,
@@ -514,7 +514,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		} else {
 			/* we use deco SAC rate during the calculated deco stops, bottom SAC rate everywhere else */
 			int sac = dp->entered ? diveplan->bottomsac : diveplan->decosac;
-			used = sac / 1000.0 * depth_to_mbar(dp->depth, dive) * (dp->time - lasttime) / 60;
+			used = sac / 1000.0 * depth_to_mbar(dp->depth, dive, &dive->dc) * (dp->time - lasttime) / 60;
 			snprintf(buffer + len, sizeof(buffer) - len, _("Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),

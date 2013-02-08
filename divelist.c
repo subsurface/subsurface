@@ -655,7 +655,7 @@ static int calculate_otu(struct dive *dive)
 			po2 = sample->po2;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
-			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive);
+			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive, &dive->dc);
 		}
 		if (po2 >= 500)
 			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
@@ -720,7 +720,7 @@ static int calculate_sac(struct dive *dive)
 		}
 	}
 	/* Mean pressure in bar (SAC calculations are in bar*l/min) */
-	pressure = depth_to_mbar(dive->dc.meandepth.mm, dive) / 1000.0;
+	pressure = depth_to_mbar(dive->dc.meandepth.mm, dive, &dive->dc) / 1000.0;
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -744,7 +744,7 @@ static void add_dive_to_deco(struct dive *dive)
 
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
-			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0,
+			(void) add_segment(depth_to_mbar(depth, dive, &dive->dc) / 1000.0,
 					   &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
 		}
 	}
@@ -790,7 +790,7 @@ double init_decompression(struct dive *dive)
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip)
 			continue;
-		surface_pressure = (pdive->dc.surface_pressure.mbar ? pdive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
+		surface_pressure = get_surface_pressure_in_mbar(pdive, TRUE) / 1000.0;
 		if (!deco_init) {
 			clear_deco(surface_pressure);
 			deco_init = TRUE;
@@ -816,7 +816,7 @@ double init_decompression(struct dive *dive)
 	/* add the final surface time */
 	if (lasttime && dive->when > lasttime) {
 		surface_time = dive->when - lasttime;
-		surface_pressure = (dive->dc.surface_pressure.mbar ? dive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
+		surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
 		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
@@ -824,7 +824,7 @@ double init_decompression(struct dive *dive)
 #endif
 	}
 	if (!deco_init) {
-		double surface_pressure = (dive->dc.surface_pressure.mbar ? dive->dc.surface_pressure.mbar : SURFACE_PRESSURE) / 1000;
+		double surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
 		clear_deco(surface_pressure);
 #if DECO_CALC_DEBUG & 2
 		printf("no previous dive\n");

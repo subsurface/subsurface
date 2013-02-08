@@ -230,6 +230,22 @@ int get_duration_in_sec(struct dive *dive)
 	return duration;
 }
 
+int get_surface_pressure_in_mbar(const struct dive *dive, gboolean non_null)
+{
+	int count = 0, pressure = 0;
+	const struct divecomputer *dc = &dive->dc;
+	do {
+		if (dc->surface_pressure.mbar) {
+			pressure = (double)(count * pressure + dc->surface_pressure.mbar) / (count + 1) + 0.5;
+			count++;
+		}
+		dc = dc->next;
+	} while (dc);
+	if (!pressure && non_null)
+		pressure = SURFACE_PRESSURE;
+	return pressure;
+}
+
 static void update_temperature(temperature_t *temperature, int new)
 {
 	if (new) {
