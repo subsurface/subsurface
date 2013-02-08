@@ -539,7 +539,7 @@ static void show_single_dive_stats(struct dive *dive)
 	double value;
 	int decimals;
 	const char *unit;
-	int idx, offset, gas_used;
+	int idx, offset, gas_used, mbar;
 	struct dive *prev_dive;
 	struct tm tm;
 
@@ -579,8 +579,9 @@ static void show_single_dive_stats(struct dive *dive)
 	} else {
 		set_label(single_w.air_temp, "");
 	}
-	if (get_surface_pressure_in_mbar(dive, FALSE)) {
-		set_label(single_w.air_press, "%d mbar", dive->dc.surface_pressure.mbar);
+	mbar = get_surface_pressure_in_mbar(dive, FALSE);
+	if (mbar) {
+		set_label(single_w.air_press, "%d mbar", mbar);
 	} else {
 		set_label(single_w.air_press, _("unknown"));
 	}
