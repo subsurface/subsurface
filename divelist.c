@@ -2700,9 +2700,21 @@ static gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *m
 	gtk_tree_model_get_iter(model, &iter, path);
 	gtk_tree_model_get(model, &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	if (idx < 0) {
+		int i;
+		struct dive *dive;
 		dive_trip_t *trip = find_trip_by_time(when);
-		if (trip)
-			trip->selected = 0;
+		if (!trip)
+			return TRUE;
+
+		trip->selected = 0;
+		/* If this is expanded, let the gtk selection happen for each dive under it */
+		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path))
+			return TRUE;
+		/* Otherwise, consider each dive under it deselected */
+		for_each_dive(i, dive) {
+			if (dive->divetrip == trip)
+				deselect_dive(i);
+		}
 	} else {
 		deselect_dive(idx);
 	}
