@@ -631,7 +631,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the adresses of those fields for every dive that references the divespot. */
-static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr, gboolean keep_number)
+static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr, gboolean keep_number, int *for_dive)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
@@ -643,6 +643,8 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 	int s, nr_sections = 0;
 	struct dive *dive = NULL;
 
+	if (for_dive)
+		*for_dive = -1;
 	bp = buf + 1;
 	tp = next_token(&bp);
 	if (strcmp(tp, "divelog") == 0) {
@@ -697,6 +699,8 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 		} else if (!log && ! strcmp(tag, "logfilenr")) {
 			/* this one tells us which dive we are adding data to */
 			dive = get_dive_by_diveid(atoi(val), deviceid);
+			if (for_dive)
+				*for_dive = atoi(val);
 		} else if (!log && dive && ! strcmp(tag, "divespot_id")) {
 			track_divespot(val, dive->dc.diveid, &dive->location, &dive->latitude, &dive->longitude);
 		} else if (dive) {
@@ -752,7 +756,7 @@ static char *do_uemis_download(struct argument_block *args)
 {
 	const char *mountpath = args->mountpath;
 	char *newmax = NULL;
-	int start, end, i;
+	int start, end, i, offset;
 	uint32_t deviceidnr;
 	char objectid[10];
 	char *deviceid = NULL;
@@ -795,7 +799,7 @@ static char *do_uemis_download(struct argument_block *args)
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		/* process the buffer we have assembled */
 		if (mbuf)
-			process_raw_buffer(deviceidnr, mbuf, &newmax, keep_number);
+			process_raw_buffer(deviceidnr, mbuf, &newmax, keep_number, NULL);
 		if (once) {
 			char *t = first_object_id_val(mbuf);
 			if (t && atoi(t) > start)
@@ -825,15 +829,31 @@ static char *do_uemis_download(struct argument_block *args)
 	fprintf(debugfile, "done: read from object_id %d to %d\n", start, end);
 #endif
 	free(newmax);
-	for (i = start; i < end; i++) {
-		snprintf(objectid, sizeof(objectid), "%d", i);
+	offset = 0;
+	for (i = start; i <= end; i++) {
+		snprintf(objectid, sizeof(objectid), "%d", i + offset);
 		param_buff[2] = objectid;
 #if UEMIS_DEBUG & 2
-		fprintf(debugfile, "getDive %d\n", i);
+		fprintf(debugfile, "getDive %d, object_id %s\n", i, objectid);
 #endif
+		/* there is no way I have found to directly get the dive information
+		 * for dive #i as the object_id and logfilenr can be different in the
+		 * getDive call; so we get the first one, compare the actual divenr
+		 * with the one that we wanted, calculate the offset and try again.
+		 * What an insane design... */
 		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
-		if (mbuf)
-			process_raw_buffer(deviceidnr, mbuf, &newmax, FALSE);
+		if (mbuf) {
+			int divenr;
+			process_raw_buffer(deviceidnr, mbuf, &newmax, FALSE, &divenr);
+			if (divenr > -1 && divenr != i) {
+				offset = i - divenr;
+#if UEMIS_DEBUG & 2
+				fprintf(debugfile, "got dive %d -> trying again with offset %d\n", divenr, offset);
+#endif
+				i = start - 1;
+				continue;
+			}
+		}
 		if (!success || import_thread_cancelled)
 			break;
 	}
