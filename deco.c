@@ -79,7 +79,6 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 
 double tissue_n2_sat[16];
 double tissue_he_sat[16];
-double tissue_tolerated_ambient_pressure[16];
 int ci_pointing_to_guiding_tissue;
 double gf_low_pressure_this_dive;
 #define TISSUE_ARRAY_SZ sizeof(tissue_n2_sat)
@@ -96,11 +95,13 @@ static double tissue_tolerance_calc(const struct dive *dive)
 
 	for (ci = 0; ci < 16; ci++)
 	{
+		double tolerated;
+
 		tissue_inertgas_saturation = tissue_n2_sat[ci] + tissue_he_sat[ci];
 		buehlmann_inertgas_a = ((buehlmann_N2_a[ci] * tissue_n2_sat[ci]) + (buehlmann_He_a[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation;
 		buehlmann_inertgas_b = ((buehlmann_N2_b[ci] * tissue_n2_sat[ci]) + (buehlmann_He_b[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation;
 
-		/* tissue_tolerated_ambient_pressure[ci] = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
+		/* tolerated = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
 
 #if !GF_LOW_AT_MAXDEPTH
 		lowest_ceiling = (buehlmann_inertgas_b * tissue_inertgas_saturation - gf_low * buehlmann_inertgas_a * buehlmann_inertgas_b) /
@@ -109,17 +110,17 @@ static double tissue_tolerance_calc(const struct dive *dive)
 			gf_low_pressure_this_dive = lowest_ceiling;
 #endif
 
-		tissue_tolerated_ambient_pressure[ci] = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
-								(1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
-								buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation) /
-							(-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high - gf_low) +
-								(1.0 - buehlmann_inertgas_b)*(gf_low * gf_low_pressure_this_dive - gf_high * surface) +
-								buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
+		tolerated = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
+				(1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
+				buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation) /
+			    (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high - gf_low) +
+				(1.0 - buehlmann_inertgas_b)*(gf_low * gf_low_pressure_this_dive - gf_high * surface) +
+				buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
 
-		if (tissue_tolerated_ambient_pressure[ci] > ret_tolerance_limit_ambient_pressure)
+		if (tolerated > ret_tolerance_limit_ambient_pressure)
 		{
 			ci_pointing_to_guiding_tissue = ci;
-			ret_tolerance_limit_ambient_pressure = tissue_tolerated_ambient_pressure[ci];
+			ret_tolerance_limit_ambient_pressure = tolerated;
 		}
 	}
 	return ret_tolerance_limit_ambient_pressure;
@@ -203,7 +204,6 @@ void clear_deco(double surface_pressure)
 	for (ci = 0; ci < 16; ci++) {
 		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;
-		tissue_tolerated_ambient_pressure[ci] = 0.0;
 	}
 	gf_low_pressure_this_dive = surface_pressure + buehlmann_config.gf_low_position_min;
 }
@@ -213,14 +213,12 @@ void cache_deco_state(double tissue_tolerance, char **cached_datap)
 	char *data = *cached_datap;
 
 	if (!data) {
-		data = malloc(3 * TISSUE_ARRAY_SZ + 2 * sizeof(double) + sizeof(int));
+		data = malloc(2 * TISSUE_ARRAY_SZ + 2 * sizeof(double) + sizeof(int));
 		*cached_datap = data;
 	}
 	memcpy(data, tissue_n2_sat, TISSUE_ARRAY_SZ);
 	data += TISSUE_ARRAY_SZ;
 	memcpy(data, tissue_he_sat, TISSUE_ARRAY_SZ);
-	data += TISSUE_ARRAY_SZ;
-	memcpy(data, tissue_tolerated_ambient_pressure, TISSUE_ARRAY_SZ);
 	data += TISSUE_ARRAY_SZ;
 	memcpy(data, &gf_low_pressure_this_dive, sizeof(double));
 	data += sizeof(double);
@@ -236,8 +234,6 @@ double restore_deco_state(char *data)
 	memcpy(tissue_n2_sat, data, TISSUE_ARRAY_SZ);
 	data += TISSUE_ARRAY_SZ;
 	memcpy(tissue_he_sat, data, TISSUE_ARRAY_SZ);
-	data += TISSUE_ARRAY_SZ;
-	memcpy(tissue_tolerated_ambient_pressure, data, TISSUE_ARRAY_SZ);
 	data += TISSUE_ARRAY_SZ;
 	memcpy(&gf_low_pressure_this_dive, data, sizeof(double));
 	data += sizeof(double);
