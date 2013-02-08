@@ -638,11 +638,12 @@ static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time
 	return o2permille;
 }
 
-/* calculate OTU for a dive */
-static int calculate_otu(struct dive *dive, struct divecomputer *dc)
+/* calculate OTU for a dive - this only takes the first diveomputer into account */
+static int calculate_otu(struct dive *dive)
 {
 	int i;
 	double otu = 0.0;
+	struct divecomputer *dc = &dive->dc;
 
 	for (i = 1; i < dc->samples; i++) {
 		int t;
@@ -688,19 +689,22 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-static int calculate_sac(struct dive *dive, struct divecomputer *dc)
+/* this only uses the first divecomputer to calculate the SAC rate */
+static int calculate_sac(struct dive *dive)
 {
+	struct divecomputer *dc = &dive->dc;
 	double airuse, pressure, sac;
 	int duration, i;
 
 	airuse = calculate_airuse(dive);
 	if (!airuse)
 		return 0;
-	if (!dive->dc.duration.seconds)
+	duration = dc->duration.seconds;
+	if (!duration)
 		return 0;
 
 	/* find and eliminate long surface intervals */
-	duration = dive->dc.duration.seconds;
+
 	for (i = 0; i < dc->samples; i++) {
 		if (dc->sample[i].depth.mm < 100) { /* less than 10cm */
 			int end = i + 1;
@@ -776,10 +780,10 @@ double init_decompression(struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip)
 			continue;
-		if (!pdive || pdive->when > when || pdive->when + pdive->dc.duration.seconds + 48 * 60 * 60 < when)
+		if (!pdive || pdive->when > when || pdive->when + get_duration_in_sec(pdive) + 48 * 60 * 60 < when)
 			break;
 		when = pdive->when;
-		lasttime = when + pdive->dc.duration.seconds;
+		lasttime = when + get_duration_in_sec(pdive);
 	}
 	while (++i < divenr) {
 		struct dive* pdive = get_dive(i);
@@ -801,7 +805,7 @@ double init_decompression(struct dive *dive)
 #endif
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
-			lasttime = pdive->when + pdive->dc.duration.seconds;
+			lasttime = pdive->when + get_duration_in_sec(pdive);
 			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
@@ -833,8 +837,8 @@ double init_decompression(struct dive *dive)
 void update_cylinder_related_info(struct dive *dive)
 {
 	if (dive != NULL) {
-		dive->sac = calculate_sac(dive, &dive->dc);
-		dive->otu = calculate_otu(dive, &dive->dc);
+		dive->sac = calculate_sac(dive);
+		dive->otu = calculate_otu(dive);
 	}
 }
 
@@ -1314,7 +1318,7 @@ static void fill_dive_list(void)
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->dc.maxdepth,
-			DIVE_DURATION, dive->dc.duration.seconds,
+			DIVE_DURATION, get_duration_in_sec(dive),
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
@@ -1327,7 +1331,7 @@ static void fill_dive_list(void)
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->dc.maxdepth,
-			DIVE_DURATION, dive->dc.duration.seconds,
+			DIVE_DURATION, get_duration_in_sec(dive),
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
@@ -2357,7 +2361,7 @@ static void add_dive_merge_label(int idx, GtkMenuShell *menu)
 		return;
 
 	/* .. and if the surface interval is excessive, you must be kidding us */
-	if (b->when > a->when + a->dc.duration.seconds + 30*60)
+	if (b->when > a->when + get_duration_in_sec(a) + 30*60)
 		return;
 
 	/* If so, we can add a "merge dive" menu entry */

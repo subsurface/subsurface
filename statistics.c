@@ -135,13 +135,14 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 static void process_dive(struct dive *dp, stats_t *stats)
 {
 	int old_tt, sac_time = 0;
+	int duration = get_duration_in_sec(dp);
 
 	old_tt = stats->total_time.seconds;
-	stats->total_time.seconds += dp->dc.duration.seconds;
-	if (dp->dc.duration.seconds > stats->longest_time.seconds)
-		stats->longest_time.seconds = dp->dc.duration.seconds;
-	if (stats->shortest_time.seconds == 0 || dp->dc.duration.seconds < stats->shortest_time.seconds)
-		stats->shortest_time.seconds = dp->dc.duration.seconds;
+	stats->total_time.seconds += duration;
+	if (duration > stats->longest_time.seconds)
+		stats->longest_time.seconds = duration;
+	if (stats->shortest_time.seconds == 0 || duration < stats->shortest_time.seconds)
+		stats->shortest_time.seconds = duration;
 	if (dp->dc.maxdepth.mm > stats->max_depth.mm)
 		stats->max_depth.mm = dp->dc.maxdepth.mm;
 	if (stats->min_depth.mm == 0 || dp->dc.maxdepth.mm < stats->min_depth.mm)
@@ -150,14 +151,14 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	process_temperatures(dp, stats);
 
 	/* Maybe we should drop zero-duration dives */
-	if (!dp->dc.duration.seconds)
+	if (!duration)
 		return;
 	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
-			dp->dc.duration.seconds * dp->dc.meandepth.mm) / stats->total_time.seconds;
+			duration * dp->dc.meandepth.mm) / stats->total_time.seconds;
 	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
-		sac_time = stats->total_sac_time + dp->dc.duration.seconds;
+		sac_time = stats->total_sac_time + duration;
 		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +
-				dp->dc.duration.seconds * dp->sac) / sac_time ;
+				duration * dp->sac) / sac_time ;
 		if (dp->sac > stats->max_sac.mliter)
 			stats->max_sac.mliter = dp->sac;
 		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
@@ -421,7 +422,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
-		stats.shortest_time.seconds = dive_table.dives[0]->dc.duration.seconds;
+		stats.shortest_time.seconds = get_duration_in_sec(dive_table.dives[0]);
 		stats.min_depth.mm = dive_table.dives[0]->dc.maxdepth.mm;
 		stats.selection_size = dive_table.nr;
 	}
@@ -555,10 +556,10 @@ static void show_single_dive_stats(struct dive *dive)
 		tm.tm_hour, tm.tm_min);
 
 	set_label(single_w.date, buf);
-	set_label(single_w.dive_time, _("%d min"), (dive->dc.duration.seconds + 30) / 60);
+	set_label(single_w.dive_time, _("%d min"), (get_duration_in_sec(dive) + 30) / 60);
 	if (prev_dive)
 		set_label(single_w.surf_intv,
-			get_time_string(dive->when - (prev_dive->when + prev_dive->dc.duration.seconds), 4));
+			get_time_string(dive->when - (prev_dive->when + get_duration_in_sec(prev_dive)), 4));
 	else
 		set_label(single_w.surf_intv, _("unknown"));
 	value = get_depth_units(dive->dc.maxdepth.mm, &decimals, &unit);

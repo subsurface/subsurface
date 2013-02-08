@@ -219,6 +219,17 @@ static void update_duration(duration_t *duration, int new)
 		duration->seconds = new;
 }
 
+int get_duration_in_sec(struct dive *dive)
+{
+	int duration;
+	struct divecomputer *dc = &dive->dc;
+	do {
+		duration = dc->duration.seconds;
+		dc = dc->next;
+	} while (dc);
+	return duration;
+}
+
 static void update_temperature(temperature_t *temperature, int new)
 {
 	if (new) {
@@ -413,6 +424,7 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	return previous;
 }
 
+/* right now this only operates on the first divecomputer */
 struct dive *fixup_dive(struct dive *dive)
 {
 	int i,j;
@@ -1182,11 +1194,6 @@ static int match_dc_dive(struct divecomputer *a, struct divecomputer *b)
 	return 0;
 }
 
-static int max_time(duration_t a, duration_t b)
-{
-	return a.seconds > b.seconds ? a.seconds : b.seconds;
-}
-
 /*
  * Do we want to automatically try to merge two dives that
  * look like they are the same dive?
@@ -1224,20 +1231,13 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	if (a->divetrip && b->divetrip && a->divetrip != b->divetrip)
 		return 0;
 
-	/* if one of the dives has no depth and duration this could be
-	 * a location marker from the webservice (in this situation it
-	 * is valid to only check the first dc structure as we know that
-	 * a location marker will only ever have one of those structures) */
-	if ((!a->dc.maxdepth.mm && !a->dc.duration.seconds) ||
-	    (!b->dc.maxdepth.mm && !b->dc.duration.seconds))
-		return ((a->when <= b->when + fuzz) && (a->when >= b->when - fuzz));
 	/*
 	 * Do some basic sanity testing of the values we
 	 * have filled in during 'fixup_dive()'
 	 */
 	if (!similar(a->dc.maxdepth.mm, b->dc.maxdepth.mm, 1000) ||
 	    !similar(a->dc.meandepth.mm, b->dc.meandepth.mm, 1000) ||
-	    !similar(a->dc.duration.seconds, b->dc.duration.seconds, 5*60))
+	    !similar(get_duration_in_sec(a), get_duration_in_sec(b), 5*60))
 		return 0;
 
 	/* See if we can get an exact match on the dive computer */
@@ -1249,7 +1249,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	 * Allow a time difference due to dive computer time
 	 * setting etc. Check if they overlap.
 	 */
-	fuzz = max_time(a->dc.duration, b->dc.duration) / 2;
+	fuzz = MAX(get_duration_in_sec(a), get_duration_in_sec(b)) / 2;
 	if (fuzz < 60)
 		fuzz = 60;
 
@@ -1537,7 +1537,7 @@ struct dive *find_dive_including(timestamp_t when)
 	 * also we always use the duration from the first divecomputer
 	 *     could this ever be a problem? */
 	for_each_dive(i, dive) {
-		if (dive->when <= when && when <= dive->when + dive->dc.duration.seconds)
+		if (dive->when <= when && when <= dive->when + get_duration_in_sec(dive))
 			return dive;
 	}
 	return NULL;
@@ -1545,7 +1545,7 @@ struct dive *find_dive_including(timestamp_t when)
 
 gboolean dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
 {
-	return when - offset <= dive->when && dive->when + dive->dc.duration.seconds <= when + offset;
+	return when - offset <= dive->when && dive->when + get_duration_in_sec(dive) <= when + offset;
 }
 
 /* find the n-th dive that is part of a group of dives within the offset around 'when'.
