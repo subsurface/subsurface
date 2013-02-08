@@ -18,6 +18,7 @@ int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000,
 		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
 		     90000};
 double plangflow, plangfhigh;
+char *disclaimer;
 
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
@@ -464,8 +465,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	if (!dp)
 		return;
 
-	snprintf(buffer, sizeof(buffer), _("Subsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
-						plangflow * 100, plangfhigh * 100);
+	snprintf(buffer, sizeof(buffer), _("%s\nSubsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
+					disclaimer, plangflow * 100, plangfhigh * 100);
 	/* we start with gas 0, then check if that was changed */
 	o2 = dive->cylinder[0].gasmix.o2.permille;
 	he = dive->cylinder[0].gasmix.he.permille;
@@ -1193,7 +1194,22 @@ void input_plan()
 {
 	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *label;
 	char *bottom_sac, *deco_sac, gflowstring[4], gfhighstring[4];
+	char *explanationtext = _("<small>Add segments below.\nEach line describes part of the planned dive.\n"
+			"An entry with depth, time and gas describes a segment that ends "
+			"at the given depth, takes the given time (if relative, e.g. '+3:30') "
+			"or ends at the given time (if absolute), and uses the given gas.\n"
+			"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
+			"An entry that has a depth and a gas given but no time is special; it "
+			"informs the planner that the gas specified is available for the ascent "
+			"once the depth given has been reached.\n"
+			"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n");
+	char *labeltext;
+	int len;
 
+	disclaimer = _("DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BÜHLMANN "
+			"ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
+			"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+			"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.");
 	if (diveplan.dp)
 		free_dps(diveplan.dp);
 	memset(&diveplan, 0, sizeof(diveplan));
@@ -1209,17 +1225,14 @@ void input_plan()
 	content = gtk_dialog_get_content_area (GTK_DIALOG (planner));
 	outervbox = gtk_vbox_new(FALSE, 2);
 	gtk_container_add (GTK_CONTAINER (content), outervbox);
-	label = gtk_label_new(_("<small>Add segments below.\nEach line describes part of the planned dive.\n"
-						"An entry with depth, time and gas describes a segment that ends "
-						"at the given depth, takes the given time (if relative, e.g. '+3:30') "
-						"or ends at the given time (if absolute), and uses the given gas.\n"
-						"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
-						"An entry that has a depth and a gas given but no time is special; it "
-						"informs the planner that the gas specified is available for the ascent "
-						"once the depth given has been reached.\n"
-						"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>"));
+
+	len = strlen(explanationtext) + strlen(disclaimer) + sizeof("<span foreground='red'></span>");
+	labeltext = malloc(len);
+	snprintf(labeltext, len, "%s<span foreground='red'>%s</span>", explanationtext, disclaimer);
+	label = gtk_label_new(labeltext);
 	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
+	gtk_label_set_width_chars(GTK_LABEL(label), 60);
 	gtk_box_pack_start(GTK_BOX(outervbox), label, TRUE, TRUE, 0);
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(outervbox), vbox, TRUE, TRUE, 0);
