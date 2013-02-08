@@ -221,10 +221,10 @@ static void update_duration(duration_t *duration, int new)
 
 int get_duration_in_sec(struct dive *dive)
 {
-	int duration;
+	int duration = 0;
 	struct divecomputer *dc = &dive->dc;
 	do {
-		duration = dc->duration.seconds;
+		duration = MAX(duration, dc->duration.seconds);
 		dc = dc->next;
 	} while (dc);
 	return duration;
