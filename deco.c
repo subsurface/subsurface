@@ -126,7 +126,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-double add_segment(double pressure, struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive)
+double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive)
 {
 	int ci;
 	int fo2 = gasmix->o2.permille ? gasmix->o2.permille : O2_IN_AIR;
