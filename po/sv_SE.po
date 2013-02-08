@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-04 17:58+1100\n"
-"PO-Revision-Date: 2013-02-08 11:05+1000\n"
+"PO-Revision-Date: 2013-02-08 13:51+0100\n"
 "Last-Translator: Linus Torvalds <torvalds@linux-foundation.org>\n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
@@ -312,7 +312,7 @@ msgid ""
 msgstr ""
 "<small>Lägg till dyksegment nedan.\n"
 "Var rad beskriver en del av den planerade dykningen.\n"
-"En rad med djup, tid och gas-information beskriver ett segment som slutar på det givna djupet, efter den givna tiden (om relative tid, t.ex. '+3:30') eller vid den givna tiden (om absolut), och använder den divna gasen.\n"
+"En rad med djup, tid och gas-information beskriver ett segment som slutar på det givna djupet, efter den givna tiden (om relativ tid, t.ex. '+3:30') eller vid den givna tiden (om absolut), och använder den divna gasen.\n"
 "En tom gas betyder 'samma gas som tidigare segment'' (eller luft  om det inte fanns en tidigare gas).\n"
 "En rad som har ett djup och gas men ingen tid är speciell; det informerar pleneringen att den gasen kan användas för planering när planen överskrider det givna djpet.\n"
 "CC SetPoint används for CC (rebreather) dykningar, lämna tomt för OC.</small>"
@@ -551,13 +551,12 @@ msgid "Depth:"
 msgstr "Djup:"
 
 #: gtk-gui.c:1269
-#, fuzzy
 msgid "Device Id"
 msgstr "Enhetsnamn"
 
 #: download-dialog.c:330
 msgid "Device or mount point"
-msgstr "Enhet"
+msgstr "Enhet eller monteringspunkt"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:105
@@ -862,7 +861,7 @@ msgstr "Filter"
 
 #: download-dialog.c:385
 msgid "Force download of all dives"
-msgstr "Tvinge nedladdning av alla dyk"
+msgstr "Tvinga nedladdning av alla dyk"
 
 #: main.c:62
 msgid "Fri"
@@ -1227,11 +1226,11 @@ msgstr "Planerare"
 
 #: gtk-gui.c:606
 msgid "Preferences"
-msgstr "Optioner"
+msgstr "Inställningar"
 
 #: gtk-gui.c:1369
 msgid "Preferences..."
-msgstr "Optioner..."
+msgstr "Inställningar..."
 
 #: equipment.c:938
 #: equipment.c:944
@@ -1375,7 +1374,6 @@ msgid "Select Events"
 msgstr "Välj händelser"
 
 #: gtk-gui.c:1375
-#, fuzzy
 msgid "Select Events..."
 msgstr "Välj händelser..."
 
@@ -1907,7 +1905,7 @@ msgstr "pund"
 
 #: uemis-downloader.c:590
 msgid "long john"
-msgstr "Långkalsonger"
+msgstr "Longjohn"
 
 #: dive.c:112
 #: info.c:1078
