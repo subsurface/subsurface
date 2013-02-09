@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-04 17:58+1100\n"
-"PO-Revision-Date: 2013-02-09 16:33+0100\n"
-"Last-Translator: Martin Gysel <me@bearsh.org>\n"
+"PO-Revision-Date: 2013-02-09 10:03-0800\n"
+"Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -34,12 +34,12 @@ msgstr " Bitte Tauchcomputer und Gerät auswählen. "
 #: profile.c:412
 msgctxt "Starts with space!"
 msgid " begin"
-msgstr "Anfang"
+msgstr " Anfang"
 
 #: profile.c:413
 msgctxt "Starts with space!"
 msgid " end"
-msgstr "Ende"
+msgstr " Ende"
 
 #: statistics.c:182
 msgid "#"
@@ -406,7 +406,7 @@ msgstr "Ø Dauer"
 #: profile.c:408
 #, c-format
 msgid "Bailing out to OC"
-msgstr ""
+msgstr "Notausstieg mittels offenem System"
 
 #: gtk-gui.c:634
 msgid "Bar"
