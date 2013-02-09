@@ -42,6 +42,12 @@
         </xsl:choose>
       </xsl:attribute>
 
+      <xsl:if test="rating != ''">
+        <xsl:attribute name="rating">
+          <xsl:value-of select="rating"/>
+        </xsl:attribute>
+      </xsl:if>
+
       <xsl:attribute name="date">
         <xsl:value-of select="date"/>
       </xsl:attribute>
@@ -55,11 +61,44 @@
 
       <xsl:choose>
         <xsl:when test="maxdepth != ''">
-          <depth max="{concat(maxdepth,' m')}" mean="{concat(avgdepth, ' m')}"/>
+          <depth>
+            <xsl:attribute name="max">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="maxdepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+            <xsl:attribute name="mean">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="avgdepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </depth>
         </xsl:when>
         <xsl:otherwise>
-          <!-- Note: averageDepth is mis-spelled as in received sample -->
-          <depth max="{concat(maxDepth,' m')}" mean="{concat(avergeDepth, ' m')}"/>
+          <depth>
+            <xsl:attribute name="max">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="maxDepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+            <xsl:attribute name="mean">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="averageDepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </depth>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -68,7 +107,19 @@
       </xsl:variable>
 
       <location>
-        <xsl:value-of select="concat(country, ' ', location, ' ', site)"/>
+        <xsl:for-each select="country|location|site">
+          <xsl:choose>
+            <xsl:when test="following-sibling::location[1] != ''">
+              <xsl:value-of select="concat(., ' / ')"/>
+            </xsl:when>
+            <xsl:when test="following-sibling::site[1] != ''">
+              <xsl:value-of select="concat(., ' / ')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="."/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
       </location>
 
       <xsl:if test="sitelat != ''">
@@ -130,7 +181,12 @@
           </xsl:if>
           <xsl:if test="tankSize != ''">
             <xsl:attribute name="size">
-              <xsl:value-of select="concat(tankSize, ' l')"/>
+              <xsl:call-template name="sizeConvert">
+                <xsl:with-param name="singleSize" select="tankSize"/>
+                <xsl:with-param name="double" select="double"/>
+                <xsl:with-param name="pressure" select="workingPressure"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="workingPressure != ''">
@@ -139,6 +195,11 @@
                 <xsl:with-param name="number" select="workingPressure"/>
                 <xsl:with-param name="units" select="$units"/>
               </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="tankName != ''">
+            <xsl:attribute name="description">
+              <xsl:value-of select="tankName"/>
             </xsl:attribute>
           </xsl:if>
         </cylinder>
@@ -188,7 +249,10 @@
       <xsl:if test="weight != ''">
         <weightsystem>
           <xsl:attribute name="weight">
-            <xsl:value-of select="weight"/>
+            <xsl:call-template name="weightConvert">
+              <xsl:with-param name="weight" select="weight"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
           <xsl:attribute name="description">
             <xsl:value-of select="'unknown'"/>
@@ -207,11 +271,19 @@
             </xsl:call-template>
           </xsl:attribute>
           <xsl:attribute name="depth">
-            <xsl:value-of select="concat(depth, ' m')"/>
+            <xsl:call-template name="depthConvert">
+              <xsl:with-param name="depth">
+                <xsl:value-of select="depth"/>
+              </xsl:with-param>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
           <xsl:if test="pressure != ''">
             <xsl:attribute name="pressure">
-              <xsl:value-of select="concat(pressure, ' bar')"/>
+              <xsl:call-template name="pressureConvert">
+                <xsl:with-param name="number" select="pressure"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="temperature != ''">
@@ -239,6 +311,21 @@
                 <xsl:when test="alarm = 'ascent_rate'">
                   <xsl:value-of select="'ascent'"/>
                 </xsl:when>
+                <xsl:when test="alarm = 'deep_stop'">
+                  <xsl:value-of select="'deepstop'"/>
+                </xsl:when>
+                <xsl:when test="alarm = 'deco'">
+                  <xsl:value-of select="'deco stop'"/>
+                </xsl:when>
+                <xsl:when test="alarm = 'po2_high'">
+                  <xsl:value-of select="'PO2'"/>
+                </xsl:when>
+                <xsl:when test="alarm = 'tissue_warning'">
+                  <xsl:value-of select="'tissue level warning'"/>
+                </xsl:when>
+                <xsl:when test="alarm = 'user_depth_alarm'">
+                  <xsl:value-of select="'maxdepth'"/>
+                </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="alarm"/>
                 </xsl:otherwise>
@@ -258,10 +345,34 @@
 
     <xsl:choose>
       <xsl:when test="$units = 'Imperial'">
-        <xsl:value-of select="concat(round($number div 14.5037738007), ' bar')"/>
+        <xsl:value-of select="concat(($number div 14.5037738007), ' bar')"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="concat($number, ' bar')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!-- end convert pressure -->
+
+  <!-- convert cuft to litres -->
+  <xsl:template name="sizeConvert">
+    <xsl:param name="singleSize"/>
+    <xsl:param name="double"/>
+    <xsl:param name="pressure"/>
+    <xsl:param name="units"/>
+
+    <xsl:variable name="size">
+      <xsl:value-of select="$singleSize + $singleSize * $double"/>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:if test="$pressure != '0'">
+          <xsl:value-of select="concat((($size * 14.7 div $pressure) div 0.035315), ' l')"/>
+        </xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat($size, ' l')"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -273,13 +384,48 @@
     <xsl:param name="units"/>
 
     <xsl:if test="$timeSec != ''">
-      <xsl:choose>
-        <xsl:when test="$units = 'Metric'">
-          <xsl:value-of select="concat(floor(number($timeSec) div 60), ':',    format-number(floor(number($timeSec) mod 60), '00'), ' min')"/>
-        </xsl:when>
-      </xsl:choose>
+      <xsl:value-of select="concat(floor(number($timeSec) div 60), ':',    format-number(floor(number($timeSec) mod 60), '00'), ' min')"/>
     </xsl:if>
   </xsl:template>
   <!-- end convert time -->
+
+  <!-- convert depth to meters -->
+  <xsl:template name="depthConvert">
+    <xsl:param name="depth"/>
+    <xsl:param name="units"/>
+
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:value-of select="concat(($depth * 0.3048), ' m')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat($depth, ' m')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!-- end convert depth -->
+
+  <!-- convert weight to kg -->
+  <xsl:template name="weightConvert">
+    <xsl:param name="weight"/>
+    <xsl:param name="units"/>
+
+    <xsl:choose>
+      <xsl:when test="$weight &gt; 0">
+        <xsl:choose>
+          <xsl:when test="$units = 'Imperial'">
+            <xsl:value-of select="concat(($weight * 0.453592), ' kg')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($weight, ' kg')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$weight"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!-- end convert weight -->
 
 </xsl:stylesheet>
