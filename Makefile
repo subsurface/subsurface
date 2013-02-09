@@ -111,6 +111,7 @@ ifeq ($(UNAME), linux)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
+	XSLT_CAPABLE = 1
 else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
@@ -121,6 +122,7 @@ else ifeq ($(UNAME), darwin)
 	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
 	LDFLAGS += -headerpad_max_install_names
 	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
+	XSLT_CAPABLE = 1
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
@@ -134,7 +136,7 @@ endif
 
 ifneq ($(strip $(LIBXSLT)),)
 	# We still need proper paths and install options for OSX and Windows
-	ifeq ($(shell sh -c 'uname -s 2>/dev/null || echo not'),Linux)
+	ifdef XSLT_CAPABLE
 		XSLT=-DXSLT='"$(XSLTDIR)"'
 	endif
 endif
