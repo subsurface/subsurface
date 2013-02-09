@@ -135,10 +135,11 @@ static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer dat
 
 static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 {
-	OsmGpsMapTrack * track = osm_gps_map_track_new();
-	OsmGpsMapPoint * point = osm_gps_map_point_new_degrees(latitude, longitude);
+	OsmGpsMapTrack *track = osm_gps_map_track_new();
+	OsmGpsMapPoint *point = osm_gps_map_point_new_degrees(latitude, longitude);
 	osm_gps_map_track_add_point(track, point);
 	osm_gps_map_track_add(map, track);
+	free((void *)point);
 }
 
 static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data)
@@ -177,6 +178,7 @@ OsmGpsMap *init_map(void)
 
 	osm_gps_map_layer_add(OSM_GPS_MAP(map), osd);
 	g_object_unref(G_OBJECT(osd));
+	free((void*)cachebasedir);
 	return map;
 }
 
