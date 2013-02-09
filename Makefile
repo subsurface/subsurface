@@ -240,6 +240,11 @@ update-po-files:
 		msgmerge --no-wrap -s -U $$i po/subsurface-new.pot ; \
 	done
 
+prepare-po-files:
+	for i in po/*.po; do \
+		msgcat --no-wrap $$i -o $$i ; \
+	done
+
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 		$(XSLT) $(ZIP) $(LIBDIVECOMPUTERCFLAGS) \
 		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS) \
