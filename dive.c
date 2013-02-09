@@ -427,7 +427,7 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 static void fixup_surface_pressure(struct dive *dive)
 {
 	struct divecomputer *dc;
-	int sum, nr;
+	int sum = 0, nr = 0;
 
 	for_each_dc(dive, dc) {
 		if (dc->surface_pressure.mbar) {
@@ -442,7 +442,7 @@ static void fixup_surface_pressure(struct dive *dive)
 static void fixup_water_salinity(struct dive *dive)
 {
 	struct divecomputer *dc;
-	int sum, nr;
+	int sum = 0, nr = 0;
 
 	for_each_dc(dive, dc) {
 		if (dc->salinity) {
