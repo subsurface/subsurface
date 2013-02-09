@@ -921,6 +921,8 @@ static void fill_one_dive(struct dive *dive,
 		DIVE_SUIT, suit,
 		-1);
 
+	if (icon)
+		gdk_pixbuf_unref(icon);
 	free(location);
 	free(cylinder);
 	free(suit);
@@ -1325,6 +1327,8 @@ static void fill_dive_list(void)
 			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_SAC, 0,
 			-1);
+		if (icon)
+			gdk_pixbuf_unref(icon);
 		gtk_tree_store_append(liststore, &iter, NULL);
 		gtk_tree_store_set(liststore, &iter,
 			DIVE_INDEX, i,
