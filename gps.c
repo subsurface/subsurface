@@ -228,7 +228,7 @@ void show_gps_location(struct dive *dive, void (*callback)(float, float))
 		picture = gdk_pixbuf_from_pixdata(&flag_pixbuf, TRUE, NULL);
 		if (picture) {
 			osm_gps_map_image_add_with_alignment(map, lat, lng, picture, 0, 1);
-			gdk_pixbuf_unref(picture);
+			g_object_unref(picture);
 		} else {
 			printf("error message: %s\n", gerror->message);
 		}
