@@ -525,6 +525,9 @@ static char *get_time_string(int seconds, int maxdays)
 	return buf;
 }
 
+/* we try to show the data from the currently selected divecomputer
+ * right now for some values (e.g., surface pressure) we could fall back
+ * to dive data, but for consistency we don't. */
 static void show_single_dive_stats(struct dive *dive)
 {
 	char buf[80];
@@ -534,10 +537,12 @@ static void show_single_dive_stats(struct dive *dive)
 	int idx, offset, gas_used, mbar;
 	struct dive *prev_dive;
 	struct tm tm;
+	struct divecomputer *dc;
 
 	process_all_dives(dive, &prev_dive);
 	if (!dive)
 		return;
+	dc = select_dc(&dive->dc);
 	utc_mkdate(dive->when, &tm);
 	snprintf(buf, sizeof(buf),
 		/*++GETTEXT 80 chars: weekday, monthname, day, year, hour, min */
@@ -554,28 +559,32 @@ static void show_single_dive_stats(struct dive *dive)
 			get_time_string(dive->when - (prev_dive->when + get_duration_in_sec(prev_dive)), 4));
 	else
 		set_label(single_w.surf_intv, _("unknown"));
-	value = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
+	value = get_depth_units(dc->maxdepth.mm, &decimals, &unit);
 	set_label(single_w.max_depth, "%.*f %s", decimals, value, unit);
-	value = get_depth_units(dive->dc.meandepth.mm, &decimals, &unit);
+	value = get_depth_units(dc->meandepth.mm, &decimals, &unit);
 	set_label(single_w.avg_depth, "%.*f %s", decimals, value, unit);
 	set_label(single_w.viz, star_strings[dive->visibility]);
-	if (dive->dc.watertemp.mkelvin) {
-		value = get_temp_units(dive->dc.watertemp.mkelvin, &unit);
+	if (dc->watertemp.mkelvin) {
+		value = get_temp_units(dc->watertemp.mkelvin, &unit);
 		set_label(single_w.water_temp, "%.1f %s", value, unit);
 	} else {
 		set_label(single_w.water_temp, "");
 	}
-	if (dive->dc.airtemp.mkelvin) {
-		value = get_temp_units(dive->dc.airtemp.mkelvin, &unit);
+	if (dc->airtemp.mkelvin) {
+		value = get_temp_units(dc->airtemp.mkelvin, &unit);
 		set_label(single_w.air_temp, "%.1f %s", value, unit);
 	} else {
 		set_label(single_w.air_temp, "");
 	}
-	mbar = get_surface_pressure_in_mbar(dive, FALSE);
+	mbar = dc->surface_pressure.mbar;
+	/* it would be easy to get dive data here:
+	 *	if (!mbar)
+	 *		mbar = get_surface_pressure_in_mbar(dive, FALSE);
+	 */
 	if (mbar) {
 		set_label(single_w.air_press, "%d mbar", mbar);
 	} else {
-		set_label(single_w.air_press, _("unknown"));
+		set_label(single_w.air_press, "");
 	}
 	value = get_volume_units(dive->sac, &decimals, &unit);
 	if (value > 0)

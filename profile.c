@@ -1955,7 +1955,7 @@ static int nr_dcs(struct divecomputer *main)
 	return i;
 }
 
-static struct divecomputer *select_dc(struct divecomputer *main)
+struct divecomputer *select_dc(struct divecomputer *main)
 {
 	int i = dc_number;
 	struct divecomputer *dc = main;

@@ -46,6 +46,7 @@ struct graphics_context {
 typedef enum { SC_SCREEN, SC_PRINT } scale_mode_t;
 
 extern void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale);
+extern struct divecomputer *select_dc(struct divecomputer *main);
 extern void init_profile_background(struct graphics_context *gc);
 extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 extern void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize);
