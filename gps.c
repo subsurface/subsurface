@@ -14,6 +14,9 @@
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include "flag.h"
 
+static GtkWidget *window = NULL;
+static OsmGpsMap *map = NULL;
+
 /* Several map providers are available, such as OSM_GPS_MAP_SOURCE_OPENSTREETMAP
    and OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_SATELLITE. We should make more of
    them available from e.g. a pull-down menu */
@@ -209,8 +212,6 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 
 void show_gps_location(struct dive *dive, void (*callback)(float, float))
 {
-	static GtkWidget *window = NULL;
-	static OsmGpsMap *map = NULL;
 	GdkPixbuf *picture;
 	GError *gerror = NULL;
 
@@ -225,6 +226,7 @@ void show_gps_location(struct dive *dive, void (*callback)(float, float))
 		picture = gdk_pixbuf_from_pixdata(&flag_pixbuf, TRUE, NULL);
 		if (picture) {
 			osm_gps_map_image_add_with_alignment(map, lat, lng, picture, 0, 1);
+			gdk_pixbuf_unref(picture);
 		} else {
 			printf("error message: %s\n", gerror->message);
 		}
@@ -236,8 +238,6 @@ void show_gps_location(struct dive *dive, void (*callback)(float, float))
 
 void show_gps_locations()
 {
-	static OsmGpsMap *map = NULL;
-	static GtkWidget *window = NULL;
 	struct dive *dive;
 	int idx;
 
