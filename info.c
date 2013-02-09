@@ -1151,7 +1151,7 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	 */
 	if (amount_selected == 1) {
 		timestamp_t when = current_dive->when;
-		when += get_duration_in_sec(current_dive);
+		when += current_dive->duration.seconds;
 		when += 60*60;
 		utc_mkdate(when, &tm);
 		time = &tm;

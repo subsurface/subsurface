@@ -780,10 +780,10 @@ double init_decompression(struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip)
 			continue;
-		if (!pdive || pdive->when > when || pdive->when + get_duration_in_sec(pdive) + 48 * 60 * 60 < when)
+		if (!pdive || pdive->when > when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
 			break;
 		when = pdive->when;
-		lasttime = when + get_duration_in_sec(pdive);
+		lasttime = when + pdive->duration.seconds;
 	}
 	while (++i < divenr) {
 		struct dive* pdive = get_dive(i);
@@ -805,7 +805,7 @@ double init_decompression(struct dive *dive)
 #endif
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
-			lasttime = pdive->when + get_duration_in_sec(pdive);
+			lasttime = pdive->when + pdive->duration.seconds;
 			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
@@ -1318,7 +1318,7 @@ static void fill_dive_list(void)
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->maxdepth,
-			DIVE_DURATION, get_duration_in_sec(dive),
+			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
@@ -1331,7 +1331,7 @@ static void fill_dive_list(void)
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
 			DIVE_DEPTH, dive->maxdepth,
-			DIVE_DURATION, get_duration_in_sec(dive),
+			DIVE_DURATION, dive->duration.seconds,
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
@@ -2361,7 +2361,7 @@ static void add_dive_merge_label(int idx, GtkMenuShell *menu)
 		return;
 
 	/* .. and if the surface interval is excessive, you must be kidding us */
-	if (b->when > a->when + get_duration_in_sec(a) + 30*60)
+	if (b->when > a->when + a->duration.seconds + 30*60)
 		return;
 
 	/* If so, we can add a "merge dive" menu entry */

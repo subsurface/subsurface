@@ -127,7 +127,7 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 static void process_dive(struct dive *dp, stats_t *stats)
 {
 	int old_tt, sac_time = 0;
-	int duration = get_duration_in_sec(dp);
+	int duration = dp->duration.seconds;
 
 	old_tt = stats->total_time.seconds;
 	stats->total_time.seconds += duration;
@@ -414,7 +414,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
-		stats.shortest_time.seconds = get_duration_in_sec(dive_table.dives[0]);
+		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
 		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
 		stats.selection_size = dive_table.nr;
 	}
@@ -553,10 +553,10 @@ static void show_single_dive_stats(struct dive *dive)
 		tm.tm_hour, tm.tm_min);
 
 	set_label(single_w.date, buf);
-	set_label(single_w.dive_time, _("%d min"), (get_duration_in_sec(dive) + 30) / 60);
+	set_label(single_w.dive_time, _("%d min"), (dive->duration.seconds + 30) / 60);
 	if (prev_dive)
 		set_label(single_w.surf_intv,
-			get_time_string(dive->when - (prev_dive->when + get_duration_in_sec(prev_dive)), 4));
+			get_time_string(dive->when - (prev_dive->when + prev_dive->duration.seconds), 4));
 	else
 		set_label(single_w.surf_intv, _("unknown"));
 	value = get_depth_units(dc->maxdepth.mm, &decimals, &unit);

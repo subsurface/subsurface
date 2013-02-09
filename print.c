@@ -101,7 +101,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 	snprintf(buffer, sizeof(buffer),
 		_("Max depth: %.*f %s\nDuration: %d min\n%s"),
 		decimals, depth, unit,
-		(dive->dc.duration.seconds+59) / 60,
+		(dive->duration.seconds+59) / 60,
 		people);
 	set_font(layout, font, FONT_NORMAL*(1.5/w_scale_factor), PANGO_ALIGN_RIGHT);
 	pango_layout_set_text(layout, buffer, -1);
@@ -597,7 +597,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 
 	// Col 4: Time
 	len = snprintf(buffer, sizeof(buffer),
-		_("%d min"),(dive->dc.duration.seconds+59) / 60);
+		_("%d min"),(dive->duration.seconds + 59) / 60);
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
 	pango_layout_set_width(layout, colwidth/ (double) 2);
 	pango_layout_set_text(layout, buffer, len);
