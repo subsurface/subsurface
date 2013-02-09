@@ -105,19 +105,11 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 {
 	int min_temp, mean_temp, max_temp = 0;
 
-	if (dp->maxtemp.mkelvin)
-		max_temp = dp->maxtemp.mkelvin;
-	else
-		max_temp = dp->dc.watertemp.mkelvin;
-
+	max_temp = dp->maxtemp.mkelvin;
 	if (max_temp && (!stats->max_temp || max_temp > stats->max_temp))
 		stats->max_temp = max_temp;
 
-	if (dp->mintemp.mkelvin)
-		min_temp = dp->mintemp.mkelvin;
-	else
-		min_temp = dp->dc.watertemp.mkelvin;
-
+	min_temp = dp->mintemp.mkelvin;
 	if (min_temp && (!stats->min_temp || min_temp < stats->min_temp))
 		stats->min_temp = min_temp;
 

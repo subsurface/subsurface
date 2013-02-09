@@ -259,13 +259,13 @@ static void fixup_pressure(struct dive *dive, struct sample *sample)
 	cyl->sample_end.mbar = pressure;
 }
 
-static void update_min_max_temperatures(struct dive *dive, struct sample *sample)
+static void update_min_max_temperatures(struct dive *dive, temperature_t temperature)
 {
-	if (sample->temperature.mkelvin) {
-		if (!dive->maxtemp.mkelvin || sample->temperature.mkelvin > dive->maxtemp.mkelvin)
-			dive->maxtemp = sample->temperature;
-		if (!dive->mintemp.mkelvin || sample->temperature.mkelvin < dive->mintemp.mkelvin)
-			dive->mintemp = sample->temperature;
+	if (temperature.mkelvin) {
+		if (!dive->maxtemp.mkelvin || temperature.mkelvin > dive->maxtemp.mkelvin)
+			dive->maxtemp = temperature;
+		if (!dive->mintemp.mkelvin || temperature.mkelvin < dive->mintemp.mkelvin)
+			dive->mintemp = temperature;
 	}
 }
 
@@ -510,6 +510,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
 
+	update_min_max_temperatures(dive, dc->watertemp);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
@@ -566,7 +567,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
 		}
-		update_min_max_temperatures(dive, sample);
+		update_min_max_temperatures(dive, sample->temperature);
 
 		depthtime += (time - lasttime) * (lastdepth + depth) / 2;
 		lastdepth = depth;
