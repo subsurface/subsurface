@@ -2953,11 +2953,12 @@ void show_and_select_dive(struct dive *dive)
 	selected_dive = divenr;
 	dive->selected = TRUE;
 	go_to_iter(selection, iter);
+	gtk_tree_iter_free(iter);
 }
 
 void select_next_dive(void)
 {
-	GtkTreeIter *nextiter, *parent;
+	GtkTreeIter *nextiter, *parent = NULL;
 	GtkTreeIter *iter = get_iter_from_idx(selected_dive);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 	int idx;
@@ -2983,11 +2984,14 @@ void select_next_dive(void)
 			return;
 	}
 	go_to_iter(selection, nextiter);
+	if (parent)
+		gtk_tree_iter_free(parent);
+	gtk_tree_iter_free(iter);
 }
 
 void select_prev_dive(void)
 {
-	GtkTreeIter previter, *parent;
+	GtkTreeIter previter, *parent = NULL;
 	GtkTreeIter *iter = get_iter_from_idx(selected_dive);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 	GtkTreePath *treepath;
@@ -3021,4 +3025,7 @@ void select_prev_dive(void)
 	go_to_iter(selection, &previter);
 free_path:
 	gtk_tree_path_free(treepath);
+	if (parent)
+		gtk_tree_iter_free(parent);
+	gtk_tree_iter_free(iter);
 }
