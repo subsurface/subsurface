@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-09 10:31-0800\n"
-"PO-Revision-Date: 2013-02-09 10:03-0800\n"
+"PO-Revision-Date: 2013-02-09 10:44-0800\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -213,13 +213,14 @@ msgstr ""
 "Sicherheitsstopp:unbk Zeit @ %.0f %s"
 
 #: planner.c:468
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "Subsurface dive plan\n"
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
+"%s\n"
 "Subsurface Tauchplan\n"
 "basierend auf GFlow = %.0f und GFhigh = %.0f\n"
 "\n"
@@ -287,9 +288,8 @@ msgid "17 l/min"
 msgstr "17 l/min"
 
 #: print.c:924
-#, fuzzy
 msgid "2 dives per page"
-msgstr "6 Tauchgänge pro Seite"
+msgstr "2 Tauchgänge pro Seite"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
@@ -308,7 +308,6 @@ msgid "6 dives per page"
 msgstr "6 Tauchgänge pro Seite"
 
 #: planner.c:1197
-#, fuzzy
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -322,7 +321,7 @@ msgstr ""
 "Ein Eintrag mit Tiefe, Zeit und Atemgas beschreibt einen Abschnitt, der auf der angegeben Tiefe endet, die angegebene Zeit dauert (falls relativ, also '+3:30') oder zur angegebenen Zeit endet (falls absolut) und der das angegebene Atemgas verwendet.\n"
 "Keine Gasangabe bedeutet 'benutze vorheriges Atemgas' (oder Luft, falls kein Atemgas spezifiziert wurde).\n"
 "Ein Eintrag mit Tiefe und Atemgas aber keiner Zeitangabe dient einem besonderen Zweck: er informiert den Plan-Algorithmus, dass das angegebene Atemgas für den Aufstieg verfügbar ist sobald die angegebene Tiefe erreicht ist.\n"
-"CC SetPoint ist fuer CC (Kreislaufgerät) Tauchgänge; bitte nicht ausfüllen für Tauchgänge mit normalem OC Tauchgerät.</small>"
+"CC SetPoint ist fuer CC (Kreislaufgerät) Tauchgänge; bitte nicht ausfüllen für Tauchgänge mit normalem OC Tauchgerät.</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
@@ -497,7 +496,7 @@ msgstr "T:%.1f %s"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr ""
+msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTIERUNG DES BÜHLMANN ALGORITHMUS UND EINES DARAF BASIERENDEN TAUCHPLANNERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN."
 
 #: divelist.c:1420 print.c:501 statistics.c:830
 msgid "Date"
@@ -1335,9 +1334,8 @@ msgid "Save File As"
 msgstr "Datei speichern unter"
 
 #: divelist.c:2441
-#, fuzzy
 msgid "Save as"
-msgstr "Speichern unter..."
+msgstr "Speichern unter"
 
 #: gtk-gui.c:1361
 msgid "Save..."
