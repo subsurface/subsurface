@@ -237,7 +237,7 @@ $(NSIFILE): $(NSIINPUTFILE) Makefile
 update-po-files:
 	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
 	for i in po/*.po; do \
-		msgmerge -s -U $$i po/subsurface-new.pot ; \
+		msgmerge --no-wrap -s -U $$i po/subsurface-new.pot ; \
 	done
 
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \

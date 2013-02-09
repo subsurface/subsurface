@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-04 17:58+1100\n"
+"POT-Creation-Date: 2013-02-09 10:31-0800\n"
 "PO-Revision-Date: 2013-02-04 21:49+0200\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: statistics.c:184
+#: statistics.c:177
 msgctxt "Stats"
 msgid " > Month"
 msgstr "> Месяц"
@@ -25,46 +25,42 @@ msgstr "Загрузить"
 msgid " Please select dive computer and device. "
 msgstr "Выберите модель компьютера и устройство."
 
-#: profile.c:412
+#: profile.c:413
 msgctxt "Starts with space!"
 msgid " begin"
 msgstr " начало"
 
-#: profile.c:413
+#: profile.c:414
 msgctxt "Starts with space!"
 msgid " end"
 msgstr " конец"
 
-#: statistics.c:182
+#: statistics.c:175
 msgid "#"
 msgstr "№"
 
-#: print.c:322
+#: print.c:307
 #, c-format
 msgid "%.*f %s"
 msgstr "%.*f %s"
 
-#: print.c:267
-#: print.c:340
+#: print.c:252 print.c:325
 #, c-format
 msgid "%.*f %s\n"
 msgstr "%.*f %s\n"
 
-#: statistics.c:588
-#: statistics.c:735
-#: statistics.c:737
-#: statistics.c:739
+#: statistics.c:591 statistics.c:738 statistics.c:740 statistics.c:742
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/мин"
 
-#: planner.c:540
+#: planner.c:547
 #, c-format
 msgid "%.0f%s of %s\n"
 msgstr "%.0f%s %s\n"
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
-#: print.c:76
+#: print.c:81
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
 msgstr ""
@@ -72,7 +68,7 @@ msgstr ""
 "%2$s, %4$d %3$s, %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
-#: print.c:584
+#: print.c:575
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
 msgstr "%1$s, %3$d %2$s %4$d    %5$d:%6$02d"
@@ -84,33 +80,32 @@ msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
 msgstr "%1$s, %3$d %2$s %4$d %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
-#: statistics.c:551
+#: statistics.c:549
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
 msgstr "%1$s, %3$d %2$s %4$d %5$2d:%6$02d"
 
-#: print.c:609
-#: statistics.c:558
+#: print.c:600 statistics.c:556
 #, c-format
 msgid "%d min"
 msgstr "%d мин"
 
-#: statistics.c:528
+#: statistics.c:521
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%dд %dч %dмин"
 
-#: statistics.c:530
+#: statistics.c:523
 #, c-format
 msgid "%dh %dmin"
 msgstr "%dч %dмин"
 
-#: print.c:318
+#: print.c:303
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: profile.c:2144
+#: profile.c:2148
 #, c-format
 msgid ""
 "%s\n"
@@ -119,7 +114,7 @@ msgstr ""
 "%s\n"
 "CNS:%u%%"
 
-#: profile.c:2112
+#: profile.c:2116
 #, c-format
 msgid ""
 "%s\n"
@@ -128,7 +123,7 @@ msgstr ""
 "%s\n"
 "Расчетный потолок %.0f %s"
 
-#: profile.c:2128
+#: profile.c:2132
 #, c-format
 msgid ""
 "%s\n"
@@ -137,7 +132,7 @@ msgstr ""
 "%s\n"
 "Деко:%uмин @ %.0f %s"
 
-#: profile.c:2131
+#: profile.c:2135
 #, c-format
 msgid ""
 "%s\n"
@@ -146,7 +141,7 @@ msgstr ""
 "%s\n"
 "Деко:неизв. время @ %.0f %s"
 
-#: profile.c:2168
+#: profile.c:2172
 #, c-format
 msgid ""
 "%s\n"
@@ -159,7 +154,7 @@ msgstr ""
 "END:%d%s\n"
 "EADD:%d%s"
 
-#: profile.c:2137
+#: profile.c:2141
 #, c-format
 msgid ""
 "%s\n"
@@ -168,7 +163,7 @@ msgstr ""
 "%s\n"
 "В деко"
 
-#: profile.c:2161
+#: profile.c:2165
 #, c-format
 msgid ""
 "%s\n"
@@ -177,7 +172,7 @@ msgstr ""
 "%s\n"
 "MOD:%d%s"
 
-#: profile.c:2140
+#: profile.c:2144
 #, c-format
 msgid ""
 "%s\n"
@@ -186,7 +181,7 @@ msgstr ""
 "%s\n"
 "NDL:%uмин"
 
-#: profile.c:2102
+#: profile.c:2106
 #, c-format
 msgid ""
 "%s\n"
@@ -195,7 +190,7 @@ msgstr ""
 "%s\n"
 "P:%d %s"
 
-#: profile.c:2120
+#: profile.c:2124
 #, c-format
 msgid ""
 "%s\n"
@@ -204,7 +199,7 @@ msgstr ""
 "%s\n"
 "Ост.безоп:%uмин @ %.0f %s"
 
-#: profile.c:2123
+#: profile.c:2127
 #, c-format
 msgid ""
 "%s\n"
@@ -213,7 +208,19 @@ msgstr ""
 "%s\n"
 "Ост.безоп:неизв. время @ %.0f %s"
 
-#: profile.c:2107
+#: planner.c:468
+#, fuzzy, c-format
+msgid ""
+"%s\n"
+"Subsurface dive plan\n"
+"based on GFlow = %.0f and GFhigh = %.0f\n"
+"\n"
+msgstr ""
+"План погружения Subsurface\n"
+"на основе значений нижний ГФ = %.0f и верхний ГФ = %.0f\n"
+"\n"
+
+#: profile.c:2111
 #, c-format
 msgid ""
 "%s\n"
@@ -222,7 +229,7 @@ msgstr ""
 "%s\n"
 "T:%.1f %s"
 
-#: profile.c:2156
+#: profile.c:2160
 #, c-format
 msgid ""
 "%s\n"
@@ -231,7 +238,7 @@ msgstr ""
 "%s\n"
 "pHe:%.2fбар"
 
-#: profile.c:2152
+#: profile.c:2156
 #, c-format
 msgid ""
 "%s\n"
@@ -240,7 +247,7 @@ msgstr ""
 "%s\n"
 "pN%s:%.2fбар"
 
-#: profile.c:2148
+#: profile.c:2152
 #, c-format
 msgid ""
 "%s\n"
@@ -249,12 +256,12 @@ msgstr ""
 "%s\n"
 "pO%s:%.2fбар"
 
-#: dive.c:762
+#: dive.c:873
 #, c-format
 msgid "(%s) or (%s)"
 msgstr "(%s) или (%s)"
 
-#: statistics.c:680
+#: statistics.c:683
 #, c-format
 msgid "(no dives)"
 msgstr "(нет погружений)"
@@ -263,46 +270,48 @@ msgstr "(нет погружений)"
 msgid "(nothing)"
 msgstr "(отсутствует)"
 
-#: planner.c:1226
+#: planner.c:1248
 msgid "0.6 cuft/min"
 msgstr "0.6 куб.фут/мин"
 
-#: planner.c:1225
+#: planner.c:1247
 msgid "0.7 cuft/min"
 msgstr "0.7 куб.фут/мин"
 
-#: print.c:907
-msgid "1 dive per page"
-msgstr "1 погр. на стр."
-
-#: planner.c:1231
+#: planner.c:1253
 msgid "17 l/min"
 msgstr "17 л/мин"
+
+#: print.c:924
+#, fuzzy
+msgid "2 dives per page"
+msgstr "6 погр. на стр."
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
 msgstr "полный из 2-х"
 
-#: planner.c:1230
+#: planner.c:1252
 msgid "20 l/min"
 msgstr "20 л/мин"
 
-#: gtk-gui.c:833
+#: gtk-gui.c:837
 msgid "3m increments for calculated ceiling"
 msgstr "3м шаг для расчетного потолка"
 
-#: print.c:903
+#: print.c:920
 msgid "6 dives per page"
 msgstr "6 погр. на стр."
 
-#: planner.c:1203
+#: planner.c:1197
+#, fuzzy
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
 "An entry with depth, time and gas describes a segment that ends at the given depth, takes the given time (if relative, e.g. '+3:30') or ends at the given time (if absolute), and uses the given gas.\n"
 "An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
-"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>"
+"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr ""
 "<small>Добавляйте сегменты ниже.\n"
 "Каждая строка - это часть планируемого погружения.\n"
@@ -311,12 +320,11 @@ msgstr ""
 "Строка с указанными глубиной и смесью, но без времени, - особая; она сообщает планировщику, что данная смесь доступна при подъеме по достижении указанной глубины.\n"
 "Точка СС помечает погружения с ИДА замкнутого цикла (ребризер), оставьте пустым для обычных погружений.</small>"
 
-#: planner.c:1113
+#: planner.c:1123
 msgid "AIR"
 msgstr "воздух"
 
-#: gtk-gui.c:1054
-#: gtk-gui.c:1377
+#: gtk-gui.c:1054 gtk-gui.c:1377
 msgid "About Subsurface"
 msgstr "О Subsurface"
 
@@ -324,27 +332,27 @@ msgstr "О Subsurface"
 msgid "Add Dive..."
 msgstr "Добавить погружение..."
 
-#: divelist.c:2364
+#: divelist.c:2393
 msgid "Add dive"
 msgstr "Добавить погружение"
 
-#: divelist.c:2462
+#: divelist.c:2495
 msgid "Add to trip above"
 msgstr "Добавить к поездке выше"
 
-#: planner.c:1250
+#: planner.c:1272
 msgid "Add waypoint"
 msgstr "Добавить путевую точку"
 
-#: statistics.c:845
+#: statistics.c:848
 msgid "Air Press"
 msgstr "Давл. возд."
 
-#: statistics.c:844
+#: statistics.c:847
 msgid "Air Temp"
 msgstr "Темп. возд."
 
-#: info.c:714
+#: info.c:812
 #, c-format
 msgid "Air Temp in %s"
 msgstr "Темп. воздуха в %s"
@@ -365,67 +373,64 @@ msgstr "Авг"
 msgid "Autogroup"
 msgstr "Автогруппировка"
 
-#: statistics.c:190
+#: statistics.c:183
 msgctxt "Depth"
 msgid "Average"
 msgstr "Средняя"
 
-#: statistics.c:187
+#: statistics.c:180
 msgctxt "Duration"
 msgid "Average"
 msgstr "Средняя"
 
-#: statistics.c:193
+#: statistics.c:186
 msgctxt "SAC"
 msgid "Average"
 msgstr "Среднее"
 
-#: statistics.c:196
+#: statistics.c:189
 msgctxt "Temp"
 msgid "Average"
 msgstr "Средняя"
 
-#: statistics.c:799
-#: statistics.c:836
+#: statistics.c:802 statistics.c:839
 msgid "Avg Depth"
 msgstr "Ср. глуб."
 
-#: statistics.c:807
+#: statistics.c:810
 msgid "Avg SAC"
 msgstr "Сред. SAC"
 
-#: statistics.c:782
+#: statistics.c:785
 msgid "Avg Temp"
 msgstr "Ср. темп."
 
-#: statistics.c:789
+#: statistics.c:792
 msgid "Avg Time"
 msgstr "Ср. время"
 
-#: profile.c:408
+#: profile.c:410
 #, c-format
 msgid "Bailing out to OC"
 msgstr "Переход на Откр. Цикл"
 
-#: gtk-gui.c:634
+#: gtk-gui.c:638
 msgid "Bar"
 msgstr "Бар"
 
-#: info.c:700
-#: info.c:1153
-#: print.c:511
+#: info.c:798 info.c:1251 print.c:502
 msgid "Buddy"
 msgstr "Партнер"
 
-#: planner.c:1142
+#: planner.c:1152
 msgid "CC SetPoint"
 msgstr "Точка СС"
 
-#: uemis-downloader.c:908
+#: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
 msgstr "Отменено, выход..."
 
-#: libdivecomputer.c:756
+#: libdivecomputer.c:757
 msgid "Cancelled..."
 msgstr "Отменено..."
 
@@ -433,11 +438,11 @@ msgstr "Отменено..."
 msgid "Cannot parse response!"
 msgstr "Невозможно разобрать ответ!"
 
-#: gtk-gui.c:644
+#: gtk-gui.c:648
 msgid "Celsius"
 msgstr "Цельсий"
 
-#: gtk-gui.c:556
+#: gtk-gui.c:560
 msgid "Choose Default XML File"
 msgstr "Выберите XML файл по умолчанию"
 
@@ -449,7 +454,7 @@ msgstr "Выберите XML файлы для импорта в текущий 
 msgid "Close"
 msgstr "Закрыть"
 
-#: divelist.c:2480
+#: divelist.c:2513
 msgid "Collapse all"
 msgstr "Свернуть все"
 
@@ -461,22 +466,19 @@ msgstr "Соединение..."
 msgid "Connection Error: "
 msgstr "Ошибка соединения:"
 
-#: divelist.c:2452
+#: divelist.c:2485
 msgid "Create new trip above"
 msgstr "Создать поездку выше"
 
-#: gtk-gui.c:640
+#: gtk-gui.c:644
 msgid "CuFt"
 msgstr "куб. фут"
 
-#: divelist.c:1423
-#: gtk-gui.c:664
+#: divelist.c:1427 gtk-gui.c:668
 msgid "Cyl"
 msgstr "Балон"
 
-#: equipment.c:918
-#: equipment.c:1029
-#: print.c:205
+#: equipment.c:918 equipment.c:1029 print.c:194
 msgid "Cylinder"
 msgstr "Балон"
 
@@ -484,22 +486,24 @@ msgstr "Балон"
 msgid "Cylinders"
 msgstr "Балоны"
 
-#: profile.c:2098
+#: profile.c:2102
 #, c-format
 msgid "D:%.1f %s"
 msgstr "Г:%.1f %s"
 
-#: divelist.c:1416
-#: print.c:510
-#: statistics.c:827
+#: planner.c:1209
+msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
+msgstr ""
+
+#: divelist.c:1420 print.c:501 statistics.c:830
 msgid "Date"
 msgstr "Дата"
 
-#: info.c:1001
+#: info.c:1099
 msgid "Date and Time"
 msgstr "Дата и время"
 
-#: info.c:1011
+#: info.c:1109
 msgid "Date:"
 msgstr "Дата:"
 
@@ -507,7 +511,7 @@ msgstr "Дата:"
 msgid "Dec"
 msgstr "Дек"
 
-#: gtk-gui.c:701
+#: gtk-gui.c:705
 msgid "Default XML Data File"
 msgstr "XML файл по умолчанию"
 
@@ -515,23 +519,19 @@ msgstr "XML файл по умолчанию"
 msgid "Delete a dive computer information entry"
 msgstr "Удалить дайвкомпьютер"
 
-#: divelist.c:2206
-#: divelist.c:2259
-#: divelist.c:2351
+#: divelist.c:2235 divelist.c:2288 divelist.c:2380
 msgid "Delete dive"
 msgstr "Удалить погружение"
 
-#: divelist.c:2208
-#: divelist.c:2350
+#: divelist.c:2237 divelist.c:2379
 msgid "Delete dives"
 msgstr "Удалить погружения"
 
-#: print.c:510
-#: statistics.c:182
+#: print.c:501 statistics.c:175
 msgid "Depth"
 msgstr "Глуб."
 
-#: info.c:1078
+#: info.c:1176
 #, c-format
 msgid "Depth (%s):"
 msgstr "Глубина (%s):"
@@ -540,7 +540,7 @@ msgstr "Глубина (%s):"
 msgid "Depth Limit Exceeded"
 msgstr "Превышен лимит глубины"
 
-#: gtk-gui.c:628
+#: gtk-gui.c:632
 msgid "Depth:"
 msgstr "Глубина:"
 
@@ -558,13 +558,12 @@ msgstr "Устройство или точка монтирования"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Погружение №%1$d - %2$s %4$02d.%3$02d.%5$04d в %6$d:%7$02d"
 
-#: info.c:157
-#: print.c:71
+#: info.c:157 print.c:76
 #, c-format
 msgid "Dive #%d - "
 msgstr "Погр. №%d - "
 
-#: libdivecomputer.c:435
+#: libdivecomputer.c:436
 #, c-format
 msgid "Dive %d: %s %d %04d"
 msgstr "Погружение %d: %s %d %04d"
@@ -573,9 +572,7 @@ msgstr "Погружение %d: %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Название дайвкомпьютера"
 
-#: gtk-gui.c:1607
-#: info.c:898
-#: statistics.c:818
+#: gtk-gui.c:1607 info.c:996 statistics.c:821
 msgid "Dive Info"
 msgstr "Информация"
 
@@ -583,11 +580,11 @@ msgstr "Информация"
 msgid "Dive Notes"
 msgstr "Погружение"
 
-#: planner.c:1194
+#: planner.c:1219
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
 msgstr "План погружения - ЭТО ТОЛЬКО ИМИТАЦИЯ; НЕ ИСПОЛЬЗУЙТЕ ДЛЯ ПОГРУЖЕНИЯ"
 
-#: statistics.c:828
+#: statistics.c:831
 msgid "Dive Time"
 msgstr "Время погр."
 
@@ -603,11 +600,11 @@ msgstr "Информация о времени погружения"
 msgid "Dive computer vendor and product"
 msgstr "Производитель и модель"
 
-#: libdivecomputer.c:680
+#: libdivecomputer.c:681
 msgid "Dive data import error"
 msgstr "Ошибка импорта данных погружения"
 
-#: print.c:893
+#: print.c:910
 msgid "Dive details"
 msgstr "Детали погружения"
 
@@ -615,27 +612,27 @@ msgstr "Детали погружения"
 msgid "Dive locations"
 msgstr "Места погружений"
 
-#: info.c:699
+#: info.c:797
 msgid "Dive master"
 msgstr "Инструктор"
 
-#: planner.c:1219
+#: planner.c:1241
 msgid "Dive starts when?"
 msgstr "Начало погружения"
 
-#: print.c:510
+#: print.c:501
 msgid "Dive#"
 msgstr "Погр#"
 
-#: gtk-gui.c:689
+#: gtk-gui.c:693
 msgid "Divelist Font"
 msgstr "Шрифт списка"
 
-#: info.c:1152
+#: info.c:1250
 msgid "Divemaster"
 msgstr "Инструктор"
 
-#: statistics.c:779
+#: statistics.c:782
 msgid "Dives"
 msgstr "Погружения"
 
@@ -663,28 +660,28 @@ msgstr "Загрузка из вебсервиса..."
 msgid "Download Success!"
 msgstr "Успешная загрузка!"
 
-#: statistics.c:182
+#: statistics.c:175
 msgid "Duration"
 msgstr "Длительность"
 
-#: info.c:1073
+#: info.c:1171
 msgid "Duration (min)"
 msgstr "Длительность (мин)"
 
-#: info.c:629
+#: info.c:655
 msgid "E"
 msgstr "В"
 
-#: planner.c:76
+#: planner.c:77
 #, c-format
 msgid "EAN%d"
 msgstr "EAN%d"
 
-#: planner.c:1114
+#: planner.c:1124
 msgid "EAN32"
 msgstr "EAN32"
 
-#: planner.c:1115
+#: planner.c:1125
 msgid "EAN36"
 msgstr "EAN36"
 
@@ -700,11 +697,11 @@ msgstr "Список дайвкомпьютеров"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Редактирование названий дайвкомпьютеров"
 
-#: info.c:857
+#: info.c:955
 msgid "Edit Trip Info"
 msgstr "Редактирование поездки"
 
-#: divelist.c:2372
+#: divelist.c:2401
 msgid "Edit Trip Summary"
 msgstr "Краткие данные о поездке"
 
@@ -712,37 +709,35 @@ msgstr "Краткие данные о поездке"
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Чтобы редактировать название компьютера, дважды щелкните мышью в поле названия"
 
-#: divelist.c:2348
+#: divelist.c:2377
 msgid "Edit dive"
 msgstr "Редактировать погружение"
 
-#: divelist.c:2405
-#: divelist.c:2424
+#: divelist.c:2434 divelist.c:2457
 msgid "Edit dive date/time"
 msgstr "Редактировать дату/время"
 
-#: divelist.c:2347
+#: divelist.c:2376
 msgid "Edit dives"
 msgstr "Редактировать погружения"
 
-#: info.c:669
+#: info.c:763
 msgid "Edit multiple dives"
 msgstr "Множественное редактирование"
 
-#: info.c:601
+#: info.c:619
 msgid "Edit trip summary"
 msgstr "Редактировать данные поездки"
 
-#: gtk-gui.c:953
+#: gtk-gui.c:957
 msgid "Enable / Disable Events"
 msgstr "Разрешить / Запретить события"
 
-#: equipment.c:949
-#: equipment.c:1456
+#: equipment.c:949 equipment.c:1456
 msgid "End"
 msgstr "Конец"
 
-#: planner.c:1139
+#: planner.c:1149
 msgid "Ending Depth"
 msgstr "Конечная глубина"
 
@@ -750,69 +745,68 @@ msgstr "Конечная глубина"
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Введите идентификатор пользователя и нажмите 'Загрузить'. По окончании загрузки вы можете нажать 'Применить' чтобы внести изменения."
 
-#: gtk-gui.c:1603
-#: info.c:733
+#: gtk-gui.c:1603 info.c:831
 msgid "Equipment"
 msgstr "Снаряжение"
 
-#: libdivecomputer.c:470
+#: libdivecomputer.c:471
 msgid "Error obtaining water salinity"
 msgstr "Ошибка получения солености воды"
 
-#: libdivecomputer.c:418
+#: libdivecomputer.c:419
 msgid "Error parsing the datetime"
 msgstr "Ошибка разбора даты/времени"
 
-#: libdivecomputer.c:440
+#: libdivecomputer.c:441
 msgid "Error parsing the divetime"
 msgstr "Ошибка разбора времени погружения"
 
-#: libdivecomputer.c:479
+#: libdivecomputer.c:480
 msgid "Error parsing the gas mix"
 msgstr "Ошибка разбора смеси"
 
-#: libdivecomputer.c:460
+#: libdivecomputer.c:461
 msgid "Error parsing the gas mix count"
 msgstr "Ошибка разбора счетчика смесей"
 
-#: libdivecomputer.c:450
+#: libdivecomputer.c:451
 msgid "Error parsing the maxdepth"
 msgstr "Ошибка разбора макс. глубины"
 
-#: libdivecomputer.c:487
+#: libdivecomputer.c:488
 msgid "Error parsing the samples"
 msgstr "Ошибка разбора выборки"
 
-#: libdivecomputer.c:676
+#: libdivecomputer.c:677
 msgid "Error registering the cancellation handler."
 msgstr "Ошибка регистрации обработчика завершения."
 
-#: libdivecomputer.c:409
+#: libdivecomputer.c:410
 msgid "Error registering the data"
 msgstr "Ошибка регистрации данных"
 
-#: libdivecomputer.c:671
+#: libdivecomputer.c:672
 msgid "Error registering the event handler."
 msgstr "Ошибка регистрации обработчика событий."
 
-#: libdivecomputer.c:644
+#: libdivecomputer.c:645
 #, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
 msgstr "Событие: сис.время=%<PRId64>, уст.время=%u\n"
 
-#: libdivecomputer.c:621
+#: libdivecomputer.c:622
 msgid "Event: waiting for user action"
 msgstr "Событие: ожидание действия пользователя"
 
-#: divelist.c:2476
+#: divelist.c:2509
 msgid "Expand all"
 msgstr "Развернуть все"
 
-#: gtk-gui.c:645
+#: gtk-gui.c:649
 msgid "Fahrenheit"
 msgstr "Фаренгейт"
 
-#: gtk-gui.c:112
+#: gtk-gui.c:116
 #, c-format
 msgid "Failed to open %i files."
 msgstr "Не получилось открыть %i файлов."
@@ -827,12 +821,12 @@ msgstr "Ошибка разбора '%s'"
 msgid "Failed to parse '%s'.\n"
 msgstr "Ошибка разбора '%s'.\n"
 
-#: file.c:265
+#: file.c:267
 #, c-format
 msgid "Failed to read '%s'"
 msgstr "Ошибка чтения '%s'"
 
-#: file.c:261
+#: file.c:263
 #, c-format
 msgid "Failed to read '%s'.\n"
 msgstr "Ошибка чтения '%s'.\n"
@@ -841,7 +835,7 @@ msgstr "Ошибка чтения '%s'.\n"
 msgid "Feb"
 msgstr "Фев"
 
-#: gtk-gui.c:630
+#: gtk-gui.c:634
 msgid "Feet"
 msgstr "Фут"
 
@@ -861,47 +855,46 @@ msgstr "Принудительная загрузка всех погружен�
 msgid "Fri"
 msgstr "Птн"
 
-#: gtk-gui.c:851
+#: gtk-gui.c:855
 msgid "GFhigh"
 msgstr "верхний ГФ"
 
-#: planner.c:1242
+#: planner.c:1264
 msgid "GFhigh for plan"
 msgstr "верхний ГФ для плана"
 
-#: gtk-gui.c:841
+#: gtk-gui.c:845
 msgid "GFlow"
 msgstr "нижний ГФ"
 
-#: planner.c:1241
+#: planner.c:1263
 msgid "GFlow for plan"
 msgstr "нижний ГФ для плана"
 
-#: info.c:683
+#: info.c:775
 msgid "GPS (WGS84 or GPS format)"
 msgstr "GPS (формат WGS84 или GPS)"
 
-#: statistics.c:854
+#: statistics.c:857
 msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Расход"
 
-#: planner.c:1141
+#: planner.c:1151
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Смесь"
 
-#: planner.c:529
+#: planner.c:536
 #, c-format
 msgid "Gas consumption:\n"
 msgstr "Потребление смеси:\n"
 
-#: equipment.c:959
-#: print.c:205
+#: equipment.c:959 print.c:194
 msgid "Gasmix"
 msgstr "Смесь"
 
-#: gtk-gui.c:621
+#: gtk-gui.c:625
 msgid "General Settings"
 msgstr "Общие настройки"
 
@@ -921,7 +914,7 @@ msgstr "Импорт XML файла(-ов)..."
 msgid "Info"
 msgstr "Информация"
 
-#: uemis-downloader.c:761
+#: uemis-downloader.c:769
 msgid "Init Communication"
 msgstr "Инициализация связи"
 
@@ -954,15 +947,11 @@ msgstr "Линус Торвальдс, Дирк Хондел и другие, 20
 msgid "List"
 msgstr "Список"
 
-#: gtk-gui.c:639
+#: gtk-gui.c:643
 msgid "Liter"
 msgstr "Литр"
 
-#: divelist.c:1428
-#: info.c:606
-#: info.c:676
-#: info.c:1147
-#: print.c:511
+#: divelist.c:1432 info.c:624 info.c:770 info.c:1245 print.c:502
 msgid "Location"
 msgstr "Местонахождение"
 
@@ -970,12 +959,12 @@ msgstr "Местонахождение"
 msgid "Log"
 msgstr "Журнал"
 
-#: statistics.c:189
+#: statistics.c:182
 msgctxt "Duration"
 msgid "Longest"
 msgstr "Максимум"
 
-#: statistics.c:790
+#: statistics.c:793
 msgid "Longest Dive"
 msgstr "Самый долгий"
 
@@ -999,7 +988,7 @@ msgstr "Пометить точку здесь"
 msgid "Marker"
 msgstr "Метка"
 
-#: print.c:510
+#: print.c:501
 msgid "Master"
 msgstr "Инструктор"
 
@@ -1007,20 +996,19 @@ msgstr "Инструктор"
 msgid "Max Deco Time Warning"
 msgstr "Предупреждение макс. времени декомпрессии"
 
-#: statistics.c:797
-#: statistics.c:835
+#: statistics.c:800 statistics.c:838
 msgid "Max Depth"
 msgstr "Макс. глуб."
 
-#: statistics.c:805
+#: statistics.c:808
 msgid "Max SAC"
 msgstr "Макс. SAC"
 
-#: statistics.c:780
+#: statistics.c:783
 msgid "Max Temp"
 msgstr "Макс. темп."
 
-#: print.c:103
+#: print.c:102
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -1031,7 +1019,7 @@ msgstr ""
 "Длительность: %d мин\n"
 "%s"
 
-#: print.c:385
+#: print.c:372
 #, c-format
 msgid "Max. CNS"
 msgstr "Макс. CNS"
@@ -1040,17 +1028,17 @@ msgstr "Макс. CNS"
 msgid "MaxPress"
 msgstr "Макс. давл."
 
-#: statistics.c:192
+#: statistics.c:185
 msgctxt "Depth"
 msgid "Maximum"
 msgstr "Максимум"
 
-#: statistics.c:195
+#: statistics.c:188
 msgctxt "SAC"
 msgid "Maximum"
 msgstr "Максимум"
 
-#: statistics.c:198
+#: statistics.c:191
 msgctxt "Temp"
 msgid "Maximum"
 msgstr "Максимум"
@@ -1059,50 +1047,50 @@ msgstr "Максимум"
 msgid "May"
 msgstr "Май"
 
-#: divelist.c:2339
+#: divelist.c:2368
 msgid "Merge dives"
 msgstr "Объединить погружения"
 
-#: divelist.c:2380
+#: divelist.c:2409
 msgid "Merge trip with trip above"
 msgstr "Объединить с поездкой выше"
 
-#: divelist.c:2390
+#: divelist.c:2419
 msgid "Merge trip with trip below"
 msgstr "Объединить с поездкой ниже"
 
-#: gtk-gui.c:629
+#: gtk-gui.c:633
 msgid "Meter"
 msgstr "Метр"
 
-#: statistics.c:798
+#: statistics.c:801
 msgid "Min Depth"
 msgstr "Мин. глуб."
 
-#: statistics.c:806
+#: statistics.c:809
 msgid "Min SAC"
 msgstr "Мин. SAC"
 
-#: statistics.c:781
+#: statistics.c:784
 msgid "Min Temp"
 msgstr "Мин. темп."
 
-#: statistics.c:191
+#: statistics.c:184
 msgctxt "Depth"
 msgid "Minimum"
 msgstr "Минимум"
 
-#: statistics.c:194
+#: statistics.c:187
 msgctxt "SAC"
 msgid "Minimum"
 msgstr "Минимум"
 
-#: statistics.c:197
+#: statistics.c:190
 msgctxt "Temp"
 msgid "Minimum"
 msgstr "Минимум"
 
-#: gtk-gui.c:695
+#: gtk-gui.c:699
 msgid "Misc. Options"
 msgstr "Прочие настройки"
 
@@ -1118,7 +1106,7 @@ msgstr "Пнд"
 msgid "Multi-platform divelog software in C"
 msgstr "Кроссплатформенный журнал погружений"
 
-#: info.c:628
+#: info.c:654
 msgid "N"
 msgstr "С"
 
@@ -1126,7 +1114,7 @@ msgstr "С"
 msgid "New"
 msgstr "Новый"
 
-#: gtk-gui.c:1004
+#: gtk-gui.c:1008
 msgid "New starting number"
 msgstr "Начать нумерацию с"
 
@@ -1134,8 +1122,7 @@ msgstr "Начать нумерацию с"
 msgid "Next DC"
 msgstr "След. ДК"
 
-#: gtk-gui.c:1274
-#: gtk-gui.c:1999
+#: gtk-gui.c:1274 gtk-gui.c:1999
 msgid "Nickname"
 msgstr "Имя устройства"
 
@@ -1143,9 +1130,7 @@ msgstr "Имя устройства"
 msgid "No Tank Data"
 msgstr "Нет данных о балоне"
 
-#: info.c:611
-#: info.c:725
-#: info.c:1161
+#: info.c:629 info.c:823 info.c:1259
 msgid "Notes"
 msgstr "Примечания"
 
@@ -1157,10 +1142,7 @@ msgstr "Ноя"
 msgid "OLF"
 msgstr "OLF"
 
-#: divelist.c:1426
-#: gtk-gui.c:722
-#: print.c:363
-#: statistics.c:852
+#: divelist.c:1430 gtk-gui.c:726 print.c:349 statistics.c:855
 #, c-format
 msgid "OTU"
 msgstr "OTU"
@@ -1169,7 +1151,7 @@ msgstr "OTU"
 msgid "Oct"
 msgstr "Окт"
 
-#: libdivecomputer.c:769
+#: libdivecomputer.c:770
 msgid "Odd pthread error return"
 msgstr "Необычная ошибка возврата pthread"
 
@@ -1177,7 +1159,7 @@ msgstr "Необычная ошибка возврата pthread"
 msgid "Ok to delete the selected entry?"
 msgstr "Удалить выбранную запись?"
 
-#: gtk-gui.c:268
+#: gtk-gui.c:272
 msgid "Open File"
 msgstr "Открыть файл"
 
@@ -1185,7 +1167,7 @@ msgstr "Открыть файл"
 msgid "Open..."
 msgstr "Открыть..."
 
-#: print.c:178
+#: print.c:166
 #, c-format
 msgid "Oxygen"
 msgstr "Кислород"
@@ -1206,11 +1188,11 @@ msgstr "Предупреждение PO2 при подъеме"
 msgid "PO2 Green Warning"
 msgstr "Предупреждение PO2 (зеленый)"
 
-#: gtk-gui.c:635
+#: gtk-gui.c:639
 msgid "PSI"
 msgstr "PSI"
 
-#: info.c:686
+#: info.c:786
 msgid "Pick on map"
 msgstr "Выбрать на карте"
 
@@ -1218,7 +1200,7 @@ msgstr "Выбрать на карте"
 msgid "Planner"
 msgstr "Планировщик"
 
-#: gtk-gui.c:606
+#: gtk-gui.c:610
 msgid "Preferences"
 msgstr "Предпочтения"
 
@@ -1226,12 +1208,11 @@ msgstr "Предпочтения"
 msgid "Preferences..."
 msgstr "Предпочтения..."
 
-#: equipment.c:938
-#: equipment.c:944
+#: equipment.c:938 equipment.c:944
 msgid "Pressure"
 msgstr "Давление"
 
-#: gtk-gui.c:633
+#: gtk-gui.c:637
 msgid "Pressure:"
 msgstr "Давление:"
 
@@ -1239,15 +1220,15 @@ msgstr "Давление:"
 msgid "Prev DC"
 msgstr "Пред. ДК"
 
-#: print.c:930
+#: print.c:947
 msgid "Print only selected dives"
 msgstr "Печать выбранных погружений"
 
-#: print.c:925
+#: print.c:942
 msgid "Print selection"
 msgstr "Печать выделенных"
 
-#: print.c:897
+#: print.c:914
 msgid "Print type"
 msgstr "Тип печати"
 
@@ -1259,7 +1240,7 @@ msgstr "Печать..."
 msgid "Profile"
 msgstr "Профиль"
 
-#: gtk-gui.c:732
+#: gtk-gui.c:736
 msgid "Profile Settings"
 msgstr "Настройки профиля"
 
@@ -1275,8 +1256,7 @@ msgstr "Сигнал RGT"
 msgid "RGT Warning"
 msgstr "Предупреждение RGT"
 
-#: info.c:705
-#: info.c:1158
+#: info.c:803 info.c:1256
 msgid "Rating"
 msgstr "Оценка"
 
@@ -1285,20 +1265,19 @@ msgstr "Оценка"
 msgid "Reading %s %s"
 msgstr "Чтение %s %s"
 
-#: divelist.c:2051
-#: divelist.c:2395
+#: divelist.c:2080 divelist.c:2424
 msgid "Remove Trip"
 msgstr "Удалить поездку"
 
-#: divelist.c:2470
+#: divelist.c:2503
 msgid "Remove dive from trip"
 msgstr "Удалить из поездки"
 
-#: divelist.c:2468
+#: divelist.c:2501
 msgid "Remove selected dives from trip"
 msgstr "Удалить выделенные из поездки"
 
-#: gtk-gui.c:995
+#: gtk-gui.c:999
 msgid "Renumber"
 msgstr "Перенумеровать"
 
@@ -1310,24 +1289,20 @@ msgstr "Перенумеровать..."
 msgid "Retry"
 msgstr "Повторить"
 
-#: info.c:628
+#: info.c:654
 msgid "S"
 msgstr "Ю"
 
-#: divelist.c:1425
-#: gtk-gui.c:674
-#: print.c:410
-#: statistics.c:182
-#: statistics.c:851
+#: divelist.c:1429 gtk-gui.c:678 print.c:398 statistics.c:175 statistics.c:854
 #, c-format
 msgid "SAC"
 msgstr "SAC"
 
-#: planner.c:1236
+#: planner.c:1258
 msgid "SAC during decostop"
 msgstr "SAC при декостоп"
 
-#: planner.c:1235
+#: planner.c:1257
 msgid "SAC during dive"
 msgstr "SAC при погружении"
 
@@ -1347,23 +1322,28 @@ msgstr "Суб"
 msgid "Save As..."
 msgstr "Сохранить как..."
 
-#: gtk-gui.c:198
+#: gtk-gui.c:202
 msgid "Save Changes?"
 msgstr "Сохранить изменения?"
 
-#: gtk-gui.c:135
+#: divelist.c:1633 gtk-gui.c:139
 msgid "Save File As"
 msgstr "Сохранить файл как"
+
+#: divelist.c:2441
+#, fuzzy
+msgid "Save as"
+msgstr "Сохранить как..."
 
 #: gtk-gui.c:1361
 msgid "Save..."
 msgstr "Сохранить..."
 
-#: planner.c:1140
+#: planner.c:1150
 msgid "Segment Time"
 msgstr "Время сегмента"
 
-#: gtk-gui.c:944
+#: gtk-gui.c:948
 msgid "Select Events"
 msgstr "Выбрать события"
 
@@ -1383,60 +1363,58 @@ msgstr ""
 "Прервана запись в файл req.txt\n"
 "Проверьте подключение Uemis Zurich."
 
-#: statistics.c:188
+#: statistics.c:181
 msgctxt "Duration"
 msgid "Shortest"
 msgstr "Минимум"
 
-#: statistics.c:791
+#: statistics.c:794
 msgid "Shortest Dive"
 msgstr "Самый короткий"
 
-#: gtk-gui.c:653
-#: gtk-gui.c:716
+#: gtk-gui.c:657 gtk-gui.c:720
 msgid "Show Columns"
 msgstr "Показать колонки"
 
-#: gtk-gui.c:812
+#: gtk-gui.c:816
 msgid "Show EAD, END, EADD"
 msgstr "Показать EAD, END, EADD"
 
-#: gtk-gui.c:795
+#: gtk-gui.c:799
 msgid "Show MOD"
 msgstr "Показать MOD"
 
-#: gtk-gui.c:828
+#: gtk-gui.c:832
 msgid "Show calculated ceiling"
 msgstr "Показать расчетный потолок"
 
-#: gtk-gui.c:820
+#: gtk-gui.c:824
 msgid "Show dc reported ceiling in red"
 msgstr "Показать потолок компьютера красным"
 
-#: divelist.c:2441
+#: divelist.c:2474
 msgid "Show in map"
 msgstr "Показать на карте"
 
-#: gtk-gui.c:778
+#: gtk-gui.c:782
 msgid "Show pHe graph"
 msgstr "График pHe"
 
-#: gtk-gui.c:759
+#: gtk-gui.c:763
 #, c-format
 msgid "Show pN%s graph"
 msgstr "График pN%s"
 
-#: gtk-gui.c:740
+#: gtk-gui.c:744
 #, c-format
 msgid "Show pO%s graph"
 msgstr "График pO%s"
 
-#: planner.c:191
+#: planner.c:192
 msgid "Simulated Dive"
 msgstr "Моделирование погружения"
 
-#: equipment.c:935
-#: equipment.c:1453
+#: equipment.c:935 equipment.c:1453
 msgid "Size"
 msgstr "Объем"
 
@@ -1448,20 +1426,19 @@ msgstr "Сигнал скорости"
 msgid "Speed Warning"
 msgstr "Предупреждение скорости"
 
-#: equipment.c:946
-#: equipment.c:1455
+#: equipment.c:946 equipment.c:1455
 msgid "Start"
 msgstr "Начало"
 
-#: uemis-downloader.c:774
+#: uemis-downloader.c:782
 msgid "Start download"
 msgstr "Начать загрузку"
 
-#: statistics.c:769
+#: statistics.c:772
 msgid "Statistics"
 msgstr "Статистика"
 
-#: statistics.c:705
+#: statistics.c:708
 #, c-format
 msgid "Statistics %s"
 msgstr "Статистика %s"
@@ -1474,26 +1451,12 @@ msgstr "Статистика"
 msgid "Status"
 msgstr "Состояние"
 
-#: planner.c:511
+#: planner.c:518
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Оставаться на %.*f %s в течение %d:%02d мин - рантайм %d:%02u на смеси %s\n"
 
-#: planner.c:461
-#, c-format
-msgid ""
-"Subsurface dive plan\n"
-"based on GFlow = %.0f and GFhigh = %.0f\n"
-"\n"
-msgstr ""
-"План погружения Subsurface\n"
-"на основе значений нижний ГФ = %.0f и верхний ГФ = %.0f\n"
-"\n"
-
-#: divelist.c:1422
-#: gtk-gui.c:684
-#: info.c:706
-#: info.c:1159
+#: divelist.c:1426 gtk-gui.c:688 info.c:804 info.c:1257
 msgid "Suit"
 msgstr "Костюм"
 
@@ -1502,20 +1465,20 @@ msgstr "Костюм"
 msgid "Sun"
 msgstr "Вск"
 
-#: statistics.c:829
+#: statistics.c:832
 msgid "Surf Intv"
 msgstr "Пов. инт."
 
-#: planner.c:1220
+#: planner.c:1242
 msgid "Surface Pressure (mbar)"
 msgstr "Давление на поверхности (мбар)"
 
-#: planner.c:521
+#: planner.c:528
 #, c-format
 msgid "Switch gas to %s\n"
 msgstr "Замена смеси на %s\n"
 
-#: print.c:911
+#: print.c:928
 msgid "Table print"
 msgstr "Таблица"
 
@@ -1527,19 +1490,19 @@ msgstr "Рекомендуется смена балона"
 msgid "Tank Pressure Info"
 msgstr "Информация о давлении в балоне"
 
-#: gtk-gui.c:714
+#: gtk-gui.c:718
 msgid "Tec Settings"
 msgstr "Техн. настройки"
 
-#: gtk-gui.c:659
+#: gtk-gui.c:663
 msgid "Temp"
 msgstr "Темп."
 
-#: statistics.c:182
+#: statistics.c:175
 msgid "Temperature"
 msgstr "Температура"
 
-#: gtk-gui.c:643
+#: gtk-gui.c:647
 msgid "Temperature:"
 msgstr "Температура:"
 
@@ -1551,8 +1514,7 @@ msgstr "Три панели"
 msgid "Thu"
 msgstr "Чтв"
 
-#: info.c:1016
-#: print.c:510
+#: info.c:1114 print.c:501
 msgid "Time"
 msgstr "Время"
 
@@ -1568,21 +1530,21 @@ msgstr ""
 msgid "Toggle Zoom"
 msgstr "Изменить масштаб"
 
-#: statistics.c:186
+#: statistics.c:179
 msgctxt "Duration"
 msgid "Total"
 msgstr "Общая"
 
-#: statistics.c:788
+#: statistics.c:791
 msgid "Total Time"
 msgstr "Общее время"
 
-#: print.c:336
+#: print.c:321
 #, c-format
 msgid "Total Weight:"
 msgstr "Общий вес:"
 
-#: planner.c:502
+#: planner.c:509
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Переход на %.*f %s за %d:%02d мин - рантайм %d:%02u на смеси %s\n"
@@ -1600,8 +1562,7 @@ msgstr[2] "Trip %1$s, %3$d %2$s %4$d (%5$d погружений)"
 msgid "Tue"
 msgstr "Втр"
 
-#: equipment.c:1452
-#: equipment.c:1480
+#: equipment.c:1452 equipment.c:1480
 msgid "Type"
 msgstr "Тип"
 
@@ -1625,25 +1586,25 @@ msgstr ""
 "Отсоедините и подключите дайв-компьютер\n"
 "и попробуйте заново"
 
-#: uemis-downloader.c:763
+#: uemis-downloader.c:771
 msgid "Uemis init failed"
 msgstr "Ошибка инициализации Uemis"
 
-#: libdivecomputer.c:698
+#: libdivecomputer.c:699
 msgid "Unable to create libdivecomputer context"
 msgstr "Невозможно создать контекст libdivecomputer"
 
-#: libdivecomputer.c:403
+#: libdivecomputer.c:404
 #, c-format
 msgid "Unable to create parser for %s %s"
 msgstr "Невозможно создать анализатор для %s %s"
 
-#: libdivecomputer.c:700
+#: libdivecomputer.c:701
 #, c-format
 msgid "Unable to open %s %s (%s)"
 msgstr "Невозможно открыть %s %s (%s)"
 
-#: gtk-gui.c:622
+#: gtk-gui.c:626
 msgid "Units"
 msgstr "Единицы"
 
@@ -1655,20 +1616,19 @@ msgstr "Идентификатор пользователя"
 msgid "View"
 msgstr "Просмотр"
 
-#: info.c:711
-#: statistics.c:837
+#: info.c:809 statistics.c:840
 msgid "Visibility"
 msgstr "Видимость"
 
-#: gtk-gui.c:638
+#: gtk-gui.c:642
 msgid "Volume:"
 msgstr "Объем:"
 
-#: info.c:629
+#: info.c:655
 msgid "W"
 msgstr "З"
 
-#: statistics.c:843
+#: statistics.c:846
 msgid "Water Temp"
 msgstr "Темп. воды"
 
@@ -1680,32 +1640,28 @@ msgstr "Вебсервис"
 msgid "Wed"
 msgstr "Срд"
 
-#: equipment.c:985
-#: equipment.c:1579
-#: gtk-gui.c:679
+#: equipment.c:985 equipment.c:1579 gtk-gui.c:683
 msgid "Weight"
 msgstr "Груз"
 
-#: equipment.c:1084
-#: print.c:304
+#: equipment.c:1084 print.c:289
 #, c-format
 msgid "Weight System"
 msgstr "Грузовая система"
 
-#: gtk-gui.c:648
+#: gtk-gui.c:652
 msgid "Weight:"
 msgstr "Вес:"
 
-#: gtk-gui.c:123
+#: gtk-gui.c:127
 msgid "XML file"
 msgstr "XML файл"
 
-#: statistics.c:182
+#: statistics.c:175
 msgid "Year"
 msgstr "Год"
 
-#: gtk-gui.c:1371
-#: statistics.c:390
+#: gtk-gui.c:1371 statistics.c:383
 msgid "Yearly Statistics"
 msgstr "Статистика за год"
 
@@ -1721,7 +1677,7 @@ msgstr ""
 "который называется %s.Subsurface позволяет именовать компьютеры чтобы различать их. По умолчанию это модель и идентификатор, указанные ниже.\n"
 "Если вы не хотите именовать этот компьютер, нажмите 'Отмена' и Subsurface будет показывать его модель вместо имени (и вы не сможете отличить их друг от друга в журналах)."
 
-#: gtk-gui.c:208
+#: gtk-gui.c:212
 msgid ""
 "You have unsaved changes\n"
 "Would you like to save those before closing the datafile?"
@@ -1729,8 +1685,7 @@ msgstr ""
 "У вас есть несохраненные изменения.\n"
 "Хотите ли вы их сохранить перед закрытием журнала?"
 
-#: gtk-gui.c:211
-#: gtk-gui.c:214
+#: gtk-gui.c:215 gtk-gui.c:218
 #, c-format
 msgid ""
 "You have unsaved changes to file: %s \n"
@@ -1739,10 +1694,7 @@ msgstr ""
 "У вас есть несохраненные изменения в файле %s.\n"
 "Хотите ли вы их сохранить перед закрытием журнала?"
 
-#: divelist.c:544
-#: planner.c:74
-#: planner.c:725
-#: print.c:183
+#: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:171
 #: profile.c:399
 #, c-format
 msgid "air"
@@ -1788,8 +1740,7 @@ msgstr "потолок (остановка безопасности)"
 msgid "clip-on"
 msgstr "карабины"
 
-#: dive.c:91
-#: planner.c:890
+#: dive.c:91 planner.c:897
 msgid "cuft"
 msgstr "куб. фут"
 
@@ -1821,39 +1772,36 @@ msgstr "время погружения"
 msgid "drysuit"
 msgstr "сухой"
 
-#: planner.c:727
+#: planner.c:734
 msgid "ean"
 msgstr "ean"
 
-#: statistics.c:678
+#: statistics.c:681
 #, c-format
 msgid "for all dives"
 msgstr "для всех погружений"
 
-#: statistics.c:674
+#: statistics.c:677
 #, c-format
 msgid "for dive #%d"
 msgstr "для погружения №%d"
 
-#: statistics.c:633
+#: statistics.c:636
 #, c-format
 msgid "for dives #"
 msgstr "для погружений №"
 
-#: statistics.c:676
+#: statistics.c:679
 #, c-format
 msgid "for selected dive"
 msgstr "для выбранного погружения"
 
-#: statistics.c:640
+#: statistics.c:643
 #, c-format
 msgid "for selected dives"
 msgstr "для выбранных погружений"
 
-#: dive.c:117
-#: divelist.c:1418
-#: info.c:1078
-#: planner.c:831
+#: dive.c:117 divelist.c:1422 info.c:1176 planner.c:838
 msgid "ft"
 msgstr "фут"
 
@@ -1861,8 +1809,7 @@ msgstr "фут"
 msgid "full suit"
 msgstr "полный"
 
-#: libdivecomputer.c:151
-#: libdivecomputer.c:154
+#: libdivecomputer.c:151 libdivecomputer.c:154
 msgid "gaschange"
 msgstr "замена смеси"
 
@@ -1882,9 +1829,7 @@ msgstr "неверный номер события"
 msgid "jacket"
 msgstr "куртка"
 
-#: dive.c:141
-#: equipment.c:1004
-#: gtk-gui.c:649
+#: dive.c:141 equipment.c:1004 gtk-gui.c:653
 msgid "kg"
 msgstr "кг"
 
@@ -1892,10 +1837,7 @@ msgstr "кг"
 msgid "l"
 msgstr "л"
 
-#: dive.c:137
-#: divelist.c:1421
-#: equipment.c:1006
-#: gtk-gui.c:650
+#: dive.c:137 divelist.c:1425 equipment.c:1006 gtk-gui.c:654
 msgid "lbs"
 msgstr "фунт"
 
@@ -1903,17 +1845,15 @@ msgstr "фунт"
 msgid "long john"
 msgstr "long john"
 
-#: dive.c:112
-#: info.c:1078
+#: dive.c:112 info.c:1176
 msgid "m"
 msgstr "м"
 
-#: gtk-gui.c:800
+#: gtk-gui.c:804
 msgid "max ppO2"
 msgstr "макс. ppO2"
 
-#: divelist.c:1427
-#: gtk-gui.c:727
+#: divelist.c:1431 gtk-gui.c:731
 msgid "maxCNS"
 msgstr "макс.CNS"
 
@@ -1925,12 +1865,11 @@ msgstr "макс. глуб."
 msgid "membrane"
 msgstr "мембрана"
 
-#: divelist.c:1419
-#: planner.c:896
+#: divelist.c:1423 planner.c:903
 msgid "min"
 msgstr "мин"
 
-#: libdivecomputer.c:629
+#: libdivecomputer.c:630
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr "модель=%u (0x%08x), прошивка=%u (0x%08x), серийный номер=%u (0x%08x)"
@@ -1939,7 +1878,7 @@ msgstr "модель=%u (0x%08x), прошивка=%u (0x%08x), серийный
 msgid "more data dive id"
 msgstr "ид. дополнительных данных погружения"
 
-#: statistics.c:522
+#: statistics.c:515
 #, c-format
 msgid "more than %d days"
 msgstr "более %d дней"
@@ -1952,16 +1891,16 @@ msgstr "время без остановки"
 msgid "none"
 msgstr "отсутствует"
 
-#: gtk-gui.c:783
+#: gtk-gui.c:787
 msgid "pHe threshold"
 msgstr "порог pHe"
 
-#: gtk-gui.c:765
+#: gtk-gui.c:769
 #, c-format
 msgid "pN%s threshold"
 msgstr "порог pN%s"
 
-#: gtk-gui.c:746
+#: gtk-gui.c:750
 #, c-format
 msgid "pO%s threshold"
 msgstr "порог pO%s"
@@ -2019,16 +1958,11 @@ msgstr "Sergey Starosek"
 msgid "transmitter"
 msgstr "передатчик"
 
-#: equipment.c:1345
-#: equipment.c:1365
+#: equipment.c:1345 equipment.c:1365
 msgid "unkn"
 msgstr "неизв"
 
-#: libdivecomputer.c:152
-#: print.c:317
-#: statistics.c:563
-#: statistics.c:584
-#: uemis-downloader.c:133
+#: libdivecomputer.c:152 print.c:302 statistics.c:561 uemis-downloader.c:133
 msgid "unknown"
 msgstr "неизвестно"
 
@@ -2055,6 +1989,9 @@ msgstr "мокрый"
 #: libdivecomputer.c:149
 msgid "workload"
 msgstr "нагрузка"
+
+#~ msgid "1 dive per page"
+#~ msgstr "1 погр. на стр."
 
 #~ msgid "Automatically group dives in trips"
 #~ msgstr "Автогруппировка погружений в поездке"
