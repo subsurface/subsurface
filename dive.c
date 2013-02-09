@@ -454,6 +454,21 @@ static void fixup_water_salinity(struct dive *dive)
 		dive->salinity = (sum + nr/2)/nr;
 }
 
+static void fixup_meandepth(struct dive *dive)
+{
+	struct divecomputer *dc;
+	int sum = 0, nr = 0;
+
+	for_each_dc(dive, dc) {
+		if (dc->meandepth.mm) {
+			sum += dc->meandepth.mm;
+			nr++;
+		}
+	}
+	if (nr)
+		dive->meandepth.mm = (sum + nr / 2) / nr;
+}
+
 /*
  * events are stored as a linked list, so the concept of
  * "consecutive, identical events" is somewhat hard to
@@ -645,6 +660,7 @@ struct dive *fixup_dive(struct dive *dive)
 
 	fixup_water_salinity(dive);
 	fixup_surface_pressure(dive);
+	fixup_meandepth(dive);
 
 	for_each_dc(dive, dc)
 		fixup_dive_dc(dive, dc);
