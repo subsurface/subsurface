@@ -135,7 +135,15 @@ static gboolean scroll_cb(GtkWidget *widget, GdkEventScroll *event, gpointer dat
 
 static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 {
-	OsmGpsMapTrack *track = osm_gps_map_track_new();
+	OsmGpsMapTrack *track;
+	GdkColor dotColor = { 0, 0xFFFF, 0xFFFF, 0x4444 };
+
+	track = g_object_new(OSM_TYPE_GPS_MAP_TRACK,
+				"color", &dotColor,
+				"line-width", (gfloat) 10,
+				"alpha", (gfloat) 0.7,
+				NULL);
+
 	OsmGpsMapPoint *point = osm_gps_map_point_new_degrees(latitude, longitude);
 	osm_gps_map_track_add_point(track, point);
 	osm_gps_map_track_add(map, track);
