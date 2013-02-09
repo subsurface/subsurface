@@ -639,36 +639,42 @@ struct location_update {
 	void (*callback)(float, float);
 } location_update;
 
-static void print_gps_coordinates(char *buffer, int len, float lat, float lon)
+/* take latitude and longitude in udeg and print them in a human readable
+ * form, without losing precision */
+static void print_gps_coordinates(char *buffer, int len, int lat, int lon)
 {
 	unsigned int latdeg, londeg;
-	float latmin, lonmin;
+	double latmin, lonmin;
 	char *lath, *lonh;
 
 	if (!lat && !lon) {
 		*buffer = 0;
 		return;
 	}
-
-	lath = lat >= 0.0 ? _("N") : _("S");
-	lonh = lon >= 0.0 ? _("E") : _("W");
-	lat = fabs(lat);
-	lon = fabs(lon);
-	latdeg = lat;
-	londeg = lon;
-	latmin = (lat - latdeg) * 60.0;
-	lonmin = (lon - londeg) * 60.0;
+	lath = lat >= 0 ? _("N") : _("S");
+	lonh = lon >= 0 ? _("E") : _("W");
+	lat = abs(lat);
+	lon = abs(lon);
+	latdeg = lat / 1000000;
+	londeg = lon / 1000000;
+	latmin = (lat % 1000000) * 60.0 / 1000000.0;
+	lonmin = (lon % 1000000) * 60.0 / 1000000.0;
 	snprintf(buffer, len, "%s%u%s %8.5f\' , %s%u%s %8.5f\'",
 		lath, latdeg, UTF8_DEGREE, latmin,
 		lonh, londeg, UTF8_DEGREE, lonmin);
 }
 
-static void update_gps_entry(float lat, float lon)
+static void update_gps_entry(int lat, int lon)
 {
 	if (location_update.entry) {
 		print_gps_coordinates(location_update.text, 45, lat, lon);
 		gtk_entry_set_text(location_update.entry, location_update.text);
 	}
+}
+
+static void update_gps_entry_callback(float lat, float lon)
+{
+	update_gps_entry(lat * 1000000, lon * 1000000);
 }
 
 #if HAVE_OSM_GPS_MAP
@@ -680,7 +686,7 @@ static gboolean gps_map_callback(GtkWidget *w, gpointer data)
 		gps_text = gtk_entry_get_text(location_update.entry);
 		(void)gps_changed(dive, NULL, gps_text);
 	}
-	show_gps_location(dive, update_gps_entry);
+	show_gps_location(dive, update_gps_entry_callback);
 	location_update.set_by_hand = 1;
 	return TRUE;
 }
@@ -740,7 +746,7 @@ static void location_entry_change_cb(GtkComboBox *location, gpointer *userdata)
 			continue;
 		if (!dive->location || strcasecmp(dive->location, name))
 			continue;
-		update_gps_entry(dive->latitude.udeg / 1000000.0, dive->longitude.udeg / 1000000.0);
+		update_gps_entry(dive->latitude.udeg, dive->longitude.udeg);
 		return;
 	}
 	update_gps_entry(0, 0);
@@ -770,7 +776,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	location_update.entry = info->gps;
 	location_update.dive = dive;
-	update_gps_entry(dive->latitude.udeg / 1000000.0, dive->longitude.udeg / 1000000.0);
+	update_gps_entry(dive->latitude.udeg, dive->longitude.udeg);
 	location_update.set_by_hand = !!location_update.text[0];
 
 	gtk_widget_add_events(GTK_WIDGET(info->gps), GDK_FOCUS_CHANGE_MASK);
