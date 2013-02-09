@@ -18,9 +18,9 @@ static GtkWidget *window = NULL;
 static OsmGpsMap *map = NULL;
 
 /* Several map providers are available, such as OSM_GPS_MAP_SOURCE_OPENSTREETMAP
-   and OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_SATELLITE. We should make more of
+   and OSM_GPS_MAP_SOURCE_GOOGLE_STREET. We should make more of
    them available from e.g. a pull-down menu */
-static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_GOOGLE_STREET;
+static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_HYBRID;
 
 
 static void on_close(GtkWidget *widget, gpointer user_data)
