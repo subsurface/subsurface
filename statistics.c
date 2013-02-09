@@ -135,10 +135,10 @@ static void process_dive(struct dive *dp, stats_t *stats)
 		stats->longest_time.seconds = duration;
 	if (stats->shortest_time.seconds == 0 || duration < stats->shortest_time.seconds)
 		stats->shortest_time.seconds = duration;
-	if (dp->dc.maxdepth.mm > stats->max_depth.mm)
-		stats->max_depth.mm = dp->dc.maxdepth.mm;
-	if (stats->min_depth.mm == 0 || dp->dc.maxdepth.mm < stats->min_depth.mm)
-		stats->min_depth.mm = dp->dc.maxdepth.mm;
+	if (dp->maxdepth.mm > stats->max_depth.mm)
+		stats->max_depth.mm = dp->maxdepth.mm;
+	if (stats->min_depth.mm == 0 || dp->maxdepth.mm < stats->min_depth.mm)
+		stats->min_depth.mm = dp->maxdepth.mm;
 
 	process_temperatures(dp, stats);
 
@@ -415,7 +415,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
 		stats.shortest_time.seconds = get_duration_in_sec(dive_table.dives[0]);
-		stats.min_depth.mm = dive_table.dives[0]->dc.maxdepth.mm;
+		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
 		stats.selection_size = dive_table.nr;
 	}
 
@@ -554,7 +554,7 @@ static void show_single_dive_stats(struct dive *dive)
 			get_time_string(dive->when - (prev_dive->when + get_duration_in_sec(prev_dive)), 4));
 	else
 		set_label(single_w.surf_intv, _("unknown"));
-	value = get_depth_units(dive->dc.maxdepth.mm, &decimals, &unit);
+	value = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	set_label(single_w.max_depth, "%.*f %s", decimals, value, unit);
 	value = get_depth_units(dive->dc.meandepth.mm, &decimals, &unit);
 	set_label(single_w.avg_depth, "%.*f %s", decimals, value, unit);

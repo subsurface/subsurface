@@ -97,7 +97,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 			people = "";
 	}
 
-	depth = get_depth_units(dive->dc.maxdepth.mm, &decimals, &unit);
+	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	snprintf(buffer, sizeof(buffer),
 		_("Max depth: %.*f %s\nDuration: %d min\n%s"),
 		decimals, depth, unit,
@@ -585,7 +585,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	curwidth = curwidth + colwidth;
 
 	// Col 3: Depth
-	depth = get_depth_units(dive->dc.maxdepth.mm, &decimals, &unit);
+	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	len = snprintf(buffer, sizeof(buffer),
 		"%.*f %s", decimals, depth, unit);
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);

@@ -626,7 +626,8 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	update_depth(&dc->meandepth, depthtime);
 	update_temperature(&dc->watertemp, mintemp);
 	update_depth(&dc->maxdepth, maxdepth);
-
+	if (maxdepth > dive->maxdepth.mm)
+		dive->maxdepth.mm = maxdepth;
 	fixup_dc_events(dc);
 }
 

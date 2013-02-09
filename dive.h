@@ -321,6 +321,7 @@ struct dive {
 
 	/* Calculated based on dive computer data */
 	temperature_t mintemp, maxtemp;
+	depth_t maxdepth;
 	pressure_t surface_pressure;
 	int salinity; // kg per 10000 l
 

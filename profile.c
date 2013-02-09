@@ -1543,9 +1543,9 @@ static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, str
 	pi = &gc->pi;
 	memset(pi, 0, sizeof(*pi));
 
-	/* This should probably have been per-dive-computer */
-	maxdepth = dive->dc.maxdepth.mm;
-	mintemp = maxtemp = dive->dc.watertemp.mkelvin;
+	maxdepth = dive->maxdepth.mm;
+	mintemp = dive->mintemp.mkelvin;
+	maxtemp = dive->maxtemp.mkelvin;
 
 	/* Get the per-cylinder maximum pressure if they are manual */
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {

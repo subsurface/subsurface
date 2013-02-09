@@ -55,7 +55,7 @@ enum {
 	DIVE_NR,		/* int: dive->nr */
 	DIVE_DATE,		/* timestamp_t: dive->when */
 	DIVE_RATING,		/* int: 0-5 stars */
-	DIVE_DEPTH,		/* int: dive->dc.maxdepth in mm */
+	DIVE_DEPTH,		/* int: dive->maxdepth in mm */
 	DIVE_DURATION,		/* int: in seconds */
 	DIVE_TEMPERATURE,	/* int: in mkelvin */
 	DIVE_TOTALWEIGHT,	/* int: in grams */
@@ -1317,7 +1317,7 @@ static void fill_dive_list(void)
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
-			DIVE_DEPTH, dive->dc.maxdepth,
+			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATION, get_duration_in_sec(dive),
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
@@ -1330,7 +1330,7 @@ static void fill_dive_list(void)
 			DIVE_INDEX, i,
 			DIVE_NR, dive->number,
 			DIVE_DATE, dive->when,
-			DIVE_DEPTH, dive->dc.maxdepth,
+			DIVE_DEPTH, dive->maxdepth,
 			DIVE_DURATION, get_duration_in_sec(dive),
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
@@ -1673,7 +1673,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_NR, &store_dive.number,
 		DIVE_DATE, &store_dive.when,
 		DIVE_RATING, &store_dive.rating,
-		DIVE_DEPTH, &store_dive.dc.maxdepth,
+		DIVE_DEPTH, &store_dive.maxdepth,
 		DIVE_DURATION, &store_dive.dc.duration,
 		DIVE_TEMPERATURE, &store_dive.dc.watertemp.mkelvin,
 		DIVE_TOTALWEIGHT, &totalweight,
@@ -1690,7 +1690,7 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_NR, store_dive.number,
 		DIVE_DATE, store_dive.when,
 		DIVE_RATING, store_dive.rating,
-		DIVE_DEPTH, store_dive.dc.maxdepth,
+		DIVE_DEPTH, store_dive.maxdepth,
 		DIVE_DURATION, store_dive.dc.duration,
 		DIVE_TEMPERATURE, store_dive.dc.watertemp.mkelvin,
 		DIVE_TOTALWEIGHT, totalweight,
