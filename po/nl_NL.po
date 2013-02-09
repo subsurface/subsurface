@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-09 10:31-0800\n"
-"PO-Revision-Date: 2013-02-08 21:40+0100\n"
+"PO-Revision-Date: 2013-02-09 20:32+0100\n"
 "Last-Translator: Reinout Hoornweg <reinout@xs4all.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
@@ -214,13 +214,14 @@ msgstr ""
 "Veiligheidsstop:onbek.tijd @ %.0f %s"
 
 #: planner.c:468
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "Subsurface dive plan\n"
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
+"%s\n"
 "Subsurface duikplan\n"
 "Gebaseerd op GFlow =  %.0f en GFhigh = %.0f\n"
 "\n"
@@ -288,9 +289,8 @@ msgid "17 l/min"
 msgstr "17L/min"
 
 #: print.c:924
-#, fuzzy
 msgid "2 dives per page"
-msgstr "6 duiken per bladzijde"
+msgstr "2 duiken per bladzijde"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
@@ -309,7 +309,6 @@ msgid "6 dives per page"
 msgstr "6 duiken per bladzijde"
 
 #: planner.c:1197
-#, fuzzy
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -319,11 +318,11 @@ msgid ""
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr ""
 "<small>Voeg etappes hieronder toe.\n"
-"Elke invoer beschrijft een deel van de geplande duik.\n"
-"Een invoer met diepte, tijd en gas beschrijft een etappe dat eindigt op de gegeven diepte, de gegeven tijd duurt (indien relatief, bijv.  '+3:30') of eindigt op de gegeven tijd (indien absoluut) en gebruik maakt van het opgegeven gasmengsel.\n"
+"Elke invoerregel beschrijft een deel van de geplande duik.\n"
+"Een invoerregel met diepte, tijd en gas beschrijft een etappe die eindigt op de gegeven diepte, de gegeven tijd duurt (indien relatief, bijv.  '+3:30') of eindigt op de gegeven tijd (indien absoluut) en gebruik maakt van het opgegeven gasmengsel.\n"
 "Een leeggelaten gasmengsel betekent 'gebruik vorig gasmengsel' (of AIR als geen gasmengsel opgegeven is).\n"
 "Een invoer die een diepte en een gas heeft, maar geen tijd, is speciaal: het vertelt de planner dat het opgegeven gasmengsel beschikbaar is voor de opstijging wanneer de opgegeven diepte is bereikt.\n"
-"CC Instelpunt specificeert CC (rebreather) duiken, dit veld wordt niet ingevuld voor OC.</small>"
+"CC Instelpunt specificeert CC (rebreather) duiken, dit veld wordt niet ingevuld voor OC.</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
@@ -498,7 +497,7 @@ msgstr "D:%.1f %s"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr ""
+msgstr "NIET-AANSPRAKELIJKHEIDSVERKLARING / WAARSCHUWING: DIT IS EEN NIEUWE IMPLEMENTATIE VAN HET BUHLMANN ALGORITME EN EEN IMPLEMENTATIE VAN EEN DUIKPLANNER DIE HIEROP GEBASEERD IS. BEIDE IMPLEMENTATIES HEBBEN MAAR EEN BEPERKTE MATE VAN TESTEN ONDERGAAN. WIJ RADEN MET KLEM AF DUIKEN UIT TE VOEREN DIE GEBASEERD ZIJN OP DE RESULTATEN DIE HIER GETOOND WORDEN."
 
 #: divelist.c:1420 print.c:501 statistics.c:830
 msgid "Date"
@@ -1336,7 +1335,6 @@ msgid "Save File As"
 msgstr "Bestand opslaan als"
 
 #: divelist.c:2441
-#, fuzzy
 msgid "Save as"
 msgstr "Opslaan als..."
 
@@ -1935,7 +1933,7 @@ msgstr "veiligheidsstop (verplicht)"
 
 #: libdivecomputer.c:151
 msgid "safety stop (voluntary)"
-msgstr "veiigheidsstop (vrijwillig)"
+msgstr "veiligheidsstop (vrijwillig)"
 
 #: uemis-downloader.c:589
 msgid "semidry"
