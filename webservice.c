@@ -199,10 +199,13 @@ void webservice_download_dialog(void)
 	GtkWidget *dialog, *vbox, *status, *info, *uid;
 	GtkWidget *frame_uid, *frame_status, *download, *image, *apply;
 	struct download_dialog_state state = {NULL};
+	gboolean has_previous_uid = TRUE;
 	int result;
 
-	if (!current_uid)
+	if (!current_uid) {
 		current_uid = "";
+		has_previous_uid = FALSE;
+	}
 
 	dialog = gtk_dialog_new_with_buttons(_("Download From Web Service"),
 		GTK_WINDOW(main_window),
@@ -262,4 +265,6 @@ void webservice_download_dialog(void)
 	}
 	download_dialog_release_xml(&state);
 	gtk_widget_destroy(dialog);
+	if (has_previous_uid)
+		free((void *)current_uid);
 }
