@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-09 10:31-0800\n"
-"PO-Revision-Date: 2013-02-05 09:34+0100\n"
+"PO-Revision-Date: 2013-02-09 20:21+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -214,13 +214,14 @@ msgstr ""
 "Sikkerhetsstopp: ukjent tid @ %.0f %s"
 
 #: planner.c:468
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "Subsurface dive plan\n"
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
+"%s\n"
 "Subsurface dykkeplan\n"
 "basert på GFlow = %.0f og GFhigh = %.0f\n"
 "\n"
@@ -288,9 +289,8 @@ msgid "17 l/min"
 msgstr "17 l/min"
 
 #: print.c:924
-#, fuzzy
 msgid "2 dives per page"
-msgstr "6 dykk per side"
+msgstr "2 dykk per side"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
@@ -309,7 +309,6 @@ msgid "6 dives per page"
 msgstr "6 dykk per side"
 
 #: planner.c:1197
-#, fuzzy
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -320,10 +319,10 @@ msgid ""
 msgstr ""
 "<small>Legg til segmenter.\n"
 "Hver rad beskriver en del av det planlagte dykket.\n"
-"En rad med dybde, tid og gass beskriver et segment som slutter på den gitte dybden, tar den gitte tiden (f.eks relativ tid som '+3:30') eller slutter på den gitte tiden (hvis absolutt), og bruker den gitte gassen.\n"
+"En rad med dybde, tid og gass beskriver et segment som slutter på den gitte dybden, tar den gitte tiden (hvis relativ tid er brukt, som '+3:30') eller slutter på den gitte tiden (hvis absolutt tid er brukt), og bruker den angitte gassen.\n"
 "Et tomt gassfelt betyr 'bruk forrige gass' (eller luft hvis det ikke var noen tidligere gass).\n"
 "En rad som har dybde og gass, men ikke tid er spesiell: planleggeren vet da at gassen er tilgjengelig når den oppgitte dybden nåes.\n"
-"CC setpoint spesifiserer rebreather-dykk, ikke bruk ved åpent system (OC).</small>"
+"CC setpoint spesifiserer rebreather-dykk, ikke bruk ved åpent system (OC).</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
@@ -498,7 +497,7 @@ msgstr "D:%.1f %s"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr ""
+msgstr "ADVARSEL: DETTE ER EN NY IMPLEMENTASJON AV BÜHLMANN-ALGORITMEN OG EN DYKKEPLANLEGGER SOM IKKE HAR BLITT TESTET NOE SÆRLIG. VI ANBEFALER PÅ DET STERKESTE Å IKKE PLANLEGGE DYKK UTELUKKENDE MED DATA HERFRA."
 
 #: divelist.c:1420 print.c:501 statistics.c:830
 msgid "Date"
@@ -1336,9 +1335,8 @@ msgid "Save File As"
 msgstr "Lagre fil som"
 
 #: divelist.c:2441
-#, fuzzy
 msgid "Save as"
-msgstr "Lagre som..."
+msgstr "Lagre som"
 
 #: gtk-gui.c:1361
 msgid "Save..."
