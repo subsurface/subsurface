@@ -593,8 +593,8 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		default:
 			mkelvin = 0;
 		}
-		if (mkelvin != dive->dc.airtemp.mkelvin && dive->dc.airtemp.mkelvin == master->dc.airtemp.mkelvin) {
-			dive->dc.airtemp.mkelvin = mkelvin;
+		if (mkelvin != dive->airtemp.mkelvin && dive->airtemp.mkelvin == master->airtemp.mkelvin) {
+			dive->airtemp.mkelvin = mkelvin;
 			changed = 1;
 		}
 	}
@@ -808,9 +808,9 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 
 	info->viz = text_entry(hbox, _("Visibility"), star_list, star_strings[dive->visibility]);
 
-	value = get_temp_units(dive->dc.airtemp.mkelvin, &unit);
+	value = get_temp_units(dive->airtemp.mkelvin, &unit);
 	snprintf(buffer, sizeof(buffer), _("Air Temp in %s"), unit);
-	if (dive->dc.airtemp.mkelvin)
+	if (dive->airtemp.mkelvin)
 		snprintf(airtemp, sizeof(airtemp), "%.1f", value);
 	else
 		airtemp[0] = '\0';

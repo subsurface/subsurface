@@ -320,7 +320,7 @@ struct dive {
 	int sac, otu, cns, maxcns;
 
 	/* Calculated based on dive computer data */
-	temperature_t mintemp, maxtemp;
+	temperature_t mintemp, maxtemp, watertemp, airtemp;
 	depth_t maxdepth, meandepth;
 	pressure_t surface_pressure;
 	duration_t duration;

@@ -720,7 +720,7 @@ static int calculate_sac(struct dive *dive)
 		}
 	}
 	/* Mean pressure in bar (SAC calculations are in bar*l/min) */
-	pressure = depth_to_mbar(dive->dc.meandepth.mm, dive) / 1000.0;
+	pressure = depth_to_mbar(dc->meandepth.mm, dive) / 1000.0;
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -735,7 +735,7 @@ static void add_dive_to_deco(struct dive *dive)
 
 	if (!dc)
 		return;
-	for (i = 1; i < dive->dc.samples; i++) {
+	for (i = 1; i < dc->samples; i++) {
 		struct sample *psample = dc->sample + i - 1;
 		struct sample *sample = dc->sample + i;
 		int t0 = psample->time.seconds;
@@ -1322,7 +1322,7 @@ static void fill_dive_list(void)
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
-			DIVE_TEMPERATURE, dive->dc.watertemp.mkelvin,
+			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_SAC, 0,
 			-1);
 		gtk_tree_store_append(liststore, &iter, NULL);
@@ -1335,7 +1335,7 @@ static void fill_dive_list(void)
 			DIVE_LOCATION, dive->location,
 			DIVE_LOC_ICON, icon,
 			DIVE_RATING, dive->rating,
-			DIVE_TEMPERATURE, dive->dc.watertemp.mkelvin,
+			DIVE_TEMPERATURE, dive->watertemp.mkelvin,
 			DIVE_TOTALWEIGHT, 0,
 			DIVE_SUIT, dive->suit,
 			DIVE_SAC, 0,
@@ -1674,8 +1674,8 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_DATE, &store_dive.when,
 		DIVE_RATING, &store_dive.rating,
 		DIVE_DEPTH, &store_dive.maxdepth,
-		DIVE_DURATION, &store_dive.dc.duration,
-		DIVE_TEMPERATURE, &store_dive.dc.watertemp.mkelvin,
+		DIVE_DURATION, &store_dive.duration,
+		DIVE_TEMPERATURE, &store_dive.watertemp.mkelvin,
 		DIVE_TOTALWEIGHT, &totalweight,
 		DIVE_SUIT, &store_dive.suit,
 		DIVE_CYLINDER, &cylinder_text,
@@ -1691,8 +1691,8 @@ static int copy_tree_node(GtkTreeIter *a, GtkTreeIter *b)
 		DIVE_DATE, store_dive.when,
 		DIVE_RATING, store_dive.rating,
 		DIVE_DEPTH, store_dive.maxdepth,
-		DIVE_DURATION, store_dive.dc.duration,
-		DIVE_TEMPERATURE, store_dive.dc.watertemp.mkelvin,
+		DIVE_DURATION, store_dive.duration,
+		DIVE_TEMPERATURE, store_dive.watertemp.mkelvin,
 		DIVE_TOTALWEIGHT, totalweight,
 		DIVE_SUIT, store_dive.suit,
 		DIVE_CYLINDER, cylinder_text,

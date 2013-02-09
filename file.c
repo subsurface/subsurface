@@ -174,6 +174,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 	int i, time;
 	timestamp_t date;
 	struct dive *dive;
+	struct divecomputer *dc;
 
 	for (i = 0; i < 8; i++) {
 		header[i] = p;
@@ -190,6 +191,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 	dive = alloc_dive();
 	dive->when = date;
 	dive->number = atoi(header[1]);
+	dc = &dive->dc;
 
 	time = 0;
 	for (;;) {
@@ -204,13 +206,13 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		if (errno)
 			break;
 
-		sample = prepare_sample(&dive->dc);
+		sample = prepare_sample(dc);
 		sample->time.seconds = time;
 		add_sample_data(sample, type, val);
-		finish_sample(&dive->dc);
+		finish_sample(dc);
 
 		time++;
-		dive->dc.duration.seconds = time;
+		dc->duration.seconds = time;
 		if (*end != ',')
 			break;
 		p = end+1;

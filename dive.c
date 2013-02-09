@@ -469,6 +469,36 @@ static void fixup_duration(struct dive *dive)
 	dive->duration.seconds = duration;
 }
 
+static void fixup_watertemp(struct dive *dive)
+{
+	struct divecomputer *dc;
+	int sum = 0, nr = 0;
+
+	for_each_dc(dive, dc) {
+		if (dc->watertemp.mkelvin) {
+			sum += dc->watertemp.mkelvin;
+			nr++;
+		}
+	}
+	if (nr)
+		dive->watertemp.mkelvin = (sum + nr / 2) / nr;
+}
+
+static void fixup_airtemp(struct dive *dive)
+{
+	struct divecomputer *dc;
+	int sum = 0, nr = 0;
+
+	for_each_dc(dive, dc) {
+		if (dc->airtemp.mkelvin) {
+			sum += dc->airtemp.mkelvin;
+			nr++;
+		}
+	}
+	if (nr)
+		dive->airtemp.mkelvin = (sum + nr / 2) / nr;
+}
+
 /*
  * events are stored as a linked list, so the concept of
  * "consecutive, identical events" is somewhat hard to
@@ -662,6 +692,8 @@ struct dive *fixup_dive(struct dive *dive)
 	fixup_surface_pressure(dive);
 	fixup_meandepth(dive);
 	fixup_duration(dive);
+	fixup_watertemp(dive);
+	fixup_airtemp(dive);
 
 	for_each_dc(dive, dc)
 		fixup_dive_dc(dive, dc);
@@ -1580,7 +1612,6 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_MAX(res, a, b, rating);
 	MERGE_TXT(res, a, b, suit);
 	MERGE_MAX(res, a, b, number);
-	res->dc.meandepth.mm = 0;
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
 	merge_equipment(res, a, b);
