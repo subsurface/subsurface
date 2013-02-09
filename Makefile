@@ -190,6 +190,11 @@ install-macosx: $(NAME)
 		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/$$LOC; \
 		$(INSTALL) $$LOC/subsurface.mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/subsurface.mo; \
 	done
+	@-if test ! -z "$(XSLT)"; then \
+		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/xslt; \
+		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXINSTALL)/Contents/Resources/xslt/; \
+	fi
+
 
 create-macosx-bundle: $(NAME)
 	$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources
@@ -203,6 +208,10 @@ create-macosx-bundle: $(NAME)
 		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/$$LOC; \
 		$(INSTALL) $$LOC/subsurface.mo $(MACOSXSTAGING)/Contents/Resources/$$LOC/subsurface.mo; \
 	done
+	@-if test ! -z "$(XSLT)"; then \
+		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/xslt; \
+		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXSTAGING)/Contents/Resources/xslt/; \
+	fi
 	$(GTK_MAC_BUNDLER) packaging/macosx/subsurface.bundle
 
 install-cross-windows: $(NAME)

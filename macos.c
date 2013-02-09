@@ -1,5 +1,6 @@
 /* macos.c */
 /* implements Mac OS X specific functions */
+#include <stdlib.h>
 #include "dive.h"
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
@@ -172,6 +173,10 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	GtkWidget *menu_item, *sep;
+	static char path[1024];
+
+	snprintf(path, 1024, "%s/xslt", gtkosx_application_get_resource_path());
+	setenv("SUBSURFACE_XSLT_PATH",  path, TRUE);
 
 	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
 
