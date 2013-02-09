@@ -230,27 +230,6 @@ int get_duration_in_sec(struct dive *dive)
 	return duration;
 }
 
-int get_surface_pressure_in_mbar(const struct dive *dive, gboolean non_null)
-{
-	unsigned int count = 0, sum = 0;
-	const struct divecomputer *dc = &dive->dc;
-
-	do {
-		if (!dc->surface_pressure.mbar)
-			continue;
-		sum += dc->surface_pressure.mbar;
-		count++;
-	} while ((dc = dc->next) != NULL);
-
-	/* Did we have any dive computers with surface pressure information */
-	if (count)
-		return (sum + count/2) / count;
-
-	if (non_null)
-		return SURFACE_PRESSURE;
-	return 0;
-}
-
 static void update_temperature(temperature_t *temperature, int new)
 {
 	if (new) {
@@ -445,6 +424,36 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	return previous;
 }
 
+static void fixup_surface_pressure(struct dive *dive)
+{
+	struct divecomputer *dc;
+	int sum, nr;
+
+	for_each_dc(dive, dc) {
+		if (dc->surface_pressure.mbar) {
+			sum += dc->surface_pressure.mbar;
+			nr++;
+		}
+	}
+	if (nr)
+		dive->surface_pressure.mbar = (sum + nr/2)/nr;
+}
+
+static void fixup_water_salinity(struct dive *dive)
+{
+	struct divecomputer *dc;
+	int sum, nr;
+
+	for_each_dc(dive, dc) {
+		if (dc->salinity) {
+			sum += dc->salinity;
+			nr++;
+		}
+	}
+	if (nr)
+		dive->salinity = (sum + nr/2)/nr;
+}
+
 /* right now this only operates on the first divecomputer */
 struct dive *fixup_dive(struct dive *dive)
 {
@@ -466,6 +475,10 @@ struct dive *fixup_dive(struct dive *dive)
 	add_suit(dive->suit);
 	sanitize_cylinder_info(dive);
 	dive->maxcns = dive->cns;
+
+	fixup_water_salinity(dive);
+	fixup_surface_pressure(dive);
+
 	dc = &dive->dc;
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;

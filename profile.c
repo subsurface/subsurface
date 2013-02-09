@@ -1011,11 +1011,11 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 }
 
 /* calculate the current SAC in ml/min and convert to int */
-#define GET_LOCAL_SAC(_entry1, _entry2, _dive, _dc)	(int)		\
+#define GET_LOCAL_SAC(_entry1, _entry2, _dive)	(int)		\
 	((GET_PRESSURE((_entry1)) - GET_PRESSURE((_entry2))) *			\
 		(_dive)->cylinder[(_entry1)->cylinderindex].type.size.mliter /	\
 		(((_entry2)->sec - (_entry1)->sec) / 60.0) /			\
-		depth_to_mbar(((_entry1)->depth + (_entry2)->depth) / 2.0, (_dive), (_dc)))
+		depth_to_mbar(((_entry1)->depth + (_entry2)->depth) / 2.0, (_dive)))
 
 #define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
 
@@ -1050,12 +1050,12 @@ static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info
 		if (!last_entry) {
 			last = i;
 			last_entry = entry;
-			sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive, dc);
+			sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive);
 		} else {
 			int j;
 			sac = 0;
 			for (j = last; j < i; j++)
-				sac += GET_LOCAL_SAC(pi->entry + j, pi->entry + j + 1, dive, dc);
+				sac += GET_LOCAL_SAC(pi->entry + j, pi->entry + j + 1, dive);
 			sac /= (i - last);
 			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
 				last++;
@@ -1405,7 +1405,7 @@ static inline int pressure_time(struct dive *dive, struct divecomputer *dc, stru
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth)/2;
 
-	return depth_to_mbar(depth, dive, dc) * time;
+	return depth_to_mbar(depth, dive) * time;
 }
 
 static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr)
@@ -1822,7 +1822,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		struct plot_data *entry = pi->entry + i;
 		int cylinderindex = entry->cylinderindex;
 
-		amb_pressure = depth_to_mbar(entry->depth, dive, dc) / 1000.0;
+		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille ? : O2_IN_AIR;
 		fhe = dive->cylinder[cylinderindex].gasmix.he.permille;
 		double ratio = (double)fhe / (1000.0 - fo2);
@@ -1876,7 +1876,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		tissue_tolerance = 0;
 		for (j = t0+1; j <= t1; j++) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
-			double min_pressure = add_segment(depth_to_mbar(depth, dive, dc) / 1000.0,
+			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 							&dive->cylinder[cylinderindex].gasmix, 1, entry->po2 * 1000, dive);
 			tissue_tolerance = min_pressure;
 		}

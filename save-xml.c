@@ -172,7 +172,7 @@ static void save_airpressure(FILE *f, struct divecomputer *dc)
 static void save_salinity(FILE *f, struct divecomputer *dc)
 {
 	/* only save if we have a value that isn't the default of sea water */
-	if (!dc->salinity || dc->salinity == 10300)
+	if (!dc->salinity || dc->salinity == SEAWATER_SALINITY)
 		return;
 	fputs("  <water", f);
 	show_salinity(f, dc->salinity, " salinity='", "'");

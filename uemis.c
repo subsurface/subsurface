@@ -300,9 +300,9 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	dive->dc.airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + ZERO_C_IN_MKELVIN;
 	dive->dc.surface_pressure.mbar = *(uint16_t *)(data + 43);
 	if (*(uint8_t *)(data + 19))
-		dive->dc.salinity = 10300; /* avg grams per 10l sea water */
+		dive->dc.salinity = SEAWATER_SALINITY; /* avg grams per 10l sea water */
 	else
-		dive->dc.salinity = 10000; /* grams per 10l fresh water */
+		dive->dc.salinity = FRESHWATER_SALINITY; /* grams per 10l fresh water */
 
 	/* this will allow us to find the last dive read so far from this computer */
 	dc->model = strdup("Uemis Zurich");

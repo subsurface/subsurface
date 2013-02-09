@@ -20,6 +20,10 @@
 #define SURFACE_PRESSURE_STRING "1013"
 #define ZERO_C_IN_MKELVIN	273150  // mKelvin
 
+/* Salinity is expressed in weight in grams per 10l */
+#define SEAWATER_SALINITY	10300
+#define FRESHWATER_SALINITY	10000
+
 
 /*
  * Some silly typedefs to make our units very explicit.
@@ -314,9 +318,12 @@ struct dive {
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
 	char *suit;
 	int sac, otu, cns, maxcns;
-	temperature_t mintemp, maxtemp;
 
-	/* Eventually we'll do multiple dive computers */
+	/* Calculated based on dive computer data */
+	temperature_t mintemp, maxtemp;
+	pressure_t surface_pressure;
+	int salinity; // kg per 10000 l
+
 	struct divecomputer dc;
 };
 
@@ -333,22 +340,34 @@ static inline void copy_gps_location(struct dive *from, struct dive *to)
 	}
 }
 
-extern int get_surface_pressure_in_mbar(const struct dive *dive, gboolean non_null);
+static inline int get_surface_pressure_in_mbar(const struct dive *dive, gboolean non_null)
+{
+	int mbar = dive->surface_pressure.mbar;
+	if (!mbar && non_null)
+		mbar = SURFACE_PRESSURE;
+	return mbar;
+}
 
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
-static inline int depth_to_mbar(int depth, struct dive *dive, struct divecomputer *dc)
+static inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
 {
-	double specific_weight = 1.03 * 0.981;
-	int surface_pressure;
-	if (dc->salinity)
-		specific_weight = dc->salinity / 10000.0 * 0.981;
-	if (dc->surface_pressure.mbar)
-		surface_pressure = dc->surface_pressure.mbar;
-	else
-		surface_pressure = get_surface_pressure_in_mbar(dive, TRUE);
-	return depth / 10.0 * specific_weight + surface_pressure + 0.5;
+	double specific_weight;
+	int mbar = surface_pressure.mbar;
+
+	if (!mbar)
+		mbar = SURFACE_PRESSURE;
+	if (!salinity)
+		salinity = SEAWATER_SALINITY;
+	specific_weight = salinity / 10000.0 * 0.981;
+	mbar += depth / 10.0 * specific_weight + 0.5;
+	return mbar;
+}
+
+static inline int depth_to_mbar(int depth, struct dive *dive)
+{
+	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
 }
 
 /* for the inverse calculation we use just the relative pressure
@@ -467,6 +486,9 @@ static inline struct dive *get_dive(int nr)
  */
 #define for_each_dive(_i,_x) \
 	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
+
+#define for_each_dc(_dive,_dc) \
+	for (_dc = &_dive->dc; _dc; _dc = _dc->next)
 
 #define for_each_gps_location(_i,_x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)

@@ -655,7 +655,7 @@ static int calculate_otu(struct dive *dive)
 			po2 = sample->po2;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
-			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive, &dive->dc);
+			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive);
 		}
 		if (po2 >= 500)
 			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
@@ -720,7 +720,7 @@ static int calculate_sac(struct dive *dive)
 		}
 	}
 	/* Mean pressure in bar (SAC calculations are in bar*l/min) */
-	pressure = depth_to_mbar(dive->dc.meandepth.mm, dive, &dive->dc) / 1000.0;
+	pressure = depth_to_mbar(dive->dc.meandepth.mm, dive) / 1000.0;
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -744,7 +744,7 @@ static void add_dive_to_deco(struct dive *dive)
 
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
-			(void) add_segment(depth_to_mbar(depth, dive, &dive->dc) / 1000.0,
+			(void) add_segment(depth_to_mbar(depth, dive) / 1000.0,
 					   &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
 		}
 	}
