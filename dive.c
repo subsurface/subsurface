@@ -454,10 +454,53 @@ static void fixup_water_salinity(struct dive *dive)
 		dive->salinity = (sum + nr/2)/nr;
 }
 
-/* right now this only operates on the first divecomputer */
-struct dive *fixup_dive(struct dive *dive)
+/*
+ * events are stored as a linked list, so the concept of
+ * "consecutive, identical events" is somewhat hard to
+ * implement correctly (especially given that on some dive
+ * computers events are asynchronous, so they can come in
+ * between what would be the non-constant sample rate).
+ *
+ * So what we do is that we throw away clearly redundant
+ * events that are fewer than 61 seconds apart (assuming there
+ * is no dive computer with a sample rate of more than 60
+ * seconds... that would be pretty pointless to plot the
+ * profile with)
+ *
+ * We first only mark the events for deletion so that we
+ * still know when the previous event happened.
+ */
+static void fixup_dc_events(struct divecomputer *dc)
 {
-	int i,j;
+	struct event *event;
+
+	event = dc->events;
+	while (event) {
+		struct event *prev;
+		if (is_potentially_redundant(event)) {
+			prev = find_previous_event(dc, event);
+			if (prev && prev->value == event->value &&
+			    prev->flags == event->flags &&
+			    event->time.seconds - prev->time.seconds < 61)
+				event->deleted = TRUE;
+		}
+		event = event->next;
+	}
+	event = dc->events;
+	while (event) {
+		if (event->next && event->next->deleted) {
+			struct event *nextnext = event->next->next;
+			free(event->next);
+			event->next = nextnext;
+		} else {
+			event = event->next;
+		}
+	}
+}
+
+static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
+{
+	int i, j;
 	double depthtime = 0;
 	int lasttime = 0;
 	int lastindex = -1;
@@ -466,20 +509,7 @@ struct dive *fixup_dive(struct dive *dive)
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
-	struct divecomputer *dc;
-	struct event *event;
 
-	add_people(dive->buddy);
-	add_people(dive->divemaster);
-	add_location(dive->location);
-	add_suit(dive->suit);
-	sanitize_cylinder_info(dive);
-	dive->maxcns = dive->cns;
-
-	fixup_water_salinity(dive);
-	fixup_surface_pressure(dive);
-
-	dc = &dive->dc;
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
@@ -574,9 +604,9 @@ struct dive *fixup_dive(struct dive *dive)
 	}
 	if (end < 0) {
 		/* Assume an ascent/descent rate of 9 m/min */
-		int depth = dive->dc.maxdepth.mm;
+		int depth = dc->maxdepth.mm;
 		int asc_desc_time = depth*60/9000;
-		int duration = dive->dc.duration.seconds;
+		int duration = dc->duration.seconds;
 
 		/* Some sanity checks against insane dives */
 		if (duration < 2)
@@ -584,17 +614,38 @@ struct dive *fixup_dive(struct dive *dive)
 		if (asc_desc_time * 2 >= duration)
 			asc_desc_time = duration/2;
 
-		dive->dc.meandepth.mm = depth*(duration-asc_desc_time)/duration;
-		return dive;
+		dc->meandepth.mm = depth*(duration-asc_desc_time)/duration;
+		return;
 	}
 
-	update_duration(&dive->dc.duration, end - start);
+	update_duration(&dc->duration, end - start);
 	if (start != end)
 		depthtime /= (end - start);
 
-	update_depth(&dive->dc.meandepth, depthtime);
-	update_temperature(&dive->dc.watertemp, mintemp);
-	update_depth(&dive->dc.maxdepth, maxdepth);
+	update_depth(&dc->meandepth, depthtime);
+	update_temperature(&dc->watertemp, mintemp);
+	update_depth(&dc->maxdepth, maxdepth);
+
+	fixup_dc_events(dc);
+}
+
+struct dive *fixup_dive(struct dive *dive)
+{
+	int i;
+	struct divecomputer *dc;
+
+	add_people(dive->buddy);
+	add_people(dive->divemaster);
+	add_location(dive->location);
+	add_suit(dive->suit);
+	sanitize_cylinder_info(dive);
+	dive->maxcns = dive->cns;
+
+	fixup_water_salinity(dive);
+	fixup_surface_pressure(dive);
+
+	for_each_dc(dive, dc)
+		fixup_dive_dc(dive, dc);
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
@@ -607,42 +658,6 @@ struct dive *fixup_dive(struct dive *dive)
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 		weightsystem_t *ws = dive->weightsystem + i;
 		add_weightsystem_description(ws);
-	}
-
-	/* events are stored as a linked list, so the concept of
-	 * "consecutive, identical events" is somewhat hard to
-	 * implement correctly (especially given that on some dive
-	 * computers events are asynchronous, so they can come in
-	 * between what would be the non-constant sample rate).
-	 *
-	 * So what we do is that we throw away clearly redundant
-	 * events that are fewer than 61 seconds apart (assuming there
-	 * is no dive computer with a sample rate of more than 60
-	 * seconds... that would be pretty pointless to plot the
-	 * profile with)
-	 * We first only mark the events for deletion so that we
-	 * still know when the previous event happened. */
-	event = dc->events;
-	while (event) {
-		struct event *prev;
-		if (is_potentially_redundant(event)) {
-			prev = find_previous_event(dc, event);
-			if (prev && prev->value == event->value &&
-			    prev->flags == event->flags &&
-			    event->time.seconds - prev->time.seconds < 61)
-				event->deleted = TRUE;
-		}
-		event = event->next;
-	}
-	event = dc->events;
-	while (event) {
-		if (event->next && event->next->deleted) {
-			struct event *nextnext = event->next->next;
-			free(event->next);
-			event->next = nextnext;
-		} else {
-			event = event->next;
-		}
 	}
 
 	return dive;

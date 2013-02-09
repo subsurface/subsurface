@@ -658,7 +658,7 @@ static void print_gps_coordinates(char *buffer, int len, float lat, float lon)
 	londeg = lon;
 	latmin = (lat - latdeg) * 60.0;
 	lonmin = (lon - londeg) * 60.0;
-	snprintf(buffer, len, "%s%u%s %6.3f\' , %s%u%s %6.3f\'",
+	snprintf(buffer, len, "%s%u%s %8.5f\' , %s%u%s %8.5f\'",
 		lath, latdeg, UTF8_DEGREE, latmin,
 		lonh, londeg, UTF8_DEGREE, lonmin);
 }
