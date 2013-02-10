@@ -63,7 +63,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 	PangoLayout *layout;
 	PangoRectangle ink_ext, logic_ext;
 	struct tm tm;
-	char buffer[160], divenr[20], *people;
+	char buffer[160], divenr[40], *people;
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
@@ -157,7 +157,7 @@ static void show_dive_notes(struct dive *dive, cairo_t *cr, double w,
 /* Print the used gas mix */
 static void print_ean_trimix (cairo_t *cr, PangoLayout *layout, int O2, int He){
 
-	char buffer[8];
+	char buffer[64];
 
 	if (He){
 		snprintf(buffer, sizeof(buffer), "Tx%d/%d", O2, He);
@@ -335,7 +335,7 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 /* Print the dive OTUs */
 static void print_otus (struct dive *dive, cairo_t *cr, PangoLayout *layout, int maxwidth)
 {
-	char buffer[20];
+	char buffer[40];
 
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("OTU"));
@@ -350,7 +350,7 @@ static void print_otus (struct dive *dive, cairo_t *cr, PangoLayout *layout, int
 /* Print the dive maxCNS */
 static void print_cns (struct dive *dive, cairo_t *cr, PangoLayout *layout, int maxwidth)
 {
-	char buffer[20];
+	char buffer[40];
 
 
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
@@ -369,7 +369,7 @@ static void print_SAC (struct dive *dive, cairo_t *cr, 	PangoLayout *layout, int
 	double sac;
 	int decimals;
 	const char *unit;
-	char buffer[20];
+	char buffer[40];
 
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("SAC"));
@@ -524,7 +524,7 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	double maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
 	struct tm tm;
-	char buffer[160], divenr[20];
+	char buffer[160], divenr[40];
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
