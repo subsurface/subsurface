@@ -498,7 +498,7 @@ static void show_table_header(cairo_t *cr, double w, double h,
 	int i;
 	double maxwidth, maxheight, colwidth, curwidth;
 	PangoLayout *layout;
-	char headers[7][80]= { N_("Dive#"), N_("Date"), N_("Depth"), N_("Time"), N_("Master"),
+	char headers[7][80]= { N_("Dive#"), N_("Date"), N_("Depth"), N_("Duration"), N_("Master"),
 			       N_("Buddy"), N_("Location") };
 
 	maxwidth = w * PANGO_SCALE;
