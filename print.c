@@ -192,7 +192,9 @@ static void print_tanks (struct dive *dive, cairo_t *cr, PangoLayout *layout, in
         double w_scale_factor)
 {
 	int curwidth, n, i, counter;
-	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"), NC_("Amount","Gas Used")};
+	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"),
+	/*++GETTEXT Gas Used is amount used */
+					       N_("Gas Used")};
 	PangoRectangle logic_ext;
 
 	cairo_save(cr);
