@@ -176,7 +176,7 @@ OsmGpsMap *init_map(void)
 	osd = g_object_new(OSM_TYPE_GPS_MAP_OSD,
 				"show-scale", TRUE,
 				"show-coordinates", TRUE,
-				"show-crosshair", TRUE,
+				"show-crosshair", FALSE,
 				"show-dpad", TRUE,
 				"show-zoom", TRUE,
 				"show-gps-in-dpad", TRUE,
