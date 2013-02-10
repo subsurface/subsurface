@@ -68,7 +68,7 @@ msgstr "%.0f%s от %s\n"
 #: print.c:81
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
-msgstr "%1$s, %3$s, %2$s, %4$d, %5$d   %6$d:%7$02d"
+msgstr "%1$s %3$s, %2$s, %4$d, %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
 #: print.c:575
