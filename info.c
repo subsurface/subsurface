@@ -506,12 +506,9 @@ static gboolean gps_changed(struct dive *dive, struct dive *master, const char *
 	if (!parse_gps_text(gps_text, &latitude, &longitude))
 		return FALSE;
 
-	latudeg = 1000000 * latitude + 0.5;
-	longudeg = 1000000 * longitude + 0.5;
+	latudeg = rint(1000000 * latitude);
+	longudeg = rint(1000000 * longitude);
 
-	/* if master gps didn't change, don't change dive */
-	if (master && master->latitude.udeg == latudeg && master->longitude.udeg == longudeg)
-		return FALSE;
 	/* if dive gps didn't change, nothing changed */
 	if (dive->latitude.udeg == latudeg && dive->longitude.udeg == longudeg)
 		return FALSE;
