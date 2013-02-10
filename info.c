@@ -669,22 +669,27 @@ static void update_gps_entry(int lat, int lon)
 	}
 }
 
+#if HAVE_OSM_GPS_MAP
 static void update_gps_entry_callback(float lat, float lon)
 {
 	update_gps_entry(lat * 1000000, lon * 1000000);
+	location_update.set_by_hand = 1;
 }
 
-#if HAVE_OSM_GPS_MAP
 static gboolean gps_map_callback(GtkWidget *w, gpointer data)
 {
+	double latitude, longitude;
 	const char *gps_text = NULL;
-	struct dive *dive = location_update.dive;
+	struct dive fake_dive;
+
+	memset(&fake_dive, 0, sizeof(fake_dive));
 	if (location_update.entry) {
 		gps_text = gtk_entry_get_text(location_update.entry);
-		(void)gps_changed(dive, NULL, gps_text);
+		parse_gps_text(gps_text, &latitude, &longitude);
+		fake_dive.latitude.udeg = rint(latitude * 1000000);
+		fake_dive.longitude.udeg = rint(longitude * 1000000);
 	}
-	show_gps_location(dive, update_gps_entry_callback);
-	location_update.set_by_hand = 1;
+	show_gps_location(&fake_dive, update_gps_entry_callback);
 	return TRUE;
 }
 #endif
