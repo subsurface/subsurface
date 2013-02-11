@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-09 10:31-0800\n"
-"PO-Revision-Date: 2013-02-04 21:49+0200\n"
+"PO-Revision-Date: 2013-02-11 14:04+0300\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -209,13 +209,14 @@ msgstr ""
 "Ост.безоп:неизв. время @ %.0f %s"
 
 #: planner.c:468
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "Subsurface dive plan\n"
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
+"%s\n"
 "План погружения Subsurface\n"
 "на основе значений нижний ГФ = %.0f и верхний ГФ = %.0f\n"
 "\n"
@@ -283,9 +284,8 @@ msgid "17 l/min"
 msgstr "17 л/мин"
 
 #: print.c:924
-#, fuzzy
 msgid "2 dives per page"
-msgstr "6 погр. на стр."
+msgstr "2 погр. на стр."
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
@@ -304,7 +304,6 @@ msgid "6 dives per page"
 msgstr "6 погр. на стр."
 
 #: planner.c:1197
-#, fuzzy
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -315,10 +314,10 @@ msgid ""
 msgstr ""
 "<small>Добавляйте сегменты ниже.\n"
 "Каждая строка - это часть планируемого погружения.\n"
-"Запись с глубиной, временем и смесью описывает сегмент который заканчивается на заданной глубине, длится (если относительно, т.е. +3:30) либо заканчивается (если абсолютно) в указанное время, и использует указанную смесь.\n"
+"Запись с глубиной, временем и смесью описывает сегмент, который заканчивается на заданной глубине, длится (если относительно, т.е. +3:30) либо заканчивается (если абсолютно) в указанное время, и использует указанную смесь.\n"
 "Строка без указания смеси означает использование предыдущей смеси (или воздуха, если смесь не была указана).\n"
 "Строка с указанными глубиной и смесью, но без времени, - особая; она сообщает планировщику, что данная смесь доступна при подъеме по достижении указанной глубины.\n"
-"Точка СС помечает погружения с ИДА замкнутого цикла (ребризер), оставьте пустым для обычных погружений.</small>"
+"Настройка СС помечает погружения с ИДА замкнутого цикла (ребризером), оставьте пустым для обычных погружений.</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
@@ -424,7 +423,7 @@ msgstr "Партнер"
 
 #: planner.c:1152
 msgid "CC SetPoint"
-msgstr "Точка СС"
+msgstr "Настройка СС"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -493,7 +492,7 @@ msgstr "Г:%.1f %s"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr ""
+msgstr "ОТКАЗ ОТ ОТВЕТСТВЕННОСТИ / ВНИМАНИЕ: В ПЛАНИРОВЩИКЕ ИСПОЛЬЗУЕТСЯ НОВАЯ РЕАЛИЗАЦИЯ АЛГОРИТМА БЮЛЬМАНА, КОТОРАЯ БЫЛА НЕДОСТАТОЧНО ПРОТЕСТИРОВАНА. МЫ НАСТОЯТЕЛЬНО РЕКОМЕНДУЕМ НЕ ПЛАНИРОВАТЬ ПОГРУЖЕНИЯ ТОЛЬКО НА ОСНОВЕ ЭТИХ РЕЗУЛЬТАТОВ."
 
 #: divelist.c:1420 print.c:501 statistics.c:830
 msgid "Date"
@@ -590,7 +589,7 @@ msgstr "Время погр."
 
 #: uemis.c:228
 msgid "Dive Time Alert"
-msgstr "Предупреждение о времени погруженя"
+msgstr "Тревога: время погружения"
 
 #: uemis.c:226
 msgid "Dive Time Info"
@@ -970,11 +969,11 @@ msgstr "Самый долгий"
 
 #: uemis.c:236
 msgid "Low Battery Alert"
-msgstr "Сигнал о низком заряде батареи"
+msgstr "Тревога: заряд батареи"
 
 #: uemis.c:234
 msgid "Low Battery Warning"
-msgstr "Предупреждение о низком заряде батареи"
+msgstr "Внимание: заряд батареи"
 
 #: main.c:71
 msgid "Mar"
@@ -994,7 +993,7 @@ msgstr "Инструктор"
 
 #: uemis.c:224
 msgid "Max Deco Time Warning"
-msgstr "Предупреждение макс. времени декомпрессии"
+msgstr "Внимание: макс. время деко"
 
 #: statistics.c:800 statistics.c:838
 msgid "Max Depth"
@@ -1178,15 +1177,15 @@ msgstr "PO2"
 
 #: uemis.c:210
 msgid "PO2 Ascend Alarm"
-msgstr "Сигнал PO2 при подъеме"
+msgstr "Тревога: PO2 при подъеме"
 
 #: uemis.c:208
 msgid "PO2 Ascend Warning"
-msgstr "Предупреждение PO2 при подъеме"
+msgstr "Внимание: PO2 при подъеме"
 
 #: uemis.c:205
 msgid "PO2 Green Warning"
-msgstr "Предупреждение PO2 (зеленый)"
+msgstr "Внимание: PO2 (зеленый)"
 
 #: gtk-gui.c:639
 msgid "PSI"
@@ -1250,11 +1249,11 @@ msgstr "Выход"
 
 #: uemis.c:218
 msgid "RGT Alert"
-msgstr "Сигнал RGT"
+msgstr "Тревога: RGT"
 
 #: uemis.c:216
 msgid "RGT Warning"
-msgstr "Предупреждение RGT"
+msgstr "Внимание: RGT"
 
 #: info.c:803 info.c:1256
 msgid "Rating"
@@ -1331,9 +1330,8 @@ msgid "Save File As"
 msgstr "Сохранить файл как"
 
 #: divelist.c:2441
-#, fuzzy
 msgid "Save as"
-msgstr "Сохранить как..."
+msgstr "Сохранить как"
 
 #: gtk-gui.c:1361
 msgid "Save..."
@@ -1420,11 +1418,11 @@ msgstr "Объем"
 
 #: uemis.c:200
 msgid "Speed Alarm"
-msgstr "Сигнал скорости"
+msgstr "Тревога: скорость"
 
 #: uemis.c:203
 msgid "Speed Warning"
-msgstr "Предупреждение скорости"
+msgstr "Внимание: скорость"
 
 #: equipment.c:946 equipment.c:1455
 msgid "Start"
@@ -1706,7 +1704,7 @@ msgstr "оставшееся время по воздуху"
 
 #: equipment.c:828
 msgid "ankle"
-msgstr "лодыжки"
+msgstr "груз на ноги"
 
 #: libdivecomputer.c:149
 msgid "ascent"
@@ -1714,7 +1712,7 @@ msgstr "подъем"
 
 #: equipment.c:829
 msgid "backplate weight"
-msgstr "спина"
+msgstr "груз на пластину"
 
 #: dive.c:46
 msgid "bar"
@@ -1843,7 +1841,7 @@ msgstr "фунт"
 
 #: uemis-downloader.c:590
 msgid "long john"
-msgstr "long john"
+msgstr "комбинезон"
 
 #: dive.c:112 info.c:1176
 msgid "m"
