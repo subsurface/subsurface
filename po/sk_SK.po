@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2012-10-23 22:30+0100\n"
-"Last-Translator: Ďoďo Ivanecký <dodo.sk@gmail.com>\n"
+"POT-Creation-Date: 2013-02-12 08:20-0800\n"
+"PO-Revision-Date: 2013-02-12 15:52+0100\n"
+"Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr " > Mesiac"
 
 #: webservice.c:237
 msgid " Download"
-msgstr ""
+msgstr "Načitať"
 
 #: download-dialog.c:375
 msgid " Please select dive computer and device. "
@@ -35,26 +35,26 @@ msgstr "Voľba typu počítača a zariadia. "
 #: profile.c:413
 msgctxt "Starts with space!"
 msgid " begin"
-msgstr ""
+msgstr "začiatok"
 
 #: profile.c:414
 msgctxt "Starts with space!"
 msgid " end"
-msgstr ""
+msgstr "koniec"
 
 #: statistics.c:175
 msgid "#"
 msgstr "#"
 
 #: print.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "%.*f %s"
-msgstr "%.*f %s/min"
+msgstr "%.*f %s"
 
 #: print.c:253 print.c:326
-#, fuzzy, c-format
+#, c-format
 msgid "%.*f %s\n"
-msgstr "%.*f %s/min"
+msgstr "%.*f %s\n"
 
 #: statistics.c:591 statistics.c:738 statistics.c:740 statistics.c:742
 #, c-format
@@ -64,7 +64,7 @@ msgstr "%.*f %s/min"
 #: planner.c:547
 #, c-format
 msgid "%.0f%s of %s\n"
-msgstr ""
+msgstr "%.0f%s z %s\n"
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
 #: print.c:82
@@ -108,7 +108,7 @@ msgstr "%dh %dmin"
 #: print.c:304
 #, c-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: profile.c:2148
 #, c-format
@@ -116,6 +116,8 @@ msgid ""
 "%s\n"
 "CNS:%u%%"
 msgstr ""
+"%s\n"
+"CNS:%u%%"
 
 #: profile.c:2116
 #, c-format
@@ -123,6 +125,8 @@ msgid ""
 "%s\n"
 "Calculated ceiling %.0f %s"
 msgstr ""
+"%s\n"
+"Vypočítaná hladina %.0f %s"
 
 #: profile.c:2132
 #, c-format
@@ -130,6 +134,8 @@ msgid ""
 "%s\n"
 "Deco:%umin @ %.0f %s"
 msgstr ""
+"%s\n"
+"Deco:%umin @ %.0f %s"
 
 #: profile.c:2135
 #, c-format
@@ -137,6 +143,8 @@ msgid ""
 "%s\n"
 "Deco:unkn time @ %.0f %s"
 msgstr ""
+"%s\n"
+"Deco:nezn. čas @ %.0f %s"
 
 #: profile.c:2172
 #, c-format
@@ -146,6 +154,10 @@ msgid ""
 "END:%d%s\n"
 "EADD:%d%s"
 msgstr ""
+"%s\n"
+"EAD:%d%s\n"
+"END:%d%s\n"
+"EADD:%d%s"
 
 #: profile.c:2141
 #, c-format
@@ -153,6 +165,8 @@ msgid ""
 "%s\n"
 "In deco"
 msgstr ""
+"%s\n"
+"In deco"
 
 #: profile.c:2165
 #, c-format
@@ -160,6 +174,8 @@ msgid ""
 "%s\n"
 "MOD:%d%s"
 msgstr ""
+"%s\n"
+"MOD:%d%s"
 
 #: profile.c:2144
 #, c-format
@@ -167,6 +183,8 @@ msgid ""
 "%s\n"
 "NDL:%umin"
 msgstr ""
+"%s\n"
+"NDL:%umin"
 
 #: profile.c:2106
 #, c-format
@@ -174,6 +192,8 @@ msgid ""
 "%s\n"
 "P:%d %s"
 msgstr ""
+"%s\n"
+"P:%d %s"
 
 #: profile.c:2124
 #, c-format
@@ -181,6 +201,8 @@ msgid ""
 "%s\n"
 "Safetystop:%umin @ %.0f %s"
 msgstr ""
+"%s\n"
+"Bezpečnostná zastávka:%umin @ %.0f %s"
 
 #: profile.c:2127
 #, c-format
@@ -188,6 +210,8 @@ msgid ""
 "%s\n"
 "Safetystop:unkn time @ %.0f %s"
 msgstr ""
+"%s\n"
+"Bezpečnostná zastávka:nezn. čas @ %.0f %s"
 
 #: planner.c:468
 #, c-format
@@ -197,6 +221,10 @@ msgid ""
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
+"%s\n"
+"Subsurface plan ponoru\n"
+"zrátaný s  GFlow = %.0f a GFhigh = %.0f\n"
+"\n"
 
 #: profile.c:2111
 #, c-format
@@ -204,6 +232,8 @@ msgid ""
 "%s\n"
 "T:%.1f %s"
 msgstr ""
+"%s\n"
+"T:%.1f %s"
 
 #: profile.c:2160
 #, c-format
@@ -211,6 +241,8 @@ msgid ""
 "%s\n"
 "pHe:%.2fbar"
 msgstr ""
+"%s\n"
+"pHe:%.2fbar"
 
 #: profile.c:2156
 #, c-format
@@ -218,6 +250,8 @@ msgid ""
 "%s\n"
 "pN%s:%.2fbar"
 msgstr ""
+"%s\n"
+"pN%s:%.2fbar"
 
 #: profile.c:2152
 #, c-format
@@ -225,6 +259,8 @@ msgid ""
 "%s\n"
 "pO%s:%.2fbar"
 msgstr ""
+"%s\n"
+"pO%s:%.2fbar"
 
 #: dive.c:873
 #, c-format
@@ -232,45 +268,45 @@ msgid "(%s) or (%s)"
 msgstr "(%s) alebo (%s)"
 
 #: statistics.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "(no dives)"
-msgstr "Editovať ponory"
+msgstr "(žiadné ponory)"
 
 #: gtk-gui.c:1995
 msgid "(nothing)"
-msgstr ""
+msgstr "(nič)"
 
 #: planner.c:1248
 msgid "0.6 cuft/min"
-msgstr ""
+msgstr "0.6 kubst/min"
 
 #: planner.c:1247
 msgid "0.7 cuft/min"
-msgstr ""
+msgstr "0.7 kubst/min"
 
 #: planner.c:1253
 msgid "17 l/min"
-msgstr ""
+msgstr "17 l/min"
 
 #: print.c:909
 msgid "2 dives per page"
-msgstr ""
+msgstr "2 ponory na stránku"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
-msgstr ""
+msgstr "2 dielny oblek"
 
 #: planner.c:1252
 msgid "20 l/min"
-msgstr ""
+msgstr "20 l/min"
 
 #: gtk-gui.c:837
 msgid "3m increments for calculated ceiling"
-msgstr ""
+msgstr "3m krok pre výpočet hladiny"
 
 #: print.c:905
 msgid "6 dives per page"
-msgstr ""
+msgstr "6 ponorov na stránku"
 
 #: planner.c:1197
 msgid ""
@@ -281,10 +317,16 @@ msgid ""
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr ""
+"<small>Pridaj segment.\n"
+"Každý riadok predstavuje časť plánovaného ponoru.\n"
+"Riadok s hĺbkou, časom a dýchacou zmesou popisuje segment, ktorý končí v zadanej hĺbke,  trvá zadaný čas (ak zadaný relatívne, napr. '+3:30') alebo končí v zadaný čas (ak zadaný absolútne), a používa zadanú zmes.\n"
+"Nezadaná zmes znamená 'použi predchádzajúcu zmes' (alebo vzduch, ak žiadna zmes nebola zadaná).\n"
+"Riadok, ktorý ma zadanú hĺbku a dýchaciu zmes, no nemá zadaný čas, je špeciálny; informuje plánovač, že daná zmes je plánovaná len pre výstup po dosiahnutí zadanej hĺbky.\n"
+"CC SetPoint špecifikuje CC (rebreather) ponory, čiže nevypĺňať pre OC.</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
-msgstr ""
+msgstr "Vzduch"
 
 #: gtk-gui.c:1054 gtk-gui.c:1377
 msgid "About Subsurface"
@@ -304,25 +346,24 @@ msgstr "Pridať do akcie vyššie"
 
 #: planner.c:1272
 msgid "Add waypoint"
-msgstr ""
+msgstr "Pridaj zastávku"
 
 #: statistics.c:848
 msgid "Air Press"
-msgstr ""
+msgstr "Tlak vzduchu"
 
 #: statistics.c:847
-#, fuzzy
 msgid "Air Temp"
-msgstr "Priemerná teplota"
+msgstr "Teplota vzduchu"
 
 #: info.c:814
 #, c-format
 msgid "Air Temp in %s"
-msgstr ""
+msgstr "Teplota vzduchu v %s"
 
 #: download-dialog.c:391
 msgid "Always prefer downloaded dive"
-msgstr ""
+msgstr "Vždycky preferuje nahratý ponor"
 
 #: main.c:71
 msgid "Apr"
@@ -387,19 +428,19 @@ msgstr "Partner"
 
 #: planner.c:1152
 msgid "CC SetPoint"
-msgstr ""
+msgstr "CC SetPoint"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
-msgstr ""
+msgstr "Zrušené, korektne ukončenie..."
 
 #: libdivecomputer.c:757
 msgid "Cancelled..."
-msgstr ""
+msgstr "Zrušené..."
 
 #: webservice.c:27
 msgid "Cannot parse response!"
-msgstr ""
+msgstr "Nemôžem spracovať odpoveď!"
 
 #: gtk-gui.c:648
 msgid "Celsius"
@@ -423,11 +464,11 @@ msgstr "Zredukovať všetky"
 
 #: webservice.c:119
 msgid "Connecting..."
-msgstr ""
+msgstr "Pripájam..."
 
 #: webservice.c:23
 msgid "Connection Error: "
-msgstr ""
+msgstr "Chyba spojenia"
 
 #: divelist.c:2489
 msgid "Create new trip above"
@@ -450,13 +491,13 @@ msgid "Cylinders"
 msgstr "Fľaše"
 
 #: profile.c:2102
-#, fuzzy, c-format
+#, c-format
 msgid "D:%.1f %s"
-msgstr "%.*f %s/min"
+msgstr "H:%.1f %s"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr ""
+msgstr "VAROVANIE: TOTO JE NOVÁ IMPLEMENTÁCIA BUHLMANOVHO ALGORITMU A NA ŇOM IMPLEMENTOVANÝ PLÁNOVAČ PONOROV, KTORÝ VŠAK BOL MINIMÁLNE TESTOVANÝ. V ŽIADNOM PRÍPADE SA NEDOPORUČUJE PLÁNOVAŤ SKUTOČNÉ PONORY LEN POMOCOU TOHTO PROGRAMU."
 
 #: divelist.c:1424 print.c:486 statistics.c:830
 msgid "Date"
@@ -480,7 +521,7 @@ msgstr "Default XML Súbor"
 
 #: gtk-gui.c:1310
 msgid "Delete a dive computer information entry"
-msgstr ""
+msgstr "Zmaž údaje o počítači"
 
 #: divelist.c:2239 divelist.c:2292 divelist.c:2384
 msgid "Delete dive"
@@ -508,9 +549,8 @@ msgid "Depth:"
 msgstr "Hĺbka:"
 
 #: gtk-gui.c:1269
-#, fuzzy
 msgid "Device Id"
-msgstr "Názov zariadenia"
+msgstr "Id zariadenia"
 
 #: download-dialog.c:330
 msgid "Device or mount point"
@@ -533,9 +573,8 @@ msgid "Dive %d: %s %d %04d"
 msgstr "Ponor #%d: %s %d %04d"
 
 #: gtk-gui.c:1977
-#, fuzzy
 msgid "Dive Computer Nickname"
-msgstr "Počítač"
+msgstr "Voliteľný názov počítača"
 
 #: gtk-gui.c:1607 info.c:998 statistics.c:821
 msgid "Dive Info"
@@ -547,7 +586,7 @@ msgstr "Poznámky"
 
 #: planner.c:1219
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
-msgstr ""
+msgstr "Plán ponoru - TOTO JE LEN SIMULÁCIA; NEPOUŽÍVAJ NA POTÁPANIE"
 
 #: statistics.c:831
 msgid "Dive Time"
@@ -563,7 +602,7 @@ msgstr "Info: Čas Ponoru"
 
 #: download-dialog.c:288
 msgid "Dive computer vendor and product"
-msgstr ""
+msgstr "Počítač - výrobca a produkt"
 
 #: libdivecomputer.c:681
 msgid "Dive data import error"
@@ -573,10 +612,9 @@ msgstr "Chyba importu dát"
 msgid "Dive details"
 msgstr "Detaily ponoru"
 
-#: gps.c:206
-#, fuzzy
+#: gps.c:219
 msgid "Dive locations"
-msgstr "Poznámky"
+msgstr "Miesto ponoru"
 
 #: info.c:799
 msgid "Dive master"
@@ -584,7 +622,7 @@ msgstr "Divemaster"
 
 #: planner.c:1241
 msgid "Dive starts when?"
-msgstr ""
+msgstr "Začiatok ponoru?"
 
 #: print.c:486
 msgid "Dive#"
@@ -603,9 +641,8 @@ msgid "Dives"
 msgstr "Ponory"
 
 #: gtk-gui.c:1373
-#, fuzzy
 msgid "Dives Locations"
-msgstr "Miesto"
+msgstr "Miesta ponorov"
 
 #: download-dialog.c:366
 msgid "Download From Dive Computer"
@@ -616,18 +653,16 @@ msgid "Download From Dive Computer..."
 msgstr "Nahratie údajov z počítača..."
 
 #: webservice.c:210
-#, fuzzy
 msgid "Download From Web Service"
-msgstr "Nahratie údajov z počítača"
+msgstr "Nahratie údajov z internetu"
 
 #: gtk-gui.c:1367
-#, fuzzy
 msgid "Download From Web Service..."
-msgstr "Nahratie údajov z počítača..."
+msgstr "Nahratie údajov z internetu..."
 
 #: webservice.c:29
 msgid "Download Success!"
-msgstr ""
+msgstr "Nahrávanie úspešne ukončené!"
 
 #: print.c:486 statistics.c:175
 msgid "Duration"
@@ -644,28 +679,27 @@ msgstr ""
 #: planner.c:77
 #, c-format
 msgid "EAN%d"
-msgstr ""
+msgstr "EAN%d"
 
 #: planner.c:1124
 msgid "EAN32"
-msgstr ""
+msgstr "EAN32"
 
 #: planner.c:1125
 msgid "EAN36"
-msgstr ""
+msgstr "EAN36"
 
 #: info.c:222
 msgid "Edit"
 msgstr "Editovať"
 
 #: gtk-gui.c:1382
-#, fuzzy
 msgid "Edit Device Names"
-msgstr "Názov zariadenia"
+msgstr "Edituj názov zariadenia"
 
 #: gtk-gui.c:1242
 msgid "Edit Dive Computer Nicknames"
-msgstr ""
+msgstr "Zmena voliteľného mena počítača"
 
 #: info.c:957
 msgid "Edit Trip Info"
@@ -677,16 +711,15 @@ msgstr "Editovať sumár"
 
 #: gtk-gui.c:1302
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
-msgstr ""
+msgstr "Zmeň voliteľný názov počítača dvojitým kliknutím na jeho meno"
 
 #: divelist.c:2381
 msgid "Edit dive"
 msgstr "Editovať ponor"
 
 #: divelist.c:2438 divelist.c:2461
-#, fuzzy
 msgid "Edit dive date/time"
-msgstr "Editovať ponor"
+msgstr "Editovať dátum/čas"
 
 #: divelist.c:2380
 msgid "Edit dives"
@@ -709,22 +742,20 @@ msgid "End"
 msgstr "Koniec"
 
 #: planner.c:1149
-#, fuzzy
 msgid "Ending Depth"
-msgstr "Min. hĺbka"
+msgstr "Cieľová hĺbka"
 
 #: webservice.c:223
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
-msgstr ""
+msgstr "Zadaj identifikačné údaje užívateľa a použi 'Download'. Po ukončení nahrávania údajov môžeš použiť 'Apply' ak si praješ aplikovať zmeny."
 
 #: gtk-gui.c:1603 info.c:833
 msgid "Equipment"
 msgstr "Výstroj"
 
 #: libdivecomputer.c:471
-#, fuzzy
 msgid "Error obtaining water salinity"
-msgstr "Chyba spracovania vzoriek"
+msgstr "Chyba získania slanosti vody"
 
 #: libdivecomputer.c:419
 msgid "Error parsing the datetime"
@@ -822,7 +853,7 @@ msgstr "Filter"
 
 #: download-dialog.c:385
 msgid "Force download of all dives"
-msgstr ""
+msgstr "Vynútiť načítanie všetkých ponorov"
 
 #: main.c:62
 msgid "Fri"
@@ -834,7 +865,7 @@ msgstr ""
 
 #: planner.c:1264
 msgid "GFhigh for plan"
-msgstr ""
+msgstr "GFhigh pre plán"
 
 #: gtk-gui.c:845
 msgid "GFlow"
@@ -842,11 +873,11 @@ msgstr ""
 
 #: planner.c:1263
 msgid "GFlow for plan"
-msgstr ""
+msgstr "GFlow pre plán"
 
 #: info.c:777
 msgid "GPS (WGS84 or GPS format)"
-msgstr ""
+msgstr "GPS (WGS84 alebo GPS format)"
 
 #. ++GETTEXT Gas Used is amount used
 #: print.c:197
@@ -854,13 +885,11 @@ msgid "Gas Used"
 msgstr "Použitá zmes"
 
 #: statistics.c:857
-#, fuzzy
 msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Použitá zmes"
 
 #: planner.c:1151
-#, fuzzy
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Použitá zmes"
@@ -868,7 +897,7 @@ msgstr "Použitá zmes"
 #: planner.c:536
 #, c-format
 msgid "Gas consumption:\n"
-msgstr ""
+msgstr "Spotreba plynu:\n"
 
 #: equipment.c:959 print.c:195
 msgid "Gasmix"
@@ -876,7 +905,7 @@ msgstr "Zmes"
 
 #: gtk-gui.c:625
 msgid "General Settings"
-msgstr ""
+msgstr "Všeobecné nastavenia"
 
 #: gtk-gui.c:1358
 msgid "Help"
@@ -896,15 +925,15 @@ msgstr "Info"
 
 #: uemis-downloader.c:769
 msgid "Init Communication"
-msgstr ""
+msgstr "Inicializácia komunikácie"
 
 #: gtk-gui.c:1385
 msgid "Input Plan"
-msgstr ""
+msgstr "Plánovanie"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
-msgstr ""
+msgstr "Neplatný identifikátor užívateľa!"
 
 #. ++GETTEXT: these are three letter months - we allow up to six code bytes
 #: main.c:71
@@ -920,9 +949,8 @@ msgid "Jun"
 msgstr "Jun"
 
 #: gtk-gui.c:1060
-#, fuzzy
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
-msgstr "Linus Torvalds, Dirk Hohndel a ďalší, 2011, 2012"
+msgstr "Linus Torvalds, Dirk Hohndel a ďalší, 2011, 2012, 2013"
 
 #: gtk-gui.c:1378
 msgid "List"
@@ -963,7 +991,7 @@ msgstr "Mar"
 
 #: gps.c:59
 msgid "Mark location here"
-msgstr ""
+msgstr "Označ pozíciu"
 
 #: uemis.c:230
 msgid "Marker"
@@ -1003,7 +1031,7 @@ msgstr ""
 #: print.c:359
 #, c-format
 msgid "Max. CNS"
-msgstr ""
+msgstr "Max. CNS"
 
 #: equipment.c:1454
 msgid "MaxPress"
@@ -1029,9 +1057,8 @@ msgid "May"
 msgstr "Máj"
 
 #: divelist.c:2372
-#, fuzzy
 msgid "Merge dives"
-msgstr "Zmazať ponory"
+msgstr "Zlučiť ponory"
 
 #: divelist.c:2413
 msgid "Merge trip with trip above"
@@ -1078,7 +1105,7 @@ msgstr "Rôzne voľby"
 
 #: gtk-gui.c:1264
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #: main.c:62
 msgid "Mon"
@@ -1090,7 +1117,7 @@ msgstr "Multiplatformový SW na správu ponorov v C"
 
 #: info.c:651
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: gtk-gui.c:1359
 msgid "New"
@@ -1102,12 +1129,11 @@ msgstr "Nové začiatočné číslo"
 
 #: gtk-gui.c:1384
 msgid "Next DC"
-msgstr ""
+msgstr "Nasledujúci DC"
 
 #: gtk-gui.c:1274 gtk-gui.c:1999
-#, fuzzy
 msgid "Nickname"
-msgstr "Názov zariadenia"
+msgstr "Voliteľný názov"
 
 #: uemis.c:232
 msgid "No Tank Data"
@@ -1140,7 +1166,7 @@ msgstr "Nešpecifikovaná PTHREAD chyba"
 
 #: gtk-gui.c:1321
 msgid "Ok to delete the selected entry?"
-msgstr ""
+msgstr "Môžem zmazať položku?"
 
 #: gtk-gui.c:272
 msgid "Open File"
@@ -1153,7 +1179,7 @@ msgstr "Otvoriť..."
 #: print.c:167
 #, c-format
 msgid "Oxygen"
-msgstr ""
+msgstr "Kyslik"
 
 #: libdivecomputer.c:153
 msgid "PO2"
@@ -1177,11 +1203,11 @@ msgstr "psi"
 
 #: info.c:788
 msgid "Pick on map"
-msgstr ""
+msgstr "Vyber na mape"
 
 #: gtk-gui.c:1357
 msgid "Planner"
-msgstr ""
+msgstr "Plánovač"
 
 #: gtk-gui.c:610
 msgid "Preferences"
@@ -1201,7 +1227,7 @@ msgstr "Tlak:"
 
 #: gtk-gui.c:1383
 msgid "Prev DC"
-msgstr ""
+msgstr "Predchádzajúci DC"
 
 #: print.c:932
 msgid "Print only selected dives"
@@ -1224,9 +1250,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: gtk-gui.c:736
-#, fuzzy
 msgid "Profile Settings"
-msgstr "Profil"
+msgstr "Nastavenia profilu"
 
 #: gtk-gui.c:1376
 msgid "Quit"
@@ -1242,12 +1267,12 @@ msgstr "Upozornenie: zostávajúci čas plynu"
 
 #: info.c:805 info.c:1258
 msgid "Rating"
-msgstr "Rating"
+msgstr "Hodnotenie"
 
 #: uemis-downloader.c:364
-#, fuzzy, c-format
+#, c-format
 msgid "Reading %s %s"
-msgstr "Načítavam ponor %s"
+msgstr "Načítavam %s %s"
 
 #: divelist.c:2084 divelist.c:2428
 msgid "Remove Trip"
@@ -1284,12 +1309,11 @@ msgstr "Spotreba plynu"
 
 #: planner.c:1258
 msgid "SAC during decostop"
-msgstr ""
+msgstr "SAC počas dekompresnej zastávky"
 
 #: planner.c:1257
-#, fuzzy
 msgid "SAC during dive"
-msgstr "Pridať ponor"
+msgstr "SAC počas ponoru"
 
 #: file.c:75
 msgid "SDE file"
@@ -1316,26 +1340,22 @@ msgid "Save File As"
 msgstr "Uložiť súbor ako"
 
 #: divelist.c:2445
-#, fuzzy
 msgid "Save as"
-msgstr "Uložiť ako..."
+msgstr "Uložiť ako"
 
 #: gtk-gui.c:1361
 msgid "Save..."
 msgstr "Uložiť..."
 
 #: planner.c:1150
-#, fuzzy
 msgid "Segment Time"
-msgstr "Priemerný čas"
+msgstr "Časový segment"
 
 #: gtk-gui.c:948
-#, fuzzy
 msgid "Select Events"
 msgstr "Voľba udalosti"
 
 #: gtk-gui.c:1375
-#, fuzzy
 msgid "Select Events..."
 msgstr "Voľba udalosti..."
 
@@ -1366,42 +1386,41 @@ msgstr "Zobraz stĺpce"
 
 #: gtk-gui.c:816
 msgid "Show EAD, END, EADD"
-msgstr ""
+msgstr "Zobraz EAD, END, EADD"
 
 #: gtk-gui.c:799
 msgid "Show MOD"
-msgstr ""
+msgstr "Zobraz MOD"
 
 #: gtk-gui.c:832
 msgid "Show calculated ceiling"
-msgstr ""
+msgstr "Zobraz vypočítanú hladinu"
 
 #: gtk-gui.c:824
 msgid "Show dc reported ceiling in red"
-msgstr ""
+msgstr "Zobraz počítačom hlásenú hladinu červenou"
 
 #: divelist.c:2478
 msgid "Show in map"
-msgstr ""
+msgstr "Zobraz na mape"
 
 #: gtk-gui.c:782
 msgid "Show pHe graph"
-msgstr ""
+msgstr "Zobraz pHe graf"
 
 #: gtk-gui.c:763
 #, c-format
 msgid "Show pN%s graph"
-msgstr ""
+msgstr "Zobraz pN%s graf"
 
 #: gtk-gui.c:744
 #, c-format
 msgid "Show pO%s graph"
-msgstr ""
+msgstr "Zobraz pO%s graf"
 
 #: planner.c:192
-#, fuzzy
 msgid "Simulated Dive"
-msgstr "Zmazať Ponor"
+msgstr "Simulovaný Ponor"
 
 #: equipment.c:935 equipment.c:1453
 msgid "Size"
@@ -1421,30 +1440,29 @@ msgstr "Štart"
 
 #: uemis-downloader.c:782
 msgid "Start download"
-msgstr ""
+msgstr "Začať nahrávanie"
 
 #: statistics.c:772
 msgid "Statistics"
 msgstr "Štatistika"
 
 #: statistics.c:708
-#, fuzzy, c-format
+#, c-format
 msgid "Statistics %s"
-msgstr "Štatistika"
+msgstr "Štatistika %s"
 
 #: gtk-gui.c:1611
 msgid "Stats"
 msgstr "Štatistiky"
 
 #: webservice.c:243
-#, fuzzy
 msgid "Status"
-msgstr "Štatistiky"
+msgstr "Stav"
 
 #: planner.c:518
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
-msgstr ""
+msgstr "Zostaň v %.*f %s na %d:%02d min - runtime %d:%02u na %s\n"
 
 #: divelist.c:1430 gtk-gui.c:688 info.c:806 info.c:1259
 msgid "Suit"
@@ -1461,12 +1479,12 @@ msgstr "Povrchový interval"
 
 #: planner.c:1242
 msgid "Surface Pressure (mbar)"
-msgstr ""
+msgstr "Tlak na hladine (mbar)"
 
 #: planner.c:528
 #, c-format
 msgid "Switch gas to %s\n"
-msgstr ""
+msgstr "Zmena plynu na %s\n"
 
 #: print.c:913
 msgid "Table print"
@@ -1482,7 +1500,7 @@ msgstr "Info: Tlak vo fľaši"
 
 #: gtk-gui.c:718
 msgid "Tec Settings"
-msgstr ""
+msgstr "Tec nastavenia"
 
 #: gtk-gui.c:663
 msgid "Temp"
@@ -1513,6 +1531,8 @@ msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
 msgstr ""
+"Na editovanie informácii o ponore\n"
+"klikni 2x na ponor v zozname"
 
 #: gtk-gui.c:1391
 msgid "Toggle Zoom"
@@ -1528,14 +1548,14 @@ msgid "Total Time"
 msgstr "Celkový čas"
 
 #: print.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "Total Weight:"
-msgstr "Závažie:"
+msgstr "Celková hmotnosť:"
 
 #: planner.c:509
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
-msgstr ""
+msgstr "Prechod na %.*f %s v %d:%02d min - runtime %d:%02u na %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:268
@@ -1554,15 +1574,14 @@ msgid "Type"
 msgstr "Typ"
 
 #: uemis-downloader.c:28
-#, fuzzy
 msgid ""
 "Uemis Zurich: File System is almost full\n"
 "Disconnect/reconnect the dive computer\n"
 "and click 'Retry'"
 msgstr ""
 "Uemis Zurich: Súborovy systém takmer plný\n"
-"Odpoj a znovu pripoj počítač\n"
-"a skus znovu"
+"Odpoj/znovu pripoj počítač\n"
+"a klikni na 'Retry'"
 
 #: uemis-downloader.c:29
 msgid ""
@@ -1596,13 +1615,13 @@ msgstr "Nie je možné otvoriť %s %s (%s)"
 msgid "Units"
 msgstr "Jednotky"
 
-#: gps.c:218
+#: gps.c:217
 msgid "Use right click to mark dive location at cursor"
 msgstr ""
 
 #: webservice.c:230
 msgid "User Identifier"
-msgstr ""
+msgstr "Identifikátor Uživateľa"
 
 #: gtk-gui.c:1355
 msgid "View"
@@ -1610,7 +1629,7 @@ msgstr "Náhľad"
 
 #: info.c:811 statistics.c:840
 msgid "Visibility"
-msgstr ""
+msgstr "Viditeľnosť"
 
 #: gtk-gui.c:642
 msgid "Volume:"
@@ -1665,6 +1684,10 @@ msgid ""
 "Subsurface can maintain a nickname for this device to distinguish it from the existing one. The default is the model and device ID as shown below.\n"
 "If you don't want to name this dive computer click 'Cancel' and Subsurface will simply display its model as its name (which may mean that you cannot tell the two dive computers apart in the logs)."
 msgstr ""
+"Už máš jeden počítač tohto druhu\n"
+"pomenovaný ako %s\n"
+"Subsurface vie pracovať s voliteľnými menami pre rovnaké typy počítačov, aby bolo možné ich navzájom oddeliť. Prednastavený je model s identifikáciou zobrazený nižšie.\n"
+"Ak nechceš pomenovať tento počítač, klikni na 'Cancel' a Subsurface jednoducho zobrazí model počítača ako jeho meno (čo môže znamenať, že budeš mať problém identifikovať počítač medzi záznamami o ponoroch)."
 
 #: gtk-gui.c:212
 msgid ""
@@ -1735,16 +1758,15 @@ msgstr "cuft"
 
 #: uemis-downloader.c:384
 msgid "data"
-msgstr ""
+msgstr "data"
 
 #: libdivecomputer.c:149
-#, fuzzy
 msgid "deco stop"
-msgstr "hĺbkový zastávka"
+msgstr "dekompresná zastávka"
 
 #: libdivecomputer.c:152
 msgid "deepstop"
-msgstr "hĺbkový zastávka"
+msgstr "hĺbková zastávka"
 
 #: uemis-downloader.c:405
 msgid "divelog entry id"
@@ -1760,37 +1782,36 @@ msgstr "čas ponoru"
 
 #: uemis-downloader.c:589
 msgid "drysuit"
-msgstr ""
+msgstr "suchý oblek"
 
 #: planner.c:734
-#, fuzzy
 msgid "ean"
-msgstr "Jan"
+msgstr "ean"
 
 #: statistics.c:681
 #, c-format
 msgid "for all dives"
-msgstr ""
+msgstr "pre všetky ponory"
 
 #: statistics.c:677
-#, fuzzy, c-format
+#, c-format
 msgid "for dive #%d"
-msgstr "Ponor #%d - "
+msgstr "pre ponor #%d"
 
 #: statistics.c:636
 #, c-format
 msgid "for dives #"
-msgstr ""
+msgstr "pre ponory"
 
 #: statistics.c:679
-#, fuzzy, c-format
+#, c-format
 msgid "for selected dive"
-msgstr "Tlačiť vybrané ponory"
+msgstr "pre vybraný ponor"
 
 #: statistics.c:643
-#, fuzzy, c-format
+#, c-format
 msgid "for selected dives"
-msgstr "Tlačiť vybrané ponory"
+msgstr "pre vybrané ponory"
 
 #: dive.c:117 divelist.c:1426 info.c:1178 planner.c:838
 msgid "ft"
@@ -1798,7 +1819,7 @@ msgstr "ft"
 
 #: uemis-downloader.c:590
 msgid "full suit"
-msgstr ""
+msgstr "celotelový oblek"
 
 #: libdivecomputer.c:151 libdivecomputer.c:154
 msgid "gaschange"
@@ -1818,7 +1839,7 @@ msgstr "neplatné číslo udalosti"
 
 #: uemis-downloader.c:590
 msgid "jacket"
-msgstr ""
+msgstr "vesta"
 
 #: dive.c:141 equipment.c:1004 gtk-gui.c:653
 msgid "kg"
@@ -1834,7 +1855,7 @@ msgstr "US libra"
 
 #: uemis-downloader.c:590
 msgid "long john"
-msgstr ""
+msgstr "long john"
 
 #: dive.c:112 info.c:1178
 msgid "m"
@@ -1842,11 +1863,11 @@ msgstr "m"
 
 #: gtk-gui.c:804
 msgid "max ppO2"
-msgstr ""
+msgstr "max. ppO2"
 
 #: divelist.c:1435 gtk-gui.c:731
 msgid "maxCNS"
-msgstr ""
+msgstr "max. CNS"
 
 #: libdivecomputer.c:153
 msgid "maxdepth"
@@ -1854,7 +1875,7 @@ msgstr "max. hĺbka"
 
 #: uemis-downloader.c:591
 msgid "membrane"
-msgstr ""
+msgstr "membrana"
 
 #: divelist.c:1427 planner.c:903
 msgid "min"
@@ -1866,9 +1887,8 @@ msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 
 #: uemis-downloader.c:409
-#, fuzzy
 msgid "more data dive id"
-msgstr "viac než %d dní"
+msgstr ""
 
 #: statistics.c:515
 #, c-format
@@ -1877,7 +1897,7 @@ msgstr "viac než %d dní"
 
 #: libdivecomputer.c:154
 msgid "non stop time"
-msgstr ""
+msgstr "non stop čas"
 
 #: libdivecomputer.c:149
 msgid "none"
@@ -1885,17 +1905,17 @@ msgstr "žiaden"
 
 #: gtk-gui.c:787
 msgid "pHe threshold"
-msgstr ""
+msgstr "pHe hranica"
 
 #: gtk-gui.c:769
 #, c-format
 msgid "pN%s threshold"
-msgstr ""
+msgstr "pN%s hranica"
 
 #: gtk-gui.c:750
 #, c-format
 msgid "pO%s threshold"
-msgstr ""
+msgstr "pO%s hranica"
 
 #: dive.c:42
 msgid "pascal"
@@ -1927,11 +1947,11 @@ msgstr "bezpečnostná zastávka (dobrovoľná)"
 
 #: uemis-downloader.c:589
 msgid "semidry"
-msgstr ""
+msgstr "polosuchý"
 
 #: uemis-downloader.c:590
 msgid "shorty"
-msgstr ""
+msgstr "krátky"
 
 #: libdivecomputer.c:150
 msgid "surface"
@@ -1964,7 +1984,7 @@ msgstr "nešpecifikovaný"
 
 #: uemis-downloader.c:590
 msgid "vest"
-msgstr ""
+msgstr "vesta"
 
 #: libdivecomputer.c:150
 msgid "violation"
@@ -1976,7 +1996,7 @@ msgstr "hmotnosť"
 
 #: uemis-downloader.c:589
 msgid "wetsuit"
-msgstr ""
+msgstr "neoprén"
 
 #: libdivecomputer.c:149
 msgid "workload"
