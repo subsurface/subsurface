@@ -326,6 +326,8 @@ void save_window_geometry(void)
 	gtk_window_get_size(GTK_WINDOW (main_window), &window_width, &window_height);
 	subsurface_set_conf_int("window_width", window_width);
 	subsurface_set_conf_int("window_height", window_height);
+
+	subsurface_flush_conf();
 }
 
 void restore_window_geometry(void)

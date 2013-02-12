@@ -47,7 +47,8 @@ void subsurface_set_conf_bool(char *name, int value)
 
 void subsurface_set_conf_int(char *name, int value)
 {
-	/* CF pref stuff here? */
+	CFNumberRef numRef = CFNumberCreate(NULL, kCFNumberIntType, &value);
+	CFPreferencesSetAppValue(CFSTR_VAR(name), numRef, SUBSURFACE_PREFERENCES);
 }
 
 const void *subsurface_get_conf(char *name)
@@ -72,9 +73,13 @@ int subsurface_get_conf_bool(char *name)
 
 int subsurface_get_conf_int(char *name)
 {
+	Boolean exists;
+	CFIndex value;
 
-	return -1; /* CF pref stuff here? */
-
+	value = CFPreferencesGetAppIntegerValue(CFSTR_VAR(name), SUBSURFACE_PREFERENCES, &exists);
+	if (!exists)
+		return -1;
+	return value;
 }
 
 void subsurface_flush_conf(void)
