@@ -90,7 +90,7 @@ Building subsurface on a Mac
 ----------------------------
 Install MacPorts and install the dependencies from MacPorts:
 sudo port install gtk2 +quartz py27-pygtk +quartz libusb gtk-osx-application \
-     automake autoconf libtool libsoup osm-gps-map
+     automake autoconf libtool libsoup osm-gps-map libzip
 
 Install libdivecomputer:
 git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
