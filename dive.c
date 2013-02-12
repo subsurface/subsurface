@@ -661,14 +661,15 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			asc_desc_time = duration/2;
 
 		dc->meandepth.mm = depth*(duration-asc_desc_time)/duration;
-		return;
+		if (depth > maxdepth)
+			maxdepth = depth;
+	} else {
+		update_duration(&dc->duration, end - start);
+		if (start != end)
+			depthtime /= (end - start);
+
+		update_depth(&dc->meandepth, depthtime);
 	}
-
-	update_duration(&dc->duration, end - start);
-	if (start != end)
-		depthtime /= (end - start);
-
-	update_depth(&dc->meandepth, depthtime);
 	update_temperature(&dc->watertemp, mintemp);
 	update_depth(&dc->maxdepth, maxdepth);
 	if (maxdepth > dive->maxdepth.mm)
