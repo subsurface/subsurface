@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2013-02-09 20:32+0100\n"
+"PO-Revision-Date: 2013-02-12 09:26+0100\n"
 "Last-Translator: Reinout Hoornweg <reinout@xs4all.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
@@ -1617,7 +1617,7 @@ msgstr "Eenheden"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Gebruik de rechtermuisknop om een duiklocatie te markeren"
 
 #: webservice.c:230
 msgid "User Identifier"
