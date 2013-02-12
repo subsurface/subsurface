@@ -211,10 +211,12 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 		gtk_window_set_modal(GTK_WINDOW(*window), TRUE);
 		g_signal_connect(*window, "destroy", G_CALLBACK(on_close), (gpointer)window);
 		g_signal_connect(G_OBJECT(map), "scroll-event", G_CALLBACK(scroll_cb), NULL);
-        g_signal_connect(*window, "key_press_event", G_CALLBACK (key_press_event), NULL);
+		g_signal_connect(*window, "key_press_event", G_CALLBACK (key_press_event), NULL);
 	}
-	if (callback)
+	if (callback) {
 		g_signal_connect(G_OBJECT(map), "button-press-event", G_CALLBACK(button_cb), callback);
+		gtk_window_set_title(GTK_WINDOW(*window), _("Use right click to mark dive location at cursor"));
+	}
 	gtk_widget_show_all(*window);
 	if (callback)
 		gtk_grab_add(*window);
