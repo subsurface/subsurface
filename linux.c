@@ -38,6 +38,11 @@ void subsurface_set_conf_bool(char *name, int value)
 	gconf_client_set_bool(gconf, gconf_name(name), value > 0, NULL);
 }
 
+void subsurface_set_conf_int(char *name, int value)
+{
+	gconf_client_set_int(gconf, gconf_name(name), value , NULL);
+}
+
 const void *subsurface_get_conf(char *name)
 {
 	return gconf_client_get_string(gconf, gconf_name(name), NULL);
@@ -54,6 +59,15 @@ int subsurface_get_conf_bool(char *name)
 	ret = gconf_value_get_bool(val);
 	gconf_value_free(val);
 	return ret;
+}
+
+int subsurface_get_conf_int(char *name)
+{
+	int val = gconf_client_get_int(gconf, gconf_name(name), NULL);
+	if(!val)
+		return -1;
+
+	return val;
 }
 
 void subsurface_flush_conf(void)

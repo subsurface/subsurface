@@ -84,6 +84,11 @@ void subsurface_set_conf_bool(char *name, int value)
 	free(wname);
 }
 
+void subsurface_set_conf_int(char *name, int value)
+{
+	/* call to set registry key to value here? */
+}
+
 const void *subsurface_get_conf(char *name)
 {
 	const int csize = 64;
@@ -125,6 +130,11 @@ const void *subsurface_get_conf(char *name)
 int subsurface_get_conf_bool(char *name)
 {
 	return get_from_registry(hkey, name);
+}
+
+int subsurface_get_conf_int(char *name)
+{
+	return -1; /* windows registry call here? */
 }
 
 void subsurface_flush_conf(void)

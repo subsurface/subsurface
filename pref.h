@@ -44,9 +44,11 @@ extern struct preferences prefs, default_prefs;
 extern void subsurface_open_conf(void);
 extern void subsurface_set_conf(char *name, const char *value);
 extern void subsurface_set_conf_bool(char *name, gboolean value);
+extern void subsurface_set_conf_int(char *name, int value);
 extern void subsurface_unset_conf(char *name);
 extern const void *subsurface_get_conf(char *name);
 extern int subsurface_get_conf_bool(char *name);
+extern int subsurface_get_conf_int(char *name);
 extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 

@@ -45,6 +45,11 @@ void subsurface_set_conf_bool(char *name, int value)
 		value ? kCFBooleanTrue : kCFBooleanFalse, SUBSURFACE_PREFERENCES);
 }
 
+void subsurface_set_conf_int(char *name, int value)
+{
+	/* CF pref stuff here? */
+}
+
 const void *subsurface_get_conf(char *name)
 {
 	CFPropertyListRef strpref;
@@ -63,6 +68,13 @@ int subsurface_get_conf_bool(char *name)
 	if (!exists)
 		return -1;
 	return boolpref;
+}
+
+int subsurface_get_conf_int(char *name)
+{
+
+	return -1; /* CF pref stuff here? */
+
 }
 
 void subsurface_flush_conf(void)

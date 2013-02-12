@@ -319,6 +319,29 @@ static void file_open(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+void save_window_geometry(void)
+{
+	/* GDK_GRAVITY_NORTH_WEST assumed ( it is the default ) */
+	int window_width, window_height;
+	gtk_window_get_size(GTK_WINDOW (main_window), &window_width, &window_height);
+	subsurface_set_conf_int("window_width", window_width);
+	subsurface_set_conf_int("window_height", window_height);
+}
+
+void restore_window_geometry(void)
+{
+	int window_width, window_height;
+
+	window_height = subsurface_get_conf_int("window_height");
+	window_width = subsurface_get_conf_int("window_width");
+
+	window_height == -1 ? window_height = 300 : window_height;
+	window_width == -1 ? window_width = 700 : window_width;
+
+	gtk_window_resize (GTK_WINDOW (main_window), window_width, window_height);
+
+}
+
 gboolean on_delete(GtkWidget* w, gpointer data)
 {
 	/* Make sure to flush any modified dive data */
@@ -329,6 +352,7 @@ gboolean on_delete(GtkWidget* w, gpointer data)
 		quit = ask_save_changes();
 
 	if (quit){
+		save_window_geometry();
 		return FALSE; /* go ahead, kill the program, we're good now */
 	} else {
 		return TRUE; /* We are not leaving */
@@ -352,6 +376,7 @@ static void quit(GtkWidget *w, gpointer data)
 		quit = ask_save_changes();
 
 	if (quit){
+		save_window_geometry();
 		dive_list_destroy();
 		gtk_main_quit();
 	}
@@ -1647,6 +1672,7 @@ void init_ui(int *argcp, char ***argvp)
 	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (on_key_press), dive_list);
 
 	gtk_widget_set_app_paintable(win, TRUE);
+	restore_window_geometry();
 	gtk_widget_show_all(win);
 
 	return;
