@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2013-02-11 14:04+0300\n"
+"PO-Revision-Date: 2013-02-12 12:38+0300\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -1613,7 +1613,7 @@ msgstr "Единицы"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Для отметки нажмите правую кнопку мыши"
 
 #: webservice.c:230
 msgid "User Identifier"
