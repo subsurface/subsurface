@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2013-02-09 10:44-0800\n"
+"PO-Revision-Date: 2013-02-11 20:16-0800\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -1616,7 +1616,7 @@ msgstr "Einheiten"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Der Tauchplatz kann mittels rechter Maustaste an der Mausposition markiert werden"
 
 #: webservice.c:230
 msgid "User Identifier"

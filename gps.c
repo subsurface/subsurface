@@ -203,7 +203,6 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 		*window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_window_set_position(GTK_WINDOW(*window), GTK_WIN_POS_MOUSE);
 		gtk_window_set_default_size(GTK_WINDOW(*window), 560, 360);
-		gtk_window_set_title(GTK_WINDOW(*window), _("Dive locations"));
 		gtk_container_set_border_width(GTK_CONTAINER(*window), 5);
 		gtk_window_set_resizable(GTK_WINDOW(*window), TRUE);
 		gtk_container_add(GTK_CONTAINER(*window), GTK_WIDGET(map));
@@ -216,6 +215,8 @@ void show_map(OsmGpsMap *map, GtkWidget **window, struct dive *dive, void (*call
 	if (callback) {
 		g_signal_connect(G_OBJECT(map), "button-press-event", G_CALLBACK(button_cb), callback);
 		gtk_window_set_title(GTK_WINDOW(*window), _("Use right click to mark dive location at cursor"));
+	} else {
+		gtk_window_set_title(GTK_WINDOW(*window), _("Dive locations"));
 	}
 	gtk_widget_show_all(*window);
 	if (callback)
