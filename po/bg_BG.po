@@ -360,7 +360,7 @@ msgstr "Темп. на въздух"
 #: info.c:814
 #, c-format
 msgid "Air Temp in %s"
-msgstr "Tемп на въздуха в %s"
+msgstr "Tемп. на въздуха в %s"
 
 #: download-dialog.c:391
 msgid "Always prefer downloaded dive"
@@ -1619,7 +1619,7 @@ msgstr "Единици"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Маркирайте местонахождение с десния бутон на мишката"
 
 #: webservice.c:230
 msgid "User Identifier"
