@@ -9,14 +9,15 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2013-02-11 20:16-0800\n"
-"Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
+"PO-Revision-Date: 2013-02-12 10:07+0100\n"
+"Last-Translator: Robert C. Helling <helling@atdotde.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Basepath: ..\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -321,7 +322,7 @@ msgstr ""
 "Ein Eintrag mit Tiefe, Zeit und Atemgas beschreibt einen Abschnitt, der auf der angegeben Tiefe endet, die angegebene Zeit dauert (falls relativ, also '+3:30') oder zur angegebenen Zeit endet (falls absolut) und der das angegebene Atemgas verwendet.\n"
 "Keine Gasangabe bedeutet 'benutze vorheriges Atemgas' (oder Luft, falls kein Atemgas spezifiziert wurde).\n"
 "Ein Eintrag mit Tiefe und Atemgas aber keiner Zeitangabe dient einem besonderen Zweck: er informiert den Plan-Algorithmus, dass das angegebene Atemgas für den Aufstieg verfügbar ist sobald die angegebene Tiefe erreicht ist.\n"
-"CC SetPoint ist fuer CC (Kreislaufgerät) Tauchgänge; bitte nicht ausfüllen für Tauchgänge mit normalem OC Tauchgerät.</small>\n"
+"CC SetPoint ist fuer geschlossene Kreislaufgeräte; bitte nicht ausfüllen für Tauchgänge mit offenem Tauchgerät.</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
@@ -353,7 +354,7 @@ msgstr "Luftdruck"
 
 #: statistics.c:847
 msgid "Air Temp"
-msgstr "Luft Temp"
+msgstr "Lufttemp."
 
 #: info.c:814
 #, c-format
@@ -415,7 +416,7 @@ msgstr "Ø Dauer"
 #: profile.c:410
 #, c-format
 msgid "Bailing out to OC"
-msgstr "Notausstieg mittels offenem System"
+msgstr "Notausstieg mit offenem System"
 
 #: gtk-gui.c:638
 msgid "Bar"
@@ -447,11 +448,11 @@ msgstr "Celsius"
 
 #: gtk-gui.c:560
 msgid "Choose Default XML File"
-msgstr "Standard XML Datei auswählen"
+msgstr "Standard XML-Datei auswählen"
 
 #: gtk-gui.c:1896
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden sollen"
+msgstr "Bitte XML-Dateien auswählen, die in die aktuelle Datei eingefügt werden sollen"
 
 #: gtk-gui.c:1363
 msgid "Close"
@@ -496,7 +497,7 @@ msgstr "T:%.1f %s"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTIERUNG DES BÜHLMANN ALGORITHMUS UND EINES DARAF BASIERENDEN TAUCHPLANNERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN."
+msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTATION DES BÜHLMANN-ALGORITHMUS UND EINES DARAUF BASIERENDEN TAUCHPLANERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN."
 
 #: divelist.c:1424 print.c:486 statistics.c:830
 msgid "Date"
@@ -553,7 +554,7 @@ msgstr "Gerätebezeichnung"
 
 #: download-dialog.c:330
 msgid "Device or mount point"
-msgstr "Gerät oder Einhängepunkt"
+msgstr "Gerät oder Mount-Point"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:105
@@ -605,7 +606,7 @@ msgstr "Tauchcomputer Hersteller und Modell"
 
 #: libdivecomputer.c:681
 msgid "Dive data import error"
-msgstr "Fehler beim Importieren der Daten des Tauchgangs"
+msgstr "Fehler beim Importieren der Tauchgangsdaten"
 
 #: print.c:895
 msgid "Dive details"
@@ -710,7 +711,7 @@ msgstr "Reisen-Übersicht bearbeiten"
 
 #: gtk-gui.c:1302
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
-msgstr "Der Name des Tauchcomputers kann mittels Doppelklick bearbeitet werden"
+msgstr "Der Name des Tauchcomputers kann durch Doppelklick bearbeitet werden"
 
 #: divelist.c:2381
 msgid "Edit dive"
@@ -754,31 +755,31 @@ msgstr "Ausrüstung"
 
 #: libdivecomputer.c:471
 msgid "Error obtaining water salinity"
-msgstr "Fehler beim Auswerten des Salzgehalts"
+msgstr "Fehler beim Lesen des Salzgehalts"
 
 #: libdivecomputer.c:419
 msgid "Error parsing the datetime"
-msgstr "Fehler beim Analysieren des Datums"
+msgstr "Fehler beim Lesen des Datums"
 
 #: libdivecomputer.c:441
 msgid "Error parsing the divetime"
-msgstr "Fehler beim Analysieren der Dauer"
+msgstr "Fehler beim Lesen der Dauer"
 
 #: libdivecomputer.c:480
 msgid "Error parsing the gas mix"
-msgstr "Fehler beim Analysieren der Gas Informationen"
+msgstr "Fehler beim Lesen der Gasgemischs"
 
 #: libdivecomputer.c:461
 msgid "Error parsing the gas mix count"
-msgstr "Fehler beim Analysieren der Gas Informationen"
+msgstr "Fehler beim Lesen der Gasgemischszahl"
 
 #: libdivecomputer.c:451
 msgid "Error parsing the maxdepth"
-msgstr "Fehler beim Analysieren der maximalen Tiefe"
+msgstr "Fehler beim Lesen der maximalen Tiefe"
 
 #: libdivecomputer.c:488
 msgid "Error parsing the samples"
-msgstr "Fehler beim Auswerten der Samples"
+msgstr "Fehler beim Lesen der Samples"
 
 #: libdivecomputer.c:677
 msgid "Error registering the cancellation handler."
@@ -799,7 +800,7 @@ msgstr "Ereignis: systime=%<PRId64>, devtime=%u\n"
 
 #: libdivecomputer.c:622
 msgid "Event: waiting for user action"
-msgstr "Ereignis: warte auf Benutzer Aktion"
+msgstr "Ereignis: warte auf Benutzeraktion"
 
 #: divelist.c:2513
 msgid "Expand all"
@@ -817,12 +818,12 @@ msgstr "Fehler beim Öffnen von %i Dateien"
 #: parse-xml.c:1448
 #, c-format
 msgid "Failed to parse '%s'"
-msgstr "Fehler beim Analysieren von '%s'"
+msgstr "Fehler beim Lesen von '%s'"
 
 #: parse-xml.c:1443
 #, c-format
 msgid "Failed to parse '%s'.\n"
-msgstr "Fehler beim Analysieren von '%s'.\n"
+msgstr "Fehler beim Lesen von '%s'.\n"
 
 #: file.c:267
 #, c-format
@@ -896,11 +897,11 @@ msgstr "Verw. Gas"
 #: planner.c:536
 #, c-format
 msgid "Gas consumption:\n"
-msgstr "Gasverbruach:\n"
+msgstr "Gasverbrauch:\n"
 
 #: equipment.c:959 print.c:195
 msgid "Gasmix"
-msgstr "Gasmischung"
+msgstr "Gasgemisch"
 
 #: gtk-gui.c:625
 msgid "General Settings"
@@ -1112,7 +1113,7 @@ msgstr "Mo"
 
 #: gtk-gui.c:1056
 msgid "Multi-platform divelog software in C"
-msgstr "Multi-Platform Tauchprogram in C"
+msgstr "Multi-Platform Tauchprogramm in C"
 
 #: info.c:651
 msgid "N"
@@ -1397,7 +1398,7 @@ msgstr "Berechnete tiefste Deko-Stopps anzeigen"
 
 #: gtk-gui.c:824
 msgid "Show dc reported ceiling in red"
-msgstr "Vom TC ausgelesene tiefste Deko-Stopps in rot anzeigen"
+msgstr "Vom TC ausgelesene tiefste Deko-Stopps rot anzeigen"
 
 #: divelist.c:2478
 msgid "Show in map"
@@ -1439,7 +1440,7 @@ msgstr "Start"
 
 #: uemis-downloader.c:782
 msgid "Start download"
-msgstr "Fange an zu laden"
+msgstr "Laden anfangen"
 
 #: statistics.c:772
 msgid "Statistics"
@@ -1478,7 +1479,7 @@ msgstr "Oberflächenpause"
 
 #: planner.c:1242
 msgid "Surface Pressure (mbar)"
-msgstr "Druck an der Oberfläche (mbar)"
+msgstr "Oberflächendruck (mbar)"
 
 #: planner.c:528
 #, c-format
@@ -1487,11 +1488,11 @@ msgstr "Gaswechsel zu %s\n"
 
 #: print.c:913
 msgid "Table print"
-msgstr "Tabellenausdruck"
+msgstr "Tabellendruck"
 
 #: uemis.c:220
 msgid "Tank Change Suggested"
-msgstr "Flaschenwechsel Vorschlag"
+msgstr "Gaswechsel-Vorschlag"
 
 #: uemis.c:214
 msgid "Tank Pressure Info"
@@ -1499,7 +1500,7 @@ msgstr "Info: Flaschendruck"
 
 #: gtk-gui.c:718
 msgid "Tec Settings"
-msgstr "Tec Einstellungen"
+msgstr "Tec-Einstellungen"
 
 #: gtk-gui.c:663
 msgid "Temp"
@@ -1530,8 +1531,8 @@ msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
 msgstr ""
-"Um Daten zum Tauchgang zu bearbeiten\n"
-"Doppelklick in der Tauchgangliste"
+"Zum Tauchgangsdaten bearbeiten\n"
+"Doppelklick in der Tauchgangsliste"
 
 #: gtk-gui.c:1391
 msgid "Toggle Zoom"
@@ -1579,7 +1580,7 @@ msgid ""
 "and click 'Retry'"
 msgstr ""
 "Uemis Zürich: Dateisystem beinahe voll\n"
-"Bitte den Tauchcomputer ausstecken und wieder einstecken\n"
+"Bitte den Tauchcomputer ausstecken, wieder einstecken\n"
 "und erneut versuchen"
 
 #: uemis-downloader.c:29
@@ -1588,13 +1589,13 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zürich: Dateisystem voll\n"
-"Bitte den Tauchcomputer ausstecken und wieder einstecken\n"
+"Uemis Zürich: Dateisystem voll.\n"
+"Bitte den Tauchcomputer ausstecken, wieder einstecken\n"
 "und erneut versuchen"
 
 #: uemis-downloader.c:771
 msgid "Uemis init failed"
-msgstr "Uemis Initialisierung fehlgeschlagen"
+msgstr "Uemis-Initialisierung fehlgeschlagen"
 
 #: libdivecomputer.c:699
 msgid "Unable to create libdivecomputer context"
@@ -1665,7 +1666,7 @@ msgstr "Gewicht:"
 
 #: gtk-gui.c:127
 msgid "XML file"
-msgstr "XML Datei"
+msgstr "XML-Datei"
 
 #: statistics.c:175
 msgid "Year"
@@ -1673,7 +1674,7 @@ msgstr "Jahr"
 
 #: gtk-gui.c:1371 statistics.c:383
 msgid "Yearly Statistics"
-msgstr "Jährliche Statistiken"
+msgstr "Jahresstatistiken"
 
 #: gtk-gui.c:1985
 #, c-format
@@ -1684,8 +1685,8 @@ msgid ""
 "If you don't want to name this dive computer click 'Cancel' and Subsurface will simply display its model as its name (which may mean that you cannot tell the two dive computers apart in the logs)."
 msgstr ""
 "Sie haben bereits einen Tauchcomputer dieses Modells\n"
-"mit Namen %s\n"
-"Subsurface kann einen Namen für dieses Gerät verwalten um die Geräte zu unterscheiden. Die Voreinstellung ist unten angezeigt.\n"
+"mit Namen %s.\n"
+"Subsurface kann einen Namen für dieses Gerät verwalten, um die Geräte zu unterscheiden. Die Voreinstellung ist unten angezeigt.\n"
 "Falls kein Name gewünscht ist, bitte 'Abbrechen' klicken. Subsurface zeigt dann einfach den Produktnamen an (in diesem Fall können eventuell verschiedene Tauchcomputer nicht mehr in den angezeigten Daten unterschieden werden)."
 
 #: gtk-gui.c:212
@@ -1702,7 +1703,7 @@ msgid ""
 "You have unsaved changes to file: %s \n"
 "Would you like to save those before closing the datafile?"
 msgstr ""
-"Nicht alle Änderungen in der Dati %s wurden gespeichert.\n"
+"Nicht alle Änderungen in der Datei %s wurden gespeichert.\n"
 "Sollen Änderungen vor dem Schließen der Datei gespeichert werden?"
 
 #: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:172
@@ -1717,7 +1718,7 @@ msgstr "verbleibende Atemzeit"
 
 #: equipment.c:828
 msgid "ankle"
-msgstr "Fuß"
+msgstr "Fußblei"
 
 #: libdivecomputer.c:149
 msgid "ascent"
@@ -1725,7 +1726,7 @@ msgstr "Aufstieg"
 
 #: equipment.c:829
 msgid "backplate weight"
-msgstr "Rückenplatten-Gewicht"
+msgstr "Backplate-Gewicht"
 
 #: dive.c:46
 msgid "bar"
@@ -1761,15 +1762,15 @@ msgstr "Daten"
 
 #: libdivecomputer.c:149
 msgid "deco stop"
-msgstr "Deko Stopp"
+msgstr "Deko-Stopp"
 
 #: libdivecomputer.c:152
 msgid "deepstop"
-msgstr "Tiefen Stopp"
+msgstr "Tiefen-Stopp"
 
 #: uemis-downloader.c:405
 msgid "divelog entry id"
-msgstr "Tauchlisten Eintrag mit ID"
+msgstr "Logbucheintrag mit ID"
 
 #: uemis-downloader.c:407
 msgid "divespot data id"
@@ -1777,7 +1778,7 @@ msgstr "Tauchplatz Daten ID"
 
 #: libdivecomputer.c:152
 msgid "divetime"
-msgstr "Dauer"
+msgstr "Tauchgangsdauer"
 
 #: uemis-downloader.c:589
 msgid "drysuit"
@@ -1795,7 +1796,7 @@ msgstr "für alle Tauchgänge"
 #: statistics.c:677
 #, c-format
 msgid "for dive #%d"
-msgstr "für Tauchgang Nr.%d"
+msgstr "für Tauchgang Nr. %d"
 
 #: statistics.c:636
 #, c-format
@@ -1818,11 +1819,11 @@ msgstr "ft"
 
 #: uemis-downloader.c:590
 msgid "full suit"
-msgstr "voller Tauchanzug"
+msgstr "vollständiger Tauchanzug"
 
 #: libdivecomputer.c:151 libdivecomputer.c:154
 msgid "gaschange"
-msgstr "Flaschenwechsel"
+msgstr "Gaswechsel"
 
 #: libdivecomputer.c:153
 msgid "heading"
@@ -1896,7 +1897,7 @@ msgstr "mehr als %d Tage"
 
 #: libdivecomputer.c:154
 msgid "non stop time"
-msgstr "No-Stopp Zeit"
+msgstr "Nullzeit"
 
 #: libdivecomputer.c:149
 msgid "none"
@@ -1950,7 +1951,7 @@ msgstr "halbtrocken"
 
 #: uemis-downloader.c:590
 msgid "shorty"
-msgstr "kurzer Tauchanzug"
+msgstr "Shorty"
 
 #: libdivecomputer.c:150
 msgid "surface"
@@ -1958,7 +1959,7 @@ msgstr "Oberfläche"
 
 #: libdivecomputer.c:154
 msgid "tissue level warning"
-msgstr "Warnung auf Gewebe-Ebene"
+msgstr "Gewebewarnung"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:1062
@@ -1991,7 +1992,7 @@ msgstr "Verletzung"
 
 #: equipment.c:1481
 msgid "weight"
-msgstr "Gewicht"
+msgstr "Blei"
 
 #: uemis-downloader.c:589
 msgid "wetsuit"
