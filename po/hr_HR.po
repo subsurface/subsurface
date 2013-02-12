@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-09 10:31-0800\n"
+"POT-Creation-Date: 2013-02-11 19:54-0800\n"
 "PO-Revision-Date: 2012-10-18 15:00+0100\n"
 "Last-Translator: Ivan Habunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian\n"
@@ -24,7 +24,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Mjesec"
 
-#: webservice.c:234
+#: webservice.c:237
 msgid " Download"
 msgstr ""
 
@@ -46,12 +46,12 @@ msgstr ""
 msgid "#"
 msgstr "#"
 
-#: print.c:307
+#: print.c:308
 #, fuzzy, c-format
 msgid "%.*f %s"
 msgstr "%.*f %s/min"
 
-#: print.c:252 print.c:325
+#: print.c:253 print.c:326
 #, fuzzy, c-format
 msgid "%.*f %s\n"
 msgstr "%.*f %s/min"
@@ -67,13 +67,13 @@ msgid "%.0f%s of %s\n"
 msgstr ""
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
-#: print.c:81
+#: print.c:82
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
 msgstr "%1$s%2$s %4$d. %3$s %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
-#: print.c:575
+#: print.c:560
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
 msgstr "%1$s %3$d. %2$s %4$d   %5$dh%6$02d"
@@ -90,7 +90,7 @@ msgstr "%1$s %3$d. %2$s %4$d %5$02d:%6$02d"
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
 msgstr "%1$s %3$d. %2$s %4$d %5$2d:%6$02d"
 
-#: print.c:600 statistics.c:556
+#: print.c:585 statistics.c:556
 #, c-format
 msgid "%d min"
 msgstr "%d min"
@@ -105,7 +105,7 @@ msgstr "%dd %dh %dmin"
 msgid "%dh %dmin"
 msgstr "%dst %dmin"
 
-#: print.c:303
+#: print.c:304
 #, c-format
 msgid "%s"
 msgstr ""
@@ -252,7 +252,7 @@ msgstr ""
 msgid "17 l/min"
 msgstr ""
 
-#: print.c:924
+#: print.c:909
 msgid "2 dives per page"
 msgstr ""
 
@@ -268,7 +268,7 @@ msgstr ""
 msgid "3m increments for calculated ceiling"
 msgstr ""
 
-#: print.c:920
+#: print.c:905
 msgid "6 dives per page"
 msgstr ""
 
@@ -294,11 +294,11 @@ msgstr ""
 msgid "Add Dive..."
 msgstr "Dodaj uron..."
 
-#: divelist.c:2393
+#: divelist.c:2397
 msgid "Add dive"
 msgstr "Dodaj uron"
 
-#: divelist.c:2495
+#: divelist.c:2499
 msgid "Add to trip above"
 msgstr "Dodaj u gornju grupu"
 
@@ -315,7 +315,7 @@ msgstr ""
 msgid "Air Temp"
 msgstr "Prosj. temp."
 
-#: info.c:812
+#: info.c:814
 #, c-format
 msgid "Air Temp in %s"
 msgstr ""
@@ -381,7 +381,7 @@ msgstr ""
 msgid "Bar"
 msgstr "Bar"
 
-#: info.c:798 info.c:1251 print.c:502
+#: info.c:800 info.c:1253 print.c:487
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -417,7 +417,7 @@ msgstr "Odaberite XML datoteke za uvoz u trenutačnu datoteku"
 msgid "Close"
 msgstr "Zatvori"
 
-#: divelist.c:2513
+#: divelist.c:2517
 msgid "Collapse all"
 msgstr "Zatvori sve grupe"
 
@@ -429,7 +429,7 @@ msgstr ""
 msgid "Connection Error: "
 msgstr ""
 
-#: divelist.c:2485
+#: divelist.c:2489
 msgid "Create new trip above"
 msgstr "Kreiraj novu grupu iznad"
 
@@ -437,11 +437,11 @@ msgstr "Kreiraj novu grupu iznad"
 msgid "CuFt"
 msgstr "CuSt"
 
-#: divelist.c:1427 gtk-gui.c:668
+#: divelist.c:1431 gtk-gui.c:668
 msgid "Cyl"
 msgstr "Boca"
 
-#: equipment.c:918 equipment.c:1029 print.c:194
+#: equipment.c:918 equipment.c:1029 print.c:195
 msgid "Cylinder"
 msgstr "Boca"
 
@@ -458,15 +458,15 @@ msgstr "%.*f %s/min"
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
 msgstr ""
 
-#: divelist.c:1420 print.c:501 statistics.c:830
+#: divelist.c:1424 print.c:486 statistics.c:830
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:1099
+#: info.c:1101
 msgid "Date and Time"
 msgstr "Datum i vrijeme"
 
-#: info.c:1109
+#: info.c:1111
 msgid "Date:"
 msgstr "Datum:"
 
@@ -482,19 +482,19 @@ msgstr "Defaultna XML datoteka"
 msgid "Delete a dive computer information entry"
 msgstr ""
 
-#: divelist.c:2235 divelist.c:2288 divelist.c:2380
+#: divelist.c:2239 divelist.c:2292 divelist.c:2384
 msgid "Delete dive"
 msgstr "Obriši uron"
 
-#: divelist.c:2237 divelist.c:2379
+#: divelist.c:2241 divelist.c:2383
 msgid "Delete dives"
 msgstr "Obriši urone"
 
-#: print.c:501 statistics.c:175
+#: print.c:486 statistics.c:175
 msgid "Depth"
 msgstr "Dubina"
 
-#: info.c:1176
+#: info.c:1178
 #, c-format
 msgid "Depth (%s):"
 msgstr "Dubina (%s):"
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Uron #%1$d - %2$s %4$02d.%3$02d.%5$04d u %6$d:%7$02d"
 
-#: info.c:157 print.c:76
+#: info.c:157 print.c:77
 #, c-format
 msgid "Dive #%d - "
 msgstr "Uron #%d - "
@@ -537,7 +537,7 @@ msgstr "Uron #%d - %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Ronilačko računalo"
 
-#: gtk-gui.c:1607 info.c:996 statistics.c:821
+#: gtk-gui.c:1607 info.c:998 statistics.c:821
 msgid "Dive Info"
 msgstr "Informacije o uronu"
 
@@ -569,16 +569,16 @@ msgstr ""
 msgid "Dive data import error"
 msgstr ""
 
-#: print.c:910
+#: print.c:895
 msgid "Dive details"
 msgstr "Podaci o uronu"
 
-#: gps.c:193
+#: gps.c:206
 #, fuzzy
 msgid "Dive locations"
 msgstr "Bilješke"
 
-#: info.c:797
+#: info.c:799
 msgid "Dive master"
 msgstr "Voditelj"
 
@@ -586,7 +586,7 @@ msgstr "Voditelj"
 msgid "Dive starts when?"
 msgstr ""
 
-#: print.c:501
+#: print.c:486
 msgid "Dive#"
 msgstr "Uron br."
 
@@ -594,7 +594,7 @@ msgstr "Uron br."
 msgid "Divelist Font"
 msgstr "Font za listu urona"
 
-#: info.c:1250
+#: info.c:1252
 msgid "Divemaster"
 msgstr "Voditelj"
 
@@ -615,7 +615,7 @@ msgstr "Preuzmi s ronilačkog računala"
 msgid "Download From Dive Computer..."
 msgstr "Preuzmi s ronilačkog računala..."
 
-#: webservice.c:207
+#: webservice.c:210
 #, fuzzy
 msgid "Download From Web Service"
 msgstr "Preuzmi s ronilačkog računala"
@@ -629,15 +629,15 @@ msgstr "Preuzmi s ronilačkog računala..."
 msgid "Download Success!"
 msgstr ""
 
-#: statistics.c:175
+#: print.c:486 statistics.c:175
 msgid "Duration"
 msgstr "Trajanje"
 
-#: info.c:1171
+#: info.c:1173
 msgid "Duration (min)"
 msgstr "Trajanje (min)"
 
-#: info.c:655
+#: info.c:652
 msgid "E"
 msgstr ""
 
@@ -667,11 +667,11 @@ msgstr "Naziv uređaja"
 msgid "Edit Dive Computer Nicknames"
 msgstr ""
 
-#: info.c:955
+#: info.c:957
 msgid "Edit Trip Info"
 msgstr "Uredi informacije o grupi"
 
-#: divelist.c:2401
+#: divelist.c:2405
 msgid "Edit Trip Summary"
 msgstr "Uredi sažetak grupe"
 
@@ -679,24 +679,24 @@ msgstr "Uredi sažetak grupe"
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr ""
 
-#: divelist.c:2377
+#: divelist.c:2381
 msgid "Edit dive"
 msgstr "Uredi uron"
 
-#: divelist.c:2434 divelist.c:2457
+#: divelist.c:2438 divelist.c:2461
 #, fuzzy
 msgid "Edit dive date/time"
 msgstr "Uredi uron"
 
-#: divelist.c:2376
+#: divelist.c:2380
 msgid "Edit dives"
 msgstr "Uredi urone"
 
-#: info.c:763
+#: info.c:765
 msgid "Edit multiple dives"
 msgstr "Uredi više urona"
 
-#: info.c:619
+#: info.c:616
 msgid "Edit trip summary"
 msgstr "Uredi sažetak urona"
 
@@ -713,11 +713,11 @@ msgstr "Kraj"
 msgid "Ending Depth"
 msgstr "Najmanja dubina"
 
-#: webservice.c:220
+#: webservice.c:223
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr ""
 
-#: gtk-gui.c:1603 info.c:831
+#: gtk-gui.c:1603 info.c:833
 msgid "Equipment"
 msgstr "Oprema"
 
@@ -770,7 +770,7 @@ msgstr ""
 msgid "Event: waiting for user action"
 msgstr ""
 
-#: divelist.c:2509
+#: divelist.c:2513
 msgid "Expand all"
 msgstr "Otvori sve"
 
@@ -843,9 +843,14 @@ msgstr ""
 msgid "GFlow for plan"
 msgstr ""
 
-#: info.c:775
+#: info.c:777
 msgid "GPS (WGS84 or GPS format)"
 msgstr ""
+
+#. ++GETTEXT Gas Used is amount used
+#: print.c:197
+msgid "Gas Used"
+msgstr "Potrošeno plina"
 
 #: statistics.c:857
 #, fuzzy
@@ -864,7 +869,7 @@ msgstr "Potrošeno plina"
 msgid "Gas consumption:\n"
 msgstr ""
 
-#: equipment.c:959 print.c:194
+#: equipment.c:959 print.c:195
 msgid "Gasmix"
 msgstr "Mješavina"
 
@@ -876,7 +881,7 @@ msgstr ""
 msgid "Help"
 msgstr "Pomoć"
 
-#: webservice.c:241
+#: webservice.c:244
 msgid "Idle"
 msgstr ""
 
@@ -926,7 +931,7 @@ msgstr "Popis"
 msgid "Liter"
 msgstr "Litra"
 
-#: divelist.c:1432 info.c:624 info.c:770 info.c:1245 print.c:502
+#: divelist.c:1436 info.c:621 info.c:772 info.c:1247 print.c:487
 msgid "Location"
 msgstr "Lokacija"
 
@@ -955,7 +960,7 @@ msgstr "Upozorenje: Baterija pri izmaku"
 msgid "Mar"
 msgstr "Ožu"
 
-#: gps.c:56
+#: gps.c:59
 msgid "Mark location here"
 msgstr ""
 
@@ -963,7 +968,7 @@ msgstr ""
 msgid "Marker"
 msgstr "Oznaka"
 
-#: print.c:501
+#: print.c:486
 msgid "Master"
 msgstr "Master"
 
@@ -983,7 +988,7 @@ msgstr "Najveći SAC"
 msgid "Max Temp"
 msgstr "Maks. temp."
 
-#: print.c:102
+#: print.c:103
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -994,7 +999,7 @@ msgstr ""
 "Trajanje: %d min\n"
 "%s"
 
-#: print.c:372
+#: print.c:359
 #, c-format
 msgid "Max. CNS"
 msgstr ""
@@ -1022,16 +1027,16 @@ msgstr "Max."
 msgid "May"
 msgstr "Svi"
 
-#: divelist.c:2368
+#: divelist.c:2372
 #, fuzzy
 msgid "Merge dives"
 msgstr "Obriši urone"
 
-#: divelist.c:2409
+#: divelist.c:2413
 msgid "Merge trip with trip above"
 msgstr "Spoji s grupom iznad"
 
-#: divelist.c:2419
+#: divelist.c:2423
 msgid "Merge trip with trip below"
 msgstr "Spoji s grupom ispod"
 
@@ -1082,7 +1087,7 @@ msgstr "Pon"
 msgid "Multi-platform divelog software in C"
 msgstr "Višeplatformski program za vođenje ronilačkog dnevnika pisan u C-u"
 
-#: info.c:654
+#: info.c:651
 msgid "N"
 msgstr ""
 
@@ -1107,7 +1112,7 @@ msgstr "Naziv uređaja"
 msgid "No Tank Data"
 msgstr "Nema podatka o boci"
 
-#: info.c:629 info.c:823 info.c:1259
+#: info.c:626 info.c:825 info.c:1261
 msgid "Notes"
 msgstr "Bilješke"
 
@@ -1119,7 +1124,7 @@ msgstr "Stu"
 msgid "OLF"
 msgstr ""
 
-#: divelist.c:1430 gtk-gui.c:726 print.c:349 statistics.c:855
+#: divelist.c:1434 gtk-gui.c:726 print.c:343 statistics.c:855
 #, c-format
 msgid "OTU"
 msgstr "OTU"
@@ -1144,7 +1149,7 @@ msgstr "Otvori datoteku"
 msgid "Open..."
 msgstr "Otvori..."
 
-#: print.c:166
+#: print.c:167
 #, c-format
 msgid "Oxygen"
 msgstr ""
@@ -1169,7 +1174,7 @@ msgstr "PO2 Upozorenje: Zeleno"
 msgid "PSI"
 msgstr "PSI"
 
-#: info.c:786
+#: info.c:788
 msgid "Pick on map"
 msgstr ""
 
@@ -1197,15 +1202,15 @@ msgstr "Pritisak:"
 msgid "Prev DC"
 msgstr ""
 
-#: print.c:947
+#: print.c:932
 msgid "Print only selected dives"
 msgstr "Ispiši odabrane urone"
 
-#: print.c:942
+#: print.c:927
 msgid "Print selection"
 msgstr "Ispiši odabrano"
 
-#: print.c:914
+#: print.c:899
 msgid "Print type"
 msgstr "Vrsta ispisa"
 
@@ -1234,7 +1239,7 @@ msgstr "RTG Alarm"
 msgid "RGT Warning"
 msgstr "RTG Upozorenje"
 
-#: info.c:803 info.c:1256
+#: info.c:805 info.c:1258
 msgid "Rating"
 msgstr "Ocjena"
 
@@ -1243,15 +1248,15 @@ msgstr "Ocjena"
 msgid "Reading %s %s"
 msgstr "Čitanje urona %s"
 
-#: divelist.c:2080 divelist.c:2424
+#: divelist.c:2084 divelist.c:2428
 msgid "Remove Trip"
 msgstr "Obriši grupu"
 
-#: divelist.c:2503
+#: divelist.c:2507
 msgid "Remove dive from trip"
 msgstr "Ukloni uron iz grupe"
 
-#: divelist.c:2501
+#: divelist.c:2505
 msgid "Remove selected dives from trip"
 msgstr "Ukloni odabrane urone iz grupe"
 
@@ -1267,11 +1272,11 @@ msgstr "Renumeriraj..."
 msgid "Retry"
 msgstr "Pokušaj ponovo"
 
-#: info.c:654
+#: info.c:651
 msgid "S"
 msgstr ""
 
-#: divelist.c:1429 gtk-gui.c:678 print.c:398 statistics.c:175 statistics.c:854
+#: divelist.c:1433 gtk-gui.c:678 print.c:377 statistics.c:175 statistics.c:854
 #, c-format
 msgid "SAC"
 msgstr "SAC"
@@ -1305,11 +1310,11 @@ msgstr "Spremi kao..."
 msgid "Save Changes?"
 msgstr "Spremi promjene?"
 
-#: divelist.c:1633 gtk-gui.c:139
+#: divelist.c:1637 gtk-gui.c:139
 msgid "Save File As"
 msgstr "Spremi datoteku kao"
 
-#: divelist.c:2441
+#: divelist.c:2445
 #, fuzzy
 msgid "Save as"
 msgstr "Spremi kao..."
@@ -1374,7 +1379,7 @@ msgstr ""
 msgid "Show dc reported ceiling in red"
 msgstr ""
 
-#: divelist.c:2474
+#: divelist.c:2478
 msgid "Show in map"
 msgstr ""
 
@@ -1430,7 +1435,7 @@ msgstr "Statistika"
 msgid "Stats"
 msgstr "Statistika"
 
-#: webservice.c:240
+#: webservice.c:243
 #, fuzzy
 msgid "Status"
 msgstr "Statistika"
@@ -1440,7 +1445,7 @@ msgstr "Statistika"
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr ""
 
-#: divelist.c:1426 gtk-gui.c:688 info.c:804 info.c:1257
+#: divelist.c:1430 gtk-gui.c:688 info.c:806 info.c:1259
 msgid "Suit"
 msgstr "Odijelo"
 
@@ -1462,7 +1467,7 @@ msgstr ""
 msgid "Switch gas to %s\n"
 msgstr ""
 
-#: print.c:928
+#: print.c:913
 msgid "Table print"
 msgstr "Tablični ispis"
 
@@ -1498,7 +1503,7 @@ msgstr "Tri"
 msgid "Thu"
 msgstr "Čet"
 
-#: info.c:1114 print.c:501
+#: info.c:1116
 msgid "Time"
 msgstr "Vrijeme"
 
@@ -1521,7 +1526,7 @@ msgstr "Ukupno"
 msgid "Total Time"
 msgstr "Ukupno trajanje"
 
-#: print.c:321
+#: print.c:322
 #, fuzzy, c-format
 msgid "Total Weight:"
 msgstr "Težina:"
@@ -1590,7 +1595,11 @@ msgstr "Nije uspjelo otvaranje %i datoteka"
 msgid "Units"
 msgstr "Jedinice"
 
-#: webservice.c:227
+#: gps.c:218
+msgid "Use right click to mark dive location at cursor"
+msgstr ""
+
+#: webservice.c:230
 msgid "User Identifier"
 msgstr ""
 
@@ -1598,7 +1607,7 @@ msgstr ""
 msgid "View"
 msgstr "Pregled"
 
-#: info.c:809 statistics.c:840
+#: info.c:811 statistics.c:840
 msgid "Visibility"
 msgstr ""
 
@@ -1606,7 +1615,7 @@ msgstr ""
 msgid "Volume:"
 msgstr "Zapremnina:"
 
-#: info.c:655
+#: info.c:652
 msgid "W"
 msgstr ""
 
@@ -1614,7 +1623,7 @@ msgstr ""
 msgid "Water Temp"
 msgstr "Temperatura vode"
 
-#: webservice.c:255
+#: webservice.c:258
 msgid "Webservice"
 msgstr ""
 
@@ -1626,7 +1635,7 @@ msgstr "Sri"
 msgid "Weight"
 msgstr "Težina"
 
-#: equipment.c:1084 print.c:289
+#: equipment.c:1084 print.c:290
 #, c-format
 msgid "Weight System"
 msgstr "Težina"
@@ -1673,7 +1682,7 @@ msgstr ""
 "Imate promjena koje nisu spremljene u datoteci: %s \n"
 "Želite li ih spremiti prije zatvaranja datoteke?"
 
-#: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:171
+#: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:172
 #: profile.c:399
 #, c-format
 msgid "air"
@@ -1781,7 +1790,7 @@ msgstr "Ispiši odabrane urone"
 msgid "for selected dives"
 msgstr "Ispiši odabrane urone"
 
-#: dive.c:117 divelist.c:1422 info.c:1176 planner.c:838
+#: dive.c:117 divelist.c:1426 info.c:1178 planner.c:838
 msgid "ft"
 msgstr "ft"
 
@@ -1817,7 +1826,7 @@ msgstr "kg"
 msgid "l"
 msgstr ""
 
-#: dive.c:137 divelist.c:1425 equipment.c:1006 gtk-gui.c:654
+#: dive.c:137 divelist.c:1429 equipment.c:1006 gtk-gui.c:654
 msgid "lbs"
 msgstr "US funte"
 
@@ -1825,7 +1834,7 @@ msgstr "US funte"
 msgid "long john"
 msgstr ""
 
-#: dive.c:112 info.c:1176
+#: dive.c:112 info.c:1178
 msgid "m"
 msgstr ""
 
@@ -1833,7 +1842,7 @@ msgstr ""
 msgid "max ppO2"
 msgstr ""
 
-#: divelist.c:1431 gtk-gui.c:731
+#: divelist.c:1435 gtk-gui.c:731
 msgid "maxCNS"
 msgstr ""
 
@@ -1846,7 +1855,7 @@ msgstr "Maks. dubina"
 msgid "membrane"
 msgstr ""
 
-#: divelist.c:1423 planner.c:903
+#: divelist.c:1427 planner.c:903
 msgid "min"
 msgstr "min"
 
@@ -1944,7 +1953,7 @@ msgstr ""
 msgid "unkn"
 msgstr "nepoznat"
 
-#: libdivecomputer.c:152 print.c:302 statistics.c:561 uemis-downloader.c:133
+#: libdivecomputer.c:152 print.c:303 statistics.c:561 uemis-downloader.c:133
 msgid "unknown"
 msgstr "nepoznato"
 
@@ -1998,9 +2007,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Ukupno\n"
 #~ "Trajanje"
-
-#~ msgid "Gas Used"
-#~ msgstr "Potrošeno plina"
 
 #~ msgid "Pretty print"
 #~ msgstr "Lijep ispis"

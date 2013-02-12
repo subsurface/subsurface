@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-09 10:31-0800\n"
+"POT-Creation-Date: 2013-02-11 19:54-0800\n"
 "PO-Revision-Date: 2013-02-09 10:44-0800\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
@@ -23,7 +23,7 @@ msgctxt "Stats"
 msgid " > Month"
 msgstr " > Monat"
 
-#: webservice.c:234
+#: webservice.c:237
 msgid " Download"
 msgstr " herunterladen"
 
@@ -45,12 +45,12 @@ msgstr " Ende"
 msgid "#"
 msgstr "Nr."
 
-#: print.c:307
+#: print.c:308
 #, c-format
 msgid "%.*f %s"
 msgstr "%.*f %s"
 
-#: print.c:252 print.c:325
+#: print.c:253 print.c:326
 #, c-format
 msgid "%.*f %s\n"
 msgstr "%.*f %s\n"
@@ -66,13 +66,13 @@ msgid "%.0f%s of %s\n"
 msgstr "%.0f%s %s\n"
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
-#: print.c:81
+#: print.c:82
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
 msgstr "%1$s%2$s %4$d. %3$s %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
-#: print.c:575
+#: print.c:560
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
 msgstr "%1$s %3$d. %2$s %4$d   %5$dh%6$02d"
@@ -89,7 +89,7 @@ msgstr "%1$s %3$d. %2$s %4$d %5$02d:%6$02d"
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
 msgstr "%1$s %3$d. %2$s %4$d %5$2d:%6$02d"
 
-#: print.c:600 statistics.c:556
+#: print.c:585 statistics.c:556
 #, c-format
 msgid "%d min"
 msgstr "%d min"
@@ -104,7 +104,7 @@ msgstr "%dt %dst %dmin"
 msgid "%dh %dmin"
 msgstr "%dst %dmin"
 
-#: print.c:303
+#: print.c:304
 #, c-format
 msgid "%s"
 msgstr "%s"
@@ -287,7 +287,7 @@ msgstr "0.7 cu.ft./min"
 msgid "17 l/min"
 msgstr "17 l/min"
 
-#: print.c:924
+#: print.c:909
 msgid "2 dives per page"
 msgstr "2 Tauchgänge pro Seite"
 
@@ -303,7 +303,7 @@ msgstr "20 l/min"
 msgid "3m increments for calculated ceiling"
 msgstr "3m Stufen für berechnete Deko-Stopps"
 
-#: print.c:920
+#: print.c:905
 msgid "6 dives per page"
 msgstr "6 Tauchgänge pro Seite"
 
@@ -335,11 +335,11 @@ msgstr "Info zu Subsurface"
 msgid "Add Dive..."
 msgstr "Tauchgang hinzufügen..."
 
-#: divelist.c:2393
+#: divelist.c:2397
 msgid "Add dive"
 msgstr "Tauchgang hinzufügen"
 
-#: divelist.c:2495
+#: divelist.c:2499
 msgid "Add to trip above"
 msgstr "Zur obigen Reise hinzufügen"
 
@@ -355,7 +355,7 @@ msgstr "Luftdruck"
 msgid "Air Temp"
 msgstr "Luft Temp"
 
-#: info.c:812
+#: info.c:814
 #, c-format
 msgid "Air Temp in %s"
 msgstr "Lufttemp. in %s"
@@ -421,7 +421,7 @@ msgstr "Notausstieg mittels offenem System"
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:798 info.c:1251 print.c:502
+#: info.c:800 info.c:1253 print.c:487
 msgid "Buddy"
 msgstr "Partner"
 
@@ -457,7 +457,7 @@ msgstr "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werde
 msgid "Close"
 msgstr "Schließen"
 
-#: divelist.c:2513
+#: divelist.c:2517
 msgid "Collapse all"
 msgstr "Alle einfalten"
 
@@ -469,7 +469,7 @@ msgstr "Verbinde..."
 msgid "Connection Error: "
 msgstr "Verbindungsfehler: "
 
-#: divelist.c:2485
+#: divelist.c:2489
 msgid "Create new trip above"
 msgstr "Neue Reise darüber einfügen"
 
@@ -477,11 +477,11 @@ msgstr "Neue Reise darüber einfügen"
 msgid "CuFt"
 msgstr "cuft"
 
-#: divelist.c:1427 gtk-gui.c:668
+#: divelist.c:1431 gtk-gui.c:668
 msgid "Cyl"
 msgstr "Flasche"
 
-#: equipment.c:918 equipment.c:1029 print.c:194
+#: equipment.c:918 equipment.c:1029 print.c:195
 msgid "Cylinder"
 msgstr "Flasche"
 
@@ -498,15 +498,15 @@ msgstr "T:%.1f %s"
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
 msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTIERUNG DES BÜHLMANN ALGORITHMUS UND EINES DARAF BASIERENDEN TAUCHPLANNERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN."
 
-#: divelist.c:1420 print.c:501 statistics.c:830
+#: divelist.c:1424 print.c:486 statistics.c:830
 msgid "Date"
 msgstr "Datum"
 
-#: info.c:1099
+#: info.c:1101
 msgid "Date and Time"
 msgstr "Datum und Zeit"
 
-#: info.c:1109
+#: info.c:1111
 msgid "Date:"
 msgstr "Datum:"
 
@@ -522,19 +522,19 @@ msgstr "Standard XML Datei"
 msgid "Delete a dive computer information entry"
 msgstr "Lösche die Informationen zu einem Tauchcomputer"
 
-#: divelist.c:2235 divelist.c:2288 divelist.c:2380
+#: divelist.c:2239 divelist.c:2292 divelist.c:2384
 msgid "Delete dive"
 msgstr "Tauchgang löschen"
 
-#: divelist.c:2237 divelist.c:2379
+#: divelist.c:2241 divelist.c:2383
 msgid "Delete dives"
 msgstr "Tauchgänge löschen"
 
-#: print.c:501 statistics.c:175
+#: print.c:486 statistics.c:175
 msgid "Depth"
 msgstr "Tiefe"
 
-#: info.c:1176
+#: info.c:1178
 #, c-format
 msgid "Depth (%s):"
 msgstr "Tiefe (%s):"
@@ -561,7 +561,7 @@ msgstr "Gerät oder Einhängepunkt"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Tauchgang #%1$d - %2$s %4$02d.%3$02d.%5$04d um %6$d:%7$02d"
 
-#: info.c:157 print.c:76
+#: info.c:157 print.c:77
 #, c-format
 msgid "Dive #%d - "
 msgstr "Tauchgang #%d - "
@@ -575,7 +575,7 @@ msgstr "Tauchgang Nr. %d: %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Bezeichnung für den Tauchcomputer"
 
-#: gtk-gui.c:1607 info.c:996 statistics.c:821
+#: gtk-gui.c:1607 info.c:998 statistics.c:821
 msgid "Dive Info"
 msgstr "Informationen"
 
@@ -607,15 +607,15 @@ msgstr "Tauchcomputer Hersteller und Modell"
 msgid "Dive data import error"
 msgstr "Fehler beim Importieren der Daten des Tauchgangs"
 
-#: print.c:910
+#: print.c:895
 msgid "Dive details"
 msgstr "Notizen zum Tauchgang"
 
-#: gps.c:193
+#: gps.c:206
 msgid "Dive locations"
 msgstr "Tauchplätze"
 
-#: info.c:797
+#: info.c:799
 msgid "Dive master"
 msgstr "Tauchgruppenleiter"
 
@@ -623,7 +623,7 @@ msgstr "Tauchgruppenleiter"
 msgid "Dive starts when?"
 msgstr "Wann beginnt der Tauchgang?"
 
-#: print.c:501
+#: print.c:486
 msgid "Dive#"
 msgstr "Tauchgang Nr."
 
@@ -631,7 +631,7 @@ msgstr "Tauchgang Nr."
 msgid "Divelist Font"
 msgstr "Schriftart für Tauchliste"
 
-#: info.c:1250
+#: info.c:1252
 msgid "Divemaster"
 msgstr "Tauchgruppenleiter"
 
@@ -651,7 +651,7 @@ msgstr "Von Tauchcomputer laden"
 msgid "Download From Dive Computer..."
 msgstr "Von Tauchcomputer laden..."
 
-#: webservice.c:207
+#: webservice.c:210
 msgid "Download From Web Service"
 msgstr "Vom Webserver laden"
 
@@ -663,15 +663,15 @@ msgstr "Vom Webserver laden..."
 msgid "Download Success!"
 msgstr "Erfolgreich geladen!"
 
-#: statistics.c:175
+#: print.c:486 statistics.c:175
 msgid "Duration"
 msgstr "Dauer"
 
-#: info.c:1171
+#: info.c:1173
 msgid "Duration (min)"
 msgstr "Dauer (min)"
 
-#: info.c:655
+#: info.c:652
 msgid "E"
 msgstr "O"
 
@@ -700,11 +700,11 @@ msgstr "Gerätename bearbeiten"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Tauchcomputer Bezeichnung bearbeiten"
 
-#: info.c:955
+#: info.c:957
 msgid "Edit Trip Info"
 msgstr "Reisen-Informationen bearbeiten"
 
-#: divelist.c:2401
+#: divelist.c:2405
 msgid "Edit Trip Summary"
 msgstr "Reisen-Übersicht bearbeiten"
 
@@ -712,23 +712,23 @@ msgstr "Reisen-Übersicht bearbeiten"
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Der Name des Tauchcomputers kann mittels Doppelklick bearbeitet werden"
 
-#: divelist.c:2377
+#: divelist.c:2381
 msgid "Edit dive"
 msgstr "Tauchgang bearbeiten"
 
-#: divelist.c:2434 divelist.c:2457
+#: divelist.c:2438 divelist.c:2461
 msgid "Edit dive date/time"
 msgstr "Zeit des Tauchgangs bearbeiten"
 
-#: divelist.c:2376
+#: divelist.c:2380
 msgid "Edit dives"
 msgstr "Tauchgänge bearbeiten"
 
-#: info.c:763
+#: info.c:765
 msgid "Edit multiple dives"
 msgstr "Mehrere Tauchgänge bearbeiten"
 
-#: info.c:619
+#: info.c:616
 msgid "Edit trip summary"
 msgstr "Reisen-Übersicht bearbeiten"
 
@@ -744,11 +744,11 @@ msgstr "Ende"
 msgid "Ending Depth"
 msgstr "Tiefe am Ende"
 
-#: webservice.c:220
+#: webservice.c:223
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Benutzerkennung eingeben und 'Laden' drücken. Bei Erfolg 'Anwenden' drücken um die Daten zu übernehmen."
 
-#: gtk-gui.c:1603 info.c:831
+#: gtk-gui.c:1603 info.c:833
 msgid "Equipment"
 msgstr "Ausrüstung"
 
@@ -801,7 +801,7 @@ msgstr "Ereignis: systime=%<PRId64>, devtime=%u\n"
 msgid "Event: waiting for user action"
 msgstr "Ereignis: warte auf Benutzer Aktion"
 
-#: divelist.c:2509
+#: divelist.c:2513
 msgid "Expand all"
 msgstr "Alle ausfalten"
 
@@ -874,9 +874,14 @@ msgstr "GFlow"
 msgid "GFlow for plan"
 msgstr "GFlow für Tauchplan"
 
-#: info.c:775
+#: info.c:777
 msgid "GPS (WGS84 or GPS format)"
 msgstr "GPS (WGS84 oder GPS Format)"
+
+#. ++GETTEXT Gas Used is amount used
+#: print.c:197
+msgid "Gas Used"
+msgstr "Gasverbrauch"
 
 #: statistics.c:857
 msgctxt "Amount"
@@ -893,7 +898,7 @@ msgstr "Verw. Gas"
 msgid "Gas consumption:\n"
 msgstr "Gasverbruach:\n"
 
-#: equipment.c:959 print.c:194
+#: equipment.c:959 print.c:195
 msgid "Gasmix"
 msgstr "Gasmischung"
 
@@ -905,7 +910,7 @@ msgstr "Allg. Einstellungen"
 msgid "Help"
 msgstr "Hilfe"
 
-#: webservice.c:241
+#: webservice.c:244
 msgid "Idle"
 msgstr "inaktiv"
 
@@ -954,7 +959,7 @@ msgstr "Liste"
 msgid "Liter"
 msgstr "Liter"
 
-#: divelist.c:1432 info.c:624 info.c:770 info.c:1245 print.c:502
+#: divelist.c:1436 info.c:621 info.c:772 info.c:1247 print.c:487
 msgid "Location"
 msgstr "Ort"
 
@@ -983,7 +988,7 @@ msgstr "Warnung: Batterie schwach"
 msgid "Mar"
 msgstr "Mär"
 
-#: gps.c:56
+#: gps.c:59
 msgid "Mark location here"
 msgstr "Hier markieren"
 
@@ -991,7 +996,7 @@ msgstr "Hier markieren"
 msgid "Marker"
 msgstr "Markierung"
 
-#: print.c:501
+#: print.c:486
 msgid "Master"
 msgstr "Leiter"
 
@@ -1011,7 +1016,7 @@ msgstr "Max. AMV"
 msgid "Max Temp"
 msgstr "Max. Temp."
 
-#: print.c:102
+#: print.c:103
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -1022,7 +1027,7 @@ msgstr ""
 "Dauer: %d min\n"
 "%s"
 
-#: print.c:372
+#: print.c:359
 #, c-format
 msgid "Max. CNS"
 msgstr "Max. CNS"
@@ -1050,15 +1055,15 @@ msgstr "Max."
 msgid "May"
 msgstr "Mai"
 
-#: divelist.c:2368
+#: divelist.c:2372
 msgid "Merge dives"
 msgstr "Tauchgänge zusammenführen"
 
-#: divelist.c:2409
+#: divelist.c:2413
 msgid "Merge trip with trip above"
 msgstr "Reise mit der darüber verbinden"
 
-#: divelist.c:2419
+#: divelist.c:2423
 msgid "Merge trip with trip below"
 msgstr "Reise mit der darunter verbinden"
 
@@ -1109,7 +1114,7 @@ msgstr "Mo"
 msgid "Multi-platform divelog software in C"
 msgstr "Multi-Platform Tauchprogram in C"
 
-#: info.c:654
+#: info.c:651
 msgid "N"
 msgstr "N"
 
@@ -1133,7 +1138,7 @@ msgstr "Gerätename"
 msgid "No Tank Data"
 msgstr "Keine Flaschen Informationen"
 
-#: info.c:629 info.c:823 info.c:1259
+#: info.c:626 info.c:825 info.c:1261
 msgid "Notes"
 msgstr "Notizen"
 
@@ -1145,7 +1150,7 @@ msgstr "Nov"
 msgid "OLF"
 msgstr "OLF"
 
-#: divelist.c:1430 gtk-gui.c:726 print.c:349 statistics.c:855
+#: divelist.c:1434 gtk-gui.c:726 print.c:343 statistics.c:855
 #, c-format
 msgid "OTU"
 msgstr "OTU"
@@ -1170,7 +1175,7 @@ msgstr "Datei öffnen"
 msgid "Open..."
 msgstr "Öffnen..."
 
-#: print.c:166
+#: print.c:167
 #, c-format
 msgid "Oxygen"
 msgstr "Sauerstoff"
@@ -1195,7 +1200,7 @@ msgstr "Warnung: PO2 Grün"
 msgid "PSI"
 msgstr "psi"
 
-#: info.c:786
+#: info.c:788
 msgid "Pick on map"
 msgstr "Auf Karte auswählen"
 
@@ -1223,15 +1228,15 @@ msgstr "Druck:"
 msgid "Prev DC"
 msgstr "Vorh. TC"
 
-#: print.c:947
+#: print.c:932
 msgid "Print only selected dives"
 msgstr "Nur ausgewählte Tauchgänge drucken"
 
-#: print.c:942
+#: print.c:927
 msgid "Print selection"
 msgstr "Auswahl drucken"
 
-#: print.c:914
+#: print.c:899
 msgid "Print type"
 msgstr "Art des Ausdrucks"
 
@@ -1259,7 +1264,7 @@ msgstr "Alarm: verbleibende Gas-Zeit"
 msgid "RGT Warning"
 msgstr "Warnung: verbleibende Gas-Zeit"
 
-#: info.c:803 info.c:1256
+#: info.c:805 info.c:1258
 msgid "Rating"
 msgstr "Bewertung"
 
@@ -1268,15 +1273,15 @@ msgstr "Bewertung"
 msgid "Reading %s %s"
 msgstr "Lese %s %s"
 
-#: divelist.c:2080 divelist.c:2424
+#: divelist.c:2084 divelist.c:2428
 msgid "Remove Trip"
 msgstr "Reise entfernen"
 
-#: divelist.c:2503
+#: divelist.c:2507
 msgid "Remove dive from trip"
 msgstr "Tauchgang aus Reise entfernen"
 
-#: divelist.c:2501
+#: divelist.c:2505
 msgid "Remove selected dives from trip"
 msgstr "Ausgewählte Tauchgänge aus Reise entfernen"
 
@@ -1292,11 +1297,11 @@ msgstr "Neu nummerieren..."
 msgid "Retry"
 msgstr "Wiederholen"
 
-#: info.c:654
+#: info.c:651
 msgid "S"
 msgstr "S"
 
-#: divelist.c:1429 gtk-gui.c:678 print.c:398 statistics.c:175 statistics.c:854
+#: divelist.c:1433 gtk-gui.c:678 print.c:377 statistics.c:175 statistics.c:854
 #, c-format
 msgid "SAC"
 msgstr "AMV"
@@ -1329,11 +1334,11 @@ msgstr "Speichern unter..."
 msgid "Save Changes?"
 msgstr "Änderungen speichern?"
 
-#: divelist.c:1633 gtk-gui.c:139
+#: divelist.c:1637 gtk-gui.c:139
 msgid "Save File As"
 msgstr "Datei speichern unter"
 
-#: divelist.c:2441
+#: divelist.c:2445
 msgid "Save as"
 msgstr "Speichern unter"
 
@@ -1394,7 +1399,7 @@ msgstr "Berechnete tiefste Deko-Stopps anzeigen"
 msgid "Show dc reported ceiling in red"
 msgstr "Vom TC ausgelesene tiefste Deko-Stopps in rot anzeigen"
 
-#: divelist.c:2474
+#: divelist.c:2478
 msgid "Show in map"
 msgstr "Auf Karte zeigen"
 
@@ -1449,7 +1454,7 @@ msgstr "Statistiken %s"
 msgid "Stats"
 msgstr "Statistiken"
 
-#: webservice.c:240
+#: webservice.c:243
 msgid "Status"
 msgstr "Status"
 
@@ -1458,7 +1463,7 @@ msgstr "Status"
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Verbleibe auf %.*f %s für %d:%02d min - Gesamtzeit %d:%02u mit %s\n"
 
-#: divelist.c:1426 gtk-gui.c:688 info.c:804 info.c:1257
+#: divelist.c:1430 gtk-gui.c:688 info.c:806 info.c:1259
 msgid "Suit"
 msgstr "Anzug"
 
@@ -1480,7 +1485,7 @@ msgstr "Druck an der Oberfläche (mbar)"
 msgid "Switch gas to %s\n"
 msgstr "Gaswechsel zu %s\n"
 
-#: print.c:928
+#: print.c:913
 msgid "Table print"
 msgstr "Tabellenausdruck"
 
@@ -1516,7 +1521,7 @@ msgstr "Drei"
 msgid "Thu"
 msgstr "Do"
 
-#: info.c:1114 print.c:501
+#: info.c:1116
 msgid "Time"
 msgstr "Zeit"
 
@@ -1541,7 +1546,7 @@ msgstr "Gesamt"
 msgid "Total Time"
 msgstr "Gesamtzeit"
 
-#: print.c:321
+#: print.c:322
 #, c-format
 msgid "Total Weight:"
 msgstr "Gesamtgewicht:"
@@ -1609,7 +1614,11 @@ msgstr "Fehler beim Öffnen von %s %s (%s)"
 msgid "Units"
 msgstr "Einheiten"
 
-#: webservice.c:227
+#: gps.c:218
+msgid "Use right click to mark dive location at cursor"
+msgstr ""
+
+#: webservice.c:230
 msgid "User Identifier"
 msgstr "Benutzerkennung"
 
@@ -1617,7 +1626,7 @@ msgstr "Benutzerkennung"
 msgid "View"
 msgstr "Ansicht"
 
-#: info.c:809 statistics.c:840
+#: info.c:811 statistics.c:840
 msgid "Visibility"
 msgstr "Sicht"
 
@@ -1625,7 +1634,7 @@ msgstr "Sicht"
 msgid "Volume:"
 msgstr "Volumen:"
 
-#: info.c:655
+#: info.c:652
 msgid "W"
 msgstr "W"
 
@@ -1633,7 +1642,7 @@ msgstr "W"
 msgid "Water Temp"
 msgstr "Wassertemperatur"
 
-#: webservice.c:255
+#: webservice.c:258
 msgid "Webservice"
 msgstr "Webservice"
 
@@ -1645,7 +1654,7 @@ msgstr "Mi"
 msgid "Weight"
 msgstr "Gewicht"
 
-#: equipment.c:1084 print.c:289
+#: equipment.c:1084 print.c:290
 #, c-format
 msgid "Weight System"
 msgstr "Gewicht"
@@ -1696,7 +1705,7 @@ msgstr ""
 "Nicht alle Änderungen in der Dati %s wurden gespeichert.\n"
 "Sollen Änderungen vor dem Schließen der Datei gespeichert werden?"
 
-#: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:171
+#: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:172
 #: profile.c:399
 #, c-format
 msgid "air"
@@ -1803,7 +1812,7 @@ msgstr "für den ausgewählten Tauchgang"
 msgid "for selected dives"
 msgstr "für die ausgewählten Tauchgänge"
 
-#: dive.c:117 divelist.c:1422 info.c:1176 planner.c:838
+#: dive.c:117 divelist.c:1426 info.c:1178 planner.c:838
 msgid "ft"
 msgstr "ft"
 
@@ -1839,7 +1848,7 @@ msgstr "kg"
 msgid "l"
 msgstr "l"
 
-#: dive.c:137 divelist.c:1425 equipment.c:1006 gtk-gui.c:654
+#: dive.c:137 divelist.c:1429 equipment.c:1006 gtk-gui.c:654
 msgid "lbs"
 msgstr "US Pfund"
 
@@ -1847,7 +1856,7 @@ msgstr "US Pfund"
 msgid "long john"
 msgstr "Latzhose"
 
-#: dive.c:112 info.c:1176
+#: dive.c:112 info.c:1178
 msgid "m"
 msgstr "m"
 
@@ -1855,7 +1864,7 @@ msgstr "m"
 msgid "max ppO2"
 msgstr "max. ppO2"
 
-#: divelist.c:1431 gtk-gui.c:731
+#: divelist.c:1435 gtk-gui.c:731
 msgid "maxCNS"
 msgstr "max. CNS"
 
@@ -1867,7 +1876,7 @@ msgstr "Max. Tiefe"
 msgid "membrane"
 msgstr "Membran"
 
-#: divelist.c:1423 planner.c:903
+#: divelist.c:1427 planner.c:903
 msgid "min"
 msgstr "min"
 
@@ -1964,7 +1973,7 @@ msgstr "Sender"
 msgid "unkn"
 msgstr "unbk"
 
-#: libdivecomputer.c:152 print.c:302 statistics.c:561 uemis-downloader.c:133
+#: libdivecomputer.c:152 print.c:303 statistics.c:561 uemis-downloader.c:133
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -2019,9 +2028,6 @@ msgstr "Arbeit"
 #~ msgstr ""
 #~ "Dauer\n"
 #~ "Gesamt"
-
-#~ msgid "Gas Used"
-#~ msgstr "Gasverbrauch"
 
 #~ msgid "Pretty print"
 #~ msgstr "Schön drucken"
