@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2013-02-09 20:21+0100\n"
+"PO-Revision-Date: 2013-02-12 10:12+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
+"X-Poedit-Basepath: ..\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -294,7 +295,7 @@ msgstr "2 dykk per side"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
-msgstr "todelt vams"
+msgstr "todelt drakt"
 
 #: planner.c:1252
 msgid "20 l/min"
@@ -342,7 +343,7 @@ msgstr "Nytt dykk"
 
 #: divelist.c:2499
 msgid "Add to trip above"
-msgstr "Slå sammen med turen over"
+msgstr "Legg til i turen over"
 
 #: planner.c:1272
 msgid "Add waypoint"
@@ -460,7 +461,7 @@ msgstr "Lukk"
 
 #: divelist.c:2517
 msgid "Collapse all"
-msgstr "Slå sammen alle"
+msgstr "Fold sammen turer"
 
 #: webservice.c:119
 msgid "Connecting..."
@@ -804,7 +805,7 @@ msgstr "Hendelse: Venter på bruker"
 
 #: divelist.c:2513
 msgid "Expand all"
-msgstr "Ekspander alle"
+msgstr "Fold ut turer"
 
 #: gtk-gui.c:649
 msgid "Fahrenheit"
@@ -1398,7 +1399,7 @@ msgstr "Vis kalkulert tak"
 
 #: gtk-gui.c:824
 msgid "Show dc reported ceiling in red"
-msgstr "Tak fra DC i rødt"
+msgstr "Tak fra computer i rødt"
 
 #: divelist.c:2478
 msgid "Show in map"
@@ -1462,7 +1463,7 @@ msgstr "Status"
 #: planner.c:518
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
-msgstr "Vis ved %.*f %s for %d:%02d min - kjøretid %d:%02u på %s\n"
+msgstr "Bli ved %.*f %s i %d:%02d min - kjøretid %d:%02u på %s\n"
 
 #: divelist.c:1430 gtk-gui.c:688 info.c:806 info.c:1259
 msgid "Suit"
@@ -1496,11 +1497,11 @@ msgstr "Tankbytte foreslått"
 
 #: uemis.c:214
 msgid "Tank Pressure Info"
-msgstr "Info: trykk"
+msgstr "Info: tanktrykk"
 
 #: gtk-gui.c:718
 msgid "Tec Settings"
-msgstr "Tec-innstillinger"
+msgstr "Tek-innstillinger"
 
 #: gtk-gui.c:663
 msgid "Temp"
@@ -1617,7 +1618,7 @@ msgstr "Enheter"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Høyreklikk for å velge dykkested"
 
 #: webservice.c:230
 msgid "User Identifier"
@@ -1718,7 +1719,7 @@ msgstr "lufttid"
 
 #: equipment.c:828
 msgid "ankle"
-msgstr "ankel"
+msgstr "ankelvekt"
 
 #: libdivecomputer.c:149
 msgid "ascent"
@@ -1734,7 +1735,7 @@ msgstr "bar"
 
 #: equipment.c:827
 msgid "belt"
-msgstr "belte"
+msgstr "vektbelte"
 
 #: libdivecomputer.c:150
 msgid "bookmark"
@@ -1819,7 +1820,7 @@ msgstr "ft"
 
 #: uemis-downloader.c:590
 msgid "full suit"
-msgstr "hel vams"
+msgstr "hel drakt"
 
 #: libdivecomputer.c:151 libdivecomputer.c:154
 msgid "gaschange"
@@ -1831,7 +1832,7 @@ msgstr "retning"
 
 #: equipment.c:826
 msgid "integrated"
-msgstr "integrert"
+msgstr "integrert bly"
 
 #: libdivecomputer.c:171
 msgid "invalid event number"
@@ -1839,7 +1840,7 @@ msgstr "ugyldig hendelsesnummer"
 
 #: uemis-downloader.c:590
 msgid "jacket"
-msgstr "BCD"
+msgstr "overdel"
 
 #: dive.c:141 equipment.c:1004 gtk-gui.c:653
 msgid "kg"
@@ -1855,7 +1856,7 @@ msgstr "pund"
 
 #: uemis-downloader.c:590
 msgid "long john"
-msgstr "stillongs"
+msgstr "ermeløs våtdrakt"
 
 #: dive.c:112 info.c:1178
 msgid "m"
