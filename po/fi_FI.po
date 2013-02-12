@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2013-02-10 08:16+0200\n"
+"PO-Revision-Date: 2013-02-12 21:05+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -161,7 +161,7 @@ msgstr ""
 "EADD: %d %s"
 
 #: profile.c:2141
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "In deco"
@@ -416,7 +416,7 @@ msgstr "Keskipituus"
 #: profile.c:410
 #, c-format
 msgid "Bailing out to OC"
-msgstr ""
+msgstr "Vaihto vapaaseen ilman kiertoon"
 
 #: gtk-gui.c:638
 msgid "Bar"
@@ -428,7 +428,7 @@ msgstr "Sukelluspari"
 
 #: planner.c:1152
 msgid "CC SetPoint"
-msgstr ""
+msgstr "CC-vaiheet"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -673,7 +673,6 @@ msgid "Duration (min)"
 msgstr "Kesto (min)"
 
 #: info.c:652
-#, fuzzy
 msgid "E"
 msgstr "E"
 
@@ -795,7 +794,7 @@ msgid "Error registering the event handler."
 msgstr "Virhe tapahtumakäsittelijän rekisteröinnissä."
 
 #: libdivecomputer.c:645
-#, fuzzy, c-format
+#, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
 msgstr "Tapahtuma: systime=%<PRId64>, devtime=%u\n"
 
@@ -861,7 +860,6 @@ msgid "Fri"
 msgstr "pe"
 
 #: gtk-gui.c:855
-#, fuzzy
 msgid "GFhigh"
 msgstr "GFhigh"
 
@@ -1031,7 +1029,7 @@ msgstr ""
 "%s"
 
 #: print.c:359
-#, fuzzy, c-format
+#, c-format
 msgid "Max. CNS"
 msgstr "Max. CNS"
 
@@ -1118,7 +1116,6 @@ msgid "Multi-platform divelog software in C"
 msgstr "Usean laitealustan sukelluspäiväkirjaohjelma C-kielellä"
 
 #: info.c:651
-#, fuzzy
 msgid "N"
 msgstr "N"
 
@@ -1131,9 +1128,8 @@ msgid "New starting number"
 msgstr "Uusi aloitusnumero"
 
 #: gtk-gui.c:1384
-#, fuzzy
 msgid "Next DC"
-msgstr "Seuraava DC"
+msgstr "Seuraava tietokone"
 
 #: gtk-gui.c:1274 gtk-gui.c:1999
 msgid "Nickname"
@@ -1230,9 +1226,8 @@ msgid "Pressure:"
 msgstr "Paine:"
 
 #: gtk-gui.c:1383
-#, fuzzy
 msgid "Prev DC"
-msgstr "Edellinen DC"
+msgstr "Edellinen tietokone"
 
 #: print.c:932
 msgid "Print only selected dives"
@@ -1275,9 +1270,9 @@ msgid "Rating"
 msgstr "Yleisarvio"
 
 #: uemis-downloader.c:364
-#, fuzzy, c-format
+#, c-format
 msgid "Reading %s %s"
-msgstr "Luetaan sukellusta %s"
+msgstr "Luetaan sukellusta %s %s"
 
 #: divelist.c:2084 divelist.c:2428
 msgid "Remove Trip"
@@ -1304,7 +1299,6 @@ msgid "Retry"
 msgstr "Yritä uudestaan"
 
 #: info.c:651
-#, fuzzy
 msgid "S"
 msgstr "S"
 
@@ -1580,7 +1574,6 @@ msgid "Type"
 msgstr "Tyyppi"
 
 #: uemis-downloader.c:28
-#, fuzzy
 msgid ""
 "Uemis Zurich: File System is almost full\n"
 "Disconnect/reconnect the dive computer\n"
@@ -1624,7 +1617,7 @@ msgstr "Yksiköt"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Näpäytä oikealla painikkeella merkitäksesi kursorin osoittaman sukelluskohteen"
 
 #: webservice.c:230
 msgid "User Identifier"
@@ -1643,7 +1636,6 @@ msgid "Volume:"
 msgstr "Tilavuus:"
 
 #: info.c:652
-#, fuzzy
 msgid "W"
 msgstr "W"
 
@@ -1652,9 +1644,8 @@ msgid "Water Temp"
 msgstr "Veden lämpötila"
 
 #: webservice.c:258
-#, fuzzy
 msgid "Webservice"
-msgstr "Webservice"
+msgstr "Verkkopalvelu"
 
 #: main.c:62
 msgid "Wed"
@@ -1803,9 +1794,9 @@ msgid "for all dives"
 msgstr "kaikille sukelluksille"
 
 #: statistics.c:677
-#, fuzzy, c-format
+#, c-format
 msgid "for dive #%d"
-msgstr "Sukellus #%d - "
+msgstr "Sukellus #%d"
 
 #: statistics.c:636
 #, c-format
@@ -1871,12 +1862,10 @@ msgid "m"
 msgstr "m"
 
 #: gtk-gui.c:804
-#, fuzzy
 msgid "max ppO2"
 msgstr "max ppO2"
 
 #: divelist.c:1435 gtk-gui.c:731
-#, fuzzy
 msgid "maxCNS"
 msgstr "maxCNS"
 
@@ -1886,7 +1875,7 @@ msgstr "Suurin syvyys"
 
 #: uemis-downloader.c:591
 msgid "membrane"
-msgstr ""
+msgstr "\"skini\""
 
 #: divelist.c:1427 planner.c:903
 msgid "min"
@@ -1898,7 +1887,6 @@ msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr "malli=%u (0x%08x), firmware=%u (0x%08x), sarjanumero=%u (0x%08x)"
 
 #: uemis-downloader.c:409
-#, fuzzy
 msgid "more data dive id"
 msgstr "id: lisää sukellusdataa"
 
@@ -1938,9 +1926,8 @@ msgid "psi"
 msgstr "psi"
 
 #: libdivecomputer.c:149
-#, fuzzy
 msgid "rbt"
-msgstr "jäljellä oleva pohja-aika"
+msgstr "pohja-aika"
 
 #: libdivecomputer.c:153
 msgid "rgbm"
