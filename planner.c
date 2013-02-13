@@ -12,6 +12,11 @@
 #include "divelist.h"
 #include "display-gtk.h"
 
+/* while we normally track gases with permille precision, in the planner
+ * we want to treat gases as identical based on percent granularity.
+ * The reason for this is that the gaschange event only deals with
+ * percent (this is inherited from libdivecomputer). */
+#define O2_IN_AIR_PERCENT 210
 
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
@@ -57,21 +62,30 @@ void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 	}
 }
 
+/* simple helper function to compare two permille values with
+ * (rounded) percent granularity */
+static inline gboolean match_percent(int a, int b)
+{
+	return (a + 5) / 10 == (b + 5) / 10;
+}
 
 static int get_gasidx(struct dive *dive, int o2, int he)
 {
 	int gasidx = -1;
 
+	/* we treat air as 0/0 because it is special */
+	if (is_air(o2, he))
+		o2 = 0;
 	while (++gasidx < MAX_CYLINDERS)
-		if (dive->cylinder[gasidx].gasmix.o2.permille == o2 &&
-		    dive->cylinder[gasidx].gasmix.he.permille == he)
+		if (match_percent(dive->cylinder[gasidx].gasmix.o2.permille, o2) &&
+		    match_percent(dive->cylinder[gasidx].gasmix.he.permille, he))
 			return gasidx;
 	return -1;
 }
 
 static void get_gas_string(int o2, int he, char *text, int len)
 {
-	if (he == 0 && (o2 == 0 || (o2 >= O2_IN_AIR - 1 && o2 <= O2_IN_AIR + 1)))
+	if (is_air(o2, he))
 		snprintf(text, len, _("air"));
 	else if (he == 0)
 		snprintf(text, len, _("EAN%d"), (o2 + 5) / 10);
@@ -105,7 +119,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &o2, &he);
 		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
-			printf("can't find gas %d/%d\n", o2/10, he/10);
+			printf("can't find gas %d/%d\n", (o2 + 5) / 10, (he + 5) / 10);
 			gasidx = 0;
 		}
 		if (i > 0)
@@ -153,19 +167,21 @@ int add_gas(struct dive *dive, int o2, int he)
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cyl = dive->cylinder + i;
+		mix = &cyl->gasmix;
 		if (cylinder_nodata(cyl))
 			break;
-		mix = &cyl->gasmix;
-		if (o2 == mix->o2.permille && he == mix->he.permille)
+		if (match_percent(o2, mix->o2.permille) && match_percent(he, mix->he.permille))
 			return i;
 	}
 	if (i == MAX_CYLINDERS) {
 		printf("too many cylinders\n");
 		return -1;
 	}
-	mix = &cyl->gasmix;
 	mix->o2.permille = o2;
 	mix->he.permille = he;
+	/* since air is stored as 0/0 we need to set a name or an air cylinder
+	 * would be seen as unset (by cylinder_nodata()) */
+	cyl->type.description = strdup("Cylinder for planning");
 	return i;
 }
 
@@ -175,7 +191,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
 	struct sample *sample;
-	int oldo2 = O2_IN_AIR, oldhe = 0;
+	int oldo2 = O2_IN_AIR_PERCENT, oldhe = 0;
 	int oldpo2 = 0;
 	int lasttime = 0;
 
@@ -226,14 +242,18 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 			oldpo2 = po2;
 		}
 
-		/* Create new gas, and gas change event if necessary */
+		/* Create new gas, and gas change event if necessary;
+		 * Sadly, we inherited our gaschange event from libdivecomputer which only
+		 * support percentage values, so round the entries */
 		if (o2 != oldo2 || he != oldhe) {
-			int value = (o2 / 10) | (he / 10 << 16);
-			add_gas(dive, o2, he);
+			int plano2 = (o2 + 5) / 10 * 10;
+			int planhe = (he + 5) / 10 * 10;
+			int value;
+			add_gas(dive, plano2, planhe);
+			value = (plano2 / 10) | (planhe << 16);
 			add_event(dc, lasttime, 25, 0, value, "gaschange"); // SAMPLE_EVENT_GASCHANGE2
 			oldo2 = o2; oldhe = he;
 		}
-
 		/* Create sample */
 		sample = prepare_sample(dc);
 		/* set po2 at beginning of this segment */
@@ -395,8 +415,8 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 #if DEBUG_PLAN & 16
 	for (nr = 0; nr < *gaschangenr; nr++)
 		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%d/%d)\n", nr, gaschanges[nr].depth / 1000.0,
-			gaschanges[nr].gasidx, dive->cylinder[gaschanges[nr].gasidx].gasmix.o2.permille / 10,
-			dive->cylinder[gaschanges[nr].gasidx].gasmix.he.permille / 10);
+			gaschanges[nr].gasidx, (dive->cylinder[gaschanges[nr].gasidx].gasmix.o2.permille + 5) / 10,
+			(dive->cylinder[gaschanges[nr].gasidx].gasmix.he.permille + 5) / 10);
 #endif
 	return gaschanges;
 }
@@ -521,7 +541,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 							FRACTION(dp->time, 60),
 							gas);
 		}
-		consumption[gasidx] += used;
+		if (gasidx != -1)
+			consumption[gasidx] += used;
 		get_gas_string(newo2, newhe, gas, sizeof(gas));
 		if (o2 != newo2 || he != newhe) {
 			len = strlen(buffer);
@@ -619,7 +640,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 			he = dive->cylinder[gaschanges[gi].gasidx].gasmix.he.permille;
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-				o2 / 10, he / 10, gaschanges[gi].depth / 1000.0);
+				(o2 + 5) / 10, (he + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 			gi--;
 		}
@@ -730,7 +751,7 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 		return 0;
 
 	if (!strcasecmp(text, _("air"))) {
-		o2 = O2_IN_AIR; he = 0; text += strlen(_("air"));
+		o2 = O2_IN_AIR_PERCENT; he = 0; text += strlen(_("air"));
 	} else if (!strncasecmp(text, _("ean"), 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
 	} else {

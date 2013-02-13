@@ -213,6 +213,11 @@ static inline int mbar_to_PSI(int mbar)
 	return to_PSI(p);
 }
 
+static inline gboolean is_air(int o2, int he)
+{
+	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
+}
+
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
 {
