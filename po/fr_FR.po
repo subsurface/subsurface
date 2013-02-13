@@ -2,16 +2,17 @@
 # Copyright (C) 2012 Subsurface's COPYRIGHT HOLDER
 # This file is distributed under the same license as the Subsurface package.
 #
-# Pierre-Yves Chibon <pingou@pingoured.fr>, 2012
+# Pierre-Yves Chibon <pingou@pingoured.fr>, 2012, 2013
 # Jean-Noël Rouchon <jnoel@sissiou.net>, 2012
 # Stéphane Raimbault <stephane.raimbault@gmail.com>, 2012
+# Kévin Raymond <shaiton@fedoraproject.org>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-11 19:54-0800\n"
-"PO-Revision-Date: 2012-10-27 02:44+0200\n"
-"Last-Translator: Stéphane Raimbault <stephane.raimbault@gmail.com>\n"
+"POT-Creation-Date: 2013-02-04 17:58+1100\n"
+"PO-Revision-Date: 2013-02-13 19:16+0100\n"
+"Last-Translator: Kévin Raymond <shaiton@fedoraproject.org>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -26,35 +27,35 @@ msgstr " > mois"
 
 #: webservice.c:237
 msgid " Download"
-msgstr ""
+msgstr " Télécharger"
 
 #: download-dialog.c:375
 msgid " Please select dive computer and device. "
-msgstr " Veuillez choisir un ordinateur de plongée et un périphérique. "
+msgstr "Veuillez choisir un ordinateur de plongée et son périphérique associé."
 
 #: profile.c:413
 msgctxt "Starts with space!"
 msgid " begin"
-msgstr ""
+msgstr " début"
 
 #: profile.c:414
 msgctxt "Starts with space!"
 msgid " end"
-msgstr ""
+msgstr " fin"
 
 #: statistics.c:175
 msgid "#"
 msgstr "N°"
 
 #: print.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "%.*f %s"
-msgstr "%.*f %s/min"
+msgstr "%.*f %s"
 
 #: print.c:253 print.c:326
-#, fuzzy, c-format
+#, c-format
 msgid "%.*f %s\n"
-msgstr "%.*f %s/min"
+msgstr "%.*f %s\n"
 
 #: statistics.c:591 statistics.c:738 statistics.c:740 statistics.c:742
 #, c-format
@@ -64,7 +65,7 @@ msgstr "%.*f %s/min"
 #: planner.c:547
 #, c-format
 msgid "%.0f%s of %s\n"
-msgstr ""
+msgstr "%.0f%s de %s\n"
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
 #: print.c:82
@@ -108,7 +109,7 @@ msgstr "%d h %d min"
 #: print.c:304
 #, c-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: profile.c:2148
 #, c-format
@@ -116,6 +117,8 @@ msgid ""
 "%s\n"
 "CNS:%u%%"
 msgstr ""
+"%s\n"
+"SNC : %u%%"
 
 #: profile.c:2116
 #, c-format
@@ -123,6 +126,8 @@ msgid ""
 "%s\n"
 "Calculated ceiling %.0f %s"
 msgstr ""
+"%s\n"
+"Plafond calculé %.0f %s"
 
 #: profile.c:2132
 #, c-format
@@ -130,6 +135,8 @@ msgid ""
 "%s\n"
 "Deco:%umin @ %.0f %s"
 msgstr ""
+"%s\n"
+"Décompression : %umin @ %.0f %s"
 
 #: profile.c:2135
 #, c-format
@@ -137,6 +144,8 @@ msgid ""
 "%s\n"
 "Deco:unkn time @ %.0f %s"
 msgstr ""
+"%s\n"
+"Décompression : durée inconnue @ %.0f %s"
 
 #: profile.c:2172
 #, c-format
@@ -146,6 +155,10 @@ msgid ""
 "END:%d%s\n"
 "EADD:%d%s"
 msgstr ""
+"%s\n"
+"EAD : %d%s\n"
+"END : %d%s\n"
+"EADD : %d%s"
 
 #: profile.c:2141
 #, c-format
@@ -153,6 +166,8 @@ msgid ""
 "%s\n"
 "In deco"
 msgstr ""
+"%s\n"
+"En décompression"
 
 #: profile.c:2165
 #, c-format
@@ -160,6 +175,8 @@ msgid ""
 "%s\n"
 "MOD:%d%s"
 msgstr ""
+"%s\n"
+"MOD : %d%s"
 
 #: profile.c:2144
 #, c-format
@@ -167,6 +184,8 @@ msgid ""
 "%s\n"
 "NDL:%umin"
 msgstr ""
+"%s\n"
+"NDL : %umin"
 
 #: profile.c:2106
 #, c-format
@@ -174,6 +193,8 @@ msgid ""
 "%s\n"
 "P:%d %s"
 msgstr ""
+"%s\n"
+"P : %d %s"
 
 #: profile.c:2124
 #, c-format
@@ -181,6 +202,8 @@ msgid ""
 "%s\n"
 "Safetystop:%umin @ %.0f %s"
 msgstr ""
+"%s\n"
+"Arrêt de sécurité : %umin @ %.0f %s"
 
 #: profile.c:2127
 #, c-format
@@ -188,6 +211,8 @@ msgid ""
 "%s\n"
 "Safetystop:unkn time @ %.0f %s"
 msgstr ""
+"%s\n"
+"Arrêt de sécurité : durée inconnue @ %.0f %s"
 
 #: planner.c:468
 #, c-format
@@ -204,6 +229,8 @@ msgid ""
 "%s\n"
 "T:%.1f %s"
 msgstr ""
+"%s\n"
+"T : %.1f %s"
 
 #: profile.c:2160
 #, c-format
@@ -211,6 +238,8 @@ msgid ""
 "%s\n"
 "pHe:%.2fbar"
 msgstr ""
+"%s\n"
+"pHe : %.2fbar"
 
 #: profile.c:2156
 #, c-format
@@ -218,6 +247,8 @@ msgid ""
 "%s\n"
 "pN%s:%.2fbar"
 msgstr ""
+"%s\n"
+"pN%s : %.2fbar"
 
 #: profile.c:2152
 #, c-format
@@ -225,6 +256,8 @@ msgid ""
 "%s\n"
 "pO%s:%.2fbar"
 msgstr ""
+"%s\n"
+"pO%s : %.2fbar"
 
 #: dive.c:873
 #, c-format
@@ -232,45 +265,45 @@ msgid "(%s) or (%s)"
 msgstr "(%s) ou (%s)"
 
 #: statistics.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "(no dives)"
-msgstr "Modifier les plongées"
+msgstr "(pas de plongées)"
 
 #: gtk-gui.c:1995
 msgid "(nothing)"
-msgstr ""
+msgstr "(rien)"
 
 #: planner.c:1248
 msgid "0.6 cuft/min"
-msgstr ""
+msgstr "0.016 m³/min"
 
 #: planner.c:1247
 msgid "0.7 cuft/min"
-msgstr ""
+msgstr "0.02 m³/min"
 
 #: planner.c:1253
 msgid "17 l/min"
-msgstr ""
+msgstr "17 l/min"
 
 #: print.c:909
 msgid "2 dives per page"
-msgstr ""
+msgstr "2 plongées par page"
 
 #: uemis-downloader.c:590
 msgid "2 pcs full suit"
-msgstr ""
+msgstr "Combi 2 pièces"
 
 #: planner.c:1252
 msgid "20 l/min"
-msgstr ""
+msgstr "20 l/min"
 
 #: gtk-gui.c:837
 msgid "3m increments for calculated ceiling"
-msgstr ""
+msgstr "Pas de 3 m pour calculer le plafond"
 
 #: print.c:905
 msgid "6 dives per page"
-msgstr ""
+msgstr "6 plongées par page"
 
 #: planner.c:1197
 msgid ""
@@ -281,10 +314,16 @@ msgid ""
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr ""
+"<small>Ajouter des sections ci-dessous.\n"
+"Chaque ligne décrit une partie de la plongée prévue.\n"
+"Une ligne comprend la profondeur, le temps et le gaz utilisé pendant la section qui se termine à la profondeur désignée, dure le temps prévu (si durée relative : « +3:30 ») ou finit au temps prévu (si la durée est absolue) et utilise la quantité de gaz indiquée.\n"
+"Si aucun gaz n'est précisé, cela correspondra à « utiliser le gaz précédant » (ou à AIR si aucun gaz n'a été spécifié).\n"
+"Un entrée avec une profondeur et un gaz mais sans durée est particulière ; elle informe le planificateur que le volume de gaz indiqué sera disponible pour la remonté une fois la profondeur indiquée atteinte.\n"
+"Les repères CF sont pour les plongées en CF (circuit-fermé, avec recycleur), laisser vide pour les plongées en CO (circuit ouvert).</small>"
 
 #: planner.c:1123
 msgid "AIR"
-msgstr ""
+msgstr "AIR"
 
 #: gtk-gui.c:1054 gtk-gui.c:1377
 msgid "About Subsurface"
@@ -304,25 +343,24 @@ msgstr "Ajouter au groupe au-dessus"
 
 #: planner.c:1272
 msgid "Add waypoint"
-msgstr ""
+msgstr "Ajouter des points de cheminement"
 
 #: statistics.c:848
 msgid "Air Press"
-msgstr ""
+msgstr "Pression athmosphérique"
 
 #: statistics.c:847
-#, fuzzy
 msgid "Air Temp"
-msgstr "Temp. moy."
+msgstr "Temp. atmosphérique"
 
 #: info.c:814
 #, c-format
 msgid "Air Temp in %s"
-msgstr ""
+msgstr "Temp. atmosphérique en %s"
 
 #: download-dialog.c:391
 msgid "Always prefer downloaded dive"
-msgstr ""
+msgstr "Choisir les plongées téléchargées par défaut"
 
 #: main.c:71
 msgid "Apr"
@@ -370,12 +408,12 @@ msgstr "Temp. moy."
 
 #: statistics.c:792
 msgid "Avg Time"
-msgstr "Temps moy."
+msgstr "Tps moy."
 
 #: profile.c:410
 #, c-format
 msgid "Bailing out to OC"
-msgstr ""
+msgstr "Passer en CO"
 
 #: gtk-gui.c:638
 msgid "Bar"
@@ -387,19 +425,19 @@ msgstr "Binôme"
 
 #: planner.c:1152
 msgid "CC SetPoint"
-msgstr ""
+msgstr "repère CF"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
-msgstr ""
+msgstr "Annulé, sortie en cours..."
 
 #: libdivecomputer.c:757
 msgid "Cancelled..."
-msgstr ""
+msgstr "Annulé..."
 
 #: webservice.c:27
 msgid "Cannot parse response!"
-msgstr ""
+msgstr "Impossible de lire la réponse"
 
 #: gtk-gui.c:648
 msgid "Celsius"
@@ -423,11 +461,11 @@ msgstr "Tout replier"
 
 #: webservice.c:119
 msgid "Connecting..."
-msgstr ""
+msgstr "Connexion en cours..."
 
 #: webservice.c:23
 msgid "Connection Error: "
-msgstr ""
+msgstr "Erreur de connexion : "
 
 #: divelist.c:2489
 msgid "Create new trip above"
@@ -443,20 +481,19 @@ msgstr "Blk"
 
 #: equipment.c:918 equipment.c:1029 print.c:195
 msgid "Cylinder"
-msgstr "Block"
+msgstr "Bloc"
 
 #: equipment.c:1539
 msgid "Cylinders"
-msgstr "Blocks"
+msgstr "Blocs"
 
 #: profile.c:2102
-#, fuzzy, c-format
 msgid "D:%.1f %s"
-msgstr "%.*f %s/min"
+msgstr "P : %.1f %s/min"
 
 #: planner.c:1209
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr ""
+msgstr "ATTENTION: CECI EST UNE NOUVELLE IMPLEMENTATION DU L'ALGRITHME DE BUHLMANN ET LE SIMULATEUR DE PLONGÉE L'UTILISANT ONT ÉTÉ TESTÉ QUE SOMMAIREMENT. IL EST FORTEMENT CONSEILLÉ DE NE PAS PLONGER EN CE BASANT UNIQUEMENT PAR LES INDICATIONS DONNÉES ICI."
 
 #: divelist.c:1424 print.c:486 statistics.c:830
 msgid "Date"
@@ -468,7 +505,7 @@ msgstr "Date et heure"
 
 #: info.c:1111
 msgid "Date:"
-msgstr "Date :"
+msgstr "Date :"
 
 #: main.c:72
 msgid "Dec"
@@ -480,7 +517,7 @@ msgstr "Fichier XML par défaut"
 
 #: gtk-gui.c:1310
 msgid "Delete a dive computer information entry"
-msgstr ""
+msgstr "Supprimer un ordinateur de plongée"
 
 #: divelist.c:2239 divelist.c:2292 divelist.c:2384
 msgid "Delete dive"
@@ -497,7 +534,7 @@ msgstr "Profondeur"
 #: info.c:1178
 #, c-format
 msgid "Depth (%s):"
-msgstr "Profondeur (%s) :"
+msgstr "Profondeur (%s) :"
 
 #: uemis.c:222
 msgid "Depth Limit Exceeded"
@@ -505,16 +542,15 @@ msgstr "Profondeur plafond dépassée"
 
 #: gtk-gui.c:632
 msgid "Depth:"
-msgstr "Profondeur :"
+msgstr "Profondeur :"
 
 #: gtk-gui.c:1269
-#, fuzzy
 msgid "Device Id"
 msgstr "Nom du périphérique"
 
 #: download-dialog.c:330
 msgid "Device or mount point"
-msgstr ""
+msgstr "Périphérique ou point de montage"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:105
@@ -533,9 +569,8 @@ msgid "Dive %d: %s %d %04d"
 msgstr "Plongée n°%d - %s %d %04d"
 
 #: gtk-gui.c:1977
-#, fuzzy
 msgid "Dive Computer Nickname"
-msgstr "Ordinateur de plongée"
+msgstr "Surnom de l'ordinateur de plongée"
 
 #: gtk-gui.c:1607 info.c:998 statistics.c:821
 msgid "Dive Info"
@@ -543,11 +578,11 @@ msgstr "Détails de plongée"
 
 #: gtk-gui.c:1599
 msgid "Dive Notes"
-msgstr "Notes de Plongée"
+msgstr "Notes de plongée"
 
 #: planner.c:1219
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
-msgstr ""
+msgstr "Planificateur de plongée - CECI EST UNE SIMULATION ; NE PAS L'UTILISER POUR PLONGER"
 
 #: statistics.c:831
 msgid "Dive Time"
@@ -559,11 +594,11 @@ msgstr "Alerte temps de plongée"
 
 #: uemis.c:226
 msgid "Dive Time Info"
-msgstr "Information du temps de plongée"
+msgstr "Temps de plongée"
 
 #: download-dialog.c:288
 msgid "Dive computer vendor and product"
-msgstr ""
+msgstr "Marque et modèle de l'ordinateur de plongée"
 
 #: libdivecomputer.c:681
 msgid "Dive data import error"
@@ -571,20 +606,19 @@ msgstr "Erreur à l'import des données de plongées"
 
 #: print.c:895
 msgid "Dive details"
-msgstr "Détails de plongée"
+msgstr "Détails de la plongée"
 
 #: gps.c:206
-#, fuzzy
 msgid "Dive locations"
-msgstr "Notes de Plongée"
+msgstr "Lieux"
 
 #: info.c:799
 msgid "Dive master"
-msgstr "Chef de Palanquée"
+msgstr "Chef de palanquée"
 
 #: planner.c:1241
 msgid "Dive starts when?"
-msgstr ""
+msgstr "Début de la plongée ?"
 
 #: print.c:486
 msgid "Dive#"
@@ -603,9 +637,8 @@ msgid "Dives"
 msgstr "Plongées"
 
 #: gtk-gui.c:1373
-#, fuzzy
 msgid "Dives Locations"
-msgstr "Lieu"
+msgstr "Lieux"
 
 #: download-dialog.c:366
 msgid "Download From Dive Computer"
@@ -616,18 +649,16 @@ msgid "Download From Dive Computer..."
 msgstr "Télécharger depuis l'ordinateur de plongée..."
 
 #: webservice.c:210
-#, fuzzy
 msgid "Download From Web Service"
-msgstr "Télécharger depuis l'ordinateur de plongée"
+msgstr "Télécharger depuis le serveur"
 
 #: gtk-gui.c:1367
-#, fuzzy
 msgid "Download From Web Service..."
-msgstr "Télécharger depuis l'ordinateur de plongée..."
+msgstr "Télécharger depuis le serveur..."
 
 #: webservice.c:29
 msgid "Download Success!"
-msgstr ""
+msgstr "Téléchargement réussi"
 
 #: print.c:486 statistics.c:175
 msgid "Duration"
@@ -639,33 +670,32 @@ msgstr "Durée (min)"
 
 #: info.c:652
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: planner.c:77
 #, c-format
 msgid "EAN%d"
-msgstr ""
+msgstr "Nitrox%d"
 
 #: planner.c:1124
 msgid "EAN32"
-msgstr ""
+msgstr "Nitrox32"
 
 #: planner.c:1125
 msgid "EAN36"
-msgstr ""
+msgstr "Nitrox36"
 
 #: info.c:222
 msgid "Edit"
 msgstr "Modifier"
 
 #: gtk-gui.c:1382
-#, fuzzy
 msgid "Edit Device Names"
-msgstr "Nom du périphérique"
+msgstr "Modifier le nom du périphérique"
 
 #: gtk-gui.c:1242
 msgid "Edit Dive Computer Nicknames"
-msgstr ""
+msgstr "Modifier le surnom de l'ordinateur de plongée"
 
 #: info.c:957
 msgid "Edit Trip Info"
@@ -677,16 +707,15 @@ msgstr "Modifier le résumé du groupe"
 
 #: gtk-gui.c:1302
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
-msgstr ""
+msgstr "Modifier le surnom de l'ordinateur de plongée en faisant un double-clic sur le champ du surnom."
 
 #: divelist.c:2381
 msgid "Edit dive"
 msgstr "Modifier la plongée"
 
 #: divelist.c:2438 divelist.c:2461
-#, fuzzy
 msgid "Edit dive date/time"
-msgstr "Modifier la plongée"
+msgstr "Modifier la date et l'heure de la plongée"
 
 #: divelist.c:2380
 msgid "Edit dives"
@@ -702,29 +731,27 @@ msgstr "Modifier le résumé du groupe"
 
 #: gtk-gui.c:957
 msgid "Enable / Disable Events"
-msgstr "Activer / Désactiver évênements"
+msgstr "Activer/désactiver événements"
 
 #: equipment.c:949 equipment.c:1456
 msgid "End"
 msgstr "Fin"
 
 #: planner.c:1149
-#, fuzzy
 msgid "Ending Depth"
-msgstr "Profondeur min."
+msgstr "Profondeur finale"
 
 #: webservice.c:223
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
-msgstr ""
+msgstr "Entrer l'identifiant de l'utilisateur et appuyer sur « Télécharger ». Une fois le téléchargement complet vous pouvez appuyer sur « Appliquer » si vous voulez appliquer  les modifications."
 
 #: gtk-gui.c:1603 info.c:833
 msgid "Equipment"
 msgstr "Équipement"
 
 #: libdivecomputer.c:471
-#, fuzzy
 msgid "Error obtaining water salinity"
-msgstr "Impossible d'analyser des échantillons"
+msgstr "Impossible d'obtenir la salinité de l'eau"
 
 #: libdivecomputer.c:419
 msgid "Error parsing the datetime"
@@ -765,11 +792,11 @@ msgstr "Impossible d'enregistrer le gestionnaire d'événement."
 #: libdivecomputer.c:645
 #, c-format
 msgid "Event: systime=%<PRId64>, devtime=%u\n"
-msgstr "Événement : systime=%<PRId64>, devtime=%u\n"
+msgstr "Événement : systime=%<PRId64>, devtime=%u\n"
 
 #: libdivecomputer.c:622
 msgid "Event: waiting for user action"
-msgstr "Événement : attente d'une action de l'utilisateur"
+msgstr "Événement : attente d'une action de l'utilisateur"
 
 #: divelist.c:2513
 msgid "Expand all"
@@ -822,7 +849,7 @@ msgstr "Filtrer"
 
 #: download-dialog.c:385
 msgid "Force download of all dives"
-msgstr ""
+msgstr "Forcer le téléchargement de toutes les plongées"
 
 #: main.c:62
 msgid "Fri"
@@ -830,23 +857,23 @@ msgstr "Ven."
 
 #: gtk-gui.c:855
 msgid "GFhigh"
-msgstr ""
+msgstr "GFhaut"
 
 #: planner.c:1264
 msgid "GFhigh for plan"
-msgstr ""
+msgstr "GFhaut pour la simulation"
 
 #: gtk-gui.c:845
 msgid "GFlow"
-msgstr ""
+msgstr "GFbas"
 
 #: planner.c:1263
 msgid "GFlow for plan"
-msgstr ""
+msgstr "GFbas pour la simulation"
 
 #: info.c:777
 msgid "GPS (WGS84 or GPS format)"
-msgstr ""
+msgstr "GPS (format WGS84 ou GPS)"
 
 #. ++GETTEXT Gas Used is amount used
 #: print.c:197
@@ -854,21 +881,19 @@ msgid "Gas Used"
 msgstr "Air utilisé"
 
 #: statistics.c:857
-#, fuzzy
 msgctxt "Amount"
 msgid "Gas Used"
-msgstr "Air utilisé"
+msgstr "Gaz utilisé"
 
 #: planner.c:1151
-#, fuzzy
 msgctxt "Type of"
 msgid "Gas Used"
-msgstr "Air utilisé"
+msgstr "Gaz utilisé"
 
 #: planner.c:536
 #, c-format
 msgid "Gas consumption:\n"
-msgstr ""
+msgstr "Consommation de gaz :\n"
 
 #: equipment.c:959 print.c:195
 msgid "Gasmix"
@@ -876,7 +901,7 @@ msgstr "Mélange gazeux"
 
 #: gtk-gui.c:625
 msgid "General Settings"
-msgstr ""
+msgstr "Préférences générales"
 
 #: gtk-gui.c:1358
 msgid "Help"
@@ -884,7 +909,7 @@ msgstr "Aide"
 
 #: webservice.c:244
 msgid "Idle"
-msgstr ""
+msgstr "Inactif"
 
 #: gtk-gui.c:1365
 msgid "Import XML File(s)..."
@@ -892,19 +917,19 @@ msgstr "Importer les fichiers XML..."
 
 #: gtk-gui.c:1380
 msgid "Info"
-msgstr "Information"
+msgstr "Informations"
 
 #: uemis-downloader.c:769
 msgid "Init Communication"
-msgstr ""
+msgstr "Initialisation de la communication"
 
 #: gtk-gui.c:1385
 msgid "Input Plan"
-msgstr ""
+msgstr "Saisir le plan"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
-msgstr ""
+msgstr "Identifiant utilisateur incorrect."
 
 #. ++GETTEXT: these are three letter months - we allow up to six code bytes
 #: main.c:71
@@ -920,9 +945,8 @@ msgid "Jun"
 msgstr "Juin"
 
 #: gtk-gui.c:1060
-#, fuzzy
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
-msgstr "Linus Torvalds, Dirk Hohndel et autres, 2011, 2012"
+msgstr "Linus Torvalds, Dirk Hohndel et autres, 2011, 2012, 2013"
 
 #: gtk-gui.c:1378
 msgid "List"
@@ -963,11 +987,11 @@ msgstr "Mar."
 
 #: gps.c:59
 msgid "Mark location here"
-msgstr ""
+msgstr "Sélectioner l'emplacement"
 
 #: uemis.c:230
 msgid "Marker"
-msgstr "Marker"
+msgstr "Marqueur"
 
 #: print.c:486
 msgid "Master"
@@ -996,14 +1020,14 @@ msgid ""
 "Duration: %d min\n"
 "%s"
 msgstr ""
-"Profondeur max. : %.*f %s\n"
-"Durée : %d min\n"
+"Profondeur max. : %.*f %s\n"
+"Durée : %d min\n"
 "%s"
 
 #: print.c:359
 #, c-format
 msgid "Max. CNS"
-msgstr ""
+msgstr "SNC Max."
 
 #: equipment.c:1454
 msgid "MaxPress"
@@ -1029,9 +1053,8 @@ msgid "May"
 msgstr "Mai"
 
 #: divelist.c:2372
-#, fuzzy
 msgid "Merge dives"
-msgstr "Supprimer les plongées"
+msgstr "Fusionner les plongées"
 
 #: divelist.c:2413
 msgid "Merge trip with trip above"
@@ -1078,7 +1101,7 @@ msgstr "Options diverses"
 
 #: gtk-gui.c:1264
 msgid "Model"
-msgstr ""
+msgstr "Modèle"
 
 #: main.c:62
 msgid "Mon"
@@ -1086,11 +1109,11 @@ msgstr "Lun."
 
 #: gtk-gui.c:1056
 msgid "Multi-platform divelog software in C"
-msgstr "Journal de plongée multi-système écrit en C"
+msgstr "Journal de plongée multi systèmes, écrit en C"
 
 #: info.c:651
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: gtk-gui.c:1359
 msgid "New"
@@ -1102,16 +1125,15 @@ msgstr "Nouveau numéro de départ"
 
 #: gtk-gui.c:1384
 msgid "Next DC"
-msgstr ""
+msgstr "Ordinateur suivant"
 
 #: gtk-gui.c:1274 gtk-gui.c:1999
-#, fuzzy
 msgid "Nickname"
-msgstr "Nom du périphérique"
+msgstr "Surnom"
 
 #: uemis.c:232
 msgid "No Tank Data"
-msgstr "Pas d'information sur le block"
+msgstr "Pas d'information sur le bloc"
 
 #: info.c:626 info.c:825 info.c:1261
 msgid "Notes"
@@ -1140,7 +1162,7 @@ msgstr "Étrange erreur pthread retournée"
 
 #: gtk-gui.c:1321
 msgid "Ok to delete the selected entry?"
-msgstr ""
+msgstr "Supprimer cette entrée ?"
 
 #: gtk-gui.c:272
 msgid "Open File"
@@ -1153,7 +1175,7 @@ msgstr "Ouvrir..."
 #: print.c:167
 #, c-format
 msgid "Oxygen"
-msgstr ""
+msgstr "Oxygène"
 
 #: libdivecomputer.c:153
 msgid "PO2"
@@ -1177,11 +1199,11 @@ msgstr "PSI"
 
 #: info.c:788
 msgid "Pick on map"
-msgstr ""
+msgstr "Sélectioner sur une carte"
 
 #: gtk-gui.c:1357
 msgid "Planner"
-msgstr ""
+msgstr "Simulateur"
 
 #: gtk-gui.c:610
 msgid "Preferences"
@@ -1197,11 +1219,11 @@ msgstr "Pression"
 
 #: gtk-gui.c:637
 msgid "Pressure:"
-msgstr "Pression :"
+msgstr "Pression :"
 
 #: gtk-gui.c:1383
 msgid "Prev DC"
-msgstr ""
+msgstr "Ordinateur précédent"
 
 #: print.c:932
 msgid "Print only selected dives"
@@ -1224,9 +1246,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: gtk-gui.c:736
-#, fuzzy
 msgid "Profile Settings"
-msgstr "Profil"
+msgstr "Préférences personnelles"
 
 #: gtk-gui.c:1376
 msgid "Quit"
@@ -1245,9 +1266,9 @@ msgid "Rating"
 msgstr "Évaluation"
 
 #: uemis-downloader.c:364
-#, fuzzy, c-format
+#, c-format
 msgid "Reading %s %s"
-msgstr "Lecture de la plongée %s"
+msgstr "Lecture %s %s"
 
 #: divelist.c:2084 divelist.c:2428
 msgid "Remove Trip"
@@ -1275,7 +1296,7 @@ msgstr "Essayer à nouveau"
 
 #: info.c:651
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: divelist.c:1433 gtk-gui.c:678 print.c:377 statistics.c:175 statistics.c:854
 #, c-format
@@ -1284,12 +1305,11 @@ msgstr "Consommation d'air"
 
 #: planner.c:1258
 msgid "SAC during decostop"
-msgstr ""
+msgstr "Consommation d'air pendant la décompression"
 
 #: planner.c:1257
-#, fuzzy
 msgid "SAC during dive"
-msgstr "Ajouter une plongée"
+msgstr "Consommation d'air pendant la plongée"
 
 #: file.c:75
 msgid "SDE file"
@@ -1317,22 +1337,20 @@ msgid "Save File As"
 msgstr "Enregistrer le fichier sous"
 
 #: divelist.c:2445
-#, fuzzy
 msgid "Save as"
-msgstr "Enregistrer sous..."
+msgstr "Enregistrer sous"
 
 #: gtk-gui.c:1361
 msgid "Save..."
 msgstr "Enregistrer..."
 
 #: planner.c:1150
-#, fuzzy
 msgid "Segment Time"
-msgstr "Temps moy."
+msgstr "Fragmenter le temps"
 
 #: gtk-gui.c:948
 msgid "Select Events"
-msgstr "Sélection des évènements"
+msgstr "Sélection des événements"
 
 #: gtk-gui.c:1375
 msgid "Select Events..."
@@ -1348,7 +1366,7 @@ msgid ""
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
 "Écriture partielle des progrès dans le fichier req.txt\n"
-"Est-ce que votre Uemis Zurich est branché correctement ?"
+"Est-ce que votre Uemis Zurich est branché correctement ?"
 
 #: statistics.c:181
 msgctxt "Duration"
@@ -1365,41 +1383,41 @@ msgstr "Afficher les colonnes"
 
 #: gtk-gui.c:816
 msgid "Show EAD, END, EADD"
-msgstr ""
+msgstr "Afficher EAD, END, EADD"
 
 #: gtk-gui.c:799
 msgid "Show MOD"
-msgstr ""
+msgstr "Afficher MOD"
 
 #: gtk-gui.c:832
 msgid "Show calculated ceiling"
-msgstr ""
+msgstr "Afficher le plafond calculé"
 
 #: gtk-gui.c:824
 msgid "Show dc reported ceiling in red"
-msgstr ""
+msgstr "Afficher en rouge le plafond signalé par l'ordinateur"
 
 #: divelist.c:2478
 msgid "Show in map"
-msgstr ""
+msgstr "Afficher sur une carte"
 
 #: gtk-gui.c:782
 msgid "Show pHe graph"
-msgstr ""
+msgstr "Afficher le graph pHe"
 
 #: gtk-gui.c:763
 #, c-format
 msgid "Show pN%s graph"
-msgstr ""
+msgstr "Afficher le graph pN%s"
 
 #: gtk-gui.c:744
 #, c-format
 msgid "Show pO%s graph"
-msgstr ""
+msgstr "Afficher le graph pO%s"
 
 #: planner.c:192
 msgid "Simulated Dive"
-msgstr ""
+msgstr "Plongée simulée"
 
 #: equipment.c:935 equipment.c:1453
 msgid "Size"
@@ -1419,30 +1437,28 @@ msgstr "Début"
 
 #: uemis-downloader.c:782
 msgid "Start download"
-msgstr ""
+msgstr "Début du téléchargement"
 
 #: statistics.c:772
 msgid "Statistics"
 msgstr "Statistiques"
 
 #: statistics.c:708
-#, fuzzy, c-format
 msgid "Statistics %s"
-msgstr "Statistiques"
+msgstr "Statistiques %s"
 
 #: gtk-gui.c:1611
 msgid "Stats"
 msgstr "Stats"
 
 #: webservice.c:243
-#, fuzzy
 msgid "Status"
-msgstr "Stats"
+msgstr "Statut"
 
 #: planner.c:518
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
-msgstr ""
+msgstr "Rester à %.*f %s pour %d:%02d min - temps %d:%02u sur %s\n"
 
 #: divelist.c:1430 gtk-gui.c:688 info.c:806 info.c:1259
 msgid "Suit"
@@ -1455,32 +1471,32 @@ msgstr "Dim."
 
 #: statistics.c:832
 msgid "Surf Intv"
-msgstr "Intervale de surface"
+msgstr "Tps entre plongées"
 
 #: planner.c:1242
 msgid "Surface Pressure (mbar)"
-msgstr ""
+msgstr "Pression en surface (mbar)"
 
 #: planner.c:528
 #, c-format
 msgid "Switch gas to %s\n"
-msgstr ""
+msgstr "Changer pour du gaz %s\n"
 
 #: print.c:913
 msgid "Table print"
-msgstr "Impression en tableau"
+msgstr "Impression du tableau"
 
 #: uemis.c:220
 msgid "Tank Change Suggested"
-msgstr "Changement de block suggéré"
+msgstr "Changement de bloc suggéré"
 
 #: uemis.c:214
 msgid "Tank Pressure Info"
-msgstr "Information de pression block"
+msgstr "Pression du bloc"
 
 #: gtk-gui.c:718
 msgid "Tec Settings"
-msgstr ""
+msgstr "Préférences techniques"
 
 #: gtk-gui.c:663
 msgid "Temp"
@@ -1492,7 +1508,7 @@ msgstr "Température"
 
 #: gtk-gui.c:647
 msgid "Temperature:"
-msgstr "Température :"
+msgstr "Température :"
 
 #: gtk-gui.c:1381
 msgid "Three"
@@ -1511,6 +1527,8 @@ msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
 msgstr ""
+"Pour modifier les information d'une plongée\n"
+"faites un double-clic sur la plongée dans la liste"
 
 #: gtk-gui.c:1391
 msgid "Toggle Zoom"
@@ -1523,17 +1541,17 @@ msgstr "Total"
 
 #: statistics.c:791
 msgid "Total Time"
-msgstr "Temps Total"
+msgstr "Temps total"
 
 #: print.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "Total Weight:"
-msgstr "Poids:"
+msgstr "Poids total :"
 
 #: planner.c:509
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
-msgstr ""
+msgstr "Transition vers %.*f %s en %d:%02d min - temps %d:%02u sur %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:268
@@ -1552,15 +1570,14 @@ msgid "Type"
 msgstr "Type"
 
 #: uemis-downloader.c:28
-#, fuzzy
 msgid ""
 "Uemis Zurich: File System is almost full\n"
 "Disconnect/reconnect the dive computer\n"
 "and click 'Retry'"
 msgstr ""
-"Uemis Zurich : le disque dur est presque plein\n"
-"Débranchez et re-branchez l'ordinateur\n"
-"et essayer à nouveau"
+"Uemis Zurich : le disque dur est presque plein\n"
+"Débranchez puis rebranchez l'ordinateur\n"
+"afin d'essayer à nouveau"
 
 #: uemis-downloader.c:29
 msgid ""
@@ -1568,9 +1585,9 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: Le disque dur est plein\n"
-"Débranchez et re-branchez l'ordinateur\n"
-"et re-essayez"
+"Uemis Zurich : Le disque dur est plein\n"
+"Débranchez puis rebranchez l'ordinateur\n"
+"afin d'essayer à nouveau"
 
 #: uemis-downloader.c:771
 msgid "Uemis init failed"
@@ -1596,11 +1613,11 @@ msgstr "Unités"
 
 #: gps.c:218
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Faites un clique droit pour marquer la position de la plongé au curseur"
 
 #: webservice.c:230
 msgid "User Identifier"
-msgstr ""
+msgstr "Identifiant utilisateur"
 
 #: gtk-gui.c:1355
 msgid "View"
@@ -1608,15 +1625,15 @@ msgstr "Vue"
 
 #: info.c:811 statistics.c:840
 msgid "Visibility"
-msgstr ""
+msgstr "Visibilité"
 
 #: gtk-gui.c:642
 msgid "Volume:"
-msgstr "Volume :"
+msgstr "Volume :"
 
 #: info.c:652
 msgid "W"
-msgstr ""
+msgstr "O"
 
 #: statistics.c:846
 msgid "Water Temp"
@@ -1624,7 +1641,7 @@ msgstr "Temp. de l'eau"
 
 #: webservice.c:258
 msgid "Webservice"
-msgstr ""
+msgstr "Serveur"
 
 #: main.c:62
 msgid "Wed"
@@ -1663,14 +1680,18 @@ msgid ""
 "Subsurface can maintain a nickname for this device to distinguish it from the existing one. The default is the model and device ID as shown below.\n"
 "If you don't want to name this dive computer click 'Cancel' and Subsurface will simply display its model as its name (which may mean that you cannot tell the two dive computers apart in the logs)."
 msgstr ""
+"Vous avez déjà un ordinateur de ce modèle\n"
+"nommé %s\n"
+"Subsurface peut donner un surnom à ce modèle pour le distinguer du précédant.Le modèle et l'identifiant du périphérique sont montré ci-dessous.\n"
+"Si vous ne voulez pas donner un surnom à ce modèle, appuyez sur « Annuler » et Subsurface utilisera son modèle (ce qui peut signifier que vous ne pourrez distinguer les deux ordinateurs)."
 
 #: gtk-gui.c:212
 msgid ""
 "You have unsaved changes\n"
 "Would you like to save those before closing the datafile?"
 msgstr ""
-"Vous avez des changements non-enregistrés.\n"
-"Souhaitez-vous enregistrer ces changements avant de fermer ?"
+"Vous avez des changements non enregistrés.\n"
+"Souhaitez-vous enregistrer ces changements avant de fermer ?"
 
 #: gtk-gui.c:215 gtk-gui.c:218
 #, c-format
@@ -1678,8 +1699,8 @@ msgid ""
 "You have unsaved changes to file: %s \n"
 "Would you like to save those before closing the datafile?"
 msgstr ""
-"Vous avez des changements non-enregistrés dans le fichier : %s \n"
-"Souhaitez-vous enregistrer ces changements avant de le fermer ?"
+"Vous avez des changements non enregistrés dans le fichier : %s \n"
+"Souhaitez-vous enregistrer ces changements avant de le fermer ?"
 
 #: divelist.c:544 planner.c:75 planner.c:732 planner.c:733 print.c:172
 #: profile.c:399
@@ -1733,12 +1754,12 @@ msgstr "pied³"
 
 #: uemis-downloader.c:384
 msgid "data"
-msgstr ""
+msgstr "données"
 
+# voir pallier ?
 #: libdivecomputer.c:149
-#, fuzzy
 msgid "deco stop"
-msgstr "Arrêt profond"
+msgstr "Arrêt de décompression"
 
 #: libdivecomputer.c:152
 msgid "deepstop"
@@ -1746,11 +1767,11 @@ msgstr "Arrêt profond"
 
 #: uemis-downloader.c:405
 msgid "divelog entry id"
-msgstr ""
+msgstr "identifiant de l'entrée dans le journal"
 
 #: uemis-downloader.c:407
 msgid "divespot data id"
-msgstr ""
+msgstr "identifiant du site de plongée"
 
 #: libdivecomputer.c:152
 msgid "divetime"
@@ -1758,37 +1779,36 @@ msgstr "Temps de plongée"
 
 #: uemis-downloader.c:589
 msgid "drysuit"
-msgstr ""
+msgstr "Combinaison sèche"
 
 #: planner.c:734
-#, fuzzy
 msgid "ean"
-msgstr "Janv."
+msgstr "ean"
 
 #: statistics.c:681
 #, c-format
 msgid "for all dives"
-msgstr ""
+msgstr "pour toutes les plongées"
 
 #: statistics.c:677
-#, fuzzy, c-format
+#, c-format
 msgid "for dive #%d"
-msgstr "Plongée n°%d - "
+msgstr "pour la plongée n°%d"
 
 #: statistics.c:636
 #, c-format
 msgid "for dives #"
-msgstr ""
+msgstr "pour les plongées n°"
 
 #: statistics.c:679
-#, fuzzy, c-format
+#, c-format
 msgid "for selected dive"
-msgstr "Imprimer uniquement les plongées selectionnées"
+msgstr "uniquement la plongée selectionnée"
 
 #: statistics.c:643
-#, fuzzy, c-format
+#, c-format
 msgid "for selected dives"
-msgstr "Imprimer uniquement les plongées selectionnées"
+msgstr "uniquement les plongées selectionnées"
 
 #: dive.c:117 divelist.c:1426 info.c:1178 planner.c:838
 msgid "ft"
@@ -1796,7 +1816,7 @@ msgstr "pied"
 
 #: uemis-downloader.c:590
 msgid "full suit"
-msgstr ""
+msgstr "Combinaison intégrale"
 
 #: libdivecomputer.c:151 libdivecomputer.c:154
 msgid "gaschange"
@@ -1816,7 +1836,7 @@ msgstr "numéro d'événement non valide"
 
 #: uemis-downloader.c:590
 msgid "jacket"
-msgstr ""
+msgstr "gilet"
 
 #: dive.c:141 equipment.c:1004 gtk-gui.c:653
 msgid "kg"
@@ -1832,7 +1852,7 @@ msgstr "livre US"
 
 #: uemis-downloader.c:590
 msgid "long john"
-msgstr ""
+msgstr "salopette combinaison"
 
 #: dive.c:112 info.c:1178
 msgid "m"
@@ -1840,11 +1860,11 @@ msgstr "m"
 
 #: gtk-gui.c:804
 msgid "max ppO2"
-msgstr ""
+msgstr "ppO2 max"
 
 #: divelist.c:1435 gtk-gui.c:731
 msgid "maxCNS"
-msgstr ""
+msgstr "SNCmax"
 
 #: libdivecomputer.c:153
 msgid "maxdepth"
@@ -1852,7 +1872,7 @@ msgstr "prof. max"
 
 #: uemis-downloader.c:591
 msgid "membrane"
-msgstr ""
+msgstr "membrane"
 
 #: divelist.c:1427 planner.c:903
 msgid "min"
@@ -1861,12 +1881,11 @@ msgstr "min"
 #: libdivecomputer.c:630
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
-msgstr "modèle=%u (0x%08x), firmware=%u (0x%08x), port série=%u (0x%08x)"
+msgstr "modèle = %u (0x%08x), firmware = %u (0x%08x), port série = %u (0x%08x)"
 
 #: uemis-downloader.c:409
-#, fuzzy
 msgid "more data dive id"
-msgstr "plus de %d jours"
+msgstr "plus d'identifiants de plongée"
 
 #: statistics.c:515
 #, c-format
@@ -1875,7 +1894,7 @@ msgstr "plus de %d jours"
 
 #: libdivecomputer.c:154
 msgid "non stop time"
-msgstr ""
+msgstr "temps sans arrêt"
 
 #: libdivecomputer.c:149
 msgid "none"
@@ -1883,17 +1902,17 @@ msgstr "aucun"
 
 #: gtk-gui.c:787
 msgid "pHe threshold"
-msgstr ""
+msgstr "limite pHe"
 
 #: gtk-gui.c:769
 #, c-format
 msgid "pN%s threshold"
-msgstr ""
+msgstr "limite pN%s"
 
 #: gtk-gui.c:750
 #, c-format
 msgid "pO%s threshold"
-msgstr ""
+msgstr "limite pO%s"
 
 #: dive.c:42
 msgid "pascal"
@@ -1925,11 +1944,11 @@ msgstr "palier de sécurité (volontaire)"
 
 #: uemis-downloader.c:589
 msgid "semidry"
-msgstr ""
+msgstr "semi-étanche"
 
 #: uemis-downloader.c:590
 msgid "shorty"
-msgstr ""
+msgstr "shorty"
 
 #: libdivecomputer.c:150
 msgid "surface"
@@ -1945,7 +1964,8 @@ msgid "translator-credits"
 msgstr ""
 "Pierre-Yves Chibon\n"
 "Jean-Noël Rouchon\n"
-"Stéphane Raimbault"
+"Stéphane Raimbault\n"
+"Kévin Raymond"
 
 #: libdivecomputer.c:150
 msgid "transmitter"
@@ -1965,7 +1985,7 @@ msgstr "non specifié"
 
 #: uemis-downloader.c:590
 msgid "vest"
-msgstr ""
+msgstr "veste"
 
 #: libdivecomputer.c:150
 msgid "violation"
@@ -1977,7 +1997,7 @@ msgstr "poids"
 
 #: uemis-downloader.c:589
 msgid "wetsuit"
-msgstr ""
+msgstr "combinaison humide"
 
 #: libdivecomputer.c:149
 msgid "workload"
