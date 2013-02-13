@@ -1,0 +1,28 @@
+Subsurface 3.0
+==============
+
+New in this version (compared to Subsurface 2.1):
+
+- Many new divecomputers supported, bugfixes for existing divecomputers
+  - Cressi Leonardo, Seemann XP5, Mares Matrix, Mares Puck Pro, Mares
+    Nemo Wide 2, Shearwater Petrel, Shearwater Predator, Aeris A300
+    AI, Hollis DG03
+  - significant improvements for the Heinrichs Weiskamp OSTC
+- Significantly improved selection of divecomputers for direct download
+- Map display of GPS locations of dives and ability to enter and edit those
+- Improved automatic dive numbering
+- Data overlay for profile plot (with additional statistics information)
+- Zoom function for profile plot
+- Dive planner
+- Improved printing support
+- Improved dive trip handling
+- Support for downloading dives from multiple computers (so for example both your main and your backup computer)
+- Lots of features to make tec divers happy:
+  - Deco calculation with optional display of a calculated ceiling (Buehlmann ZH16 with gradient factors)
+  - Display of deco information from some divecomputers that support this
+  - TriMix support
+  - CCR support (fixed or variable setpoint, on dive computers that support this)
+  - Optional pO2, pN2 and pHe graphs
+  - CNS tracking for supported divecomputers
+- Lots of bug fixes
+

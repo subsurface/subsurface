@@ -1,18 +1,25 @@
 Subsurface - an Open Source Divelog
 ===================================
 
-Subsurface is able to track multi-tank dives with air, Nitrox or
-TriMix. It keeps track of equipment like weights and exposure
-protection used, tracks the dice locations (if available including GPS
-fixes), dive masters and dive buddies and allows the user to rate
-dives and provide additional dive notes. It calculates a wide variety
-of statistics of the user's diving and calculates and tracks
-information like SAC rate, partial pressures of O2, N2 and H2,
-calculated deco information, and many more.
+Subsurface is an open source divelog program that runs on Windows, Mac
+and Linux.
 
-Subsurface allows the user to print out a detailed log book including dive
-profiles and other relevant information. The program is localized in about
-a dozen languages and well supported by an active developer community.
+With Subsurface the user can download dive information directly from a
+large number of supported dive computers. Subsurface is able to track
+multi-tank dives with air, Nitrox or TriMix, weights and exposure
+protection used, dive masters and dive buddies and allows the user to
+rate dives and provide additional dive notes. Subsurface also allows
+to track dive locations including GPS coordinates and offers a
+convenient map interface to enter these locations directly in the
+program. It calculates a wide variety of statistics of the user’s
+diving and calculates and tracks information like the user's SAC rate,
+partial pressures of O2, N2 and He, calculated deco information, and
+many more.
+
+Subsurface allows the user to print out a detailed log book including
+dive profiles and other relevant information. The program is localized
+in more than a dozen languages and well supported by an active
+developer community.
 
 You are reading the README file of the latest git version, this file
 is not tracked as actively as might be desirable, so some of the
