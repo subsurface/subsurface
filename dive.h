@@ -599,6 +599,7 @@ extern void set_autogroup(gboolean value);
 extern int total_weight(struct dive *);
 
 #define DIVE_ERROR_PARSE 1
+#define DIVE_ERROR_PLAN 2
 
 const char *weekday(int wday);
 const char *monthname(int mon);
