@@ -12,12 +12,6 @@
 #include "divelist.h"
 #include "display-gtk.h"
 
-/* while we normally track gases with permille precision, in the planner
- * we want to treat gases as identical based on percent granularity.
- * The reason for this is that the gaschange event only deals with
- * percent (this is inherited from libdivecomputer). */
-#define O2_IN_AIR_PERCENT 210
-
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
@@ -191,7 +185,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
 	struct sample *sample;
-	int oldo2 = O2_IN_AIR_PERCENT, oldhe = 0;
+	int oldo2 = O2_IN_AIR, oldhe = 0;
 	int oldpo2 = 0;
 	int lasttime = 0;
 
@@ -751,7 +745,7 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 		return 0;
 
 	if (!strcasecmp(text, _("air"))) {
-		o2 = O2_IN_AIR_PERCENT; he = 0; text += strlen(_("air"));
+		o2 = O2_IN_AIR; he = 0; text += strlen(_("air"));
 	} else if (!strncasecmp(text, _("ean"), 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
 	} else {
