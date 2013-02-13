@@ -416,7 +416,7 @@ msgstr "Keskipituus"
 #: profile.c:410
 #, c-format
 msgid "Bailing out to OC"
-msgstr "Vaihto vapaaseen ilman kiertoon"
+msgstr "Vaihto avoimeen ilman kiertoon"
 
 #: gtk-gui.c:638
 msgid "Bar"
@@ -428,7 +428,7 @@ msgstr "Sukelluspari"
 
 #: planner.c:1152
 msgid "CC SetPoint"
-msgstr "CC-vaiheet"
+msgstr "CCR-asetuspiste"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1875,7 +1875,7 @@ msgstr "Suurin syvyys"
 
 #: uemis-downloader.c:591
 msgid "membrane"
-msgstr "\"skini\""
+msgstr "laminaatti"
 
 #: divelist.c:1427 planner.c:903
 msgid "min"
