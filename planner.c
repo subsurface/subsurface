@@ -15,7 +15,10 @@
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
-		     90000};
+		     90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
+		     180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
+		     320000, 340000, 360000, 380000
+};
 double plangflow, plangfhigh;
 char *disclaimer;
 GtkWidget *planner, *planner_error_bar, *error_label;
@@ -510,7 +513,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 {
-	char buffer[2000];
+	char buffer[20000];
 	int consumption[MAX_CYLINDERS] = { 0, };
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
