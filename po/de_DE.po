@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-13 23:41-0800\n"
-"Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
+"PO-Revision-Date: 2013-02-14 09:16+0100\n"
+"Last-Translator: Robert C. Helling <helling@atdotde.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -433,7 +433,7 @@ msgstr "CC SetPoint"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr "Kann Gasmix %d/%d nicht finden"
+msgstr "Kann Gasgemisch %d/%d nicht finden"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -947,12 +947,12 @@ msgstr "Ungültige Tiefe - kann \"%s\" nicht lesen"
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr "Ungültige Tiefe - Werte unterhalb 400m sind nicht erlaubt"
+msgstr "Ungültige Tiefe - Werte unterhalb 400m sind nicht unterstützt"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr "Ungültiger Gasmix in Zeile %d"
+msgstr "Ungültiges Gasgemisch in Zeile %d"
 
 #: planner.c:1145
 msgid "Invalid starttime"
@@ -1567,11 +1567,11 @@ msgstr "Zoom ein-/ausschalten"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr "Zu viele Gasmixe"
+msgstr "Zu viele Gasgemische"
 
 #: planner.c:1245
 msgid "Too many waypoints"
-msgstr "Zu viele Abschnitt"
+msgstr "Zu viele Abschnitte"
 
 #: statistics.c:179
 msgctxt "Duration"
