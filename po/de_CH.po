@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-12 09:04-0800\n"
+"PO-Revision-Date: 2013-02-13 23:41-0800\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -434,7 +434,7 @@ msgstr "CC SetPoint"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Kann Gasmix %d/%d nicht finden"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -494,7 +494,7 @@ msgstr "Flasche"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Flasche für Tauchplanung"
 
 #: equipment.c:1539
 msgid "Cylinders"
@@ -944,21 +944,20 @@ msgstr "Plan eingeben"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Ungültige Tiefe - kann \"%s\" nicht lesen"
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Ungültige Tiefe - Werte unterhalb 400m sind nicht erlaubt"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Ungültiger Gasmix in Zeile %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Ungültige Benutzerkennung"
+msgstr "Ungültige Anfangszeit"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1569,12 +1568,11 @@ msgstr "Zoom ein-/ausschalten"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Zu viele Gasmixe"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Weiteren Abschnitt hinzufügen"
+msgstr "Zu viele Abschnitt"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1679,11 +1677,11 @@ msgstr "W"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Warnung - extrem lange Tauchgänge können zu sehr langen Berechnungszeiten führen"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Warnung - extrem tiefe Tauchgänge können zu sehr langen Berechnungszeiten führen"
 
 #: statistics.c:846
 msgid "Water Temp"
