@@ -120,7 +120,7 @@ else ifeq ($(UNAME), darwin)
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
 	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation
 	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
-	LDFLAGS += -headerpad_max_install_names
+	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist ./packaging/macosx/Info.plist
 	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 	XSLT_CAPABLE = 1
 else
@@ -215,6 +215,9 @@ create-macosx-bundle: $(NAME)
 		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXSTAGING)/Contents/Resources/xslt/; \
 	fi
 	$(GTK_MAC_BUNDLER) packaging/macosx/subsurface.bundle
+
+sign-macosx-bundle: $(NAME)
+	codesign -s "3A8CE62A483083EDEA5581A61E770EC1FA8BECE8" /Applications/Subsurface.app/Contents/MacOS/subsurface-bin
 
 install-cross-windows: $(NAME)
 	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
