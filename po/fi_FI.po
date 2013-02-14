@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-12 21:05+0200\n"
+"PO-Revision-Date: 2013-02-14 17:10+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -433,7 +433,7 @@ msgstr "CCR-asetuspiste"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Seosta %d/%d ei löydy"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -493,7 +493,7 @@ msgstr "Säiliö"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Suunnitelman säiliö"
 
 #: equipment.c:1539
 msgid "Cylinders"
@@ -943,21 +943,20 @@ msgstr "Suunnittele"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Virheellinen syvyys - seuraavan syötteen tulkinta epäonnistui: %s"
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Virheellinen syvyys - yli neljänsadan metrin syvyisiä sukelluksia ei tueta"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Virheellinen kaasu rivillä %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Tuntematon käyttäjä!"
+msgstr "Virhellinen aloitusaika"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1568,12 +1567,11 @@ msgstr "Venytä sukellusprofiilikuvaajaa"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Liian monta kaasuseosta"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Lisää uusi jakso"
+msgstr "Liikaa välietappeja"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1678,11 +1676,11 @@ msgstr "W"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Varoitus - hyvin pitkien sukellusten suunnitelman laskeminen voi kestää kohtuuttoman kauan"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Varoitus: hyvin syvien sukellusten suunnittelu voi kestää kohtuuttoman kauan"
 
 #: statistics.c:846
 msgid "Water Temp"
