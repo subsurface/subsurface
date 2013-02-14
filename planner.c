@@ -15,9 +15,13 @@
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
-		     90000};
+		     90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
+		     180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
+		     320000, 340000, 360000, 380000
+};
 double plangflow, plangfhigh;
 char *disclaimer;
+GtkWidget *planner, *planner_error_bar, *error_label;
 
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
@@ -43,6 +47,43 @@ void dump_plan(struct diveplan *diveplan)
 
 }
 #endif
+
+static void on_error_bar_response(GtkWidget *widget, gint response, gpointer data)
+{
+	if (response == GTK_RESPONSE_OK)
+	{
+		gtk_widget_destroy(widget);
+		planner_error_bar = NULL;
+		error_label = NULL;
+	}
+}
+
+static void show_error(const char *fmt, ...)
+{
+	va_list args;
+	GError *error;
+	GtkWidget *box, *container;
+	gboolean bar_is_visible = TRUE;
+
+	va_start(args, fmt);
+	error = g_error_new_valist(g_quark_from_string("subsurface"), DIVE_ERROR_PLAN, fmt, args);
+	va_end(args);
+	if (!planner_error_bar) {
+		planner_error_bar = gtk_info_bar_new_with_buttons(GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+		g_signal_connect(planner_error_bar, "response", G_CALLBACK(on_error_bar_response), NULL);
+		gtk_info_bar_set_message_type(GTK_INFO_BAR(planner_error_bar), GTK_MESSAGE_ERROR);
+		bar_is_visible = FALSE;
+	}
+	container = gtk_info_bar_get_content_area(GTK_INFO_BAR(planner_error_bar));
+	if (error_label)
+		gtk_container_remove(GTK_CONTAINER(container), error_label);
+	error_label = gtk_label_new(error->message);
+	gtk_container_add(GTK_CONTAINER(container), error_label);
+	box = gtk_dialog_get_content_area(GTK_DIALOG(planner));
+	if (!bar_is_visible)
+		gtk_box_pack_start(GTK_BOX(box), planner_error_bar, FALSE, FALSE, 0);
+	gtk_widget_show_all(box);
+}
 
 void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 {
@@ -113,7 +154,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &o2, &he);
 		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
-			printf("can't find gas %d/%d\n", (o2 + 5) / 10, (he + 5) / 10);
+			show_error(_("Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
 			gasidx = 0;
 		}
 		if (i > 0)
@@ -168,14 +209,14 @@ int add_gas(struct dive *dive, int o2, int he)
 			return i;
 	}
 	if (i == MAX_CYLINDERS) {
-		printf("too many cylinders\n");
+		show_error(_("Too many gas mixes"));
 		return -1;
 	}
 	mix->o2.permille = o2;
 	mix->he.permille = he;
 	/* since air is stored as 0/0 we need to set a name or an air cylinder
 	 * would be seen as unset (by cylinder_nodata()) */
-	cyl->type.description = strdup("Cylinder for planning");
+	cyl->type.description = strdup(_("Cylinder for planning"));
 	return i;
 }
 
@@ -322,6 +363,8 @@ void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gb
 			duration += pdp->time;
 	}
 	dp->time = duration;
+	if (duration > 180 * 60)
+		show_error(_("Warning - extremely long dives can cause long calculation time"));
 }
 
 /* this function is ONLY called from the dialog callback - so it
@@ -470,7 +513,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 {
-	char buffer[2000];
+	char buffer[20000];
 	int consumption[MAX_CYLINDERS] = { 0, };
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
@@ -865,6 +908,9 @@ static int validate_depth(const char *text, int *mm_p)
 		depth *= 100;
 	}
 	*mm_p = depth;
+	/* we don't support extreme depths */
+	if (depth > 400000)
+		return 0;
 	return 1;
 }
 
@@ -943,7 +989,7 @@ static GtkWidget *add_entry_to_box(GtkWidget *box, const char *label)
 	return entry;
 }
 
-#define MAX_WAYPOINTS 8
+#define MAX_WAYPOINTS 12
 GtkWidget *entry_depth[MAX_WAYPOINTS], *entry_duration[MAX_WAYPOINTS], *entry_gas[MAX_WAYPOINTS], *entry_po2[MAX_WAYPOINTS];
 int nr_waypoints = 0;
 static GtkListStore *gas_model = NULL;
@@ -1008,7 +1054,7 @@ static void gas_changed_cb(GtkWidget *combo, gpointer data)
 	if (!validate_gas(gastext, &o2, &he)) {
 		/* this should never happen as only validated texts should be
 		 * in the dropdown */
-		printf("invalid gas for row %d\n",idx);
+		show_error(_("Invalid gas for row %d"),idx);
 	}
 	add_gas_to_nth_dp(&diveplan, idx, o2, he);
 	show_planned_dive();
@@ -1017,16 +1063,22 @@ static void gas_changed_cb(GtkWidget *combo, gpointer data)
 static gboolean depth_focus_out_cb(GtkWidget *entry, GdkEvent *event, gpointer data)
 {
 	const char *depthtext;
-	int depth;
+	int depth = -1;
 	int idx = data - NULL;
 
 	depthtext = gtk_entry_get_text(GTK_ENTRY(entry));
+
 	if (validate_depth(depthtext, &depth)) {
+		if (depth > 150000)
+			show_error(_("Warning - planning very deep dives can take excessive amounts of time"));
 		add_depth_to_nth_dp(&diveplan, idx, depth);
 		show_planned_dive();
 	} else {
-		/* we need to instead change the color of the input field or something */
-		printf("invalid depth for row %d\n", idx);
+		/* it might be better to instead change the color of the input field or something */
+		if (depth == -1)
+			show_error(_("Invalid depth - could not parse \"%s\""), depthtext);
+		else
+			show_error(_("Invalid depth - values deeper than 400m not supported"));
 	}
 	return FALSE;
 }
@@ -1089,8 +1141,8 @@ static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpoin
 		diveplan.when = cur + starttime;
 		show_planned_dive();
 	} else {
-		/* we need to instead change the color of the input field or something */
-		printf("invalid starttime\n");
+		/* it might be better to instead change the color of the input field or something */
+		show_error(_("Invalid starttime"));
 	}
 	return FALSE;
 }
@@ -1190,7 +1242,7 @@ static void add_waypoint_cb(GtkButton *button, gpointer _data)
 		dialog = gtk_widget_get_parent(ovbox);
 		gtk_widget_show_all(dialog);
 	} else {
-		// some error
+		show_error(_("Too many waypoints"));
 	}
 }
 
@@ -1207,7 +1259,7 @@ static void add_entry_with_callback(GtkWidget *box, int length, char *label, cha
 /* set up the dialog where the user can input their dive plan */
 void input_plan()
 {
-	GtkWidget *planner, *content, *vbox, *hbox, *outervbox, *add_row, *label;
+	GtkWidget *content, *vbox, *hbox, *outervbox, *add_row, *label;
 	char *bottom_sac, *deco_sac, gflowstring[4], gfhighstring[4];
 	char *explanationtext = _("<small>Add segments below.\nEach line describes part of the planned dive.\n"
 			"An entry with depth, time and gas describes a segment that ends "
@@ -1301,5 +1353,7 @@ void input_plan()
 		}
 	}
 	gtk_widget_destroy(planner);
+	planner_error_bar = NULL;
+	error_label = NULL;
 	set_gf(prefs.gflow, prefs.gfhigh);
 }
