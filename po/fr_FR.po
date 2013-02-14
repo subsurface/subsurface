@@ -319,7 +319,7 @@ msgstr ""
 "Une ligne comprend la profondeur, le temps et le gaz utilisé pendant la section qui se termine à la profondeur désignée, dure le temps prévu (si durée relative : « +3:30 ») ou finit au temps prévu (si la durée est absolue) et utilise la quantité de gaz indiquée.\n"
 "Si aucun gaz n'est précisé, cela correspondra à « utiliser le gaz précédant » (ou à AIR si aucun gaz n'a été spécifié).\n"
 "Un entrée avec une profondeur et un gaz mais sans durée est particulière ; elle informe le planificateur que le volume de gaz indiqué sera disponible pour la remonté une fois la profondeur indiquée atteinte.\n"
-"Les repères CF sont pour les plongées en CF (circuit-fermé, avec recycleur), laisser vide pour les plongées en CO (circuit ouvert).</small>"
+"Les repères CF sont pour les plongées en CF (circuit-fermé, avec recycleur), laisser vide pour les plongées en CO (circuit ouvert).</small>\n"
 
 #: planner.c:1123
 msgid "AIR"
