@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-12 12:38+0300\n"
+"PO-Revision-Date: 2013-02-14 13:17+0300\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -428,7 +428,7 @@ msgstr "Настройка СС"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Не найдена смесь %d/%d"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -480,19 +480,19 @@ msgstr "куб. фут"
 
 #: divelist.c:1431 gtk-gui.c:672
 msgid "Cyl"
-msgstr "Балон"
+msgstr "Баллон"
 
 #: equipment.c:918 equipment.c:1029 print.c:195
 msgid "Cylinder"
-msgstr "Балон"
+msgstr "Баллон"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Баллон планировщика"
 
 #: equipment.c:1539
 msgid "Cylinders"
-msgstr "Балоны"
+msgstr "Баллоны"
 
 #: profile.c:2102
 #, c-format
@@ -602,7 +602,7 @@ msgstr "Тревога: время погружения"
 
 #: uemis.c:226
 msgid "Dive Time Info"
-msgstr "Информация о времени погружения"
+msgstr "Время погружения"
 
 #: download-dialog.c:288
 msgid "Dive computer vendor and product"
@@ -938,21 +938,20 @@ msgstr "Ввести план"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Ошибка разбора глубины \"%s\""
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Ошибка - глубины более 400м не поддерживаются"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Неверная смесь в строке %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Неверный идентификатор пользователя!"
+msgstr "Неверное время старта"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1160,7 +1159,7 @@ msgstr "Имя устройства"
 
 #: uemis.c:232
 msgid "No Tank Data"
-msgstr "Нет данных о балоне"
+msgstr "Нет данных о баллоне"
 
 #: info.c:626 info.c:825 info.c:1261
 msgid "Notes"
@@ -1515,11 +1514,11 @@ msgstr "Таблица"
 
 #: uemis.c:220
 msgid "Tank Change Suggested"
-msgstr "Рекомендуется смена балона"
+msgstr "Предложена смена баллона"
 
 #: uemis.c:214
 msgid "Tank Pressure Info"
-msgstr "Информация о давлении в балоне"
+msgstr "Давление в баллоне"
 
 #: gtk-gui.c:722
 msgid "Tec Settings"
@@ -1563,12 +1562,11 @@ msgstr "Изменить масштаб"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Слишком много смесей"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Добавить путевую точку"
+msgstr "Слишком много путевых точек"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1674,11 +1672,11 @@ msgstr "З"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Внимание - расчет очень долгих погружений может занять много времени"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Внимание - расчет очень глубоких погружений может занять много времени"
 
 #: statistics.c:846
 msgid "Water Temp"
@@ -1999,7 +1997,7 @@ msgstr "поверхность"
 
 #: libdivecomputer.c:154
 msgid "tissue level warning"
-msgstr "предупреждение насыщения тканей"
+msgstr "насыщение тканей"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:1066
