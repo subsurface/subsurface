@@ -477,25 +477,17 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 	g_object_unref (layout);
 }
 
-static void show_table_header(cairo_t *cr, double w, double h,
-	PangoFontDescription *font)
+static void show_table_header(cairo_t *cr, PangoLayout *layout, double w)
 {
 	int i;
-	double maxwidth, maxheight, colwidth, curwidth;
-	PangoLayout *layout;
+	double maxwidth, colwidth, curwidth;
 	char headers[7][80]= { N_("Dive#"), N_("Date"), N_("Depth"), N_("Duration"), N_("Master"),
 			       N_("Buddy"), N_("Location") };
 
 	maxwidth = w * PANGO_SCALE;
-	maxheight = h * PANGO_SCALE * 0.9;
 	colwidth = maxwidth / 7;
 
-	layout = pango_cairo_create_layout(cr);
-
 	cairo_move_to(cr, 0, 0);
-	pango_layout_set_height(layout, maxheight);
-	set_font(layout, font, FONT_LARGE, PANGO_ALIGN_LEFT);
-
 
 	curwidth = 0;
 	for (i = 0; i < 7; i++) {
@@ -512,35 +504,25 @@ static void show_table_header(cairo_t *cr, double w, double h,
 		pango_layout_set_justify(layout, 0);
 		pango_cairo_show_layout(cr, layout);
 	}
-
 	cairo_move_to(cr, 0, 0);
-	g_object_unref(layout);
 }
 
-static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
-	double h, PangoFontDescription *font)
+static int show_dive_table(struct dive *dive, cairo_t *cr, PangoLayout *layout,  double w)
 {
 	double depth;
 	const char *unit;
 	int len, decimals;
-	double maxwidth, maxheight, colwidth, curwidth;
-	PangoLayout *layout;
+	double maxwidth, colwidth, curwidth;
 	struct tm tm;
-	char buffer[160], divenr[40];
+	char buffer[160], divenr[20];
+	PangoRectangle logic_ext;
 
 	maxwidth = w * PANGO_SCALE;
-	maxheight = h * PANGO_SCALE * 0.9;
-
 	colwidth = maxwidth / 7;
 
-	layout = pango_cairo_create_layout(cr);
-
-	cairo_move_to(cr, 0, 0);
-	pango_layout_set_width(layout, colwidth);
-	pango_layout_set_height(layout, maxheight);
-	set_font(layout, font, FONT_NORMAL, PANGO_ALIGN_LEFT);
 	cairo_move_to(cr, 0, 0);
 	curwidth = 0;
+	int height_count = 0;
 
 	// Col 1: Dive #
 	*divenr = 0;
@@ -551,6 +533,9 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
 
 	// Col 2: Date #
 	pango_layout_set_width(layout, colwidth);
@@ -568,6 +553,10 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + colwidth;
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
+
 
 	// Col 3: Depth
 	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
@@ -579,6 +568,10 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
+
 
 	// Col 4: Time
 	len = snprintf(buffer, sizeof(buffer),
@@ -589,6 +582,10 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + (colwidth / 2);
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
+
 
 	// Col 5: Master
 	pango_layout_set_width(layout, colwidth);
@@ -597,6 +594,10 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + colwidth;
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
+
 
 	// Col 6: Buddy
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
@@ -604,15 +605,26 @@ static void show_dive_table(struct dive *dive, cairo_t *cr, double w,
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
 	curwidth = curwidth + colwidth;
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
+
 
 	// Col 7: Location
 	cairo_move_to(cr, curwidth / PANGO_SCALE, 0);
-	pango_layout_set_width(layout, maxwidth - curwidth);
+	pango_layout_set_width(layout, (maxwidth*0.90) - curwidth);
 	pango_layout_set_text(layout, dive->location ? : " ", -1);
 	pango_layout_set_justify(layout, 0);
 	pango_cairo_show_layout(cr, layout);
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	if (logic_ext.height > height_count)
+		height_count = logic_ext.height;
 
-	g_object_unref(layout);
+	/*
+	 * Return the bigger column height, will be used to plot the frame and
+	 * and translate the next row
+	 */
+	return (height_count);
 }
 
 static void show_dive_profile(struct dive *dive, cairo_t *cr, double w,
@@ -668,47 +680,22 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	cairo_restore(cr);
 }
 
-static void print_table_header(cairo_t *cr, double x, double y,
-	double w, double h, PangoFontDescription *font)
+/* Plot a grid por each dive */
+static void print_table_frame(cairo_t *cr, double x, double y, double w, double h)
 {
-	cairo_save(cr);
-	cairo_translate(cr, x, y);
-
-	/* Plus 5% on all sides */
-	cairo_translate(cr, w/20, h/20);
-	w *= 0.9; h *= 0.9;
-
-	/* We actually want to scale the text and the lines now */
-	cairo_scale(cr, 0.5, 0.5);
-
-	show_table_header(cr, w*2, h*2, font);
-
-	cairo_restore(cr);
-}
-
-static void print_table(int divenr, cairo_t *cr, double x, double y,
-	double w, double h, PangoFontDescription *font)
-{
-	struct dive *dive;
-	double maxwidth, curwidth;
+	double curwidth, maxwidth;
 	int i;
 
-	dive = get_dive_for_printing(divenr);
-	if (!dive)
-		return;
-	cairo_save(cr);
-
-	/*Create a frame for each print x,y are provided in draw_page()*/
-	maxwidth = w * 0.90;
-	curwidth = w * 0.045;
-	cairo_rectangle(cr, curwidth, y, maxwidth, h);
+	maxwidth = w*2;
+	curwidth = x;
+	cairo_rectangle(cr, x, y, maxwidth*0.90, h);
 	cairo_set_line_width(cr, 0.01);
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
 	cairo_stroke(cr);
 	for (i = 0; i < 6; i++) {
 		if (i == 0 || i == 2 || i == 3){
 			// Column 0, 2 and 3 (Dive #, Depth and Time) get 1/2 width
-			curwidth = curwidth + (maxwidth/7/2);
+			curwidth = curwidth + (maxwidth/14);
 		} else {
 			curwidth = curwidth + (maxwidth/7);
 		}
@@ -717,19 +704,6 @@ static void print_table(int divenr, cairo_t *cr, double x, double y,
 		cairo_set_line_width (cr, 0.01);
 		cairo_stroke(cr);
 	}
-
-	cairo_translate(cr, x, y);
-
-	/* Plus 5% on all sides */
-	cairo_translate(cr, w/20, h/20);
-	w *= 0.9; h *= 0.9;
-
-	/* We actually want to scale the text and the lines now */
-	cairo_scale(cr, 0.5, 0.5);
-
-	show_dive_table(dive, cr, w*2, h*2, font);
-
-	cairo_restore(cr);
 }
 
 /* Positioning factor for height 0,0,1,1,2 ... */
@@ -816,25 +790,59 @@ static void draw_table(GtkPrintOperation *operation,
 			gint page_nr,
 			gpointer user_data)
 {
-	int i, nr;
-	int n_dive_per_page = 25;
+	int i, nr, maxwidth, maxheight;
+	int n_dive_per_page = 35;
 	cairo_t *cr;
-	double w, h;
+	double w, h, max_ext;
+	struct dive *dive;
 	PangoFontDescription *font;
+	PangoLayout *layout;
+	PangoRectangle logic_ext;
 
 	cr = gtk_print_context_get_cairo_context(context);
 	font = pango_font_description_from_string("Sans");
+	cairo_save(cr);
 
 	w = gtk_print_context_get_width(context);
 	h = gtk_print_context_get_height(context)/(n_dive_per_page+1);
+	maxwidth = w * PANGO_SCALE;
+	maxheight = h * PANGO_SCALE * 0.9;
+
+	layout = pango_cairo_create_layout(cr);
+	pango_layout_set_height(layout, maxheight);
+	pango_layout_set_width (layout, maxwidth);
+	pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+	set_font(layout, font, FONT_LARGE*1.2, PANGO_ALIGN_LEFT);
+
+	/* We actually want to scale the text and the lines now */
+	cairo_scale(cr, 0.5, 0.5);
 
 	nr = page_nr*n_dive_per_page;
-	print_table_header(cr, 0, 0+h, w, h, font);
-	for (i = 0; i < n_dive_per_page; i++) {
-		print_table(nr+i, cr, 0,   h*1.5+h*i, w, h, font);
-	}
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	cairo_translate (cr, w/10, 2 * logic_ext.height / (double) PANGO_SCALE);
+	show_table_header(cr, layout, w*2);
+	set_font(layout, font, FONT_NORMAL*1.2, PANGO_ALIGN_LEFT);
+	/* We wanted the header ellipsized but not the data */
+	pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_NONE);
 
+	/* Get the height for an only line but move two down */
+	pango_layout_get_extents(layout, NULL, &logic_ext);
+	cairo_translate (cr, 0, (2 * logic_ext.height) / (double) PANGO_SCALE);
+
+	for (i = 0; i < n_dive_per_page; i++) {
+		dive = get_dive_for_printing(nr+i);
+		if (!dive)
+			return;
+		/* Write the dive data and get the max. height of the row */
+		max_ext = show_dive_table(dive, cr, layout, w*2);
+		/* Draw a frame for each row */
+		print_table_frame (cr, -0.05, -0.02, w, max_ext / (double) PANGO_SCALE);
+		/* and move down by the max. height of it */
+		cairo_translate (cr, 0, max_ext / (double) PANGO_SCALE);
+	}
+	cairo_restore (cr);
 	pango_font_description_free(font);
+	g_object_unref (layout);
 }
 
 static int nr_selected_dives(void)
@@ -862,7 +870,7 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 	} else if (print_options.type == TWOPERPAGE) {
 		dives_per_page = 2;
 	} else {
-		dives_per_page = 25;
+		dives_per_page = 35;
 	}
 	pages = (dives + dives_per_page - 1) / dives_per_page;
 	gtk_print_operation_set_n_pages(operation, pages);
