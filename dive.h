@@ -561,6 +561,7 @@ extern void finish_sample(struct divecomputer *dc);
 extern void sort_table(struct dive_table *table);
 extern void report_dives(gboolean imported, gboolean prefer_imported);
 extern struct dive *fixup_dive(struct dive *dive);
+extern void fixup_airtemp(struct dive *dive);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded);
 extern void renumber_dives(int nr);
