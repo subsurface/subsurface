@@ -364,7 +364,7 @@ void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gb
 	}
 	dp->time = duration;
 	if (duration > 180 * 60)
-		show_error(_("Warning, extremely long dives can cause long calculation time"));
+		show_error(_("Warning - extremely long dives can cause long calculation time"));
 }
 
 /* this function is ONLY called from the dialog callback - so it
