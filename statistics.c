@@ -574,7 +574,12 @@ static void show_single_dive_stats(struct dive *dive)
 		value = get_temp_units(dc->airtemp.mkelvin, &unit);
 		set_label(single_w.air_temp, "%.1f %s", value, unit);
 	} else {
-		set_label(single_w.air_temp, "");
+		if (dive->airtemp.mkelvin) {
+			value = get_temp_units(dive->airtemp.mkelvin, &unit);
+			set_label(single_w.air_temp, "%.1f %s", value, unit);
+		} else {
+				set_label(single_w.air_temp, "");
+		}
 	}
 	mbar = dc->surface_pressure.mbar;
 	/* it would be easy to get dive data here:

@@ -484,11 +484,13 @@ static void fixup_watertemp(struct dive *dive)
 		dive->watertemp.mkelvin = (sum + nr / 2) / nr;
 }
 
-static void fixup_airtemp(struct dive *dive)
+void fixup_airtemp(struct dive *dive)
 {
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
+	if (dive->airtemp.mkelvin)
+		return;
 	for_each_dc(dive, dc) {
 		if (dc->airtemp.mkelvin) {
 			sum += dc->airtemp.mkelvin;
@@ -497,6 +499,20 @@ static void fixup_airtemp(struct dive *dive)
 	}
 	if (nr)
 		dive->airtemp.mkelvin = (sum + nr / 2) / nr;
+}
+
+/* zero out the airtemp in the dive structure if it was just created by
+ * running fixup on the dive. keep it if it had been edited by hand */
+static void un_fixup_airtemp(struct dive *a)
+{
+	temperature_t temp;
+	temp.mkelvin = a->airtemp.mkelvin;
+	a->airtemp.mkelvin = 0;
+	fixup_airtemp(a);
+	if (a->airtemp.mkelvin && a->airtemp.mkelvin != temp.mkelvin)
+		a->airtemp.mkelvin = temp.mkelvin;
+	else
+		a->airtemp.mkelvin = 0;
 }
 
 /*
@@ -981,6 +997,13 @@ static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
 		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		merge_weightsystem_info(res->weightsystem+i, a->weightsystem + i, b->weightsystem + i);
+}
+
+static void merge_airtemps(struct dive *res, struct dive *a, struct dive *b)
+{
+	un_fixup_airtemp(a);
+	un_fixup_airtemp(b);
+	MERGE_NONZERO(res, a, b, airtemp.mkelvin);
 }
 
 /*
@@ -1616,6 +1639,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
 	merge_equipment(res, a, b);
+	merge_airtemps(res, a, b);
 	if (dl) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
 		join_dive_computers(&res->dc, &dl->dc, &a->dc, 1);

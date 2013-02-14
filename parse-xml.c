@@ -1011,6 +1011,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH(".he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
 		return;
+	if (MATCH(".divetemperature.air", temperature, &dive->airtemp))
+		return;
 
 	nonmatch("dive", name, buf);
 }
