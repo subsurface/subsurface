@@ -484,34 +484,35 @@ static void fixup_watertemp(struct dive *dive)
 		dive->watertemp.mkelvin = (sum + nr / 2) / nr;
 }
 
-void fixup_airtemp(struct dive *dive)
+/*
+ * What do the dive computers say the air temperature is?
+ */
+unsigned int dc_airtemp(struct divecomputer *dc)
 {
-	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	if (dive->airtemp.mkelvin)
-		return;
-	for_each_dc(dive, dc) {
+	do {
 		if (dc->airtemp.mkelvin) {
 			sum += dc->airtemp.mkelvin;
 			nr++;
 		}
-	}
-	if (nr)
-		dive->airtemp.mkelvin = (sum + nr / 2) / nr;
+	} while ((dc = dc->next) != NULL);
+	if (!nr)
+		return 0;
+	return (sum + nr / 2) / nr;
+}
+
+static void fixup_airtemp(struct dive *dive)
+{
+	if (!dive->airtemp.mkelvin)
+		dive->airtemp.mkelvin = dc_airtemp(&dive->dc);
 }
 
 /* zero out the airtemp in the dive structure if it was just created by
  * running fixup on the dive. keep it if it had been edited by hand */
 static void un_fixup_airtemp(struct dive *a)
 {
-	temperature_t temp;
-	temp.mkelvin = a->airtemp.mkelvin;
-	a->airtemp.mkelvin = 0;
-	fixup_airtemp(a);
-	if (a->airtemp.mkelvin && a->airtemp.mkelvin != temp.mkelvin)
-		a->airtemp.mkelvin = temp.mkelvin;
-	else
+	if (a->airtemp.mkelvin && a->airtemp.mkelvin == dc_airtemp(&a->dc))
 		a->airtemp.mkelvin = 0;
 }
 
