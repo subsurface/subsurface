@@ -435,7 +435,7 @@ msgstr "CC SetPoint"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Не може да бъде намерен газ %d/%d"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -447,7 +447,7 @@ msgstr "Отмяна..."
 
 #: webservice.c:27
 msgid "Cannot parse response!"
-msgstr "Неможе да бъде напревен разряд!"
+msgstr "Не може да бъде напревен разряд!"
 
 #: gtk-gui.c:652
 msgid "Celsius"
@@ -495,7 +495,7 @@ msgstr "Бутилка"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Бутилка за плануване"
 
 #: equipment.c:1539
 msgid "Cylinders"
@@ -945,21 +945,20 @@ msgstr "Въведи план"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Грешна дълбочина - не може да бъде направен разряд \"%s\""
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Грешна дълбочина - стойности по-големи от 400м не се поддържат"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Неправилен газ на ред %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Грешен потребителски ключ"
+msgstr "Грешно стартово време"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1509,7 +1508,7 @@ msgstr "Време на повърхността"
 
 #: planner.c:1309
 msgid "Surface Pressure (mbar)"
-msgstr "Налягане на повърхността (mbar)"
+msgstr "Налягане на повърхността (м.бара)"
 
 #: planner.c:586
 #, c-format
@@ -1570,12 +1569,11 @@ msgstr "Превключване на зуум"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Твърде много газови смеси"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Добави контролна точка"
+msgstr "Твърде много контролни точки"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1680,11 +1678,11 @@ msgstr "W"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Внимание - прекалено дълги гмуркания могат да отнемат много време за калкулиране"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Внимание - плануването на прекалено дълбоки гмуркания може да отнеме много време"
 
 #: statistics.c:846
 msgid "Water Temp"
@@ -1733,7 +1731,7 @@ msgid ""
 msgstr ""
 "Вече имате въведен ГК от този модел\n"
 "наименуван %s\n"
-"Subsurface може да потдържа прякор за това устройсто за да го различавате от вече съществуващо такова. По подразбиране това е модела и идентификатора показани долу.\n"
+"Subsurface може да поддържа прякор за това устройсто за да го различавате от вече съществуващо такова. По подразбиране това е модела и идентификатора показани долу.\n"
 "Ако не желаете да да ползате прякор натиснете 'Отказване'."
 
 #: gtk-gui.c:216
