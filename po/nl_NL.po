@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-12 09:26+0100\n"
+"PO-Revision-Date: 2013-02-14 19:22+0100\n"
 "Last-Translator: Reinout Hoornweg <reinout@xs4all.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
@@ -433,7 +433,7 @@ msgstr "CC Instelpunt"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Kan gasmengsel %d/%d niet vinden"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -493,7 +493,7 @@ msgstr "Fles"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Fles voor planning"
 
 #: equipment.c:1539
 msgid "Cylinders"
@@ -943,21 +943,20 @@ msgstr "Voer plan in"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Ongeldige diepte: kan \"%s\" niet verwerken"
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Ongeldige diepte: dieptes groter dan 400m worden niet ondersteund"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Ongeldig gasmengsel voor regel %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Ongeldige gebruikersidentificatie"
+msgstr "Ongeldige starttijd"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1568,12 +1567,11 @@ msgstr "Zoom in-/uitschakelen"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Teveel gasmengsels"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Voeg routepunt toe."
+msgstr "Teveel routepunten"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1678,11 +1676,11 @@ msgstr "W"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Waarschuwing: bijzonder lange duiken kunnen lange berekentijd kosten"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Waarschuwing: het plannen van extreem diepe duiken kan bijzonder veel tijd kosten"
 
 #: statistics.c:846
 msgid "Water Temp"
