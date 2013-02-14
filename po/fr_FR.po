@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-13 19:16+0100\n"
-"Last-Translator: Kévin Raymond <shaiton@fedoraproject.org>\n"
+"PO-Revision-Date: 2013-02-14 09:46+0100\n"
+"Last-Translator: Pierre-Yves Chibon <pingou@pingoured.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -222,6 +222,10 @@ msgid ""
 "based on GFlow = %.0f and GFhigh = %.0f\n"
 "\n"
 msgstr ""
+"%s\n"
+"Subsurface sumilation de plongée\n"
+"basé sur un GFlow = %.0f et un GFhigh = %.0f\n"
+"\n"
 
 #: profile.c:2111
 #, c-format
@@ -430,7 +434,7 @@ msgstr "repère CF"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Impossible de trouver le gaz %d/%d"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -490,7 +494,7 @@ msgstr "Bloc"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Bloc pour la simulation"
 
 #: equipment.c:1539
 msgid "Cylinders"
@@ -940,21 +944,20 @@ msgstr "Saisir le plan"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Profondeur invalide \"%s\""
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Profondeur invalid - profondeurs inférieures à 400m ne sont pas supportés"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Gaz invalide ligne %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Identifiant utilisateur incorrect."
+msgstr "Heure de début invalide"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1566,12 +1569,11 @@ msgstr "Changer de zoom"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Trop de gaz différents"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Ajouter des points de cheminement"
+msgstr "Trops de points de cheminement"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1652,7 +1654,7 @@ msgstr "Unités"
 
 #: gps.c:217
 msgid "Use right click to mark dive location at cursor"
-msgstr "Faites un clique droit pour marquer la position de la plongé au curseur"
+msgstr "Faites un clic droit pour marquer la position de la plongé au curseur"
 
 #: webservice.c:230
 msgid "User Identifier"
@@ -1676,11 +1678,11 @@ msgstr "O"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Attention - les longues plongées entrainent de long temps de calcul"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Attention - la simulation de plongées très profondes peut durer un certain temps"
 
 #: statistics.c:846
 msgid "Water Temp"
