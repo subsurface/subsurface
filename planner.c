@@ -83,6 +83,9 @@ static void show_error(const char *fmt, ...)
 	if (!bar_is_visible)
 		gtk_box_pack_start(GTK_BOX(box), planner_error_bar, FALSE, FALSE, 0);
 	gtk_widget_show_all(box);
+	/* make sure this actually gets shown BEFORE the calculations run */
+	while (gtk_events_pending())
+		gtk_main_iteration_do(FALSE);
 }
 
 void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
