@@ -110,6 +110,17 @@
     ${prefix}/share/themes
   </data>
 
+  <!-- Copy the mime.cache -->
+  <data>
+    ${prefix}/share/mime/mime.cache
+  </data>
+
+  <!-- Copy the jpeg library that is missed by the dependency generation
+  -->
+  <data>
+    ${prefix}/lib/libjpeg.9.dylib
+  </data>
+
   <!-- Copy icons. Note that the .icns file is an Apple format which
        contains up to 4 sizes of icon. You can use
        /Developer/Applications/Utilities/Icon Composer.app to import

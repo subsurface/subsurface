@@ -1,20 +1,45 @@
 #!/bin/bash
 #
 # this simply automates the steps to create a DMG we can ship
+#
 # for this to work you need to have a custom build of MacPorts / gtk / etc
 # with prefix=/Applications/Subsurface.app/Contents/Resources
 # yes, that's a major hack, but otherwise gettext cannot seem to find
 # the gtk related .mo files and localization is only partial
 #
-# run this from the packaging/macosx directory
+# run this from the top subsurface directory
 
-VERSION=`grep -1 CFBundleVersionString Info.plist | tail -1 | cut -d\> -f 2 | cut -d\< -f 1`
-BUNDLER="../../../.local/bin/gtk-mac-bundler"
+# adjust to your install location of gtk-mac-bundler. I appear to need at
+# least 0.7.2
+BUNDLER="../.local/bin/gtk-mac-bundler"
+BUNDLER_SRC="${HOME}/gtk-mac-bundler"
 
-${BUNDLER} subsurface.bundle
+# install location of yourway-create-dmg
+DMGCREATE="../yoursway-create-dmg/create-dmg"
+
+# This is the directory into which MacPorts, libdivecomputer and all the
+# other components have been installed
+PREFIX="/Applications/Subsurface.app/Contents/Resources"
+
+# maybe we want to update this to use the git tag magic instead. That
+# would be more consistent
+VERSION=`grep -1 CFBundleVersionString packaging/macosx/Info.plist | tail -1 | cut -d\> -f 2 | cut -d\< -f 1`
+
+# gtk-mac-bundler allegedly supports signing by setting this environment
+# variable, but this fails as we change the shared objects below and all
+# the signatures become invalid.
+# export APPLICATION_CERT="Dirk"
+
+# first clean up the staging area
+rm -rf ./staging
+
+# now populate it with the bundle
+${BUNDLER} packaging/macosx/subsurface.bundle
+
+# correct the paths and names
 cd staging/Subsurface.app/Contents
 for i in Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders/* ; do
-	~/gtk-mac-bundler/bundler/run-install-name-tool-change.sh $i /Applications/Subsurface.app/Contents/Resources Resources change ;
+	${BUNDLER_SRC}/bundler/run-install-name-tool-change.sh $i ${PREFIX} Resources change ;
 done
 for i in Resources/lib/*.dylib;
 do
@@ -22,8 +47,18 @@ do
 done
 
 cd ../../..
-if [ -f Subsurface-${VERSION}.dmg ]; then
-	mv Subsurface-${VERSION}.dmg Subsurface-${VERSION}.dmg.bak
+
+codesign -s Dirk ./staging/Subsurface.app/Contents/MacOS/subsurface \
+	./staging/Subsurface.app/Contents/MacOS/subsurface-bin
+
+if [ -f ./Subsurface-${VERSION}.dmg ]; then
+	rm ./Subsurface-${VERSION}.dmg.bak
+	mv ./Subsurface-${VERSION}.dmg ./Subsurface-${VERSION}.dmg.bak
 fi
-hdiutil create -volname Subsurface -srcfolder staging Subsurface-${VERSION}.dmg
+
+${DMGCREATE} --background ./packaging/macosx/DMG-Background.png \
+	--window-size 500 300 --icon-size 96 --volname Subsurface-${VERSION} \
+	--app-drop-link 380 205 \
+	--volicon ~/subsurface/packaging/macosx/Subsurface.icns \
+	--icon "Subsurface" 110 205 ./Subsurface-${VERSION}.dmg ./staging
 
