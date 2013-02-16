@@ -100,8 +100,7 @@ Section
     # Files to include in installer
     File ..\..\subsurface.exe
     File ..\..\subsurface-icon.svg
-    File ..\..\xslt\jdivelog2subsurface.xslt
-    File ..\..\xslt\SuuntoSDM.xslt
+    File /r ..\..\xslt
     File dll\iconv.dll
     File dll\libatk-1.0-0.dll
     File dll\libcairo-2.dll
@@ -135,8 +134,8 @@ Section
     File dll\libexpat-1.dll
     File dll\pthreadGC2.dll
     File dll\zlib1.dll
-    File dll\libcrypto-10.dll
     File dll\libsoup-2.4-1.dll
+    File dll\libosmgpsmap-2.dll
     File subsurface.ico
     File /r share
 
