@@ -11,15 +11,15 @@
 
 # adjust to your install location of gtk-mac-bundler. I appear to need at
 # least 0.7.2
-BUNDLER="../.local/bin/gtk-mac-bundler"
-BUNDLER_SRC="${HOME}/gtk-mac-bundler"
+BUNDLER=../.local/bin/gtk-mac-bundler
+BUNDLER_SRC=${HOME}/gtk-mac-bundler
 
 # install location of yourway-create-dmg
-DMGCREATE="../yoursway-create-dmg/create-dmg"
+DMGCREATE=../yoursway-create-dmg/create-dmg
 
 # This is the directory into which MacPorts, libdivecomputer and all the
 # other components have been installed
-PREFIX="/Applications/Subsurface.app/Contents/Resources"
+PREFIX=/Applications/Subsurface.app/Contents/Resources
 
 INFOPLIST=./packaging/macosx/Info.plist
 
@@ -29,7 +29,7 @@ VERSION=$(./scripts/get-version darwin)
 # gtk-mac-bundler allegedly supports signing by setting this environment
 # variable, but this fails as we change the shared objects below and all
 # the signatures become invalid.
-# export APPLICATION_CERT="Dirk"
+# export APPLICATION_CERT=Dirk
 
 # force rebuilding of Info.plist
 rm ${INFOPLIST}
