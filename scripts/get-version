@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# $1 - os name {linux|darwin|win}
+# $2 - [optional] raw version string "vX.Y-patchN-sha1". as from `git describe'
+#      (see below)
+
+set -eu
+#set -x
+
+croak() {
+	echo "$0: $*" >&2
+	exit 1
+}
+
+[ $# -ge 1 ] || croak "missing OS argument"
+os=$1
+
+if [ $# -eq 2 ] && [ "$2" ]; then
+	v0=$2
+else
+	cmd="git describe --tags --abbrev=12"
+	v0=$($cmd) || croak "odd; command '$cmd' failed"
+fi
+
+# strip off the 'v' prefix, if any
+v0=${v0#v}
+
+case $os in
+	linux)
+		v=$v0
+		;;
+	darwin|win)
+		# split version string using a '-' separator
+		IFS='-'
+		set -- $v0
+		v1=$1
+		if [ $# -gt 1 ]; then
+			v1=$v1.$2
+		else
+			v1=$v1.0
+		fi
+		case $os in
+			darwin)
+				v=$v1
+				;;
+			win)
+				# always add '0' as the 4:th digit
+				v=$v1.0
+				;;
+		esac
+		;;
+	*)
+		v='git.missing.please.hardcode.version'
+		;;
+esac
+printf '%s' $v

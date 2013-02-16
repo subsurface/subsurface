@@ -24,7 +24,7 @@ PREFIX="/Applications/Subsurface.app/Contents/Resources"
 INFOPLIST=./packaging/macosx/Info.plist
 
 # same git version magic as in the Makefile
-VERSION=`git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0/' || echo "git.missing.please.hardcode.version"`
+VERSION=$(./scripts/get-version darwin)
 
 # gtk-mac-bundler allegedly supports signing by setting this environment
 # variable, but this fails as we change the shared objects below and all

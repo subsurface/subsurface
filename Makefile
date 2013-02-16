@@ -26,11 +26,14 @@ MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
-VERSION_STRING := $(shell git describe --tags --abbrev=12 || echo "v$(VERSION)")
-# Windows .nsi style with four numbers 1.2.3.4
-PRODVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3.0/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0.0/' || echo "$(VERSION).0.0")
+GET_VERSION = ./scripts/get-version
+VERSION_STRING := $(shell $(GET_VERSION) linux || echo "v$(VERSION)")
 # Mac Info.plist style with three numbers 1.2.3
-CFBUNDLEVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0/' || echo "$(VERSION).0")
+CFBUNDLEVERSION_STRING := $(shell $(GET_VERSION) darwin $(VERSION_STRING) || \
+	echo "$(VERSION).0")
+# Windows .nsi style with four numbers 1.2.3.4
+PRODVERSION_STRING := $(shell $(GET_VERSION) win $(VERSION_STRING) || \
+	echo "$(VERSION).0.0")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
