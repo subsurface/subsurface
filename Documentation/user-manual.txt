@@ -546,6 +546,8 @@ The Log menu
 Within the Log menu, you will find the following sub-items:
 
  - Download From Dive Computer::   Allows you to download dive information from your dive computer
+ - Download From Web Service::     Allows you to download dive information from the webservice
+ - Edit Device Names::             Allows you to add device nicknames to divecomputers
  - Add Dive::	      		   Manually add a dive that you cannot download from an existing computer
  - Renumber::	This option provides you with a pop-up. Within this
 			pop-up you can choose what the first number of your dives should be
@@ -555,12 +557,15 @@ Within the Log menu, you will find the following sub-items:
  - Toggle Zoom::        The dive profile tries to convey some first glance information about
 			the depth of a dive - so the vertical scaling of the profile always
 			show a minimum of 30m / 90ft. This can be changed to be only 10m / 30ft.
- - Yearly Statistics:	Contrary to the Statistics in the main display, these are purely calendar based.
+ - Yearly Statistics::	Contrary to the Statistics in the main display, these are purely calendar based
+ - Dives Locations::    Show an interactive map with locations of the logged dives with GPS coordinates
  - View::		This is a submenu containing:
 	* List::		Show only the list of dives you have made
 	* Profile::	Show only the dive profile of the selected dive
 	* Info::		Show only the 3 tab information screen
 	* Three::		Show the 'default' 3 screen setup
+	* Prev DC		Switch to the previous divecomputer
+	* Next DC		Switch to the next divecomputer
 
 The Filter menu
 ~~~~~~~~~~~~~~~
