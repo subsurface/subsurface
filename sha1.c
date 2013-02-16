@@ -8,8 +8,12 @@
 
 /* this is only to get definitions for memcpy(), ntohl() and htonl() */
 #include <string.h>
+#include <stdint.h>
+#ifdef WIN32
+#include <winsock2.h>
+#else
 #include <arpa/inet.h>
-
+#endif
 #include "sha1.h"
 
 #if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
