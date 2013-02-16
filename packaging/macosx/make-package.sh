@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # this simply automates the steps to create a DMG we can ship
 #
@@ -67,4 +67,3 @@ ${DMGCREATE} --background ./packaging/macosx/DMG-Background.png \
 	--app-drop-link 380 205 \
 	--volicon ~/subsurface/packaging/macosx/Subsurface.icns \
 	--icon "Subsurface" 110 205 ./Subsurface-${VERSION}.dmg ./staging
-
