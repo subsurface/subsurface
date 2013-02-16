@@ -473,70 +473,12 @@ Export from Suunto Divemanager
 	* You are back in the Export pop-up. Press the button 'Export'
  - Your dives are now exported to the file Divelogs.SDE.
 
-Unpacking the Divelogs.SDE on Windows
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Reading Suunto Divemanager Export in Subsurface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Renaming your file to a .zip:
-
- - Use the filemanager (explorer) and navigate to your Divelogs.SDE file
- - Right click on the Divelogs.SDE file and choose 'Rename'
-	* Change the name into Divelogs.SDE.zip
-	* Press enter when done. A warning pop-up shows:
-
-		The file could be unusable when changing the extension. Are you sure:
-		Press OK.
-
-	* Your filemanager will show now the filename Divelogs.SDE.zip
-
-When you double click your Divelogs.SDE.zip file, your preferred archiving
-tool will start and show you the list of xml files that are in the zip
-archive. Select all the xml files and extract them to a place where you
-can find them later in the process.
-
-Unpacking the Divelogs.SDE on Linux
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The assumption is that you have exported your Divelogs.SDE on a Windows
-system. You have to transfer the file to a location where you can read it
-from within your Linux environment. You can use file-transfer, shared
-storage or an USB storage device to do this.
-The example uses an USB storage:
-
- - Insert your USB storage into your Windows computer
- - Use the filemanager (explorer) to navigate to the location where your Divelogs.SDE file is located
- - Copy the file to your USB storage:
-	* Select the file by 1 click
-	* Press Ctrl+c
-	* Navigate to your USB Storage
-	* Press Ctrl+v
- - Disconnect your USB storage by right clicking your USB storage in the explorer and choose Eject
- - Insert your USB storage into your Linux computer
- - Use your favorite filemanager to navigate to your USB storage
- - Copy the file to /tmp by:
-	* Right click on the file
-	* select copy
-	* navigate to /tmp
-	* press Ctrl+v or use the menu 'Edit - Paste'
- - The file is now transferred to /tmp
-
-Now the file is in /tmp, we can extract the xml files from it. You can do
-this by hand, or use the example script in <<AppendixB,Appendix B>>.
-
-To extract the xml files, we need to open a terminal and use the following
-commands:
-
-	cd /tmp
-	mkdir suunto
-	cd suunto
-	unzip ../Divelogs.SDE
-
-Your divelogs have now been extracted from the Divelogs.SDE file and you
-can import them with the command:
-
-	subsurface *.xml
-
-And with the menu 'File - Save' you can save your dives into the
-Subsurface format.
+The file Divelogs.SDE can now be opened (or imported) in
+Subsurface. Different from earlier versions of Subsurface, no manual
+unpacking of the .SDE file is needed anymore.
 
 [[S_Menu]]
 The menu and sub-menus
@@ -673,39 +615,8 @@ your users manual to check if your computer will be supported.
 
 * OSTC computers are listed in the pull-down menu as OSTC. All 3 types are supported.
 
-
 [[AppendixB]]
-Appendix B: Suunto Export Unpacking Script
-------------------------------------------
-
-	#!/bin/bash
-	#
-	# Small basic example script to unpack Suunto Export files
-	# for the use with Subsurface
-	#
-
-	echo -n "Enter the directory where you stored your Suunto Divemanager export file: "
-	read SuuntoExportDir
-
-	echo -n "Enter the name of your Suunto Divemanager export file: "
-	read SuuntoExportFile
-
-	echo "You have entered: $SuuntoExportDir/$SuuntoExportFile"
-
-	cd $SuuntoExportDir
-
-	if [ -e ./$SuuntoExportFile ]; then
-		mkdir SuuntoXML
-		cd SuuntoXML
-		unzip ../$SuuntoExportFile
-		subsurface *.xml
-	else
-		echo "Nothing found! Try again!"
-	fi
-
-
-[[AppendixC]]
-Appendix C: Mac OSX Driver Installation
+Appendix B: Mac OSX Driver Installation
 ---------------------------------------
 
 Working out which driver to use for a Mac requires for a particular dive computer can
