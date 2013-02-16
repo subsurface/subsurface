@@ -311,33 +311,62 @@ Setting up preferences
 ----------------------
 
 Subsurface has the ability to modify the preferences you want. By
-using menu 'File - Preferences' you will be presented a pop-up with the
-'Units'. You are free to choose what is your preference, with other
-words, use Metric or Imperial.
+using menu 'File - Preferences' you will be presented a pop-up. The pop-up
+has two tabs: 'General Settings' and 'Tec Settings'.
 
-You can set the following options:
+The General Settings allow you to select units, columns to be shown, the
+font used for the divelist and the default file that contains the data.
+
+The Tec Settings offer extra columns to show, settings for more graphs and
+information to be shown in the dive profile and settings for GFlow and
+GFhigh.
+
+In General Settings you are free to choose what your preference are for the
+units to be displayed, with other words, use Metric or Imperial.
+
+You can set the following options with 'Units':
+
  - Depth:	Your diving depth in Meters or Feet
  - Pressure:	The pressure of your tank(s) in Bar/Ato or PSI (Pressure Square Inch)
  - Volume:	The volume of your tank(s) in Liter or CuFt (Cubic Feet) (At sea-level pressure)
  - Temperature:	The temperature of the water in Celsius or Fahrenheit
  - Weight:	The weight of your weight system in kg or lbs
 
-In the main screen, you did see in Area 3, some information. In the
-Columns options, you can enable/disable options you would like to show
+In the main screen, you did see in Area 3, some information. With the
+'Show Columns', you can enable/disable options you would like to show
 there:
+
  - Show Temp:	Shows the temperature of your dive
  - Show Cyl:	Shows the cylinder(s) of your dive
  - Show O2%:	Shows the O2% of your dive
  - Show SAC:	Shows the SAC of your dive (Surface Air Consumption)
- - Show OTU:	Shows the OTU of your dive (Oxygen Toxicity Units)
  - Show Weight: Shows the total weight carried
  - Show Suit:   Shows the suit you were wearing
 
-You can also change the default setting whether your dives are grouped
-by dive trips (the algorithm makes educated guesses) or whether you'd
-prefer to do any grouping of dive trips manually
+With 'Divelist Font', you can change the font used in the dive list,
 
-And, you can change the font used in the dive list,
+And you can use 'Default XML Data File' to specify which file contains the
+data the program will use by default.
+
+The other tab holds the 'Tec Settings'
+You can select more columns to be shows with 'Show Columns':
+
+ - OTU		The number of Oxygen Toxicity Units
+ - maxCNS	The maximimum Central Nervous System oxygen toxicity
+
+The 'Profile Setting' allow you to show extra information in the dive profile:
+
+ - Show pO2 graph	Show a graph of the oxygen partial pressure (with a threshold, default 1.6)
+ - Show pN2 graph	Show a graph of the nitrogren partial pressure (with a threshold, default 4.0)
+ - Show pHe graph	Show a graph of the helium partial pressure (with a threshold, default 13.0)
+ - Show MOD		Show the Maximum Operating Depth of the used gasmix (for the given max. ppO2, default 1.6)
+ - Show EAD, END, EADD	Show Equivalent Air Depth (considering N2 and O2 narcotic), Equivalent Nitrogen Depth (considering just N2 narcotic) and Equivalent Air Density Depth
+ - Show dc reported ceiling in red	Show the ceiling as reported by the divecomputer
+ - Show calculated ceiling	Show the ceiling as calculated by Subsurface
+ - 3m increments for calculated ceiling	The calculated ceiling is not continuous, but increments in 3m steps
+ - GFlow		Set the Low Gradient Factor (default 30)
+ - GFhigh		Set the High Gradient Factor (default 75)
+
 
 I will give an example here:
 
@@ -357,9 +386,6 @@ I would like to see the:
  - Show Cyl
  - Show O2%
  - Show SAC
-
-As a beginning diver, I don't need to track my OTUs. So I leave this
-one not enabled.
 
 Clicking OK on the dialog stores these settings.
 
