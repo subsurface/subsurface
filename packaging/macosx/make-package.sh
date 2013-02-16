@@ -12,7 +12,7 @@
 # adjust to your install location of gtk-mac-bundler. I appear to need at
 # least 0.7.2
 BUNDLER=../.local/bin/gtk-mac-bundler
-BUNDLER_SRC=${HOME}/gtk-mac-bundler
+BUNDLER_SRC=$HOME/gtk-mac-bundler
 
 # install location of yourway-create-dmg
 DMGCREATE=../yoursway-create-dmg/create-dmg
@@ -32,7 +32,7 @@ VERSION=$(./scripts/get-version darwin)
 # export APPLICATION_CERT=Dirk
 
 # force rebuilding of Info.plist
-rm ${INFOPLIST}
+rm $INFOPLIST
 
 # first build and install Subsurface and then clean up the staging area
 make
@@ -40,12 +40,12 @@ make install-macosx
 rm -rf ./staging
 
 # now populate it with the bundle
-${BUNDLER} packaging/macosx/subsurface.bundle
+$BUNDLER packaging/macosx/subsurface.bundle
 
 # correct the paths and names
 cd staging/Subsurface.app/Contents
 for i in Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders/* ; do
-	${BUNDLER_SRC}/bundler/run-install-name-tool-change.sh $i ${PREFIX} Resources change ;
+	$BUNDLER_SRC/bundler/run-install-name-tool-change.sh $i $PREFIX Resources change ;
 done
 for i in Resources/lib/*.dylib;
 do
@@ -57,13 +57,13 @@ cd ../../..
 codesign -s Dirk ./staging/Subsurface.app/Contents/MacOS/subsurface \
 	./staging/Subsurface.app/Contents/MacOS/subsurface-bin
 
-if [ -f ./Subsurface-${VERSION}.dmg ]; then
-	rm ./Subsurface-${VERSION}.dmg.bak
-	mv ./Subsurface-${VERSION}.dmg ./Subsurface-${VERSION}.dmg.bak
+if [ -f ./Subsurface-$VERSION.dmg ]; then
+	rm ./Subsurface-$VERSION.dmg.bak
+	mv ./Subsurface-$VERSION.dmg ./Subsurface-$VERSION.dmg.bak
 fi
 
-${DMGCREATE} --background ./packaging/macosx/DMG-Background.png \
-	--window-size 500 300 --icon-size 96 --volname Subsurface-${VERSION} \
+$DMGCREATE --background ./packaging/macosx/DMG-Background.png \
+	--window-size 500 300 --icon-size 96 --volname Subsurface-$VERSION \
 	--app-drop-link 380 205 \
 	--volicon ~/subsurface/packaging/macosx/Subsurface.icns \
-	--icon "Subsurface" 110 205 ./Subsurface-${VERSION}.dmg ./staging
+	--icon "Subsurface" 110 205 ./Subsurface-$VERSION.dmg ./staging
