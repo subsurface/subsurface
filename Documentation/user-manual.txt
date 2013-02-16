@@ -184,10 +184,14 @@ completing your logs>>.  The Dive Info window pops up and you will see
 the following:
 [horizontal]
  *Location*::	 An input where you can enter your new location, or you can choose with the pull-down previous locations
+ *GPS (WGS84 or GPS format)*::	An input where your can enter geographic coordinates of the dive site
+ *Pick on map*::        A button you can click on to display an interactive map on which you can select the location of the dive site
  *Dive Master*:: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
  *Buddy*::	 An input where you can enter the name of you Buddy, or you can choose with the pull-down a previous name
- *Rating*::	 A pull-down where you can rate your dive.
+ *Rating*::	 A pull-down where you can rate your dive
  *Suit*::	 An input where you can track the exposure protection suit you were wearing
+ *Visibility*:: A pulldown where you can rate the visibility underwater
+ *Air Temp in deg. C*:: An input where you can enter the air temperature
  *Notes*::	 A free input where you can enter information about your dive. What you've seen, etc.
 
 In this example we use the following information:
@@ -200,7 +204,7 @@ In this example we use the following information:
  *Notes*::		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive. +
                         Made movie with headcam.
 
-Now don't press ok yet!
+Now don't press OK yet!
 
 [[S_EditEquipmentInfo]]
 Edit equipment info
