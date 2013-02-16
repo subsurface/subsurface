@@ -288,7 +288,10 @@ The information contains:
 	** Surf Intv:	Interval between previous dive and this dive
 	** Max Depth:	Maximum depth of this dive
 	** Avg Depth:	The average depth of this dive
+	** Visibility:	The visibility under water
 	** Water Temp:	Lowest temperature of the water
+	** Air Temp:	The temperature of the air at the surface
+	** Air Press:	The air pressure at the surface
 	** SAC:		The amount of Surface Air Consumption liters per minute
 	** OTU:		The Oxygen Toxicity Units of this dive
 	** O2/He:	Amount of Oxygen/Helium
@@ -296,12 +299,12 @@ The information contains:
 
  - Statistics:
 
-	** Dive:                Number of dives covered (usually one, unless you select more dives)
+	** Dives:               Number of dives covered (usually one, unless you select more dives)
 	** Max/Min/Avg Temp:    Corresponding temperature of the dives covered
 	** Total time:	        Total time of the covered dives together, calculated
 	** Avg/Long/Short Time:	The average / longest / shortest dive time of the covered dives, calculated
 	** Max/Min/Avg Depth:	The maximum / minimum / average depth of the covered dives
-	** Max SAC:		Highest / lowest / average Surface Air Consumption of your covered dives
+	** Max/Min/Avg SAC:	Highest / lowest / average Surface Air Consumption of your covered dives
 
 [[S_SettingUpPreferences]]
 Setting up preferences
