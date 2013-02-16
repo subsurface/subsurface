@@ -1,8 +1,8 @@
-Subsurface 2.1 User Manual
+Subsurface 3.0 User Manual
 ==========================
-Jacco_van_Koll_and_Dirk_Hohndel
-v0.1.1, October 2012
-:Author Initials: JKO & DH
+Jacco_van_Koll,_Dirk_Hohndel_and_Reinout_Hoornweg
+v3.0.0, February 2013
+:Author Initials: JKO & DH & RH
 :toc:
 :icons:
 :numbered:
