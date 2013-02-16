@@ -1,2 +1,4 @@
 *.o
 /subsurface
+.dep/
+share/
