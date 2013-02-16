@@ -30,7 +30,7 @@ msgstr " herunterladen"
 
 #: download-dialog.c:375
 msgid " Please select dive computer and device. "
-msgstr " Bitte Tauchcomputer und Gerät auswählen. "
+msgstr " Bitte Tauchcomputer und Anschluß auswählen. "
 
 #: profile.c:413
 msgctxt "Starts with space!"
@@ -611,7 +611,7 @@ msgstr "Info: Tauchgangsdauer"
 
 #: download-dialog.c:288
 msgid "Dive computer vendor and product"
-msgstr "Tauchcomputer Hersteller und Modell"
+msgstr "Hersteller und Modell"
 
 #: libdivecomputer.c:681
 msgid "Dive data import error"
@@ -712,11 +712,11 @@ msgstr "Tauchcomputer Bezeichnung bearbeiten"
 
 #: info.c:957
 msgid "Edit Trip Info"
-msgstr "Reisen-Informationen bearbeiten"
+msgstr "Reise-Informationen bearbeiten"
 
 #: divelist.c:2405
 msgid "Edit Trip Summary"
-msgstr "Reisen-Übersicht bearbeiten"
+msgstr "Reise-Übersicht bearbeiten"
 
 #: gtk-gui.c:1306
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
@@ -740,7 +740,7 @@ msgstr "Mehrere Tauchgänge bearbeiten"
 
 #: info.c:616
 msgid "Edit trip summary"
-msgstr "Reisen-Übersicht bearbeiten"
+msgstr "Reise-Übersicht bearbeiten"
 
 #: gtk-gui.c:961
 msgid "Enable / Disable Events"
@@ -1348,7 +1348,7 @@ msgstr "SDE Datei"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"
-msgstr "Verletzung des Sicherheitsstops"
+msgstr "Verletzung des Sicherheitsstopps"
 
 #: main.c:62
 msgid "Sat"
@@ -1467,7 +1467,7 @@ msgstr "Start"
 
 #: uemis-downloader.c:782
 msgid "Start download"
-msgstr "Laden anfangen"
+msgstr "Beginne zu Laden"
 
 #: statistics.c:772
 msgid "Statistics"
@@ -1701,7 +1701,7 @@ msgstr "Gewicht"
 #: equipment.c:1084 print.c:290
 #, c-format
 msgid "Weight System"
-msgstr "Gewicht"
+msgstr "Gewichtsystem"
 
 #: gtk-gui.c:656
 msgid "Weight:"
