@@ -7,6 +7,7 @@
 *.xml
 !dives/*.xml
 *~
+po/*.mo
 /subsurface
 .dep/
 share/
