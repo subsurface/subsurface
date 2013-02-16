@@ -54,6 +54,12 @@ On Debian the package names are different; try libxml2-dev,
 libgtk2.0-dev, libglib2.0-dev, libgconf2-dev, libsoup2.4-dev. It seems
 the cairo packages at least in Squeeze is too old.
 
+To be able to visualise the dives on a map (optional), using GPS
+coordinates, install libosmgpsmap-dev (debian package). That will be
+detected and configured at build time. The library is used to embed
+maps in applications that, when given GPS co-ordinates, draw a GPS
+track.
+
 You also need to have libdivecomputer installed. The current git
 versions of Subsurface assume that you use libdivecomputer version
 0.3, which goes something like this:
