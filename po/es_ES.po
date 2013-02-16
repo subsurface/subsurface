@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-16 00:01+0100\n"
+"PO-Revision-Date: 2013-02-16 22:51+0100\n"
 "Last-Translator: Salvador Cuñat <salvador.cunat@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -753,9 +753,8 @@ msgid "End"
 msgstr "Fin"
 
 #: planner.c:1216
-#, fuzzy
 msgid "Ending Depth"
-msgstr "Profundidad mínima"
+msgstr "Profundidad final"
 
 #: webservice.c:223
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
@@ -1815,11 +1814,11 @@ msgstr "parada de profundidad"
 
 #: uemis-downloader.c:405
 msgid "divelog entry id"
-msgstr ""
+msgstr "identificador de entrada del diario"
 
 #: uemis-downloader.c:407
 msgid "divespot data id"
-msgstr ""
+msgstr "identificador del punto de buceo"
 
 #: libdivecomputer.c:152
 msgid "divetime"
@@ -1932,9 +1931,8 @@ msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgstr "modelo=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 
 #: uemis-downloader.c:409
-#, fuzzy
 msgid "more data dive id"
-msgstr "más de %d días"
+msgstr "más datos para el identificador de  inmersión"
 
 #: statistics.c:515
 #, c-format
