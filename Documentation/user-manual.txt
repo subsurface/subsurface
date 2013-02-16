@@ -154,7 +154,9 @@ In the log line of this dive, you see the following information:
 || *	   |			     | Your rating (none at this time)
 || m	   | 12.8		     | Your maximum depth in meters
 || min	   | 31:20		     | Your dive-time in minutes and seconds
-|| Deg. C   | 13.0		     | Lowest water temperature during your dive
+|| Deg. C  | 13.0		     | Lowest water temperature during your dive
+|| kg      |                         | Weight carried (none at this time)
+|| Suit    |                         | Exposure protection suit worn (none at this time)
 || Cyl	   |			     | Your used cylinder (none at this time)
 || O2%	   | air		     | What type of mixture
 || SAC	   |			     | SAC (none at this time)
@@ -166,6 +168,8 @@ retrieved from your divecomputer. Some information is waiting for
 you to be added. By double clicking on this dive, you can view and
 complete the log.
 
+The different types of information shown in this list may differ depending on the settings. More
+about that in <<S_SettingUpPreferences,Setting up preferences>>.
 
 [[S_EditDiveInfo]]
 Edit the dive info
