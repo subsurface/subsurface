@@ -1361,7 +1361,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	 * have filled in during 'fixup_dive()'
 	 */
 	if (!similar(a->maxdepth.mm, b->maxdepth.mm, 1000) ||
-	    !similar(a->meandepth.mm, b->meandepth.mm, 1000) ||
+	    (a->meandepth.mm && b->meandepth.mm && !similar(a->meandepth.mm, b->meandepth.mm, 1000)) ||
 	    !similar(a->duration.seconds, b->duration.seconds, 5*60))
 		return 0;
 
