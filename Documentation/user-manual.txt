@@ -225,7 +225,7 @@ pop-up. This pop-up gives you the following:
  - Optional:
 		* Start Pressure: What was the pressure starting the dive
 		* End Pressure:	What was the pressure ending the dive
-		* Nitrox:		What was the percentage of blend
+		* Gasmix:	What was the percentage O2 and He of the blend
 
 Now we are going to enter the data:
 
@@ -237,7 +237,7 @@ Now tick the option for Start & End pressure
 
  - Start Pressure:	180
  - End Pressure:	60
- - Press Ok
+ - Press OK
 
 In very much the same way you can enter the weight you were carrying on
 the dive. Subsurface tracks the following:
@@ -249,10 +249,10 @@ Enter the following data:
 
  - Type:      Integrated
  - weight:    13kg
- - Press Ok
+ - Press OK
 
 Now your dive information for this dive is complete. You can now press
-ok in the Dive Info screen and view the results.
+OK in the Dive Info screen and view the results.
 
 [[S_AddingEquipment]]
 Adding equipment info
