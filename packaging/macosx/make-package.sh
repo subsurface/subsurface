@@ -47,8 +47,7 @@ cd staging/Subsurface.app/Contents
 for i in Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders/*; do
 	$BUNDLER_SRC/bundler/run-install-name-tool-change.sh $i $PREFIX Resources change
 done
-for i in Resources/lib/*.dylib;
-do
+for i in Resources/lib/*.dylib; do
 	install_name_tool -id "@executable_path/../$i" $i
 done
 
