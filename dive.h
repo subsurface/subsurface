@@ -9,7 +9,8 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <libxml/tree.h>
-#include <openssl/sha.h>
+
+#include "sha1.h"
 
 #define O2_IN_AIR		209     // permille
 #define N2_IN_AIR		781
