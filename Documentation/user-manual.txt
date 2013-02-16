@@ -46,15 +46,16 @@ Start using the program
 -----------------------
 
 When you start the program for the first time, it shows no information
-at all. This is because the program does not automatically load the
-already available dive-log files.
+at all. This is because the program doesn't have any information available.
+If you have used the program before and saved the data, the program will
+automatically load the already available dive-log files.
 
-There is a menu, containing 'File', 'Log', 'Filter' and Help.
+There is a menu, containing 'File', 'Log', 'Filter', 'Planner' and 'Help'.
 
 The screen is divided in 3 area's:
 
  - Area with 4 tabs: Dive Notes, Equipment, Dive Info, and Stats
- - Area next to the 3 tabs which will contain the dive profile
+ - Area next to the 4 tabs which will contain the dive profile
  - Area with the dives (usually called dive list) which can be sorted by number, date, etc.
 
 
