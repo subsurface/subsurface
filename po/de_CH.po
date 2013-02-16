@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-13 23:41-0800\n"
-"Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
+"PO-Revision-Date: 2013-02-16 14:33+0100\n"
+"Last-Translator: Martin Gysel <me@bearsh.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -31,7 +32,7 @@ msgstr " herunterladen"
 
 #: download-dialog.c:375
 msgid " Please select dive computer and device. "
-msgstr " Bitte Tauchcomputer und Gerät auswählen. "
+msgstr " Bitte Tauchcomputer und Anschluss auswählen. "
 
 #: profile.c:413
 msgctxt "Starts with space!"
@@ -99,12 +100,12 @@ msgstr "%d min"
 #: statistics.c:521
 #, c-format
 msgid "%dd %dh %dmin"
-msgstr "%dt %dst %dmin"
+msgstr "%dd %dh %dmin"
 
 #: statistics.c:523
 #, c-format
 msgid "%dh %dmin"
-msgstr "%dst %dmin"
+msgstr "%dh %dmin"
 
 #: print.c:304
 #, c-format
@@ -434,7 +435,7 @@ msgstr "CC SetPoint"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr "Kann Gasmix %d/%d nicht finden"
+msgstr "Kann Gasgemisch %d/%d nicht finden"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -454,11 +455,11 @@ msgstr "Celsius"
 
 #: gtk-gui.c:564
 msgid "Choose Default XML File"
-msgstr "Standard XML Datei auswählen"
+msgstr "Standard XML-Datei auswählen"
 
 #: gtk-gui.c:1900
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Bitte XML Dateien auswählen, die in die aktuelle Datei eingefügt werden sollen"
+msgstr "Bitte XML-Dateien auswählen, die in die aktuelle Datei eingefügt werden sollen"
 
 #: gtk-gui.c:1367
 msgid "Close"
@@ -612,7 +613,7 @@ msgstr "Info: Tauchgangsdauer"
 
 #: download-dialog.c:288
 msgid "Dive computer vendor and product"
-msgstr "Tauchcomputer Hersteller und Modell"
+msgstr "Hersteller und Modell"
 
 #: libdivecomputer.c:681
 msgid "Dive data import error"
@@ -713,11 +714,11 @@ msgstr "Tauchcomputer Bezeichnung bearbeiten"
 
 #: info.c:957
 msgid "Edit Trip Info"
-msgstr "Reisen-Informationen bearbeiten"
+msgstr "Reise-Informationen bearbeiten"
 
 #: divelist.c:2405
 msgid "Edit Trip Summary"
-msgstr "Reisen-Übersicht bearbeiten"
+msgstr "Reise-Übersicht bearbeiten"
 
 #: gtk-gui.c:1306
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
@@ -741,7 +742,7 @@ msgstr "Mehrere Tauchgänge bearbeiten"
 
 #: info.c:616
 msgid "Edit trip summary"
-msgstr "Reisen-Übersicht bearbeiten"
+msgstr "Reise-Übersicht bearbeiten"
 
 #: gtk-gui.c:961
 msgid "Enable / Disable Events"
@@ -911,7 +912,7 @@ msgstr "Gasverbrauch:\n"
 
 #: equipment.c:959 print.c:195
 msgid "Gasmix"
-msgstr "Gasmischung"
+msgstr "Gasgemisch"
 
 #: gtk-gui.c:629
 msgid "General Settings"
@@ -948,12 +949,12 @@ msgstr "Ungültige Tiefe - kann \"%s\" nicht lesen"
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr "Ungültige Tiefe - Werte unterhalb 400m sind nicht erlaubt"
+msgstr "Ungültige Tiefe - Werte unterhalb 400m sind nicht unterstützt"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr "Ungültiger Gasmix in Zeile %d"
+msgstr "Ungültiges Gasgemisch in Zeile %d"
 
 #: planner.c:1145
 msgid "Invalid starttime"
@@ -1349,7 +1350,7 @@ msgstr "SDE Datei"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"
-msgstr "Verletzung des Sicherheitsstops"
+msgstr "Verletzung des Sicherheitsstopps"
 
 #: main.c:62
 msgid "Sat"
@@ -1468,7 +1469,7 @@ msgstr "Start"
 
 #: uemis-downloader.c:782
 msgid "Start download"
-msgstr "Laden anfangen"
+msgstr "Beginne zu Laden"
 
 #: statistics.c:772
 msgid "Statistics"
@@ -1568,11 +1569,11 @@ msgstr "Zoom ein-/ausschalten"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr "Zu viele Gasmixe"
+msgstr "Zu viele Gasgemische"
 
 #: planner.c:1245
 msgid "Too many waypoints"
-msgstr "Zu viele Abschnitt"
+msgstr "Zu viele Abschnitte"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1702,7 +1703,7 @@ msgstr "Gewicht"
 #: equipment.c:1084 print.c:290
 #, c-format
 msgid "Weight System"
-msgstr "Gewicht"
+msgstr "Gewichtsystem"
 
 #: gtk-gui.c:656
 msgid "Weight:"
@@ -1762,7 +1763,7 @@ msgstr "verbleibende Atemzeit"
 
 #: equipment.c:828
 msgid "ankle"
-msgstr "Fuss"
+msgstr "Fussblei"
 
 #: libdivecomputer.c:149
 msgid "ascent"
@@ -1770,7 +1771,7 @@ msgstr "Aufstieg"
 
 #: equipment.c:829
 msgid "backplate weight"
-msgstr "Rückenplatten-Gewicht"
+msgstr "Backplate-Gewicht"
 
 #: dive.c:46
 msgid "bar"
@@ -1983,7 +1984,7 @@ msgstr "Sicherheitsstopp"
 
 #: libdivecomputer.c:151
 msgid "safety stop (mandatory)"
-msgstr "Sicherheitsstopp (verpflichtend)"
+msgstr "Sicherheitsstopp (obligatorisch)"
 
 #: libdivecomputer.c:151
 msgid "safety stop (voluntary)"
@@ -1995,7 +1996,7 @@ msgstr "halbtrocken"
 
 #: uemis-downloader.c:590
 msgid "shorty"
-msgstr "kurzer Tauchanzug"
+msgstr "Shorty"
 
 #: libdivecomputer.c:150
 msgid "surface"
@@ -2038,7 +2039,7 @@ msgstr "Verletzung"
 
 #: equipment.c:1481
 msgid "weight"
-msgstr "Blei"
+msgstr "Gewicht"
 
 #: uemis-downloader.c:589
 msgid "wetsuit"
