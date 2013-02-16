@@ -21,16 +21,22 @@ DMGCREATE="../yoursway-create-dmg/create-dmg"
 # other components have been installed
 PREFIX="/Applications/Subsurface.app/Contents/Resources"
 
-# maybe we want to update this to use the git tag magic instead. That
-# would be more consistent
-VERSION=`grep -1 CFBundleVersionString packaging/macosx/Info.plist | tail -1 | cut -d\> -f 2 | cut -d\< -f 1`
+INFOPLIST=./packaging/macosx/Info.plist
+
+# same git version magic as in the Makefile
+VERSION=`git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0/' || echo "git.missing.please.hardcode.version"`
 
 # gtk-mac-bundler allegedly supports signing by setting this environment
 # variable, but this fails as we change the shared objects below and all
 # the signatures become invalid.
 # export APPLICATION_CERT="Dirk"
 
-# first clean up the staging area
+# force rebuilding of Info.plist
+rm ${INFOPLIST}
+
+# first build and install Subsurface and then clean up the staging area
+make
+make install-macosx
 rm -rf ./staging
 
 # now populate it with the bundle

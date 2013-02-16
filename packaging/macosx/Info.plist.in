@@ -8,19 +8,15 @@
 	<string>Subsurface</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-        <key>CFBundleGetInfoString</key>
-	<string>Multi Platform Divelog in C and Gtk</string>
 	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>SBSF</string>
 	<key>CFBundleExecutable</key>
 	<string>subsurface</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.hohndel.subsurface</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>1.0</string>
-	<key>CFBundleVersionString</key>
-	<string>2.9</string>
 	<key>CFBundleVersion</key>
-	<string>2.9</string>
+	<string>CFBUNDLEVERSION_TOKEN</string>
 </dict>
 </plist>

@@ -27,7 +27,10 @@ XSLTFILES = xslt/*.xslt
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 VERSION_STRING := $(shell git describe --tags --abbrev=12 || echo "v$(VERSION)")
+# Windows .nsi style with four numbers 1.2.3.4
 PRODVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3.0/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0.0/' || echo "$(VERSION).0.0")
+# Mac Info.plist style with three numbers 1.2.3
+CFBUNDLEVERSION_STRING := $(shell git describe --tags --abbrev=12 | sed 's/v\([0-9]*\)\.\([0-9]*\)-\([0-9]*\)-.*/\1.\2.\3/ ; s/v\([0-9]\)\.\([0-9]*\)/\1.\2.0/' || echo "$(VERSION).0")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
@@ -119,9 +122,11 @@ else ifeq ($(UNAME), darwin)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
+	INFOPLIST = $(MACOSXFILES)/Info.plist
+	INFOPLISTINPUT = $(INFOPLIST).in
 	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation
 	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
-	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist ./packaging/macosx/Info.plist
+	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
 	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 	XSLT_CAPABLE = 1
 else
@@ -154,7 +159,7 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o plann
 
 DEPS = $(wildcard .dep/*.dep)
 
-$(NAME): $(OBJS) $(MSGOBJS)
+$(NAME): $(OBJS) $(MSGOBJS) $(INFOPLIST)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
@@ -234,9 +239,11 @@ install-cross-windows: $(NAME)
 create-windows-installer: $(NAME) $(NSIFILE) install-cross-windows
 	$(MAKENSIS) $(NSIFILE)
 
-$(NSIFILE): $(NSIINPUTFILE) Makefile
+$(NSIFILE): $(NSIINPUTFILE)
 	$(shell cat $(NSIINPUTFILE) | sed -e 's/VERSIONTOKEN/$(VERSION_STRING)/;s/PRODVTOKEN/$(PRODVERSION_STRING)/' > $(NSIFILE))
 
+$(INFOPLIST): $(INFOPLISTINPUT)
+	$(shell cat $(INFOPLISTINPUT) | sed -e 's/CFBUNDLEVERSION_TOKEN/$(CFBUNDLEVERSION_STRING)/' > $(INFOPLIST))
 
 update-po-files:
 	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
