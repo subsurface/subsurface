@@ -22,10 +22,10 @@ Introduction:
 Subsurface was started because of a lack of viable dive log software
 on Linux. It turns out that the resulting software was easily ported
 to Windows and Mac, but it clearly is a native Linux program first.
-The program is under active development and at version 2.1 it is
+The program is under active development and at version 3.0 it is
 already very usable for divers with supported dive-computers.
 
-In this manual the Suunto Viper will be used for all examples.
+In this manual the Suunto Vyper will be used for all examples.
 
 
 [[S_Requirements]]
