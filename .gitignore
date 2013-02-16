@@ -1,4 +1,16 @@
 *.o
+*.orig
+*.rej
+*.exe
+*.dmg
+*.patch
+*.xml
+!dives/*.xml
+*~
 /subsurface
 .dep/
 share/
+Documentation/user-manual.pdf
+Documentation/user-manual.html
+packaging/windows/subsurface.nsi
+packaging/macos/Info.plist
