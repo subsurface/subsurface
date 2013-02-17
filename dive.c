@@ -706,15 +706,15 @@ struct dive *fixup_dive(struct dive *dive)
 	sanitize_cylinder_info(dive);
 	dive->maxcns = dive->cns;
 
+	for_each_dc(dive, dc)
+		fixup_dive_dc(dive, dc);
+
 	fixup_water_salinity(dive);
 	fixup_surface_pressure(dive);
 	fixup_meandepth(dive);
 	fixup_duration(dive);
 	fixup_watertemp(dive);
 	fixup_airtemp(dive);
-
-	for_each_dc(dive, dc)
-		fixup_dive_dc(dive, dc);
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
