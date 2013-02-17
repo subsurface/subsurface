@@ -362,12 +362,12 @@ The other tab holds the 'Tec Settings'
 You can select more columns to be shows with 'Show Columns':
 
  - OTU		The number of Oxygen Toxicity Units
- - maxCNS	The maximimum Central Nervous System oxygen toxicity
+ - maxCNS	The maximum Central Nervous System oxygen toxicity
 
 The 'Profile Setting' allow you to show extra information in the dive profile:
 
  - Show pO2 graph	Show a graph of the oxygen partial pressure (with a threshold, default 1.6)
- - Show pN2 graph	Show a graph of the nitrogren partial pressure (with a threshold, default 4.0)
+ - Show pN2 graph	Show a graph of the nitrogen partial pressure (with a threshold, default 4.0)
  - Show pHe graph	Show a graph of the helium partial pressure (with a threshold, default 13.0)
  - Show MOD		Show the Maximum Operating Depth of the used gasmix (for the given max. ppO2, default 1.6)
  - Show EAD, END, EADD	Show Equivalent Air Depth (considering N2 and O2 narcotic), Equivalent Nitrogen Depth (considering just N2 narcotic) and Equivalent Air Density Depth
@@ -669,7 +669,7 @@ Appendix B: Mac OSX Driver Installation
 Working out which driver to use for a Mac requires for a particular dive computer can
 require some experimentation. The libdivecomputer website provides a useful point from
 which to start: http://www.divesoftware.org/libdc/drivers.html. It lists a number of
-sites for manufacturers of the serial to usb chips which provide the necessary conversions.
+sites for manufacturers of the serial to USB chips which provide the necessary conversions.
 
 Here you have two alternatives. Either you try each of the major drivers in turn until
 you find the right one, or you follow some further steps to try and identify the right
@@ -679,7 +679,7 @@ connector cable. Next open a terminal window and run the command:
 	system_profiler SPUSBDataType > usb.txt
 
 you should end up with a file (usb.txt in this example) which contains the VID/PID information
-which can then be used with the url above to narrow the field. Just open the text file and
+which can then be used with the URL above to narrow the field. Just open the text file and
 compare the information with the table in the drivers section of the web page. This should
 point you to the relevant driver manufacturer.  Typically, one then needs to navigate to the
 relevant sub page for "drivers" and then the one for "VCP drivers."  VCP stands for Virtual
