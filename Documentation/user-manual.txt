@@ -448,6 +448,20 @@ Simply try COM1, COM2, etc. The drop down list should contain all connected COM 
 
 The drop down box should find all connected divecomputers.
 
+[[S_ImportingAlienDiveLogs]]
+Importing divelogs from other software
+--------------------------------------
+
+Subsurface will import divelogs from a couple of other log software. We
+support currently XML exports from DivingLog as well as Suunto
+DiveManager. Native format of JDivelog and MacDive are imported as well.
+
+When importing dives subsurface tries to detect multiple records for
+the same dive and merges the information as best as it can. So as long
+as there are no time zone issues (or other reasons that would cause the
+beginning time of the dives to be substantially different) subsurface
+will not create duplicate entries.
+
 [[S_ImportingDivesJDivelog]]
 Importing dives from JDivelog
 -----------------------------
@@ -491,15 +505,6 @@ which will have the same effect:
 will open your divelog (assuming that's called MyDives.xml) and then
 import the dives from JdivelogDives.jlb. You can now save the combined
 divelog back as MyDives.xml.
-
-Subsurface will similarly import xml exports from DivingLog as well as
-Suunto DiveManager.
-
-When importing dives subsurface tries to detect multiple records for
-the same dive and merges the information as best as it can. So as long
-as there are no time zone issues (or other reasons that would cause the
-beginning time of the dives to be substantially different) subsurface
-will not create duplicate entries.
 
 [[S_ImportingDivesSuunto]]
 Importing dives from Suunto Divemanager 3.*
