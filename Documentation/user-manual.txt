@@ -122,23 +122,27 @@ mounted once you connect the divecomputer.
 On Windows this is a drive letter (often 'E:' or 'F:'), on a Mac this is
 '/Volumes/UEMISSDA' and on Linux systems this differs depending on the
 distribution that you use. On Fedora it usually is
-'/var/run/media/<your_username>/UEMISSDA'.
+'/var/run/media/<your_username>/UEMISSDA'. In all cases Subsurface
+should suggest the correct location in the drop down list.
 
-So once you have selected this as device name you can download the dives
-from the Uemis Zurich. One current issue is that you cannot download more
-than about 40-50 dives without running out of memory on the SDA. This will
-usually only happen the very first time you download dives from the Uemis
-Zurich - normally when downloading at the end of a day or even after a
-dive trip, the capacity is sufficient. If Subsurface displays and error
-that the divecomputer ran out of space the solution is straight forward.
-Disconnect the SDA, turn it off and on again, and reconnect it. You can
-now start a new download session and it will continue where it stopped the
-last time you tried. You may have to do this more than once, depending on
-how many dives you have stored on your divecomputer.
+So once you have selected this as device name you can download the
+dives from the Uemis Zurich. One technical issue with the Uemis Zurich
+download implementation (this is a firmware limitation, not a
+Subsurface issue) is that you cannot download more than about 40-50
+dives without running out of memory on the SDA. This will usually only
+happen the very first time you download dives from the Uemis Zurich -
+normally when downloading at the end of a day or even after a dive
+trip, the capacity is sufficient. If Subsurface displays and error
+that the divecomputer ran out of space the solution is straight
+forward.  Disconnect the SDA, turn it off and on again, and reconnect
+it. You can now retry (or start a new download session) and the
+download will continue where it stopped the last time you tried. You
+may have to do this more than once, depending on how many dives you
+have stored on your divecomputer.
 
-At this point Subsurface doesn't download all the information that is
-stored on the SDA. Information about dive spots, buddies, and equipment is
-not yet downloaded.
+At this point Subsurface downloads most of the information that is
+stored on the SDA, including information about dive spots and
+equipment. Buddy information is not yet downloaded.
 
 [[S_ViewingLogs]]
 Viewing and completing your logs
