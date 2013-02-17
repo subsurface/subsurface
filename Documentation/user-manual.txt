@@ -397,12 +397,13 @@ Clicking OK on the dialog stores these settings.
 How to find the Device Name
 ---------------------------
 
-When you connect your divecomputer by using an USB connector, most of the
-time, the default of '/dev/ttyUSB0' should work. But if you have other
-Serial to USB devices, this can be different because '/dev/ttyUSB0' is
-already in use.
+When you connect your divecomputer by using an USB connector, usually
+Subsurface will propose a drop down list that contains the correct
+device name (or mount point for the Uemis Zurich). In the rare cases
+where this doesn't work here are some instructions on ways to find out
+what your dive name is:
 
-One of the ways to find out what your dive name is:
+.On Linux:
 
  - Disconnect your USB cable of your dive computer
  - Open a terminal
@@ -432,6 +433,14 @@ You see that in the third line from the bottom, the USB adapter is
 detected and is connected to 'ttyUSB3'. Now you use this information in
 the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
 connected and you should be able to import your dives.
+
+.On Windows:
+
+Simply try COM1, COM2, etc. The drop down list should contain all connected COM devices.
+
+.On MacOS:
+
+The drop down box should find all connected divecomputers.
 
 [[S_ImportingDivesJDivelog]]
 Importing dives from JDivelog
