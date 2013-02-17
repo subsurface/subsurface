@@ -89,7 +89,7 @@ Now it is time to hook up your divecomputer to your PC:
 	  for you.
 
 	* On Windows, the OS should offer to download the correct
-	  driver when you connect to the USB port.
+	  driver when you connect your divecomputer to the USB port.
 
 	* On a Mac you at times have to manually hunt for the correct
 	  driver. For example the correct driver for the Mares Puck
