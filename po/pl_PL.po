@@ -7,19 +7,110 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-16 20:53+0100\n"
-"PO-Revision-Date: 2013-02-16 22:30+0100\n"
+"POT-Creation-Date: 2013-02-16 23:48+0100\n"
+"PO-Revision-Date: 2013-02-16 23:48+0100\n"
 "Last-Translator: Krzysztof Arentowicz <k.arentowicz@gmail.com>\n"
 "Language-Team: Polish\n"
-"Language: \n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop;N_\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;N_;C_\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: POLAND\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: ..\n"
+
+#: statistics.c:177
+msgctxt "Stats"
+msgid " > Month"
+msgstr " > miesiąc"
+
+#: profile.c:413
+msgctxt "Starts with space!"
+msgid " begin"
+msgstr " początek"
+
+#: profile.c:414
+msgctxt "Starts with space!"
+msgid " end"
+msgstr " koniec"
+
+#: statistics.c:183
+msgctxt "Depth"
+msgid "Average"
+msgstr "średnia"
+
+#: statistics.c:180
+msgctxt "Duration"
+msgid "Average"
+msgstr "średni"
+
+#: statistics.c:186
+msgctxt "SAC"
+msgid "Average"
+msgstr "średni"
+
+#: statistics.c:189
+msgctxt "Temp"
+msgid "Average"
+msgstr "średnia"
+
+#: statistics.c:857
+msgctxt "Amount"
+msgid "Gas Used"
+msgstr "Zużyty gaz"
+
+#: planner.c:1218
+msgctxt "Type of"
+msgid "Gas Used"
+msgstr "Użyty gaz"
+
+#: statistics.c:185
+msgctxt "Depth"
+msgid "Maximum"
+msgstr "max."
+
+#: statistics.c:188
+msgctxt "SAC"
+msgid "Maximum"
+msgstr "max."
+
+#: statistics.c:191
+msgctxt "Temp"
+msgid "Maximum"
+msgstr "max."
+
+#: statistics.c:184
+msgctxt "Depth"
+msgid "Minimum"
+msgstr "min."
+
+#: statistics.c:187
+msgctxt "SAC"
+msgid "Minimum"
+msgstr "min."
+
+#: statistics.c:190
+msgctxt "Temp"
+msgid "Minimum"
+msgstr "min."
+
+#: statistics.c:179
+msgctxt "Duration"
+msgid "Total"
+msgstr "całkowity"
+
+#: statistics.c:182
+msgctxt "Duration"
+msgid "Longest"
+msgstr "max."
+
+#: statistics.c:181
+msgctxt "Duration"
+msgid "Shortest"
+msgstr "min."
 
 #: ../statistics.c:175
 msgid "Year"
@@ -27,23 +118,43 @@ msgstr "Rok"
 
 #: ../statistics.c:175
 msgid "#"
-msgstr "nr"
+msgstr "#"
 
-#: ../statistics.c:175
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
+#: divelist.c:268
+#, c-format
+msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
+msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
+msgstr[0] "Grupa %1$s, %3$d. %2$s %4$d (%5$d nurkowanie)"
+msgstr[1] "Grupa %1$s, %3$d. %2$s %4$d (nurkowań: %5$d)"
+
+#: ../statistics.c:175 ../statistics.c:179 ../statistics.c:180
+#: ../statistics.c:181 ../statistics.c:182
 msgid "Duration"
-msgstr "Czas trwania(min)"
+msgstr "Czas"
 
-#: ../statistics.c:175
+#: ../statistics.c:175 ../statistics.c:183 ../statistics.c:184
+#: ../statistics.c:185
 msgid "Depth"
-msgstr "Głębokość:"
+msgstr "Głębokość"
 
-#: ../statistics.c:175 ../statistics.c:859 ../gtk-gui.c:682
+#: ../statistics.c:175 ../statistics.c:186 ../statistics.c:187
+#: ../statistics.c:188 ../statistics.c:859 ../gtk-gui.c:682
 msgid "SAC"
 msgstr "SAC"
 
 #: ../statistics.c:175
 msgid "Temperature"
-msgstr "Temperatura:"
+msgstr "Temperatura"
+
+#: ../statistics.c:177 ../gtk-gui.c:1615
+msgid "Stats"
+msgstr "Statystyka"
+
+#: ../statistics.c:189 ../statistics.c:190 ../statistics.c:191
+#: ../gtk-gui.c:667
+msgid "Temp"
+msgstr "Temperatura"
 
 #: ../statistics.c:383 ../gtk-gui.c:1375
 msgid "Yearly Statistics"
@@ -87,7 +198,7 @@ msgstr "%.*f %s/min"
 #: ../statistics.c:641
 #, c-format
 msgid "for dives #"
-msgstr "dla nurkowania #"
+msgstr "dla nurkowania nr"
 
 #: ../statistics.c:648
 #, c-format
@@ -181,7 +292,7 @@ msgstr "Śr. SAC"
 
 #: ../statistics.c:826 ../gtk-gui.c:1611 ../info.c:998
 msgid "Dive Info"
-msgstr "Informacje "
+msgstr "Informacje"
 
 #: ../statistics.c:835
 msgid "Date"
@@ -320,7 +431,7 @@ msgstr "Niepoprawna głębokość - głębokości poniżej 400m nie są obsługi
 
 #: ../planner.c:1148
 msgid "Invalid starttime"
-msgstr "Niepoprawny czas początku nurkowania "
+msgstr "Niepoprawny czas początku nurkowania"
 
 #: ../planner.c:1193
 msgid "AIR"
@@ -341,6 +452,10 @@ msgstr "Głębokość końcowa"
 #: ../planner.c:1220
 msgid "Segment Time"
 msgstr "Czas segmentu"
+
+#: ../planner.c:1221
+msgid "Type of"
+msgstr "Rodzaj"
 
 #: ../planner.c:1222
 msgid "CC SetPoint"
@@ -461,7 +576,7 @@ msgstr "Alarm prędkości wynurzania"
 
 #: ../uemis.c:203
 msgid "Speed Warning"
-msgstr "Ostrzeżenie:  prędkość wynurzania"
+msgstr "Ostrzeżenie: prędkość wynurzania"
 
 #: ../uemis.c:205
 msgid "PO2 Green Warning"
@@ -525,7 +640,7 @@ msgstr "Alarm: niski poziom baterii"
 
 #: ../equipment.c:540
 msgid "unspecified"
-msgstr "nieokreślony "
+msgstr "nieokreślony"
 
 #: ../equipment.c:826
 msgid "integrated"
@@ -589,7 +704,7 @@ msgstr "Rodzaj"
 
 #: ../equipment.c:1454
 msgid "MaxPress"
-msgstr "Ciśnienie Max"
+msgstr "Ciśnienie max"
 
 #: ../equipment.c:1481
 msgid "weight"
@@ -606,7 +721,7 @@ msgstr "Nie udało się otworzyć %i plików."
 
 #: ../gtk-gui.c:131
 msgid "XML file"
-msgstr "plik XML "
+msgstr "plik XML"
 
 #: ../gtk-gui.c:143
 msgid "Save File As"
@@ -667,7 +782,7 @@ msgstr "Stopy"
 
 #: ../gtk-gui.c:641
 msgid "Pressure:"
-msgstr "Cisnienie:"
+msgstr "Ciśnienie:"
 
 #: ../gtk-gui.c:642
 msgid "Bar"
@@ -709,10 +824,6 @@ msgstr "Waga:"
 msgid "Show Columns"
 msgstr "Pokazuj kolumny"
 
-#: ../gtk-gui.c:667
-msgid "Temp"
-msgstr "Temperatura"
-
 #: ../gtk-gui.c:672
 msgid "Cyl"
 msgstr "Butle"
@@ -748,7 +859,7 @@ msgstr "Konfiguracja profilu"
 #: ../gtk-gui.c:748
 #, c-format
 msgid "Show pO%s graph"
-msgstr "pokazuj wykres pO%s "
+msgstr "pokazuj wykres pO%s"
 
 #: ../gtk-gui.c:754
 #, c-format
@@ -758,7 +869,7 @@ msgstr "próg pO%s "
 #: ../gtk-gui.c:767
 #, c-format
 msgid "Show pN%s graph"
-msgstr "pokazuj wykres pN%s "
+msgstr "pokazuj wykres pN%s"
 
 #: ../gtk-gui.c:773
 #, c-format
@@ -935,7 +1046,7 @@ msgstr "Ustawienia..."
 
 #: ../gtk-gui.c:1374
 msgid "Renumber..."
-msgstr "Przenumeruj..."
+msgstr "Zmień numerację..."
 
 #: ../gtk-gui.c:1377
 msgid "Dives Locations"
@@ -959,7 +1070,7 @@ msgstr "Profil"
 
 #: ../gtk-gui.c:1384
 msgid "Info"
-msgstr "Informacje "
+msgstr "Informacje"
 
 #: ../gtk-gui.c:1385
 msgid "Three"
@@ -1005,10 +1116,6 @@ msgstr "Notatki"
 msgid "Equipment"
 msgstr "Wyposażenie"
 
-#: ../gtk-gui.c:1615
-msgid "Stats"
-msgstr "Statystyka"
-
 #: ../gtk-gui.c:1900
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Wybierz plik XML, z którego zaimportować dane"
@@ -1026,9 +1133,9 @@ msgid ""
 "If you don't want to name this dive computer click 'Cancel' and Subsurface will simply display its model as its name (which may mean that you cannot tell the two dive computers apart in the logs)."
 msgstr ""
 "Istnieje już zdefiniowany komputer nurkowy tego typu\n"
-" nazwany  %s\n"
-"Subsurface może nadać nazwę temu urządzeniu, która pozwoli go odróżnić od już istniejącego. Domyślany nazwa to model i ID pokazane poniżej.\n"
-"Jeśli nie chcesz podawać własnej nazwy wybierz 'Anuluj' a Subsurface będzie używać modelu jako nazwy (może to oznaczać, że nie w logach nie da się odróżnić obu komputerów od siebie)."
+"nazwany  %s\n"
+"Subsurface może nadać nazwę temu urządzeniu, która pozwoli go odróżnić od już istniejącego. Domyślna nazwa to model i ID pokazane poniżej.\n"
+"Jeśli nie chcesz podawać własnej nazwy wybierz 'Anuluj' a Subsurface będzie używać modelu jako nazwy (może to oznaczać, że w logach nie da się odróżnić obu komputerów od siebie)."
 
 #: ../gtk-gui.c:1999
 msgid "(nothing)"
@@ -1051,12 +1158,12 @@ msgstr "Błąd odczytu '%s'"
 #: ../info.c:105
 #, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Nurkowanie #%1$d - %2$s %3$02d/%4$02d/%5$04d o %6$d:%7$02d"
+msgstr "Nurkowanie nr %1$d - %2$s %3$02d/%4$02d/%5$04d o %6$d:%7$02d"
 
 #: ../info.c:157
 #, c-format
 msgid "Dive #%d - "
-msgstr "Nurkowanie #%d - "
+msgstr "Nurkowanie nr %d - "
 
 #: ../info.c:222
 msgid "Edit"
@@ -1158,7 +1265,7 @@ msgstr "przystanek deco"
 
 #: ../libdivecomputer.c:149
 msgid "rbt"
-msgstr "czas denny"
+msgstr "pozostały czas na dnie"
 
 #: ../libdivecomputer.c:149
 msgid "ascent"
@@ -1218,7 +1325,7 @@ msgstr "czas nurkowania"
 
 #: ../libdivecomputer.c:153
 msgid "maxdepth"
-msgstr "Max głębokość "
+msgstr "Max głębokość"
 
 #: ../libdivecomputer.c:153
 msgid "OLF"
@@ -1351,6 +1458,10 @@ msgstr "Nie udało się przetworzyć '%s'"
 #, c-format
 msgid "Bailing out to OC"
 msgstr "Przejście na obieg otwarty"
+
+#: ../profile.c:413 ../profile.c:414
+msgid "Starts with space!"
+msgstr ""
 
 #: ../profile.c:2102
 #, c-format
@@ -1540,7 +1651,7 @@ msgid ""
 "Disconnect/reconnect the dive computer\n"
 "and try again"
 msgstr ""
-"Uemis Zurich: System plików jest pełenl\n"
+"Uemis Zurich: System plików jest pełen\n"
 "Odłącz i podłącz ponownie komputer nurkowy\n"
 "i spróbuj jeszcze raz."
 
@@ -1549,7 +1660,7 @@ msgid ""
 "Short write to req.txt file\n"
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
-"Nieudaney zapis do pliku req.txt \n"
+"Nieudany zapis do pliku req.txt \n"
 "Czy Uemis Zurich jest podłączony poprawnie?"
 
 #: ../uemis-downloader.c:364
@@ -1677,7 +1788,7 @@ msgstr "Bezczynny"
 msgid "Webservice"
 msgstr "Webservice"
 
-#: ../divelist.c:268 ../divelist.c:277
+#: ../divelist.c:277
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
 msgstr "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
@@ -1688,7 +1799,7 @@ msgstr "Usuń grupę"
 
 #: ../divelist.c:2239 ../divelist.c:2292 ../divelist.c:2384
 msgid "Delete dive"
-msgstr "Usuń nurkowania"
+msgstr "Usuń nurkowanie"
 
 #: ../divelist.c:2241 ../divelist.c:2383
 msgid "Delete dives"
@@ -1736,7 +1847,7 @@ msgstr "Pokaż na mapie"
 
 #: ../divelist.c:2489
 msgid "Create new trip above"
-msgstr "Utwórz nową grupe powyżej"
+msgstr "Utwórz nową grupę powyżej"
 
 #: ../divelist.c:2499
 msgid "Add to trip above"
@@ -1748,11 +1859,11 @@ msgstr "Usuń wybrane nurkowania z grupy"
 
 #: ../divelist.c:2507
 msgid "Remove dive from trip"
-msgstr "Unuń nurkowanie z grupy"
+msgstr "Usuń nurkowanie z grupy"
 
 #: ../divelist.c:2513
 msgid "Expand all"
-msgstr "Rozwiń wsystkie"
+msgstr "Rozwiń wszystkie"
 
 #: ../divelist.c:2517
 msgid "Collapse all"
