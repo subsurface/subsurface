@@ -20,7 +20,7 @@ Introduction:
 -------------
 
 Subsurface is an open source divelog program that runs on Windows, Mac
-and Linux. It was started because of a lack of viable dive log
+and Linux. It was started because of a lack of viable divelog
 software on Linux. It then turned out that the resulting software was
 fairly easily ported to Windows and Mac and today great effort is put
 into making it a viable application on all three platforms.
@@ -44,8 +44,8 @@ Subsurface, you need some preparation. Do you have the following:
 	3. Working installation of Subsurface
 	4. If needed, the manual of your divecomputer
 
-Alternatively you can import your dive logs from a couple of other Dive
-Log applications (JDivelog, MacDive, Suunto Dive Manager). However,
+Alternatively you can import your divelogs from a couple of other
+divelog applications (JDivelog, MacDive, Suunto Dive Manager). However,
 native download from dive computer directly to Subsurface is
 recommended.
 
@@ -57,7 +57,7 @@ Start using the program
 When you start the program for the first time, it shows no information
 at all. This is because the program doesn't have any information available.
 If you have used the program before and saved the data, the program will
-automatically load the already available dive-log files.
+automatically load the already available divelog files.
 
 There is a menu, containing 'File', 'Log', 'Filter', 'Planner' and 'Help'.
 
@@ -185,7 +185,7 @@ about that in <<S_SettingUpPreferences,Setting up preferences>>.
 Edit the dive info
 ------------------
 
-When you double click on the dive log line, the editor window
+When you double click on the divelog line, the editor window
 opens. Now you can add information that is missing. Let start with
 completing the example:
 
