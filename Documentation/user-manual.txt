@@ -537,6 +537,30 @@ The file Divelogs.SDE can now be opened (or imported) in
 Subsurface. Different from earlier versions of Subsurface, no manual
 unpacking of the .SDE file is needed anymore.
 
+[[S_ImportingMacDive]]
+Importing dives from MacDive
+----------------------------
+
+Importing logs from MacDive is as easy as it gets. Do the following
+steps in Subsurface:
+
+ - Open the following menu 'File - Import XML Files(s)'
+ - Browse your directories to the location where your MacDive logs are
+   stored
+ - Select the log file(s) you want to import and click 'open'
+ - Click the OK button in the popup
+
+After a few moments, you see your existing logs in Subsurface. Now you can
+edit your dives like explained in <<S_EditDiveInfo, chapter 6>>.
+
+We currently attempt to import all the relevant dive information
+excluding the used equipment and diver name.
+
+It is also possible to do the importing from command line just like with
+JDivelog (see <<S_ImportingDivesJDivelog>>):
+
+      subsurface MyDives.xml --import MacDiveDives.xml
+
 [[S_Menu]]
 The menu and sub-menus
 ----------------------
