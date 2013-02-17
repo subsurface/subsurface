@@ -90,19 +90,16 @@ Now it is time to hook up your divecomputer to your PC:
 	  driver. For example the correct driver for the Mares Puck
 	  devices can be found as Mac_OSX_VCP_Driver.zip at
 	  http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
+	  (see further hints in <<AppendixB,Appendix B>>)
 
  - Connect your interface cable to a free USB port
 
- - Put your divecomputer into PC Communication mode. (For Suunto Viper, press Mode - 1 Memory - 3 TR-PC)
+ - Put your divecomputer into PC Communication mode. (For 'Suunto Viper', press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific divecomputer for your brand and type)
 
  - Go in Subsurface to 'Log - Download From Dive Computer'
-	* Within the pop-up, under Dive computer, choose your brand and type. Here we choose Suunto Vyper.
-	* Change the device name under which your interface is connected.
-	       ** On Linux, default is /dev/ttyUSB0
-	       ** On Windows, default is COM3
-	       ** On Mac, default is ... specific to the dive computer
-
+	* Using the two drop down lists, choose your vendor and product. Here we choose 'Suunto' and 'Vyper'.
+	* Select the device name under which your interface is connected from the drop down list.
 	* Click the 'OK' button.
 
  - Now watch how your data is retrieved from your divecomputer!
