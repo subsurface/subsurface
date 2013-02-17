@@ -13,6 +13,10 @@
 #define FONT_LARGE (FONT_NORMAL * 1.2)
 
 static double rel_width[] = { 0.333, 1.166, 0.5, 0.5, 1.0, 1.0, 1.8 };
+static int last_page_paginated, last_dive_paginated;
+/* dynamically growing array of the first dive to be printed on each
+ * page in table mode */
+static int *first_dive;
 
 static struct options print_options;
 
@@ -504,7 +508,7 @@ static void show_table_header(cairo_t *cr, PangoLayout *layout, double w)
 }
 
 static int show_table_cell(int i, cairo_t *cr, PangoLayout *layout, double colwidth, int height_count,
-			char *buffer, int len, double *curwidth, double y)
+			char *buffer, int len, double *curwidth, double y, gboolean paginate)
 {
 	PangoRectangle logic_ext;
 	double inner_colwidth = 0.95 * colwidth;
@@ -512,7 +516,8 @@ static int show_table_cell(int i, cairo_t *cr, PangoLayout *layout, double colwi
 	pango_layout_set_width(layout, inner_colwidth * rel_width[i]);
 	pango_layout_set_text(layout, buffer, len);
 	pango_layout_set_justify(layout, 0);
-	pango_cairo_show_layout(cr, layout);
+	if (!paginate)
+		pango_cairo_show_layout(cr, layout);
 	*curwidth += colwidth * rel_width[i];
 	pango_layout_get_extents(layout, NULL, &logic_ext);
 	if (logic_ext.height > height_count)
@@ -520,7 +525,7 @@ static int show_table_cell(int i, cairo_t *cr, PangoLayout *layout, double colwi
 	return height_count;
 }
 
-static int show_dive_table(struct dive *dive, cairo_t *cr, PangoLayout *layout,  double w, double dy)
+static int show_dive_table(struct dive *dive, cairo_t *cr, PangoLayout *layout,  double w, double dy, gboolean paginate)
 {
 	double depth;
 	const char *unit;
@@ -539,7 +544,7 @@ static int show_dive_table(struct dive *dive, cairo_t *cr, PangoLayout *layout, 
 	len = 0;
 	if (dive->number)
 		len = snprintf(buffer, sizeof(buffer), "#%d", dive->number);
-	height_count = show_table_cell(0, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy);
+	height_count = show_table_cell(0, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy, paginate);
 
 	// Col 2: Date # (1 + 1/6 of the regular width)
 	utc_mkdate(dive->when, &tm);
@@ -551,27 +556,27 @@ static int show_dive_table(struct dive *dive, cairo_t *cr, PangoLayout *layout, 
 		tm.tm_mday, tm.tm_year + 1900,
 		tm.tm_hour, tm.tm_min
 		);
-	height_count = show_table_cell(1, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy);
+	height_count = show_table_cell(1, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy, paginate);
 
 	// Col 3: Depth (1/2 width)
 	depth = get_depth_units(dive->maxdepth.mm, &decimals, &unit);
 	len = snprintf(buffer, sizeof(buffer),
 		"%.*f %s", decimals, depth, unit);
-	height_count = show_table_cell(2, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy);
+	height_count = show_table_cell(2, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy, paginate);
 
 	// Col 4: Duration (1/2 width)
 	len = snprintf(buffer, sizeof(buffer),
 		_("%d min"),(dive->duration.seconds + 59) / 60);
-	height_count = show_table_cell(3, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy);
+	height_count = show_table_cell(3, cr, layout, colwidth, height_count, buffer, len, &curwidth, dy, paginate);
 
 	// Col 5: Master
-	height_count = show_table_cell(4, cr, layout, colwidth, height_count, dive->divemaster ? : "", -1, &curwidth, dy);
+	height_count = show_table_cell(4, cr, layout, colwidth, height_count, dive->divemaster ? : "", -1, &curwidth, dy, paginate);
 
 	// Col 6: Buddy
-	height_count = show_table_cell(5, cr, layout, colwidth, height_count, dive->buddy ? : "", -1, &curwidth, dy);
+	height_count = show_table_cell(5, cr, layout, colwidth, height_count, dive->buddy ? : "", -1, &curwidth, dy, paginate);
 
 	// Col 7: Location
-	height_count = show_table_cell(6, cr, layout, colwidth, height_count, dive->location ? : "", -1, &curwidth, dy);
+	height_count = show_table_cell(6, cr, layout, colwidth, height_count, dive->location ? : "", -1, &curwidth, dy, paginate);
 
 	/* Return the biggest column height, will be used to plot the frame and
 	 * and translate the next row */
@@ -731,28 +736,33 @@ static void draw_page(GtkPrintOperation *operation,
 	pango_font_description_free(font);
 }
 
-static void draw_table(GtkPrintOperation *operation,
-			GtkPrintContext *context,
-			gint page_nr,
-			gpointer user_data)
+static void draw_table(GtkPrintOperation *operation, GtkPrintContext *context, gint page_nr, gpointer user_data)
 {
 	int i, nr, maxwidth, maxheight;
-	int n_dive_per_page = 35;
 	cairo_t *cr;
-	double w, h, max_ext, delta_y;
+	double w, h, max_ext, delta_y, y;
 	struct dive *dive;
 	PangoFontDescription *font;
 	PangoLayout *layout;
 	PangoRectangle logic_ext;
+	gboolean paginate = TRUE;
 
+	if (user_data) {
+		paginate = FALSE;
+	} else {
+		first_dive = realloc(first_dive, (page_nr + 1) * sizeof(int));
+		first_dive[page_nr] = last_dive_paginated + 1;
+	}
+	nr = first_dive[page_nr];
 	cr = gtk_print_context_get_cairo_context(context);
 	font = pango_font_description_from_string("Sans");
 	cairo_save(cr);
 
 	w = gtk_print_context_get_width(context);
-	h = gtk_print_context_get_height(context)/(n_dive_per_page+1);
+	h = gtk_print_context_get_height(context);
 	maxwidth = w * PANGO_SCALE;
-	maxheight = h * PANGO_SCALE * 0.9;
+	/* let's limit the height so we can fit at least 35 dives */
+	maxheight = h * PANGO_SCALE * 0.9 / 35;
 
 	layout = pango_cairo_create_layout(cr);
 	pango_layout_set_height(layout, maxheight);
@@ -763,9 +773,9 @@ static void draw_table(GtkPrintOperation *operation,
 	/* We actually want to scale the text and the lines now */
 	cairo_scale(cr, 0.5, 0.5);
 
-	nr = page_nr*n_dive_per_page;
 	pango_layout_get_extents(layout, NULL, &logic_ext);
-	cairo_translate (cr, w/10, 2 * logic_ext.height / (double) PANGO_SCALE);
+	cairo_translate (cr, w/10, 2.0 * logic_ext.height / PANGO_SCALE);
+	y = 2.0 * logic_ext.height / PANGO_SCALE;
 	show_table_header(cr, layout, w*2);
 	set_font(layout, font, FONT_NORMAL*1.2, PANGO_ALIGN_LEFT);
 	/* We wanted the header ellipsized but not the data */
@@ -774,19 +784,25 @@ static void draw_table(GtkPrintOperation *operation,
 	/* Get the height for an only line but move two down */
 	pango_layout_get_extents(layout, NULL, &logic_ext);
 	delta_y = logic_ext.height;
-	cairo_translate (cr, 0, 2 * delta_y / (double) PANGO_SCALE);
-
-	for (i = 0; i < n_dive_per_page; i++) {
+	cairo_translate (cr, 0, 2.0 * delta_y / PANGO_SCALE);
+	y += 2.0 * delta_y / PANGO_SCALE;
+	for (i = 0; i < dive_table.nr - nr; i++) {
 		dive = get_dive_for_printing(nr+i);
 		if (!dive)
-			return;
+			break;
 		/* Write the dive data and get the max. height of the row */
-		max_ext = show_dive_table(dive, cr, layout, w*2, delta_y / 4 / PANGO_SCALE);
+		max_ext = show_dive_table(dive, cr, layout, w*2, delta_y / 4 / PANGO_SCALE, paginate);
 		/* Draw a frame for each row */
-		print_table_frame (cr, -0.05, 0, w, (max_ext + delta_y / 2) / PANGO_SCALE);
+		if (user_data)
+			print_table_frame (cr, -0.05, 0, w, (max_ext + delta_y / 2) / PANGO_SCALE);
 		/* and move down by the max. height of it */
 		cairo_translate (cr, 0, (max_ext + delta_y / 2) / PANGO_SCALE);
+		y += (max_ext + delta_y / 2) / PANGO_SCALE;
+		if (y > 1.9 * h)
+			break;
 	}
+	if (paginate)
+		last_dive_paginated += i + 1;
 	cairo_restore (cr);
 	pango_font_description_free(font);
 	g_object_unref (layout);
@@ -817,7 +833,8 @@ static void begin_print(GtkPrintOperation *operation, gpointer user_data)
 	} else if (print_options.type == TWOPERPAGE) {
 		dives_per_page = 2;
 	} else {
-		dives_per_page = 35;
+		/* set it to one page - gets update during pagination */
+		dives_per_page = dives;
 	}
 	pages = (dives + dives_per_page - 1) / dives_per_page;
 	gtk_print_operation_set_n_pages(operation, pages);
@@ -896,6 +913,24 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	return vbox;
 }
 
+static gboolean paginate(GtkPrintOperation *operation, GtkPrintContext *context, gpointer user_data)
+{
+	draw_table(operation, context, last_page_paginated++, NULL);
+	if (last_dive_paginated >= dive_table.nr) {
+		return TRUE;
+	} else {
+		gtk_print_operation_set_n_pages(operation, last_page_paginated + 1);
+		return FALSE;
+	}
+}
+static void end_print(GtkPrintOperation *operation, GtkPrintContext *context, gpointer user_data)
+{
+	if (first_dive) {
+		free(first_dive);
+		first_dive = 0;
+	}
+}
+
 static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
 {
 	Print_params *print_params = g_slice_new(Print_params);
@@ -914,7 +949,11 @@ static void print_dialog_apply(GtkPrintOperation *operation, GtkWidget *widget, 
 			print_params->rotation = 1;
 			g_signal_connect(operation, "draw_page", G_CALLBACK(draw_page), print_params);
 		} else {
-			g_signal_connect(operation, "draw_page", G_CALLBACK(draw_table), NULL);
+			g_signal_connect(operation, "draw_page", G_CALLBACK(draw_table), print_params);
+			g_signal_connect(operation, "paginate", G_CALLBACK(paginate), NULL);
+			g_signal_connect(operation, "end_print", G_CALLBACK(end_print), NULL);
+			last_page_paginated = 0;
+			last_dive_paginated = -1;
 		}
 	}
 }
