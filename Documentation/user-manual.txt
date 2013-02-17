@@ -44,6 +44,11 @@ Subsurface, you need some preparation. Do you have the following:
 	3. Working installation of Subsurface
 	4. If needed, the manual of your divecomputer
 
+Alternatively you can import your dive logs from a couple of other Dive
+Log applications (JDivelog, MacDive, Suunto Dive Manager). However,
+native download from dive computer directly to Subsurface is
+recommended.
+
 
 [[S_StartUsing]]
 Start using the program
