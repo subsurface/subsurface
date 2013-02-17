@@ -864,9 +864,9 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
 	GtkWidget *vbox, *radio1, *radio2, *radio3, *frame, *box;
 	int dives;
-	gtk_print_operation_set_custom_tab_label(operation, _("Dive details"));
+	gtk_print_operation_set_custom_tab_label(operation, _("Print type"));
 
-	vbox = gtk_vbox_new(TRUE, 5);
+	vbox = gtk_vbox_new(FALSE, 5);
 
 	frame = gtk_frame_new(_("Print type"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
