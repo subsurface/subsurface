@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-16 22:51+0100\n"
+"PO-Revision-Date: 2013-02-17 11:31+0100\n"
 "Last-Translator: Salvador Cuñat <salvador.cunat@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -413,7 +413,7 @@ msgstr "Temp media"
 
 #: statistics.c:792
 msgid "Avg Time"
-msgstr "Media de tiempo"
+msgstr "Tiempo medio"
 
 #: profile.c:410
 #, c-format
@@ -443,7 +443,7 @@ msgstr "Cancelado, saliendo ..."
 
 #: libdivecomputer.c:757
 msgid "Cancelled..."
-msgstr "Cancelado"
+msgstr "Cancelado..."
 
 #: webservice.c:27
 msgid "Cannot parse response!"
@@ -571,7 +571,7 @@ msgstr "Dispositivo o punto de montaje"
 #: info.c:105
 #, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Inmersión #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
+msgstr "Inmersión #%1$d - %2$s %3$02d/%4$02d/%5$04d a las %6$d:%7$02d"
 
 #: info.c:157 print.c:77
 #, c-format
@@ -811,7 +811,7 @@ msgstr "Evento: Hora de sistema=%<PRId64>, Hora del dispositivo=%u\n"
 
 #: libdivecomputer.c:622
 msgid "Event: waiting for user action"
-msgstr "Evento: aguardando acción del usuario"
+msgstr "Evento: esperando acción del usuario"
 
 #: divelist.c:2513
 msgid "Expand all"
@@ -916,7 +916,7 @@ msgstr "Mezcla de gas"
 
 #: gtk-gui.c:629
 msgid "General Settings"
-msgstr "Opciones generales"
+msgstr "Ajustes generales"
 
 #: gtk-gui.c:1362
 msgid "Help"
@@ -940,7 +940,7 @@ msgstr "Iniciar comunicación"
 
 #: gtk-gui.c:1389
 msgid "Input Plan"
-msgstr "Entrar Plan"
+msgstr "Introducir Plan"
 
 #: planner.c:1079
 #, c-format
@@ -1397,8 +1397,8 @@ msgid ""
 "Short write to req.txt file\n"
 "Is the Uemis Zurich plugged in correctly?"
 msgstr ""
-"Escritura corta al archivo req.txt \n"
-"¿Está el Zúrich Uemis correctamente conectado?"
+"Escritura al archivo req.txt muy corta.\n"
+"¿Está el Uemis Zúrich correctamente conectado?"
 
 #: statistics.c:181
 msgctxt "Duration"
@@ -1541,7 +1541,7 @@ msgstr "Temperatura"
 
 #: gtk-gui.c:651
 msgid "Temperature:"
-msgstr "Temperatura"
+msgstr "Temperatura:"
 
 #: gtk-gui.c:1385
 msgid "Three"
@@ -1592,7 +1592,7 @@ msgstr "Peso total:"
 #: planner.c:566
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
-msgstr "Ascenso a %.*f %s en %d:%02d min - runtime %d:%02u con %s\n"
+msgstr "Cambio de cota a %.*f %s en %d:%02d min - runtime %d:%02u con %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:268
@@ -1928,7 +1928,7 @@ msgstr "min"
 #: libdivecomputer.c:630
 #, c-format
 msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
-msgstr "modelo=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
+msgstr "modelo=%u (0x%08x), firmware=%u (0x%08x), Nº de serie=%u (0x%08x)"
 
 #: uemis-downloader.c:409
 msgid "more data dive id"
@@ -2014,7 +2014,8 @@ msgstr ""
 "Matthias Kaehlcke\n"
 "Sergio Schvezov\n"
 "Auni Somero\n"
-"and Henrik Brautaset Aronsen (who doesn't speak Spanish)"
+"Henrik Brautaset Aronsen (who doesn't speak Spanish)\n"
+"and Salvador Cuñat"
 
 #: libdivecomputer.c:150
 msgid "transmitter"
