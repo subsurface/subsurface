@@ -630,6 +630,27 @@ by clicking the 'Add waypoint'. Note that if you go to edit previous
 segments, the later segments values are not properly included in the
 calculation until they get a focus out event or 'OK' is clicked.
 
+[[S_Webservice]]
+Web Service and Companion App
+-----------------------------
+
+This part of Subsurface is a bit of 'work in progress'. We are
+developing a companion application for Android that will allow you to
+track dive sites from your GPS-enabled Android device; at the time of
+the Subsurface 3.0 release the app wasn't ready to be submitted to the
+Google Play store, but since it is mostly usable when built form
+source we left the server side integration in Subsurface.
+
+Assuming you have used the companion app to name and locate dive sites
+you can use this menu item to connect to our backend server and
+download this data. Enter your userid (you got this when registering
+with the web service) and click 'Download'. If the data was
+successfully downloaded you can click apply and Subsurface will match
+the time stamps of the downloaded location and site name information
+with the dives in your log and will add the GPS locations and dive
+site names to your dives.
+
+
 [[S_Menu]]
 The menu and sub-menus
 ----------------------
