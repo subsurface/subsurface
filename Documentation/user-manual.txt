@@ -1,8 +1,8 @@
 Subsurface 3.0 User Manual
 ==========================
-Jacco_van_Koll,_Dirk_Hohndel_and_Reinout_Hoornweg
-v3.0.0, February 2013
-:Author Initials: JKO & DH & RH
+:author: Jacco_van_Koll,_Dirk_Hohndel,_Reinout_Hoornweg,_Linus_Torvalds,_Miika_Turkia_and_Amit_Chaudhuri
+:revnumber: v3.0.0
+:revdate: February 2013
 :toc:
 :icons:
 :numbered:
@@ -113,7 +113,7 @@ Now it is time to hook up your dive computer to your PC:
 
 [[S_ImportUemis]]
 Import New Dives from a Uemis Zurich
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Things are very similar when downloading dives from a Uemis Zurich
 dive computer (which certainly is one of the ones that DO recharge when
@@ -145,6 +145,57 @@ have stored on your dive computer.
 At this point Subsurface downloads most of the information that is
 stored on the SDA, including information about dive spots and
 equipment. Buddy information is not yet downloaded.
+
+
+[[S_HowFindDeviceName]]
+How to Find the Device Name
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you connect your dive computer by using an USB connector, usually
+Subsurface will propose a drop down list that contains the correct
+device name (or mount point for the Uemis Zurich). In the rare cases
+where this doesn't work here are some instructions on ways to find out
+what your dive name is:
+
+.On Linux:
+
+ - Disconnect your USB cable of your dive computer
+ - Open a terminal
+ - Type the command: 'dmesg' and press enter
+ - Plug in your USB cable of your dive computer
+ - Type the command: 'dmesg' and press enter
+
+Within your terminal you should see a message similar to this one:
+
+	usb 2-1.1: new full speed USB device number 14 using ehci_hcd
+	usbcore: registered new interface driver usbserial
+	USB Serial support registered for generic
+	usbcore: registered new interface driver usbserial_generic
+	usbserial: USB Serial Driver core
+	USB Serial support registered for FTDI USB Serial Device
+	ftdi_sio 2-1.1:1.0: FTDI USB Serial Device converter detected
+	usb 2-1.1: Detected FT232BM
+	usb 2-1.1: Number of endpoints 2
+	usb 2-1.1: Endpoint 1 MaxPacketSize 64
+	usb 2-1.1: Endpoint 2 MaxPacketSize 64
+	usb 2-1.1: Setting MaxPacketSize 64
+	usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB3
+	usbcore: registered new interface driver ftdi_sio
+	ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver
+
+You see that in the third line from the bottom, the USB adapter is
+detected and is connected to 'ttyUSB3'. Now you use this information in
+the import settings as '/dev/ttyUSB3'. Your dive computer interface is
+connected and you should be able to import your dives.
+
+.On Windows:
+
+Simply try COM1, COM2, etc. The drop down list should contain all connected COM devices.
+
+.On MacOS:
+
+The drop down box should find all connected dive computers.
+
 
 [[S_ViewingLogs]]
 Viewing and Completing Your Logs
@@ -183,7 +234,7 @@ about that in <<S_SettingUpPreferences,Setting up Preferences>>.
 
 [[S_EditDiveInfo]]
 Edit the Dive Info
-------------------
+~~~~~~~~~~~~~~~~~~
 
 When you double click on the divelog line, the editor window
 opens. Now you can add information that is missing. Let start with
@@ -218,7 +269,7 @@ Now don't press OK yet!
 
 [[S_EditEquipmentInfo]]
 Edit Equipment Info
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 You also want to edit your Cylinder information. And in the
 <<S_EditDiveInfo, previous chapter>>, this was not edited. There is
@@ -266,7 +317,7 @@ OK in the Dive Info screen and view the results.
 
 [[S_AddingEquipment]]
 Adding Equipment Info
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 In Area with the 3 tabs there is the tab Equipment. With this tab, you
 can add Cylinders and Weight Systems (just like in the previous dialog).
@@ -399,55 +450,6 @@ I would like to see the:
 
 Clicking OK on the dialog stores these settings.
 
-[[S_HowFindDeviceName]]
-How to Find the Device Name
----------------------------
-
-When you connect your dive computer by using an USB connector, usually
-Subsurface will propose a drop down list that contains the correct
-device name (or mount point for the Uemis Zurich). In the rare cases
-where this doesn't work here are some instructions on ways to find out
-what your dive name is:
-
-.On Linux:
-
- - Disconnect your USB cable of your dive computer
- - Open a terminal
- - Type the command: 'dmesg' and press enter
- - Plug in your USB cable of your dive computer
- - Type the command: 'dmesg' and press enter
-
-Within your terminal you should see a message similar to this one:
-
-	usb 2-1.1: new full speed USB device number 14 using ehci_hcd
-	usbcore: registered new interface driver usbserial
-	USB Serial support registered for generic
-	usbcore: registered new interface driver usbserial_generic
-	usbserial: USB Serial Driver core
-	USB Serial support registered for FTDI USB Serial Device
-	ftdi_sio 2-1.1:1.0: FTDI USB Serial Device converter detected
-	usb 2-1.1: Detected FT232BM
-	usb 2-1.1: Number of endpoints 2
-	usb 2-1.1: Endpoint 1 MaxPacketSize 64
-	usb 2-1.1: Endpoint 2 MaxPacketSize 64
-	usb 2-1.1: Setting MaxPacketSize 64
-	usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB3
-	usbcore: registered new interface driver ftdi_sio
-	ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver
-
-You see that in the third line from the bottom, the USB adapter is
-detected and is connected to 'ttyUSB3'. Now you use this information in
-the import settings as '/dev/ttyUSB3'. Your dive computer interface is
-connected and you should be able to import your dives.
-
-.On Windows:
-
-Simply try COM1, COM2, etc. The drop down list should contain all connected COM devices.
-
-.On MacOS:
-
-The drop down box should find all connected dive computers.
-
 [[S_ImportingAlienDiveLogs]]
 Importing Divelogs from other Software
 --------------------------------------
@@ -464,7 +466,7 @@ will not create duplicate entries.
 
 [[S_ImportingDivesJDivelog]]
 Importing Dives from JDivelog
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Maybe you have been using JDivelog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
@@ -508,7 +510,7 @@ divelog back as MyDives.xml.
 
 [[S_ImportingDivesSuunto]]
 Importing dives from Suunto Divemanager 3.*
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before you can start importing dives from Suunto Divemanager, you first
 have to export the dives you want to import. Subsurface does not import
@@ -516,7 +518,7 @@ directly from the Suunto Divemanager log files. The following procedures
 unpacking instructions for Linux and Windows.
 
 Export from Suunto Divemanager
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
  - Start Suunto Divemanager and login with the name containing the logs
  - Do not start the import wizard to import dives from your computer.
@@ -536,7 +538,7 @@ Export from Suunto Divemanager
  - Your dives are now exported to the file Divelogs.SDE.
 
 Reading Suunto Divemanager Export in Subsurface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The file Divelogs.SDE can now be opened (or imported) in
 Subsurface. Different from earlier versions of Subsurface, no manual
@@ -544,7 +546,7 @@ unpacking of the .SDE file is needed anymore.
 
 [[S_ImportingMacDive]]
 Importing Dives from MacDive
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Importing logs from MacDive is as easy as it gets. Do the following
 steps in Subsurface:
