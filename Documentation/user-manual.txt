@@ -208,20 +208,21 @@ An example:
 
 On Sunday Oct 23, 2011 you made a dive.
 In the log line of this dive, you see the following information:
-[width="70%",cols="<5%,10%,<20%,<65%",grid="none",frame="none",style="monospaced"]
+[width="70%",cols="<20%,40%,40%",options="header"]
 |===============================================================================
-|| #	   | 12			     | Dive number
-|| Date	   | Sun, Oct 23, 2011 10:50 | Date and time of your dive
-|| *	   |			     | Your rating (none at this time)
-|| m	   | 12.8		     | Your maximum depth in meters
-|| min	   | 31:20		     | Your dive-time in minutes and seconds
-|| Deg. C  | 13.0		     | Lowest water temperature during your dive
-|| kg      |                         | Weight carried (none at this time)
-|| Suit    |                         | Exposure protection suit worn (none at this time)
-|| Cyl	   |			     | Your used cylinder (none at this time)
-|| O2%	   | air		     | What type of mixture
-|| SAC	   |			     | SAC (none at this time)
-|| Location |			     | Where you performed your dive (empty)
+| Header   | Value                   | Description of field
+| #	   | 12			     | Dive number
+| Date	   | Sun, Oct 23, 2011 10:50 | Date and time of your dive
+| *	   |			     | Your rating (none at this time)
+| m	   | 12.8		     | Your maximum depth in meters
+| min	   | 31:20		     | Your dive-time in minutes and seconds
+| Deg. C   | 13.0		     | Lowest water temperature during your dive
+| kg       |                         | Weight carried (none at this time)
+| Suit     |                         | Exposure protection suit worn (none at this time)
+| Cyl	   |			     | Your used cylinder (none at this time)
+| O2%	   | air		     | What type of mixture
+| SAC	   |			     | SAC (none at this time)
+| Location |			     | Where you performed your dive (empty)
 |===============================================================================
 
 As you can see, some information is already there because it is
