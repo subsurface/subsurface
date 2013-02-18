@@ -51,7 +51,7 @@ recommended.
 
 
 [[S_StartUsing]]
-Start using the program
+Start Using the Program
 -----------------------
 
 When you start the program for the first time, it shows no information
@@ -69,7 +69,7 @@ The screen is divided in 3 area's:
 
 
 [[S_ImportNewDives]]
-Import new dives from your dive computer
+Import New Dives from your Dive Computer
 ---------------------------------------
 
 Before you start fiddling around with your dive computer, note that
@@ -112,7 +112,7 @@ Now it is time to hook up your dive computer to your PC:
    could take some time. Please be patient.
 
 [[S_ImportUemis]]
-Import new dives from a Uemis Zurich
+Import New Dives from a Uemis Zurich
 ------------------------------------
 
 Things are very similar when downloading dives from a Uemis Zurich
@@ -147,7 +147,7 @@ stored on the SDA, including information about dive spots and
 equipment. Buddy information is not yet downloaded.
 
 [[S_ViewingLogs]]
-Viewing and completing your logs
+Viewing and Completing Your Logs
 --------------------------------
 
 When all data from your dive computer is transferred, you will see a
@@ -179,10 +179,10 @@ you to be added. By double clicking on this dive, you can view and
 complete the log.
 
 The different types of information shown in this list may differ depending on the settings. More
-about that in <<S_SettingUpPreferences,Setting up preferences>>.
+about that in <<S_SettingUpPreferences,Setting up Preferences>>.
 
 [[S_EditDiveInfo]]
-Edit the dive info
+Edit the Dive Info
 ------------------
 
 When you double click on the divelog line, the editor window
@@ -190,7 +190,7 @@ opens. Now you can add information that is missing. Let start with
 completing the example:
 
 You double clicked on dive #12, as described in <<S_ViewingLogs,Viewing and
-completing your logs>>.  The Dive Info window pops up and you will see
+Completing Your Logs>>.  The Dive Info window pops up and you will see
 the following:
 [horizontal]
  *Location*::	 An input where you can enter your new location, or you can choose with the pull-down previous locations
@@ -217,7 +217,7 @@ In this example we use the following information:
 Now don't press OK yet!
 
 [[S_EditEquipmentInfo]]
-Edit equipment info
+Edit Equipment Info
 -------------------
 
 You also want to edit your Cylinder information. And in the
@@ -265,7 +265,7 @@ Now your dive information for this dive is complete. You can now press
 OK in the Dive Info screen and view the results.
 
 [[S_AddingEquipment]]
-Adding equipment info
+Adding Equipment Info
 ---------------------
 
 In Area with the 3 tabs there is the tab Equipment. With this tab, you
@@ -282,7 +282,7 @@ We are going to add an additional Cylinder:
    Fill in all the information about this Cylinder and press OK.
 
 [[S_ViewInfoStats]]
-View info & Stats
+View Info & Stats
 -----------------
 
 After adding all the information, you can use the tab Dive Info and
@@ -317,7 +317,7 @@ The information contains:
 	** Max/Min/Avg SAC:	Highest / lowest / average Surface Air Consumption of your covered dives
 
 [[S_SettingUpPreferences]]
-Setting up preferences
+Setting up Preferences
 ----------------------
 
 Subsurface has the ability to modify the preferences you want. By
@@ -400,7 +400,7 @@ I would like to see the:
 Clicking OK on the dialog stores these settings.
 
 [[S_HowFindDeviceName]]
-How to find the Device Name
+How to Find the Device Name
 ---------------------------
 
 When you connect your dive computer by using an USB connector, usually
@@ -449,7 +449,7 @@ Simply try COM1, COM2, etc. The drop down list should contain all connected COM 
 The drop down box should find all connected dive computers.
 
 [[S_ImportingAlienDiveLogs]]
-Importing divelogs from other software
+Importing Divelogs from other Software
 --------------------------------------
 
 Subsurface will import divelogs from a couple of other log software. We
@@ -463,7 +463,7 @@ beginning time of the dives to be substantially different) subsurface
 will not create duplicate entries.
 
 [[S_ImportingDivesJDivelog]]
-Importing dives from JDivelog
+Importing Dives from JDivelog
 -----------------------------
 
 Maybe you have been using JDivelog and you have a lot of dives logged in
@@ -483,7 +483,7 @@ for the file name.  To import your JDivelog file(s) do the following:
  - Click the OK button in the popup
 
 After a few moments, you see your existing logs in Subsurface. Now you can
-edit your dives like explained in <<S_EditDiveInfo, chapter 6>>.
+edit your dives like explained in <<S_EditDiveInfo, chapter Editing the Dive Info>>.
 
 Information that is imported from JDivelog into the location field:
 
@@ -543,7 +543,7 @@ Subsurface. Different from earlier versions of Subsurface, no manual
 unpacking of the .SDE file is needed anymore.
 
 [[S_ImportingMacDive]]
-Importing dives from MacDive
+Importing Dives from MacDive
 ----------------------------
 
 Importing logs from MacDive is as easy as it gets. Do the following
@@ -556,18 +556,18 @@ steps in Subsurface:
  - Click the OK button in the popup
 
 After a few moments, you see your existing logs in Subsurface. Now you can
-edit your dives like explained in <<S_EditDiveInfo, chapter 6>>.
+edit your dives like explained in <<S_EditDiveInfo, chapter Editing the Dive Info>>.
 
 We currently attempt to import all the relevant dive information
 excluding the used equipment and diver name.
 
 It is also possible to do the importing from command line just like with
-JDivelog (see <<S_ImportingDivesJDivelog>>):
+JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>>):
 
       subsurface MyDives.xml --import MacDiveDives.xml
 
 [[S_DivePlanning]]
-Planning dives
+Planning Dives
 --------------
 
 Subsurface supports planning of dives using open and closed circuit
@@ -630,7 +630,7 @@ by clicking the 'Add waypoint'. Note that if you go to edit previous
 segments, the later segments values are not properly included in the
 calculation until they get a focus out event or 'OK' is clicked.
 
-[[S_Webservice]]
+[[S_Webservice,Web Service and Companion App]]
 Web Service and Companion App
 -----------------------------
 
@@ -652,13 +652,13 @@ site names to your dives.
 
 
 [[S_Menu]]
-The menu and sub-menus
+The Menu and Sub-Menus
 ----------------------
 
 Within Subsurface, there are several menu and sub-menu options. All of
 those will be described here with their function.
 
-The file menu
+The File Menu
 ~~~~~~~~~~~~~
 
 The file menu is used for the following menu options:
@@ -670,22 +670,22 @@ The file menu is used for the following menu options:
  - Close::		Close your current divelog, saving as necessary
  - Import XML File(s)::	Import your dives from files exported by other divelogs
  - Print::		Print your current divelog profiles and information about the dive
- - Preferences::	Set your preferences as described in <<S_SettingUpPreferences,chapter 10>>
+ - Preferences::	Set your preferences as described in <<S_SettingUpPreferences,chapter Setting up Preferences>>
  - Quit::		Quit the program
 
-The Log menu
+The Log Menu
 ~~~~~~~~~~~~
 
 Within the Log menu, you will find the following sub-items:
 
  - Download From Dive Computer::   Allows you to download dive information from your dive computer
- - Download From Web Service::     Allows you to download dive information from the webservice
+ - Download From Web Service::     Allows you to download dive information from the webservice (see <<S_Webservice,chapter Web Service and Companion App>>)
  - Edit Device Names::             Allows you to add device nicknames to dive computers
  - Add Dive::	      		   Manually add a dive that you cannot download from an existing computer
  - Renumber::	This option provides you with a pop-up. Within this
 			pop-up you can choose what the first number of your dives should be
 			for this set of dives.
- - Autogroup::		Toggle the auto group setting (see the discussion in the <<S_SettingUpPreferences,chapter 10>>)
+ - Autogroup::		Toggle the auto group setting (see the discussion in the <<S_SettingUpPreferences,chapter Setting up Preferences>>)
 
  - Toggle Zoom::        The dive profile tries to convey some first glance information about
 			the depth of a dive - so the vertical scaling of the profile always
@@ -700,7 +700,7 @@ Within the Log menu, you will find the following sub-items:
 	* Prev DC		Switch to the previous dive computer
 	* Next DC		Switch to the next dive computer
 
-The Filter menu
+The Filter Menu
 ~~~~~~~~~~~~~~~
 
 This menu gives you the choice to enable or disable Events for the
@@ -709,13 +709,13 @@ When you enable ascent for your dives, within the dive profile, a yellow
 marker with exclamation sign (!) will show on the points where you have
 ascended.
 
-The Planner menu
+The Planner Menu
 ~~~~~~~~~~~~~~~~
 
 This men opens up a dive planning dialog. The dive planning is described
-in <<S_DivePlanning>>.
+in <<S_DivePlanning,chapter Planning Dives>>.
 
-The Help menu
+The Help Menu
 ~~~~~~~~~~~~~
 
 The Help menu shows only the About, which contains the version and author
