@@ -36,13 +36,13 @@ manual the Suunto Vyper will be used for all examples.
 Requirements
 ------------
 
-Before you are able to import information from your divecomputer into
+Before you are able to import information from your dive computer into
 Subsurface, you need some preparation. Do you have the following:
 
-	1. Your Divecomputer - Compatible with libdivecomputer (see list in <<AppendixA,Appendix A>>)
-	2. Communication interface - Cable to connect your divecomputer to your PC/Laptop/Netbook
+	1. Your Dive Computer - compatible with libdivecomputer (see list in <<AppendixA,Appendix A>>)
+	2. Communication interface - usually that means a cable to connect your dive computer to your PC/Laptop/Netbook; some dive computers use IRDA or Bluetooth as well
 	3. Working installation of Subsurface
-	4. If needed, the manual of your divecomputer
+	4. If needed, the manual of your dive computer
 
 Alternatively you can import your divelogs from a couple of other
 divelog applications (JDivelog, MacDive, Suunto Dive Manager). However,
@@ -69,18 +69,18 @@ The screen is divided in 3 area's:
 
 
 [[S_ImportNewDives]]
-Import new dives from your divecomputer
+Import new dives from your dive computer
 ---------------------------------------
 
-Before you start fiddling around with your divecomputer, note that
-there are divecomputers that consume more power when they are in the
+Before you start fiddling around with your dive computer, note that
+there are dive computers that consume more power when they are in the
 PC-Communication mode. This could drain your battery. Therefor, ensure
 if your computer is recharging when connecting to the USB port. The
 Suunto Viper does not recharge trough the USB connection. Please
-consult the manual of your divecomputer if you are unsure if it will
+consult the manual of your dive computer if you are unsure if it will
 be recharged when connected to the USB port.
 
-Now it is time to hook up your divecomputer to your PC:
+Now it is time to hook up your dive computer to your PC:
 
  - Make sure that your OS has the required drivers installed
 
@@ -89,7 +89,7 @@ Now it is time to hook up your divecomputer to your PC:
 	  for you.
 
 	* On Windows, the OS should offer to download the correct
-	  driver when you connect your divecomputer to the USB port.
+	  driver when you connect your dive computer to the USB port.
 
 	* On a Mac you at times have to manually hunt for the correct
 	  driver. For example the correct driver for the Mares Puck
@@ -99,15 +99,15 @@ Now it is time to hook up your divecomputer to your PC:
 
  - Connect your interface cable to a free USB port
 
- - Put your divecomputer into PC Communication mode. (For 'Suunto Viper', press Mode - 1 Memory - 3 TR-PC)
-	(You should consult the manual of your specific divecomputer for your brand and type)
+ - Put your dive computer into PC Communication mode. (For 'Suunto Viper', press Mode - 1 Memory - 3 TR-PC)
+	(You should consult the manual of your specific dive computer for your brand and type)
 
  - Go in Subsurface to 'Log - Download From Dive Computer'
 	* Using the two drop down lists, choose your vendor and product. Here we choose 'Suunto' and 'Vyper'.
 	* Select the device name under which your interface is connected from the drop down list.
 	* Click the 'OK' button.
 
- - Now watch how your data is retrieved from your divecomputer!
+ - Now watch how your data is retrieved from your dive computer!
    Depending on your type of computer and/or number of dives, this
    could take some time. Please be patient.
 
@@ -116,10 +116,10 @@ Import new dives from a Uemis Zurich
 ------------------------------------
 
 Things are very similar when downloading dives from a Uemis Zurich
-divecomputer (which certainly is one of the ones that DO recharge when
+dive computer (which certainly is one of the ones that DO recharge when
 connected to the USB port). The main difference is that you don't enter a
 device name, but instead the location where the UEMISSDA file system is
-mounted once you connect the divecomputer.
+mounted once you connect the dive computer.
 
 On Windows this is a drive letter (often 'E:' or 'F:'), on a Mac this is
 '/Volumes/UEMISSDA' and on Linux systems this differs depending on the
@@ -135,12 +135,12 @@ dives without running out of memory on the SDA. This will usually only
 happen the very first time you download dives from the Uemis Zurich -
 normally when downloading at the end of a day or even after a dive
 trip, the capacity is sufficient. If Subsurface displays and error
-that the divecomputer ran out of space the solution is straight
+that the dive computer ran out of space the solution is straight
 forward.  Disconnect the SDA, turn it off and on again, and reconnect
 it. You can now retry (or start a new download session) and the
 download will continue where it stopped the last time you tried. You
 may have to do this more than once, depending on how many dives you
-have stored on your divecomputer.
+have stored on your dive computer.
 
 At this point Subsurface downloads most of the information that is
 stored on the SDA, including information about dive spots and
@@ -150,7 +150,7 @@ equipment. Buddy information is not yet downloaded.
 Viewing and completing your logs
 --------------------------------
 
-When all data from your divecomputer is transferred, you will see a
+When all data from your dive computer is transferred, you will see a
 listing of your dives in Area 3.
 
 An example:
@@ -174,7 +174,7 @@ In the log line of this dive, you see the following information:
 |===============================================================================
 
 As you can see, some information is already there because it is
-retrieved from your divecomputer. Some information is waiting for
+retrieved from your dive computer. Some information is waiting for
 you to be added. By double clicking on this dive, you can view and
 complete the log.
 
@@ -371,7 +371,7 @@ The 'Profile Setting' allow you to show extra information in the dive profile:
  - Show pHe graph	Show a graph of the helium partial pressure (with a threshold, default 13.0)
  - Show MOD		Show the Maximum Operating Depth of the used gasmix (for the given max. ppO2, default 1.6)
  - Show EAD, END, EADD	Show Equivalent Air Depth (considering N2 and O2 narcotic), Equivalent Nitrogen Depth (considering just N2 narcotic) and Equivalent Air Density Depth
- - Show dc reported ceiling in red	Show the ceiling as reported by the divecomputer
+ - Show dc reported ceiling in red	Show the ceiling as reported by the dive computer
  - Show calculated ceiling	Show the ceiling as calculated by Subsurface
  - 3m increments for calculated ceiling	The calculated ceiling is not continuous, but increments in 3m steps
  - GFlow		Set the Low Gradient Factor (default 30)
@@ -403,7 +403,7 @@ Clicking OK on the dialog stores these settings.
 How to find the Device Name
 ---------------------------
 
-When you connect your divecomputer by using an USB connector, usually
+When you connect your dive computer by using an USB connector, usually
 Subsurface will propose a drop down list that contains the correct
 device name (or mount point for the Uemis Zurich). In the rare cases
 where this doesn't work here are some instructions on ways to find out
@@ -414,7 +414,7 @@ what your dive name is:
  - Disconnect your USB cable of your dive computer
  - Open a terminal
  - Type the command: 'dmesg' and press enter
- - Plug in your USB cable of your divecomputer
+ - Plug in your USB cable of your dive computer
  - Type the command: 'dmesg' and press enter
 
 Within your terminal you should see a message similar to this one:
@@ -437,7 +437,7 @@ Within your terminal you should see a message similar to this one:
 
 You see that in the third line from the bottom, the USB adapter is
 detected and is connected to 'ttyUSB3'. Now you use this information in
-the import settings as '/dev/ttyUSB3'. Your divecomputer interface is
+the import settings as '/dev/ttyUSB3'. Your dive computer interface is
 connected and you should be able to import your dives.
 
 .On Windows:
@@ -446,7 +446,7 @@ Simply try COM1, COM2, etc. The drop down list should contain all connected COM 
 
 .On MacOS:
 
-The drop down box should find all connected divecomputers.
+The drop down box should find all connected dive computers.
 
 [[S_ImportingAlienDiveLogs]]
 Importing divelogs from other software
@@ -595,7 +595,7 @@ Within the Log menu, you will find the following sub-items:
 
  - Download From Dive Computer::   Allows you to download dive information from your dive computer
  - Download From Web Service::     Allows you to download dive information from the webservice
- - Edit Device Names::             Allows you to add device nicknames to divecomputers
+ - Edit Device Names::             Allows you to add device nicknames to dive computers
  - Add Dive::	      		   Manually add a dive that you cannot download from an existing computer
  - Renumber::	This option provides you with a pop-up. Within this
 			pop-up you can choose what the first number of your dives should be
@@ -612,8 +612,8 @@ Within the Log menu, you will find the following sub-items:
 	* Profile::	Show only the dive profile of the selected dive
 	* Info::		Show only the 3 tab information screen
 	* Three::		Show the 'default' 3 screen setup
-	* Prev DC		Switch to the previous divecomputer
-	* Next DC		Switch to the next divecomputer
+	* Prev DC		Switch to the previous dive computer
+	* Next DC		Switch to the next dive computer
 
 The Filter menu
 ~~~~~~~~~~~~~~~
@@ -635,13 +635,13 @@ information and License button.
 Appendix A: Supported Dive Computers
 ------------------------------------
 
-The use of libdivecomputer provides the support for divecomputers.
+The use of libdivecomputer provides the support for dive computers.
 Within the 'File - import' dialog box you will see a list of
-divecomputer vendors and respective products. This list is covering a
+dive computer vendors and respective products. This list is covering a
 compatible set. Please check your users manual to check if your
 computer will be supported.
 
-Supported divecomputers::
+Supported dive computers::
 
 Atomics Aquatics:::
 	* Cobalt
