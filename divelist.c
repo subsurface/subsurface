@@ -2744,23 +2744,95 @@ static void entry_selected(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 		if (!trip)
 			return;
 		trip->selected = 1;
+
 		/* If this is expanded, let the gtk selection happen for each dive under it */
-		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path))
+		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path)) {
+			trip->fixup = 1;
 			return;
+		}
+
 		/* Otherwise, consider each dive under it selected */
 		for_each_dive(i, dive) {
 			if (dive->divetrip == trip)
 				select_dive(i);
 		}
+		trip->fixup = 0;
 	} else {
 		select_dive(idx);
 	}
 }
 
+static void update_gtk_selection(GtkTreeSelection *selection, GtkTreeModel *model)
+{
+	GtkTreeIter iter;
+
+	if (!gtk_tree_model_get_iter_first(model, &iter))
+		return;
+	do {
+		GtkTreeIter child;
+
+		if (!gtk_tree_model_iter_children(model, &child, &iter))
+			continue;
+
+		do {
+			int idx;
+			struct dive *dive;
+			dive_trip_t *trip;
+
+			gtk_tree_model_get(model, &child, DIVE_INDEX, &idx, -1);
+			dive = get_dive(idx);
+			if (!dive || !dive->selected)
+				break;
+			trip = dive->divetrip;
+			if (!trip)
+				break;
+			gtk_tree_selection_select_iter(selection, &child);
+		} while (gtk_tree_model_iter_next(model, &child));
+	} while (gtk_tree_model_iter_next(model, &iter));
+}
+
 /* this is called when gtk thinks that the selection has changed */
 static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
+	int i, fixup;
+	struct dive *dive;
+
 	gtk_tree_selection_selected_foreach(selection, entry_selected, model);
+
+	/*
+	 * Go through all the dives, if there is a trip that is selected but no
+	 * dives under it are selected, force-select all the dives
+	 */
+
+	/* First, clear "fixup" for any trip that has selected dives */
+	for_each_dive(i, dive) {
+		dive_trip_t *trip = dive->divetrip;
+		if (!trip || !trip->fixup)
+			continue;
+		if (dive->selected || !trip->selected)
+			trip->fixup = 0;
+	}
+
+	/*
+	 * Ok, not fixup is only set for trips that are selected
+	 * but have no selected dives in them. Select all dives
+	 * for such trips.
+	 */
+	fixup = 0;
+	for_each_dive(i, dive) {
+		dive_trip_t *trip = dive->divetrip;
+		if (!trip || !trip->fixup)
+			continue;
+		fixup = 1;
+		select_dive(i);
+	}
+
+	/*
+	 * Ok, we did a forced selection of dives, now we need to update the gtk
+	 * view of what is selected too..
+	 */
+	if (fixup)
+		update_gtk_selection(selection, model);
 
 #if DEBUG_SELECTION_TRACKING
 	dump_selection();
