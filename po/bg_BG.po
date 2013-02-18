@@ -571,7 +571,7 @@ msgstr "Устройсто или входна точка"
 #: info.c:105
 #, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
-msgstr "Гмуркане №%1$d - %2$s %4$02d/%3$02d/%5$04d at %6$d:%7$02d"
+msgstr "Гмуркане №%1$d - %2$s %4$02d/%3$02d/%5$04d в %6$d:%7$02d"
 
 #: info.c:157 print.c:77
 #, c-format
@@ -1841,7 +1841,7 @@ msgstr "за вички гмуркания"
 #: statistics.c:677
 #, c-format
 msgid "for dive #%d"
-msgstr "Гмуркане №%d - "
+msgstr "за гмуркане №%d"
 
 #: statistics.c:636
 #, c-format
