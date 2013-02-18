@@ -573,14 +573,20 @@ Planning Dives
 --------------
 
 Subsurface supports planning of dives using open and closed circuit
-equipment. Deco calculations with optionally displaying the ceiling is
-done using a new implementation of Bühlmann ZH16 algorithm with
-gradient factors. Since the planner and our implementation of
-decompression algorithms are new and have received only a limited amount
-of testing - WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
-RESULTS GIVEN HERE.
+equipment. This allows users to experiment with different plans and see
+the effects of changing various parameters of the dives.
 
-In order to plan a dive some basic information needs to be entered:
+[WARNING]
+Deco calculations with optionally displaying the ceiling is
+done using a new implementation of the Bühlmann ZH16 algorithm with
+gradient factors. Since the planner and our implementation of the
+decompression algorithms are new and have received only a limited amount
+of testing: +
+**WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
+RESULTS GIVEN HERE.**
+
+When you start the planner, a dialog appears. In order to plan a dive
+some basic information needs to be entered:
 
  - planned start time of the dive
  - air consumption
@@ -590,18 +596,18 @@ In order to plan a dive some basic information needs to be entered:
 There is also other information available for those who
 are familiar with dive planning or use closed circuit rebrethers.
 
-[width="90%",cols="<5%,20%,<75%",grid="none",frame="none",style="monospaced"]
+[width="90%",cols="<25%,<75%"]
 |===============================================================================
-|| Dive starts		| +60:00 means that the dive is 60 minutes in the future
-|| Surface Pressure	| Air pressure on surface, default 1013 should suffice for most
-|| SAC during dive	| Air consumption during the dive, use conservative value based on your own air consumption e.g. 20l/min
-|| SAC during decostop	| Air consumption during decompression stop, e.g. 17 l/min
-|| GFlow		| Gradient factor low value affects the ceiling calculation, leave to default if you are not familiar with GF
-|| GFhigh		| Gradient factor high value affects the ceiling calculation, leave to default if you are not familiar GF
-|| **Ending Depth**	| Depth where current segment ends; a different depth from the previous segment creates a transition segment for ascent or descent, keeping the same depth creates a segment at the given depth. By default the planner uses the measurement for length set in the preferences (meters for most users) - this can be overridden by explicitly specifying 'm' or 'ft'.
-|| **Segment Time**	| Enter time in minutes; segment duration / relative time is indicated by a '+':  '+3' or '+3:00' creates a segment that lasts 3 minutes, a bare number like '7' is used for a segment that ends 7 minutes after the start of the dive.
-|| **Gas Used**		| Breathing gas mix used; the parser is reasonably flexible and understands terms like AIR, EAN32, 36% or 15/50 (compressed air, 32% nitrox, 36% nitrox or 15% O₂ / 50% He trimix, respectively); leaving this field empty indicates continued use of the previous gas, air by default
-|| **CC SetPoint**	| SetPoint when diving with a closed circuit rebreather. Leave empty for open circuit dives with standard scuba equipment
+| Dive starts		| Start time of the dive; '+60:00' means that the dive is 60 minutes in the future
+| Surface Pressure	| Air pressure on surface, default 1013 should suffice for most
+| SAC during dive	| Air consumption during the dive, use conservative value based on your own air consumption e.g. 20l/min
+| SAC during decostop	| Air consumption during decompression stop, e.g. 17 l/min
+| GFlow		| Gradient factor low value affects the ceiling calculation, leave to default if you are not familiar with GF
+| GFhigh		| Gradient factor high value affects the ceiling calculation, leave to default if you are not familiar GF
+| **Ending Depth**	| Depth where current segment ends; a different depth from the previous segment creates a transition segment for ascent or descent, keeping the same depth creates a segment at the given depth. By default the planner uses the measurement for length set in te preferences (meters for most users) - this can be overridden by explicitly specifying 'm' or 'ft'.
+| **Segment Time**	| Enter time in minutes; segment duration / relative time is indicated by a '+':  '+3' or '+3:00' creates a segment that lasts 3 minutes, a bare number like '7' is used for a segment that ends 7 minutes after the start of the dive.
+| **Gas Used**		| Breathing gas mix used; the parser is reasonably flexible and understands terms like AIR, EAN32, 36% or 15/50 (compressed air, 32% nitrox, 36% nitrox or 15% O₂ / 50% He trimix, respectively); leaving this field empty indicates continued use of the previous gas, air by default
+| **CC SetPoint**	| SetPoint when diving with a closed circuit rebreather. Leave empty for open circuit dives with standard scuba equipment
 |===============================================================================
 
 The last four elements are repeated for each segment of a planned dive.
@@ -609,12 +615,13 @@ To illustrate the functionality let's plan a dive to 20 meters lasting 20
 minutes at that depth and another 10 minutes at 10 meters. We'll only
 concentrate on the dive profile here filling the segments.
 
-[width="30%",cols="<15%,10%,<15%,<60%",grid="none",frame="none",style="monospaced"]
+[width="30%",cols="<33%,<33%,34%",options="header"]
 |===============================================================================
-|| 20	| +3	| AIR
-|| 20	| +20	|
-|| 10	| +1:30	|
-|| 10	| +10	|
+| Ending Depth | Segment Time | Gas Used
+| 20	| +3	| AIR
+| 20	| +20	|
+| 10	| +1:30	|
+| 10	| +10	|
 |===============================================================================
 
 So we define the ending depth for the first segment to be 20 meters
@@ -638,9 +645,34 @@ speed.
 
 If needed more segments can be added by clicking 'Add waypoint'.
 
-To add the dive to the divelist simply click 'OK'. The dive notes now
-contain the detailed dive plan including the estimated gas consumption
-based on the SAC rates specified.
+To add the dive to the divelist simply click 'OK'. Double-clicking on
+the planned dive wil show the details, including a written diveplan in
+the Notes.
+
+The dive we defined earlier will present itself like this:
+
+--------------------------
+  DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN
+  ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS
+  RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO
+  PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.
+  Subsurface dive plan
+  based on GFlow = 30 and GFhigh = 80                          <1>
+
+  Transition to 20 m in 3:00 min - runtime 3:00 on air         <2>
+  Stay at 20 m for 20:00 min - runtime 23:00 on air            <3>
+  Transition to 10.0 m in 1:30 min - runtime 24:30 on air
+  Stay at 10.0 m for 10:00 min - runtime 34:30 on air
+  Transition to 0.0 m in 1:06 min - runtime 35:36 on air       <4>
+  Gas consumption:
+  1849l of air                                                 <5>
+--------------------------
+<1> This shows the values used for GFlow and GFhigh
+<2> A 'transition' is a change in depth in a certain amount of time
+<3> A 'stay' is a constant depth for a specified amount of time
+<4> Note that the planner assumes you always want to end the dive at the surface.
+The final segment to 0m with a sane ascent rate is automatically added.
+<5> The planner tries to estimate the needed amount of gas based on the plan and SAC
 
 
 [[S_Webservice,Web Service and Companion App]]
