@@ -566,6 +566,70 @@ JDivelog (see <<S_ImportingDivesJDivelog>>):
 
       subsurface MyDives.xml --import MacDiveDives.xml
 
+[[S_DivePlanning]]
+Planning dives
+--------------
+
+Subsurface supports planning of dives using open and closed circuit
+equipment. Deco calculations with optionally displaying the ceiling is
+done using a new implementation of Bühlmann ZH16 algorithm with
+gradient factors. Since the planner and our implementation of
+decompression algorithms are new and have received only a limited amount
+of testing - WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
+RESULTS GIVEN HERE.
+
+Basic information that is to be inserted when planning a dive is the
+planned start time of the dive, air consumption and planned depths and
+segment times. There is also other information available for those who
+are familiar with dive planning or use closed circuit rebrethers.
+
+[width="70%",cols="<5%,20%,<75%",grid="none",frame="none",style="monospaced"]
+|===============================================================================
+|| Dive starts		| +60:00 means that the dive is 60 minutes in the future
+|| Surface Pressure	| Air pressure on surface, default 1013 should suffice for most
+|| SAC during dive	| Air consumption during the dive, use conservative value based on your own air consumption e.g. 20l/min
+|| SAC during decostop	| Air consumption during decompression stop, e.g. 17 l/min
+|| GFlow		| Gradient factor low value affects the ceiling calculation, leave to default if you are not familiar with GF
+|| GFhigh		| Gradient factor high value affects the ceiling calculation, leave to default if you are not familiar GF
+|| **Ending Depth**	| Depth where current segment ends, can be used for ascending, descending and level
+|| **Segment Time**	| +3 min is relative time from segment start, 7 is an absolute time from the start of the dive
+|| **Gas Used**		| Mix used; AIR, EAN32, 15/50 (compressed air, 32% nitrox, and trimix)
+|| **CC SetPoint**	| ***FIX*** This has something to do with rebrethers so better leave empty if you are like me
+|===============================================================================
+
+Information marked with bold is used multiple times to do the actual
+planning of the dive. So let's plan a dive to 20 meters lasting 20
+minutes at that depth and another 10 minutes in 10 meters. We'll only
+concentrate on the dive profile here filling the segments.
+
+[width="30%",cols="<15%,10%,<15%,<60%",grid="none",frame="none",style="monospaced"]
+|===============================================================================
+|| 20	| +3	| AIR
+|| 20	| +20	|
+|| 10	| +1:30	|
+|| 10	| +10	|
+|===============================================================================
+
+So we define the ending depth for the first segment to be 20 meters
+(assuming metric preferences, you can also define the depth explicitly
+to m or ft). We will take it easy and descent takes 3 minutes from
+surface to the planned depth. Then we spend 20 minutes in same level
+using same air as before (used gas is left empty).
+
+Ascent to 10 meters will take one and half minutes that is slower than
+the fastest recommendation. However, as you can see in Subsurface's
+calculations it is still marked with yellow, meaning somewhat
+conservative speed (green would be conservative and red on the fast
+side). After the defined 10 minutes at even depth of 10 meters we let
+Subsurface calculate how we will surface. If decompression is required
+these stops are taken into account and can be easily visualised by
+setting the first depth to e.g. 30 meters.
+
+Pre-populated segments can be left empty and new segments can be added
+by clicking the 'Add waypoint'. Note that if you go to edit previous
+segments, the later segments values are not properly included in the
+calculation until they get a focus out event or 'OK' is clicked.
+
 [[S_Menu]]
 The menu and sub-menus
 ----------------------
@@ -623,6 +687,12 @@ selected divelog(s). At this time, you can enable or disable ascent.
 When you enable ascent for your dives, within the dive profile, a yellow
 marker with exclamation sign (!) will show on the points where you have
 ascended.
+
+The Planner menu
+~~~~~~~~~~~~~~~~
+
+This men opens up a dive planning dialog. The dive planning is described
+in <<S_DivePlanning>>.
 
 The Help menu
 ~~~~~~~~~~~~~
