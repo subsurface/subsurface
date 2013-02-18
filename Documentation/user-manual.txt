@@ -578,12 +578,17 @@ decompression algorithms are new and have received only a limited amount
 of testing - WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
 RESULTS GIVEN HERE.
 
-Basic information that is to be inserted when planning a dive is the
-planned start time of the dive, air consumption and planned depths and
-segment times. There is also other information available for those who
+In order to plan a dive some basic information needs to be entered:
+
+ - planned start time of the dive
+ - air consumption
+ - planned depths
+ - planned segment times
+
+There is also other information available for those who
 are familiar with dive planning or use closed circuit rebrethers.
 
-[width="70%",cols="<5%,20%,<75%",grid="none",frame="none",style="monospaced"]
+[width="90%",cols="<5%,20%,<75%",grid="none",frame="none",style="monospaced"]
 |===============================================================================
 || Dive starts		| +60:00 means that the dive is 60 minutes in the future
 || Surface Pressure	| Air pressure on surface, default 1013 should suffice for most
@@ -591,15 +596,15 @@ are familiar with dive planning or use closed circuit rebrethers.
 || SAC during decostop	| Air consumption during decompression stop, e.g. 17 l/min
 || GFlow		| Gradient factor low value affects the ceiling calculation, leave to default if you are not familiar with GF
 || GFhigh		| Gradient factor high value affects the ceiling calculation, leave to default if you are not familiar GF
-|| **Ending Depth**	| Depth where current segment ends, can be used for ascending, descending and level
-|| **Segment Time**	| +3 min is relative time from segment start, 7 is an absolute time from the start of the dive
-|| **Gas Used**		| Mix used; AIR, EAN32, 15/50 (compressed air, 32% nitrox, and trimix)
-|| **CC SetPoint**	| ***FIX*** This has something to do with rebrethers so better leave empty if you are like me
+|| **Ending Depth**	| Depth where current segment ends; a different depth from the previous segment creates a transition segment for ascent or descent, keeping the same depth creates a segment at the given depth. By default the planner uses the measurement for length set in the preferences (meters for most users) - this can be overridden by explicitly specifying 'm' or 'ft'.
+|| **Segment Time**	| Enter time in minutes; segment duration / relative time is indicated by a '+':  '+3' or '+3:00' creates a segment that lasts 3 minutes, a bare number like '7' is used for a segment that ends 7 minutes after the start of the dive.
+|| **Gas Used**		| Breathing gas mix used; the parser is reasonably flexible and understands terms like AIR, EAN32, 36% or 15/50 (compressed air, 32% nitrox, 36% nitrox or 15% O₂ / 50% He trimix, respectively); leaving this field empty indicates continued use of the previous gas, air by default
+|| **CC SetPoint**	| SetPoint when diving with a closed circuit rebreather. Leave empty for open circuit dives with standard scuba equipment
 |===============================================================================
 
-Information marked with bold is used multiple times to do the actual
-planning of the dive. So let's plan a dive to 20 meters lasting 20
-minutes at that depth and another 10 minutes in 10 meters. We'll only
+The last four elements are repeated for each segment of a planned dive.
+To illustrate the functionality let's plan a dive to 20 meters lasting 20
+minutes at that depth and another 10 minutes at 10 meters. We'll only
 concentrate on the dive profile here filling the segments.
 
 [width="30%",cols="<15%,10%,<15%,<60%",grid="none",frame="none",style="monospaced"]
@@ -621,14 +626,20 @@ the fastest recommendation. However, as you can see in Subsurface's
 calculations it is still marked with yellow, meaning somewhat
 conservative speed (green would be conservative and red on the fast
 side). After the defined 10 minutes at even depth of 10 meters we let
-Subsurface calculate how we will surface. If decompression is required
-these stops are taken into account and can be easily visualized by
-setting the first depth to e.g. 30 meters.
+Subsurface calculate how we will surface.
 
-Pre-populated segments can be left empty and new segments can be added
-by clicking the 'Add waypoint'. Note that if you go to edit previous
-segments, the later segments values are not properly included in the
-calculation until they get a focus out event or 'OK' is clicked.
+If decompression is required these stops are taken into account and
+can be easily visualized by setting the first depth to e.g. 40 meters
+(somewhat dependent on the GF settings). For the ascend phase of the
+dive calculation Subsurface assumes a typical 9m/min (30ft/min) ascend
+speed.
+
+If needed more segments can be added by clicking 'Add waypoint'.
+
+To add the dive to the divelist simply click 'OK'. The dive notes now
+contain the detailed dive plan including the estimated gas consumption
+based on the SAC rates specified.
+
 
 [[S_Webservice,Web Service and Companion App]]
 Web Service and Companion App
