@@ -76,7 +76,7 @@ Before you start fiddling around with your dive computer, note that
 there are dive computers that consume more power when they are in the
 PC-Communication mode. This could drain your battery. Therefor, ensure
 if your computer is recharging when connecting to the USB port. The
-Suunto Viper does not recharge trough the USB connection. Please
+Suunto Vyper does not recharge through the USB connection. Please
 consult the manual of your dive computer if you are unsure if it will
 be recharged when connected to the USB port.
 
@@ -99,7 +99,7 @@ Now it is time to hook up your dive computer to your PC:
 
  - Connect your interface cable to a free USB port
 
- - Put your dive computer into PC Communication mode. (For 'Suunto Viper', press Mode - 1 Memory - 3 TR-PC)
+ - Put your dive computer into PC Communication mode. (For 'Suunto Vyper', press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific dive computer for your brand and type)
 
  - Go in Subsurface to 'Log - Download From Dive Computer'
@@ -238,7 +238,7 @@ Edit the Dive Info
 ~~~~~~~~~~~~~~~~~~
 
 When you double click on the divelog line, the editor window
-opens. Now you can add information that is missing. Let start with
+opens. Now you can add information that is missing. Let's start with
 completing the example:
 
 You double clicked on dive #12, as described in <<S_ViewingLogs,Viewing and
@@ -595,7 +595,7 @@ some basic information needs to be entered:
  - planned segment times
 
 There is also other information available for those who
-are familiar with dive planning or use closed circuit rebrethers.
+are familiar with dive planning or use closed circuit rebreathers.
 
 [width="90%",cols="<25%,<75%"]
 |===============================================================================
@@ -605,7 +605,7 @@ are familiar with dive planning or use closed circuit rebrethers.
 | SAC during decostop	| Air consumption during decompression stop, e.g. 17 l/min
 | GFlow		| Gradient factor low value affects the ceiling calculation, leave to default if you are not familiar with GF
 | GFhigh		| Gradient factor high value affects the ceiling calculation, leave to default if you are not familiar GF
-| **Ending Depth**	| Depth where current segment ends; a different depth from the previous segment creates a transition segment for ascent or descent, keeping the same depth creates a segment at the given depth. By default the planner uses the measurement for length set in te preferences (meters for most users) - this can be overridden by explicitly specifying 'm' or 'ft'.
+| **Ending Depth**	| Depth where current segment ends; a different depth from the previous segment creates a transition segment for ascent or descent, keeping the same depth creates a segment at the given depth. By default the planner uses the measurement for length set in the preferences (meters for most users) - this can be overridden by explicitly specifying 'm' or 'ft'.
 | **Segment Time**	| Enter time in minutes; segment duration / relative time is indicated by a '+':  '+3' or '+3:00' creates a segment that lasts 3 minutes, a bare number like '7' is used for a segment that ends 7 minutes after the start of the dive.
 | **Gas Used**		| Breathing gas mix used; the parser is reasonably flexible and understands terms like AIR, EAN32, 36% or 15/50 (compressed air, 32% nitrox, 36% nitrox or 15% O₂ / 50% He trimix, respectively); leaving this field empty indicates continued use of the previous gas, air by default
 | **CC SetPoint**	| SetPoint when diving with a closed circuit rebreather. Leave empty for open circuit dives with standard scuba equipment
@@ -647,7 +647,7 @@ speed.
 If needed more segments can be added by clicking 'Add waypoint'.
 
 To add the dive to the divelist simply click 'OK'. Double-clicking on
-the planned dive wil show the details, including a written diveplan in
+the planned dive will show the details, including a written diveplan in
 the Notes.
 
 The dive we defined earlier will present itself like this:
@@ -758,7 +758,7 @@ ascended.
 The Planner Menu
 ~~~~~~~~~~~~~~~~
 
-This men opens up a dive planning dialog. The dive planning is described
+This menu opens up a dive planning dialog. The dive planning is described
 in <<S_DivePlanning,chapter Planning Dives>>.
 
 The Help Menu
@@ -861,7 +861,7 @@ control-clicking the installation package and answering some standard dialogs. T
 goes like this:
 
 - download the driver .dmg package to your downloads folder
-- right click the downloads folder an navigate to the new dmg package
+- right click the downloads folder and navigate to the new dmg package
 - control-click the package: a dialog will open stating that the package has not been signed
   and is from an unknown developer and asking whether you really want to proceed
 - if happy, you accept the dialog and the package opens and may show you one or more versions
