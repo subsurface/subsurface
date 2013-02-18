@@ -325,7 +325,7 @@ using menu 'File - Preferences' you will be presented a pop-up. The pop-up
 has two tabs: 'General Settings' and 'Tec Settings'.
 
 The General Settings allow you to select units, columns to be shown, the
-font used for the divelist and the default file that contains the data.
+font used for the dive list and the default file that contains the data.
 
 The Tec Settings offer extra columns to show, settings for more graphs and
 information to be shown in the dive profile and settings for GFlow and
@@ -475,7 +475,7 @@ These .jlb contain all the information that has been stored, except your
 images in xml format.
 
 By using the menu 'File - Import XML File(s)' you get a popup asking
-for the filename.  To import your JDivelog file(s) do the following:
+for the file name.  To import your JDivelog file(s) do the following:
 
  - Open 'File - Import XML Files(s)' on the menu
  - Browse your directories to the location where your *.jlb file is
@@ -622,7 +622,7 @@ calculations it is still marked with yellow, meaning somewhat
 conservative speed (green would be conservative and red on the fast
 side). After the defined 10 minutes at even depth of 10 meters we let
 Subsurface calculate how we will surface. If decompression is required
-these stops are taken into account and can be easily visualised by
+these stops are taken into account and can be easily visualized by
 setting the first depth to e.g. 30 meters.
 
 Pre-populated segments can be left empty and new segments can be added
@@ -642,7 +642,7 @@ Google Play store, but since it is mostly usable when built form
 source we left the server side integration in Subsurface.
 
 Assuming you have used the companion app to name and locate dive sites
-you can use this menu item to connect to our backend server and
+you can use this menu item to connect to our back-end server and
 download this data. Enter your userid (you got this when registering
 with the web service) and click 'Download'. If the data was
 successfully downloaded you can click apply and Subsurface will match
@@ -793,7 +793,7 @@ sites for manufacturers of the serial to USB chips which provide the necessary c
 
 Here you have two alternatives. Either you try each of the major drivers in turn until
 you find the right one, or you follow some further steps to try and identify the right
-driver up front. To determine the required driver up front, first attach the usd to device
+driver up front. To determine the required driver up front, first attach the USB to device
 connector cable. Next open a terminal window and run the command:
 
 	system_profiler SPUSBDataType > usb.txt
