@@ -1029,27 +1029,20 @@ static void dump_trip_list(void)
 }
 #endif
 
-/* this finds a trip that starts at precisely the time given */
-static dive_trip_t *find_trip_by_time(timestamp_t when)
+static dive_trip_t *find_trip_by_idx(int idx)
 {
 	dive_trip_t *trip = dive_trip_list;
 
-	while (trip && trip->when < when)
+	if (!idx)
+		return NULL;
+	if (idx < 0)
+		idx = -idx;
+
+	while (trip) {
+		if (trip->index == idx)
+			return trip;
 		trip = trip->next;
-	if (trip && trip->when == when) {
-#ifdef DEBUG_TRIP
-		struct tm tm;
-		utc_mkdate(trip->when, &tm);
-		printf("found trip %p @ %04d-%02d-%02d %02d:%02d:%02d\n",
-			trip,
-			tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-			tm.tm_hour, tm.tm_min, tm.tm_sec);
-#endif
-		return trip;
 	}
-#ifdef DEBUG_TRIP
-	printf("no matching trip\n");
-#endif
 	return NULL;
 }
 
@@ -1382,7 +1375,7 @@ static gint dive_nr_sort(GtkTreeModel *model,
 
 	if (idx_a < 0) {
 		a = NULL;
-		tripa = find_trip_by_time(when_a);
+		tripa = find_trip_by_idx(idx_a);
 	} else {
 		a = get_dive(idx_a);
 		if (a)
@@ -1391,7 +1384,7 @@ static gint dive_nr_sort(GtkTreeModel *model,
 
 	if (idx_b < 0) {
 		b = NULL;
-		tripb = find_trip_by_time(when_b);
+		tripb = find_trip_by_idx(idx_b);
 	} else {
 		b = get_dive(idx_b);
 		if (b)
@@ -1521,13 +1514,13 @@ void add_dive_cb(GtkWidget *menuitem, gpointer data)
 
 static void edit_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
+	int idx;
 	GtkTreeIter iter;
-	timestamp_t when;
 	dive_trip_t *dive_trip;
 
 	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_DATE, &when, -1);
-	dive_trip = find_trip_by_time(when);
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	dive_trip = find_trip_by_idx(idx);
 	if (edit_trip(dive_trip))
 		gtk_tree_store_set(STORE(dive_list), &iter, DIVE_LOCATION, dive_trip->location, -1);
 }
@@ -2176,16 +2169,14 @@ void remember_tree_state()
 		return;
 	do {
 		int idx;
-		timestamp_t when;
 		GtkTreePath *path;
 
-		gtk_tree_model_get(TREEMODEL(dive_list), &iter,
-				   DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 		if (idx >= 0)
 			continue;
 		path = gtk_tree_model_get_path(TREEMODEL(dive_list), &iter);
 		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path)) {
-			trip = find_trip_by_time(when);
+			trip = find_trip_by_idx(idx);
 			if (trip)
 				trip->expanded = TRUE;
 		}
@@ -2196,15 +2187,14 @@ void remember_tree_state()
 static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
 	int idx;
-	timestamp_t when;
 	struct dive *dive;
 	dive_trip_t *trip;
 	GtkTreeView *tree_view = GTK_TREE_VIEW(dive_list.tree_view);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
 	if (idx < 0) {
-		trip = find_trip_by_time(when);
+		trip = find_trip_by_idx(idx);
 		if (trip && trip->expanded)
 			gtk_tree_view_expand_row(tree_view, path, FALSE);
 		if (trip && trip->selected)
@@ -2700,17 +2690,16 @@ static gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *m
 				GtkTreePath *path, gboolean was_selected, gpointer userdata)
 {
 	int idx;
-	timestamp_t when;
 	GtkTreeIter iter;
 
 	if (!was_selected)
 		return TRUE;
 	gtk_tree_model_get_iter(model, &iter, path);
-	gtk_tree_model_get(model, &iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+	gtk_tree_model_get(model, &iter, DIVE_INDEX, &idx, -1);
 	if (idx < 0) {
 		int i;
 		struct dive *dive;
-		dive_trip_t *trip = find_trip_by_time(when);
+		dive_trip_t *trip = find_trip_by_idx(idx);
 		if (!trip)
 			return TRUE;
 
@@ -2733,13 +2722,12 @@ static gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *m
 static void entry_selected(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
 	int idx;
-	timestamp_t when;
 
-	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
+	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
 	if (idx < 0) {
 		int i;
 		struct dive *dive;
-		dive_trip_t *trip = find_trip_by_time(when);
+		dive_trip_t *trip = find_trip_by_idx(idx);
 
 		if (!trip)
 			return;
