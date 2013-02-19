@@ -11,7 +11,10 @@ po/*.mo
 /subsurface
 .dep/
 share/
-Documentation/user-manual.pdf
+Documentation/images/
+Documentation/docbook-xsl.css
 Documentation/user-manual.html
+Documentation/user-manual.pdf
+Documentation/user-manual.text
 packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
