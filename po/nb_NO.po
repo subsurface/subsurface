@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 2.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-14 09:23+0100\n"
+"PO-Revision-Date: 2013-02-19 21:01+0100\n"
 "Last-Translator: Henrik Brautaset Aronsen <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb_NO\n"
@@ -478,7 +478,7 @@ msgstr "Feil med forbindelse"
 
 #: divelist.c:2489
 msgid "Create new trip above"
-msgstr "Lag ny tur over denne"
+msgstr "Lag ny tur"
 
 #: gtk-gui.c:648
 msgid "CuFt"
