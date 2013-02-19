@@ -1,24 +1,30 @@
-ASCIIDOC=asciidoc
-A2X=a2x
-BROWSER=firefox
+DOCNAME = user-manual
+DOCSOURCE = $(DOCNAME).txt
+HTMLDOC = $(DOCNAME).html
+ASCIIDOC = asciidoc
+A2X = a2x
+BROWSER = firefox
 
-doc: user-manual.html
+all: $(HTMLDOC) $(addprefix $(DOCNAME).,pdf text)
 
-show: user-manual.html
-	$(BROWSER) user-manual.html
+doc: $(HTMLDOC)
 
-user-manual.html: user-manual.txt
-	$(ASCIIDOC) user-manual.txt
+show: $(HTMLDOC)
+	$(BROWSER) $<
+
+$(HTMLDOC): $(DOCSOURCE)
+	$(ASCIIDOC) $<
 
 # Alternatively::
-user-manual.xhtml: user-manual.txt
-	$(A2X) --icons -f xhtml user-manual.txt
+$(DOCNAME).xhtml: $(DOCSOURCE)
+	$(A2X) --icons -f xhtml $<
 
-user-manual.text: user-manual.txt
-	$(A2X) -f text user-manual.txt
+$(DOCNAME).text: $(DOCSOURCE)
+	$(A2X) -f text $<
 
-user-manual.pdf: user-manual.txt
-	$(A2X) -f pdf user-manual.txt
+$(DOCNAME).pdf: $(DOCSOURCE)
+	$(A2X) -f pdf $<
 
 clean:
-	rm -f user-manual.html user-manual.pdf user-manual.text
+	rm -f *~ docbook-xsl.css $(HTMLDOC) $(addprefix $(DOCNAME).,pdf text)
+	rm -fr images
