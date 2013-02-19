@@ -241,38 +241,44 @@ about that in <<S_SettingUpPreferences,Setting up Preferences>>.
 Edit the Dive Info
 ~~~~~~~~~~~~~~~~~~
 
-When you double click on the divelog line, an editor window
+When you double click on the divelog line as described in
+<<S_ViewingLogs,Viewing and Completing Your Logs>>, an editor window
 opens as shown in this screenshot:
 
 image::images/edit_dive_info.png["Edit Dive Info",align="center"]
 
+The purpose of the fields is described in the tabel below:
+
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field                      | Description of field
+| Location                   | An input where you can enter your new location, or you can choose with the pull-down previous locations
+| GPS (WGS84 or GPS format)  | An input where your can enter geographic coordinates of the dive site
+| Pick on map                | A button you can click on to display an interactive map on which you can select the location of the dive site
+| Dive Master                | An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
+| Buddy                      | An input where you can enter the name of you Buddy, or you can choose with the pull-down a previous name
+| Rating                     | A pull-down where you can rate your dive
+| Suit                       | An input where you can track the exposure protection suit you were wearing
+| Visibility                 | A pull-down where you can rate the visibility underwater
+| Air Temp in deg. C         | An input where you can enter the air temperature
+| Notes                      | A free input where you can enter information about your dive. What you've seen, etc.
+|===============================================================================
+
 Now you can add information that is missing. Let's start with
 completing the example:
 
-You double clicked on dive #12, as described in <<S_ViewingLogs,Viewing and
-Completing Your Logs>>.  The Dive Info window pops up and you will see
-the following:
-[horizontal]
- *Location*::	 An input where you can enter your new location, or you can choose with the pull-down previous locations
- *GPS (WGS84 or GPS format)*::	An input where your can enter geographic coordinates of the dive site
- *Pick on map*::        A button you can click on to display an interactive map on which you can select the location of the dive site
- *Dive Master*:: An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
- *Buddy*::	 An input where you can enter the name of you Buddy, or you can choose with the pull-down a previous name
- *Rating*::	 A pull-down where you can rate your dive
- *Suit*::	 An input where you can track the exposure protection suit you were wearing
- *Visibility*:: A pulldown where you can rate the visibility underwater
- *Air Temp in deg. C*:: An input where you can enter the air temperature
- *Notes*::	 A free input where you can enter information about your dive. What you've seen, etc.
-
 In this example we use the following information:
-[horizontal]
- *Location*::		Oostvoornse Meer
- *Dive Master*::	S. de Vries
- *Buddy*::		S. de Vries
- *Rating*::		3 stars
- *Suit*::		7mm wet
- *Notes*::		First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive. +
+
+[width="70%",cols="<33%,67%"]
+|===============================================================================
+| Location    | Oostvoornse Meer
+| Dive Master | S. de Vries
+| Buddy       | S. de Vries
+| Rating      | 3 stars
+| Suit        | 7mm wet
+| Notes       | First dive here. Good visibility. Did see the concrete poles, some crab and fish. Very nice and easy dive. +
                         Made movie with headcam.
+|===============================================================================
 
 Now don't press OK yet!
 
