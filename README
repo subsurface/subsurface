@@ -51,8 +51,8 @@ libgtk2.0-dev, libglib2.0-dev, libgconf2-dev, libsoup2.4-dev. It seems
 the cairo packages at least in Squeeze is too old.
 
 To be able to visualise the dives on a map (optional), using GPS
-coordinates, install osm-gps-map-devel (Fedora) or libosmgpsmap-dev
-(Debian package). That will be detected and configured at build
+coordinates, install the osm-gps-map-devel (Fedora) or libosmgpsmap-dev
+(Debian) package. That will be detected and configured at build
 time. The library is used to embed maps in applications that, when
 given GPS co-ordinates, draw a GPS track.
 
