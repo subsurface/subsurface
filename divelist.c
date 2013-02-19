@@ -70,7 +70,6 @@ enum {
 	DIVELIST_COLUMNS
 };
 
-static void turn_dive_into_trip(GtkTreePath *path);
 static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path);
 
 #ifdef DEBUG_MODEL
@@ -1809,127 +1808,6 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 	mark_divelist_changed(TRUE);
 }
 
-static void turn_dive_into_trip(GtkTreePath *path)
-{
-	GtkTreeIter iter, *newiter, newparent;
-	GtkTreePath *treepath;
-	timestamp_t when;
-	char *location;
-	int idx;
-	struct dive *dive;
-
-	/* this is a dive on the top level, insert trip AFTER it, populate its date / location, and
-	 * then move the dive below that trip */
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	gtk_tree_store_insert_after(STORE(dive_list), &newparent, NULL, &iter);
-	gtk_tree_model_get(MODEL(dive_list), &iter,
-			DIVE_INDEX, &idx, DIVE_DATE, &when, DIVE_LOCATION, &location, -1);
-	gtk_tree_store_set(STORE(dive_list), &newparent,
-			DIVE_INDEX, -1, DIVE_DATE, when, DIVE_LOCATION, location, -1);
-	free(location);
-	newiter = move_dive_between_trips(&iter, NULL, &newparent, NULL, FALSE);
-	treepath = gtk_tree_model_get_path(MODEL(dive_list), newiter);
-	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
-	gtk_tree_path_free(treepath);
-	dive = get_dive(idx);
-	create_and_hookup_trip_from_dive(dive);
-	free(newiter);
-}
-
-/* we know that path is pointing at a dive in a trip and are asked to split this trip into two */
-static void insert_trip_before(GtkTreePath *path)
-{
-	GtkTreeIter iter, prev_iter, parent, newparent, nextsibling;
-	GtkTreePath *treepath, *prev_path;
-	struct dive *dive, *prev_dive;
-	dive_trip_t *new_divetrip;
-	int idx, nr, i;
-
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	prev_path = gtk_tree_path_copy(path);
-	if (!gtk_tree_path_prev(prev_path) ||
-	    !gtk_tree_model_iter_parent(MODEL(dive_list), &parent, &iter))
-		return;
-	gtk_tree_model_get_iter(MODEL(dive_list), &prev_iter, prev_path);
-	gtk_tree_model_get(MODEL(dive_list), &prev_iter, DIVE_INDEX, &idx, -1);
-	prev_dive = get_dive(idx);
-	gtk_tree_store_insert_after(STORE(dive_list), &newparent, NULL, &parent);
-	copy_tree_node(&parent, &newparent);
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-	dive = get_dive(idx);
-	/* make sure that the timestamp_t of the previous divetrip is correct before
-	 * inserting a new one */
-	if (dive->when < prev_dive->when)
-		if (prev_dive->divetrip && prev_dive->divetrip->when < prev_dive->when)
-			prev_dive->divetrip->when = prev_dive->when;
-	new_divetrip = create_and_hookup_trip_from_dive(dive);
-
-	/* in order for the data structures to stay consistent we need to walk from
-	 * the last child backwards to this one. The easiest way seems to be to do
-	 * this with the nth iterator API */
-	nr = gtk_tree_model_iter_n_children(MODEL(dive_list), &parent);
-	for (i = nr - 1; i >= 0; i--) {
-		gtk_tree_model_iter_nth_child(MODEL(dive_list), &nextsibling, &parent, i);
-		treepath = gtk_tree_model_get_path(MODEL(dive_list), &nextsibling);
-		gtk_tree_model_get(MODEL(dive_list), &nextsibling, DIVE_INDEX, &idx, -1);
-		dive = get_dive(idx);
-		add_dive_to_trip(dive, new_divetrip);
-		free(move_dive_between_trips(&nextsibling, &parent, &newparent, NULL, FALSE));
-		if (gtk_tree_path_compare(path, treepath) == 0) {
-			/* we copied the dive we were called with; we are done */
-			gtk_tree_path_free(treepath);
-			break;
-		}
-		gtk_tree_path_free(treepath);
-	}
-	/* treat this divetrip as if it had been read from a file */
-	treepath = gtk_tree_model_get_path(MODEL(dive_list), &newparent);
-	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), treepath);
-	gtk_tree_path_free(treepath);
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
-
-static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
-{
-	/* is this splitting a trip or turning a dive into a trip? */
-	if (gtk_tree_path_get_depth(path) == 2) {
-		insert_trip_before(path);
-	} else { /* this is a top level dive */
-		struct dive *dive, *next_dive;
-		GtkTreePath *next_path;
-
-		dive = dive_from_path(path);
-		if (dive->selected) {
-			next_path = gtk_tree_path_copy(path);
-			for (;;) {
-				/* let's find the first dive in a block of selected dives */
-				if (gtk_tree_path_prev(next_path)) {
-					next_dive = dive_from_path(next_path);
-					if (next_dive && next_dive->selected) {
-						path = gtk_tree_path_copy(next_path);
-						continue;
-					}
-				}
-				break;
-			}
-		}
-		/* now path points at the first selected dive in a consecutive block */
-		turn_dive_into_trip(path);
-		/* if the dive was selected and the next dive was selected, too,
-		 * then all of them should be part of the new trip */
-		if (dive->selected) {
-			next_path = gtk_tree_path_copy(path);
-			gtk_tree_path_next(next_path);
-			next_dive = dive_from_path(next_path);
-			if (next_dive && next_dive->selected)
-				merge_dive_into_trip_above_cb(menuitem, next_path);
-		}
-	}
-	mark_divelist_changed(TRUE);
-}
-
 static int get_path_index(GtkTreePath *path)
 {
 	GtkTreeIter iter;
@@ -1938,6 +1816,31 @@ static int get_path_index(GtkTreePath *path)
 	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 	return idx;
+}
+
+static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	int idx;
+	struct dive *dive;
+	dive_trip_t *trip;
+
+	idx = get_path_index(path);
+	dive = get_dive(idx);
+	if (!dive)
+		return;
+	remember_tree_state();
+	trip = create_and_hookup_trip_from_dive(dive);
+	if (dive->selected) {
+		for_each_dive(idx, dive) {
+			if (!dive->selected)
+				continue;
+			add_dive_to_trip(dive, trip);
+		}
+	}
+	trip->expanded = 1;
+	dive_list_update_dives();
+	restore_tree_state();
+	mark_divelist_changed(TRUE);
 }
 
 static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
