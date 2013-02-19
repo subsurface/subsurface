@@ -294,7 +294,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 			int planhe = (he + 5) / 10 * 10;
 			int value;
 			add_gas(dive, plano2, planhe);
-			value = (plano2 / 10) | (planhe << 16);
+			value = (plano2 / 10) | ((planhe / 10) << 16);
 			add_event(dc, lasttime, 25, 0, value, "gaschange"); // SAMPLE_EVENT_GASCHANGE2
 			oldo2 = o2; oldhe = he;
 		}
