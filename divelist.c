@@ -1035,7 +1035,7 @@ static dive_trip_t *find_trip_by_idx(int idx)
 
 	if (idx >= 0)
 		return NULL;
-
+	idx = -idx;
 	while (trip) {
 		if (trip->index == idx)
 			return trip;
