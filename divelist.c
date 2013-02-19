@@ -1886,14 +1886,11 @@ void remember_tree_state()
 		GtkTreePath *path;
 
 		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-		if (idx >= 0)
+		trip = find_trip_by_idx(idx);
+		if (!trip)
 			continue;
 		path = gtk_tree_model_get_path(TREEMODEL(dive_list), &iter);
-		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path)) {
-			trip = find_trip_by_idx(idx);
-			if (trip)
-				trip->expanded = TRUE;
-		}
+		trip->expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path);
 		gtk_tree_path_free(path);
 	} while (gtk_tree_model_iter_next(TREEMODEL(dive_list), &iter));
 }
