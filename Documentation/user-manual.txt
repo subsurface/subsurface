@@ -286,11 +286,15 @@ Now don't press OK yet!
 Edit Equipment Info
 ~~~~~~~~~~~~~~~~~~~
 
-You also want to edit your Cylinder information. And in the
+You also want to edit your Cylinder information and in the
 <<S_EditDiveInfo, previous chapter>>, this was not edited. There is
-still another item to edit in the Dive Info screen:
+still another item to edit in the Dive Info screen: 'Cylinder'
 
- - Cylinder:	 A double-click field set. Here you can edit your Cylinder information
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field    | Description of field
+| Cylinder | A double-click field set. Here you can edit your Cylinder information
+|===============================================================================
 
 So, when you double click on the cylinder info or press the 'Edit' button, you get another
 pop-up.
@@ -298,41 +302,53 @@ pop-up.
 image::images/cylinder.png["Edit Cylinder",align="center"]
 
 This pop-up window contains the following information:
-
- - Cylinder:	Pull-down where you can choose your Cylinder, or add your own
- - Size:	The volume if not `filled'
- - Pressure:	The maximum pressure of this Cylinder
- - Optional:
-		* Start Pressure: What was the pressure starting the dive
-		* End Pressure:	What was the pressure ending the dive
-		* Gasmix:	What was the percentage O2 and He of the blend
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field                       | Description of field
+| Cylinder                    | Pull-down where you can choose your Cylinder, or add your own
+| Size                        | The volume if not `filled'
+| Pressure                    | The maximum pressure of this Cylinder
+| Start Pressure _(optional)_ | What was the pressure starting the dive
+| End Pressure   _(optional)_ | What was the pressure ending the dive
+| Gasmix         _(optional)_ | What was the percentage O2 and He of the blend
+|===============================================================================
 
 Now we are going to enter the data:
+[width="40%",cols="<34%,33%,33%",options="header"]
+|===============================================================================
+| Cylinder | Size | Pressure
+| 15.0 l   | 15.0 | 220
+|===============================================================================
 
- - Cylinder:	15.0 l
- - Size:	15.0
- - Pressure:	220
+Now tick the option for Start & End pressure and enter the pressures:
+[width="40%",cols="<50%,50%",options="header"]
+|===============================================================================
+| Start Pressure | End Pressure
+| 180            | 60
+|===============================================================================
 
-Now tick the option for Start & End pressure
-
- - Start Pressure:	180
- - End Pressure:	60
- - Press OK
+Press 'OK'.
 
 In very much the same way you can enter the weight you were carrying on
 the dive. Subsurface tracks the following:
-
- - Type:      Specific type of weight system, like weight belt, integrated pockets
- - Weight:    Amount of weight (by default in kg, but can be switched to use lbs)
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field  | Description of field
+| Type   | Specific type of weight system, like weight belt, integrated pockets
+| Weight | Amount of weight (by default in kg, but can be switched to use lbs)
+|===============================================================================
 
 Enter the following data:
+[width="40%",cols="<50%,50%",options="header"]
+|===============================================================================
+| Type       | Weight
+| Integrated | 13kg
+|===============================================================================
 
- - Type:      Integrated
- - weight:    13kg
- - Press OK
+Press 'OK'.
 
 Now your dive information for this dive is complete. You can now press
-OK in the Dive Info screen and view the results.
+'OK' in the Dive Info screen and view the results.
 
 [[S_ViewInfoStats]]
 View Info & Stats
