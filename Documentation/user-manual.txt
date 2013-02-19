@@ -586,8 +586,12 @@ of testing: +
 **WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
 RESULTS GIVEN HERE.**
 
-When you start the planner, a dialog appears. In order to plan a dive
-some basic information needs to be entered:
+When you start the planner, a dialog appears as shown in the following
+screen capture:
+
+image::images/dive_planning.png["Dive Planning",align="center"]
+
+In order to plan a dive some basic information needs to be entered:
 
  - planned start time of the dive
  - air consumption
@@ -675,6 +679,10 @@ The dive we defined earlier will present itself like this:
 The final segment to 0m with a sane ascent rate is automatically added.
 <5> The planner tries to estimate the needed amount of gas based on the plan and SAC
 
+Following image shows the resulting profile along with a glimpse of the
+aforementioned dive plan:
+
+image::images/planned_dive.png["Planned Dive",align="center"]
 
 [[S_Webservice,Web Service and Companion App]]
 Web Service and Companion App

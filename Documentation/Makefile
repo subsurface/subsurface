@@ -25,4 +25,3 @@ show: $(HTMLDOC)
 
 clean:
 	rm -f *~ docbook-xsl.css $(HTMLDOC) $(addprefix $(DOCNAME).,pdf text)
-	rm -fr images
