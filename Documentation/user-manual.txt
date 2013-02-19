@@ -328,23 +328,6 @@ Enter the following data:
 Now your dive information for this dive is complete. You can now press
 OK in the Dive Info screen and view the results.
 
-[[S_AddingEquipment]]
-Adding Equipment Info
-~~~~~~~~~~~~~~~~~~~~~
-
-In Area with the 3 tabs there is the tab Equipment. With this tab, you
-can add Cylinders and Weight Systems (just like in the previous dialog).
-We are going to add an additional Cylinder:
-
- - In the main screen, click on the Equipment tab.  This shows your
-   Cylinder you added in 7.
-
- - Now press the Add button and the Cylinder pop-up comes back.
-
- - Just like you added your Cylinder information in 7.  Edit equipment
-   info, you add your cylinder information for the second Cylinder.
-   Fill in all the information about this Cylinder and press OK.
-
 [[S_ViewInfoStats]]
 View Info & Stats
 -----------------
