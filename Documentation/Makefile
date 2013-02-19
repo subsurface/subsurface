@@ -7,13 +7,15 @@ BROWSER = firefox
 
 all: doc $(addprefix $(DOCNAME).,pdf text)
 
+doc: $(HTMLDOC)
+
 $(DOCNAME).text: $(DOCSOURCE)
 	$(A2X) -f text $<
 
 $(DOCNAME).pdf: $(DOCSOURCE)
 	$(A2X) -f pdf $<
 
-doc $(HTMLDOC): $(DOCSOURCE)
+$(HTMLDOC): $(DOCSOURCE)
 	$(ASCIIDOC) $<
 
 # Alternatively::
