@@ -980,7 +980,9 @@ static void autogroup_cb(GtkWidget *w, gpointer data)
 	autogroup = !autogroup;
 	if (! autogroup)
 		remove_autogen_trips();
+	remember_tree_state();
 	dive_list_update_dives();
+	restore_tree_state();
 }
 
 void set_autogroup(gboolean value)
