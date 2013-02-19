@@ -11,7 +11,7 @@ protection used, dive masters and dive buddies and allows the user to
 rate dives and provide additional dive notes. Subsurface also allows
 to track dive locations including GPS coordinates and offers a
 convenient map interface to enter these locations directly in the
-program. It calculates a wide variety of statistics of the user’s
+program. It calculates a wide variety of statistics of the user's
 diving and calculates and tracks information like the user's SAC rate,
 partial pressures of O2, N2 and He, calculated deco information, and
 many more.
@@ -78,7 +78,7 @@ Just edit the makefile directly.
 
 Building Subsurface under Windows
 ---------------------------------
-Subsurface builds nicely with MinGW – the official builds are done as
+Subsurface builds nicely with MinGW - the official builds are done as
 cross builds under Linux (currently on Fedora 17). A shell script to do
 that (plus the .nsi file to create the installer with makensis) are
 included in the packaging/Windows directory.
