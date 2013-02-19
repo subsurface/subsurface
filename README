@@ -55,10 +55,10 @@ libgtk2.0-dev, libglib2.0-dev, libgconf2-dev, libsoup2.4-dev. It seems
 the cairo packages at least in Squeeze is too old.
 
 To be able to visualise the dives on a map (optional), using GPS
-coordinates, install libosmgpsmap-dev (debian package). That will be
-detected and configured at build time. The library is used to embed
-maps in applications that, when given GPS co-ordinates, draw a GPS
-track.
+coordinates, install osm-gps-map-devel (Fedora) or libosmgpsmap-dev
+(Debian package). That will be detected and configured at build
+time. The library is used to embed maps in applications that, when
+given GPS co-ordinates, draw a GPS track.
 
 You also need to have libdivecomputer installed. The current git
 versions of Subsurface assume that you use libdivecomputer version
@@ -67,7 +67,7 @@ versions of Subsurface assume that you use libdivecomputer version
 git clone \
 git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
 cd libdivecomputer
-git checkout v0.3.0
+git checkout release-0.3
 autoreconf --install
 ./configure
 make
@@ -97,7 +97,10 @@ Once you have built and installed libdivecomputer you can use
 
 sh packaging/Windows/mingw-make.sh
 
-to then build subsurface.
+to then build subsurface. In order to create an installer simply use
+
+sh packaging/Windows/mingw-make.sh create-windows-installer
+
 
 Building subsurface on a Mac
 ----------------------------
