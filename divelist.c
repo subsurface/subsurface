@@ -1158,7 +1158,7 @@ static void remove_dive_from_trip(struct dive *dive)
 		next->pprev = pprev;
 
 	dive->divetrip = NULL;
-	dive->tripflag = TF_NONE;
+	dive->tripflag = NO_TRIP;
 	assert(trip->nrdives > 0);
 	if (!--trip->nrdives)
 		delete_trip(trip);
@@ -1961,7 +1961,6 @@ static void remove_from_trip(GtkTreePath *path)
 		gtk_tree_store_remove(STORE(dive_list), &parent);
 	}
 	/* mark the dive as intentionally at the top level */
-	dive->tripflag = NO_TRIP;
 	remove_dive_from_trip(dive);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
@@ -2030,40 +2029,29 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 	mark_divelist_changed(TRUE);
 }
 
-static void remove_trip(GtkTreePath *trippath, gboolean force_no_trip)
+static void remove_trip(GtkTreePath *trippath)
 {
-	GtkTreeIter newiter, parent, child, *lastiter = &parent;
+	int idx, i;
+	GtkTreeIter iter;
+	dive_trip_t *trip;
 	struct dive *dive;
-	int idx;
-	GtkTreePath *childpath;
-	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
-	/* what a pain - we can't just move the nodes, we have to
-	 * create new ones and delete the existing ones instead */
-	gtk_tree_model_get_iter(MODEL(dive_list), &parent, trippath);
-	childpath = gtk_tree_path_copy(trippath);
-	gtk_tree_path_down(childpath);
-	for (;;) {
-		if ( ! gtk_tree_model_get_iter(MODEL(dive_list), &child, childpath))
-			break;
-		gtk_tree_store_insert_after(STORE(dive_list), &newiter, NULL, lastiter);
-		copy_tree_node(&child, &newiter);
-		/* we need to track what was selected */
-		gtk_tree_model_get(MODEL(dive_list), &child, DIVE_INDEX, &idx, -1);
-		dive = get_dive(idx);
-		if (dive->selected)
-			gtk_tree_selection_select_iter(selection, &newiter);
-		if (force_no_trip)
-			dive->tripflag = NO_TRIP;
-		else
-			dive->tripflag = TF_NONE;
+	gtk_tree_model_get_iter(MODEL(dive_list), &iter, trippath);
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	trip = find_trip_by_idx(idx);
+	if (!trip)
+		return;
+
+	remember_tree_state();
+	for_each_dive(i, dive) {
+		if (dive->divetrip != trip)
+			continue;
 		remove_dive_from_trip(dive);
-		/* this removes the child - now childpath points to the next child */
-		gtk_tree_store_remove(STORE(dive_list), &child);
-		lastiter = &newiter;
 	}
-	/* finally, remove the trip */
-	gtk_tree_store_remove(STORE(dive_list), &parent);
+
+	dive_list_update_dives();
+	restore_tree_state();
+
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -2087,7 +2075,7 @@ static void remove_trip_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	if (!success)
 		return;
 
-	remove_trip(trippath, TRUE);
+	remove_trip(trippath);
 	mark_divelist_changed(TRUE);
 }
 
