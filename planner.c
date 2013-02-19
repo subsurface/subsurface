@@ -137,6 +137,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
 	int i, j, t0, t1, gasidx, lastdepth;
+	int o2, he;
 	double tissue_tolerance;
 
 	if (!dive)
@@ -152,8 +153,10 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		return tissue_tolerance;
 	psample = sample = dc->sample;
 	lastdepth = t0 = 0;
+	/* we always start with gas 0 (unless an event tells us otherwise) */
+	o2 = dive->cylinder[0].gasmix.o2.permille;
+	he = dive->cylinder[0].gasmix.he.permille;
 	for (i = 0; i < dc->samples; i++, sample++) {
-		int o2 = 0, he = 0;
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &o2, &he);
 		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
@@ -176,7 +179,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 /* how many seconds until we can ascend to the next stop? */
 int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 {
-	int depth, gasidx, o2 = 0, he = 0;
+	int depth, gasidx, o2, he;
 	double surface_pressure, tissue_tolerance;
 	int wait = 0;
 	struct sample *sample;
@@ -187,6 +190,9 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	tissue_tolerance = tissue_at_end(dive, cached_data_p);
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
+	/* we always start with gas 0 (unless an event tells us otherwise) */
+	o2 = dive->cylinder[0].gasmix.o2.permille;
+	he = dive->cylinder[0].gasmix.he.permille;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
 	gasidx = get_gasidx(dive, o2, he);
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
@@ -652,7 +658,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 			break;
 	stopidx--;
 
-	/* so now we now the first decostop level above us
+	/* so now we know the first decostop level above us
 	 * NOTE, this could be the surface or a long list of potential stops
 	 * we do NOT start only at the ceiling, as the ceiling may come down
 	 * further during the ascent.
@@ -689,7 +695,10 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 		 * make this configurable at some point */
 		wait_time = ((wait_time + 59) / 60) * 60;
 #if DEBUG_PLAN & 2
-		printf("waittime %d:%02d at depth %5.2lfm\n", FRACTION(wait_time, 60), stoplevels[stopidx] / 1000.0);
+		tissue_tolerance = tissue_at_end(dive, cached_datap);
+		ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
+		printf("waittime %d:%02d at depth %5.2lfm; ceiling %5.2lfm\n", FRACTION(wait_time, 60),
+								stoplevels[stopidx] / 1000.0, ceiling / 1000.0);
 #endif
 		if (wait_time)
 			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he, po2);
