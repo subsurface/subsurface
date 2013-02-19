@@ -160,6 +160,31 @@ static struct dive *dive_from_path(GtkTreePath *path)
 
 }
 
+static dive_trip_t *find_trip_by_idx(int idx)
+{
+	dive_trip_t *trip = dive_trip_list;
+
+	if (idx >= 0)
+		return NULL;
+	idx = -idx;
+	while (trip) {
+		if (trip->index == idx)
+			return trip;
+		trip = trip->next;
+	}
+	return NULL;
+}
+
+static int get_path_index(GtkTreePath *path)
+{
+	GtkTreeIter iter;
+	int idx;
+
+	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
+	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
+	return idx;
+}
+
 /* make sure that if we expand a summary row that is selected, the children show
    up as selected, too */
 static void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
@@ -167,7 +192,13 @@ static void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePa
 	GtkTreeIter child;
 	GtkTreeModel *model = MODEL(dive_list);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+	dive_trip_t *trip;
 
+	trip = find_trip_by_idx(get_path_index(path));
+	if (!trip)
+		return;
+
+	trip->expanded = 1;
 	if (!gtk_tree_model_iter_children(model, &child, iter))
 		return;
 
@@ -185,35 +216,32 @@ static void row_expanded_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePa
 	} while (gtk_tree_model_iter_next(model, &child));
 }
 
-static int selected_children(GtkTreeModel *model, GtkTreeIter *iter)
+static int trip_has_selected_dives(dive_trip_t *trip)
 {
-	GtkTreeIter child;
-
-	if (!gtk_tree_model_iter_children(model, &child, iter))
-		return FALSE;
-
-	do {
-		int idx;
-		struct dive *dive;
-
-		gtk_tree_model_get(model, &child, DIVE_INDEX, &idx, -1);
-		dive = get_dive(idx);
-
+	struct dive *dive;
+	for (dive = trip->dives; dive; dive = dive->next) {
 		if (dive->selected)
-			return TRUE;
-	} while (gtk_tree_model_iter_next(model, &child));
-	return FALSE;
+			return 1;
+	}
+	return 0;
 }
 
 /* Make sure that if we collapse a summary row with any selected children, the row
    shows up as selected too */
 static void row_collapsed_cb(GtkTreeView *tree_view, GtkTreeIter *iter, GtkTreePath *path, gpointer data)
 {
-	GtkTreeModel *model = MODEL(dive_list);
+	dive_trip_t *trip;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
 
-	if (selected_children(model, iter))
+	trip = find_trip_by_idx(get_path_index(path));
+	if (!trip)
+		return;
+
+	trip->expanded = 0;
+	if (trip_has_selected_dives(trip)) {
 		gtk_tree_selection_select_iter(selection, iter);
+		trip->selected = 1;
+	}
 }
 
 const char *star_strings[] = {
@@ -1028,21 +1056,6 @@ static void dump_trip_list(void)
 }
 #endif
 
-static dive_trip_t *find_trip_by_idx(int idx)
-{
-	dive_trip_t *trip = dive_trip_list;
-
-	if (idx >= 0)
-		return NULL;
-	idx = -idx;
-	while (trip) {
-		if (trip->index == idx)
-			return trip;
-		trip = trip->next;
-	}
-	return NULL;
-}
-
 /* this finds the last trip that at or before the time given */
 static dive_trip_t *find_matching_trip(timestamp_t when)
 {
@@ -1348,12 +1361,15 @@ static void fill_dive_list(void)
 	}
 }
 
+static void restore_tree_state(void);
+
 void dive_list_update_dives(void)
 {
 	dive_table.preexisting = dive_table.nr;
 	gtk_tree_store_clear(TREESTORE(dive_list));
 	gtk_tree_store_clear(LISTSTORE(dive_list));
 	fill_dive_list();
+	restore_tree_state();
 	repaint_dive();
 }
 
@@ -1577,10 +1593,8 @@ static void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 			remove_dive_from_trip(dive);
 		dive->when = when;
 		mark_divelist_changed(TRUE);
-		remember_tree_state();
 		report_dives(FALSE, FALSE);
 		dive_list_update_dives();
-		restore_tree_state();
 	}
 }
 
@@ -1654,16 +1668,6 @@ static void collapse_all_cb(GtkWidget *menuitem, GtkTreeView *tree_view)
 	gtk_tree_view_collapse_all(tree_view);
 }
 
-static int get_path_index(GtkTreePath *path)
-{
-	GtkTreeIter iter;
-	int idx;
-
-	gtk_tree_model_get_iter(MODEL(dive_list), &iter, path);
-	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-	return idx;
-}
-
 /* Move a top-level dive into the trip above it */
 static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path)
 {
@@ -1688,8 +1692,6 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 			break;
 	}
 
-	remember_tree_state();
-
 	add_dive_to_trip(dive, trip);
 	if (dive->selected) {
 		for_each_dive(idx, dive) {
@@ -1701,7 +1703,6 @@ static void merge_dive_into_trip_above_cb(GtkWidget *menuitem, GtkTreePath *path
 
 	trip->expanded = 1;
 	dive_list_update_dives();
-	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -1715,7 +1716,6 @@ static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
 	dive = get_dive(idx);
 	if (!dive)
 		return;
-	remember_tree_state();
 	trip = create_and_hookup_trip_from_dive(dive);
 	if (dive->selected) {
 		for_each_dive(idx, dive) {
@@ -1726,7 +1726,6 @@ static void insert_trip_before_cb(GtkWidget *menuitem, GtkTreePath *path)
 	}
 	trip->expanded = 1;
 	dive_list_update_dives();
-	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -1740,7 +1739,6 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 		return;
 	dive = get_dive(idx);
 
-	remember_tree_state();
 	if (dive->selected) {
 		/* remove all the selected dives */
 		for_each_dive(idx, dive) {
@@ -1753,7 +1751,6 @@ static void remove_from_trip_cb(GtkWidget *menuitem, GtkTreePath *path)
 		remove_dive_from_trip(dive);
 	}
 	dive_list_update_dives();
-	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -1768,7 +1765,6 @@ static void remove_trip(GtkTreePath *trippath)
 	if (!trip)
 		return;
 
-	remember_tree_state();
 	for_each_dive(i, dive) {
 		if (dive->divetrip != trip)
 			continue;
@@ -1776,7 +1772,6 @@ static void remove_trip(GtkTreePath *trippath)
 	}
 
 	dive_list_update_dives();
-	restore_tree_state();
 
 #ifdef DEBUG_TRIP
 	dump_trip_list();
@@ -1822,13 +1817,11 @@ static void merge_trips_cb(GtkWidget *menuitem, GtkTreePath *trippath)
 	gtk_tree_model_get_iter(tm, &prevtripiter, prevpath);
 	gtk_tree_model_get(tm, &prevtripiter, DIVE_DATE, &when, -1);
 	prevtrip = find_matching_trip(when);
-	remember_tree_state();
 	/* move dives from trip */
 	assert(thistrip != prevtrip);
 	while (thistrip->dives)
 		add_dive_to_trip(thistrip->dives, prevtrip);
 	dive_list_update_dives();
-	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -1874,27 +1867,6 @@ void add_single_dive(int idx, struct dive *dive)
 	}
 }
 
-/* remember expanded state */
-void remember_tree_state()
-{
-	dive_trip_t *trip;
-	GtkTreeIter iter;
-	if (!gtk_tree_model_get_iter_first(TREEMODEL(dive_list), &iter))
-		return;
-	do {
-		int idx;
-		GtkTreePath *path;
-
-		gtk_tree_model_get(TREEMODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
-		trip = find_trip_by_idx(idx);
-		if (!trip)
-			continue;
-		path = gtk_tree_model_get_path(TREEMODEL(dive_list), &iter);
-		trip->expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(dive_list.tree_view), path);
-		gtk_tree_path_free(path);
-	} while (gtk_tree_model_iter_next(TREEMODEL(dive_list), &iter));
-}
-
 static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
 	int idx;
@@ -1920,7 +1892,7 @@ static gboolean restore_node_state(GtkTreeModel *model, GtkTreePath *path, GtkTr
 }
 
 /* restore expanded and selected state */
-void restore_tree_state()
+static void restore_tree_state(void)
 {
 	gtk_tree_model_foreach(MODEL(dive_list), restore_node_state, NULL);
 }
@@ -1954,7 +1926,6 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	if (!success)
 		return;
 
-	remember_tree_state();
 	/* walk the dive list in chronological order */
 	for (i = 0; i < dive_table.nr; i++) {
 		dive = get_dive(i);
@@ -1968,7 +1939,6 @@ static void delete_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		i--;
 	}
 	dive_list_update_dives();
-	restore_tree_state();
 
 	/* if no dives are selected at this point clear the display widgets */
 	if (!amount_selected) {
@@ -2003,13 +1973,11 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	if (!success)
 		return;
 
-	remember_tree_state();
 	if (!gtk_tree_model_get_iter(MODEL(dive_list), &iter, path))
 		return;
 	gtk_tree_model_get(MODEL(dive_list), &iter, DIVE_INDEX, &idx, -1);
 	delete_single_dive(idx);
 	dive_list_update_dives();
-	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 
@@ -2022,13 +1990,11 @@ static void merge_dive_index(int i, struct dive *a)
 	if (!res)
 		return;
 
-	remember_tree_state();
 	add_single_dive(i, res);
 	delete_single_dive(i+1);
 	delete_single_dive(i+1);
 
 	dive_list_update_dives();
-	restore_tree_state();
 	mark_divelist_changed(TRUE);
 }
 

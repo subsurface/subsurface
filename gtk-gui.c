@@ -980,9 +980,7 @@ static void autogroup_cb(GtkWidget *w, gpointer data)
 	autogroup = !autogroup;
 	if (! autogroup)
 		remove_autogen_trips();
-	remember_tree_state();
 	dive_list_update_dives();
-	restore_tree_state();
 }
 
 void set_autogroup(gboolean value)
@@ -1898,7 +1896,6 @@ static void import_files(GtkWidget *w, gpointer data)
 	struct stat sb;
 	GSList *filenames = NULL;
 
-	remember_tree_state();
 	fs_dialog = gtk_file_chooser_dialog_new(_("Choose XML Files To Import Into Current Data File"),
 		GTK_WINDOW(main_window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -1936,7 +1933,6 @@ static void import_files(GtkWidget *w, gpointer data)
 
 	free(current_def_dir);
 	gtk_widget_destroy(fs_dialog);
-	restore_tree_state();
 }
 
 void set_filename(const char *filename, gboolean force)

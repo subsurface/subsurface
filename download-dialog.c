@@ -362,7 +362,6 @@ void download_dialog(GtkWidget *w, gpointer data)
 		.devname = NULL,
 	};
 
-	remember_tree_state();
 	dialog = gtk_dialog_new_with_buttons(_("Download From Dive Computer"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -459,7 +458,6 @@ repeat:
 		break;
 	}
 	gtk_widget_destroy(dialog);
-	restore_tree_state();
 }
 
 void update_progressbar(progressbar_t *progress, double value)
