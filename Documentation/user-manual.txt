@@ -61,11 +61,13 @@ automatically load the already available divelog files.
 
 There is a menu, containing 'File', 'Log', 'Filter', 'Planner' and 'Help'.
 
-The screen is divided in 3 area's:
+The screen is divided in 3 area's (shown below with test dives loaded):
 
  - Area with 4 tabs: Dive Notes, Equipment, Dive Info, and Stats
  - Area next to the 4 tabs which will contain the dive profile
  - Area with the dives (usually called dive list) which can be sorted by number, date, etc.
+
+image::images/main_window.png["The Main Window",align="center"]
 
 
 [[S_ImportNewDives]]
@@ -102,10 +104,12 @@ Now it is time to hook up your dive computer to your PC:
  - Put your dive computer into PC Communication mode. (For 'Suunto Vyper', press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific dive computer for your brand and type)
 
- - Go in Subsurface to 'Log - Download From Dive Computer'
-	* Using the two drop down lists, choose your vendor and product. Here we choose 'Suunto' and 'Vyper'.
+ - In Subsurface go to 'Log - Download From Dive Computer'
+	* Using the two drop down lists, choose your vendor and product. Here we choose 'Suunto' and 'Vyper' as is shown on the screenshot below.
 	* Select the device name under which your interface is connected from the drop down list.
 	* Click the 'OK' button.
+
+image::images/download_dc.png["Download from Dive Computer",align="center"]
 
  - Now watch how your data is retrieved from your dive computer!
    Depending on your type of computer and/or number of dives, this
@@ -237,8 +241,12 @@ about that in <<S_SettingUpPreferences,Setting up Preferences>>.
 Edit the Dive Info
 ~~~~~~~~~~~~~~~~~~
 
-When you double click on the divelog line, the editor window
-opens. Now you can add information that is missing. Let's start with
+When you double click on the divelog line, an editor window
+opens as shown in this screenshot:
+
+image::images/edit_dive_info.png["Edit Dive Info",align="center"]
+
+Now you can add information that is missing. Let's start with
 completing the example:
 
 You double clicked on dive #12, as described in <<S_ViewingLogs,Viewing and
@@ -278,8 +286,12 @@ still another item to edit in the Dive Info screen:
 
  - Cylinder:	 A double-click field set. Here you can edit your Cylinder information
 
-So, when you double click on the cylinder info, you get another
-pop-up. This pop-up gives you the following:
+So, when you double click on the cylinder info or press the 'Edit' button, you get another
+pop-up.
+
+image::images/cylinder.png["Edit Cylinder",align="center"]
+
+This pop-up window contains the following information:
 
  - Cylinder:	Pull-down where you can choose your Cylinder, or add your own
  - Size:	The volume if not `filled'
