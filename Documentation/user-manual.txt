@@ -391,7 +391,9 @@ Setting up Preferences
 
 Subsurface has the ability to modify the preferences you want. By
 using menu 'File - Preferences' you will be presented a pop-up. The pop-up
-has two tabs: 'General Settings' and 'Tec Settings'.
+has two tabs: 'General Settings' and 'Tec Settings' as shown below.
+
+image::images/preferences.png["Preferences",align="center"]
 
 The General Settings allow you to select units, columns to be shown, the
 font used for the dive list and the default file that contains the data.
