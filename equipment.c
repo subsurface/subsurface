@@ -573,6 +573,7 @@ static void show_equipment(struct dive *dive, int max,
 		gtk_widget_set_sensitive(equipment_list->edit, 0);
 		gtk_widget_set_sensitive(equipment_list->del, 0);
 		gtk_widget_set_sensitive(equipment_list->add, 0);
+		clear_equipment_widgets();
 		return;
 	}
 	gtk_list_store_clear(model);

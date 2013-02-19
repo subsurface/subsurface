@@ -439,7 +439,7 @@ static void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	 * are in chronological order */
 	for (idx = 0; idx < dive_table.nr; idx++) {
 		dp = dive_table.dives[idx];
-		if (dp->when == dive->when) {
+		if (dive && dp->when == dive->when) {
 			/* that's the one we are showing */
 			if (idx > 0)
 				*prev_dive = dive_table.dives[idx-1];
@@ -699,7 +699,7 @@ static void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
-static void show_total_dive_stats(struct dive *dive)
+static void show_total_dive_stats(void)
 {
 	double value;
 	int decimals, seconds;
@@ -707,6 +707,8 @@ static void show_total_dive_stats(struct dive *dive)
 	char buffer[60];
 	stats_t *stats_ptr;
 
+	if (!stats_w.framelabel)
+		return;
 	stats_ptr = &stats_selection;
 
 	get_selected_dives_text(buffer, sizeof(buffer));
@@ -752,7 +754,7 @@ void show_dive_stats(struct dive *dive)
 	/* they have to be called in this order, as 'total' depends on
 	 * calculations done in 'single' */
 	show_single_dive_stats(dive);
-	show_total_dive_stats(dive);
+	show_total_dive_stats();
 }
 
 static GtkWidget *new_info_label_in_frame(GtkWidget *box, const char *label)
