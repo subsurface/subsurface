@@ -363,6 +363,28 @@ The information contains:
 	** Max/Min/Avg Depth:	The maximum / minimum / average depth of the covered dives
 	** Max/Min/Avg SAC:	Highest / lowest / average Surface Air Consumption of your covered dives
 
+There is also a yearly statistics option that is reachable from the menu 'Log -
+Yearly Statistics'. These statistics show you information on how many dives you
+have done per year and how long you spent below surface in total (during each
+year). You can also dig into a monthly level displaying the same information on
+monthly basis. Following information is given for each year (and month when expanded):
+
+	** Year > Month:	Year and month that is shown
+	** #:			Amount of dives during the year (or month) in question
+	** Duration Total:	Duration of all dives added together
+	** Average:		Average duration of a dive
+	** Shortest:		Duration of the shortest dive
+	** Longest:		Duration of the longest dive
+	** Depth Average:	Average depth of the dives
+	** Minimum:		This is the maximum depth of the shallowest dive
+	** Maximum:		Greatest maximum depth of the deepest
+	** SAC Average:		Average air consumption
+	** Minimum:		Minimum air consumption on a single dive
+	** Maximum:		Maximum air consumption on a single dive
+	** Temperature Average:	The average temperature of the recorded minimum temperatures of the dives
+	** Minimum:		The minimum temperature of the dives
+	** Maximum:		The maximum (minimum) temperature of the recorded dives
+
 [[S_SettingUpPreferences]]
 Setting up Preferences
 ----------------------
