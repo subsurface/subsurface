@@ -351,39 +351,45 @@ Now your dive information for this dive is complete. You can now press
 'OK' in the Dive Info screen and view the results.
 
 [[S_ViewInfoStats]]
-View Info & Stats
------------------
+View Dive Info & Stats
+----------------------
 
-After adding all the information, you can use the tab Dive Info and
-the Stats tab. These tabs will provide you with all the (statistical and
+After adding all the information, you can use the tab 'Dive Info' and
+the 'Stats tab'. These tabs will provide you with all the (statistical and
 calculated) information regarding your dive.
 
 The information contains:
 
- - Dive Info:
+**Dive Info:**
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field      | Description of field
+| Date       | Date and time of your dive
+| Dive Time  | Duration of your dive
+| Surf Intv  | Interval between previous dive and this dive
+| Max Depth  | Maximum depth of this dive
+| Avg Depth  | The average depth of this dive
+| Visibility | The visibility under water
+| Water Temp | Lowest temperature of the water
+| Air Temp   | The temperature of the air at the surface
+| Air Press  | The air pressure at the surface
+| SAC        | The amount of Surface Air Consumption liters per minute
+| OTU        | The Oxygen Toxicity Units of this dive
+| O2/He      | Amount of Oxygen/Helium
+| Gas Used   | The total volume of gas used during this dive
+|===============================================================================
 
-	** Date:	Date and time of your dive
-	** Dive Time:	Duration of your dive
-	** Surf Intv:	Interval between previous dive and this dive
-	** Max Depth:	Maximum depth of this dive
-	** Avg Depth:	The average depth of this dive
-	** Visibility:	The visibility under water
-	** Water Temp:	Lowest temperature of the water
-	** Air Temp:	The temperature of the air at the surface
-	** Air Press:	The air pressure at the surface
-	** SAC:		The amount of Surface Air Consumption liters per minute
-	** OTU:		The Oxygen Toxicity Units of this dive
-	** O2/He:	Amount of Oxygen/Helium
-	** Gas Used:	The total volume of gas used during this dive
-
- - Statistics:
-
-	** Dives:               Number of dives covered (usually one, unless you select more dives)
-	** Max/Min/Avg Temp:    Corresponding temperature of the dives covered
-	** Total time:	        Total time of the covered dives together, calculated
-	** Avg/Long/Short Time:	The average / longest / shortest dive time of the covered dives, calculated
-	** Max/Min/Avg Depth:	The maximum / minimum / average depth of the covered dives
-	** Max/Min/Avg SAC:	Highest / lowest / average Surface Air Consumption of your covered dives
+**Statistics:**
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field               | Description of field
+| Dives               | Number of dives covered (usually one, unless you select more dives)
+| Max/Min/Avg Temp    | Corresponding temperature of the dives covered
+| Total time          | Total time of the covered dives together, calculated
+| Avg/Long/Short Time | The average / longest / shortest dive time of the covered dives, calculated
+| Max/Min/Avg Depth   | The maximum / minimum / average depth of the covered dives
+| Max/Min/Avg SAC     | Highest / lowest / average Surface Air Consumption of your covered dives
+|===============================================================================
 
 There is also a yearly statistics option that is reachable from the menu 'Log -
 Yearly Statistics'. These statistics show you information on how many dives you
@@ -391,21 +397,25 @@ have done per year and how long you spent below surface in total (during each
 year). You can also dig into a monthly level displaying the same information on
 monthly basis. Following information is given for each year (and month when expanded):
 
-	** Year > Month:	Year and month that is shown
-	** #:			Amount of dives during the year (or month) in question
-	** Duration Total:	Duration of all dives added together
-	** Average:		Average duration of a dive
-	** Shortest:		Duration of the shortest dive
-	** Longest:		Duration of the longest dive
-	** Depth Average:	Average depth of the dives
-	** Minimum:		This is the maximum depth of the shallowest dive
-	** Maximum:		Greatest maximum depth of the deepest
-	** SAC Average:		Average air consumption
-	** Minimum:		Minimum air consumption on a single dive
-	** Maximum:		Maximum air consumption on a single dive
-	** Temperature Average:	The average temperature of the recorded minimum temperatures of the dives
-	** Minimum:		The minimum temperature of the dives
-	** Maximum:		The maximum (minimum) temperature of the recorded dives
+[width="90%",cols="<33%,67%",options="header"]
+|===============================================================================
+| Field               | Description of field
+| Year > Month        | Year and month that is shown
+| #                   | Amount of dives during the year (or month) in question
+| Duration Total      | Duration of all dives added together
+| Average             | Average duration of a dive
+| Shortest            | Duration of the shortest dive
+| Longest             | Duration of the longest dive
+| Depth Average       | Average depth of the dives
+| Minimum             | This is the maximum depth of the shallowest dive
+| Maximum             | Greatest maximum depth of the deepest
+| SAC Average         | Average air consumption
+| Minimum             | Minimum air consumption on a single dive
+| Maximum             | Maximum air consumption on a single dive
+| Temperature Average | The average temperature of the recorded minimum temperatures of the dives
+| Minimum             | The minimum temperature of the dives
+| Maximum             | The maximum (minimum) temperature of the recorded dives
+|===============================================================================
 
 [[S_SettingUpPreferences]]
 Setting up Preferences
