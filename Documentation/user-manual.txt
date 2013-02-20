@@ -642,15 +642,15 @@ Importing Dives from divelogs.de
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before you can start importing dives from divelogs.de, you first
-have to export the dives you want to import. The exported ZIP file can
+have to export the dives you want to import. The exported DLD file can
 be imported to Subsurface either from command line or from GUI.
 
 Export from divelogs.de
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-If you have logged dives in http://en.divelogs.de you can easily export them by
-going to http://en.divelogs.de/export.php and selecting 'DLD Export'.  This will provide
-the divelogsData.zip file.
+ - Login to http://en.divelogs.de with your account
+ - Go to the 'Export Logbook' page
+ - Choose 'DLD Export of your logbook' and save the resulting yourUserName.DLD file
 
 Import divelogs.de to Subsurface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -659,7 +659,7 @@ The import works similarly as importing any other divelogs. Just do the
 following steps on Subsurface:
 
  - Open the following menu 'File - Import XML Files(s)'
- - Browse your directories to the location where divelogsData.zip is
+ - Browse your directories to the location where yourUserName.DLD is
  - Select the log file and click OK
 
 After a few moments, you see your existing logs in Subsurface. Now you can
@@ -671,7 +671,7 @@ boat.
 It is also possible to do the importing from command line just like with
 JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>>):
 
-      subsurface MyDives.xml --import divelogsde.zip
+      subsurface MyDives.xml --import yourUserName.DLD
 
 [[S_DivePlanning]]
 Planning Dives
