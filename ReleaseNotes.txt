@@ -19,7 +19,7 @@ diving and calculates and tracks information like the user's SAC rate,
 partial pressures of O2, N2 and He, calculated deco information, and
 many more.
 
-One of the major strength of Subsurface is its support of a wide range
+One of the major strengths of Subsurface is its support of a wide range
 of dive computers (most common dive computers are supported, a
 detailed list is at
 http://subsurface.hohndel.org/documentation/supported-dive-computers).
@@ -45,13 +45,17 @@ New in this version (compared to Subsurface 2.1):
 - Dive planner
 - Improved printing support
 - Improved dive trip handling
-- Support for downloading dives from multiple computers (so for example both your main and your backup computer)
-- Added ability to import existing divelogs from Suunto DM3 (no manual unpacking needed anymore), JDivelog, MacDive and divelogs.de
+- Support for downloading dives from multiple computers (so for example
+  both your main and your backup computer)
+- Added ability to import existing divelogs from Suunto DM3 (no manual
+  unpacking needed anymore), JDivelog, MacDive and divelogs.de
 - Lots of features to make tec divers happy:
-  - Deco calculation with optional display of a calculated ceiling (Buehlmann ZH16 with gradient factors)
+  - Experimental deco calculation with optional display of a calculated
+    ceiling (Buhlmann ZH16 with gradient factors)
   - Display of deco information from some divecomputers that support this
   - TriMix support
-  - CCR support (fixed or variable setpoint, on dive computers that support this)
+  - CCR support (fixed or variable setpoint, on dive computers that support
+    this)
   - Optional pO2, pN2 and pHe graphs
   - CNS tracking for supported divecomputers
 - Lots of bug fixes
