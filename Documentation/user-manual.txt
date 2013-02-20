@@ -45,7 +45,8 @@ Subsurface, you need some preparation. Do you have the following:
 	4. If needed, the manual of your dive computer
 
 Alternatively you can import your divelogs from a couple of other
-divelog applications (JDivelog, MacDive, Suunto Dive Manager). However,
+divelog applications (JDivelog, MacDive, Suunto Dive Manager,
+divelogs.de). However,
 native download from dive computer directly to Subsurface is
 recommended.
 
@@ -507,7 +508,7 @@ Importing Divelogs from other Software
 --------------------------------------
 
 Subsurface will import divelogs from a couple of other log software. We
-support currently XML exports from DivingLog as well as Suunto
+support currently XML exports from DivingLog, divelogs.de and Suunto
 DiveManager. Native format of JDivelog and MacDive are imported as well.
 
 When importing dives subsurface tries to detect multiple records for
@@ -619,6 +620,43 @@ It is also possible to do the importing from command line just like with
 JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>>):
 
       subsurface MyDives.xml --import MacDiveDives.xml
+
+[[S_ImportingDivelogs.de]]
+Importing Dives from divelogs.de
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before you can start importing dives from divelogs.de, you first
+have to export the dives you want to import. The exported ZIP file can
+be imported to Subsurface either from command line or from GUI.
+
+Export from divelogs.de
+^^^^^^^^^^^^^^^^^^^^^^^
+
+ - ***FIXME*** Login to the divelogs.de
+ - ***FIXME*** Export
+
+Import divelogs.de to Subsurface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The import works similarly as importing any other divelogs. Just do the
+following steps on Subsurface:
+
+ - Open the following menu 'File - Import XML Files(s)'
+ - Browse your directories to the location where your divelogs.de
+   exported logs are
+ - Select the log file you want to import and click 'open'
+ - Click the OK button in the popup
+
+After a few moments, you see your existing logs in Subsurface. Now you can
+edit your dives like explained in <<S_EditDiveInfo, chapter Editing the Dive Info>>.
+
+The fields that are currently not imported are: weather, visibility and
+boat.
+
+It is also possible to do the importing from command line just like with
+JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>>):
+
+      subsurface MyDives.xml --import divelogsde.zip
 
 [[S_DivePlanning]]
 Planning Dives
