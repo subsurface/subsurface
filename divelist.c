@@ -2591,6 +2591,8 @@ GtkWidget *dive_list_create(void)
 	dive_list.otu = divelist_column(&dive_list, dl_column + DIVE_OTU);
 	dive_list.maxcns = divelist_column(&dive_list, dl_column + DIVE_MAXCNS);
 	dive_list.location = divelist_column(&dive_list, dl_column + DIVE_LOCATION);
+	gtk_tree_view_column_set_sort_indicator(dive_list.nr, TRUE);
+	gtk_tree_view_column_set_sort_order(dive_list.nr, GTK_SORT_DESCENDING);
 	/* now add the GPS icon to the location column */
 	tree_view_column_add_pixbuf(dive_list.tree_view, gpsicon_data_func, dive_list.location);
 
