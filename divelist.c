@@ -45,6 +45,9 @@ static struct DiveList dive_list;
 
 dive_trip_t *dive_trip_list;
 gboolean autogroup = FALSE;
+static gboolean in_set_cursor = FALSE;
+static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
+			     GtkTreeIter *iter, gpointer data);
 
 /*
  * The dive list has the dive data in both string format (for showing)
@@ -2206,11 +2209,21 @@ static gboolean button_press_cb(GtkWidget *treeview, GdkEventButton *event, gpoi
 	return FALSE;
 }
 
+/* make sure 'path' is shown in the divelist widget; since set_cursor changes the
+ * selection to be only 'path' we need to let our selection handling callbacks know
+ * that we didn't really mean this */
 static void scroll_to_path(GtkTreePath *path)
 {
+	GtkTreeSelection *selection;
+
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), path);
 	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE, 0, 0);
+	in_set_cursor = TRUE;
 	gtk_tree_view_set_cursor(GTK_TREE_VIEW(dive_list.tree_view), path, NULL, FALSE);
+	in_set_cursor = FALSE;
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dive_list.tree_view));
+	gtk_tree_model_foreach(MODEL(dive_list), set_selected, selection);
+
 }
 
 /* we need to have a temporary copy of the selected dives while
@@ -2234,18 +2247,21 @@ static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
 	if (idx < 0) {
-		GtkTreeIter child;
-		if (gtk_tree_model_iter_children(model, &child, iter))
-			gtk_tree_model_get(model, &child, DIVE_INDEX, &idx, -1);
-	}
-	dive = get_dive(idx);
-	selected = dive && dive->selected;
-	if (selected) {
-		gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), path);
-		gtk_tree_selection_select_path(selection, path);
+		/* this is a trip - restore its state */
+		dive_trip_t *trip = find_trip_by_idx(idx);
+		if (trip && trip->expanded)
+			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), path);
+		if (trip && trip->selected)
+			gtk_tree_selection_select_path(selection, path);
+	} else {
+		dive = get_dive(idx);
+		selected = dive && dive->selected;
+		if (selected) {
+			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(dive_list.tree_view), path);
+			gtk_tree_selection_select_path(selection, path);
+		}
 	}
 	return FALSE;
-
 }
 
 static gboolean scroll_to_this(GtkTreeModel *model, GtkTreePath *path,
@@ -2369,7 +2385,7 @@ static gboolean modify_selection_cb(GtkTreeSelection *selection, GtkTreeModel *m
 	int idx;
 	GtkTreeIter iter;
 
-	if (!was_selected)
+	if (!was_selected || in_set_cursor)
 		return TRUE;
 	gtk_tree_model_get_iter(model, &iter, path);
 	gtk_tree_model_get(model, &iter, DIVE_INDEX, &idx, -1);
