@@ -227,8 +227,8 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	if (!strcasecmp(fmt, "SDE"))
 		return try_to_open_zip(filename, mem, error);
 
-	/* divelogs.de files: divelogsData.zip */
-	if (!strcasecmp(fmt, "ZIP"))
+	/* divelogs.de files: DLD */
+	if (!strcasecmp(fmt, "DLD"))
 		return try_to_open_zip(filename, mem, error);
 
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
