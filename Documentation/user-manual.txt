@@ -621,7 +621,7 @@ JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>
 
       subsurface MyDives.xml --import MacDiveDives.xml
 
-[[S_ImportingDivelogs.de]]
+[[S_ImportingDivelogsDe]]
 Importing Dives from divelogs.de
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
