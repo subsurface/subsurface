@@ -62,7 +62,7 @@ out:
 #ifdef LIBZIP
 #include <zip.h>
 
-static void suunto_read(struct zip_file *file, GError **error)
+static void zip_read(struct zip_file *file, GError **error)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -72,12 +72,12 @@ static void suunto_read(struct zip_file *file, GError **error)
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
-	parse_xml_buffer(_("SDE file"), mem, read, &dive_table, error);
+	parse_xml_buffer(_("ZIP file"), mem, read, &dive_table, error);
 	free(mem);
 }
 #endif
 
-static int try_to_open_suunto(const char *filename, struct memblock *mem, GError **error)
+static int try_to_open_zip(const char *filename, struct memblock *mem, GError **error)
 {
 	int success = 0;
 #ifdef LIBZIP
@@ -90,7 +90,7 @@ static int try_to_open_suunto(const char *filename, struct memblock *mem, GError
 			struct zip_file *file = zip_fopen_index(zip, index, 0);
 			if (!file)
 				break;
-			suunto_read(file, error);
+			zip_read(file, error);
 			zip_fclose(file);
 			success++;
 		}
@@ -225,7 +225,11 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 {
 	/* Suunto Dive Manager files: SDE */
 	if (!strcasecmp(fmt, "SDE"))
-		return try_to_open_suunto(filename, mem, error);
+		return try_to_open_zip(filename, mem, error);
+
+	/* divelogs.de files: divelogsData.zip */
+	if (!strcasecmp(fmt, "ZIP"))
+		return try_to_open_zip(filename, mem, error);
 
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))

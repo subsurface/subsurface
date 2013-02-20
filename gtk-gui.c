@@ -126,6 +126,8 @@ static GtkFileFilter *setup_filter(void)
 #ifdef LIBZIP
 	gtk_file_filter_add_pattern(filter, "*.sde");
 	gtk_file_filter_add_pattern(filter, "*.SDE");
+	gtk_file_filter_add_pattern(filter, "*.zip");
+	gtk_file_filter_add_pattern(filter, "*.ZIP");
 #endif
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, _("XML file"));
