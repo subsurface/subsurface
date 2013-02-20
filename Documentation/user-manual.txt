@@ -632,8 +632,9 @@ be imported to Subsurface either from command line or from GUI.
 Export from divelogs.de
 ^^^^^^^^^^^^^^^^^^^^^^^
 
- - ***FIXME*** Login to the divelogs.de
- - ***FIXME*** Export
+If you have logged dives in http://en.divelogs.de you can easily export them by
+going to http://en.divelogs.de/export.php and selecting 'DLD Export'.  This will provide
+the divelogsData.zip file.
 
 Import divelogs.de to Subsurface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -642,10 +643,8 @@ The import works similarly as importing any other divelogs. Just do the
 following steps on Subsurface:
 
  - Open the following menu 'File - Import XML Files(s)'
- - Browse your directories to the location where your divelogs.de
-   exported logs are
- - Select the log file you want to import and click 'open'
- - Click the OK button in the popup
+ - Browse your directories to the location where divelogsData.zip is
+ - Select the log file and click OK
 
 After a few moments, you see your existing logs in Subsurface. Now you can
 edit your dives like explained in <<S_EditDiveInfo, chapter Editing the Dive Info>>.
