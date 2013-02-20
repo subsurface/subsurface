@@ -1142,8 +1142,8 @@ msgid "(nothing)"
 msgstr "(nic)"
 
 #: ../file.c:75
-msgid "SDE file"
-msgstr "plik SDE"
+msgid "ZIP file"
+msgstr "plik ZIP"
 
 #: ../file.c:263
 #, c-format

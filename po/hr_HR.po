@@ -1318,8 +1318,8 @@ msgid "SAC during dive"
 msgstr "Dodaj uron"
 
 #: file.c:75
-msgid "SDE file"
-msgstr "SDE Datoteka"
+msgid "ZIP file"
+msgstr "ZIP Datoteka"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"

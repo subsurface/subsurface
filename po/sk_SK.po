@@ -1344,8 +1344,8 @@ msgid "SAC during dive"
 msgstr "SAC počas ponoru"
 
 #: file.c:75
-msgid "SDE file"
-msgstr "SDE súbor"
+msgid "ZIP file"
+msgstr "ZIP súbor"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"

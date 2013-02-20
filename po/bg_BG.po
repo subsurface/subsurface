@@ -1345,8 +1345,8 @@ msgid "SAC during dive"
 msgstr "Добави гмуркане"
 
 #: file.c:75
-msgid "SDE file"
-msgstr "SDE файл"
+msgid "ZIP file"
+msgstr "ZIP файл"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"

@@ -1343,8 +1343,8 @@ msgid "SAC during dive"
 msgstr "Gasverbruik tijdens duik"
 
 #: file.c:75
-msgid "SDE file"
-msgstr "SDE bestand"
+msgid "ZIP file"
+msgstr "ZIP bestand"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"
