@@ -350,7 +350,7 @@ msgstr "Добави контролна точка"
 
 #: statistics.c:848
 msgid "Air Press"
-msgstr "Въздушна преса"
+msgstr "Атмосф. налягане"
 
 # SAC = Повърхностно Потребление на Кислород
 #: statistics.c:847
