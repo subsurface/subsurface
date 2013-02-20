@@ -1531,6 +1531,7 @@ static struct xslt_files {
 	{ "SUUNTO", "SuuntoSDM.xslt" },
 	{ "JDiveLog", "jdivelog2subsurface.xslt" },
 	{ "dives", "MacDive.xslt" },
+	{ "DIVELOGSDATA", "divelogs.xslt" },
 	{ NULL, }
 };
 
