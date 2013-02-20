@@ -2316,6 +2316,7 @@ static void sort_column_change_cb(GtkTreeSortable *treeview, gpointer data)
 	GtkSortType order;
 	GtkTreeStore *currentmodel = dive_list.model;
 
+	gtk_widget_grab_focus(dive_list.tree_view);
 	if (second_call)
 		return;
 
