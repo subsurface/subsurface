@@ -1,5 +1,34 @@
-Subsurface 3.0
-==============
+			Subsurface 3.0
+			==============
+
+The Subsurface developer team is proud to announce the release of the
+latest version of Subsurface.
+
+Subsurface is an open source divelog program that runs on Windows, Mac
+and Linux.
+
+Subsurface is able to track single- and multi-tank dives using air,
+Nitrox or TriMix. It also allows logging of weights and exposure
+protection used, dive masters and dive buddies and enables the user to
+rate dives and provide additional dive notes.
+
+With Subsurface the user can also track dive locations including GPS
+coordinates (which can conveniently entered using a map interface).
+Subsurface calculates a wide variety of statistics of the user’s
+diving and calculates and tracks information like the user's SAC rate,
+partial pressures of O2, N2 and He, calculated deco information, and
+many more.
+
+One of the major strength of Subsurface is its support of a wide range
+of dive computers (most common dive computers are supported, a
+detailed list is at
+http://subsurface.hohndel.org/documentation/supported-dive-computers).
+Subsurface can also import existing dive logs from several sources
+including MacDive, Suunto DM3, JDivelog and divelogs.de. Another
+strength is its ability to visualize the depth profile (and, if
+available, the tank pressure curve) in very innovative ways that give
+the user additional information on relative velocity (and momentary
+air consumption) during the dive.
 
 New in this version (compared to Subsurface 2.1):
 
@@ -17,6 +46,7 @@ New in this version (compared to Subsurface 2.1):
 - Improved printing support
 - Improved dive trip handling
 - Support for downloading dives from multiple computers (so for example both your main and your backup computer)
+- Added ability to import existing divelogs from Suunto DM3 (no manual unpacking needed anymore), JDivelog, MacDive and divelogs.de
 - Lots of features to make tec divers happy:
   - Deco calculation with optional display of a calculated ceiling (Buehlmann ZH16 with gradient factors)
   - Display of deco information from some divecomputers that support this
