@@ -683,7 +683,7 @@ the effects of changing various parameters of the dives.
 
 [WARNING]
 Deco calculations with optionally displaying the ceiling is
-done using a new implementation of the Bühlmann ZH16 algorithm with
+done using a new implementation of the Buhlmann ZH16 algorithm with
 gradient factors. Since the planner and our implementation of the
 decompression algorithms are new and have received only a limited amount
 of testing: +
