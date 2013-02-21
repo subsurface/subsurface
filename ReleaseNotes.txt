@@ -8,14 +8,16 @@ Subsurface is an open source divelog program that runs on Windows, Mac
 and Linux.
 
 Subsurface is able to track single- and multi-tank dives using air,
-Nitrox or TriMix. It also allows logging of weights and exposure
-protection used, dive masters and dive buddies and enables the user to
-rate dives and provide additional dive notes.
+Nitrox or TriMix. Dive profile is displayed with all related
+information, including air consumption and alarms. It also allows
+logging of weights and exposure protection used, dive masters and dive
+buddies and enables the user to rate dives and provide additional dive
+notes.
 
-With Subsurface the user can also track dive locations including GPS
-coordinates (which can conveniently entered using a map interface).
-Subsurface calculates a wide variety of statistics of the user’s
-diving and calculates and tracks information like the user's SAC rate,
+With Subsurface the user can track dive locations including GPS
+coordinates (which can also be conveniently entered using a map
+interface). Subsurface calculates a wide variety of statistics of the
+user's diving and keeps track of information like the user's SAC rate,
 partial pressures of O2, N2 and He, calculated deco information, and
 many more.
 
@@ -48,7 +50,7 @@ New in this version (compared to Subsurface 2.1):
 - Support for downloading dives from multiple computers (so for example
   both your main and your backup computer)
 - Added ability to import existing divelogs from Suunto DM3 (no manual
-  unpacking needed anymore), JDivelog, MacDive and divelogs.de
+  unpacking needed anymore), MacDive and divelogs.de
 - Lots of features to make tec divers happy:
   - Experimental deco calculation with optional display of a calculated
     ceiling (Buhlmann ZH16 with gradient factors)
