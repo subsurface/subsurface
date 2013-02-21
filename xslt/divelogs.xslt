@@ -25,9 +25,11 @@
       <xsl:attribute name="time">
         <xsl:value-of select="TIME"/>
       </xsl:attribute>
-      <xsl:attribute name="duration">
-        <xsl:value-of select="concat(floor(number(DIVETIMESEC) div 60), ':', format-number(floor(number(DIVETIMESEC) mod 60), '00'), ' min')"/>
-      </xsl:attribute>
+      <xsl:if test="DIVETIMESEC != ''">
+        <xsl:attribute name="duration">
+          <xsl:value-of select="concat(floor(number(DIVETIMESEC) div 60), ':', format-number(floor(number(DIVETIMESEC) mod 60), '00'), ' min')"/>
+        </xsl:attribute>
+    </xsl:if>
 
       <depth>
         <xsl:if test="MAXDEPTH != ''">
@@ -105,14 +107,16 @@
         </xsl:attribute>
       </cylinder>
 
-      <weightsystem>
-        <xsl:attribute name="description">
-          <xsl:value-of select="'unknown'"/>
-        </xsl:attribute>
-        <xsl:attribute name="weight">
-          <xsl:value-of select="concat(WEIGHT, ' kg')"/>
-        </xsl:attribute>
-      </weightsystem>
+      <xsl:if test="WEIGHT != ''">
+        <weightsystem>
+          <xsl:attribute name="description">
+            <xsl:value-of select="'unknown'"/>
+          </xsl:attribute>
+          <xsl:attribute name="weight">
+            <xsl:value-of select="concat(WEIGHT, ' kg')"/>
+          </xsl:attribute>
+        </weightsystem>
+      </xsl:if>
 
       <notes>
         <xsl:value-of select="LOGNOTES"/>
