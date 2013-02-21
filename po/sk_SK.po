@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 23:39-0800\n"
-"PO-Revision-Date: 2013-02-12 15:52+0100\n"
+"PO-Revision-Date: 2013-02-21 11:20+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
 "Language: de\n"
@@ -433,7 +433,7 @@ msgstr "CC SetPoint"
 #: planner.c:157
 #, c-format
 msgid "Can't find gas %d/%d"
-msgstr ""
+msgstr "Neviem nájsť zmes %d/%d"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -493,7 +493,7 @@ msgstr "Fľaša"
 
 #: planner.c:219
 msgid "Cylinder for planning"
-msgstr ""
+msgstr "Fľaša pre plánovanie"
 
 #: equipment.c:1539
 msgid "Cylinders"
@@ -563,7 +563,7 @@ msgstr "Id zariadenia"
 
 #: download-dialog.c:330
 msgid "Device or mount point"
-msgstr ""
+msgstr "Zariadenie alebo bod pripojenia"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #: info.c:105
@@ -683,7 +683,7 @@ msgstr "Dĺžka (min)"
 
 #: info.c:652
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: planner.c:126
 #, c-format
@@ -870,7 +870,7 @@ msgstr "Pi"
 
 #: gtk-gui.c:859
 msgid "GFhigh"
-msgstr ""
+msgstr "GFhigh"
 
 #: planner.c:1331
 msgid "GFhigh for plan"
@@ -878,7 +878,7 @@ msgstr "GFhigh pre plán"
 
 #: gtk-gui.c:849
 msgid "GFlow"
-msgstr ""
+msgstr "GFlow"
 
 #: planner.c:1330
 msgid "GFlow for plan"
@@ -922,7 +922,7 @@ msgstr "Pomoc"
 
 #: webservice.c:244
 msgid "Idle"
-msgstr ""
+msgstr "Nečinnosť"
 
 #: gtk-gui.c:1369
 msgid "Import XML File(s)..."
@@ -943,21 +943,20 @@ msgstr "Plánovanie"
 #: planner.c:1079
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
-msgstr ""
+msgstr "Neplatná hĺbka - nemožnosť spracovať \"%s\""
 
 #: planner.c:1081
 msgid "Invalid depth - values deeper than 400m not supported"
-msgstr ""
+msgstr "Neplatná hĺbka - hodnoty pod 400m nie sú podporované"
 
 #: planner.c:1057
 #, c-format
 msgid "Invalid gas for row %d"
-msgstr ""
+msgstr "Neplatná zmes na riadku %d"
 
 #: planner.c:1145
-#, fuzzy
 msgid "Invalid starttime"
-msgstr "Neplatný identifikátor užívateľa!"
+msgstr "Neplatný čas začiatku"
 
 #: webservice.c:25
 msgid "Invalid user identifier!"
@@ -1328,7 +1327,7 @@ msgstr "Skús znovu"
 
 #: info.c:651
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: divelist.c:1433 gtk-gui.c:682 print.c:377 statistics.c:175 statistics.c:854
 #, c-format
@@ -1568,12 +1567,11 @@ msgstr "Zmeň veľkosť"
 
 #: planner.c:212
 msgid "Too many gas mixes"
-msgstr ""
+msgstr "Príliš veľa zmesí"
 
 #: planner.c:1245
-#, fuzzy
 msgid "Too many waypoints"
-msgstr "Pridaj zastávku"
+msgstr "Príliš veľa zastávok"
 
 #: statistics.c:179
 msgctxt "Duration"
@@ -1654,7 +1652,7 @@ msgstr "Jednotky"
 
 #: gps.c:217
 msgid "Use right click to mark dive location at cursor"
-msgstr ""
+msgstr "Použi pravé tlačidlo na označenie miesta ponor pod kurzorom"
 
 #: webservice.c:230
 msgid "User Identifier"
@@ -1674,15 +1672,15 @@ msgstr "Objem:"
 
 #: info.c:652
 msgid "W"
-msgstr ""
+msgstr "W"
 
 #: planner.c:367
 msgid "Warning - extremely long dives can cause long calculation time"
-msgstr ""
+msgstr "Upozornenie - príliš dlhý ponor, výpočet môže trvať dlhšie"
 
 #: planner.c:1073
 msgid "Warning - planning very deep dives can take excessive amounts of time"
-msgstr ""
+msgstr "Upozornenie - príliš hlboký ponor, môže trvať príliš dlho"
 
 #: statistics.c:846
 msgid "Water Temp"
@@ -1690,7 +1688,7 @@ msgstr "Teplota vody"
 
 #: webservice.c:258
 msgid "Webservice"
-msgstr ""
+msgstr "Webservis"
 
 #: main.c:62
 msgid "Wed"
@@ -1815,11 +1813,11 @@ msgstr "hĺbková zastávka"
 
 #: uemis-downloader.c:405
 msgid "divelog entry id"
-msgstr ""
+msgstr "id položky logu"
 
 #: uemis-downloader.c:407
 msgid "divespot data id"
-msgstr ""
+msgstr "id dát miesta ponoru"
 
 #: libdivecomputer.c:152
 msgid "divetime"
@@ -1933,7 +1931,7 @@ msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 
 #: uemis-downloader.c:409
 msgid "more data dive id"
-msgstr ""
+msgstr "id ďalších dát ponoru"
 
 #: statistics.c:515
 #, c-format
