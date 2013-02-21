@@ -187,6 +187,7 @@ OsmGpsMap *init_map(void)
 	osm_gps_map_layer_add(OSM_GPS_MAP(map), osd);
 	g_object_unref(G_OBJECT(osd));
 	free((void*)cachebasedir);
+	free((void*)cachedir);
 	return map;
 }
 
