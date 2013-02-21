@@ -24,7 +24,10 @@ PREFIX=/Applications/Subsurface.app/Contents/Resources
 INFOPLIST=./packaging/macosx/Info.plist
 
 # same git version magic as in the Makefile
-VERSION=$(./scripts/get-version darwin)
+# for the naming of volume and dmg we don't need the "always 3 digits"
+# darwin version - the 'regular' version that has 2 digits for releases
+# is better
+VERSION=$(./scripts/get-version linux)
 
 # gtk-mac-bundler allegedly supports signing by setting this environment
 # variable, but this fails as we change the shared objects below and all
