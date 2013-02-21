@@ -5,7 +5,7 @@
 # Krzysztof Arentowicz <k.arentowicz@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: Subsurface\n"
+"Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-16 23:48+0100\n"
 "PO-Revision-Date: 2013-02-16 23:48+0100\n"
