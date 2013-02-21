@@ -45,7 +45,7 @@ Subsurface, you need some preparation. Do you have the following:
 	4. If needed, the manual of your dive computer
 
 Alternatively you can import your divelogs from a couple of other
-divelog applications (JDivelog, MacDive, Suunto Dive Manager,
+divelog applications (JDiveLog, MacDive, Suunto Dive Manager,
 divelogs.de). However,
 native download from dive computer directly to Subsurface is
 recommended.
@@ -525,7 +525,7 @@ Importing Divelogs from other Software
 
 Subsurface will import divelogs from a couple of other log software. We
 support currently XML exports from DivingLog, divelogs.de and Suunto
-DiveManager. Native format of JDivelog and MacDive are imported as well.
+DiveManager. Native format of JDiveLog and MacDive are imported as well.
 
 When importing dives subsurface tries to detect multiple records for
 the same dive and merges the information as best as it can. So as long
@@ -533,20 +533,20 @@ as there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be substantially different) subsurface
 will not create duplicate entries.
 
-[[S_ImportingDivesJDivelog]]
-Importing Dives from JDivelog
+[[S_ImportingDivesJDiveLog]]
+Importing Dives from JDiveLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Maybe you have been using JDivelog and you have a lot of dives logged in
+Maybe you have been using JDiveLog and you have a lot of dives logged in
 this program. You don't have to type all information by hand into
-Subsurface, because you can import your divelogs from JDivelog.
+Subsurface, because you can import your divelogs from JDiveLog.
 
-JDivelog stores its information into files with the extension of .jlb.
+JDiveLog stores its information into files with the extension of .jlb.
 These .jlb contain all the information that has been stored, except your
 images in xml format.
 
 By using the menu 'File - Import XML File(s)' you get a popup asking
-for the file name.  To import your JDivelog file(s) do the following:
+for the file name.  To import your JDiveLog file(s) do the following:
 
  - Open 'File - Import XML Files(s)' on the menu
  - Browse your directories to the location where your *.jlb file is
@@ -556,7 +556,7 @@ for the file name.  To import your JDivelog file(s) do the following:
 After a few moments, you see your existing logs in Subsurface. Now you can
 edit your dives like explained in <<S_EditDiveInfo, chapter Editing the Dive Info>>.
 
-Information that is imported from JDivelog into the location field:
+Information that is imported from JDiveLog into the location field:
 
  - Extended dive location information
 
@@ -571,7 +571,7 @@ Information that is merged into the location or notes field:
 Alternatively, you can start subsurface with the --import command line
 which will have the same effect:
 
-      subsurface MyDives.xml --import JDivelogDives.jlb
+      subsurface MyDives.xml --import JDiveLogDives.jlb
 
 will open your divelog (assuming that's called MyDives.xml) and then
 import the dives from JdivelogDives.jlb. You can now save the combined
@@ -633,7 +633,7 @@ We currently attempt to import all the relevant dive information
 excluding the used equipment and diver name.
 
 It is also possible to do the importing from command line just like with
-JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>>):
+JDiveLog (see <<S_ImportingDivesJDiveLog, chapter Importing Dives from JDiveLog>>):
 
       subsurface MyDives.xml --import MacDiveDives.xml
 
@@ -669,7 +669,7 @@ The fields that are currently not imported are: weather, visibility and
 boat.
 
 It is also possible to do the importing from command line just like with
-JDivelog (see <<S_ImportingDivesJDivelog, chapter Importing Dives from JDivelog>>):
+JDiveLog (see <<S_ImportingDivesJDiveLog, chapter Importing Dives from JDiveLog>>):
 
       subsurface MyDives.xml --import yourUserName.DLD
 

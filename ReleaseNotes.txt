@@ -26,7 +26,7 @@ of dive computers (most common dive computers are supported, a
 detailed list is at
 http://subsurface.hohndel.org/documentation/supported-dive-computers).
 Subsurface can also import existing dive logs from several sources
-including MacDive, Suunto DM3, JDivelog and divelogs.de. Another
+including MacDive, Suunto DM3, JDiveLog and divelogs.de. Another
 strength is its ability to visualize the depth profile (and, if
 available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
