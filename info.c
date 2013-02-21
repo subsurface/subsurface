@@ -1261,3 +1261,11 @@ GtkWidget *extended_dive_info_widget(void)
 	notes = text_view(vbox, _("Notes"), READ_ONLY);
 	return vbox;
 }
+
+void info_widget_destroy(void)
+{
+	g_object_unref(people_list);
+	g_object_unref(location_list);
+	g_object_unref(star_list);
+	g_object_unref(suit_list);
+}

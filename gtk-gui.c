@@ -336,6 +336,7 @@ gboolean on_delete(GtkWidget* w, gpointer data)
 static void on_destroy(GtkWidget* w, gpointer data)
 {
 	dive_list_destroy();
+	info_widget_destroy();
 	gtk_main_quit();
 }
 

@@ -64,6 +64,7 @@ extern GtkWidget *total_stats_widget(void);
 
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);
+extern void info_widget_destroy(void);
 extern GdkPixbuf *get_gps_icon(void);
 
 /* Helper functions for gtk combo boxes */
