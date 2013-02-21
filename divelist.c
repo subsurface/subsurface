@@ -2729,11 +2729,11 @@ void select_next_dive(void)
 	if (!gtk_tree_model_iter_next(MODEL(dive_list), nextiter)) {
 		if (!gtk_tree_model_iter_parent(MODEL(dive_list), nextiter, iter)) {
 			/* we're at the last top level node */
-			return;
+			goto free_iter;
 		}
 		if (!gtk_tree_model_iter_next(MODEL(dive_list), nextiter)) {
 			/* last trip */
-			return;
+			goto free_iter;
 		}
 	}
 	gtk_tree_model_get(MODEL(dive_list), nextiter, DIVE_INDEX, &idx, -1);
@@ -2741,9 +2741,12 @@ void select_next_dive(void)
 		/* need the first child */
 		parent = gtk_tree_iter_copy(nextiter);
 		if (! gtk_tree_model_iter_children(MODEL(dive_list), nextiter, parent))
-			return;
+			goto free_iter;
 	}
 	go_to_iter(selection, nextiter);
+free_iter:
+	if (nextiter)
+		gtk_tree_iter_free(nextiter);
 	if (parent)
 		gtk_tree_iter_free(parent);
 	gtk_tree_iter_free(iter);
@@ -2763,27 +2766,27 @@ void select_prev_dive(void)
 	if (!gtk_tree_path_prev(treepath)) {
 		if (!gtk_tree_model_iter_parent(MODEL(dive_list), &previter, iter))
 			/* we're at the last top level node */
-			goto free_path;
+			goto free_iter;
 		gtk_tree_path_free(treepath);
 		treepath = gtk_tree_model_get_path(MODEL(dive_list), &previter);
 		if (!gtk_tree_path_prev(treepath))
 			/* first trip */
-			goto free_path;
+			goto free_iter;
 		if (!gtk_tree_model_get_iter(MODEL(dive_list), &previter, treepath))
-			goto free_path;
+			goto free_iter;
 	}
 	if (!gtk_tree_model_get_iter(MODEL(dive_list), &previter, treepath))
-		goto free_path;
+		goto free_iter;
 	gtk_tree_model_get(MODEL(dive_list), &previter, DIVE_INDEX, &idx, -1);
 	if (idx < 0) {
 		/* need the last child */
 		parent = gtk_tree_iter_copy(&previter);
 		if (! gtk_tree_model_iter_nth_child(MODEL(dive_list), &previter, parent,
 				gtk_tree_model_iter_n_children(MODEL(dive_list), parent) - 1))
-			goto free_path;
+			goto free_iter;
 	}
 	go_to_iter(selection, &previter);
-free_path:
+free_iter:
 	gtk_tree_path_free(treepath);
 	if (parent)
 		gtk_tree_iter_free(parent);
