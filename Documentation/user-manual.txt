@@ -248,7 +248,7 @@ opens as shown in this screenshot:
 
 image::images/edit_dive_info.png["Edit Dive Info",align="center"]
 
-The purpose of the fields is described in the tabel below:
+The purpose of the fields is described in the table below:
 
 [width="90%",cols="<33%,67%",options="header"]
 |===============================================================================
@@ -487,8 +487,8 @@ The 'Profile Setting' allow you to show extra information in the dive profile:
 | Setting                              | Description
 | Show pO2 graph                       | Show a graph of the oxygen partial pressure (with a threshold, default 1.6)
 | Show pN2 graph                       | Show a graph of the nitrogen partial pressure (with a threshold, default 4.0)
-| Show pHe grapg                       | Show a graph of the helium partial pressure (with a threshold, default 13.0)
-| Show MOD                             | Show the Maximum Operating Depth of the used gasmix (for the given max. ppO2, default 1.6)
+| Show pHe graph                       | Show a graph of the helium partial pressure (with a threshold, default 13.0)
+| Show MOD                             | Show the Maximum Operating Depth of the used gas-mix (for the given max. ppO2, default 1.6)
 | Show EAD, END, EADD                  | Show Equivalent Air Depth (considering N2 and O2 narcotic), Equivalent Nitrogen Depth (considering just N2 narcotic) and Equivalent Air Density Depth
 | Show dc reported ceiling in red      | Show the ceiling as reported by the dive computer
 | Show calculated ceiling              | Show the ceiling as calculated by Subsurface
@@ -543,7 +543,7 @@ Subsurface, because you can import your divelogs from JDiveLog.
 
 JDiveLog stores its information into files with the extension of .jlb.
 These .jlb contain all the information that has been stored, except your
-images in xml format.
+images in XML format.
 
 By using the menu 'File - Import XML File(s)' you get a popup asking
 for the file name.  To import your JDiveLog file(s) do the following:
