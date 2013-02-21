@@ -62,7 +62,7 @@ out:
 #ifdef LIBZIP
 #include <zip.h>
 
-static void zip_read(struct zip_file *file, GError **error)
+static void zip_read(struct zip_file *file, GError **error, const char *filename)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -72,7 +72,7 @@ static void zip_read(struct zip_file *file, GError **error)
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
-	parse_xml_buffer(_("ZIP file"), mem, read, &dive_table, error);
+	parse_xml_buffer(filename, mem, read, &dive_table, error);
 	free(mem);
 }
 #endif
@@ -90,7 +90,7 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, GError **
 			struct zip_file *file = zip_fopen_index(zip, index, 0);
 			if (!file)
 				break;
-			zip_read(file, error);
+			zip_read(file, error, filename);
 			zip_fclose(file);
 			success++;
 		}
