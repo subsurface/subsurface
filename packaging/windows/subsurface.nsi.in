@@ -99,7 +99,6 @@ Section
 
     # Files to include in installer
     File ..\..\subsurface.exe
-    File ..\..\subsurface-icon.svg
     File /r ..\..\xslt
     File dll\iconv.dll
     File dll\libatk-1.0-0.dll
@@ -148,6 +147,7 @@ Section
         CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Subsurface.lnk" "$INSTDIR\subsurface.exe"
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall Subsurface.lnk" "$INSTDIR\Uninstall.exe"
+        CreateShortCut "$DESKTOP\Subsurface.lnk" "$INSTDIR\subsurface.exe" ""
     !insertmacro MUI_STARTMENU_WRITE_END
 
     # Create the uninstaller
@@ -163,13 +163,13 @@ Section "Uninstall"
 
     # Delete installed files
     Delete "$INSTDIR\*.dll"
-    Delete "$INSTDIR\*.xslt"
+    Delete "$INSTDIR\xslt\*.xslt"
     Delete "$INSTDIR\freetype-config"
     Delete "$INSTDIR\subsurface.exe"
     Delete "$INSTDIR\subsurface.ico"
-    Delete "$INSTDIR\subsurface-icon.svg"
     Delete "$INSTDIR\Uninstall.exe"
     RMDir /r "$INSTDIR\share"
+    RMDir /r "$INSTDIR\xslt"
     RMDir "$INSTDIR"
 
     # Remove shortcuts
@@ -177,6 +177,7 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$StartMenuFolder\Subsurface.lnk"
     Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall Subsurface.lnk"
     RMDir "$SMPROGRAMS\$StartMenuFolder"
+    Delete "$DESKTOP\Subsurface.lnk"
 
     # Remove registry entries
     DeleteRegKey /ifempty HKCU "Software\Subsurface"
