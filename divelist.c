@@ -2628,6 +2628,8 @@ GtkWidget *dive_list_create(void)
 void dive_list_destroy(void)
 {
 	gtk_widget_destroy(dive_list.tree_view);
+	g_object_unref(dive_list.treemodel);
+	g_object_unref(dive_list.listmodel);
 }
 
 void mark_divelist_changed(int changed)
