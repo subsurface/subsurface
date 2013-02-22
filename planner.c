@@ -177,9 +177,9 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 }
 
 /* how many seconds until we can ascend to the next stop? */
-int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
+int time_at_last_depth(struct dive *dive, int o2, int he, int next_stop, char **cached_data_p)
 {
-	int depth, gasidx, o2, he;
+	int depth, gasidx;
 	double surface_pressure, tissue_tolerance;
 	int wait = 0;
 	struct sample *sample;
@@ -190,10 +190,6 @@ int time_at_last_depth(struct dive *dive, int next_stop, char **cached_data_p)
 	tissue_tolerance = tissue_at_end(dive, cached_data_p);
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
-	/* we always start with gas 0 (unless an event tells us otherwise) */
-	o2 = dive->cylinder[0].gasmix.o2.permille;
-	he = dive->cylinder[0].gasmix.he.permille;
-	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
 	gasidx = get_gasidx(dive, o2, he);
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
@@ -690,7 +686,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 #endif
 			gi--;
 		}
-		wait_time = time_at_last_depth(dive, stoplevels[stopidx - 1], cached_datap);
+		wait_time = time_at_last_depth(dive, o2, he, stoplevels[stopidx - 1], cached_datap);
 		/* typically deco plans are done in one minute increments; we may want to
 		 * make this configurable at some point */
 		wait_time = ((wait_time + 59) / 60) * 60;
