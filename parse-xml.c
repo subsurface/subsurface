@@ -108,6 +108,15 @@ static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
 static int lastcylinderindex, lastsensor;
 
+/*
+ * If we don't have an explicit dive computer,
+ * we use the implicit one that every dive has..
+ */
+static struct divecomputer *get_dc(void)
+{
+	return cur_dc ? : &cur_dive->dc;
+}
+
 static enum import_source {
 	UNKNOWN,
 	LIBDIVECOMPUTER,
@@ -342,6 +351,10 @@ static void percent(char *buffer, void *_fraction)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
+		/* Turn fractions into percent.. */
+		if (val.fp <= 1.0)
+			val.fp *= 100;
+		/* Then turn percent into our integer permille format */
 		if (val.fp <= 100.0)
 			fraction->permille = val.fp * 10 + 0.5;
 		break;
@@ -524,12 +537,24 @@ static int divinglog_fill_sample(struct sample *sample, const char *name, int le
 		0;
 }
 
+static void uddf_gasswitch(char *buffer, void *_sample)
+{
+	struct sample *sample = _sample;
+	int idx = atoi(buffer);
+	int seconds = sample->time.seconds;
+	struct dive *dive = cur_dive;
+	struct divecomputer *dc = get_dc();
+
+	add_gas_switch_event(dive, dc, seconds, idx);
+}
+
 static int uddf_fill_sample(struct sample *sample, const char *name, int len, char *buf)
 {
 	return	MATCH(".divetime", sampletime, &sample->time) ||
 		MATCH(".depth", depth, &sample->depth) ||
 		MATCH(".temperature", temperature, &sample->temperature) ||
 		MATCH(".tankpressure", pressure, &sample->cylinderpressure) ||
+		MATCH(".switchmix.ref", uddf_gasswitch, sample) ||
 		0;
 }
 
@@ -591,15 +616,6 @@ static void try_to_fill_event(const char *name, char *buf)
 	if (MATCH(".value", get_index, &cur_event.value))
 		return;
 	nonmatch("event", name, buf);
-}
-
-/*
- * If we don't have an explicit dive computer,
- * we use the implicit one that every dive has..
- */
-static struct divecomputer *get_dc(void)
-{
-	return cur_dc ? : &cur_dive->dc;
 }
 
 static int match_dc_data_fields(struct divecomputer *dc, const char *name, int len, char *buf)
@@ -835,11 +851,28 @@ success:
 	*when = utc_mktime(&tm);
 }
 
+#define uddf_datedata(name, offset)				\
+static void uddf_##name(char *buffer, void *_when)		\
+{	timestamp_t *when = _when;				\
+	cur_tm.tm_##name = atoi(buffer) + offset;		\
+	*when = utc_mktime(&cur_tm); }
+
+uddf_datedata(year, 0)
+uddf_datedata(mon, -1)
+uddf_datedata(mday, 0)
+uddf_datedata(hour, 0)
+uddf_datedata(min, 0)
+
 static int uddf_dive_match(struct dive *dive, const char *name, int len, char *buf)
 {
 	return	MATCH(".datetime", uddf_datetime, &dive->when) ||
 		MATCH(".diveduration", duration, &dive->dc.duration) ||
 		MATCH(".greatestdepth", depth, &dive->dc.maxdepth) ||
+		MATCH(".date.year", uddf_year, &dive->when) ||
+		MATCH(".date.month", uddf_mon, &dive->when) ||
+		MATCH(".date.day", uddf_mday, &dive->when) ||
+		MATCH(".time.hour", uddf_hour, &dive->when) ||
+		MATCH(".time.minute", uddf_min, &dive->when) ||
 		0;
 }
 
@@ -1381,6 +1414,7 @@ static struct nesting {
 	{ "SAMPLE", sample_start, sample_end },
 	{ "reading", sample_start, sample_end },
 	{ "event", event_start, event_end },
+	{ "mix", cylinder_start, cylinder_end },
 	{ "gasmix", cylinder_start, cylinder_end },
 	{ "cylinder", cylinder_start, cylinder_end },
 	{ "weightsystem", ws_start, ws_end },
