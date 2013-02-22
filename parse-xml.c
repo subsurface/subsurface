@@ -19,10 +19,24 @@
 
 int verbose;
 
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, GError **error);
+
 /* the dive table holds the overall dive list; target table points at
  * the table we are currently filling */
 struct dive_table dive_table;
 struct dive_table *target_table = NULL;
+
+static void parser_error(GError **error, const char *fmt, ...)
+{
+	va_list args;
+
+	if (!error)
+		return;
+	va_start(args, fmt);
+	*error = g_error_new_valist(g_quark_from_string("subsurface"), DIVE_ERROR_PARSE, fmt, args);
+	va_end(args);
+}
+
 /*
  * Add a dive into the dive_table array
  */
@@ -1477,19 +1491,13 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	doc = xmlReadMemory(buffer, size, url, NULL, 0);
 	if (!doc) {
 		fprintf(stderr, _("Failed to parse '%s'.\n"), url);
-		if (error != NULL)
-		{
-			*error = g_error_new(g_quark_from_string("subsurface"),
-					     DIVE_ERROR_PARSE,
-					     _("Failed to parse '%s'"),
-					     url);
-		}
+		parser_error(error, _("Failed to parse '%s'"), url);
 		return;
 	}
 	reset_all();
 	dive_start();
 #ifdef XSLT
-	doc = test_xslt_transforms(doc);
+	doc = test_xslt_transforms(doc, error);
 #endif
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
@@ -1569,7 +1577,7 @@ static struct xslt_files {
 	{ NULL, }
 };
 
-xmlDoc *test_xslt_transforms(xmlDoc *doc)
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, GError **error)
 {
 	struct xslt_files *info = xslt_files;
 	xmlDoc *transformed;
@@ -1593,8 +1601,10 @@ xmlDoc *test_xslt_transforms(xmlDoc *doc)
 
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
-		if (xslt == NULL)
+		if (xslt == NULL) {
+			parser_error(error, "Can't open stylesheet (%s)/%s", xslt_path, info->file);
 			return doc;
+		}
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
 		xmlFreeDoc(doc);
 		xsltFreeStylesheet(xslt);

@@ -529,10 +529,6 @@ extern void set_filename(const char *filename, gboolean force);
 
 extern void parse_file(const char *filename, GError **error, gboolean possible_default_filename);
 
-#ifdef XSLT
-extern xmlDoc *test_xslt_transforms(xmlDoc *doc);
-#endif
-
 extern void show_dive_info(struct dive *);
 
 extern void show_dive_equipment(struct dive *, int w_idx);
