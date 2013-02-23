@@ -294,6 +294,9 @@ Comment: <xsl:value-of select="Comment"/>
                 <xsl:attribute name="stopdepth">
                   <xsl:value-of select="concat(following-sibling::DECOINFO[1], ' m')"/>
                 </xsl:attribute>
+		<xsl:attribute name="ndl">
+			<xsl:value-of select="'0:00 min'"/>
+		</xsl:attribute>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:if>
