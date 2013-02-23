@@ -256,7 +256,7 @@ static void add_cell(GtkTreeStore *store, GtkTreeIter *parent, unsigned int val,
 		snprintf(value_str, sizeof(value_str), "%.*f %s", decimals, value, unit);
 	} else {
 		value = get_volume_units(val, &decimals, &unit);
-		snprintf(value_str, sizeof(value_str), "%.*f %s/min", decimals, value, unit);
+		snprintf(value_str, sizeof(value_str), _("%.*f %s/min"), decimals, value, unit);
 	}
 	add_cell_to_tree(store, value_str, cell, parent);
 }
