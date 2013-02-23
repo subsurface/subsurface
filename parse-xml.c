@@ -195,28 +195,32 @@ static void divedatetime(char *buffer, void *_when)
 	}
 }
 
-union int_or_float {
-	double fp;
-};
-
 enum number_type {
 	NEITHER,
 	FLOAT
 };
 
+static enum number_type parse_float(char *buffer, double *res, char **endp)
+{
+	double val;
+
+	errno = 0;
+	val = g_ascii_strtod(buffer, endp);
+	if (errno || *endp == buffer)
+		return NEITHER;
+
+	*res = val;
+	return FLOAT;
+}
+
+union int_or_float {
+	double fp;
+};
+
 static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 {
 	char *end;
-	double fp;
-
-	errno = 0;
-	fp = g_ascii_strtod(buffer, &end);
-	if (!errno && end != buffer) {
-		res->fp = fp;
-		return FLOAT;
-	}
-
-	return NEITHER;
+	return parse_float(buffer, &res->fp, &end);
 }
 
 static void pressure(char *buffer, void *_press)
@@ -361,18 +365,24 @@ static void duration(char *buffer, void *_time)
 static void percent(char *buffer, void *_fraction)
 {
 	fraction_t *fraction = _fraction;
-	union int_or_float val;
+	double val;
+	char *end;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, &val, &end)) {
 	case FLOAT:
-		/* Turn fractions into percent.. */
-		if (val.fp <= 1.0)
-			val.fp *= 100;
-		/* Then turn percent into our integer permille format */
-		if (val.fp <= 100.0)
-			fraction->permille = val.fp * 10 + 0.5;
-		break;
+		/* Turn fractions into percent unless explicit.. */
+		if (val <= 1.0) {
+			while (isspace(*end))
+				end++;
+			if (*end != '%')
+				val *= 100;
+		}
 
+		/* Then turn percent into our integer permille format */
+		if (val >= 0 && val <= 100.0) {
+			fraction->permille = val * 10 + 0.5;
+			break;
+		}
 	default:
 		printf("Strange percentage reading %s\n", buffer);
 		break;
