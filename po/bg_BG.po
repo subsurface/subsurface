@@ -1403,7 +1403,7 @@ msgstr ""
 #: statistics.c:181
 msgctxt "Duration"
 msgid "Shortest"
-msgstr "Най-къс"
+msgstr "Най-късо"
 
 #: statistics.c:794
 msgid "Shortest Dive"
