@@ -123,6 +123,8 @@ static GtkFileFilter *setup_filter(void)
 	GtkFileFilter *filter = gtk_file_filter_new();
 	gtk_file_filter_add_pattern(filter, "*.xml");
 	gtk_file_filter_add_pattern(filter, "*.XML");
+	gtk_file_filter_add_pattern(filter, "*.uddf");
+	gtk_file_filter_add_pattern(filter, "*.UDDF");
 #ifdef LIBZIP
 	gtk_file_filter_add_pattern(filter, "*.sde");
 	gtk_file_filter_add_pattern(filter, "*.SDE");
