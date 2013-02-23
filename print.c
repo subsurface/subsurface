@@ -197,7 +197,7 @@ static void print_tanks (struct dive *dive, cairo_t *cr, PangoLayout *layout, in
 		int tank_count, int first_tank, PangoFontDescription *font,
         double w_scale_factor)
 {
-	int curwidth, n, i, counter;
+	int curwidth, n, i, counter, height_count = 0;
 	char buffer[80], dataheader1[3][80]= { N_("Cylinder"), N_("Gasmix"),
 	/*++GETTEXT Gas Used is amount used */
 					       N_("Gas Used")};
@@ -247,26 +247,38 @@ static void print_tanks (struct dive *dive, cairo_t *cr, PangoLayout *layout, in
 		snprintf(buffer, sizeof(buffer), "%s", desc);
 		pango_layout_set_text(layout, buffer, -1);
 		pango_cairo_show_layout(cr, layout);
+		pango_layout_get_extents(layout, NULL, &logic_ext);
+		if (logic_ext.height > height_count)
+			height_count = logic_ext.height;
+
 		curwidth += (maxwidth/ 3);
 
 		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
 		print_ean_trimix (cr, layout,
 				cyl->gasmix.o2.permille/10,
 				cyl->gasmix.he.permille/10);
+		pango_layout_get_extents(layout, NULL, &logic_ext);
+		if (logic_ext.height > height_count)
+			height_count = logic_ext.height;
+
 		curwidth += (maxwidth/ 3);
 
 		cairo_move_to(cr, curwidth / (double) PANGO_SCALE, 0);
-		snprintf(buffer, sizeof(buffer), _("%.*f %s\n"),
+		snprintf(buffer, sizeof(buffer), _("%.*f %s"),
 			decimals,
 			gas_usage,
 			unit);
 		pango_layout_set_text(layout, buffer, -1);
 		pango_cairo_show_layout(cr, layout);
+		pango_layout_get_extents(layout, NULL, &logic_ext);
+		if (logic_ext.height > height_count)
+			height_count = logic_ext.height;
+
 		curwidth += (maxwidth/ 3);
 		n++;
 		counter++;
-		pango_layout_get_extents(layout, NULL, &logic_ext);
-		cairo_translate (cr, 0, logic_ext.height / (2*(double) PANGO_SCALE));
+
+		cairo_translate (cr, 0, height_count / (double) PANGO_SCALE);
 	}
 	g_object_unref (layout);
 	cairo_restore(cr);
