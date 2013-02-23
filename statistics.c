@@ -361,7 +361,8 @@ static void update_yearly_stats()
 
 		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
 			combined_months += stats_monthly[month].selection_size;
-			process_interval_stats(stats_monthly[month++], &year_iter, &month_iter);
+			process_interval_stats(stats_monthly[month], &year_iter, &month_iter);
+			month++;
 		}
 	}
 }
