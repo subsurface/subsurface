@@ -1122,7 +1122,7 @@ GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget *
 	gtk_calendar_select_month(GTK_CALENDAR(*cal), time->tm_mon, time->tm_year + 1900);
 	gtk_calendar_select_day(GTK_CALENDAR(*cal), time->tm_mday);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(*h), time->tm_hour);
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(*m), (time->tm_min / 5)*5);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(*m), time->tm_min);
 
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(*h), TRUE);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(*m), TRUE);
