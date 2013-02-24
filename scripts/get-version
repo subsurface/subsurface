@@ -40,7 +40,7 @@ case $os in
 		# do we need to add another digit?
 		# We know there are 1 or 2 dots in $v, so if it's just one
 		# or we are trying to get to 4, add one digit
-		if [ ${#dots} -eq 1 ] || [ $os == "win" ]; then
+		if [ ${#dots} -eq 1 ] || [ $os = win ]; then
 			if [ $# -gt 1 ]; then
 				v=$v.$2
 			else
@@ -48,7 +48,7 @@ case $os in
 			fi
 		fi
 		# and if it was just one dot and we want 4, at another 0
-		if [ ${#dots} -eq 1 ] && [ $os == "win" ]; then
+		if [ ${#dots} -eq 1 ] && [ $os = win ]; then
 			v=$v.0
 		fi
 		;;
