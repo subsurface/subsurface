@@ -678,7 +678,8 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		if (asc_desc_time * 2 >= duration)
 			asc_desc_time = duration/2;
 
-		dc->meandepth.mm = depth*(duration-asc_desc_time)/duration;
+		if (!dc->meandepth.mm)
+			dc->meandepth.mm = depth*(duration-asc_desc_time)/duration;
 		if (depth > maxdepth)
 			maxdepth = depth;
 	} else {
