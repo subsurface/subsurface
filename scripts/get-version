@@ -30,24 +30,27 @@ case $os in
 		v=$v0
 		;;
 	darwin|win)
+		# just the dots in the version string - this way we can
+		# count them
+		dots="${v0//[^.]}"
 		# split version string using a '-' separator
 		IFS='-'
 		set -- $v0
-		v1=$1
-		if [ $# -gt 1 ]; then
-			v1=$v1.$2
-		else
-			v1=$v1.0
+		v=$1
+		# do we need to add another digit?
+		# We know there are 1 or 2 dots in $v, so if it's just one
+		# or we are trying to get to 4, add one digit
+		if [ ${#dots} -eq 1 ] || [ $os == "win" ]; then
+			if [ $# -gt 1 ]; then
+				v=$v.$2
+			else
+				v=$v.0
+			fi
 		fi
-		case $os in
-			darwin)
-				v=$v1
-				;;
-			win)
-				# always add '0' as the 4:th digit
-				v=$v1.0
-				;;
-		esac
+		# and if it was just one dot and we want 4, at another 0
+		if [ ${#dots} -eq 1 ] && [ $os == "win" ]; then
+			v=$v.0
+		fi
 		;;
 	*)
 		v='git.missing.please.hardcode.version'
