@@ -213,12 +213,6 @@ static void update_depth(depth_t *depth, int new)
 	}
 }
 
-static void update_duration(duration_t *duration, int new)
-{
-	if (new)
-		duration->seconds = new;
-}
-
 static void update_temperature(temperature_t *temperature, int new)
 {
 	if (new) {
@@ -226,6 +220,40 @@ static void update_temperature(temperature_t *temperature, int new)
 
 		if (abs(old - new) > 1000)
 			temperature->mkelvin = new;
+	}
+}
+
+/*
+ * Calculate how long we were actually under water, and the average
+ * depth while under water.
+ *
+ * This ignores any surface time in the middle of the dive.
+ */
+static void fixup_dc_duration(struct divecomputer *dc)
+{
+	int duration, i;
+	int lasttime, lastdepth, depthtime;
+
+	duration = 0;
+	lasttime = 0;
+	lastdepth = 0;
+	depthtime = 0;
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+		int time = sample->time.seconds;
+		int depth = sample->depth.mm;
+
+		/* We ignore segments at the surface */
+		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
+			duration += time - lasttime;
+			depthtime += (time - lasttime)*(depth+lastdepth)/2;
+		}
+		lastdepth = depth;
+		lasttime = time;
+	}
+	if (duration) {
+		dc->duration.seconds = duration;
+		dc->meandepth.mm = (depthtime + duration/2) / duration;
 	}
 }
 
@@ -566,11 +594,13 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	double depthtime = 0;
 	int lasttime = 0;
 	int lastindex = -1;
-	int start = -1, end = -1;
 	int maxdepth = 0, mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
+
+	/* Fixup duration and mean depth */
+	fixup_dc_duration(dc);
 
 	update_min_max_temperatures(dive, dc->watertemp);
 	for (i = 0; i < dc->samples; i++) {
@@ -603,13 +633,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		lastindex = index;
 		lastpressure = pressure;
 
-		if (lastdepth > SURFACE_THRESHOLD)
-			end = time;
-
 		if (depth > SURFACE_THRESHOLD) {
-			end = time;
-			if (start < 0)
-				start = lasttime;
 			if (depth > maxdepth)
 				maxdepth = depth;
 		}
@@ -666,29 +690,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			cyl->sample_end.mbar = 0;
 		}
 	}
-	if (end < 0) {
-		/* Assume an ascent/descent rate of 9 m/min */
-		int depth = dc->maxdepth.mm;
-		int asc_desc_time = depth*60/9000;
-		int duration = dc->duration.seconds;
 
-		/* Some sanity checks against insane dives */
-		if (duration < 2)
-			duration = 2;
-		if (asc_desc_time * 2 >= duration)
-			asc_desc_time = duration/2;
-
-		if (!dc->meandepth.mm)
-			dc->meandepth.mm = depth*(duration-asc_desc_time)/duration;
-		if (depth > maxdepth)
-			maxdepth = depth;
-	} else {
-		update_duration(&dc->duration, end - start);
-		if (start != end)
-			depthtime /= (end - start);
-
-		update_depth(&dc->meandepth, depthtime);
-	}
 	update_temperature(&dc->watertemp, mintemp);
 	update_depth(&dc->maxdepth, maxdepth);
 	if (maxdepth > dive->maxdepth.mm)

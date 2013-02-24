@@ -719,46 +719,6 @@ static double calculate_airuse(struct dive *dive)
 	return airuse;
 }
 
-/*
- * Calculate how long we were actually under water, and the average
- * depth while under water.
- *
- * This ignores any surface time in the middle of the dive.
- */
-static int calculate_duration(struct dive *dive, struct divecomputer *dc, int *meandepth)
-{
-	int duration, i;
-	int lasttime, lastdepth, depthtime;
-
-	duration = 0;
-	lasttime = 0;
-	lastdepth = 0;
-	depthtime = 0;
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		int time = sample->time.seconds;
-		int depth = sample->depth.mm;
-
-		/* We ignore segments at the surface */
-		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
-			duration += time - lasttime;
-			depthtime += (time - lasttime)*(depth+lastdepth)/2;
-		}
-		lastdepth = depth;
-		lasttime = time;
-	}
-	if (duration) {
-		if (meandepth)
-			*meandepth = depthtime / duration;
-		return duration;
-	}
-
-	/* No samples? */
-	if (meandepth)
-		*meandepth = dive->meandepth.mm;
-	return dive->duration.seconds;
-}
-
 /* this only uses the first divecomputer to calculate the SAC rate */
 static int calculate_sac(struct dive *dive)
 {
@@ -770,10 +730,12 @@ static int calculate_sac(struct dive *dive)
 	if (!airuse)
 		return 0;
 
-	duration = calculate_duration(dive, dc, &meandepth);
-
-	/* find and eliminate long surface intervals */
+	duration = dc->duration.seconds;
 	if (!duration)
+		return 0;
+
+	meandepth = dc->meandepth.mm;
+	if (!meandepth)
 		return 0;
 
 	/* Mean pressure in ATM (SAC calculations are in atm*l/min) */
