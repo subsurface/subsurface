@@ -749,8 +749,8 @@ static int calculate_sac(struct dive *dive)
 			}
 		}
 	}
-	/* Mean pressure in bar (SAC calculations are in bar*l/min) */
-	pressure = depth_to_mbar(dc->meandepth.mm, dive) / 1000.0;
+	/* Mean pressure in ATM (SAC calculations are in atm*l/min) */
+	pressure = (double) depth_to_mbar(dc->meandepth.mm, dive) / SURFACE_PRESSURE;
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */

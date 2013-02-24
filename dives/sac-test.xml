@@ -1,0 +1,50 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='1' date='2013-02-24' time='09:26:04' duration='25:00 min'>
+  <location>SAC test dive 1</location>
+  <notes>SAC should be 20l/min (0.7063 cuft/min)
+We have exactly 100 ATM of gas in a 10l cylinder, average 10m for 25min</notes>
+  <cylinder size='10 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <divecomputer>
+  <depth max='10.0 m' mean='10.0 m' />
+  <sample time='0:00 min' depth='10.0 m' />
+  <sample time='5:00 min' depth='10.0 m' />
+  <sample time='10:00 min' depth='10.0 m' />
+  <sample time='15:00 min' depth='10.0 m' />
+  <sample time='20:00 min' depth='10.0 m' />
+  <sample time='25:00 min' depth='10.0 m' />
+  </divecomputer>
+</dive>
+<dive number='2' date='2013-02-24' time='10:26:04' duration='25:00 min'>
+  <location>SAC test dive 2</location>
+  <notes>SAC should be 20l/min (0.7063 cuft/min)
+We have exactly 100 ATM of gas in a 10l cylinder, average 10m for 25min</notes>
+  <cylinder size='10 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <divecomputer>
+  <depth max='20.0 m' mean='10.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='12:30 min' depth='20.0 m' />
+  <sample time='25:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='3' date='2013-02-24' time='11:26:04' duration='25:00 min'>
+  <location>SAC test dive 3</location>
+  <notes>SAC should be 20l/min (0.7063 cuft/min)
+We have exactly 100 ATM of gas in 15l of cylinder, average 20m for 25min</notes>
+  <cylinder size='10 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <cylinder size='5 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <divecomputer>
+  <event time='17:00 min' name='gaschange' />
+  <depth max='20.0 m' mean='10.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='5:00 min' depth='20.0 m' />
+  <sample time='10:00 min' depth='40.0 m' />
+  <sample time='15:00 min' depth='0.0 m' />
+  <sample time='20:00 min' depth='40.0 m' />
+  <sample time='25:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

@@ -607,6 +607,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			end = time;
 
 		if (depth > SURFACE_THRESHOLD) {
+			end = time;
 			if (start < 0)
 				start = lasttime;
 			if (depth > maxdepth)
