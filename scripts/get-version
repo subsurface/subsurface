@@ -36,7 +36,7 @@ case $os in
 		set -- $v0		# split $v0 using $IFS separator
 		dots=$(($# - 1))	# use positional argument count
 		# split version string using a '-' separator
-		IFS='-'
+		IFS=-
 		set -- $v0
 		v=$1
 		# do we need to add another digit?
@@ -55,7 +55,7 @@ case $os in
 		fi
 		;;
 	*)
-		v='git.missing.please.hardcode.version'
+		v=git.missing.please.hardcode.version
 		;;
 esac
 printf '%s' $v
