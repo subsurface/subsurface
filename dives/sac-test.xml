@@ -46,5 +46,24 @@ We have exactly 100 ATM of gas in 15l of cylinder, average 20m for 25min</notes>
   <sample time='25:00 min' depth='0.0 m' />
   </divecomputer>
 </dive>
+<dive number='4' date='2013-02-24' time='12:26:04' duration='25:00 min'>
+  <location>SAC test dive 3</location>
+  <notes>SAC should be 20l/min (0.7063 cuft/min)
+This adds a 5-minute surface time to the middle of the dive.
+We have exactly 100 ATM of gas in 15l of cylinder, average 20m for 25min</notes>
+  <cylinder size='10 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <cylinder size='5 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <divecomputer>
+  <event time='22:00 min' name='gaschange' />
+  <depth max='20.0 m' mean='10.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='5:00 min' depth='20.0 m' />
+  <sample time='10:00 min' depth='40.0 m' />
+  <sample time='15:00 min' depth='0.0 m' />
+  <sample time='20:00 min' depth='0.0 m' />
+  <sample time='25:00 min' depth='40.0 m' />
+  <sample time='30:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
 </dives>
 </divelog>
