@@ -205,7 +205,7 @@ static inline double bar_to_atm(double bar)
 
 static inline double to_ATM(pressure_t pressure)
 {
-	return pressure.mbar / SURFACE_PRESSURE;
+	return pressure.mbar / (double) SURFACE_PRESSURE;
 }
 
 static inline int mbar_to_PSI(int mbar)
