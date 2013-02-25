@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-25 08:13-0800\n"
+"POT-Creation-Date: 2013-02-25 13:57-0800\n"
 "PO-Revision-Date: 2013-02-17 11:37+0300\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -12,12 +12,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: gtk-gui.c:973
+msgid ""
+"\n"
+"No Events\n"
+msgstr ""
+
 #: statistics.c:177
 msgctxt "Stats"
 msgid " > Month"
 msgstr "> Месяц"
 
-#: webservice.c:237
+#: webservice.c:258
 msgid " Download"
 msgstr "Загрузить"
 
@@ -25,12 +31,12 @@ msgstr "Загрузить"
 msgid " Please select dive computer and device. "
 msgstr "Выберите модель компьютера и устройство."
 
-#: profile.c:413
+#: profile.c:414
 msgctxt "Starts with space!"
 msgid " begin"
 msgstr " начало"
 
-#: profile.c:414
+#: profile.c:415
 msgctxt "Starts with space!"
 msgid " end"
 msgstr " конец"
@@ -104,7 +110,7 @@ msgstr "%dч %dмин"
 msgid "%s"
 msgstr "%s"
 
-#: profile.c:2168
+#: profile.c:2169
 #, c-format
 msgid ""
 "%s\n"
@@ -113,7 +119,7 @@ msgstr ""
 "%s\n"
 "CNS:%u%%"
 
-#: profile.c:2136
+#: profile.c:2137
 #, c-format
 msgid ""
 "%s\n"
@@ -122,7 +128,7 @@ msgstr ""
 "%s\n"
 "Расчетный потолок %.0f %s"
 
-#: profile.c:2152
+#: profile.c:2153
 #, c-format
 msgid ""
 "%s\n"
@@ -131,7 +137,7 @@ msgstr ""
 "%s\n"
 "Деко:%uмин @ %.0f %s"
 
-#: profile.c:2155
+#: profile.c:2156
 #, c-format
 msgid ""
 "%s\n"
@@ -140,7 +146,7 @@ msgstr ""
 "%s\n"
 "Деко:неизв. время @ %.0f %s"
 
-#: profile.c:2192
+#: profile.c:2193
 #, c-format
 msgid ""
 "%s\n"
@@ -153,7 +159,7 @@ msgstr ""
 "END:%d%s\n"
 "EADD:%d%s"
 
-#: profile.c:2161
+#: profile.c:2162
 #, c-format
 msgid ""
 "%s\n"
@@ -162,7 +168,7 @@ msgstr ""
 "%s\n"
 "В деко"
 
-#: profile.c:2185
+#: profile.c:2186
 #, c-format
 msgid ""
 "%s\n"
@@ -171,7 +177,7 @@ msgstr ""
 "%s\n"
 "MOD:%d%s"
 
-#: profile.c:2164
+#: profile.c:2165
 #, c-format
 msgid ""
 "%s\n"
@@ -180,7 +186,7 @@ msgstr ""
 "%s\n"
 "NDL:%uмин"
 
-#: profile.c:2126
+#: profile.c:2127
 #, c-format
 msgid ""
 "%s\n"
@@ -189,7 +195,7 @@ msgstr ""
 "%s\n"
 "P:%d %s"
 
-#: profile.c:2144
+#: profile.c:2145
 #, c-format
 msgid ""
 "%s\n"
@@ -198,7 +204,7 @@ msgstr ""
 "%s\n"
 "Ост.безоп:%uмин @ %.0f %s"
 
-#: profile.c:2147
+#: profile.c:2148
 #, c-format
 msgid ""
 "%s\n"
@@ -220,7 +226,7 @@ msgstr ""
 "на основе значений нижний ГФ = %.0f и верхний ГФ = %.0f\n"
 "\n"
 
-#: profile.c:2131
+#: profile.c:2132
 #, c-format
 msgid ""
 "%s\n"
@@ -229,7 +235,7 @@ msgstr ""
 "%s\n"
 "T:%.1f %s"
 
-#: profile.c:2180
+#: profile.c:2181
 #, c-format
 msgid ""
 "%s\n"
@@ -238,7 +244,7 @@ msgstr ""
 "%s\n"
 "pHe:%.2fбар"
 
-#: profile.c:2176
+#: profile.c:2177
 #, c-format
 msgid ""
 "%s\n"
@@ -247,7 +253,7 @@ msgstr ""
 "%s\n"
 "pN%s:%.2fбар"
 
-#: profile.c:2172
+#: profile.c:2173
 #, c-format
 msgid ""
 "%s\n"
@@ -266,7 +272,7 @@ msgstr "(%s) или (%s)"
 msgid "(no dives)"
 msgstr "(нет погружений)"
 
-#: gtk-gui.c:2002
+#: gtk-gui.c:2010
 msgid "(nothing)"
 msgstr "(отсутствует)"
 
@@ -322,11 +328,11 @@ msgstr ""
 msgid "AIR"
 msgstr "воздух"
 
-#: gtk-gui.c:1063 gtk-gui.c:1386
+#: gtk-gui.c:1067 gtk-gui.c:1394
 msgid "About Subsurface"
 msgstr "О Subsurface"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1385
 msgid "Add Dive..."
 msgstr "Добавить погружение..."
 
@@ -367,7 +373,7 @@ msgstr "Апр"
 msgid "Aug"
 msgstr "Авг"
 
-#: gtk-gui.c:1399
+#: gtk-gui.c:1407
 msgid "Autogroup"
 msgstr "Автогруппировка"
 
@@ -407,7 +413,7 @@ msgstr "Ср. темп."
 msgid "Avg Time"
 msgstr "Ср. время"
 
-#: profile.c:410
+#: profile.c:411
 #, c-format
 msgid "Bailing out to OC"
 msgstr "Переход на Откр. Цикл"
@@ -442,7 +448,7 @@ msgstr "Отменено, выход..."
 msgid "Cancelled..."
 msgstr "Отменено..."
 
-#: webservice.c:27
+#: webservice.c:28
 msgid "Cannot parse response!"
 msgstr "Невозможно разобрать ответ!"
 
@@ -454,11 +460,11 @@ msgstr "Цельсий"
 msgid "Choose Default XML File"
 msgstr "Выберите XML файл по умолчанию"
 
-#: gtk-gui.c:1904
+#: gtk-gui.c:1912
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Выберите XML файлы для импорта в текущий файл данных"
 
-#: gtk-gui.c:1372
+#: gtk-gui.c:1380
 msgid "Close"
 msgstr "Закрыть"
 
@@ -466,11 +472,11 @@ msgstr "Закрыть"
 msgid "Collapse all"
 msgstr "Свернуть все"
 
-#: webservice.c:119
+#: webservice.c:120
 msgid "Connecting..."
 msgstr "Соединение..."
 
-#: webservice.c:23
+#: webservice.c:24
 msgid "Connection Error: "
 msgstr "Ошибка соединения:"
 
@@ -498,7 +504,7 @@ msgstr "Баллон планировщика"
 msgid "Cylinders"
 msgstr "Баллоны"
 
-#: profile.c:2122
+#: profile.c:2123
 #, c-format
 msgid "D:%.1f %s"
 msgstr "Г:%.1f %s"
@@ -527,7 +533,7 @@ msgstr "Дек"
 msgid "Default XML Data File"
 msgstr "XML файл по умолчанию"
 
-#: gtk-gui.c:1319
+#: gtk-gui.c:1327
 msgid "Delete a dive computer information entry"
 msgstr "Удалить дайвкомпьютер"
 
@@ -556,7 +562,7 @@ msgstr "Превышен лимит глубины"
 msgid "Depth:"
 msgstr "Глубина:"
 
-#: gtk-gui.c:1278
+#: gtk-gui.c:1286
 msgid "Device Id"
 msgstr "Идентификатор"
 
@@ -580,15 +586,15 @@ msgstr "Погр. №%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Погружение %d: %s %d %04d"
 
-#: gtk-gui.c:1984
+#: gtk-gui.c:1992
 msgid "Dive Computer Nickname"
 msgstr "Название дайвкомпьютера"
 
-#: gtk-gui.c:1616 info.c:998 statistics.c:829
+#: gtk-gui.c:1624 info.c:998 statistics.c:829
 msgid "Dive Info"
 msgstr "Информация"
 
-#: gtk-gui.c:1608
+#: gtk-gui.c:1616
 msgid "Dive Notes"
 msgstr "Погружение"
 
@@ -644,7 +650,7 @@ msgstr "Инструктор"
 msgid "Dives"
 msgstr "Погружения"
 
-#: gtk-gui.c:1382
+#: gtk-gui.c:1390
 msgid "Dives Locations"
 msgstr "Места погружений"
 
@@ -652,19 +658,19 @@ msgstr "Места погружений"
 msgid "Download From Dive Computer"
 msgstr "Загрузка из дайвкомпьютера"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1383
 msgid "Download From Dive Computer..."
 msgstr "Загрузка из дайвкомпьютера..."
 
-#: webservice.c:210
+#: webservice.c:229
 msgid "Download From Web Service"
 msgstr "Загрузка из вебсервиса"
 
-#: gtk-gui.c:1376
+#: gtk-gui.c:1384
 msgid "Download From Web Service..."
 msgstr "Загрузка из вебсервиса..."
 
-#: webservice.c:29
+#: webservice.c:30
 msgid "Download Success!"
 msgstr "Успешная загрузка!"
 
@@ -697,11 +703,11 @@ msgstr "EAN36"
 msgid "Edit"
 msgstr "Редактировать"
 
-#: gtk-gui.c:1391
+#: gtk-gui.c:1399
 msgid "Edit Device Names"
 msgstr "Список дайвкомпьютеров"
 
-#: gtk-gui.c:1251
+#: gtk-gui.c:1259
 msgid "Edit Dive Computer Nicknames"
 msgstr "Редактирование названий дайвкомпьютеров"
 
@@ -713,7 +719,7 @@ msgstr "Редактирование поездки"
 msgid "Edit Trip Summary"
 msgstr "Краткие данные о поездке"
 
-#: gtk-gui.c:1311
+#: gtk-gui.c:1319
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Чтобы редактировать название компьютера, дважды щелкните мышью в поле названия"
 
@@ -749,11 +755,11 @@ msgstr "Конец"
 msgid "Ending Depth"
 msgstr "Конечная глубина"
 
-#: webservice.c:223
+#: webservice.c:244
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Введите идентификатор пользователя и нажмите 'Загрузить'. По окончании загрузки вы можете нажать 'Применить' чтобы внести изменения."
 
-#: gtk-gui.c:1612 info.c:833
+#: gtk-gui.c:1620 info.c:833
 msgid "Equipment"
 msgstr "Снаряжение"
 
@@ -847,11 +853,11 @@ msgstr "Фев"
 msgid "Feet"
 msgstr "Фут"
 
-#: gtk-gui.c:1362
+#: gtk-gui.c:1370
 msgid "File"
 msgstr "Файл"
 
-#: gtk-gui.c:1365
+#: gtk-gui.c:1373
 msgid "Filter"
 msgstr "Фильтр"
 
@@ -911,19 +917,19 @@ msgstr "Смесь"
 msgid "General Settings"
 msgstr "Общие настройки"
 
-#: gtk-gui.c:1367
+#: gtk-gui.c:1375
 msgid "Help"
 msgstr "Справка"
 
-#: webservice.c:244
+#: webservice.c:265
 msgid "Idle"
 msgstr "Простаивает"
 
-#: gtk-gui.c:1374
+#: gtk-gui.c:1382
 msgid "Import XML File(s)..."
 msgstr "Импорт XML файла(-ов)..."
 
-#: gtk-gui.c:1389
+#: gtk-gui.c:1397
 msgid "Info"
 msgstr "Информация"
 
@@ -931,7 +937,7 @@ msgstr "Информация"
 msgid "Init Communication"
 msgstr "Инициализация связи"
 
-#: gtk-gui.c:1394
+#: gtk-gui.c:1402
 msgid "Input Plan"
 msgstr "Ввести план"
 
@@ -953,7 +959,7 @@ msgstr "Неверная смесь в строке %d"
 msgid "Invalid starttime"
 msgstr "Неверное время старта"
 
-#: webservice.c:25
+#: webservice.c:26
 msgid "Invalid user identifier!"
 msgstr "Неверный идентификатор пользователя!"
 
@@ -970,11 +976,11 @@ msgstr "Июл"
 msgid "Jun"
 msgstr "Июн"
 
-#: gtk-gui.c:1069
+#: gtk-gui.c:1073
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 msgstr "Линус Торвальдс, Дирк Хондел и другие, 2011, 2012, 2013"
 
-#: gtk-gui.c:1387
+#: gtk-gui.c:1395
 msgid "List"
 msgstr "Список"
 
@@ -986,7 +992,7 @@ msgstr "Литр"
 msgid "Location"
 msgstr "Местонахождение"
 
-#: gtk-gui.c:1363
+#: gtk-gui.c:1371
 msgid "Log"
 msgstr "Журнал"
 
@@ -1125,7 +1131,7 @@ msgstr "Минимум"
 msgid "Misc. Options"
 msgstr "Прочие настройки"
 
-#: gtk-gui.c:1273
+#: gtk-gui.c:1281
 msgid "Model"
 msgstr "Модель"
 
@@ -1133,7 +1139,7 @@ msgstr "Модель"
 msgid "Mon"
 msgstr "Пнд"
 
-#: gtk-gui.c:1065
+#: gtk-gui.c:1069
 msgid "Multi-platform divelog software in C"
 msgstr "Кроссплатформенный журнал погружений"
 
@@ -1141,19 +1147,19 @@ msgstr "Кроссплатформенный журнал погружений"
 msgid "N"
 msgstr "С"
 
-#: gtk-gui.c:1368
+#: gtk-gui.c:1376
 msgid "New"
 msgstr "Новый"
 
-#: gtk-gui.c:1017
+#: gtk-gui.c:1021
 msgid "New starting number"
 msgstr "Начать нумерацию с"
 
-#: gtk-gui.c:1393
+#: gtk-gui.c:1401
 msgid "Next DC"
 msgstr "След. ДК"
 
-#: gtk-gui.c:1283 gtk-gui.c:2006
+#: gtk-gui.c:1291 gtk-gui.c:2014
 msgid "Nickname"
 msgstr "Имя устройства"
 
@@ -1186,7 +1192,7 @@ msgstr "Окт"
 msgid "Odd pthread error return"
 msgstr "Необычная ошибка возврата pthread"
 
-#: gtk-gui.c:1330
+#: gtk-gui.c:1338
 msgid "Ok to delete the selected entry?"
 msgstr "Удалить выбранную запись?"
 
@@ -1194,7 +1200,7 @@ msgstr "Удалить выбранную запись?"
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: gtk-gui.c:1369
+#: gtk-gui.c:1377
 msgid "Open..."
 msgstr "Открыть..."
 
@@ -1227,7 +1233,7 @@ msgstr "PSI"
 msgid "Pick on map"
 msgstr "Выбрать на карте"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1374
 msgid "Planner"
 msgstr "Планировщик"
 
@@ -1235,7 +1241,7 @@ msgstr "Планировщик"
 msgid "Preferences"
 msgstr "Предпочтения"
 
-#: gtk-gui.c:1378
+#: gtk-gui.c:1386
 msgid "Preferences..."
 msgstr "Предпочтения..."
 
@@ -1247,7 +1253,7 @@ msgstr "Давление"
 msgid "Pressure:"
 msgstr "Давление:"
 
-#: gtk-gui.c:1392
+#: gtk-gui.c:1400
 msgid "Prev DC"
 msgstr "Пред. ДК"
 
@@ -1263,11 +1269,11 @@ msgstr "Печать выделенных"
 msgid "Print type"
 msgstr "Тип печати"
 
-#: gtk-gui.c:1373
+#: gtk-gui.c:1381
 msgid "Print..."
 msgstr "Печать..."
 
-#: gtk-gui.c:1388
+#: gtk-gui.c:1396
 msgid "Profile"
 msgstr "Профиль"
 
@@ -1275,7 +1281,7 @@ msgstr "Профиль"
 msgid "Profile Settings"
 msgstr "Настройки профиля"
 
-#: gtk-gui.c:1385
+#: gtk-gui.c:1393
 msgid "Quit"
 msgstr "Выход"
 
@@ -1308,11 +1314,11 @@ msgstr "Удалить из поездки"
 msgid "Remove selected dives from trip"
 msgstr "Удалить выделенные из поездки"
 
-#: gtk-gui.c:1008
+#: gtk-gui.c:1012
 msgid "Renumber"
 msgstr "Перенумеровать"
 
-#: gtk-gui.c:1379
+#: gtk-gui.c:1387
 msgid "Renumber..."
 msgstr "Перенумеровать..."
 
@@ -1345,7 +1351,7 @@ msgstr "Нарушение остановки безопасности"
 msgid "Sat"
 msgstr "Суб"
 
-#: gtk-gui.c:1371
+#: gtk-gui.c:1379
 msgid "Save As..."
 msgstr "Сохранить как..."
 
@@ -1361,7 +1367,7 @@ msgstr "Сохранить файл как"
 msgid "Save as"
 msgstr "Сохранить как"
 
-#: gtk-gui.c:1370
+#: gtk-gui.c:1378
 msgid "Save..."
 msgstr "Сохранить..."
 
@@ -1373,7 +1379,7 @@ msgstr "Время сегмента"
 msgid "Select Events"
 msgstr "Выбрать события"
 
-#: gtk-gui.c:1384
+#: gtk-gui.c:1392
 msgid "Select Events..."
 msgstr "Выбрать события..."
 
@@ -1469,11 +1475,11 @@ msgstr "Статистика"
 msgid "Statistics %s"
 msgstr "Статистика %s"
 
-#: gtk-gui.c:1620
+#: gtk-gui.c:1628
 msgid "Stats"
 msgstr "Статистика"
 
-#: webservice.c:243
+#: webservice.c:264
 msgid "Status"
 msgstr "Состояние"
 
@@ -1537,7 +1543,7 @@ msgstr "Температура"
 msgid "Temperature:"
 msgstr "Температура:"
 
-#: gtk-gui.c:1390
+#: gtk-gui.c:1398
 msgid "Three"
 msgstr "Три панели"
 
@@ -1549,7 +1555,7 @@ msgstr "Чтв"
 msgid "Time"
 msgstr "Время"
 
-#: gtk-gui.c:1506
+#: gtk-gui.c:1514
 msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
@@ -1557,7 +1563,7 @@ msgstr ""
 "Для редактирования погружения\n"
 "дважды щелкните мышью на нем в списке"
 
-#: gtk-gui.c:1400
+#: gtk-gui.c:1408
 msgid "Toggle Zoom"
 msgstr "Изменить масштаб"
 
@@ -1651,11 +1657,11 @@ msgstr "Единицы"
 msgid "Use right click to mark dive location at cursor"
 msgstr "Для отметки нажмите правую кнопку мыши"
 
-#: webservice.c:230
+#: webservice.c:251
 msgid "User Identifier"
 msgstr "Идентификатор пользователя"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1372
 msgid "View"
 msgstr "Просмотр"
 
@@ -1683,7 +1689,7 @@ msgstr "Внимание - расчет очень глубоких погруж
 msgid "Water Temp"
 msgstr "Темп. воды"
 
-#: webservice.c:258
+#: webservice.c:153
 msgid "Webservice"
 msgstr "Вебсервис"
 
@@ -1712,11 +1718,11 @@ msgstr "XML файл"
 msgid "Year"
 msgstr "Год"
 
-#: gtk-gui.c:1380 statistics.c:384
+#: gtk-gui.c:1388 statistics.c:384
 msgid "Yearly Statistics"
 msgstr "Статистика за год"
 
-#: gtk-gui.c:1992
+#: gtk-gui.c:2000
 #, c-format
 msgid ""
 "You already have a dive computer of this model\n"
@@ -1746,7 +1752,7 @@ msgstr ""
 "Хотите ли вы их сохранить перед закрытием журнала?"
 
 #: divelist.c:574 planner.c:127 planner.c:798 planner.c:799 print.c:178
-#: profile.c:399
+#: profile.c:400
 #, c-format
 msgid "air"
 msgstr "воздух"
@@ -2001,7 +2007,7 @@ msgid "tissue level warning"
 msgstr "насыщение тканей"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
-#: gtk-gui.c:1071
+#: gtk-gui.c:1075
 msgid "translator-credits"
 msgstr "Sergey Starosek"
 

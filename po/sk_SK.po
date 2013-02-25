@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-25 08:13-0800\n"
+"POT-Creation-Date: 2013-02-25 13:57-0800\n"
 "PO-Revision-Date: 2013-02-21 11:20+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
@@ -19,12 +19,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: gtk-gui.c:973
+msgid ""
+"\n"
+"No Events\n"
+msgstr ""
+
 #: statistics.c:177
 msgctxt "Stats"
 msgid " > Month"
 msgstr " > Mesiac"
 
-#: webservice.c:237
+#: webservice.c:258
 msgid " Download"
 msgstr "Načitať"
 
@@ -32,12 +38,12 @@ msgstr "Načitať"
 msgid " Please select dive computer and device. "
 msgstr "Voľba typu počítača a zariadia. "
 
-#: profile.c:413
+#: profile.c:414
 msgctxt "Starts with space!"
 msgid " begin"
 msgstr "začiatok"
 
-#: profile.c:414
+#: profile.c:415
 msgctxt "Starts with space!"
 msgid " end"
 msgstr "koniec"
@@ -111,7 +117,7 @@ msgstr "%dh %dmin"
 msgid "%s"
 msgstr "%s"
 
-#: profile.c:2168
+#: profile.c:2169
 #, c-format
 msgid ""
 "%s\n"
@@ -120,7 +126,7 @@ msgstr ""
 "%s\n"
 "CNS:%u%%"
 
-#: profile.c:2136
+#: profile.c:2137
 #, c-format
 msgid ""
 "%s\n"
@@ -129,7 +135,7 @@ msgstr ""
 "%s\n"
 "Vypočítaná hladina %.0f %s"
 
-#: profile.c:2152
+#: profile.c:2153
 #, c-format
 msgid ""
 "%s\n"
@@ -138,7 +144,7 @@ msgstr ""
 "%s\n"
 "Deco:%umin @ %.0f %s"
 
-#: profile.c:2155
+#: profile.c:2156
 #, c-format
 msgid ""
 "%s\n"
@@ -147,7 +153,7 @@ msgstr ""
 "%s\n"
 "Deco:nezn. čas @ %.0f %s"
 
-#: profile.c:2192
+#: profile.c:2193
 #, c-format
 msgid ""
 "%s\n"
@@ -160,7 +166,7 @@ msgstr ""
 "END:%d%s\n"
 "EADD:%d%s"
 
-#: profile.c:2161
+#: profile.c:2162
 #, c-format
 msgid ""
 "%s\n"
@@ -169,7 +175,7 @@ msgstr ""
 "%s\n"
 "In deco"
 
-#: profile.c:2185
+#: profile.c:2186
 #, c-format
 msgid ""
 "%s\n"
@@ -178,7 +184,7 @@ msgstr ""
 "%s\n"
 "MOD:%d%s"
 
-#: profile.c:2164
+#: profile.c:2165
 #, c-format
 msgid ""
 "%s\n"
@@ -187,7 +193,7 @@ msgstr ""
 "%s\n"
 "NDL:%umin"
 
-#: profile.c:2126
+#: profile.c:2127
 #, c-format
 msgid ""
 "%s\n"
@@ -196,7 +202,7 @@ msgstr ""
 "%s\n"
 "P:%d %s"
 
-#: profile.c:2144
+#: profile.c:2145
 #, c-format
 msgid ""
 "%s\n"
@@ -205,7 +211,7 @@ msgstr ""
 "%s\n"
 "Bezpečnostná zastávka:%umin @ %.0f %s"
 
-#: profile.c:2147
+#: profile.c:2148
 #, c-format
 msgid ""
 "%s\n"
@@ -227,7 +233,7 @@ msgstr ""
 "zrátaný s  GFlow = %.0f a GFhigh = %.0f\n"
 "\n"
 
-#: profile.c:2131
+#: profile.c:2132
 #, c-format
 msgid ""
 "%s\n"
@@ -236,7 +242,7 @@ msgstr ""
 "%s\n"
 "T:%.1f %s"
 
-#: profile.c:2180
+#: profile.c:2181
 #, c-format
 msgid ""
 "%s\n"
@@ -245,7 +251,7 @@ msgstr ""
 "%s\n"
 "pHe:%.2fbar"
 
-#: profile.c:2176
+#: profile.c:2177
 #, c-format
 msgid ""
 "%s\n"
@@ -254,7 +260,7 @@ msgstr ""
 "%s\n"
 "pN%s:%.2fbar"
 
-#: profile.c:2172
+#: profile.c:2173
 #, c-format
 msgid ""
 "%s\n"
@@ -273,7 +279,7 @@ msgstr "(%s) alebo (%s)"
 msgid "(no dives)"
 msgstr "(žiadné ponory)"
 
-#: gtk-gui.c:2002
+#: gtk-gui.c:2010
 msgid "(nothing)"
 msgstr "(nič)"
 
@@ -329,11 +335,11 @@ msgstr ""
 msgid "AIR"
 msgstr "Vzduch"
 
-#: gtk-gui.c:1063 gtk-gui.c:1386
+#: gtk-gui.c:1067 gtk-gui.c:1394
 msgid "About Subsurface"
 msgstr "O Subsurface"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1385
 msgid "Add Dive..."
 msgstr "Pridať Ponor..."
 
@@ -374,7 +380,7 @@ msgstr "Apr"
 msgid "Aug"
 msgstr "Aug"
 
-#: gtk-gui.c:1399
+#: gtk-gui.c:1407
 msgid "Autogroup"
 msgstr "Automatické zgrupovanie"
 
@@ -414,7 +420,7 @@ msgstr "Priemerná teplota"
 msgid "Avg Time"
 msgstr "Priemerný čas"
 
-#: profile.c:410
+#: profile.c:411
 #, c-format
 msgid "Bailing out to OC"
 msgstr ""
@@ -449,7 +455,7 @@ msgstr "Zrušené, korektne ukončenie..."
 msgid "Cancelled..."
 msgstr "Zrušené..."
 
-#: webservice.c:27
+#: webservice.c:28
 msgid "Cannot parse response!"
 msgstr "Nemôžem spracovať odpoveď!"
 
@@ -461,11 +467,11 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Vyber default XML súbor"
 
-#: gtk-gui.c:1904
+#: gtk-gui.c:1912
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Vyber XML súbor pre import do aktuálneho data súboru"
 
-#: gtk-gui.c:1372
+#: gtk-gui.c:1380
 msgid "Close"
 msgstr "Zatvoriť"
 
@@ -473,11 +479,11 @@ msgstr "Zatvoriť"
 msgid "Collapse all"
 msgstr "Zredukovať všetky"
 
-#: webservice.c:119
+#: webservice.c:120
 msgid "Connecting..."
 msgstr "Pripájam..."
 
-#: webservice.c:23
+#: webservice.c:24
 msgid "Connection Error: "
 msgstr "Chyba spojenia"
 
@@ -505,7 +511,7 @@ msgstr "Fľaša pre plánovanie"
 msgid "Cylinders"
 msgstr "Fľaše"
 
-#: profile.c:2122
+#: profile.c:2123
 #, c-format
 msgid "D:%.1f %s"
 msgstr "H:%.1f %s"
@@ -534,7 +540,7 @@ msgstr "Dec"
 msgid "Default XML Data File"
 msgstr "Default XML Súbor"
 
-#: gtk-gui.c:1319
+#: gtk-gui.c:1327
 msgid "Delete a dive computer information entry"
 msgstr "Zmaž údaje o počítači"
 
@@ -563,7 +569,7 @@ msgstr "Prekročená Maximálna Hĺbka"
 msgid "Depth:"
 msgstr "Hĺbka:"
 
-#: gtk-gui.c:1278
+#: gtk-gui.c:1286
 msgid "Device Id"
 msgstr "Id zariadenia"
 
@@ -587,15 +593,15 @@ msgstr "Ponor #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Ponor #%d: %s %d %04d"
 
-#: gtk-gui.c:1984
+#: gtk-gui.c:1992
 msgid "Dive Computer Nickname"
 msgstr "Voliteľný názov počítača"
 
-#: gtk-gui.c:1616 info.c:998 statistics.c:829
+#: gtk-gui.c:1624 info.c:998 statistics.c:829
 msgid "Dive Info"
 msgstr "Informácie"
 
-#: gtk-gui.c:1608
+#: gtk-gui.c:1616
 msgid "Dive Notes"
 msgstr "Poznámky"
 
@@ -651,7 +657,7 @@ msgstr "Divemaster"
 msgid "Dives"
 msgstr "Ponory"
 
-#: gtk-gui.c:1382
+#: gtk-gui.c:1390
 msgid "Dives Locations"
 msgstr "Miesta ponorov"
 
@@ -659,19 +665,19 @@ msgstr "Miesta ponorov"
 msgid "Download From Dive Computer"
 msgstr "Nahratie údajov z počítača"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1383
 msgid "Download From Dive Computer..."
 msgstr "Nahratie údajov z počítača..."
 
-#: webservice.c:210
+#: webservice.c:229
 msgid "Download From Web Service"
 msgstr "Nahratie údajov z internetu"
 
-#: gtk-gui.c:1376
+#: gtk-gui.c:1384
 msgid "Download From Web Service..."
 msgstr "Nahratie údajov z internetu..."
 
-#: webservice.c:29
+#: webservice.c:30
 msgid "Download Success!"
 msgstr "Nahrávanie úspešne ukončené!"
 
@@ -704,11 +710,11 @@ msgstr "EAN36"
 msgid "Edit"
 msgstr "Editovať"
 
-#: gtk-gui.c:1391
+#: gtk-gui.c:1399
 msgid "Edit Device Names"
 msgstr "Edituj názov zariadenia"
 
-#: gtk-gui.c:1251
+#: gtk-gui.c:1259
 msgid "Edit Dive Computer Nicknames"
 msgstr "Zmena voliteľného mena počítača"
 
@@ -720,7 +726,7 @@ msgstr "Editovať akciu"
 msgid "Edit Trip Summary"
 msgstr "Editovať sumár"
 
-#: gtk-gui.c:1311
+#: gtk-gui.c:1319
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Zmeň voliteľný názov počítača dvojitým kliknutím na jeho meno"
 
@@ -756,11 +762,11 @@ msgstr "Koniec"
 msgid "Ending Depth"
 msgstr "Cieľová hĺbka"
 
-#: webservice.c:223
+#: webservice.c:244
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Zadaj identifikačné údaje užívateľa a použi 'Download'. Po ukončení nahrávania údajov môžeš použiť 'Apply' ak si praješ aplikovať zmeny."
 
-#: gtk-gui.c:1612 info.c:833
+#: gtk-gui.c:1620 info.c:833
 msgid "Equipment"
 msgstr "Výstroj"
 
@@ -854,11 +860,11 @@ msgstr "Feb"
 msgid "Feet"
 msgstr "stopa"
 
-#: gtk-gui.c:1362
+#: gtk-gui.c:1370
 msgid "File"
 msgstr "Súbor"
 
-#: gtk-gui.c:1365
+#: gtk-gui.c:1373
 msgid "Filter"
 msgstr "Filter"
 
@@ -918,19 +924,19 @@ msgstr "Zmes"
 msgid "General Settings"
 msgstr "Všeobecné nastavenia"
 
-#: gtk-gui.c:1367
+#: gtk-gui.c:1375
 msgid "Help"
 msgstr "Pomoc"
 
-#: webservice.c:244
+#: webservice.c:265
 msgid "Idle"
 msgstr "Nečinnosť"
 
-#: gtk-gui.c:1374
+#: gtk-gui.c:1382
 msgid "Import XML File(s)..."
 msgstr "Import XML súboru..."
 
-#: gtk-gui.c:1389
+#: gtk-gui.c:1397
 msgid "Info"
 msgstr "Info"
 
@@ -938,7 +944,7 @@ msgstr "Info"
 msgid "Init Communication"
 msgstr "Inicializácia komunikácie"
 
-#: gtk-gui.c:1394
+#: gtk-gui.c:1402
 msgid "Input Plan"
 msgstr "Plánovanie"
 
@@ -960,7 +966,7 @@ msgstr "Neplatná zmes na riadku %d"
 msgid "Invalid starttime"
 msgstr "Neplatný čas začiatku"
 
-#: webservice.c:25
+#: webservice.c:26
 msgid "Invalid user identifier!"
 msgstr "Neplatný identifikátor užívateľa!"
 
@@ -977,11 +983,11 @@ msgstr "Jul"
 msgid "Jun"
 msgstr "Jun"
 
-#: gtk-gui.c:1069
+#: gtk-gui.c:1073
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 msgstr "Linus Torvalds, Dirk Hohndel a ďalší, 2011, 2012, 2013"
 
-#: gtk-gui.c:1387
+#: gtk-gui.c:1395
 msgid "List"
 msgstr "Zoznam"
 
@@ -993,7 +999,7 @@ msgstr "liter"
 msgid "Location"
 msgstr "Miesto"
 
-#: gtk-gui.c:1363
+#: gtk-gui.c:1371
 msgid "Log"
 msgstr "Log"
 
@@ -1132,7 +1138,7 @@ msgstr "Minimum"
 msgid "Misc. Options"
 msgstr "Rôzne voľby"
 
-#: gtk-gui.c:1273
+#: gtk-gui.c:1281
 msgid "Model"
 msgstr "Model"
 
@@ -1140,7 +1146,7 @@ msgstr "Model"
 msgid "Mon"
 msgstr "Po"
 
-#: gtk-gui.c:1065
+#: gtk-gui.c:1069
 msgid "Multi-platform divelog software in C"
 msgstr "Multiplatformový SW na správu ponorov v C"
 
@@ -1148,19 +1154,19 @@ msgstr "Multiplatformový SW na správu ponorov v C"
 msgid "N"
 msgstr "N"
 
-#: gtk-gui.c:1368
+#: gtk-gui.c:1376
 msgid "New"
 msgstr "Nový"
 
-#: gtk-gui.c:1017
+#: gtk-gui.c:1021
 msgid "New starting number"
 msgstr "Nové začiatočné číslo"
 
-#: gtk-gui.c:1393
+#: gtk-gui.c:1401
 msgid "Next DC"
 msgstr "Nasledujúci DC"
 
-#: gtk-gui.c:1283 gtk-gui.c:2006
+#: gtk-gui.c:1291 gtk-gui.c:2014
 msgid "Nickname"
 msgstr "Voliteľný názov"
 
@@ -1193,7 +1199,7 @@ msgstr "Okt"
 msgid "Odd pthread error return"
 msgstr "Nešpecifikovaná PTHREAD chyba"
 
-#: gtk-gui.c:1330
+#: gtk-gui.c:1338
 msgid "Ok to delete the selected entry?"
 msgstr "Môžem zmazať položku?"
 
@@ -1201,7 +1207,7 @@ msgstr "Môžem zmazať položku?"
 msgid "Open File"
 msgstr "Otvoriť súbor"
 
-#: gtk-gui.c:1369
+#: gtk-gui.c:1377
 msgid "Open..."
 msgstr "Otvoriť..."
 
@@ -1234,7 +1240,7 @@ msgstr "psi"
 msgid "Pick on map"
 msgstr "Vyber na mape"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1374
 msgid "Planner"
 msgstr "Plánovač"
 
@@ -1242,7 +1248,7 @@ msgstr "Plánovač"
 msgid "Preferences"
 msgstr "Nastavenia"
 
-#: gtk-gui.c:1378
+#: gtk-gui.c:1386
 msgid "Preferences..."
 msgstr "Nastavenia..."
 
@@ -1254,7 +1260,7 @@ msgstr "Tlak"
 msgid "Pressure:"
 msgstr "Tlak:"
 
-#: gtk-gui.c:1392
+#: gtk-gui.c:1400
 msgid "Prev DC"
 msgstr "Predchádzajúci DC"
 
@@ -1270,11 +1276,11 @@ msgstr "Tlačiť výber"
 msgid "Print type"
 msgstr "Druh tlače"
 
-#: gtk-gui.c:1373
+#: gtk-gui.c:1381
 msgid "Print..."
 msgstr "Tlačiť..."
 
-#: gtk-gui.c:1388
+#: gtk-gui.c:1396
 msgid "Profile"
 msgstr "Profil"
 
@@ -1282,7 +1288,7 @@ msgstr "Profil"
 msgid "Profile Settings"
 msgstr "Nastavenia profilu"
 
-#: gtk-gui.c:1385
+#: gtk-gui.c:1393
 msgid "Quit"
 msgstr "Koniec"
 
@@ -1315,11 +1321,11 @@ msgstr "Vymaž ponor z akcie"
 msgid "Remove selected dives from trip"
 msgstr "Vymaž vybrané ponory z akcie"
 
-#: gtk-gui.c:1008
+#: gtk-gui.c:1012
 msgid "Renumber"
 msgstr "Prečíslovanie"
 
-#: gtk-gui.c:1379
+#: gtk-gui.c:1387
 msgid "Renumber..."
 msgstr "Prečíslovanie..."
 
@@ -1352,7 +1358,7 @@ msgstr "Nedodržaná bezpečnostná zastávka"
 msgid "Sat"
 msgstr "So"
 
-#: gtk-gui.c:1371
+#: gtk-gui.c:1379
 msgid "Save As..."
 msgstr "Uložiť ako..."
 
@@ -1368,7 +1374,7 @@ msgstr "Uložiť súbor ako"
 msgid "Save as"
 msgstr "Uložiť ako"
 
-#: gtk-gui.c:1370
+#: gtk-gui.c:1378
 msgid "Save..."
 msgstr "Uložiť..."
 
@@ -1380,7 +1386,7 @@ msgstr "Časový segment"
 msgid "Select Events"
 msgstr "Voľba udalosti"
 
-#: gtk-gui.c:1384
+#: gtk-gui.c:1392
 msgid "Select Events..."
 msgstr "Voľba udalosti..."
 
@@ -1476,11 +1482,11 @@ msgstr "Štatistika"
 msgid "Statistics %s"
 msgstr "Štatistika %s"
 
-#: gtk-gui.c:1620
+#: gtk-gui.c:1628
 msgid "Stats"
 msgstr "Štatistiky"
 
-#: webservice.c:243
+#: webservice.c:264
 msgid "Status"
 msgstr "Stav"
 
@@ -1544,7 +1550,7 @@ msgstr "Teplota"
 msgid "Temperature:"
 msgstr "Teplota:"
 
-#: gtk-gui.c:1390
+#: gtk-gui.c:1398
 msgid "Three"
 msgstr "Kombinovaný"
 
@@ -1556,7 +1562,7 @@ msgstr "Št"
 msgid "Time"
 msgstr "Čas"
 
-#: gtk-gui.c:1506
+#: gtk-gui.c:1514
 msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
@@ -1564,7 +1570,7 @@ msgstr ""
 "Na editovanie informácii o ponore\n"
 "klikni 2x na ponor v zozname"
 
-#: gtk-gui.c:1400
+#: gtk-gui.c:1408
 msgid "Toggle Zoom"
 msgstr "Zmeň veľkosť"
 
@@ -1657,11 +1663,11 @@ msgstr "Jednotky"
 msgid "Use right click to mark dive location at cursor"
 msgstr "Použi pravé tlačidlo na označenie miesta ponor pod kurzorom"
 
-#: webservice.c:230
+#: webservice.c:251
 msgid "User Identifier"
 msgstr "Identifikátor Uživateľa"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1372
 msgid "View"
 msgstr "Náhľad"
 
@@ -1689,7 +1695,7 @@ msgstr "Upozornenie - príliš hlboký ponor, môže trvať príliš dlho"
 msgid "Water Temp"
 msgstr "Teplota vody"
 
-#: webservice.c:258
+#: webservice.c:153
 msgid "Webservice"
 msgstr "Webservis"
 
@@ -1718,11 +1724,11 @@ msgstr "XML súbor"
 msgid "Year"
 msgstr "Rok"
 
-#: gtk-gui.c:1380 statistics.c:384
+#: gtk-gui.c:1388 statistics.c:384
 msgid "Yearly Statistics"
 msgstr "Ročná štatistika"
 
-#: gtk-gui.c:1992
+#: gtk-gui.c:2000
 #, c-format
 msgid ""
 "You already have a dive computer of this model\n"
@@ -1753,7 +1759,7 @@ msgstr ""
 "Chceš ich uložiť pred zatvorením súboru?"
 
 #: divelist.c:574 planner.c:127 planner.c:798 planner.c:799 print.c:178
-#: profile.c:399
+#: profile.c:400
 #, c-format
 msgid "air"
 msgstr "vzduch"
@@ -2008,7 +2014,7 @@ msgid "tissue level warning"
 msgstr "upozornenie nasýtenia tkanív"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
-#: gtk-gui.c:1071
+#: gtk-gui.c:1075
 msgid "translator-credits"
 msgstr "Jozef Ivanecký"
 

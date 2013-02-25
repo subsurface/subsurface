@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-25 08:13-0800\n"
+"POT-Creation-Date: 2013-02-25 13:57-0800\n"
 "PO-Revision-Date: 2013-02-25 18:24+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -20,12 +20,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Basepath: ..\n"
 
+#: gtk-gui.c:973
+msgid ""
+"\n"
+"No Events\n"
+msgstr ""
+
 #: statistics.c:177
 msgctxt "Stats"
 msgid " > Month"
 msgstr " > Kuukausi"
 
-#: webservice.c:237
+#: webservice.c:258
 msgid " Download"
 msgstr "Lataa"
 
@@ -33,12 +39,12 @@ msgstr "Lataa"
 msgid " Please select dive computer and device. "
 msgstr "Valitse sukellustietokone ja laitenimi."
 
-#: profile.c:413
+#: profile.c:414
 msgctxt "Starts with space!"
 msgid " begin"
 msgstr "alku"
 
-#: profile.c:414
+#: profile.c:415
 msgctxt "Starts with space!"
 msgid " end"
 msgstr "loppu"
@@ -112,7 +118,7 @@ msgstr "%d t %d min"
 msgid "%s"
 msgstr "%s"
 
-#: profile.c:2168
+#: profile.c:2169
 #, c-format
 msgid ""
 "%s\n"
@@ -121,7 +127,7 @@ msgstr ""
 "%s\n"
 "CNS: %u %%"
 
-#: profile.c:2136
+#: profile.c:2137
 #, c-format
 msgid ""
 "%s\n"
@@ -130,7 +136,7 @@ msgstr ""
 "%s\n"
 "Laskettu katto %.0f %s"
 
-#: profile.c:2152
+#: profile.c:2153
 #, c-format
 msgid ""
 "%s\n"
@@ -139,7 +145,7 @@ msgstr ""
 "%s\n"
 "Deko: %u min @ %.0f %s"
 
-#: profile.c:2155
+#: profile.c:2156
 #, c-format
 msgid ""
 "%s\n"
@@ -148,7 +154,7 @@ msgstr ""
 "%s\n"
 "Deko: tuntem. aika @ %.0f %s"
 
-#: profile.c:2192
+#: profile.c:2193
 #, c-format
 msgid ""
 "%s\n"
@@ -161,7 +167,7 @@ msgstr ""
 "END: %d %s\n"
 "EADD: %d %s"
 
-#: profile.c:2161
+#: profile.c:2162
 #, c-format
 msgid ""
 "%s\n"
@@ -170,7 +176,7 @@ msgstr ""
 "%s\n"
 "dekossa"
 
-#: profile.c:2185
+#: profile.c:2186
 #, c-format
 msgid ""
 "%s\n"
@@ -179,7 +185,7 @@ msgstr ""
 "%s\n"
 "MOD: %d %s"
 
-#: profile.c:2164
+#: profile.c:2165
 #, c-format
 msgid ""
 "%s\n"
@@ -188,7 +194,7 @@ msgstr ""
 "%s\n"
 "NDL: %u min"
 
-#: profile.c:2126
+#: profile.c:2127
 #, c-format
 msgid ""
 "%s\n"
@@ -197,7 +203,7 @@ msgstr ""
 "%s\n"
 "P: %d %s"
 
-#: profile.c:2144
+#: profile.c:2145
 #, c-format
 msgid ""
 "%s\n"
@@ -206,7 +212,7 @@ msgstr ""
 "%s\n"
 "Turvapysähdys: %u min @ %.0f %s"
 
-#: profile.c:2147
+#: profile.c:2148
 #, c-format
 msgid ""
 "%s\n"
@@ -228,7 +234,7 @@ msgstr ""
 "perustuu arvoihin GFlow = %.0f ja GFhigh = %.0f\n"
 "\n"
 
-#: profile.c:2131
+#: profile.c:2132
 #, c-format
 msgid ""
 "%s\n"
@@ -237,7 +243,7 @@ msgstr ""
 "%s\n"
 "T: %.1f %s"
 
-#: profile.c:2180
+#: profile.c:2181
 #, c-format
 msgid ""
 "%s\n"
@@ -246,7 +252,7 @@ msgstr ""
 "%s\n"
 "pHe: %.2f bar"
 
-#: profile.c:2176
+#: profile.c:2177
 #, c-format
 msgid ""
 "%s\n"
@@ -255,7 +261,7 @@ msgstr ""
 "%s\n"
 "pN%s: %.2f bar"
 
-#: profile.c:2172
+#: profile.c:2173
 #, c-format
 msgid ""
 "%s\n"
@@ -274,7 +280,7 @@ msgstr "(%s) tai (%s)"
 msgid "(no dives)"
 msgstr "(ei sukelluksia)"
 
-#: gtk-gui.c:2002
+#: gtk-gui.c:2010
 msgid "(nothing)"
 msgstr "(ei mitään)"
 
@@ -329,11 +335,11 @@ msgstr ""
 msgid "AIR"
 msgstr "Ilma"
 
-#: gtk-gui.c:1063 gtk-gui.c:1386
+#: gtk-gui.c:1067 gtk-gui.c:1394
 msgid "About Subsurface"
 msgstr "Tietoja Subsurfacesta"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1385
 msgid "Add Dive..."
 msgstr "Lisää sukellus..."
 
@@ -374,7 +380,7 @@ msgstr "huhti"
 msgid "Aug"
 msgstr "elo"
 
-#: gtk-gui.c:1399
+#: gtk-gui.c:1407
 msgid "Autogroup"
 msgstr "Automaattinen ryhmittely"
 
@@ -414,7 +420,7 @@ msgstr "Keskilämpötila"
 msgid "Avg Time"
 msgstr "Keskipituus"
 
-#: profile.c:410
+#: profile.c:411
 #, c-format
 msgid "Bailing out to OC"
 msgstr "Vaihto avoimeen ilman kiertoon"
@@ -449,7 +455,7 @@ msgstr "Peruutettu, poistutaan..."
 msgid "Cancelled..."
 msgstr "Peruttu..."
 
-#: webservice.c:27
+#: webservice.c:28
 msgid "Cannot parse response!"
 msgstr "Vastauksen jäsentäminen ei onnistu!"
 
@@ -461,11 +467,11 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Valitse oletustiedosto"
 
-#: gtk-gui.c:1904
+#: gtk-gui.c:1912
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Valitse tietoihin liitettävät XML-tiedostot"
 
-#: gtk-gui.c:1372
+#: gtk-gui.c:1380
 msgid "Close"
 msgstr "Sulje"
 
@@ -473,11 +479,11 @@ msgstr "Sulje"
 msgid "Collapse all"
 msgstr "Supista kaikki retket"
 
-#: webservice.c:119
+#: webservice.c:120
 msgid "Connecting..."
 msgstr "Yhdistetään..."
 
-#: webservice.c:23
+#: webservice.c:24
 msgid "Connection Error: "
 msgstr "Yhteysvirhe:"
 
@@ -505,7 +511,7 @@ msgstr "Suunnitelman säiliö"
 msgid "Cylinders"
 msgstr "Säiliöt"
 
-#: profile.c:2122
+#: profile.c:2123
 #, c-format
 msgid "D:%.1f %s"
 msgstr "S:%.1f %s"
@@ -534,7 +540,7 @@ msgstr "joulu"
 msgid "Default XML Data File"
 msgstr "Oletustiedosto"
 
-#: gtk-gui.c:1319
+#: gtk-gui.c:1327
 msgid "Delete a dive computer information entry"
 msgstr "Poista sukellustietokoneen tiedot"
 
@@ -563,7 +569,7 @@ msgstr "Syvyysraja ylitetty"
 msgid "Depth:"
 msgstr "Syvyys:"
 
-#: gtk-gui.c:1278
+#: gtk-gui.c:1286
 msgid "Device Id"
 msgstr "Laitenimi"
 
@@ -587,15 +593,15 @@ msgstr "Sukellus #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Sukellus %1$d: %3$d. %2$skuuta %4$04d"
 
-#: gtk-gui.c:1984
+#: gtk-gui.c:1992
 msgid "Dive Computer Nickname"
 msgstr "Sukellustietokoneen lempinimi"
 
-#: gtk-gui.c:1616 info.c:998 statistics.c:829
+#: gtk-gui.c:1624 info.c:998 statistics.c:829
 msgid "Dive Info"
 msgstr "Tiedot"
 
-#: gtk-gui.c:1608
+#: gtk-gui.c:1616
 msgid "Dive Notes"
 msgstr "Muistiinpanot"
 
@@ -651,7 +657,7 @@ msgstr "Sukellusvanhin"
 msgid "Dives"
 msgstr "Sukelluskerrat"
 
-#: gtk-gui.c:1382
+#: gtk-gui.c:1390
 msgid "Dives Locations"
 msgstr "Sukelluskohteet"
 
@@ -659,19 +665,19 @@ msgstr "Sukelluskohteet"
 msgid "Download From Dive Computer"
 msgstr "Hae sukellustietokoneelta"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1383
 msgid "Download From Dive Computer..."
 msgstr "Hae sukellustietokoneelta..."
 
-#: webservice.c:210
+#: webservice.c:229
 msgid "Download From Web Service"
 msgstr "Hae verkkopalvelusta"
 
-#: gtk-gui.c:1376
+#: gtk-gui.c:1384
 msgid "Download From Web Service..."
 msgstr "Hae verkkopalvelusta..."
 
-#: webservice.c:29
+#: webservice.c:30
 msgid "Download Success!"
 msgstr "Lataus onnistui!"
 
@@ -704,11 +710,11 @@ msgstr "EAN36"
 msgid "Edit"
 msgstr "Muuta"
 
-#: gtk-gui.c:1391
+#: gtk-gui.c:1399
 msgid "Edit Device Names"
 msgstr "Muokkaa laitenimeä"
 
-#: gtk-gui.c:1251
+#: gtk-gui.c:1259
 msgid "Edit Dive Computer Nicknames"
 msgstr "Muokkaa sukellustietokoneiden lempinimiä"
 
@@ -720,7 +726,7 @@ msgstr "Muuta retken tietoja"
 msgid "Edit Trip Summary"
 msgstr "Muuta retken tietoja"
 
-#: gtk-gui.c:1311
+#: gtk-gui.c:1319
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Muokkaa sukellustietokoneen lempinimeä kaksoisnäpäyttämällä muokattavaa kenttää"
 
@@ -756,11 +762,11 @@ msgstr "Loppu"
 msgid "Ending Depth"
 msgstr "Kohdesyvyys"
 
-#: webservice.c:223
+#: webservice.c:244
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Syötä käyttäjätunnus ja paina \"Lataa\"-painiketta. Kun tiedot on ladattu, voit painaa 'Hyväksy', jos haluat ottaa muutokset käyttöön."
 
-#: gtk-gui.c:1612 info.c:833
+#: gtk-gui.c:1620 info.c:833
 msgid "Equipment"
 msgstr "Varusteet"
 
@@ -854,11 +860,11 @@ msgstr "helmi"
 msgid "Feet"
 msgstr "jalka"
 
-#: gtk-gui.c:1362
+#: gtk-gui.c:1370
 msgid "File"
 msgstr "Tiedosto"
 
-#: gtk-gui.c:1365
+#: gtk-gui.c:1373
 msgid "Filter"
 msgstr "Suodattimet"
 
@@ -918,19 +924,19 @@ msgstr "Kaasuseos"
 msgid "General Settings"
 msgstr "Yleisasetukset"
 
-#: gtk-gui.c:1367
+#: gtk-gui.c:1375
 msgid "Help"
 msgstr "Ohje"
 
-#: webservice.c:244
+#: webservice.c:265
 msgid "Idle"
 msgstr "Toimeton"
 
-#: gtk-gui.c:1374
+#: gtk-gui.c:1382
 msgid "Import XML File(s)..."
 msgstr "Liitä tiedot XML-tiedostosta..."
 
-#: gtk-gui.c:1389
+#: gtk-gui.c:1397
 msgid "Info"
 msgstr "Tiedot"
 
@@ -938,7 +944,7 @@ msgstr "Tiedot"
 msgid "Init Communication"
 msgstr "Muodosta yhteys"
 
-#: gtk-gui.c:1394
+#: gtk-gui.c:1402
 msgid "Input Plan"
 msgstr "Suunnittele"
 
@@ -960,7 +966,7 @@ msgstr "Virheellinen kaasu rivillä %d"
 msgid "Invalid starttime"
 msgstr "Virhellinen aloitusaika"
 
-#: webservice.c:25
+#: webservice.c:26
 msgid "Invalid user identifier!"
 msgstr "Tuntematon käyttäjä!"
 
@@ -977,11 +983,11 @@ msgstr "heinä"
 msgid "Jun"
 msgstr "kesä"
 
-#: gtk-gui.c:1069
+#: gtk-gui.c:1073
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 msgstr "Linus Torvalds, Dirk Hohndel et al., 2011, 2012, 2013"
 
-#: gtk-gui.c:1387
+#: gtk-gui.c:1395
 msgid "List"
 msgstr "Sukelluslista"
 
@@ -993,7 +999,7 @@ msgstr "litra"
 msgid "Location"
 msgstr "Kohde"
 
-#: gtk-gui.c:1363
+#: gtk-gui.c:1371
 msgid "Log"
 msgstr "Loki"
 
@@ -1132,7 +1138,7 @@ msgstr "Alin"
 msgid "Misc. Options"
 msgstr "Sekalaiset asetukset"
 
-#: gtk-gui.c:1273
+#: gtk-gui.c:1281
 msgid "Model"
 msgstr "Malli"
 
@@ -1140,7 +1146,7 @@ msgstr "Malli"
 msgid "Mon"
 msgstr "ma"
 
-#: gtk-gui.c:1065
+#: gtk-gui.c:1069
 msgid "Multi-platform divelog software in C"
 msgstr "Usean laitealustan sukelluspäiväkirjaohjelma C-kielellä"
 
@@ -1148,19 +1154,19 @@ msgstr "Usean laitealustan sukelluspäiväkirjaohjelma C-kielellä"
 msgid "N"
 msgstr "N"
 
-#: gtk-gui.c:1368
+#: gtk-gui.c:1376
 msgid "New"
 msgstr "Uusi"
 
-#: gtk-gui.c:1017
+#: gtk-gui.c:1021
 msgid "New starting number"
 msgstr "Uusi aloitusnumero"
 
-#: gtk-gui.c:1393
+#: gtk-gui.c:1401
 msgid "Next DC"
 msgstr "Seuraava tietokone"
 
-#: gtk-gui.c:1283 gtk-gui.c:2006
+#: gtk-gui.c:1291 gtk-gui.c:2014
 msgid "Nickname"
 msgstr "Lempinimi"
 
@@ -1193,7 +1199,7 @@ msgstr "loka"
 msgid "Odd pthread error return"
 msgstr "Outo pthread-virheen paluukoodi"
 
-#: gtk-gui.c:1330
+#: gtk-gui.c:1338
 msgid "Ok to delete the selected entry?"
 msgstr "Poistetaanko valittu merkintä?"
 
@@ -1201,7 +1207,7 @@ msgstr "Poistetaanko valittu merkintä?"
 msgid "Open File"
 msgstr "Avaa tiedosto"
 
-#: gtk-gui.c:1369
+#: gtk-gui.c:1377
 msgid "Open..."
 msgstr "Avaa..."
 
@@ -1234,7 +1240,7 @@ msgstr "psi"
 msgid "Pick on map"
 msgstr "Valitse kartalta"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1374
 msgid "Planner"
 msgstr "Suunnittelu"
 
@@ -1242,7 +1248,7 @@ msgstr "Suunnittelu"
 msgid "Preferences"
 msgstr "Asetukset"
 
-#: gtk-gui.c:1378
+#: gtk-gui.c:1386
 msgid "Preferences..."
 msgstr "Asetukset..."
 
@@ -1254,7 +1260,7 @@ msgstr "Paine"
 msgid "Pressure:"
 msgstr "Paine:"
 
-#: gtk-gui.c:1392
+#: gtk-gui.c:1400
 msgid "Prev DC"
 msgstr "Edellinen tietokone"
 
@@ -1270,11 +1276,11 @@ msgstr "Tulosteen valinta"
 msgid "Print type"
 msgstr "Tulosteen tyyppi"
 
-#: gtk-gui.c:1373
+#: gtk-gui.c:1381
 msgid "Print..."
 msgstr "Tulosta..."
 
-#: gtk-gui.c:1388
+#: gtk-gui.c:1396
 msgid "Profile"
 msgstr "Profiilikuvaaja"
 
@@ -1282,7 +1288,7 @@ msgstr "Profiilikuvaaja"
 msgid "Profile Settings"
 msgstr "Profiiliasetukset"
 
-#: gtk-gui.c:1385
+#: gtk-gui.c:1393
 msgid "Quit"
 msgstr "Lopeta"
 
@@ -1315,11 +1321,11 @@ msgstr "Erota sukellus pois retkestä"
 msgid "Remove selected dives from trip"
 msgstr "Erota valitut sukellukset pois retkestä"
 
-#: gtk-gui.c:1008
+#: gtk-gui.c:1012
 msgid "Renumber"
 msgstr "Uudellennumeroi"
 
-#: gtk-gui.c:1379
+#: gtk-gui.c:1387
 msgid "Renumber..."
 msgstr "Uudellennumeroi..."
 
@@ -1352,7 +1358,7 @@ msgstr "Turvapysähdyksen laiminlyönti"
 msgid "Sat"
 msgstr "la"
 
-#: gtk-gui.c:1371
+#: gtk-gui.c:1379
 msgid "Save As..."
 msgstr "Tallenna nimellä..."
 
@@ -1368,7 +1374,7 @@ msgstr "Tallenna nimellä"
 msgid "Save as"
 msgstr "Tallenna nimellä..."
 
-#: gtk-gui.c:1370
+#: gtk-gui.c:1378
 msgid "Save..."
 msgstr "Tallenna..."
 
@@ -1380,7 +1386,7 @@ msgstr "Aika"
 msgid "Select Events"
 msgstr "Valitse tapahtumat"
 
-#: gtk-gui.c:1384
+#: gtk-gui.c:1392
 msgid "Select Events..."
 msgstr "Valitse tapahtumat..."
 
@@ -1476,11 +1482,11 @@ msgstr "Tilastot"
 msgid "Statistics %s"
 msgstr "Tilastot %s"
 
-#: gtk-gui.c:1620
+#: gtk-gui.c:1628
 msgid "Stats"
 msgstr "Tilastot"
 
-#: webservice.c:243
+#: webservice.c:264
 msgid "Status"
 msgstr "Tila"
 
@@ -1544,7 +1550,7 @@ msgstr "Lämpötila"
 msgid "Temperature:"
 msgstr "Lämpötila:"
 
-#: gtk-gui.c:1390
+#: gtk-gui.c:1398
 msgid "Three"
 msgstr "Kaikki"
 
@@ -1556,7 +1562,7 @@ msgstr "to"
 msgid "Time"
 msgstr "Kello"
 
-#: gtk-gui.c:1506
+#: gtk-gui.c:1514
 msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
@@ -1564,7 +1570,7 @@ msgstr ""
 "Avaa sukellustietojen muokkausikkuna\n"
 "kaksoisnäpäyttämällä sukellusta listalla"
 
-#: gtk-gui.c:1400
+#: gtk-gui.c:1408
 msgid "Toggle Zoom"
 msgstr "Venytä sukellusprofiilikuvaajaa"
 
@@ -1657,11 +1663,11 @@ msgstr "Yksiköt"
 msgid "Use right click to mark dive location at cursor"
 msgstr "Näpäytä oikealla painikkeella merkitäksesi kursorin osoittaman sukelluskohteen"
 
-#: webservice.c:230
+#: webservice.c:251
 msgid "User Identifier"
 msgstr "Käyttäjätunniste"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1372
 msgid "View"
 msgstr "Näytä"
 
@@ -1689,7 +1695,7 @@ msgstr "Varoitus: hyvin syvien sukellusten suunnittelu voi kestää kohtuuttoman
 msgid "Water Temp"
 msgstr "Veden lämpötila"
 
-#: webservice.c:258
+#: webservice.c:153
 msgid "Webservice"
 msgstr "Verkkopalvelu"
 
@@ -1718,11 +1724,11 @@ msgstr "XML-tiedosto"
 msgid "Year"
 msgstr "Vuosi"
 
-#: gtk-gui.c:1380 statistics.c:384
+#: gtk-gui.c:1388 statistics.c:384
 msgid "Yearly Statistics"
 msgstr "Vuositilastot"
 
-#: gtk-gui.c:1992
+#: gtk-gui.c:2000
 #, c-format
 msgid ""
 "You already have a dive computer of this model\n"
@@ -1753,7 +1759,7 @@ msgstr ""
 "Haluatko tallentaa muutokset ennen tietojen sulkemista?"
 
 #: divelist.c:574 planner.c:127 planner.c:798 planner.c:799 print.c:178
-#: profile.c:399
+#: profile.c:400
 #, c-format
 msgid "air"
 msgstr "ilma"
@@ -2008,7 +2014,7 @@ msgid "tissue level warning"
 msgstr "kudoskertymän varoitus"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
-#: gtk-gui.c:1071
+#: gtk-gui.c:1075
 msgid "translator-credits"
 msgstr ""
 "Tommi Saviranta\n"

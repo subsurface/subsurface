@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-25 08:13-0800\n"
+"POT-Creation-Date: 2013-02-25 13:57-0800\n"
 "PO-Revision-Date: 2013-02-14 10:45+0100\n"
 "Last-Translator: Fredrik Steen <fredrik@ppo2.se>\n"
 "Language-Team: Swedish\n"
@@ -20,12 +20,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
+#: gtk-gui.c:973
+msgid ""
+"\n"
+"No Events\n"
+msgstr ""
+
 #: statistics.c:177
 msgctxt "Stats"
 msgid " > Month"
 msgstr " > Månad"
 
-#: webservice.c:237
+#: webservice.c:258
 msgid " Download"
 msgstr "Ladda ned"
 
@@ -33,12 +39,12 @@ msgstr "Ladda ned"
 msgid " Please select dive computer and device. "
 msgstr " Välj dykdator och enhet"
 
-#: profile.c:413
+#: profile.c:414
 msgctxt "Starts with space!"
 msgid " begin"
 msgstr "start"
 
-#: profile.c:414
+#: profile.c:415
 msgctxt "Starts with space!"
 msgid " end"
 msgstr "slut"
@@ -112,7 +118,7 @@ msgstr "%dt %dmin"
 msgid "%s"
 msgstr "%s"
 
-#: profile.c:2168
+#: profile.c:2169
 #, c-format
 msgid ""
 "%s\n"
@@ -121,7 +127,7 @@ msgstr ""
 "%s\n"
 "CNS:%u%%"
 
-#: profile.c:2136
+#: profile.c:2137
 #, c-format
 msgid ""
 "%s\n"
@@ -130,7 +136,7 @@ msgstr ""
 "%s\n"
 "Beräknat tak %.0f %s"
 
-#: profile.c:2152
+#: profile.c:2153
 #, c-format
 msgid ""
 "%s\n"
@@ -139,7 +145,7 @@ msgstr ""
 "%s\n"
 "Deko:%umin @ %.0f %s"
 
-#: profile.c:2155
+#: profile.c:2156
 #, c-format
 msgid ""
 "%s\n"
@@ -148,7 +154,7 @@ msgstr ""
 "%s\n"
 "Deko:okänd tid @ %.0f %s"
 
-#: profile.c:2192
+#: profile.c:2193
 #, c-format
 msgid ""
 "%s\n"
@@ -161,7 +167,7 @@ msgstr ""
 "END:%d%s\n"
 "EADD:%d%s"
 
-#: profile.c:2161
+#: profile.c:2162
 #, c-format
 msgid ""
 "%s\n"
@@ -170,7 +176,7 @@ msgstr ""
 "%s\n"
 "I deco"
 
-#: profile.c:2185
+#: profile.c:2186
 #, c-format
 msgid ""
 "%s\n"
@@ -179,7 +185,7 @@ msgstr ""
 "%s\n"
 "MOD:%d%s"
 
-#: profile.c:2164
+#: profile.c:2165
 #, c-format
 msgid ""
 "%s\n"
@@ -188,7 +194,7 @@ msgstr ""
 "%s\n"
 "NDL:%umin"
 
-#: profile.c:2126
+#: profile.c:2127
 #, c-format
 msgid ""
 "%s\n"
@@ -197,7 +203,7 @@ msgstr ""
 "%s\n"
 "P:%d %s"
 
-#: profile.c:2144
+#: profile.c:2145
 #, c-format
 msgid ""
 "%s\n"
@@ -206,7 +212,7 @@ msgstr ""
 "%s\n"
 "Såkerhetsstopp:%umin @ %.0f %s"
 
-#: profile.c:2147
+#: profile.c:2148
 #, c-format
 msgid ""
 "%s\n"
@@ -228,7 +234,7 @@ msgstr ""
 "baserad på GFlow = %.0f och GFhigh = %.0f\n"
 "\n"
 
-#: profile.c:2131
+#: profile.c:2132
 #, c-format
 msgid ""
 "%s\n"
@@ -237,7 +243,7 @@ msgstr ""
 "%s\n"
 "T:%.1f %s"
 
-#: profile.c:2180
+#: profile.c:2181
 #, c-format
 msgid ""
 "%s\n"
@@ -246,7 +252,7 @@ msgstr ""
 "%s\n"
 "pHe:%.2fbar"
 
-#: profile.c:2176
+#: profile.c:2177
 #, c-format
 msgid ""
 "%s\n"
@@ -255,7 +261,7 @@ msgstr ""
 "%s\n"
 "pN%s:%.2fbar"
 
-#: profile.c:2172
+#: profile.c:2173
 #, c-format
 msgid ""
 "%s\n"
@@ -274,7 +280,7 @@ msgstr "(%s) eller (%s)"
 msgid "(no dives)"
 msgstr "(inga dyk)"
 
-#: gtk-gui.c:2002
+#: gtk-gui.c:2010
 msgid "(nothing)"
 msgstr "(inget)"
 
@@ -330,11 +336,11 @@ msgstr ""
 msgid "AIR"
 msgstr "LUFT"
 
-#: gtk-gui.c:1063 gtk-gui.c:1386
+#: gtk-gui.c:1067 gtk-gui.c:1394
 msgid "About Subsurface"
 msgstr "Om Subsurface"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1385
 msgid "Add Dive..."
 msgstr "Nytt dyk..."
 
@@ -375,7 +381,7 @@ msgstr "apr"
 msgid "Aug"
 msgstr "aug"
 
-#: gtk-gui.c:1399
+#: gtk-gui.c:1407
 msgid "Autogroup"
 msgstr "Gruppera automatiskt"
 
@@ -415,7 +421,7 @@ msgstr "Medel-temp"
 msgid "Avg Time"
 msgstr "Medel-tid"
 
-#: profile.c:410
+#: profile.c:411
 #, c-format
 msgid "Bailing out to OC"
 msgstr "Bailout till öppet system"
@@ -450,7 +456,7 @@ msgstr "Avbrutet ..."
 msgid "Cancelled..."
 msgstr "Avbrutet ..."
 
-#: webservice.c:27
+#: webservice.c:28
 msgid "Cannot parse response!"
 msgstr "Kan inte tolka respons"
 
@@ -462,11 +468,11 @@ msgstr "Celsius"
 msgid "Choose Default XML File"
 msgstr "Välj standard XML-fil"
 
-#: gtk-gui.c:1904
+#: gtk-gui.c:1912
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Välj vilka XML-filer du vill importera"
 
-#: gtk-gui.c:1372
+#: gtk-gui.c:1380
 msgid "Close"
 msgstr "Stäng"
 
@@ -474,11 +480,11 @@ msgstr "Stäng"
 msgid "Collapse all"
 msgstr "Sammanslå alla"
 
-#: webservice.c:119
+#: webservice.c:120
 msgid "Connecting..."
 msgstr "Kontaktar..."
 
-#: webservice.c:23
+#: webservice.c:24
 msgid "Connection Error: "
 msgstr "Kontaktfel:"
 
@@ -506,7 +512,7 @@ msgstr "Flaska för planering"
 msgid "Cylinders"
 msgstr "Flaskor"
 
-#: profile.c:2122
+#: profile.c:2123
 #, c-format
 msgid "D:%.1f %s"
 msgstr "D:%.1f %s"
@@ -535,7 +541,7 @@ msgstr "dec"
 msgid "Default XML Data File"
 msgstr "Standard XML-fil"
 
-#: gtk-gui.c:1319
+#: gtk-gui.c:1327
 msgid "Delete a dive computer information entry"
 msgstr "Radera dykdatorinformation"
 
@@ -564,7 +570,7 @@ msgstr "Maxdjup har överskridits"
 msgid "Depth:"
 msgstr "Djup:"
 
-#: gtk-gui.c:1278
+#: gtk-gui.c:1286
 msgid "Device Id"
 msgstr "Enhetsnamn"
 
@@ -588,15 +594,15 @@ msgstr "Dyk #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Dyk #%d: %s %d %04d"
 
-#: gtk-gui.c:1984
+#: gtk-gui.c:1992
 msgid "Dive Computer Nickname"
 msgstr "Dykdatornamn"
 
-#: gtk-gui.c:1616 info.c:998 statistics.c:829
+#: gtk-gui.c:1624 info.c:998 statistics.c:829
 msgid "Dive Info"
 msgstr "Information"
 
-#: gtk-gui.c:1608
+#: gtk-gui.c:1616
 msgid "Dive Notes"
 msgstr "Dykanteckningar"
 
@@ -652,7 +658,7 @@ msgstr "Divemaster"
 msgid "Dives"
 msgstr "Dyk"
 
-#: gtk-gui.c:1382
+#: gtk-gui.c:1390
 msgid "Dives Locations"
 msgstr "Dykplatser"
 
@@ -660,19 +666,19 @@ msgstr "Dykplatser"
 msgid "Download From Dive Computer"
 msgstr "Ladda ner från dykdator"
 
-#: gtk-gui.c:1375
+#: gtk-gui.c:1383
 msgid "Download From Dive Computer..."
 msgstr "Ladda ner från dykdator..."
 
-#: webservice.c:210
+#: webservice.c:229
 msgid "Download From Web Service"
 msgstr "Ladda ner från webbtjänst"
 
-#: gtk-gui.c:1376
+#: gtk-gui.c:1384
 msgid "Download From Web Service..."
 msgstr "Ladda ned från webbtjänst..."
 
-#: webservice.c:29
+#: webservice.c:30
 msgid "Download Success!"
 msgstr "Nedladdning lyckades!"
 
@@ -705,11 +711,11 @@ msgstr "EAN36"
 msgid "Edit"
 msgstr "Redigera"
 
-#: gtk-gui.c:1391
+#: gtk-gui.c:1399
 msgid "Edit Device Names"
 msgstr "Ändra Enhetsnamn"
 
-#: gtk-gui.c:1251
+#: gtk-gui.c:1259
 msgid "Edit Dive Computer Nicknames"
 msgstr "Ändra dykdatorers namn"
 
@@ -721,7 +727,7 @@ msgstr "Ändra reseinformation"
 msgid "Edit Trip Summary"
 msgstr "Ändra resesammandrag"
 
-#: gtk-gui.c:1311
+#: gtk-gui.c:1319
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Ändra dykdatorns namn genom att dubbel-klicka på namnfältet"
 
@@ -757,11 +763,11 @@ msgstr "Slut"
 msgid "Ending Depth"
 msgstr "Slutdjup"
 
-#: webservice.c:223
+#: webservice.c:244
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Ange ditt användarid och tryck 'Ladda ner'. När laddningen är färdig kan du trycka på 'Använd' för att använda data"
 
-#: gtk-gui.c:1612 info.c:833
+#: gtk-gui.c:1620 info.c:833
 msgid "Equipment"
 msgstr "Utrustning"
 
@@ -855,11 +861,11 @@ msgstr "feb"
 msgid "Feet"
 msgstr "fot"
 
-#: gtk-gui.c:1362
+#: gtk-gui.c:1370
 msgid "File"
 msgstr "Fil"
 
-#: gtk-gui.c:1365
+#: gtk-gui.c:1373
 msgid "Filter"
 msgstr "Filter"
 
@@ -919,19 +925,19 @@ msgstr "Gasblandning"
 msgid "General Settings"
 msgstr "Allmänna Iinställningar"
 
-#: gtk-gui.c:1367
+#: gtk-gui.c:1375
 msgid "Help"
 msgstr "Hjälp"
 
-#: webservice.c:244
+#: webservice.c:265
 msgid "Idle"
 msgstr "Idle"
 
-#: gtk-gui.c:1374
+#: gtk-gui.c:1382
 msgid "Import XML File(s)..."
 msgstr "Importera XML-fil(er)..."
 
-#: gtk-gui.c:1389
+#: gtk-gui.c:1397
 msgid "Info"
 msgstr "Info"
 
@@ -939,7 +945,7 @@ msgstr "Info"
 msgid "Init Communication"
 msgstr "Initierar anslutning"
 
-#: gtk-gui.c:1394
+#: gtk-gui.c:1402
 msgid "Input Plan"
 msgstr "Skriv plan"
 
@@ -961,7 +967,7 @@ msgstr "Ogiltig gas för rad %d"
 msgid "Invalid starttime"
 msgstr "Ogiltig starttid"
 
-#: webservice.c:25
+#: webservice.c:26
 msgid "Invalid user identifier!"
 msgstr "Ogiltigt användarid!"
 
@@ -978,11 +984,11 @@ msgstr "jul"
 msgid "Jun"
 msgstr "jun"
 
-#: gtk-gui.c:1069
+#: gtk-gui.c:1073
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 msgstr "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 
-#: gtk-gui.c:1387
+#: gtk-gui.c:1395
 msgid "List"
 msgstr "Lista"
 
@@ -994,7 +1000,7 @@ msgstr "liter"
 msgid "Location"
 msgstr "Plats"
 
-#: gtk-gui.c:1363
+#: gtk-gui.c:1371
 msgid "Log"
 msgstr "Log"
 
@@ -1133,7 +1139,7 @@ msgstr "Minimum"
 msgid "Misc. Options"
 msgstr "Diverse inställningar"
 
-#: gtk-gui.c:1273
+#: gtk-gui.c:1281
 msgid "Model"
 msgstr "Modell"
 
@@ -1141,7 +1147,7 @@ msgstr "Modell"
 msgid "Mon"
 msgstr "mån"
 
-#: gtk-gui.c:1065
+#: gtk-gui.c:1069
 msgid "Multi-platform divelog software in C"
 msgstr "Dyklogg i C for flera platformer"
 
@@ -1149,19 +1155,19 @@ msgstr "Dyklogg i C for flera platformer"
 msgid "N"
 msgstr "N"
 
-#: gtk-gui.c:1368
+#: gtk-gui.c:1376
 msgid "New"
 msgstr "Ny"
 
-#: gtk-gui.c:1017
+#: gtk-gui.c:1021
 msgid "New starting number"
 msgstr "Nytt startnummer"
 
-#: gtk-gui.c:1393
+#: gtk-gui.c:1401
 msgid "Next DC"
 msgstr "Nästa dykdator"
 
-#: gtk-gui.c:1283 gtk-gui.c:2006
+#: gtk-gui.c:1291 gtk-gui.c:2014
 msgid "Nickname"
 msgstr "Enhetsnamn"
 
@@ -1194,7 +1200,7 @@ msgstr "okt"
 msgid "Odd pthread error return"
 msgstr "Konstig felreturn from pthread"
 
-#: gtk-gui.c:1330
+#: gtk-gui.c:1338
 msgid "Ok to delete the selected entry?"
 msgstr "Ok att radera?"
 
@@ -1202,7 +1208,7 @@ msgstr "Ok att radera?"
 msgid "Open File"
 msgstr "Öppna fil"
 
-#: gtk-gui.c:1369
+#: gtk-gui.c:1377
 msgid "Open..."
 msgstr "Öppna..."
 
@@ -1235,7 +1241,7 @@ msgstr "psi"
 msgid "Pick on map"
 msgstr "Välj från karta"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1374
 msgid "Planner"
 msgstr "Planerare"
 
@@ -1243,7 +1249,7 @@ msgstr "Planerare"
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: gtk-gui.c:1378
+#: gtk-gui.c:1386
 msgid "Preferences..."
 msgstr "Inställningar..."
 
@@ -1255,7 +1261,7 @@ msgstr "Tryck"
 msgid "Pressure:"
 msgstr "Tryck:"
 
-#: gtk-gui.c:1392
+#: gtk-gui.c:1400
 msgid "Prev DC"
 msgstr "Föregående dykdator"
 
@@ -1271,11 +1277,11 @@ msgstr "Skriv ut valda dyk"
 msgid "Print type"
 msgstr "Utskriftstyp"
 
-#: gtk-gui.c:1373
+#: gtk-gui.c:1381
 msgid "Print..."
 msgstr "Skriv ut..."
 
-#: gtk-gui.c:1388
+#: gtk-gui.c:1396
 msgid "Profile"
 msgstr "Profil"
 
@@ -1283,7 +1289,7 @@ msgstr "Profil"
 msgid "Profile Settings"
 msgstr "Profilinställningar"
 
-#: gtk-gui.c:1385
+#: gtk-gui.c:1393
 msgid "Quit"
 msgstr "Avsluta"
 
@@ -1316,11 +1322,11 @@ msgstr "Ta bort dyk från resa"
 msgid "Remove selected dives from trip"
 msgstr "Ta bort valda dyk från resa"
 
-#: gtk-gui.c:1008
+#: gtk-gui.c:1012
 msgid "Renumber"
 msgstr "Uppdatera numrering"
 
-#: gtk-gui.c:1379
+#: gtk-gui.c:1387
 msgid "Renumber..."
 msgstr "Uppdatera numrering..."
 
@@ -1353,7 +1359,7 @@ msgstr "Säkerhetsstopp ej uppfyllt"
 msgid "Sat"
 msgstr "lör"
 
-#: gtk-gui.c:1371
+#: gtk-gui.c:1379
 msgid "Save As..."
 msgstr "Spara som..."
 
@@ -1369,7 +1375,7 @@ msgstr "Spara fil som"
 msgid "Save as"
 msgstr "Spara som"
 
-#: gtk-gui.c:1370
+#: gtk-gui.c:1378
 msgid "Save..."
 msgstr "Spara..."
 
@@ -1381,7 +1387,7 @@ msgstr "Segment-tid"
 msgid "Select Events"
 msgstr "Välj händelser"
 
-#: gtk-gui.c:1384
+#: gtk-gui.c:1392
 msgid "Select Events..."
 msgstr "Välj händelser..."
 
@@ -1477,11 +1483,11 @@ msgstr "Statistik"
 msgid "Statistics %s"
 msgstr "Statistik %s"
 
-#: gtk-gui.c:1620
+#: gtk-gui.c:1628
 msgid "Stats"
 msgstr "Statistik"
 
-#: webservice.c:243
+#: webservice.c:264
 msgid "Status"
 msgstr "Status"
 
@@ -1545,7 +1551,7 @@ msgstr "Temperatur"
 msgid "Temperature:"
 msgstr "Temperatur:"
 
-#: gtk-gui.c:1390
+#: gtk-gui.c:1398
 msgid "Three"
 msgstr "Alla"
 
@@ -1557,13 +1563,13 @@ msgstr "tor"
 msgid "Time"
 msgstr "Tid"
 
-#: gtk-gui.c:1506
+#: gtk-gui.c:1514
 msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
 msgstr "Dubbelklicka på dyklistan för att ändra dykinformation"
 
-#: gtk-gui.c:1400
+#: gtk-gui.c:1408
 msgid "Toggle Zoom"
 msgstr "Zoom av/på"
 
@@ -1657,11 +1663,11 @@ msgstr "Enheter"
 msgid "Use right click to mark dive location at cursor"
 msgstr "Högerklicka för att markera dykmål vid muspekaren"
 
-#: webservice.c:230
+#: webservice.c:251
 msgid "User Identifier"
 msgstr "Användar ID"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1372
 msgid "View"
 msgstr "Visa"
 
@@ -1689,7 +1695,7 @@ msgstr "Varning - att planera väldigt djupa dyk kan ta väldigt lång tid"
 msgid "Water Temp"
 msgstr "Vattentemperatur"
 
-#: webservice.c:258
+#: webservice.c:153
 msgid "Webservice"
 msgstr "Webbtjänst"
 
@@ -1718,11 +1724,11 @@ msgstr "XML-fil"
 msgid "Year"
 msgstr "År"
 
-#: gtk-gui.c:1380 statistics.c:384
+#: gtk-gui.c:1388 statistics.c:384
 msgid "Yearly Statistics"
 msgstr "Årsstatistik"
 
-#: gtk-gui.c:1992
+#: gtk-gui.c:2000
 #, c-format
 msgid ""
 "You already have a dive computer of this model\n"
@@ -1753,7 +1759,7 @@ msgstr ""
 "Vill du spara dem innan du stänger datafilen?"
 
 #: divelist.c:574 planner.c:127 planner.c:798 planner.c:799 print.c:178
-#: profile.c:399
+#: profile.c:400
 #, c-format
 msgid "air"
 msgstr "luft"
@@ -2008,7 +2014,7 @@ msgid "tissue level warning"
 msgstr "vävnadsnivå"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
-#: gtk-gui.c:1071
+#: gtk-gui.c:1075
 msgid "translator-credits"
 msgstr ""
 "Linus Torvalds\n"
