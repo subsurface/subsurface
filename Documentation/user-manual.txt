@@ -3,6 +3,8 @@ Subsurface 3.0 User Manual
 :author: Jacco_van_Koll,_Dirk_Hohndel,_Reinout_Hoornweg,_Linus_Torvalds,_Miika_Turkia_and_Amit_Chaudhuri
 :revnumber: v3.0.0
 :revdate: February 2013
+:revnumber: v3.0.1
+:revdate: February 2013
 :toc:
 :icons:
 :numbered:
@@ -74,36 +76,48 @@ image::images/main_window.png["The Main Window",align="center"]
 Dive Profile and Included information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The dive profile show on main screen is loaded with information.
-However, a great effort is given to keep the profile simple, yet
+The dive profile shown on the main screen is loaded with information.
+However, great effort was taken to keep the profile simple, yet
 informative.
 
 The main information of the dive profile is the depth graph. On top of
 the obvious information of the depth it shows also the ascent and
-descent rate compared to average (or recommendation). This information
-is given using different colors. Dark red means the ascent or descent
-rate is faster than average, dark green means slower than average and
-yellow / light green is close to average. The depth graph includes also
-depth readings for the peaks in the graph. Thus you should see the
-depth of the deepest point and other peaks. Average depth is marked with
-a horizontal red line.
+descent rate compared to the recommended speed of going up or down in
+the water column. This information is given using different
+colors. Dark red means ascent faster than 18m/60ft per minute or
+decent faster than 30m/100ft per minute. Orange implies an ascent
+speed range between 9m and 18m (between 30 and 60ft) per minute (or
+descent between 18m and 30m (60ft - 100ft) per minute). Yellow and
+light green represent even slower speeds and dark green represents
+reasonably stable situations where the vertical speed is between +/-
+1.5m or 5ft per minute.
+
+The depth graph also includes depth readings for the peaks in the
+graph. Thus you should see the depth of the deepest point and other
+peaks. Average depth is marked with a horizontal red line.
 
 The air consumption graph displays the tank pressure and its change
 during the dive.  The air consumption takes depth into account so that
-even when manually entering the start and end pressures the graph is not
-a straight line. Similarly to the depth graph the tank pressure
+even when manually entering the start and end pressures the graph is
+not a straight line. Similarly to the depth graph the tank pressure
 gives you information of the SAC rate when using air integrated dive
-computer. Same color coding is used with dark red being faster and dark
-green slower air consumption than average.
+computer. Here the color coding is not relative to some absolute
+values but relative to the average normalized air consumption during
+the dive. So areas that are red or orange indicate times of increased
+normalized air consumption while dark green reflects times when the
+diver was using less gas than average. Please note that the color
+coding is obviously only possible when a tank sensor is connected and
+tank pressure readings during the dive are available.
 
 Water temperature is displayed with its own blue line with degree
 markings placed adjacent to significant changes.
 
-It is also possible to zoom in the profile graph. This is done by the
-left mouse button and zoom area can be changed by moving the mouse while
-the button is pressed down. There is also a toggle zoom under the 'Log'
-menu that changes the scale of the dive to fill the whole area, useful
-especially for free divers.
+It is also possible to zoom in the profile graph. This is done either
+by using the scroll wheel / scroll gesture of your mouse or trackpad
+or by holding down the left mouse button; the zoom area can be changed
+by moving the mouse around the profile. There is also a toggle zoom
+under the 'Log' menu that changes the scale of the dive to fill the
+whole area, useful especially for free divers.
 
 [[S_TecDiveProfile]]
 Tec Information in Dive Profile
