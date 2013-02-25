@@ -4,6 +4,7 @@
 #include "dive.h"
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
+#include <LaunchServices/LSOpen.h>
 #include <mach-o/dyld.h>
 #include "gtkosxapplication.h"
 
@@ -228,12 +229,9 @@ gboolean subsurface_os_feature_available(os_feature_t f)
 
 gboolean subsurface_launch_for_uri(const char* uri)
 {
-	GError *err = NULL;
-	gtk_show_uri(NULL, uri, gtk_get_current_event_time(), &err);
-	if (err) {
-		g_message("%s: %s", err->message, uri);
-		g_error_free(err);
+	CFURLRef urlref = CFURLCreateWithBytes(NULL, uri, strlen(uri), kCFStringEncodingMacRoman, NULL);
+	OSStatus status = LSOpenCFURLRef(urlref, NULL);
+	if (status)
 		return FALSE;
-	}
 	return TRUE;
 }
