@@ -24,6 +24,8 @@ msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Няма събития\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -447,7 +449,7 @@ msgstr "Не може да бъде намерен газ %d/%d"
 #: parse-xml.c:1622
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Не може да бъде зареден стилов файл (%s)/%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -754,7 +756,7 @@ msgstr "Редактиране на обобщение за пътуване"
 
 #: gtk-gui.c:966
 msgid "Enable / Disable Events"
-msgstr "Включване / Изключване на Събития"
+msgstr "Включване / изключване на събития"
 
 #: equipment.c:950 equipment.c:1457
 msgid "End"
@@ -1500,7 +1502,7 @@ msgstr "Остани на %.*f %s за %d:%02d мин - времетраене %
 #: parse-xml.c:387
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Неразпозната стойност за проценти %s\n"
 
 #: divelist.c:1428 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
