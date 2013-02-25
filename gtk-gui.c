@@ -1047,19 +1047,19 @@ static void about_dialog(GtkWidget *w, gpointer data)
 {
 	const char *logo_property = NULL;
 	GdkPixbuf *logo = NULL;
-	GtkWidget * dialog;
+	GtkWidget *dialog;
 
 	if (need_icon) {
 		logo_property = "logo";
 		logo = gdk_pixbuf_from_pixdata(&subsurface_icon_pixbuf, TRUE, NULL);
 	}
 	dialog = gtk_about_dialog_new();
-#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION <= 24)
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 24)
 	gtk_about_dialog_set_url_hook(about_dialog_link_cb, NULL, NULL); /* deprecated since GTK 2.24 */
 #else
 	g_signal_connect(GTK_ABOUT_DIALOG(dialog), "activate-link", G_CALLBACK(about_dialog_link_cb), NULL);
 #endif
-	gtk_show_about_dialog(NULL,
+	g_object_set(GTK_OBJECT(dialog),
 		"title", _("About Subsurface"),
 		"program-name", "Subsurface",
 		"comments", _("Multi-platform divelog software in C"),
@@ -1073,6 +1073,10 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		/* Must be last: */
 		logo_property, logo,
 		NULL);
+	if (logo)
+		g_object_unref(logo);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy(dialog);
 }
 
 static void view_list(GtkWidget *w, gpointer data)
