@@ -218,7 +218,7 @@ void webservice_download_dialog(void)
 	const gchar *current_uid = subsurface_get_conf("webservice_uid");
 	GtkWidget *dialog, *vbox, *status, *info, *uid;
 	GtkWidget *frame_uid, *frame_status, *download, *image, *apply;
-	struct download_dialog_state *state = malloc(sizeof(struct download_dialog_state));
+	struct download_dialog_state *state = calloc(1, sizeof(struct download_dialog_state));
 	gboolean has_previous_uid = TRUE;
 
 	if (!current_uid) {
