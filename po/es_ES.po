@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 08:13-0800\n"
-"PO-Revision-Date: 2013-02-17 11:31+0100\n"
+"PO-Revision-Date: 2013-02-25 20:42+0100\n"
 "Last-Translator: Salvador Cuñat <salvador.cunat@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -441,7 +441,7 @@ msgstr "No encuentro el gas %d/%d"
 #: parse-xml.c:1622
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "No se puede abrir el fichero (%s)/%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1494,7 +1494,7 @@ msgstr "Permanecer a  %.*f %s durante %d:%02d min - runtime %d:%02u en %s\n"
 #: parse-xml.c:387
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Porcentaje extraño al leer %s\n"
 
 #: divelist.c:1428 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
