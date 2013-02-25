@@ -286,6 +286,29 @@ static void update_min_max_temperatures(struct dive *dive, temperature_t tempera
 	}
 }
 
+/*
+ * At high pressures air becomes less compressible, and
+ * does not follow the ideal gas law any more.
+ *
+ * This tries to correct for that, becoming the same
+ * as to_ATM() at lower pressures.
+ *
+ * THIS IS A ROUGH APPROXIMATION! The real numbers will
+ * depend on the exact gas mix and temperature.
+ */
+double surface_volume_multiplier(pressure_t pressure)
+{
+	double bar = pressure.mbar / 1000.0;
+
+	if (bar > 200)
+		bar = 0.00038*bar*bar + 0.51629*bar + 81.542;
+	return bar_to_atm(bar);
+}
+
+int gas_volume(cylinder_t *cyl, pressure_t p)
+{
+	return cyl->type.size.mliter * surface_volume_multiplier(p);
+}
 
 /*
  * If the cylinder tank pressures are within half a bar
@@ -338,7 +361,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 		return;
 
 	cuft = ml_to_cuft(type->size.mliter);
-	cuft *= to_ATM(type->workingpressure);
+	cuft *= surface_volume_multiplier(type->workingpressure);
 	psi = to_PSI(type->workingpressure);
 
 	switch (psi) {
@@ -381,7 +404,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
  */
 static void sanitize_cylinder_type(cylinder_type_t *type)
 {
-	double volume_of_air, atm, volume;
+	double volume_of_air, volume;
 
 	/* If we have no working pressure, it had *better* be just a physical size! */
 	if (!type->workingpressure.mbar)
@@ -394,8 +417,8 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 	if (xml_parsing_units.volume == CUFT) {
 		/* confusing - we don't really start from ml but millicuft !*/
 		volume_of_air = cuft_to_l(type->size.mliter);
-		atm = to_ATM(type->workingpressure);		/* working pressure in atm */
-		volume = volume_of_air / atm;			/* milliliters at 1 atm: "true size" */
+		/* milliliters at 1 atm: "true size" */
+		volume = volume_of_air / surface_volume_multiplier(type->workingpressure);
 		type->size.mliter = volume + 0.5;
 	}
 

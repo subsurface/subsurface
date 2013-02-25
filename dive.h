@@ -203,10 +203,8 @@ static inline double bar_to_atm(double bar)
 	return bar / SURFACE_PRESSURE * 1000;
 }
 
-static inline double to_ATM(pressure_t pressure)
-{
-	return pressure.mbar / (double) SURFACE_PRESSURE;
-}
+/* Volume in mliter of a cylinder at pressure 'p' */
+extern int gas_volume(cylinder_t *cyl, pressure_t p);
 
 static inline int mbar_to_PSI(int mbar)
 {

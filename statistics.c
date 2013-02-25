@@ -604,10 +604,10 @@ static void show_single_dive_stats(struct dive *dive)
 	/* for the O2/He readings just create a list of them */
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
 		cylinder_t *cyl = &dive->cylinder[idx];
-		unsigned int start, end;
+		pressure_t start, end;
 
-		start = cyl->start.mbar ? : cyl->sample_start.mbar;
-		end = cyl->end.mbar ? : cyl->sample_end.mbar;
+		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
+		end = cyl->end.mbar ?cyl->sample_end : cyl->sample_end;
 		if (!cylinder_none(cyl)) {
 			/* 0% O2 strangely means air, so 21% - I don't like that at all */
 			int o2 = cyl->gasmix.o2.permille ? : O2_IN_AIR;
@@ -621,8 +621,8 @@ static void show_single_dive_stats(struct dive *dive)
 		}
 		/* and if we have size, start and end pressure, we can
 		 * calculate the total gas used */
-		if (cyl->type.size.mliter && start && end)
-			gas_used += cyl->type.size.mliter / 1000.0 * (start - end);
+		if (start.mbar && end.mbar)
+			gas_used += gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
 	set_label(single_w.o2he, buf);
 	if (gas_used) {

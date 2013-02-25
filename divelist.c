@@ -697,26 +697,19 @@ static int calculate_otu(struct dive *dive)
  */
 static double calculate_airuse(struct dive *dive)
 {
-	double airuse = 0;
+	int airuse = 0;
 	int i;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		pressure_t start, end;
 		cylinder_t *cyl = dive->cylinder + i;
-		int size = cyl->type.size.mliter;
-		double kilo_atm;
-
-		if (!size)
-			continue;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
-		kilo_atm = (to_ATM(start) - to_ATM(end)) / 1000.0;
 
-		/* Liters of air at 1 atm == milliliters at 1k atm*/
-		airuse += kilo_atm * size;
+		airuse += gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
-	return airuse;
+	return airuse / 1000.0;
 }
 
 /* this only uses the first divecomputer to calculate the SAC rate */

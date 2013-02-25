@@ -1011,32 +1011,40 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 	}
 }
 
-static double get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
+/* Get local sac-rate (in ml/min) between entry1 and entry2 */
+static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
 	int index = entry1->cylinderindex;
-	int delta_time = entry2->sec - entry1->sec;
-	double depth;
-	long delta_pressure = GET_PRESSURE(entry1) - GET_PRESSURE(entry2);
-	long mliter;
+	cylinder_t *cyl;
+	int duration = entry2->sec - entry1->sec;
+	int depth, airuse;
+	pressure_t a, b;
+	double atm;
 
 	if (entry2->cylinderindex != index)
 		return 0;
-	if (delta_pressure <= 0)
+	if (duration <= 0)
 		return 0;
-	if (delta_time <= 0)
+	a.mbar = GET_PRESSURE(entry1);
+	b.mbar = GET_PRESSURE(entry2);
+	if (!a.mbar || !b.mbar)
 		return 0;
-	depth = (entry1->depth + entry2->depth) / 2.0;
 
-	mliter = dive->cylinder[index].type.size.mliter;
+	/* Mean pressure in ATM */
+	depth = (entry1->depth + entry2->depth) / 2;
+	atm = (double) depth_to_mbar(depth, dive) / SURFACE_PRESSURE;
 
-	return delta_pressure * mliter /
-		(delta_time / 60.0) /
-		depth_to_mbar(depth, dive);
+	cyl = dive->cylinder + index;
+
+	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
+
+	/* milliliters per minute */
+	return airuse / atm * 60 / duration;
 }
 
 /* calculate the current SAC in ml/min and convert to int */
 #define GET_LOCAL_SAC(_entry1, _entry2, _dive) \
-	(int) get_local_sac(_entry1, _entry2, _dive)
+	get_local_sac(_entry1, _entry2, _dive)
 
 #define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
 
