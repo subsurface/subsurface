@@ -70,6 +70,56 @@ The screen is divided in 3 area's (shown below with test dives loaded):
 
 image::images/main_window.png["The Main Window",align="center"]
 
+[[S_DiveProfile]]
+Dive Profile and Included information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The dive profile show on main screen is loaded with information.
+However, a great effort is given to keep the profile simple, yet
+informative.
+
+The main information of the dive profile is the depth graph. On top of
+the obvious information of the depth it shows also the ascent and
+descent rate compared to average (or recommendation). This information
+is given using different colors. Dark red means the ascent or descent
+rate is faster than average, dark green means slower than average and
+yellow / light green is close to average. The depth graph includes also
+depth readings for the peaks in the graph. Thus you should see the
+depth of the deepest point and other peaks. Average depth is marked with
+a horizontal red line.
+
+The air consumption graph displays the tank pressure and its change
+during the dive.  The air consumption takes depth into account so that
+even when manually entering the start and end pressures the graph is not
+a straight line. Similarly to the depth graph the tank pressure
+gives you information of the SAC rate when using air integrated dive
+computer. Same color coding is used with dark red being faster and dark
+green slower air consumption than average.
+
+Water temperature is displayed with its own blue line with degree
+markings placed adjacent to significant changes.
+
+It is also possible to zoom in the profile graph. This is done by the
+left mouse button and zoom area can be changed by moving the mouse while
+the button is pressed down. There is also a toggle zoom under the 'Log'
+menu that changes the scale of the dive to fill the whole area, useful
+especially for free divers.
+
+[[S_TecDiveProfile]]
+Tec Information in Dive Profile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The dive profile can include Tec settings. Enabling these is described
+in chapter <<S_SettingUpPreferences,Setting up Preferences>>. Basically
+you can include graphs of accumulated pO2, pN2, pHe. These graphs are
+added below the profile data. On top of the profile the currently used
+gradient factors are shown (e.g. GF 35/75).
+
+The graph can also include both the dive computer reported ceiling and
+our calculated ceiling. Because of the differences in used algorithms it
+is unlikely that both of these are the same. It is even quite common
+that Subsurface calculates ceiling for non-decompression dives when the
+dive computer was not in deco mode during the dive.
 
 [[S_ImportNewDives]]
 Import New Dives from your Dive Computer
