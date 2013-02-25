@@ -952,7 +952,7 @@ static void create_toggle(const char* label, int *on, void *_data)
 static void selectevents_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *frame, *vbox, *table;
+	GtkWidget *dialog, *frame, *vbox, *table, *label;
 
 	dialog = gtk_dialog_new_with_buttons(_("Select Events"),
 		GTK_WINDOW(main_window),
@@ -968,9 +968,13 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	table = gtk_table_new(1, 4, TRUE);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-
-	evn_foreach(&create_toggle, table);
+	if (!evn_foreach(&create_toggle, table)) {
+		g_object_ref_sink(G_OBJECT(table));
+		label = gtk_label_new(_("\nNo Events\n"));
+		gtk_container_add(GTK_CONTAINER(frame), label);
+	} else {
+		gtk_container_add(GTK_CONTAINER(frame), table);
+	}
 
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));

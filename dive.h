@@ -581,7 +581,7 @@ extern void add_people(const char *string);
 extern void add_location(const char *string);
 extern void add_suit(const char *string);
 extern void remember_event(const char *eventname);
-extern void evn_foreach(void (*callback)(const char *, int *, void *), void *data);
+extern int evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 extern void clear_events(void);
 
 extern int add_new_dive(struct dive *dive);

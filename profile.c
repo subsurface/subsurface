@@ -303,7 +303,7 @@ static struct ev_select *ev_namelist;
 static int evn_allocated;
 static int evn_used;
 
-void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
+int evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 {
 	int i;
 
@@ -311,6 +311,7 @@ void evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 		/* here we display an event name on screen - so translate */
 		callback(_(ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
 	}
+	return i;
 }
 
 void clear_events(void)
