@@ -1054,8 +1054,8 @@ static void about_dialog(GtkWidget *w, gpointer data)
 		logo = gdk_pixbuf_from_pixdata(&subsurface_icon_pixbuf, TRUE, NULL);
 	}
 	dialog = gtk_about_dialog_new();
-#if !GTK_CHECK_VERSION(2,24,0) /* F*cking gtk */
-	gtk_about_dialog_set_url_hook(about_dialog_link_cb, NULL, NULL);
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION <= 24)
+	gtk_about_dialog_set_url_hook(about_dialog_link_cb, NULL, NULL); /* deprecated since GTK 2.24 */
 #else
 	g_signal_connect(GTK_ABOUT_DIALOG(dialog), "activate-link", G_CALLBACK(about_dialog_link_cb), NULL);
 #endif
