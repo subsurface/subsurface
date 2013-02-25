@@ -737,6 +737,19 @@ JDiveLog (see <<S_ImportingDivesJDiveLog, chapter Importing Dives from JDiveLog>
 
       subsurface MyDives.xml --import yourUserName.DLD
 
+[[S_ImporintgDivinglog]]
+Importing Dives from DivingLog 5.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before you can start importing dives from DivingLog you first have to
+export those dives.
+
+ - Open the 'File - Export - XML' menu
+ - Select the dives that you want to export
+ - Click on the export button and select the filename
+
+This file can now be opened in Subsurface (as described in the previous sections).
+
 [[S_DivePlanning]]
 Planning Dives
 --------------
