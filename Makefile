@@ -259,16 +259,11 @@ $(NSIFILE): $(NSIINPUTFILE)
 $(INFOPLIST): $(INFOPLISTINPUT)
 	$(shell cat $(INFOPLISTINPUT) | sed -e 's/CFBUNDLEVERSION_TOKEN/$(CFBUNDLEVERSION_STRING)/' > $(INFOPLIST))
 
+# Transifex merge the translations
 update-po-files:
 	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
-	for i in po/*.po; do \
-		msgmerge --no-wrap -s -U $$i po/subsurface-new.pot ; \
-	done
-
-prepare-po-files:
-	for i in po/*.po; do \
-		msgcat --no-wrap $$i -o $$i ; \
-	done
+	tx push -s
+	tx pull -af
 
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 		$(XSLT) $(ZIP) $(LIBDIVECOMPUTERCFLAGS) \
