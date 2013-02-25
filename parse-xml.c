@@ -384,7 +384,7 @@ static void percent(char *buffer, void *_fraction)
 			break;
 		}
 	default:
-		printf("Strange percentage reading %s\n", buffer);
+		printf(_("Strange percentage reading %s\n"), buffer);
 		break;
 	}
 }
@@ -1613,7 +1613,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, GError **error)
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
-			parser_error(error, "Can't open stylesheet (%s)/%s", xslt_path, info->file);
+			parser_error(error, _("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
 			return doc;
 		}
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
