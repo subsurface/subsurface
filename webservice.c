@@ -8,6 +8,7 @@
 #include "display-gtk.h"
 
 struct dive_table gps_location_table;
+static void merge_locations_into_dives(void);
 
 enum {
 	DD_STATUS_OK,
@@ -76,11 +77,11 @@ static void download_dialog_traverse_xml(xmlNodePtr node, guint *download_status
 {
 	xmlNodePtr cur_node;
 	for (cur_node = node; cur_node; cur_node = cur_node->next) {
-		if ((!strcmp(cur_node->name, (const gchar *)"download")) &&
-			  (!strcmp(xmlNodeGetContent(cur_node), (const gchar *)"ok"))) {
+		if ((!strcmp((const char *)cur_node->name, (const char *)"download")) &&
+			  (!strcmp((const char *)xmlNodeGetContent(cur_node), (const char *)"ok"))) {
 			*download_status = DD_STATUS_OK;
 			return;
-		}	else if (!strcmp(cur_node->name, (const gchar *)"error")) {
+		}	else if (!strcmp((const char *)cur_node->name, (const char *)"error")) {
 			*download_status = DD_STATUS_ERROR_ID;
 			return;
 		}
@@ -139,10 +140,29 @@ static void download_dialog_release_xml(struct download_dialog_state *state)
 		free((void *)state->xmldata);
 }
 
-static void download_dialog_delete(GtkWidget *w, gpointer data)
+static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer data)
 {
 	struct download_dialog_state *state = (struct download_dialog_state *)data;
-	download_dialog_release_xml(state);
+	switch (response) {
+	case GTK_RESPONSE_HELP:
+		/* open webservice api page */
+		subsurface_launch_for_uri("http://api.hohndel.org/");
+		break;
+	case GTK_RESPONSE_ACCEPT:
+		/* apply download */
+		parse_xml_buffer(_("Webservice"), state->xmldata, state->xmldata_len, &gps_location_table, NULL);
+		/* now merge the data in the gps_location table into the dive_table */
+		merge_locations_into_dives();
+		mark_divelist_changed(TRUE);
+		dive_list_update_dives();
+		/* store last entered uid in config */
+		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(state->uid)));
+	default:
+	case GTK_RESPONSE_DELETE_EVENT:
+		gtk_widget_destroy(GTK_WIDGET(d));
+		download_dialog_release_xml(state);
+		free(state);
+	}
 }
 
 static gboolean is_automatic_fix(struct dive *gpsfix)
@@ -198,9 +218,8 @@ void webservice_download_dialog(void)
 	const gchar *current_uid = subsurface_get_conf("webservice_uid");
 	GtkWidget *dialog, *vbox, *status, *info, *uid;
 	GtkWidget *frame_uid, *frame_status, *download, *image, *apply;
-	struct download_dialog_state state = {NULL};
+	struct download_dialog_state *state = malloc(sizeof(struct download_dialog_state));
 	gboolean has_previous_uid = TRUE;
-	int result;
 
 	if (!current_uid) {
 		current_uid = "";
@@ -214,6 +233,8 @@ void webservice_download_dialog(void)
 		GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_CANCEL,
 		GTK_RESPONSE_REJECT,
+		GTK_STOCK_HELP,
+		GTK_RESPONSE_HELP,
 		NULL);
 
 	apply = gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
@@ -238,7 +259,7 @@ void webservice_download_dialog(void)
 	image = gtk_image_new_from_stock(GTK_STOCK_CONNECT, GTK_ICON_SIZE_MENU);
 	gtk_button_set_image(GTK_BUTTON(download), image);
 	gtk_box_pack_start(GTK_BOX(vbox), download, FALSE, TRUE, pad);
-	g_signal_connect(download, "clicked", G_CALLBACK(download_dialog_connect_cb), &state);
+	g_signal_connect(download, "clicked", G_CALLBACK(download_dialog_connect_cb), (gpointer)state);
 
 	frame_status = gtk_frame_new(_("Status"));
 	status = gtk_label_new(_("Idle"));
@@ -246,25 +267,12 @@ void webservice_download_dialog(void)
 	gtk_container_add(GTK_CONTAINER(frame_status), status);
 	gtk_misc_set_padding(GTK_MISC(status), pad, pad);
 
-	state.uid = uid;
-	state.status = status;
-	state.apply = apply;
+	state->uid = uid;
+	state->status = status;
+	state->apply = apply;
 
+	g_signal_connect(dialog, "response", G_CALLBACK(download_dialog_response_cb), (gpointer)state);
 	gtk_widget_show_all(dialog);
-	g_signal_connect(dialog, "delete-event", G_CALLBACK(download_dialog_delete), &state);
-	result = gtk_dialog_run(GTK_DIALOG(dialog));
-	if (result == GTK_RESPONSE_ACCEPT) {
-		/* apply download */
-		parse_xml_buffer(_("Webservice"), state.xmldata, state.xmldata_len, &gps_location_table, NULL);
-		/* now merge the data in the gps_location table into the dive_table */
-		merge_locations_into_dives();
-		mark_divelist_changed(TRUE);
-		dive_list_update_dives();
-		/* store last entered uid in config */
-		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(uid)));
-	}
-	download_dialog_release_xml(&state);
-	gtk_widget_destroy(dialog);
 	if (has_previous_uid)
 		free((void *)current_uid);
 }
