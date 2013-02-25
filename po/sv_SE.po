@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-13 23:39-0800\n"
+"POT-Creation-Date: 2013-02-25 08:13-0800\n"
 "PO-Revision-Date: 2013-02-14 10:45+0100\n"
 "Last-Translator: Fredrik Steen <fredrik@ppo2.se>\n"
 "Language-Team: Swedish\n"
@@ -29,7 +29,7 @@ msgstr " > Månad"
 msgid " Download"
 msgstr "Ladda ned"
 
-#: download-dialog.c:375
+#: download-dialog.c:374
 msgid " Please select dive computer and device. "
 msgstr " Välj dykdator och enhet"
 
@@ -47,71 +47,72 @@ msgstr "slut"
 msgid "#"
 msgstr "#"
 
-#: print.c:308
+#: print.c:267 print.c:326
 #, c-format
 msgid "%.*f %s"
 msgstr "%.*f %s"
 
-#: print.c:253 print.c:326
+#: print.c:344
 #, c-format
 msgid "%.*f %s\n"
 msgstr "%.*f %s\n"
 
-#: statistics.c:591 statistics.c:738 statistics.c:740 statistics.c:742
+#: statistics.c:259 statistics.c:597 statistics.c:746 statistics.c:748
+#: statistics.c:750
 #, c-format
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: planner.c:605
+#: planner.c:610
 #, c-format
 msgid "%.0f%s of %s\n"
 msgstr "%.0f%s av %s\n"
 
 #. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday, monthname, day, year, hour, min
-#: print.c:82
+#: print.c:88
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
 msgstr "%1$s%2$s, %4$d %3$s, %5$d   %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
-#: print.c:560
+#: print.c:565
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
 msgstr "%1$s, %3$d %2$s, %4$d   %5$dh%6$02d"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
-#: divelist.c:277
+#: divelist.c:307
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
 msgstr "%1$s, %3$d %2$s, %4$d %5$02d:%6$02d"
 
 #. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
-#: statistics.c:549
+#: statistics.c:550
 #, c-format
 msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
 msgstr "%1$s, %3$d %2$s, %4$d %5$2d:%6$02d"
 
-#: print.c:585 statistics.c:556
+#: print.c:581 statistics.c:557
 #, c-format
 msgid "%d min"
 msgstr "%d min"
 
-#: statistics.c:521
+#: statistics.c:522
 #, c-format
 msgid "%dd %dh %dmin"
 msgstr "%dd %dt %dmin"
 
-#: statistics.c:523
+#: statistics.c:524
 #, c-format
 msgid "%dh %dmin"
 msgstr "%dt %dmin"
 
-#: print.c:304
+#: print.c:322
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: profile.c:2148
+#: profile.c:2168
 #, c-format
 msgid ""
 "%s\n"
@@ -120,7 +121,7 @@ msgstr ""
 "%s\n"
 "CNS:%u%%"
 
-#: profile.c:2116
+#: profile.c:2136
 #, c-format
 msgid ""
 "%s\n"
@@ -129,7 +130,7 @@ msgstr ""
 "%s\n"
 "Beräknat tak %.0f %s"
 
-#: profile.c:2132
+#: profile.c:2152
 #, c-format
 msgid ""
 "%s\n"
@@ -138,7 +139,7 @@ msgstr ""
 "%s\n"
 "Deko:%umin @ %.0f %s"
 
-#: profile.c:2135
+#: profile.c:2155
 #, c-format
 msgid ""
 "%s\n"
@@ -147,7 +148,7 @@ msgstr ""
 "%s\n"
 "Deko:okänd tid @ %.0f %s"
 
-#: profile.c:2172
+#: profile.c:2192
 #, c-format
 msgid ""
 "%s\n"
@@ -160,7 +161,7 @@ msgstr ""
 "END:%d%s\n"
 "EADD:%d%s"
 
-#: profile.c:2141
+#: profile.c:2161
 #, c-format
 msgid ""
 "%s\n"
@@ -169,7 +170,7 @@ msgstr ""
 "%s\n"
 "I deco"
 
-#: profile.c:2165
+#: profile.c:2185
 #, c-format
 msgid ""
 "%s\n"
@@ -177,26 +178,26 @@ msgid ""
 msgstr ""
 "%s\n"
 "MOD:%d%s"
+
+#: profile.c:2164
+#, c-format
+msgid ""
+"%s\n"
+"NDL:%umin"
+msgstr ""
+"%s\n"
+"NDL:%umin"
+
+#: profile.c:2126
+#, c-format
+msgid ""
+"%s\n"
+"P:%d %s"
+msgstr ""
+"%s\n"
+"P:%d %s"
 
 #: profile.c:2144
-#, c-format
-msgid ""
-"%s\n"
-"NDL:%umin"
-msgstr ""
-"%s\n"
-"NDL:%umin"
-
-#: profile.c:2106
-#, c-format
-msgid ""
-"%s\n"
-"P:%d %s"
-msgstr ""
-"%s\n"
-"P:%d %s"
-
-#: profile.c:2124
 #, c-format
 msgid ""
 "%s\n"
@@ -205,7 +206,7 @@ msgstr ""
 "%s\n"
 "Såkerhetsstopp:%umin @ %.0f %s"
 
-#: profile.c:2127
+#: profile.c:2147
 #, c-format
 msgid ""
 "%s\n"
@@ -214,7 +215,7 @@ msgstr ""
 "%s\n"
 "Säkerhetsstopp:okänd tid @ %.0f %s"
 
-#: planner.c:525
+#: planner.c:530
 #, c-format
 msgid ""
 "%s\n"
@@ -227,7 +228,7 @@ msgstr ""
 "baserad på GFlow = %.0f och GFhigh = %.0f\n"
 "\n"
 
-#: profile.c:2111
+#: profile.c:2131
 #, c-format
 msgid ""
 "%s\n"
@@ -236,7 +237,7 @@ msgstr ""
 "%s\n"
 "T:%.1f %s"
 
-#: profile.c:2160
+#: profile.c:2180
 #, c-format
 msgid ""
 "%s\n"
@@ -245,7 +246,7 @@ msgstr ""
 "%s\n"
 "pHe:%.2fbar"
 
-#: profile.c:2156
+#: profile.c:2176
 #, c-format
 msgid ""
 "%s\n"
@@ -254,7 +255,7 @@ msgstr ""
 "%s\n"
 "pN%s:%.2fbar"
 
-#: profile.c:2152
+#: profile.c:2172
 #, c-format
 msgid ""
 "%s\n"
@@ -263,33 +264,33 @@ msgstr ""
 "%s\n"
 "pO%s:%.2fbar"
 
-#: dive.c:874
+#: dive.c:895
 #, c-format
 msgid "(%s) or (%s)"
 msgstr "(%s) eller (%s)"
 
-#: statistics.c:683
+#: statistics.c:689
 #, c-format
 msgid "(no dives)"
 msgstr "(inga dyk)"
 
-#: gtk-gui.c:1999
+#: gtk-gui.c:2002
 msgid "(nothing)"
 msgstr "(inget)"
 
-#: planner.c:1315
+#: planner.c:1323
 msgid "0.6 cuft/min"
 msgstr "0.6 ft³/min"
 
-#: planner.c:1314
+#: planner.c:1322
 msgid "0.7 cuft/min"
 msgstr "0.7 ft³/min"
 
-#: planner.c:1320
+#: planner.c:1328
 msgid "17 l/min"
 msgstr "17 l/min"
 
-#: print.c:909
+#: print.c:893
 msgid "2 dives per page"
 msgstr "2 dyk per sida"
 
@@ -297,19 +298,19 @@ msgstr "2 dyk per sida"
 msgid "2 pcs full suit"
 msgstr "2 pcs full suit"
 
-#: planner.c:1319
+#: planner.c:1327
 msgid "20 l/min"
 msgstr "20 l/min"
 
-#: gtk-gui.c:841
+#: gtk-gui.c:846
 msgid "3m increments for calculated ceiling"
 msgstr "beräknat tak i 3m steg"
 
-#: print.c:905
+#: print.c:889
 msgid "6 dives per page"
 msgstr "6 dyk per sida"
 
-#: planner.c:1264
+#: planner.c:1272
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -325,35 +326,35 @@ msgstr ""
 "En rad som har ett djup och gas men ingen tid är speciell; det informerar pleneringen att den gasen kan användas för planering när planen överskrider det givna djpet.\n"
 "CC SetPoint används for CC (rebreather) dykningar, lämna tomt för OC.</small>\n"
 
-#: planner.c:1190
+#: planner.c:1198
 msgid "AIR"
 msgstr "LUFT"
 
-#: gtk-gui.c:1058 gtk-gui.c:1381
+#: gtk-gui.c:1063 gtk-gui.c:1386
 msgid "About Subsurface"
 msgstr "Om Subsurface"
 
-#: gtk-gui.c:1372
+#: gtk-gui.c:1377
 msgid "Add Dive..."
 msgstr "Nytt dyk..."
 
-#: divelist.c:2397
+#: divelist.c:2056
 msgid "Add dive"
 msgstr "Nytt dyk"
 
-#: divelist.c:2499
+#: divelist.c:2158
 msgid "Add to trip above"
 msgstr "Kombinera med resan ovan"
 
-#: planner.c:1339
+#: planner.c:1347
 msgid "Add waypoint"
 msgstr "Lägg till"
 
-#: statistics.c:848
+#: statistics.c:856
 msgid "Air Press"
 msgstr "Lufttryck"
 
-#: statistics.c:847
+#: statistics.c:855
 msgid "Air Temp"
 msgstr "Lufttemp"
 
@@ -362,7 +363,7 @@ msgstr "Lufttemp"
 msgid "Air Temp in %s"
 msgstr "Lufttemp i %s"
 
-#: download-dialog.c:391
+#: download-dialog.c:390
 msgid "Always prefer downloaded dive"
 msgstr "Föredra alltid nyladdad dykinformation"
 
@@ -374,7 +375,7 @@ msgstr "apr"
 msgid "Aug"
 msgstr "aug"
 
-#: gtk-gui.c:1394
+#: gtk-gui.c:1399
 msgid "Autogroup"
 msgstr "Gruppera automatiskt"
 
@@ -398,19 +399,19 @@ msgctxt "Temp"
 msgid "Average"
 msgstr "Genomsnitt"
 
-#: statistics.c:802 statistics.c:839
+#: statistics.c:810 statistics.c:847
 msgid "Avg Depth"
 msgstr "Medeldjup"
 
-#: statistics.c:810
+#: statistics.c:818
 msgid "Avg SAC"
 msgstr "Medel-SAC"
 
-#: statistics.c:785
+#: statistics.c:793
 msgid "Avg Temp"
 msgstr "Medel-temp"
 
-#: statistics.c:792
+#: statistics.c:800
 msgid "Avg Time"
 msgstr "Medel-tid"
 
@@ -419,22 +420,27 @@ msgstr "Medel-tid"
 msgid "Bailing out to OC"
 msgstr "Bailout till öppet system"
 
-#: gtk-gui.c:642
+#: gtk-gui.c:647
 msgid "Bar"
 msgstr "bar"
 
-#: info.c:800 info.c:1253 print.c:487
+#: info.c:800 info.c:1253 print.c:503
 msgid "Buddy"
 msgstr "Parkamrat"
 
-#: planner.c:1219
+#: planner.c:1227
 msgid "CC SetPoint"
 msgstr "CC SetPoint"
 
-#: planner.c:157
+#: planner.c:163
 #, c-format
 msgid "Can't find gas %d/%d"
 msgstr "Kan inte hitta gasen %d/%d"
+
+#: parse-xml.c:1622
+#, c-format
+msgid "Can't open stylesheet (%s)/%s"
+msgstr ""
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -448,23 +454,23 @@ msgstr "Avbrutet ..."
 msgid "Cannot parse response!"
 msgstr "Kan inte tolka respons"
 
-#: gtk-gui.c:652
+#: gtk-gui.c:657
 msgid "Celsius"
 msgstr "Celsius"
 
-#: gtk-gui.c:564
+#: gtk-gui.c:569
 msgid "Choose Default XML File"
 msgstr "Välj standard XML-fil"
 
-#: gtk-gui.c:1900
+#: gtk-gui.c:1904
 msgid "Choose XML Files To Import Into Current Data File"
 msgstr "Välj vilka XML-filer du vill importera"
 
-#: gtk-gui.c:1367
+#: gtk-gui.c:1372
 msgid "Close"
 msgstr "Stäng"
 
-#: divelist.c:2517
+#: divelist.c:2176
 msgid "Collapse all"
 msgstr "Sammanslå alla"
 
@@ -476,40 +482,40 @@ msgstr "Kontaktar..."
 msgid "Connection Error: "
 msgstr "Kontaktfel:"
 
-#: divelist.c:2489
+#: divelist.c:2148
 msgid "Create new trip above"
 msgstr "Ny resa innan"
 
-#: gtk-gui.c:648
+#: gtk-gui.c:653
 msgid "CuFt"
 msgstr "ft^3"
 
-#: divelist.c:1431 gtk-gui.c:672
+#: divelist.c:1429 gtk-gui.c:677
 msgid "Cyl"
 msgstr "Cyl"
 
-#: equipment.c:918 equipment.c:1029 print.c:195
+#: equipment.c:919 equipment.c:1030 print.c:201
 msgid "Cylinder"
 msgstr "Flaska"
 
-#: planner.c:219
+#: planner.c:224
 msgid "Cylinder for planning"
 msgstr "Flaska för planering"
 
-#: equipment.c:1539
+#: equipment.c:1540
 msgid "Cylinders"
 msgstr "Flaskor"
 
-#: profile.c:2102
+#: profile.c:2122
 #, c-format
 msgid "D:%.1f %s"
 msgstr "D:%.1f %s"
 
-#: planner.c:1276
+#: planner.c:1284
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
 msgstr "VARNING: DETTA ÄR EN NY IMPLEMENTATION AV BÜHLMANN'S DEKO ALGORITM OCH EN DYKPLANERARE BASERAD PÅ DEN, OCH KODEN HAR SETT ENDAST LITE TESTNING. VI FÖRESLÅR ATT MAN INTE GÖR DYK BASERADE ENBART PÅ RESULTATEN AV DENNA PLAN!"
 
-#: divelist.c:1424 print.c:486 statistics.c:830
+#: divelist.c:1422 print.c:502 statistics.c:838
 msgid "Date"
 msgstr "Datum"
 
@@ -525,23 +531,23 @@ msgstr "Datum:"
 msgid "Dec"
 msgstr "dec"
 
-#: gtk-gui.c:709
+#: gtk-gui.c:714
 msgid "Default XML Data File"
 msgstr "Standard XML-fil"
 
-#: gtk-gui.c:1314
+#: gtk-gui.c:1319
 msgid "Delete a dive computer information entry"
 msgstr "Radera dykdatorinformation"
 
-#: divelist.c:2239 divelist.c:2292 divelist.c:2384
+#: divelist.c:1904 divelist.c:1955 divelist.c:2043
 msgid "Delete dive"
 msgstr "Radera dyk"
 
-#: divelist.c:2241 divelist.c:2383
+#: divelist.c:1906 divelist.c:2042
 msgid "Delete dives"
 msgstr "Radera dyk"
 
-#: print.c:486 statistics.c:175
+#: print.c:502 statistics.c:175
 msgid "Depth"
 msgstr "Djup"
 
@@ -554,11 +560,11 @@ msgstr "Djup (%s):"
 msgid "Depth Limit Exceeded"
 msgstr "Maxdjup har överskridits"
 
-#: gtk-gui.c:636
+#: gtk-gui.c:641
 msgid "Depth:"
 msgstr "Djup:"
 
-#: gtk-gui.c:1273
+#: gtk-gui.c:1278
 msgid "Device Id"
 msgstr "Enhetsnamn"
 
@@ -572,7 +578,7 @@ msgstr "Enhet eller monteringspunkt"
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"
 msgstr "Dyk #%1$d - %2$s %4$02d.%3$02d.%5$04d kl %6$d:%7$02d"
 
-#: info.c:157 print.c:77
+#: info.c:157 print.c:83
 #, c-format
 msgid "Dive #%d - "
 msgstr "Dyk #%d - "
@@ -582,23 +588,23 @@ msgstr "Dyk #%d - "
 msgid "Dive %d: %s %d %04d"
 msgstr "Dyk #%d: %s %d %04d"
 
-#: gtk-gui.c:1981
+#: gtk-gui.c:1984
 msgid "Dive Computer Nickname"
 msgstr "Dykdatornamn"
 
-#: gtk-gui.c:1611 info.c:998 statistics.c:821
+#: gtk-gui.c:1616 info.c:998 statistics.c:829
 msgid "Dive Info"
 msgstr "Information"
 
-#: gtk-gui.c:1603
+#: gtk-gui.c:1608
 msgid "Dive Notes"
 msgstr "Dykanteckningar"
 
-#: planner.c:1286
+#: planner.c:1294
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
 msgstr "Dykplan - DETTA ÄR BARA EN SIMULATION; ANVÄND INTE FÖR DYKNING"
 
-#: statistics.c:831
+#: statistics.c:839
 msgid "Dive Time"
 msgstr "Dyktid"
 
@@ -618,11 +624,7 @@ msgstr "Dykdatorleverantör och produkt"
 msgid "Dive data import error"
 msgstr "Lyckades inte importera dykdata"
 
-#: print.c:895
-msgid "Dive details"
-msgstr "Detaljer"
-
-#: gps.c:219
+#: gps.c:220
 msgid "Dive locations"
 msgstr "Dykplatser"
 
@@ -630,15 +632,15 @@ msgstr "Dykplatser"
 msgid "Dive master"
 msgstr "Divemaster"
 
-#: planner.c:1308
+#: planner.c:1316
 msgid "Dive starts when?"
 msgstr "När börjar dyket?"
 
-#: print.c:486
+#: print.c:502
 msgid "Dive#"
 msgstr "Dyknr"
 
-#: gtk-gui.c:697
+#: gtk-gui.c:702
 msgid "Divelist Font"
 msgstr "Font för dyklistan"
 
@@ -646,19 +648,19 @@ msgstr "Font för dyklistan"
 msgid "Divemaster"
 msgstr "Divemaster"
 
-#: statistics.c:782
+#: statistics.c:790
 msgid "Dives"
 msgstr "Dyk"
 
-#: gtk-gui.c:1377
+#: gtk-gui.c:1382
 msgid "Dives Locations"
 msgstr "Dykplatser"
 
-#: download-dialog.c:366
+#: download-dialog.c:365
 msgid "Download From Dive Computer"
 msgstr "Ladda ner från dykdator"
 
-#: gtk-gui.c:1370
+#: gtk-gui.c:1375
 msgid "Download From Dive Computer..."
 msgstr "Ladda ner från dykdator..."
 
@@ -666,7 +668,7 @@ msgstr "Ladda ner från dykdator..."
 msgid "Download From Web Service"
 msgstr "Ladda ner från webbtjänst"
 
-#: gtk-gui.c:1371
+#: gtk-gui.c:1376
 msgid "Download From Web Service..."
 msgstr "Ladda ned från webbtjänst..."
 
@@ -674,7 +676,7 @@ msgstr "Ladda ned från webbtjänst..."
 msgid "Download Success!"
 msgstr "Nedladdning lyckades!"
 
-#: print.c:486 statistics.c:175
+#: print.c:502 statistics.c:175
 msgid "Duration"
 msgstr "Varaktighet"
 
@@ -686,16 +688,16 @@ msgstr "Varaktighet (min)"
 msgid "E"
 msgstr "E"
 
-#: planner.c:126
+#: planner.c:129
 #, c-format
 msgid "EAN%d"
 msgstr "EAN%d"
 
-#: planner.c:1191
+#: planner.c:1199
 msgid "EAN32"
 msgstr "EAN32"
 
-#: planner.c:1192
+#: planner.c:1200
 msgid "EAN36"
 msgstr "EAN36"
 
@@ -703,11 +705,11 @@ msgstr "EAN36"
 msgid "Edit"
 msgstr "Redigera"
 
-#: gtk-gui.c:1386
+#: gtk-gui.c:1391
 msgid "Edit Device Names"
 msgstr "Ändra Enhetsnamn"
 
-#: gtk-gui.c:1246
+#: gtk-gui.c:1251
 msgid "Edit Dive Computer Nicknames"
 msgstr "Ändra dykdatorers namn"
 
@@ -715,23 +717,23 @@ msgstr "Ändra dykdatorers namn"
 msgid "Edit Trip Info"
 msgstr "Ändra reseinformation"
 
-#: divelist.c:2405
+#: divelist.c:2064
 msgid "Edit Trip Summary"
 msgstr "Ändra resesammandrag"
 
-#: gtk-gui.c:1306
+#: gtk-gui.c:1311
 msgid "Edit a dive computer nickname by double-clicking the in the relevant nickname field"
 msgstr "Ändra dykdatorns namn genom att dubbel-klicka på namnfältet"
 
-#: divelist.c:2381
+#: divelist.c:2040
 msgid "Edit dive"
 msgstr "Redigera dyk"
 
-#: divelist.c:2438 divelist.c:2461
+#: divelist.c:2097 divelist.c:2120
 msgid "Edit dive date/time"
 msgstr "Redigera dyk datum/tid"
 
-#: divelist.c:2380
+#: divelist.c:2039
 msgid "Edit dives"
 msgstr "Redigera dyk"
 
@@ -743,15 +745,15 @@ msgstr "Redigera flera dyk"
 msgid "Edit trip summary"
 msgstr "Redigera resesammandrag"
 
-#: gtk-gui.c:961
+#: gtk-gui.c:966
 msgid "Enable / Disable Events"
 msgstr "Aktivera / Inaktivera händelser"
 
-#: equipment.c:949 equipment.c:1456
+#: equipment.c:950 equipment.c:1457
 msgid "End"
 msgstr "Slut"
 
-#: planner.c:1216
+#: planner.c:1224
 msgid "Ending Depth"
 msgstr "Slutdjup"
 
@@ -759,7 +761,7 @@ msgstr "Slutdjup"
 msgid "Enter a user identifier and press 'Download'. Once the download is complete you can press 'Apply' if you wish to apply the changes."
 msgstr "Ange ditt användarid och tryck 'Ladda ner'. När laddningen är färdig kan du trycka på 'Använd' för att använda data"
 
-#: gtk-gui.c:1607 info.c:833
+#: gtk-gui.c:1612 info.c:833
 msgid "Equipment"
 msgstr "Utrustning"
 
@@ -812,11 +814,11 @@ msgstr "Event: systime=%<PRId64>, devtime=%u\n"
 msgid "Event: waiting for user action"
 msgstr "Händelse: väntar på användaren"
 
-#: divelist.c:2513
+#: divelist.c:2172
 msgid "Expand all"
 msgstr "Expandera alla"
 
-#: gtk-gui.c:653
+#: gtk-gui.c:658
 msgid "Fahrenheit"
 msgstr "Fahrenheit"
 
@@ -825,22 +827,22 @@ msgstr "Fahrenheit"
 msgid "Failed to open %i files."
 msgstr "Kunde inte öppna %i filer."
 
-#: parse-xml.c:1448
+#: parse-xml.c:1510
 #, c-format
 msgid "Failed to parse '%s'"
 msgstr "Kunde inte läsa '%s'"
 
-#: parse-xml.c:1443
+#: parse-xml.c:1509
 #, c-format
 msgid "Failed to parse '%s'.\n"
 msgstr "Kunde inte läsa '%s'.\n"
 
-#: file.c:267
+#: file.c:271
 #, c-format
 msgid "Failed to read '%s'"
 msgstr "Kunde inte öppna '%s'"
 
-#: file.c:263
+#: file.c:267
 #, c-format
 msgid "Failed to read '%s'.\n"
 msgstr "Kunde inte öppna '%s'.\n"
@@ -849,19 +851,19 @@ msgstr "Kunde inte öppna '%s'.\n"
 msgid "Feb"
 msgstr "feb"
 
-#: gtk-gui.c:638
+#: gtk-gui.c:643
 msgid "Feet"
 msgstr "fot"
 
-#: gtk-gui.c:1357
+#: gtk-gui.c:1362
 msgid "File"
 msgstr "Fil"
 
-#: gtk-gui.c:1360
+#: gtk-gui.c:1365
 msgid "Filter"
 msgstr "Filter"
 
-#: download-dialog.c:385
+#: download-dialog.c:384
 msgid "Force download of all dives"
 msgstr "Tvinga nedladdning av alla dyk"
 
@@ -869,19 +871,19 @@ msgstr "Tvinga nedladdning av alla dyk"
 msgid "Fri"
 msgstr "fre"
 
-#: gtk-gui.c:859
+#: gtk-gui.c:864
 msgid "GFhigh"
 msgstr "GFhigh"
 
-#: planner.c:1331
+#: planner.c:1339
 msgid "GFhigh for plan"
 msgstr "GFhigh för dykplanering"
 
-#: gtk-gui.c:849
+#: gtk-gui.c:854
 msgid "GFlow"
 msgstr "GFlow"
 
-#: planner.c:1330
+#: planner.c:1338
 msgid "GFlow for plan"
 msgstr "GFlow för dykplanering"
 
@@ -890,34 +892,34 @@ msgid "GPS (WGS84 or GPS format)"
 msgstr "GPS (WGS84 eller GPS format)"
 
 #. ++GETTEXT Gas Used is amount used
-#: print.c:197
+#: print.c:203
 msgid "Gas Used"
 msgstr "Gasanvändning"
 
-#: statistics.c:857
+#: statistics.c:865
 msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Gasanvändning"
 
-#: planner.c:1218
+#: planner.c:1226
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Gasanvändning"
 
-#: planner.c:594
+#: planner.c:599
 #, c-format
 msgid "Gas consumption:\n"
 msgstr "Gasanvändning:\n"
 
-#: equipment.c:959 print.c:195
+#: equipment.c:960 print.c:201
 msgid "Gasmix"
 msgstr "Gasblandning"
 
-#: gtk-gui.c:629
+#: gtk-gui.c:634
 msgid "General Settings"
 msgstr "Allmänna Iinställningar"
 
-#: gtk-gui.c:1362
+#: gtk-gui.c:1367
 msgid "Help"
 msgstr "Hjälp"
 
@@ -925,11 +927,11 @@ msgstr "Hjälp"
 msgid "Idle"
 msgstr "Idle"
 
-#: gtk-gui.c:1369
+#: gtk-gui.c:1374
 msgid "Import XML File(s)..."
 msgstr "Importera XML-fil(er)..."
 
-#: gtk-gui.c:1384
+#: gtk-gui.c:1389
 msgid "Info"
 msgstr "Info"
 
@@ -937,25 +939,25 @@ msgstr "Info"
 msgid "Init Communication"
 msgstr "Initierar anslutning"
 
-#: gtk-gui.c:1389
+#: gtk-gui.c:1394
 msgid "Input Plan"
 msgstr "Skriv plan"
 
-#: planner.c:1079
+#: planner.c:1087
 #, c-format
 msgid "Invalid depth - could not parse \"%s\""
 msgstr "Ogiltigt djup - kunde inte tolka  \"%s\""
 
-#: planner.c:1081
+#: planner.c:1089
 msgid "Invalid depth - values deeper than 400m not supported"
 msgstr "Ogiltigt djup - värden djupare än 400m stöds inte"
 
-#: planner.c:1057
+#: planner.c:1065
 #, c-format
 msgid "Invalid gas for row %d"
 msgstr "Ogiltig gas för rad %d"
 
-#: planner.c:1145
+#: planner.c:1153
 msgid "Invalid starttime"
 msgstr "Ogiltig starttid"
 
@@ -976,23 +978,23 @@ msgstr "jul"
 msgid "Jun"
 msgstr "jun"
 
-#: gtk-gui.c:1064
+#: gtk-gui.c:1069
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 msgstr "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
 
-#: gtk-gui.c:1382
+#: gtk-gui.c:1387
 msgid "List"
 msgstr "Lista"
 
-#: gtk-gui.c:647
+#: gtk-gui.c:652
 msgid "Liter"
 msgstr "liter"
 
-#: divelist.c:1436 info.c:621 info.c:772 info.c:1247 print.c:487
+#: divelist.c:1434 info.c:621 info.c:772 info.c:1247 print.c:503
 msgid "Location"
 msgstr "Plats"
 
-#: gtk-gui.c:1358
+#: gtk-gui.c:1363
 msgid "Log"
 msgstr "Log"
 
@@ -1001,7 +1003,7 @@ msgctxt "Duration"
 msgid "Longest"
 msgstr "Längsta"
 
-#: statistics.c:793
+#: statistics.c:801
 msgid "Longest Dive"
 msgstr "Längsta dyk"
 
@@ -1025,7 +1027,7 @@ msgstr "Markera platsen här"
 msgid "Marker"
 msgstr "markering"
 
-#: print.c:486
+#: print.c:502
 msgid "Master"
 msgstr "master"
 
@@ -1033,19 +1035,19 @@ msgstr "master"
 msgid "Max Deco Time Warning"
 msgstr "Varning: max dekotid"
 
-#: statistics.c:800 statistics.c:838
+#: statistics.c:808 statistics.c:846
 msgid "Max Depth"
 msgstr "Maxdjup"
 
-#: statistics.c:808
+#: statistics.c:816
 msgid "Max SAC"
 msgstr "Max SAC"
 
-#: statistics.c:783
+#: statistics.c:791
 msgid "Max Temp"
 msgstr "Max temp"
 
-#: print.c:103
+#: print.c:109
 #, c-format
 msgid ""
 "Max depth: %.*f %s\n"
@@ -1056,12 +1058,12 @@ msgstr ""
 "Tid: %d min\n"
 "%s"
 
-#: print.c:359
+#: print.c:377
 #, c-format
 msgid "Max. CNS"
 msgstr "Max. CNS"
 
-#: equipment.c:1454
+#: equipment.c:1455
 msgid "MaxPress"
 msgstr "Max tryck"
 
@@ -1084,31 +1086,31 @@ msgstr "Maximum"
 msgid "May"
 msgstr "maj"
 
-#: divelist.c:2372
+#: divelist.c:2031
 msgid "Merge dives"
 msgstr "Sammanslå dyk"
 
-#: divelist.c:2413
+#: divelist.c:2072
 msgid "Merge trip with trip above"
 msgstr "Sammanfoga resa med tidigare resa"
 
-#: divelist.c:2423
+#: divelist.c:2082
 msgid "Merge trip with trip below"
 msgstr "Sammanfoga resa med senare resa"
 
-#: gtk-gui.c:637
+#: gtk-gui.c:642
 msgid "Meter"
 msgstr "meter"
 
-#: statistics.c:801
+#: statistics.c:809
 msgid "Min Depth"
 msgstr "Min. djup"
 
-#: statistics.c:809
+#: statistics.c:817
 msgid "Min SAC"
 msgstr "Min. SAC"
 
-#: statistics.c:784
+#: statistics.c:792
 msgid "Min Temp"
 msgstr "Min. temp"
 
@@ -1127,11 +1129,11 @@ msgctxt "Temp"
 msgid "Minimum"
 msgstr "Minimum"
 
-#: gtk-gui.c:703
+#: gtk-gui.c:708
 msgid "Misc. Options"
 msgstr "Diverse inställningar"
 
-#: gtk-gui.c:1268
+#: gtk-gui.c:1273
 msgid "Model"
 msgstr "Modell"
 
@@ -1139,7 +1141,7 @@ msgstr "Modell"
 msgid "Mon"
 msgstr "mån"
 
-#: gtk-gui.c:1060
+#: gtk-gui.c:1065
 msgid "Multi-platform divelog software in C"
 msgstr "Dyklogg i C for flera platformer"
 
@@ -1147,19 +1149,19 @@ msgstr "Dyklogg i C for flera platformer"
 msgid "N"
 msgstr "N"
 
-#: gtk-gui.c:1363
+#: gtk-gui.c:1368
 msgid "New"
 msgstr "Ny"
 
-#: gtk-gui.c:1012
+#: gtk-gui.c:1017
 msgid "New starting number"
 msgstr "Nytt startnummer"
 
-#: gtk-gui.c:1388
+#: gtk-gui.c:1393
 msgid "Next DC"
 msgstr "Nästa dykdator"
 
-#: gtk-gui.c:1278 gtk-gui.c:2003
+#: gtk-gui.c:1283 gtk-gui.c:2006
 msgid "Nickname"
 msgstr "Enhetsnamn"
 
@@ -1179,7 +1181,7 @@ msgstr "nov"
 msgid "OLF"
 msgstr "OLF"
 
-#: divelist.c:1434 gtk-gui.c:730 print.c:343 statistics.c:855
+#: divelist.c:1432 gtk-gui.c:735 print.c:361 statistics.c:863
 #, c-format
 msgid "OTU"
 msgstr "OTU"
@@ -1192,19 +1194,19 @@ msgstr "okt"
 msgid "Odd pthread error return"
 msgstr "Konstig felreturn from pthread"
 
-#: gtk-gui.c:1325
+#: gtk-gui.c:1330
 msgid "Ok to delete the selected entry?"
 msgstr "Ok att radera?"
 
-#: gtk-gui.c:276
+#: gtk-gui.c:280
 msgid "Open File"
 msgstr "Öppna fil"
 
-#: gtk-gui.c:1364
+#: gtk-gui.c:1369
 msgid "Open..."
 msgstr "Öppna..."
 
-#: print.c:167
+#: print.c:173
 #, c-format
 msgid "Oxygen"
 msgstr "Syre"
@@ -1225,7 +1227,7 @@ msgstr "Varning: uppstigning / PO2"
 msgid "PO2 Green Warning"
 msgstr "Varning: grön PO2"
 
-#: gtk-gui.c:643
+#: gtk-gui.c:648
 msgid "PSI"
 msgstr "psi"
 
@@ -1233,55 +1235,55 @@ msgstr "psi"
 msgid "Pick on map"
 msgstr "Välj från karta"
 
-#: gtk-gui.c:1361
+#: gtk-gui.c:1366
 msgid "Planner"
 msgstr "Planerare"
 
-#: gtk-gui.c:614
+#: gtk-gui.c:619
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: gtk-gui.c:1373
+#: gtk-gui.c:1378
 msgid "Preferences..."
 msgstr "Inställningar..."
 
-#: equipment.c:938 equipment.c:944
+#: equipment.c:939 equipment.c:945
 msgid "Pressure"
 msgstr "Tryck"
 
-#: gtk-gui.c:641
+#: gtk-gui.c:646
 msgid "Pressure:"
 msgstr "Tryck:"
 
-#: gtk-gui.c:1387
+#: gtk-gui.c:1392
 msgid "Prev DC"
 msgstr "Föregående dykdator"
 
-#: print.c:932
+#: print.c:916
 msgid "Print only selected dives"
 msgstr "Skriv ut valda dyk"
 
-#: print.c:927
+#: print.c:911
 msgid "Print selection"
 msgstr "Skriv ut valda dyk"
 
-#: print.c:899
+#: print.c:879 print.c:883
 msgid "Print type"
 msgstr "Utskriftstyp"
 
-#: gtk-gui.c:1368
+#: gtk-gui.c:1373
 msgid "Print..."
 msgstr "Skriv ut..."
 
-#: gtk-gui.c:1383
+#: gtk-gui.c:1388
 msgid "Profile"
 msgstr "Profil"
 
-#: gtk-gui.c:740
+#: gtk-gui.c:745
 msgid "Profile Settings"
 msgstr "Profilinställningar"
 
-#: gtk-gui.c:1380
+#: gtk-gui.c:1385
 msgid "Quit"
 msgstr "Avsluta"
 
@@ -1302,23 +1304,23 @@ msgstr "Rankning"
 msgid "Reading %s %s"
 msgstr "Läser %s %s"
 
-#: divelist.c:2084 divelist.c:2428
+#: divelist.c:1778 divelist.c:2087
 msgid "Remove Trip"
 msgstr "Radera resa"
 
-#: divelist.c:2507
+#: divelist.c:2166
 msgid "Remove dive from trip"
 msgstr "Ta bort dyk från resa"
 
-#: divelist.c:2505
+#: divelist.c:2164
 msgid "Remove selected dives from trip"
 msgstr "Ta bort valda dyk från resa"
 
-#: gtk-gui.c:1003
+#: gtk-gui.c:1008
 msgid "Renumber"
 msgstr "Uppdatera numrering"
 
-#: gtk-gui.c:1374
+#: gtk-gui.c:1379
 msgid "Renumber..."
 msgstr "Uppdatera numrering..."
 
@@ -1330,22 +1332,18 @@ msgstr "Försök igen"
 msgid "S"
 msgstr "S"
 
-#: divelist.c:1433 gtk-gui.c:682 print.c:377 statistics.c:175 statistics.c:854
+#: divelist.c:1431 gtk-gui.c:687 print.c:395 statistics.c:175 statistics.c:862
 #, c-format
 msgid "SAC"
 msgstr "SAC"
 
-#: planner.c:1325
+#: planner.c:1333
 msgid "SAC during decostop"
 msgstr "SAC under dekostopp"
 
-#: planner.c:1324
+#: planner.c:1332
 msgid "SAC during dive"
 msgstr "SAC under dyk"
-
-#: file.c:75
-msgid "ZIP file"
-msgstr "ZIP-fil"
 
 #: uemis.c:198
 msgid "Safety Stop Violation"
@@ -1355,35 +1353,35 @@ msgstr "Säkerhetsstopp ej uppfyllt"
 msgid "Sat"
 msgstr "lör"
 
-#: gtk-gui.c:1366
+#: gtk-gui.c:1371
 msgid "Save As..."
 msgstr "Spara som..."
 
-#: gtk-gui.c:206
+#: gtk-gui.c:210
 msgid "Save Changes?"
 msgstr "Spara ändringar?"
 
-#: divelist.c:1637 gtk-gui.c:143
+#: divelist.c:1633 gtk-gui.c:147
 msgid "Save File As"
 msgstr "Spara fil som"
 
-#: divelist.c:2445
+#: divelist.c:2104
 msgid "Save as"
 msgstr "Spara som"
 
-#: gtk-gui.c:1365
+#: gtk-gui.c:1370
 msgid "Save..."
 msgstr "Spara..."
 
-#: planner.c:1217
+#: planner.c:1225
 msgid "Segment Time"
 msgstr "Segment-tid"
 
-#: gtk-gui.c:952
+#: gtk-gui.c:957
 msgid "Select Events"
 msgstr "Välj händelser"
 
-#: gtk-gui.c:1379
+#: gtk-gui.c:1384
 msgid "Select Events..."
 msgstr "Välj händelser..."
 
@@ -1404,53 +1402,53 @@ msgctxt "Duration"
 msgid "Shortest"
 msgstr "Kortaste"
 
-#: statistics.c:794
+#: statistics.c:802
 msgid "Shortest Dive"
 msgstr "Kortaste dyk"
 
-#: gtk-gui.c:661 gtk-gui.c:724
+#: gtk-gui.c:666 gtk-gui.c:729
 msgid "Show Columns"
 msgstr "Visa kolumner"
 
-#: gtk-gui.c:820
+#: gtk-gui.c:825
 msgid "Show EAD, END, EADD"
 msgstr "Visa EAD, END, EADD"
 
-#: gtk-gui.c:803
+#: gtk-gui.c:808
 msgid "Show MOD"
 msgstr "Visa MOD"
 
-#: gtk-gui.c:836
+#: gtk-gui.c:841
 msgid "Show calculated ceiling"
 msgstr "Visa beräknad tak-information"
 
-#: gtk-gui.c:828
+#: gtk-gui.c:833
 msgid "Show dc reported ceiling in red"
 msgstr "Visa takinformationen i rött"
 
-#: divelist.c:2478
+#: divelist.c:2137
 msgid "Show in map"
 msgstr "Visa på kartan"
 
-#: gtk-gui.c:786
+#: gtk-gui.c:791
 msgid "Show pHe graph"
 msgstr "Visa pHe graf"
 
-#: gtk-gui.c:767
+#: gtk-gui.c:772
 #, c-format
 msgid "Show pN%s graph"
 msgstr "Visa pN%s graf"
 
-#: gtk-gui.c:748
+#: gtk-gui.c:753
 #, c-format
 msgid "Show pO%s graph"
 msgstr "Visa pO%s graph"
 
-#: planner.c:243
+#: planner.c:248
 msgid "Simulated Dive"
 msgstr "Simulerat dyk"
 
-#: equipment.c:935 equipment.c:1453
+#: equipment.c:936 equipment.c:1454
 msgid "Size"
 msgstr "Storlek"
 
@@ -1462,7 +1460,7 @@ msgstr "Alarm: uppstigningshastighet"
 msgid "Speed Warning"
 msgstr "Varning: uppstigningshastighet"
 
-#: equipment.c:946 equipment.c:1455
+#: equipment.c:947 equipment.c:1456
 msgid "Start"
 msgstr "Start"
 
@@ -1470,16 +1468,16 @@ msgstr "Start"
 msgid "Start download"
 msgstr "Starta nedladdningen"
 
-#: statistics.c:772
+#: statistics.c:780
 msgid "Statistics"
 msgstr "Statistik"
 
-#: statistics.c:708
+#: statistics.c:716
 #, c-format
 msgid "Statistics %s"
 msgstr "Statistik %s"
 
-#: gtk-gui.c:1615
+#: gtk-gui.c:1620
 msgid "Stats"
 msgstr "Statistik"
 
@@ -1487,12 +1485,17 @@ msgstr "Statistik"
 msgid "Status"
 msgstr "Status"
 
-#: planner.c:575
+#: planner.c:580
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Stanna vid %.*f %s för %d:%02d min - totaltid %d:%02u on %s\n"
 
-#: divelist.c:1430 gtk-gui.c:692 info.c:806 info.c:1259
+#: parse-xml.c:387
+#, c-format
+msgid "Strange percentage reading %s\n"
+msgstr ""
+
+#: divelist.c:1428 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
 msgstr "Dräkt"
 
@@ -1501,20 +1504,20 @@ msgstr "Dräkt"
 msgid "Sun"
 msgstr "sön"
 
-#: statistics.c:832
+#: statistics.c:840
 msgid "Surf Intv"
 msgstr "Ytintervall"
 
-#: planner.c:1309
+#: planner.c:1317
 msgid "Surface Pressure (mbar)"
 msgstr "Lufttryck på ytan (mbar)"
 
-#: planner.c:586
+#: planner.c:591
 #, c-format
 msgid "Switch gas to %s\n"
 msgstr "Byt till gas %s\n"
 
-#: print.c:913
+#: print.c:897
 msgid "Table print"
 msgstr "Tabellutskrift"
 
@@ -1526,11 +1529,11 @@ msgstr "Tankbyte rekommenderat"
 msgid "Tank Pressure Info"
 msgstr "Info: flasktryck"
 
-#: gtk-gui.c:722
+#: gtk-gui.c:727
 msgid "Tec Settings"
 msgstr "Tekniska inställningar"
 
-#: gtk-gui.c:667
+#: gtk-gui.c:672
 msgid "Temp"
 msgstr "Temp"
 
@@ -1538,11 +1541,11 @@ msgstr "Temp"
 msgid "Temperature"
 msgstr "Temperatur"
 
-#: gtk-gui.c:651
+#: gtk-gui.c:656
 msgid "Temperature:"
 msgstr "Temperatur:"
 
-#: gtk-gui.c:1385
+#: gtk-gui.c:1390
 msgid "Three"
 msgstr "Alla"
 
@@ -1554,21 +1557,21 @@ msgstr "tor"
 msgid "Time"
 msgstr "Tid"
 
-#: gtk-gui.c:1501
+#: gtk-gui.c:1506
 msgid ""
 "To edit dive information\n"
 "double click on it in the dive list"
 msgstr "Dubbelklicka på dyklistan för att ändra dykinformation"
 
-#: gtk-gui.c:1395
+#: gtk-gui.c:1400
 msgid "Toggle Zoom"
 msgstr "Zoom av/på"
 
-#: planner.c:212
+#: planner.c:217
 msgid "Too many gas mixes"
 msgstr "För många gasblandningar"
 
-#: planner.c:1245
+#: planner.c:1253
 #, fuzzy
 msgid "Too many waypoints"
 msgstr "För många etapper"
@@ -1578,22 +1581,22 @@ msgctxt "Duration"
 msgid "Total"
 msgstr "Total"
 
-#: statistics.c:791
+#: statistics.c:799
 msgid "Total Time"
 msgstr "Total tid"
 
-#: print.c:322
+#: print.c:340
 #, c-format
 msgid "Total Weight:"
 msgstr "Total vikt:"
 
-#: planner.c:566
+#: planner.c:571
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Dyk till %.*f %s i %d:%02d min - totaltid %d:%02u on %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
-#: divelist.c:268
+#: divelist.c:298
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
@@ -1604,7 +1607,7 @@ msgstr[1] "Resa %1$s, %3$d %2$s, %4$d (%5$d dyk)"
 msgid "Tue"
 msgstr "tis"
 
-#: equipment.c:1452 equipment.c:1480
+#: equipment.c:1453 equipment.c:1481
 msgid "Type"
 msgstr "Typ"
 
@@ -1646,11 +1649,11 @@ msgstr "Kan inte skapa parser för %s %s"
 msgid "Unable to open %s %s (%s)"
 msgstr "Kunde inte öppna fil %s %s (%s)"
 
-#: gtk-gui.c:630
+#: gtk-gui.c:635
 msgid "Units"
 msgstr "Enheter"
 
-#: gps.c:217
+#: gps.c:218
 msgid "Use right click to mark dive location at cursor"
 msgstr "Högerklicka för att markera dykmål vid muspekaren"
 
@@ -1658,15 +1661,15 @@ msgstr "Högerklicka för att markera dykmål vid muspekaren"
 msgid "User Identifier"
 msgstr "Användar ID"
 
-#: gtk-gui.c:1359
+#: gtk-gui.c:1364
 msgid "View"
 msgstr "Visa"
 
-#: info.c:811 statistics.c:840
+#: info.c:811 statistics.c:848
 msgid "Visibility"
 msgstr "Synlighet"
 
-#: gtk-gui.c:646
+#: gtk-gui.c:651
 msgid "Volume:"
 msgstr "Volym:"
 
@@ -1674,15 +1677,15 @@ msgstr "Volym:"
 msgid "W"
 msgstr "W"
 
-#: planner.c:367
+#: planner.c:372
 msgid "Warning - extremely long dives can cause long calculation time"
 msgstr "Varning - extremt långa dyk kan ta lång tid att beräkna"
 
-#: planner.c:1073
+#: planner.c:1081
 msgid "Warning - planning very deep dives can take excessive amounts of time"
 msgstr "Varning - att planera väldigt djupa dyk kan ta väldigt lång tid"
 
-#: statistics.c:846
+#: statistics.c:854
 msgid "Water Temp"
 msgstr "Vattentemperatur"
 
@@ -1694,20 +1697,20 @@ msgstr "Webbtjänst"
 msgid "Wed"
 msgstr "ons"
 
-#: equipment.c:985 equipment.c:1579 gtk-gui.c:687
+#: equipment.c:986 equipment.c:1580 gtk-gui.c:692
 msgid "Weight"
 msgstr "Vikt"
 
-#: equipment.c:1084 print.c:290
+#: equipment.c:1085 print.c:308
 #, c-format
 msgid "Weight System"
 msgstr "Viktsystem"
 
-#: gtk-gui.c:656
+#: gtk-gui.c:661
 msgid "Weight:"
 msgstr "Vikt:"
 
-#: gtk-gui.c:131
+#: gtk-gui.c:135
 msgid "XML file"
 msgstr "XML-fil"
 
@@ -1715,11 +1718,11 @@ msgstr "XML-fil"
 msgid "Year"
 msgstr "År"
 
-#: gtk-gui.c:1375 statistics.c:383
+#: gtk-gui.c:1380 statistics.c:384
 msgid "Yearly Statistics"
 msgstr "Årsstatistik"
 
-#: gtk-gui.c:1989
+#: gtk-gui.c:1992
 #, c-format
 msgid ""
 "You already have a dive computer of this model\n"
@@ -1732,7 +1735,7 @@ msgstr ""
 "Subsurface kan namnge den nya dykdatorn så att du kan lätt skilja dem åt. Det förvalda namnet är modellen och enhetens ID som visas nedan.\n"
 "Om du inte vill ge ett nytt namn åt datorn, tryck 'Avbryt'. Subsurface kommer att endast visa modellnamnet (vilket kan göra det svårt att skilja två dykdatorer av samma modell)."
 
-#: gtk-gui.c:216
+#: gtk-gui.c:220
 msgid ""
 "You have unsaved changes\n"
 "Would you like to save those before closing the datafile?"
@@ -1740,7 +1743,7 @@ msgstr ""
 "Du har ändringer som inte är sparade.\n"
 "Vill du spara dem innan du stänger datafilen?"
 
-#: gtk-gui.c:219 gtk-gui.c:222
+#: gtk-gui.c:223 gtk-gui.c:226
 #, c-format
 msgid ""
 "You have unsaved changes to file: %s \n"
@@ -1749,7 +1752,7 @@ msgstr ""
 "Du har ändringer som inte är sparade i %s.\n"
 "Vill du spara dem innan du stänger datafilen?"
 
-#: divelist.c:544 planner.c:124 planner.c:790 planner.c:791 print.c:172
+#: divelist.c:574 planner.c:127 planner.c:798 planner.c:799 print.c:178
 #: profile.c:399
 #, c-format
 msgid "air"
@@ -1759,7 +1762,7 @@ msgstr "luft"
 msgid "airtime"
 msgstr "gastid"
 
-#: equipment.c:828
+#: equipment.c:829
 msgid "ankle"
 msgstr "ankel"
 
@@ -1767,7 +1770,7 @@ msgstr "ankel"
 msgid "ascent"
 msgstr "uppstigning"
 
-#: equipment.c:829
+#: equipment.c:830
 msgid "backplate weight"
 msgstr "Ryggplattans vikt"
 
@@ -1775,7 +1778,7 @@ msgstr "Ryggplattans vikt"
 msgid "bar"
 msgstr "bar"
 
-#: equipment.c:827
+#: equipment.c:828
 msgid "belt"
 msgstr "bälte"
 
@@ -1791,11 +1794,11 @@ msgstr "ceiling"
 msgid "ceiling (safety stop)"
 msgstr "ceiling (säkerhetsstopp)"
 
-#: equipment.c:830
+#: equipment.c:831
 msgid "clip-on"
 msgstr "clip-on"
 
-#: dive.c:91 planner.c:958
+#: dive.c:91 planner.c:966
 msgid "cuft"
 msgstr "ft³"
 
@@ -1827,36 +1830,36 @@ msgstr "dyktid"
 msgid "drysuit"
 msgstr "torrdräkt"
 
-#: planner.c:792
+#: planner.c:800
 msgid "ean"
 msgstr "ean"
 
-#: statistics.c:681
+#: statistics.c:687
 #, c-format
 msgid "for all dives"
 msgstr "för alla dyk"
 
-#: statistics.c:677
+#: statistics.c:683
 #, c-format
 msgid "for dive #%d"
 msgstr "Dyk #%d "
 
-#: statistics.c:636
+#: statistics.c:642
 #, c-format
 msgid "for dives #"
 msgstr "för dykningar #"
 
-#: statistics.c:679
+#: statistics.c:685
 #, c-format
 msgid "for selected dive"
 msgstr "för valt dyk"
 
-#: statistics.c:643
+#: statistics.c:649
 #, c-format
 msgid "for selected dives"
 msgstr "för utvalda dyk"
 
-#: dive.c:117 divelist.c:1426 info.c:1178 planner.c:896
+#: dive.c:117 divelist.c:1424 info.c:1178 planner.c:904
 msgid "ft"
 msgstr "ft"
 
@@ -1872,7 +1875,7 @@ msgstr "gasbyte"
 msgid "heading"
 msgstr "riktning"
 
-#: equipment.c:826
+#: equipment.c:827
 msgid "integrated"
 msgstr "integrerat"
 
@@ -1884,7 +1887,7 @@ msgstr "okänt händelsenummer"
 msgid "jacket"
 msgstr "jacka"
 
-#: dive.c:141 equipment.c:1004 gtk-gui.c:657
+#: dive.c:141 equipment.c:1005 gtk-gui.c:662
 msgid "kg"
 msgstr "kg"
 
@@ -1892,7 +1895,7 @@ msgstr "kg"
 msgid "l"
 msgstr "l"
 
-#: dive.c:137 divelist.c:1429 equipment.c:1006 gtk-gui.c:658
+#: dive.c:137 divelist.c:1427 equipment.c:1007 gtk-gui.c:663
 msgid "lbs"
 msgstr "pund"
 
@@ -1904,11 +1907,11 @@ msgstr "Longjohn"
 msgid "m"
 msgstr "m"
 
-#: gtk-gui.c:808
+#: gtk-gui.c:813
 msgid "max ppO2"
 msgstr "max ppO2"
 
-#: divelist.c:1435 gtk-gui.c:735
+#: divelist.c:1433 gtk-gui.c:740
 msgid "maxCNS"
 msgstr "maxCNS"
 
@@ -1920,7 +1923,7 @@ msgstr "Maxdjup"
 msgid "membrane"
 msgstr "membran"
 
-#: divelist.c:1427 planner.c:964
+#: divelist.c:1425 planner.c:972
 msgid "min"
 msgstr "Min"
 
@@ -1933,7 +1936,7 @@ msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
 msgid "more data dive id"
 msgstr "mer data dive id"
 
-#: statistics.c:515
+#: statistics.c:516
 #, c-format
 msgid "more than %d days"
 msgstr "mer än %d dagar"
@@ -1946,16 +1949,16 @@ msgstr "non stop tid"
 msgid "none"
 msgstr "inget"
 
-#: gtk-gui.c:791
+#: gtk-gui.c:796
 msgid "pHe threshold"
 msgstr "pHe tröskel"
 
-#: gtk-gui.c:773
+#: gtk-gui.c:778
 #, c-format
 msgid "pN%s threshold"
 msgstr "pN%s tröskel"
 
-#: gtk-gui.c:754
+#: gtk-gui.c:759
 #, c-format
 msgid "pO%s threshold"
 msgstr "pO%s tröskel"
@@ -2005,7 +2008,7 @@ msgid "tissue level warning"
 msgstr "vävnadsnivå"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
-#: gtk-gui.c:1066
+#: gtk-gui.c:1071
 msgid "translator-credits"
 msgstr ""
 "Linus Torvalds\n"
@@ -2015,11 +2018,11 @@ msgstr ""
 msgid "transmitter"
 msgstr "sändare"
 
-#: equipment.c:1345 equipment.c:1365
+#: equipment.c:1346 equipment.c:1366
 msgid "unkn"
 msgstr "okänd"
 
-#: libdivecomputer.c:152 print.c:303 statistics.c:561 uemis-downloader.c:133
+#: libdivecomputer.c:152 print.c:321 statistics.c:562 uemis-downloader.c:133
 msgid "unknown"
 msgstr "okänd"
 
@@ -2035,7 +2038,7 @@ msgstr "väst"
 msgid "violation"
 msgstr "kränkning"
 
-#: equipment.c:1481
+#: equipment.c:1482
 msgid "weight"
 msgstr "Vikt"
 
@@ -2059,5 +2062,11 @@ msgstr "arbetsbelastning"
 #~ msgid "Delete"
 #~ msgstr "Radera"
 
+#~ msgid "Dive details"
+#~ msgstr "Detaljer"
+
 #~ msgid "Pretty print"
 #~ msgstr "Prydlig utskrift"
+
+#~ msgid "ZIP file"
+#~ msgstr "ZIP-fil"
