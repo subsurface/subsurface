@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 08:13-0800\n"
-"PO-Revision-Date: 2013-02-14 19:22+0100\n"
+"PO-Revision-Date: 2013-02-25 17:56+0100\n"
 "Last-Translator: Reinout Hoornweg <reinout@xs4all.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
@@ -439,7 +439,7 @@ msgstr "Kan gasmengsel %d/%d niet vinden"
 #: parse-xml.c:1622
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Kan stylesheet (%s)/%s niet openen"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1492,7 +1492,7 @@ msgstr "Blijft op %.*f %s gedurende %d:%02d min - looptijd %d:%02u op %s\n"
 #: parse-xml.c:387
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Vreemde percentage %s\n"
 
 #: divelist.c:1428 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
