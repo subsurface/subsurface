@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 08:13-0800\n"
-"PO-Revision-Date: 2013-02-14 17:10+0200\n"
+"PO-Revision-Date: 2013-02-25 18:24+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -439,7 +439,7 @@ msgstr "Seosta %d/%d ei löydy"
 #: parse-xml.c:1622
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Konversiotiedoston avaus epäonnistui (%s)/%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1492,7 +1492,7 @@ msgstr "Pysy %.*f %s:n syvyydessä %d:%02d min - aika %d:%02u kaasulla %s\n"
 #: parse-xml.c:387
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Outo prosenttiosuus: %s\n"
 
 #: divelist.c:1428 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
