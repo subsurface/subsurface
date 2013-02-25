@@ -359,7 +359,17 @@ static void sampletime(char *buffer, void *_time)
 
 static void duration(char *buffer, void *_time)
 {
-	sampletime(buffer, _time);
+	/* DivingLog 5.08 (and maybe other versions) appear to sometimes
+	 * store the dive time as 44.00 instead of 44:00;
+	 * This attempts to parse this in a fairly robust way */
+	if (!strchr(buffer,':') && strchr(buffer,'.')) {
+		char *mybuffer = strdup(buffer);
+		char *dot = strchr(mybuffer,'.');
+		*dot = ':';
+		sampletime(mybuffer, _time);
+	} else {
+		sampletime(buffer, _time);
+	}
 }
 
 static void percent(char *buffer, void *_fraction)
@@ -819,7 +829,9 @@ static int divinglog_dive_match(struct dive *dive, const char *name, int len, ch
 {
 	return	MATCH(".divedate", divedate, &dive->when) ||
 		MATCH(".entrytime", divetime, &dive->when) ||
+		MATCH(".divetime", duration, &dive->dc.duration) ||
 		MATCH(".depth", depth, &dive->dc.maxdepth) ||
+		MATCH(".depthavg", depth, &dive->dc.meandepth) ||
 		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
 		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
 		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
