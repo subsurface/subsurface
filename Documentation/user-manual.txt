@@ -290,9 +290,13 @@ allowing to pair it. Choose "0000" as PIN set in your dive computer should work
 in most cases, if not refere to the manufacturer of your dive computer. The dive
 computer should then show up in the list of Bluetooth devices and you may then
 right click on it and choose Properties->COM Ports to get known of the ports
-used for your dive computer. If there are several ports listet remember the one
-saying "Outgoing" instead of "Incoming".  Downloading in Subsurface, the drop
-down list should contain this COM port already, if not enter it manually.
+used for your dive computer. If there are several ports listet use the one
+saying "Outgoing" instead of "Incoming".
+
+image::images/bluetooth_properties.png["Edit Dive Info",align="center"]
+
+Downloading in Subsurface, the drop down list should contain this COM
+port already, if not enter it manually.
 
 Note: If you have issues downloading from your dive computer in other software
 afterwards try to remove the pairing to get it to work again (proven to work for
