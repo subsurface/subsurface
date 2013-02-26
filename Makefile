@@ -163,14 +163,14 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o plann
 
 DEPS = $(wildcard .dep/*.dep)
 
+$(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
+	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+
 gen_version_file:
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
 	$(info updating $(VERSION_FILE) to $(VERSION_STRING))
 	@echo \#define VERSION_STRING \"$(VERSION_STRING)\" >$(VERSION_FILE)
 endif
-
-$(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
-	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
 	$(INSTALL) -d -m 755 $(BINDIR)
