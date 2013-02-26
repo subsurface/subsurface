@@ -226,6 +226,14 @@ device name (or mount point for the Uemis Zurich). In the rare cases
 where this doesn't work here are some instructions on ways to find out
 what your dive name is:
 
+.On Windows:
+
+Simply try COM1, COM2, etc. The drop down list should contain all connected COM devices.
+
+.On MacOS:
+
+The drop down box should find all connected dive computers.
+
 .On Linux:
 
  - Disconnect your USB cable of your dive computer
@@ -257,14 +265,6 @@ detected and is connected to 'ttyUSB3'. Now you use this information in
 the import settings as '/dev/ttyUSB3'. Your dive computer interface is
 connected and you should be able to import your dives.
 
-.On Windows:
-
-Simply try COM1, COM2, etc. The drop down list should contain all connected COM devices.
-
-.On MacOS:
-
-The drop down box should find all connected dive computers.
-
 [[S_HowFindBluetoothDeviceName]]
 Setting up bluetooth enabled devices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -275,34 +275,49 @@ different procedure to get the devices name to communicate with
 subsurface. In general it consists of these steps:
 
 .Enable bluetooth on your computer
-Please make sure you have bluetooth enabled on your computer running
-Subsurface. For Windows and Mac this should be working without any
-further interaction.
-
-On Linux for most common distributions the same should be true, if not
-then depending on your system running initd or systemd this might be
-different and might also involve loading modules specific to your
-hardware. If you run a common distribution it will most likely be
-setup and up and running already. In case your system is running
-systemd manually run 'sudo systemctl start bluetooth.service' to
-enable it, in case of initd run something like 'sudo rc.config start
-bluetoothd' or 'sudo /etc/init.d/buetooth start'.
-
 .Pairing the device
-On Windows, Mac and most Linux distributions this is very straight
-forward; simply follow system dialog provided (usually you have to
-click on the Bluetooth symbol).
 
-Using Gnome3 for instance will show a bluetooth icon in the upper
-right corner of your desktop where you select 'Set up New
-Device'. This should show you a dialog where you are able to select
-your device and pair it. If you have issues with PIN setting try
-manually setting '0000'. Please do not forget to set your dive
-computer in bluetooth mode before, if you use a Shearwater
-Predator/Petrel just select 'Dive Log+' -> 'Upload Log' and wait until
-you see the 'Wait PC' message.
+Please do not forget to set your divecomputer in Bluetooth or upload mode before
+Paring and Downloading logs. If you use a Shearwater Predator/Petrel just select
+'Dive Log+' -> 'Upload Log' and wait until you see the 'Wait PC' message.
 
-You may also use a manual approach by using these commands:
+.On Windows:
+
+Bluetooth is most likely already enabled. For Pairing the device choose
+Control Panel->Bluetooth Devices->Add Wireless Device
+This should bring up a dialog showing your dive computer (in Bluetooth mode) and
+allowing to pair it. Choose "0000" as PIN set in your dive computer should work
+in most cases, if not refere to the manufacturer of your dive computer. The dive
+computer should then show up in the list of Bluetooth devices and you may then
+right click on it and choose Properties->COM Ports to get known of the ports
+used for your dive computer. If there are several ports listet remember the one
+saying "Outgoing" instead of "Incoming".  Downloading in Subsurface, the drop
+down list should contain this COM port already, if not enter it manually.
+
+Note: If you have issues downloading from your dive computer in other software
+afterwards try to remove the pairing to get it to work again (proven to work for
+Shearwater Desktop).
+
+.On MacOS:
+
+This should be similar straight forward as described in the Windows section.
+
+.On Linux
+Please make sure you have bluetooth enabled on your computer running Subsurface.
+On most common distributions this should be true out of the box, if not then
+depending on your system running initd or systemd this might be different and
+also involve loading modules specific to your hardware. In case your system is
+running systemd manually run 'sudo systemctl start bluetooth.service' to enable
+it, in case of initd run something like 'sudo rc.config start bluetoothd' or
+'sudo /etc/init.d/buetooth start'.
+
+Pairing should be straight forward. Using Gnome3 for instance will show a
+bluetooth icon in the upper right corner of your desktop where you select 'Set
+up New Device'. This should show you a dialog where you are able to select your
+dive computer (in bluetooth mode) and pair it. If you have issues with PIN
+setting try manually setting '0000'.
+
+You may also use a manual approach by using such commands:
 
  * 'sudo hciconfig' - shows the bluetooth devices available on your
 computer (not dive computer), most likely you will see a hci0, if not
@@ -313,21 +328,41 @@ hciconfig hci0 up' to bring them up
 client devices, watch out for your dive computer and remember the MAC
 address shown there
 
- * 'sudo bluez-simple-agent  hci0 10:00:E8:C4:BE:C4' - this will pair
+ * 'sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4' - this will pair
 your dive computer with the bluetooth stack of your computer, copy/paste
 the MAC address from the output of 'hcitool scanning'
 
-.Bind a rfcomm device
-Unforturnately on Linux this has to be done manually by running
+Unforturnately on Linux binding to a communication device has to be done
+manually by running:
 
  * 'sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4' - bind the dive
 computer to a communication device in your computer, in case rfcomm is
-not availabe just use rfcomm1 or up, please copy/paste the MAC address
+already taken just use rfcomm1 or up, please copy/paste the MAC address
 from the output of 'hcitool scanning', the MAC shown in here will not
 work for you :-).
 
-For downloading dives in subsurface you have then to specify
-'/dev/rfcomm0' as device name to use.
+For downloading dives in subsurface you have then to specify '/dev/rfcomm0'
+as device name to use.
+
+Troubleshooting:
+Using Bluetooth for downloading from dive computers on Linux seems to be tricky
+some times. If you have issues please have a look to the following notes. Using
+a Shearwater Predator you may be able to pair but then encounter issues when
+downloading, showing errors like "Slip RX: unexp. SLIP END" on the Predator.
+This might be also seen, when using other dive log software and operating
+systems than Linux. We have no detailed idea about the source and how to fix
+this, but it is reported to be solved sometimes by one of these steps:
+* use the bluetooth dongle which came with the Shearwater Predator instead of
+* the inbuilt one of your computer
+* switch to different bluetooth drivers for your hardware
+* switch of WiFi while using Bluetooth
+
+Computers reportet to work fine:
+* Lenovo T410 running Arch Linux, kernel 3.7.x
+* MacBookPro Retina running Ubuntu 13.04, Kernel 3.8.0
+  hint: use bmcl drivers instead of b43, try to disable WiFi
+
+Please report issues or working environments to subsurface@hohndel.org.
 
 [[S_ViewingLogs]]
 Viewing and Completing Your Logs
