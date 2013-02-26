@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-21 11:20+0100\n"
+"PO-Revision-Date: 2013-02-26 08:55+0100\n"
 "Last-Translator: Jozef Ivanecký <dodo.sk@gmail.com>\n"
 "Language-Team: Slovakian\n"
 "Language: de\n"
@@ -24,6 +24,8 @@ msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Bez záznamov\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -423,7 +425,7 @@ msgstr "Priemerný čas"
 #: profile.c:411
 #, c-format
 msgid "Bailing out to OC"
-msgstr ""
+msgstr "Záchrana na OC"
 
 #: gtk-gui.c:647
 msgid "Bar"
@@ -445,7 +447,7 @@ msgstr "Neviem nájsť zmes %d/%d"
 #: parse-xml.c:1634
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Nemôžem otvoriť stylesheet (%s)/%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1498,7 +1500,7 @@ msgstr "Zostaň v %.*f %s na %d:%02d min - runtime %d:%02u na %s\n"
 #: parse-xml.c:397
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Zvláštne percenta v %s\n"
 
 #: divelist.c:1421 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
@@ -1669,7 +1671,7 @@ msgstr "Identifikátor Uživateľa"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Užívateľská príručka"
 
 #: gtk-gui.c:1377
 msgid "View"
@@ -2020,7 +2022,7 @@ msgstr "upozornenie nasýtenia tkanív"
 #. ++GETTEXT the term translator-credits is magic - list the names of the tranlators here
 #: gtk-gui.c:1075
 msgid "translator-credits"
-msgstr "Jozef Ivanecký"
+msgstr "Jozef (Ďoďo) Ivanecký"
 
 #: libdivecomputer.c:150
 msgid "transmitter"
