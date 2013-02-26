@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-25 13:58-0800\n"
+"PO-Revision-Date: 2013-02-25 17:33-0800\n"
 "Last-Translator: Dirk Hohndel <dirk@hohndel.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -1671,7 +1671,7 @@ msgstr "Benutzerkennung"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Benutzerhandbuch"
 
 #: gtk-gui.c:1377
 msgid "View"
