@@ -2012,10 +2012,10 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 
 	if (!dc->samples) {
 		static struct sample fake[4];
-		static struct divecomputer fakedc = {
-			.sample = fake,
-			.samples = 4
-		};
+		static struct divecomputer fakedc;
+		fakedc = dive->dc;
+		fakedc.sample = fake;
+		fakedc.samples = 4;
 
 		/* The dive has no samples, so create a few fake ones.  This assumes an
 		ascent/descent rate of 9 m/min, which is just below the limit for FAST. */
