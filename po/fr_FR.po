@@ -11,20 +11,23 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-14 09:46+0100\n"
-"Last-Translator: Pierre-Yves Chibon <pingou@pingoured.fr>\n"
+"PO-Revision-Date: 2013-02-26 21:04+0100\n"
+"Last-Translator: Kévin Raymond <shaiton@fedoraproject.org>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: gtk-gui.c:973
 msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Aucun événements\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -446,7 +449,7 @@ msgstr "Impossible de trouver le gaz %d/%d"
 #: parse-xml.c:1634
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Impossible d'ouvrir la feuille de style (%s)/%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -519,7 +522,7 @@ msgstr "P : %.1f %s/min"
 
 #: planner.c:1284
 msgid "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."
-msgstr "ATTENTION: CECI EST UNE NOUVELLE IMPLEMENTATION DU L'ALGRITHME DE BUHLMANN ET LE SIMULATEUR DE PLONGÉE L'UTILISANT ONT ÉTÉ TESTÉ QUE SOMMAIREMENT. IL EST FORTEMENT CONSEILLÉ DE NE PAS PLONGER EN CE BASANT UNIQUEMENT PAR LES INDICATIONS DONNÉES ICI."
+msgstr "ATTENTION : CECI EST UNE NOUVELLE IMPLÉMENTATION DE L'ALGORITHME DE BUHLMANN ET LE SIMULATEUR DE PLONGÉE N'A ÉTÉ TESTÉ QUE SOMMAIREMENT. IL EST FORTEMENT CONSEILLÉ DE NE PAS PLONGER EN SE BASANT UNIQUEMENT PAR LES INDICATIONS FOURNIES ICI."
 
 #: divelist.c:1415 print.c:502 statistics.c:838
 msgid "Date"
@@ -1500,7 +1503,7 @@ msgstr "Rester à %.*f %s pour %d:%02d min - temps %d:%02u sur %s\n"
 #: parse-xml.c:397
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Valeur de pourcentage étrange %s\n"
 
 #: divelist.c:1421 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
@@ -1671,7 +1674,7 @@ msgstr "Identifiant utilisateur"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Manuel utilisateur"
 
 #: gtk-gui.c:1377
 msgid "View"
