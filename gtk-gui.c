@@ -1083,6 +1083,11 @@ static void about_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_destroy(dialog);
 }
 
+static void show_user_manual(GtkWidget *w, gpointer data)
+{
+	subsurface_launch_for_uri("http://subsurface.hohndel.org/documentation/user-manual/");
+}
+
 static void view_list(GtkWidget *w, gpointer data)
 {
 	gtk_paned_set_position(GTK_PANED(vpane), 0);
@@ -1392,6 +1397,7 @@ static GtkActionEntry menu_items[] = {
 	{ "SelectEvents",   NULL, N_("Select Events..."), NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, N_("Quit"),   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, N_("About Subsurface"),  NULL, NULL, G_CALLBACK(about_dialog) },
+	{ "UserManual",     GTK_STOCK_HELP, N_("User Manual"), NULL, NULL, G_CALLBACK(show_user_manual) },
 	{ "ViewList",       NULL, N_("List"),  CTRLCHAR "1", NULL, G_CALLBACK(view_list) },
 	{ "ViewProfile",    NULL, N_("Profile"), CTRLCHAR "2", NULL, G_CALLBACK(view_profile) },
 	{ "ViewInfo",       NULL, N_("Info"), CTRLCHAR "3", NULL, G_CALLBACK(view_info) },
@@ -1458,6 +1464,7 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"Help\" action=\"HelpMenuAction\"> \
 				<menuitem name=\"About\" action=\"About\" /> \
+				<menuitem name=\"UserManual\" action=\"UserManual\" /> \
 			</menu> \
 		</menubar> \
 	</ui> \
