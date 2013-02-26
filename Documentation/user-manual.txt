@@ -217,8 +217,8 @@ equipment. Buddy information is not yet downloaded.
 
 
 [[S_HowFindDeviceName]]
-How to Find the Device Name
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How to Find the Device Name for USB devices
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When you connect your dive computer by using an USB connector, usually
 Subsurface will propose a drop down list that contains the correct
@@ -265,6 +265,69 @@ Simply try COM1, COM2, etc. The drop down list should contain all connected COM 
 
 The drop down box should find all connected dive computers.
 
+[[S_HowFindBluetoothDeviceName]]
+Setting up bluetooth enabled devices
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For dive computers communicating through bluetooth like the Heinrichs
+Weikamp Frog or the Shearwater Predator and Petrel there is a
+different procedure to get the devices name to communicate with
+subsurface. In general it consists of these steps:
+
+.Enable bluetooth on your computer
+Please make sure you have bluetooth enabled on your computer running
+Subsurface. For Windows and Mac this should be working without any
+further interaction.
+
+On Linux for most common distributions the same should be true, if not
+then depending on your system running initd or systemd this might be
+different and might also involve loading modules specific to your
+hardware. If you run a common distribution it will most likely be
+setup and up and running already. In case your system is running
+systemd manually run 'sudo systemctl start bluetooth.service' to
+enable it, in case of initd run something like 'sudo rc.config start
+bluetoothd' or 'sudo /etc/init.d/buetooth start'.
+
+.Pairing the device
+On Windows, Mac and most Linux distributions this is very straight
+forward; simply follow system dialog provided (usually you have to
+click on the Bluetooth symbol).
+
+Using Gnome3 for instance will show a bluetooth icon in the upper
+right corner of your desktop where you select 'Set up New
+Device'. This should show you a dialog where you are able to select
+your device and pair it. If you have issues with PIN setting try
+manually setting '0000'. Please do not forget to set your dive
+computer in bluetooth mode before, if you use a Shearwater
+Predator/Petrel just select 'Dive Log+' -> 'Upload Log' and wait until
+you see the 'Wait PC' message.
+
+You may also use a manual approach by using these commands:
+
+ * 'sudo hciconfig' - shows the bluetooth devices available on your
+computer (not dive computer), most likely you will see a hci0, if not
+try 'sudo hcitool -a' to see inactive devices and try to run 'sudo
+hciconfig hci0 up' to bring them up
+
+ * 'sudo hcitool scanning'- use this to get a list of bluetooth enabled
+client devices, watch out for your dive computer and remember the MAC
+address shown there
+
+ * 'sudo bluez-simple-agent  hci0 10:00:E8:C4:BE:C4' - this will pair
+your dive computer with the bluetooth stack of your computer, copy/paste
+the MAC address from the output of 'hcitool scanning'
+
+.Bind a rfcomm device
+Unforturnately on Linux this has to be done manually by running
+
+ * 'sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4' - bind the dive
+computer to a communication device in your computer, in case rfcomm is
+not availabe just use rfcomm1 or up, please copy/paste the MAC address
+from the output of 'hcitool scanning', the MAC shown in here will not
+work for you :-).
+
+For downloading dives in subsurface you have then to specify
+'/dev/rfcomm0' as device name to use.
 
 [[S_ViewingLogs]]
 Viewing and Completing Your Logs
