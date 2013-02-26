@@ -1603,6 +1603,7 @@ static struct xslt_files {
 	{ "dives", "MacDive.xslt" },
 	{ "DIVELOGSDATA", "divelogs.xslt" },
 	{ "uddf", "uddf.xslt" },
+	{ "Divinglog", "DivingLog.xslt" },
 	{ NULL, }
 };
 
