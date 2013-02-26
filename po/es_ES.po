@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-25 23:29+0100\n"
+"PO-Revision-Date: 2013-02-26 16:42+0100\n"
 "Last-Translator: Salvador Cuñat <salvador.cunat@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -1673,7 +1673,7 @@ msgstr "Identificador de usuario"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Manual de usuario"
 
 #: gtk-gui.c:1377
 msgid "View"
