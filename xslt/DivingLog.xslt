@@ -148,6 +148,13 @@
         <xsl:value-of select="Comments"/>
       </notes>
 
+      <divecomputer>
+        <xsl:if test="Computer != ''">
+          <xsl:attribute name="model">
+	    <xsl:value-of select="Computer"/>
+          </xsl:attribute>
+	</xsl:if>
+
       <xsl:for-each select="Profile/P">
         <sample>
           <xsl:attribute name="time">
@@ -179,7 +186,7 @@
         </sample>
       </xsl:for-each>
 
-
+      </divecomputer>
 
 
     </dive>
