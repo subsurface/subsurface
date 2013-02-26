@@ -1,4 +1,4 @@
-VERSION=3.0
+VERSION=3.0.1
 
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE

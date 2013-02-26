@@ -1,5 +1,5 @@
-Subsurface 3.0 User Manual
-==========================
+Subsurface 3.0.1 User Manual
+============================
 :author: Jacco_van_Koll,_Dirk_Hohndel,_Reinout_Hoornweg,_Linus_Torvalds,_Miika_Turkia_and_Amit_Chaudhuri
 :revnumber: v3.0.0
 :revdate: February 2013
@@ -27,7 +27,7 @@ software on Linux. It then turned out that the resulting software was
 fairly easily ported to Windows and Mac and today great effort is put
 into making it a viable application on all three platforms.
 
-The program is under active development and at version 3.0 it compares
+The program is under active development and at this point it compares
 favorably to many other programs in this market.
 
 While the list of supported dive computers is very long, in this
