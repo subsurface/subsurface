@@ -742,7 +742,13 @@ Importing Dives from DivingLog 5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before you can start importing dives from DivingLog you first have to
-export those dives.
+export those dives. Unfortunately DivingLog XML files give us no
+indication on the preferences set on your system. So in order for
+Subsurface to be able to successfully import XML files from DivingLog
+you first need to make sure that your copy of DivingLog is configured
+to use the Metric system (you can easily change this in 'File -
+Preferences - Units and Language' by clicking the 'Metric'
+button). Then do the following:
 
  - Open the 'File - Export - XML' menu
  - Select the dives that you want to export
