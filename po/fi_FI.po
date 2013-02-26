@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-25 18:24+0200\n"
+"PO-Revision-Date: 2013-02-26 06:11+0200\n"
 "Last-Translator: Miika Turkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -25,6 +25,8 @@ msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Ei tapahtumia\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -1669,7 +1671,7 @@ msgstr "Käyttäjätunniste"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Käyttöohje"
 
 #: gtk-gui.c:1377
 msgid "View"
