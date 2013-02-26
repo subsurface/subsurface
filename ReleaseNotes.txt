@@ -1,5 +1,5 @@
-			Subsurface 3.0
-			==============
+			Subsurface 3.0.1
+			================
 
 The Subsurface developer team is proud to announce the release of the
 latest version of Subsurface.
@@ -38,8 +38,18 @@ available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
+New in version 3.0.1 (compared to Subsurface 3.0):
 
-New in this version (compared to Subsurface 2.1):
+- Several bug fixes for importing log files from other divelog software;
+  especially imports from DivingLog should work much better now, but
+  also new importer functions for UDDF and UDCF
+- Fixes for SAC calculation and gas volume estimates at high pressures
+  (air and nitrox are NOT ideal gases in the physics sense)
+- Added Help link to the online user manual
+- Improved the user manual
+- random other bug fixes
+
+New in version 3.0 (compared to Subsurface 2.1):
 
 - Many new divecomputers supported, bugfixes for existing divecomputers
   - Cressi Leonardo, Seemann XP5, Mares Matrix, Mares Puck Pro, Mares
