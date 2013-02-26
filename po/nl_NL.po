@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-25 17:56+0100\n"
+"PO-Revision-Date: 2013-02-26 10:07+0100\n"
 "Last-Translator: Reinout Hoornweg <reinout@xs4all.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
@@ -24,6 +24,8 @@ msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Geen gebeurtenissen\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -1669,7 +1671,7 @@ msgstr "Gebruikersidentificatie"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Gebruikershandleiding"
 
 #: gtk-gui.c:1377
 msgid "View"
