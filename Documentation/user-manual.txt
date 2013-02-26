@@ -352,17 +352,21 @@ downloading, showing errors like "Slip RX: unexp. SLIP END" on the Predator.
 This might be also seen, when using other dive log software and operating
 systems than Linux. We have no detailed idea about the source and how to fix
 this, but it is reported to be solved sometimes by one of these steps:
-* use the bluetooth dongle which came with the Shearwater Predator instead of
-* the inbuilt one of your computer
-* switch to different bluetooth drivers for your hardware
-* switch of WiFi while using Bluetooth
+
+ * use the bluetooth dongle which came with the Shearwater Predator instead of
+ * the inbuilt one of your computer
+ * switch to different bluetooth drivers for your hardware
+ * switch of WiFi while using Bluetooth
 
 Computers reportet to work fine:
-* Lenovo T410 running Arch Linux, kernel 3.7.x
-* MacBookPro Retina running Ubuntu 13.04, Kernel 3.8.0
-  hint: use bmcl drivers instead of b43, try to disable WiFi
 
-Please report issues or working environments to subsurface@hohndel.org.
+ * Lenovo T410 running Arch Linux, kernel 3.7.x
+ * MacBookPro Retina running Ubuntu 13.04, Kernel 3.8.0
+   hint: use bmcl drivers instead of b43, try to disable WiFi
+
+Please report issues or working environments to on
+http://trac.hohndel.org[our bugtracker] or send email to
+mailto:subsurface@hohndel.org[our mailing list].
 
 [[S_ViewingLogs]]
 Viewing and Completing Your Logs
