@@ -3,11 +3,11 @@
   <Header>
     <AppName>Diving Log 5.0</AppName>
     <AppVersion>5.0.8.0</AppVersion>
-    <ExportDate>2013-02-26T03:44:35</ExportDate>
+    <ExportDate>2013-02-26T16:34:07</ExportDate>
   </Header>
   <Logbook>
-    <Dive ID="46" UUID="C5F1F1A3-D390-4D17-9A4F-D3DA39C1AF7F" Updated="2011-09-05T04:33:17">
-      <Number>46</Number>
+    <Dive ID="1" UUID="2EEC58E4-F337-4891-B306-3860E134237A" Updated="2013-02-26T16:30:41">
+      <Number>1</Number>
       <Divedate>2011-05-17</Divedate>
       <Entrytime>11:01</Entrytime>
       <Surfint>13:31</Surfint>
@@ -22,45 +22,40 @@
       <Divetime>32.00</Divetime>
       <Depth>24.69</Depth>
       <Buddy IDs="" Names="Linus" />
-      <Signature />
-      <Comments>Second deep dive
-Linus and I planned and executed - Alex just watching
-down to 80ft (overshot by one)
-then the reverse sqeeze BS started again
-So the rest of the dive is a loooong buoyancy exercise
-Still, fun dive - but I skipped the next one and called it a day.</Comments>
+      <Signature>
+      </Signature>
+      <Comments>{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}
+\viewkind4\uc1\pard\lang1033\f0\fs17 All data in DivingLog is Imperial\par
+}
+</Comments>
       <Water>Salt</Water>
       <Entry>Shore</Entry>
-      <Divetype>
-      </Divetype>
+      <Divetype>Night</Divetype>
       <Tanktype>Steel</Tanktype>
       <Tanksize>11.66</Tanksize>
-      <PresS>164.99</PresS>
-      <PresE>69.02</PresE>
+      <PresS>165.47</PresS>
+      <PresE>68.95</PresE>
       <Gas>
       </Gas>
       <Weather>Sunny</Weather>
-      <UWCurrent>
-      </UWCurrent>
-      <Surface>
-      </Surface>
+      <UWCurrent>No Current</UWCurrent>
+      <Surface>No Waves</Surface>
       <Visibility>Bad</Visibility>
       <Airtemp>14.00</Airtemp>
       <Watertemp>10.00</Watertemp>
-      <Weight>16.37</Weight>
+      <Weight>16.33</Weight>
       <Deco>False</Deco>
-      <Decostops>
-      </Decostops>
+      <Decostops>This is the "DecoStop Details" text field
+I also added the silly table groups - should show up as A and K</Decostops>
       <Rep>False</Rep>
-      <Altitude>
-      </Altitude>
+      <Altitude>0 ft - 3000 ft</Altitude>
       <Divesuit>Drysuit</Divesuit>
       <Computer>Vyper</Computer>
       <ProfileInt>30</ProfileInt>
       <Profile>
         <P Time="30">
           <Depth>0.00</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -70,7 +65,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="60">
           <Depth>2.74</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -80,7 +75,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="90">
           <Depth>4.88</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -90,7 +85,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="120">
           <Depth>8.53</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -100,7 +95,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="150">
           <Depth>12.19</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -110,7 +105,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="180">
           <Depth>14.02</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -120,7 +115,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="210">
           <Depth>16.76</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -130,7 +125,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="240">
           <Depth>19.51</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -140,7 +135,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="270">
           <Depth>22.86</Depth>
-          <Temp>57.2</Temp>
+          <Temp>14.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -150,7 +145,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="300">
           <Depth>24.69</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -160,7 +155,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="330">
           <Depth>23.77</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -170,7 +165,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="360">
           <Depth>23.16</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -180,7 +175,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="390">
           <Depth>23.47</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -190,7 +185,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="420">
           <Depth>22.25</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -200,7 +195,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="450">
           <Depth>21.64</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -210,7 +205,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="480">
           <Depth>21.95</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -220,7 +215,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="510">
           <Depth>21.03</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -230,7 +225,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="540">
           <Depth>21.03</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -240,7 +235,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="570">
           <Depth>18.90</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -250,7 +245,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="600">
           <Depth>17.98</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -260,7 +255,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="630">
           <Depth>17.07</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -270,7 +265,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="660">
           <Depth>16.46</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -280,7 +275,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="690">
           <Depth>15.85</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -290,7 +285,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="720">
           <Depth>15.54</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -300,7 +295,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="750">
           <Depth>14.63</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -310,7 +305,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="780">
           <Depth>13.72</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -320,7 +315,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="810">
           <Depth>12.50</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -330,7 +325,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="840">
           <Depth>11.89</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -340,7 +335,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="870">
           <Depth>11.58</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -350,7 +345,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="900">
           <Depth>11.58</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -360,7 +355,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="930">
           <Depth>11.89</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -370,7 +365,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="960">
           <Depth>11.28</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -380,7 +375,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="990">
           <Depth>11.28</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -390,7 +385,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1020">
           <Depth>11.89</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -400,7 +395,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1050">
           <Depth>11.89</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -410,7 +405,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1080">
           <Depth>11.58</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -420,7 +415,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1110">
           <Depth>10.36</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -430,7 +425,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1140">
           <Depth>10.67</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -440,7 +435,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1170">
           <Depth>10.67</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -450,7 +445,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1200">
           <Depth>11.28</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -460,7 +455,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1230">
           <Depth>11.28</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -470,7 +465,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1260">
           <Depth>10.67</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -480,7 +475,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1290">
           <Depth>11.28</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -490,7 +485,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1320">
           <Depth>11.28</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -500,7 +495,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1350">
           <Depth>10.97</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -510,7 +505,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1380">
           <Depth>9.75</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -520,7 +515,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1410">
           <Depth>8.84</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -530,7 +525,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1440">
           <Depth>7.92</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -540,7 +535,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1470">
           <Depth>8.23</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -550,7 +545,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1500">
           <Depth>7.01</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -560,7 +555,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1530">
           <Depth>5.79</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -570,7 +565,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1560">
           <Depth>6.10</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -580,7 +575,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1590">
           <Depth>5.49</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -590,7 +585,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1620">
           <Depth>5.79</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -600,7 +595,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1650">
           <Depth>3.96</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -610,7 +605,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1680">
           <Depth>5.18</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -620,7 +615,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1710">
           <Depth>5.18</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -630,7 +625,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1740">
           <Depth>5.49</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -640,7 +635,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1770">
           <Depth>5.18</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -650,7 +645,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1800">
           <Depth>5.18</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -660,7 +655,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1830">
           <Depth>3.96</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -670,7 +665,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1860">
           <Depth>3.35</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -680,7 +675,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1890">
           <Depth>2.44</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -690,7 +685,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1920">
           <Depth>2.13</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -700,7 +695,7 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
         </P>
         <P Time="1950">
           <Depth>0.00</Depth>
-          <Temp>50.0</Temp>
+          <Temp>10.0</Temp>
           <Warning>00000</Warning>
           <Press1>0.0</Press1>
           <Press2>0.0</Press2>
@@ -712,23 +707,23 @@ Still, fun dive - but I skipped the next one and called it a day.</Comments>
       <UsedEquip>
       </UsedEquip>
       <PresW>182.02</PresW>
-      <DepthAvg>11.65</DepthAvg>
-      <Profile4 />
-      <Profile5 />
+      <DepthAvg>12.02</DepthAvg>
+      <Profile4>
+      </Profile4>
+      <Profile5>
+      </Profile5>
       <RepNumber />
       <VisHor>15-20ft</VisHor>
       <VisVer>
       </VisVer>
       <CNS>
       </CNS>
-      <PGStart>
-      </PGStart>
-      <PGEnd>
-      </PGEnd>
+      <PGStart>A</PGStart>
+      <PGEnd>K</PGEnd>
       <Divemaster>Alex</Divemaster>
       <Boat>
       </Boat>
-      <Rating>0</Rating>
+      <Rating>4</Rating>
       <O2>32.00</O2>
       <He />
       <DblTank>False</DblTank>
