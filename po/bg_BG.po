@@ -1673,7 +1673,7 @@ msgstr "Потребителски ключ"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Ръководство за потребителя"
 
 #: gtk-gui.c:1377
 msgid "View"
