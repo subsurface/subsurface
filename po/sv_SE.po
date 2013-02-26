@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-14 10:45+0100\n"
+"PO-Revision-Date: 2013-02-26 09:03+0100\n"
 "Last-Translator: Fredrik Steen <fredrik@ppo2.se>\n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
@@ -25,6 +25,8 @@ msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Inga händelser\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -446,7 +448,7 @@ msgstr "Kan inte hitta gasen %d/%d"
 #: parse-xml.c:1634
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Kunde inte öppna stilmall (%s)%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1499,7 +1501,7 @@ msgstr "Stanna vid %.*f %s för %d:%02d min - totaltid %d:%02u on %s\n"
 #: parse-xml.c:397
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Konstig procent läsning %s\n"
 
 #: divelist.c:1421 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
@@ -1578,7 +1580,6 @@ msgid "Too many gas mixes"
 msgstr "För många gasblandningar"
 
 #: planner.c:1253
-#, fuzzy
 msgid "Too many waypoints"
 msgstr "För många etapper"
 
@@ -1669,7 +1670,7 @@ msgstr "Användar ID"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Användarmanual"
 
 #: gtk-gui.c:1377
 msgid "View"
