@@ -617,7 +617,8 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	double depthtime = 0;
 	int lasttime = 0;
 	int lastindex = -1;
-	int maxdepth = 0, mintemp = 0;
+	int maxdepth = dc->maxdepth.mm;
+	int mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };

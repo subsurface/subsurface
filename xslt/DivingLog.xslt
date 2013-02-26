@@ -47,6 +47,11 @@
             <xsl:value-of select="concat(Depth, ' m')"/>
           </xsl:attribute>
         </xsl:if>
+        <xsl:if test="DepthAvg != ''">
+          <xsl:attribute name="mean">
+            <xsl:value-of select="concat(DepthAvg, ' m')"/>
+          </xsl:attribute>
+        </xsl:if>
       </depth>
 
       <location>
