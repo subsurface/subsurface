@@ -22,7 +22,7 @@
 #include "uemis.h"
 #include "device.h"
 #include "webservice.h"
-
+#include "version.h"
 #include "libdivecomputer.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>

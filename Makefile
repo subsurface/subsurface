@@ -25,6 +25,12 @@ DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt
 
+VERSION_FILE = version.h
+# There's only one line in $(VERSION_FILE); use the shell builtin `read'
+STORED_VERSION_STRING = \
+	$(subst ",,$(shell read ignore ignore v <$(VERSION_FILE) && echo $$v))
+#" workaround editor syntax highlighting quirk
+
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
 GET_VERSION = ./scripts/get-version
 VERSION_STRING := $(shell $(GET_VERSION) linux || echo "v$(VERSION)")
@@ -157,7 +163,13 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o plann
 
 DEPS = $(wildcard .dep/*.dep)
 
-$(NAME): $(OBJS) $(MSGOBJS) $(INFOPLIST)
+gen_version_file:
+ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
+	$(info updating $(VERSION_FILE) to $(VERSION_STRING))
+	@echo \#define VERSION_STRING \"$(VERSION_STRING)\" >$(VERSION_FILE)
+endif
+
+$(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 install: $(NAME)
@@ -256,8 +268,7 @@ prepare-po-files:
 
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 		$(XSLT) $(ZIP) $(LIBDIVECOMPUTERCFLAGS) \
-		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS) \
-		-DVERSION_STRING='"$(VERSION_STRING)"'
+		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS)
 
 %.o: %.c
 	@echo '    CC' $<
@@ -290,7 +301,8 @@ doc:
 	$(MAKE) -C Documentation doc
 
 clean:
-	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot
+	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
+		$(VERSION_FILE)
 	rm -rf share .dep
 
 -include $(DEPS)

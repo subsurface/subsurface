@@ -5,6 +5,7 @@
 *.dmg
 *.patch
 *.xml
+version.h
 !dives/*.xml
 *~
 po/*.mo
