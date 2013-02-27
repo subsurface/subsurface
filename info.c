@@ -1095,7 +1095,11 @@ static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
 	return hbox;
 }
 
-GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget **h, GtkWidget **m)
+/* returns the dialog plus pointers to the calendar, hour and minute widget
+ * plus the hbox that holds the time entry (in case the caller wants to put
+ * a duration entry widget next to the time entry widget */
+GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget **h,
+						    GtkWidget **m, GtkWidget **timehbox)
 {
 	GtkWidget *dialog;
 	GtkWidget *hbox, *vbox;
@@ -1116,11 +1120,12 @@ GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget *
 	gtk_box_pack_start(GTK_BOX(hbox), *cal, FALSE, TRUE, 0);
 
 	/* Time hbox */
-	hbox = frame_box(vbox, _("Time"));
+	*timehbox = gtk_hbox_new(TRUE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), *timehbox, FALSE, FALSE, 0);
+	hbox = frame_box(*timehbox, _("Time"));
 
 	*h = gtk_spin_button_new_with_range (0.0, 23.0, 1.0);
 	*m = gtk_spin_button_new_with_range (0.0, 59.0, 1.0);
-
 
 	gtk_calendar_select_month(GTK_CALENDAR(*cal), time->tm_mon, time->tm_year + 1900);
 	gtk_calendar_select_day(GTK_CALENDAR(*cal), time->tm_mday);
@@ -1138,16 +1143,28 @@ GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget *
 	return dialog;
 }
 
+static int mm_from_spinbutton(GtkWidget *depth)
+{
+	int result;
+	double val = gtk_spin_button_get_value(GTK_SPIN_BUTTON(depth));
+	if (prefs.units.length == FEET) {
+		result = feet_to_mm(val);
+	} else {
+		result = val * 1000 + 0.5;
+	}
+	return result;
+}
+
 static timestamp_t dive_time_widget(struct dive *dive)
 {
 	GtkWidget *dialog;
 	GtkWidget *cal, *vbox, *hbox, *box;
 	GtkWidget *h, *m;
-	GtkWidget *duration, *depth;
+	GtkWidget *duration, *depth, *avgdepth;
 	guint yval, mval, dval;
 	struct tm tm, *time;
 	int success;
-	double depthinterval, val;
+	double depthinterval;
 
 	/*
 	 * If we have a dive selected, 'add dive' will default
@@ -1167,18 +1184,19 @@ static timestamp_t dive_time_widget(struct dive *dive)
 		now = tv.tv_sec;
 		time = localtime(&now);
 	}
-	dialog = create_date_time_widget(time, &cal, &h, &m);
+	dialog = create_date_time_widget(time, &cal, &h, &m, &hbox);
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	hbox = gtk_hbox_new(TRUE, 3);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
-	/* Duration hbox */
+	/* Duration box */
 	box = frame_box(hbox, _("Duration (min)"));
 	duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
 	gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
 
+	hbox = gtk_hbox_new(TRUE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+
 	/* Depth box */
-	box = frame_box(hbox, _("Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
+	box = frame_box(hbox, _("Max Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
 	if (prefs.units.length == FEET) {
 		depthinterval = 1.0;
 	} else {
@@ -1186,6 +1204,15 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	}
 	depth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
 	gtk_box_pack_end(GTK_BOX(box), depth, FALSE, FALSE, 0);
+
+	box = frame_box(hbox, _("Avg Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
+	if (prefs.units.length == FEET) {
+		depthinterval = 1.0;
+	} else {
+		depthinterval = 0.1;
+	}
+	avgdepth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
+	gtk_box_pack_end(GTK_BOX(box), avgdepth, FALSE, FALSE, 0);
 
 	/* All done, show it and wait for editing */
 	gtk_widget_show_all(dialog);
@@ -1204,13 +1231,8 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	tm.tm_hour = gtk_spin_button_get_value(GTK_SPIN_BUTTON(h));
 	tm.tm_min = gtk_spin_button_get_value(GTK_SPIN_BUTTON(m));
 
-	val = gtk_spin_button_get_value(GTK_SPIN_BUTTON(depth));
-	if (prefs.units.length == FEET) {
-		dive->dc.maxdepth.mm = feet_to_mm(val);
-	} else {
-		dive->dc.maxdepth.mm = val * 1000 + 0.5;
-	}
-
+	dive->dc.maxdepth.mm = mm_from_spinbutton(depth);
+	dive->dc.meandepth.mm = mm_from_spinbutton(avgdepth);
 	dive->dc.duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
 
 	gtk_widget_destroy(dialog);

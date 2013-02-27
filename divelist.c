@@ -1537,7 +1537,7 @@ static void edit_dive_from_path_cb(GtkWidget *menuitem, GtkTreePath *path)
 
 static void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 {
-	GtkWidget *dialog, *cal, *h, *m;
+	GtkWidget *dialog, *cal, *h, *m, *timehbox;
 	timestamp_t when;
 
 	guint yval, mval, dval;
@@ -1549,7 +1549,7 @@ static void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 
 	when = dive->when;
 	utc_mkdate(when, &tm);
-	dialog = create_date_time_widget(&tm, &cal, &h, &m);
+	dialog = create_date_time_widget(&tm, &cal, &h, &m, &timehbox);
 
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;

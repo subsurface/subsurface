@@ -52,7 +52,7 @@ enum {
 	MATCH_AFTER
 } found_string_entry;
 
-extern GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget **h, GtkWidget **m);
+extern GtkWidget *create_date_time_widget(struct tm *time, GtkWidget **cal, GtkWidget **h, GtkWidget **m, GtkWidget **timehbox);
 extern void add_string_list_entry(const char *string, GtkListStore *list);
 extern int match_list(GtkListStore *list, const char *string);
 
