@@ -3,6 +3,7 @@
   xmlns:u="http://www.streit.cc/uddf/3.2/"
   exclude-result-prefixes="u"
   version="1.0">
+  <xsl:import href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" indent="yes"/>
 
@@ -61,12 +62,11 @@
           </xsl:attribute>
         </xsl:when>
         <xsl:when test="informationbeforedive/datetime|u:informationbeforedive/u:datetime != ''">
-          <xsl:attribute name="date">
-            <xsl:value-of select="substring-before(informationbeforedive/datetime|u:informationbeforedive/u:datetime, 'T')"/>
-          </xsl:attribute>
-          <xsl:attribute name="time">
-            <xsl:value-of select="substring-after(informationbeforedive/datetime|u:informationbeforedive/u:datetime, 'T')"/>
-          </xsl:attribute>
+          <xsl:call-template name="datetime">
+            <xsl:with-param name="value">
+              <xsl:value-of select="informationbeforedive/datetime|u:informationbeforedive/u:datetime"/>
+            </xsl:with-param>
+          </xsl:call-template>
         </xsl:when>
       </xsl:choose>
 
