@@ -30,6 +30,19 @@
 
   <xsl:template match="dive">
     <xsl:variable name="units" select="/dives/units"/>
+
+    <!-- Count the amount of temeprature samples during the dive -->
+    <xsl:variable name="temperatureSamples">
+      <xsl:call-template name="temperatureSamples" select="/dives/dive/samples">
+        <xsl:with-param name="units" select="$units"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <!-- Count the amount of pressure samples during the dive -->
+    <xsl:variable name="pressureSamples">
+      <xsl:call-template name="pressureSamples" select="/dives/dive/samples"/>
+    </xsl:variable>
+
     <dive>
       <xsl:attribute name="number">
         <xsl:choose>
@@ -122,12 +135,14 @@
         </xsl:for-each>
       </location>
 
-      <xsl:if test="sitelat != ''">
+      <!-- This will discard GPS coordinates of 0 0 but I suppose that
+           is better than all non-gps dives to be in that location -->
+      <xsl:if test="sitelat != 0">
         <gps>
           <xsl:value-of select="concat(sitelat, ' ', sitelon)"/>
         </gps>
       </xsl:if>
-      <xsl:if test="siteLat != ''">
+      <xsl:if test="siteLat != 0">
         <gps>
           <xsl:value-of select="concat(siteLat, ' ', siteLon)"/>
         </gps>
@@ -163,7 +178,7 @@
               <xsl:value-of select="concat(helium, '%')"/>
             </xsl:attribute>
           </xsl:if>
-          <xsl:if test="pressureStart != ''">
+          <xsl:if test="pressureStart &gt; 0">
             <xsl:attribute name="start">
               <xsl:call-template name="pressureConvert">
                 <xsl:with-param name="number" select="pressureStart"/>
@@ -171,7 +186,7 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-          <xsl:if test="pressureEnd != ''">
+          <xsl:if test="pressureEnd &gt; 0">
             <xsl:attribute name="end">
               <xsl:call-template name="pressureConvert">
                 <xsl:with-param name="number" select="pressureEnd"/>
@@ -179,7 +194,7 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-          <xsl:if test="tankSize != ''">
+          <xsl:if test="tankSize &gt; 0">
             <xsl:attribute name="size">
               <xsl:call-template name="sizeConvert">
                 <xsl:with-param name="singleSize" select="tankSize"/>
@@ -189,7 +204,7 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-          <xsl:if test="workingPressure != ''">
+          <xsl:if test="workingPressure &gt; 0">
             <xsl:attribute name="workpressure">
               <xsl:call-template name="pressureConvert">
                 <xsl:with-param name="number" select="workingPressure"/>
@@ -206,37 +221,63 @@
       </xsl:for-each>
 
       <temperature>
+
+        <!-- If we have temperature reading and it is non-zero, we use
+             it. If the temperature is zero, we only use it if we have
+             temperature samples from the dive. -->
         <xsl:if test="tempAir != ''">
-          <xsl:attribute name="air">
+          <xsl:variable name="air">
             <xsl:call-template name="tempConvert">
               <xsl:with-param name="temp" select="tempAir"/>
               <xsl:with-param name="units" select="$units"/>
             </xsl:call-template>
-          </xsl:attribute>
+          </xsl:variable>
+          <xsl:if test="substring-before($air, ' ') != 0 or $temperatureSamples &gt; 0">
+            <xsl:attribute name="air">
+              <xsl:value-of select="$air"/>
+            </xsl:attribute>
+          </xsl:if>
         </xsl:if>
+
         <xsl:if test="tempLow != ''">
-          <xsl:attribute name="water">
+          <xsl:variable name="water">
             <xsl:call-template name="tempConvert">
               <xsl:with-param name="temp" select="tempLow"/>
               <xsl:with-param name="units" select="$units"/>
             </xsl:call-template>
-          </xsl:attribute>
+          </xsl:variable>
+          <xsl:if test="substring-before($water, ' ') != 0 or $temperatureSamples &gt; 0">
+            <xsl:attribute name="water">
+              <xsl:value-of select="$water"/>
+            </xsl:attribute>
+          </xsl:if>
         </xsl:if>
+
         <xsl:if test="tempair != ''">
-          <xsl:attribute name="air">
+          <xsl:variable name="air">
             <xsl:call-template name="tempConvert">
               <xsl:with-param name="temp" select="tempair"/>
               <xsl:with-param name="units" select="$units"/>
             </xsl:call-template>
-          </xsl:attribute>
+          </xsl:variable>
+          <xsl:if test="substring-before($air, ' ') != 0 or $temperatureSamples &gt; 0">
+            <xsl:attribute name="air">
+              <xsl:value-of select="$air"/>
+            </xsl:attribute>
+          </xsl:if>
         </xsl:if>
         <xsl:if test="templow != ''">
-          <xsl:attribute name="water">
+          <xsl:variable name="water">
             <xsl:call-template name="tempConvert">
               <xsl:with-param name="temp" select="temlow"/>
               <xsl:with-param name="units" select="$units"/>
             </xsl:call-template>
-          </xsl:attribute>
+          </xsl:variable>
+          <xsl:if test="substring-before($water, ' ') != 0 or $temperatureSamples &gt; 0">
+            <xsl:attribute name="water">
+              <xsl:value-of select="$water"/>
+            </xsl:attribute>
+          </xsl:if>
         </xsl:if>
       </temperature>
 
@@ -290,7 +331,7 @@
               <xsl:with-param name="units" select="$units"/>
             </xsl:call-template>
           </xsl:attribute>
-          <xsl:if test="pressure != ''">
+          <xsl:if test="pressure != '' and $pressureSamples &gt; 0">
             <xsl:attribute name="pressure">
               <xsl:call-template name="pressureConvert">
                 <xsl:with-param name="number" select="pressure"/>
@@ -298,7 +339,7 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-          <xsl:if test="temperature != ''">
+          <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
             <xsl:attribute name="temp">
               <xsl:call-template name="tempConvert">
                 <xsl:with-param name="temp" select="temperature"/>
@@ -393,7 +434,7 @@
   </xsl:template>
   <!-- end convert pressure -->
 
-  <!-- convert temperature to C -->
+  <!-- convert temperature from F to C -->
   <xsl:template name="tempConvert">
     <xsl:param name="temp"/>
     <xsl:param name="units"/>
@@ -458,5 +499,21 @@
     </xsl:choose>
   </xsl:template>
   <!-- end convert weight -->
+
+  <xsl:template name="temperatureSamples">
+    <xsl:param name="units"/>
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:value-of select="count(descendant::temperature[. != 32])"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="count(descendant::temperature[. != 0])"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="pressureSamples">
+    <xsl:value-of select="count(descendant::pressure[. &gt; 0])"/>
+  </xsl:template>
 
 </xsl:stylesheet>
