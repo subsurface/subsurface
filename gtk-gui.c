@@ -2037,6 +2037,8 @@ void set_dc_nickname(struct dive *dive)
 					remember_dc(dc->model, dc->deviceid, NULL);
 				}
 				gtk_widget_destroy(dialog);
+			} else {
+				remember_dc(dc->model, dc->deviceid, NULL);
 			}
 		}
 		dc = dc->next;
