@@ -208,22 +208,34 @@
       <temperature>
         <xsl:if test="tempAir != ''">
           <xsl:attribute name="air">
-            <xsl:value-of select="concat(tempAir, ' C')"/>
+            <xsl:call-template name="tempConvert">
+              <xsl:with-param name="temp" select="tempAir"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="tempLow != ''">
           <xsl:attribute name="water">
-            <xsl:value-of select="concat(tempLow, ' C')"/>
+            <xsl:call-template name="tempConvert">
+              <xsl:with-param name="temp" select="tempLow"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="tempair != ''">
           <xsl:attribute name="air">
-            <xsl:value-of select="concat(tempair, ' C')"/>
+            <xsl:call-template name="tempConvert">
+              <xsl:with-param name="temp" select="tempair"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="templow != ''">
           <xsl:attribute name="water">
-            <xsl:value-of select="concat(templow, ' C')"/>
+            <xsl:call-template name="tempConvert">
+              <xsl:with-param name="temp" select="temlow"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
       </temperature>
@@ -288,7 +300,10 @@
           </xsl:if>
           <xsl:if test="temperature != ''">
             <xsl:attribute name="temp">
-              <xsl:value-of select="concat(temperature, ' C')"/>
+              <xsl:call-template name="tempConvert">
+                <xsl:with-param name="temp" select="temperature"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
         </sample>
@@ -377,6 +392,22 @@
     </xsl:choose>
   </xsl:template>
   <!-- end convert pressure -->
+
+  <!-- convert temperature to C -->
+  <xsl:template name="tempConvert">
+    <xsl:param name="temp"/>
+    <xsl:param name="units"/>
+
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:value-of select="concat(format-number(($temp - 32) * 5 div 9, '0.0'), ' C')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat($temp, ' C')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!-- end convert temperature -->
 
   <!-- convert time in seconds to minutes:seconds -->
   <xsl:template name="timeConvert">
