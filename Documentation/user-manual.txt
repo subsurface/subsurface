@@ -424,7 +424,7 @@ The purpose of the fields is described in the table below:
 |===============================================================================
 | Field                      | Description of field
 | Location                   | An input where you can enter your new location, or you can choose with the pull-down previous locations
-| GPS (WGS84 or GPS format)  | An input where your can enter geographic coordinates of the dive site
+| GPS (WGS84 or GPS format)  | An input where you can enter geographic coordinates of the dive site
 | Pick on map                | A button you can click on to display an interactive map on which you can select the location of the dive site
 | Dive Master                | An input where you can enter the name of your Dive Master, or you can choose with the pull-down a previous name
 | Buddy                      | An input where you can enter the name of you Buddy, or you can choose with the pull-down a previous name
