@@ -163,6 +163,9 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o plann
 
 DEPS = $(wildcard .dep/*.dep)
 
+
+all: $(NAME)
+
 $(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
@@ -172,7 +175,7 @@ ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
 	@echo \#define VERSION_STRING \"$(VERSION_STRING)\" >$(VERSION_FILE)
 endif
 
-install: $(NAME)
+install: all
 	$(INSTALL) -d -m 755 $(BINDIR)
 	$(INSTALL) $(NAME) $(BINDIR)
 	$(INSTALL) -d -m 755 $(DESKTOPDIR)
@@ -195,7 +198,7 @@ install: $(NAME)
 	done
 
 
-install-macosx: $(NAME)
+install-macosx: all
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/MacOS
 	$(INSTALL) $(NAME) $(MACOSXINSTALL)/Contents/MacOS/$(NAME)-bin
@@ -214,7 +217,7 @@ install-macosx: $(NAME)
 	fi
 
 
-create-macosx-bundle: $(NAME)
+create-macosx-bundle: all
 	$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources
 	$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/MacOS
 	$(INSTALL) $(NAME) $(MACOSXSTAGING)/Contents/MacOS/
@@ -232,10 +235,10 @@ create-macosx-bundle: $(NAME)
 	fi
 	$(GTK_MAC_BUNDLER) packaging/macosx/subsurface.bundle
 
-sign-macosx-bundle: $(NAME)
+sign-macosx-bundle: all
 	codesign -s "3A8CE62A483083EDEA5581A61E770EC1FA8BECE8" /Applications/Subsurface.app/Contents/MacOS/subsurface-bin
 
-install-cross-windows: $(NAME)
+install-cross-windows: all
 	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
 	for MSG in $(WINMSGDIRS); do\
 		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$MSG;\
@@ -246,7 +249,7 @@ install-cross-windows: $(NAME)
 		$(INSTALL) $$LOC/subsurface.mo $(WINDOWSSTAGING)/$$LOC/subsurface.mo; \
 	done
 
-create-windows-installer: $(NAME) $(NSIFILE) install-cross-windows
+create-windows-installer: all $(NSIFILE) install-cross-windows
 	$(MAKENSIS) $(NSIFILE)
 
 $(NSIFILE): $(NSIINPUTFILE)
