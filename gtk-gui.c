@@ -439,8 +439,13 @@ GtkWidget *combo_box_with_model_and_entry(GtkListStore *model)
 	GtkWidget *widget;
 	GtkEntryCompletion *completion;
 
+#if GTK_CHECK_VERSION(2,24,0)
 	widget = gtk_combo_box_new_with_model_and_entry(GTK_TREE_MODEL(model));
 	gtk_combo_box_set_entry_text_column(GTK_COMBO_BOX(widget), 0);
+#else
+	widget = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(model), 0);
+	gtk_combo_box_entry_set_text_column(GTK_COMBO_BOX_ENTRY(widget), 0);
+#endif
 
 	completion = gtk_entry_completion_new();
 	gtk_entry_completion_set_text_column(completion, 0);
