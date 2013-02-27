@@ -290,7 +290,7 @@ allowing to pair it. Choose "0000" as PIN set in your dive computer should work
 in most cases, if not, refer to the manufacturer of your dive computer. The dive
 computer should then show up in the list of Bluetooth devices and you may then
 right click on it and choose Properties->COM Ports to get known of the ports
-used for your dive computer. If there are several ports listet use the one
+used for your dive computer. If there are several ports listed, use the one
 saying "Outgoing" instead of "Incoming".
 
 image::images/bluetooth_properties.png["Edit Dive Info",align="center"]
@@ -304,7 +304,13 @@ Shearwater Desktop).
 
 .On MacOS:
 
-This should be similar straight forward as described in the Windows section.
+In general this should be similar straight forward as described in the Windows
+section.
+
+Select your dive computer in the Bluetooth system settings. Choosing
+"Connections" next to the "-" will bring up a window showing the device name at
+the bottom. Watch out for something like "/dev/tty.Predator-COM1" and copy/paste
+this to the download dialog in Subsurface.
 
 .On Linux
 Please make sure you have bluetooth enabled on your computer running Subsurface.
@@ -360,7 +366,7 @@ this, but it is reported to be solved sometimes by one of these steps:
  * use the bluetooth dongle which came with the Shearwater Predator instead of
    the built-in one of your computer
  * switch to different bluetooth drivers for your hardware
- * switch of WiFi while using Bluetooth
+ * switch off WiFi while using Bluetooth
 
 Computers reportet to work fine:
 
