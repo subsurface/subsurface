@@ -60,9 +60,12 @@
             <xsl:value-of select="concat(format-number(time/hour, '00'), ':', format-number(time/minute, '00'))"/>
           </xsl:attribute>
         </xsl:when>
-        <xsl:when test="u:informationbeforedive/u:datetime != ''">
+        <xsl:when test="informationbeforedive/datetime|u:informationbeforedive/u:datetime != ''">
           <xsl:attribute name="date">
-            <xsl:value-of select="u:informationbeforedive/u:datetime"/>
+            <xsl:value-of select="substring-before(informationbeforedive/datetime|u:informationbeforedive/u:datetime, 'T')"/>
+          </xsl:attribute>
+          <xsl:attribute name="time">
+            <xsl:value-of select="substring-after(informationbeforedive/datetime|u:informationbeforedive/u:datetime, 'T')"/>
           </xsl:attribute>
         </xsl:when>
       </xsl:choose>
