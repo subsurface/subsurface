@@ -756,7 +756,10 @@ static void location_entry_change_cb(GtkComboBox *location, gpointer *userdata)
 
 static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
 {
-	GtkWidget *hbox, *label, *frame, *equipment, *image;
+	GtkWidget *hbox, *label, *frame, *equipment;
+#if HAVE_OSM_GPS_MAP
+	GtkWidget *image;
+#endif
 	char buffer[128];
 	char airtemp[6];
 	const char *unit;
