@@ -53,7 +53,7 @@ development version) you can either get this via
 
 git checkout v3.0.1  (or whatever the last release is)
 
-if you have already clined the git repository as shown above or you
+if you have already cloned the git repository as shown above or you
 can get a tar ball from
 
 http://subsurface.hohndel.org/downloads/Subsurface-3.0.1.tgz
