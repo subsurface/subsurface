@@ -41,15 +41,22 @@ License: GPLv2
 
 Subsurface can be found at http://subsurface.hohndel.org
 
-You can get the latest sources from the git repository:
+You can get the sources to the latest development version from the git
+repository:
 
 git clone git://subsurface.hohndel.org/subsurface.git .
 
-or
+You can also browse the sources via gitweb at git.hohndel.org
 
-git clone http://subsurface.hohndel.org/subsurface.git .
+If you want the latest release (instead of the bleeding edge
+development version) you can either get this via
 
-You can also browse the sources via gitweb.
+git checkout v3.0.1  (or whatever the last release is)
+
+if you have already clined the git repository as shown above or you
+can get a tar ball from
+
+http://subsurface.hohndel.org/downloads/Subsurface-3.0.1.tgz
 
 
 Building subsurface under Linux
@@ -62,8 +69,7 @@ packages.
 
 On Debian the package names are different; try libxml2-dev,
 libgtk2.0-dev, libglib2.0-dev, libgconf2-dev, libsoup2.4-dev,
-libxslt1-dev, zlib1g-dev. It seems the cairo packages at least in
-Squeeze is too old.
+libxslt1-dev, zlib1g-dev.
 
 To be able to visualise the dives on a map (optional), using GPS
 coordinates, install the osm-gps-map-devel (Fedora) or libosmgpsmap-dev
