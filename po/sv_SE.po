@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-26 09:03+0100\n"
+"PO-Revision-Date: 2013-02-27 22:24+0100\n"
 "Last-Translator: Fredrik Steen <fredrik@ppo2.se>\n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
@@ -1151,7 +1151,7 @@ msgstr "mÃ¥n"
 
 #: gtk-gui.c:1069
 msgid "Multi-platform divelog software in C"
-msgstr "Dyklogg i C for flera platformer"
+msgstr "Dyklogg i C för flera plattformar"
 
 #: info.c:651
 msgid "N"
