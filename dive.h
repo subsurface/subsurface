@@ -647,6 +647,7 @@ struct divedatapoint {
 
 struct diveplan {
 	timestamp_t when;
+	int lastdive_nr;
 	int surface_pressure;		/* mbar */
 	int bottomsac;			/* ml/min */
 	int decosac;			/* ml/min */
