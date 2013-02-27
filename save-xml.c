@@ -288,8 +288,7 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 		if (volume)
 			show_milli(f, " size='", volume, " l", "'");
 		show_pressure(f, cylinder->type.workingpressure, " workpressure='", "'");
-		if (description && *description)
-			fprintf(f, " description='%s'", description);
+		show_utf8(f, description, " description='", "'", 1);
 		if (o2) {
 			fprintf(f, " o2='%u.%u%%'", FRACTION(o2, 10));
 			if (he)
@@ -315,8 +314,7 @@ static void save_weightsystem_info(FILE *f, struct dive *dive)
 			return;
 		fprintf(f, "  <weightsystem");
 		show_milli(f, " weight='", grams, " kg", "'");
-		if (description && *description)
-			fprintf(f, " description='%s'", description);
+		show_utf8(f, description, " description='", "'", 1);
 		fprintf(f, " />\n");
 	}
 }
@@ -418,8 +416,7 @@ static void save_samples(FILE *f, int nr, struct sample *s)
 static void save_dc(FILE *f, struct dive *dive, struct divecomputer *dc)
 {
 	fprintf(f, "  <divecomputer");
-	if (dc->model)
-		show_utf8(f, dc->model, " model='", "'", 1);
+	show_utf8(f, dc->model, " model='", "'", 1);
 	if (dc->deviceid)
 		fprintf(f, " deviceid='%08x'", dc->deviceid);
 	if (dc->diveid)
@@ -478,11 +475,9 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 
 	fprintf(f, "<trip");
 	show_date(f, trip->when);
-	if (trip->location)
-		show_utf8(f, trip->location, " location=\'","\'", 1);
+	show_utf8(f, trip->location, " location=\'","\'", 1);
 	fprintf(f, ">\n");
-	if (trip->notes)
-		show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
+	show_utf8(f, trip->notes, "<notes>","</notes>\n", 0);
 
 	/*
 	 * Incredibly cheesy: we want to save the dives sorted, and they
@@ -523,13 +518,12 @@ static void save_one_device(FILE *f, struct device_info *info)
 	if (!serial_nr && !nickname && !firmware)
 		return;
 
-	fprintf(f, "<divecomputerid model='%s' deviceid='%08x'", info->model, info->deviceid);
-	if (serial_nr)
-		show_utf8(f, serial_nr, " serial='", "'", 1);
-	if (firmware)
-		show_utf8(f, firmware, " firmware='", "'", 1);
-	if (nickname)
-		show_utf8(f, nickname, " nickname='", "'", 1);
+	fprintf(f, "<divecomputerid");
+	show_utf8(f, info->model, " model='", "'", 1);
+	fprintf(f, " deviceid='%08x'", info->deviceid);
+	show_utf8(f, serial_nr, " serial='", "'", 1);
+	show_utf8(f, firmware, " firmware='", "'", 1);
+	show_utf8(f, nickname, " nickname='", "'", 1);
 	fprintf(f, "/>\n");
 }
 
