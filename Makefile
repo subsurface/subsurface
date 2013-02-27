@@ -28,7 +28,8 @@ XSLTFILES = xslt/*.xslt
 VERSION_FILE = version.h
 # There's only one line in $(VERSION_FILE); use the shell builtin `read'
 STORED_VERSION_STRING = \
-	$(subst ",,$(shell read ignore ignore v <$(VERSION_FILE) && echo $$v))
+	$(subst ",,$(shell [ ! -r $(VERSION_FILE) ] || \
+			   read ignore ignore v <$(VERSION_FILE) && echo $$v))
 #" workaround editor syntax highlighting quirk
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
