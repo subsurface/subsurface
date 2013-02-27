@@ -1123,12 +1123,9 @@ static gboolean po2_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer da
  * time in that way we actually need to add the timezone offset */
 static timestamp_t current_time_notz(void)
 {
-	timestamp_t now = time(NULL);
-	GTimeZone *tz = g_time_zone_new_local();
-	gint interval = g_time_zone_find_interval(tz, G_TIME_TYPE_UNIVERSAL, now);
-	gint32 offset = g_time_zone_get_offset(tz, interval);
-	g_time_zone_unref(tz);
-	return now + offset;
+	time_t now = time(NULL);
+	struct tm *local = localtime(&now);
+	return utc_mktime(local);
 }
 
 static gboolean starttime_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
