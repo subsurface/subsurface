@@ -1151,7 +1151,7 @@ msgstr "mån"
 
 #: gtk-gui.c:1069
 msgid "Multi-platform divelog software in C"
-msgstr "Dyklogg i C f�r flera plattformar"
+msgstr "Dyklogg i C för flera plattformar"
 
 #: info.c:651
 msgid "N"
