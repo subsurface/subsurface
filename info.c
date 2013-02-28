@@ -20,6 +20,7 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
+typedef enum { EDIT_NEW_DIVE, EDIT_ALL, EDIT_WHEN } edit_control_t;
 static GtkEntry *location, *buddy, *divemaster, *rating, *suit;
 static GtkTextView *notes;
 static GtkListStore *location_list, *people_list, *star_list, *suit_list;
@@ -96,18 +97,19 @@ static char *get_combo_box_entry_text(GtkComboBox *combo_box, char **textp, cons
 #define SET_TEXT_VALUE(x) \
 	gtk_entry_set_text(x, dive && dive->x ? dive->x : "")
 
-static int divename(char *buf, size_t size, struct dive *dive)
+static int divename(char *buf, size_t size, struct dive *dive, char *trailer)
 {
 	struct tm tm;
 
 	utc_mkdate(dive->when, &tm);
-	/*++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min */
-	return snprintf(buf, size, _("Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d"),
+	/*++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min <trailing text>*/
+	return snprintf(buf, size, _("Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d %8$s"),
 		dive->number,
 		weekday(tm.tm_wday),
 		tm.tm_mon+1, tm.tm_mday,
 		tm.tm_year+1900,
-		tm.tm_hour, tm.tm_min);
+		tm.tm_hour, tm.tm_min,
+		trailer);
 }
 
 void show_dive_info(struct dive *dive)
@@ -161,7 +163,7 @@ void show_dive_info(struct dive *dive)
 	} else {
 		sz = (maxlen + 32) * sizeof(gunichar);
 		buffer = malloc(sz);
-		divename(buffer, sz, dive);
+		divename(buffer, sz, dive, "");
 		text = buffer;
 	}
 
@@ -754,23 +756,58 @@ static void location_entry_change_cb(GtkComboBox *location, gpointer *userdata)
 	update_gps_entry(0, 0);
 }
 
+static void set_dive_button_label(GtkWidget *button, struct dive *dive)
+{
+	char buffer[256];
+
+	/* if there is only one dc and it has no samples we can edit the depth, too */
+	if (dive->dc.next || dive->dc.samples)
+		divename(buffer, sizeof(buffer), dive, _("(click to edit date/time)"));
+	else
+		divename(buffer, sizeof(buffer), dive, _("(click to edit date/time/depth)"));
+	gtk_button_set_label(GTK_BUTTON(button), buffer);
+}
+
+static int dive_time_widget(struct dive *dive, edit_control_t editing);
+
+static gboolean base_data_cb(GtkWidget *w, GdkEvent *event, gpointer _data)
+{
+	struct dive *dive = _data;
+
+	/* if there are more than one divecomputers or if there are any sample
+	 * then only the start time (well, date and time) can be changed,
+	 * otherwise (this is most likely a dive that was added manually in Subsurface
+	 * and we can edit duration, max and mean depth, too */
+	if (dive->dc.next || dive->dc.samples)
+		dive_time_widget(dive, EDIT_WHEN);
+	else
+		dive_time_widget(dive, EDIT_ALL);
+	set_dive_button_label(w, dive);
+	return FALSE;
+}
+
 static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_info *info, gboolean multi)
 {
-	GtkWidget *hbox, *label, *frame, *equipment, *ibox, *box;
+	GtkWidget *hbox, *frame, *equipment, *ibox, *box;
 #if HAVE_OSM_GPS_MAP
 	GtkWidget *image;
 #endif
-	char buffer[128];
+	char buffer[256];
 	char airtemp[6];
 	const char *unit;
 	double value;
 
-	snprintf(buffer, sizeof(buffer), "%s", _("Edit multiple dives"));
-	if (!multi)
-		divename(buffer, sizeof(buffer), dive);
-	label = gtk_label_new(buffer);
-	gtk_box_pack_start(GTK_BOX(obox), label, FALSE, TRUE, 0);
-
+	if (multi) {
+		GtkWidget *label;
+		snprintf(buffer, sizeof(buffer), "%s", _("Edit multiple dives"));
+		label = gtk_label_new(buffer);
+		gtk_box_pack_start(GTK_BOX(obox), label, FALSE, TRUE, 0);
+	} else {
+		GtkWidget *basedata = gtk_button_new_with_label(buffer);
+		set_dive_button_label(basedata, dive);
+		g_signal_connect(G_OBJECT(basedata), "button-press-event", G_CALLBACK(base_data_cb), dive);
+		gtk_box_pack_start(GTK_BOX(obox), basedata, FALSE, TRUE, 0);
+	}
 	/* two column layout (inner hbox ibox) within the outer vbox (obox) we are given */
 	ibox = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(obox), ibox, FALSE, FALSE, 0);
@@ -995,6 +1032,17 @@ gboolean edit_trip(dive_trip_t *trip)
 	return changed;
 }
 
+/* we can simply overwrite these - this only gets called if we edited
+ * a single dive and the dive was first copied into edited - so we can
+ * just take those values */
+static void update_time_depth(struct dive *dive, struct dive *edited)
+{
+	dive->when = edited->when;
+	dive->dc.duration.seconds = edited->dc.duration.seconds;
+	dive->dc.maxdepth.mm = edited->dc.maxdepth.mm;
+	dive->dc.meandepth.mm = edited->dc.meandepth.mm;
+}
+
 int edit_multi_dive_info(struct dive *single_dive)
 {
 	int success;
@@ -1065,9 +1113,11 @@ int edit_multi_dive_info(struct dive *single_dive)
 		save_dive_info_changes(master, &edit_dive, &info);
 		update_equipment_data(master, &edit_dive);
 		update_cylinder_related_info(master);
-		flush_divelist(master);
-		process_selected_dives();
-		update_dive(master);
+		/* if there was only one dive we might also have changed dive->when
+		 * or even the duration and depth information (in a dive without samples) */
+		if (! multi)
+			update_time_depth(master, &edit_dive);
+		dive_list_update_dives();
 	}
 	gtk_widget_destroy(dialog);
 	location_update.entry = NULL;
@@ -1160,7 +1210,7 @@ static int mm_from_spinbutton(GtkWidget *depth)
 	return result;
 }
 
-static timestamp_t dive_time_widget(struct dive *dive)
+static int dive_time_widget(struct dive *dive, edit_control_t editing)
 {
 	GtkWidget *dialog;
 	GtkWidget *cal, *vbox, *hbox, *box;
@@ -1176,7 +1226,10 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	 * to one hour after the end of that dive. Otherwise,
 	 * we'll just take the current time.
 	 */
-	if (amount_selected == 1) {
+	if (editing != EDIT_NEW_DIVE) {
+		utc_mkdate(dive->when, &tm);
+		time = &tm;
+	} else if (amount_selected == 1) {
 		timestamp_t when = current_dive->when;
 		when += current_dive->duration.seconds;
 		when += 60*60;
@@ -1192,33 +1245,40 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	dialog = create_date_time_widget(time, &cal, &h, &m, &hbox);
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	/* Duration box */
-	box = frame_box(hbox, _("Duration (min)"));
-	duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
-	gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
+	if (editing != EDIT_WHEN) {
+		/* Duration box */
+		box = frame_box(hbox, _("Duration (min)"));
+		duration = gtk_spin_button_new_with_range (0.0, 1000.0, 1.0);
+		if (editing != EDIT_NEW_DIVE)
+			gtk_spin_button_set_value(GTK_SPIN_BUTTON(duration), dive->dc.duration.seconds / 60.0);
+		gtk_box_pack_end(GTK_BOX(box), duration, FALSE, FALSE, 0);
 
-	hbox = gtk_hbox_new(TRUE, 3);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+		hbox = gtk_hbox_new(TRUE, 3);
+		gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
-	/* Depth box */
-	box = frame_box(hbox, _("Max Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
-	if (prefs.units.length == FEET) {
-		depthinterval = 1.0;
-	} else {
-		depthinterval = 0.1;
+		/* Depth box */
+		box = frame_box(hbox, _("Max Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
+		if (prefs.units.length == FEET) {
+			depthinterval = 1.0;
+		} else {
+			depthinterval = 0.1;
+		}
+		depth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
+		if (editing != EDIT_NEW_DIVE)
+			gtk_spin_button_set_value(GTK_SPIN_BUTTON(depth), dive->dc.maxdepth.mm / 1000.0);
+		gtk_box_pack_end(GTK_BOX(box), depth, FALSE, FALSE, 0);
+
+		box = frame_box(hbox, _("Avg Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
+		if (prefs.units.length == FEET) {
+			depthinterval = 1.0;
+		} else {
+			depthinterval = 0.1;
+		}
+		avgdepth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
+		if (editing != EDIT_NEW_DIVE)
+			gtk_spin_button_set_value(GTK_SPIN_BUTTON(avgdepth), dive->dc.meandepth.mm / 1000.0);
+		gtk_box_pack_end(GTK_BOX(box), avgdepth, FALSE, FALSE, 0);
 	}
-	depth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
-	gtk_box_pack_end(GTK_BOX(box), depth, FALSE, FALSE, 0);
-
-	box = frame_box(hbox, _("Avg Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
-	if (prefs.units.length == FEET) {
-		depthinterval = 1.0;
-	} else {
-		depthinterval = 0.1;
-	}
-	avgdepth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
-	gtk_box_pack_end(GTK_BOX(box), avgdepth, FALSE, FALSE, 0);
-
 	/* All done, show it and wait for editing */
 	gtk_widget_show_all(dialog);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
@@ -1236,10 +1296,11 @@ static timestamp_t dive_time_widget(struct dive *dive)
 	tm.tm_hour = gtk_spin_button_get_value(GTK_SPIN_BUTTON(h));
 	tm.tm_min = gtk_spin_button_get_value(GTK_SPIN_BUTTON(m));
 
-	dive->dc.maxdepth.mm = mm_from_spinbutton(depth);
-	dive->dc.meandepth.mm = mm_from_spinbutton(avgdepth);
-	dive->dc.duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
-
+	if (editing != EDIT_WHEN) {
+		dive->dc.maxdepth.mm = mm_from_spinbutton(depth);
+		dive->dc.meandepth.mm = mm_from_spinbutton(avgdepth);
+		dive->dc.duration.seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(duration))*60;
+	}
 	gtk_widget_destroy(dialog);
 	dive->when = utc_mktime(&tm);
 
@@ -1251,7 +1312,7 @@ int add_new_dive(struct dive *dive)
 	if (!dive)
 		return 0;
 
-	if (!dive_time_widget(dive))
+	if (!dive_time_widget(dive, EDIT_NEW_DIVE))
 		return 0;
 
 	return edit_dive_info(dive, TRUE);
