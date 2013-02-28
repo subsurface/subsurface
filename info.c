@@ -754,9 +754,9 @@ static void location_entry_change_cb(GtkComboBox *location, gpointer *userdata)
 	update_gps_entry(0, 0);
 }
 
-static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info *info, gboolean multi)
+static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_info *info, gboolean multi)
 {
-	GtkWidget *hbox, *label, *frame, *equipment;
+	GtkWidget *hbox, *label, *frame, *equipment, *ibox, *box;
 #if HAVE_OSM_GPS_MAP
 	GtkWidget *image;
 #endif
@@ -766,11 +766,16 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 	double value;
 
 	snprintf(buffer, sizeof(buffer), "%s", _("Edit multiple dives"));
-
 	if (!multi)
 		divename(buffer, sizeof(buffer), dive);
 	label = gtk_label_new(buffer);
-	gtk_box_pack_start(GTK_BOX(box), label, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(obox), label, FALSE, TRUE, 0);
+
+	/* two column layout (inner hbox ibox) within the outer vbox (obox) we are given */
+	ibox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(obox), ibox, FALSE, FALSE, 0);
+	box = gtk_vbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(ibox), box, FALSE, FALSE, 0);
 
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
 	g_signal_connect(G_OBJECT(info->location), "changed", G_CALLBACK(location_entry_change_cb), NULL);
@@ -830,7 +835,7 @@ static void dive_info_widget(GtkWidget *box, struct dive *dive, struct dive_info
 			gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
 	}
 	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(ibox), hbox, FALSE, TRUE, 0);
 
 	/* create a secondary Equipment widget */
 	frame = gtk_frame_new(_("Equipment"));
