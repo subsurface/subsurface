@@ -304,13 +304,14 @@ Shearwater Desktop).
 
 .On MacOS:
 
-In general this should be similar straight forward as described in the Windows
-section.
+Click on the Bluetooth symbol in the menu bar and select 'Set up
+Bluetooth Device...'. Make sure that your dive computer is in upload
+mode; it should then show up in the list of devices. Select it and go
+through the pairing process. This step should only be needed once for
+initial setup.
 
-Select your dive computer in the Bluetooth system settings. Choosing
-"Connections" next to the "-" will bring up a window showing the device name at
-the bottom. Watch out for something like "/dev/tty.Predator-COM1" and copy/paste
-this to the download dialog in Subsurface.
+Once the pairing is completed the correct device will be shown in the
+'Device or Mount Point' drop down in the Subsurface Download dialog.
 
 .On Linux
 Please make sure you have bluetooth enabled on your computer running Subsurface.

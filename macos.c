@@ -87,7 +87,8 @@ int subsurface_fill_device_list(GtkListStore *store)
 
 	dev = g_dir_open("/dev", 0, NULL);
 	while (dev && (name = g_dir_read_name(dev)) != NULL) {
-		if (strstr(name, "usbserial")) {
+		if (strstr(name, "usbserial") ||
+		    (strstr(name, "SerialPort") && strstr(name, "cu"))) {
 			int len = strlen(name) + 6;
 			char *devicename = malloc(len);
 			snprintf(devicename, len, "/dev/%s", name);
