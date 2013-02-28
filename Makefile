@@ -133,7 +133,7 @@ else ifeq ($(UNAME), darwin)
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
 	INFOPLIST = $(MACOSXFILES)/Info.plist
 	INFOPLISTINPUT = $(INFOPLIST).in
-	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation
+	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation -framework CoreServices
 	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
 	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
 	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
