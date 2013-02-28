@@ -4,7 +4,7 @@
 #include "dive.h"
 #include "display-gtk.h"
 #include <CoreFoundation/CoreFoundation.h>
-#include <LaunchServices/LSOpen.h>
+#include <CoreServices/CoreServices.h>
 #include <mach-o/dyld.h>
 #include "gtkosxapplication.h"
 
