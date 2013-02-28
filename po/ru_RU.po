@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-25 17:32-0800\n"
-"PO-Revision-Date: 2013-02-17 11:37+0300\n"
+"PO-Revision-Date: 2013-02-28 14:31+0300\n"
 "Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -17,6 +17,8 @@ msgid ""
 "\n"
 "No Events\n"
 msgstr ""
+"\n"
+"Нет событий\n"
 
 #: statistics.c:177
 msgctxt "Stats"
@@ -438,7 +440,7 @@ msgstr "Не найдена смесь %d/%d"
 #: parse-xml.c:1634
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
-msgstr ""
+msgstr "Невозможно открыть файл преобразования (%s)/%s"
 
 #: uemis-downloader.c:932
 msgid "Cancelled, exiting cleanly..."
@@ -1491,7 +1493,7 @@ msgstr "Оставаться на %.*f %s в течение %d:%02d мин - р�
 #: parse-xml.c:397
 #, c-format
 msgid "Strange percentage reading %s\n"
-msgstr ""
+msgstr "Странное значение процентов %s\n"
 
 #: divelist.c:1421 gtk-gui.c:697 info.c:806 info.c:1259
 msgid "Suit"
@@ -1663,7 +1665,7 @@ msgstr "Идентификатор пользователя"
 
 #: gtk-gui.c:1400
 msgid "User Manual"
-msgstr ""
+msgstr "Руководство пользователя"
 
 #: gtk-gui.c:1377
 msgid "View"
