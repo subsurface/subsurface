@@ -868,6 +868,7 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 		info->notes = NULL;
 	} else {
 		info->notes = text_view(box, _("Notes"), READ_WRITE);
+		gtk_widget_set_size_request(GTK_WIDGET(info->notes), -1, 128);
 		if (dive->notes && *dive->notes)
 			gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
 	}
