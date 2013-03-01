@@ -60,8 +60,18 @@ static void save_double_conf(char *name, double _val, double _def)
 	subsurface_set_conf(name, string);
 }
 
+static void save_int_conf(char *name, int value, int def)
+{
+	if (value == def) {
+		subsurface_unset_conf(name);
+		return;
+	}
+	subsurface_set_conf_int(name, value);
+}
+
 #define SAVE_DOUBLE(name, field) save_double_conf(name, prefs.field, default_prefs.field)
 #define SAVE_PERCENT(name, field) save_double_conf(name, prefs.field*100, default_prefs.field*100)
+#define SAVE_INT(name, field) save_int_conf(name, prefs.field, default_prefs.field)
 
 void save_preferences(void)
 {
@@ -102,6 +112,8 @@ void save_preferences(void)
 
 	SAVE_STRING("default_filename", default_filename);
 
+	SAVE_INT("map_provider", map_provider);
+
 	/* Flush the changes out to the system */
 	subsurface_flush_conf();
 }
@@ -122,6 +134,7 @@ static gboolean get_bool(char *name, gboolean def)
 void load_preferences(void)
 {
 	const char *conf_value;
+	int int_value;
 
 	GET_UNIT("feet", length, METERS, FEET);
 	GET_UNIT("psi", pressure, BAR, PSI);
@@ -189,4 +202,8 @@ void load_preferences(void)
 	conf_value = subsurface_get_conf("default_filename");
 	if (conf_value)
 		prefs.default_filename = conf_value;
+
+	int_value = subsurface_get_conf_int("map_provider");
+	if(int_value >= 0)
+		prefs.map_provider = int_value;
 }
