@@ -1046,11 +1046,15 @@ static void update_time_depth(struct dive *dive, struct dive *edited)
 int edit_multi_dive_info(struct dive *single_dive)
 {
 	int success;
-	GtkWidget *dialog, *vbox;
+	GtkWidget *dialog, *vbox, *scrolled_window, *viewport;
+	GtkRequisition size;
 	struct dive_info info;
 	struct dive *master;
 	gboolean multi;
 
+	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
+		GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	dialog = gtk_dialog_new_with_buttons(_("Dive Info"),
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1059,6 +1063,9 @@ int edit_multi_dive_info(struct dive *single_dive)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), scrolled_window, TRUE, TRUE, 0);
+	vbox = g_object_new(GTK_TYPE_VBOX, NULL);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled_window), vbox);
 	master = single_dive;
 	if (!master)
 		master = current_dive;
@@ -1084,9 +1091,17 @@ int edit_multi_dive_info(struct dive *single_dive)
 	memcpy(&edit_dive, master, sizeof(struct dive));
 
 	dive_info_widget(vbox, &edit_dive, &info, multi);
-	show_dive_equipment(&edit_dive, W_IDX_SECONDARY);
 	save_equipment_data(&edit_dive);
 	gtk_widget_show_all(dialog);
+	viewport = gtk_widget_get_ancestor(vbox, GTK_TYPE_VIEWPORT);
+#if GTK_CHECK_VERSION(3,0,0)
+	gtk_widget_get_preferred_size(viewport, NULL, &size);
+#else
+	gtk_widget_size_request(viewport, &size);
+#endif
+	gtk_widget_set_size_request(scrolled_window, size.width, size.height);
+	/* add the equipment post the "blank" layout estimate */
+	show_dive_equipment(&edit_dive, W_IDX_SECONDARY);
 	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
 	if (success) {
 		mark_divelist_changed(TRUE);
