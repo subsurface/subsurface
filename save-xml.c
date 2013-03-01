@@ -366,7 +366,7 @@ static void save_sample(FILE *f, struct sample *sample, struct sample *old)
 	}
 
 	if (sample->po2 != old->po2) {
-		fprintf(f, " po2='%u.%2u bar'", FRACTION(sample->po2, 1000));
+		show_milli(f, " po2='", sample->po2, " bar", "'");
 		old->po2 = sample->po2;
 	}
 	fprintf(f, " />\n");
