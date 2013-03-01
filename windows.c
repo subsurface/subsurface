@@ -9,20 +9,6 @@ const char system_divelist_default_font[] = "Sans 8";
 
 static HKEY hkey;
 
-/* Return "boolean" 0/1, or -1 if nonexistent */
-static int get_from_registry(HKEY hkey, const char *key)
-{
-	DWORD value;
-	DWORD len = 4;
-	LONG success;
-
-	success = RegQueryValueEx(hkey, (LPCTSTR)TEXT(key), NULL, NULL,
-	                         (LPBYTE) &value, (LPDWORD)&len);
-	if (success != ERROR_SUCCESS)
-		return -1;
-	return value != 0;
-}
-
 void subsurface_open_conf(void)
 {
 	LONG success;
@@ -71,22 +57,14 @@ void subsurface_set_conf(char *name, const char *value)
 	free(wname);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
-{
-	wchar_t *wname;
-
-	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
-	if (!wname)
-		return;
-
-	/* we simply store the value as DWORD */
-	RegSetValueExW(hkey, (LPCWSTR)wname, 0, REG_DWORD, (const BYTE *)&value, 4);
-	free(wname);
-}
-
 void subsurface_set_conf_int(char *name, int value)
 {
-	/* call to set registry key to value here? */
+	RegSetValueEx(hkey, (LPCTSTR)name, 0, REG_DWORD, (const BYTE *)&value, 4);
+}
+
+void subsurface_set_conf_bool(char *name, int value)
+{
+	subsurface_set_conf_int(name, value);
 }
 
 const void *subsurface_get_conf(char *name)
@@ -127,14 +105,20 @@ const void *subsurface_get_conf(char *name)
 	return utf8_string;
 }
 
-int subsurface_get_conf_bool(char *name)
-{
-	return get_from_registry(hkey, name);
-}
-
 int subsurface_get_conf_int(char *name)
 {
-	return -1; /* windows registry call here? */
+	DWORD value = -1, len = 4;
+	RegQueryValueEx(hkey, (LPCTSTR)TEXT(name), NULL, NULL,
+	                         (LPBYTE)&value, (LPDWORD)&len);
+	return value;
+}
+
+int subsurface_get_conf_bool(char *name)
+{
+	int ret = subsurface_get_conf_int(name);
+	if (ret == -1)
+		return 0;
+	return ret != 0;
 }
 
 void subsurface_flush_conf(void)
