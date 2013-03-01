@@ -22,12 +22,7 @@ void subsurface_open_conf(void)
 
 void subsurface_unset_conf(char *name)
 {
-	wchar_t *wname;
-
-	wname = (wchar_t *)g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
-	if (!wname)
-		return;
-	RegDeleteKey(hkey, (LPCTSTR)wname);
+	RegDeleteKey(hkey, (LPCTSTR)name);
 }
 
 void subsurface_set_conf(char *name, const char *value)
@@ -108,8 +103,10 @@ const void *subsurface_get_conf(char *name)
 int subsurface_get_conf_int(char *name)
 {
 	DWORD value = -1, len = 4;
-	RegQueryValueEx(hkey, (LPCTSTR)TEXT(name), NULL, NULL,
+	LONG ret = RegQueryValueEx(hkey, (LPCTSTR)TEXT(name), NULL, NULL,
 	                         (LPBYTE)&value, (LPDWORD)&len);
+	if (ret != ERROR_SUCCESS)
+		return -1;
 	return value;
 }
 
@@ -117,7 +114,7 @@ int subsurface_get_conf_bool(char *name)
 {
 	int ret = subsurface_get_conf_int(name);
 	if (ret == -1)
-		return 0;
+		return ret;
 	return ret != 0;
 }
 
