@@ -8,7 +8,7 @@
 #include "display-gtk.h"
 
 struct dive_table gps_location_table;
-static void merge_locations_into_dives(void);
+static gboolean merge_locations_into_dives(void);
 
 enum {
 	DD_STATUS_OK,
@@ -152,9 +152,10 @@ static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer da
 		/* apply download */
 		parse_xml_buffer(_("Webservice"), state->xmldata, state->xmldata_len, &gps_location_table, NULL);
 		/* now merge the data in the gps_location table into the dive_table */
-		merge_locations_into_dives();
-		mark_divelist_changed(TRUE);
-		dive_list_update_dives();
+		if (merge_locations_into_dives()) {
+			mark_divelist_changed(TRUE);
+			dive_list_update_dives();
+		}
 		/* store last entered uid in config */
 		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(state->uid)));
 	default:
@@ -167,16 +168,19 @@ static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer da
 
 static gboolean is_automatic_fix(struct dive *gpsfix)
 {
-	if (gpsfix && gpsfix->location && !strcmp(gpsfix->location, "automatic fix"))
+	if (gpsfix && gpsfix->location &&
+	    !strcmp(gpsfix->location, "automatic fix") &&
+	    !strcmp(gpsfix->location, "Auto-created dive"))
 		return TRUE;
 	return FALSE;
 }
 
 #define SAME_GROUP 6 * 3600   // six hours
 
-static void merge_locations_into_dives(void)
+/* returns TRUE if dive_table was changed */
+static gboolean merge_locations_into_dives(void)
 {
-	int i, nr = 0;
+	int i, nr = 0, changed = 0;
 	struct dive *gpsfix, *last_named_fix = NULL, *dive;
 
 	sort_table(&gps_location_table);
@@ -184,8 +188,10 @@ static void merge_locations_into_dives(void)
 	for_each_gps_location(i, gpsfix) {
 		if (is_automatic_fix(gpsfix)) {
 			dive = find_dive_including(gpsfix->when);
-			if (dive && !dive_has_gps_location(dive))
+			if (dive && !dive_has_gps_location(dive)) {
+				changed++;
 				copy_gps_location(gpsfix, dive);
+			}
 		} else {
 			if (last_named_fix && dive_within_time_range(last_named_fix, gpsfix->when, SAME_GROUP)) {
 				nr++;
@@ -195,10 +201,14 @@ static void merge_locations_into_dives(void)
 			}
 			dive = find_dive_n_near(gpsfix->when, nr, SAME_GROUP);
 			if (dive) {
-				if (!dive_has_gps_location(dive))
+				if (!dive_has_gps_location(dive)) {
 					copy_gps_location(gpsfix, dive);
-				if (!dive->location)
+					changed++;
+				}
+				if (!dive->location) {
 					dive->location = strdup(gpsfix->location);
+					changed++;
+				}
 			} else {
 				struct tm tm;
 				utc_mkdate(gpsfix->when, &tm);
@@ -209,6 +219,7 @@ static void merge_locations_into_dives(void)
 			}
 		}
 	}
+	return changed > 0;
 }
 
 void webservice_download_dialog(void)
