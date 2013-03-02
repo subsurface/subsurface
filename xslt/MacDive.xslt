@@ -5,27 +5,21 @@
   <xsl:template match="/">
     <divelog program='subsurface' version='2'>
       <settings>
-        <divecomputer>
-          <xsl:apply-templates select="/dives/dive/computer"/>
-          <xsl:apply-templates select="/dives/dive/serial"/>
-        </divecomputer>
+        <xsl:for-each select="/dives/dive">
+          <divecomputerid deviceid="ffffffff">
+            <xsl:attribute name="model">
+              <xsl:value-of select="computer"/>
+            </xsl:attribute>
+            <xsl:attribute name="serial">
+              <xsl:value-of select="serial"/>
+            </xsl:attribute>
+          </divecomputerid>
+        </xsl:for-each>
       </settings>
       <dives>
         <xsl:apply-templates select="/dives/dive"/>
       </dives>
     </divelog>
-  </xsl:template>
-
-  <xsl:template match="computer">
-    <xsl:attribute name="model">
-      <xsl:value-of select="."/>
-    </xsl:attribute>
-  </xsl:template>
-
-  <xsl:template match="serial">
-    <xsl:attribute name="serial">
-      <xsl:value-of select="."/>
-    </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="dive">
@@ -152,7 +146,7 @@
         <xsl:value-of select="notes"/>
       </notes>
 
-      <divecomputer>
+      <divecomputer deviceid="ffffffff">
         <xsl:attribute name="model">
           <xsl:value-of select="computer"/>
         </xsl:attribute>

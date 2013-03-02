@@ -23,12 +23,12 @@
   <xsl:template match="generator|u:generator">
     <xsl:if test="manufacturer/name|u:manufacturer/u:name != ''">
       <xsl:attribute name="model">
-        <xsl:value-of select="manufacturer/name|/u:manufacturer/u:name"/>
+        <xsl:value-of select="name|u:name"/>
       </xsl:attribute>
     </xsl:if>
     <xsl:if test="name|u:name != ''">
       <xsl:attribute name="firmware">
-        <xsl:value-of select="name|u:name"/>
+        <xsl:value-of select="manufacturer/name|/u:manufacturer/u:name"/>
       </xsl:attribute>
     </xsl:if>
     <xsl:if test="version|u:version != ''">
@@ -91,6 +91,12 @@
           </xsl:attribute>
         </temperature>
       </xsl:for-each>
+
+      <divecomputer deviceid="ffffffff">
+        <xsl:attribute name="model">
+          <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name"/>
+        </xsl:attribute>
+      </divecomputer>
 
       <xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions"/>
       <depth>

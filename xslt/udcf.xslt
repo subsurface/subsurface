@@ -5,10 +5,28 @@
 
   <xsl:template match="/">
     <divelog program="subsurface" version="2">
+      <settings>
+        <divecomputerid deviceid="ffffffff">
+          <xsl:apply-templates select="/PROFILE/DEVICE|/profile/device"/>
+        </divecomputerid>
+      </settings>
       <dives>
 	      <xsl:apply-templates select="/PROFILE/REPGROUP/DIVE|/profile/repgroup/dive"/>
       </dives>
     </divelog>
+  </xsl:template>
+
+  <xsl:template match="DEVICE|device">
+    <xsl:if test="MODEL|model != ''">
+      <xsl:attribute name="model">
+        <xsl:value-of select="MODEL|model"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="version|VERSION != ''">
+      <xsl:attribute name="serial">
+        <xsl:value-of select="VERSION|version"/>
+      </xsl:attribute>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="DIVE|dive">
@@ -38,6 +56,12 @@
           </xsl:attribute>
         </temperature>
       </xsl:if>
+
+      <divecomputer deviceid="ffffffff">
+        <xsl:attribute name="model">
+          <xsl:value-of select="/PROFILE/DEVICE/MODEL|/profile/device/model"/>
+        </xsl:attribute>
+      </divecomputer>
 
       <xsl:for-each select="GASES/MIX|gases/mix">
         <cylinder>
