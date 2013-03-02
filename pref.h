@@ -33,6 +33,7 @@ struct preferences {
 	gboolean calc_ceiling_3m_incr;
 	double gflow;
 	double gfhigh;
+	int map_provider;
 	const char *divelist_font;
 	const char *default_filename;
 };

@@ -29,6 +29,10 @@
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include "subsurface-icon.h"
 
+#if HAVE_OSM_GPS_MAP
+#include <osm-gps-map-source.h>
+#endif
+
 GtkWidget *main_window;
 GtkWidget *main_vbox;
 GtkWidget *error_info_bar;
@@ -643,10 +647,27 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_widget_set_sensitive(parent, TRUE);
 }
 
+#if HAVE_OSM_GPS_MAP
+static GtkWidget * map_provider_widget()
+{
+	OsmGpsMapSource_t i;
+	GtkWidget *combobox = gtk_combo_box_text_new();
+
+	/* several of the providers seem to be redundant or non-functional;
+	 * we may have to skip more than just the last three eventually */
+	for (i = OSM_GPS_MAP_SOURCE_OPENSTREETMAP; i < OSM_GPS_MAP_SOURCE_LAST; i++)
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combobox), osm_gps_map_source_get_friendly_name(i));
+	/* we don't offer choice 0 (none), so the index here is off by one */
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combobox), prefs.map_provider - 1);
+	return combobox;
+}
+#endif
+
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
-	GtkWidget *dialog, *notebook, *font, *frame, *box, *vbox, *button, *xmlfile_button;
+	GtkWidget *dialog, *notebook, *font, *frame, *box, *hbox, *vbox, *button;
+	GtkWidget *xmlfile_button, *map_provider;
 	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_mod, *entry_gflow, *entry_gfhigh;
 	const char *current_default, *new_default;
 	char threshold_text[10], mod_text[10], utf8_buf[128];
@@ -749,14 +770,19 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 	frame = gtk_frame_new(_("Default XML Data File"));
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
-	box = gtk_hbox_new(FALSE, 6);
-	gtk_container_add(GTK_CONTAINER(frame), box);
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_container_add(GTK_CONTAINER(frame), hbox);
 	current_default = prefs.default_filename;
 	xmlfile_button = gtk_button_new_with_label(current_default);
 	g_signal_connect(G_OBJECT(xmlfile_button), "clicked",
 			 G_CALLBACK(pick_default_file), xmlfile_button);
-	gtk_box_pack_start(GTK_BOX(box), xmlfile_button, FALSE, FALSE, 6);
-
+	gtk_box_pack_start(GTK_BOX(hbox), xmlfile_button, FALSE, FALSE, 6);
+#if HAVE_OSM_GPS_MAP
+	frame = gtk_frame_new(_("Map provider"));
+	map_provider = map_provider_widget();
+	gtk_container_add(GTK_CONTAINER(frame), map_provider);
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 3);
+#endif
 	/* vbox that holds the second notebook page */
 	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox,
@@ -944,11 +970,19 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 				existing_filename = strdup(new_default);
 			}
 		}
-
 		if (strcmp(current_default, new_default)) {
 			prefs.default_filename = new_default;
 		}
-
+#if HAVE_OSM_GPS_MAP
+		/* get the map provider selected */
+		OsmGpsMapSource_t i;
+		char *provider = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(map_provider));
+		for (i = OSM_GPS_MAP_SOURCE_OPENSTREETMAP; i <= OSM_GPS_MAP_SOURCE_YAHOO_STREET; i++)
+			if (!strcmp(provider,osm_gps_map_source_get_friendly_name(i))) {
+				prefs.map_provider = i;
+				break;
+			}
+#endif
 		save_preferences();
 	} else if (result == GTK_RESPONSE_CANCEL) {
 		prefs = oldprefs;

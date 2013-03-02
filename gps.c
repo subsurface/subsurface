@@ -17,12 +17,6 @@
 static GtkWidget *window = NULL;
 static OsmGpsMap *map = NULL;
 
-/* Several map providers are available, such as OSM_GPS_MAP_SOURCE_OPENSTREETMAP
-   and OSM_GPS_MAP_SOURCE_GOOGLE_STREET. We should make more of
-   them available from e.g. a pull-down menu */
-static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_HYBRID;
-
-
 static void on_close(GtkWidget *widget, gpointer user_data)
 {
 	GtkWidget **window = user_data;
@@ -168,7 +162,7 @@ OsmGpsMap *init_map(void)
 	cachedir = g_strdup(OSM_GPS_MAP_CACHE_AUTO);
 
 	map = g_object_new(OSM_TYPE_GPS_MAP,
-				"map-source", opt_map_provider,
+				"map-source", prefs.map_provider,
 				"tile-cache", cachedir,
 				"tile-cache-base", cachebasedir,
 				"proxy-uri", g_getenv("http_proxy"),
