@@ -140,6 +140,14 @@ static void download_dialog_release_xml(struct download_dialog_state *state)
 		free((void *)state->xmldata);
 }
 
+static void clear_table(struct dive_table *table)
+{
+	int i;
+	for (i = 0; i < table->nr; i++)
+		free(table->dives[i]);
+	table->nr = 0;
+}
+
 static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer data)
 {
 	struct download_dialog_state *state = (struct download_dialog_state *)data;
@@ -150,6 +158,7 @@ static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer da
 		break;
 	case GTK_RESPONSE_ACCEPT:
 		/* apply download */
+		clear_table(&gps_location_table);
 		parse_xml_buffer(_("Webservice"), state->xmldata, state->xmldata_len, &gps_location_table, NULL);
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
