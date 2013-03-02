@@ -9,20 +9,34 @@
 
   <xsl:template match="/">
     <divelog program="subsurface" version="2">
+      <settings>
+        <divecomputerid deviceid="ffffffff">
+          <xsl:apply-templates select="/uddf/generator|/u:uddf/u:generator"/>
+        </divecomputerid>
+      </settings>
       <dives>
         <xsl:apply-templates select="/uddf/profiledata/repetitiongroup/dive|/u:uddf/u:profiledata/u:repetitiongroup/u:dive"/>
       </dives>
     </divelog>
   </xsl:template>
 
-  <!-- Print warning if we don't handle some element -->
-  <xsl:template match="*">
-  <xsl:message terminate="no">
-   WARNING: Unmatched element: <xsl:value-of select="name()"/>
-  </xsl:message>
-
-  <xsl:apply-templates/>
- </xsl:template>
+  <xsl:template match="generator|u:generator">
+    <xsl:if test="manufacturer/name|u:manufacturer/u:name != ''">
+      <xsl:attribute name="model">
+        <xsl:value-of select="manufacturer/name|/u:manufacturer/u:name"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="name|u:name != ''">
+      <xsl:attribute name="firmware">
+        <xsl:value-of select="name|u:name"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="version|u:version != ''">
+      <xsl:attribute name="serial">
+        <xsl:value-of select="version|u:version"/>
+      </xsl:attribute>
+    </xsl:if>
+  </xsl:template>
 
   <xsl:template match="gasdefinitions|u:gasdefinitions">
     <xsl:for-each select="u:mix|mix">
@@ -150,16 +164,25 @@
             </xsl:attribute>
           </xsl:if>
 
-          <!-- otu -->
-          <xsl:if test="cns &gt; 0">
-            <xsl:attribute name="cns">
-              <xsl:value-of select="concat(cns, ' C')"/>
+          <xsl:if test="otu|u:otu &gt; 0">
+            <xsl:attribute name="otu">
+              <xsl:value-of select="otu|u:otu"/>
             </xsl:attribute>
           </xsl:if>
 
-          <xsl:if test="u:cns &gt; 0">
+          <xsl:if test="cns|u:cns &gt; 0">
             <xsl:attribute name="cns">
-              <xsl:value-of select="concat(u:cns, ' C')"/>
+              <xsl:value-of select="concat(cns|u:cns, ' C')"/>
+            </xsl:attribute>
+          </xsl:if>
+
+          <xsl:if test="setpo2|u:setpo2 != ''">
+            <xsl:attribute name="po2">
+              <xsl:call-template name="convertPascal">
+                <xsl:with-param name="value">
+                  <xsl:value-of select="setpo2|u:setpo2"/>
+                </xsl:with-param>
+              </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
         </sample>

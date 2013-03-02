@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <!-- Convert ISO 8601 time format to "standard" date and time format
+       -->
   <xsl:template name="datetime">
     <xsl:param name="value"/>
 
@@ -56,6 +58,44 @@
         </xsl:choose>
       </xsl:attribute>
     </xsl:if>
+  </xsl:template>
+
+  <!-- Convert units in Pascal given in scientific notation to normal
+       decimal notation -->
+  <xsl:template name="convertPascal">
+    <xsl:param name="value"/>
+
+    <xsl:variable name="number">
+      <xsl:value-of select="translate($value, 'e', 'E')"/>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="contains($number, 'E')">
+        <xsl:variable name="pressure">
+          <xsl:choose>
+            <xsl:when test="$value != ''">
+              <xsl:variable name="Exp" select="substring-after($number, 'E')"/>
+              <xsl:variable name="Man" select="substring-before($number, 'E')"/>
+              <xsl:variable name="Fac" select="substring('100000000000000000000', 1, substring($Exp,2) + 1)"/>
+              <xsl:choose>
+                <xsl:when test="$Exp != ''">
+                  <xsl:value-of select="(number($Man) * number($Fac))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$number"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>0</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:value-of select="$pressure div 100000"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$value"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
