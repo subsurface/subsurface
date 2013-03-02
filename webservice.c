@@ -169,8 +169,8 @@ static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer da
 static gboolean is_automatic_fix(struct dive *gpsfix)
 {
 	if (gpsfix && gpsfix->location &&
-	    !strcmp(gpsfix->location, "automatic fix") &&
-	    !strcmp(gpsfix->location, "Auto-created dive"))
+	    (!strcmp(gpsfix->location, "automatic fix") ||
+	     !strcmp(gpsfix->location, "Auto-created dive")))
 		return TRUE;
 	return FALSE;
 }
@@ -189,6 +189,14 @@ static gboolean merge_locations_into_dives(void)
 		if (is_automatic_fix(gpsfix)) {
 			dive = find_dive_including(gpsfix->when);
 			if (dive && !dive_has_gps_location(dive)) {
+#if DEBUG_WEBSERVICE
+				struct tm tm;
+				utc_mkdate(gpsfix->when, &tm);
+				printf("found dive named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
+					gpsfix->location,
+					tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+					tm.tm_hour, tm.tm_min, tm.tm_sec);
+#endif
 				changed++;
 				copy_gps_location(gpsfix, dive);
 			}
@@ -212,10 +220,12 @@ static gboolean merge_locations_into_dives(void)
 			} else {
 				struct tm tm;
 				utc_mkdate(gpsfix->when, &tm);
+#if DEBUG_WEBSERVICE
 				printf("didn't find dive matching gps fix named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
 					gpsfix->location,
 					tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 					tm.tm_hour, tm.tm_min, tm.tm_sec);
+#endif
 			}
 		}
 	}
