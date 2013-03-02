@@ -22,7 +22,7 @@ void subsurface_open_conf(void)
 
 void subsurface_unset_conf(char *name)
 {
-	RegDeleteKey(hkey, (LPCTSTR)name);
+	RegDeleteValue(hkey, (LPCTSTR)name);
 }
 
 void subsurface_set_conf(char *name, const char *value)
