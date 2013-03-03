@@ -1336,7 +1336,7 @@ static void size_data_func(GtkTreeViewColumn *col,
 {
 	int ml, mbar;
 	double size, pressure;
-	char buffer[10];
+	char buffer[64];
 
 	gtk_tree_model_get(model, iter, CYL_SIZE, &ml, CYL_WORKP, &mbar, -1);
 	convert_volume_pressure(ml, mbar, &size, &pressure);
