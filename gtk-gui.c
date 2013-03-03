@@ -238,7 +238,7 @@ static gboolean ask_save_changes()
 	gint outcode = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (outcode == GTK_RESPONSE_ACCEPT) {
 		file_save(NULL,NULL);
-	} else if (outcode == GTK_RESPONSE_CANCEL) {
+	} else if (outcode == GTK_RESPONSE_CANCEL || outcode == GTK_RESPONSE_DELETE_EVENT) {
 		quit = FALSE;
 	}
 	gtk_widget_destroy(dialog);
