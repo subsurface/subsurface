@@ -327,9 +327,12 @@ void save_pane_position()
 {
 	gint vpane_position = gtk_paned_get_position(GTK_PANED(vpane));
 	gint hpane_position = gtk_paned_get_position(GTK_PANED(hpane));
-	if (vpane_position && vpane_position != 65535)
+	int window_width, window_height;
+	gtk_window_get_size(GTK_WINDOW (main_window), &window_width, &window_height);
+
+	if (vpane_position && vpane_position < window_height - 12)
 		subsurface_set_conf_int("vpane_position", vpane_position);
-	if (hpane_position && hpane_position != 65535)
+	if (hpane_position && hpane_position < window_width - 6 )
 		subsurface_set_conf_int("hpane_position", hpane_position);
 }
 
@@ -1198,7 +1201,7 @@ static void view_three(GtkWidget *w, gpointer data)
 
 	gtk_widget_get_allocation(hpane, &alloc);
 
-	if (hpane_position && hpane_position != 65535)
+	if (hpane_position)
 		gtk_paned_set_position(GTK_PANED(hpane), hpane_position);
 	else
 	        gtk_paned_set_position(GTK_PANED(hpane), alloc.width/2);
@@ -1206,7 +1209,7 @@ static void view_three(GtkWidget *w, gpointer data)
 	gtk_widget_get_allocation(vpane, &alloc);
 	gtk_widget_size_request(notebook, &requisition);
 	/* pick the requested size for the notebook plus 6 pixels for frame */
-	if (vpane_position && vpane_position != 65535)
+	if (vpane_position)
 		gtk_paned_set_position(GTK_PANED(vpane), vpane_position);
 	else
 	        gtk_paned_set_position(GTK_PANED(vpane), requisition.height + 6);
