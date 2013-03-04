@@ -810,9 +810,9 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	}
 	/* two column layout (inner hbox ibox) within the outer vbox (obox) we are given */
 	ibox = gtk_hbox_new(FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(obox), ibox, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(obox), ibox, TRUE, TRUE, 0);
 	box = gtk_vbox_new(FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(ibox), box, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(ibox), box, TRUE, TRUE, 0);
 
 	info->location = text_entry(box, _("Location"), location_list, dive->location);
 	g_signal_connect(G_OBJECT(info->location), "changed", G_CALLBACK(location_entry_change_cb), NULL);
@@ -873,13 +873,13 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 			gtk_text_buffer_set_text(gtk_text_view_get_buffer(info->notes), dive->notes, -1);
 	}
 	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(ibox), hbox, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(ibox), hbox, TRUE, TRUE, 0);
 
 	/* create a secondary Equipment widget */
 	frame = gtk_frame_new(_("Equipment"));
 	equipment = equipment_widget(W_IDX_SECONDARY);
 	gtk_container_add(GTK_CONTAINER(frame), equipment);
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, TRUE, 0);
 }
 
 /* we use these to find out if we edited the cylinder or weightsystem entries */
