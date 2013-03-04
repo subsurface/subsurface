@@ -1637,7 +1637,6 @@ static void save_as_cb(GtkWidget *menuitem, struct dive *dive)
 	gtk_widget_destroy(dialog);
 
 	if (filename){
-		set_filename(filename, TRUE);
 		save_dives_logic(filename, TRUE);
 		g_free(filename);
 	}
