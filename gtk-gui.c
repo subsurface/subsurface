@@ -43,6 +43,9 @@ GtkWidget *notebook;
 int        error_count;
 const char *existing_filename;
 
+typedef enum { PANE_INFO, PANE_PROFILE, PANE_LIST, PANE_THREE } pane_conf_t;
+static pane_conf_t pane_conf;
+
 static struct device_info *holdnicknames = NULL;
 static GtkWidget *dive_profile_widget(void);
 static void import_files(GtkWidget *, gpointer);
@@ -1173,22 +1176,28 @@ static void show_user_manual(GtkWidget *w, gpointer data)
 
 static void view_list(GtkWidget *w, gpointer data)
 {
-        save_pane_position();
+	if (pane_conf == PANE_THREE)
+		save_pane_position();
         gtk_paned_set_position(GTK_PANED(vpane), 0);
+	pane_conf = PANE_LIST;
 }
 
 static void view_profile(GtkWidget *w, gpointer data)
 {
-        save_pane_position();
+	if (pane_conf == PANE_THREE)
+		save_pane_position();
 	gtk_paned_set_position(GTK_PANED(hpane), 0);
 	gtk_paned_set_position(GTK_PANED(vpane), 65535);
+	pane_conf = PANE_PROFILE;
 }
 
 static void view_info(GtkWidget *w, gpointer data)
 {
-        save_pane_position();
+	if (pane_conf == PANE_THREE)
+		save_pane_position();
 	gtk_paned_set_position(GTK_PANED(vpane), 65535);
 	gtk_paned_set_position(GTK_PANED(hpane), 65535);
+	pane_conf = PANE_INFO;
 }
 
 static void view_three(GtkWidget *w, gpointer data)
@@ -1214,7 +1223,7 @@ static void view_three(GtkWidget *w, gpointer data)
 	else
 	        gtk_paned_set_position(GTK_PANED(vpane), requisition.height + 6);
 
-
+	pane_conf = PANE_THREE;
 }
 
 static void toggle_zoom(GtkWidget *w, gpointer data)
