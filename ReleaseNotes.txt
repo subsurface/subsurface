@@ -1,4 +1,4 @@
-			Subsurface 3.0.1
+			Subsurface 3.0.2
 			================
 
 The Subsurface developer team is proud to announce the release of the
@@ -38,7 +38,48 @@ available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
+
+New in version 3.0.2 (compared to Subsurface 3.0.1):
+----------------------------------------------------
+
+This update was mainly triggered by a bug in the handling of pO2
+values read from CCR / rebreather dive computers. This bug can lead to
+incorrect data being stored in the Subsurface XML file. Installing
+Subsurface 3.0.2 and re-downloading the dives will correct the
+incorrect data. In order to re-download the dives connect your dive
+computer (this should only affect people with certain tec dive
+computers like the Shearwater Petrel or Predator that store pO2 values
+read from a pO2 sensor in their dive log), open the download dialog,
+check the box "Force download of all dives" and download your
+dives. After you save your data file the correct pO2 data should be
+stored in the samples.
+
+If you are using one of those dive computers, have saved data files
+with Subsurface 3.0 or 3.0.1 and have since deleted those dives from
+your dive computers, please contact the developers as we also have an
+experimental script that should be able to fix incorrect XML files -
+but re-downloading the data is the much more reliable way to address
+this issue.
+
+In addition to this bug fix, 3.0.2 brings a number of other improvements:
+ - A Portuguese localization of Subsurface was added.
+ - Subsurface now remembers its window size and pane layout the next time
+   it is started.
+ - Several importers for data for third party dive software were improved.
+ - Dives from the Heinrichs & Weikamp DR5 and from kenozooid can now be
+   imported into Subsurface.
+ - A crash with localized versions of Subsurface on Mac was resolved.
+ - The map provider for the GPS maps is now configurable.
+ - The layout of some dialog boxes was changed to improve usability on
+   small screens.
+ - It is now easier to edit date and time of existing dives (and you can
+   now edit duration, maximum and average depth for dives that were
+   manually entered).
+ - Several small bugs were addressed.
+
+
 New in version 3.0.1 (compared to Subsurface 3.0):
+--------------------------------------------------
 
 - Several bug fixes for importing log files from other divelog software;
   especially imports from DivingLog should work much better now, but
@@ -49,7 +90,9 @@ New in version 3.0.1 (compared to Subsurface 3.0):
 - Improved the user manual
 - random other bug fixes
 
+
 New in version 3.0 (compared to Subsurface 2.1):
+------------------------------------------------
 
 - Many new divecomputers supported, bugfixes for existing divecomputers
   - Cressi Leonardo, Seemann XP5, Mares Matrix, Mares Puck Pro, Mares

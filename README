@@ -51,12 +51,12 @@ You can also browse the sources via gitweb at git.hohndel.org
 If you want the latest release (instead of the bleeding edge
 development version) you can either get this via
 
-git checkout v3.0.1  (or whatever the last release is)
+git checkout v3.0.2  (or whatever the last release is)
 
 if you have already cloned the git repository as shown above or you
 can get a tar ball from
 
-http://subsurface.hohndel.org/downloads/Subsurface-3.0.1.tgz
+http://subsurface.hohndel.org/downloads/Subsurface-3.0.2.tgz
 
 
 Building subsurface under Linux

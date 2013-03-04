@@ -1,4 +1,4 @@
-Subsurface 3.0.1 User Manual
+Subsurface 3.0.2 User Manual
 ============================
 :author: Jacco_van_Koll,_Dirk_Hohndel,_Reinout_Hoornweg,_Linus_Torvalds,_Miika_Turkia,_Amit_Chaudhuri,_Jan_Schubert
 :revnumber: v3.0.0
