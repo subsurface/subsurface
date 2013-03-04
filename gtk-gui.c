@@ -330,13 +330,11 @@ void save_pane_position()
 {
 	gint vpane_position = gtk_paned_get_position(GTK_PANED(vpane));
 	gint hpane_position = gtk_paned_get_position(GTK_PANED(hpane));
-	int window_width, window_height;
-	gtk_window_get_size(GTK_WINDOW (main_window), &window_width, &window_height);
 
-	if (vpane_position && vpane_position < window_height - 12)
+	if (pane_conf == PANE_THREE){
 		subsurface_set_conf_int("vpane_position", vpane_position);
-	if (hpane_position && hpane_position < window_width - 6 )
 		subsurface_set_conf_int("hpane_position", hpane_position);
+	}
 }
 
 void save_window_geometry(void)
@@ -1176,16 +1174,14 @@ static void show_user_manual(GtkWidget *w, gpointer data)
 
 static void view_list(GtkWidget *w, gpointer data)
 {
-	if (pane_conf == PANE_THREE)
-		save_pane_position();
+	save_pane_position();
         gtk_paned_set_position(GTK_PANED(vpane), 0);
 	pane_conf = PANE_LIST;
 }
 
 static void view_profile(GtkWidget *w, gpointer data)
 {
-	if (pane_conf == PANE_THREE)
-		save_pane_position();
+	save_pane_position();
 	gtk_paned_set_position(GTK_PANED(hpane), 0);
 	gtk_paned_set_position(GTK_PANED(vpane), 65535);
 	pane_conf = PANE_PROFILE;
@@ -1193,8 +1189,8 @@ static void view_profile(GtkWidget *w, gpointer data)
 
 static void view_info(GtkWidget *w, gpointer data)
 {
-	if (pane_conf == PANE_THREE)
-		save_pane_position();
+
+	save_pane_position();
 	gtk_paned_set_position(GTK_PANED(vpane), 65535);
 	gtk_paned_set_position(GTK_PANED(hpane), 65535);
 	pane_conf = PANE_INFO;
