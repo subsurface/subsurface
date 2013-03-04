@@ -600,7 +600,8 @@ has two tabs: 'General Settings' and 'Tec Settings' as shown below.
 image::images/preferences.png["Preferences",align="center"]
 
 The General Settings allow you to select units, columns to be shown, the
-font used for the dive list and the default file that contains the data.
+font used for the dive list and the default file that contains the dive data.
+It is also posible to choose from a number of map providers.
 
 The Tec Settings offer extra columns to show, settings for more graphs and
 information to be shown in the dive profile and settings for GFlow and
@@ -958,20 +959,20 @@ concentrate on the dive profile here filling the segments.
 So we define the ending depth for the first segment to be 20 meters
 (assuming metric preferences, you can also define the depth explicitly
 to m or ft). We will take it easy and descent takes 3 minutes from
-surface to the planned depth. Then we spend 20 minutes in same level
-using same air as before (used gas is left empty).
+surface to the planned depth. Then we spend 20 minutes at 20m breathing
+the same gas mixture as the previous step (used gas is left empty).
 
 Ascent to 10 meters will take one and half minutes that is slower than
 the fastest recommendation. However, as you can see in Subsurface's
 calculations it is still marked with yellow, meaning somewhat
 conservative speed (green would be conservative and red on the fast
-side). After the defined 10 minutes at even depth of 10 meters we let
+side). After the defined 10 minutes at a constant depth of 10 meters we let
 Subsurface calculate how we will surface.
 
 If decompression is required these stops are taken into account and
 can be easily visualized by setting the first depth to e.g. 40 meters
-(somewhat dependent on the GF settings). For the ascend phase of the
-dive calculation Subsurface assumes a typical 9m/min (30ft/min) ascend
+(somewhat dependent on the GF settings). For the ascent phase of the
+dive calculation Subsurface assumes a typical 9m/min (30ft/min) ascent
 speed.
 
 If needed more segments can be added by clicking 'Add waypoint'.
