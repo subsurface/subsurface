@@ -182,7 +182,7 @@ install: all
 	$(INSTALL) -d -m 755 $(DESKTOPDIR)
 	$(INSTALL) $(DESKTOPFILE) $(DESKTOPDIR)
 	$(INSTALL) -d -m 755 $(ICONDIR)
-	$(INSTALL) $(ICONFILE) $(ICONDIR)
+	$(INSTALL) -m 644 $(ICONFILE) $(ICONDIR)
 	@-if test -z "$(DESTDIR)"; then \
 		$(gtk_update_icon_cache); \
 	fi
@@ -194,8 +194,8 @@ install: all
 		$(INSTALL) -m 644 $(XSLTFILES) $(XSLTDIR); \
 	fi
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
-		$(INSTALL) -d -m 755 $(prefix)/$$LOC; \
-		$(INSTALL) $$LOC/subsurface.mo $(prefix)/$$LOC/subsurface.mo; \
+		$(INSTALL) -d $(prefix)/$$LOC; \
+		$(INSTALL) -m 644 $$LOC/subsurface.mo $(prefix)/$$LOC/subsurface.mo; \
 	done
 
 
