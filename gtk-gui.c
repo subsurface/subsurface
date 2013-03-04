@@ -1793,7 +1793,7 @@ static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 	gint tx = x - drawing_area->x; /* get transformed coordinates */
 	gint ty = y - drawing_area->y;
 	gint width, height, time = -1;
-	char buffer[256], plot[256];
+	char buffer[2048], plot[1024];
 	const char *event = "";
 
 	if (tx < 0 || ty < 0)
@@ -2082,7 +2082,7 @@ void set_dc_nickname(struct dive *dive)
 {
 	GtkWidget *dialog, *vbox, *entry, *frame, *label;
 	char nickname[160] = "";
-	char dialogtext[1024];
+	char dialogtext[2048];
 	const char *name = nickname;
 	struct divecomputer *dc = &dive->dc;
 

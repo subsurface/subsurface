@@ -354,7 +354,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	double cuft;
 	int psi, len;
 	const char *fmt;
-	char buffer[20], *p;
+	char buffer[40], *p;
 
 	/* Do we already have a cylinder description? */
 	if (type->description)

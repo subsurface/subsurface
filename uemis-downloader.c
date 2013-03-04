@@ -145,7 +145,7 @@ static struct dive *uemis_start_dive(uint32_t deviceid)
 /* send text to the importer progress bar */
 static void uemis_info(const char *fmt, ...)
 {
-	static char buffer[40];
+	static char buffer[256];
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -544,7 +544,7 @@ static void parse_divespot(char *buf)
 	char *bp = buf + 1;
 	char *tp = next_token(&bp);
 	char *tag, *type, *val;
-	char locationstring[255] = "";
+	char locationstring[1024] = "";
 	int divespot, len;
 	double latitude, longitude;
 

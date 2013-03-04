@@ -192,7 +192,7 @@ static void init_tree()
 
 	/* Add all the columns to the tree view */
 	for (i = 0; i < N_COLUMNS; ++i) {
-		char buf[80];
+		char buf[256];
 		column = gtk_tree_view_column_new();
 		snprintf(buf, sizeof(buf), "%s\n%s", _(columnstop[i]), columnsbot[i]);
 		gtk_tree_view_column_set_title(column, buf);
@@ -500,7 +500,7 @@ void process_selected_dives(void)
 
 static void set_label(GtkWidget *w, const char *fmt, ...)
 {
-	char buf[80];
+	char buf[256];
 	va_list args;
 
 	va_start(args, fmt);
@@ -531,7 +531,7 @@ static char *get_time_string(int seconds, int maxdays)
  * to dive data, but for consistency we don't. */
 static void show_single_dive_stats(struct dive *dive)
 {
-	char buf[80];
+	char buf[256];
 	double value;
 	int decimals;
 	const char *unit;

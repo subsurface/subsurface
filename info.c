@@ -793,7 +793,7 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	GtkWidget *image;
 #endif
 	char buffer[256];
-	char airtemp[6];
+	char airtemp[10];
 	const char *unit;
 	double value;
 
@@ -1152,7 +1152,7 @@ int edit_dive_info(struct dive *dive, gboolean newdive)
 static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
 {
 	va_list ap;
-	char buffer[64];
+	char buffer[128];
 	GtkWidget *frame, *hbox;
 
 	va_start(ap, fmt);

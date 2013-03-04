@@ -361,7 +361,7 @@ static void duration_data_func(GtkTreeViewColumn *col,
 {
 	unsigned int sec;
 	int idx;
-	char buffer[16];
+	char buffer[40];
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DURATION, &sec, -1);
 	if (idx < 0)

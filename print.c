@@ -69,7 +69,7 @@ static void show_dive_header(struct dive *dive, cairo_t *cr, double w,
 	PangoLayout *layout;
 	PangoRectangle ink_ext, logic_ext;
 	struct tm tm;
-	char buffer[160], divenr[40], *people;
+	char buffer[512], divenr[80], *people;
 
 	maxwidth = w * PANGO_SCALE;
 	maxheight = h * PANGO_SCALE * 0.9;
@@ -355,7 +355,7 @@ static void print_weight_data (struct dive *dive, cairo_t *cr, int maxwidth, int
 /* Print the dive OTUs */
 static void print_otus (struct dive *dive, cairo_t *cr, PangoLayout *layout, int maxwidth)
 {
-	char buffer[40];
+	char buffer[128];
 
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("OTU"));
@@ -370,7 +370,7 @@ static void print_otus (struct dive *dive, cairo_t *cr, PangoLayout *layout, int
 /* Print the dive maxCNS */
 static void print_cns (struct dive *dive, cairo_t *cr, PangoLayout *layout, int maxwidth)
 {
-	char buffer[40];
+	char buffer[128];
 
 
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
@@ -389,7 +389,7 @@ static void print_SAC (struct dive *dive, cairo_t *cr, 	PangoLayout *layout, int
 	double sac;
 	int decimals;
 	const char *unit;
-	char buffer[40];
+	char buffer[128];
 
 	cairo_move_to (cr,(maxwidth*0.05) / ((double) PANGO_SCALE), 0);
 	snprintf(buffer, sizeof(buffer), _("SAC"));

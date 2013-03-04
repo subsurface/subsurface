@@ -806,7 +806,7 @@ static const char *country, *city;
 static void divinglog_place(char *place, void *_location)
 {
 	char **location = _location;
-	char buffer[256], *p;
+	char buffer[1024], *p;
 	int len;
 
 	len = snprintf(buffer, sizeof(buffer),

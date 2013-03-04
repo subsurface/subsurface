@@ -270,7 +270,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 static void dev_info(device_data_t *devdata, const char *fmt, ...)
 {
-	static char buffer[256];
+	static char buffer[1024];
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -358,7 +358,7 @@ static inline int year(int year)
 static char *str_printf(const char *fmt, ...)
 {
 	va_list args;
-	char buf[80];
+	char buf[1024];
 
 	va_start(args, fmt);
 	vsnprintf(buf, sizeof(buf)-1, fmt, args);

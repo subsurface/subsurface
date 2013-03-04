@@ -1356,7 +1356,7 @@ static void weight_data_func(GtkTreeViewColumn *col,
 	int idx = (long)data;
 	int grams, decimals;
 	double value;
-	char buffer[10];
+	char buffer[64];
 
 	gtk_tree_model_get(model, iter, idx, &grams, -1);
 	decimals = convert_weight(grams, &value);

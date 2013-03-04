@@ -268,7 +268,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	cairo_font_extents_t fe;
 	cairo_text_extents_t extents;
 	double dx, dy;
-	char buffer[80];
+	char buffer[256];
 	va_list args;
 
 	va_start(args, fmt);
@@ -346,7 +346,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 {
 	int i, depth = 0;
 	int x,y;
-	char buffer[80];
+	char buffer[256];
 
 	/* is plotting this event disabled? */
 	if (event->name) {

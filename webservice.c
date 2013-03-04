@@ -49,11 +49,11 @@ gboolean webservice_request_user_xml(const gchar *user_id,
 	SoupMessage *msg;
 	SoupSession *session;
 	gboolean ret = FALSE;
-	gchar url[80] = {0};
+	gchar url[256] = {0};
 
 	session = soup_session_async_new();
 	strcat(url, "http://api.hohndel.org/api/dive/get/?login=");
-	strcat(url, user_id);
+	strncat(url, user_id, sizeof(url) - strlen(url) - 1);
 	msg = soup_message_new("GET", url);
 	soup_message_headers_append(msg->request_headers, "Accept", "text/xml");
 	soup_session_send_message(session, msg);
@@ -115,7 +115,7 @@ static void download_dialog_connect_cb(GtkWidget *w, gpointer data)
 	guint len, status_connect, status_xml;
 	gchar *xmldata;
 	gboolean ret;
-	gchar err[128] = {0};
+	gchar err[256] = {0};
 
 	gtk_label_set_text(GTK_LABEL(state->status), _("Connecting..."));
 	gtk_widget_set_sensitive(state->apply, FALSE);
@@ -126,7 +126,7 @@ static void download_dialog_connect_cb(GtkWidget *w, gpointer data)
 		if (status_xml != DD_STATUS_OK)
 			ret = FALSE;
 	} else {
-		sprintf(err, "%s %u!", download_dialog_status_text(DD_STATUS_ERROR_CONNECT), status_connect);
+		snprintf(err, sizeof(err), "%s %u!", download_dialog_status_text(DD_STATUS_ERROR_CONNECT), status_connect);
 		gtk_label_set_text(GTK_LABEL(state->status), err);
 	}
 	state->xmldata = xmldata;

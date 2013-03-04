@@ -7,6 +7,7 @@
 #include <CoreServices/CoreServices.h>
 #include <mach-o/dyld.h>
 #include "gtkosxapplication.h"
+#include <sys/syslimits.h>
 
 static GtkosxApplication *osx_app;
 
@@ -148,9 +149,9 @@ int subsurface_fill_device_list(GtkListStore *store)
 
 const char *subsurface_icon_name()
 {
-	static char path[1024];
+	static char path[PATH_MAX];
 
-	snprintf(path, 1024, "%s/%s", gtkosx_application_get_resource_path(), ICON_NAME);
+	snprintf(path, sizeof(path), "%s/%s", gtkosx_application_get_resource_path(), ICON_NAME);
 
 	return path;
 }
@@ -173,7 +174,7 @@ const char *subsurface_gettext_domainpath(char *argv0)
 {
 	/* on a Mac we ignore the argv0 argument and instead use the resource_path
 	 * to figure out where to find the translation files */
-	static char buffer[256];
+	static char buffer[PATH_MAX];
 	const char *resource_path = gtkosx_application_get_resource_path();
 	if (resource_path) {
 		snprintf(buffer, sizeof(buffer), "%s/share/locale", resource_path);
@@ -192,9 +193,9 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	GtkWidget *menu_item, *sep;
-	static char path[1024];
+	static char path[PATH_MAX];
 
-	snprintf(path, 1024, "%s/xslt", gtkosx_application_get_resource_path());
+	snprintf(path, sizeof(path), "%s/xslt", gtkosx_application_get_resource_path());
 	setenv("SUBSURFACE_XSLT_PATH",  path, TRUE);
 
 	g_object_set(G_OBJECT(settings), "gtk-font-name", UI_FONT, NULL);
