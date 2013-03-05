@@ -120,6 +120,11 @@ ifneq ($(strip $(LIBZIP)),)
 	ZIP = -DLIBZIP $(shell $(PKGCONFIG) --cflags libzip)
 endif
 
+LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
+ifneq ($(strip $(LIBSQLITE3)),)
+	SQLITE3 = -DSQLITE3 $(shell $(PKGCONFIG) --cflags sqlite3)
+endif
+
 ifeq ($(UNAME), linux)
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
@@ -152,7 +157,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	XSLT=-DXSLT='"$(XSLTDIR)"'
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
 
 MSGLANGS=$(notdir $(wildcard po/*po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
@@ -266,7 +271,7 @@ update-po-files:
 	tx pull -af
 
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
-		$(XSLT) $(ZIP) $(LIBDIVECOMPUTERCFLAGS) \
+		$(XSLT) $(ZIP) $(SQLITE3) $(LIBDIVECOMPUTERCFLAGS) \
 		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS)
 
 %.o: %.c

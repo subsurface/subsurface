@@ -100,6 +100,13 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, GError **
 	return success;
 }
 
+#ifdef SQLITE3
+static int try_to_open_db(const char *filename, struct memblock *mem, GError **error)
+{
+	return parse_dm4_buffer(filename, mem->buffer, mem->size, &dive_table, error);
+}
+#endif
+
 static timestamp_t parse_date(const char *date)
 {
 	int hour, min, sec;
@@ -258,6 +265,9 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, GError
 void parse_file(const char *filename, GError **error, gboolean possible_default_filename)
 {
 	struct memblock mem;
+#ifdef SQLITE3
+	char *fmt;
+#endif
 
 	if (readfile(filename, &mem) < 0) {
 		/* we don't want to display an error if this was the default file */
@@ -284,6 +294,16 @@ void parse_file(const char *filename, GError **error, gboolean possible_default_
 
 	if (possible_default_filename)
 		set_filename(filename, TRUE);
+
+#ifdef SQLITE3
+	fmt = strrchr(filename, '.');
+	if (fmt && !strcasecmp(fmt + 1, "DB")) {
+		if (!try_to_open_db(filename, &mem, error)) {
+			free(mem.buffer);
+			return;
+		}
+	}
+#endif
 
 	parse_file_buffer(filename, &mem, error);
 	free(mem.buffer);

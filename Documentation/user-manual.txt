@@ -785,6 +785,41 @@ The file Divelogs.SDE can now be opened (or imported) in
 Subsurface. Different from earlier versions of Subsurface, no manual
 unpacking of the .SDE file is needed anymore.
 
+[[S_ImportingDivesSuuntoDM4]]
+Importing dives from Suunto DM4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To import divelog from Suunto DM4, you need to locate the DM4 database
+where the dives are stored. You can either look for the original
+database or take a backup of the dives. We recommend the backup method
+as the directory path to the main database is partly random.
+
+Backing up Suunto DM4
+^^^^^^^^^^^^^^^^^^^^^
+
+ - Start Suunto DM4
+ - Select 'File - Create backup'
+ - From the file menu select the location and name for the backup, we'll
+   use DM4 in here with the default suffix .bak
+ - Click 'Save'
+ - Your dives are now exported to the file DM4.bak
+
+Reading Suunto DM4 backup in Subsurface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Importing the logs from DM4 does not require any special steps. You just
+do the following:
+
+ - Open the following menu 'File - Import XML Files(s)'
+ - Browse your directories to the location where your DM4 backup is
+   stored
+ - Select the backup file you want to import and click 'Open'
+
+It is also possible to do the importing from command line just like with
+JDiveLog (see <<S_ImportingDivesJDiveLog, chapter Importing Dives from JDiveLog>>):
+
+      subsurface MyDives.xml --import DM4.bak
+
 [[S_ImportingMacDive]]
 Importing Dives from MacDive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -861,6 +896,7 @@ button). Then do the following:
  - Open the 'File - Export - XML' menu
  - Select the dives that you want to export
  - Click on the export button and select the filename
+ - Rename the backup file to extension .db
 
 This file can now be opened in Subsurface (as described in the previous sections).
 

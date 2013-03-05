@@ -138,6 +138,11 @@ static GtkFileFilter *setup_filter(void)
 	gtk_file_filter_add_pattern(filter, "*.dld");
 	gtk_file_filter_add_pattern(filter, "*.DLD");
 #endif
+#ifdef SQLITE3
+	gtk_file_filter_add_pattern(filter, "*.DB");
+	gtk_file_filter_add_pattern(filter, "*.db");
+#endif
+
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, _("XML file"));
 

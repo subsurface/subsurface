@@ -14,6 +14,10 @@
 #endif
 #include <glib/gi18n.h>
 
+#ifdef SQLITE3
+#include<sqlite3.h>
+#endif
+
 #include "dive.h"
 #include "device.h"
 
@@ -1530,6 +1534,218 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
+}
+
+#ifdef SQLITE3
+extern int dm4_events(void *handle, int columns, char **data, char **column)
+{
+	event_start();
+	if(data[1])
+		cur_event.time.seconds = atoi(data[1]);
+
+	if(data[2]) {
+		switch (atoi(data[2])) {
+			case 1:
+				/* 1 Mandatory Safety Stop */
+				cur_event.name = strdup("safety stop (mandatory)");
+				break;
+			case 3:
+				/* 3 Deco */
+				/* What is Subsurface's term for going to
+				 * deco? */
+				cur_event.name = strdup("deco");
+				break;
+			case 4:
+				/* 4 Ascent warning */
+				cur_event.name = strdup("ascent");
+				break;
+			case 5:
+				/* 5 Ceiling broken */
+				cur_event.name = strdup("violation");
+				break;
+			case 10:
+				/* 10 OLF 80% */
+			case 11:
+				/* 11 OLF 100% */
+				cur_event.name = strdup("OLF");
+				break;
+			case 12:
+				/* 12 High ppO2 */
+				cur_event.name = strdup("PO2");
+				break;
+			case 18:
+				/* 18 Ceiling error */
+				cur_event.name = strdup("ceiling");
+				break;
+			case 19:
+				/* 19 Surfaced */
+				cur_event.name = strdup("surface");
+				break;
+			case 258:
+				/* 258 Bookmark */
+				cur_event.name = strdup("bookmark");
+				break;
+			default:
+				cur_event.name = strdup("unknown");
+				break;
+		}
+	}
+	event_end();
+
+	return 0;
+}
+
+extern int dm4_dive(void *param, int columns, char **data, char **column)
+{
+	int i, interval, retval = 0;
+	sqlite3 *handle = (sqlite3 *)param;
+	float *profileBlob;
+	unsigned char *tempBlob;
+	int *pressureBlob;
+	time_t when;
+	struct tm *tm;
+	char *err = NULL;
+	char get_events_template[] = "select * from Mark where DiveId = %d";
+	char get_events[64];
+
+	dive_start();
+	cur_dive->number = atoi(data[0]);
+
+	/* Suunto saves time in 100 nano seconds, we'll need the time in
+	 * seconds.
+	 */
+	when = (time_t)(atol(data[1]) / 10000000);
+	tm = localtime(&when);
+
+	/* Suunto starts counting time in year 1, we need epoch */
+	tm->tm_year -= 1969;
+	cur_dive->when = mktime(tm);
+	if (data[2])
+		utf8_string(data[2], &cur_dive->notes);
+
+	/*
+	 * DM4 stores Duration and DiveTime. It looks like DiveTime is
+	 * 10 to 60 seconds shorter than Duration. However, I have no
+	 * idea what is the difference and which one should be used.
+	 * Duration = data[3]
+	 * DiveTime = data[15]
+	 */
+	if (data[15])
+		cur_dive->duration.seconds = atoi(data[15]);
+
+	/*
+	 * TODO: the deviceid hash should be calculated here.
+	 */
+	settings_start();
+	dc_settings_start();
+	if (data[4])
+		utf8_string(data[4], &cur_settings.dc.serial_nr);
+	if (data[5])
+		utf8_string(data[5], &cur_settings.dc.model);
+
+	cur_settings.dc.deviceid = 0xffffffff;
+	dc_settings_end();
+	settings_end();
+
+	if (data[6])
+		cur_dive->maxdepth.mm = atof(data[6]) * 1000;
+	if (data[8])
+		cur_dive->airtemp.mkelvin = (atoi(data[8]) + 273.15) * 1000;
+	if (data[9])
+		cur_dive->watertemp.mkelvin  = (atoi(data[9]) + 273.15) * 1000;
+
+	/*
+	 * TODO: handle multiple cylinders
+	 */
+	cylinder_start();
+	if (data[10])
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = (atoi(data[10]));
+	if (data[11])
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
+	if (data[12])
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[12])) * 1000;
+	if (data[13])
+		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = (atoi(data[13]));
+	if (data[20])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[20]) * 10;
+	if (data[21])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atoi(data[21]) * 10;
+	cylinder_end();
+
+	if (data[14])
+		cur_dive->surface_pressure.mbar = (atoi(data[14]) * 1000);
+
+	interval = data[16] ? atoi(data[16]) : 0;
+	profileBlob = (float *)data[17];
+	tempBlob = (unsigned char *)data[18];
+	pressureBlob = (int *)data[19];
+	for (i=0; interval && i * interval < cur_dive->duration.seconds; i++) {
+		sample_start();
+		cur_sample->time.seconds = i * interval;
+		if (profileBlob)
+			cur_sample->depth.mm = profileBlob[i] * 1000;
+		else
+			cur_sample->depth.mm = cur_dive->maxdepth.mm;
+
+		if (tempBlob && tempBlob[i])
+			cur_sample->temperature.mkelvin = (tempBlob[i] + 273.15) * 1000;
+		if (pressureBlob)
+			cur_sample->cylinderpressure.mbar = pressureBlob[i] ;
+		sample_end();
+	}
+
+	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, _("Database query get_events failed.\n"));
+		return 1;
+	}
+
+	dive_end();
+
+	/*
+	for (i=0; i<columns;++i) {
+		fprintf(stderr, "%s\t", column[i]);
+	}
+	fprintf(stderr, "\n");
+	for (i=0; i<columns;++i) {
+		fprintf(stderr, "%s\t", data[i]);
+	}
+	fprintf(stderr, "\n");
+	//exit(0);
+	*/
+	return SQLITE_OK;
+}
+#endif
+
+int parse_dm4_buffer(const char *url, const char *buffer, int size,
+			struct dive_table *table, GError **error)
+{
+#ifdef SQLITE3
+	int retval;
+	char *err = NULL;
+	sqlite3 *handle;
+	target_table = table;
+
+	char get_dives[] = "select D.DiveId,StartTime,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,CylinderVolume,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+
+	retval = sqlite3_open(url,&handle);
+
+	if(retval) {
+		fprintf(stderr, _("Database connection failed '%s'.\n"), url);
+		return 1;
+	}
+
+	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
+
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, _("Database query failed '%s'.\n"), url);
+		return 1;
+	}
+
+	sqlite3_close(handle);
+#endif
+	return 0;
 }
 
 void parse_xml_init(void)
