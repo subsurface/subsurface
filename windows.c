@@ -243,7 +243,7 @@ extern int __wgetmainargs(int *, wchar_t ***, wchar_t ***, int, int *);
 /* expand-convert the UTF-16 argument list to a list of UTF-8 strings */
 void subsurface_command_line_init(gint *argc, gchar ***argv)
 {
-	wchar_t **wargv, **wenviron, *p, path[MAX_PATH];
+	wchar_t **wargv, **wenviron, *p, path[MAX_PATH] = {0};
 	gchar **argv_new;
 	gchar *s;
 	/* for si we assume that a struct address will equal the address
