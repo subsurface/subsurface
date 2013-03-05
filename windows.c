@@ -243,12 +243,19 @@ extern int __wgetmainargs(int *, wchar_t ***, wchar_t ***, int, int *);
 /* expand-convert the UTF-16 argument list to a list of UTF-8 strings */
 void subsurface_command_line_init(gint *argc, gchar ***argv)
 {
-	wchar_t **wargv, **wenviron;
+	wchar_t **wargv, **wenviron, *p, path[MAX_PATH];
 	gchar **argv_new;
 	gchar *s;
 	/* for si we assume that a struct address will equal the address
 	 * of its first and only int member */
 	gint i, n, ret, si;
+
+	/* change the current process path to the module path, so that we can
+	 * access relative folders such as ./share and ./xslt */
+	GetModuleFileNameW(NULL, path, MAX_PATH - 1);
+	p = wcsrchr(path, '\\');
+	*(p + 1) = '\0';
+	SetCurrentDirectoryW(path);
 
 	/* memory leak tools may reports a potential issue here at a call
 	 * to strcpy_s in msvcrt, wich should be a false positive. but even if there
