@@ -65,7 +65,7 @@
       <xsl:if test="WEIGTH != ''">
         <weightsystem>
           <xsl:attribute name="weight">
-            <xsl:value-of select="concat(WEIGTH, ' kg')"/>
+            <xsl:value-of select="concat(translate(WEIGTH, ',', '.'), ' kg')"/>
           </xsl:attribute>
         </weightsystem>
       </xsl:if>
@@ -240,7 +240,7 @@
 
     <xsl:choose>
       <xsl:when test="$number != ''">
-        <xsl:value-of select="concat(($number div 1000), ' bar')"/>
+        <xsl:value-of select="concat(format-number(($number div 1000), '#.##'), ' bar')"/>
       </xsl:when>
       <xsl:otherwise>0</xsl:otherwise>
     </xsl:choose>

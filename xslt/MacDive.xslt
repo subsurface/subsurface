@@ -395,7 +395,7 @@
 
     <xsl:choose>
       <xsl:when test="$units = 'Imperial'">
-        <xsl:value-of select="concat(($number div 14.5037738007), ' bar')"/>
+        <xsl:value-of select="concat(format-number(($number div 14.5037738007), '#.##'), ' bar')"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="concat($number, ' bar')"/>
@@ -412,13 +412,13 @@
     <xsl:param name="units"/>
 
     <xsl:variable name="size">
-      <xsl:value-of select="$singleSize + $singleSize * $double"/>
+      <xsl:value-of select="format-number($singleSize + $singleSize * $double, '#.##')"/>
     </xsl:variable>
 
     <xsl:choose>
       <xsl:when test="$units = 'Imperial'">
         <xsl:if test="$pressure != '0'">
-          <xsl:value-of select="concat((($size * 14.7 div $pressure) div 0.035315), ' l')"/>
+          <xsl:value-of select="concat(format-number((($size * 14.7 div $pressure) div 0.035315), '#.##'), ' l')"/>
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
@@ -462,7 +462,7 @@
 
     <xsl:choose>
       <xsl:when test="$units = 'Imperial'">
-        <xsl:value-of select="concat(($depth * 0.3048), ' m')"/>
+        <xsl:value-of select="concat(format-number(($depth * 0.3048), '#.##'), ' m')"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="concat($depth, ' m')"/>
@@ -480,7 +480,7 @@
       <xsl:when test="$weight &gt; 0">
         <xsl:choose>
           <xsl:when test="$units = 'Imperial'">
-            <xsl:value-of select="concat(($weight * 0.453592), ' kg')"/>
+            <xsl:value-of select="concat(format-number(($weight * 0.453592), '#.##'), ' kg')"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat($weight, ' kg')"/>

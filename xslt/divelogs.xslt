@@ -94,7 +94,7 @@
         </xsl:attribute>
         <xsl:if test="CYLINDERSIZE != ''">
           <xsl:attribute name="size">
-            <xsl:value-of select="CYLINDERSIZE + CYLINDERSIZE * DBLTANK"/>
+	    <xsl:value-of select="format-number(CYLINDERSIZE + CYLINDERSIZE * DBLTANK, '#.##')"/>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="WORKINGPRESSURE &gt; 0">

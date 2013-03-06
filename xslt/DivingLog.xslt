@@ -97,7 +97,7 @@
               <xsl:value-of select="Tanksize"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="Tanksize * 2"/>
+              <xsl:value-of select="format-number(Tanksize * 2, '#.##')"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
