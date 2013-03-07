@@ -1563,6 +1563,18 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 				/* 5 Ceiling broken */
 				cur_event.name = strdup("violation");
 				break;
+			case 6:
+				/* 6 Mandatory safety stop ceiling error */
+				cur_event.name = strdup("violation");
+				break;
+			case 8:
+				/* 8 Dive time alarm */
+				cur_event.name = strdup("divetime");
+				break;
+			case 9:
+				/* 9 Depth alarm */
+				cur_event.name = strdup("maxdepth");
+				break;
 			case 10:
 				/* 10 OLF 80% */
 			case 11:
@@ -1581,12 +1593,20 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 				/* 19 Surfaced */
 				cur_event.name = strdup("surface");
 				break;
+			case 257:
+				/* 257 Dive active */
+				/* This seems to be given after surface
+				 * when descending again. Ignoring it. */
+				break;
 			case 258:
 				/* 258 Bookmark */
 				cur_event.name = strdup("bookmark");
+				if (data[3])
+					cur_event.value = atoi(data[3]);
 				break;
 			default:
 				cur_event.name = strdup("unknown");
+				cur_event.value = atoi(data[2]);
 				break;
 		}
 	}
