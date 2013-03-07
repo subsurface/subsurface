@@ -78,7 +78,7 @@
                 <xsl:value-of select="0" />
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="Equipment/Weight"/>
+                <xsl:value-of select="translate(Equipment/Weight, ',', '.')"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>

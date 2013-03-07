@@ -33,10 +33,10 @@
 
       <xsl:choose>
         <xsl:when test="MEANDEPTH != ''">
-          <depth max="{concat(MAXDEPTH,' m')}" mean="{concat(MEANDEPTH, ' m')}"/>
+          <depth max="{concat(translate(MAXDEPTH, ',', '.'),' m')}" mean="{concat(translate(MEANDEPTH, ',', '.'), ' m')}"/>
         </xsl:when>
         <xsl:otherwise>
-          <depth max="{concat(MAXDEPTH,' m')}"/>
+          <depth max="{concat(translate(MAXDEPTH, ',', '.'),' m')}"/>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -187,7 +187,7 @@
                 </xsl:call-template>
               </xsl:attribute>
               <xsl:attribute name="depth">
-                <xsl:value-of select="concat(DEPTH, ' m')"/>
+                <xsl:value-of select="concat(translate(DEPTH, ',', '.'), ' m')"/>
               </xsl:attribute>
               <xsl:attribute name="temp">
                 <xsl:value-of select="TEMPERATURE"/>

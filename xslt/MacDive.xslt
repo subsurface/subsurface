@@ -297,7 +297,7 @@
         <weightsystem>
           <xsl:attribute name="weight">
             <xsl:call-template name="weightConvert">
-              <xsl:with-param name="weight" select="weight"/>
+              <xsl:with-param name="weight" select="translate(weight, ',', '.')"/>
               <xsl:with-param name="units" select="$units"/>
             </xsl:call-template>
           </xsl:attribute>
@@ -435,10 +435,14 @@
 
     <xsl:choose>
       <xsl:when test="$units = 'Imperial'">
-        <xsl:value-of select="concat(format-number(($temp - 32) * 5 div 9, '0.0'), ' C')"/>
+        <xsl:if test="$temp != ''">
+          <xsl:value-of select="concat(format-number(($temp - 32) * 5 div 9, '0.0'), ' C')"/>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat($temp, ' C')"/>
+        <xsl:if test="$temp != ''">
+          <xsl:value-of select="concat($temp, ' C')"/>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
