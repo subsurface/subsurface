@@ -1707,9 +1707,9 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 		else
 			cur_sample->depth.mm = cur_dive->maxdepth.mm;
 
-		if (tempBlob && tempBlob[i])
+		if (tempBlob)
 			cur_sample->temperature.mkelvin = (tempBlob[i] + 273.15) * 1000;
-		if (pressureBlob)
+		if (data[19] && data[19][0])
 			cur_sample->cylinderpressure.mbar = pressureBlob[i] ;
 		sample_end();
 	}
