@@ -207,11 +207,26 @@ enum number_type {
 static enum number_type parse_float(char *buffer, double *res, char **endp)
 {
 	double val;
+	static gboolean first_time = TRUE;
 
 	errno = 0;
 	val = g_ascii_strtod(buffer, endp);
 	if (errno || *endp == buffer)
 		return NEITHER;
+	if (**endp == ',') {
+		if (val == rint(val)) {
+			/* we really want to send an error if this is a Subsurface native file
+			 * as this is likely indication of a bug - but right now we don't have
+			 * that information available */
+			if (first_time) {
+				fprintf(stderr, "Floating point value with decimal comma (%s)?\n", buffer);
+				first_time = FALSE;
+			}
+			/* Try again */
+			**endp = '.';
+			val = g_ascii_strtod(buffer, endp);
+		}
+	}
 
 	*res = val;
 	return FLOAT;
