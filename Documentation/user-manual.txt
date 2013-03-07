@@ -790,8 +790,17 @@ Importing dives from Suunto DM4
 
 To import divelog from Suunto DM4, you need to locate the DM4 database
 where the dives are stored. You can either look for the original
-database or take a backup of the dives. We recommend the backup method
-as the directory path to the main database is partly random.
+database or take a backup of the dives. Both methods are described here.
+
+Locating the Suunto DM4 database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ - Start Suunto DM4
+ - Select 'Help - About'
+ - Click 'Copy' after text 'Copy log folder path to clipboard'
+ - Now open Windows Explorer
+ - Paste the address to the path box at the top of the File Explorer
+ - The database is called DM4.db
 
 Backing up Suunto DM4
 ^^^^^^^^^^^^^^^^^^^^^
