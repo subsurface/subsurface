@@ -789,7 +789,7 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 	if (!text)
 		return 0;
 
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 
 	if (!*text)
@@ -806,7 +806,7 @@ static int validate_gas(const char *text, int *o2_p, int *he_p)
 	}
 
 	/* We don't want any extra crud */
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -829,14 +829,14 @@ static int validate_time(const char *text, int *sec_p, int *rel_p)
 	if (!text)
 		return 0;
 
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 
 	rel = 0;
 	if (*text == '+') {
 		rel = 1;
 		text++;
-		while (isspace(*text))
+		while (g_ascii_isspace(*text))
 			text++;
 	}
 
@@ -873,7 +873,7 @@ static int validate_time(const char *text, int *sec_p, int *rel_p)
 	}
 
 	/* Maybe we should accept 'min' at the end? */
-	if (isspace(*text))
+	if (g_ascii_isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -894,7 +894,7 @@ static int validate_depth(const char *text, int *mm_p)
 	if (depth < 0)
 		return 0;
 
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 
 	imperial = get_units()->length == FEET;
@@ -905,7 +905,7 @@ static int validate_depth(const char *text, int *mm_p)
 		imperial = 1;
 		text += 2;
 	}
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -933,10 +933,10 @@ static int validate_po2(const char *text, int *mbar_po2)
 	if (po2 < 0)
 		return 0;
 
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -956,7 +956,7 @@ static int validate_volume(const char *text, int *sac)
 	if (volume < 0)
 		return 0;
 
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 
 	imperial = get_units()->volume == CUFT;
@@ -967,11 +967,11 @@ static int validate_volume(const char *text, int *sac)
 		imperial = 1;
 		text += 4;
 	}
-	while (isspace(*text) || *text == '/')
+	while (g_ascii_isspace(*text) || *text == '/')
 		text++;
 	if (!strncasecmp(text, _("min"), 3))
 		text += 3;
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 	if (*text)
 		return 0;

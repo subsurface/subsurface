@@ -386,7 +386,7 @@ static void percent(char *buffer, void *_fraction)
 	case FLOAT:
 		/* Turn fractions into percent unless explicit.. */
 		if (val <= 1.0) {
-			while (isspace(*end))
+			while (g_ascii_isspace(*end))
 				end++;
 			if (*end != '%')
 				val *= 100;
@@ -437,10 +437,10 @@ static void utf8_string(char *buffer, void *_res)
 {
 	int size;
 	char *res;
-	while (isspace(*buffer))
+	while (g_ascii_isspace(*buffer))
 		buffer++;
 	size = strlen(buffer);
-	while (size && isspace(buffer[size-1]))
+	while (size && g_ascii_isspace(buffer[size-1]))
 		size--;
 	if (!size)
 		return;
@@ -926,7 +926,7 @@ static degrees_t parse_degrees(char *buf, char **end)
 	int sign = 1, decimals = 6, value = 0;
 	degrees_t ret;
 
-	while (isspace(*buf))
+	while (g_ascii_isspace(*buf))
 		buf++;
 	switch (*buf) {
 	case '-':

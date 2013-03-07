@@ -125,12 +125,12 @@ static void show_utf8(FILE *f, const char *text, const char *pre, const char *po
 
 	if (!text)
 		return;
-	while (isspace(*text))
+	while (g_ascii_isspace(*text))
 		text++;
 	len = strlen(text);
 	if (!len)
 		return;
-	while (len && isspace(text[len-1]))
+	while (len && g_ascii_isspace(text[len-1]))
 		len--;
 	/* FIXME! Quoting! */
 	fputs(pre, f);

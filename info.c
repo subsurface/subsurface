@@ -48,7 +48,7 @@ static int text_changed(const char *old, const char *new)
 static const char *skip_space(const char *str)
 {
 	if (str) {
-		while (isspace(*str))
+		while (g_ascii_isspace(*str))
 			str++;
 		if (!*str)
 			str = NULL;
@@ -82,7 +82,7 @@ static char *get_combo_box_entry_text(GtkComboBox *combo_box, char **textp, cons
 			return NULL;
 
 	new = get_active_text(combo_box);
-	while (isspace(*new))
+	while (g_ascii_isspace(*new))
 		new++;
 	/* If the master string didn't change, don't change other dives either! */
 	if (!text_changed(master,new))
@@ -724,7 +724,7 @@ static gboolean gps_entry_change_cb(GtkEntry *gps, GdkEvent *event, gpointer use
 	}
 
 	/* Otherwise, check if it's all empty.. */
-	while (isspace(*string))
+	while (g_ascii_isspace(*string))
 		string++;
 	location_update.set_by_hand = !!*string;
 
