@@ -297,7 +297,7 @@ void parse_file(const char *filename, GError **error, gboolean possible_default_
 
 #ifdef SQLITE3
 	fmt = strrchr(filename, '.');
-	if (fmt && !strcasecmp(fmt + 1, "DB")) {
+	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK"))) {
 		if (!try_to_open_db(filename, &mem, error)) {
 			free(mem.buffer);
 			return;
