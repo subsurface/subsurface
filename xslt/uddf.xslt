@@ -8,7 +8,7 @@
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="/">
-    <divelog program="subsurface" version="2">
+    <divelog program="subsurface-import" version="2">
       <settings>
         <divecomputerid deviceid="ffffffff">
           <xsl:apply-templates select="/uddf/generator|/u:uddf/u:generator"/>

@@ -3,7 +3,7 @@
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="/">
-    <divelog program='subsurface' version='2'>
+    <divelog program='subsurface-import' version='2'>
       <settings>
         <xsl:for-each select="/dives/dive">
           <divecomputerid deviceid="ffffffff">

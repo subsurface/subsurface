@@ -5,7 +5,7 @@
 
   <xsl:template match="/">
     <dives>
-      <program name="subsurface" version="1"/>
+      <program name="subsurface-import" version="1"/>
       <xsl:apply-templates select="/JDiveLog/JDive"/>
     </dives>
   </xsl:template>

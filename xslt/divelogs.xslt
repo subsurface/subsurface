@@ -4,7 +4,7 @@
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="/">
-    <divelog program='subsurface' version='2'>
+    <divelog program='subsurface-import' version='2'>
       <dives>
         <xsl:apply-templates select="DIVELOGSDATA"/>
       </dives>
