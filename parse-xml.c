@@ -354,6 +354,10 @@ static void temperature(char *buffer, void *_temperature)
 	default:
 		printf("Strange temperature reading %s\n", buffer);
 	}
+	/* temperatures outside -40C .. +70C should be ignored */
+	if (temperature->mkelvin < ZERO_C_IN_MKELVIN - 40000 ||
+	    temperature->mkelvin > ZERO_C_IN_MKELVIN + 70000)
+		temperature->mkelvin = 0;
 }
 
 static void sampletime(char *buffer, void *_time)
