@@ -1697,9 +1697,13 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	 * TODO: handle multiple cylinders
 	 */
 	cylinder_start();
-	if (data[10])
-		cur_dive->cylinder[cur_cylinder_index].start.mbar = (atoi(data[10]));
-	if (data[11])
+	if (data[22] && atoi(data[22]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[22]);
+	else if (data[10] && atoi(data[10]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[10]);
+	if (data[23] && atoi(data[23]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[23]));
+	if (data[11] && atoi(data[11]) > 0)
 		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
 	if (data[12])
 		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[12])) * 1000;
@@ -1766,7 +1770,7 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	sqlite3 *handle;
 	target_table = table;
 
-	char get_dives[] = "select D.DiveId,StartTime,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,CylinderVolume,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+	char get_dives[] = "select D.DiveId,StartTime,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_open(url,&handle);
 
