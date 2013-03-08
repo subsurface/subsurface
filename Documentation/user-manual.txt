@@ -61,7 +61,7 @@ at all. This is because the program doesn't have any information available.
 If you have used the program before and saved the data, the program will
 automatically load the already available divelog files.
 
-There is a menu, containing 'File', 'Log', 'Filter', 'Planner' and 'Help'.
+There is a menu, containing 'File', 'Log', 'View', 'Filter', 'Planner' and 'Help'.
 
 The screen is divided in 3 area's (shown below with test dives loaded):
 
@@ -716,10 +716,10 @@ JDiveLog stores its information into files with the extension of .jlb.
 These .jlb contain all the information that has been stored, except your
 images in XML format.
 
-By using the menu 'File - Import XML File(s)' you get a popup asking
+By using the menu 'File - Import File(s)' you get a popup asking
 for the file name.  To import your JDiveLog file(s) do the following:
 
- - Open 'File - Import XML Files(s)' on the menu
+ - Open 'File - Import File(s)' on the menu
  - Browse your directories to the location where your *.jlb file is
  - Select your existing *.jlb file and click 'open'
  - Click the OK button in the popup
@@ -818,7 +818,7 @@ Reading Suunto DM4 backup in Subsurface
 Importing the logs from DM4 does not require any special steps. You just
 do the following:
 
- - Open the following menu 'File - Import XML Files(s)'
+ - Open the following menu 'File - Import File(s)'
  - Browse your directories to the location where your DM4 backup is
    stored
  - Select the backup file you want to import and click 'Open'
@@ -835,7 +835,7 @@ Importing Dives from MacDive
 Importing logs from MacDive is as easy as it gets. Do the following
 steps in Subsurface:
 
- - Open the following menu 'File - Import XML Files(s)'
+ - Open the following menu 'File - Import File(s)'
  - Browse your directories to the location where your MacDive logs are
    stored
  - Select the log file(s) you want to import and click 'open'
@@ -873,7 +873,7 @@ Import divelogs.de to Subsurface
 The import works similarly as importing any other divelogs. Just do the
 following steps on Subsurface:
 
- - Open the following menu 'File - Import XML Files(s)'
+ - Open the following menu 'File - Import File(s)'
  - Browse your directories to the location where yourUserName.DLD is
  - Select the log file and click OK
 
@@ -1093,7 +1093,7 @@ The file menu is used for the following menu options:
  - Save::		Save your current divelogs or changes you made to your divelogs
  - Save As::		Save your current divelogs or changes you made to your divelogs under a different name
  - Close::		Close your current divelog, saving as necessary
- - Import XML File(s)::	Import your dives from files exported by other divelogs
+ - Import File(s)::	Import your dives from files exported by other divelogs
  - Print::		Print your current divelog profiles and information about the dive
  - Preferences::	Set your preferences as described in <<S_SettingUpPreferences,chapter Setting up Preferences>>
  - Quit::		Quit the program
@@ -1117,13 +1117,18 @@ Within the Log menu, you will find the following sub-items:
 			show a minimum of 30m / 90ft. This can be changed to be only 10m / 30ft.
  - Yearly Statistics::	Contrary to the Statistics in the main display, these are purely calendar based
  - Dives Locations::    Show an interactive map with locations of the logged dives with GPS coordinates
- - View::		This is a submenu containing:
-	* List::		Show only the list of dives you have made
-	* Profile::	Show only the dive profile of the selected dive
-	* Info::		Show only the 3 tab information screen
-	* Three::		Show the 'default' 3 screen setup
-	* Prev DC		Switch to the previous dive computer
-	* Next DC		Switch to the next dive computer
+
+The View Menu
+~~~~~~~~~~~~~
+
+The view menu allows you to choose between the following representations:
+
+ - List::		Show only the list of dives you have made
+ - Profile::		Show only the dive profile of the selected dive
+ - Info::		Show only the 3 tab information screen
+ - Three::		Show the 'default' 3 screen setup
+ - Prev DC		Switch to the previous dive computer
+ - Next DC		Switch to the next dive computer
 
 The Filter Menu
 ~~~~~~~~~~~~~~~

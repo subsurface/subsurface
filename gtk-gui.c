@@ -1497,7 +1497,7 @@ static GtkActionEntry menu_items[] = {
 	{ "SaveAsFile",     GTK_STOCK_SAVE_AS, N_("Save As..."),   SHIFTCHAR CTRLCHAR "S", NULL, G_CALLBACK(file_save_as) },
 	{ "CloseFile",      GTK_STOCK_CLOSE, N_("Close"), NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, N_("Print..."),  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
-	{ "ImportFile",     NULL, N_("Import XML File(s)..."), CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
+	{ "ImportFile",     NULL, N_("Import File(s)..."), CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
 	{ "DownloadLog",    NULL, N_("Download From Dive Computer..."), CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
 	{ "DownloadWeb",    GTK_STOCK_CONNECT, N_("Download From Web Service..."), NULL, NULL, G_CALLBACK(webservice_download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, N_("Add Dive..."), NULL, NULL, G_CALLBACK(add_dive_cb) },
@@ -1556,18 +1556,18 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Renumber\" action=\"Renumber\" /> \
 				<menuitem name=\"Autogroup\" action=\"Autogroup\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
-				<menuitem name=\"YearlyStats\" action=\"YearlyStats\" /> "
+				<menuitem name=\"YearlyStats\" action=\"YearlyStats\" />"
 #if HAVE_OSM_GPS_MAP
-				"<menuitem name=\"DivesLocations\" action=\"DivesLocations\" /> "
+				"<menuitem name=\"Dive Locations\" action=\"DivesLocations\" /> "
 #endif
-				"<menu name=\"View\" action=\"ViewMenuAction\"> \
-					<menuitem name=\"List\" action=\"ViewList\" /> \
-					<menuitem name=\"Profile\" action=\"ViewProfile\" /> \
-					<menuitem name=\"Info\" action=\"ViewInfo\" /> \
-					<menuitem name=\"Paned\" action=\"ViewThree\" /> \
-					<menuitem name=\"PrevDC\" action=\"PrevDC\" /> \
-					<menuitem name=\"NextDC\" action=\"NextDC\" /> \
-				</menu> \
+			"</menu> \
+			<menu name=\"ViewMenu\" action=\"ViewMenuAction\"> \
+				<menuitem name=\"List\" action=\"ViewList\" /> \
+				<menuitem name=\"Profile\" action=\"ViewProfile\" /> \
+				<menuitem name=\"Info\" action=\"ViewInfo\" /> \
+				<menuitem name=\"Paned\" action=\"ViewThree\" /> \
+				<menuitem name=\"PrevDC\" action=\"PrevDC\" /> \
+				<menuitem name=\"NextDC\" action=\"NextDC\" /> \
 			</menu> \
 			<menu name=\"FilterMenu\" action=\"FilterMenuAction\"> \
 				<menuitem name=\"SelectEvents\" action=\"SelectEvents\" /> \
