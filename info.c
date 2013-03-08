@@ -427,7 +427,7 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		text += incr;
 		south = TRUE;
 	}
-	parselat = strtod(text, &endptr);
+	parselat = g_ascii_strtod(text, &endptr);
 	if (text == endptr)
 		return FALSE;
 	text = endptr;
@@ -441,7 +441,7 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		text = g_utf8_next_char(text);
 	incr = string_advance_cardinal(text, "E") + string_advance_cardinal(text, "W");
 	if (!incr && c != ';' && c != ',') {
-		parselat += strtod(text, &endptr) / 60.0;
+		parselat += g_ascii_strtod(text, &endptr) / 60.0;
 		if (text == endptr)
 			return FALSE;
 		text = endptr;
@@ -459,7 +459,7 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 		text += incr;
 		west = TRUE;
 	}
-	parselong = strtod(text, &endptr);
+	parselong = g_ascii_strtod(text, &endptr);
 	if (text == endptr)
 		return FALSE;
 	text = endptr;
@@ -472,7 +472,7 @@ static gboolean parse_gps_text(const char *gps_text, double *latitude, double *l
 	while (g_unichar_isspace(c = g_utf8_get_char(text)) || c == degrees)
 		text = g_utf8_next_char(text);
 	if (*text) {
-		parselong += strtod(text, &endptr) / 60.0;
+		parselong += g_ascii_strtod(text, &endptr) / 60.0;
 		if (text == endptr)
 			return FALSE;
 		text = endptr;
