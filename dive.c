@@ -908,11 +908,11 @@ static char *merge_text(const char *a, const char *b)
 	if (!a && !b)
 		return NULL;
 	if (!a || !*a)
-		return strdup(b);
+		return b ? strdup(b) : NULL;
 	if (!b || !*b)
 		return strdup(a);
 	if (!strcmp(a,b))
-		return strdup(a);
+		return a ? strdup(a) : NULL;
 	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
