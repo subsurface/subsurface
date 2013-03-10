@@ -644,7 +644,7 @@ static void print_gps_coordinates(char *buffer, int len, int lat, int lon)
 {
 	unsigned int latdeg, londeg;
 	double latmin, lonmin;
-	char *lath, *lonh;
+	char *lath, *lonh, dbuf_lat[32], dbuf_lon[32];
 
 	if (!lat && !lon) {
 		*buffer = 0;
@@ -658,9 +658,16 @@ static void print_gps_coordinates(char *buffer, int len, int lat, int lon)
 	londeg = lon / 1000000;
 	latmin = (lat % 1000000) * 60.0 / 1000000.0;
 	lonmin = (lon % 1000000) * 60.0 / 1000000.0;
-	snprintf(buffer, len, "%s%u%s %8.5f\' , %s%u%s %8.5f\'",
-		lath, latdeg, UTF8_DEGREE, latmin,
-		lonh, londeg, UTF8_DEGREE, lonmin);
+	*dbuf_lat = *dbuf_lon = 0;
+	g_ascii_formatd(dbuf_lat, sizeof(dbuf_lat), "%8.5f", latmin);
+	g_ascii_formatd(dbuf_lon, sizeof(dbuf_lon), "%8.5f", lonmin);
+	if (!*dbuf_lat || !*dbuf_lon) {
+		*buffer = 0;
+		return;
+	}
+	snprintf(buffer, len, "%s%u%s %s\' , %s%u%s %s\'",
+		lath, latdeg, UTF8_DEGREE, dbuf_lat,
+		lonh, londeg, UTF8_DEGREE, dbuf_lon);
 }
 
 static void update_gps_entry(int lat, int lon)
