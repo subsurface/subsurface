@@ -802,7 +802,7 @@ static void draw_table(GtkPrintOperation *operation, GtkPrintContext *context, g
 	for (i = 0; i < dive_table.nr - nr; i++) {
 		dive = get_dive_for_printing(nr+i);
 		if (!dive)
-			break;
+			continue;
 		/* Write the dive data and get the max. height of the row */
 		max_ext = show_dive_table(dive, cr, layout, w*2, delta_y / 4 / PANGO_SCALE, paginate);
 		/* Draw a frame for each row */
