@@ -112,9 +112,16 @@
 
     <xsl:variable name="value" select="substring-before($values[1], ' ')"/>
     <xsl:choose>
+
+      <!-- No input -->
+      <xsl:when test="count($values) = 0"/>
+
+      <!-- Handling last value -->
       <xsl:when test="count($values) = 1">
         <xsl:value-of select="format-number($value + $sum, '#.#')"/>
       </xsl:when>
+
+      <!-- More than one value to sum -->
       <xsl:otherwise>
         <xsl:call-template name="sum">
           <xsl:with-param name="values" select="$values[position() &gt; 1]"/>
