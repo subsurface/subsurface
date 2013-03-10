@@ -495,7 +495,7 @@ static void show_dive_tanks(struct dive *dive, cairo_t *cr, double w,
 	g_object_unref (layout);
 }
 
-static void show_table_header(cairo_t *cr, PangoLayout *layout, double w)
+static void show_table_header(cairo_t *cr, PangoLayout *layout, double w, gboolean paginate)
 {
 	int i;
 	double maxwidth, colwidth, curwidth;
@@ -514,7 +514,8 @@ static void show_table_header(cairo_t *cr, PangoLayout *layout, double w)
 		curwidth = curwidth + (colwidth * rel_width[i]);
 		pango_layout_set_text(layout, _(headers[i]), -1);
 		pango_layout_set_justify(layout, 0);
-		pango_cairo_show_layout(cr, layout);
+		if (!paginate)
+			pango_cairo_show_layout(cr, layout);
 	}
 	cairo_move_to(cr, 0, 0);
 }
@@ -788,7 +789,7 @@ static void draw_table(GtkPrintOperation *operation, GtkPrintContext *context, g
 	pango_layout_get_extents(layout, NULL, &logic_ext);
 	cairo_translate (cr, w/10, 2.0 * logic_ext.height / PANGO_SCALE);
 	y = 2.0 * logic_ext.height / PANGO_SCALE;
-	show_table_header(cr, layout, w*2);
+	show_table_header(cr, layout, w*2, paginate);
 	set_font(layout, font, FONT_NORMAL*1.2, PANGO_ALIGN_LEFT);
 	/* We wanted the header ellipsized but not the data */
 	pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_NONE);
