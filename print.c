@@ -797,8 +797,8 @@ static void draw_table(GtkPrintOperation *operation, GtkPrintContext *context, g
 	/* Get the height for an only line but move two down */
 	pango_layout_get_extents(layout, NULL, &logic_ext);
 	delta_y = logic_ext.height;
-	cairo_translate (cr, 0, 2.0 * delta_y / PANGO_SCALE);
-	y += 2.0 * delta_y / PANGO_SCALE;
+	cairo_translate (cr, 0, 3.0 * delta_y / PANGO_SCALE);
+	y += 3.0 * delta_y / PANGO_SCALE;
 	for (i = 0; i < dive_table.nr - nr; i++) {
 		dive = get_dive_for_printing(nr+i);
 		if (!dive)
@@ -811,7 +811,7 @@ static void draw_table(GtkPrintOperation *operation, GtkPrintContext *context, g
 		/* and move down by the max. height of it */
 		cairo_translate (cr, 0, (max_ext + delta_y / 2) / PANGO_SCALE);
 		y += (max_ext + delta_y / 2) / PANGO_SCALE;
-		if (y > 1.9 * h)
+		if (y > 1.95 * h)
 			break;
 	}
 	if (paginate)
