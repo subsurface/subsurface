@@ -1827,7 +1827,7 @@ static xsltStylesheetPtr try_get_stylesheet(const char *path, int len, const cha
 	return ret;
 }
 
-static xsltStylesheetPtr get_stylesheet(const char *name)
+xsltStylesheetPtr get_stylesheet(const char *name)
 {
 	const char *path, *next;
 

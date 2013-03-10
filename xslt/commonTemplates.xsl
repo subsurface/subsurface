@@ -98,4 +98,30 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="time2sec">
+    <xsl:param name="time"/>
+
+    <xsl:value-of select="substring-before($time, ':') * 60 + substring-before(substring-after($time, ':'), ' ')"/>
+  </xsl:template>
+
+  <!-- Calculate sum of all parameters, and strip any unit following the
+       value -->
+  <xsl:template name="sum">
+    <xsl:param name="values"/>
+    <xsl:param name="sum" select="'0'"/>
+
+    <xsl:variable name="value" select="substring-before($values[1], ' ')"/>
+    <xsl:choose>
+      <xsl:when test="count($values) = 1">
+        <xsl:value-of select="format-number($value + $sum, '#.#')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="sum">
+          <xsl:with-param name="values" select="$values[position() &gt; 1]"/>
+          <xsl:with-param name="sum" select="$sum + $value"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

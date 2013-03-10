@@ -9,6 +9,9 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <libxml/tree.h>
+#ifdef XSLT
+#include <libxslt/transform.h>
+#endif
 
 #include "sha1.h"
 
@@ -545,6 +548,11 @@ extern void show_yearly_stats(void);
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, gboolean select_only);
+extern void save_dive(FILE *f, struct dive *dive);
+
+#ifdef XSLT
+extern xsltStylesheetPtr get_stylesheet(const char *name);
+#endif
 
 extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);

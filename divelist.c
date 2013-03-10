@@ -17,6 +17,12 @@
 #include <math.h>
 #include <glib/gi18n.h>
 #include <assert.h>
+#ifdef LIBZIP
+#include <zip.h>
+#endif
+#ifdef XSLT
+#include <libxslt/transform.h>
+#endif
 
 #include "divelist.h"
 #include "dive.h"
@@ -1965,6 +1971,94 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	mark_divelist_changed(TRUE);
 }
 
+#if defined(LIBZIP) && defined(XSLT)
+static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	int i;
+	struct dive *dive;
+	FILE *f;
+	char filename[PATH_MAX], *tempfile, *template;
+	size_t streamsize;
+	char *membuf;
+	xmlDoc *doc;
+	xsltStylesheetPtr xslt = NULL;
+	xmlDoc *transformed;
+	struct zip_source *s[dive_table.nr];
+	struct zip *zip;
+
+	/*
+	 * Creating a temporary .DLD file to be eventually uploaded to
+	 * divelogs.de. I wonder if this could be done in-memory.
+	 */
+
+	template = strdup("/tmp/export.DLD-XXXXXX");
+	tempfile = mktemp(template);
+	zip = zip_open(tempfile, ZIP_CREATE, NULL);
+
+	if (!zip)
+		return;
+
+	if (!amount_selected)
+		return;
+
+	/* walk the dive list in chronological order */
+	for (i = 0; i < dive_table.nr; i++) {
+
+		dive = get_dive(i);
+		if (!dive)
+			continue;
+		if (!dive->selected)
+			continue;
+
+		/*
+		 * Saving the dive is done into a memory buffer
+		 */
+
+		f = open_memstream(&membuf, &streamsize);
+		if (!f)
+			return;
+		save_dive(f, dive);
+		fclose(f);
+
+		/*
+		 * Parse the memory buffer into XML document and
+		 * transform it to divelogs.de format, finally dumping
+		 * the XML into a character buffer.
+		 */
+
+		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
+		if (!doc)
+			continue;
+
+		xslt = get_stylesheet("divelogs-export.xslt");
+		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+		xsltFreeStylesheet(xslt);
+		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
+		xmlFreeDoc(doc);
+		xmlFreeDoc(transformed);
+
+		/*
+		 * Save the XML document into a zip file.
+		 */
+
+		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
+		if ((s[i]=zip_source_buffer(zip, membuf, streamsize, 0)) == NULL || zip_add(zip, filename, s[i]) == -1)
+			fprintf(stderr, "failed to include dive %d\n", i);
+
+	}
+	zip_close(zip);
+
+	/*
+	 * divelogs.de upload functionality should get rid of this
+	 * message and use proper dialog to inform user of the success
+	 * or failure of the upload
+	 */
+
+	fprintf(stderr, "Created .DLD file %s\n", tempfile);
+	free(template);
+}
+#endif
+
 static void merge_dive_index(int i, struct dive *a)
 {
 	struct dive *b = get_dive(i+1);
@@ -2034,6 +2128,9 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 	char deleteplurallabel[] = N_("Delete dives");
 	char deletesinglelabel[] = N_("Delete dive");
 	char *deletelabel;
+#if defined(LIBZIP) && defined(XSLT)
+	char exportlabel[] = N_("Export dive(s)");
+#endif
 	GtkTreePath *path, *prevpath, *nextpath;
 	GtkTreeIter iter, previter, nextiter;
 	int idx, previdx, nextidx;
@@ -2100,6 +2197,12 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			menuitem = gtk_menu_item_new_with_label(deletelabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_selected_dives_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+#if defined(LIBZIP) && defined(XSLT)
+			menuitem = gtk_menu_item_new_with_label(exportlabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(export_selected_dives_cb), path);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+#endif
 
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_selected_dives_cb), NULL);
