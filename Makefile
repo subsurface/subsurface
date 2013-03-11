@@ -32,7 +32,7 @@ STORED_VERSION_STRING = \
 			   read ignore ignore v <$(VERSION_FILE) && echo $$v))
 #" workaround editor syntax highlighting quirk
 
-UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win")
+UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win|gnu|kfreebsd")
 GET_VERSION = ./scripts/get-version
 VERSION_STRING := $(shell $(GET_VERSION) linux || echo "v$(VERSION)")
 # Mac Info.plist style with three numbers 1.2.3
@@ -125,7 +125,7 @@ ifneq ($(strip $(LIBSQLITE3)),)
 	SQLITE3 = -DSQLITE3 $(shell $(PKGCONFIG) --cflags sqlite3)
 endif
 
-ifeq ($(UNAME), linux)
+ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
