@@ -10,6 +10,7 @@
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
  */
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1977,7 +1978,7 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	int i;
 	struct dive *dive;
 	FILE *f;
-	char filename[PATH_MAX], *tempfile, *template;
+	char filename[PATH_MAX], *tempfile;
 	size_t streamsize;
 	char *membuf;
 	xmlDoc *doc;
@@ -1985,14 +1986,17 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	xmlDoc *transformed;
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
+	const gchar *tmpdir = g_get_tmp_dir();
 
 	/*
 	 * Creating a temporary .DLD file to be eventually uploaded to
 	 * divelogs.de. I wonder if this could be done in-memory.
 	 */
 
-	template = strdup("/tmp/export.DLD-XXXXXX");
-	tempfile = mktemp(template);
+	tempfile = g_build_filename(tmpdir, "export.DLD-XXXXXX", NULL);
+	int fd = g_mkstemp(tempfile);
+	if (fd != -1)
+		close(fd);
 	zip = zip_open(tempfile, ZIP_CREATE, NULL);
 
 	if (!zip)
@@ -2010,14 +2014,17 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		if (!dive->selected)
 			continue;
 
-		/*
-		 * Saving the dive is done into a memory buffer
-		 */
-
-		f = open_memstream(&membuf, &streamsize);
+		f = tmpfile();
 		if (!f)
 			return;
 		save_dive(f, dive);
+		fseek(f, 0, SEEK_END);
+		streamsize = ftell(f);
+		rewind(f);
+		membuf = malloc(streamsize + 1);
+		if (!membuf || !fread(membuf, streamsize, 1, f))
+			return;
+		membuf[streamsize] = 0;
 		fclose(f);
 
 		/*
@@ -2030,7 +2037,10 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		if (!doc)
 			continue;
 
+		free((void *)membuf);
 		xslt = get_stylesheet("divelogs-export.xslt");
+		if (!xslt)
+			return;
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
 		xsltFreeStylesheet(xslt);
 		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
@@ -2044,7 +2054,8 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
 		if ((s[i]=zip_source_buffer(zip, membuf, streamsize, 0)) == NULL || zip_add(zip, filename, s[i]) == -1)
 			fprintf(stderr, "failed to include dive %d\n", i);
-
+		if (membuf)
+			free((void *)membuf);
 	}
 	zip_close(zip);
 
@@ -2053,9 +2064,14 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	 * message and use proper dialog to inform user of the success
 	 * or failure of the upload
 	 */
-
 	fprintf(stderr, "Created .DLD file %s\n", tempfile);
-	free(template);
+
+	/* TODO: the file needs to be deleted after the upload
+
+	   g_unlink(tempfile);
+
+	 */
+	g_free(tempfile);
 }
 #endif
 
