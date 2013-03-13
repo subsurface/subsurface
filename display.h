@@ -54,6 +54,7 @@ extern void get_plot_details(struct graphics_context *gc, int time, char *buf, s
 struct options {
 	enum { PRETTY, TABLE, TWOPERPAGE } type;
 	int print_selected;
+	int color_selected;
 };
 
 extern char zoomed_plot, dc_number;

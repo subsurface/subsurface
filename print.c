@@ -599,8 +599,9 @@ static int show_dive_table(struct dive *dive, cairo_t *cr, PangoLayout *layout, 
 static void show_dive_profile(struct dive *dive, cairo_t *cr, double w,
 	double h)
 {
+	int color = print_options.color_selected == 1 ? 2 : 1; /* 1 for B/W, 2 for color */
 	struct graphics_context gc = {
-		.printer = 1,
+		.printer = color,
 		.cr = cr,
 		.drawing_area = { w/20.0, h/20.0, w, h},
 	};
@@ -871,6 +872,7 @@ static void name(GtkWidget *w, gpointer data) \
 }
 
 OPTIONSELECTEDCALLBACK(print_selection_toggle, print_options.print_selected)
+OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
 
 
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
@@ -920,6 +922,12 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 		gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 2);
 		g_signal_connect(G_OBJECT(button), "toggled",
 			G_CALLBACK(print_selection_toggle), NULL);
+		GtkWidget *colorButton;
+		colorButton = gtk_check_button_new_with_label(_("Print in color"));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(colorButton),TRUE);
+		gtk_box_pack_start(GTK_BOX(box), colorButton, FALSE, FALSE, 2);
+		g_signal_connect(G_OBJECT(colorButton), "toggled",
+			G_CALLBACK(color_selection_toggle), NULL);
 	}
 
 	gtk_widget_show_all(vbox);
