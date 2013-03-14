@@ -45,13 +45,27 @@
       <xsl:value-of select="substring-before(cylinder/@size, ' ')"/>
     </CYLINDERSIZE>
     <CYLINDERSTARTPRESSURE>
-      <xsl:value-of select="substring-before(node()/sample/@pressure, ' ')"/>
+      <xsl:choose>
+        <xsl:when test="node()/sample/@pressure != ''">
+          <xsl:value-of select="substring-before(node()/sample/@pressure, ' ')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="cylinder[1]/@start"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </CYLINDERSTARTPRESSURE>
     <CYLINDERENDPRESSURE>
-      <xsl:variable name="samples">
-        <xsl:value-of select="count(node()/sample)"/>
-      </xsl:variable>
-      <xsl:value-of select="node()/sample[position() = $samples]/@pressure"/>
+      <xsl:choose>
+        <xsl:when test="count(node()/sample[@pressure!='']) &gt; 0">
+          <xsl:variable name="samples">
+            <xsl:value-of select="count(node()/sample[@pressure!=''])"/>
+          </xsl:variable>
+          <xsl:value-of select="node()/sample[position() = $samples]/@pressure"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="cylinder[1]/@end"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </CYLINDERENDPRESSURE>
     <WEIGHT>
       <xsl:call-template name="sum">
