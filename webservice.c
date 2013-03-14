@@ -308,6 +308,57 @@ void webservice_download_dialog(void)
 		free((void *)current_uid);
 }
 
+static gboolean divelogde_dialog(const char **user, const char **pass)
+{
+	GtkWidget *dialog, *vbox, *info, *frame_user, *frame_pass, *uid, *pwd;
+	gboolean ret = FALSE;
+
+	*user = subsurface_get_conf("divelogde_user");
+	*pass = subsurface_get_conf("divelogde_pass");
+	dialog = gtk_dialog_new_with_buttons(_("Upload to divelogs.de"),
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_APPLY,
+		GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL,
+		GTK_RESPONSE_REJECT,
+		NULL);
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	info = gtk_label_new(_("Please enter your userid and password for divelogs.de. "
+				"The selected dives will be added to your account"));
+	gtk_label_set_line_wrap(GTK_LABEL(info), TRUE);
+	gtk_box_pack_start(GTK_BOX(vbox), info, FALSE, TRUE, 0);
+	gtk_misc_set_padding(GTK_MISC(info), 6, 6);
+
+	frame_user = gtk_frame_new(_("User Identifier"));
+	gtk_box_pack_start(GTK_BOX(vbox), frame_user, FALSE, TRUE, 6);
+	uid = gtk_entry_new();
+	gtk_container_add(GTK_CONTAINER(frame_user), uid);
+	gtk_entry_set_max_length(GTK_ENTRY(uid), 40);
+	gtk_entry_set_text(GTK_ENTRY(uid), *user ?: "");
+
+
+	frame_pass = gtk_frame_new(_("Password"));
+	gtk_box_pack_start(GTK_BOX(vbox), frame_pass, FALSE, TRUE, 6);
+	pwd = gtk_entry_new();
+	gtk_container_add(GTK_CONTAINER(frame_pass), pwd);
+	gtk_entry_set_max_length(GTK_ENTRY(pwd), 40);
+	gtk_entry_set_text(GTK_ENTRY(pwd), *pass ?: "");
+
+	gtk_widget_show_all(dialog);
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		free((void*)*user);
+		free((void*)*pass);
+		*user = strdup(gtk_entry_get_text(GTK_ENTRY(uid)));
+		*pass = strdup(gtk_entry_get_text(GTK_ENTRY(pwd)));
+		subsurface_set_conf("divelogde_user", *user);
+		subsurface_set_conf("divelogde_pass", *pass);
+		ret = TRUE;
+	}
+	gtk_widget_destroy(dialog);
+	return ret;
+}
+
 int divelogde_upload(char *fn)
 {
 	SoupMessage *msg;
@@ -315,19 +366,20 @@ int divelogde_upload(char *fn)
 	SoupSession *session;
 	SoupBuffer *sbuf;
 	gboolean ret = FALSE;
-	gchar url[256] = "http://divelogs.de/DivelogsDirectImport.php";
+	char url[256] = "http://divelogs.de/DivelogsDirectImport.php";
+	const char *pass = NULL;
+	const char *user = NULL;
 	struct memblock mem;
 
 	if (readfile(fn, &mem) < 0)
 		return ret;
-
+	if (!divelogde_dialog(&user, &pass))
+		return ret;
 	sbuf = soup_buffer_new(SOUP_MEMORY_STATIC, mem.buffer, mem.size);
 	session = soup_session_async_new();
 	multipart = soup_multipart_new(SOUP_FORM_MIME_TYPE_MULTIPART);
-
-	/* this needs to come from a dialog box and be stored in the user config */
-	soup_multipart_append_form_string(multipart, "user", "subsurfacetest");
-	soup_multipart_append_form_string(multipart, "pass", "geheim");
+	soup_multipart_append_form_string(multipart, "user", user);
+	soup_multipart_append_form_string(multipart, "pass", pass);
 
 	soup_multipart_append_form_file(multipart, "userfile", fn, NULL, sbuf);
 	msg = soup_form_request_new_from_multipart(url, multipart);
