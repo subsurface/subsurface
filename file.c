@@ -14,7 +14,7 @@
 #define O_BINARY 0
 #endif
 
-static int readfile(const char *filename, struct memblock *mem)
+int readfile(const char *filename, struct memblock *mem)
 {
 	int ret, fd;
 	struct stat st;

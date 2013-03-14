@@ -6,6 +6,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display-gtk.h"
+#include "file.h"
 
 struct dive_table gps_location_table;
 static gboolean merge_locations_into_dives(void);
@@ -305,4 +306,42 @@ void webservice_download_dialog(void)
 	gtk_widget_show_all(dialog);
 	if (has_previous_uid)
 		free((void *)current_uid);
+}
+
+int divelogde_upload(char *fn)
+{
+	SoupMessage *msg;
+	SoupMultipart *multipart;
+	SoupSession *session;
+	SoupBuffer *sbuf;
+	gboolean ret = FALSE;
+	gchar url[256] = "http://divelogs.de/DivelogsDirectImport.php";
+	struct memblock mem;
+
+	if (readfile(fn, &mem) < 0)
+		return ret;
+
+	sbuf = soup_buffer_new(SOUP_MEMORY_STATIC, mem.buffer, mem.size);
+	session = soup_session_async_new();
+	multipart = soup_multipart_new(SOUP_FORM_MIME_TYPE_MULTIPART);
+
+	/* this needs to come from a dialog box and be stored in the user config */
+	soup_multipart_append_form_string(multipart, "user", "subsurfacetest");
+	soup_multipart_append_form_string(multipart, "pass", "geheim");
+
+	soup_multipart_append_form_file(multipart, "userfile", fn, NULL, sbuf);
+	msg = soup_form_request_new_from_multipart(url, multipart);
+	soup_message_headers_append(msg->request_headers, "Accept", "text/xml");
+	soup_session_send_message(session, msg);
+	if (SOUP_STATUS_IS_SUCCESSFUL(msg->status_code)) {
+		/* we should really check if the XML returned indicates that
+		 * the profiles were successfully uploaded...
+		 */
+		fprintf(stderr, "%s\n", (gchar *)msg->response_body->data);
+		ret = TRUE;
+	}
+	soup_session_abort(session);
+	g_object_unref(G_OBJECT(msg));
+	g_object_unref(G_OBJECT(session));
+	return ret;
 }

@@ -29,6 +29,7 @@
 #include "dive.h"
 #include "display.h"
 #include "display-gtk.h"
+#include "webservice.h"
 
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include "satellite.h"
@@ -1992,7 +1993,6 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	 * Creating a temporary .DLD file to be eventually uploaded to
 	 * divelogs.de. I wonder if this could be done in-memory.
 	 */
-
 	tempfile = g_build_filename(tmpdir, "export.DLD-XXXXXX", NULL);
 	int fd = g_mkstemp(tempfile);
 	if (fd != -1)
@@ -2032,7 +2032,6 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		 * transform it to divelogs.de format, finally dumping
 		 * the XML into a character buffer.
 		 */
-
 		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
 		if (!doc)
 			continue;
@@ -2050,27 +2049,19 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		/*
 		 * Save the XML document into a zip file.
 		 */
-
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
-		if ((s[i]=zip_source_buffer(zip, membuf, streamsize, 0)) == NULL || zip_add(zip, filename, s[i]) == -1)
-			fprintf(stderr, "failed to include dive %d\n", i);
-		if (membuf)
-			free((void *)membuf);
+		s[i] = zip_source_buffer(zip, membuf, streamsize, 1);
+		if (s[i]) {
+			zip_int64_t ret = zip_add(zip, filename, s[i]);
+			if (ret == -1)
+				fprintf(stderr, "failed to include dive %d\n", i);
+		}
 	}
 	zip_close(zip);
-
-	/*
-	 * divelogs.de upload functionality should get rid of this
-	 * message and use proper dialog to inform user of the success
-	 * or failure of the upload
-	 */
-	fprintf(stderr, "Created .DLD file %s\n", tempfile);
-
-	/* TODO: the file needs to be deleted after the upload
-
-	   g_unlink(tempfile);
-
-	 */
+	if (divelogde_upload(tempfile))
+		g_unlink(tempfile);
+	else
+		fprintf(stderr,"upload of %s failed\n", tempfile);
 	g_free(tempfile);
 }
 #endif
