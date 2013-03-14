@@ -924,10 +924,10 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 			G_CALLBACK(print_selection_toggle), NULL);
 		GtkWidget *colorButton;
 		colorButton = gtk_check_button_new_with_label(_("Print in color"));
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(colorButton),TRUE);
-		gtk_box_pack_start(GTK_BOX(box), colorButton, FALSE, FALSE, 2);
 		g_signal_connect(G_OBJECT(colorButton), "toggled",
 			G_CALLBACK(color_selection_toggle), NULL);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(colorButton),TRUE);
+		gtk_box_pack_start(GTK_BOX(box), colorButton, FALSE, FALSE, 2);
 	}
 
 	gtk_widget_show_all(vbox);
