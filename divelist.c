@@ -2052,7 +2052,7 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
 		s[i] = zip_source_buffer(zip, membuf, streamsize, 1);
 		if (s[i]) {
-			zip_int64_t ret = zip_add(zip, filename, s[i]);
+			int64_t ret = zip_add(zip, filename, s[i]);
 			if (ret == -1)
 				fprintf(stderr, "failed to include dive %d\n", i);
 		}
