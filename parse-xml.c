@@ -8,6 +8,7 @@
 #define __USE_XOPEN
 #include <time.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #ifdef XSLT
 #include <libxslt/transform.h>
@@ -1533,13 +1534,34 @@ static void reset_all(void)
 	import_source = UNKNOWN;
 }
 
+/* divelog.de sends us xml files that claim to be iso-8859-1
+ * but once we decode the HTML encoded characters they turn
+ * into UTF-8 instead. So skip the incorrect encoding
+ * declaration and decode the HTML encoded characters */
+const char *preprocess_divelog_de(const char *buffer)
+{
+	char *ret = strstr(buffer, "<DIVELOGSDATA>");
+
+	if (ret) {
+		xmlParserCtxtPtr ctx;
+		char buf[] = "";
+
+		ctx = xmlCreateMemoryParserCtxt(buf, sizeof(buf));
+		ret = xmlStringLenDecodeEntities(ctx, ret, strlen(ret),  XML_SUBSTITUTE_REF, 0, 0, 0);
+
+		return ret;
+	}
+	return buffer;
+}
+
 void parse_xml_buffer(const char *url, const char *buffer, int size,
 			struct dive_table *table, GError **error)
 {
 	xmlDoc *doc;
+	const char *res = preprocess_divelog_de(buffer);
 
 	target_table = table;
-	doc = xmlReadMemory(buffer, size, url, NULL, 0);
+	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
 	if (!doc) {
 		fprintf(stderr, _("Failed to parse '%s'.\n"), url);
 		parser_error(error, _("Failed to parse '%s'"), url);
