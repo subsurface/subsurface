@@ -45,14 +45,8 @@
       </depth>
       <location>
         <xsl:for-each select="LOCATION|SITE">
-          <xsl:choose>
-            <xsl:when test="following-sibling::SITE[1] != ''">
-              <xsl:value-of select="concat(., ' / ')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="."/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:value-of select="."/>
+          <xsl:if test=". != '' and following-sibling::*[1] != ''"> / </xsl:if>
         </xsl:for-each>
       </location>
 
