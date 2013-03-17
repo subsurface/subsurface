@@ -1959,6 +1959,34 @@ static gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer 
 	return TRUE;
 }
 
+static void add_gas_change_cb(GtkWidget *menuitem, gpointer data)
+{
+	double *x = data;
+	printf("x = %d:%02u\n", FRACTION(x_to_time(*x), 60));
+}
+
+static void popup_profile_menu(GtkWidget *widget, GdkEventButton *event)
+{
+	GtkWidget *menu, *menuitem, *image;
+	static double x;
+
+	if (!event || !current_dive)
+		return;
+	x = event->x;
+	menu = gtk_menu_new();
+	menuitem = gtk_image_menu_item_new_with_label(_("Add gas change event here"));
+	image = gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
+	g_signal_connect(menuitem, "activate", G_CALLBACK(add_gas_change_cb), &x);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+	gtk_widget_show_all(menu);
+
+	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
+		event->button, gtk_get_current_event_time());
+
+}
+
 static gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	switch (event->button) {
@@ -1966,6 +1994,9 @@ static gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_
 		zoom_x = event->x;
 		zoom_y = event->y;
 		zoom_factor = 2.5;
+		break;
+	case 3:
+		popup_profile_menu(widget, event);
 		break;
 	default:
 		return TRUE;

@@ -50,6 +50,7 @@ extern struct divecomputer *select_dc(struct divecomputer *main);
 extern void init_profile_background(struct graphics_context *gc);
 extern void attach_tooltip(int x, int y, int w, int h, const char *text);
 extern void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize);
+extern int x_to_time(double x);
 
 struct options {
 	enum { PRETTY, TABLE, TWOPERPAGE } type;

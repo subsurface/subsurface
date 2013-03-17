@@ -141,6 +141,15 @@ static const color_t profile_color[] = {
 #define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
 #define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
 
+/* keep the last used gc around so we can invert the SCALEX calculation in
+ * order to calculate a time value for an x coordinate */
+static struct graphics_context last_gc;
+int x_to_time(double x)
+{
+	int seconds = (x - last_gc.drawing_area.x) / last_gc.maxx * (last_gc.rightx - last_gc.leftx) + last_gc.leftx;
+	return (seconds > 0) ? seconds : 0;
+}
+
 static void move_to(struct graphics_context *gc, double x, double y)
 {
 	cairo_move_to(gc->cr, SCALE(gc, x, y));
@@ -700,6 +709,9 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 
 	gc->leftx = 0; gc->rightx = maxtime;
 	gc->topy = 0; gc->bottomy = 1.0;
+
+	last_gc = *gc;
+
 	set_source_rgba(gc, TIME_GRID);
 	cairo_set_line_width_scaled(gc->cr, 2);
 
