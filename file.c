@@ -72,6 +72,7 @@ static void zip_read(struct zip_file *file, GError **error, const char *filename
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
 	}
+	mem[read] = 0;
 	parse_xml_buffer(filename, mem, read, &dive_table, error);
 	free(mem);
 }

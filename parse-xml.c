@@ -1562,6 +1562,9 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 
 	target_table = table;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
+	if (res != buffer)
+		free((char *)res);
+
 	if (!doc) {
 		fprintf(stderr, _("Failed to parse '%s'.\n"), url);
 		parser_error(error, _("Failed to parse '%s'"), url);
