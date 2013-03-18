@@ -1644,9 +1644,12 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 				break;
 			case 258:
 				/* 258 Bookmark */
-				cur_event.name = strdup("bookmark");
-				if (data[3])
+				if (data[3]) {
+					cur_event.name = strdup("heading");
 					cur_event.value = atoi(data[3]);
+				} else {
+					cur_event.name = strdup("bookmark");
+				}
 				break;
 			default:
 				cur_event.name = strdup("unknown");
