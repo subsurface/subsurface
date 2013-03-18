@@ -466,7 +466,8 @@ static void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 		int o2 = mix->o2.permille;
 		int he = mix->he.permille;
 		struct divecomputer *dc = &dive->dc;
-		int used = !i;  /* The first gas is always used */
+		int used = 0;
+		int first_gas_explicit = 0;
 
 		while (dc){
 			struct event *event = dc->events;
@@ -476,6 +477,8 @@ static void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 						unsigned int event_he = event->value >> 16;
 						unsigned int event_o2 = event->value & 0xffff;
 
+						if (event->time.seconds < 30)
+							first_gas_explicit = 1;
 						if (is_air(o2, he)){
 							if (is_air(event_o2 * 10, event_he * 10))
 								used = 1;
@@ -490,6 +493,11 @@ static void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 			}
 			dc = dc->next;
 		}
+
+		/* Unless explicity set, the first gas to use has index 0 */
+		if (i == 0 && !first_gas_explicit)
+			used = 1;
+
 		if (!used)
 			continue;
 
