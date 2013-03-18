@@ -1962,7 +1962,16 @@ static gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer 
 static void add_gas_change_cb(GtkWidget *menuitem, gpointer data)
 {
 	double *x = data;
-	printf("x = %d:%02u\n", FRACTION(x_to_time(*x), 60));
+	int when = x_to_time(*x);
+	int cylnr = select_cylinder(current_dive, when);
+	if (cylnr >= 0) {
+		cylinder_t *cyl = &current_dive->cylinder[cylnr];
+		int value = cyl->gasmix.o2.permille / 10 | ((cyl->gasmix.he.permille / 10) << 16);
+		add_event(current_dc, when, 25, 0, value, "gaschange");
+		mark_divelist_changed(TRUE);
+		report_dives(FALSE, FALSE);
+		dive_list_update_dives();
+	}
 }
 
 static void popup_profile_menu(GtkWidget *widget, GdkEventButton *event)

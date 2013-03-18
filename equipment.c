@@ -605,6 +605,69 @@ void show_dive_equipment(struct dive *dive, int w_idx)
 		&ws_ptr, &weightsystem_none, &set_one_weightsystem);
 }
 
+int select_cylinder(struct dive *dive, int when)
+{
+	GtkWidget *dialog, *vbox, *label;
+	GtkWidget *buttons[MAX_CYLINDERS] = { NULL, };
+	GSList *group = NULL;
+	int i, success, nr, selected = -1;
+	char buffer[256];
+
+	nr = MAX_CYLINDERS - 1;
+	while (nr >= 0 && cylinder_nodata(cyl_ptr(dive, nr)))
+		nr--;
+
+	if (nr == -1) {
+		dialog = gtk_dialog_new_with_buttons(_("Cannot add gas change"),
+				GTK_WINDOW(main_window),
+				GTK_DIALOG_DESTROY_WITH_PARENT,
+				GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+				NULL);
+		vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+		label = gtk_label_new(_("No cylinders listed for this dive."));
+		gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
+		gtk_widget_show_all(dialog);
+		success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+		goto bail;
+	}
+	snprintf(buffer, sizeof(buffer), _("Add gaschange event at %d:%02u"), FRACTION(when, 60));
+	dialog = gtk_dialog_new_with_buttons(buffer,
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	label = gtk_label_new(_("Available gases"));
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
+	for (i = 0; i <= nr; i++) {
+		char gas_buf[80];
+		cylinder_t *cyl = cyl_ptr(dive, i);
+		get_gas_string(cyl->gasmix.o2.permille, cyl->gasmix.he.permille, gas_buf, sizeof(gas_buf));
+		snprintf(buffer, sizeof(buffer), "%s: %s",
+			dive->cylinder[i].type.description ?: _("unknown"), gas_buf);
+		buttons[i] = gtk_radio_button_new_with_label(group, buffer);
+		group = gtk_radio_button_get_group(GTK_RADIO_BUTTON(buttons[i]));
+		gtk_box_pack_start(GTK_BOX(vbox), buttons[i], FALSE, FALSE, 0);
+	}
+	gtk_widget_show_all(dialog);
+	success = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+	if (success) {
+		for (i = 0; i <= nr; i++)
+			if (buttons[i] && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttons[i])))
+				selected = i;
+	}
+	for (i = 0; i <= nr; i++)
+		if (buttons[i])
+			gtk_widget_destroy(buttons[i]);
+bail:
+	gtk_widget_destroy(dialog);
+
+	return selected;
+
+}
+
 static GtkWidget *create_spinbutton(GtkWidget *vbox, const char *name, double min, double max, double incr)
 {
 	GtkWidget *frame, *hbox, *button;

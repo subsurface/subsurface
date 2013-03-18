@@ -121,7 +121,7 @@ static int get_gasidx(struct dive *dive, int o2, int he)
 	return -1;
 }
 
-static void get_gas_string(int o2, int he, char *text, int len)
+void get_gas_string(int o2, int he, char *text, int len)
 {
 	if (is_air(o2, he))
 		snprintf(text, len, _("air"));

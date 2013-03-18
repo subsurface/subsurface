@@ -61,7 +61,7 @@ extern GtkWidget *extended_dive_info_widget(void);
 extern GtkWidget *equipment_widget(int w_idx);
 extern GtkWidget *single_stats_widget(void);
 extern GtkWidget *total_stats_widget(void);
-
+extern int select_cylinder(struct dive *dive, int when);
 extern GtkWidget *dive_list_create(void);
 extern void dive_list_destroy(void);
 extern void info_widget_destroy(void);

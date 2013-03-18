@@ -471,6 +471,7 @@ extern struct dive_table dive_table;
 
 extern int selected_dive;
 #define current_dive (get_dive(selected_dive))
+#define current_dc (get_dive_dc(current_dive, dc_number))
 
 static inline struct dive *get_gps_location(int nr, struct dive_table *table)
 {
@@ -484,6 +485,16 @@ static inline struct dive *get_dive(int nr)
 	if (nr >= dive_table.nr || nr < 0)
 		return NULL;
 	return dive_table.dives[nr];
+}
+
+static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
+{
+	struct divecomputer *dc = NULL;
+	if (nr >= 0)
+		dc = &dive->dc;
+	while (nr-- > 0)
+		dc = dc->next;
+	return dc;
 }
 
 /*
@@ -670,6 +681,7 @@ void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gb
 void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth);
 void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he);
 void free_dps(struct divedatapoint *dp);
+void get_gas_string(int o2, int he, char *buf, int len);
 
 #ifdef DEBUGFILE
 extern char *debugfilename;
