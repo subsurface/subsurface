@@ -383,17 +383,17 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 	x = SCALEX(gc, event->time.seconds);
 	y = SCALEY(gc, depth);
 	set_source_rgba(gc, ALERT_BG);
-	cairo_move_to(gc->cr, x-15, y+6);
-	cairo_line_to(gc->cr, x-3  , y+6);
-	cairo_line_to(gc->cr, x-9, y-6);
-	cairo_line_to(gc->cr, x-15, y+6);
+	cairo_move_to(gc->cr, x-6, y+12);
+	cairo_line_to(gc->cr, x+6, y+12);
+	cairo_line_to(gc->cr, x  , y);
+	cairo_line_to(gc->cr, x-6, y+12);
 	cairo_stroke_preserve(gc->cr);
 	cairo_fill(gc->cr);
 	set_source_rgba(gc, ALERT_FG);
-	cairo_move_to(gc->cr, x-9, y-3);
-	cairo_line_to(gc->cr, x-9, y+1);
-	cairo_move_to(gc->cr, x-9, y+4);
-	cairo_line_to(gc->cr, x-9, y+4);
+	cairo_move_to(gc->cr, x, y+3);
+	cairo_line_to(gc->cr, x, y+7);
+	cairo_move_to(gc->cr, x, y+10);
+	cairo_line_to(gc->cr, x, y+10);
 	cairo_stroke(gc->cr);
 	/* we display the event on screen - so translate */
 	if (event->value) {
@@ -423,7 +423,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			event->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
 			event->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "");
 	}
-	attach_tooltip(x-15, y-6, 12, 12, buffer);
+	attach_tooltip(x-6, y, 12, 12, buffer);
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
