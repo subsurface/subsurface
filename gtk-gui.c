@@ -1974,6 +1974,43 @@ static void add_gas_change_cb(GtkWidget *menuitem, gpointer data)
 	}
 }
 
+int confirm_bookmark(int when)
+{
+        GtkWidget *dialog, *vbox, *label;
+	int confirmed;
+	char buffer[256];
+
+	snprintf(buffer, sizeof(buffer), _("Add bookmark event at %d:%02u"), FRACTION(when, 60));
+	dialog = gtk_dialog_new_with_buttons(_("Add bookmark"),
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	label = gtk_label_new(buffer);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
+	gtk_widget_show_all(dialog);
+	confirmed =  gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;
+
+	gtk_widget_destroy(dialog);
+
+	return confirmed;
+}
+
+static void add_bookmark_cb(GtkWidget *menuitem, gpointer data)
+{
+	double *x = data;
+	int when = x_to_time(*x);
+
+	if (confirm_bookmark(when)){
+		add_event(current_dc, when, 8, 0, 0, "bookmark");
+		mark_divelist_changed(TRUE);
+		report_dives(FALSE, FALSE);
+	}
+}
+
 static void popup_profile_menu(GtkWidget *widget, GdkEventButton *event)
 {
 	GtkWidget *menu, *menuitem, *image;
@@ -1988,6 +2025,12 @@ static void popup_profile_menu(GtkWidget *widget, GdkEventButton *event)
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
 	g_signal_connect(menuitem, "activate", G_CALLBACK(add_gas_change_cb), &x);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	menuitem = gtk_image_menu_item_new_with_label(_("Add bookmark event here"));
+	image = gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
+	g_signal_connect(menuitem, "activate", G_CALLBACK(add_bookmark_cb), &x);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
 
 	gtk_widget_show_all(menu);
 
