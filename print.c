@@ -610,6 +610,22 @@ static void show_dive_profile(struct dive *dive, cairo_t *cr, double w,
 	cairo_restore(cr);
 }
 
+#define NOTES_BLOCK()  \
+{\
+	show_dive_header(dive, cr, w*2, dive_header_height, font, w_scale_factor);\
+	cairo_translate(cr, 0, dive_header_height); \
+	show_dive_tanks (dive, cr, w*1, dive_tanks_height, font, w_scale_factor);\
+	cairo_translate(cr, 0, dive_tanks_height);\
+	show_dive_notes(dive, cr, w*2, dive_notes_height, font, w_scale_factor);\
+	cairo_translate(cr, 0, dive_notes_height);\
+}
+
+#define PROFILE_BLOCK() \
+{\
+	show_dive_profile(dive, cr, w*2, dive_profile_height);\
+	cairo_translate(cr, 0, dive_profile_height);\
+}
+
 static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	double h, PangoFontDescription *font, double w_scale_factor)
 {
@@ -634,18 +650,16 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	/* We actually want to scale the text and the lines now */
 	cairo_scale(cr, 0.5, 0.5);
 
-	/* Dive plot in the upper two thirds - note the scaling */
-	show_dive_profile(dive, cr, w*2, h*1.30);
+	double dive_header_height = h*0.15;
+	double dive_tanks_height = h* ((double) print_options.tanks_height/50);
+	double dive_notes_height = h* ((double) print_options.notes_height/50);
+	double dive_profile_height = h* ((double) print_options.profile_height/50);
 
-	/* Dive information in the lower third */
-	cairo_translate(cr, 0, h*1.30);
-	show_dive_header(dive, cr, w*2, h*0.15, font, w_scale_factor);
-
-	cairo_translate(cr, 0, h*0.15);
-	show_dive_tanks (dive, cr, w*1, h*0.25, font, w_scale_factor);
-
-	cairo_translate(cr, 0, h*0.25);
-	show_dive_notes(dive, cr, w*2, h*0.30, font, w_scale_factor);
+	if (!print_options.notes_up)
+		PROFILE_BLOCK()
+	NOTES_BLOCK()
+	if (print_options.notes_up)
+		PROFILE_BLOCK()
 
 	cairo_restore(cr);
 }
@@ -873,11 +887,37 @@ static void name(GtkWidget *w, gpointer data) \
 
 OPTIONSELECTEDCALLBACK(print_selection_toggle, print_options.print_selected)
 OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
+OPTIONSELECTEDCALLBACK(notes_up, print_options.notes_up)
 
+/*
+ * Hardcoded minimum and maximum values for the scaling spin_buttons
+ */
+#define profile_height_min (37)
+#define tanks_height_min (7)
+#define profile_height_max (77)
+#define tanks_height_max (16)
+
+/*
+ * Callback function that sets the values of the heigths for profile
+ * and tanks.  If changed recalculates height for notes.
+ */
+#define SCALECALLBACK(name, scale1, scale2)\
+static void name(GtkWidget *hscale, gpointer *data)\
+{ \
+    print_options.scale1 = gtk_range_get_value(GTK_RANGE(hscale)); \
+	print_options.notes_height = 93 - print_options.scale1 - print_options.scale2;\
+}
+
+SCALECALLBACK (prof_hscale, profile_height, tanks_height)
+SCALECALLBACK (tanks_hscale, tanks_height, profile_height)
 
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
-	GtkWidget *vbox, *radio1, *radio2, *radio3, *frame, *box;
+	GtkWidget *vbox, *radio1, *radio2, *radio3, *radio4, *radio5,
+	*frame, *frame1, *frame2,
+	*box, *box1, *box2, *box3, *box4,
+	*button, *colorButton, *label1, *label2,
+	*scale_prof_hscale, *scale_tanks_hscale;
 	int dives;
 	gtk_print_operation_set_custom_tab_label(operation, _("Print type"));
 
@@ -915,20 +955,75 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 		gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
 		box = gtk_hbox_new(FALSE, 1);
 		gtk_container_add(GTK_CONTAINER(frame), box);
-		GtkWidget *button;
 		button = gtk_check_button_new_with_label(_("Print only selected dives"));
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),
 			print_options.print_selected);
 		gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 2);
 		g_signal_connect(G_OBJECT(button), "toggled",
 			G_CALLBACK(print_selection_toggle), NULL);
-		GtkWidget *colorButton;
-		colorButton = gtk_check_button_new_with_label(_("Print in color"));
-		g_signal_connect(G_OBJECT(colorButton), "toggled",
-			G_CALLBACK(color_selection_toggle), NULL);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(colorButton),TRUE);
-		gtk_box_pack_start(GTK_BOX(box), colorButton, FALSE, FALSE, 2);
 	}
+	frame = gtk_frame_new(_("Layout Options"));
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
+	box = gtk_hbox_new(FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(frame), box);
+	colorButton = gtk_check_button_new_with_label(_("Print in color"));
+	g_signal_connect(G_OBJECT(colorButton), "toggled",
+		G_CALLBACK(color_selection_toggle), NULL);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(colorButton),TRUE);
+	gtk_box_pack_start(GTK_BOX(box), colorButton, FALSE, FALSE, 2);
+
+	frame1 = gtk_frame_new(_("Ordering"));
+	gtk_box_pack_start(GTK_BOX(box), frame1, FALSE, FALSE, 5);
+	box1 = gtk_vbox_new (TRUE, 1);
+	gtk_container_add(GTK_CONTAINER(frame1), box1);
+
+	radio4 = gtk_radio_button_new_with_label_from_widget (NULL, _("Profile on top"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio4), FALSE);
+	g_signal_connect(G_OBJECT(radio4), "toggled", NULL, NULL);
+
+	radio5 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio4), _("Notes on top"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio4), FALSE);
+	g_signal_connect(G_OBJECT(radio5), "toggled", G_CALLBACK(notes_up), NULL);
+
+	gtk_box_pack_start(GTK_BOX(box1), radio4, TRUE, FALSE, 2);
+	gtk_box_pack_start(GTK_BOX(box1), radio5, TRUE, FALSE, 2);
+
+	frame2 = gtk_frame_new(_("Sizing heights (\% of layout)"));
+	gtk_box_pack_start(GTK_BOX(box), frame2, FALSE, FALSE, 5);
+
+	box2 = gtk_hbox_new (TRUE, 1);
+	gtk_container_add (GTK_CONTAINER(frame2), box2);
+
+	box3 = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(box2), box3, FALSE, FALSE, 5);
+	box4 = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(box2), box4, TRUE, TRUE, 5);
+
+	label1 = gtk_label_new(_("Profile height (37% - 77%)"));
+	label2 = gtk_label_new(_("Other data height (7% - 16%)"));
+	gtk_box_pack_start (GTK_BOX(box3), label1, TRUE, TRUE, 10);
+	gtk_box_pack_start (GTK_BOX(box3), label2, TRUE, TRUE, 10);
+
+	/* Initialize the options to the actual layout */
+	print_options.profile_height = 65;
+	print_options.notes_height = 15;
+	print_options.tanks_height = 12;
+
+	scale_prof_hscale = gtk_hscale_new_with_range (profile_height_min, profile_height_max, 1);
+	gtk_range_set_value (GTK_RANGE(scale_prof_hscale), print_options.profile_height);
+	gtk_range_set_increments (GTK_RANGE(scale_prof_hscale),1,5);
+	gtk_scale_set_value_pos (GTK_SCALE(scale_prof_hscale), GTK_POS_LEFT);
+
+	scale_tanks_hscale = gtk_hscale_new_with_range (tanks_height_min, tanks_height_max, 1);
+	gtk_range_set_value (GTK_RANGE(scale_tanks_hscale), print_options.tanks_height);
+	gtk_range_set_increments (GTK_RANGE(scale_tanks_hscale),1,1);
+	gtk_scale_set_value_pos (GTK_SCALE(scale_tanks_hscale), GTK_POS_LEFT);
+
+	g_signal_connect(G_OBJECT(scale_prof_hscale),"value-changed",G_CALLBACK(prof_hscale), NULL);
+	g_signal_connect(G_OBJECT(scale_tanks_hscale),"value-changed",G_CALLBACK(tanks_hscale), NULL);
+
+	gtk_box_pack_start (GTK_BOX(box4), scale_prof_hscale, TRUE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX(box4), scale_tanks_hscale, TRUE, TRUE, 5);
 
 	gtk_widget_show_all(vbox);
 	return vbox;

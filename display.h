@@ -57,6 +57,8 @@ struct options {
 	enum { PRETTY, TABLE, TWOPERPAGE } type;
 	int print_selected;
 	int color_selected;
+	gboolean notes_up;
+	int profile_height, notes_height, tanks_height;
 };
 
 extern char zoomed_plot, dc_number;
