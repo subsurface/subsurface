@@ -878,6 +878,8 @@ static void name(GtkWidget *w, gpointer data) \
 OPTIONCALLBACK(set_pretty, type, PRETTY)
 OPTIONCALLBACK(set_table, type, TABLE)
 OPTIONCALLBACK(set_twoperpage, type, TWOPERPAGE)
+OPTIONCALLBACK(set_notes_up, notes_up, TRUE)
+OPTIONCALLBACK(set_profile_up, notes_up, FALSE)
 
 #define OPTIONSELECTEDCALLBACK(name, option) \
 static void name(GtkWidget *w, gpointer data) \
@@ -887,7 +889,6 @@ static void name(GtkWidget *w, gpointer data) \
 
 OPTIONSELECTEDCALLBACK(print_selection_toggle, print_options.print_selected)
 OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
-OPTIONSELECTEDCALLBACK(notes_up, print_options.notes_up)
 
 /*
  * Hardcoded minimum and maximum values for the scaling spin_buttons
@@ -977,13 +978,14 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	box1 = gtk_vbox_new (TRUE, 1);
 	gtk_container_add(GTK_CONTAINER(frame1), box1);
 
-	radio4 = gtk_radio_button_new_with_label_from_widget (NULL, _("Profile on top"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio4), FALSE);
-	g_signal_connect(G_OBJECT(radio4), "toggled", NULL, NULL);
+	radio4 = gtk_radio_button_new_with_label (NULL, _("Profile on top"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio4), print_options.notes_up);
 
 	radio5 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio4), _("Notes on top"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio4), FALSE);
-	g_signal_connect(G_OBJECT(radio5), "toggled", G_CALLBACK(notes_up), NULL);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio5), print_options.notes_up);
+
+	g_signal_connect(G_OBJECT(radio4), "toggled", G_CALLBACK(set_profile_up), NULL);
+	g_signal_connect(G_OBJECT(radio5), "toggled", G_CALLBACK(set_notes_up), NULL);
 
 	gtk_box_pack_start(GTK_BOX(box1), radio4, TRUE, FALSE, 2);
 	gtk_box_pack_start(GTK_BOX(box1), radio5, TRUE, FALSE, 2);
