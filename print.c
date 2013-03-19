@@ -18,7 +18,7 @@ static int last_page_paginated, last_dive_paginated;
  * page in table mode */
 static int *first_dive;
 
-static struct options print_options;
+static struct options print_options = {PRETTY, 0, 2, FALSE, 65, 15, 12};
 
 typedef struct _Print_params {
 	int rotation, dives;
@@ -895,8 +895,10 @@ OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
  */
 #define profile_height_min (37)
 #define tanks_height_min (7)
+#define notes_height_min (0)
 #define profile_height_max (77)
 #define tanks_height_max (16)
+#define notes_height_max (49)
 
 /*
  * Callback function that sets the values of the heigths for profile
@@ -906,7 +908,8 @@ OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
 static void name(GtkWidget *hscale, gpointer *data)\
 { \
     print_options.scale1 = gtk_range_get_value(GTK_RANGE(hscale)); \
-	print_options.notes_height = 93 - print_options.scale1 - print_options.scale2;\
+    print_options.notes_height = 93 - print_options.scale1 - print_options.scale2;\
+    gtk_range_set_value (GTK_RANGE(data), print_options.notes_height);\
 }
 
 SCALECALLBACK (prof_hscale, profile_height, tanks_height)
@@ -917,8 +920,8 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	GtkWidget *vbox, *radio1, *radio2, *radio3, *radio4, *radio5,
 	*frame, *frame1, *frame2,
 	*box, *box1, *box2, *box3, *box4,
-	*button, *colorButton, *label1, *label2,
-	*scale_prof_hscale, *scale_tanks_hscale;
+	*button, *colorButton, *label1, *label2, *label3,
+	*scale_prof_hscale, *scale_tanks_hscale, *scale_notes_hscale;
 	int dives;
 	gtk_print_operation_set_custom_tab_label(operation, _("Print type"));
 
@@ -1003,13 +1006,10 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 
 	label1 = gtk_label_new(_("Profile height (37% - 77%)"));
 	label2 = gtk_label_new(_("Other data height (7% - 16%)"));
+	label3 = gtk_label_new(_("Notes height (7% - 77%)"));
 	gtk_box_pack_start (GTK_BOX(box3), label1, TRUE, TRUE, 10);
 	gtk_box_pack_start (GTK_BOX(box3), label2, TRUE, TRUE, 10);
-
-	/* Initialize the options to the actual layout */
-	print_options.profile_height = 65;
-	print_options.notes_height = 15;
-	print_options.tanks_height = 12;
+	gtk_box_pack_start (GTK_BOX(box3), label3, TRUE, TRUE, 10);
 
 	scale_prof_hscale = gtk_hscale_new_with_range (profile_height_min, profile_height_max, 1);
 	gtk_range_set_value (GTK_RANGE(scale_prof_hscale), print_options.profile_height);
@@ -1020,12 +1020,18 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_range_set_value (GTK_RANGE(scale_tanks_hscale), print_options.tanks_height);
 	gtk_range_set_increments (GTK_RANGE(scale_tanks_hscale),1,1);
 	gtk_scale_set_value_pos (GTK_SCALE(scale_tanks_hscale), GTK_POS_LEFT);
+	scale_notes_hscale = gtk_hscale_new_with_range (notes_height_min, notes_height_max, 1);
+	gtk_range_set_value (GTK_RANGE(scale_notes_hscale), print_options.notes_height);
+	gtk_range_set_increments (GTK_RANGE(scale_notes_hscale),1,1);
+	gtk_scale_set_value_pos (GTK_SCALE(scale_notes_hscale), GTK_POS_LEFT);
+	gtk_widget_set_sensitive(GTK_WIDGET(scale_notes_hscale), FALSE);
 
-	g_signal_connect(G_OBJECT(scale_prof_hscale),"value-changed",G_CALLBACK(prof_hscale), NULL);
-	g_signal_connect(G_OBJECT(scale_tanks_hscale),"value-changed",G_CALLBACK(tanks_hscale), NULL);
+	g_signal_connect(G_OBJECT(scale_prof_hscale),"value-changed",G_CALLBACK(prof_hscale), scale_notes_hscale);
+	g_signal_connect(G_OBJECT(scale_tanks_hscale),"value-changed",G_CALLBACK(tanks_hscale), scale_notes_hscale);
 
 	gtk_box_pack_start (GTK_BOX(box4), scale_prof_hscale, TRUE, TRUE, 5);
 	gtk_box_pack_start (GTK_BOX(box4), scale_tanks_hscale, TRUE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX(box4), scale_notes_hscale, TRUE, TRUE, 5);
 
 	gtk_widget_show_all(vbox);
 	return vbox;
