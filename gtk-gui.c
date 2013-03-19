@@ -1981,11 +1981,9 @@ int confirm_dialog(int when, char *action_text, char *event_text)
 {
         GtkWidget *dialog, *vbox, *label;
 	int confirmed;
-	char buffer[256];
 	char title[80];
 
 	snprintf(title, sizeof(title), "%s %s", action_text, event_text);
-	snprintf(buffer, sizeof(buffer), _("%s event at %d:%02u"), title, FRACTION(when, 60));
 	dialog = gtk_dialog_new_with_buttons(title,
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1994,7 +1992,7 @@ int confirm_dialog(int when, char *action_text, char *event_text)
 		NULL);
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	label = gtk_label_new(buffer);
+	label = create_label(_("%s event at %d:%02u"), title, FRACTION(when, 60));
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
 	gtk_widget_show_all(dialog);
 	confirmed =  gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT;

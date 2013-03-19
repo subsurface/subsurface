@@ -907,13 +907,25 @@ OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
 #define SCALECALLBACK(name, scale1, scale2)\
 static void name(GtkWidget *hscale, gpointer *data)\
 { \
-    print_options.scale1 = gtk_range_get_value(GTK_RANGE(hscale)); \
-    print_options.notes_height = 93 - print_options.scale1 - print_options.scale2;\
-    gtk_range_set_value (GTK_RANGE(data), print_options.notes_height);\
+	print_options.scale1 = gtk_range_get_value(GTK_RANGE(hscale));	\
+	print_options.notes_height = 93 - print_options.scale1 - print_options.scale2; \
+	gtk_range_set_value (GTK_RANGE(data), print_options.notes_height); \
 }
 
 SCALECALLBACK (prof_hscale, profile_height, tanks_height)
 SCALECALLBACK (tanks_hscale, tanks_height, profile_height)
+
+
+GtkWidget *create_label(const char *fmt, ...)
+{
+	char buf[256];
+	va_list args;
+
+	va_start(args, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, args);
+	va_end(args);
+	return gtk_label_new(buf);
+}
 
 static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 {
@@ -1004,9 +1016,9 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	box4 = gtk_vbox_new (FALSE, 5);
 	gtk_box_pack_start(GTK_BOX(box2), box4, TRUE, TRUE, 5);
 
-	label1 = gtk_label_new(_("Profile height (37% - 77%)"));
-	label2 = gtk_label_new(_("Other data height (7% - 16%)"));
-	label3 = gtk_label_new(_("Notes height (7% - 77%)"));
+	label1 = create_label(_("Profile height (%d%% - %d%%)"), profile_height_min, profile_height_max);
+	label2 = create_label(_("Other data height (%d%% - %d%%)"), tanks_height_min, tanks_height_max);
+	label3 = create_label(_("Notes height (%d%% - %d%%)"), notes_height_min, notes_height_max);
 	gtk_box_pack_start (GTK_BOX(box3), label1, TRUE, TRUE, 10);
 	gtk_box_pack_start (GTK_BOX(box3), label2, TRUE, TRUE, 10);
 	gtk_box_pack_start (GTK_BOX(box3), label3, TRUE, TRUE, 10);
@@ -1020,6 +1032,9 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_range_set_value (GTK_RANGE(scale_tanks_hscale), print_options.tanks_height);
 	gtk_range_set_increments (GTK_RANGE(scale_tanks_hscale),1,1);
 	gtk_scale_set_value_pos (GTK_SCALE(scale_tanks_hscale), GTK_POS_LEFT);
+
+	/* this third scale just shows how much is left for the notes;
+	 * it can't be directly changed by the user */
 	scale_notes_hscale = gtk_hscale_new_with_range (notes_height_min, notes_height_max, 1);
 	gtk_range_set_value (GTK_RANGE(scale_notes_hscale), print_options.notes_height);
 	gtk_range_set_increments (GTK_RANGE(scale_notes_hscale),1,1);

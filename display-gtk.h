@@ -73,6 +73,8 @@ extern const char *get_active_text(GtkComboBox *);
 extern void set_active_text(GtkComboBox *, const char *);
 extern GtkWidget *combo_box_with_model_and_entry(GtkListStore *);
 
+extern GtkWidget *create_label(const char *fmt, ...);
+
 extern gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data);
 
 unsigned int amount_selected;
