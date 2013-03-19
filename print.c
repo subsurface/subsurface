@@ -652,9 +652,9 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 
 	/* 7.5% for the header, 92.5% for the rest */
 	double dive_header_height = h * 0.15;
-	double dive_tanks_height = h * ((double) print_options.tanks_height / 92.5 * 2);
-	double dive_notes_height = h * ((double) print_options.notes_height / 92.5 * 2);
-	double dive_profile_height = h * ((double) print_options.profile_height / 92.5 * 2);
+	double dive_tanks_height = h * ((double) print_options.tanks_height / 108.1 * 2);
+	double dive_notes_height = h * ((double) print_options.notes_height / 108.1 * 2);
+	double dive_profile_height = h * ((double) print_options.profile_height / 108.1 * 2);
 
 	if (!print_options.notes_up)
 		PROFILE_BLOCK()
