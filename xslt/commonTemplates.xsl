@@ -131,4 +131,20 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- Trying to see if we have temperature readings -->
+  <xsl:template name="temperatureSamples">
+    <xsl:param name="units"/>
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:value-of select="count(descendant::temperature[. != 32])"/>
+      </xsl:when>
+      <xsl:when test="$units = 'Kelvin'">
+        <xsl:value-of select="count(descendant::temperature[. != 273.15])"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="count(descendant::temperature[. != 0])"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>
