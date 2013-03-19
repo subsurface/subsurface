@@ -150,6 +150,12 @@ int x_to_time(double x)
 	return (seconds > 0) ? seconds : 0;
 }
 
+/* x offset into the drawing area */
+int x_abs(double x)
+{
+	return x - last_gc.drawing_area.x;
+}
+
 static void move_to(struct graphics_context *gc, double x, double y)
 {
 	cairo_move_to(gc->cr, SCALE(gc, x, y));
@@ -423,7 +429,7 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 			event->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
 			event->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "");
 	}
-	attach_tooltip(x-6, y, 12, 12, buffer);
+	attach_tooltip(x-6, y, 12, 12, buffer, event);
 }
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)

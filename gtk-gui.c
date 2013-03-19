@@ -1789,12 +1789,13 @@ void exit_ui(void)
 typedef struct {
 	cairo_rectangle_t rect;
 	const char *text;
+	struct event *event;
 } tooltip_record_t;
 
 static tooltip_record_t *tooltip_rects;
 static int tooltips;
 
-void attach_tooltip(int x, int y, int w, int h, const char *text)
+void attach_tooltip(int x, int y, int w, int h, const char *text, struct event *event)
 {
 	cairo_rectangle_t *rect;
 	tooltip_rects = realloc(tooltip_rects, (tooltips + 1) * sizeof(tooltip_record_t));
@@ -1804,11 +1805,13 @@ void attach_tooltip(int x, int y, int w, int h, const char *text)
 	rect->width = w;
 	rect->height = h;
 	tooltip_rects[tooltips].text = strdup(text);
+	tooltip_rects[tooltips].event = event;
 	tooltips++;
 }
 
 #define INSIDE_RECT(_r,_x,_y)	((_r.x <= _x) && (_r.x + _r.width >= _x) && \
 				(_r.y <= _y) && (_r.y + _r.height >= _y))
+#define INSIDE_RECT_X(_r, _x)   ((_r.x <= _x) && (_r.x + _r.width >= _x))
 
 static gboolean profile_tooltip (GtkWidget *widget, gint x, gint y,
 			gboolean keyboard_mode, GtkTooltip *tooltip, struct graphics_context *gc)
@@ -1974,14 +1977,16 @@ static void add_gas_change_cb(GtkWidget *menuitem, gpointer data)
 	}
 }
 
-int confirm_bookmark(int when)
+int confirm_dialog(int when, char *action_text, char *event_text)
 {
         GtkWidget *dialog, *vbox, *label;
 	int confirmed;
 	char buffer[256];
+	char title[80];
 
-	snprintf(buffer, sizeof(buffer), _("Add bookmark event at %d:%02u"), FRACTION(when, 60));
-	dialog = gtk_dialog_new_with_buttons(_("Add bookmark"),
+	snprintf(title, sizeof(title), "%s %s", action_text, event_text);
+	snprintf(buffer, sizeof(buffer), _("%s event at %d:%02u"), title, FRACTION(when, 60));
+	dialog = gtk_dialog_new_with_buttons(title,
 		GTK_WINDOW(main_window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -2004,21 +2009,54 @@ static void add_bookmark_cb(GtkWidget *menuitem, gpointer data)
 	double *x = data;
 	int when = x_to_time(*x);
 
-	if (confirm_bookmark(when)){
+	if (confirm_dialog(when, _("Add"), _("bookmark"))){
 		add_event(current_dc, when, 8, 0, 0, "bookmark");
 		mark_divelist_changed(TRUE);
 		report_dives(FALSE, FALSE);
 	}
 }
 
-static void popup_profile_menu(GtkWidget *widget, GdkEventButton *event)
+static struct event *event_at_x(double rel_x)
+{
+	/* is there an event marker at this x coordinate */
+	struct event *ret = NULL;
+	int i;
+	int x = x_abs(rel_x);
+
+	for (i = 0; i < tooltips; i++) {
+		if (INSIDE_RECT_X(tooltip_rects[i].rect, x)) {
+			ret = tooltip_rects[i].event;
+			break;
+		}
+	}
+	return ret;
+}
+
+static void remove_event_cb(GtkWidget *menuitem, gpointer data)
+{
+	struct event *event = data;
+	if (confirm_dialog(event->time.seconds, _("Remove"), _(event->name))){
+		struct event **ep = &current_dc->events;
+		while (ep && *ep != event)
+			ep = &(*ep)->next;
+		if (ep) {
+			*ep = event->next;
+			free(event);
+		}
+		mark_divelist_changed(TRUE);
+		report_dives(FALSE, FALSE);
+	}
+}
+
+static void popup_profile_menu(GtkWidget *widget, GdkEventButton *gtk_event)
 {
 	GtkWidget *menu, *menuitem, *image;
 	static double x;
+	struct event *event;
 
-	if (!event || !current_dive)
+	if (!gtk_event || !current_dive)
 		return;
-	x = event->x;
+	x = gtk_event->x;
 	menu = gtk_menu_new();
 	menuitem = gtk_image_menu_item_new_with_label(_("Add gas change event here"));
 	image = gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
@@ -2030,12 +2068,18 @@ static void popup_profile_menu(GtkWidget *widget, GdkEventButton *event)
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
 	g_signal_connect(menuitem, "activate", G_CALLBACK(add_bookmark_cb), &x);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-
+	if ((event = event_at_x(x)) != NULL) {
+		menuitem = gtk_image_menu_item_new_with_label(_("Remove event here"));
+		image = gtk_image_new_from_stock(GTK_STOCK_REMOVE, GTK_ICON_SIZE_MENU);
+		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
+		g_signal_connect(menuitem, "activate", G_CALLBACK(remove_event_cb), event);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	}
 
 	gtk_widget_show_all(menu);
 
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
-		event->button, gtk_get_current_event_time());
+		gtk_event->button, gtk_get_current_event_time());
 
 }
 
