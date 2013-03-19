@@ -650,10 +650,11 @@ static void print(int divenr, cairo_t *cr, double x, double y, double w,
 	/* We actually want to scale the text and the lines now */
 	cairo_scale(cr, 0.5, 0.5);
 
-	double dive_header_height = h*0.15;
-	double dive_tanks_height = h* ((double) print_options.tanks_height/50);
-	double dive_notes_height = h* ((double) print_options.notes_height/50);
-	double dive_profile_height = h* ((double) print_options.profile_height/50);
+	/* 7.5% for the header, 92.5% for the rest */
+	double dive_header_height = h * 0.15;
+	double dive_tanks_height = h * ((double) print_options.tanks_height / 92.5 * 2);
+	double dive_notes_height = h * ((double) print_options.notes_height / 92.5 * 2);
+	double dive_profile_height = h * ((double) print_options.profile_height / 92.5 * 2);
 
 	if (!print_options.notes_up)
 		PROFILE_BLOCK()
@@ -893,12 +894,12 @@ OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
 /*
  * Hardcoded minimum and maximum values for the scaling spin_buttons
  */
-#define profile_height_min (37)
-#define tanks_height_min (7)
+#define profile_height_min (40)
+#define tanks_height_min (8)
 #define notes_height_min (0)
-#define profile_height_max (77)
-#define tanks_height_max (16)
-#define notes_height_max (49)
+#define profile_height_max (83)
+#define tanks_height_max (17)
+#define notes_height_max (52)
 
 /*
  * Callback function that sets the values of the heigths for profile
@@ -908,7 +909,7 @@ OPTIONSELECTEDCALLBACK(color_selection_toggle, print_options.color_selected)
 static void name(GtkWidget *hscale, gpointer *data)\
 { \
 	print_options.scale1 = gtk_range_get_value(GTK_RANGE(hscale));	\
-	print_options.notes_height = 93 - print_options.scale1 - print_options.scale2; \
+	print_options.notes_height = 100 - print_options.scale1 - print_options.scale2; \
 	gtk_range_set_value (GTK_RANGE(data), print_options.notes_height); \
 }
 
