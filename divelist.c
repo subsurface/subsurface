@@ -10,7 +10,7 @@
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
  */
-#include <fcntl.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
