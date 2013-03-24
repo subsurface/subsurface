@@ -2102,6 +2102,92 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 }
 #endif
 
+#if defined(XSLT)
+static void export_dives_uddf(const gboolean selected)
+{
+	FILE *f;
+	char *filename = NULL;
+	size_t streamsize;
+	char *membuf;
+	xmlDoc *doc;
+	xsltStylesheetPtr xslt = NULL;
+	xmlDoc *transformed;
+	GtkWidget *dialog;
+
+	dialog = gtk_file_chooser_dialog_new(_("Export As UDDF File"),
+			GTK_WINDOW(main_window),
+			GTK_FILE_CHOOSER_ACTION_SAVE,
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+			NULL);
+	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	}
+	gtk_widget_destroy(dialog);
+
+	if (!filename)
+		return;
+
+	/* Save XML to file and convert it into a memory buffer */
+	save_dives_logic(filename, selected);
+	f = fopen(filename, "r");
+	fseek(f, 0, SEEK_END);
+	streamsize = ftell(f);
+	rewind(f);
+
+	membuf = malloc(streamsize + 1);
+	if (!membuf || !fread(membuf, streamsize, 1, f)) {
+		fprintf(stderr, "Failed to read memory buffer\n");
+		return;
+	}
+	membuf[streamsize] = 0;
+	fclose(f);
+	g_unlink(filename);
+
+	/*
+	 * Parse the memory buffer into XML document and
+	 * transform it to UDDF format, finally dumping
+	 * the XML into a character buffer.
+	 */
+	doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
+	if (!doc) {
+		fprintf(stderr, "Failed to read XML memory\n");
+		return;
+	}
+	free((void *)membuf);
+
+	/* Convert to UDDF format */
+	xslt = get_stylesheet("uddf-export.xslt");
+	if (!xslt) {
+		fprintf(stderr, "Failed to open UDDF conversion stylesheet\n");
+		return;
+	}
+	transformed = xsltApplyStylesheet(xslt, doc, NULL);
+	xsltFreeStylesheet(xslt);
+	xmlFreeDoc(doc);
+
+	/* Write the transformed XML to file */
+	f = g_fopen(filename, "w");
+	xmlDocFormatDump(f, transformed, 1);
+	xmlFreeDoc(transformed);
+
+	fclose(f);
+	g_free(filename);
+}
+
+static void export_selected_dives_uddf_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	export_dives_uddf(TRUE);
+}
+
+void export_all_dives_uddf_cb()
+{
+	export_dives_uddf(FALSE);
+}
+#endif
+
 static void merge_dive_index(int i, struct dive *a)
 {
 	struct dive *b = get_dive(i+1);
@@ -2171,6 +2257,9 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 	char deleteplurallabel[] = N_("Delete dives");
 	char deletesinglelabel[] = N_("Delete dive");
 	char *deletelabel;
+#if defined(XSLT)
+	char exportuddflabel[] = N_("Export dive(s) to UDDF");
+#endif
 #if defined(LIBZIP) && defined(XSLT)
 	char exportlabel[] = N_("Export dive(s)");
 #endif
@@ -2244,6 +2333,12 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 #if defined(LIBZIP) && defined(XSLT)
 			menuitem = gtk_menu_item_new_with_label(exportlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(export_selected_dives_cb), path);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+#endif
+
+#if defined(XSLT)
+			menuitem = gtk_menu_item_new_with_label(exportuddflabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(export_selected_dives_uddf_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 #endif
 

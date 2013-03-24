@@ -1509,6 +1509,7 @@ static GtkActionEntry menu_items[] = {
 	{ "CloseFile",      GTK_STOCK_CLOSE, N_("Close"), NULL, NULL, G_CALLBACK(file_close) },
 	{ "Print",          GTK_STOCK_PRINT, N_("Print..."),  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "ImportFile",     NULL, N_("Import File(s)..."), CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
+	{ "ExportUDDF",     NULL, N_("Export UDDF..."), NULL, NULL, G_CALLBACK(export_all_dives_uddf_cb) },
 	{ "DownloadLog",    NULL, N_("Download From Dive Computer..."), CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
 	{ "DownloadWeb",    GTK_STOCK_CONNECT, N_("Download From Web Service..."), NULL, NULL, G_CALLBACK(webservice_download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, N_("Add Dive..."), NULL, NULL, G_CALLBACK(add_dive_cb) },
@@ -1550,6 +1551,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Close\" action=\"CloseFile\" /> \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Import XML File\" action=\"ImportFile\" /> \
+				<menuitem name=\"Export to UDDF File\" action=\"ExportUDDF\" /> \
 				<separator name=\"Separator2\"/> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator3\"/> \

@@ -15,4 +15,5 @@ extern void select_next_dive(void);
 extern void select_prev_dive(void);
 extern void show_and_select_dive(struct dive *dive);
 extern double init_decompression(struct dive * dive);
+extern void export_all_dives_uddf_cb();
 #endif
