@@ -263,7 +263,7 @@ static int get_maxdepth(struct plot_info *pi)
 }
 
 typedef struct {
-	int size;
+	double size;
 	color_indice_t color;
 	double hpos, vpos;
 } text_render_options_t;
@@ -357,7 +357,7 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
-static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event, const text_render_options_t *tro)
+static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event)
 {
 	int i, depth = 0;
 	int x,y;
@@ -434,14 +434,13 @@ static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, st
 
 static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
 {
-	static const text_render_options_t tro = {14, EVENTS, CENTER, TOP};
 	struct event *event = dc->events;
 
 	if (gc->printer)
 		return;
 
 	while (event) {
-		plot_one_event(gc, pi, event, &tro);
+		plot_one_event(gc, pi, event);
 		event = event->next;
 	}
 }
@@ -544,7 +543,7 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 {
 	int i, maxdepth, marker;
-	static const text_render_options_t tro = {10, SAMPLE_DEEP, RIGHT, MIDDLE};
+	static const text_render_options_t tro = {DEPTH_TEXT_SIZE, SAMPLE_DEEP, RIGHT, MIDDLE};
 
 	/* Depth markers: every 30 ft or 10 m*/
 	maxdepth = get_maxdepth(pi);
@@ -585,7 +584,7 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	double pp, dpp, m;
 	int hpos;
-	static const text_render_options_t tro = {11, PP_LINES, LEFT, MIDDLE};
+	static const text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
 
 	setup_pp_limits(gc, pi);
 	pp = floor(pi->maxpp * 10.0) / 10.0 + 0.2;
@@ -728,7 +727,7 @@ static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi
 	cairo_stroke(cr);
 
 	/* now the text on the time markers */
-	text_render_options_t tro = {10, TIME_TEXT, CENTER, TOP};
+	text_render_options_t tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
@@ -914,7 +913,7 @@ static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkel
 {
 	double deg;
 	const char *unit;
-	static const text_render_options_t tro = {12, TEMP_TEXT, LEFT, TOP};
+	static const text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
 
 	deg = get_temp_units(mkelvin, &unit);
 
@@ -1139,7 +1138,7 @@ static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 	const char *unit;
 
 	pressure = get_pressure_units(mbar, &unit);
-	text_render_options_t tro = {10, PRESSURE_TEXT, xalign, yalign};
+	text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
 	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
 }
 
@@ -1185,7 +1184,7 @@ static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
 	if (prefs.profile_calc_ceiling) {
 		float x = gc->leftx + (gc->rightx - gc->leftx) / 2;
 		float y = gc->topy = 1.0;
-		text_render_options_t tro = {10, PRESSURE_TEXT, CENTER, -0.2};
+		text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
 		gc->bottomy = 0.0;
 		plot_text(gc, &tro, x, y, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
 	}
@@ -2112,7 +2111,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 	if (!nickname || *nickname == '\0')
 		nickname = dc->model;
 	if (nickname) {
-		static const text_render_options_t computer = {10, TIME_TEXT, LEFT, MIDDLE};
+		static const text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
 		plot_text(gc, &computer, 0, 1, "%s", nickname);
 	}
 
