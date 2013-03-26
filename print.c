@@ -934,11 +934,14 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	*frame, *frame1, *frame2,
 	*box, *box1, *box2, *box3, *box4,
 	*button, *colorButton, *label1, *label2, *label3,
-	*scale_prof_hscale, *scale_tanks_hscale, *scale_notes_hscale;
+	*scale_prof_hscale, *scale_tanks_hscale, *scale_notes_hscale, *scrolled_window;
 	int dives;
 	gtk_print_operation_set_custom_tab_label(operation, _("Print type"));
 
+	scrolled_window = gtk_scrolled_window_new(0, 0);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled_window), vbox);
 
 	frame = gtk_frame_new(_("Print type"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
@@ -981,7 +984,7 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	}
 	frame = gtk_frame_new(_("Layout Options"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 1);
-	box = gtk_hbox_new(FALSE, 5);
+	box = gtk_vbox_new(FALSE, 5);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 	colorButton = gtk_check_button_new_with_label(_("Print in color"));
 	g_signal_connect(G_OBJECT(colorButton), "toggled",
@@ -1050,7 +1053,7 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_box_pack_start (GTK_BOX(box4), scale_notes_hscale, TRUE, TRUE, 5);
 
 	gtk_widget_show_all(vbox);
-	return vbox;
+	return scrolled_window;
 }
 
 static gboolean paginate(GtkPrintOperation *operation, GtkPrintContext *context, gpointer user_data)
