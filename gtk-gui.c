@@ -339,10 +339,30 @@ void save_pane_position()
 {
 	gint vpane_position = gtk_paned_get_position(GTK_PANED(vpane));
 	gint hpane_position = gtk_paned_get_position(GTK_PANED(hpane));
+	gboolean is_maximized = gdk_window_get_state(gtk_widget_get_window(GTK_WIDGET(main_window))) &
+		GDK_WINDOW_STATE_MAXIMIZED;
 
 	if (pane_conf == PANE_THREE){
-		subsurface_set_conf_int("vpane_position", vpane_position);
-		subsurface_set_conf_int("hpane_position", hpane_position);
+		if (is_maximized) {
+			subsurface_set_conf_int("vpane_position_maximized", vpane_position);
+			subsurface_set_conf_int("hpane_position_maximized", hpane_position);
+		} else {
+			subsurface_set_conf_int("vpane_position", vpane_position);
+			subsurface_set_conf_int("hpane_position", hpane_position);
+		}
+	}
+}
+
+/* Since we want direct control of what set of parameters to retrive, this function
+ * has an input argument. */
+void restore_pane_position(gboolean maximized)
+{
+	if (maximized) {
+		gtk_paned_set_position(GTK_PANED(vpane), subsurface_get_conf_int("vpane_position_maximized"));
+		gtk_paned_set_position(GTK_PANED(hpane), subsurface_get_conf_int("hpane_position_maximized"));
+	} else {
+		gtk_paned_set_position(GTK_PANED(vpane), subsurface_get_conf_int("vpane_position"));
+		gtk_paned_set_position(GTK_PANED(hpane), subsurface_get_conf_int("hpane_position"));
 	}
 }
 
@@ -350,9 +370,14 @@ void save_window_geometry(void)
 {
 	/* GDK_GRAVITY_NORTH_WEST assumed ( it is the default ) */
 	int window_width, window_height;
-	gtk_window_get_size(GTK_WINDOW (main_window), &window_width, &window_height);
+	gboolean is_maximized;
+
+	gtk_window_get_size(GTK_WINDOW(main_window), &window_width, &window_height);
+	is_maximized = gdk_window_get_state(gtk_widget_get_window(GTK_WIDGET(main_window))) &
+		GDK_WINDOW_STATE_MAXIMIZED;
 	subsurface_set_conf_int("window_width", window_width);
 	subsurface_set_conf_int("window_height", window_height);
+	subsurface_set_conf_bool("window_maximized", is_maximized);
 	save_pane_position();
 	subsurface_flush_conf();
 }
@@ -360,6 +385,7 @@ void save_window_geometry(void)
 void restore_window_geometry(void)
 {
 	int window_width, window_height;
+	gboolean is_maximized = subsurface_get_conf_bool("window_maximized") > 0;
 
 	window_height = subsurface_get_conf_int("window_height");
 	window_width = subsurface_get_conf_int("window_width");
@@ -367,9 +393,12 @@ void restore_window_geometry(void)
 	window_height == -1 ? window_height = 300 : window_height;
 	window_width == -1 ? window_width = 700 : window_width;
 
-	gtk_paned_set_position(GTK_PANED(vpane), subsurface_get_conf_int("vpane_position"));
-	gtk_paned_set_position(GTK_PANED(hpane), subsurface_get_conf_int("hpane_position"));
-	gtk_window_resize (GTK_WINDOW (main_window), window_width, window_height);
+	restore_pane_position(is_maximized);
+	/* don't resize the window if in maximized state */
+	if (is_maximized)
+		gtk_window_maximize(GTK_WINDOW(main_window));
+	else
+		gtk_window_resize(GTK_WINDOW(main_window), window_width, window_height);
 }
 
 gboolean on_delete(GtkWidget* w, gpointer data)
@@ -394,6 +423,31 @@ static void on_destroy(GtkWidget* w, gpointer data)
 	dive_list_destroy();
 	info_widget_destroy();
 	gtk_main_quit();
+}
+
+/* This "window-state-event" callback will be called after the actual action, such
+ * as maximize or restore. This means that if you have methods here that check
+ * for the current window state, they will obtain the already updated state... */
+static gboolean on_state(GtkWidget *widget, GdkEventWindowState *event, gpointer user_data)
+{
+	gint vpane_position, hpane_position;
+	if (event->changed_mask & GDK_WINDOW_STATE_WITHDRAWN ||
+	    event->changed_mask & GDK_WINDOW_STATE_ICONIFIED)
+		return TRUE; /* do nothing if the window is shown for the first time or minimized */
+	if (pane_conf == PANE_THREE) {
+		hpane_position = gtk_paned_get_position(GTK_PANED(hpane));
+		vpane_position = gtk_paned_get_position(GTK_PANED(vpane));
+		if (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED) { /* maximize */
+			subsurface_set_conf_int("vpane_position", vpane_position);
+			subsurface_set_conf_int("hpane_position", hpane_position);
+			restore_pane_position(TRUE);
+		} else if (event->new_window_state == 0) { /* restore */
+			subsurface_set_conf_int("vpane_position_maximized", vpane_position);
+			subsurface_set_conf_int("hpane_position_maximized", hpane_position);
+			restore_pane_position(FALSE);
+		}
+	}
+	return TRUE;
 }
 
 static void quit(GtkWidget *w, gpointer data)
@@ -1709,6 +1763,7 @@ void init_ui(int *argcp, char ***argvp)
 	}
 	g_signal_connect(G_OBJECT(win), "delete-event", G_CALLBACK(on_delete), NULL);
 	g_signal_connect(G_OBJECT(win), "destroy", G_CALLBACK(on_destroy), NULL);
+	g_signal_connect(G_OBJECT(win), "window-state-event", G_CALLBACK(on_state), NULL);
 	main_window = win;
 
 	vbox = gtk_vbox_new(FALSE, 0);
