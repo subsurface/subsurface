@@ -1545,6 +1545,11 @@ const char *preprocess_divelog_de(const char *buffer)
 	if (ret) {
 		xmlParserCtxtPtr ctx;
 		char buf[] = "";
+		int i;
+
+		for (i = 0; i < strlen(ret); ++i)
+			if (!isascii(ret[i]))
+				return buffer;
 
 		ctx = xmlCreateMemoryParserCtxt(buf, sizeof(buf));
 		ret = xmlStringLenDecodeEntities(ctx, ret, strlen(ret),  XML_SUBSTITUTE_REF, 0, 0, 0);
