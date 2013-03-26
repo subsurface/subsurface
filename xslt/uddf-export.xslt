@@ -3,6 +3,8 @@
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
+  <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
+
   <xsl:template match="/divelog/dives">
     <uddf version="3.2.0">
       <generator>
@@ -44,26 +46,51 @@
         </owner>
       </diver>
 
-      <!-- Gas definitions is not yet working, so it is commented out
-           -->
-      <xsl:if test="'asdf' = ''">
-        <gasdefinitions>
-          <xsl:for-each select="dive/cylinder">
-            <mix id="{generate-id(.)}">
-              <name>
-                <xsl:value-of select="concat(./@o2, '/', ./he)"/>
-              </name>
-              <o2>
-                <xsl:value-of select="./@o2"/>
-              </o2>
-              <he>
-                <xsl:value-of select="./@he"/>
-              </he>
-            </mix>
-          </xsl:for-each>
-        </gasdefinitions>
-      </xsl:if>
+      <!-- Define all the unique gases found in the dive log -->
+      <gasdefinitions>
+        <!-- Get unique gas mixes from all the recorded dives -->
+        <xsl:for-each select="dive/cylinder[generate-id() = generate-id(key('gases', concat(substring-before(@o2, '.'), '/', substring-before(@he, '.')))[1])]">
 
+          <xsl:variable name="o2">
+            <xsl:choose>
+              <xsl:when test="@o2 != ''">
+                <xsl:value-of select="substring-before(@o2, '.')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="'21'"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+
+          <xsl:variable name="he">
+            <xsl:choose>
+              <xsl:when test="@he != ''">
+                <xsl:value-of select="substring-before(@he, '.')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="'0'"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+
+          <!-- The gas definitions will have the o2 percentage as mix ID
+               to ease up the reference on switchmix events. Thus we can
+               just use the same references used internally on
+               Subsurface.
+          -->
+          <mix id="{$o2}">
+            <name>
+              <xsl:value-of select="concat($o2, '/', $he)"/>
+            </name>
+            <o2>
+              <xsl:value-of select="$o2"/>
+            </o2>
+            <he>
+              <xsl:value-of select="$he"/>
+            </he>
+          </mix>
+        </xsl:for-each>
+      </gasdefinitions>
 
       <profiledata>
         <xsl:for-each select="trip">
@@ -119,6 +146,47 @@
               <temperature>
                 <xsl:value-of select="format-number(substring-before(./@temp, ' ') + 273.15, '0.00')"/>
               </temperature>
+            </xsl:if>
+
+            <!-- We need to look up if there is an event at the time we
+                 are handling currently. And then translate that event
+                 to the one in UDDF specification.
+            -->
+            <xsl:variable name="time">
+              <xsl:value-of select="./@time"/>
+            </xsl:variable>
+            <xsl:if test="preceding-sibling::event/@time = $time">
+              <xsl:if test="preceding-sibling::event[@time=$time and @name='gaschange']/@name">
+
+                <!-- Gas change is a reference to the gases section, as
+                     the gases index was pure o2 value, we can directly
+                     use Subsurfaces reference here.
+                -->
+                <switchmix>
+                  <xsl:attribute name="ref">
+                    <xsl:value-of select="preceding-sibling::event[@time=$time and @name='gaschange']/@value"/>
+                  </xsl:attribute>
+                </switchmix>
+              </xsl:if>
+
+              <xsl:if test="preceding-sibling::event[@time=$time and @name='heading']/@name">
+                <heading>
+                  <xsl:value-of select="preceding-sibling::event[@time=$time and @name='heading']/@value"/>
+                </heading>
+              </xsl:if>
+
+              <!-- We'll just print the alarm text from our event name
+                   as is, deco and surface are specified in UDDF
+                   specification but the rest is not recognized and
+                   there is no equivalent available.
+              -->
+              <xsl:if test="preceding-sibling::event[@time=$time and not(@name='heading' or @name='gaschange')]/@name">
+                <alarm>
+                  <xsl:for-each select="preceding-sibling::event[@time=$time and not(@name='heading' or @name='gaschange')]/@name">
+                    <xsl:value-of select="."/>
+                  </xsl:for-each>
+                </alarm>
+              </xsl:if>
             </xsl:if>
           </waypoint>
         </xsl:for-each>
