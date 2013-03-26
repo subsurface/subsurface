@@ -832,9 +832,14 @@ static int validate_time(const char *text, int *sec_p, int *rel_p)
 	while (g_ascii_isspace(*text))
 		text++;
 
-	rel = 0;
+	rel = 1;
 	if (*text == '+') {
 		rel = 1;
+		text++;
+		while (g_ascii_isspace(*text))
+			text++;
+	} else if (*text == '@') {
+		rel = 0;
 		text++;
 		while (g_ascii_isspace(*text))
 			text++;
@@ -1269,7 +1274,7 @@ void input_plan()
 	char *explanationtext = _("<small>Add segments below.\nEach line describes part of the planned dive.\n"
 			"An entry with depth, time and gas describes a segment that ends "
 			"at the given depth, takes the given time (if relative, e.g. '+3:30') "
-			"or ends at the given time (if absolute), and uses the given gas.\n"
+			"or ends at the given time (if absolute e.g '@5:00', 'runtime'), and uses the given gas.\n"
 			"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
 			"An entry that has a depth and a gas given but no time is special; it "
 			"informs the planner that the gas specified is available for the ascent "
