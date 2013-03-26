@@ -1249,7 +1249,7 @@ static void show_user_manual(GtkWidget *w, gpointer data)
 static void view_list(GtkWidget *w, gpointer data)
 {
 	save_pane_position();
-        gtk_paned_set_position(GTK_PANED(vpane), 0);
+	gtk_paned_set_position(GTK_PANED(vpane), 0);
 	pane_conf = PANE_LIST;
 }
 
@@ -1283,7 +1283,7 @@ static void view_three(GtkWidget *w, gpointer data)
 	if (hpane_position)
 		gtk_paned_set_position(GTK_PANED(hpane), hpane_position);
 	else
-	        gtk_paned_set_position(GTK_PANED(hpane), alloc.width/2);
+		gtk_paned_set_position(GTK_PANED(hpane), alloc.width/2);
 
 	gtk_widget_get_allocation(vpane, &alloc);
 	gtk_widget_size_request(notebook, &requisition);
@@ -1291,7 +1291,7 @@ static void view_three(GtkWidget *w, gpointer data)
 	if (vpane_position)
 		gtk_paned_set_position(GTK_PANED(vpane), vpane_position);
 	else
-	        gtk_paned_set_position(GTK_PANED(vpane), requisition.height + 6);
+		gtk_paned_set_position(GTK_PANED(vpane), requisition.height + 6);
 
 	pane_conf = PANE_THREE;
 }
