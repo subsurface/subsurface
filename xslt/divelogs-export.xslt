@@ -57,10 +57,7 @@
     <CYLINDERENDPRESSURE>
       <xsl:choose>
         <xsl:when test="count(node()/sample[@pressure!='']) &gt; 0">
-          <xsl:variable name="samples">
-            <xsl:value-of select="count(node()/sample[@pressure!=''])"/>
-          </xsl:variable>
-          <xsl:value-of select="node()/sample[position() = $samples]/@pressure"/>
+          <xsl:value-of select="node()/sample[@pressure][last()]/@pressure"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="cylinder[1]/@end"/>
