@@ -1533,7 +1533,7 @@ static int get_cylinder_index(struct dive *dive, struct event *ev)
 	return 0;
 }
 
-static struct event *get_next_event(struct event *event, char *name)
+struct event *get_next_event(struct event *event, char *name)
 {
 	if (!name || !*name)
 		return NULL;

@@ -986,31 +986,30 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 }
 
 /* Pick whichever has any info (if either). Prefer 'a' */
-static void merge_cylinder_type(cylinder_type_t *res, cylinder_type_t *a, cylinder_type_t *b)
+static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 {
-	cylinder_type_t *clean = a;
-	if (a->size.mliter) {
-		clean = b;
-		b = a;
+	if (!dst->size.mliter)
+		dst->size.mliter = src->size.mliter;
+	if (!dst->workingpressure.mbar)
+		dst->workingpressure.mbar = src->workingpressure.mbar;
+	if (!dst->description) {
+		dst->description = src->description;
+		src->description = NULL;
 	}
-	if (clean->description)
-		free((void *)clean->description);
-	*res = *b;
 }
 
-static void merge_cylinder_mix(struct gasmix *res, struct gasmix *a, struct gasmix *b)
+static void merge_cylinder_mix(struct gasmix *src, struct gasmix *dst)
 {
-	if (a->o2.permille)
-		b = a;
-	*res = *b;
+	if (!dst->o2.permille)
+		*dst = *src;
 }
 
-static void merge_cylinder_info(cylinder_t *res, cylinder_t *a, cylinder_t *b)
+static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
 {
-	merge_cylinder_type(&res->type, &a->type, &b->type);
-	merge_cylinder_mix(&res->gasmix, &a->gasmix, &b->gasmix);
-	MERGE_MAX(res, a, b, start.mbar);
-	MERGE_MIN(res, a, b, end.mbar);
+	merge_cylinder_type(&src->type, &dst->type);
+	merge_cylinder_mix(&src->gasmix, &dst->gasmix);
+	MERGE_MAX(dst, dst, src, start.mbar);
+	MERGE_MIN(dst, dst, src, end.mbar);
 }
 
 static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weightsystem_t *b)
@@ -1020,12 +1019,141 @@ static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weig
 	*res = *a;
 }
 
+static int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
+{
+	int a_o2 = a->o2.permille ? : O2_IN_AIR;
+	int b_o2 = b->o2.permille ? : O2_IN_AIR;
+	int a_he = a->he.permille, b_he = b->he.permille;
+	int delta_o2 = a_o2 - b_o2, delta_he = a_he - b_he;
+
+	delta_he = delta_he*delta_he;
+	delta_o2 = delta_o2*delta_o2;
+	return delta_he + delta_o2;
+}
+
+static int find_cylinder_match(cylinder_t *cyl, cylinder_t array[], unsigned int used)
+{
+	int i;
+	int best = -1, score = INT_MAX;
+
+	if (cylinder_nodata(cyl))
+		return -1;
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		const cylinder_t *match;
+		int distance;
+
+		if (used & (1<<i))
+			continue;
+		match = array+i;
+		distance = gasmix_distance(&cyl->gasmix, &match->gasmix);
+		if (distance >= score)
+			continue;
+		best = i;
+		score = distance;
+	}
+	return best;
+}
+
+/* Force an initial gaschange event to the (old) gas #0 */
+static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
+{
+	int o2, he, value;
+	struct event *ev = get_next_event(dc->events, "gaschange");
+
+	if (ev && ev->time.seconds < 30)
+		return;
+
+	/* Old starting gas mix */
+	o2 = dive->cylinder[0].gasmix.o2.permille ? : O2_IN_AIR;
+	he = dive->cylinder[0].gasmix.o2.permille;
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	value = o2 + (he << 16);
+
+	add_event(dc, 0, 11, 0, value, "gaschange");
+}
+
+static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
+{
+	int i;
+
+	/* Did the first gas get remapped? Add gas switch event */
+	if (mapping[0] > 0)
+		add_initial_gaschange(dive, dc);
+
+	/* Remap the sensor indexes */
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *s = dc->sample+i;
+		int sensor;
+
+		if (!s->cylinderpressure.mbar)
+			continue;
+		sensor = mapping[s->sensor];
+		if (sensor >= 0)
+			s->sensor = sensor;
+	}
+}
+
+/*
+ * If the cylinder indexes change (due to merging dives or deleting
+ * cylinders in the middle), we need to change the indexes in the
+ * dive computer data for this dive.
+ *
+ * Also note that we assume that the initial cylinder is cylinder 0,
+ * so if that got renamed, we need to create a fake gas change event
+ */
+static void cylinder_renumber(struct dive *dive, int mapping[])
+{
+	struct divecomputer *dc;
+
+	dc = &dive->dc;
+	do {
+		dc_cylinder_renumber(dive, dc, mapping);
+	} while ((dc = dc->next) != NULL);
+}
+
+/*
+ * Merging cylinder information is non-trivial, because the two dive computers
+ * may have different ideas of what the different cylinder indexing is.
+ *
+ * Logic: take all the cylinder information from the preferred dive ('a'), and
+ * then try to match each of the cylinders in the other dive by the gasmix that
+ * is the best match and hasn't been used yet.
+ */
+static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
+{
+	int i, renumber = 0;
+	int mapping[MAX_CYLINDERS];
+	unsigned int used = 0;
+
+	/* Copy the cylinder info raw from 'a' */
+	memcpy(res->cylinder, a->cylinder, sizeof(res->cylinder));
+	memset(a->cylinder, 0, sizeof(a->cylinder));
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		int j;
+		cylinder_t *cyl = b->cylinder + i;
+
+		j = find_cylinder_match(cyl, res->cylinder, used);
+		mapping[i] = j;
+		if (j < 0)
+			continue;
+		used |= 1 << j;
+		merge_cylinder_info(cyl, res->cylinder+j);
+
+		/* If that renumbered the cylinders, fix it up! */
+		if (i != j)
+			renumber = 1;
+	}
+	if (renumber)
+		cylinder_renumber(b, mapping);
+}
+
 static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
 {
 	int i;
 
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		merge_cylinder_info(res->cylinder+i, a->cylinder + i, b->cylinder + i);
+	merge_cylinders(res, a, b);
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		merge_weightsystem_info(res->weightsystem+i, a->weightsystem + i, b->weightsystem + i);
 }
