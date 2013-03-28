@@ -1509,28 +1509,36 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 static int get_cylinder_index(struct dive *dive, struct event *ev)
 {
 	int i;
+	int best = 0, score = INT_MAX;
+	int target_o2, target_he;
 
 	/*
-	 * Try to find a cylinder that matches the O2 percentage
-	 * in the gas change event 'value' field.
-	 *
-	 * Crazy suunto gas change events. We really should do
-	 * this in libdivecomputer or something.
-	 *
-	 * There are two different gas change events that can get
-	 * us here - GASCHANGE2 has the He value in the high 16
-	 * bits; looking at the possible values we can actually
-	 * handle them with the same code since the high 16 bits
-	 * will be 0 with the GASCHANGE event - and that means no He
+	 * Crazy gas change events give us odd encoded o2/he in percent.
+	 * Decode into our internal permille format.
+	 */
+	target_o2 = (ev->value & 0xFFFF) * 10;
+	target_he = (ev->value >> 16) * 10;
+
+	/*
+	 * Try to find a cylinder that best matches the target gas
+	 * mix.
 	 */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder+i;
-		int o2 = (cyl->gasmix.o2.permille + 5) / 10;
-		int he = (cyl->gasmix.he.permille + 5) / 10;
-		if (o2 == (ev->value & 0xFFFF) && he == (ev->value >> 16))
-			return i;
+		int delta_o2, delta_he, distance;
+
+		if (cylinder_nodata(cyl))
+			continue;
+
+		delta_o2 = get_o2(&cyl->gasmix) - target_o2;
+		delta_he = get_he(&cyl->gasmix) - target_he;
+		distance = delta_o2 * delta_o2 + delta_he * delta_he;
+		if (distance >= score)
+			continue;
+		score = distance;
+		best = i;
 	}
-	return 0;
+	return best;
 }
 
 struct event *get_next_event(struct event *event, char *name)

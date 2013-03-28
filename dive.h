@@ -215,6 +215,16 @@ static inline int mbar_to_PSI(int mbar)
 	return to_PSI(p);
 }
 
+static inline int get_o2(const struct gasmix *mix)
+{
+	return mix->o2.permille ? : O2_IN_AIR;
+}
+
+static inline int get_he(const struct gasmix *mix)
+{
+	return mix->he.permille;
+}
+
 static inline gboolean is_air(int o2, int he)
 {
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
