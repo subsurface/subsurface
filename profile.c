@@ -1316,9 +1316,8 @@ struct pr_track_struct {
 static pr_track_t *pr_track_alloc(int start, int t_start) {
 	pr_track_t *pt = malloc(sizeof(pr_track_t));
 	pt->start = start;
-	pt->t_start = t_start;
 	pt->end = 0;
-	pt->t_end = 0;
+	pt->t_start = pt->t_end = t_start;
 	pt->pressure_time = 0;
 	pt->next = NULL;
 	return pt;
@@ -1465,6 +1464,8 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		dump_pr_track(track_pr);
 	}
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		if (!track_pr[cyl])
+			continue;
 		fill_missing_segment_pressures(track_pr[cyl]);
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
@@ -1809,52 +1810,40 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 	pr_track_t *current;
 	gboolean missing_pr = FALSE;
 
-	/* Set up the pressure tracking data structures */
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
-		int mbar = cyl->start.mbar ? : cyl->sample_start.mbar;
-		track_pr[i] = pr_track_alloc(mbar, 0);
-	}
-
-	cylinderindex = pi->entry[0].cylinderindex;
-	current = track_pr[cylinderindex];
-	for (i = 1; i < pi->nr; i++) {
+	cylinderindex = -1;
+	current = NULL;
+	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
+		unsigned pressure = SENSOR_PRESSURE(entry);
 
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
-		current->pressure_time += pressure_time(dive, dc, entry-1, entry);
+		if (current) {
+			current->pressure_time += pressure_time(dive, dc, entry-1, entry);
+			current->t_end = entry->sec;
+		}
 
 		/* track the segments per cylinder and their pressure/time integral */
 		if (entry->cylinderindex != cylinderindex) {
 			cylinderindex = entry->cylinderindex;
-			current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
+			current = pr_track_alloc(pressure, entry->sec);
 			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
-		} else { /* same cylinder */
-			if (SENSOR_PRESSURE(entry) && !SENSOR_PRESSURE(entry-1)) {
-				/* transmitter changed its working status */
-				current->end = SENSOR_PRESSURE(entry);
-				current->t_end = entry->sec;
-				current = pr_track_alloc(SENSOR_PRESSURE(entry), entry->sec);
-				track_pr[cylinderindex] =
-					list_add(track_pr[cylinderindex], current);
-			}
+			continue;
 		}
-		/* finally, do the discrete integration to get the SAC rate equivalent */
-		if (SENSOR_PRESSURE(entry)) {
-			current->end = SENSOR_PRESSURE(entry);
-			current->t_end = entry->sec;
-		}
-		missing_pr |= !SENSOR_PRESSURE(entry);
-	}
 
-	/* initialize the end pressures */
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
-		int pr = cyl->end.mbar ? : cyl->sample_end.mbar;
-		if (pr && track_pr[i]) {
-			pr_track_t *pr_track = list_last(track_pr[i]);
-			pr_track->end = pr;
+		if (!pressure) {
+			missing_pr = 1;
+			continue;
 		}
+
+		current->end = pressure;
+
+		/* Was it continuous? */
+		if (SENSOR_PRESSURE(entry-1))
+			continue;
+
+		/* transmitter changed its working status */
+		current = pr_track_alloc(pressure, entry->sec);
+		track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 	}
 
 	if (missing_pr) {
