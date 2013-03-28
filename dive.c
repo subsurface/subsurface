@@ -1021,9 +1021,8 @@ static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weig
 
 static int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 {
-	int a_o2 = a->o2.permille ? : O2_IN_AIR;
-	int b_o2 = b->o2.permille ? : O2_IN_AIR;
-	int a_he = a->he.permille, b_he = b->he.permille;
+	int a_o2 = get_o2(a), b_o2 = get_o2(b);
+	int a_he = get_he(a), b_he = get_he(b);
 	int delta_o2 = a_o2 - b_o2, delta_he = a_he - b_he;
 
 	delta_he = delta_he*delta_he;
@@ -1064,8 +1063,8 @@ static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
 		return;
 
 	/* Old starting gas mix */
-	o2 = dive->cylinder[0].gasmix.o2.permille ? : O2_IN_AIR;
-	he = dive->cylinder[0].gasmix.o2.permille;
+	o2 = get_o2(&dive->cylinder[0].gasmix);
+	he = get_he(&dive->cylinder[0].gasmix);
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
 	value = o2 + (he << 16);

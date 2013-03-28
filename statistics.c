@@ -610,13 +610,13 @@ static void show_single_dive_stats(struct dive *dive)
 		end = cyl->end.mbar ?cyl->sample_end : cyl->sample_end;
 		if (!cylinder_none(cyl)) {
 			/* 0% O2 strangely means air, so 21% - I don't like that at all */
-			int o2 = cyl->gasmix.o2.permille ? : O2_IN_AIR;
+			int o2 = get_o2(&cyl->gasmix);
+			int he = get_he(&cyl->gasmix);
 			if (offset > 0) {
 				snprintf(buf+offset, 80-offset, ", ");
 				offset += 2;
 			}
-			snprintf(buf+offset, 80-offset, "%d/%d", (o2 + 5) / 10,
-				(cyl->gasmix.he.permille + 5) / 10);
+			snprintf(buf+offset, 80-offset, "%d/%d", (o2 + 5) / 10, (he + 5) / 10);
 			offset = strlen(buf);
 		}
 		/* and if we have size, start and end pressure, we can

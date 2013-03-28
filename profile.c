@@ -1877,8 +1877,8 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		int cylinderindex = entry->cylinderindex;
 
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
-		fo2 = dive->cylinder[cylinderindex].gasmix.o2.permille ? : O2_IN_AIR;
-		fhe = dive->cylinder[cylinderindex].gasmix.he.permille;
+		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
+		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 		double ratio = (double)fhe / (1000.0 - fo2);
 
 		if (entry->po2) {

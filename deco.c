@@ -130,9 +130,9 @@ static double tissue_tolerance_calc(const struct dive *dive)
 double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive)
 {
 	int ci;
-	int fo2 = gasmix->o2.permille ? gasmix->o2.permille : O2_IN_AIR;
-	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - gasmix->he.permille) / 1000.0;
-	double pphe = (pressure - WV_PRESSURE) * gasmix->he.permille / 1000.0;
+	int fo2 = get_o2(gasmix), fhe = get_he(gasmix);
+	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - fhe) / 1000.0;
+	double pphe = (pressure - WV_PRESSURE) * fhe / 1000.0;
 
 #if GF_LOW_AT_MAXDEPTH
 	if (pressure > gf_low_pressure_this_dive)
