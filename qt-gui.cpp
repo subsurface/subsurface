@@ -2394,4 +2394,4 @@ gdouble get_screen_dpi(void)
 	return dpi_h;
 }
 
-#include "qt-gui.moc.cpp"
+#include "qt-gui.moc"

@@ -306,18 +306,23 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@mkdir -p .dep
 	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
+# This rule is for running the moc on QObject subclasses defined in the .h
+# files.
+# To activate this rule, add <file>.moc.o to the OBJS variable.
 %.moc.cpp: %.h
 	@echo '    MOC' $<
 	@$(MOC) $(MOCFLAGS) $< -o $@
 
-# This rule is for running the moc on QObject subclasses defined in the .cpp files;
-# remember to #include "<file>.moc.cpp" at the end of the .cpp file, or you'll
-# get linker errors ("undefined vtable for...")
-%.moc.cpp: %.cpp
+# This rule is for running the moc on QObject subclasses defined in the .cpp
+# files; remember to #include "<file>.moc" at the end of the .cpp file, or
+# you'll get linker errors ("undefined vtable for...")
+# To activate this rule, you need another rule on the .o file, like:
+#    file.o: file.moc
+%.moc: %.cpp
 	@echo '    MOC' $<
 	@$(MOC) -i $(MOCFLAGS) $< -o $@
 
-qt-gui.o: qt-gui.moc.cpp
+qt-gui.o: qt-gui.moc
 
 %.ui.h: ui/%.ui
 	@echo '    UIC' $<
