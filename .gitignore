@@ -3,7 +3,9 @@
 *.rej
 *.exe
 *.dmg
+*.moc.cpp
 *.patch
+*.ui.h
 *.xml
 version.h
 !dives/*.xml

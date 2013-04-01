@@ -2,10 +2,15 @@ VERSION=3.0.2
 
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE
+CXX=g++
+CXXFLAGS=-Wall -g $(CLCFLAGS)
 INSTALL=install
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
 XSLCONFIG=xslt-config
+QMAKE=qmake
+MOC=moc
+UIC=uic
 
 # these locations seem to work for SuSE and Fedora
 # prefix = $(HOME)
@@ -96,6 +101,18 @@ endif
 # about it if it doesn't.
 LIBUSB = $(shell $(PKGCONFIG) --libs libusb-1.0 2> /dev/null)
 
+# Use qmake to find out which Qt version we are building for.
+QT_VERSION_MAJOR = $(shell $(QMAKE) -query QT_VERSION | cut -d. -f1)
+ifeq ($(QT_VERSION_MAJOR), 5)
+	QT_MODULES = Qt5Widgets
+	QT_CORE = Qt5Core
+else
+	QT_MODULES = QtGui
+	QT_CORE = QtCore
+endif
+LIBQT = $(shell $(PKGCONFIG) --libs $(QT_MODULES))
+QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES))
+
 LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
@@ -130,6 +147,9 @@ ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
+	ifneq ($(findstring reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))),)
+		CXXFLAGS += -fPIE
+	endif
 else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
@@ -157,7 +177,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	XSLT=-DXSLT='"$(XSLTDIR)"'
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
+LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
@@ -173,7 +193,7 @@ DEPS = $(wildcard .dep/*.dep)
 all: $(NAME)
 
 $(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
-	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+	$(CXX) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 gen_version_file:
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
@@ -270,14 +290,36 @@ update-po-files:
 	tx push -s
 	tx pull -af
 
-EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
+EXTRA_FLAGS =	$(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 		$(XSLT) $(ZIP) $(SQLITE3) $(LIBDIVECOMPUTERCFLAGS) \
 		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS)
+
+MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $(EXTRA_FLAGS))
 
 %.o: %.c
 	@echo '    CC' $<
 	@mkdir -p .dep
 	@$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
+
+%.o: %.cpp
+	@echo '    CXX' $<
+	@mkdir -p .dep
+	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
+
+%.moc.cpp: %.h
+	@echo '    MOC' $<
+	@$(MOC) $(MOCFLAGS) $< -o $@
+
+# This rule is for running the moc on QObject subclasses defined in the .cpp files;
+# remember to #include "<file>.moc.cpp" at the end of the .cpp file, or you'll
+# get linker errors ("undefined vtable for...")
+%.moc.cpp: %.cpp
+	@echo '    MOC' $<
+	@$(MOC) -i $(MOCFLAGS) $< -o $@
+
+%.ui.h: ui/%.ui
+	@echo '    UIC' $<
+	@$(UIC) $< -o $@
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
