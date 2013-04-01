@@ -30,29 +30,29 @@ void subsurface_open_conf(void)
 	/* nothing at this time */
 }
 
-void subsurface_unset_conf(char *name)
+void subsurface_unset_conf(const char *name)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name), NULL, SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf(char *name, const char *value)
+void subsurface_set_conf(const char *name, const char *value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
+void subsurface_set_conf_bool(const char *name, int value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name),
 		value ? kCFBooleanTrue : kCFBooleanFalse, SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf_int(char *name, int value)
+void subsurface_set_conf_int(const char *name, int value)
 {
 	CFNumberRef numRef = CFNumberCreate(NULL, kCFNumberIntType, &value);
 	CFPreferencesSetAppValue(CFSTR_VAR(name), numRef, SUBSURFACE_PREFERENCES);
 }
 
-const void *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(char *name)
 {
 	CFPropertyListRef strpref;
 
@@ -62,7 +62,7 @@ const void *subsurface_get_conf(char *name)
 	return strdup(CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman));
 }
 
-int subsurface_get_conf_bool(char *name)
+int subsurface_get_conf_bool(const char *name)
 {
 	Boolean boolpref, exists;
 
@@ -72,7 +72,7 @@ int subsurface_get_conf_bool(char *name)
 	return boolpref;
 }
 
-int subsurface_get_conf_int(char *name)
+int subsurface_get_conf_int(const char *name)
 {
 	Boolean exists;
 	CFIndex value;

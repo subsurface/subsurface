@@ -1,6 +1,10 @@
 #ifndef DIVELIST_H
 #define DIVELIST_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct dive;
 
 extern void dive_list_update_dives(void);
@@ -16,4 +20,9 @@ extern void select_prev_dive(void);
 extern void show_and_select_dive(struct dive *dive);
 extern double init_decompression(struct dive * dive);
 extern void export_all_dives_uddf_cb();
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

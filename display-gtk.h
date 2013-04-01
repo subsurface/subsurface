@@ -8,6 +8,10 @@
 #include <gdk/gdkkeysyms-compat.h>
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GtkWidget *main_window;
 
 /* we want a progress bar as part of the device_data_t - let's abstract this out */
@@ -116,5 +120,9 @@ GError *uemis_download(const char *path, progressbar_t *progress, GtkDialog *dia
 
 /* from planner.c */
 extern void input_plan(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

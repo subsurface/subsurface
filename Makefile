@@ -184,7 +184,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
+	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
 	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
 
 DEPS = $(wildcard .dep/*.dep)

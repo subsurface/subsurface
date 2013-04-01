@@ -27,11 +27,12 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
-#include "subsurface-icon.h"
 
 #if HAVE_OSM_GPS_MAP
 #include <osm-gps-map-source.h>
 #endif
+
+static const GdkPixdata subsurface_icon_pixbuf = {};
 
 GtkWidget *main_window;
 GtkWidget *main_vbox;
@@ -224,7 +225,7 @@ static gboolean ask_save_changes()
 	GtkWidget *dialog, *label, *content;
 	gboolean quit = TRUE;
 	dialog = gtk_dialog_new_with_buttons(_("Save Changes?"),
-		GTK_WINDOW(main_window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_WINDOW(main_window), GtkDialogFlags(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
 		GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 		GTK_STOCK_NO, GTK_RESPONSE_NO,
 		GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -320,7 +321,7 @@ static void file_open(GtkWidget *w, gpointer data)
 		fn_glist = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 
 		GError *error = NULL;
-		filename = fn_glist->data;
+		filename = (char *)fn_glist->data;
 		parse_file(filename, &error, TRUE);
 		if (error != NULL)
 		{
@@ -609,16 +610,16 @@ void update_screen()
 	update_dive_list_col_visibility();
 }
 
-UNITCALLBACK(set_meter, length, METERS)
-UNITCALLBACK(set_feet, length, FEET)
-UNITCALLBACK(set_bar, pressure, BAR)
-UNITCALLBACK(set_psi, pressure, PSI)
-UNITCALLBACK(set_liter, volume, LITER)
-UNITCALLBACK(set_cuft, volume, CUFT)
-UNITCALLBACK(set_celsius, temperature, CELSIUS)
-UNITCALLBACK(set_fahrenheit, temperature, FAHRENHEIT)
-UNITCALLBACK(set_kg, weight, KG)
-UNITCALLBACK(set_lbs, weight, LBS)
+UNITCALLBACK(set_meter, length, units::METERS)
+UNITCALLBACK(set_feet, length, units::FEET)
+UNITCALLBACK(set_bar, pressure, units::BAR)
+UNITCALLBACK(set_psi, pressure, units::PSI)
+UNITCALLBACK(set_liter, volume, units::LITER)
+UNITCALLBACK(set_cuft, volume, units::CUFT)
+UNITCALLBACK(set_celsius, temperature, units::CELSIUS)
+UNITCALLBACK(set_fahrenheit, temperature, units::FAHRENHEIT)
+UNITCALLBACK(set_kg, weight, units::KG)
+UNITCALLBACK(set_lbs, weight, units::LBS)
 
 OPTIONCALLBACK(otu_toggle, prefs.visible_cols.otu)
 OPTIONCALLBACK(maxcns_toggle, prefs.visible_cols.maxcns)
@@ -667,7 +668,7 @@ static gboolean gfhigh_edit(GtkWidget *w, GdkEvent *event, gpointer _data)
 
 static void event_toggle(GtkWidget *w, gpointer _data)
 {
-	gboolean *plot_ev = _data;
+	gboolean *plot_ev = (gboolean *)_data;
 
 	*plot_ev = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w));
 }
@@ -710,7 +711,7 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 
 		list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(fs_dialog));
 		if (g_slist_length(list) == 1)
-			gtk_button_set_label(button, list->data);
+			gtk_button_set_label(button, (const gchar *)list->data);
 		g_slist_free(list);
 	}
 
@@ -779,28 +780,28 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
 	create_radio(box, _("Depth:"),
-		_("Meter"), set_meter, (prefs.units.length == METERS),
-		_("Feet"),  set_feet, (prefs.units.length == FEET),
+		_("Meter"), set_meter, (prefs.units.length == units::METERS),
+		_("Feet"),  set_feet, (prefs.units.length == units::FEET),
 		NULL);
 
 	create_radio(box, _("Pressure:"),
-		_("Bar"), set_bar, (prefs.units.pressure == BAR),
-		_("PSI"),  set_psi, (prefs.units.pressure == PSI),
+		_("Bar"), set_bar, (prefs.units.pressure == units::BAR),
+		_("PSI"),  set_psi, (prefs.units.pressure == units::PSI),
 		NULL);
 
 	create_radio(box, _("Volume:"),
-		_("Liter"),  set_liter, (prefs.units.volume == LITER),
-		_("CuFt"), set_cuft, (prefs.units.volume == CUFT),
+		_("Liter"),  set_liter, (prefs.units.volume == units::LITER),
+		_("CuFt"), set_cuft, (prefs.units.volume == units::CUFT),
 		NULL);
 
 	create_radio(box, _("Temperature:"),
-		_("Celsius"), set_celsius, (prefs.units.temperature == CELSIUS),
-		_("Fahrenheit"),  set_fahrenheit, (prefs.units.temperature == FAHRENHEIT),
+		_("Celsius"), set_celsius, (prefs.units.temperature == units::CELSIUS),
+		_("Fahrenheit"),  set_fahrenheit, (prefs.units.temperature == units::FAHRENHEIT),
 		NULL);
 
 	create_radio(box, _("Weight:"),
-		_("kg"), set_kg, (prefs.units.weight == KG),
-		_("lbs"),  set_lbs, (prefs.units.weight == LBS),
+		_("kg"), set_kg, (prefs.units.weight == units::KG),
+		_("lbs"),  set_lbs, (prefs.units.weight == units::LBS),
 		NULL);
 
 	frame = gtk_frame_new(_("Show Columns"));
@@ -1082,7 +1083,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 
 static void create_toggle(const char* label, int *on, void *_data)
 {
-	GtkWidget *button, *table = _data;
+	GtkWidget *button, *table = GTK_WIDGET(_data);
 	int rows, cols, x, y;
 	static int count;
 
@@ -1345,7 +1346,7 @@ static void edit_dc_delete_rows(GtkTreeView *view)
 	selected_rows = gtk_tree_selection_get_selected_rows(selection, &model);
 
 	for (list = selected_rows; list; list = g_list_next(list)) {
-		path = list->data;
+		path = (GtkTreePath *)list->data;
 		ref = gtk_tree_row_reference_new(model, path);
 		row_references = g_list_append(row_references, ref);
 	}
@@ -1441,7 +1442,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 
 	dialog = gtk_dialog_new_with_buttons(_("Edit Dive Computer Nicknames"),
 		GTK_WINDOW(main_window),
-		GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		GtkDialogFlags(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
 		GTK_STOCK_DELETE,
 		SUB_RESPONSE_DELETE,
 		GTK_STOCK_CANCEL,
@@ -1509,7 +1510,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 		if (res == SUB_RESPONSE_DELETE) {
 			confirm = gtk_dialog_new_with_buttons(_("Delete a dive computer information entry"),
 							GTK_WINDOW(dialog),
-							GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+							GtkDialogFlags(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
 							GTK_STOCK_YES,
 							GTK_RESPONSE_YES,
 							GTK_STOCK_NO,
@@ -1855,7 +1856,8 @@ static int tooltips;
 void attach_tooltip(int x, int y, int w, int h, const char *text, struct event *event)
 {
 	cairo_rectangle_t *rect;
-	tooltip_rects = realloc(tooltip_rects, (tooltips + 1) * sizeof(tooltip_record_t));
+	tooltip_rects = (tooltip_record_t *)
+		realloc(tooltip_rects, (tooltips + 1) * sizeof(tooltip_record_t));
 	rect = &tooltip_rects[tooltips].rect;
 	rect->x = x;
 	rect->y = y;
@@ -1975,7 +1977,7 @@ static gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
 static gboolean expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
 	GtkAllocation allocation;
-	static struct graphics_context gc = { .printer = 0 };
+	static struct graphics_context gc = { 0 };
 
 	/* the drawing area gives TOTAL width * height - x,y is used as the topx/topy offset
 	 * so effective drawing area is width-2x * height-2y */
@@ -2021,7 +2023,7 @@ static gboolean scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer 
 
 static void add_gas_change_cb(GtkWidget *menuitem, gpointer data)
 {
-	double *x = data;
+	double *x = (double *)data;
 	int when = x_to_time(*x);
 	int cylnr = select_cylinder(current_dive, when);
 	if (cylnr >= 0) {
@@ -2061,7 +2063,7 @@ int confirm_dialog(int when, char *action_text, char *event_text)
 
 static void add_bookmark_cb(GtkWidget *menuitem, gpointer data)
 {
-	double *x = data;
+	double *x = (double *)data;
 	int when = x_to_time(*x);
 
 	if (confirm_dialog(when, _("Add"), _("bookmark"))){
@@ -2089,7 +2091,7 @@ static struct event *event_at_x(double rel_x)
 
 static void remove_event_cb(GtkWidget *menuitem, gpointer data)
 {
-	struct event *event = data;
+	struct event *event = (struct event *)data;
 	if (confirm_dialog(event->time.seconds, _("Remove"), _(event->name))){
 		struct event **ep = &current_dc->events;
 		while (ep && *ep != event)
@@ -2204,7 +2206,7 @@ static GtkWidget *dive_profile_widget(void)
 static void do_import_file(gpointer data, gpointer user_data)
 {
 	GError *error = NULL;
-	parse_file(data, &error, FALSE);
+	parse_file((const char *)data, &error, FALSE);
 
 	if (error != NULL)
 	{

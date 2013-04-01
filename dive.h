@@ -15,6 +15,10 @@
 
 #include "sha1.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define O2_IN_AIR		209     // permille
 #define N2_IN_AIR		781
 #define O2_DENSITY		1429    // mg/Liter
@@ -523,7 +527,7 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 #define for_each_gps_location(_i,_x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
-static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
+static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid)
 {
 	int i;
 	struct dive *dive;
@@ -698,6 +702,10 @@ struct event *get_next_event(struct event *event, char *name);
 #ifdef DEBUGFILE
 extern char *debugfilename;
 extern FILE *debugfile;
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #include "pref.h"

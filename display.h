@@ -3,6 +3,10 @@
 
 #include <cairo.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SCALE_SCREEN 1.0
 #define SCALE_PRINT (1.0 / get_screen_dpi())
 
@@ -62,5 +66,9 @@ struct options {
 };
 
 extern char zoomed_plot, dc_number;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

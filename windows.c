@@ -20,12 +20,12 @@ void subsurface_open_conf(void)
 		printf("CreateKey Software\\subsurface failed %ld\n", success);
 }
 
-void subsurface_unset_conf(char *name)
+void subsurface_unset_conf(const char *name)
 {
 	RegDeleteValue(hkey, (LPCTSTR)name);
 }
 
-void subsurface_set_conf(char *name, const char *value)
+void subsurface_set_conf(const char *name, const char *value)
 {
 	/* since we are using the pointer 'value' as both an actual
 	 * pointer to the string setting and as a way to pass the
@@ -52,17 +52,17 @@ void subsurface_set_conf(char *name, const char *value)
 	free(wname);
 }
 
-void subsurface_set_conf_int(char *name, int value)
+void subsurface_set_conf_int(const char *name, int value)
 {
 	RegSetValueEx(hkey, (LPCTSTR)name, 0, REG_DWORD, (const BYTE *)&value, 4);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
+void subsurface_set_conf_bool(const char *name, int value)
 {
 	subsurface_set_conf_int(name, value);
 }
 
-const void *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(const char *name)
 {
 	const int csize = 64;
 	int blen = 0;

@@ -9,7 +9,7 @@ const char system_divelist_default_font[] = "Sans 8";
 
 GConfClient *gconf;
 
-static char *gconf_name(char *name)
+static char *gconf_name(const char *name)
 {
 	static char buf[255] = "/apps/subsurface/";
 
@@ -23,32 +23,32 @@ void subsurface_open_conf(void)
 	gconf = gconf_client_get_default();
 }
 
-void subsurface_unset_conf(char *name)
+void subsurface_unset_conf(const char *name)
 {
 	gconf_client_unset(gconf, gconf_name(name), NULL);
 }
 
-void subsurface_set_conf(char *name, const char *value)
+void subsurface_set_conf(const char *name, const char *value)
 {
 	gconf_client_set_string(gconf, gconf_name(name), value, NULL);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
+void subsurface_set_conf_bool(const char *name, int value)
 {
 	gconf_client_set_bool(gconf, gconf_name(name), value > 0, NULL);
 }
 
-void subsurface_set_conf_int(char *name, int value)
+void subsurface_set_conf_int(const char *name, int value)
 {
 	gconf_client_set_int(gconf, gconf_name(name), value , NULL);
 }
 
-const void *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(const char *name)
 {
 	return gconf_client_get_string(gconf, gconf_name(name), NULL);
 }
 
-int subsurface_get_conf_bool(char *name)
+int subsurface_get_conf_bool(const char *name)
 {
 	GConfValue *val;
 	gboolean ret;
@@ -61,7 +61,7 @@ int subsurface_get_conf_bool(char *name)
 	return ret;
 }
 
-int subsurface_get_conf_int(char *name)
+int subsurface_get_conf_int(const char *name)
 {
 	int val = gconf_client_get_int(gconf, gconf_name(name), NULL);
 	if(!val)
