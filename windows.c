@@ -100,7 +100,7 @@ const char *subsurface_get_conf(const char *name)
 	return utf8_string;
 }
 
-int subsurface_get_conf_int(char *name)
+int subsurface_get_conf_int(const char *name)
 {
 	DWORD value = -1, len = 4;
 	LONG ret = RegQueryValueEx(hkey, (LPCTSTR)TEXT(name), NULL, NULL,
@@ -110,7 +110,7 @@ int subsurface_get_conf_int(char *name)
 	return value;
 }
 
-int subsurface_get_conf_bool(char *name)
+int subsurface_get_conf_bool(const char *name)
 {
 	int ret = subsurface_get_conf_int(name);
 	if (ret == -1)

@@ -52,7 +52,7 @@ void subsurface_set_conf_int(const char *name, int value)
 	CFPreferencesSetAppValue(CFSTR_VAR(name), numRef, SUBSURFACE_PREFERENCES);
 }
 
-const char *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(const char *name)
 {
 	CFPropertyListRef strpref;
 
