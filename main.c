@@ -348,8 +348,12 @@ int main(int argc, char **argv)
 		/* if we have exactly one filename, parse_file will set
 		 * that to be the default. Otherwise there will be no default filename */
 		set_filename(NULL, TRUE);
-		parse_file(a, &error, no_filenames);
-		no_filenames = FALSE;
+		parse_file(a, &error);
+		if (no_filenames)
+		{
+			set_filename(a, TRUE);
+			no_filenames = FALSE;
+		}
 		if (error != NULL)
 		{
 			report_error(error);
@@ -360,7 +364,7 @@ int main(int argc, char **argv)
 	if (no_filenames) {
 		GError *error = NULL;
 		const char *filename = prefs.default_filename;
-		parse_file(filename, &error, TRUE);
+		parse_file(filename, &error);
 		/* don't report errors - this file may not exist, but make
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);

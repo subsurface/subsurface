@@ -348,7 +348,8 @@ static void file_open(GtkWidget *w, gpointer data)
 
 		GError *error = NULL;
 		filename = (char *)fn_glist->data;
-		parse_file(filename, &error, TRUE);
+		parse_file(filename, &error);
+		set_filename(filename, TRUE);
 		if (error != NULL)
 		{
 			report_error(error);
@@ -2236,7 +2237,7 @@ static GtkWidget *dive_profile_widget(void)
 static void do_import_file(gpointer data, gpointer user_data)
 {
 	GError *error = NULL;
-	parse_file((const char *)data, &error, FALSE);
+	parse_file((const char *)data, &error);
 
 	if (error != NULL)
 	{

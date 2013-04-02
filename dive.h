@@ -555,7 +555,7 @@ extern void set_filename(const char *filename, gboolean force);
 
 extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct dive_table *table, GError **error);
 
-extern void parse_file(const char *filename, GError **error, gboolean possible_default_filename);
+extern void parse_file(const char *filename, GError **error);
 
 extern void show_dive_info(struct dive *);
 
