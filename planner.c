@@ -677,6 +677,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep)
 		record_dive(dive);
 	}
 	while (stopidx > 0) { /* this indicates that we aren't surfacing directly */
+		/* if we are in a double-step, eg, when 3m/10ft stop is disabled,
+		 * just skip the first stop at that depth */
+		if (stoplevels[stopidx] == stoplevels[stopidx - 1]) {
+			stopidx--;
+			continue;
+		}
 		if (gi >= 0 && stoplevels[stopidx] == gaschanges[gi].depth) {
 			o2 = dive->cylinder[gaschanges[gi].gasidx].gasmix.o2.permille;
 			he = dive->cylinder[gaschanges[gi].gasidx].gasmix.he.permille;
@@ -1191,6 +1197,16 @@ static gboolean gf_focus_out_cb(GtkWidget *entry, GdkEvent * event, gpointer dat
 	return FALSE;
 }
 
+static gboolean last_stop_toggled_cb(GtkWidget *entry, GdkEvent * event, gpointer data)
+{
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(entry)) == TRUE)
+		decostoplevels[1] = 6000;
+	else
+		decostoplevels[1] = 3000;
+	show_planned_dive();
+	return FALSE;
+}
+
 static GtkWidget *add_gas_combobox_to_box(GtkWidget *box, const char *label, int idx)
 {
 	GtkWidget *frame, *combo;
@@ -1318,6 +1334,16 @@ void input_plan()
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 	add_entry_with_callback(hbox, 12, _("Dive starts when?"), "+60:00", starttime_focus_out_cb, NULL);
 	add_entry_with_callback(hbox, 12, _("Surface Pressure (mbar)"), SURFACE_PRESSURE_STRING, surfpres_focus_out_cb, NULL);
+
+	if (get_units()->length == METERS)
+		labeltext = _("Last stop at 6 Meters");
+	else
+		labeltext = _("Last stop at 20 Feet");
+
+	content = gtk_check_button_new_with_label(labeltext);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(content), 0);
+	gtk_box_pack_start(GTK_BOX(hbox), content, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(content), "toggled", G_CALLBACK(last_stop_toggled_cb), NULL);
 
 	hbox = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
