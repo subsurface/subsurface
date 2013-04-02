@@ -322,7 +322,7 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@echo '    MOC' $<
 	@$(MOC) -i $(MOCFLAGS) $< -o $@
 
-qt-gui.o: qt-gui.moc
+qt-gui.o: main-window.ui.h qt-gui.moc
 
 %.ui.h: ui/%.ui
 	@echo '    UIC' $<

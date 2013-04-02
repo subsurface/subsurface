@@ -24,10 +24,14 @@
 #include "webservice.h"
 #include "version.h"
 #include "libdivecomputer.h"
+#include "main-window.ui.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include <QApplication>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QStringList>
 #include <QTranslator>
 
 #if HAVE_OSM_GPS_MAP
@@ -1733,6 +1737,120 @@ static gboolean notebook_tooltip (GtkWidget *widget, gint x, gint y,
 	}
 }
 
+class MainWindow: public QMainWindow, private Ui::MainWindow
+{
+	Q_OBJECT
+
+public:
+	MainWindow(QWidget *parent = 0);
+	~MainWindow() {}
+
+	void setCurrentFileName(const QString &fileName);
+
+private Q_SLOTS:
+	void on_actionNew_triggered() { on_actionClose_triggered(); }
+	void on_actionOpen_triggered();
+	void on_actionSave_triggered() { file_save(NULL, NULL); }
+	void on_actionSaveAs_triggered() { file_save_as(NULL, NULL); }
+	void on_actionClose_triggered();
+
+private:
+	QStringList fileNameFilters() const;
+
+private:
+	QString m_currentFileName;
+};
+
+MainWindow::MainWindow(QWidget *parent):
+	QMainWindow(parent)
+{
+	setupUi(this);
+}
+
+void MainWindow::setCurrentFileName(const QString &fileName)
+{
+	if (fileName == m_currentFileName) return;
+	m_currentFileName = fileName;
+
+	QString title = tr("Subsurface");
+	if (!m_currentFileName.isEmpty()) {
+		QFileInfo fileInfo(m_currentFileName);
+		title += " - " + fileInfo.fileName();
+	}
+	setWindowTitle(title);
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+	QString defaultFileName = QString::fromUtf8(prefs.default_filename);
+	QFileInfo fileInfo(defaultFileName);
+
+	QFileDialog dialog(this, tr("Open File"), fileInfo.path());
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.selectFile(defaultFileName);
+	dialog.setNameFilters(fileNameFilters());
+	if (dialog.exec()) {
+		/* first, close the existing file, if any */
+		file_close(NULL, NULL);
+
+		/* we know there is only one filename */
+		QString fileName = dialog.selectedFiles().first();
+		GError *error = NULL;
+		parse_file(fileName.toUtf8().constData(), &error);
+		if (error != NULL) {
+			report_error(error);
+			g_error_free(error);
+			error = NULL;
+		} else {
+			setCurrentFileName(fileName);
+		}
+		report_dives(FALSE, FALSE);
+	}
+}
+
+void MainWindow::on_actionClose_triggered()
+{
+	if (unsaved_changes())
+		if (ask_save_changes() == FALSE)
+			return;
+
+	setCurrentFileName(QString());
+
+	/* free the dives and trips */
+	while (dive_table.nr)
+		delete_single_dive(0);
+	mark_divelist_changed(FALSE);
+
+	/* clear the selection and the statistics */
+	selected_dive = 0;
+	process_selected_dives();
+	clear_stats_widgets();
+	clear_events();
+	show_dive_stats(NULL);
+
+	/* clear the equipment page */
+	clear_equipment_widgets();
+
+	/* redraw the screen */
+	dive_list_update_dives();
+	show_dive_info(NULL);
+}
+
+QStringList MainWindow::fileNameFilters() const
+{
+	QStringList filters;
+
+	filters << "*.xml *.uddf *.udcf *.jlb"
+#ifdef LIBZIP
+		" *.sde *.dld"
+#endif
+#ifdef SQLITE3
+		" *.db"
+#endif
+		;
+	return filters;
+}
+
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -1748,6 +1866,8 @@ void init_ui(int *argcp, char ***argvp)
 
 	application = new QApplication(*argcp, *argvp);
 	application->installTranslator(new Translator(application));
+	MainWindow *window = new MainWindow();
+	window->show();
 
 	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();
