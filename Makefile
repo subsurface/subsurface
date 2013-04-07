@@ -3,7 +3,7 @@ VERSION=3.0.2
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE
 CXX=g++
-CXXFLAGS=-Wall -g $(CLCFLAGS) -DQT_NO_KEYWORDS
+CXXFLAGS=-Wall -g $(CLCFLAGS) -fPIC -DQT_NO_KEYWORDS
 INSTALL=install
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
@@ -182,10 +182,13 @@ LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIB
 MSGLANGS=$(notdir $(wildcard po/*.po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
+
+QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o
+
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
+	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE) $(QTOBJS)
 
 DEPS = $(wildcard .dep/*.dep)
 
@@ -298,35 +301,44 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 
 %.o: %.c
 	@echo '    CC' $<
-	@mkdir -p .dep
+	@mkdir -p .dep .dep/qt-ui
 	@$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 %.o: %.cpp
 	@echo '    CXX' $<
-	@mkdir -p .dep
+	@mkdir -p .dep .dep/qt-ui
 	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
-
-# This rule is for running the moc on QObject subclasses defined in the .h
-# files.
-# To activate this rule, add <file>.moc.o to the OBJS variable.
-%.moc.cpp: %.h
-	@echo '    MOC' $<
-	@$(MOC) $(MOCFLAGS) $< -o $@
 
 # This rule is for running the moc on QObject subclasses defined in the .cpp
 # files; remember to #include "<file>.moc" at the end of the .cpp file, or
 # you'll get linker errors ("undefined vtable for...")
 # To activate this rule, you need another rule on the .o file, like:
 #    file.o: file.moc
+
+qt-ui/%.moc: qt-ui/%.h
+	@echo '    MOC' $<
+	@$(MOC) -i $(MOCFLAGS) $< -o $@
+
+# this is just here for qt-gui.cpp
+# should be removed once all the Qt UI code has been moved into qt-ui
+
 %.moc: %.cpp
 	@echo '    MOC' $<
 	@$(MOC) -i $(MOCFLAGS) $< -o $@
 
-qt-gui.o: main-window.ui.h qt-gui.moc
+# This creates the ui headers.
+# To activate this rule, you need to add the ui_*.h file to the .o file:
+#    file.o: ui_file.h
 
-%.ui.h: ui/%.ui
+qt-ui/ui_%.h: qt-ui/%.ui
 	@echo '    UIC' $<
 	@$(UIC) $< -o $@
+
+qt-gui.o: qt-gui.moc
+
+qt-ui/maintab.o: qt-ui/maintab.moc qt-ui/ui_maintab.h
+
+qt-ui/mainwindow.o: qt-ui/mainwindow.moc qt-ui/ui_mainwindow.h
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
@@ -355,7 +367,7 @@ doc:
 
 clean:
 	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
-		$(VERSION_FILE)
+		$(VERSION_FILE) qt-ui/*.moc qt-ui/ui_*.h
 	rm -rf share .dep
 
 -include $(DEPS)

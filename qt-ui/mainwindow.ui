@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>763</width>
+    <height>548</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QSplitter" name="splitter_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QSplitter" name="splitter_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="MainTab" name="widget" native="true"/>
+       <widget class="QGraphicsView" name="graphicsView"/>
+      </widget>
+      <widget class="QTableView" name="tableView"/>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>763</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actSave"/>
+    <addaction name="actSaveAs"/>
+    <addaction name="actClose"/>
+    <addaction name="separator"/>
+    <addaction name="actImport"/>
+    <addaction name="actExportUDDF"/>
+    <addaction name="separator"/>
+    <addaction name="actPrint"/>
+    <addaction name="separator"/>
+    <addaction name="actPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuLog">
+    <property name="title">
+     <string>Log</string>
+    </property>
+    <addaction name="actDowFromDiveComputer"/>
+    <addaction name="actDownloadFromWeb"/>
+    <addaction name="actionEdit_Device_Names"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_Dive"/>
+    <addaction name="separator"/>
+    <addaction name="actionRenumber"/>
+    <addaction name="actionAuto_Group"/>
+    <addaction name="actionToggle_Zoom"/>
+    <addaction name="actionYearly_Statistics"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionList"/>
+    <addaction name="actionProfile"/>
+    <addaction name="actionInfo"/>
+    <addaction name="actionTree"/>
+    <addaction name="actionPrev_DC"/>
+    <addaction name="actionNext_DC"/>
+   </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Filter</string>
+    </property>
+    <addaction name="actionSelect_Events"/>
+   </widget>
+   <widget class="QMenu" name="menuPlanner">
+    <property name="title">
+     <string>Planner</string>
+    </property>
+    <addaction name="actionInput_Plan"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_Subsurface"/>
+    <addaction name="actionUser_Manual"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuLog"/>
+   <addaction name="menuView"/>
+   <addaction name="menuFilter"/>
+   <addaction name="menuPlanner"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actSaveAs">
+   <property name="text">
+    <string>Save as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actImport">
+   <property name="text">
+    <string>Import Files</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actExportUDDF">
+   <property name="text">
+    <string>Export UDDF</string>
+   </property>
+  </action>
+  <action name="actPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actDowFromDiveComputer">
+   <property name="text">
+    <string>Download from Dive computer</string>
+   </property>
+  </action>
+  <action name="actDownloadFromWeb">
+   <property name="text">
+    <string>Download from Web Service</string>
+   </property>
+  </action>
+  <action name="actionEdit_Device_Names">
+   <property name="text">
+    <string>Edit Device Names</string>
+   </property>
+  </action>
+  <action name="actionAdd_Dive">
+   <property name="text">
+    <string>Add Dive</string>
+   </property>
+  </action>
+  <action name="actionRenumber">
+   <property name="text">
+    <string>Renumber</string>
+   </property>
+  </action>
+  <action name="actionAuto_Group">
+   <property name="text">
+    <string>Auto Group</string>
+   </property>
+  </action>
+  <action name="actionToggle_Zoom">
+   <property name="text">
+    <string>Toggle Zoom</string>
+   </property>
+  </action>
+  <action name="actionYearly_Statistics">
+   <property name="text">
+    <string>Yearly Statistics</string>
+   </property>
+  </action>
+  <action name="actionList">
+   <property name="text">
+    <string>List</string>
+   </property>
+  </action>
+  <action name="actionProfile">
+   <property name="text">
+    <string>Profile</string>
+   </property>
+  </action>
+  <action name="actionInfo">
+   <property name="text">
+    <string>Info</string>
+   </property>
+  </action>
+  <action name="actionTree">
+   <property name="text">
+    <string>Tree</string>
+   </property>
+  </action>
+  <action name="actionPrev_DC">
+   <property name="text">
+    <string>Prev DC</string>
+   </property>
+  </action>
+  <action name="actionNext_DC">
+   <property name="text">
+    <string>Next DC</string>
+   </property>
+  </action>
+  <action name="actionSelect_Events">
+   <property name="text">
+    <string>Select Events</string>
+   </property>
+  </action>
+  <action name="actionInput_Plan">
+   <property name="text">
+    <string>Input Plan</string>
+   </property>
+  </action>
+  <action name="actionAbout_Subsurface">
+   <property name="text">
+    <string>About Subsurface</string>
+   </property>
+  </action>
+  <action name="actionUser_Manual">
+   <property name="text">
+    <string>User Manual</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MainTab</class>
+   <extends>QWidget</extends>
+   <header>maintab.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

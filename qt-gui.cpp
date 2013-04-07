@@ -24,10 +24,11 @@
 #include "webservice.h"
 #include "version.h"
 #include "libdivecomputer.h"
-#include "main-window.ui.h"
+#include "qt-ui/mainwindow.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
+
 #include <QApplication>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -1737,6 +1738,9 @@ static gboolean notebook_tooltip (GtkWidget *widget, gint x, gint y,
 	}
 }
 
+#if NEEDS_TO_MOVE_TO_QT_UI
+/* this appears to have moved - but it's very different in qt-ui */
+
 class MainWindow: public QMainWindow, private Ui::MainWindow
 {
 	Q_OBJECT
@@ -1850,6 +1854,7 @@ QStringList MainWindow::fileNameFilters() const
 		;
 	return filters;
 }
+#endif /* NEEDS_TO_MOVE_TO_QT_UI */
 
 void init_ui(int *argcp, char ***argvp)
 {
