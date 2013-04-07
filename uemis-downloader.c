@@ -731,7 +731,7 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 	return;
 }
 
-static char *get_divenr(char *deviceidstr)
+static char *uemis_get_divenr(char *deviceidstr)
 {
 	uint32_t deviceid, maxdiveid = 0;
 	int i;
@@ -789,7 +789,7 @@ static char *do_uemis_download(struct argument_block *args)
 	/* if we have an empty divelist or force it, then we start downloading from the
 	 * first dive on the Uemis; otherwise check which was the last dive downloaded */
 	if (!args->force_download && dive_table.nr > 0)
-		newmax = get_divenr(deviceid);
+		newmax = uemis_get_divenr(deviceid);
 	else
 		newmax = strdup("0");
 	start = atoi(newmax);

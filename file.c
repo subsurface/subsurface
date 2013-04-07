@@ -263,7 +263,7 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, GError
 	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, error);
 }
 
-void parse_file(const char *filename, GError **error, gboolean possible_default_filename)
+void parse_file(const char *filename, GError **error)
 {
 	struct memblock mem;
 #ifdef SQLITE3
@@ -283,18 +283,8 @@ void parse_file(const char *filename, GError **error, gboolean possible_default_
 					     filename);
 		}
 
-		/*
-		 * We do *not* want to leave the old default_filename
-		 * just because the open failed.
-		 */
-		if (possible_default_filename)
-			set_filename(filename, TRUE);
-
 		return;
 	}
-
-	if (possible_default_filename)
-		set_filename(filename, TRUE);
 
 #ifdef SQLITE3
 	fmt = strrchr(filename, '.');

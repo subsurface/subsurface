@@ -410,7 +410,7 @@ static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
  * be able to edit a dive without unintended side effects */
 extern struct dive edit_dive;
 
-extern gboolean autogroup;
+extern short autogroup;
 /* random threashold: three days without diving -> new trip
  * this works very well for people who usually dive as part of a trip and don't
  * regularly dive at a local facility; this is why trips are an optional feature */
@@ -551,7 +551,7 @@ extern void set_filename(const char *filename, gboolean force);
 
 extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct dive_table *table, GError **error);
 
-extern void parse_file(const char *filename, GError **error, gboolean possible_default_filename);
+extern void parse_file(const char *filename, GError **error);
 
 extern void show_dive_info(struct dive *);
 
