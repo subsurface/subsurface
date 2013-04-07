@@ -81,7 +81,7 @@ extern GtkWidget *create_label(const char *fmt, ...);
 
 extern gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data);
 
-unsigned int amount_selected;
+extern unsigned int amount_selected;
 
 extern void process_selected_dives(void);
 
