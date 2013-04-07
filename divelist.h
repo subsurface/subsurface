@@ -19,7 +19,9 @@ extern void export_all_dives_uddf_cb();
 
 /* divelist core logic functions */
 extern dive_trip_t *find_trip_by_idx(int idx);
+extern int dive_nr_sort(int idx_a, int idx_b, timestamp_t when_a, timestamp_t when_b);
 extern int trip_has_selected_dives(dive_trip_t *trip);
+extern void get_depth_values(int depth, int *depth_int, int *depth_decimal, int *show_decimal);
 extern void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(struct dive *dive);
 extern void get_location(struct dive *dive, char **str);
