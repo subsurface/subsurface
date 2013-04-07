@@ -88,6 +88,43 @@ dive_trip_t *find_trip_by_idx(int idx)
 	return NULL;
 }
 
+int dive_nr_sort(int idx_a, int idx_b, timestamp_t when_a, timestamp_t when_b)
+{
+	struct dive *a, *b;
+	dive_trip_t *tripa = NULL, *tripb = NULL;
+
+	if (idx_a < 0) {
+		a = NULL;
+		tripa = find_trip_by_idx(idx_a);
+	} else {
+		a = get_dive(idx_a);
+		if (a)
+			tripa = a->divetrip;
+	}
+
+	if (idx_b < 0) {
+		b = NULL;
+		tripb = find_trip_by_idx(idx_b);
+	} else {
+		b = get_dive(idx_b);
+		if (b)
+			tripb = b->divetrip;
+	}
+
+	/*
+	 * Compare dive dates within the same trip (or when there
+	 * are no trips involved at all). But if we have two
+	 * different trips use the trip dates for comparison
+	 */
+	if (tripa != tripb) {
+		if (tripa)
+			when_a = tripa->when;
+		if (tripb)
+			when_b = tripb->when;
+	}
+	return when_a - when_b;
+}
+
 int trip_has_selected_dives(dive_trip_t *trip)
 {
 	struct dive *dive;
@@ -96,6 +133,38 @@ int trip_has_selected_dives(dive_trip_t *trip)
 			return 1;
 	}
 	return 0;
+}
+
+/* Get the values as we want to show them. Whole feet. But meters with one decimal for 
+ * values less than 20m, without decimals for larger values */
+void get_depth_values(int depth, int *depth_int, int *depth_decimal, int *show_decimal)
+{
+	int integer, frac;
+
+	*show_decimal = 1;
+	switch (prefs.units.length) {
+	case METERS:
+		/* To tenths of meters */
+		depth = (depth + 49) / 100;
+		integer = depth / 10;
+		frac = depth % 10;
+		if (integer < 20)
+			break;
+		if (frac >= 5)
+			integer++;
+		*show_decimal = 0;
+		break;
+	case FEET:
+		integer = mm_to_feet(depth) + 0.5;
+		*show_decimal = 0;
+		break;
+	default:
+		/* can't happen */
+		return;
+	}
+	*depth_int = integer;
+	if (*show_decimal)
+		*depth_decimal = frac;
 }
 
 /*

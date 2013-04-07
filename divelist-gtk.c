@@ -295,7 +295,7 @@ static void depth_data_func(GtkTreeViewColumn *col,
 			    GtkTreeIter *iter,
 			    gpointer data)
 {
-	int depth, integer, frac, len, idx;
+	int depth, integer, frac, len, idx, show_decimal;
 	char buffer[40];
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DEPTH, &depth, -1);
@@ -303,27 +303,9 @@ static void depth_data_func(GtkTreeViewColumn *col,
 	if (idx < 0) {
 		*buffer = '\0';
 	} else {
-		switch (prefs.units.length) {
-		case METERS:
-			/* To tenths of meters */
-			depth = (depth + 49) / 100;
-			integer = depth / 10;
-			frac = depth % 10;
-			if (integer < 20)
-				break;
-			if (frac >= 5)
-				integer++;
-			frac = -1;
-			break;
-		case FEET:
-			integer = mm_to_feet(depth) + 0.5;
-			frac = -1;
-			break;
-		default:
-			return;
-		}
+		get_depth_values(depth, &integer, &frac, &show_decimal);
 		len = snprintf(buffer, sizeof(buffer), "%d", integer);
-		if (frac >= 0)
+		if (show_decimal)
 			len += snprintf(buffer+len, sizeof(buffer)-len, ".%d", frac);
 	}
 	g_object_set(renderer, "text", buffer, NULL);
@@ -826,49 +808,18 @@ void dive_list_update_dives(void)
 	repaint_dive();
 }
 
-static gint dive_nr_sort(GtkTreeModel *model,
+static gint gtk_dive_nr_sort(GtkTreeModel *model,
 	GtkTreeIter *iter_a,
 	GtkTreeIter *iter_b,
 	gpointer user_data)
 {
 	int idx_a, idx_b;
 	timestamp_t when_a, when_b;
-	struct dive *a, *b;
-	dive_trip_t *tripa = NULL, *tripb = NULL;
 
 	gtk_tree_model_get(model, iter_a, DIVE_INDEX, &idx_a, DIVE_DATE, &when_a, -1);
 	gtk_tree_model_get(model, iter_b, DIVE_INDEX, &idx_b, DIVE_DATE, &when_b, -1);
 
-	if (idx_a < 0) {
-		a = NULL;
-		tripa = find_trip_by_idx(idx_a);
-	} else {
-		a = get_dive(idx_a);
-		if (a)
-			tripa = a->divetrip;
-	}
-
-	if (idx_b < 0) {
-		b = NULL;
-		tripb = find_trip_by_idx(idx_b);
-	} else {
-		b = get_dive(idx_b);
-		if (b)
-			tripb = b->divetrip;
-	}
-
-	/*
-	 * Compare dive dates within the same trip (or when there
-	 * are no trips involved at all). But if we have two
-	 * different trips use the trip dates for comparison
-	 */
-	if (tripa != tripb) {
-		if (tripa)
-			when_a = tripa->when;
-		if (tripb)
-			when_b = tripb->when;
-	}
-	return when_a - when_b;
+	return dive_nr_sort(idx_a, idx_b, when_a, when_b);
 }
 
 
@@ -879,7 +830,7 @@ static struct divelist_column {
 	unsigned int flags;
 	int *visible;
 } dl_column[] = {
-	[DIVE_NR] = { "#", nr_data_func, dive_nr_sort, ALIGN_RIGHT },
+	[DIVE_NR] = { "#", nr_data_func, gtk_dive_nr_sort, ALIGN_RIGHT },
 	[DIVE_DATE] = { N_("Date"), date_data_func, NULL, ALIGN_LEFT },
 	[DIVE_RATING] = { UTF8_BLACKSTAR, star_data_func, NULL, ALIGN_LEFT },
 	[DIVE_DEPTH] = { N_("ft"), depth_data_func, NULL, ALIGN_RIGHT },
