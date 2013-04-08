@@ -685,9 +685,7 @@ struct diveplan {
 	struct divedatapoint *dp;
 };
 
-void plan(struct diveplan *diveplan, char **cache_datap, struct dive **divep);
 void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2);
-void add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gboolean is_rel);
 void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth);
 void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he);
 void free_dps(struct divedatapoint *dp);
