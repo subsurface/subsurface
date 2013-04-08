@@ -1734,8 +1734,9 @@ void init_ui(int *argcp, char ***argvp)
 		star_strings[4] = "**** ";
 		star_strings[5] = "*****";
 	}
+#if !GLIB_CHECK_VERSION(2,3,6)
 	g_type_init();
-
+#endif
 	subsurface_open_conf();
 
 	load_preferences();

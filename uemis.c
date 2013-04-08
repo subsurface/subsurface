@@ -288,7 +288,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	int datalen;
 	int i;
 	uint8_t *data;
-	struct sample *sample;
+	struct sample *sample = NULL;
 	uemis_sample_t *u_sample;
 	struct dive *dive = datap;
 	struct divecomputer *dc = &dive->dc;
@@ -365,6 +365,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		i += 0x25;
 		u_sample++;
 	}
-	dive->dc.duration.seconds = sample->time.seconds - 1;
+	if (sample)
+		dive->dc.duration.seconds = sample->time.seconds - 1;
 	return;
 }
