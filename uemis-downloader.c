@@ -546,7 +546,7 @@ static void parse_divespot(char *buf)
 	char *tag, *type, *val;
 	char locationstring[1024] = "";
 	int divespot, len;
-	double latitude, longitude;
+	double latitude = 0.0, longitude = 0.0;
 
 
 	if (strcmp(tp, "divespot"))

@@ -668,6 +668,7 @@ static void get_ranges(char *buffer, int size)
 			}
 		}
 	}
+	len = strlen(buffer);
 	if (first != last) {
 		if (first + 1 == last)
 			snprintf(buffer + len, size - len, ", %d", last);
