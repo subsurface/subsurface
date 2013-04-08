@@ -16,7 +16,7 @@
   <property name="currentIndex">
    <number>0</number>
   </property>
-  <widget class="QWidget" name="tab">
+  <widget class="QWidget" name="infoTab">
    <attribute name="title">
     <string>Dive Info</string>
    </attribute>
@@ -307,7 +307,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="tab">
+  <widget class="QWidget" name="notesTab">
    <attribute name="title">
     <string>Dive Notes</string>
    </attribute>
@@ -374,7 +374,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="tab_2">
+  <widget class="QWidget" name="equipmentTab">
    <attribute name="title">
     <string>Equipment</string>
    </attribute>
@@ -484,7 +484,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="tab_3">
+  <widget class="QWidget" name="statisticsTab">
    <attribute name="title">
     <string>Stats</string>
    </attribute>
