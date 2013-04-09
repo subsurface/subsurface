@@ -13,5 +13,3 @@ void MainWindow::on_actionNew_triggered()
 {
     qDebug() << "actionNew";
 }
-
-#include "mainwindow.moc"

@@ -6,5 +6,3 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 {
 	ui->setupUi(this);
 }
-
-#include "maintab.moc"

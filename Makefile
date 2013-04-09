@@ -191,13 +191,24 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk
 	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
 	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE) $(QTOBJS)
 
-DEPS = $(wildcard .dep/*.dep)
+# Add files to the following variables if the auto-detection based on the
+# filename fails
+OBJS_NEEDING_MOC =
+OBJS_NEEDING_UIC =
+HEADERS_NEEDING_MOC =
 
+# Add the objects for the header files which define QObject subclasses
+HEADERS_NEEDING_MOC += $(shell grep -l -s 'Q_OBJECT' $(OBJS:.o=.h))
+MOC_OBJS = $(HEADERS_NEEDING_MOC:.h=.moc.o)
+
+ALL_OBJS = $(OBJS) $(MOC_OBJS)
+
+DEPS = $(wildcard .dep/*.dep)
 
 all: $(NAME)
 
-$(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
-	$(CXX) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+$(NAME): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
+	$(CXX) $(LDFLAGS) -o $(NAME) $(ALL_OBJS) $(LIBS)
 
 gen_version_file:
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
@@ -310,36 +321,33 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@mkdir -p .dep .dep/qt-ui
 	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
+# Detect which files require the moc or uic tools to be run
+CPP_NEEDING_MOC = $(shell grep -l -s '^\#include \".*\.moc\"' $(OBJS:.o=.cpp))
+OBJS_NEEDING_MOC += $(CPP_NEEDING_MOC:.cpp=.o)
+
+CPP_NEEDING_UIC = $(shell grep -l -s '^\#include \"ui_.*\.h\"' $(OBJS:.o=.cpp))
+OBJS_NEEDING_UIC += $(CPP_NEEDING_UIC:.cpp=.o)
+
+# This rule is for running the moc on QObject subclasses defined in the .h
+# files.
+%.moc.cpp: %.h
+	@echo '    MOC' $<
+	@$(MOC) $(MOCFLAGS) $< -o $@
+
 # This rule is for running the moc on QObject subclasses defined in the .cpp
 # files; remember to #include "<file>.moc" at the end of the .cpp file, or
 # you'll get linker errors ("undefined vtable for...")
-# To activate this rule, you need another rule on the .o file, like:
-#    file.o: file.moc
-
-qt-ui/%.moc: qt-ui/%.h
-	@echo '    MOC' $<
-	@$(MOC) -i $(MOCFLAGS) $< -o $@
-
-# this is just here for qt-gui.cpp
-# should be removed once all the Qt UI code has been moved into qt-ui
-
 %.moc: %.cpp
 	@echo '    MOC' $<
 	@$(MOC) -i $(MOCFLAGS) $< -o $@
 
 # This creates the ui headers.
-# To activate this rule, you need to add the ui_*.h file to the .o file:
-#    file.o: ui_file.h
-
-qt-ui/ui_%.h: qt-ui/%.ui
+ui_%.h: %.ui
 	@echo '    UIC' $<
 	@$(UIC) $< -o $@
 
-qt-gui.o: qt-gui.moc
-
-qt-ui/maintab.o: qt-ui/maintab.moc qt-ui/ui_maintab.h
-
-qt-ui/mainwindow.o: qt-ui/mainwindow.moc qt-ui/ui_mainwindow.h
+$(OBJS_NEEDING_MOC): %.o: %.moc
+$(OBJS_NEEDING_UIC): qt-ui/%.o: qt-ui/ui_%.h
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
@@ -367,7 +375,7 @@ doc:
 	$(MAKE) -C Documentation doc
 
 clean:
-	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
+	rm -f $(ALL_OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
 		$(VERSION_FILE) qt-ui/*.moc qt-ui/ui_*.h
 	rm -rf share .dep
 
