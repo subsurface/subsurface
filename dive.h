@@ -28,18 +28,21 @@
 #define SEAWATER_SALINITY	10300
 #define FRESHWATER_SALINITY	10000
 
-/* Dive types definition */
-#define DTYPE_INVALID           1
-#define DTYPE_BOAT              2
-#define DTYPE_SHORE             4
-#define DTYPE_DRIFT             8
-#define DTYPE_DEEP              16
-#define DTYPE_CAVERN            32
-#define DTYPE_ICE               64
-#define DTYPE_WRECK             128
-#define DTYPE_CAVE              256
-#define DTYPE_ALTITUDE          512
-#define DTYPE_POOL              1024
+/* Dive tag definitions */
+#define DTAG_INVALID		(1 << 0)
+#define DTAG_BOAT		(1 << 1)
+#define DTAG_SHORE		(1 << 2)
+#define DTAG_DRIFT		(1 << 3)
+#define DTAG_DEEP		(1 << 4)
+#define DTAG_CAVERN		(1 << 5)
+#define DTAG_ICE		(1 << 6)
+#define DTAG_WRECK		(1 << 7)
+#define DTAG_CAVE		(1 << 8)
+#define DTAG_ALTITUDE		(1 << 9)
+#define DTAG_POOL		(1 << 10)
+#define DTAG_NR			11
+/* defined in statistics.c */
+extern char *dtag_names[DTAG_NR];
 
 /*
  * Some silly typedefs to make our units very explicit.

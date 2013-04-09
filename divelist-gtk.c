@@ -716,7 +716,7 @@ static void fill_dive_list(void)
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
 		dive_trip_t *trip;
-		if ((dive->dive_tags & DTYPE_INVALID) && !prefs.display_invalid_dives)
+		if ((dive->dive_tags & DTAG_INVALID) && !prefs.display_invalid_dives)
 			continue;
 		trip = dive->divetrip;
 
@@ -1082,14 +1082,14 @@ static void invalid_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		/* now swap the invalid tag if just 1 dive was selected
 		 * otherwise set all to invalid */
 		if(amount_selected == 1) {
-                        if (dive->dive_tags & DTYPE_INVALID)
-                                dive->dive_tags &= ~DTYPE_INVALID;
+                        if (dive->dive_tags & DTAG_INVALID)
+                                dive->dive_tags &= ~DTAG_INVALID;
                         else
-                                dive->dive_tags |= DTYPE_INVALID;
+                                dive->dive_tags |= DTAG_INVALID;
 			changed = 1;
                 } else {
-			if (! dive->dive_tags & DTYPE_INVALID) {
-				dive->dive_tags |= DTYPE_INVALID;
+			if (! dive->dive_tags & DTAG_INVALID) {
+				dive->dive_tags |= DTAG_INVALID;
 				changed = 1;
 			}
                 }
@@ -1682,7 +1682,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
 			if (amount_selected == 1) {
-                                if (dive->dive_tags & DTYPE_INVALID)
+                                if (dive->dive_tags & DTAG_INVALID)
 					menuitem = gtk_menu_item_new_with_label(_("Mark valid"));
                                 else
 					menuitem = gtk_menu_item_new_with_label(_("Mark invalid"));

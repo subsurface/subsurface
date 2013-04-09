@@ -391,6 +391,22 @@ static void save_events(FILE *f, struct event *ev)
 	}
 }
 
+static void save_tags(FILE *f, int tags)
+{
+	int i, more = 0;
+
+	fprintf(f, " tags='");
+	for (i = 0; i < DTAG_NR; i++) {
+		if (tags & (1 << i)) {
+			if (more)
+				fprintf(f, ", ");
+			fprintf(f, "%s", dtag_names[i]);
+			more = 1;
+		}
+	}
+	fprintf(f, "'");
+}
+
 static void show_date(FILE *f, timestamp_t when)
 {
 	struct tm tm;
@@ -452,7 +468,8 @@ void save_dive(FILE *f, struct dive *dive)
 	if (dive->visibility)
 		fprintf(f, " visibility='%d'", dive->visibility);
         if (dive->dive_tags)
-		fprintf(f, " tags='%d'", dive->dive_tags);
+		save_tags(f, dive->dive_tags);
+
 	show_date(f, dive->when);
 	fprintf(f, " duration='%u:%02u min'>\n",
 		FRACTION(dive->dc.duration.seconds, 60));

@@ -200,6 +200,29 @@ static void divedatetime(char *buffer, void *_when)
 	}
 }
 
+static void divetags(char *buffer, void *_tags)
+{
+	int *tags = _tags;
+	int i;
+
+	*tags = 0;
+	for (i = 0; i < DTAG_NR; i++) {
+		if (strstr(buffer, dtag_names[i])) {
+			/* stupidly we have 'cave' and 'cavern' */
+			if (1 << i == DTAG_CAVE) {
+				char *cave = strstr(buffer, "cave");
+				while (cave && !strncmp(cave, "cavern", strlen("cavern"))) {
+					cave++;
+					cave = strstr(cave, "cave");
+				}
+				if (!cave)
+					continue;
+			}
+			*tags |= (1 << i);
+		}
+	}
+}
+
 enum number_type {
 	NEITHER,
 	FLOAT
@@ -1033,7 +1056,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH(".number", get_index, &dive->number))
 		return;
-	if (MATCH(".tags", get_index, &dive->dive_tags))
+	if (MATCH(".tags", divetags, &dive->dive_tags))
 		return;
 	if (MATCH(".tripflag", get_tripflag, &dive->tripflag))
 		return;

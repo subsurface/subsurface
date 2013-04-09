@@ -15,6 +15,13 @@
 #include "display-gtk.h"
 #include "divelist.h"
 
+/* mark for translation but don't translate here as these terms are used
+ * in save-xml.c */
+char *dtag_names[DTAG_NR] = {
+	N_("invalid"), N_("boat"), N_("shore"), N_("drift"), N_("deep"), N_("cavern"),
+	N_("ice"), N_("wreck"), N_("cave"), N_("altitude"), N_("pool")
+};
+
 typedef struct {
 	GtkWidget *date,
 		*dive_time,
@@ -633,35 +640,17 @@ static void show_single_dive_stats(struct dive *dive)
 		set_label(single_w.gas_used, "");
 	}
         /* Dive type */
+	*buf = '\0';
         if (dive->dive_tags) {
-                buf[0]=0;
-                if(dive->dive_tags & DTYPE_INVALID)
-	                strcat(buf, " Invalid,");
-                if(dive->dive_tags & DTYPE_BOAT)
-	                strcat(buf, " Boat,");
-                if(dive->dive_tags & DTYPE_SHORE)
-	                strcat(buf, " Shore,");
-                if(dive->dive_tags & DTYPE_DRIFT)
-	                strcat(buf, " Drift,");
-                if(dive->dive_tags & DTYPE_DEEP)
-	                strcat(buf, " Deep,");
-                if(dive->dive_tags & DTYPE_CAVERN)
-	                strcat(buf, " Cavern,");
-                if(dive->dive_tags & DTYPE_ICE)
-	                strcat(buf, " Ice,");
-                if(dive->dive_tags & DTYPE_WRECK)
-	                strcat(buf, " Wreck,");
-                if(dive->dive_tags & DTYPE_CAVE)
-	                strcat(buf, " Cave,");
-                if(dive->dive_tags & DTYPE_ALTITUDE)
-	                strcat(buf, " Altitude,");
-                if(dive->dive_tags & DTYPE_POOL)
-	                strcat(buf, " Pool,");
-                if(strlen(buf) > 1)
-                        buf[strlen(buf)-1] = 0;
-        }
-        else {
-                buf[0] = 0;
+		int i, more = 0;
+
+		for (i = 0; i < DTAG_NR; i++)
+			if(dive->dive_tags & (1 << i)) {
+				if (more)
+					strcat(buf, ", ");
+				strcat(buf, _(dtag_names[i]));
+				more = 1;
+			}
         }
         set_label(single_w.dive_type, buf);
 }
@@ -902,7 +891,7 @@ GtkWidget *single_stats_widget(void)
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
 
-	single_w.dive_type = new_info_label_in_frame(hbox, _("Dive Type"));
+	single_w.dive_type = new_info_label_in_frame(hbox, _("Dive Tags"));
 
 	return vbox;
 }
