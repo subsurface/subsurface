@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 namespace Ui
 {
 	class MainWindow;
@@ -13,10 +14,16 @@ class DiveNotes;
 class Stats;
 class Equipment;
 
-class MainWindow : public QMainWindow{
-	Q_OBJECT
+class MainWindow : public QMainWindow
+{
+Q_OBJECT
 public:
 	MainWindow();
+
+private Q_SLOTS:
+
+	void on_actionNew_triggered();
+
 private:
 	Ui::MainWindow *ui;
 };
