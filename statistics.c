@@ -28,7 +28,8 @@ typedef struct {
 		*sac,
 		*otu,
 		*o2he,
-		*gas_used;
+		*gas_used,
+                *dive_type;
 } single_stat_widget_t;
 
 static single_stat_widget_t single_w;
@@ -631,6 +632,38 @@ static void show_single_dive_stats(struct dive *dive)
 	} else {
 		set_label(single_w.gas_used, "");
 	}
+        /* Dive type */
+        if (dive->dive_tags) {
+                buf[0]=0;
+                if(dive->dive_tags & DTYPE_INVALID)
+	                strcat(buf, " Invalid,");
+                if(dive->dive_tags & DTYPE_BOAT)
+	                strcat(buf, " Boat,");
+                if(dive->dive_tags & DTYPE_SHORE)
+	                strcat(buf, " Shore,");
+                if(dive->dive_tags & DTYPE_DRIFT)
+	                strcat(buf, " Drift,");
+                if(dive->dive_tags & DTYPE_DEEP)
+	                strcat(buf, " Deep,");
+                if(dive->dive_tags & DTYPE_CAVERN)
+	                strcat(buf, " Cavern,");
+                if(dive->dive_tags & DTYPE_ICE)
+	                strcat(buf, " Ice,");
+                if(dive->dive_tags & DTYPE_WRECK)
+	                strcat(buf, " Wreck,");
+                if(dive->dive_tags & DTYPE_CAVE)
+	                strcat(buf, " Cave,");
+                if(dive->dive_tags & DTYPE_ALTITUDE)
+	                strcat(buf, " Altitude,");
+                if(dive->dive_tags & DTYPE_POOL)
+	                strcat(buf, " Pool,");
+                if(strlen(buf) > 1)
+                        buf[strlen(buf)-1] = 0;
+        }
+        else {
+                buf[0] = 0;
+        }
+        set_label(single_w.dive_type, buf);
 }
 
 /* this gets called when at least two but not all dives are selected */
@@ -865,6 +898,12 @@ GtkWidget *single_stats_widget(void)
 	single_w.o2he = new_info_label_in_frame(hbox, "O" UTF8_SUBSCRIPT_2 " / He");
 	single_w.gas_used = new_info_label_in_frame(hbox, C_("Amount","Gas Used"));
 
+	/* fifth row */
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(framebox), hbox, TRUE, FALSE, 3);
+
+	single_w.dive_type = new_info_label_in_frame(hbox, _("Dive Type"));
+
 	return vbox;
 }
 
@@ -884,6 +923,7 @@ void clear_stats_widgets(void)
 	set_label(single_w.otu, "");
 	set_label(single_w.o2he, "");
 	set_label(single_w.gas_used, "");
+	set_label(single_w.dive_type, "");
 	set_label(stats_w.total_time,"");
 	set_label(stats_w.avg_time,"");
 	set_label(stats_w.shortest_time,"");

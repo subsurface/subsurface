@@ -28,6 +28,18 @@
 #define SEAWATER_SALINITY	10300
 #define FRESHWATER_SALINITY	10000
 
+/* Dive types definition */
+#define DTYPE_INVALID           1
+#define DTYPE_BOAT              2
+#define DTYPE_SHORE             4
+#define DTYPE_DRIFT             8
+#define DTYPE_DEEP              16
+#define DTYPE_CAVERN            32
+#define DTYPE_ICE               64
+#define DTYPE_WRECK             128
+#define DTYPE_CAVE              256
+#define DTYPE_ALTITUDE          512
+#define DTYPE_POOL              1024
 
 /*
  * Some silly typedefs to make our units very explicit.
@@ -342,6 +354,7 @@ struct dive {
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity; // kg per 10000 l
+        int dive_tags;
 
 	struct divecomputer dc;
 };

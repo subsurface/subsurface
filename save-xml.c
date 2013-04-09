@@ -451,6 +451,8 @@ void save_dive(FILE *f, struct dive *dive)
 		fprintf(f, " rating='%d'", dive->rating);
 	if (dive->visibility)
 		fprintf(f, " visibility='%d'", dive->visibility);
+        if (dive->dive_tags)
+		fprintf(f, " tags='%d'", dive->dive_tags);
 	show_date(f, dive->when);
 	fprintf(f, " duration='%u:%02u min'>\n",
 		FRACTION(dive->dc.duration.seconds, 60));

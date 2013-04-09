@@ -36,6 +36,7 @@ struct preferences {
 	int map_provider;
 	const char *divelist_font;
 	const char *default_filename;
+        short display_invalid_dives;
 };
 
 extern struct preferences prefs, default_prefs;

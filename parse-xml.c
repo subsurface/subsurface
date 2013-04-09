@@ -1033,6 +1033,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH(".number", get_index, &dive->number))
 		return;
+	if (MATCH(".tags", get_index, &dive->dive_tags))
+		return;
 	if (MATCH(".tripflag", get_tripflag, &dive->tripflag))
 		return;
 	if (MATCH(".date", divedate, &dive->when))

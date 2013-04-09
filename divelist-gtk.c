@@ -715,7 +715,10 @@ static void fill_dive_list(void)
 	i = dive_table.nr;
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
-		dive_trip_t *trip = dive->divetrip;
+		dive_trip_t *trip;
+		if ((dive->dive_tags & DTYPE_INVALID) && !prefs.display_invalid_dives)
+			continue;
+		trip = dive->divetrip;
 
 		if (!trip) {
 			parent_ptr = NULL;
@@ -1058,6 +1061,42 @@ static void save_as_cb(GtkWidget *menuitem, struct dive *dive)
 	if (filename){
 		save_dives_logic(filename, TRUE);
 		g_free(filename);
+	}
+}
+
+static void invalid_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	int i;
+	int changed = 0;
+	struct dive *dive;
+
+	if (!amount_selected)
+		return;
+	/* walk the dive list in chronological order */
+	for_each_dive(i, dive) {
+		dive = get_dive(i);
+		if (!dive)
+			continue;
+		if (!dive->selected)
+			continue;
+		/* now swap the invalid tag if just 1 dive was selected
+		 * otherwise set all to invalid */
+		if(amount_selected == 1) {
+                        if (dive->dive_tags & DTYPE_INVALID)
+                                dive->dive_tags &= ~DTYPE_INVALID;
+                        else
+                                dive->dive_tags |= DTYPE_INVALID;
+			changed = 1;
+                } else {
+			if (! dive->dive_tags & DTYPE_INVALID) {
+				dive->dive_tags |= DTYPE_INVALID;
+				changed = 1;
+			}
+                }
+	}
+	if (changed) {
+		dive_list_update_dives();
+		mark_divelist_changed(TRUE);
 	}
 }
 
@@ -1626,7 +1665,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	} else {
 		dive = get_dive(idx);
-		/* if we right click on selected dive(s), edit or delete those */
+		/* if we right click on selected dive(s), edit, delete or tag them as invalid */
 		if (dive->selected) {
 			if (amount_selected == 1) {
 				deletelabel = _(deletesinglelabel);
@@ -1640,6 +1679,17 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			}
 			menuitem = gtk_menu_item_new_with_label(_("Save as"));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(save_as_cb), dive);
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+			if (amount_selected == 1) {
+                                if (dive->dive_tags & DTYPE_INVALID)
+					menuitem = gtk_menu_item_new_with_label(_("Mark valid"));
+                                else
+					menuitem = gtk_menu_item_new_with_label(_("Mark invalid"));
+                        } else {
+                                menuitem = gtk_menu_item_new_with_label(_("Mark invalid"));
+                        }
+			g_signal_connect(menuitem, "activate", G_CALLBACK(invalid_dives_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
 			menuitem = gtk_menu_item_new_with_label(deletelabel);

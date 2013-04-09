@@ -113,6 +113,7 @@ void save_preferences(void)
 	SAVE_STRING("default_filename", default_filename);
 
 	SAVE_INT("map_provider", map_provider);
+        SAVE_INT("display_invalid_dives", display_invalid_dives);
 
 	/* Flush the changes out to the system */
 	subsurface_flush_conf();
@@ -204,6 +205,10 @@ void load_preferences(void)
 		prefs.default_filename = conf_value;
 
 	int_value = subsurface_get_conf_int("map_provider");
-	if(int_value >= 0)
+	if (int_value >= 0)
 		prefs.map_provider = int_value;
+
+	int_value = subsurface_get_conf_int("display_invalid_dives");
+	if (int_value >= 0)
+		prefs.display_invalid_dives = int_value;
 }

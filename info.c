@@ -606,6 +606,10 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		if (old_text)
 			g_free(old_text);
 	}
+	if (dive->dive_tags != master->dive_tags) {
+		changed = 1;
+		dive->dive_tags = master->dive_tags;
+	}
 	if (changed) {
 		mark_divelist_changed(TRUE);
 		update_dive(dive);
@@ -793,9 +797,18 @@ static gboolean base_data_cb(GtkWidget *w, GdkEvent *event, gpointer _data)
 	return FALSE;
 }
 
+void divetag_toggle_cb(GtkWidget *widget, gpointer data)
+{
+        int DT = GPOINTER_TO_INT (data);
+        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
+                edit_dive.dive_tags |= DT;
+        else
+                edit_dive.dive_tags &= ~DT;
+}
+
 static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_info *info, gboolean multi)
 {
-	GtkWidget *hbox, *frame, *equipment, *ibox, *box;
+	GtkWidget *hbox, *frame, *equipment, *ibox, *box, *button, *sbox, *framebox;
 #if HAVE_OSM_GPS_MAP
 	GtkWidget *image;
 #endif
@@ -869,6 +882,66 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	else
 		airtemp[0] = '\0';
 	info->airtemp = single_text_entry(hbox, buffer, airtemp);
+
+	frame = gtk_frame_new(_("Dive Type"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
+
+	framebox = gtk_vbox_new(FALSE, 3);
+	gtk_container_add(GTK_CONTAINER(frame), framebox);
+
+	sbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
+/* 1st line */
+	button = gtk_check_button_new_with_label(_("Boat Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_BOAT);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_BOAT));
+
+	button = gtk_check_button_new_with_label(_("Shore Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_SHORE);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_SHORE));
+
+	button = gtk_check_button_new_with_label(_("Pool Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_POOL);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_POOL));
+
+	sbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
+/* 2nd line */
+	button = gtk_check_button_new_with_label(_("Drift Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_DRIFT);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_DRIFT));
+
+	button = gtk_check_button_new_with_label(_("Deep Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_DEEP);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_DEEP));
+
+	button = gtk_check_button_new_with_label(_("Cavern Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_CAVERN);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_CAVERN));
+
+	sbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
+/* 3rd line */
+	button = gtk_check_button_new_with_label(_("Ice Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_ICE);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_ICE));
+
+	button = gtk_check_button_new_with_label(_("Wreck Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_WRECK);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_WRECK));
+
+	button = gtk_check_button_new_with_label(_("Cave Dive"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & DTYPE_CAVE);
+	gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER (DTYPE_CAVE));
 
 	/* only show notes if editing a single dive */
 	if (multi) {

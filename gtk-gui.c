@@ -626,6 +626,7 @@ OPTIONCALLBACK(maxcns_toggle, prefs.visible_cols.maxcns)
 OPTIONCALLBACK(sac_toggle, prefs.visible_cols.sac)
 OPTIONCALLBACK(nitrox_toggle, prefs.visible_cols.nitrox)
 OPTIONCALLBACK(temperature_toggle, prefs.visible_cols.temperature)
+OPTIONCALLBACK(display_invalid_dives_toggle, prefs.display_invalid_dives)
 OPTIONCALLBACK(totalweight_toggle, prefs.visible_cols.totalweight)
 OPTIONCALLBACK(suit_toggle, prefs.visible_cols.suit)
 OPTIONCALLBACK(cylinder_toggle, prefs.visible_cols.cylinder)
@@ -852,6 +853,11 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	box = gtk_hbox_new(FALSE, 6);
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
+	button = gtk_check_button_new_with_label(_("Display invalid dives"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), prefs.display_invalid_dives);
+	gtk_box_pack_end(GTK_BOX(box), button, FALSE, FALSE, 6);
+	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(display_invalid_dives_toggle), NULL);
+
 	frame = gtk_frame_new(_("Default XML Data File"));
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 5);
 	hbox = gtk_hbox_new(FALSE, 6);
@@ -1073,6 +1079,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		free((void *)provider);
 #endif
 		save_preferences();
+                dive_list_update_dives();
 	} else if (result == GTK_RESPONSE_CANCEL) {
 		prefs = oldprefs;
 		set_gf(prefs.gflow, prefs.gfhigh);
