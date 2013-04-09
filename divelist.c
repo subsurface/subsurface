@@ -273,7 +273,7 @@ static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time
 	return o2permille;
 }
 
-/* calculate OTU for a dive - this only takes the first diveomputer into account */
+/* calculate OTU for a dive - this only takes the first divecomputer into account */
 static int calculate_otu(struct dive *dive)
 {
 	int i;
@@ -296,6 +296,74 @@ static int calculate_otu(struct dive *dive)
 			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
 	}
 	return otu + 0.5;
+}
+/* calculate CNS for a dive - this only takes the first divecomputer into account */
+int const cns_table[][3] = {
+/* po2, Maximum Single Exposure, Maximum 24 hour Exposure */
+	{1600,  45 * 60, 150 * 60},
+	{1500, 120 * 60, 180 * 60},
+	{1400, 150 * 60, 180 * 60},
+	{1300, 180 * 60, 210 * 60},
+	{1200, 210 * 60, 240 * 60},
+	{1100, 240 * 60, 270 * 60},
+	{1000, 300 * 60, 300 * 60},
+	{ 900, 360 * 60, 360 * 60},
+	{ 800, 450 * 60, 450 * 60},
+	{ 700, 570 * 60, 570 * 60},
+	{ 600, 720 * 60, 720 * 60}
+};
+
+/* this only gets called if dive->maxcns == 0 which means we know that
+ * none of the divecomputers has tracked any CNS for us
+ * so we calculated it "by hand" */
+static int calculate_cns(struct dive *dive)
+{
+	int i, j, divenr;
+	double cns = 0.0;
+	struct divecomputer *dc = &dive->dc;
+	struct dive *prev_dive;
+	timestamp_t endtime;
+
+	/* shortcut */
+	if (dive->cns)
+		return dive->cns;
+	/*
+	 * Do we start with a cns loading from a privious dive?
+	 * Check if we did a dive 12 hours prior, and what cns we had from that.
+	 * Then apply ha 90min halftime to see whats left.
+	 */
+	divenr = get_divenr(dive);
+	if (divenr) {
+		prev_dive = get_dive(divenr -1 );
+		endtime = prev_dive->when + prev_dive->duration.seconds;
+		if (prev_dive && dive->when < (endtime + 3600 * 12)) {
+			cns = calculate_cns(prev_dive);
+			cns = cns * 1/pow(2, (dive->when - endtime) / (90.0 * 60.0));
+		}
+	}
+	/* Caclulate the cns for each sample in this dive and sum them */
+	for (i = 1; i < dc->samples; i++) {
+		int t;
+		int po2;
+		struct sample *sample = dc->sample + i;
+		struct sample *psample = sample - 1;
+		t = sample->time.seconds - psample->time.seconds;
+		if (sample->po2) {
+			po2 = sample->po2;
+		} else {
+			int o2 = active_o2(dive, dc, sample->time);
+			po2 = o2 / 1000.0 * depth_to_mbar(sample->depth.mm, dive);
+		}
+		/* Find what table-row we should calculate % for */
+		for (j = 1; j < sizeof(cns_table)/(sizeof(int) * 3); j++)
+			if (po2 > cns_table[j][0])
+				break;
+		j--;
+		cns += ((double)t)/((double)cns_table[j][1]) * 100;
+	}
+	/* save calculated cns in dive struct */
+	dive->cns = cns;
+	return dive->cns;
 }
 /*
  * Return air usage (in liters).
@@ -456,6 +524,8 @@ void update_cylinder_related_info(struct dive *dive)
 	if (dive != NULL) {
 		dive->sac = calculate_sac(dive);
 		dive->otu = calculate_otu(dive);
+		if (dive->maxcns == 0)
+			dive->maxcns = calculate_cns(dive);
 	}
 }
 
