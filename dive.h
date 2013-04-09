@@ -42,7 +42,9 @@
 #define DTAG_POOL		(1 << 10)
 #define DTAG_LAKE		(1 << 11)
 #define DTAG_RIVER		(1 << 12)
-#define DTAG_NR			13
+#define DTAG_NIGHT		(1 << 13)
+#define DTAG_FRESH		(1 << 14)
+#define DTAG_NR			15
 /* defined in statistics.c */
 extern char *dtag_names[DTAG_NR];
 

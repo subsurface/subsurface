@@ -20,7 +20,7 @@
 char *dtag_names[DTAG_NR] = {
 	N_("invalid"), N_("boat"), N_("shore"), N_("drift"), N_("deep"), N_("cavern"),
 	N_("ice"), N_("wreck"), N_("cave"), N_("altitude"), N_("pool"), N_("lake"),
-	N_("river")
+	N_("river"), N_("night"), N_("freshwater")
 };
 
 typedef struct {
