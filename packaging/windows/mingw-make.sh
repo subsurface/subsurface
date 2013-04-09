@@ -11,7 +11,7 @@
 rm packaging/windows/subsurface.nsi
 
 export PATH=/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
-make CC=i686-w64-mingw32-gcc \
+make CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ \
 	PKGCONFIG=i686-w64-mingw32-pkg-config \
 	PKG_CONFIG_PATH=/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig/ \
 	CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw/ \
