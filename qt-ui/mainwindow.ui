@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -54,63 +54,63 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="actSave"/>
-    <addaction name="actSaveAs"/>
-    <addaction name="actClose"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="actionClose"/>
     <addaction name="separator"/>
-    <addaction name="actImport"/>
-    <addaction name="actExportUDDF"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionExportUDDF"/>
     <addaction name="separator"/>
-    <addaction name="actPrint"/>
+    <addaction name="actionPrint"/>
     <addaction name="separator"/>
-    <addaction name="actPreferences"/>
+    <addaction name="actionPreferences"/>
     <addaction name="separator"/>
-    <addaction name="actQuit"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuLog">
     <property name="title">
      <string>Log</string>
     </property>
-    <addaction name="actDowFromDiveComputer"/>
-    <addaction name="actDownloadFromWeb"/>
-    <addaction name="actionEdit_Device_Names"/>
+    <addaction name="actionDownloadDC"/>
+    <addaction name="actionDownloadWeb"/>
+    <addaction name="actionEditDeviceNames"/>
     <addaction name="separator"/>
-    <addaction name="actionAdd_Dive"/>
+    <addaction name="actionAddDive"/>
     <addaction name="separator"/>
     <addaction name="actionRenumber"/>
-    <addaction name="actionAuto_Group"/>
-    <addaction name="actionToggle_Zoom"/>
-    <addaction name="actionYearly_Statistics"/>
+    <addaction name="actionAutoGroup"/>
+    <addaction name="actionToggleZoom"/>
+    <addaction name="actionYearlyStatistics"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="actionList"/>
-    <addaction name="actionProfile"/>
-    <addaction name="actionInfo"/>
-    <addaction name="actionTree"/>
-    <addaction name="actionPrev_DC"/>
-    <addaction name="actionNext_DC"/>
+    <addaction name="actionViewList"/>
+    <addaction name="actionViewProfile"/>
+    <addaction name="actionViewInfo"/>
+    <addaction name="actionViewAll"/>
+    <addaction name="actionPreviousDC"/>
+    <addaction name="actionNextDC"/>
    </widget>
    <widget class="QMenu" name="menuFilter">
     <property name="title">
      <string>Filter</string>
     </property>
-    <addaction name="actionSelect_Events"/>
+    <addaction name="actionSelectEvents"/>
    </widget>
    <widget class="QMenu" name="menuPlanner">
     <property name="title">
      <string>Planner</string>
     </property>
-    <addaction name="actionInput_Plan"/>
+    <addaction name="actionInputPlan"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAbout_Subsurface"/>
-    <addaction name="actionUser_Manual"/>
+    <addaction name="actionAboutSubsurface"/>
+    <addaction name="actionUserManual"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLog"/>
@@ -135,7 +135,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actSave">
+  <action name="actionSave">
    <property name="text">
     <string>Save</string>
    </property>
@@ -143,7 +143,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actSaveAs">
+  <action name="actionSaveAs">
    <property name="text">
     <string>Save as</string>
    </property>
@@ -151,7 +151,7 @@
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="actClose">
+  <action name="actionClose">
    <property name="text">
     <string>Close</string>
    </property>
@@ -159,7 +159,7 @@
     <string>Ctrl+W</string>
    </property>
   </action>
-  <action name="actImport">
+  <action name="actionImport">
    <property name="text">
     <string>Import Files</string>
    </property>
@@ -167,12 +167,12 @@
     <string>Ctrl+I</string>
    </property>
   </action>
-  <action name="actExportUDDF">
+  <action name="actionExportUDDF">
    <property name="text">
     <string>Export UDDF</string>
    </property>
   </action>
-  <action name="actPrint">
+  <action name="actionPrint">
    <property name="text">
     <string>Print</string>
    </property>
@@ -180,12 +180,12 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actPreferences">
+  <action name="actionPreferences">
    <property name="text">
     <string>Preferences</string>
    </property>
   </action>
-  <action name="actQuit">
+  <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
    </property>
@@ -193,22 +193,22 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actDowFromDiveComputer">
+  <action name="actionDownloadDC">
    <property name="text">
     <string>Download from Dive computer</string>
    </property>
   </action>
-  <action name="actDownloadFromWeb">
+  <action name="actionDownloadWeb">
    <property name="text">
     <string>Download from Web Service</string>
    </property>
   </action>
-  <action name="actionEdit_Device_Names">
+  <action name="actionEditDeviceNames">
    <property name="text">
     <string>Edit Device Names</string>
    </property>
   </action>
-  <action name="actionAdd_Dive">
+  <action name="actionAddDive">
    <property name="text">
     <string>Add Dive</string>
    </property>
@@ -218,67 +218,67 @@
     <string>Renumber</string>
    </property>
   </action>
-  <action name="actionAuto_Group">
+  <action name="actionAutoGroup">
    <property name="text">
     <string>Auto Group</string>
    </property>
   </action>
-  <action name="actionToggle_Zoom">
+  <action name="actionToggleZoom">
    <property name="text">
     <string>Toggle Zoom</string>
    </property>
   </action>
-  <action name="actionYearly_Statistics">
+  <action name="actionYearlyStatistics">
    <property name="text">
     <string>Yearly Statistics</string>
    </property>
   </action>
-  <action name="actionList">
+  <action name="actionViewList">
    <property name="text">
-    <string>List</string>
+    <string>View List</string>
    </property>
   </action>
-  <action name="actionProfile">
+  <action name="actionViewProfile">
    <property name="text">
-    <string>Profile</string>
+    <string>View Profile</string>
    </property>
   </action>
-  <action name="actionInfo">
+  <action name="actionViewInfo">
    <property name="text">
-    <string>Info</string>
+    <string>View Info</string>
    </property>
   </action>
-  <action name="actionTree">
+  <action name="actionViewAll">
    <property name="text">
-    <string>Tree</string>
+    <string>View All</string>
    </property>
   </action>
-  <action name="actionPrev_DC">
+  <action name="actionPreviousDC">
    <property name="text">
     <string>Prev DC</string>
    </property>
   </action>
-  <action name="actionNext_DC">
+  <action name="actionNextDC">
    <property name="text">
     <string>Next DC</string>
    </property>
   </action>
-  <action name="actionSelect_Events">
+  <action name="actionSelectEvents">
    <property name="text">
     <string>Select Events</string>
    </property>
   </action>
-  <action name="actionInput_Plan">
+  <action name="actionInputPlan">
    <property name="text">
     <string>Input Plan</string>
    </property>
   </action>
-  <action name="actionAbout_Subsurface">
+  <action name="actionAboutSubsurface">
    <property name="text">
     <string>About Subsurface</string>
    </property>
   </action>
-  <action name="actionUser_Manual">
+  <action name="actionUserManual">
    <property name="text">
     <string>User Manual</string>
    </property>
