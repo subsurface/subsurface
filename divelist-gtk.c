@@ -1382,7 +1382,7 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 }
 
 #if defined(LIBZIP) && defined(XSLT)
-static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
+static void upload_dives_divelogs(const gboolean selected)
 {
 	int i;
 	struct dive *dive;
@@ -1419,7 +1419,7 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		dive = get_dive(i);
 		if (!dive)
 			continue;
-		if (!dive->selected)
+		if (selected && !dive->selected)
 			continue;
 
 		f = tmpfile();
@@ -1471,6 +1471,16 @@ static void export_selected_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 	else
 		fprintf(stderr,"upload of %s failed\n", tempfile);
 	g_free(tempfile);
+}
+
+void upload_selected_dives_divelogs_cb(GtkWidget *menuitem, GtkTreePath *path)
+{
+	upload_dives_divelogs(TRUE);
+}
+
+void upload_all_dives_divelogs_cb()
+{
+	upload_dives_divelogs(FALSE);
 }
 #endif
 
@@ -1616,7 +1626,7 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 	char exportuddflabel[] = N_("Export dive(s) to UDDF");
 #endif
 #if defined(LIBZIP) && defined(XSLT)
-	char exportlabel[] = N_("Export dive(s)");
+	char uploaddivelogslabel[] = N_("Upload dive(s) to divelogs.de");
 #endif
 	GtkTreePath *path, *prevpath, *nextpath;
 	GtkTreeIter iter, previter, nextiter;
@@ -1697,8 +1707,8 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
 #if defined(LIBZIP) && defined(XSLT)
-			menuitem = gtk_menu_item_new_with_label(exportlabel);
-			g_signal_connect(menuitem, "activate", G_CALLBACK(export_selected_dives_cb), path);
+			menuitem = gtk_menu_item_new_with_label(uploaddivelogslabel);
+			g_signal_connect(menuitem, "activate", G_CALLBACK(upload_selected_dives_divelogs_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 #endif
 
