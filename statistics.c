@@ -548,6 +548,7 @@ static void show_single_dive_stats(struct dive *dive)
 	struct dive *prev_dive;
 	struct tm tm;
 	struct divecomputer *dc;
+	int more = 0;
 
 	process_all_dives(dive, &prev_dive);
 	if (!dive)
@@ -643,7 +644,7 @@ static void show_single_dive_stats(struct dive *dive)
         /* Dive type */
 	*buf = '\0';
         if (dive->dive_tags) {
-		int i, more = 0;
+		int i;
 
 		for (i = 0; i < DTAG_NR; i++)
 			if(dive->dive_tags & (1 << i)) {
@@ -653,6 +654,11 @@ static void show_single_dive_stats(struct dive *dive)
 				more = 1;
 			}
         }
+	if (!(dive->dive_tags & DTAG_FRESH) && dc->salinity == 10000) {
+		if (more)
+			strcat(buf, ", ");
+		strcat(buf, _(dtag_names[DTAG_FRESH_NR]));
+	}
         set_label(single_w.dive_type, buf);
 }
 

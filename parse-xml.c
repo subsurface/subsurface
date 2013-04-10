@@ -205,7 +205,6 @@ static void divetags(char *buffer, void *_tags)
 	int *tags = _tags;
 	int i;
 
-	*tags = 0;
 	for (i = 0; i < DTAG_NR; i++) {
 		if (strstr(buffer, dtag_names[i])) {
 			/* stupidly we have 'cave' and 'cavern' */
