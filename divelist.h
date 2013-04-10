@@ -16,7 +16,10 @@ extern void select_prev_dive(void);
 extern void show_and_select_dive(struct dive *dive);
 extern double init_decompression(struct dive * dive);
 extern void export_all_dives_uddf_cb();
+
+#if defined(LIBZIP) && defined(XSLT)
 extern void upload_all_dives_divelogs_cb();
+#endif
 
 /* divelist core logic functions */
 extern dive_trip_t *find_trip_by_idx(int idx);
