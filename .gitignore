@@ -3,6 +3,7 @@
 *.rej
 *.exe
 *.dmg
+*.moc
 *.moc.cpp
 *.patch
 *.ui.h
@@ -11,6 +12,7 @@ version.h
 !dives/*.xml
 *~
 po/*.mo
+qt-ui/ui_*.h
 /subsurface
 .dep/
 share/
