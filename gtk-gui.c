@@ -1027,9 +1027,23 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
 		const char *po2_threshold_text, *pn2_threshold_text, *phe_threshold_text, *mod_text, *gflow_text, *gfhigh_text;
+		int j;
+		struct dive *d;
+
 		/* Make sure to flush any modified old dive data with old units */
 		update_dive(NULL);
 
+		/* if we turned off displaying invalid dives. de-select all
+		 * invalid dives that were selected before hiding them */
+		if (oldprefs.display_invalid_dives && !prefs.display_invalid_dives) {
+			for_each_dive(j, d)
+				if (d->selected && d->dive_tags && DTAG_INVALID) {
+					d->selected = 0;
+					amount_selected--;
+				}
+			if (amount_selected == 0)
+				selected_dive = -1;
+		}
 		prefs.divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
 		set_divelist_font(prefs.divelist_font);
 		po2_threshold_text = gtk_entry_get_text(GTK_ENTRY(entry_po2));

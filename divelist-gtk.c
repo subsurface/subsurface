@@ -1074,9 +1074,6 @@ static void invalid_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 		return;
 	/* walk the dive list in chronological order */
 	for_each_dive(i, dive) {
-		dive = get_dive(i);
-		if (!dive)
-			continue;
 		if (!dive->selected)
 			continue;
 		/* now swap the invalid tag if just 1 dive was selected
@@ -1093,7 +1090,15 @@ static void invalid_dives_cb(GtkWidget *menuitem, GtkTreePath *path)
 				changed = 1;
 			}
                 }
+		/* if invalid dives aren't shown they need to be
+		 * de-selected here to avoid confusion */
+		if (dive->selected && !prefs.display_invalid_dives) {
+			dive->selected = 0;
+			amount_selected--;
+		}
 	}
+	if (amount_selected == 0)
+		selected_dive = -1;
 	if (changed) {
 		dive_list_update_dives();
 		mark_divelist_changed(TRUE);

@@ -609,6 +609,13 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 	if (tags_shown && dive->dive_tags != master->dive_tags) {
 		changed = 1;
 		dive->dive_tags = master->dive_tags;
+		/* if a dive is selected and we aren't showing invalid dives and it is
+		 * now marked as invalid we need to deselect it to keep the selection
+		 * state consistent */
+		if (!prefs.display_invalid_dives && dive->selected && dive->dive_tags & DTAG_INVALID) {
+			dive->selected = 0;
+			amount_selected--;
+		}
 	}
 	if (changed) {
 		mark_divelist_changed(TRUE);

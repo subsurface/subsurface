@@ -852,6 +852,9 @@ void select_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
 	if (dive && !dive->selected) {
+		/* never select an invalid dive that isn't displayed */
+		if (dive->dive_tags & DTAG_INVALID && !prefs.display_invalid_dives)
+			return;
 		dive->selected = 1;
 		amount_selected++;
 		selected_dive = idx;
