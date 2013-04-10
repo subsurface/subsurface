@@ -24,10 +24,10 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="MainTab" name="widget" native="true"/>
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="MainTab" name="InfoWidget" native="true"/>
+       <widget class="QGraphicsView" name="ProfileWidget"/>
       </widget>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="QTableView" name="ListWidget"/>
      </widget>
     </item>
     <item>
