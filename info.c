@@ -527,7 +527,7 @@ struct dive_info {
 	GtkTextView *notes;
 };
 
-static void save_dive_info_changes(struct dive *dive, struct dive *master, struct dive_info *info)
+static void save_dive_info_changes(struct dive *dive, struct dive *master, struct dive_info *info, int tags_shown)
 {
 	char *old_text, *new_text;
 	const char *gps_text;
@@ -606,7 +606,7 @@ static void save_dive_info_changes(struct dive *dive, struct dive *master, struc
 		if (old_text)
 			g_free(old_text);
 	}
-	if (dive->dive_tags != master->dive_tags) {
+	if (tags_shown && dive->dive_tags != master->dive_tags) {
 		changed = 1;
 		dive->dive_tags = master->dive_tags;
 	}
@@ -806,7 +806,7 @@ void divetag_toggle_cb(GtkWidget *widget, gpointer data)
                 edit_dive.dive_tags &= ~togglebit;
 }
 
-static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_info *info, gboolean multi)
+static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_info *info, int multi, int *show_tags)
 {
 	GtkWidget *hbox, *frame, *equipment, *ibox, *box, *button, *sbox, *framebox;
 #if HAVE_OSM_GPS_MAP
@@ -816,7 +816,8 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	char airtemp[10];
 	const char *unit;
 	double value;
-	int i;
+	int i, tags;
+	struct dive *otherdive;
 
 	if (multi) {
 		GtkWidget *label;
@@ -884,25 +885,38 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 		airtemp[0] = '\0';
 	info->airtemp = single_text_entry(hbox, buffer, airtemp);
 
-	frame = gtk_frame_new(_("Dive Type"));
+	frame = gtk_frame_new(_("Dive Tags"));
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
 
 	framebox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), framebox);
 
-	/* check boxes for the (currently fixed) list of tags;
-	 * let's do 5 per row */
-	for (i = 0; i < DTAG_NR; i++) {
-		if (i % 5 == 0) {
-			sbox = gtk_hbox_new(FALSE, 6);
-			gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
+	/* we only want to show the tags if we have a single dive or if all selected
+	 * dives have the exact same set of tags (like none at all right after import) */
+	i = 0;
+	*show_tags = 1;
+	tags = dive->dive_tags;
+	for_each_dive(i, otherdive)
+		if (otherdive && otherdive->selected && otherdive->dive_tags != tags)
+			*show_tags = 0;
+	if (*show_tags) {
+		/* check boxes for the (currently fixed) list of tags;
+		 * let's do 5 per row */
+		for (i = 0; i < DTAG_NR; i++) {
+			if (i % 5 == 0) {
+				sbox = gtk_hbox_new(FALSE, 6);
+				gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
+			}
+			button = gtk_check_button_new_with_label(_(dtag_names[i]));
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & (1 << i));
+			gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+			g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb),
+					 GINT_TO_POINTER(1 << i));
 		}
-		button = gtk_check_button_new_with_label(_(dtag_names[i]));
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & (1 << i));
-		gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
-		g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb), GINT_TO_POINTER(1 << i));
+	} else {
+		sbox = gtk_label_new(_("Tags are only shown if they are identical for all edited dives"));
+		gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
 	}
-
 	/* only show notes if editing a single dive */
 	if (multi) {
 		info->notes = NULL;
@@ -1091,7 +1105,8 @@ int edit_multi_dive_info(struct dive *single_dive)
 	GtkRequisition size;
 	struct dive_info info;
 	struct dive *master;
-	gboolean multi;
+	int multi;
+	int tags_shown;
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
@@ -1131,7 +1146,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 	 * edit widgets as we do here */
 	memcpy(&edit_dive, master, sizeof(struct dive));
 
-	dive_info_widget(vbox, &edit_dive, &info, multi);
+	dive_info_widget(vbox, &edit_dive, &info, multi, &tags_shown);
 	save_equipment_data(&edit_dive);
 	gtk_widget_show_all(dialog);
 	viewport = gtk_widget_get_ancestor(vbox, GTK_TYPE_VIEWPORT);
@@ -1155,7 +1170,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 				if (dive == master || !dive->selected)
 					continue;
 				/* copy all "info" fields */
-				save_dive_info_changes(dive, &edit_dive, &info);
+				save_dive_info_changes(dive, &edit_dive, &info, tags_shown);
 				/* copy the cylinders / weightsystems */
 				update_equipment_data(dive, &edit_dive);
 				/* this is extremely inefficient... it loops through all
@@ -1166,7 +1181,7 @@ int edit_multi_dive_info(struct dive *single_dive)
 		}
 
 		/* Update the master dive last! */
-		save_dive_info_changes(master, &edit_dive, &info);
+		save_dive_info_changes(master, &edit_dive, &info, tags_shown);
 		update_equipment_data(master, &edit_dive);
 		update_cylinder_related_info(master);
 		/* if there was only one dive we might also have changed dive->when
