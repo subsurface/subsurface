@@ -161,7 +161,3 @@ void MainWindow::on_actionUserManual_triggered()
 {
 	qDebug("actionUserManual");
 }
-
-
-
-#include "mainwindow.moc"
