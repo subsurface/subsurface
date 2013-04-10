@@ -11,139 +11,139 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 
 void MainWindow::on_actionNew_triggered()
 {
-	qDebug() << "actionNew";
+	qDebug("actionNew");
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
-	qDebug() << "actionOpen";
+	qDebug("actionOpen");
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-	qDebug() << "actionSave";
+	qDebug("actionSave");
 }
 
 void MainWindow::on_actionSaveAs_triggered()
 {
-	qDebug() << "actionSaveAs";
+	qDebug("actionSaveAs");
 }
 void MainWindow::on_actionClose_triggered()
 {
-	qDebug() << "actionClose";
+	qDebug("actionClose");
 }
 
 void MainWindow::on_actionImport_triggered()
 {
-	qDebug() << "actionImport";
+	qDebug("actionImport");
 }
 
 void MainWindow::on_actionExportUDDF_triggered()
 {
-	qDebug() << "actionExportUDDF";
+	qDebug("actionExportUDDF");
 }
 
 void MainWindow::on_actionPrint_triggered()
 {
-	qDebug() << "actionPrint";
+	qDebug("actionPrint");
 }
 
 void MainWindow::on_actionPreferences_triggered()
 {
-	qDebug() << "actionPreferences";
+	qDebug("actionPreferences");
 }
 
 void MainWindow::on_actionQuit_triggered()
 {
-	qDebug() << "actionQuit";
+	qDebug("actionQuit");
 }
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-	qDebug() << "actionDownloadDC";
+	qDebug("actionDownloadDC");
 }
 
 void MainWindow::on_actionDownloadWeb_triggered()
 {
-	qDebug() << "actionDownloadWeb";}
+	qDebug("actionDownloadWeb");}
 
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
-	qDebug() << "actionEditDeviceNames";}
+	qDebug("actionEditDeviceNames");}
 
 void MainWindow::on_actionAddDive_triggered()
 {
-	qDebug() << "actionAddDive";
+	qDebug("actionAddDive");
 }
 
 void MainWindow::on_actionRenumber_triggered()
 {
-	qDebug() << "actionRenumber";
+	qDebug("actionRenumber");
 }
 
 void MainWindow::on_actionAutoGroup_triggered()
 {
-	qDebug() << "actionAutoGroup";
+	qDebug("actionAutoGroup");
 }
 
 void MainWindow::on_actionToggleZoom_triggered()
 {
-	qDebug() << "actionToggleZoom";
+	qDebug("actionToggleZoom");
 }
 
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
-	qDebug() << "actionYearlyStatistics";
+	qDebug("actionYearlyStatistics");
 }
 
 void MainWindow::on_actionViewList_triggered()
 {
-	qDebug() << "actionViewList";
+	qDebug("actionViewList");
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
-	qDebug() << "actionViewProfile";
+	qDebug("actionViewProfile");
 }
 
 void MainWindow::on_actionViewInfo_triggered()
 {
-	qDebug() << "actionViewInfo";
+	qDebug("actionViewInfo");
 }
 
 void MainWindow::on_actionViewAll_triggered()
 {
-	qDebug() << "actionViewAll";
+	qDebug("actionViewAll");
 }
 
 void MainWindow::on_actionPreviousDC_triggered()
 {
-	qDebug() << "actionPreviousDC";
+	qDebug("actionPreviousDC");
 }
 
 void MainWindow::on_actionNextDC_triggered()
 {
-	qDebug() << "actionNextDC";
+	qDebug("actionNextDC");
 }
 
 void MainWindow::on_actionSelectEvents_triggered()
 {
-	qDebug() << "actionSelectEvents";
+	qDebug("actionSelectEvents");
 }
 
 void MainWindow::on_actionInputPlan_triggered()
 {
-	qDebug() << "actionInputPlan";
+	qDebug("actionInputPlan");
 }
 
 void MainWindow::on_actionAboutSubsurface_triggered()
 {
-	qDebug() << "actionAboutSubsurface";
+	qDebug("actionAboutSubsurface");
 }
 
 void MainWindow::on_actionUserManual_triggered()
 {
-	qDebug() << "actionUserManual";
+	qDebug("actionUserManual");
 }
 
 
