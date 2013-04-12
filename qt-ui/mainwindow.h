@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+class DiveTripModel;
 
 namespace Ui
 {
@@ -60,6 +61,7 @@ private Q_SLOTS:
 
 private:
 	Ui::MainWindow *ui;
+	DiveTripModel *model;
 };
 
 #endif

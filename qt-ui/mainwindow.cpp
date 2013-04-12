@@ -4,9 +4,38 @@
 #include <QVBoxLayout>
 #include <QtDebug>
 
+#include "divelistview.h"
+#include "divetripmodel.h"
+
 MainWindow::MainWindow() : ui(new Ui::MainWindow())
 {
 	ui->setupUi(this);
+
+	/* may want to change ctor to avoid filename as 1st param.
+	 * here we just use an empty string
+	 */
+	model = new DiveTripModel("",this);
+	if (model){
+		ui->ListWidget->setModel(model);
+	}
+	/* add in dives here.
+	 * we need to root to parent all top level dives
+	 * trips need more work as it complicates parent/child stuff.
+	 *
+	 * We show how to obtain the root and add a demo dive
+	 *
+	 * Todo: work through integration with current list of dives/trips
+	 * Todo: look at alignment/format of e.g. duration in view
+	 */
+	DiveItem *dive = 0;
+	DiveItem *root = model->itemForIndex(QModelIndex());
+	if (root){
+		dive = new DiveItem(1,QString("01/03/13"),14.2, 29.0,QString("Wraysbury"),root);
+
+		Q_UNUSED(dive)
+	}
+
+
 }
 
 void MainWindow::on_actionNew_triggered()

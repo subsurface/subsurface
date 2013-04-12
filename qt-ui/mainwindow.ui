@@ -27,7 +27,7 @@
        <widget class="MainTab" name="InfoWidget" native="true"/>
        <widget class="QGraphicsView" name="ProfileWidget"/>
       </widget>
-      <widget class="QTableView" name="ListWidget"/>
+      <widget class="DiveListView" name="ListWidget"/>
      </widget>
     </item>
     <item>
@@ -290,6 +290,11 @@
    <extends>QWidget</extends>
    <header>maintab.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DiveListView</class>
+   <extends>QTreeView</extends>
+   <header>divelistview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
