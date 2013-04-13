@@ -765,14 +765,14 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 #if HAVE_OSM_GPS_MAP
 static GtkWidget * map_provider_widget()
 {
-	OsmGpsMapSource_t i;
+	int i;
 #if GTK_CHECK_VERSION(2,24,0)
 	GtkWidget *combobox = gtk_combo_box_text_new();
 
 	/* several of the providers seem to be redundant or non-functional;
 	 * we may have to skip more than just the last three eventually */
 	for (i = OSM_GPS_MAP_SOURCE_OPENSTREETMAP; i < OSM_GPS_MAP_SOURCE_LAST; i++)
-		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combobox), osm_gps_map_source_get_friendly_name(i));
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combobox), osm_gps_map_source_get_friendly_name((OsmGpsMapSource_t)i));
 #else
 	GtkWidget *combobox = gtk_combo_box_new_text();
 	for (i = OSM_GPS_MAP_SOURCE_OPENSTREETMAP; i < OSM_GPS_MAP_SOURCE_LAST; i++)
@@ -1099,14 +1099,14 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		}
 #if HAVE_OSM_GPS_MAP
 		/* get the map provider selected */
-		OsmGpsMapSource_t i;
+		int i;
 #if GTK_CHECK_VERSION(2,24,0)
 		char *provider = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(map_provider));
 #else
 		char *provider = gtk_combo_box_get_active_text(GTK_COMBO_BOX(map_provider));
 #endif
 		for (i = OSM_GPS_MAP_SOURCE_OPENSTREETMAP; i <= OSM_GPS_MAP_SOURCE_YAHOO_STREET; i++)
-			if (!strcmp(provider,osm_gps_map_source_get_friendly_name(i))) {
+			if (!strcmp(provider,osm_gps_map_source_get_friendly_name((OsmGpsMapSource_t)i))) {
 				prefs.map_provider = i;
 				break;
 			}
