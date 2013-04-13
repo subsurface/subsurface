@@ -14,7 +14,7 @@
    <string>TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>2</number>
   </property>
   <widget class="QWidget" name="infoTab">
    <attribute name="title">
@@ -390,19 +390,19 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QTableView" name="tableView"/>
+         <widget class="QTableView" name="cylinders"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="editCylinder">
             <property name="text">
              <string>Edit</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="addCylinder">
             <property name="text">
              <string>Add</string>
             </property>
@@ -422,7 +422,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="delCylinder">
             <property name="text">
              <string>Delete</string>
             </property>
@@ -438,7 +438,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QTableView" name="tableView_2"/>
+         <widget class="QTableView" name="weights"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">

@@ -126,6 +126,7 @@ static void on_info_bar_response(GtkWidget *widget, gint response,
 
 void report_error(GError* error)
 {
+	qDebug("Warning: Calling GTK-Specific Code.");
 	if (error == NULL)
 	{
 		return;
@@ -253,6 +254,8 @@ static void file_save(GtkWidget *w, gpointer data)
 
 static gboolean ask_save_changes()
 {
+	//WARNING: Porting to Qt
+	qDebug("This method is being ported to Qt, please, stop using it. ");
 	GtkWidget *dialog, *label, *content;
 	gboolean quit = TRUE;
 	dialog = gtk_dialog_new_with_buttons(_("Save Changes?"),
@@ -291,6 +294,7 @@ static gboolean ask_save_changes()
 
 static void file_close(GtkWidget *w, gpointer data)
 {
+	qDebug("Calling an already ported-to-qt Gtk method");
 	if (unsaved_changes())
 		if (ask_save_changes() == FALSE)
 			return;
@@ -319,8 +323,12 @@ static void file_close(GtkWidget *w, gpointer data)
 	show_dive_info(NULL);
 }
 
+//#####################################################################
+//######      ALREAADY PORTED TO Qt. DELETE ME WHEN NOT MORE USERFUL. #
+//#####################################################################
 static void file_open(GtkWidget *w, gpointer data)
 {
+	qDebug("Calling an already ported-to-qt Gtk method.");
 	GtkWidget *dialog;
 	GtkFileFilter *filter;
 	const char *current_default;

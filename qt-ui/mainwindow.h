@@ -62,6 +62,9 @@ private Q_SLOTS:
 private:
 	Ui::MainWindow *ui;
 	DiveTripModel *model;
+	QString filter();
+	bool askSaveChanges();
+
 };
 
 #endif

@@ -2,10 +2,18 @@
 #include "ui_mainwindow.h"
 
 #include <QVBoxLayout>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <QtDebug>
 
 #include "divelistview.h"
 #include "divetripmodel.h"
+
+#include "glib.h"
+#include "../dive.h"
+#include "../divelist.h"
+#include "../pref.h"
+
 
 MainWindow::MainWindow() : ui(new Ui::MainWindow())
 {
@@ -45,7 +53,31 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	qDebug("actionOpen");
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), filter());
+	if (filename.isEmpty()){
+		return;
+	}
+
+	// Needed to convert to char*
+	QByteArray fileNamePtr = filename.toLocal8Bit();
+
+	on_actionClose_triggered();
+
+	GError *error = NULL;
+	parse_file(fileNamePtr.data(), &error);
+	set_filename(fileNamePtr.data(), TRUE);
+
+	if (error != NULL)
+	{
+		QMessageBox::warning(this, "Error", error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+
+	//WARNING: Port This method to Qt
+	report_dives(FALSE, FALSE);
+
+	ui->InfoWidget->reload();
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -59,7 +91,37 @@ void MainWindow::on_actionSaveAs_triggered()
 }
 void MainWindow::on_actionClose_triggered()
 {
-	qDebug("actionClose");
+	if (unsaved_changes() && (askSaveChanges() == FALSE))
+	{
+		return;
+	}
+
+	/* free the dives and trips */
+	while (dive_table.nr)
+	{
+		delete_single_dive(0);
+	}
+	mark_divelist_changed(FALSE);
+
+	/* clear the selection and the statistics */
+	selected_dive = 0;
+
+	//WARNING: Port this to Qt.
+	//process_selected_dives();
+
+	ui->InfoWidget->clearStats();
+	ui->InfoWidget->clearInfo();
+	ui->InfoWidget->clearEquipment();
+
+	clear_events();
+	show_dive_stats(NULL);
+
+	/* redraw the screen */
+	//WARNING: Port this to Qt.
+	dive_list_update_dives();
+
+	// WARNING? Port this to Qt.
+	show_dive_info(NULL);
 }
 
 void MainWindow::on_actionImport_triggered()
@@ -189,4 +251,45 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 void MainWindow::on_actionUserManual_triggered()
 {
 	qDebug("actionUserManual");
+}
+
+QString MainWindow::filter()
+{
+	QString f;
+	f += "ALL ( *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
+#ifdef LIBZIP
+	f += "*.sde *.SDE *.dld *.DLD ";
+#endif
+#ifdef SQLITE3
+	f += "*.db";
+#endif
+	f += ");;";
+
+	f += "XML (*.xml *.XML);;";
+	f += "UDDF (*.uddf);;";
+	f += "UDCF (*.udcf *.UDCF);;";
+	f += "JLB  (*.jlb *.JLB);;";
+
+#ifdef LIBZIP
+	f += "SDE (*.sde *.SDE);;";
+	f += "DLD (*.dld *.DLD);;";
+#endif
+#ifdef SQLITE3
+	f += "DB (*.db)";
+#endif
+
+	return f;
+}
+
+bool MainWindow::askSaveChanges()
+{
+	QString message = ! existing_filename ? tr("You have unsaved changes\nWould you like to save those before closing the datafile?")
+		:    tr("You have unsaved changes to file: %1 \nWould you like to save those before closing the datafile?").arg(existing_filename);
+
+	if (QMessageBox::question(this,  tr("Save Changes?"), message) == QMessageBox::Ok){
+		// WARNING: Port.
+		//		file_save(NULL,NULL);
+		return true;
+	}
+	return false;
 }

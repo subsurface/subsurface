@@ -18,6 +18,7 @@
 #include "display.h"
 #include "display-gtk.h"
 #include "divelist.h"
+#include "conversions.h"
 
 static GtkListStore *cylinder_model, *weightsystem_model;
 
@@ -70,7 +71,7 @@ struct ws_widget {
 };
 
 /* we want bar - so let's not use our unit functions */
-static int convert_pressure(int mbar, double *p)
+int convert_pressure(int mbar, double *p)
 {
 	int decimals = 1;
 	double pressure;
@@ -86,7 +87,7 @@ static int convert_pressure(int mbar, double *p)
 	return decimals;
 }
 
-static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
+void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 {
 	double volume, pressure;
 
@@ -724,6 +725,7 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 	/*
 	 * Also, insert it into the model if it doesn't already exist
 	 */
+	// WARNING: GTK-Specific Code.
 	add_cylinder(cylinder, desc, ml, mbar);
 }
 

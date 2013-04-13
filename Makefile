@@ -177,13 +177,15 @@ ifneq ($(strip $(LIBXSLT)),)
 	XSLT=-DXSLT='"$(XSLTDIR)"'
 endif
 
-LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
+LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
+	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
 
-QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o qt-ui/divetripmodel.o
+QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
+	 qt-ui/divetripmodel.o qt-ui/addcylinderdialog.o qt-ui/models.o
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk.o deco.o \
 	planner.o planner-gtk.o \
