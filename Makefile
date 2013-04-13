@@ -39,16 +39,43 @@ HEADERS = \
 	qt-ui/starwidget.h \
 
 
-QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
-	qt-ui/addcylinderdialog.o qt-ui/models.o qt-ui/starwidget.o
-
-GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o
-
-OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk.o deco.o \
-	planner.o planner-gtk.o \
-	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	webservice.o sha1.o $(RESFILE) $(QTOBJS) $(GTKOBJS)
+SOURCES = \
+	cochran.c \
+	deco.c \
+	device.c \
+	dive.c \
+	divelist.c \
+	divelist-gtk.c \
+	download-dialog.c \
+	equipment.c \
+	file.c \
+	info.c \
+	info-gtk.c \
+	libdivecomputer.c \
+	main.c \
+	parse-xml.c \
+	planner.c \
+	planner-gtk.c \
+	prefs.c \
+	print.c \
+	profile.c \
+	save-xml.c \
+	sha1.c \
+	statistics.c \
+	statistics-gtk.c \
+	time.c \
+	uemis.c \
+	uemis-downloader.c \
+	webservice.c \
+	qt-gui.cpp \
+	qt-ui/addcylinderdialog.cpp \
+	qt-ui/divelistview.cpp \
+	qt-ui/maintab.cpp \
+	qt-ui/mainwindow.cpp \
+	qt-ui/models.cpp \
+	qt-ui/plotareascene.cpp \
+	qt-ui/starwidget.cpp \
+	$(RESFILE)
 
 ifneq ($(SQLITE3FLAGS),)
 	EXTRA_FLAGS += -DSQLITE3 $(SQLITE3FLAGS)
@@ -60,14 +87,14 @@ ifneq ($(strip $(LIBXSLT)),)
        EXTRA_FLAGS += -DXSLT='"$(XSLTDIR)"' $(XSLCFLAGS)
 endif
 ifneq ($(strip $(LIBOSMGPSMAP)),)
-       OBJS += gps.o
+       SOURCES += gps.c
        EXTRA_FLAGS += -DHAVE_OSM_GPS_MAP $(OSMGPSMAPFLAGS)
 endif
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
-	OBJS += linux.o
+	SOURCES += linux.c
 else ifeq ($(UNAME), darwin)
-	OBJS += macos.o
+	SOURCES += macos.c
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
@@ -75,7 +102,7 @@ else ifeq ($(UNAME), darwin)
 	INFOPLISTINPUT = $(INFOPLIST).in
 	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
 else
-	OBSJ += windows.o
+	SOURCES += windows.c
 	WINDOWSSTAGING = ./packaging/windows
 	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
 	NSIINPUTFILE = $(WINDOWSSTAGING)/subsurface.nsi.in
