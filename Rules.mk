@@ -20,7 +20,7 @@ PRODVERSION_STRING := $(shell $(GET_VERSION) win $(VERSION_STRING) || \
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
 # Add the objects for the header files which define QObject subclasses
-HEADERS_NEEDING_MOC += $(shell grep -l -s 'Q_OBJECT' $(OBJS:.o=.h))
+HEADERS_NEEDING_MOC += $(shell grep -l -s 'Q_OBJECT' $(HEADERS))
 MOC_OBJS = $(HEADERS_NEEDING_MOC:.h=.moc.o)
 
 ALL_OBJS = $(OBJS) $(MOC_OBJS)

@@ -29,6 +29,16 @@ EXTRA_FLAGS =  $(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 	       $(LIBDIVECOMPUTERCFLAGS) \
 	       $(LIBSOUPCFLAGS) $(GCONF2CFLAGS)
 
+HEADERS = \
+	qt-ui/addcylinderdialog.h \
+	qt-ui/divelistview.h \
+	qt-ui/maintab.h \
+	qt-ui/mainwindow.h \
+	qt-ui/models.h \
+	qt-ui/plotareascene.h \
+	qt-ui/starwidget.h \
+
+
 QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
 	qt-ui/addcylinderdialog.o qt-ui/models.o qt-ui/starwidget.o
 
