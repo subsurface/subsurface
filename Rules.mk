@@ -35,7 +35,7 @@ all: $(NAME)
 $(NAME): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
 	$(CXX) $(LDFLAGS) -o $(NAME) $(ALL_OBJS) $(LIBS)
 
-gen_version_file:
+gen_version_file $(VERSION_FILE):
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
 	$(info updating $(VERSION_FILE) to $(VERSION_STRING))
 	@echo \#define VERSION_STRING \"$(VERSION_STRING)\" >$(VERSION_FILE)
@@ -142,13 +142,6 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@mkdir -p .dep .dep/qt-ui
 	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
-# Detect which files require the moc or uic tools to be run
-CPP_NEEDING_MOC = $(shell grep -l -s '^\#include \".*\.moc\"' $(OBJS:.o=.cpp))
-OBJS_NEEDING_MOC += $(CPP_NEEDING_MOC:.cpp=.o)
-
-CPP_NEEDING_UIC = $(shell grep -l -s '^\#include \"ui_.*\.h\"' $(OBJS:.o=.cpp))
-OBJS_NEEDING_UIC += $(CPP_NEEDING_UIC:.cpp=.o)
-
 # This rule is for running the moc on QObject subclasses defined in the .h
 # files.
 %.moc.cpp: %.h
@@ -167,8 +160,12 @@ ui_%.h: %.ui
 	@echo '    UIC' $<
 	@$(UIC) $< -o $@
 
-$(OBJS_NEEDING_MOC): %.o: %.moc
-$(OBJS_NEEDING_UIC): qt-ui/%.o: qt-ui/ui_%.h
+# This forces the creation of ui headers with the wrong path
+# This is required because the -MG option to the compiler outputs
+# unknown files with no path prefix
+ui_%.h: qt-ui/%.ui
+	@echo '    UIC' $<
+	@$(UIC) $< -o qt-ui/$@
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
@@ -198,10 +195,17 @@ doc:
 clean:
 	rm -f $(ALL_OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
 		$(VERSION_FILE) qt-ui/*.moc qt-ui/ui_*.h
-	rm -rf share .dep
+	rm -rf share
 
 confclean: clean
 	rm -f $(CONFIGFILE)
+	rm -rf .dep
+
+ifneq ($(CONFIGURED)$(CONFIGURING),)
+.dep/%.o.dep: %.cpp
+	@mkdir -p .dep .dep/qt-ui
+	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MM -MG -MF $@ -MT $(<:.cpp=.o) -c $<
+endif
 
 DEPS = $(addprefix .dep/,$(C_SOURCES:.c=.o.dep) $(CXX_SOURCES:.cpp=.o.dep))
 -include $(DEPS)
