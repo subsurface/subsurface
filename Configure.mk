@@ -1,5 +1,6 @@
 # -*- Makefile -*-
 # This file contains the detection rules
+all:
 
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
@@ -8,6 +9,11 @@ QMAKE=qmake
 MOC=moc
 UIC=uic
 
+CONFIGFILE = config.cache
+ifeq ($(CONFIGURING),1)
+
+# Detect the target system
+# Ask the compiler what OS it's producing files for
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win|gnu|kfreebsd")
 
 # find libdivecomputer
@@ -110,3 +116,45 @@ ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
 
 LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
 SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
+
+# Write the configure file
+all: configure
+configure $(CONFIGURE): Configure.mk
+	@echo "\
+	CONFIGURED = 1 \\\
+	UNAME = $(UNAME) \\\
+	LIBDIVECOMPUTERDIR = $(LIBDIVECOMPUTERDIR) \\\
+	LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERCFLAGS) \\\
+	LIBDIVECOMPUTER = $(LIBDIVECOMPUTER) \\\
+	LIBQT = $(LIBQT) \\\
+	QTCXXFLAGS = $(QTCXXFLAGS) \\\
+	LIBGTK = $(LIBGTK) \\\
+	GTKCFLAGS = $(GTKCFLAGS) \\\
+	LIBGCONF2 = $(LIBGCONF2) \\\
+	GCONF2CFLAGS = $(GCONF2CFLAGS) \\\
+	GTK_MAC_BUNDLER = $(GTK_MAC_BUNDLER) \\\
+	LIBXML2 = $(LIBXML2) \\\
+	LIBXSLT = $(LIBXSLT) \\\
+	XML2CFLAGS = $(XML2CFLAGS) \\\
+	GLIB2CFLAGS = $(GLIB2CFLAGS) \\\
+	XSLCFLAGS = $(XSLCFLAGS) \\\
+	OSMGPSMAPFLAGS = $(OSMGPSMAPFLAGS) \\\
+	LIBOSMGPSMAP = $(LIBOSMGPSMAP) \\\
+	LIBSOUPCFLAGS = $(LIBSOUPCFLAGS) \\\
+	LIBSOUP = $(LIBSOUP) \\\
+	LIBZIP = $(LIBZIP) \\\
+	ZIPFLAGS = $(ZIPFLAGS) \\\
+	LIBSQLITE3 = $(LIBSQLITE3) \\\
+	SQLITE3FLAGS = $(SQLITE3FLAGS) \\\
+	" | sed 's,\\,\n,g' > $(CONFIGFILE)
+
+else
+configure $(CONFIGFILE): Configure.mk
+	@test -e $(CONFIGFILE) && echo Reconfiguring.. || echo Configuring...
+	@$(MAKE) CONFIGURING=1 configure
+	@echo Done
+
+-include $(CONFIGFILE)
+endif
+
+.PHONY: configure all

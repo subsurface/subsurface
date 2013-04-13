@@ -22,3 +22,4 @@ Documentation/user-manual.pdf
 Documentation/user-manual.text
 packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
+config.cache

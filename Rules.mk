@@ -197,4 +197,7 @@ clean:
 		$(VERSION_FILE) qt-ui/*.moc qt-ui/ui_*.h
 	rm -rf share .dep
 
+confclean: clean
+	rm -f $(CONFIGFILE)
+
 -include $(DEPS)
