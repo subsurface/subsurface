@@ -75,9 +75,11 @@ QT_VERSION_MAJOR = $(shell $(QMAKE) -query QT_VERSION | cut -d. -f1)
 ifeq ($(QT_VERSION_MAJOR), 5)
 	QT_MODULES = Qt5Widgets Qt5Svg
 	QT_CORE = Qt5Core
+	QTBINDIR = $(shell $(QMAKE) -query QT_HOST_BINS)
 else
 	QT_MODULES = QtGui QtSvg
 	QT_CORE = QtCore
+	QTBINDIR = $(shell $(QMAKE) -query QT_INSTALL_BINS)
 endif
 
 # we need GLIB2CFLAGS for gettext
@@ -86,6 +88,9 @@ LIBQT = $(shell $(PKGCONFIG) --libs $(QT_MODULES))
 ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))), )
 	QTCXXFLAGS += -fPIE
 endif
+MOC = $(QTBINDIR)/moc
+UIC = $(QTBINDIR)/uic
+RCC = $(QTBINDIR)/rcc
 
 LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
@@ -128,6 +133,9 @@ configure $(CONFIGURE): Configure.mk
 	LIBDIVECOMPUTER = $(LIBDIVECOMPUTER) \\\
 	LIBQT = $(LIBQT) \\\
 	QTCXXFLAGS = $(QTCXXFLAGS) \\\
+	MOC = $(MOC) \\\
+	UIC = $(UIC) \\\
+	RCC = $(RCC) \\\
 	LIBGTK = $(LIBGTK) \\\
 	GTKCFLAGS = $(GTKCFLAGS) \\\
 	LIBGCONF2 = $(LIBGCONF2) \\\
