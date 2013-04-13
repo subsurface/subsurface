@@ -30,8 +30,6 @@ MOC_OBJS = $(HEADERS_NEEDING_MOC:.h=.moc.o)
 
 ALL_OBJS = $(OBJS) $(MOC_OBJS)
 
-DEPS = $(wildcard .dep/*.dep)
-
 all: $(NAME)
 
 $(NAME): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
@@ -205,4 +203,5 @@ clean:
 confclean: clean
 	rm -f $(CONFIGFILE)
 
+DEPS = $(addprefix .dep/,$(C_SOURCES:.c=.o.dep) $(CXX_SOURCES:.cpp=.o.dep))
 -include $(DEPS)
