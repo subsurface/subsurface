@@ -41,7 +41,8 @@ ALL_OBJS = $(OBJS) $(MOC_OBJS)
 all: $(NAME)
 
 $(NAME): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
-	$(CXX) $(LDFLAGS) -o $(NAME) $(ALL_OBJS) $(LIBS)
+	@$(PRETTYECHO) '    LINK' $(NAME)
+	$(COMPILE_PREFIX)$(CXX) $(LDFLAGS) -o $(NAME) $(ALL_OBJS) $(LIBS)
 
 gen_version_file $(VERSION_FILE):
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
@@ -176,8 +177,9 @@ ui_%.h: qt-ui/%.ui
 	$(COMPILE_PREFIX)$(UIC) $< -o qt-ui/$@
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
-	mkdir -p $(dir $@)
-	msgfmt -c -o $@ po/$*.po
+	@$(PRETTYECHO) '    MSGFMT' $*.po
+	@mkdir -p $(dir $@)
+	$(COMPILE_PREFIX)msgfmt -c -o $@ po/$*.po
 	@-if test -s po/$*.aliases; then \
 		for ALIAS in `cat po/$*.aliases`; do \
 			mkdir -p share/locale/$$ALIAS/LC_MESSAGES; \
