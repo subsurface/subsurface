@@ -1,3 +1,10 @@
+/*
+ * divetripmodel.cpp
+ *
+ * classes for the dive trip list in Subsurface
+ */
+
+#include "common.h"
 #include "divetripmodel.h"
 
 
@@ -63,15 +70,15 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
 		if (section == DIVE_NUMBER) {
-			return tr("Dive number");
+			return Qtr_("Dive number");
 		} else if (section == DIVE_DATE_TIME) {
-			return tr("Date");
+			return Qtr_("Date");
 		} else if (section == DIVE_DURATION) {
-			return tr("Duration");
+			return Qtr_("Duration");
 		} else if (section == DIVE_DEPTH) {
-			return tr("Depth");
+			return Qtr_("Depth");
 		} else if (section == DIVE_LOCATION) {
-			return tr("Location");
+			return Qtr_("Location");
 		}
 	}
 	return QVariant();

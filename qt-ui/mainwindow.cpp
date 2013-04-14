@@ -1,3 +1,10 @@
+/*
+ * mainwindow.cpp
+ *
+ * classes for the main UI window in Subsurface
+ */
+
+#include "common.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -53,7 +60,7 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), filter());
+	QString filename = QFileDialog::getOpenFileName(this, Qtr_("Open File"), QDir::homePath(), filter());
 	if (filename.isEmpty()){
 		return;
 	}
@@ -283,10 +290,10 @@ QString MainWindow::filter()
 
 bool MainWindow::askSaveChanges()
 {
-	QString message = ! existing_filename ? tr("You have unsaved changes\nWould you like to save those before closing the datafile?")
-		:    tr("You have unsaved changes to file: %1 \nWould you like to save those before closing the datafile?").arg(existing_filename);
+	QString message = ! existing_filename ? Qtr_("You have unsaved changes\nWould you like to save those before closing the datafile?")
+		:    Qtr_("You have unsaved changes to file: %1 \nWould you like to save those before closing the datafile?").arg(existing_filename);
 
-	if (QMessageBox::question(this,  tr("Save Changes?"), message) == QMessageBox::Ok){
+	if (QMessageBox::question(this,  Qtr_("Save Changes?"), message) == QMessageBox::Ok){
 		// WARNING: Port.
 		//		file_save(NULL,NULL);
 		return true;

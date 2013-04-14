@@ -1,3 +1,9 @@
+/*
+ * addcylinderdialog.h
+ *
+ * header file for the add cylinder dialog of Subsurface
+ *
+ */
 #ifndef ADDCYLINDERDIALOG_H
 #define ADDCYLINDERDIALOG_H
 

@@ -1,3 +1,9 @@
+/*
+ * divetripmodel.h
+ *
+ * header file for the divetrip model of Subsurface
+ *
+ */
 #ifndef DIVETRIPMODEL_H
 #define DIVETRIPMODEL_H
 

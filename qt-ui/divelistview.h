@@ -1,3 +1,9 @@
+/*
+ * divelistview.h
+ *
+ * header file for the dive list of Subsurface
+ *
+ */
 #ifndef DIVELISTVIEW_H
 #define DIVELISTVIEW_H
 

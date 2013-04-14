@@ -110,8 +110,10 @@ else
 	QT_MODULES = QtGui
 	QT_CORE = QtCore
 endif
+
+# we need GLIB2CFLAGS for gettext
+QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES)) $(GLIB2CFLAGS)
 LIBQT = $(shell $(PKGCONFIG) --libs $(QT_MODULES))
-QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES))
 
 LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
@@ -303,7 +305,7 @@ $(INFOPLIST): $(INFOPLISTINPUT)
 
 # Transifex merge the translations
 update-po-files:
-	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
+	xgettext -o po/subsurface-new.pot -s -k_ -kN_ -kQtr_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c qt-ui/*.cpp
 	tx push -s
 	tx pull -af
 

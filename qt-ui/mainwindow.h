@@ -1,3 +1,9 @@
+/*
+ * mainwindow.h
+ *
+ * header file for the main window of Subsurface
+ *
+ */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

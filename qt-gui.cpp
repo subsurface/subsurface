@@ -25,6 +25,7 @@
 #include "version.h"
 #include "libdivecomputer.h"
 #include "qt-ui/mainwindow.h"
+#include "qt-ui/common.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
@@ -1784,7 +1785,7 @@ void MainWindow::setCurrentFileName(const QString &fileName)
 	if (fileName == m_currentFileName) return;
 	m_currentFileName = fileName;
 
-	QString title = tr("Subsurface");
+	QString title = Qtr_("Subsurface");
 	if (!m_currentFileName.isEmpty()) {
 		QFileInfo fileInfo(m_currentFileName);
 		title += " - " + fileInfo.fileName();
@@ -1797,7 +1798,7 @@ void MainWindow::on_actionOpen_triggered()
 	QString defaultFileName = QString::fromUtf8(prefs.default_filename);
 	QFileInfo fileInfo(defaultFileName);
 
-	QFileDialog dialog(this, tr("Open File"), fileInfo.path());
+	QFileDialog dialog(this, Qtr_("Open File"), fileInfo.path());
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.selectFile(defaultFileName);
 	dialog.setNameFilters(fileNameFilters());

@@ -1,3 +1,9 @@
+/*
+ * models.h
+ *
+ * header file for the equipment models of Subsurface
+ *
+ */
 #ifndef MODELS_H
 #define MODELS_H
 

@@ -1,3 +1,9 @@
+/*
+ * maintab.h
+ *
+ * header file for the main tab of Subsurface
+ *
+ */
 #ifndef MAINTAB_H
 #define MAINTAB_H
 

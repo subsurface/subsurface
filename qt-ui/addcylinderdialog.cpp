@@ -1,3 +1,9 @@
+/*
+ * addcylinderdialog.cpp
+ *
+ * classes for the add cylinder dialog of Subsurface
+ *
+ */
 #include "addcylinderdialog.h"
 #include "ui_addcylinderdialog.h"
 #include <QComboBox>
