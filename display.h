@@ -63,4 +63,6 @@ struct options {
 
 extern char zoomed_plot, dc_number;
 
+extern unsigned int amount_selected;
+
 #endif

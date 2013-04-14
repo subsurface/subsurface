@@ -162,14 +162,14 @@ LIBS = $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPU
 MSGLANGS=$(notdir $(wildcard po/*.po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
-OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk.o deco.o \
-	planner.o planner-gtk.o \
+GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o gtk-gui.o
+
+OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	gtk-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE)
+	statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
+	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE) $(GTKOBJS)
 
 DEPS = $(wildcard .dep/*.dep)
-
 
 all: $(NAME)
 
