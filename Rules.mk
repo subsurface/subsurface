@@ -19,6 +19,14 @@ PRODVERSION_STRING := $(shell $(GET_VERSION) win $(VERSION_STRING) || \
 
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
+ifeq ($(V),1)
+	PRETTYECHO=true
+	COMPILE_PREFIX=
+else
+	PRETTYECHO=echo
+	COMPILE_PREFIX=@
+endif
+
 C_SOURCES = $(filter %.c, $(SOURCES))
 CXX_SOURCES = $(filter %.cpp, $(SOURCES))
 OTHER_SOURCES = $(filter-out %.c %.cpp, $(SOURCES))
@@ -133,39 +141,39 @@ update-po-files:
 MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $(EXTRA_FLAGS))
 
 %.o: %.c
-	@echo '    CC' $<
+	@$(PRETTYECHO) '    CC' $<
 	@mkdir -p .dep .dep/qt-ui
-	@$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
+	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 %.o: %.cpp
-	@echo '    CXX' $<
+	@$(PRETTYECHO) '    CXX' $<
 	@mkdir -p .dep .dep/qt-ui
-	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
+	$(COMPILE_PREFIX)$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 # This rule is for running the moc on QObject subclasses defined in the .h
 # files.
 %.moc.cpp: %.h
-	@echo '    MOC' $<
-	@$(MOC) $(MOCFLAGS) $< -o $@
+	@$(PRETTYECHO) '    MOC' $<
+	$(COMPILE_PREFIX)$(MOC) $(MOCFLAGS) $< -o $@
 
 # This rule is for running the moc on QObject subclasses defined in the .cpp
 # files; remember to #include "<file>.moc" at the end of the .cpp file, or
 # you'll get linker errors ("undefined vtable for...")
 %.moc: %.cpp
-	@echo '    MOC' $<
-	@$(MOC) -i $(MOCFLAGS) $< -o $@
+	@$(PRETTYECHO) '    MOC' $<
+	$(COMPILE_PREFIX)$(MOC) -i $(MOCFLAGS) $< -o $@
 
 # This creates the ui headers.
 ui_%.h: %.ui
-	@echo '    UIC' $<
-	@$(UIC) $< -o $@
+	@$(PRETTYECHO) '    UIC' $<
+	$(COMPILE_PREFIX)$(UIC) $< -o $@
 
 # This forces the creation of ui headers with the wrong path
 # This is required because the -MG option to the compiler outputs
 # unknown files with no path prefix
 ui_%.h: qt-ui/%.ui
-	@echo '    UIC' $<
-	@$(UIC) $< -o qt-ui/$@
+	@$(PRETTYECHO) '    UIC' $<
+	$(COMPILE_PREFIX)$(UIC) $< -o qt-ui/$@
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
