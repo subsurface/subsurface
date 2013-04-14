@@ -27,28 +27,37 @@ void MainTab::clearEquipment()
 
 void MainTab::clearInfo()
 {
-	QList<QLabel*> labels;
-	labels 	<< ui->sac << ui->otu << ui->oxygenhelium << ui->gasused
-		<< ui->date << ui->divetime << ui->surfinterval
-		<< ui->maxdepth << ui->avgdepth << ui->visibility
-		<< ui->watertemperature << ui->airtemperature << ui->airpress;
-
-	Q_FOREACH(QLabel *l, labels){
-		l->setText(QString());
-	}
+	ui->sac->setText(QString());
+	ui->otu->setText(QString());
+	ui->oxygenhelium->setText(QString());
+	ui->gasused->setText(QString());
+	ui->date->setText(QString());
+	ui->divetime->setText(QString());
+	ui->surfinterval->setText(QString());
+	ui->maxdepth->setText(QString());
+	ui->avgdepth->setText(QString());
+	ui->visibility->setText(QString());
+	ui->watertemperature->setText(QString());
+	ui->airtemperature->setText(QString());
+	ui->airpress->setText(QString());
 }
 
 void MainTab::clearStats()
 {
-	QList<QLabel*> labels;
-	labels << ui->maxdepth_2 << ui->mindepth << ui->avgdepth
-		<< ui->maxsac << ui->minsac << ui->avgsac
-		<< ui->dives << ui->maxtemp << ui->mintemp << ui->avgtemp
-		<< ui->totaltime << ui->avgtime << ui->longestdive << ui->shortestdive;
-
-	Q_FOREACH(QLabel *l, labels){
-		l->setText(QString());
-	}
+	ui->maxdepth_2->setText(QString());
+	ui->mindepth->setText(QString());
+	ui->avgdepth->setText(QString());
+	ui->maxsac->setText(QString());
+	ui->minsac->setText(QString());
+	ui->avgsac->setText(QString());
+	ui->dives->setText(QString());
+	ui->maxtemp->setText(QString());
+	ui->mintemp->setText(QString());
+	ui->avgtemp->setText(QString());
+	ui->totaltime->setText(QString());
+	ui->avgtime->setText(QString());
+	ui->longestdive->setText(QString());
+	ui->shortestdive->setText(QString());
 }
 
 void MainTab::on_addCylinder_clicked()
