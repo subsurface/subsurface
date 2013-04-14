@@ -305,7 +305,7 @@ $(INFOPLIST): $(INFOPLISTINPUT)
 
 # Transifex merge the translations
 update-po-files:
-	xgettext -o po/subsurface-new.pot -s -k_ -kN_ -kQtr_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c qt-ui/*.cpp
+	xgettext -o po/subsurface-new.pot -s -k_ -kN_ -ktr --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c qt-ui/*.cpp
 	tx push -s
 	tx pull -af
 

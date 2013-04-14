@@ -4,7 +4,6 @@
  * classes for the equipment models of Subsurface
  *
  */
-#include "common.h"
 #include "models.h"
 #include "../dive.h"
 
@@ -22,25 +21,25 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 	if (role == Qt::DisplayRole) {
 		switch(section) {
 		case TYPE:
-			ret = Qtr_("Type");
+			ret = tr("Type");
 			break;
 		case SIZE:
-			ret = Qtr_("Size");
+			ret = tr("Size");
 			break;
 		case MAXPRESS:
-			ret = Qtr_("MaxPress");
+			ret = tr("MaxPress");
 			break;
 		case START:
-			ret = Qtr_("Start");
+			ret = tr("Start");
 			break;
 		case END:
-			ret = Qtr_("End");
+			ret = tr("End");
 			break;
 		case O2:
-			ret = Qtr_("O2%");
+			ret = tr("O2%");
 			break;
 		case HE:
-			ret = Qtr_("He%");
+			ret = tr("He%");
 			break;
 		}
 	}
@@ -164,10 +163,10 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 
 	switch(section){
 	case TYPE:
-		ret = Qtr_("Type");
+		ret = tr("Type");
 		break;
 	case WEIGHT:
-		ret = Qtr_("Weight");
+		ret = tr("Weight");
 		break;
 	}
 	return ret;

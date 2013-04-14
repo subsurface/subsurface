@@ -4,7 +4,6 @@
  * classes for the "notebook" area of the main window of Subsurface
  *
  */
-#include "common.h"
 #include "maintab.h"
 #include "ui_maintab.h"
 #include "addcylinderdialog.h"
