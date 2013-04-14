@@ -28,7 +28,7 @@ else
 endif
 
 C_SOURCES = $(filter %.c, $(SOURCES))
-CXX_SOURCES = $(filter %.cpp, $(SOURCES))
+CXX_SOURCES = $(filter %.cpp, $(SOURCES)) $(RESOURCES:.qrc=.qrc.cpp)
 OTHER_SOURCES = $(filter-out %.c %.cpp, $(SOURCES))
 OBJS = $(C_SOURCES:.c=.o) $(CXX_SOURCES:.cpp=.o) $(OTHER_SOURCES)
 
@@ -164,6 +164,12 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@$(PRETTYECHO) '    MOC' $<
 	$(COMPILE_PREFIX)$(MOC) -i $(MOCFLAGS) $< -o $@
 
+# This creates the Qt resource sources.
+%.qrc.cpp: %.qrc
+	@$(PRETTYECHO) '    RCC' $<
+	$(COMPILE_PREFIX)$(RCC) $< -o $@
+%.qrc:
+
 # This creates the ui headers.
 ui_%.h: %.ui
 	@$(PRETTYECHO) '    UIC' $<
@@ -205,6 +211,7 @@ doc:
 clean:
 	rm -f $(ALL_OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
 		$(VERSION_FILE) qt-ui/*.moc qt-ui/ui_*.h
+	rm -f $(RESOURCES:.qrc=.qrc.cpp)
 	rm -rf share
 
 confclean: clean

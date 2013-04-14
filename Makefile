@@ -77,6 +77,9 @@ SOURCES = \
 	qt-ui/starwidget.cpp \
 	$(RESFILE)
 
+
+RESOURCES = subsurface.qrc
+
 ifneq ($(SQLITE3FLAGS),)
 	EXTRA_FLAGS += -DSQLITE3 $(SQLITE3FLAGS)
 endif
