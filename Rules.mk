@@ -143,12 +143,12 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 
 %.o: %.c
 	@$(PRETTYECHO) '    CC' $<
-	@mkdir -p .dep .dep/qt-ui
+	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 %.o: %.cpp
 	@$(PRETTYECHO) '    CXX' $<
-	@mkdir -p .dep .dep/qt-ui
+	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 # This rule is for running the moc on QObject subclasses defined in the .h
@@ -220,7 +220,7 @@ confclean: clean
 
 ifneq ($(CONFIGURED)$(CONFIGURING),)
 .dep/%.o.dep: %.cpp
-	@mkdir -p .dep .dep/qt-ui
+	@mkdir -p $(@D)
 	@$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MM -MG -MF $@ -MT $(<:.cpp=.o) -c $<
 endif
 
