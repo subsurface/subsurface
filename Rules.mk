@@ -210,7 +210,7 @@ doc:
 
 clean:
 	rm -f $(ALL_OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
-		$(VERSION_FILE) qt-ui/*.moc qt-ui/ui_*.h
+		$(VERSION_FILE) $(HEADERS_NEEDING_MOC:.h=.moc) *.moc qt-ui/*.moc qt-ui/ui_*.h
 	rm -f $(RESOURCES:.qrc=.qrc.cpp)
 	rm -rf share
 
