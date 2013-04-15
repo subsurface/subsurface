@@ -697,6 +697,19 @@ void get_gas_string(int o2, int he, char *buf, int len);
 
 struct event *get_next_event(struct event *event, char *name);
 
+
+/* this struct holds the information that
+ * describes the cylinders of air.
+ * it is a global variable initialized in equipment.c
+ * used to fill the combobox in the add/edit cylinder
+ * dialog
+ */
+
+struct tank_info {
+	const char *name;
+	int cuft, ml, psi, bar;
+};
+
 #ifdef DEBUGFILE
 extern char *debugfilename;
 extern FILE *debugfile;

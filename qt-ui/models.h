@@ -10,6 +10,26 @@
 #include <QAbstractTableModel>
 #include "../dive.h"
 
+/* Encapsulates the tank_info global variable
+ * to show on Qt`s Model View System.*/
+class TankInfoModel : public QAbstractTableModel {
+Q_OBJECT
+public:
+	enum { DESCRIPTION, ML, BAR};
+	TankInfoModel();
+
+	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
+
+	void add(const QString& description);
+	void clear();
+	void update();
+private:
+	int rows;
+};
+
 class CylindersModel : public QAbstractTableModel {
 Q_OBJECT
 public:

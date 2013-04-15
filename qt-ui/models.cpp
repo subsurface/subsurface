@@ -7,6 +7,8 @@
 #include "models.h"
 #include "../dive.h"
 
+extern struct tank_info tank_info[100];
+
 CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent)
 {
 }
@@ -161,7 +163,7 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 		return ret;
 	}
 
-	switch(section){
+	switch(section) {
 	case TYPE:
 		ret = tr("Type");
 		break;
@@ -178,4 +180,103 @@ void WeightModel::add(weight_t* weight)
 
 void WeightModel::update()
 {
+}
+
+void TankInfoModel::add(const QString& description)
+{
+	// When the user `creates` a new one on the combobox.
+	// for now, empty till dirk cleans the GTK code.
+}
+
+void TankInfoModel::clear()
+{
+}
+
+int TankInfoModel::columnCount(const QModelIndex& parent) const
+{
+	return 3;
+}
+
+QVariant TankInfoModel::data(const QModelIndex& index, int role) const
+{
+	QVariant ret;
+	if (!index.isValid()) {
+		return ret;
+	}
+	struct tank_info *info = &tank_info[index.row()];
+
+	int ml = info->ml;
+
+	int bar = ((info->psi) ? psi_to_bar(info->psi) : info->bar) * 1000 + 0.5;
+
+	if (info->cuft) {
+		double airvolume = cuft_to_l(info->cuft) * 1000.0;
+		ml = airvolume / bar_to_atm(bar) + 0.5;
+	}
+	if (role == Qt::DisplayRole) {
+		switch(index.column()) {
+			case BAR: ret = bar;
+				break;
+			case ML: ret = ml;
+				break;
+			case DESCRIPTION:
+				ret = QString(info->name);
+				break;
+		}
+	}
+	return ret;
+}
+
+QVariant TankInfoModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	QVariant ret;
+
+	if (orientation != Qt::Horizontal)
+		return ret;
+
+	if (role == Qt::DisplayRole) {
+		switch(section) {
+			case BAR:
+				ret = tr("Bar");
+				break;
+			case ML:
+				ret = tr("Ml");
+				break;
+			case DESCRIPTION:
+				ret = tr("Description");
+				break;
+		}
+	}
+	return ret;
+}
+
+int TankInfoModel::rowCount(const QModelIndex& parent) const
+{
+	return rows+1;
+}
+
+TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
+{
+	struct tank_info *info = tank_info;
+	for (info = tank_info ; info->name; info++, rows++);
+
+	if (rows > -1) {
+		beginInsertRows(QModelIndex(), 0, rows);
+		endInsertRows();
+	}
+}
+
+void TankInfoModel::update()
+{
+	if(rows > -1) {
+		beginRemoveRows(QModelIndex(), 0, rows);
+		endRemoveRows();
+	}
+	struct tank_info *info = tank_info;
+	for (info = tank_info ; info->name; info++, rows++);
+
+	if (rows > -1) {
+		beginInsertRows(QModelIndex(), 0, rows);
+		endInsertRows();
+	}
 }

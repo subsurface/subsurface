@@ -14,6 +14,8 @@ namespace Ui{
 	class AddCylinderDialog;
 }
 
+class TankInfoModel;
+
 class AddCylinderDialog : public QDialog{
 	Q_OBJECT
 public:
@@ -24,6 +26,7 @@ public:
 private:
 	Ui::AddCylinderDialog *ui;
 	cylinder_t *currentCylinder;
+	TankInfoModel *tankInfoModel;
 };
 
 

@@ -149,7 +149,7 @@ ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
-	ifneq ($(findstring reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))),)
+	ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))), )
 		CXXFLAGS += -fPIE
 	endif
 else ifeq ($(UNAME), darwin)

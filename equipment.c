@@ -790,10 +790,7 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
  * we should pick up any other names from the dive
  * logs directly.
  */
-static struct tank_info {
-	const char *name;
-	int cuft, ml, psi, bar;
-} tank_info[100] = {
+struct tank_info tank_info[100] = {
 	/* Need an empty entry for the no-cylinder case */
 	{ "", },
 

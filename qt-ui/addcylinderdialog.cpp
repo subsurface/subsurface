@@ -9,11 +9,13 @@
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include "../conversions.h"
-
+#include "models.h"
 
 AddCylinderDialog::AddCylinderDialog(QWidget *parent) : ui(new Ui::AddCylinderDialog())
+, tankInfoModel(new TankInfoModel())
 {
 	ui->setupUi(this);
+	ui->cylinderType->setModel(tankInfoModel);
 }
 
 void AddCylinderDialog::setCylinder(cylinder_t *cylinder)
