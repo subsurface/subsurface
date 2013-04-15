@@ -59,7 +59,6 @@ static struct DiveList dive_list;
 #define TREESTORE(_dl) GTK_TREE_STORE((_dl).treemodel)
 #define LISTSTORE(_dl) GTK_TREE_STORE((_dl).listmodel)
 
-dive_trip_t *dive_trip_list;
 short autogroup = FALSE;
 static gboolean in_set_cursor = FALSE;
 static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
@@ -684,14 +683,6 @@ void update_dive_list_col_visibility(void)
 	gtk_tree_view_column_set_visible(dive_list.otu, prefs.visible_cols.otu);
 	gtk_tree_view_column_set_visible(dive_list.maxcns, prefs.visible_cols.maxcns);
 	return;
-}
-
-static void clear_trip_indexes(void)
-{
-	dive_trip_t *trip;
-
-	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->index = 0;
 }
 
 /* Select the iter asked for, and set the keyboard focus on it */

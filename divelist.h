@@ -22,6 +22,7 @@ extern void upload_all_dives_divelogs_cb();
 #endif
 
 /* divelist core logic functions */
+extern void clear_trip_indexes(void);
 extern dive_trip_t *find_trip_by_idx(int idx);
 extern int dive_nr_sort(int idx_a, int idx_b, timestamp_t when_a, timestamp_t when_b);
 extern int trip_has_selected_dives(dive_trip_t *trip);
