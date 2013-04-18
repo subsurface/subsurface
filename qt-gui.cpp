@@ -1864,6 +1864,14 @@ QStringList MainWindow::fileNameFilters() const
 }
 #endif /* NEEDS_TO_MOVE_TO_QT_UI */
 
+void init_qt_ui(int *argcp, char ***argvp)
+{
+	application = new QApplication(*argcp, *argvp);
+	application->installTranslator(new Translator(application));
+	MainWindow *window = new MainWindow();
+	window->show();
+}
+
 void init_ui(int *argcp, char ***argvp)
 {
 	GtkWidget *win;
@@ -1876,11 +1884,6 @@ void init_ui(int *argcp, char ***argvp)
 	GtkIconTheme *icon_theme=NULL;
 	GtkSettings *settings;
 	GtkUIManager *ui_manager;
-
-	application = new QApplication(*argcp, *argvp);
-	application->installTranslator(new Translator(application));
-	MainWindow *window = new MainWindow();
-	window->show();
 
 	gtk_init(argcp, argvp);
 	settings = gtk_settings_get_default();

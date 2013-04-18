@@ -335,7 +335,7 @@ int main(int argc, char **argv)
 	subsurface_command_line_init(&argc, &argv);
 	parse_xml_init();
 
-	init_ui(&argc, &argv);
+	init_ui(&argc, &argv); /* the gtk stuff is needed for parsing below */
 
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];
@@ -372,12 +372,13 @@ int main(int argc, char **argv)
 	report_dives(imported, FALSE);
 	if (dive_table.nr == 0)
 		show_dive_info(NULL);
-	run_ui();
-	exit_ui();
 
 	parse_xml_exit();
 	subsurface_command_line_exit(&argc, &argv);
 
+	init_qt_ui(&argc, &argv); /* qt bit delayed until dives are parsed */
+	run_ui();
+	exit_ui();
 #ifdef DEBUGFILE
 	if (debugfile)
 		fclose(debugfile);

@@ -492,7 +492,6 @@ void get_suit(struct dive *dive, char **str)
 /*
  * helper functions for dive_trip handling
  */
-
 #ifdef DEBUG_TRIP
 void dump_trip_list(void)
 {

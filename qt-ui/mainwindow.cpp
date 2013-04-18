@@ -46,6 +46,10 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 		dive = new DiveItem(1,QString("01/03/13"),14.2, 29.0,QString("Wraysbury"),root);
 
 		Q_UNUSED(dive)
+
+		qDebug("dive_table checks - number of dives is %d", dive_table.nr);
+		qDebug("# allocated dives = %d, pre-existing = %d",
+		       dive_table.allocated, dive_table.preexisting);
 	}
 
 
