@@ -47,12 +47,17 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 		struct dive *d;
 		qDebug("address of dive_table %p", &dive_table);
 		for_each_dive(i, d) {
+			struct tm tm;
+			char *buffer;
+			utc_mkdate(d->when, &tm);
+			buffer = get_dive_date_string(&tm);
 			dive = new DiveItem(d->number,
-				    QDateTime::fromTime_t(d->when).toString(),
-				    (float)d->maxdepth.mm/1000 ,
-				    (float)d->duration.seconds/60,
-				    d->location,
-				    root);
+					buffer,
+					(float)d->duration.seconds/60,
+					(float)d->maxdepth.mm/1000 ,
+					d->location,
+					root);
+			free(buffer);
 		}
 	}
 }
