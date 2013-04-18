@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QtDebug>
+#include <QDateTime>
 
 #include "divelistview.h"
 #include "divetripmodel.h"
@@ -28,31 +29,32 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	 * here we just use an empty string
 	 */
 	model = new DiveTripModel("",this);
-	if (model){
+	if (model) {
 		ui->ListWidget->setModel(model);
 	}
-	/* add in dives here.
-	 * we need to root to parent all top level dives
+	/* we need root to parent all top level dives
 	 * trips need more work as it complicates parent/child stuff.
 	 *
-	 * We show how to obtain the root and add a demo dive
-	 *
-	 * Todo: work through integration with current list of dives/trips
 	 * Todo: look at alignment/format of e.g. duration in view
+	 *
 	 */
 	DiveItem *dive = 0;
 	DiveItem *root = model->itemForIndex(QModelIndex());
-	if (root){
-		dive = new DiveItem(1,QString("01/03/13"),14.2, 29.0,QString("Wraysbury"),root);
-
+	if (root) {
+		int i;
 		Q_UNUSED(dive)
 
-		qDebug("dive_table checks - number of dives is %d", dive_table.nr);
-		qDebug("# allocated dives = %d, pre-existing = %d",
-		       dive_table.allocated, dive_table.preexisting);
+		struct dive *d;
+		qDebug("address of dive_table %p", &dive_table);
+		for_each_dive(i, d) {
+			dive = new DiveItem(d->number,
+				    QDateTime::fromTime_t(d->when).toString(),
+				    (float)d->maxdepth.mm/1000 ,
+				    (float)d->duration.seconds/60,
+				    d->location,
+				    root);
+		}
 	}
-
-
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -63,7 +65,7 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), filter());
-	if (filename.isEmpty()){
+	if (filename.isEmpty()) {
 		return;
 	}
 
@@ -295,7 +297,7 @@ bool MainWindow::askSaveChanges()
 	QString message = ! existing_filename ? tr("You have unsaved changes\nWould you like to save those before closing the datafile?")
 		:    tr("You have unsaved changes to file: %1 \nWould you like to save those before closing the datafile?").arg(existing_filename);
 
-	if (QMessageBox::question(this,  tr("Save Changes?"), message) == QMessageBox::Ok){
+	if (QMessageBox::question(this,  tr("Save Changes?"), message) == QMessageBox::Ok) {
 		// WARNING: Port.
 		//		file_save(NULL,NULL);
 		return true;
