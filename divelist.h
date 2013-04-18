@@ -21,6 +21,8 @@ extern double init_decompression(struct dive * dive);
 extern void export_all_dives_uddf_cb();
 
 /* divelist core logic functions */
+extern char *get_dive_date_string(struct tm *tm);
+extern char *get_trip_date_string(struct tm *tm, int nr);
 extern void clear_trip_indexes(void);
 extern dive_trip_t *find_trip_by_idx(int idx);
 extern int dive_nr_sort(int idx_a, int idx_b, timestamp_t when_a, timestamp_t when_b);

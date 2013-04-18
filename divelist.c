@@ -489,6 +489,36 @@ void get_suit(struct dive *dive, char **str)
 	get_string(str, dive->suit);
 }
 
+#define MAX_DATE_STRING 256
+/* caller needs to free the string */
+char *get_dive_date_string(struct tm *tm) {
+	char *buffer = malloc(MAX_DATE_STRING);
+	if (buffer)
+		snprintf(buffer, MAX_DATE_STRING,
+			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min */
+			_("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
+			weekday(tm->tm_wday),
+			monthname(tm->tm_mon),
+			tm->tm_mday, tm->tm_year + 1900,
+			tm->tm_hour, tm->tm_min);
+	return buffer;
+}
+
+/* caller needs to free the string */
+char *get_trip_date_string(struct tm *tm, int nr) {
+	char *buffer = malloc(MAX_DATE_STRING);
+	if (buffer)
+		snprintf(buffer, MAX_DATE_STRING,
+			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives */
+			ngettext("Trip %1$s, %2$s %3$d, %4$d (%5$d dive)",
+				"Trip %1$s, %2$s %3$d, %4$d (%5$d dives)", nr),
+			weekday(tm->tm_wday),
+			monthname(tm->tm_mon),
+			tm->tm_mday, tm->tm_year + 1900,
+			nr);
+	return buffer;
+}
+
 /*
  * helper functions for dive_trip handling
  */
