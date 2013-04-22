@@ -15,7 +15,7 @@
 class TankInfoModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum { DESCRIPTION, ML, BAR};
+	enum Column { DESCRIPTION, ML, BAR};
 	TankInfoModel();
 
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -30,10 +30,12 @@ private:
 	int rows;
 };
 
+/* Encapsulation of the Cylinder Model, that presents the
+ * Current cylinders that are used on a dive. */
 class CylindersModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum {TYPE, SIZE, MAXPRESS, START, END, O2, HE};
+	enum Column {TYPE, SIZE, MAXPRESS, START, END, O2, HE};
 
 	explicit CylindersModel(QObject* parent = 0);
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -53,8 +55,10 @@ private:
 	QMap<dive*, int> usedRows;
 };
 
+/* Encapsulation of the Weight Model, that represents
+ * the current weights on a dive. */
 class WeightModel : public QAbstractTableModel {
-	enum{TYPE, WEIGHT};
+	enum Column {TYPE, WEIGHT};
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
@@ -65,6 +69,30 @@ class WeightModel : public QAbstractTableModel {
 	void update();
 private:
 	int rows;
+};
+
+/*! An AbstractItemModel for recording dive trip information such as a list of dives.
+*
+*/
+class DiveItem; // Represents a single item on the model, implemented in the .cpp since it's private for this class.
+class DiveTripModel : public QAbstractItemModel
+{
+public:
+	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT, SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
+
+	DiveTripModel(QObject *parent = 0);
+
+	/*reimp*/ Qt::ItemFlags flags(const QModelIndex &index) const;
+	/*reimp*/ QVariant data(const QModelIndex &index, int role) const;
+	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+	/*reimp*/ int rowCount(const QModelIndex &parent) const;
+	/*reimp*/ int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	/*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	/*reimp*/ QModelIndex parent(const QModelIndex &child) const;
+
+private:
+	DiveItem *itemForIndex(const QModelIndex& index) const;
+	DiveItem *rootItem;
 };
 
 #endif

@@ -6,6 +6,7 @@
  */
 #include "models.h"
 #include "../dive.h"
+#include "../divelist.h"
 
 extern struct tank_info tank_info[100];
 
@@ -279,4 +280,227 @@ void TankInfoModel::update()
 		beginInsertRows(QModelIndex(), 0, rows);
 		endInsertRows();
 	}
+}
+
+/*! A DiveItem for use with a DiveTripModel
+ *
+ * A simple class which wraps basic stats for a dive (e.g. duration, depth) and
+ * tidies up after it's children. This is done manually as we don't inherit from
+ * QObject.
+ *
+*/
+class DiveItem
+{
+public:
+	explicit DiveItem(): number(0), dateTime(QString()), duration(0.0), depth(0.0), location(QString()) {parentItem = 0;}
+	explicit DiveItem(int num, QString dt, float, float, QString loc, DiveItem *parent = 0);
+	~DiveItem() { qDeleteAll(childlist); }
+
+	int diveNumber() const { return number; }
+	const QString& diveDateTime() const { return dateTime; }
+	float diveDuration() const { return duration; }
+	float diveDepth() const { return depth; }
+	const QString& diveLocation() const { return location; }
+	DiveItem *parent() const { return parentItem; }
+	const QList<DiveItem *>& children() const { return childlist; }
+
+	void addChild(DiveItem* item) {
+		item->parentItem = this;
+		childlist.push_back(item);
+	} /* parent = self */
+
+private:
+	int number;
+	QString dateTime;
+	float duration;
+	float depth;
+	QString location;
+
+	DiveItem *parentItem;
+	QList <DiveItem*> childlist;
+
+};
+
+DiveItem::DiveItem(int num, QString dt, float dur, float dep, QString loc, DiveItem *p):
+		   number(num), dateTime(dt), duration(dur), depth(dep), location(loc), parentItem(p)
+{
+	if (parentItem)
+		parentItem->addChild(this);
+}
+
+DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
+{
+	rootItem = new DiveItem;
+	int i;
+	struct dive *d;
+
+	for_each_dive(i, d) {
+		struct tm tm;
+		char *buffer;
+		utc_mkdate(d->when, &tm);
+		buffer = get_dive_date_string(&tm);
+		new DiveItem(d->number,
+				buffer,
+				d->duration.seconds/60.0,
+				d->maxdepth.mm/1000.0 ,
+				d->location,
+				rootItem);
+		free(buffer);
+	}
+}
+
+
+Qt::ItemFlags DiveTripModel::flags(const QModelIndex &index) const
+{
+	Qt::ItemFlags diveFlags = QAbstractItemModel::flags(index);
+	if (index.isValid()) {
+		diveFlags |= Qt::ItemIsSelectable|Qt::ItemIsEnabled;
+	}
+	return diveFlags;
+}
+
+
+QVariant DiveTripModel::data(const QModelIndex &index, int role) const
+{
+	if (!index.isValid())
+		return QVariant();
+
+	DiveItem *item = static_cast<DiveItem*>(index.internalPointer());
+
+	QVariant retVal;
+	if (role == Qt::DisplayRole){
+		switch (index.column()) {
+			case NR:
+				retVal = item->diveNumber();
+				break;
+			case DATE:
+				retVal = item->diveDateTime();
+				break;
+			case DURATION:
+				retVal = item->diveDuration();
+				break;
+			case DEPTH:
+				retVal = item->diveDepth();
+				break;
+			case LOCATION:
+				retVal = item->diveLocation();
+				break;
+		}
+	}
+	return retVal;
+}
+
+
+QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	QVariant ret;
+	if (orientation != Qt::Horizontal){
+		return ret;
+	}
+
+	if (role == Qt::DisplayRole) {
+		switch(section){
+			case NR:
+				ret = tr("#");
+				break;
+			case DATE:
+				ret = tr("Date");
+				break;
+			case RATING:
+				ret = UTF8_BLACKSTAR;
+				break;
+			case DEPTH:
+				ret = tr("ft");
+				break;
+			case DURATION:
+				ret = tr("min");
+				break;
+			case TEMPERATURE:
+				ret = UTF8_DEGREE "F";
+				break;
+			case TOTALWEIGHT:
+				ret = tr("lbs");
+				break;
+			case SUIT:
+				ret = tr("Suit");
+				break;
+			case CYLINDER:
+				ret = tr("Cyl");
+				break;
+			case NITROX:
+				ret = "O" UTF8_SUBSCRIPT_2 "%";
+				break;
+			case SAC:
+				ret = tr("SAC");
+				break;
+			case OTU:
+				ret = tr("OTU");
+				break;
+			case MAXCNS:
+				ret = tr("maxCNS");
+				break;
+			case LOCATION:
+				ret = tr("Location");
+				break;
+		}
+	}
+	return ret;
+}
+
+int DiveTripModel::rowCount(const QModelIndex &parent) const
+{
+	/* only allow kids in column 0 */
+	if (parent.isValid() && parent.column() > 0){
+		return 0;
+	}
+	DiveItem *item = itemForIndex(parent);
+	return item ? item->children().count() : 0;
+}
+
+
+
+int DiveTripModel::columnCount(const QModelIndex &parent) const
+{
+	return parent.isValid() && parent.column() != 0 ? 0 : COLUMNS;
+}
+
+
+QModelIndex DiveTripModel::index(int row, int column, const QModelIndex &parent) const
+{
+
+	if (!rootItem || row < 0 || column < 0 || column >= COLUMNS ||
+	    (parent.isValid() && parent.column() != 0))
+		return QModelIndex();
+
+	DiveItem *parentItem = itemForIndex(parent);
+	Q_ASSERT(parentItem);
+	if (DiveItem *item = parentItem->children().at(row)){
+		return createIndex(row, column, item);
+	}
+	return QModelIndex();
+}
+
+
+QModelIndex DiveTripModel::parent(const QModelIndex &childIndex) const
+{
+	if (!childIndex.isValid())
+		return QModelIndex();
+
+	DiveItem *child = static_cast<DiveItem*>(childIndex.internalPointer());
+	DiveItem *parent = child->parent();
+
+	if (parent == rootItem)
+		return QModelIndex();
+
+	return createIndex(parent->children().indexOf(child), 0, parent);
+}
+
+
+DiveItem* DiveTripModel::itemForIndex(const QModelIndex &index) const
+{
+	if (index.isValid()) {
+		DiveItem *item = static_cast<DiveItem*>(index.internalPointer());
+		return item;
+	}
+	return rootItem;
 }

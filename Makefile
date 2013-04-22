@@ -187,7 +187,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 
 
 QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
-	 qt-ui/divetripmodel.o qt-ui/addcylinderdialog.o qt-ui/models.o
+	 qt-ui/addcylinderdialog.o qt-ui/models.o
 
 GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o
 

@@ -13,7 +13,6 @@
 #include <QDateTime>
 
 #include "divelistview.h"
-#include "divetripmodel.h"
 
 #include "glib.h"
 #include "../dive.h"
@@ -21,45 +20,11 @@
 #include "../pref.h"
 
 
-MainWindow::MainWindow() : ui(new Ui::MainWindow())
+MainWindow::MainWindow() : ui(new Ui::MainWindow()),
+			   model(new DiveTripModel(this))
 {
 	ui->setupUi(this);
-
-	/* may want to change ctor to avoid filename as 1st param.
-	 * here we just use an empty string
-	 */
-	model = new DiveTripModel("",this);
-	if (model) {
-		ui->ListWidget->setModel(model);
-	}
-	/* we need root to parent all top level dives
-	 * trips need more work as it complicates parent/child stuff.
-	 *
-	 * Todo: look at alignment/format of e.g. duration in view
-	 *
-	 */
-	DiveItem *dive = 0;
-	DiveItem *root = model->itemForIndex(QModelIndex());
-	if (root) {
-		int i;
-		Q_UNUSED(dive)
-
-		struct dive *d;
-		qDebug("address of dive_table %p", &dive_table);
-		for_each_dive(i, d) {
-			struct tm tm;
-			char *buffer;
-			utc_mkdate(d->when, &tm);
-			buffer = get_dive_date_string(&tm);
-			dive = new DiveItem(d->number,
-					buffer,
-					(float)d->duration.seconds/60,
-					(float)d->maxdepth.mm/1000 ,
-					d->location,
-					root);
-			free(buffer);
-		}
-	}
+	ui->ListWidget->setModel(model);
 }
 
 void MainWindow::on_actionNew_triggered()
