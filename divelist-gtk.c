@@ -695,7 +695,8 @@ static void fill_dive_list(void)
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
 		dive_trip_t *trip;
-		if ((dive->dive_tags & DTAG_INVALID) && !prefs.display_invalid_dives)
+		if (((dive->dive_tags & DTAG_INVALID) && !prefs.display_invalid_dives) ||
+		    (dive->dive_tags & dive_mask) != dive_mask)
 			continue;
 		trip = dive->divetrip;
 

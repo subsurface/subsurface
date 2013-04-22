@@ -53,6 +53,7 @@
 /* defined in statistics.c */
 extern char *dtag_names[DTAG_NR];
 extern int dtag_shown[DTAG_NR];
+extern int dive_mask;
 
 /*
  * Some silly typedefs to make our units very explicit.

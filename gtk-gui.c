@@ -46,7 +46,7 @@ const char *existing_filename;
 typedef enum { PANE_INFO, PANE_PROFILE, PANE_LIST, PANE_THREE } pane_conf_t;
 static pane_conf_t pane_conf;
 
-int dtag_shown[DTAG_NR];
+int dive_mask, dtag_shown[DTAG_NR];
 static struct device_info *holdnicknames = NULL;
 static GtkWidget *dive_profile_widget(void);
 static void import_files(GtkWidget *, gpointer);
@@ -1159,6 +1159,11 @@ static void selecttags_dialog(GtkWidget *w, gpointer data)
 		repaint_dive();
 	}
 	gtk_widget_destroy(dialog);
+	dive_mask = 0;
+	for (i = 0; i < DTAG_NR; i++)
+		if (dtag_shown[i])
+			dive_mask |= (1 << i);
+	dive_list_update_dives();
 }
 
 static void selectevents_dialog(GtkWidget *w, gpointer data)
