@@ -13,6 +13,7 @@
 #include <QDateTime>
 
 #include "divelistview.h"
+#include "starwidget.h"
 
 #include "glib.h"
 #include "../dive.h"
@@ -25,6 +26,11 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 {
 	ui->setupUi(this);
 	ui->ListWidget->setModel(model);
+	// Just to test the star widgets, can be safely removed.
+	StarWidget *star = new StarWidget(0);
+	star->setMaximumStars(10);
+	star->setCurrentStars(3);
+	star->show();
 }
 
 void MainWindow::on_actionNew_triggered()

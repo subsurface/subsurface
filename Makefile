@@ -104,10 +104,10 @@ LIBUSB = $(shell $(PKGCONFIG) --libs libusb-1.0 2> /dev/null)
 # Use qmake to find out which Qt version we are building for.
 QT_VERSION_MAJOR = $(shell $(QMAKE) -query QT_VERSION | cut -d. -f1)
 ifeq ($(QT_VERSION_MAJOR), 5)
-	QT_MODULES = Qt5Widgets
+	QT_MODULES = Qt5Widgets Qt5Svg
 	QT_CORE = Qt5Core
 else
-	QT_MODULES = QtGui
+	QT_MODULES = QtGui QtSvg
 	QT_CORE = QtCore
 endif
 
@@ -187,7 +187,7 @@ MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.m
 
 
 QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
-	 qt-ui/addcylinderdialog.o qt-ui/models.o
+	 qt-ui/addcylinderdialog.o qt-ui/models.o qt-ui/starwidget.o
 
 GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o
 
