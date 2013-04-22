@@ -46,6 +46,7 @@ const char *existing_filename;
 typedef enum { PANE_INFO, PANE_PROFILE, PANE_LIST, PANE_THREE } pane_conf_t;
 static pane_conf_t pane_conf;
 
+int dtag_shown[DTAG_NR];
 static struct device_info *holdnicknames = NULL;
 static GtkWidget *dive_profile_widget(void);
 static void import_files(GtkWidget *, gpointer);
@@ -1129,6 +1130,37 @@ static void create_toggle(const char* label, int *on, void *_data)
 	count++;
 }
 
+static void selecttags_dialog(GtkWidget *w, gpointer data)
+{
+	int i, result;
+	GtkWidget *dialog, *frame, *vbox, *table;
+
+	dialog = gtk_dialog_new_with_buttons(_("Only display dives with these tags:"),
+		GTK_WINDOW(main_window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+		NULL);
+	/* initialize the function that fills the table */
+	create_toggle(NULL, NULL, NULL);
+
+	frame = gtk_frame_new(_("Enable / Disable Tags"));
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
+
+	table = gtk_table_new(1, 4, TRUE);
+	for (i = 0; i < DTAG_NR; i++) {
+		create_toggle(_(dtag_names[i]), &dtag_shown[i], table);
+	}
+	gtk_container_add(GTK_CONTAINER(frame), table);
+	gtk_widget_show_all(dialog);
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (result == GTK_RESPONSE_ACCEPT) {
+		repaint_dive();
+	}
+	gtk_widget_destroy(dialog);
+}
+
 static void selectevents_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
@@ -1599,6 +1631,7 @@ static GtkActionEntry menu_items[] = {
 	{ "DivesLocations", NULL, N_("Dives Locations"), CTRLCHAR "M", NULL, G_CALLBACK(show_gps_locations) },
 #endif
 	{ "SelectEvents",   NULL, N_("Select Events..."), NULL, NULL, G_CALLBACK(selectevents_dialog) },
+	{ "SelectTags",   NULL, N_("Select Tags..."), NULL, NULL, G_CALLBACK(selecttags_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, N_("Quit"),   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
 	{ "About",          GTK_STOCK_ABOUT, N_("About Subsurface"),  NULL, NULL, G_CALLBACK(about_dialog) },
 	{ "UserManual",     GTK_STOCK_HELP, N_("User Manual"), NULL, NULL, G_CALLBACK(show_user_manual) },
@@ -1666,6 +1699,7 @@ static const gchar* ui_string = " \
 			</menu> \
 			<menu name=\"FilterMenu\" action=\"FilterMenuAction\"> \
 				<menuitem name=\"SelectEvents\" action=\"SelectEvents\" /> \
+				<menuitem name=\"SelectTags\" action=\"SelectTags\" /> \
 			</menu> \
 			<menu name=\"PlannerMenu\" action=\"PlannerMenuAction\"> \
 				<menuitem name=\"InputPlan\" action=\"InputPlan\" /> \
