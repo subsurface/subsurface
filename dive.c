@@ -25,7 +25,7 @@ void add_event(struct divecomputer *dc, int time, int type, int flags, int value
 	p = &dc->events;
 
 	/* insert in the sorted list of events */
-	while (*p && (*p)->time.seconds < time)
+	while (*p && (*p)->time.seconds <= time)
 		p = &(*p)->next;
 	ev->next = *p;
 	*p = ev;
