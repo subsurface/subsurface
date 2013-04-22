@@ -1866,7 +1866,6 @@ QStringList MainWindow::fileNameFilters() const
 
 void init_qt_ui(int *argcp, char ***argvp)
 {
-	application = new QApplication(*argcp, *argvp);
 	application->installTranslator(new Translator(application));
 	MainWindow *window = new MainWindow();
 	window->show();
@@ -1874,6 +1873,7 @@ void init_qt_ui(int *argcp, char ***argvp)
 
 void init_ui(int *argcp, char ***argvp)
 {
+	application = new QApplication(*argcp, *argvp);
 	GtkWidget *win;
 	GtkWidget *nb_page;
 	GtkWidget *dive_list;
