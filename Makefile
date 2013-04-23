@@ -5,6 +5,8 @@ CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE
 CXX=g++
 CXXFLAGS=-Wall -g $(CLCFLAGS) -DQT_NO_KEYWORDS
 INSTALL=install
+
+# This are the detection rules
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
 XSLCONFIG=xslt-config
@@ -12,40 +14,7 @@ QMAKE=qmake
 MOC=moc
 UIC=uic
 
-# these locations seem to work for SuSE and Fedora
-# prefix = $(HOME)
-prefix = $(DESTDIR)/usr
-BINDIR = $(prefix)/bin
-DATADIR = $(prefix)/share
-DESKTOPDIR = $(DATADIR)/applications
-ICONPATH = $(DATADIR)/icons/hicolor
-ICONDIR = $(ICONPATH)/scalable/apps
-MANDIR = $(DATADIR)/man/man1
-XSLTDIR = $(DATADIR)/subsurface/xslt
-gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
-
-NAME = subsurface
-ICONFILE = $(NAME)-icon.svg
-DESKTOPFILE = $(NAME).desktop
-MANFILES = $(NAME).1
-XSLTFILES = xslt/*.xslt
-
-VERSION_FILE = version.h
-# There's only one line in $(VERSION_FILE); use the shell builtin `read'
-STORED_VERSION_STRING = \
-	$(subst ",,$(shell [ ! -r $(VERSION_FILE) ] || \
-			   read ignore ignore v <$(VERSION_FILE) && echo $$v))
-#" workaround editor syntax highlighting quirk
-
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win|gnu|kfreebsd")
-GET_VERSION = ./scripts/get-version
-VERSION_STRING := $(shell $(GET_VERSION) linux || echo "v$(VERSION)")
-# Mac Info.plist style with three numbers 1.2.3
-CFBUNDLEVERSION_STRING := $(shell $(GET_VERSION) darwin $(VERSION_STRING) || \
-	echo "$(VERSION).0")
-# Windows .nsi style with four numbers 1.2.3.4
-PRODVERSION_STRING := $(shell $(GET_VERSION) win $(VERSION_STRING) || \
-	echo "$(VERSION).0.0")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
@@ -148,6 +117,30 @@ ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
 LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
 SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 
+# These are the main rules
+
+# these locations seem to work for SuSE and Fedora
+# prefix = $(HOME)
+prefix = $(DESTDIR)/usr
+BINDIR = $(prefix)/bin
+DATADIR = $(prefix)/share
+DESKTOPDIR = $(DATADIR)/applications
+ICONPATH = $(DATADIR)/icons/hicolor
+ICONDIR = $(ICONPATH)/scalable/apps
+MANDIR = $(DATADIR)/man/man1
+XSLTDIR = $(DATADIR)/subsurface/xslt
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
+
+NAME = subsurface
+ICONFILE = $(NAME)-icon.svg
+DESKTOPFILE = $(NAME).desktop
+MANFILES = $(NAME).1
+XSLTFILES = xslt/*.xslt
+
+EXTRA_FLAGS =  $(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
+	       $(LIBDIVECOMPUTERCFLAGS) \
+	       $(LIBSOUPCFLAGS) $(GCONF2CFLAGS)
+
 QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
 	qt-ui/addcylinderdialog.o qt-ui/models.o qt-ui/starwidget.o
 
@@ -158,6 +151,20 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
 	webservice.o sha1.o $(RESFILE) $(QTOBJS) $(GTKOBJS)
+
+ifneq ($(SQLITE3FLAGS),)
+	EXTRA_FLAGS += -DSQLITE3 $(SQLITE3FLAGS)
+endif
+ifneq ($(ZIPFLAGS),)
+       EXTRA_FLAGS += -DLIBZIP $(ZIPFLAGS)
+endif
+ifneq ($(strip $(LIBXSLT)),)
+       EXTRA_FLAGS += -DXSLT='"$(XSLTDIR)"' $(XSLCFLAGS)
+endif
+ifneq ($(strip $(LIBOSMGPSMAP)),)
+       OBJS += gps.o
+       EXTRA_FLAGS += -DHAVE_OSM_GPS_MAP $(OSMGPSMAPFLAGS)
+endif
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	OBJS += linux.o
@@ -179,7 +186,6 @@ else
 	XSLTDIR = .\\xslt
 endif
 
-
 LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
 	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
 
@@ -190,6 +196,26 @@ MSGLANGS=$(notdir $(wildcard po/*.po))
 OBJS_NEEDING_MOC =
 OBJS_NEEDING_UIC =
 HEADERS_NEEDING_MOC =
+
+# These are the generic rules for building
+
+# Rules for building and creating the version file
+
+VERSION_FILE = version.h
+# There's only one line in $(VERSION_FILE); use the shell builtin `read'
+STORED_VERSION_STRING = \
+	$(subst ",,$(shell [ ! -r $(VERSION_FILE) ] || \
+			   read ignore ignore v <$(VERSION_FILE) && echo $$v))
+#" workaround editor syntax highlighting quirk
+
+GET_VERSION = ./scripts/get-version
+VERSION_STRING := $(shell $(GET_VERSION) linux || echo "v$(VERSION)")
+# Mac Info.plist style with three numbers 1.2.3
+CFBUNDLEVERSION_STRING := $(shell $(GET_VERSION) darwin $(VERSION_STRING) || \
+	echo "$(VERSION).0")
+# Windows .nsi style with four numbers 1.2.3.4
+PRODVERSION_STRING := $(shell $(GET_VERSION) win $(VERSION_STRING) || \
+	echo "$(VERSION).0.0")
 
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
@@ -300,24 +326,6 @@ update-po-files:
 	xgettext -o po/subsurface-new.pot -s -k_ -kN_ -ktr --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c qt-ui/*.cpp
 	tx push -s
 	tx pull -af
-
-EXTRA_FLAGS =	$(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
-		$(LIBDIVECOMPUTERCFLAGS) \
-		$(LIBSOUPCFLAGS) $(GCONF2CFLAGS)
-
-ifneq ($(SQLITE3FLAGS),)
-	EXTRA_FLAGS += -DSQLITE3 $(SQLITE3FLAGS)
-endif
-ifneq ($(ZIPFLAGS),)
-	EXTRA_FLAGS += -DLIBZIP $(ZIPFLAGS)
-endif
-ifneq ($(strip $(LIBXSLT)),)
-	EXTRA_FLAGS += -DXSLT='"$(XSLTDIR)"' $(XSLCFLAGS)
-endif
-ifneq ($(strip $(LIBOSMGPSMAP)),)
-	OBJS += gps.o
-	EXTRA_FLAGS += -DHAVE_OSM_GPS_MAP $(OSMGPSMAPFLAGS)
-endif
 
 MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $(EXTRA_FLAGS))
 
