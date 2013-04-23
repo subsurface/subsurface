@@ -184,14 +184,14 @@ LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIB
 	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
-MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
-
 
 # Add files to the following variables if the auto-detection based on the
 # filename fails
 OBJS_NEEDING_MOC =
 OBJS_NEEDING_UIC =
 HEADERS_NEEDING_MOC =
+
+MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
 # Add the objects for the header files which define QObject subclasses
 HEADERS_NEEDING_MOC += $(shell grep -l -s 'Q_OBJECT' $(OBJS:.o=.h))
