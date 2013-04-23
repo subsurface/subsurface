@@ -70,7 +70,7 @@ StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
 	current(0),
 	halfStar(false)
 {
-	QSvgRenderer render(QString("star.svg"));
+	QSvgRenderer render(QString(":star"));
 	QPixmap renderedStar(IMG_SIZE, IMG_SIZE);
 
 	renderedStar.fill(Qt::transparent);
