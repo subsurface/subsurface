@@ -148,11 +148,22 @@ ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
 LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
 SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 
+QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
+	qt-ui/addcylinderdialog.o qt-ui/models.o qt-ui/starwidget.o
+
+GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o
+
+OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk.o deco.o \
+	planner.o planner-gtk.o \
+	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
+	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
+	webservice.o sha1.o $(RESFILE) $(QTOBJS) $(GTKOBJS)
+
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
-	OSSUPPORT = linux
+	OBJS += linux.o
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
 else ifeq ($(UNAME), darwin)
-	OSSUPPORT = macos
+	OBJS += macos.o
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
@@ -161,7 +172,7 @@ else ifeq ($(UNAME), darwin)
 	INFOPLISTINPUT = $(INFOPLIST).in
 	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
 else
-	OSSUPPORT = windows
+	OBSJ += windows.o
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	WINDOWSSTAGING = ./packaging/windows
 	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
@@ -178,16 +189,6 @@ LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIB
 MSGLANGS=$(notdir $(wildcard po/*.po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
 
-
-QTOBJS = qt-ui/maintab.o  qt-ui/mainwindow.o  qt-ui/plotareascene.o qt-ui/divelistview.o \
-	 qt-ui/addcylinderdialog.o qt-ui/models.o qt-ui/starwidget.o
-
-GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o
-
-OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
-	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	webservice.o sha1.o $(OSSUPPORT).o $(RESFILE) $(QTOBJS) $(GTKOBJS)
 
 # Add files to the following variables if the auto-detection based on the
 # filename fails
