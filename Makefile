@@ -161,10 +161,8 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o divelist-gtk
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	OBJS += linux.o
-	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
 else ifeq ($(UNAME), darwin)
 	OBJS += macos.o
-	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	MACOSXINSTALL = /Applications/Subsurface.app
 	MACOSXFILES = packaging/macosx
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
@@ -173,7 +171,6 @@ else ifeq ($(UNAME), darwin)
 	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
 else
 	OBSJ += windows.o
-	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	WINDOWSSTAGING = ./packaging/windows
 	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
 	NSIINPUTFILE = $(WINDOWSSTAGING)/subsurface.nsi.in
