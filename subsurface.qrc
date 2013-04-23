@@ -1,1 +1,5 @@
-<RCC/>
+ <!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file alias="star">star.svg</file>
+ </qresource>
+ </RCC>
