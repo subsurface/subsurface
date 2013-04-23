@@ -136,25 +136,17 @@ LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
 GTKCFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
-CFLAGS += $(shell $(XSLCONFIG) --cflags)
+XSLCFLAGS = $(shell $(XSLCONFIG) --cflags)
 OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap 2> /dev/null)
 LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
-ifneq ($(strip $(LIBOSMGPSMAP)),)
-	GPSOBJ = gps.o
-	CFLAGS += -DHAVE_OSM_GPS_MAP
-endif
 LIBSOUPCFLAGS = $(shell $(PKGCONFIG) --cflags libsoup-2.4)
 LIBSOUP = $(shell $(PKGCONFIG) --libs libsoup-2.4)
 
 LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
-ifneq ($(strip $(LIBZIP)),)
-	ZIP = -DLIBZIP $(shell $(PKGCONFIG) --cflags libzip)
-endif
+ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
 
 LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
-ifneq ($(strip $(LIBSQLITE3)),)
-	SQLITE3 = -DSQLITE3 $(shell $(PKGCONFIG) --cflags sqlite3)
-endif
+SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	OSSUPPORT = linux
@@ -179,9 +171,6 @@ else
 	XSLTDIR = .\\xslt
 endif
 
-ifneq ($(strip $(LIBXSLT)),)
-	XSLT=-DXSLT='"$(XSLTDIR)"'
-endif
 
 LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
 	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
@@ -198,7 +187,7 @@ GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
 	qt-gui.o statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
-	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE) $(QTOBJS) $(GTKOBJS)
+	webservice.o sha1.o $(OSSUPPORT).o $(RESFILE) $(QTOBJS) $(GTKOBJS)
 
 # Add files to the following variables if the auto-detection based on the
 # filename fails
@@ -315,8 +304,22 @@ update-po-files:
 	tx pull -af
 
 EXTRA_FLAGS =	$(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
-		$(XSLT) $(ZIP) $(SQLITE3) $(LIBDIVECOMPUTERCFLAGS) \
-		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS)
+		$(LIBDIVECOMPUTERCFLAGS) \
+		$(LIBSOUPCFLAGS) $(GCONF2CFLAGS)
+
+ifneq ($(SQLITE3FLAGS),)
+	EXTRA_FLAGS += -DSQLITE3 $(SQLITE3FLAGS)
+endif
+ifneq ($(ZIPFLAGS),)
+	EXTRA_FLAGS += -DLIBZIP $(ZIPFLAGS)
+endif
+ifneq ($(strip $(LIBXSLT)),)
+	EXTRA_FLAGS += -DXSLT='"$(XSLTDIR)"' $(XSLCFLAGS)
+endif
+ifneq ($(strip $(LIBOSMGPSMAP)),)
+	OBJS += gps.o
+	EXTRA_FLAGS += -DHAVE_OSM_GPS_MAP $(OSMGPSMAPFLAGS)
+endif
 
 MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $(EXTRA_FLAGS))
 
