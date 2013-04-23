@@ -114,8 +114,20 @@ endif
 # we need GLIB2CFLAGS for gettext
 QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES)) $(GLIB2CFLAGS)
 LIBQT = $(shell $(PKGCONFIG) --libs $(QT_MODULES))
+ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))), )
+	QTCXXFLAGS += -fPIE
+endif
 
 LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
+ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
+	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
+	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
+else ifeq ($(UNAME), darwin)
+	LIBGTK += $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation -framework CoreServices
+	GTKCFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
+	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
+endif
+
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
@@ -145,13 +157,8 @@ ifneq ($(strip $(LIBSQLITE3)),)
 endif
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
-	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
-	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 	OSSUPPORT = linux
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS) $(GCONF2CFLAGS)
-	ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))), )
-		CXXFLAGS += -fPIE
-	endif
 else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
@@ -160,10 +167,7 @@ else ifeq ($(UNAME), darwin)
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
 	INFOPLIST = $(MACOSXFILES)/Info.plist
 	INFOPLISTINPUT = $(INFOPLIST).in
-	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation -framework CoreServices
-	CFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
 	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
-	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 else
 	OSSUPPORT = windows
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
