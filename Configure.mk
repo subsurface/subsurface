@@ -154,7 +154,7 @@ configure $(CONFIGURE): Configure.mk
 	ZIPFLAGS = $(ZIPFLAGS) \\\
 	LIBSQLITE3 = $(LIBSQLITE3) \\\
 	SQLITE3FLAGS = $(SQLITE3FLAGS) \\\
-	" | sed 's,\\,\n,g' > $(CONFIGFILE)
+	" | tr '\\' '\n' > $(CONFIGFILE)
 
 else
 configure $(CONFIGFILE): Configure.mk
