@@ -8,6 +8,8 @@
 #include "../dive.h"
 #include "../divelist.h"
 
+#include <QtDebug>
+
 extern struct tank_info tank_info[100];
 
 CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent)
@@ -292,14 +294,16 @@ void TankInfoModel::update()
 class DiveItem
 {
 public:
-	explicit DiveItem(): number(0), dateTime(QString()), duration(0.0), depth(0.0), location(QString()) {parentItem = 0;}
-	explicit DiveItem(int num, QString dt, float, float, QString loc, DiveItem *parent = 0);
+	explicit DiveItem(): number(0), dateTime(QString()), seconds(0), mm(0), location(QString()) { parentItem = 0; }
+	explicit DiveItem(int num, QString dt, int, int, QString loc, DiveItem *parent = 0);
 	~DiveItem() { qDeleteAll(childlist); }
 
 	int diveNumber() const { return number; }
 	const QString& diveDateTime() const { return dateTime; }
-	float diveDuration() const { return duration; }
-	float diveDepth() const { return depth; }
+	int diveDuration() const { return seconds; }
+	int diveDepth() const { return mm; }
+	QString displayDuration() const;
+	QString displayDepth() const;
 	const QString& diveLocation() const { return location; }
 	DiveItem *parent() const { return parentItem; }
 	const QList<DiveItem *>& children() const { return childlist; }
@@ -312,8 +316,8 @@ public:
 private:
 	int number;
 	QString dateTime;
-	float duration;
-	float depth;
+	int seconds;
+	int mm;
 	QString location;
 
 	DiveItem *parentItem;
@@ -321,11 +325,47 @@ private:
 
 };
 
-DiveItem::DiveItem(int num, QString dt, float dur, float dep, QString loc, DiveItem *p):
-		   number(num), dateTime(dt), duration(dur), depth(dep), location(loc), parentItem(p)
+DiveItem::DiveItem(int num, QString dt, int dur, int dep, QString loc, DiveItem *p):
+		   number(num), dateTime(dt), seconds(dur), mm(dep), location(loc), parentItem(p)
 {
 	if (parentItem)
 		parentItem->addChild(this);
+}
+
+QString DiveItem::displayDepth() const
+{
+	const int scale = 1000;
+	QString fract, str;
+	if (get_units()->length == units::METERS) {
+		fract = QString::number((unsigned)(mm % scale) / 10);
+		str = QString("%1.%2").arg((unsigned)(mm / scale)).arg(fract);
+	}
+	if (get_units()->length == units::FEET) {
+		str = QString::number(mm_to_feet(mm),'f',2);
+	}
+	return str;
+}
+
+QString DiveItem::displayDuration() const
+{
+	int hrs, mins, secs, val;
+	const int minutes_hour = 60;
+	const int seconds_minute= 60;
+
+	val = seconds;
+	secs = seconds % seconds_minute;
+	val /= seconds_minute;
+	mins = val % seconds_minute;
+	val /= minutes_hour;
+	hrs = val % minutes_hour;
+
+	QString displayTime;
+	if (hrs > 0)
+		displayTime = QString("%1:%2:%3").arg(hrs).arg(mins).arg(secs);
+	else
+		displayTime = QString("%1:%2").arg(mins).arg(secs);
+
+	return displayTime;
 }
 
 DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
@@ -341,8 +381,8 @@ DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
 		buffer = get_dive_date_string(&tm);
 		new DiveItem(d->number,
 				buffer,
-				d->duration.seconds/60.0,
-				d->maxdepth.mm/1000.0 ,
+				d->duration.seconds,
+				d->maxdepth.mm,
 				d->location,
 				rootItem);
 		free(buffer);
@@ -368,7 +408,17 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 	DiveItem *item = static_cast<DiveItem*>(index.internalPointer());
 
 	QVariant retVal;
-	if (role == Qt::DisplayRole){
+	if (role == Qt::TextAlignmentRole) {
+		switch (index.column()) {
+			case DURATION: /* fall through */
+			case DEPTH:
+				retVal = Qt::AlignRight;
+				break;
+			default:
+				retVal = Qt::AlignLeft;
+		}
+	}
+	if (role == Qt::DisplayRole) {
 		switch (index.column()) {
 			case NR:
 				retVal = item->diveNumber();
@@ -377,10 +427,12 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 				retVal = item->diveDateTime();
 				break;
 			case DURATION:
-				retVal = item->diveDuration();
+				retVal = item->displayDuration();
+				//retVal = item->diveDuration();
 				break;
 			case DEPTH:
-				retVal = item->diveDepth();
+				retVal = item->displayDepth();
+				//retVal = item->diveDepth();
 				break;
 			case LOCATION:
 				retVal = item->diveLocation();
@@ -394,12 +446,11 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
-	if (orientation != Qt::Horizontal){
+	if (orientation != Qt::Horizontal)
 		return ret;
-	}
 
 	if (role == Qt::DisplayRole) {
-		switch(section){
+		switch(section) {
 			case NR:
 				ret = tr("#");
 				break;
@@ -407,19 +458,28 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				ret = tr("Date");
 				break;
 			case RATING:
-				ret = UTF8_BLACKSTAR;
+				ret = QString::fromUtf8(UTF8_BLACKSTAR);
 				break;
 			case DEPTH:
-				ret = tr("ft");
+				if (get_units()->length == units::METERS)
+					ret = tr("Depth (m)");
+				else
+					ret = tr("Depth (ft)");
 				break;
 			case DURATION:
-				ret = tr("min");
+				ret = tr("Duration (h:mm:ss)");
 				break;
 			case TEMPERATURE:
-				ret = UTF8_DEGREE "F";
+				if (get_units()->temperature == units::CELSIUS)
+					ret = QString("%1%2").arg(QString::fromUtf8(UTF8_DEGREE)).arg("C");
+				else
+					ret = QString("%1%2").arg(QString::fromUtf8(UTF8_DEGREE)).arg("F");
 				break;
 			case TOTALWEIGHT:
-				ret = tr("lbs");
+				if (get_units()->weight == units::KG)
+					ret = tr("Weight (kg)");
+				else
+					ret = tr("Weight (lbs)");
 				break;
 			case SUIT:
 				ret = tr("Suit");
@@ -428,7 +488,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				ret = tr("Cyl");
 				break;
 			case NITROX:
-				ret = "O" UTF8_SUBSCRIPT_2 "%";
+				ret = QString("O%1%").arg(QString::fromUtf8(UTF8_SUBSCRIPT_2));
 				break;
 			case SAC:
 				ret = tr("SAC");
@@ -450,9 +510,8 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 int DiveTripModel::rowCount(const QModelIndex &parent) const
 {
 	/* only allow kids in column 0 */
-	if (parent.isValid() && parent.column() > 0){
+	if (parent.isValid() && parent.column() > 0)
 		return 0;
-	}
 	DiveItem *item = itemForIndex(parent);
 	return item ? item->children().count() : 0;
 }
@@ -474,9 +533,8 @@ QModelIndex DiveTripModel::index(int row, int column, const QModelIndex &parent)
 
 	DiveItem *parentItem = itemForIndex(parent);
 	Q_ASSERT(parentItem);
-	if (DiveItem *item = parentItem->children().at(row)){
+	if (DiveItem *item = parentItem->children().at(row))
 		return createIndex(row, column, item);
-	}
 	return QModelIndex();
 }
 
