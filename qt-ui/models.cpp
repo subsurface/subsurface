@@ -338,7 +338,7 @@ QString DiveItem::displayDepth() const
 	QString fract, str;
 	if (get_units()->length == units::METERS) {
 		fract = QString::number((unsigned)(mm % scale) / 10);
-		str = QString("%1.%2").arg((unsigned)(mm / scale)).arg(fract);
+		str = QString("%1.%2").arg((unsigned)(mm / scale)).arg(fract, 2, QChar('0'));
 	}
 	if (get_units()->length == units::FEET) {
 		str = QString::number(mm_to_feet(mm),'f',2);
@@ -348,23 +348,19 @@ QString DiveItem::displayDepth() const
 
 QString DiveItem::displayDuration() const
 {
-	int hrs, mins, secs, val;
-	const int minutes_hour = 60;
-	const int seconds_minute= 60;
+	int hrs, mins, secs;
 
-	val = seconds;
-	secs = seconds % seconds_minute;
-	val /= seconds_minute;
-	mins = val % seconds_minute;
-	val /= minutes_hour;
-	hrs = val % minutes_hour;
+	secs = seconds % 60;
+	mins = seconds / 60;
+	hrs = mins / 60;
+	mins -= hrs * 60;
 
 	QString displayTime;
-	if (hrs > 0)
-		displayTime = QString("%1:%2:%3").arg(hrs).arg(mins).arg(secs);
+	if (hrs)
+		displayTime = QString("%1:%2:").arg(hrs).arg(mins, 2, 10, QChar('0'));
 	else
-		displayTime = QString("%1:%2").arg(mins).arg(secs);
-
+		displayTime = QString("%1:").arg(mins);
+	displayTime += QString("%1").arg(secs, 2, 10, QChar('0'));
 	return displayTime;
 }
 
