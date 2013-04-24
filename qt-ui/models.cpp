@@ -462,12 +462,12 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				break;
 			case DEPTH:
 				if (get_units()->length == units::METERS)
-					ret = tr("Depth (m)");
+					ret = tr("m");
 				else
-					ret = tr("Depth (ft)");
+					ret = tr("ft");
 				break;
 			case DURATION:
-				ret = tr("Duration (h:mm:ss)");
+				ret = tr("min");
 				break;
 			case TEMPERATURE:
 				if (get_units()->temperature == units::CELSIUS)
@@ -477,9 +477,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				break;
 			case TOTALWEIGHT:
 				if (get_units()->weight == units::KG)
-					ret = tr("Weight (kg)");
+					ret = tr("kg");
 				else
-					ret = tr("Weight (lbs)");
+					ret = tr("lbs");
 				break;
 			case SUIT:
 				ret = tr("Suit");
