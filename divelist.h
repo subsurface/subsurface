@@ -4,8 +4,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <stdbool.h>
+
 struct dive;
 
+extern void report_dives(bool imported, bool prefer_imported);
 extern void dive_list_update_dives(void);
 extern void update_dive_list_col_visibility(void);
 extern void update_dive_list_units(void);
@@ -21,6 +25,7 @@ extern double init_decompression(struct dive * dive);
 extern void export_all_dives_uddf_cb();
 
 /* divelist core logic functions */
+extern void process_dives(bool imported, bool prefer_imported);
 extern char *get_dive_date_string(struct tm *tm);
 extern char *get_trip_date_string(struct tm *tm, int nr);
 extern void clear_trip_indexes(void);

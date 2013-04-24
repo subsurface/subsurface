@@ -935,3 +935,124 @@ void remove_autogen_trips()
 	}
 }
 
+/*
+ * When adding dives to the dive table, we try to renumber
+ * the new dives based on any old dives in the dive table.
+ *
+ * But we only do it if:
+ *
+ *  - there are no dives in the dive table
+ *
+ *  OR
+ *
+ *  - the last dive in the old dive table was numbered
+ *
+ *  - all the new dives are strictly at the end (so the
+ *    "last dive" is at the same location in the dive table
+ *    after re-sorting the dives.
+ *
+ *  - none of the new dives have any numbers
+ *
+ * This catches the common case of importing new dives from
+ * a dive computer, and gives them proper numbers based on
+ * your old dive list. But it tries to be very conservative
+ * and not give numbers if there is *any* question about
+ * what the numbers should be - in which case you need to do
+ * a manual re-numbering.
+ */
+static void try_to_renumber(struct dive *last, int preexisting)
+{
+	int i, nr;
+
+	/*
+	 * If the new dives aren't all strictly at the end,
+	 * we're going to expect the user to do a manual
+	 * renumbering.
+	 */
+	if (preexisting && get_dive(preexisting-1) != last)
+		return;
+
+	/*
+	 * If any of the new dives already had a number,
+	 * we'll have to do a manual renumbering.
+	 */
+	for (i = preexisting; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		if (dive->number)
+			return;
+	}
+
+	/*
+	 * Ok, renumber..
+	 */
+	if (last)
+		nr = last->number;
+	else
+		nr = 0;
+	for (i = preexisting; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		dive->number = ++nr;
+	}
+}
+
+void process_dives(bool is_imported, bool prefer_imported)
+{
+		int i;
+	int preexisting = dive_table.preexisting;
+	struct dive *last;
+
+	/* check if we need a nickname for the divecomputer for newly downloaded dives;
+	 * since we know they all came from the same divecomputer we just check for the
+	 * first one */
+	if (preexisting < dive_table.nr && dive_table.dives[preexisting]->downloaded)
+		set_dc_nickname(dive_table.dives[preexisting]);
+	else
+		/* they aren't downloaded, so record / check all new ones */
+		for (i = preexisting; i < dive_table.nr; i++)
+			set_dc_nickname(dive_table.dives[i]);
+
+	/* This does the right thing for -1: NULL */
+	last = get_dive(preexisting-1);
+
+	sort_table(&dive_table);
+
+	for (i = 1; i < dive_table.nr; i++) {
+		struct dive **pp = &dive_table.dives[i-1];
+		struct dive *prev = pp[0];
+		struct dive *dive = pp[1];
+		struct dive *merged;
+
+		/* only try to merge overlapping dives - or if one of the dives has
+		 * zero duration (that might be a gps marker from the webservice) */
+		if (prev->duration.seconds && dive->duration.seconds &&
+		    prev->when + prev->duration.seconds < dive->when)
+			continue;
+
+		merged = try_to_merge(prev, dive, prefer_imported);
+		if (!merged)
+			continue;
+
+		/* careful - we might free the dive that last points to. Oops... */
+		if (last == prev || last == dive)
+			last = merged;
+
+		/* Redo the new 'i'th dive */
+		i--;
+		add_single_dive(i, merged);
+		delete_single_dive(i+1);
+		delete_single_dive(i+1);
+	}
+	/* make sure no dives are still marked as downloaded */
+	for (i = 1; i < dive_table.nr; i++)
+		dive_table.dives[i]->downloaded = FALSE;
+
+	if (is_imported) {
+		/* If there are dives in the table, are they numbered */
+		if (!last || last->number)
+			try_to_renumber(last, preexisting);
+
+		/* did we add dives to the dive table? */
+		if (preexisting != dive_table.nr)
+			mark_divelist_changed(TRUE);
+	}
+}

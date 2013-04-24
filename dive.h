@@ -589,7 +589,6 @@ extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
 
 extern void sort_table(struct dive_table *table);
-extern void report_dives(gboolean imported, gboolean prefer_imported);
 extern struct dive *fixup_dive(struct dive *dive);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);

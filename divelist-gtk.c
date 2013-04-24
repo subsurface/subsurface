@@ -801,7 +801,6 @@ static gint gtk_dive_nr_sort(GtkTreeModel *model,
 	return dive_nr_sort(idx_a, idx_b, when_a, when_b);
 }
 
-
 static struct divelist_column {
 	const char *header;
 	data_func_t data;
@@ -893,6 +892,12 @@ static void row_activated_cb(GtkTreeView *tree_view,
 		return;
 	}
 	edit_dive_info(get_dive(index), FALSE);
+}
+
+void report_dives(bool is_imported, bool prefer_imported)
+{
+	process_dives(is_imported, prefer_imported);
+	dive_list_update_dives();
 }
 
 void add_dive_cb(GtkWidget *menuitem, gpointer data)
