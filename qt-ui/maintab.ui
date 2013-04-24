@@ -14,7 +14,7 @@
    <string>TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>1</number>
   </property>
   <widget class="QWidget" name="infoTab">
    <attribute name="title">
@@ -356,9 +356,6 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
-     <widget class="QLineEdit" name="ratting"/>
-    </item>
     <item row="5" column="1">
      <widget class="QLineEdit" name="suit"/>
     </item>
@@ -371,6 +368,9 @@
     </item>
     <item row="7" column="0" colspan="2">
      <widget class="QTextEdit" name="notes"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="StarWidget" name="widget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -805,6 +805,14 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StarWidget</class>
+   <extends>QWidget</extends>
+   <header>starwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

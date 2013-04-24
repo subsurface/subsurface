@@ -28,10 +28,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	ui->ListWidget->setModel(model);
 	this->setWindowIcon(QIcon(":subsurface-icon"));
 	// Just to test the star widgets, can be safely removed.
-	StarWidget *star = new StarWidget(0);
-	star->setMaximumStars(10);
-	star->setCurrentStars(3);
-	star->show();
+
 }
 
 void MainWindow::on_actionNew_triggered()
