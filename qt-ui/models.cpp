@@ -63,7 +63,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 		return ret;
 	}
 
-	dive *d = get_dive(selected_dive);
+	struct dive *d = get_dive(selected_dive);
 	cylinder_t& cyl = d->cylinder[index.row()];
 
 	if (role == Qt::DisplayRole) {
@@ -297,8 +297,9 @@ public:
 	explicit DiveItem(): number(0), when(), duration(), maxdepth(), rating(0),
 			     temperature(), totalweight(), suit(QString()), sac(0),
 			     otu(0), maxcns(0), location(QString()) { parentItem = 0; }
-	explicit DiveItem(int, timestamp_t, duration_t, depth_t, int, temperature_t,
-			  weight_t, QString, int, int, int, QString, DiveItem *parent = 0);
+
+	explicit DiveItem(struct dive *d, DiveItem *parent = 0);
+
 	~DiveItem() { qDeleteAll(childlist); }
 
 	int diveNumber() const { return number; }
@@ -341,15 +342,24 @@ private:
 	QList <DiveItem*> childlist;
 };
 
-DiveItem::DiveItem(int num, timestamp_t when, duration_t duration, depth_t maxdepth, int rating, temperature_t temp,
-		   weight_t weight, QString su, int sac, int otu, int maxcns, QString loc, DiveItem *p):
-	number(num), rating(rating), suit(su), sac(sac), otu(otu), maxcns(maxcns), location(loc), parentItem(p)
+DiveItem::DiveItem(struct dive *d, DiveItem *p):
+	number(d->number),
+	rating(d->rating),
+	suit(d->suit),
+	sac(d->sac),
+	otu(d->otu),
+	maxcns(d->maxcns),
+	location(d->location),
+	parentItem(p)
 {
-	this->when = when;
-	this->duration = duration;
-	this->maxdepth = maxdepth;
-	this->temperature = temp;
-	this->totalweight = weight;
+	this->when = d->when;
+	this->duration = d->duration;
+	this->maxdepth = d->maxdepth;
+	this->temperature = d->watertemp;
+
+	weight_t tw = { total_weight(d) };
+	this->totalweight = tw;
+
 	if (parentItem)
 		parentItem->addChild(this);
 }
@@ -431,20 +441,7 @@ DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
 	struct dive *d;
 
 	for_each_dive(i, d) {
-		weight_t tw = {.grams = total_weight(d)};
-		new DiveItem(d->number,
-			d->when,
-			d->duration,
-			d->maxdepth,
-			d->rating,
-			d->watertemp,
-			tw,
-			d->suit,
-			d->sac,
-			d->otu,
-			d->maxcns,
-			d->location,
-			rootItem);
+		new DiveItem(d, rootItem);
 	}
 }
 
