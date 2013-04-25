@@ -294,17 +294,28 @@ void TankInfoModel::update()
 class DiveItem
 {
 public:
-	explicit DiveItem(): number(0), dateTime(QString()), seconds(0), mm(0), location(QString()) { parentItem = 0; }
-	explicit DiveItem(int num, QString dt, int, int, QString loc, DiveItem *parent = 0);
+	explicit DiveItem(): number(0), when(), duration(), maxdepth(), rating(0),
+			     temperature(), totalweight(), suit(QString()), sac(0),
+			     otu(0), maxcns(0), location(QString()) { parentItem = 0; }
+	explicit DiveItem(int, timestamp_t, duration_t, depth_t, int, temperature_t,
+			  weight_t, QString, int, int, int, QString, DiveItem *parent = 0);
 	~DiveItem() { qDeleteAll(childlist); }
 
 	int diveNumber() const { return number; }
-	const QString& diveDateTime() const { return dateTime; }
-	int diveDuration() const { return seconds; }
-	int diveDepth() const { return mm; }
+	const QString diveDateTime() const { return QString::fromUtf8(get_dive_date_string(when)); }
+	int diveDuration() const { return duration.seconds; }
+	int diveDepth() const { return maxdepth.mm; }
+	int diveSac() const { return sac; }
+	int diveOtu() const { return otu; }
+	int diveMaxcns() const { return maxcns; }
+	int diveWeight() const { return totalweight.grams; }
 	QString displayDuration() const;
 	QString displayDepth() const;
+	QString displayTemperature() const;
+	QString displayWeight() const;
+	QString displaySac() const;
 	const QString& diveLocation() const { return location; }
+	const QString& diveSuit() const { return suit; }
 	DiveItem *parent() const { return parentItem; }
 	const QList<DiveItem *>& children() const { return childlist; }
 
@@ -315,19 +326,30 @@ public:
 
 private:
 	int number;
-	QString dateTime;
-	int seconds;
-	int mm;
+	timestamp_t when;
+	duration_t duration;
+	depth_t maxdepth;
+	int rating;
+	temperature_t temperature;
+	weight_t totalweight;
+	QString suit;
+	int sac;
+	int otu;
+	int maxcns;
 	QString location;
-
 	DiveItem *parentItem;
 	QList <DiveItem*> childlist;
-
 };
 
-DiveItem::DiveItem(int num, QString dt, int dur, int dep, QString loc, DiveItem *p):
-		   number(num), dateTime(dt), seconds(dur), mm(dep), location(loc), parentItem(p)
+DiveItem::DiveItem(int num, timestamp_t when, duration_t duration, depth_t maxdepth, int rating, temperature_t temp,
+		   weight_t weight, QString su, int sac, int otu, int maxcns, QString loc, DiveItem *p):
+	number(num), rating(rating), suit(su), sac(sac), otu(otu), maxcns(maxcns), location(loc), parentItem(p)
 {
+	this->when = when;
+	this->duration = duration;
+	this->maxdepth = maxdepth;
+	this->temperature = temp;
+	this->totalweight = weight;
 	if (parentItem)
 		parentItem->addChild(this);
 }
@@ -337,11 +359,11 @@ QString DiveItem::displayDepth() const
 	const int scale = 1000;
 	QString fract, str;
 	if (get_units()->length == units::METERS) {
-		fract = QString::number((unsigned)(mm % scale) / 10);
-		str = QString("%1.%2").arg((unsigned)(mm / scale)).arg(fract, 2, QChar('0'));
+		fract = QString::number((unsigned)(maxdepth.mm % scale) / 10);
+		str = QString("%1.%2").arg((unsigned)(maxdepth.mm / scale)).arg(fract, 2, QChar('0'));
 	}
 	if (get_units()->length == units::FEET) {
-		str = QString::number(mm_to_feet(mm),'f',2);
+		str = QString::number(mm_to_feet(maxdepth.mm),'f',0);
 	}
 	return str;
 }
@@ -350,8 +372,8 @@ QString DiveItem::displayDuration() const
 {
 	int hrs, mins, secs;
 
-	secs = seconds % 60;
-	mins = seconds / 60;
+	secs = duration.seconds % 60;
+	mins = duration.seconds / 60;
 	hrs = mins / 60;
 	mins -= hrs * 60;
 
@@ -364,6 +386,44 @@ QString DiveItem::displayDuration() const
 	return displayTime;
 }
 
+QString DiveItem::displayTemperature() const
+{
+	QString str;
+
+	if (get_units()->temperature == units::CELSIUS) {
+		str = QString::number(mkelvin_to_C(temperature.mkelvin), 'f', 1);
+	} else {
+		str = QString::number(mkelvin_to_F(temperature.mkelvin), 'f', 1);
+	}
+	return str;
+}
+
+QString DiveItem::displaySac() const
+{
+	QString str;
+
+	if (get_units()->volume == units::LITER) {
+		str = QString::number(sac / 1000, 'f', 1);
+	} else {
+		str = QString::number(ml_to_cuft(sac), 'f', 2);
+	}
+	return str;
+}
+
+QString DiveItem::displayWeight() const
+{
+	QString str;
+
+	if (get_units()->weight == units::KG) {
+		int gr = totalweight.grams % 1000;
+		int kg = totalweight.grams / 1000;
+		str = QString("%1.%2").arg(kg).arg((unsigned)(gr + 500) / 100);
+	} else {
+		str = QString("%1").arg((unsigned)(grams_to_lbs(totalweight.grams) + 0.5));
+	}
+	return str;
+}
+
 DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
 {
 	rootItem = new DiveItem;
@@ -371,17 +431,20 @@ DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
 	struct dive *d;
 
 	for_each_dive(i, d) {
-		struct tm tm;
-		char *buffer;
-		utc_mkdate(d->when, &tm);
-		buffer = get_dive_date_string(&tm);
+		weight_t tw = {.grams = total_weight(d)};
 		new DiveItem(d->number,
-				buffer,
-				d->duration.seconds,
-				d->maxdepth.mm,
-				d->location,
-				rootItem);
-		free(buffer);
+			d->when,
+			d->duration,
+			d->maxdepth,
+			d->rating,
+			d->watertemp,
+			tw,
+			d->suit,
+			d->sac,
+			d->otu,
+			d->maxcns,
+			d->location,
+			rootItem);
 	}
 }
 
@@ -406,12 +469,14 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 	QVariant retVal;
 	if (role == Qt::TextAlignmentRole) {
 		switch (index.column()) {
-			case DURATION: /* fall through */
-			case DEPTH:
-				retVal = Qt::AlignRight;
+			case DATE:     /* fall through */
+			case SUIT:     /* fall through */
+			case LOCATION:
+				retVal = Qt::AlignLeft;
 				break;
 			default:
-				retVal = Qt::AlignLeft;
+				retVal = Qt::AlignRight;
+				break;
 		}
 	}
 	if (role == Qt::DisplayRole) {
@@ -422,13 +487,29 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 			case DATE:
 				retVal = item->diveDateTime();
 				break;
-			case DURATION:
-				retVal = item->displayDuration();
-				//retVal = item->diveDuration();
-				break;
 			case DEPTH:
 				retVal = item->displayDepth();
-				//retVal = item->diveDepth();
+				break;
+			case DURATION:
+				retVal = item->displayDuration();
+				break;
+			case TEMPERATURE:
+				retVal = item->displayTemperature();
+				break;
+			case TOTALWEIGHT:
+				retVal = item->displayWeight();
+				break;
+			case SUIT:
+				retVal = item->diveSuit();
+				break;
+			case SAC:
+				retVal = item->displaySac();
+				break;
+			case OTU:
+				retVal = item->diveOtu();
+				break;
+			case MAXCNS:
+				retVal = item->diveMaxcns();
 				break;
 			case LOCATION:
 				retVal = item->diveLocation();
