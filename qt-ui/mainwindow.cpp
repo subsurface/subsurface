@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QtDebug>
 #include <QDateTime>
+#include <QSortFilterProxyModel>
 
 #include "divelistview.h"
 #include "starwidget.h"
@@ -22,13 +23,14 @@
 
 
 MainWindow::MainWindow() : ui(new Ui::MainWindow()),
-			   model(new DiveTripModel(this))
+			   model(new DiveTripModel(this)),
+			   sortModel(new QSortFilterProxyModel())
 {
 	ui->setupUi(this);
-	ui->ListWidget->setModel(model);
-	setWindowIcon(QIcon(":subsurface-icon"));
-	// Just to test the star widgets, can be safely removed.
+	sortModel->setSourceModel(model);
+	ui->ListWidget->setModel(sortModel);
 
+	setWindowIcon(QIcon(":subsurface-icon"));
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -63,6 +65,10 @@ void MainWindow::on_actionOpen_triggered()
 	report_dives(FALSE, FALSE);
 
 	ui->InfoWidget->reload();
+
+	model->deleteLater();
+	model = new DiveTripModel(this);
+	sortModel->setSourceModel(model);
 }
 
 void MainWindow::on_actionSave_triggered()
