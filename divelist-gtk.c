@@ -258,7 +258,6 @@ static void date_data_func(GtkTreeViewColumn *col,
 			   gpointer data)
 {
 	int idx, nr;
-	struct tm tm;
 	timestamp_t when;
 	/* this should be enought for most languages. if not increase the value. */
 	char *buffer;
@@ -266,11 +265,10 @@ static void date_data_func(GtkTreeViewColumn *col,
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	nr = gtk_tree_model_iter_n_children(model, iter);
 
-	utc_mkdate(when, &tm);
 	if (idx < 0) {
-		buffer = get_trip_date_string(&tm, nr);
+		buffer = get_trip_date_string(when, nr);
 	} else {
-		buffer = get_dive_date_string(&tm);
+		buffer = get_dive_date_string(when);
 	}
 	g_object_set(renderer, "text", buffer, NULL);
 	free(buffer);
