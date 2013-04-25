@@ -33,6 +33,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QStringList>
+#include <QTextCodec>
 #include <QTranslator>
 
 #if HAVE_OSM_GPS_MAP
@@ -1874,6 +1875,15 @@ void init_qt_ui(int *argcp, char ***argvp)
 void init_ui(int *argcp, char ***argvp)
 {
 	application = new QApplication(*argcp, *argvp);
+
+#if QT_VERSION < 0x050000
+	// ask QString in Qt 4 to interpret all char* as UTF-8,
+	// like Qt 5 does.
+	// 106 is "UTF-8", this is faster than lookup by name
+	// [http://www.iana.org/assignments/character-sets/character-sets.xml]
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
+#endif
+
 	GtkWidget *win;
 	GtkWidget *nb_page;
 	GtkWidget *dive_list;
