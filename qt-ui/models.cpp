@@ -294,9 +294,9 @@ void TankInfoModel::update()
 class DiveItem
 {
 public:
-	explicit DiveItem(): dive() { parentItem = 0; }
+	DiveItem(): dive(NULL), parentItem(NULL) {}
 
-	explicit DiveItem(struct dive *d, DiveItem *parent = 0);
+	DiveItem(struct dive *d, DiveItem *parent = NULL);
 
 	~DiveItem() { qDeleteAll(childlist); }
 
@@ -319,7 +319,7 @@ public:
 	QString displayTemperature() const;
 	QString displayWeight() const;
 	QString displaySac() const;
-	const QString diveLocation() const { return dive->location; }
+	const QString diveLocation() const { return QString::fromUtf8(dive->location); }
 	const QString diveSuit() const { return dive->suit; }
 	DiveItem *parent() const { return parentItem; }
 	const QList<DiveItem *>& children() const { return childlist; }
