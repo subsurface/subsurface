@@ -294,29 +294,33 @@ void TankInfoModel::update()
 class DiveItem
 {
 public:
-	explicit DiveItem(): number(0), when(), duration(), maxdepth(), rating(0),
-			     temperature(), totalweight(), suit(QString()), sac(0),
-			     otu(0), maxcns(0), location(QString()) { parentItem = 0; }
+	explicit DiveItem(): dive() { parentItem = 0; }
 
 	explicit DiveItem(struct dive *d, DiveItem *parent = 0);
 
 	~DiveItem() { qDeleteAll(childlist); }
 
-	int diveNumber() const { return number; }
-	const QString diveDateTime() const { return QString::fromUtf8(get_dive_date_string(when)); }
-	int diveDuration() const { return duration.seconds; }
-	int diveDepth() const { return maxdepth.mm; }
-	int diveSac() const { return sac; }
-	int diveOtu() const { return otu; }
-	int diveMaxcns() const { return maxcns; }
-	int diveWeight() const { return totalweight.grams; }
+	int diveNumber() const { return dive->number; }
+	const QString diveDateTime() const { return QString::fromUtf8(get_dive_date_string(dive->when)); }
+	int diveDuration() const { return dive->duration.seconds; }
+	int diveDepth() const { return dive->maxdepth.mm; }
+	int diveSac() const { return dive->sac; }
+	int diveOtu() const { return dive->otu; }
+	int diveMaxcns() const { return dive->maxcns; }
+
+	int diveWeight() const
+	{
+		weight_t tw = { total_weight(dive) };
+		return tw.grams;
+	}
+
 	QString displayDuration() const;
 	QString displayDepth() const;
 	QString displayTemperature() const;
 	QString displayWeight() const;
 	QString displaySac() const;
-	const QString& diveLocation() const { return location; }
-	const QString& diveSuit() const { return suit; }
+	const QString diveLocation() const { return dive->location; }
+	const QString diveSuit() const { return dive->suit; }
 	DiveItem *parent() const { return parentItem; }
 	const QList<DiveItem *>& children() const { return childlist; }
 
@@ -326,40 +330,15 @@ public:
 	} /* parent = self */
 
 private:
-	int number;
-	timestamp_t when;
-	duration_t duration;
-	depth_t maxdepth;
-	int rating;
-	temperature_t temperature;
-	weight_t totalweight;
-	QString suit;
-	int sac;
-	int otu;
-	int maxcns;
-	QString location;
+	struct dive *dive;
 	DiveItem *parentItem;
 	QList <DiveItem*> childlist;
 };
 
 DiveItem::DiveItem(struct dive *d, DiveItem *p):
-	number(d->number),
-	rating(d->rating),
-	suit(d->suit),
-	sac(d->sac),
-	otu(d->otu),
-	maxcns(d->maxcns),
-	location(d->location),
+	dive(d),
 	parentItem(p)
 {
-	this->when = d->when;
-	this->duration = d->duration;
-	this->maxdepth = d->maxdepth;
-	this->temperature = d->watertemp;
-
-	weight_t tw = { total_weight(d) };
-	this->totalweight = tw;
-
 	if (parentItem)
 		parentItem->addChild(this);
 }
@@ -369,11 +348,11 @@ QString DiveItem::displayDepth() const
 	const int scale = 1000;
 	QString fract, str;
 	if (get_units()->length == units::METERS) {
-		fract = QString::number((unsigned)(maxdepth.mm % scale) / 10);
-		str = QString("%1.%2").arg((unsigned)(maxdepth.mm / scale)).arg(fract, 2, QChar('0'));
+		fract = QString::number((unsigned)(dive->maxdepth.mm % scale) / 10);
+		str = QString("%1.%2").arg((unsigned)(dive->maxdepth.mm / scale)).arg(fract, 2, QChar('0'));
 	}
 	if (get_units()->length == units::FEET) {
-		str = QString::number(mm_to_feet(maxdepth.mm),'f',0);
+		str = QString::number(mm_to_feet(dive->maxdepth.mm),'f',0);
 	}
 	return str;
 }
@@ -382,8 +361,8 @@ QString DiveItem::displayDuration() const
 {
 	int hrs, mins, secs;
 
-	secs = duration.seconds % 60;
-	mins = duration.seconds / 60;
+	secs = dive->duration.seconds % 60;
+	mins = dive->duration.seconds / 60;
 	hrs = mins / 60;
 	mins -= hrs * 60;
 
@@ -401,9 +380,9 @@ QString DiveItem::displayTemperature() const
 	QString str;
 
 	if (get_units()->temperature == units::CELSIUS) {
-		str = QString::number(mkelvin_to_C(temperature.mkelvin), 'f', 1);
+		str = QString::number(mkelvin_to_C(dive->watertemp.mkelvin), 'f', 1);
 	} else {
-		str = QString::number(mkelvin_to_F(temperature.mkelvin), 'f', 1);
+		str = QString::number(mkelvin_to_F(dive->watertemp.mkelvin), 'f', 1);
 	}
 	return str;
 }
@@ -413,9 +392,9 @@ QString DiveItem::displaySac() const
 	QString str;
 
 	if (get_units()->volume == units::LITER) {
-		str = QString::number(sac / 1000, 'f', 1);
+		str = QString::number(dive->sac / 1000, 'f', 1);
 	} else {
-		str = QString::number(ml_to_cuft(sac), 'f', 2);
+		str = QString::number(ml_to_cuft(dive->sac), 'f', 2);
 	}
 	return str;
 }
@@ -425,11 +404,11 @@ QString DiveItem::displayWeight() const
 	QString str;
 
 	if (get_units()->weight == units::KG) {
-		int gr = totalweight.grams % 1000;
-		int kg = totalweight.grams / 1000;
+		int gr = diveWeight() % 1000;
+		int kg = diveWeight() / 1000;
 		str = QString("%1.%2").arg(kg).arg((unsigned)(gr + 500) / 100);
 	} else {
-		str = QString("%1").arg((unsigned)(grams_to_lbs(totalweight.grams) + 0.5));
+		str = QString("%1").arg((unsigned)(grams_to_lbs(diveWeight()) + 0.5));
 	}
 	return str;
 }
