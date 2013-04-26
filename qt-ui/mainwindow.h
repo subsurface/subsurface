@@ -9,6 +9,7 @@
 
 #include <QMainWindow>
 
+class QSortFilterProxyModel;
 class DiveTripModel;
 
 namespace Ui
@@ -68,6 +69,7 @@ private Q_SLOTS:
 private:
 	Ui::MainWindow *ui;
 	DiveTripModel *model;
+	QSortFilterProxyModel *sortModel;
 	QString filter();
 	bool askSaveChanges();
 

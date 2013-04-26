@@ -27,7 +27,11 @@
        <widget class="MainTab" name="InfoWidget" native="true"/>
        <widget class="QGraphicsView" name="ProfileWidget"/>
       </widget>
-      <widget class="DiveListView" name="ListWidget"/>
+      <widget class="DiveListView" name="ListWidget">
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </item>
     <item>
@@ -45,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
