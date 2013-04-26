@@ -60,7 +60,7 @@ Translator::Translator(QObject *parent):
 QString Translator::translate(const char *context, const char *sourceText,
                               const char *disambiguation) const
 {
-	return QString::fromUtf8(gettext(sourceText));
+	return gettext(sourceText);
 }
 
 static const GdkPixdata subsurface_icon_pixbuf = {};
@@ -1795,7 +1795,7 @@ void MainWindow::setCurrentFileName(const QString &fileName)
 
 void MainWindow::on_actionOpen_triggered()
 {
-	QString defaultFileName = QString::fromUtf8(prefs.default_filename);
+	QString defaultFileName = prefs.default_filename;
 	QFileInfo fileInfo(defaultFileName);
 
 	QFileDialog dialog(this, tr("Open File"), fileInfo.path());

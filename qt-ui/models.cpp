@@ -301,7 +301,7 @@ public:
 	~DiveItem() { qDeleteAll(childlist); }
 
 	int diveNumber() const { return dive->number; }
-	const QString diveDateTime() const { return QString::fromUtf8(get_dive_date_string(dive->when)); }
+	const QString diveDateTime() const { return get_dive_date_string(dive->when); }
 	int diveDuration() const { return dive->duration.seconds; }
 	int diveDepth() const { return dive->maxdepth.mm; }
 	int diveSac() const { return dive->sac; }
@@ -319,7 +319,7 @@ public:
 	QString displayTemperature() const;
 	QString displayWeight() const;
 	QString displaySac() const;
-	const QString diveLocation() const { return QString::fromUtf8(dive->location); }
+	const QString diveLocation() const { return dive->location; }
 	const QString diveSuit() const { return dive->suit; }
 	DiveItem *parent() const { return parentItem; }
 	const QList<DiveItem *>& children() const { return childlist; }
@@ -511,7 +511,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				ret = tr("Date");
 				break;
 			case RATING:
-				ret = QString::fromUtf8(UTF8_BLACKSTAR);
+				ret = UTF8_BLACKSTAR;
 				break;
 			case DEPTH:
 				if (get_units()->length == units::METERS)
@@ -524,9 +524,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				break;
 			case TEMPERATURE:
 				if (get_units()->temperature == units::CELSIUS)
-					ret = QString("%1%2").arg(QString::fromUtf8(UTF8_DEGREE)).arg("C");
+					ret = QString("%1%2").arg(UTF8_DEGREE).arg("C");
 				else
-					ret = QString("%1%2").arg(QString::fromUtf8(UTF8_DEGREE)).arg("F");
+					ret = QString("%1%2").arg(UTF8_DEGREE).arg("F");
 				break;
 			case TOTALWEIGHT:
 				if (get_units()->weight == units::KG)
@@ -541,7 +541,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 				ret = tr("Cyl");
 				break;
 			case NITROX:
-				ret = QString("O%1%").arg(QString::fromUtf8(UTF8_SUBSCRIPT_2));
+				ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2);
 				break;
 			case SAC:
 				ret = tr("SAC");
