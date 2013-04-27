@@ -20,7 +20,7 @@
 #include "../dive.h"
 #include "../divelist.h"
 #include "../pref.h"
-
+#include "modeldelegates.h"
 
 MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 			   model(new DiveTripModel(this)),
@@ -69,6 +69,7 @@ void MainWindow::on_actionOpen_triggered()
 	model->deleteLater();
 	model = new DiveTripModel(this);
 	sortModel->setSourceModel(model);
+	ui->ListWidget->setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate());
 }
 
 void MainWindow::on_actionSave_triggered()

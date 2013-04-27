@@ -3,39 +3,34 @@
 
 #include <QWidget>
 
+enum StarConfig {SPACING = 2, IMG_SIZE = 16, TOTALSTARS = 5};
 
 class StarWidget : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit StarWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
-
-	int maxStars() const;
 	int currentStars() const;
-	bool halfStarsEnabled() const;
 
 	/*reimp*/ QSize sizeHint() const;
 
-	enum {SPACING = 2, IMG_SIZE = 16};
+	static QPixmap starActive();
+	static QPixmap starInactive();
 
 Q_SIGNALS:
 	void valueChanged(int stars);
 
 public Q_SLOTS:
 	void setCurrentStars(int value);
-	void setMaximumStars(int maximum);
-	void enableHalfStars(bool enabled);
 
 protected:
 	/*reimp*/ void mouseReleaseEvent(QMouseEvent* );
 	/*reimp*/ void paintEvent(QPaintEvent* );
 
 private:
-	int stars;
 	int current;
-	bool halfStar;
-	QPixmap activeStar;
-	QPixmap inactiveStar;
+	static QPixmap* activeStar;
+	static QPixmap* inactiveStar;
 	QPixmap grayImage(QPixmap *coloredImg);
 };
 

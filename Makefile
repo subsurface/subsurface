@@ -37,6 +37,7 @@ HEADERS = \
 	qt-ui/models.h \
 	qt-ui/plotareascene.h \
 	qt-ui/starwidget.h \
+	qt-ui/modeldelegates.h \
 
 
 SOURCES = \
@@ -75,6 +76,7 @@ SOURCES = \
 	qt-ui/models.cpp \
 	qt-ui/plotareascene.cpp \
 	qt-ui/starwidget.cpp \
+	qt-ui/modeldelegates.cpp \
 	$(RESFILE)
 
 

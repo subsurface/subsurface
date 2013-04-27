@@ -5,9 +5,6 @@
  *
  */
 #include "models.h"
-#include "../dive.h"
-#include "../divelist.h"
-
 #include <QtDebug>
 
 extern struct tank_info tank_info[100];
@@ -284,6 +281,7 @@ void TankInfoModel::update()
 	}
 }
 
+
 /*! A DiveItem for use with a DiveTripModel
  *
  * A simple class which wraps basic stats for a dive (e.g. duration, depth) and
@@ -314,6 +312,8 @@ public:
 		return tw.grams;
 	}
 
+	int diveRating() const { return dive->rating; }
+
 	QString displayDuration() const;
 	QString displayDepth() const;
 	QString displayTemperature() const;
@@ -334,6 +334,7 @@ private:
 	DiveItem *parentItem;
 	QList <DiveItem*> childlist;
 };
+
 
 DiveItem::DiveItem(struct dive *d, DiveItem *p):
 	dive(d),
@@ -490,6 +491,16 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 			case LOCATION:
 				retVal = item->diveLocation();
 				break;
+			case RATING:
+				retVal = item->diveRating();
+				break;
+		}
+	}
+	if (role == DelegatesRole){
+		switch(index.column()){
+			case RATING:
+				retVal = item->diveRating();
+				break;
 		}
 	}
 	return retVal;
@@ -568,8 +579,6 @@ int DiveTripModel::rowCount(const QModelIndex &parent) const
 	DiveItem *item = itemForIndex(parent);
 	return item ? item->children().count() : 0;
 }
-
-
 
 int DiveTripModel::columnCount(const QModelIndex &parent) const
 {

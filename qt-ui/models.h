@@ -9,7 +9,7 @@
 
 #include <QAbstractTableModel>
 #include "../dive.h"
-
+#include "../divelist.h"
 /* Encapsulates the tank_info global variable
  * to show on Qt`s Model View System.*/
 class TankInfoModel : public QAbstractTableModel {
@@ -74,11 +74,12 @@ private:
 /*! An AbstractItemModel for recording dive trip information such as a list of dives.
 *
 */
-class DiveItem; // Represents a single item on the model, implemented in the .cpp since it's private for this class.
+class DiveItem;
 class DiveTripModel : public QAbstractItemModel
 {
 public:
 	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT, SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
+	enum { DelegatesRole = Qt::UserRole };
 
 	DiveTripModel(QObject *parent = 0);
 

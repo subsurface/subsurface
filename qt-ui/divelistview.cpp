@@ -5,6 +5,8 @@
  *
  */
 #include "divelistview.h"
+#include "models.h"
+#include "modeldelegates.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent)
 {
