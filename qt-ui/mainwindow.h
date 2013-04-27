@@ -66,12 +66,17 @@ private Q_SLOTS:
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
 
+protected:
+	void closeEvent(QCloseEvent *);
+
 private:
 	Ui::MainWindow *ui;
 	DiveTripModel *model;
 	QSortFilterProxyModel *sortModel;
 	QString filter();
 	bool askSaveChanges();
+	void readSettings();
+	void writeSettings();
 
 };
 

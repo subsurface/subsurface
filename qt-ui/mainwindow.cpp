@@ -12,6 +12,8 @@
 #include <QtDebug>
 #include <QDateTime>
 #include <QSortFilterProxyModel>
+#include <QSettings>
+#include <QCloseEvent>
 
 #include "divelistview.h"
 #include "starwidget.h"
@@ -31,6 +33,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	ui->ListWidget->setModel(sortModel);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
+	readSettings();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -138,6 +141,11 @@ void MainWindow::on_actionPreferences_triggered()
 void MainWindow::on_actionQuit_triggered()
 {
 	qDebug("actionQuit");
+	if (unsaved_changes() && (askSaveChanges() == FALSE))
+	{
+		return;
+	}
+
 }
 
 void MainWindow::on_actionDownloadDC_triggered()
@@ -283,4 +291,33 @@ bool MainWindow::askSaveChanges()
 		return true;
 	}
 	return false;
+}
+
+void MainWindow::readSettings()
+{
+	QSettings settings("hohndel.org","subsurface");
+
+	/* note: section/key i.e. forward slash to separate */
+	QSize sz = settings.value("MainWindow/size").value<QSize>();
+	resize(sz);
+}
+
+void MainWindow::writeSettings()
+{
+	QSettings settings("hohndel.org","subsurface");
+	settings.beginGroup("MainWindow");
+	settings.setValue("size",size());
+	settings.endGroup();
+	/* other groups here; avoid '/' and '\' in keys with setValue(...) please */
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	if (unsaved_changes() && (askSaveChanges() == FALSE))
+	{
+		event->ignore();
+		return;
+	}
+	event->accept();
+	writeSettings();
 }
