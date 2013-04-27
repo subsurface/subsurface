@@ -359,7 +359,7 @@ static gboolean divelogde_dialog(const char **user, const char **pass)
 	return ret;
 }
 
-int divelogde_upload(char *fn)
+int divelogde_upload(char *fn, char **error)
 {
 	SoupMessage *msg;
 	SoupMultipart *multipart;
@@ -386,10 +386,7 @@ int divelogde_upload(char *fn)
 	soup_message_headers_append(msg->request_headers, "Accept", "text/xml");
 	soup_session_send_message(session, msg);
 	if (SOUP_STATUS_IS_SUCCESSFUL(msg->status_code)) {
-		/* we should really check if the XML returned indicates that
-		 * the profiles were successfully uploaded...
-		 */
-		fprintf(stderr, "%s\n", (gchar *)msg->response_body->data);
+		*error = strdup(msg->response_body->data);
 		ret = TRUE;
 	}
 	soup_session_abort(session);

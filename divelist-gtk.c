@@ -1366,6 +1366,30 @@ static void delete_dive_cb(GtkWidget *menuitem, GtkTreePath *path)
 	mark_divelist_changed(TRUE);
 }
 
+void divelogs_status_dialog(char *error, GtkMessageType type)
+{
+	GtkWidget *dialog, *vbox, *label;
+
+	dialog = gtk_message_dialog_new(
+			GTK_WINDOW(main_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			type,
+			GTK_BUTTONS_OK,
+			_("%s: Response from divelogs.de"), type == GTK_MESSAGE_INFO ? _("Info") : _("Error")
+			);
+
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+	label = create_label("%s", error);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
+
+	gtk_widget_show_all(dialog);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+
+}
+
 #if defined(LIBZIP) && defined(XSLT)
 static void upload_dives_divelogs(const gboolean selected)
 {
@@ -1381,6 +1405,8 @@ static void upload_dives_divelogs(const gboolean selected)
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
 	const gchar *tmpdir = g_get_tmp_dir();
+	GtkMessageType type;
+	char *error = NULL;
 
 	/*
 	 * Creating a temporary .DLD file to be eventually uploaded to
@@ -1451,10 +1477,29 @@ static void upload_dives_divelogs(const gboolean selected)
 		}
 	}
 	zip_close(zip);
-	if (divelogde_upload(tempfile))
-		g_unlink(tempfile);
-	else
-		fprintf(stderr,"upload of %s failed\n", tempfile);
+	if (!divelogde_upload(tempfile, &error)) {
+		error = strdup(_("Communication error with divelogs.de"));
+		type = GTK_MESSAGE_ERROR;
+	} else {
+		/* The upload status XML message should be parsed
+		 * properly and displayed in a sensible manner. But just
+		 * displaying the raw message is better than nothing.
+		 * And at least the dialog is customized to indicate
+		 * error or success.
+		 */
+		if (strstr(error, "failed"))
+			type = GTK_MESSAGE_ERROR;
+		else
+			type = GTK_MESSAGE_INFO;
+	}
+
+
+	if (error) {
+		divelogs_status_dialog(error, type);
+		free(error);
+	}
+
+	g_unlink(tempfile);
 	g_free(tempfile);
 }
 
