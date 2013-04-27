@@ -366,7 +366,7 @@ int divelogde_upload(char *fn)
 	SoupSession *session;
 	SoupBuffer *sbuf;
 	gboolean ret = FALSE;
-	char url[256] = "http://divelogs.de/DivelogsDirectImport.php";
+	char url[256] = "https://divelogs.de/DivelogsDirectImport.php";
 	const char *pass = NULL;
 	const char *user = NULL;
 	struct memblock mem;
