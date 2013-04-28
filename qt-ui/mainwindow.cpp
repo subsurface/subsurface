@@ -289,9 +289,12 @@ void MainWindow::readSettings()
 {
 	QSettings settings("hohndel.org","subsurface");
 
-	/* note: section/key i.e. forward slash to separate */
-	QSize sz = settings.value("MainWindow/size").value<QSize>();
+	settings.beginGroup("MainWindow");
+	QSize sz = settings.value("size").value<QSize>();
 	resize(sz);
+	ui->mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	ui->infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+	settings.endGroup();
 }
 
 void MainWindow::writeSettings()
@@ -299,6 +302,8 @@ void MainWindow::writeSettings()
 	QSettings settings("hohndel.org","subsurface");
 	settings.beginGroup("MainWindow");
 	settings.setValue("size",size());
+	settings.setValue("mainSplitter", ui->mainSplitter->saveState());
+	settings.setValue("infoProfileSplitter", ui->infoProfileSplitter->saveState());
 	settings.endGroup();
 	/* other groups here; avoid '/' and '\' in keys with setValue(...) please */
 }
