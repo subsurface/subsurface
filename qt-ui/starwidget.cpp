@@ -5,32 +5,29 @@
 #include <QDebug>
 #include <QMouseEvent>
 
+QPixmap* StarWidget::activeStar = 0;
+QPixmap* StarWidget::inactiveStar = 0;
+
+QPixmap StarWidget::starActive()
+{
+	return (*activeStar);
+}
+
+QPixmap StarWidget::starInactive()
+{
+	return (*inactiveStar);
+}
+
 int StarWidget::currentStars() const
 {
 	return current;
 }
 
-void StarWidget::enableHalfStars(bool enabled)
-{
-	halfStar = enabled;
-	update();
-}
-
-bool StarWidget::halfStarsEnabled() const
-{
-	return halfStar;
-}
-
-int StarWidget::maxStars() const
-{
-	return stars;
-}
-
 void StarWidget::mouseReleaseEvent(QMouseEvent* event)
 {
 	int starClicked = event->pos().x() / IMG_SIZE + 1;
-	if (starClicked > stars)
-		starClicked = stars;
+	if (starClicked > TOTALSTARS)
+		starClicked = TOTALSTARS;
 
 	if (current == starClicked)
 		current -= 1;
@@ -45,10 +42,10 @@ void StarWidget::paintEvent(QPaintEvent* event)
 	QPainter p(this);
 
 	for(int i = 0; i < current; i++)
-		p.drawPixmap(i * IMG_SIZE + SPACING, 0, activeStar);
+		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starActive());
 
-	for(int i = current; i < stars; i++)
-		p.drawPixmap(i * IMG_SIZE + SPACING, 0, inactiveStar);
+	for(int i = current; i < TOTALSTARS; i++)
+		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starInactive());
 }
 
 void StarWidget::setCurrentStars(int value)
@@ -58,27 +55,25 @@ void StarWidget::setCurrentStars(int value)
 	Q_EMIT valueChanged(current);
 }
 
-void StarWidget::setMaximumStars(int maximum)
-{
-	stars = maximum;
-	update();
-}
-
 StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
 	QWidget(parent, f),
-	stars(5),
-	current(0),
-	halfStar(false)
+	current(0)
 {
-	QSvgRenderer render(QString(":star"));
-	QPixmap renderedStar(IMG_SIZE, IMG_SIZE);
+	if(!activeStar){
+		activeStar = new QPixmap();
+		QSvgRenderer render(QString(":star"));
+		QPixmap renderedStar(IMG_SIZE, IMG_SIZE);
 
-	renderedStar.fill(Qt::transparent);
-	QPainter painter(&renderedStar);
+		renderedStar.fill(Qt::transparent);
+		QPainter painter(&renderedStar);
 
-	render.render(&painter, QRectF(0, 0, IMG_SIZE, IMG_SIZE));
-	activeStar = renderedStar;
-	inactiveStar = grayImage(&renderedStar);
+		render.render(&painter, QRectF(0, 0, IMG_SIZE, IMG_SIZE));
+		(*activeStar) = renderedStar;
+	}
+	if(!inactiveStar){
+		inactiveStar = new QPixmap();
+		(*inactiveStar) = grayImage(activeStar);
+	}
 }
 
 QPixmap StarWidget::grayImage(QPixmap* coloredImg)
@@ -86,17 +81,20 @@ QPixmap StarWidget::grayImage(QPixmap* coloredImg)
 	QImage img = coloredImg->toImage();
 	for (int i = 0; i < img.width(); ++i) {
 		for (int j = 0; j < img.height(); ++j) {
-			QRgb col = img.pixel(i, j);
-			if (!col)
+			QRgb rgb = img.pixel(i, j);
+			if (!rgb)
 				continue;
-			int gray = QColor(Qt::darkGray).rgb();
+
+			QColor c(rgb);
+			int gray = (c.red() + c.green() + c.blue()) / 3;
 			img.setPixel(i, j, qRgb(gray, gray, gray));
 		}
 	}
+
 	return QPixmap::fromImage(img);
 }
 
 QSize StarWidget::sizeHint() const
 {
-	return QSize(IMG_SIZE * stars + SPACING * (stars-1), IMG_SIZE);
+	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS-1), IMG_SIZE);
 }
