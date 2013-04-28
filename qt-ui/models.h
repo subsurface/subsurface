@@ -79,7 +79,6 @@ class DiveTripModel : public QAbstractItemModel
 {
 public:
 	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT, SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
-	enum { DelegatesRole = Qt::UserRole };
 
 	DiveTripModel(QObject *parent = 0);
 

@@ -496,13 +496,6 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 				break;
 		}
 	}
-	if (role == DelegatesRole){
-		switch(index.column()){
-			case RATING:
-				retVal = item->diveRating();
-				break;
-		}
-	}
 	return retVal;
 }
 

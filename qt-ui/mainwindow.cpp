@@ -69,7 +69,7 @@ void MainWindow::on_actionOpen_triggered()
 	model->deleteLater();
 	model = new DiveTripModel(this);
 	sortModel->setSourceModel(model);
-	ui->ListWidget->setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate());
+	ui->ListWidget->sortByColumn(0, Qt::DescendingOrder);
 }
 
 void MainWindow::on_actionSave_triggered()
