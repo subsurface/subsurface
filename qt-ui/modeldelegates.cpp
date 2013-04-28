@@ -6,6 +6,7 @@
 
 #include <QtDebug>
 #include <QPainter>
+#include <QSortFilterProxyModel>
 
 void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
@@ -13,7 +14,7 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 		return;
 	}
 
-	int rating = index.model()->data(index, DiveTripModel::DelegatesRole).toInt();
+	int rating = index.model()->data(index, Qt::DisplayRole).toInt();
 
 	if (option.state & QStyle::State_Selected)
          painter->fillRect(option.rect, option.palette.highlight());
