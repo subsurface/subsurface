@@ -44,9 +44,8 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), filter());
-	if (filename.isEmpty()) {
+	if (filename.isEmpty())
 		return;
-	}
 
 	// Needed to convert to char*
 	QByteArray fileNamePtr = filename.toLocal8Bit();
@@ -57,15 +56,13 @@ void MainWindow::on_actionOpen_triggered()
 	parse_file(fileNamePtr.data(), &error);
 	set_filename(fileNamePtr.data(), TRUE);
 
-	if (error != NULL)
-	{
+	if (error != NULL) {
 		QMessageBox::warning(this, "Error", error->message);
 		g_error_free(error);
 		error = NULL;
 	}
 
-	//WARNING: Port This method to Qt
-	report_dives(FALSE, FALSE);
+	process_dives(FALSE, FALSE);
 
 	ui->InfoWidget->reload();
 
@@ -86,15 +83,12 @@ void MainWindow::on_actionSaveAs_triggered()
 void MainWindow::on_actionClose_triggered()
 {
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
-	{
 		return;
-	}
 
 	/* free the dives and trips */
 	while (dive_table.nr)
-	{
 		delete_single_dive(0);
-	}
+
 	mark_divelist_changed(FALSE);
 
 	/* clear the selection and the statistics */
@@ -142,10 +136,7 @@ void MainWindow::on_actionQuit_triggered()
 {
 	qDebug("actionQuit");
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
-	{
 		return;
-	}
-
 }
 
 void MainWindow::on_actionDownloadDC_triggered()
@@ -313,8 +304,7 @@ void MainWindow::writeSettings()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (unsaved_changes() && (askSaveChanges() == FALSE))
-	{
+	if (unsaved_changes() && (askSaveChanges() == FALSE)) {
 		event->ignore();
 		return;
 	}
