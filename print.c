@@ -1009,7 +1009,7 @@ static GtkWidget *print_dialog(GtkPrintOperation *operation, gpointer user_data)
 	gtk_box_pack_start(GTK_BOX(box1), radio4, TRUE, FALSE, 2);
 	gtk_box_pack_start(GTK_BOX(box1), radio5, TRUE, FALSE, 2);
 
-	frame2 = gtk_frame_new(_("Sizing heights (\% of layout)"));
+	frame2 = gtk_frame_new(_("Sizing heights (%% of layout)"));
 	gtk_box_pack_start(GTK_BOX(box), frame2, FALSE, FALSE, 5);
 
 	box2 = gtk_hbox_new (TRUE, 1);
