@@ -14,6 +14,7 @@
 AddWeightsystemDialog::AddWeightsystemDialog(QWidget *parent) : ui(new Ui::AddWeightsystemDialog())
 {
 	ui->setupUi(this);
+	currentWeightsystem = NULL;
 }
 
 void AddWeightsystemDialog::setWeightsystem(weightsystem_t *ws)

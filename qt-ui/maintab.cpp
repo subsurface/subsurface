@@ -93,17 +93,17 @@ void MainTab::on_addWeight_clicked()
 		return;
 
 	AddWeightsystemDialog dialog(this);
-	weightsystem_t *newWeightsystem = (weightsystem_t *) malloc(sizeof(weightsystem_t));
-	newWeightsystem->description = "";
-	newWeightsystem->weight.grams = 0;
+	weightsystem_t newWeightsystem;
+	newWeightsystem.description = "";
+	newWeightsystem.weight.grams = 0;
 
-	dialog.setWeightsystem(newWeightsystem);
+	dialog.setWeightsystem(&newWeightsystem);
 	int result = dialog.exec();
 	if (result == QDialog::Rejected)
 		return;
 
 	dialog.updateWeightsystem();
-	weightModel->add(newWeightsystem);
+	weightModel->add(&newWeightsystem);
 }
 
 void MainTab::on_editWeight_clicked()
