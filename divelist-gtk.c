@@ -1487,7 +1487,7 @@ static void upload_dives_divelogs(const gboolean selected)
 		 * And at least the dialog is customized to indicate
 		 * error or success.
 		 */
-		if (strstr(error, "failed"))
+		if (error && strstr(error, "failed"))
 			type = GTK_MESSAGE_ERROR;
 		else
 			type = GTK_MESSAGE_INFO;

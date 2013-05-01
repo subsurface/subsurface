@@ -374,7 +374,7 @@ int divelogde_upload(char *fn, char **error)
 	if (readfile(fn, &mem) < 0)
 		return ret;
 	if (!divelogde_dialog(&user, &pass))
-		return ret;
+		return TRUE;
 	sbuf = soup_buffer_new(SOUP_MEMORY_STATIC, mem.buffer, mem.size);
 	session = soup_session_async_new();
 	multipart = soup_multipart_new(SOUP_FORM_MIME_TYPE_MULTIPART);
