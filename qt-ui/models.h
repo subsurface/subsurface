@@ -62,7 +62,7 @@ class WeightModel : public QAbstractTableModel {
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 
-	void add(weight_t *weight);
+	void add(weightsystem_t *weight);
 	void clear();
 	void update();
 private:

@@ -149,7 +149,29 @@ int WeightModel::columnCount(const QModelIndex& parent) const
 
 QVariant WeightModel::data(const QModelIndex& index, int role) const
 {
-	return QVariant();
+	QVariant ret;
+	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS) {
+		return ret;
+	}
+	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
+
+	if (role == Qt::DisplayRole) {
+		switch(index.column()) {
+		case TYPE:
+			ret = QString(ws->description);
+			break;
+		case WEIGHT:
+			if (get_units()->weight == units::KG) {
+				int gr = ws->weight.grams % 1000;
+				int kg = ws->weight.grams / 1000;
+				ret = QString("%1.%2").arg(kg).arg((unsigned)(gr + 500) / 100);
+			} else {
+				ret = QString("%1").arg((unsigned)(grams_to_lbs(ws->weight.grams) + 0.5));
+			}
+			break;
+		}
+	}
+	return ret;
 }
 
 int WeightModel::rowCount(const QModelIndex& parent) const
@@ -175,8 +197,22 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 	return ret;
 }
 
-void WeightModel::add(weight_t* weight)
+void WeightModel::add(weightsystem_t* weight)
 {
+	if (usedRows[current_dive] >= MAX_WEIGHTSYSTEMS) {
+		free(weight);
+	}
+
+	int row = usedRows[current_dive];
+
+	weightsystem_t *ws = &current_dive->weightsystem[row];
+
+	ws->description = weight->description;
+	ws->weight.grams = weight->weight.grams;
+
+	beginInsertRows(QModelIndex(), row, row);
+	usedRows[current_dive]++;
+	endInsertRows();
 }
 
 void WeightModel::update()
