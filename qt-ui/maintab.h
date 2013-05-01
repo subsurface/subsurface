@@ -31,6 +31,9 @@ public Q_SLOTS:
 	void on_addCylinder_clicked();
 	void on_editCylinder_clicked();
 	void on_delCylinder_clicked();
+	void on_addWeight_clicked();
+	void on_editWeight_clicked();
+	void on_delWeight_clicked();
 
 private:
 	Ui::MainTab *ui;

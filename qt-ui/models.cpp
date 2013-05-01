@@ -186,13 +186,15 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 		return ret;
 	}
 
-	switch(section) {
-	case TYPE:
-		ret = tr("Type");
-		break;
-	case WEIGHT:
-		ret = tr("Weight");
-		break;
+	if (role == Qt::DisplayRole) {
+		switch(section) {
+		case TYPE:
+			ret = tr("Type");
+			break;
+		case WEIGHT:
+			ret = tr("Weight");
+			break;
+		}
 	}
 	return ret;
 }

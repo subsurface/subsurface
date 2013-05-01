@@ -83,6 +83,23 @@ void MainTab::on_delCylinder_clicked()
 {
 }
 
+void MainTab::on_addWeight_clicked()
+{
+	/* this needs a dialog - right now we just fill in a dummy */
+	weightsystem_t *newWeightsystem = (weightsystem_t *) malloc(sizeof(weightsystem_t));
+	newWeightsystem->description = "Just testing";
+	newWeightsystem->weight.grams = 15000;
+	weightModel->add(newWeightsystem);
+}
+
+void MainTab::on_editWeight_clicked()
+{
+}
+
+void MainTab::on_delWeight_clicked()
+{
+}
+
 void MainTab::reload()
 {
 	cylindersModel->update();

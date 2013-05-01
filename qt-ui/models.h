@@ -56,6 +56,8 @@ private:
 /* Encapsulation of the Weight Model, that represents
  * the current weights on a dive. */
 class WeightModel : public QAbstractTableModel {
+Q_OBJECT
+public:
 	enum Column {TYPE, WEIGHT};
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
