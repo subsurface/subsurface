@@ -61,6 +61,9 @@ void MainTab::clearStats()
 
 void MainTab::on_addCylinder_clicked()
 {
+	if (cylindersModel->rowCount() >= MAX_CYLINDERS)
+		return;
+
 	AddCylinderDialog dialog(this);
 	cylinder_t *newCylinder = (cylinder_t*) malloc(sizeof(cylinder_t));
 	newCylinder->type.description = "";
@@ -85,6 +88,9 @@ void MainTab::on_delCylinder_clicked()
 
 void MainTab::on_addWeight_clicked()
 {
+	if (weightModel->rowCount() >= MAX_WEIGHTSYSTEMS)
+		return;
+
 	/* this needs a dialog - right now we just fill in a dummy */
 	weightsystem_t *newWeightsystem = (weightsystem_t *) malloc(sizeof(weightsystem_t));
 	newWeightsystem->description = "Just testing";

@@ -98,6 +98,7 @@ void CylindersModel::add(cylinder_t* cyl)
 {
 	if (usedRows[current_dive] >= MAX_CYLINDERS) {
 		free(cyl);
+		return;
 	}
 
 	int row = usedRows[current_dive];
@@ -203,6 +204,7 @@ void WeightModel::add(weightsystem_t* weight)
 {
 	if (usedRows[current_dive] >= MAX_WEIGHTSYSTEMS) {
 		free(weight);
+		return;
 	}
 
 	int row = usedRows[current_dive];
