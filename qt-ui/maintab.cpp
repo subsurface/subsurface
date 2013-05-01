@@ -7,6 +7,7 @@
 #include "maintab.h"
 #include "ui_maintab.h"
 #include "addcylinderdialog.h"
+#include "addweightsystemdialog.h"
 
 #include <QLabel>
 
@@ -91,10 +92,17 @@ void MainTab::on_addWeight_clicked()
 	if (weightModel->rowCount() >= MAX_WEIGHTSYSTEMS)
 		return;
 
-	/* this needs a dialog - right now we just fill in a dummy */
+	AddWeightsystemDialog dialog(this);
 	weightsystem_t *newWeightsystem = (weightsystem_t *) malloc(sizeof(weightsystem_t));
-	newWeightsystem->description = "Just testing";
-	newWeightsystem->weight.grams = 15000;
+	newWeightsystem->description = "";
+	newWeightsystem->weight.grams = 0;
+
+	dialog.setWeightsystem(newWeightsystem);
+	int result = dialog.exec();
+	if (result == QDialog::Rejected)
+		return;
+
+	dialog.updateWeightsystem();
 	weightModel->add(newWeightsystem);
 }
 
