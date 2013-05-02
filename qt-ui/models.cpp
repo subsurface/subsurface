@@ -490,11 +490,17 @@ QVariant DiveItem::data(int column, int role) const
 		case LOCATION:
 			retVal = QString(dive->location);
 			break;
-		case RATING:
-			retVal = dive->rating;
-			break;
 		}
 	}
+
+	if(role == STAR_ROLE){
+		retVal = dive->rating;
+	}
+
+	if(role == DIVE_ROLE){
+		retVal = QVariant::fromValue<void*>(dive);
+	}
+
 	return retVal;
 }
 

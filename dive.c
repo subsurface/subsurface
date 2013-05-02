@@ -1810,6 +1810,15 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	return res;
 }
 
+int get_index_for_dive(struct dive *dive) {
+	int i;
+	struct dive *d;
+	for_each_dive(i, d)
+		if (d == dive)
+			return i;
+	return -1;
+}
+
 struct dive *find_dive_including(timestamp_t when)
 {
 	int i;

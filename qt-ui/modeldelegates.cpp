@@ -22,10 +22,11 @@ StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	QStyledItemDelegate::paint(painter, option, index);
+
 	if (!index.isValid())
 		return;
 
-	QVariant value = index.model()->data(index, Qt::DisplayRole);
+	QVariant value = index.model()->data(index, TreeItemDT::STAR_ROLE);
 
 	if (!value.isValid())
 		return;
