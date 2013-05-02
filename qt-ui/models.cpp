@@ -470,6 +470,12 @@ QVariant DiveItem::data(int column, int role) const
 		case SUIT:
 			retVal = QString(dive->suit);
 			break;
+		case CYLINDER:
+			retVal = QString(dive->cylinder[0].type.description);
+			break;
+		case NITROX:
+			retVal = QString(get_nitrox_string(dive));
+			break;
 		case SAC:
 			retVal = displaySac();
 			break;
