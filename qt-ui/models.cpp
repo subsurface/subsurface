@@ -7,6 +7,8 @@
 #include "models.h"
 #include <QCoreApplication>
 #include <QDebug>
+#include <QColor>
+#include <QBrush>
 
 extern struct tank_info tank_info[100];
 
@@ -596,9 +598,6 @@ int DiveTripModel::columnCount(const QModelIndex& parent) const
 QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 {
 	if (!index.isValid())
-		return QVariant();
-
-	if (role != Qt::DisplayRole)
 		return QVariant();
 
 	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());

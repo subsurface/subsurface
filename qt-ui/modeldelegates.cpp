@@ -7,9 +7,21 @@
 #include <QtDebug>
 #include <QPainter>
 #include <QSortFilterProxyModel>
+#include <QColor>
+#include <QBrush>
+#include <QStyle>
+#include <QStyleOption>
+
+StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
+	QStyledItemDelegate(parent),
+	parentWidget(parent)
+{
+
+}
 
 void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+	QStyledItemDelegate::paint(painter, option, index);
 	if (!index.isValid())
 		return;
 
@@ -20,8 +32,6 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
 	int rating = value.toInt();
 
-	if(option.state & QStyle::State_Selected)
-		painter->fillRect(option.rect, option.palette.highlight());
 
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing, true);

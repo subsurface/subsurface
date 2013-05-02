@@ -7,6 +7,8 @@
 #include "divelistview.h"
 #include "models.h"
 #include "modeldelegates.h"
+#include <QApplication>
+#include <QHeaderView>
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent)
 {
