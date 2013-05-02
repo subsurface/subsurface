@@ -267,9 +267,11 @@ $(INFOPLIST): $(INFOPLISTINPUT)
 
 # Transifex merge the translations
 update-po-files:
+	tx pull -af
+
+push-pot:
 	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
 	tx push -s
-	tx pull -af
 
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 		$(XSLT) $(ZIP) $(SQLITE3) $(LIBDIVECOMPUTERCFLAGS) \
