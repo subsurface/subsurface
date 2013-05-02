@@ -17,9 +17,8 @@ CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent)
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
-	if (orientation == Qt::Vertical) {
+	if (orientation == Qt::Vertical)
 		return ret;
-	}
 
 	if (role == Qt::DisplayRole) {
 		switch(section) {
@@ -57,9 +56,9 @@ int CylindersModel::columnCount(const QModelIndex& parent) const
 QVariant CylindersModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
-	if (!index.isValid() || index.row() >= MAX_CYLINDERS) {
+	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
-	}
+
 	cylinder_t& cyl = current_dive->cylinder[index.row()];
 
 	if (role == Qt::DisplayRole) {
@@ -152,9 +151,9 @@ int WeightModel::columnCount(const QModelIndex& parent) const
 QVariant WeightModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
-	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS) {
+	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
 		return ret;
-	}
+
 	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
 
 	if (role == Qt::DisplayRole) {
@@ -184,9 +183,8 @@ int WeightModel::rowCount(const QModelIndex& parent) const
 QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
-	if (orientation == Qt::Vertical) {
+	if (orientation == Qt::Vertical)
 		return ret;
-	}
 
 	if (role == Qt::DisplayRole) {
 		switch(section) {
@@ -257,9 +255,11 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 	}
 	if (role == Qt::DisplayRole) {
 		switch(index.column()) {
-			case BAR: ret = bar;
+			case BAR:
+				ret = bar;
 				break;
-			case ML: ret = ml;
+			case ML:
+				ret = ml;
 				break;
 			case DESCRIPTION:
 				ret = QString(info->name);
@@ -300,7 +300,7 @@ int TankInfoModel::rowCount(const QModelIndex& parent) const
 TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
 {
 	struct tank_info *info = tank_info;
-	for (info = tank_info ; info->name; info++, rows++);
+	for (info = tank_info; info->name; info++, rows++);
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
@@ -315,7 +315,7 @@ void TankInfoModel::update()
 		endRemoveRows();
 	}
 	struct tank_info *info = tank_info;
-	for (info = tank_info ; info->name; info++, rows++);
+	for (info = tank_info; info->name; info++, rows++);
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
@@ -426,7 +426,6 @@ struct DiveItem : public TreeItemDT {
 	QString displayWeight() const;
 	QString displaySac() const;
 	int weight() const;
-
 };
 
 QVariant DiveItem::data(int column, int role) const
@@ -524,11 +523,11 @@ QString DiveItem::displayTemperature() const
 {
 	QString str;
 
-	if (get_units()->temperature == units::CELSIUS) {
+	if (get_units()->temperature == units::CELSIUS)
 		str = QString::number(mkelvin_to_C(dive->watertemp.mkelvin), 'f', 1);
-	} else {
+	else
 		str = QString::number(mkelvin_to_F(dive->watertemp.mkelvin), 'f', 1);
-	}
+
 	return str;
 }
 
@@ -536,11 +535,11 @@ QString DiveItem::displaySac() const
 {
 	QString str;
 
-	if (get_units()->volume == units::LITER) {
+	if (get_units()->volume == units::LITER)
 		str = QString::number(dive->sac / 1000, 'f', 1);
-	} else {
+	else
 		str = QString::number(ml_to_cuft(dive->sac), 'f', 2);
-	}
+
 	return str;
 }
 
@@ -566,8 +565,8 @@ int DiveItem::weight() const
 }
 
 
-DiveTripModel::DiveTripModel(QObject* parent)
-	: QAbstractItemModel(parent)
+DiveTripModel::DiveTripModel(QObject* parent) :
+	QAbstractItemModel(parent)
 {
 	rootItem = new TreeItemDT();
 	setupModelData();
@@ -622,13 +621,11 @@ const
 	if (!hasIndex(row, column, parent))
 		return QModelIndex();
 
-	TreeItemDT* parentItem = (!parent.isValid()) ? rootItem
-	                         :  static_cast<TreeItemDT*>(parent.internalPointer());
+	TreeItemDT* parentItem = (!parent.isValid()) ? rootItem : static_cast<TreeItemDT*>(parent.internalPointer());
 
 	TreeItemDT* childItem = parentItem->childs[row];
 
-	return (childItem) ? createIndex(row, column, childItem)
-	       : QModelIndex();
+	return (childItem) ? createIndex(row, column, childItem) : QModelIndex();
 }
 
 QModelIndex DiveTripModel::parent(const QModelIndex& index) const
@@ -649,13 +646,11 @@ int DiveTripModel::rowCount(const QModelIndex& parent) const
 {
 	TreeItemDT* parentItem;
 
-	if (parent.column() > 0) {
+	if (parent.column() > 0)
 		return 0;
-	}
 
 	if (!parent.isValid())
 		parentItem = rootItem;
-
 	else
 		parentItem = static_cast<TreeItemDT*>(parent.internalPointer());
 
@@ -678,7 +673,6 @@ void DiveTripModel::setupModelData()
 			rootItem->childs.push_back(diveItem);
 			continue;
 		}
-
 		if (!trips.keys().contains(trip)) {
 			TripItem* tripItem  = new TripItem();
 			tripItem->trip = trip;
@@ -688,7 +682,6 @@ void DiveTripModel::setupModelData()
 			rootItem->childs.push_back(tripItem);
 			continue;
 		}
-
 		TripItem* tripItem  = trips[trip];
 		tripItem->childs.push_back(diveItem);
 	}

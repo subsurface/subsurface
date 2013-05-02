@@ -79,8 +79,6 @@ private:
 *
 */
 
-
-
 struct TreeItemDT {
 	Q_DECLARE_TR_FUNCTIONS ( TreeItemDT );
 public:
@@ -95,7 +93,6 @@ public:
 	QList<TreeItemDT *> childs;
 	TreeItemDT *parent;
 };
-
 
 struct TripItem;
 
@@ -114,7 +111,6 @@ public:
 	/*reimp*/ int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ QModelIndex parent(const QModelIndex &child) const;
-
 
 private:
 	void setupModelData();

@@ -10,15 +10,13 @@
 
 void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	if (!index.isValid()){
+	if (!index.isValid())
 		return;
-	}
 
 	QVariant value = index.model()->data(index, Qt::DisplayRole);
 
-	if (!value.isValid()){
+	if (!value.isValid())
 		return;
-	}
 
 	int rating = value.toInt();
 
