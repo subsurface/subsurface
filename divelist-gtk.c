@@ -431,40 +431,24 @@ static gint nitrox_sort_func(GtkTreeModel *model,
 	return a_he - b_he;
 }
 
-#define UTF8_ELLIPSIS "\xE2\x80\xA6"
-
 static void nitrox_data_func(GtkTreeViewColumn *col,
 			     GtkCellRenderer *renderer,
 			     GtkTreeModel *model,
 			     GtkTreeIter *iter,
 			     gpointer data)
 {
-	int idx, o2, he, o2low;
-	char buffer[80];
+	int idx;
+	char *buffer;
 	struct dive *dive;
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
-	if (idx < 0) {
-		*buffer = '\0';
-		goto exit;
+	if (idx >= 0 && (dive = get_dive(idx))) {
+		buffer = get_nitrox_string(dive);
+		g_object_set(renderer, "text", buffer, NULL);
+		free(buffer);
+	} else {
+		g_object_set(renderer, "text", "", NULL);
 	}
-	dive = get_dive(idx);
-	get_dive_gas(dive, &o2, &he, &o2low);
-	o2 = (o2 + 5) / 10;
-	he = (he + 5) / 10;
-	o2low = (o2low + 5) / 10;
-
-	if (he)
-		snprintf(buffer, sizeof(buffer), "%d/%d", o2, he);
-	else if (o2)
-		if (o2 == o2low)
-			snprintf(buffer, sizeof(buffer), "%d", o2);
-		else
-			snprintf(buffer, sizeof(buffer), "%d" UTF8_ELLIPSIS "%d", o2low, o2);
-	else
-		strcpy(buffer, _("air"));
-exit:
-	g_object_set(renderer, "text", buffer, NULL);
 }
 
 /* Render the SAC data (integer value of "ml / min") */

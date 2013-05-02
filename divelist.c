@@ -595,6 +595,34 @@ char *get_trip_date_string(timestamp_t when, int nr) {
 	return buffer;
 }
 
+#define MAX_NITROX_STRING 80
+#define UTF8_ELLIPSIS "\xE2\x80\xA6"
+
+/* callers needs to free the string */
+char *get_nitrox_string(struct dive *dive)
+{
+	int o2, he, o2low;
+	char *buffer = malloc(MAX_NITROX_STRING);
+
+	if (buffer) {
+		get_dive_gas(dive, &o2, &he, &o2low);
+		o2 = (o2 + 5) / 10;
+		he = (he + 5) / 10;
+		o2low = (o2low + 5) / 10;
+
+		if (he)
+			snprintf(buffer, sizeof(buffer), "%d/%d", o2, he);
+		else if (o2)
+			if (o2 == o2low)
+				snprintf(buffer, sizeof(buffer), "%d", o2);
+			else
+				snprintf(buffer, sizeof(buffer), "%d" UTF8_ELLIPSIS "%d", o2low, o2);
+		else
+			strcpy(buffer, _("air"));
+	}
+	return buffer;
+}
+
 /*
  * helper functions for dive_trip handling
  */
