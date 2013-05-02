@@ -12,6 +12,8 @@
 #include <QtDebug>
 #include <QDateTime>
 #include <QSortFilterProxyModel>
+#include <QSettings>
+#include <QCloseEvent>
 
 #include "divelistview.h"
 #include "starwidget.h"
@@ -31,6 +33,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	ui->ListWidget->setModel(sortModel);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
+	readSettings();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -41,9 +44,8 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), filter());
-	if (filename.isEmpty()) {
+	if (filename.isEmpty())
 		return;
-	}
 
 	// Needed to convert to char*
 	QByteArray fileNamePtr = filename.toLocal8Bit();
@@ -54,15 +56,13 @@ void MainWindow::on_actionOpen_triggered()
 	parse_file(fileNamePtr.data(), &error);
 	set_filename(fileNamePtr.data(), TRUE);
 
-	if (error != NULL)
-	{
+	if (error != NULL) {
 		QMessageBox::warning(this, "Error", error->message);
 		g_error_free(error);
 		error = NULL;
 	}
 
-	//WARNING: Port This method to Qt
-	report_dives(FALSE, FALSE);
+	process_dives(FALSE, FALSE);
 
 	ui->InfoWidget->reload();
 
@@ -84,15 +84,12 @@ void MainWindow::on_actionSaveAs_triggered()
 void MainWindow::on_actionClose_triggered()
 {
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
-	{
 		return;
-	}
 
 	/* free the dives and trips */
 	while (dive_table.nr)
-	{
 		delete_single_dive(0);
-	}
+
 	mark_divelist_changed(FALSE);
 
 	/* clear the selection and the statistics */
@@ -139,6 +136,8 @@ void MainWindow::on_actionPreferences_triggered()
 void MainWindow::on_actionQuit_triggered()
 {
 	qDebug("actionQuit");
+	if (unsaved_changes() && (askSaveChanges() == FALSE))
+		return;
 }
 
 void MainWindow::on_actionDownloadDC_triggered()
@@ -284,4 +283,37 @@ bool MainWindow::askSaveChanges()
 		return true;
 	}
 	return false;
+}
+
+void MainWindow::readSettings()
+{
+	QSettings settings("hohndel.org","subsurface");
+
+	settings.beginGroup("MainWindow");
+	QSize sz = settings.value("size").value<QSize>();
+	resize(sz);
+	ui->mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	ui->infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+	settings.endGroup();
+}
+
+void MainWindow::writeSettings()
+{
+	QSettings settings("hohndel.org","subsurface");
+	settings.beginGroup("MainWindow");
+	settings.setValue("size",size());
+	settings.setValue("mainSplitter", ui->mainSplitter->saveState());
+	settings.setValue("infoProfileSplitter", ui->infoProfileSplitter->saveState());
+	settings.endGroup();
+	/* other groups here; avoid '/' and '\' in keys with setValue(...) please */
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	if (unsaved_changes() && (askSaveChanges() == FALSE)) {
+		event->ignore();
+		return;
+	}
+	event->accept();
+	writeSettings();
 }

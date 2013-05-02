@@ -50,28 +50,29 @@ public:
 	void clear();
 	void update();
 private:
-	dive *currentDive;
-
 	/* Since the dive doesn`t stores the number of cylinders that
 	 * it has ( max 8 ) and since I don`t want to make a
 	 * model-for-each-dive, let`s hack this here instead. */
-	QMap<dive*, int> usedRows;
+	QMap<struct dive *, int> usedRows;
 };
 
 /* Encapsulation of the Weight Model, that represents
  * the current weights on a dive. */
 class WeightModel : public QAbstractTableModel {
+Q_OBJECT
+public:
 	enum Column {TYPE, WEIGHT};
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 
-	void add(weight_t *weight);
+	void add(weightsystem_t *weight);
 	void clear();
 	void update();
 private:
-	int rows;
+	/* Remember the number of rows in a dive */
+	QMap<struct dive *, int> usedRows;
 };
 
 /*! An AbstractItemModel for recording dive trip information such as a list of dives.

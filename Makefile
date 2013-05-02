@@ -31,6 +31,7 @@ EXTRA_FLAGS =  $(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 
 HEADERS = \
 	qt-ui/addcylinderdialog.h \
+	qt-ui/addweightsystemdialog.h \
 	qt-ui/divelistview.h \
 	qt-ui/maintab.h \
 	qt-ui/mainwindow.h \
@@ -70,6 +71,7 @@ SOURCES = \
 	webservice.c \
 	qt-gui.cpp \
 	qt-ui/addcylinderdialog.cpp \
+	qt-ui/addweightsystemdialog.cpp \
 	qt-ui/divelistview.cpp \
 	qt-ui/maintab.cpp \
 	qt-ui/mainwindow.cpp \

@@ -16,11 +16,11 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QSplitter" name="splitter_3">
+     <widget class="QSplitter" name="mainSplitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QSplitter" name="splitter_2">
+      <widget class="QSplitter" name="infoProfileSplitter">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -34,13 +34,6 @@
       </widget>
      </widget>
     </item>
-    <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -49,7 +42,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
