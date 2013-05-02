@@ -14,10 +14,16 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 		return;
 	}
 
-	int rating = index.model()->data(index, Qt::DisplayRole).toInt();
+	QVariant value = index.model()->data(index, Qt::DisplayRole);
 
-	if (option.state & QStyle::State_Selected)
-         painter->fillRect(option.rect, option.palette.highlight());
+	if (!value.isValid()){
+		return;
+	}
+
+	int rating = value.toInt();
+
+	if(option.state & QStyle::State_Selected)
+		painter->fillRect(option.rect, option.palette.highlight());
 
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing, true);

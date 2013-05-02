@@ -5,7 +5,8 @@
  *
  */
 #include "models.h"
-#include <QtDebug>
+#include <QCoreApplication>
+#include <QDebug>
 
 extern struct tank_info tank_info[100];
 
@@ -289,59 +290,162 @@ void TankInfoModel::update()
  * QObject.
  *
 */
-class DiveItem
+
+TreeItemDT::~TreeItemDT()
 {
-public:
-	DiveItem(): dive(NULL), parentItem(NULL) {}
+	qDeleteAll(childs);
+}
 
-	DiveItem(struct dive *d, DiveItem *parent = NULL);
+int TreeItemDT::row() const
+{
+	if (parent)
+		return parent->childs.indexOf(const_cast<TreeItemDT*>(this));
 
-	~DiveItem() { qDeleteAll(childlist); }
+	return 0;
+}
 
-	int diveNumber() const { return dive->number; }
-	const QString diveDateTime() const { return get_dive_date_string(dive->when); }
-	int diveDuration() const { return dive->duration.seconds; }
-	int diveDepth() const { return dive->maxdepth.mm; }
-	int diveSac() const { return dive->sac; }
-	int diveOtu() const { return dive->otu; }
-	int diveMaxcns() const { return dive->maxcns; }
+QVariant TreeItemDT::data(int column, int role) const
+{
+	QVariant ret;
+	switch (column) {
+	case NR:
+		ret = tr("#");
+		break;
+	case DATE:
+		ret = tr("Date");
+		break;
+	case RATING:
+		ret = UTF8_BLACKSTAR;
+		break;
+	case DEPTH:
+		ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft");
+		break;
+	case DURATION:
+		ret = tr("min");
+		break;
+	case TEMPERATURE:
+		ret = QString("%1%2").arg(UTF8_DEGREE).arg( (get_units()->temperature == units::CELSIUS) ? "C" : "F");
+		break;
+	case TOTALWEIGHT:
+		ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs");
+		break;
+	case SUIT:
+		ret = tr("Suit");
+		break;
+	case CYLINDER:
+		ret = tr("Cyl");
+		break;
+	case NITROX:
+		ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2);
+		break;
+	case SAC:
+		ret = tr("SAC");
+		break;
+	case OTU:
+		ret = tr("OTU");
+		break;
+	case MAXCNS:
+		ret = tr("maxCNS");
+		break;
+	case LOCATION:
+		ret = tr("Location");
+		break;
+	}
+	return ret;
+}
 
-	int diveWeight() const
-	{
-		weight_t tw = { total_weight(dive) };
-		return tw.grams;
+struct TripItem : public TreeItemDT {
+	virtual QVariant data(int column, int role) const;
+	dive_trip_t* trip;
+};
+
+QVariant TripItem::data(int column, int role) const
+{
+	QVariant ret;
+
+	if (column != LOCATION) {
+		return ret;
 	}
 
-	int diveRating() const { return dive->rating; }
+	switch (role) {
+	case Qt::DisplayRole:
+		ret = QString(trip->location);
+	}
+
+	return ret;
+}
+
+struct DiveItem : public TreeItemDT {
+	virtual QVariant data(int column, int role) const;
+	struct dive* dive;
 
 	QString displayDuration() const;
 	QString displayDepth() const;
 	QString displayTemperature() const;
 	QString displayWeight() const;
 	QString displaySac() const;
-	const QString diveLocation() const { return dive->location; }
-	const QString diveSuit() const { return dive->suit; }
-	DiveItem *parent() const { return parentItem; }
-	const QList<DiveItem *>& children() const { return childlist; }
+	int weight() const;
 
-	void addChild(DiveItem* item) {
-		item->parentItem = this;
-		childlist.push_back(item);
-	} /* parent = self */
-
-private:
-	struct dive *dive;
-	DiveItem *parentItem;
-	QList <DiveItem*> childlist;
 };
 
-
-DiveItem::DiveItem(struct dive *d, DiveItem *p):
-	dive(d),
-	parentItem(p)
+QVariant DiveItem::data(int column, int role) const
 {
-	if (parentItem)
-		parentItem->addChild(this);
+	QVariant retVal;
+
+	if (role == Qt::TextAlignmentRole) {
+		switch (column) {
+		case DATE: /* fall through */
+		case SUIT: /* fall through */
+		case LOCATION:
+			retVal = Qt::AlignLeft;
+			break;
+		default:
+			retVal = Qt::AlignRight;
+			break;
+		}
+	}
+
+	if (role == Qt::DisplayRole) {
+		switch (column) {
+		case NR:
+			retVal = dive->number;
+			break;
+		case DATE:
+			retVal = QString(get_dive_date_string(dive->when));
+			break;
+		case DEPTH:
+			retVal = displayDepth();
+			break;
+		case DURATION:
+			retVal = displayDuration();
+			break;
+		case TEMPERATURE:
+			retVal = displayTemperature();
+			break;
+		case TOTALWEIGHT:
+			retVal = displayWeight();
+			break;
+		case SUIT:
+			retVal = QString(dive->suit);
+			break;
+		case SAC:
+			retVal = displaySac();
+			break;
+		case OTU:
+			retVal = dive->otu;
+			break;
+		case MAXCNS:
+			retVal = dive->maxcns;
+			break;
+		case LOCATION:
+			retVal = QString(dive->location);
+			break;
+		case RATING:
+			retVal = dive->rating;
+			break;
+		}
+	}
+	return retVal;
 }
 
 QString DiveItem::displayDepth() const
@@ -361,7 +465,6 @@ QString DiveItem::displayDepth() const
 QString DiveItem::displayDuration() const
 {
 	int hrs, mins, secs;
-
 	secs = dive->duration.seconds % 60;
 	mins = dive->duration.seconds / 60;
 	hrs = mins / 60;
@@ -405,215 +508,147 @@ QString DiveItem::displayWeight() const
 	QString str;
 
 	if (get_units()->weight == units::KG) {
-		int gr = diveWeight() % 1000;
-		int kg = diveWeight() / 1000;
+		int gr = weight() % 1000;
+		int kg = weight() / 1000;
 		str = QString("%1.%2").arg(kg).arg((unsigned)(gr + 500) / 100);
 	} else {
-		str = QString("%1").arg((unsigned)(grams_to_lbs(diveWeight()) + 0.5));
+		str = QString("%1").arg((unsigned)(grams_to_lbs(weight()) + 0.5));
 	}
+
 	return str;
 }
 
-DiveTripModel::DiveTripModel(QObject *parent) : QAbstractItemModel(parent)
+int DiveItem::weight() const
 {
-	rootItem = new DiveItem;
-	int i;
-	struct dive *d;
-
-	for_each_dive(i, d) {
-		new DiveItem(d, rootItem);
-	}
+	weight_t tw = { total_weight(dive) };
+	return tw.grams;
 }
 
 
-Qt::ItemFlags DiveTripModel::flags(const QModelIndex &index) const
+DiveTripModel::DiveTripModel(QObject* parent)
+	: QAbstractItemModel(parent)
 {
-	Qt::ItemFlags diveFlags = QAbstractItemModel::flags(index);
-	if (index.isValid()) {
-		diveFlags |= Qt::ItemIsSelectable|Qt::ItemIsEnabled;
-	}
-	return diveFlags;
+	rootItem = new TreeItemDT();
+	setupModelData();
 }
 
+DiveTripModel::~DiveTripModel()
+{
+	delete rootItem;
+}
 
-QVariant DiveTripModel::data(const QModelIndex &index, int role) const
+int DiveTripModel::columnCount(const QModelIndex& parent) const
+{
+	if (parent.isValid())
+		return static_cast<TreeItemDT*>(parent.internalPointer())->columnCount();
+	else
+		return rootItem->columnCount();
+}
+
+QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
 
-	DiveItem *item = static_cast<DiveItem*>(index.internalPointer());
+	if (role != Qt::DisplayRole)
+		return QVariant();
 
-	QVariant retVal;
-	if (role == Qt::TextAlignmentRole) {
-		switch (index.column()) {
-			case DATE:     /* fall through */
-			case SUIT:     /* fall through */
-			case LOCATION:
-				retVal = Qt::AlignLeft;
-				break;
-			default:
-				retVal = Qt::AlignRight;
-				break;
-		}
-	}
-	if (role == Qt::DisplayRole) {
-		switch (index.column()) {
-			case NR:
-				retVal = item->diveNumber();
-				break;
-			case DATE:
-				retVal = item->diveDateTime();
-				break;
-			case DEPTH:
-				retVal = item->displayDepth();
-				break;
-			case DURATION:
-				retVal = item->displayDuration();
-				break;
-			case TEMPERATURE:
-				retVal = item->displayTemperature();
-				break;
-			case TOTALWEIGHT:
-				retVal = item->displayWeight();
-				break;
-			case SUIT:
-				retVal = item->diveSuit();
-				break;
-			case SAC:
-				retVal = item->displaySac();
-				break;
-			case OTU:
-				retVal = item->diveOtu();
-				break;
-			case MAXCNS:
-				retVal = item->diveMaxcns();
-				break;
-			case LOCATION:
-				retVal = item->diveLocation();
-				break;
-			case RATING:
-				retVal = item->diveRating();
-				break;
-		}
-	}
-	return retVal;
+	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());
+
+	return item->data(index.column(), role);
 }
 
-
-QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int role) const
+Qt::ItemFlags DiveTripModel::flags(const QModelIndex& index) const
 {
-	QVariant ret;
-	if (orientation != Qt::Horizontal)
-		return ret;
-
-	if (role == Qt::DisplayRole) {
-		switch(section) {
-			case NR:
-				ret = tr("#");
-				break;
-			case DATE:
-				ret = tr("Date");
-				break;
-			case RATING:
-				ret = UTF8_BLACKSTAR;
-				break;
-			case DEPTH:
-				if (get_units()->length == units::METERS)
-					ret = tr("m");
-				else
-					ret = tr("ft");
-				break;
-			case DURATION:
-				ret = tr("min");
-				break;
-			case TEMPERATURE:
-				if (get_units()->temperature == units::CELSIUS)
-					ret = QString("%1%2").arg(UTF8_DEGREE).arg("C");
-				else
-					ret = QString("%1%2").arg(UTF8_DEGREE).arg("F");
-				break;
-			case TOTALWEIGHT:
-				if (get_units()->weight == units::KG)
-					ret = tr("kg");
-				else
-					ret = tr("lbs");
-				break;
-			case SUIT:
-				ret = tr("Suit");
-				break;
-			case CYLINDER:
-				ret = tr("Cyl");
-				break;
-			case NITROX:
-				ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2);
-				break;
-			case SAC:
-				ret = tr("SAC");
-				break;
-			case OTU:
-				ret = tr("OTU");
-				break;
-			case MAXCNS:
-				ret = tr("maxCNS");
-				break;
-			case LOCATION:
-				ret = tr("Location");
-				break;
-		}
-	}
-	return ret;
-}
-
-int DiveTripModel::rowCount(const QModelIndex &parent) const
-{
-	/* only allow kids in column 0 */
-	if (parent.isValid() && parent.column() > 0)
+	if (!index.isValid())
 		return 0;
-	DiveItem *item = itemForIndex(parent);
-	return item ? item->children().count() : 0;
+
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-int DiveTripModel::columnCount(const QModelIndex &parent) const
+QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation,
+                                   int role) const
 {
-	return parent.isValid() && parent.column() != 0 ? 0 : COLUMNS;
+	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+		return rootItem->data(section, role);
+
+	return QVariant();
 }
 
-
-QModelIndex DiveTripModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex DiveTripModel::index(int row, int column, const QModelIndex& parent)
+const
 {
-
-	if (!rootItem || row < 0 || column < 0 || column >= COLUMNS ||
-	    (parent.isValid() && parent.column() != 0))
+	if (!hasIndex(row, column, parent))
 		return QModelIndex();
 
-	DiveItem *parentItem = itemForIndex(parent);
-	Q_ASSERT(parentItem);
-	if (DiveItem *item = parentItem->children().at(row))
-		return createIndex(row, column, item);
-	return QModelIndex();
+	TreeItemDT* parentItem = (!parent.isValid()) ? rootItem
+	                         :  static_cast<TreeItemDT*>(parent.internalPointer());
+
+	TreeItemDT* childItem = parentItem->childs[row];
+
+	return (childItem) ? createIndex(row, column, childItem)
+	       : QModelIndex();
 }
 
-
-QModelIndex DiveTripModel::parent(const QModelIndex &childIndex) const
+QModelIndex DiveTripModel::parent(const QModelIndex& index) const
 {
-	if (!childIndex.isValid())
+	if (!index.isValid())
 		return QModelIndex();
 
-	DiveItem *child = static_cast<DiveItem*>(childIndex.internalPointer());
-	DiveItem *parent = child->parent();
+	TreeItemDT* childItem = static_cast<TreeItemDT*>(index.internalPointer());
+	TreeItemDT* parentItem = childItem->parent;
 
-	if (parent == rootItem)
+	if (parentItem == rootItem)
 		return QModelIndex();
 
-	return createIndex(parent->children().indexOf(child), 0, parent);
+	return createIndex(parentItem->row(), 0, parentItem);
 }
 
-
-DiveItem* DiveTripModel::itemForIndex(const QModelIndex &index) const
+int DiveTripModel::rowCount(const QModelIndex& parent) const
 {
-	if (index.isValid()) {
-		DiveItem *item = static_cast<DiveItem*>(index.internalPointer());
-		return item;
+	TreeItemDT* parentItem;
+
+	if (parent.column() > 0) {
+		return 0;
 	}
-	return rootItem;
+
+	if (!parent.isValid())
+		parentItem = rootItem;
+
+	else
+		parentItem = static_cast<TreeItemDT*>(parent.internalPointer());
+
+	return parentItem->childs.count();
+}
+
+void DiveTripModel::setupModelData()
+{
+	int i = dive_table.nr;
+
+	while (--i >= 0) {
+		struct dive* dive = get_dive(i);
+		dive_trip_t* trip = dive->divetrip;
+
+		DiveItem* diveItem = new DiveItem();
+		diveItem->dive = dive;
+
+		if (!trip) {
+			diveItem->parent = rootItem;
+			rootItem->childs.push_back(diveItem);
+			continue;
+		}
+
+		if (!trips.keys().contains(trip)) {
+			TripItem* tripItem  = new TripItem();
+			tripItem->trip = trip;
+			tripItem->parent = rootItem;
+			tripItem->childs.push_back(diveItem);
+			trips[trip] = tripItem;
+			rootItem->childs.push_back(tripItem);
+			continue;
+		}
+
+		TripItem* tripItem  = trips[trip];
+		tripItem->childs.push_back(diveItem);
+	}
 }

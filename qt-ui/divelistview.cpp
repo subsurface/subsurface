@@ -11,5 +11,5 @@
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent)
 {
 	setUniformRowHeights(true);
-	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate());
+	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
 }
