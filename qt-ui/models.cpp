@@ -7,6 +7,8 @@
 #include "models.h"
 #include <QCoreApplication>
 #include <QDebug>
+#include <QColor>
+#include <QBrush>
 
 extern struct tank_info tank_info[100];
 
@@ -599,6 +601,8 @@ QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
+	if (role == Qt::BackgroundRole)
+		return QBrush(QColor(index.row() % 2 ? Qt::white : QColor(Qt::lightGray).lighter(120)));
 
 	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());
 
