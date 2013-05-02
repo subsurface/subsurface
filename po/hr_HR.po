@@ -5,14 +5,15 @@
 # Translators:
 # dirkhh <dirk@hohndel.org>, 2012
 # dirkhh <dirk@hohndel.org>, 2012
+# ivanhabunek <ivan.habunek@gmail.com>, 2013
 # ivanhabunek <ivan.habunek@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 15:43-0700\n"
-"PO-Revision-Date: 2013-04-30 22:42+0000\n"
-"Last-Translator: dirkhh <dirk@hohndel.org>\n"
+"POT-Creation-Date: 2013-05-02 08:37-0700\n"
+"PO-Revision-Date: 2013-05-01 07:40+0000\n"
+"Last-Translator: ivanhabunek <ivan.habunek@gmail.com>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/projects/p/subsurface/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -131,7 +132,7 @@ msgstr "%s\nCNS:%u%%"
 msgid ""
 "%s\n"
 "Calculated ceiling %.0f %s"
-msgstr "%s\nIzračunati plafon %.0f %s"
+msgstr "%s\nIzračunati strop %.0f %s"
 
 #: profile.c:2175
 #, c-format
@@ -473,11 +474,11 @@ msgstr "Celzijusa"
 
 #: gtk-gui.c:686
 msgid "Choose Default XML File"
-msgstr "Odaberite defaultnu XML datoteku"
+msgstr "Odaberi defaultnu XML datoteku"
 
 #: gtk-gui.c:2294
 msgid "Choose XML Files To Import Into Current Data File"
-msgstr "Odaberite XML datoteke za uvoz u trenutačnu datoteku"
+msgstr "Odaberi XML datoteke za uvoz u trenutačnu datoteku"
 
 #: gtk-gui.c:1622
 msgid "Close"
@@ -646,7 +647,7 @@ msgstr "Oznake urona"
 
 #: statistics-gtk.c:591
 msgid "Dive Time"
-msgstr "Vrijeme urona"
+msgstr "Trajanje"
 
 #: uemis.c:228
 msgid "Dive Time Alert"
@@ -993,7 +994,7 @@ msgstr "U mirovanju"
 
 #: gtk-gui.c:1624
 msgid "Import File(s)..."
-msgstr "Uvezi XML datoteke..."
+msgstr "Uvezi datoteku..."
 
 #: divelist-gtk.c:1378 gtk-gui.c:1645
 msgid "Info"
@@ -1117,7 +1118,7 @@ msgstr "Upozorenje: Max. vrijeme dekompresije"
 
 #: statistics-gtk.c:560 statistics-gtk.c:598
 msgid "Max Depth"
-msgstr "Max. dubina"
+msgstr "Max dubina"
 
 #: info-gtk.c:918
 #, c-format
@@ -1126,7 +1127,7 @@ msgstr "Max dubina (%s):"
 
 #: statistics-gtk.c:568
 msgid "Max SAC"
-msgstr "Najveći SAC"
+msgstr "Max SAC"
 
 #: statistics-gtk.c:543
 msgid "Max Temp"
@@ -1143,11 +1144,11 @@ msgstr "Najveća dubina: %.*f %s\nTrajanje: %d min\n%s"
 #: print.c:377
 #, c-format
 msgid "Max. CNS"
-msgstr "Maks. CNS"
+msgstr "Max CNS"
 
 #: equipment.c:1518
 msgid "MaxPress"
-msgstr "Maks. pritisak"
+msgstr "Max pritisak"
 
 #: statistics-gtk.c:102
 msgctxt "Depth"
@@ -1186,15 +1187,15 @@ msgstr "Metar"
 
 #: statistics-gtk.c:561
 msgid "Min Depth"
-msgstr "Najmanja dubina"
+msgstr "Min dubina"
 
 #: statistics-gtk.c:569
 msgid "Min SAC"
-msgstr "Najmanji SAC"
+msgstr "Min SAC"
 
 #: statistics-gtk.c:544
 msgid "Min Temp"
-msgstr "Min. temp."
+msgstr "Min temp."
 
 #: statistics-gtk.c:101
 msgctxt "Depth"
@@ -1515,7 +1516,7 @@ msgstr "Spremi..."
 
 #: planner-gtk.c:289
 msgid "Segment Time"
-msgstr "Trajanje segemnta"
+msgstr "Trajanje segmenta"
 
 #: gtk-gui.c:1174
 msgid "Select Events"
@@ -1981,7 +1982,7 @@ msgstr "deko zastoj"
 
 #: statistics.c:20
 msgid "deep"
-msgstr "duboko"
+msgstr "dubok"
 
 #: libdivecomputer.c:152
 msgid "deepstop"
@@ -2110,7 +2111,7 @@ msgstr "maxCNS"
 
 #: libdivecomputer.c:153
 msgid "maxdepth"
-msgstr "Max. dubina"
+msgstr "Max dubina"
 
 #: uemis-downloader.c:591
 msgid "membrane"

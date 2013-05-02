@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 11:00-0700\n"
-"PO-Revision-Date: 2013-04-30 17:51+0000\n"
-"Last-Translator: dirkhh <dirk@hohndel.org>\n"
+"POT-Creation-Date: 2013-05-02 08:37-0700\n"
+"PO-Revision-Date: 2013-05-01 04:20+0000\n"
+"Last-Translator: mturkia <miika.turkia@gmail.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/subsurface/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -243,7 +243,7 @@ msgstr "%s tapahtuma %d:%02u"
 #: divelist-gtk.c:1378
 #, c-format
 msgid "%s: Response from divelogs.de"
-msgstr ""
+msgstr "%s: divelogs.de:n vastaus"
 
 #: dive.c:921
 #, c-format
@@ -489,7 +489,7 @@ msgstr "Supista kaikki retket"
 
 #: divelist-gtk.c:1481
 msgid "Communication error with divelogs.de"
-msgstr ""
+msgstr "Virhe divelogs.de:n yhteydessä"
 
 #: webservice.c:121
 msgid "Connecting..."
@@ -815,7 +815,7 @@ msgstr "Varusteet"
 
 #: divelist-gtk.c:1378
 msgid "Error"
-msgstr ""
+msgstr "Virhe"
 
 #: libdivecomputer.c:471
 msgid "Error obtaining water salinity"
@@ -1597,7 +1597,7 @@ msgstr "Tilavuus"
 #: print.c:1012
 #, c-format
 msgid "Sizing heights (%% of layout)"
-msgstr ""
+msgstr "Korkeuksien määritys(%% pohjasta)"
 
 #: uemis.c:200
 msgid "Speed Alarm"
