@@ -47,6 +47,14 @@ void dump_plan(struct diveplan *diveplan)
 }
 #endif
 
+void set_last_stop(gboolean last_stop_6m)
+{
+	if (last_stop_6m == TRUE)
+		decostoplevels[1] = 6000;
+	else
+		decostoplevels[1] = 3000;
+}
+
 void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 {
 	struct event *event = dc->events;

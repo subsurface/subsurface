@@ -11,6 +11,7 @@ extern timestamp_t current_time_notz(void);
 extern void show_planned_dive(char **error_string_p);
 extern int add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gboolean is_rel);
 extern void add_po2_to_nth_dp(struct diveplan *diveplan, int idx, int po2);
+extern void set_last_stop(gboolean last_stop_6m);
 
 extern struct diveplan diveplan;
 extern struct dive *planned_dive;
