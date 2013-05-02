@@ -434,7 +434,8 @@ QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
 
-	if (role == Qt::TextAlignmentRole) {
+	switch (role) {
+	case Qt::TextAlignmentRole:
 		switch (column) {
 		case DATE: /* fall through */
 		case SUIT: /* fall through */
@@ -445,9 +446,8 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = Qt::AlignRight;
 			break;
 		}
-	}
-
-	if (role == Qt::DisplayRole) {
+		break;
+	case Qt::DisplayRole:
 		switch (column) {
 		case NR:
 			retVal = dive->number;
@@ -492,6 +492,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = dive->rating;
 			break;
 		}
+		break;
 	}
 	return retVal;
 }
@@ -598,8 +599,6 @@ QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (role != Qt::DisplayRole)
-		return QVariant();
 
 	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());
 

@@ -14,6 +14,8 @@
 #include <QSortFilterProxyModel>
 #include <QSettings>
 #include <QCloseEvent>
+#include <QApplication>
+#include <QFontMetrics>
 
 #include "divelistview.h"
 #include "starwidget.h"
@@ -31,6 +33,38 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	ui->setupUi(this);
 	sortModel->setSourceModel(model);
 	ui->ListWidget->setModel(sortModel);
+
+	/* figure out appropriate widths for the columns. The strings chosen
+	 * are somewhat random (but at least we're trying to allow them to be
+	 * localized so they are somewhat universal) */
+	QFontMetrics fm(QApplication::font());
+	int pixelsWide = fm.width(tr("Trip Wed, Mar 29, 2000 (100 dives)"));
+	ui->ListWidget->setColumnWidth(TreeItemDT::DATE, pixelsWide);
+
+	/* all the columns that have usually up to four numbers plus maybe
+	 * a decimal separator */
+	pixelsWide = fm.width("000.0");
+	ui->ListWidget->setColumnWidth(TreeItemDT::DEPTH, pixelsWide);
+	ui->ListWidget->setColumnWidth(TreeItemDT::TEMPERATURE, pixelsWide);
+	ui->ListWidget->setColumnWidth(TreeItemDT::TOTALWEIGHT, pixelsWide);
+	ui->ListWidget->setColumnWidth(TreeItemDT::SAC, pixelsWide);
+	ui->ListWidget->setColumnWidth(TreeItemDT::OTU, pixelsWide);
+
+	/* this one is likely dominated by the header (need extra pixels) */
+	pixelsWide = fm.width(tr("maxCNS")) + 10;
+	ui->ListWidget->setColumnWidth(TreeItemDT::MAXCNS, pixelsWide);
+
+	/* the rest we try to cover with reasonable sample text again */
+	pixelsWide = fm.width("   123456");
+	ui->ListWidget->setColumnWidth(TreeItemDT::NR, pixelsWide);
+	pixelsWide = fm.width("00:00:00");
+	ui->ListWidget->setColumnWidth(TreeItemDT::DURATION, pixelsWide);
+	pixelsWide = fm.width(tr("twin HP119"));
+	ui->ListWidget->setColumnWidth(TreeItemDT::CYLINDER, pixelsWide);
+	pixelsWide = fm.width("888888");
+	ui->ListWidget->setColumnWidth(TreeItemDT::NITROX, pixelsWide);
+	pixelsWide = fm.width(tr("7mm wet, farmer johns and jacket"));
+	ui->ListWidget->setColumnWidth(TreeItemDT::SUIT, pixelsWide);
 
 	setWindowIcon(QIcon(":subsurface-icon"));
 	readSettings();
