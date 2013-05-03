@@ -27,19 +27,19 @@ void MainTab::clearEquipment()
 
 void MainTab::clearInfo()
 {
-	ui->sac->setText(QString());
-	ui->otu->setText(QString());
-	ui->oxygenhelium->setText(QString());
-	ui->gasused->setText(QString());
-	ui->date->setText(QString());
-	ui->divetime->setText(QString());
-	ui->surfinterval->setText(QString());
-	ui->maxdepth->setText(QString());
-	ui->avgdepth->setText(QString());
-	ui->visibility->setText(QString());
-	ui->watertemperature->setText(QString());
-	ui->airtemperature->setText(QString());
-	ui->airpress->setText(QString());
+	ui->sacText->setText(QString());
+	ui->otuText->setText(QString());
+	ui->oxygenHeliumText->setText(QString());
+	ui->gasUsedText->setText(QString());
+	ui->dateText->setText(QString());
+	ui->diveTimeText->setText(QString());
+	ui->surfaceIntervalText->setText(QString());
+	ui->maximumDepthText->setText(QString());
+	ui->averageDepthText->setText(QString());
+	ui->visibilityText->setText(QString());
+	ui->waterTemperatureText->setText(QString());
+	ui->airTemperatureText->setText(QString());
+	ui->airPressureText->setText(QString());
 }
 
 void MainTab::clearStats()
