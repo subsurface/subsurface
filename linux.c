@@ -81,6 +81,7 @@ void subsurface_close_conf(void)
 	/* this is a no-op */
 }
 
+#if USE_GTK_UI
 int subsurface_fill_device_list(GtkListStore *store)
 {
 	int i = 0;
@@ -140,6 +141,7 @@ int subsurface_fill_device_list(GtkListStore *store)
 	}
 	return index;
 }
+#endif /* USE_GTK_UI */
 
 const char *subsurface_icon_name()
 {
@@ -171,11 +173,13 @@ const char *subsurface_gettext_domainpath(char *argv0)
 	}
 }
 
+#if USE_GTK_UI
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
+#endif /* USE_GTK_UI */
 
 void subsurface_command_line_init(gint *argc, gchar ***argv)
 {
@@ -192,6 +196,7 @@ gboolean subsurface_os_feature_available(os_feature_t f)
 	return TRUE;
 }
 
+#if USE_GTK_UI
 gboolean subsurface_launch_for_uri(const char* uri)
 {
 	GError *err = NULL;
@@ -203,3 +208,4 @@ gboolean subsurface_launch_for_uri(const char* uri)
 	}
 	return TRUE;
 }
+#endif /* USE_GTK_UI */
