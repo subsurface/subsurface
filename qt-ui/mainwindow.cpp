@@ -150,9 +150,10 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	qDebug("actionQuit");
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
 		return;
+	writeSettings();
+	QApplication::quit();
 }
 
 void MainWindow::on_actionDownloadDC_triggered()
