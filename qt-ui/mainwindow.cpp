@@ -35,39 +35,6 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	sortModel->setSourceModel(model);
 	ui->ListWidget->setModel(sortModel);
 	connect(ui->ListWidget, SIGNAL(activated(QModelIndex)), this, SLOT(diveSelected(QModelIndex)));
-
-	/* figure out appropriate widths for the columns. The strings chosen
-	 * are somewhat random (but at least we're trying to allow them to be
-	 * localized so they are somewhat universal) */
-	QFontMetrics fm(QApplication::font());
-	int pixelsWide = fm.width(tr("Trip Wed, Mar 29, 2000 (100 dives)"));
-	ui->ListWidget->setColumnWidth(TreeItemDT::DATE, pixelsWide);
-
-	/* all the columns that have usually up to four numbers plus maybe
-	 * a decimal separator */
-	pixelsWide = fm.width("000.0");
-	ui->ListWidget->setColumnWidth(TreeItemDT::DEPTH, pixelsWide);
-	ui->ListWidget->setColumnWidth(TreeItemDT::TEMPERATURE, pixelsWide);
-	ui->ListWidget->setColumnWidth(TreeItemDT::TOTALWEIGHT, pixelsWide);
-	ui->ListWidget->setColumnWidth(TreeItemDT::SAC, pixelsWide);
-	ui->ListWidget->setColumnWidth(TreeItemDT::OTU, pixelsWide);
-
-	/* this one is likely dominated by the header (need extra pixels) */
-	pixelsWide = fm.width(tr("maxCNS")) + 10;
-	ui->ListWidget->setColumnWidth(TreeItemDT::MAXCNS, pixelsWide);
-
-	/* the rest we try to cover with reasonable sample text again */
-	pixelsWide = fm.width("   123456");
-	ui->ListWidget->setColumnWidth(TreeItemDT::NR, pixelsWide);
-	pixelsWide = fm.width("00:00:00");
-	ui->ListWidget->setColumnWidth(TreeItemDT::DURATION, pixelsWide);
-	pixelsWide = fm.width(tr("twin HP119"));
-	ui->ListWidget->setColumnWidth(TreeItemDT::CYLINDER, pixelsWide);
-	pixelsWide = fm.width("888888");
-	ui->ListWidget->setColumnWidth(TreeItemDT::NITROX, pixelsWide);
-	pixelsWide = fm.width(tr("7mm wet, farmer johns and jacket"));
-	ui->ListWidget->setColumnWidth(TreeItemDT::SUIT, pixelsWide);
-
 	setWindowIcon(QIcon(":subsurface-icon"));
 	readSettings();
 }
@@ -333,6 +300,8 @@ bool MainWindow::askSaveChanges()
 
 void MainWindow::readSettings()
 {
+	int i;
+
 	QSettings settings("hohndel.org","subsurface");
 
 	settings.beginGroup("MainWindow");
@@ -341,16 +310,34 @@ void MainWindow::readSettings()
 	ui->mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
 	ui->infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
 	settings.endGroup();
+
+	settings.beginGroup("ListWidget");
+	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++) {
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui->ListWidget->setColumnWidth(i, width.toInt());
+		else
+			ui->ListWidget->resizeColumnToContents(i);
+	}
+	settings.endGroup();
 }
 
 void MainWindow::writeSettings()
 {
+	int i;
 	QSettings settings("hohndel.org","subsurface");
+
 	settings.beginGroup("MainWindow");
 	settings.setValue("size",size());
 	settings.setValue("mainSplitter", ui->mainSplitter->saveState());
 	settings.setValue("infoProfileSplitter", ui->infoProfileSplitter->saveState());
 	settings.endGroup();
+
+	settings.beginGroup("ListWidget");
+	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++)
+		settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
+	settings.endGroup();
+
 	/* other groups here; avoid '/' and '\' in keys with setValue(...) please */
 }
 
