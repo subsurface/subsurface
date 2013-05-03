@@ -97,7 +97,7 @@ else ifeq ($(UNAME), darwin)
 	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
 	INFOPLIST = $(MACOSXFILES)/Info.plist
 	INFOPLISTINPUT = $(INFOPLIST).in
-	LDFLAGS += -headerpad_max_install_names -sectcreate __TEXT __info_plist $(INFOPLIST)
+	LDFLAGS += -headerpad_max_install_names
 else
 	SOURCES += windows.c
 	WINDOWSSTAGING = ./packaging/windows
