@@ -490,12 +490,18 @@ QVariant DiveItem::data(int column, int role) const
 		case LOCATION:
 			retVal = QString(dive->location);
 			break;
-		case RATING:
-			retVal = dive->rating;
-			break;
 		}
 		break;
 	}
+
+	if(role == STAR_ROLE){
+		retVal = dive->rating;
+	}
+
+	if(role == DIVE_ROLE){
+		retVal = QVariant::fromValue<void*>(dive);
+	}
+
 	return retVal;
 }
 
@@ -600,9 +606,6 @@ QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
-
-	if (role == Qt::BackgroundRole)
-		return QBrush(QColor(index.row() % 2 ? Qt::white : QColor(Qt::lightGray).lighter(120)));
 
 	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());
 

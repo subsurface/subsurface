@@ -25,6 +25,7 @@
 #include "../divelist.h"
 #include "../pref.h"
 #include "modeldelegates.h"
+#include "models.h"
 
 MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 			   model(new DiveTripModel(this)),
@@ -33,6 +34,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	ui->setupUi(this);
 	sortModel->setSourceModel(model);
 	ui->ListWidget->setModel(sortModel);
+	connect(ui->ListWidget, SIGNAL(activated(QModelIndex)), this, SLOT(diveSelected(QModelIndex)));
 
 	/* figure out appropriate widths for the columns. The strings chosen
 	 * are somewhat random (but at least we're trying to allow them to be
@@ -68,6 +70,16 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 
 	setWindowIcon(QIcon(":subsurface-icon"));
 	readSettings();
+}
+
+void MainWindow::diveSelected(const QModelIndex& index)
+{
+	struct dive *dive = (struct dive*) index.model()->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
+
+	if (dive)
+		selected_dive = get_index_for_dive(dive);
+
+	// Here should be the code to update the other widgets.
 }
 
 void MainWindow::on_actionNew_triggered()

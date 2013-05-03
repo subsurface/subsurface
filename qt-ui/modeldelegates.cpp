@@ -7,18 +7,24 @@
 #include <QtDebug>
 #include <QPainter>
 #include <QSortFilterProxyModel>
+#include <QStyle>
+#include <QStyleOption>
+
+StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
+	QStyledItemDelegate(parent),
+	parentWidget(parent)
+{
+
+}
 
 void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+	QStyledItemDelegate::paint(painter, option, index);
+
 	if (!index.isValid())
 		return;
 
-	QVariant value = index.model()->data(index, Qt::DisplayRole);
-
-	if(option.state & QStyle::State_Selected)
-		painter->fillRect(option.rect, option.palette.highlight());
-	else
-		painter->fillRect(option.rect, index.model()->data(index, Qt::BackgroundRole).value<QBrush>());
+	QVariant value = index.model()->data(index, TreeItemDT::STAR_ROLE);
 
 	if (!value.isValid())
 		return;

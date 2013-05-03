@@ -8,6 +8,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QModelIndex>
 
 class QSortFilterProxyModel;
 class DiveTripModel;
@@ -65,6 +66,8 @@ private Q_SLOTS:
 	void on_actionInputPlan_triggered();
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
+
+	void diveSelected(const QModelIndex& index);
 
 protected:
 	void closeEvent(QCloseEvent *);

@@ -82,7 +82,11 @@ private:
 struct TreeItemDT {
 	Q_DECLARE_TR_FUNCTIONS ( TreeItemDT );
 public:
-	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT, SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
+	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
+				SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, DIVE, COLUMNS };
+
+	enum ExtraRoles{STAR_ROLE = Qt::UserRole + 1, DIVE_ROLE};
+
 	virtual ~TreeItemDT();
 	int columnCount() const {
 		return COLUMNS;

@@ -350,6 +350,8 @@ struct dive {
 	struct divecomputer dc;
 };
 
+extern int get_index_for_dive(struct dive *dive);
+
 static inline int dive_has_gps_location(struct dive *dive)
 {
 	return dive->latitude.udeg || dive->longitude.udeg;
