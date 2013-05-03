@@ -151,8 +151,11 @@ const char *subsurface_icon_name()
 {
 	static char path[PATH_MAX];
 
+#if USE_GTK_UI
 	snprintf(path, sizeof(path), "%s/%s", gtkosx_application_get_resource_path(), ICON_NAME);
-
+#else
+	/* need Qt path */
+#endif
 	return path;
 }
 
@@ -174,15 +177,18 @@ const char *subsurface_gettext_domainpath(char *argv0)
 {
 	/* on a Mac we ignore the argv0 argument and instead use the resource_path
 	 * to figure out where to find the translation files */
+#if USE_GTK_UI
 	static char buffer[PATH_MAX];
 	const char *resource_path = gtkosx_application_get_resource_path();
 	if (resource_path) {
 		snprintf(buffer, sizeof(buffer), "%s/share/locale", resource_path);
 		return buffer;
 	}
+#endif /* USE_GTK_UI */
 	return "./share/locale";
 }
 
+#if USE_GTK_UI
 static void show_main_window(GtkWidget *w, gpointer data)
 {
 	gtk_widget_show(main_window);
@@ -230,6 +236,7 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 
 	gtkosx_application_ready(osx_app);
 }
+#endif /* UES_GTK_UI */
 
 void subsurface_command_line_init(gint *argc, gchar ***argv)
 {
