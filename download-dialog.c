@@ -81,7 +81,7 @@ int is_default_dive_computer_device(const char *name)
 	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
 }
 
-static void set_default_dive_computer(const char *vendor, const char *product)
+void set_default_dive_computer(const char *vendor, const char *product)
 {
 	if (!vendor || !*vendor)
 		return;
@@ -99,7 +99,7 @@ static void set_default_dive_computer(const char *vendor, const char *product)
 	subsurface_set_conf("dive_computer_product", product);
 }
 
-static void set_default_dive_computer_device(const char *name)
+void set_default_dive_computer_device(const char *name)
 {
 	if (!name || !*name)
 		return;
@@ -159,7 +159,7 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 #endif
 
 /* create a list of lists and keep the elements sorted */
-static void add_dc(const char *vendor, const char *product, dc_descriptor_t *descriptor)
+void add_dc(const char *vendor, const char *product, dc_descriptor_t *descriptor)
 {
 	struct vendor *dcl = dc_list;
 	struct vendor **dclp = &dc_list;

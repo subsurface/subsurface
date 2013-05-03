@@ -18,7 +18,10 @@ int selected_dive = 0;
 char zoomed_plot = 0;
 char dc_number = 0;
 
+#if USE_GTK_UI
 static double plot_scale = SCALE_SCREEN;
+#endif
+
 static struct plot_data *last_pi_entry = NULL;
 
 #define cairo_set_line_width_scaled(cr, w) \
@@ -228,7 +231,7 @@ static void dump_pi (struct plot_info *pi)
  * We also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
-static int get_maxtime(struct plot_info *pi)
+int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
 	if (zoomed_plot) {
@@ -251,7 +254,7 @@ static int get_maxtime(struct plot_info *pi)
 /* get the maximum depth to which we want to plot
  * take into account the additional verical space needed to plot
  * partial pressure graphs */
-static int get_maxdepth(struct plot_info *pi)
+int get_maxdepth(struct plot_info *pi)
 {
 	unsigned mm = pi->maxdepth;
 	int md;
@@ -1018,8 +1021,7 @@ static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_
  * as compared to avg_sac; the calculation simply maps the delta between
  * sac and avg_sac to indexes 0 .. (SAC_COLORS - 1) with everything
  * more than 6000 ml/min below avg_sac mapped to 0 */
-
-static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
+void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 {
 	int sac_index = 0;
 	int delta = sac - avg_sac + 7000;
@@ -1038,7 +1040,7 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 #endif /* USE_GTK_UI */
 
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
-static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
+int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
 	int index = entry1->cylinderindex;
 	cylinder_t *cyl;
@@ -1597,7 +1599,7 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
 }
 
-static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
 	int maxdepth;
@@ -1953,7 +1955,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
 

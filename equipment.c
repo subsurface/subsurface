@@ -112,7 +112,7 @@ void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	*v = volume;
 }
 
-static int convert_weight(int grams, double *m)
+int convert_weight(int grams, double *m)
 {
 	int decimals = 1; /* not sure - do people do less than whole lbs/kg ? */
 	double weight;
