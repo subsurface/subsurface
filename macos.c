@@ -2,7 +2,10 @@
 /* implements Mac OS X specific functions */
 #include <stdlib.h>
 #include "dive.h"
+#include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif /* USE_GTK_UI */
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #include <mach-o/dyld.h>

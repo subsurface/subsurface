@@ -2,7 +2,9 @@
 /* implements Linux specific functions */
 #include "dive.h"
 #include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include <gconf/gconf-client.h>
 #include <string.h>
 

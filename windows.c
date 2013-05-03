@@ -1,7 +1,10 @@
 /* windows.c */
 /* implements Windows specific functions */
 #include "dive.h"
+#include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include <windows.h>
 #include <shlobj.h>
 
@@ -128,6 +131,7 @@ void subsurface_close_conf(void)
 	RegCloseKey(hkey);
 }
 
+#if USE_GTK_UI
 int subsurface_fill_device_list(GtkListStore *store)
 {
 	const int bufdef = 512;
@@ -194,6 +198,7 @@ int subsurface_fill_device_list(GtkListStore *store)
 	}
 	return index;
 }
+#endif /* USE_GTK_UI */
 
 const char *subsurface_icon_name()
 {
@@ -231,11 +236,13 @@ const char *subsurface_gettext_domainpath(char *argv0)
 	return "./share/locale";
 }
 
+#if USE_GTK_UI
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
+#endif /* USE_GTK_UI */
 
 /* barely documented API */
 extern int __wgetmainargs(int *, wchar_t ***, wchar_t ***, int, int *);

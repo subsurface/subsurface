@@ -6,7 +6,9 @@
 
 #include "dive.h"
 #include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include "divelist.h"
 #include "color.h"
 #include "libdivecomputer/parser.h"
