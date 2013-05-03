@@ -325,6 +325,12 @@ void MainWindow::readSettings()
 			ui->ListWidget->resizeColumnToContents(i);
 	}
 	ui->ListWidget->collapseAll();
+	ui->ListWidget->expand(sortModel->index(0,0));
+	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
+	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
+		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
+	else
+		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
 	settings.endGroup();
 }
 
