@@ -314,6 +314,9 @@ void MainWindow::readSettings()
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
+	/* if no width are set, use the calculated width for each column;
+	 * for that to work we need to temporarily expand all rows */
+	ui->ListWidget->expandAll();
 	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++) {
 		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
@@ -321,6 +324,7 @@ void MainWindow::readSettings()
 		else
 			ui->ListWidget->resizeColumnToContents(i);
 	}
+	ui->ListWidget->collapseAll();
 	settings.endGroup();
 }
 
