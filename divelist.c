@@ -54,6 +54,8 @@
 
 static short dive_list_changed = FALSE;
 
+short autogroup = FALSE;
+
 dive_trip_t *dive_trip_list;
 
 unsigned int amount_selected;
@@ -72,6 +74,13 @@ void dump_selection(void)
 	printf("\n");
 }
 #endif
+
+void set_autogroup(gboolean value)
+{
+	/* if we keep the UI paradigm, this needs to toggle
+	 * the checkbox on the autogroup menu item */
+	autogroup = value;
+}
 
 dive_trip_t *find_trip_by_idx(int idx)
 {
@@ -906,8 +915,9 @@ void merge_dive_index(int i, struct dive *a)
 	add_single_dive(i, res);
 	delete_single_dive(i+1);
 	delete_single_dive(i+1);
-
+#if USE_GTK_UI
 	dive_list_update_dives();
+#endif
 	mark_divelist_changed(TRUE);
 }
 

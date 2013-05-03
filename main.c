@@ -99,7 +99,11 @@ static void parse_argument(const char *arg)
 			if (strcmp(arg,"--import") == 0) {
 				/* mark the dives so far as the base,
 				 * everything after is imported */
+#if USE_GTK_UI
 				report_dives(FALSE, FALSE);
+#else
+				process_dives(FALSE, FALSE);
+#endif
 				imported = TRUE;
 				return;
 			}
@@ -119,6 +123,7 @@ static void parse_argument(const char *arg)
 
 void update_dive(struct dive *new_dive)
 {
+#if USE_GTK_UI
 	static struct dive *buffered_dive;
 	struct dive *old_dive = buffered_dive;
 
@@ -129,6 +134,7 @@ void update_dive(struct dive *new_dive)
 	show_dive_equipment(new_dive, W_IDX_PRIMARY);
 	show_dive_stats(new_dive);
 	buffered_dive = new_dive;
+#endif
 }
 
 void renumber_dives(int nr)
@@ -138,7 +144,9 @@ void renumber_dives(int nr)
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
 		dive->number = nr + i;
+#if USE_GTK_UI
 		flush_divelist(dive);
+#endif
 	}
 	mark_divelist_changed(TRUE);
 }
@@ -229,7 +237,9 @@ int main(int argc, char **argv)
 		}
 		if (error != NULL)
 		{
+#if USE_GTK_UI
 			report_error(error);
+#endif
 			g_error_free(error);
 			error = NULL;
 		}
@@ -242,9 +252,13 @@ int main(int argc, char **argv)
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);
 	}
+#if USE_GTK_UI
 	report_dives(imported, FALSE);
 	if (dive_table.nr == 0)
 		show_dive_info(NULL);
+#else
+	process_dives(imported, FALSE);
+#endif
 
 	parse_xml_exit();
 	subsurface_command_line_exit(&argc, &argv);

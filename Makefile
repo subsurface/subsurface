@@ -42,33 +42,21 @@ HEADERS = \
 
 
 SOURCES = \
-	cochran.c \
 	deco.c \
 	device.c \
 	dive.c \
 	divelist.c \
-	divelist-gtk.c \
 	download-dialog.c \
 	equipment.c \
 	file.c \
 	info.c \
-	info-gtk.c \
-	libdivecomputer.c \
 	main.c \
 	parse-xml.c \
-	planner.c \
-	planner-gtk.c \
 	prefs.c \
-	print.c \
 	profile.c \
 	save-xml.c \
 	sha1.c \
-	statistics.c \
-	statistics-gtk.c \
 	time.c \
-	uemis.c \
-	uemis-downloader.c \
-	webservice.c \
 	qt-gui.cpp \
 	qt-ui/addcylinderdialog.cpp \
 	qt-ui/addweightsystemdialog.cpp \
@@ -93,9 +81,11 @@ endif
 ifneq ($(strip $(LIBXSLT)),)
        EXTRA_FLAGS += -DXSLT='"$(XSLTDIR)"' $(XSLCFLAGS)
 endif
+ifeq  ($(USE_GTK_UI),1)
 ifneq ($(strip $(LIBOSMGPSMAP)),)
        SOURCES += gps.c
        EXTRA_FLAGS += -DHAVE_OSM_GPS_MAP $(OSMGPSMAPFLAGS)
+endif
 endif
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
@@ -118,7 +108,7 @@ else
 	XSLTDIR = .\\xslt
 endif
 
-LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
+LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
 	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))

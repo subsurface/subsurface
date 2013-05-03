@@ -116,6 +116,7 @@ void MainWindow::on_actionClose_triggered()
 	ui->InfoWidget->clearEquipment();
 
 	clear_events();
+#if USE_GTK_UI
 	show_dive_stats(NULL);
 
 	/* redraw the screen */
@@ -124,6 +125,7 @@ void MainWindow::on_actionClose_triggered()
 
 	// WARNING? Port this to Qt.
 	show_dive_info(NULL);
+#endif /* USE_GTK_UI */
 }
 
 void MainWindow::on_actionImport_triggered()

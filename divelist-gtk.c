@@ -59,7 +59,6 @@ static struct DiveList dive_list;
 #define TREESTORE(_dl) GTK_TREE_STORE((_dl).treemodel)
 #define LISTSTORE(_dl) GTK_TREE_STORE((_dl).listmodel)
 
-short autogroup = FALSE;
 static gboolean in_set_cursor = FALSE;
 static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
 			     GtkTreeIter *iter, gpointer data);

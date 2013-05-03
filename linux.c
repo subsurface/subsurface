@@ -1,6 +1,7 @@
 /* linux.c */
 /* implements Linux specific functions */
 #include "dive.h"
+#include "display.h"
 #include "display-gtk.h"
 #include <gconf/gconf-client.h>
 #include <string.h>

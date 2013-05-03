@@ -69,6 +69,12 @@ extern char zoomed_plot, dc_number;
 
 extern unsigned int amount_selected;
 
+extern int is_default_dive_computer_device(const char *);
+extern int is_default_dive_computer(const char *, const char *);
+extern const char *default_dive_computer_vendor;
+extern const char *default_dive_computer_product;
+extern const char *default_dive_computer_device;
+
 #ifdef __cplusplus
 }
 #endif

@@ -164,7 +164,9 @@ static void download_dialog_response_cb(GtkDialog *d, gint response, gpointer da
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
 			mark_divelist_changed(TRUE);
+#if USE_GTK_UI
 			dive_list_update_dives();
+#endif
 		}
 		/* store last entered uid in config */
 		subsurface_set_conf("webservice_uid", gtk_entry_get_text(GTK_ENTRY(state->uid)));

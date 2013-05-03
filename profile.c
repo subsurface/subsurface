@@ -136,6 +136,8 @@ static const color_t profile_color[] = {
 
 };
 
+#if USE_GTK_UI
+
 /* Scale to 0,0 -> maxx,maxy */
 #define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
 #define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
@@ -189,8 +191,7 @@ static void pattern_add_color_stop_rgba(struct graphics_context *gc, cairo_patte
 	struct rgba rgb = col->media[gc->printer];
 	cairo_pattern_add_color_stop_rgba(pat, o, rgb.r, rgb.g, rgb.b, rgb.a);
 }
-
-#define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
+#endif /* USE_GTK_UI */
 
 /* debugging tool - not normally used */
 static void dump_pi (struct plot_info *pi)
@@ -214,6 +215,8 @@ static void dump_pi (struct plot_info *pi)
 	}
 	printf("   }\n");
 }
+
+#define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
 
 /*
  * When showing dive profiles, we scale things to the
@@ -276,6 +279,7 @@ typedef struct {
 #define MIDDLE (0)
 #define BOTTOM (-1)
 
+#if USE_GTK_UI
 static void plot_text(struct graphics_context *gc, const text_render_options_t *tro,
 		      double x, double y, const char *fmt, ...)
 {
@@ -308,6 +312,7 @@ static void plot_text(struct graphics_context *gc, const text_render_options_t *
 	set_source_rgba(gc, tro->color);
 	cairo_show_text(cr, buffer);
 }
+#endif /* USE_GTK_UI */
 
 /* collect all event names and whether we display them */
 struct ev_select {
@@ -357,6 +362,7 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
+#if USE_GTK_UI
 static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event)
 {
 	int i, depth = 0;
@@ -1027,6 +1033,7 @@ static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
 		set_source_rgba(gc, SAC_DEFAULT);
 	}
 }
+#endif /* USE_GTK_UI */
 
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
@@ -1065,6 +1072,7 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 
 #define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
 
+#if USE_GTK_UI
 static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi,
 				struct dive *dive, struct divecomputer *dc)
 {
@@ -1189,6 +1197,7 @@ static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
 		plot_text(gc, &tro, x, y, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
 	}
 }
+#endif /* USE_GTK_UI */
 
 static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, int index)
 {
@@ -1259,6 +1268,7 @@ static velocity_t velocity(int speed)
 
 	return v;
 }
+
 static struct plot_info *analyze_plot_info(struct plot_info *pi)
 {
 	int i;
@@ -1974,6 +1984,7 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	return analyze_plot_info(pi);
 }
 
+#if USE_GTK_UI
 static void plot_set_scale(scale_mode_t scale)
 {
 	switch (scale) {
@@ -1986,6 +1997,7 @@ static void plot_set_scale(scale_mode_t scale)
 		break;
 	}
 }
+#endif
 
 /* make sure you pass this the FIRST dc - it just walks the list */
 static int nr_dcs(struct divecomputer *main)
@@ -2015,6 +2027,7 @@ struct divecomputer *select_dc(struct divecomputer *main)
 	return main;
 }
 
+#if USE_GTK_UI
 void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 {
 	struct plot_info *pi;
@@ -2132,6 +2145,7 @@ void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
 		pi->nr = 0;
 	}
 }
+#endif /* USE_GTK_UI */
 
 static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 			int depth, int pressure, int temp, gboolean has_ndl)

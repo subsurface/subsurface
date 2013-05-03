@@ -39,15 +39,11 @@ extern void set_divelist_font(const char *);
 
 extern void update_screen(void);
 extern void download_dialog(GtkWidget *, gpointer);
-extern int is_default_dive_computer_device(const char *);
-extern int is_default_dive_computer(const char *, const char *);
+
 extern void add_dive_cb(GtkWidget *, gpointer);
 extern void update_progressbar(progressbar_t *progress, double value);
 extern void update_progressbar_text(progressbar_t *progress, const char *text);
 
-extern const char *default_dive_computer_vendor;
-extern const char *default_dive_computer_product;
-extern const char *default_dive_computer_device;
 
 // info.c
 enum {
