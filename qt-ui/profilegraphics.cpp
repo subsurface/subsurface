@@ -2,7 +2,9 @@
 
 #include <QGraphicsScene>
 #include <QResizeEvent>
-
+#include <QGraphicsLineItem>
+#include <QPen>
+#include <QBrush>
 #include <QDebug>
 
 #include "../color.h"
@@ -15,6 +17,12 @@
 #define VELOCITY_COLORS_START_IDX VELO_STABLE
 #define VELOCITY_COLORS 5
 
+/* Scale to 0,0 -> maxx,maxy */
+#define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
+#define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
+#define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
+
+static struct graphics_context last_gc;
 static double plot_scale = SCALE_SCREEN;
 
 typedef enum {
@@ -93,6 +101,7 @@ void fill_profile_color()
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent)
 {
 	setScene(new QGraphicsScene());
+	setBackgroundBrush(QColor("#F3F3E6"));
 	scene()->setSceneRect(0,0,100,100);
 	fill_profile_color();
 }
@@ -112,6 +121,13 @@ static void plot_set_scale(scale_mode_t scale)
 
 void ProfileGraphicsView::plot(struct dive *dive)
 {
+	// Clear the items before drawing this dive.
+	qDeleteAll(scene()->items());
+	scene()->clear();
+
+	if(!dive)
+		return;
+
 	struct plot_info *pi;
 	struct divecomputer *dc = &dive->dc;
 
@@ -151,13 +167,6 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	 */
 	calculate_max_limits(dive, dc, &gc);
 
-#if 0
-	/* shift the drawing area so we have a nice margin around it */
-	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
-	cairo_set_line_width_scaled(gc->cr, 1);
-	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
-	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
-
 	/*
 	 * We don't use "cairo_translate()" because that doesn't
 	 * scale line width etc. But the actual scaling we need
@@ -165,16 +174,18 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	 *
 	 * Snif. What a pity.
 	 */
-	gc->maxx = (drawing_area->width - 2*drawing_area->x);
-	gc->maxy = (drawing_area->height - 2*drawing_area->y);
+	QRectF drawing_area = scene()->sceneRect();
+	gc.maxx = (drawing_area.width() - 2*drawing_area.x());
+	gc.maxy = (drawing_area.height() - 2*drawing_area.y());
 
 	dc = select_dc(dc);
 
 	/* This is per-dive-computer. Right now we just do the first one */
-	pi = create_plot_info(dive, dc, gc);
+	pi = create_plot_info(dive, dc, &gc);
 
 	/* Depth profile */
-	plot_depth_profile(gc, pi);
+	plot_depth_profile(&gc, pi);
+#if 0
 	plot_events(gc, pi, dc);
 
 	/* Temperature profile */
@@ -232,6 +243,213 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	}
 #endif
 }
+
+
+void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
+{
+	int i, incr;
+	int sec, depth;
+	struct plot_data *entry;
+	int maxtime, maxdepth, marker, maxline;
+	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
+
+	/* Get plot scaling limits */
+	maxtime = get_maxtime(pi);
+	maxdepth = get_maxdepth(pi);
+
+	gc->maxtime = maxtime;
+
+	/* Time markers: at most every 10 seconds, but no more than 12 markers.
+	 * We start out with 10 seconds and increment up to 30 minutes,
+	 * depending on the dive time.
+	 * This allows for 6h dives - enough (I hope) for even the craziest
+	 * divers - but just in case, for those 8h depth-record-breaking dives,
+	 * we double the interval if this still doesn't get us to 12 or fewer
+	 * time markers */
+	i = 0;
+	while (maxtime / increments[i] > 12 && i < 7)
+		i++;
+	incr = increments[i];
+	while (maxtime / incr > 12)
+		incr *= 2;
+
+	gc->leftx = 0; gc->rightx = maxtime;
+	gc->topy = 0; gc->bottomy = 1.0;
+
+	last_gc = *gc;
+
+	QColor color;
+	color = profile_color[TIME_GRID].at(0);
+	for (i = incr; i < maxtime; i += incr) {
+		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, i, 0), SCALE(gc, i, 1));
+		line->setPen(QPen(color));
+		scene()->addItem(line);
+	}
+
+#if 0
+	/* now the text on the time markers */
+	text_render_options_t tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
+	if (maxtime < 600) {
+		/* Be a bit more verbose with shorter dives */
+		for (i = incr; i < maxtime; i += incr)
+			plot_text(gc, &tro, i, 1, "%02d:%02d", i/60, i%60);
+	} else {
+		/* Only render the time on every second marker for normal dives */
+		for (i = incr; i < maxtime; i += 2 * incr)
+			plot_text(gc, &tro, i, 1, "%d", i/60);
+	}
+#endif
+
+	/* Depth markers: every 30 ft or 10 m*/
+	gc->leftx = 0; gc->rightx = 1.0;
+	gc->topy = 0; gc->bottomy = maxdepth;
+	switch (prefs.units.length) {
+	case units::METERS: marker = 10000; break;
+	case units::FEET: marker = 9144; break;	/* 30 ft */
+	}
+	maxline = MAX(pi->maxdepth + marker, maxdepth * 2 / 3);
+
+	color = profile_color[TIME_GRID].at(0);
+
+	for (i = marker; i < maxline; i += marker) {
+		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, 0, i), SCALE(gc, 1, i));
+		line->setPen(QPen(color));
+		scene()->addItem(line);
+	}
+
+#if 0
+	gc->leftx = 0; gc->rightx = maxtime;
+
+	/* Show mean depth */
+	if (! gc->printer) {
+		set_source_rgba(gc, MEAN_DEPTH);
+		move_to(gc, 0, pi->meandepth);
+		line_to(gc, pi->entry[pi->nr - 1].sec, pi->meandepth);
+		cairo_stroke(cr);
+	}
+
+	/*
+	 * These are good for debugging text placement etc,
+	 * but not for actual display..
+	 */
+	if (0) {
+		plot_smoothed_profile(gc, pi);
+		plot_minmax_profile(gc, pi);
+	}
+
+	/* Do the depth profile for the neat fill */
+	gc->topy = 0; gc->bottomy = maxdepth;
+
+	cairo_pattern_t *pat;
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+	pattern_add_color_stop_rgba (gc, pat, 1, DEPTH_BOTTOM);
+	pattern_add_color_stop_rgba (gc, pat, 0, DEPTH_TOP);
+
+	cairo_set_source(gc->cr, pat);
+	cairo_pattern_destroy(pat);
+	cairo_set_line_width_scaled(gc->cr, 2);
+
+	entry = pi->entry;
+	move_to(gc, 0, 0);
+	for (i = 0; i < pi->nr; i++, entry++)
+		line_to(gc, entry->sec, entry->depth);
+
+	/* Show any ceiling we may have encountered */
+	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+		if (entry->ndl) {
+			/* non-zero NDL implies this is a safety stop, no ceiling */
+			line_to(gc, entry->sec, 0);
+		} else if (entry->stopdepth < entry->depth) {
+				line_to(gc, entry->sec, entry->stopdepth);
+		} else {
+			line_to(gc, entry->sec, entry->depth);
+		}
+	}
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
+
+	/* if the user wants the deco ceiling more visible, do that here (this
+	 * basically draws over the background that we had allowed to shine
+	 * through so far) */
+	if (prefs.profile_red_ceiling) {
+		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+		pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
+		pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
+		cairo_set_source(gc->cr, pat);
+		cairo_pattern_destroy(pat);
+		entry = pi->entry;
+		move_to(gc, 0, 0);
+		for (i = 0; i < pi->nr; i++, entry++) {
+			if (entry->ndl == 0 && entry->stopdepth) {
+				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
+					line_to(gc, entry->sec, entry->stopdepth);
+				} else {
+					line_to(gc, entry->sec, entry->depth);
+				}
+			} else {
+				line_to(gc, entry->sec, 0);
+			}
+		}
+		cairo_close_path(gc->cr);
+		cairo_fill(gc->cr);
+	}
+	/* finally, plot the calculated ceiling over all this */
+	if (prefs.profile_calc_ceiling) {
+		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+		pattern_add_color_stop_rgba (gc, pat, 0, CALC_CEILING_SHALLOW);
+		pattern_add_color_stop_rgba (gc, pat, 1, CALC_CEILING_DEEP);
+		cairo_set_source(gc->cr, pat);
+		cairo_pattern_destroy(pat);
+		entry = pi->entry;
+		move_to(gc, 0, 0);
+		for (i = 0; i < pi->nr; i++, entry++) {
+			if (entry->ceiling)
+				line_to(gc, entry->sec, entry->ceiling);
+			else
+				line_to(gc, entry->sec, 0);
+		}
+		line_to(gc, (entry-1)->sec, 0); /* make sure we end at 0 */
+		cairo_close_path(gc->cr);
+		cairo_fill(gc->cr);
+	}
+	/* next show where we have been bad and crossed the dc's ceiling */
+	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
+	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
+	pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
+	cairo_set_source(gc->cr, pat);
+	cairo_pattern_destroy(pat);
+	entry = pi->entry;
+	move_to(gc, 0, 0);
+	for (i = 0; i < pi->nr; i++, entry++)
+		line_to(gc, entry->sec, entry->depth);
+
+	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+		if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
+			line_to(gc, entry->sec, entry->stopdepth);
+		} else {
+			line_to(gc, entry->sec, entry->depth);
+		}
+	}
+	cairo_close_path(gc->cr);
+	cairo_fill(gc->cr);
+
+	/* Now do it again for the velocity colors */
+	entry = pi->entry;
+	for (i = 1; i < pi->nr; i++) {
+		entry++;
+		sec = entry->sec;
+		/* we want to draw the segments in different colors
+		 * representing the vertical velocity, so we need to
+		 * chop this into short segments */
+		depth = entry->depth;
+		set_source_rgba(gc, VELOCITY_COLORS_START_IDX + entry->velocity);
+		move_to(gc, entry[-1].sec, entry[-1].depth);
+		line_to(gc, sec, depth);
+		cairo_stroke(cr);
+	}
+#endif
+}
+
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
