@@ -34,19 +34,12 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	ui->setupUi(this);
 	sortModel->setSourceModel(model);
 	ui->ListWidget->setModel(sortModel);
-	connect(ui->ListWidget, SIGNAL(activated(QModelIndex)), this, SLOT(diveSelected(QModelIndex)));
 	setWindowIcon(QIcon(":subsurface-icon"));
+
+	connect(ui->ListWidget->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+			this, SLOT(dive_selection_changed(QItemSelection,QItemSelection)));
+
 	readSettings();
-}
-
-void MainWindow::diveSelected(const QModelIndex& index)
-{
-	struct dive *dive = (struct dive*) index.model()->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
-
-	if (dive)
-		selected_dive = get_index_for_dive(dive);
-
-	// Here should be the code to update the other widgets.
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -83,6 +76,30 @@ void MainWindow::on_actionOpen_triggered()
 	model = new DiveTripModel(this);
 	sortModel->setSourceModel(model);
 	ui->ListWidget->sortByColumn(0, Qt::DescendingOrder);
+}
+
+void MainWindow::dive_selection_changed(const QItemSelection& newSelection,	const QItemSelection& oldSelection)
+{
+	// struct dive *dive = (struct dive*) index.model()->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
+	//if (dive)
+	//	selected_dive = get_index_for_dive(dive);
+	Q_FOREACH(const QModelIndex& desselect, oldSelection.indexes()){
+		struct dive *d = (struct dive*) desselect.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		if (!d)
+			continue;
+		d->selected = false;
+	}
+
+	struct dive *lastSelected = 0;
+	Q_FOREACH(const QModelIndex& select, oldSelection.indexes()){
+		struct dive *d = (struct dive*) select.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		if (!d)
+			continue;
+		d->selected = true;
+		lastSelected = d;
+	}
+
+	select_dive( get_divenr(lastSelected) );
 }
 
 void MainWindow::on_actionSave_triggered()

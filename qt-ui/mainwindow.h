@@ -22,6 +22,7 @@ class DiveInfo;
 class DiveNotes;
 class Stats;
 class Equipment;
+class QItemSelection;
 
 class MainWindow : public QMainWindow
 {
@@ -67,7 +68,8 @@ private Q_SLOTS:
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
 
-	void diveSelected(const QModelIndex& index);
+	void dive_selection_changed(const QItemSelection& newSelection,
+								const QItemSelection& oldSelection);
 
 protected:
 	void closeEvent(QCloseEvent *);
