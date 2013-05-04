@@ -309,7 +309,7 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	}
 	maxline = MAX(pi->maxdepth + marker, maxdepth * 2 / 3);
 
-	color = profile_color[TIME_GRID].at(0);
+	color = profile_color[DEPTH_GRID].at(0);
 
 	for (i = marker; i < maxline; i += marker) {
 		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, 0, i), SCALE(gc, 1, i));
@@ -317,17 +317,18 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		scene()->addItem(line);
 	}
 
-#if 0
+
 	gc->leftx = 0; gc->rightx = maxtime;
+	color = profile_color[MEAN_DEPTH].at(0);
 
 	/* Show mean depth */
 	if (! gc->printer) {
-		set_source_rgba(gc, MEAN_DEPTH);
-		move_to(gc, 0, pi->meandepth);
-		line_to(gc, pi->entry[pi->nr - 1].sec, pi->meandepth);
-		cairo_stroke(cr);
+		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, 0, pi->meandepth), SCALE(gc, pi->entry[pi->nr - 1].sec, pi->meandepth));
+		line->setPen(QPen(color));
+		scene()->addItem(line);
 	}
 
+#if 0
 	/*
 	 * These are good for debugging text placement etc,
 	 * but not for actual display..
