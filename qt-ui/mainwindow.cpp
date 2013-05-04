@@ -78,28 +78,22 @@ void MainWindow::on_actionOpen_triggered()
 	ui->ListWidget->sortByColumn(0, Qt::DescendingOrder);
 }
 
-void MainWindow::dive_selection_changed(const QItemSelection& newSelection,	const QItemSelection& oldSelection)
+void MainWindow::dive_selection_changed(const QItemSelection& newSelection, const QItemSelection& oldSelection)
 {
-	// struct dive *dive = (struct dive*) index.model()->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
-	//if (dive)
-	//	selected_dive = get_index_for_dive(dive);
-	Q_FOREACH(const QModelIndex& desselect, oldSelection.indexes()){
+	/* first deselect the dives that are no longer selected */
+	Q_FOREACH(const QModelIndex& desselect, oldSelection.indexes()) {
 		struct dive *d = (struct dive*) desselect.data(TreeItemDT::DIVE_ROLE).value<void*>();
-		if (!d)
+		if (!d || !d->selected)
 			continue;
-		d->selected = false;
+		deselect_dive(get_divenr(d));
 	}
-
-	struct dive *lastSelected = 0;
-	Q_FOREACH(const QModelIndex& select, oldSelection.indexes()){
+	/* then select the newly selected dives */
+	Q_FOREACH(const QModelIndex& select, newSelection.indexes()) {
 		struct dive *d = (struct dive*) select.data(TreeItemDT::DIVE_ROLE).value<void*>();
-		if (!d)
+		if (!d || d->selected)
 			continue;
-		d->selected = true;
-		lastSelected = d;
+		select_dive(get_divenr(d));
 	}
-
-	select_dive( get_divenr(lastSelected) );
 }
 
 void MainWindow::on_actionSave_triggered()
