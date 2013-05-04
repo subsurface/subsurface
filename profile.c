@@ -11,6 +11,7 @@
 #endif
 #include "divelist.h"
 
+#include "profile.h"
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 
@@ -24,31 +25,7 @@ static struct plot_data *last_pi_entry = NULL;
 #define cairo_set_line_width_scaled(cr, w) \
 	cairo_set_line_width((cr), (w) * plot_scale);
 
-typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
-struct plot_data {
-	unsigned int in_deco:1;
-	unsigned int cylinderindex;
-	int sec;
-	/* pressure[0] is sensor pressure
-	 * pressure[1] is interpolated pressure */
-	int pressure[2];
-	int temperature;
-	/* Depth info */
-	int depth;
-	int ceiling;
-	int ndl;
-	int stoptime;
-	int stopdepth;
-	int cns;
-	int smoothed;
-	double po2, pn2, phe;
-	double mod, ead, end, eadd;
-	velocity_t velocity;
-	struct plot_data *min[3];
-	struct plot_data *max[3];
-	int avg[3];
-};
 
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
