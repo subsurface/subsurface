@@ -12,6 +12,8 @@ public:
 protected:
 	void resizeEvent(QResizeEvent *event);
 
+private:
+	void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi);
 };
 
 #endif
