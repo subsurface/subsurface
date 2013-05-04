@@ -67,7 +67,6 @@ void MainWindow::on_actionOpen_triggered()
 		g_error_free(error);
 		error = NULL;
 	}
-
 	process_dives(FALSE, FALSE);
 
 	ui->InfoWidget->reload();
@@ -94,6 +93,7 @@ void MainWindow::dive_selection_changed(const QItemSelection& newSelection, cons
 			continue;
 		select_dive(get_divenr(d));
 	}
+	ui->ProfileWidget->plot(get_dive(selected_dive));
 }
 
 void MainWindow::on_actionSave_triggered()
