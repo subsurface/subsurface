@@ -14,6 +14,9 @@ protected:
 
 private:
 	void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi);
+
+	QPen defaultPen;
+	QBrush defaultBrush;
 };
 
 #endif
