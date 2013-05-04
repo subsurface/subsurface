@@ -341,38 +341,38 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		plot_smoothed_profile(gc, pi);
 		plot_minmax_profile(gc, pi);
 	}
+#endif
 
 	/* Do the depth profile for the neat fill */
 	gc->topy = 0; gc->bottomy = maxdepth;
 
-	cairo_pattern_t *pat;
-	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-	pattern_add_color_stop_rgba (gc, pat, 1, DEPTH_BOTTOM);
-	pattern_add_color_stop_rgba (gc, pat, 0, DEPTH_TOP);
-
-	cairo_set_source(gc->cr, pat);
-	cairo_pattern_destroy(pat);
-	cairo_set_line_width_scaled(gc->cr, 2);
-
 	entry = pi->entry;
-	move_to(gc, 0, 0);
+
+	QGraphicsPolygonItem *neatFill = new QGraphicsPolygonItem();
+	QPolygonF p;
 	for (i = 0; i < pi->nr; i++, entry++)
-		line_to(gc, entry->sec, entry->depth);
+		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 
 	/* Show any ceiling we may have encountered */
 	for (i = pi->nr - 1; i >= 0; i--, entry--) {
 		if (entry->ndl) {
 			/* non-zero NDL implies this is a safety stop, no ceiling */
-			line_to(gc, entry->sec, 0);
+			p.append( QPointF( SCALE(gc, entry->sec, 0) ));
 		} else if (entry->stopdepth < entry->depth) {
-				line_to(gc, entry->sec, entry->stopdepth);
+			p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
 		} else {
-			line_to(gc, entry->sec, entry->depth);
+			p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 		}
 	}
-	cairo_close_path(gc->cr);
-	cairo_fill(gc->cr);
+	neatFill->setPolygon(p);
+	QLinearGradient pat(0.0,0.0,0.0,p.boundingRect().height());
+	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
+	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
 
+	neatFill->setBrush(QBrush(pat));
+	scene()->addItem(neatFill);
+
+#if 0
 	/* if the user wants the deco ceiling more visible, do that here (this
 	 * basically draws over the background that we had allowed to shine
 	 * through so far) */
