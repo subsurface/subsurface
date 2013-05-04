@@ -94,6 +94,8 @@ void MainWindow::dive_selection_changed(const QItemSelection& newSelection, cons
 			continue;
 		select_dive(get_divenr(d));
 	}
+
+	ui->ProfileWidget->plot( get_dive(selected_dive) );
 }
 
 void MainWindow::on_actionSave_triggered()

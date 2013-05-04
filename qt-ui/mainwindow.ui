@@ -25,7 +25,7 @@
         <enum>Qt::Horizontal</enum>
        </property>
        <widget class="MainTab" name="InfoWidget" native="true"/>
-       <widget class="QGraphicsView" name="ProfileWidget"/>
+       <widget class="ProfileGraphicsView" name="ProfileWidget"/>
       </widget>
       <widget class="DiveListView" name="ListWidget">
        <property name="styleSheet">
@@ -88,7 +88,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>19</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -338,6 +338,11 @@
    <class>DiveListView</class>
    <extends>QTreeView</extends>
    <header>divelistview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ProfileGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>profilegraphics.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
