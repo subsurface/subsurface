@@ -328,7 +328,6 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		scene()->addItem(line);
 	}
 
-
 	gc->leftx = 0; gc->rightx = maxtime;
 	color = profile_color[MEAN_DEPTH].at(0);
 
@@ -359,6 +358,7 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	QLinearGradient pat(0.0,0.0,0.0,scene()->height());
 	QGraphicsPolygonItem *neatFill = NULL;
 
+	p.append( QPointF(SCALE(gc, 0, 0) ));
 	for (i = 0; i < pi->nr; i++, entry++)
 		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 
@@ -373,26 +373,28 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 			p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 		}
 	}
-
 	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
 	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
 
 	neatFill = new QGraphicsPolygonItem();
 	neatFill->setPolygon(p);
 	neatFill->setBrush(QBrush(pat));
-	neatFill->setPen(QPen());
+	neatFill->setPen(QPen(QBrush(),0));
 	scene()->addItem(neatFill);
+
 
 	/* if the user wants the deco ceiling more visible, do that here (this
 	 * basically draws over the background that we had allowed to shine
 	 * through so far) */
 	// TODO: port the prefs.profile_red_ceiling to QSettings
+
 	//if (prefs.profile_red_ceiling) {
 		p.clear();
 		pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
 		pat.setColorAt(1, profile_color[CEILING_DEEP].first());
 
 		entry = pi->entry;
+		p.append( QPointF(SCALE(gc, 0, 0) ));
 		for (i = 0; i < pi->nr; i++, entry++) {
 			if (entry->ndl == 0 && entry->stopdepth) {
 				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
@@ -408,19 +410,23 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		neatFill = new QGraphicsPolygonItem();
 		neatFill->setBrush(QBrush(pat));
 		neatFill->setPolygon(p);
-		neatFill->setPen(QPen());
+		neatFill->setPen(QPen(QBrush(),0));
 		scene()->addItem(neatFill);
 	//}
 
 	/* finally, plot the calculated ceiling over all this */
 	// TODO: Port the profile_calc_ceiling to QSettings
 	// if (prefs.profile_calc_ceiling) {
+
+		qDebug() << "CALC_CEILING_SHALLOW" << profile_color[CALC_CEILING_SHALLOW].first();
+		qDebug() << "CALC_CEILING_DEEP" << profile_color[CALC_CEILING_DEEP].first();
+
 		pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
 		pat.setColorAt(1, profile_color[CALC_CEILING_DEEP].first());
 
 		entry = pi->entry;
 		p.clear();
-		p.append( QPointF(0,0));
+		p.append( QPointF(SCALE(gc, 0, 0) ));
 		for (i = 0; i < pi->nr; i++, entry++) {
 			if (entry->ceiling)
 				p.append( QPointF( SCALE(gc, entry->sec, entry->ceiling) ));
@@ -430,17 +436,17 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		p.append( QPointF( SCALE(gc, (entry-1)->sec, 0) ));
 		neatFill = new QGraphicsPolygonItem();
 		neatFill->setPolygon(p);
-		neatFill->setPen(QPen());
+		neatFill->setPen(QPen(QBrush(),0));
+		neatFill->setBrush(pat);
 		scene()->addItem(neatFill);
 	//}
-
 	/* next show where we have been bad and crossed the dc's ceiling */
 	pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
 	pat.setColorAt(1, profile_color[CEILING_DEEP].first());
 
 	entry = pi->entry;
 	p.clear();
-	p.append( QPointF(0,0));
+	p.append( QPointF(SCALE(gc, 0, 0) ));
 	for (i = 0; i < pi->nr; i++, entry++)
 		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 
@@ -454,7 +460,7 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 
 	neatFill = new QGraphicsPolygonItem();
 	neatFill->setPolygon(p);
-	neatFill->setPen(QPen());
+	neatFill->setPen(QPen(QBrush(),0));
 	neatFill->setBrush(QBrush(pat));
 	scene()->addItem(neatFill);
 
