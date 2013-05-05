@@ -105,6 +105,11 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	setScene(new QGraphicsScene());
 	setBackgroundBrush(QColor("#F3F3E6"));
 	scene()->setSceneRect(0,0,1000,1000);
+
+	setRenderHint(QPainter::Antialiasing);
+	setRenderHint(QPainter::HighQualityAntialiasing);
+	setRenderHint(QPainter::SmoothPixmapTransform);
+
 	fill_profile_color();
 }
 
