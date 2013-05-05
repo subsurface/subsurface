@@ -102,7 +102,7 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 {
 	setScene(new QGraphicsScene());
 	setBackgroundBrush(QColor("#F3F3E6"));
-	scene()->setSceneRect(0,0,100,100);
+	scene()->setSceneRect(0,0,1000,1000);
 	fill_profile_color();
 }
 
@@ -344,8 +344,11 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 
 	entry = pi->entry;
 
-	QGraphicsPolygonItem *neatFill = new QGraphicsPolygonItem();
+
 	QPolygonF p;
+	QLinearGradient pat(0.0,0.0,0.0,scene()->height());
+	QGraphicsPolygonItem *neatFill = 0;
+
 	for (i = 0; i < pi->nr; i++, entry++)
 		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 
@@ -353,86 +356,98 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	for (i = pi->nr - 1; i >= 0; i--, entry--) {
 		if (entry->ndl) {
 			/* non-zero NDL implies this is a safety stop, no ceiling */
-		p.append( QPointF( SCALE(gc, entry->sec, 0) ));
+			p.append( QPointF( SCALE(gc, entry->sec, 0) ));
 		} else if (entry->stopdepth < entry->depth) {
 			p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
 		} else {
 			p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 		}
 	}
-	neatFill->setPolygon(p);
-	QLinearGradient pat(0.0,0.0,0.0,p.boundingRect().height());
+
+;
 	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
 	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
 
+	neatFill = new QGraphicsPolygonItem();
+	neatFill->setPolygon(p);
 	neatFill->setBrush(QBrush(pat));
+	neatFill->setPen(QPen());
 	scene()->addItem(neatFill);
 
-#if 0
 	/* if the user wants the deco ceiling more visible, do that here (this
 	 * basically draws over the background that we had allowed to shine
 	 * through so far) */
-	if (prefs.profile_red_ceiling) {
-		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-		pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
-		pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
-		cairo_set_source(gc->cr, pat);
-		cairo_pattern_destroy(pat);
+	// TODO: port the prefs.profile_red_ceiling to QSettings
+	//if (prefs.profile_red_ceiling) {
+		p.clear();
+		pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
+		pat.setColorAt(1, profile_color[CEILING_DEEP].first());
+
 		entry = pi->entry;
-		move_to(gc, 0, 0);
 		for (i = 0; i < pi->nr; i++, entry++) {
 			if (entry->ndl == 0 && entry->stopdepth) {
 				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
-					line_to(gc, entry->sec, entry->stopdepth);
+					p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
 				} else {
-					line_to(gc, entry->sec, entry->depth);
+					p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 				}
 			} else {
-				line_to(gc, entry->sec, 0);
+				p.append( QPointF( SCALE(gc, entry->sec, 0) ));
 			}
 		}
-		cairo_close_path(gc->cr);
-		cairo_fill(gc->cr);
-	}
+
+		neatFill = new QGraphicsPolygonItem();
+		neatFill->setBrush(QBrush(pat));
+		neatFill->setPolygon(p);
+		neatFill->setPen(QPen());
+		scene()->addItem(neatFill);
+	//}
+
 	/* finally, plot the calculated ceiling over all this */
-	if (prefs.profile_calc_ceiling) {
-		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-		pattern_add_color_stop_rgba (gc, pat, 0, CALC_CEILING_SHALLOW);
-		pattern_add_color_stop_rgba (gc, pat, 1, CALC_CEILING_DEEP);
-		cairo_set_source(gc->cr, pat);
-		cairo_pattern_destroy(pat);
+	// TODO: Port the profile_calc_ceiling to QSettings
+	// if (prefs.profile_calc_ceiling) {
+		pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
+		pat.setColorAt(1, profile_color[CALC_CEILING_DEEP].first());
+
 		entry = pi->entry;
-		move_to(gc, 0, 0);
+		p.clear();
+		p.append( QPointF(0,0));
 		for (i = 0; i < pi->nr; i++, entry++) {
 			if (entry->ceiling)
-				line_to(gc, entry->sec, entry->ceiling);
+				p.append( QPointF( SCALE(gc, entry->sec, entry->ceiling) ));
 			else
-				line_to(gc, entry->sec, 0);
+				p.append( QPointF( SCALE(gc, entry->sec, 0) ));
 		}
-		line_to(gc, (entry-1)->sec, 0); /* make sure we end at 0 */
-		cairo_close_path(gc->cr);
-		cairo_fill(gc->cr);
-	}
+		p.append( QPointF( SCALE(gc, (entry-1)->sec, 0) ));
+		neatFill = new QGraphicsPolygonItem();
+		neatFill->setPolygon(p);
+		neatFill->setPen(QPen());
+		scene()->addItem(neatFill);
+	//}
+
 	/* next show where we have been bad and crossed the dc's ceiling */
-	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
-	pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
-	cairo_set_source(gc->cr, pat);
-	cairo_pattern_destroy(pat);
+	pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
+	pat.setColorAt(1, profile_color[CEILING_DEEP].first());
+
 	entry = pi->entry;
-	move_to(gc, 0, 0);
+	p.clear();
+	p.append( QPointF(0,0));
 	for (i = 0; i < pi->nr; i++, entry++)
-		line_to(gc, entry->sec, entry->depth);
+		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 
 	for (i = pi->nr - 1; i >= 0; i--, entry--) {
 		if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
-			line_to(gc, entry->sec, entry->stopdepth);
+			p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
 		} else {
-			line_to(gc, entry->sec, entry->depth);
+			p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
 		}
 	}
-	cairo_close_path(gc->cr);
-	cairo_fill(gc->cr);
+
+	neatFill = new QGraphicsPolygonItem();
+	neatFill->setPolygon(p);
+	neatFill->setPen(QPen());
+	neatFill->setBrush(QBrush(pat));
+	scene()->addItem(neatFill);
 
 	/* Now do it again for the velocity colors */
 	entry = pi->entry;
@@ -442,13 +457,12 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		/* we want to draw the segments in different colors
 		 * representing the vertical velocity, so we need to
 		 * chop this into short segments */
+
 		depth = entry->depth;
-		set_source_rgba(gc, VELOCITY_COLORS_START_IDX + entry->velocity);
-		move_to(gc, entry[-1].sec, entry[-1].depth);
-		line_to(gc, sec, depth);
-		cairo_stroke(cr);
+		QGraphicsLineItem *colorLine = new QGraphicsLineItem( SCALE(gc, entry[-1].sec, entry[-1].depth), SCALE(gc, sec, depth));
+		colorLine->setPen(QPen(QBrush(profile_color[ (color_indice_t) (VELOCITY_COLORS_START_IDX + entry->velocity)].first()), 2 ));
+		scene()->addItem(colorLine);
 	}
-#endif
 }
 
 
