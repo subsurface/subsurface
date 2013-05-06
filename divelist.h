@@ -3,12 +3,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#else
-#if __STDC_VERSION__ >= 199901L
-#include <stdbool.h>
-#else
-typedef int bool;
-#endif
 #endif
 
 struct dive;

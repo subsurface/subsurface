@@ -17,6 +17,12 @@
 
 #ifdef __cplusplus
 extern "C" {
+#else
+#if __STDC_VERSION__ >= 199901L
+#include <stdbool.h>
+#else
+typedef int bool;
+#endif
 #endif
 
 #define O2_IN_AIR		209     // permille
@@ -31,7 +37,6 @@ extern "C" {
 /* Salinity is expressed in weight in grams per 10l */
 #define SEAWATER_SALINITY	10300
 #define FRESHWATER_SALINITY	10000
-
 
 /*
  * Some silly typedefs to make our units very explicit.
