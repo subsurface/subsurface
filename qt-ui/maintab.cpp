@@ -44,20 +44,20 @@ void MainTab::clearInfo()
 
 void MainTab::clearStats()
 {
-	ui->maxdepth_2->setText(QString());
-	ui->mindepth->setText(QString());
-	ui->avgdepth->setText(QString());
-	ui->maxsac->setText(QString());
-	ui->minsac->setText(QString());
-	ui->avgsac->setText(QString());
-	ui->dives->setText(QString());
-	ui->maxtemp->setText(QString());
-	ui->mintemp->setText(QString());
-	ui->avgtemp->setText(QString());
-	ui->totaltime->setText(QString());
-	ui->avgtime->setText(QString());
-	ui->longestdive->setText(QString());
-	ui->shortestdive->setText(QString());
+	ui->maximumDepthAllText->setText(QString());
+	ui->minimumDepthAllText->setText(QString());
+	ui->averageDepthAllText->setText(QString());
+	ui->maximumSacAllText->setText(QString());
+	ui->minimumSacAllText->setText(QString());
+	ui->averageSacAllText->setText(QString());
+	ui->divesAllText->setText(QString());
+	ui->maximumTemperatureAllText->setText(QString());
+	ui->minimumTemperatureAllText->setText(QString());
+	ui->averageTemperatureAllText->setText(QString());
+	ui->totalTimeAllText->setText(QString());
+	ui->averageTimeAllText->setText(QString());
+	ui->longestAllText->setText(QString());
+	ui->shortestAllText->setText(QString());
 }
 
 void MainTab::on_addCylinder_clicked()

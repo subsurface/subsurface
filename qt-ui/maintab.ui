@@ -14,7 +14,7 @@
    <string>TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="notesTab">
    <attribute name="title">
@@ -528,12 +528,28 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <property name="verticalSpacing">
+     <spacer name="verticalSpacer_6">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="statsUpperGridLayout">
+      <property name="margin">
        <number>10</number>
       </property>
+      <property name="spacing">
+       <number>15</number>
+      </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_28">
+       <widget class="QLabel" name="maximumDepthAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -541,12 +557,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Max Depth</string>
+         <string>Max. Depth</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_29">
+       <widget class="QLabel" name="minimumDepthAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -554,12 +570,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Min Depth</string>
+         <string>Min. Depth</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_30">
+       <widget class="QLabel" name="averageDepthAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -567,33 +583,33 @@
          </font>
         </property>
         <property name="text">
-         <string>Avg Depth</string>
+         <string>Ave. Depth</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="maxdepth_2">
+       <widget class="QLabel" name="maximumDepthAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="mindepth">
+       <widget class="QLabel" name="minimumDepthAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel" name="avgdepth">
+       <widget class="QLabel" name="averageDepthAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_31">
+       <widget class="QLabel" name="maximumSacAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -601,12 +617,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Max SAC</string>
+         <string>Max. SAC</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="label_32">
+       <widget class="QLabel" name="minimumSacAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -614,12 +630,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Min SAC</string>
+         <string>Min. SAC</string>
         </property>
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QLabel" name="label_33">
+       <widget class="QLabel" name="averageSacAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -627,26 +643,26 @@
          </font>
         </property>
         <property name="text">
-         <string>Avg SAC</string>
+         <string>Ave. SAC</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="maxsac">
+       <widget class="QLabel" name="maximumSacAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLabel" name="minsac">
+       <widget class="QLabel" name="minimumSacAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="3" column="2">
-       <widget class="QLabel" name="avgsac">
+       <widget class="QLabel" name="averageSacAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
@@ -655,15 +671,28 @@
      </layout>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <property name="verticalSpacing">
+     <spacer name="verticalSpacer_5">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="statsLowerGridLayout">
+      <property name="margin">
        <number>10</number>
       </property>
-      <property name="bottomMargin">
-       <number>0</number>
+      <property name="spacing">
+       <number>15</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_20">
+       <widget class="QLabel" name="divesAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -679,7 +708,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_21">
+       <widget class="QLabel" name="maximumTemperatureLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -687,12 +716,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Max Temp</string>
+         <string>Max. Temp.</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_22">
+       <widget class="QLabel" name="minimumTemperatureAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -700,12 +729,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Min Temp</string>
+         <string>Min. Temp.</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLabel" name="label_23">
+       <widget class="QLabel" name="averageTemperatureAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -713,40 +742,40 @@
          </font>
         </property>
         <property name="text">
-         <string>Avg Temp</string>
+         <string>Ave. Temp.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="dives">
+       <widget class="QLabel" name="divesAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="maxtemp">
+       <widget class="QLabel" name="maximumTemperatureAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel" name="mintemp">
+       <widget class="QLabel" name="minimumTemperatureAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLabel" name="avgtemp">
+       <widget class="QLabel" name="averageTemperatureAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_24">
+       <widget class="QLabel" name="totalTimeAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -759,7 +788,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="label_25">
+       <widget class="QLabel" name="averageTimeAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -767,12 +796,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Avg Time</string>
+         <string>Ave. Time</string>
         </property>
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QLabel" name="label_26">
+       <widget class="QLabel" name="longestAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -780,12 +809,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Longest Dive</string>
+         <string>Longest</string>
         </property>
        </widget>
       </item>
       <item row="2" column="3">
-       <widget class="QLabel" name="label_27">
+       <widget class="QLabel" name="shortestAllLabel">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -793,33 +822,33 @@
          </font>
         </property>
         <property name="text">
-         <string>Shortest Dive</string>
+         <string>Shortest</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="totaltime">
+       <widget class="QLabel" name="totalTimeAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLabel" name="avgtime">
+       <widget class="QLabel" name="averageTimeAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="3" column="2">
-       <widget class="QLabel" name="longestdive">
+       <widget class="QLabel" name="longestAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="3" column="3">
-       <widget class="QLabel" name="shortestdive">
+       <widget class="QLabel" name="shortestAllText">
         <property name="text">
          <string>TextLabel</string>
         </property>
@@ -835,7 +864,7 @@
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>85</height>
+        <height>20</height>
        </size>
       </property>
      </spacer>
