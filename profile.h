@@ -54,6 +54,30 @@ int get_maxtime(struct plot_info *pi);
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi);
 
+#define ALIGN_LEFT 1
+#define ALIGN_RIGHT 2
+#define INVISIBLE 4
+#define UNSORTABLE 8
+#define EDITABLE 16
+
+#ifndef TEXT_SCALE
+#define TEXT_SCALE 1.0
+#endif
+
+#define DEPTH_TEXT_SIZE (10 * TEXT_SCALE)
+#define PRESSURE_TEXT_SIZE (10 * TEXT_SCALE)
+#define DC_TEXT_SIZE (10.5 * TEXT_SCALE)
+#define PP_TEXT_SIZE (11 * TEXT_SCALE)
+#define TEMP_TEXT_SIZE (12 * TEXT_SCALE)
+
+#define RIGHT (-1.0)
+#define CENTER (-0.5)
+#define LEFT (0.0)
+
+#define TOP (1)
+#define MIDDLE (0)
+#define BOTTOM (-1)
+
 #ifdef __cplusplus
 }
 #endif

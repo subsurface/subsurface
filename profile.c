@@ -157,57 +157,6 @@ int get_maxdepth(struct plot_info *pi)
 	return md;
 }
 
-#if 0
-typedef struct {
-	double size;
-	color_indice_t color;
-	double hpos, vpos;
-} text_render_options_t;
-#endif
-
-#define RIGHT (-1.0)
-#define CENTER (-0.5)
-#define LEFT (0.0)
-
-#define TOP (1)
-#define MIDDLE (0)
-#define BOTTOM (-1)
-
-#if USE_GTK_UI
-static void plot_text(struct graphics_context *gc, const text_render_options_t *tro,
-		      double x, double y, const char *fmt, ...)
-{
-	cairo_t *cr = gc->cr;
-	cairo_font_extents_t fe;
-	cairo_text_extents_t extents;
-	double dx, dy;
-	char buffer[256];
-	va_list args;
-
-	va_start(args, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, args);
-	va_end(args);
-
-	cairo_set_font_size(cr, tro->size * plot_scale);
-	cairo_font_extents(cr, &fe);
-	cairo_text_extents(cr, buffer, &extents);
-	dx = tro->hpos * (extents.width + extents.x_bearing);
-	dy = tro->vpos * (extents.height + fe.descent);
-	move_to(gc, x, y);
-	cairo_rel_move_to(cr, dx, dy);
-
-	cairo_text_path(cr, buffer);
-	set_source_rgba(gc, TEXT_BACKGROUND);
-	cairo_stroke(cr);
-
-	move_to(gc, x, y);
-	cairo_rel_move_to(cr, dx, dy);
-
-	set_source_rgba(gc, tro->color);
-	cairo_show_text(cr, buffer);
-}
-#endif /* USE_GTK_UI */
-
 /* collect all event names and whether we display them */
 struct ev_select {
 	char *ev_name;

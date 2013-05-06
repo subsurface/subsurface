@@ -100,6 +100,12 @@ void fill_profile_color()
 }
 #undef COLOR
 
+struct text_render_options{
+	double size;
+	color_indice_t color;
+	double hpos, vpos;
+};
+
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent)
 {
 	setScene(new QGraphicsScene());
@@ -293,19 +299,17 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		scene()->addItem(line);
 	}
 
-#if 0
 	/* now the text on the time markers */
-	text_render_options_t tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
+	struct text_render_options tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(gc, &tro, i, 1, "%02d:%02d", i/60, i%60);
+			plot_text(gc, &tro, i, 1, QString("%1:%2").arg(i/60).arg(i%60));
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
-			plot_text(gc, &tro, i, 1, "%d", i/60);
+			plot_text(gc, &tro, i, 1, QString::number(i/60));
 	}
-#endif
 
 	/* Depth markers: every 30 ft or 10 m*/
 	gc->leftx = 0; gc->rightx = 1.0;
@@ -418,9 +422,6 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	// TODO: Port the profile_calc_ceiling to QSettings
 	// if (prefs.profile_calc_ceiling) {
 
-		qDebug() << "CALC_CEILING_SHALLOW" << profile_color[CALC_CEILING_SHALLOW].first();
-		qDebug() << "CALC_CEILING_DEEP" << profile_color[CALC_CEILING_DEEP].first();
-
 		pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
 		pat.setColorAt(1, profile_color[CALC_CEILING_DEEP].first());
 
@@ -479,6 +480,23 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	}
 }
 
+void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_options_t *tro, double x, double y, const QString& text)
+{
+	QFontMetrics fm(font());
+
+	double dx = tro->hpos * (fm.width(text));
+	double dy = tro->vpos * (fm.height());
+
+	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text);
+	QPointF point( SCALE(gc, x, y) ); // This is neded because of the SCALE macro.
+
+	item->setPos(point.x() + dx, point.y() +dy );
+	item->setBrush( QBrush(profile_color[tro->color].first()));
+	item->setPen( QPen(profile_color[BACKGROUND].first()));
+	scene()->addItem(item);
+	qDebug() << item->pos();
+}
+
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
@@ -486,5 +504,5 @@ void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 	// I can pass some parameters to this -
 	// like Qt::IgnoreAspectRatio or Qt::KeepAspectRatio
 	QRectF r = scene()->sceneRect();
-	fitInView ( r.x() - 2, r.y() -2, r.width() + 4, r.height() + 4); // do a little bit of spacing;
+	fitInView ( r.x() - 50, r.y() -50, r.width() + 100, r.height() + 100); // do a little bit of spacing;
 }

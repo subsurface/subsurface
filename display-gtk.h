@@ -90,22 +90,6 @@ typedef gint (*sort_func_t)(GtkTreeModel *model,
 			    GtkTreeIter *b,
 			    gpointer user_data);
 
-#define ALIGN_LEFT 1
-#define ALIGN_RIGHT 2
-#define INVISIBLE 4
-#define UNSORTABLE 8
-#define EDITABLE 16
-
-#ifndef TEXT_SCALE
-#define TEXT_SCALE 1.0
-#endif
-
-#define DEPTH_TEXT_SIZE (10 * TEXT_SCALE)
-#define PRESSURE_TEXT_SIZE (10 * TEXT_SCALE)
-#define DC_TEXT_SIZE (10.5 * TEXT_SCALE)
-#define PP_TEXT_SIZE (11 * TEXT_SCALE)
-#define TEMP_TEXT_SIZE (12 * TEXT_SCALE)
-
 extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
 		data_func_t data_func, unsigned int flags);
 extern GtkTreeViewColumn *tree_view_column_add_pixbuf(GtkWidget *tree_view, data_func_t data_func, GtkTreeViewColumn *col);
