@@ -35,6 +35,8 @@ public Q_SLOTS:
 	void on_editWeight_clicked();
 	void on_delWeight_clicked();
 
+	void updateDiveInfo(int dive);
+
 private:
 	Ui::MainTab *ui;
 	WeightModel *weightModel;

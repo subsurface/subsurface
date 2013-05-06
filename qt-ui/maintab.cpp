@@ -60,6 +60,22 @@ void MainTab::clearStats()
 	ui->shortestAllText->setText(QString());
 }
 
+void MainTab::updateDiveInfo(int dive)
+{
+	// So, this is what happens now:
+	// Every tab should be populated from this method,
+	// it will be called whenever a new dive is selected
+	// I'm already populating the 'notes' box
+	// to show how it can be done.
+	// If you are unsure what's the name of anything,
+	// open the file maintab.ui on the designer
+	// click on the item and check its objectName,
+	// the access is ui->objectName from here on.
+
+	struct dive *d = get_dive(dive);
+	ui->notes->setText(d->notes);
+}
+
 void MainTab::on_addCylinder_clicked()
 {
 	if (cylindersModel->rowCount() >= MAX_CYLINDERS)
