@@ -6,3 +6,9 @@ file_filter = po/<lang>.po
 source_file = po/subsurface-new.pot
 source_lang = en
 type = PO
+
+[subsurface.readme]
+file_filter = l10n/README.<lang>
+source_file = README
+source_lang = en
+type = WIKI
