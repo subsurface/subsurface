@@ -158,13 +158,9 @@ int get_maxdepth(struct plot_info *pi)
 }
 
 /* collect all event names and whether we display them */
-struct ev_select {
-	char *ev_name;
-	gboolean plot_ev;
-};
-static struct ev_select *ev_namelist;
-static int evn_allocated;
-static int evn_used;
+struct ev_select *ev_namelist;
+int evn_allocated;
+int evn_used;
 
 int evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 {
@@ -205,95 +201,7 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
-#if USE_GTK_UI
-static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event)
-{
-	int i, depth = 0;
-	int x,y;
-	char buffer[256];
-
-	/* is plotting this event disabled? */
-	if (event->name) {
-		for (i = 0; i < evn_used; i++) {
-			if (! strcmp(event->name, ev_namelist[i].ev_name)) {
-				if (ev_namelist[i].plot_ev)
-					break;
-				else
-					return;
-			}
-		}
-	}
-	if (event->time.seconds < 30 && !strcmp(event->name, "gaschange"))
-		/* a gas change in the first 30 seconds is the way of some dive computers
-		 * to tell us the gas that is used; let's not plot a marker for that */
-		return;
-
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *data = pi->entry + i;
-		if (event->time.seconds < data->sec)
-			break;
-		depth = data->depth;
-	}
-	/* draw a little triangular marker and attach tooltip */
-	x = SCALEX(gc, event->time.seconds);
-	y = SCALEY(gc, depth);
-	set_source_rgba(gc, ALERT_BG);
-	cairo_move_to(gc->cr, x-6, y+12);
-	cairo_line_to(gc->cr, x+6, y+12);
-	cairo_line_to(gc->cr, x  , y);
-	cairo_line_to(gc->cr, x-6, y+12);
-	cairo_stroke_preserve(gc->cr);
-	cairo_fill(gc->cr);
-	set_source_rgba(gc, ALERT_FG);
-	cairo_move_to(gc->cr, x, y+3);
-	cairo_line_to(gc->cr, x, y+7);
-	cairo_move_to(gc->cr, x, y+10);
-	cairo_line_to(gc->cr, x, y+10);
-	cairo_stroke(gc->cr);
-	/* we display the event on screen - so translate */
-	if (event->value) {
-		if (event->name && !strcmp(event->name, "gaschange")) {
-			unsigned int he = event->value >> 16;
-			unsigned int o2 = event->value & 0xffff;
-			if (he) {
-				snprintf(buffer, sizeof(buffer), "%s:%u/%u",
-					_(event->name), o2, he);
-			} else {
-				if (o2 == 21)
-					snprintf(buffer, sizeof(buffer), "%s:%s",
-						_(event->name), _("air"));
-				else
-					snprintf(buffer, sizeof(buffer), "%s:%u%% %s",
-						_(event->name), o2, "O" UTF8_SUBSCRIPT_2);
-			}
-		} else if (event->name && !strcmp(event->name, "SP change")) {
-			snprintf(buffer, sizeof(buffer), "%s:%0.1f", _(event->name), (double) event->value / 1000);
-		} else {
-			snprintf(buffer, sizeof(buffer), "%s:%d", _(event->name), event->value);
-		}
-	} else if (event->name && !strcmp(event->name, "SP change")) {
-		snprintf(buffer, sizeof(buffer), _("Bailing out to OC"));
-	} else {
-		snprintf(buffer, sizeof(buffer), "%s%s", _(event->name),
-			event->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
-			event->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "");
-	}
-	attach_tooltip(x-6, y, 12, 12, buffer, event);
-}
-
-static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
-{
-	struct event *event = dc->events;
-
-	if (gc->printer)
-		return;
-
-	while (event) {
-		plot_one_event(gc, pi, event);
-		event = event->next;
-	}
-}
-
+#if 0
 static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
 {
 	int sec = entry->sec, decimals;

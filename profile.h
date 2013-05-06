@@ -39,6 +39,11 @@ struct plot_data {
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
 struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
 
+struct ev_select {
+	char *ev_name;
+	bool plot_ev;
+};
+
 /*
  * When showing dive profiles, we scale things to the
  * current dive. However, we don't scale past less than

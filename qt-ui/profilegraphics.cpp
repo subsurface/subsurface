@@ -6,6 +6,7 @@
 #include <QPen>
 #include <QBrush>
 #include <QDebug>
+#include <QLineF>
 
 #include "../color.h"
 #include "../display.h"
@@ -106,6 +107,10 @@ struct text_render_options{
 	double hpos, vpos;
 };
 
+extern struct ev_select *ev_namelist;
+extern int evn_allocated;
+extern int evn_used;
+
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent)
 {
 	setScene(new QGraphicsScene());
@@ -198,9 +203,9 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	/* Depth profile */
 	plot_depth_profile(&gc, pi);
-#if 0
-	plot_events(gc, pi, dc);
 
+	plot_events(&gc, pi, dc);
+#if 0
 	/* Temperature profile */
 	plot_temperature_profile(gc, pi);
 
@@ -257,6 +262,101 @@ void ProfileGraphicsView::plot(struct dive *dive)
 #endif
 }
 
+void ProfileGraphicsView::plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
+{
+	struct event *event = dc->events;
+
+// 	if (gc->printer){
+// 		return;
+// 	}
+
+	while (event) {
+		plot_one_event(gc, pi, event);
+		event = event->next;
+	}
+}
+
+void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *ev)
+{
+	int i, depth = 0;
+
+	/* is plotting this event disabled? */
+	if (ev->name) {
+		for (i = 0; i < evn_used; i++) {
+			if (! strcmp(ev->name, ev_namelist[i].ev_name)) {
+				if (ev_namelist[i].plot_ev)
+					break;
+				else
+					return;
+			}
+		}
+	}
+
+	if (ev->time.seconds < 30 && !strcmp(ev->name, "gaschange"))
+		/* a gas change in the first 30 seconds is the way of some dive computers
+		 * to tell us the gas that is used; let's not plot a marker for that */
+		return;
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *data = pi->entry + i;
+		if (ev->time.seconds < data->sec)
+			break;
+		depth = data->depth;
+	}
+
+	/* draw a little triangular marker and attach tooltip */
+	QPolygonF poly;
+	poly.push_back(QPointF(-8, 16));
+	poly.push_back(QPointF(8, 16));
+	poly.push_back(QPointF(0, 0));
+	poly.push_back(QPointF(-8, 16));
+
+	int x = SCALEX(gc, ev->time.seconds);
+	int y = SCALEY(gc, depth);
+
+	QGraphicsPolygonItem *triangle = new QGraphicsPolygonItem();
+	triangle->setPolygon(poly);
+	triangle->setBrush(QBrush(profile_color[ALERT_BG].first()));
+	triangle->setPen(QPen(QBrush(profile_color[ALERT_FG].first()), 1));
+	triangle->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	triangle->setPos(x, y);
+
+	QGraphicsLineItem *line = new QGraphicsLineItem(0,5,0,10, triangle);
+	line->setPen(QPen(QBrush(Qt::black), 2));
+
+	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, triangle);
+	ball->setBrush(QBrush(Qt::black));
+
+	scene()->addItem(triangle);
+
+	/* we display the event on screen - so translate */
+	QString name = tr(ev->name);
+	if (ev->value) {
+		if (ev->name && name == "gaschange") {
+			unsigned int he = ev->value >> 16;
+			unsigned int o2 = ev->value & 0xffff;
+			if (he) {
+				name += QString("%1/%2").arg(o2, he);
+			} else {
+				if (o2 == 21)
+					name += tr(":air");
+				else
+					name += QString("%1 %% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
+			}
+		} else if (ev->name && !strcmp(ev->name, "SP change")) {
+			name += QString(":%1").arg( (double) ev->value / 1000 );
+		} else {
+			name += QString(":%1").arg(ev->value);
+		}
+	} else if (ev->name && name == "SP change") {
+		name += tr("Bailing out to OC");
+	} else {
+		//name += ev->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
+		//		ev->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "";
+	}
+
+	//attach_tooltip(x-6, y, 12, 12, buffer, ev);
+}
 
 void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
 {
