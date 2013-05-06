@@ -60,6 +60,12 @@ void MainTab::clearStats()
 	ui->shortestAllText->setText(QString());
 }
 
+#define UPDATE_TEXT(d, field)				\
+	if (!d || !d->field)				\
+		ui->field->setText("");			\
+	else						\
+		ui->field->setText(d->field)
+
 void MainTab::updateDiveInfo(int dive)
 {
 	// So, this is what happens now:
@@ -73,7 +79,15 @@ void MainTab::updateDiveInfo(int dive)
 	// the access is ui->objectName from here on.
 
 	struct dive *d = get_dive(dive);
-	ui->notes->setText(d->notes);
+	UPDATE_TEXT(d, notes);
+	UPDATE_TEXT(d, location);
+	UPDATE_TEXT(d, suit);
+	UPDATE_TEXT(d, divemaster);
+	UPDATE_TEXT(d, buddy);
+	if (d)
+		ui->rating->setCurrentStars(d->rating);
+	else
+		ui->rating->setCurrentStars(0);
 }
 
 void MainTab::on_addCylinder_clicked()

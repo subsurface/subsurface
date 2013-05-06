@@ -79,7 +79,7 @@
      <widget class="QTextEdit" name="notes"/>
     </item>
     <item row="5" column="0">
-     <widget class="StarWidget" name="widget" native="true"/>
+     <widget class="StarWidget" name="rating" native="true"/>
     </item>
    </layout>
   </widget>
