@@ -75,14 +75,16 @@ void init_ui(int *argcp, char ***argvp)
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
 #endif
 
+#if 0
 	subsurface_open_conf();
 
 	load_preferences();
 
+	/* these still need to be handled in QSettings */
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor");
 	default_dive_computer_product = subsurface_get_conf("dive_computer_product");
 	default_dive_computer_device = subsurface_get_conf("dive_computer_device");
-
+#endif
 	return;
 }
 
@@ -94,7 +96,9 @@ void run_ui(void)
 void exit_ui(void)
 {
 	delete application;
+#if 0
 	subsurface_close_conf();
+#endif
 	if (existing_filename)
 		free((void *)existing_filename);
 	if (default_dive_computer_device)

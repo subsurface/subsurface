@@ -312,10 +312,22 @@ bool MainWindow::askSaveChanges()
 	return false;
 }
 
+#define GET_UNIT(v, name, field, f, t)				\
+	v = settings.value(QString(name));			\
+	if (v.isValid())					\
+		prefs.units.field = (v.toInt() == (t)) ? (t) : (f)
+
+#define GET_BOOL(v, name, field)				\
+	v = settings.value(QString(name));			\
+	if (v.isValid() && v.toInt())				\
+		field = TRUE;					\
+	else							\
+		field = FALSE
+
 void MainWindow::readSettings()
 {
 	int i;
-
+	QVariant v;
 	QSettings settings("hohndel.org","subsurface");
 
 	settings.beginGroup("MainWindow");
@@ -344,7 +356,77 @@ void MainWindow::readSettings()
 	else
 		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
 	settings.endGroup();
+	settings.beginGroup("Units");
+	GET_UNIT(v, "feet", length, units::METERS, units::FEET);
+	GET_UNIT(v, "psi", pressure, units::BAR, units::PSI);
+	GET_UNIT(v, "cuft", volume, units::LITER, units::CUFT);
+	GET_UNIT(v, "fahrenheit", temperature, units::CELSIUS, units::FAHRENHEIT);
+	GET_UNIT(v, "lbs", weight, units::KG, units::LBS);
+	settings.endGroup();
+	settings.beginGroup("DisplayListColumns");
+	GET_BOOL(v, "CYLINDER", prefs.visible_cols.cylinder);
+	GET_BOOL(v, "TEMPERATURE", prefs.visible_cols.temperature);
+	GET_BOOL(v, "TOTALWEIGHT", prefs.visible_cols.totalweight);
+	GET_BOOL(v, "SUIT", prefs.visible_cols.suit);
+	GET_BOOL(v, "NITROX", prefs.visible_cols.nitrox);
+	GET_BOOL(v, "OTU", prefs.visible_cols.otu);
+	GET_BOOL(v, "MAXCNS", prefs.visible_cols.maxcns);
+	GET_BOOL(v, "SAC", prefs.visible_cols.sac);
+	GET_BOOL(v, "po2graph", prefs.pp_graphs.po2);
+	GET_BOOL(v, "pn2graph", prefs.pp_graphs.pn2);
+	GET_BOOL(v, "phegraph", prefs.pp_graphs.phe);
+	settings.endGroup();
+	settings.beginGroup("TecDetails");
+	v = settings.value(QString("po2threshold"));
+	if (v.isValid())
+		prefs.pp_graphs.po2_threshold = v.toDouble();
+	v = settings.value(QString("pn2threshold"));
+	if (v.isValid())
+		prefs.pp_graphs.pn2_threshold = v.toDouble();
+	v = settings.value(QString("phethreshold"));
+	if (v.isValid())
+		prefs.pp_graphs.phe_threshold = v.toDouble();
+	GET_BOOL(v, "mod", prefs.mod);
+	v = settings.value(QString("modppO2"));
+	if (v.isValid())
+		prefs.mod_ppO2 = v.toDouble();
+	GET_BOOL(v, "ead", prefs.ead);
+	GET_BOOL(v, "redceiling", prefs.profile_red_ceiling);
+	GET_BOOL(v, "calcceiling", prefs.profile_calc_ceiling);
+	GET_BOOL(v, "calcceiling3m", prefs.calc_ceiling_3m_incr);
+	v = settings.value(QString("gflow"));
+	if (v.isValid())
+		prefs.gflow = v.toInt() / 100.0;
+	v = settings.value(QString("gfhigh"));
+	if (v.isValid())
+		prefs.gfhigh = v.toInt() / 100.0;
+	set_gf(prefs.gflow, prefs.gfhigh);
+	settings.endGroup();
+
+#if ONCE_WE_CAN_SET_FONTS
+	settings.beginGroup("Display");
+	v = settings.value(QString("divelist_font"));
+	if (v.isValid())
+		/* I don't think this is right */
+		prefs.divelist_font = strdup(v.toString);
+#endif
+
+#if DONT_KNOW_HOW_TO_DO_THAT
+	v = settings.value(QString("default_filename"));
+	if (v.isValid())
+		prefs.default_filename = strdup(v.toString);
+#endif
+
+#if ONCE_WE_HAVE_MAPS
+	v = settings.value(QString_int("map_provider"));
+	if(v.isValid())
+		prefs.map_provider = v.toInt();
+#endif
 }
+
+#define SAVE_VALUE(name, field)				\
+	if (prefs.field != default_prefs.field)		\
+		settings.setValue(name, prefs.field)
 
 void MainWindow::writeSettings()
 {
@@ -361,8 +443,39 @@ void MainWindow::writeSettings()
 	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++)
 		settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
 	settings.endGroup();
-
-	/* other groups here; avoid '/' and '\' in keys with setValue(...) please */
+	settings.beginGroup("Units");
+	SAVE_VALUE("feet", units.length);
+	SAVE_VALUE("psi", units.pressure);
+	SAVE_VALUE("cuft", units.volume);
+	SAVE_VALUE("fahrenheit", units.temperature);
+	SAVE_VALUE("lbs", units.weight);
+	settings.endGroup();
+	settings.beginGroup("DisplayListColumns");
+	SAVE_VALUE("TEMPERATURE", visible_cols.temperature);
+	SAVE_VALUE("TOTALWEIGHT", visible_cols.totalweight);
+	SAVE_VALUE("SUIT", visible_cols.suit);
+	SAVE_VALUE("CYLINDER", visible_cols.cylinder);
+	SAVE_VALUE("NITROX", visible_cols.nitrox);
+	SAVE_VALUE("SAC", visible_cols.sac);
+	SAVE_VALUE("OTU", visible_cols.otu);
+	SAVE_VALUE("MAXCNS", visible_cols.maxcns);
+	settings.endGroup();
+	settings.beginGroup("TecDetails");
+	SAVE_VALUE("po2graph", pp_graphs.po2);
+	SAVE_VALUE("pn2graph", pp_graphs.pn2);
+	SAVE_VALUE("phegraph", pp_graphs.phe);
+	SAVE_VALUE("po2threshold", pp_graphs.po2_threshold);
+	SAVE_VALUE("pn2threshold", pp_graphs.pn2_threshold);
+	SAVE_VALUE("phethreshold", pp_graphs.phe_threshold);
+	SAVE_VALUE("mod", mod);
+	SAVE_VALUE("modppO2", mod_ppO2);
+	SAVE_VALUE("ead", ead);
+	SAVE_VALUE("redceiling", profile_red_ceiling);
+	SAVE_VALUE("calcceiling", profile_calc_ceiling);
+	SAVE_VALUE("calcceiling3m", calc_ceiling_3m_incr);
+	SAVE_VALUE("gflow", gflow);
+	SAVE_VALUE("gfhigh", gfhigh);
+	settings.endGroup();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
