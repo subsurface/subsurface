@@ -493,6 +493,7 @@ void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_opt
 	item->setPos(point.x() + dx, point.y() +dy );
 	item->setBrush( QBrush(profile_color[tro->color].first()));
 	item->setPen( QPen(profile_color[BACKGROUND].first()));
+	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(item);
 	qDebug() << item->pos();
 }
