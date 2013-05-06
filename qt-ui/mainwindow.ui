@@ -88,7 +88,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -240,6 +240,9 @@
    <property name="text">
     <string>Download from Dive computer</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionDownloadWeb">
    <property name="text">
@@ -280,30 +283,48 @@
    <property name="text">
     <string>View List</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
   </action>
   <action name="actionViewProfile">
    <property name="text">
     <string>View Profile</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
    </property>
   </action>
   <action name="actionViewInfo">
    <property name="text">
     <string>View Info</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
   </action>
   <action name="actionViewAll">
    <property name="text">
     <string>View All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
    </property>
   </action>
   <action name="actionPreviousDC">
    <property name="text">
     <string>Prev DC</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
   </action>
   <action name="actionNextDC">
    <property name="text">
     <string>Next DC</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="actionSelectEvents">

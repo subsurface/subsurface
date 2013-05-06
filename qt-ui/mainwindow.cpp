@@ -207,8 +207,6 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 
 void MainWindow::on_actionViewList_triggered()
 {
-	qDebug("actionViewList");
-
 	ui->InfoWidget->setVisible(false);
 	ui->ListWidget->setVisible(true);
 	ui->ProfileWidget->setVisible(false);
@@ -216,8 +214,6 @@ void MainWindow::on_actionViewList_triggered()
 
 void MainWindow::on_actionViewProfile_triggered()
 {
-	qDebug("actionViewProfile");
-
 	ui->InfoWidget->setVisible(false);
 	ui->ListWidget->setVisible(false);
 	ui->ProfileWidget->setVisible(true);
@@ -225,8 +221,6 @@ void MainWindow::on_actionViewProfile_triggered()
 
 void MainWindow::on_actionViewInfo_triggered()
 {
-	qDebug("actionViewInfo");
-
 	ui->InfoWidget->setVisible(true);
 	ui->ListWidget->setVisible(false);
 	ui->ProfileWidget->setVisible(false);
@@ -234,8 +228,6 @@ void MainWindow::on_actionViewInfo_triggered()
 
 void MainWindow::on_actionViewAll_triggered()
 {
-	qDebug("actionViewAll");
-
 	ui->InfoWidget->setVisible(true);
 	ui->ListWidget->setVisible(true);
 	ui->ProfileWidget->setVisible(true);
