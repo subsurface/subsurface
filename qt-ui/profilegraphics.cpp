@@ -13,6 +13,9 @@
 #include "../dive.h"
 #include "../profile.h"
 
+#include <libdivecomputer/parser.h>
+#include <libdivecomputer/version.h>
+
 #define SAC_COLORS_START_IDX SAC_1
 #define SAC_COLORS 9
 #define VELOCITY_COLORS_START_IDX VELO_STABLE
@@ -120,6 +123,10 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	setRenderHint(QPainter::Antialiasing);
 	setRenderHint(QPainter::HighQualityAntialiasing);
 	setRenderHint(QPainter::SmoothPixmapTransform);
+
+	defaultPen.setJoinStyle(Qt::RoundJoin);
+	defaultPen.setCapStyle(Qt::RoundCap);
+	defaultPen.setWidth(2);
 
 	fill_profile_color();
 }
@@ -314,15 +321,18 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 	int x = SCALEX(gc, ev->time.seconds);
 	int y = SCALEY(gc, depth);
 
+	QPen pen = defaultPen;
+	pen.setBrush(QBrush(profile_color[ALERT_BG].first()));
+
 	QGraphicsPolygonItem *triangle = new QGraphicsPolygonItem();
 	triangle->setPolygon(poly);
 	triangle->setBrush(QBrush(profile_color[ALERT_BG].first()));
-	triangle->setPen(QPen(QBrush(profile_color[ALERT_FG].first()), 1));
+	triangle->setPen(pen);
 	triangle->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	triangle->setPos(x, y);
 
 	QGraphicsLineItem *line = new QGraphicsLineItem(0,5,0,10, triangle);
-	line->setPen(QPen(QBrush(Qt::black), 2));
+	line->setPen(defaultPen);
 
 	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, triangle);
 	ball->setBrush(QBrush(Qt::black));
@@ -335,14 +345,11 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 		if (ev->name && name == "gaschange") {
 			unsigned int he = ev->value >> 16;
 			unsigned int o2 = ev->value & 0xffff;
-			if (he) {
-				name += QString("%1/%2").arg(o2, he);
-			} else {
-				if (o2 == 21)
-					name += tr(":air");
-				else
-					name += QString("%1 %% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
-			}
+
+			name += (he) ? QString("%1/%2").arg(o2, he)
+				  : (o2 == 21) ? name += tr(":air")
+				  : QString("%1 %% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
+
 		} else if (ev->name && !strcmp(ev->name, "SP change")) {
 			name += QString(":%1").arg( (double) ev->value / 1000 );
 		} else {
@@ -351,11 +358,12 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 	} else if (ev->name && name == "SP change") {
 		name += tr("Bailing out to OC");
 	} else {
-		//name += ev->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
-		//		ev->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "";
+		name += ev->flags == SAMPLE_FLAGS_BEGIN ? tr("Starts with space!"," begin") :
+				ev->flags == SAMPLE_FLAGS_END ? tr("Starts with space!", " end") : "";
 	}
 
 	//attach_tooltip(x-6, y, 12, 12, buffer, ev);
+	triangle->setToolTip(name);
 }
 
 void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -595,7 +603,6 @@ void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_opt
 	item->setPen( QPen(profile_color[BACKGROUND].first()));
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(item);
-	qDebug() << item->pos();
 }
 
 
