@@ -103,11 +103,9 @@ void MainTab::updateDiveInfo(int dive)
 		ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 	else
 		ui->airPressureText->setText(QString(""));
-#if 0 /* this fails to link, even though the function is defined in statistics.c / statistics.h */
 	if (d)
 		ui->gasUsedText->setText(get_volume_string(get_gas_used(d), TRUE));
 	else
-#endif
 		ui->gasUsedText->setText("");
 }
 
