@@ -10,6 +10,7 @@
 #include <QSettings>
 #include <QIcon>
 #include <QPropertyAnimation>
+#include <QGraphicsSceneHoverEvent>
 
 #include "../color.h"
 #include "../display.h"
@@ -323,32 +324,13 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 	}
 
 	/* draw a little triangular marker and attach tooltip */
-	QPolygonF poly;
-	poly.push_back(QPointF(-8, 16));
-	poly.push_back(QPointF(8, 16));
-	poly.push_back(QPointF(0, 0));
-	poly.push_back(QPointF(-8, 16));
 
 	int x = SCALEX(gc, ev->time.seconds);
 	int y = SCALEY(gc, depth);
 
-	QPen pen = defaultPen;
-	pen.setBrush(QBrush(profile_color[ALERT_BG].first()));
-
-	QGraphicsPolygonItem *triangle = new QGraphicsPolygonItem();
-	triangle->setPolygon(poly);
-	triangle->setBrush(QBrush(profile_color[ALERT_BG].first()));
-	triangle->setPen(pen);
-	triangle->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	triangle->setPos(x, y);
-
-	QGraphicsLineItem *line = new QGraphicsLineItem(0,5,0,10, triangle);
-	line->setPen(defaultPen);
-
-	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, triangle);
-	ball->setBrush(QBrush(Qt::black));
-
-	scene()->addItem(triangle);
+	EventItem *item = new EventItem();
+	item->setPos(x, y);
+	scene()->addItem(item);
 
 	/* we display the event on screen - so translate */
 	QString name = tr(ev->name);
@@ -373,9 +355,8 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 				ev->flags == SAMPLE_FLAGS_END ? tr("Starts with space!", " end") : "";
 	}
 
-	//attach_tooltip(x-6, y, 12, 12, buffer, ev);
-	//triangle->setToolTip(name);
-	toolTip->addToolTip(name);
+	item->setToolTipController(toolTip);
+	item->addToolTip(name);
 }
 
 void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -639,16 +620,16 @@ void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 
 void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 {
-	qDebug() << "Tooltip Adicionado" << toolTip;
-
 	QGraphicsPixmapItem *iconItem = 0;
+	double yValue = title->boundingRect().height() + SPACING + toolTips.keys().size() * ICON_SMALL + SPACING;
+
 	if (!icon.isNull()) {
 		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL,ICON_SMALL), this);
-		iconItem->setPos( 4, toolTips.keys().size() * ICON_SMALL + 4);
+		iconItem->setPos( SPACING, yValue);
 	}
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
-	textItem->setPos( 4 + ICON_SMALL + 4, toolTips.keys().size() * ICON_SMALL + 4);
+	textItem->setPos( SPACING + ICON_SMALL + SPACING, yValue);
 	textItem->setPen(QPen(Qt::white, 1));
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
@@ -662,6 +643,22 @@ void ToolTipItem::removeToolTip(const QString& toolTip)
 	ToolTip toBeRemoved = toolTips[toolTip];
 	delete toBeRemoved.first;
 	delete toBeRemoved.second;
+	toolTips.remove(toolTip);
+
+	int toolTipIndex = 0;
+
+	// We removed a toolTip, let's move the others to the correct location
+	Q_FOREACH(ToolTip t, toolTips){
+		double yValue = title->boundingRect().height() + SPACING + toolTipIndex * ICON_SMALL + SPACING;
+
+		// Icons can be null.
+		if (t.first)
+			t.first->setPos(SPACING, yValue);
+
+		t.second->setPos(SPACING + ICON_SMALL + SPACING, yValue);
+		toolTipIndex++;
+	}
+
 	expand();
 }
 
@@ -700,6 +697,7 @@ void ToolTipItem::setRect(const QRectF& r)
 	b->setBrush(c);
 	background = b;
 
+	updateTitlePosition();
 }
 
 
@@ -715,30 +713,125 @@ void ToolTipItem::collapse()
 
 void ToolTipItem::expand()
 {
-	QRectF newRect = childrenBoundingRect();
-	newRect = QRect(0, 0, newRect.width() + 8, newRect.height() + 8);
-	if (newRect != boundingRect()) {
-		QRectF newRect = childrenBoundingRect();
-		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
-		animation->setDuration(100);
-		animation->setStartValue(boundingRect());
-		animation->setEndValue(newRect);
-		animation->start(QAbstractAnimation::DeleteWhenStopped);
+	QRectF currentRect = rectangle;
+	QRectF nextRectangle;
+
+	double width = 0;
+	Q_FOREACH(ToolTip t, toolTips) {
+		if (t.second->boundingRect().width() > width)
+			width = t.second->boundingRect().width();
 	}
+
+	double height = toolTips.count() * 18 + title->boundingRect().height() + SPACING;
+	/*       Left padding, Icon Size,   space, right padding */
+	width += SPACING       + ICON_SMALL + SPACING + SPACING;
+
+	if (width < title->boundingRect().width() + SPACING*2)
+		width = title->boundingRect().width() + SPACING*2;
+
+	if( height < ICON_SMALL)
+		height = ICON_SMALL;
+
+	nextRectangle.setWidth(width);
+	nextRectangle.setHeight(height);
+
+	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
+	animation->setDuration(100);
+	animation->setStartValue(rectangle);
+	animation->setEndValue(nextRectangle);
+	animation->start(QAbstractAnimation::DeleteWhenStopped);
+
 }
 
 ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), background(0)
 {
-	setRect(QRectF(0,0,ICON_SMALL, ICON_SMALL));
-	setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	setFlag(QGraphicsItem::ItemIsMovable);
+	title = new QGraphicsSimpleTextItem(tr("Information"), this);
+	separator = new QGraphicsLineItem(this);
+
+	setFlag(ItemIgnoresTransformations);
+	setFlag(ItemIsMovable);
+
+	updateTitlePosition();
+	setZValue(99);
 }
 
-void ToolTipStatusHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
+void ToolTipItem::updateTitlePosition()
 {
-    QGraphicsItem::mousePressEvent(event);
+	if (rectangle.width() < title->boundingRect().width() + SPACING*4 ){
+		QRectF newRect = rectangle;
+		newRect.setWidth(title->boundingRect().width() + SPACING*4);
+		newRect.setHeight( newRect.height() ? newRect.height() : ICON_SMALL );
+		setRect(newRect);
+	}
+
+	title->setPos(boundingRect().width()/2 -title->boundingRect().width()/2, 0);
+	title->setFlag(ItemIgnoresTransformations);
+	title->setPen(QPen(Qt::white, 1));
+	title->setBrush(Qt::white);
+
+	if (toolTips.size() > 0){
+		double x1 = 0;
+		double y1 = title->pos().y() + SPACING/2 + title->boundingRect().height();
+		double x2 = boundingRect().width() - 4;
+		double y2 = y1;
+
+		separator->setLine(x1, y1, x2, y2);
+		separator->setFlag(ItemIgnoresTransformations);
+		separator->setPen(QPen(Qt::white));
+	}else{
+		separator->setLine(QLineF());
+	}
 }
 
-ToolTipStatusHandler::ToolTipStatusHandler(QObject* parent): QObject(parent), QGraphicsEllipseItem()
+EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 {
+	setFlag(ItemIgnoresTransformations);
+	setFlag(ItemIsFocusable);
+	setAcceptHoverEvents(true);
+
+	QPolygonF poly;
+	poly.push_back(QPointF(-8, 16));
+	poly.push_back(QPointF(8, 16));
+	poly.push_back(QPointF(0, 0));
+	poly.push_back(QPointF(-8, 16));
+
+	QPen defaultPen ;
+	defaultPen.setJoinStyle(Qt::RoundJoin);
+	defaultPen.setCapStyle(Qt::RoundCap);
+	defaultPen.setWidth(2);
+
+	QPen pen = defaultPen;
+	pen.setBrush(QBrush(profile_color[ALERT_BG].first()));
+
+	setPolygon(poly);
+	setBrush(QBrush(profile_color[ALERT_BG].first()));
+	setPen(pen);
+
+	QGraphicsLineItem *line = new QGraphicsLineItem(0,5,0,10, this);
+	line->setPen(QPen(Qt::black, 2));
+
+	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, this);
+	ball->setBrush(QBrush(Qt::black));
+
+}
+
+void EventItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+	controller->addToolTip(text, icon);
+}
+
+void EventItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+	controller->removeToolTip(text);
+}
+
+void EventItem::addToolTip(const QString& t, const QIcon& i)
+{
+	text = t;
+	icon = i;
+}
+
+void EventItem::setToolTipController(ToolTipItem* c)
+{
+	controller = c;
 }

@@ -10,26 +10,16 @@ struct graphics_context;
 struct plot_info;
 typedef struct text_render_options text_render_options_t;
 
-
-class ToolTipItem;
-class ToolTipStatusHandler;
-
-class ToolTipStatusHandler :public QObject, public QGraphicsEllipseItem {
-public:
-    explicit ToolTipStatusHandler(QObject* parent = 0);
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
-};
-
 class ToolTipItem :public QObject, public QGraphicsPathItem {
 	Q_OBJECT
+	void updateTitlePosition();
 	Q_PROPERTY(QRectF rect READ boundingRect WRITE setRect)
 
 public:
-	enum Status {COLLAPSED, EXPANDED};
-	enum {ICON_SMALL = 16, ICON_MEDIUM = 24, ICON_BIG = 32};
+	enum Status{COLLAPSED, EXPANDED};
+	enum {ICON_SMALL = 16, ICON_MEDIUM = 24, ICON_BIG = 32, SPACING=4};
 
-    explicit ToolTipItem(QGraphicsItem* parent = 0);
+	explicit ToolTipItem(QGraphicsItem* parent = 0);
 
 	void collapse();
 	void expand();
@@ -42,10 +32,28 @@ public Q_SLOTS:
 
 private:
 	typedef QPair<QGraphicsPixmapItem*, QGraphicsSimpleTextItem*> ToolTip;
-	enum Status status;
 	QMap<QString, ToolTip > toolTips;
 	QGraphicsRectItem *background;
+	QGraphicsLineItem *separator;
+	QGraphicsSimpleTextItem *title;
+
 	QRectF rectangle;
+};
+
+class EventItem : public QGraphicsPolygonItem{
+public:
+	explicit EventItem(QGraphicsItem* parent = 0);
+	void addToolTip(const QString& text,const QIcon& icon = QIcon());
+	void setToolTipController(ToolTipItem *controller);
+
+protected:
+	void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+
+private:
+	ToolTipItem *controller;
+	QString text;
+	QIcon icon;
 };
 
 class ProfileGraphicsView : public QGraphicsView {
@@ -69,6 +77,5 @@ private:
 	QBrush defaultBrush;
 	ToolTipItem *toolTip;
 };
-
 
 #endif
