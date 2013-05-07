@@ -32,14 +32,17 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 			   sortModel(new QSortFilterProxyModel())
 {
 	ui->setupUi(this);
+	readSettings();
 	sortModel->setSourceModel(model);
 	ui->ListWidget->setModel(sortModel);
 	setWindowIcon(QIcon(":subsurface-icon"));
-
 	connect(ui->ListWidget->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			this, SLOT(dive_selection_changed(QItemSelection,QItemSelection)));
-
-	readSettings();
+	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
+	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
+		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
+	else
+		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -343,11 +346,6 @@ void MainWindow::readSettings()
 	}
 	ui->ListWidget->collapseAll();
 	ui->ListWidget->expand(sortModel->index(0,0));
-	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
-	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
-		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
-	else
-		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
 	settings.endGroup();
 	settings.beginGroup("Units");
 	GET_UNIT(v, "feet", length, units::METERS, units::FEET);

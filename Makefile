@@ -57,6 +57,7 @@ SOURCES = \
 	profile.c \
 	save-xml.c \
 	sha1.c \
+	statistics.c \
 	time.c \
 	qt-gui.cpp \
 	qt-ui/addcylinderdialog.cpp \

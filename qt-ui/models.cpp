@@ -677,6 +677,7 @@ void DiveTripModel::setupModelData()
 
 	while (--i >= 0) {
 		struct dive* dive = get_dive(i);
+		update_cylinder_related_info(dive);
 		dive_trip_t* trip = dive->divetrip;
 
 		DiveItem* diveItem = new DiveItem();

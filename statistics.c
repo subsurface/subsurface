@@ -267,3 +267,18 @@ void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
+volume_t get_gas_used(struct dive *dive)
+{
+	int idx;
+	volume_t gas_used = { 0 };
+	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
+		cylinder_t *cyl = &dive->cylinder[idx];
+		pressure_t start, end;
+
+		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
+		end = cyl->end.mbar ?cyl->sample_end : cyl->sample_end;
+		if (start.mbar && end.mbar)
+			gas_used.mliter += gas_volume(cyl, start) - gas_volume(cyl, end);
+	}
+	return gas_used;
+}

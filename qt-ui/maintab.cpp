@@ -8,6 +8,8 @@
 #include "ui_maintab.h"
 #include "addcylinderdialog.h"
 #include "addweightsystemdialog.h"
+#include "../helpers.h"
+#include "../statistics.h"
 
 #include <QLabel>
 
@@ -66,6 +68,7 @@ void MainTab::clearStats()
 	else						\
 		ui->field->setText(d->field)
 
+
 void MainTab::updateDiveInfo(int dive)
 {
 	// So, this is what happens now:
@@ -77,7 +80,7 @@ void MainTab::updateDiveInfo(int dive)
 	// open the file maintab.ui on the designer
 	// click on the item and check its objectName,
 	// the access is ui->objectName from here on.
-
+	volume_t sacVal;
 	struct dive *d = get_dive(dive);
 	UPDATE_TEXT(d, notes);
 	UPDATE_TEXT(d, location);
@@ -88,6 +91,24 @@ void MainTab::updateDiveInfo(int dive)
 		ui->rating->setCurrentStars(d->rating);
 	else
 		ui->rating->setCurrentStars(0);
+	ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
+	ui->averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
+	sacVal.mliter = d ? d->sac : 0;
+	ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
+	ui->otuText->setText(QString("%1").arg( d ? d->otu : 0));
+	ui->waterTemperatureText->setText(d ? get_temperature_string(d->watertemp, TRUE) : "");
+	ui->airTemperatureText->setText(d ? get_temperature_string(d->airtemp, TRUE) : "");
+	if (d && d->surface_pressure.mbar)
+		/* this is ALWAYS displayed in mbar */
+		ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
+	else
+		ui->airPressureText->setText(QString(""));
+#if 0 /* this fails to link, even though the function is defined in statistics.c / statistics.h */
+	if (d)
+		ui->gasUsedText->setText(get_volume_string(get_gas_used(d), TRUE));
+	else
+#endif
+		ui->gasUsedText->setText("");
 }
 
 void MainTab::on_addCylinder_clicked()
