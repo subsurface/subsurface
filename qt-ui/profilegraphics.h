@@ -10,7 +10,33 @@ struct graphics_context;
 struct plot_info;
 typedef struct text_render_options text_render_options_t;
 
-class ToolTipItem :public QObject, public QGraphicsPathItem {
+/**!
+ *
+ * Hookay, so, if you wanna extend the ToolTips that are displayed
+ * in the Profile Graph, there's one 'toolTip' widget already on it,
+ * you can just pass it to your Reimplementation of QGraphiscItem
+ * and do the following:
+ *
+ * EventItem::setController(ToolTipItem *c)
+ * {
+ * 	controller = c;
+ * }
+ *
+ * void EventItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+ * {
+ *	controller->addToolTip(text, icon);
+ * }
+ *
+ * void EventItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+ * {
+ *	controller->removeToolTip(text);
+ * }
+ *
+ * Remember to removeToolTip when you don't want it to be displayed.
+ *
+ **/
+class ToolTipItem :public QObject, public QGraphicsPathItem
+{
 	Q_OBJECT
 	void updateTitlePosition();
 	Q_PROPERTY(QRectF rect READ boundingRect WRITE setRect)
@@ -40,7 +66,8 @@ private:
 	QRectF rectangle;
 };
 
-class EventItem : public QGraphicsPolygonItem{
+class EventItem : public QGraphicsPolygonItem
+{
 public:
 	explicit EventItem(QGraphicsItem* parent = 0);
 	void addToolTip(const QString& text,const QIcon& icon = QIcon());
@@ -56,13 +83,12 @@ private:
 	QIcon icon;
 };
 
-class ProfileGraphicsView : public QGraphicsView {
+class ProfileGraphicsView : public QGraphicsView
+{
 Q_OBJECT
 public:
 	ProfileGraphicsView(QWidget* parent = 0);
 	void plot(struct dive *d);
-	void addToolTip(const QString& text, const QIcon& icon = QIcon());
-	void removeToolTip(const QString& text);
 
 protected:
 	void resizeEvent(QResizeEvent *event);

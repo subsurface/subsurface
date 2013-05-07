@@ -598,17 +598,6 @@ void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_opt
 	scene()->addItem(item);
 }
 
-void ProfileGraphicsView::addToolTip(const QString& text, const QIcon& icon)
-{
-	toolTip->addToolTip(text, icon);
-}
-
-void ProfileGraphicsView::removeToolTip(const QString& text)
-{
-	toolTip->removeToolTip(text);
-}
-
-
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
 	// Fits the scene's rectangle on the view.
