@@ -7,6 +7,9 @@
 #include <QBrush>
 #include <QDebug>
 #include <QLineF>
+#include <QSettings>
+#include <QIcon>
+#include <QPropertyAnimation>
 
 #include "../color.h"
 #include "../display.h"
@@ -146,12 +149,20 @@ static void plot_set_scale(scale_mode_t scale)
 
 void ProfileGraphicsView::plot(struct dive *dive)
 {
-	// Clear the items before drawing this dive.
-	qDeleteAll(scene()->items());
 	scene()->clear();
 
 	if(!dive)
 		return;
+
+	QSettings s;
+	s.beginGroup("ProfileMap");
+	QPointF toolTipPos = s.value("tooltip_position", QPointF(0,0)).toPointF();
+	s.endGroup();
+
+	toolTip = new ToolTipItem();
+	toolTip->setPos(toolTipPos);
+
+	scene()->addItem(toolTip);
 
 	struct plot_info *pi;
 	struct divecomputer *dc = &dive->dc;
@@ -363,7 +374,8 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 	}
 
 	//attach_tooltip(x-6, y, 12, 12, buffer, ev);
-	triangle->setToolTip(name);
+	//triangle->setToolTip(name);
+	toolTip->addToolTip(name);
 }
 
 void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -605,6 +617,16 @@ void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_opt
 	scene()->addItem(item);
 }
 
+void ProfileGraphicsView::addToolTip(const QString& text, const QIcon& icon)
+{
+	toolTip->addToolTip(text, icon);
+}
+
+void ProfileGraphicsView::removeToolTip(const QString& text)
+{
+	toolTip->removeToolTip(text);
+}
+
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
@@ -613,4 +635,110 @@ void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 	// like Qt::IgnoreAspectRatio or Qt::KeepAspectRatio
 	QRectF r = scene()->sceneRect();
 	fitInView ( r.x() - 50, r.y() -50, r.width() + 100, r.height() + 100); // do a little bit of spacing;
+}
+
+void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
+{
+	qDebug() << "Tooltip Adicionado" << toolTip;
+
+	QGraphicsPixmapItem *iconItem = 0;
+	if (!icon.isNull()) {
+		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL,ICON_SMALL), this);
+		iconItem->setPos( 4, toolTips.keys().size() * ICON_SMALL + 4);
+	}
+
+	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
+	textItem->setPos( 4 + ICON_SMALL + 4, toolTips.keys().size() * ICON_SMALL + 4);
+	textItem->setPen(QPen(Qt::white, 1));
+	textItem->setBrush(QBrush(Qt::white));
+	textItem->setFlag(ItemIgnoresTransformations);
+
+	toolTips[toolTip] = qMakePair(iconItem, textItem);
+	expand();
+}
+
+void ToolTipItem::removeToolTip(const QString& toolTip)
+{
+	ToolTip toBeRemoved = toolTips[toolTip];
+	delete toBeRemoved.first;
+	delete toBeRemoved.second;
+	expand();
+}
+
+void ToolTipItem::clear()
+{
+	Q_FOREACH(ToolTip t, toolTips) {
+		delete t.first;
+		delete t.second;
+	}
+	toolTips.clear();
+	expand();
+}
+
+void ToolTipItem::setRect(const QRectF& r)
+{
+
+	// qDeleteAll(childItems());
+	if (background) {
+		childItems().removeAt(childItems().indexOf(background));
+		delete background;
+	}
+
+	rectangle = r;
+	setBrush(QBrush(Qt::white));
+	setPen(QPen(Qt::black, 0.5));
+
+	QPainterPath border;
+	border.addRoundedRect(-2, -2, rectangle.width() + 4, rectangle.height()+ 4, 3, 3);
+	border.addRoundedRect( 0, 0, rectangle.width(), rectangle.height(), 3, 3);
+	setPath(border);
+
+	QGraphicsRectItem *b = new QGraphicsRectItem(-1, -1, rectangle.width()+1, rectangle.height()+1, this);
+	b->setFlag(ItemStacksBehindParent);
+	QColor c = QColor(Qt::black);
+	c.setAlpha(155);
+	b->setBrush(c);
+	background = b;
+
+}
+
+
+void ToolTipItem::collapse()
+{
+	QRectF newRect = childrenBoundingRect();
+	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
+	animation->setDuration(100);
+	animation->setStartValue(boundingRect());
+	animation->setEndValue(QRect(0, 0, ICON_SMALL, ICON_SMALL ));
+	animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void ToolTipItem::expand()
+{
+	QRectF newRect = childrenBoundingRect();
+	newRect = QRect(0, 0, newRect.width() + 8, newRect.height() + 8);
+	if (newRect != boundingRect()) {
+		QRectF newRect = childrenBoundingRect();
+		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
+		animation->setDuration(100);
+		animation->setStartValue(boundingRect());
+		animation->setEndValue(newRect);
+		animation->start(QAbstractAnimation::DeleteWhenStopped);
+	}
+}
+
+ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), background(0)
+{
+	setRect(QRectF(0,0,ICON_SMALL, ICON_SMALL));
+	setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	setFlag(QGraphicsItem::ItemIsMovable);
+}
+
+void ToolTipStatusHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    QGraphicsItem::mousePressEvent(event);
+}
+
+ToolTipStatusHandler::ToolTipStatusHandler(QObject* parent): QObject(parent), QGraphicsEllipseItem()
+{
 }
