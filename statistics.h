@@ -4,6 +4,14 @@
  * core logic functions called from statistics UI
  * common types and variables
  */
+
+#ifndef STATISTICS_H
+#define STATISTICS_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 	int period;
 	duration_t total_time;
@@ -32,3 +40,9 @@ extern char *get_minutes(int seconds);
 extern void process_all_dives(struct dive *dive, struct dive **prev_dive);
 extern void get_selected_dives_text(char *buffer, int size);
 extern volume_t get_gas_used(struct dive *dive);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
