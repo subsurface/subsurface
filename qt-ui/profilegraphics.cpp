@@ -135,6 +135,10 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
 	toolTip->clear();
+	int time =  (mapToScene(event->pos()).x() * gc.maxtime) / scene()->sceneRect().width();
+	char buffer[500];
+	get_plot_details(&gc, time, buffer, 500);
+	toolTip->addToolTip(QString(buffer));
 	QList<QGraphicsItem*> items = scene()->items(mapToScene(event->pos()), Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
 	Q_FOREACH(QGraphicsItem *item, items) {
 		if (!item->toolTip().isEmpty())
@@ -356,9 +360,10 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 			unsigned int he = ev->value >> 16;
 			unsigned int o2 = ev->value & 0xffff;
 
+			name += ": ";
 			name += (he) ? QString("%1/%2").arg(o2, he)
-				  : (o2 == 21) ? name += tr(":air")
-				  : QString("%1 %% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
+				  : (o2 == 21) ? name += tr("air")
+				  : QString("%1% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
 
 		} else if (ev->name && !strcmp(ev->name, "SP change")) {
 			name += QString(":%1").arg((double) ev->value / 1000);
@@ -664,8 +669,10 @@ void ProfileGraphicsView::plot_temperature_profile()
 void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 {
 	QGraphicsPixmapItem *iconItem = 0;
-	double yValue = title->boundingRect().height() + SPACING + toolTips.keys().size() * ICON_SMALL + SPACING;
-
+	double yValue = title->boundingRect().height() + SPACING;
+	Q_FOREACH(ToolTip t, toolTips) {
+		yValue += t.second->boundingRect().height();
+	}
 	if (!icon.isNull()) {
 		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL,ICON_SMALL), this);
 		iconItem->setPos(SPACING, yValue);
@@ -764,13 +771,12 @@ void ToolTipItem::expand()
 	QRectF currentRect = rectangle;
 	QRectF nextRectangle;
 
-	double width = 0;
+	double width = 0, height = title->boundingRect().height() + SPACING;
 	Q_FOREACH(ToolTip t, toolTips) {
 		if (t.second->boundingRect().width() > width)
 			width = t.second->boundingRect().width();
+		height += t.second->boundingRect().height();
 	}
-
-	double height = toolTips.count() * 18 + title->boundingRect().height() + SPACING;
 	/*       Left padding, Icon Size,   space, right padding */
 	width += SPACING       + ICON_SMALL + SPACING + SPACING;
 
