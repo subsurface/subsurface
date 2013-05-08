@@ -23,7 +23,7 @@ NAME = subsurface
 ICONFILE = $(NAME)-icon.svg
 DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
-XSLTFILES = xslt/*.xslt
+XSLTFILES = xslt/*.xslt xslt/*.xsl
 
 VERSION_FILE = version.h
 # There's only one line in $(VERSION_FILE); use the shell builtin `read'
