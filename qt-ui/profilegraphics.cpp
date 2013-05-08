@@ -11,6 +11,7 @@
 #include <QIcon>
 #include <QPropertyAnimation>
 #include <QGraphicsSceneHoverEvent>
+#include <QMouseEvent>
 
 #include "../color.h"
 #include "../display.h"
@@ -134,6 +135,16 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	defaultPen.setWidth(2);
 
 	fill_profile_color();
+}
+
+void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
+{
+	toolTip->clear();
+	QList<QGraphicsItem*> items = scene()->items( mapToScene(event->pos() ), Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
+	Q_FOREACH(QGraphicsItem *item, items){
+		if (!item->toolTip().isEmpty())
+			toolTip->addToolTip(item->toolTip());
+	}
 }
 
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
