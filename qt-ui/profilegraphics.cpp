@@ -123,6 +123,7 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	setScene(new QGraphicsScene());
 	setBackgroundBrush(QColor("#F3F3E6"));
 	scene()->setSceneRect(0,0,1000,1000);
+	scene()->installEventFilter(this);
 
 	setRenderHint(QPainter::Antialiasing);
 	setRenderHint(QPainter::HighQualityAntialiasing);
@@ -133,6 +134,16 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	defaultPen.setWidth(2);
 
 	fill_profile_color();
+}
+
+bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
+{
+	// This will "Eat" the default tooltip behavior.
+	if (event->type() == QEvent::GraphicsSceneHelp){
+		event->ignore();
+		return true;
+	}
+	return QGraphicsView::eventFilter(obj, event);
 }
 
 static void plot_set_scale(scale_mode_t scale)
@@ -355,8 +366,9 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 				ev->flags == SAMPLE_FLAGS_END ? tr("Starts with space!", " end") : "";
 	}
 
-	item->setToolTipController(toolTip);
-	item->addToolTip(name);
+	//item->setToolTipController(toolTip);
+	//item->addToolTip(name);
+	item->setToolTip(name);
 }
 
 void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -808,25 +820,4 @@ EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, this);
 	ball->setBrush(QBrush(Qt::black));
 
-}
-
-void EventItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
-{
-	controller->addToolTip(text, icon);
-}
-
-void EventItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
-{
-	controller->removeToolTip(text);
-}
-
-void EventItem::addToolTip(const QString& t, const QIcon& i)
-{
-	text = t;
-	icon = i;
-}
-
-void EventItem::setToolTipController(ToolTipItem* c)
-{
-	controller = c;
 }

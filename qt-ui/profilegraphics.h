@@ -70,12 +70,6 @@ class EventItem : public QGraphicsPolygonItem
 {
 public:
 	explicit EventItem(QGraphicsItem* parent = 0);
-	void addToolTip(const QString& text,const QIcon& icon = QIcon());
-	void setToolTipController(ToolTipItem *controller);
-
-protected:
-	void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
 private:
 	ToolTipItem *controller;
@@ -89,6 +83,7 @@ Q_OBJECT
 public:
 	ProfileGraphicsView(QWidget* parent = 0);
 	void plot(struct dive *d);
+	bool eventFilter(QObject* obj, QEvent* event);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
