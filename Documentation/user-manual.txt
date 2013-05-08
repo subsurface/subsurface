@@ -154,7 +154,9 @@ Now it is time to hook up your dive computer to your PC:
 
 	* On Linux this means you need to have the correct kernel
 	  module loaded. Most distributions will do this automatically
-	  for you.
+	  for you. Make sure you have read/write permissions to that
+	  port. On Ubuntu that could mean you should do 'sudo adduser
+	  [your_username] dialout'.
 
 	* On Windows, the OS should offer to download the correct
 	  driver when you connect your dive computer to the USB port.
@@ -1021,7 +1023,7 @@ are familiar with dive planning or use closed circuit rebreathers.
 | GFlow		| Gradient factor low value affects the ceiling calculation, leave to default if you are not familiar with GF
 | GFhigh		| Gradient factor high value affects the ceiling calculation, leave to default if you are not familiar GF
 | **Ending Depth**	| Depth where current segment ends; a different depth from the previous segment creates a transition segment for ascent or descent, keeping the same depth creates a segment at the given depth. By default the planner uses the measurement for length set in the preferences (meters for most users) - this can be overridden by explicitly specifying 'm' or 'ft'.
-| **Segment Time**	| Enter time in minutes; segment duration / relative time is indicated by a '+':  '+3' or '+3:00' creates a segment that lasts 3 minutes, an absolute time is indicated by @ character. Time '@7:30' means that the segment ends 7 minutes and 30 seconds after the start of a dive.
+| **Segment Time**	| Enter time in minutes; segment duration / relative time can be  indicated by an optional '+':  '+3' or '+3:00' creates a segment that lasts 3 minutes, add an at sign like '@7' for a segment that ends 7 minutes after the start of the dive.
 | **Gas Used**		| Breathing gas mix used; the parser is reasonably flexible and understands terms like AIR, EAN32, 36% or 15/50 (compressed air, 32% nitrox, 36% nitrox or 15% O₂ / 50% He trimix, respectively); leaving this field empty indicates continued use of the previous gas, air by default
 | **CC SetPoint**	| SetPoint when diving with a closed circuit rebreather. Leave empty for open circuit dives with standard scuba equipment
 |===============================================================================
