@@ -665,25 +665,30 @@ void ToolTipItem::setRect(const QRectF& r)
 {
 
 	// qDeleteAll(childItems());
-	if (background) {
-		childItems().removeAt(childItems().indexOf(background));
-		delete background;
-	}
+	delete background;
 
 	rectangle = r;
 	setBrush(QBrush(Qt::white));
 	setPen(QPen(Qt::black, 0.5));
 
+	// Creates a 2pixels border
 	QPainterPath border;
-	border.addRoundedRect(-2, -2, rectangle.width() + 4, rectangle.height()+ 4, 3, 3);
-	border.addRoundedRect( 0, 0, rectangle.width(), rectangle.height(), 3, 3);
+	border.addRoundedRect(-4, -4,  rectangle.width() + 8, rectangle.height() + 10, 3, 3);
+	border.addRoundedRect(-1, -1,  rectangle.width() + 3, rectangle.height() + 4, 3, 3);
 	setPath(border);
 
-	QGraphicsRectItem *b = new QGraphicsRectItem(-1, -1, rectangle.width()+1, rectangle.height()+1, this);
-	b->setFlag(ItemStacksBehindParent);
+	QPainterPath bg;
+	bg.addRoundedRect( -1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
+
 	QColor c = QColor(Qt::black);
 	c.setAlpha(155);
+
+	QGraphicsPathItem *b = new QGraphicsPathItem(bg, this);
+	b->setFlag(ItemStacksBehindParent);
+	b->setFlags(ItemIgnoresTransformations);
 	b->setBrush(c);
+	b->setPen(QPen(QBrush(Qt::transparent), 0));
+	b->setZValue(-10);
 	background = b;
 
 	updateTitlePosition();
@@ -753,7 +758,7 @@ void ToolTipItem::updateTitlePosition()
 		setRect(newRect);
 	}
 
-	title->setPos(boundingRect().width()/2 -title->boundingRect().width()/2, 0);
+	title->setPos(boundingRect().width()/2  - title->boundingRect().width()/2 -1, 0);
 	title->setFlag(ItemIgnoresTransformations);
 	title->setPen(QPen(Qt::white, 1));
 	title->setBrush(Qt::white);
@@ -761,14 +766,15 @@ void ToolTipItem::updateTitlePosition()
 	if (toolTips.size() > 0){
 		double x1 = 0;
 		double y1 = title->pos().y() + SPACING/2 + title->boundingRect().height();
-		double x2 = boundingRect().width() - 4;
+		double x2 = boundingRect().width() - 10;
 		double y2 = y1;
 
 		separator->setLine(x1, y1, x2, y2);
 		separator->setFlag(ItemIgnoresTransformations);
 		separator->setPen(QPen(Qt::white));
+		separator->show();
 	}else{
-		separator->setLine(QLineF());
+		separator->hide();
 	}
 }
 

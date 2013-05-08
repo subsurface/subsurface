@@ -59,7 +59,7 @@ public Q_SLOTS:
 private:
 	typedef QPair<QGraphicsPixmapItem*, QGraphicsSimpleTextItem*> ToolTip;
 	QMap<QString, ToolTip > toolTips;
-	QGraphicsRectItem *background;
+	QGraphicsPathItem *background;
 	QGraphicsLineItem *separator;
 	QGraphicsSimpleTextItem *title;
 
