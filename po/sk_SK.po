@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 11:00-0700\n"
-"PO-Revision-Date: 2013-04-30 17:51+0000\n"
-"Last-Translator: dirkhh <dirk@hohndel.org>\n"
+"POT-Creation-Date: 2013-05-02 08:37-0700\n"
+"PO-Revision-Date: 2013-05-08 15:01+0000\n"
+"Last-Translator: Dodiak <dodo.sk@gmail.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/subsurface/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,11 +33,11 @@ msgstr " > Mesiac"
 
 #: webservice.c:289
 msgid " Download"
-msgstr "Načitať"
+msgstr "Načítať"
 
 #: download-dialog.c:374
 msgid " Please select dive computer and device. "
-msgstr "Voľba typu počítača a zariadia. "
+msgstr "Voľba typu počítača a zariadenia. "
 
 #: profile.c:429
 msgctxt "Starts with space!"
@@ -243,7 +243,7 @@ msgstr "%s udalosť o %d:%02u"
 #: divelist-gtk.c:1378
 #, c-format
 msgid "%s: Response from divelogs.de"
-msgstr ""
+msgstr "%s: Odpoveď z "
 
 #: dive.c:921
 #, c-format
@@ -327,7 +327,7 @@ msgstr "Pridať Ponor..."
 
 #: gtk-gui.c:2189
 msgid "Add bookmark event here"
-msgstr ""
+msgstr "Pridaj poznámku"
 
 #: divelist-gtk.c:1672
 msgid "Add dive"
@@ -335,12 +335,12 @@ msgstr "Pridať ponor"
 
 #: gtk-gui.c:2184
 msgid "Add gas change event here"
-msgstr ""
+msgstr "Pridaj zmenu zmesi"
 
 #: equipment.c:633
 #, c-format
 msgid "Add gaschange event at %d:%02u"
-msgstr ""
+msgstr "Pridaj zmenu zmesi o %d:%02u"
 
 #: divelist-gtk.c:1797
 msgid "Add to trip above"
@@ -381,7 +381,7 @@ msgstr "Automatické zgrupovanie"
 
 #: equipment.c:642
 msgid "Available gases"
-msgstr ""
+msgstr "Zmesi k dispozícii"
 
 #: statistics-gtk.c:100
 msgctxt "Depth"
@@ -461,7 +461,7 @@ msgstr "Zrušené..."
 
 #: equipment.c:621
 msgid "Cannot add gas change"
-msgstr ""
+msgstr "Nemôžem pridať zmenu zmesi"
 
 #: webservice.c:29
 msgid "Cannot parse response!"
@@ -489,7 +489,7 @@ msgstr "Zredukovať všetky"
 
 #: divelist-gtk.c:1481
 msgid "Communication error with divelogs.de"
-msgstr ""
+msgstr "Problém v komunikácii s "
 
 #: webservice.c:121
 msgid "Connecting..."
@@ -549,7 +549,7 @@ msgstr "Požiadavka na databázu zlyhala '%s'.\n"
 #: parse-xml.c:1800
 #, c-format
 msgid "Database query get_events failed.\n"
-msgstr ""
+msgstr "Neúspešná požiadavka: get_events.⏎\n"
 
 #: divelist-gtk.c:817 print.c:502 statistics-gtk.c:590
 msgid "Date"
@@ -815,7 +815,7 @@ msgstr "Výstroj"
 
 #: divelist-gtk.c:1378
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 #: libdivecomputer.c:471
 msgid "Error obtaining water salinity"
@@ -1253,7 +1253,7 @@ msgstr "Žiadne informácie o fľaši"
 
 #: equipment.c:627
 msgid "No cylinders listed for this dive."
-msgstr ""
+msgstr "Pre tento ponor neboli zvolené žiadne fľaše."
 
 #: info-gtk.c:379 info-gtk.c:639 info-gtk.c:1010
 msgid "Notes"
@@ -1262,11 +1262,11 @@ msgstr "Poznámky"
 #: print.c:1025
 #, c-format
 msgid "Notes height (%d%% - %d%%)"
-msgstr ""
+msgstr "Výška poznámok (%d%% - %d%%)"
 
 #: print.c:1003
 msgid "Notes on top"
-msgstr ""
+msgstr "Poznámky na vrchu"
 
 #: main.c:78
 msgid "Nov"
@@ -1307,12 +1307,12 @@ msgstr "Otvoriť..."
 
 #: print.c:995
 msgid "Ordering"
-msgstr ""
+msgstr "Radenie"
 
 #: print.c:1024
 #, c-format
 msgid "Other data height (%d%% - %d%%)"
-msgstr ""
+msgstr "Výška pre ostatné údaje (%d%% - %d%%)"
 
 #: print.c:173
 #, c-format
@@ -1408,11 +1408,11 @@ msgstr "Nastavenia profilu"
 #: print.c:1023
 #, c-format
 msgid "Profile height (%d%% - %d%%)"
-msgstr ""
+msgstr "Výška profilu (%d%% - %d%%)"
 
 #: print.c:1000
 msgid "Profile on top"
-msgstr ""
+msgstr "Profil na vrchu"
 
 #: gtk-gui.c:1640
 msgid "Quit"
@@ -1597,7 +1597,7 @@ msgstr "Veľkosť"
 #: print.c:1012
 #, c-format
 msgid "Sizing heights (%% of layout)"
-msgstr ""
+msgstr "Rozdelenie výšky (%% celej plochy)"
 
 #: uemis.c:200
 msgid "Speed Alarm"
@@ -1750,9 +1750,9 @@ msgstr "Prechod na %.*f %s v %d:%02d min - runtime %d:%02u na %s\n"
 #, c-format
 msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
 msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Akcia %1$s, %2$s %3$d, %4$d (%5$d ponor)"
+msgstr[1] "Akcia %1$s, %2$s %3$d, %4$d (%5$d ponorov)"
+msgstr[2] "Akcia %1$s, %2$s %3$d, %4$d (%5$d ponorov)"
 
 #: main.c:68
 msgid "Tue"
@@ -1953,7 +1953,7 @@ msgstr "jaskyňa"
 
 #: statistics.c:20
 msgid "cavern"
-msgstr ""
+msgstr "dutina"
 
 #: libdivecomputer.c:149
 msgid "ceiling"
