@@ -141,6 +141,7 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 		if (!item->toolTip().isEmpty())
 			toolTip->addToolTip(item->toolTip());
 	}
+	QGraphicsView::mouseMoveEvent(event);
 }
 
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
