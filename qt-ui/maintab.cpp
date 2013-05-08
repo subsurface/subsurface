@@ -87,26 +87,39 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, suit);
 	UPDATE_TEXT(d, divemaster);
 	UPDATE_TEXT(d, buddy);
-	if (d)
+	if (d) {
 		ui->rating->setCurrentStars(d->rating);
-	else
-		ui->rating->setCurrentStars(0);
-	ui->maximumDepthText->setText(d ? get_depth_string(d->maxdepth, TRUE) : "");
-	ui->averageDepthText->setText(d ? get_depth_string(d->meandepth, TRUE) : "");
-	sacVal.mliter = d ? d->sac : 0;
-	ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
-	ui->otuText->setText(QString("%1").arg( d ? d->otu : 0));
-	ui->waterTemperatureText->setText(d ? get_temperature_string(d->watertemp, TRUE) : "");
-	ui->airTemperatureText->setText(d ? get_temperature_string(d->airtemp, TRUE) : "");
-	if (d && d->surface_pressure.mbar)
-		/* this is ALWAYS displayed in mbar */
-		ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
-	else
-		ui->airPressureText->setText(QString(""));
-	if (d)
+		ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
+		ui->averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
+		ui->otuText->setText(QString("%1").arg(d->otu));
+		ui->waterTemperatureText->setText(get_temperature_string(d->watertemp, TRUE));
+		ui->airTemperatureText->setText(get_temperature_string(d->airtemp, TRUE));
 		ui->gasUsedText->setText(get_volume_string(get_gas_used(d), TRUE));
-	else
-		ui->gasUsedText->setText("");
+		if ((sacVal.mliter = d->sac) > 0)
+			ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
+		else
+			ui->sacText->setText(QString());
+		if (d->surface_pressure.mbar)
+			/* this is ALWAYS displayed in mbar */
+			ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
+		else
+			ui->airPressureText->setText(QString());
+	} else {
+		ui->rating->setCurrentStars(0);
+		ui->sacText->setText(QString());
+		ui->otuText->setText(QString());
+		ui->oxygenHeliumText->setText(QString());
+		ui->dateText->setText(QString());
+		ui->diveTimeText->setText(QString());
+		ui->surfaceIntervalText->setText(QString());
+		ui->maximumDepthText->setText(QString());
+		ui->averageDepthText->setText(QString());
+		ui->visibilityText->setText(QString());
+		ui->waterTemperatureText->setText(QString());
+		ui->airTemperatureText->setText(QString());
+		ui->gasUsedText->setText(QString());
+		ui->airPressureText->setText(QString());
+	}
 }
 
 void MainTab::on_addCylinder_clicked()
