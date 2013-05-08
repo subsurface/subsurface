@@ -189,8 +189,6 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	struct divecomputer *dc = &dive->dc;
 
-	// This was passed around in the Cairo version / needed?
-	// const char *nickname;
 
 	// Fix this for printing / screen later.
 	// plot_set_scale(scale_mode_t);
@@ -224,13 +222,6 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	 */
 	calculate_max_limits(dive, dc, &gc);
 
-	/*
-	 * We don't use "cairo_translate()" because that doesn't
-	 * scale line width etc. But the actual scaling we need
-	 * do set up ourselves..
-	 *
-	 * Snif. What a pity.
-	 */
 	QRectF drawing_area = scene()->sceneRect();
 	gc.maxx = (drawing_area.width() - 2 * drawing_area.x());
 	gc.maxy = (drawing_area.height() - 2 * drawing_area.y());
@@ -256,29 +247,21 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	plot_depth_text(gc, pi);
 	plot_cylinder_pressure_text(gc, pi);
 	plot_deco_text(gc, pi);
+#endif
 
-	/* Bounding box last */
-	gc->leftx = 0; gc->rightx = 1.0;
-	gc->topy = 0; gc->bottomy = 1.0;
-
-	set_source_rgba(gc, BOUNDING_BOX);
-	cairo_set_line_width_scaled(gc->cr, 1);
-	move_to(gc, 0, 0);
-	line_to(gc, 0, 1);
-	line_to(gc, 1, 1);
-	line_to(gc, 1, 0);
-	cairo_close_path(gc->cr);
-	cairo_stroke(gc->cr);
+	gc.leftx = 0; gc.rightx = 1.0;
+	gc.topy = 0; gc.bottomy = 1.0;
 
 	/* Put the dive computer name in the lower left corner */
+	const char *nickname;
 	nickname = get_dc_nickname(dc->model, dc->deviceid);
 	if (!nickname || *nickname == '\0')
 		nickname = dc->model;
 	if (nickname) {
-		static const text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
-		plot_text(gc, &computer, 0, 1, "%s", nickname);
+	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
+		plot_text(&computer, 0, 1, nickname);
 	}
-
+#if 0
 	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile(gc, pi);
 		plot_pp_text(gc, pi);
