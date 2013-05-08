@@ -26,10 +26,6 @@
 #define VELOCITY_COLORS_START_IDX VELO_STABLE
 #define VELOCITY_COLORS 5
 
-/* Scale to 0,0 -> maxx,maxy */
-#define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
-#define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
-#define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
 
 static struct graphics_context last_gc;
 static double plot_scale = SCALE_SCREEN;
@@ -246,10 +242,10 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	plot_depth_profile(&gc, pi);
 
 	plot_events(&gc, pi, dc);
-#if 0
-	/* Temperature profile */
-	plot_temperature_profile(gc, pi);
 
+	/* Temperature profile */
+	plot_temperature_profile(&gc, pi);
+#if 0
 	/* Cylinder pressure plot */
 	plot_cylinder_pressure(gc, pi, dive, dc);
 
@@ -628,6 +624,41 @@ void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 	// like Qt::IgnoreAspectRatio or Qt::KeepAspectRatio
 	QRectF r = scene()->sceneRect();
 	fitInView ( r.x() - 50, r.y() -50, r.width() + 100, r.height() + 100); // do a little bit of spacing;
+}
+
+void ProfileGraphicsView::plot_temperature_profile(struct graphics_context *gc, struct plot_info *pi)
+{
+	int last = 0;
+
+	if (!setup_temperature_limits(gc, pi))
+		return;
+
+	QPointF from;
+	QPointF to;
+	QColor color = profile_color[TEMP_PLOT].first();
+
+	for (int i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+		int mkelvin = entry->temperature;
+		int sec = entry->sec;
+		if (!mkelvin) {
+			if (!last)
+				continue;
+			mkelvin = last;
+		}
+		if (last){
+			to = QPointF(SCALE(gc, sec, mkelvin));
+			//qDebug() << from << to;
+			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+			item->setPen(QPen(color, 2*plot_scale));
+			scene()->addItem(item);
+			from = to;
+		}
+		else{
+			from = QPointF(SCALE(gc, sec, mkelvin));
+		}
+		last = mkelvin;
+	}
 }
 
 void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)

@@ -38,6 +38,7 @@ struct plot_data {
 
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
 struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
+int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi);
 
 struct ev_select {
 	char *ev_name;
@@ -82,6 +83,10 @@ int get_maxdepth(struct plot_info *pi);
 #define TOP (1)
 #define MIDDLE (0)
 #define BOTTOM (-1)
+
+#define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
+#define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
+#define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
 
 #ifdef __cplusplus
 }

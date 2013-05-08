@@ -201,6 +201,32 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
+int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
+{
+	int maxtime, mintemp, maxtemp, delta;
+
+	/* Get plot scaling limits */
+	maxtime = get_maxtime(pi);
+	mintemp = pi->mintemp;
+	maxtemp = pi->maxtemp;
+
+	gc->leftx = 0; gc->rightx = maxtime;
+	/* Show temperatures in roughly the lower third, but make sure the scale
+	   is at least somewhat reasonable */
+	delta = maxtemp - mintemp;
+	if (delta < 3000) /* less than 3K in fluctuation */
+		delta = 3000;
+	gc->topy = maxtemp + delta*2;
+
+	if (PP_GRAPHS_ENABLED)
+		gc->bottomy = mintemp - delta * 2;
+	else
+		gc->bottomy = mintemp - delta / 3;
+
+	pi->endtempcoord = SCALEY(gc, pi->mintemp);
+	return maxtemp && maxtemp >= mintemp;
+}
+
 #if 0
 static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
 {
@@ -441,31 +467,7 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 }
 
 
-static int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
-{
-	int maxtime, mintemp, maxtemp, delta;
 
-	/* Get plot scaling limits */
-	maxtime = get_maxtime(pi);
-	mintemp = pi->mintemp;
-	maxtemp = pi->maxtemp;
-
-	gc->leftx = 0; gc->rightx = maxtime;
-	/* Show temperatures in roughly the lower third, but make sure the scale
-	   is at least somewhat reasonable */
-	delta = maxtemp - mintemp;
-	if (delta < 3000) /* less than 3K in fluctuation */
-		delta = 3000;
-	gc->topy = maxtemp + delta*2;
-
-	if (PP_GRAPHS_ENABLED)
-		gc->bottomy = mintemp - delta * 2;
-	else
-		gc->bottomy = mintemp - delta / 3;
-
-	pi->endtempcoord = SCALEY(gc, pi->mintemp);
-	return maxtemp && maxtemp >= mintemp;
-}
 
 static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkelvin)
 {
@@ -513,35 +515,6 @@ static void plot_temperature_text(struct graphics_context *gc, struct plot_info 
 	if ((abs(last_temperature - last_printed_temp) > 500) ||
 		((double)last / (double)sec < 0.75))
 		plot_single_temp_text(gc, sec, last_temperature);
-}
-
-static void plot_temperature_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	cairo_t *cr = gc->cr;
-	int last = 0;
-
-	if (!setup_temperature_limits(gc, pi))
-		return;
-
-	cairo_set_line_width_scaled(gc->cr, 2);
-	set_source_rgba(gc, TEMP_PLOT);
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-		int mkelvin = entry->temperature;
-		int sec = entry->sec;
-		if (!mkelvin) {
-			if (!last)
-				continue;
-			mkelvin = last;
-		}
-		if (last)
-			line_to(gc, sec, mkelvin);
-		else
-			move_to(gc, sec, mkelvin);
-		last = mkelvin;
-	}
-	cairo_stroke(cr);
 }
 
 /* gets both the actual start and end pressure as well as the scaling factors */
