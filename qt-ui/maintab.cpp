@@ -91,8 +91,8 @@ void MainTab::updateDiveInfo(int dive)
 		ui->rating->setCurrentStars(d->rating);
 	else
 		ui->rating->setCurrentStars(0);
-	ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
-	ui->averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
+	ui->maximumDepthText->setText(d ? get_depth_string(d->maxdepth, TRUE) : "");
+	ui->averageDepthText->setText(d ? get_depth_string(d->meandepth, TRUE) : "");
 	sacVal.mliter = d ? d->sac : 0;
 	ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
 	ui->otuText->setText(QString("%1").arg( d ? d->otu : 0));
