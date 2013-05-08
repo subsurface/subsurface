@@ -248,9 +248,13 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	plot_cylinder_pressure_text(gc, pi);
 	plot_deco_text(gc, pi);
 #endif
-
-	gc.leftx = 0; gc.rightx = 1.0;
-	gc.topy = 0; gc.bottomy = 1.0;
+	/* Bounding box */
+	QColor color = profile_color[TIME_GRID].at(0);
+	QPen pen = QPen(color);
+	pen.setWidth(1);
+	QGraphicsRectItem *rect = new QGraphicsRectItem(scene()->sceneRect());
+	rect->setPen(pen);
+	scene()->addItem(rect);
 
 	/* Put the dive computer name in the lower left corner */
 	const char *nickname;
@@ -259,7 +263,7 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		nickname = dc->model;
 	if (nickname) {
 	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
-		plot_text(&computer, 0, 1, nickname);
+		plot_text(&computer, gc.leftx, gc.bottomy, nickname);
 	}
 #if 0
 	if (PP_GRAPHS_ENABLED) {
