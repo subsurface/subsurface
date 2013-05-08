@@ -312,4 +312,8 @@ clean:
 		$(VERSION_FILE)
 	rm -rf share .dep
 
+release:
+	@scripts/check-version -cdr $(VERSION_STRING)
+	# Add other rules (like tar-command) bellow
+
 -include $(DEPS)

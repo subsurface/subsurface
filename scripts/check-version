@@ -1,0 +1,77 @@
+#!/bin/sh
+
+# $1	- version string
+# options:
+#	-c	colored grep
+#	-d	debug
+#	-r	release (exit status error; when called from Makefile)
+
+set -eu
+#set -x
+
+files="Documentation/user-manual.txt Makefile README ReleaseNotes.txt"
+
+whine() {
+	echo "$0: $*" >&2
+}
+
+croak() {
+	whine "$*"
+	exit 1
+}
+
+color=n
+debug=n
+release=n
+while getopts cdr opt; do
+	case $opt in
+		c)
+			color=y
+			;;
+		d)
+			debug=y
+			;;
+		r)
+			release=y
+			;;
+		*)
+			croak "invalid option"
+			;;
+	esac
+done
+shift $(($OPTIND - 1))
+
+if [ $debug = y ]; then
+	opts=-n
+else
+	opts=-q
+fi
+[ $color = n ] || opts="${opts:+ }--color"
+
+v=${1:-}
+case $v in
+	*-*)
+		# Ignore development versions
+		if [ $release = y ]; then
+			croak "'$v' not a release tag"
+		else
+			exit 0
+		fi
+		;;
+	''|*[!.0-9]*)
+		croak "invalid version string '$v'"
+		;;
+esac
+
+sts=0
+whine "checking for version $v"
+for f in $files; do
+	grep $opts -EHio "(VERSION=|subsurface[[:blank:]]+)?\<v?$v\>" $f || {
+		msg="'$f' may need updating"
+		if [ $release = y ]; then
+			croak "$msg"
+		else
+			whine "$msg"
+		fi
+	}
+done
