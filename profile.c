@@ -1551,7 +1551,7 @@ struct divecomputer *select_dc(struct divecomputer *main)
 	return main;
 }
 
-static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
+static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 			int depth, int pressure, int temp, gboolean has_ndl)
 {
 	int pressurevalue, mod, ead, end, eadd;
@@ -1635,7 +1635,7 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	free(buf2);
 }
 
-void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize)
+void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufsize)
 {
 	struct plot_info *pi = &gc->pi;
 	int pressure = 0, temp = 0;

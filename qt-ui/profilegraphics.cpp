@@ -26,7 +26,6 @@
 #define VELOCITY_COLORS_START_IDX VELO_STABLE
 #define VELOCITY_COLORS 5
 
-
 static struct graphics_context last_gc;
 static double plot_scale = SCALE_SCREEN;
 
@@ -136,8 +135,8 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
 	toolTip->clear();
-	QList<QGraphicsItem*> items = scene()->items( mapToScene(event->pos() ), Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
-	Q_FOREACH(QGraphicsItem *item, items){
+	QList<QGraphicsItem*> items = scene()->items(mapToScene(event->pos()), Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
+	Q_FOREACH(QGraphicsItem *item, items) {
 		if (!item->toolTip().isEmpty())
 			toolTip->addToolTip(item->toolTip());
 	}
@@ -147,7 +146,7 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
 {
 	// This will "Eat" the default tooltip behavior.
-	if (event->type() == QEvent::GraphicsSceneHelp){
+	if (event->type() == QEvent::GraphicsSceneHelp) {
 		event->ignore();
 		return true;
 	}
@@ -184,15 +183,13 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	scene()->addItem(toolTip);
 
-	struct plot_info *pi;
 	struct divecomputer *dc = &dive->dc;
 
 	// This was passed around in the Cairo version / needed?
-	graphics_context gc;
-	const char *nickname;
+	// const char *nickname;
 
 	// Fix this for printing / screen later.
-	// plot_set_scale( scale_mode_t);
+	// plot_set_scale(scale_mode_t);
 
 	if (!dc->samples) {
 		static struct sample fake[4];
@@ -237,15 +234,15 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	dc = select_dc(dc);
 
 	/* This is per-dive-computer. Right now we just do the first one */
-	pi = create_plot_info(dive, dc, &gc);
+	gc.pi = *create_plot_info(dive, dc, &gc);
 
 	/* Depth profile */
-	plot_depth_profile(&gc, pi);
+	plot_depth_profile();
 
-	plot_events(&gc, pi, dc);
+	plot_events(dc);
 
 	/* Temperature profile */
-	plot_temperature_profile(&gc, pi);
+	plot_temperature_profile();
 #if 0
 	/* Cylinder pressure plot */
 	plot_cylinder_pressure(gc, pi, dive, dc);
@@ -300,7 +297,7 @@ void ProfileGraphicsView::plot(struct dive *dive)
 #endif
 }
 
-void ProfileGraphicsView::plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
+void ProfileGraphicsView::plot_events(struct divecomputer *dc)
 {
 	struct event *event = dc->events;
 
@@ -309,14 +306,15 @@ void ProfileGraphicsView::plot_events(struct graphics_context *gc, struct plot_i
 // 	}
 
 	while (event) {
-		plot_one_event(gc, pi, event);
+		plot_one_event(event);
 		event = event->next;
 	}
 }
 
-void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *ev)
+void ProfileGraphicsView::plot_one_event(struct event *ev)
 {
 	int i, depth = 0;
+	struct plot_info *pi = &gc.pi;
 
 	/* is plotting this event disabled? */
 	if (ev->name) {
@@ -344,8 +342,8 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 
 	/* draw a little triangular marker and attach tooltip */
 
-	int x = SCALEX(gc, ev->time.seconds);
-	int y = SCALEY(gc, depth);
+	int x = SCALEXGC(ev->time.seconds);
+	int y = SCALEYGC(depth);
 
 	EventItem *item = new EventItem();
 	item->setPos(x, y);
@@ -363,7 +361,7 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 				  : QString("%1 %% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
 
 		} else if (ev->name && !strcmp(ev->name, "SP change")) {
-			name += QString(":%1").arg( (double) ev->value / 1000 );
+			name += QString(":%1").arg((double) ev->value / 1000);
 		} else {
 			name += QString(":%1").arg(ev->value);
 		}
@@ -379,7 +377,7 @@ void ProfileGraphicsView::plot_one_event(struct graphics_context *gc, struct plo
 	item->setToolTip(name);
 }
 
-void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
+void ProfileGraphicsView::plot_depth_profile()
 {
 	int i, incr;
 	int sec, depth;
@@ -388,10 +386,10 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
 
 	/* Get plot scaling limits */
-	maxtime = get_maxtime(pi);
-	maxdepth = get_maxdepth(pi);
+	maxtime = get_maxtime(&gc.pi);
+	maxdepth = get_maxdepth(&gc.pi);
 
-	gc->maxtime = maxtime;
+	gc.maxtime = maxtime;
 
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
 	 * We start out with 10 seconds and increment up to 30 minutes,
@@ -407,15 +405,15 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	while (maxtime / incr > 12)
 		incr *= 2;
 
-	gc->leftx = 0; gc->rightx = maxtime;
-	gc->topy = 0; gc->bottomy = 1.0;
+	gc.leftx = 0; gc.rightx = maxtime;
+	gc.topy = 0; gc.bottomy = 1.0;
 
-	last_gc = *gc;
+	last_gc = gc;
 
 	QColor color;
 	color = profile_color[TIME_GRID].at(0);
 	for (i = incr; i < maxtime; i += incr) {
-		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, i, 0), SCALE(gc, i, 1));
+		QGraphicsLineItem *line = new QGraphicsLineItem(SCALEGC(i, 0), SCALEGC(i, 1));
 		line->setPen(QPen(color));
 		scene()->addItem(line);
 	}
@@ -425,16 +423,16 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(gc, &tro, i, 1, QString("%1:%2").arg(i/60).arg(i%60));
+			plot_text(&tro, i, 1, QString("%1:%2").arg(i/60).arg(i%60));
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
-			plot_text(gc, &tro, i, 1, QString::number(i/60));
+			plot_text(&tro, i, 1, QString::number(i/60));
 	}
 
 	/* Depth markers: every 30 ft or 10 m*/
-	gc->leftx = 0; gc->rightx = 1.0;
-	gc->topy = 0; gc->bottomy = maxdepth;
+	gc.leftx = 0; gc.rightx = 1.0;
+	gc.topy = 0; gc.bottomy = maxdepth;
 	switch (prefs.units.length) {
 	case units::METERS:
 		marker = 10000;
@@ -443,22 +441,23 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		marker = 9144;
 		break;	/* 30 ft */
 	}
-	maxline = MAX(pi->maxdepth + marker, maxdepth * 2 / 3);
+	maxline = MAX(gc.pi.maxdepth + marker, maxdepth * 2 / 3);
 
 	color = profile_color[DEPTH_GRID].at(0);
 
 	for (i = marker; i < maxline; i += marker) {
-		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, 0, i), SCALE(gc, 1, i));
+		QGraphicsLineItem *line = new QGraphicsLineItem(SCALEGC(0, i), SCALEGC(1, i));
 		line->setPen(QPen(color));
 		scene()->addItem(line);
 	}
 
-	gc->leftx = 0; gc->rightx = maxtime;
+	gc.leftx = 0; gc.rightx = maxtime;
 	color = profile_color[MEAN_DEPTH].at(0);
 
 	/* Show mean depth */
-	if (! gc->printer) {
-		QGraphicsLineItem *line = new QGraphicsLineItem(SCALE(gc, 0, pi->meandepth), SCALE(gc, pi->entry[pi->nr - 1].sec, pi->meandepth));
+	if (! gc.printer) {
+		QGraphicsLineItem *line = new QGraphicsLineItem(SCALEGC(0, gc.pi.meandepth),
+								SCALEGC(gc.pi.entry[gc.pi.nr - 1].sec, gc.pi.meandepth));
 		line->setPen(QPen(color));
 		scene()->addItem(line);
 	}
@@ -475,27 +474,27 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 #endif
 
 	/* Do the depth profile for the neat fill */
-	gc->topy = 0; gc->bottomy = maxdepth;
+	gc.topy = 0; gc.bottomy = maxdepth;
 
-	entry = pi->entry;
+	entry = gc.pi.entry;
 
 	QPolygonF p;
 	QLinearGradient pat(0.0,0.0,0.0,scene()->height());
 	QGraphicsPolygonItem *neatFill = NULL;
 
-	p.append( QPointF(SCALE(gc, 0, 0) ));
-	for (i = 0; i < pi->nr; i++, entry++)
-		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
+	p.append(QPointF(SCALEGC(0, 0)));
+	for (i = 0; i < gc.pi.nr; i++, entry++)
+		p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 
 	/* Show any ceiling we may have encountered */
-	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+	for (i = gc.pi.nr - 1; i >= 0; i--, entry--) {
 		if (entry->ndl) {
 			/* non-zero NDL implies this is a safety stop, no ceiling */
-			p.append( QPointF( SCALE(gc, entry->sec, 0) ));
+			p.append(QPointF(SCALEGC(entry->sec, 0)));
 		} else if (entry->stopdepth < entry->depth) {
-			p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
+			p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
 		} else {
-			p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
+			p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 		}
 	}
 	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
@@ -518,17 +517,17 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
 		pat.setColorAt(1, profile_color[CEILING_DEEP].first());
 
-		entry = pi->entry;
-		p.append( QPointF(SCALE(gc, 0, 0) ));
-		for (i = 0; i < pi->nr; i++, entry++) {
+		entry = gc.pi.entry;
+		p.append(QPointF(SCALEGC(0, 0)));
+		for (i = 0; i < gc.pi.nr; i++, entry++) {
 			if (entry->ndl == 0 && entry->stopdepth) {
 				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
-					p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
+					p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
 				} else {
-					p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
+					p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 				}
 			} else {
-				p.append( QPointF( SCALE(gc, entry->sec, 0) ));
+				p.append(QPointF(SCALEGC(entry->sec, 0)));
 			}
 		}
 
@@ -546,16 +545,16 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 		pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
 		pat.setColorAt(1, profile_color[CALC_CEILING_DEEP].first());
 
-		entry = pi->entry;
+		entry = gc.pi.entry;
 		p.clear();
-		p.append( QPointF(SCALE(gc, 0, 0) ));
-		for (i = 0; i < pi->nr; i++, entry++) {
+		p.append(QPointF(SCALEGC(0, 0)));
+		for (i = 0; i < gc.pi.nr; i++, entry++) {
 			if (entry->ceiling)
-				p.append( QPointF( SCALE(gc, entry->sec, entry->ceiling) ));
+				p.append(QPointF(SCALEGC(entry->sec, entry->ceiling)));
 			else
-				p.append( QPointF( SCALE(gc, entry->sec, 0) ));
+				p.append(QPointF(SCALEGC(entry->sec, 0)));
 		}
-		p.append( QPointF( SCALE(gc, (entry-1)->sec, 0) ));
+		p.append(QPointF(SCALEGC((entry-1)->sec, 0)));
 		neatFill = new QGraphicsPolygonItem();
 		neatFill->setPolygon(p);
 		neatFill->setPen(QPen(QBrush(),0));
@@ -566,17 +565,17 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
 	pat.setColorAt(1, profile_color[CEILING_DEEP].first());
 
-	entry = pi->entry;
+	entry = gc.pi.entry;
 	p.clear();
-	p.append( QPointF(SCALE(gc, 0, 0) ));
-	for (i = 0; i < pi->nr; i++, entry++)
-		p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
+	p.append(QPointF(SCALEGC(0, 0)));
+	for (i = 0; i < gc.pi.nr; i++, entry++)
+		p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 
-	for (i = pi->nr - 1; i >= 0; i--, entry--) {
+	for (i = gc.pi.nr - 1; i >= 0; i--, entry--) {
 		if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
-			p.append( QPointF( SCALE(gc, entry->sec, entry->stopdepth) ));
+			p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
 		} else {
-			p.append( QPointF( SCALE(gc, entry->sec, entry->depth) ));
+			p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 		}
 	}
 
@@ -587,21 +586,21 @@ void ProfileGraphicsView::plot_depth_profile(struct graphics_context *gc, struct
 	scene()->addItem(neatFill);
 
 	/* Now do it again for the velocity colors */
-	entry = pi->entry;
-	for (i = 1; i < pi->nr; i++) {
+	entry = gc.pi.entry;
+	for (i = 1; i < gc.pi.nr; i++) {
 		entry++;
 		sec = entry->sec;
 		/* we want to draw the segments in different colors
 		 * representing the vertical velocity, so we need to
 		 * chop this into short segments */
 		depth = entry->depth;
-		QGraphicsLineItem *colorLine = new QGraphicsLineItem( SCALE(gc, entry[-1].sec, entry[-1].depth), SCALE(gc, sec, depth));
-		colorLine->setPen(QPen(QBrush(profile_color[ (color_indice_t) (VELOCITY_COLORS_START_IDX + entry->velocity)].first()), 2 ));
+		QGraphicsLineItem *colorLine = new QGraphicsLineItem(SCALEGC(entry[-1].sec, entry[-1].depth), SCALEGC(sec, depth));
+		colorLine->setPen(QPen(QBrush(profile_color[ (color_indice_t) (VELOCITY_COLORS_START_IDX + entry->velocity)].first()), 2));
 		scene()->addItem(colorLine);
 	}
 }
 
-void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_options_t *tro, double x, double y, const QString& text)
+void ProfileGraphicsView::plot_text(text_render_options_t *tro, double x, double y, const QString& text)
 {
 	QFontMetrics fm(font());
 
@@ -609,11 +608,11 @@ void ProfileGraphicsView::plot_text(struct graphics_context *gc, text_render_opt
 	double dy = tro->vpos * (fm.height());
 
 	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text);
-	QPointF point( SCALE(gc, x, y) ); // This is neded because of the SCALE macro.
+	QPointF point(SCALEGC(x, y)); // This is neded because of the SCALE macro.
 
-	item->setPos(point.x() + dx, point.y() +dy );
-	item->setBrush( QBrush(profile_color[tro->color].first()));
-	item->setPen( QPen(profile_color[BACKGROUND].first()));
+	item->setPos(point.x() + dx, point.y() +dy);
+	item->setBrush(QBrush(profile_color[tro->color].first()));
+	item->setPen(QPen(profile_color[BACKGROUND].first()));
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(item);
 }
@@ -624,22 +623,22 @@ void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 	// I can pass some parameters to this -
 	// like Qt::IgnoreAspectRatio or Qt::KeepAspectRatio
 	QRectF r = scene()->sceneRect();
-	fitInView ( r.x() - 50, r.y() -50, r.width() + 100, r.height() + 100); // do a little bit of spacing;
+	fitInView (r.x() - 50, r.y() -50, r.width() + 100, r.height() + 100); // do a little bit of spacing;
 }
 
-void ProfileGraphicsView::plot_temperature_profile(struct graphics_context *gc, struct plot_info *pi)
+void ProfileGraphicsView::plot_temperature_profile()
 {
 	int last = 0;
 
-	if (!setup_temperature_limits(gc, pi))
+	if (!setup_temperature_limits(&gc, &gc.pi))
 		return;
 
 	QPointF from;
 	QPointF to;
 	QColor color = profile_color[TEMP_PLOT].first();
 
-	for (int i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
+	for (int i = 0; i < gc.pi.nr; i++) {
+		struct plot_data *entry = gc.pi.entry + i;
 		int mkelvin = entry->temperature;
 		int sec = entry->sec;
 		if (!mkelvin) {
@@ -647,8 +646,8 @@ void ProfileGraphicsView::plot_temperature_profile(struct graphics_context *gc, 
 				continue;
 			mkelvin = last;
 		}
-		if (last){
-			to = QPointF(SCALE(gc, sec, mkelvin));
+		if (last) {
+			to = QPointF(SCALEGC(sec, mkelvin));
 			//qDebug() << from << to;
 			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
 			item->setPen(QPen(color, 2*plot_scale));
@@ -656,7 +655,7 @@ void ProfileGraphicsView::plot_temperature_profile(struct graphics_context *gc, 
 			from = to;
 		}
 		else{
-			from = QPointF(SCALE(gc, sec, mkelvin));
+			from = QPointF(SCALEGC(sec, mkelvin));
 		}
 		last = mkelvin;
 	}
@@ -669,11 +668,11 @@ void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 
 	if (!icon.isNull()) {
 		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL,ICON_SMALL), this);
-		iconItem->setPos( SPACING, yValue);
+		iconItem->setPos(SPACING, yValue);
 	}
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
-	textItem->setPos( SPACING + ICON_SMALL + SPACING, yValue);
+	textItem->setPos(SPACING + ICON_SMALL + SPACING, yValue);
 	textItem->setPen(QPen(Qt::white, 1));
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
@@ -692,7 +691,7 @@ void ToolTipItem::removeToolTip(const QString& toolTip)
 	int toolTipIndex = 0;
 
 	// We removed a toolTip, let's move the others to the correct location
-	Q_FOREACH(ToolTip t, toolTips){
+	Q_FOREACH(ToolTip t, toolTips) {
 		double yValue = title->boundingRect().height() + SPACING + toolTipIndex * ICON_SMALL + SPACING;
 
 		// Icons can be null.
@@ -733,7 +732,7 @@ void ToolTipItem::setRect(const QRectF& r)
 	setPath(border);
 
 	QPainterPath bg;
-	bg.addRoundedRect( -1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
+	bg.addRoundedRect(-1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
 
 	QColor c = QColor(Qt::black);
 	c.setAlpha(155);
@@ -756,7 +755,7 @@ void ToolTipItem::collapse()
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
 	animation->setDuration(100);
 	animation->setStartValue(boundingRect());
-	animation->setEndValue(QRect(0, 0, ICON_SMALL, ICON_SMALL ));
+	animation->setEndValue(QRect(0, 0, ICON_SMALL, ICON_SMALL));
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -778,7 +777,7 @@ void ToolTipItem::expand()
 	if (width < title->boundingRect().width() + SPACING*2)
 		width = title->boundingRect().width() + SPACING*2;
 
-	if( height < ICON_SMALL)
+	if(height < ICON_SMALL)
 		height = ICON_SMALL;
 
 	nextRectangle.setWidth(width);
@@ -806,10 +805,10 @@ ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), back
 
 void ToolTipItem::updateTitlePosition()
 {
-	if (rectangle.width() < title->boundingRect().width() + SPACING*4 ){
+	if (rectangle.width() < title->boundingRect().width() + SPACING*4) {
 		QRectF newRect = rectangle;
 		newRect.setWidth(title->boundingRect().width() + SPACING*4);
-		newRect.setHeight( newRect.height() ? newRect.height() : ICON_SMALL );
+		newRect.setHeight(newRect.height() ? newRect.height() : ICON_SMALL);
 		setRect(newRect);
 	}
 
@@ -818,7 +817,7 @@ void ToolTipItem::updateTitlePosition()
 	title->setPen(QPen(Qt::white, 1));
 	title->setBrush(Qt::white);
 
-	if (toolTips.size() > 0){
+	if (toolTips.size() > 0) {
 		double x1 = 0;
 		double y1 = title->pos().y() + SPACING/2 + title->boundingRect().height();
 		double x2 = boundingRect().width() - 10;
@@ -828,7 +827,7 @@ void ToolTipItem::updateTitlePosition()
 		separator->setFlag(ItemIgnoresTransformations);
 		separator->setPen(QPen(Qt::white));
 		separator->show();
-	}else{
+	} else {
 		separator->hide();
 	}
 }

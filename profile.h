@@ -84,6 +84,10 @@ int get_maxdepth(struct plot_info *pi);
 #define MIDDLE (0)
 #define BOTTOM (-1)
 
+#define SCALEXGC(x)  (((x) - gc.leftx) / (gc.rightx - gc.leftx) * gc.maxx)
+#define SCALEYGC(y)  (((y) - gc.topy) / (gc.bottomy - gc.topy) * gc.maxy)
+#define SCALEGC(x,y) SCALEXGC(x),SCALEYGC(y)
+
 #define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
 #define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
 #define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
