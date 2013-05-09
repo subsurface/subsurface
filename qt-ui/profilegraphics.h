@@ -107,6 +107,8 @@ private:
 	void plot_deco_text();
 	void plot_pp_gas_profile();
 	void plot_pp_text();
+	void plot_depth_scale();
+
 	QColor get_sac_color(int sac, int avg_sac);
 
 	QPen defaultPen;

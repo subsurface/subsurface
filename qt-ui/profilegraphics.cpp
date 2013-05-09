@@ -276,22 +276,51 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		plot_pp_text();
 	//}
 
-#if 0
+
 	/* now shift the translation back by half the margin;
 	 * this way we can draw the vertical scales on both sides */
-	cairo_translate(gc->cr, -drawing_area->x / 2.0, 0);
-	gc->maxx += drawing_area->x;
-	gc->leftx = -(drawing_area->x / drawing_area->width) / 2.0;
-	gc->rightx = 1.0 - gc->leftx;
+	//cairo_translate(gc->cr, -drawing_area->x / 2.0, 0);
 
-	plot_depth_scale(gc, pi);
+	//gc->maxx += drawing_area->x;
+	//gc->leftx = -(drawing_area->x / drawing_area->width) / 2.0;
+	//gc->rightx = 1.0 - gc->leftx;
 
+	plot_depth_scale();
+
+#if 0
 	if (gc->printer) {
 		free(pi->entry);
 		last_pi_entry = pi->entry = NULL;
 		pi->nr = 0;
 	}
 #endif
+}
+
+void ProfileGraphicsView::plot_depth_scale()
+{
+	int i, maxdepth, marker;
+	static text_render_options_t tro = {DEPTH_TEXT_SIZE, SAMPLE_DEEP, RIGHT, MIDDLE};
+
+	/* Depth markers: every 30 ft or 10 m*/
+	maxdepth = get_maxdepth(&gc.pi);
+	gc.topy = 0; gc.bottomy = maxdepth;
+
+	switch (prefs.units.length) {
+		case units::METERS: marker = 10000; break;
+		case units::FEET: marker = 9144; break;	/* 30 ft */
+	}
+
+	QColor c(profile_color[DEPTH_GRID].first());
+
+	/* don't write depth labels all the way to the bottom as
+	 * there may be other graphs below the depth plot (like
+	 * partial pressure graphs) where this would look out
+	 * of place - so we only make sure that we print the next
+	 * marker below the actual maxdepth of the dive */
+	for (i = marker; i <= gc.pi.maxdepth + marker; i += marker) {
+		double d = get_depth_units(i, NULL, NULL);
+		plot_text(&tro, -0.002, i, QString::number(d));
+	}
 }
 
 void ProfileGraphicsView::plot_pp_text()

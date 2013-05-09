@@ -281,31 +281,6 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 	plot_minmax_profile_minute(gc, pi, 0);
 }
 
-static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i, maxdepth, marker;
-	static const text_render_options_t tro = {DEPTH_TEXT_SIZE, SAMPLE_DEEP, RIGHT, MIDDLE};
-
-	/* Depth markers: every 30 ft or 10 m*/
-	maxdepth = get_maxdepth(pi);
-	gc->topy = 0; gc->bottomy = maxdepth;
-
-	switch (prefs.units.length) {
-	case METERS: marker = 10000; break;
-	case FEET: marker = 9144; break;	/* 30 ft */
-	}
-	set_source_rgba(gc, DEPTH_GRID);
-	/* don't write depth labels all the way to the bottom as
-	 * there may be other graphs below the depth plot (like
-	 * partial pressure graphs) where this would look out
-	 * of place - so we only make sure that we print the next
-	 * marker below the actual maxdepth of the dive */
-	for (i = marker; i <= pi->maxdepth + marker; i += marker) {
-		double d = get_depth_units(i, NULL, NULL);
-		plot_text(gc, &tro, -0.002, i, "%.0f", d);
-	}
-}
-
 static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	double pp, dpp, m;
