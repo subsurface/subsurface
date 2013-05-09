@@ -38,7 +38,7 @@ struct plot_data {
 
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
 struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
-int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi);
+int setup_temperature_limits(struct graphics_context *gc);
 int get_cylinder_pressure_range(struct graphics_context *gc);
 
 struct ev_select {

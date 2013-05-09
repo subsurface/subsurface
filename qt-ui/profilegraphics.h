@@ -97,7 +97,8 @@ private:
 	void plot_one_event(struct event *event);
 	void plot_temperature_profile();
 	void plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc);
-
+	void plot_temperature_text();
+	void plot_single_temp_text(int sec, int mkelvin);
 	QColor get_sac_color(int sac, int avg_sac);
 
 	QPen defaultPen;

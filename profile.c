@@ -193,10 +193,11 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
-int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
+int setup_temperature_limits(struct graphics_context *gc)
 {
 	int maxtime, mintemp, maxtemp, delta;
 
+	struct plot_info *pi = &gc->pi;
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
 	mintemp = pi->mintemp;
@@ -461,53 +462,7 @@ static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *p
 
 
 
-static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkelvin)
-{
-	double deg;
-	const char *unit;
-	static const text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
 
-	deg = get_temp_units(mkelvin, &unit);
-
-	plot_text(gc, &tro, sec, mkelvin, "%.2g%s", deg, unit);
-}
-
-static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	int last = -300, sec = 0;
-	int last_temperature = 0, last_printed_temp = 0;
-
-	if (!setup_temperature_limits(gc, pi))
-		return;
-
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry+i;
-		int mkelvin = entry->temperature;
-		sec = entry->sec;
-
-		if (!mkelvin)
-			continue;
-		last_temperature = mkelvin;
-		/* don't print a temperature
-		 * if it's been less than 5min and less than a 2K change OR
-		 * if it's been less than 2min OR if the change from the
-		 * last print is less than .4K (and therefore less than 1F */
-		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
-			(sec < last + 120) ||
-			(abs(mkelvin - last_printed_temp) < 400))
-			continue;
-		last = sec;
-		plot_single_temp_text(gc,sec,mkelvin);
-		last_printed_temp = mkelvin;
-	}
-	/* it would be nice to print the end temperature, if it's
-	 * different or if the last temperature print has been more
-	 * than a quarter of the dive back */
-	if ((abs(last_temperature - last_printed_temp) > 500) ||
-		((double)last / (double)sec < 0.75))
-		plot_single_temp_text(gc, sec, last_temperature);
-}
 
 /* gets both the actual start and end pressure as well as the scaling factors */
 

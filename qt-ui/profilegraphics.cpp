@@ -242,10 +242,13 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	/* Cylinder pressure plot */
 	plot_cylinder_pressure(dive, dc);
-#if 0
+
 	/* Text on top of all graphs.. */
-	plot_temperature_text(gc, pi);
+	plot_temperature_text();
+
 	plot_depth_text(gc, pi);
+
+#if 0
 	plot_cylinder_pressure_text(gc, pi);
 	plot_deco_text(gc, pi);
 #endif
@@ -287,6 +290,54 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		pi->nr = 0;
 	}
 #endif
+}
+
+void ProfileGraphicsView::plot_temperature_text()
+{
+	int i;
+	int last = -300, sec = 0;
+	int last_temperature = 0, last_printed_temp = 0;
+	plot_info *pi = &gc.pi;
+
+	if (!setup_temperature_limits(&gc))
+		return;
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry+i;
+		int mkelvin = entry->temperature;
+		sec = entry->sec;
+
+		if (!mkelvin)
+			continue;
+		last_temperature = mkelvin;
+		/* don't print a temperature
+		 * if it's been less than 5min and less than a 2K change OR
+		 * if it's been less than 2min OR if the change from the
+		 * last print is less than .4K (and therefore less than 1F */
+		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
+			(sec < last + 120) ||
+			(abs(mkelvin - last_printed_temp) < 400))
+			continue;
+		last = sec;
+
+		plot_single_temp_text(sec,mkelvin);
+		last_printed_temp = mkelvin;
+	}
+	/* it would be nice to print the end temperature, if it's
+	 * different or if the last temperature print has been more
+	 * than a quarter of the dive back */
+	if ((abs(last_temperature - last_printed_temp) > 500) ||
+		((double)last / (double)sec < 0.75))
+		plot_single_temp_text(sec, last_temperature);
+}
+
+void ProfileGraphicsView::plot_single_temp_text(int sec, int mkelvin)
+{
+	double deg;
+	const char *unit;
+	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
+	deg = get_temp_units(mkelvin, &unit);
+	plot_text(&tro, sec, mkelvin, QString("%1%2").arg(deg).arg(unit)); //"%.2g%s"
 }
 
 void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc)
@@ -716,7 +767,7 @@ void ProfileGraphicsView::plot_temperature_profile()
 {
 	int last = 0;
 
-	if (!setup_temperature_limits(&gc, &gc.pi))
+	if (!setup_temperature_limits(&gc))
 		return;
 
 	QPointF from;
