@@ -1707,14 +1707,14 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	dive_start();
 	cur_dive->number = atoi(data[0]);
 
-	/* Suunto saves time in 100 nano seconds, we'll need the time in
-	 * seconds.
-	 */
-	when = (time_t)(atol(data[1]) / 10000000);
+	when = (time_t)(atol(data[1]));
 	tm = localtime(&when);
 
-	/* Suunto starts counting time in year 1, we need epoch */
-	tm->tm_year -= 1969;
+	/* Bailing out if localtime returns NULL */
+	if (!tm)
+		return -1;
+
+	/* Timezones are not taken into account */
 	cur_dive->when = mktime(tm);
 	if (data[2])
 		utf8_string(data[2], &cur_dive->notes);
@@ -1827,7 +1827,9 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	sqlite3 *handle;
 	target_table = table;
 
-	char get_dives[] = "select D.DiveId,StartTime,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+	/* StartTime is converted from Suunto's nano seconds to standard
+	 * time. We also need epoch, not seconds since year 1. */
+	char get_dives[] = "select D.DiveId,StartTime/10000000-62135604000,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_open(url,&handle);
 
