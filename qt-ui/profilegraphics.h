@@ -67,6 +67,7 @@ public:
 protected:
 	void resizeEvent(QResizeEvent *event);
     void mouseMoveEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
 
 private:
 	void plot_depth_profile();
@@ -93,6 +94,7 @@ private:
 	QBrush defaultBrush;
 	ToolTipItem *toolTip;
 	graphics_context gc;
+	struct dive *dive;
 };
 
 #endif

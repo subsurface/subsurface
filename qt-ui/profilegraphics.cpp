@@ -114,7 +114,7 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent) , dive(0)
 {
 	gc.printer = false;
 	setScene(new QGraphicsScene());
@@ -131,7 +131,25 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	defaultPen.setWidth(2);
 	defaultPen.setCosmetic(true);
 
+	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+	setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+
 	fill_profile_color();
+}
+
+void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
+{
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+    // Scale the view / do the zoom
+    double scaleFactor = 1.15;
+    if(event->delta() > 0) {
+        // Zoom in
+        scale(scaleFactor, scaleFactor);
+    } else {
+        // Zooming out
+        scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    }
 }
 
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
@@ -146,6 +164,10 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 		if (!item->toolTip().isEmpty())
 			toolTip->addToolTip(item->toolTip());
 	}
+
+	// Pan on mouseMove code.
+	ensureVisible(event->pos().x(), event->pos().y(), 10, 10, 100, 100);
+
 	QGraphicsView::mouseMoveEvent(event);
 }
 
@@ -172,12 +194,15 @@ static void plot_set_scale(scale_mode_t scale)
 	}
 }
 
-void ProfileGraphicsView::plot(struct dive *dive)
+void ProfileGraphicsView::plot(struct dive *d)
 {
 	scene()->clear();
 
+	dive = d;
 	if(!dive)
 		return;
+
+	scene()->setSceneRect(0,0, viewport()->width()-50, viewport()->height()-50);
 
 	QSettings s;
 	s.beginGroup("ProfileMap");
@@ -294,6 +319,9 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		pi->nr = 0;
 	}
 #endif
+
+	QRectF curerntRect = scene()->itemsBoundingRect();
+	scene()->setSceneRect( -10, -10, curerntRect.width() + 10, curerntRect.height() +10 );
 }
 
 void ProfileGraphicsView::plot_depth_scale()
@@ -1061,11 +1089,7 @@ void ProfileGraphicsView::plot_text(text_render_options_t *tro, double x, double
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
-	// Fits the scene's rectangle on the view.
-	// I can pass some parameters to this -
-	// like Qt::IgnoreAspectRatio or Qt::KeepAspectRatio
-	QRectF r = scene()->sceneRect();
-	fitInView (r.x() - 50, r.y() -50, r.width() + 100, r.height() + 100); // do a little bit of spacing;
+	plot(dive);
 }
 
 void ProfileGraphicsView::plot_temperature_profile()
