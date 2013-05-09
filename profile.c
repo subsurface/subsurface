@@ -470,55 +470,6 @@ int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct div
 
 #if USE_GTK_UI
 
-
-static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
-				int xalign, int yalign)
-{
-	int pressure;
-	const char *unit;
-
-	pressure = get_pressure_units(mbar, &unit);
-	text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
-	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
-}
-
-static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	int mbar, cyl;
-	int seen_cyl[MAX_CYLINDERS] = { FALSE, };
-	int last_pressure[MAX_CYLINDERS] = { 0, };
-	int last_time[MAX_CYLINDERS] = { 0, };
-	struct plot_data *entry;
-
-	if (!get_cylinder_pressure_range(gc, pi))
-		return;
-
-	cyl = -1;
-	for (i = 0; i < pi->nr; i++) {
-		entry = pi->entry + i;
-		mbar = GET_PRESSURE(entry);
-
-		if (!mbar)
-			continue;
-		if (cyl != entry->cylinderindex) {
-			cyl = entry->cylinderindex;
-			if (!seen_cyl[cyl]) {
-				plot_pressure_value(gc, mbar, entry->sec, LEFT, BOTTOM);
-				seen_cyl[cyl] = TRUE;
-			}
-		}
-		last_pressure[cyl] = mbar;
-		last_time[cyl] = entry->sec;
-	}
-
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		if (last_time[cyl]) {
-			plot_pressure_value(gc, last_pressure[cyl], last_time[cyl], CENTER, TOP);
-		}
-	}
-}
-
 static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	if (prefs.profile_calc_ceiling) {

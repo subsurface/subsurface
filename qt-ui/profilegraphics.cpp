@@ -248,8 +248,8 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	plot_depth_text();
 
+	plot_cylinder_pressure_text();
 #if 0
-	plot_cylinder_pressure_text(gc, pi);
 	plot_deco_text(gc, pi);
 #endif
 	/* Bounding box */
@@ -290,6 +290,54 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		pi->nr = 0;
 	}
 #endif
+}
+
+void ProfileGraphicsView::plot_cylinder_pressure_text()
+{
+	int i;
+	int mbar, cyl;
+	int seen_cyl[MAX_CYLINDERS] = { FALSE, };
+	int last_pressure[MAX_CYLINDERS] = { 0, };
+	int last_time[MAX_CYLINDERS] = { 0, };
+	struct plot_data *entry;
+	struct plot_info *pi = &gc.pi;
+
+	if (!get_cylinder_pressure_range(&gc))
+		return;
+
+	cyl = -1;
+	for (i = 0; i < pi->nr; i++) {
+		entry = pi->entry + i;
+		mbar = GET_PRESSURE(entry);
+
+		if (!mbar)
+			continue;
+		if (cyl != entry->cylinderindex) {
+			cyl = entry->cylinderindex;
+			if (!seen_cyl[cyl]) {
+				plot_pressure_value(mbar, entry->sec, LEFT, BOTTOM);
+				seen_cyl[cyl] = TRUE;
+			}
+		}
+		last_pressure[cyl] = mbar;
+		last_time[cyl] = entry->sec;
+	}
+
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		if (last_time[cyl]) {
+			plot_pressure_value(last_pressure[cyl], last_time[cyl], CENTER, TOP);
+		}
+	}
+}
+
+void ProfileGraphicsView::plot_pressure_value(int mbar, int sec, int xalign, int yalign)
+{
+	int pressure;
+	const char *unit;
+
+	pressure = get_pressure_units(mbar, &unit);
+	static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
+	plot_text(&tro, sec, mbar, QString("%1 %2").arg(pressure).arg(unit));
 }
 
 void ProfileGraphicsView::plot_depth_text()

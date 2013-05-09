@@ -102,6 +102,8 @@ private:
 	void plot_depth_text();
 	void plot_text_samples();
 	void plot_depth_sample(struct plot_data *entry, text_render_options_t *tro);
+	void plot_cylinder_pressure_text();
+	void plot_pressure_value(int mbar, int sec, int xalign, int yalign);
 
 	QColor get_sac_color(int sac, int avg_sac);
 
