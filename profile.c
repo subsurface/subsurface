@@ -25,14 +25,6 @@ static struct plot_data *last_pi_entry = NULL;
 #define cairo_set_line_width_scaled(cr, w) \
 	cairo_set_line_width((cr), (w) * plot_scale);
 
-
-
-#define SENSOR_PR 0
-#define INTERPOLATED_PR 1
-#define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
-#define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
-#define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? : INTERPOLATED_PRESSURE(_entry))
-
 #if USE_GTK_UI
 
 /* keep the last used gc around so we can invert the SCALEX calculation in
@@ -518,46 +510,28 @@ static void plot_temperature_text(struct graphics_context *gc, struct plot_info 
 }
 
 /* gets both the actual start and end pressure as well as the scaling factors */
-static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_info *pi)
+
+#endif /* USE_GTK_UI */
+
+int get_cylinder_pressure_range(struct graphics_context *gc)
 {
 	gc->leftx = 0;
-	gc->rightx = get_maxtime(pi);
+	gc->rightx = get_maxtime(&gc->pi);
 
 	if (PP_GRAPHS_ENABLED)
-		gc->bottomy = -pi->maxpressure * 0.75;
+		gc->bottomy = -gc->pi.maxpressure * 0.75;
 	else
 		gc->bottomy = 0;
-	gc->topy = pi->maxpressure * 1.5;
-	if (!pi->maxpressure)
+	gc->topy = gc->pi.maxpressure * 1.5;
+	if (!gc->pi.maxpressure)
 		return FALSE;
 
-	while (pi->endtempcoord <= SCALEY(gc, pi->minpressure - (gc->topy) * 0.1))
+	while (gc->pi.endtempcoord <= SCALEY(gc, gc->pi.minpressure - (gc->topy) * 0.1))
 		gc->bottomy -=  gc->topy * 0.1;
 
 	return TRUE;
 }
 
-/* set the color for the pressure plot according to temporary sac rate
- * as compared to avg_sac; the calculation simply maps the delta between
- * sac and avg_sac to indexes 0 .. (SAC_COLORS - 1) with everything
- * more than 6000 ml/min below avg_sac mapped to 0 */
-void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
-{
-	int sac_index = 0;
-	int delta = sac - avg_sac + 7000;
-
-	if (!gc->printer) {
-		sac_index = delta / 2000;
-		if (sac_index < 0)
-			sac_index = 0;
-		if (sac_index > SAC_COLORS - 1)
-			sac_index = SAC_COLORS - 1;
-		set_source_rgba(gc, SAC_COLORS_START_IDX + sac_index);
-	} else {
-		set_source_rgba(gc, SAC_DEFAULT);
-	}
-}
-#endif /* USE_GTK_UI */
 
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
@@ -590,78 +564,8 @@ int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct div
 	return airuse / atm * 60 / duration;
 }
 
-/* calculate the current SAC in ml/min and convert to int */
-#define GET_LOCAL_SAC(_entry1, _entry2, _dive) \
-	get_local_sac(_entry1, _entry2, _dive)
-
-#define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
-
 #if USE_GTK_UI
-static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi,
-				struct dive *dive, struct divecomputer *dc)
-{
-	int i;
-	int last = -1, last_index = -1;
-	int lift_pen = FALSE;
-	int first_plot = TRUE;
-	int sac = 0;
-	struct plot_data *last_entry = NULL;
 
-	if (!get_cylinder_pressure_range(gc, pi))
-		return;
-
-	cairo_set_line_width_scaled(gc->cr, 2);
-
-	for (i = 0; i < pi->nr; i++) {
-		int mbar;
-		struct plot_data *entry = pi->entry + i;
-
-		mbar = GET_PRESSURE(entry);
-		if (entry->cylinderindex != last_index) {
-			lift_pen = TRUE;
-			last_entry = NULL;
-		}
-		if (!mbar) {
-			lift_pen = TRUE;
-			continue;
-		}
-		if (!last_entry) {
-			last = i;
-			last_entry = entry;
-			sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive);
-		} else {
-			int j;
-			sac = 0;
-			for (j = last; j < i; j++)
-				sac += GET_LOCAL_SAC(pi->entry + j, pi->entry + j + 1, dive);
-			sac /= (i - last);
-			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
-				last++;
-				last_entry = pi->entry + last;
-			}
-		}
-		set_sac_color(gc, sac, dive->sac);
-		if (lift_pen) {
-			if (!first_plot && entry->cylinderindex == last_index) {
-				/* if we have a previous event from the same tank,
-				 * draw at least a short line */
-				int prev_pr;
-				prev_pr = GET_PRESSURE(entry - 1);
-				move_to(gc, (entry-1)->sec, prev_pr);
-				line_to(gc, entry->sec, mbar);
-			} else {
-				first_plot = FALSE;
-				move_to(gc, entry->sec, mbar);
-			}
-			lift_pen = FALSE;
-		} else {
-			line_to(gc, entry->sec, mbar);
-		}
-		cairo_stroke(gc->cr);
-		move_to(gc, entry->sec, mbar);
-		last_index = entry->cylinderindex;
-	}
-}
 
 static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
 				int xalign, int yalign)

@@ -39,6 +39,7 @@ struct plot_data {
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
 struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
 int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi);
+int get_cylinder_pressure_range(struct graphics_context *gc);
 
 struct ev_select {
 	char *ev_name;
@@ -59,6 +60,9 @@ int get_maxtime(struct plot_info *pi);
  * take into account the additional verical space needed to plot
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi);
+
+int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive);
+
 
 #define ALIGN_LEFT 1
 #define ALIGN_RIGHT 2
@@ -91,6 +95,14 @@ int get_maxdepth(struct plot_info *pi);
 #define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
 #define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
 #define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
+
+#define SENSOR_PR 0
+#define INTERPOLATED_PR 1
+#define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
+#define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
+#define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? SENSOR_PRESSURE(_entry) : INTERPOLATED_PRESSURE(_entry))
+
+#define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
 
 #ifdef __cplusplus
 }

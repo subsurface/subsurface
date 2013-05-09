@@ -238,10 +238,10 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	/* Temperature profile */
 	plot_temperature_profile();
-#if 0
-	/* Cylinder pressure plot */
-	plot_cylinder_pressure(gc, pi, dive, dc);
 
+	/* Cylinder pressure plot */
+	plot_cylinder_pressure(dive, dc);
+#if 0
 	/* Text on top of all graphs.. */
 	plot_temperature_text(gc, pi);
 	plot_depth_text(gc, pi);
@@ -286,6 +286,100 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		pi->nr = 0;
 	}
 #endif
+}
+
+void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc)
+{
+	int i;
+	int last = -1, last_index = -1;
+	int lift_pen = FALSE;
+	int first_plot = TRUE;
+	int sac = 0;
+	struct plot_data *last_entry = NULL;
+
+	if (!get_cylinder_pressure_range(&gc))
+		return;
+
+	QPointF from, to;
+	for (i = 0; i < gc.pi.nr; i++) {
+		int mbar;
+		struct plot_data *entry = gc.pi.entry + i;
+
+		mbar = GET_PRESSURE(entry);
+		if (entry->cylinderindex != last_index) {
+			lift_pen = TRUE;
+			last_entry = NULL;
+		}
+		if (!mbar) {
+			lift_pen = TRUE;
+			continue;
+		}
+		if (!last_entry) {
+			last = i;
+			last_entry = entry;
+			sac = get_local_sac(entry, gc.pi.entry + i + 1, dive);
+		} else {
+			int j;
+			sac = 0;
+			for (j = last; j < i; j++)
+				sac += get_local_sac(gc.pi.entry + j, gc.pi.entry + j + 1, dive);
+			sac /= (i - last);
+			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
+				last++;
+				last_entry = gc.pi.entry + last;
+			}
+		}
+
+		// QColor c = get_sac_color(sac, dive->sac); Buggy TODO: fix.
+		QColor c = QColor(Qt::darkGreen);
+
+		if (lift_pen) {
+			if (!first_plot && entry->cylinderindex == last_index) {
+				/* if we have a previous event from the same tank,
+				 * draw at least a short line */
+				int prev_pr;
+				prev_pr = GET_PRESSURE(entry - 1);
+
+				QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC((entry-1)->sec, prev_pr), SCALEGC(entry->sec, mbar));
+				item->setPen(QPen(c, 2));
+				scene()->addItem(item);
+			} else {
+				first_plot = FALSE;
+				from = QPointF(SCALEGC(entry->sec, mbar));
+			}
+			lift_pen = FALSE;
+		} else {
+			to = QPointF(SCALEGC(entry->sec, mbar));
+			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+			item->setPen(QPen(c, 2));
+			scene()->addItem(item);
+		}
+
+
+		from = QPointF(SCALEGC(entry->sec, mbar));
+		last_index = entry->cylinderindex;
+	}
+}
+
+
+/* set the color for the pressure plot according to temporary sac rate
+ * as compared to avg_sac; the calculation simply maps the delta between
+ * sac and avg_sac to indexes 0 .. (SAC_COLORS - 1) with everything
+ * more than 6000 ml/min below avg_sac mapped to 0 */
+QColor ProfileGraphicsView::get_sac_color(int sac, int avg_sac)
+{
+	int sac_index = 0;
+	int delta = sac - avg_sac + 7000;
+
+	if (!gc.printer) {
+		sac_index = delta / 2000;
+		if (sac_index < 0)
+			sac_index = 0;
+		if (sac_index > SAC_COLORS - 1)
+			sac_index = SAC_COLORS - 1;
+		return profile_color[ (color_indice_t) (SAC_COLORS_START_IDX + sac_index)].first();
+	}
+	return profile_color[SAC_DEFAULT].first();
 }
 
 void ProfileGraphicsView::plot_events(struct divecomputer *dc)
