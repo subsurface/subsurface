@@ -273,7 +273,7 @@ void ProfileGraphicsView::plot(struct dive *dive)
 
 	//if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile();
-	//	plot_pp_text(gc, pi);
+		plot_pp_text();
 	//}
 
 #if 0
@@ -292,6 +292,27 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		pi->nr = 0;
 	}
 #endif
+}
+
+void ProfileGraphicsView::plot_pp_text()
+{
+	double pp, dpp, m;
+	int hpos;
+	static text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
+
+	setup_pp_limits(&gc);
+	pp = floor(gc.pi.maxpp * 10.0) / 10.0 + 0.2;
+	dpp = pp > 4 ? 1.0 : 0.5;
+	hpos = gc.pi.entry[gc.pi.nr - 1].sec;
+	QColor c = profile_color[PP_LINES].first();
+
+	qDebug() << pp << dpp;
+	for (m = 0.0; m <= pp; m += dpp) {
+		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
+		item->setPen(QPen(c));
+		scene()->addItem(item);
+		plot_text(&tro, hpos + 30, m, QString::number(m));
+	}
 }
 
 void ProfileGraphicsView::plot_pp_gas_profile()
