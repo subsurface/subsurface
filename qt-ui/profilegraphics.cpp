@@ -116,6 +116,7 @@ extern int evn_used;
 
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent)
 {
+	gc.printer = false;
 	setScene(new QGraphicsScene());
 	setBackgroundBrush(QColor("#F3F3E6"));
 	scene()->setSceneRect(0,0,1000,1000);
@@ -330,8 +331,7 @@ void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divec
 			}
 		}
 
-		// QColor c = get_sac_color(sac, dive->sac); Buggy TODO: fix.
-		QColor c = QColor(Qt::darkGreen);
+		QColor c = get_sac_color(sac, dive->sac);
 
 		if (lift_pen) {
 			if (!first_plot && entry->cylinderindex == last_index) {
