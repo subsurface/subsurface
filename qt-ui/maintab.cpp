@@ -21,6 +21,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->setupUi(this);
 	ui->cylinders->setModel(cylindersModel);
 	ui->weights->setModel(weightModel);
+
+	/* example of where code is more concise than Qt designer */
+	QList<QObject *> infoTabWidgets = ui->infoTab->children();
+	Q_FOREACH( QObject* obj, infoTabWidgets ){
+		QLabel* label = qobject_cast<QLabel *>(obj);
+		if (label)
+			label->setAlignment(Qt::AlignHCenter);
+	}
 }
 
 void MainTab::clearEquipment()
