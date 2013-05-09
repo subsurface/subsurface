@@ -129,6 +129,7 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	defaultPen.setJoinStyle(Qt::RoundJoin);
 	defaultPen.setCapStyle(Qt::RoundCap);
 	defaultPen.setWidth(2);
+	defaultPen.setCosmetic(true);
 
 	fill_profile_color();
 }
@@ -253,9 +254,8 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	plot_deco_text();
 
 	/* Bounding box */
-	QColor color = profile_color[TIME_GRID].at(0);
-	QPen pen = QPen(color);
-	pen.setWidth(1);
+	QPen pen = defaultPen;
+	pen.setColor(profile_color[TIME_GRID].at(0));
 	QGraphicsRectItem *rect = new QGraphicsRectItem(scene()->sceneRect());
 	rect->setPen(pen);
 	scene()->addItem(rect);
@@ -338,7 +338,9 @@ void ProfileGraphicsView::plot_pp_text()
 	qDebug() << pp << dpp;
 	for (m = 0.0; m <= pp; m += dpp) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
-		item->setPen(QPen(c));
+		QPen pen(defaultPen);
+		pen.setColor(c);
+		item->setPen(pen);
 		scene()->addItem(item);
 		plot_text(&tro, hpos + 30, m, QString::number(m));
 	}
@@ -362,7 +364,9 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			if (entry->pn2 < prefs.pp_graphs.pn2_threshold){
 				to = QPointF(SCALEGC(entry->sec, entry->pn2));
 				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				item->setPen(QPen(c));
+				QPen pen(defaultPen);
+				pen.setColor(c);
+				item->setPen(pen);
 				scene()->addItem(item);
 				from = to;
 			}
@@ -379,7 +383,9 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold){
 				to = QPointF(SCALEGC(entry->sec, entry->pn2));
 				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				item->setPen(QPen(c));
+				QPen pen(defaultPen);
+				pen.setColor(c);
+				item->setPen(pen);
 				scene()->addItem(item);
 				from = to;
 			}
@@ -399,7 +405,9 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			if (entry->phe < prefs.pp_graphs.phe_threshold){
 				to = QPointF(SCALEGC(entry->sec, entry->phe));
 				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				item->setPen(QPen(c));
+				QPen pen(defaultPen);
+				pen.setColor(c);
+				item->setPen(pen);
 				scene()->addItem(item);
 				from = to;
 			}
@@ -416,7 +424,9 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			if (entry->phe >= prefs.pp_graphs.phe_threshold){
 				to = QPointF(SCALEGC(entry->sec, entry->phe));
 				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				item->setPen(QPen(c));
+				QPen pen(defaultPen);
+				pen.setColor(c);
+				item->setPen(pen);
 				scene()->addItem(item);
 				from = to;
 			}
@@ -434,7 +444,9 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			if (entry->po2 < prefs.pp_graphs.po2_threshold){
 				to = QPointF(SCALEGC(entry->sec, entry->po2));
 				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				item->setPen(QPen(c));
+				QPen pen(defaultPen);
+				pen.setColor(c);
+				item->setPen(pen);
 				scene()->addItem(item);
 				from = to;
 			}
@@ -676,7 +688,9 @@ void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divec
 				prev_pr = GET_PRESSURE(entry - 1);
 
 				QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC((entry-1)->sec, prev_pr), SCALEGC(entry->sec, mbar));
-				item->setPen(QPen(c, 2));
+				QPen pen(defaultPen);
+				pen.setColor(c);
+				item->setPen(pen);
 				scene()->addItem(item);
 			} else {
 				first_plot = FALSE;
@@ -686,7 +700,9 @@ void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divec
 		} else {
 			to = QPointF(SCALEGC(entry->sec, mbar));
 			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-			item->setPen(QPen(c, 2));
+			QPen pen(defaultPen);
+			pen.setColor(c);
+			item->setPen(pen);
 			scene()->addItem(item);
 		}
 
@@ -831,12 +847,13 @@ void ProfileGraphicsView::plot_depth_profile()
 
 	last_gc = gc;
 
-	QColor color;
-	color = profile_color[TIME_GRID].at(0);
+	QColor c = profile_color[TIME_GRID].at(0);
 	for (i = incr; i < maxtime; i += incr) {
-		QGraphicsLineItem *line = new QGraphicsLineItem(SCALEGC(i, 0), SCALEGC(i, 1));
-		line->setPen(QPen(color));
-		scene()->addItem(line);
+		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(i, 0), SCALEGC(i, 1));
+		QPen pen(defaultPen);
+		pen.setColor(c);
+		item->setPen(pen);
+		scene()->addItem(item);
 	}
 
 	/* now the text on the time markers */
@@ -864,23 +881,27 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 	maxline = MAX(gc.pi.maxdepth + marker, maxdepth * 2 / 3);
 
-	color = profile_color[DEPTH_GRID].at(0);
+	c = profile_color[DEPTH_GRID].at(0);
 
 	for (i = marker; i < maxline; i += marker) {
-		QGraphicsLineItem *line = new QGraphicsLineItem(SCALEGC(0, i), SCALEGC(1, i));
-		line->setPen(QPen(color));
-		scene()->addItem(line);
+		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, i), SCALEGC(1, i));
+		QPen pen(defaultPen);
+		pen.setColor(c);
+		item->setPen(pen);
+		scene()->addItem(item);
 	}
 
 	gc.leftx = 0; gc.rightx = maxtime;
-	color = profile_color[MEAN_DEPTH].at(0);
+	c = profile_color[MEAN_DEPTH].at(0);
 
 	/* Show mean depth */
 	if (! gc.printer) {
-		QGraphicsLineItem *line = new QGraphicsLineItem(SCALEGC(0, gc.pi.meandepth),
+		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, gc.pi.meandepth),
 								SCALEGC(gc.pi.entry[gc.pi.nr - 1].sec, gc.pi.meandepth));
-		line->setPen(QPen(color));
-		scene()->addItem(line);
+		QPen pen(defaultPen);
+		pen.setColor(c);
+		item->setPen(pen);
+		scene()->addItem(item);
 	}
 
 #if 0
@@ -924,7 +945,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	neatFill = new QGraphicsPolygonItem();
 	neatFill->setPolygon(p);
 	neatFill->setBrush(QBrush(pat));
-	neatFill->setPen(QPen(QBrush(),0));
+	neatFill->setPen(QPen(QBrush(Qt::transparent),0));
 	scene()->addItem(neatFill);
 
 
@@ -955,7 +976,7 @@ void ProfileGraphicsView::plot_depth_profile()
 		neatFill = new QGraphicsPolygonItem();
 		neatFill->setBrush(QBrush(pat));
 		neatFill->setPolygon(p);
-		neatFill->setPen(QPen(QBrush(),0));
+		neatFill->setPen(QPen(QBrush(Qt::NoBrush),0));
 		scene()->addItem(neatFill);
 	//}
 
@@ -978,7 +999,7 @@ void ProfileGraphicsView::plot_depth_profile()
 		p.append(QPointF(SCALEGC((entry-1)->sec, 0)));
 		neatFill = new QGraphicsPolygonItem();
 		neatFill->setPolygon(p);
-		neatFill->setPen(QPen(QBrush(),0));
+		neatFill->setPen(QPen(QBrush(Qt::NoBrush),0));
 		neatFill->setBrush(pat);
 		scene()->addItem(neatFill);
 	//}
@@ -1002,7 +1023,7 @@ void ProfileGraphicsView::plot_depth_profile()
 
 	neatFill = new QGraphicsPolygonItem();
 	neatFill->setPolygon(p);
-	neatFill->setPen(QPen(QBrush(),0));
+	neatFill->setPen(QPen(QBrush(Qt::NoBrush),0));
 	neatFill->setBrush(QBrush(pat));
 	scene()->addItem(neatFill);
 
@@ -1015,9 +1036,11 @@ void ProfileGraphicsView::plot_depth_profile()
 		 * representing the vertical velocity, so we need to
 		 * chop this into short segments */
 		depth = entry->depth;
-		QGraphicsLineItem *colorLine = new QGraphicsLineItem(SCALEGC(entry[-1].sec, entry[-1].depth), SCALEGC(sec, depth));
-		colorLine->setPen(QPen(QBrush(profile_color[ (color_indice_t) (VELOCITY_COLORS_START_IDX + entry->velocity)].first()), 2));
-		scene()->addItem(colorLine);
+		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(entry[-1].sec, entry[-1].depth), SCALEGC(sec, depth));
+		QPen pen(defaultPen);
+		pen.setColor(profile_color[ (color_indice_t) (VELOCITY_COLORS_START_IDX + entry->velocity)].first());
+		item->setPen(pen);
+		scene()->addItem(item);
 	}
 }
 
@@ -1033,7 +1056,6 @@ void ProfileGraphicsView::plot_text(text_render_options_t *tro, double x, double
 
 	item->setPos(point.x() + dx, point.y() +dy);
 	item->setBrush(QBrush(profile_color[tro->color].first()));
-	item->setPen(QPen(profile_color[BACKGROUND].first()));
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(item);
 }
@@ -1071,7 +1093,9 @@ void ProfileGraphicsView::plot_temperature_profile()
 			to = QPointF(SCALEGC(sec, mkelvin));
 			//qDebug() << from << to;
 			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-			item->setPen(QPen(color, 2*plot_scale));
+			QPen pen(defaultPen);
+			pen.setColor(color);
+			item->setPen(pen);
 			scene()->addItem(item);
 			from = to;
 		}
@@ -1096,10 +1120,8 @@ void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
 	textItem->setPos(SPACING + ICON_SMALL + SPACING, yValue);
-	textItem->setPen(QPen(Qt::white, 1));
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
-
 	toolTips[toolTip] = qMakePair(iconItem, textItem);
 	expand();
 }
@@ -1270,6 +1292,7 @@ EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 	defaultPen.setJoinStyle(Qt::RoundJoin);
 	defaultPen.setCapStyle(Qt::RoundCap);
 	defaultPen.setWidth(2);
+	defaultPen.setCosmetic(true);
 
 	QPen pen = defaultPen;
 	pen.setBrush(QBrush(profile_color[ALERT_BG].first()));
