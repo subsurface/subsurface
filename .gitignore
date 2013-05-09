@@ -24,3 +24,8 @@ packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
 config.cache
 *.qrc.cpp
+/subsurface.config
+/subsurface.creator
+/subsurface.creator.user
+/subsurface.files
+/subsurface.includes

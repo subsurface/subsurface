@@ -38,6 +38,9 @@ MOC_OBJS = $(HEADERS_NEEDING_MOC:.h=.moc.o)
 
 ALL_OBJS = $(OBJS) $(MOC_OBJS)
 
+# Files for using Qt Creator
+CREATOR_FILES = subsurface.config subsurface.creator subsurface.files subsurface.includes
+
 all: $(NAME)
 
 $(NAME): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
@@ -219,6 +222,19 @@ confclean: clean
 	rm -rf .dep
 
 distclean: confclean
+	rm -f $(CREATOR_FILES)
+
+.PHONY: creator-files
+creator-files: $(CREATOR_FILES)
+subsurface.files: Makefile $(CONFIGFILE)
+	echo $(wildcard *.h) $(HEADERS) $(SOURCES) | tr ' ' '\n' | sort | uniq > subsurface.files
+subsurface.config: Makefile $(CONFIGFILE)
+	echo $(patsubst -D%,%,$(filter -D%, $(CXXFLAGS) $(CFLAGS) $(EXTRA_FLAGS))) | tr ' ' '\n' | sort | uniq > subsurface.config
+subsurface.includes: Makefile $(CONFIGFILE)
+	echo $$PWD > subsurface.includes
+	echo $(patsubst -I%,%,$(filter -I%, $(CXXFLAGS) $(CFLAGS) $(EXTRA_FLAGS))) | tr ' ' '\n' | sort | uniq >> subsurface.includes
+subsurface.creator:
+	echo '[General]' > subsurface.creator
 
 ifneq ($(CONFIGURED)$(CONFIGURING),)
 .dep/%.o.dep: %.cpp
