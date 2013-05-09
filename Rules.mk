@@ -218,6 +218,8 @@ confclean: clean
 	rm -f $(CONFIGFILE)
 	rm -rf .dep
 
+distclean: confclean
+
 ifneq ($(CONFIGURED)$(CONFIGURING),)
 .dep/%.o.dep: %.cpp
 	@mkdir -p $(@D)
