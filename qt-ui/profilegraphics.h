@@ -99,6 +99,10 @@ private:
 	void plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc);
 	void plot_temperature_text();
 	void plot_single_temp_text(int sec, int mkelvin);
+	void plot_depth_text();
+	void plot_text_samples();
+	void plot_depth_sample(struct plot_data *entry, text_render_options_t *tro);
+
 	QColor get_sac_color(int sac, int avg_sac);
 
 	QPen defaultPen;

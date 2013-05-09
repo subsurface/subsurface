@@ -221,57 +221,6 @@ int setup_temperature_limits(struct graphics_context *gc)
 }
 
 #if 0
-static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
-{
-	int sec = entry->sec, decimals;
-	double d;
-
-	d = get_depth_units(entry->depth, &decimals, NULL);
-
-	plot_text(gc, tro, sec, entry->depth, "%.*f", decimals, d);
-}
-
-static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
-{
-	static const text_render_options_t deep = {14, SAMPLE_DEEP, CENTER, TOP};
-	static const text_render_options_t shallow = {14, SAMPLE_SHALLOW, CENTER, BOTTOM};
-	int i;
-	int last = -1;
-
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-
-		if (entry->depth < 2000)
-			continue;
-
-		if ((entry == entry->max[2]) && entry->depth != last) {
-			render_depth_sample(gc, entry, &deep);
-			last = entry->depth;
-		}
-
-		if ((entry == entry->min[2]) && entry->depth != last) {
-			render_depth_sample(gc, entry, &shallow);
-			last = entry->depth;
-		}
-
-		if (entry->depth != last)
-			last = -1;
-	}
-}
-
-static void plot_depth_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	int maxtime, maxdepth;
-
-	/* Get plot scaling limits */
-	maxtime = get_maxtime(pi);
-	maxdepth = get_maxdepth(pi);
-
-	gc->leftx = 0; gc->rightx = maxtime;
-	gc->topy = 0; gc->bottomy = maxdepth;
-
-	plot_text_samples(gc, pi);
-}
 
 static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info *pi)
 {

@@ -246,7 +246,7 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	/* Text on top of all graphs.. */
 	plot_temperature_text();
 
-	plot_depth_text(gc, pi);
+	plot_depth_text();
 
 #if 0
 	plot_cylinder_pressure_text(gc, pi);
@@ -291,6 +291,61 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	}
 #endif
 }
+
+void ProfileGraphicsView::plot_depth_text()
+{
+	int maxtime, maxdepth;
+
+	/* Get plot scaling limits */
+	maxtime = get_maxtime(&gc.pi);
+	maxdepth = get_maxdepth(&gc.pi);
+
+	gc.leftx = 0; gc.rightx = maxtime;
+	gc.topy = 0; gc.bottomy = maxdepth;
+
+	plot_text_samples();
+}
+
+void ProfileGraphicsView::plot_text_samples()
+{
+	static text_render_options_t deep = {14, SAMPLE_DEEP, CENTER, TOP};
+	static text_render_options_t shallow = {14, SAMPLE_SHALLOW, CENTER, BOTTOM};
+	int i;
+	int last = -1;
+
+	struct plot_info* pi = &gc.pi;
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+
+		if (entry->depth < 2000)
+			continue;
+
+		if ((entry == entry->max[2]) && entry->depth != last) {
+			plot_depth_sample(entry, &deep);
+			last = entry->depth;
+		}
+
+		if ((entry == entry->min[2]) && entry->depth != last) {
+			plot_depth_sample(entry, &shallow);
+			last = entry->depth;
+		}
+
+		if (entry->depth != last)
+			last = -1;
+	}
+}
+
+void ProfileGraphicsView::plot_depth_sample(struct plot_data *entry,text_render_options_t *tro)
+{
+	int sec = entry->sec, decimals;
+	double d;
+
+	d = get_depth_units(entry->depth, &decimals, NULL);
+
+	plot_text(tro, sec, entry->depth, QString("%1").arg(d)); // , decimals, d);
+}
+
 
 void ProfileGraphicsView::plot_temperature_text()
 {
