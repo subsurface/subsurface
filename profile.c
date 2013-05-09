@@ -220,6 +220,22 @@ int setup_temperature_limits(struct graphics_context *gc)
 	return maxtemp && maxtemp >= mintemp;
 }
 
+void setup_pp_limits(struct graphics_context *gc)
+{
+	int maxdepth;
+
+	gc->leftx = 0;
+	gc->rightx = get_maxtime(&gc->pi);
+
+	/* the maxdepth already includes extra vertical space - and if
+	 * we use 1.5 times the corresponding pressure as maximum partial
+	 * pressure the graph seems to look fine*/
+	maxdepth = get_maxdepth(&gc->pi);
+	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
+	gc->bottomy = -gc->topy / 20;
+}
+
+
 #if 0
 
 static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info *pi)
@@ -290,21 +306,6 @@ static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
 	}
 }
 
-static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
-{
-	int maxdepth;
-
-	gc->leftx = 0;
-	gc->rightx = get_maxtime(pi);
-
-	/* the maxdepth already includes extra vertical space - and if
-	 * we use 1.5 times the corresponding pressure as maximum partial
-	 * pressure the graph seems to look fine*/
-	maxdepth = get_maxdepth(pi);
-	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
-	gc->bottomy = -gc->topy / 20;
-}
-
 static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 {
 	double pp, dpp, m;
@@ -323,95 +324,6 @@ static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
 		plot_text(gc, &tro, hpos + 30, m, "%.1f", m);
 	}
 }
-
-static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	struct plot_data *entry;
-
-	setup_pp_limits(gc, pi);
-
-	if (prefs.pp_graphs.pn2) {
-		set_source_rgba(gc, PN2);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->pn2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->pn2 < prefs.pp_graphs.pn2_threshold)
-				line_to(gc, entry->sec, entry->pn2);
-			else
-				move_to(gc, entry->sec, entry->pn2);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PN2_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->pn2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold)
-				line_to(gc, entry->sec, entry->pn2);
-			else
-				move_to(gc, entry->sec, entry->pn2);
-		}
-		cairo_stroke(gc->cr);
-	}
-	if (prefs.pp_graphs.phe) {
-		set_source_rgba(gc, PHE);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->phe);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->phe < prefs.pp_graphs.phe_threshold)
-				line_to(gc, entry->sec, entry->phe);
-			else
-				move_to(gc, entry->sec, entry->phe);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PHE_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->phe);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->phe >= prefs.pp_graphs.phe_threshold)
-				line_to(gc, entry->sec, entry->phe);
-			else
-				move_to(gc, entry->sec, entry->phe);
-		}
-		cairo_stroke(gc->cr);
-	}
-	if (prefs.pp_graphs.po2) {
-		set_source_rgba(gc, PO2);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 < prefs.pp_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PO2_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 >= prefs.pp_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-	}
-}
-
-
-
-
-
 
 /* gets both the actual start and end pressure as well as the scaling factors */
 
@@ -467,20 +379,6 @@ int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct div
 	/* milliliters per minute */
 	return airuse / atm * 60 / duration;
 }
-
-#if USE_GTK_UI
-
-static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	if (prefs.profile_calc_ceiling) {
-		float x = gc->leftx + (gc->rightx - gc->leftx) / 2;
-		float y = gc->topy = 1.0;
-		text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
-		gc->bottomy = 0.0;
-		plot_text(gc, &tro, x, y, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
-	}
-}
-#endif /* USE_GTK_UI */
 
 static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, int index)
 {

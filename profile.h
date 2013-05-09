@@ -63,6 +63,8 @@ int get_maxdepth(struct plot_info *pi);
 
 int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive);
 
+void setup_pp_limits(struct graphics_context *gc);
+
 
 #define ALIGN_LEFT 1
 #define ALIGN_RIGHT 2

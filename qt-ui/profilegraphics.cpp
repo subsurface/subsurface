@@ -249,9 +249,9 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	plot_depth_text();
 
 	plot_cylinder_pressure_text();
-#if 0
-	plot_deco_text(gc, pi);
-#endif
+
+	plot_deco_text();
+
 	/* Bounding box */
 	QColor color = profile_color[TIME_GRID].at(0);
 	QPen pen = QPen(color);
@@ -269,12 +269,14 @@ void ProfileGraphicsView::plot(struct dive *dive)
 	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
 		plot_text(&computer, gc.leftx, gc.bottomy, nickname);
 	}
-#if 0
-	if (PP_GRAPHS_ENABLED) {
-		plot_pp_gas_profile(gc, pi);
-		plot_pp_text(gc, pi);
-	}
 
+
+	//if (PP_GRAPHS_ENABLED) {
+		plot_pp_gas_profile();
+	//	plot_pp_text(gc, pi);
+	//}
+
+#if 0
 	/* now shift the translation back by half the margin;
 	 * this way we can draw the vertical scales on both sides */
 	cairo_translate(gc->cr, -drawing_area->x / 2.0, 0);
@@ -290,6 +292,135 @@ void ProfileGraphicsView::plot(struct dive *dive)
 		pi->nr = 0;
 	}
 #endif
+}
+
+void ProfileGraphicsView::plot_pp_gas_profile()
+{
+	int i;
+	struct plot_data *entry;
+	struct plot_info *pi = &gc.pi;
+
+	setup_pp_limits(&gc);
+	QColor c;
+	QPointF from, to;
+	//if (prefs.pp_graphs.pn2) {
+		c = profile_color[PN2].first();
+		entry = pi->entry;
+		from = QPointF(SCALEGC(entry->sec, entry->pn2));
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->pn2 < prefs.pp_graphs.pn2_threshold){
+				to = QPointF(SCALEGC(entry->sec, entry->pn2));
+				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+				item->setPen(QPen(c));
+				scene()->addItem(item);
+				from = to;
+			}
+			else{
+				from = QPointF(SCALEGC(entry->sec, entry->pn2));
+			}
+		}
+
+		c = profile_color[PN2_ALERT].first();
+		entry = pi->entry;
+		from = QPointF(SCALEGC(entry->sec, entry->pn2));
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold){
+				to = QPointF(SCALEGC(entry->sec, entry->pn2));
+				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+				item->setPen(QPen(c));
+				scene()->addItem(item);
+				from = to;
+			}
+			else{
+				from = QPointF(SCALEGC(entry->sec, entry->pn2));
+			}
+		}
+	//}
+
+	//if (prefs.pp_graphs.phe) {
+		c = profile_color[PHE].first();
+		entry = pi->entry;
+
+		from = QPointF(SCALEGC(entry->sec, entry->phe));
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->phe < prefs.pp_graphs.phe_threshold){
+				to = QPointF(SCALEGC(entry->sec, entry->phe));
+				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+				item->setPen(QPen(c));
+				scene()->addItem(item);
+				from = to;
+			}
+			else{
+				from = QPointF(SCALEGC(entry->sec, entry->phe));
+			}
+		}
+
+		c = profile_color[PHE_ALERT].first();
+		entry = pi->entry;
+		from = QPointF(SCALEGC(entry->sec, entry->phe));
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->phe >= prefs.pp_graphs.phe_threshold){
+				to = QPointF(SCALEGC(entry->sec, entry->phe));
+				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+				item->setPen(QPen(c));
+				scene()->addItem(item);
+				from = to;
+			}
+			else{
+				from = QPointF(SCALEGC(entry->sec, entry->phe));
+			}
+		}
+	//}
+	//if (prefs.pp_graphs.po2) {
+		c = profile_color[PO2].first();
+		entry = pi->entry;
+		from = QPointF(SCALEGC(entry->sec, entry->po2));
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 < prefs.pp_graphs.po2_threshold){
+				to = QPointF(SCALEGC(entry->sec, entry->po2));
+				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+				item->setPen(QPen(c));
+				scene()->addItem(item);
+				from = to;
+			}
+			else{
+				from = QPointF(SCALEGC(entry->sec, entry->po2));
+			}
+		}
+
+		c = profile_color[PO2_ALERT].first();
+		entry = pi->entry;
+		from = QPointF(SCALEGC(entry->sec, entry->po2));
+		for (i = 1; i < pi->nr; i++) {
+			entry++;
+			if (entry->po2 >= prefs.pp_graphs.po2_threshold){
+				to = QPointF(SCALEGC(entry->sec, entry->po2));
+				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+				item->setPen(QPen(c));
+				scene()->addItem(item);
+				from = to;
+			}
+			else{
+				from = QPointF(SCALEGC(entry->sec, entry->po2));
+			}
+		}
+	//}
+}
+
+void ProfileGraphicsView::plot_deco_text()
+{
+	if (prefs.profile_calc_ceiling) {
+		float x = gc.leftx + (gc.rightx - gc.leftx) / 2;
+		float y = gc.topy = 1.0;
+		static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
+		gc.bottomy = 0.0;
+		plot_text(&tro, x, y, QString("GF %1/%2").arg(prefs.gflow * 100).arg(prefs.gfhigh * 100));
+	}
 }
 
 void ProfileGraphicsView::plot_cylinder_pressure_text()
