@@ -41,40 +41,6 @@ int x_abs(double x)
 {
 	return x - last_gc.drawing_area.x;
 }
-
-static void move_to(struct graphics_context *gc, double x, double y)
-{
-	cairo_move_to(gc->cr, SCALE(gc, x, y));
-}
-
-static void line_to(struct graphics_context *gc, double x, double y)
-{
-	cairo_line_to(gc->cr, SCALE(gc, x, y));
-}
-
-static void set_source_rgba(struct graphics_context *gc, color_indice_t c)
-{
-	const color_t *col = &profile_color[c];
-	struct rgba rgb = col->media[gc->printer];
-	double r = rgb.r;
-	double g = rgb.g;
-	double b = rgb.b;
-	double a = rgb.a;
-
-	cairo_set_source_rgba(gc->cr, r, g, b, a);
-}
-
-void init_profile_background(struct graphics_context *gc)
-{
-	set_source_rgba(gc, BACKGROUND);
-}
-
-static void pattern_add_color_stop_rgba(struct graphics_context *gc, cairo_pattern_t *pat, double o, color_indice_t c)
-{
-	const color_t *col = &profile_color[c];
-	struct rgba rgb = col->media[gc->printer];
-	cairo_pattern_add_color_stop_rgba(pat, o, rgb.r, rgb.g, rgb.b, rgb.a);
-}
 #endif /* USE_GTK_UI */
 
 /* debugging tool - not normally used */
@@ -280,27 +246,6 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 	plot_minmax_profile_minute(gc, pi, 1);
 	plot_minmax_profile_minute(gc, pi, 0);
 }
-
-static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	double pp, dpp, m;
-	int hpos;
-	static const text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
-
-	setup_pp_limits(gc, pi);
-	pp = floor(pi->maxpp * 10.0) / 10.0 + 0.2;
-	dpp = pp > 4 ? 1.0 : 0.5;
-	hpos = pi->entry[pi->nr - 1].sec;
-	set_source_rgba(gc, PP_LINES);
-	for (m = 0.0; m <= pp; m += dpp) {
-		move_to(gc, 0, m);
-		line_to(gc, hpos, m);
-		cairo_stroke(gc->cr);
-		plot_text(gc, &tro, hpos + 30, m, "%.1f", m);
-	}
-}
-
-/* gets both the actual start and end pressure as well as the scaling factors */
 
 #endif /* USE_GTK_UI */
 
@@ -1139,21 +1084,6 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 		dump_pi(pi);
 	return analyze_plot_info(pi);
 }
-
-#if USE_GTK_UI
-static void plot_set_scale(scale_mode_t scale)
-{
-	switch (scale) {
-	default:
-	case SC_SCREEN:
-		plot_scale = SCALE_SCREEN;
-		break;
-	case SC_PRINT:
-		plot_scale = SCALE_PRINT;
-		break;
-	}
-}
-#endif
 
 /* make sure you pass this the FIRST dc - it just walks the list */
 static int nr_dcs(struct divecomputer *main)

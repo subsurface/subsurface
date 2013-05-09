@@ -335,7 +335,6 @@ void ProfileGraphicsView::plot_pp_text()
 	hpos = gc.pi.entry[gc.pi.nr - 1].sec;
 	QColor c = profile_color[PP_LINES].first();
 
-	qDebug() << pp << dpp;
 	for (m = 0.0; m <= pp; m += dpp) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
 		QPen pen(defaultPen);
@@ -1091,7 +1090,6 @@ void ProfileGraphicsView::plot_temperature_profile()
 		}
 		if (last) {
 			to = QPointF(SCALEGC(sec, mkelvin));
-			//qDebug() << from << to;
 			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
 			QPen pen(defaultPen);
 			pen.setColor(color);

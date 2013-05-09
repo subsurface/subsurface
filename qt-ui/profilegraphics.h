@@ -11,31 +11,9 @@ struct graphics_context;
 struct plot_info;
 typedef struct text_render_options text_render_options_t;
 
-/**!
- *
- * Hookay, so, if you wanna extend the ToolTips that are displayed
- * in the Profile Graph, there's one 'toolTip' widget already on it,
- * you can just pass it to your Reimplementation of QGraphiscItem
- * and do the following:
- *
- * EventItem::setController(ToolTipItem *c)
- * {
- * 	controller = c;
- * }
- *
- * void EventItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
- * {
- *	controller->addToolTip(text, icon);
- * }
- *
- * void EventItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
- * {
- *	controller->removeToolTip(text);
- * }
- *
- * Remember to removeToolTip when you don't want it to be displayed.
- *
- **/
+/* To use a tooltip, simply ->setToolTip on the QGraphicsItem that you want
+ * or, if it's a "global" tooltip, set it on the mouseMoveEvent of the ProfileGraphicsView.
+ */
 class ToolTipItem :public QObject, public QGraphicsPathItem
 {
 	Q_OBJECT
