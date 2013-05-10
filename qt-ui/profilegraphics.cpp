@@ -114,7 +114,7 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent) , dive(0)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent) , dive(0), toolTip(0)
 {
 	gc.printer = false;
 	setScene(new QGraphicsScene());
@@ -138,6 +138,9 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 
 void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 {
+	if (!toolTip)
+		return;
+
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
     // Scale the view / do the zoom
@@ -156,6 +159,9 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
+	if (!toolTip)
+		return;
+
 	toolTip->refresh(&gc,  mapToScene(event->pos()));
 
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
