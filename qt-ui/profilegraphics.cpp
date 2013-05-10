@@ -119,7 +119,6 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	gc.printer = false;
 	setScene(new QGraphicsScene());
 	setBackgroundBrush(QColor("#F3F3E6"));
-	scene()->setSceneRect(0,0,1000,1000);
 	scene()->installEventFilter(this);
 
 	setRenderHint(QPainter::Antialiasing);
@@ -160,7 +159,12 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 	toolTip->refresh(&gc,  mapToScene(event->pos()));
 
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
-	ensureVisible(event->pos().x(), event->pos().y(), 10, 10, 100, 100);
+
+	double dx = sceneRect().x();
+	double dy = sceneRect().y();
+
+	ensureVisible(event->pos().x() + dx, event->pos().y() + dy, 1, 1);
+
 	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 
 	if (zoomLevel < 0)
@@ -287,15 +291,16 @@ void ProfileGraphicsView::plot(struct dive *d)
 	scene()->addItem(rect);
 
 	/* Put the dive computer name in the lower left corner */
-	const char *nickname;
-	nickname = get_dc_nickname(dc->model, dc->deviceid);
-	if (!nickname || *nickname == '\0')
-		nickname = dc->model;
-	if (nickname) {
-	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
-		plot_text(&computer, QPointF(gc.leftx, gc.bottomy), nickname);
-	}
+	QString nick(get_dc_nickname(dc->model, dc->deviceid));
+	if (nick.isEmpty())
+		nick = QString(dc->model);
 
+	if (!nick.isEmpty()) {
+	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
+			diveComputer = plot_text(&computer, QPointF(gc.leftx, gc.bottomy), nick);
+	}
+	// The Time ruler should be right after the DiveComputer:
+	timeMarkers->setPos(0, diveComputer->y());
 
 	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile();
@@ -321,7 +326,11 @@ void ProfileGraphicsView::plot(struct dive *d)
 	}
 #endif
 
-	scene()->setSceneRect(scene()->itemsBoundingRect());
+	QRectF r = scene()->itemsBoundingRect();
+	scene()->setSceneRect(r.x() - 15, r.y() -15, r.width() + 30, r.height() + 30);
+	if(zoomLevel == 0){
+		fitInView(sceneRect());
+	}
 }
 
 void ProfileGraphicsView::plot_depth_scale()
@@ -345,10 +354,13 @@ void ProfileGraphicsView::plot_depth_scale()
 	 * partial pressure graphs) where this would look out
 	 * of place - so we only make sure that we print the next
 	 * marker below the actual maxdepth of the dive */
+	depthMarkers = new QGraphicsRectItem();
 	for (i = marker; i <= gc.pi.maxdepth + marker; i += marker) {
 		double d = get_depth_units(i, NULL, NULL);
-		plot_text(&tro, QPointF(-0.002, i), QString::number(d));
+		plot_text(&tro, QPointF(-0.002, i), QString::number(d), depthMarkers);
 	}
+	scene()->addItem(depthMarkers);
+	depthMarkers->setPos(depthMarkers->pos().x() - 10, 0);
 }
 
 void ProfileGraphicsView::plot_pp_text()
@@ -883,17 +895,20 @@ void ProfileGraphicsView::plot_depth_profile()
 		scene()->addItem(item);
 	}
 
+	timeMarkers = new QGraphicsRectItem();
 	/* now the text on the time markers */
 	struct text_render_options tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(&tro, QPointF(i, 1), QString("%1:%2").arg(i/60).arg(i%60));
+			plot_text(&tro, QPointF(i, 0), QString("%1:%2").arg(i/60).arg(i%60), timeMarkers);
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
-			plot_text(&tro, QPointF(i, 1), QString::number(i/60));
+			plot_text(&tro, QPointF(i, 0), QString("%1").arg(QString::number(i/60)), timeMarkers);
 	}
+	timeMarkers->setPos(0,0);
+	scene()->addItem(timeMarkers);
 
 	/* Depth markers: every 30 ft or 10 m*/
 	gc.leftx = 0; gc.rightx = 1.0;
@@ -1071,7 +1086,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 }
 
-void ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent)
+QGraphicsSimpleTextItem *ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent)
 {
 	QFontMetrics fm(font());
 
@@ -1084,7 +1099,10 @@ void ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& po
 	item->setPos(point.x() + dx, point.y() +dy);
 	item->setBrush(QBrush(profile_color[tro->color].first()));
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	scene()->addItem(item);
+
+	if(!parent)
+		scene()->addItem(item);
+	return item;
 }
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
