@@ -163,9 +163,8 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 	ensureVisible(event->pos().x(), event->pos().y(), 10, 10, 100, 100);
 	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 
-	if (zoomLevel < 0){
+	if (zoomLevel < 0)
 		QGraphicsView::mouseMoveEvent(event);
-	}
 }
 
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
@@ -322,8 +321,7 @@ void ProfileGraphicsView::plot(struct dive *d)
 	}
 #endif
 
-	QRectF curerntRect = scene()->itemsBoundingRect();
-	scene()->setSceneRect( -10, -10, curerntRect.width() + 10, curerntRect.height() +10 );
+	scene()->setSceneRect(scene()->itemsBoundingRect());
 }
 
 void ProfileGraphicsView::plot_depth_scale()
