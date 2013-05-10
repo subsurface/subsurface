@@ -293,7 +293,7 @@ void ProfileGraphicsView::plot(struct dive *d)
 		nickname = dc->model;
 	if (nickname) {
 	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
-		plot_text(&computer, gc.leftx, gc.bottomy, nickname);
+		plot_text(&computer, QPointF(gc.leftx, gc.bottomy), nickname);
 	}
 
 
@@ -347,7 +347,7 @@ void ProfileGraphicsView::plot_depth_scale()
 	 * marker below the actual maxdepth of the dive */
 	for (i = marker; i <= gc.pi.maxdepth + marker; i += marker) {
 		double d = get_depth_units(i, NULL, NULL);
-		plot_text(&tro, -0.002, i, QString::number(d));
+		plot_text(&tro, QPointF(-0.002, i), QString::number(d));
 	}
 }
 
@@ -369,7 +369,7 @@ void ProfileGraphicsView::plot_pp_text()
 		pen.setColor(c);
 		item->setPen(pen);
 		scene()->addItem(item);
-		plot_text(&tro, hpos + 30, m, QString::number(m));
+		plot_text(&tro, QPointF(hpos + 30, m), QString::number(m));
 	}
 }
 
@@ -508,7 +508,7 @@ void ProfileGraphicsView::plot_deco_text()
 		float y = gc.topy = 1.0;
 		static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
 		gc.bottomy = 0.0;
-		plot_text(&tro, x, y, QString("GF %1/%2").arg(prefs.gflow * 100).arg(prefs.gfhigh * 100));
+		plot_text(&tro, QPointF(x, y), QString("GF %1/%2").arg(prefs.gflow * 100).arg(prefs.gfhigh * 100));
 	}
 }
 
@@ -557,7 +557,7 @@ void ProfileGraphicsView::plot_pressure_value(int mbar, int sec, int xalign, int
 
 	pressure = get_pressure_units(mbar, &unit);
 	static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
-	plot_text(&tro, sec, mbar, QString("%1 %2").arg(pressure).arg(unit));
+	plot_text(&tro, QPointF(sec, mbar), QString("%1 %2").arg(pressure).arg(unit));
 }
 
 void ProfileGraphicsView::plot_depth_text()
@@ -611,7 +611,7 @@ void ProfileGraphicsView::plot_depth_sample(struct plot_data *entry,text_render_
 
 	d = get_depth_units(entry->depth, &decimals, NULL);
 
-	plot_text(tro, sec, entry->depth, QString("%1").arg(d)); // , decimals, d);
+	plot_text(tro, QPointF(sec, entry->depth), QString("%1").arg(d)); // , decimals, d);
 }
 
 
@@ -660,7 +660,7 @@ void ProfileGraphicsView::plot_single_temp_text(int sec, int mkelvin)
 	const char *unit;
 	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
 	deg = get_temp_units(mkelvin, &unit);
-	plot_text(&tro, sec, mkelvin, QString("%1%2").arg(deg).arg(unit)); //"%.2g%s"
+	plot_text(&tro, QPointF(sec, mkelvin), QString("%1%2").arg(deg).arg(unit)); //"%.2g%s"
 }
 
 void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc)
@@ -888,11 +888,11 @@ void ProfileGraphicsView::plot_depth_profile()
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(&tro, i, 1, QString("%1:%2").arg(i/60).arg(i%60));
+			plot_text(&tro, QPointF(i, 1), QString("%1:%2").arg(i/60).arg(i%60));
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
-			plot_text(&tro, i, 1, QString::number(i/60));
+			plot_text(&tro, QPointF(i, 1), QString::number(i/60));
 	}
 
 	/* Depth markers: every 30 ft or 10 m*/
@@ -1071,15 +1071,15 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 }
 
-void ProfileGraphicsView::plot_text(text_render_options_t *tro, double x, double y, const QString& text)
+void ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent)
 {
 	QFontMetrics fm(font());
 
 	double dx = tro->hpos * (fm.width(text));
 	double dy = tro->vpos * (fm.height());
 
-	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text);
-	QPointF point(SCALEGC(x, y)); // This is neded because of the SCALE macro.
+	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text, parent);
+	QPointF point(SCALEGC(pos.x(), pos.y())); // This is neded because of the SCALE macro.
 
 	item->setPos(point.x() + dx, point.y() +dy);
 	item->setBrush(QBrush(profile_color[tro->color].first()));
