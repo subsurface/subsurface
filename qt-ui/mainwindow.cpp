@@ -45,6 +45,11 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
 }
 
+void MainWindow::redrawProfile()
+{
+	ui->ProfileWidget->plot(get_dive(selected_dive));
+}
+
 void MainWindow::on_actionNew_triggered()
 {
 	qDebug("actionNew");
@@ -96,7 +101,7 @@ void MainWindow::dive_selection_changed(const QItemSelection& newSelection, cons
 			continue;
 		select_dive(get_divenr(d));
 	}
-	ui->ProfileWidget->plot(get_dive(selected_dive));
+	redrawProfile();
 	ui->InfoWidget->updateDiveInfo(selected_dive);
 }
 
@@ -239,12 +244,14 @@ void MainWindow::on_actionViewAll_triggered()
 
 void MainWindow::on_actionPreviousDC_triggered()
 {
-	qDebug("actionPreviousDC");
+	dc_number--;
+	redrawProfile();
 }
 
 void MainWindow::on_actionNextDC_triggered()
 {
-	qDebug("actionNextDC");
+	dc_number++;
+	redrawProfile();
 }
 
 void MainWindow::on_actionSelectEvents_triggered()

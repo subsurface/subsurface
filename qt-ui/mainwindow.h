@@ -82,7 +82,7 @@ private:
 	bool askSaveChanges();
 	void readSettings();
 	void writeSettings();
-
+	void redrawProfile();
 };
 
 #endif

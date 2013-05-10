@@ -315,10 +315,16 @@
    <property name="text">
     <string>Prev DC</string>
    </property>
+   <property name="shortcut">
+    <string>Left</string>
+   </property>
   </action>
   <action name="actionNextDC">
    <property name="text">
     <string>Next DC</string>
+   </property>
+   <property name="shortcut">
+    <string>Right</string>
    </property>
   </action>
   <action name="actionSelectEvents">
