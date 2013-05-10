@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QTextCodec>
 #include <QTranslator>
+#include <QSettings>
 
 class Translator: public QTranslator
 {
@@ -65,6 +66,7 @@ void init_qt_ui(int *argcp, char ***argvp)
 
 void init_ui(int *argcp, char ***argvp)
 {
+	QVariant v;
 	application = new QApplication(*argcp, *argvp);
 
 #if QT_VERSION < 0x050000
@@ -74,6 +76,16 @@ void init_ui(int *argcp, char ***argvp)
 	// [http://www.iana.org/assignments/character-sets/character-sets.xml]
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
 #endif
+
+	QSettings settings("hohndel.org","subsurface");
+	settings.beginGroup("GeneralSettings");
+	v = settings.value(QString("default_filename"));
+	if (v.isValid()) {
+		QString name = v.toString();
+		prefs.default_filename = strdup(name.toUtf8());
+		qDebug("default filename %s", prefs.default_filename);
+	}
+	settings.endGroup();
 
 #if 0
 	subsurface_open_conf();

@@ -402,12 +402,6 @@ void MainWindow::readSettings()
 		prefs.divelist_font = strdup(v.toString);
 #endif
 
-#if DONT_KNOW_HOW_TO_DO_THAT
-	v = settings.value(QString("default_filename"));
-	if (v.isValid())
-		prefs.default_filename = strdup(v.toString);
-#endif
-
 #if ONCE_WE_HAVE_MAPS
 	v = settings.value(QString_int("map_provider"));
 	if(v.isValid())
@@ -466,6 +460,9 @@ void MainWindow::writeSettings()
 	SAVE_VALUE("calcceiling3m", calc_ceiling_3m_incr);
 	SAVE_VALUE("gflow", gflow);
 	SAVE_VALUE("gfhigh", gfhigh);
+	settings.endGroup();
+	settings.beginGroup("GeneralSettings");
+	SAVE_VALUE("default_filename", default_filename);
 	settings.endGroup();
 }
 
