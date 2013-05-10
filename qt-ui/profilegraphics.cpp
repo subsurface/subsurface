@@ -114,7 +114,7 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent) , dive(0), toolTip(0)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0)
 {
 	gc.printer = false;
 	setScene(new QGraphicsScene());

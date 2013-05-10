@@ -29,6 +29,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
 	}
+	QList<QObject *> statisticsTabWidgets = ui->statisticsTab->children();
+	Q_FOREACH( QObject* obj, statisticsTabWidgets ){
+		QLabel* label = qobject_cast<QLabel *>(obj);
+		if (label)
+			label->setAlignment(Qt::AlignHCenter);
+	}
 }
 
 void MainTab::clearEquipment()
@@ -95,6 +101,7 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, suit);
 	UPDATE_TEXT(d, divemaster);
 	UPDATE_TEXT(d, buddy);
+	/* infoTab */
 	if (d) {
 		ui->rating->setCurrentStars(d->rating);
 		ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
@@ -128,6 +135,13 @@ void MainTab::updateDiveInfo(int dive)
 		ui->gasUsedText->setText(QString());
 		ui->airPressureText->setText(QString());
 	}
+	/* statisticsTab*/
+	/* we can access the stats_selection struct but how to we ensure the relevant dives are selected
+	 * if we don't use the gtk widget to drive this?
+	 * Maybe call process_selected_dives? Or re-write to query our Qt list view.
+	 */
+	qDebug("max temp %u",stats_selection.max_temp);
+	qDebug("min temp %u",stats_selection.min_temp);
 }
 
 void MainTab::on_addCylinder_clicked()

@@ -263,7 +263,7 @@ int get_cylinder_pressure_range(struct graphics_context *gc)
 		return FALSE;
 
 	while (gc->pi.endtempcoord <= SCALEY(gc, gc->pi.minpressure - (gc->topy) * 0.1))
-		gc->bottomy -=  gc->topy * 0.1;
+		gc->bottomy -=  gc->topy * 0.1 * gc->maxy/abs(gc->maxy);
 
 	return TRUE;
 }

@@ -171,10 +171,12 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 {
 	if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
-		return QString("%1%2").arg(celsius, 0, 'f', 1).arg(showunit ? _("C") : "");
+		return QString("%1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
+								.arg(showunit ? _("C") : "");
 	} else {
 		double fahrenheit = mkelvin_to_F(temp.mkelvin);
-		return QString("%1%2").arg(fahrenheit, 0, 'f', 1).arg(showunit ? _("F") : "");
+		return QString("%1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
+								.arg(showunit ? _("F") : "");
 	}
 }
 
