@@ -194,14 +194,24 @@ static void plot_set_scale(scale_mode_t scale)
 	}
 }
 
+void ProfileGraphicsView::showEvent(QShowEvent* event)
+{
+	if (dive)
+		plot(dive);
+}
+
 void ProfileGraphicsView::plot(struct dive *d)
 {
-	scene()->clear();
 
+	scene()->clear();
 	if (dive != d){
 		resetTransform();
 		zoomLevel = 0;
 		dive = d;
+	}
+
+	if(!isVisible()){
+		return;
 	}
 
 	if(!dive)
