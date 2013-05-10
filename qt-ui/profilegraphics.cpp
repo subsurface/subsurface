@@ -249,9 +249,9 @@ void ProfileGraphicsView::plot(struct dive *d)
 	 */
 	calculate_max_limits(dive, dc, &gc);
 
-	QRectF drawing_area = scene()->sceneRect();
-	gc.maxx = (drawing_area.width() - 2 * drawing_area.x());
-	gc.maxy = (drawing_area.height() - 2 * drawing_area.y());
+	QRectF profile_grid_area = scene()->sceneRect();
+	gc.maxx = (profile_grid_area.width() - 2 * profile_grid_area.x());
+	gc.maxy = (profile_grid_area.height() - 2 * profile_grid_area.y());
 
 	dc = select_dc(dc);
 
@@ -281,7 +281,7 @@ void ProfileGraphicsView::plot(struct dive *d)
 	/* Bounding box */
 	QPen pen = defaultPen;
 	pen.setColor(profile_color[TIME_GRID].at(0));
-	QGraphicsRectItem *rect = new QGraphicsRectItem(scene()->sceneRect());
+	QGraphicsRectItem *rect = new QGraphicsRectItem(profile_grid_area);
 	rect->setPen(pen);
 	scene()->addItem(rect);
 
@@ -296,10 +296,10 @@ void ProfileGraphicsView::plot(struct dive *d)
 	}
 
 
-	//if (PP_GRAPHS_ENABLED) {
+	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile();
 		plot_pp_text();
-	//}
+	}
 
 
 	/* now shift the translation back by half the margin;
