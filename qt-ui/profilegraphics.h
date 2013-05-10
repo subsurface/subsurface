@@ -83,7 +83,7 @@ private:
 	void plot_text_samples();
 	void plot_depth_sample(struct plot_data *entry, text_render_options_t *tro);
 	void plot_cylinder_pressure_text();
-	void plot_pressure_value(int mbar, int sec, int xalign, int yalign);
+	void plot_pressure_value(int mbar, int sec, double xalign, double yalign);
 	void plot_deco_text();
 	void plot_pp_gas_profile();
 	void plot_pp_text();

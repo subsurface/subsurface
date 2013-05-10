@@ -14,7 +14,7 @@ struct graphics_context;
 struct plot_info;
 struct plot_data {
 	unsigned int in_deco:1;
-	unsigned int cylinderindex;
+	int cylinderindex;
 	int sec;
 	/* pressure[0] is sensor pressure
 	 * pressure[1] is interpolated pressure */
