@@ -6,15 +6,13 @@ extern "C" {
 #endif
 
 #define SCALE_SCREEN 1.0
-#warning "PORT THE get_screen_dpi to Qt"
-#define SCALE_PRINT 1.0
-//#define SCALE_PRINT (1.0 / get_screen_dpi())
+#define SCALE_PRINT (1.0 / get_screen_dpi())
 
 extern void repaint_dive(void);
 extern void do_print(void);
 
 // Commented out because I don't know how to get the dpi on a paint device yet.
-// extern gdouble get_screen_dpi(void);
+extern double get_screen_dpi(void);
 
 /* Plot info with smoothing, velocity indication
  * and one-, two- and three-minute minimums and maximums */
