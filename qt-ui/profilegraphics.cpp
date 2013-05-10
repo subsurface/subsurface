@@ -144,12 +144,13 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
     // Scale the view / do the zoom
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
     double scaleFactor = 1.15;
-    if(event->delta() > 0) {
-        // Zoom in
+    if(event->delta() > 0 && zoomLevel <= 10) {
         scale(scaleFactor, scaleFactor);
-    } else {
+		zoomLevel++;
+    } else if (zoomLevel >= 0) {
         // Zooming out
         scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+		zoomLevel--;
     }
     toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 }
@@ -162,7 +163,9 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 	ensureVisible(event->pos().x(), event->pos().y(), 10, 10, 100, 100);
 	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 
-	QGraphicsView::mouseMoveEvent(event);
+	if (zoomLevel < 0){
+		QGraphicsView::mouseMoveEvent(event);
+	}
 }
 
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
@@ -192,7 +195,12 @@ void ProfileGraphicsView::plot(struct dive *d)
 {
 	scene()->clear();
 
-	dive = d;
+	if (dive != d){
+		resetTransform();
+		zoomLevel = 0;
+		dive = d;
+	}
+
 	if(!dive)
 		return;
 

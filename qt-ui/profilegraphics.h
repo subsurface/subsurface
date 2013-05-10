@@ -96,6 +96,7 @@ private:
 	ToolTipItem *toolTip;
 	graphics_context gc;
 	struct dive *dive;
+	int zoomLevel;
 };
 
 #endif
