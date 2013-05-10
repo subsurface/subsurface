@@ -550,7 +550,7 @@ void ProfileGraphicsView::plot_cylinder_pressure_text()
 	}
 }
 
-void ProfileGraphicsView::plot_pressure_value(int mbar, int sec, int xalign, int yalign)
+void ProfileGraphicsView::plot_pressure_value(int mbar, int sec, double xalign, double yalign)
 {
 	int pressure;
 	const char *unit;
@@ -1234,7 +1234,6 @@ void ToolTipItem::setRect(const QRectF& r)
 
 void ToolTipItem::collapse()
 {
-	QRectF newRect = childrenBoundingRect();
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
 	animation->setDuration(100);
 	animation->setStartValue(boundingRect());
@@ -1244,7 +1243,6 @@ void ToolTipItem::collapse()
 
 void ToolTipItem::expand()
 {
-	QRectF currentRect = rectangle;
 	QRectF nextRectangle;
 
 	double width = 0, height = title->boundingRect().height() + SPACING;
