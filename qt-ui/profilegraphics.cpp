@@ -142,6 +142,7 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
     // Scale the view / do the zoom
+	QPoint toolTipPos = mapFromScene(toolTip->pos());
     double scaleFactor = 1.15;
     if(event->delta() > 0) {
         // Zoom in
@@ -150,23 +151,16 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
         // Zooming out
         scale(1.0 / scaleFactor, 1.0 / scaleFactor);
     }
+    toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 }
 
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
-	toolTip->clear();
-	int time =  (mapToScene(event->pos()).x() * gc.maxtime) / scene()->sceneRect().width();
-	char buffer[500];
-	get_plot_details(&gc, time, buffer, 500);
-	toolTip->addToolTip(QString(buffer));
-	QList<QGraphicsItem*> items = scene()->items(mapToScene(event->pos()), Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
-	Q_FOREACH(QGraphicsItem *item, items) {
-		if (!item->toolTip().isEmpty())
-			toolTip->addToolTip(item->toolTip());
-	}
+	toolTip->refresh(&gc,  mapToScene(event->pos()));
 
-	// Pan on mouseMove code.
+	QPoint toolTipPos = mapFromScene(toolTip->pos());
 	ensureVisible(event->pos().x(), event->pos().y(), 10, 10, 100, 100);
+	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 
 	QGraphicsView::mouseMoveEvent(event);
 }
@@ -1170,6 +1164,22 @@ void ToolTipItem::removeToolTip(const QString& toolTip)
 	}
 
 	expand();
+}
+
+void ToolTipItem::refresh(struct graphics_context *gc, QPointF pos)
+{
+	clear();
+	int time = (pos.x() * gc->maxtime) / scene()->sceneRect().width();
+	char buffer[500];
+	get_plot_details(gc, time, buffer, 500);
+	addToolTip(QString(buffer));
+
+	QList<QGraphicsItem*> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
+	Q_FOREACH(QGraphicsItem *item, items) {
+		if (!item->toolTip().isEmpty())
+			addToolTip(item->toolTip());
+	}
+
 }
 
 void ToolTipItem::clear()

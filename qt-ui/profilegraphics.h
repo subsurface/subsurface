@@ -31,6 +31,7 @@ public:
 	void clear();
 	void addToolTip(const QString& toolTip, const QIcon& icon = QIcon());
 	void removeToolTip(const QString& toolTip);
+	void refresh(struct graphics_context* gc, QPointF pos);
 
 public Q_SLOTS:
 	void setRect(const QRectF& rect);
