@@ -28,6 +28,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QSettings>
+#include <QDesktopWidget>
 
 class Translator: public QTranslator
 {
@@ -83,7 +84,6 @@ void init_ui(int *argcp, char ***argvp)
 	if (v.isValid()) {
 		QString name = v.toString();
 		prefs.default_filename = strdup(name.toUtf8());
-		qDebug("default filename %s", prefs.default_filename);
 	}
 	settings.endGroup();
 
@@ -200,4 +200,9 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 	}
 }
 
+double get_screen_dpi()
+{
+	QDesktopWidget *mydesk = application->desktop();
+	return mydesk->physicalDpiX();
+}
 #include "qt-gui.moc"
