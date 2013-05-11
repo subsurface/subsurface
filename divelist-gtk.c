@@ -26,12 +26,8 @@
 #include <math.h>
 #include <glib/gi18n.h>
 #include <assert.h>
-#ifdef LIBZIP
 #include <zip.h>
-#endif
-#ifdef XSLT
 #include <libxslt/transform.h>
-#endif
 
 #include "dive.h"
 #include "divelist.h"
@@ -985,16 +981,13 @@ static void edit_dive_when_cb(GtkWidget *menuitem, struct dive *dive)
 	}
 }
 
-#if HAVE_OSM_GPS_MAP
 static void show_gps_location_cb(GtkWidget *menuitem, struct dive *dive)
 {
 	show_gps_location(dive, NULL);
 }
-#endif
 
 gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 {
-#if HAVE_OSM_GPS_MAP
 	GtkTreePath *path = NULL;
 	GtkTreeIter iter;
 	GtkTreeViewColumn *col;
@@ -1015,7 +1008,6 @@ gboolean icon_click_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 		if (path)
 			gtk_tree_path_free(path);
 	}
-#endif
 	/* keep processing the click */
 	return FALSE;
 }
@@ -1390,7 +1382,6 @@ void divelogs_status_dialog(char *error, GtkMessageType type)
 
 }
 
-#if defined(LIBZIP) && defined(XSLT)
 static void upload_dives_divelogs(const gboolean selected)
 {
 	int i;
@@ -1512,9 +1503,7 @@ void upload_all_dives_divelogs_cb()
 {
 	upload_dives_divelogs(FALSE);
 }
-#endif
 
-#if defined(XSLT)
 static void export_dives_uddf(const gboolean selected)
 {
 	FILE *f;
@@ -1598,7 +1587,6 @@ void export_all_dives_uddf_cb()
 {
 	export_dives_uddf(FALSE);
 }
-#endif
 
 static void merge_dives_cb(GtkWidget *menuitem, void *unused)
 {
@@ -1652,12 +1640,8 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 	char deleteplurallabel[] = N_("Delete dives");
 	char deletesinglelabel[] = N_("Delete dive");
 	char *deletelabel;
-#if defined(XSLT)
 	char exportuddflabel[] = N_("Export dive(s) to UDDF");
-#endif
-#if defined(LIBZIP) && defined(XSLT)
 	char uploaddivelogslabel[] = N_("Upload dive(s) to divelogs.de");
-#endif
 	GtkTreePath *path, *prevpath, *nextpath;
 	GtkTreeIter iter, previter, nextiter;
 	int idx, previdx, nextidx;
@@ -1736,17 +1720,13 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			g_signal_connect(menuitem, "activate", G_CALLBACK(delete_selected_dives_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
-#if defined(LIBZIP) && defined(XSLT)
 			menuitem = gtk_menu_item_new_with_label(_(uploaddivelogslabel));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(upload_selected_dives_divelogs_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-#endif
 
-#if defined(XSLT)
 			menuitem = gtk_menu_item_new_with_label(_(exportuddflabel));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(export_selected_dives_uddf_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-#endif
 
 			menuitem = gtk_menu_item_new_with_label(editlabel);
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_selected_dives_cb), NULL);
@@ -1770,14 +1750,12 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			g_signal_connect(menuitem, "activate", G_CALLBACK(edit_dive_from_path_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		}
-#if HAVE_OSM_GPS_MAP
 		/* Only offer to show on map if it has a location. */
 		if (dive_has_gps_location(dive)) {
 			menuitem = gtk_menu_item_new_with_label(_("Show in map"));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(show_gps_location_cb), dive);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 		}
-#endif
 		/* only offer trip editing options when we are displaying the tree model */
 		if (dive_list.model == dive_list.treemodel) {
 			int depth = gtk_tree_path_get_depth(path);

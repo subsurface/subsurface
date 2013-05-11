@@ -10,14 +10,9 @@
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
-#ifdef XSLT
 #include <libxslt/transform.h>
-#endif
 #include <glib/gi18n.h>
-
-#ifdef SQLITE3
 #include<sqlite3.h>
-#endif
 
 #include "dive.h"
 #include "device.h"
@@ -1601,15 +1596,12 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	}
 	reset_all();
 	dive_start();
-#ifdef XSLT
 	doc = test_xslt_transforms(doc, error);
-#endif
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
 }
 
-#ifdef SQLITE3
 extern int dm4_events(void *handle, int columns, char **data, char **column)
 {
 	event_start();
@@ -1816,12 +1808,10 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	*/
 	return SQLITE_OK;
 }
-#endif
 
 int parse_dm4_buffer(const char *url, const char *buffer, int size,
 			struct dive_table *table, GError **error)
 {
-#ifdef SQLITE3
 	int retval;
 	char *err = NULL;
 	sqlite3 *handle;
@@ -1846,7 +1836,6 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	}
 
 	sqlite3_close(handle);
-#endif
 	return 0;
 }
 
@@ -1859,8 +1848,6 @@ void parse_xml_exit(void)
 {
 	xmlCleanupParser();
 }
-
-#ifdef XSLT
 
 /* Maybe we'll want a environment variable that can override this.. */
 static const char *xslt_path = XSLT ":xslt:.";
@@ -1962,4 +1949,3 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, GError **error)
 	}
 	return doc;
 }
-#endif

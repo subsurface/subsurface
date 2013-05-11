@@ -29,9 +29,7 @@
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include "subsurface-icon.h"
 
-#if HAVE_OSM_GPS_MAP
 #include <osm-gps-map-source.h>
-#endif
 
 GtkWidget *main_window;
 GtkWidget *main_vbox;
@@ -137,16 +135,12 @@ static GtkFileFilter *setup_filter(void)
 	gtk_file_filter_add_pattern(filter, "*.UDCF");
 	gtk_file_filter_add_pattern(filter, "*.jlb");
 	gtk_file_filter_add_pattern(filter, "*.JLB");
-#ifdef LIBZIP
 	gtk_file_filter_add_pattern(filter, "*.sde");
 	gtk_file_filter_add_pattern(filter, "*.SDE");
 	gtk_file_filter_add_pattern(filter, "*.dld");
 	gtk_file_filter_add_pattern(filter, "*.DLD");
-#endif
-#ifdef SQLITE3
 	gtk_file_filter_add_pattern(filter, "*.DB");
 	gtk_file_filter_add_pattern(filter, "*.db");
-#endif
 
 	gtk_file_filter_add_mime_type(filter, "text/xml");
 	gtk_file_filter_set_name(filter, _("XML file"));
@@ -724,7 +718,6 @@ static void pick_default_file(GtkWidget *w, GtkButton *button)
 	gtk_widget_set_sensitive(parent, TRUE);
 }
 
-#if HAVE_OSM_GPS_MAP
 static GtkWidget * map_provider_widget()
 {
 	OsmGpsMapSource_t i;
@@ -744,16 +737,13 @@ static GtkWidget * map_provider_widget()
 	gtk_combo_box_set_active(GTK_COMBO_BOX(combobox), prefs.map_provider - 1);
 	return combobox;
 }
-#endif
 
 static void preferences_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	GtkWidget *dialog, *notebook, *font, *frame, *box, *hbox, *vbox, *button;
 	GtkWidget *xmlfile_button;
-#if HAVE_OSM_GPS_MAP
 	GtkWidget *map_provider;
-#endif
 	GtkWidget *entry_po2, *entry_pn2, *entry_phe, *entry_mod, *entry_gflow, *entry_gfhigh;
 	const char *current_default, *new_default;
 	char threshold_text[10], mod_text[10], utf8_buf[128];
@@ -868,12 +858,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	g_signal_connect(G_OBJECT(xmlfile_button), "clicked",
 			 G_CALLBACK(pick_default_file), xmlfile_button);
 	gtk_box_pack_start(GTK_BOX(hbox), xmlfile_button, FALSE, FALSE, 6);
-#if HAVE_OSM_GPS_MAP
+
 	frame = gtk_frame_new(_("Map provider"));
 	map_provider = map_provider_widget();
 	gtk_container_add(GTK_CONTAINER(frame), map_provider);
 	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 3);
-#endif
+
 	/* vbox that holds the second notebook page */
 	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox,
@@ -1078,7 +1068,6 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		if (strcmp(current_default, new_default)) {
 			prefs.default_filename = new_default;
 		}
-#if HAVE_OSM_GPS_MAP
 		/* get the map provider selected */
 		OsmGpsMapSource_t i;
 #if GTK_CHECK_VERSION(2,24,0)
@@ -1092,7 +1081,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 				break;
 			}
 		free((void *)provider);
-#endif
+
 		save_preferences();
                 dive_list_update_dives();
 	} else if (result == GTK_RESPONSE_CANCEL) {
@@ -1623,18 +1612,14 @@ static GtkActionEntry menu_items[] = {
 	{ "Print",          GTK_STOCK_PRINT, N_("Print..."),  CTRLCHAR "P", NULL, G_CALLBACK(do_print) },
 	{ "ImportFile",     NULL, N_("Import File(s)..."), CTRLCHAR "I", NULL, G_CALLBACK(import_files) },
 	{ "ExportUDDF",     NULL, N_("Export UDDF..."), NULL, NULL, G_CALLBACK(export_all_dives_uddf_cb) },
-#if defined(LIBZIP) && defined(XSLT)
 	{ "UploadDivelogs", NULL, N_("Upload to divelogs.de..."), NULL, NULL, G_CALLBACK(upload_all_dives_divelogs_cb) },
-#endif
 	{ "DownloadLog",    NULL, N_("Download From Dive Computer..."), CTRLCHAR "D", NULL, G_CALLBACK(download_dialog) },
 	{ "DownloadWeb",    GTK_STOCK_CONNECT, N_("Download From Web Service..."), NULL, NULL, G_CALLBACK(webservice_download_dialog) },
 	{ "AddDive",        GTK_STOCK_ADD, N_("Add Dive..."), NULL, NULL, G_CALLBACK(add_dive_cb) },
 	{ "Preferences",    GTK_STOCK_PREFERENCES, N_("Preferences..."), PREFERENCE_ACCEL, NULL, G_CALLBACK(preferences_dialog) },
 	{ "Renumber",       NULL, N_("Renumber..."), NULL, NULL, G_CALLBACK(renumber_dialog) },
 	{ "YearlyStats",    NULL, N_("Yearly Statistics"), NULL, NULL, G_CALLBACK(show_yearly_stats) },
-#if HAVE_OSM_GPS_MAP
 	{ "DivesLocations", NULL, N_("Dives Locations"), CTRLCHAR "M", NULL, G_CALLBACK(show_gps_locations) },
-#endif
 	{ "SelectEvents",   NULL, N_("Select Events..."), NULL, NULL, G_CALLBACK(selectevents_dialog) },
 	{ "SelectTags",   NULL, N_("Select Tags..."), NULL, NULL, G_CALLBACK(selecttags_dialog) },
 	{ "Quit",           GTK_STOCK_QUIT, N_("Quit"),   CTRLCHAR "Q", NULL, G_CALLBACK(quit) },
@@ -1669,9 +1654,7 @@ static const gchar* ui_string = " \
 				<separator name=\"Separator1\"/> \
 				<menuitem name=\"Import XML File\" action=\"ImportFile\" /> \
 				<menuitem name=\"Export to UDDF File\" action=\"ExportUDDF\" />"
-#if defined(LIBZIP) && defined(XSLT)
 				"<menuitem name=\"Upload to divelogs.de\" action=\"UploadDivelogs\" />"
-#endif
 				"<separator name=\"Separator2\"/> \
 				<menuitem name=\"Print\" action=\"Print\" /> \
 				<separator name=\"Separator3\"/> \
@@ -1690,9 +1673,7 @@ static const gchar* ui_string = " \
 				<menuitem name=\"Autogroup\" action=\"Autogroup\" /> \
 				<menuitem name=\"Toggle Zoom\" action=\"ToggleZoom\" /> \
 				<menuitem name=\"YearlyStats\" action=\"YearlyStats\" />"
-#if HAVE_OSM_GPS_MAP
 				"<menuitem name=\"Dive Locations\" action=\"DivesLocations\" /> "
-#endif
 			"</menu> \
 			<menu name=\"ViewMenu\" action=\"ViewMenuAction\"> \
 				<menuitem name=\"List\" action=\"ViewList\" /> \

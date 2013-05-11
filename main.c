@@ -10,9 +10,7 @@
 #include "dive.h"
 #include "divelist.h"
 
-#if HAVE_OSM_GPS_MAP
 #include <osm-gps-map.h>
-#endif
 #ifdef DEBUGFILE
 char *debugfilename;
 FILE *debugfile;
@@ -38,9 +36,7 @@ struct preferences default_prefs = {
 	.calc_ceiling_3m_incr = FALSE,
 	.gflow = 0.30,
 	.gfhigh = 0.75,
-#if HAVE_OSM_GPS_MAP
 	.map_provider = OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_HYBRID,
-#endif
 };
 
 /* random helper functions, used here or elsewhere */

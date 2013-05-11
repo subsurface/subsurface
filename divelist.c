@@ -40,12 +40,8 @@
 #include <math.h>
 #include <glib/gi18n.h>
 #include <assert.h>
-#ifdef LIBZIP
 #include <zip.h>
-#endif
-#ifdef XSLT
 #include <libxslt/transform.h>
-#endif
 
 #include "dive.h"
 #include "divelist.h"

@@ -397,7 +397,6 @@ static void update_gps_entry(int lat, int lon)
 	}
 }
 
-#if HAVE_OSM_GPS_MAP
 static void update_gps_entry_callback(float lat, float lon)
 {
 	update_gps_entry(lat * 1000000, lon * 1000000);
@@ -420,7 +419,6 @@ static gboolean gps_map_callback(GtkWidget *w, gpointer data)
 	show_gps_location(&fake_dive, update_gps_entry_callback);
 	return TRUE;
 }
-#endif
 
 /*
  * If somebody sets the string by editing the text entry,
@@ -524,9 +522,7 @@ void divetag_toggle_cb(GtkWidget *widget, gpointer data)
 static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_info *info, int multi, int *show_tags)
 {
 	GtkWidget *hbox, *frame, *equipment, *ibox, *box, *button, *sbox, *framebox;
-#if HAVE_OSM_GPS_MAP
 	GtkWidget *image;
-#endif
 	char buffer[256];
 	char airtemp[10];
 	const char *unit;
@@ -566,7 +562,6 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	gtk_widget_add_events(GTK_WIDGET(info->gps), GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(G_OBJECT(info->gps), "focus-out-event", G_CALLBACK(gps_entry_change_cb), NULL);
 	gtk_entry_set_width_chars(info->gps, 30);
-#if HAVE_OSM_GPS_MAP
 	info->gps_icon = gtk_button_new_with_label(_("Pick on map"));
 	gtk_box_pack_start(GTK_BOX(hbox), info->gps_icon, FALSE, FALSE, 6);
 	image = gtk_image_new_from_pixbuf(get_gps_icon());
@@ -574,7 +569,6 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	gtk_button_set_image(GTK_BUTTON(info->gps_icon), image);
 
 	g_signal_connect(G_OBJECT(info->gps_icon), "clicked", G_CALLBACK(gps_map_callback), NULL);
-#endif
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, TRUE, 0);
 

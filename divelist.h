@@ -17,9 +17,7 @@ extern void show_and_select_dive(struct dive *dive);
 extern double init_decompression(struct dive * dive);
 extern void export_all_dives_uddf_cb();
 
-#if defined(LIBZIP) && defined(XSLT)
 extern void upload_all_dives_divelogs_cb();
-#endif
 
 /* divelist core logic functions */
 extern char *get_dive_date_string(struct tm *tm);

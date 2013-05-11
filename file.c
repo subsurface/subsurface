@@ -5,6 +5,7 @@
 #include <string.h>
 #include <errno.h>
 #include <glib/gi18n.h>
+#include <zip.h>
 
 #include "dive.h"
 #include "file.h"
@@ -59,8 +60,6 @@ out:
 	return ret;
 }
 
-#ifdef LIBZIP
-#include <zip.h>
 
 static void zip_read(struct zip_file *file, GError **error, const char *filename)
 {
@@ -76,12 +75,10 @@ static void zip_read(struct zip_file *file, GError **error, const char *filename
 	parse_xml_buffer(filename, mem, read, &dive_table, error);
 	free(mem);
 }
-#endif
 
 static int try_to_open_zip(const char *filename, struct memblock *mem, GError **error)
 {
 	int success = 0;
-#ifdef LIBZIP
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
 	struct zip *zip = zip_open(filename, ZIP_CHECKCONS, NULL);
 
@@ -97,16 +94,13 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, GError **
 		}
 		zip_close(zip);
 	}
-#endif
 	return success;
 }
 
-#ifdef SQLITE3
 static int try_to_open_db(const char *filename, struct memblock *mem, GError **error)
 {
 	return parse_dm4_buffer(filename, mem->buffer, mem->size, &dive_table, error);
 }
-#endif
 
 static timestamp_t parse_date(const char *date)
 {
@@ -266,9 +260,7 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, GError
 void parse_file(const char *filename, GError **error)
 {
 	struct memblock mem;
-#ifdef SQLITE3
 	char *fmt;
-#endif
 
 	if (readfile(filename, &mem) < 0) {
 		/* we don't want to display an error if this was the default file */
@@ -286,7 +278,6 @@ void parse_file(const char *filename, GError **error)
 		return;
 	}
 
-#ifdef SQLITE3
 	fmt = strrchr(filename, '.');
 	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK"))) {
 		if (!try_to_open_db(filename, &mem, error)) {
@@ -294,7 +285,6 @@ void parse_file(const char *filename, GError **error)
 			return;
 		}
 	}
-#endif
 
 	parse_file_buffer(filename, &mem, error);
 	free(mem.buffer);
