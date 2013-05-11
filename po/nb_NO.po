@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 15:43-0700\n"
-"PO-Revision-Date: 2013-04-30 20:30+0000\n"
+"POT-Creation-Date: 2013-05-08 11:07-0700\n"
+"PO-Revision-Date: 2013-05-08 18:30+0000\n"
 "Last-Translator: henrik <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/subsurface/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "%.*f %s\n"
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: planner.c:581
+#: planner.c:589
 #, c-format
 msgid "%.0f%s of %s\n"
 msgstr "%.0f%s av %s\n"
@@ -197,7 +197,7 @@ msgid ""
 "Safetystop:unkn time @ %.0f %s"
 msgstr "%s\nSikkerhetsstopp: ukjent tid @ %.0f %s"
 
-#: planner.c:501
+#: planner.c:509
 #, c-format
 msgid ""
 "%s\n"
@@ -266,15 +266,15 @@ msgstr "(ingen dykk)"
 msgid "(nothing)"
 msgstr "(ingenting)"
 
-#: planner-gtk.c:389
+#: planner-gtk.c:410
 msgid "0.6 cuft/min"
 msgstr "0.6 ft³/min"
 
-#: planner-gtk.c:388
+#: planner-gtk.c:409
 msgid "0.7 cuft/min"
 msgstr "0.7 ft³/min"
 
-#: planner-gtk.c:394
+#: planner-gtk.c:415
 msgid "17 l/min"
 msgstr "17 l/min"
 
@@ -286,7 +286,7 @@ msgstr "2 dykk per side"
 msgid "2 pcs full suit"
 msgstr "todelt drakt"
 
-#: planner-gtk.c:393
+#: planner-gtk.c:414
 msgid "20 l/min"
 msgstr "20 l/min"
 
@@ -298,7 +298,7 @@ msgstr "3m intervaller for kalkulert tak"
 msgid "6 dives per page"
 msgstr "6 dykk per side"
 
-#: planner-gtk.c:336
+#: planner-gtk.c:346
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -308,7 +308,7 @@ msgid ""
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr "<small>Legg til segmenter.\nHver rad beskriver en del av det planlagte dykket.\nEn rad med dybde, tid og gass beskriver et segment som slutter på den gitte dybden, tar den gitte tiden (hvis relativ tid er brukt, som '+3:30') eller slutter på den gitte tiden (hvis absolutt tid er brukt, som '@5:00'), og bruker den angitte gassen.\nEt tomt gassfelt betyr 'bruk forrige gass' (eller luft hvis det ikke var noen tidligere gass). En rad som har dybde og gass, men ikke tid er spesiell: planleggeren vet da at gassen er tilgjengelig når den oppgitte dybden nåes.\nCC setpoint spesifiserer rebreather-dykk, ikke bruk ved åpent system (OC).</small>\n"
 
-#: planner-gtk.c:262
+#: planner-gtk.c:272
 msgid "AIR"
 msgstr "Luft"
 
@@ -345,7 +345,7 @@ msgstr "Legg til gassbytte ved %d:%02u"
 msgid "Add to trip above"
 msgstr "Legg til i turen over"
 
-#: planner-gtk.c:413
+#: planner-gtk.c:434
 msgid "Add waypoint"
 msgstr "Legg til rad"
 
@@ -436,11 +436,11 @@ msgstr "bar"
 msgid "Buddy"
 msgstr "Buddy"
 
-#: planner-gtk.c:291
+#: planner-gtk.c:301
 msgid "CC SetPoint"
 msgstr "CC setpoint"
 
-#: planner.c:123
+#: planner.c:131
 #, c-format
 msgid "Can't find gas %d/%d"
 msgstr "Finner ikke gassen %d/%d"
@@ -514,7 +514,7 @@ msgstr "Flaske"
 msgid "Cylinder"
 msgstr "Flaske"
 
-#: planner.c:184
+#: planner.c:192
 msgid "Cylinder for planning"
 msgstr "Tank fra plan"
 
@@ -527,7 +527,7 @@ msgstr "Flasker"
 msgid "D:%.1f %s"
 msgstr "D:%.1f %s"
 
-#: planner-gtk.c:349
+#: planner-gtk.c:359
 msgid ""
 "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM"
 " AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
@@ -635,7 +635,7 @@ msgstr "Informasjon"
 msgid "Dive Notes"
 msgstr "Dykk"
 
-#: planner-gtk.c:360
+#: planner-gtk.c:370
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
 msgstr "Dykkeplan - DETTE ER KUN EN SIMULERING, IKKE BRUK TIL DYKKING"
 
@@ -671,7 +671,7 @@ msgstr "Dykkesteder"
 msgid "Dive master"
 msgstr "Dykkeleder"
 
-#: planner-gtk.c:382
+#: planner-gtk.c:392
 msgid "Dive starts when?"
 msgstr "Når starter dykket?"
 
@@ -727,16 +727,16 @@ msgstr "Varighet (min)"
 msgid "E"
 msgstr "Ø"
 
-#: planner.c:88
+#: planner.c:96
 #, c-format
 msgid "EAN%d"
 msgstr "EAN%d"
 
-#: planner-gtk.c:263
+#: planner-gtk.c:273
 msgid "EAN32"
 msgstr "EAN32"
 
-#: planner-gtk.c:264
+#: planner-gtk.c:274
 msgid "EAN36"
 msgstr "EAN36"
 
@@ -798,7 +798,7 @@ msgstr "Vis / skjul emneord"
 msgid "End"
 msgstr "Slutt"
 
-#: planner-gtk.c:288
+#: planner-gtk.c:298
 msgid "Ending Depth"
 msgstr "Sluttdybde"
 
@@ -938,7 +938,7 @@ msgstr "fre"
 msgid "GFhigh"
 msgstr "GFhigh"
 
-#: planner-gtk.c:405
+#: planner-gtk.c:426
 msgid "GFhigh for plan"
 msgstr "GFhigh for plan"
 
@@ -946,7 +946,7 @@ msgstr "GFhigh for plan"
 msgid "GFlow"
 msgstr "GFlow"
 
-#: planner-gtk.c:404
+#: planner-gtk.c:425
 msgid "GFlow for plan"
 msgstr "GFlow for plan"
 
@@ -964,12 +964,12 @@ msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Gassforbruk"
 
-#: planner-gtk.c:290
+#: planner-gtk.c:300
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Gass"
 
-#: planner.c:570
+#: planner.c:578
 #, c-format
 msgid "Gas consumption:\n"
 msgstr "Gasskonsum:\n"
@@ -1040,6 +1040,14 @@ msgstr "jul"
 #: main.c:77
 msgid "Jun"
 msgstr "jun"
+
+#: planner-gtk.c:398
+msgid "Last stop at 20 Feet"
+msgstr "Siste stopp ved 20 fot"
+
+#: planner-gtk.c:396
+msgid "Last stop at 6 Meters"
+msgstr "Siste stopp ved 6 meter"
 
 #: print.c:985
 msgid "Layout Options"
@@ -1476,11 +1484,11 @@ msgstr "S"
 msgid "SAC"
 msgstr "SAC"
 
-#: planner-gtk.c:399
+#: planner-gtk.c:420
 msgid "SAC during decostop"
 msgstr "SAC under dekostopp"
 
-#: planner-gtk.c:398
+#: planner-gtk.c:419
 msgid "SAC during dive"
 msgstr "SAC under dykk"
 
@@ -1512,7 +1520,7 @@ msgstr "Lagre som"
 msgid "Save..."
 msgstr "Lagre..."
 
-#: planner-gtk.c:289
+#: planner-gtk.c:299
 msgid "Segment Time"
 msgstr "Deltid"
 
@@ -1585,7 +1593,7 @@ msgstr "Vis graf for pN%s"
 msgid "Show pO%s graph"
 msgstr "Vis graf for pO%s"
 
-#: planner.c:209
+#: planner.c:217
 msgid "Simulated Dive"
 msgstr "Simulert dykk"
 
@@ -1631,7 +1639,7 @@ msgstr "Statistikk"
 msgid "Status"
 msgstr "Status"
 
-#: planner.c:551
+#: planner.c:559
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Bli ved %.*f %s i %d:%02d min - kjøretid %d:%02u på %s\n"
@@ -1654,11 +1662,11 @@ msgstr "søn"
 msgid "Surf Intv"
 msgstr "Overflateintervall"
 
-#: planner-gtk.c:383
+#: planner-gtk.c:393
 msgid "Surface Pressure (mbar)"
 msgstr "Overflatetrykk (mbar)"
 
-#: planner.c:562
+#: planner.c:570
 #, c-format
 msgid "Switch gas to %s\n"
 msgstr "Bytt gass til %s\n"
@@ -1717,11 +1725,11 @@ msgstr "Dobbeltklikk oppføring i lista\nfor å redigere et dykk."
 msgid "Toggle Zoom"
 msgstr "Zoom av/på"
 
-#: planner.c:286
+#: planner.c:294
 msgid "Too many gas mixes"
 msgstr "For mange gassmikser"
 
-#: planner-gtk.c:317
+#: planner-gtk.c:327
 msgid "Too many waypoints"
 msgstr "For mange rader"
 
@@ -1739,7 +1747,7 @@ msgstr "Total tid"
 msgid "Total Weight:"
 msgstr "Total vekt:"
 
-#: planner.c:542
+#: planner.c:550
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Overgang til %.*f %s i %d:%02d min - kjøretid %d:%02u på %s\n"
@@ -1903,7 +1911,7 @@ msgid ""
 "Would you like to save those before closing the datafile?"
 msgstr "Du har endringer som ikke er lagret i %s.\nVil du lagre disse før du lukker fila?"
 
-#: divelist-gtk.c:467 planner.c:86 planner.c:778 planner.c:779 print.c:178
+#: divelist-gtk.c:467 planner.c:94 planner.c:786 planner.c:787 print.c:178
 #: profile.c:415
 #, c-format
 msgid "air"
@@ -1965,7 +1973,7 @@ msgstr "tak (sikkerhetsstopp)"
 msgid "clip-on"
 msgstr "clip-on"
 
-#: dive.c:93 planner.c:951
+#: dive.c:93 planner.c:959
 msgid "cuft"
 msgstr "ft³"
 
@@ -2005,7 +2013,7 @@ msgstr "strømdyk"
 msgid "drysuit"
 msgstr "tørrdrakt"
 
-#: planner.c:780
+#: planner.c:788
 msgid "ean"
 msgstr "ean"
 
@@ -2038,7 +2046,7 @@ msgstr "for valgte dykk"
 msgid "freshwater"
 msgstr "ferskvan"
 
-#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:889
+#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2114,7 +2122,7 @@ msgstr "maksdybde"
 msgid "membrane"
 msgstr "skalldrakt"
 
-#: divelist-gtk.c:820 planner.c:957
+#: divelist-gtk.c:820 planner.c:965
 msgid "min"
 msgstr "Min"
 

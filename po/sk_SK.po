@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-02 08:37-0700\n"
-"PO-Revision-Date: 2013-05-08 15:01+0000\n"
-"Last-Translator: Dodiak <dodo.sk@gmail.com>\n"
+"POT-Creation-Date: 2013-05-08 11:07-0700\n"
+"PO-Revision-Date: 2013-05-08 18:07+0000\n"
+"Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/subsurface/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,7 +69,7 @@ msgstr "%.*f %s\n"
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: planner.c:581
+#: planner.c:589
 #, c-format
 msgid "%.0f%s of %s\n"
 msgstr "%.0f%s z %s\n"
@@ -198,7 +198,7 @@ msgid ""
 "Safetystop:unkn time @ %.0f %s"
 msgstr "%s\nBezpečnostná zastávka:nezn. čas @ %.0f %s"
 
-#: planner.c:501
+#: planner.c:509
 #, c-format
 msgid ""
 "%s\n"
@@ -267,15 +267,15 @@ msgstr "(žiadné ponory)"
 msgid "(nothing)"
 msgstr "(nič)"
 
-#: planner-gtk.c:389
+#: planner-gtk.c:410
 msgid "0.6 cuft/min"
 msgstr "0.6 kubst/min"
 
-#: planner-gtk.c:388
+#: planner-gtk.c:409
 msgid "0.7 cuft/min"
 msgstr "0.7 kubst/min"
 
-#: planner-gtk.c:394
+#: planner-gtk.c:415
 msgid "17 l/min"
 msgstr "17 l/min"
 
@@ -287,7 +287,7 @@ msgstr "2 ponory na stránku"
 msgid "2 pcs full suit"
 msgstr "2 dielny oblek"
 
-#: planner-gtk.c:393
+#: planner-gtk.c:414
 msgid "20 l/min"
 msgstr "20 l/min"
 
@@ -299,7 +299,7 @@ msgstr "3m krok pre výpočet hladiny"
 msgid "6 dives per page"
 msgstr "6 ponorov na stránku"
 
-#: planner-gtk.c:336
+#: planner-gtk.c:346
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -309,7 +309,7 @@ msgid ""
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr "<small>Pridaj segment nižšie.\nKaždý riadok predstavuje časť plánovaného ponoru.\nRiadok s hĺbkou, časom a dýchacou zmesou popisuje segment, ktorý končí v zadanej hĺbke,  trvá zadaný čas (ak zadaný relatívne, napr. '+3:30') alebo končí v zadaný čas (ak zadaný absolútne, napr. '@5:00'), a používa zadanú zmes.\nNezadaná zmes znamená 'použi predchádzajúcu zmes' (alebo vzduch, ak žiadna zmes nebola zadaná).\nRiadok, ktorý ma zadanú hĺbku a dýchaciu zmes, no nemá zadaný čas, je špeciálny; informuje plánovač, že daná zmes je plánovaná len pre výstup po dosiahnutí zadanej hĺbky.\nCC SetPoint špecifikuje CC (rebreather) ponory, čiže nevypĺňať pre OC.</small>\n"
 
-#: planner-gtk.c:262
+#: planner-gtk.c:272
 msgid "AIR"
 msgstr "Vzduch"
 
@@ -346,7 +346,7 @@ msgstr "Pridaj zmenu zmesi o %d:%02u"
 msgid "Add to trip above"
 msgstr "Pridať do akcie vyššie"
 
-#: planner-gtk.c:413
+#: planner-gtk.c:434
 msgid "Add waypoint"
 msgstr "Pridaj zastávku"
 
@@ -437,11 +437,11 @@ msgstr "bar"
 msgid "Buddy"
 msgstr "Partner"
 
-#: planner-gtk.c:291
+#: planner-gtk.c:301
 msgid "CC SetPoint"
 msgstr "CC SetPoint"
 
-#: planner.c:123
+#: planner.c:131
 #, c-format
 msgid "Can't find gas %d/%d"
 msgstr "Neviem nájsť zmes %d/%d"
@@ -515,7 +515,7 @@ msgstr "Fľaša"
 msgid "Cylinder"
 msgstr "Fľaša"
 
-#: planner.c:184
+#: planner.c:192
 msgid "Cylinder for planning"
 msgstr "Fľaša pre plánovanie"
 
@@ -528,7 +528,7 @@ msgstr "Fľaše"
 msgid "D:%.1f %s"
 msgstr "H:%.1f %s"
 
-#: planner-gtk.c:349
+#: planner-gtk.c:359
 msgid ""
 "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM"
 " AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
@@ -636,7 +636,7 @@ msgstr "Informácie"
 msgid "Dive Notes"
 msgstr "Poznámky"
 
-#: planner-gtk.c:360
+#: planner-gtk.c:370
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
 msgstr "Plán ponoru - TOTO JE LEN SIMULÁCIA; NEPOUŽÍVAJ NA POTÁPANIE"
 
@@ -672,7 +672,7 @@ msgstr "Miesto ponoru"
 msgid "Dive master"
 msgstr "Divemaster"
 
-#: planner-gtk.c:382
+#: planner-gtk.c:392
 msgid "Dive starts when?"
 msgstr "Začiatok ponoru?"
 
@@ -728,16 +728,16 @@ msgstr "Dĺžka (min)"
 msgid "E"
 msgstr "E"
 
-#: planner.c:88
+#: planner.c:96
 #, c-format
 msgid "EAN%d"
 msgstr "EAN%d"
 
-#: planner-gtk.c:263
+#: planner-gtk.c:273
 msgid "EAN32"
 msgstr "EAN32"
 
-#: planner-gtk.c:264
+#: planner-gtk.c:274
 msgid "EAN36"
 msgstr "EAN36"
 
@@ -789,7 +789,7 @@ msgstr "Editovať sumár"
 
 #: gtk-gui.c:1183
 msgid "Enable / Disable Events"
-msgstr "Povolit / zakázať udalosti"
+msgstr "Povoliť / zakázať udalosti"
 
 #: gtk-gui.c:1147
 msgid "Enable / Disable Tags"
@@ -799,7 +799,7 @@ msgstr "Povoľ / Zakaž označenia"
 msgid "End"
 msgstr "Koniec"
 
-#: planner-gtk.c:288
+#: planner-gtk.c:298
 msgid "Ending Depth"
 msgstr "Cieľová hĺbka"
 
@@ -939,7 +939,7 @@ msgstr "Pi"
 msgid "GFhigh"
 msgstr "GFhigh"
 
-#: planner-gtk.c:405
+#: planner-gtk.c:426
 msgid "GFhigh for plan"
 msgstr "GFhigh pre plán"
 
@@ -947,7 +947,7 @@ msgstr "GFhigh pre plán"
 msgid "GFlow"
 msgstr "GFlow"
 
-#: planner-gtk.c:404
+#: planner-gtk.c:425
 msgid "GFlow for plan"
 msgstr "GFlow pre plán"
 
@@ -965,12 +965,12 @@ msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Použitá zmes"
 
-#: planner-gtk.c:290
+#: planner-gtk.c:300
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Použitá zmes"
 
-#: planner.c:570
+#: planner.c:578
 #, c-format
 msgid "Gas consumption:\n"
 msgstr "Spotreba plynu:\n"
@@ -1041,6 +1041,14 @@ msgstr "Jul"
 #: main.c:77
 msgid "Jun"
 msgstr "Jun"
+
+#: planner-gtk.c:398
+msgid "Last stop at 20 Feet"
+msgstr ""
+
+#: planner-gtk.c:396
+msgid "Last stop at 6 Meters"
+msgstr ""
 
 #: print.c:985
 msgid "Layout Options"
@@ -1477,11 +1485,11 @@ msgstr "S"
 msgid "SAC"
 msgstr "Spotreba plynu"
 
-#: planner-gtk.c:399
+#: planner-gtk.c:420
 msgid "SAC during decostop"
 msgstr "SAC počas dekompresnej zastávky"
 
-#: planner-gtk.c:398
+#: planner-gtk.c:419
 msgid "SAC during dive"
 msgstr "SAC počas ponoru"
 
@@ -1513,7 +1521,7 @@ msgstr "Uložiť ako"
 msgid "Save..."
 msgstr "Uložiť..."
 
-#: planner-gtk.c:289
+#: planner-gtk.c:299
 msgid "Segment Time"
 msgstr "Časový segment"
 
@@ -1586,7 +1594,7 @@ msgstr "Zobraz pN%s graf"
 msgid "Show pO%s graph"
 msgstr "Zobraz pO%s graf"
 
-#: planner.c:209
+#: planner.c:217
 msgid "Simulated Dive"
 msgstr "Simulovaný Ponor"
 
@@ -1632,7 +1640,7 @@ msgstr "Štatistiky"
 msgid "Status"
 msgstr "Stav"
 
-#: planner.c:551
+#: planner.c:559
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Zostaň v %.*f %s na %d:%02d min - runtime %d:%02u na %s\n"
@@ -1655,11 +1663,11 @@ msgstr "Ne"
 msgid "Surf Intv"
 msgstr "Povrchový interval"
 
-#: planner-gtk.c:383
+#: planner-gtk.c:393
 msgid "Surface Pressure (mbar)"
 msgstr "Tlak na hladine (mbar)"
 
-#: planner.c:562
+#: planner.c:570
 #, c-format
 msgid "Switch gas to %s\n"
 msgstr "Zmena plynu na %s\n"
@@ -1718,11 +1726,11 @@ msgstr "Na editovanie informácii o ponore\nklikni 2x na ponor v zozname"
 msgid "Toggle Zoom"
 msgstr "Zmeň veľkosť"
 
-#: planner.c:286
+#: planner.c:294
 msgid "Too many gas mixes"
 msgstr "Príliš veľa zmesí"
 
-#: planner-gtk.c:317
+#: planner-gtk.c:327
 msgid "Too many waypoints"
 msgstr "Príliš veľa zastávok"
 
@@ -1740,7 +1748,7 @@ msgstr "Celkový čas"
 msgid "Total Weight:"
 msgstr "Celková hmotnosť:"
 
-#: planner.c:542
+#: planner.c:550
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Prechod na %.*f %s v %d:%02d min - runtime %d:%02u na %s\n"
@@ -1905,7 +1913,7 @@ msgid ""
 "Would you like to save those before closing the datafile?"
 msgstr "Máš neuložené zmeny v súbore %s \nChceš ich uložiť pred zatvorením súboru?"
 
-#: divelist-gtk.c:467 planner.c:86 planner.c:778 planner.c:779 print.c:178
+#: divelist-gtk.c:467 planner.c:94 planner.c:786 planner.c:787 print.c:178
 #: profile.c:415
 #, c-format
 msgid "air"
@@ -1967,7 +1975,7 @@ msgstr "strop (bezpečnostná zastávka)"
 msgid "clip-on"
 msgstr "clip-on"
 
-#: dive.c:93 planner.c:951
+#: dive.c:93 planner.c:959
 msgid "cuft"
 msgstr "cuft"
 
@@ -2007,7 +2015,7 @@ msgstr "prúdový"
 msgid "drysuit"
 msgstr "suchý oblek"
 
-#: planner.c:780
+#: planner.c:788
 msgid "ean"
 msgstr "ean"
 
@@ -2040,7 +2048,7 @@ msgstr "pre vybrané ponory"
 msgid "freshwater"
 msgstr "sladká voda"
 
-#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:889
+#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2116,7 +2124,7 @@ msgstr "max. hĺbka"
 msgid "membrane"
 msgstr "membrana"
 
-#: divelist-gtk.c:820 planner.c:957
+#: divelist-gtk.c:820 planner.c:965
 msgid "min"
 msgstr "min"
 

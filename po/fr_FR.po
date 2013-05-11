@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-02 08:37-0700\n"
-"PO-Revision-Date: 2013-05-01 19:40+0000\n"
-"Last-Translator: vavincavent <vavincavent@gmail.com>\n"
+"POT-Creation-Date: 2013-05-08 11:07-0700\n"
+"PO-Revision-Date: 2013-05-10 19:30+0000\n"
+"Last-Translator: jnoel <jnoel@sissiou.net>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/subsurface/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +73,7 @@ msgstr "%.*f %s\n"
 msgid "%.*f %s/min"
 msgstr "%.*f %s/min"
 
-#: planner.c:581
+#: planner.c:589
 #, c-format
 msgid "%.0f%s of %s\n"
 msgstr "%.0f%s de %s\n"
@@ -202,7 +202,7 @@ msgid ""
 "Safetystop:unkn time @ %.0f %s"
 msgstr "%s\nArrêt de sécurité : durée inconnue @ %.0f %s"
 
-#: planner.c:501
+#: planner.c:509
 #, c-format
 msgid ""
 "%s\n"
@@ -242,12 +242,12 @@ msgstr "%s\npO%s : %.2fbar"
 #: gtk-gui.c:2120
 #, c-format
 msgid "%s event at %d:%02u"
-msgstr ""
+msgstr "%s événement à %d:%02u"
 
 #: divelist-gtk.c:1378
 #, c-format
 msgid "%s: Response from divelogs.de"
-msgstr ""
+msgstr "%s: Réponse de divelogs.de"
 
 #: dive.c:921
 #, c-format
@@ -271,15 +271,15 @@ msgstr "(pas de plongées)"
 msgid "(nothing)"
 msgstr "(rien)"
 
-#: planner-gtk.c:389
+#: planner-gtk.c:410
 msgid "0.6 cuft/min"
 msgstr "0.016 m³/min"
 
-#: planner-gtk.c:388
+#: planner-gtk.c:409
 msgid "0.7 cuft/min"
 msgstr "0.02 m³/min"
 
-#: planner-gtk.c:394
+#: planner-gtk.c:415
 msgid "17 l/min"
 msgstr "17 l/min"
 
@@ -291,7 +291,7 @@ msgstr "2 plongées par page"
 msgid "2 pcs full suit"
 msgstr "Combi 2 pièces"
 
-#: planner-gtk.c:393
+#: planner-gtk.c:414
 msgid "20 l/min"
 msgstr "20 l/min"
 
@@ -303,7 +303,7 @@ msgstr "Pas de 3 m pour calculer le plafond"
 msgid "6 dives per page"
 msgstr "6 plongées par page"
 
-#: planner-gtk.c:336
+#: planner-gtk.c:346
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -311,9 +311,9 @@ msgid ""
 "An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
-msgstr ""
+msgstr "<small>Ajouter des sections ci-dessous.\nChaque ligne décrit une partie de la plongée prévue.\nUne ligne comprend la profondeur, le temps et le gaz utilisé pendant la section qui se termine à la profondeur désignée, dure le temps prévu (si durée relative : « +3:30 ») ou finit au temps prévu (si la durée est absolue) et utilise la quantité de gaz indiquée.\nSi aucun gaz n'est précisé, cela correspondra à « utiliser le gaz précédant » (ou à AIR si aucun gaz n'a été spécifié).\nUn entrée avec une profondeur et un gaz mais sans durée est particulière ; elle informe le planificateur que le volume de gaz indiqué sera disponible pour la remonté une fois la profondeur indiquée atteinte.\nLes repères CF sont pour les plongées en CF (circuit-fermé, avec recycleur), laisser vide pour les plongées en CO (circuit ouvert).</small>\n"
 
-#: planner-gtk.c:262
+#: planner-gtk.c:272
 msgid "AIR"
 msgstr "AIR"
 
@@ -323,7 +323,7 @@ msgstr "À propos de Subsurface"
 
 #: gtk-gui.c:2135
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
 #: gtk-gui.c:1631
 msgid "Add Dive..."
@@ -331,7 +331,7 @@ msgstr "Ajouter une plongée..."
 
 #: gtk-gui.c:2189
 msgid "Add bookmark event here"
-msgstr ""
+msgstr "Ajouter un signet ici"
 
 #: divelist-gtk.c:1672
 msgid "Add dive"
@@ -339,18 +339,18 @@ msgstr "Ajouter une plongée"
 
 #: gtk-gui.c:2184
 msgid "Add gas change event here"
-msgstr ""
+msgstr "Ajouter un changement de mélange ici"
 
 #: equipment.c:633
 #, c-format
 msgid "Add gaschange event at %d:%02u"
-msgstr ""
+msgstr "Ajouter un changement de mélange à %d:%02u"
 
 #: divelist-gtk.c:1797
 msgid "Add to trip above"
 msgstr "Ajouter au groupe au-dessus"
 
-#: planner-gtk.c:413
+#: planner-gtk.c:434
 msgid "Add waypoint"
 msgstr "Ajouter des points de cheminement"
 
@@ -441,11 +441,11 @@ msgstr "bar"
 msgid "Buddy"
 msgstr "Binôme"
 
-#: planner-gtk.c:291
+#: planner-gtk.c:301
 msgid "CC SetPoint"
 msgstr "repère CF"
 
-#: planner.c:123
+#: planner.c:131
 #, c-format
 msgid "Can't find gas %d/%d"
 msgstr "Impossible de trouver le gaz %d/%d"
@@ -465,7 +465,7 @@ msgstr "Annulé..."
 
 #: equipment.c:621
 msgid "Cannot add gas change"
-msgstr ""
+msgstr "Impossible d'ajouter un changement de mélange"
 
 #: webservice.c:29
 msgid "Cannot parse response!"
@@ -519,7 +519,7 @@ msgstr "Blk"
 msgid "Cylinder"
 msgstr "Bloc"
 
-#: planner.c:184
+#: planner.c:192
 msgid "Cylinder for planning"
 msgstr "Bloc pour la simulation"
 
@@ -532,7 +532,7 @@ msgstr "Blocs"
 msgid "D:%.1f %s"
 msgstr "P : %.1f %s"
 
-#: planner-gtk.c:349
+#: planner-gtk.c:359
 msgid ""
 "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM"
 " AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
@@ -543,17 +543,17 @@ msgstr "ATTENTION : CECI EST UNE NOUVELLE IMPLÉMENTATION DE L'ALGORITHME DE B
 #: parse-xml.c:1835
 #, c-format
 msgid "Database connection failed '%s'.\n"
-msgstr ""
+msgstr "Connexion à la base de données impossible '%s'.\n"
 
 #: parse-xml.c:1842
 #, c-format
 msgid "Database query failed '%s'.\n"
-msgstr ""
+msgstr "Échec de la requête '%s'.\n"
 
 #: parse-xml.c:1800
 #, c-format
 msgid "Database query get_events failed.\n"
-msgstr ""
+msgstr "Échec de la requête.\n"
 
 #: divelist-gtk.c:817 print.c:502 statistics-gtk.c:590
 msgid "Date"
@@ -609,7 +609,7 @@ msgstr "Périphérique ou point de montage"
 
 #: gtk-gui.c:857
 msgid "Display invalid dives"
-msgstr ""
+msgstr "Afficher les plongées erronées"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #. <trailing text>
@@ -640,13 +640,13 @@ msgstr "Détails de plongée"
 msgid "Dive Notes"
 msgstr "Notes de plongée"
 
-#: planner-gtk.c:360
+#: planner-gtk.c:370
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
 msgstr "Planificateur de plongée - CECI EST UNE SIMULATION ; NE PAS L'UTILISER POUR PLONGER"
 
 #: info-gtk.c:603 statistics-gtk.c:623
 msgid "Dive Tags"
-msgstr ""
+msgstr "Étiquettes de plongée"
 
 #: statistics-gtk.c:591
 msgid "Dive Time"
@@ -676,7 +676,7 @@ msgstr "Lieux"
 msgid "Dive master"
 msgstr "Chef de palanquée"
 
-#: planner-gtk.c:382
+#: planner-gtk.c:392
 msgid "Dive starts when?"
 msgstr "Début de la plongée ?"
 
@@ -732,16 +732,16 @@ msgstr "Durée (min)"
 msgid "E"
 msgstr "E"
 
-#: planner.c:88
+#: planner.c:96
 #, c-format
 msgid "EAN%d"
 msgstr "Nitrox%d"
 
-#: planner-gtk.c:263
+#: planner-gtk.c:273
 msgid "EAN32"
 msgstr "Nitrox32"
 
-#: planner-gtk.c:264
+#: planner-gtk.c:274
 msgid "EAN36"
 msgstr "Nitrox36"
 
@@ -797,13 +797,13 @@ msgstr "Activer/désactiver des événements"
 
 #: gtk-gui.c:1147
 msgid "Enable / Disable Tags"
-msgstr ""
+msgstr "Activer / Désactiver les étiquettes"
 
 #: equipment.c:1013 equipment.c:1520
 msgid "End"
 msgstr "Fin"
 
-#: planner-gtk.c:288
+#: planner-gtk.c:298
 msgid "Ending Depth"
 msgstr "Profondeur finale"
 
@@ -943,7 +943,7 @@ msgstr "Ven."
 msgid "GFhigh"
 msgstr "GFhaut"
 
-#: planner-gtk.c:405
+#: planner-gtk.c:426
 msgid "GFhigh for plan"
 msgstr "GFhaut pour la simulation"
 
@@ -951,7 +951,7 @@ msgstr "GFhaut pour la simulation"
 msgid "GFlow"
 msgstr "GFbas"
 
-#: planner-gtk.c:404
+#: planner-gtk.c:425
 msgid "GFlow for plan"
 msgstr "GFbas pour la simulation"
 
@@ -969,12 +969,12 @@ msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Gaz utilisé"
 
-#: planner-gtk.c:290
+#: planner-gtk.c:300
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Gaz utilisé"
 
-#: planner.c:570
+#: planner.c:578
 #, c-format
 msgid "Gas consumption:\n"
 msgstr "Consommation de gaz :\n"
@@ -1046,9 +1046,17 @@ msgstr "Juil."
 msgid "Jun"
 msgstr "Juin"
 
+#: planner-gtk.c:398
+msgid "Last stop at 20 Feet"
+msgstr "Dernier arrêt à 20 pieds"
+
+#: planner-gtk.c:396
+msgid "Last stop at 6 Meters"
+msgstr "Dernier arrêt à 6 mètres"
+
 #: print.c:985
 msgid "Layout Options"
-msgstr ""
+msgstr "Options de mise en page"
 
 #: gtk-gui.c:1290
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
@@ -1097,7 +1105,7 @@ msgstr "Mar."
 
 #: divelist-gtk.c:1728 divelist-gtk.c:1730
 msgid "Mark invalid"
-msgstr ""
+msgstr "Trace invalide"
 
 #: gps.c:53
 msgid "Mark location here"
@@ -1105,7 +1113,7 @@ msgstr "Sélectionner l'emplacement"
 
 #: divelist-gtk.c:1726
 msgid "Mark valid"
-msgstr ""
+msgstr "Trace valide"
 
 #: uemis.c:230
 msgid "Marker"
@@ -1266,11 +1274,11 @@ msgstr "Notes"
 #: print.c:1025
 #, c-format
 msgid "Notes height (%d%% - %d%%)"
-msgstr ""
+msgstr "Hauteur des notes (%d%% - %d%%)"
 
 #: print.c:1003
 msgid "Notes on top"
-msgstr ""
+msgstr "Notes en haut"
 
 #: main.c:78
 msgid "Nov"
@@ -1299,7 +1307,7 @@ msgstr "Supprimer cette entrée ?"
 
 #: gtk-gui.c:1138
 msgid "Only display dives with these tags:"
-msgstr ""
+msgstr "N'afficher que les plongées avec ces étiquettes:"
 
 #: gtk-gui.c:297
 msgid "Open File"
@@ -1316,7 +1324,7 @@ msgstr "Classer"
 #: print.c:1024
 #, c-format
 msgid "Other data height (%d%% - %d%%)"
-msgstr ""
+msgstr "Hauteur des autres données (%d%% - %d%%)"
 
 #: print.c:173
 #, c-format
@@ -1359,7 +1367,7 @@ msgstr "Simulateur"
 msgid ""
 "Please enter your userid and password for divelogs.de. The selected dives "
 "will be added to your account"
-msgstr ""
+msgstr "Entrer vos id et mot de passe pour divelogs.de. Les plongées sélectionnées seront ajoutées à votre compte."
 
 #: gtk-gui.c:762
 msgid "Preferences"
@@ -1412,11 +1420,11 @@ msgstr "Préférences personnelles"
 #: print.c:1023
 #, c-format
 msgid "Profile height (%d%% - %d%%)"
-msgstr ""
+msgstr "Hauteur du profil (%d%% - %d%%)"
 
 #: print.c:1000
 msgid "Profile on top"
-msgstr ""
+msgstr "Profil en haut"
 
 #: gtk-gui.c:1640
 msgid "Quit"
@@ -1453,7 +1461,7 @@ msgstr "Retirer la plongée du groupe"
 
 #: gtk-gui.c:2195
 msgid "Remove event here"
-msgstr ""
+msgstr "Retirer un événement ici"
 
 #: divelist-gtk.c:1803
 msgid "Remove selected dives from trip"
@@ -1481,11 +1489,11 @@ msgstr "S"
 msgid "SAC"
 msgstr "Consommation d'air"
 
-#: planner-gtk.c:399
+#: planner-gtk.c:420
 msgid "SAC during decostop"
 msgstr "Consommation d'air pendant la décompression"
 
-#: planner-gtk.c:398
+#: planner-gtk.c:419
 msgid "SAC during dive"
 msgstr "Consommation d'air pendant la plongée"
 
@@ -1517,7 +1525,7 @@ msgstr "Enregistrer sous"
 msgid "Save..."
 msgstr "Enregistrer..."
 
-#: planner-gtk.c:289
+#: planner-gtk.c:299
 msgid "Segment Time"
 msgstr "Fragmenter le temps"
 
@@ -1531,7 +1539,7 @@ msgstr "Sélection des événements..."
 
 #: gtk-gui.c:1639
 msgid "Select Tags..."
-msgstr ""
+msgstr "Sélectionner des étiquettes..."
 
 #: main.c:78
 msgid "Sep"
@@ -1590,7 +1598,7 @@ msgstr "Afficher le graph pN%s"
 msgid "Show pO%s graph"
 msgstr "Afficher le graph pO%s"
 
-#: planner.c:209
+#: planner.c:217
 msgid "Simulated Dive"
 msgstr "Plongée simulée"
 
@@ -1601,7 +1609,7 @@ msgstr "Taille"
 #: print.c:1012
 #, c-format
 msgid "Sizing heights (%% of layout)"
-msgstr ""
+msgstr "Hauteurs (%% de la page)"
 
 #: uemis.c:200
 msgid "Speed Alarm"
@@ -1636,7 +1644,7 @@ msgstr "Stats"
 msgid "Status"
 msgstr "Statut"
 
-#: planner.c:551
+#: planner.c:559
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Rester à %.*f %s pour %d:%02d min - temps %d:%02u sur %s\n"
@@ -1659,11 +1667,11 @@ msgstr "Dim."
 msgid "Surf Intv"
 msgstr "Tps entre plongées"
 
-#: planner-gtk.c:383
+#: planner-gtk.c:393
 msgid "Surface Pressure (mbar)"
 msgstr "Pression en surface (mbar)"
 
-#: planner.c:562
+#: planner.c:570
 #, c-format
 msgid "Switch gas to %s\n"
 msgstr "Changer pour du gaz %s\n"
@@ -1674,7 +1682,7 @@ msgstr "Impression du tableau"
 
 #: info-gtk.c:632
 msgid "Tags are only shown if they are identical for all edited dives"
-msgstr ""
+msgstr "Les étiquettes ne sont affichées que si elles sont identiques pour toutes les plongées éditées"
 
 #: uemis.c:220
 msgid "Tank Change Suggested"
@@ -1722,11 +1730,11 @@ msgstr "Pour modifier les informations d'une plongée\nfaites un double-clic sur
 msgid "Toggle Zoom"
 msgstr "Changer de zoom"
 
-#: planner.c:286
+#: planner.c:294
 msgid "Too many gas mixes"
 msgstr "Trop de gaz différents"
 
-#: planner-gtk.c:317
+#: planner-gtk.c:327
 msgid "Too many waypoints"
 msgstr "Trop de points de cheminement"
 
@@ -1744,7 +1752,7 @@ msgstr "Temps total"
 msgid "Total Weight:"
 msgstr "Poids total :"
 
-#: planner.c:542
+#: planner.c:550
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Transition vers %.*f %s en %d:%02d min - temps %d:%02u sur %s\n"
@@ -1908,7 +1916,7 @@ msgid ""
 "Would you like to save those before closing the datafile?"
 msgstr "Vous avez des changements non enregistrés dans le fichier : %s \nSouhaitez-vous enregistrer ces changements avant de le fermer ?"
 
-#: divelist-gtk.c:467 planner.c:86 planner.c:778 planner.c:779 print.c:178
+#: divelist-gtk.c:467 planner.c:94 planner.c:786 planner.c:787 print.c:178
 #: profile.c:415
 #, c-format
 msgid "air"
@@ -1952,7 +1960,7 @@ msgstr "marque-page"
 
 #: statistics.c:21
 msgid "cave"
-msgstr ""
+msgstr "grotte"
 
 #: statistics.c:20
 msgid "cavern"
@@ -1970,7 +1978,7 @@ msgstr "plafond (palier de sécurité)"
 msgid "clip-on"
 msgstr "clip-on"
 
-#: dive.c:93 planner.c:951
+#: dive.c:93 planner.c:959
 msgid "cuft"
 msgstr "pied³"
 
@@ -2004,13 +2012,13 @@ msgstr "Temps de plongée"
 
 #: statistics.c:20
 msgid "drift"
-msgstr ""
+msgstr "dérivante"
 
 #: uemis-downloader.c:589
 msgid "drysuit"
 msgstr "Combinaison sèche"
 
-#: planner.c:780
+#: planner.c:788
 msgid "ean"
 msgstr "ean"
 
@@ -2041,9 +2049,9 @@ msgstr "uniquement les plongées sélectionnées"
 
 #: statistics.c:22
 msgid "freshwater"
-msgstr ""
+msgstr "eau douce"
 
-#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:889
+#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:897
 msgid "ft"
 msgstr "pied"
 
@@ -2119,7 +2127,7 @@ msgstr "profondeur max"
 msgid "membrane"
 msgstr "membrane"
 
-#: divelist-gtk.c:820 planner.c:957
+#: divelist-gtk.c:820 planner.c:965
 msgid "min"
 msgstr "min"
 
@@ -2209,7 +2217,7 @@ msgstr "semi-étanche"
 
 #: statistics.c:20
 msgid "shore"
-msgstr ""
+msgstr "rivage"
 
 #: uemis-downloader.c:590
 msgid "shorty"
@@ -2229,7 +2237,7 @@ msgstr "Avertissement de niveau « tissue »"
 
 #: statistics.c:22
 msgid "training"
-msgstr ""
+msgstr "entraînement"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the
 #. tranlators here
@@ -2280,4 +2288,4 @@ msgstr "charge"
 
 #: statistics.c:21
 msgid "wreck"
-msgstr ""
+msgstr "épave"
