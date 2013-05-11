@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-02 08:37-0700\n"
-"PO-Revision-Date: 2013-05-04 11:50+0000\n"
-"Last-Translator: Sergey Starosek <sergey.starosek@gmail.com>\n"
+"POT-Creation-Date: 2013-05-08 11:07-0700\n"
+"PO-Revision-Date: 2013-05-08 18:07+0000\n"
+"Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/subsurface/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +67,7 @@ msgstr "%.*f %s\n"
 msgid "%.*f %s/min"
 msgstr "%.*f %s/мин"
 
-#: planner.c:581
+#: planner.c:589
 #, c-format
 msgid "%.0f%s of %s\n"
 msgstr "%.0f%s %s\n"
@@ -196,7 +196,7 @@ msgid ""
 "Safetystop:unkn time @ %.0f %s"
 msgstr "%s\nОст.безоп:неизв. время @ %.0f %s"
 
-#: planner.c:501
+#: planner.c:509
 #, c-format
 msgid ""
 "%s\n"
@@ -265,15 +265,15 @@ msgstr "(нет погружений)"
 msgid "(nothing)"
 msgstr "(отсутствует)"
 
-#: planner-gtk.c:389
+#: planner-gtk.c:410
 msgid "0.6 cuft/min"
 msgstr "0.6 куб.фут/мин"
 
-#: planner-gtk.c:388
+#: planner-gtk.c:409
 msgid "0.7 cuft/min"
 msgstr "0.7 куб.фут/мин"
 
-#: planner-gtk.c:394
+#: planner-gtk.c:415
 msgid "17 l/min"
 msgstr "17 л/мин"
 
@@ -285,7 +285,7 @@ msgstr "2 погр. на стр."
 msgid "2 pcs full suit"
 msgstr "полный из 2-х"
 
-#: planner-gtk.c:393
+#: planner-gtk.c:414
 msgid "20 l/min"
 msgstr "20 л/мин"
 
@@ -297,7 +297,7 @@ msgstr "3м шаг для расчетного потолка"
 msgid "6 dives per page"
 msgstr "6 погр. на стр."
 
-#: planner-gtk.c:336
+#: planner-gtk.c:346
 msgid ""
 "<small>Add segments below.\n"
 "Each line describes part of the planned dive.\n"
@@ -307,7 +307,7 @@ msgid ""
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
 msgstr "<small>Добавляйте сегменты ниже.\nКаждая строка - это часть планируемого погружения.\nЗапись с глубиной, временем и смесью описывает сегмент, который заканчивается на заданной глубине, длится (указано относительное время, т.е. '+3:30') либо заканчивается (указано абсолютное время, т.е. '@5:00', 'runtime') в указанное время, и использует указанную смесь.\nЕсли смесь не указана, то будет использоваться предыдущая смесь (или воздух, если смесь не была задана).\nСтрока с указанными глубиной и смесью, но без времени, - особая; она сообщает планировщику, что данная смесь доступна при подъеме по достижении указанной глубины.\nНастройка СС помечает погружения с ребризером, оставьте пустым для обычных погружений.</small>\n"
 
-#: planner-gtk.c:262
+#: planner-gtk.c:272
 msgid "AIR"
 msgstr "воздух"
 
@@ -344,7 +344,7 @@ msgstr "Добавить событие \"замена смеси\" в %d:%02u"
 msgid "Add to trip above"
 msgstr "Добавить к поездке выше"
 
-#: planner-gtk.c:413
+#: planner-gtk.c:434
 msgid "Add waypoint"
 msgstr "Добавить путевую точку"
 
@@ -435,11 +435,11 @@ msgstr "Бар"
 msgid "Buddy"
 msgstr "Партнер"
 
-#: planner-gtk.c:291
+#: planner-gtk.c:301
 msgid "CC SetPoint"
 msgstr "Настройка СС"
 
-#: planner.c:123
+#: planner.c:131
 #, c-format
 msgid "Can't find gas %d/%d"
 msgstr "Не найдена смесь %d/%d"
@@ -513,7 +513,7 @@ msgstr "Баллон"
 msgid "Cylinder"
 msgstr "Баллон"
 
-#: planner.c:184
+#: planner.c:192
 msgid "Cylinder for planning"
 msgstr "Баллон планировщика"
 
@@ -526,7 +526,7 @@ msgstr "Баллоны"
 msgid "D:%.1f %s"
 msgstr "Г:%.1f %s"
 
-#: planner-gtk.c:349
+#: planner-gtk.c:359
 msgid ""
 "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM"
 " AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
@@ -634,7 +634,7 @@ msgstr "Информация"
 msgid "Dive Notes"
 msgstr "Погружение"
 
-#: planner-gtk.c:360
+#: planner-gtk.c:370
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
 msgstr "План погружения - ЭТО ТОЛЬКО ИМИТАЦИЯ; НЕ ИСПОЛЬЗУЙТЕ ДЛЯ ПОГРУЖЕНИЯ"
 
@@ -670,7 +670,7 @@ msgstr "Места погружений"
 msgid "Dive master"
 msgstr "Инструктор"
 
-#: planner-gtk.c:382
+#: planner-gtk.c:392
 msgid "Dive starts when?"
 msgstr "Начало погружения"
 
@@ -726,16 +726,16 @@ msgstr "Длительность (мин)"
 msgid "E"
 msgstr "В"
 
-#: planner.c:88
+#: planner.c:96
 #, c-format
 msgid "EAN%d"
 msgstr "EAN%d"
 
-#: planner-gtk.c:263
+#: planner-gtk.c:273
 msgid "EAN32"
 msgstr "EAN32"
 
-#: planner-gtk.c:264
+#: planner-gtk.c:274
 msgid "EAN36"
 msgstr "EAN36"
 
@@ -797,7 +797,7 @@ msgstr "Показать / скрыть метки"
 msgid "End"
 msgstr "Конец"
 
-#: planner-gtk.c:288
+#: planner-gtk.c:298
 msgid "Ending Depth"
 msgstr "Конечная глубина"
 
@@ -937,7 +937,7 @@ msgstr "Птн"
 msgid "GFhigh"
 msgstr "верхний ГФ"
 
-#: planner-gtk.c:405
+#: planner-gtk.c:426
 msgid "GFhigh for plan"
 msgstr "верхний ГФ для плана"
 
@@ -945,7 +945,7 @@ msgstr "верхний ГФ для плана"
 msgid "GFlow"
 msgstr "нижний ГФ"
 
-#: planner-gtk.c:404
+#: planner-gtk.c:425
 msgid "GFlow for plan"
 msgstr "нижний ГФ для плана"
 
@@ -963,12 +963,12 @@ msgctxt "Amount"
 msgid "Gas Used"
 msgstr "Расход"
 
-#: planner-gtk.c:290
+#: planner-gtk.c:300
 msgctxt "Type of"
 msgid "Gas Used"
 msgstr "Смесь"
 
-#: planner.c:570
+#: planner.c:578
 #, c-format
 msgid "Gas consumption:\n"
 msgstr "Потребление смеси:\n"
@@ -1039,6 +1039,14 @@ msgstr "Июл"
 #: main.c:77
 msgid "Jun"
 msgstr "Июн"
+
+#: planner-gtk.c:398
+msgid "Last stop at 20 Feet"
+msgstr ""
+
+#: planner-gtk.c:396
+msgid "Last stop at 6 Meters"
+msgstr ""
 
 #: print.c:985
 msgid "Layout Options"
@@ -1475,11 +1483,11 @@ msgstr "Ю"
 msgid "SAC"
 msgstr "SAC"
 
-#: planner-gtk.c:399
+#: planner-gtk.c:420
 msgid "SAC during decostop"
 msgstr "SAC при декостоп"
 
-#: planner-gtk.c:398
+#: planner-gtk.c:419
 msgid "SAC during dive"
 msgstr "SAC при погружении"
 
@@ -1511,7 +1519,7 @@ msgstr "Сохранить как"
 msgid "Save..."
 msgstr "Сохранить..."
 
-#: planner-gtk.c:289
+#: planner-gtk.c:299
 msgid "Segment Time"
 msgstr "Время сегмента"
 
@@ -1584,7 +1592,7 @@ msgstr "График pN%s"
 msgid "Show pO%s graph"
 msgstr "График pO%s"
 
-#: planner.c:209
+#: planner.c:217
 msgid "Simulated Dive"
 msgstr "Моделирование погружения"
 
@@ -1630,7 +1638,7 @@ msgstr "Статистика"
 msgid "Status"
 msgstr "Состояние"
 
-#: planner.c:551
+#: planner.c:559
 #, c-format
 msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Оставаться на %.*f %s в течение %d:%02d мин - рантайм %d:%02u на смеси %s\n"
@@ -1653,11 +1661,11 @@ msgstr "Вск"
 msgid "Surf Intv"
 msgstr "Пов. инт."
 
-#: planner-gtk.c:383
+#: planner-gtk.c:393
 msgid "Surface Pressure (mbar)"
 msgstr "Давление на поверхности (мбар)"
 
-#: planner.c:562
+#: planner.c:570
 #, c-format
 msgid "Switch gas to %s\n"
 msgstr "Замена смеси на %s\n"
@@ -1716,11 +1724,11 @@ msgstr "Для редактирования погружения\nдважды �
 msgid "Toggle Zoom"
 msgstr "Изменить масштаб"
 
-#: planner.c:286
+#: planner.c:294
 msgid "Too many gas mixes"
 msgstr "Слишком много смесей"
 
-#: planner-gtk.c:317
+#: planner-gtk.c:327
 msgid "Too many waypoints"
 msgstr "Слишком много путевых точек"
 
@@ -1738,7 +1746,7 @@ msgstr "Общее время"
 msgid "Total Weight:"
 msgstr "Общий вес:"
 
-#: planner.c:542
+#: planner.c:550
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
 msgstr "Переход на %.*f %s за %d:%02d мин - рантайм %d:%02u на смеси %s\n"
@@ -1903,7 +1911,7 @@ msgid ""
 "Would you like to save those before closing the datafile?"
 msgstr "У вас есть несохраненные изменения в файле %s.\nХотите ли вы их сохранить перед закрытием журнала?"
 
-#: divelist-gtk.c:467 planner.c:86 planner.c:778 planner.c:779 print.c:178
+#: divelist-gtk.c:467 planner.c:94 planner.c:786 planner.c:787 print.c:178
 #: profile.c:415
 #, c-format
 msgid "air"
@@ -1965,7 +1973,7 @@ msgstr "потолок (остановка безопасности)"
 msgid "clip-on"
 msgstr "карабины"
 
-#: dive.c:93 planner.c:951
+#: dive.c:93 planner.c:959
 msgid "cuft"
 msgstr "куб. фут"
 
@@ -2005,7 +2013,7 @@ msgstr "течение"
 msgid "drysuit"
 msgstr "сухой"
 
-#: planner.c:780
+#: planner.c:788
 msgid "ean"
 msgstr "ean"
 
@@ -2038,7 +2046,7 @@ msgstr "для выбранных погружений"
 msgid "freshwater"
 msgstr "в пресной воде"
 
-#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:889
+#: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:897
 msgid "ft"
 msgstr "фут"
 
@@ -2114,7 +2122,7 @@ msgstr "макс. глуб."
 msgid "membrane"
 msgstr "мембрана"
 
-#: divelist-gtk.c:820 planner.c:957
+#: divelist-gtk.c:820 planner.c:965
 msgid "min"
 msgstr "мин"
 
