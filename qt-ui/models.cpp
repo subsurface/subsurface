@@ -650,7 +650,7 @@ QModelIndex DiveTripModel::parent(const QModelIndex& index) const
 	TreeItemDT* childItem = static_cast<TreeItemDT*>(index.internalPointer());
 	TreeItemDT* parentItem = childItem->parent;
 
-	if (parentItem == rootItem)
+	if (parentItem == rootItem || !parentItem)
 		return QModelIndex();
 
 	return createIndex(parentItem->row(), 0, parentItem);
