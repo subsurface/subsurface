@@ -617,14 +617,14 @@ void ProfileGraphicsView::plot_text_samples()
 		if (entry->depth < 2000)
 			continue;
 
-		if ((entry == entry->max[2]) && entry->depth != last) {
+		if ((entry == entry->max[2]) && entry->depth / 100 != last) {
 			plot_depth_sample(entry, &deep);
-			last = entry->depth;
+			last = entry->depth / 100;
 		}
 
-		if ((entry == entry->min[2]) && entry->depth != last) {
+		if ((entry == entry->min[2]) && entry->depth / 100 != last) {
 			plot_depth_sample(entry, &shallow);
-			last = entry->depth;
+			last = entry->depth / 100;
 		}
 
 		if (entry->depth != last)
@@ -639,7 +639,7 @@ void ProfileGraphicsView::plot_depth_sample(struct plot_data *entry,text_render_
 
 	d = get_depth_units(entry->depth, &decimals, NULL);
 
-	plot_text(tro, QPointF(sec, entry->depth), QString("%1").arg(d)); // , decimals, d);
+	plot_text(tro, QPointF(sec, entry->depth), QString("%1").arg(d, 0, 'f', 1));
 }
 
 
@@ -688,7 +688,7 @@ void ProfileGraphicsView::plot_single_temp_text(int sec, int mkelvin)
 	const char *unit;
 	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
 	deg = get_temp_units(mkelvin, &unit);
-	plot_text(&tro, QPointF(sec, mkelvin), QString("%1%2").arg(deg).arg(unit)); //"%.2g%s"
+	plot_text(&tro, QPointF(sec, mkelvin), QString("%1%2").arg(deg, 0, 'f', 1).arg(unit)); //"%.2g%s"
 }
 
 void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc)
@@ -1112,7 +1112,7 @@ QGraphicsSimpleTextItem *ProfileGraphicsView::plot_text(text_render_options_t *t
 	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text, parent);
 	QPointF point(SCALEGC(pos.x(), pos.y())); // This is neded because of the SCALE macro.
 
-	item->setPos(point.x() + dx, point.y() +dy);
+	item->setPos(point.x() + dx, point.y() + dy);
 	item->setBrush(QBrush(profile_color[tro->color].first()));
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
