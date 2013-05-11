@@ -1737,13 +1737,13 @@ static void popup_divelist_menu(GtkTreeView *tree_view, GtkTreeModel *model, int
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
 #if defined(LIBZIP) && defined(XSLT)
-			menuitem = gtk_menu_item_new_with_label(uploaddivelogslabel);
+			menuitem = gtk_menu_item_new_with_label(_(uploaddivelogslabel));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(upload_selected_dives_divelogs_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 #endif
 
 #if defined(XSLT)
-			menuitem = gtk_menu_item_new_with_label(exportuddflabel);
+			menuitem = gtk_menu_item_new_with_label(_(exportuddflabel));
 			g_signal_connect(menuitem, "activate", G_CALLBACK(export_selected_dives_uddf_cb), path);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 #endif
