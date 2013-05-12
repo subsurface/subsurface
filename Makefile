@@ -34,13 +34,16 @@ STORED_VERSION_STRING = \
 
 UNAME := $(shell $(CC) -dumpmachine 2>&1 | grep -E -o "linux|darwin|win|gnu|kfreebsd")
 GET_VERSION = ./scripts/get-version
-VERSION_STRING := $(shell $(GET_VERSION) linux || echo "v$(VERSION)")
+VERSION_STRING := $(shell [ -d .git ] && $(GET_VERSION) linux || \
+			echo "v$(VERSION)")
 # Mac Info.plist style with three numbers 1.2.3
-CFBUNDLEVERSION_STRING := $(shell $(GET_VERSION) darwin $(VERSION_STRING) || \
-	echo "$(VERSION).0")
+CFBUNDLEVERSION_STRING := $(shell [ -d .git ] && \
+				$(GET_VERSION) darwin $(VERSION_STRING) || \
+				echo "$(VERSION).0")
 # Windows .nsi style with four numbers 1.2.3.4
-PRODVERSION_STRING := $(shell $(GET_VERSION) win $(VERSION_STRING) || \
-	echo "$(VERSION).0.0")
+PRODVERSION_STRING := $(shell [ -d .git ] && \
+				$(GET_VERSION) win $(VERSION_STRING) || \
+				echo "$(VERSION).0.0")
 
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
