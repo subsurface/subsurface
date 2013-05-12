@@ -67,11 +67,9 @@ sts=0
 whine "checking for version $v"
 for f in $files; do
 	grep $opts -EHio "(VERSION=|subsurface[[:blank:]]+)?\<v?$v\>" $f || {
-		msg="'$f' may need updating"
-		if [ $release = y ]; then
-			croak "$msg"
-		else
-			whine "$msg"
-		fi
+		[ $release != y ] || sts=1
+		whine "'$f' may need updating"
 	}
 done
+
+exit $sts
