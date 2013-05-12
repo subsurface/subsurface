@@ -87,19 +87,81 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::dive_selection_changed(const QItemSelection& newSelection, const QItemSelection& oldSelection)
 {
+	int cnt, i;
 	/* first deselect the dives that are no longer selected */
-	Q_FOREACH(const QModelIndex& desselect, oldSelection.indexes()) {
-		struct dive *d = (struct dive*) desselect.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	Q_FOREACH(const QModelIndex& deselect, oldSelection.indexes()) {
+		struct dive *d = (struct dive*) deselect.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		if (!d) {
+			// this is a trip - if just the trip is deselected but not its children,
+			// then we manually need to deselect its children
+			const QAbstractItemModel *model = deselect.model();
+			cnt = model->rowCount(deselect);
+			if (cnt == 0)
+				continue;
+			for (i = 0; i < cnt; i++) {
+				QModelIndex child = deselect.child(i,0);
+				if (oldSelection.contains(child))
+					break;
+			}
+			// if none of the dives were in the deselect list (so the user only ctrl-clicked
+			// on the trip header) then manually deselect all the dives
+			if (i == model->rowCount(deselect)) {
+				QItemSelectionModel::SelectionFlags flags = (QItemSelectionModel::Deselect |
+									     QItemSelectionModel::Rows);
+				QItemSelection removedDives = QItemSelection();
+				removedDives.select(deselect.child(0,0), deselect.child(i - 1,0));
+				ui->ListWidget->selectionModel()->select(removedDives,flags);
+			}
+		}
 		if (!d || !d->selected)
 			continue;
 		deselect_dive(get_divenr(d));
 	}
 	/* then select the newly selected dives */
+	bool needToScroll = TRUE;
 	Q_FOREACH(const QModelIndex& select, newSelection.indexes()) {
 		struct dive *d = (struct dive*) select.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		if (!d) {
+			// this is a trip
+			const QAbstractItemModel *model = select.model();
+			cnt = model->rowCount(select);
+			if (cnt == 0)
+				continue;
+			for (i = 0; i < cnt; i++) {
+				QModelIndex child = select.child(i,0);
+				if (newSelection.contains(child))
+					break;
+			}
+			// if just the trip header was clicked and none of its children,
+			// select all of them
+			if (i == model->rowCount(select)) {
+				if (needToScroll) {
+					// make sure the trip header is visible
+					needToScroll = FALSE;
+					ui->ListWidget->scrollTo(select, QAbstractItemView::PositionAtCenter);
+				}
+				QItemSelectionModel::SelectionFlags flags = (QItemSelectionModel::Select |
+									     QItemSelectionModel::Rows);
+				QItemSelection addedDives = QItemSelection();
+				addedDives.select(select.child(0,0), select.child(i - 1,0));
+				ui->ListWidget->selectionModel()->select(addedDives,flags);
+			}
+		}
 		if (!d || d->selected)
 			continue;
 		select_dive(get_divenr(d));
+		if (needToScroll) {
+			// make sure at least one of them is visible in the list
+			// and if this is the first dive of a trip, make the trip visible, too
+			needToScroll = FALSE;
+			if (select.row() == 0 && d->divetrip && select.parent().isValid())
+				ui->ListWidget->scrollTo(select.parent(), QAbstractItemView::PositionAtCenter);
+			else
+				ui->ListWidget->scrollTo(select, QAbstractItemView::PositionAtCenter);
+		} else {
+			// but all selected dives should be in expanded trips
+			ui->ListWidget->expand(select.parent());
+		}
 	}
 	redrawProfile();
 	ui->InfoWidget->updateDiveInfo(selected_dive);
@@ -352,7 +414,7 @@ void MainWindow::readSettings()
 			ui->ListWidget->resizeColumnToContents(i);
 	}
 	ui->ListWidget->collapseAll();
-	ui->ListWidget->expand(sortModel->index(0,0));
+	ui->ListWidget->scrollTo(sortModel->index(0,0), QAbstractItemView::PositionAtCenter);
 	settings.endGroup();
 	settings.beginGroup("Units");
 	GET_UNIT(v, "feet", length, units::METERS, units::FEET);
