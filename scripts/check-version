@@ -46,7 +46,7 @@ if [ $debug = y ]; then
 else
 	opts=-q
 fi
-[ $color = n ] || opts="${opts:+ }--color"
+[ $color = n ] || opts="${opts:+$opts }--color"
 
 v=${1:-}
 case $v in
