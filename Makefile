@@ -167,7 +167,7 @@ GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o gtk-gui.o
 
 OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o planner.o \
 	parse-xml.o save-xml.o libdivecomputer.o print.o uemis.o uemis-downloader.o \
-	statistics.o file.o cochran.o device.o download-dialog.o prefs.o \
+	statistics.o file.o device.o download-dialog.o prefs.o \
 	webservice.o sha1.o $(GPSOBJ) $(OSSUPPORT).o $(RESFILE) $(GTKOBJS)
 
 DEPS = $(wildcard .dep/*.dep)
