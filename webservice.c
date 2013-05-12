@@ -366,7 +366,14 @@ int divelogde_upload(char *fn, char **error)
 	SoupSession *session;
 	SoupBuffer *sbuf;
 	gboolean ret = FALSE;
+#ifdef __MINGW32__
+	/* for odd reasons I can't seem to get https connections to work
+	 * with mingw32 when cross-building the Windows binaries... so fall
+	 * back to http for now */
+	char url[256] = "http://divelogs.de/DivelogsDirectImport.php";
+#else
 	char url[256] = "https://divelogs.de/DivelogsDirectImport.php";
+#endif
 	const char *pass = NULL;
 	const char *user = NULL;
 	struct memblock mem;
