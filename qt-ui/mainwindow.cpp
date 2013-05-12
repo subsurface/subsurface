@@ -43,11 +43,109 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
 	else
 		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
+	QAction *actionNextDive = new QAction(this);
+	addAction(actionNextDive);
+	actionNextDive->setShortcut(Qt::Key_Down);
+	connect(actionNextDive, SIGNAL(triggered()), this, SLOT(nextDive_triggered()));
+	QAction *actionPreviousDive = new QAction(this);
+	addAction(actionPreviousDive);
+	actionPreviousDive->setShortcut(Qt::Key_Up);
+	connect(actionPreviousDive, SIGNAL(triggered()), this, SLOT(previousDive_triggered()));
 }
 
 void MainWindow::redrawProfile()
 {
 	ui->ProfileWidget->plot(get_dive(selected_dive));
+}
+
+void MainWindow::nextDive_triggered()
+{
+	// Get the current Selection:
+	QItemSelectionModel *m = ui->ListWidget->selectionModel();
+	QModelIndexList selection = m->selectedRows();
+
+	if (!selection.size())
+		return;
+
+	// check if it's a dive or trip:
+	QModelIndex index = selection.first();
+	struct dive *d = (struct dive*) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	const QAbstractItemModel *model = index.model();
+
+	QItemSelectionModel::SelectionFlags flags = (QItemSelectionModel::Select  | QItemSelectionModel::Rows);
+
+	if (d) {
+		// it's a dive.
+		QModelIndex trip = index.parent();
+
+		// checks if it's the last dive on a trip list:
+		if (index.row() == model->rowCount(trip) - 1) {
+			// selects a trip.
+			QModelIndex nexttrip = model->index(trip.row()+1, trip.column(), trip.parent());
+			if (nexttrip.isValid()) {
+				m->clear();
+				m->select(nexttrip, flags);
+			}
+		} else {
+			m->clear();
+			m->select(model->index(index.row()+1, index.column(), index.parent()), flags);
+		}
+	} else {
+		// it's a trip (and we have no empty trips, so there is a first child)
+		QModelIndex child = index.child(0,0);
+		m->select(model->index(0, index.column(), index), flags);
+	}
+}
+
+void MainWindow::previousDive_triggered()
+{
+	// Get the current Selection:
+	QItemSelectionModel *m = ui->ListWidget->selectionModel();
+	QModelIndexList selection = m->selectedRows();
+
+	if (!selection.size())
+		return;
+
+	// check if it's a dive or trip:
+	QModelIndex index = selection.first();
+	struct dive *d = (struct dive*) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	const QAbstractItemModel *model = index.model();
+
+	QItemSelectionModel::SelectionFlags flags = (QItemSelectionModel::Select  | QItemSelectionModel::Rows);
+
+	if (d) {
+		// it's a dive.
+		QModelIndex trip = index.parent();
+
+		// checks if it's the first dive on a trip list:
+		if (index.row() == 0) {
+			if (trip.isValid()) {
+				// select the trip this dive is in
+				m->clear();
+				m->select(model->index(trip.row(), trip.column(), trip.parent()),flags);
+			}
+		} else {
+			// select the previous dive
+			m->clear();
+			m->select(model->index(index.row() - 1, index.column(), index.parent()), flags);
+		}
+	} else {
+		// it's a trip.
+		if (index.row() != 0) {
+			QModelIndex prevtrip = index.sibling(index.row() - 1, 0);
+			if (!prevtrip.isValid())
+				return;
+			int cnt = prevtrip.model()->rowCount();
+			QModelIndex child = prevtrip.child(prevtrip.model()->rowCount() - 1, 0);
+			/* I don't understand why this gives me incorrect rowCount... */
+			while(!child.isValid() && cnt > 0)
+				child = prevtrip.child(--cnt, 0);
+			if (!child.isValid())
+				return;
+			m->clear();
+			m->select(model->index(child.row(), index.column(), prevtrip), flags);
+		}
+	}
 }
 
 void MainWindow::on_actionNew_triggered()
