@@ -1,3 +1,6 @@
+NAME = subsurface
+CAPITALIZED_NAME = Subsurface
+
 VERSION=3.0.2
 
 CC=gcc
@@ -16,10 +19,9 @@ DESKTOPDIR = $(DATADIR)/applications
 ICONPATH = $(DATADIR)/icons/hicolor
 ICONDIR = $(ICONPATH)/scalable/apps
 MANDIR = $(DATADIR)/man/man1
-XSLTDIR = $(DATADIR)/subsurface/xslt
+XSLTDIR = $(DATADIR)/$(NAME)/xslt
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
 
-NAME = subsurface
 ICONFILE = $(NAME)-icon.svg
 DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
@@ -67,7 +69,7 @@ ifeq ($(CC), i686-w64-mingw32-gcc)
 	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
 	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
 	LIBGNUTLS = $(shell $(PKGCONFIG) --libs gnutls-extra) $(shell $(PKGCONFIG) --libs p11-kit-1)
-	RESFILE = packaging/windows/subsurface.res
+	RESFILE = packaging/windows/$(NAME).res
 	LDFLAGS += -Wl,-subsystem,windows
 	LIBWINSOCK = -lwsock32
 else ifeq ($(UNAME), darwin)
@@ -147,9 +149,9 @@ ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 else ifeq ($(UNAME), darwin)
 	OSSUPPORT = macos
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
-	MACOSXINSTALL = /Applications/Subsurface.app
+	MACOSXINSTALL = /Applications/$(CAPITALIZED_NAME).app
 	MACOSXFILES = packaging/macosx
-	MACOSXSTAGING = $(MACOSXFILES)/Subsurface.app
+	MACOSXSTAGING = $(MACOSXFILES)/$(CAPITALIZED_NAME).app
 	INFOPLIST = $(MACOSXFILES)/Info.plist
 	INFOPLISTINPUT = $(INFOPLIST).in
 	EXTRALIBS = $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation -framework CoreServices
@@ -161,8 +163,8 @@ else
 	OSSUPPORT_CFLAGS = $(GTKCFLAGS)
 	WINDOWSSTAGING = ./packaging/windows
 	WINMSGDIRS=$(addprefix share/locale/,$(shell ls po/*.po | sed -e 's/po\/\(..\)_.*/\1\/LC_MESSAGES/'))
-	NSIINPUTFILE = $(WINDOWSSTAGING)/subsurface.nsi.in
-	NSIFILE = $(WINDOWSSTAGING)/subsurface.nsi
+	NSIINPUTFILE = $(WINDOWSSTAGING)/$(NAME).nsi.in
+	NSIFILE = $(WINDOWSSTAGING)/$(NAME).nsi
 	MAKENSIS = makensis
 	XSLTDIR = .\\xslt
 endif
@@ -174,7 +176,7 @@ endif
 LIBS = $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK) $(LIBGNUTLS)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
-MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))
+MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/$(NAME).mo))
 
 GTKOBJS = info-gtk.o divelist-gtk.o planner-gtk.o statistics-gtk.o gtk-gui.o
 
@@ -210,13 +212,13 @@ install: all
 	$(INSTALL) -d -m 755 $(MANDIR)
 	$(INSTALL) -m 644 $(MANFILES) $(MANDIR)
 	@-if test ! -z "$(XSLT)"; then \
-		$(INSTALL) -d -m 755 $(DATADIR)/subsurface; \
+		$(INSTALL) -d -m 755 $(DATADIR)/$(NAME); \
 		$(INSTALL) -d -m 755 $(XSLTDIR); \
 		$(INSTALL) -m 644 $(XSLTFILES) $(XSLTDIR); \
 	fi
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
 		$(INSTALL) -d $(prefix)/$$LOC; \
-		$(INSTALL) -m 644 $$LOC/subsurface.mo $(prefix)/$$LOC/subsurface.mo; \
+		$(INSTALL) -m 644 $$LOC/$(NAME).mo $(prefix)/$$LOC/$(NAME).mo; \
 	done
 
 
@@ -228,10 +230,10 @@ install-macosx: all
 	$(INSTALL) $(MACOSXFILES)/PkgInfo $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
-	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXINSTALL)/Contents/Resources/
+	$(INSTALL) $(MACOSXFILES)/$(CAPITALIZED_NAME).icns $(MACOSXINSTALL)/Contents/Resources/
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
 		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/$$LOC; \
-		$(INSTALL) $$LOC/subsurface.mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/subsurface.mo; \
+		$(INSTALL) $$LOC/$(NAME).mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/$(NAME).mo; \
 	done
 	@-if test ! -z "$(XSLT)"; then \
 		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/xslt; \
@@ -246,19 +248,19 @@ create-macosx-bundle: all
 	$(INSTALL) $(MACOSXFILES)/PkgInfo $(MACOSXSTAGING)/Contents/
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXSTAGING)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXSTAGING)/Contents/Resources/
-	$(INSTALL) $(MACOSXFILES)/Subsurface.icns $(MACOSXSTAGING)/Contents/Resources/
+	$(INSTALL) $(MACOSXFILES)/$(CAPITALIZED_NAME).icns $(MACOSXSTAGING)/Contents/Resources/
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
 		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/$$LOC; \
-		$(INSTALL) $$LOC/subsurface.mo $(MACOSXSTAGING)/Contents/Resources/$$LOC/subsurface.mo; \
+		$(INSTALL) $$LOC/$(NAME).mo $(MACOSXSTAGING)/Contents/Resources/$$LOC/$(NAME).mo; \
 	done
 	@-if test ! -z "$(XSLT)"; then \
 		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/xslt; \
 		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXSTAGING)/Contents/Resources/xslt/; \
 	fi
-	$(GTK_MAC_BUNDLER) packaging/macosx/subsurface.bundle
+	$(GTK_MAC_BUNDLER) packaging/macosx/$(NAME).bundle
 
 sign-macosx-bundle: all
-	codesign -s "3A8CE62A483083EDEA5581A61E770EC1FA8BECE8" /Applications/Subsurface.app/Contents/MacOS/subsurface-bin
+	codesign -s "3A8CE62A483083EDEA5581A61E770EC1FA8BECE8" /Applications/$(CAPITALIZED_NAME).app/Contents/MacOS/$(NAME)-bin
 
 install-cross-windows: all
 	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
@@ -268,7 +270,7 @@ install-cross-windows: all
 	done
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
 		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$LOC; \
-		$(INSTALL) $$LOC/subsurface.mo $(WINDOWSSTAGING)/$$LOC/subsurface.mo; \
+		$(INSTALL) $$LOC/$(NAME).mo $(WINDOWSSTAGING)/$$LOC/$(NAME).mo; \
 	done
 
 create-windows-installer: all $(NSIFILE) install-cross-windows
@@ -285,7 +287,7 @@ update-po-files:
 	tx pull -af
 
 push-pot:
-	xgettext -o po/subsurface-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
+	xgettext -o po/$(NAME)-new.pot -s -k_ -kN_ --keyword=C_:1c,2  --add-comments="++GETTEXT" *.c
 	tx push -s
 
 EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
@@ -297,7 +299,7 @@ EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 	@mkdir -p .dep
 	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
-share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
+share/locale/%.UTF-8/LC_MESSAGES/$(NAME).mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
 	msgfmt -c -o $@ po/$*.po
 	@-if test -s po/$*.aliases; then \
@@ -311,7 +313,7 @@ satellite.png: satellite.svg
 	convert -transparent white -resize 11x16 -depth 8 $< $@
 
 # This should work, but it doesn't get the colors quite right - so I manually converted with Gimp
-#	convert -colorspace RGB -transparent white -resize 256x256 subsurface-icon.svg subsurface-icon.png
+#	convert -colorspace RGB -transparent white -resize 256x256 $(NAME)-icon.svg $(NAME)-icon.png
 #
 # The following creates the pixbuf data in .h files with the basename followed by '_pixmap'
 # as name of the data structure
@@ -323,12 +325,14 @@ doc:
 	$(MAKE) -C Documentation doc
 
 clean:
-	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/subsurface-new.pot \
+	rm -f $(OBJS) *~ $(NAME) $(NAME).exe po/*~ po/$(NAME)-new.pot \
 		$(VERSION_FILE)
 	rm -rf share .dep
 
 release:
 	@scripts/check-version -cr $(VERSION_STRING)
-	git archive -o $(NAME)-$(VERSION_STRING).tar.gz v$(VERSION_STRING)
+	git archive --prefix $(CAPITALIZED_NAME)-$(VERSION_STRING)/ \
+		    --output $(CAPITALIZED_NAME)-$(VERSION_STRING).tgz \
+		    v$(VERSION_STRING)
 
 -include $(DEPS)
