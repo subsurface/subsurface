@@ -311,10 +311,11 @@ void ProfileGraphicsView::plot(struct dive *d)
 	if (nick.isEmpty())
 		nick = QString(dc->model);
 
-	if (!nick.isEmpty()) {
-	        text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
-			diveComputer = plot_text(&computer, QPointF(gc.leftx, gc.bottomy), nick);
-	}
+	if (nick.isEmpty())
+		nick = tr("unknown divecomputer");
+
+	text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
+	diveComputer = plot_text(&computer, QPointF(gc.leftx, gc.bottomy), nick);
 	// The Time ruler should be right after the DiveComputer:
 	timeMarkers->setPos(0, diveComputer->y());
 
