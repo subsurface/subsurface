@@ -77,7 +77,9 @@ done
 sts=0
 whine "checking for version $v"
 for f in $files; do
-	grep $opts -EHi "(VERSION=|subsurface[[:blank:]]+)?\<v?$v[.0-9]*\>" $f || {
+	grep	-EH $opts \
+		-e "(VERSION=|[Ss]ubsurface[[:blank:]]+)?\<v?$v[.0-9]*\>" \
+		$f || {
 		[ $release != y ] || sts=1
 		whine "'$f' may need updating"
 	}
