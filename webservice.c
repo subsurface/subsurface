@@ -388,6 +388,8 @@ int divelogde_upload(char *fn, char **error)
 	if (SOUP_STATUS_IS_SUCCESSFUL(msg->status_code)) {
 		*error = strdup(msg->response_body->data);
 		ret = TRUE;
+	} else {
+		*error = strdup(msg->reason_phrase);
 	}
 	soup_session_abort(session);
 	g_object_unref(G_OBJECT(msg));

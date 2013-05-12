@@ -1478,7 +1478,7 @@ static void upload_dives_divelogs(const gboolean selected)
 	}
 	zip_close(zip);
 	if (!divelogde_upload(tempfile, &error)) {
-		error = strdup(_("Communication error with divelogs.de"));
+		/* error = strdup(_("Communication error with divelogs.de")); */
 		type = GTK_MESSAGE_ERROR;
 	} else {
 		/* The upload status XML message should be parsed
