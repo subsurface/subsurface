@@ -1398,6 +1398,7 @@ static void upload_dives_divelogs(const gboolean selected)
 	const gchar *tmpdir = g_get_tmp_dir();
 	GtkMessageType type;
 	char *error = NULL;
+	char *parsed = NULL, *endat = NULL;
 
 	/*
 	 * Creating a temporary .DLD file to be eventually uploaded to
@@ -1469,26 +1470,31 @@ static void upload_dives_divelogs(const gboolean selected)
 	}
 	zip_close(zip);
 	if (!divelogde_upload(tempfile, &error)) {
-		/* error = strdup(_("Communication error with divelogs.de")); */
 		type = GTK_MESSAGE_ERROR;
 	} else {
 		/* The upload status XML message should be parsed
 		 * properly and displayed in a sensible manner. But just
-		 * displaying the raw message is better than nothing.
+		 * displaying the information part of the raw message is
+		 * better than nothing.
 		 * And at least the dialog is customized to indicate
 		 * error or success.
 		 */
+		if (error) {
+			parsed = strstr(error, "<Login>");
+			endat = strstr(error, "</divelogsDataImport>");
+			if (parsed && endat)
+				*endat = '\0';
+		}
 		if (error && strstr(error, "failed"))
 			type = GTK_MESSAGE_ERROR;
 		else
 			type = GTK_MESSAGE_INFO;
 	}
-
-
-	if (error) {
+	if (parsed)
+		divelogs_status_dialog(parsed, type);
+	else if (error)
 		divelogs_status_dialog(error, type);
-		free(error);
-	}
+	free(error);
 
 	g_unlink(tempfile);
 	g_free(tempfile);
