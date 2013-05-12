@@ -69,7 +69,7 @@ packages.
 
 On Debian the package names are different; try libxml2-dev,
 libgtk2.0-dev, libglib2.0-dev, libgconf2-dev, libsoup2.4-dev,
-libxslt1-dev, zlib1g-dev.
+libsqlite3-dev, libxslt1-dev, libzip-dev, zlib1g-dev.
 
 To be able to visualise the dives on a map (optional), using GPS
 coordinates, install the osm-gps-map-devel (Fedora) or libosmgpsmap-dev
