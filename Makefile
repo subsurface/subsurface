@@ -314,7 +314,16 @@ clean:
 	rm -rf share .dep
 
 release:
-	@scripts/check-version -cdr $(VERSION_STRING)
+	@scripts/check-version -cr $(VERSION_STRING)
 	# Add other rules (like tar-command) bellow
+	tar czf $(NAME)-$(VERSION_STRING).tar.gz \
+		--exclude-backups \
+		--exclude .dep \
+		--exclude .git \
+		--exclude .gitignore \
+		--exclude-from .gitignore \
+		--exclude '*~' \
+		--exclude subsurface \
+		.
 
 -include $(DEPS)
