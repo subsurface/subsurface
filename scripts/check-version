@@ -27,6 +27,7 @@ while getopts cdr opt; do
 	case $opt in
 		c)
 			color=y
+			debug=y
 			;;
 		d)
 			debug=y
