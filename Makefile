@@ -315,15 +315,6 @@ clean:
 
 release:
 	@scripts/check-version -cr $(VERSION_STRING)
-	# Add other rules (like tar-command) bellow
-	tar czf $(NAME)-$(VERSION_STRING).tar.gz \
-		--exclude-backups \
-		--exclude .dep \
-		--exclude .git \
-		--exclude .gitignore \
-		--exclude-from .gitignore \
-		--exclude '*~' \
-		--exclude subsurface \
-		.
+	git archive -o $(NAME)-$(VERSION_STRING).tar.gz v$(VERSION_STRING)
 
 -include $(DEPS)
