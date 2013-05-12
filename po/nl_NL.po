@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-08 11:07-0700\n"
-"PO-Revision-Date: 2013-05-08 18:07+0000\n"
-"Last-Translator: dirkhh <dirk@hohndel.org>\n"
+"PO-Revision-Date: 2013-05-11 19:10+0000\n"
+"Last-Translator: rnt <reinout@xs4all.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/subsurface/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -256,7 +256,7 @@ msgstr "(klik om datum/tijd te bewerken)"
 
 #: info-gtk.c:493
 msgid "(click to edit date/time/depth)"
-msgstr ""
+msgstr "(klik om datum/tijd/diepte te bewerken)"
 
 #: statistics.c:265
 #, c-format
@@ -489,7 +489,7 @@ msgstr "Alles inklappen"
 
 #: divelist-gtk.c:1481
 msgid "Communication error with divelogs.de"
-msgstr ""
+msgstr "Communicatiefout met divelogs.de"
 
 #: webservice.c:121
 msgid "Connecting..."
@@ -539,7 +539,7 @@ msgstr "NIET-AANSPRAKELIJKHEIDSVERKLARING / WAARSCHUWING: DIT IS EEN NIEUWE IMPL
 #: parse-xml.c:1835
 #, c-format
 msgid "Database connection failed '%s'.\n"
-msgstr ""
+msgstr "Databaseconnectie is mislukt '%s'.\n"
 
 #: parse-xml.c:1842
 #, c-format
@@ -815,7 +815,7 @@ msgstr "Uitrusting"
 
 #: divelist-gtk.c:1378
 msgid "Error"
-msgstr ""
+msgstr "Fout"
 
 #: libdivecomputer.c:471
 msgid "Error obtaining water salinity"
@@ -1044,11 +1044,11 @@ msgstr "jun"
 
 #: planner-gtk.c:398
 msgid "Last stop at 20 Feet"
-msgstr ""
+msgstr "Laatste stop op 20 voet"
 
 #: planner-gtk.c:396
 msgid "Last stop at 6 Meters"
-msgstr ""
+msgstr "Laatste stop op 6 meter"
 
 #: print.c:985
 msgid "Layout Options"
@@ -1093,7 +1093,7 @@ msgstr "Waarschuwing:Lege batterij"
 
 #: gtk-gui.c:872
 msgid "Map provider"
-msgstr ""
+msgstr "Kaartaanbieder"
 
 #: main.c:77
 msgid "Mar"
@@ -1130,7 +1130,7 @@ msgstr "Max. diepte"
 #: info-gtk.c:918
 #, c-format
 msgid "Max Depth (%s):"
-msgstr ""
+msgstr "Max. diepte (%s):"
 
 #: statistics-gtk.c:568
 msgid "Max SAC"
@@ -1349,7 +1349,7 @@ msgstr "psi"
 
 #: webservice.c:341
 msgid "Password"
-msgstr ""
+msgstr "Wachtwoord"
 
 #: info-gtk.c:570
 msgid "Pick on map"
@@ -1924,7 +1924,7 @@ msgstr "resterende luchttijd"
 
 #: statistics.c:21
 msgid "altitude"
-msgstr ""
+msgstr "hoogte"
 
 #: equipment.c:892
 msgid "ankle"
@@ -1948,7 +1948,7 @@ msgstr "riem"
 
 #: statistics.c:20
 msgid "boat"
-msgstr ""
+msgstr "boot"
 
 #: gtk-gui.c:2135 libdivecomputer.c:150
 msgid "bookmark"
@@ -1956,7 +1956,7 @@ msgstr "bladwijzer"
 
 #: statistics.c:21
 msgid "cave"
-msgstr ""
+msgstr "grot"
 
 #: statistics.c:20
 msgid "cavern"
@@ -2045,7 +2045,7 @@ msgstr "voor de geselecteerde duiken"
 
 #: statistics.c:22
 msgid "freshwater"
-msgstr ""
+msgstr "zoetwater"
 
 #: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:897
 msgid "ft"
@@ -2065,7 +2065,7 @@ msgstr "koers"
 
 #: statistics.c:21
 msgid "ice"
-msgstr ""
+msgstr "ijs"
 
 #: equipment.c:890
 msgid "integrated"
@@ -2093,7 +2093,7 @@ msgstr "l"
 
 #: statistics.c:21
 msgid "lake"
-msgstr ""
+msgstr "meer"
 
 #: dive.c:139 divelist-gtk.c:822 equipment.c:1070 gtk-gui.c:806
 msgid "lbs"
@@ -2143,7 +2143,7 @@ msgstr "meer dan %d dagen"
 
 #: statistics.c:22
 msgid "night"
-msgstr ""
+msgstr "nacht"
 
 #: libdivecomputer.c:154
 msgid "non stop time"
@@ -2173,11 +2173,11 @@ msgstr "Pa"
 
 #: statistics.c:23
 msgid "photo"
-msgstr ""
+msgstr "foto"
 
 #: statistics.c:21
 msgid "pool"
-msgstr ""
+msgstr "zwembad"
 
 #: dive.c:52
 msgid "psi"
@@ -2193,7 +2193,7 @@ msgstr "RGBM"
 
 #: statistics.c:22
 msgid "river"
-msgstr ""
+msgstr "rivier"
 
 #: libdivecomputer.c:150
 msgid "safety stop"
@@ -2213,7 +2213,7 @@ msgstr "semidroog"
 
 #: statistics.c:20
 msgid "shore"
-msgstr ""
+msgstr "kust"
 
 #: uemis-downloader.c:590
 msgid "shorty"
@@ -2225,7 +2225,7 @@ msgstr "oppervlakte"
 
 #: statistics.c:22
 msgid "teaching"
-msgstr ""
+msgstr "lesgeven"
 
 #: libdivecomputer.c:154
 msgid "tissue level warning"
@@ -2233,7 +2233,7 @@ msgstr "waarschuwing stikstofbelasting"
 
 #: statistics.c:22
 msgid "training"
-msgstr ""
+msgstr "training"
 
 #. ++GETTEXT the term translator-credits is magic - list the names of the
 #. tranlators here
@@ -2264,7 +2264,7 @@ msgstr "vest"
 
 #: statistics.c:23
 msgid "video"
-msgstr ""
+msgstr "video"
 
 #: libdivecomputer.c:150
 msgid "violation"
@@ -2284,4 +2284,4 @@ msgstr "werklast"
 
 #: statistics.c:21
 msgid "wreck"
-msgstr ""
+msgstr "wrak"
