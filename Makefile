@@ -53,6 +53,7 @@ ifeq ($(CC), i686-w64-mingw32-gcc)
 # ok, we are cross building for Windows
 	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
 	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
+	LIBGNUTLS = $(shell $(PKGCONFIG) --libs gnutls-extra) $(shell $(PKGCONFIG) --libs p11-kit-1)
 	RESFILE = packaging/windows/subsurface.res
 	LDFLAGS += -Wl,-subsystem,windows
 	LIBWINSOCK = -lwsock32
@@ -157,7 +158,7 @@ ifneq ($(strip $(LIBXSLT)),)
 	XSLT=-DXSLT='"$(XSLTDIR)"'
 endif
 
-LIBS = $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
+LIBS = $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGTK) $(LIBGCONF2) $(LIBDIVECOMPUTER) $(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK) $(LIBGNUTLS)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
 MSGOBJS=$(addprefix share/locale/,$(MSGLANGS:.po=.UTF-8/LC_MESSAGES/subsurface.mo))

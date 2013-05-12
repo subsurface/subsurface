@@ -139,6 +139,11 @@ Section
     File dll\libosmgpsmap-2.dll
     File dll\libsqlite3-0.dll
     File dll\libgnutls-26.dll
+    File dll\libgnutls-extra-26.dll
+    File dll\libgnutls-openssl-27.dll
+    File dll\libgnutlsxx-27.dll
+    File dll\libp11-kit-0.dll
+    File mydll\libgiognutls.dll
     File subsurface.ico
     File /r share
 
