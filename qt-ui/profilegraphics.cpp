@@ -671,15 +671,15 @@ void ProfileGraphicsView::plot_temperature_text()
 			(abs(mkelvin - last_printed_temp) < 400))
 			continue;
 		last = sec;
-
-		plot_single_temp_text(sec,mkelvin);
+		if (mkelvin > 200000)
+			plot_single_temp_text(sec,mkelvin);
 		last_printed_temp = mkelvin;
 	}
 	/* it would be nice to print the end temperature, if it's
 	 * different or if the last temperature print has been more
 	 * than a quarter of the dive back */
-	if ((abs(last_temperature - last_printed_temp) > 500) ||
-		((double)last / (double)sec < 0.75))
+	if (last_temperature > 200000 &&
+	    ((abs(last_temperature - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75)))
 		plot_single_temp_text(sec, last_temperature);
 }
 
