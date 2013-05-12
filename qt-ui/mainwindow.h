@@ -9,6 +9,7 @@
 
 #include <QMainWindow>
 #include <QModelIndex>
+#include <QAction>
 
 class QSortFilterProxyModel;
 class DiveTripModel;
@@ -68,6 +69,10 @@ private Q_SLOTS:
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
 
+	/* keyboard actions */
+	void nextDive_triggered();
+	void previousDive_triggered();
+
 	void dive_selection_changed(const QItemSelection& newSelection,
 								const QItemSelection& oldSelection);
 
@@ -78,6 +83,9 @@ private:
 	Ui::MainWindow *ui;
 	DiveTripModel *model;
 	QSortFilterProxyModel *sortModel;
+	QAction *actionNextDive;
+	QAction *actionPreviousDive;
+
 	QString filter();
 	bool askSaveChanges();
 	void readSettings();
