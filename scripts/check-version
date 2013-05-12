@@ -64,10 +64,20 @@ case $v in
 		;;
 esac
 
+saveIFS=$IFS
+IFS=.
+set -- $v
+IFS=$saveIFS
+v=
+while [ $# -gt 0 ]; do
+	v=${v:+$v\\.}$1
+	shift
+done
+
 sts=0
 whine "checking for version $v"
 for f in $files; do
-	grep $opts -EHio "(VERSION=|subsurface[[:blank:]]+)?\<v?$v\>" $f || {
+	grep $opts -EHio "(VERSION=|subsurface[[:blank:]]+)?\<v?$v[.0-9]*\>" $f || {
 		[ $release != y ] || sts=1
 		whine "'$f' may need updating"
 	}
