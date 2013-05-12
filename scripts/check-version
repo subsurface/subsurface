@@ -2,13 +2,19 @@
 
 # $1	- version string
 # options:
-#	-c	colored grep
+#	-c	colored grep (implies -d)
 #	-d	debug
 #	-r	release (exit status error; when called from Makefile)
+
+# To validate relevant files are up to date, you would run the script
+# from command line before tagging:
+#
+#	$ scripts/check-version -cr <tag>
 
 set -eu
 #set -x
 
+# You would typically add/remove files to/from the list
 files="Documentation/user-manual.txt Makefile README ReleaseNotes.txt"
 
 whine() {
@@ -50,6 +56,7 @@ fi
 [ $color = n ] || opts="${opts:+$opts }--color"
 
 v=${1:-}
+v=${v#v}
 case $v in
 	*-*)
 		# Ignore development versions
@@ -63,6 +70,7 @@ case $v in
 		croak "invalid version string '$v'"
 		;;
 esac
+whine "checking for version $v"
 
 saveIFS=$IFS
 IFS=.
@@ -75,7 +83,6 @@ while [ $# -gt 0 ]; do
 done
 
 sts=0
-whine "checking for version $v"
 for f in $files; do
 	grep	-EH $opts \
 		-e "(VERSION=|[Ss]ubsurface[[:blank:]]+)?\<v?$v[.0-9]*\>" \
