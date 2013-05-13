@@ -43,37 +43,37 @@ void MainTab::clearEquipment()
 
 void MainTab::clearInfo()
 {
-	ui->sacText->setText(QString());
-	ui->otuText->setText(QString());
-	ui->oxygenHeliumText->setText(QString());
-	ui->gasUsedText->setText(QString());
-	ui->dateText->setText(QString());
-	ui->diveTimeText->setText(QString());
-	ui->surfaceIntervalText->setText(QString());
-	ui->maximumDepthText->setText(QString());
-	ui->averageDepthText->setText(QString());
-	ui->visibilityText->setText(QString());
-	ui->waterTemperatureText->setText(QString());
-	ui->airTemperatureText->setText(QString());
-	ui->airPressureText->setText(QString());
+	ui->sacText->clear();
+	ui->otuText->clear();
+	ui->oxygenHeliumText->clear();
+	ui->gasUsedText->clear();
+	ui->dateText->clear();
+	ui->diveTimeText->clear();
+	ui->surfaceIntervalText->clear();
+	ui->maximumDepthText->clear();
+	ui->averageDepthText->clear();
+	ui->visibilityText->clear();
+	ui->waterTemperatureText->clear();
+	ui->airTemperatureText->clear();
+	ui->airPressureText->clear();
 }
 
 void MainTab::clearStats()
 {
-	ui->maximumDepthAllText->setText(QString());
-	ui->minimumDepthAllText->setText(QString());
-	ui->averageDepthAllText->setText(QString());
-	ui->maximumSacAllText->setText(QString());
-	ui->minimumSacAllText->setText(QString());
-	ui->averageSacAllText->setText(QString());
-	ui->divesAllText->setText(QString());
-	ui->maximumTemperatureAllText->setText(QString());
-	ui->minimumTemperatureAllText->setText(QString());
-	ui->averageTemperatureAllText->setText(QString());
-	ui->totalTimeAllText->setText(QString());
-	ui->averageTimeAllText->setText(QString());
-	ui->longestAllText->setText(QString());
-	ui->shortestAllText->setText(QString());
+	ui->maximumDepthAllText->clear();
+	ui->minimumDepthAllText->clear();
+	ui->averageDepthAllText->clear();
+	ui->maximumSacAllText->clear();
+	ui->minimumSacAllText->clear();
+	ui->averageSacAllText->clear();
+	ui->divesAllText->clear();
+	ui->maximumTemperatureAllText->clear();
+	ui->minimumTemperatureAllText->clear();
+	ui->averageTemperatureAllText->clear();
+	ui->totalTimeAllText->clear();
+	ui->averageTimeAllText->clear();
+	ui->longestAllText->clear();
+	ui->shortestAllText->clear();
 }
 
 #define UPDATE_TEXT(d, field)				\
@@ -113,27 +113,27 @@ void MainTab::updateDiveInfo(int dive)
 		if ((sacVal.mliter = d->sac) > 0)
 			ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
 		else
-			ui->sacText->setText(QString());
+			ui->sacText->clear();
 		if (d->surface_pressure.mbar)
 			/* this is ALWAYS displayed in mbar */
 			ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
-			ui->airPressureText->setText(QString());
+			ui->airPressureText->clear();
 	} else {
 		ui->rating->setCurrentStars(0);
-		ui->sacText->setText(QString());
-		ui->otuText->setText(QString());
-		ui->oxygenHeliumText->setText(QString());
-		ui->dateText->setText(QString());
-		ui->diveTimeText->setText(QString());
-		ui->surfaceIntervalText->setText(QString());
-		ui->maximumDepthText->setText(QString());
-		ui->averageDepthText->setText(QString());
-		ui->visibilityText->setText(QString());
-		ui->waterTemperatureText->setText(QString());
-		ui->airTemperatureText->setText(QString());
-		ui->gasUsedText->setText(QString());
-		ui->airPressureText->setText(QString());
+		ui->sacText->clear();
+		ui->otuText->clear();
+		ui->oxygenHeliumText->clear();
+		ui->dateText->clear();
+		ui->diveTimeText->clear();
+		ui->surfaceIntervalText->clear();
+		ui->maximumDepthText->clear();
+		ui->averageDepthText->clear();
+		ui->visibilityText->clear();
+		ui->waterTemperatureText->clear();
+		ui->airTemperatureText->clear();
+		ui->gasUsedText->clear();
+		ui->airPressureText->clear();
 	}
 	/* statisticsTab*/
 	/* we can access the stats_selection struct but how to we ensure the relevant dives are selected
