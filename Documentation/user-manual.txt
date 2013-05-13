@@ -1023,12 +1023,20 @@ Uploading Dives to divelogs.de
 
 Subsurface supports uploading dives directly to divelogs.de. You can upload
 either selected dives or all the dives. When selecting to upload, you are
-presented a simple dialog for user name and password. Note that the password is
-displayed on screen and is stored on configuration file in clear-text.
+presented a simple dialog for user name and password.
+
+[NOTE]
+The password is displayed on screen and is stored in the configuration
+file / registry in clear-text. Please do not use this feature if you have
+security concerns with this. Also note that when running Subsurface on
+Windows at this point the connection to divelogs.de is established through
+an http link, so your login credentials and uploaded data can easily be
+captured by other people on the same network.
 
 image::images/upload_divelogs_de.png["Upload to divelogs.de",align="center"]
 
-Note that uploading dives to divelogs.de requires Internet connectivity and cannot be done off-line.
+Note that uploading dives to divelogs.de requires Internet
+connectivity and cannot be done off-line.
 
 .Uploading selected dives to divelogs.de
 
