@@ -1271,11 +1271,27 @@ The view menu allows you to choose between the following representations:
 The Filter Menu
 ~~~~~~~~~~~~~~~
 
-This menu gives you the choice to enable or disable Events for the
-selected divelog(s). At this time, you can enable or disable ascent.
-When you enable ascent for your dives, within the dive profile, a yellow
-marker with exclamation sign (!) will show on the points where you have
-ascended.
+The filter menu gives you two very different filter selections.
+
+The first one allows you to create a global filter for certain kind of
+events that you no longer want to see displayed in the dive profile
+view. Normally all events are represented by small yellow triangles,
+but some dive computers create a large number of events that the user
+may or may not want to see in the profile (some dive computers for
+exampel are very agressively creating "ascend speed warnings" that can
+clutter the profile). Selecting this menu will open a dialog that
+allows you to select which events should be globally disabled (they
+will still be stored in the XML file).
+
+Subsurface also allows you to delete specific events from a dive
+profile. This can be done by right-clicking on the specific event that
+you want to remove in the dive profile window. Events that are deleted
+like this will actually be removed from the XML file as well.
+
+The second entry in the filter menu allows you to display only a
+subset of your dives in the dive list, based on specific tags that are
+selected in a dialog. This is especially useful when used in
+connection with the statistics features of Subsurface.
 
 The Planner Menu
 ~~~~~~~~~~~~~~~~
@@ -1286,8 +1302,12 @@ in <<S_DivePlanning,chapter Planning Dives>>.
 The Help Menu
 ~~~~~~~~~~~~~
 
-The Help menu shows only the About, which contains the version and author
-information and License button.
+The Help menu contains the About entry which displays the version and
+author information as well as links to the full license under which
+Subsurface is developed and to the Subsurface website.
+
+The second entry in the help menu opens the latest online version of
+this manual in the default web browser.
 
 
 [[AppendixA]]
