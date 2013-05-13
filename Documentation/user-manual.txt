@@ -1,4 +1,4 @@
-Subsurface 3.0.2 User Manual
+Subsurface 3.1 User Manual
 ============================
 :author: Jacco_van_Koll,_Dirk_Hohndel,_Reinout_Hoornweg,_Linus_Torvalds,_Miika_Turkia,_Amit_Chaudhuri,_Jan_Schubert
 :revnumber: v3.0.0
@@ -23,13 +23,27 @@ Introduction:
 -------------
 
 Subsurface is an open source divelog program that runs on Windows, Mac
-and Linux. It was started because of a lack of viable divelog
-software on Linux. It then turned out that the resulting software was
-fairly easily ported to Windows and Mac and today great effort is put
-into making it a viable application on all three platforms.
+and Linux.
 
-The program is under active development and at this point it compares
-favorably to many other programs in this market.
+With Subsurface the user can download dive information directly from a
+large number of supported dive computers. Subsurface is able to track
+single- and multi-tank dives using air, Nitrox or TriMix. It displays
+a dive profile with all related information including air consumption
+and alarms. It also allows logging of information like weights and
+exposure protection used, dive masters and dive buddies and enables
+the user to rate dives and provide additional dive notes.
+
+With Subsurface the user can track dive locations including GPS
+coordinates (which can also be conveniently entered using a map
+interface). Subsurface calculates a wide variety of statistics of the
+user's diving and keeps track of information like the user's SAC rate,
+partial pressures of O2, N2 and He, calculated deco information, and
+many more.
+
+Subsurface allows the user to print out a detailed log book including
+dive profiles and other relevant information. The program is localized
+in more than a dozen languages and well supported by an active
+developer community.
 
 While the list of supported dive computers is very long, in this
 manual the Suunto Vyper will be used for all examples.
