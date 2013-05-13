@@ -675,8 +675,9 @@ The Tec Settings offer extra columns to show, settings for more graphs and
 information to be shown in the dive profile and settings for GFlow and
 GFhigh.
 
-In General Settings you are free to choose what your preference are for the
-units to be displayed, with other words, use Metric or Imperial.
+In General Settings you are free to choose what your preference are
+for the units to be displayed. You are not restricted to use all
+Metric or all Imperial, any combination is fine.
 
 You can set the following options with 'Units':
 
@@ -690,9 +691,9 @@ You can set the following options with 'Units':
 | Weight       | The weight of your weight system in kg or lbs
 |===============================================================================
 
-In the main screen, you did see in Area 3, some information. With the
-'Show Columns', you can enable/disable options you would like to show
-there:
+As mentioned earlier when discussing the information visible in the
+dive list at the bottom of the main Subsurface window, you can you can
+enable/disable some of the colums that can be shown there:
 
 [width="90%",cols="<33%,67%",options="header"]
 |===============================================================================
@@ -707,8 +708,9 @@ there:
 
 With 'Divelist Font', you can change the font used in the dive list,
 
-And you can use 'Default XML Data File' to specify which file contains the
-data the program will use by default.
+And you can use 'Default XML Data File' to specify which file contains
+the data the program will use by default (the program tries to pick a
+reasonable default on all three supported operating systems.
 
 The other tab holds the 'Tec Settings'
 You can select more columns to be shown with 'Show Columns':
