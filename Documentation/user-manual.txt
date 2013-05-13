@@ -96,7 +96,7 @@ However, great effort was taken to keep the profile simple, yet
 informative.
 
 The main information of the dive profile is the depth graph. On top of
-the obvious information of the depth it shows also the ascent and
+the obvious information of the depth it also shows the ascent and
 descent rate compared to the recommended speed of going up or down in
 the water column. This information is given using different
 colors. Dark red means ascent faster than 18m/60ft per minute or
@@ -139,16 +139,38 @@ Tec Information in Dive Profile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The dive profile can include Tec settings. Enabling these is described
-in chapter <<S_SettingUpPreferences,Setting up Preferences>>. Basically
-you can include graphs of accumulated pO2, pN2, pHe. These graphs are
-added below the profile data. On top of the profile the currently used
-gradient factors are shown (e.g. GF 35/75).
+in chapter <<S_SettingUpPreferences,Setting up
+Preferences>>. Basically you can include graphs of the partial
+pressures O2, N2, and He during the dive as well as a calculated deco
+ceiling (only visible for deep, long, or repetitive dives).
 
-The graph can also include both the dive computer reported ceiling and
-our calculated ceiling. Because of the differences in used algorithms it
-is unlikely that both of these are the same. It is even quite common
-that Subsurface calculates ceiling for non-decompression dives when the
-dive computer was not in deco mode during the dive.
+The partial pressure graphs are added below the profile data, the
+calculated ceiling is shown as a green overlay on top of the dive
+profile. Above the profile the currently used gradient factors are
+shown (e.g. GF 35/75). Please note that these are NOT the gradient
+factors in use by the dive computer in question, but the gradient
+factors used by Subsurface to calculate deco obligations during the
+dive.
+
+The graph can also include the dive computer reported ceiling (or more
+precisely, the first deco stop that the dive computer recorded - note
+that not all dive computers record this information and make it
+available for download; for example all of the Suunto dive computers
+fail to make this very useful data available to divelog
+software). Because of the differences in used algorithms and amount of
+data available (and taken into consideration) at the time of the
+calculation it is unlikely that both of these are the same; this can
+be true even if the same algorithm and gradient factors are used. It
+is also quite common that Subsurface calculates a ceiling for
+non-decompression dives when the dive computer stayed in non-deco mode
+during the whole dive. This is caused by the fact that Subsurface's
+calculations describe the deco obligation at that point in time during
+a dive, while dive computers usually take the upcoming ascent into
+account. During the ascent some excess Nitrogen (and possibly Helium)
+are already breathed off so even though the diver technically
+encountered a 'ceiling' at depth, the dive still does not require an
+explicit deco stop. This feature allows dive computers to offer longer
+'non-stop bottom time'.
 
 [[S_ImportNewDives]]
 Import New Dives from your Dive Computer
