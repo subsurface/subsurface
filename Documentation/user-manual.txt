@@ -176,13 +176,14 @@ explicit deco stop. This feature allows dive computers to offer longer
 Import New Dives from your Dive Computer
 ---------------------------------------
 
-Before you start fiddling around with your dive computer, note that
-there are dive computers that consume more power when they are in the
-PC-Communication mode. This could drain your battery. Therefor, ensure
-if your computer is recharging when connecting to the USB port. The
-Suunto Vyper does not recharge through the USB connection. Please
-consult the manual of your dive computer if you are unsure if it will
-be recharged when connected to the USB port.
+[NOTE]
+Some dive computers consume more power when they are in their
+PC-Communication mode. **This could drain your battery**. We therefore
+recommend that you check if your dive computer is recharging when
+connected to the USB port of a PC. The Suunto Vyper for example does
+not recharge through the USB connection. Please consult the manual of
+your dive computer if you are unsure if it will recharge or drain its
+batteries while connected to the USB port.
 
 Now it is time to hook up your dive computer to your PC:
 
@@ -191,8 +192,10 @@ Now it is time to hook up your dive computer to your PC:
 	* On Linux this means you need to have the correct kernel
 	  module loaded. Most distributions will do this automatically
 	  for you. Make sure you have read/write permissions to that
-	  port. On Ubuntu that could mean you should do 'sudo adduser
-	  [your_username] dialout'.
+	  port. On Ubuntu that could mean you should run the command
+	  following command in a terminal window:
+
+	sudo adduser [your_username] dialout
 
 	* On Windows, the OS should offer to download the correct
 	  driver when you connect your dive computer to the USB port.
@@ -203,7 +206,8 @@ Now it is time to hook up your dive computer to your PC:
 	  http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
 	  (see further hints in <<AppendixB,Appendix B>>)
 
- - Connect your interface cable to a free USB port
+ - Connect your interface cable to a free USB port (or setup the Infrared
+	or Bluetooth connection as described later in this manual)
 
  - Put your dive computer into PC Communication mode. (For 'Suunto Vyper', press Mode - 1 Memory - 3 TR-PC)
 	(You should consult the manual of your specific dive computer for your brand and type)
@@ -235,7 +239,7 @@ distribution that you use. On Fedora it usually is
 '/var/run/media/<your_username>/UEMISSDA'. In all cases Subsurface
 should suggest the correct location in the drop down list.
 
-So once you have selected this as device name you can download the
+Once you have selected this as device name you can download the
 dives from the Uemis Zurich. One technical issue with the Uemis Zurich
 download implementation (this is a firmware limitation, not a
 Subsurface issue) is that you cannot download more than about 40-50
@@ -274,6 +278,8 @@ Simply try COM1, COM2, etc. The drop down list should contain all connected COM 
 The drop down box should find all connected dive computers.
 
 .On Linux:
+
+Try the following:
 
  - Disconnect your USB cable of your dive computer
  - Open a terminal
