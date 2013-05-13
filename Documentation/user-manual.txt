@@ -1059,16 +1059,17 @@ When you select dives and choose the exporting option from right click menu, you
 Planning Dives
 --------------
 
-Subsurface supports planning of dives using open and closed circuit
-equipment. This allows users to experiment with different plans and see
-the effects of changing various parameters of the dives.
+Subsurface includes a still rather experimental dive planning feature
+that allows the creation of dive plans for both recreational scuba
+equipment (open circuit) and rebreathers (closed circuit
+equipment). This allows users to experiment with different plans and
+see the effects of changing various parameters of the dives.
 
 [WARNING]
-Deco calculations with optionally displaying the ceiling is
-done using a new implementation of the Buhlmann ZH16 algorithm with
-gradient factors. Since the planner and our implementation of the
-decompression algorithms are new and have received only a limited amount
-of testing: +
+Deco calculations are done using a new implementation of the Buhlmann
+ZH16 algorithm with gradient factors. Since the planner and our
+implementation of the decompression algorithms are new and have received
+only a limited amount of testing: +
 **WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
 RESULTS GIVEN HERE.**
 
@@ -1083,6 +1084,10 @@ In order to plan a dive some basic information needs to be entered:
  - air consumption
  - planned depths
  - planned segment times
+
+New in version 3.1 (and missing on the screen shot) is an option to
+plan the last deco stop at 6m/20ft instead of the otherwise used final
+stop at 3m/10ft.
 
 There is also other information available for those who
 are familiar with dive planning or use closed circuit rebreathers.
