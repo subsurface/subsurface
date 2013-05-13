@@ -1,5 +1,5 @@
-			Subsurface 3.0.2
-			================
+			Subsurface 3.1
+			==============
 
 The Subsurface developer team is proud to announce the release of the
 latest version of Subsurface.
@@ -10,7 +10,7 @@ and Linux.
 With Subsurface the user can download dive information directly from a
 large number of supported dive computers. Subsurface is able to track
 single- and multi-tank dives using air, Nitrox or TriMix. It displays
-a dive profile with all related information, including air consumption
+a dive profile with all related information including air consumption
 and alarms. It also allows logging of information like weights and
 exposure protection used, dive masters and dive buddies and enables
 the user to rate dives and provide additional dive notes.
@@ -28,15 +28,31 @@ in more than a dozen languages and well supported by an active
 developer community.
 
 One of the major strengths of Subsurface is its support of a wide range
-of dive computers (most common dive computers are supported, a
-detailed list is at
+of dive computers (most common dive computers are supported with the help
+of libdivecomputer); a detailed list is at
 http://subsurface.hohndel.org/documentation/supported-dive-computers).
 Subsurface can also import existing dive logs from several sources
-including MacDive, Suunto DM3, JDiveLog and divelogs.de. Another
+including MacDive, Suunto DM3/DM4, JDiveLog and divelogs.de. Another
 strength is its ability to visualize the depth profile (and, if
 available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
+
+
+New in version 3.1 (compared to Subsurface 3.0.2):
+----------------------------------------------------
+
+- track tags for dives (things like 'boat', 'shore', 'deep', etc)
+- enable filtering by tags
+- ability to modify events from a context menu in the dive profile
+  (this includes the ability to add gaschange events)
+- direct export / upload to the divelogs.de online logbook
+- import of Suunto DM4 files
+- improved printout formatting and printer dialog
+- support for color printing
+- dive planning: add option for last stop at 6m/20ft
+- various bug fixes
+
 
 
 New in version 3.0.2 (compared to Subsurface 3.0.1):
@@ -127,7 +143,7 @@ License: GPLv2
 
 Subsurface can be found at http://subsurface.hohndel.org
 
-At the time of the 3.0 release subsurface supports the following dive
+At the time of the 3.1 release subsurface supports the following dive
 computers:
 
 Atomics Aquatics
@@ -135,18 +151,19 @@ Atomics Aquatics
 Cressi / Zeagle / Mares
 	Edy, Nemo Sport
 	N2iTiON3
+	Leonardo
 Mares
 	Nemo, Nemo Excel, Nemo Apneist,...
 	Puck, Puck Air, Nemo Air, Nemo Wide,...
 	Darwin, Darwin Air, M1, M2, Airlab
 	Icon HD, Icon HD Net Ready, Nemo Wide 2
 Oceanic / Aeris / Sherwood / Hollis / Genesis / Tusa (Pelagic)
-	VT Pro, Versa Pro, Pro Plus 2, Wisdom, Atmos 2, Atmos AI, Atmos Elite,...
-	Veo 250, Veo 180Nx, XR2, React Pro, DG02, Insight,...
+	VT Pro, Versa Pro, Pro Plus 2, Pro Plus 3, Wisdom, Atmos 2, Atmos AI, Atmos Elite,...
+	Veo 250, Veo 180Nx, XR2, React Pro, React Pro White, DG02, Insight,...
 	Atom 2.0, VT3, Datamask, Geo, Geo 2.0, Veo 2.0, Veo 3.0, Pro Plus 2.1,
 	Compumask, Elite T3, Epic, Manta, IQ-900 (Zen), IQ-950 (Zen Air), IQ-750 (Element II),...
 Heinrichs Weikamp
-	OSTC, OSTC Mk.2, OSTC 2N
+	OSTC, OSTC Mk.2, OSTC 2N, OSTC3
 	Frog
 Reefnet
 	Sensus
