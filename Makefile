@@ -45,6 +45,16 @@ PRODVERSION_STRING := $(shell [ -d .git ] && \
 				$(GET_VERSION) win $(VERSION_STRING) || \
 				echo "$(VERSION).0.0")
 
+# 'pretty' output (easy to spot warnings) by default
+# 'verbose' output (all the details) by calling with "make V=1"
+ifeq ($(V),1)
+	PRETTYECHO=true
+	COMPILE_PREFIX=
+else
+	PRETTYECHO=echo
+	COMPILE_PREFIX=@
+endif
+
 # find libdivecomputer
 # First deal with the cross compile environment and with Mac.
 # For the native case, Linus doesn't want to trust pkg-config given
@@ -178,7 +188,8 @@ DEPS = $(wildcard .dep/*.dep)
 all: $(NAME)
 
 $(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
-	$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+	@$(PRETTYECHO) '    LINK' $(NAME)
+	$(COMPILE_PREFIX)$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 gen_version_file:
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
@@ -282,9 +293,9 @@ EXTRA_FLAGS =	$(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 		$(LIBSOUPCFLAGS) $(OSMGPSMAPFLAGS) $(GCONF2CFLAGS)
 
 %.o: %.c
-	@echo '    CC' $<
+	@$(PRETTYECHO) '    CC' $<
 	@mkdir -p .dep
-	@$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
+	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
 share/locale/%.UTF-8/LC_MESSAGES/subsurface.mo: po/%.po po/%.aliases
 	mkdir -p $(dir $@)
@@ -305,8 +316,8 @@ satellite.png: satellite.svg
 # The following creates the pixbuf data in .h files with the basename followed by '_pixmap'
 # as name of the data structure
 %.h: %.png
-	@echo '    gdk-pixbuf-csource' $<
-	@gdk-pixbuf-csource --struct --name `echo $* | sed 's/-/_/g'`_pixbuf $< > $@
+	@$(PRETTYECHO) '    gdk-pixbuf-csource' $<
+	$(COMPILE_PREFIX)gdk-pixbuf-csource --struct --name `echo $* | sed 's/-/_/g'`_pixbuf $< > $@
 
 doc:
 	$(MAKE) -C Documentation doc
