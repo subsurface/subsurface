@@ -63,8 +63,8 @@ Subsurface, you need some preparation. Do you have the following:
 
 Alternatively you can import your divelogs from a couple of other
 divelog applications (JDiveLog, MacDive, Suunto Dive Manager,
-divelogs.de). However,
-native download from dive computer directly to Subsurface is
+divelogs.de as well as any application that can export to UDDF).
+However, native download from dive computer directly to Subsurface is
 recommended.
 
 
