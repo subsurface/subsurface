@@ -423,7 +423,10 @@ Viewing and Completing Your Logs
 --------------------------------
 
 When all data from your dive computer is transferred, you will see a
-listing of your dives in Area 3.
+listing of your dives in the dive list on the bottom of the Subsurface
+window. The columns shown as well as the units used in some of the columns
+depend on preference settings. The example below uses metric units and has
+some of the more commonly enabled columns explained.
 
 An example:
 
@@ -441,18 +444,28 @@ In the log line of this dive, you see the following information:
 | kg       |                         | Weight carried (none at this time)
 | Suit     |                         | Exposure protection suit worn (none at this time)
 | Cyl	   |			     | Your used cylinder (none at this time)
-| O2%	   | air		     | What type of mixture
+| O2%	   | air		     | What type of gas you used on the dive
 | SAC	   |			     | SAC (none at this time)
 | Location |			     | Where you performed your dive (empty)
 |===============================================================================
 
 As you can see, some information is already there because it is
 retrieved from your dive computer. Some information is waiting for
-you to be added. By double clicking on this dive, you can view and
-complete the log.
+you to be added.
 
-The different types of information shown in this list may differ depending on the settings. More
-about that in <<S_SettingUpPreferences,Setting up Preferences>>.
+[NOTE]
+In order to edit the dive information, you need to either double-click
+on this dive in the dive list, right-click on the dive in the dive
+list and select "Edit Dive" from the context menu, or select multiple
+dives in the dive list, right click on one of them and then select
+"Edit Dives" from the context menu. The last option is especially
+useful if you want to edit multiple dives that you just downloaded at
+the same time in order to set common attributes (like dive master or
+buddy).
+
+As mentioned, the different types of information shown in this list
+may differ depending on the settings. More about that in
+<<S_SettingUpPreferences,Setting up Preferences>>.
 
 [[S_EditDiveInfo]]
 Edit the Dive Info
