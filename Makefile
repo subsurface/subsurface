@@ -1,7 +1,7 @@
 NAME = subsurface
 CAPITALIZED_NAME = Subsurface
 
-VERSION=3.0.2
+VERSION=3.1
 
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE
