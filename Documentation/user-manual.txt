@@ -587,8 +587,8 @@ View Dive Info & Stats
 ----------------------
 
 After adding all the information, you can use the tab 'Dive Info' and
-the 'Stats tab'. These tabs will provide you with all the (statistical and
-calculated) information regarding your dive.
+the 'Stats tab'. These tabs will provide you with lots of (statistical
+and calculated) information regarding your dive.
 
 The information contains:
 
@@ -622,6 +622,14 @@ The information contains:
 | Max/Min/Avg Depth   | The maximum / minimum / average depth of the covered dives
 | Max/Min/Avg SAC     | Highest / lowest / average Surface Air Consumption of your covered dives
 |===============================================================================
+
+Since the statistics cover all selected dives this feature can be used
+to do some more selective analysis of your dives. You can sort your
+dives based on one of the columns and then easily select all the dives
+with a certain value in that column (for example, all dives in a dry
+suit). Or you can use the Filter->Select Tags... menu to only display
+dives that include a certain tag, select some or all of those dives
+and now see statistics for those dives.
 
 There is also a yearly statistics option that is reachable from the menu 'Log -
 Yearly Statistics'. These statistics show you information on how many dives you
