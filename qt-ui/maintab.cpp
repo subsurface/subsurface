@@ -140,8 +140,8 @@ void MainTab::updateDiveInfo(int dive)
 	 * if we don't use the gtk widget to drive this?
 	 * Maybe call process_selected_dives? Or re-write to query our Qt list view.
 	 */
-	qDebug("max temp %u",stats_selection.max_temp);
-	qDebug("min temp %u",stats_selection.min_temp);
+// 	qDebug("max temp %u",stats_selection.max_temp);
+// 	qDebug("min temp %u",stats_selection.min_temp);
 }
 
 void MainTab::on_addCylinder_clicked()

@@ -43,6 +43,8 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
 	else
 		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
+
+#if 0
 	QAction *actionNextDive = new QAction(this);
 	addAction(actionNextDive);
 	actionNextDive->setShortcut(Qt::Key_Down);
@@ -51,6 +53,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	addAction(actionPreviousDive);
 	actionPreviousDive->setShortcut(Qt::Key_Up);
 	connect(actionPreviousDive, SIGNAL(triggered()), this, SLOT(previousDive_triggered()));
+#endif
 }
 
 void MainWindow::redrawProfile()
@@ -58,6 +61,7 @@ void MainWindow::redrawProfile()
 	ui->ProfileWidget->plot(get_dive(selected_dive));
 }
 
+#if 0
 void MainWindow::nextDive_triggered()
 {
 	// Get the current Selection:
@@ -147,6 +151,7 @@ void MainWindow::previousDive_triggered()
 		}
 	}
 }
+#endif
 
 void MainWindow::on_actionNew_triggered()
 {

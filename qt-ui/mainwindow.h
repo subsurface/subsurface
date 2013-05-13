@@ -69,9 +69,11 @@ private Q_SLOTS:
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
 
+#if 0
 	/* keyboard actions */
 	void nextDive_triggered();
 	void previousDive_triggered();
+#endif
 
 	void dive_selection_changed(const QItemSelection& newSelection,
 								const QItemSelection& oldSelection);

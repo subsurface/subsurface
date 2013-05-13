@@ -214,14 +214,12 @@ void ProfileGraphicsView::plot(struct dive *d)
 		resetTransform();
 		zoomLevel = 0;
 		dive = d;
+		toolTip = 0;
 	}
 
-	if(!isVisible()){
+	if(!isVisible() || !dive){
 		return;
 	}
-
-	if(!dive)
-		return;
 
 	scene()->setSceneRect(0,0, viewport()->width()-50, viewport()->height()-50);
 
@@ -1278,8 +1276,12 @@ void ToolTipItem::collapse()
 
 void ToolTipItem::expand()
 {
-	QRectF nextRectangle;
 
+	if (!title){
+		return;
+	}
+
+	QRectF nextRectangle;
 	double width = 0, height = title->boundingRect().height() + SPACING;
 	Q_FOREACH(ToolTip t, toolTips) {
 		if (t.second->boundingRect().width() > width)
