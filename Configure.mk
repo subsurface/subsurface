@@ -5,9 +5,6 @@ all:
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
 XSLCONFIG=xslt-config
-QMAKE=qmake
-MOC=moc
-UIC=uic
 
 CONFIGFILE = config.cache
 ifeq ($(CONFIGURING),1)
@@ -69,6 +66,19 @@ endif
 # installed. So get libusb if it exists, but don't complain
 # about it if it doesn't.
 LIBUSB = $(shell $(PKGCONFIG) --libs libusb-1.0 2> /dev/null)
+
+# Find qmake. Rules are:
+#  - use qmake if it is in $PATH
+#    [qmake -query QT_VERSION  will fail if it's Qt 3's qmake]
+#  - if that fails, try qmake-qt4
+#  - if that fails, print an error
+# We specifically do not search for qmake-qt5 since that is not supposed
+# to exist.
+QMAKE = $(shell { qmake -query QT_VERSION >/dev/null 2>&1 && echo qmake; } || \
+		{ qmake-qt4 -v >/dev/null 2>&1 && echo qmake-qt4; })
+ifeq ($(strip $(QMAKE)),)
+$(error Could not find qmake or qmake-qt4 in $$PATH or they failed)
+endif
 
 # Use qmake to find out which Qt version we are building for.
 QT_VERSION_MAJOR = $(shell $(QMAKE) -query QT_VERSION | cut -d. -f1)
