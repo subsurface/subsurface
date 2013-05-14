@@ -86,10 +86,16 @@ ifeq ($(QT_VERSION_MAJOR), 5)
 	QT_MODULES = Qt5Widgets Qt5Svg
 	QT_CORE = Qt5Core
 	QTBINDIR = $(shell $(QMAKE) -query QT_HOST_BINS)
+	# Tool paths are not stored in .pc files in Qt 5.0
+	MOC = $(QTBINDIR)/moc
+	UIC = $(QTBINDIR)/uic
+	RCC = $(QTBINDIR)/rcc
 else
 	QT_MODULES = QtGui QtSvg
 	QT_CORE = QtCore
-	QTBINDIR = $(shell $(QMAKE) -query QT_INSTALL_BINS)
+	MOC = $(shell $(PKGCONFIG) --variable=moc_location QtCore)
+	UIC = $(shell $(PKGCONFIG) --variable=uic_location QtGui)
+	RCC = $(shell $(PKGCONFIG) --variable=rcc_location QtGui)
 endif
 
 # we need GLIB2CFLAGS for gettext
@@ -98,9 +104,6 @@ LIBQT = $(shell $(PKGCONFIG) --libs $(QT_MODULES))
 ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))), )
 	QTCXXFLAGS += -fPIE
 endif
-MOC = $(QTBINDIR)/moc
-UIC = $(QTBINDIR)/uic
-RCC = $(QTBINDIR)/rcc
 
 LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
