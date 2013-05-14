@@ -69,6 +69,8 @@ private Q_SLOTS:
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
 
+	void current_dive_changed(int divenr);
+
 protected:
 	void closeEvent(QCloseEvent *);
 

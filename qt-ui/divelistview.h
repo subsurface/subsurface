@@ -18,19 +18,19 @@
 
 class DiveListView : public QTreeView
 {
+	Q_OBJECT
 public:
 	DiveListView(QWidget *parent = 0);
-
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+	void currentChanged(const QModelIndex& current, const QModelIndex& previous);
 	void setModel(QAbstractItemModel* model);
-
 	void mousePressEvent(QMouseEvent* event);
 	void mouseReleaseEvent(QMouseEvent* event);
 	void keyPressEvent(QKeyEvent* event);
 	void keyReleaseEvent(QKeyEvent*);
-
 	void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
-
+Q_SIGNALS:
+	void currentDiveChanged(int divenr);
 private:
 	bool mouseClickSelection;
 };

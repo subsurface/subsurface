@@ -144,7 +144,7 @@ int trip_has_selected_dives(dive_trip_t *trip)
 	return 0;
 }
 
-/* Get the values as we want to show them. Whole feet. But meters with one decimal for 
+/* Get the values as we want to show them. Whole feet. But meters with one decimal for
  * values less than 20m, without decimals for larger values */
 void get_depth_values(int depth, int *depth_int, int *depth_decimal, int *show_decimal)
 {
@@ -924,9 +924,11 @@ void merge_dive_index(int i, struct dive *a)
 void select_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
-	if (dive && !dive->selected) {
-		dive->selected = 1;
-		amount_selected++;
+	if (dive) {
+		if (!dive->selected){
+			dive->selected = 1;
+			amount_selected++;
+		}
 		selected_dive = idx;
 	}
 }

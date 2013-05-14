@@ -42,6 +42,15 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
 	else
 		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
+
+	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+}
+
+void MainWindow::current_dive_changed(int divenr)
+{
+	select_dive(divenr);
+	redrawProfile();
+	ui->InfoWidget->updateDiveInfo(divenr);
 }
 
 void MainWindow::redrawProfile()
