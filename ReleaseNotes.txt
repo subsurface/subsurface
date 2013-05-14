@@ -51,6 +51,7 @@ New in version 3.1 (compared to Subsurface 3.0.2):
 - improved printout formatting and printer dialog
 - support for color printing
 - dive planning: add option for last stop at 6m/20ft
+- native support for the Shearwater Petrel and Heinrichs Weikamp OSTC3
 - various bug fixes
 
 
