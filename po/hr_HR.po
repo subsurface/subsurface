@@ -4,7 +4,7 @@
 # 
 # Translators:
 # dirkhh <dirk@hohndel.org>, 2012
-# dirkhh <dirk@hohndel.org>, 2012
+# dirkhh <dirk@hohndel.org>, 2012-2013
 # ivanhabunek <ivan.habunek@gmail.com>, 2013
 # ivanhabunek <ivan.habunek@gmail.com>, 2012
 msgid ""
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 10:39+0000\n"
+"PO-Revision-Date: 2013-05-14 11:20+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/projects/p/subsurface/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
@@ -762,7 +762,7 @@ msgstr "Uredi sažetak grupe"
 msgid ""
 "Edit a dive computer nickname by double-clicking it in the relevant nickname"
 " field"
-msgstr ""
+msgstr "Uredite ime računala duplim klikom u odgovarajuće polje za naziv računala"
 
 #: divelist-gtk.c:1644
 msgid "Edit dive"

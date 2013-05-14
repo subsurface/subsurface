@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# dirkhh <dirk@hohndel.org>, 2013
 # Linus Torvalds <torvalds@linux-foundation.org>, 2012
 # mturkia <miika.turkia@gmail.com>, 2013
 # mturkia <miika.turkia@gmail.com>, 2013
@@ -11,7 +12,7 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 10:39+0000\n"
+"PO-Revision-Date: 2013-05-14 11:20+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/subsurface/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -761,7 +762,7 @@ msgstr "Muuta retken tietoja"
 msgid ""
 "Edit a dive computer nickname by double-clicking it in the relevant nickname"
 " field"
-msgstr ""
+msgstr "Muokkaa sukellustietokoneen lempinimeä kaksoisnäpäyttämällä muokattavaa kenttää"
 
 #: divelist-gtk.c:1644
 msgid "Edit dive"

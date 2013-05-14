@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# dirkhh <dirk@hohndel.org>, 2012
+# dirkhh <dirk@hohndel.org>, 2012-2013
 # Jacco van Koll <jacco.van.koll@gmail.com>, 2012
 # rnt <reinout@xs4all.nl>, 2013
 msgid ""
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 10:39+0000\n"
+"PO-Revision-Date: 2013-05-14 11:20+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/subsurface/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -540,12 +540,12 @@ msgstr "Databaseconnectie is mislukt '%s'.\n"
 #: parse-xml.c:1834
 #, c-format
 msgid "Database query failed '%s'.\n"
-msgstr "Database-query mislukt: '%s'\\n"
+msgstr "Database-query mislukt: '%s'\n"
 
 #: parse-xml.c:1792
 #, c-format
 msgid "Database query get_events failed.\n"
-msgstr "Database-query get_events mislukt.\\n"
+msgstr "Database-query get_events mislukt.\n"
 
 #: divelist-gtk.c:813 print.c:502 statistics-gtk.c:590
 msgid "Date"
@@ -761,7 +761,7 @@ msgstr "Trip overzicht bewerken"
 msgid ""
 "Edit a dive computer nickname by double-clicking it in the relevant nickname"
 " field"
-msgstr ""
+msgstr "Bewerk een duikcomputernaam door te dubbelklikken in het relevante apparaatnaamveld."
 
 #: divelist-gtk.c:1644
 msgid "Edit dive"
