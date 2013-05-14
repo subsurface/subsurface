@@ -5,7 +5,7 @@ all:
 PKGCONFIG=pkg-config
 XML2CONFIG=xml2-config
 XSLCONFIG=xslt-config
-QMAKE=qmake-qt4
+QMAKE=qmake
 MOC=moc
 UIC=uic
 
