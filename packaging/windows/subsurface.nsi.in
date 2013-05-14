@@ -161,6 +161,13 @@ Section
     # Create the uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
+        "DisplayName" "Subsurface"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
+        "DisplayIcon" "$INSTDIR\subsurface.ico"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
+        "UninstallString" "$INSTDIR\Uninstall.exe"
+
 SectionEnd
 
 #--------------------------------
@@ -189,5 +196,6 @@ Section "Uninstall"
 
     # Remove registry entries
     DeleteRegKey /ifempty HKCU "Software\Subsurface"
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface"
 
 SectionEnd
