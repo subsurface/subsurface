@@ -540,6 +540,9 @@ QString DiveItem::displayTemperature() const
 {
 	QString str;
 
+	if (!dive->watertemp.mkelvin)
+		return str;
+
 	if (get_units()->temperature == units::CELSIUS)
 		str = QString::number(mkelvin_to_C(dive->watertemp.mkelvin), 'f', 1);
 	else
@@ -567,9 +570,9 @@ QString DiveItem::displayWeight() const
 	if (get_units()->weight == units::KG) {
 		int gr = weight() % 1000;
 		int kg = weight() / 1000;
-		str = QString("%1.%2").arg(kg).arg((unsigned)(gr + 500) / 100);
+		str = QString("%1.%2").arg(kg).arg((unsigned)(gr) / 100);
 	} else {
-		str = QString("%1").arg((unsigned)(grams_to_lbs(weight()) + 0.5));
+		str = QString("%1").arg((unsigned)(grams_to_lbs(weight())));
 	}
 
 	return str;
