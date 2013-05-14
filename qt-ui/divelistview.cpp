@@ -89,8 +89,6 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 		}
 	}
 
-	Q_FOREACH(const QModelIndex& index, parents) {
-		qDebug() << "Expanding";
+	Q_FOREACH(const QModelIndex& index, parents)
 		expand(index);
-	}
 }
