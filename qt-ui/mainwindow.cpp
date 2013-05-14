@@ -36,6 +36,8 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	sortModel->setSourceModel(model);
 	ui->ListWidget->setModel(sortModel);
 	setWindowIcon(QIcon(":subsurface-icon"));
+	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 
 	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
 	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
@@ -43,7 +45,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()),
 	else
 		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
 
-	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+	ui->ListWidget->setFocus();
 }
 
 void MainWindow::current_dive_changed(int divenr)
@@ -91,6 +93,13 @@ void MainWindow::on_actionOpen_triggered()
 	model = new DiveTripModel(this);
 	sortModel->setSourceModel(model);
 	ui->ListWidget->sortByColumn(0, Qt::DescendingOrder);
+
+	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
+	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
+		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
+	else
+		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
+	ui->ListWidget->setFocus();
 }
 
 void MainWindow::on_actionSave_triggered()
