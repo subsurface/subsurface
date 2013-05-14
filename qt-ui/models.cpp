@@ -660,15 +660,14 @@ int DiveTripModel::rowCount(const QModelIndex& parent) const
 {
 	TreeItemDT* parentItem;
 
-	if (parent.column() > 0)
-		return 0;
-
 	if (!parent.isValid())
 		parentItem = rootItem;
 	else
 		parentItem = static_cast<TreeItemDT*>(parent.internalPointer());
 
-	return parentItem->childs.count();
+	int amount = parentItem->childs.count();
+
+	return amount;
 }
 
 void DiveTripModel::setupModelData()
