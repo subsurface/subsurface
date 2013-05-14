@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 10:50+0000\n"
-"Last-Translator: dirkhh <dirk@hohndel.org>\n"
+"PO-Revision-Date: 2013-05-14 20:10+0000\n"
+"Last-Translator: Thomas_M\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/subsurface/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -307,7 +307,7 @@ msgid ""
 "An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
-msgstr "<small>Abschnitte des Tauchgangs hier hinzufügen.\nJede Zeile beschreibt einen Teil des geplanten Tauchgangs.\nEin Eintrag mit Tiefe, Dauer und Gas bestimmt einen Abschnitt der auf der angegebenen Tiefe ended, die angegebene Dauer hat (oder zur angegebenen Zeit endet, wenn absolut definiert: '@5:00') und das angegebene Gas benutzt.\nEin leerer Eintrag für Gas bedeutet \"benutze das vorherige Gas\" (oder LUFT falls kein Gas spezifiziert war).\nEin Eintrag der eine Tiefe und ein Gas angibt, aber keine Dauer ist ein Hinweis für den Algorithmus, dass beim Aufstieg auf dieser Tiefe ein Wechsel zum angegebenen Gas geplant ist.\nCC SetPoint ist für Tauchgänge mit Kreislaufgeräten gedacht, bitte für Tauchgänge mit traditioneller Ausrüstung leer lassen..</small>\n"
+msgstr "<small>Abschnitte des Tauchgangs hier hinzufügen.\nJede Zeile beschreibt einen Teil des geplanten Tauchgangs.\nEin Eintrag mit Tiefe, Dauer und Gas bestimmt einen Abschnitt der auf der angegebenen Tiefe endet, die angegebene Dauer hat (oder zur angegebenen Zeit endet, wenn relativ definiert: '+3:30', wenn absolut definiert: '@5:00') und das angegebene Gas benutzt.\nEin leerer Eintrag für Gas bedeutet \"benutze das vorherige Gas\" (oder LUFT falls kein Gas spezifiziert war).\nEin Eintrag der eine Tiefe und ein Gas angibt, aber keine Dauer ist ein Hinweis für den Algorithmus, dass beim Aufstieg auf dieser Tiefe ein Wechsel zum angegebenen Gas geplant ist.\nCC SetPoint ist für Tauchgänge mit Kreislaufgeräten gedacht, bitte für Tauchgänge mit traditioneller Ausrüstung leer lassen..</small>\n"
 
 #: planner-gtk.c:272
 msgid "AIR"
@@ -530,7 +530,7 @@ msgid ""
 " AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
 "LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY "
 "BASED ON THE RESULTS GIVEN HERE."
-msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTATION DES BÜHLMANN-ALGORITHMUS UND EINES DARAUF BASIERENDEN TAUCHPLANERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN."
+msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTIERUNG DES \"BÜHLMANN ZH-L16\"-ALGORITHMUS UND EINES DARAUF AUFBAUENDEN TAUCHGANGPLANERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN."
 
 #: parse-xml.c:1827
 #, c-format
@@ -634,7 +634,7 @@ msgstr "Notizen"
 
 #: planner-gtk.c:370
 msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
-msgstr "Tauchplan - DIES IST NUR EINE SUMULATION; NICHT ZUM TAUCHEN VERWENDEN"
+msgstr "Tauchplan - DIES IST NUR EINE SIMULATION; NICHT ZUM TAUCHEN VERWENDEN"
 
 #: info-gtk.c:597 statistics-gtk.c:623
 msgid "Dive Tags"
@@ -925,7 +925,7 @@ msgstr "Filter"
 
 #: download-dialog.c:384
 msgid "Force download of all dives"
-msgstr "Erzwinge erneutes Laden aller Tauchgänge"
+msgstr "(Erneutes) Laden aller Tauchgänge erzwingen"
 
 #: main.c:64
 msgid "Fri"
@@ -1747,7 +1747,7 @@ msgstr "Gesamtgewicht:"
 #: planner.c:550
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
-msgstr "Auftauchen auf %.*f %s in %d:%02d min - Gesamtzeit %d:%02u mit %s\n"
+msgstr "Tauchen auf %.*f %s in %d:%02d min - Gesamtzeit %d:%02u mit %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:579
