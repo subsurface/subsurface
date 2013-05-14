@@ -109,6 +109,18 @@ static void dive_computer_selector_changed(GtkWidget *combo, gpointer data)
 {
 	GtkWidget *import, *button;
 
+#if DC_VERSION_CHECK(0, 4, 0)
+	GtkTreeIter iter;
+	if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(combo), &iter)) {
+		GtkTreeModel *model;
+		dc_descriptor_t *descriptor;
+
+		model = gtk_combo_box_get_model (GTK_COMBO_BOX(combo));
+		gtk_tree_model_get(model, &iter, 0, &descriptor, -1);
+		gtk_widget_set_sensitive(GTK_WIDGET(data), dc_descriptor_get_transport (descriptor) == DC_TRANSPORT_SERIAL);
+	}
+#endif
+
 	import = gtk_widget_get_ancestor(combo, GTK_TYPE_DIALOG);
 	button = gtk_dialog_get_widget_for_response(GTK_DIALOG(import), GTK_RESPONSE_ACCEPT);
 	gtk_widget_set_sensitive(button, TRUE);
@@ -295,7 +307,6 @@ static GtkComboBox *dive_computer_selector(GtkWidget *vbox)
 	product_combo_box = gtk_combo_box_new_with_model(GTK_TREE_MODEL(product_model[vendor_default_index + 1]));
 
 	g_signal_connect(G_OBJECT(vendor_combo_box), "changed", G_CALLBACK(dive_computer_vendor_changed), product_combo_box);
-	g_signal_connect(G_OBJECT(product_combo_box), "changed", G_CALLBACK(dive_computer_selector_changed), NULL);
 	gtk_box_pack_start(GTK_BOX(hbox), vendor_combo_box, FALSE, FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(hbox), product_combo_box, FALSE, FALSE, 3);
 
@@ -375,6 +386,8 @@ void download_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 3);
 	computer = dive_computer_selector(vbox);
 	device = dc_device_selector(vbox);
+	g_signal_connect(G_OBJECT(computer), "changed", G_CALLBACK(dive_computer_selector_changed), device);
+
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
 	devicedata.progress.bar = gtk_progress_bar_new();

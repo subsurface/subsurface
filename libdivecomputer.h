@@ -2,6 +2,7 @@
 #define LIBDIVECOMPUTER_H
 
 /* libdivecomputer */
+#include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
 
