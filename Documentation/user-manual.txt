@@ -214,7 +214,7 @@ Now it is time to hook up your dive computer to your PC:
 
  - In Subsurface go to 'Log - Download From Dive Computer'
 	* Using the two drop down lists, choose your vendor and product. Here we choose 'Suunto' and 'Vyper' as is shown on the screenshot below.
-	* Select the device name under which your interface is connected from the drop down list.
+	* If the device name drop down list is enabled, select the device name under which your interface is connected from the drop down list.
 	* Click the 'OK' button.
 
 image::images/download_dc.png["Download from Dive Computer",align="center"]
@@ -264,10 +264,11 @@ How to Find the Device Name for USB devices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When you connect your dive computer by using an USB connector, usually
-Subsurface will propose a drop down list that contains the correct
-device name (or mount point for the Uemis Zurich). In the rare cases
-where this doesn't work here are some instructions on ways to find out
-what your dive name is:
+Subsurface will either propose a drop down list that contains the
+correct device name (or mount point for the Uemis Zurich), or it will
+disable the device select drop down is now device name is needed at
+all. In the rare cases where this doesn't work here are some
+instructions on ways to find out what your dive name is:
 
 .On Windows:
 
