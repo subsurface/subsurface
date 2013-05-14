@@ -17,7 +17,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 {
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
-
 }
 
 void DiveListView::setModel(QAbstractItemModel* model)
@@ -43,8 +42,22 @@ void DiveListView::mouseReleaseEvent(QMouseEvent* event)
 	QTreeView::mouseReleaseEvent(event);
 }
 
+void DiveListView::keyPressEvent(QKeyEvent* event)
+{
+	if(event->modifiers())
+		mouseClickSelection = true;
+	QTreeView::keyPressEvent(event);
+}
+
+void DiveListView::keyReleaseEvent(QKeyEvent* event)
+{
+	mouseClickSelection = false;
+	QWidget::keyReleaseEvent(event);
+}
+
 void DiveListView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
+	QList<QModelIndex> parents;
 	Q_FOREACH(const QModelIndex& index, deselected.indexes()) {
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
@@ -53,10 +66,11 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 				expand(index);	// leave this - even if it looks like it shouldn't be here. looks like I'v found a Qt bug.
 						// the subselection is removed, but the painting is not. this cleans the area.
 			}
+		} else if (!parents.contains(index.parent())) {
+			parents.push_back(index.parent());
 		}
 	}
 
-	QList<QModelIndex> parents;
 	Q_FOREACH(const QModelIndex& index, selected.indexes()) {
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
@@ -66,17 +80,17 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 				selection.select(index.child(0,0), index.child(model->rowCount(index) -1 , 0));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
-				if (!isExpanded(index)){
+				if (!isExpanded(index)) {
 					expand(index);
 				}
 			}
-		}
-		else if (!parents.contains(index.parent())){
+		} else if (!parents.contains(index.parent())) {
 			parents.push_back(index.parent());
 		}
 	}
 
-	Q_FOREACH(const QModelIndex& index, parents){
+	Q_FOREACH(const QModelIndex& index, parents) {
+		qDebug() << "Expanding";
 		expand(index);
 	}
 }

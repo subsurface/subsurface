@@ -26,6 +26,8 @@ public:
 
 	void mousePressEvent(QMouseEvent* event);
 	void mouseReleaseEvent(QMouseEvent* event);
+	void keyPressEvent(QKeyEvent* event);
+	void keyReleaseEvent(QKeyEvent*);
 
 	void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
 
