@@ -1,5 +1,6 @@
 NAME = subsurface
 CAPITALIZED_NAME = Subsurface
+TARGET = $(NAME)
 
 VERSION=3.1
 
@@ -72,6 +73,7 @@ ifeq ($(CC), i686-w64-mingw32-gcc)
 	RESFILE = packaging/windows/$(NAME).res
 	LDFLAGS += -Wl,-subsystem,windows
 	LIBWINSOCK = -lwsock32
+	TARGET = $(NAME).exe
 else ifeq ($(UNAME), darwin)
 	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
 	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
@@ -187,11 +189,11 @@ OBJS =	main.o dive.o time.o profile.o info.o equipment.o divelist.o deco.o plann
 
 DEPS = $(wildcard .dep/*.dep)
 
-all: $(NAME)
+all: $(TARGET)
 
-$(NAME): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
-	@$(PRETTYECHO) '    LINK' $(NAME)
-	$(COMPILE_PREFIX)$(CC) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+$(TARGET): gen_version_file $(OBJS) $(MSGOBJS) $(INFOPLIST)
+	@$(PRETTYECHO) '    LINK' $(TARGET)
+	$(COMPILE_PREFIX)$(CC) $(LDFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
 gen_version_file:
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
