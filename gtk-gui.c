@@ -1547,7 +1547,7 @@ static void edit_dc_nicknames(GtkWidget *w, gpointer data)
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 	gtk_container_add(GTK_CONTAINER(scroll), view);
 	gtk_container_add(GTK_CONTAINER(vbox),
-			gtk_label_new(_("Edit a dive computer nickname by double-clicking the in the relevant nickname field")));
+			gtk_label_new(_("Edit a dive computer nickname by double-clicking it in the relevant nickname field")));
 	gtk_container_add(GTK_CONTAINER(vbox), scroll);
 	gtk_widget_set_size_request(scroll, 500, 300);
 	gtk_widget_show_all(dialog);
