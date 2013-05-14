@@ -336,13 +336,13 @@ void TankInfoModel::update()
 
 TreeItemDT::~TreeItemDT()
 {
-	qDeleteAll(childs);
+	qDeleteAll(children);
 }
 
 int TreeItemDT::row() const
 {
 	if (parent)
-		return parent->childs.indexOf(const_cast<TreeItemDT*>(this));
+		return parent->children.indexOf(const_cast<TreeItemDT*>(this));
 
 	return 0;
 }
@@ -637,7 +637,7 @@ const
 
 	TreeItemDT* parentItem = (!parent.isValid()) ? rootItem : static_cast<TreeItemDT*>(parent.internalPointer());
 
-	TreeItemDT* childItem = parentItem->childs[row];
+	TreeItemDT* childItem = parentItem->children[row];
 
 	return (childItem) ? createIndex(row, column, childItem) : QModelIndex();
 }
@@ -665,7 +665,7 @@ int DiveTripModel::rowCount(const QModelIndex& parent) const
 	else
 		parentItem = static_cast<TreeItemDT*>(parent.internalPointer());
 
-	int amount = parentItem->childs.count();
+	int amount = parentItem->children.count();
 
 	return amount;
 }
@@ -684,19 +684,19 @@ void DiveTripModel::setupModelData()
 
 		if (!trip) {
 			diveItem->parent = rootItem;
-			rootItem->childs.push_back(diveItem);
+			rootItem->children.push_back(diveItem);
 			continue;
 		}
 		if (!trips.keys().contains(trip)) {
 			TripItem* tripItem  = new TripItem();
 			tripItem->trip = trip;
 			tripItem->parent = rootItem;
-			tripItem->childs.push_back(diveItem);
+			tripItem->children.push_back(diveItem);
 			trips[trip] = tripItem;
-			rootItem->childs.push_back(tripItem);
+			rootItem->children.push_back(tripItem);
 			continue;
 		}
 		TripItem* tripItem  = trips[trip];
-		tripItem->childs.push_back(diveItem);
+		tripItem->children.push_back(diveItem);
 	}
 }

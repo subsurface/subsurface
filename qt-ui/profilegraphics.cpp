@@ -663,7 +663,7 @@ void ProfileGraphicsView::plot_temperature_text()
 		/* don't print a temperature
 		 * if it's been less than 5min and less than a 2K change OR
 		 * if it's been less than 2min OR if the change from the
-		 * last print is less than .4K (and therefore less than 1F */
+		 * last print is less than .4K (and therefore less than 1F) */
 		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
 			(sec < last + 120) ||
 			(abs(mkelvin - last_printed_temp) < 400))
@@ -806,7 +806,7 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	int i, depth = 0;
 	struct plot_info *pi = &gc.pi;
 
-	/* is plotting this event disabled? */
+	/* is plotting of this event disabled? */
 	if (ev->name) {
 		for (i = 0; i < evn_used; i++) {
 			if (! strcmp(ev->name, ev_namelist[i].ev_name)) {

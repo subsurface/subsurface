@@ -90,7 +90,7 @@ void MainTab::updateDiveInfo(int dive)
 	// it will be called whenever a new dive is selected
 	// I'm already populating the 'notes' box
 	// to show how it can be done.
-	// If you are unsure what's the name of anything,
+	// If you are unsure about the name of something,
 	// open the file maintab.ui on the designer
 	// click on the item and check its objectName,
 	// the access is ui->objectName from here on.
@@ -136,7 +136,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->airPressureText->clear();
 	}
 	/* statisticsTab*/
-	/* we can access the stats_selection struct but how to we ensure the relevant dives are selected
+	/* we can access the stats_selection struct, but how do we ensure the relevant dives are selected
 	 * if we don't use the gtk widget to drive this?
 	 * Maybe call process_selected_dives? Or re-write to query our Qt list view.
 	 */

@@ -61,9 +61,9 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	Q_FOREACH(const QModelIndex& index, deselected.indexes()) {
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
-		if (!dive) { // is's a trip!
+		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
-				expand(index);	// leave this - even if it looks like it shouldn't be here. looks like I'v found a Qt bug.
+				expand(index);	// leave this - even if it looks like it shouldn't be here. looks like I've found a Qt bug.
 						// the subselection is removed, but the painting is not. this cleans the area.
 			}
 		} else if (!parents.contains(index.parent())) {
@@ -74,7 +74,7 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	Q_FOREACH(const QModelIndex& index, selected.indexes()) {
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
-		if (!dive) { // is's a trip!
+		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
 				QItemSelection selection;
 				selection.select(index.child(0,0), index.child(model->rowCount(index) -1 , 0));

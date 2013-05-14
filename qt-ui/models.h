@@ -14,7 +14,7 @@
 #include "../divelist.h"
 
 /* Encapsulates the tank_info global variable
- * to show on Qt`s Model View System.*/
+ * to show on Qt's Model View System.*/
 class TankInfoModel : public QAbstractTableModel {
 Q_OBJECT
 public:
@@ -50,9 +50,9 @@ public:
 	void clear();
 	void update();
 private:
-	/* Since the dive doesn`t stores the number of cylinders that
-	 * it has ( max 8 ) and since I don`t want to make a
-	 * model-for-each-dive, let`s hack this here instead. */
+	/* Since the dive doesn't stores the number of cylinders that
+	 * it has (max 8) and since I don't want to make a
+	 * model-for-each-dive, let's hack this here instead. */
 	QMap<struct dive *, int> usedRows;
 };
 
@@ -94,7 +94,7 @@ public:
 
 	virtual QVariant data ( int column, int role ) const;
 	int row() const;
-	QList<TreeItemDT *> childs;
+	QList<TreeItemDT *> children;
 	TreeItemDT *parent;
 };
 
