@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-08 11:07-0700\n"
-"PO-Revision-Date: 2013-05-08 18:30+0000\n"
+"PO-Revision-Date: 2013-05-14 10:30+0000\n"
 "Last-Translator: henrik <subsurface@henrik.synth.no>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/subsurface/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -533,7 +533,7 @@ msgid ""
 " AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
 "LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY "
 "BASED ON THE RESULTS GIVEN HERE."
-msgstr "ADVARSEL: DETTE ER EN NY IMPLEMENTASJON AV BÜHLMANN-ALGORITMEN OG EN DYKKEPLANLEGGER SOM IKKE HAR BLITT TESTET NOE SÆRLIG. VI ANBEFALER PÅ DET STERKESTE Å IKKE PLANLEGGE DYKK UTELUKKENDE MED DATA HERFRA."
+msgstr "Advarsel! Dette er en ny implementasjon av Bühlmann-algoritmen, og en dykkeplanlegger som ikke har blitt testet noe særlig.  Vi anbefaler på det sterkeste å ikke planlegge dykk utelukkende med data herfra."
 
 #: parse-xml.c:1835
 #, c-format
@@ -1923,7 +1923,7 @@ msgstr "lufttid"
 
 #: statistics.c:21
 msgid "altitude"
-msgstr "høyde"
+msgstr "høydedykk"
 
 #: equipment.c:892
 msgid "ankle"
@@ -1987,7 +1987,7 @@ msgstr "dekostopp"
 
 #: statistics.c:20
 msgid "deep"
-msgstr "dypdyk"
+msgstr "dypdykk"
 
 #: libdivecomputer.c:152
 msgid "deepstop"
@@ -2007,7 +2007,7 @@ msgstr "dykketid"
 
 #: statistics.c:20
 msgid "drift"
-msgstr "strømdyk"
+msgstr "strømdykk"
 
 #: uemis-downloader.c:589
 msgid "drysuit"
@@ -2044,7 +2044,7 @@ msgstr "for valgte dykk"
 
 #: statistics.c:22
 msgid "freshwater"
-msgstr "ferskvan"
+msgstr "ferskvann"
 
 #: dive.c:119 divelist-gtk.c:819 info-gtk.c:918 info-gtk.c:929 planner.c:897
 msgid "ft"
@@ -2283,4 +2283,4 @@ msgstr "arbeidsbelastning"
 
 #: statistics.c:21
 msgid "wreck"
-msgstr "vrakdyk"
+msgstr "vrakdykk"

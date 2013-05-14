@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-08 11:07-0700\n"
-"PO-Revision-Date: 2013-05-11 19:10+0000\n"
+"PO-Revision-Date: 2013-05-12 18:10+0000\n"
 "Last-Translator: rnt <reinout@xs4all.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/subsurface/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -238,12 +238,12 @@ msgstr "%s\npO%s:%.2fbar"
 #: gtk-gui.c:2120
 #, c-format
 msgid "%s event at %d:%02u"
-msgstr ""
+msgstr "%s gebeurtenis om %d:%02u"
 
 #: divelist-gtk.c:1378
 #, c-format
 msgid "%s: Response from divelogs.de"
-msgstr ""
+msgstr "%s: Antwoord van divelogs.de"
 
 #: dive.c:921
 #, c-format
@@ -307,7 +307,7 @@ msgid ""
 "An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
 "An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
 "CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
-msgstr ""
+msgstr "<small>Voeg etappes hieronder toe.\\n\nElke invoerregel beschrijft een deel van de geplande duik.\\n\nEen invoerregel met diepte, tijd en gas beschrijft een etappe die eindigt op de gegeven diepte, de gegeven tijd duurt (indien relatief, bijv.  '+3:30') of eindigt op de gegeven tijd (indien absoluut) en gebruik maakt van het opgegeven gasmengsel.\\n\nEen leeggelaten gasmengsel betekent 'gebruik vorig gasmengsel' (of AIR als geen gasmengsel opgegeven is).\\n\nEen invoer die een diepte en een gas heeft, maar geen tijd, is speciaal: het vertelt de planner dat het opgegeven gasmengsel beschikbaar is voor de opstijging wanneer de opgegeven diepte is bereikt.\\n\nCC Instelpunt specificeert CC (rebreather) duiken, dit veld wordt niet ingevuld voor OC.</small>\\n\n"
 
 #: planner-gtk.c:272
 msgid "AIR"
@@ -319,7 +319,7 @@ msgstr "Over Subsurface"
 
 #: gtk-gui.c:2135
 msgid "Add"
-msgstr ""
+msgstr "Toevoegen"
 
 #: gtk-gui.c:1631
 msgid "Add Dive..."
@@ -327,7 +327,7 @@ msgstr "Duik toevoegen..."
 
 #: gtk-gui.c:2189
 msgid "Add bookmark event here"
-msgstr ""
+msgstr "Voeg bladwijzer hier toe"
 
 #: divelist-gtk.c:1672
 msgid "Add dive"
@@ -335,12 +335,12 @@ msgstr "Duik Toevoegen"
 
 #: gtk-gui.c:2184
 msgid "Add gas change event here"
-msgstr ""
+msgstr "Voeg gaswissel hier toe"
 
 #: equipment.c:633
 #, c-format
 msgid "Add gaschange event at %d:%02u"
-msgstr ""
+msgstr "Voeg gaswissel toe op %d:%02u"
 
 #: divelist-gtk.c:1797
 msgid "Add to trip above"
@@ -381,7 +381,7 @@ msgstr "Automatisch groeperen"
 
 #: equipment.c:642
 msgid "Available gases"
-msgstr ""
+msgstr "Beschikbare gasmengsels"
 
 #: statistics-gtk.c:100
 msgctxt "Depth"
@@ -461,7 +461,7 @@ msgstr "GeÃ¤nnuleerd..."
 
 #: equipment.c:621
 msgid "Cannot add gas change"
-msgstr ""
+msgstr "Gaswissel kan niet toegevoegd worden"
 
 #: webservice.c:29
 msgid "Cannot parse response!"
@@ -544,12 +544,12 @@ msgstr "Databaseconnectie is mislukt '%s'.\n"
 #: parse-xml.c:1842
 #, c-format
 msgid "Database query failed '%s'.\n"
-msgstr ""
+msgstr "Database-query mislukt: '%s'\\n"
 
 #: parse-xml.c:1800
 #, c-format
 msgid "Database query get_events failed.\n"
-msgstr ""
+msgstr "Database-query get_events mislukt.\\n"
 
 #: divelist-gtk.c:817 print.c:502 statistics-gtk.c:590
 msgid "Date"
@@ -605,14 +605,14 @@ msgstr "Device of mountpoint"
 
 #: gtk-gui.c:857
 msgid "Display invalid dives"
-msgstr ""
+msgstr "Geef ongeldige duiken weer"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #. <trailing text>
 #: info.c:88
 #, c-format
 msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d %8$s"
-msgstr ""
+msgstr "Duik nr. %1$d - %2$s %4$02d-%3$02d-%5$04d om %6$d:%7$02d %8$s"
 
 #: info.c:130 print.c:83
 #, c-format
@@ -642,7 +642,7 @@ msgstr "Duikplan - DIT IS ENKEL EEN SIMULATIE; NIET GEBRUIKEN VOOR EEN WERKELIJK
 
 #: info-gtk.c:603 statistics-gtk.c:623
 msgid "Dive Tags"
-msgstr ""
+msgstr "Duik trefwoorden"
 
 #: statistics-gtk.c:591
 msgid "Dive Time"
@@ -793,7 +793,7 @@ msgstr "In-/uitschakelen gebeurtenissen"
 
 #: gtk-gui.c:1147
 msgid "Enable / Disable Tags"
-msgstr ""
+msgstr "In/-uitschakelen trefwoorden"
 
 #: equipment.c:1013 equipment.c:1520
 msgid "End"
@@ -872,15 +872,15 @@ msgstr "Alles uitklappen"
 
 #: divelist-gtk.c:1529
 msgid "Export As UDDF File"
-msgstr ""
+msgstr "Exporteer naar UDDF-bestand"
 
 #: gtk-gui.c:1625
 msgid "Export UDDF..."
-msgstr ""
+msgstr "Exporteer UDDF..."
 
 #: divelist-gtk.c:1656
 msgid "Export dive(s) to UDDF"
-msgstr ""
+msgstr "Exporteer duik(en) naar UDDF"
 
 #: gtk-gui.c:801
 msgid "Fahrenheit"
@@ -993,7 +993,7 @@ msgstr "Inactief"
 
 #: gtk-gui.c:1624
 msgid "Import File(s)..."
-msgstr ""
+msgstr "Importeer bestand(en)..."
 
 #: divelist-gtk.c:1378 gtk-gui.c:1645
 msgid "Info"
@@ -1052,7 +1052,7 @@ msgstr "Laatste stop op 6 meter"
 
 #: print.c:985
 msgid "Layout Options"
-msgstr ""
+msgstr "Opmaakopties"
 
 #: gtk-gui.c:1290
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
@@ -1101,7 +1101,7 @@ msgstr "mar"
 
 #: divelist-gtk.c:1728 divelist-gtk.c:1730
 msgid "Mark invalid"
-msgstr ""
+msgstr "Markeer als ongeldig"
 
 #: gps.c:53
 msgid "Mark location here"
@@ -1109,7 +1109,7 @@ msgstr "Markeer locatie hier"
 
 #: divelist-gtk.c:1726
 msgid "Mark valid"
-msgstr ""
+msgstr "Markeer als geldig"
 
 #: uemis.c:230
 msgid "Marker"
@@ -1261,7 +1261,7 @@ msgstr "Geen flesinformatie"
 
 #: equipment.c:627
 msgid "No cylinders listed for this dive."
-msgstr ""
+msgstr "Geen flessen opgegeven voor deze duik."
 
 #: info-gtk.c:379 info-gtk.c:639 info-gtk.c:1010
 msgid "Notes"
@@ -1270,11 +1270,11 @@ msgstr "Notities"
 #: print.c:1025
 #, c-format
 msgid "Notes height (%d%% - %d%%)"
-msgstr ""
+msgstr "Hoogte van notities (%d%% - %d%%)"
 
 #: print.c:1003
 msgid "Notes on top"
-msgstr ""
+msgstr "Notities bovenaan"
 
 #: main.c:78
 msgid "Nov"
@@ -1303,7 +1303,7 @@ msgstr "Geselecteerde gegevens wissen?"
 
 #: gtk-gui.c:1138
 msgid "Only display dives with these tags:"
-msgstr ""
+msgstr "Toon enkel duiken met de volgende trefwoorden:"
 
 #: gtk-gui.c:297
 msgid "Open File"
@@ -1315,12 +1315,12 @@ msgstr "Openen..."
 
 #: print.c:995
 msgid "Ordering"
-msgstr ""
+msgstr "Volgorde"
 
 #: print.c:1024
 #, c-format
 msgid "Other data height (%d%% - %d%%)"
-msgstr ""
+msgstr "Hoogte van overige data (%d%% - %d%%)"
 
 #: print.c:173
 #, c-format
@@ -1363,7 +1363,7 @@ msgstr "Planner"
 msgid ""
 "Please enter your userid and password for divelogs.de. The selected dives "
 "will be added to your account"
-msgstr ""
+msgstr "Voer uw gebruikersnaam en wachtwoord voor divelogs.de in. De geselecteerde duiken zullen aan uw account worden toegevoegd."
 
 #: gtk-gui.c:762
 msgid "Preferences"
@@ -1387,7 +1387,7 @@ msgstr "Vorige DC"
 
 #: print.c:989
 msgid "Print in color"
-msgstr ""
+msgstr "Afdrukken in kleur"
 
 #: print.c:978
 msgid "Print only selected dives"
@@ -1416,11 +1416,11 @@ msgstr "Profiel"
 #: print.c:1023
 #, c-format
 msgid "Profile height (%d%% - %d%%)"
-msgstr ""
+msgstr "Hoogte van profiel (%d%% - %d%%)"
 
 #: print.c:1000
 msgid "Profile on top"
-msgstr ""
+msgstr "Profiel bovenaan"
 
 #: gtk-gui.c:1640
 msgid "Quit"
@@ -1445,7 +1445,7 @@ msgstr "Lezen %s %s"
 
 #: gtk-gui.c:2161
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: divelist-gtk.c:1213 divelist-gtk.c:1703
 msgid "Remove Trip"
@@ -1457,7 +1457,7 @@ msgstr "Duik uit trip verwijderen"
 
 #: gtk-gui.c:2195
 msgid "Remove event here"
-msgstr ""
+msgstr "Verwijder gebeurtenis hier"
 
 #: divelist-gtk.c:1803
 msgid "Remove selected dives from trip"
@@ -1535,7 +1535,7 @@ msgstr "gebeurtenissen selecteren..."
 
 #: gtk-gui.c:1639
 msgid "Select Tags..."
-msgstr ""
+msgstr "Selecteer trefwoorden..."
 
 #: main.c:78
 msgid "Sep"
@@ -1605,7 +1605,7 @@ msgstr "Grootte"
 #: print.c:1012
 #, c-format
 msgid "Sizing heights (%% of layout)"
-msgstr ""
+msgstr "Instellen hoogtes (%% van opmaak)"
 
 #: uemis.c:200
 msgid "Speed Alarm"
@@ -1678,7 +1678,7 @@ msgstr "Afdrukken in tabelvorm"
 
 #: info-gtk.c:632
 msgid "Tags are only shown if they are identical for all edited dives"
-msgstr ""
+msgstr "Trefwoorden worden alleen getoond als zij identiek zijn voor alle te bewerken duiken"
 
 #: uemis.c:220
 msgid "Tank Change Suggested"
@@ -1807,15 +1807,15 @@ msgstr "Eenheden"
 
 #: divelist-gtk.c:1659
 msgid "Upload dive(s) to divelogs.de"
-msgstr ""
+msgstr "Upload duik(en) naar divelogs.de"
 
 #: webservice.c:318
 msgid "Upload to divelogs.de"
-msgstr ""
+msgstr "Upload naar divelogs.de"
 
 #: gtk-gui.c:1627
 msgid "Upload to divelogs.de..."
-msgstr ""
+msgstr "Upload naar divelogs.de..."
 
 #: gps.c:212
 msgid "Use right click to mark dive location at cursor"
@@ -1960,7 +1960,7 @@ msgstr "grot"
 
 #: statistics.c:20
 msgid "cavern"
-msgstr ""
+msgstr "spelonk"
 
 #: libdivecomputer.c:149
 msgid "ceiling"
@@ -1988,7 +1988,7 @@ msgstr "decompressiestop"
 
 #: statistics.c:20
 msgid "deep"
-msgstr ""
+msgstr "diep"
 
 #: libdivecomputer.c:152
 msgid "deepstop"
@@ -2008,7 +2008,7 @@ msgstr "duiktijd"
 
 #: statistics.c:20
 msgid "drift"
-msgstr ""
+msgstr "drift"
 
 #: uemis-downloader.c:589
 msgid "drysuit"
@@ -2073,7 +2073,7 @@ msgstr "Geïntegreerd"
 
 #: statistics.c:20
 msgid "invalid"
-msgstr ""
+msgstr "Ongeldig"
 
 #: libdivecomputer.c:171
 msgid "invalid event number"
