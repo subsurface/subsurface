@@ -167,9 +167,9 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			if (get_units()->weight == units::KG) {
 				int gr = ws->weight.grams % 1000;
 				int kg = ws->weight.grams / 1000;
-				ret = QString("%1.%2").arg(kg).arg((unsigned)(gr + 500) / 100);
+				ret = QString("%1.%2").arg(kg).arg((unsigned) gr / 100);
 			} else {
-				ret = QString("%1").arg((unsigned)(grams_to_lbs(ws->weight.grams) + 0.5));
+				ret = QString("%1").arg((unsigned)(grams_to_lbs(ws->weight.grams)));
 			}
 			break;
 		}
