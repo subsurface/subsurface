@@ -611,17 +611,19 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 	if (*show_tags) {
 		/* check boxes for the (currently fixed) list of tags;
 		 * let's do 5 per row */
+		const int cols = 5;
+		int rows = DTAG_NR / cols + (DTAG_NR % cols) ? 1 : 0;
+		GtkWidget *table = gtk_table_new(rows, cols, TRUE);
 		for (i = 0; i < DTAG_NR; i++) {
-			if (i % 5 == 0) {
-				sbox = gtk_hbox_new(FALSE, 6);
-				gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
-			}
+			int x = i % cols;
+			int y = i / cols;
 			button = gtk_check_button_new_with_label(_(dtag_names[i]));
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), dive->dive_tags & (1 << i));
-			gtk_box_pack_start(GTK_BOX(sbox), button, FALSE, FALSE, 6);
+			gtk_table_attach_defaults(GTK_TABLE(table), button, x, x+1, y, y+1);
 			g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(divetag_toggle_cb),
 					 GINT_TO_POINTER(1 << i));
 		}
+		gtk_box_pack_start(GTK_BOX(framebox), table, TRUE, FALSE, 3);
 	} else {
 		sbox = gtk_label_new(_("Tags are only shown if they are identical for all edited dives"));
 		gtk_box_pack_start(GTK_BOX(framebox), sbox, TRUE, FALSE, 3);
