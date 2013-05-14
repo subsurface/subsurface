@@ -51,7 +51,8 @@ New in version 3.1 (compared to Subsurface 3.0.2):
 - improved printout formatting and printer dialog
 - support for color printing
 - dive planning: add option for last stop at 6m/20ft
-- native support for the Shearwater Petrel and Heinrichs Weikamp OSTC3
+- added support for Heinrichs Weikamp OSTC3 and Suunto DX
+- native support for the Shearwater Petrel (much faster download)
 - various bug fixes
 
 
@@ -177,7 +178,7 @@ Suunto
 	Eon, Solution Alpha and Solution Nitrox/Vario
 	Vyper, Cobra, Vytec, Vytec DS, D3, Spyder, Gekko, Mosquito, Stinger, Zoop
 	Vyper2, Cobra2, Cobra3, Vyper Air and HelO2
-	D9, D6, D4, D9tx, D6i and D4i
+	DX, D9, D6, D4, D9tx, D6i and D4i
 Uemis
 	Zurich
 Uwatec
