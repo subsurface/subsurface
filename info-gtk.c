@@ -777,8 +777,15 @@ int edit_multi_dive_info(struct dive *single_dive)
 		update_cylinder_related_info(master);
 		/* if there was only one dive we might also have changed dive->when
 		 * or even the duration and depth information (in a dive without samples) */
-		if (! multi)
+		if (! multi) {
 			update_time_depth(master, &edit_dive);
+			/* these values could have changed because of the edit - so let's
+			 * recreate them */
+			master->duration.seconds = 0;
+			master->maxdepth.mm = 0;
+			master->meandepth.mm = 0;
+			(void)fixup_dive(master);
+		}
 		dive_list_update_dives();
 	}
 	gtk_widget_destroy(dialog);
