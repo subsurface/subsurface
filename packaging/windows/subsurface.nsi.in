@@ -167,6 +167,8 @@ Section
         "DisplayIcon" "$INSTDIR\subsurface.ico"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
         "UninstallString" "$INSTDIR\Uninstall.exe"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
+        "DisplayVersion" ${SUBSURFACE_VERSION}
 
 SectionEnd
 
