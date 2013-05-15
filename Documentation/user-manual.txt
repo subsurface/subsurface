@@ -172,6 +172,22 @@ encountered a 'ceiling' at depth, the dive still does not require an
 explicit deco stop. This feature allows dive computers to offer longer
 'non-stop bottom time'.
 
+[[S_DiveList]]
+Dive List
+~~~~~~~~~
+
+Information in the dive list is taken from different sources. Either
+through <<S_ImportingAlienDiveLogs,imports from other diving log
+software>> or a <<S_ImportNewDives,dive computer>> or manually entered.
+Additional columns can be added through
+<<S_SettingUpPreferences,preferences>>.
+Existing data can be <<S_EditDiveInfo,manually edited>>, too.
+
+Because of the inaccuracy of depth gauge of diving computers depth
+ >20m are shown rounded to the next meter. Despite this the provided
+depth is kept in the logfile. Users of imperial system aren't affected
+by this.
+
 [[S_ImportNewDives]]
 Import New Dives from your Dive Computer
 ---------------------------------------
@@ -1068,7 +1084,7 @@ see the effects of changing various parameters of the dives.
 
 [WARNING]
 Deco calculations are done using a new implementation of the Buhlmann
-ZH16 algorithm with gradient factors. Since the planner and our
+ZH-L16 algorithm with gradient factors. Since the planner and our
 implementation of the decompression algorithms are new and have received
 only a limited amount of testing: +
 **WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE
