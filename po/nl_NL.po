@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 11:20+0000\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:56+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/subsurface/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr " > Maand"
 msgid " Download"
 msgstr "Download"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr " Selecteer duikcomputer en aansluiting. "
 
@@ -363,7 +363,7 @@ msgstr "Luchttemp."
 msgid "Air Temp in %s"
 msgstr "Luchttemp. in %s"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Prefereer altijd de gedownloadde duik"
 
@@ -407,7 +407,7 @@ msgstr "Gemiddelde"
 msgid "Avg Depth"
 msgstr "Gem. diepte"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr "Gem. Diepte (%s):"
@@ -433,7 +433,7 @@ msgstr "Schakel om naar OC"
 msgid "Bar"
 msgstr "bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -446,7 +446,7 @@ msgstr "CC Instelpunt"
 msgid "Can't find gas %d/%d"
 msgstr "Kan gasmengsel %d/%d niet vinden"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr "Kan stylesheet (%s)/%s niet openen"
@@ -532,17 +532,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "NIET-AANSPRAKELIJKHEIDSVERKLARING / WAARSCHUWING: DIT IS EEN NIEUWE IMPLEMENTATIE VAN HET BUHLMANN ALGORITME EN EEN IMPLEMENTATIE VAN EEN DUIKPLANNER DIE HIEROP GEBASEERD IS. BEIDE IMPLEMENTATIES HEBBEN MAAR EEN BEPERKTE MATE VAN TESTEN ONDERGAAN. WIJ RADEN MET KLEM AF DUIKEN UIT TE VOEREN DIE GEBASEERD ZIJN OP DE RESULTATEN DIE HIER GETOOND WORDEN."
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr "Databaseconnectie is mislukt '%s'.\n"
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr "Database-query mislukt: '%s'\n"
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr "Database-query get_events mislukt.\n"
@@ -551,11 +551,11 @@ msgstr "Database-query get_events mislukt.\n"
 msgid "Date"
 msgstr "Datum"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Datum en tijd"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Datum:"
 
@@ -595,7 +595,7 @@ msgstr "Diepte:"
 msgid "Device Id"
 msgstr "Apparaat-ID"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Device of mountpoint"
 
@@ -624,7 +624,7 @@ msgstr "Duik nr. %d: %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Duikcomputer naam"
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Duikinformatie"
 
@@ -652,7 +652,7 @@ msgstr "Alarm: Duiktijd"
 msgid "Dive Time Info"
 msgstr "Info: Duiktijd"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Duikcomputer merk en model"
 
@@ -680,7 +680,7 @@ msgstr "Duik nr."
 msgid "Divelist Font"
 msgstr "Duiklijst font"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Duikleider"
 
@@ -692,7 +692,7 @@ msgstr "Duiken"
 msgid "Dives Locations"
 msgstr "Duiklocaties"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Download uit duikcomputer"
 
@@ -716,7 +716,7 @@ msgstr "Laden succesvol voltooid!"
 msgid "Duration"
 msgstr "Duur"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Duur (min)"
 
@@ -749,7 +749,7 @@ msgstr "Apparaatnamen bewerken"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Bewerk duikcomputer apparaatnamen"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Trip informatie bewerken"
 
@@ -805,7 +805,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Voer een gebruikers-ID in en klik op \"Download\". Wanneer de download voltooid is kunt u op \"Toepassen\" klikken als u de veranderingen wilt uitvoeren."
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Uitrusting"
 
@@ -923,7 +923,7 @@ msgstr "Bestand"
 msgid "Filter"
 msgstr "Filter"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Forceer download van alle duiken"
 
@@ -1062,7 +1062,7 @@ msgstr "Lijst"
 msgid "Liter"
 msgstr "liter"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Locatie"
 
@@ -1123,7 +1123,7 @@ msgstr "Waarschuwing: Maximale deco-tijd"
 msgid "Max Depth"
 msgstr "Max. diepte"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr "Max. diepte (%s):"
@@ -1259,7 +1259,7 @@ msgstr "Geen flesinformatie"
 msgid "No cylinders listed for this dive."
 msgstr "Geen flessen opgegeven voor deze duik."
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Notities"
 
@@ -1430,7 +1430,7 @@ msgstr "Alarm: resterende gas-tijd"
 msgid "RGT Warning"
 msgstr "Waarschuwing: resterende gas-tijd"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Waardering"
 
@@ -1467,7 +1467,7 @@ msgstr "Hernummeren"
 msgid "Renumber..."
 msgstr "Hernummeren..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Opnieuw"
 
@@ -1646,7 +1646,7 @@ msgstr "Blijft op %.*f %s gedurende %d:%02d min - looptijd %d:%02u op %s\n"
 msgid "Strange percentage reading %s\n"
 msgstr "Vreemde percentage %s\n"
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Pak"
 
@@ -1672,7 +1672,7 @@ msgstr "Gaswissel naar %s\n"
 msgid "Table print"
 msgstr "Afdrukken in tabelvorm"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr "Trefwoorden worden alleen getoond als zij identiek zijn voor alle te bewerken duiken"
 
@@ -1708,7 +1708,7 @@ msgstr "Drie"
 msgid "Thu"
 msgstr "Do"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Tijd"
 
@@ -1978,6 +1978,10 @@ msgstr "cuft"
 msgid "data"
 msgstr "gegevens"
 
+#: statistics.c:23
+msgid "deco"
+msgstr "decompressie"
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "decompressiestop"
@@ -2043,7 +2047,7 @@ msgstr "voor de geselecteerde duiken"
 msgid "freshwater"
 msgstr "zoetwater"
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2099,7 +2103,7 @@ msgstr "US pond"
 msgid "long john"
 msgstr "long john"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "m"
 

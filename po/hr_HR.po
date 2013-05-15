@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 11:20+0000\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:53+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/projects/p/subsurface/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr " > Mjesec"
 msgid " Download"
 msgstr " preuzimanje"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr "Odaberite ronilačko računalo i naziv uređaja."
 
@@ -364,7 +364,7 @@ msgstr "Temp. zraka"
 msgid "Air Temp in %s"
 msgstr "Temp. zraka u %s"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Uvijek preferiraj preuzete urone"
 
@@ -408,7 +408,7 @@ msgstr "Ø"
 msgid "Avg Depth"
 msgstr "Prosj. dubina"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr "Prosj. dubina (%s)"
@@ -434,7 +434,7 @@ msgstr "Neplanirani prelazak na OC sustav"
 msgid "Bar"
 msgstr "Bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Buddy"
 
@@ -447,7 +447,7 @@ msgstr "CC SetPoint"
 msgid "Can't find gas %d/%d"
 msgstr "Ne mogu naći plin %d/%d"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr "Ne mogu otvoriti stylesheet (%s)/%s"
@@ -533,17 +533,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "UPOZORENJE: OVO JE NOVA IMPLEMENTACIJA BUHLMANN ALGORITMA I PLANERA TEMELJENOG NA NJEMU KOJA JE SAMO DJELOMIČNO TESTIRANA. NIKAKO SE NE PREPORUČA PLANIRANJE URONA TEMELJEM SAMO OVIH INFORMACIJA."
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr "Neuspjelo spajanje na bazu '%s'.\n"
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr "Neuspjeo upit na bazu '%s'.\n"
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr "Neuspjeo get_events na bazi.\n"
@@ -552,11 +552,11 @@ msgstr "Neuspjeo get_events na bazi.\n"
 msgid "Date"
 msgstr "Datum"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Datum i vrijeme"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Datum:"
 
@@ -596,7 +596,7 @@ msgstr "Dubina:"
 msgid "Device Id"
 msgstr "Naziv uređaja"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Uređaj ili mount lokacija"
 
@@ -625,7 +625,7 @@ msgstr "Uron #%d - %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr ""
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Informacije o uronu"
 
@@ -653,7 +653,7 @@ msgstr "Alarm: Trajanje urona"
 msgid "Dive Time Info"
 msgstr "Info: Trajanje urona"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Proizvođač i model računala za ronjenje"
 
@@ -681,7 +681,7 @@ msgstr "Uron br."
 msgid "Divelist Font"
 msgstr "Font za listu urona"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Voditelj"
 
@@ -693,7 +693,7 @@ msgstr "Uroni"
 msgid "Dives Locations"
 msgstr "Lokacije urona"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Preuzmi s ronilačkog računala"
 
@@ -717,7 +717,7 @@ msgstr "Preuzimanje uspješno!"
 msgid "Duration"
 msgstr "Trajanje"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Trajanje (min)"
 
@@ -750,7 +750,7 @@ msgstr "Naziv uređaja"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Promijeni nazive računala"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Uredi informacije o grupi"
 
@@ -806,7 +806,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Unesite korisničku oznaki i pritisnite 'Preuzimanje'. Kad se preuzimanje završi možete pritisnuti 'Primjeni' ako želite primjeniti promjene."
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Oprema"
 
@@ -924,7 +924,7 @@ msgstr "Datoteka"
 msgid "Filter"
 msgstr "Filter"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Prisilno preuzimanje svih urona"
 
@@ -1063,7 +1063,7 @@ msgstr "Popis"
 msgid "Liter"
 msgstr "Litra"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Lokacija"
 
@@ -1124,7 +1124,7 @@ msgstr "Upozorenje: Max. vrijeme dekompresije"
 msgid "Max Depth"
 msgstr "Max dubina"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr "Max dubina (%s):"
@@ -1260,7 +1260,7 @@ msgstr "Nema podatka o boci"
 msgid "No cylinders listed for this dive."
 msgstr "Niti jedna boca nije odabrana za ovaj uron."
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Bilješke"
 
@@ -1431,7 +1431,7 @@ msgstr "RGT Alarm"
 msgid "RGT Warning"
 msgstr "RTG Upozorenje"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Ocjena"
 
@@ -1468,7 +1468,7 @@ msgstr "Renumeriraj"
 msgid "Renumber..."
 msgstr "Renumeriraj..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Pokušaj ponovo"
 
@@ -1647,7 +1647,7 @@ msgstr "Stanka na %.*f %s u trajanju %d:%02d min - Ukupno vrijeme %d:%02u na %s\
 msgid "Strange percentage reading %s\n"
 msgstr "Neobično očitanje postotka %s\n"
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Odijelo"
 
@@ -1673,7 +1673,7 @@ msgstr "Prebaci plin na %s\n"
 msgid "Table print"
 msgstr "Tablični ispis"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr "Oznake su prikazane samo ako su iste za sve urone koji se uređuju"
 
@@ -1709,7 +1709,7 @@ msgstr "Tri"
 msgid "Thu"
 msgstr "Čet"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Vrijeme"
 
@@ -1980,6 +1980,10 @@ msgstr "cuft"
 msgid "data"
 msgstr "podaci"
 
+#: statistics.c:23
+msgid "deco"
+msgstr ""
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "deko zastoj"
@@ -2045,7 +2049,7 @@ msgstr "za odabrane urone"
 msgid "freshwater"
 msgstr "slatka voda"
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2101,7 +2105,7 @@ msgstr "lbs"
 msgid "long john"
 msgstr "long john"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "m"
 

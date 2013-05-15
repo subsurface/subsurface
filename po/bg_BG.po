@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 10:50+0000\n"
-"Last-Translator: neolit123 <neolit123@gmail.com>\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:53+0000\n"
+"Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/subsurface/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +34,7 @@ msgstr " > Месец"
 msgid " Download"
 msgstr " Изтегли"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr " Моля изберете леководолазен компютър и устройство. "
 
@@ -362,7 +362,7 @@ msgstr "Темп. на въздух"
 msgid "Air Temp in %s"
 msgstr "Tемп. на въздуха в %s"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Винаги предпочитай изтегленото гмуркане"
 
@@ -406,7 +406,7 @@ msgstr "Средно"
 msgid "Avg Depth"
 msgstr "Средна дълбочина"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr "Средна дълбочина (%s):"
@@ -432,7 +432,7 @@ msgstr "Връщане към OC"
 msgid "Bar"
 msgstr "Бара"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Партньор"
 
@@ -445,7 +445,7 @@ msgstr "CC SetPoint"
 msgid "Can't find gas %d/%d"
 msgstr "Не може да бъде намерен газ %d/%d"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr "Не може да бъде зареден стилов файл (%s)/%s"
@@ -531,17 +531,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "ВНИМАНИЕ: ТОВА Е НОВО ИЗПЪЛНЕНИЕ НА АГЛОРИТЪМА НА БУЛМАН И НА ПЛАНОВИКА, КОИТО НЕ СА ТЕСТВАНИ ДОСТАТЪЧНО. МОЛЯ НЕ ПЛАНУВАЙТЕ ИЗТИНСКИ ГМУРКАНИЯ БАЗИРАНИ НА ДАННИТЕ ТУК!"
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr "Няма връзка към базата данни '%s'.\n"
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr "Грешка при заява към база данни '%s'.\n"
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr "Базата данни не може да изпълни get_events.\n"
@@ -550,11 +550,11 @@ msgstr "Базата данни не може да изпълни get_events.\n"
 msgid "Date"
 msgstr "Дата"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Дата и час"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Дата:"
 
@@ -594,7 +594,7 @@ msgstr "Дълбочина:"
 msgid "Device Id"
 msgstr "Име на устройство"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Устройсто или входна точка"
 
@@ -623,7 +623,7 @@ msgstr "Гмуркане №%d: %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Прякор на леководолазен компютър"
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Информация"
 
@@ -651,7 +651,7 @@ msgstr "Тревога: Време за гмуркане"
 msgid "Dive Time Info"
 msgstr "Времева Информация за гмуркане"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Марка и модел на гмуркачески комютър"
 
@@ -679,7 +679,7 @@ msgstr "Гмуркане №"
 msgid "Divelist Font"
 msgstr "Шрифт за списъка на гмуркания"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Водач"
 
@@ -691,7 +691,7 @@ msgstr "Гмуркания"
 msgid "Dives Locations"
 msgstr "Местонахождения"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Изтегли от леководолазен компютър"
 
@@ -715,7 +715,7 @@ msgstr "Успешно изтегляне!"
 msgid "Duration"
 msgstr "Продълж. (мин.)"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Продълж. (мин.)"
 
@@ -748,7 +748,7 @@ msgstr "Редактирай имена на устройства"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Редактирай прякори на гмуркачерски комютри"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Редактиране на информация за пътуване"
 
@@ -804,7 +804,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Въведете потребителски ключ и натиснете 'Изтегли'. След като е готово може да натиснете 'Прилагане' ако желаете на приложите промените."
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Екипировка"
 
@@ -922,7 +922,7 @@ msgstr "Файл"
 msgid "Filter"
 msgstr "Филтър"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Изтегли всички гмуркания"
 
@@ -1061,7 +1061,7 @@ msgstr "Списък"
 msgid "Liter"
 msgstr "Литра"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Местонахождение"
 
@@ -1122,7 +1122,7 @@ msgstr "Внимание: Максимално време на сигнал за
 msgid "Max Depth"
 msgstr "Макс. дълбочина"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr "Макс. дълбочина (%s):"
@@ -1258,7 +1258,7 @@ msgstr "Няма информация за резервоар"
 msgid "No cylinders listed for this dive."
 msgstr "Няма бутилки към това гмуркане"
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Бележки"
 
@@ -1429,7 +1429,7 @@ msgstr "Тревога: оставащо газ-време"
 msgid "RGT Warning"
 msgstr "Внимание: оставащо газ-време"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Оценка"
 
@@ -1466,7 +1466,7 @@ msgstr "Преномерирай"
 msgid "Renumber..."
 msgstr "Преномерирай..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Опитай пак"
 
@@ -1645,7 +1645,7 @@ msgstr "Остани на %.*f %s за %d:%02d мин - времетраене %
 msgid "Strange percentage reading %s\n"
 msgstr "Неразпозната стойност за проценти %s\n"
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Водолазен костюм"
 
@@ -1671,7 +1671,7 @@ msgstr "Превключи газ на %s\n"
 msgid "Table print"
 msgstr "Печат на таблица"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr "Таговете се показват само ако идентични за всички гмуркания"
 
@@ -1707,7 +1707,7 @@ msgstr "Комбиниран"
 msgid "Thu"
 msgstr "Чет"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Време"
 
@@ -1977,6 +1977,10 @@ msgstr "кб.фута"
 msgid "data"
 msgstr "данни"
 
+#: statistics.c:23
+msgid "deco"
+msgstr ""
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "деко. стоп"
@@ -2042,7 +2046,7 @@ msgstr "за избраните гмуркания"
 msgid "freshwater"
 msgstr "сладководно"
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "фута"
 
@@ -2098,7 +2102,7 @@ msgstr "паунда"
 msgid "long john"
 msgstr "лонг джон"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "м"
 

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 11:20+0000\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:57+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/subsurface/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "> Mês"
 msgid " Download"
 msgstr "Transferir"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr " Por favor, seleccione o computador de mergulho."
 
@@ -362,7 +362,7 @@ msgstr "Temperatura do ar"
 msgid "Air Temp in %s"
 msgstr "Temperatura do ar em %s"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Preferir sempre mergulho transferido"
 
@@ -406,7 +406,7 @@ msgstr "Média"
 msgid "Avg Depth"
 msgstr "Prof. média"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr ""
@@ -432,7 +432,7 @@ msgstr "Troca de emergência para OC"
 msgid "Bar"
 msgstr "Bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Parceiro"
 
@@ -445,7 +445,7 @@ msgstr "CC SetPoint"
 msgid "Can't find gas %d/%d"
 msgstr "Não encontro o gás %d/%d"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr ""
@@ -531,17 +531,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "CLÁUSULA DE DESRESPONSABILIZAÇÃO/AVISO:ESTA É UMA NOVA IMPLEMENTAÇÃO DO ALGORITMO BUHLMANN E DO SEU PLANEADOR DE MERGULHOS DERIVADO AO QUAL  SÓ FORAM REALIZADOS TESTES DE FORMA LIMITADA. RECOMENDAMOS FORTEMENTE PARA NUNCA PLANEAR MERGULHOS BASEADOS SIMPLESMENTE NOS RESULTADOS OBTIDOS AQUI."
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr ""
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr ""
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr ""
@@ -550,11 +550,11 @@ msgstr ""
 msgid "Date"
 msgstr "Data"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Data e hora"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Data:"
 
@@ -594,7 +594,7 @@ msgstr "Profundidade:"
 msgid "Device Id"
 msgstr "Identificador de dispositivo"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Dispositivo ou \"mount point\""
 
@@ -623,7 +623,7 @@ msgstr "Mergulho #%d:%s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Nome do computador de mergulho"
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Informação do mergulho"
 
@@ -651,7 +651,7 @@ msgstr "Alerta de duração de mergulho"
 msgid "Dive Time Info"
 msgstr "Informação sobre a duração do mergulho"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Fabricante e modelo"
 
@@ -679,7 +679,7 @@ msgstr "Mergulho #"
 msgid "Divelist Font"
 msgstr "Fonte da lista de mergulhos"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Divemaster"
 
@@ -691,7 +691,7 @@ msgstr "Mergulhos"
 msgid "Dives Locations"
 msgstr "Locais de Mergulho"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Transferir do Computador de Mergulho"
 
@@ -715,7 +715,7 @@ msgstr "Operação de transferência bem sucedida!"
 msgid "Duration"
 msgstr "Duração"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Duração (min)"
 
@@ -748,7 +748,7 @@ msgstr "Editar nomes do dispositivo"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Editar nomes do computador de mergulho"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Editar informação da expedição de mergulho"
 
@@ -804,7 +804,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Introduzir uma identificação do utilizador e seleccionar \"Transferir\". Após terminar seleccionar \"Aplicar\"."
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Equipamento"
 
@@ -922,7 +922,7 @@ msgstr "Ficheiro"
 msgid "Filter"
 msgstr "Filtros"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Forçar a transferência de todos os mergulhos"
 
@@ -1061,7 +1061,7 @@ msgstr "Lista"
 msgid "Liter"
 msgstr "Litro"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Localização"
 
@@ -1122,7 +1122,7 @@ msgstr "Advertência de tempo máx deco"
 msgid "Max Depth"
 msgstr "Profundidade máx"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr ""
@@ -1258,7 +1258,7 @@ msgstr "Sem dados registados da garrafa"
 msgid "No cylinders listed for this dive."
 msgstr ""
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Notas"
 
@@ -1429,7 +1429,7 @@ msgstr "Alerta de tempo de gás restante"
 msgid "RGT Warning"
 msgstr "Aviso tempo de gás restante"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Classificação"
 
@@ -1466,7 +1466,7 @@ msgstr "Alterar numeração"
 msgid "Renumber..."
 msgstr "Alterar numeração..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Repetir"
 
@@ -1645,7 +1645,7 @@ msgstr "Permanecer a  %.*f %s durante %d:%02d min - runtime %d:%02u a %s\n"
 msgid "Strange percentage reading %s\n"
 msgstr ""
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Fato"
 
@@ -1671,7 +1671,7 @@ msgstr "Alterar gás para %s\n"
 msgid "Table print"
 msgstr "Imprimir tabela"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr ""
 
@@ -1707,7 +1707,7 @@ msgstr "Todo"
 msgid "Thu"
 msgstr "Qui"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Tempo"
 
@@ -1977,6 +1977,10 @@ msgstr "pés^3"
 msgid "data"
 msgstr "dados"
 
+#: statistics.c:23
+msgid "deco"
+msgstr "deco"
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "paragem de deco"
@@ -2042,7 +2046,7 @@ msgstr "para mergulhos seleccionados"
 msgid "freshwater"
 msgstr ""
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "pés"
 
@@ -2098,7 +2102,7 @@ msgstr "libra"
 msgid "long john"
 msgstr "long john"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "m"
 

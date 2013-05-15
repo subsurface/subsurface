@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 11:20+0000\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:57+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/subsurface/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr " > Månad"
 msgid " Download"
 msgstr "Ladda ned"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr " Välj dykdator och enhet"
 
@@ -363,7 +363,7 @@ msgstr "Lufttemp"
 msgid "Air Temp in %s"
 msgstr "Lufttemp i %s"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Föredra alltid nyladdad dykinformation"
 
@@ -407,7 +407,7 @@ msgstr "Genomsnitt"
 msgid "Avg Depth"
 msgstr "Medeldjup"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr "Medeldjup (%s):"
@@ -433,7 +433,7 @@ msgstr "Bailout till öppet system"
 msgid "Bar"
 msgstr "bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Parkamrat"
 
@@ -446,7 +446,7 @@ msgstr "CC SetPoint"
 msgid "Can't find gas %d/%d"
 msgstr "Kan inte hitta gasen %d/%d"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr "Kunde inte öppna stilmall (%s)%s"
@@ -532,17 +532,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "VARNING: DETTA ÄR EN NY IMPLEMENTATION AV BÜHLMANN'S DEKO ALGORITM OCH EN DYKPLANERARE BASERAD PÅ DEN, OCH KODEN HAR SETT ENDAST LITE TESTNING. VI FÖRESLÅR ATT MAN INTE GÖR DYK BASERADE ENBART PÅ RESULTATEN AV DENNA PLAN!"
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr "Databasanslutning misslyckades '%s'.\n"
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr "Databasfråga misslyckades '%s'.\n"
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr "Databasfråga get_events misslyckades.\n"
@@ -551,11 +551,11 @@ msgstr "Databasfråga get_events misslyckades.\n"
 msgid "Date"
 msgstr "Datum"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Datum och tid"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Datum:"
 
@@ -595,7 +595,7 @@ msgstr "Djup:"
 msgid "Device Id"
 msgstr "Enhetsnamn"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Enhet eller monteringspunkt"
 
@@ -624,7 +624,7 @@ msgstr "Dyk #%d: %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Dykdatornamn"
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Information"
 
@@ -652,7 +652,7 @@ msgstr "Dyktidsvarning"
 msgid "Dive Time Info"
 msgstr "Dyktidsnot"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Dykdatorleverantör och produkt"
 
@@ -680,7 +680,7 @@ msgstr "Dyknr"
 msgid "Divelist Font"
 msgstr "Font för dyklistan"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Divemaster"
 
@@ -692,7 +692,7 @@ msgstr "Dyk"
 msgid "Dives Locations"
 msgstr "Dykplatser"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Ladda ner från dykdator"
 
@@ -716,7 +716,7 @@ msgstr "Nedladdning lyckades!"
 msgid "Duration"
 msgstr "Varaktighet"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Varaktighet (min)"
 
@@ -749,7 +749,7 @@ msgstr "Ändra Enhetsnamn"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Ändra dykdatorers namn"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Ändra reseinformation"
 
@@ -805,7 +805,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Ange ditt användarid och tryck 'Ladda ner'. När laddningen är färdig kan du trycka på 'Använd' för att använda data"
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Utrustning"
 
@@ -923,7 +923,7 @@ msgstr "Fil"
 msgid "Filter"
 msgstr "Filter"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Tvinga nedladdning av alla dyk"
 
@@ -1062,7 +1062,7 @@ msgstr "Lista"
 msgid "Liter"
 msgstr "liter"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Plats"
 
@@ -1123,7 +1123,7 @@ msgstr "Varning: max dekotid"
 msgid "Max Depth"
 msgstr "Maxdjup"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr "Maxdjup (%s):"
@@ -1259,7 +1259,7 @@ msgstr "Ingen flaskinformation"
 msgid "No cylinders listed for this dive."
 msgstr "Inga flaskor listade för detta dyk."
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Anteckningar"
 
@@ -1430,7 +1430,7 @@ msgstr "Varning: gastid"
 msgid "RGT Warning"
 msgstr "Varning: gastid"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Rankning"
 
@@ -1467,7 +1467,7 @@ msgstr "Uppdatera numrering"
 msgid "Renumber..."
 msgstr "Uppdatera numrering..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Försök igen"
 
@@ -1646,7 +1646,7 @@ msgstr "Stanna vid %.*f %s för %d:%02d min - totaltid %d:%02u on %s\n"
 msgid "Strange percentage reading %s\n"
 msgstr "Konstig procent läsning %s\n"
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Dräkt"
 
@@ -1672,7 +1672,7 @@ msgstr "Byt till gas %s\n"
 msgid "Table print"
 msgstr "Tabellutskrift"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr "Taggar visas bara om de är identiska för alla dyk"
 
@@ -1708,7 +1708,7 @@ msgstr "Alla"
 msgid "Thu"
 msgstr "tor"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Tid"
 
@@ -1978,6 +1978,10 @@ msgstr "ft³"
 msgid "data"
 msgstr "data"
 
+#: statistics.c:23
+msgid "deco"
+msgstr "deko"
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "dekostopp"
@@ -2043,7 +2047,7 @@ msgstr "för utvalda dyk"
 msgid "freshwater"
 msgstr "sötvatten"
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2099,7 +2103,7 @@ msgstr "pund"
 msgid "long john"
 msgstr "Longjohn"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "m"
 

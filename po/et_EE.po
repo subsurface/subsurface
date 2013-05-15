@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 10:39+0000\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:53+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/projects/p/subsurface/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr "Kuu"
 msgid " Download"
 msgstr ""
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr ""
 
@@ -361,7 +361,7 @@ msgstr ""
 msgid "Air Temp in %s"
 msgstr ""
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr "Keskmine"
 msgid "Avg Depth"
 msgstr ""
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr ""
@@ -431,7 +431,7 @@ msgstr ""
 msgid "Bar"
 msgstr "Bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Semu"
 
@@ -444,7 +444,7 @@ msgstr ""
 msgid "Can't find gas %d/%d"
 msgstr ""
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr ""
@@ -530,17 +530,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "TÄHELEPANU: SIIN ON KASUTUSEL BUHLMANNI ALGORITMIL PÕHINEV SUKELDUMISTE PLANEERIJA, MIS ON NULLIST IMPLEMENTEERITUD JA SEDA ON HETKEL NAPILT KATSETATUD. SOOVITAME TUNGIVALT, MITTE PLANEERIDA OMA SUKELDUMIST AINULT SIIT SAADUD ANDMETE PÕHJAL."
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr ""
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr ""
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr ""
@@ -549,11 +549,11 @@ msgstr ""
 msgid "Date"
 msgstr "Kuupäev"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Kuupäev ja aeg"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Kuupäev:"
 
@@ -593,7 +593,7 @@ msgstr "Sügavus:"
 msgid "Device Id"
 msgstr "Seadme ID"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr ""
 
@@ -622,7 +622,7 @@ msgstr ""
 msgid "Dive Computer Nickname"
 msgstr ""
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr ""
 
@@ -650,7 +650,7 @@ msgstr ""
 msgid "Dive Time Info"
 msgstr ""
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr ""
 
@@ -678,7 +678,7 @@ msgstr ""
 msgid "Divelist Font"
 msgstr ""
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr ""
 
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Dives Locations"
 msgstr ""
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Lae kompuutrist alla"
 
@@ -714,7 +714,7 @@ msgstr ""
 msgid "Duration"
 msgstr "Kestus"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Kestus (min)"
 
@@ -747,7 +747,7 @@ msgstr "Muuda seadmete nime"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Muuda kompuutri hüüdnime"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Muuda Tripi Infot"
 
@@ -803,7 +803,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr ""
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Varustus"
 
@@ -921,7 +921,7 @@ msgstr ""
 msgid "Filter"
 msgstr "Filter"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr ""
 
@@ -1060,7 +1060,7 @@ msgstr ""
 msgid "Liter"
 msgstr ""
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr ""
 
@@ -1121,7 +1121,7 @@ msgstr ""
 msgid "Max Depth"
 msgstr ""
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr ""
@@ -1257,7 +1257,7 @@ msgstr ""
 msgid "No cylinders listed for this dive."
 msgstr ""
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr ""
 
@@ -1428,7 +1428,7 @@ msgstr ""
 msgid "RGT Warning"
 msgstr ""
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr ""
 
@@ -1465,7 +1465,7 @@ msgstr ""
 msgid "Renumber..."
 msgstr ""
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr ""
 
@@ -1644,7 +1644,7 @@ msgstr ""
 msgid "Strange percentage reading %s\n"
 msgstr ""
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr ""
 
@@ -1670,7 +1670,7 @@ msgstr ""
 msgid "Table print"
 msgstr ""
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr ""
 
@@ -1706,7 +1706,7 @@ msgstr ""
 msgid "Thu"
 msgstr ""
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr ""
 
@@ -1976,6 +1976,10 @@ msgstr ""
 msgid "data"
 msgstr ""
 
+#: statistics.c:23
+msgid "deco"
+msgstr ""
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr ""
@@ -2041,7 +2045,7 @@ msgstr ""
 msgid "freshwater"
 msgstr ""
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr ""
 
@@ -2097,7 +2101,7 @@ msgstr ""
 msgid "long john"
 msgstr ""
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr ""
 

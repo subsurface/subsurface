@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 11:10+0000\n"
-"Last-Translator: Dodiak <dodo.sk@gmail.com>\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:53+0000\n"
+"Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/subsurface/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgstr " > Mesiac"
 msgid " Download"
 msgstr "Načítať"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr "Voľba typu počítača a zariadenia. "
 
@@ -363,7 +363,7 @@ msgstr "Teplota vzduchu"
 msgid "Air Temp in %s"
 msgstr "Teplota vzduchu v %s"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Vždycky preferuje nahratý ponor"
 
@@ -407,7 +407,7 @@ msgstr "Priemer"
 msgid "Avg Depth"
 msgstr "Priemerná hĺbka"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr "Priem. hĺbka (%s):"
@@ -433,7 +433,7 @@ msgstr "Záchrana na OC"
 msgid "Bar"
 msgstr "bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Partner"
 
@@ -446,7 +446,7 @@ msgstr "CC SetPoint"
 msgid "Can't find gas %d/%d"
 msgstr "Neviem nájsť zmes %d/%d"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr "Nemôžem otvoriť stylesheet (%s)/%s"
@@ -532,17 +532,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "VAROVANIE: TOTO JE NOVÁ IMPLEMENTÁCIA BUHLMANOVHO ALGORITMU A NA ŇOM IMPLEMENTOVANÝ PLÁNOVAČ PONOROV, KTORÝ VŠAK BOL MINIMÁLNE TESTOVANÝ. V ŽIADNOM PRÍPADE SA NEDOPORUČUJE PLÁNOVAŤ SKUTOČNÉ PONORY LEN POMOCOU TOHTO PROGRAMU."
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr "Spojenie s databázou zlýhalo '%s'.\n"
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr "Požiadavka na databázu zlyhala '%s'.\n"
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr "Neúspešná požiadavka: get_events.⏎\n"
@@ -551,11 +551,11 @@ msgstr "Neúspešná požiadavka: get_events.⏎\n"
 msgid "Date"
 msgstr "Dátum"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Dátum a čas"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Dátum:"
 
@@ -595,7 +595,7 @@ msgstr "Hĺbka:"
 msgid "Device Id"
 msgstr "Id zariadenia"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Zariadenie alebo bod pripojenia"
 
@@ -624,7 +624,7 @@ msgstr "Ponor #%d: %s %d %04d"
 msgid "Dive Computer Nickname"
 msgstr "Voliteľný názov počítača"
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Informácie"
 
@@ -652,7 +652,7 @@ msgstr "Alarm Času Ponoru"
 msgid "Dive Time Info"
 msgstr "Info: Čas Ponoru"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Počítač - výrobca a produkt"
 
@@ -680,7 +680,7 @@ msgstr "Ponor č."
 msgid "Divelist Font"
 msgstr "Font pre ponory"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Divemaster"
 
@@ -692,7 +692,7 @@ msgstr "Ponory"
 msgid "Dives Locations"
 msgstr "Miesta ponorov"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Nahratie údajov z počítača"
 
@@ -716,7 +716,7 @@ msgstr "Nahrávanie úspešne ukončené!"
 msgid "Duration"
 msgstr "Dĺžka (min)"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Dĺžka (min)"
 
@@ -749,7 +749,7 @@ msgstr "Edituj názov zariadenia"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Zmena voliteľného mena počítača"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Editovať akciu"
 
@@ -805,7 +805,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Zadaj identifikačné údaje užívateľa a použi 'Download'. Po ukončení nahrávania údajov môžeš použiť 'Apply' ak si praješ aplikovať zmeny."
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Výstroj"
 
@@ -923,7 +923,7 @@ msgstr "Súbor"
 msgid "Filter"
 msgstr "Filter"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Vynútiť načítanie všetkých ponorov"
 
@@ -1062,7 +1062,7 @@ msgstr "Zoznam"
 msgid "Liter"
 msgstr "liter"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Miesto"
 
@@ -1123,7 +1123,7 @@ msgstr "Upozornenie: Max. dekompresný čas"
 msgid "Max Depth"
 msgstr "Max. hĺbka"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr "Max. hĺbka (%s):"
@@ -1259,7 +1259,7 @@ msgstr "Žiadne informácie o fľaši"
 msgid "No cylinders listed for this dive."
 msgstr "Pre tento ponor neboli zvolené žiadne fľaše."
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -1430,7 +1430,7 @@ msgstr "Alarm: zostávajúci čas plynu"
 msgid "RGT Warning"
 msgstr "Upozornenie: zostávajúci čas plynu"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Hodnotenie"
 
@@ -1467,7 +1467,7 @@ msgstr "Prečíslovanie"
 msgid "Renumber..."
 msgstr "Prečíslovanie..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Skús znovu"
 
@@ -1646,7 +1646,7 @@ msgstr "Zostaň v %.*f %s na %d:%02d min - runtime %d:%02u na %s\n"
 msgid "Strange percentage reading %s\n"
 msgstr "Zvláštne percenta v %s\n"
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Oblek"
 
@@ -1672,7 +1672,7 @@ msgstr "Zmena plynu na %s\n"
 msgid "Table print"
 msgstr "Tlač tabuľky"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr "Označenia sú zobrazené len ak sú identické pre všetky editované ponory"
 
@@ -1708,7 +1708,7 @@ msgstr "Kombinovaný"
 msgid "Thu"
 msgstr "Št"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Čas"
 
@@ -1979,6 +1979,10 @@ msgstr "cuft"
 msgid "data"
 msgstr "data"
 
+#: statistics.c:23
+msgid "deco"
+msgstr ""
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "dekompresná zastávka"
@@ -2044,7 +2048,7 @@ msgstr "pre vybrané ponory"
 msgid "freshwater"
 msgstr "sladká voda"
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2100,7 +2104,7 @@ msgstr "US libra"
 msgid "long john"
 msgstr "long john"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "m"
 

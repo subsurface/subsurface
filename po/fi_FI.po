@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 06:39-0400\n"
-"PO-Revision-Date: 2013-05-14 11:20+0000\n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-05-15 01:56+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/subsurface/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr " > Kuukausi"
 msgid " Download"
 msgstr "Lataa"
 
-#: download-dialog.c:374
+#: download-dialog.c:385
 msgid " Please select dive computer and device. "
 msgstr "Valitse sukellustietokone ja laitenimi."
 
@@ -364,7 +364,7 @@ msgstr "Ilman lämpötila"
 msgid "Air Temp in %s"
 msgstr "Ilman lämpötila (%s)"
 
-#: download-dialog.c:390
+#: download-dialog.c:403
 msgid "Always prefer downloaded dive"
 msgstr "Suosi aina ladattua sukellusta"
 
@@ -408,7 +408,7 @@ msgstr "Keskim."
 msgid "Avg Depth"
 msgstr "Keskisyvyys"
 
-#: info-gtk.c:923
+#: info-gtk.c:932
 #, c-format
 msgid "Avg Depth (%s):"
 msgstr "Keskisyvyys (%s):"
@@ -434,7 +434,7 @@ msgstr "Vaihto avoimeen ilman kiertoon"
 msgid "Bar"
 msgstr "bar"
 
-#: info-gtk.c:576 info-gtk.c:996 print.c:503
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
 msgid "Buddy"
 msgstr "Sukelluspari"
 
@@ -447,7 +447,7 @@ msgstr "CCR-asetuspiste"
 msgid "Can't find gas %d/%d"
 msgstr "Seosta %d/%d ei löydy"
 
-#: parse-xml.c:1942
+#: parse-xml.c:1944
 #, c-format
 msgid "Can't open stylesheet (%s)/%s"
 msgstr "Konversiotiedoston avaus epäonnistui (%s)/%s"
@@ -533,17 +533,17 @@ msgid ""
 "BASED ON THE RESULTS GIVEN HERE."
 msgstr "VAROITUS: BUHLMANNIN ALGORITMIN TOTEUTUS JA SIIHEN PERUSTUVA SUKELLUSTEN SUUNNITTELUOMINAISUUS OVAT UUSIA, JOTEN NIITÄ ON TESTATTU VAIN RAJALLISESTI. SUKELLUKSIA SUUNNITELTAESSA EI TULE LUOTTAA VAIN NÄIHIN TULOKSIIN."
 
-#: parse-xml.c:1827
+#: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
 msgstr "Tietokantayhteys epäonnistui '%s'.\n"
 
-#: parse-xml.c:1834
+#: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
 msgstr "Tietokantakysely epäonnistui '%s'.\n"
 
-#: parse-xml.c:1792
+#: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
 msgstr "Tietokantakysely 'get_events' (nouda tapahtumat) epäonnistui.\n"
@@ -552,11 +552,11 @@ msgstr "Tietokantakysely 'get_events' (nouda tapahtumat) epäonnistui.\n"
 msgid "Date"
 msgstr "Ajankohta"
 
-#: info-gtk.c:815
+#: info-gtk.c:824
 msgid "Date and Time"
 msgstr "Päivä ja aika"
 
-#: info-gtk.c:825
+#: info-gtk.c:834
 msgid "Date:"
 msgstr "Päivä:"
 
@@ -596,7 +596,7 @@ msgstr "Syvyys:"
 msgid "Device Id"
 msgstr "Laitenimi"
 
-#: download-dialog.c:330
+#: download-dialog.c:341
 msgid "Device or mount point"
 msgstr "Laite- tai hakemistopolku"
 
@@ -625,7 +625,7 @@ msgstr "Sukellus %1$d: %3$d. %2$skuuta %4$04d"
 msgid "Dive Computer Nickname"
 msgstr "Sukellustietokoneen lempinimi"
 
-#: gtk-gui.c:1861 info-gtk.c:703 statistics-gtk.c:581
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
 msgid "Dive Info"
 msgstr "Tiedot"
 
@@ -653,7 +653,7 @@ msgstr "Hälytys: sukellusaika"
 msgid "Dive Time Info"
 msgstr "Tiedotus: sukellusaika"
 
-#: download-dialog.c:288
+#: download-dialog.c:300
 msgid "Dive computer vendor and product"
 msgstr "Sukellustietokoneen valmistaja ja laite"
 
@@ -681,7 +681,7 @@ msgstr "Sukellus"
 msgid "Divelist Font"
 msgstr "Sukelluslistan kirjasin"
 
-#: info-gtk.c:995
+#: info-gtk.c:1004
 msgid "Divemaster"
 msgstr "Sukellusvanhin"
 
@@ -693,7 +693,7 @@ msgstr "Sukelluskerrat"
 msgid "Dives Locations"
 msgstr "Sukelluskohteet"
 
-#: download-dialog.c:365
+#: download-dialog.c:376
 msgid "Download From Dive Computer"
 msgstr "Hae sukellustietokoneelta"
 
@@ -717,7 +717,7 @@ msgstr "Lataus onnistui!"
 msgid "Duration"
 msgstr "Kesto"
 
-#: info-gtk.c:902
+#: info-gtk.c:911
 msgid "Duration (min)"
 msgstr "Kesto (min)"
 
@@ -750,7 +750,7 @@ msgstr "Muokkaa laitenimeä"
 msgid "Edit Dive Computer Nicknames"
 msgstr "Muokkaa sukellustietokoneiden lempinimiä"
 
-#: info-gtk.c:657
+#: info-gtk.c:659
 msgid "Edit Trip Info"
 msgstr "Muuta retken tietoja"
 
@@ -806,7 +806,7 @@ msgid ""
 "you can press 'Apply' if you wish to apply the changes."
 msgstr "Syötä käyttäjätunnus ja paina \"Lataa\"-painiketta. Kun tiedot on ladattu, voit painaa 'Hyväksy', jos haluat ottaa muutokset käyttöön."
 
-#: gtk-gui.c:1857 info-gtk.c:642
+#: gtk-gui.c:1857 info-gtk.c:644
 msgid "Equipment"
 msgstr "Varusteet"
 
@@ -924,7 +924,7 @@ msgstr "Tiedosto"
 msgid "Filter"
 msgstr "Suodattimet"
 
-#: download-dialog.c:384
+#: download-dialog.c:397
 msgid "Force download of all dives"
 msgstr "Lataa kaikki sukellukset"
 
@@ -1063,7 +1063,7 @@ msgstr "Sukelluslista"
 msgid "Liter"
 msgstr "litra"
 
-#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:990 print.c:503
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
 msgid "Location"
 msgstr "Kohde"
 
@@ -1124,7 +1124,7 @@ msgstr "Varoitus: etappipysähdysaika"
 msgid "Max Depth"
 msgstr "Suurin syvyys"
 
-#: info-gtk.c:912
+#: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
 msgstr "Suurin syvyys (%s):"
@@ -1260,7 +1260,7 @@ msgstr "Ei tietoja säiliöistä"
 msgid "No cylinders listed for this dive."
 msgstr "Sukellukselle ei ole määritetty säiliötä"
 
-#: info-gtk.c:379 info-gtk.c:633 info-gtk.c:1004
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
 msgstr "Muistiinpanot"
 
@@ -1431,7 +1431,7 @@ msgstr "Hälytys: kaasumäärä"
 msgid "RGT Warning"
 msgstr "Varoitus: kaasumäärä"
 
-#: info-gtk.c:581 info-gtk.c:1001
+#: info-gtk.c:581 info-gtk.c:1010
 msgid "Rating"
 msgstr "Yleisarvio"
 
@@ -1468,7 +1468,7 @@ msgstr "Uudellennumeroi"
 msgid "Renumber..."
 msgstr "Uudellennumeroi..."
 
-#: download-dialog.c:141
+#: download-dialog.c:153
 msgid "Retry"
 msgstr "Yritä uudestaan"
 
@@ -1647,7 +1647,7 @@ msgstr "Pysy %.*f %s:n syvyydessä %d:%02d min - aika %d:%02u kaasulla %s\n"
 msgid "Strange percentage reading %s\n"
 msgstr "Outo prosenttiosuus: %s\n"
 
-#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1002
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
 msgid "Suit"
 msgstr "Puku"
 
@@ -1673,7 +1673,7 @@ msgstr "Vaihda kaasu seuraavaan: %s\n"
 msgid "Table print"
 msgstr "Taulukkotuloste"
 
-#: info-gtk.c:626
+#: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
 msgstr "Sukellustyypit näytetään vain jos ne ovat identtiset kaikissa muokattavissa sukelluksissa"
 
@@ -1709,7 +1709,7 @@ msgstr "Kaikki"
 msgid "Thu"
 msgstr "to"
 
-#: info-gtk.c:832
+#: info-gtk.c:841
 msgid "Time"
 msgstr "Kello"
 
@@ -1979,6 +1979,10 @@ msgstr "ft³"
 msgid "data"
 msgstr "tieto"
 
+#: statistics.c:23
+msgid "deco"
+msgstr "deko"
+
 #: libdivecomputer.c:149
 msgid "deco stop"
 msgstr "deko-pysähdys"
@@ -2044,7 +2048,7 @@ msgstr "valitut sukellukset"
 msgid "freshwater"
 msgstr "makea vesi"
 
-#: dive.c:119 divelist-gtk.c:815 info-gtk.c:912 info-gtk.c:923 planner.c:897
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
 msgid "ft"
 msgstr "ft"
 
@@ -2100,7 +2104,7 @@ msgstr "pauna"
 msgid "long john"
 msgstr "haalari"
 
-#: dive.c:114 info-gtk.c:912 info-gtk.c:923
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
 msgid "m"
 msgstr "m"
 
