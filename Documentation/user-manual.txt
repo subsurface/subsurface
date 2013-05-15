@@ -1086,9 +1086,8 @@ In order to plan a dive some basic information needs to be entered:
  - planned depths
  - planned segment times
 
-New in version 3.1 (and missing on the screen shot) is an option to
-plan the last deco stop at 6m/20ft instead of the otherwise used final
-stop at 3m/10ft.
+Additionally there is an option to plan the last deco stop at 6m/20ft
+instead of the otherwise used final stop at 3m/10ft.
 
 There is also other information available for those who
 are familiar with dive planning or use closed circuit rebreathers.
