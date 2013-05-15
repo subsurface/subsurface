@@ -47,7 +47,8 @@
 #define DTAG_INSTRUCTOR		(1 << 16)
 #define DTAG_PHOTO		(1 << 17)
 #define DTAG_VIDEO		(1 << 18)
-#define DTAG_NR			19
+#define DTAG_DECO		(1 << 19)
+#define DTAG_NR			20
 /* defined in statistics.c */
 extern char *dtag_names[DTAG_NR];
 extern int dtag_shown[DTAG_NR];
