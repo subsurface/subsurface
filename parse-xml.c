@@ -1690,8 +1690,6 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	float *profileBlob;
 	unsigned char *tempBlob;
 	int *pressureBlob;
-	time_t when;
-	struct tm *tm;
 	char *err = NULL;
 	char get_events_template[] = "select * from Mark where DiveId = %d";
 	char get_events[64];
@@ -1699,15 +1697,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	dive_start();
 	cur_dive->number = atoi(data[0]);
 
-	when = (time_t)(atol(data[1]));
-	tm = localtime(&when);
-
-	/* Bailing out if localtime returns NULL */
-	if (!tm)
-		return -1;
-
-	/* Timezones are not taken into account */
-	cur_dive->when = mktime(tm);
+	cur_dive->when = (time_t)(atol(data[1]));
 	if (data[2])
 		utf8_string(data[2], &cur_dive->notes);
 
@@ -1821,7 +1811,7 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 
 	/* StartTime is converted from Suunto's nano seconds to standard
 	 * time. We also need epoch, not seconds since year 1. */
-	char get_dives[] = "select D.DiveId,StartTime/10000000-62135604000,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_open(url,&handle);
 
