@@ -366,7 +366,7 @@ void download_dialog(GtkWidget *w, gpointer data)
 {
 	int result;
 	char *devname, *ns, *ne;
-	GtkWidget *dialog, *button, *hbox, *vbox, *label, *info = NULL;
+	GtkWidget *dialog, *button, *okbutton, *hbox, *vbox, *label, *info = NULL;
 	GtkComboBox *computer, *device;
 	GtkTreeIter iter;
 	device_data_t devicedata = {
@@ -405,12 +405,13 @@ void download_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 6);
 	g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(prefer_dl_toggle), NULL);
 
-	button = gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+	okbutton = gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	if (!gtk_combo_box_get_active_iter(computer, &iter))
-		gtk_widget_set_sensitive(button, FALSE);
+		gtk_widget_set_sensitive(okbutton, FALSE);
 
 repeat:
 	gtk_widget_show_all(dialog);
+	gtk_widget_set_sensitive(okbutton, TRUE);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	switch (result) {
 		dc_descriptor_t *descriptor;
@@ -426,6 +427,8 @@ repeat:
 
 		if (!gtk_combo_box_get_active_iter(computer, &iter))
 			break;
+
+		gtk_widget_set_sensitive(okbutton, FALSE);
 
 		model = gtk_combo_box_get_model(computer);
 		gtk_tree_model_get(model, &iter,
