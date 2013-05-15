@@ -925,8 +925,13 @@ static int dive_time_widget(struct dive *dive, edit_control_t editing)
 			depthinterval = 0.1;
 		}
 		depth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
-		if (editing != EDIT_NEW_DIVE)
-			gtk_spin_button_set_value(GTK_SPIN_BUTTON(depth), dive->dc.maxdepth.mm / 1000.0);
+		if (editing != EDIT_NEW_DIVE) {
+			if (prefs.units.length == FEET) {
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(depth), mm_to_feet(dive->dc.maxdepth.mm));
+			} else {
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(depth), dive->dc.maxdepth.mm / 1000.0);
+			}
+		}
 		gtk_box_pack_end(GTK_BOX(box), depth, FALSE, FALSE, 0);
 
 		box = frame_box(hbox, _("Avg Depth (%s):"), prefs.units.length == FEET ? _("ft") : _("m"));
@@ -936,8 +941,13 @@ static int dive_time_widget(struct dive *dive, edit_control_t editing)
 			depthinterval = 0.1;
 		}
 		avgdepth = gtk_spin_button_new_with_range (0.0, 1000.0, depthinterval);
-		if (editing != EDIT_NEW_DIVE)
-			gtk_spin_button_set_value(GTK_SPIN_BUTTON(avgdepth), dive->dc.meandepth.mm / 1000.0);
+		if (editing != EDIT_NEW_DIVE) {
+			if (prefs.units.length == FEET) {
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(avgdepth), mm_to_feet(dive->dc.meandepth.mm));
+			} else {
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(avgdepth), dive->dc.meandepth.mm / 1000.0);
+			}
+		}
 		gtk_box_pack_end(GTK_BOX(box), avgdepth, FALSE, FALSE, 0);
 	}
 	/* All done, show it and wait for editing */
