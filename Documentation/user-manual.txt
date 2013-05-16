@@ -199,6 +199,22 @@ Because of the inaccuracy of depth gauge of diving computers depth
 depth is kept in the logfile. Users of imperial system aren't affected
 by this.
 
+An innovative feature in Subsurface is the ability to group dives by
+"trips". What this means is that multiple dives can be categorized
+together under a common header. Typically this is used by divers who
+travel for a limited time to a dive destiation - the location in the
+trip header can then be used for the destination information
+("Phillippines, Puerto Galera"), while the location in the individual
+dive can describe the actual dive site ("Hole in the wall").
+
+Subsurface usually does a very good job detecting and grouping dive
+trips together. To use this feature simply enable the "Autogroup"
+option in the "Log" menu entry. Alternatively, you can select multiple
+dives in the dive list and use the context menu (right click on one of
+the selected dives) to create a trip. The context menu contains
+several additional options to allow manipulation of trips - these
+should be self-explanatory.
+
 [[S_ImportNewDives]]
 Import New Dives from your Dive Computer
 ---------------------------------------
