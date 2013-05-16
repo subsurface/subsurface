@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 21:53-0400\n"
-"PO-Revision-Date: 2013-05-15 01:55+0000\n"
+"PO-Revision-Date: 2013-05-15 22:06+0000\n"
 "Last-Translator: dirkhh <dirk@hohndel.org>\n"
 "Language-Team: German (Switzerland) (http://www.transifex.com/projects/p/subsurface/language/de_CH/)\n"
 "MIME-Version: 1.0\n"
@@ -238,12 +238,12 @@ msgstr "%s\npO%s:%.2fbar"
 #: gtk-gui.c:2101
 #, c-format
 msgid "%s event at %d:%02u"
-msgstr ""
+msgstr "%s Ereignis (%d:%02u)"
 
 #: divelist-gtk.c:1370
 #, c-format
 msgid "%s: Response from divelogs.de"
-msgstr ""
+msgstr "%s: Antwort von divelogs.de"
 
 #: dive.c:921
 #, c-format
@@ -252,11 +252,11 @@ msgstr "(%s) oder (%s)"
 
 #: info-gtk.c:489
 msgid "(click to edit date/time)"
-msgstr ""
+msgstr "(um Datum/Zeit zu bearbeiten hier klicken)"
 
 #: info-gtk.c:491
 msgid "(click to edit date/time/depth)"
-msgstr ""
+msgstr "(um Datum/Zeit/Tiefe zu bearbeiten hier klicken)"
 
 #: statistics.c:265
 #, c-format
@@ -319,7 +319,7 @@ msgstr "Info zu Subsurface"
 
 #: gtk-gui.c:2116
 msgid "Add"
-msgstr ""
+msgstr "Setze"
 
 #: gtk-gui.c:1618
 msgid "Add Dive..."
@@ -327,7 +327,7 @@ msgstr "Tauchgang hinzufügen..."
 
 #: gtk-gui.c:2170
 msgid "Add bookmark event here"
-msgstr ""
+msgstr "Markierung hier setzen"
 
 #: divelist-gtk.c:1662
 msgid "Add dive"
@@ -335,12 +335,12 @@ msgstr "Tauchgang hinzufügen"
 
 #: gtk-gui.c:2165
 msgid "Add gas change event here"
-msgstr ""
+msgstr "Gaswechsel hier setzen"
 
 #: equipment.c:633
 #, c-format
 msgid "Add gaschange event at %d:%02u"
-msgstr ""
+msgstr "Gaswechsel setzen bei %d:%02u"
 
 #: divelist-gtk.c:1781
 msgid "Add to trip above"
@@ -381,7 +381,7 @@ msgstr "Automatisch gruppieren"
 
 #: equipment.c:642
 msgid "Available gases"
-msgstr ""
+msgstr "Verfügbare Gase"
 
 #: statistics-gtk.c:100
 msgctxt "Depth"
@@ -461,7 +461,7 @@ msgstr "Abgebrochen..."
 
 #: equipment.c:621
 msgid "Cannot add gas change"
-msgstr ""
+msgstr "Kann keinen Gaswechsel setzen"
 
 #: webservice.c:29
 msgid "Cannot parse response!"
@@ -535,17 +535,17 @@ msgstr "HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTATION DES BÜH
 #: parse-xml.c:1829
 #, c-format
 msgid "Database connection failed '%s'.\n"
-msgstr ""
+msgstr "Datenbank Verbindung fehlgeschlagen '%s'.\n"
 
 #: parse-xml.c:1836
 #, c-format
 msgid "Database query failed '%s'.\n"
-msgstr ""
+msgstr "Datenbank Anfrage fehlgeschlagen '%s'.\n"
 
 #: parse-xml.c:1794
 #, c-format
 msgid "Database query get_events failed.\n"
-msgstr ""
+msgstr "Datenbank Anfrage der Events fehlgeschlagen.\n"
 
 #: divelist-gtk.c:813 print.c:502 statistics-gtk.c:590
 msgid "Date"
@@ -601,7 +601,7 @@ msgstr "Gerät oder Einhängepunkt"
 
 #: gtk-gui.c:847
 msgid "Display invalid dives"
-msgstr ""
+msgstr "Ungültige Tauchgänge anzeigen"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #. <trailing text>
@@ -638,7 +638,7 @@ msgstr "Tauchplan - DIES IST NUR EINE SUMULATION; NICHT ZUM TAUCHEN VERWENDEN"
 
 #: info-gtk.c:597 statistics-gtk.c:623
 msgid "Dive Tags"
-msgstr ""
+msgstr "Tauchgang Tags"
 
 #: statistics-gtk.c:591
 msgid "Dive Time"
@@ -789,7 +789,7 @@ msgstr "Ereignisse Ein-/Ausblenden"
 
 #: gtk-gui.c:1136
 msgid "Enable / Disable Tags"
-msgstr ""
+msgstr "Tags Ein- / Ausschalten"
 
 #: equipment.c:1013 equipment.c:1520
 msgid "End"
@@ -811,7 +811,7 @@ msgstr "Ausrüstung"
 
 #: divelist-gtk.c:1370
 msgid "Error"
-msgstr ""
+msgstr "Fehler"
 
 #: libdivecomputer.c:471
 msgid "Error obtaining water salinity"
@@ -868,15 +868,15 @@ msgstr "Alle ausfalten"
 
 #: divelist-gtk.c:1524
 msgid "Export As UDDF File"
-msgstr ""
+msgstr "Als UDDF Datei exportieren"
 
 #: gtk-gui.c:1614
 msgid "Export UDDF..."
-msgstr ""
+msgstr "Exportiere UDDF ..."
 
 #: divelist-gtk.c:1649
 msgid "Export dive(s) to UDDF"
-msgstr ""
+msgstr "Exportiere Tauchgang/-gänge als UDDF"
 
 #: gtk-gui.c:791
 msgid "Fahrenheit"
@@ -989,7 +989,7 @@ msgstr "inaktiv"
 
 #: gtk-gui.c:1613
 msgid "Import File(s)..."
-msgstr ""
+msgstr "Importiere Datei(en)..."
 
 #: divelist-gtk.c:1370 gtk-gui.c:1630
 msgid "Info"
@@ -1040,15 +1040,15 @@ msgstr "Jun"
 
 #: planner-gtk.c:398
 msgid "Last stop at 20 Feet"
-msgstr ""
+msgstr "Letzter Stopp bei 20 Fuss"
 
 #: planner-gtk.c:396
 msgid "Last stop at 6 Meters"
-msgstr ""
+msgstr "Letzter Stopp bei 6 Meter"
 
 #: print.c:985
 msgid "Layout Options"
-msgstr ""
+msgstr "Layout Einstellungen"
 
 #: gtk-gui.c:1279
 msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
@@ -1097,7 +1097,7 @@ msgstr "Mär"
 
 #: divelist-gtk.c:1718 divelist-gtk.c:1720
 msgid "Mark invalid"
-msgstr ""
+msgstr "Als ungültig markieren"
 
 #: gps.c:53
 msgid "Mark location here"
@@ -1105,7 +1105,7 @@ msgstr "Hier markieren"
 
 #: divelist-gtk.c:1716
 msgid "Mark valid"
-msgstr ""
+msgstr "Als gültig markieren"
 
 #: uemis.c:230
 msgid "Marker"
@@ -1257,7 +1257,7 @@ msgstr "Keine Flaschen Informationen"
 
 #: equipment.c:627
 msgid "No cylinders listed for this dive."
-msgstr ""
+msgstr "Keine Flaschen für diesen Tauchgang"
 
 #: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
 msgid "Notes"
@@ -1266,11 +1266,11 @@ msgstr "Notizen"
 #: print.c:1025
 #, c-format
 msgid "Notes height (%d%% - %d%%)"
-msgstr ""
+msgstr "Höhe der Notizen (%d%% - %d%%)"
 
 #: print.c:1003
 msgid "Notes on top"
-msgstr ""
+msgstr "Notizen oben"
 
 #: main.c:74
 msgid "Nov"
@@ -1299,7 +1299,7 @@ msgstr "Ausgewählten Eintrag löschen?"
 
 #: gtk-gui.c:1127
 msgid "Only display dives with these tags:"
-msgstr ""
+msgstr "Zeige nur Tauchgänge mit diesen Tags:"
 
 #: gtk-gui.c:291
 msgid "Open File"
@@ -1316,7 +1316,7 @@ msgstr "Reihenfolge"
 #: print.c:1024
 #, c-format
 msgid "Other data height (%d%% - %d%%)"
-msgstr ""
+msgstr "Höhe der anderen Daten (%d%% - %d%%)"
 
 #: print.c:173
 #, c-format
@@ -1359,7 +1359,7 @@ msgstr "Planer"
 msgid ""
 "Please enter your userid and password for divelogs.de. The selected dives "
 "will be added to your account"
-msgstr ""
+msgstr "Bitte Benutzerkennung und Passwort für divelogs.de eingeben. Die ausgewählten Tauchgänge werden zum Benutzerkonto hinzugefügt."
 
 #: gtk-gui.c:752
 msgid "Preferences"
@@ -1412,11 +1412,11 @@ msgstr "Profil Einstellungen"
 #: print.c:1023
 #, c-format
 msgid "Profile height (%d%% - %d%%)"
-msgstr ""
+msgstr "Höhe des Profils (%d%% - %d%%)"
 
 #: print.c:1000
 msgid "Profile on top"
-msgstr ""
+msgstr "Profil oben"
 
 #: gtk-gui.c:1625
 msgid "Quit"
@@ -1531,7 +1531,7 @@ msgstr "Ereignisse auswählen..."
 
 #: gtk-gui.c:1624
 msgid "Select Tags..."
-msgstr ""
+msgstr "Tags auswählen..."
 
 #: main.c:74
 msgid "Sep"
@@ -1601,7 +1601,7 @@ msgstr "Grösse"
 #: print.c:1012
 #, c-format
 msgid "Sizing heights (%% of layout)"
-msgstr ""
+msgstr "Höhe (%% des Layouts)"
 
 #: uemis.c:200
 msgid "Speed Alarm"
@@ -1674,7 +1674,7 @@ msgstr "Tabellendruck"
 
 #: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
-msgstr ""
+msgstr "Tauchgang-Tags werden nur angezeigt, wenn sie in allen editierten Tauchgängen identisch waren"
 
 #: uemis.c:220
 msgid "Tank Change Suggested"
@@ -1803,7 +1803,7 @@ msgstr "Einheiten"
 
 #: divelist-gtk.c:1650
 msgid "Upload dive(s) to divelogs.de"
-msgstr ""
+msgstr "Tauchgang/-gänge zu divelogs.de hochladen"
 
 #: webservice.c:318
 msgid "Upload to divelogs.de"
@@ -1920,7 +1920,7 @@ msgstr "verbleibende Atemzeit"
 
 #: statistics.c:21
 msgid "altitude"
-msgstr ""
+msgstr "Berg"
 
 #: equipment.c:892
 msgid "ankle"
@@ -2073,7 +2073,7 @@ msgstr "integriert"
 
 #: statistics.c:20
 msgid "invalid"
-msgstr ""
+msgstr "ungültig"
 
 #: libdivecomputer.c:171
 msgid "invalid event number"
@@ -2225,7 +2225,7 @@ msgstr "Oberfläche"
 
 #: statistics.c:22
 msgid "teaching"
-msgstr ""
+msgstr "Unterricht"
 
 #: libdivecomputer.c:154
 msgid "tissue level warning"
