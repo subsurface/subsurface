@@ -599,6 +599,41 @@ Press 'OK'.
 Now your dive information for this dive is complete. You can now press
 'OK' in the Dive Info screen and view the results.
 
+[[S_EditEvents]]
+Edit Events and Gas Changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Depending on your dive computer and the specific dive that you are
+looking at, a number of events may be indicated by small yellow
+triangles within the dive profile. Hovering the mouse pointer over
+such an event will show a short explanation of the event in the
+tooltip window. On some dive computers few or no events are shows,
+other dive computers create these events rather agressively. At times
+you may want to remove some of these events, either because they were
+created in error (an accidental 'marker' or 'bookmark' set during a
+dive) or because the information provided is not useful to you.
+
+You can either do this by filtering out these events (as explained in
+the <<S_FilterMenu, Filter Menu section>>), or by outright deleting
+these events from the XML file. In order to do that, point at the
+event-triangle with your mouse (it is actually sufficient to have the
+mouse point at the point in time when the event happened) and
+right-click. A context menu will allow you to remove the event from
+the dive.
+
+In the same way (by picking the correct time with the mouse pointer),
+certain events can be added to a dive profile from the right-click
+context menu. At this point only 'bookmark' events and 'gas change'
+events can be added. The latter ones are especially useful when diving
+with multiple tanks but with a dive computer that only supports one
+gas, or when forgetting to switch the dive computer to a different
+tank during the dive.
+
+Please note that the gas that you want to switch to must have already
+been added to the Equipment list before it can be used here.  See the
+<<S_EditEquipmentInfo, previous section on Editing Equipment Info>>
+for reference.
+
 [[S_ViewInfoStats]]
 View Dive Info & Stats
 ----------------------
@@ -1284,6 +1319,7 @@ The view menu allows you to choose between the following representations:
  - Prev DC		Switch to the previous dive computer
  - Next DC		Switch to the next dive computer
 
+[[S_FilterMenu]]
 The Filter Menu
 ~~~~~~~~~~~~~~~
 
@@ -1300,9 +1336,10 @@ allows you to select which events should be globally disabled (they
 will still be stored in the XML file).
 
 Subsurface also allows you to delete specific events from a dive
-profile. This can be done by right-clicking on the specific event that
-you want to remove in the dive profile window. Events that are deleted
-like this will actually be removed from the XML file as well.
+profile (see <<S_EditEvents, section Edit Events and Gas Changes>>).
+As a reminder, his can be done by right-clicking on the specific event
+that you want to remove in the dive profile window. Events that are
+deleted like this will actually be removed from the XML file as well.
 
 The second entry in the filter menu allows you to display only a
 subset of your dives in the dive list, based on specific tags that are
