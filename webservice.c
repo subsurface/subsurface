@@ -344,6 +344,7 @@ static gboolean divelogde_dialog(const char **user, const char **pass)
 	gtk_container_add(GTK_CONTAINER(frame_pass), pwd);
 	gtk_entry_set_max_length(GTK_ENTRY(pwd), 40);
 	gtk_entry_set_text(GTK_ENTRY(pwd), *pass ?: "");
+	gtk_entry_set_visibility(GTK_ENTRY(pwd), FALSE);
 	gtk_entry_set_activates_default(GTK_ENTRY(pwd), TRUE);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 
