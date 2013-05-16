@@ -476,7 +476,7 @@ An example:
 
 On Sunday Oct 23, 2011 you made a dive.
 In the log line of this dive, you see the following information:
-[width="70%",cols="<20%,40%,40%",options="header"]
+[width="95%",cols="<20%,40%,40%",options="header"]
 |===============================================================================
 | Header   | Value                   | Description of field
 | #	   | 12			     | Dive number
@@ -484,7 +484,7 @@ In the log line of this dive, you see the following information:
 | *	   |			     | Your rating (none at this time)
 | m	   | 12.8		     | Your maximum depth in meters
 | min	   | 31:20		     | Your dive-time in minutes and seconds
-| Deg. C   | 13.0		     | Lowest water temperature during your dive
+| Deg. C   | 13.0		     | Lowest water temperature during your dive (or with some dive computers the temperature at maximum depth)
 | kg       |                         | Weight carried (none at this time)
 | Suit     |                         | Exposure protection suit worn (none at this time)
 | Cyl	   |			     | Your used cylinder (none at this time)
@@ -509,7 +509,12 @@ buddy).
 
 As mentioned, the different types of information shown in this list
 may differ depending on the settings. More about that in
-<<S_SettingUpPreferences,Setting up Preferences>>.
+<<S_SettingUpPreferences,Setting up Preferences>>. Also, the fields
+that are filled or empty differ from dive computer to dive
+computer. Basic dive computers are less likely to provide a lot of
+information, whereas some more advanced once will provide all of the
+information listed here (assuming it was correctly entered on the dive
+computer).
 
 [[S_EditDiveInfo]]
 Edit the Dive Info
