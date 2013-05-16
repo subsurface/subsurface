@@ -206,16 +206,21 @@ void ProfileGraphicsView::showEvent(QShowEvent* event)
 		plot(dive);
 }
 
+void ProfileGraphicsView::clear()
+{
+	scene()->clear();
+	resetTransform();
+	zoomLevel = 0;
+	toolTip = 0;
+}
+
 void ProfileGraphicsView::plot(struct dive *d)
 {
+	if (dive == d)
+		return;
 
-	scene()->clear();
-	if (dive != d){
-		resetTransform();
-		zoomLevel = 0;
-		dive = d;
-		toolTip = 0;
-	}
+	clear();
+	dive = d;
 
 	if(!isVisible() || !dive){
 		return;

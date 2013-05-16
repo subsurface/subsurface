@@ -76,8 +76,6 @@ protected:
 
 private:
 	Ui::MainWindow *ui;
-	DiveTripModel *model;
-	QSortFilterProxyModel *sortModel;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 

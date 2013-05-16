@@ -29,6 +29,8 @@ public:
 	void keyPressEvent(QKeyEvent* event);
 	void keyReleaseEvent(QKeyEvent*);
 	void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
+	void reload();
+
 Q_SIGNALS:
 	void currentDiveChanged(int divenr);
 private:

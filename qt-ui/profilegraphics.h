@@ -64,6 +64,7 @@ public:
 	ProfileGraphicsView(QWidget* parent = 0);
 	void plot(struct dive *d);
 	bool eventFilter(QObject* obj, QEvent* event);
+	void clear();
 
 protected:
 	void resizeEvent(QResizeEvent *event);

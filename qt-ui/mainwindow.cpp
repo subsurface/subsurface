@@ -11,7 +11,6 @@
 #include <QMessageBox>
 #include <QtDebug>
 #include <QDateTime>
-#include <QSortFilterProxyModel>
 #include <QSettings>
 #include <QCloseEvent>
 #include <QApplication>
@@ -27,24 +26,14 @@
 #include "modeldelegates.h"
 #include "models.h"
 
-MainWindow::MainWindow() : ui(new Ui::MainWindow()),
-			   model(new DiveTripModel(this)),
-			   sortModel(new QSortFilterProxyModel())
+MainWindow::MainWindow() : ui(new Ui::MainWindow())
 {
 	ui->setupUi(this);
 	readSettings();
-	sortModel->setSourceModel(model);
-	ui->ListWidget->setModel(sortModel);
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
-
-	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
-	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
-		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
-	else
-		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
-
+	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
 }
 
@@ -89,16 +78,7 @@ void MainWindow::on_actionOpen_triggered()
 
 	ui->InfoWidget->reload();
 
-	model->deleteLater();
-	model = new DiveTripModel(this);
-	sortModel->setSourceModel(model);
-	ui->ListWidget->sortByColumn(0, Qt::DescendingOrder);
-
-	QModelIndex firstDiveOrTrip = sortModel->index(0,0);
-	if (sortModel->index(0,0, firstDiveOrTrip).isValid())
-		ui->ListWidget->setCurrentIndex(sortModel->index(0,0, firstDiveOrTrip));
-	else
-		ui->ListWidget->setCurrentIndex(firstDiveOrTrip);
+	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
 }
 
@@ -120,8 +100,6 @@ void MainWindow::on_actionClose_triggered()
 	while (dive_table.nr)
 		delete_single_dive(0);
 
-	mark_divelist_changed(FALSE);
-
 	/* clear the selection and the statistics */
 	selected_dive = -1;
 
@@ -131,6 +109,8 @@ void MainWindow::on_actionClose_triggered()
 	ui->InfoWidget->clearStats();
 	ui->InfoWidget->clearInfo();
 	ui->InfoWidget->clearEquipment();
+	ui->ProfileWidget->clear();
+	ui->ListWidget->reload();
 
 	clear_events();
 #if USE_GTK_UI
@@ -349,7 +329,8 @@ void MainWindow::readSettings()
 			ui->ListWidget->resizeColumnToContents(i);
 	}
 	ui->ListWidget->collapseAll();
-	ui->ListWidget->scrollTo(sortModel->index(0,0), QAbstractItemView::PositionAtCenter);
+	ui->ListWidget->scrollTo(ui->ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
+
 	settings.endGroup();
 	settings.beginGroup("Units");
 	GET_UNIT(v, "feet", length, units::METERS, units::FEET);

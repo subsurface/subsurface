@@ -11,12 +11,31 @@
 #include <QHeaderView>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QSortFilterProxyModel>
 
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false)
 {
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
+	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
+	setModel(model);
+}
+
+void DiveListView::reload()
+{
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
+	QAbstractItemModel *oldModel = m->sourceModel();
+	oldModel->deleteLater();
+	m->setSourceModel(new DiveTripModel(this));
+	sortByColumn(0, Qt::DescendingOrder);
+	QModelIndex firstDiveOrTrip = m->index(0,0);
+	if (firstDiveOrTrip.isValid()){
+		if (m->index(0,0, firstDiveOrTrip).isValid())
+			setCurrentIndex(m->index(0,0, firstDiveOrTrip));
+		else
+			setCurrentIndex(firstDiveOrTrip);
+	}
 }
 
 void DiveListView::setModel(QAbstractItemModel* model)
