@@ -123,7 +123,7 @@ void MainWindow::on_actionClose_triggered()
 	mark_divelist_changed(FALSE);
 
 	/* clear the selection and the statistics */
-	selected_dive = 0;
+	selected_dive = -1;
 
 	//WARNING: Port this to Qt.
 	//process_selected_dives();

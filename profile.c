@@ -15,7 +15,7 @@
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 
-int selected_dive = 0;
+int selected_dive = -1;
 char zoomed_plot = 0;
 char dc_number = 0;
 
