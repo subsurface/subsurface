@@ -26,7 +26,8 @@ void DiveListView::reload()
 {
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QAbstractItemModel *oldModel = m->sourceModel();
-	oldModel->deleteLater();
+	if (oldModel)
+		oldModel->deleteLater();
 	m->setSourceModel(new DiveTripModel(this));
 	sortByColumn(0, Qt::DescendingOrder);
 	QModelIndex firstDiveOrTrip = m->index(0,0);
