@@ -906,6 +906,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_entry_set_max_length(GTK_ENTRY(entry_po2), 4);
 	snprintf(threshold_text, sizeof(threshold_text), "%.1f", prefs.pp_graphs.po2_threshold);
 	gtk_entry_set_text(GTK_ENTRY(entry_po2), threshold_text);
+	gtk_entry_set_activates_default(GTK_ENTRY(entry_po2), TRUE);
 	gtk_widget_set_sensitive(entry_po2, prefs.pp_graphs.po2);
 	gtk_container_add(GTK_CONTAINER(frame), entry_po2);
 
@@ -925,6 +926,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_entry_set_max_length(GTK_ENTRY(entry_pn2), 4);
 	snprintf(threshold_text, sizeof(threshold_text), "%.1f", prefs.pp_graphs.pn2_threshold);
 	gtk_entry_set_text(GTK_ENTRY(entry_pn2), threshold_text);
+	gtk_entry_set_activates_default(GTK_ENTRY(entry_pn2), TRUE);
 	gtk_widget_set_sensitive(entry_pn2, prefs.pp_graphs.pn2);
 	gtk_container_add(GTK_CONTAINER(frame), entry_pn2);
 
@@ -942,6 +944,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_entry_set_max_length(GTK_ENTRY(entry_phe), 4);
 	snprintf(threshold_text, sizeof(threshold_text), "%.1f", prefs.pp_graphs.phe_threshold);
 	gtk_entry_set_text(GTK_ENTRY(entry_phe), threshold_text);
+	gtk_entry_set_activates_default(GTK_ENTRY(entry_phe), TRUE);
 	gtk_widget_set_sensitive(entry_phe, prefs.pp_graphs.phe);
 	gtk_container_add(GTK_CONTAINER(frame), entry_phe);
 
@@ -959,6 +962,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_entry_set_max_length(GTK_ENTRY(entry_mod), 4);
 	snprintf(mod_text, sizeof(mod_text), "%.1f", prefs.mod_ppO2);
 	gtk_entry_set_text(GTK_ENTRY(entry_mod), mod_text);
+	gtk_entry_set_activates_default(GTK_ENTRY(entry_mod), TRUE);
 	gtk_widget_set_sensitive(entry_mod, prefs.mod);
 	gtk_container_add(GTK_CONTAINER(frame), entry_mod);
 
@@ -1000,6 +1004,7 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_entry_set_max_length(GTK_ENTRY(entry_gflow), 4);
 	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gflow * 100);
 	gtk_entry_set_text(GTK_ENTRY(entry_gflow), threshold_text);
+	gtk_entry_set_activates_default(GTK_ENTRY(entry_gflow), TRUE);
 	gtk_container_add(GTK_CONTAINER(frame), entry_gflow);
 	gtk_widget_add_events(entry_gflow, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(G_OBJECT(entry_gflow), "event", G_CALLBACK(gflow_edit), NULL);
@@ -1010,10 +1015,12 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 	gtk_entry_set_max_length(GTK_ENTRY(entry_gfhigh), 4);
 	snprintf(threshold_text, sizeof(threshold_text), "%.0f", prefs.gfhigh * 100);
 	gtk_entry_set_text(GTK_ENTRY(entry_gfhigh), threshold_text);
+	gtk_entry_set_activates_default(GTK_ENTRY(entry_gfhigh), TRUE);
 	gtk_container_add(GTK_CONTAINER(frame), entry_gfhigh);
 	gtk_widget_add_events(entry_gfhigh, GDK_FOCUS_CHANGE_MASK);
 	g_signal_connect(G_OBJECT(entry_gfhigh), "event", G_CALLBACK(gfhigh_edit), NULL);
 
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
@@ -1142,6 +1149,7 @@ static void selecttags_dialog(GtkWidget *w, gpointer data)
 		create_toggle(_(dtag_names[i]), &dtag_shown[i], table);
 	}
 	gtk_container_add(GTK_CONTAINER(frame), table);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
@@ -1182,6 +1190,7 @@ static void selectevents_dialog(GtkWidget *w, gpointer data)
 		gtk_container_add(GTK_CONTAINER(frame), table);
 	}
 
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
@@ -1228,6 +1237,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 5);
 
 	button = gtk_spin_button_new_with_range(1, 50000, 1);
+	gtk_entry_set_activates_default(GTK_ENTRY(button), TRUE);
 	gtk_container_add(GTK_CONTAINER(frame), button);
 
 	/*
@@ -1238,6 +1248,7 @@ static void renumber_dialog(GtkWidget *w, gpointer data)
 	if (dive && dive->number)
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(button), dive->number);
 
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {

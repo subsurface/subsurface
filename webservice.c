@@ -336,7 +336,7 @@ static gboolean divelogde_dialog(const char **user, const char **pass)
 	gtk_container_add(GTK_CONTAINER(frame_user), uid);
 	gtk_entry_set_max_length(GTK_ENTRY(uid), 40);
 	gtk_entry_set_text(GTK_ENTRY(uid), *user ?: "");
-
+	gtk_entry_set_activates_default(GTK_ENTRY(uid), TRUE);
 
 	frame_pass = gtk_frame_new(_("Password"));
 	gtk_box_pack_start(GTK_BOX(vbox), frame_pass, FALSE, TRUE, 6);
@@ -344,6 +344,8 @@ static gboolean divelogde_dialog(const char **user, const char **pass)
 	gtk_container_add(GTK_CONTAINER(frame_pass), pwd);
 	gtk_entry_set_max_length(GTK_ENTRY(pwd), 40);
 	gtk_entry_set_text(GTK_ENTRY(pwd), *pass ?: "");
+	gtk_entry_set_activates_default(GTK_ENTRY(pwd), TRUE);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 
 	gtk_widget_show_all(dialog);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
