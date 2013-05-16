@@ -268,7 +268,7 @@ static void file_close(GtkWidget *w, gpointer data)
 	mark_divelist_changed(FALSE);
 
 	/* clear the selection and the statistics */
-	selected_dive = 0;
+	selected_dive = -1;
 	process_selected_dives();
 	clear_stats_widgets();
 	clear_events();
