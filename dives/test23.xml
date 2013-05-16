@@ -1,11 +1,12 @@
 <dives>
 <program name='subsurface' version='1'></program>
-<trip date='2011-12-02' time='6:00:00' location='trip location' />
+<trip date='2011-12-02' time='6:00:00' location='trip location' >
 <dive number='23' tripflag='INTRIP' date='2011-12-02' time='6:00:00' duration='30:00 min'>
   <depth max='20.0 m' mean='15.0 m' />
   <location>23rd test dive - this should be in a trip</location>
   <notes>We are testing that the NOTRIP flag works</notes>
 </dive>
+</trip>
 <dive number='22' tripflag='NOTRIP' date='2011-12-03' time='7:00:00' duration='30:00 min'>
   <depth max='20.0 m' mean='15.0 m' />
   <location>22nd test dive - this should not be in a trip</location>
