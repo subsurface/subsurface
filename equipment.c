@@ -102,6 +102,8 @@ static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 		else
 			pressure = mbar / 1000.0;
 		*p = pressure;
+	} else {
+		*p = 0;
 	}
 	*v = volume;
 }
