@@ -536,7 +536,9 @@ static void dive_info_widget(GtkWidget *obox, struct dive *dive, struct dive_inf
 		label = gtk_label_new(buffer);
 		gtk_box_pack_start(GTK_BOX(obox), label, FALSE, TRUE, 0);
 	} else {
-		GtkWidget *basedata = gtk_button_new_with_label(buffer);
+		GtkWidget *basedata;
+		snprintf(buffer, sizeof(buffer), "%s", _("Edit dive"));
+		basedata = gtk_button_new_with_label(buffer);
 		set_dive_button_label(basedata, dive);
 		g_signal_connect(G_OBJECT(basedata), "button-press-event", G_CALLBACK(base_data_cb), dive);
 		gtk_box_pack_start(GTK_BOX(obox), basedata, FALSE, TRUE, 0);
