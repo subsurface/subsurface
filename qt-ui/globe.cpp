@@ -16,14 +16,12 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setMapThemeId("earth/bluemarble/bluemarble.dgml");
 	setProjection( Marble::Spherical );
 
-	// Enable the cloud cover and enable the country borders
+	setAnimationsEnabled(true);
 	setShowClouds( false );
 	setShowBorders( false );
 	setShowPlaces( false );
 	setShowCrosshairs( false );
 	setShowGrid( false );
-
-	// Hide the FloatItems: Compass and StatusBar
 	setShowOverviewMap(false);
 	setShowScaleBar(false);
 
@@ -33,6 +31,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 			floatItem->setContentSize( QSize( 50, 50 ) );
 		}
 	}
+
 }
 
 void GlobeGPS::reload()
@@ -49,8 +48,11 @@ void GlobeGPS::reload()
 	struct dive *dive;
 	for_each_dive(idx, dive) {
 		if (dive_has_gps_location(dive)) {
+			// don't add dive locations twice.
+			if( diveLocations.contains( QString(dive->location)))
+				continue;
+
 			GeoDataPlacemark *place = new GeoDataPlacemark( dive->location );
-			place->setDescription(dive->notes);
 			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree );
 			loadedDives->append( place );
 		}
@@ -60,5 +62,5 @@ void GlobeGPS::reload()
 
 void GlobeGPS::centerOn(dive* dive)
 {
-	centerOn(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0);
+	centerOn(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0, true);
 }

@@ -2,6 +2,7 @@
 #define GLOBE_H
 
 #include <marble/MarbleWidget.h>
+#include <QHash>
 
 namespace Marble{
 	class GeoDataDocument;
@@ -16,6 +17,8 @@ public:
 
 private:
 	Marble::GeoDataDocument *loadedDives;
+	QStringList diveLocations;
+	
 };
 
 #endif
