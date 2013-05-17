@@ -35,11 +35,13 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
+	ui->widget->reload();
 }
 
 void MainWindow::current_dive_changed(int divenr)
 {
 	select_dive(divenr);
+	ui->widget->centerOn(get_dive(selected_dive));
 	redrawProfile();
 	ui->InfoWidget->updateDiveInfo(divenr);
 }
@@ -77,7 +79,7 @@ void MainWindow::on_actionOpen_triggered()
 	process_dives(FALSE, FALSE);
 
 	ui->InfoWidget->reload();
-
+	ui->widget->reload();
 	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
 }

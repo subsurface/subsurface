@@ -3,11 +3,19 @@
 
 #include <marble/MarbleWidget.h>
 
+namespace Marble{
+	class GeoDataDocument;
+}
 class GlobeGPS : public Marble::MarbleWidget{
 	Q_OBJECT
 public:
+	using Marble::MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent);
-
+	void reload();
+	void centerOn(struct dive* dive);
+	
+private:
+	Marble::GeoDataDocument *loadedDives;
 };
 
 #endif
