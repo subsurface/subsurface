@@ -2,23 +2,33 @@
 #define GLOBE_H
 
 #include <marble/MarbleWidget.h>
+#include <marble/GeoDataCoordinates.h>
+
 #include <QHash>
 
-namespace Marble{
-	class GeoDataDocument;
-}
-class GlobeGPS : public Marble::MarbleWidget{
+using namespace Marble;
+struct dive;
+
+class GlobeGPS : public MarbleWidget{
 	Q_OBJECT
+    void prepareForGetDiveCoordinates(struct dive* dive);
 public:
-	using Marble::MarbleWidget::centerOn;
+	using MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void centerOn(struct dive* dive);
 
+protected:
+    virtual void mousePressEvent(QMouseEvent* event);
+
 private:
-	Marble::GeoDataDocument *loadedDives;
+	GeoDataDocument *loadedDives;
 	QStringList diveLocations;
-	
+    struct dive* editingDiveCoords;
+
+public Q_SLOTS:
+	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
+
 };
 
 #endif

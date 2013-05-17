@@ -9,7 +9,8 @@
 #include <marble/MarbleModel.h>
 #include <marble/GeoDataTreeModel.h>
 
-using namespace Marble;
+#include <QMouseEvent>
+#include <QMessageBox>
 
 GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 {
@@ -31,7 +32,6 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 			floatItem->setContentSize( QSize( 50, 50 ) );
 		}
 	}
-
 }
 
 void GlobeGPS::reload()
@@ -40,7 +40,9 @@ void GlobeGPS::reload()
 		model()->treeModel()->removeDocument(loadedDives);
 		delete loadedDives;
 	}
-
+	if (editingDiveCoords){
+		editingDiveCoords = 0;
+	}
 
 	loadedDives = new GeoDataDocument;
 
@@ -62,5 +64,50 @@ void GlobeGPS::reload()
 
 void GlobeGPS::centerOn(dive* dive)
 {
-	centerOn(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0, true);
+	qreal longitude = dive->longitude.udeg / 1000000.0;
+	qreal latitude = dive->latitude.udeg / 1000000.0;
+
+	if (!longitude || !latitude){
+		prepareForGetDiveCoordinates(dive);
+		return;
+	}
+
+	centerOn(longitude,latitude, true);
 }
+
+void GlobeGPS::prepareForGetDiveCoordinates(dive* dive)
+{
+	QMessageBox::warning(parentWidget(),
+						 tr("This dive has no location!"),
+						 tr("Move the planet to the desired position, then \n double-click to set the new location of this dive."));
+
+	editingDiveCoords = dive;
+}
+
+void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
+{
+	// convert to degrees if in radian.
+	if (unit == GeoDataCoordinates::Radian){
+		lon = lon * 180 / M_PI;
+		lat = lat * 180 / M_PI;
+	}
+
+	if (!editingDiveCoords){
+		return;
+	}
+
+	editingDiveCoords->latitude.udeg = (int) lat * 1000000.0;
+	editingDiveCoords->longitude.udeg = (int) lon * 1000000.0;
+	centerOn(lon, lat, true);
+	reload();
+	editingDiveCoords = 0;
+}
+
+void GlobeGPS::mousePressEvent(QMouseEvent* event)
+{
+	qreal lat, lon;
+	if (editingDiveCoords &&  geoCoordinates(event->pos().x(), event->pos().y(), lon,lat, GeoDataCoordinates::Radian)){
+		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Radian);
+	}
+}
+
