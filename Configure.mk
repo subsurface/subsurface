@@ -83,20 +83,28 @@ endif
 # Use qmake to find out which Qt version we are building for.
 QT_VERSION_MAJOR = $(shell $(QMAKE) -query QT_VERSION | cut -d. -f1)
 ifeq ($(QT_VERSION_MAJOR), 5)
-	QT_MODULES = Qt5Widgets Qt5Svg
-	QT_CORE = Qt5Core
-	QTBINDIR = $(shell $(QMAKE) -query QT_HOST_BINS)
-	# Tool paths are not stored in .pc files in Qt 5.0
-	MOC = $(QTBINDIR)/moc
-	UIC = $(QTBINDIR)/uic
-	RCC = $(QTBINDIR)/rcc
-else
+#	QT_MODULES = Qt5Widgets Qt5Svg
+#	QT_CORE = Qt5Core
+#	QTBINDIR = $(shell $(QMAKE) -query QT_HOST_BINS)
+#	# Tool paths are not stored in .pc files in Qt 5.0
+#	MOC = $(QTBINDIR)/moc
+#	UIC = $(QTBINDIR)/uic
+#	RCC = $(QTBINDIR)/rcc
+# if qmake is qt5, try to get the qt4 one.
+	QMAKE = { qmake-qt4 -v >/dev/null 2>&1 && echo qmake-qt4; }
+#else
+endif
+
+ifeq ($(strip $(QMAKE)),)
+$(error Could not find qmake or qmake-qt4 in $$PATH for the Qt4 version they failed)
+endif
+
 	QT_MODULES = QtGui QtSvg
 	QT_CORE = QtCore
 	MOC = $(shell $(PKGCONFIG) --variable=moc_location QtCore)
 	UIC = $(shell $(PKGCONFIG) --variable=uic_location QtGui)
 	RCC = $(shell $(PKGCONFIG) --variable=rcc_location QtGui)
-endif
+#endif
 
 # we need GLIB2CFLAGS for gettext
 QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES)) $(GLIB2CFLAGS)

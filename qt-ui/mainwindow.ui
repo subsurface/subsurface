@@ -14,8 +14,8 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <widget class="QSplitter" name="mainSplitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -27,9 +27,13 @@
        <widget class="MainTab" name="InfoWidget" native="true"/>
        <widget class="ProfileGraphicsView" name="ProfileWidget"/>
       </widget>
-      <widget class="DiveListView" name="ListWidget">
-       <property name="styleSheet">
-        <string notr="true"> QTreeView {
+      <widget class="QSplitter" name="globeListSplitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="DiveListView" name="ListWidget">
+        <property name="styleSheet">
+         <string notr="true"> QTreeView {
      show-decoration-selected: 1;
  }
 
@@ -58,25 +62,27 @@
  }
 
 </string>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ExtendedSelection</enum>
-       </property>
-       <property name="rootIsDecorated">
-        <bool>true</bool>
-       </property>
-       <property name="sortingEnabled">
-        <bool>true</bool>
-       </property>
-       <property name="animated">
-        <bool>true</bool>
-       </property>
-       <property name="allColumnsShowFocus">
-        <bool>true</bool>
-       </property>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
+        <property name="rootIsDecorated">
+         <bool>true</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="animated">
+         <bool>true</bool>
+        </property>
+        <property name="allColumnsShowFocus">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="GlobeGPS" name="widget" native="true"/>
       </widget>
      </widget>
     </item>
@@ -88,7 +94,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -364,6 +370,12 @@
    <class>ProfileGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>profilegraphics.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GlobeGPS</class>
+   <extends>QWidget</extends>
+   <header>globe.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

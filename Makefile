@@ -40,6 +40,7 @@ HEADERS = \
 	qt-ui/starwidget.h \
 	qt-ui/modeldelegates.h \
 	qt-ui/profilegraphics.h \
+	qt-ui/globe.h
 
 
 SOURCES = \
@@ -70,6 +71,7 @@ SOURCES = \
 	qt-ui/starwidget.cpp \
 	qt-ui/modeldelegates.cpp \
 	qt-ui/profilegraphics.cpp \
+	qt-ui/globe.cpp \
 	$(RESFILE)
 
 
@@ -112,7 +114,7 @@ else
 endif
 
 LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
-	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK)
+	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK) -lmarblewidget
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
 
