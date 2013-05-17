@@ -1105,8 +1105,12 @@ We currently support exporting the divelog to UDDF format and directly uploading
 Uploading Dives to divelogs.de
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Subsurface supports uploading dives directly to divelogs.de. You can upload
-either selected dives or all the dives. When selecting to upload, you are
+Subsurface supports uploading dives directly to divelogs.de. You'll
+need to provide a valid user name and password for divelogs.de which
+can be created from a web browser at
+https://en.divelogs.de/newuser.php. You can upload either selected
+dives or all the dives (duplicate dives that are already recorded at
+divelogs.de will be skipped). When selecting to upload, you are
 presented a simple dialog for user name and password.
 
 [NOTE]
