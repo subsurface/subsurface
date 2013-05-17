@@ -46,7 +46,7 @@
       <location>
         <xsl:for-each select="LOCATION|SITE">
           <xsl:value-of select="."/>
-          <xsl:if test=". != '' and following-sibling::*[1] != ''"> / </xsl:if>
+          <xsl:if test=". != '' and following-sibling::SITE[1] != ''"> / </xsl:if>
         </xsl:for-each>
       </location>
 
