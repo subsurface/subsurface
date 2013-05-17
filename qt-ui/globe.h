@@ -13,7 +13,7 @@ public:
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void centerOn(struct dive* dive);
-	
+
 private:
 	Marble::GeoDataDocument *loadedDives;
 };
