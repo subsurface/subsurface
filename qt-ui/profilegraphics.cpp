@@ -202,8 +202,14 @@ static void plot_set_scale(scale_mode_t scale)
 
 void ProfileGraphicsView::showEvent(QShowEvent* event)
 {
-	if (dive)
-		plot(dive);
+	// Program just opened,
+	// but the dive was not ploted.
+	// force a replot by modifying the dive
+	// hold by the view, and issuing a plot.
+	if (dive){
+		dive = 0;
+		plot(get_dive(selected_dive));
+	}
 }
 
 void ProfileGraphicsView::clear()
