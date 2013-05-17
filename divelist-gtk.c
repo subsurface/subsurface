@@ -56,6 +56,7 @@ static struct DiveList dive_list;
 #define LISTSTORE(_dl) GTK_TREE_STORE((_dl).listmodel)
 
 short autogroup = FALSE;
+static gboolean ignore_selection_changes = FALSE;
 static gboolean in_set_cursor = FALSE;
 static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
 			     GtkTreeIter *iter, gpointer data);
@@ -780,8 +781,10 @@ static void restore_tree_state(void);
 void dive_list_update_dives(void)
 {
 	dive_table.preexisting = dive_table.nr;
+	ignore_selection_changes = TRUE;
 	gtk_tree_store_clear(TREESTORE(dive_list));
 	gtk_tree_store_clear(LISTSTORE(dive_list));
+	ignore_selection_changes = FALSE;
 	fill_dive_list();
 	restore_tree_state();
 	repaint_dive();
@@ -2055,6 +2058,9 @@ static void selection_cb(GtkTreeSelection *selection, GtkTreeModel *model)
 {
 	int i, fixup;
 	struct dive *dive;
+
+	if (ignore_selection_changes)
+		return;
 
 	gtk_tree_selection_selected_foreach(selection, entry_selected, model);
 

@@ -1035,12 +1035,8 @@ static void preferences_dialog(GtkWidget *w, gpointer data)
 		 * invalid dives that were selected before hiding them */
 		if (oldprefs.display_invalid_dives && !prefs.display_invalid_dives) {
 			for_each_dive(j, d)
-				if (d->selected && d->dive_tags && DTAG_INVALID) {
-					d->selected = 0;
-					amount_selected--;
-				}
-			if (amount_selected == 0)
-				selected_dive = -1;
+				if (d->selected && d->dive_tags && DTAG_INVALID)
+					deselect_dive(j);
 		}
 		prefs.divelist_font = strdup(gtk_font_button_get_font_name(GTK_FONT_BUTTON(font)));
 		set_divelist_font(prefs.divelist_font);
@@ -1160,16 +1156,13 @@ static void selecttags_dialog(GtkWidget *w, gpointer data)
 				dive_mask |= (1 << i);
 
 		/* deselect dives filtered by tags before hiding */
-		for_each_dive(i, d) {
-			if (d->selected && (d->dive_tags & dive_mask) != dive_mask) {
-				d->selected = 0;
-				amount_selected--;
-			}
-		}
-		if (amount_selected == 0)
-			selected_dive = -1;
+		for_each_dive(i, d)
+			if (d->selected && (d->dive_tags & dive_mask) != dive_mask)
+				deselect_dive(i);
 
 		dive_list_update_dives();
+		process_selected_dives();
+		show_dive_stats(current_dive);
 	} else {
 		/* restore tags selection from dive_mask */
 		for (i = 0; i < DTAG_NR; i++) {
