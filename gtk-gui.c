@@ -1130,6 +1130,7 @@ static void selecttags_dialog(GtkWidget *w, gpointer data)
 {
 	int i, result;
 	GtkWidget *dialog, *frame, *vbox, *table;
+	struct dive *d;
 
 	dialog = gtk_dialog_new_with_buttons(_("Only display dives with these tags:"),
 		GTK_WINDOW(main_window),
@@ -1153,14 +1154,29 @@ static void selecttags_dialog(GtkWidget *w, gpointer data)
 	gtk_widget_show_all(dialog);
 	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	if (result == GTK_RESPONSE_ACCEPT) {
-		repaint_dive();
+		dive_mask = 0;
+		for (i = 0; i < DTAG_NR; i++)
+			if (dtag_shown[i])
+				dive_mask |= (1 << i);
+
+		/* deselect dives filtered by tags before hiding */
+		for_each_dive(i, d) {
+			if (d->selected && (d->dive_tags & dive_mask) != dive_mask) {
+				d->selected = 0;
+				amount_selected--;
+			}
+		}
+		if (amount_selected == 0)
+			selected_dive = -1;
+
+		dive_list_update_dives();
+	} else {
+		/* restore tags selection from dive_mask */
+		for (i = 0; i < DTAG_NR; i++) {
+			dtag_shown[i] = 1 & dive_mask >> i;
+		}
 	}
 	gtk_widget_destroy(dialog);
-	dive_mask = 0;
-	for (i = 0; i < DTAG_NR; i++)
-		if (dtag_shown[i])
-			dive_mask |= (1 << i);
-	dive_list_update_dives();
 }
 
 static void selectevents_dialog(GtkWidget *w, gpointer data)
