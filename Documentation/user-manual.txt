@@ -1110,7 +1110,7 @@ either selected dives or all the dives. When selecting to upload, you are
 presented a simple dialog for user name and password.
 
 [NOTE]
-The password is displayed on screen and is stored in the configuration
+The password is stored in the configuration
 file / registry in clear-text. Please do not use this feature if you have
 security concerns with this. Also note that when running Subsurface on
 Windows at this point the connection to divelogs.de is established through
