@@ -14,8 +14,8 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
      <widget class="QSplitter" name="mainSplitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -27,7 +27,7 @@
        <widget class="MainTab" name="InfoWidget" native="true"/>
        <widget class="ProfileGraphicsView" name="ProfileWidget"/>
       </widget>
-      <widget class="QSplitter" name="globeListSplitter">
+      <widget class="QSplitter" name="listGlobeSplitter">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -82,7 +82,16 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="GlobeGPS" name="widget" native="true"/>
+       <widget class="QWidget" name="layoutWidget">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="KMessageWidget" name="globeMessage" native="true"/>
+         </item>
+         <item>
+          <widget class="GlobeGPS" name="globe" native="true"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -375,6 +384,12 @@
    <class>GlobeGPS</class>
    <extends>QWidget</extends>
    <header>globe.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KMessageWidget</class>
+   <extends>QWidget</extends>
+   <header>kmessagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

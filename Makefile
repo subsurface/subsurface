@@ -40,7 +40,8 @@ HEADERS = \
 	qt-ui/starwidget.h \
 	qt-ui/modeldelegates.h \
 	qt-ui/profilegraphics.h \
-	qt-ui/globe.h
+	qt-ui/globe.h \
+	qt-ui/kmessagewidget.h \
 
 
 SOURCES = \
@@ -72,6 +73,7 @@ SOURCES = \
 	qt-ui/modeldelegates.cpp \
 	qt-ui/profilegraphics.cpp \
 	qt-ui/globe.cpp \
+	qt-ui/kmessagewidget.cpp \
 	$(RESFILE)
 
 

@@ -32,16 +32,18 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	readSettings();
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+	ui->globeMessage->hide();
+	ui->globe->setMessageWidget(ui->globeMessage);
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
-	ui->widget->reload();
+	ui->globe->reload();
 }
 
 void MainWindow::current_dive_changed(int divenr)
 {
 	select_dive(divenr);
-	ui->widget->centerOn(get_dive(selected_dive));
+	ui->globe->centerOn(get_dive(selected_dive));
 	redrawProfile();
 	ui->InfoWidget->updateDiveInfo(divenr);
 }
@@ -79,7 +81,7 @@ void MainWindow::on_actionOpen_triggered()
 	process_dives(FALSE, FALSE);
 
 	ui->InfoWidget->reload();
-	ui->widget->reload();
+	ui->globe->reload();
 	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
 }
