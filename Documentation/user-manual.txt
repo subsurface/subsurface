@@ -1417,6 +1417,7 @@ Atomics Aquatics:::
 Cressi / Zeagle / Mares:::
         * Edy, Nemo Sport
 	* N2iTiON3
+	* Leonardo
 
 Mares:::
 	* Nemo, Nemo Excel, Nemo Apneist, ...
@@ -1424,19 +1425,20 @@ Mares:::
 	* Darwin, Darwin Air, M1, M2, Airlab
 	* Icon HD, Icon HD Net Ready, Nemo Wide 2
 
-Oceanic / Aeris / Sherwood / Hollis / Genesis / Tusa (Pelagic):::
+Oceanic / Aeris / Sherwood / Hollis / Genesis / Seemann / Tusa (Pelagic):::
 	* VT Pro, Versa Pro, Pro Plus 2, Wisdom, Atmos 2, Atmos AI, Atmos Elite, ...
-	* Veo 250, Veo 180Nx, XR2, React Pro, DG02, Insight, ...
-	* Atom 2.0, VT3, Datamask, Geo, Geo 2.0, Veo 2.0, Veo 3.0, Pro Plus 2.1, Compumask, Elite T3, Epic, Manta, IQ-900 (Zen), IQ-950 (Zen Air), IQ-750 (Element II), ...
+	* Veo 250, XP5, Veo 180Nx, XR2, React Pro, React Pro White, DG02, Insight, ...
+	* Atom 2.0, VT3, Datamask, Geo, Geo 2.0, Veo 2.0, Veo 3.0, Pro Plus 2.1, Pro Plus 3, Compumask, Elite T3, Epic, Manta, IQ-900 (Zen), IQ-950 (Zen Air), IQ-750 (Element II), ...
 
 Heinrichs Weikamp:::
-	* OSTC, OSTC Mk.2, OSTC 2N
+	* OSTC, OSTC Mk.2, OSTC 2N, OSTC3
 	* Frog
 
 Reefnet:::
 	* Sensus
 	* Sensus Pro
 	* Sensus Ultra
+
 Shearwater:::
 	* Predator, Petrel
 
