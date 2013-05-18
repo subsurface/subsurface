@@ -146,10 +146,9 @@ ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
 LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
 SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 
-UNAME_A = $(shell uname -a)
-ifneq (,$(filter $(UNAME_A), Debian))
-	MARBLEFLAGS = -DINCOMPLETE_MARBLE
-endif
+# Before Marble 4.9, the GeoDataTreeModel.h header wasn't installed
+# Check if it's present by trying to compile
+MARBLEFLAGS = $(shell $(CXX) $(QTCXXFLAGS) -E -include marble/GeoDataTreeModel.h -xc++ /dev/null > /dev/null 2>&1 || echo " -DINCOMPLETE_MARBLE")
 
 # Write the configure file
 all: configure
