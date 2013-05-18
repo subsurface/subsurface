@@ -12,15 +12,20 @@
 #include "../statistics.h"
 
 #include <QLabel>
+#include <QDebug>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    ui(new Ui::MainTab()),
 				    weightModel(new WeightModel()),
-				    cylindersModel(new CylindersModel())
+				    cylindersModel(new CylindersModel()),
+				    currentDive(0)
 {
 	ui->setupUi(this);
 	ui->cylinders->setModel(cylindersModel);
 	ui->weights->setModel(weightModel);
+	ui->diveNotesMessage->hide();
+	ui->diveNotesMessage->setCloseButtonVisible(false);
+	ui->rating->setReadOnly(true);
 
 	/* example of where code is more concise than Qt designer */
 	QList<QObject *> infoTabWidgets = ui->infoTab->children();
@@ -96,6 +101,7 @@ void MainTab::updateDiveInfo(int dive)
 	// the access is ui->objectName from here on.
 	volume_t sacVal;
 	struct dive *d = get_dive(dive);
+	currentDive = d;
 	UPDATE_TEXT(d, notes);
 	UPDATE_TEXT(d, location);
 	UPDATE_TEXT(d, suit);
@@ -201,4 +207,99 @@ void MainTab::on_delWeight_clicked()
 void MainTab::reload()
 {
 	cylindersModel->update();
+}
+
+void MainTab::on_editNotes_clicked(bool edit)
+{
+	ui->location->setReadOnly(!edit);
+	ui->divemaster->setReadOnly(!edit);
+	ui->buddy->setReadOnly(!edit);
+	ui->suit->setReadOnly(!edit);
+	ui->notes->setReadOnly(!edit);
+	ui->rating->setReadOnly(!edit);
+
+	if (edit){
+		ui->diveNotesMessage->setText("This dive is being edited. click on finish / reset when ready.");
+		ui->diveNotesMessage->animatedShow();
+		notesBackup.buddy = ui->buddy->text();
+		notesBackup.suit = ui->suit->text();
+		notesBackup.notes = ui->notes->toPlainText();
+		notesBackup.divemaster = ui->divemaster->text();
+		notesBackup.location = ui->location->text();
+		notesBackup.rating = ui->rating->currentStars();
+	}
+	else{
+		ui->diveNotesMessage->animatedHide();
+	}
+}
+
+void MainTab::on_resetNotes_clicked()
+{
+	if (!ui->editNotes->isChecked())
+		return;
+
+	ui->buddy->setText(notesBackup.buddy);
+	ui->suit->setText(notesBackup.suit);
+	ui->notes->setText(notesBackup.notes);
+	ui->divemaster->setText(notesBackup.divemaster);
+	ui->location->setText(notesBackup.location);
+	ui->rating->setCurrentStars(notesBackup.rating);
+	ui->editNotes->setChecked(false);
+	ui->diveNotesMessage->animatedHide();
+
+	ui->location->setReadOnly(false);
+	ui->divemaster->setReadOnly(false);
+	ui->buddy->setReadOnly(false);
+	ui->suit->setReadOnly(false);
+	ui->notes->setReadOnly(false);
+	ui->rating->setReadOnly(false);
+}
+
+#define EDIT_NOTES(what, text) \
+	QByteArray textByteArray = text.toLocal8Bit(); \
+	free(currentDive->what);\
+	currentDive->what = strdup(textByteArray.data());
+
+void MainTab::on_buddy_textChanged(const QString& text)
+{
+	if (!currentDive)
+		return;
+	EDIT_NOTES(buddy, text);
+}
+
+void MainTab::on_divemaster_textChanged(const QString& text)
+{
+	if (!currentDive)
+		return;
+	EDIT_NOTES(divemaster, text);
+}
+
+void MainTab::on_location_textChanged(const QString& text)
+{
+	if (!currentDive)
+		return;
+	EDIT_NOTES(location, text);
+}
+
+void MainTab::on_suit_textChanged(const QString& text)
+{
+	if (!currentDive)
+		return;
+	EDIT_NOTES(suit, text);
+}
+
+void MainTab::on_notes_textChanged()
+{
+	if (!currentDive)
+		return;
+	EDIT_NOTES(notes, ui->notes->toPlainText());
+}
+
+#undef EDIT_NOTES
+
+void MainTab::on_rating_valueChanged(int value)
+{
+	if (!currentDive)
+		return;
+	currentDive->rating = value;
 }

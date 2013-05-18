@@ -4,6 +4,7 @@
 #include <QPaintEvent>
 #include <QDebug>
 #include <QMouseEvent>
+#include <unistd.h>
 
 QPixmap* StarWidget::activeStar = 0;
 QPixmap* StarWidget::inactiveStar = 0;
@@ -25,6 +26,10 @@ int StarWidget::currentStars() const
 
 void StarWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+	if (readOnly){
+		return;
+	}
+
 	int starClicked = event->pos().x() / IMG_SIZE + 1;
 	if (starClicked > TOTALSTARS)
 		starClicked = TOTALSTARS;
@@ -34,6 +39,7 @@ void StarWidget::mouseReleaseEvent(QMouseEvent* event)
 	else
 		current = starClicked;
 
+	Q_EMIT valueChanged(current);
 	update();
 }
 
@@ -97,4 +103,9 @@ QPixmap StarWidget::grayImage(QPixmap* coloredImg)
 QSize StarWidget::sizeHint() const
 {
 	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS-1), IMG_SIZE);
+}
+
+void StarWidget::setReadOnly(bool r)
+{
+	readOnly = r;
 }

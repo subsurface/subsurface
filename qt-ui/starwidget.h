@@ -22,6 +22,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
 	void setCurrentStars(int value);
+	void setReadOnly( bool readOnly);
 
 protected:
 	/*reimp*/ void mouseReleaseEvent(QMouseEvent* );
@@ -32,6 +33,7 @@ private:
 	static QPixmap* activeStar;
 	static QPixmap* inactiveStar;
 	QPixmap grayImage(QPixmap *coloredImg);
+	bool readOnly;
 };
 
 #endif // STARWIDGET_H
