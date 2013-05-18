@@ -217,22 +217,22 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 
 	switch (type) {
 	case Positive:
-		bg1 = QColor(Qt::green);
+		bg1 = QColor("#72D594"); // nice green
 		fg = QColor(Qt::white);
 		break;
 
 	case Information:
-		bg1 = QColor(Qt::blue);
+		bg1 = QColor("#41A8E3"); // nice blue
 		fg = QColor(Qt::black);
 		break;
 
 	case Warning:
-		bg1 = QColor(Qt::yellow);
+		bg1 = QColor("#72D594"); // nice yellow
 		fg = QColor(Qt::black);
 		break;
 
 	case Error:
-		bg1 = QColor(Qt::red);
+		bg1 = QColor("#E4B7B7"); // nice red.
 		fg = QColor(Qt::black);
 		break;
 	}
@@ -240,7 +240,7 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 	// Colors
 	bg0 = bg1.lighter(110);
 	bg2 = bg1.darker(110);
-	border = QColor(Qt::black);
+	border = bg2.darker(110);
 	d->content->setStyleSheet(
 		QString(".QFrame {"
 			"background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"

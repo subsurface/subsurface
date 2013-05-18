@@ -34,6 +34,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	ui->globeMessage->hide();
 	ui->globe->setMessageWidget(ui->globeMessage);
+	ui->globeMessage->setCloseButtonVisible(false);
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();

@@ -15,17 +15,19 @@
 
 GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 {
+
 	setMapThemeId("earth/bluemarble/bluemarble.dgml");
+	//setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
 	setProjection( Marble::Spherical );
 
 	setAnimationsEnabled(true);
 	setShowClouds( false );
 	setShowBorders( false );
-	setShowPlaces( false );
+	setShowPlaces( true );
 	setShowCrosshairs( false );
 	setShowGrid( false );
 	setShowOverviewMap(false);
-	setShowScaleBar(false);
+	setShowScaleBar(true);
 
 	Q_FOREACH( AbstractFloatItem * floatItem, floatItems() ){
 		if ( floatItem && floatItem->nameId() == "compass" ) {
