@@ -20,7 +20,9 @@ Building the Qt version under Linux
 On Debian you need libqt4-dev, libmarble-dev, libzip-dev.
 Unfortunately the marble version in Debian stable (and possibly
 Ubuntu) appears broken and missing essential header files used in the
-current git version of Subsurface.
+current git version of Subsurface. We hack around this right now by
+including this header file but this needs to be revisited before an
+actual release.
 
 On Fedora you need qt-devel, marble-devel, libzip-devel.
 

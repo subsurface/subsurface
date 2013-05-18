@@ -146,6 +146,13 @@ ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
 LIBSQLITE3 = $(shell $(PKGCONFIG) --libs sqlite3 2> /dev/null)
 SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 
+UNAME_A = $(shell uname -a)
+ifneq (,$(filter $(UNAME_A), Debian))
+	MARBLEFLAGS = -DINCOMPLETE_MARBLE
+else
+	MARBLEFLAGS = -DQT_NO_KEYWORDS
+endif
+
 # Write the configure file
 all: configure
 configure $(CONFIGURE): Configure.mk
@@ -181,6 +188,7 @@ configure $(CONFIGURE): Configure.mk
 	ZIPFLAGS = $(ZIPFLAGS)\\\
 	LIBSQLITE3 = $(LIBSQLITE3)\\\
 	SQLITE3FLAGS = $(SQLITE3FLAGS)\\\
+	MARBLEFLAGS = $(MARBLEFLAGS)\\\
 	" | tr '\\' '\n' > $(CONFIGFILE)
 
 else

@@ -8,7 +8,7 @@ VERSION=3.1
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE
 CXX=g++
-CXXFLAGS=-Wall -g $(CLCXXFLAGS) -DQT_NO_KEYWORDS
+CXXFLAGS=-Wall -g $(CLCXXFLAGS) $(MARBLEFLAGS)
 INSTALL=install
 
 # these locations seem to work for SuSE and Fedora

@@ -8,8 +8,11 @@
 #include <marble/GeoDataPlacemark.h>
 #include <marble/GeoDataDocument.h>
 #include <marble/MarbleModel.h>
+#if INCOMPLETE_MARBLE
+#include "marble/GeoDataTreeModel.h"
+#else
 #include <marble/GeoDataTreeModel.h>
-
+#endif
 #include <QMouseEvent>
 #include <QMessageBox>
 
