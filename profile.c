@@ -6,9 +6,12 @@
 
 #include "dive.h"
 #include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include "divelist.h"
-#include "color.h"
+
+#include "profile.h"
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 
@@ -16,130 +19,13 @@ int selected_dive = -1; /* careful: 0 is a valid value */
 char zoomed_plot = 0;
 char dc_number = 0;
 
-static double plot_scale = SCALE_SCREEN;
+
 static struct plot_data *last_pi_entry = NULL;
 
 #define cairo_set_line_width_scaled(cr, w) \
 	cairo_set_line_width((cr), (w) * plot_scale);
 
-typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
-
-struct plot_data {
-	unsigned int in_deco:1;
-	unsigned int cylinderindex;
-	int sec;
-	/* pressure[0] is sensor pressure
-	 * pressure[1] is interpolated pressure */
-	int pressure[2];
-	int temperature;
-	/* Depth info */
-	int depth;
-	int ceiling;
-	int ndl;
-	int stoptime;
-	int stopdepth;
-	int cns;
-	int smoothed;
-	double po2, pn2, phe;
-	double mod, ead, end, eadd;
-	velocity_t velocity;
-	struct plot_data *min[3];
-	struct plot_data *max[3];
-	int avg[3];
-};
-
-#define SENSOR_PR 0
-#define INTERPOLATED_PR 1
-#define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
-#define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
-#define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? : INTERPOLATED_PRESSURE(_entry))
-
-#define SAC_COLORS_START_IDX SAC_1
-#define SAC_COLORS 9
-#define VELOCITY_COLORS_START_IDX VELO_STABLE
-#define VELOCITY_COLORS 5
-
-typedef enum {
-	/* SAC colors. Order is important, the SAC_COLORS_START_IDX define above. */
-	SAC_1, SAC_2, SAC_3, SAC_4, SAC_5, SAC_6, SAC_7, SAC_8, SAC_9,
-
-	/* Velocity colors.  Order is still important, ref VELOCITY_COLORS_START_IDX. */
-	VELO_STABLE, VELO_SLOW, VELO_MODERATE, VELO_FAST, VELO_CRAZY,
-
-	/* gas colors */
-	PO2, PO2_ALERT, PN2, PN2_ALERT, PHE, PHE_ALERT, PP_LINES,
-
-	/* Other colors */
-	TEXT_BACKGROUND, ALERT_BG, ALERT_FG, EVENTS, SAMPLE_DEEP, SAMPLE_SHALLOW,
-	SMOOTHED, MINUTE, TIME_GRID, TIME_TEXT, DEPTH_GRID, MEAN_DEPTH, DEPTH_TOP,
-	DEPTH_BOTTOM, TEMP_TEXT, TEMP_PLOT, SAC_DEFAULT, BOUNDING_BOX, PRESSURE_TEXT, BACKGROUND,
-	CEILING_SHALLOW, CEILING_DEEP, CALC_CEILING_SHALLOW, CALC_CEILING_DEEP
-} color_indice_t;
-
-typedef struct {
-	/* media[0] is screen, media[1] is b/w printer media[2] is color printer */
-	struct rgba {
-		double r,g,b,a;
-	} media[3];
-} color_t;
-
-/* [color indice] = {{screen color, b/w printer color, color printer}} printer & screen colours could be different */
-static const color_t profile_color[] = {
-	[SAC_1]           = {{FUNGREEN1, BLACK1_LOW_TRANS, FUNGREEN1}},
-	[SAC_2]           = {{APPLE1, BLACK1_LOW_TRANS, APPLE1}},
-	[SAC_3]           = {{ATLANTIS1, BLACK1_LOW_TRANS, ATLANTIS1}},
-	[SAC_4]           = {{ATLANTIS2, BLACK1_LOW_TRANS, ATLANTIS2}},
-	[SAC_5]           = {{EARLSGREEN1, BLACK1_LOW_TRANS, EARLSGREEN1}},
-	[SAC_6]           = {{HOKEYPOKEY1, BLACK1_LOW_TRANS, HOKEYPOKEY1}},
-	[SAC_7]           = {{TUSCANY1, BLACK1_LOW_TRANS, TUSCANY1}},
-	[SAC_8]           = {{CINNABAR1, BLACK1_LOW_TRANS, CINNABAR1}},
-	[SAC_9]           = {{REDORANGE1, BLACK1_LOW_TRANS, REDORANGE1}},
-
-	[VELO_STABLE]     = {{CAMARONE1, BLACK1_LOW_TRANS, CAMARONE1}},
-	[VELO_SLOW]       = {{LIMENADE1, BLACK1_LOW_TRANS, LIMENADE1}},
-	[VELO_MODERATE]   = {{RIOGRANDE1, BLACK1_LOW_TRANS, RIOGRANDE1}},
-	[VELO_FAST]       = {{PIRATEGOLD1, BLACK1_LOW_TRANS, PIRATEGOLD1}},
-	[VELO_CRAZY]      = {{RED1, BLACK1_LOW_TRANS, RED1}},
-
-	[PO2]             = {{APPLE1, BLACK1_LOW_TRANS, APPLE1}},
-	[PO2_ALERT]       = {{RED1, BLACK1_LOW_TRANS, RED1}},
-	[PN2]             = {{BLACK1_LOW_TRANS, BLACK1_LOW_TRANS, BLACK1_LOW_TRANS}},
-	[PN2_ALERT]       = {{RED1, BLACK1_LOW_TRANS, RED1}},
-	[PHE]             = {{PEANUT, BLACK1_LOW_TRANS, PEANUT}},
-	[PHE_ALERT]       = {{RED1, BLACK1_LOW_TRANS, RED1}},
-	[PP_LINES]        = {{BLACK1_HIGH_TRANS, BLACK1_HIGH_TRANS, BLACK1_HIGH_TRANS}},
-
-	[TEXT_BACKGROUND] = {{CONCRETE1_LOWER_TRANS, WHITE1, CONCRETE1_LOWER_TRANS}},
-	[ALERT_BG]        = {{BROOM1_LOWER_TRANS, BLACK1_LOW_TRANS, BROOM1_LOWER_TRANS}},
-	[ALERT_FG]        = {{BLACK1_LOW_TRANS, BLACK1_LOW_TRANS, BLACK1_LOW_TRANS}},
-	[EVENTS]          = {{REDORANGE1, BLACK1_LOW_TRANS, REDORANGE1}},
-	[SAMPLE_DEEP]     = {{PERSIANRED1, BLACK1_LOW_TRANS, PERSIANRED1}},
-	[SAMPLE_SHALLOW]  = {{PERSIANRED1, BLACK1_LOW_TRANS, PERSIANRED1}},
-	[SMOOTHED]        = {{REDORANGE1_HIGH_TRANS, BLACK1_LOW_TRANS, REDORANGE1_HIGH_TRANS}},
-	[MINUTE]          = {{MEDIUMREDVIOLET1_HIGHER_TRANS, BLACK1_LOW_TRANS, MEDIUMREDVIOLET1_HIGHER_TRANS}},
-	[TIME_GRID]       = {{WHITE1, BLACK1_HIGH_TRANS, TUNDORA1_MED_TRANS}},
-	[TIME_TEXT]       = {{FORESTGREEN1, BLACK1_LOW_TRANS, FORESTGREEN1}},
-	[DEPTH_GRID]      = {{WHITE1, BLACK1_HIGH_TRANS, TUNDORA1_MED_TRANS}},
-	[MEAN_DEPTH]      = {{REDORANGE1_MED_TRANS, BLACK1_LOW_TRANS, REDORANGE1_MED_TRANS}},
-	[DEPTH_BOTTOM]    = {{GOVERNORBAY1_MED_TRANS, BLACK1_HIGH_TRANS, GOVERNORBAY1_MED_TRANS}},
-	[DEPTH_TOP]       = {{MERCURY1_MED_TRANS, WHITE1_MED_TRANS, MERCURY1_MED_TRANS}},
-	[TEMP_TEXT]       = {{GOVERNORBAY2, BLACK1_LOW_TRANS, GOVERNORBAY2}},
-	[TEMP_PLOT]       = {{ROYALBLUE2_LOW_TRANS, BLACK1_LOW_TRANS, ROYALBLUE2_LOW_TRANS}},
-	[SAC_DEFAULT]     = {{WHITE1, BLACK1_LOW_TRANS, FORESTGREEN1}},
-	[BOUNDING_BOX]    = {{WHITE1, BLACK1_LOW_TRANS, TUNDORA1_MED_TRANS}},
-	[PRESSURE_TEXT]   = {{KILLARNEY1, BLACK1_LOW_TRANS, KILLARNEY1}},
-	[BACKGROUND]      = {{SPRINGWOOD1, BLACK1_LOW_TRANS, SPRINGWOOD1}},
-	[CEILING_SHALLOW] = {{REDORANGE1_HIGH_TRANS, BLACK1_HIGH_TRANS, REDORANGE1_HIGH_TRANS}},
-	[CEILING_DEEP]    = {{RED1_MED_TRANS, BLACK1_HIGH_TRANS, RED1_MED_TRANS}},
-	[CALC_CEILING_SHALLOW] = {{FUNGREEN1_HIGH_TRANS, BLACK1_HIGH_TRANS, FUNGREEN1_HIGH_TRANS}},
-	[CALC_CEILING_DEEP]    = {{APPLE1_HIGH_TRANS, BLACK1_HIGH_TRANS, APPLE1_HIGH_TRANS}},
-
-};
-
-/* Scale to 0,0 -> maxx,maxy */
-#define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
-#define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
-#define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
+#if USE_GTK_UI
 
 /* keep the last used gc around so we can invert the SCALEX calculation in
  * order to calculate a time value for an x coordinate */
@@ -155,42 +41,7 @@ int x_abs(double x)
 {
 	return x - last_gc.drawing_area.x;
 }
-
-static void move_to(struct graphics_context *gc, double x, double y)
-{
-	cairo_move_to(gc->cr, SCALE(gc, x, y));
-}
-
-static void line_to(struct graphics_context *gc, double x, double y)
-{
-	cairo_line_to(gc->cr, SCALE(gc, x, y));
-}
-
-static void set_source_rgba(struct graphics_context *gc, color_indice_t c)
-{
-	const color_t *col = &profile_color[c];
-	struct rgba rgb = col->media[gc->printer];
-	double r = rgb.r;
-	double g = rgb.g;
-	double b = rgb.b;
-	double a = rgb.a;
-
-	cairo_set_source_rgba(gc->cr, r, g, b, a);
-}
-
-void init_profile_background(struct graphics_context *gc)
-{
-	set_source_rgba(gc, BACKGROUND);
-}
-
-static void pattern_add_color_stop_rgba(struct graphics_context *gc, cairo_pattern_t *pat, double o, color_indice_t c)
-{
-	const color_t *col = &profile_color[c];
-	struct rgba rgb = col->media[gc->printer];
-	cairo_pattern_add_color_stop_rgba(pat, o, rgb.r, rgb.g, rgb.b, rgb.a);
-}
-
-#define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
+#endif /* USE_GTK_UI */
 
 /* debugging tool - not normally used */
 static void dump_pi (struct plot_info *pi)
@@ -215,6 +66,8 @@ static void dump_pi (struct plot_info *pi)
 	printf("   }\n");
 }
 
+#define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
+
 /*
  * When showing dive profiles, we scale things to the
  * current dive. However, we don't scale past less than
@@ -223,7 +76,7 @@ static void dump_pi (struct plot_info *pi)
  * We also need to add 180 seconds at the end so the min/max
  * plots correctly
  */
-static int get_maxtime(struct plot_info *pi)
+int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
 	if (zoomed_plot) {
@@ -246,7 +99,7 @@ static int get_maxtime(struct plot_info *pi)
 /* get the maximum depth to which we want to plot
  * take into account the additional verical space needed to plot
  * partial pressure graphs */
-static int get_maxdepth(struct plot_info *pi)
+int get_maxdepth(struct plot_info *pi)
 {
 	unsigned mm = pi->maxdepth;
 	int md;
@@ -262,61 +115,10 @@ static int get_maxdepth(struct plot_info *pi)
 	return md;
 }
 
-typedef struct {
-	double size;
-	color_indice_t color;
-	double hpos, vpos;
-} text_render_options_t;
-
-#define RIGHT (-1.0)
-#define CENTER (-0.5)
-#define LEFT (0.0)
-
-#define TOP (1)
-#define MIDDLE (0)
-#define BOTTOM (-1)
-
-static void plot_text(struct graphics_context *gc, const text_render_options_t *tro,
-		      double x, double y, const char *fmt, ...)
-{
-	cairo_t *cr = gc->cr;
-	cairo_font_extents_t fe;
-	cairo_text_extents_t extents;
-	double dx, dy;
-	char buffer[256];
-	va_list args;
-
-	va_start(args, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, args);
-	va_end(args);
-
-	cairo_set_font_size(cr, tro->size * plot_scale);
-	cairo_font_extents(cr, &fe);
-	cairo_text_extents(cr, buffer, &extents);
-	dx = tro->hpos * (extents.width + extents.x_bearing);
-	dy = tro->vpos * (extents.height + fe.descent);
-	move_to(gc, x, y);
-	cairo_rel_move_to(cr, dx, dy);
-
-	cairo_text_path(cr, buffer);
-	set_source_rgba(gc, TEXT_BACKGROUND);
-	cairo_stroke(cr);
-
-	move_to(gc, x, y);
-	cairo_rel_move_to(cr, dx, dy);
-
-	set_source_rgba(gc, tro->color);
-	cairo_show_text(cr, buffer);
-}
-
 /* collect all event names and whether we display them */
-struct ev_select {
-	char *ev_name;
-	gboolean plot_ev;
-};
-static struct ev_select *ev_namelist;
-static int evn_allocated;
-static int evn_used;
+struct ev_select *ev_namelist;
+int evn_allocated;
+int evn_used;
 
 int evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 {
@@ -357,145 +159,50 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
-static void plot_one_event(struct graphics_context *gc, struct plot_info *pi, struct event *event)
+int setup_temperature_limits(struct graphics_context *gc)
 {
-	int i, depth = 0;
-	int x,y;
-	char buffer[256];
+	int maxtime, mintemp, maxtemp, delta;
 
-	/* is plotting this event disabled? */
-	if (event->name) {
-		for (i = 0; i < evn_used; i++) {
-			if (! strcmp(event->name, ev_namelist[i].ev_name)) {
-				if (ev_namelist[i].plot_ev)
-					break;
-				else
-					return;
-			}
-		}
-	}
-	if (event->time.seconds < 30 && !strcmp(event->name, "gaschange"))
-		/* a gas change in the first 30 seconds is the way of some dive computers
-		 * to tell us the gas that is used; let's not plot a marker for that */
-		return;
-
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *data = pi->entry + i;
-		if (event->time.seconds < data->sec)
-			break;
-		depth = data->depth;
-	}
-	/* draw a little triangular marker and attach tooltip */
-	x = SCALEX(gc, event->time.seconds);
-	y = SCALEY(gc, depth);
-	set_source_rgba(gc, ALERT_BG);
-	cairo_move_to(gc->cr, x-6, y+12);
-	cairo_line_to(gc->cr, x+6, y+12);
-	cairo_line_to(gc->cr, x  , y);
-	cairo_line_to(gc->cr, x-6, y+12);
-	cairo_stroke_preserve(gc->cr);
-	cairo_fill(gc->cr);
-	set_source_rgba(gc, ALERT_FG);
-	cairo_move_to(gc->cr, x, y+3);
-	cairo_line_to(gc->cr, x, y+7);
-	cairo_move_to(gc->cr, x, y+10);
-	cairo_line_to(gc->cr, x, y+10);
-	cairo_stroke(gc->cr);
-	/* we display the event on screen - so translate */
-	if (event->value) {
-		if (event->name && !strcmp(event->name, "gaschange")) {
-			unsigned int he = event->value >> 16;
-			unsigned int o2 = event->value & 0xffff;
-			if (he) {
-				snprintf(buffer, sizeof(buffer), "%s:%u/%u",
-					_(event->name), o2, he);
-			} else {
-				if (o2 == 21)
-					snprintf(buffer, sizeof(buffer), "%s:%s",
-						_(event->name), _("air"));
-				else
-					snprintf(buffer, sizeof(buffer), "%s:%u%% %s",
-						_(event->name), o2, "O" UTF8_SUBSCRIPT_2);
-			}
-		} else if (event->name && !strcmp(event->name, "SP change")) {
-			snprintf(buffer, sizeof(buffer), "%s:%0.1f", _(event->name), (double) event->value / 1000);
-		} else {
-			snprintf(buffer, sizeof(buffer), "%s:%d", _(event->name), event->value);
-		}
-	} else if (event->name && !strcmp(event->name, "SP change")) {
-		snprintf(buffer, sizeof(buffer), _("Bailing out to OC"));
-	} else {
-		snprintf(buffer, sizeof(buffer), "%s%s", _(event->name),
-			event->flags == SAMPLE_FLAGS_BEGIN ? C_("Starts with space!"," begin") :
-			event->flags == SAMPLE_FLAGS_END ? C_("Starts with space!", " end") : "");
-	}
-	attach_tooltip(x-6, y, 12, 12, buffer, event);
-}
-
-static void plot_events(struct graphics_context *gc, struct plot_info *pi, struct divecomputer *dc)
-{
-	struct event *event = dc->events;
-
-	if (gc->printer)
-		return;
-
-	while (event) {
-		plot_one_event(gc, pi, event);
-		event = event->next;
-	}
-}
-
-static void render_depth_sample(struct graphics_context *gc, struct plot_data *entry, const text_render_options_t *tro)
-{
-	int sec = entry->sec, decimals;
-	double d;
-
-	d = get_depth_units(entry->depth, &decimals, NULL);
-
-	plot_text(gc, tro, sec, entry->depth, "%.*f", decimals, d);
-}
-
-static void plot_text_samples(struct graphics_context *gc, struct plot_info *pi)
-{
-	static const text_render_options_t deep = {14, SAMPLE_DEEP, CENTER, TOP};
-	static const text_render_options_t shallow = {14, SAMPLE_SHALLOW, CENTER, BOTTOM};
-	int i;
-	int last = -1;
-
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-
-		if (entry->depth < 2000)
-			continue;
-
-		if ((entry == entry->max[2]) && entry->depth != last) {
-			render_depth_sample(gc, entry, &deep);
-			last = entry->depth;
-		}
-
-		if ((entry == entry->min[2]) && entry->depth != last) {
-			render_depth_sample(gc, entry, &shallow);
-			last = entry->depth;
-		}
-
-		if (entry->depth != last)
-			last = -1;
-	}
-}
-
-static void plot_depth_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	int maxtime, maxdepth;
-
+	struct plot_info *pi = &gc->pi;
 	/* Get plot scaling limits */
 	maxtime = get_maxtime(pi);
-	maxdepth = get_maxdepth(pi);
+	mintemp = pi->mintemp;
+	maxtemp = pi->maxtemp;
 
 	gc->leftx = 0; gc->rightx = maxtime;
-	gc->topy = 0; gc->bottomy = maxdepth;
+	/* Show temperatures in roughly the lower third, but make sure the scale
+	   is at least somewhat reasonable */
+	delta = maxtemp - mintemp;
+	if (delta < 3000) /* less than 3K in fluctuation */
+		delta = 3000;
+	gc->topy = maxtemp + delta*2;
 
-	plot_text_samples(gc, pi);
+	if (PP_GRAPHS_ENABLED)
+		gc->bottomy = mintemp - delta * 2;
+	else
+		gc->bottomy = mintemp - delta / 3;
+
+	pi->endtempcoord = SCALEY(gc, pi->mintemp);
+	return maxtemp && maxtemp >= mintemp;
 }
+
+void setup_pp_limits(struct graphics_context *gc)
+{
+	int maxdepth;
+
+	gc->leftx = 0;
+	gc->rightx = get_maxtime(&gc->pi);
+
+	/* the maxdepth already includes extra vertical space - and if
+	 * we use 1.5 times the corresponding pressure as maximum partial
+	 * pressure the graph seems to look fine*/
+	maxdepth = get_maxdepth(&gc->pi);
+	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
+	gc->bottomy = -gc->topy / 20;
+}
+
+
+#if 0
 
 static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info *pi)
 {
@@ -540,496 +247,30 @@ static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *p
 	plot_minmax_profile_minute(gc, pi, 0);
 }
 
-static void plot_depth_scale(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i, maxdepth, marker;
-	static const text_render_options_t tro = {DEPTH_TEXT_SIZE, SAMPLE_DEEP, RIGHT, MIDDLE};
+#endif /* USE_GTK_UI */
 
-	/* Depth markers: every 30 ft or 10 m*/
-	maxdepth = get_maxdepth(pi);
-	gc->topy = 0; gc->bottomy = maxdepth;
-
-	switch (prefs.units.length) {
-	case METERS: marker = 10000; break;
-	case FEET: marker = 9144; break;	/* 30 ft */
-	}
-	set_source_rgba(gc, DEPTH_GRID);
-	/* don't write depth labels all the way to the bottom as
-	 * there may be other graphs below the depth plot (like
-	 * partial pressure graphs) where this would look out
-	 * of place - so we only make sure that we print the next
-	 * marker below the actual maxdepth of the dive */
-	for (i = marker; i <= pi->maxdepth + marker; i += marker) {
-		double d = get_depth_units(i, NULL, NULL);
-		plot_text(gc, &tro, -0.002, i, "%.0f", d);
-	}
-}
-
-static void setup_pp_limits(struct graphics_context *gc, struct plot_info *pi)
-{
-	int maxdepth;
-
-	gc->leftx = 0;
-	gc->rightx = get_maxtime(pi);
-
-	/* the maxdepth already includes extra vertical space - and if
-	 * we use 1.5 times the corresponding pressure as maximum partial
-	 * pressure the graph seems to look fine*/
-	maxdepth = get_maxdepth(pi);
-	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
-	gc->bottomy = -gc->topy / 20;
-}
-
-static void plot_pp_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	double pp, dpp, m;
-	int hpos;
-	static const text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
-
-	setup_pp_limits(gc, pi);
-	pp = floor(pi->maxpp * 10.0) / 10.0 + 0.2;
-	dpp = pp > 4 ? 1.0 : 0.5;
-	hpos = pi->entry[pi->nr - 1].sec;
-	set_source_rgba(gc, PP_LINES);
-	for (m = 0.0; m <= pp; m += dpp) {
-		move_to(gc, 0, m);
-		line_to(gc, hpos, m);
-		cairo_stroke(gc->cr);
-		plot_text(gc, &tro, hpos + 30, m, "%.1f", m);
-	}
-}
-
-static void plot_pp_gas_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	struct plot_data *entry;
-
-	setup_pp_limits(gc, pi);
-
-	if (prefs.pp_graphs.pn2) {
-		set_source_rgba(gc, PN2);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->pn2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->pn2 < prefs.pp_graphs.pn2_threshold)
-				line_to(gc, entry->sec, entry->pn2);
-			else
-				move_to(gc, entry->sec, entry->pn2);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PN2_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->pn2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold)
-				line_to(gc, entry->sec, entry->pn2);
-			else
-				move_to(gc, entry->sec, entry->pn2);
-		}
-		cairo_stroke(gc->cr);
-	}
-	if (prefs.pp_graphs.phe) {
-		set_source_rgba(gc, PHE);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->phe);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->phe < prefs.pp_graphs.phe_threshold)
-				line_to(gc, entry->sec, entry->phe);
-			else
-				move_to(gc, entry->sec, entry->phe);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PHE_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->phe);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->phe >= prefs.pp_graphs.phe_threshold)
-				line_to(gc, entry->sec, entry->phe);
-			else
-				move_to(gc, entry->sec, entry->phe);
-		}
-		cairo_stroke(gc->cr);
-	}
-	if (prefs.pp_graphs.po2) {
-		set_source_rgba(gc, PO2);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 < prefs.pp_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-
-		set_source_rgba(gc, PO2_ALERT);
-		entry = pi->entry;
-		move_to(gc, entry->sec, entry->po2);
-		for (i = 1; i < pi->nr; i++) {
-			entry++;
-			if (entry->po2 >= prefs.pp_graphs.po2_threshold)
-				line_to(gc, entry->sec, entry->po2);
-			else
-				move_to(gc, entry->sec, entry->po2);
-		}
-		cairo_stroke(gc->cr);
-	}
-}
-
-static void plot_depth_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i, incr;
-	cairo_t *cr = gc->cr;
-	int sec, depth;
-	struct plot_data *entry;
-	int maxtime, maxdepth, marker, maxline;
-	int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
-
-	/* Get plot scaling limits */
-	maxtime = get_maxtime(pi);
-	maxdepth = get_maxdepth(pi);
-
-	gc->maxtime = maxtime;
-
-	/* Time markers: at most every 10 seconds, but no more than 12 markers.
-	 * We start out with 10 seconds and increment up to 30 minutes,
-	 * depending on the dive time.
-	 * This allows for 6h dives - enough (I hope) for even the craziest
-	 * divers - but just in case, for those 8h depth-record-breaking dives,
-	 * we double the interval if this still doesn't get us to 12 or fewer
-	 * time markers */
-	i = 0;
-	while (maxtime / increments[i] > 12 && i < 7)
-		i++;
-	incr = increments[i];
-	while (maxtime / incr > 12)
-		incr *= 2;
-
-	gc->leftx = 0; gc->rightx = maxtime;
-	gc->topy = 0; gc->bottomy = 1.0;
-
-	last_gc = *gc;
-
-	set_source_rgba(gc, TIME_GRID);
-	cairo_set_line_width_scaled(gc->cr, 2);
-
-	for (i = incr; i < maxtime; i += incr) {
-		move_to(gc, i, 0);
-		line_to(gc, i, 1);
-	}
-	cairo_stroke(cr);
-
-	/* now the text on the time markers */
-	text_render_options_t tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
-	if (maxtime < 600) {
-		/* Be a bit more verbose with shorter dives */
-		for (i = incr; i < maxtime; i += incr)
-			plot_text(gc, &tro, i, 1, "%02d:%02d", i/60, i%60);
-	} else {
-		/* Only render the time on every second marker for normal dives */
-		for (i = incr; i < maxtime; i += 2 * incr)
-			plot_text(gc, &tro, i, 1, "%d", i/60);
-	}
-	/* Depth markers: every 30 ft or 10 m*/
-	gc->leftx = 0; gc->rightx = 1.0;
-	gc->topy = 0; gc->bottomy = maxdepth;
-	switch (prefs.units.length) {
-	case METERS: marker = 10000; break;
-	case FEET: marker = 9144; break;	/* 30 ft */
-	}
-	maxline = MAX(pi->maxdepth + marker, maxdepth * 2 / 3);
-	set_source_rgba(gc, DEPTH_GRID);
-	for (i = marker; i < maxline; i += marker) {
-		move_to(gc, 0, i);
-		line_to(gc, 1, i);
-	}
-	cairo_stroke(cr);
-
-	gc->leftx = 0; gc->rightx = maxtime;
-
-	/* Show mean depth */
-	if (! gc->printer) {
-		set_source_rgba(gc, MEAN_DEPTH);
-		move_to(gc, 0, pi->meandepth);
-		line_to(gc, pi->entry[pi->nr - 1].sec, pi->meandepth);
-		cairo_stroke(cr);
-	}
-
-	/*
-	 * These are good for debugging text placement etc,
-	 * but not for actual display..
-	 */
-	if (0) {
-		plot_smoothed_profile(gc, pi);
-		plot_minmax_profile(gc, pi);
-	}
-
-	/* Do the depth profile for the neat fill */
-	gc->topy = 0; gc->bottomy = maxdepth;
-
-	cairo_pattern_t *pat;
-	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-	pattern_add_color_stop_rgba (gc, pat, 1, DEPTH_BOTTOM);
-	pattern_add_color_stop_rgba (gc, pat, 0, DEPTH_TOP);
-
-	cairo_set_source(gc->cr, pat);
-	cairo_pattern_destroy(pat);
-	cairo_set_line_width_scaled(gc->cr, 2);
-
-	entry = pi->entry;
-	move_to(gc, 0, 0);
-	for (i = 0; i < pi->nr; i++, entry++)
-		line_to(gc, entry->sec, entry->depth);
-
-	/* Show any ceiling we may have encountered */
-	for (i = pi->nr - 1; i >= 0; i--, entry--) {
-		if (entry->ndl) {
-			/* non-zero NDL implies this is a safety stop, no ceiling */
-			line_to(gc, entry->sec, 0);
-		} else if (entry->stopdepth < entry->depth) {
-				line_to(gc, entry->sec, entry->stopdepth);
-		} else {
-			line_to(gc, entry->sec, entry->depth);
-		}
-	}
-	cairo_close_path(gc->cr);
-	cairo_fill(gc->cr);
-
-	/* if the user wants the deco ceiling more visible, do that here (this
-	 * basically draws over the background that we had allowed to shine
-	 * through so far) */
-	if (prefs.profile_red_ceiling) {
-		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-		pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
-		pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
-		cairo_set_source(gc->cr, pat);
-		cairo_pattern_destroy(pat);
-		entry = pi->entry;
-		move_to(gc, 0, 0);
-		for (i = 0; i < pi->nr; i++, entry++) {
-			if (entry->ndl == 0 && entry->stopdepth) {
-				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
-					line_to(gc, entry->sec, entry->stopdepth);
-				} else {
-					line_to(gc, entry->sec, entry->depth);
-				}
-			} else {
-				line_to(gc, entry->sec, 0);
-			}
-		}
-		cairo_close_path(gc->cr);
-		cairo_fill(gc->cr);
-	}
-	/* finally, plot the calculated ceiling over all this */
-	if (prefs.profile_calc_ceiling) {
-		pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-		pattern_add_color_stop_rgba (gc, pat, 0, CALC_CEILING_SHALLOW);
-		pattern_add_color_stop_rgba (gc, pat, 1, CALC_CEILING_DEEP);
-		cairo_set_source(gc->cr, pat);
-		cairo_pattern_destroy(pat);
-		entry = pi->entry;
-		move_to(gc, 0, 0);
-		for (i = 0; i < pi->nr; i++, entry++) {
-			if (entry->ceiling)
-				line_to(gc, entry->sec, entry->ceiling);
-			else
-				line_to(gc, entry->sec, 0);
-		}
-		line_to(gc, (entry-1)->sec, 0); /* make sure we end at 0 */
-		cairo_close_path(gc->cr);
-		cairo_fill(gc->cr);
-	}
-	/* next show where we have been bad and crossed the dc's ceiling */
-	pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0 * plot_scale);
-	pattern_add_color_stop_rgba (gc, pat, 0, CEILING_SHALLOW);
-	pattern_add_color_stop_rgba (gc, pat, 1, CEILING_DEEP);
-	cairo_set_source(gc->cr, pat);
-	cairo_pattern_destroy(pat);
-	entry = pi->entry;
-	move_to(gc, 0, 0);
-	for (i = 0; i < pi->nr; i++, entry++)
-		line_to(gc, entry->sec, entry->depth);
-
-	for (i = pi->nr - 1; i >= 0; i--, entry--) {
-		if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
-			line_to(gc, entry->sec, entry->stopdepth);
-		} else {
-			line_to(gc, entry->sec, entry->depth);
-		}
-	}
-	cairo_close_path(gc->cr);
-	cairo_fill(gc->cr);
-
-	/* Now do it again for the velocity colors */
-	entry = pi->entry;
-	for (i = 1; i < pi->nr; i++) {
-		entry++;
-		sec = entry->sec;
-		/* we want to draw the segments in different colors
-		 * representing the vertical velocity, so we need to
-		 * chop this into short segments */
-		depth = entry->depth;
-		set_source_rgba(gc, VELOCITY_COLORS_START_IDX + entry->velocity);
-		move_to(gc, entry[-1].sec, entry[-1].depth);
-		line_to(gc, sec, depth);
-		cairo_stroke(cr);
-	}
-}
-
-static int setup_temperature_limits(struct graphics_context *gc, struct plot_info *pi)
-{
-	int maxtime, mintemp, maxtemp, delta;
-
-	/* Get plot scaling limits */
-	maxtime = get_maxtime(pi);
-	mintemp = pi->mintemp;
-	maxtemp = pi->maxtemp;
-
-	gc->leftx = 0; gc->rightx = maxtime;
-	/* Show temperatures in roughly the lower third, but make sure the scale
-	   is at least somewhat reasonable */
-	delta = maxtemp - mintemp;
-	if (delta < 3000) /* less than 3K in fluctuation */
-		delta = 3000;
-	gc->topy = maxtemp + delta*2;
-
-	if (PP_GRAPHS_ENABLED)
-		gc->bottomy = mintemp - delta * 2;
-	else
-		gc->bottomy = mintemp - delta / 3;
-
-	pi->endtempcoord = SCALEY(gc, pi->mintemp);
-	return maxtemp && maxtemp >= mintemp;
-}
-
-static void plot_single_temp_text(struct graphics_context *gc, int sec, int mkelvin)
-{
-	double deg;
-	const char *unit;
-	static const text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
-
-	deg = get_temp_units(mkelvin, &unit);
-
-	plot_text(gc, &tro, sec, mkelvin, "%.2g%s", deg, unit);
-}
-
-static void plot_temperature_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	int last = -300, sec = 0;
-	int last_temperature = 0, last_printed_temp = 0;
-
-	if (!setup_temperature_limits(gc, pi))
-		return;
-
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry+i;
-		int mkelvin = entry->temperature;
-		sec = entry->sec;
-
-		if (!mkelvin)
-			continue;
-		last_temperature = mkelvin;
-		/* don't print a temperature
-		 * if it's been less than 5min and less than a 2K change OR
-		 * if it's been less than 2min OR if the change from the
-		 * last print is less than .4K (and therefore less than 1F */
-		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
-			(sec < last + 120) ||
-			(abs(mkelvin - last_printed_temp) < 400))
-			continue;
-		last = sec;
-		plot_single_temp_text(gc,sec,mkelvin);
-		last_printed_temp = mkelvin;
-	}
-	/* it would be nice to print the end temperature, if it's
-	 * different or if the last temperature print has been more
-	 * than a quarter of the dive back */
-	if ((abs(last_temperature - last_printed_temp) > 500) ||
-		((double)last / (double)sec < 0.75))
-		plot_single_temp_text(gc, sec, last_temperature);
-}
-
-static void plot_temperature_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	cairo_t *cr = gc->cr;
-	int last = 0;
-
-	if (!setup_temperature_limits(gc, pi))
-		return;
-
-	cairo_set_line_width_scaled(gc->cr, 2);
-	set_source_rgba(gc, TEMP_PLOT);
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-		int mkelvin = entry->temperature;
-		int sec = entry->sec;
-		if (!mkelvin) {
-			if (!last)
-				continue;
-			mkelvin = last;
-		}
-		if (last)
-			line_to(gc, sec, mkelvin);
-		else
-			move_to(gc, sec, mkelvin);
-		last = mkelvin;
-	}
-	cairo_stroke(cr);
-}
-
-/* gets both the actual start and end pressure as well as the scaling factors */
-static int get_cylinder_pressure_range(struct graphics_context *gc, struct plot_info *pi)
+int get_cylinder_pressure_range(struct graphics_context *gc)
 {
 	gc->leftx = 0;
-	gc->rightx = get_maxtime(pi);
+	gc->rightx = get_maxtime(&gc->pi);
 
 	if (PP_GRAPHS_ENABLED)
-		gc->bottomy = -pi->maxpressure * 0.75;
+		gc->bottomy = -gc->pi.maxpressure * 0.75;
 	else
 		gc->bottomy = 0;
-	gc->topy = pi->maxpressure * 1.5;
-	if (!pi->maxpressure)
+	gc->topy = gc->pi.maxpressure * 1.5;
+	if (!gc->pi.maxpressure)
 		return FALSE;
 
-	while (pi->endtempcoord <= SCALEY(gc, pi->minpressure - (gc->topy) * 0.1))
-		gc->bottomy -=  gc->topy * 0.1;
+	while (gc->pi.endtempcoord <= SCALEY(gc, gc->pi.minpressure - (gc->topy) * 0.1))
+		gc->bottomy -=  gc->topy * 0.1 * gc->maxy/abs(gc->maxy);
 
 	return TRUE;
 }
 
-/* set the color for the pressure plot according to temporary sac rate
- * as compared to avg_sac; the calculation simply maps the delta between
- * sac and avg_sac to indexes 0 .. (SAC_COLORS - 1) with everything
- * more than 6000 ml/min below avg_sac mapped to 0 */
-
-static void set_sac_color(struct graphics_context *gc, int sac, int avg_sac)
-{
-	int sac_index = 0;
-	int delta = sac - avg_sac + 7000;
-
-	if (!gc->printer) {
-		sac_index = delta / 2000;
-		if (sac_index < 0)
-			sac_index = 0;
-		if (sac_index > SAC_COLORS - 1)
-			sac_index = SAC_COLORS - 1;
-		set_source_rgba(gc, SAC_COLORS_START_IDX + sac_index);
-	} else {
-		set_source_rgba(gc, SAC_DEFAULT);
-	}
-}
 
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
-static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
+int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
 	int index = entry1->cylinderindex;
 	cylinder_t *cyl;
@@ -1057,137 +298,6 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 
 	/* milliliters per minute */
 	return airuse / atm * 60 / duration;
-}
-
-/* calculate the current SAC in ml/min and convert to int */
-#define GET_LOCAL_SAC(_entry1, _entry2, _dive) \
-	get_local_sac(_entry1, _entry2, _dive)
-
-#define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
-
-static void plot_cylinder_pressure(struct graphics_context *gc, struct plot_info *pi,
-				struct dive *dive, struct divecomputer *dc)
-{
-	int i;
-	int last = -1, last_index = -1;
-	int lift_pen = FALSE;
-	int first_plot = TRUE;
-	int sac = 0;
-	struct plot_data *last_entry = NULL;
-
-	if (!get_cylinder_pressure_range(gc, pi))
-		return;
-
-	cairo_set_line_width_scaled(gc->cr, 2);
-
-	for (i = 0; i < pi->nr; i++) {
-		int mbar;
-		struct plot_data *entry = pi->entry + i;
-
-		mbar = GET_PRESSURE(entry);
-		if (entry->cylinderindex != last_index) {
-			lift_pen = TRUE;
-			last_entry = NULL;
-		}
-		if (!mbar) {
-			lift_pen = TRUE;
-			continue;
-		}
-		if (!last_entry) {
-			last = i;
-			last_entry = entry;
-			sac = GET_LOCAL_SAC(entry, pi->entry + i + 1, dive);
-		} else {
-			int j;
-			sac = 0;
-			for (j = last; j < i; j++)
-				sac += GET_LOCAL_SAC(pi->entry + j, pi->entry + j + 1, dive);
-			sac /= (i - last);
-			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
-				last++;
-				last_entry = pi->entry + last;
-			}
-		}
-		set_sac_color(gc, sac, dive->sac);
-		if (lift_pen) {
-			if (!first_plot && entry->cylinderindex == last_index) {
-				/* if we have a previous event from the same tank,
-				 * draw at least a short line */
-				int prev_pr;
-				prev_pr = GET_PRESSURE(entry - 1);
-				move_to(gc, (entry-1)->sec, prev_pr);
-				line_to(gc, entry->sec, mbar);
-			} else {
-				first_plot = FALSE;
-				move_to(gc, entry->sec, mbar);
-			}
-			lift_pen = FALSE;
-		} else {
-			line_to(gc, entry->sec, mbar);
-		}
-		cairo_stroke(gc->cr);
-		move_to(gc, entry->sec, mbar);
-		last_index = entry->cylinderindex;
-	}
-}
-
-static void plot_pressure_value(struct graphics_context *gc, int mbar, int sec,
-				int xalign, int yalign)
-{
-	int pressure;
-	const char *unit;
-
-	pressure = get_pressure_units(mbar, &unit);
-	text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
-	plot_text(gc, &tro, sec, mbar, "%d %s", pressure, unit);
-}
-
-static void plot_cylinder_pressure_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	int mbar, cyl;
-	int seen_cyl[MAX_CYLINDERS] = { FALSE, };
-	int last_pressure[MAX_CYLINDERS] = { 0, };
-	int last_time[MAX_CYLINDERS] = { 0, };
-	struct plot_data *entry;
-
-	if (!get_cylinder_pressure_range(gc, pi))
-		return;
-
-	cyl = -1;
-	for (i = 0; i < pi->nr; i++) {
-		entry = pi->entry + i;
-		mbar = GET_PRESSURE(entry);
-
-		if (!mbar)
-			continue;
-		if (cyl != entry->cylinderindex) {
-			cyl = entry->cylinderindex;
-			if (!seen_cyl[cyl]) {
-				plot_pressure_value(gc, mbar, entry->sec, LEFT, BOTTOM);
-				seen_cyl[cyl] = TRUE;
-			}
-		}
-		last_pressure[cyl] = mbar;
-		last_time[cyl] = entry->sec;
-	}
-
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		if (last_time[cyl]) {
-			plot_pressure_value(gc, last_pressure[cyl], last_time[cyl], CENTER, TOP);
-		}
-	}
-}
-
-static void plot_deco_text(struct graphics_context *gc, struct plot_info *pi)
-{
-	if (prefs.profile_calc_ceiling) {
-		float x = gc->leftx + (gc->rightx - gc->leftx) / 2;
-		float y = gc->topy = 1.0;
-		text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
-		gc->bottomy = 0.0;
-		plot_text(gc, &tro, x, y, "GF %.0f/%.0f", prefs.gflow * 100, prefs.gfhigh * 100);
-	}
 }
 
 static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, int index)
@@ -1259,6 +369,7 @@ static velocity_t velocity(int speed)
 
 	return v;
 }
+
 static struct plot_info *analyze_plot_info(struct plot_info *pi)
 {
 	int i;
@@ -1585,7 +696,7 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
 }
 
-static void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
 	int maxdepth;
@@ -1941,7 +1052,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
 
@@ -1974,19 +1085,6 @@ static struct plot_info *create_plot_info(struct dive *dive, struct divecomputer
 	return analyze_plot_info(pi);
 }
 
-static void plot_set_scale(scale_mode_t scale)
-{
-	switch (scale) {
-	default:
-	case SC_SCREEN:
-		plot_scale = SCALE_SCREEN;
-		break;
-	case SC_PRINT:
-		plot_scale = SCALE_PRINT;
-		break;
-	}
-}
-
 /* make sure you pass this the FIRST dc - it just walks the list */
 static int nr_dcs(struct divecomputer *main)
 {
@@ -2015,125 +1113,7 @@ struct divecomputer *select_dc(struct divecomputer *main)
 	return main;
 }
 
-void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale)
-{
-	struct plot_info *pi;
-	struct divecomputer *dc = &dive->dc;
-	cairo_rectangle_t *drawing_area = &gc->drawing_area;
-	const char *nickname;
-
-	plot_set_scale(scale);
-
-	if (!dc->samples) {
-		static struct sample fake[4];
-		static struct divecomputer fakedc;
-		fakedc = dive->dc;
-		fakedc.sample = fake;
-		fakedc.samples = 4;
-
-		/* The dive has no samples, so create a few fake ones.  This assumes an
-		ascent/descent rate of 9 m/min, which is just below the limit for FAST. */
-		int duration = dive->dc.duration.seconds;
-		int maxdepth = dive->dc.maxdepth.mm;
-		int asc_desc_time = dive->dc.maxdepth.mm*60/9000;
-		if (asc_desc_time * 2 >= duration)
-			asc_desc_time = duration / 2;
-		fake[1].time.seconds = asc_desc_time;
-		fake[1].depth.mm = maxdepth;
-		fake[2].time.seconds = duration - asc_desc_time;
-		fake[2].depth.mm = maxdepth;
-		fake[3].time.seconds = duration * 1.00;
-		fakedc.events = dc->events;
-		dc = &fakedc;
-	}
-
-	/*
-	 * Set up limits that are independent of
-	 * the dive computer
-	 */
-	calculate_max_limits(dive, dc, gc);
-
-	/* shift the drawing area so we have a nice margin around it */
-	cairo_translate(gc->cr, drawing_area->x, drawing_area->y);
-	cairo_set_line_width_scaled(gc->cr, 1);
-	cairo_set_line_cap(gc->cr, CAIRO_LINE_CAP_ROUND);
-	cairo_set_line_join(gc->cr, CAIRO_LINE_JOIN_ROUND);
-
-	/*
-	 * We don't use "cairo_translate()" because that doesn't
-	 * scale line width etc. But the actual scaling we need
-	 * do set up ourselves..
-	 *
-	 * Snif. What a pity.
-	 */
-	gc->maxx = (drawing_area->width - 2*drawing_area->x);
-	gc->maxy = (drawing_area->height - 2*drawing_area->y);
-
-	dc = select_dc(dc);
-
-	/* This is per-dive-computer. Right now we just do the first one */
-	pi = create_plot_info(dive, dc, gc);
-
-	/* Depth profile */
-	plot_depth_profile(gc, pi);
-	plot_events(gc, pi, dc);
-
-	/* Temperature profile */
-	plot_temperature_profile(gc, pi);
-
-	/* Cylinder pressure plot */
-	plot_cylinder_pressure(gc, pi, dive, dc);
-
-	/* Text on top of all graphs.. */
-	plot_temperature_text(gc, pi);
-	plot_depth_text(gc, pi);
-	plot_cylinder_pressure_text(gc, pi);
-	plot_deco_text(gc, pi);
-
-	/* Bounding box last */
-	gc->leftx = 0; gc->rightx = 1.0;
-	gc->topy = 0; gc->bottomy = 1.0;
-
-	set_source_rgba(gc, BOUNDING_BOX);
-	cairo_set_line_width_scaled(gc->cr, 1);
-	move_to(gc, 0, 0);
-	line_to(gc, 0, 1);
-	line_to(gc, 1, 1);
-	line_to(gc, 1, 0);
-	cairo_close_path(gc->cr);
-	cairo_stroke(gc->cr);
-
-	/* Put the dive computer name in the lower left corner */
-	nickname = get_dc_nickname(dc->model, dc->deviceid);
-	if (!nickname || *nickname == '\0')
-		nickname = dc->model;
-	if (nickname) {
-		static const text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
-		plot_text(gc, &computer, 0, 1, "%s", nickname);
-	}
-
-	if (PP_GRAPHS_ENABLED) {
-		plot_pp_gas_profile(gc, pi);
-		plot_pp_text(gc, pi);
-	}
-
-	/* now shift the translation back by half the margin;
-	 * this way we can draw the vertical scales on both sides */
-	cairo_translate(gc->cr, -drawing_area->x / 2.0, 0);
-	gc->maxx += drawing_area->x;
-	gc->leftx = -(drawing_area->x / drawing_area->width) / 2.0;
-	gc->rightx = 1.0 - gc->leftx;
-
-	plot_depth_scale(gc, pi);
-
-	if (gc->printer) {
-		free(pi->entry);
-		last_pi_entry = pi->entry = NULL;
-		pi->nr = 0;
-	}
-}
-
-static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
+static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 			int depth, int pressure, int temp, gboolean has_ndl)
 {
 	int pressurevalue, mod, ead, end, eadd;
@@ -2217,7 +1197,7 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 	free(buf2);
 }
 
-void get_plot_details(struct graphics_context *gc, int time, char *buf, size_t bufsize)
+void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufsize)
 {
 	struct plot_info *pi = &gc->pi;
 	int pressure = 0, temp = 0;

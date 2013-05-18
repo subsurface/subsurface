@@ -1,0 +1,6 @@
+ <!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file alias="star">star.svg</file>
+    <file alias="subsurface-icon">subsurface-icon.png</file>
+ </qresource>
+ </RCC>

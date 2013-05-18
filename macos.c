@@ -2,7 +2,10 @@
 /* implements Mac OS X specific functions */
 #include <stdlib.h>
 #include "dive.h"
+#include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif /* USE_GTK_UI */
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #include <mach-o/dyld.h>
@@ -30,29 +33,29 @@ void subsurface_open_conf(void)
 	/* nothing at this time */
 }
 
-void subsurface_unset_conf(char *name)
+void subsurface_unset_conf(const char *name)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name), NULL, SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf(char *name, const char *value)
+void subsurface_set_conf(const char *name, const char *value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
+void subsurface_set_conf_bool(const char *name, int value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name),
 		value ? kCFBooleanTrue : kCFBooleanFalse, SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf_int(char *name, int value)
+void subsurface_set_conf_int(const char *name, int value)
 {
 	CFNumberRef numRef = CFNumberCreate(NULL, kCFNumberIntType, &value);
 	CFPreferencesSetAppValue(CFSTR_VAR(name), numRef, SUBSURFACE_PREFERENCES);
 }
 
-const void *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(const char *name)
 {
 	CFPropertyListRef strpref;
 
@@ -62,7 +65,7 @@ const void *subsurface_get_conf(char *name)
 	return strdup(CFStringGetCStringPtr(strpref, kCFStringEncodingMacRoman));
 }
 
-int subsurface_get_conf_bool(char *name)
+int subsurface_get_conf_bool(const char *name)
 {
 	Boolean boolpref, exists;
 
@@ -72,7 +75,7 @@ int subsurface_get_conf_bool(char *name)
 	return boolpref;
 }
 
-int subsurface_get_conf_int(char *name)
+int subsurface_get_conf_int(const char *name)
 {
 	Boolean exists;
 	CFIndex value;
@@ -151,8 +154,11 @@ const char *subsurface_icon_name()
 {
 	static char path[PATH_MAX];
 
+#if USE_GTK_UI
 	snprintf(path, sizeof(path), "%s/%s", gtkosx_application_get_resource_path(), ICON_NAME);
-
+#else
+	/* need Qt path */
+#endif
 	return path;
 }
 
@@ -174,15 +180,18 @@ const char *subsurface_gettext_domainpath(char *argv0)
 {
 	/* on a Mac we ignore the argv0 argument and instead use the resource_path
 	 * to figure out where to find the translation files */
+#if USE_GTK_UI
 	static char buffer[PATH_MAX];
 	const char *resource_path = gtkosx_application_get_resource_path();
 	if (resource_path) {
 		snprintf(buffer, sizeof(buffer), "%s/share/locale", resource_path);
 		return buffer;
 	}
+#endif /* USE_GTK_UI */
 	return "./share/locale";
 }
 
+#if USE_GTK_UI
 static void show_main_window(GtkWidget *w, gpointer data)
 {
 	gtk_widget_show(main_window);
@@ -230,6 +239,7 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 
 	gtkosx_application_ready(osx_app);
 }
+#endif /* UES_GTK_UI */
 
 void subsurface_command_line_init(gint *argc, gchar ***argv)
 {

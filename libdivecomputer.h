@@ -18,10 +18,12 @@ typedef struct device_data_t {
 	unsigned int deviceid, diveid;
 	dc_device_t *device;
 	dc_context_t *context;
-	progressbar_t progress;
 	int preexisting;
 	gboolean force_download;
+#if USE_GTK_UI
+	progressbar_t progress;
 	GtkDialog *dialog;
+#endif
 } device_data_t;
 
 extern GError *do_import(device_data_t *data);

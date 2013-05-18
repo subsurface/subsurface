@@ -13,6 +13,16 @@
 
 #include "sha1.h"
 
+#ifdef __cplusplus
+extern "C" {
+#else
+#if __STDC_VERSION__ >= 199901L
+#include <stdbool.h>
+#else
+typedef int bool;
+#endif
+#endif
+
 #define O2_IN_AIR		209     // permille
 #define N2_IN_AIR		781
 #define O2_DENSITY		1429    // mg/Liter
@@ -372,6 +382,8 @@ struct dive {
 	struct divecomputer dc;
 };
 
+extern int get_index_for_dive(struct dive *dive);
+
 static inline int dive_has_gps_location(struct dive *dive)
 {
 	return dive->latitude.udeg || dive->longitude.udeg;
@@ -549,7 +561,7 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 #define for_each_gps_location(_i,_x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
-static inline struct dive *get_dive_by_diveid(int diveid, int deviceid)
+static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid)
 {
 	int i;
 	struct dive *dive;
@@ -609,7 +621,6 @@ extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
 
 extern void sort_table(struct dive_table *table);
-extern void report_dives(gboolean imported, gboolean prefer_imported);
 extern struct dive *fixup_dive(struct dive *dive);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);
@@ -622,6 +633,7 @@ extern void add_event(struct divecomputer *dc, int time, int type, int flags, in
 /* UI related protopypes */
 
 extern void init_ui(int *argcp, char ***argvp);
+extern void init_qt_ui(int *argcp, char ***argvp);
 
 extern void run_ui(void);
 extern void exit_ui(void);
@@ -717,9 +729,26 @@ void get_gas_string(int o2, int he, char *buf, int len);
 
 struct event *get_next_event(struct event *event, char *name);
 
+
+/* this struct holds the information that
+ * describes the cylinders of air.
+ * it is a global variable initialized in equipment.c
+ * used to fill the combobox in the add/edit cylinder
+ * dialog
+ */
+
+struct tank_info {
+	const char *name;
+	int cuft, ml, psi, bar;
+};
+
 #ifdef DEBUGFILE
 extern char *debugfilename;
 extern FILE *debugfile;
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #include "pref.h"

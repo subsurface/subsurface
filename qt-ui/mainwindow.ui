@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>763</width>
+    <height>548</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="mainSplitter">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QSplitter" name="infoProfileSplitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="MainTab" name="InfoWidget" native="true"/>
+       <widget class="ProfileGraphicsView" name="ProfileWidget"/>
+      </widget>
+      <widget class="QSplitter" name="globeListSplitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="DiveListView" name="ListWidget">
+        <property name="styleSheet">
+         <string notr="true"> QTreeView {
+     show-decoration-selected: 1;
+ }
+
+ QTreeView::item {
+     border: 1px solid #d9d9d9;
+     border-top-color: transparent;
+     border-bottom-color: transparent;
+     padding: 2px;
+ }
+
+ QTreeView::item:hover {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+     border: 1px solid #bfcde4;
+ }
+
+ QTreeView::item:selected {
+     border: 1px solid #567dbc;
+ }
+
+ QTreeView::item:selected:active{
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+ }
+
+ QTreeView::item:selected:!active {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
+ }
+
+</string>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
+        <property name="rootIsDecorated">
+         <bool>true</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="animated">
+         <bool>true</bool>
+        </property>
+        <property name="allColumnsShowFocus">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="GlobeGPS" name="widget" native="true"/>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>763</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="actionClose"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionExportUDDF"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuLog">
+    <property name="title">
+     <string>Log</string>
+    </property>
+    <addaction name="actionDownloadDC"/>
+    <addaction name="actionDownloadWeb"/>
+    <addaction name="actionEditDeviceNames"/>
+    <addaction name="separator"/>
+    <addaction name="actionAddDive"/>
+    <addaction name="separator"/>
+    <addaction name="actionRenumber"/>
+    <addaction name="actionAutoGroup"/>
+    <addaction name="actionToggleZoom"/>
+    <addaction name="actionYearlyStatistics"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionViewList"/>
+    <addaction name="actionViewProfile"/>
+    <addaction name="actionViewInfo"/>
+    <addaction name="actionViewAll"/>
+    <addaction name="actionPreviousDC"/>
+    <addaction name="actionNextDC"/>
+   </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Filter</string>
+    </property>
+    <addaction name="actionSelectEvents"/>
+   </widget>
+   <widget class="QMenu" name="menuPlanner">
+    <property name="title">
+     <string>Planner</string>
+    </property>
+    <addaction name="actionInputPlan"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAboutSubsurface"/>
+    <addaction name="actionUserManual"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuLog"/>
+   <addaction name="menuView"/>
+   <addaction name="menuFilter"/>
+   <addaction name="menuPlanner"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import Files</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionExportUDDF">
+   <property name="text">
+    <string>Export UDDF</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionDownloadDC">
+   <property name="text">
+    <string>Download from Dive computer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionDownloadWeb">
+   <property name="text">
+    <string>Download from Web Service</string>
+   </property>
+  </action>
+  <action name="actionEditDeviceNames">
+   <property name="text">
+    <string>Edit Device Names</string>
+   </property>
+  </action>
+  <action name="actionAddDive">
+   <property name="text">
+    <string>Add Dive</string>
+   </property>
+  </action>
+  <action name="actionRenumber">
+   <property name="text">
+    <string>Renumber</string>
+   </property>
+  </action>
+  <action name="actionAutoGroup">
+   <property name="text">
+    <string>Auto Group</string>
+   </property>
+  </action>
+  <action name="actionToggleZoom">
+   <property name="text">
+    <string>Toggle Zoom</string>
+   </property>
+  </action>
+  <action name="actionYearlyStatistics">
+   <property name="text">
+    <string>Yearly Statistics</string>
+   </property>
+  </action>
+  <action name="actionViewList">
+   <property name="text">
+    <string>View List</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionViewProfile">
+   <property name="text">
+    <string>View Profile</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actionViewInfo">
+   <property name="text">
+    <string>View Info</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionViewAll">
+   <property name="text">
+    <string>View All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="actionPreviousDC">
+   <property name="text">
+    <string>Prev DC</string>
+   </property>
+   <property name="shortcut">
+    <string>Left</string>
+   </property>
+  </action>
+  <action name="actionNextDC">
+   <property name="text">
+    <string>Next DC</string>
+   </property>
+   <property name="shortcut">
+    <string>Right</string>
+   </property>
+  </action>
+  <action name="actionSelectEvents">
+   <property name="text">
+    <string>Select Events</string>
+   </property>
+  </action>
+  <action name="actionInputPlan">
+   <property name="text">
+    <string>Input Plan</string>
+   </property>
+  </action>
+  <action name="actionAboutSubsurface">
+   <property name="text">
+    <string>About Subsurface</string>
+   </property>
+  </action>
+  <action name="actionUserManual">
+   <property name="text">
+    <string>User Manual</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MainTab</class>
+   <extends>QWidget</extends>
+   <header>maintab.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DiveListView</class>
+   <extends>QTreeView</extends>
+   <header>divelistview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ProfileGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>profilegraphics.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GlobeGPS</class>
+   <extends>QWidget</extends>
+   <header>globe.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

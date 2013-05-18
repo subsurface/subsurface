@@ -1,6 +1,10 @@
 #ifndef PREF_H
 #define PREF_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 	gboolean cylinder;
 	gboolean temperature;
@@ -44,13 +48,13 @@ extern struct preferences prefs, default_prefs;
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
 extern void subsurface_open_conf(void);
-extern void subsurface_set_conf(char *name, const char *value);
-extern void subsurface_set_conf_bool(char *name, gboolean value);
-extern void subsurface_set_conf_int(char *name, int value);
-extern void subsurface_unset_conf(char *name);
-extern const void *subsurface_get_conf(char *name);
-extern int subsurface_get_conf_bool(char *name);
-extern int subsurface_get_conf_int(char *name);
+extern void subsurface_set_conf(const char *name, const char *value);
+extern void subsurface_set_conf_bool(const char *name, gboolean value);
+extern void subsurface_set_conf_int(const char *name, int value);
+extern void subsurface_unset_conf(const char *name);
+extern const char *subsurface_get_conf(const char *name);
+extern int subsurface_get_conf_bool(const char *name);
+extern int subsurface_get_conf_int(const char *name);
 extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
@@ -59,5 +63,9 @@ extern const char *system_default_filename();
 
 extern void load_preferences(void);
 extern void save_preferences(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PREF_H */

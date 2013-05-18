@@ -922,14 +922,18 @@ GError *uemis_download(const char *mountpath, progressbar_t *progress,
 		if (!import_thread_cancelled) {
 			int result;
 			g_timeout_add(100, timeout_func, dialog);
+#if USE_GTK_UI
 			update_progressbar(args.progress, progress_bar_fraction);
 			update_progressbar_text(args.progress, progress_bar_text);
+#endif
 			result = gtk_dialog_run(dialog);
 			if (result == GTK_RESPONSE_CANCEL)
 				import_thread_cancelled = TRUE;
 		} else {
+#if USE_GTK_UI
 			update_progressbar(args.progress, progress_bar_fraction);
 			update_progressbar_text(args.progress, _("Cancelled, exiting cleanly..."));
+#endif
 			usleep(100000);
 		}
 	}

@@ -3,12 +3,16 @@
 *.rej
 *.exe
 *.dmg
+*.moc
+*.moc.cpp
 *.patch
+*.ui.h
 *.xml
 version.h
 !dives/*.xml
 *~
 po/*.mo
+qt-ui/ui_*.h
 /subsurface
 /*.tar.gz
 .dep/
@@ -19,3 +23,10 @@ Documentation/user-manual.pdf
 Documentation/user-manual.text
 packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
+config.cache
+*.qrc.cpp
+/subsurface.config
+/subsurface.creator
+/subsurface.creator.user
+/subsurface.files
+/subsurface.includes

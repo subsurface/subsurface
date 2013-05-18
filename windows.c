@@ -1,7 +1,10 @@
 /* windows.c */
 /* implements Windows specific functions */
 #include "dive.h"
+#include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include <windows.h>
 #include <shlobj.h>
 
@@ -20,12 +23,12 @@ void subsurface_open_conf(void)
 		printf("CreateKey Software\\subsurface failed %ld\n", success);
 }
 
-void subsurface_unset_conf(char *name)
+void subsurface_unset_conf(const char *name)
 {
 	RegDeleteValue(hkey, (LPCTSTR)name);
 }
 
-void subsurface_set_conf(char *name, const char *value)
+void subsurface_set_conf(const char *name, const char *value)
 {
 	/* since we are using the pointer 'value' as both an actual
 	 * pointer to the string setting and as a way to pass the
@@ -52,17 +55,17 @@ void subsurface_set_conf(char *name, const char *value)
 	free(wname);
 }
 
-void subsurface_set_conf_int(char *name, int value)
+void subsurface_set_conf_int(const char *name, int value)
 {
 	RegSetValueEx(hkey, (LPCTSTR)name, 0, REG_DWORD, (const BYTE *)&value, 4);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
+void subsurface_set_conf_bool(const char *name, int value)
 {
 	subsurface_set_conf_int(name, value);
 }
 
-const void *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(const char *name)
 {
 	const int csize = 64;
 	int blen = 0;
@@ -100,7 +103,7 @@ const void *subsurface_get_conf(char *name)
 	return utf8_string;
 }
 
-int subsurface_get_conf_int(char *name)
+int subsurface_get_conf_int(const char *name)
 {
 	DWORD value = -1, len = 4;
 	LONG ret = RegQueryValueEx(hkey, (LPCTSTR)TEXT(name), NULL, NULL,
@@ -110,7 +113,7 @@ int subsurface_get_conf_int(char *name)
 	return value;
 }
 
-int subsurface_get_conf_bool(char *name)
+int subsurface_get_conf_bool(const char *name)
 {
 	int ret = subsurface_get_conf_int(name);
 	if (ret == -1)
@@ -128,6 +131,7 @@ void subsurface_close_conf(void)
 	RegCloseKey(hkey);
 }
 
+#if USE_GTK_UI
 int subsurface_fill_device_list(GtkListStore *store)
 {
 	const int bufdef = 512;
@@ -194,6 +198,7 @@ int subsurface_fill_device_list(GtkListStore *store)
 	}
 	return index;
 }
+#endif /* USE_GTK_UI */
 
 const char *subsurface_icon_name()
 {
@@ -231,11 +236,13 @@ const char *subsurface_gettext_domainpath(char *argv0)
 	return "./share/locale";
 }
 
+#if USE_GTK_UI
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
+#endif /* USE_GTK_UI */
 
 /* barely documented API */
 extern int __wgetmainargs(int *, wchar_t ***, wchar_t ***, int, int *);

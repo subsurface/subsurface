@@ -3,19 +3,23 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
 #include "callbacks-gtk.h"
+#endif
 #include "libdivecomputer.h"
 
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
 
+#if USE_GTK_UI
 static gboolean force_download;
 static gboolean prefer_downloaded;
 
 OPTIONCALLBACK(force_toggle, force_download)
 OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
+#endif
 
 struct product {
 	const char *product;
@@ -38,6 +42,7 @@ struct mydescriptor {
 
 struct vendor *dc_list;
 
+#if USE_GTK_UI
 static void render_dc_vendor(GtkCellLayout *cell,
 		GtkCellRenderer *renderer,
 		GtkTreeModel *model,
@@ -63,6 +68,7 @@ static void render_dc_product(GtkCellLayout *cell,
 	product = dc_descriptor_get_product(descriptor);
 	g_object_set(renderer, "text", product, NULL);
 }
+#endif
 
 int is_default_dive_computer(const char *vendor, const char *product)
 {
@@ -75,7 +81,7 @@ int is_default_dive_computer_device(const char *name)
 	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
 }
 
-static void set_default_dive_computer(const char *vendor, const char *product)
+void set_default_dive_computer(const char *vendor, const char *product)
 {
 	if (!vendor || !*vendor)
 		return;
@@ -93,7 +99,7 @@ static void set_default_dive_computer(const char *vendor, const char *product)
 	subsurface_set_conf("dive_computer_product", product);
 }
 
-static void set_default_dive_computer_device(const char *name)
+void set_default_dive_computer_device(const char *name)
 {
 	if (!name || !*name)
 		return;
@@ -105,6 +111,7 @@ static void set_default_dive_computer_device(const char *name)
 	subsurface_set_conf("dive_computer_device", name);
 }
 
+#if USE_GTK_UI
 static void dive_computer_selector_changed(GtkWidget *combo, gpointer data)
 {
 	GtkWidget *import, *button;
@@ -161,10 +168,10 @@ static GtkWidget *import_dive_computer(device_data_t *data, GtkDialog *dialog)
 	gtk_box_pack_start(GTK_BOX(vbox), info, FALSE, FALSE, 0);
 	return info;
 }
-
+#endif
 
 /* create a list of lists and keep the elements sorted */
-static void add_dc(const char *vendor, const char *product, dc_descriptor_t *descriptor)
+void add_dc(const char *vendor, const char *product, dc_descriptor_t *descriptor)
 {
 	struct vendor *dcl = dc_list;
 	struct vendor **dclp = &dc_list;
@@ -207,6 +214,7 @@ static void add_dc(const char *vendor, const char *product, dc_descriptor_t *des
 	pl->descriptor = descriptor;
 }
 
+#if USE_GTK_UI
 /* fill the vendors and create and fill the respective product stores; return the longest product name
  * and also the indices of the default vendor / product */
 static int fill_computer_list(GtkListStore *vendorstore, GtkListStore ***productstore, int *vendor_index, int *product_index)
@@ -485,3 +493,4 @@ void update_progressbar_text(progressbar_t *progress, const char *text)
 {
 	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->bar), text);
 }
+#endif

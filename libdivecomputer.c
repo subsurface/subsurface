@@ -26,6 +26,7 @@ static double progress_bar_fraction = 0.0;
 static int stoptime, stopdepth, ndl, po2, cns;
 static gboolean in_deco, first_temp_is_air;
 
+#if USE_GTK_UI
 static GError *error(const char *fmt, ...)
 {
 	va_list args;
@@ -38,6 +39,7 @@ static GError *error(const char *fmt, ...)
 	va_end(args);
 	return error;
 }
+#endif
 
 static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 {
@@ -708,6 +710,7 @@ static const char *do_libdivecomputer_import(device_data_t *data)
 	return err;
 }
 
+#if USE_GTK_UI
 static void *pthread_wrapper(void *_data)
 {
 	device_data_t *data = _data;
@@ -772,3 +775,4 @@ GError *do_import(device_data_t *data)
 		return error(retval, data->vendor, data->product, data->devname);
 	return NULL;
 }
+#endif

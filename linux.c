@@ -1,7 +1,10 @@
 /* linux.c */
 /* implements Linux specific functions */
 #include "dive.h"
+#include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include <gconf/gconf-client.h>
 #include <string.h>
 
@@ -9,7 +12,7 @@ const char system_divelist_default_font[] = "Sans 8";
 
 GConfClient *gconf;
 
-static char *gconf_name(char *name)
+static char *gconf_name(const char *name)
 {
 	static char buf[255] = "/apps/subsurface/";
 
@@ -23,32 +26,32 @@ void subsurface_open_conf(void)
 	gconf = gconf_client_get_default();
 }
 
-void subsurface_unset_conf(char *name)
+void subsurface_unset_conf(const char *name)
 {
 	gconf_client_unset(gconf, gconf_name(name), NULL);
 }
 
-void subsurface_set_conf(char *name, const char *value)
+void subsurface_set_conf(const char *name, const char *value)
 {
 	gconf_client_set_string(gconf, gconf_name(name), value, NULL);
 }
 
-void subsurface_set_conf_bool(char *name, int value)
+void subsurface_set_conf_bool(const char *name, int value)
 {
 	gconf_client_set_bool(gconf, gconf_name(name), value > 0, NULL);
 }
 
-void subsurface_set_conf_int(char *name, int value)
+void subsurface_set_conf_int(const char *name, int value)
 {
 	gconf_client_set_int(gconf, gconf_name(name), value , NULL);
 }
 
-const void *subsurface_get_conf(char *name)
+const char *subsurface_get_conf(const char *name)
 {
 	return gconf_client_get_string(gconf, gconf_name(name), NULL);
 }
 
-int subsurface_get_conf_bool(char *name)
+int subsurface_get_conf_bool(const char *name)
 {
 	GConfValue *val;
 	gboolean ret;
@@ -61,7 +64,7 @@ int subsurface_get_conf_bool(char *name)
 	return ret;
 }
 
-int subsurface_get_conf_int(char *name)
+int subsurface_get_conf_int(const char *name)
 {
 	int val = gconf_client_get_int(gconf, gconf_name(name), NULL);
 	if(!val)
@@ -80,6 +83,7 @@ void subsurface_close_conf(void)
 	/* this is a no-op */
 }
 
+#if USE_GTK_UI
 int subsurface_fill_device_list(GtkListStore *store)
 {
 	int i = 0;
@@ -139,6 +143,7 @@ int subsurface_fill_device_list(GtkListStore *store)
 	}
 	return index;
 }
+#endif /* USE_GTK_UI */
 
 const char *subsurface_icon_name()
 {
@@ -170,11 +175,13 @@ const char *subsurface_gettext_domainpath(char *argv0)
 	}
 }
 
+#if USE_GTK_UI
 void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 		GtkWidget *vbox, GtkUIManager *ui_manager)
 {
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 }
+#endif /* USE_GTK_UI */
 
 void subsurface_command_line_init(gint *argc, gchar ***argv)
 {
@@ -191,6 +198,7 @@ gboolean subsurface_os_feature_available(os_feature_t f)
 	return TRUE;
 }
 
+#if USE_GTK_UI
 gboolean subsurface_launch_for_uri(const char* uri)
 {
 	GError *err = NULL;
@@ -202,3 +210,4 @@ gboolean subsurface_launch_for_uri(const char* uri)
 	}
 	return TRUE;
 }
+#endif /* USE_GTK_UI */

@@ -448,10 +448,15 @@ void update_time_depth(struct dive *dive, struct dive *edited)
 	dive->dc.meandepth.mm = edited->dc.meandepth.mm;
 }
 
-int edit_dive_info(struct dive *dive, gboolean newdive)
+void add_people(const char *string)
 {
-	if (!dive || (!newdive && !amount_selected))
-		return 0;
-
-	return edit_multi_dive_info(dive);
+	/* add names to the completion list for people */
+}
+void add_location(const char *string)
+{
+	/* add names to the completion list for locations */
+}
+void add_suit(const char *string)
+{
+	/* add names to the completion list for suits */
 }

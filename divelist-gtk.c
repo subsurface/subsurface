@@ -55,7 +55,6 @@ static struct DiveList dive_list;
 #define TREESTORE(_dl) GTK_TREE_STORE((_dl).treemodel)
 #define LISTSTORE(_dl) GTK_TREE_STORE((_dl).listmodel)
 
-short autogroup = FALSE;
 static gboolean ignore_selection_changes = FALSE;
 static gboolean in_set_cursor = FALSE;
 static gboolean set_selected(GtkTreeModel *model, GtkTreePath *path,
@@ -255,7 +254,6 @@ static void date_data_func(GtkTreeViewColumn *col,
 			   gpointer data)
 {
 	int idx, nr;
-	struct tm tm;
 	timestamp_t when;
 	/* this should be enought for most languages. if not increase the value. */
 	char *buffer;
@@ -263,11 +261,10 @@ static void date_data_func(GtkTreeViewColumn *col,
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, DIVE_DATE, &when, -1);
 	nr = gtk_tree_model_iter_n_children(model, iter);
 
-	utc_mkdate(when, &tm);
 	if (idx < 0) {
-		buffer = get_trip_date_string(&tm, nr);
+		buffer = get_trip_date_string(when, nr);
 	} else {
-		buffer = get_dive_date_string(&tm);
+		buffer = get_dive_date_string(when);
 	}
 	g_object_set(renderer, "text", buffer, NULL);
 	free(buffer);
@@ -430,40 +427,24 @@ static gint nitrox_sort_func(GtkTreeModel *model,
 	return a_he - b_he;
 }
 
-#define UTF8_ELLIPSIS "\xE2\x80\xA6"
-
 static void nitrox_data_func(GtkTreeViewColumn *col,
 			     GtkCellRenderer *renderer,
 			     GtkTreeModel *model,
 			     GtkTreeIter *iter,
 			     gpointer data)
 {
-	int idx, o2, he, o2low;
-	char buffer[80];
+	int idx;
+	char *buffer;
 	struct dive *dive;
 
 	gtk_tree_model_get(model, iter, DIVE_INDEX, &idx, -1);
-	if (idx < 0) {
-		*buffer = '\0';
-		goto exit;
+	if (idx >= 0 && (dive = get_dive(idx))) {
+		buffer = get_nitrox_string(dive);
+		g_object_set(renderer, "text", buffer, NULL);
+		free(buffer);
+	} else {
+		g_object_set(renderer, "text", "", NULL);
 	}
-	dive = get_dive(idx);
-	get_dive_gas(dive, &o2, &he, &o2low);
-	o2 = (o2 + 5) / 10;
-	he = (he + 5) / 10;
-	o2low = (o2low + 5) / 10;
-
-	if (he)
-		snprintf(buffer, sizeof(buffer), "%d/%d", o2, he);
-	else if (o2)
-		if (o2 == o2low)
-			snprintf(buffer, sizeof(buffer), "%d", o2);
-		else
-			snprintf(buffer, sizeof(buffer), "%d" UTF8_ELLIPSIS "%d", o2low, o2);
-	else
-		strcpy(buffer, _("air"));
-exit:
-	g_object_set(renderer, "text", buffer, NULL);
 }
 
 /* Render the SAC data (integer value of "ml / min") */
@@ -804,7 +785,6 @@ static gint gtk_dive_nr_sort(GtkTreeModel *model,
 	return dive_nr_sort(idx_a, idx_b, when_a, when_b);
 }
 
-
 static struct divelist_column {
 	const char *header;
 	data_func_t data;
@@ -896,6 +876,12 @@ static void row_activated_cb(GtkTreeView *tree_view,
 		return;
 	}
 	edit_dive_info(get_dive(index), FALSE);
+}
+
+void report_dives(bool is_imported, bool prefer_imported)
+{
+	process_dives(is_imported, prefer_imported);
+	dive_list_update_dives();
 }
 
 void add_dive_cb(GtkWidget *menuitem, gpointer data)

@@ -699,9 +699,11 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, c
 		stopidx--;
 	}
 	add_plan_to_notes(diveplan, dive);
+#if USE_GTK_UI
 	/* now make the dive visible in the dive list */
 	report_dives(FALSE, FALSE);
 	show_and_select_dive(dive);
+#endif
 error_exit:
 	free(stoplevels);
 	free(gaschanges);

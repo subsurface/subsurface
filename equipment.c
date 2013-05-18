@@ -16,9 +16,14 @@
 
 #include "dive.h"
 #include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
+#endif
 #include "divelist.h"
+#include "conversions.h"
 
+#if USE_GTK_UI
+#include "display-gtk.h"
 static GtkListStore *cylinder_model, *weightsystem_model;
 
 enum {
@@ -68,9 +73,10 @@ struct ws_widget {
 	GtkSpinButton *weight;
 	int w_idx;
 };
+#endif /* USE_GTK_UI */
 
 /* we want bar - so let's not use our unit functions */
-static int convert_pressure(int mbar, double *p)
+int convert_pressure(int mbar, double *p)
 {
 	int decimals = 1;
 	double pressure;
@@ -86,7 +92,7 @@ static int convert_pressure(int mbar, double *p)
 	return decimals;
 }
 
-static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
+void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 {
 	double volume, pressure;
 
@@ -108,7 +114,7 @@ static void convert_volume_pressure(int ml, int mbar, double *v, double *p)
 	*v = volume;
 }
 
-static int convert_weight(int grams, double *m)
+int convert_weight(int grams, double *m)
 {
 	int decimals = 1; /* not sure - do people do less than whole lbs/kg ? */
 	double weight;
@@ -121,6 +127,7 @@ static int convert_weight(int grams, double *m)
 	return decimals;
 }
 
+#if USE_GTK_UI
 static void set_cylinder_description(struct cylinder_widget *cylinder, const char *desc)
 {
 	set_active_text(cylinder->description, desc);
@@ -452,6 +459,28 @@ static void show_weightsystem(weightsystem_t *ws, struct ws_widget *weightsystem
 	set_weight_description(weightsystem_widget, desc);
 	set_weight_weight_spinbutton(weightsystem_widget, ws->weight.grams);
 }
+#else
+/* placeholders for a few functions that we need to redesign for the Qt UI */
+void add_cylinder_description(cylinder_type_t *type)
+{
+	const char *desc;
+
+	desc = type->description;
+	if (!desc)
+		return;
+	/* now do something with it... */
+}
+void add_weightsystem_description(weightsystem_t *weightsystem)
+{
+	const char *desc;
+
+	desc = weightsystem->description;
+	if (!desc)
+		return;
+	/* now do something with it... */
+}
+
+#endif /* USE_GTK_UI */
 
 gboolean cylinder_nodata(cylinder_t *cyl)
 {
@@ -516,6 +545,7 @@ gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 	return TRUE;
 }
 
+#if USE_GTK_UI
 static void set_one_cylinder(void *_data, GtkListStore *model, GtkTreeIter *iter)
 {
 	cylinder_t *cyl = _data;
@@ -726,6 +756,7 @@ static void fill_cylinder_info(struct cylinder_widget *cylinder, cylinder_t *cyl
 	/*
 	 * Also, insert it into the model if it doesn't already exist
 	 */
+	// WARNING: GTK-Specific Code.
 	add_cylinder(cylinder, desc, ml, mbar);
 }
 
@@ -784,16 +815,13 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
 	ws->description = desc;
 	add_weightsystem_type(desc, grams, &iter);
 }
-
+#endif /* USE_GTK_UI */
 /*
  * We hardcode the most common standard cylinders,
  * we should pick up any other names from the dive
  * logs directly.
  */
-static struct tank_info {
-	const char *name;
-	int cuft, ml, psi, bar;
-} tank_info[100] = {
+struct tank_info tank_info[100] = {
 	/* Need an empty entry for the no-cylinder case */
 	{ "", },
 
@@ -836,6 +864,7 @@ static struct tank_info {
 	{ NULL, }
 };
 
+#if USE_GTK_UI
 static void fill_tank_list(GtkListStore *store)
 {
 	GtkTreeIter iter;
@@ -1682,3 +1711,4 @@ void clear_equipment_widgets()
 	gtk_list_store_clear(cylinder_list[W_IDX_PRIMARY].model);
 	gtk_list_store_clear(weightsystem_list[W_IDX_PRIMARY].model);
 }
+#endif /* USE_GTK_UI */

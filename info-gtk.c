@@ -796,6 +796,14 @@ int edit_multi_dive_info(struct dive *single_dive)
 	return success;
 }
 
+int edit_dive_info(struct dive *dive, gboolean newdive)
+{
+	if (!dive || (!newdive && !amount_selected))
+		return 0;
+
+	return edit_multi_dive_info(dive);
+}
+
 static GtkWidget *frame_box(GtkWidget *vbox, const char *fmt, ...)
 {
 	va_list ap;

@@ -1,8 +1,13 @@
 #ifndef DIVELIST_H
 #define DIVELIST_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct dive;
 
+extern void report_dives(bool imported, bool prefer_imported);
 extern void dive_list_update_dives(void);
 extern void update_dive_list_col_visibility(void);
 extern void update_dive_list_units(void);
@@ -16,12 +21,13 @@ extern void select_prev_dive(void);
 extern void show_and_select_dive(struct dive *dive);
 extern double init_decompression(struct dive * dive);
 extern void export_all_dives_uddf_cb();
-
 extern void upload_all_dives_divelogs_cb();
 
 /* divelist core logic functions */
-extern char *get_dive_date_string(struct tm *tm);
-extern char *get_trip_date_string(struct tm *tm, int nr);
+extern void process_dives(bool imported, bool prefer_imported);
+extern char *get_dive_date_string(timestamp_t when);
+extern char *get_trip_date_string(timestamp_t when, int nr);
+extern char *get_nitrox_string(struct dive *dive);
 extern void clear_trip_indexes(void);
 extern dive_trip_t *find_trip_by_idx(int idx);
 extern int dive_nr_sort(int idx_a, int idx_b, timestamp_t when_a, timestamp_t when_b);
@@ -43,6 +49,10 @@ extern void deselect_dive(int idx);
 #ifdef DEBUG_TRIP
 extern void dump_selection(void);
 extern void dump_trip_list(void);
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

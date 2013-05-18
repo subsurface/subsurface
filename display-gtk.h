@@ -8,6 +8,10 @@
 #include <gdk/gdkkeysyms-compat.h>
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GtkWidget *main_window;
 
 /* we want a progress bar as part of the device_data_t - let's abstract this out */
@@ -35,15 +39,11 @@ extern void set_divelist_font(const char *);
 
 extern void update_screen(void);
 extern void download_dialog(GtkWidget *, gpointer);
-extern int is_default_dive_computer_device(const char *);
-extern int is_default_dive_computer(const char *, const char *);
+
 extern void add_dive_cb(GtkWidget *, gpointer);
 extern void update_progressbar(progressbar_t *progress, double value);
 extern void update_progressbar_text(progressbar_t *progress, const char *text);
 
-extern const char *default_dive_computer_vendor;
-extern const char *default_dive_computer_product;
-extern const char *default_dive_computer_device;
 
 // info.c
 enum {
@@ -90,22 +90,6 @@ typedef gint (*sort_func_t)(GtkTreeModel *model,
 			    GtkTreeIter *b,
 			    gpointer user_data);
 
-#define ALIGN_LEFT 1
-#define ALIGN_RIGHT 2
-#define INVISIBLE 4
-#define UNSORTABLE 8
-#define EDITABLE 16
-
-#ifndef TEXT_SCALE
-#define TEXT_SCALE 1.0
-#endif
-
-#define DEPTH_TEXT_SIZE (10 * TEXT_SCALE)
-#define PRESSURE_TEXT_SIZE (10 * TEXT_SCALE)
-#define DC_TEXT_SIZE (10.5 * TEXT_SCALE)
-#define PP_TEXT_SIZE (11 * TEXT_SCALE)
-#define TEMP_TEXT_SIZE (12 * TEXT_SCALE)
-
 extern GtkTreeViewColumn *tree_view_column(GtkWidget *tree_view, int index, const char *title,
 		data_func_t data_func, unsigned int flags);
 extern GtkTreeViewColumn *tree_view_column_add_pixbuf(GtkWidget *tree_view, data_func_t data_func, GtkTreeViewColumn *col);
@@ -114,5 +98,9 @@ GError *uemis_download(const char *path, progressbar_t *progress, GtkDialog *dia
 
 /* from planner.c */
 extern void input_plan(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

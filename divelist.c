@@ -50,6 +50,8 @@
 
 static short dive_list_changed = FALSE;
 
+short autogroup = FALSE;
+
 dive_trip_t *dive_trip_list;
 
 unsigned int amount_selected;
@@ -68,6 +70,13 @@ void dump_selection(void)
 	printf("\n");
 }
 #endif
+
+void set_autogroup(gboolean value)
+{
+	/* if we keep the UI paradigm, this needs to toggle
+	 * the checkbox on the autogroup menu item */
+	autogroup = value;
+}
 
 dive_trip_t *find_trip_by_idx(int idx)
 {
@@ -131,7 +140,7 @@ int trip_has_selected_dives(dive_trip_t *trip)
 	return 0;
 }
 
-/* Get the values as we want to show them. Whole feet. But meters with one decimal for 
+/* Get the values as we want to show them. Whole feet. But meters with one decimal for
  * values less than 20m, without decimals for larger values */
 void get_depth_values(int depth, int *depth_int, int *depth_decimal, int *show_decimal)
 {
@@ -557,38 +566,71 @@ void get_suit(struct dive *dive, char **str)
 
 #define MAX_DATE_STRING 256
 /* caller needs to free the string */
-char *get_dive_date_string(struct tm *tm) {
+char *get_dive_date_string(timestamp_t when) {
 	char *buffer = malloc(MAX_DATE_STRING);
-	if (buffer)
+	if (buffer) {
+		struct tm tm;
+		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
 			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min */
 			_("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
-			weekday(tm->tm_wday),
-			monthname(tm->tm_mon),
-			tm->tm_mday, tm->tm_year + 1900,
-			tm->tm_hour, tm->tm_min);
+			weekday(tm.tm_wday),
+			monthname(tm.tm_mon),
+			tm.tm_mday, tm.tm_year + 1900,
+			tm.tm_hour, tm.tm_min);
+	}
 	return buffer;
 }
 
 /* caller needs to free the string */
-char *get_trip_date_string(struct tm *tm, int nr) {
+char *get_trip_date_string(timestamp_t when, int nr) {
 	char *buffer = malloc(MAX_DATE_STRING);
-	if (buffer)
+	if (buffer) {
+		struct tm tm;
+		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
 			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives */
 			ngettext("Trip %1$s, %2$s %3$d, %4$d (%5$d dive)",
 				"Trip %1$s, %2$s %3$d, %4$d (%5$d dives)", nr),
-			weekday(tm->tm_wday),
-			monthname(tm->tm_mon),
-			tm->tm_mday, tm->tm_year + 1900,
+			weekday(tm.tm_wday),
+			monthname(tm.tm_mon),
+			tm.tm_mday, tm.tm_year + 1900,
 			nr);
+	}
+	return buffer;
+}
+
+#define MAX_NITROX_STRING 80
+#define UTF8_ELLIPSIS "\xE2\x80\xA6"
+
+/* callers needs to free the string */
+char *get_nitrox_string(struct dive *dive)
+{
+	int o2, he, o2low;
+	char *buffer = malloc(MAX_NITROX_STRING);
+
+	if (buffer) {
+		get_dive_gas(dive, &o2, &he, &o2low);
+		o2 = (o2 + 5) / 10;
+		he = (he + 5) / 10;
+		o2low = (o2low + 5) / 10;
+
+		if (he)
+			snprintf(buffer, MAX_NITROX_STRING, "%d/%d", o2, he);
+		else if (o2)
+			if (o2 == o2low)
+				snprintf(buffer, MAX_NITROX_STRING, "%d", o2);
+			else
+				snprintf(buffer, MAX_NITROX_STRING, "%d" UTF8_ELLIPSIS "%d", o2low, o2);
+		else
+			strcpy(buffer, _("air"));
+	}
 	return buffer;
 }
 
 /*
  * helper functions for dive_trip handling
  */
-
 #ifdef DEBUG_TRIP
 void dump_trip_list(void)
 {
@@ -869,20 +911,23 @@ void merge_dive_index(int i, struct dive *a)
 	add_single_dive(i, res);
 	delete_single_dive(i+1);
 	delete_single_dive(i+1);
-
+#if USE_GTK_UI
 	dive_list_update_dives();
+#endif
 	mark_divelist_changed(TRUE);
 }
 
 void select_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
-	if (dive && !dive->selected) {
+	if (dive) {
 		/* never select an invalid dive that isn't displayed */
 		if (dive->dive_tags & DTAG_INVALID && !prefs.display_invalid_dives)
 			return;
-		dive->selected = 1;
-		amount_selected++;
+		if (!dive->selected) {
+			dive->selected = 1;
+			amount_selected++;
+		}
 		selected_dive = idx;
 	}
 }
@@ -935,3 +980,124 @@ void remove_autogen_trips()
 	}
 }
 
+/*
+ * When adding dives to the dive table, we try to renumber
+ * the new dives based on any old dives in the dive table.
+ *
+ * But we only do it if:
+ *
+ *  - there are no dives in the dive table
+ *
+ *  OR
+ *
+ *  - the last dive in the old dive table was numbered
+ *
+ *  - all the new dives are strictly at the end (so the
+ *    "last dive" is at the same location in the dive table
+ *    after re-sorting the dives.
+ *
+ *  - none of the new dives have any numbers
+ *
+ * This catches the common case of importing new dives from
+ * a dive computer, and gives them proper numbers based on
+ * your old dive list. But it tries to be very conservative
+ * and not give numbers if there is *any* question about
+ * what the numbers should be - in which case you need to do
+ * a manual re-numbering.
+ */
+static void try_to_renumber(struct dive *last, int preexisting)
+{
+	int i, nr;
+
+	/*
+	 * If the new dives aren't all strictly at the end,
+	 * we're going to expect the user to do a manual
+	 * renumbering.
+	 */
+	if (preexisting && get_dive(preexisting-1) != last)
+		return;
+
+	/*
+	 * If any of the new dives already had a number,
+	 * we'll have to do a manual renumbering.
+	 */
+	for (i = preexisting; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		if (dive->number)
+			return;
+	}
+
+	/*
+	 * Ok, renumber..
+	 */
+	if (last)
+		nr = last->number;
+	else
+		nr = 0;
+	for (i = preexisting; i < dive_table.nr; i++) {
+		struct dive *dive = get_dive(i);
+		dive->number = ++nr;
+	}
+}
+
+void process_dives(bool is_imported, bool prefer_imported)
+{
+		int i;
+	int preexisting = dive_table.preexisting;
+	struct dive *last;
+
+	/* check if we need a nickname for the divecomputer for newly downloaded dives;
+	 * since we know they all came from the same divecomputer we just check for the
+	 * first one */
+	if (preexisting < dive_table.nr && dive_table.dives[preexisting]->downloaded)
+		set_dc_nickname(dive_table.dives[preexisting]);
+	else
+		/* they aren't downloaded, so record / check all new ones */
+		for (i = preexisting; i < dive_table.nr; i++)
+			set_dc_nickname(dive_table.dives[i]);
+
+	/* This does the right thing for -1: NULL */
+	last = get_dive(preexisting-1);
+
+	sort_table(&dive_table);
+
+	for (i = 1; i < dive_table.nr; i++) {
+		struct dive **pp = &dive_table.dives[i-1];
+		struct dive *prev = pp[0];
+		struct dive *dive = pp[1];
+		struct dive *merged;
+
+		/* only try to merge overlapping dives - or if one of the dives has
+		 * zero duration (that might be a gps marker from the webservice) */
+		if (prev->duration.seconds && dive->duration.seconds &&
+		    prev->when + prev->duration.seconds < dive->when)
+			continue;
+
+		merged = try_to_merge(prev, dive, prefer_imported);
+		if (!merged)
+			continue;
+
+		/* careful - we might free the dive that last points to. Oops... */
+		if (last == prev || last == dive)
+			last = merged;
+
+		/* Redo the new 'i'th dive */
+		i--;
+		add_single_dive(i, merged);
+		delete_single_dive(i+1);
+		delete_single_dive(i+1);
+	}
+	/* make sure no dives are still marked as downloaded */
+	for (i = 1; i < dive_table.nr; i++)
+		dive_table.dives[i]->downloaded = FALSE;
+
+	if (is_imported) {
+		/* If there are dives in the table, are they numbered */
+		if (!last || last->number)
+			try_to_renumber(last, preexisting);
+
+		/* did we add dives to the dive table? */
+		if (preexisting != dive_table.nr)
+			mark_divelist_changed(TRUE);
+	}
+}
