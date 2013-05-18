@@ -149,8 +149,6 @@ SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 UNAME_A = $(shell uname -a)
 ifneq (,$(filter $(UNAME_A), Debian))
 	MARBLEFLAGS = -DINCOMPLETE_MARBLE
-else
-	MARBLEFLAGS = -DQT_NO_KEYWORDS
 endif
 
 # Write the configure file
