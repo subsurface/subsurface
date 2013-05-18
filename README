@@ -1,3 +1,31 @@
+
+This is the README file for the latest git version of Subsurface.
+
+After the release of Subsurface 3.1 we merged the Qt branch into
+master and are now developing the Qt port of Subsurface in the master
+branch. At this stage the Qt version is not functional as a divelog -
+edit and import capabilities are missing and many other areas need
+more work. So unless you are planning to participate in the ongoing
+development you most likely want to switch to the Gtk branch as that
+will get you the latest version of the fully functional Subsurface.
+
+git checkout Gtk
+
+If you are indeed planning to work no the Qt version, here are some
+pointers to get you started:
+
+Building the Qt version under Linux
+-----------------------------------
+
+On Debian you need libqt4-dev, libmarble-dev, libzip-dev.
+Unfortunately the marble version in Debian stable (and possibly
+Ubuntu) appears broken and missing essential header files used in the
+current git version of Subsurface.
+
+On Fedora you need qt-devel, marble-devel, libzip-devel.
+
+
+
 Subsurface - an Open Source Divelog
 ===================================
 
