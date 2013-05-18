@@ -20,8 +20,6 @@
 #ifndef KMESSAGEWIDGET_H
 #define KMESSAGEWIDGET_H
 
-#include <kdeui_export.h>
-
 #include <QFrame>
 
 class KMessageWidgetPrivate;
