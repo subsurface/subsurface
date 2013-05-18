@@ -1,4 +1,5 @@
 #include "globe.h"
+#include "kmessagewidget.h"
 #include "../dive.h"
 
 #include <QDebug>
@@ -14,17 +15,19 @@
 
 GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 {
+
 	setMapThemeId("earth/bluemarble/bluemarble.dgml");
+	//setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
 	setProjection( Marble::Spherical );
 
 	setAnimationsEnabled(true);
 	setShowClouds( false );
 	setShowBorders( false );
-	setShowPlaces( false );
+	setShowPlaces( true );
 	setShowCrosshairs( false );
 	setShowGrid( false );
 	setShowOverviewMap(false);
-	setShowScaleBar(false);
+	setShowScaleBar(true);
 
 	Q_FOREACH( AbstractFloatItem * floatItem, floatItems() ){
 		if ( floatItem && floatItem->nameId() == "compass" ) {
@@ -40,12 +43,16 @@ void GlobeGPS::reload()
 		model()->treeModel()->removeDocument(loadedDives);
 		delete loadedDives;
 	}
+
 	if (editingDiveCoords){
 		editingDiveCoords = 0;
 	}
 
+	messageWidget->animatedHide();
+
 	loadedDives = new GeoDataDocument;
 
+	diveLocations.clear();
 	int idx = 0;
 	struct dive *dive;
 	for_each_dive(idx, dive) {
@@ -54,6 +61,7 @@ void GlobeGPS::reload()
 			if( diveLocations.contains( QString(dive->location)))
 				continue;
 
+			diveLocations.append( QString(dive->location) );
 			GeoDataPlacemark *place = new GeoDataPlacemark( dive->location );
 			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree );
 			loadedDives->append( place );
@@ -64,6 +72,13 @@ void GlobeGPS::reload()
 
 void GlobeGPS::centerOn(dive* dive)
 {
+	// dive has changed, if we had the 'editingDive', hide it.
+	if(messageWidget->isVisible()){
+		messageWidget->animatedHide();
+	}
+
+	editingDiveCoords = 0;
+
 	qreal longitude = dive->longitude.udeg / 1000000.0;
 	qreal latitude = dive->latitude.udeg / 1000000.0;
 
@@ -77,9 +92,9 @@ void GlobeGPS::centerOn(dive* dive)
 
 void GlobeGPS::prepareForGetDiveCoordinates(dive* dive)
 {
-	QMessageBox::warning(parentWidget(),
-						 tr("This dive has no location!"),
-						 tr("Move the planet to the desired position, then \n double-click to set the new location of this dive."));
+	messageWidget->setMessageType(KMessageWidget::Warning);
+	messageWidget->setText(QObject::tr("This dive has no location! Please move the planet to the desired position, then double-click to set the new location for this dive."));
+	messageWidget->animatedShow();
 
 	editingDiveCoords = dive;
 }
@@ -101,6 +116,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	centerOn(lon, lat, true);
 	reload();
 	editingDiveCoords = 0;
+	messageWidget->animatedHide();
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent* event)
@@ -110,4 +126,10 @@ void GlobeGPS::mousePressEvent(QMouseEvent* event)
 		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Radian);
 	}
 }
+
+void GlobeGPS::setMessageWidget(KMessageWidget* globeMessage)
+{
+	messageWidget = globeMessage;
+}
+
 

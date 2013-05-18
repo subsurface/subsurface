@@ -6,6 +6,7 @@
 
 #include <QHash>
 
+class KMessageWidget;
 using namespace Marble;
 struct dive;
 
@@ -25,9 +26,11 @@ private:
 	GeoDataDocument *loadedDives;
 	QStringList diveLocations;
     struct dive* editingDiveCoords;
+	KMessageWidget* messageWidget;
 
 public Q_SLOTS:
 	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
+	void setMessageWidget(KMessageWidget* globeMessage);
 
 };
 
