@@ -149,6 +149,7 @@ SQLITE3FLAGS = $(strip $(shell $(PKGCONFIG) --cflags sqlite3))
 # Before Marble 4.9, the GeoDataTreeModel.h header wasn't installed
 # Check if it's present by trying to compile
 MARBLEFLAGS = $(shell $(CXX) $(QTCXXFLAGS) -E -include marble/GeoDataTreeModel.h -xc++ /dev/null > /dev/null 2>&1 || echo " -DINCOMPLETE_MARBLE")
+MARBLELIBS = -lmarblewidget
 
 # Write the configure file
 all: configure
@@ -186,6 +187,7 @@ configure $(CONFIGURE): Configure.mk
 	LIBSQLITE3 = $(LIBSQLITE3)\\\
 	SQLITE3FLAGS = $(SQLITE3FLAGS)\\\
 	MARBLEFLAGS = $(MARBLEFLAGS)\\\
+	MARBLELIBS = $(MARBLELIBS)\\\
 	" | tr '\\' '\n' > $(CONFIGFILE)
 
 else

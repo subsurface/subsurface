@@ -119,7 +119,7 @@ else
 endif
 
 LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
-	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK) -lmarblewidget
+	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK) $(MARBLELIBS)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
 
