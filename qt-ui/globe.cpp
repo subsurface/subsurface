@@ -52,6 +52,7 @@ void GlobeGPS::reload()
 
 	loadedDives = new GeoDataDocument;
 
+	diveLocations.clear();
 	int idx = 0;
 	struct dive *dive;
 	for_each_dive(idx, dive) {
@@ -60,6 +61,7 @@ void GlobeGPS::reload()
 			if( diveLocations.contains( QString(dive->location)))
 				continue;
 
+			diveLocations.append( QString(dive->location) );
 			GeoDataPlacemark *place = new GeoDataPlacemark( dive->location );
 			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree );
 			loadedDives->append( place );
