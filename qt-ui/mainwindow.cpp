@@ -97,12 +97,12 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-	qDebug("actionSave");
+	file_save();
 }
 
 void MainWindow::on_actionSaveAs_triggered()
 {
-	qDebug("actionSaveAs");
+	file_save_as();
 }
 void MainWindow::on_actionClose_triggered()
 {
@@ -295,8 +295,7 @@ bool MainWindow::askSaveChanges()
 	response = QMessageBox::question(this, tr("Save Changes?"), message,
 					QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Save);
 	if (response == QMessageBox::Save) {
-		// WARNING: Port.
-		//		file_save(NULL,NULL);
+		file_save();
 		return true;
 	} else if (response == QMessageBox::Ok) {
 		return true;
@@ -491,4 +490,46 @@ ProfileGraphicsView* MainWindow::graphics()
 MainTab* MainWindow::information()
 {
 	return ui->InfoWidget;
+}
+
+void MainWindow::file_save_as(void)
+{
+	QString filename;
+	const char *default_filename;
+
+	if (existing_filename)
+		default_filename = existing_filename;
+	else
+		default_filename = prefs.default_filename;
+	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), default_filename,
+						tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+	if (!filename.isNull() && !filename.isEmpty()) {
+		save_dives(filename.toUtf8().data());
+		set_filename(filename.toUtf8().data(), TRUE);
+		mark_divelist_changed(FALSE);
+	}
+}
+
+void MainWindow::file_save(void)
+{
+	const char *current_default;
+
+	if (!existing_filename)
+		return file_save_as();
+
+	current_default = prefs.default_filename;
+	if (strcmp(existing_filename, current_default) ==  0) {
+		/* if we are using the default filename the directory
+		 * that we are creating the file in may not exist */
+		char *current_def_dir;
+		struct stat sb;
+
+		current_def_dir = g_path_get_dirname(existing_filename);
+		if (stat(current_def_dir, &sb) != 0) {
+			g_mkdir(current_def_dir, S_IRWXU);
+		}
+		free(current_def_dir);
+	}
+	save_dives(existing_filename);
+	mark_divelist_changed(FALSE);
 }

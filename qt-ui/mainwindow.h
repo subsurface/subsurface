@@ -94,6 +94,8 @@ private:
 	void readSettings();
 	void writeSettings();
 	void redrawProfile();
+	void file_save();
+	void file_save_as();
 };
 
 MainWindow *mainWindow();
