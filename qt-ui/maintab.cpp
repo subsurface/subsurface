@@ -28,9 +28,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->diveNotesMessage->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
 
-#if EDIT_STYLE
-	ui->rating->setReadOnly(true);
-#else
 	ui->location->setReadOnly(false);
 	ui->divemaster->setReadOnly(false);
 	ui->buddy->setReadOnly(false);
@@ -46,17 +43,16 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->suit->installEventFilter(this);
 	ui->notes->installEventFilter(this);
 	ui->rating->installEventFilter(this);
-#endif
 
 	/* example of where code is more concise than Qt designer */
 	QList<QObject *> infoTabWidgets = ui->infoTab->children();
-	Q_FOREACH( QObject* obj, infoTabWidgets ){
+	Q_FOREACH(QObject* obj, infoTabWidgets) {
 		QLabel* label = qobject_cast<QLabel *>(obj);
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
 	}
 	QList<QObject *> statisticsTabWidgets = ui->statisticsTab->children();
-	Q_FOREACH( QObject* obj, statisticsTabWidgets ){
+	Q_FOREACH(QObject* obj, statisticsTabWidgets) {
 		QLabel* label = qobject_cast<QLabel *>(obj);
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
@@ -65,8 +61,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
-	if(event->type() == QEvent::FocusIn){
-		if (ui->editNotes->isVisible()){
+	if (event->type() == QEvent::FocusIn) {
+		if (ui->editNotes->isVisible()) {
 			return false;
 		}
 		ui->editNotes->setChecked(true);
@@ -204,7 +200,7 @@ void MainTab::on_addCylinder_clicked()
 
 	dialog.setCylinder(newCylinder);
 	int result = dialog.exec();
-	if (result == QDialog::Rejected){
+	if (result == QDialog::Rejected) {
 		return;
 	}
 
@@ -263,7 +259,7 @@ void MainTab::on_editNotes_clicked(bool edit)
 
 	mainWindow()->dive_list()->setEnabled(!edit);
 
-	if (edit){
+	if (edit) {
 		ui->diveNotesMessage->setText("This dive is being edited. click on finish / reset when ready.");
 		ui->diveNotesMessage->animatedShow();
 		notesBackup.buddy = ui->buddy->text();
@@ -273,18 +269,15 @@ void MainTab::on_editNotes_clicked(bool edit)
 		notesBackup.location = ui->location->text();
 		notesBackup.rating = ui->rating->currentStars();
 		ui->editNotes->setText(tr("OK"));
-	}
-	else{
+	} else {
 		ui->diveNotesMessage->animatedHide();
 		ui->editNotes->setText(tr("edit"));
 	}
 
-#if !EDIT_STYLE
-	if(!edit){
+	if (!edit) {
 		ui->editNotes->hide();
 		ui->resetNotes->hide();
 	}
-#endif
 }
 
 void MainTab::on_resetNotes_clicked()
@@ -292,9 +285,6 @@ void MainTab::on_resetNotes_clicked()
 	if (!ui->editNotes->isChecked())
 		return;
 
-#if EDIT_STYLE
-	ui->editNotes->setText(tr("edit"));
-#endif
 	ui->buddy->setText(notesBackup.buddy);
 	ui->suit->setText(notesBackup.suit);
 	ui->notes->setText(notesBackup.notes);
@@ -312,10 +302,8 @@ void MainTab::on_resetNotes_clicked()
 	ui->rating->setReadOnly(true);
 	mainWindow()->dive_list()->setEnabled(true);
 
-#if !EDIT_STYLE
 	ui->editNotes->hide();
 	ui->resetNotes->hide();
-#endif
 }
 
 #define EDIT_NOTES(what, text) \

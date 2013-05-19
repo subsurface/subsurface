@@ -26,10 +26,6 @@ struct NotesBackup{
 	QString divemaster;
 };
 
-#define DIRK_EDIT_STYLE 0
-#define TEST_EDIT_STYLE 1
-#define EDIT_STYLE DIRK_EDIT_STYLE
-
 class MainTab : public QTabWidget
 {
 	Q_OBJECT
