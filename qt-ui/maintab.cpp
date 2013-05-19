@@ -231,9 +231,11 @@ void MainTab::on_editNotes_clicked(bool edit)
 		notesBackup.divemaster = ui->divemaster->text();
 		notesBackup.location = ui->location->text();
 		notesBackup.rating = ui->rating->currentStars();
+		ui->editNotes->setText(tr("OK"));
 	}
 	else{
 		ui->diveNotesMessage->animatedHide();
+		ui->editNotes->setText(tr("edit"));
 	}
 }
 
@@ -242,6 +244,7 @@ void MainTab::on_resetNotes_clicked()
 	if (!ui->editNotes->isChecked())
 		return;
 
+	ui->editNotes->setText(tr("edit"));
 	ui->buddy->setText(notesBackup.buddy);
 	ui->suit->setText(notesBackup.suit);
 	ui->notes->setText(notesBackup.notes);
