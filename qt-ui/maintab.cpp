@@ -27,7 +27,26 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->weights->setModel(weightModel);
 	ui->diveNotesMessage->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
+
+#if EDIT_STYLE
 	ui->rating->setReadOnly(true);
+#else
+	ui->location->setReadOnly(false);
+	ui->divemaster->setReadOnly(false);
+	ui->buddy->setReadOnly(false);
+	ui->suit->setReadOnly(false);
+	ui->notes->setReadOnly(false);
+	ui->rating->setReadOnly(false);
+	ui->editNotes->hide();
+	ui->resetNotes->hide();
+
+	ui->location->installEventFilter(this);
+	ui->divemaster->installEventFilter(this);
+	ui->buddy->installEventFilter(this);
+	ui->suit->installEventFilter(this);
+	ui->notes->installEventFilter(this);
+	ui->rating->installEventFilter(this);
+#endif
 
 	/* example of where code is more concise than Qt designer */
 	QList<QObject *> infoTabWidgets = ui->infoTab->children();
@@ -42,6 +61,20 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
 	}
+}
+
+bool MainTab::eventFilter(QObject* object, QEvent* event)
+{
+	if(event->type() == QEvent::FocusIn){
+		if (ui->editNotes->isVisible()){
+			return false;
+		}
+		ui->editNotes->setChecked(true);
+		ui->editNotes->show();
+		ui->resetNotes->show();
+		on_editNotes_clicked(true);
+	}
+	return false;
 }
 
 void MainTab::clearEquipment()
@@ -245,6 +278,13 @@ void MainTab::on_editNotes_clicked(bool edit)
 		ui->diveNotesMessage->animatedHide();
 		ui->editNotes->setText(tr("edit"));
 	}
+
+#if !EDIT_STYLE
+	if(!edit){
+		ui->editNotes->hide();
+		ui->resetNotes->hide();
+	}
+#endif
 }
 
 void MainTab::on_resetNotes_clicked()
@@ -269,6 +309,11 @@ void MainTab::on_resetNotes_clicked()
 	ui->notes->setReadOnly(true);
 	ui->rating->setReadOnly(true);
 	mainWindow()->dive_list()->setEnabled(true);
+
+#if !EDIT_STYLE
+	ui->editCylinder->hide();
+	ui->resetNotes->hide();
+#endif
 }
 
 #define EDIT_NOTES(what, text) \
