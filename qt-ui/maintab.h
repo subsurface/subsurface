@@ -26,6 +26,10 @@ struct NotesBackup{
 	QString divemaster;
 };
 
+#define DIRK_EDIT_STYLE 0
+#define TEST_EDIT_STYLE 1
+#define EDIT_STYLE DIRK_EDIT_STYLE
+
 class MainTab : public QTabWidget
 {
 	Q_OBJECT
@@ -35,6 +39,8 @@ public:
 	void clearInfo();
 	void clearEquipment();
 	void reload();
+
+	bool eventFilter(QObject* , QEvent*);
 
 public Q_SLOTS:
 	void on_addCylinder_clicked();
