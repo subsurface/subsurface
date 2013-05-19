@@ -292,7 +292,9 @@ void MainTab::on_resetNotes_clicked()
 	if (!ui->editNotes->isChecked())
 		return;
 
+#if EDIT_STYLE
 	ui->editNotes->setText(tr("edit"));
+#endif
 	ui->buddy->setText(notesBackup.buddy);
 	ui->suit->setText(notesBackup.suit);
 	ui->notes->setText(notesBackup.notes);
@@ -311,7 +313,7 @@ void MainTab::on_resetNotes_clicked()
 	mainWindow()->dive_list()->setEnabled(true);
 
 #if !EDIT_STYLE
-	ui->editCylinder->hide();
+	ui->editNotes->hide();
 	ui->resetNotes->hide();
 #endif
 }
