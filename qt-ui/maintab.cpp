@@ -16,6 +16,10 @@
 #include <QLabel>
 #include <QDebug>
 
+#define GTK_EDIT_STYLE 0
+#define TEST_EDIT_STYLE 1
+#define EDIT_STYLE GTK_EDIT_STYLE
+
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    ui(new Ui::MainTab()),
 				    weightModel(new WeightModel()),
@@ -27,7 +31,19 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->weights->setModel(weightModel);
 	ui->diveNotesMessage->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
+
+#if EDIT_STYLE
 	ui->rating->setReadOnly(true);
+#else
+	ui->location->setReadOnly(false);
+	ui->divemaster->setReadOnly(false);
+	ui->buddy->setReadOnly(false);
+	ui->suit->setReadOnly(false);
+	ui->notes->setReadOnly(false);
+	ui->rating->setReadOnly(false);
+	ui->editNotes->hide();
+	ui->resetNotes->hide();
+#endif
 
 	/* example of where code is more concise than Qt designer */
 	QList<QObject *> infoTabWidgets = ui->infoTab->children();
