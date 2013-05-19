@@ -11,6 +11,7 @@
 #include <QModelIndex>
 #include <QAction>
 
+struct DiveList;
 class QSortFilterProxyModel;
 class DiveTripModel;
 
@@ -24,14 +25,23 @@ class DiveNotes;
 class Stats;
 class Equipment;
 class QItemSelection;
+class DiveListView;
+class GlobeGPS;
+class MainTab;
+class ProfileGraphicsView;
 
 class MainWindow : public QMainWindow
 {
 Q_OBJECT
 public:
 	MainWindow();
+	ProfileGraphicsView *graphics();
+	MainTab *information();
+	DiveListView *dive_list();
+	GlobeGPS *globe();
 
 private Q_SLOTS:
+
 
 	/* file menu action */
 	void on_actionNew_triggered();
@@ -85,5 +95,7 @@ private:
 	void writeSettings();
 	void redrawProfile();
 };
+
+MainWindow *mainWindow();
 
 #endif

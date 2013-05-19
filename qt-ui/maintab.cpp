@@ -8,8 +8,10 @@
 #include "ui_maintab.h"
 #include "addcylinderdialog.h"
 #include "addweightsystemdialog.h"
+#include "mainwindow.h"
 #include "../helpers.h"
 #include "../statistics.h"
+#include "divelistview.h"
 
 #include <QLabel>
 #include <QDebug>
@@ -218,6 +220,8 @@ void MainTab::on_editNotes_clicked(bool edit)
 	ui->notes->setReadOnly(!edit);
 	ui->rating->setReadOnly(!edit);
 
+	mainWindow()->dive_list()->setEnabled(!edit);
+
 	if (edit){
 		ui->diveNotesMessage->setText("This dive is being edited. click on finish / reset when ready.");
 		ui->diveNotesMessage->animatedShow();
@@ -247,12 +251,13 @@ void MainTab::on_resetNotes_clicked()
 	ui->editNotes->setChecked(false);
 	ui->diveNotesMessage->animatedHide();
 
-	ui->location->setReadOnly(false);
-	ui->divemaster->setReadOnly(false);
-	ui->buddy->setReadOnly(false);
-	ui->suit->setReadOnly(false);
-	ui->notes->setReadOnly(false);
-	ui->rating->setReadOnly(false);
+	ui->location->setReadOnly(true);
+	ui->divemaster->setReadOnly(true);
+	ui->buddy->setReadOnly(true);
+	ui->suit->setReadOnly(true);
+	ui->notes->setReadOnly(true);
+	ui->rating->setReadOnly(true);
+	mainWindow()->dive_list()->setEnabled(true);
 }
 
 #define EDIT_NOTES(what, text) \

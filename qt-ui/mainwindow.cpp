@@ -26,6 +26,13 @@
 #include "modeldelegates.h"
 #include "models.h"
 
+static MainWindow* instance = 0;
+
+MainWindow* mainWindow()
+{
+	return instance;
+}
+
 MainWindow::MainWindow() : ui(new Ui::MainWindow())
 {
 	ui->setupUi(this);
@@ -39,6 +46,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	ui->ListWidget->reload();
 	ui->ListWidget->setFocus();
 	ui->globe->reload();
+	instance = this;
 }
 
 void MainWindow::current_dive_changed(int divenr)
@@ -464,4 +472,24 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 	event->accept();
 	writeSettings();
+}
+
+DiveListView* MainWindow::dive_list()
+{
+	return ui->ListWidget;
+}
+
+GlobeGPS* MainWindow::globe()
+{
+	return ui->globe;
+}
+
+ProfileGraphicsView* MainWindow::graphics()
+{
+	return ui->ProfileWidget;
+}
+
+MainTab* MainWindow::information()
+{
+	return ui->InfoWidget;
 }
