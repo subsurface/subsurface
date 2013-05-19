@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QColor>
 #include <QBrush>
+#include <QFont>
 
 extern struct tank_info tank_info[100];
 
@@ -610,6 +611,11 @@ QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
+	if (role == Qt::FontRole){
+		QFont font;
+		font.setPointSizeF(font.pointSizeF() * 0.7);
+		return font;
+	}
 	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());
 
 	return item->data(index.column(), role);
