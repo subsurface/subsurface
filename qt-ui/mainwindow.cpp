@@ -284,12 +284,21 @@ QString MainWindow::filter()
 
 bool MainWindow::askSaveChanges()
 {
-	QString message = ! existing_filename ? tr("You have unsaved changes\nWould you like to save those before closing the datafile?")
-		:    tr("You have unsaved changes to file: %1 \nWould you like to save those before closing the datafile?").arg(existing_filename);
+	QString message;
+	QMessageBox::StandardButton response;
 
-	if (QMessageBox::question(this,  tr("Save Changes?"), message) == QMessageBox::Ok) {
+	if (existing_filename)
+		message = tr("You have unsaved changes to file: %1\nDo you really want to close the file without saving?").arg(existing_filename);
+	else
+		message = tr("You have unsaved changes\nDo you really want to close the datafile without saving?");
+
+	response = QMessageBox::question(this, tr("Save Changes?"), message,
+					QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Save);
+	if (response == QMessageBox::Save) {
 		// WARNING: Port.
 		//		file_save(NULL,NULL);
+		return true;
+	} else if (response == QMessageBox::Ok) {
 		return true;
 	}
 	return false;
