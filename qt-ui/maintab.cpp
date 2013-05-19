@@ -272,6 +272,14 @@ void MainTab::on_editAccept_clicked(bool edit)
 		ui->diveNotesMessage->animatedHide();
 		ui->editAccept->hide();
 		ui->editReset->hide();
+		/* now figure out if things have changed */
+		if (notesBackup.buddy != ui->buddy->text() ||
+		    notesBackup.suit != ui->suit->text() ||
+		    notesBackup.notes != ui->notes->toPlainText() ||
+		    notesBackup.divemaster != ui->divemaster->text() ||
+		    notesBackup.location != ui->location->text() ||
+		    notesBackup.rating != ui->rating->currentStars())
+			mark_divelist_changed(TRUE);
 	}
 }
 
