@@ -102,16 +102,16 @@
      <widget class="StarWidget" name="rating" native="true"/>
     </item>
     <item row="10" column="1">
-     <widget class="QPushButton" name="resetNotes">
+     <widget class="QPushButton" name="editReset">
       <property name="text">
        <string>reset</string>
       </property>
      </widget>
     </item>
     <item row="10" column="0">
-     <widget class="QPushButton" name="editNotes">
+     <widget class="QPushButton" name="editAccept">
       <property name="text">
-       <string>edit</string>
+       <string>OK</string>
       </property>
       <property name="checkable">
        <bool>true</bool>

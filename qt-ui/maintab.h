@@ -46,8 +46,8 @@ public Q_SLOTS:
 	void on_editWeight_clicked();
 	void on_delWeight_clicked();
 	void updateDiveInfo(int dive);
-	void on_editNotes_clicked(bool edit);
-	void on_resetNotes_clicked();
+	void on_editAccept_clicked(bool edit);
+	void on_editReset_clicked();
 	void on_location_textChanged(const QString& text);
 	void on_divemaster_textChanged(const QString& text);
 	void on_buddy_textChanged(const QString& text);

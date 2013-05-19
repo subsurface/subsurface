@@ -34,8 +34,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->suit->setReadOnly(false);
 	ui->notes->setReadOnly(false);
 	ui->rating->setReadOnly(false);
-	ui->editNotes->hide();
-	ui->resetNotes->hide();
+	ui->editAccept->hide();
+	ui->editReset->hide();
 
 	ui->location->installEventFilter(this);
 	ui->divemaster->installEventFilter(this);
@@ -62,13 +62,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::FocusIn) {
-		if (ui->editNotes->isVisible()) {
+		if (ui->editAccept->isVisible()) {
 			return false;
 		}
-		ui->editNotes->setChecked(true);
-		ui->editNotes->show();
-		ui->resetNotes->show();
-		on_editNotes_clicked(true);
+		ui->editAccept->setChecked(true);
+		ui->editAccept->show();
+		ui->editReset->show();
+		on_editAccept_clicked(true);
 	}
 	return false;
 }
@@ -248,7 +248,7 @@ void MainTab::reload()
 	cylindersModel->update();
 }
 
-void MainTab::on_editNotes_clicked(bool edit)
+void MainTab::on_editAccept_clicked(bool edit)
 {
 	ui->location->setReadOnly(!edit);
 	ui->divemaster->setReadOnly(!edit);
@@ -260,7 +260,7 @@ void MainTab::on_editNotes_clicked(bool edit)
 	mainWindow()->dive_list()->setEnabled(!edit);
 
 	if (edit) {
-		ui->diveNotesMessage->setText("This dive is being edited. click on finish / reset when ready.");
+		ui->diveNotesMessage->setText(tr("This dive is being edited. click on finish / reset when ready."));
 		ui->diveNotesMessage->animatedShow();
 		notesBackup.buddy = ui->buddy->text();
 		notesBackup.suit = ui->suit->text();
@@ -268,21 +268,16 @@ void MainTab::on_editNotes_clicked(bool edit)
 		notesBackup.divemaster = ui->divemaster->text();
 		notesBackup.location = ui->location->text();
 		notesBackup.rating = ui->rating->currentStars();
-		ui->editNotes->setText(tr("OK"));
 	} else {
 		ui->diveNotesMessage->animatedHide();
-		ui->editNotes->setText(tr("edit"));
-	}
-
-	if (!edit) {
-		ui->editNotes->hide();
-		ui->resetNotes->hide();
+		ui->editAccept->hide();
+		ui->editReset->hide();
 	}
 }
 
-void MainTab::on_resetNotes_clicked()
+void MainTab::on_editReset_clicked()
 {
-	if (!ui->editNotes->isChecked())
+	if (!ui->editAccept->isChecked())
 		return;
 
 	ui->buddy->setText(notesBackup.buddy);
@@ -291,7 +286,7 @@ void MainTab::on_resetNotes_clicked()
 	ui->divemaster->setText(notesBackup.divemaster);
 	ui->location->setText(notesBackup.location);
 	ui->rating->setCurrentStars(notesBackup.rating);
-	ui->editNotes->setChecked(false);
+	ui->editAccept->setChecked(false);
 	ui->diveNotesMessage->animatedHide();
 
 	ui->location->setReadOnly(true);
@@ -302,8 +297,8 @@ void MainTab::on_resetNotes_clicked()
 	ui->rating->setReadOnly(true);
 	mainWindow()->dive_list()->setEnabled(true);
 
-	ui->editNotes->hide();
-	ui->resetNotes->hide();
+	ui->editAccept->hide();
+	ui->editReset->hide();
 }
 
 #define EDIT_NOTES(what, text) \
