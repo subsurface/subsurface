@@ -126,16 +126,6 @@ void MainWindow::on_actionClose_triggered()
 	ui->ListWidget->reload();
 
 	clear_events();
-#if USE_GTK_UI
-	show_dive_stats(NULL);
-
-	/* redraw the screen */
-	//WARNING: Port this to Qt.
-	dive_list_update_dives();
-
-	// WARNING? Port this to Qt.
-	show_dive_info(NULL);
-#endif /* USE_GTK_UI */
 }
 
 void MainWindow::on_actionImport_triggered()
