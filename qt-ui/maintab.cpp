@@ -102,7 +102,10 @@ void MainTab::updateDiveInfo(int dive)
 	// click on the item and check its objectName,
 	// the access is ui->objectName from here on.
 	volume_t sacVal;
+	struct dive *prevd;
 	struct dive *d = get_dive(dive);
+
+	process_all_dives(d, &prevd);
 	currentDive = d;
 	UPDATE_TEXT(d, notes);
 	UPDATE_TEXT(d, location);
@@ -118,6 +121,11 @@ void MainTab::updateDiveInfo(int dive)
 		ui->waterTemperatureText->setText(get_temperature_string(d->watertemp, TRUE));
 		ui->airTemperatureText->setText(get_temperature_string(d->airtemp, TRUE));
 		ui->gasUsedText->setText(get_volume_string(get_gas_used(d), TRUE));
+		ui->oxygenHeliumText->setText(get_gaslist(d));
+		ui->dateText->setText(get_dive_date_string(d->when));
+		ui->diveTimeText->setText(QString::number((int)((d->duration.seconds + 30) / 60)));
+		if (prevd)
+			ui->surfaceIntervalText->setText(get_time_string(d->when - (prevd->when + prevd->duration.seconds), 4));
 		if ((sacVal.mliter = d->sac) > 0)
 			ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
 		else

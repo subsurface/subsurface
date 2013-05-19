@@ -289,3 +289,24 @@ volume_t get_gas_used(struct dive *dive)
 	}
 	return gas_used;
 }
+
+#define MAXBUF 80
+/* for the O2/He readings just create a list of them */
+char *get_gaslist(struct dive *dive)
+{
+	int idx, offset = 0;
+	static char buf[MAXBUF];
+
+	buf[0] = '\0';
+	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
+		cylinder_t *cyl = &dive->cylinder[idx];
+		if (!cylinder_none(cyl)) {
+			int o2 = get_o2(&cyl->gasmix);
+			int he = get_he(&cyl->gasmix);
+			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
+				 (o2 + 5) / 10, (he + 5) / 10);
+			offset = strlen(buf);
+		}
+	}
+	return buf;
+}

@@ -40,6 +40,7 @@ extern char *get_minutes(int seconds);
 extern void process_all_dives(struct dive *dive, struct dive **prev_dive);
 extern void get_selected_dives_text(char *buffer, int size);
 extern volume_t get_gas_used(struct dive *dive);
+extern char *get_gaslist(struct dive *dive);
 
 #ifdef __cplusplus
 }
