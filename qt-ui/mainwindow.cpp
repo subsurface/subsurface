@@ -521,14 +521,9 @@ void MainWindow::file_save(void)
 	if (strcmp(existing_filename, current_default) ==  0) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
-		char *current_def_dir;
-		struct stat sb;
-
-		current_def_dir = g_path_get_dirname(existing_filename);
-		if (stat(current_def_dir, &sb) != 0) {
-			g_mkdir(current_def_dir, S_IRWXU);
-		}
-		free(current_def_dir);
+		QDir current_def_dir = QFileInfo(current_default).absoluteDir();
+		if (!current_def_dir.exists())
+			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
 	save_dives(existing_filename);
 	mark_divelist_changed(FALSE);
