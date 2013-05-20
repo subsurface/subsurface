@@ -122,8 +122,10 @@ void MainWindow::on_actionClose_triggered()
 	ui->InfoWidget->clearStats();
 	ui->InfoWidget->clearInfo();
 	ui->InfoWidget->clearEquipment();
+	ui->InfoWidget->updateDiveInfo(-1);
 	ui->ProfileWidget->clear();
 	ui->ListWidget->reload();
+	ui->globe->reload();
 
 	clear_events();
 }
