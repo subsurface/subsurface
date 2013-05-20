@@ -23,6 +23,7 @@ struct NotesBackup{
 	QString buddy;
 	QString suit;
 	int rating;
+	int visibility;
 	QString divemaster;
 };
 
@@ -54,6 +55,7 @@ public Q_SLOTS:
 	void on_suit_textChanged(const QString& text);
 	void on_notes_textChanged();
 	void on_rating_valueChanged(int value);
+	void on_visibility_valueChanged(int value);
 
 private:
 	Ui::MainTab *ui;

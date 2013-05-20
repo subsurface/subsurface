@@ -36,6 +36,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->suit->setReadOnly(true);
 	ui->notes->setReadOnly(true);
 	ui->rating->setReadOnly(true);
+	ui->visibility->setReadOnly(true);
 	ui->editAccept->hide();
 	ui->editReset->hide();
 
@@ -45,6 +46,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->suit->installEventFilter(this);
 	ui->notes->installEventFilter(this);
 	ui->rating->installEventFilter(this);
+	ui->visibility->installEventFilter(this);
 
 	/* example of where code is more concise than Qt designer */
 	QList<QObject *> infoTabWidgets = ui->infoTab->children();
@@ -90,16 +92,9 @@ void MainTab::clearInfo()
 	ui->surfaceIntervalText->clear();
 	ui->maximumDepthText->clear();
 	ui->averageDepthText->clear();
-	ui->visibility->setCurrentStars(0);
 	ui->waterTemperatureText->clear();
 	ui->airTemperatureText->clear();
 	ui->airPressureText->clear();
-	ui->location->setReadOnly(true);
-	ui->divemaster->setReadOnly(true);
-	ui->buddy->setReadOnly(true);
-	ui->suit->setReadOnly(true);
-	ui->notes->setReadOnly(true);
-	ui->rating->setReadOnly(true);
 }
 
 void MainTab::clearStats()
@@ -160,6 +155,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->suit->setReadOnly(false);
 		ui->notes->setReadOnly(false);
 		ui->rating->setReadOnly(false);
+		ui->visibility->setReadOnly(false);
 		/* and fill them from the dive */
 		ui->rating->setCurrentStars(d->rating);
 		ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
@@ -214,6 +210,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->suit->setReadOnly(true);
 		ui->notes->setReadOnly(true);
 		ui->rating->setReadOnly(true);
+		ui->visibility->setReadOnly(true);
 		/* clear the fields */
 		ui->rating->setCurrentStars(0);
 		ui->sacText->clear();
@@ -306,6 +303,7 @@ void MainTab::on_editAccept_clicked(bool edit)
 	ui->suit->setReadOnly(!edit);
 	ui->notes->setReadOnly(!edit);
 	ui->rating->setReadOnly(!edit);
+	ui->visibility->setReadOnly(!edit);
 
 	mainWindow()->dive_list()->setEnabled(!edit);
 
@@ -318,6 +316,7 @@ void MainTab::on_editAccept_clicked(bool edit)
 		notesBackup.divemaster = ui->divemaster->text();
 		notesBackup.location = ui->location->text();
 		notesBackup.rating = ui->rating->currentStars();
+		notesBackup.visibility = ui->visibility->currentStars();
 	} else {
 		ui->diveNotesMessage->animatedHide();
 		ui->editAccept->hide();
@@ -328,6 +327,7 @@ void MainTab::on_editAccept_clicked(bool edit)
 		    notesBackup.notes != ui->notes->toPlainText() ||
 		    notesBackup.divemaster != ui->divemaster->text() ||
 		    notesBackup.location != ui->location->text() ||
+		    notesBackup.visibility != ui->visibility->currentStars() ||
 		    notesBackup.rating != ui->rating->currentStars())
 			mark_divelist_changed(TRUE);
 	}
@@ -344,6 +344,7 @@ void MainTab::on_editReset_clicked()
 	ui->divemaster->setText(notesBackup.divemaster);
 	ui->location->setText(notesBackup.location);
 	ui->rating->setCurrentStars(notesBackup.rating);
+	ui->visibility->setCurrentStars(notesBackup.visibility);
 	ui->editAccept->setChecked(false);
 	ui->diveNotesMessage->animatedHide();
 
@@ -353,6 +354,7 @@ void MainTab::on_editReset_clicked()
 	ui->suit->setReadOnly(true);
 	ui->notes->setReadOnly(true);
 	ui->rating->setReadOnly(true);
+	ui->visibility->setReadOnly(true);
 	mainWindow()->dive_list()->setEnabled(true);
 
 	ui->editAccept->hide();
@@ -406,4 +408,11 @@ void MainTab::on_rating_valueChanged(int value)
 	if (!currentDive)
 		return;
 	currentDive->rating = value;
+}
+
+void MainTab::on_visibility_valueChanged(int value)
+{
+	if (!currentDive)
+		return;
+	currentDive->visibility = value;
 }
