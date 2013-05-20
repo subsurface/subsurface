@@ -78,11 +78,22 @@
      </widget>
     </item>
     <item row="5" column="0">
-     <widget class="QLabel" name="label_14">
-      <property name="text">
-       <string>Rating</string>
-      </property>
-     </widget>
+        <layout class="QHBoxLayout" name="ratingVisibilityLabels">
+	  <item>
+	    <widget class="QLabel" name="label_14">
+	      <property name="text">
+		<string>Rating</string>
+	      </property>
+	    </widget>
+	  </item>
+	  <item>
+	    <widget class="QLabel" name="visibilityLabel">
+	      <property name="text">
+		<string>Visibility</string>
+	      </property>
+	    </widget>
+	  </item>
+	</layout>
     </item>
     <item row="5" column="1">
      <widget class="QLabel" name="label_19">
@@ -99,7 +110,14 @@
      </widget>
     </item>
     <item row="6" column="0">
-     <widget class="StarWidget" name="rating" native="true"/>
+      <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
+	<item>
+	  <widget class="StarWidget" name="rating" native="true"/>
+	</item>
+	<item>
+	  <widget class="StarWidget" name="visibility" native="true"/>
+	</item>
+      </layout>
     </item>
     <item row="10" column="1">
      <widget class="QPushButton" name="editReset">
@@ -400,22 +418,6 @@
        <widget class="QLabel" name="maximumDepthText">
         <property name="text">
          <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="StarWidget" name="visibility" native="true"/>
-      </item>
-      <item row="2" column="2">
-       <widget class="QLabel" name="visibilityLabel">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Visibility</string>
         </property>
        </widget>
       </item>
