@@ -28,12 +28,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->diveNotesMessage->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
 
-	ui->location->setReadOnly(false);
-	ui->divemaster->setReadOnly(false);
-	ui->buddy->setReadOnly(false);
-	ui->suit->setReadOnly(false);
-	ui->notes->setReadOnly(false);
-	ui->rating->setReadOnly(false);
+	// we start out with the fields read-only; once things are
+	// filled from a dive, they are made writeable
+	ui->location->setReadOnly(true);
+	ui->divemaster->setReadOnly(true);
+	ui->buddy->setReadOnly(true);
+	ui->suit->setReadOnly(true);
+	ui->notes->setReadOnly(true);
+	ui->rating->setReadOnly(true);
 	ui->editAccept->hide();
 	ui->editReset->hide();
 
@@ -62,9 +64,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::FocusIn) {
-		if (ui->editAccept->isVisible()) {
+		if (ui->editAccept->isVisible() || !currentDive)
 			return false;
-		}
+
 		ui->editAccept->setChecked(true);
 		ui->editAccept->show();
 		ui->editReset->show();
@@ -92,6 +94,12 @@ void MainTab::clearInfo()
 	ui->waterTemperatureText->clear();
 	ui->airTemperatureText->clear();
 	ui->airPressureText->clear();
+	ui->location->setReadOnly(true);
+	ui->divemaster->setReadOnly(true);
+	ui->buddy->setReadOnly(true);
+	ui->suit->setReadOnly(true);
+	ui->notes->setReadOnly(true);
+	ui->rating->setReadOnly(true);
 }
 
 void MainTab::clearStats()
@@ -143,6 +151,14 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, buddy);
 	/* infoTab */
 	if (d) {
+		/* make the fields writeable */
+		ui->location->setReadOnly(false);
+		ui->divemaster->setReadOnly(false);
+		ui->buddy->setReadOnly(false);
+		ui->suit->setReadOnly(false);
+		ui->notes->setReadOnly(false);
+		ui->rating->setReadOnly(false);
+		/* and fill them from the dive */
 		ui->rating->setCurrentStars(d->rating);
 		ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
 		ui->averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
@@ -165,6 +181,14 @@ void MainTab::updateDiveInfo(int dive)
 		else
 			ui->airPressureText->clear();
 	} else {
+		/* make the fields read-only */
+		ui->location->setReadOnly(true);
+		ui->divemaster->setReadOnly(true);
+		ui->buddy->setReadOnly(true);
+		ui->suit->setReadOnly(true);
+		ui->notes->setReadOnly(true);
+		ui->rating->setReadOnly(true);
+		/* clear the fields */
 		ui->rating->setCurrentStars(0);
 		ui->sacText->clear();
 		ui->otuText->clear();
