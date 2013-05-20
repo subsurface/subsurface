@@ -90,7 +90,7 @@ void MainTab::clearInfo()
 	ui->surfaceIntervalText->clear();
 	ui->maximumDepthText->clear();
 	ui->averageDepthText->clear();
-	ui->visibilityText->clear();
+	ui->visibility->setCurrentStars(0);
 	ui->waterTemperatureText->clear();
 	ui->airTemperatureText->clear();
 	ui->airPressureText->clear();
@@ -180,6 +180,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
 			ui->airPressureText->clear();
+		ui->visibility->setCurrentStars(d->visibility);
 	} else {
 		/* make the fields read-only */
 		ui->location->setReadOnly(true);
@@ -198,7 +199,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->surfaceIntervalText->clear();
 		ui->maximumDepthText->clear();
 		ui->averageDepthText->clear();
-		ui->visibilityText->clear();
+		ui->visibility->setCurrentStars(0);
 		ui->waterTemperatureText->clear();
 		ui->airTemperatureText->clear();
 		ui->gasUsedText->clear();
