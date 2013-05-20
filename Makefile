@@ -53,7 +53,6 @@ SOURCES = \
 	device.c \
 	dive.c \
 	divelist.c \
-	download-dialog.c \
 	equipment.c \
 	file.c \
 	info.c \

@@ -113,8 +113,8 @@ void exit_ui(void)
 #endif
 	if (existing_filename)
 		free((void *)existing_filename);
-	if (default_dive_computer_device)
-		free((void *)default_dive_computer_device);
+// 	if (default_dive_computer_device)
+// 		free((void *)default_dive_computer_device);
 }
 
 void set_filename(const char *filename, gboolean force)

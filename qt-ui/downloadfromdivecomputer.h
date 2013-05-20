@@ -1,7 +1,9 @@
 #ifndef DOWNLOADFROMDIVECOMPUTER_H
 #define DOWNLOADFROMDIVECOMPUTER_H
+
 #include <QDialog>
 #include <QThread>
+#include <QHash>
 
 namespace Ui{
 	class DownloadFromDiveComputer;
@@ -29,6 +31,7 @@ private:
 	device_data_t *data;
 };
 
+class QStringListModel;
 class DownloadFromDCWidget : public QDialog{
 	Q_OBJECT
 public:
@@ -37,10 +40,19 @@ public:
 public slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
+
+	void on_vendor_currentIndexChanged(const QString& vendor);
 private:
 	Ui::DownloadFromDiveComputer *ui;
 	InterfaceThread *thread;
 	bool downloading;
+
+	QStringList vendorList;
+	QHash<QString, QStringList> productList;
+
+	QStringListModel *vendorModel;
+	QStringListModel *productModel;
+	void fill_computer_list();
 };
 
 #endif

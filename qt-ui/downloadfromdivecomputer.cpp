@@ -2,9 +2,29 @@
 #include "ui_downloadfromdivecomputer.h"
 
 #include "../libdivecomputer.h"
-
+#include <cstdlib>
 #include <QThread>
 #include <QDebug>
+#include <QStringListModel>
+
+struct product {
+	const char *product;
+	dc_descriptor_t *descriptor;
+	struct product *next;
+};
+
+struct vendor {
+	const char *vendor;
+	struct product *productlist;
+	struct vendor *next;
+};
+
+struct mydescriptor {
+	const char *vendor;
+	const char *product;
+	dc_family_t type;
+	unsigned int model;
+};
 
 namespace DownloadFromDcGlobal{
 	const char *err_string;
@@ -17,6 +37,65 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	ui->progressBar->hide();
 	ui->progressBar->setMinimum(0);
 	ui->progressBar->setMaximum(100);
+	fill_computer_list();
+
+	vendorModel = new QStringListModel(vendorList);
+	ui->vendor->setModel(vendorModel);
+	ui->diveComputerName->setModel(0);
+}
+
+void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
+{
+	QAbstractItemModel *currentModel = ui->diveComputerName->model();
+	if (!currentModel)
+		return;
+
+	productModel = new QStringListModel(productList[vendor]);
+	ui->diveComputerName->setModel(productModel);
+
+	// Memleak - but deleting gives me a crash.
+	//currentModel->deleteLater();
+}
+
+void DownloadFromDCWidget::fill_computer_list()
+{
+	dc_iterator_t *iterator = NULL;
+	dc_descriptor_t *descriptor = NULL;
+	struct mydescriptor *mydescriptor;
+	struct vendor *dcl;
+	struct product *pl;
+
+	QStringList computer;
+	dc_descriptor_iterator(&iterator);
+	while (dc_iterator_next (iterator, &descriptor) == DC_STATUS_SUCCESS) {
+		const char *vendor = dc_descriptor_get_vendor(descriptor);
+		const char *product = dc_descriptor_get_product(descriptor);
+
+		if (!vendorList.contains( vendor ))
+			vendorList.append( vendor );
+
+		if( !productList[vendor].contains( product ))
+			productList[vendor].push_back( product );
+	}
+	dc_iterator_free(iterator);
+
+	/* and add the Uemis Zurich which we are handling internally
+	   THIS IS A HACK as we magically have a data structure here that
+	   happens to match a data structure that is internal to libdivecomputer;
+	   this WILL BREAK if libdivecomputer changes the dc_descriptor struct...
+	   eventually the UEMIS code needs to move into libdivecomputer, I guess */
+
+	mydescriptor = (struct mydescriptor*) malloc(sizeof(struct mydescriptor));
+	mydescriptor->vendor = "Uemis";
+	mydescriptor->product = "Zurich";
+	mydescriptor->type = DC_FAMILY_NULL;
+	mydescriptor->model = 0;
+
+	if(!vendorList.contains( "Uemis"))
+		vendorList.append("Uemis");
+
+	if( !productList["Uemis"].contains( "Zurich" ))
+		productList["Uemis"].push_back( "Zurich" );
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()

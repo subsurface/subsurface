@@ -9,24 +9,7 @@ const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
 
-struct product {
-	const char *product;
-	dc_descriptor_t *descriptor;
-	struct product *next;
-};
 
-struct vendor {
-	const char *vendor;
-	struct product *productlist;
-	struct vendor *next;
-};
-
-struct mydescriptor {
-	const char *vendor;
-	const char *product;
-	dc_family_t type;
-	unsigned int model;
-};
 
 struct vendor *dc_list;
 
