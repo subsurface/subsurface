@@ -29,6 +29,10 @@ typedef struct device_data_t {
 
 const char *do_libdivecomputer_import(device_data_t *data);
 
+extern int import_thread_cancelled;
+extern const char *progress_bar_text;
+extern double progress_bar_fraction;
+
 #ifdef __cplusplus
 }
 #endif

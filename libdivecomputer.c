@@ -652,7 +652,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	}
 }
 
-static int import_thread_done = 0, import_thread_cancelled;
+int  import_thread_cancelled;
 
 static int
 cancel_cb(void *userdata)

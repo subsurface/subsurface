@@ -40,7 +40,7 @@ public slots:
 private:
 	Ui::DownloadFromDiveComputer *ui;
 	InterfaceThread *thread;
+	bool downloading;
 };
-
 
 #endif
