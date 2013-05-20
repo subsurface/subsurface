@@ -139,9 +139,11 @@ void MainTab::updateDiveInfo(int dive)
 	// click on the item and check its objectName,
 	// the access is ui->objectName from here on.
 	volume_t sacVal;
+	temperature_t temp;
 	struct dive *prevd;
 	struct dive *d = get_dive(dive);
 
+	process_selected_dives();
 	process_all_dives(d, &prevd);
 	currentDive = d;
 	UPDATE_TEXT(d, notes);
@@ -172,7 +174,7 @@ void MainTab::updateDiveInfo(int dive)
 		if (prevd)
 			ui->surfaceIntervalText->setText(get_time_string(d->when - (prevd->when + prevd->duration.seconds), 4));
 		if ((sacVal.mliter = d->sac) > 0)
-			ui->sacText->setText(get_volume_string(sacVal, TRUE).append("/min"));
+			ui->sacText->setText(get_volume_string(sacVal, TRUE).append(tr("/min")));
 		else
 			ui->sacText->clear();
 		if (d->surface_pressure.mbar)
@@ -181,6 +183,29 @@ void MainTab::updateDiveInfo(int dive)
 		else
 			ui->airPressureText->clear();
 		ui->visibility->setCurrentStars(d->visibility);
+		ui->maximumDepthAllText->setText(get_depth_string(stats_selection.max_depth, TRUE));
+		ui->minimumDepthAllText->setText(get_depth_string(stats_selection.min_depth, TRUE));
+		ui->averageDepthAllText->setText(get_depth_string(stats_selection.avg_depth, TRUE));
+		ui->maximumSacAllText->setText(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));
+		ui->minimumSacAllText->setText(get_volume_string(stats_selection.min_sac, TRUE).append(tr("/min")));
+		ui->averageSacAllText->setText(get_volume_string(stats_selection.avg_sac, TRUE).append(tr("/min")));
+		ui->divesAllText->setText(QString::number(stats_selection.selection_size));
+		temp.mkelvin = stats_selection.max_temp;
+		ui->maximumTemperatureAllText->setText(get_temperature_string(temp, TRUE));
+		temp.mkelvin = stats_selection.min_temp;
+		ui->minimumTemperatureAllText->setText(get_temperature_string(temp, TRUE));
+		if (stats_selection.combined_temp && stats_selection.combined_count) {
+			const char *unit;
+			get_temp_units(0, &unit);
+			ui->averageTemperatureAllText->setText(QString("%1%2").arg(stats_selection.combined_temp / stats_selection.combined_count, 0, 'f', 1).arg(unit));
+		}
+		ui->totalTimeAllText->setText(get_time_string(stats_selection.total_time.seconds, 0));
+		int seconds = stats_selection.total_time.seconds;
+		if (stats_selection.selection_size)
+			seconds /= stats_selection.selection_size;
+		ui->averageTimeAllText->setText(get_time_string(seconds, 0));
+		ui->longestAllText->setText(get_time_string(stats_selection.longest_time.seconds, 0));
+		ui->shortestAllText->setText(get_time_string(stats_selection.shortest_time.seconds, 0));
 	} else {
 		/* make the fields read-only */
 		ui->location->setReadOnly(true);
