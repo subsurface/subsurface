@@ -45,6 +45,7 @@ HEADERS = \
 	qt-ui/profilegraphics.h \
 	qt-ui/globe.h \
 	qt-ui/kmessagewidget.h \
+	qt-ui/downloadfromdivecomputer.h \
 
 
 SOURCES = \
@@ -64,6 +65,7 @@ SOURCES = \
 	sha1.c \
 	statistics.c \
 	time.c \
+	libdivecomputer.c \
 	qt-gui.cpp \
 	qt-ui/addcylinderdialog.cpp \
 	qt-ui/addweightsystemdialog.cpp \
@@ -77,6 +79,7 @@ SOURCES = \
 	qt-ui/profilegraphics.cpp \
 	qt-ui/globe.cpp \
 	qt-ui/kmessagewidget.cpp \
+	qt-ui/downloadfromdivecomputer.cpp \
 	$(RESFILE)
 
 

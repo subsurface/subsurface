@@ -3,23 +3,11 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
-#if USE_GTK_UI
-#include "display-gtk.h"
-#include "callbacks-gtk.h"
-#endif
 #include "libdivecomputer.h"
 
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
-
-#if USE_GTK_UI
-static gboolean force_download;
-static gboolean prefer_downloaded;
-
-OPTIONCALLBACK(force_toggle, force_download)
-OPTIONCALLBACK(prefer_dl_toggle, prefer_downloaded)
-#endif
 
 struct product {
 	const char *product;

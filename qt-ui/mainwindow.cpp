@@ -25,6 +25,7 @@
 #include "../pref.h"
 #include "modeldelegates.h"
 #include "models.h"
+#include "downloadfromdivecomputer.h"
 
 static MainWindow* instance = 0;
 
@@ -160,7 +161,8 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-	qDebug("actionDownloadDC");
+	DownloadFromDCWidget* downloadWidget = new DownloadFromDCWidget();
+	downloadWidget->show();
 }
 
 void MainWindow::on_actionDownloadWeb_triggered()

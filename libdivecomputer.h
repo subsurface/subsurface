@@ -1,6 +1,11 @@
 #ifndef LIBDIVECOMPUTER_H
 #define LIBDIVECOMPUTER_H
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* libdivecomputer */
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
@@ -20,12 +25,12 @@ typedef struct device_data_t {
 	dc_context_t *context;
 	int preexisting;
 	gboolean force_download;
-#if USE_GTK_UI
-	progressbar_t progress;
-	GtkDialog *dialog;
-#endif
 } device_data_t;
 
-extern GError *do_import(device_data_t *data);
+const char *do_libdivecomputer_import(device_data_t *data);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
