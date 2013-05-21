@@ -10,8 +10,10 @@
 #include <QApplication>
 #include <QHeaderView>
 #include <QDebug>
+#include <QSettings>
 #include <QKeyEvent>
 #include <QSortFilterProxyModel>
+#include <QAction>
 
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false)
@@ -20,6 +22,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
 	setModel(model);
+	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 void DiveListView::reload()
@@ -37,11 +40,41 @@ void DiveListView::reload()
 		else
 			setCurrentIndex(firstDiveOrTrip);
 	}
+	// Populate the context menu of the headers that will show
+	// the menu to show / hide columns.
+	if (!header()->actions().size()){
+		QAction *visibleAction = new QAction("Visible:", header());
+		header()->addAction(visibleAction);
+		QSettings s;
+		s.beginGroup("DiveListColumnState");
+		for(int i = 0; i < model()->columnCount(); i++){
+			QString title = QString("show %1").arg( model()->headerData( i, Qt::Horizontal).toString());
+			QAction *a = new QAction(title, header());
+			a->setCheckable(true);
+			a->setChecked( s.value(title, true).toBool());
+			a->setProperty("index", i);
+			connect(a, SIGNAL(triggered(bool)), this, SLOT(hideColumnByIndex()));
+			header()->addAction(a);
+		}
+		s.endGroup();
+	}
 }
 
-void DiveListView::setModel(QAbstractItemModel* model)
+void DiveListView::hideColumnByIndex()
 {
-	QTreeView::setModel(model);
+	QAction *action = qobject_cast<QAction*>(sender());
+	if (!action)
+		return;
+
+	QSettings s;
+	s.beginGroup("DiveListColumnState");
+	s.setValue(action->text(), action->isChecked());
+	s.endGroup();
+
+	if (action->isChecked())
+		showColumn(action->property("index").toInt());
+	else
+		hideColumn(action->property("index").toInt());
 }
 
 void DiveListView::setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command)
