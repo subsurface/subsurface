@@ -136,10 +136,10 @@ void CylindersModel::setDive(dive* d)
 	if (current)
 		clear();
 
-	int amount = 0;
+	int amount = MAX_CYLINDERS;
 	for(int i = 0; i < MAX_CYLINDERS; i++){
-		cylinder_t& cylinder = d->cylinder[i];
-		if (!cylinder.type.description){
+		cylinder_t *cylinder = &d->cylinder[i];
+		if (cylinder_none(cylinder)) {
 			amount = i;
 			break;
 		}
@@ -217,9 +217,8 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 
 void WeightModel::add(weightsystem_t* weight)
 {
-	if (rows >= MAX_WEIGHTSYSTEMS) {
+	if (rows >= MAX_WEIGHTSYSTEMS)
 		return;
-	}
 
 	int row = rows;
 
@@ -243,10 +242,10 @@ void WeightModel::setDive(dive* d)
 	if (current)
 		clear();
 
-	int amount = 0;
-	for(int i = 0; i < MAX_WEIGHTSYSTEMS; i++){
-		weightsystem_t& weightsystem = d->weightsystem[i];
-		if (!weightsystem.description){
+	int amount = MAX_WEIGHTSYSTEMS;
+	for(int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		weightsystem_t *weightsystem = &d->weightsystem[i];
+		if (weightsystem_none(weightsystem)) {
 			amount = i;
 			break;
 		}
@@ -528,13 +527,11 @@ QVariant DiveItem::data(int column, int role) const
 		break;
 	}
 
-	if(role == STAR_ROLE){
+	if (role == STAR_ROLE)
 		retVal = dive->rating;
-	}
 
-	if(role == DIVE_ROLE){
+	if (role == DIVE_ROLE)
 		retVal = QVariant::fromValue<void*>(dive);
-	}
 
 	return retVal;
 }
@@ -663,7 +660,7 @@ Qt::ItemFlags DiveTripModel::flags(const QModelIndex& index) const
 }
 
 QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation,
-                                   int role) const
+				   int role) const
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
 		return rootItem->data(section, role);

@@ -157,6 +157,7 @@ typedef struct {
 
 extern bool cylinder_nodata(cylinder_t *cyl);
 extern bool cylinder_none(void *_data);
+extern bool weightsystem_none(void *_data);
 extern bool no_weightsystems(weightsystem_t *ws);
 extern bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 
@@ -377,7 +378,7 @@ struct dive {
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity; // kg per 10000 l
-        int dive_tags;
+	int dive_tags;
 
 	struct divecomputer dc;
 };

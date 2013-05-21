@@ -513,7 +513,7 @@ static gboolean description_equal(const char *desc1, const char *desc2)
 			(desc1 && desc2 && strcmp(desc1, desc2) == 0));
 }
 
-static gboolean weightsystem_none(void *_data)
+gboolean weightsystem_none(void *_data)
 {
 	weightsystem_t *ws = _data;
 	return !ws->weight.grams && !ws->description;
