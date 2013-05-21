@@ -5,6 +5,7 @@
  *
  */
 #include "models.h"
+#include "../helpers.h"
 #include <QCoreApplication>
 #include <QDebug>
 #include <QColor>
@@ -62,30 +63,42 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
 
-	cylinder_t& cyl = current->cylinder[index.row()];
+	cylinder_t *cyl = &current->cylinder[index.row()];
 
 	if (role == Qt::DisplayRole) {
 		switch(index.column()) {
 		case TYPE:
-			ret = QString(cyl.type.description);
+			ret = QString(cyl->type.description);
 			break;
 		case SIZE:
-			ret = cyl.type.size.mliter;
+			// we can't use get_volume_string because the idiotic imperial tank
+			// sizes take working pressure into account...
+			if (cyl->type.size.mliter) {
+				if (prefs.units.volume == prefs.units.CUFT) {
+					int cuft = ml_to_cuft(gas_volume(cyl, cyl->type.workingpressure));
+					ret = QString("%1cuft").arg(cuft);
+				} else {
+					ret = QString("%1l").arg(cyl->type.size.mliter / 1000.0, 0, 'f', 1);
+				}
+			}
 			break;
 		case MAXPRESS:
-			ret = cyl.type.workingpressure.mbar;
+			if (cyl->type.workingpressure.mbar)
+				ret = get_pressure_string(cyl->type.workingpressure, TRUE);
 			break;
 		case START:
-			ret = cyl.start.mbar;
+			if (cyl->start.mbar)
+				ret = get_pressure_string(cyl->start, TRUE);
 			break;
 		case END:
-			ret = cyl.end.mbar;
+			if (cyl->end.mbar)
+				ret = get_pressure_string(cyl->end, TRUE	);
 			break;
 		case O2:
-			ret = cyl.gasmix.o2.permille;
+			ret = QString("%1%").arg((cyl->gasmix.o2.permille + 5) / 10);
 			break;
 		case HE:
-			ret = cyl.gasmix.he.permille;
+			ret = QString("%1%").arg((cyl->gasmix.he.permille + 5) / 10);
 			break;
 		}
 	}
@@ -178,13 +191,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			ret = QString(ws->description);
 			break;
 		case WEIGHT:
-			if (get_units()->weight == units::KG) {
-				int gr = ws->weight.grams % 1000;
-				int kg = ws->weight.grams / 1000;
-				ret = QString("%1.%2").arg(kg).arg((unsigned) gr / 100);
-			} else {
-				ret = QString("%1").arg((unsigned)(grams_to_lbs(ws->weight.grams)));
-			}
+			ret = get_weight_string(ws->weight, TRUE);
 			break;
 		}
 	}
