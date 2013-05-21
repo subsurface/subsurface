@@ -246,17 +246,17 @@ void MainTab::on_addCylinder_clicked()
 		return;
 
 	AddCylinderDialog dialog(this);
-	cylinder_t *newCylinder = (cylinder_t*) malloc(sizeof(cylinder_t));
-	newCylinder->type.description = "";
+	cylinder_t newCylinder;
+	newCylinder.type.description = "";
 
-	dialog.setCylinder(newCylinder);
+	dialog.setCylinder(&newCylinder);
 	int result = dialog.exec();
 	if (result == QDialog::Rejected) {
 		return;
 	}
 
 	dialog.updateCylinder();
-	cylindersModel->add(newCylinder);
+	cylindersModel->add(&newCylinder);
 }
 
 void MainTab::on_editCylinder_clicked()
