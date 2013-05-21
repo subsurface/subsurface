@@ -49,11 +49,11 @@ public:
 	void add(cylinder_t *cyl);
 	void clear();
 	void update();
+	void setDive(struct dive *d);
+
 private:
-	/* Since the dive doesn't stores the number of cylinders that
-	 * it has (max 8) and since I don't want to make a
-	 * model-for-each-dive, let's hack this here instead. */
-	QMap<struct dive *, int> usedRows;
+	struct dive *current;
+	int rows;
 };
 
 /* Encapsulation of the Weight Model, that represents

@@ -202,6 +202,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->averageTimeAllText->setText(get_time_string(seconds, 0));
 		ui->longestAllText->setText(get_time_string(stats_selection.longest_time.seconds, 0));
 		ui->shortestAllText->setText(get_time_string(stats_selection.shortest_time.seconds, 0));
+		cylindersModel->setDive(d);
 	} else {
 		/* make the fields read-only */
 		ui->location->setReadOnly(true);
@@ -226,6 +227,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->airTemperatureText->clear();
 		ui->gasUsedText->clear();
 		ui->airPressureText->clear();
+		cylindersModel->clear();
 	}
 	/* statisticsTab*/
 	/* we can access the stats_selection struct, but how do we ensure the relevant dives are selected
@@ -292,7 +294,6 @@ void MainTab::on_delWeight_clicked()
 
 void MainTab::reload()
 {
-	cylindersModel->update();
 }
 
 void MainTab::on_editAccept_clicked(bool edit)

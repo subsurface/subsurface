@@ -13,7 +13,7 @@
 
 extern struct tank_info tank_info[100];
 
-CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent)
+CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent), current(0), rows(0)
 {
 }
 
@@ -62,7 +62,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
 
-	cylinder_t& cyl = current_dive->cylinder[index.row()];
+	cylinder_t& cyl = current->cylinder[index.row()];
 
 	if (role == Qt::DisplayRole) {
 		switch(index.column()) {
@@ -94,47 +94,62 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 
 int CylindersModel::rowCount(const QModelIndex& parent) const
 {
-	return 	usedRows[current_dive];
+	return 	rows;
 }
 
 void CylindersModel::add(cylinder_t* cyl)
 {
-	if (usedRows[current_dive] >= MAX_CYLINDERS) {
-		free(cyl);
+	if (rows >= MAX_CYLINDERS) {
 		return;
 	}
 
-	int row = usedRows[current_dive];
+	int row = rows;
 
-	cylinder_t& cylinder = current_dive->cylinder[row];
+	cylinder_t& cylinder = current->cylinder[row];
 
 	cylinder.end.mbar = cyl->end.mbar;
 	cylinder.start.mbar = cyl->start.mbar;
+	cylinder.type.description = strdup(cyl->type.description);
+	cylinder.type.size = cyl->type.size;
+	cylinder.type.workingpressure = cyl->type.workingpressure;
 
 	beginInsertRows(QModelIndex(), row, row);
-	usedRows[current_dive]++;
+	rows++;
 	endInsertRows();
 }
 
 void CylindersModel::update()
 {
-	if (usedRows[current_dive] > 0) {
-		beginRemoveRows(QModelIndex(), 0, usedRows[current_dive]-1);
-		endRemoveRows();
-	}
-	if (usedRows[current_dive] > 0) {
-		beginInsertRows(QModelIndex(), 0, usedRows[current_dive]-1);
-		endInsertRows();
-	}
+	setDive(current);
 }
 
 void CylindersModel::clear()
 {
-	if (usedRows[current_dive] > 0) {
-		beginRemoveRows(QModelIndex(), 0, usedRows[current_dive]-1);
-		usedRows[current_dive] = 0;
+	if (rows > 0) {
+		beginRemoveRows(QModelIndex(), 0, rows-1);
 		endRemoveRows();
 	}
+}
+
+void CylindersModel::setDive(dive* d)
+{
+	if (current)
+		clear();
+
+	int amount = 0;
+	for(int i = 0; i < MAX_CYLINDERS; i++){
+		cylinder_t& cylinder = current_dive->cylinder[i];
+		qDebug() << QString(cylinder.type.description);
+		if (!cylinder.type.description){
+			amount = i;
+			break;
+		}
+	}
+
+	beginInsertRows(QModelIndex(), 0, amount-1);
+	rows = amount;
+	current = d;
+	endInsertRows();
 }
 
 void WeightModel::clear()
