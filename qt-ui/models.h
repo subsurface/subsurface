@@ -70,9 +70,11 @@ public:
 	void add(weightsystem_t *weight);
 	void clear();
 	void update();
+	void setDive(struct dive *d);
+
 private:
-	/* Remember the number of rows in a dive */
-	QMap<struct dive *, int> usedRows;
+	struct dive *current;
+	int rows;
 };
 
 /*! An AbstractItemModel for recording dive trip information such as a list of dives.

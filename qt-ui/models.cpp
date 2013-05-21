@@ -138,8 +138,7 @@ void CylindersModel::setDive(dive* d)
 
 	int amount = 0;
 	for(int i = 0; i < MAX_CYLINDERS; i++){
-		cylinder_t& cylinder = current_dive->cylinder[i];
-		qDebug() << QString(cylinder.type.description);
+		cylinder_t& cylinder = d->cylinder[i];
 		if (!cylinder.type.description){
 			amount = i;
 			break;
@@ -154,9 +153,8 @@ void CylindersModel::setDive(dive* d)
 
 void WeightModel::clear()
 {
-	if (usedRows[current_dive] > 0) {
-		beginRemoveRows(QModelIndex(), 0, usedRows[current_dive]-1);
-		usedRows[current_dive] = 0;
+	if (rows > 0) {
+		beginRemoveRows(QModelIndex(), 0, rows-1);
 		endRemoveRows();
 	}
 }
@@ -195,7 +193,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 
 int WeightModel::rowCount(const QModelIndex& parent) const
 {
-	return usedRows[current_dive];
+	return rows;
 }
 
 QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -219,25 +217,45 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 
 void WeightModel::add(weightsystem_t* weight)
 {
-	if (usedRows[current_dive] >= MAX_WEIGHTSYSTEMS) {
-		free(weight);
+	if (rows >= MAX_WEIGHTSYSTEMS) {
 		return;
 	}
 
-	int row = usedRows[current_dive];
+	int row = rows;
 
-	weightsystem_t *ws = &current_dive->weightsystem[row];
+	weightsystem_t *ws = &current->weightsystem[row];
 
 	ws->description = weight->description;
 	ws->weight.grams = weight->weight.grams;
 
 	beginInsertRows(QModelIndex(), row, row);
-	usedRows[current_dive]++;
+	rows++;
 	endInsertRows();
 }
 
 void WeightModel::update()
 {
+	setDive(current);
+}
+
+void WeightModel::setDive(dive* d)
+{
+	if (current)
+		clear();
+
+	int amount = 0;
+	for(int i = 0; i < MAX_WEIGHTSYSTEMS; i++){
+		weightsystem_t& weightsystem = d->weightsystem[i];
+		if (!weightsystem.description){
+			amount = i;
+			break;
+		}
+	}
+
+	beginInsertRows(QModelIndex(), 0, amount-1);
+	rows = amount;
+	current = d;
+	endInsertRows();
 }
 
 void TankInfoModel::add(const QString& description)
