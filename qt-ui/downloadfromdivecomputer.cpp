@@ -41,17 +41,17 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 
 	vendorModel = new QStringListModel(vendorList);
 	ui->vendor->setModel(vendorModel);
-	ui->diveComputerName->setModel(0);
+	ui->product->setModel(0);
 }
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
 {
-	QAbstractItemModel *currentModel = ui->diveComputerName->model();
+	QAbstractItemModel *currentModel = ui->product->model();
 	if (!currentModel)
 		return;
 
 	productModel = new QStringListModel(productList[vendor]);
-	ui->diveComputerName->setModel(productModel);
+	ui->product->setModel(productModel);
 
 	// Memleak - but deleting gives me a crash.
 	//currentModel->deleteLater();
@@ -62,8 +62,6 @@ void DownloadFromDCWidget::fill_computer_list()
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
 	struct mydescriptor *mydescriptor;
-	struct vendor *dcl;
-	struct product *pl;
 
 	QStringList computer;
 	dc_descriptor_iterator(&iterator);
@@ -76,6 +74,8 @@ void DownloadFromDCWidget::fill_computer_list()
 
 		if( !productList[vendor].contains( product ))
 			productList[vendor].push_back( product );
+
+		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
 	}
 	dc_iterator_free(iterator);
 
@@ -96,6 +96,8 @@ void DownloadFromDCWidget::fill_computer_list()
 
 	if( !productList["Uemis"].contains( "Zurich" ))
 		productList["Uemis"].push_back( "Zurich" );
+
+	descriptorLookup[QString("UemisZurich")] = (dc_descriptor_t *)mydescriptor;
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
@@ -121,8 +123,14 @@ void DownloadFromDCWidget::on_ok_clicked()
 		thread->deleteLater();
 	}
 
-	device_data_t data;
-	// still need to fill the data info here.
+	data.devname = strdup(ui->device->text().toUtf8().data());
+	data.vendor = strdup(ui->vendor->currentText().toUtf8().data());
+	data.product = strdup(ui->product->currentText().toUtf8().data());
+	data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
+	data.force_download = ui->forceDownload->isChecked();
+	// still needs to be implemented
+	// set_default_dive_computer(data.vendor, data.product);
+
 	thread = new InterfaceThread(this, &data);
 	connect(thread, SIGNAL(updateInterface(int)),
 			ui->progressBar, SLOT(setValue(int)), Qt::QueuedConnection); // Qt::QueuedConnection == threadsafe.

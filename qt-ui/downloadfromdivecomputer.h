@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QThread>
 #include <QHash>
+#include <QMap>
+#include "../libdivecomputer.h"
 
 namespace Ui{
 	class DownloadFromDiveComputer;
@@ -49,6 +51,8 @@ private:
 
 	QStringList vendorList;
 	QHash<QString, QStringList> productList;
+	QMap<QString, dc_descriptor_t *> descriptorLookup;
+	device_data_t data;
 
 	QStringListModel *vendorModel;
 	QStringListModel *productModel;
