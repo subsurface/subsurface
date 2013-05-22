@@ -66,7 +66,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 
 	cylinder_t *cyl = &current->cylinder[index.row()];
 
-	if (role == Qt::DisplayRole) {
+	if (role == Qt::DisplayRole || role==Qt::EditRole) {
 		switch(index.column()) {
 		case TYPE:
 			ret = QString(cyl->type.description);
@@ -261,7 +261,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 
 	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
 
-	if (role == Qt::DisplayRole) {
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch(index.column()) {
 		case TYPE:
 			ret = QString(ws->description);
