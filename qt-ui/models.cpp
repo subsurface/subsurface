@@ -123,7 +123,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 	case TYPE:
 		if (!value.isNull()) {
 			char *text = value.toByteArray().data();
-			if (strcmp(cyl->type.description, text)) {
+			if (!cyl->type.description || strcmp(cyl->type.description, text)) {
 				cyl->type.description = strdup(text);
 				mark_divelist_changed(TRUE);
 			}
@@ -431,9 +431,10 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 
 	int bar = ((info->psi) ? psi_to_bar(info->psi) : info->bar) * 1000 + 0.5;
 
-	if (info->cuft) {
-		double airvolume = cuft_to_l(info->cuft) * 1000.0;
-		ml = airvolume / bar_to_atm(bar) + 0.5;
+	if (info->cuft && info->psi) {
+		pressure_t p;
+		p.mbar = psi_to_mbar(info->psi);
+		ml = wet_volume(info->cuft, p);
 	}
 	if (role == Qt::DisplayRole) {
 		switch(index.column()) {
