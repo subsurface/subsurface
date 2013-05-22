@@ -69,11 +69,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	addCylinder->setFlat(true);
 	addCylinder->setToolTip(tr("Add Cylinder"));
 	connect(addCylinder, SIGNAL(clicked(bool)), this, SLOT(addCylinder_clicked()));
-
+	addCylinder->setEnabled(false);
 	addWeight = new QPushButton(plusIcon, QString(), ui->weightGroup);
 	addWeight->setFlat(true);
 	addWeight->setToolTip(tr("Add Weight System"));
 	connect(addWeight, SIGNAL(clicked(bool)), this, SLOT(addWeight_clicked()));
+	addWeight->setEnabled(false);
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
@@ -237,6 +238,8 @@ void MainTab::updateDiveInfo(int dive)
 		ui->shortestAllText->setText(get_time_string(stats_selection.shortest_time.seconds, 0));
 		cylindersModel->setDive(d);
 		weightModel->setDive(d);
+		addCylinder->setEnabled(true);
+		addWeight->setEnabled(true);
 	} else {
 		/* make the fields read-only */
 		ui->location->setReadOnly(true);
@@ -263,6 +266,8 @@ void MainTab::updateDiveInfo(int dive)
 		ui->airPressureText->clear();
 		cylindersModel->clear();
 		weightModel->clear();
+		addCylinder->setEnabled(false);
+		addWeight->setEnabled(false);
 	}
 	/* statisticsTab*/
 	/* we can access the stats_selection struct, but how do we ensure the relevant dives are selected
