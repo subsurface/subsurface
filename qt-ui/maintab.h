@@ -42,10 +42,10 @@ public:
     virtual void showEvent(QShowEvent* );
 
 public Q_SLOTS:
-	void on_addCylinder_clicked();
+	void addCylinder_clicked();
 	void on_editCylinder_clicked();
 	void on_delCylinder_clicked();
-	void on_addWeight_clicked();
+	void addWeight_clicked();
 	void on_editWeight_clicked();
 	void on_delWeight_clicked();
 	void updateDiveInfo(int dive);

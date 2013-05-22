@@ -68,9 +68,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	addCylinder = new QPushButton(plusIcon, QString(), ui->cylindersGroup);
 	addCylinder->setFlat(true);
 	addCylinder->setToolTip(tr("Add Cylinder"));
+	connect(addCylinder, SIGNAL(clicked(bool)), this, SLOT(addCylinder_clicked()));
+
 	addWeight = new QPushButton(plusIcon, QString(), ui->weightGroup);
 	addWeight->setFlat(true);
 	addWeight->setToolTip(tr("Add Weight System"));
+	connect(addWeight, SIGNAL(clicked(bool)), this, SLOT(addWeight_clicked()));
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
@@ -270,7 +273,7 @@ void MainTab::updateDiveInfo(int dive)
 // 	qDebug("min temp %u",stats_selection.min_temp);
 }
 
-void MainTab::on_addCylinder_clicked()
+void MainTab::addCylinder_clicked()
 {
 	if (cylindersModel->rowCount() >= MAX_CYLINDERS)
 		return;
@@ -297,7 +300,7 @@ void MainTab::on_delCylinder_clicked()
 {
 }
 
-void MainTab::on_addWeight_clicked()
+void MainTab::addWeight_clicked()
 {
 	if (weightModel->rowCount() >= MAX_WEIGHTSYSTEMS)
 		return;
