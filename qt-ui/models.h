@@ -38,18 +38,21 @@ private:
 class CylindersModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum Column {TYPE, SIZE, MAXPRESS, START, END, O2, HE};
+	enum Column {REMOVE, TYPE, SIZE, MAXPRESS, START, END, O2, HE,  COLUMNS};
 
 	explicit CylindersModel(QObject* parent = 0);
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    /*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
 
 	void add(cylinder_t *cyl);
 	void clear();
 	void update();
 	void setDive(struct dive *d);
+public slots:
+	void remove(const QModelIndex& index);
 
 private:
 	struct dive *current;
@@ -61,16 +64,19 @@ private:
 class WeightModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum Column {TYPE, WEIGHT};
+	enum Column {REMOVE, TYPE, WEIGHT, COLUMNS};
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    /*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
 
 	void add(weightsystem_t *weight);
 	void clear();
 	void update();
 	void setDive(struct dive *d);
+public slots:
+	void remove(const QModelIndex& index);
 
 private:
 	struct dive *current;

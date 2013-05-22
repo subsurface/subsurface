@@ -75,6 +75,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	addWeight->setToolTip(tr("Add Weight System"));
 	connect(addWeight, SIGNAL(clicked(bool)), this, SLOT(addWeight_clicked()));
 	addWeight->setEnabled(false);
+
+	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), ui->cylinders->model(), SLOT(remove(QModelIndex)));
+	connect(ui->weights, SIGNAL(clicked(QModelIndex)), ui->weights->model(), SLOT(remove(QModelIndex)));
+
+	ui->cylinders->setColumnWidth( CylindersModel::REMOVE, 24);
+	ui->cylinders->horizontalHeader()->setResizeMode (CylindersModel::REMOVE , QHeaderView::Fixed);
+	ui->weights->setColumnWidth( WeightModel::REMOVE, 24);
+	ui->cylinders->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
 }
 
 // We need to manually position the 'plus' on cylinder and weight.

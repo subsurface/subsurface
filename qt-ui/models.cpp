@@ -11,6 +11,7 @@
 #include <QColor>
 #include <QBrush>
 #include <QFont>
+#include <QIcon>
 
 extern struct tank_info tank_info[100];
 
@@ -54,7 +55,7 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 
 int CylindersModel::columnCount(const QModelIndex& parent) const
 {
-	return 7;
+	return COLUMNS;
 }
 
 QVariant CylindersModel::data(const QModelIndex& index, int role) const
@@ -102,6 +103,13 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		}
 	}
+
+	else if (role == Qt::DecorationRole){
+		if (index.column() == REMOVE){
+			ret = QIcon(":trash");
+		}
+	}
+
 	return ret;
 }
 
@@ -164,6 +172,29 @@ void CylindersModel::setDive(dive* d)
 	endInsertRows();
 }
 
+Qt::ItemFlags CylindersModel::flags(const QModelIndex& index) const
+{
+	if (index.column() == REMOVE)
+		return Qt::ItemIsEnabled;
+	return QAbstractItemModel::flags(index);
+}
+
+void CylindersModel::remove(const QModelIndex& index)
+{
+	if (index.column() != REMOVE){
+		return;
+	}
+	// Remove code should be here.
+}
+
+void WeightModel::remove(const QModelIndex& index)
+{
+	if (index.column() != REMOVE){
+		return;
+	}
+	// Remove code should be here.
+}
+
 void WeightModel::clear()
 {
 	if (rows > 0) {
@@ -174,7 +205,7 @@ void WeightModel::clear()
 
 int WeightModel::columnCount(const QModelIndex& parent) const
 {
-	return 2;
+	return COLUMNS;
 }
 
 QVariant WeightModel::data(const QModelIndex& index, int role) const
@@ -195,7 +226,20 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			break;
 		}
 	}
+
+	else if (role == Qt::DecorationRole){
+		if (index.column() == REMOVE){
+			ret = QIcon(":trash");
+		}
+	}
 	return ret;
+}
+
+Qt::ItemFlags WeightModel::flags(const QModelIndex& index) const
+{
+	if (index.column() == REMOVE)
+		return Qt::ItemIsEnabled;
+	return QAbstractItemModel::flags(index);
 }
 
 int WeightModel::rowCount(const QModelIndex& parent) const
