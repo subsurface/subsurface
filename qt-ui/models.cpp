@@ -34,8 +34,8 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 		case SIZE:
 			ret = tr("Size");
 			break;
-		case MAXPRESS:
-			ret = tr("MaxPress");
+		case WORKINGPRESS:
+			ret = tr("WorkPress");
 			break;
 		case START:
 			ret = tr("Start");
@@ -77,14 +77,14 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			// sizes take working pressure into account...
 			if (cyl->type.size.mliter) {
 				if (prefs.units.volume == prefs.units.CUFT) {
-					int cuft = ml_to_cuft(gas_volume(cyl, cyl->type.workingpressure));
+					int cuft = 0.5 + ml_to_cuft(gas_volume(cyl, cyl->type.workingpressure));
 					ret = QString("%1cuft").arg(cuft);
 				} else {
 					ret = QString("%1l").arg(cyl->type.size.mliter / 1000.0, 0, 'f', 1);
 				}
 			}
 			break;
-		case MAXPRESS:
+		case WORKINGPRESS:
 			if (cyl->type.workingpressure.mbar)
 				ret = get_pressure_string(cyl->type.workingpressure, TRUE);
 			break;
@@ -114,45 +114,90 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	return ret;
 }
 
+#define CHANGED(_t,_u1,_u2) value._t() != data(index, role).toString().replace(_u1,"").replace(_u2,"")._t()
+
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	cylinder_t *cyl = &current->cylinder[index.row()];
-	switch(index.column()){
-		case TYPE:{
-			QByteArray desc = value.toByteArray();
-			cyl->type.description = strdup(desc.data());
-			break;
+	switch(index.column()) {
+	case TYPE:
+		if (!value.isNull()) {
+			char *text = value.toByteArray().data();
+			if (strcmp(cyl->type.description, text)) {
+				cyl->type.description = strdup(text);
+				mark_divelist_changed(TRUE);
+			}
 		}
-		case SIZE:
-			// we can't use get_volume_string because the idiotic imperial tank
-			// sizes take working pressure into account...
-			if (cyl->type.size.mliter) {
+		break;
+	case SIZE:
+		if (CHANGED(toDouble, "cuft", "l")) {
+			// if units are CUFT then this value is meaningless until we have working pressure
+			if (value.toDouble() != 0.0) {
 				if (prefs.units.volume == prefs.units.CUFT) {
-					double liters = cuft_to_l(value.toDouble());
-					cyl->type.size.mliter = liters * 1000.0;
+					if (cyl->type.workingpressure.mbar == 0)
+						// this is a hack as we can't store a wet size
+						// without working pressure in cuft mode
+						// so we assume it's an aluminum tank at 3000psi
+						cyl->type.workingpressure.mbar = psi_to_mbar(3000);
+					if (cyl->type.size.mliter != wet_volume(value.toDouble(), cyl->type.workingpressure)) {
+						mark_divelist_changed(TRUE);
+						cyl->type.size.mliter = wet_volume(value.toDouble(), cyl->type.workingpressure);
+					}
 				} else {
-					cyl->type.size.mliter = value.toDouble() * 1000.0;
+					if (cyl->type.size.mliter != value.toDouble() * 1000.0) {
+						mark_divelist_changed(TRUE);
+						cyl->type.size.mliter = value.toDouble() * 1000.0;
+					}
 				}
 			}
-			break;
-		case MAXPRESS:
-			cyl->type.workingpressure.mbar = value.toInt();
-			break;
-		case START:
-			cyl->start.mbar = value.toInt();
-			break;
-		case END:
-			cyl->end.mbar = value.toInt();
-			break;
-		case O2:
+		}
+		break;
+	case WORKINGPRESS:
+		if (CHANGED(toDouble, "psi", "bar")) {
+			if (value.toDouble() != 0.0) {
+				if (prefs.units.pressure == prefs.units.PSI)
+					cyl->type.workingpressure.mbar = psi_to_mbar(value.toDouble());
+				else
+					cyl->type.workingpressure.mbar = value.toDouble() * 1000;
+				mark_divelist_changed(TRUE);
+			}
+		}
+		break;
+	case START:
+		if (CHANGED(toDouble, "psi", "bar")) {
+			if (value.toDouble() != 0.0) {
+				if (prefs.units.pressure == prefs.units.PSI)
+					cyl->start.mbar = psi_to_mbar(value.toDouble());
+				else
+					cyl->start.mbar = value.toDouble() * 1000;
+				mark_divelist_changed(TRUE);
+			}
+		}
+		break;
+	case END:
+		if (CHANGED(toDouble, "psi", "bar")) {
+			if (value.toDouble() != 0.0) {
+				if (prefs.units.pressure == prefs.units.PSI)
+					cyl->end.mbar = psi_to_mbar(value.toDouble());
+				else
+					cyl->end.mbar = value.toDouble() * 1000;
+			}
+		}
+		break;
+	case O2:
+		if (CHANGED(toInt, "%", "%")) {
 			cyl->gasmix.o2.permille = value.toInt() * 10 - 5;
-			break;
-		case HE:
+			mark_divelist_changed(TRUE);
+		}
+		break;
+	case HE:
+		if (CHANGED(toInt, "%", "%")) {
 			cyl->gasmix.he.permille = value.toInt() * 10 - 5;
-			break;
+			mark_divelist_changed(TRUE);
+		}
+		break;
 	}
-
-    return QAbstractItemModel::setData(index, value, role);
+	return QAbstractItemModel::setData(index, value, role);
 }
 
 int CylindersModel::rowCount(const QModelIndex& parent) const

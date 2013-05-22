@@ -312,6 +312,11 @@ int gas_volume(cylinder_t *cyl, pressure_t p)
 	return cyl->type.size.mliter * surface_volume_multiplier(p);
 }
 
+int wet_volume(double cuft, pressure_t p)
+{
+	return cuft_to_l(cuft) * 1000 / surface_volume_multiplier(p);
+}
+
 /*
  * If the cylinder tank pressures are within half a bar
  * (about 8 PSI) of the sample pressures, we consider it

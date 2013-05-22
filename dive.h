@@ -221,7 +221,7 @@ static inline double psi_to_bar(double psi)
 	return psi / 14.5037738;
 }
 
-static inline unsigned long psi_to_mbar(double psi)
+static inline long psi_to_mbar(double psi)
 {
 	return psi_to_bar(psi)*1000 + 0.5;
 }
@@ -238,6 +238,7 @@ static inline double bar_to_atm(double bar)
 
 /* Volume in mliter of a cylinder at pressure 'p' */
 extern int gas_volume(cylinder_t *cyl, pressure_t p);
+extern int wet_volume(double cuft, pressure_t p);
 
 static inline int mbar_to_PSI(int mbar)
 {

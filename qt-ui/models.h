@@ -38,7 +38,7 @@ private:
 class CylindersModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum Column {REMOVE, TYPE, SIZE, MAXPRESS, START, END, O2, HE,  COLUMNS};
+	enum Column {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE,  COLUMNS};
 
 	explicit CylindersModel(QObject* parent = 0);
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
