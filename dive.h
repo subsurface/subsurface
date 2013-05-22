@@ -743,11 +743,6 @@ struct tank_info {
 	int cuft, ml, psi, bar;
 };
 
-#ifdef DEBUGFILE
-extern char *debugfilename;
-extern FILE *debugfile;
-#endif
-
 #ifdef __cplusplus
 }
 #endif

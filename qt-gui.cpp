@@ -91,9 +91,6 @@ void init_ui(int *argcp, char ***argvp)
 	settings.endGroup();
 
 #if 0
-	subsurface_open_conf();
-
-	load_preferences();
 
 	/* these still need to be handled in QSettings */
 	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor");
@@ -111,9 +108,6 @@ void run_ui(void)
 void exit_ui(void)
 {
 	delete application;
-#if 0
-	subsurface_close_conf();
-#endif
 	if (existing_filename)
 		free((void *)existing_filename);
 // 	if (default_dive_computer_device)

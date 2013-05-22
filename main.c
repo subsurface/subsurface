@@ -10,15 +10,6 @@
 #include "dive.h"
 #include "divelist.h"
 
-#ifdef USE_GTK_UI
-#include <osm-gps-map.h>
-#endif
-
-#ifdef DEBUGFILE
-char *debugfilename;
-FILE *debugfile;
-#endif
-
 struct preferences prefs;
 struct preferences default_prefs = {
 	.units = SI_UNITS,
@@ -100,11 +91,7 @@ static void parse_argument(const char *arg)
 			if (strcmp(arg,"--import") == 0) {
 				/* mark the dives so far as the base,
 				 * everything after is imported */
-#if USE_GTK_UI
-				report_dives(FALSE, FALSE);
-#else
 				process_dives(FALSE, FALSE);
-#endif
 				imported = TRUE;
 				return;
 			}
@@ -122,22 +109,6 @@ static void parse_argument(const char *arg)
 	} while (*++p);
 }
 
-void update_dive(struct dive *new_dive)
-{
-#if USE_GTK_UI
-	static struct dive *buffered_dive;
-	struct dive *old_dive = buffered_dive;
-
-	if (old_dive) {
-		flush_divelist(old_dive);
-	}
-	show_dive_info(new_dive);
-	show_dive_equipment(new_dive, W_IDX_PRIMARY);
-	show_dive_stats(new_dive);
-	buffered_dive = new_dive;
-#endif
-}
-
 void renumber_dives(int nr)
 {
 	int i;
@@ -145,9 +116,6 @@ void renumber_dives(int nr)
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = dive_table.dives[i];
 		dive->number = nr + i;
-#if USE_GTK_UI
-		flush_divelist(dive);
-#endif
 	}
 	mark_divelist_changed(TRUE);
 }
@@ -204,16 +172,6 @@ int main(int argc, char **argv)
 	setup_system_prefs();
 	prefs = default_prefs;
 
-#if DEBUGFILE > 1
-	debugfile = stderr;
-#elif defined(DEBUGFILE)
-	debugfilename = strdup(prefs.default_filename);
-	strncpy(debugfilename + strlen(debugfilename) - 3, "log", 3);
-	if (g_mkdir_with_parents(g_path_get_dirname(debugfilename), 0664) != 0 ||
-	    (debugfile = g_fopen(debugfilename, "w")) == NULL)
-		printf("oh boy, can't create debugfile");
-#endif
-
 	subsurface_command_line_init(&argc, &argv);
 	parse_xml_init();
 
@@ -253,23 +211,12 @@ int main(int argc, char **argv)
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);
 	}
-#if USE_GTK_UI
-	report_dives(imported, FALSE);
-	if (dive_table.nr == 0)
-		show_dive_info(NULL);
-#else
 	process_dives(imported, FALSE);
-#endif
-
 	parse_xml_exit();
 	subsurface_command_line_exit(&argc, &argv);
 
 	init_qt_ui(&argc, &argv); /* qt bit delayed until dives are parsed */
 	run_ui();
 	exit_ui();
-#ifdef DEBUGFILE
-	if (debugfile)
-		fclose(debugfile);
-#endif
 	return 0;
 }

@@ -467,7 +467,7 @@ void save_dive(FILE *f, struct dive *dive)
 		fprintf(f, " rating='%d'", dive->rating);
 	if (dive->visibility)
 		fprintf(f, " visibility='%d'", dive->visibility);
-        if (dive->dive_tags)
+	if (dive->dive_tags)
 		save_tags(f, dive->dive_tags);
 
 	show_date(f, dive->when);
@@ -574,9 +574,6 @@ void save_dives_logic(const char *filename, const gboolean select_only)
 
 	if (!f)
 		return;
-
-	/* Flush any edits of current dives back to the dives! */
-	update_dive(current_dive);
 
 	fprintf(f, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
 
