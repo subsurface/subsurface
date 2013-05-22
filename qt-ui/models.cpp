@@ -184,7 +184,9 @@ void CylindersModel::remove(const QModelIndex& index)
 	if (index.column() != REMOVE){
 		return;
 	}
+	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	// Remove code should be here.
+	endRemoveRows();
 }
 
 void WeightModel::remove(const QModelIndex& index)
@@ -192,7 +194,9 @@ void WeightModel::remove(const QModelIndex& index)
 	if (index.column() != REMOVE){
 		return;
 	}
+	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	// Remove code should be here.
+	endRemoveRows();
 }
 
 void WeightModel::clear()
