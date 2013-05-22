@@ -76,7 +76,7 @@ void GlobeGPS::reload()
 void GlobeGPS::centerOn(dive* dive)
 {
 	// dive has changed, if we had the 'editingDive', hide it.
-	if(messageWidget->isVisible()){
+	if(messageWidget->isVisible() && (!dive || dive_has_gps_location(dive))){
 		messageWidget->animatedHide();
 	}
 
@@ -95,10 +95,12 @@ void GlobeGPS::centerOn(dive* dive)
 
 void GlobeGPS::prepareForGetDiveCoordinates(dive* dive)
 {
-	messageWidget->setMessageType(KMessageWidget::Warning);
-	messageWidget->setText(QObject::tr("This dive has no location! Please move the planet to the desired position, then double-click to set the new location for this dive."));
-	messageWidget->animatedShow();
-
+	if (!messageWidget->isVisible()) {
+		messageWidget->setMessageType(KMessageWidget::Warning);
+		messageWidget->setText(QObject::tr("This dive has no location! Please move the planet to the desired position, then double-click to set the new location for this dive."));
+		messageWidget->setWordWrap(true);
+		messageWidget->animatedShow();
+	}
 	editingDiveCoords = dive;
 }
 
