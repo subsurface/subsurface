@@ -48,15 +48,20 @@ void DiveListView::reload()
 		QSettings s;
 		s.beginGroup("DiveListColumnState");
 		for(int i = 0; i < model()->columnCount(); i++){
-			QString title = QString("show %1").arg( model()->headerData( i, Qt::Horizontal).toString());
+			QString title = QString("show %1").arg(model()->headerData( i, Qt::Horizontal).toString());
 			QAction *a = new QAction(title, header());
 			a->setCheckable(true);
 			a->setChecked( s.value(title, true).toBool());
 			a->setProperty("index", i);
 			connect(a, SIGNAL(triggered(bool)), this, SLOT(hideColumnByIndex()));
 			header()->addAction(a);
+			if (a->isChecked())
+				showColumn(true);
+			else
+				hideColumn(false);
 		}
 		s.endGroup();
+		s.sync();
 	}
 }
 
@@ -70,6 +75,7 @@ void DiveListView::hideColumnByIndex()
 	s.beginGroup("DiveListColumnState");
 	s.setValue(action->text(), action->isChecked());
 	s.endGroup();
+	s.sync();
 
 	if (action->isChecked())
 		showColumn(action->property("index").toInt());

@@ -61,6 +61,9 @@ const char *existing_filename;
 void init_qt_ui(int *argcp, char ***argvp)
 {
 	application->installTranslator(new Translator(application));
+	QCoreApplication::setOrganizationName("hohndel");
+	QCoreApplication::setOrganizationDomain("hohndel.org");
+	QCoreApplication::setApplicationName("Subsurface");
 	MainWindow *window = new MainWindow();
 	window->show();
 }
