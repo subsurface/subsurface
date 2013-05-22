@@ -9,10 +9,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #include <mach-o/dyld.h>
-#include "gtkosxapplication.h"
 #include <sys/syslimits.h>
-
-static GtkosxApplication *osx_app;
 
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
@@ -98,6 +95,7 @@ void subsurface_close_conf(void)
 	/* Nothing */
 }
 
+#if USE_GTK_UI
 int subsurface_fill_device_list(GtkListStore *store)
 {
 	int i = 0;
@@ -149,6 +147,7 @@ int subsurface_fill_device_list(GtkListStore *store)
 	}
 	return index;
 }
+#endif
 
 const char *subsurface_icon_name()
 {

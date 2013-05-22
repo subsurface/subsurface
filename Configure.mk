@@ -124,8 +124,7 @@ ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
 else ifeq ($(UNAME), darwin)
-	LIBGTK += $(shell $(PKGCONFIG) --libs gtk-mac-integration) -framework CoreFoundation -framework CoreServices
-	GTKCFLAGS += $(shell $(PKGCONFIG) --cflags gtk-mac-integration)
+	LDFLAGS += -framework CoreFoundation -framework CoreServices
 	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 endif
 
