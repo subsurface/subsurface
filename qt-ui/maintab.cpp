@@ -61,7 +61,37 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
 	}
+
+	/*Thid couldn't be done on the ui file because element
+	is floating, instead of being fixed on the layout. */
+	QIcon plusIcon(":plus");
+	addCylinder = new QPushButton(plusIcon, QString(), ui->cylindersGroup);
+	addCylinder->setFlat(true);
+	addCylinder->setToolTip(tr("Add Cylinder"));
+	addWeight = new QPushButton(plusIcon, QString(), ui->weightGroup);
+	addWeight->setFlat(true);
+	addWeight->setToolTip(tr("Add Weight System"));
 }
+
+// We need to manually position the 'plus' on cylinder and weight.
+void MainTab::resizeEvent(QResizeEvent* event)
+{
+	if (ui->cylindersGroup->isVisible())
+		addCylinder->setGeometry( ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
+
+	if (ui->weightGroup->isVisible())
+		addWeight->setGeometry( ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
+
+    QTabWidget::resizeEvent(event);
+}
+
+void MainTab::showEvent(QShowEvent* event)
+{
+	QTabWidget::showEvent(event);
+	addCylinder->setGeometry( ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
+	addWeight->setGeometry( ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
+}
+
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {

@@ -38,6 +38,8 @@ public:
 	void reload();
 
 	bool eventFilter(QObject* , QEvent*);
+    virtual void resizeEvent(QResizeEvent* );
+    virtual void showEvent(QShowEvent* );
 
 public Q_SLOTS:
 	void on_addCylinder_clicked();
@@ -63,6 +65,8 @@ private:
 	CylindersModel *cylindersModel;
 	NotesBackup notesBackup;
 	struct dive* currentDive;
+	QPushButton *addCylinder;
+	QPushButton *addWeight;
 };
 
 #endif
