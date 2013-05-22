@@ -37,7 +37,6 @@ MainWindow* mainWindow()
 MainWindow::MainWindow() : ui(new Ui::MainWindow())
 {
 	ui->setupUi(this);
-	readSettings();
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	ui->globeMessage->hide();
@@ -45,6 +44,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	ui->globeMessage->setCloseButtonVisible(false);
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
+	readSettings();
 	ui->ListWidget->setFocus();
 	ui->globe->reload();
 	instance = this;
@@ -344,6 +344,7 @@ void MainWindow::readSettings()
 			ui->ListWidget->resizeColumnToContents(i);
 	}
 	ui->ListWidget->collapseAll();
+	ui->ListWidget->expand(ui->ListWidget->model()->index(0,0));
 	ui->ListWidget->scrollTo(ui->ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
 
 	settings.endGroup();
