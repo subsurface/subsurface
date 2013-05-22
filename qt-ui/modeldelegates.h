@@ -12,4 +12,12 @@ public:
 private:
 	QWidget *parentWidget;
 };
+
+class TankInfoDelegate : public QStyledItemDelegate{
+	Q_OBJECT
+public:
+    explicit TankInfoDelegate(QObject* parent = 0);
+    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+};
+
 #endif
