@@ -54,7 +54,6 @@ QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
     QComboBox *comboDelegate = new QComboBox(parent);
 	TankInfoModel *model = new TankInfoModel;
 	QString data = index.model()->data(index, Qt::DisplayRole).toString();
-	qDebug() << "Tentando pegar " << data;
 	comboDelegate->setModel(model);
 	int i;
 	for(i = 0; i < model->rowCount(); i++){

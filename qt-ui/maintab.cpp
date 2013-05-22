@@ -6,8 +6,6 @@
  */
 #include "maintab.h"
 #include "ui_maintab.h"
-#include "addcylinderdialog.h"
-#include "addweightsystemdialog.h"
 #include "mainwindow.h"
 #include "../helpers.h"
 #include "../statistics.h"
@@ -290,21 +288,7 @@ void MainTab::updateDiveInfo(int dive)
 
 void MainTab::addCylinder_clicked()
 {
-	if (cylindersModel->rowCount() >= MAX_CYLINDERS)
-		return;
-
-	AddCylinderDialog dialog(this);
-	cylinder_t newCylinder;
-	newCylinder.type.description = "";
-
-	dialog.setCylinder(&newCylinder);
-	int result = dialog.exec();
-	if (result == QDialog::Rejected) {
-		return;
-	}
-
-	dialog.updateCylinder();
-	cylindersModel->add(&newCylinder);
+	cylindersModel->add();
 }
 
 void MainTab::on_editCylinder_clicked()
@@ -317,21 +301,7 @@ void MainTab::on_delCylinder_clicked()
 
 void MainTab::addWeight_clicked()
 {
-	if (weightModel->rowCount() >= MAX_WEIGHTSYSTEMS)
-		return;
-
-	AddWeightsystemDialog dialog(this);
-	weightsystem_t newWeightsystem;
-	newWeightsystem.description = "";
-	newWeightsystem.weight.grams = 0;
-
-	dialog.setWeightsystem(&newWeightsystem);
-	int result = dialog.exec();
-	if (result == QDialog::Rejected)
-		return;
-
-	dialog.updateWeightsystem();
-	weightModel->add(&newWeightsystem);
+	weightModel->add();
 }
 
 void MainTab::on_editWeight_clicked()

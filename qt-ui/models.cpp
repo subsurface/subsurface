@@ -67,7 +67,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 
 	cylinder_t *cyl = &current->cylinder[index.row()];
 
-	if (role == Qt::DisplayRole) {
+	if (role == Qt::DisplayRole || role==Qt::EditRole) {
 		switch(index.column()) {
 		case TYPE:
 			ret = QString(cyl->type.description);
@@ -160,21 +160,13 @@ int CylindersModel::rowCount(const QModelIndex& parent) const
 	return 	rows;
 }
 
-void CylindersModel::add(cylinder_t* cyl)
+void CylindersModel::add()
 {
 	if (rows >= MAX_CYLINDERS) {
 		return;
 	}
 
 	int row = rows;
-
-	cylinder_t& cylinder = current->cylinder[row];
-
-	cylinder.end.mbar = cyl->end.mbar;
-	cylinder.start.mbar = cyl->start.mbar;
-	cylinder.type.description = strdup(cyl->type.description);
-	cylinder.type.size = cyl->type.size;
-	cylinder.type.workingpressure = cyl->type.workingpressure;
 
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
@@ -266,7 +258,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 
 	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
 
-	if (role == Qt::DisplayRole) {
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch(index.column()) {
 		case TYPE:
 			ret = QString(ws->description);
@@ -331,18 +323,12 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 	return ret;
 }
 
-void WeightModel::add(weightsystem_t* weight)
+void WeightModel::add()
 {
 	if (rows >= MAX_WEIGHTSYSTEMS)
 		return;
 
 	int row = rows;
-
-	weightsystem_t *ws = &current->weightsystem[row];
-
-	ws->description = weight->description;
-	ws->weight.grams = weight->weight.grams;
-
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
 	endInsertRows();
