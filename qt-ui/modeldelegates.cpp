@@ -9,6 +9,7 @@
 #include <QSortFilterProxyModel>
 #include <QStyle>
 #include <QStyleOption>
+#include <QComboBox>
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 	QStyledItemDelegate(parent),
@@ -46,4 +47,26 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS-1), IMG_SIZE);
+}
+
+QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    QComboBox *comboDelegate = new QComboBox(parent);
+	TankInfoModel *model = new TankInfoModel;
+	QString data = index.model()->data(index, Qt::DisplayRole).toString();
+	qDebug() << "Tentando pegar " << data;
+	comboDelegate->setModel(model);
+	int i;
+	for(i = 0; i < model->rowCount(); i++){
+		if (model->data(model->index(i,0), Qt::DisplayRole).toString() == data){
+			break;
+		}
+	}
+	if (i != model->rowCount())
+		comboDelegate->setCurrentIndex(i);
+	return comboDelegate;
+}
+
+TankInfoDelegate::TankInfoDelegate(QObject* parent): QStyledItemDelegate(parent)
+{
 }

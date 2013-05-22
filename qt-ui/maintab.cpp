@@ -12,6 +12,7 @@
 #include "../helpers.h"
 #include "../statistics.h"
 #include "divelistview.h"
+#include "modeldelegates.h"
 
 #include <QLabel>
 #include <QDebug>
@@ -81,6 +82,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	ui->cylinders->setColumnWidth( CylindersModel::REMOVE, 24);
 	ui->cylinders->horizontalHeader()->setResizeMode (CylindersModel::REMOVE , QHeaderView::Fixed);
+	ui->cylinders->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	ui->weights->setColumnWidth( WeightModel::REMOVE, 24);
 	ui->cylinders->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
 }
