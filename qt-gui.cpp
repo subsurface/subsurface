@@ -58,10 +58,11 @@ static QApplication *application = NULL;
 int        error_count;
 const char *existing_filename;
 
-void init_qt_ui(int *argcp, char ***argvp)
+void init_qt_ui(int *argcp, char ***argvp, char *errormessage)
 {
 	application->installTranslator(new Translator(application));
 	MainWindow *window = new MainWindow();
+	window->showError(errormessage);
 	window->show();
 }
 

@@ -39,6 +39,7 @@ public:
 	MainTab *information();
 	DiveListView *dive_list();
 	GlobeGPS *globe();
+	void showError(QString message);
 
 private Q_SLOTS:
 

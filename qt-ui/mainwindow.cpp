@@ -40,6 +40,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	ui->globeMessage->hide();
+	ui->mainErrorMessage->hide();
 	ui->globe->setMessageWidget(ui->globeMessage);
 	ui->globeMessage->setCloseButtonVisible(false);
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
@@ -79,14 +80,13 @@ void MainWindow::on_actionOpen_triggered()
 
 	on_actionClose_triggered();
 
-	GError *error = NULL;
+	char *error = NULL;
 	parse_file(fileNamePtr.data(), &error);
 	set_filename(fileNamePtr.data(), TRUE);
 
 	if (error != NULL) {
-		QMessageBox::warning(this, "Error", error->message);
-		g_error_free(error);
-		error = NULL;
+		showError(error);
+		free(error);
 	}
 	process_dives(FALSE, FALSE);
 
@@ -532,4 +532,14 @@ void MainWindow::file_save(void)
 	}
 	save_dives(existing_filename);
 	mark_divelist_changed(FALSE);
+}
+
+void MainWindow::showError(QString message)
+{
+	if (message.isEmpty())
+		return;
+	ui->mainErrorMessage->setText(message);
+	ui->mainErrorMessage->setCloseButtonVisible(true);
+	ui->mainErrorMessage->setMessageType(KMessageWidget::Error);
+	ui->mainErrorMessage->animatedShow();
 }

@@ -159,6 +159,7 @@ int main(int argc, char **argv)
 	int i;
 	gboolean no_filenames = TRUE;
 	const char *path;
+	char *error_message = NULL;
 
 	/* set up l18n - the search directory needs to change
 	 * so that it uses the correct system directory when
@@ -179,34 +180,22 @@ int main(int argc, char **argv)
 
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];
-
 		if (a[0] == '-') {
 			parse_argument(a);
 			continue;
 		}
-		GError *error = NULL;
-		/* if we have exactly one filename, parse_file will set
-		 * that to be the default. Otherwise there will be no default filename */
 		set_filename(NULL, TRUE);
-		parse_file(a, &error);
+
+		parse_file(a, &error_message);
 		if (no_filenames)
 		{
 			set_filename(a, TRUE);
 			no_filenames = FALSE;
 		}
-		if (error != NULL)
-		{
-#if USE_GTK_UI
-			report_error(error);
-#endif
-			g_error_free(error);
-			error = NULL;
-		}
 	}
 	if (no_filenames) {
-		GError *error = NULL;
 		const char *filename = prefs.default_filename;
-		parse_file(filename, &error);
+		parse_file(filename, NULL);
 		/* don't report errors - this file may not exist, but make
 		   sure we remember this as the filename in use */
 		set_filename(filename, FALSE);
@@ -215,7 +204,7 @@ int main(int argc, char **argv)
 	parse_xml_exit();
 	subsurface_command_line_exit(&argc, &argv);
 
-	init_qt_ui(&argc, &argv); /* qt bit delayed until dives are parsed */
+	init_qt_ui(&argc, &argv, error_message); /* qt bit delayed until dives are parsed */
 	run_ui();
 	exit_ui();
 	return 0;

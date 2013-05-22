@@ -19,22 +19,34 @@
 
 int verbose;
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, GError **error);
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error);
 
 /* the dive table holds the overall dive list; target table points at
  * the table we are currently filling */
 struct dive_table dive_table;
 struct dive_table *target_table = NULL;
 
-static void parser_error(GError **error, const char *fmt, ...)
+static void parser_error(char **error, const char *fmt, ...)
 {
 	va_list args;
+	char *tmp;
 
 	if (!error)
 		return;
+
+	tmp = malloc(1024);
 	va_start(args, fmt);
-	*error = g_error_new_valist(g_quark_from_string("subsurface"), DIVE_ERROR_PARSE, fmt, args);
+	vsnprintf(tmp, 1024, fmt, args);
 	va_end(args);
+
+	if (*error) {
+		int len = strlen(*error) + strlen(tmp) + 1;
+		*error = realloc(*error, len);
+		strncat(*error, tmp, strlen(tmp));
+		free(tmp);
+	} else {
+		*error = tmp;
+	}
 }
 
 /*
@@ -1579,7 +1591,7 @@ const char *preprocess_divelog_de(const char *buffer)
 }
 
 void parse_xml_buffer(const char *url, const char *buffer, int size,
-			struct dive_table *table, GError **error)
+			struct dive_table *table, char **error)
 {
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
@@ -1802,7 +1814,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 }
 
 int parse_dm4_buffer(const char *url, const char *buffer, int size,
-			struct dive_table *table, GError **error)
+			struct dive_table *table, char **error)
 {
 	int retval;
 	char *err = NULL;
@@ -1906,7 +1918,7 @@ static struct xslt_files {
 	{ NULL, }
 };
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, GError **error)
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 {
 	struct xslt_files *info = xslt_files;
 	xmlDoc *transformed;

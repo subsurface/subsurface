@@ -95,6 +95,9 @@
       </widget>
      </widget>
     </item>
+    <item>
+     <widget class="KMessageWidget" name="mainErrorMessage" native="true"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">

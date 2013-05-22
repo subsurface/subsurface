@@ -584,13 +584,13 @@ struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
 extern void parse_xml_init(void);
-extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, GError **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, char **error);
 extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, gboolean force);
 
-extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct dive_table *table, GError **error);
+extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct dive_table *table, char **error);
 
-extern void parse_file(const char *filename, GError **error);
+extern void parse_file(const char *filename, char **error);
 
 extern void show_dive_info(struct dive *);
 
@@ -634,7 +634,7 @@ extern void add_event(struct divecomputer *dc, int time, int type, int flags, in
 /* UI related protopypes */
 
 extern void init_ui(int *argcp, char ***argvp);
-extern void init_qt_ui(int *argcp, char ***argvp);
+extern void init_qt_ui(int *argcp, char ***argvp, char *errormessage);
 
 extern void run_ui(void);
 extern void exit_ui(void);

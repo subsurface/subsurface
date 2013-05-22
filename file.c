@@ -61,7 +61,7 @@ out:
 }
 
 
-static void zip_read(struct zip_file *file, GError **error, const char *filename)
+static void zip_read(struct zip_file *file, char **error, const char *filename)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -76,7 +76,7 @@ static void zip_read(struct zip_file *file, GError **error, const char *filename
 	free(mem);
 }
 
-static int try_to_open_zip(const char *filename, struct memblock *mem, GError **error)
+static int try_to_open_zip(const char *filename, struct memblock *mem, char **error)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -97,7 +97,7 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, GError **
 	return success;
 }
 
-static int try_to_open_db(const char *filename, struct memblock *mem, GError **error)
+static int try_to_open_db(const char *filename, struct memblock *mem, char **error)
 {
 	return parse_dm4_buffer(filename, mem->buffer, mem->size, &dive_table, error);
 }
@@ -223,7 +223,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 	return 1;
 }
 
-static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, GError **error)
+static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, char **error)
 {
 	/* Suunto Dive Manager files: SDE */
 	if (!strcasecmp(fmt, "SDE"))
@@ -250,7 +250,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	return 0;
 }
 
-static void parse_file_buffer(const char *filename, struct memblock *mem, GError **error)
+static void parse_file_buffer(const char *filename, struct memblock *mem, char **error)
 {
 	char *fmt = strrchr(filename, '.');
 	if (fmt && open_by_filename(filename, fmt+1, mem, error))
@@ -259,7 +259,7 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, GError
 	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, error);
 }
 
-void parse_file(const char *filename, GError **error)
+void parse_file(const char *filename, char **error)
 {
 	struct memblock mem;
 	char *fmt;
@@ -269,12 +269,9 @@ void parse_file(const char *filename, GError **error)
 		if (prefs.default_filename && ! strcmp(filename, prefs.default_filename))
 			return;
 
-		g_warning(_("Failed to read '%s'.\n"), filename);
 		if (error) {
-			*error = g_error_new(g_quark_from_string("subsurface"),
-					     DIVE_ERROR_PARSE,
-					     _("Failed to read '%s'"),
-					     filename);
+			*error = malloc(1024);
+			snprintf(*error, 1024, _("Failed to read '%s'"), filename);
 		}
 
 		return;
