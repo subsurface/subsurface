@@ -97,7 +97,7 @@ void GlobeGPS::prepareForGetDiveCoordinates(dive* dive)
 {
 	if (!messageWidget->isVisible()) {
 		messageWidget->setMessageType(KMessageWidget::Warning);
-		messageWidget->setText(QObject::tr("This dive has no location! Please move the planet to the desired position, then double-click to set the new location for this dive."));
+		messageWidget->setText(QObject::tr("No location data - move the map and double-click to set the dive location"));
 		messageWidget->setWordWrap(true);
 		messageWidget->animatedShow();
 	}
