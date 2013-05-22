@@ -45,7 +45,8 @@ public:
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
-    /*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
+	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
+	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
 	void add(cylinder_t *cyl);
 	void clear();
@@ -69,7 +70,8 @@ public:
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
-    /*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
+	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
+	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
 	void add(weightsystem_t *weight);
 	void clear();
