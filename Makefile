@@ -33,8 +33,6 @@ EXTRA_FLAGS =  $(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 	       $(LIBSOUPCFLAGS) $(GCONF2CFLAGS)
 
 HEADERS = \
-	qt-ui/addcylinderdialog.h \
-	qt-ui/addweightsystemdialog.h \
 	qt-ui/divelistview.h \
 	qt-ui/maintab.h \
 	qt-ui/mainwindow.h \
@@ -66,8 +64,6 @@ SOURCES = \
 	time.c \
 	libdivecomputer.c \
 	qt-gui.cpp \
-	qt-ui/addcylinderdialog.cpp \
-	qt-ui/addweightsystemdialog.cpp \
 	qt-ui/divelistview.cpp \
 	qt-ui/maintab.cpp \
 	qt-ui/mainwindow.cpp \

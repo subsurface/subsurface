@@ -48,7 +48,7 @@ public:
 	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
-	void add(cylinder_t *cyl);
+	void add();
 	void clear();
 	void update();
 	void setDive(struct dive *d);
@@ -73,7 +73,7 @@ public:
 	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
-	void add(weightsystem_t *weight);
+	void add();
 	void clear();
 	void update();
 	void setDive(struct dive *d);
