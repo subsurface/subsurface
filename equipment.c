@@ -1267,7 +1267,26 @@ static void add_cb(GtkWidget *w, int w_idx)
 	cylinder_list[w_idx].max_index++;
 	gtk_widget_set_sensitive(cylinder_list[w_idx].add, cylinder_list[w_idx].max_index < MAX_CYLINDERS);
 }
+#endif /* USE_GTK_UI */
 
+void remove_cylinder(struct dive *dive, int idx)
+{
+	cylinder_t *cyl = dive->cylinder + idx;
+	int nr = MAX_CYLINDERS - idx - 1;
+	memmove(cyl, cyl + 1, nr * sizeof(*cyl));
+	memset(cyl + nr, 0, sizeof(*cyl));
+}
+
+void remove_weightsystem(struct dive *dive, int idx)
+{
+	weightsystem_t *ws = dive->weightsystem + idx;
+	int nr = MAX_WEIGHTSYSTEMS - idx - 1;
+	memmove(ws, ws + 1, nr * sizeof(*ws));
+	memset(ws + nr, 0, sizeof(*ws));
+}
+
+
+#if USE_GTK_UI
 static void del_cb(GtkButton *button, int w_idx)
 {
 	int index, nr;

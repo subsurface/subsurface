@@ -6,6 +6,7 @@
  */
 #include "models.h"
 #include "../helpers.h"
+#include "../dive.h"
 #include <QCoreApplication>
 #include <QDebug>
 #include <QColor>
@@ -226,7 +227,9 @@ void CylindersModel::remove(const QModelIndex& index)
 		return;
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
-	// Remove code should be here.
+	rows--;
+	remove_cylinder(current, index.row());
+	mark_divelist_changed(TRUE);
 	endRemoveRows();
 }
 
@@ -236,7 +239,9 @@ void WeightModel::remove(const QModelIndex& index)
 		return;
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
-	// Remove code should be here.
+	rows--;
+	remove_weightsystem(current, index.row());
+	mark_divelist_changed(TRUE);
 	endRemoveRows();
 }
 

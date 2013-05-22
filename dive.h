@@ -155,12 +155,6 @@ typedef struct {
 	const char *description;	/* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
-extern bool cylinder_nodata(cylinder_t *cyl);
-extern bool cylinder_none(void *_data);
-extern bool weightsystem_none(void *_data);
-extern bool no_weightsystems(weightsystem_t *ws);
-extern bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
-
 extern int get_pressure_units(unsigned int mb, const char **units);
 extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int ml, int *frac, const char **units);
@@ -742,6 +736,14 @@ struct tank_info {
 	const char *name;
 	int cuft, ml, psi, bar;
 };
+
+extern bool cylinder_nodata(cylinder_t *cyl);
+extern bool cylinder_none(void *_data);
+extern bool weightsystem_none(void *_data);
+extern bool no_weightsystems(weightsystem_t *ws);
+extern bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
+extern void remove_cylinder(struct dive *dive, int idx);
+extern void remove_weightsystem(struct dive *dive, int idx);
 
 #ifdef __cplusplus
 }
