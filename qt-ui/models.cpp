@@ -11,6 +11,7 @@
 #include <QColor>
 #include <QBrush>
 #include <QFont>
+#include <QIcon>
 
 extern struct tank_info tank_info[100];
 
@@ -54,7 +55,7 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 
 int CylindersModel::columnCount(const QModelIndex& parent) const
 {
-	return 7;
+	return COLUMNS;
 }
 
 QVariant CylindersModel::data(const QModelIndex& index, int role) const
@@ -102,7 +103,55 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		}
 	}
+
+	else if (role == Qt::DecorationRole){
+		if (index.column() == REMOVE){
+			ret = QIcon(":trash");
+		}
+	}
+
 	return ret;
+}
+
+bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	cylinder_t *cyl = &current->cylinder[index.row()];
+	switch(index.column()){
+		case TYPE:{
+			QByteArray desc = value.toByteArray();
+			cyl->type.description = strdup(desc.data());
+			break;
+		}
+		case SIZE:
+			// we can't use get_volume_string because the idiotic imperial tank
+			// sizes take working pressure into account...
+			if (cyl->type.size.mliter) {
+				if (prefs.units.volume == prefs.units.CUFT) {
+					double liters = cuft_to_l(value.toDouble());
+					cyl->type.size.mliter = liters * 1000.0;
+				} else {
+					cyl->type.size.mliter = value.toDouble() * 1000.0;
+				}
+			}
+			break;
+		case MAXPRESS:
+			cyl->type.workingpressure.mbar = value.toInt();
+			break;
+		case START:
+			cyl->start.mbar = value.toInt();
+			break;
+		case END:
+			cyl->end.mbar = value.toInt();
+			break;
+		case O2:
+			cyl->gasmix.o2.permille = value.toInt() * 10 - 5;
+			break;
+		case HE:
+			cyl->gasmix.he.permille = value.toInt() * 10 - 5;
+			break;
+	}
+
+    return QAbstractItemModel::setData(index, value, role);
 }
 
 int CylindersModel::rowCount(const QModelIndex& parent) const
@@ -164,6 +213,33 @@ void CylindersModel::setDive(dive* d)
 	endInsertRows();
 }
 
+Qt::ItemFlags CylindersModel::flags(const QModelIndex& index) const
+{
+	if (index.column() == REMOVE)
+		return Qt::ItemIsEnabled;
+	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
+void CylindersModel::remove(const QModelIndex& index)
+{
+	if (index.column() != REMOVE){
+		return;
+	}
+	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
+	// Remove code should be here.
+	endRemoveRows();
+}
+
+void WeightModel::remove(const QModelIndex& index)
+{
+	if (index.column() != REMOVE){
+		return;
+	}
+	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
+	// Remove code should be here.
+	endRemoveRows();
+}
+
 void WeightModel::clear()
 {
 	if (rows > 0) {
@@ -174,7 +250,7 @@ void WeightModel::clear()
 
 int WeightModel::columnCount(const QModelIndex& parent) const
 {
-	return 2;
+	return COLUMNS;
 }
 
 QVariant WeightModel::data(const QModelIndex& index, int role) const
@@ -195,7 +271,35 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			break;
 		}
 	}
+
+	else if (role == Qt::DecorationRole){
+		if (index.column() == REMOVE){
+			ret = QIcon(":trash");
+		}
+	}
 	return ret;
+}
+
+bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
+	switch(index.column()) {
+	case TYPE:{
+		QByteArray desc = value.toByteArray();
+		ws->description = strdup(desc.data());
+		break;
+	}
+	case WEIGHT:
+		ws->weight.grams = value.toInt() *1000;
+		break;
+	}
+}
+
+Qt::ItemFlags WeightModel::flags(const QModelIndex& index) const
+{
+	if (index.column() == REMOVE)
+		return Qt::ItemIsEnabled;
+	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
 int WeightModel::rowCount(const QModelIndex& parent) const

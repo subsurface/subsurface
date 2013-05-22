@@ -2,5 +2,7 @@
  <qresource>
     <file alias="star">star.svg</file>
     <file alias="subsurface-icon">subsurface-icon.png</file>
+	<file alias="plus">plus.png</file>
+	<file alias="trash">trash.png</file>
  </qresource>
  </RCC>
