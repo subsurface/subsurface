@@ -56,7 +56,7 @@ void KMessageWidgetPrivate::init(KMessageWidget* q_ptr)
 	QObject::connect(textLabel, SIGNAL(linkHovered(const QString&)), q, SIGNAL(linkHovered(const QString&)));
 
 	QAction* closeAction = new QAction(QObject::tr("Close"), q);
-	q->connect(closeAction, SIGNAL(toggled(bool)), q, SLOT(animatedHide()));
+	q->connect(closeAction, SIGNAL(triggered(bool)), q, SLOT(animatedHide()));
 
 	closeButton = new QToolButton(content);
 	closeButton->setAutoRaise(true);
