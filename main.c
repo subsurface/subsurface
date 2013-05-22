@@ -217,7 +217,7 @@ int main(int argc, char **argv)
 	subsurface_command_line_init(&argc, &argv);
 	parse_xml_init();
 
-	init_ui(&argc, &argv); /* the gtk stuff is needed for parsing below */
+	init_ui(&argc, &argv);
 
 	for (i = 1; i < argc; i++) {
 		const char *a = argv[i];

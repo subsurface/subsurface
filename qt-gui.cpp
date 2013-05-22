@@ -39,7 +39,7 @@ public:
 	~Translator() {}
 
 	virtual QString	translate(const char *context, const char *sourceText,
-	                          const char *disambiguation = NULL) const;
+				  const char *disambiguation = NULL) const;
 };
 
 Translator::Translator(QObject *parent):
@@ -48,7 +48,7 @@ Translator::Translator(QObject *parent):
 }
 
 QString Translator::translate(const char *context, const char *sourceText,
-                              const char *disambiguation) const
+			      const char *disambiguation) const
 {
 	return gettext(sourceText);
 }
@@ -61,9 +61,6 @@ const char *existing_filename;
 void init_qt_ui(int *argcp, char ***argvp)
 {
 	application->installTranslator(new Translator(application));
-	QCoreApplication::setOrganizationName("hohndel");
-	QCoreApplication::setOrganizationDomain("hohndel.org");
-	QCoreApplication::setApplicationName("Subsurface");
 	MainWindow *window = new MainWindow();
 	window->show();
 }
@@ -80,6 +77,9 @@ void init_ui(int *argcp, char ***argvp)
 	// [http://www.iana.org/assignments/character-sets/character-sets.xml]
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
 #endif
+	QCoreApplication::setOrganizationName("Subsurface");
+	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
+	QCoreApplication::setApplicationName("Subsurface");
 
 	QSettings settings;
 	settings.beginGroup("GeneralSettings");
