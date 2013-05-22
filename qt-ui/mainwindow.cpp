@@ -323,7 +323,7 @@ void MainWindow::readSettings()
 {
 	int i;
 	QVariant v;
-	QSettings settings("hohndel.org","subsurface");
+	QSettings settings;
 
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size").value<QSize>();
@@ -417,7 +417,7 @@ void MainWindow::readSettings()
 void MainWindow::writeSettings()
 {
 	int i;
-	QSettings settings("hohndel.org","subsurface");
+	QSettings settings;
 
 	settings.beginGroup("MainWindow");
 	settings.setValue("size",size());

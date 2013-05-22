@@ -61,6 +61,9 @@ const char *existing_filename;
 void init_qt_ui(int *argcp, char ***argvp)
 {
 	application->installTranslator(new Translator(application));
+	QCoreApplication::setOrganizationName("hohndel");
+	QCoreApplication::setOrganizationDomain("hohndel.org");
+	QCoreApplication::setApplicationName("Subsurface");
 	MainWindow *window = new MainWindow();
 	window->show();
 }
@@ -78,7 +81,7 @@ void init_ui(int *argcp, char ***argvp)
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
 #endif
 
-	QSettings settings("hohndel.org","subsurface");
+	QSettings settings;
 	settings.beginGroup("GeneralSettings");
 	v = settings.value(QString("default_filename"));
 	if (v.isValid()) {
