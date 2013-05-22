@@ -81,7 +81,7 @@ void init_ui(int *argcp, char ***argvp)
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
 #endif
 
-	QSettings settings("hohndel.org","subsurface");
+	QSettings settings;
 	settings.beginGroup("GeneralSettings");
 	v = settings.value(QString("default_filename"));
 	if (v.isValid()) {
