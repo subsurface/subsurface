@@ -36,6 +36,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->notes->setReadOnly(true);
 	ui->rating->setReadOnly(true);
 	ui->visibility->setReadOnly(true);
+
 	ui->editAccept->hide();
 	ui->editReset->hide();
 
@@ -107,7 +108,7 @@ void MainTab::showEvent(QShowEvent* event)
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
-	if (event->type() == QEvent::FocusIn) {
+	if (event->type() == QEvent::FocusIn || event->type() == QEvent::MouseButtonPress) {
 		if (ui->editAccept->isVisible() || !currentDive)
 			return false;
 
