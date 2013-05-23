@@ -114,7 +114,7 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0)
 {
 	gc.printer = false;
 	setScene(new QGraphicsScene());
@@ -222,11 +222,17 @@ void ProfileGraphicsView::clear()
 
 void ProfileGraphicsView::plot(struct dive *d)
 {
-	if (dive == d)
+	struct divecomputer *dc;
+
+	if (d)
+		dc = select_dc(&d->dc);
+
+	if (dive == d && (d && dc == diveDC))
 		return;
 
 	clear();
 	dive = d;
+	diveDC = d ? dc : NULL;
 
 	if(!isVisible() || !dive){
 		return;
@@ -243,9 +249,6 @@ void ProfileGraphicsView::plot(struct dive *d)
 	toolTip->setPos(toolTipPos);
 
 	scene()->addItem(toolTip);
-
-	struct divecomputer *dc = &dive->dc;
-
 
 	// Fix this for printing / screen later.
 	// plot_set_scale(scale_mode_t);
@@ -282,8 +285,6 @@ void ProfileGraphicsView::plot(struct dive *d)
 	QRectF profile_grid_area = scene()->sceneRect();
 	gc.maxx = (profile_grid_area.width() - 2 * profile_grid_area.x());
 	gc.maxy = (profile_grid_area.height() - 2 * profile_grid_area.y());
-
-	dc = select_dc(dc);
 
 	/* This is per-dive-computer. Right now we just do the first one */
 	gc.pi = *create_plot_info(dive, dc, &gc);

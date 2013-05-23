@@ -98,6 +98,7 @@ private:
 	ToolTipItem *toolTip;
 	graphics_context gc;
 	struct dive *dive;
+	struct divecomputer *diveDC;
 	int zoomLevel;
 
 	// Top Level Items.
