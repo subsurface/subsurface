@@ -9,6 +9,7 @@
 
 #include <QAbstractTableModel>
 #include <QCoreApplication>
+#include <QStringList>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -18,6 +19,8 @@
 class TankInfoModel : public QAbstractTableModel {
 Q_OBJECT
 public:
+	static TankInfoModel* instance();
+
 	enum Column { DESCRIPTION, ML, BAR};
 	TankInfoModel();
 
@@ -25,8 +28,8 @@ public:
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
-
-	void add(const QString& description);
+	/*reimp*/ bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
+	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	void clear();
 	void update();
 private:

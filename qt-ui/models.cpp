@@ -398,10 +398,25 @@ void WeightModel::setDive(dive* d)
 	endInsertRows();
 }
 
-void TankInfoModel::add(const QString& description)
+TankInfoModel* TankInfoModel::instance()
 {
-	// When the user `creates` a new one on the combobox.
-	// for now, empty till dirk cleans the GTK code.
+	static TankInfoModel *self = new TankInfoModel();
+	return self;
+}
+
+bool TankInfoModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+	beginInsertRows(parent, rowCount(), rowCount());
+	rows += count;
+	endInsertRows();
+	return true;
+}
+
+bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	struct tank_info *info = &tank_info[index.row()];
+	QByteArray name = value.toByteArray();
+	info->name = strdup(name.data());
 }
 
 void TankInfoModel::clear()
@@ -430,7 +445,7 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 		p.mbar = psi_to_mbar(info->psi);
 		ml = wet_volume(info->cuft, p);
 	}
-	if (role == Qt::DisplayRole) {
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch(index.column()) {
 			case BAR:
 				ret = bar;
@@ -478,7 +493,6 @@ TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
 {
 	struct tank_info *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++);
-
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
 		endInsertRows();

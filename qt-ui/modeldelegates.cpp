@@ -10,6 +10,8 @@
 #include <QStyle>
 #include <QStyleOption>
 #include <QComboBox>
+#include <QCompleter>
+#include <QLineEdit>
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 	QStyledItemDelegate(parent),
@@ -52,17 +54,30 @@ QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
 QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	QComboBox *comboDelegate = new QComboBox(parent);
-	TankInfoModel *model = new TankInfoModel;
-	QString data = index.model()->data(index, Qt::DisplayRole).toString();
+	TankInfoModel *model = TankInfoModel::instance();
 	comboDelegate->setModel(model);
-	int i;
-	for (i = 0; i < model->rowCount(); i++) {
-		if (model->data(model->index(i,0), Qt::DisplayRole).toString() == data)
-			break;
-	}
-	if (i != model->rowCount())
-		comboDelegate->setCurrentIndex(i);
+	comboDelegate->setEditable(true);
+	comboDelegate->setAutoCompletion(true);
+	comboDelegate->setAutoCompletionCaseSensitivity(Qt::CaseInsensitive);
+	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	return comboDelegate;
+}
+
+void TankInfoDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+{
+	QComboBox *c = qobject_cast<QComboBox*>(editor);
+	QString data = index.model()->data(index, Qt::DisplayRole).toString();
+	int i = c->findText(data);
+	if (i != -1)
+		c->setCurrentIndex(i);
+	else
+		c->setEditText(data);
+}
+
+void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
+{
+	QComboBox *c = static_cast<QComboBox*>(editor);
+	model->setData(index, c->currentText(), Qt::EditRole);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject* parent): QStyledItemDelegate(parent)
