@@ -79,10 +79,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), ui->cylinders->model(), SLOT(remove(QModelIndex)));
 	connect(ui->weights, SIGNAL(clicked(QModelIndex)), ui->weights->model(), SLOT(remove(QModelIndex)));
 
-	ui->cylinders->setColumnWidth( CylindersModel::REMOVE, 24);
+	ui->cylinders->setColumnWidth(CylindersModel::REMOVE, 24);
 	ui->cylinders->horizontalHeader()->setResizeMode (CylindersModel::REMOVE , QHeaderView::Fixed);
 	ui->cylinders->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
-	ui->weights->setColumnWidth( WeightModel::REMOVE, 24);
+	ui->weights->setColumnWidth(WeightModel::REMOVE, 24);
 	ui->cylinders->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
 }
 
@@ -90,19 +90,19 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 void MainTab::resizeEvent(QResizeEvent* event)
 {
 	if (ui->cylindersGroup->isVisible())
-		addCylinder->setGeometry( ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
+		addCylinder->setGeometry(ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
 
 	if (ui->weightGroup->isVisible())
-		addWeight->setGeometry( ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
+		addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
 
-    QTabWidget::resizeEvent(event);
+	QTabWidget::resizeEvent(event);
 }
 
 void MainTab::showEvent(QShowEvent* event)
 {
 	QTabWidget::showEvent(event);
-	addCylinder->setGeometry( ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
-	addWeight->setGeometry( ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
+	addCylinder->setGeometry(ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
+	addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
 }
 
 

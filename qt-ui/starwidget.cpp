@@ -26,7 +26,7 @@ int StarWidget::currentStars() const
 
 void StarWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-	if (readOnly){
+	if (readOnly) {
 		return;
 	}
 
@@ -65,7 +65,7 @@ StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
 	QWidget(parent, f),
 	current(0)
 {
-	if(!activeStar){
+	if (!activeStar) {
 		activeStar = new QPixmap();
 		QSvgRenderer render(QString(":star"));
 		QPixmap renderedStar(IMG_SIZE, IMG_SIZE);
@@ -76,7 +76,7 @@ StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
 		render.render(&painter, QRectF(0, 0, IMG_SIZE, IMG_SIZE));
 		(*activeStar) = renderedStar;
 	}
-	if(!inactiveStar){
+	if (!inactiveStar) {
 		inactiveStar = new QPixmap();
 		(*inactiveStar) = grayImage(activeStar);
 	}

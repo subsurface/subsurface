@@ -69,11 +69,11 @@ void DownloadFromDCWidget::fill_computer_list()
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
 
-		if (!vendorList.contains( vendor ))
-			vendorList.append( vendor );
+		if (!vendorList.contains(vendor))
+			vendorList.append(vendor);
 
-		if( !productList[vendor].contains( product ))
-			productList[vendor].push_back( product );
+		if (!productList[vendor].contains(product))
+			productList[vendor].push_back(product);
 
 		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
 	}
@@ -91,11 +91,11 @@ void DownloadFromDCWidget::fill_computer_list()
 	mydescriptor->type = DC_FAMILY_NULL;
 	mydescriptor->model = 0;
 
-	if(!vendorList.contains( "Uemis"))
+	if (!vendorList.contains("Uemis"))
 		vendorList.append("Uemis");
 
-	if( !productList["Uemis"].contains( "Zurich" ))
-		productList["Uemis"].push_back( "Zurich" );
+	if (!productList["Uemis"].contains("Zurich"))
+		productList["Uemis"].push_back("Zurich");
 
 	descriptorLookup[QString("UemisZurich")] = (dc_descriptor_t *)mydescriptor;
 }
@@ -103,7 +103,7 @@ void DownloadFromDCWidget::fill_computer_list()
 void DownloadFromDCWidget::on_cancel_clicked()
 {
 	import_thread_cancelled = true;
-	if(thread){
+	if (thread) {
 		thread->wait();
 		thread->deleteLater();
 		thread = 0;
@@ -119,7 +119,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	ui->progressBar->setValue(0);
 	ui->progressBar->show();
 
-	if(thread){
+	if (thread) {
 		thread->deleteLater();
 	}
 
@@ -159,7 +159,7 @@ void InterfaceThread::run()
 	DownloadThread *download = new DownloadThread(data);
 
 	download->start();
-	while(download->isRunning()){
+	while (download->isRunning()) {
 		msleep(200);
 		updateInterface(progress_bar_fraction *100);
 	}

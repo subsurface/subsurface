@@ -38,8 +38,8 @@ public:
 	void reload();
 
 	bool eventFilter(QObject* , QEvent*);
-    virtual void resizeEvent(QResizeEvent* );
-    virtual void showEvent(QShowEvent* );
+	virtual void resizeEvent(QResizeEvent*);
+	virtual void showEvent(QShowEvent*);
 
 public Q_SLOTS:
 	void addCylinder_clicked();

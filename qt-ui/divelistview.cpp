@@ -34,7 +34,7 @@ void DiveListView::reload()
 	m->setSourceModel(new DiveTripModel(this));
 	sortByColumn(0, Qt::DescendingOrder);
 	QModelIndex firstDiveOrTrip = m->index(0,0);
-	if (firstDiveOrTrip.isValid()){
+	if (firstDiveOrTrip.isValid()) {
 		if (m->index(0,0, firstDiveOrTrip).isValid())
 			setCurrentIndex(m->index(0,0, firstDiveOrTrip));
 		else
@@ -42,12 +42,12 @@ void DiveListView::reload()
 	}
 	// Populate the context menu of the headers that will show
 	// the menu to show / hide columns.
-	if (!header()->actions().size()){
+	if (!header()->actions().size()) {
 		QAction *visibleAction = new QAction("Visible:", header());
 		header()->addAction(visibleAction);
 		QSettings s;
 		s.beginGroup("DiveListColumnState");
-		for(int i = 0; i < model()->columnCount(); i++){
+		for(int i = 0; i < model()->columnCount(); i++) {
 			QString title = QString("show %1").arg(model()->headerData( i, Qt::Horizontal).toString());
 			QAction *a = new QAction(title, header());
 			a->setCheckable(true);
@@ -103,7 +103,7 @@ void DiveListView::mouseReleaseEvent(QMouseEvent* event)
 
 void DiveListView::keyPressEvent(QKeyEvent* event)
 {
-	if(event->modifiers())
+	if (event->modifiers())
 		mouseClickSelection = true;
 	QTreeView::keyPressEvent(event);
 }
@@ -124,7 +124,7 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 	if (!dive) { // it's a trip! select first child.
 		dive = (struct dive*) model->data(current.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
 		selectedDive = get_divenr(dive);
-	}else{
+	} else {
 		selectedDive = get_divenr(dive);
 	}
 	if (selectedDive == selected_dive)

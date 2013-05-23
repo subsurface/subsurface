@@ -12,7 +12,7 @@ struct dive;
 
 class GlobeGPS : public MarbleWidget{
 	Q_OBJECT
-    void prepareForGetDiveCoordinates(struct dive* dive);
+	void prepareForGetDiveCoordinates(struct dive* dive);
 public:
 	using MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent);
@@ -20,12 +20,12 @@ public:
 	void centerOn(struct dive* dive);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent* event);
+	virtual void mousePressEvent(QMouseEvent* event);
 
 private:
 	GeoDataDocument *loadedDives;
 	QStringList diveLocations;
-    struct dive* editingDiveCoords;
+	struct dive* editingDiveCoords;
 	KMessageWidget* messageWidget;
 
 public Q_SLOTS:

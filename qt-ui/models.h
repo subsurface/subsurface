@@ -90,7 +90,7 @@ private:
 */
 
 struct TreeItemDT {
-	Q_DECLARE_TR_FUNCTIONS ( TreeItemDT );
+	Q_DECLARE_TR_FUNCTIONS (TreeItemDT);
 public:
 	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
 				SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, DIVE, COLUMNS };
@@ -102,7 +102,7 @@ public:
 		return COLUMNS;
 	};
 
-	virtual QVariant data ( int column, int role ) const;
+	virtual QVariant data (int column, int role) const;
 	int row() const;
 	QList<TreeItemDT *> children;
 	TreeItemDT *parent;

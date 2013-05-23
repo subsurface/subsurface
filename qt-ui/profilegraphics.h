@@ -68,9 +68,9 @@ public:
 
 protected:
 	void resizeEvent(QResizeEvent *event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void wheelEvent(QWheelEvent* event);
-    void showEvent(QShowEvent* event);
+	void mouseMoveEvent(QMouseEvent* event);
+	void wheelEvent(QWheelEvent* event);
+	void showEvent(QShowEvent* event);
 
 private:
 	void plot_depth_profile();

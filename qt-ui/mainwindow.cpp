@@ -405,7 +405,7 @@ void MainWindow::readSettings()
 
 #if ONCE_WE_HAVE_MAPS
 	v = settings.value(QString_int("map_provider"));
-	if(v.isValid())
+	if (v.isValid())
 		prefs.map_provider = v.toInt();
 #endif
 }

@@ -103,12 +103,9 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			ret = QString("%1%").arg((cyl->gasmix.he.permille + 5) / 10);
 			break;
 		}
-	}
-
-	else if (role == Qt::DecorationRole){
-		if (index.column() == REMOVE){
+	} else if (role == Qt::DecorationRole) {
+		if (index.column() == REMOVE)
 			ret = QIcon(":trash");
-		}
 	}
 
 	return ret;
@@ -237,7 +234,7 @@ void CylindersModel::setDive(dive* d)
 		clear();
 
 	int amount = MAX_CYLINDERS;
-	for(int i = 0; i < MAX_CYLINDERS; i++){
+	for(int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cylinder = &d->cylinder[i];
 		if (cylinder_none(cylinder)) {
 			amount = i;
@@ -260,7 +257,7 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex& index) const
 
 void CylindersModel::remove(const QModelIndex& index)
 {
-	if (index.column() != REMOVE){
+	if (index.column() != REMOVE) {
 		return;
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
@@ -272,7 +269,7 @@ void CylindersModel::remove(const QModelIndex& index)
 
 void WeightModel::remove(const QModelIndex& index)
 {
-	if (index.column() != REMOVE){
+	if (index.column() != REMOVE) {
 		return;
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
@@ -312,12 +309,9 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			ret = get_weight_string(ws->weight, TRUE);
 			break;
 		}
-	}
-
-	else if (role == Qt::DecorationRole){
-		if (index.column() == REMOVE){
+	} else if (role == Qt::DecorationRole) {
+		if (index.column() == REMOVE)
 			ret = QIcon(":trash");
-		}
 	}
 	return ret;
 }
@@ -493,7 +487,7 @@ TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
 
 void TankInfoModel::update()
 {
-	if(rows > -1) {
+	if (rows > -1) {
 		beginRemoveRows(QModelIndex(), 0, rows);
 		endRemoveRows();
 	}
@@ -548,7 +542,7 @@ QVariant TreeItemDT::data(int column, int role) const
 		ret = tr("min");
 		break;
 	case TEMPERATURE:
-		ret = QString("%1%2").arg(UTF8_DEGREE).arg( (get_units()->temperature == units::CELSIUS) ? "C" : "F");
+		ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
 		break;
 	case TOTALWEIGHT:
 		ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs");
@@ -789,7 +783,7 @@ QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (role == Qt::FontRole){
+	if (role == Qt::FontRole) {
 		QFont font;
 		font.setPointSizeF(font.pointSizeF() * 0.7);
 		return font;

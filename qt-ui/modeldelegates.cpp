@@ -51,15 +51,14 @@ QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
 
 QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QComboBox *comboDelegate = new QComboBox(parent);
+	QComboBox *comboDelegate = new QComboBox(parent);
 	TankInfoModel *model = new TankInfoModel;
 	QString data = index.model()->data(index, Qt::DisplayRole).toString();
 	comboDelegate->setModel(model);
 	int i;
-	for(i = 0; i < model->rowCount(); i++){
-		if (model->data(model->index(i,0), Qt::DisplayRole).toString() == data){
+	for (i = 0; i < model->rowCount(); i++) {
+		if (model->data(model->index(i,0), Qt::DisplayRole).toString() == data)
 			break;
-		}
 	}
 	if (i != model->rowCount())
 		comboDelegate->setCurrentIndex(i);

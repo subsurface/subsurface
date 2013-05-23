@@ -21,33 +21,33 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 
 	setMapThemeId("earth/bluemarble/bluemarble.dgml");
 	//setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
-	setProjection( Marble::Spherical );
+	setProjection(Marble::Spherical);
 
 	setAnimationsEnabled(true);
-	setShowClouds( false );
-	setShowBorders( false );
-	setShowPlaces( true );
-	setShowCrosshairs( false );
-	setShowGrid( false );
+	setShowClouds(false);
+	setShowBorders(false);
+	setShowPlaces(true);
+	setShowCrosshairs(false);
+	setShowGrid(false);
 	setShowOverviewMap(false);
 	setShowScaleBar(true);
 
-	Q_FOREACH( AbstractFloatItem * floatItem, floatItems() ){
-		if ( floatItem && floatItem->nameId() == "compass" ) {
-			floatItem->setPosition( QPoint( 10, 10 ) );
-			floatItem->setContentSize( QSize( 50, 50 ) );
+	Q_FOREACH(AbstractFloatItem * floatItem, floatItems()) {
+		if (floatItem && floatItem->nameId() == "compass") {
+			floatItem->setPosition(QPoint(10, 10));
+			floatItem->setContentSize(QSize(50, 50));
 		}
 	}
 }
 
 void GlobeGPS::reload()
 {
-	if (loadedDives){
+	if (loadedDives) {
 		model()->treeModel()->removeDocument(loadedDives);
 		delete loadedDives;
 	}
 
-	if (editingDiveCoords){
+	if (editingDiveCoords) {
 		editingDiveCoords = 0;
 	}
 
@@ -61,22 +61,22 @@ void GlobeGPS::reload()
 	for_each_dive(idx, dive) {
 		if (dive_has_gps_location(dive)) {
 			// don't add dive locations twice.
-			if( diveLocations.contains( QString(dive->location)))
+			if (diveLocations.contains(QString(dive->location)))
 				continue;
 
-			diveLocations.append( QString(dive->location) );
-			GeoDataPlacemark *place = new GeoDataPlacemark( dive->location );
-			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree );
-			loadedDives->append( place );
+			diveLocations.append(QString(dive->location));
+			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
+			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree);
+			loadedDives->append(place);
 		}
 	}
-	model()->treeModel()->addDocument( loadedDives );
+	model()->treeModel()->addDocument(loadedDives);
 }
 
 void GlobeGPS::centerOn(dive* dive)
 {
 	// dive has changed, if we had the 'editingDive', hide it.
-	if(messageWidget->isVisible() && (!dive || dive_has_gps_location(dive))){
+	if (messageWidget->isVisible() && (!dive || dive_has_gps_location(dive))) {
 		messageWidget->animatedHide();
 	}
 
@@ -85,7 +85,7 @@ void GlobeGPS::centerOn(dive* dive)
 	qreal longitude = dive->longitude.udeg / 1000000.0;
 	qreal latitude = dive->latitude.udeg / 1000000.0;
 
-	if (!longitude || !latitude){
+	if (!longitude || !latitude) {
 		prepareForGetDiveCoordinates(dive);
 		return;
 	}
@@ -107,12 +107,12 @@ void GlobeGPS::prepareForGetDiveCoordinates(dive* dive)
 void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
 	// convert to degrees if in radian.
-	if (unit == GeoDataCoordinates::Radian){
+	if (unit == GeoDataCoordinates::Radian) {
 		lon = lon * 180 / M_PI;
 		lat = lat * 180 / M_PI;
 	}
 
-	if (!editingDiveCoords){
+	if (!editingDiveCoords) {
 		return;
 	}
 
@@ -127,7 +127,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 void GlobeGPS::mousePressEvent(QMouseEvent* event)
 {
 	qreal lat, lon;
-	if (editingDiveCoords &&  geoCoordinates(event->pos().x(), event->pos().y(), lon,lat, GeoDataCoordinates::Radian)){
+	if (editingDiveCoords &&  geoCoordinates(event->pos().x(), event->pos().y(), lon,lat, GeoDataCoordinates::Radian)) {
 		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Radian);
 	}
 }
