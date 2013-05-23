@@ -77,7 +77,16 @@ void TankInfoDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
 	QComboBox *c = static_cast<QComboBox*>(editor);
+
+	TankInfoModel *tanks = TankInfoModel::instance();
+	QModelIndex tankIndex = tanks->match(tanks->index(0,0), Qt::DisplayRole, c->currentText()).first();
+
+	int tankSize = tanks->data(tanks->index(tankIndex.row(), TankInfoModel::ML)).toInt();
+	int tankPressure = tanks->data(tanks->index(tankIndex.row(), TankInfoModel::BAR)).toInt();
+
 	model->setData(index, c->currentText(), Qt::EditRole);
+	model->setData(model->index(index.row(), CylindersModel:: SIZE), tankSize );
+	model->setData(model->index(index.row(), CylindersModel::WORKINGPRESS), tankPressure);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject* parent): QStyledItemDelegate(parent)
