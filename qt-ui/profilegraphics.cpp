@@ -1136,7 +1136,7 @@ QGraphicsSimpleTextItem *ProfileGraphicsView::plot_text(text_render_options_t *t
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
-	plot(dive);
+	fitInView(sceneRect());
 }
 
 void ProfileGraphicsView::plot_temperature_profile()
