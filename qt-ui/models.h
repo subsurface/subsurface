@@ -51,6 +51,7 @@ public:
 	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
+	void passInData(const QModelIndex& index, const QVariant& value);
 	void add();
 	void clear();
 	void update();

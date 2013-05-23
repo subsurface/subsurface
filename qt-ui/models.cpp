@@ -111,6 +111,28 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	return ret;
 }
 
+// this is our magic 'pass data in' function that allows the delegate to get
+// the data here without silly unit conversions;
+// so we only implement the two columns we care about
+void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
+{
+	cylinder_t *cyl = &current->cylinder[index.row()];
+	switch(index.column()) {
+	case SIZE:
+		if (cyl->type.size.mliter != value.toInt()) {
+			cyl->type.size.mliter = value.toInt();
+			mark_divelist_changed(TRUE);
+		}
+		break;
+	case WORKINGPRESS:
+		if (cyl->type.workingpressure.mbar != value.toInt()) {
+			cyl->type.workingpressure.mbar = value.toInt();
+			mark_divelist_changed(TRUE);
+		}
+		break;
+	}
+}
+
 #define CHANGED(_t,_u1,_u2) value._t() != data(index, role).toString().replace(_u1,"").replace(_u2,"")._t()
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
