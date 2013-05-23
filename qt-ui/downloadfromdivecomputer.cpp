@@ -2,6 +2,8 @@
 #include "ui_downloadfromdivecomputer.h"
 
 #include "../libdivecomputer.h"
+#include "../helpers.h"
+#include "../display.h"
 #include <cstdlib>
 #include <QThread>
 #include <QDebug>
@@ -41,7 +43,15 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 
 	vendorModel = new QStringListModel(vendorList);
 	ui->vendor->setModel(vendorModel);
-	ui->product->setModel(0);
+	if (default_dive_computer_vendor) {
+		ui->vendor->setCurrentIndex(ui->vendor->findText(default_dive_computer_vendor));
+		productModel = new QStringListModel(productList[default_dive_computer_vendor]);
+		ui->product->setModel(productModel);
+		if (default_dive_computer_product)
+			ui->product->setCurrentIndex(ui->product->findText(default_dive_computer_product));
+	}
+	if (default_dive_computer_device)
+		ui->device->setText(default_dive_computer_device);
 }
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
@@ -128,8 +138,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 	data.product = strdup(ui->product->currentText().toUtf8().data());
 	data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
 	data.force_download = ui->forceDownload->isChecked();
-	// still needs to be implemented
-	// set_default_dive_computer(data.vendor, data.product);
+	set_default_dive_computer(data.vendor, data.product);
+	set_default_dive_computer_device(data.devname);
 
 	thread = new InterfaceThread(this, &data);
 	connect(thread, SIGNAL(updateInterface(int)),

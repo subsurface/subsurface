@@ -20,6 +20,7 @@
 #include "version.h"
 #include "libdivecomputer.h"
 #include "qt-ui/mainwindow.h"
+#include "helpers.h"
 
 #include <QApplication>
 #include <QFileDialog>
@@ -29,6 +30,10 @@
 #include <QTranslator>
 #include <QSettings>
 #include <QDesktopWidget>
+
+const char *default_dive_computer_vendor;
+const char *default_dive_computer_product;
+const char *default_dive_computer_device;
 
 class Translator: public QTranslator
 {
@@ -66,6 +71,18 @@ void init_qt_ui(int *argcp, char ***argvp, char *errormessage)
 	window->show();
 }
 
+const char *getSetting(QSettings &s, char *name)
+{
+	QVariant v;
+	QString text;
+	v = s.value(name);
+	if (v.isValid()) {
+		text = v.toString();
+		return strdup(text.toUtf8());
+	}
+	return NULL;
+}
+
 void init_ui(int *argcp, char ***argvp)
 {
 	QVariant v;
@@ -82,22 +99,15 @@ void init_ui(int *argcp, char ***argvp)
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
 
-	QSettings settings;
-	settings.beginGroup("GeneralSettings");
-	v = settings.value(QString("default_filename"));
-	if (v.isValid()) {
-		QString name = v.toString();
-		prefs.default_filename = strdup(name.toUtf8());
-	}
-	settings.endGroup();
-
-#if 0
-
-	/* these still need to be handled in QSettings */
-	default_dive_computer_vendor = subsurface_get_conf("dive_computer_vendor");
-	default_dive_computer_product = subsurface_get_conf("dive_computer_product");
-	default_dive_computer_device = subsurface_get_conf("dive_computer_device");
-#endif
+	QSettings s;
+	s.beginGroup("GeneralSettings");
+	prefs.default_filename = getSetting(s, "default_filename");
+	s.endGroup();
+	s.beginGroup("DiveComputer");
+	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
+	default_dive_computer_product = getSetting(s,"dive_computer_product");
+	default_dive_computer_device = getSetting(s, "dive_computer_device");
+	s.endGroup();
 	return;
 }
 
@@ -111,8 +121,8 @@ void exit_ui(void)
 	delete application;
 	if (existing_filename)
 		free((void *)existing_filename);
-// 	if (default_dive_computer_device)
-// 		free((void *)default_dive_computer_device);
+	if (default_dive_computer_device)
+		free((void *)default_dive_computer_device);
 }
 
 void set_filename(const char *filename, gboolean force)
@@ -205,4 +215,54 @@ double get_screen_dpi()
 	QDesktopWidget *mydesk = application->desktop();
 	return mydesk->physicalDpiX();
 }
+
+int is_default_dive_computer(const char *vendor, const char *product)
+{
+	return default_dive_computer_vendor && !strcmp(vendor, default_dive_computer_vendor) &&
+		default_dive_computer_product && !strcmp(product, default_dive_computer_product);
+}
+
+int is_default_dive_computer_device(const char *name)
+{
+	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
+}
+
+void set_default_dive_computer(const char *vendor, const char *product)
+{
+	QSettings s;
+
+	if (!vendor || !*vendor)
+		return;
+	if (!product || !*product)
+		return;
+	if (is_default_dive_computer(vendor, product))
+		return;
+	if (default_dive_computer_vendor)
+		free((void *)default_dive_computer_vendor);
+	if (default_dive_computer_product)
+		free((void *)default_dive_computer_product);
+	default_dive_computer_vendor = strdup(vendor);
+	default_dive_computer_product = strdup(product);
+	s.beginGroup("DiveComputer");
+	s.setValue("dive_computer_vendor", vendor);
+	s.setValue("dive_computer_product", product);
+	s.endGroup();
+}
+
+void set_default_dive_computer_device(const char *name)
+{
+	QSettings s;
+
+	if (!name || !*name)
+		return;
+	if (is_default_dive_computer_device(name))
+		return;
+	if (default_dive_computer_device)
+		free((void *)default_dive_computer_device);
+	default_dive_computer_device = strdup(name);
+	s.beginGroup("DiveComputer");
+	s.setValue("dive_computer_device", name);
+	s.endGroup();
+}
+
 #include "qt-gui.moc"
