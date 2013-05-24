@@ -287,6 +287,10 @@ void CylindersModel::remove(const QModelIndex& index)
 	endRemoveRows();
 }
 
+WeightModel::WeightModel(QObject* parent): QAbstractTableModel(parent), current(0), rows(0)
+{
+}
+
 void WeightModel::remove(const QModelIndex& index)
 {
 	if (index.column() != REMOVE) {
@@ -318,7 +322,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
 		return ret;
 
-	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
+	weightsystem_t *ws = &current->weightsystem[index.row()];
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch(index.column()) {
@@ -336,19 +340,43 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 	return ret;
 }
 
+// this is our magic 'pass data in' function that allows the delegate to get
+// the data here without silly unit conversions;
+// so we only implement the two columns we care about
+void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
+{
+	weightsystem_t *ws = &current->weightsystem[index.row()];
+	if (index.column() == WEIGHT) {
+		if (ws->weight.grams != value.toInt()) {
+			ws->weight.grams = value.toInt();
+			mark_divelist_changed(TRUE);
+		}
+	}
+}
+
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-	weightsystem_t *ws = &current_dive->weightsystem[index.row()];
+	weightsystem_t *ws = &current->weightsystem[index.row()];
 	switch(index.column()) {
-	case TYPE:{
-		QByteArray desc = value.toByteArray();
-		ws->description = strdup(desc.data());
+	case TYPE:
+		if (!value.isNull()) {
+			char *text= value.toByteArray().data();
+			if (!ws->description || strcmp(ws->description, text)) {
+				ws->description = strdup(text);
+				mark_divelist_changed(TRUE);
+			}
+		}
 		break;
-	}
 	case WEIGHT:
-		ws->weight.grams = value.toInt() *1000;
+		if (CHANGED(toDouble, "kg", "lbs")) {
+			if (prefs.units.weight == prefs.units.LBS)
+				ws->weight.grams = lbs_to_grams(value.toDouble());
+			else
+				ws->weight.grams = value.toDouble() * 1000.0;
+		}
 		break;
 	}
+	return QAbstractItemModel::setData(index, value, role);
 }
 
 Qt::ItemFlags WeightModel::flags(const QModelIndex& index) const
@@ -418,6 +446,111 @@ void WeightModel::setDive(dive* d)
 	endInsertRows();
 }
 
+WSInfoModel* WSInfoModel::instance()
+{
+	static WSInfoModel *self = new WSInfoModel();
+	return self;
+}
+
+bool WSInfoModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+	beginInsertRows(parent, rowCount(), rowCount());
+	rows += count;
+	endInsertRows();
+	return true;
+}
+
+bool WSInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	struct ws_info *info = &ws_info[index.row()];
+	QByteArray name = value.toByteArray();
+	info->name = strdup(name.data());
+	return TRUE;
+}
+
+void WSInfoModel::clear()
+{
+}
+
+int WSInfoModel::columnCount(const QModelIndex& parent) const
+{
+	return 2;
+}
+
+QVariant WSInfoModel::data(const QModelIndex& index, int role) const
+{
+	QVariant ret;
+	if (!index.isValid()) {
+		return ret;
+	}
+	struct ws_info *info = &ws_info[index.row()];
+
+	int gr = info->grams;
+
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
+		switch(index.column()) {
+			case GR:
+				ret = gr;
+				break;
+			case DESCRIPTION:
+				ret = QString(info->name);
+				break;
+		}
+	}
+	return ret;
+}
+
+QVariant WSInfoModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	QVariant ret;
+
+	if (orientation != Qt::Horizontal)
+		return ret;
+
+	if (role == Qt::DisplayRole) {
+		switch(section) {
+			case GR:
+				ret = tr("kg");
+				break;
+			case DESCRIPTION:
+				ret = tr("Description");
+				break;
+		}
+	}
+	return ret;
+}
+
+int WSInfoModel::rowCount(const QModelIndex& parent) const
+{
+	return rows+1;
+}
+
+WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
+{
+	struct ws_info *info = ws_info;
+	for (info = ws_info; info->name; info++, rows++);
+
+	if (rows > -1) {
+		beginInsertRows(QModelIndex(), 0, rows);
+		endInsertRows();
+	}
+}
+
+void WSInfoModel::update()
+{
+	if (rows > -1) {
+		beginRemoveRows(QModelIndex(), 0, rows);
+		endRemoveRows();
+	}
+	struct ws_info *info = ws_info;
+	for (info = ws_info; info->name; info++, rows++);
+
+	if (rows > -1) {
+		beginInsertRows(QModelIndex(), 0, rows);
+		endInsertRows();
+	}
+}
+
 TankInfoModel* TankInfoModel::instance()
 {
 	static TankInfoModel *self = new TankInfoModel();
@@ -437,6 +570,7 @@ bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int
 	struct tank_info *info = &tank_info[index.row()];
 	QByteArray name = value.toByteArray();
 	info->name = strdup(name.data());
+	return TRUE;
 }
 
 void TankInfoModel::clear()

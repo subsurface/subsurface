@@ -83,7 +83,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->cylinders->horizontalHeader()->setResizeMode (CylindersModel::REMOVE , QHeaderView::Fixed);
 	ui->cylinders->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	ui->weights->setColumnWidth(WeightModel::REMOVE, 24);
-	ui->cylinders->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
+	ui->weights->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
+	ui->weights->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
 }
 
 // We need to manually position the 'plus' on cylinder and weight.

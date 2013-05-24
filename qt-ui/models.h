@@ -21,7 +21,7 @@ Q_OBJECT
 public:
 	static TankInfoModel* instance();
 
-	enum Column { DESCRIPTION, ML, BAR};
+	enum Column {DESCRIPTION, ML, BAR};
 	TankInfoModel();
 
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -34,6 +34,28 @@ public:
 	void update();
 private:
 	int rows;
+};
+
+/* Encapsulate ws_info */
+class WSInfoModel : public QAbstractTableModel {
+Q_OBJECT
+public:
+	static WSInfoModel* instance();
+
+	enum Column {DESCRIPTION, GR};
+	WSInfoModel();
+
+	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
+	/*reimp*/ bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
+	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	void clear();
+	void update();
+private:
+	int rows;
+
 };
 
 /* Encapsulation of the Cylinder Model, that presents the
@@ -70,6 +92,8 @@ class WeightModel : public QAbstractTableModel {
 Q_OBJECT
 public:
 	enum Column {REMOVE, TYPE, WEIGHT, COLUMNS};
+
+	explicit WeightModel(QObject *parent = 0);
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
@@ -77,6 +101,7 @@ public:
 	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
+	void passInData(const QModelIndex& index, const QVariant& value);
 	void add();
 	void clear();
 	void update();
