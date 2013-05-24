@@ -14,8 +14,6 @@
 #include <QFont>
 #include <QIcon>
 
-extern struct tank_info tank_info[100];
-
 CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent), current(0), rows(0)
 {
 }

@@ -909,15 +909,13 @@ bad_tank_info:
 		fprintf(stderr, "Bad tank info for '%s'\n", info->name);
 	}
 }
+#endif /* USE_GTK_UI */
 
 /*
  * We hardcode the most common weight system types
  * This is a bit odd as the weight system types don't usually encode weight
  */
-static struct ws_info {
-	const char *name;
-	int grams;
-} ws_info[100] = {
+struct ws_info ws_info[100] = {
 	{ N_("integrated"), 0 },
 	{ N_("belt"), 0 },
 	{ N_("ankle"), 0 },
@@ -925,6 +923,7 @@ static struct ws_info {
 	{ N_("clip-on"), 0 },
 };
 
+#if USE_GTK_UI
 static void fill_ws_list(GtkListStore *store)
 {
 	GtkTreeIter iter;
