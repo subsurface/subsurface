@@ -71,7 +71,7 @@ void init_qt_ui(int *argcp, char ***argvp, char *errormessage)
 	window->show();
 }
 
-const char *getSetting(QSettings &s, char *name)
+const char *getSetting(QSettings &s, QString name)
 {
 	QVariant v;
 	QString text;
