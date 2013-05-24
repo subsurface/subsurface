@@ -26,7 +26,18 @@ actual release.
 
 On Fedora you need qt-devel, marble-devel, libzip-devel.
 
+Building the Qt version under MacOSX
+------------------------------------
 
+You might have built MacPorts packages with +quartz dependencies to
+build the previous Subsurface/Gtk version.  Switch to the +x11
+dependencies and prepare your system for Subsurface/Qt by doing:
+
+sudo port uninstall gtk-osx-application subsurface libdivecomputer
+sudo port install cairo +x11 pango +x11 py27-pygtk +x11 gtk2 +x11
+sudo port install qt4-mac marble libzip libtool libusb
+
+Then build libdivecomputer and Subsurface as described below.
 
 Subsurface - an Open Source Divelog
 ===================================
@@ -155,8 +166,8 @@ sh packaging/Windows/mingw-make.sh create-windows-installer
 Building subsurface on a Mac
 ----------------------------
 Install MacPorts and install the dependencies from MacPorts:
-sudo port install gtk2 +quartz py27-pygtk +quartz libusb gtk-osx-application \
-     automake autoconf libtool libsoup osm-gps-map libzip
+
+sudo port install libusb libtool libzip qt4-mac marble
 
 Install libdivecomputer:
 git clone git://git.libdivecomputer.org/libdivecomputer
