@@ -315,7 +315,7 @@ void MainTab::on_editAccept_clicked(bool edit)
 	mainWindow()->dive_list()->setEnabled(!edit);
 
 	if (edit) {
-		ui->diveNotesMessage->setText(tr("This dive is being edited. click on finish / reset when ready."));
+		ui->diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
 		ui->diveNotesMessage->animatedShow();
 		notesBackup.buddy = ui->buddy->text();
 		notesBackup.suit = ui->suit->text();
