@@ -74,19 +74,27 @@ void TankInfoDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 		c->setEditText(data);
 }
 
-void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
+void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
 {
-	QComboBox *c = static_cast<QComboBox*>(editor);
+	QComboBox *c = qobject_cast<QComboBox*>(editor);
 	CylindersModel *mymodel = qobject_cast<CylindersModel *>(model);
 	TankInfoModel *tanks = TankInfoModel::instance();
-	QModelIndex tankIndex = tanks->match(tanks->index(0,0), Qt::DisplayRole, c->currentText()).first();
+	QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, c->currentText());
+	int row;
+	if (matches.isEmpty()) {
+		// we need to add this
+		tanks->insertRows(tanks->rowCount(), 1);
+		tanks->setData(tanks->index(tanks->rowCount() -1, 0), c->currentText());
+		row = tanks->rowCount() - 1;
+	} else {
+		row = matches.first().row();
+	}
+	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
+	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
-	int tankSize = tanks->data(tanks->index(tankIndex.row(), TankInfoModel::ML)).toInt();
-	int tankPressure = tanks->data(tanks->index(tankIndex.row(), TankInfoModel::BAR)).toInt();
-
-	mymodel->setData(index, c->currentText(), Qt::EditRole);
-	mymodel->passInData(model->index(index.row(), CylindersModel::WORKINGPRESS), tankPressure);
-	mymodel->passInData(model->index(index.row(), CylindersModel::SIZE), tankSize);
+	mymodel->setData(model->index(thisindex.row(), CylindersModel::TYPE), c->currentText(), Qt::EditRole);
+	mymodel->passInData(model->index(thisindex.row(), CylindersModel::WORKINGPRESS), tankPressure);
+	mymodel->passInData(model->index(thisindex.row(), CylindersModel::SIZE), tankSize);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject* parent): QStyledItemDelegate(parent)
@@ -116,17 +124,25 @@ void WSInfoDelegate::setEditorData(QWidget* editor, const QModelIndex& index) co
 		c->setEditText(data);
 }
 
-void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
+void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
 {
-	QComboBox *c = static_cast<QComboBox*>(editor);
+	QComboBox *c = qobject_cast<QComboBox*>(editor);
 	WeightModel *mymodel = qobject_cast<WeightModel *>(model);
-	WSInfoModel *ws = WSInfoModel::instance();
-	QModelIndex wsIndex = ws->match(ws->index(0,0), Qt::DisplayRole, c->currentText()).first();
-
-	int grams = ws->data(ws->index(wsIndex.row(), WSInfoModel::GR)).toInt();
-
-	mymodel->setData(index, c->currentText(), Qt::EditRole);
-	mymodel->passInData(model->index(index.row(), WeightModel::WEIGHT), grams);
+	WSInfoModel *wsim = WSInfoModel::instance();
+	QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, c->currentText());
+	int row;
+	if (matches.isEmpty()) {
+		// we need to add this puppy
+		wsim->insertRows(wsim->rowCount(), 1);
+		wsim->setData(wsim->index(wsim->rowCount() - 1, 0), c->currentText());
+		row = wsim->rowCount() - 1;
+	} else {
+		row = matches.first().row();
+	}
+	int grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
+	QVariant v = QString(c->currentText());
+	mymodel->setData(model->index(thisindex.row(), WeightModel::TYPE), v, Qt::EditRole);
+	mymodel->passInData(model->index(thisindex.row(), WeightModel::WEIGHT), grams);
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject* parent): QStyledItemDelegate(parent)

@@ -150,20 +150,29 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		if (CHANGED(toDouble, "cuft", "l")) {
 			// if units are CUFT then this value is meaningless until we have working pressure
 			if (value.toDouble() != 0.0) {
+				TankInfoModel *tanks = TankInfoModel::instance();
+				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 				if (prefs.units.volume == prefs.units.CUFT) {
-					if (cyl->type.workingpressure.mbar == 0)
+					if (cyl->type.workingpressure.mbar == 0) {
 						// this is a hack as we can't store a wet size
 						// without working pressure in cuft mode
 						// so we assume it's an aluminum tank at 3000psi
 						cyl->type.workingpressure.mbar = psi_to_mbar(3000);
+						if (!matches.isEmpty())
+							tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
+					}
 					if (cyl->type.size.mliter != wet_volume(value.toDouble(), cyl->type.workingpressure)) {
 						mark_divelist_changed(TRUE);
 						cyl->type.size.mliter = wet_volume(value.toDouble(), cyl->type.workingpressure);
+						if (!matches.isEmpty())
+							tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 					}
 				} else {
 					if (cyl->type.size.mliter != value.toDouble() * 1000.0) {
 						mark_divelist_changed(TRUE);
 						cyl->type.size.mliter = value.toDouble() * 1000.0;
+						if (!matches.isEmpty())
+							tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 					}
 				}
 			}
@@ -172,10 +181,14 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 	case WORKINGPRESS:
 		if (CHANGED(toDouble, "psi", "bar")) {
 			if (value.toDouble() != 0.0) {
+				TankInfoModel *tanks = TankInfoModel::instance();
+				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 				if (prefs.units.pressure == prefs.units.PSI)
 					cyl->type.workingpressure.mbar = psi_to_mbar(value.toDouble());
 				else
 					cyl->type.workingpressure.mbar = value.toDouble() * 1000;
+				if (!matches.isEmpty())
+					tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
 				mark_divelist_changed(TRUE);
 			}
 		}
@@ -360,7 +373,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 	switch(index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
-			char *text= value.toByteArray().data();
+			char *text = strdup(value.toString().toUtf8().data());
 			if (!ws->description || strcmp(ws->description, text)) {
 				ws->description = strdup(text);
 				mark_divelist_changed(TRUE);
@@ -373,6 +386,11 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 				ws->weight.grams = lbs_to_grams(value.toDouble());
 			else
 				ws->weight.grams = value.toDouble() * 1000.0;
+			// now update the ws_info
+			WSInfoModel *wsim = WSInfoModel::instance();
+			QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, ws->description);
+			if (!matches.isEmpty())
+				wsim->setData(wsim->index(matches.first().row(), WSInfoModel::GR), ws->weight.grams);
 		}
 		break;
 	}
@@ -463,8 +481,14 @@ bool WSInfoModel::insertRows(int row, int count, const QModelIndex& parent)
 bool WSInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	struct ws_info *info = &ws_info[index.row()];
-	QByteArray name = value.toByteArray();
-	info->name = strdup(name.data());
+	switch(index.column()) {
+	case DESCRIPTION:
+		info->name = strdup(value.toByteArray().data());
+		break;
+	case GR:
+		info->grams = value.toInt();
+		break;
+	}
 	return TRUE;
 }
 
@@ -541,6 +565,7 @@ void WSInfoModel::update()
 	if (rows > -1) {
 		beginRemoveRows(QModelIndex(), 0, rows);
 		endRemoveRows();
+		rows = -1;
 	}
 	struct ws_info *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++);
@@ -568,8 +593,17 @@ bool TankInfoModel::insertRows(int row, int count, const QModelIndex& parent)
 bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	struct tank_info *info = &tank_info[index.row()];
-	QByteArray name = value.toByteArray();
-	info->name = strdup(name.data());
+	switch(index.column()) {
+	case DESCRIPTION:
+		info->name = strdup(value.toByteArray().data());
+		break;
+	case ML:
+		info->ml = value.toInt();
+		break;
+	case BAR:
+		info->bar = value.toInt();
+		break;
+	}
 	return TRUE;
 }
 
@@ -658,6 +692,7 @@ void TankInfoModel::update()
 	if (rows > -1) {
 		beginRemoveRows(QModelIndex(), 0, rows);
 		endRemoveRows();
+		rows = -1;
 	}
 	struct tank_info *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++);
