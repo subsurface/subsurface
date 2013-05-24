@@ -34,6 +34,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setShowGrid(false);
 	setShowOverviewMap(false);
 	setShowScaleBar(true);
+	setShowCompass(false);
 
 	Q_FOREACH(AbstractFloatItem * floatItem, floatItems()) {
 		if (floatItem && floatItem->nameId() == "compass") {
