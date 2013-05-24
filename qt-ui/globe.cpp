@@ -18,6 +18,9 @@
 
 GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 {
+	messageWidget = new KMessageWidget(this);
+	messageWidget->setCloseButtonVisible(false);
+	messageWidget->setHidden(true);
 
 	setMapThemeId("earth/googlesat/googlesat.dgml");
 	//setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
@@ -50,8 +53,6 @@ void GlobeGPS::reload()
 	if (editingDiveCoords) {
 		editingDiveCoords = 0;
 	}
-
-	messageWidget->animatedHide();
 
 	loadedDives = new GeoDataDocument;
 
@@ -132,9 +133,16 @@ void GlobeGPS::mousePressEvent(QMouseEvent* event)
 	}
 }
 
-void GlobeGPS::setMessageWidget(KMessageWidget* globeMessage)
+void GlobeGPS::resizeEvent(QResizeEvent* event)
 {
-	messageWidget = globeMessage;
+	int size  = event->size().width();
+
+	MarbleWidget::resizeEvent(event);
+
+	if (size > 600)
+		messageWidget->setGeometry((size - 600) / 2, 5, 600, 0);
+	else
+		messageWidget->setGeometry(5, 5, size - 10, 0);
+
+	messageWidget->setMaximumHeight(500);
 }
-
-

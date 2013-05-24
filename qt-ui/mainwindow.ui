@@ -85,9 +85,6 @@
        <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="KMessageWidget" name="globeMessage" native="true"/>
-         </item>
-         <item>
           <widget class="GlobeGPS" name="globe" native="true"/>
          </item>
         </layout>

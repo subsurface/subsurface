@@ -40,10 +40,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	ui->setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
-	ui->globeMessage->hide();
 	ui->mainErrorMessage->hide();
-	ui->globe->setMessageWidget(ui->globeMessage);
-	ui->globeMessage->setCloseButtonVisible(false);
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
 	readSettings();

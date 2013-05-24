@@ -18,6 +18,7 @@ public:
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void centerOn(struct dive* dive);
+	void resizeEvent(QResizeEvent *event);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent* event);
@@ -30,8 +31,6 @@ private:
 
 public Q_SLOTS:
 	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
-	void setMessageWidget(KMessageWidget* globeMessage);
-
 };
 
 #endif
