@@ -19,7 +19,7 @@
 GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 {
 
-	setMapThemeId("earth/bluemarble/bluemarble.dgml");
+	setMapThemeId("earth/googlesat/googlesat.dgml");
 	//setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
 	setProjection(Marble::Spherical);
 
