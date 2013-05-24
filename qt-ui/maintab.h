@@ -43,11 +43,7 @@ public:
 
 public Q_SLOTS:
 	void addCylinder_clicked();
-	void on_editCylinder_clicked();
-	void on_delCylinder_clicked();
 	void addWeight_clicked();
-	void on_editWeight_clicked();
-	void on_delWeight_clicked();
 	void updateDiveInfo(int dive);
 	void on_editAccept_clicked(bool edit);
 	void on_editReset_clicked();

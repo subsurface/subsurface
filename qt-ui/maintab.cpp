@@ -292,25 +292,9 @@ void MainTab::addCylinder_clicked()
 	cylindersModel->add();
 }
 
-void MainTab::on_editCylinder_clicked()
-{
-}
-
-void MainTab::on_delCylinder_clicked()
-{
-}
-
 void MainTab::addWeight_clicked()
 {
 	weightModel->add();
-}
-
-void MainTab::on_editWeight_clicked()
-{
-}
-
-void MainTab::on_delWeight_clicked()
-{
 }
 
 void MainTab::reload()
