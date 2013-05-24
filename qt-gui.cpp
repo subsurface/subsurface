@@ -74,11 +74,9 @@ void init_qt_ui(int *argcp, char ***argvp, char *errormessage)
 const char *getSetting(QSettings &s, QString name)
 {
 	QVariant v;
-	QString text;
 	v = s.value(name);
 	if (v.isValid()) {
-		text = v.toString();
-		return strdup(text.toUtf8());
+		return strdup(v.toString().toUtf8().constData());
 	}
 	return NULL;
 }

@@ -139,7 +139,8 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 	switch(index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
-			char *text = value.toByteArray().data();
+			QByteArray ba = value.toByteArray();
+			const char *text = ba.constData();
 			if (!cyl->type.description || strcmp(cyl->type.description, text)) {
 				cyl->type.description = strdup(text);
 				mark_divelist_changed(TRUE);
@@ -373,7 +374,8 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 	switch(index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
-			char *text = strdup(value.toString().toUtf8().data());
+			QByteArray ba = value.toString().toUtf8();
+			const char *text = ba.constData();
 			if (!ws->description || strcmp(ws->description, text)) {
 				ws->description = strdup(text);
 				mark_divelist_changed(TRUE);
