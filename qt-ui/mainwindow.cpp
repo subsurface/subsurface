@@ -26,6 +26,7 @@
 #include "modeldelegates.h"
 #include "models.h"
 #include "downloadfromdivecomputer.h"
+#include "preferences.h"
 
 static MainWindow* instance = 0;
 
@@ -148,7 +149,7 @@ void MainWindow::on_actionPrint_triggered()
 
 void MainWindow::on_actionPreferences_triggered()
 {
-	qDebug("actionPreferences");
+	PreferencesDialog::instance()->show();
 }
 
 void MainWindow::on_actionQuit_triggered()

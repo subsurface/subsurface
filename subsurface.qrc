@@ -1,8 +1,11 @@
  <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
-    <file alias="star">star.svg</file>
-    <file alias="subsurface-icon">subsurface-icon.png</file>
-	<file alias="plus">plus.png</file>
-	<file alias="trash">trash.png</file>
+	<file alias="star">icons/star.svg</file>
+	<file alias="subsurface-icon">icons/subsurface-icon.png</file>
+	<file alias="plus">icons/plus.png</file>
+	<file alias="trash">icons/trash.png</file>
+	<file alias="units">icons/units.png</file>
+	<file alias="advanced">icons/advanced.png</file>
+	<file alias="graph">icons/graph.png</file>
  </qresource>
  </RCC>
