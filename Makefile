@@ -44,6 +44,7 @@ HEADERS = \
 	qt-ui/globe.h \
 	qt-ui/kmessagewidget.h \
 	qt-ui/downloadfromdivecomputer.h \
+	qt-ui/preferences.h \
 
 
 SOURCES = \
@@ -75,6 +76,7 @@ SOURCES = \
 	qt-ui/globe.cpp \
 	qt-ui/kmessagewidget.cpp \
 	qt-ui/downloadfromdivecomputer.cpp \
+	qt-ui/preferences.cpp \
 	$(RESFILE)
 
 
