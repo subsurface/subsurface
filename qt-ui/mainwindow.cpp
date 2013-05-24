@@ -289,19 +289,26 @@ QString MainWindow::filter()
 bool MainWindow::askSaveChanges()
 {
 	QString message;
-	QMessageBox::StandardButton response;
+	QMessageBox response;
 
 	if (existing_filename)
-		message = tr("You have unsaved changes to file: %1\nDo you really want to close the file without saving?").arg(existing_filename);
+		message = tr("Do you want to save the changes you made in the file %1?").arg(existing_filename);
 	else
-		message = tr("You have unsaved changes\nDo you really want to close the datafile without saving?");
+		message = tr("Do you want to save the changes you made in the datafile?");
 
-	response = QMessageBox::question(this, tr("Save Changes?"), message,
-					QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Save);
-	if (response == QMessageBox::Save) {
+	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+	response.setDefaultButton(QMessageBox::Save);
+	response.setText(message);
+	response.setWindowTitle(tr("Save Changes?")); // Not displayed on MacOSX as described in Qt API
+	response.setInformativeText(tr("Changes will be lost if you don't save them."));
+	response.setIcon(QMessageBox::Warning);
+	int ret = response.exec();
+
+	switch (ret) {
+	case QMessageBox::Save:
 		file_save();
 		return true;
-	} else if (response == QMessageBox::Ok) {
+	case QMessageBox::Discard:
 		return true;
 	}
 	return false;
