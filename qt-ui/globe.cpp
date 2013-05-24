@@ -112,13 +112,12 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 		lon = lon * 180 / M_PI;
 		lat = lat * 180 / M_PI;
 	}
-
 	if (!editingDiveCoords) {
 		return;
 	}
 
-	editingDiveCoords->latitude.udeg = (int) lat * 1000000.0;
-	editingDiveCoords->longitude.udeg = (int) lon * 1000000.0;
+	editingDiveCoords->latitude.udeg = lat * 1000000.0;
+	editingDiveCoords->longitude.udeg = lon * 1000000.0;
 	centerOn(lon, lat, true);
 	reload();
 	editingDiveCoords = 0;
@@ -128,8 +127,8 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 void GlobeGPS::mousePressEvent(QMouseEvent* event)
 {
 	qreal lat, lon;
-	if (editingDiveCoords &&  geoCoordinates(event->pos().x(), event->pos().y(), lon,lat, GeoDataCoordinates::Radian)) {
-		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Radian);
+	if (editingDiveCoords &&  geoCoordinates(event->pos().x(), event->pos().y(), lon, lat, GeoDataCoordinates::Degree)) {
+		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Degree);
 	}
 }
 
