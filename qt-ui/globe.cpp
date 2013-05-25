@@ -35,13 +35,6 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setShowOverviewMap(false);
 	setShowScaleBar(true);
 	setShowCompass(false);
-
-	Q_FOREACH(AbstractFloatItem * floatItem, floatItems()) {
-		if (floatItem && floatItem->nameId() == "compass") {
-			floatItem->setPosition(QPoint(10, 10));
-			floatItem->setContentSize(QSize(50, 50));
-		}
-	}
 }
 
 void GlobeGPS::reload()
