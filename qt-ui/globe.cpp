@@ -110,8 +110,8 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 		return;
 	}
 
-	editingDiveCoords->latitude.udeg = lat * 1000000.0;
-	editingDiveCoords->longitude.udeg = lon * 1000000.0;
+	editingDiveCoords->latitude.udeg = lrint(lat * 1000000.0);
+	editingDiveCoords->longitude.udeg = lrint(lon * 1000000.0);
 	centerOn(lon, lat, true);
 	reload();
 	editingDiveCoords = 0;
