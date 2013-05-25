@@ -8,6 +8,7 @@
 #include <marble/GeoDataPlacemark.h>
 #include <marble/GeoDataDocument.h>
 #include <marble/MarbleModel.h>
+#include <marble/MarbleDirs.h>
 #if INCOMPLETE_MARBLE
 #include "marble/GeoDataTreeModel.h"
 #else
@@ -18,6 +19,9 @@
 
 GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 {
+	// this will find the Google maps when running from your build directory
+	// TODO: all the magic to find the install path (and actually install/bundle these files)
+	MarbleDirs::setMarbleDataPath(QDir("./marbledata").absolutePath());
 	messageWidget = new KMessageWidget(this);
 	messageWidget->setCloseButtonVisible(false);
 	messageWidget->setHidden(true);
