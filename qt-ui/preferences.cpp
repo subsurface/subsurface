@@ -1,5 +1,6 @@
 #include "preferences.h"
 #include "ui_preferences.h"
+#include "../dive.h"
 #include <QSettings>
 
 PreferencesDialog* PreferencesDialog::instance()
@@ -75,6 +76,7 @@ void PreferencesDialog::syncSettings()
 	QSettings s;
 
 	// Graph
+	s.beginGroup("TecDetails");
 	s.setValue("show_calculated_ceiling", ui->calculated_ceiling->isChecked());
 	s.setValue("show_phe", ui->phe->isChecked());
 	s.setValue("show_po2", ui->po2->isChecked());
@@ -89,20 +91,23 @@ void PreferencesDialog::syncSettings()
 	s.setValue("show_3m_increments", ui->increment_3m->isChecked());
 	s.setValue("gflow", ui->gflow->value());
 	s.setValue("gfhigh", ui->gfhigh->value());
-
+	s.endGroup();
 	// Units
+	s.beginGroup("Units");
 	s.setValue("units_metric", ui->metric->isChecked());
-	s.setValue("units_celcius", ui->celsius->isChecked());
-	s.setValue("units_meter", ui->meter->isChecked());
-	s.setValue("units_bar", ui->bar->isChecked());
-	s.setValue("units_liter", ui->liter->isChecked());
-	s.setValue("units_kgs", ui->liter->isChecked());
-
+	s.setValue("fahrenheit", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
+	s.setValue("feet", ui->feet->isChecked() ? units::FEET : units::METERS);
+	s.setValue("psi", ui->psi->isChecked() ? units::PSI : units::BAR);
+	s.setValue("cuft", ui->cuft->isChecked() ? units::CUFT : units::LITER);
+	s.setValue("lbs", ui->lbs->isChecked() ? units::LBS : units::KG);
+	s.endGroup();
 	// Defaults
+	s.beginGroup("GeneralSettings");
 	s.value("table_fonts", ui->font->font().family());
 	s.value("font_size", ui->fontsize->value());
 	s.value("default_file", ui->defaultfilename->text());
 	s.value("displayinvalid", ui->displayinvalid->isChecked());
+	s.endGroup();
 	s.sync();
 
 	emit settingsChanged();

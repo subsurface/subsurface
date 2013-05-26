@@ -355,11 +355,11 @@ void MainWindow::readSettings()
 
 	settings.endGroup();
 	settings.beginGroup("Units");
-	GET_UNIT(v, "feet", length, units::METERS, units::FEET);
-	GET_UNIT(v, "psi", pressure, units::BAR, units::PSI);
-	GET_UNIT(v, "cuft", volume, units::LITER, units::CUFT);
-	GET_UNIT(v, "fahrenheit", temperature, units::CELSIUS, units::FAHRENHEIT);
-	GET_UNIT(v, "lbs", weight, units::KG, units::LBS);
+	GET_UNIT(v, "feet", length, units::FEET, units::METERS);
+	GET_UNIT(v, "psi", pressure, units::PSI, units::BAR);
+	GET_UNIT(v, "cuft", volume, units::CUFT, units::LITER);
+	GET_UNIT(v, "fahrenheit", temperature, units::FAHRENHEIT, units::CELSIUS);
+	GET_UNIT(v, "lbs", weight, units::LBS, units::KG);
 	settings.endGroup();
 	settings.beginGroup("DisplayListColumns");
 	GET_BOOL(v, "CYLINDER", prefs.visible_cols.cylinder);
