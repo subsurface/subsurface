@@ -63,7 +63,7 @@ private:
 class CylindersModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum Column {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE,  COLUMNS};
+	enum Column {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, COLUMNS};
 
 	explicit CylindersModel(QObject* parent = 0);
 	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -122,7 +122,7 @@ struct TreeItemDT {
 	Q_DECLARE_TR_FUNCTIONS (TreeItemDT);
 public:
 	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
-				SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, DIVE, COLUMNS };
+				SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
 
 	enum ExtraRoles{STAR_ROLE = Qt::UserRole + 1, DIVE_ROLE};
 
