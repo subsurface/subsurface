@@ -40,6 +40,10 @@ void DiveListView::reload()
 		else
 			setCurrentIndex(firstDiveOrTrip);
 	}
+}
+
+void DiveListView::reloadHeaderActions()
+{
 	// Populate the context menu of the headers that will show
 	// the menu to show / hide columns.
 	if (!header()->actions().size()) {
@@ -48,24 +52,23 @@ void DiveListView::reload()
 		QSettings s;
 		s.beginGroup("DiveListColumnState");
 		for(int i = 0; i < model()->columnCount(); i++) {
-			QString title = QString("show %1").arg(model()->headerData( i, Qt::Horizontal).toString());
+			QString title = QString("show %1").arg(model()->headerData(i, Qt::Horizontal).toString());
+			QString settingName = QString("showColumn%1").arg(i);
 			QAction *a = new QAction(title, header());
+			bool shown = s.value(settingName, true).toBool();
 			a->setCheckable(true);
-			a->setChecked( s.value(title, true).toBool());
+			a->setChecked(shown);
 			a->setProperty("index", i);
-			connect(a, SIGNAL(triggered(bool)), this, SLOT(hideColumnByIndex()));
+			a->setProperty("settingName", settingName);
+			connect(a, SIGNAL(triggered(bool)), this, SLOT(toggleColumnVisibilityByIndex()));
 			header()->addAction(a);
-			if (a->isChecked())
-				showColumn(true);
-			else
-				hideColumn(false);
+			setColumnHidden(i, !shown);
 		}
 		s.endGroup();
-		s.sync();
 	}
 }
 
-void DiveListView::hideColumnByIndex()
+void DiveListView::toggleColumnVisibilityByIndex()
 {
 	QAction *action = qobject_cast<QAction*>(sender());
 	if (!action)
@@ -73,14 +76,10 @@ void DiveListView::hideColumnByIndex()
 
 	QSettings s;
 	s.beginGroup("DiveListColumnState");
-	s.setValue(action->text(), action->isChecked());
+	s.setValue(action->property("settingName").toString(), action->isChecked());
 	s.endGroup();
 	s.sync();
-
-	if (action->isChecked())
-		showColumn(action->property("index").toInt());
-	else
-		hideColumn(action->property("index").toInt());
+	setColumnHidden(action->property("index").toInt(), !action->isChecked());
 }
 
 void DiveListView::setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command)

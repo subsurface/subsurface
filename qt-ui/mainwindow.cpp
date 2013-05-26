@@ -44,6 +44,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
 	readSettings();
+	ui->ListWidget->reloadHeaderActions();
 	ui->ListWidget->setFocus();
 	ui->globe->reload();
 	instance = this;
@@ -432,7 +433,8 @@ void MainWindow::writeSettings()
 
 	settings.beginGroup("ListWidget");
 	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++)
-		settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
+		if (!ui->ListWidget->isColumnHidden(i))
+			settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
 	settings.endGroup();
 	settings.beginGroup("Units");
 	SAVE_VALUE("feet", units.length);

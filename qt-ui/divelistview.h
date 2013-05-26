@@ -31,7 +31,8 @@ public:
 	void reload();
 
 public slots:
-	void hideColumnByIndex();
+	void toggleColumnVisibilityByIndex();
+	void reloadHeaderActions();
 
 Q_SIGNALS:
 	void currentDiveChanged(int divenr);
