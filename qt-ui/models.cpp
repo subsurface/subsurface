@@ -21,10 +21,16 @@ CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent), cu
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
+	QFont font;
+
 	if (orientation == Qt::Vertical)
 		return ret;
 
-	if (role == Qt::DisplayRole) {
+	switch (role) {
+	case Qt::FontRole:
+		font.setPointSizeF(font.pointSizeF() * 0.8);
+		return font;
+	case Qt::DisplayRole:
 		switch(section) {
 		case TYPE:
 			ret = tr("Type");
@@ -36,16 +42,16 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 			ret = tr("WorkPress");
 			break;
 		case START:
-			ret = tr("Start");
+			ret = tr("StartPress");
 			break;
 		case END:
-			ret = tr("End");
+			ret = tr("EndPress  ");
 			break;
 		case O2:
-			ret = tr("O2%");
+			ret = tr("O2% ");
 			break;
 		case HE:
-			ret = tr("He%");
+			ret = tr("He% ");
 			break;
 		}
 	}
@@ -60,12 +66,22 @@ int CylindersModel::columnCount(const QModelIndex& parent) const
 QVariant CylindersModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
+	QFont font;
+
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
 
 	cylinder_t *cyl = &current->cylinder[index.row()];
-
-	if (role == Qt::DisplayRole || role==Qt::EditRole) {
+	switch (role) {
+	case Qt::FontRole:
+		font.setPointSizeF(font.pointSizeF() * 0.80);
+		ret = font;
+		break;
+	case Qt::TextAlignmentRole:
+		ret = Qt::AlignRight;
+		break;
+	case Qt::DisplayRole:
+	case Qt::EditRole:
 		switch(index.column()) {
 		case TYPE:
 			ret = QString(cyl->type.description);
@@ -101,11 +117,12 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			ret = QString("%1%").arg((cyl->gasmix.he.permille + 5) / 10);
 			break;
 		}
-	} else if (role == Qt::DecorationRole) {
+		break;
+	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
 			ret = QIcon(":trash");
+		break;
 	}
-
 	return ret;
 }
 
@@ -333,12 +350,22 @@ int WeightModel::columnCount(const QModelIndex& parent) const
 QVariant WeightModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
+	QFont font;
 	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
 		return ret;
 
 	weightsystem_t *ws = &current->weightsystem[index.row()];
 
-	if (role == Qt::DisplayRole || role == Qt::EditRole) {
+	switch (role) {
+	case Qt::FontRole:
+		font.setPointSizeF(font.pointSizeF() * 0.80);
+		ret = font;
+		break;
+	case Qt::TextAlignmentRole:
+		ret = Qt::AlignRight;
+		break;
+	case Qt::DisplayRole:
+	case Qt::EditRole:
 		switch(index.column()) {
 		case TYPE:
 			ret = QString(ws->description);
@@ -347,9 +374,11 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			ret = get_weight_string(ws->weight, TRUE);
 			break;
 		}
-	} else if (role == Qt::DecorationRole) {
+		break;
+	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
 			ret = QIcon(":trash");
+		break;
 	}
 	return ret;
 }
@@ -414,10 +443,16 @@ int WeightModel::rowCount(const QModelIndex& parent) const
 QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
+	QFont font;
 	if (orientation == Qt::Vertical)
 		return ret;
 
-	if (role == Qt::DisplayRole) {
+	switch (role) {
+	case Qt::FontRole:
+		font.setPointSizeF(font.pointSizeF() * 0.8);
+		ret = font;
+		break;
+	case Qt::DisplayRole:
 		switch(section) {
 		case TYPE:
 			ret = tr("Type");
@@ -426,6 +461,7 @@ QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int r
 			ret = tr("Weight");
 			break;
 		}
+		break;
 	}
 	return ret;
 }
