@@ -85,6 +85,9 @@ private Q_SLOTS:
 protected:
 	void closeEvent(QCloseEvent *);
 
+public Q_SLOTS:
+	void readSettings();
+
 private:
 	Ui::MainWindow *ui;
 	QAction *actionNextDive;
@@ -92,7 +95,6 @@ private:
 
 	QString filter();
 	bool askSaveChanges();
-	void readSettings();
 	void writeSettings();
 	void redrawProfile();
 	void file_save();

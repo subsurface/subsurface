@@ -62,7 +62,7 @@ class ProfileGraphicsView : public QGraphicsView
 Q_OBJECT
 public:
 	ProfileGraphicsView(QWidget* parent = 0);
-	void plot(struct dive *d);
+	void plot(struct dive *d, bool forceRedraw = FALSE);
 	bool eventFilter(QObject* obj, QEvent* event);
 	void clear();
 
@@ -71,6 +71,9 @@ protected:
 	void mouseMoveEvent(QMouseEvent* event);
 	void wheelEvent(QWheelEvent* event);
 	void showEvent(QShowEvent* event);
+
+public Q_SLOTS:
+	void refresh();
 
 private:
 	void plot_depth_profile();

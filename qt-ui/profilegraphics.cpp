@@ -220,14 +220,19 @@ void ProfileGraphicsView::clear()
 	toolTip = 0;
 }
 
-void ProfileGraphicsView::plot(struct dive *d)
+void ProfileGraphicsView::refresh()
+{
+	plot(current_dive, TRUE);
+}
+
+void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 {
 	struct divecomputer *dc;
 
 	if (d)
 		dc = select_dc(&d->dc);
 
-	if (dive == d && (d && dc == diveDC))
+	if (!forceRedraw && dive == d && (d && dc == diveDC))
 		return;
 
 	clear();

@@ -21,6 +21,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	QSettings s;
 
 	// Graph
+	s.beginGroup("TecDetails");
 	ui->calculated_ceiling->setChecked(B(show_calculated_ceiling));
 	ui->phe->setChecked(B(show_phe));
 	ui->po2->setChecked(B(show_po2));
@@ -34,39 +35,44 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	ui->increment_3m->setChecked(B(show_3m_increments));
 	ui->gflow->setValue(D(gflow));
 	ui->gfhigh->setValue(D(gfhigh));
+	s.endGroup();
 
 	// Units
+	s.beginGroup("Units");
 	bool value = s.value("units_metric").toBool();
 	ui->metric->setChecked(value);
 	ui->imperial->setChecked(!value);
 
-	value = s.value("units_celcius").toBool();
-	ui->celsius->setChecked( value);
-	ui->fahrenheit->setChecked( !value);
+	int unit = s.value("temperature").toInt();
+	ui->celsius->setChecked(unit == units::CELSIUS);
+	ui->fahrenheit->setChecked(unit == units::FAHRENHEIT);
 
-	value = s.value("units_meters").toBool();
-	ui->meter->setChecked(value);
-	ui->feet->setChecked(!value);
+	unit = s.value("length").toInt();
+	ui->meter->setChecked(unit == units::METERS);
+	ui->feet->setChecked(unit == units::FEET);
 
-	value = s.value("units_bar").toBool();
-	ui->bar->setChecked(value);
-	ui->psi->setChecked(!value);
+	unit = s.value("pressure").toInt();
+	ui->bar->setChecked(unit == units::BAR);
+	ui->psi->setChecked(unit == units::PSI);
 
-	value = s.value("units_liter").toBool();
-	ui->liter->setChecked(value);
-	ui->cuft->setChecked(!value);
+	unit = s.value("volume").toInt();
+	ui->liter->setChecked(unit == units::LITER);
+	ui->cuft->setChecked(unit == units::CUFT);
 
-	value = s.value("units_kgs").toBool();
-	ui->kgs->setChecked(value);
-	ui->lbs->setChecked(!value);
+	unit = s.value("weight").toInt();
+	ui->kgs->setChecked(unit == units::KG);
+	ui->lbs->setChecked(unit == units::LBS);
+
+	s.endGroup();
 
 	// Defaults
+	s.beginGroup("GeneralSettings");
 	ui->font->setFont( QFont(s.value("table_fonts").toString()));
 	ui->fontsize->setValue(D(font_size));
 
 	ui->defaultfilename->setText(s.value("default_file").toString());
 	ui->displayinvalid->setChecked(B(show_invalid));
-
+	s.endGroup();
 #undef B
 #undef D
 }
@@ -95,11 +101,11 @@ void PreferencesDialog::syncSettings()
 	// Units
 	s.beginGroup("Units");
 	s.setValue("units_metric", ui->metric->isChecked());
-	s.setValue("fahrenheit", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
-	s.setValue("feet", ui->feet->isChecked() ? units::FEET : units::METERS);
-	s.setValue("psi", ui->psi->isChecked() ? units::PSI : units::BAR);
-	s.setValue("cuft", ui->cuft->isChecked() ? units::CUFT : units::LITER);
-	s.setValue("lbs", ui->lbs->isChecked() ? units::LBS : units::KG);
+	s.setValue("temperature", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
+	s.setValue("length", ui->feet->isChecked() ? units::FEET : units::METERS);
+	s.setValue("pressure", ui->psi->isChecked() ? units::PSI : units::BAR);
+	s.setValue("volume", ui->cuft->isChecked() ? units::CUFT : units::LITER);
+	s.setValue("weight", ui->lbs->isChecked() ? units::LBS : units::KG);
 	s.endGroup();
 	// Defaults
 	s.beginGroup("GeneralSettings");

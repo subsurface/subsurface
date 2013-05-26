@@ -40,6 +40,8 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	ui->setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ProfileWidget, SLOT(refresh()));
 	ui->mainErrorMessage->hide();
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
@@ -355,11 +357,11 @@ void MainWindow::readSettings()
 
 	settings.endGroup();
 	settings.beginGroup("Units");
-	GET_UNIT(v, "feet", length, units::FEET, units::METERS);
-	GET_UNIT(v, "psi", pressure, units::PSI, units::BAR);
-	GET_UNIT(v, "cuft", volume, units::CUFT, units::LITER);
-	GET_UNIT(v, "fahrenheit", temperature, units::FAHRENHEIT, units::CELSIUS);
-	GET_UNIT(v, "lbs", weight, units::LBS, units::KG);
+	GET_UNIT(v, "length", length, units::FEET, units::METERS);
+	GET_UNIT(v, "pressure", pressure, units::PSI, units::BAR);
+	GET_UNIT(v, "volume", volume, units::CUFT, units::LITER);
+	GET_UNIT(v, "temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
+	GET_UNIT(v, "weight", weight, units::LBS, units::KG);
 	settings.endGroup();
 	settings.beginGroup("DisplayListColumns");
 	GET_BOOL(v, "CYLINDER", prefs.visible_cols.cylinder);
@@ -437,11 +439,11 @@ void MainWindow::writeSettings()
 			settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
 	settings.endGroup();
 	settings.beginGroup("Units");
-	SAVE_VALUE("feet", units.length);
-	SAVE_VALUE("psi", units.pressure);
-	SAVE_VALUE("cuft", units.volume);
-	SAVE_VALUE("fahrenheit", units.temperature);
-	SAVE_VALUE("lbs", units.weight);
+	SAVE_VALUE("length", units.length);
+	SAVE_VALUE("pressure", units.pressure);
+	SAVE_VALUE("volume", units.volume);
+	SAVE_VALUE("temperature", units.temperature);
+	SAVE_VALUE("weight", units.weight);
 	settings.endGroup();
 	settings.beginGroup("DisplayListColumns");
 	SAVE_VALUE("TEMPERATURE", visible_cols.temperature);
