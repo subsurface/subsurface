@@ -9,6 +9,8 @@
 
 #include "dive.h"
 #include "divelist.h"
+#include "libdivecomputer.h"
+#include "version.h"
 
 #include <osm-gps-map.h>
 #ifdef DEBUGFILE
@@ -225,6 +227,11 @@ static void parse_argument(const char *arg)
 				report_dives(FALSE, FALSE);
 				imported = TRUE;
 				return;
+			}
+			if (strcmp(arg, "--version") == 0) {
+				printf("Subsurface v%s, ", VERSION_STRING);
+				printf("built with libdivecomputer v%s\n", dc_version(NULL));
+				exit(0);
 			}
 			/* fallthrough */
 		case 'p':
