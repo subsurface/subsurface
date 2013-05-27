@@ -39,8 +39,6 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setShowOverviewMap(false);
 	setShowScaleBar(true);
 	setShowCompass(false);
-	// set the zoom as seen from n kilometer above. 3km / 10,000ft seems pleasant
-	zoomView(zoomFromDistance(3));
 }
 
 void GlobeGPS::reload()
@@ -90,6 +88,12 @@ void GlobeGPS::centerOn(dive* dive)
 		prepareForGetDiveCoordinates(dive);
 		return;
 	}
+
+	// set the zoom as seen from n kilometer above. 3km / 10,000ft seems pleasant
+	// do not change it it was already modified by user
+	if (!zoom())
+		zoomView(zoomFromDistance(3));
+
 	centerOn(longitude,latitude, true);
 }
 
