@@ -50,6 +50,8 @@ void GlobeGPS::reload()
 
 	if (editingDiveCoords) {
 		editingDiveCoords = 0;
+		if (messageWidget->isVisible())
+			messageWidget->animatedHide();
 	}
 
 	loadedDives = new GeoDataDocument;
