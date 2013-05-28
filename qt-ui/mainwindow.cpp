@@ -372,11 +372,11 @@ void MainWindow::readSettings()
 	GET_BOOL(v, "OTU", prefs.visible_cols.otu);
 	GET_BOOL(v, "MAXCNS", prefs.visible_cols.maxcns);
 	GET_BOOL(v, "SAC", prefs.visible_cols.sac);
+	settings.endGroup();
+	settings.beginGroup("TecDetails");
 	GET_BOOL(v, "po2graph", prefs.pp_graphs.po2);
 	GET_BOOL(v, "pn2graph", prefs.pp_graphs.pn2);
 	GET_BOOL(v, "phegraph", prefs.pp_graphs.phe);
-	settings.endGroup();
-	settings.beginGroup("TecDetails");
 	v = settings.value(QString("po2threshold"));
 	if (v.isValid())
 		prefs.pp_graphs.po2_threshold = v.toDouble();
@@ -392,14 +392,15 @@ void MainWindow::readSettings()
 		prefs.mod_ppO2 = v.toDouble();
 	GET_BOOL(v, "ead", prefs.ead);
 	GET_BOOL(v, "redceiling", prefs.profile_red_ceiling);
+	GET_BOOL(v, "show_dc_reported_ceiling", prefs.profile_dc_ceiling);
 	GET_BOOL(v, "calcceiling", prefs.profile_calc_ceiling);
 	GET_BOOL(v, "calcceiling3m", prefs.calc_ceiling_3m_incr);
 	v = settings.value(QString("gflow"));
 	if (v.isValid())
-		prefs.gflow = v.toInt() / 100.0;
+		prefs.gflow = v.toInt();
 	v = settings.value(QString("gfhigh"));
 	if (v.isValid())
-		prefs.gfhigh = v.toInt() / 100.0;
+		prefs.gfhigh = v.toInt();
 	set_gf(prefs.gflow, prefs.gfhigh);
 	settings.endGroup();
 
@@ -420,7 +421,9 @@ void MainWindow::readSettings()
 
 #define SAVE_VALUE(name, field)				\
 	if (prefs.field != default_prefs.field)		\
-		settings.setValue(name, prefs.field)
+		settings.setValue(name, prefs.field);	\
+	else						\
+		settings.remove(name)
 
 void MainWindow::writeSettings()
 {

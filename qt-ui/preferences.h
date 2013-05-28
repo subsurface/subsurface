@@ -2,6 +2,8 @@
 #define PREFERENCES_DIALOG_H
 
 #include <QDialog>
+#include "../dive.h"
+#include "../pref.h"
 
 namespace Ui{
 	class PreferencesDialog;
@@ -17,10 +19,12 @@ signals:
 
 public slots:
 	void syncSettings();
-	
+	void resetSettings();
+
 private:
 	explicit PreferencesDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    Ui::PreferencesDialog* ui;
+	Ui::PreferencesDialog* ui;
+	struct preferences oldPrefs;
 };
 
 #endif

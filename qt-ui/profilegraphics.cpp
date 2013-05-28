@@ -429,7 +429,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 	setup_pp_limits(&gc);
 	QColor c;
 	QPointF from, to;
-	//if (prefs.pp_graphs.pn2) {
+	if (prefs.pp_graphs.pn2) {
 		c = profile_color[PN2].first();
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->pn2));
@@ -465,9 +465,9 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 				from = QPointF(SCALEGC(entry->sec, entry->pn2));
 			}
 		}
-	//}
+	}
 
-	//if (prefs.pp_graphs.phe) {
+	if (prefs.pp_graphs.phe) {
 		c = profile_color[PHE].first();
 		entry = pi->entry;
 
@@ -504,8 +504,8 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 				from = QPointF(SCALEGC(entry->sec, entry->phe));
 			}
 		}
-	//}
-	//if (prefs.pp_graphs.po2) {
+	}
+	if (prefs.pp_graphs.po2) {
 		c = profile_color[PO2].first();
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->po2));
@@ -539,7 +539,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 				from = QPointF(SCALEGC(entry->sec, entry->po2));
 			}
 		}
-	//}
+	}
 }
 
 void ProfileGraphicsView::plot_deco_text()
@@ -549,7 +549,7 @@ void ProfileGraphicsView::plot_deco_text()
 		float y = gc.topy = 1.0;
 		static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
 		gc.bottomy = 0.0;
-		plot_text(&tro, QPointF(x, y), QString("GF %1/%2").arg(prefs.gflow * 100).arg(prefs.gfhigh * 100));
+		plot_text(&tro, QPointF(x, y), QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
 	}
 }
 

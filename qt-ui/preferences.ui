@@ -449,12 +449,12 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>threshould</string>
+                 <string>threshold</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="po2Threashould">
+               <widget class="QDoubleSpinBox" name="po2Threshold">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -490,12 +490,12 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>threshould</string>
+                 <string>threshold</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="pn2Threshould">
+               <widget class="QDoubleSpinBox" name="pn2Threshold">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -531,12 +531,12 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>threshould</string>
+                 <string>threshold</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="pheThreshould">
+               <widget class="QDoubleSpinBox" name="pheThreshold">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -650,7 +650,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="gflow"/>
+             <widget class="QSpinBox" name="gflow"/>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_20">
@@ -660,7 +660,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="gfhigh"/>
+             <widget class="QSpinBox" name="gfhigh"/>
             </item>
            </layout>
           </widget>
@@ -754,7 +754,7 @@
   <connection>
    <sender>po2</sender>
    <signal>clicked(bool)</signal>
-   <receiver>po2Threashould</receiver>
+   <receiver>po2Threshold</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -786,7 +786,7 @@
   <connection>
    <sender>pn2</sender>
    <signal>clicked(bool)</signal>
-   <receiver>pn2Threshould</receiver>
+   <receiver>pn2Threshold</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -818,7 +818,7 @@
   <connection>
    <sender>phe</sender>
    <signal>clicked(bool)</signal>
-   <receiver>pheThreshould</receiver>
+   <receiver>pheThreshold</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

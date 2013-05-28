@@ -5,42 +5,46 @@
 extern "C" {
 #endif
 
+/* can't use 'bool' for the boolean values - different size in C and C++ */
 typedef struct {
-	gboolean cylinder;
-	gboolean temperature;
-	gboolean totalweight;
-	gboolean suit;
-	gboolean nitrox;
-	gboolean sac;
-	gboolean otu;
-	gboolean maxcns;
+	short cylinder;
+	short temperature;
+	short totalweight;
+	short suit;
+	short nitrox;
+	short sac;
+	short otu;
+	short maxcns;
 } visible_cols_t;
 
 typedef struct {
-	gboolean po2;
-	gboolean pn2;
-	gboolean phe;
+	short po2;
+	short pn2;
+	short phe;
 	double po2_threshold;
 	double pn2_threshold;
 	double phe_threshold;
 } partial_pressure_graphs_t;
 
 struct preferences {
-	struct units units;
-	visible_cols_t visible_cols;
-	partial_pressure_graphs_t pp_graphs;
-	gboolean mod;
-	double mod_ppO2;
-	gboolean ead;
-	gboolean profile_red_ceiling;
-	gboolean profile_calc_ceiling;
-	gboolean calc_ceiling_3m_incr;
-	double gflow;
-	double gfhigh;
-	int map_provider;
 	const char *divelist_font;
 	const char *default_filename;
-        short display_invalid_dives;
+	double font_size;
+	visible_cols_t visible_cols;
+	partial_pressure_graphs_t pp_graphs;
+	short mod;
+	double mod_ppO2;
+	short ead;
+	short profile_dc_ceiling;
+	short profile_red_ceiling;
+	short profile_calc_ceiling;
+	short calc_ceiling_3m_incr;
+	short gflow;
+	short gfhigh;
+	int map_provider;
+	short display_invalid_dives;
+	short show_invalid;
+	struct units units;
 };
 
 extern struct preferences prefs, default_prefs;
@@ -49,7 +53,7 @@ extern struct preferences prefs, default_prefs;
 
 extern void subsurface_open_conf(void);
 extern void subsurface_set_conf(const char *name, const char *value);
-extern void subsurface_set_conf_bool(const char *name, gboolean value);
+extern void subsurface_set_conf_bool(const char *name, bool value);
 extern void subsurface_set_conf_int(const char *name, int value);
 extern void subsurface_unset_conf(const char *name);
 extern const char *subsurface_get_conf(const char *name);

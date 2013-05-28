@@ -1,6 +1,5 @@
 #include "preferences.h"
 #include "ui_preferences.h"
-#include "../dive.h"
 #include <QSettings>
 
 PreferencesDialog* PreferencesDialog::instance()
@@ -9,32 +8,36 @@ PreferencesDialog* PreferencesDialog::instance()
 	return dialog;
 }
 
+#define B(V, P) s.value(#V, default_prefs.P).toBool()
+#define D(V, P) s.value(#V, default_prefs.P).toDouble()
+#define I(V, P) s.value(#V, default_prefs.P).toInt()
+
 PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 , ui(new Ui::PreferencesDialog())
 {
 	ui->setupUi(this);
 	connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(syncSettings()));
+	connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(resetSettings()));
 
-	#define B(X) s.value(#X, false).toBool()
-	#define D(X) s.value(#X, 0.0).toDouble()
+	oldPrefs = prefs;
 
 	QSettings s;
 
 	// Graph
 	s.beginGroup("TecDetails");
-	ui->calculated_ceiling->setChecked(B(show_calculated_ceiling));
-	ui->phe->setChecked(B(show_phe));
-	ui->po2->setChecked(B(show_po2));
-	ui->pn2->setChecked(B(show_pn2));
-	ui->pheThreshould->setValue(D(phe_threshould));
-	ui->po2Threashould->setValue(D(po2_threshould));
-	ui->pn2Threshould->setValue(D(pn2_threshould));
-	ui->ead_end_eadd->setChecked(B(show_ead_end_eadd));
-	ui->dc_reported_ceiling->setChecked(B(show_dc_reported_ceiling));
-	ui->calculated_ceiling->setChecked(B(show_calculated_ceiling));
-	ui->increment_3m->setChecked(B(show_3m_increments));
-	ui->gflow->setValue(D(gflow));
-	ui->gfhigh->setValue(D(gfhigh));
+	ui->calculated_ceiling->setChecked(B(calcceiling, profile_calc_ceiling));
+	ui->phe->setChecked(B(phegraph, pp_graphs.phe));
+	ui->po2->setChecked(B(po2graph, pp_graphs.po2));
+	ui->pn2->setChecked(B(pn2graph, pp_graphs.pn2));
+	ui->pheThreshold->setValue(D(phethreshold, pp_graphs.phe_threshold));
+	ui->po2Threshold->setValue(D(po2threshold, pp_graphs.po2_threshold));
+	ui->pn2Threshold->setValue(D(pn2threshold, pp_graphs.pn2_threshold));
+	ui->ead_end_eadd->setChecked(B(ead, ead));
+	ui->dc_reported_ceiling->setChecked(B(dcceiling, profile_dc_ceiling));
+	ui->calculated_ceiling->setChecked(B(calceiling, profile_calc_ceiling));
+	ui->increment_3m->setChecked(B(calcceiling3m, calc_ceiling_3m_incr));
+	ui->gflow->setValue((int)(I(gflow, gflow)));
+	ui->gfhigh->setValue((int)(I(gfhigh, gfhigh)));
 	s.endGroup();
 
 	// Units
@@ -68,14 +71,22 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	// Defaults
 	s.beginGroup("GeneralSettings");
 	ui->font->setFont( QFont(s.value("table_fonts").toString()));
-	ui->fontsize->setValue(D(font_size));
+	ui->fontsize->setValue(D(font_size, font_size));
 
-	ui->defaultfilename->setText(s.value("default_file").toString());
-	ui->displayinvalid->setChecked(B(show_invalid));
+	ui->defaultfilename->setText(s.value("default_filename").toString());
+	ui->displayinvalid->setChecked(B(show_invalid, show_invalid));
 	s.endGroup();
+}
+
 #undef B
 #undef D
+
+void PreferencesDialog::resetSettings()
+{
+	prefs = oldPrefs;
 }
+
+#define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
 
 void PreferencesDialog::syncSettings()
 {
@@ -83,21 +94,21 @@ void PreferencesDialog::syncSettings()
 
 	// Graph
 	s.beginGroup("TecDetails");
-	s.setValue("show_calculated_ceiling", ui->calculated_ceiling->isChecked());
-	s.setValue("show_phe", ui->phe->isChecked());
-	s.setValue("show_po2", ui->po2->isChecked());
-	s.setValue("show_pn2", ui->pn2->isChecked());
-	s.setValue("phe_threshould", ui->pheThreshould->value());
-	s.setValue("po2_threshould", ui->po2Threashould->value());
-	s.setValue("pn2_threshould", ui->pn2Threshould->value());
-	s.setValue("show_ead_end_eadd", ui->ead_end_eadd->isChecked());
-	s.setValue("show_dc_reported_ceiling", ui->dc_reported_ceiling->isChecked());
-	s.setValue("show_calculated_ceiling", ui->calculated_ceiling->isChecked());
 
-	s.setValue("show_3m_increments", ui->increment_3m->isChecked());
+	SB("calcceiling", ui->calculated_ceiling);
+	SB("phegraph", ui->phe);
+	SB("po2graph", ui->po2);
+	SB("pn2graph", ui->pn2);
+	s.setValue("phethreshold", ui->pheThreshold->value());
+	s.setValue("po2threshold", ui->po2Threshold->value());
+	s.setValue("pn2threshold", ui->pn2Threshold->value());
+	SB("ead", ui->ead_end_eadd);
+	SB("dcceiling", ui->dc_reported_ceiling);
+	SB("calceiling3m", ui->increment_3m);
 	s.setValue("gflow", ui->gflow->value());
 	s.setValue("gfhigh", ui->gfhigh->value());
 	s.endGroup();
+
 	// Units
 	s.beginGroup("Units");
 	s.setValue("units_metric", ui->metric->isChecked());
@@ -111,10 +122,13 @@ void PreferencesDialog::syncSettings()
 	s.beginGroup("GeneralSettings");
 	s.value("table_fonts", ui->font->font().family());
 	s.value("font_size", ui->fontsize->value());
-	s.value("default_file", ui->defaultfilename->text());
+	s.value("default_filename", ui->defaultfilename->text());
 	s.value("displayinvalid", ui->displayinvalid->isChecked());
 	s.endGroup();
 	s.sync();
 
+	oldPrefs = prefs;
 	emit settingsChanged();
 }
+
+#undef SB

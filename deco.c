@@ -136,7 +136,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 
 #if GF_LOW_AT_MAXDEPTH
 	if (pressure > gf_low_pressure_this_dive)
-	        gf_low_pressure_this_dive = pressure;
+		gf_low_pressure_this_dive = pressure;
 #endif
 
 	if (ccpo2) { /* CC */
@@ -263,10 +263,10 @@ unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressur
 	return depth;
 }
 
-void set_gf(double gflow, double gfhigh)
+void set_gf(short gflow, short gfhigh)
 {
-	if (gflow != -1.0)
-		buehlmann_config.gf_low = gflow;
-	if (gfhigh != -1.0)
-		buehlmann_config.gf_high = gfhigh;
+	if (gflow != -1)
+		buehlmann_config.gf_low = (double)gflow / 100.0;
+	if (gfhigh != -1)
+		buehlmann_config.gf_high = (double)gfhigh / 100.0;
 }

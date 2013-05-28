@@ -25,11 +25,14 @@ struct preferences default_prefs = {
 	.mod  = FALSE,
 	.mod_ppO2  = 1.6,
 	.ead  = FALSE,
+	.profile_dc_ceiling = TRUE,
 	.profile_red_ceiling  = FALSE,
 	.profile_calc_ceiling = FALSE,
 	.calc_ceiling_3m_incr = FALSE,
-	.gflow = 0.30,
-	.gfhigh = 0.75,
+	.gflow = 30,
+	.gfhigh = 75,
+	.font_size = 14.0,
+	.show_invalid = FALSE,
 #ifdef USE_GTK_UI
 	.map_provider = OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_HYBRID,
 #endif

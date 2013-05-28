@@ -76,7 +76,7 @@ const char *getSetting(QSettings &s, QString name)
 	QVariant v;
 	v = s.value(name);
 	if (v.isValid()) {
-		return strdup(v.toString().toUtf8().constData());
+		return strdup(v.toString().toUtf8().data());
 	}
 	return NULL;
 }
