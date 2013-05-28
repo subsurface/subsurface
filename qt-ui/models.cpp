@@ -1003,7 +1003,6 @@ DiveTripModel::DiveTripModel(QObject* parent) :
 	QAbstractItemModel(parent)
 {
 	rootItem = new TreeItemDT();
-	setupModelData();
 }
 
 DiveTripModel::~DiveTripModel()
@@ -1096,6 +1095,11 @@ void DiveTripModel::setupModelData()
 {
 	int i = dive_table.nr;
 
+	if (rowCount()){
+		beginRemoveRows(QModelIndex(), 0, rowCount()-1);
+		endRemoveRows();
+	}
+
 	while (--i >= 0) {
 		struct dive* dive = get_dive(i);
 		update_cylinder_related_info(dive);
@@ -1104,11 +1108,14 @@ void DiveTripModel::setupModelData()
 		DiveItem* diveItem = new DiveItem();
 		diveItem->dive = dive;
 
-		if (!trip) {
+		if (!trip || currentLayout == LIST) {
 			diveItem->parent = rootItem;
 			rootItem->children.push_back(diveItem);
 			continue;
 		}
+		if (currentLayout == LIST)
+			continue;
+
 		if (!trips.keys().contains(trip)) {
 			TripItem* tripItem  = new TripItem();
 			tripItem->trip = trip;
@@ -1121,4 +1128,20 @@ void DiveTripModel::setupModelData()
 		TripItem* tripItem  = trips[trip];
 		tripItem->children.push_back(diveItem);
 	}
+
+	if (rowCount()){
+		beginInsertRows(QModelIndex(), 0, rowCount()-1);
+		endInsertRows();
+	}
+}
+
+DiveTripModel::Layout DiveTripModel::layout() const
+{
+	return currentLayout;
+}
+
+void DiveTripModel::setLayout(DiveTripModel::Layout layout)
+{
+	currentLayout = layout;
+	setupModelData();
 }

@@ -22,6 +22,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
 	setModel(model);
+	setSortingEnabled(false);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
@@ -31,7 +32,10 @@ void DiveListView::reload()
 	QAbstractItemModel *oldModel = m->sourceModel();
 	if (oldModel)
 		oldModel->deleteLater();
-	m->setSourceModel(new DiveTripModel(this));
+	DiveTripModel *tripModel = new DiveTripModel(this);
+	tripModel->setLayout(DiveTripModel::LIST);
+
+	m->setSourceModel(tripModel);
 	sortByColumn(0, Qt::DescendingOrder);
 	QModelIndex firstDiveOrTrip = m->index(0,0);
 	if (firstDiveOrTrip.isValid()) {
