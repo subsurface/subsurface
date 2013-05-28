@@ -332,7 +332,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	gc.leftx = 0; gc.rightx = 1.0;
 	gc.topy = 0; gc.bottomy = 1.0;
 
-	text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, MIDDLE};
+	text_render_options_t computer = {DC_TEXT_SIZE, TIME_TEXT, LEFT, TOP};
 	diveComputer = plot_text(&computer, QPointF(gc.leftx, gc.bottomy), nick);
 	// The Time ruler should be right after the DiveComputer:
 	timeMarkers->setPos(0, diveComputer->y());
@@ -926,7 +926,7 @@ void ProfileGraphicsView::plot_depth_profile()
 
 	timeMarkers = new QGraphicsRectItem();
 	/* now the text on the time markers */
-	struct text_render_options tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, TOP};
+	struct text_render_options tro = {DEPTH_TEXT_SIZE, TIME_TEXT, CENTER, LINE_DOWN};
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)

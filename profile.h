@@ -86,8 +86,9 @@ void setup_pp_limits(struct graphics_context *gc);
 #define CENTER (-0.5)
 #define LEFT (0.0)
 
-#define TOP (1)
-#define MIDDLE (0)
+#define LINE_DOWN (1)
+#define TOP (0)
+#define MIDDLE (-0.5)
 #define BOTTOM (-1)
 
 #define SCALEXGC(x)  (((x) - gc.leftx) / (gc.rightx - gc.leftx) * gc.maxx)
