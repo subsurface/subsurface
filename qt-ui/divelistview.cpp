@@ -24,16 +24,26 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setModel(model);
 	setSortingEnabled(false);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	connect(header(), SIGNAL(sectionClicked(int)), this, SLOT(headerClicked(int)));
 }
 
-void DiveListView::reload()
+void DiveListView::headerClicked(int i )
+{
+	if (i == (int) TreeItemDT::NR){
+		reload(DiveTripModel::TREE);
+	}else{
+		reload(DiveTripModel::LIST);
+	}
+}
+
+void DiveListView::reload(DiveTripModel::Layout layout)
 {
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QAbstractItemModel *oldModel = m->sourceModel();
 	if (oldModel)
 		oldModel->deleteLater();
 	DiveTripModel *tripModel = new DiveTripModel(this);
-	tripModel->setLayout(DiveTripModel::LIST);
+	tripModel->setLayout(layout);
 
 	m->setSourceModel(tripModel);
 	sortByColumn(0, Qt::DescendingOrder);
