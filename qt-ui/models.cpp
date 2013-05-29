@@ -837,6 +837,7 @@ QVariant DiveItem::data(int column, int role) const
 		switch (column) {
 		case NR:		retVal = dive->number; break;
 		case DATE:		retVal = (qulonglong) dive->when; break;
+		case RATING:		retVal = dive->rating; break;
 		case DEPTH:		retVal = dive->maxdepth.mm; break;
 		case DURATION:		retVal = dive->duration.seconds; break;
 		case TEMPERATURE:	retVal = dive->watertemp.mkelvin; break;
