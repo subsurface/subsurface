@@ -21,6 +21,7 @@ ICONPATH = $(DATADIR)/icons/hicolor
 ICONDIR = $(ICONPATH)/scalable/apps
 MANDIR = $(DATADIR)/man/man1
 XSLTDIR = $(DATADIR)/$(NAME)/xslt
+MARBLEDIR = marbledata/maps/earth/googlesat
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(ICONPATH)
 
 ICONFILE = $(NAME)-icon.svg

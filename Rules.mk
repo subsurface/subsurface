@@ -70,6 +70,10 @@ install: all
 		$(INSTALL) -d -m 755 $(XSLTDIR); \
 		$(INSTALL) -m 644 $(XSLTFILES) $(XSLTDIR); \
 	fi
+	@-if test ! -z "$(MARBLEDIR)"; then \
+		$(INSTALL) -d -m 755 $(DATADIR)/$(NAME)/$(MARBLEDIR); \
+		$(TAR) cf - $(MARBLEDIR) | ( cd $(DATADIR)/$(NAME); $(TAR) xf - ); \
+	fi
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
 		$(INSTALL) -d $(prefix)/$$LOC; \
 		$(INSTALL) -m 644 $$LOC/$(NAME).mo $(prefix)/$$LOC/$(NAME).mo; \

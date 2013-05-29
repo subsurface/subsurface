@@ -8,6 +8,7 @@ XSLCONFIG=xslt-config
 QMAKE=qmake
 MOC=moc
 UIC=uic
+TAR=tar
 
 CONFIGFILE = config.cache
 ifeq ($(CONFIGURING),1)
