@@ -233,7 +233,8 @@ release:
 .PHONY: creator-files
 creator-files: $(CREATOR_FILES)
 $(NAME).files: Makefile $(CONFIGFILE)
-	echo $(wildcard *.h) $(HEADERS) $(SOURCES) | tr ' ' '\n' | sort | uniq > $(NAME).files
+	echo $(wildcard *.h qt-ui/*.h qt-ui/*.ui) $(HEADERS) $(SOURCES) | tr ' ' '\n' | sort | uniq > $(NAME).files
+	{ echo Makefile; echo Rules.mk; echo Configure.mk; } >> $(NAME).files
 $(NAME).config: Makefile $(CONFIGFILE)
 	echo $(patsubst -D%,%,$(filter -D%, $(CXXFLAGS) $(CFLAGS) $(EXTRA_FLAGS))) | tr ' ' '\n' | sort | uniq > $(NAME).config
 $(NAME).includes: Makefile $(CONFIGFILE)
