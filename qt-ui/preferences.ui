@@ -593,12 +593,39 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="dc_reported_ceiling">
-              <property name="text">
-               <string>Dive computer reported ceiling</string>
-              </property>
-             </widget>
-            </item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10b">
+              <item>
+               <widget class="QCheckBox" name="dc_reported_ceiling">
+                <property name="text">
+                 <string>Dive computer reported ceiling</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_6b">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="red_ceiling">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>draw ceiling red</string>
+                </property>
+               </widget>
+              </item>
+	     </layout>
+	    </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_10">
               <item>
@@ -860,6 +887,22 @@
     <hint type="destinationlabel">
      <x>760</x>
      <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dc_ceiling</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>red_ceiling</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>288</x>
+     <y>364</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>555</x>
+     <y>371</y>
     </hint>
    </hints>
   </connection>

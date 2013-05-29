@@ -25,7 +25,6 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 
 	// Graph
 	s.beginGroup("TecDetails");
-	ui->calculated_ceiling->setChecked(B(calcceiling, profile_calc_ceiling));
 	ui->phe->setChecked(B(phegraph, pp_graphs.phe));
 	ui->pheThreshold->setEnabled(ui->phe->isChecked());
 	ui->po2->setChecked(B(po2graph, pp_graphs.po2));
@@ -37,8 +36,12 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	ui->pn2Threshold->setValue(D(pn2threshold, pp_graphs.pn2_threshold));
 	ui->ead_end_eadd->setChecked(B(ead, ead));
 	ui->dc_reported_ceiling->setChecked(B(dcceiling, profile_dc_ceiling));
-	ui->calculated_ceiling->setChecked(B(calceiling, profile_calc_ceiling));
+	ui->red_ceiling->setEnabled(ui->dc_reported_ceiling->isChecked());
+	ui->red_ceiling->setChecked(B(redceiling, profile_red_ceiling));
+	ui->calculated_ceiling->setChecked(B(calcceiling, profile_calc_ceiling));
+	ui->increment_3m->setEnabled(ui->calculated_ceiling->isChecked());
 	ui->increment_3m->setChecked(B(calcceiling3m, calc_ceiling_3m_incr));
+
 	ui->gflow->setValue((int)(I(gflow, gflow)));
 	ui->gfhigh->setValue((int)(I(gfhigh, gfhigh)));
 	s.endGroup();
@@ -98,7 +101,6 @@ void PreferencesDialog::syncSettings()
 	// Graph
 	s.beginGroup("TecDetails");
 
-	SB("calcceiling", ui->calculated_ceiling);
 	SB("phegraph", ui->phe);
 	SB("po2graph", ui->po2);
 	SB("pn2graph", ui->pn2);
@@ -107,7 +109,9 @@ void PreferencesDialog::syncSettings()
 	s.setValue("pn2threshold", ui->pn2Threshold->value());
 	SB("ead", ui->ead_end_eadd);
 	SB("dcceiling", ui->dc_reported_ceiling);
-	SB("calceiling3m", ui->increment_3m);
+	SB("redceiling", ui->red_ceiling);
+	SB("calcceiling", ui->calculated_ceiling);
+	SB("calcceiling3m", ui->increment_3m);
 	s.setValue("gflow", ui->gflow->value());
 	s.setValue("gfhigh", ui->gfhigh->value());
 	s.endGroup();

@@ -392,7 +392,7 @@ void MainWindow::readSettings()
 		prefs.mod_ppO2 = v.toDouble();
 	GET_BOOL(v, "ead", prefs.ead);
 	GET_BOOL(v, "redceiling", prefs.profile_red_ceiling);
-	GET_BOOL(v, "show_dc_reported_ceiling", prefs.profile_dc_ceiling);
+	GET_BOOL(v, "dcceiling", prefs.profile_dc_ceiling);
 	GET_BOOL(v, "calcceiling", prefs.profile_calc_ceiling);
 	GET_BOOL(v, "calcceiling3m", prefs.calc_ceiling_3m_incr);
 	v = settings.value(QString("gflow"));
@@ -471,6 +471,7 @@ void MainWindow::writeSettings()
 	SAVE_VALUE("redceiling", profile_red_ceiling);
 	SAVE_VALUE("calcceiling", profile_calc_ceiling);
 	SAVE_VALUE("calcceiling3m", calc_ceiling_3m_incr);
+	SAVE_VALUE("dcceiling", profile_dc_ceiling);
 	SAVE_VALUE("gflow", gflow);
 	SAVE_VALUE("gfhigh", gfhigh);
 	settings.endGroup();
