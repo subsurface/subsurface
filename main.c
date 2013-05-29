@@ -40,6 +40,11 @@ struct preferences default_prefs = {
 #endif
 };
 
+struct units *get_units()
+{
+	return &prefs.units;
+}
+
 /* random helper functions, used here or elsewhere */
 static int sortfn(const void *_a, const void *_b)
 {

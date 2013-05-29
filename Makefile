@@ -57,7 +57,6 @@ SOURCES = \
 	info.c \
 	main.c \
 	parse-xml.c \
-	prefs.c \
 	profile.c \
 	save-xml.c \
 	sha1.c \
