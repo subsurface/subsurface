@@ -144,6 +144,8 @@ class DiveTripModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
+	enum Layout{TREE, LIST};
+
 	DiveTripModel(QObject *parent = 0);
 	~DiveTripModel();
 
@@ -155,11 +157,14 @@ public:
 	/*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ QModelIndex parent(const QModelIndex &child) const;
 
+	Layout layout() const;
+	void setLayout(Layout layout);
 private:
 	void setupModelData();
 
 	TreeItemDT *rootItem;
 	QMap<dive_trip_t*, TripItem*> trips;
+	Layout currentLayout;
 };
 
 #endif

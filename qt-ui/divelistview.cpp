@@ -22,16 +22,53 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
 	setModel(model);
+	setSortingEnabled(false);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
-void DiveListView::reload()
+void DiveListView::headerClicked(int i )
 {
+	QModelIndexList oldSelection = selectionModel()->selectedRows();
+	QList<struct dive*> currentSelectedDives;
+	Q_FOREACH(const QModelIndex& index , oldSelection){
+		struct dive *d = (struct dive *) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		if (d){
+			currentSelectedDives.push_back(d);
+		}
+	}
+
+	if (i == (int) TreeItemDT::NR){
+		reload(DiveTripModel::TREE);
+	}else{
+		reload(DiveTripModel::LIST);
+	}
+
+	QModelIndexList newSelection;
+	QItemSelection newSelection2;
+
+	Q_FOREACH(struct dive *d, currentSelectedDives){
+		QModelIndexList match = model()->match(model()->index(0,0), TreeItemDT::DIVE_ROLE, QVariant::fromValue<void*>(d), 1, Qt::MatchRecursive);
+		if (match.count() == 0){
+			qDebug() << "Well, this shouldn't happen.";
+		}else{
+			newSelection << match.first();
+		}
+	}
+}
+
+void DiveListView::reload(DiveTripModel::Layout layout)
+{
+	header()->setClickable(true);
+	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
+
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QAbstractItemModel *oldModel = m->sourceModel();
 	if (oldModel)
 		oldModel->deleteLater();
-	m->setSourceModel(new DiveTripModel(this));
+	DiveTripModel *tripModel = new DiveTripModel(this);
+	tripModel->setLayout(layout);
+
+	m->setSourceModel(tripModel);
 	sortByColumn(0, Qt::DescendingOrder);
 	QModelIndex firstDiveOrTrip = m->index(0,0);
 	if (firstDiveOrTrip.isValid()) {
