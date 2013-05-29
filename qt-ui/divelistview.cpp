@@ -29,32 +29,24 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 void DiveListView::headerClicked(int i )
 {
-	QModelIndexList oldSelection = selectionModel()->selectedRows();
+	QItemSelection oldSelection = selectionModel()->selection();
 	QList<struct dive*> currentSelectedDives;
-	Q_FOREACH(const QModelIndex& index , oldSelection){
+	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()){
 		struct dive *d = (struct dive *) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
-		if (d){
+		if (d){ // can also be a trip, so test.
 			currentSelectedDives.push_back(d);
 		}
 	}
 
-	if (i == (int) TreeItemDT::NR){
-		reload(DiveTripModel::TREE);
-	}else{
-		reload(DiveTripModel::LIST);
-	}
+	reload( i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST);
 
-	QModelIndexList newSelection;
-	QItemSelection newSelection2;
-
+	selectionModel()->clearSelection();
 	Q_FOREACH(struct dive *d, currentSelectedDives){
 		QModelIndexList match = model()->match(model()->index(0,0), TreeItemDT::DIVE_ROLE, QVariant::fromValue<void*>(d), 1, Qt::MatchRecursive);
-		if (match.count() == 0){
-			qDebug() << "Well, this shouldn't happen.";
-		}else{
-			newSelection << match.first();
-		}
+		selectionModel()->select(match.first(), QItemSelectionModel::Select | QItemSelectionModel::Rows);
 	}
+
+	sortByColumn(i);
 }
 
 void DiveListView::reload(DiveTripModel::Layout layout)
@@ -122,8 +114,8 @@ void DiveListView::toggleColumnVisibilityByIndex()
 
 void DiveListView::setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command)
 {
-	if (mouseClickSelection)
-		QTreeView::setSelection(rect, command);
+	//if (mouseClickSelection)
+	QTreeView::setSelection(rect, command);
 }
 
 void DiveListView::mousePressEvent(QMouseEvent* event)
