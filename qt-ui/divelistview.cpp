@@ -109,7 +109,7 @@ void DiveListView::reloadHeaderActions()
 		QSettings s;
 		s.beginGroup("DiveListColumnState");
 		for(int i = 0; i < model()->columnCount(); i++) {
-			QString title = QString("show %1").arg(model()->headerData(i, Qt::Horizontal).toString());
+			QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
 			QString settingName = QString("showColumn%1").arg(i);
 			QAction *a = new QAction(title, header());
 			bool shown = s.value(settingName, true).toBool();
