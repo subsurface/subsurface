@@ -27,8 +27,11 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	s.beginGroup("TecDetails");
 	ui->calculated_ceiling->setChecked(B(calcceiling, profile_calc_ceiling));
 	ui->phe->setChecked(B(phegraph, pp_graphs.phe));
+	ui->pheThreshold->setEnabled(ui->phe->isChecked());
 	ui->po2->setChecked(B(po2graph, pp_graphs.po2));
+	ui->po2Threshold->setEnabled(ui->po2->isChecked());
 	ui->pn2->setChecked(B(pn2graph, pp_graphs.pn2));
+	ui->pn2Threshold->setEnabled(ui->pn2->isChecked());
 	ui->pheThreshold->setValue(D(phethreshold, pp_graphs.phe_threshold));
 	ui->po2Threshold->setValue(D(po2threshold, pp_graphs.po2_threshold));
 	ui->pn2Threshold->setValue(D(pn2threshold, pp_graphs.pn2_threshold));
