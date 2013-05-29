@@ -24,12 +24,7 @@ public:
 	DiveListView(QWidget *parent = 0);
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 	void currentChanged(const QModelIndex& current, const QModelIndex& previous);
-	void mousePressEvent(QMouseEvent* event);
-	void mouseReleaseEvent(QMouseEvent* event);
-	void keyPressEvent(QKeyEvent* event);
-	void keyReleaseEvent(QKeyEvent*);
-	void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
-	void reload(DiveTripModel::Layout layout = DiveTripModel::TREE);
+	void reload(DiveTripModel::Layout layout = DiveTripModel::TREE, bool forceSort = true);
 
 public slots:
 	void toggleColumnVisibilityByIndex();

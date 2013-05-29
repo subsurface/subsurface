@@ -32,24 +32,31 @@ void DiveListView::headerClicked(int i )
 	QItemSelection oldSelection = selectionModel()->selection();
 	QList<struct dive*> currentSelectedDives;
 	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()){
+		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
+			continue;
+
 		struct dive *d = (struct dive *) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
-		if (d){ // can also be a trip, so test.
+		if (d){
 			currentSelectedDives.push_back(d);
 		}
 	}
 
-	reload( i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST);
-
+	// clear the model, repopulate with new indexes.
+	reload( i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST, false);
 	selectionModel()->clearSelection();
-	Q_FOREACH(struct dive *d, currentSelectedDives){
-		QModelIndexList match = model()->match(model()->index(0,0), TreeItemDT::DIVE_ROLE, QVariant::fromValue<void*>(d), 1, Qt::MatchRecursive);
-		selectionModel()->select(match.first(), QItemSelectionModel::Select | QItemSelectionModel::Rows);
-	}
 
+	// repopulat the selections.
+	Q_FOREACH(struct dive *d, currentSelectedDives){
+		QModelIndexList match = model()->match(model()->index(0,0), TreeItemDT::NR, d->number, 1, Qt::MatchRecursive);
+		QModelIndex idx = match.first();
+		selectionModel()->select( idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+	}
+	
+	// sort.
 	sortByColumn(i);
 }
 
-void DiveListView::reload(DiveTripModel::Layout layout)
+void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
 	header()->setClickable(true);
 	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
@@ -58,10 +65,15 @@ void DiveListView::reload(DiveTripModel::Layout layout)
 	QAbstractItemModel *oldModel = m->sourceModel();
 	if (oldModel)
 		oldModel->deleteLater();
+
 	DiveTripModel *tripModel = new DiveTripModel(this);
 	tripModel->setLayout(layout);
 
 	m->setSourceModel(tripModel);
+
+	if(!forceSort)
+		return;
+
 	sortByColumn(0, Qt::DescendingOrder);
 	QModelIndex firstDiveOrTrip = m->index(0,0);
 	if (firstDiveOrTrip.isValid()) {
@@ -112,37 +124,6 @@ void DiveListView::toggleColumnVisibilityByIndex()
 	setColumnHidden(action->property("index").toInt(), !action->isChecked());
 }
 
-void DiveListView::setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command)
-{
-	//if (mouseClickSelection)
-	QTreeView::setSelection(rect, command);
-}
-
-void DiveListView::mousePressEvent(QMouseEvent* event)
-{
-	mouseClickSelection = true;
-	QTreeView::mousePressEvent(event);
-}
-
-void DiveListView::mouseReleaseEvent(QMouseEvent* event)
-{
-	mouseClickSelection = false;
-	QTreeView::mouseReleaseEvent(event);
-}
-
-void DiveListView::keyPressEvent(QKeyEvent* event)
-{
-	if (event->modifiers())
-		mouseClickSelection = true;
-	QTreeView::keyPressEvent(event);
-}
-
-void DiveListView::keyReleaseEvent(QKeyEvent* event)
-{
-	mouseClickSelection = false;
-	QWidget::keyReleaseEvent(event);
-}
-
 void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
 	if (!current.isValid())
@@ -163,21 +144,16 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 
 void DiveListView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-	QList<QModelIndex> parents;
-	Q_FOREACH(const QModelIndex& index, deselected.indexes()) {
-		const QAbstractItemModel *model = index.model();
-		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
-		if (!dive) { // it's a trip!
-			if (model->rowCount(index)) {
-				expand(index);	// leave this - even if it looks like it shouldn't be here. looks like I've found a Qt bug.
-						// the subselection is removed, but the painting is not. this cleans the area.
-			}
-		} else if (!parents.contains(index.parent())) {
-			parents.push_back(index.parent());
-		}
-	}
+	QItemSelection newSelected = selected.size() ? selected : selectionModel()->selection();
+	QItemSelection newDeselected = deselected;
 
-	Q_FOREACH(const QModelIndex& index, selected.indexes()) {
+	disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
+	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
+
+	Q_FOREACH(const QModelIndex& index, newSelected.indexes()) {
+		if(index.column() != 0)
+			continue;
+
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
 		if (!dive) { // it's a trip!
@@ -190,11 +166,10 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 					expand(index);
 				}
 			}
-		} else if (!parents.contains(index.parent())) {
-			parents.push_back(index.parent());
 		}
 	}
 
-	Q_FOREACH(const QModelIndex& index, parents)
-		expand(index);
+	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
+	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
+	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
 }
