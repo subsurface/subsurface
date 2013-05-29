@@ -27,28 +27,27 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
-void DiveListView::headerClicked(int i )
+void DiveListView::headerClicked(int i)
 {
-	if (currentHeaderClicked == i){
+	if (currentHeaderClicked == i) {
 		sortByColumn(i);
 		return;
 	}
 
-	if (currentLayout == (i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST)){
+	if (currentLayout == (i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST)) {
 		sortByColumn(i);
 		return;
 	}
 
 	QItemSelection oldSelection = selectionModel()->selection();
 	QList<struct dive*> currentSelectedDives;
-	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()){
+	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()) {
 		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
 			continue;
 
 		struct dive *d = (struct dive *) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
-		if (d){
+		if (d)
 			currentSelectedDives.push_back(d);
-		}
 	}
 
 	// clear the model, repopulate with new indexes.
@@ -59,10 +58,10 @@ void DiveListView::headerClicked(int i )
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 
 	// repopulat the selections.
-	Q_FOREACH(struct dive *d, currentSelectedDives){
+	Q_FOREACH(struct dive *d, currentSelectedDives) {
 		QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, d->number, 1, Qt::MatchRecursive);
 		QModelIndex idx = match.first();
-		if (i == (int) TreeItemDT::NR && idx.parent().isValid() ){ // Tree Mode Activated.
+		if (i == (int) TreeItemDT::NR && idx.parent().isValid()) { // Tree Mode Activated.
 			QModelIndex parent = idx.parent();
 			expand(parent);
 		}
@@ -72,7 +71,6 @@ void DiveListView::headerClicked(int i )
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
-	DiveTripModel::Layout oldLayout = currentLayout;
 	currentLayout = layout;
 
 	header()->setClickable(true);
@@ -176,9 +174,8 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 				selection.select(index.child(0,0), index.child(model->rowCount(index) -1 , 0));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
-				if (!isExpanded(index)) {
+				if (!isExpanded(index))
 					expand(index);
-				}
 			}
 		}
 	}

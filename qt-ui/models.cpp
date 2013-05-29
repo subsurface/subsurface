@@ -32,27 +32,13 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 		return font;
 	case Qt::DisplayRole:
 		switch(section) {
-		case TYPE:
-			ret = tr("Type");
-			break;
-		case SIZE:
-			ret = tr("Size");
-			break;
-		case WORKINGPRESS:
-			ret = tr("WorkPress");
-			break;
-		case START:
-			ret = tr("StartPress");
-			break;
-		case END:
-			ret = tr("EndPress  ");
-			break;
-		case O2:
-			ret = tr("O2% ");
-			break;
-		case HE:
-			ret = tr("He% ");
-			break;
+		case TYPE:		ret = tr("Type"); break;
+		case SIZE:		ret = tr("Size"); break;
+		case WORKINGPRESS:	ret = tr("WorkPress"); break;
+		case START:		ret = tr("StartPress"); break;
+		case END:		ret = tr("EndPress  "); break;
+		case O2:		ret = tr("O2% "); break;
+		case HE:		ret = tr("He% "); break;
 		}
 	}
 	return ret;
@@ -767,48 +753,20 @@ QVariant TreeItemDT::data(int column, int role) const
 {
 	QVariant ret;
 	switch (column) {
-	case NR:
-		ret = tr("#");
-		break;
-	case DATE:
-		ret = tr("Date");
-		break;
-	case RATING:
-		ret = UTF8_BLACKSTAR;
-		break;
-	case DEPTH:
-		ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft");
-		break;
-	case DURATION:
-		ret = tr("min");
-		break;
-	case TEMPERATURE:
-		ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
-		break;
-	case TOTALWEIGHT:
-		ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs");
-		break;
-	case SUIT:
-		ret = tr("Suit");
-		break;
-	case CYLINDER:
-		ret = tr("Cyl");
-		break;
-	case NITROX:
-		ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2);
-		break;
-	case SAC:
-		ret = tr("SAC");
-		break;
-	case OTU:
-		ret = tr("OTU");
-		break;
-	case MAXCNS:
-		ret = tr("maxCNS");
-		break;
-	case LOCATION:
-		ret = tr("Location");
-		break;
+	case NR:		ret = tr("#"); break;
+	case DATE:		ret = tr("Date"); break;
+	case RATING:		ret = UTF8_BLACKSTAR; break;
+	case DEPTH:		ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft"); break;
+	case DURATION:		ret = tr("min"); break;
+	case TEMPERATURE:	ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F"); break;
+	case TOTALWEIGHT:	ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs"); break;
+	case SUIT:		ret = tr("Suit"); break;
+	case CYLINDER:		ret = tr("Cyl"); break;
+	case NITROX:		ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2); break;
+	case SAC:		ret = tr("SAC"); break;
+	case OTU:		ret = tr("OTU"); break;
+	case MAXCNS:		ret = tr("maxCNS"); break;
+	case LOCATION:		ret = tr("Location"); break;
 	}
 	return ret;
 }
@@ -877,62 +835,36 @@ QVariant DiveItem::data(int column, int role) const
 		break;
 	case SORT_ROLE:
 		switch (column) {
-		case NR:		return dive->number;
-		case DATE:		return (qulonglong) dive->when;
-		case DEPTH:		return dive->maxdepth.mm;
-		case DURATION:		return dive->duration.seconds;
-		case TEMPERATURE:	return dive->watertemp.mkelvin;
-		case TOTALWEIGHT:	return total_weight(dive);
-		case SUIT:		return QString(dive->suit);
-		case CYLINDER:		return QString(dive->cylinder[0].type.description);
-		case NITROX:		return nitrox_sort_value(dive);
-		case SAC:		return dive->sac;
-		case OTU:		return dive->otu;
-		case MAXCNS:		return dive->maxcns;
-		case LOCATION:		return QString(dive->location);
+		case NR:		retVal = dive->number; break;
+		case DATE:		retVal = (qulonglong) dive->when; break;
+		case DEPTH:		retVal = dive->maxdepth.mm; break;
+		case DURATION:		retVal = dive->duration.seconds; break;
+		case TEMPERATURE:	retVal = dive->watertemp.mkelvin; break;
+		case TOTALWEIGHT:	retVal = total_weight(dive); break;
+		case SUIT:		retVal = QString(dive->suit); break;
+		case CYLINDER:		retVal = QString(dive->cylinder[0].type.description); break;
+		case NITROX:		retVal = nitrox_sort_value(dive); break;
+		case SAC:		retVal = dive->sac; break;
+		case OTU:		retVal = dive->otu; break;
+		case MAXCNS:		retVal = dive->maxcns; break;
+		case LOCATION:		retVal = QString(dive->location); break;
 		}
 		break;
 	case Qt::DisplayRole:
 		switch (column) {
-		case NR:
-			retVal = dive->number;
-			break;
-		case DATE:
-			retVal = QString(get_dive_date_string(dive->when));
-			break;
-		case DEPTH:
-			retVal = displayDepth();
-			break;
-		case DURATION:
-			retVal = displayDuration();
-			break;
-		case TEMPERATURE:
-			retVal = displayTemperature();
-			break;
-		case TOTALWEIGHT:
-			retVal = displayWeight();
-			break;
-		case SUIT:
-			retVal = QString(dive->suit);
-			break;
-		case CYLINDER:
-			retVal = QString(dive->cylinder[0].type.description);
-			break;
-		case NITROX:
-			retVal = QString(get_nitrox_string(dive));
-			break;
-		case SAC:
-			retVal = displaySac();
-			break;
-		case OTU:
-			retVal = dive->otu;
-			break;
-		case MAXCNS:
-			retVal = dive->maxcns;
-			break;
-		case LOCATION:
-			retVal = QString(dive->location);
-			break;
+		case NR:		retVal = dive->number; break;
+		case DATE:		retVal = QString(get_dive_date_string(dive->when)); break;
+		case DEPTH:		retVal = displayDepth(); break;
+		case DURATION:		retVal = displayDuration(); break;
+		case TEMPERATURE:	retVal = displayTemperature(); break;
+		case TOTALWEIGHT:	retVal = displayWeight(); break;
+		case SUIT:		retVal = QString(dive->suit); break;
+		case CYLINDER:		retVal = QString(dive->cylinder[0].type.description); break;
+		case NITROX:		retVal = QString(get_nitrox_string(dive)); break;
+		case SAC:		retVal = displaySac(); break;
+		case OTU:		retVal = dive->otu; break;
+		case MAXCNS:		retVal = dive->maxcns; break;
+		case LOCATION:		retVal = QString(dive->location); break;
 		}
 		break;
 	}
@@ -1157,7 +1089,7 @@ void DiveTripModel::setupModelData()
 	}
 
 	if (rowCount()){
-		beginInsertRows(QModelIndex(), 0, rowCount()-1);
+		beginInsertRows(QModelIndex(), 0, rowCount() - 1);
 		endInsertRows();
 	}
 }
