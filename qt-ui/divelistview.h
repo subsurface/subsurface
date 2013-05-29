@@ -35,6 +35,8 @@ Q_SIGNALS:
 	void currentDiveChanged(int divenr);
 private:
 	bool mouseClickSelection;
+	int currentHeaderClicked;
+	DiveTripModel::Layout currentLayout;
 };
 
 #endif // DIVELISTVIEW_H

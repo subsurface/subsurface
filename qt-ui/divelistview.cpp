@@ -16,7 +16,7 @@
 #include <QAction>
 
 
-DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false)
+DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), currentHeaderClicked(-1)
 {
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
@@ -29,6 +29,16 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 void DiveListView::headerClicked(int i )
 {
+	if (currentHeaderClicked == i){
+		sortByColumn(i);
+		return;
+	}
+
+	if (currentLayout == (i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST)){
+		sortByColumn(i);
+		return;
+	}
+
 	QItemSelection oldSelection = selectionModel()->selection();
 	QList<struct dive*> currentSelectedDives;
 	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()){
@@ -44,20 +54,27 @@ void DiveListView::headerClicked(int i )
 	// clear the model, repopulate with new indexes.
 	reload( i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST, false);
 	selectionModel()->clearSelection();
+	sortByColumn(i, Qt::DescendingOrder);
+
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 
 	// repopulat the selections.
 	Q_FOREACH(struct dive *d, currentSelectedDives){
-		QModelIndexList match = model()->match(model()->index(0,0), TreeItemDT::NR, d->number, 1, Qt::MatchRecursive);
+		QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, d->number, 1, Qt::MatchRecursive);
 		QModelIndex idx = match.first();
+		if (i == (int) TreeItemDT::NR && idx.parent().isValid() ){ // Tree Mode Activated.
+			QModelIndex parent = idx.parent();
+			expand(parent);
+		}
 		selectionModel()->select( idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 	}
-	
-	// sort.
-	sortByColumn(i);
 }
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
+	DiveTripModel::Layout oldLayout = currentLayout;
+	currentLayout = layout;
+
 	header()->setClickable(true);
 	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
 
