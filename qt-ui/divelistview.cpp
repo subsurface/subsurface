@@ -148,12 +148,9 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 	const QAbstractItemModel *model = current.model();
 	int selectedDive = 0;
 	struct dive *dive = (struct dive*) model->data(current, TreeItemDT::DIVE_ROLE).value<void*>();
-	if (!dive) { // it's a trip! select first child.
+	if (!dive)  // it's a trip! select first child.
 		dive = (struct dive*) model->data(current.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
-		selectedDive = get_divenr(dive);
-	} else {
-		selectedDive = get_divenr(dive);
-	}
+	selectedDive = get_divenr(dive);
 	if (selectedDive == selected_dive)
 		return;
 	Q_EMIT currentDiveChanged(selectedDive);
