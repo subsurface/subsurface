@@ -9,7 +9,7 @@
 
 #include "dive.h"
 #include "divelist.h"
-#include "libdivecomputer.h"
+#include <libdivecomputer/version.h>
 #include "version.h"
 
 #include <osm-gps-map.h>
@@ -210,27 +210,52 @@ void report_dives(gboolean is_imported, gboolean prefer_imported)
 	dive_list_update_dives();
 }
 
+static void print_version() {
+	printf("Subsurface v%s, ", VERSION_STRING);
+	printf("built with libdivecomputer v%s\n", dc_version(NULL));
+}
+
+static void print_help() {
+	print_version();
+	printf("\nUsage: subsurface [options] [logfile ...] [--import logfile ...]");
+	printf("\n\noptions include:");
+	printf("\n --help|-h             This help text");
+	printf("\n --import logfile ...  Logs before this option is treated as base, everything after is imported");
+	printf("\n --verbose|-v          Verbose debug (repeat to increase verbosity)");
+	printf("\n --version             Prints current version\n\n");
+}
+
 static void parse_argument(const char *arg)
 {
 	const char *p = arg+1;
 
 	do {
 		switch (*p) {
+		case 'h':
+			print_help();
+			exit(0);
 		case 'v':
 			verbose++;
 			continue;
 		case '-':
 			/* long options with -- */
-			if (strcmp(arg,"--import") == 0) {
+			if (strcmp(arg, "--help") == 0) {
+				print_help();
+				exit(0);
+			}
+			if (strcmp(arg, "--import") == 0) {
 				/* mark the dives so far as the base,
 				 * everything after is imported */
 				report_dives(FALSE, FALSE);
 				imported = TRUE;
 				return;
 			}
+			if (strcmp(arg, "--verbose") == 0) {
+				verbose++;
+				return;
+			}
 			if (strcmp(arg, "--version") == 0) {
-				printf("Subsurface v%s, ", VERSION_STRING);
-				printf("built with libdivecomputer v%s\n", dc_version(NULL));
+				print_version();
 				exit(0);
 			}
 			/* fallthrough */
