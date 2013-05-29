@@ -21,6 +21,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
+	model->setSortRole(TreeItemDT::SORT_ROLE);
 	setModel(model);
 	setSortingEnabled(false);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);

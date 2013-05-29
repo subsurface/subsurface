@@ -822,6 +822,9 @@ QVariant TripItem::data(int column, int role) const
 {
 	QVariant ret;
 
+	if (role == SORT_ROLE)
+		return (qulonglong)trip->when;
+
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 		case LOCATION:
@@ -848,6 +851,13 @@ struct DiveItem : public TreeItemDT {
 	int weight() const;
 };
 
+static int nitrox_sort_value(struct dive *dive)
+{
+	int o2, he, o2low;
+	get_dive_gas(dive, &o2, &he, &o2low);
+	return he*1000 + o2;
+}
+
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
@@ -863,6 +873,23 @@ QVariant DiveItem::data(int column, int role) const
 		default:
 			retVal = Qt::AlignRight;
 			break;
+		}
+		break;
+	case SORT_ROLE:
+		switch (column) {
+		case NR:		return dive->number;
+		case DATE:		return (qulonglong) dive->when;
+		case DEPTH:		return dive->maxdepth.mm;
+		case DURATION:		return dive->duration.seconds;
+		case TEMPERATURE:	return dive->watertemp.mkelvin;
+		case TOTALWEIGHT:	return total_weight(dive);
+		case SUIT:		return QString(dive->suit);
+		case CYLINDER:		return QString(dive->cylinder[0].type.description);
+		case NITROX:		return nitrox_sort_value(dive);
+		case SAC:		return dive->sac;
+		case OTU:		return dive->otu;
+		case MAXCNS:		return dive->maxcns;
+		case LOCATION:		return QString(dive->location);
 		}
 		break;
 	case Qt::DisplayRole:
