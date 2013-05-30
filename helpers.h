@@ -17,5 +17,6 @@ QString get_volume_string(volume_t volume, bool showunit);
 QString get_pressure_string(pressure_t pressure, bool showunit);
 void set_default_dive_computer(const char *vendor, const char *product);
 void set_default_dive_computer_device(const char *name);
+QString getSubsurfaceDataPath(QString folderToFind);
 
 #endif /* HELPER_H */

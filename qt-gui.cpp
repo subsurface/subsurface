@@ -263,4 +263,30 @@ void set_default_dive_computer_device(const char *name)
 	s.endGroup();
 }
 
+QString getSubsurfaceDataPath(QString folderToFind)
+{
+	QString execdir;
+	QDir folder;
+
+	// first check if we are running in the build dir, so this
+	// is just subdirectory of the current directory
+	execdir = QCoreApplication::applicationDirPath();
+	folder = QDir(execdir.append(QDir::separator()).append(folderToFind));
+	if (folder.exists())
+		return folder.absolutePath();
+
+	// next check for the Linux typical $(prefix)/share/subsurface
+	execdir = QCoreApplication::applicationDirPath();
+	folder = QDir(execdir.replace("bin", "share/subsurface/").append(folderToFind));
+	if (folder.exists())
+		return folder.absolutePath();
+
+	// then look for the usual location on a Mac
+	execdir = QCoreApplication::applicationDirPath();
+	folder = QDir(execdir.append("/../Resources/share/").append(folderToFind));
+	if (folder.exists())
+		return folder.absolutePath();
+	return QString("");
+}
+
 #include "qt-gui.moc"

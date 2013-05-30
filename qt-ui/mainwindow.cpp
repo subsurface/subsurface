@@ -23,6 +23,7 @@
 #include "../dive.h"
 #include "../divelist.h"
 #include "../pref.h"
+#include "../helpers.h"
 #include "modeldelegates.h"
 #include "models.h"
 #include "downloadfromdivecomputer.h"
@@ -267,7 +268,13 @@ void MainWindow::on_actionUserManual_triggered()
 	if(!helpView){
 		helpView = new QTextBrowser();
 	}
-	helpView->setText(tr("HTML of Help menu here."));
+	QString searchPath = getSubsurfaceDataPath("Documentation");
+	if (searchPath != "") {
+		QUrl url(searchPath.append("/user-manual.html"));
+		helpView->setSource(url);
+	} else {
+		helpView->setText(tr("Cannot find the Subsurface manual"));
+	}
 	helpView->show();
 }
 
@@ -500,7 +507,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		helpView->close();
 		helpView->deleteLater();
 	}
-	
+
 	if (unsaved_changes() && (askSaveChanges() == FALSE)) {
 		event->ignore();
 		return;

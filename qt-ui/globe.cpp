@@ -1,6 +1,7 @@
 #include "globe.h"
 #include "kmessagewidget.h"
 #include "../dive.h"
+#include "../helpers.h"
 
 #include <QDebug>
 
@@ -24,39 +25,16 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	// if not, check if they are in a known location
 	MapThemeManager mtm;
 	QStringList list = mtm.mapThemeIds();
-	QString theme, execdir;
+	QString theme, subsurfaceDataPath;
 	QDir marble;
 	bool foundGoogleMap = false;
 	Q_FOREACH(theme, list)
 		if (theme == "earth/googlesat/googlesat.dgml")
 			foundGoogleMap = true;
 	if (!foundGoogleMap) {
-		// first check if we are running from the build directory
-		execdir = QCoreApplication::applicationDirPath();
-		marble = QDir(execdir.append("/marbledata"));
-		if (marble.exists()) {
-			MarbleDirs::setMarbleDataPath(marble.absolutePath());
-			foundGoogleMap = true;
-		}
-	}
-	if (!foundGoogleMap) {
-		// next check if we can guess an installed location by replacing
-		// "bin" with "share/subsurface" - so /usr/local/bin/subsurface would
-		//  have us check /usr/local/share/subsurface/marbledata
-		marble = execdir.replace("bin", "share/subsurface");
-		if (marble.exists()) {
-			MarbleDirs::setMarbleDataPath(marble.absolutePath());
-			foundGoogleMap = true;
-		}
-	}
-	if (!foundGoogleMap) {
-		// then check if we're running as an app on MacOSX
-		execdir = QCoreApplication::applicationDirPath();
-		marble = QDir(execdir.append("/../Resources/share/marbledata"));
-		if (marble.exists()) {
-			MarbleDirs::setMarbleDataPath(marble.absolutePath());
-			foundGoogleMap = true;
-		}
+		subsurfaceDataPath = getSubsurfaceDataPath("marbledata");
+		if (subsurfaceDataPath != "")
+			MarbleDirs::setMarbleDataPath(subsurfaceDataPath);
 	}
 	messageWidget = new KMessageWidget(this);
 	messageWidget->setCloseButtonVisible(false);
