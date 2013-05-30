@@ -16,6 +16,9 @@
   <property name="currentIndex">
    <number>1</number>
   </property>
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="notesTab">
    <attribute name="title">
     <string>Dive Notes</string>
@@ -158,8 +161,8 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QTableView" name="cylinders">
-        <property name="styleSheet">
-         <string notr="true"> QTableView {
+          <property name="styleSheet">
+           <string notr="true"> QTableView {
      show-decoration-selected: 1;
  }
 
@@ -188,11 +191,11 @@
  }
 
 </string>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-</widget>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
