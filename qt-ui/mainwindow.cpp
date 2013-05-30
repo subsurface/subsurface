@@ -15,7 +15,7 @@
 #include <QCloseEvent>
 #include <QApplication>
 #include <QFontMetrics>
-
+#include <QTextBrowser>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -35,7 +35,7 @@ MainWindow* mainWindow()
 	return instance;
 }
 
-MainWindow::MainWindow() : ui(new Ui::MainWindow())
+MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 {
 	ui->setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
@@ -264,7 +264,11 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 
 void MainWindow::on_actionUserManual_triggered()
 {
-	qDebug("actionUserManual");
+	if(!helpView){
+		helpView = new QTextBrowser();
+	}
+	helpView->setText(tr("HTML of Help menu here."));
+	helpView->show();
 }
 
 QString MainWindow::filter()
@@ -492,6 +496,11 @@ void MainWindow::writeSettings()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	if (helpView && helpView->isVisible()){
+		helpView->close();
+		helpView->deleteLater();
+	}
+	
 	if (unsaved_changes() && (askSaveChanges() == FALSE)) {
 		event->ignore();
 		return;

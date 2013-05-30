@@ -29,6 +29,7 @@ class DiveListView;
 class GlobeGPS;
 class MainTab;
 class ProfileGraphicsView;
+class QTextBrowser;
 
 class MainWindow : public QMainWindow
 {
@@ -93,7 +94,7 @@ private:
 	Ui::MainWindow *ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
-
+	QTextBrowser *helpView;
 	QString filter();
 	bool askSaveChanges();
 	void writeSettings();
