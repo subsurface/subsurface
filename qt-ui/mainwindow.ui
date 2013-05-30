@@ -361,6 +361,9 @@
    <property name="text">
     <string>User Manual</string>
    </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
   </action>
  </widget>
  <customwidgets>
