@@ -224,7 +224,10 @@
        <item>
         <widget class="QLabel" name="sacText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -240,7 +243,10 @@
        <item>
         <widget class="QLabel" name="oxygenHeliumText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -256,7 +262,10 @@
        <item>
         <widget class="QLabel" name="otuText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -272,7 +281,10 @@
        <item>
         <widget class="QLabel" name="dateText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -288,7 +300,10 @@
        <item>
         <widget class="QLabel" name="airPressureText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -304,7 +319,10 @@
        <item>
         <widget class="QLabel" name="airTemperatureText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -320,7 +338,10 @@
        <item>
         <widget class="QLabel" name="gasUsedText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -336,7 +357,10 @@
        <item>
         <widget class="QLabel" name="maximumDepthText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -352,7 +376,10 @@
        <item>
         <widget class="QLabel" name="averageDepthText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -368,7 +395,10 @@
        <item>
         <widget class="QLabel" name="waterTemperatureText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -384,7 +414,10 @@
        <item>
         <widget class="QLabel" name="surfaceIntervalText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -400,7 +433,10 @@
        <item>
         <widget class="QLabel" name="diveTimeText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
