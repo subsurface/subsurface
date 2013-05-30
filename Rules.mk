@@ -41,7 +41,7 @@ ALL_OBJS = $(OBJS) $(MOC_OBJS)
 # Files for using Qt Creator
 CREATOR_FILES = $(NAME).config $(NAME).creator $(NAME).files $(NAME).includes
 
-all: $(NAME)
+all: $(NAME) doc
 
 $(TARGET): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
 	@$(PRETTYECHO) '    LINK' $(TARGET)
@@ -78,6 +78,11 @@ install: all
 		$(INSTALL) -d $(prefix)/$$LOC; \
 		$(INSTALL) -m 644 $$LOC/$(NAME).mo $(prefix)/$$LOC/$(NAME).mo; \
 	done
+	$(INSTALL) -d -m 755 $(DOCDIR)
+	$(INSTALL) -m 644 Documentation/user-manual.html $(DOCDIR)
+	for IMG in $(wildcard Documentation/images/*); do \
+		$(INSTALL) -m 644 $$IMG $(DOCDIR)/images; \
+	done
 
 
 install-macosx: all
@@ -101,6 +106,11 @@ install-macosx: all
 		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/xslt; \
 		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXINSTALL)/Contents/Resources/xslt/; \
 	fi
+	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/resources/share/doc/$(NAME)
+	$(INSTALL) -m 644 Documentation/user-manual.html $(MACOSXINSTALL)/Contents/Resources/share/doc/$(NAME)
+	for IMG in $(wildcard Documentation/images/*); do \
+		$(INSTALL) -m 644 $$IMG $(MACOSXINSTALL)/Contents/Resources/share/doc/$(NAME)/images; \
+	done
 
 
 create-macosx-bundle: all
@@ -119,6 +129,11 @@ create-macosx-bundle: all
 		$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/Resources/xslt; \
 		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXSTAGING)/Contents/Resources/xslt/; \
 	fi
+	$(INSTALL) -d -m 755 $(MACOSXSTAGING)/Contents/resources/share/doc/$(NAME)
+	$(INSTALL) -m 644 Documentation/user-manual.html $(MACOSXSTAGING)/Contents/Resources/share/doc/$(NAME)
+	for IMG in $(wildcard Documentation/images/*); do \
+		$(INSTALL) -m 644 $$IMG $(MACOSXSTAGING)/Contents/Resources/share/doc/$(NAME)/images; \
+	done
 	$(GTK_MAC_BUNDLER) packaging/macosx/$(NAME).bundle
 
 sign-macosx-bundle: all
@@ -134,6 +149,12 @@ install-cross-windows: all
 		$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/$$LOC; \
 		$(INSTALL) $$LOC/$(NAME).mo $(WINDOWSSTAGING)/$$LOC/$(NAME).mo; \
 	done
+	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/doc/$(NAME)
+	$(INSTALL) -m 644 Documentation/user-manual.html $(WINDOWSSTAGING)/share/doc/$(NAME)
+	for IMG in $(wildcard Documentation/images/*); do \
+		$(INSTALL) -m 644 $$IMG $(WINDOWSSTAGING)/share/doc/$(NAME)/images; \
+	done
+
 
 create-windows-installer: all $(NSIFILE) install-cross-windows
 	$(MAKENSIS) $(NSIFILE)

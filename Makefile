@@ -16,6 +16,7 @@ INSTALL=install
 prefix = $(DESTDIR)/usr
 BINDIR = $(prefix)/bin
 DATADIR = $(prefix)/share
+DOCDIR = $(DATADIR)/doc/$(NAME)
 DESKTOPDIR = $(DATADIR)/applications
 ICONPATH = $(DATADIR)/icons/hicolor
 ICONDIR = $(ICONPATH)/scalable/apps
