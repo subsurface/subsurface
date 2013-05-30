@@ -14,17 +14,52 @@
 #include <QKeyEvent>
 #include <QSortFilterProxyModel>
 #include <QAction>
+#include <QLineEdit>
+#include <QKeyEvent>
 
-
-DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), currentHeaderClicked(-1)
+DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
+	currentHeaderClicked(-1), searchBox(new QLineEdit(this))
 {
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
 	model->setSortRole(TreeItemDT::SORT_ROLE);
+	model->setFilterKeyColumn(-1); // filter all columns
 	setModel(model);
 	setSortingEnabled(false);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	QAction *showSearchBox = new QAction(tr("Show Search Box"), this);
+	showSearchBox->setShortcut( Qt::CTRL + Qt::Key_F);
+	showSearchBox->setShortcutContext(Qt::ApplicationShortcut);
+	addAction(showSearchBox);
+
+	searchBox->installEventFilter(this);
+	searchBox->hide();
+	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
+	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
+}
+
+void DiveListView::showSearchEdit()
+{
+	searchBox->show();
+	searchBox->setFocus();
+}
+
+bool DiveListView::eventFilter(QObject* , QEvent* event)
+{
+	if(event->type() != QEvent::KeyPress){
+		return false;
+	}
+	QKeyEvent *keyEv = static_cast<QKeyEvent*>(event);
+	if (keyEv->key() != Qt::Key_Escape){
+		return false;
+	}
+
+	searchBox->clear();
+	searchBox->hide();
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
+	m->setFilterFixedString(QString());
+	return true;
 }
 
 void DiveListView::headerClicked(int i)
