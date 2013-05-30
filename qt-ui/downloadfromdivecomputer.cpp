@@ -4,6 +4,8 @@
 #include "../libdivecomputer.h"
 #include "../helpers.h"
 #include "../display.h"
+#include "../divelist.h"
+#include "mainwindow.h"
 #include <cstdlib>
 #include <QThread>
 #include <QDebug>
@@ -32,6 +34,12 @@ namespace DownloadFromDcGlobal{
 	const char *err_string;
 };
 
+DownloadFromDCWidget *DownloadFromDCWidget::instance()
+{
+	static DownloadFromDCWidget *dialog = new DownloadFromDCWidget();
+	return dialog;
+}
+
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	QDialog(parent, f), ui(new Ui::DownloadFromDiveComputer), thread(0), downloading(false)
 {
@@ -52,6 +60,12 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	}
 	if (default_dive_computer_device)
 		ui->device->setText(default_dive_computer_device);
+}
+
+void DownloadFromDCWidget::runDialog()
+{
+	ui->progressBar->hide();
+	show();
 }
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
@@ -151,13 +165,20 @@ void DownloadFromDCWidget::on_ok_clicked()
 	downloading = true;
 }
 
+bool DownloadFromDCWidget::preferDownloaded()
+{
+	return ui->preferDownloaded->isChecked();
+}
+
 DownloadThread::DownloadThread(device_data_t* data): data(data)
 {
 }
 
 void DownloadThread::run()
 {
+	DownloadFromDCWidget *dfdcw = DownloadFromDCWidget::instance();
 	do_libdivecomputer_import(data);
+	process_dives(TRUE, dfdcw->preferDownloaded());
 }
 
 InterfaceThread::InterfaceThread(QObject* parent, device_data_t* data): QThread(parent), data(data)
@@ -167,7 +188,8 @@ InterfaceThread::InterfaceThread(QObject* parent, device_data_t* data): QThread(
 void InterfaceThread::run()
 {
 	DownloadThread *download = new DownloadThread(data);
-
+	MainWindow *w = mainWindow();
+	connect(download, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 	download->start();
 	while (download->isRunning()) {
 		msleep(200);

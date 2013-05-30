@@ -87,6 +87,7 @@ protected:
 
 public Q_SLOTS:
 	void readSettings();
+	void refreshDisplay();
 
 private:
 	Ui::MainWindow *ui;

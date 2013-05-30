@@ -52,6 +52,14 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow())
 	instance = this;
 }
 
+// this gets called after we download dives from a divecomputer
+void MainWindow::refreshDisplay()
+{
+	if (!selected_dive)
+		current_dive_changed(dive_table.nr - 1);
+	ui->ListWidget->reload();
+}
+
 void MainWindow::current_dive_changed(int divenr)
 {
 	select_dive(divenr);
@@ -162,8 +170,8 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-	DownloadFromDCWidget* downloadWidget = new DownloadFromDCWidget();
-	downloadWidget->show();
+	DownloadFromDCWidget* downloadWidget = DownloadFromDCWidget::instance();
+	downloadWidget->runDialog();
 }
 
 void MainWindow::on_actionDownloadWeb_triggered()

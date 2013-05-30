@@ -38,11 +38,11 @@ class DownloadFromDCWidget : public QDialog{
 	Q_OBJECT
 public:
 	explicit DownloadFromDCWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
-
+	static DownloadFromDCWidget *instance();
 public slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
-
+	void runDialog();
 	void on_vendor_currentIndexChanged(const QString& vendor);
 private:
 	Ui::DownloadFromDiveComputer *ui;
@@ -57,6 +57,8 @@ private:
 	QStringListModel *vendorModel;
 	QStringListModel *productModel;
 	void fill_computer_list();
+public:
+	bool preferDownloaded();
 };
 
 #endif
