@@ -12,6 +12,7 @@
 #include "divelist.h"
 
 #include "profile.h"
+#include "deco.h"
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 
@@ -971,7 +972,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, TRUE)) / 1000.0;
 
 	for (i = 1; i < pi->nr; i++) {
-		int fo2, fhe, j, t0, t1;
+		int fo2, fhe, j, k, t0, t1;
 		double tissue_tolerance;
 		struct plot_data *entry = pi->entry + i;
 		int cylinderindex = entry->cylinderindex;
@@ -1038,6 +1039,8 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->ceiling = (entry - 1)->ceiling;
 		else
 			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+		for (k=0; k<16; k++)
+			entry->ceilings[k] = deco_allowed_depth(tolerated_by_tissue[k], surface_pressure, dive, 1);
 	}
 
 #if DECO_CALC_DEBUG & 1
@@ -1137,6 +1140,16 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, _("%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
+		if (prefs.calc_all_tissues){
+			int k;
+			for (k=0; k<16; k++){
+				if (entry->ceilings[k]){
+					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
+					memcpy(buf2, buf, bufsize);
+					snprintf(buf, bufsize, _("%s\nTissue %.0fmin: %.0f %s"), buf2, buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+				}
+			}
+		}
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);

@@ -41,6 +41,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	ui->calculated_ceiling->setChecked(B(calcceiling, profile_calc_ceiling));
 	ui->increment_3m->setEnabled(ui->calculated_ceiling->isChecked());
 	ui->increment_3m->setChecked(B(calcceiling3m, calc_ceiling_3m_incr));
+	ui->all_tissues->setEnabled(ui->all_tissues->isChecked());
+	ui->all_tissues->setChecked(B(calcalltissues, calc_all_tissues));
 
 	ui->gflow->setValue((int)(I(gflow, gflow)));
 	ui->gfhigh->setValue((int)(I(gfhigh, gfhigh)));
@@ -112,6 +114,7 @@ void PreferencesDialog::syncSettings()
 	SB("redceiling", ui->red_ceiling);
 	SB("calcceiling", ui->calculated_ceiling);
 	SB("calcceiling3m", ui->increment_3m);
+	SB("calcalltissues", ui->all_tissues);
 	s.setValue("gflow", ui->gflow->value());
 	s.setValue("gfhigh", ui->gfhigh->value());
 	s.endGroup();

@@ -39,6 +39,7 @@ struct preferences {
 	short profile_red_ceiling;
 	short profile_calc_ceiling;
 	short calc_ceiling_3m_incr;
+	short calc_all_tissues;
 	short gflow;
 	short gfhigh;
 	int map_provider;

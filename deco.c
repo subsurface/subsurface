@@ -83,6 +83,9 @@ int ci_pointing_to_guiding_tissue;
 double gf_low_pressure_this_dive;
 #define TISSUE_ARRAY_SZ sizeof(tissue_n2_sat)
 
+double tolerated_by_tissue[16];
+
+
 static double tissue_tolerance_calc(const struct dive *dive)
 {
 	int ci = -1;
@@ -116,6 +119,8 @@ static double tissue_tolerance_calc(const struct dive *dive)
 			    (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high - gf_low) +
 				(1.0 - buehlmann_inertgas_b)*(gf_low * gf_low_pressure_this_dive - gf_high * surface) +
 				buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
+
+		tolerated_by_tissue[ci] = tolerated;
 
 		if (tolerated > ret_tolerance_limit_ambient_pressure)
 		{

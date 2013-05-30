@@ -403,6 +403,7 @@ void MainWindow::readSettings()
 	GET_BOOL(v, "dcceiling", prefs.profile_dc_ceiling);
 	GET_BOOL(v, "calcceiling", prefs.profile_calc_ceiling);
 	GET_BOOL(v, "calcceiling3m", prefs.calc_ceiling_3m_incr);
+	GET_BOOL(v, "calcalltissues", prefs.calc_all_tissues);
 	v = settings.value(QString("gflow"));
 	if (v.isValid())
 		prefs.gflow = v.toInt();
@@ -479,6 +480,7 @@ void MainWindow::writeSettings()
 	SAVE_VALUE("redceiling", profile_red_ceiling);
 	SAVE_VALUE("calcceiling", profile_calc_ceiling);
 	SAVE_VALUE("calcceiling3m", calc_ceiling_3m_incr);
+	SAVE_VALUE("calcalltissues", calc_all_tissues);
 	SAVE_VALUE("dcceiling", profile_dc_ceiling);
 	SAVE_VALUE("gflow", gflow);
 	SAVE_VALUE("gfhigh", gfhigh);

@@ -23,6 +23,7 @@ struct plot_data {
 	/* Depth info */
 	int depth;
 	int ceiling;
+	int ceilings[16];
 	int ndl;
 	int stoptime;
 	int stopdepth;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
-    <height>386</height>
+    <width>604</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -116,7 +116,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="page_2">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -624,8 +624,8 @@
                 </property>
                </widget>
               </item>
-	     </layout>
-	    </item>
+             </layout>
+            </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_10">
               <item>
@@ -647,6 +647,16 @@
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="all_tissues">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>show all tissues</string>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QCheckBox" name="increment_3m">
@@ -891,25 +901,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>dc_ceiling</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>red_ceiling</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>288</x>
-     <y>364</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>371</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>calculated_ceiling</sender>
    <signal>clicked(bool)</signal>
-   <receiver>increment_3m</receiver>
+   <receiver>all_tissues</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -922,12 +916,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>calculated_ceiling</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>increment_3m</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>198</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>503</x>
+     <y>286</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
