@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
-    <height>490</height>
+    <width>698</width>
+    <height>521</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -731,8 +731,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>226</x>
-     <y>522</y>
+     <x>235</x>
+     <y>511</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -747,8 +747,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>294</x>
-     <y>522</y>
+     <x>303</x>
+     <y>511</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -767,8 +767,8 @@
      <y>97</y>
     </hint>
     <hint type="destinationlabel">
-     <x>186</x>
-     <y>8</y>
+     <x>282</x>
+     <y>18</y>
     </hint>
    </hints>
   </connection>
@@ -779,12 +779,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>288</x>
-     <y>179</y>
+     <x>187</x>
+     <y>77</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>194</y>
+     <x>581</x>
+     <y>80</y>
     </hint>
    </hints>
   </connection>
@@ -795,12 +795,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>301</x>
-     <y>179</y>
+     <x>187</x>
+     <y>77</y>
     </hint>
     <hint type="destinationlabel">
-     <x>742</x>
-     <y>184</y>
+     <x>668</x>
+     <y>80</y>
     </hint>
    </hints>
   </connection>
@@ -811,12 +811,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>295</x>
-     <y>208</y>
+     <x>186</x>
+     <y>121</y>
     </hint>
     <hint type="destinationlabel">
-     <x>673</x>
-     <y>216</y>
+     <x>581</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
@@ -827,12 +827,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>301</x>
-     <y>206</y>
+     <x>186</x>
+     <y>121</y>
     </hint>
     <hint type="destinationlabel">
-     <x>740</x>
-     <y>216</y>
+     <x>668</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
@@ -843,12 +843,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>296</x>
-     <y>240</y>
+     <x>184</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>683</x>
-     <y>242</y>
+     <x>581</x>
+     <y>168</y>
     </hint>
    </hints>
   </connection>
@@ -859,12 +859,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>304</x>
-     <y>232</y>
+     <x>184</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>760</x>
-     <y>236</y>
+     <x>668</x>
+     <y>168</y>
     </hint>
    </hints>
   </connection>
@@ -875,12 +875,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>294</x>
-     <y>267</y>
+     <x>195</x>
+     <y>209</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>271</y>
+     <x>591</x>
+     <y>212</y>
     </hint>
    </hints>
   </connection>
@@ -891,12 +891,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>286</x>
-     <y>261</y>
+     <x>195</x>
+     <y>209</y>
     </hint>
     <hint type="destinationlabel">
-     <x>760</x>
-     <y>269</y>
+     <x>668</x>
+     <y>212</y>
     </hint>
    </hints>
   </connection>
@@ -907,12 +907,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>288</x>
-     <y>344</y>
+     <x>298</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
-     <x>555</x>
-     <y>351</y>
+     <x>512</x>
+     <y>327</y>
     </hint>
    </hints>
   </connection>
@@ -923,12 +923,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>198</x>
-     <y>286</y>
+     <x>298</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
-     <x>503</x>
-     <y>286</y>
+     <x>668</x>
+     <y>327</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dc_reported_ceiling</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>red_ceiling</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>586</x>
+     <y>270</y>
     </hint>
    </hints>
   </connection>

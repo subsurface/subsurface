@@ -1074,28 +1074,26 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 
 	/* plot the calculated ceiling for all tissues */
-	if (prefs.calc_all_tissues){
+	if (prefs.profile_calc_ceiling && prefs.calc_all_tissues){
 		int k;
 		for (k=0; k<16; k++){
-			if (prefs.profile_calc_ceiling) {
-				pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
-				pat.setColorAt(1, QColor(100, 100, 100, 50));
+			pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
+			pat.setColorAt(1, QColor(100, 100, 100, 50));
 
-				entry = gc.pi.entry;
-				p.clear();
-				p.append(QPointF(SCALEGC(0, 0)));
-				for (i = 0; i < gc.pi.nr; i++, entry++) {
-					if ((entry->ceilings)[k])
-						p.append(QPointF(SCALEGC(entry->sec, (entry->ceilings)[k])));
-					else
-						p.append(QPointF(SCALEGC(entry->sec, 0)));
-				}
-				p.append(QPointF(SCALEGC((entry-1)->sec, 0)));
-				neatFill = new QGraphicsPolygonItem();
-				neatFill->setPolygon(p);
-				neatFill->setBrush(pat);
-				scene()->addItem(neatFill);
+			entry = gc.pi.entry;
+			p.clear();
+			p.append(QPointF(SCALEGC(0, 0)));
+			for (i = 0; i < gc.pi.nr; i++, entry++) {
+				if ((entry->ceilings)[k])
+					p.append(QPointF(SCALEGC(entry->sec, (entry->ceilings)[k])));
+				else
+					p.append(QPointF(SCALEGC(entry->sec, 0)));
 			}
+			p.append(QPointF(SCALEGC((entry-1)->sec, 0)));
+			neatFill = new QGraphicsPolygonItem();
+			neatFill->setPolygon(p);
+			neatFill->setBrush(pat);
+			scene()->addItem(neatFill);
 		}
 	}
 	/* next show where we have been bad and crossed the dc's ceiling */
