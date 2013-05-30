@@ -55,12 +55,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
 	}
-	QList<QObject *> statisticsTabWidgets = ui->statisticsTab->children();
-	Q_FOREACH(QObject* obj, statisticsTabWidgets) {
-		QLabel* label = qobject_cast<QLabel *>(obj);
-		if (label)
-			label->setAlignment(Qt::AlignHCenter);
-	}
 
 	/*Thid couldn't be done on the ui file because element
 	is floating, instead of being fixed on the layout. */
