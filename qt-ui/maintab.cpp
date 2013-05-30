@@ -48,13 +48,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->rating->installEventFilter(this);
 	ui->visibility->installEventFilter(this);
 
-	/* example of where code is more concise than Qt designer */
-	QList<QObject *> infoTabWidgets = ui->infoTab->children();
-	Q_FOREACH(QObject* obj, infoTabWidgets) {
-		QLabel* label = qobject_cast<QLabel *>(obj);
-		if (label)
-			label->setAlignment(Qt::AlignHCenter);
-	}
 	QList<QObject *> statisticsTabWidgets = ui->statisticsTab->children();
 	Q_FOREACH(QObject* obj, statisticsTabWidgets) {
 		QLabel* label = qobject_cast<QLabel *>(obj);
