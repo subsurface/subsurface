@@ -3,6 +3,7 @@
 
 #include <marble/MarbleWidget.h>
 #include <marble/GeoDataCoordinates.h>
+#include <marble/GeoDataDocument.h>
 
 #include <QHash>
 
