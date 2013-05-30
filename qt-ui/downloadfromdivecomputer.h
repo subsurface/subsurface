@@ -43,6 +43,7 @@ public slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
 	void runDialog();
+	void stoppedDownloading();
 	void on_vendor_currentIndexChanged(const QString& vendor);
 private:
 	Ui::DownloadFromDiveComputer *ui;

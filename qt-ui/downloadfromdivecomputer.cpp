@@ -68,6 +68,11 @@ void DownloadFromDCWidget::runDialog()
 	show();
 }
 
+void DownloadFromDCWidget::stoppedDownloading()
+{
+	downloading = false;
+}
+
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
 {
 	QAbstractItemModel *currentModel = ui->product->model();
@@ -179,6 +184,7 @@ void DownloadThread::run()
 	DownloadFromDCWidget *dfdcw = DownloadFromDCWidget::instance();
 	do_libdivecomputer_import(data);
 	process_dives(TRUE, dfdcw->preferDownloaded());
+	dfdcw->stoppedDownloading();
 }
 
 InterfaceThread::InterfaceThread(QObject* parent, device_data_t* data): QThread(parent), data(data)
