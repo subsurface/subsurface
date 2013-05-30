@@ -89,6 +89,10 @@ install-macosx: all
 	$(INSTALL) $(MACOSXFILES)/Info.plist $(MACOSXINSTALL)/Contents/
 	$(INSTALL) $(ICONFILE) $(MACOSXINSTALL)/Contents/Resources/
 	$(INSTALL) $(MACOSXFILES)/$(CAPITALIZED_NAME).icns $(MACOSXINSTALL)/Contents/Resources/
+	@-if test ! -z "$(MARBLEDIR)"; then \
+		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/share/$(MARBLEDIR); \
+		$(TAR) cf - $(MARBLEDIR) | ( cd $(MACOSXINSTALL)/Contents/Resources/share; $(TAR) xf - ); \
+	fi
 	for LOC in $(wildcard share/locale/*/LC_MESSAGES); do \
 		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/$$LOC; \
 		$(INSTALL) $$LOC/$(NAME).mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/$(NAME).mo; \

@@ -49,6 +49,15 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 			foundGoogleMap = true;
 		}
 	}
+	if (!foundGoogleMap) {
+		// then check if we're running as an app on MacOSX
+		execdir = QCoreApplication::applicationDirPath();
+		marble = QDir(execdir.append("/../Resources/share/marbledata"));
+		if (marble.exists()) {
+			MarbleDirs::setMarbleDataPath(marble.absolutePath());
+			foundGoogleMap = true;
+		}
+	}
 	messageWidget = new KMessageWidget(this);
 	messageWidget->setCloseButtonVisible(false);
 	messageWidget->setHidden(true);
