@@ -290,23 +290,73 @@ volume_t get_gas_used(struct dive *dive)
 	return gas_used;
 }
 
+bool is_gas_used(struct dive *dive, int idx)
+{
+	cylinder_t *cyl = &dive->cylinder[idx];
+	int o2, he;
+	struct divecomputer *dc;
+	bool used = FALSE;
+	bool firstGasExplicit = FALSE;
+	if (cylinder_none(cyl))
+		return FALSE;
+
+	o2 = get_o2(&cyl->gasmix);
+	he = get_he(&cyl->gasmix);
+	dc = &dive->dc;
+	while (dc) {
+		struct event *event = dc->events;
+		while (event) {
+			if (event->value) {
+				if (event->name && !strcmp(event->name, "gaschange")) {
+					unsigned int event_he = event->value >> 16;
+					unsigned int event_o2 = event->value & 0xffff;
+					if (event->time.seconds < 30)
+						firstGasExplicit = TRUE;
+					if (is_air(o2, he)) {
+						if (is_air(event_o2 * 10, event_he * 10))
+							used = TRUE;
+					} else if (he == event_he * 10 && o2 == event_o2 * 10) {
+						used = TRUE;
+					}
+				}
+			}
+			if (used)
+				break;
+			event = event->next;
+		}
+		if (used)
+			break;
+		dc = dc->next;
+	}
+	if (idx == 0 && !firstGasExplicit)
+		used = TRUE;
+	return used;
+}
+
 #define MAXBUF 80
 /* for the O2/He readings just create a list of them */
 char *get_gaslist(struct dive *dive)
 {
 	int idx, offset = 0;
 	static char buf[MAXBUF];
+	int o2, he;
 
 	buf[0] = '\0';
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
-		cylinder_t *cyl = &dive->cylinder[idx];
-		if (!cylinder_none(cyl)) {
-			int o2 = get_o2(&cyl->gasmix);
-			int he = get_he(&cyl->gasmix);
+		cylinder_t *cyl;
+		if (!is_gas_used(dive, idx))
+			continue;
+		cyl = &dive->cylinder[idx];
+		o2 = get_o2(&cyl->gasmix);
+		he = get_he(&cyl->gasmix);
+		if (is_air(o2, he))
+			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", _("air"));
+		else
 			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
 				 (o2 + 5) / 10, (he + 5) / 10);
-			offset = strlen(buf);
-		}
+		offset = strlen(buf);
 	}
+	if (*buf == '\0')
+		strncpy(buf, _("air"), MAXBUF);
 	return buf;
 }
