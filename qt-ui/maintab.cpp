@@ -272,6 +272,20 @@ void MainTab::updateDiveInfo(int dive)
 		weightModel->clear();
 		addCylinder->setEnabled(false);
 		addWeight->setEnabled(false);
+		ui->maximumDepthAllText->clear();
+		ui->minimumDepthAllText->clear();
+		ui->averageDepthAllText->clear();
+		ui->maximumSacAllText->clear();
+		ui->minimumSacAllText->clear();
+		ui->averageSacAllText->clear();
+		ui->divesAllText->clear();
+		ui->maximumTemperatureAllText->clear();
+		ui->minimumTemperatureAllText->clear();
+		ui->averageTemperatureAllText->clear();
+		ui->totalTimeAllText->clear();
+		ui->averageTimeAllText->clear();
+		ui->longestAllText->clear();
+		ui->shortestAllText->clear();
 	}
 	/* statisticsTab*/
 	/* we can access the stats_selection struct, but how do we ensure the relevant dives are selected

@@ -94,6 +94,8 @@ void GlobeGPS::centerOn(dive* dive)
 	if (messageWidget->isVisible() && (!dive || dive_has_gps_location(dive))) {
 		messageWidget->animatedHide();
 	}
+	if (!dive)
+		return;
 
 	editingDiveCoords = 0;
 
