@@ -15,6 +15,7 @@ struct plot_info;
 struct plot_data {
 	unsigned int in_deco:1;
 	int cylinderindex;
+	int o2, he;
 	int sec;
 	/* pressure[0] is sensor pressure
 	 * pressure[1] is interpolated pressure */

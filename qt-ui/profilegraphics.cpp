@@ -577,6 +577,8 @@ void ProfileGraphicsView::plot_cylinder_pressure_text()
 			cyl = entry->cylinderindex;
 			if (!seen_cyl[cyl]) {
 				plot_pressure_value(mbar, entry->sec, LEFT, BOTTOM);
+				plot_gas_value(mbar, entry->sec, LEFT, TOP,
+					       entry->o2, entry->he);
 				seen_cyl[cyl] = TRUE;
 			}
 		}
@@ -599,6 +601,20 @@ void ProfileGraphicsView::plot_pressure_value(int mbar, int sec, double xalign, 
 	pressure = get_pressure_units(mbar, &unit);
 	static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
 	plot_text(&tro, QPointF(sec, mbar), QString("%1 %2").arg(pressure).arg(unit));
+}
+
+void ProfileGraphicsView::plot_gas_value(int mbar, int sec, double xalign, double yalign, int o2, int he)
+{
+	QString gas;
+	if (is_air(o2, he))
+		gas = tr("air");
+	else if (he == 0)
+		gas = QString(tr("EAN%1")).arg((o2 + 5) / 10);
+	else
+		gas = QString("%1/%2").arg((o2 + 5) / 10).arg((he + 5) / 10);
+	static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
+	plot_text(&tro, QPointF(sec, mbar), gas);
+
 }
 
 void ProfileGraphicsView::plot_depth_text()

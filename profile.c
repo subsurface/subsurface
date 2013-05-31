@@ -389,7 +389,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 		/* Linus wants to smooth this - let's at least look at the samples that aren't FAST or CRAZY */
 		if (entry[0].sec - entry[-1].sec) {
 			entry->velocity = velocity((entry[0].depth - entry[-1].depth) / (entry[0].sec - entry[-1].sec));
-                        /* if our samples are short and we aren't too FAST*/
+			/* if our samples are short and we aren't too FAST*/
 			if (entry[0].sec - entry[-1].sec < 15 && entry->velocity < FAST) {
 				int past = -2;
 				while (i+past > 0 && entry[0].sec - entry[past].sec < 15)
@@ -832,6 +832,8 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 		entry->po2 = sample->po2 / 1000.0;
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
+		entry->o2 = dive->cylinder[entry->cylinderindex].gasmix.o2.permille;
+		entry->he = dive->cylinder[entry->cylinderindex].gasmix.he.permille;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
 
@@ -844,6 +846,12 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 	plot_data[idx++].sec = lasttime+10;
 	plot_data[idx++].sec = lasttime+20;
 	pi->nr = idx;
+
+	/* make sure the first two entries have the correct gas */
+	plot_data[0].o2 = plot_data[2].o2;
+	plot_data[0].he = plot_data[2].he;
+	plot_data[1].o2 = plot_data[2].o2;
+	plot_data[1].he = plot_data[2].he;
 
 	return plot_data;
 }
@@ -996,10 +1004,10 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
 		}
 
-                /* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
-                 * so there is no difference in calculating between OC and CC
-                 * EAD takes O2 + N2 (air) into account
-                 * END just uses N2 */
+		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
+		 * so there is no difference in calculating between OC and CC
+		 * EAD takes O2 + N2 (air) into account
+		 * END just uses N2 */
 		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
 		entry->ead = (entry->depth + 10000) *
 			(entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
@@ -1007,7 +1015,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			(amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
 		entry->eadd = (entry->depth + 10000) *
 			(entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
-                                N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
+				N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
 				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -10000;
 		if (entry->mod < 0)
 			entry->mod = 0;
