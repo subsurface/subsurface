@@ -62,20 +62,19 @@ bool DiveListView::eventFilter(QObject* , QEvent* event)
 	return true;
 }
 
+// NOTE! This loses trip selection, because while we remember the
+// dives, we don't remember the trips (see the "currentSelectedDives"
+// list). I haven't figured out how to look up the trip from the
+// index. TRIP_ROLE vs DIVE_ROLE?
 void DiveListView::headerClicked(int i)
 {
-	if (currentHeaderClicked == i) {
-		sortByColumn(i);
-		return;
-	}
-
-	if (currentLayout == (i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST)) {
-		sortByColumn(i);
-		return;
-	}
-
 	QItemSelection oldSelection = selectionModel()->selection();
 	QList<struct dive*> currentSelectedDives;
+	DiveTripModel::Layout newLayout;
+	bool scrolled = false;
+
+	newLayout = i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST;
+
 	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()) {
 		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
 			continue;
@@ -85,10 +84,16 @@ void DiveListView::headerClicked(int i)
 			currentSelectedDives.push_back(d);
 	}
 
-	// clear the model, repopulate with new indexes.
-	reload( i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST, false);
 	selectionModel()->clearSelection();
-	sortByColumn(i, Qt::DescendingOrder);
+
+	/* No layout change? Just re-sort, and scroll to first selection, making sure all selections are expanded */
+	if (currentLayout == newLayout) {
+		sortByColumn(i);
+	} else {
+		// clear the model, repopulate with new indexes.
+		reload(newLayout, false);
+		sortByColumn(i, Qt::DescendingOrder);
+	}
 
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 
@@ -96,11 +101,17 @@ void DiveListView::headerClicked(int i)
 	Q_FOREACH(struct dive *d, currentSelectedDives) {
 		QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, d->number, 1, Qt::MatchRecursive);
 		QModelIndex idx = match.first();
-		if (i == (int) TreeItemDT::NR && idx.parent().isValid()) { // Tree Mode Activated.
+
+		if (newLayout == DiveTripModel::TREE) {
 			QModelIndex parent = idx.parent();
-			expand(parent);
+			if (parent.isValid())
+				expand(parent);
 		}
 		selectionModel()->select( idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+		if (!scrolled) {
+			scrollTo(idx, PositionAtCenter);
+			scrolled = true;
+		}
 	}
 }
 
@@ -186,6 +197,7 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 	selectedDive = get_divenr(dive);
 	if (selectedDive == selected_dive)
 		return;
+	scrollTo(current);
 	Q_EMIT currentDiveChanged(selectedDive);
 }
 
