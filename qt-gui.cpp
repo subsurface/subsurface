@@ -84,6 +84,15 @@ const char *getSetting(QSettings &s, QString name)
 void init_ui(int *argcp, char ***argvp)
 {
 	QVariant v;
+#ifdef __linux__
+	// for people running under Gnome the default style is
+	// really ugly; this seems like a bad hack, but it makes
+	// things look somewhat better
+	// I'd much rather be able to check if it is using the Gnome
+	// style and only then force plastique but I haven't been
+	// able to figure out how to do that
+	QApplication::setStyle("plastique");
+#endif
 	application = new QApplication(*argcp, *argvp);
 
 #if QT_VERSION < 0x050000
