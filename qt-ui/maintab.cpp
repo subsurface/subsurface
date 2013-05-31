@@ -203,7 +203,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui->airTemperatureText->setText(get_temperature_string(d->airtemp, TRUE));
 		ui->gasUsedText->setText(get_volume_string(get_gas_used(d), TRUE));
 		ui->oxygenHeliumText->setText(get_gaslist(d));
-		ui->dateText->setText(get_dive_date_string(d->when));
+		ui->dateText->setText(get_short_dive_date_string(d->when));
 		ui->diveTimeText->setText(QString::number((int)((d->duration.seconds + 30) / 60)));
 		if (prevd)
 			ui->surfaceIntervalText->setText(get_time_string(d->when - (prevd->when + prevd->duration.seconds), 4));

@@ -26,6 +26,7 @@ extern void upload_all_dives_divelogs_cb();
 /* divelist core logic functions */
 extern void process_dives(bool imported, bool prefer_imported);
 extern char *get_dive_date_string(timestamp_t when);
+extern char *get_short_dive_date_string(timestamp_t when);
 extern char *get_trip_date_string(timestamp_t when, int nr);
 extern char *get_nitrox_string(struct dive *dive);
 extern void clear_trip_indexes(void);

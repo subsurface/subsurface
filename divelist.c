@@ -566,7 +566,8 @@ void get_suit(struct dive *dive, char **str)
 
 #define MAX_DATE_STRING 256
 /* caller needs to free the string */
-char *get_dive_date_string(timestamp_t when) {
+char *get_dive_date_string(timestamp_t when)
+{
 	char *buffer = malloc(MAX_DATE_STRING);
 	if (buffer) {
 		struct tm tm;
@@ -582,8 +583,25 @@ char *get_dive_date_string(timestamp_t when) {
 	return buffer;
 }
 
+char *get_short_dive_date_string(timestamp_t when)
+{
+	char *buffer = malloc(MAX_DATE_STRING);
+	if (buffer) {
+		struct tm tm;
+		utc_mkdate(when, &tm);
+		snprintf(buffer, MAX_DATE_STRING,
+			/*++GETTEXT 40 char buffer monthname, day of month, year, hour:min */
+			_("%1$s %2$d, %3$d\n%4$02d:%5$02d"),
+			monthname(tm.tm_mon),
+			tm.tm_mday, tm.tm_year +1900,
+			tm.tm_hour, tm.tm_min);
+	}
+	return buffer;
+}
+
 /* caller needs to free the string */
-char *get_trip_date_string(timestamp_t when, int nr) {
+char *get_trip_date_string(timestamp_t when, int nr)
+{
 	char *buffer = malloc(MAX_DATE_STRING);
 	if (buffer) {
 		struct tm tm;
