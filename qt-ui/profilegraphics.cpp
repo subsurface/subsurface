@@ -547,7 +547,7 @@ void ProfileGraphicsView::plot_deco_text()
 	if (prefs.profile_calc_ceiling) {
 		float x = gc.leftx + (gc.rightx - gc.leftx) / 2;
 		float y = gc.topy = 1.0;
-		static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, -0.2};
+		static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, CENTER, BOTTOM};
 		gc.bottomy = 0.0;
 		plot_text(&tro, QPointF(x, y), QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
 	}
