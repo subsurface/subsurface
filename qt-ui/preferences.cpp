@@ -13,12 +13,22 @@ PreferencesDialog* PreferencesDialog::instance()
 #define D(V, P) s.value(#V, default_prefs.P).toDouble()
 #define I(V, P) s.value(#V, default_prefs.P).toInt()
 
-PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
-, ui(new Ui::PreferencesDialog())
+PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
+	ui(new Ui::PreferencesDialog())
 {
 	ui->setupUi(this);
-	connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(syncSettings()));
-	connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(resetSettings()));
+	connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	reloadPrefs();
+}
+
+void PreferencesDialog::showEvent(QShowEvent *event)
+{
+	reloadPrefs();
+	QDialog::showEvent(event);
+}
+
+void PreferencesDialog::reloadPrefs()
+{
 
 	oldPrefs = prefs;
 
@@ -140,8 +150,30 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 	s.sync();
 
-	oldPrefs = prefs;
 	emit settingsChanged();
 }
+
+void PreferencesDialog::buttonClicked(QAbstractButton* button)
+{
+	switch(ui->buttonBox->standardButton(button)){
+	case QDialogButtonBox::Discard:
+		prefs = oldPrefs;
+		close();
+		break;
+	case QDialogButtonBox::Apply:
+		syncSettings();
+		emit settingsChanged();
+		break;
+	case QDialogButtonBox::FirstButton:
+		syncSettings();
+		oldPrefs = prefs;
+		emit settingsChanged();
+		close();
+		break;
+	default:
+		break; // ignore warnings.
+	}
+}
+
 
 #undef SB
