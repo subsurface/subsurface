@@ -210,7 +210,7 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
 
 	Q_FOREACH(const QModelIndex& index, newSelected.indexes()) {
-		if(index.column() != 0)
+		if (index.column() != 0)
 			continue;
 
 		const QAbstractItemModel *model = index.model();
@@ -218,16 +218,42 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
 				QItemSelection selection;
+				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				while (child) {
+					select_dive(get_index_for_dive(child));
+					child = child->next;
+				}
 				selection.select(index.child(0,0), index.child(model->rowCount(index) -1 , 0));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
 				if (!isExpanded(index))
 					expand(index);
 			}
+		} else {
+			select_dive(get_index_for_dive(dive));
+		}
+	}
+	Q_FOREACH(const QModelIndex& index, newDeselected.indexes()) {
+		if (index.column() != 0)
+			continue;
+		const QAbstractItemModel *model = index.model();
+		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
+		if (!dive) { // it's a trip!
+			if (model->rowCount(index)) {
+				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				while (child) {
+					deselect_dive(get_index_for_dive(child));
+					child = child->next;
+				}
+			}
+		} else {
+			deselect_dive(get_index_for_dive(dive));
 		}
 	}
 
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
+	// now that everything is up to date, update the widgets
+	Q_EMIT currentDiveChanged(selected_dive);
 }
