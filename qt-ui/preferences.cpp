@@ -1,6 +1,7 @@
 #include "preferences.h"
 #include "ui_preferences.h"
 #include <QSettings>
+#include <QDebug>
 
 PreferencesDialog* PreferencesDialog::instance()
 {
@@ -43,6 +44,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	ui->increment_3m->setChecked(B(calcceiling3m, calc_ceiling_3m_incr));
 	ui->all_tissues->setEnabled(ui->calculated_ceiling->isChecked());
 	ui->all_tissues->setChecked(B(calcalltissues, calc_all_tissues));
+	ui->groupBox->setEnabled(ui->personalize->isChecked());
 
 	ui->gflow->setValue((int)(I(gflow, gflow)));
 	ui->gfhigh->setValue((int)(I(gfhigh, gfhigh)));
@@ -121,7 +123,8 @@ void PreferencesDialog::syncSettings()
 
 	// Units
 	s.beginGroup("Units");
-	s.setValue("units_metric", ui->metric->isChecked());
+	QString unitSystem = ui->metric->isChecked() ? "metric" : (ui->imperial->isChecked() ? "imperial" : "personal");
+	s.setValue("unit_system", unitSystem);
 	s.setValue("temperature", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
 	s.setValue("length", ui->feet->isChecked() ? units::FEET : units::METERS);
 	s.setValue("pressure", ui->psi->isChecked() ? units::PSI : units::BAR);

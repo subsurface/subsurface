@@ -116,7 +116,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page_2">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -224,6 +224,9 @@
              <property name="text">
               <string>Metric</string>
              </property>
+             <attribute name="buttonGroup">
+              <string notr="true">buttonGroup_6</string>
+             </attribute>
             </widget>
            </item>
            <item>
@@ -231,6 +234,19 @@
              <property name="text">
               <string>Imperial</string>
              </property>
+             <attribute name="buttonGroup">
+              <string notr="true">buttonGroup_6</string>
+             </attribute>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="personalize">
+             <property name="text">
+              <string>Personalize</string>
+             </property>
+             <attribute name="buttonGroup">
+              <string notr="true">buttonGroup_6</string>
+             </attribute>
             </widget>
            </item>
           </layout>
@@ -238,10 +254,10 @@
          <item>
           <widget class="QGroupBox" name="groupBox">
            <property name="title">
-            <string>Personalize</string>
+            <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="checked">
             <bool>false</bool>
@@ -948,6 +964,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>personalize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>613</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <buttongroups>
   <buttongroup name="buttonGroup_2"/>
@@ -955,5 +987,6 @@
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_6"/>
  </buttongroups>
 </ui>

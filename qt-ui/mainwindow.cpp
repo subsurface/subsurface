@@ -376,11 +376,17 @@ void MainWindow::readSettings()
 
 	settings.endGroup();
 	settings.beginGroup("Units");
-	GET_UNIT(v, "length", length, units::FEET, units::METERS);
-	GET_UNIT(v, "pressure", pressure, units::PSI, units::BAR);
-	GET_UNIT(v, "volume", volume, units::CUFT, units::LITER);
-	GET_UNIT(v, "temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
-	GET_UNIT(v, "weight", weight, units::LBS, units::KG);
+	if (settings.value("unit_system").toString() == "metric") {
+		prefs.units = SI_units;
+	} else if (settings.value("unit_system").toString() == "imperial") {
+		prefs.units = IMPERIAL_units;
+	} else {
+		GET_UNIT(v, "length", length, units::FEET, units::METERS);
+		GET_UNIT(v, "pressure", pressure, units::PSI, units::BAR);
+		GET_UNIT(v, "volume", volume, units::CUFT, units::LITER);
+		GET_UNIT(v, "temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
+		GET_UNIT(v, "weight", weight, units::LBS, units::KG);
+	}
 	settings.endGroup();
 	settings.beginGroup("DisplayListColumns");
 	GET_BOOL(v, "CYLINDER", prefs.visible_cols.cylinder);
