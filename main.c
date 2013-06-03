@@ -15,6 +15,7 @@
 struct preferences prefs;
 struct preferences default_prefs = {
 	.units = SI_UNITS,
+	.unit_system = METRIC,
 	.visible_cols = { TRUE, FALSE, },
 	.pp_graphs = {
 		.po2 = FALSE,

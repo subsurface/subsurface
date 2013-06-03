@@ -9,101 +9,110 @@ PreferencesDialog* PreferencesDialog::instance()
 	return dialog;
 }
 
-#define B(V, P) s.value(#V, default_prefs.P).toBool()
-#define D(V, P) s.value(#V, default_prefs.P).toDouble()
-#define I(V, P) s.value(#V, default_prefs.P).toInt()
-
 PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
 	ui(new Ui::PreferencesDialog())
 {
 	ui->setupUi(this);
 	connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
-	reloadPrefs();
+	setUiFromPrefs();
+	rememberPrefs();
 }
 
 void PreferencesDialog::showEvent(QShowEvent *event)
 {
-	reloadPrefs();
+	setUiFromPrefs();
+	rememberPrefs();
 	QDialog::showEvent(event);
 }
 
-void PreferencesDialog::reloadPrefs()
+void PreferencesDialog::setUiFromPrefs()
 {
-
-	oldPrefs = prefs;
-
-	QSettings s;
-
-	// Graph
-	s.beginGroup("TecDetails");
-	ui->phe->setChecked(B(phegraph, pp_graphs.phe));
+	// graphs
+	ui->phe->setChecked(prefs.pp_graphs.phe);
 	ui->pheThreshold->setEnabled(ui->phe->isChecked());
-	ui->po2->setChecked(B(po2graph, pp_graphs.po2));
+	ui->po2->setChecked(prefs.pp_graphs.po2);
 	ui->po2Threshold->setEnabled(ui->po2->isChecked());
-	ui->pn2->setChecked(B(pn2graph, pp_graphs.pn2));
+	ui->pn2->setChecked(prefs.pp_graphs.pn2);
 	ui->pn2Threshold->setEnabled(ui->pn2->isChecked());
-	ui->pheThreshold->setValue(D(phethreshold, pp_graphs.phe_threshold));
-	ui->po2Threshold->setValue(D(po2threshold, pp_graphs.po2_threshold));
-	ui->pn2Threshold->setValue(D(pn2threshold, pp_graphs.pn2_threshold));
-	ui->ead_end_eadd->setChecked(B(ead, ead));
-	ui->dc_reported_ceiling->setChecked(B(dcceiling, profile_dc_ceiling));
+	ui->pheThreshold->setValue(prefs.pp_graphs.phe_threshold);
+	ui->po2Threshold->setValue(prefs.pp_graphs.po2_threshold);
+	ui->pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
+	ui->ead_end_eadd->setChecked(prefs.ead);
+	ui->dc_reported_ceiling->setChecked(prefs.profile_dc_ceiling);
 	ui->red_ceiling->setEnabled(ui->dc_reported_ceiling->isChecked());
-	ui->red_ceiling->setChecked(B(redceiling, profile_red_ceiling));
-	ui->calculated_ceiling->setChecked(B(calcceiling, profile_calc_ceiling));
+	ui->red_ceiling->setChecked(prefs.profile_red_ceiling);
+	ui->calculated_ceiling->setChecked(prefs.profile_calc_ceiling);
 	ui->increment_3m->setEnabled(ui->calculated_ceiling->isChecked());
-	ui->increment_3m->setChecked(B(calcceiling3m, calc_ceiling_3m_incr));
+	ui->increment_3m->setChecked(prefs.calc_ceiling_3m_incr);
 	ui->all_tissues->setEnabled(ui->calculated_ceiling->isChecked());
-	ui->all_tissues->setChecked(B(calcalltissues, calc_all_tissues));
+	ui->all_tissues->setChecked(prefs.calc_all_tissues);
 	ui->groupBox->setEnabled(ui->personalize->isChecked());
 
-	ui->gflow->setValue((int)(I(gflow, gflow)));
-	ui->gfhigh->setValue((int)(I(gfhigh, gfhigh)));
-	s.endGroup();
+	ui->gflow->setValue(prefs.gflow);
+	ui->gfhigh->setValue(prefs.gfhigh);
 
-	// Units
-	s.beginGroup("Units");
-	bool value = s.value("units_metric").toBool();
-	ui->metric->setChecked(value);
-	ui->imperial->setChecked(!value);
+	// units
+	if (prefs.unit_system == METRIC)
+		ui->metric->setChecked(true);
+	else if (prefs.unit_system == IMPERIAL)
+		ui->imperial->setChecked(true);
+	else
+		ui->personalize->setChecked(true);
 
-	int unit = s.value("temperature").toInt();
-	ui->celsius->setChecked(unit == units::CELSIUS);
-	ui->fahrenheit->setChecked(unit == units::FAHRENHEIT);
-
-	unit = s.value("length").toInt();
-	ui->meter->setChecked(unit == units::METERS);
-	ui->feet->setChecked(unit == units::FEET);
-
-	unit = s.value("pressure").toInt();
-	ui->bar->setChecked(unit == units::BAR);
-	ui->psi->setChecked(unit == units::PSI);
-
-	unit = s.value("volume").toInt();
-	ui->liter->setChecked(unit == units::LITER);
-	ui->cuft->setChecked(unit == units::CUFT);
-
-	unit = s.value("weight").toInt();
-	ui->kgs->setChecked(unit == units::KG);
-	ui->lbs->setChecked(unit == units::LBS);
-
-	s.endGroup();
-
-	// Defaults
-	s.beginGroup("GeneralSettings");
-	ui->font->setFont( QFont(s.value("table_fonts").toString()));
-	ui->fontsize->setValue(D(font_size, font_size));
-
-	ui->defaultfilename->setText(s.value("default_filename").toString());
-	ui->displayinvalid->setChecked(B(show_invalid, show_invalid));
-	s.endGroup();
+	ui->celsius->setChecked(prefs.units.temperature == units::CELSIUS);
+	ui->fahrenheit->setChecked(prefs.units.temperature == units::FAHRENHEIT);
+	ui->meter->setChecked(prefs.units.length == units::METERS);
+	ui->feet->setChecked(prefs.units.length == units::FEET);
+	ui->bar->setChecked(prefs.units.pressure == units::BAR);
+	ui->psi->setChecked(prefs.units.pressure == units::PSI);
+	ui->liter->setChecked(prefs.units.volume == units::LITER);
+	ui->cuft->setChecked(prefs.units.volume == units::CUFT);
+	ui->kgs->setChecked(prefs.units.weight == units::KG);
+	ui->lbs->setChecked(prefs.units.weight == units::LBS);
+	ui->font->setFont(QString(prefs.divelist_font));
+	ui->fontsize->setValue(prefs.font_size);
+	ui->defaultfilename->setText(prefs.default_filename);
+	ui->displayinvalid->setChecked(prefs.show_invalid);
 }
 
-#undef B
-#undef D
-
-void PreferencesDialog::resetSettings()
+void PreferencesDialog::restorePrefs()
 {
 	prefs = oldPrefs;
+}
+
+void PreferencesDialog::rememberPrefs()
+{
+	oldPrefs = prefs;
+}
+
+#define SP(V, B) prefs.V = (int)(B->isChecked() ? 1 : 0)
+
+void PreferencesDialog::setPrefsFromUi()
+{
+	SP(pp_graphs.phe, ui->phe);
+	SP(pp_graphs.po2, ui->po2);
+	SP(pp_graphs.pn2, ui->pn2);
+	prefs.pp_graphs.phe_threshold = ui->pheThreshold->value();
+	prefs.pp_graphs.po2_threshold = ui->po2Threshold->value();
+	prefs.pp_graphs.pn2_threshold = ui->pn2Threshold->value();
+	SP(ead, ui->ead_end_eadd);
+	SP(profile_dc_ceiling, ui->dc_reported_ceiling);
+	SP(profile_red_ceiling, ui->red_ceiling);
+	SP(profile_calc_ceiling, ui->calculated_ceiling);
+	SP(calc_ceiling_3m_incr, ui->increment_3m);
+	SP(calc_all_tissues, ui->all_tissues);
+	prefs.gflow = ui->gflow->value();
+	prefs.gfhigh = ui->gfhigh->value();
+	prefs.unit_system = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
+	prefs.units.temperature = ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS;
+	prefs.units.length = ui->feet->isChecked() ? units::FEET : units::METERS;
+	prefs.units.pressure = ui->psi->isChecked() ? units::PSI : units::BAR;
+	prefs.units.volume = ui->cuft->isChecked() ? units::CUFT : units::LITER;
+	prefs.units.weight = ui->lbs->isChecked() ? units::LBS : units::KG;
+	prefs.divelist_font = strdup(ui->font->font().family().toUtf8().data());
+	prefs.font_size = ui->fontsize->value();
+	prefs.default_filename = strdup(ui->defaultfilename->text().toUtf8().data());
+	prefs.display_invalid_dives = ui->displayinvalid->isChecked();
 }
 
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
@@ -157,17 +166,16 @@ void PreferencesDialog::buttonClicked(QAbstractButton* button)
 {
 	switch(ui->buttonBox->standardButton(button)){
 	case QDialogButtonBox::Discard:
-		prefs = oldPrefs;
+		restorePrefs();
+		setUiFromPrefs();
+		syncSettings();
 		close();
 		break;
 	case QDialogButtonBox::Apply:
 		syncSettings();
-		emit settingsChanged();
 		break;
 	case QDialogButtonBox::FirstButton:
 		syncSettings();
-		oldPrefs = prefs;
-		emit settingsChanged();
 		close();
 		break;
 	default:

@@ -20,11 +20,14 @@ signals:
 public slots:
 	void buttonClicked(QAbstractButton* button);
 	void syncSettings();
-	void resetSettings();
+	void restorePrefs();
+	void rememberPrefs();
 
 private:
 	explicit PreferencesDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-	void reloadPrefs();
+	void setUiFromPrefs();
+	void setPrefsFromUi();
+	void setUIFromSettings();
 	Ui::PreferencesDialog* ui;
 	struct preferences oldPrefs;
 };

@@ -45,8 +45,10 @@ struct preferences {
 	int map_provider;
 	short display_invalid_dives;
 	short show_invalid;
+	short unit_system;
 	struct units units;
 };
+enum unit_system_values { METRIC, IMPERIAL, PERSONALIZE };
 
 extern struct preferences prefs, default_prefs;
 

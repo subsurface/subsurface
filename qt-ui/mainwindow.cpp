@@ -379,10 +379,13 @@ void MainWindow::readSettings()
 	settings.endGroup();
 	settings.beginGroup("Units");
 	if (settings.value("unit_system").toString() == "metric") {
+		prefs.unit_system = METRIC;
 		prefs.units = SI_units;
 	} else if (settings.value("unit_system").toString() == "imperial") {
+		prefs.unit_system = IMPERIAL;
 		prefs.units = IMPERIAL_units;
 	} else {
+		prefs.unit_system = PERSONALIZE;
 		GET_UNIT(v, "length", length, units::FEET, units::METERS);
 		GET_UNIT(v, "pressure", pressure, units::PSI, units::BAR);
 		GET_UNIT(v, "volume", volume, units::CUFT, units::LITER);
