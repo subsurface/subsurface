@@ -172,9 +172,11 @@ void PreferencesDialog::buttonClicked(QAbstractButton* button)
 		close();
 		break;
 	case QDialogButtonBox::Apply:
+		setPrefsFromUi();
 		syncSettings();
 		break;
 	case QDialogButtonBox::FirstButton:
+		setPrefsFromUi();
 		syncSettings();
 		close();
 		break;
