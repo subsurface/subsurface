@@ -1801,6 +1801,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean pr
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
+	MERGE_NONZERO(res, a, b, dive_tags);
 	merge_equipment(res, a, b);
 	merge_airtemps(res, a, b);
 	if (dl) {
