@@ -82,6 +82,7 @@ private Q_SLOTS:
 	void on_actionUserManual_triggered();
 
 	void current_dive_changed(int divenr);
+	void initialUiSetup();
 
 protected:
 	void closeEvent(QCloseEvent *);

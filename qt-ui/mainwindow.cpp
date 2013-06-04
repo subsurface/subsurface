@@ -42,10 +42,12 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(refreshDisplay()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ProfileWidget, SLOT(refresh()));
 	ui->mainErrorMessage->hide();
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload();
+	initialUiSetup();
 	readSettings();
 	ui->ListWidget->reloadHeaderActions();
 	ui->ListWidget->setFocus();
@@ -336,23 +338,39 @@ bool MainWindow::askSaveChanges()
 	return false;
 }
 
-#define GET_UNIT(v, name, field, f, t)				\
-	v = settings.value(QString(name));			\
+#define GET_UNIT(name, field, f, t)				\
+	v = s.value(QString(name));				\
 	if (v.isValid())					\
-		prefs.units.field = (v.toInt() == (t)) ? (t) : (f)
-
-#define GET_BOOL(v, name, field)				\
-	v = settings.value(QString(name));			\
-	if (v.isValid() && v.toInt())				\
-		field = TRUE;					\
+		prefs.units.field = (v.toInt() == (t)) ? (t) : (f); \
 	else							\
-		field = FALSE
+		prefs.units.field = default_prefs.units.field
 
-void MainWindow::readSettings()
+#define GET_BOOL(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = v.toInt() ? TRUE : FALSE;		\
+	else							\
+		prefs.field = default_prefs.field
+
+#define GET_DOUBLE(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = v.toDouble();			\
+	else							\
+		prefs.field = default_prefs.field
+
+#define GET_INT(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = v.toInt();			\
+	else							\
+		prefs.field = default_prefs.field
+
+
+void MainWindow::initialUiSetup()
 {
-	int i;
-	QVariant v;
 	QSettings settings;
+	int i;
 
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size").value<QSize>();
@@ -375,79 +393,64 @@ void MainWindow::readSettings()
 	ui->ListWidget->collapseAll();
 	ui->ListWidget->expand(ui->ListWidget->model()->index(0,0));
 	ui->ListWidget->scrollTo(ui->ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
-
 	settings.endGroup();
-	settings.beginGroup("Units");
-	if (settings.value("unit_system").toString() == "metric") {
+}
+
+void MainWindow::readSettings()
+{
+	QVariant v;
+	QSettings s;
+
+	s.beginGroup("Units");
+	if (s.value("unit_system").toString() == "metric") {
 		prefs.unit_system = METRIC;
 		prefs.units = SI_units;
-	} else if (settings.value("unit_system").toString() == "imperial") {
+	} else if (s.value("unit_system").toString() == "imperial") {
 		prefs.unit_system = IMPERIAL;
 		prefs.units = IMPERIAL_units;
 	} else {
 		prefs.unit_system = PERSONALIZE;
-		GET_UNIT(v, "length", length, units::FEET, units::METERS);
-		GET_UNIT(v, "pressure", pressure, units::PSI, units::BAR);
-		GET_UNIT(v, "volume", volume, units::CUFT, units::LITER);
-		GET_UNIT(v, "temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
-		GET_UNIT(v, "weight", weight, units::LBS, units::KG);
+		GET_UNIT("length", length, units::FEET, units::METERS);
+		GET_UNIT("pressure", pressure, units::PSI, units::BAR);
+		GET_UNIT("volume", volume, units::CUFT, units::LITER);
+		GET_UNIT("temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
+		GET_UNIT("weight", weight, units::LBS, units::KG);
 	}
-	settings.endGroup();
-	settings.beginGroup("DisplayListColumns");
-	GET_BOOL(v, "CYLINDER", prefs.visible_cols.cylinder);
-	GET_BOOL(v, "TEMPERATURE", prefs.visible_cols.temperature);
-	GET_BOOL(v, "TOTALWEIGHT", prefs.visible_cols.totalweight);
-	GET_BOOL(v, "SUIT", prefs.visible_cols.suit);
-	GET_BOOL(v, "NITROX", prefs.visible_cols.nitrox);
-	GET_BOOL(v, "OTU", prefs.visible_cols.otu);
-	GET_BOOL(v, "MAXCNS", prefs.visible_cols.maxcns);
-	GET_BOOL(v, "SAC", prefs.visible_cols.sac);
-	settings.endGroup();
-	settings.beginGroup("TecDetails");
-	GET_BOOL(v, "po2graph", prefs.pp_graphs.po2);
-	GET_BOOL(v, "pn2graph", prefs.pp_graphs.pn2);
-	GET_BOOL(v, "phegraph", prefs.pp_graphs.phe);
-	v = settings.value(QString("po2threshold"));
-	if (v.isValid())
-		prefs.pp_graphs.po2_threshold = v.toDouble();
-	v = settings.value(QString("pn2threshold"));
-	if (v.isValid())
-		prefs.pp_graphs.pn2_threshold = v.toDouble();
-	v = settings.value(QString("phethreshold"));
-	if (v.isValid())
-		prefs.pp_graphs.phe_threshold = v.toDouble();
-	GET_BOOL(v, "mod", prefs.mod);
-	v = settings.value(QString("modppO2"));
-	if (v.isValid())
-		prefs.mod_ppO2 = v.toDouble();
-	GET_BOOL(v, "ead", prefs.ead);
-	GET_BOOL(v, "redceiling", prefs.profile_red_ceiling);
-	GET_BOOL(v, "dcceiling", prefs.profile_dc_ceiling);
-	GET_BOOL(v, "calcceiling", prefs.profile_calc_ceiling);
-	GET_BOOL(v, "calcceiling3m", prefs.calc_ceiling_3m_incr);
-	GET_BOOL(v, "calcalltissues", prefs.calc_all_tissues);
-	v = settings.value(QString("gflow"));
-	if (v.isValid())
-		prefs.gflow = v.toInt();
-	v = settings.value(QString("gfhigh"));
-	if (v.isValid())
-		prefs.gfhigh = v.toInt();
+	s.endGroup();
+	s.beginGroup("DisplayListColumns");
+	GET_BOOL("CYLINDER", visible_cols.cylinder);
+	GET_BOOL("TEMPERATURE", visible_cols.temperature);
+	GET_BOOL("TOTALWEIGHT", visible_cols.totalweight);
+	GET_BOOL("SUIT", visible_cols.suit);
+	GET_BOOL("NITROX", visible_cols.nitrox);
+	GET_BOOL("OTU", visible_cols.otu);
+	GET_BOOL("MAXCNS", visible_cols.maxcns);
+	GET_BOOL("SAC", visible_cols.sac);
+	s.endGroup();
+	s.beginGroup("TecDetails");
+	GET_BOOL("po2graph", pp_graphs.po2);
+	GET_BOOL("pn2graph", pp_graphs.pn2);
+	GET_BOOL("phegraph", pp_graphs.phe);
+	GET_DOUBLE("po2threshold", pp_graphs.po2_threshold);
+	GET_DOUBLE("pn2threshold", pp_graphs.pn2_threshold);
+	GET_DOUBLE("phethreshold", pp_graphs.phe_threshold);
+	GET_BOOL("mod", mod);
+	GET_DOUBLE("modppO2", mod_ppO2);
+	GET_BOOL("ead", ead);
+	GET_BOOL("redceiling", profile_red_ceiling);
+	GET_BOOL("dcceiling", profile_dc_ceiling);
+	GET_BOOL("calcceiling", profile_calc_ceiling);
+	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);
+	GET_BOOL("calcalltissues", calc_all_tissues);
+	GET_INT("gflow", gflow);
+	GET_INT("gfhigh", gfhigh);
 	set_gf(prefs.gflow, prefs.gfhigh);
-	settings.endGroup();
+	s.endGroup();
 
-#if ONCE_WE_CAN_SET_FONTS
-	settings.beginGroup("Display");
-	v = settings.value(QString("divelist_font"));
+	s.beginGroup("Display");
+	v = s.value(QString("divelist_font"));
 	if (v.isValid())
-		/* I don't think this is right */
-		prefs.divelist_font = strdup(v.toString);
-#endif
-
-#if ONCE_WE_HAVE_MAPS
-	v = settings.value(QString_int("map_provider"));
-	if (v.isValid())
-		prefs.map_provider = v.toInt();
-#endif
+		prefs.divelist_font = strdup(v.toString().toUtf8().data());
 }
 
 #define SAVE_VALUE(name, field)				\
