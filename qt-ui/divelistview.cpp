@@ -7,6 +7,7 @@
 #include "divelistview.h"
 #include "models.h"
 #include "modeldelegates.h"
+#include "../display.h"
 #include <QApplication>
 #include <QHeaderView>
 #include <QDebug>
@@ -136,12 +137,16 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		return;
 
 	sortByColumn(0, Qt::DescendingOrder);
-	QModelIndex firstDiveOrTrip = m->index(0,0);
-	if (firstDiveOrTrip.isValid()) {
-		if (m->index(0,0, firstDiveOrTrip).isValid())
-			setCurrentIndex(m->index(0,0, firstDiveOrTrip));
-		else
-			setCurrentIndex(firstDiveOrTrip);
+	if (amount_selected && selected_dive >= 0) {
+		// magic happens and the selected dive is expanded and scrolled to
+	} else {
+		QModelIndex firstDiveOrTrip = m->index(0,0);
+		if (firstDiveOrTrip.isValid()) {
+			if (m->index(0,0, firstDiveOrTrip).isValid())
+				setCurrentIndex(m->index(0,0, firstDiveOrTrip));
+			else
+				setCurrentIndex(firstDiveOrTrip);
+		}
 	}
 }
 
