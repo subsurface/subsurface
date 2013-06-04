@@ -14,7 +14,7 @@
    <string>TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>3</number>
   </property>
   <property name="documentMode">
    <bool>true</bool>
@@ -453,40 +453,26 @@
     <string>Stats</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout1">
-    <item row="2" column="0">
-     <widget class="QGroupBox" name="groupBox_8b">
+    <item row="0" column="2">
+     <widget class="QGroupBox" name="groupBox_4b">
       <property name="title">
-       <string>Max. Temp.</string>
+       <string>SAC</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_5b">
+      <layout class="QHBoxLayout" name="horizontalLayout_10b">
        <item>
-        <widget class="QLabel" name="maximumTemperatureAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+        <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
        </item>
       </layout>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QGroupBox" name="groupBox_2b">
+     <widget class="QGroupBox" name="groupBox_8b">
       <property name="title">
-       <string>Min Depth</string>
+       <string>Temperature</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3b">
+      <layout class="QHBoxLayout" name="horizontalLayout_5b">
        <item>
-        <widget class="QLabel" name="minimumDepthAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+        <widget class="MinMaxAvgWidget" name="tempLimits" native="true"/>
        </item>
       </layout>
      </widget>
@@ -494,196 +480,28 @@
     <item row="0" column="0">
      <widget class="QGroupBox" name="groupBoxb">
       <property name="title">
-       <string>Max. Depth</string>
+       <string>Depth</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2b">
        <item>
-        <widget class="QLabel" name="maximumDepthAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-      <zorder>maximumDepthAllText</zorder>
-      <zorder>minimumDepthAllText</zorder>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QGroupBox" name="groupBox_10b">
-      <property name="title">
-       <string>Ave. Temp.</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_7b">
-       <item>
-        <widget class="QLabel" name="averageTemperatureAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+        <widget class="MinMaxAvgWidget" name="depthLimits" native="true"/>
        </item>
       </layout>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QGroupBox" name="groupBox_12b">
-      <property name="title">
-       <string>Ave. Time</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_13b">
-       <item>
-        <widget class="QLabel" name="averageTimeAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QGroupBox" name="groupBox_9b">
-      <property name="title">
-       <string>Min. Temp.</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_6b">
-       <item>
-        <widget class="QLabel" name="minimumTemperatureAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QGroupBox" name="groupBox_3b">
-      <property name="title">
-       <string>Ave. Depth</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4b">
-       <item>
-        <widget class="QLabel" name="averageDepthAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QGroupBox" name="groupBox_4b">
-      <property name="title">
-       <string>Max. SAC</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_10b">
-       <item>
-        <widget class="QLabel" name="maximumSacAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QGroupBox" name="groupBox_5b">
-      <property name="title">
-       <string>Min. SAC</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_9b">
-       <item>
-        <widget class="QLabel" name="minimumSacAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QGroupBox" name="groupBox_6b">
-      <property name="title">
-       <string>Ave. SAC</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_8b">
-       <item>
-        <widget class="QLabel" name="averageSacAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="7" column="0">
-     <widget class="QGroupBox" name="groupBox_7b">
-      <property name="title">
-       <string>Dives</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_15">
-       <item>
-        <widget class="QLabel" name="divesAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="4" column="1">
+    <item row="1" column="0">
      <widget class="QGroupBox" name="groupBox_13">
       <property name="title">
-       <string>Longest</string>
+       <string>Duration</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_12b">
        <item>
-        <widget class="QLabel" name="longestAllText">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+        <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
        </item>
       </layout>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="1" column="1">
      <widget class="QGroupBox" name="groupBox_11b">
       <property name="title">
        <string>Total Time</string>
@@ -702,14 +520,14 @@
       </layout>
      </widget>
     </item>
-    <item row="7" column="1">
-     <widget class="QGroupBox" name="groupBox_14">
+    <item row="1" column="2">
+     <widget class="QGroupBox" name="groupBox_7b">
       <property name="title">
-       <string>Shortest</string>
+       <string>Dives</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
+      <layout class="QHBoxLayout" name="horizontalLayout_15">
        <item>
-        <widget class="QLabel" name="shortestAllText">
+        <widget class="QLabel" name="divesAllText">
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -735,6 +553,12 @@
    <class>StarWidget</class>
    <extends>QWidget</extends>
    <header>starwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MinMaxAvgWidget</class>
+   <extends>QWidget</extends>
+   <header>simplewidgets.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
