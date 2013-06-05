@@ -137,20 +137,12 @@ void MainTab::clearInfo()
 
 void MainTab::clearStats()
 {
-	ui->maximumDepthAllText->clear();
-	ui->minimumDepthAllText->clear();
-	ui->averageDepthAllText->clear();
-	ui->maximumSacAllText->clear();
-	ui->minimumSacAllText->clear();
-	ui->averageSacAllText->clear();
+	ui->depthLimits->clear();
+	ui->sacLimits->clear();
 	ui->divesAllText->clear();
-	ui->maximumTemperatureAllText->clear();
-	ui->minimumTemperatureAllText->clear();
-	ui->averageTemperatureAllText->clear();
+	ui->tempLimits->clear();
 	ui->totalTimeAllText->clear();
-	ui->averageTimeAllText->clear();
-	ui->longestAllText->clear();
-	ui->shortestAllText->clear();
+	ui->timeLimits->clear();
 }
 
 #define UPDATE_TEXT(d, field)				\
@@ -217,29 +209,29 @@ void MainTab::updateDiveInfo(int dive)
 		else
 			ui->airPressureText->clear();
 		ui->visibility->setCurrentStars(d->visibility);
-		ui->maximumDepthAllText->setText(get_depth_string(stats_selection.max_depth, TRUE));
-		ui->minimumDepthAllText->setText(get_depth_string(stats_selection.min_depth, TRUE));
-		ui->averageDepthAllText->setText(get_depth_string(stats_selection.avg_depth, TRUE));
-		ui->maximumSacAllText->setText(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));
-		ui->minimumSacAllText->setText(get_volume_string(stats_selection.min_sac, TRUE).append(tr("/min")));
-		ui->averageSacAllText->setText(get_volume_string(stats_selection.avg_sac, TRUE).append(tr("/min")));
+		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
+		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
+		ui->depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
+		ui->sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));
+		ui->sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, TRUE).append(tr("/min")));
+		ui->sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, TRUE).append(tr("/min")));
 		ui->divesAllText->setText(QString::number(stats_selection.selection_size));
 		temp.mkelvin = stats_selection.max_temp;
-		ui->maximumTemperatureAllText->setText(get_temperature_string(temp, TRUE));
+		ui->tempLimits->setMaximum(get_temperature_string(temp, TRUE));
 		temp.mkelvin = stats_selection.min_temp;
-		ui->minimumTemperatureAllText->setText(get_temperature_string(temp, TRUE));
+		ui->tempLimits->setMinimum(get_temperature_string(temp, TRUE));
 		if (stats_selection.combined_temp && stats_selection.combined_count) {
 			const char *unit;
 			get_temp_units(0, &unit);
-			ui->averageTemperatureAllText->setText(QString("%1%2").arg(stats_selection.combined_temp / stats_selection.combined_count, 0, 'f', 1).arg(unit));
+			ui->tempLimits->setAverage(QString("%1%2").arg(stats_selection.combined_temp / stats_selection.combined_count, 0, 'f', 1).arg(unit));
 		}
 		ui->totalTimeAllText->setText(get_time_string(stats_selection.total_time.seconds, 0));
 		int seconds = stats_selection.total_time.seconds;
 		if (stats_selection.selection_size)
 			seconds /= stats_selection.selection_size;
-		ui->averageTimeAllText->setText(get_time_string(seconds, 0));
-		ui->longestAllText->setText(get_time_string(stats_selection.longest_time.seconds, 0));
-		ui->shortestAllText->setText(get_time_string(stats_selection.shortest_time.seconds, 0));
+		ui->timeLimits->setAverage(get_time_string(seconds, 0));
+		ui->timeLimits->setMaximum(get_time_string(stats_selection.longest_time.seconds, 0));
+		ui->timeLimits->setMinimum(get_time_string(stats_selection.shortest_time.seconds, 0));
 		cylindersModel->setDive(d);
 		weightModel->setDive(d);
 		addCylinder->setEnabled(true);
@@ -272,20 +264,12 @@ void MainTab::updateDiveInfo(int dive)
 		weightModel->clear();
 		addCylinder->setEnabled(false);
 		addWeight->setEnabled(false);
-		ui->maximumDepthAllText->clear();
-		ui->minimumDepthAllText->clear();
-		ui->averageDepthAllText->clear();
-		ui->maximumSacAllText->clear();
-		ui->minimumSacAllText->clear();
-		ui->averageSacAllText->clear();
+		ui->depthLimits->clear();
+		ui->sacLimits->clear();
 		ui->divesAllText->clear();
-		ui->maximumTemperatureAllText->clear();
-		ui->minimumTemperatureAllText->clear();
-		ui->averageTemperatureAllText->clear();
+		ui->tempLimits->clear();
 		ui->totalTimeAllText->clear();
-		ui->averageTimeAllText->clear();
-		ui->longestAllText->clear();
-		ui->shortestAllText->clear();
+		ui->timeLimits->clear();
 	}
 	/* statisticsTab*/
 	/* we can access the stats_selection struct, but how do we ensure the relevant dives are selected
