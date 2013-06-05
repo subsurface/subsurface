@@ -58,7 +58,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 // this gets called after we download dives from a divecomputer
 void MainWindow::refreshDisplay()
 {
-	if (!selected_dive)
+	if (selected_dive == -1)
 		current_dive_changed(dive_table.nr - 1);
 	ui->ListWidget->reload();
 }

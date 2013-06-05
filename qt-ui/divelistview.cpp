@@ -157,7 +157,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 
 	sortByColumn(0, Qt::DescendingOrder);
 	if (amount_selected && selected_dive >= 0) {
-		// magic happens and the selected dive is expanded and scrolled to
+		selectDive(current_dive, true);
 	} else {
 		QModelIndex firstDiveOrTrip = m->index(0,0);
 		if (firstDiveOrTrip.isValid()) {
