@@ -40,6 +40,25 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 }
 
+void DiveListView::unselectDives()
+{
+	selectionModel()->clearSelection();
+}
+
+void DiveListView::selectDive(struct dive *dive, bool scrollto)
+{
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
+	QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, dive->number, 1, Qt::MatchRecursive);
+	QModelIndex idx = match.first();
+
+	QModelIndex parent = idx.parent();
+	if (parent.isValid())
+		expand(parent);
+	selectionModel()->select( idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+	if (scrollto)
+		scrollTo(idx, PositionAtCenter);
+}
+
 void DiveListView::showSearchEdit()
 {
 	searchBox->show();

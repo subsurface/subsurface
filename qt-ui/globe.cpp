@@ -1,5 +1,7 @@
 #include "globe.h"
 #include "kmessagewidget.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 #include "../dive.h"
 #include "../helpers.h"
 
@@ -60,7 +62,44 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
 	GeoDataCoordinates here(lon, lat, unit);
-	qDebug("At this point Linus will make magic appear... %f/%f", here.longitude(GeoDataCoordinates::Degree), here.latitude(GeoDataCoordinates::Degree));
+	long lon_udeg = rint(1000000 * here.longitude(GeoDataCoordinates::Degree));
+	long lat_udeg = rint(1000000 * here.latitude(GeoDataCoordinates::Degree));
+
+	// distance() is in km above the map.
+	// We're going to use that to decide how
+	// approximate the dives have to be.
+	//
+	// Totally arbitrarily I say that 1km
+	// distance means that we can resolve
+	// to about 100m. Which in turn is about
+	// 1000 udeg.
+	//
+	// Trigonometry is hard, but sin x == x
+	// for small x, so let's just do this as
+	// a linear thing.
+	long resolve = rint(distance() * 1000);
+
+	int idx;
+	struct dive *dive;
+	bool first = true;
+	for_each_dive(idx, dive) {
+		long lat_diff, lon_diff;
+		if (!dive_has_gps_location(dive))
+			continue;
+		lat_diff = labs(dive->latitude.udeg - lat_udeg);
+		lon_diff = labs(dive->longitude.udeg - lon_udeg);
+		if (lat_diff > 180000000)
+			lat_diff = 360000000 - lat_diff;
+		if (lon_diff > 180000000)
+			lon_diff = 180000000 - lon_diff;
+		if (lat_diff > resolve || lon_diff > resolve)
+			continue;
+
+		if (first)
+			mainWindow()->dive_list()->unselectDives();
+		mainWindow()->dive_list()->selectDive(dive, first);
+		first = false;
+	}
 }
 
 void GlobeGPS::reload()
