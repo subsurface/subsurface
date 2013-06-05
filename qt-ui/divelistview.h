@@ -28,6 +28,7 @@ public:
 	bool eventFilter(QObject* , QEvent* );
 	void unselectDives();
 	void selectDive(struct dive *, bool scrollto = false);
+	void mousePressEvent(QMouseEvent *event);
 
 public slots:
 	void toggleColumnVisibilityByIndex();

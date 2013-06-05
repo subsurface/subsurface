@@ -17,6 +17,7 @@
 #include <QAction>
 #include <QLineEdit>
 #include <QKeyEvent>
+#include <QMenu>
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	currentHeaderClicked(-1), searchBox(new QLineEdit(this))
@@ -269,4 +270,19 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
 	// now that everything is up to date, update the widgets
 	Q_EMIT currentDiveChanged(selected_dive);
+}
+
+void DiveListView::mousePressEvent(QMouseEvent *event)
+{
+	// all we care about is the unmodified right click
+	if ( ! (event->modifiers() == Qt::NoModifier && event->buttons() & Qt::RightButton)) {
+		event->ignore();
+		QTreeView::mousePressEvent(event);
+		return;
+	}
+	QMenu popup(this);
+	popup.addAction(tr("expand all"), this, SLOT(expandAll()));
+	QAction *collapseAllAction = popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
+	if (popup.exec(event->globalPos()) == collapseAllAction)
+		selectDive(current_dive, true);
 }
