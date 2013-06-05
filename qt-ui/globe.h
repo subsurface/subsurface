@@ -31,6 +31,7 @@ private:
 
 public Q_SLOTS:
 	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
+	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 };
 
 #endif
