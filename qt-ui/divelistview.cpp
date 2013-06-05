@@ -219,9 +219,9 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 	if (!dive)  // it's a trip! select first child.
 		dive = (struct dive*) model->data(current.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
 	selectedDive = get_divenr(dive);
+	scrollTo(current);
 	if (selectedDive == selected_dive)
 		return;
-	scrollTo(current);
 	Q_EMIT currentDiveChanged(selectedDive);
 }
 
