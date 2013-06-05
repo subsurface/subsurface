@@ -282,7 +282,10 @@ void DiveListView::mousePressEvent(QMouseEvent *event)
 	}
 	QMenu popup(this);
 	popup.addAction(tr("expand all"), this, SLOT(expandAll()));
-	QAction *collapseAllAction = popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
-	if (popup.exec(event->globalPos()) == collapseAllAction)
+	popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
+	QAction *collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
+	// "collapse all" really closes all trips,
+	// "collaps" keeps the trip with the selected dive open
+	if (popup.exec(event->globalPos()) == collapseAction)
 		selectDive(current_dive, true);
 }
