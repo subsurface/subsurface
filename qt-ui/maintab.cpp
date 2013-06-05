@@ -11,6 +11,7 @@
 #include "../statistics.h"
 #include "divelistview.h"
 #include "modeldelegates.h"
+#include "globe.h"
 
 #include <QLabel>
 #include <QDebug>
@@ -329,6 +330,8 @@ void MainTab::on_editAccept_clicked(bool edit)
 		    notesBackup.visibility != ui->visibility->currentStars() ||
 		    notesBackup.rating != ui->rating->currentStars())
 			mark_divelist_changed(TRUE);
+		if (notesBackup.location != ui->location->text())
+			mainWindow()->globe()->reload();
 	}
 }
 
