@@ -91,7 +91,7 @@ void DiveListView::headerClicked(int i)
 	QItemSelection oldSelection = selectionModel()->selection();
 	QList<struct dive*> currentSelectedDives;
 	DiveTripModel::Layout newLayout;
-	bool scrolled = false;
+	bool first = true;
 
 	newLayout = i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST;
 
@@ -104,7 +104,7 @@ void DiveListView::headerClicked(int i)
 			currentSelectedDives.push_back(d);
 	}
 
-	selectionModel()->clearSelection();
+	unselectDives();
 
 	/* No layout change? Just re-sort, and scroll to first selection, making sure all selections are expanded */
 	if (currentLayout == newLayout) {
@@ -119,19 +119,8 @@ void DiveListView::headerClicked(int i)
 
 	// repopulat the selections.
 	Q_FOREACH(struct dive *d, currentSelectedDives) {
-		QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, d->number, 1, Qt::MatchRecursive);
-		QModelIndex idx = match.first();
-
-		if (newLayout == DiveTripModel::TREE) {
-			QModelIndex parent = idx.parent();
-			if (parent.isValid())
-				expand(parent);
-		}
-		selectionModel()->select( idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-		if (!scrolled) {
-			scrollTo(idx, PositionAtCenter);
-			scrolled = true;
-		}
+		selectDive(d, first);
+		first = false;
 	}
 }
 
