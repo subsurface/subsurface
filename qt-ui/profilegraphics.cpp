@@ -179,6 +179,12 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
 {
+	if (event->type() == QEvent::Leave) {
+	  if (toolTip && toolTip->isExpanded()) 
+	      toolTip->collapse();
+	  return true;
+	}
+
 	// This will "Eat" the default tooltip behavior.
 	if (event->type() == QEvent::GraphicsSceneHelp) {
 		event->ignore();
@@ -1324,6 +1330,8 @@ void ToolTipItem::collapse()
 	animation->setStartValue(boundingRect());
 	animation->setEndValue(QRect(0, 0, ICON_SMALL, ICON_SMALL));
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
+	
+	status = COLLAPSED;
 }
 
 void ToolTipItem::expand()
@@ -1357,7 +1365,8 @@ void ToolTipItem::expand()
 	animation->setStartValue(rectangle);
 	animation->setEndValue(nextRectangle);
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
-
+	
+	status = EXPANDED;
 }
 
 ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), background(0)
@@ -1367,6 +1376,8 @@ ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), back
 
 	setFlag(ItemIgnoresTransformations);
 	setFlag(ItemIsMovable);
+	
+	status = COLLAPSED;
 
 	updateTitlePosition();
 	setZValue(99);
@@ -1400,6 +1411,12 @@ void ToolTipItem::updateTitlePosition()
 		separator->hide();
 	}
 }
+
+bool ToolTipItem::isExpanded()
+{
+  return status == EXPANDED ? true : false;
+}
+
 
 EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 {
