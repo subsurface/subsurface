@@ -274,6 +274,7 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 
 void DiveListView::mousePressEvent(QMouseEvent *event)
 {
+	QAction *collapseAction = NULL;
 	// all we care about is the unmodified right click
 	if ( ! (event->modifiers() == Qt::NoModifier && event->buttons() & Qt::RightButton)) {
 		event->ignore();
@@ -281,11 +282,13 @@ void DiveListView::mousePressEvent(QMouseEvent *event)
 		return;
 	}
 	QMenu popup(this);
-	popup.addAction(tr("expand all"), this, SLOT(expandAll()));
-	popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
-	QAction *collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
+	if (currentLayout == DiveTripModel::TREE) {
+		popup.addAction(tr("expand all"), this, SLOT(expandAll()));
+		popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
+		collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
+	}
 	// "collapse all" really closes all trips,
-	// "collaps" keeps the trip with the selected dive open
-	if (popup.exec(event->globalPos()) == collapseAction)
+	// "collapse" keeps the trip with the selected dive open
+	if (popup.exec(event->globalPos()) == collapseAction && collapseAction)
 		selectDive(current_dive, true);
 }
