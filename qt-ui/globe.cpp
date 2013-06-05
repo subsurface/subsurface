@@ -11,6 +11,7 @@
 #include <marble/MarbleModel.h>
 #include <marble/MarbleDirs.h>
 #include <marble/MapThemeManager.h>
+#include <marble/GeoDataLineString.h>
 #if INCOMPLETE_MARBLE
 #include "marble/GeoDataTreeModel.h"
 #else
@@ -69,19 +70,28 @@ void GlobeGPS::reload()
 	}
 
 	loadedDives = new GeoDataDocument;
+	QMap<QString, GeoDataPlacemark *> locationMap;
 
-	diveLocations.clear();
 	int idx = 0;
 	struct dive *dive;
 	for_each_dive(idx, dive) {
 		if (dive_has_gps_location(dive)) {
-			// don't add dive locations twice.
-			if (diveLocations.contains(QString(dive->location)))
-				continue;
-
-			diveLocations.append(QString(dive->location));
 			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
 			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree);
+			// don't add dive locations twice, unless they are at least 50m apart
+			if (locationMap[QString(dive->location)]) {
+				GeoDataPoint existingLocation = locationMap[QString(dive->location)]->coordinate();
+				GeoDataLineString segment = GeoDataLineString();
+				segment.append(existingLocation);
+				GeoDataPoint newLocation = place->coordinate();
+				segment.append(newLocation);
+				double dist = segment.length(6371);
+				// the dist is scaled to the radius given - so with 6371km as radius
+				// 50m turns into 0.05 as threashold
+				if (dist < 0.05)
+					continue;
+			}
+			locationMap[QString(dive->location)] = place;
 			loadedDives->append(place);
 		}
 	}

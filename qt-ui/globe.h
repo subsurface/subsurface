@@ -26,7 +26,6 @@ protected:
 
 private:
 	GeoDataDocument *loadedDives;
-	QStringList diveLocations;
 	struct dive* editingDiveCoords;
 	KMessageWidget* messageWidget;
 
