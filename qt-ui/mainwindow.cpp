@@ -65,7 +65,7 @@ void MainWindow::refreshDisplay()
 
 void MainWindow::current_dive_changed(int divenr)
 {
-	if (amount_selected && divenr >= 0) {
+	if (divenr >= 0) {
 		select_dive(divenr);
 		ui->globe->centerOn(get_dive(selected_dive));
 		redrawProfile();
