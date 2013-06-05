@@ -32,6 +32,7 @@ public:
 	void addToolTip(const QString& toolTip, const QIcon& icon = QIcon());
 	void removeToolTip(const QString& toolTip);
 	void refresh(struct graphics_context* gc, QPointF pos);
+	bool isExpanded();
 
 public Q_SLOTS:
 	void setRect(const QRectF& rect);
@@ -42,6 +43,7 @@ private:
 	QGraphicsPathItem *background;
 	QGraphicsLineItem *separator;
 	QGraphicsSimpleTextItem *title;
+	Status status;
 
 	QRectF rectangle;
 };
