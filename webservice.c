@@ -1,15 +1,35 @@
 #include <libintl.h>
 #include <glib/gi18n.h>
 #include <libsoup/soup.h>
-
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 #include "dive.h"
 #include "divelist.h"
 #include "display-gtk.h"
 #include "file.h"
-#include "webservice.h"
 
 struct dive_table gps_location_table;
 static gboolean merge_locations_into_dives(void);
+
+enum {
+	DD_STATUS_OK,
+	DD_STATUS_ERROR_CONNECT,
+	DD_STATUS_ERROR_ID,
+	DD_STATUS_ERROR_PARSE,
+};
+
+static const gchar *download_dialog_status_text(const gint status)
+{
+	switch (status)	{
+	case DD_STATUS_ERROR_CONNECT:
+		return _("Connection Error: ");
+	case DD_STATUS_ERROR_ID:
+		return _("Invalid user identifier!");
+	case DD_STATUS_ERROR_PARSE:
+		return _("Cannot parse response!");
+	}
+	return _("Download Success!");
+}
 
 /* provides a state of the download dialog contents and the downloaded xml */
 struct download_dialog_state {
@@ -51,6 +71,42 @@ gboolean webservice_request_user_xml(const gchar *user_id,
 	g_object_unref(G_OBJECT(msg));
 	g_object_unref(G_OBJECT(session));
 	return ret;
+}
+
+/* requires that there is a <download> or <error> tag under the <root> tag */
+static void download_dialog_traverse_xml(xmlNodePtr node, guint *download_status)
+{
+	xmlNodePtr cur_node;
+	for (cur_node = node; cur_node; cur_node = cur_node->next) {
+		if ((!strcmp((const char *)cur_node->name, (const char *)"download")) &&
+			  (!strcmp((const char *)xmlNodeGetContent(cur_node), (const char *)"ok"))) {
+			*download_status = DD_STATUS_OK;
+			return;
+		}	else if (!strcmp((const char *)cur_node->name, (const char *)"error")) {
+			*download_status = DD_STATUS_ERROR_ID;
+			return;
+		}
+	}
+}
+
+static guint download_dialog_parse_response(gchar *xmldata, guint len)
+{
+	xmlNodePtr root;
+	xmlDocPtr doc = xmlParseMemory(xmldata, len);
+	guint status = DD_STATUS_ERROR_PARSE;
+
+	if (!doc)
+		return DD_STATUS_ERROR_PARSE;
+	root = xmlDocGetRootElement(doc);
+	if (!root) {
+		status = DD_STATUS_ERROR_PARSE;
+		goto end;
+	}
+	if (root->children)
+		download_dialog_traverse_xml(root->children, &status);
+	end:
+		xmlFreeDoc(doc);
+		return status;
 }
 
 static void download_dialog_connect_cb(GtkWidget *w, gpointer data)
