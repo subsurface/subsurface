@@ -149,7 +149,7 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 	if (event->delta() > 0 && zoomLevel <= 10) {
 		scale(scaleFactor, scaleFactor);
 		zoomLevel++;
-	} else if (zoomLevel >= 0) {
+	} else if (zoomLevel > 0) {
 		// Zooming out
 		scale(1.0 / scaleFactor, 1.0 / scaleFactor);
 		zoomLevel--;
@@ -173,7 +173,7 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 
 	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 
-	if (zoomLevel < 0)
+	if (zoomLevel == 0)
 		QGraphicsView::mouseMoveEvent(event);
 }
 
