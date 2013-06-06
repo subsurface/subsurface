@@ -29,6 +29,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	model->setFilterKeyColumn(-1); // filter all columns
 	setModel(model);
 	setSortingEnabled(false);
+	setContextMenuPolicy(Qt::DefaultContextMenu);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	QAction *showSearchBox = new QAction(tr("Show Search Box"), this);
 	showSearchBox->setShortcut( Qt::CTRL + Qt::Key_F);
@@ -272,23 +273,52 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	Q_EMIT currentDiveChanged(selected_dive);
 }
 
-void DiveListView::mousePressEvent(QMouseEvent *event)
+void DiveListView::removeFromTrip()
+{
+	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
+		return;
+	remove_dive_from_trip(d);
+	reload();
+}
+
+void DiveListView::testSlot()
+{
+	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	if (d) {
+		qDebug("testSlot called on dive #%d", d->number);
+	} else {
+		QModelIndex child = contextMenuIndex.child(0, 0);
+		d = (struct dive *) child.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		if (d)
+			qDebug("testSlot called on trip including dive #%d", d->number);
+		else
+			qDebug("testSlot called on trip with no dive");
+	}
+}
+
+void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 {
 	QAction *collapseAction = NULL;
-	// all we care about is the unmodified right click
-	if ( ! (event->modifiers() == Qt::NoModifier && event->buttons() & Qt::RightButton)) {
-		event->ignore();
-		QTreeView::mousePressEvent(event);
-		return;
-	}
+	// let's remember where we are
+	contextMenuIndex = indexAt(event->pos());
+	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModel::TREE) {
 		popup.addAction(tr("expand all"), this, SLOT(expandAll()));
 		popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
 		collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
+		if (d) {
+			popup.addAction(tr("remove dive from trip"), this, SLOT(removeFromTrip()));
+		}
 	}
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
-	if (popup.exec(event->globalPos()) == collapseAction && collapseAction)
+	QAction * actionTaken = popup.exec(event->globalPos());
+	if (actionTaken == collapseAction && collapseAction) {
+		this->setAnimated(false);
 		selectDive(current_dive, true);
+		this->setAnimated(true);
+	}
+	event->accept();
 }

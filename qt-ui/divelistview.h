@@ -28,21 +28,25 @@ public:
 	bool eventFilter(QObject* , QEvent* );
 	void unselectDives();
 	void selectDive(struct dive *, bool scrollto = false);
-	void mousePressEvent(QMouseEvent *event);
+	void contextMenuEvent(QContextMenuEvent *event);
 
 public slots:
 	void toggleColumnVisibilityByIndex();
 	void reloadHeaderActions();
 	void headerClicked(int);
 	void showSearchEdit();
+	void removeFromTrip();
+	void testSlot();
 
 Q_SIGNALS:
 	void currentDiveChanged(int divenr);
+
 private:
 	bool mouseClickSelection;
 	int currentHeaderClicked;
 	DiveTripModel::Layout currentLayout;
 	QLineEdit *searchBox;
+	QModelIndex contextMenuIndex;
 };
 
 #endif // DIVELISTVIEW_H
