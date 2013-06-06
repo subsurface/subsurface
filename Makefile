@@ -48,6 +48,7 @@ HEADERS = \
 	qt-ui/downloadfromdivecomputer.h \
 	qt-ui/preferences.h \
 	qt-ui/simplewidgets.h \
+	qt-ui/subsurfacewebservices.h \
 
 
 SOURCES = \
@@ -80,6 +81,7 @@ SOURCES = \
 	qt-ui/downloadfromdivecomputer.cpp \
 	qt-ui/preferences.cpp \
 	qt-ui/simplewidgets.cpp \
+	qt-ui/subsurfacewebservices.cpp \
 	$(RESFILE)
 
 
