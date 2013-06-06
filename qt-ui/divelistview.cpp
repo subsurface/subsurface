@@ -279,7 +279,15 @@ void DiveListView::removeFromTrip()
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
 	remove_dive_from_trip(d);
-	reload();
+	reload(currentLayout, false);
+}
+
+void DiveListView::deleteDive()
+{
+	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	if (d)
+		delete_single_dive(get_index_for_dive(d));
+	reload(currentLayout, false);
 }
 
 void DiveListView::testSlot()
@@ -312,6 +320,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("remove dive from trip"), this, SLOT(removeFromTrip()));
 		}
 	}
+	popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction * actionTaken = popup.exec(event->globalPos());

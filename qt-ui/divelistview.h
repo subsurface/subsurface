@@ -36,6 +36,7 @@ public slots:
 	void headerClicked(int);
 	void showSearchEdit();
 	void removeFromTrip();
+	void deleteDive();
 	void testSlot();
 
 Q_SIGNALS:
