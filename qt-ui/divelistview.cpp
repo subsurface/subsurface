@@ -117,9 +117,7 @@ void DiveListView::headerClicked(int i)
 		sortByColumn(i, Qt::DescendingOrder);
 	}
 
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
-
-	// repopulat the selections.
+	// repopulate the selections.
 	Q_FOREACH(struct dive *d, currentSelectedDives) {
 		selectDive(d, first);
 		first = false;
