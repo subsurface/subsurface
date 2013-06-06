@@ -144,7 +144,7 @@ class DiveTripModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
-	enum Layout{TREE, LIST};
+	enum Layout{TREE, LIST, CURRENT};
 
 	DiveTripModel(QObject *parent = 0);
 	~DiveTripModel();

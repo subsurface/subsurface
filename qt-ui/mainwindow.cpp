@@ -42,11 +42,11 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(refreshDisplay()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ListWidget, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ProfileWidget, SLOT(refresh()));
 	ui->mainErrorMessage->hide();
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
-	ui->ListWidget->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
 	initialUiSetup();
 	readSettings();
 	ui->ListWidget->reloadHeaderActions();
@@ -60,7 +60,7 @@ void MainWindow::refreshDisplay()
 {
 	if (selected_dive == -1)
 		current_dive_changed(dive_table.nr - 1);
-	ui->ListWidget->reload();
+	ui->ListWidget->reload(DiveTripModel::CURRENT, false);
 }
 
 void MainWindow::current_dive_changed(int divenr)
@@ -106,7 +106,7 @@ void MainWindow::on_actionOpen_triggered()
 
 	ui->InfoWidget->reload();
 	ui->globe->reload();
-	ui->ListWidget->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
 	ui->ListWidget->setFocus();
 }
 
@@ -139,7 +139,7 @@ void MainWindow::on_actionClose_triggered()
 	ui->InfoWidget->clearEquipment();
 	ui->InfoWidget->updateDiveInfo(-1);
 	ui->ProfileWidget->clear();
-	ui->ListWidget->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
 	ui->globe->reload();
 
 	clear_events();

@@ -128,8 +128,10 @@ void DiveListView::headerClicked(int i)
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
-	currentLayout = layout;
-
+	if (layout == DiveTripModel::CURRENT)
+		layout = currentLayout;
+	else
+		currentLayout = layout;
 	header()->setClickable(true);
 	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
 

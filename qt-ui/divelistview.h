@@ -24,7 +24,7 @@ public:
 	DiveListView(QWidget *parent = 0);
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 	void currentChanged(const QModelIndex& current, const QModelIndex& previous);
-	void reload(DiveTripModel::Layout layout = DiveTripModel::TREE, bool forceSort = true);
+	void reload(DiveTripModel::Layout layout, bool forceSort = true);
 	bool eventFilter(QObject* , QEvent* );
 	void unselectDives();
 	void selectDive(struct dive *, bool scrollto = false);
