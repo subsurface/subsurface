@@ -8,6 +8,7 @@
 #include "../helpers.h"
 #include "../dive.h"
 #include "../device.h"
+
 #include <QCoreApplication>
 #include <QDebug>
 #include <QColor>
@@ -1203,7 +1204,18 @@ bool DiveComputerModel::setData(const QModelIndex& index, const QVariant& value,
 		nnl = nnl->next;
 	}
 	
+	
 	QByteArray v = value.toByteArray();
 	nnl->nickname = strdup(v.data()); // how should I free this before setting a new one?
 	// set_dc_nickname(dive);  -> should this be used instead?
+	
+	return true;
+}
+
+void DiveComputerModel::remove(const QModelIndex& i)
+{
+	QByteArray model = data(index(i.row(), (int)MODEL)).toByteArray();
+	uint32_t deviceid = data(index(i.row(), (int) ID)).toUInt();
+	remove_dive_computer(model.data(),  deviceid);
+	update();
 }

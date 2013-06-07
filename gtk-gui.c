@@ -101,11 +101,6 @@ static void remember_dc(const char *model, uint32_t deviceid, const char *nickna
 	nn_entry->nickname = strdup(nickname);
 }
 
-static void remove_dc(const char *model, uint32_t deviceid)
-{
-	free(remove_device_info(model, deviceid));
-}
-
 static GtkWidget *dive_profile;
 
 GtkActionGroup *action_group;
