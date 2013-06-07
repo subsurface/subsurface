@@ -157,6 +157,7 @@ const char *get_dc_nickname(const char *model, uint32_t deviceid)
 void set_dc_nickname(struct dive *dive)
 {
 	/* needs Qt implementation */
+	/*well, I don't know how to do this here... = ( */
 }
 
 QString get_depth_string(depth_t depth, bool showunit)

@@ -1198,10 +1198,12 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex& index) const
 bool DiveComputerModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	struct device_info *nnl = head_of_device_info_list();
+	
 	for(int i = 0; i < index.row(); i++){
 		nnl = nnl->next;
 	}
 	
 	QByteArray v = value.toByteArray();
 	nnl->nickname = strdup(v.data()); // how should I free this before setting a new one?
+	// set_dc_nickname(dive);  -> should this be used instead?
 }
