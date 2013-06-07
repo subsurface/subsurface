@@ -7,6 +7,7 @@
 #include "models.h"
 #include "../helpers.h"
 #include "../dive.h"
+#include "../device.h"
 #include <QCoreApplication>
 #include <QDebug>
 #include <QColor>
@@ -1104,4 +1105,86 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
 {
 	currentLayout = layout;
 	setupModelData();
+}
+
+/*#################################################################### 
+ *
+ * Dive Computer Model 
+ *
+ *####################################################################
+ */
+
+DiveComputerModel::DiveComputerModel(QObject* parent): QAbstractTableModel(parent)
+{
+
+}
+
+int DiveComputerModel::columnCount(const QModelIndex& parent) const
+{
+	return COLUMNS;
+}
+
+QVariant DiveComputerModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	QVariant ret;
+	if (role != Qt::DisplayRole || orientation != Qt::Horizontal){
+		return ret;
+	}
+	switch(section){
+		case ID : ret = tr("Device ID"); break;
+		case MODEL : ret = tr("Model"); break;
+		case NICKNAME : ret = tr("Nickname"); break;
+	}
+	return ret;
+}
+
+QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
+{
+	struct device_info *device = head_of_device_info_list();
+	for(int i = 0; i < index.row(); i++){
+		device = device->next;
+	}
+
+	QVariant ret;
+	if (role == Qt::DisplayRole || role == Qt::EditRole){
+		switch(index.column()){
+			case ID : ret = device->deviceid; break;
+			case MODEL : ret = device->model; break;
+			case NICKNAME : ret = device->nickname; break;
+		}
+	}
+	
+	if (role ==  Qt::DecorationRole && index.column() == REMOVE){
+		ret = QIcon(":trash");
+	}
+	return ret;
+}
+
+int DiveComputerModel::rowCount(const QModelIndex& parent) const
+{
+	return numRows;
+}
+
+void DiveComputerModel::update()
+{
+	int count = 0;
+	struct device_info *nnl = head_of_device_info_list();
+	while (nnl) {
+		nnl = nnl->next;
+		count++;
+	}
+	qDebug() << "Numero de Devices" << count;
+	
+	if(numRows){
+		beginRemoveRows(QModelIndex(), 0, numRows-1);
+		numRows = 0;
+		endRemoveRows();
+	}
+	
+	if (count){
+		beginInsertRows(QModelIndex(), 0, count-1);
+		numRows = count;
+		endInsertRows();
+	}
+	
 }

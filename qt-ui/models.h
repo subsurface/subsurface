@@ -167,4 +167,20 @@ private:
 	Layout currentLayout;
 };
 
+class DiveComputerModel : public QAbstractTableModel
+{
+	Q_OBJECT
+public:
+	enum {REMOVE, MODEL, ID, NICKNAME, COLUMNS};
+    explicit DiveComputerModel(QObject* parent = 0);
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+	void update();
+private:
+	int numRows;
+	
+};
+
 #endif

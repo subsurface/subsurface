@@ -29,6 +29,7 @@
 #include "downloadfromdivecomputer.h"
 #include "preferences.h"
 #include "subsurfacewebservices.h"
+#include "divecomputermanagementdialog.h"
 
 static MainWindow* instance = 0;
 
@@ -187,7 +188,9 @@ void MainWindow::on_actionDownloadWeb_triggered()
 
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
-	qDebug("actionEditDeviceNames");}
+	DiveComputerManagementDialog::instance()->update();
+	DiveComputerManagementDialog::instance()->show();
+}
 
 void MainWindow::on_actionAddDive_triggered()
 {
