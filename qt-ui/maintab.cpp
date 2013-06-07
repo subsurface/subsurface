@@ -27,7 +27,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->weights->setModel(weightModel);
 	ui->diveNotesMessage->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
-
+#ifdef __APPLE__
+	setDocumentMode(false);
+#else
+	setDocumentMode(true);
+#endif
 	// we start out with the fields read-only; once things are
 	// filled from a dive, they are made writeable
 	ui->location->setReadOnly(true);
