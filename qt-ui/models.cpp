@@ -1173,18 +1173,35 @@ void DiveComputerModel::update()
 		nnl = nnl->next;
 		count++;
 	}
-	qDebug() << "Numero de Devices" << count;
-	
+
 	if(numRows){
 		beginRemoveRows(QModelIndex(), 0, numRows-1);
 		numRows = 0;
 		endRemoveRows();
 	}
-	
+
 	if (count){
 		beginInsertRows(QModelIndex(), 0, count-1);
 		numRows = count;
 		endInsertRows();
 	}
+}
+
+Qt::ItemFlags DiveComputerModel::flags(const QModelIndex& index) const
+{
+	Qt::ItemFlags flags = QAbstractItemModel::flags(index);
+	if (index.column() == NICKNAME)
+		flags |= Qt::ItemIsEditable;
+    return flags;
+}
+
+bool DiveComputerModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	struct device_info *nnl = head_of_device_info_list();
+	for(int i = 0; i < index.row(); i++){
+		nnl = nnl->next;
+	}
 	
+	QByteArray v = value.toByteArray();
+	nnl->nickname = strdup(v.data()); // how should I free this before setting a new one?
 }
