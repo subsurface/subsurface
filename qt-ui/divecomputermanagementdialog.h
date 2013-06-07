@@ -2,6 +2,7 @@
 #define DIVECOMPUTERMANAGEMENTDIALOG_H
 #include <QDialog>
 
+class QModelIndex;
 class DiveComputerModel;
 namespace Ui{
 	class DiveComputerManagementDialog;
@@ -13,6 +14,10 @@ Q_OBJECT
 public:
     static DiveComputerManagementDialog *instance();
 	void update();
+
+public  slots:
+	void tryRemove(const QModelIndex& index);
+
 private:
     explicit DiveComputerManagementDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
     Ui::DiveComputerManagementDialog *ui;
