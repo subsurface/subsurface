@@ -28,6 +28,7 @@
 #include "models.h"
 #include "downloadfromdivecomputer.h"
 #include "preferences.h"
+#include "subsurfacewebservices.h"
 
 static MainWindow* instance = 0;
 
@@ -181,7 +182,8 @@ void MainWindow::on_actionDownloadDC_triggered()
 
 void MainWindow::on_actionDownloadWeb_triggered()
 {
-	qDebug("actionDownloadWeb");}
+	SubsurfaceWebServices::instance()->runDialog();
+}
 
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
