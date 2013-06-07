@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:u="http://www.streit.cc/uddf/3.2/"
   xmlns:u1="http://www.streit.cc/uddf/3.1/"
-  exclude-result-prefixes="u"
+  exclude-result-prefixes="u u1"
   version="1.0">
   <xsl:import href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
@@ -12,11 +12,18 @@
     <divelog program="subsurface-import" version="2">
       <settings>
         <divecomputerid deviceid="ffffffff">
-          <xsl:apply-templates select="/uddf/generator|/u:uddf/u:generator|/u1:uddf/u1:generator"/>
+          <xsl:choose>
+            <xsl:when test="/UDDF/history != ''">
+              <xsl:apply-templates select="/UDDF/history"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="/uddf/generator|/u:uddf/u:generator|/u1:uddf/u1:generator"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </divecomputerid>
       </settings>
       <dives>
-        <xsl:apply-templates select="/uddf/profiledata/repetitiongroup/dive|/u:uddf/u:profiledata/u:repetitiongroup/u:dive|/u1:uddf/u1:profiledata/u1:repetitiongroup/u1:dive"/>
+        <xsl:apply-templates select="/uddf/profiledata/repetitiongroup/dive|/u:uddf/u:profiledata/u:repetitiongroup/u:dive|/u1:uddf/u1:profiledata/u1:repetitiongroup/u1:dive|/UDDF/dive"/>
       </dives>
     </divelog>
   </xsl:template>
@@ -39,11 +46,24 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="gasdefinitions|u:gasdefinitions|u1:gasdefinitions">
-    <xsl:for-each select="mix|u:mix|u1:mix">
+  <xsl:template match="modified">
+    <xsl:if test="application/name != ''">
+      <xsl:attribute name="model">
+        <xsl:value-of select="application/name"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="application/version != ''">
+      <xsl:attribute name="serial">
+        <xsl:value-of select="application/version"/>
+      </xsl:attribute>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="gasdefinitions|u:gasdefinitions|u1:gasdefinitions|gas_def">
+    <xsl:for-each select="mix|u:mix|u1:mix|gas_mix">
       <cylinder>
         <xsl:attribute name="description">
-          <xsl:value-of select="name|u:name|u1:name"/>
+          <xsl:value-of select="name|u:name|u1:name|mixname"/>
         </xsl:attribute>
 
         <xsl:attribute name="o2">
@@ -69,7 +89,7 @@
     <dive>
       <!-- Count the amount of temeprature samples during the dive -->
       <xsl:variable name="temperatureSamples">
-        <xsl:call-template name="temperatureSamples" select="samples/waypoint/temperature|u:samples/u:waypoint/u:temperature|u1:samples/u1:waypoint/u1:temperature">
+        <xsl:call-template name="temperatureSamples" select="samples/waypoint/temperature|u:samples/u:waypoint/u:temperature|u1:samples/u1:waypoint/u1:temperature|samples/t">
           <xsl:with-param name="units" select="'Kelvin'"/>
         </xsl:call-template>
       </xsl:variable>
@@ -91,8 +111,22 @@
           </xsl:call-template>
         </xsl:when>
       </xsl:choose>
+      <xsl:if test="dive_number != ''">
+        <xsl:attribute name="number">
+          <xsl:value-of select="dive_number"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="dive_duration != '' and dive_duration != 0">
+        <xsl:attribute name="duration">
+          <xsl:call-template name="timeConvert">
+            <xsl:with-param name="timeSec">
+              <xsl:value-of select="dive_duration"/>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:attribute>
+      </xsl:if>
 
-      <xsl:for-each select="lowesttemperature|informationafterdive/lowesttemperature|u:lowesttemperature|u:informationafterdive/u:lowesttemperature|u1:lowesttemperature|u1:informationafterdive/u1:lowesttemperature">
+      <xsl:for-each select="lowesttemperature|informationafterdive/lowesttemperature|u:lowesttemperature|u:informationafterdive/u:lowesttemperature|u1:lowesttemperature|u1:informationafterdive/u1:lowesttemperature|condition/water_temp">
         <temperature>
           <xsl:if test="$temperatureSamples &gt; 0 or . != 273.15">
             <xsl:attribute name="water">
@@ -104,24 +138,27 @@
 
       <divecomputer deviceid="ffffffff">
         <xsl:attribute name="model">
-          <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name"/>
+          <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name|/UDDF/history/modified/application/name"/>
         </xsl:attribute>
       </divecomputer>
 
+      <!--<xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions|/u1:uddf/u1:gasdefinitions|/UDDF/gas_def"/>-->
       <xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions|/u1:uddf/u1:gasdefinitions"/>
       <depth>
-        <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth">
+        <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth|max_depth">
           <xsl:attribute name="max">
-            <xsl:value-of select="concat(., ' m')"/>
+            <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
           </xsl:attribute>
         </xsl:for-each>
         <xsl:for-each select="averagedepth|informationafterdive/averagedepth|u:averagedepth|u:informationafterdive/u:averagedepth|u1:averagedepth|u1:informationafterdive/u1:averagedepth">
           <xsl:attribute name="mean">
-            <xsl:value-of select="concat(., ' m')"/>
+            <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
           </xsl:attribute>
         </xsl:for-each>
       </depth>
 
+      <!-- TODO: aquadivelog gas changes missing, yet another totally
+           different way of doing this -->
       <xsl:for-each select="samples/waypoint/switchmix|u:samples/u:waypoint/u:switchmix|u1:samples/u1:waypoint/u1:switchmix">
 			<!-- Index to lookup gas per cent -->
         <xsl:variable name="idx">
@@ -132,7 +169,7 @@
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
               <xsl:with-param name="timeSec">
-                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime"/>
+                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime|preceding-sibling::t"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:attribute>
@@ -147,24 +184,29 @@
         </event>
       </xsl:for-each>
 
-      <xsl:for-each select="samples/waypoint|u:samples/u:waypoint|u1:samples/u1:waypoint">
+      <xsl:for-each select="samples/waypoint|u:samples/u:waypoint|u1:samples/u1:waypoint|samples/d">
         <sample>
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
               <xsl:with-param name="timeSec">
-                <xsl:value-of select="divetime|u:divetime|u1:divetime"/>
+                <xsl:value-of select="divetime|u:divetime|u1:divetime|preceding-sibling::t[1]"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:attribute>
 
           <xsl:if test="depth != ''">
             <xsl:attribute name="depth">
-              <xsl:value-of select="concat(depth, ' m')"/>
+              <xsl:value-of select="concat(format-number(depth, '0.00'), ' m')"/>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="u:depth|u1:depth != ''">
             <xsl:attribute name="depth">
-              <xsl:value-of select="concat(u:depth|u1:depth, ' m')"/>
+              <xsl:value-of select="concat(format-number(u:depth|u1:depth, '0.00'), ' m')"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test=". != 0">
+            <xsl:attribute name="depth">
+              <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
             </xsl:attribute>
           </xsl:if>
 
