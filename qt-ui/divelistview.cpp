@@ -51,7 +51,7 @@ void DiveListView::selectDive(struct dive *dive, bool scrollto, bool toggle)
 {
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, dive->number, 1, Qt::MatchRecursive);
-	QFlags<QItemSelectionModel::SelectionFlag> flags;
+	QItemSelectionModel::SelectionFlags flags;
 	QModelIndex idx = match.first();
 
 	QModelIndex parent = idx.parent();
