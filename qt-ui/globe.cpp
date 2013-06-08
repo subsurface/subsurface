@@ -130,10 +130,10 @@ void GlobeGPS::reload()
 			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree);
 			// don't add dive locations twice, unless they are at least 50m apart
 			if (locationMap[QString(dive->location)]) {
-				GeoDataPoint existingLocation = locationMap[QString(dive->location)]->coordinate();
+				GeoDataCoordinates existingLocation = locationMap[QString(dive->location)]->coordinate();
 				GeoDataLineString segment = GeoDataLineString();
 				segment.append(existingLocation);
-				GeoDataPoint newLocation = place->coordinate();
+				GeoDataCoordinates newLocation = place->coordinate();
 				segment.append(newLocation);
 				double dist = segment.length(6371);
 				// the dist is scaled to the radius given - so with 6371km as radius
