@@ -82,6 +82,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	int idx;
 	struct dive *dive;
 	bool clear = !(QApplication::keyboardModifiers() && Qt::ControlModifier);
+	bool toggle = !clear;
 	bool first = true;
 	for_each_dive(idx, dive) {
 		long lat_diff, lon_diff;
@@ -100,7 +101,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 			mainWindow()->dive_list()->unselectDives();
 			clear = false;
 		}
-		mainWindow()->dive_list()->selectDive(dive, first);
+		mainWindow()->dive_list()->selectDive(dive, first, toggle);
 		first = false;
 	}
 }
