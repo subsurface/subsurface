@@ -128,7 +128,23 @@
 
       <xsl:if test="condition/visibility != '' and condition/visibility != 0">
         <xsl:attribute name="visibility">
-          <xsl:value-of select="condition/visibility"/>
+          <xsl:choose>
+            <xsl:when test="condition/visibility &lt; 1">
+              <xsl:value-of select="1"/>
+            </xsl:when>
+            <xsl:when test="condition/visibility &lt;= 3">
+              <xsl:value-of select="2"/>
+            </xsl:when>
+            <xsl:when test="condition/visibility &lt;= 5">
+              <xsl:value-of select="3"/>
+            </xsl:when>
+            <xsl:when test="condition/visibility &lt;= 10">
+              <xsl:value-of select="4"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="5"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:attribute>
       </xsl:if>
 
