@@ -126,6 +126,58 @@
         </xsl:attribute>
       </xsl:if>
 
+      <xsl:if test="condition/visibility != '' and condition/visibility != 0">
+        <xsl:attribute name="visibility">
+          <xsl:value-of select="condition/visibility"/>
+        </xsl:attribute>
+      </xsl:if>
+
+      <xsl:if test="condition/air_temp != ''">
+        <divetemperature>
+          <xsl:attribute name="air">
+            <xsl:value-of select="concat(format-number(condition/air_temp - 273.15, '0.0'), ' C')"/>
+          </xsl:attribute>
+        </divetemperature>
+      </xsl:if>
+
+      <xsl:if test="dive_site_ref/@ref != ''">
+        <location>
+          <xsl:variable name="ref">
+            <xsl:value-of select="dive_site_ref/@ref"/>
+          </xsl:variable>
+          <xsl:for-each select="//dive_site[@id=$ref]/geography/location|//dive_site[@id=$ref]/name">
+            <xsl:value-of select="."/>
+            <xsl:if test=". != '' and following-sibling::*[1]/* != ''"> / </xsl:if>
+          </xsl:for-each>
+        </location>
+      </xsl:if>
+
+      <xsl:if test="buddy_ref/@ref != ''">
+        <buddy>
+          <xsl:variable name="ref">
+            <xsl:value-of select="buddy_ref/@ref"/>
+          </xsl:variable>
+          <xsl:for-each select="//diver[@id=$ref]/personal/first_name|//diver[@id=$ref]/personal/nick_name|//diver[@id=$ref]/personal/family_name">
+            <xsl:value-of select="."/>
+            <xsl:if test=". != '' and (following-sibling::*[1] != '' or following-sibling::*[2] != '')"> / </xsl:if>
+          </xsl:for-each>
+        </buddy>
+      </xsl:if>
+
+      <xsl:if test="note/text != ''">
+        <notes>
+          <xsl:value-of select="note/text"/>
+        </notes>
+      </xsl:if>
+
+      <xsl:if test="equipment_used/weight_used &gt; 0">
+        <weightsystem description="unknown">
+          <xsl:attribute name="weight">
+            <xsl:value-of select="concat(format-number(equipment_used/weight_used, '0.0'), ' kg')"/>
+          </xsl:attribute>
+        </weightsystem>
+      </xsl:if>
+
       <xsl:for-each select="lowesttemperature|informationafterdive/lowesttemperature|u:lowesttemperature|u:informationafterdive/u:lowesttemperature|u1:lowesttemperature|u1:informationafterdive/u1:lowesttemperature|condition/water_temp">
         <temperature>
           <xsl:if test="$temperatureSamples &gt; 0 or . != 273.15">
@@ -142,7 +194,28 @@
         </xsl:attribute>
       </divecomputer>
 
-      <!--<xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions|/u1:uddf/u1:gasdefinitions|/UDDF/gas_def"/>-->
+      <xsl:if test="equipment_used/tank_used != ''">
+        <xsl:for-each select="equipment_used/tank_used">
+          <cylinder>
+            <xsl:variable name="idx">
+              <xsl:value-of select="./tank_ref/@ref"/>
+            </xsl:variable>
+            <xsl:attribute name="size">
+              <xsl:value-of select="//equipment[@id=$idx]/tank/volume"/>
+            </xsl:attribute>
+            <xsl:attribute name="description">
+              <xsl:value-of select="//equipment[@id=$idx]/general/name"/>
+            </xsl:attribute>
+            <xsl:attribute name="start">
+              <xsl:value-of select="concat(substring-before(./pressure_start, '.') div 100000, ' bar')"/>
+            </xsl:attribute>
+            <xsl:attribute name="end">
+              <xsl:value-of select="concat(substring-before(./pressure_end, '.') div 100000, ' bar')"/>
+            </xsl:attribute>
+          </cylinder>
+        </xsl:for-each>
+      </xsl:if>
+
       <xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions|/u1:uddf/u1:gasdefinitions"/>
       <depth>
         <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth|max_depth">
@@ -157,8 +230,36 @@
         </xsl:for-each>
       </depth>
 
-      <!-- TODO: aquadivelog gas changes missing, yet another totally
-           different way of doing this -->
+      <!-- Aquadivelog gas switches require more lookups than other UDDF
+           formats I have seen -->
+      <xsl:for-each select="samples/switch">
+        <xsl:variable name="tank_idx">
+          <xsl:value-of select="./@tank"/>
+        </xsl:variable>
+        <xsl:variable name="idx">
+          <xsl:value-of select="//equipment_used/tank_used[@id=$tank_idx]/gas_ref/@ref"/>
+        </xsl:variable>
+
+        <event name="gaschange" type="11">
+          <xsl:attribute name="time">
+            <xsl:call-template name="timeConvert">
+              <xsl:with-param name="timeSec">
+                <xsl:value-of select="following-sibling::t"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:attribute>
+
+          <xsl:attribute name="value">
+            <xsl:call-template name="gasConvert">
+              <xsl:with-param name="mix">
+                <xsl:value-of select="//gas_def/gas_mix[@id=$idx]/o2"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:attribute>
+        </event>
+      </xsl:for-each>
+
+      <!-- Other gas switches than Aquadivelog -->
       <xsl:for-each select="samples/waypoint/switchmix|u:samples/u:waypoint/u:switchmix|u1:samples/u1:waypoint/u1:switchmix">
 			<!-- Index to lookup gas per cent -->
         <xsl:variable name="idx">
@@ -169,7 +270,7 @@
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
               <xsl:with-param name="timeSec">
-                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime|preceding-sibling::t"/>
+                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:attribute>
@@ -194,21 +295,23 @@
             </xsl:call-template>
           </xsl:attribute>
 
-          <xsl:if test="depth != ''">
-            <xsl:attribute name="depth">
-              <xsl:value-of select="concat(format-number(depth, '0.00'), ' m')"/>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="u:depth|u1:depth != ''">
-            <xsl:attribute name="depth">
-              <xsl:value-of select="concat(format-number(u:depth|u1:depth, '0.00'), ' m')"/>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test=". != 0">
-            <xsl:attribute name="depth">
-              <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
-            </xsl:attribute>
-          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="depth != ''">
+              <xsl:attribute name="depth">
+                <xsl:value-of select="concat(format-number(depth, '0.00'), ' m')"/>
+              </xsl:attribute>
+            </xsl:when>
+            <xsl:when test="u:depth|u1:depth != ''">
+              <xsl:attribute name="depth">
+                <xsl:value-of select="concat(format-number(u:depth|u1:depth, '0.00'), ' m')"/>
+              </xsl:attribute>
+            </xsl:when>
+            <xsl:when test=". != 0">
+              <xsl:attribute name="depth">
+                <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
+              </xsl:attribute>
+            </xsl:when>
+          </xsl:choose>
 
           <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
             <xsl:attribute name="temperature">
