@@ -44,6 +44,7 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ListWidget, SLOT(update()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ListWidget, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ProfileWidget, SLOT(refresh()));
 	ui->mainErrorMessage->hide();
 	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
