@@ -59,10 +59,14 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 			QSettings s;
 			s.setValue("webservice_uid", ui->userID->text());
 			s.sync();
+			hide();
+			close();
 		}
 		break;
 		case QDialogButtonBox::RejectRole:
-			manager->deleteLater();
+			// we may want to clean up after ourselves, but this
+			// makes Subsurface throw a SIGSEGV...
+			// manager->deleteLater();
 			reply->deleteLater();
 			ui->progressBar->setMaximum(1);
 			break;
@@ -90,7 +94,7 @@ void SubsurfaceWebServices::startDownload()
 	ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 
 	connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
-	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), 
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
 			this, SLOT(downloadError(QNetworkReply::NetworkError)));
 }
 
