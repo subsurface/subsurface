@@ -25,6 +25,7 @@ public:
 	enum {ICON_SMALL = 16, ICON_MEDIUM = 24, ICON_BIG = 32, SPACING=4};
 
 	explicit ToolTipItem(QGraphicsItem* parent = 0);
+	virtual ~ToolTipItem();
 
 	void collapse();
 	void expand();
@@ -83,7 +84,7 @@ private:
 	void plot_events(struct divecomputer *dc);
 	void plot_one_event(struct event *event);
 	void plot_temperature_profile();
-	void plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc);
+	void plot_cylinder_pressure(struct divecomputer *dc);
 	void plot_temperature_text();
 	void plot_single_temp_text(int sec, int mkelvin);
 	void plot_depth_text();

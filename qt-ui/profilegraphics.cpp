@@ -221,10 +221,14 @@ void ProfileGraphicsView::showEvent(QShowEvent* event)
 
 void ProfileGraphicsView::clear()
 {
-	scene()->clear();
 	resetTransform();
 	zoomLevel = 0;
-	toolTip = 0;
+	if(toolTip){
+		scene()->removeItem(toolTip);
+		toolTip->deleteLater();
+		toolTip = 0;
+	}
+	scene()->clear();
 }
 
 void ProfileGraphicsView::refresh()
@@ -291,7 +295,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	plot_temperature_profile();
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure(dive, dc);
+	plot_cylinder_pressure(dc);
 
 	/* Text on top of all graphs.. */
 	plot_temperature_text();
@@ -708,7 +712,7 @@ void ProfileGraphicsView::plot_single_temp_text(int sec, int mkelvin)
 	plot_text(&tro, QPointF(sec, mkelvin), QString("%1%2").arg(deg, 0, 'f', 1).arg(unit)); //"%.2g%s"
 }
 
-void ProfileGraphicsView::plot_cylinder_pressure(struct dive *dive, struct divecomputer *dc)
+void ProfileGraphicsView::plot_cylinder_pressure(struct divecomputer *dc)
 {
 	int i;
 	int last = -1, last_index = -1;
@@ -1366,6 +1370,12 @@ ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), back
 	setZValue(99);
 }
 
+ToolTipItem::~ToolTipItem()
+{
+	clear();
+}
+
+
 void ToolTipItem::updateTitlePosition()
 {
 	if (rectangle.width() < title->boundingRect().width() + SPACING*4) {
@@ -1398,7 +1408,6 @@ void ToolTipItem::updateTitlePosition()
 bool ToolTipItem::isExpanded() {
 	return status == EXPANDED;
 }
-
 
 EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 {
