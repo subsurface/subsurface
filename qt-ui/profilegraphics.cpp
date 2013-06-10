@@ -268,6 +268,19 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		dc = fake_dc(dc);
 	}
 
+	QString nick(get_dc_nickname(dc->model, dc->deviceid));
+	if (nick.isEmpty())
+		nick = QString(dc->model);
+
+	if (nick.isEmpty())
+		nick = tr("unknown divecomputer");
+
+	if ( tr("unknown divecomputer") == nick){
+		mode = PLAN;
+	}else{
+		mode = DIVE;
+	}
+
 	/*
 	 * Set up limits that are independent of
 	 * the dive computer
@@ -309,13 +322,6 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	scene()->addItem(rect);
 
 	/* Put the dive computer name in the lower left corner */
-	QString nick(get_dc_nickname(dc->model, dc->deviceid));
-	if (nick.isEmpty())
-		nick = QString(dc->model);
-
-	if (nick.isEmpty())
-		nick = tr("unknown divecomputer");
-
 	gc.leftx = 0; gc.rightx = 1.0;
 	gc.topy = 0; gc.bottomy = 1.0;
 

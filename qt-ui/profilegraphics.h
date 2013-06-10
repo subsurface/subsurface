@@ -68,6 +68,8 @@ class ProfileGraphicsView : public QGraphicsView
 {
 Q_OBJECT
 public:
+	enum Mode{DIVE, PLAN};
+
 	ProfileGraphicsView(QWidget* parent = 0);
 	void plot(struct dive *d, bool forceRedraw = FALSE);
 	bool eventFilter(QObject* obj, QEvent* event);
@@ -117,6 +119,8 @@ private:
 	QGraphicsItem* timeMarkers;
 	QGraphicsItem* depthMarkers;
 	QGraphicsItem* diveComputer;
+
+	enum Mode mode;
 };
 
 #endif
