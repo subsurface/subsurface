@@ -5,6 +5,9 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QIcon>
+#include <QDoubleSpinBox>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
 
 struct text_render_options;
 struct graphics_context;
@@ -64,6 +67,20 @@ private:
 	QIcon icon;
 };
 
+class GraphicsTextEditor : public QGraphicsTextItem{
+	Q_OBJECT
+public:
+    GraphicsTextEditor(QGraphicsItem* parent = 0);
+
+protected:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
+    virtual void keyReleaseEvent(QKeyEvent* event);
+
+signals:
+	void textChanged(const QString& text);
+	void editingFinished(const QString& text);
+};
+
 class ProfileGraphicsView : public QGraphicsView
 {
 Q_OBJECT
@@ -119,6 +136,10 @@ private:
 	QGraphicsItem* timeMarkers;
 	QGraphicsItem* depthMarkers;
 	QGraphicsItem* diveComputer;
+
+	// For 'Plan' mode.:
+	GraphicsTextEditor *depthEditor;
+	GraphicsTextEditor *timeEditor;
 
 	enum Mode mode;
 };

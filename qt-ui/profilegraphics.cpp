@@ -1,4 +1,6 @@
 #include "profilegraphics.h"
+#include "mainwindow.h"
+#include "divelistview.h"
 
 #include <QGraphicsScene>
 #include <QResizeEvent>
@@ -12,6 +14,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
+#include <qtextdocument.h>
 
 #include "../color.h"
 #include "../display.h"
@@ -255,6 +258,8 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		return;
 	}
 
+	// best place to put the focus stealer code.
+	setFocusProxy(mainWindow()->dive_list());
 	scene()->setSceneRect(0,0, viewport()->width()-50, viewport()->height()-50);
 
 	toolTip = new ToolTipItem();
@@ -330,11 +335,17 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	// The Time ruler should be right after the DiveComputer:
 	timeMarkers->setPos(0, diveComputer->y());
 
+	if(mode == PLAN){
+		timeEditor = new GraphicsTextEditor();
+		timeEditor->setPlainText(" Set Duration: 10 minutes");
+		timeEditor->setPos(profile_grid_area.width() + timeMarkers->boundingRect().width(), timeMarkers->y());
+		timeEditor->document();
+		scene()->addItem(timeEditor);
+	}
 	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile();
 		plot_pp_text();
 	}
-
 
 	/* now shift the translation back by half the margin;
 	 * this way we can draw the vertical scales on both sides */
@@ -1480,4 +1491,28 @@ EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, this);
 	ball->setBrush(QBrush(Qt::black));
 
+}
+
+GraphicsTextEditor::GraphicsTextEditor(QGraphicsItem* parent): QGraphicsTextItem(parent)
+{
+
+}
+
+void GraphicsTextEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+	// Remove the proxy filter so we can focus here.
+	mainWindow()->graphics()->setFocusProxy(0);
+	setTextInteractionFlags(Qt::TextEditorInteraction | Qt::TextEditable);
+}
+
+void GraphicsTextEditor::keyReleaseEvent(QKeyEvent* event)
+{
+	if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return){
+		setTextInteractionFlags(Qt::NoTextInteraction);
+		emit editingFinished( toPlainText() );
+		mainWindow()->graphics()->setFocusProxy(mainWindow()->dive_list());
+		return;
+	}
+	emit textChanged( toPlainText() );
+    QGraphicsTextItem::keyReleaseEvent(event);
 }

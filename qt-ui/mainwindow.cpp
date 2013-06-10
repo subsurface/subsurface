@@ -47,7 +47,6 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ListWidget, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ProfileWidget, SLOT(refresh()));
 	ui->mainErrorMessage->hide();
-	ui->ProfileWidget->setFocusProxy(ui->ListWidget);
 	ui->ListWidget->reload(DiveTripModel::TREE);
 	initialUiSetup();
 	readSettings();
