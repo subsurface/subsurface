@@ -335,13 +335,6 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	// The Time ruler should be right after the DiveComputer:
 	timeMarkers->setPos(0, diveComputer->y());
 
-	if(mode == PLAN){
-		timeEditor = new GraphicsTextEditor();
-		timeEditor->setPlainText(" Set Duration: 10 minutes");
-		timeEditor->setPos(profile_grid_area.width() + timeMarkers->boundingRect().width(), timeMarkers->y());
-		timeEditor->document();
-		scene()->addItem(timeEditor);
-	}
 	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile();
 		plot_pp_text();
@@ -371,6 +364,15 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		fitInView(sceneRect());
 	}
 	toolTip->readPos();
+
+	if(mode == PLAN){
+		timeEditor = new GraphicsTextEditor();
+		timeEditor->setPlainText( dive->duration.seconds ? QString::number(dive->duration.seconds/60) : tr("Set Duration: 10 minutes"));
+		timeEditor->setPos(profile_grid_area.width() - timeEditor->boundingRect().width(), timeMarkers->y());
+		timeEditor->document();
+		connect(timeEditor, SIGNAL(editingFinished(QString)), this, SLOT(edit_dive_time(QString)));
+		scene()->addItem(timeEditor);
+	}
 }
 
 void ProfileGraphicsView::plot_depth_scale()
@@ -1218,6 +1220,12 @@ void ProfileGraphicsView::plot_temperature_profile()
 	}
 }
 
+void ProfileGraphicsView::edit_dive_time(const QString& time)
+{
+	// this should set the full time of the dive.
+	refresh();
+}
+
 void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 {
 	QGraphicsPixmapItem *iconItem = 0;
@@ -1490,12 +1498,10 @@ EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 
 	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, this);
 	ball->setBrush(QBrush(Qt::black));
-
 }
 
 GraphicsTextEditor::GraphicsTextEditor(QGraphicsItem* parent): QGraphicsTextItem(parent)
 {
-
 }
 
 void GraphicsTextEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)

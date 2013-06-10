@@ -100,6 +100,7 @@ protected:
 
 public Q_SLOTS:
 	void refresh();
+	void edit_dive_time(const QString& time);
 
 private:
 	void plot_depth_profile();
