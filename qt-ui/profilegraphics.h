@@ -35,6 +35,10 @@ public:
 	void refresh(struct graphics_context* gc, QPointF pos);
 	bool isExpanded();
 
+	void persistPos();
+	void readPos();
+
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 public Q_SLOTS:
 	void setRect(const QRectF& rect);
 

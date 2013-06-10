@@ -146,6 +146,7 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 
 	// Scale the view / do the zoom
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
+
 	double scaleFactor = 1.15;
 	if (event->delta() > 0 && zoomLevel <= 10) {
 		scale(scaleFactor, scaleFactor);
@@ -172,10 +173,10 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 
 	ensureVisible(event->pos().x() + dx, event->pos().y() + dy, 1, 1);
 
-	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
-
 	if (zoomLevel == 0)
 		QGraphicsView::mouseMoveEvent(event);
+	else
+		toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 }
 
 bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
@@ -256,14 +257,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 
 	scene()->setSceneRect(0,0, viewport()->width()-50, viewport()->height()-50);
 
-	QSettings s;
-	s.beginGroup("ProfileMap");
-	QPointF toolTipPos = s.value("tooltip_position", QPointF(0,0)).toPointF();
-	s.endGroup();
-
 	toolTip = new ToolTipItem();
-	toolTip->setPos(toolTipPos);
-
 	scene()->addItem(toolTip);
 
 	// Fix this for printing / screen later.
@@ -358,6 +352,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	if (zoomLevel == 0) {
 		fitInView(sceneRect());
 	}
+	toolTip->readPos();
 }
 
 void ProfileGraphicsView::plot_depth_scale()
@@ -1408,6 +1403,33 @@ void ToolTipItem::updateTitlePosition()
 bool ToolTipItem::isExpanded() {
 	return status == EXPANDED;
 }
+
+void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+	persistPos();
+}
+
+void ToolTipItem::persistPos()
+{
+	QPoint currentPos = scene()->views().at(0)->mapFromScene(pos());
+	QSettings s;
+	s.beginGroup("ProfileMap");
+	s.setValue("tooltip_position", currentPos);
+	s.endGroup();
+	s.sync();
+	qDebug() << "Salvou" << currentPos;
+}
+
+void ToolTipItem::readPos()
+{
+	QSettings s;
+	s.beginGroup("ProfileMap");
+	QPointF value = scene()->views().at(0)->mapToScene(
+		s.value("tooltip_position").toPoint()
+	);
+	setPos(value);
+}
+
 
 EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 {
