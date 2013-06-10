@@ -205,11 +205,20 @@ void MainWindow::on_actionDownloadWeb_triggered()
 
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
-	qDebug("actionEditDeviceNames");}
+	qDebug("actionEditDeviceNames");
+}
 
 void MainWindow::on_actionAddDive_triggered()
 {
-	qDebug("actionAddDive");
+	struct dive *dive;
+	dive = alloc_dive();
+	record_dive(dive);
+	process_dives(FALSE, FALSE);
+
+	ui->InfoWidget->reload();
+	ui->globe->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
+	ui->ListWidget->setFocus();
 }
 
 void MainWindow::on_actionRenumber_triggered()

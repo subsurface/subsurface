@@ -157,12 +157,6 @@
     </property>
     <addaction name="actionSelectEvents"/>
    </widget>
-   <widget class="QMenu" name="menuPlanner">
-    <property name="title">
-     <string>Planner</string>
-    </property>
-    <addaction name="actionInputPlan"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -174,7 +168,6 @@
    <addaction name="menuLog"/>
    <addaction name="menuView"/>
    <addaction name="menuFilter"/>
-   <addaction name="menuPlanner"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew">
