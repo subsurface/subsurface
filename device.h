@@ -2,6 +2,7 @@
 #define DEVICE_INFO_H
 
 #ifdef __cplusplus
+#include "dive.h"
 extern "C" {
 #endif
 
@@ -20,6 +21,7 @@ extern struct device_info *get_different_device_info(const char *model, uint32_t
 extern struct device_info *create_device_info(const char *model, uint32_t deviceid);
 extern struct device_info *remove_device_info(const char *model, uint32_t deviceid);
 extern struct device_info *head_of_device_info_list(void);
+extern struct divecomputer *fake_dc(struct divecomputer* dc);
 
 #ifdef __cplusplus
 }
