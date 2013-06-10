@@ -87,9 +87,26 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), filter());
+	QSettings settings;
+	QString lastDir = QDir::homePath();
+
+	settings.beginGroup("FileDialog");
+	if (settings.contains("LastDir")) {
+		if(QDir::setCurrent(settings.value("LastDir").toString())) {
+			lastDir = settings.value("LastDir").toString();
+		}
+	}
+	settings.endGroup();
+
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastDir, filter());
 	if (filename.isEmpty())
 		return;
+
+	// Keep last open dir
+	QFileInfo fileInfo(filename);
+	settings.beginGroup("FileDialog");
+	settings.setValue("LastDir",fileInfo.dir().path());
+	settings.endGroup();
 
 	// Needed to convert to char*
 	QByteArray fileNamePtr = filename.toLocal8Bit();
