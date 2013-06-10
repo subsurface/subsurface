@@ -34,11 +34,11 @@ public:
 	void removeToolTip(const QString& toolTip);
 	void refresh(struct graphics_context* gc, QPointF pos);
 	bool isExpanded();
-
 	void persistPos();
 	void readPos();
-
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+	void mousePressEvent(QGraphicsSceneMouseEvent* event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+	bool eventFilter(QObject* , QEvent* );
 public Q_SLOTS:
 	void setRect(const QRectF& rect);
 
@@ -49,8 +49,8 @@ private:
 	QGraphicsLineItem *separator;
 	QGraphicsSimpleTextItem *title;
 	Status status;
-
 	QRectF rectangle;
+	bool dragging;
 };
 
 class EventItem : public QGraphicsPolygonItem

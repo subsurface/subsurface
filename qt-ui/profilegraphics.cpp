@@ -258,6 +258,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	scene()->setSceneRect(0,0, viewport()->width()-50, viewport()->height()-50);
 
 	toolTip = new ToolTipItem();
+	installEventFilter(toolTip);
 	scene()->addItem(toolTip);
 
 	// Fix this for printing / screen later.
@@ -1355,12 +1356,9 @@ ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), back
 {
 	title = new QGraphicsSimpleTextItem(tr("Information"), this);
 	separator = new QGraphicsLineItem(this);
-
+	dragging = false;
 	setFlag(ItemIgnoresTransformations);
-	setFlag(ItemIsMovable);
-
 	status = COLLAPSED;
-
 	updateTitlePosition();
 	setZValue(99);
 }
@@ -1407,6 +1405,12 @@ bool ToolTipItem::isExpanded() {
 void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
 	persistPos();
+	dragging = false;
+}
+
+void ToolTipItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	dragging = true;
 }
 
 void ToolTipItem::persistPos()
@@ -1417,7 +1421,6 @@ void ToolTipItem::persistPos()
 	s.setValue("tooltip_position", currentPos);
 	s.endGroup();
 	s.sync();
-	qDebug() << "Salvou" << currentPos;
 }
 
 void ToolTipItem::readPos()
@@ -1430,6 +1433,15 @@ void ToolTipItem::readPos()
 	setPos(value);
 }
 
+bool ToolTipItem::eventFilter(QObject* view, QEvent* event)
+{
+	if (event->type() == QEvent::HoverMove && dragging){
+		QHoverEvent *e = static_cast<QHoverEvent*>(event);
+		QGraphicsView *v = scene()->views().at(0);
+		setPos( v->mapToScene(e->pos()));
+	}
+	return false;
+}
 
 EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 {
