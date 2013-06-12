@@ -930,7 +930,7 @@ QString DiveItem::displaySac() const
 	QString str;
 
 	if (get_units()->volume == units::LITER)
-		str = QString::number(dive->sac / 1000, 'f', 1);
+		str = QString::number(dive->sac / 1000.0, 'f', 1);
 	else
 		str = QString::number(ml_to_cuft(dive->sac), 'f', 2);
 
