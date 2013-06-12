@@ -8,12 +8,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QModelIndex>
 #include <QAction>
 
 struct DiveList;
 class QSortFilterProxyModel;
 class DiveTripModel;
+
 
 namespace Ui
 {
@@ -35,6 +35,8 @@ class MainWindow : public QMainWindow
 {
 Q_OBJECT
 public:
+	enum {COLLAPSED, EXPANDED};
+
 	MainWindow();
 	ProfileGraphicsView *graphics();
 	MainTab *information();
@@ -71,6 +73,7 @@ private Q_SLOTS:
 	void on_actionViewList_triggered();
 	void on_actionViewProfile_triggered();
 	void on_actionViewInfo_triggered();
+	void on_actionViewGlobe_triggered();
 	void on_actionViewAll_triggered();
 	void on_actionPreviousDC_triggered();
 	void on_actionNextDC_triggered();
@@ -102,6 +105,7 @@ private:
 	void redrawProfile();
 	void file_save();
 	void file_save_as();
+    void setupSplitters();
 };
 
 MainWindow *mainWindow();
