@@ -352,7 +352,11 @@ char *get_gaslist(struct dive *dive)
 		if (is_air(o2, he))
 			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", _("air"));
 		else
-			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
+			if (he == 0)
+				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? _(", EAN%d") : _("EAN%d"),
+					 (o2 + 5) / 10);
+			else
+				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
 				 (o2 + 5) / 10, (he + 5) / 10);
 		offset = strlen(buf);
 	}
