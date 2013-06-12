@@ -245,6 +245,7 @@ void MainWindow::on_actionViewList_triggered()
 	ui->InfoWidget->setVisible(false);
 	ui->ListWidget->setVisible(true);
 	ui->ProfileWidget->setVisible(false);
+	ui->globe->setVisible(false);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
@@ -252,6 +253,7 @@ void MainWindow::on_actionViewProfile_triggered()
 	ui->InfoWidget->setVisible(false);
 	ui->ListWidget->setVisible(false);
 	ui->ProfileWidget->setVisible(true);
+	ui->globe->setVisible(false);
 }
 
 void MainWindow::on_actionViewInfo_triggered()
@@ -259,6 +261,15 @@ void MainWindow::on_actionViewInfo_triggered()
 	ui->InfoWidget->setVisible(true);
 	ui->ListWidget->setVisible(false);
 	ui->ProfileWidget->setVisible(false);
+	ui->globe->setVisible(false);
+}
+
+void MainWindow::on_actionViewGlobe_triggered()
+{
+	ui->InfoWidget->setVisible(false);
+	ui->ListWidget->setVisible(false);
+	ui->ProfileWidget->setVisible(false);
+	ui->globe->setVisible(true);
 }
 
 void MainWindow::on_actionViewAll_triggered()
@@ -266,6 +277,7 @@ void MainWindow::on_actionViewAll_triggered()
 	ui->InfoWidget->setVisible(true);
 	ui->ListWidget->setVisible(true);
 	ui->ProfileWidget->setVisible(true);
+	ui->globe->setVisible(true);
 }
 
 void MainWindow::on_actionPreviousDC_triggered()

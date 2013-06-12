@@ -71,6 +71,7 @@ private Q_SLOTS:
 	void on_actionViewList_triggered();
 	void on_actionViewProfile_triggered();
 	void on_actionViewInfo_triggered();
+	void on_actionViewGlobe_triggered();
 	void on_actionViewAll_triggered();
 	void on_actionPreviousDC_triggered();
 	void on_actionNextDC_triggered();

@@ -103,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>20</height>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -148,6 +148,7 @@
     <addaction name="actionViewProfile"/>
     <addaction name="actionViewInfo"/>
     <addaction name="actionViewAll"/>
+    <addaction name="actionViewGlobe"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
    </widget>
@@ -358,8 +359,25 @@
     <string>F1</string>
    </property>
   </action>
+  <action name="actionViewGlobe">
+   <property name="text">
+    <string>View Globe</string>
+   </property>
+   <property name="toolTip">
+    <string>View Globe</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+5</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>KMessageWidget</class>
+   <extends>QWidget</extends>
+   <header>kmessagewidget.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>MainTab</class>
    <extends>QWidget</extends>
@@ -380,12 +398,6 @@
    <class>GlobeGPS</class>
    <extends>QWidget</extends>
    <header>globe.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KMessageWidget</class>
-   <extends>QWidget</extends>
-   <header>kmessagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
