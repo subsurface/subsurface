@@ -28,6 +28,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	model->setSortRole(TreeItemDT::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	setModel(model);
+	connect(model, SIGNAL(layoutChanged()), this, SLOT(fixMessyQtModelBehaviour()));
+
 	setSortingEnabled(false);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -40,6 +42,16 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	searchBox->hide();
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
+}
+
+void DiveListView::fixMessyQtModelBehaviour()
+{
+	QAbstractItemModel *m = model();
+	for(int i = 0; i < model()->rowCount(); i++){
+		if (m->rowCount( m->index(i, 0) ) != 0){
+			setFirstColumnSpanned(i, QModelIndex(), true);
+		}
+	}
 }
 
 void DiveListView::unselectDives()
