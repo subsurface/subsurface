@@ -217,7 +217,7 @@ void ProfileGraphicsView::showEvent(QShowEvent* event)
 	// but the dive was not ploted.
 	// force a replot by modifying the dive
 	// hold by the view, and issuing a plot.
-	if (dive) {
+	if (dive && !scene()->items().count()) {
 		dive = 0;
 		plot(get_dive(selected_dive));
 	}

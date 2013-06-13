@@ -785,11 +785,8 @@ QVariant TripItem::data(int column, int role) const
 
 	if (role == Qt::DisplayRole) {
 		switch (column) {
-		case LOCATION:
-			ret = QString(trip->location);
-			break;
-		case DATE:
-			ret = QString(get_trip_date_string(trip->when, trip->nrdives));
+		case NR:
+			ret = QString(trip->location) + QString(get_trip_date_string(trip->when, trip->nrdives));
 			break;
 		}
 	}

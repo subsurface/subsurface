@@ -240,44 +240,54 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	qDebug("actionYearlyStatistics");
 }
 
+/**
+ * So, here's the deal.
+ * We have a few QSplitters that takes care of helping us with the
+ * size of a few widgets, they are ok, and we should continue using them
+ * to manage the visibility of them too. But the way that we did before was to
+ * widget->hide(); something, and if you hided something using the splitter,
+ * by holding it's handle and collapsing the widget, then you used the 'ctrl+number'
+ * shortcut to show it, it whould only show a gray panel.
+ *
+ * This patch makes everything behave using the splitters.
+ */
+
+#define BEHAVIOR QList<int>()
 void MainWindow::on_actionViewList_triggered()
 {
-	ui->InfoWidget->setVisible(false);
-	ui->ListWidget->setVisible(true);
-	ui->ProfileWidget->setVisible(false);
-	ui->globe->setVisible(false);
+	ui->listGlobeSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
+	ui->mainSplitter->setSizes( BEHAVIOR << COLLAPSED << EXPANDED);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
-	ui->InfoWidget->setVisible(false);
-	ui->ListWidget->setVisible(false);
-	ui->ProfileWidget->setVisible(true);
-	ui->globe->setVisible(false);
+	ui->infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui->mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
 void MainWindow::on_actionViewInfo_triggered()
 {
-	ui->InfoWidget->setVisible(true);
-	ui->ListWidget->setVisible(false);
-	ui->ProfileWidget->setVisible(false);
-	ui->globe->setVisible(false);
+	ui->infoProfileSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui->mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
 void MainWindow::on_actionViewGlobe_triggered()
 {
-	ui->InfoWidget->setVisible(false);
-	ui->ListWidget->setVisible(false);
-	ui->ProfileWidget->setVisible(false);
-	ui->globe->setVisible(true);
+	ui->infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui->mainSplitter->setSizes( BEHAVIOR << COLLAPSED << EXPANDED);
 }
+#undef BEHAVIOR
 
 void MainWindow::on_actionViewAll_triggered()
 {
-	ui->InfoWidget->setVisible(true);
-	ui->ListWidget->setVisible(true);
-	ui->ProfileWidget->setVisible(true);
-	ui->globe->setVisible(true);
+	// big number squash the info profile to it's minimum.
+	ui->infoProfileSplitter->setSizes(QList<int>() << 1 << 20000);
+
+	// big number squash the globe view.
+	ui->listGlobeSplitter->setSizes(QList<int>() << 2000 << 1 );
+
+	// half and half?
+	ui->mainSplitter->setSizes( QList<int>() << 1 << 1);
 }
 
 void MainWindow::on_actionPreviousDC_triggered()
@@ -417,6 +427,7 @@ void MainWindow::initialUiSetup()
 	resize(sz);
 	ui->mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
 	ui->infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+	ui->listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
@@ -508,6 +519,7 @@ void MainWindow::writeSettings()
 	settings.setValue("size",size());
 	settings.setValue("mainSplitter", ui->mainSplitter->saveState());
 	settings.setValue("infoProfileSplitter", ui->infoProfileSplitter->saveState());
+	settings.setValue("listGlobeSplitter", ui->listGlobeSplitter->saveState());
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");

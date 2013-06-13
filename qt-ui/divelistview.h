@@ -38,7 +38,8 @@ public slots:
 	void removeFromTrip();
 	void deleteDive();
 	void testSlot();
-
+	void fixMessyQtModelBehaviour();
+	
 Q_SIGNALS:
 	void currentDiveChanged(int divenr);
 
