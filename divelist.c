@@ -607,12 +607,11 @@ char *get_trip_date_string(timestamp_t when, int nr)
 		struct tm tm;
 		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
-			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives */
-			ngettext("Trip %1$s, %2$s %3$d, %4$d (%5$d dive)",
-				"Trip %1$s, %2$s %3$d, %4$d (%5$d dives)", nr),
-			weekday(tm.tm_wday),
+			/*++GETTEXT 60 char buffer monthname, year, nr dives */
+			ngettext("%1$s %2$d (%3$d dive)",
+				 "%1$s %2$d (%3$d dives)", nr),
 			monthname(tm.tm_mon),
-			tm.tm_mday, tm.tm_year + 1900,
+			tm.tm_year + 1900,
 			nr);
 	}
 	return buffer;
