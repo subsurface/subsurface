@@ -296,7 +296,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	gc.maxx = (profile_grid_area.width() - 2 * profile_grid_area.x());
 	gc.maxy = (profile_grid_area.height() - 2 * profile_grid_area.y());
 
-	/* This is per-dive-computer. Right now we just do the first one */
+	/* This is per-dive-computer */
 	gc.pi = *create_plot_info(dive, dc, &gc);
 
 	/* Depth profile */
@@ -427,6 +427,17 @@ void ProfileGraphicsView::plot_pp_text()
 	}
 }
 
+void ProfileGraphicsView::plot_add_line(int sec, double val, QColor c, QPointF &from)
+{
+	QPointF to = QPointF(SCALEGC(sec, val));
+	QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
+	QPen pen(defaultPen);
+	pen.setColor(c);
+	item->setPen(pen);
+	scene()->addItem(item);
+	from = to;
+}
+
 void ProfileGraphicsView::plot_pp_gas_profile()
 {
 	int i;
@@ -442,17 +453,10 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->pn2 < prefs.pp_graphs.pn2_threshold) {
-				to = QPointF(SCALEGC(entry->sec, entry->pn2));
-				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				QPen pen(defaultPen);
-				pen.setColor(c);
-				item->setPen(pen);
-				scene()->addItem(item);
-				from = to;
-			} else {
+			if (entry->pn2 < prefs.pp_graphs.pn2_threshold)
+				plot_add_line(entry->sec, entry->pn2, c, from);
+			else
 				from = QPointF(SCALEGC(entry->sec, entry->pn2));
-			}
 		}
 
 		c = profile_color[PN2_ALERT].first();
@@ -460,17 +464,10 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold) {
-				to = QPointF(SCALEGC(entry->sec, entry->pn2));
-				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				QPen pen(defaultPen);
-				pen.setColor(c);
-				item->setPen(pen);
-				scene()->addItem(item);
-				from = to;
-			} else {
+			if (entry->pn2 >= prefs.pp_graphs.pn2_threshold)
+				plot_add_line(entry->sec, entry->pn2, c, from);
+			else
 				from = QPointF(SCALEGC(entry->sec, entry->pn2));
-			}
 		}
 	}
 
@@ -481,17 +478,10 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		from = QPointF(SCALEGC(entry->sec, entry->phe));
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->phe < prefs.pp_graphs.phe_threshold) {
-				to = QPointF(SCALEGC(entry->sec, entry->phe));
-				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				QPen pen(defaultPen);
-				pen.setColor(c);
-				item->setPen(pen);
-				scene()->addItem(item);
-				from = to;
-			} else {
+			if (entry->phe < prefs.pp_graphs.phe_threshold)
+				plot_add_line(entry->sec, entry->phe, c, from);
+			else
 				from = QPointF(SCALEGC(entry->sec, entry->phe));
-			}
 		}
 
 		c = profile_color[PHE_ALERT].first();
@@ -499,17 +489,10 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		from = QPointF(SCALEGC(entry->sec, entry->phe));
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->phe >= prefs.pp_graphs.phe_threshold) {
-				to = QPointF(SCALEGC(entry->sec, entry->phe));
-				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				QPen pen(defaultPen);
-				pen.setColor(c);
-				item->setPen(pen);
-				scene()->addItem(item);
-				from = to;
-			} else {
+			if (entry->phe >= prefs.pp_graphs.phe_threshold)
+				plot_add_line(entry->sec, entry->phe, c, from);
+			else
 				from = QPointF(SCALEGC(entry->sec, entry->phe));
-			}
 		}
 	}
 	if (prefs.pp_graphs.po2) {
@@ -518,17 +501,10 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		from = QPointF(SCALEGC(entry->sec, entry->po2));
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->po2 < prefs.pp_graphs.po2_threshold) {
-				to = QPointF(SCALEGC(entry->sec, entry->po2));
-				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				QPen pen(defaultPen);
-				pen.setColor(c);
-				item->setPen(pen);
-				scene()->addItem(item);
-				from = to;
-			} else {
+			if (entry->po2 < prefs.pp_graphs.po2_threshold)
+				plot_add_line(entry->sec, entry->po2, c, from);
+			else
 				from = QPointF(SCALEGC(entry->sec, entry->po2));
-			}
 		}
 
 		c = profile_color[PO2_ALERT].first();
@@ -536,15 +512,10 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		from = QPointF(SCALEGC(entry->sec, entry->po2));
 		for (i = 1; i < pi->nr; i++) {
 			entry++;
-			if (entry->po2 >= prefs.pp_graphs.po2_threshold) {
-				to = QPointF(SCALEGC(entry->sec, entry->po2));
-				QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
-				item->setPen(QPen(c));
-				scene()->addItem(item);
-				from = to;
-			} else {
+			if (entry->po2 >= prefs.pp_graphs.po2_threshold)
+				plot_add_line(entry->sec, entry->po2, c, from);
+			 else
 				from = QPointF(SCALEGC(entry->sec, entry->po2));
-			}
 		}
 	}
 }

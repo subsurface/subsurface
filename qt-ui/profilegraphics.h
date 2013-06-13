@@ -118,6 +118,7 @@ private:
 	void plot_pressure_value(int mbar, int sec, double xalign, double yalign);
 	void plot_gas_value(int mbar, int sec, double xalign, double yalign, int o2, int he);
 	void plot_deco_text();
+	void plot_add_line(int sec, double val, QColor c, QPointF &from);
 	void plot_pp_gas_profile();
 	void plot_pp_text();
 	void plot_depth_scale();
