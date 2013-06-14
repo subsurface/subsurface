@@ -340,7 +340,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("remove dive from trip"), this, SLOT(removeFromTrip()));
 		}
 	}
-	popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
+	if (d)
+		popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction * actionTaken = popup.exec(event->globalPos());
