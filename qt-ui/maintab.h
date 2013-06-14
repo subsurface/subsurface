@@ -63,6 +63,7 @@ private:
 	struct dive* currentDive;
 	QPushButton *addCylinder;
 	QPushButton *addWeight;
+	enum { NONE, DIVE, TRIP } editMode;
 };
 
 #endif

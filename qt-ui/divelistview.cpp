@@ -42,6 +42,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	searchBox->hide();
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
+	selectedTrips.clear();
 }
 
 void DiveListView::fixMessyQtModelBehaviour()
@@ -253,6 +254,8 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
 				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				if (child && child->divetrip)
+					selectedTrips.remove(child->divetrip);
 				while (child) {
 					deselect_dive(get_index_for_dive(child));
 					child = child->next;
@@ -272,6 +275,8 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 			if (model->rowCount(index)) {
 				QItemSelection selection;
 				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				if (child && child->divetrip)
+					selectedTrips.insert(child->divetrip);
 				while (child) {
 					select_dive(get_index_for_dive(child));
 					child = child->next;

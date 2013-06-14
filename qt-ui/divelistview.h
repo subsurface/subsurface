@@ -29,6 +29,7 @@ public:
 	void unselectDives();
 	void selectDive(struct dive *, bool scrollto = false, bool toggle = false);
 	void contextMenuEvent(QContextMenuEvent *event);
+	QSet<dive_trip_t *> selectedTrips;
 
 public slots:
 	void toggleColumnVisibilityByIndex();
@@ -39,7 +40,7 @@ public slots:
 	void deleteDive();
 	void testSlot();
 	void fixMessyQtModelBehaviour();
-	
+
 Q_SIGNALS:
 	void currentDiveChanged(int divenr);
 

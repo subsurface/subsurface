@@ -15,12 +15,14 @@
 
 #include <QLabel>
 #include <QDebug>
+#include <QSet>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    ui(new Ui::MainTab()),
 				    weightModel(new WeightModel()),
 				    cylindersModel(new CylindersModel()),
-				    currentDive(0)
+				    currentDive(0),
+				    editMode(NONE)
 {
 	ui->setupUi(this);
 	ui->cylinders->setModel(cylindersModel);
@@ -159,15 +161,11 @@ void MainTab::clearStats()
 
 void MainTab::updateDiveInfo(int dive)
 {
-	// So, this is what happens now:
-	// Every tab should be populated from this method,
-	// it will be called whenever a new dive is selected
-	// I'm already populating the 'notes' box
-	// to show how it can be done.
-	// If you are unsure about the name of something,
-	// open the file maintab.ui on the designer
-	// click on the item and check its objectName,
-	// the access is ui->objectName from here on.
+	// This method updates ALL tabs whenever a new dive or trip is
+	// selected.
+	// If exactly one trip has been selected, we show the location / notes
+	// for the trip in the Info tab, otherwise we show the info of the
+	// selected_dive
 	volume_t sacVal;
 	temperature_t temp;
 	struct dive *prevd;
@@ -181,18 +179,48 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, suit);
 	UPDATE_TEXT(d, divemaster);
 	UPDATE_TEXT(d, buddy);
-	/* infoTab */
 	if (d) {
-		/* make the fields writeable */
-		ui->location->setReadOnly(false);
-		ui->divemaster->setReadOnly(false);
-		ui->buddy->setReadOnly(false);
-		ui->suit->setReadOnly(false);
-		ui->notes->setReadOnly(false);
-		ui->rating->setReadOnly(false);
-		ui->visibility->setReadOnly(false);
-		/* and fill them from the dive */
-		ui->rating->setCurrentStars(d->rating);
+		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+			// only use trip relevant fields
+			ui->divemaster->setVisible(false);
+			ui->DivemasterLabel->setVisible(false);
+			ui->buddy->setVisible(false);
+			ui->BuddyLabel->setVisible(false);
+			ui->suit->setVisible(false);
+			ui->SuitLabel->setVisible(false);
+			ui->rating->setVisible(false);
+			ui->RatingLabel->setVisible(false);
+			ui->visibility->setVisible(false);
+			ui->visibilityLabel->setVisible(false);
+			// rename the remaining fields and fill data from selected trip
+			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
+			ui->location->setReadOnly(false);
+			ui->LocationLabel->setText(tr("Trip Location"));
+			ui->location->setText(currentTrip->location);
+			ui->notes->setReadOnly(false);
+			ui->NotesLabel->setText(tr("Trip Notes"));
+			ui->notes->setText(currentTrip->notes);
+		} else {
+			// make all the fields visible writeable
+			ui->divemaster->setVisible(true);
+			ui->buddy->setVisible(true);
+			ui->suit->setVisible(true);
+			ui->rating->setVisible(true);
+			ui->visibility->setVisible(true);
+			ui->divemaster->setReadOnly(false);
+			ui->buddy->setReadOnly(false);
+			ui->suit->setReadOnly(false);
+			ui->rating->setReadOnly(false);
+			ui->visibility->setReadOnly(false);
+			/* and fill them from the dive */
+			ui->rating->setCurrentStars(d->rating);
+			ui->visibility->setCurrentStars(d->visibility);
+			// reset labels in case we last displayed trip notes
+			ui->location->setReadOnly(false);
+			ui->LocationLabel->setText(tr("Location"));
+			ui->notes->setReadOnly(false);
+			ui->NotesLabel->setText(tr("Notes"));
+		}
 		ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
 		ui->averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
 		ui->otuText->setText(QString("%1").arg(d->otu));
@@ -213,7 +241,6 @@ void MainTab::updateDiveInfo(int dive)
 			ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
 			ui->airPressureText->clear();
-		ui->visibility->setCurrentStars(d->visibility);
 		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
 		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
 		ui->depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
@@ -276,13 +303,6 @@ void MainTab::updateDiveInfo(int dive)
 		ui->totalTimeAllText->clear();
 		ui->timeLimits->clear();
 	}
-	/* statisticsTab*/
-	/* we can access the stats_selection struct, but how do we ensure the relevant dives are selected
-	 * if we don't use the gtk widget to drive this?
-	 * Maybe call process_selected_dives? Or re-write to query our Qt list view.
-	 */
-// 	qDebug("max temp %u",stats_selection.max_temp);
-// 	qDebug("min temp %u",stats_selection.min_temp);
 }
 
 void MainTab::addCylinder_clicked()
@@ -312,30 +332,47 @@ void MainTab::on_editAccept_clicked(bool edit)
 	mainWindow()->dive_list()->setEnabled(!edit);
 
 	if (edit) {
-		ui->diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
-		ui->diveNotesMessage->animatedShow();
-		notesBackup.buddy = ui->buddy->text();
-		notesBackup.suit = ui->suit->text();
-		notesBackup.notes = ui->notes->toPlainText();
-		notesBackup.divemaster = ui->divemaster->text();
-		notesBackup.location = ui->location->text();
-		notesBackup.rating = ui->rating->currentStars();
-		notesBackup.visibility = ui->visibility->currentStars();
+		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+			// we are editing trip location and notes
+			ui->diveNotesMessage->setText(tr("This trip is being edited. Select Save or Undo when ready."));
+			ui->diveNotesMessage->animatedShow();
+			notesBackup.notes = ui->notes->toPlainText();
+			notesBackup.location = ui->location->text();
+			editMode = TRIP;
+		} else {
+			ui->diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
+			ui->diveNotesMessage->animatedShow();
+			notesBackup.buddy = ui->buddy->text();
+			notesBackup.suit = ui->suit->text();
+			notesBackup.notes = ui->notes->toPlainText();
+			notesBackup.divemaster = ui->divemaster->text();
+			notesBackup.location = ui->location->text();
+			notesBackup.rating = ui->rating->currentStars();
+			notesBackup.visibility = ui->visibility->currentStars();
+			editMode = DIVE;
+		}
 	} else {
 		ui->diveNotesMessage->animatedHide();
 		ui->editAccept->hide();
 		ui->editReset->hide();
 		/* now figure out if things have changed */
-		if (notesBackup.buddy != ui->buddy->text() ||
-		    notesBackup.suit != ui->suit->text() ||
-		    notesBackup.notes != ui->notes->toPlainText() ||
-		    notesBackup.divemaster != ui->divemaster->text() ||
-		    notesBackup.location != ui->location->text() ||
-		    notesBackup.visibility != ui->visibility->currentStars() ||
-		    notesBackup.rating != ui->rating->currentStars())
-			mark_divelist_changed(TRUE);
-		if (notesBackup.location != ui->location->text())
-			mainWindow()->globe()->reload();
+		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+			if (notesBackup.notes != ui->notes->toPlainText() ||
+			    notesBackup.location != ui->location->text())
+				mark_divelist_changed(TRUE);
+		} else {
+			if (notesBackup.buddy != ui->buddy->text() ||
+			    notesBackup.suit != ui->suit->text() ||
+			    notesBackup.notes != ui->notes->toPlainText() ||
+			    notesBackup.divemaster != ui->divemaster->text() ||
+			    notesBackup.location != ui->location->text() ||
+			    notesBackup.visibility != ui->visibility->currentStars() ||
+			    notesBackup.rating != ui->rating->currentStars())
+				mark_divelist_changed(TRUE);
+			if (notesBackup.location != ui->location->text())
+				mainWindow()->globe()->reload();
+		}
+		editMode = NONE;
 	}
 }
 
@@ -344,13 +381,15 @@ void MainTab::on_editReset_clicked()
 	if (!ui->editAccept->isChecked())
 		return;
 
-	ui->buddy->setText(notesBackup.buddy);
-	ui->suit->setText(notesBackup.suit);
 	ui->notes->setText(notesBackup.notes);
-	ui->divemaster->setText(notesBackup.divemaster);
 	ui->location->setText(notesBackup.location);
-	ui->rating->setCurrentStars(notesBackup.rating);
-	ui->visibility->setCurrentStars(notesBackup.visibility);
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() != 1) {
+		ui->buddy->setText(notesBackup.buddy);
+		ui->suit->setText(notesBackup.suit);
+		ui->divemaster->setText(notesBackup.divemaster);
+		ui->rating->setCurrentStars(notesBackup.rating);
+		ui->visibility->setCurrentStars(notesBackup.visibility);
+	}
 	ui->editAccept->setChecked(false);
 	ui->diveNotesMessage->animatedHide();
 
@@ -365,49 +404,62 @@ void MainTab::on_editReset_clicked()
 
 	ui->editAccept->hide();
 	ui->editReset->hide();
+	editMode = NONE;
 }
 
-#define EDIT_NOTES(what, text) \
+#define EDIT_TEXT(what, text) \
 	QByteArray textByteArray = text.toLocal8Bit(); \
-	free(currentDive->what);\
-	currentDive->what = strdup(textByteArray.data());
+	free(what);\
+	what = strdup(textByteArray.data());
 
 void MainTab::on_buddy_textChanged(const QString& text)
 {
 	if (!currentDive)
 		return;
-	EDIT_NOTES(buddy, text);
+	EDIT_TEXT(currentDive->buddy, text);
 }
 
 void MainTab::on_divemaster_textChanged(const QString& text)
 {
 	if (!currentDive)
 		return;
-	EDIT_NOTES(divemaster, text);
+	EDIT_TEXT(currentDive->divemaster, text);
 }
 
 void MainTab::on_location_textChanged(const QString& text)
 {
-	if (!currentDive)
-		return;
-	EDIT_NOTES(location, text);
+	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+		// we are editing a trip
+		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
+		EDIT_TEXT(currentTrip->location, text);
+	} else if (editMode == DIVE){
+		if (!currentDive)
+			return;
+		EDIT_TEXT(currentDive->location, text);
+	}
 }
 
 void MainTab::on_suit_textChanged(const QString& text)
 {
 	if (!currentDive)
 		return;
-	EDIT_NOTES(suit, text);
+	EDIT_TEXT(currentDive->suit, text);
 }
 
 void MainTab::on_notes_textChanged()
 {
-	if (!currentDive)
-		return;
-	EDIT_NOTES(notes, ui->notes->toPlainText());
+	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+		// we are editing a trip
+		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
+		EDIT_TEXT(currentTrip->notes, ui->notes->toPlainText());
+	} else if (editMode == DIVE) {
+		if (!currentDive)
+			return;
+		EDIT_TEXT(currentDive->notes, ui->notes->toPlainText());
+	}
 }
 
-#undef EDIT_NOTES
+#undef EDIT_TEXT
 
 void MainTab::on_rating_valueChanged(int value)
 {
