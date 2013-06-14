@@ -245,6 +245,23 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
 	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
 
+	Q_FOREACH(const QModelIndex& index, newDeselected.indexes()) {
+		if (index.column() != 0)
+			continue;
+		const QAbstractItemModel *model = index.model();
+		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
+		if (!dive) { // it's a trip!
+			if (model->rowCount(index)) {
+				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				while (child) {
+					deselect_dive(get_index_for_dive(child));
+					child = child->next;
+				}
+			}
+		} else {
+			deselect_dive(get_index_for_dive(dive));
+		}
+	}
 	Q_FOREACH(const QModelIndex& index, newSelected.indexes()) {
 		if (index.column() != 0)
 			continue;
@@ -269,24 +286,6 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 			select_dive(get_index_for_dive(dive));
 		}
 	}
-	Q_FOREACH(const QModelIndex& index, newDeselected.indexes()) {
-		if (index.column() != 0)
-			continue;
-		const QAbstractItemModel *model = index.model();
-		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
-		if (!dive) { // it's a trip!
-			if (model->rowCount(index)) {
-				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
-				while (child) {
-					deselect_dive(get_index_for_dive(child));
-					child = child->next;
-				}
-			}
-		} else {
-			deselect_dive(get_index_for_dive(dive));
-		}
-	}
-
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),         this, SLOT(currentChanged(QModelIndex,QModelIndex)));
