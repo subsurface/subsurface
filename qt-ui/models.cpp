@@ -1057,6 +1057,9 @@ void DiveTripModel::setupModelData()
 		endRemoveRows();
 	}
 
+	if (autogroup)
+		autogroup_dives();
+	dive_table.preexisting = dive_table.nr;
 	while (--i >= 0) {
 		struct dive* dive = get_dive(i);
 		update_cylinder_related_info(dive);
