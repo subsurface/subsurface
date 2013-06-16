@@ -192,6 +192,9 @@
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
+          <property name="showGrid">
+           <bool>false</bool>
+          </property>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -236,6 +239,9 @@
  }
 
 </string>
+          </property>
+          <property name="showGrid">
+           <bool>false</bool>
           </property>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
