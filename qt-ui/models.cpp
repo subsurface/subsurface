@@ -583,10 +583,20 @@ int WSInfoModel::rowCount(const QModelIndex& parent) const
 	return rows+1;
 }
 
+const QString& WSInfoModel::biggerString() const
+{
+	return biggerEntry;
+}
+
 WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
 {
 	struct ws_info *info = ws_info;
-	for (info = ws_info; info->name; info++, rows++);
+	for (info = ws_info; info->name; info++, rows++){
+		QString wsInfoName(info->name);
+		if( wsInfoName.count() > biggerEntry.count()){
+			biggerEntry = wsInfoName;
+		}
+	}
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
@@ -614,6 +624,11 @@ TankInfoModel* TankInfoModel::instance()
 {
 	static TankInfoModel *self = new TankInfoModel();
 	return self;
+}
+
+const QString& TankInfoModel::biggerString() const
+{
+	return biggerEntry;
 }
 
 bool TankInfoModel::insertRows(int row, int count, const QModelIndex& parent)
@@ -723,7 +738,13 @@ int TankInfoModel::rowCount(const QModelIndex& parent) const
 TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
 {
 	struct tank_info *info = tank_info;
-	for (info = tank_info; info->name; info++, rows++);
+	for (info = tank_info; info->name; info++, rows++){
+		QString infoName(info->name);
+		if (infoName.count() > biggerEntry.count()){
+			biggerEntry = infoName;
+		}
+	}
+
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
 		endInsertRows();

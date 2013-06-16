@@ -32,10 +32,12 @@ public:
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	const QString& biggerString() const;
 	void clear();
 	void update();
 private:
 	int rows;
+	QString biggerEntry;
 };
 
 /* Encapsulate ws_info */
@@ -53,11 +55,12 @@ public:
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	const QString& biggerString() const;
 	void clear();
 	void update();
 private:
 	int rows;
-
+	QString biggerEntry;
 };
 
 /* Encapsulation of the Cylinder Model, that presents the
