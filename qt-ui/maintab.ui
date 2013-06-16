@@ -192,6 +192,9 @@
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
          </widget>
         </item>
        </layout>
@@ -234,6 +237,9 @@
 
 </string>
           </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
          </widget>
         </item>
        </layout>
