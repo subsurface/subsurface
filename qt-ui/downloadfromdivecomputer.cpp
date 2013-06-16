@@ -157,6 +157,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	data.product = strdup(ui->product->currentText().toUtf8().data());
 	data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
 	data.force_download = ui->forceDownload->isChecked();
+	data.deviceid = data.diveid = 0;
 	set_default_dive_computer(data.vendor, data.product);
 	set_default_dive_computer_device(data.devname);
 
