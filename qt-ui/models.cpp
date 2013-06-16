@@ -68,7 +68,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 		ret = defaultModelFont();
 		break;
 	case Qt::TextAlignmentRole:
-		ret = Qt::AlignRight;
+		ret = Qt::AlignHCenter;
 		break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
@@ -656,6 +656,10 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid()) {
 		return ret;
 	}
+	if (role == Qt::FontRole){
+		return defaultModelFont();
+	}
+
 	struct tank_info *info = &tank_info[index.row()];
 
 	int ml = info->ml;

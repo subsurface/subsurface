@@ -76,6 +76,17 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	return comboDelegate;
 }
 
+void ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+	QRect defaultRect = option.rect;
+	defaultRect.setX( defaultRect.x() -1);
+	defaultRect.setY( defaultRect.y() -1);
+	defaultRect.setWidth( defaultRect.width() + 2);
+	defaultRect.setHeight( defaultRect.height() + 2);
+    editor->setGeometry(defaultRect);
+}
+
+
 void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
 {
 	QComboBox *c = qobject_cast<QComboBox*>(editor);

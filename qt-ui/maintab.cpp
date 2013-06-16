@@ -79,12 +79,15 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), ui->cylinders->model(), SLOT(remove(QModelIndex)));
 	connect(ui->weights, SIGNAL(clicked(QModelIndex)), ui->weights->model(), SLOT(remove(QModelIndex)));
 
+	QFontMetrics metrics(defaultModelFont());
+
 	ui->cylinders->setColumnWidth(CylindersModel::REMOVE, 24);
-	ui->cylinders->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui->cylinders->horizontalHeader()->setResizeMode(CylindersModel::REMOVE, QHeaderView::Fixed);
+	ui->cylinders->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
 	ui->cylinders->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	ui->weights->setColumnWidth(WeightModel::REMOVE, 24);
 	ui->weights->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
+	ui->weights->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
 	ui->weights->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
 }
 

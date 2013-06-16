@@ -14,6 +14,8 @@
 #include "../dive.h"
 #include "../divelist.h"
 
+QFont defaultModelFont();
+
 /* Encapsulates the tank_info global variable
  * to show on Qt's Model View System.*/
 class TankInfoModel : public QAbstractTableModel {
