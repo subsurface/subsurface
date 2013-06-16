@@ -16,6 +16,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QSet>
+#include <QSettings>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    ui(new Ui::MainTab()),
@@ -82,17 +83,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	QFontMetrics metrics(defaultModelFont());
 	QFontMetrics metrics2(font());
 
-	ui->cylinders->setColumnWidth(CylindersModel::REMOVE, 24);
-	ui->cylinders->setColumnWidth(CylindersModel::TYPE, metrics2.width(TankInfoModel::instance()->biggerString()) + 20);
 	ui->cylinders->horizontalHeader()->setResizeMode(CylindersModel::REMOVE, QHeaderView::Fixed);
 	ui->cylinders->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
 	ui->cylinders->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 
-	ui->weights->setColumnWidth(WeightModel::REMOVE, 24);
-	ui->weights->setColumnWidth(WeightModel::TYPE, metrics2.width(WSInfoModel::instance()->biggerString()) + 20);
 	ui->weights->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
 	ui->weights->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
 	ui->weights->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
+	initialUiSetup();
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
@@ -480,4 +478,46 @@ void MainTab::on_visibility_valueChanged(int value)
 	if (!currentDive)
 		return;
 	currentDive->visibility = value;
+}
+
+void MainTab::hideEvent(QHideEvent* event)
+{
+	QSettings s;
+	s.beginGroup("MainTab");
+	s.beginGroup("Cylinders");
+	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
+		s.setValue(QString("colwidth%1").arg(i), ui->cylinders->columnWidth(i));
+	}
+	s.endGroup();
+	s.beginGroup("Weights");
+	for (int i = 0; i < WeightModel::COLUMNS; i++) {
+		s.setValue(QString("colwidth%1").arg(i), ui->weights->columnWidth(i));
+	}
+	s.endGroup();
+	s.sync();
+}
+
+void MainTab::initialUiSetup()
+{
+	QSettings s;
+	s.beginGroup("MainTab");
+	s.beginGroup("Cylinders");
+	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
+		QVariant width = s.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui->cylinders->setColumnWidth(i, width.toInt());
+		else
+			ui->cylinders->resizeColumnToContents(i);
+	}
+	s.endGroup();
+	s.beginGroup("Weights");
+	for (int i = 0; i < WeightModel::COLUMNS; i++) {
+		QVariant width = s.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui->weights->setColumnWidth(i, width.toInt());
+		else
+			ui->weights->resizeColumnToContents(i);
+	}
+	s.endGroup();
+
 }

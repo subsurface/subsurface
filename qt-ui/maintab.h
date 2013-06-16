@@ -40,6 +40,10 @@ public:
 	bool eventFilter(QObject* , QEvent*);
 	virtual void resizeEvent(QResizeEvent*);
 	virtual void showEvent(QShowEvent*);
+    virtual void hideEvent(QHideEvent* );
+
+	void initialUiSetup();
+
 
 public Q_SLOTS:
 	void addCylinder_clicked();
