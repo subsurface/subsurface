@@ -14,6 +14,13 @@
 #include <QFont>
 #include <QIcon>
 
+QFont defaultModelFont()
+{
+	QFont font;
+	font.setPointSizeF( font.pointSizeF() * 0.8);
+	return font;
+}
+
 CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent), current(0), rows(0)
 {
 }
@@ -21,15 +28,14 @@ CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent), cu
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
-	QFont font;
 
 	if (orientation == Qt::Vertical)
 		return ret;
 
 	switch (role) {
 	case Qt::FontRole:
-		font.setPointSizeF(font.pointSizeF() * 0.8);
-		return font;
+		ret = defaultModelFont();
+		break;
 	case Qt::DisplayRole:
 		switch(section) {
 		case TYPE:		ret = tr("Type"); break;
@@ -52,7 +58,6 @@ int CylindersModel::columnCount(const QModelIndex& parent) const
 QVariant CylindersModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
-	QFont font;
 
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
@@ -60,8 +65,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	switch (role) {
 	case Qt::FontRole:
-		font.setPointSizeF(font.pointSizeF() * 0.80);
-		ret = font;
+		ret = defaultModelFont();
 		break;
 	case Qt::TextAlignmentRole:
 		ret = Qt::AlignRight;
@@ -336,7 +340,6 @@ int WeightModel::columnCount(const QModelIndex& parent) const
 QVariant WeightModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
-	QFont font;
 	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
 		return ret;
 
@@ -344,8 +347,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 
 	switch (role) {
 	case Qt::FontRole:
-		font.setPointSizeF(font.pointSizeF() * 0.80);
-		ret = font;
+		ret = defaultModelFont();
 		break;
 	case Qt::TextAlignmentRole:
 		ret = Qt::AlignRight;
@@ -429,14 +431,12 @@ int WeightModel::rowCount(const QModelIndex& parent) const
 QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
-	QFont font;
 	if (orientation == Qt::Vertical)
 		return ret;
 
 	switch (role) {
 	case Qt::FontRole:
-		font.setPointSizeF(font.pointSizeF() * 0.8);
-		ret = font;
+		ret = defaultModelFont();
 		break;
 	case Qt::DisplayRole:
 		switch(section) {
@@ -534,16 +534,21 @@ QVariant WSInfoModel::data(const QModelIndex& index, int role) const
 	struct ws_info *info = &ws_info[index.row()];
 
 	int gr = info->grams;
-
-	if (role == Qt::DisplayRole || role == Qt::EditRole) {
-		switch(index.column()) {
-			case GR:
-				ret = gr;
-				break;
-			case DESCRIPTION:
-				ret = QString(info->name);
-				break;
-		}
+	switch(role){
+		case Qt::FontRole :
+			ret = defaultModelFont();
+			break;
+		case Qt::DisplayRole :
+		case Qt::EditRole :
+			switch(index.column()) {
+				case GR:
+					ret = gr;
+					break;
+				case DESCRIPTION:
+					ret = QString(info->name);
+					break;
+			}
+			break;
 	}
 	return ret;
 }
@@ -555,15 +560,20 @@ QVariant WSInfoModel::headerData(int section, Qt::Orientation orientation, int r
 	if (orientation != Qt::Horizontal)
 		return ret;
 
-	if (role == Qt::DisplayRole) {
-		switch(section) {
-			case GR:
-				ret = tr("kg");
-				break;
-			case DESCRIPTION:
-				ret = tr("Description");
-				break;
-		}
+	switch(role){
+		case Qt::FontRole :
+			ret = defaultModelFont();
+			break;
+		case Qt::DisplayRole :
+			switch(section) {
+				case GR:
+					ret = tr("kg");
+					break;
+				case DESCRIPTION:
+					ret = tr("Description");
+					break;
+			}
+			break;
 	}
 	return ret;
 }
@@ -680,8 +690,12 @@ QVariant TankInfoModel::headerData(int section, Qt::Orientation orientation, int
 	if (orientation != Qt::Horizontal)
 		return ret;
 
-	if (role == Qt::DisplayRole) {
-		switch(section) {
+	switch(role){
+		case Qt::FontRole:
+			ret = defaultModelFont();
+			break;
+		case Qt::DisplayRole:
+			switch(section) {
 			case BAR:
 				ret = tr("Bar");
 				break;
@@ -691,7 +705,8 @@ QVariant TankInfoModel::headerData(int section, Qt::Orientation orientation, int
 			case DESCRIPTION:
 				ret = tr("Description");
 				break;
-		}
+			}
+			break;
 	}
 	return ret;
 }
@@ -752,21 +767,25 @@ int TreeItemDT::row() const
 QVariant TreeItemDT::data(int column, int role) const
 {
 	QVariant ret;
-	switch (column) {
-	case NR:		ret = tr("#"); break;
-	case DATE:		ret = tr("Date"); break;
-	case RATING:		ret = UTF8_BLACKSTAR; break;
-	case DEPTH:		ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft"); break;
-	case DURATION:		ret = tr("min"); break;
-	case TEMPERATURE:	ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F"); break;
-	case TOTALWEIGHT:	ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs"); break;
-	case SUIT:		ret = tr("Suit"); break;
-	case CYLINDER:		ret = tr("Cyl"); break;
-	case NITROX:		ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2); break;
-	case SAC:		ret = tr("SAC"); break;
-	case OTU:		ret = tr("OTU"); break;
-	case MAXCNS:		ret = tr("maxCNS"); break;
-	case LOCATION:		ret = tr("Location"); break;
+	switch(role){
+	case Qt::DisplayRole :
+		switch (column) {
+		case NR:		ret = tr("#"); break;
+		case DATE:		ret = tr("Date"); break;
+		case RATING:		ret = UTF8_BLACKSTAR; break;
+		case DEPTH:		ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft"); break;
+		case DURATION:		ret = tr("min"); break;
+		case TEMPERATURE:	ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F"); break;
+		case TOTALWEIGHT:	ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs"); break;
+		case SUIT:		ret = tr("Suit"); break;
+		case CYLINDER:		ret = tr("Cyl"); break;
+		case NITROX:		ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2); break;
+		case SAC:		ret = tr("SAC"); break;
+		case OTU:		ret = tr("OTU"); break;
+		case MAXCNS:		ret = tr("maxCNS"); break;
+		case LOCATION:		ret = tr("Location"); break;
+		}
+		break;
 	}
 	return ret;
 }
@@ -981,9 +1000,7 @@ QVariant DiveTripModel::data(const QModelIndex& index, int role) const
 		return QVariant();
 
 	if (role == Qt::FontRole) {
-		QFont font;
-		font.setPointSizeF(font.pointSizeF() * 0.7);
-		return font;
+		return defaultModelFont();
 	}
 	TreeItemDT* item = static_cast<TreeItemDT*>(index.internalPointer());
 
@@ -1003,6 +1020,11 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation,
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
 		return rootItem->data(section, role);
+
+	switch(role){
+		case Qt::FontRole :
+		return  defaultModelFont();
+	}
 
 	return QVariant();
 }
