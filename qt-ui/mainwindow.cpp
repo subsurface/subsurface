@@ -29,6 +29,7 @@
 #include "downloadfromdivecomputer.h"
 #include "preferences.h"
 #include "subsurfacewebservices.h"
+#include "simplewidgets.h"
 
 static MainWindow* instance = 0;
 
@@ -222,7 +223,7 @@ void MainWindow::on_actionAddDive_triggered()
 
 void MainWindow::on_actionRenumber_triggered()
 {
-	qDebug("actionRenumber");
+	RenumberDialog::instance()->show();
 }
 
 void MainWindow::on_actionAutoGroup_triggered()

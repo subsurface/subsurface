@@ -2,7 +2,10 @@
 #define SIMPLEWIDGETS_H
 
 class MinMaxAvgWidgetPrivate;
+class QAbstractButton;
+
 #include <QWidget>
+#include <QDialog>
 
 class MinMaxAvgWidget : public QWidget{
 	Q_OBJECT
@@ -23,6 +26,21 @@ public:
 	void clear();
 private:
 	MinMaxAvgWidgetPrivate *d;
+};
+
+namespace Ui{
+	class RenumberDialog;
+};
+
+class RenumberDialog : public QDialog {
+	Q_OBJECT
+public:
+	static RenumberDialog *instance();
+private slots:
+	void buttonClicked(QAbstractButton *button);
+private:
+	explicit RenumberDialog();
+	Ui::RenumberDialog *ui;
 };
 
 #endif
