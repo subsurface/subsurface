@@ -69,6 +69,7 @@ SOURCES = \
 	time.c \
 	libdivecomputer.c \
 	qt-gui.cpp \
+	qthelper.cpp \
 	qt-ui/divelistview.cpp \
 	qt-ui/maintab.cpp \
 	qt-ui/mainwindow.cpp \

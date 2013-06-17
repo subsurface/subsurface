@@ -21,6 +21,7 @@
 #include "libdivecomputer.h"
 #include "qt-ui/mainwindow.h"
 #include "helpers.h"
+#include "qthelper.h"
 
 #include <QApplication>
 #include <QFileDialog>
@@ -32,10 +33,13 @@
 #include <QDesktopWidget>
 #include <QStyle>
 #include <QDebug>
+#include <QMap>
+#include <QMultiMap>
 
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
+DiveComputerList dcList;
 
 class Translator: public QTranslator
 {
@@ -142,30 +146,15 @@ void set_filename(const char *filename, gboolean force)
 		existing_filename = NULL;
 }
 
-const char *get_dc_nickname(const char *model, uint32_t deviceid)
+const QString get_dc_nickname(const char *model, uint32_t deviceid)
 {
-	struct device_info *known = get_device_info(model, deviceid);
-	if (known) {
-		if (known->nickname && *known->nickname)
-			return known->nickname;
-		else
-			return known->model;
-	}
-	return NULL;
-}
-
-void remember_dc(const char *model, uint32_t deviceid, const char *nickname)
-{
-	struct device_info *nn_entry;
-
-	nn_entry = create_device_info(model, deviceid);
-	if (!nn_entry)
-		return;
-	if (!nickname || !*nickname) {
-		nn_entry->nickname = NULL;
-		return;
-	}
-	nn_entry->nickname = strdup(nickname);
+	const DiveComputerNode *existNode = dcList.getExact(model, deviceid);
+	if (!existNode)
+		return QString("");
+	if (existNode->nickName != "")
+		return existNode->nickName;
+	else
+		return model;
 }
 
 void set_dc_nickname(struct dive *dive)
@@ -176,16 +165,20 @@ void set_dc_nickname(struct dive *dive)
 	struct divecomputer *dc = &dive->dc;
 
 	while (dc) {
-		if (get_dc_nickname(dc->model, dc->deviceid) == NULL) {
+		if (dc->model && *dc->model && dc->deviceid &&
+		    !dcList.getExact(dc->model, dc->deviceid)) {
 			// we don't have this one, yet
-			struct device_info *nn_entry = get_different_device_info(dc->model, dc->deviceid);
-			if (nn_entry) {
+			const DiveComputerNode *existNode = dcList.get(dc->model);
+			if (existNode) {
 				// we already have this model but a different deviceid
 				QString simpleNick(dc->model);
-				simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
-				remember_dc(dc->model, dc->deviceid, simpleNick.toUtf8().data());
+				if (dc->deviceid == 0)
+					simpleNick.append(" (unknown deviceid)");
+				else
+					simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
+				dcList.addDC(dc->model, dc->deviceid, simpleNick);
 			} else {
-				remember_dc(dc->model, dc->deviceid, NULL);
+				dcList.addDC(dc->model, dc->deviceid);
 			}
 		}
 		dc = dc->next;
@@ -328,6 +321,22 @@ QString getSubsurfaceDataPath(QString folderToFind)
 	if (folder.exists())
 		return folder.absolutePath();
 	return QString("");
+}
+
+void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
+{
+	dcList.addDC(model, deviceid, nickname, serial, firmware);
+}
+
+void call_for_each_dc(FILE *f, void (*callback)(FILE *, const char *, uint32_t,
+						const char *, const char *, const char *))
+{
+	QList<DiveComputerNode> values = dcList.dcMap.values();
+	for (int i = 0; i < values.size(); i++) {
+		const DiveComputerNode *node = &values.at(i);
+		callback(f, node->model.toUtf8().data(), node->deviceId, node->nickName.toUtf8().data(),
+			 node->serialNumber.toUtf8().data(), node->firmware.toUtf8().data());
+	}
 }
 
 #include "qt-gui.moc"

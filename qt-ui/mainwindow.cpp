@@ -206,6 +206,7 @@ void MainWindow::on_actionDownloadWeb_triggered()
 
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
+	DiveComputerManagementDialog::instance()->init();
 	DiveComputerManagementDialog::instance()->update();
 	DiveComputerManagementDialog::instance()->show();
 }

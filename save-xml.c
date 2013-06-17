@@ -512,24 +512,20 @@ static void save_trip(FILE *f, dive_trip_t *trip)
 	fprintf(f, "</trip>\n");
 }
 
-static void save_one_device(FILE *f, struct device_info *info)
+static void save_one_device(FILE *f, const char * model, uint32_t deviceid,
+			    const char *nickname, const char *serial_nr, const char *firmware)
 {
-	const char *nickname, *serial_nr, *firmware;
-
 	/* Nicknames that are empty or the same as the device model are not interesting */
-	nickname = info->nickname;
 	if (nickname) {
-		if (!*nickname || !strcmp(info->model, nickname))
+		if (!*nickname || !strcmp(model, nickname))
 			nickname = NULL;
 	}
 
 	/* Serial numbers that are empty are not interesting */
-	serial_nr = info->serial_nr;
 	if (serial_nr && !*serial_nr)
 		serial_nr = NULL;
 
 	/* Firmware strings that are empty are not interesting */
-	firmware = info->firmware;
 	if (firmware && !*firmware)
 		firmware = NULL;
 
@@ -538,23 +534,12 @@ static void save_one_device(FILE *f, struct device_info *info)
 		return;
 
 	fprintf(f, "<divecomputerid");
-	show_utf8(f, info->model, " model='", "'", 1);
-	fprintf(f, " deviceid='%08x'", info->deviceid);
+	show_utf8(f, model, " model='", "'", 1);
+	fprintf(f, " deviceid='%08x'", deviceid);
 	show_utf8(f, serial_nr, " serial='", "'", 1);
 	show_utf8(f, firmware, " firmware='", "'", 1);
 	show_utf8(f, nickname, " nickname='", "'", 1);
 	fprintf(f, "/>\n");
-}
-
-static void save_device_info(FILE *f)
-{
-	struct device_info *info;
-
-	info = head_of_device_info_list();
-	while (info) {
-		save_one_device(f, info);
-		info = info->next;
-	}
 }
 
 #define VERSION 2
@@ -578,7 +563,7 @@ void save_dives_logic(const char *filename, const gboolean select_only)
 	fprintf(f, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
 
 	/* save the dive computer nicknames, if any */
-	save_device_info(f);
+	call_for_each_dc(f, save_one_device);
 	if (autogroup)
 		fprintf(f, "<autogroup state='1' />\n");
 	fprintf(f, "</settings>\n<dives>\n");
