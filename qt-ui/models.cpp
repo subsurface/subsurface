@@ -1274,3 +1274,36 @@ void DiveComputerModel::remove(const QModelIndex& i)
 	remove_dive_computer(model.data(),  deviceid);
 	update();
 }
+
+/*#################################################################
+ * #
+ * #	Yearly Statistics Model
+ * #
+ * ################################################################
+ */
+
+YearlyStatisticsModel::YearlyStatisticsModel(QObject* parent)
+{
+}
+
+QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	QVariant val;
+	switch(section){
+		case YEAR: val = tr("Year \n > Month"); break;
+		case DIVES: val = tr("#"); break;
+		case TOTAL_TIME: val = tr("Duration \n Total"); break;
+		case AVERAGE_TIME: val = tr("Average"); break;
+		case SHORTEST_TIME: val = tr("Shortest"); break;
+		case LONGEST_TIME: val = tr("Longest"); break;
+		case AVG_DEPTH: val = tr("Depth \n Average"); break;
+		case MIN_DEPTH: val = tr("Minimum"); break;
+		case MAX_DEPTH: val = tr("Maximum"); break;
+		case AVG_SAC: val = tr("SAC \n Average"); break;
+		case MIN_SAC: val = tr("Minimum"); break;
+		case MAX_SAC: val = tr("Maximum"); break;
+		case AVG_TEMP: val = tr("Temperature \n Average"); break;
+		case MIN_TEMP: val = tr("Minimum"); break;
+		case MAX_TEMP: val = tr("Maximum"); break;
+	}
+}

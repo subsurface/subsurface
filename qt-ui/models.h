@@ -156,6 +156,7 @@ protected:
 };
 
 class DiveTripModel : public TreeModel {
+	Q_OBJECT
 public:
 	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
 		SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
@@ -193,7 +194,15 @@ public slots:
 	void remove(const QModelIndex& index);
 private:
 	int numRows;
-
 };
 
+class YearlyStatisticsModel : public TreeModel {
+	Q_OBJECT
+public:
+	enum { 	YEAR,DIVES,TOTAL_TIME,AVERAGE_TIME,SHORTEST_TIME,LONGEST_TIME,AVG_DEPTH,MIN_DEPTH,
+		MAX_DEPTH,AVG_SAC,MIN_SAC,MAX_SAC,AVG_TEMP,MIN_TEMP,MAX_TEMP,COLUMNS};
+
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	YearlyStatisticsModel(QObject* parent = 0);
+};
 #endif
