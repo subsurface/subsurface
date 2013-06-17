@@ -16,6 +16,7 @@
 #include <QApplication>
 #include <QFontMetrics>
 #include <QTextBrowser>
+#include <QTableView>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -240,7 +241,10 @@ void MainWindow::on_actionToggleZoom_triggered()
 
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
-	qDebug("actionYearlyStatistics");
+	QTableView *view = new QTableView();
+	QAbstractItemModel *model = new YearlyStatisticsModel();
+	view->setModel(model);
+	view->show();
 }
 
 /**
