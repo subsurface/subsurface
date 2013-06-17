@@ -123,51 +123,54 @@ private:
 *
 */
 
-struct TreeItemDT {
+struct TreeItem {
 	Q_DECLARE_TR_FUNCTIONS (TreeItemDT);
 public:
-	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
-				SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
-
-	enum ExtraRoles{STAR_ROLE = Qt::UserRole + 1, DIVE_ROLE, SORT_ROLE};
-
-	virtual ~TreeItemDT();
-	int columnCount() const {
-		return COLUMNS;
-	};
+	virtual ~TreeItem();
 
 	virtual QVariant data (int column, int role) const;
 	int row() const;
-	QList<TreeItemDT *> children;
-	TreeItemDT *parent;
+	QList<TreeItem*> children;
+	TreeItem *parent;
 };
 
 struct TripItem;
 
-class DiveTripModel : public QAbstractItemModel
+class TreeModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
 public:
-	enum Layout{TREE, LIST, CURRENT};
+	TreeModel(QObject *parent = 0);
+	virtual ~TreeModel();
 
-	DiveTripModel(QObject *parent = 0);
-	~DiveTripModel();
-
-	/*reimp*/ Qt::ItemFlags flags(const QModelIndex &index) const;
-	/*reimp*/ QVariant data(const QModelIndex &index, int role) const;
-	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual   QVariant data(const QModelIndex &index, int role) const;
 	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ QModelIndex parent(const QModelIndex &child) const;
 
+protected:
+	int columns;
+	TreeItem *rootItem;
+};
+
+class DiveTripModel : public TreeModel {
+public:
+	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
+		SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
+
+	enum ExtraRoles{STAR_ROLE = Qt::UserRole + 1, DIVE_ROLE, SORT_ROLE};
+	enum Layout{TREE, LIST, CURRENT};
+
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    DiveTripModel(QObject* parent = 0);
 	Layout layout() const;
 	void setLayout(Layout layout);
+
 private:
 	void setupModelData();
-
-	TreeItemDT *rootItem;
 	QMap<dive_trip_t*, TripItem*> trips;
 	Layout currentLayout;
 };
@@ -185,12 +188,12 @@ public:
     virtual Qt::ItemFlags flags(const QModelIndex& index) const;
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	void update();
-	
+
 public slots:
 	void remove(const QModelIndex& index);
 private:
 	int numRows;
-	
+
 };
 
 #endif

@@ -23,9 +23,9 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	currentHeaderClicked(-1), searchBox(new QLineEdit(this))
 {
 	setUniformRowHeights(true);
-	setItemDelegateForColumn(TreeItemDT::RATING, new StarWidgetsDelegate());
+	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate());
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
-	model->setSortRole(TreeItemDT::SORT_ROLE);
+	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	setModel(model);
 	connect(model, SIGNAL(layoutChanged()), this, SLOT(fixMessyQtModelBehaviour()));
@@ -63,7 +63,7 @@ void DiveListView::unselectDives()
 void DiveListView::selectDive(struct dive *dive, bool scrollto, bool toggle)
 {
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
-	QModelIndexList match = m->match(m->index(0,0), TreeItemDT::NR, dive->number, 1, Qt::MatchRecursive);
+	QModelIndexList match = m->match(m->index(0,0), DiveTripModel::NR, dive->number, 1, Qt::MatchRecursive);
 	QItemSelectionModel::SelectionFlags flags;
 	QModelIndex idx = match.first();
 
@@ -111,13 +111,13 @@ void DiveListView::headerClicked(int i)
 	DiveTripModel::Layout newLayout;
 	bool first = true;
 
-	newLayout = i == (int) TreeItemDT::NR ? DiveTripModel::TREE : DiveTripModel::LIST;
+	newLayout = i == (int) DiveTripModel::NR ? DiveTripModel::TREE : DiveTripModel::LIST;
 
 	Q_FOREACH(const QModelIndex& index , oldSelection.indexes()) {
 		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
 			continue;
 
-		struct dive *d = (struct dive *) index.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		struct dive *d = (struct dive *) index.data(DiveTripModel::DIVE_ROLE).value<void*>();
 		if (d)
 			currentSelectedDives.push_back(d);
 	}
@@ -228,9 +228,9 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 		return;
 	const QAbstractItemModel *model = current.model();
 	int selectedDive = 0;
-	struct dive *dive = (struct dive*) model->data(current, TreeItemDT::DIVE_ROLE).value<void*>();
+	struct dive *dive = (struct dive*) model->data(current, DiveTripModel::DIVE_ROLE).value<void*>();
 	if (!dive)  // it's a trip! select first child.
-		dive = (struct dive*) model->data(current.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+		dive = (struct dive*) model->data(current.child(0,0), DiveTripModel::DIVE_ROLE).value<void*>();
 	selectedDive = get_divenr(dive);
 	scrollTo(current);
 	if (selectedDive == selected_dive)
@@ -250,10 +250,10 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 		if (index.column() != 0)
 			continue;
 		const QAbstractItemModel *model = index.model();
-		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
+		struct dive *dive = (struct dive*) model->data(index, DiveTripModel::DIVE_ROLE).value<void*>();
 		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
-				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				struct dive *child = (struct dive*) model->data(index.child(0,0), DiveTripModel::DIVE_ROLE).value<void*>();
 				if (child && child->divetrip)
 					selectedTrips.remove(child->divetrip);
 				while (child) {
@@ -270,11 +270,11 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 			continue;
 
 		const QAbstractItemModel *model = index.model();
-		struct dive *dive = (struct dive*) model->data(index, TreeItemDT::DIVE_ROLE).value<void*>();
+		struct dive *dive = (struct dive*) model->data(index, DiveTripModel::DIVE_ROLE).value<void*>();
 		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
 				QItemSelection selection;
-				struct dive *child = (struct dive*) model->data(index.child(0,0), TreeItemDT::DIVE_ROLE).value<void*>();
+				struct dive *child = (struct dive*) model->data(index.child(0,0), DiveTripModel::DIVE_ROLE).value<void*>();
 				if (child && child->divetrip)
 					selectedTrips.insert(child->divetrip);
 				while (child) {
@@ -300,7 +300,7 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 
 void DiveListView::removeFromTrip()
 {
-	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
 	remove_dive_from_trip(d);
@@ -309,7 +309,7 @@ void DiveListView::removeFromTrip()
 
 void DiveListView::deleteDive()
 {
-	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
 	if (d)
 		delete_single_dive(get_index_for_dive(d));
 	reload(currentLayout, false);
@@ -317,12 +317,12 @@ void DiveListView::deleteDive()
 
 void DiveListView::testSlot()
 {
-	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
 	if (d) {
 		qDebug("testSlot called on dive #%d", d->number);
 	} else {
 		QModelIndex child = contextMenuIndex.child(0, 0);
-		d = (struct dive *) child.data(TreeItemDT::DIVE_ROLE).value<void*>();
+		d = (struct dive *) child.data(DiveTripModel::DIVE_ROLE).value<void*>();
 		if (d)
 			qDebug("testSlot called on trip including dive #%d", d->number);
 		else
@@ -335,7 +335,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	QAction *collapseAction = NULL;
 	// let's remember where we are
 	contextMenuIndex = indexAt(event->pos());
-	struct dive *d = (struct dive *) contextMenuIndex.data(TreeItemDT::DIVE_ROLE).value<void*>();
+	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModel::TREE) {
 		popup.addAction(tr("expand all"), this, SLOT(expandAll()));

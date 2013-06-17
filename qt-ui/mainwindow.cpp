@@ -437,7 +437,7 @@ void MainWindow::initialUiSetup()
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
 	ui->ListWidget->expandAll();
-	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++) {
+	for (i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++) {
 		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui->ListWidget->setColumnWidth(i, width.toInt());
@@ -526,7 +526,7 @@ void MainWindow::writeSettings()
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
-	for (i = TreeItemDT::NR; i < TreeItemDT::COLUMNS; i++)
+	for (i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++)
 		if (!ui->ListWidget->isColumnHidden(i))
 			settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
 	settings.endGroup();

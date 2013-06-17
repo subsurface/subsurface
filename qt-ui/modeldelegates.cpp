@@ -26,7 +26,7 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 	if (!index.isValid())
 		return;
 
-	QVariant value = index.model()->data(index, TreeItemDT::STAR_ROLE);
+	QVariant value = index.model()->data(index, DiveTripModel::STAR_ROLE);
 
 	if (!value.isValid())
 		return;
