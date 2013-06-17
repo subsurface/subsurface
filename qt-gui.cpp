@@ -154,10 +154,42 @@ const char *get_dc_nickname(const char *model, uint32_t deviceid)
 	return NULL;
 }
 
+void remember_dc(const char *model, uint32_t deviceid, const char *nickname)
+{
+	struct device_info *nn_entry;
+
+	nn_entry = create_device_info(model, deviceid);
+	if (!nn_entry)
+		return;
+	if (!nickname || !*nickname) {
+		nn_entry->nickname = NULL;
+		return;
+	}
+	nn_entry->nickname = strdup(nickname);
+}
+
 void set_dc_nickname(struct dive *dive)
 {
-	/* needs Qt implementation */
-	/*well, I don't know how to do this here... = ( */
+	if (!dive)
+		return;
+
+	struct divecomputer *dc = &dive->dc;
+
+	while (dc) {
+		if (get_dc_nickname(dc->model, dc->deviceid) == NULL) {
+			// we don't have this one, yet
+			struct device_info *nn_entry = get_different_device_info(dc->model, dc->deviceid);
+			if (nn_entry) {
+				// we already have this model but a different deviceid
+				QString simpleNick(dc->model);
+				simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
+				remember_dc(dc->model, dc->deviceid, simpleNick.toUtf8().data());
+			} else {
+				remember_dc(dc->model, dc->deviceid, NULL);
+			}
+		}
+		dc = dc->next;
+	}
 }
 
 QString get_depth_string(depth_t depth, bool showunit)
