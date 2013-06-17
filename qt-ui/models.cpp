@@ -1155,9 +1155,9 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
 	setupModelData();
 }
 
-/*#################################################################### 
+/*####################################################################
  *
- * Dive Computer Model 
+ * Dive Computer Model
  *
  *####################################################################
  */
@@ -1179,9 +1179,9 @@ QVariant DiveComputerModel::headerData(int section, Qt::Orientation orientation,
 		return ret;
 	}
 	switch(section){
-		case ID : ret = tr("Device ID"); break;
-		case MODEL : ret = tr("Model"); break;
-		case NICKNAME : ret = tr("Nickname"); break;
+		case ID:	ret = tr("Device ID"); break;
+		case MODEL:	ret = tr("Model"); break;
+		case NICKNAME:	ret = tr("Nickname"); break;
 	}
 	return ret;
 }
@@ -1196,12 +1196,12 @@ QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
 	QVariant ret;
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
 		switch(index.column()){
-			case ID : ret = device->deviceid; break;
-			case MODEL : ret = device->model; break;
-			case NICKNAME : ret = device->nickname; break;
+			case ID:	ret = QString("0x").append(QString::number(device->deviceid, 16)); break;
+			case MODEL:	ret = device->model; break;
+			case NICKNAME:	ret = device->nickname; break;
 		}
 	}
-	
+
 	if (role ==  Qt::DecorationRole && index.column() == REMOVE){
 		ret = QIcon(":trash");
 	}
@@ -1246,16 +1246,16 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex& index) const
 bool DiveComputerModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	struct device_info *nnl = head_of_device_info_list();
-	
+
 	for(int i = 0; i < index.row(); i++){
 		nnl = nnl->next;
 	}
-	
-	
+
+
 	QByteArray v = value.toByteArray();
 	nnl->nickname = strdup(v.data()); // how should I free this before setting a new one?
 	// set_dc_nickname(dive);  -> should this be used instead?
-	
+
 	return true;
 }
 
