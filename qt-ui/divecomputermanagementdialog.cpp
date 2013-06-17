@@ -11,7 +11,6 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget* parent, Qt::
 	model = new DiveComputerModel();
 	ui->tableView->setModel(model);
 	connect(ui->tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(tryRemove(QModelIndex)));
-	ui->tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
 }
 
 DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
@@ -23,6 +22,9 @@ DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
 void DiveComputerManagementDialog::update()
 {
 	model->update();
+	ui->tableView->resizeColumnsToContents();
+	ui->tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
+	layout()->activate();
 }
 
 void DiveComputerManagementDialog::tryRemove(const QModelIndex& index)
@@ -30,14 +32,14 @@ void DiveComputerManagementDialog::tryRemove(const QModelIndex& index)
 	if (index.column() != DiveComputerModel::REMOVE){
 		return;
 	}
-	
+
 	QMessageBox::StandardButton response = QMessageBox::question(
-		this, 
-		tr("Remove the selected Dive Computer?"), 
+		this,
+		tr("Remove the selected Dive Computer?"),
 		tr("Are you sure that you want to \n remove the selected dive computer?"),
 		QMessageBox::Ok | QMessageBox::Cancel
 	);
-	
+
 	if (response == QMessageBox::Ok){
 		model->remove(index);
 	}
