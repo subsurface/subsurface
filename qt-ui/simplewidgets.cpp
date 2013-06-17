@@ -4,6 +4,14 @@
 #include <QLabel>
 #include <QFormLayout>
 #include <QIcon>
+#include <QAbstractButton>
+#include <QSpinBox>
+#include <QButtonGroup>
+#include <QDebug>
+
+#include "../dive.h"
+
+#include "ui_renumber.h"
 
 class MinMaxAvgWidgetPrivate{
 public:
@@ -24,7 +32,7 @@ public:
 		avgValue = new QLabel(owner);
 		minValue = new QLabel(owner);
 		maxValue = new QLabel(owner);
-		
+
 		QGridLayout *formLayout = new QGridLayout();
 		formLayout->addWidget(maxIco, 0, 0);
 		formLayout->addWidget(maxValue, 0, 1);
@@ -89,4 +97,24 @@ void MinMaxAvgWidget::setMaximum(const QString& maximum)
 void MinMaxAvgWidget::setMinimum(const QString& minimum)
 {
 	d->minValue->setText(minimum);
+}
+
+RenumberDialog* RenumberDialog::instance()
+{
+	static RenumberDialog* self = new RenumberDialog();
+	return self;
+}
+
+void RenumberDialog::buttonClicked(QAbstractButton* button)
+{
+	if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole){
+		qDebug() << "Renumbering.";
+		renumber_dives(ui->spinBox->value());
+	}
+}
+
+RenumberDialog::RenumberDialog(): QDialog(), ui( new Ui::RenumberDialog())
+{
+	ui->setupUi(this);
+	connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
 }
