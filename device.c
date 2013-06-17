@@ -9,6 +9,11 @@ struct device_info *head_of_device_info_list(void)
 	return device_info_list;
 }
 
+void remove_dive_computer(const char *model, uint32_t deviceid)
+{
+	free(remove_device_info(model, deviceid));
+}
+
 static int match_device_info(struct device_info *entry, const char *model, uint32_t deviceid)
 {
 	return !strcmp(entry->model, model) && entry->deviceid == deviceid;

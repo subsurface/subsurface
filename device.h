@@ -22,6 +22,7 @@ extern struct device_info *create_device_info(const char *model, uint32_t device
 extern struct device_info *remove_device_info(const char *model, uint32_t deviceid);
 extern struct device_info *head_of_device_info_list(void);
 extern struct divecomputer *fake_dc(struct divecomputer* dc);
+extern void remove_dive_computer(const char *model, uint32_t deviceid);
 
 #ifdef __cplusplus
 }
