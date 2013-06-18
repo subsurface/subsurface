@@ -196,6 +196,14 @@ QString get_depth_string(depth_t depth, bool showunit)
 	}
 }
 
+QString get_depth_unit()
+{
+	if (prefs.units.length == units::METERS)
+		return "m";
+	else
+		return "ft";
+}
+
 QString get_weight_string(weight_t weight, bool showunit)
 {
 	if (prefs.units.weight == units::KG) {
@@ -205,6 +213,14 @@ QString get_weight_string(weight_t weight, bool showunit)
 		double lbs = grams_to_lbs(weight.grams);
 		return QString("%1%2").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1 ).arg(showunit ? _("lbs") : "");
 	}
+}
+
+QString get_weight_unit()
+{
+	if (prefs.units.weight == units::KG)
+		return "kg";
+	else
+		return "lbs";
 }
 
 QString get_temperature_string(temperature_t temp, bool showunit)
@@ -220,6 +236,14 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 	}
 }
 
+QString get_temp_unit()
+{
+	if (prefs.units.temperature == units::CELSIUS)
+		return QString(UTF8_DEGREE "C");
+	else
+		return QString(UTF8_DEGREE "F");
+}
+
 QString get_volume_string(volume_t volume, bool showunit)
 {
 	if (prefs.units.volume == units::LITER) {
@@ -229,6 +253,14 @@ QString get_volume_string(volume_t volume, bool showunit)
 		double cuft = ml_to_cuft(volume.mliter);
 		return QString("%1%2").arg(cuft, 0, 'f', cuft >= 20.0 ? 0 : (cuft >= 2.0 ? 1 : 2)).arg(showunit ? _("cuft") : "");
 	}
+}
+
+QString get_volume_unit()
+{
+	if (prefs.units.volume == units::LITER)
+		return "l";
+	else
+		return "cuft";
 }
 
 QString get_pressure_string(pressure_t pressure, bool showunit)

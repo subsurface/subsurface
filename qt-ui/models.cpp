@@ -1302,7 +1302,6 @@ YearStatisticsItem::YearStatisticsItem(stats_t interval) : stats_interval(interv
 
 QVariant YearStatisticsItem::data(int column, int role) const
 {
-	const char *unit;
 	double value;
 	QVariant ret;
 
@@ -1317,29 +1316,26 @@ QVariant YearStatisticsItem::data(int column, int role) const
 	case AVERAGE_TIME:	ret = get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size); break;
 	case SHORTEST_TIME:	ret = get_minutes(stats_interval.shortest_time.seconds); break;
 	case LONGEST_TIME:	ret = get_minutes(stats_interval.longest_time.seconds); break;
-	case AVG_DEPTH:		ret = stats_interval.avg_depth.mm; break;
-	case MIN_DEPTH:		ret = stats_interval.min_depth.mm; break;
-	case MAX_DEPTH:		ret = stats_interval.max_depth.mm; break;
-	case AVG_SAC:		ret = stats_interval.avg_sac.mliter; break;
-	case MIN_SAC:		ret = stats_interval.min_sac.mliter; break;
-	case MAX_SAC:		ret = stats_interval.max_sac.mliter; break;
+	case AVG_DEPTH:		ret = get_depth_string(stats_interval.avg_depth); break;
+	case MIN_DEPTH:		ret = get_depth_string(stats_interval.min_depth); break;
+	case MAX_DEPTH:		ret = get_depth_string(stats_interval.max_depth); break;
+	case AVG_SAC:		ret = get_volume_string(stats_interval.avg_sac); break;
+	case MIN_SAC:		ret = get_volume_string(stats_interval.min_sac); break;
+	case MAX_SAC:		ret = get_volume_string(stats_interval.max_sac); break;
 	case AVG_TEMP:
-		get_temp_units(stats_interval.min_temp, &unit);
 		if (stats_interval.combined_temp && stats_interval.combined_count) {
-			ret = QString("%1 %2").arg(stats_interval.combined_temp / stats_interval.combined_count).arg(unit);
+			ret = QString::number(stats_interval.combined_temp / stats_interval.combined_count, 'f', 1);
 		}
 		break;
 	case MIN_TEMP:
-		value = get_temp_units(stats_interval.min_temp, &unit);
-		if (value > -100.0) {
-			ret =  QString("%1 %2").arg(value).arg(unit);
-		}
+		value = get_temp_units(stats_interval.min_temp, NULL);
+		if (value > -100.0)
+			ret =  QString::number(value, 'f', 1);
 		break;
 	case MAX_TEMP:
-		value = get_temp_units(stats_interval.max_temp, &unit);
-		if (value > -100.0) {
-			ret =  QString("%1 %2").arg(value).arg(unit);
-		}
+		value = get_temp_units(stats_interval.max_temp, NULL);
+		if (value > -100.0)
+			ret =  QString::number(value, 'f', 1);
 		break;
 	}
 	return ret;
@@ -1362,18 +1358,18 @@ QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientat
 		case YEAR:		val = tr("Year \n > Month"); break;
 		case DIVES:		val = tr("#"); break;
 		case TOTAL_TIME:	val = tr("Duration \n Total"); break;
-		case AVERAGE_TIME:	val = tr("Average"); break;
-		case SHORTEST_TIME:	val = tr("Shortest"); break;
-		case LONGEST_TIME:	val = tr("Longest"); break;
-		case AVG_DEPTH:		val = tr("Depth \n Average"); break;
-		case MIN_DEPTH:		val = tr("Minimum"); break;
-		case MAX_DEPTH:		val = tr("Maximum"); break;
-		case AVG_SAC:		val = tr("SAC \n Average"); break;
-		case MIN_SAC:		val = tr("Minimum"); break;
-		case MAX_SAC:		val = tr("Maximum"); break;
-		case AVG_TEMP:		val = tr("Temperature \n Average"); break;
-		case MIN_TEMP:		val = tr("Minimum"); break;
-		case MAX_TEMP:		val = tr("Maximum"); break;
+		case AVERAGE_TIME:	val = tr("\nAverage"); break;
+		case SHORTEST_TIME:	val = tr("\nShortest"); break;
+		case LONGEST_TIME:	val = tr("\nLongest"); break;
+		case AVG_DEPTH:		val = QString(tr("Depth (%1)\n Average")).arg(get_depth_unit()); break;
+		case MIN_DEPTH:		val = tr("\nMinimum"); break;
+		case MAX_DEPTH:		val = tr("\nMaximum"); break;
+		case AVG_SAC:		val = QString(tr("SAC (%1)\n Average")).arg(get_volume_unit()); break;
+		case MIN_SAC:		val = tr("\nMinimum"); break;
+		case MAX_SAC:		val = tr("\nMaximum"); break;
+		case AVG_TEMP:		val = QString(tr("Temp. (%1)\n Average").arg(get_temp_unit())); break;
+		case MIN_TEMP:		val = tr("\nMinimum"); break;
+		case MAX_TEMP:		val = tr("\nMaximum"); break;
 		}
 	}
 	return val;
