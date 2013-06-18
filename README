@@ -11,7 +11,7 @@ will get you the latest version of the fully functional Subsurface.
 
 git checkout Gtk
 
-If you are indeed planning to work no the Qt version, here are some
+If you are indeed planning to work on the Qt version, here are some
 pointers to get you started:
 
 Building the Qt version under Linux
