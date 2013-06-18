@@ -1,4 +1,5 @@
 #include "qthelper.h"
+#include <QMap>
 
 DiveComputerList::DiveComputerList()
 {
@@ -7,7 +8,7 @@ DiveComputerList::DiveComputerList()
 
 DiveComputerList::~DiveComputerList()
 {
-	dcMap.~QMap();
+
 }
 
 bool DiveComputerNode::operator == (const DiveComputerNode &a) const {
