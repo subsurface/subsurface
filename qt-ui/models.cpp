@@ -1287,8 +1287,8 @@ void DiveComputerModel::keepWorkingList()
 
 class YearStatisticsItem : public TreeItem{
 public:
-	enum { 	YEAR,DIVES,TOTAL_TIME,AVERAGE_TIME,SHORTEST_TIME,LONGEST_TIME,AVG_DEPTH,MIN_DEPTH,
-		MAX_DEPTH,AVG_SAC,MIN_SAC,MAX_SAC,AVG_TEMP,MIN_TEMP,MAX_TEMP,COLUMNS};
+	enum {YEAR, DIVES, TOTAL_TIME, AVERAGE_TIME, SHORTEST_TIME, LONGEST_TIME, AVG_DEPTH, MIN_DEPTH,
+		MAX_DEPTH, AVG_SAC, MIN_SAC, MAX_SAC, AVG_TEMP, MIN_TEMP, MAX_TEMP, COLUMNS};
 
 	QVariant data(int column, int role) const;
 	YearStatisticsItem(stats_t interval);
@@ -1296,51 +1296,51 @@ private:
 	stats_t stats_interval;
 };
 
-YearStatisticsItem::YearStatisticsItem(stats_t interval)
-: stats_interval(interval)
+YearStatisticsItem::YearStatisticsItem(stats_t interval) : stats_interval(interval)
 {
 }
 
 QVariant YearStatisticsItem::data(int column, int role) const
 {
 	const char *unit;
+	double value;
 	QVariant ret;
 
 	if (role != Qt::DisplayRole){
 		return ret;
 	}
 
-	switch(column){
-		case YEAR: ret =  stats_interval.period; break;
-		case DIVES: ret =  stats_interval.selection_size;break;
-		case TOTAL_TIME: ret = get_time_string(stats_interval.total_time.seconds, 0);break;
-		case AVERAGE_TIME: ret = get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size);break;
-		case SHORTEST_TIME: ret = get_minutes(stats_interval.shortest_time.seconds);break;
-		case LONGEST_TIME: ret = get_minutes(stats_interval.longest_time.seconds);break;
-		case AVG_DEPTH: ret = stats_interval.avg_depth.mm;break;
-		case MIN_DEPTH: ret = stats_interval.min_depth.mm;break;
-		case MAX_DEPTH: ret = stats_interval.max_depth.mm;break;
-		case AVG_SAC: ret = stats_interval.avg_sac.mliter;break;
-		case MIN_SAC: ret = stats_interval.min_sac.mliter;break;
-		case MAX_SAC: ret = stats_interval.max_sac.mliter;break;
-		case AVG_TEMP:{
-			get_temp_units(stats_interval.min_temp, &unit);
-			if (stats_interval.combined_temp && stats_interval.combined_count) {
-				ret = QString("%1 %2").arg(stats_interval.combined_temp / stats_interval.combined_count).arg(unit);
-			}
-		}break;
-		case MIN_TEMP:{
-			double value = get_temp_units(stats_interval.min_temp, &unit);
-			if (value > -100.0) {
-				ret =  QString("%1 %2").arg(value).arg(unit);
-			}
-		}break;
-		case MAX_TEMP:{
-			double value = get_temp_units(stats_interval.max_temp, &unit);
-			if (value > -100.0) {
-				ret =  QString("%1 %2").arg(value).arg(unit);
-			}
-		}break;
+	switch(column) {
+	case YEAR:		ret =  stats_interval.period; break;
+	case DIVES:		ret =  stats_interval.selection_size; break;
+	case TOTAL_TIME:	ret = get_time_string(stats_interval.total_time.seconds, 0); break;
+	case AVERAGE_TIME:	ret = get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size); break;
+	case SHORTEST_TIME:	ret = get_minutes(stats_interval.shortest_time.seconds); break;
+	case LONGEST_TIME:	ret = get_minutes(stats_interval.longest_time.seconds); break;
+	case AVG_DEPTH:		ret = stats_interval.avg_depth.mm; break;
+	case MIN_DEPTH:		ret = stats_interval.min_depth.mm; break;
+	case MAX_DEPTH:		ret = stats_interval.max_depth.mm; break;
+	case AVG_SAC:		ret = stats_interval.avg_sac.mliter; break;
+	case MIN_SAC:		ret = stats_interval.min_sac.mliter; break;
+	case MAX_SAC:		ret = stats_interval.max_sac.mliter; break;
+	case AVG_TEMP:
+		get_temp_units(stats_interval.min_temp, &unit);
+		if (stats_interval.combined_temp && stats_interval.combined_count) {
+			ret = QString("%1 %2").arg(stats_interval.combined_temp / stats_interval.combined_count).arg(unit);
+		}
+		break;
+	case MIN_TEMP:
+		value = get_temp_units(stats_interval.min_temp, &unit);
+		if (value > -100.0) {
+			ret =  QString("%1 %2").arg(value).arg(unit);
+		}
+		break;
+	case MAX_TEMP:
+		value = get_temp_units(stats_interval.max_temp, &unit);
+		if (value > -100.0) {
+			ret =  QString("%1 %2").arg(value).arg(unit);
+		}
+		break;
 	}
 	return ret;
 }
@@ -1354,27 +1354,26 @@ YearlyStatisticsModel::YearlyStatisticsModel(QObject* parent)
 QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant val;
-	if (role == Qt::FontRole){
+	if (role == Qt::FontRole)
 		  val = defaultModelFont();
-	}
 
-	if (role == Qt::DisplayRole && orientation == Qt::Horizontal){
-		switch(section){
-			case YEAR: val = tr("Year \n > Month"); break;
-			case DIVES: val = tr("#"); break;
-			case TOTAL_TIME: val = tr("Duration \n Total"); break;
-			case AVERAGE_TIME: val = tr("Average"); break;
-			case SHORTEST_TIME: val = tr("Shortest"); break;
-			case LONGEST_TIME: val = tr("Longest"); break;
-			case AVG_DEPTH: val = tr("Depth \n Average"); break;
-			case MIN_DEPTH: val = tr("Minimum"); break;
-			case MAX_DEPTH: val = tr("Maximum"); break;
-			case AVG_SAC: val = tr("SAC \n Average"); break;
-			case MIN_SAC: val = tr("Minimum"); break;
-			case MAX_SAC: val = tr("Maximum"); break;
-			case AVG_TEMP: val = tr("Temperature \n Average"); break;
-			case MIN_TEMP: val = tr("Minimum"); break;
-			case MAX_TEMP: val = tr("Maximum"); break;
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
+		switch(section) {
+		case YEAR:		val = tr("Year \n > Month"); break;
+		case DIVES:		val = tr("#"); break;
+		case TOTAL_TIME:	val = tr("Duration \n Total"); break;
+		case AVERAGE_TIME:	val = tr("Average"); break;
+		case SHORTEST_TIME:	val = tr("Shortest"); break;
+		case LONGEST_TIME:	val = tr("Longest"); break;
+		case AVG_DEPTH:		val = tr("Depth \n Average"); break;
+		case MIN_DEPTH:		val = tr("Minimum"); break;
+		case MAX_DEPTH:		val = tr("Maximum"); break;
+		case AVG_SAC:		val = tr("SAC \n Average"); break;
+		case MIN_SAC:		val = tr("Minimum"); break;
+		case MAX_SAC:		val = tr("Maximum"); break;
+		case AVG_TEMP:		val = tr("Temperature \n Average"); break;
+		case MIN_TEMP:		val = tr("Minimum"); break;
+		case MAX_TEMP:		val = tr("Maximum"); break;
 		}
 	}
 	return val;
@@ -1385,7 +1384,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 	int i, month = 0;
 	unsigned int j, combined_months;
 
-	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i){
+	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i) {
 		YearStatisticsItem *item = new YearStatisticsItem(stats_yearly[i]);
 		combined_months = 0;
 		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
