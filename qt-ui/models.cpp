@@ -1266,6 +1266,18 @@ void DiveComputerModel::remove(const QModelIndex& index)
 	update();
 }
 
+void DiveComputerModel::dropWorkingList()
+{
+	// how do I prevent the memory leak ?
+}
+
+void DiveComputerModel::keepWorkingList()
+{
+	if (dcList.dcMap != dcWorkingMap)
+		mark_divelist_changed(TRUE);
+	dcList.dcMap = dcWorkingMap;
+}
+
 /*#################################################################
  * #
  * #	Yearly Statistics Model
@@ -1384,16 +1396,4 @@ void YearlyStatisticsModel::update_yearly_stats()
 		}
 		rootItem->children.append(item);
 	}
-}
-
-void DiveComputerModel::dropWorkingList()
-{
-	// how do I prevent the memory leak ?
-}
-
-void DiveComputerModel::keepWorkingList()
-{
-	if (dcList.dcMap != dcWorkingMap)
-		mark_divelist_changed(TRUE);
-	dcList.dcMap = dcWorkingMap;
 }
