@@ -785,6 +785,11 @@ void TankInfoModel::update()
  *
 */
 
+TreeItem::TreeItem()
+{
+	parent = NULL;
+}
+
 TreeItem::~TreeItem()
 {
 	qDeleteAll(children);
@@ -1304,10 +1309,8 @@ QVariant YearStatisticsItem::data(int column, int role) const
 {
 	double value;
 	QVariant ret;
-
-	if (role != Qt::DisplayRole){
+	if (role != Qt::DisplayRole)
 		return ret;
-	}
 
 	switch(column) {
 	case YEAR:		ret =  stats_interval.period; break;
@@ -1387,8 +1390,10 @@ void YearlyStatisticsModel::update_yearly_stats()
 			combined_months += stats_monthly[month].selection_size;
 			YearStatisticsItem *iChild = new YearStatisticsItem(stats_monthly[month]);
 			item->children.append(iChild);
+			iChild->parent = item;
 			month++;
 		}
 		rootItem->children.append(item);
+		item->parent = rootItem;
 	}
 }

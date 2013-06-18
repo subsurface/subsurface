@@ -128,7 +128,7 @@ struct TreeItem {
 	Q_DECLARE_TR_FUNCTIONS (TreeItemDT);
 public:
 	virtual ~TreeItem();
-
+	TreeItem();
 	virtual QVariant data (int column, int role) const;
 	int row() const;
 	QList<TreeItem*> children;
