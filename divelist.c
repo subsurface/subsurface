@@ -1059,7 +1059,7 @@ static void try_to_renumber(struct dive *last, int preexisting)
 
 void process_dives(bool is_imported, bool prefer_imported)
 {
-		int i;
+	int i;
 	int preexisting = dive_table.preexisting;
 	struct dive *last;
 

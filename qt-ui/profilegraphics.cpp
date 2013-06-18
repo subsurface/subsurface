@@ -21,6 +21,7 @@
 #include "../dive.h"
 #include "../profile.h"
 #include "../device.h"
+#include "../helpers.h"
 
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
@@ -273,7 +274,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		dc = fake_dc(dc);
 	}
 
-	QString nick(get_dc_nickname(dc->model, dc->deviceid));
+	QString nick = get_dc_nickname(dc->model, dc->deviceid);
 	if (nick.isEmpty())
 		nick = QString(dc->model);
 

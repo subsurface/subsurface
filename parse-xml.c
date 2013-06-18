@@ -1222,17 +1222,8 @@ static void dc_settings_start(void)
 
 static void dc_settings_end(void)
 {
-	struct device_info *info;
-
-	info = create_device_info(cur_settings.dc.model, cur_settings.dc.deviceid);
-	if (info) {
-		if (!info->serial_nr && cur_settings.dc.serial_nr)
-			info->serial_nr = strdup(cur_settings.dc.serial_nr);
-		if (!info->firmware && cur_settings.dc.firmware)
-			info->firmware = strdup(cur_settings.dc.firmware);
-		if (!info->nickname && cur_settings.dc.nickname)
-			info->nickname = strdup(cur_settings.dc.nickname);
-	}
+	create_device_node(cur_settings.dc.model, cur_settings.dc.deviceid, cur_settings.dc.serial_nr,
+			   cur_settings.dc.firmware, cur_settings.dc.nickname);
 	reset_dc_settings();
 }
 

@@ -578,36 +578,29 @@ static unsigned int undo_libdivecomputer_suunto_nr_changes(unsigned int serial)
 
 static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event_devinfo_t *devinfo)
 {
-	struct device_info *info;
 	unsigned int serial = devinfo->serial;
+	char serial_nr[13] = "";
+	char firmware[13] = "";
 
 	first_temp_is_air = 1;
 
 	serial = undo_libdivecomputer_suunto_nr_changes(serial);
 
-	info = create_device_info(devdata->model, devdata->deviceid);
-	if (!info)
-		return serial;
-
-	if (!info->serial_nr && serial) {
-		char serial_nr[13];
-
+	if (serial) {
 		snprintf(serial_nr, sizeof(serial_nr), "%02d%02d%02d%02d",
 			(devinfo->serial >> 24) & 0xff,
 			(devinfo->serial >> 16) & 0xff,
 			(devinfo->serial >> 8)  & 0xff,
 			(devinfo->serial >> 0)  & 0xff);
-		info->serial_nr = strdup(serial_nr);
 	}
-
-	if (!info->firmware && devinfo->firmware) {
-		char firmware[13];
+	if (devinfo->firmware) {
 		snprintf(firmware, sizeof(firmware), "%d.%d.%d",
 			(devinfo->firmware >> 16) & 0xff,
 			(devinfo->firmware >> 8)  & 0xff,
 			(devinfo->firmware >> 0)  & 0xff);
-		info->firmware = strdup(firmware);
 	}
+	create_device_node(devdata->model, devdata->deviceid, serial_nr, firmware, "");
+
 	return serial;
 }
 

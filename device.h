@@ -6,23 +6,10 @@
 extern "C" {
 #endif
 
-struct device_info {
-	const char *model;
-	uint32_t deviceid;
-
-	const char *serial_nr;
-	const char *firmware;
-	const char *nickname;
-	struct device_info *next;
-};
-
-extern struct device_info *get_device_info(const char *model, uint32_t deviceid);
-extern struct device_info *get_different_device_info(const char *model, uint32_t deviceid);
-extern struct device_info *create_device_info(const char *model, uint32_t deviceid);
-extern struct device_info *remove_device_info(const char *model, uint32_t deviceid);
-extern struct device_info *head_of_device_info_list(void);
 extern struct divecomputer *fake_dc(struct divecomputer* dc);
-extern void remove_dive_computer(const char *model, uint32_t deviceid);
+extern void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname);
+extern void call_for_each_dc(FILE *f, void (*callback)(FILE *, const char *, uint32_t,
+						const char *, const char *, const char *));
 
 #ifdef __cplusplus
 }

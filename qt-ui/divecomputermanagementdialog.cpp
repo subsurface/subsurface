@@ -3,14 +3,24 @@
 #include "ui_divecomputermanagementdialog.h"
 #include "mainwindow.h"
 #include <QMessageBox>
+#include "../qthelper.h"
+#include "../helpers.h"
 
-DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
-, ui( new Ui::DiveComputerManagementDialog())
+DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f),
+	ui( new Ui::DiveComputerManagementDialog()),
+	model(0)
 {
 	ui->setupUi(this);
-	model = new DiveComputerModel();
-	ui->tableView->setModel(model);
+	init();
 	connect(ui->tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(tryRemove(QModelIndex)));
+}
+
+void DiveComputerManagementDialog::init()
+{
+	if (model)
+		delete model;
+	model = new DiveComputerModel(dcList.dcMap);
+	ui->tableView->setModel(model);
 }
 
 DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
@@ -43,4 +53,18 @@ void DiveComputerManagementDialog::tryRemove(const QModelIndex& index)
 	if (response == QMessageBox::Ok){
 		model->remove(index);
 	}
+}
+
+void DiveComputerManagementDialog::accept()
+{
+	model->keepWorkingList();
+	hide();
+	close();
+}
+
+void DiveComputerManagementDialog::reject()
+{
+	model->dropWorkingList();
+	hide();
+	close();
 }

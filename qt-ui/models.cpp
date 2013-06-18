@@ -8,8 +8,8 @@
 #include "../helpers.h"
 #include "../dive.h"
 #include "../device.h"
-#include  "../statistics.h"
-
+#include "../statistics.h"
+#include "../qthelper.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -1172,9 +1172,10 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
  *####################################################################
  */
 
-DiveComputerModel::DiveComputerModel(QObject* parent): QAbstractTableModel(parent)
+DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap, QObject* parent): QAbstractTableModel(parent)
 {
-
+	dcWorkingMap = dcMap;
+	numRows = 0;
 }
 
 int DiveComputerModel::columnCount(const QModelIndex& parent) const
@@ -1198,17 +1199,15 @@ QVariant DiveComputerModel::headerData(int section, Qt::Orientation orientation,
 
 QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
 {
-	struct device_info *device = head_of_device_info_list();
-	for(int i = 0; i < index.row(); i++){
-		device = device->next;
-	}
+	QList<DiveComputerNode> values = dcWorkingMap.values();
+	DiveComputerNode node = values.at(index.row());
 
 	QVariant ret;
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
 		switch(index.column()){
-			case ID:	ret = QString("0x").append(QString::number(device->deviceid, 16)); break;
-			case MODEL:	ret = device->model; break;
-			case NICKNAME:	ret = device->nickname; break;
+			case ID:	ret = QString("0x").append(QString::number(node.deviceId, 16)); break;
+			case MODEL:	ret = node.model; break;
+			case NICKNAME:	ret = node.nickName; break;
 		}
 	}
 
@@ -1225,12 +1224,8 @@ int DiveComputerModel::rowCount(const QModelIndex& parent) const
 
 void DiveComputerModel::update()
 {
-	int count = 0;
-	struct device_info *nnl = head_of_device_info_list();
-	while (nnl) {
-		nnl = nnl->next;
-		count++;
-	}
+	QList<DiveComputerNode> values = dcWorkingMap.values();
+	int count = values.count();
 
 	if(numRows){
 		beginRemoveRows(QModelIndex(), 0, numRows-1);
@@ -1255,25 +1250,19 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex& index) const
 
 bool DiveComputerModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-	struct device_info *nnl = head_of_device_info_list();
-
-	for(int i = 0; i < index.row(); i++){
-		nnl = nnl->next;
-	}
-
-
-	QByteArray v = value.toByteArray();
-	nnl->nickname = strdup(v.data()); // how should I free this before setting a new one?
-	// set_dc_nickname(dive);  -> should this be used instead?
-
+	QList<DiveComputerNode> values = dcWorkingMap.values();
+	DiveComputerNode node = values.at(index.row());
+	dcWorkingMap.remove(node.model, node);
+	node.nickName = value.toString();
+	dcWorkingMap.insert(node.model, node);
 	return true;
 }
 
-void DiveComputerModel::remove(const QModelIndex& i)
+void DiveComputerModel::remove(const QModelIndex& index)
 {
-	QByteArray model = data(index(i.row(), (int)MODEL)).toByteArray();
-	uint32_t deviceid = data(index(i.row(), (int) ID)).toUInt();
-	remove_dive_computer(model.data(),  deviceid);
+	QList<DiveComputerNode> values = dcWorkingMap.values();
+	DiveComputerNode node = values.at(index.row());
+	dcWorkingMap.remove(node.model, node);
 	update();
 }
 
@@ -1395,4 +1384,16 @@ void YearlyStatisticsModel::update_yearly_stats()
 		}
 		rootItem->children.append(item);
 	}
+}
+
+void DiveComputerModel::dropWorkingList()
+{
+	// how do I prevent the memory leak ?
+}
+
+void DiveComputerModel::keepWorkingList()
+{
+	if (dcList.dcMap != dcWorkingMap)
+		mark_divelist_changed(TRUE);
+	dcList.dcMap = dcWorkingMap;
 }
