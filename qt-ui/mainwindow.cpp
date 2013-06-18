@@ -241,7 +241,7 @@ void MainWindow::on_actionToggleZoom_triggered()
 
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
-	QTableView *view = new QTableView();
+	QTreeView *view = new QTreeView();
 	QAbstractItemModel *model = new YearlyStatisticsModel();
 	view->setModel(model);
 	view->show();
