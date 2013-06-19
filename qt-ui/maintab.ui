@@ -14,7 +14,7 @@
    <string>TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="notesTab">
    <attribute name="title">
@@ -259,7 +259,7 @@
     <string>Dive Info</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="1" column="2">
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
        <string>SAC</string>
@@ -278,7 +278,7 @@
       </layout>
      </widget>
     </item>
-    <item row="0" column="1">
+    <item row="1" column="0">
      <widget class="QGroupBox" name="groupBox_3">
       <property name="title">
        <string>Gases Used</string>
@@ -297,7 +297,7 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="2" column="2">
      <widget class="QGroupBox" name="groupBox_2">
       <property name="title">
        <string>OTU</string>
@@ -316,7 +316,7 @@
       </layout>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="0" column="0">
      <widget class="QGroupBox" name="groupBox_5">
       <property name="title">
        <string>Date</string>
@@ -335,7 +335,7 @@
       </layout>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="3" column="0">
      <widget class="QGroupBox" name="groupBox_10">
       <property name="title">
        <string>Air Pressure</string>
@@ -354,7 +354,7 @@
       </layout>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="3" column="1">
      <widget class="QGroupBox" name="groupBox_9">
       <property name="title">
        <string>Air Temperature</string>
@@ -373,7 +373,7 @@
       </layout>
      </widget>
     </item>
-    <item row="0" column="2">
+    <item row="1" column="1">
      <widget class="QGroupBox" name="groupBox_4">
       <property name="title">
        <string>Gas Consumed</string>
@@ -392,7 +392,7 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item row="2" column="0">
      <widget class="QGroupBox" name="groupBox_6">
       <property name="title">
        <string>Max. Depth</string>
@@ -411,7 +411,7 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="2">
+    <item row="2" column="1">
      <widget class="QGroupBox" name="groupBox_7">
       <property name="title">
        <string>Ave. Depth</string>
@@ -430,7 +430,7 @@
       </layout>
      </widget>
     </item>
-    <item row="4" column="2">
+    <item row="3" column="2">
      <widget class="QGroupBox" name="groupBox_8">
       <property name="title">
        <string>Water Temperature</string>
@@ -449,7 +449,7 @@
       </layout>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="0" column="2">
      <widget class="QGroupBox" name="groupBox_12">
       <property name="title">
        <string>Interval</string>
@@ -468,7 +468,7 @@
       </layout>
      </widget>
     </item>
-    <item row="5" column="2">
+    <item row="0" column="1">
      <widget class="QGroupBox" name="groupBox_11">
       <property name="title">
        <string>Dive Time</string>
