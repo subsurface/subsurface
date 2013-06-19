@@ -245,6 +245,8 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	QTreeView *view = new QTreeView();
 	QAbstractItemModel *model = new YearlyStatisticsModel();
 	view->setModel(model);
+	view->setWindowModality(Qt::NonModal);
+	view->setMinimumWidth(600);
 	view->show();
 }
 
