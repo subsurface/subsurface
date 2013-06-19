@@ -989,12 +989,14 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 		double ratio = (double)fhe / (1000.0 - fo2);
+		int ccrdive = 0;
 
 		if (entry->po2) {
 			/* we have an O2 partial pressure in the sample - so this
 			 * is likely a CC dive... use that instead of the value
 			 * from the cylinder info */
 			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
+			ccrdive = 1;
 			entry->po2 = po2;
 			entry->phe = (amb_pressure - po2) * ratio;
 			entry->pn2 = amb_pressure - po2 - entry->phe;
@@ -1040,7 +1042,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		for (j = t0+1; j <= t1; j++) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-							&dive->cylinder[cylinderindex].gasmix, 1, entry->po2 * 1000, dive);
+							&dive->cylinder[cylinderindex].gasmix, 1, ccrdive ? entry->po2 * 1000 : 0, dive);
 			tissue_tolerance = min_pressure;
 		}
 		if (t0 == t1)
