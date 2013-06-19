@@ -191,6 +191,7 @@ static void pattern_add_color_stop_rgba(struct graphics_context *gc, cairo_patte
 }
 
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
+#define DIV_UP(x,y) (((x)+(y)-1)/(y))
 
 /* debugging tool - not normally used */
 static void dump_pi (struct plot_info *pi)
@@ -2166,7 +2167,7 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		if (entry->ndl) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				snprintf(buf, bufsize, _("%s\nSafetystop:%umin @ %.0f %s"), buf2, entry->stoptime / 60,
+				snprintf(buf, bufsize, _("%s\nSafetystop:%umin @ %.0f %s"), buf2, DIV_UP(entry->stoptime, 60),
 					depthvalue, depth_unit);
 			else
 				snprintf(buf, bufsize, _("%s\nSafetystop:unkn time @ %.0f %s"), buf2,
@@ -2174,7 +2175,7 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				snprintf(buf, bufsize, _("%s\nDeco:%umin @ %.0f %s"), buf2, entry->stoptime / 60,
+				snprintf(buf, bufsize, _("%s\nDeco:%umin @ %.0f %s"), buf2, DIV_UP(entry->stoptime, 60),
 					depthvalue, depth_unit);
 			else
 				snprintf(buf, bufsize, _("%s\nDeco:unkn time @ %.0f %s"), buf2,
@@ -2186,7 +2187,7 @@ static void plot_string(struct plot_data *entry, char *buf, size_t bufsize,
 		snprintf(buf, bufsize, _("%s\nIn deco"), buf2);
 	} else if (has_ndl) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, _("%s\nNDL:%umin"), buf2, entry->ndl / 60);
+		snprintf(buf, bufsize, _("%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
 	}
 	if (entry->cns) {
 		memcpy(buf2, buf, bufsize);
