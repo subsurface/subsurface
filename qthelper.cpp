@@ -1,5 +1,4 @@
 #include "qthelper.h"
-#include <QMap>
 
 DiveComputerList::DiveComputerList()
 {
