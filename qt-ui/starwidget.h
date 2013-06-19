@@ -17,10 +17,10 @@ public:
 	static QPixmap starActive();
 	static QPixmap starInactive();
 
-Q_SIGNALS:
+signals:
 	void valueChanged(int stars);
 
-public Q_SLOTS:
+public slots:
 	void setCurrentStars(int value);
 	void setReadOnly( bool readOnly);
 

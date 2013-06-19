@@ -27,7 +27,7 @@ public:
 	InterfaceThread(QObject *parent, device_data_t *data) ;
 	virtual void run();
 
-Q_SIGNALS:
+signals:
 	void updateInterface(int value);
 private:
 	device_data_t *data;

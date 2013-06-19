@@ -41,7 +41,7 @@ public slots:
 	void testSlot();
 	void fixMessyQtModelBehaviour();
 
-Q_SIGNALS:
+signals:
 	void currentDiveChanged(int divenr);
 
 private:

@@ -45,7 +45,7 @@ public:
 	void initialUiSetup();
 
 
-public Q_SLOTS:
+public slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();
 	void updateDiveInfo(int dive);

@@ -42,7 +42,7 @@ public:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 	bool eventFilter(QObject* , QEvent* );
-public Q_SLOTS:
+public slots:
 	void setRect(const QRectF& rect);
 
 private:
@@ -98,7 +98,7 @@ protected:
 	void wheelEvent(QWheelEvent* event);
 	void showEvent(QShowEvent* event);
 
-public Q_SLOTS:
+public slots:
 	void refresh();
 	void edit_dive_time(const QString& time);
 

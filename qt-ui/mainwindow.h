@@ -44,7 +44,7 @@ public:
 	GlobeGPS *globe();
 	void showError(QString message);
 
-private Q_SLOTS:
+private slots:
 
 
 	/* file menu action */
@@ -90,7 +90,7 @@ private Q_SLOTS:
 protected:
 	void closeEvent(QCloseEvent *);
 
-public Q_SLOTS:
+public slots:
 	void readSettings();
 	void refreshDisplay();
 

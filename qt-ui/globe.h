@@ -29,7 +29,7 @@ private:
 	struct dive* editingDiveCoords;
 	KMessageWidget* messageWidget;
 
-public Q_SLOTS:
+public slots:
 	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 };
