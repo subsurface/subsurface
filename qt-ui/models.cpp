@@ -228,13 +228,13 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case O2:
 		if (CHANGED(toInt, "%", "%")) {
-			cyl->gasmix.o2.permille = value.toInt() * 10 - 5;
+			cyl->gasmix.o2.permille = value.toInt() * 10;
 			mark_divelist_changed(TRUE);
 		}
 		break;
 	case HE:
 		if (CHANGED(toInt, "%", "%")) {
-			cyl->gasmix.he.permille = value.toInt() * 10 - 5;
+			cyl->gasmix.he.permille = value.toInt() * 10;
 			mark_divelist_changed(TRUE);
 		}
 		break;
