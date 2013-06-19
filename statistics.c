@@ -128,6 +128,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		return;
 	memset(stats_yearly, 0, size);
 	memset(stats_monthly, 0, size);
+	stats_yearly[0].is_year = TRUE;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -148,6 +149,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		if (current_year != tm.tm_year + 1900) {
 			current_year = tm.tm_year + 1900;
 			process_dive(dp, &(stats_yearly[++year_iter]));
+			stats_yearly[year_iter].is_year = TRUE;
 		} else {
 			process_dive(dp, &(stats_yearly[year_iter]));
 		}

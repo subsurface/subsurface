@@ -30,6 +30,7 @@ typedef struct {
 	unsigned int combined_count;
 	unsigned int selection_size;
 	unsigned int total_sac_time;
+	bool is_year;
 } stats_t;
 extern stats_t stats_selection;
 extern stats_t *stats_yearly;

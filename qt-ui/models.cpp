@@ -822,12 +822,13 @@ QVariant TreeModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (role == Qt::FontRole) {
-		return defaultModelFont();
-	}
 	TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+	QVariant val = item->data(index.column(), role);
 
-	return item->data(index.column(), role);
+	if (role == Qt::FontRole && !val.isValid())
+		return defaultModelFont();
+	else
+		return val;
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex& parent)
@@ -1309,9 +1310,14 @@ QVariant YearStatisticsItem::data(int column, int role) const
 {
 	double value;
 	QVariant ret;
-	if (role != Qt::DisplayRole)
-		return ret;
 
+	if (role == Qt::FontRole) {
+		QFont font = defaultModelFont();
+		font.setBold(stats_interval.is_year);
+		return font;
+	} else if (role != Qt::DisplayRole) {
+		return ret;
+	}
 	switch(column) {
 	case YEAR:		ret =  stats_interval.period; break;
 	case DIVES:		ret =  stats_interval.selection_size; break;
