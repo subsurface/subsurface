@@ -85,8 +85,8 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			// sizes take working pressure into account...
 			if (cyl->type.size.mliter) {
 				if (prefs.units.volume == prefs.units.CUFT) {
-					int cuft = 0.5 + ml_to_cuft(gas_volume(cyl, cyl->type.workingpressure));
-					ret = QString("%1cuft").arg(cuft);
+					double cuft = ml_to_cuft(gas_volume(cyl, cyl->type.workingpressure));
+					ret = QString("%1cuft").arg(cuft, 0, 'f', 1);
 				} else {
 					ret = QString("%1l").arg(cyl->type.size.mliter / 1000.0, 0, 'f', 1);
 				}
@@ -102,13 +102,13 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		case END:
 			if (cyl->end.mbar)
-				ret = get_pressure_string(cyl->end, TRUE	);
+				ret = get_pressure_string(cyl->end, TRUE);
 			break;
 		case O2:
-			ret = QString("%1%").arg((cyl->gasmix.o2.permille + 5) / 10);
+			ret = QString("%1%").arg(cyl->gasmix.o2.permille / 10.0, 0, 'f', 1);
 			break;
 		case HE:
-			ret = QString("%1%").arg((cyl->gasmix.he.permille + 5) / 10);
+			ret = QString("%1%").arg(cyl->gasmix.he.permille / 10.0, 0, 'f', 1);
 			break;
 		}
 		break;
@@ -227,14 +227,14 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case O2:
-		if (CHANGED(toInt, "%", "%")) {
-			cyl->gasmix.o2.permille = value.toInt() * 10;
+		if (CHANGED(toDouble, "%", "%")) {
+			cyl->gasmix.o2.permille = value.toDouble() * 10 + 0.5;
 			mark_divelist_changed(TRUE);
 		}
 		break;
 	case HE:
-		if (CHANGED(toInt, "%", "%")) {
-			cyl->gasmix.he.permille = value.toInt() * 10;
+		if (CHANGED(toDouble, "%", "%")) {
+			cyl->gasmix.he.permille = value.toDouble() * 10 + 0.5;
 			mark_divelist_changed(TRUE);
 		}
 		break;
@@ -408,7 +408,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 			if (prefs.units.weight == prefs.units.LBS)
 				ws->weight.grams = lbs_to_grams(value.toDouble());
 			else
-				ws->weight.grams = value.toDouble() * 1000.0;
+				ws->weight.grams = value.toDouble() * 1000.0 + 0.5;
 			// now update the ws_info
 			WSInfoModel *wsim = WSInfoModel::instance();
 			QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, ws->description);
