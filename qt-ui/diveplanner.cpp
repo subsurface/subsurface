@@ -10,8 +10,17 @@ DivePlanner* DivePlanner::instance()
 
 DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent)
 {
+	setMouseTracking(true);
 	setScene( new QGraphicsScene());
 	scene()->setSceneRect(0,0,100,100);
+
+	verticalLine = new QGraphicsLineItem(0,0,0, 100);
+	verticalLine->setPen(QPen(Qt::DotLine));
+	scene()->addItem(verticalLine);
+
+	horizontalLine = new QGraphicsLineItem(0,0,100,0);
+	horizontalLine->setPen(QPen(Qt::DotLine));
+	scene()->addItem(horizontalLine);
 }
 
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
@@ -69,3 +78,16 @@ void DivePlanner::showEvent(QShowEvent* event)
 	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
+void DivePlanner::mouseMoveEvent(QMouseEvent* event)
+{
+	QPointF mappedPos = mapToScene(event->pos());
+	if (mappedPos.x() > sceneRect().width()
+	||  mappedPos.x() < 0
+	||  mappedPos.y() < 0
+	|| mappedPos.y() > sceneRect().height())
+	{
+		return;
+	}
+	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
+	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
+}
