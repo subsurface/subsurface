@@ -32,6 +32,7 @@
 #include "subsurfacewebservices.h"
 #include "divecomputermanagementdialog.h"
 #include "simplewidgets.h"
+#include "diveplanner.h"
 
 static MainWindow* instance = 0;
 
@@ -178,6 +179,8 @@ void MainWindow::on_actionExportUDDF_triggered()
 
 void MainWindow::on_actionPrint_triggered()
 {
+	// hijacking the print action for a while.
+	DivePlanner::instance()->show();
 	qDebug("actionPrint");
 }
 
