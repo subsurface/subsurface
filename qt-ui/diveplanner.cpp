@@ -189,3 +189,42 @@ void DivePlanner::mouseReleaseEvent(QMouseEvent* event)
 DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
 {
 }
+
+void Ruler::setMaximum(double maximum)
+{
+	qDeleteAll(ticks);
+	max = maximum;
+	updateTicks();
+}
+
+void Ruler::setMinimum(double minimum)
+{
+	qDeleteAll(ticks);
+	min = minimum;
+	updateTicks();
+}
+
+Ruler::Ruler() : orientation(Qt::Horizontal)
+{
+}
+
+void Ruler::setOrientation(Qt::Orientation o)
+{
+	orientation = o;
+	updateTicks();
+}
+
+void Ruler::updateTicks()
+{
+
+}
+
+void Ruler::setLine(qreal x1, qreal y1, qreal x2, qreal y2)
+{
+
+}
+
+void Ruler::setTickInterval(double interval)
+{
+
+}

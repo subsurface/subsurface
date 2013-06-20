@@ -11,6 +11,27 @@ public:
 	QGraphicsLineItem *from;
 	QGraphicsLineItem *to;
 };
+
+class Ruler : public QGraphicsItem{
+public:
+    Ruler();
+	void setMinimum(double minimum);
+	void setMaximum(double maximum);
+	void setTickInterval(double interval);
+	void setOrientation(Qt::Orientation orientation);
+	void setLine(qreal x1, qreal y1, qreal x2, qreal y2);
+
+private:
+	void updateTicks();
+	Qt::Orientation orientation;
+	QList<QGraphicsLineItem*> ticks;
+	double min;
+	double max;
+
+	double posBegin;
+	double posEnd;
+};
+
 class DivePlanner : public QGraphicsView {
 	Q_OBJECT
 public:
