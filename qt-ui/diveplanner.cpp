@@ -47,8 +47,6 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent), activeDraggedH
 	depthString = new QGraphicsSimpleTextItem();
 	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(depthString);
-
-
 }
 
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
@@ -109,9 +107,6 @@ void DivePlanner::clear_generated_deco()
 
 void DivePlanner::create_deco_stop()
 {
-	// this needs to create everything
-	// for the calculated deco. it should return the *first*
-	// line that's calculated, so the
 	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), 100, 0);
 	scene()->addItem(item);
 	lines << item;
@@ -227,8 +222,9 @@ void DivePlanner::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler){
 		QPointF mappedPos = mapToScene(event->pos());
-		activeDraggedHandler ->setTime(timeLine->valueAt(mappedPos));
-		activeDraggedHandler ->setDepth(depthLine->valueAt(mappedPos));
+		activeDraggedHandler->setTime(timeLine->valueAt(mappedPos));
+		activeDraggedHandler->setDepth(depthLine->valueAt(mappedPos));
+		activeDraggedHandler->setBrush(QBrush());
 		activeDraggedHandler = 0;
 	}
 }
