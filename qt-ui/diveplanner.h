@@ -12,22 +12,21 @@ public:
 	QGraphicsLineItem *to;
 };
 
-class Ruler : public QGraphicsItem{
+class Ruler : public QGraphicsLineItem{
 public:
     Ruler();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
 	void setOrientation(Qt::Orientation orientation);
-	void setLine(qreal x1, qreal y1, qreal x2, qreal y2);
+	void updateTicks();
 
 private:
-	void updateTicks();
 	Qt::Orientation orientation;
 	QList<QGraphicsLineItem*> ticks;
 	double min;
 	double max;
-
+	double interval;
 	double posBegin;
 	double posEnd;
 };
@@ -56,5 +55,9 @@ private:
 	QGraphicsLineItem *verticalLine;
 	QGraphicsLineItem *horizontalLine;
 	DiveHandler *activeDraggedHandler;
+
+	Ruler *timeLine;
+	Ruler *depthLine;
+
 };
 #endif

@@ -21,6 +21,24 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent), activeDraggedH
 	horizontalLine = new QGraphicsLineItem(0,0,100,0);
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
+
+	timeLine = new Ruler();
+	timeLine->setMinimum(0);
+	timeLine->setMaximum(60);
+	timeLine->setTickInterval(10);
+	timeLine->setLine( 10, 90, 99, 90);
+	timeLine->setOrientation(Qt::Horizontal);
+	timeLine->updateTicks();
+	scene()->addItem(timeLine);
+
+	depthLine = new Ruler();
+	depthLine->setMinimum(0);
+	depthLine->setMaximum(400);
+	depthLine->setTickInterval(10);
+	depthLine->setLine( 10, 1, 10, 90);
+	depthLine->setOrientation(Qt::Vertical);
+	depthLine->updateTicks();
+	scene()->addItem(depthLine);
 }
 
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
@@ -192,16 +210,12 @@ DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
 
 void Ruler::setMaximum(double maximum)
 {
-	qDeleteAll(ticks);
 	max = maximum;
-	updateTicks();
 }
 
 void Ruler::setMinimum(double minimum)
 {
-	qDeleteAll(ticks);
 	min = minimum;
-	updateTicks();
 }
 
 Ruler::Ruler() : orientation(Qt::Horizontal)
@@ -211,20 +225,29 @@ Ruler::Ruler() : orientation(Qt::Horizontal)
 void Ruler::setOrientation(Qt::Orientation o)
 {
 	orientation = o;
-	updateTicks();
 }
 
 void Ruler::updateTicks()
 {
+	qDeleteAll(ticks);
+	QLineF m = line();
+	if(orientation == Qt::Horizontal){
+		double steps = (max - min) / interval;
+		double stepSize = (m.x2() - m.x1()) / steps;
+		for(qreal pos = m.x1(); pos < m.x2(); pos += stepSize){
+			QGraphicsLineItem *l = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this);
 
+		}
+	}else{
+		double steps = (max - min) / interval;
+		double stepSize = (m.y2() - m.y1()) / steps;
+		for(qreal pos = m.y1(); pos < m.y2(); pos += stepSize){
+			QGraphicsLineItem *l = new QGraphicsLineItem(m.x1(), pos, m.x1() - 1, pos, this);
+		}
+	}
 }
 
-void Ruler::setLine(qreal x1, qreal y1, qreal x2, qreal y2)
+void Ruler::setTickInterval(double i)
 {
-
-}
-
-void Ruler::setTickInterval(double interval)
-{
-
+	interval = i;
 }
