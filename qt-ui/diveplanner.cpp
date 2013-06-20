@@ -82,18 +82,8 @@ void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 		scene()->addItem(line);
 		create_deco_stop();
 	}
-	item->setTime(timeLine->valueAt(mappedPos));
-	item->setDepth(depthLine->valueAt(mappedPos));
-}
-
-void DiveHandler::setDepth(qreal d)
-{
-	depth = d;
-}
-
-void DiveHandler::setTime(qreal t)
-{
-	time =t;
+	item->time = (timeLine->valueAt(mappedPos));
+	item->depth = (depthLine->valueAt(mappedPos));
 }
 
 void DivePlanner::clear_generated_deco()
@@ -107,6 +97,30 @@ void DivePlanner::clear_generated_deco()
 
 void DivePlanner::create_deco_stop()
 {
+	// This needs to be done in the following steps:
+	// Get the user-input and calculate the dive info
+	Q_FOREACH(DiveHandler *h, handles){
+		// use this somewhere.
+		h->time;
+		h->depth;
+	}
+	// create the dive info here.
+
+	// set the new 'end time' of the dive.
+	// note that this is not the user end,
+	// but the real end of the dive.
+	timeLine->setMaximum(60);
+	timeLine->updateTicks();
+
+	// Re-position the user generated dive handlers
+	Q_FOREACH(DiveHandler *h, handles){
+	// uncomment this as soon as the posAtValue is implemented.
+	// h->setPos( timeLine->posAtValue(h->time),
+	// 	   depthLine->posAtValue(h->depth));
+	}
+
+	// Create all 'deco' GraphicsLineItems and put it on the canvas.This following three lines will
+	// most probably need to enter on a loop.
 	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), 100, 0);
 	scene()->addItem(item);
 	lines << item;
@@ -222,8 +236,8 @@ void DivePlanner::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler){
 		QPointF mappedPos = mapToScene(event->pos());
-		activeDraggedHandler->setTime(timeLine->valueAt(mappedPos));
-		activeDraggedHandler->setDepth(depthLine->valueAt(mappedPos));
+		activeDraggedHandler->time = (timeLine->valueAt(mappedPos));
+		activeDraggedHandler->depth = (depthLine->valueAt(mappedPos));
 		activeDraggedHandler->setBrush(QBrush());
 		activeDraggedHandler = 0;
 	}
@@ -283,4 +297,11 @@ qreal Ruler::valueAt(const QPointF& p)
 	return  orientation == Qt::Horizontal
 		? max * (p.x() - m.x1()) / (m.x2() - m.x1())
 		: max * (p.y() - m.y1()) / (m.y2() - m.y1());
+}
+
+qreal Ruler::posAtValue(qreal value)
+{
+	QLineF m = line();
+	// I need to finish this later. hungry as hell.
+
 }

@@ -7,12 +7,8 @@
 class DiveHandler : public QGraphicsEllipseItem{
 public:
     DiveHandler();
-	void setTime(qreal t);
-	void setDepth(qreal d);
-
 	QGraphicsLineItem *from;
 	QGraphicsLineItem *to;
-private:
 	qreal time;
 	qreal depth;
 };
@@ -26,6 +22,7 @@ public:
 	void setOrientation(Qt::Orientation orientation);
 	void updateTicks();
 	qreal valueAt(const QPointF& p);
+	qreal posAtValue(qreal value);
 
 private:
 	Qt::Orientation orientation;
