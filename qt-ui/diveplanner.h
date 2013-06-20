@@ -8,6 +8,9 @@ class DivePlanner : public QGraphicsView {
 	Q_OBJECT
 public:
 	static DivePlanner *instance();
+protected:
+    virtual void mouseDoubleClickEvent(QMouseEvent* event);
+	
 private:
     DivePlanner(QWidget* parent = 0);
 };
