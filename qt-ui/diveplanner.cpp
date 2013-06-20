@@ -29,6 +29,10 @@ void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 	if(isPointOutOfBoundaries(mappedPos))
 		return;
 
+	if(handles.count() && handles.last()->x() > mappedPos.x()){
+		return;
+	}
+
 	QGraphicsEllipseItem *item = new QGraphicsEllipseItem(-5,-5,10,10);
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
@@ -87,8 +91,20 @@ void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 	QPointF mappedPos = mapToScene(event->pos());
 	if (isPointOutOfBoundaries(mappedPos))
 		return;
+
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
+
+	if (!handles.count())
+		return;
+
+	if (handles.last()->x() > mappedPos.x()){
+		verticalLine->setPen( QPen(QBrush(Qt::red), 0, Qt::SolidLine));
+		horizontalLine->setPen( QPen(QBrush(Qt::red), 0, Qt::SolidLine));
+	}else{
+		verticalLine->setPen(QPen(Qt::DotLine));
+		horizontalLine->setPen(QPen(Qt::DotLine));
+	}
 }
 
 bool DivePlanner::isPointOutOfBoundaries(QPointF point)
