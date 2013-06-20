@@ -74,6 +74,18 @@ void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 		scene()->addItem(line);
 		create_deco_stop();
 	}
+	item->setTime(timeLine->valueAt(mappedPos));
+	item->setDepth(depthLine->valueAt(mappedPos));
+}
+
+void DiveHandler::setDepth(qreal d)
+{
+	depth = d;
+}
+
+void DiveHandler::setTime(qreal t)
+{
+	time =t;
 }
 
 void DivePlanner::clear_generated_deco()
@@ -200,8 +212,12 @@ void DivePlanner::mousePressEvent(QMouseEvent* event)
 
 void DivePlanner::mouseReleaseEvent(QMouseEvent* event)
 {
-	if (activeDraggedHandler)
+	if (activeDraggedHandler){
+		QPointF mappedPos = mapToScene(event->pos());
+		activeDraggedHandler ->setTime(timeLine->valueAt(mappedPos));
+		activeDraggedHandler ->setDepth(depthLine->valueAt(mappedPos));
 		activeDraggedHandler = 0;
+	}
 }
 
 DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
@@ -250,4 +266,12 @@ void Ruler::updateTicks()
 void Ruler::setTickInterval(double i)
 {
 	interval = i;
+}
+
+qreal Ruler::valueAt(const QPointF& p)
+{
+	QLineF m = line();
+	return  orientation == Qt::Horizontal
+		? max * (p.x() - m.x1()) / (m.x2() - m.x1())
+		: max * (p.y() - m.y1()) / (m.y2() - m.y1());
 }
