@@ -10,8 +10,12 @@ public:
 	static DivePlanner *instance();
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent* event);
-	
+    void clear_generated_deco();
+	void create_deco_stop();
+
 private:
     DivePlanner(QWidget* parent = 0);
+	QList<QGraphicsLineItem*> lines;
+	QList<QGraphicsEllipseItem*> handles;
 };
 #endif

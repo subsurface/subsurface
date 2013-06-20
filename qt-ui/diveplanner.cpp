@@ -1,5 +1,6 @@
 #include "diveplanner.h"
 #include <QMouseEvent>
+#include <boost/graph/graph_concepts.hpp>
 
 DivePlanner* DivePlanner::instance()
 {
@@ -16,7 +17,38 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent)
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	QGraphicsEllipseItem *item = new QGraphicsEllipseItem(-10,-10,20,20);
-	item->setPos( mapToScene(event->pos()));
+	QPointF mappedPos = mapToScene(event->pos());
+
+	item->setPos( mappedPos );
     scene()->addItem(item);
+	handles << item;
+
+	if (lines.empty()){
+		QGraphicsLineItem *first = new QGraphicsLineItem(0,0, mappedPos.x(), mappedPos.y());
+		lines << first;
+		create_deco_stop();
+		scene()->addItem(first);
+	}else{
+		clear_generated_deco();
+		create_deco_stop();
+	}
+}
+
+void DivePlanner::clear_generated_deco()
+{
+	for(int i = handles.count(); i < lines.count(); i++){
+		scene()->removeItem(lines.last());
+		delete lines.last();
+		lines.removeLast();
+	}
+}
+
+void DivePlanner::create_deco_stop()
+{
+	// this needs to create everything
+	// for the calculated deco.
+	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), 100, 0);
+	scene()->addItem(item);
+	lines << item;
 }
 
