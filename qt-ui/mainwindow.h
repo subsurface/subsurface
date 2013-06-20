@@ -83,6 +83,7 @@ private slots:
 	void on_actionInputPlan_triggered();
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
+	void on_actionDivePlanner_triggered();
 
 	void current_dive_changed(int divenr);
 	void initialUiSetup();

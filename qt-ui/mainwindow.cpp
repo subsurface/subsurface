@@ -179,10 +179,18 @@ void MainWindow::on_actionExportUDDF_triggered()
 
 void MainWindow::on_actionPrint_triggered()
 {
-	// hijacking the print action for a while.
-	DivePlanner::instance()->show();
 	qDebug("actionPrint");
 }
+
+void MainWindow::on_actionDivePlanner_triggered()
+{
+	DivePlanner *planner = DivePlanner::instance();
+	if (planner->exec() == QDialog::Accepted){
+		struct dive *d = planner->getDive();
+		qDebug() << "Finish me.";
+	}
+}
+
 
 void MainWindow::on_actionPreferences_triggered()
 {
