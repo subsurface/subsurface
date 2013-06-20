@@ -15,6 +15,8 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent* event);
     void clear_generated_deco();
 	void create_deco_stop();
+	bool isPointOutOfBoundaries(QPointF point);
+	
 private:
     DivePlanner(QWidget* parent = 0);
 	QList<QGraphicsLineItem*> lines;

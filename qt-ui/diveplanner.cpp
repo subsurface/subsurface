@@ -25,9 +25,13 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent)
 
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 {
+	QPointF mappedPos = mapToScene(event->pos());
+	if(isPointOutOfBoundaries(mappedPos))
+		return;
+
 	QGraphicsEllipseItem *item = new QGraphicsEllipseItem(-5,-5,10,10);
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	QPointF mappedPos = mapToScene(event->pos());
+
 
 	item->setPos( mappedPos );
     scene()->addItem(item);
@@ -81,13 +85,20 @@ void DivePlanner::showEvent(QShowEvent* event)
 void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 {
 	QPointF mappedPos = mapToScene(event->pos());
-	if (mappedPos.x() > sceneRect().width()
-	||  mappedPos.x() < 0
-	||  mappedPos.y() < 0
-	|| mappedPos.y() > sceneRect().height())
-	{
+	if (isPointOutOfBoundaries(mappedPos))
 		return;
-	}
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
+}
+
+bool DivePlanner::isPointOutOfBoundaries(QPointF point)
+{
+	if (point.x() > sceneRect().width()
+	||  point.x() < 0
+	||  point.y() < 0
+	|| point.y() > sceneRect().height())
+	{
+		return true;
+	}
+	return false;
 }
