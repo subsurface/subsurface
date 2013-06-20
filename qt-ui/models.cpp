@@ -78,9 +78,21 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	switch (role) {
-	case Qt::FontRole:
-		ret = defaultModelFont();
+	case Qt::FontRole: {
+		QFont font = defaultModelFont();
+		switch (index.column()) {
+		case START:
+			if (!cyl->start.mbar)
+				font.setItalic(true);
+			break;
+		case END:
+			if (!cyl->end.mbar)
+				font.setItalic(true);
+			break;
+		}
+		ret = font;
 		break;
+	}
 	case Qt::TextAlignmentRole:
 		ret = Qt::AlignHCenter;
 		break;
@@ -112,11 +124,15 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		case START:
 			if (cyl->start.mbar)
-				ret = get_pressure_string(cyl->start, TRUE);
+				ret = get_pressure_string(cyl->start, FALSE);
+			else if (cyl->sample_start.mbar)
+				ret = get_pressure_string(cyl->sample_start, FALSE);
 			break;
 		case END:
 			if (cyl->end.mbar)
-				ret = get_pressure_string(cyl->end, TRUE);
+				ret = get_pressure_string(cyl->end, FALSE);
+			else if (cyl->sample_end.mbar)
+				ret = get_pressure_string(cyl->sample_end, FALSE);
 			break;
 		case O2:
 			ret = percent_string(cyl->gasmix.o2);
