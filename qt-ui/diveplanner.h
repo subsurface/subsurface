@@ -4,6 +4,13 @@
 #include <QGraphicsView>
 #include <QGraphicsPathItem>
 
+class DiveHandler : public QGraphicsEllipseItem{
+public:
+    DiveHandler();
+
+	QGraphicsLineItem *from;
+	QGraphicsLineItem *to;
+};
 class DivePlanner : public QGraphicsView {
 	Q_OBJECT
 public:
@@ -16,11 +23,11 @@ protected:
     void clear_generated_deco();
 	void create_deco_stop();
 	bool isPointOutOfBoundaries(QPointF point);
-	
+
 private:
     DivePlanner(QWidget* parent = 0);
 	QList<QGraphicsLineItem*> lines;
-	QList<QGraphicsEllipseItem*> handles;
+	QList<DiveHandler *> handles;
 	QGraphicsLineItem *verticalLine;
 	QGraphicsLineItem *horizontalLine;
 };
