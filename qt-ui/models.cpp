@@ -59,6 +59,16 @@ int CylindersModel::columnCount(const QModelIndex& parent) const
 	return COLUMNS;
 }
 
+static QVariant percent_string(fraction_t fraction)
+{
+	int permille = fraction.permille;
+
+	if (!permille)
+		return QVariant();
+
+	return QString("%1%").arg(permille / 10.0, 0, 'f', 1);
+}
+
 QVariant CylindersModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
@@ -109,10 +119,10 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 				ret = get_pressure_string(cyl->end, TRUE);
 			break;
 		case O2:
-			ret = QString("%1%").arg(cyl->gasmix.o2.permille / 10.0, 0, 'f', 1);
+			ret = percent_string(cyl->gasmix.o2);
 			break;
 		case HE:
-			ret = QString("%1%").arg(cyl->gasmix.he.permille / 10.0, 0, 'f', 1);
+			ret = percent_string(cyl->gasmix.he);
 			break;
 		}
 		break;
