@@ -63,7 +63,10 @@ private:
 	DiveHandler *activeDraggedHandler;
 
 	Ruler *timeLine;
+	QGraphicsSimpleTextItem *timeString;
+
 	Ruler *depthLine;
+	QGraphicsSimpleTextItem *depthString;
 
 };
 #endif

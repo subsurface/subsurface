@@ -39,6 +39,16 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent), activeDraggedH
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
+
+	timeString = new QGraphicsSimpleTextItem();
+	timeString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	scene()->addItem(timeString);
+
+	depthString = new QGraphicsSimpleTextItem();
+	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	scene()->addItem(depthString);
+
+
 }
 
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
@@ -127,10 +137,13 @@ void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
+	depthString->setText(QString::number(depthLine->valueAt(mappedPos)));
+	depthString->setPos(0, mappedPos.y());
+	timeString->setText(QString::number( (int) timeLine->valueAt(mappedPos)) + "min");
+	timeString->setPos(mappedPos.x()+1, 90);
 
 	if(activeDraggedHandler)
 		moveActiveHandler(mappedPos);
-
 	if (!handles.count())
 		return;
 
