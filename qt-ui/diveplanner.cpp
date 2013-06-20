@@ -1,6 +1,6 @@
 #include "diveplanner.h"
 #include <QMouseEvent>
-#include <boost/graph/graph_concepts.hpp>
+#include <QDebug>
 
 DivePlanner* DivePlanner::instance()
 {
@@ -26,18 +26,22 @@ void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 
 	if (lines.empty()){
 		QGraphicsLineItem *first = new QGraphicsLineItem(0,0, mappedPos.x(), mappedPos.y());
-		lines << first;
+		lines.push_back(first);
 		create_deco_stop();
 		scene()->addItem(first);
 	}else{
 		clear_generated_deco();
+		QGraphicsEllipseItem *prevHandle = handles.at( handles.count()-2);
+		QGraphicsLineItem *line = new QGraphicsLineItem(prevHandle->x(), prevHandle->y(), item->x(), item->y());
+		lines.push_back(line);
+		scene()->addItem(line);
 		create_deco_stop();
 	}
 }
 
 void DivePlanner::clear_generated_deco()
 {
-	for(int i = handles.count(); i < lines.count(); i++){
+	for(int i = handles.count(); i <= lines.count(); i++){
 		scene()->removeItem(lines.last());
 		delete lines.last();
 		lines.removeLast();
