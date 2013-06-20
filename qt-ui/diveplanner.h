@@ -22,13 +22,14 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent* event);
     virtual void mousePressEvent(QMouseEvent* event);
     virtual void mouseReleaseEvent(QMouseEvent* event);
-	
+
     void clear_generated_deco();
 	void create_deco_stop();
 	bool isPointOutOfBoundaries(QPointF point);
 
 private:
     DivePlanner(QWidget* parent = 0);
+    void moveActiveHandler(QPointF pos);
 	QList<QGraphicsLineItem*> lines;
 	QList<DiveHandler *> handles;
 	QGraphicsLineItem *verticalLine;

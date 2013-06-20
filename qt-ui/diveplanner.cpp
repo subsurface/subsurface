@@ -98,24 +98,8 @@ void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
 
-	if (activeDraggedHandler){
-		int idx = handles.indexOf(activeDraggedHandler);
-		activeDraggedHandler->setPos(mappedPos);
-		if (activeDraggedHandler->from){
-			QLineF f = activeDraggedHandler->from->line();
-			activeDraggedHandler->from->setLine(f.x1(), f.y1(), mappedPos.x(), mappedPos.y());
-		}
-
-		if(activeDraggedHandler == handles.last()){
-			clear_generated_deco();
-			create_deco_stop();
-		}
-
-		if (activeDraggedHandler->to){
-			QLineF f = activeDraggedHandler->to->line();
-			activeDraggedHandler->to->setLine(mappedPos.x(), mappedPos.y(), f.x2(), f.y2());
-		}
-	}
+	if(activeDraggedHandler)
+		moveActiveHandler(mappedPos);
 
 	if (!handles.count())
 		return;
@@ -126,6 +110,50 @@ void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 	}else{
 		verticalLine->setPen(QPen(Qt::DotLine));
 		horizontalLine->setPen(QPen(Qt::DotLine));
+	}
+}
+
+void DivePlanner::moveActiveHandler(QPointF pos)
+{
+	int idx = handles.indexOf(activeDraggedHandler);
+	bool moveLines = false;;
+	// do not allow it to move between handlers.
+	if (handles.count() > 1){
+		if (idx == 0 ){ // first
+			if (pos.x() < handles[1]->x()){
+				activeDraggedHandler->setPos(pos);
+				moveLines = true;
+			}
+		}else if (idx == handles.count()-1){ // last
+			if (pos.x() > handles[idx-1]->x()){
+				activeDraggedHandler->setPos(pos);
+				moveLines = true;
+			}
+		}else{ // middle
+			if (pos.x() > handles[idx-1]->x() && pos.x() < handles[idx+1]->x()){
+				activeDraggedHandler->setPos(pos);
+				moveLines = true;
+			}
+		}
+	}else{
+		activeDraggedHandler->setPos(pos);
+		moveLines = true;
+	}
+	if (moveLines){
+		if (activeDraggedHandler->from){
+			QLineF f = activeDraggedHandler->from->line();
+			activeDraggedHandler->from->setLine(f.x1(), f.y1(), pos.x(), pos.y());
+		}
+
+		if (activeDraggedHandler->to){
+			QLineF f = activeDraggedHandler->to->line();
+			activeDraggedHandler->to->setLine(pos.x(), pos.y(), f.x2(), f.y2());
+		}
+
+		if(activeDraggedHandler == handles.last()){
+			clear_generated_deco();
+			create_deco_stop();
+		}
 	}
 }
 
