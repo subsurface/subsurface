@@ -84,12 +84,16 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			// we can't use get_volume_string because the idiotic imperial tank
 			// sizes take working pressure into account...
 			if (cyl->type.size.mliter) {
-				if (prefs.units.volume == prefs.units.CUFT) {
-					double cuft = ml_to_cuft(gas_volume(cyl, cyl->type.workingpressure));
-					ret = QString("%1cuft").arg(cuft, 0, 'f', 1);
+				double volume;
+				int mbar = cyl->type.workingpressure.mbar;
+
+				if (mbar && prefs.units.volume == prefs.units.CUFT) {
+					volume = ml_to_cuft(cyl->type.size.mliter);
+					volume *= bar_to_atm(mbar / 1000.0);
 				} else {
-					ret = QString("%1l").arg(cyl->type.size.mliter / 1000.0, 0, 'f', 1);
+					volume = cyl->type.size.mliter / 1000.0;
 				}
+				ret = QString("%1").arg(volume, 0, 'f', 1);
 			}
 			break;
 		case WORKINGPRESS:
@@ -164,28 +168,21 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 			if (value.toDouble() != 0.0) {
 				TankInfoModel *tanks = TankInfoModel::instance();
 				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
-				if (prefs.units.volume == prefs.units.CUFT) {
-					if (cyl->type.workingpressure.mbar == 0) {
-						// this is a hack as we can't store a wet size
-						// without working pressure in cuft mode
-						// so we assume it's an aluminum tank at 3000psi
-						cyl->type.workingpressure.mbar = psi_to_mbar(3000);
-						if (!matches.isEmpty())
-							tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
-					}
-					if (cyl->type.size.mliter != wet_volume(value.toDouble(), cyl->type.workingpressure)) {
-						mark_divelist_changed(TRUE);
-						cyl->type.size.mliter = wet_volume(value.toDouble(), cyl->type.workingpressure);
-						if (!matches.isEmpty())
-							tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
-					}
+				int mbar = cyl->type.workingpressure.mbar;
+				int mliter;
+
+				if (mbar && prefs.units.volume == prefs.units.CUFT) {
+					double liters = cuft_to_l(value.toDouble());
+					liters /= bar_to_atm(mbar / 1000.0);
+					mliter = rint(liters * 1000);
 				} else {
-					if (cyl->type.size.mliter != value.toDouble() * 1000.0) {
-						mark_divelist_changed(TRUE);
-						cyl->type.size.mliter = value.toDouble() * 1000.0;
-						if (!matches.isEmpty())
-							tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
-					}
+					mliter = rint(value.toDouble() * 1000);
+				}
+				if (cyl->type.size.mliter != mliter) {
+					mark_divelist_changed(TRUE);
+					cyl->type.size.mliter = mliter;
+					if (!matches.isEmpty())
+						tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 				}
 			}
 		}
