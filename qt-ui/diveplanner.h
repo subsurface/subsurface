@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsPathItem>
+#include <QDialog>
 
 class DiveHandler : public QGraphicsEllipseItem{
 public:
@@ -34,10 +35,10 @@ private:
 	double posEnd;
 };
 
-class DivePlanner : public QGraphicsView {
+class DivePlannerGraphics : public QGraphicsView {
 	Q_OBJECT
 public:
-	static DivePlanner *instance();
+	DivePlannerGraphics(QWidget* parent = 0);
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent* event);
     virtual void showEvent(QShowEvent* event);
@@ -51,7 +52,7 @@ protected:
 	bool isPointOutOfBoundaries(QPointF point);
 
 private:
-    DivePlanner(QWidget* parent = 0);
+
     void moveActiveHandler(QPointF pos);
 	QList<QGraphicsLineItem*> lines;
 	QList<DiveHandler *> handles;
@@ -65,5 +66,20 @@ private:
 	Ruler *depthLine;
 	QGraphicsSimpleTextItem *depthString;
 
+};
+
+namespace Ui{
+	class DivePlanner;
+}
+
+class DivePlanner : public QDialog{
+	Q_OBJECT
+public:
+	static DivePlanner *instance();
+	struct dive* getDive();
+
+private:
+	DivePlanner();
+	Ui::DivePlanner *ui;
 };
 #endif

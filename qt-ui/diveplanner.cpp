@@ -1,14 +1,9 @@
 #include "diveplanner.h"
 #include <QMouseEvent>
 #include <QDebug>
+#include "ui_diveplanner.h"
 
-DivePlanner* DivePlanner::instance()
-{
-	static DivePlanner *self = new DivePlanner();
-	return self;
-}
-
-DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
+DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
 {
 	setMouseTracking(true);
 	setScene( new QGraphicsScene());
@@ -49,7 +44,7 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent), activeDraggedH
 	scene()->addItem(depthString);
 }
 
-void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
+void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	QPointF mappedPos = mapToScene(event->pos());
 	if(isPointOutOfBoundaries(mappedPos))
@@ -86,7 +81,7 @@ void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 	item->depth = (depthLine->valueAt(mappedPos));
 }
 
-void DivePlanner::clear_generated_deco()
+void DivePlannerGraphics::clear_generated_deco()
 {
 	for(int i = handles.count(); i <= lines.count(); i++){
 		scene()->removeItem(lines.last());
@@ -95,7 +90,7 @@ void DivePlanner::clear_generated_deco()
 	}
 }
 
-void DivePlanner::create_deco_stop()
+void DivePlannerGraphics::create_deco_stop()
 {
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
@@ -126,19 +121,19 @@ void DivePlanner::create_deco_stop()
 	lines << item;
 }
 
-void DivePlanner::resizeEvent(QResizeEvent* event)
+void DivePlannerGraphics::resizeEvent(QResizeEvent* event)
 {
     QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
-void DivePlanner::showEvent(QShowEvent* event)
+void DivePlannerGraphics::showEvent(QShowEvent* event)
 {
     QGraphicsView::showEvent(event);
 	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
-void DivePlanner::mouseMoveEvent(QMouseEvent* event)
+void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 {
 	QPointF mappedPos = mapToScene(event->pos());
 	if (isPointOutOfBoundaries(mappedPos))
@@ -165,7 +160,7 @@ void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 	}
 }
 
-void DivePlanner::moveActiveHandler(QPointF pos)
+void DivePlannerGraphics::moveActiveHandler(QPointF pos)
 {
 	int idx = handles.indexOf(activeDraggedHandler);
 	bool moveLines = false;;
@@ -209,7 +204,7 @@ void DivePlanner::moveActiveHandler(QPointF pos)
 	}
 }
 
-bool DivePlanner::isPointOutOfBoundaries(QPointF point)
+bool DivePlannerGraphics::isPointOutOfBoundaries(QPointF point)
 {
 	if (point.x() > sceneRect().width()
 	||  point.x() < 0
@@ -221,7 +216,7 @@ bool DivePlanner::isPointOutOfBoundaries(QPointF point)
 	return false;
 }
 
-void DivePlanner::mousePressEvent(QMouseEvent* event)
+void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 {
     QPointF mappedPos = mapToScene(event->pos());
 	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos)){
@@ -232,7 +227,7 @@ void DivePlanner::mousePressEvent(QMouseEvent* event)
 	}
 }
 
-void DivePlanner::mouseReleaseEvent(QMouseEvent* event)
+void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler){
 		QPointF mappedPos = mapToScene(event->pos());
@@ -303,5 +298,21 @@ qreal Ruler::posAtValue(qreal value)
 {
 	QLineF m = line();
 	// I need to finish this later. hungry as hell.
+}
 
+
+DivePlanner::DivePlanner() : ui(new Ui::DivePlanner())
+{
+	ui->setupUi(this);
+}
+
+struct dive* DivePlanner::getDive()
+{
+	return 0;
+}
+
+DivePlanner* DivePlanner::instance()
+{
+	static DivePlanner *self = new DivePlanner();
+	return self;
 }
