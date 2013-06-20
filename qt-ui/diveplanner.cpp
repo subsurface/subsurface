@@ -8,7 +8,7 @@ DivePlanner* DivePlanner::instance()
 	return self;
 }
 
-DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent)
+DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
 {
 	setMouseTracking(true);
 	setScene( new QGraphicsScene());
@@ -98,6 +98,25 @@ void DivePlanner::mouseMoveEvent(QMouseEvent* event)
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
 
+	if (activeDraggedHandler){
+		int idx = handles.indexOf(activeDraggedHandler);
+		activeDraggedHandler->setPos(mappedPos);
+		if (activeDraggedHandler->from){
+			QLineF f = activeDraggedHandler->from->line();
+			activeDraggedHandler->from->setLine(f.x1(), f.y1(), mappedPos.x(), mappedPos.y());
+		}
+
+		if(activeDraggedHandler == handles.last()){
+			clear_generated_deco();
+			create_deco_stop();
+		}
+
+		if (activeDraggedHandler->to){
+			QLineF f = activeDraggedHandler->to->line();
+			activeDraggedHandler->to->setLine(mappedPos.x(), mappedPos.y(), f.x2(), f.y2());
+		}
+	}
+
 	if (!handles.count())
 		return;
 
@@ -122,7 +141,22 @@ bool DivePlanner::isPointOutOfBoundaries(QPointF point)
 	return false;
 }
 
+void DivePlanner::mousePressEvent(QMouseEvent* event)
+{
+    QPointF mappedPos = mapToScene(event->pos());
+	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos)){
+		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)){
+			activeDraggedHandler = h;
+			activeDraggedHandler->setBrush(Qt::red);
+		}
+	}
+}
 
+void DivePlanner::mouseReleaseEvent(QMouseEvent* event)
+{
+	if (activeDraggedHandler)
+		activeDraggedHandler = 0;
+}
 
 DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
 {

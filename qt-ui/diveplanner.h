@@ -20,6 +20,9 @@ protected:
     virtual void showEvent(QShowEvent* event);
     virtual void resizeEvent(QResizeEvent* event);
     virtual void mouseMoveEvent(QMouseEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+	
     void clear_generated_deco();
 	void create_deco_stop();
 	bool isPointOutOfBoundaries(QPointF point);
@@ -30,5 +33,6 @@ private:
 	QList<DiveHandler *> handles;
 	QGraphicsLineItem *verticalLine;
 	QGraphicsLineItem *horizontalLine;
+	DiveHandler *activeDraggedHandler;
 };
 #endif
