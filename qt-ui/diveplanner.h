@@ -10,6 +10,9 @@ public:
 	static DivePlanner *instance();
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent* event);
+    virtual void showEvent(QShowEvent* event);
+    virtual void resizeEvent(QResizeEvent* event);
+	
     void clear_generated_deco();
 	void create_deco_stop();
 

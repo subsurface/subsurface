@@ -16,7 +16,8 @@ DivePlanner::DivePlanner(QWidget* parent): QGraphicsView(parent)
 
 void DivePlanner::mouseDoubleClickEvent(QMouseEvent* event)
 {
-	QGraphicsEllipseItem *item = new QGraphicsEllipseItem(-10,-10,20,20);
+	QGraphicsEllipseItem *item = new QGraphicsEllipseItem(-5,-5,10,10);
+	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	QPointF mappedPos = mapToScene(event->pos());
 
 	item->setPos( mappedPos );
@@ -50,5 +51,17 @@ void DivePlanner::create_deco_stop()
 	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), 100, 0);
 	scene()->addItem(item);
 	lines << item;
+}
+
+void DivePlanner::resizeEvent(QResizeEvent* event)
+{
+    QGraphicsView::resizeEvent(event);
+	fitInView(sceneRect(), Qt::KeepAspectRatio);
+}
+
+void DivePlanner::showEvent(QShowEvent* event)
+{
+    QGraphicsView::showEvent(event);
+	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
