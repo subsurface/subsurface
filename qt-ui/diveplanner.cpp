@@ -145,7 +145,7 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
-	depthString->setText(QString::number(depthLine->valueAt(mappedPos)));
+	depthString->setText(QString::number( (int) depthLine->valueAt(mappedPos)) + "m" );
 	depthString->setPos(0, mappedPos.y());
 	timeString->setText(QString::number( (int) timeLine->valueAt(mappedPos)) + "min");
 	timeString->setPos(mappedPos.x()+1, 90);
