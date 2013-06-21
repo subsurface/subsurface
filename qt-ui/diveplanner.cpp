@@ -206,10 +206,13 @@ void DivePlannerGraphics::moveActiveHandler(QPointF pos)
 
 bool DivePlannerGraphics::isPointOutOfBoundaries(QPointF point)
 {
-	if (point.x() > sceneRect().width()
-	||  point.x() < 0
-	||  point.y() < 0
-	|| point.y() > sceneRect().height())
+	double xpos = timeLine->valueAt(point);
+	double ypos = depthLine->valueAt(point);
+
+	if (xpos > timeLine->maximum()
+	||  xpos < timeLine->minimum()
+	||  ypos > depthLine->maximum()
+	||  ypos < depthLine->minimum())
 	{
 		return true;
 	}
@@ -325,3 +328,14 @@ DivePlanner* DivePlanner::instance()
 	static DivePlanner *self = new DivePlanner();
 	return self;
 }
+
+double Ruler::maximum() const
+{
+	return max;
+}
+
+double Ruler::minimum() const
+{
+	return min;
+}
+

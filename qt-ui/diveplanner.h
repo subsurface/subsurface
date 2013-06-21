@@ -22,6 +22,8 @@ public:
 	void setTickInterval(double interval);
 	void setOrientation(Qt::Orientation orientation);
 	void updateTicks();
+	double minimum() const;
+	double maximum() const;
 	qreal valueAt(const QPointF& p);
 	qreal posAtValue(qreal value);
 
