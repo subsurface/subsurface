@@ -289,17 +289,26 @@ void Ruler::setTickInterval(double i)
 qreal Ruler::valueAt(const QPointF& p)
 {
 	QLineF m = line();
-	return  orientation == Qt::Horizontal
+	double retValue =  orientation == Qt::Horizontal
 		? max * (p.x() - m.x1()) / (m.x2() - m.x1())
 		: max * (p.y() - m.y1()) / (m.y2() - m.y1());
+	return retValue;
 }
 
 qreal Ruler::posAtValue(qreal value)
 {
 	QLineF m = line();
-	// I need to finish this later. hungry as hell.
+	double size = max - min;
+	double percent = value / size;
+	double realSize = orientation == Qt::Horizontal
+		? m.x2() - m.x1()
+		: m.y2() - m.y1();
+	double retValue = realSize * percent;
+	retValue =  (orientation == Qt::Horizontal)
+		? retValue + m.x1()
+		: retValue + m.y1();
+	return retValue;
 }
-
 
 DivePlanner::DivePlanner() : ui(new Ui::DivePlanner())
 {
