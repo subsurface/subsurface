@@ -62,6 +62,11 @@ protected:
     void clear_generated_deco();
 	void create_deco_stop();
 	bool isPointOutOfBoundaries(const QPointF& point);
+
+private slots:
+	void increaseTime();
+	void increaseDepth();
+
 private:
 
     void moveActiveHandler(const QPointF& pos);

@@ -47,10 +47,22 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	plusDepth = new Button();
 	plusDepth->setPos(15, 1);
 	scene()->addItem(plusDepth);
+	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 
 	plusTime = new Button();
 	plusTime->setPos( 95, 90);
 	scene()->addItem(plusTime);
+	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
+}
+
+void DivePlannerGraphics::increaseDepth()
+{
+	qDebug() << "Increase Depth Clicked";
+}
+
+void DivePlannerGraphics::increaseTime()
+{
+	qDebug() << "Increase Time Clicked";
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -249,6 +261,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 			activeDraggedHandler->setBrush(Qt::red);
 		}
 	}
+	QGraphicsView::mousePressEvent(event);
 }
 
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
