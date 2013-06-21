@@ -51,11 +51,11 @@ protected:
 
     void clear_generated_deco();
 	void create_deco_stop();
-	bool isPointOutOfBoundaries(QPointF point);
+	bool isPointOutOfBoundaries(const QPointF& point);
 
 private:
 
-    void moveActiveHandler(QPointF pos);
+    void moveActiveHandler(const QPointF& pos);
 	QList<QGraphicsLineItem*> lines;
 	QList<DiveHandler *> handles;
 	QGraphicsLineItem *verticalLine;

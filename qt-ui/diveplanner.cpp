@@ -1,4 +1,5 @@
 #include "diveplanner.h"
+#include <cmath>
 #include <QMouseEvent>
 #include <QDebug>
 #include "ui_diveplanner.h"
@@ -19,7 +20,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	timeLine = new Ruler();
 	timeLine->setMinimum(0);
-	timeLine->setMaximum(60);
+	timeLine->setMaximum(20);
 	timeLine->setTickInterval(10);
 	timeLine->setLine( 10, 90, 99, 90);
 	timeLine->setOrientation(Qt::Horizontal);
@@ -28,7 +29,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	depthLine = new Ruler();
 	depthLine->setMinimum(0);
-	depthLine->setMaximum(400);
+	depthLine->setMaximum(10);
 	depthLine->setTickInterval(10);
 	depthLine->setLine( 10, 1, 10, 90);
 	depthLine->setOrientation(Qt::Vertical);
@@ -57,7 +58,10 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	DiveHandler  *item = new DiveHandler ();
 	item->setRect(-5,-5,10,10);
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	item->setPos( mappedPos );
+
+	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(mappedPos)));
+	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(mappedPos)));
+	item->setPos( QPointF(xpos, ypos));
     scene()->addItem(item);
 	handles << item;
 
@@ -164,41 +168,46 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	}
 }
 
-void DivePlannerGraphics::moveActiveHandler(QPointF pos)
+void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 {
 	int idx = handles.indexOf(activeDraggedHandler);
+
+	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(pos)));
+	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(pos)));
+
+	QPointF newPos(xpos, ypos);
 	bool moveLines = false;;
 	// do not allow it to move between handlers.
 	if (handles.count() > 1){
 		if (idx == 0 ){ // first
-			if (pos.x() < handles[1]->x()){
-				activeDraggedHandler->setPos(pos);
+			if (newPos.x() < handles[1]->x()){
+				activeDraggedHandler->setPos(newPos);
 				moveLines = true;
 			}
 		}else if (idx == handles.count()-1){ // last
-			if (pos.x() > handles[idx-1]->x()){
-				activeDraggedHandler->setPos(pos);
+			if (newPos.x() > handles[idx-1]->x()){
+				activeDraggedHandler->setPos(newPos);
 				moveLines = true;
 			}
 		}else{ // middle
-			if (pos.x() > handles[idx-1]->x() && pos.x() < handles[idx+1]->x()){
-				activeDraggedHandler->setPos(pos);
+			if (newPos.x() > handles[idx-1]->x() && newPos.x() < handles[idx+1]->x()){
+				activeDraggedHandler->setPos(newPos);
 				moveLines = true;
 			}
 		}
 	}else{
-		activeDraggedHandler->setPos(pos);
+		activeDraggedHandler->setPos(newPos);
 		moveLines = true;
 	}
 	if (moveLines){
 		if (activeDraggedHandler->from){
 			QLineF f = activeDraggedHandler->from->line();
-			activeDraggedHandler->from->setLine(f.x1(), f.y1(), pos.x(), pos.y());
+			activeDraggedHandler->from->setLine(f.x1(), f.y1(), newPos.x(), newPos.y());
 		}
 
 		if (activeDraggedHandler->to){
 			QLineF f = activeDraggedHandler->to->line();
-			activeDraggedHandler->to->setLine(pos.x(), pos.y(), f.x2(), f.y2());
+			activeDraggedHandler->to->setLine(newPos.x(), newPos.y(), f.x2(), f.y2());
 		}
 
 		if(activeDraggedHandler == handles.last()){
@@ -208,7 +217,7 @@ void DivePlannerGraphics::moveActiveHandler(QPointF pos)
 	}
 }
 
-bool DivePlannerGraphics::isPointOutOfBoundaries(QPointF point)
+bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
 {
 	double xpos = timeLine->valueAt(point);
 	double ypos = depthLine->valueAt(point);
