@@ -62,7 +62,9 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	handles << item;
 
 	if (lines.empty()){
-		QGraphicsLineItem *first = new QGraphicsLineItem(0,0, mappedPos.x(), mappedPos.y());
+		double xpos = timeLine->posAtValue(0);
+		double ypos = depthLine->posAtValue(0);
+		QGraphicsLineItem *first = new QGraphicsLineItem(xpos,ypos, mappedPos.x(), mappedPos.y());
 		item->from = first;
 		lines.push_back(first);
 		create_deco_stop();
@@ -116,7 +118,9 @@ void DivePlannerGraphics::create_deco_stop()
 
 	// Create all 'deco' GraphicsLineItems and put it on the canvas.This following three lines will
 	// most probably need to enter on a loop.
-	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), 100, 0);
+	double xpos = timeLine->posAtValue(timeLine->maximum());
+	double ypos = depthLine->posAtValue(depthLine->minimum());
+	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), xpos, ypos);
 	scene()->addItem(item);
 	lines << item;
 }
