@@ -43,6 +43,14 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthString = new QGraphicsSimpleTextItem();
 	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(depthString);
+
+	plusDepth = new Button();
+	plusDepth->setPos(15, 1);
+	scene()->addItem(plusDepth);
+
+	plusTime = new Button();
+	plusTime->setPos( 95, 90);
+	scene()->addItem(plusTime);
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -352,3 +360,13 @@ double Ruler::minimum() const
 	return min;
 }
 
+Button::Button(QObject* parent): QObject(parent), QGraphicsPixmapItem()
+{
+    setPixmap(QPixmap(":plus").scaled(20,20));
+	setFlag(ItemIgnoresTransformations);
+}
+
+void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	emit clicked();
+}

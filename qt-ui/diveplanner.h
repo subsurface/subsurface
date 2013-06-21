@@ -5,6 +5,16 @@
 #include <QGraphicsPathItem>
 #include <QDialog>
 
+class Button : public QObject, public QGraphicsPixmapItem {
+	Q_OBJECT
+public:
+	explicit Button(QObject* parent = 0);
+protected:
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+signals:
+	void clicked();
+};
+
 class DiveHandler : public QGraphicsEllipseItem{
 public:
     DiveHandler();
@@ -52,7 +62,6 @@ protected:
     void clear_generated_deco();
 	void create_deco_stop();
 	bool isPointOutOfBoundaries(const QPointF& point);
-
 private:
 
     void moveActiveHandler(const QPointF& pos);
@@ -67,6 +76,11 @@ private:
 
 	Ruler *depthLine;
 	QGraphicsSimpleTextItem *depthString;
+
+	Button *plusTime;
+	Button *plusDepth;
+	Button *lessTime;
+	Button *lessDepth;
 
 };
 
