@@ -103,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>34</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -152,6 +152,8 @@
     <addaction name="separator"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
+    <addaction name="separator"/>
+    <addaction name="actionDivePlanner"/>
    </widget>
    <widget class="QMenu" name="menuFilter">
     <property name="title">
@@ -366,6 +368,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="actionDivePlanner">
+   <property name="text">
+    <string>Dive Planner</string>
    </property>
   </action>
  </widget>

@@ -32,6 +32,7 @@
 #include "subsurfacewebservices.h"
 #include "divecomputermanagementdialog.h"
 #include "simplewidgets.h"
+#include "diveplanner.h"
 
 static MainWindow* instance = 0;
 
@@ -180,6 +181,16 @@ void MainWindow::on_actionPrint_triggered()
 {
 	qDebug("actionPrint");
 }
+
+void MainWindow::on_actionDivePlanner_triggered()
+{
+	DivePlanner *planner = DivePlanner::instance();
+	if (planner->exec() == QDialog::Accepted){
+		struct dive *d = planner->getDive();
+		qDebug() << "Finish me.";
+	}
+}
+
 
 void MainWindow::on_actionPreferences_triggered()
 {
