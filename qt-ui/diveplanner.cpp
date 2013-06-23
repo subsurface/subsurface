@@ -7,7 +7,7 @@
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
 {
 	setMouseTracking(true);
-	setScene( new QGraphicsScene());
+	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0,0,100,100);
 
 	verticalLine = new QGraphicsLineItem(0,0,0, 100);
@@ -22,7 +22,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeLine->setMinimum(0);
 	timeLine->setMaximum(20);
 	timeLine->setTickInterval(10);
-	timeLine->setLine( 10, 90, 99, 90);
+	timeLine->setLine(10, 90, 99, 90);
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
@@ -31,7 +31,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->setMinimum(0);
 	depthLine->setMaximum(10);
 	depthLine->setTickInterval(10);
-	depthLine->setLine( 10, 1, 10, 90);
+	depthLine->setLine(10, 1, 10, 90);
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
@@ -50,7 +50,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 
 	plusTime = new Button();
-	plusTime->setPos( 95, 90);
+	plusTime->setPos(95, 90);
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
 }
@@ -68,12 +68,11 @@ void DivePlannerGraphics::increaseTime()
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	QPointF mappedPos = mapToScene(event->pos());
-	if(isPointOutOfBoundaries(mappedPos))
+	if (isPointOutOfBoundaries(mappedPos))
 		return;
 
-	if(handles.count() && handles.last()->x() > mappedPos.x()){
+	if (handles.count() && handles.last()->x() > mappedPos.x())
 		return;
-	}
 
 	DiveHandler  *item = new DiveHandler ();
 	item->setRect(-5,-5,10,10);
@@ -81,46 +80,46 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(mappedPos)));
 	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(mappedPos)));
-	item->setPos( QPointF(xpos, ypos));
-    scene()->addItem(item);
+	item->setPos(QPointF(xpos, ypos));
+	scene()->addItem(item);
 	handles << item;
 
-	if (lines.empty()){
+	if (lines.empty()) {
 		double xpos = timeLine->posAtValue(0);
 		double ypos = depthLine->posAtValue(0);
 		QGraphicsLineItem *first = new QGraphicsLineItem(xpos,ypos, mappedPos.x(), mappedPos.y());
 		item->from = first;
 		lines.push_back(first);
-		create_deco_stop();
+		createDecoStops();
 		scene()->addItem(first);
-	}else{
-		clear_generated_deco();
-		DiveHandler *prevHandle = handles.at( handles.count()-2);
+	} else {
+		clearGeneratedDeco();
+		DiveHandler *prevHandle = handles.at(handles.count()-2);
 		QGraphicsLineItem *line = new QGraphicsLineItem(prevHandle->x(), prevHandle->y(), item->x(), item->y());
 		prevHandle->to = line;
 		item->from = line;
 		lines.push_back(line);
 		scene()->addItem(line);
-		create_deco_stop();
+		createDecoStops();
 	}
 	item->time = (timeLine->valueAt(mappedPos));
 	item->depth = (depthLine->valueAt(mappedPos));
 }
 
-void DivePlannerGraphics::clear_generated_deco()
+void DivePlannerGraphics::clearGeneratedDeco()
 {
-	for(int i = handles.count(); i <= lines.count(); i++){
+	for (int i = handles.count(); i <= lines.count(); i++) {
 		scene()->removeItem(lines.last());
 		delete lines.last();
 		lines.removeLast();
 	}
 }
 
-void DivePlannerGraphics::create_deco_stop()
+void DivePlannerGraphics::createDecoStops()
 {
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
-	Q_FOREACH(DiveHandler *h, handles){
+	Q_FOREACH(DiveHandler *h, handles) {
 		// use this somewhere.
 		h->time;
 		h->depth;
@@ -134,9 +133,9 @@ void DivePlannerGraphics::create_deco_stop()
 	timeLine->updateTicks();
 
 	// Re-position the user generated dive handlers
-	Q_FOREACH(DiveHandler *h, handles){
+	Q_FOREACH(DiveHandler *h, handles) {
 	// uncomment this as soon as the posAtValue is implemented.
-	// h->setPos( timeLine->posAtValue(h->time),
+	// h->setPos(timeLine->posAtValue(h->time),
 	// 	   depthLine->posAtValue(h->depth));
 	}
 
@@ -151,13 +150,13 @@ void DivePlannerGraphics::create_deco_stop()
 
 void DivePlannerGraphics::resizeEvent(QResizeEvent* event)
 {
-    QGraphicsView::resizeEvent(event);
+	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
 void DivePlannerGraphics::showEvent(QShowEvent* event)
 {
-    QGraphicsView::showEvent(event);
+	QGraphicsView::showEvent(event);
 	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
@@ -169,20 +168,20 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 
 	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
 	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
-	depthString->setText(QString::number( (int) depthLine->valueAt(mappedPos)) + "m" );
+	depthString->setText(QString::number((int) depthLine->valueAt(mappedPos)) + "m" );
 	depthString->setPos(0, mappedPos.y());
-	timeString->setText(QString::number( (int) timeLine->valueAt(mappedPos)) + "min");
+	timeString->setText(QString::number((int) timeLine->valueAt(mappedPos)) + "min");
 	timeString->setPos(mappedPos.x()+1, 90);
 
-	if(activeDraggedHandler)
+	if (activeDraggedHandler)
 		moveActiveHandler(mappedPos);
 	if (!handles.count())
 		return;
 
-	if (handles.last()->x() > mappedPos.x()){
-		verticalLine->setPen( QPen(QBrush(Qt::red), 0, Qt::SolidLine));
-		horizontalLine->setPen( QPen(QBrush(Qt::red), 0, Qt::SolidLine));
-	}else{
+	if (handles.last()->x() > mappedPos.x()) {
+		verticalLine->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
+		horizontalLine->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
+	} else {
 		verticalLine->setPen(QPen(Qt::DotLine));
 		horizontalLine->setPen(QPen(Qt::DotLine));
 	}
@@ -198,41 +197,41 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 	QPointF newPos(xpos, ypos);
 	bool moveLines = false;;
 	// do not allow it to move between handlers.
-	if (handles.count() > 1){
-		if (idx == 0 ){ // first
-			if (newPos.x() < handles[1]->x()){
+	if (handles.count() > 1) {
+		if (idx == 0 ) { // first
+			if (newPos.x() < handles[1]->x()) {
 				activeDraggedHandler->setPos(newPos);
 				moveLines = true;
 			}
-		}else if (idx == handles.count()-1){ // last
-			if (newPos.x() > handles[idx-1]->x()){
+		} else if (idx == handles.count()-1) { // last
+			if (newPos.x() > handles[idx-1]->x()) {
 				activeDraggedHandler->setPos(newPos);
 				moveLines = true;
 			}
-		}else{ // middle
-			if (newPos.x() > handles[idx-1]->x() && newPos.x() < handles[idx+1]->x()){
+		} else { // middle
+			if (newPos.x() > handles[idx-1]->x() && newPos.x() < handles[idx+1]->x()) {
 				activeDraggedHandler->setPos(newPos);
 				moveLines = true;
 			}
 		}
-	}else{
+	} else {
 		activeDraggedHandler->setPos(newPos);
 		moveLines = true;
 	}
-	if (moveLines){
-		if (activeDraggedHandler->from){
+	if (moveLines) {
+		if (activeDraggedHandler->from) {
 			QLineF f = activeDraggedHandler->from->line();
 			activeDraggedHandler->from->setLine(f.x1(), f.y1(), newPos.x(), newPos.y());
 		}
 
-		if (activeDraggedHandler->to){
+		if (activeDraggedHandler->to) {
 			QLineF f = activeDraggedHandler->to->line();
 			activeDraggedHandler->to->setLine(newPos.x(), newPos.y(), f.x2(), f.y2());
 		}
 
-		if(activeDraggedHandler == handles.last()){
-			clear_generated_deco();
-			create_deco_stop();
+		if (activeDraggedHandler == handles.last()) {
+			clearGeneratedDeco();
+			createDecoStops();
 		}
 	}
 }
@@ -242,10 +241,10 @@ bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
 	double xpos = timeLine->valueAt(point);
 	double ypos = depthLine->valueAt(point);
 
-	if (xpos > timeLine->maximum()
-	||  xpos < timeLine->minimum()
-	||  ypos > depthLine->maximum()
-	||  ypos < depthLine->minimum())
+	if (xpos > timeLine->maximum() ||
+	    xpos < timeLine->minimum() ||
+	    ypos > depthLine->maximum() ||
+	    ypos < depthLine->minimum())
 	{
 		return true;
 	}
@@ -255,8 +254,8 @@ bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
 void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 {
     QPointF mappedPos = mapToScene(event->pos());
-	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos)){
-		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)){
+	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos)) {
+		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
 			activeDraggedHandler = h;
 			activeDraggedHandler->setBrush(Qt::red);
 		}
@@ -266,7 +265,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
-	if (activeDraggedHandler){
+	if (activeDraggedHandler) {
 		QPointF mappedPos = mapToScene(event->pos());
 		activeDraggedHandler->time = (timeLine->valueAt(mappedPos));
 		activeDraggedHandler->depth = (depthLine->valueAt(mappedPos));
@@ -302,17 +301,17 @@ void Ruler::updateTicks()
 {
 	qDeleteAll(ticks);
 	QLineF m = line();
-	if(orientation == Qt::Horizontal){
+	if (orientation == Qt::Horizontal) {
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
-		for(qreal pos = m.x1(); pos < m.x2(); pos += stepSize){
+		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
 			QGraphicsLineItem *l = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this);
 
 		}
-	}else{
+	} else {
 		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
-		for(qreal pos = m.y1(); pos < m.y2(); pos += stepSize){
+		for (qreal pos = m.y1(); pos < m.y2(); pos += stepSize) {
 			QGraphicsLineItem *l = new QGraphicsLineItem(m.x1(), pos, m.x1() - 1, pos, this);
 		}
 	}
@@ -326,9 +325,9 @@ void Ruler::setTickInterval(double i)
 qreal Ruler::valueAt(const QPointF& p)
 {
 	QLineF m = line();
-	double retValue =  orientation == Qt::Horizontal
-		? max * (p.x() - m.x1()) / (m.x2() - m.x1())
-		: max * (p.y() - m.y1()) / (m.y2() - m.y1());
+	double retValue =  orientation == Qt::Horizontal ?
+				max * (p.x() - m.x1()) / (m.x2() - m.x1()) :
+				max * (p.y() - m.y1()) / (m.y2() - m.y1());
 	return retValue;
 }
 
@@ -337,13 +336,13 @@ qreal Ruler::posAtValue(qreal value)
 	QLineF m = line();
 	double size = max - min;
 	double percent = value / size;
-	double realSize = orientation == Qt::Horizontal
-		? m.x2() - m.x1()
-		: m.y2() - m.y1();
+	double realSize = orientation == Qt::Horizontal ?
+				m.x2() - m.x1() :
+				m.y2() - m.y1();
 	double retValue = realSize * percent;
-	retValue =  (orientation == Qt::Horizontal)
-		? retValue + m.x1()
-		: retValue + m.y1();
+	retValue =  (orientation == Qt::Horizontal) ?
+				retValue + m.x1() :
+				retValue + m.y1();
 	return retValue;
 }
 
@@ -375,7 +374,7 @@ double Ruler::minimum() const
 
 Button::Button(QObject* parent): QObject(parent), QGraphicsPixmapItem()
 {
-    setPixmap(QPixmap(":plus").scaled(20,20));
+	setPixmap(QPixmap(":plus").scaled(20,20));
 	setFlag(ItemIgnoresTransformations);
 }
 

@@ -10,14 +10,14 @@ class Button : public QObject, public QGraphicsPixmapItem {
 public:
 	explicit Button(QObject* parent = 0);
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 signals:
 	void clicked();
 };
 
 class DiveHandler : public QGraphicsEllipseItem{
 public:
-    DiveHandler();
+	DiveHandler();
 	QGraphicsLineItem *from;
 	QGraphicsLineItem *to;
 	qreal time;
@@ -26,7 +26,7 @@ public:
 
 class Ruler : public QGraphicsLineItem{
 public:
-    Ruler();
+	Ruler();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
@@ -52,15 +52,15 @@ class DivePlannerGraphics : public QGraphicsView {
 public:
 	DivePlannerGraphics(QWidget* parent = 0);
 protected:
-    virtual void mouseDoubleClickEvent(QMouseEvent* event);
-    virtual void showEvent(QShowEvent* event);
-    virtual void resizeEvent(QResizeEvent* event);
-    virtual void mouseMoveEvent(QMouseEvent* event);
-    virtual void mousePressEvent(QMouseEvent* event);
-    virtual void mouseReleaseEvent(QMouseEvent* event);
+	virtual void mouseDoubleClickEvent(QMouseEvent* event);
+	virtual void showEvent(QShowEvent* event);
+	virtual void resizeEvent(QResizeEvent* event);
+	virtual void mouseMoveEvent(QMouseEvent* event);
+	virtual void mousePressEvent(QMouseEvent* event);
+	virtual void mouseReleaseEvent(QMouseEvent* event);
 
-    void clear_generated_deco();
-	void create_deco_stop();
+	void clearGeneratedDeco();
+	void createDecoStops();
 	bool isPointOutOfBoundaries(const QPointF& point);
 
 private slots:
@@ -69,7 +69,7 @@ private slots:
 
 private:
 
-    void moveActiveHandler(const QPointF& pos);
+	void moveActiveHandler(const QPointF& pos);
 	QList<QGraphicsLineItem*> lines;
 	QList<DiveHandler *> handles;
 	QGraphicsLineItem *verticalLine;
