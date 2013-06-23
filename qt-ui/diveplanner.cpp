@@ -300,19 +300,20 @@ void Ruler::setOrientation(Qt::Orientation o)
 void Ruler::updateTicks()
 {
 	qDeleteAll(ticks);
+	ticks.clear();
 	QLineF m = line();
 	if (orientation == Qt::Horizontal) {
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
 		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
-			QGraphicsLineItem *l = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this);
+			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this));
 
 		}
 	} else {
 		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
 		for (qreal pos = m.y1(); pos < m.y2(); pos += stepSize) {
-			QGraphicsLineItem *l = new QGraphicsLineItem(m.x1(), pos, m.x1() - 1, pos, this);
+			ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - 1, pos, this));
 		}
 	}
 }
