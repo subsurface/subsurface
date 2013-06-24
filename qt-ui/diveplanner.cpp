@@ -30,7 +30,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	depthLine = new Ruler();
 	depthLine->setMinimum(0);
-	depthLine->setMaximum(10);
+	depthLine->setMaximum(100);
 	depthLine->setTickInterval(10);
 	depthLine->setLine(10, 1, 10, 90);
 	depthLine->setOrientation(Qt::Vertical);
@@ -125,10 +125,13 @@ void DivePlannerGraphics::createDecoStops()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct diveplan plan;
+	struct diveplan diveplan;
 	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
 	dp->entered = TRUE;
-	plan.dp = dp;
+	diveplan.dp = dp;
+	diveplan.gflow = 30;
+	diveplan.gfhigh = 70;
+	diveplan.surface_pressure = 1013;
 	DiveHandler *lastH = NULL;
 	Q_FOREACH(DiveHandler *h, handles) {
 		// these values need to come from the planner UI, eventually
@@ -137,21 +140,30 @@ void DivePlannerGraphics::createDecoStops()
 		int po2 = 0;
 		int deltaT = lastH ? h->sec - lastH->sec : h->sec;
 		lastH = h;
-		plan_add_segment(&plan, deltaT, h->mm, o2, he, po2);
+		plan_add_segment(&diveplan, deltaT, h->mm, o2, he, po2);
 		qDebug("time %d, depth %d", h->sec, h->mm);
 	}
 #if DEBUG_PLAN
-	dump_plan(&plan);
+	dump_plan(&diveplan);
+#endif
+	char *cache = NULL;
+	struct dive *dive = NULL;
+	char *errorString = NULL;
+	plan(&diveplan, &cache, &dive, &errorString);
+#if DEBUG_PLAN
+	dump_plan(&diveplan);
 #endif
 
-	// create the dive info here.
-
-	// set the new 'end time' of the dive.
-	// note that this is not the user end,
-	// but the real end of the dive.
-	timeLine->setMaximum(60);
-	timeLine->updateTicks();
-
+	while(dp->next)
+		dp = dp->next;
+	if (timeLine->maximum() < dp->time / 60.0 + 5) {
+		// this causes all kinds of bad things as the
+		// handle that you are holding on to gets scaled out
+		// when we change the maximum and things accelerate from there
+		// BAD
+		//
+		// timeLine->setMaximum(dp->time / 60.0 + 5);
+	}
 	// Re-position the user generated dive handlers
 	Q_FOREACH(DiveHandler *h, handles) {
 	// uncomment this as soon as the posAtValue is implemented.
@@ -159,13 +171,22 @@ void DivePlannerGraphics::createDecoStops()
 	// 	   depthLine->posAtValue(h->depth));
 	}
 
-	// Create all 'deco' GraphicsLineItems and put it on the canvas.This following three lines will
-	// most probably need to enter on a loop.
-	double xpos = timeLine->posAtValue(timeLine->maximum());
-	double ypos = depthLine->posAtValue(depthLine->minimum());
-	QGraphicsLineItem *item = new QGraphicsLineItem(handles.last()->x(), handles.last()->y(), xpos, ypos);
-	scene()->addItem(item);
-	lines << item;
+	// Create all 'deco' GraphicsLineItems and put it on the canvas.
+	double lastx = handles.last()->x();
+	double lasty = handles.last()->y();
+	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
+		if (!dp->entered) {
+			// these are the nodes created by the deco
+			double xpos = timeLine->posAtValue(dp->time / 60.0);
+			double ypos = depthLine->posAtValue(dp->depth / 1000.0);
+			qDebug("time/depth %f/%f", dp->time / 60.0, dp->depth / 1000.0);
+			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
+			lastx = xpos;
+			lasty = ypos;
+			scene()->addItem(item);
+			lines << item;
+		}
+	}
 }
 
 void DivePlannerGraphics::resizeEvent(QResizeEvent* event)

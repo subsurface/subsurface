@@ -713,6 +713,8 @@ struct diveplan {
 	int surface_pressure;		/* mbar */
 	int bottomsac;			/* ml/min */
 	int decosac;			/* ml/min */
+	short gflow;
+	short gfhigh;
 	struct divedatapoint *dp;
 };
 
@@ -723,6 +725,7 @@ void free_dps(struct divedatapoint *dp);
 void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
 void dump_plan(struct diveplan *diveplan);
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, char **error_string_p);
 
 struct event *get_next_event(struct event *event, char *name);
 
