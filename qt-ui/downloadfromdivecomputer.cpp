@@ -183,7 +183,10 @@ DownloadThread::DownloadThread(device_data_t* data): data(data)
 void DownloadThread::run()
 {
 	DownloadFromDCWidget *dfdcw = DownloadFromDCWidget::instance();
-	do_libdivecomputer_import(data);
+	if (!strcmp(data->vendor, "Uemis"))
+		do_uemis_import(data->devname, data->force_download);
+	else
+		do_libdivecomputer_import(data);
 	process_dives(TRUE, dfdcw->preferDownloaded());
 	dfdcw->stoppedDownloading();
 }

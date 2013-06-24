@@ -70,6 +70,8 @@ SOURCES = \
 	sha1.c \
 	statistics.c \
 	time.c \
+	uemis.c \
+	uemis-downloader.c \
 	libdivecomputer.c \
 	qt-gui.cpp \
 	qthelper.cpp \

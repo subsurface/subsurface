@@ -19,12 +19,14 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
+#include "libdivecomputer.h"
 #include "uemis.h"
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
+#if USE_GTK_UI
 #include "display-gtk.h"
-
+#endif
 #define ERR_FS_ALMOST_FULL N_("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
 #define ERR_FS_FULL N_("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
 #define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
@@ -49,14 +51,17 @@ static int number_of_files;
 static char *mbuf = NULL;
 static int mbuf_size = 0;
 
+#if USE_GTK_UI
 struct argument_block {
 	const char *mountpath;
 	progressbar_t *progress;
 	gboolean force_download;
 };
+#endif
 
 static int nr_divespots = 0;
 
+#if USE_GTK_UI
 static int import_thread_done = 0, import_thread_cancelled;
 static const char *progress_bar_text = "";
 static double progress_bar_fraction = 0.0;
@@ -73,6 +78,7 @@ static GError *error(const char *fmt, ...)
 	va_end(args);
 	return error;
 }
+#endif
 
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
@@ -752,9 +758,8 @@ static char *uemis_get_divenr(char *deviceidstr)
 	return strdup(divenr);
 }
 
-static char *do_uemis_download(struct argument_block *args)
+char *do_uemis_import(const char *mountpath, short force_download)
 {
-	const char *mountpath = args->mountpath;
 	char *newmax = NULL;
 	int start, end, i, offset;
 	uint32_t deviceidnr;
@@ -788,7 +793,7 @@ static char *do_uemis_download(struct argument_block *args)
 	param_buff[1] = "notempty";
 	/* if we have an empty divelist or force it, then we start downloading from the
 	 * first dive on the Uemis; otherwise check which was the last dive downloaded */
-	if (!args->force_download && dive_table.nr > 0)
+	if (force_download && dive_table.nr > 0)
 		newmax = uemis_get_divenr(deviceid);
 	else
 		newmax = strdup("0");
@@ -881,6 +886,7 @@ bail:
 	return result;
 }
 
+#if USE_GTK_UI
 static void *pthread_wrapper(void *_data)
 {
 	struct argument_block *args = _data;
@@ -922,18 +928,14 @@ GError *uemis_download(const char *mountpath, progressbar_t *progress,
 		if (!import_thread_cancelled) {
 			int result;
 			g_timeout_add(100, timeout_func, dialog);
-#if USE_GTK_UI
 			update_progressbar(args.progress, progress_bar_fraction);
 			update_progressbar_text(args.progress, progress_bar_text);
-#endif
 			result = gtk_dialog_run(dialog);
 			if (result == GTK_RESPONSE_CANCEL)
 				import_thread_cancelled = TRUE;
 		} else {
-#if USE_GTK_UI
 			update_progressbar(args.progress, progress_bar_fraction);
 			update_progressbar_text(args.progress, _("Cancelled, exiting cleanly..."));
-#endif
 			usleep(100000);
 		}
 	}
@@ -943,3 +945,4 @@ GError *uemis_download(const char *mountpath, progressbar_t *progress,
 		return error(retval);
 	return NULL;
 }
+#endif
