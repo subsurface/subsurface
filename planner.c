@@ -495,6 +495,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 	return stoplevels;
 }
 
+#if USE_GTK_UI
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 {
 	char buffer[20000];
@@ -590,6 +591,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	}
 	dive->notes = strdup(buffer);
 }
+#endif
 
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, char **error_string_p)
 {
@@ -698,8 +700,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, c
 		record_dive(dive);
 		stopidx--;
 	}
-	add_plan_to_notes(diveplan, dive);
 #if USE_GTK_UI
+	add_plan_to_notes(diveplan, dive);
 	/* now make the dive visible in the dive list */
 	report_dives(FALSE, FALSE);
 	show_and_select_dive(dive);
@@ -709,6 +711,7 @@ error_exit:
 	free(gaschanges);
 }
 
+#if USE_GTK_UI
 /*
  * Get a value in tenths (so "10.2" == 102, "9" = 90)
  *
@@ -1013,4 +1016,4 @@ timestamp_t current_time_notz(void)
 	struct tm *local = localtime(&now);
 	return utc_mktime(local);
 }
-
+#endif

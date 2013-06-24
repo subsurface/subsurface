@@ -721,6 +721,8 @@ void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth);
 void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he);
 void free_dps(struct divedatapoint *dp);
 void get_gas_string(int o2, int he, char *buf, int len);
+struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
+void dump_plan(struct diveplan *diveplan);
 
 struct event *get_next_event(struct event *event, char *name);
 

@@ -22,6 +22,8 @@ public:
 	QGraphicsLineItem *to;
 	qreal time;
 	qreal depth;
+	int sec;
+	int mm;
 };
 
 class Ruler : public QGraphicsLineItem{

@@ -1,4 +1,5 @@
 #include "diveplanner.h"
+#include "../dive.h"
 #include <cmath>
 #include <QMouseEvent>
 #include <QDebug>
@@ -77,9 +78,12 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	DiveHandler  *item = new DiveHandler ();
 	item->setRect(-5,-5,10,10);
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-
-	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(mappedPos)));
-	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(mappedPos)));
+	int minutes = rint(timeLine->valueAt(mappedPos));
+	int meters = rint(depthLine->valueAt(mappedPos));
+	item->sec = minutes * 60;
+	item->mm =  meters * 1000;
+	double xpos = timeLine->posAtValue(minutes);
+	double ypos = depthLine->posAtValue(meters);
 	item->setPos(QPointF(xpos, ypos));
 	scene()->addItem(item);
 	handles << item;
@@ -119,11 +123,27 @@ void DivePlannerGraphics::createDecoStops()
 {
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
+	// Not sure if this is the place to create the diveplan...
+	// We just start with a surface node at time = 0
+	struct diveplan plan;
+	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
+	dp->entered = TRUE;
+	plan.dp = dp;
+	DiveHandler *lastH = NULL;
 	Q_FOREACH(DiveHandler *h, handles) {
-		// use this somewhere.
-		h->time;
-		h->depth;
+		// these values need to come from the planner UI, eventually
+		int o2 = 209;
+		int he = 0;
+		int po2 = 0;
+		int deltaT = lastH ? h->sec - lastH->sec : h->sec;
+		lastH = h;
+		plan_add_segment(&plan, deltaT, h->mm, o2, he, po2);
+		qDebug("time %d, depth %d", h->sec, h->mm);
 	}
+#if DEBUG_PLAN
+	dump_plan(&plan);
+#endif
+
 	// create the dive info here.
 
 	// set the new 'end time' of the dive.
@@ -193,8 +213,9 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 
 	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(pos)));
 	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(pos)));
-
 	QPointF newPos(xpos, ypos);
+	int sec = rint(timeLine->valueAt(newPos)) * 60;
+	int mm = rint(depthLine->valueAt(newPos)) * 1000;
 	bool moveLines = false;;
 	// do not allow it to move between handlers.
 	if (handles.count() > 1) {
@@ -233,6 +254,8 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 			clearGeneratedDeco();
 			createDecoStops();
 		}
+		activeDraggedHandler->sec = sec;
+		activeDraggedHandler->mm = mm;
 	}
 }
 
