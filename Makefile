@@ -51,6 +51,7 @@ HEADERS = \
 	qt-ui/subsurfacewebservices.h \
 	qt-ui/divecomputermanagementdialog.h \
 	qt-ui/diveplanner.h \
+	qt-ui/about.h \
 
 
 SOURCES = \
@@ -88,6 +89,7 @@ SOURCES = \
 	qt-ui/subsurfacewebservices.cpp \
 	qt-ui/divecomputermanagementdialog.cpp \
 	qt-ui/diveplanner.cpp \
+	qt-ui/about.cpp \
 	$(RESFILE)
 
 

@@ -33,6 +33,7 @@
 #include "divecomputermanagementdialog.h"
 #include "simplewidgets.h"
 #include "diveplanner.h"
+#include "about.h"
 
 static MainWindow* instance = 0;
 
@@ -335,7 +336,7 @@ void MainWindow::on_actionInputPlan_triggered()
 
 void MainWindow::on_actionAboutSubsurface_triggered()
 {
-	qDebug("actionAboutSubsurface");
+	SubsurfaceAbout::instance()->show();
 }
 
 void MainWindow::on_actionUserManual_triggered()
