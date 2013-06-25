@@ -170,7 +170,42 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-	qDebug("actionImport");
+	QSettings settings;
+	QString lastDir = QDir::homePath();
+
+	settings.beginGroup("FileDialog");
+	if (settings.contains("LastDir"))
+		if (QDir::setCurrent(settings.value("LastDir").toString()))
+			lastDir = settings.value("LastDir").toString();
+	settings.endGroup();
+
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Import Files"), lastDir, filter());
+	if (!fileNames.size())
+		return; // no selection
+
+	// Keep last open dir
+	QFileInfo fileInfo(fileNames.at(0));
+	settings.beginGroup("FileDialog");
+	settings.setValue("LastDir", fileInfo.dir().path());
+	settings.endGroup();
+
+	QByteArray fileNamePtr;
+	char *error = NULL;
+	for (int i = 0; i < fileNames.size(); ++i) {
+		fileNamePtr = fileNames.at(i).toLocal8Bit();
+		parse_file(fileNamePtr.data(), &error);
+		if (error != NULL) {
+			showError(error);
+			free(error);
+			error = NULL;
+		}
+	}
+	process_dives(FALSE, FALSE);
+
+	ui->InfoWidget->reload();
+	ui->globe->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
+	ui->ListWidget->setFocus();
 }
 
 void MainWindow::on_actionExportUDDF_triggered()
