@@ -20,8 +20,6 @@ public:
 	DiveHandler();
 	QGraphicsLineItem *from;
 	QGraphicsLineItem *to;
-	qreal time;
-	qreal depth;
 	int sec;
 	int mm;
 };

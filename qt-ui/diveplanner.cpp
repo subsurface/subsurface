@@ -106,8 +106,6 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 		scene()->addItem(line);
 		createDecoStops();
 	}
-	item->time = (timeLine->valueAt(mappedPos));
-	item->depth = (depthLine->valueAt(mappedPos));
 }
 
 void DivePlannerGraphics::clearGeneratedDeco()
@@ -162,13 +160,13 @@ void DivePlannerGraphics::createDecoStops()
 		// when we change the maximum and things accelerate from there
 		// BAD
 		//
-		// timeLine->setMaximum(dp->time / 60.0 + 5);
+		timeLine->setMaximum(dp->time / 60.0 + 5);
+		timeLine->updateTicks();
 	}
+
 	// Re-position the user generated dive handlers
-	Q_FOREACH(DiveHandler *h, handles) {
-	// uncomment this as soon as the posAtValue is implemented.
-	// h->setPos(timeLine->posAtValue(h->time),
-	// 	   depthLine->posAtValue(h->depth));
+	Q_FOREACH(DiveHandler *h, handles){
+		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm) / 1000);
 	}
 
 	// Create all 'deco' GraphicsLineItems and put it on the canvas.
@@ -270,11 +268,6 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 			QLineF f = activeDraggedHandler->to->line();
 			activeDraggedHandler->to->setLine(newPos.x(), newPos.y(), f.x2(), f.y2());
 		}
-
-		if (activeDraggedHandler == handles.last()) {
-			clearGeneratedDeco();
-			createDecoStops();
-		}
 		activeDraggedHandler->sec = sec;
 		activeDraggedHandler->mm = mm;
 	}
@@ -311,9 +304,15 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler) {
 		QPointF mappedPos = mapToScene(event->pos());
-		activeDraggedHandler->time = (timeLine->valueAt(mappedPos));
-		activeDraggedHandler->depth = (depthLine->valueAt(mappedPos));
+		activeDraggedHandler->sec = rint(timeLine->valueAt(mappedPos)) * 60;
+		activeDraggedHandler->mm = rint(depthLine->valueAt(mappedPos)) * 1000;
 		activeDraggedHandler->setBrush(QBrush());
+
+		if (activeDraggedHandler == handles.last()) {
+			clearGeneratedDeco();
+			createDecoStops();
+		}
+
 		activeDraggedHandler = 0;
 	}
 }
@@ -351,7 +350,6 @@ void Ruler::updateTicks()
 		double stepSize = (m.x2() - m.x1()) / steps;
 		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
 			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this));
-
 		}
 	} else {
 		double steps = (max - min) / interval;
