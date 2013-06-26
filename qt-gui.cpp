@@ -75,6 +75,10 @@ void init_qt_ui(int *argcp, char ***argvp, char *errormessage)
 	MainWindow *window = new MainWindow();
 	window->showError(errormessage);
 	window->show();
+	if (existing_filename && existing_filename[0] != '\0')
+		window->setTitle(MWTF_FILENAME);
+	else
+		window->setTitle(MWTF_DEFAULT);
 }
 
 const char *getSetting(QSettings &s, QString name)

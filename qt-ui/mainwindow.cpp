@@ -120,6 +120,7 @@ void MainWindow::on_actionOpen_triggered()
 	char *error = NULL;
 	parse_file(fileNamePtr.data(), &error);
 	set_filename(fileNamePtr.data(), TRUE);
+	setTitle(MWTF_FILENAME);
 
 	if (error != NULL) {
 		showError(error);
@@ -164,6 +165,7 @@ void MainWindow::on_actionClose_triggered()
 	ui->ProfileWidget->clear();
 	ui->ListWidget->reload(DiveTripModel::TREE);
 	ui->globe->reload();
+	setTitle(MWTF_DEFAULT);
 
 	clear_events();
 }
@@ -673,6 +675,7 @@ void MainWindow::file_save_as(void)
 	if (!filename.isNull() && !filename.isEmpty()) {
 		save_dives(filename.toUtf8().data());
 		set_filename(filename.toUtf8().data(), TRUE);
+		setTitle(MWTF_FILENAME);
 		mark_divelist_changed(FALSE);
 	}
 }
@@ -704,4 +707,19 @@ void MainWindow::showError(QString message)
 	ui->mainErrorMessage->setCloseButtonVisible(true);
 	ui->mainErrorMessage->setMessageType(KMessageWidget::Error);
 	ui->mainErrorMessage->animatedShow();
+}
+
+void MainWindow::setTitle(enum MainWindowTitleFormat format)
+{
+	switch (format) {
+	case MWTF_DEFAULT:
+		setWindowTitle("Subsurface");
+		break;
+	case MWTF_FILENAME:
+		QFile f(existing_filename);
+		QFileInfo fileInfo(f);
+		QString fileName(fileInfo.fileName());
+		setWindowTitle("Subsurface: " + fileName);
+		break;
+	}
 }

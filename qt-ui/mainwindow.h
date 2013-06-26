@@ -31,6 +31,8 @@ class MainTab;
 class ProfileGraphicsView;
 class QTextBrowser;
 
+enum MainWindowTitleFormat { MWTF_DEFAULT, MWTF_FILENAME };
+
 class MainWindow : public QMainWindow
 {
 Q_OBJECT
@@ -43,6 +45,7 @@ public:
 	DiveListView *dive_list();
 	GlobeGPS *globe();
 	void showError(QString message);
+	void setTitle(enum MainWindowTitleFormat format);
 
 private slots:
 
