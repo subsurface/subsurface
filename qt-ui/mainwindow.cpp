@@ -330,8 +330,8 @@ void MainWindow::on_actionViewInfo_triggered()
 
 void MainWindow::on_actionViewGlobe_triggered()
 {
-	ui->infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui->mainSplitter->setSizes( BEHAVIOR << COLLAPSED << EXPANDED);
+	ui->mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui->listGlobeSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 }
 #undef BEHAVIOR
 
