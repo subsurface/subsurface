@@ -86,7 +86,7 @@ void MainWindow::redrawProfile()
 
 void MainWindow::on_actionNew_triggered()
 {
-	qDebug("actionNew");
+	on_actionClose_triggered();
 }
 
 void MainWindow::on_actionOpen_triggered()
