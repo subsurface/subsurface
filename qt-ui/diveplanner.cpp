@@ -118,7 +118,8 @@ void DivePlannerGraphics::createDecoStops()
 		int po2 = 0;
 		int deltaT = lastH ? h->sec - lastH->sec : h->sec;
 		lastH = h;
-		plan_add_segment(&diveplan, deltaT, h->mm, o2, he, po2);
+		dp = plan_add_segment(&diveplan, deltaT, h->mm, o2, he, po2);
+		dp->entered = TRUE;
 		qDebug("time %d, depth %d", h->sec, h->mm);
 	}
 #if DEBUG_PLAN
@@ -165,21 +166,18 @@ void DivePlannerGraphics::createDecoStops()
 // 	}
 
 	// Create all 'deco' GraphicsLineItems and put it on the canvas.
-	double lastx = handles.last()->x();
-	double lasty = handles.last()->y();
+	double lastx = handles.first()->x();
+	double lasty = handles.first()->y();
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
-		if (!dp->entered) {
-			// these are the nodes created by the deco
-			double xpos = timeLine->posAtValue(dp->time / 60.0);
-			double ypos = depthLine->posAtValue(dp->depth / 1000.0);
-			qDebug("time/depth %f/%f", dp->time / 60.0, dp->depth / 1000.0);
-			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
-			item->setPen(QPen(QBrush(Qt::red),0));
-			lastx = xpos;
-			lasty = ypos;
-			scene()->addItem(item);
-			lines << item;
-		}
+		double xpos = timeLine->posAtValue(dp->time / 60.0);
+		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
+		qDebug("Not entered: time/depth %f/%f", dp->time / 60.0, dp->depth / 1000.0);
+		QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
+		item->setPen(QPen(QBrush(dp->entered ? Qt::black : Qt::red),0));
+		lastx = xpos;
+		lasty = ypos;
+		scene()->addItem(item);
+		lines << item;
 	}
 }
 
@@ -250,7 +248,7 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 	} else {
 		activeDraggedHandler->setPos(newPos);
 	}
-	qqDeleteAll(lines);
+	qDeleteAll(lines);
 	lines.clear();
 }
 

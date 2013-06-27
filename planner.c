@@ -391,10 +391,11 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		dp->time += lasttime;
 }
 
-void plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2)
+struct divedatapoint * plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2)
 {
 	struct divedatapoint *dp = create_dp(duration, depth, o2, he, po2);
 	add_to_end_of_diveplan(diveplan, dp);
+	return(dp);
 }
 
 struct gaschanges {
