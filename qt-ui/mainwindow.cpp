@@ -166,6 +166,7 @@ void MainWindow::on_actionClose_triggered()
 	ui->ListWidget->reload(DiveTripModel::TREE);
 	ui->globe->reload();
 	setTitle(MWTF_DEFAULT);
+	mark_divelist_changed(FALSE);
 
 	clear_events();
 }

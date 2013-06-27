@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "../dive.h"
+#include "../divelist.h"
 #include "../helpers.h"
 
 #include <QDebug>
@@ -203,6 +204,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	reload();
 	editingDiveCoords = 0;
 	messageWidget->animatedHide();
+	mark_divelist_changed(TRUE);
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent* event)

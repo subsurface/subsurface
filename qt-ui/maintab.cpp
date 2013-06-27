@@ -324,11 +324,13 @@ void MainTab::updateDiveInfo(int dive)
 void MainTab::addCylinder_clicked()
 {
 	cylindersModel->add();
+	mark_divelist_changed(TRUE);
 }
 
 void MainTab::addWeight_clicked()
 {
 	weightModel->add();
+	mark_divelist_changed(TRUE);
 }
 
 void MainTab::reload()
