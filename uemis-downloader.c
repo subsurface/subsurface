@@ -793,7 +793,7 @@ char *do_uemis_import(const char *mountpath, short force_download)
 	param_buff[1] = "notempty";
 	/* if we have an empty divelist or force it, then we start downloading from the
 	 * first dive on the Uemis; otherwise check which was the last dive downloaded */
-	if (force_download && dive_table.nr > 0)
+	if (!force_download && dive_table.nr > 0)
 		newmax = uemis_get_divenr(deviceid);
 	else
 		newmax = strdup("0");
