@@ -146,32 +146,13 @@ void DivePlannerGraphics::createDecoStops()
 		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm) / 1000);
 	}
 
-	// Create all 'user entered' lines, and put it on the canvas.
-	double xpos = timeLine->posAtValue(0);
-	double ypos = depthLine->posAtValue(0);
-	QGraphicsLineItem *first = new QGraphicsLineItem(xpos,ypos, handles.first()->x(), handles.first()->y());
-	handles.first()->from = first;
-	scene()->addItem(first);
-	lines.push_back(first);
-
-//
-// 	for(int i = 0; i < handles.count()-1; i++){
-// 		DiveHandler *first = handles.at(i);
-// 		DiveHandler *second = handles.at(i+1);
-// 		QGraphicsLineItem *line = new QGraphicsLineItem(first->x(),first->y(), second->x(), second->y());
-// 		first->from = line;
-// 		second->to = line;
-// 		scene()->addItem(line);
-// 		lines.push_back(line);
-// 	}
-
-	// Create all 'deco' GraphicsLineItems and put it on the canvas.
-	double lastx = handles.first()->x();
-	double lasty = handles.first()->y();
+	// (re-) create the profile with different colors for segments that were
+	// entered vs. segments that were calculated
+	double lastx = timeLine->posAtValue(0);
+	double lasty = depthLine->posAtValue(0);
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
 		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
-		qDebug("Not entered: time/depth %f/%f", dp->time / 60.0, dp->depth / 1000.0);
 		QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
 		item->setPen(QPen(QBrush(dp->entered ? Qt::black : Qt::red),0));
 		lastx = xpos;
