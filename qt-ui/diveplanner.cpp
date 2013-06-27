@@ -87,40 +87,18 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	item->setPos(QPointF(xpos, ypos));
 	scene()->addItem(item);
 	handles << item;
-
-	if (lines.empty()) {
-		double xpos = timeLine->posAtValue(0);
-		double ypos = depthLine->posAtValue(0);
-		QGraphicsLineItem *first = new QGraphicsLineItem(xpos,ypos, mappedPos.x(), mappedPos.y());
-		item->from = first;
-		lines.push_back(first);
-		createDecoStops();
-		scene()->addItem(first);
-	} else {
-		clearGeneratedDeco();
-		DiveHandler *prevHandle = handles.at(handles.count()-2);
-		QGraphicsLineItem *line = new QGraphicsLineItem(prevHandle->x(), prevHandle->y(), item->x(), item->y());
-		prevHandle->to = line;
-		item->from = line;
-		lines.push_back(line);
-		scene()->addItem(line);
-		createDecoStops();
-	}
-	item->time = (timeLine->valueAt(mappedPos));
-	item->depth = (depthLine->valueAt(mappedPos));
+	createDecoStops();
 }
 
 void DivePlannerGraphics::clearGeneratedDeco()
 {
-	for (int i = handles.count(); i <= lines.count(); i++) {
-		scene()->removeItem(lines.last());
-		delete lines.last();
-		lines.removeLast();
-	}
 }
 
 void DivePlannerGraphics::createDecoStops()
 {
+	qDeleteAll(lines);
+	lines.clear();
+
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
@@ -156,20 +134,35 @@ void DivePlannerGraphics::createDecoStops()
 
 	while(dp->next)
 		dp = dp->next;
-	if (timeLine->maximum() < dp->time / 60.0 + 5) {
-		// this causes all kinds of bad things as the
-		// handle that you are holding on to gets scaled out
-		// when we change the maximum and things accelerate from there
-		// BAD
-		//
-		// timeLine->setMaximum(dp->time / 60.0 + 5);
-	}
+
+	//if (timeLine->maximum() < dp->time / 60.0 + 5) {
+		timeLine->setMaximum(dp->time / 60.0 + 5);
+		timeLine->updateTicks();
+	//}
+
 	// Re-position the user generated dive handlers
-	Q_FOREACH(DiveHandler *h, handles) {
-	// uncomment this as soon as the posAtValue is implemented.
-	// h->setPos(timeLine->posAtValue(h->time),
-	// 	   depthLine->posAtValue(h->depth));
+	Q_FOREACH(DiveHandler *h, handles){
+		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm) / 1000);
 	}
+
+	// Create all 'user entered' lines, and put it on the canvas.
+	double xpos = timeLine->posAtValue(0);
+	double ypos = depthLine->posAtValue(0);
+	QGraphicsLineItem *first = new QGraphicsLineItem(xpos,ypos, handles.first()->x(), handles.first()->y());
+	handles.first()->from = first;
+	scene()->addItem(first);
+	lines.push_back(first);
+
+//
+// 	for(int i = 0; i < handles.count()-1; i++){
+// 		DiveHandler *first = handles.at(i);
+// 		DiveHandler *second = handles.at(i+1);
+// 		QGraphicsLineItem *line = new QGraphicsLineItem(first->x(),first->y(), second->x(), second->y());
+// 		first->from = line;
+// 		second->to = line;
+// 		scene()->addItem(line);
+// 		lines.push_back(line);
+// 	}
 
 	// Create all 'deco' GraphicsLineItems and put it on the canvas.
 	double lastx = handles.last()->x();
@@ -181,6 +174,7 @@ void DivePlannerGraphics::createDecoStops()
 			double ypos = depthLine->posAtValue(dp->depth / 1000.0);
 			qDebug("time/depth %f/%f", dp->time / 60.0, dp->depth / 1000.0);
 			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
+			item->setPen(QPen(QBrush(Qt::red),0));
 			lastx = xpos;
 			lasty = ypos;
 			scene()->addItem(item);
@@ -243,41 +237,21 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 		if (idx == 0 ) { // first
 			if (newPos.x() < handles[1]->x()) {
 				activeDraggedHandler->setPos(newPos);
-				moveLines = true;
 			}
 		} else if (idx == handles.count()-1) { // last
 			if (newPos.x() > handles[idx-1]->x()) {
 				activeDraggedHandler->setPos(newPos);
-				moveLines = true;
 			}
 		} else { // middle
 			if (newPos.x() > handles[idx-1]->x() && newPos.x() < handles[idx+1]->x()) {
 				activeDraggedHandler->setPos(newPos);
-				moveLines = true;
 			}
 		}
 	} else {
 		activeDraggedHandler->setPos(newPos);
-		moveLines = true;
 	}
-	if (moveLines) {
-		if (activeDraggedHandler->from) {
-			QLineF f = activeDraggedHandler->from->line();
-			activeDraggedHandler->from->setLine(f.x1(), f.y1(), newPos.x(), newPos.y());
-		}
-
-		if (activeDraggedHandler->to) {
-			QLineF f = activeDraggedHandler->to->line();
-			activeDraggedHandler->to->setLine(newPos.x(), newPos.y(), f.x2(), f.y2());
-		}
-
-		if (activeDraggedHandler == handles.last()) {
-			clearGeneratedDeco();
-			createDecoStops();
-		}
-		activeDraggedHandler->sec = sec;
-		activeDraggedHandler->mm = mm;
-	}
+	qqDeleteAll(lines);
+	lines.clear();
 }
 
 bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
@@ -311,9 +285,10 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler) {
 		QPointF mappedPos = mapToScene(event->pos());
-		activeDraggedHandler->time = (timeLine->valueAt(mappedPos));
-		activeDraggedHandler->depth = (depthLine->valueAt(mappedPos));
+		activeDraggedHandler->sec = rint(timeLine->valueAt(mappedPos)) * 60;
+		activeDraggedHandler->mm = rint(depthLine->valueAt(mappedPos)) * 1000;
 		activeDraggedHandler->setBrush(QBrush());
+		createDecoStops();
 		activeDraggedHandler = 0;
 	}
 }
@@ -351,7 +326,6 @@ void Ruler::updateTicks()
 		double stepSize = (m.x2() - m.x1()) / steps;
 		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
 			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this));
-
 		}
 	} else {
 		double steps = (max - min) / interval;
