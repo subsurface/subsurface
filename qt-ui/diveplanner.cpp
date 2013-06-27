@@ -3,7 +3,12 @@
 #include <cmath>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QGraphicsWidget>
+#include <QGraphicsProxyWidget>
+#include <QPushButton>
+
 #include "ui_diveplanner.h"
+#include "mainwindow.h"
 
 #define TIME_INITIAL_MAX 30
 
@@ -49,14 +54,39 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	scene()->addItem(depthString);
 
 	plusDepth = new Button();
+	plusDepth->setPixmap(QPixmap(":plus"));
 	plusDepth->setPos(15, 1);
 	scene()->addItem(plusDepth);
 	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 
 	plusTime = new Button();
+	plusTime->setPixmap(QPixmap(":plus"));
 	plusTime->setPos(95, 90);
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
+
+	okBtn = new Button();
+	okBtn->setText(tr("Ok"));
+	okBtn->setPos(1, 95);
+	scene()->addItem(okBtn);
+	connect(okBtn, SIGNAL(clicked()), this, SLOT(okClicked()));
+
+	cancelBtn = new Button();
+	cancelBtn->setText(tr("Cancel"));
+	cancelBtn->setPos(10,95);
+	scene()->addItem(cancelBtn);
+	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
+}
+
+void DivePlannerGraphics::cancelClicked()
+{
+	qDebug() << "clicked";
+	mainWindow()->showProfile();
+}
+
+void DivePlannerGraphics::okClicked()
+{
+	// todo.
 }
 
 void DivePlannerGraphics::increaseDepth()
@@ -359,10 +389,38 @@ double Ruler::minimum() const
 	return min;
 }
 
-Button::Button(QObject* parent): QObject(parent), QGraphicsPixmapItem()
+Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
 {
-	setPixmap(QPixmap(":plus").scaled(20,20));
+	icon  = new QGraphicsPixmapItem(this);
+	text = new QGraphicsSimpleTextItem(this);
+	icon->setPos(0,0);
+	text->setPos(0,0);
 	setFlag(ItemIgnoresTransformations);
+	setPen(QPen(QBrush(Qt::white), 0));
+}
+
+void Button::setPixmap(const QPixmap& pixmap)
+{
+	icon->setPixmap(pixmap.scaled(20,20));
+	if(pixmap.isNull()){
+		icon->hide();
+	}else{
+		icon->show();
+	}
+	setRect(childrenBoundingRect());
+}
+
+void Button::setText(const QString& t)
+{
+	text->setText(t);
+	if(icon->pixmap().isNull()){
+		icon->hide();
+		text->setPos(0,0);
+	}else{
+		icon->show();
+		text->setPos(22,0);
+	}
+	setRect(childrenBoundingRect());
 }
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)

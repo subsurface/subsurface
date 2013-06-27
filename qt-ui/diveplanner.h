@@ -5,14 +5,20 @@
 #include <QGraphicsPathItem>
 #include <QDialog>
 
-class Button : public QObject, public QGraphicsPixmapItem {
+class Button : public QObject, public QGraphicsRectItem {
 	Q_OBJECT
 public:
 	explicit Button(QObject* parent = 0);
+	void setText(const QString& text);
+	void setPixmap(const QPixmap& pixmap);
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 signals:
 	void clicked();
+private:
+	QGraphicsPixmapItem *icon;
+	QGraphicsSimpleTextItem *text;
 };
 
 class DiveHandler : public QGraphicsEllipseItem{
@@ -66,6 +72,8 @@ protected:
 private slots:
 	void increaseTime();
 	void increaseDepth();
+	void okClicked();
+	void cancelClicked();
 
 private:
 
@@ -86,7 +94,8 @@ private:
 	Button *plusDepth;
 	Button *lessTime;
 	Button *lessDepth;
-
+	Button *okBtn;
+	Button *cancelBtn;
 	QPointF lastValidPos;
 };
 
