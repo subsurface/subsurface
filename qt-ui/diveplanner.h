@@ -90,18 +90,4 @@ private:
 	QPointF lastValidPos;
 };
 
-namespace Ui{
-	class DivePlanner;
-}
-
-class DivePlanner : public QDialog{
-	Q_OBJECT
-public:
-	static DivePlanner *instance();
-	struct dive* getDive();
-
-private:
-	DivePlanner();
-	Ui::DivePlanner *ui;
-};
 #endif

@@ -170,13 +170,13 @@ void DivePlannerGraphics::createDecoStops()
 void DivePlannerGraphics::resizeEvent(QResizeEvent* event)
 {
 	QGraphicsView::resizeEvent(event);
-	fitInView(sceneRect(), Qt::KeepAspectRatio);
+	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 }
 
 void DivePlannerGraphics::showEvent(QShowEvent* event)
 {
 	QGraphicsView::showEvent(event);
-	fitInView(sceneRect(), Qt::KeepAspectRatio);
+	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 }
 
 void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
@@ -347,22 +347,6 @@ qreal Ruler::posAtValue(qreal value)
 				retValue + m.x1() :
 				retValue + m.y1();
 	return retValue;
-}
-
-DivePlanner::DivePlanner() : ui(new Ui::DivePlanner())
-{
-	ui->setupUi(this);
-}
-
-struct dive* DivePlanner::getDive()
-{
-	return 0;
-}
-
-DivePlanner* DivePlanner::instance()
-{
-	static DivePlanner *self = new DivePlanner();
-	return self;
 }
 
 double Ruler::maximum() const

@@ -223,11 +223,12 @@ void MainWindow::on_actionPrint_triggered()
 
 void MainWindow::on_actionDivePlanner_triggered()
 {
-	DivePlanner *planner = DivePlanner::instance();
-	if (planner->exec() == QDialog::Accepted){
-		struct dive *d = planner->getDive();
-		qDebug() << "Finish me.";
-	}
+	ui->stackedWidget->setCurrentIndex(1);
+}
+
+void MainWindow::showProfile()
+{
+	ui->stackedWidget->setCurrentIndex(0);
 }
 
 

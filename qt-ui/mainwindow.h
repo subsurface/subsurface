@@ -48,8 +48,6 @@ public:
 	void setTitle(enum MainWindowTitleFormat format);
 
 private slots:
-
-
 	/* file menu action */
 	void on_actionNew_triggered();
 	void on_actionOpen_triggered();
@@ -100,6 +98,7 @@ protected:
 public slots:
 	void readSettings();
 	void refreshDisplay();
+	void showProfile();
 
 private:
 	Ui::MainWindow *ui;
