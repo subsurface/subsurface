@@ -82,7 +82,7 @@ private:
 	QGraphicsLineItem *verticalLine;
 	QGraphicsLineItem *horizontalLine;
 	DiveHandler *activeDraggedHandler;
-
+	QGraphicsPolygonItem *diveBg;
 	Ruler *timeLine;
 	QGraphicsSimpleTextItem *timeString;
 

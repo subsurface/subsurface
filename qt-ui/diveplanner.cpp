@@ -17,13 +17,13 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 {
 	setMouseTracking(true);
 	setScene(new QGraphicsScene());
-	scene()->setSceneRect(0,0,100,100);
+	scene()->setSceneRect(0,0,200,200);
 
-	verticalLine = new QGraphicsLineItem(0,0,0, 100);
+	verticalLine = new QGraphicsLineItem(0,0,0, 200);
 	verticalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(verticalLine);
 
-	horizontalLine = new QGraphicsLineItem(0,0,100,0);
+	horizontalLine = new QGraphicsLineItem(0,0,200,0);
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
 
@@ -31,16 +31,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeLine->setMinimum(0);
 	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
-	timeLine->setLine(10, 90, 99, 90);
+	timeLine->setLine(10, 190, 190, 190);
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
 
 	depthLine = new Ruler();
 	depthLine->setMinimum(0);
-	depthLine->setMaximum(100);
+	depthLine->setMaximum(40);
 	depthLine->setTickInterval(10);
-	depthLine->setLine(10, 1, 10, 90);
+	depthLine->setLine(10, 1, 10, 190);
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
@@ -53,29 +53,35 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	scene()->addItem(depthString);
 
+	diveBg = new QGraphicsPolygonItem();
+	diveBg->setBrush(QBrush(Qt::green));
+	scene()->addItem(diveBg);
+
 	plusDepth = new Button();
 	plusDepth->setPixmap(QPixmap(":plus"));
-	plusDepth->setPos(15, 1);
+	plusDepth->setPos(0, 1);
 	scene()->addItem(plusDepth);
 	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 
 	plusTime = new Button();
 	plusTime->setPixmap(QPixmap(":plus"));
-	plusTime->setPos(95, 90);
+	plusTime->setPos(180, 190);
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
 
 	okBtn = new Button();
 	okBtn->setText(tr("Ok"));
-	okBtn->setPos(1, 95);
+	okBtn->setPos(1, 190);
 	scene()->addItem(okBtn);
 	connect(okBtn, SIGNAL(clicked()), this, SLOT(okClicked()));
 
 	cancelBtn = new Button();
 	cancelBtn->setText(tr("Cancel"));
-	cancelBtn->setPos(10,95);
+	cancelBtn->setPos(10,190);
 	scene()->addItem(cancelBtn);
 	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
+
+	setRenderHint(QPainter::Antialiasing);
 }
 
 void DivePlannerGraphics::cancelClicked()
@@ -185,6 +191,9 @@ void DivePlannerGraphics::createDecoStops()
 	// entered vs. segments that were calculated
 	double lastx = timeLine->posAtValue(0);
 	double lasty = depthLine->posAtValue(0);
+
+	QPolygonF poly;
+	poly.append(QPointF(lastx, lasty));
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
 		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
@@ -194,7 +203,21 @@ void DivePlannerGraphics::createDecoStops()
 		lasty = ypos;
 		scene()->addItem(item);
 		lines << item;
+		poly.append(QPointF(lastx, lasty));
 	}
+
+	diveBg->setPolygon(poly);
+	QRectF b = poly.boundingRect();
+	QLinearGradient linearGrad(
+		b.x(),
+		b.y(),
+		b.x(),
+		b.height() + b.y()
+	);
+
+    linearGrad.setColorAt(0, Qt::green);
+    linearGrad.setColorAt(1, Qt::white);
+	diveBg->setBrush(linearGrad);
 
 	deleteTemporaryDivePlan(diveplan.dp);
 }
@@ -225,12 +248,12 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	if (isPointOutOfBoundaries(mappedPos))
 		return;
 
-	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 100);
-	horizontalLine->setLine(0, mappedPos.y(), 100, mappedPos.y());
+	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 200);
+	horizontalLine->setLine(0, mappedPos.y(), 200, mappedPos.y());
 	depthString->setText(QString::number(rint(depthLine->valueAt(mappedPos))) + "m" );
 	depthString->setPos(0, mappedPos.y());
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
-	timeString->setPos(mappedPos.x()+1, 90);
+	timeString->setPos(mappedPos.x()+1, 180);
 
 	if (activeDraggedHandler)
 		moveActiveHandler(mappedPos);
@@ -311,7 +334,7 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 	if (activeDraggedHandler) {
 		activeDraggedHandler->sec = rint(timeLine->valueAt(lastValidPos)) * 60;
 		activeDraggedHandler->mm = rint(depthLine->valueAt(lastValidPos)) * 1000;
-		activeDraggedHandler->setBrush(QBrush());
+		activeDraggedHandler->setBrush(QBrush(Qt::white));
 		createDecoStops();
 		activeDraggedHandler = 0;
 	}
@@ -319,6 +342,8 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 
 DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
 {
+	setBrush(Qt::white);
+	setZValue(2);
 }
 
 void Ruler::setMaximum(double maximum)
