@@ -299,6 +299,12 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	view->show();
 }
 
+void MainWindow::on_infoProfileSplitter_splitterMoved(int pos, int idx)
+{
+	/* always update the floating plus sign icons in the equipment tab */
+	ui->InfoWidget->equipmentPlusUpdate();
+}
+
 /**
  * So, here's the deal.
  * We have a few QSplitters that takes care of helping us with the

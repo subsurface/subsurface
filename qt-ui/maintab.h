@@ -43,6 +43,7 @@ public:
     virtual void hideEvent(QHideEvent* );
 
 	void initialUiSetup();
+	void equipmentPlusUpdate();
 
 
 public slots:
@@ -58,6 +59,7 @@ public slots:
 	void on_notes_textChanged();
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
+	void tabChanged(int idx);
 
 private:
 	Ui::MainTab *ui;

@@ -88,6 +88,9 @@ private slots:
 	void on_actionUserManual_triggered();
 	void on_actionDivePlanner_triggered();
 
+	/* monitor resize of the info-profile splitter */
+	void on_infoProfileSplitter_splitterMoved(int pos, int idx);
+
 	void current_dive_changed(int divenr);
 	void initialUiSetup();
 

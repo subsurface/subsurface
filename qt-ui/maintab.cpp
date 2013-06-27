@@ -90,28 +90,39 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->weights->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
 	ui->weights->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
 	ui->weights->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
+
+	connect(this, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 	initialUiSetup();
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
 void MainTab::resizeEvent(QResizeEvent* event)
 {
-	if (ui->cylindersGroup->isVisible())
-		addCylinder->setGeometry(ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
-
-	if (ui->weightGroup->isVisible())
-		addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
-
+	equipmentPlusUpdate();
 	QTabWidget::resizeEvent(event);
 }
 
 void MainTab::showEvent(QShowEvent* event)
 {
 	QTabWidget::showEvent(event);
-	addCylinder->setGeometry(ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
-	addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
+	equipmentPlusUpdate();
 }
 
+void MainTab::tabChanged(int idx)
+{
+	/* if the current tab has become of index 1 (i.e. the equipment tab) call update
+	 * for the plus signs */
+	if (idx == 1)
+		equipmentPlusUpdate();
+}
+
+void MainTab::equipmentPlusUpdate()
+{
+	if (ui->cylindersGroup->isVisible())
+		addCylinder->setGeometry(ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
+	if (ui->weightGroup->isVisible())
+		addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
+}
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
