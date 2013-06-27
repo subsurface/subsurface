@@ -40,6 +40,8 @@ public slots:
 	void deleteDive();
 	void testSlot();
 	void fixMessyQtModelBehaviour();
+	void mergeTripAbove();
+	void mergeTripBelow();
 
 signals:
 	void currentDiveChanged(int divenr);
@@ -50,6 +52,7 @@ private:
 	DiveTripModel::Layout currentLayout;
 	QLineEdit *searchBox;
 	QModelIndex contextMenuIndex;
+	void merge_trip(const QModelIndex &a, const int offset);
 };
 
 #endif // DIVELISTVIEW_H

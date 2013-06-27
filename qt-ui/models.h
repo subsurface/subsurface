@@ -162,7 +162,7 @@ public:
 	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
 		SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
 
-	enum ExtraRoles{STAR_ROLE = Qt::UserRole + 1, DIVE_ROLE, SORT_ROLE};
+	enum ExtraRoles{STAR_ROLE = Qt::UserRole + 1, DIVE_ROLE, TRIP_ROLE, SORT_ROLE};
 	enum Layout{TREE, LIST, CURRENT};
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;

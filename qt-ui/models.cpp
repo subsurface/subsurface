@@ -909,6 +909,9 @@ QVariant TripItem::data(int column, int role) const
 {
 	QVariant ret;
 
+	if (role == DiveTripModel::TRIP_ROLE)
+		return QVariant::fromValue<void*>(trip);
+
 	if (role == DiveTripModel::SORT_ROLE)
 		return (qulonglong)trip->when;
 

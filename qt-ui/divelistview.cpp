@@ -298,6 +298,36 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	Q_EMIT currentDiveChanged(selected_dive);
 }
 
+void DiveListView::merge_trip(const QModelIndex &a, int offset)
+{
+	int i = a.row() + offset;
+	QModelIndex b = a.sibling(i,0);
+
+	dive_trip_t *trip_a = (dive_trip_t *) a.data(DiveTripModel::TRIP_ROLE).value<void*>();
+	dive_trip_t *trip_b = (dive_trip_t *) b.data(DiveTripModel::TRIP_ROLE).value<void*>();
+
+	if (trip_a == trip_b || !trip_a || !trip_b)
+		return;
+
+	if (!trip_a->location)
+		trip_a->location = strdup(trip_b->location);
+	if (!trip_a->notes)
+		trip_a->notes = strdup(trip_b->notes);
+	while (trip_b->dives)
+		add_dive_to_trip(trip_b->dives, trip_a);
+	reload(currentLayout, false);
+}
+
+void DiveListView::mergeTripAbove()
+{
+	merge_trip(contextMenuIndex, -1);
+}
+
+void DiveListView::mergeTripBelow()
+{
+	merge_trip(contextMenuIndex, +1);
+}
+
 void DiveListView::removeFromTrip()
 {
 	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
@@ -336,6 +366,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	// let's remember where we are
 	contextMenuIndex = indexAt(event->pos());
 	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
+	dive_trip_t *trip = (dive_trip_t *) contextMenuIndex.data(DiveTripModel::TRIP_ROLE).value<void*>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModel::TREE) {
 		popup.addAction(tr("expand all"), this, SLOT(expandAll()));
@@ -343,6 +374,10 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
 		if (d) {
 			popup.addAction(tr("remove dive from trip"), this, SLOT(removeFromTrip()));
+		}
+		if (trip) {
+			popup.addAction(tr("Merge trip with trip above"), this, SLOT(mergeTripAbove()));
+			popup.addAction(tr("Merge trip with trip below"), this, SLOT(mergeTripBelow()));
 		}
 	}
 	if (d)
