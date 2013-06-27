@@ -5,6 +5,8 @@
 #include <QDebug>
 #include "ui_diveplanner.h"
 
+#define TIME_INITIAL_MAX 30
+
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
 	lastValidPos(0.0, 0.0)
 {
@@ -22,7 +24,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	timeLine = new Ruler();
 	timeLine->setMinimum(0);
-	timeLine->setMaximum(20);
+	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
 	timeLine->setLine(10, 90, 99, 90);
 	timeLine->setOrientation(Qt::Horizontal);
@@ -137,10 +139,12 @@ void DivePlannerGraphics::createDecoStops()
 	while(dp->next)
 		dp = dp->next;
 
-	//if (timeLine->maximum() < dp->time / 60.0 + 5) {
-		timeLine->setMaximum(dp->time / 60.0 + 5);
+	if (timeLine->maximum() < dp->time / 60.0 + 5 ||
+	    dp->time / 60.0 + 15 < timeLine->maximum()) {
+		double newMax = fmax(dp->time / 60.0 + 5, TIME_INITIAL_MAX);
+		timeLine->setMaximum(newMax);
 		timeLine->updateTicks();
-	//}
+	}
 
 	// Re-position the user generated dive handlers
 	Q_FOREACH(DiveHandler *h, handles){
