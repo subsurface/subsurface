@@ -208,9 +208,6 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(pos)));
 	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(pos)));
 	QPointF newPos(xpos, ypos);
-	int sec = rint(timeLine->valueAt(newPos)) * 60;
-	int mm = rint(depthLine->valueAt(newPos)) * 1000;
-	bool moveLines = false;;
 	// do not allow it to move between handlers.
 	if (handles.count() > 1) {
 		if (idx == 0 ) { // first
