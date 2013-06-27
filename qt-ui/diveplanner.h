@@ -87,6 +87,7 @@ private:
 	Button *lessTime;
 	Button *lessDepth;
 
+	QPointF lastValidPos;
 };
 
 namespace Ui{

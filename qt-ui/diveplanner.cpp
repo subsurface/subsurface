@@ -5,7 +5,8 @@
 #include <QDebug>
 #include "ui_diveplanner.h"
 
-DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
+DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
+	lastValidPos(0.0, 0.0)
 {
 	setMouseTracking(true);
 	setScene(new QGraphicsScene());
@@ -213,18 +214,22 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 		if (idx == 0 ) { // first
 			if (newPos.x() < handles[1]->x()) {
 				activeDraggedHandler->setPos(newPos);
+				lastValidPos = newPos;
 			}
 		} else if (idx == handles.count()-1) { // last
 			if (newPos.x() > handles[idx-1]->x()) {
 				activeDraggedHandler->setPos(newPos);
+				lastValidPos = newPos;
 			}
 		} else { // middle
 			if (newPos.x() > handles[idx-1]->x() && newPos.x() < handles[idx+1]->x()) {
 				activeDraggedHandler->setPos(newPos);
+				lastValidPos = newPos;
 			}
 		}
 	} else {
 		activeDraggedHandler->setPos(newPos);
+		lastValidPos = newPos;
 	}
 	qDeleteAll(lines);
 	lines.clear();
@@ -260,9 +265,8 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler) {
-		QPointF mappedPos = mapToScene(event->pos());
-		activeDraggedHandler->sec = rint(timeLine->valueAt(mappedPos)) * 60;
-		activeDraggedHandler->mm = rint(depthLine->valueAt(mappedPos)) * 1000;
+		activeDraggedHandler->sec = rint(timeLine->valueAt(lastValidPos)) * 60;
+		activeDraggedHandler->mm = rint(depthLine->valueAt(lastValidPos)) * 1000;
 		activeDraggedHandler->setBrush(QBrush());
 		createDecoStops();
 		activeDraggedHandler = 0;
