@@ -551,7 +551,7 @@
        <item>
         <widget class="QLabel" name="totalTimeAllText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -570,7 +570,7 @@
        <item>
         <widget class="QLabel" name="divesAllText">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
