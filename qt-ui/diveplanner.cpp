@@ -195,6 +195,16 @@ void DivePlannerGraphics::createDecoStops()
 		scene()->addItem(item);
 		lines << item;
 	}
+
+	deleteTemporaryDivePlan(diveplan.dp);
+}
+
+void DivePlannerGraphics::deleteTemporaryDivePlan(divedatapoint* dp)
+{
+	if (!dp)
+		return;
+	deleteTemporaryDivePlan(dp->next);
+	free(dp);
 }
 
 void DivePlannerGraphics::resizeEvent(QResizeEvent* event)

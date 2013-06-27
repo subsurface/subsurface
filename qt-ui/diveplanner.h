@@ -68,7 +68,7 @@ protected:
 	void clearGeneratedDeco();
 	void createDecoStops();
 	bool isPointOutOfBoundaries(const QPointF& point);
-
+	void deleteTemporaryDivePlan(struct divedatapoint* dp);
 private slots:
 	void increaseTime();
 	void increaseDepth();
@@ -76,7 +76,6 @@ private slots:
 	void cancelClicked();
 
 private:
-
 	void moveActiveHandler(const QPointF& pos);
 	QList<QGraphicsLineItem*> lines;
 	QList<DiveHandler *> handles;
