@@ -300,6 +300,13 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	/* This is per-dive-computer */
 	gc.pi = *create_plot_info(dive, dc, &gc);
 
+	/* Bounding box */
+	QPen pen = defaultPen;
+	pen.setColor(profile_color[TIME_GRID].at(0));
+	QGraphicsRectItem *rect = new QGraphicsRectItem(profile_grid_area);
+	rect->setPen(pen);
+	scene()->addItem(rect);
+
 	/* Depth profile */
 	plot_depth_profile();
 
@@ -319,13 +326,6 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	plot_cylinder_pressure_text();
 
 	plot_deco_text();
-
-	/* Bounding box */
-	QPen pen = defaultPen;
-	pen.setColor(profile_color[TIME_GRID].at(0));
-	QGraphicsRectItem *rect = new QGraphicsRectItem(profile_grid_area);
-	rect->setPen(pen);
-	scene()->addItem(rect);
 
 	/* Put the dive computer name in the lower left corner */
 	gc.leftx = 0; gc.rightx = 1.0;
