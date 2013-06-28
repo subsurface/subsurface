@@ -37,6 +37,7 @@ namespace DownloadFromDcGlobal{
 DownloadFromDCWidget *DownloadFromDCWidget::instance()
 {
 	static DownloadFromDCWidget *dialog = new DownloadFromDCWidget();
+	dialog->setAttribute(Qt::WA_QuitOnClose, false);
 	return dialog;
 }
 

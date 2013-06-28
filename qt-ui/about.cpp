@@ -9,6 +9,7 @@
 SubsurfaceAbout *SubsurfaceAbout::instance()
 {
 	static SubsurfaceAbout *self = new SubsurfaceAbout();
+	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }
 

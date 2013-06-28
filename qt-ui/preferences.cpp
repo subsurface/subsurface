@@ -6,6 +6,7 @@
 PreferencesDialog* PreferencesDialog::instance()
 {
 	static PreferencesDialog *dialog = new PreferencesDialog();
+	dialog->setAttribute(Qt::WA_QuitOnClose, false);
 	return dialog;
 }
 

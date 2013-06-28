@@ -26,6 +26,7 @@ void DiveComputerManagementDialog::init()
 DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
 {
 	static DiveComputerManagementDialog *self = new DiveComputerManagementDialog();
+	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }
 

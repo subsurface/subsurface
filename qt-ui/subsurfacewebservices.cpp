@@ -19,6 +19,7 @@ static gboolean merge_locations_into_dives(void);
 SubsurfaceWebServices* SubsurfaceWebServices::instance()
 {
 	static SubsurfaceWebServices *self = new SubsurfaceWebServices();
+	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }
 

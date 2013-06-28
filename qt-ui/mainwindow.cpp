@@ -298,6 +298,7 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	view->setModel(model);
 	view->setWindowModality(Qt::NonModal);
 	view->setMinimumWidth(600);
+	view->setAttribute(Qt::WA_QuitOnClose, false);
 	view->show();
 }
 
