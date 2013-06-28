@@ -139,7 +139,7 @@ void SubsurfaceWebServices::setStatusText(int status)
 
 void SubsurfaceWebServices::runDialog()
 {
-	show();
+	exec();
 }
 
 /* requires that there is a <download> or <error> tag under the <root> tag */

@@ -66,7 +66,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 void DownloadFromDCWidget::runDialog()
 {
 	ui->progressBar->hide();
-	show();
+	exec();
 }
 
 void DownloadFromDCWidget::stoppedDownloading()
