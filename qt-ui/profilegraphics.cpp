@@ -1135,16 +1135,20 @@ void ProfileGraphicsView::plot_depth_profile()
 
 QGraphicsSimpleTextItem *ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent)
 {
-	QFontMetrics fm(font());
+	QFont fnt(font());
+	fnt.setBold(true);
+	QFontMetrics fm(fnt);
 
 	double dx = tro->hpos * (fm.width(text));
 	double dy = tro->vpos * (fm.height());
 
 	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text, parent);
+	item->setFont(fnt);
 	QPointF point(SCALEGC(pos.x(), pos.y())); // This is neded because of the SCALE macro.
 
 	item->setPos(point.x() + dx, point.y() + dy);
 	item->setBrush(QBrush(profile_color[tro->color].first()));
+	item->setPen(QPen(profile_color[TEXT_BACKGROUND].first()));
 	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	if (!parent)
