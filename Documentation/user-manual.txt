@@ -444,7 +444,11 @@ work for you :-).
 For downloading dives in subsurface you have then to specify '/dev/rfcomm0'
 as device name to use.
 
-Troubleshooting:
+[[S_TroubleShooting]]
+Troubleshooting
+~~~~~~~~~~~~~~~
+**Bluetooth**
+
 Using Bluetooth for downloading from dive computers on Linux seems to be tricky
 some times. If you have issues please have a look to the following notes. Using
 a Shearwater Predator you may be able to pair but then encounter issues when
@@ -461,6 +465,41 @@ this, but it is reported to be solved sometimes by one of these steps:
 Please report issues and nonworking environments at
 http://trac.hohndel.org[our bugtracker] or send an email to
 mailto:subsurface@hohndel.org[our mailing list].
+
+**USB**
+
+It is somewhat common that Modem Manager (or some other application)
+interferes with dive computers when using a USB serial connection. You
+might see errors similar to the following:
+
+	ERROR: Device or resource busy (16) [in serial_posix.c:107 (serial_open)]
+
+This often means that another application has opened the serial port
+in exclusive mode and should be disabled prior to connecting the dive
+computer.
+
+	sudo /etc/init.d/modemmanager stop
+
+**Getting debug logs**
+
+Getting debug logs or full memory dump of the dive computer might be
+needed to solve the issue. This can be don with libdivecomputer's
+universal application (you can compile it yourself or download from
+http://www.libdivecomputer.org/builds/[libdivecomputer's
+web page] - select the operating system of your choice and download the
+*universal* binary from there). Debug log can be obtained with the
+following command (change the DC name and model appropriately):
+
+	./universal -l output.log -d output.xml -n "Oceanic Geo 2.0" -v /dev/ttyUSB0
+
+This will produce an *output.log* that you should send to mailto:subsurface@hohndel.org[our mailing list].
+
+A full memory dump can be obtained similarly:
+
+	./universal -l output.log -m output.bin -n "Oceanic Geo 2.0" -v /dev/ttyUSB0
+
+NOTE: you can get a short help of the universal application along with a
+list of supported devices by running it without parameters.
 
 [[S_ViewingLogs]]
 Viewing and Completing Your Logs
