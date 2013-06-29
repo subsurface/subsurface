@@ -2,7 +2,7 @@ NAME = subsurface
 CAPITALIZED_NAME = Subsurface
 TARGET = $(NAME)
 
-VERSION=3.1
+VERSION=3.1.1
 
 CC=gcc
 CFLAGS=-Wall -Wno-pointer-sign -g $(CLCFLAGS) -DGSEAL_ENABLE

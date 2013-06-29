@@ -1,4 +1,4 @@
-Subsurface 3.1 User Manual
+Subsurface 3.1.1 User Manual
 ============================
 :author: Jacco_van_Koll,_Dirk_Hohndel,_Reinout_Hoornweg,_Linus_Torvalds,_Miika_Turkia,_Amit_Chaudhuri,_Jan_Schubert
 :revnumber: v3.0.0
@@ -7,6 +7,8 @@ Subsurface 3.1 User Manual
 :revdate: March 2013
 :revnumber: v3.1
 :revdate: May 2013
+:revnumber: v3.1.1
+:revdate: June 2013
 :toc:
 :icons:
 :numbered:
@@ -327,12 +329,13 @@ Try the following:
 
  - Disconnect your USB cable of your dive computer
  - Open a terminal
- - Type the command: 'dmesg' and press enter
+ - Type the command: +*dmesg*+ and press enter
  - Plug in your USB cable of your dive computer
- - Type the command: 'dmesg' and press enter
+ - Type the command: +*dmesg*+ and press enter
 
 Within your terminal you should see a message similar to this one:
 
+----
 	usb 2-1.1: new full speed USB device number 14 using ehci_hcd
 	usbcore: registered new interface driver usbserial
 	USB Serial support registered for generic
@@ -348,6 +351,7 @@ Within your terminal you should see a message similar to this one:
 	usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB3
 	usbcore: registered new interface driver ftdi_sio
 	ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver
+----
 
 You see that in the third line from the bottom, the USB adapter is
 detected and is connected to 'ttyUSB3'. Now you use this information in
@@ -407,9 +411,9 @@ Please make sure you have bluetooth enabled on your computer running Subsurface.
 On most common distributions this should be true out of the box, if not then
 depending on your system running initd or systemd this might be different and
 also involve loading modules specific to your hardware. In case your system is
-running systemd manually run 'sudo systemctl start bluetooth.service' to enable
-it, in case of initd run something like 'sudo rc.config start bluetoothd' or
-'sudo /etc/init.d/buetooth start'.
+running systemd manually run +*sudo systemctl start bluetooth.service*+ to enable
+it, in case of initd run something like +*sudo rc.config start bluetoothd*+ or
++*sudo /etc/init.d/buetooth start*+.
 
 Pairing should be straight forward. Using Gnome3 for instance will show a
 bluetooth icon in the upper right corner of your desktop where you select 'Set
@@ -419,29 +423,29 @@ setting try manually setting '0000'.
 
 You may also use a manual approach by using such commands:
 
- * 'sudo hciconfig' - shows the bluetooth devices available on your
+ * +*sudo hciconfig*+ - shows the bluetooth devices available on your
 computer (not dive computer), most likely you will see a hci0, if not
-try 'sudo hcitool -a' to see inactive devices and try to run 'sudo
-hciconfig hci0 up' to bring them up
+try +*sudo hcitool -a*+ to see inactive devices and try to run +*sudo
+hciconfig hci0 up*+ to bring them up
 
- * 'sudo hcitool scanning'- use this to get a list of bluetooth enabled
+ * +*sudo hcitool scanning*+- use this to get a list of bluetooth enabled
 client devices, watch out for your dive computer and remember the MAC
 address shown there
 
- * 'sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4' - this will pair
+ * +*sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4*+ - this will pair
 your dive computer with the bluetooth stack of your computer, copy/paste
-the MAC address from the output of 'hcitool scanning'
+the MAC address from the output of +*hcitool scanning*+
 
 Unforturnately on Linux binding to a communication device has to be done
 manually by running:
 
- * 'sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4' - bind the dive
+ * +*sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4*+ - bind the dive
 computer to a communication device in your computer, in case rfcomm is
 already taken just use rfcomm1 or up, please copy/paste the MAC address
-from the output of 'hcitool scanning', the MAC shown in here will not
+from the output of +*hcitool scanning*+, the MAC shown in here will not
 work for you :-).
 
-For downloading dives in subsurface you have then to specify '/dev/rfcomm0'
+For downloading dives in subsurface you have then to specify +*/dev/rfcomm0*+
 as device name to use.
 
 [[S_TroubleShooting]]
@@ -464,7 +468,16 @@ this, but it is reported to be solved sometimes by one of these steps:
 
 Please report issues and nonworking environments at
 http://trac.hohndel.org[our bugtracker] or send an email to
-mailto:subsurface@hohndel.org[our mailing list].
+mailto:subsurface@hohndel.org[our mailing list]. It usually makes
+sense to include the output of +*subsurface --version*+ in that email.
+
+On Windows this involves starting +*subsurface.exe --version*+ from a
+console windows and redirecting the output to a file. Ususally
+starting +*cmd.exe*+ and then starting *+\Program
+Files\Subsurface\subsurface.exe --version > subsurface.out*+ should do the
+trick. Adjust the path depending on your install location.
+
+On a Mac you can run +*/Applications/Subsurface.app/Contents/MacOS/subsurface-bin --version > subsurface.out+*
 
 **USB**
 
@@ -479,6 +492,32 @@ in exclusive mode and should be disabled prior to connecting the dive
 computer.
 
 	sudo /etc/init.d/modemmanager stop
+
+If you really need Modem Manager (highly doubtful - it is unclear why
+any distribution would enable this by default) then you could also add
+a blacklist entry for your dive computer. The details of doing this go
+beyond what reasonably can be explained in the context of this manual
+(and are somewhat distribution specific). Usually you would need to
+add / edit a file with udev rules for Modem Manager. The file should
+be named something like
+
+        /etc/udev/rules.d/77-modem-manager-usb-blacklist.rules
+
+And contain something like this (with the correct data for +idVendor+
+and +idProduct+ filled in for your dive computer - that data can be
+found using +*lsusb*+)
+
+----
+	ACTION!="add|change", GOTO="mm_usb_device_blacklist_end"
+	SUBSYSTEM!="usb", GOTO="mm_usb_device_blacklist_end"
+	ENV{DEVTYPE}!="usb_device",  GOTO="mm_usb_device_blacklist_end"
+
+	# std ftdi serial port adapter
+	ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001",
+	ENV{ID_MM_DEVICE_IGNORE}="1"
+
+	LABEL="mm_usb_device_blacklist_end"
+----
 
 **Getting debug logs**
 

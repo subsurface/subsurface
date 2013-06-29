@@ -1,5 +1,5 @@
-			Subsurface 3.1
-			==============
+			Subsurface 3.1.1
+			================
 
 The Subsurface developer team is proud to announce the release of the
 latest version of Subsurface.
@@ -38,9 +38,18 @@ available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
+New in version 3.1.1 (compared to Subsurface 3.1):
+--------------------------------------------------
+
+- support for the current firmware of both OSTC2 and OSTC3
+- fix divelog.de uploads for Mac
+- add support for Aquadivelog UDDF import
+- add --version and --help command line options
+- documentation updates
+- translation updates
 
 New in version 3.1 (compared to Subsurface 3.0.2):
-----------------------------------------------------
+--------------------------------------------------
 
 - track tags for dives (things like 'boat', 'shore', 'deep', etc)
 - enable filtering by tags
