@@ -68,9 +68,11 @@
           <xsl:attribute name="description">
             <xsl:value-of select="MIXNAME|mixname"/>
           </xsl:attribute>
-          <xsl:attribute name="size">
-            <xsl:value-of select="concat(TANK/TANKVOLUME|tank/tankvolume, ' l')"/>
-          </xsl:attribute>
+	  <xsl:if test="TANK/TANKVOLUME|tank/tankvolume != ''">
+            <xsl:attribute name="size">
+              <xsl:value-of select="concat(TANK/TANKVOLUME|tank/tankvolume, ' l')"/>
+            </xsl:attribute>
+          </xsl:if>
           <xsl:attribute name="start">
             <xsl:value-of select="TANK/PSTART|tank/pstart"/>
           </xsl:attribute>
