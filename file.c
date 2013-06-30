@@ -233,6 +233,10 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	if (!strcasecmp(fmt, "DLD"))
 		return try_to_open_zip(filename, mem, error);
 
+	/* Give a shot for plain ZIP */
+	if (!strcasecmp(fmt, "ZIP"))
+		return try_to_open_zip(filename, mem, error);
+
 #if ONCE_COCHRAN_IS_SUPPORTED
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
