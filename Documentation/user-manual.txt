@@ -609,7 +609,7 @@ The purpose of the fields is described in the table below:
 [width="90%",cols="<33%,67%",options="header"]
 |===============================================================================
 | Field                      | Description of field
-| Dive number, date and time | A button with dive number and date that gives a dialog to edit date/time/depth when clicked
+| Dive number, date and time | A button with dive number and date that gives a dialog to edit date/time/depth and average depth when clicked
 | Location                   | An input where you can enter your new location, or you can choose with the pull-down previous locations
 | GPS (WGS84 or GPS format)  | An input where you can enter geographic coordinates of the dive site
 | Pick on map                | A button you can click on to display an interactive map on which you can select the location of the dive site
@@ -767,7 +767,7 @@ The information contains:
 | Water Temp | Lowest temperature of the water
 | Air Temp   | The temperature of the air at the surface
 | Air Press  | The air pressure at the surface
-| SAC        | The amount of Surface Air Consumption liters per minute
+| SAC        | The amount of Surface Air Consumption in liters per minute (this only works if an average depth for the dive is provided (either manually or when data is downloaded from a dive computer))
 | OTU        | The Oxygen Toxicity Units of this dive
 | O2/He      | Amount of Oxygen/Helium
 | Gas Used   | The total volume of gas used during this dive
