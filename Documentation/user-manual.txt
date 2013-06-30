@@ -122,7 +122,7 @@ during the dive.  The air consumption takes depth into account so that
 even when manually entering the start and end pressures the graph is
 not a straight line. Similarly to the depth graph the tank pressure
 gives you information about the momentary SAC rate (Surface Air
-Consumtion - often also called RMV - Respiratory Minute Volume) when
+Consumption - often also called RMV - Respiratory Minute Volume) when
 using an air integrated dive
 computer. Here the color coding is not relative to some absolute
 values but relative to the average normalized air consumption during
@@ -204,7 +204,7 @@ by this.
 An innovative feature in Subsurface is the ability to group dives by
 "trips". What this means is that multiple dives can be categorized
 together under a common header. Typically this is used by divers who
-travel for a limited time to a dive destiation - the location in the
+travel for a limited time to a dive destination - the location in the
 trip header can then be used for the destination information
 ("Phillippines, Puerto Galera"), while the location in the individual
 dive can describe the actual dive site ("Hole in the wall").
@@ -329,9 +329,9 @@ Try the following:
 
  - Disconnect your USB cable of your dive computer
  - Open a terminal
- - Type the command: +*dmesg*+ and press enter
+ - Type the command: *+dmesg+* and press enter
  - Plug in your USB cable of your dive computer
- - Type the command: +*dmesg*+ and press enter
+ - Type the command: *+dmesg+* and press enter
 
 Within your terminal you should see a message similar to this one:
 
@@ -407,45 +407,45 @@ Once the pairing is completed the correct device will be shown in the
 'Device or Mount Point' drop down in the Subsurface Download dialog.
 
 .On Linux
-Please make sure you have bluetooth enabled on your computer running Subsurface.
+Please make sure you have Bluetooth enabled on your computer running Subsurface.
 On most common distributions this should be true out of the box, if not then
 depending on your system running initd or systemd this might be different and
 also involve loading modules specific to your hardware. In case your system is
-running systemd manually run +*sudo systemctl start bluetooth.service*+ to enable
-it, in case of initd run something like +*sudo rc.config start bluetoothd*+ or
-+*sudo /etc/init.d/buetooth start*+.
+running systemd manually run *+sudo systemctl start bluetooth.service+* to enable
+it, in case of initd run something like *+sudo rc.config start bluetoothd+* or
+*+sudo /etc/init.d/buetooth start+*.
 
 Pairing should be straight forward. Using Gnome3 for instance will show a
-bluetooth icon in the upper right corner of your desktop where you select 'Set
+Bluetooth icon in the upper right corner of your desktop where you select 'Set
 up New Device'. This should show you a dialog where you are able to select your
-dive computer (in bluetooth mode) and pair it. If you have issues with PIN
+dive computer (in Bluetooth mode) and pair it. If you have issues with PIN
 setting try manually setting '0000'.
 
 You may also use a manual approach by using such commands:
 
- * +*sudo hciconfig*+ - shows the bluetooth devices available on your
+ * *+sudo hciconfig+* - shows the bluetooth devices available on your
 computer (not dive computer), most likely you will see a hci0, if not
-try +*sudo hcitool -a*+ to see inactive devices and try to run +*sudo
-hciconfig hci0 up*+ to bring them up
+try *+sudo hcitool -a+* to see inactive devices and try to run *+sudo
+hciconfig hci0 up+* to bring them up
 
- * +*sudo hcitool scanning*+- use this to get a list of bluetooth enabled
+ * *+sudo hcitool scanning+*- use this to get a list of Bluetooth enabled
 client devices, watch out for your dive computer and remember the MAC
 address shown there
 
- * +*sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4*+ - this will pair
-your dive computer with the bluetooth stack of your computer, copy/paste
-the MAC address from the output of +*hcitool scanning*+
+ * *+sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4+* - this will pair
+your dive computer with the Bluetooth stack of your computer, copy/paste
+the MAC address from the output of *+hcitool scanning+*
 
-Unforturnately on Linux binding to a communication device has to be done
+Unfortunately on Linux binding to a communication device has to be done
 manually by running:
 
- * +*sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4*+ - bind the dive
+ * *+sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+* - bind the dive
 computer to a communication device in your computer, in case rfcomm is
 already taken just use rfcomm1 or up, please copy/paste the MAC address
-from the output of +*hcitool scanning*+, the MAC shown in here will not
+from the output of *+hcitool scanning+*, the MAC shown in here will not
 work for you :-).
 
-For downloading dives in subsurface you have then to specify +*/dev/rfcomm0*+
+For downloading dives in subsurface you have then to specify *+/dev/rfcomm0+*
 as device name to use.
 
 [[S_TroubleShooting]]
@@ -461,23 +461,23 @@ This might also be seen, when using other dive log software and operating
 systems than Linux. We have no detailed idea about the source and how to fix
 this, but it is reported to be solved sometimes by one of these steps:
 
- * use the bluetooth dongle which came with the Shearwater Predator instead of
+ * use the Bluetooth dongle which came with the Shearwater Predator instead of
    the built-in one of your computer
- * switch to different bluetooth drivers for your hardware
+ * switch to different Bluetooth drivers for your hardware
  * switch off WiFi while using Bluetooth
 
 Please report issues and nonworking environments at
 http://trac.hohndel.org[our bugtracker] or send an email to
 mailto:subsurface@hohndel.org[our mailing list]. It usually makes
-sense to include the output of +*subsurface --version*+ in that email.
+sense to include the output of *+subsurface --version+* in that email.
 
-On Windows this involves starting +*subsurface.exe --version*+ from a
-console windows and redirecting the output to a file. Ususally
-starting +*cmd.exe*+ and then starting *+\Program
-Files\Subsurface\subsurface.exe --version > subsurface.out*+ should do the
+On Windows this involves starting *+subsurface.exe --version+* from a
+console windows and redirecting the output to a file. Usually
+starting *+cmd.exe+* and then starting *+\Program
+Files\Subsurface\subsurface.exe --version > subsurface.out+* should do the
 trick. Adjust the path depending on your install location.
 
-On a Mac you can run +*/Applications/Subsurface.app/Contents/MacOS/subsurface-bin --version > subsurface.out+*
+On a Mac you can run *+/Applications/Subsurface.app/Contents/MacOS/subsurface-bin --version > subsurface.out+*
 
 **USB**
 
@@ -505,7 +505,7 @@ be named something like
 
 And contain something like this (with the correct data for +idVendor+
 and +idProduct+ filled in for your dive computer - that data can be
-found using +*lsusb*+)
+found using *+lsusb+*)
 
 ----
 	ACTION!="add|change", GOTO="mm_usb_device_blacklist_end"
@@ -831,7 +831,7 @@ image::images/preferences.png["Preferences",align="center"]
 
 The General Settings allow you to select units, columns to be shown, the
 font used for the dive list and the default file that contains the dive data.
-It is also posible to choose from a number of map providers.
+It is also possible to choose from a number of map providers.
 
 The Tec Settings offer extra columns to show, settings for more graphs and
 information to be shown in the dive profile and settings for GFlow and
@@ -855,7 +855,7 @@ You can set the following options with 'Units':
 
 As mentioned earlier when discussing the information visible in the
 dive list at the bottom of the main Subsurface window, you can
-enable or disable some of the colums that can be shown there:
+enable or disable some of the columns that can be shown there:
 
 [width="90%",cols="<33%,67%",options="header"]
 |===============================================================================
@@ -1145,7 +1145,7 @@ This file can now be opened in Subsurface (as described in the previous sections
 Importing Dives from kenozooid
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-kenozooid is using UDDF to store dives and is tested to work togehter with Subsurface.
+kenozooid is using UDDF to store dives and is tested to work together with Subsurface.
 Make sure you are not using compressed files when importing to Subsurface
  or uncompress them manually before).
 
@@ -1157,7 +1157,7 @@ The Heinrichs Weikamp DR5 will save a single UDDF file for every dive which is a
 through the filesystem when mounted as USB drive. Mark all the dives you'd like to
 import or open, Subsurface is tested to work with DR5.
 Note: The DR5 does not seem to store gradient factors nor deco information, so for
-Subsurface it is not possible to display them. Use the inbuild deco overlay in Subsurface
+Subsurface it is not possible to display them. Use the inbuilt deco overlay in Subsurface
 to get deco displayed but please note that the deco calculated by Subsurface
 will most likely differ from the one display at the DR5. Adjust the gradient
 factors in the Tec Settings in Subsurface.
@@ -1169,7 +1169,7 @@ Importing UDDF Dives
 Subsurface is supporting UDDF as import format in general. It may happen that
 single attributes inside your file will not get processed properly.
 
-Please report your findings for UDDF data from different sources than descibed
+Please report your findings for UDDF data from different sources than described
 in this document at http://trac.hohndel.org[our bugtracker] or send an email to
 mailto:subsurface@hohndel.org[our mailing list].
 
@@ -1444,7 +1444,7 @@ events that you no longer want to see displayed in the dive profile
 view. Normally all events are represented by small yellow triangles,
 but some dive computers create a large number of events that the user
 may or may not want to see in the profile (some dive computers for
-exampel are very agressively creating "ascend speed warnings" that can
+example are very aggressively creating "ascend speed warnings" that can
 clutter the profile). Selecting this menu will open a dialog that
 allows you to select which events should be globally disabled (they
 will still be stored in the XML file).
