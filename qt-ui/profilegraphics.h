@@ -104,7 +104,7 @@ public slots:
 
 private:
 	void plot_depth_profile();
-	QGraphicsSimpleTextItem* plot_text(text_render_options_t *tro, const QPointF& pos, const QString &text, QGraphicsItem *parent = 0);
+	QGraphicsItemGroup *plot_text(text_render_options_t *tro, const QPointF& pos, const QString &text, QGraphicsItem *parent = 0);
 	void plot_events(struct divecomputer *dc);
 	void plot_one_event(struct event *event);
 	void plot_temperature_profile();

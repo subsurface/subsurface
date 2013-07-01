@@ -1061,23 +1061,36 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 }
 
-QGraphicsSimpleTextItem *ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent)
+QGraphicsItemGroup *ProfileGraphicsView::plot_text(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent)
 {
-	QFontMetrics fm(font());
+	QFont fnt(font());
+	QFontMetrics fm(fnt);
 
+	QPointF point(SCALEGC(pos.x(), pos.y())); // This is neded because of the SCALE macro.
 	double dx = tro->hpos * (fm.width(text));
 	double dy = tro->vpos * (fm.height());
 
-	QGraphicsSimpleTextItem *item = new QGraphicsSimpleTextItem(text, parent);
-	QPointF point(SCALEGC(pos.x(), pos.y())); // This is neded because of the SCALE macro.
+	QGraphicsItemGroup *group = new QGraphicsItemGroup(parent);
+	QPainterPath textPath;
+	/* addText() uses bottom-left text baseline and the -3 offset is probably slightly off
+	 * for different font sizes. */
+	textPath.addText(0, fm.height() - 3, fnt, text);
+	QPainterPathStroker stroker;
+	stroker.setWidth(3);
+	QGraphicsPathItem *strokedItem = new QGraphicsPathItem(stroker.createStroke(textPath), group);
+	strokedItem->setBrush(QBrush(profile_color[TEXT_BACKGROUND].first()));
+	strokedItem->setPen(Qt::NoPen);
 
-	item->setPos(point.x() + dx, point.y() + dy);
-	item->setBrush(QBrush(profile_color[tro->color].first()));
-	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	QGraphicsPathItem *textItem = new QGraphicsPathItem(textPath, group);
+	textItem->setBrush(QBrush(profile_color[tro->color].first()));
+	textItem->setPen(Qt::NoPen);
+
+	group->setPos(point.x() + dx, point.y() + dy);
+	group->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	if (!parent)
-		scene()->addItem(item);
-	return item;
+		scene()->addItem(group);
+	return group;
 }
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
