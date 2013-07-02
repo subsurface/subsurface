@@ -37,6 +37,7 @@ public:
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
 	void setOrientation(Qt::Orientation orientation);
+	void setTickSize(qreal size);
 	void updateTicks();
 	double minimum() const;
 	double maximum() const;
@@ -51,6 +52,7 @@ private:
 	double interval;
 	double posBegin;
 	double posEnd;
+	double tickSize;
 };
 
 class DivePlannerGraphics : public QGraphicsView {

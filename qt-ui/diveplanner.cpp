@@ -29,12 +29,18 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 		fromPercent(0, Qt::Horizontal),
 		fromPercent(0, Qt::Vertical),
 		fromPercent(0, Qt::Horizontal),
-		fromPercent(100, Qt::Vertical));
+		fromPercent(100, Qt::Vertical)
+	);
 
 	verticalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(verticalLine);
 
-	horizontalLine = new QGraphicsLineItem(0,0,200,0);
+	horizontalLine = new QGraphicsLineItem(
+		fromPercent(0, Qt::Horizontal),
+		fromPercent(0, Qt::Vertical),
+		fromPercent(100, Qt::Horizontal),
+		fromPercent(0, Qt::Vertical)
+	);
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
 
@@ -42,8 +48,14 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeLine->setMinimum(0);
 	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
-	timeLine->setLine(10, 190, 190, 190);
+	timeLine->setLine(
+		fromPercent(10, Qt::Horizontal),
+		fromPercent(90, Qt::Vertical),
+		fromPercent(90, Qt::Horizontal),
+		fromPercent(90, Qt::Vertical)
+	);
 	timeLine->setOrientation(Qt::Horizontal);
+	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
 
@@ -51,8 +63,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->setMinimum(0);
 	depthLine->setMaximum(40);
 	depthLine->setTickInterval(10);
-	depthLine->setLine(10, 1, 10, 190);
+
+	depthLine->setLine(
+		fromPercent(10, Qt::Horizontal),
+		fromPercent(10, Qt::Vertical),
+		fromPercent(10, Qt::Horizontal),
+		fromPercent(90, Qt::Vertical)
+	);
+
 	depthLine->setOrientation(Qt::Vertical);
+	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
 
@@ -262,12 +282,13 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	if (isPointOutOfBoundaries(mappedPos))
 		return;
 
-	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 200);
-	horizontalLine->setLine(0, mappedPos.y(), 200, mappedPos.y());
+	verticalLine->setPos(mappedPos.x(), fromPercent(0, Qt::Vertical));
+	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), mappedPos.y());
+
 	depthString->setText(QString::number(rint(depthLine->valueAt(mappedPos))) + "m" );
-	depthString->setPos(0, mappedPos.y());
+	depthString->setPos(fromPercent(5, Qt::Horizontal), mappedPos.y());
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
-	timeString->setPos(mappedPos.x()+1, 180);
+	timeString->setPos(mappedPos.x()+1, fromPercent(95, Qt::Vertical));
 
 	if (activeDraggedHandler)
 		moveActiveHandler(mappedPos);
@@ -388,16 +409,22 @@ void Ruler::updateTicks()
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
 		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
-			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this));
+			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this));
 		}
 	} else {
 		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
 		for (qreal pos = m.y1(); pos < m.y2(); pos += stepSize) {
-			ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - 1, pos, this));
+			ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this));
 		}
 	}
 }
+
+void Ruler::setTickSize(qreal size)
+{
+	tickSize = size;
+}
+
 
 void Ruler::setTickInterval(double i)
 {
