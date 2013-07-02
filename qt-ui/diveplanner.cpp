@@ -408,15 +408,19 @@ void Ruler::updateTicks()
 	if (orientation == Qt::Horizontal) {
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
-		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
+		qreal pos;
+		for (pos = m.x1(); pos < m.x2(); pos += stepSize) {
 			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this));
 		}
+		ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this));
 	} else {
 		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
-		for (qreal pos = m.y1(); pos < m.y2(); pos += stepSize) {
+		qreal pos;
+		for (pos = m.y1(); pos < m.y2(); pos += stepSize) {
 			ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this));
 		}
+		ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this));
 	}
 }
 
