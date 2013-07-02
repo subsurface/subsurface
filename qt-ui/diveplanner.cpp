@@ -1,4 +1,6 @@
 #include "diveplanner.h"
+#include "graphicsview-common.h"
+
 #include "../dive.h"
 #include <cmath>
 #include <QMouseEvent>
@@ -6,24 +8,43 @@
 #include <QGraphicsWidget>
 #include <QGraphicsProxyWidget>
 #include <QPushButton>
+#include <QGraphicsSceneMouseEvent>
 
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
 
 #define TIME_INITIAL_MAX 30
 
+#define MAX_DEEPNESS 150
+#define MIN_DEEPNESS 40
+
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
 	lastValidPos(0.0, 0.0)
 {
+	fill_profile_color();
+	setBackgroundBrush(profile_color[BACKGROUND].at(0));
 	setMouseTracking(true);
 	setScene(new QGraphicsScene());
-	scene()->setSceneRect(0,0,200,200);
+	scene()->setSceneRect(0,0,1920,1080);
 
-	verticalLine = new QGraphicsLineItem(0,0,0, 200);
+	QRectF r = scene()->sceneRect();
+
+	verticalLine = new QGraphicsLineItem(
+		fromPercent(0, Qt::Horizontal),
+		fromPercent(0, Qt::Vertical),
+		fromPercent(0, Qt::Horizontal),
+		fromPercent(100, Qt::Vertical)
+	);
+
 	verticalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(verticalLine);
 
-	horizontalLine = new QGraphicsLineItem(0,0,200,0);
+	horizontalLine = new QGraphicsLineItem(
+		fromPercent(0, Qt::Horizontal),
+		fromPercent(0, Qt::Vertical),
+		fromPercent(100, Qt::Horizontal),
+		fromPercent(0, Qt::Vertical)
+	);
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
 
@@ -31,8 +52,15 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeLine->setMinimum(0);
 	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
-	timeLine->setLine(10, 190, 190, 190);
+	timeLine->setLine(
+		fromPercent(10, Qt::Horizontal),
+		fromPercent(90, Qt::Vertical),
+		fromPercent(90, Qt::Horizontal),
+		fromPercent(90, Qt::Vertical)
+	);
 	timeLine->setOrientation(Qt::Horizontal);
+	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
+	timeLine->setColor(profile_color[TIME_GRID].at(0));
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
 
@@ -40,32 +68,43 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->setMinimum(0);
 	depthLine->setMaximum(40);
 	depthLine->setTickInterval(10);
-	depthLine->setLine(10, 1, 10, 190);
+	depthLine->setLine(
+		fromPercent(10, Qt::Horizontal),
+		fromPercent(10, Qt::Vertical),
+		fromPercent(10, Qt::Horizontal),
+		fromPercent(90, Qt::Vertical)
+	);
 	depthLine->setOrientation(Qt::Vertical);
+	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
+	depthLine->setColor(profile_color[DEPTH_GRID].at(0));
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
 
 	timeString = new QGraphicsSimpleTextItem();
 	timeString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	timeString->setBrush(profile_color[TIME_TEXT].at(0));
 	scene()->addItem(timeString);
 
 	depthString = new QGraphicsSimpleTextItem();
 	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	depthString->setBrush(profile_color[SAMPLE_DEEP].at(0));
 	scene()->addItem(depthString);
 
 	diveBg = new QGraphicsPolygonItem();
-	diveBg->setBrush(QBrush(Qt::green));
+	diveBg->setPen(QPen(QBrush(),0));
 	scene()->addItem(diveBg);
 
 	plusDepth = new Button();
 	plusDepth->setPixmap(QPixmap(":plus"));
-	plusDepth->setPos(0, 1);
+	plusDepth->setPos(fromPercent(5, Qt::Horizontal), fromPercent(5, Qt::Vertical));
+	plusDepth->setToolTip("Increase maximum depth by 10m");
 	scene()->addItem(plusDepth);
 	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 
 	plusTime = new Button();
 	plusTime->setPixmap(QPixmap(":plus"));
-	plusTime->setPos(180, 190);
+	plusTime->setPos(fromPercent(90, Qt::Horizontal), fromPercent(95, Qt::Vertical));
+	plusTime->setToolTip("Increase minimum dive time by 10m");
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
 
@@ -81,7 +120,15 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	scene()->addItem(cancelBtn);
 	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
+	minMinutes = TIME_INITIAL_MAX;
 	setRenderHint(QPainter::Antialiasing);
+}
+
+qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientation)
+{
+	qreal total = orientation == Qt::Horizontal ? sceneRect().width() : sceneRect().height();
+	qreal result = (total * percent) / 100;
+	return result;
 }
 
 void DivePlannerGraphics::cancelClicked()
@@ -97,12 +144,19 @@ void DivePlannerGraphics::okClicked()
 
 void DivePlannerGraphics::increaseDepth()
 {
-	qDebug() << "Increase Depth Clicked";
+	if (depthLine->maximum() + 10 > MAX_DEEPNESS)
+		return;
+	depthLine->setMaximum( depthLine->maximum() + 10);
+	depthLine->updateTicks();
+	createDecoStops();
 }
 
 void DivePlannerGraphics::increaseTime()
 {
-	qDebug() << "Increase Time Clicked";
+	minMinutes += 10;
+	timeLine->setMaximum( minMinutes );
+	timeLine->updateTicks();
+	createDecoStops();
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -127,10 +181,6 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	scene()->addItem(item);
 	handles << item;
 	createDecoStops();
-}
-
-void DivePlannerGraphics::clearGeneratedDeco()
-{
 }
 
 void DivePlannerGraphics::createDecoStops()
@@ -177,14 +227,14 @@ void DivePlannerGraphics::createDecoStops()
 
 	if (timeLine->maximum() < dp->time / 60.0 + 5 ||
 	    dp->time / 60.0 + 15 < timeLine->maximum()) {
-		double newMax = fmax(dp->time / 60.0 + 5, TIME_INITIAL_MAX);
+		double newMax = fmax(dp->time / 60.0 + 5, minMinutes);
 		timeLine->setMaximum(newMax);
 		timeLine->updateTicks();
 	}
 
 	// Re-position the user generated dive handlers
 	Q_FOREACH(DiveHandler *h, handles){
-		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm) / 1000);
+		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm / 1000));
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -197,27 +247,29 @@ void DivePlannerGraphics::createDecoStops()
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
 		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
-		QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
-		item->setPen(QPen(QBrush(dp->entered ? Qt::black : Qt::red),0));
+		if(!dp->entered){
+			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
+			item->setPen(QPen(QBrush(Qt::red),0));
+			scene()->addItem(item);
+			lines << item;
+		}
 		lastx = xpos;
 		lasty = ypos;
-		scene()->addItem(item);
-		lines << item;
 		poly.append(QPointF(lastx, lasty));
 	}
 
 	diveBg->setPolygon(poly);
 	QRectF b = poly.boundingRect();
-	QLinearGradient linearGrad(
+	QLinearGradient pat(
 		b.x(),
 		b.y(),
 		b.x(),
 		b.height() + b.y()
 	);
 
-    linearGrad.setColorAt(0, Qt::green);
-    linearGrad.setColorAt(1, Qt::white);
-	diveBg->setBrush(linearGrad);
+	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
+	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
+	diveBg->setBrush(pat);
 
 	deleteTemporaryDivePlan(diveplan.dp);
 }
@@ -248,12 +300,23 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	if (isPointOutOfBoundaries(mappedPos))
 		return;
 
-	verticalLine->setLine(mappedPos.x(), 0, mappedPos.x(), 200);
-	horizontalLine->setLine(0, mappedPos.y(), 200, mappedPos.y());
+	verticalLine->setPos(mappedPos.x(), fromPercent(0, Qt::Vertical));
+	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), mappedPos.y());
+
 	depthString->setText(QString::number(rint(depthLine->valueAt(mappedPos))) + "m" );
-	depthString->setPos(0, mappedPos.y());
+	depthString->setPos(fromPercent(5, Qt::Horizontal), mappedPos.y());
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
-	timeString->setPos(mappedPos.x()+1, 180);
+	timeString->setPos(mappedPos.x()+1, fromPercent(95, Qt::Vertical));
+
+	// calculate the correct color for the depthString.
+	// QGradient doesn't returns it's interpolation, meh.
+	double percent = depthLine->percentAt(mappedPos);
+	QColor& startColor = profile_color[SAMPLE_SHALLOW].first();
+	QColor& endColor = profile_color[SAMPLE_DEEP].first();
+	short redDelta = (endColor.red() - startColor.red()) * percent + startColor.red();
+	short greenDelta = (endColor.green() - startColor.green()) * percent + startColor.green();
+	short blueDelta = (endColor.blue() - startColor.blue()) * percent + startColor.blue();
+	depthString->setBrush( QColor(redDelta, greenDelta, blueDelta));
 
 	if (activeDraggedHandler)
 		moveActiveHandler(mappedPos);
@@ -370,20 +433,40 @@ void Ruler::updateTicks()
 	qDeleteAll(ticks);
 	ticks.clear();
 	QLineF m = line();
+	QGraphicsLineItem *item = NULL;
+
 	if (orientation == Qt::Horizontal) {
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
+		qreal pos;
 		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
-			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + 1, this));
+			item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
+			item->setPen(pen());
+			ticks.push_back(item);
 		}
+		item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
+		item->setPen(pen());
+		ticks.push_back(item);
 	} else {
 		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
-		for (qreal pos = m.y1(); pos < m.y2(); pos += stepSize) {
-			ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - 1, pos, this));
+		qreal pos;
+		for (pos = m.y1(); pos < m.y2(); pos += stepSize) {
+			item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
+			item->setPen(pen());
+			ticks.push_back(item);
 		}
+		item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
+		item->setPen(pen());
+		ticks.push_back(item);
 	}
 }
+
+void Ruler::setTickSize(qreal size)
+{
+	tickSize = size;
+}
+
 
 void Ruler::setTickInterval(double i)
 {
@@ -414,6 +497,16 @@ qreal Ruler::posAtValue(qreal value)
 	return retValue;
 }
 
+qreal Ruler::percentAt(const QPointF& p)
+{
+	qreal value = valueAt(p);
+	QLineF m = line();
+	double size = max - min;
+	double percent = value / size;
+	return percent;
+}
+
+
 double Ruler::maximum() const
 {
 	return max;
@@ -424,6 +517,11 @@ double Ruler::minimum() const
 	return min;
 }
 
+void Ruler::setColor(const QColor& color)
+{
+	setPen(QPen(color));
+}
+
 Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
 {
 	icon  = new QGraphicsPixmapItem(this);
@@ -431,12 +529,12 @@ Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
 	icon->setPos(0,0);
 	text->setPos(0,0);
 	setFlag(ItemIgnoresTransformations);
-	setPen(QPen(QBrush(Qt::white), 0));
+	setPen(QPen(QBrush(), 0));
 }
 
 void Button::setPixmap(const QPixmap& pixmap)
 {
-	icon->setPixmap(pixmap.scaled(20,20));
+	icon->setPixmap(pixmap.scaled(20,20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	if(pixmap.isNull()){
 		icon->hide();
 	}else{
@@ -460,5 +558,6 @@ void Button::setText(const QString& t)
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
+	event->ignore();
 	emit clicked();
 }
