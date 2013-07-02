@@ -218,7 +218,7 @@ void DivePlannerGraphics::createDecoStops()
 
 	// Re-position the user generated dive handlers
 	Q_FOREACH(DiveHandler *h, handles){
-		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm) / 1000);
+		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm / 1000));
 	}
 
 	// (re-) create the profile with different colors for segments that were
