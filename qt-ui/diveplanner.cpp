@@ -21,9 +21,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	setBackgroundBrush(profile_color[BACKGROUND].at(0));
 	setMouseTracking(true);
 	setScene(new QGraphicsScene());
-	scene()->setSceneRect(0,0,200,200);
+	scene()->setSceneRect(0,0,1920,1080);
 
-	verticalLine = new QGraphicsLineItem(0,0,0, 200);
+	QRectF r = scene()->sceneRect();
+
+	verticalLine = new QGraphicsLineItem(
+		fromPercent(0, Qt::Horizontal),
+		fromPercent(0, Qt::Vertical),
+		fromPercent(0, Qt::Horizontal),
+		fromPercent(100, Qt::Vertical));
+
 	verticalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(verticalLine);
 
@@ -88,6 +95,13 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	setRenderHint(QPainter::Antialiasing);
 }
 
+qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientation)
+{
+	qreal total = orientation == Qt::Horizontal ? sceneRect().width() : sceneRect().height();
+	qreal result = (total * percent) / 100;
+	return result;
+}
+
 void DivePlannerGraphics::cancelClicked()
 {
 	qDebug() << "clicked";
@@ -131,10 +145,6 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	scene()->addItem(item);
 	handles << item;
 	createDecoStops();
-}
-
-void DivePlannerGraphics::clearGeneratedDeco()
-{
 }
 
 void DivePlannerGraphics::createDecoStops()

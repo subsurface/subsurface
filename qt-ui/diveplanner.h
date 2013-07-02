@@ -65,10 +65,11 @@ protected:
 	virtual void mousePressEvent(QMouseEvent* event);
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 
-	void clearGeneratedDeco();
 	void createDecoStops();
 	bool isPointOutOfBoundaries(const QPointF& point);
 	void deleteTemporaryDivePlan(struct divedatapoint* dp);
+
+	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 private slots:
 	void increaseTime();
 	void increaseDepth();
@@ -77,25 +78,41 @@ private slots:
 
 private:
 	void moveActiveHandler(const QPointF& pos);
+
+	/* This are the lines of the plotted dive. */
 	QList<QGraphicsLineItem*> lines;
+
+	/* This is the user-entered handles. */
 	QList<DiveHandler *> handles;
+
+	/* those are the lines that follows the mouse. */
 	QGraphicsLineItem *verticalLine;
 	QGraphicsLineItem *horizontalLine;
+
+	/* This is the handler that's being dragged. */
 	DiveHandler *activeDraggedHandler;
+
+	// helper to save the positions where the drag-handler is valid.
+	QPointF lastValidPos;
+
+	/* this is the background of the dive, the blue-gradient. */
 	QGraphicsPolygonItem *diveBg;
+
+	/* This is the bottom ruler - the x axis, and it's associated text */
 	Ruler *timeLine;
 	QGraphicsSimpleTextItem *timeString;
 
+	/* this is the left ruler, the y axis, and it's associated text. */
 	Ruler *depthLine;
 	QGraphicsSimpleTextItem *depthString;
 
-	Button *plusTime;
-	Button *plusDepth;
-	Button *lessTime;
-	Button *lessDepth;
-	Button *okBtn;
-	Button *cancelBtn;
-	QPointF lastValidPos;
+	/* Buttons */
+	Button *plusTime;  // adds 10 minutes to the time ruler.
+	Button *plusDepth; // adds 10 meters to the depth ruler.
+	Button *lessTime;  // remove 10 minutes to the time ruler.
+	Button *lessDepth; // remove 10 meters to the depth ruler.
+	Button *okBtn;     // accepts, and creates a new dive based on the plan.
+	Button *cancelBtn; // rejects, and clears the dive plan.
 };
 
 #endif
