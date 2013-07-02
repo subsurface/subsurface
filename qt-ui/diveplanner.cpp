@@ -8,6 +8,7 @@
 #include <QGraphicsWidget>
 #include <QGraphicsProxyWidget>
 #include <QPushButton>
+#include <QGraphicsSceneMouseEvent>
 
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
@@ -119,6 +120,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	scene()->addItem(cancelBtn);
 	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
+	minMinutes = TIME_INITIAL_MAX;
 	setRenderHint(QPainter::Antialiasing);
 }
 
@@ -151,7 +153,10 @@ void DivePlannerGraphics::increaseDepth()
 
 void DivePlannerGraphics::increaseTime()
 {
-	qDebug() << "Increase Time Clicked";
+	minMinutes += 10;
+	timeLine->setMaximum( minMinutes );
+	timeLine->updateTicks();
+	createDecoStops();
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -222,7 +227,7 @@ void DivePlannerGraphics::createDecoStops()
 
 	if (timeLine->maximum() < dp->time / 60.0 + 5 ||
 	    dp->time / 60.0 + 15 < timeLine->maximum()) {
-		double newMax = fmax(dp->time / 60.0 + 5, TIME_INITIAL_MAX);
+		double newMax = fmax(dp->time / 60.0 + 5, minMinutes);
 		timeLine->setMaximum(newMax);
 		timeLine->updateTicks();
 	}
@@ -553,5 +558,6 @@ void Button::setText(const QString& t)
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
+	event->ignore();
 	emit clicked();
 }

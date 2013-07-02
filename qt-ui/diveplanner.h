@@ -72,8 +72,8 @@ protected:
 	void createDecoStops();
 	bool isPointOutOfBoundaries(const QPointF& point);
 	void deleteTemporaryDivePlan(struct divedatapoint* dp);
-
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
+
 private slots:
 	void increaseTime();
 	void increaseDepth();
@@ -117,6 +117,8 @@ private:
 	Button *lessDepth; // remove 10 meters to the depth ruler.
 	Button *okBtn;     // accepts, and creates a new dive based on the plan.
 	Button *cancelBtn; // rejects, and clears the dive plan.
+
+	int minMinutes; // this holds the minimum duration of the dive.
 };
 
 #endif
