@@ -87,7 +87,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	scene()->addItem(depthString);
 
 	diveBg = new QGraphicsPolygonItem();
-	diveBg->setBrush(QBrush(Qt::green));
+	diveBg->setPen(QPen(QBrush(),0));
 	scene()->addItem(diveBg);
 
 	plusDepth = new Button();
@@ -233,12 +233,14 @@ void DivePlannerGraphics::createDecoStops()
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
 		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
-		QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
-		item->setPen(QPen(QBrush(dp->entered ? Qt::black : Qt::red),0));
+		if(!dp->entered){
+			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
+			item->setPen(QPen(QBrush(Qt::red),0));
+			scene()->addItem(item);
+			lines << item;
+		}
 		lastx = xpos;
 		lasty = ypos;
-		scene()->addItem(item);
-		lines << item;
 		poly.append(QPointF(lastx, lasty));
 	}
 
