@@ -43,6 +43,7 @@ public:
 	double maximum() const;
 	qreal valueAt(const QPointF& p);
 	qreal posAtValue(qreal value);
+	void setColor(const QColor& color);
 
 private:
 	Qt::Orientation orientation;

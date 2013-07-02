@@ -56,6 +56,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	);
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
+	timeLine->setColor(profile_color[TIME_GRID].at(0));
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
 
@@ -63,16 +64,15 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->setMinimum(0);
 	depthLine->setMaximum(40);
 	depthLine->setTickInterval(10);
-
 	depthLine->setLine(
 		fromPercent(10, Qt::Horizontal),
 		fromPercent(10, Qt::Vertical),
 		fromPercent(10, Qt::Horizontal),
 		fromPercent(90, Qt::Vertical)
 	);
-
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
+	depthLine->setColor(profile_color[DEPTH_GRID].at(0));
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
 
@@ -405,22 +405,32 @@ void Ruler::updateTicks()
 	qDeleteAll(ticks);
 	ticks.clear();
 	QLineF m = line();
+	QGraphicsLineItem *item = NULL;
+
 	if (orientation == Qt::Horizontal) {
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
 		qreal pos;
 		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
-			ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this));
+			item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
+			item->setPen(pen());
+			ticks.push_back(item);
 		}
-		ticks.push_back(new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this));
+		item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
+		item->setPen(pen());
+		ticks.push_back(item);
 	} else {
 		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
 		qreal pos;
 		for (pos = m.y1(); pos < m.y2(); pos += stepSize) {
-			ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this));
+			item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
+			item->setPen(pen());
+			ticks.push_back(item);
 		}
-		ticks.push_back(new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this));
+		item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
+		item->setPen(pen());
+		ticks.push_back(item);
 	}
 }
 
@@ -467,6 +477,11 @@ double Ruler::maximum() const
 double Ruler::minimum() const
 {
 	return min;
+}
+
+void Ruler::setColor(const QColor& color)
+{
+	setPen(QPen(color));
 }
 
 Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
