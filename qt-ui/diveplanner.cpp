@@ -14,6 +14,9 @@
 
 #define TIME_INITIAL_MAX 30
 
+#define MAX_DEEPNESS 150
+#define MIN_DEEPNESS 40
+
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
 	lastValidPos(0.0, 0.0)
 {
@@ -92,13 +95,15 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	plusDepth = new Button();
 	plusDepth->setPixmap(QPixmap(":plus"));
-	plusDepth->setPos(0, 1);
+	plusDepth->setPos(fromPercent(5, Qt::Horizontal), fromPercent(5, Qt::Vertical));
+	plusDepth->setToolTip("Increase maximum depth by 10m");
 	scene()->addItem(plusDepth);
 	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 
 	plusTime = new Button();
 	plusTime->setPixmap(QPixmap(":plus"));
-	plusTime->setPos(180, 190);
+	plusTime->setPos(fromPercent(90, Qt::Horizontal), fromPercent(95, Qt::Vertical));
+	plusTime->setToolTip("Increase minimum dive time by 10m");
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
 
@@ -137,7 +142,11 @@ void DivePlannerGraphics::okClicked()
 
 void DivePlannerGraphics::increaseDepth()
 {
-	qDebug() << "Increase Depth Clicked";
+	if (depthLine->maximum() + 10 > MAX_DEEPNESS)
+		return;
+	depthLine->setMaximum( depthLine->maximum() + 10);
+	depthLine->updateTicks();
+	createDecoStops();
 }
 
 void DivePlannerGraphics::increaseTime()
@@ -515,12 +524,12 @@ Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
 	icon->setPos(0,0);
 	text->setPos(0,0);
 	setFlag(ItemIgnoresTransformations);
-	setPen(QPen(QBrush(Qt::white), 0));
+	setPen(QPen(QBrush(), 0));
 }
 
 void Button::setPixmap(const QPixmap& pixmap)
 {
-	icon->setPixmap(pixmap.scaled(20,20));
+	icon->setPixmap(pixmap.scaled(20,20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	if(pixmap.isNull()){
 		icon->hide();
 	}else{
