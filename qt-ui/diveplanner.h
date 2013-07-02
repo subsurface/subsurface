@@ -42,6 +42,7 @@ public:
 	double minimum() const;
 	double maximum() const;
 	qreal valueAt(const QPointF& p);
+	qreal percentAt(const QPointF& p);
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
 

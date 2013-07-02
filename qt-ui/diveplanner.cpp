@@ -78,10 +78,12 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	timeString = new QGraphicsSimpleTextItem();
 	timeString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	timeString->setBrush(profile_color[TIME_TEXT].at(0));
 	scene()->addItem(timeString);
 
 	depthString = new QGraphicsSimpleTextItem();
 	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	depthString->setBrush(profile_color[SAMPLE_DEEP].at(0));
 	scene()->addItem(depthString);
 
 	diveBg = new QGraphicsPolygonItem();
@@ -290,6 +292,16 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
 	timeString->setPos(mappedPos.x()+1, fromPercent(95, Qt::Vertical));
 
+	// calculate the correct color for the depthString.
+	// QGradient doesn't returns it's interpolation, meh.
+	double percent = depthLine->percentAt(mappedPos);
+	QColor& startColor = profile_color[SAMPLE_SHALLOW].first();
+	QColor& endColor = profile_color[SAMPLE_DEEP].first();
+	short redDelta = (endColor.red() - startColor.red()) * percent + startColor.red();
+	short greenDelta = (endColor.green() - startColor.green()) * percent + startColor.green();
+	short blueDelta = (endColor.blue() - startColor.blue()) * percent + startColor.blue();
+	depthString->setBrush( QColor(redDelta, greenDelta, blueDelta));
+
 	if (activeDraggedHandler)
 		moveActiveHandler(mappedPos);
 	if (!handles.count())
@@ -468,6 +480,16 @@ qreal Ruler::posAtValue(qreal value)
 				retValue + m.y1();
 	return retValue;
 }
+
+qreal Ruler::percentAt(const QPointF& p)
+{
+	qreal value = valueAt(p);
+	QLineF m = line();
+	double size = max - min;
+	double percent = value / size;
+	return percent;
+}
+
 
 double Ruler::maximum() const
 {
