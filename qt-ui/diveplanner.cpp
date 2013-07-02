@@ -27,8 +27,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0,0,1920,1080);
 
-	QRectF r = scene()->sceneRect();
-
 	verticalLine = new QGraphicsLineItem(
 		fromPercent(0, Qt::Horizontal),
 		fromPercent(0, Qt::Vertical),
@@ -439,7 +437,7 @@ void Ruler::updateTicks()
 		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
 		qreal pos;
-		for (qreal pos = m.x1(); pos < m.x2(); pos += stepSize) {
+		for (pos = m.x1(); pos < m.x2(); pos += stepSize) {
 			item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
 			item->setPen(pen());
 			ticks.push_back(item);
@@ -500,7 +498,6 @@ qreal Ruler::posAtValue(qreal value)
 qreal Ruler::percentAt(const QPointF& p)
 {
 	qreal value = valueAt(p);
-	QLineF m = line();
 	double size = max - min;
 	double percent = value / size;
 	return percent;

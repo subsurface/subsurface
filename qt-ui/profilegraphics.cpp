@@ -28,7 +28,10 @@
 #include <libdivecomputer/version.h>
 
 static struct graphics_context last_gc;
+
+#if PRINT_IMPLEMENTED
 static double plot_scale = SCALE_SCREEN;
+#endif
 
 struct text_render_options{
 	double size;
@@ -122,6 +125,7 @@ bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
 	return QGraphicsView::eventFilter(obj, event);
 }
 
+#if PRINT_IMPLEMENTED
 static void plot_set_scale(scale_mode_t scale)
 {
 	switch (scale) {
@@ -134,6 +138,7 @@ static void plot_set_scale(scale_mode_t scale)
 		break;
 	}
 }
+#endif
 
 void ProfileGraphicsView::showEvent(QShowEvent* event)
 {
