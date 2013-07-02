@@ -52,6 +52,7 @@ HEADERS = \
 	qt-ui/divecomputermanagementdialog.h \
 	qt-ui/diveplanner.h \
 	qt-ui/about.h \
+	qt-ui/graphicsview-common.h \
 
 
 SOURCES = \
@@ -92,6 +93,7 @@ SOURCES = \
 	qt-ui/divecomputermanagementdialog.cpp \
 	qt-ui/diveplanner.cpp \
 	qt-ui/about.cpp \
+	qt-ui/graphicsview-common.cpp \
 	$(RESFILE)
 
 
