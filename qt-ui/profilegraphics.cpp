@@ -43,8 +43,10 @@ extern int evn_used;
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0)
 {
 	gc.printer = false;
+	fill_profile_color();
 	setScene(new QGraphicsScene());
-	setBackgroundBrush(QColor("#F3F3E6"));
+
+	setBackgroundBrush(profile_color[BACKGROUND].at(0));
 	scene()->installEventFilter(this);
 
 	setRenderHint(QPainter::Antialiasing);
@@ -59,7 +61,7 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 
-	fill_profile_color();
+
 }
 
 void ProfileGraphicsView::wheelEvent(QWheelEvent* event)

@@ -1,4 +1,6 @@
 #include "diveplanner.h"
+#include "graphicsview-common.h"
+
 #include "../dive.h"
 #include <cmath>
 #include <QMouseEvent>
@@ -15,6 +17,8 @@
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
 	lastValidPos(0.0, 0.0)
 {
+	fill_profile_color();
+	setBackgroundBrush(profile_color[BACKGROUND].at(0));
 	setMouseTracking(true);
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0,0,200,200);
