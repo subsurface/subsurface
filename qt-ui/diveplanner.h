@@ -73,7 +73,6 @@ protected:
 	bool isPointOutOfBoundaries(const QPointF& point);
 	void deleteTemporaryDivePlan(struct divedatapoint* dp);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
-
 private slots:
 	void increaseTime();
 	void increaseDepth();
@@ -96,8 +95,9 @@ private:
 	/* This is the handler that's being dragged. */
 	DiveHandler *activeDraggedHandler;
 
-	// helper to save the positions where the drag-handler is valid.
-	QPointF lastValidPos;
+	// When we start to move the handler, this pos is saved.
+	// so we can revert it later.
+	QPointF originalHandlerPos;
 
 	/* this is the background of the dive, the blue-gradient. */
 	QGraphicsPolygonItem *diveBg;

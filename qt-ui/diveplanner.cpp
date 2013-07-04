@@ -22,8 +22,7 @@ bool handlerLessThenMinutes(DiveHandler *d1, DiveHandler *d2){
 	return d1->sec < d2->sec;
 }
 
-DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
-	lastValidPos(0.0, 0.0)
+DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
 {
 	fill_profile_color();
 	setBackgroundBrush(profile_color[BACKGROUND].at(0));
@@ -185,7 +184,6 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	item->setPos(QPointF(xpos, ypos));
 	scene()->addItem(item);
 	handles << item;
-	qSort(handles.begin(), handles.end(), handlerLessThenMinutes);
 	createDecoStops();
 }
 
@@ -193,6 +191,7 @@ void DivePlannerGraphics::createDecoStops()
 {
 	qDeleteAll(lines);
 	lines.clear();
+	qSort(handles.begin(), handles.end(), handlerLessThenMinutes);
 
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
@@ -340,33 +339,9 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 
 void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
 {
-	int idx = handles.indexOf(activeDraggedHandler);
-
 	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(pos)));
 	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(pos)));
-	QPointF newPos(xpos, ypos);
-	// do not allow it to move between handlers.
-	if (handles.count() > 1) {
-		if (idx == 0 ) { // first
-			if (newPos.x() < handles[1]->x()) {
-				activeDraggedHandler->setPos(newPos);
-				lastValidPos = newPos;
-			}
-		} else if (idx == handles.count()-1) { // last
-			if (newPos.x() > handles[idx-1]->x()) {
-				activeDraggedHandler->setPos(newPos);
-				lastValidPos = newPos;
-			}
-		} else { // middle
-			if (newPos.x() > handles[idx-1]->x() && newPos.x() < handles[idx+1]->x()) {
-				activeDraggedHandler->setPos(newPos);
-				lastValidPos = newPos;
-			}
-		}
-	} else {
-		activeDraggedHandler->setPos(newPos);
-		lastValidPos = newPos;
-	}
+	activeDraggedHandler->setPos(QPointF(xpos, ypos));
 	qDeleteAll(lines);
 	lines.clear();
 }
@@ -393,6 +368,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
 			activeDraggedHandler = h;
 			activeDraggedHandler->setBrush(Qt::red);
+			originalHandlerPos = activeDraggedHandler->pos();
 		}
 	}
 	QGraphicsView::mousePressEvent(event);
@@ -401,9 +377,26 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler) {
-		activeDraggedHandler->sec = rint(timeLine->valueAt(lastValidPos)) * 60;
-		activeDraggedHandler->mm = rint(depthLine->valueAt(lastValidPos)) * 1000;
+		QPointF mappedPos = mapToScene(event->pos());
+		int minutes = rint(timeLine->valueAt(mappedPos));
+		int meters = rint(depthLine->valueAt(mappedPos));
+		double xpos = timeLine->posAtValue(minutes);
+		double ypos = depthLine->posAtValue(meters);
+		Q_FOREACH(DiveHandler* handler, handles){
+			if (xpos == handler->pos().x() && handler != activeDraggedHandler){
+				qDebug() << "There's already an point at that place.";
+				//TODO: Move this later to a KMessageWidget.
+				activeDraggedHandler->setPos(originalHandlerPos);
+				activeDraggedHandler = NULL;
+				return;
+			}
+		}
+
+		activeDraggedHandler->sec = rint(timeLine->valueAt(mappedPos)) * 60;
+		activeDraggedHandler->mm = rint(depthLine->valueAt(mappedPos)) * 1000;
 		activeDraggedHandler->setBrush(QBrush(Qt::white));
+		activeDraggedHandler->setPos(QPointF(xpos, ypos));
+
 		createDecoStops();
 		activeDraggedHandler = 0;
 	}
