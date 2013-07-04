@@ -78,7 +78,7 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
 
 	double scaleFactor = 1.15;
-	if (event->delta() > 0 && zoomLevel < 10) {
+	if (event->delta() > 0 && zoomLevel < 20) {
 		scale(scaleFactor, scaleFactor);
 		zoomLevel++;
 	} else if (event->delta() < 0 && zoomLevel > 0) {
