@@ -221,13 +221,27 @@ void MainWindow::on_actionPrint_triggered()
 	qDebug("actionPrint");
 }
 
+void MainWindow::disableDcShortcuts()
+{
+	ui->actionPreviousDC->setShortcut(QKeySequence());
+	ui->actionNextDC->setShortcut(QKeySequence());
+}
+
+void MainWindow::enableDcShortcuts()
+{
+	ui->actionPreviousDC->setShortcut(Qt::Key_Left);
+	ui->actionNextDC->setShortcut(Qt::Key_Right);
+}
+
 void MainWindow::on_actionDivePlanner_triggered()
 {
+	disableDcShortcuts();
 	ui->stackedWidget->setCurrentIndex(1);
 }
 
 void MainWindow::showProfile()
 {
+	enableDcShortcuts();
 	ui->stackedWidget->setCurrentIndex(0);
 }
 

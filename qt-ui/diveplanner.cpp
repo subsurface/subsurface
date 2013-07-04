@@ -129,7 +129,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 #define ADD_ACTION( SHORTCUT, Slot ) \
 	action = new QAction(this); \
 	action->setShortcut( SHORTCUT ); \
-	action->setShortcutContext(Qt::ApplicationShortcut); \
+	action->setShortcutContext(Qt::WindowShortcut); \
 	addAction(action); \
 	connect(action, SIGNAL(triggered(bool)), this, SLOT( Slot ))
 
@@ -137,6 +137,8 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	ADD_ACTION(Qt::Key_Delete, keyDeleteAction());
 	ADD_ACTION(Qt::Key_Up, keyUpAction());
 	ADD_ACTION(Qt::Key_Down, keyDownAction());
+	ADD_ACTION(Qt::Key_Left, keyLeftAction());
+	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
 
 	setRenderHint(QPainter::Antialiasing);
@@ -174,6 +176,58 @@ void DivePlannerGraphics::keyUpAction()
 	createDecoStops();
 }
 
+void DivePlannerGraphics::keyLeftAction()
+{
+	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
+			if (handler->sec / 60 <= 0)
+				continue;
+
+			// don't overlap positions.
+			// maybe this is a good place for a 'goto'?
+			double xpos = timeLine->posAtValue((handler->sec - 60) / 60);
+			bool nextStep = false;
+			Q_FOREACH(DiveHandler *h, handles){
+				if (h->pos().x() == xpos){
+					nextStep = true;
+					break;
+				}
+			}
+			if(nextStep)
+				continue;
+
+			handler->sec -= 60;
+			handler->setPos(xpos, handler->pos().y());
+		}
+	}
+	createDecoStops();
+}
+
+void DivePlannerGraphics::keyRightAction()
+{
+	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
+			if (handler->sec / 60 >= timeLine->maximum())
+				continue;
+
+			// don't overlap positions.
+			// maybe this is a good place for a 'goto'?
+			double xpos = timeLine->posAtValue((handler->sec + 60) / 60);
+			bool nextStep = false;
+			Q_FOREACH(DiveHandler *h, handles){
+				if (h->pos().x() == xpos){
+					nextStep = true;
+					break;
+				}
+			}
+			if(nextStep)
+				continue;
+
+			handler->sec += 60;
+			handler->setPos(xpos, handler->pos().y());
+		}
+	}	createDecoStops();
+}
 
 void DivePlannerGraphics::keyDeleteAction()
 {
@@ -438,6 +492,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 {
 	if (event->modifiers()){
 		QGraphicsView::mousePressEvent(event);
+		return;
 	}
 
     QPointF mappedPos = mapToScene(event->pos());
@@ -448,6 +503,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 			originalHandlerPos = activeDraggedHandler->pos();
 		}
 	}
+	QGraphicsView::mousePressEvent(event);
 }
 
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)

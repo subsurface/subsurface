@@ -81,6 +81,8 @@ private slots:
 	void keyDeleteAction();
 	void keyUpAction();
 	void keyDownAction();
+	void keyLeftAction();
+	void keyRightAction();
 	void increaseTime();
 	void increaseDepth();
 	void okClicked();

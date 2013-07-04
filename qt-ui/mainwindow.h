@@ -47,6 +47,11 @@ public:
 	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 
+	// The 'Change DC Shortcuts' should only be enabled
+	// when the profile's visible.
+	void disableDcShortcuts();
+	void enableDcShortcuts();
+
 private slots:
 	/* file menu action */
 	void on_actionNew_triggered();
