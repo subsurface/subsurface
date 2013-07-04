@@ -78,6 +78,7 @@ protected:
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 private slots:
 	void keyEscAction();
+	void keyDeleteAction();
 	void increaseTime();
 	void increaseDepth();
 	void okClicked();

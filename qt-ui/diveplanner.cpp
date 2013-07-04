@@ -124,14 +124,34 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	minMinutes = TIME_INITIAL_MAX;
 
-	QAction *escAction = new QAction(this);
-	escAction->setShortcut(Qt::Key_Escape);
-	escAction->setShortcutContext(Qt::ApplicationShortcut);
-	addAction(escAction);
+	QAction *action = NULL;
 
-	connect(escAction, SIGNAL(triggered(bool)), this, SLOT(keyEscAction()));
+#define ADD_ACTION( SHORTCUT, Slot ) \
+	action = new QAction(this); \
+	action->setShortcut( SHORTCUT ); \
+	action->setShortcutContext(Qt::ApplicationShortcut); \
+	addAction(action); \
+	connect(action, SIGNAL(triggered(bool)), this, SLOT( Slot ))
+
+	ADD_ACTION(Qt::Key_Escape, keyEscAction());
+	ADD_ACTION(Qt::Key_Delete, keyDeleteAction());
+#undef ADD_ACTION
 
 	setRenderHint(QPainter::Antialiasing);
+}
+
+void DivePlannerGraphics::keyDeleteAction()
+{
+	if(scene()->selectedItems().count()){
+		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
+			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
+				handles.removeAll(handler);
+				scene()->removeItem(handler);
+				delete i;
+			}
+		}
+		createDecoStops();
+	}
 }
 
 void DivePlannerGraphics::keyEscAction()
