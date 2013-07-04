@@ -123,7 +123,25 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
 	minMinutes = TIME_INITIAL_MAX;
+
+	QAction *escAction = new QAction(this);
+	escAction->setShortcut(Qt::Key_Escape);
+	escAction->setShortcutContext(Qt::ApplicationShortcut);
+	addAction(escAction);
+
+	connect(escAction, SIGNAL(triggered(bool)), this, SLOT(keyEscAction()));
+
 	setRenderHint(QPainter::Antialiasing);
+}
+
+void DivePlannerGraphics::keyEscAction()
+{
+	if (scene()->selectedItems().count()){
+		scene()->clearSelection();
+		return;
+	}
+
+	cancelClicked();
 }
 
 qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientation)
@@ -419,7 +437,7 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 	if (event->modifiers().testFlag(Qt::ControlModifier)){
 		setSelected(true);
 	}
-	// mousePressEvent 'grabs' the mouse and keyboard, annoying. 
+	// mousePressEvent 'grabs' the mouse and keyboard, annoying.
 	ungrabMouse();
 	ungrabKeyboard();
 }

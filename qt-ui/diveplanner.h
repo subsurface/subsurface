@@ -77,6 +77,7 @@ protected:
 	void deleteTemporaryDivePlan(struct divedatapoint* dp);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 private slots:
+	void keyEscAction();
 	void increaseTime();
 	void increaseDepth();
 	void okClicked();
