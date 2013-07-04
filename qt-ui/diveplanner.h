@@ -79,6 +79,8 @@ protected:
 private slots:
 	void keyEscAction();
 	void keyDeleteAction();
+	void keyUpAction();
+	void keyDownAction();
 	void increaseTime();
 	void increaseDepth();
 	void okClicked();

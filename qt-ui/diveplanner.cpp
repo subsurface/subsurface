@@ -135,10 +135,45 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	ADD_ACTION(Qt::Key_Escape, keyEscAction());
 	ADD_ACTION(Qt::Key_Delete, keyDeleteAction());
+	ADD_ACTION(Qt::Key_Up, keyUpAction());
+	ADD_ACTION(Qt::Key_Down, keyDownAction());
 #undef ADD_ACTION
 
 	setRenderHint(QPainter::Antialiasing);
 }
+
+void DivePlannerGraphics::keyDownAction()
+{
+	if(scene()->selectedItems().count()){
+		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
+			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
+				if (handler->mm / 1000 >= depthLine->maximum())
+					continue;
+
+				handler->mm += 1000;
+				double ypos = depthLine->posAtValue(handler->mm / 1000);
+				handler->setPos(handler->pos().x(), ypos);
+			}
+		}
+		createDecoStops();
+	}
+}
+
+void DivePlannerGraphics::keyUpAction()
+{
+	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
+			if (handler->mm / 1000 <= 0)
+				continue;
+
+			handler->mm -= 1000;
+			double ypos = depthLine->posAtValue(handler->mm / 1000);
+			handler->setPos(handler->pos().x(), ypos);
+		}
+	}
+	createDecoStops();
+}
+
 
 void DivePlannerGraphics::keyDeleteAction()
 {
