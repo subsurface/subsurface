@@ -9,6 +9,7 @@
 #include <QGraphicsProxyWidget>
 #include <QPushButton>
 #include <QGraphicsSceneMouseEvent>
+#include <QMessageBox>
 
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
@@ -262,6 +263,13 @@ qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientatio
 
 void DivePlannerGraphics::cancelClicked()
 {
+	if (handles.size()){
+		if (QMessageBox::warning(mainWindow(), tr("Save the Plan?"),
+			tr("You have a working plan, \n are you sure that you wanna cancel it?"),
+				QMessageBox::Ok | QMessageBox::Cancel) != QMessageBox::Ok){
+				return;
+			}
+	}
 	mainWindow()->showProfile();
 }
 
