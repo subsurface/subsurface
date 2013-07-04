@@ -18,6 +18,10 @@
 #define MAX_DEEPNESS 150
 #define MIN_DEEPNESS 40
 
+bool handlerLessThenMinutes(DiveHandler *d1, DiveHandler *d2){
+	return d1->sec < d2->sec;
+}
+
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0),
 	lastValidPos(0.0, 0.0)
 {
@@ -163,21 +167,25 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	if (isPointOutOfBoundaries(mappedPos))
 		return;
 
-	if (handles.count() && handles.last()->x() > mappedPos.x())
-		return;
-
-	DiveHandler  *item = new DiveHandler ();
-	item->setRect(-5,-5,10,10);
-	item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int meters = rint(depthLine->valueAt(mappedPos));
-	item->sec = minutes * 60;
-	item->mm =  meters * 1000;
 	double xpos = timeLine->posAtValue(minutes);
 	double ypos = depthLine->posAtValue(meters);
+	Q_FOREACH(DiveHandler* handler, handles){
+		if (xpos == handler->pos().x()){
+			qDebug() << "There's already an point at that place.";
+			//TODO: Move this later to a KMessageWidget.
+			return;
+		}
+	}
+
+	DiveHandler  *item = new DiveHandler ();
+	item->sec = minutes * 60;
+	item->mm =  meters * 1000;
 	item->setPos(QPointF(xpos, ypos));
 	scene()->addItem(item);
 	handles << item;
+	qSort(handles.begin(), handles.end(), handlerLessThenMinutes);
 	createDecoStops();
 }
 
@@ -403,6 +411,8 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 
 DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
 {
+	setRect(-5,-5,10,10);
+	setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setBrush(Qt::white);
 	setZValue(2);
 }
