@@ -363,6 +363,10 @@ bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
 
 void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 {
+	if (event->modifiers()){
+		QGraphicsView::mousePressEvent(event);
+	}
+
     QPointF mappedPos = mapToScene(event->pos());
 	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())){
 		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
@@ -371,7 +375,6 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 			originalHandlerPos = activeDraggedHandler->pos();
 		}
 	}
-	QGraphicsView::mousePressEvent(event);
 }
 
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
@@ -406,8 +409,19 @@ DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
 {
 	setRect(-5,-5,10,10);
 	setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	setFlag(QGraphicsItem::ItemIsSelectable);
 	setBrush(Qt::white);
 	setZValue(2);
+}
+
+void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	if (event->modifiers().testFlag(Qt::ControlModifier)){
+		setSelected(true);
+	}
+	// mousePressEvent 'grabs' the mouse and keyboard, annoying. 
+	ungrabMouse();
+	ungrabKeyboard();
 }
 
 void Ruler::setMaximum(double maximum)

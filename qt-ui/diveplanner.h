@@ -28,6 +28,9 @@ public:
 	QGraphicsLineItem *to;
 	int sec;
 	int mm;
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+
 };
 
 class Ruler : public QGraphicsLineItem{
