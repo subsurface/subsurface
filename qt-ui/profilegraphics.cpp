@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QResizeEvent>
 #include <QGraphicsLineItem>
+#include <QScrollBar>
 #include <QPen>
 #include <QBrush>
 #include <QDebug>
@@ -67,12 +68,32 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 
 }
 
+/* since we cannot use translate() directly on the scene we hack on
+ * the scroll bars (hidden) functionality */
+void ProfileGraphicsView::scrollViewTo(const QPoint pos)
+{
+	if (!zoomLevel)
+		return;
+	QScrollBar *vs = verticalScrollBar();
+	QScrollBar *hs = horizontalScrollBar();
+	const qreal yRat = pos.y() / sceneRect().height();
+	const qreal xRat = pos.x() / sceneRect().width();
+	const int vMax = vs->maximum();
+	const int hMax = hs->maximum();
+	const int vMin = vs->minimum();
+	const int hMin = hs->minimum();
+	/* QScrollBar receives crazy negative values for minimum */
+	vs->setValue(yRat * (vMax - vMin) + vMin * 0.9);
+	hs->setValue(xRat * (hMax - hMin) + hMin * 0.9);
+}
+
 void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 {
 	if (!toolTip)
 		return;
 
-	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	// doesn't seem to work for Qt 4.8.1
+	// setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
 	// Scale the view / do the zoom
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
@@ -86,6 +107,7 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 		scale(1.0 / scaleFactor, 1.0 / scaleFactor);
 		zoomLevel--;
 	}
+	scrollViewTo(event->pos());
 	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 }
 
@@ -98,10 +120,7 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
 
-	double dx = sceneRect().x();
-	double dy = sceneRect().y();
-
-	ensureVisible(event->pos().x() + dx, event->pos().y() + dy, 1, 1);
+	scrollViewTo(event->pos());
 
 	if (zoomLevel == 0)
 		QGraphicsView::mouseMoveEvent(event);

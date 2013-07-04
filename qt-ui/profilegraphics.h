@@ -124,6 +124,7 @@ private:
 	void plot_depth_scale();
 
 	QColor get_sac_color(int sac, int avg_sac);
+	void scrollViewTo(const QPoint pos);
 
 	QPen defaultPen;
 	QBrush defaultBrush;
