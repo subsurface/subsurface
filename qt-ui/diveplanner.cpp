@@ -101,20 +101,21 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	plusTime = new Button();
 	plusTime->setPixmap(QPixmap(":plus"));
-	plusTime->setPos(fromPercent(90, Qt::Horizontal), fromPercent(95, Qt::Vertical));
+	plusTime->setPos(fromPercent(95, Qt::Horizontal), fromPercent(95, Qt::Vertical));
 	plusTime->setToolTip("Increase minimum dive time by 10m");
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
 
 	okBtn = new Button();
 	okBtn->setText(tr("Ok"));
-	okBtn->setPos(1, 190);
+	okBtn->setPos(fromPercent(1, Qt::Horizontal), fromPercent(95, Qt::Vertical));
 	scene()->addItem(okBtn);
 	connect(okBtn, SIGNAL(clicked()), this, SLOT(okClicked()));
 
 	cancelBtn = new Button();
 	cancelBtn->setText(tr("Cancel"));
-	cancelBtn->setPos(10,190);
+	cancelBtn->setPos(okBtn->pos().x() + okBtn->boundingRect().width() + fromPercent(2, Qt::Horizontal),
+					  fromPercent(95, Qt::Vertical));
 	scene()->addItem(cancelBtn);
 	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
@@ -131,7 +132,6 @@ qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientatio
 
 void DivePlannerGraphics::cancelClicked()
 {
-	qDebug() << "clicked";
 	mainWindow()->showProfile();
 }
 
