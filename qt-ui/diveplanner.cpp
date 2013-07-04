@@ -364,7 +364,7 @@ bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
 void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 {
     QPointF mappedPos = mapToScene(event->pos());
-	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos)) {
+	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())){
 		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
 			activeDraggedHandler = h;
 			activeDraggedHandler->setBrush(Qt::red);
