@@ -54,6 +54,7 @@ private:
 	Status status;
 	QRectF rectangle;
 	bool dragging;
+	QRectF nextRectangle;
 };
 
 class EventItem : public QGraphicsPolygonItem

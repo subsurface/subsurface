@@ -1198,8 +1198,6 @@ void ToolTipItem::removeToolTip(const QString& toolTip)
 		t.second->setPos(SPACING + ICON_SMALL + SPACING, yValue);
 		toolTipIndex++;
 	}
-
-	expand();
 }
 
 void ToolTipItem::refresh(struct graphics_context *gc, QPointF pos)
@@ -1225,7 +1223,6 @@ void ToolTipItem::clear()
 		delete t.second;
 	}
 	toolTips.clear();
-	expand();
 }
 
 void ToolTipItem::setRect(const QRectF& r)
@@ -1266,7 +1263,7 @@ void ToolTipItem::collapse()
 {
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
 	animation->setDuration(100);
-	animation->setStartValue(boundingRect());
+	animation->setStartValue(nextRectangle);
 	animation->setEndValue(QRect(0, 0, ICON_SMALL, ICON_SMALL));
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
 	clear();
@@ -1281,7 +1278,6 @@ void ToolTipItem::expand()
 		return;
 	}
 
-	QRectF nextRectangle;
 	double width = 0, height = title->boundingRect().height() + SPACING;
 	Q_FOREACH(ToolTip t, toolTips) {
 		if (t.second->boundingRect().width() > width)
