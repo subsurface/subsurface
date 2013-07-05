@@ -26,6 +26,7 @@ struct plot_data {
 	int ceiling;
 	int ceilings[16];
 	int ndl;
+	int tts;
 	int stoptime;
 	int stopdepth;
 	int cns;

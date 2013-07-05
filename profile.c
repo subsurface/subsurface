@@ -1052,6 +1052,86 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
 		for (k=0; k<16; k++)
 			entry->ceilings[k] = deco_allowed_depth(tolerated_by_tissue[k], surface_pressure, dive, 1);
+
+		/* calculate DECO STOP / TTS / NDL */
+		/* We are going to mess up deco state, so store it for later restore */
+		char *cache_data = NULL;
+		cache_deco_state(tissue_tolerance, &cache_data);
+
+		/* should we calculate a stop depth and time or have dc already done that? */
+		if (entry->ceiling && !entry->stopdepth) {
+			/* FIXME: This should be configurable */
+			/* ascent speed up to first deco stop */
+			const int ascent_s_per_step = 1;
+			const int ascent_mm_per_step = 200; /* 12 m/min */
+			/* ascent speed between deco stops */
+			const int ascent_s_per_deco_step = 1;
+			const int ascent_mm_per_deco_step = 16; /* 1 m/min */
+			/* how long time steps in deco calculations? */
+			const int time_stepsize = 10;
+			const int deco_stepsize = 3000;
+			/* at what depth is the current deco-step? */
+			int next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
+			int ascent_depth = entry->depth;
+			entry->tts = 0;
+
+			/* Add segments for movement to stopdepth */
+			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts += ascent_s_per_step) {
+				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+					&dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, ccrdive ? entry->po2 * 1000 : 0, dive);
+				next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
+			}
+			ascent_depth = next_stop;
+
+			/* And how long is the current deco-step? */
+			entry->stoptime = 0;
+			entry->stopdepth = next_stop;
+			next_stop -= deco_stepsize;
+
+			/* And how long is the total TTS */
+			while(next_stop >= 0) {
+				/* save the time for the first stop to show in the graph */
+				if (ascent_depth == entry->stopdepth)
+					entry->stoptime += time_stepsize;
+
+				entry->tts += time_stepsize;
+				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+					&dive->cylinder[cylinderindex].gasmix, time_stepsize, ccrdive ? entry->po2 * 1000 : 0, dive);
+
+				if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
+					/* move to the next stop and add the travel between stops */
+					for (; ascent_depth > next_stop ; ascent_depth -= ascent_mm_per_deco_step, entry->tts += ascent_s_per_deco_step)
+						tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+							&dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, ccrdive ? entry->po2 * 1000 : 0, dive);
+					ascent_depth = next_stop;
+					next_stop -= deco_stepsize;
+				}
+			}
+		} else if (!entry->ndl) {
+			/* FIXME: This should be configurable */
+			const int time_stepsize = 60;
+			const int max_ndl = 7200;
+			entry->ndl = -1;
+			pi->has_ndl = TRUE;
+
+			/* don't try to calculate a ndl for lower values than 3m
+			 * it would take forever */
+			if (entry->depth > 3000) {
+				entry->ndl = 0;
+				/* stop if the ndl is above max_ndl seconds, and call it plenty of time */
+				while (entry->ndl < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
+					entry->ndl += time_stepsize;
+					tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
+							&dive->cylinder[cylinderindex].gasmix, time_stepsize, ccrdive ? entry->po2 * 1000 : 0, dive);
+				}
+			}
+		}
+
+		/* Restore "real" deco state for next real time step */
+		if (cache_data) {
+			tissue_tolerance = restore_deco_state(cache_data);
+			free(cache_data);
+		}
 	}
 
 #if DECO_CALC_DEBUG & 1
@@ -1188,7 +1268,14 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		snprintf(buf, bufsize, _("%s\nIn deco"), buf2);
 	} else if (has_ndl) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, _("%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
+		if (entry->ndl == -1)
+			snprintf(buf, bufsize, _("%s\nNDL:-"), buf2);
+		else
+			snprintf(buf, bufsize, _("%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
+	}
+	if (entry->tts) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, _("%s\nTTS:%umin"), buf2, DIV_UP(entry->tts, 60));
 	}
 	if (entry->cns) {
 		memcpy(buf2, buf, bufsize);
