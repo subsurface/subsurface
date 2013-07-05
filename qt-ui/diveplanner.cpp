@@ -2,6 +2,7 @@
 #include "graphicsview-common.h"
 
 #include "../dive.h"
+#include "../divelist.h"
 #include <cmath>
 #include <QMouseEvent>
 #include <QDebug>
@@ -497,6 +498,7 @@ void DivePlannerGraphics::createDecoStops()
 	diveBg->setBrush(pat);
 
 	deleteTemporaryDivePlan(diveplan.dp);
+	delete_single_dive(get_divenr(dive));
 }
 
 void DivePlannerGraphics::deleteTemporaryDivePlan(divedatapoint* dp)

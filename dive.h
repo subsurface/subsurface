@@ -726,6 +726,7 @@ void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
 void dump_plan(struct diveplan *diveplan);
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, char **error_string_p);
+void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, char *name);
 
