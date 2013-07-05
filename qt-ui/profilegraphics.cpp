@@ -1331,7 +1331,7 @@ void ToolTipItem::updateTitlePosition()
 	if (rectangle.width() < title->boundingRect().width() + SPACING*4) {
 		QRectF newRect = rectangle;
 		newRect.setWidth(title->boundingRect().width() + SPACING*4);
-		newRect.setHeight(newRect.height() ? newRect.height() : ICON_SMALL);
+		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : ICON_SMALL);
 		setRect(newRect);
 	}
 
