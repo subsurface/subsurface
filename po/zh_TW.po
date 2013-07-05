@@ -1,0 +1,2284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Kunhui Chih <quinn.chih@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: subsurface\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-14 21:53-0400\n"
+"PO-Revision-Date: 2013-07-05 07:30+0000\n"
+"Last-Translator: Kunhui Chih <quinn.chih@gmail.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/subsurface/language/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: gtk-gui.c:1179
+msgid ""
+"\n"
+"No Events\n"
+msgstr "\n無事件\n"
+
+#: statistics-gtk.c:94
+msgctxt "Stats"
+msgid " > Month"
+msgstr "> 月"
+
+#: webservice.c:289
+msgid " Download"
+msgstr "下載"
+
+#: download-dialog.c:385
+msgid " Please select dive computer and device. "
+msgstr "請選擇潛水電腦與連結的裝置"
+
+#: profile.c:429
+msgctxt "Starts with space!"
+msgid " begin"
+msgstr "開始"
+
+#: profile.c:430
+msgctxt "Starts with space!"
+msgid " end"
+msgstr "結束"
+
+#: statistics-gtk.c:92
+msgid "#"
+msgstr "#"
+
+#: print.c:267 print.c:326
+#, c-format
+msgid "%.*f %s"
+msgstr "%.*f %s"
+
+#: print.c:344
+#, c-format
+msgid "%.*f %s\n"
+msgstr "%.*f %s\n"
+
+#: statistics-gtk.c:170 statistics-gtk.c:396 statistics-gtk.c:498
+#: statistics-gtk.c:500 statistics-gtk.c:502
+#, c-format
+msgid "%.*f %s/min"
+msgstr "%.*f %s/min"
+
+#: planner.c:589
+#, c-format
+msgid "%.0f%s of %s\n"
+msgstr "%.0f%s of %s\n"
+
+#. ++GETTEXT 80 chars: lead text ("" or localized "Dive #%d - ") weekday,
+#. monthname, day, year, hour, min
+#: print.c:88
+#, c-format
+msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
+msgstr "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
+
+#. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
+#: print.c:566
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"
+msgstr "%1$s, %2$s %3$d, %4$d %5$dh%6$02d"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min
+#: divelist.c:565
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
+msgstr "%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"
+
+#. ++GETTEXT 80 chars: weekday, monthname, day, year, hour, min
+#: statistics-gtk.c:349
+#, c-format
+msgid "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
+msgstr "%1$s, %2$s %3$d, %4$d %5$2d:%6$02d"
+
+#: print.c:582 statistics-gtk.c:356
+#, c-format
+msgid "%d min"
+msgstr "%d min"
+
+#: statistics.c:204
+#, c-format
+msgid "%dd %dh %dmin"
+msgstr "%dd %dh %dmin"
+
+#: statistics.c:206
+#, c-format
+msgid "%dh %dmin"
+msgstr "%dh %dmin"
+
+#: print.c:322
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: profile.c:2191
+#, c-format
+msgid ""
+"%s\n"
+"CNS:%u%%"
+msgstr "%s\nCNS:%u%%"
+
+#: profile.c:2159
+#, c-format
+msgid ""
+"%s\n"
+"Calculated ceiling %.0f %s"
+msgstr "%s\n計算的深度 %.0f %s"
+
+#: profile.c:2175
+#, c-format
+msgid ""
+"%s\n"
+"Deco:%umin @ %.0f %s"
+msgstr "%s\nDeco:%umin @ %.0f %s"
+
+#: profile.c:2178
+#, c-format
+msgid ""
+"%s\n"
+"Deco:unkn time @ %.0f %s"
+msgstr "%s\nDeco:時間未知 @ %.0f %s"
+
+#: profile.c:2215
+#, c-format
+msgid ""
+"%s\n"
+"EAD:%d%s\n"
+"END:%d%s\n"
+"EADD:%d%s"
+msgstr "%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"
+
+#: profile.c:2184
+#, c-format
+msgid ""
+"%s\n"
+"In deco"
+msgstr "%s\n減壓中"
+
+#: profile.c:2208
+#, c-format
+msgid ""
+"%s\n"
+"MOD:%d%s"
+msgstr "%s\nMOD:%d%s"
+
+#: profile.c:2187
+#, c-format
+msgid ""
+"%s\n"
+"NDL:%umin"
+msgstr "%s\nNDL:%umin"
+
+#: profile.c:2149
+#, c-format
+msgid ""
+"%s\n"
+"P:%d %s"
+msgstr "%s\nP:%d %s"
+
+#: profile.c:2167
+#, c-format
+msgid ""
+"%s\n"
+"Safetystop:%umin @ %.0f %s"
+msgstr "%s\n安全停留:%umin @ %.0f %s"
+
+#: profile.c:2170
+#, c-format
+msgid ""
+"%s\n"
+"Safetystop:unkn time @ %.0f %s"
+msgstr "%s\n安全停留:未知時間 @ %.0f %s"
+
+#: planner.c:509
+#, c-format
+msgid ""
+"%s\n"
+"Subsurface dive plan\n"
+"based on GFlow = %.0f and GFhigh = %.0f\n"
+"\n"
+msgstr "%s\nSubsurface 潛水計畫\n以 GFlow = %.0f and GFhigh = %.0f 為基礎\n\n"
+
+#: profile.c:2154
+#, c-format
+msgid ""
+"%s\n"
+"T:%.1f %s"
+msgstr "%s\nT:%.1f %s"
+
+#: profile.c:2203
+#, c-format
+msgid ""
+"%s\n"
+"pHe:%.2fbar"
+msgstr "%s\npHe:%.2fbar"
+
+#: profile.c:2199
+#, c-format
+msgid ""
+"%s\n"
+"pN%s:%.2fbar"
+msgstr "%s\npN%s:%.2fbar"
+
+#: profile.c:2195
+#, c-format
+msgid ""
+"%s\n"
+"pO%s:%.2fbar"
+msgstr "%s\npO%s:%.2fbar"
+
+#: gtk-gui.c:2101
+#, c-format
+msgid "%s event at %d:%02u"
+msgstr "%s 事件於 %d:%02u"
+
+#: divelist-gtk.c:1370
+#, c-format
+msgid "%s: Response from divelogs.de"
+msgstr "%s: 從 divelogs.de 的回應"
+
+#: dive.c:921
+#, c-format
+msgid "(%s) or (%s)"
+msgstr "(%s) 或 (%s)"
+
+#: info-gtk.c:489
+msgid "(click to edit date/time)"
+msgstr "(鍵入來編輯日期/時間)"
+
+#: info-gtk.c:491
+msgid "(click to edit date/time/depth)"
+msgstr "(鍵入來編輯日期/時間/深度)"
+
+#: statistics.c:265
+#, c-format
+msgid "(no dives)"
+msgstr "(無潛水)"
+
+#: gtk-gui.c:2373
+msgid "(nothing)"
+msgstr "(無)"
+
+#: planner-gtk.c:410
+msgid "0.6 cuft/min"
+msgstr "0.6 cuft/min"
+
+#: planner-gtk.c:409
+msgid "0.7 cuft/min"
+msgstr "0.7 cuft/min"
+
+#: planner-gtk.c:415
+msgid "17 l/min"
+msgstr "17 l/min"
+
+#: print.c:956
+msgid "2 dives per page"
+msgstr "每頁 2 支潛水"
+
+#: uemis-downloader.c:590
+msgid "2 pcs full suit"
+msgstr "2 件式防寒衣"
+
+#: planner-gtk.c:414
+msgid "20 l/min"
+msgstr "20 l/min"
+
+#: gtk-gui.c:989
+msgid "3m increments for calculated ceiling"
+msgstr "計算深度每單位增加 3m"
+
+#: print.c:952
+msgid "6 dives per page"
+msgstr "每頁 6 支潛水"
+
+#: planner-gtk.c:346
+msgid ""
+"<small>Add segments below.\n"
+"Each line describes part of the planned dive.\n"
+"An entry with depth, time and gas describes a segment that ends at the given depth, takes the given time (if relative, e.g. '+3:30') or ends at the given time (if absolute e.g '@5:00', 'runtime'), and uses the given gas.\n"
+"An empty gas means 'use previous gas' (or AIR if no gas was specified).\n"
+"An entry that has a depth and a gas given but no time is special; it informs the planner that the gas specified is available for the ascent once the depth given has been reached.\n"
+"CC SetPoint specifies CC (rebreather) dives, leave empty for OC.</small>\n"
+msgstr "<small>下方添加資訊. \n每一行皆描述了計劃潛水的一部分. \n每一進入點的深度, 時間和使用氣瓶, 代表著在設定的交換氣瓶深度, 經過的相對時間 (相對應差別, 舉例 '+3:30'), 或使用確切結束的時間 (絕對時間, 例如'@5:00', '運行時間'), 和所使用的氣瓶種類. \n若氣體欄位空白, 表示 '使用前一氣源' (或如果沒有氣體被設定時, 則為AIR).\n如果一進入點有設定深度與氣源, 但並沒有設定時間, 表示計畫是設定此氣瓶可於到達深度後, 繼續上升時使用.\nCC 設定點為 CC (密閉循環式) 潛水使用, OC 請保持空白.</small>\n"
+
+#: planner-gtk.c:272
+msgid "AIR"
+msgstr "AIR"
+
+#: gtk-gui.c:1273 gtk-gui.c:1626
+msgid "About Subsurface"
+msgstr "關於 Subsurface"
+
+#: gtk-gui.c:2116
+msgid "Add"
+msgstr "增加"
+
+#: gtk-gui.c:1618
+msgid "Add Dive..."
+msgstr "增加潛水..."
+
+#: gtk-gui.c:2170
+msgid "Add bookmark event here"
+msgstr "在此處增加一書籤事件"
+
+#: divelist-gtk.c:1662
+msgid "Add dive"
+msgstr "增加潛水"
+
+#: gtk-gui.c:2165
+msgid "Add gas change event here"
+msgstr "在此處增加氣瓶更換事件"
+
+#: equipment.c:633
+#, c-format
+msgid "Add gaschange event at %d:%02u"
+msgstr "在 %d:%02u 增加氣瓶交換事件"
+
+#: divelist-gtk.c:1781
+msgid "Add to trip above"
+msgstr "加入上方旅程"
+
+#: planner-gtk.c:434
+msgid "Add waypoint"
+msgstr "增加路徑點"
+
+#: statistics-gtk.c:608
+msgid "Air Press"
+msgstr "氣壓"
+
+#: statistics-gtk.c:607
+msgid "Air Temp"
+msgstr "氣溫"
+
+#: info-gtk.c:590
+#, c-format
+msgid "Air Temp in %s"
+msgstr "氣溫 %s"
+
+#: download-dialog.c:403
+msgid "Always prefer downloaded dive"
+msgstr "總是保留已下載的潛水(已下載的潛水不進行同步)"
+
+#: main.c:73
+msgid "Apr"
+msgstr "4月"
+
+#: main.c:74
+msgid "Aug"
+msgstr "8月"
+
+#: gtk-gui.c:1640
+msgid "Autogroup"
+msgstr "自動分組"
+
+#: equipment.c:642
+msgid "Available gases"
+msgstr "可用氣瓶"
+
+#: statistics-gtk.c:100
+msgctxt "Depth"
+msgid "Average"
+msgstr "平均"
+
+#: statistics-gtk.c:97
+msgctxt "Duration"
+msgid "Average"
+msgstr "平均"
+
+#: statistics-gtk.c:103
+msgctxt "SAC"
+msgid "Average"
+msgstr "平均"
+
+#: statistics-gtk.c:106
+msgctxt "Temp"
+msgid "Average"
+msgstr "平均"
+
+#: statistics-gtk.c:562 statistics-gtk.c:599
+msgid "Avg Depth"
+msgstr "平均深度"
+
+#: info-gtk.c:932
+#, c-format
+msgid "Avg Depth (%s):"
+msgstr "平均深度 (%s):"
+
+#: statistics-gtk.c:570
+msgid "Avg SAC"
+msgstr "平均 SAC"
+
+#: statistics-gtk.c:545
+msgid "Avg Temp"
+msgstr "平均水溫"
+
+#: statistics-gtk.c:552
+msgid "Avg Time"
+msgstr "平均時間"
+
+#: profile.c:426
+#, c-format
+msgid "Bailing out to OC"
+msgstr "跳脫至 OC"
+
+#: gtk-gui.c:780
+msgid "Bar"
+msgstr "Bar"
+
+#: info-gtk.c:576 info-gtk.c:1005 print.c:503
+msgid "Buddy"
+msgstr "潛伴"
+
+#: planner-gtk.c:301
+msgid "CC SetPoint"
+msgstr "密閉式循環設定點"
+
+#: planner.c:131
+#, c-format
+msgid "Can't find gas %d/%d"
+msgstr "無法找到氣源 %d/%d"
+
+#: parse-xml.c:1944
+#, c-format
+msgid "Can't open stylesheet (%s)/%s"
+msgstr "無法開啟樣板 (%s)/%s"
+
+#: uemis-downloader.c:932
+msgid "Cancelled, exiting cleanly..."
+msgstr "取消，清空離開..."
+
+#: libdivecomputer.c:757
+msgid "Cancelled..."
+msgstr "取消..."
+
+#: equipment.c:621
+msgid "Cannot add gas change"
+msgstr "無法增加氣瓶更換"
+
+#: webservice.c:29
+msgid "Cannot parse response!"
+msgstr "回覆無法解析!"
+
+#: gtk-gui.c:790
+msgid "Celsius"
+msgstr "攝氏"
+
+#: gtk-gui.c:680
+msgid "Choose Default XML File"
+msgstr "選取預設的XML檔案"
+
+#: gtk-gui.c:2275
+msgid "Choose XML Files To Import Into Current Data File"
+msgstr "選擇欲匯入的XML檔案, 匯入至目前使用的資料檔"
+
+#: gtk-gui.c:1611
+msgid "Close"
+msgstr "關閉"
+
+#: divelist-gtk.c:1799
+msgid "Collapse all"
+msgstr "全部摺疊"
+
+#: webservice.c:121
+msgid "Connecting..."
+msgstr "連結..."
+
+#: webservice.c:25
+msgid "Connection Error: "
+msgstr "連結錯誤:"
+
+#: divelist-gtk.c:1771
+msgid "Create new trip above"
+msgstr "設定為新的旅程"
+
+#: gtk-gui.c:786
+msgid "CuFt"
+msgstr "CuFt"
+
+#: divelist-gtk.c:820 gtk-gui.c:810
+msgid "Cyl"
+msgstr "氣瓶"
+
+#: equipment.c:982 equipment.c:1093 print.c:201
+msgid "Cylinder"
+msgstr "氣瓶"
+
+#: planner.c:192
+msgid "Cylinder for planning"
+msgstr "計畫氣瓶"
+
+#: equipment.c:1603
+msgid "Cylinders"
+msgstr "氣瓶"
+
+#: profile.c:2145
+#, c-format
+msgid "D:%.1f %s"
+msgstr "D:%.1f %s"
+
+#: planner-gtk.c:359
+msgid ""
+"DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM"
+" AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A "
+"LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY "
+"BASED ON THE RESULTS GIVEN HERE."
+msgstr "免責聲明 / 警告: 這是使用新發展的 BUHLMANN 演算法, 且使用的潛水計畫僅經過有限次數的測試. 我們強烈建議不要直接使用此處模擬結果做為計畫.  "
+
+#: parse-xml.c:1829
+#, c-format
+msgid "Database connection failed '%s'.\n"
+msgstr "資料庫連結錯誤 '%s' .\n"
+
+#: parse-xml.c:1836
+#, c-format
+msgid "Database query failed '%s'.\n"
+msgstr "資料庫要求錯誤 '%s' .\n"
+
+#: parse-xml.c:1794
+#, c-format
+msgid "Database query get_events failed.\n"
+msgstr "資料庫讀取 get_events 失敗.\n"
+
+#: divelist-gtk.c:813 print.c:502 statistics-gtk.c:590
+msgid "Date"
+msgstr "日期"
+
+#: info-gtk.c:824
+msgid "Date and Time"
+msgstr "日期與時間"
+
+#: info-gtk.c:834
+msgid "Date:"
+msgstr "日期:"
+
+#: main.c:74
+msgid "Dec"
+msgstr "12月"
+
+#: gtk-gui.c:852
+msgid "Default XML Data File"
+msgstr "預設的XML資料檔"
+
+#: gtk-gui.c:1558
+msgid "Delete a dive computer information entry"
+msgstr "刪除該潛水電腦資訊連結"
+
+#: divelist-gtk.c:1289 divelist-gtk.c:1340 divelist-gtk.c:1647
+msgid "Delete dive"
+msgstr "刪除此潛水"
+
+#: divelist-gtk.c:1291 divelist-gtk.c:1646
+msgid "Delete dives"
+msgstr "刪除潛水"
+
+#: print.c:502 statistics-gtk.c:92
+msgid "Depth"
+msgstr "深度"
+
+#: uemis.c:222
+msgid "Depth Limit Exceeded"
+msgstr "超過深度限制"
+
+#: gtk-gui.c:774
+msgid "Depth:"
+msgstr "深度:"
+
+#: gtk-gui.c:1517
+msgid "Device Id"
+msgstr "裝置Id"
+
+#: download-dialog.c:341
+msgid "Device or mount point"
+msgstr "裝置或連接處"
+
+#: gtk-gui.c:847
+msgid "Display invalid dives"
+msgstr "顯示無效的潛水記錄"
+
+#. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
+#. <trailing text>
+#: info.c:88
+#, c-format
+msgid "Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d %8$s"
+msgstr "潛水 #%1$d - %2$s %3$02d/%4$02d/%5$04d 於 %6$d:%7$02d %8$s"
+
+#: info.c:130 print.c:83
+#, c-format
+msgid "Dive #%d - "
+msgstr "潛水 #%d - "
+
+#: libdivecomputer.c:436
+#, c-format
+msgid "Dive %d: %s %d %04d"
+msgstr "潛水 %d: %s %d %04d"
+
+#: gtk-gui.c:2355
+msgid "Dive Computer Nickname"
+msgstr "潛水電腦別名"
+
+#: gtk-gui.c:1861 info-gtk.c:705 statistics-gtk.c:581
+msgid "Dive Info"
+msgstr "潛水資訊"
+
+#: gtk-gui.c:1853
+msgid "Dive Notes"
+msgstr "潛水筆記"
+
+#: planner-gtk.c:370
+msgid "Dive Plan - THIS IS JUST A SIMULATION; DO NOT USE FOR DIVING"
+msgstr "潛水計畫 - 此程式僅提供模擬; 請勿用於實際潛水"
+
+#: info-gtk.c:597 statistics-gtk.c:623
+msgid "Dive Tags"
+msgstr "潛水標籤"
+
+#: statistics-gtk.c:591
+msgid "Dive Time"
+msgstr "潛水時間"
+
+#: uemis.c:228
+msgid "Dive Time Alert"
+msgstr "潛水時間警告"
+
+#: uemis.c:226
+msgid "Dive Time Info"
+msgstr "潛水時間資訊"
+
+#: download-dialog.c:300
+msgid "Dive computer vendor and product"
+msgstr "潛水電腦的廠商與產品"
+
+#: libdivecomputer.c:681
+msgid "Dive data import error"
+msgstr "匯入潛水資料錯誤"
+
+#: gps.c:214
+msgid "Dive locations"
+msgstr "潛水位置"
+
+#: info-gtk.c:575
+msgid "Dive master"
+msgstr "潛導"
+
+#: planner-gtk.c:392
+msgid "Dive starts when?"
+msgstr "潛水開始時間"
+
+#: print.c:502
+msgid "Dive#"
+msgstr "潛水編號#"
+
+#: gtk-gui.c:835
+msgid "Divelist Font"
+msgstr "潛水表單字型"
+
+#: info-gtk.c:1004
+msgid "Divemaster"
+msgstr "導潛"
+
+#: statistics-gtk.c:542
+msgid "Dives"
+msgstr "潛水"
+
+#: gtk-gui.c:1622
+msgid "Dives Locations"
+msgstr "潛點位置"
+
+#: download-dialog.c:376
+msgid "Download From Dive Computer"
+msgstr "從潛水電腦進行下載"
+
+#: gtk-gui.c:1616
+msgid "Download From Dive Computer..."
+msgstr "從潛水電腦進行下載..."
+
+#: webservice.c:260
+msgid "Download From Web Service"
+msgstr "自網路服務進行下載"
+
+#: gtk-gui.c:1617
+msgid "Download From Web Service..."
+msgstr "自網路服務進行下載..."
+
+#: webservice.c:31
+msgid "Download Success!"
+msgstr "下載成功!"
+
+#: print.c:502 statistics-gtk.c:92
+msgid "Duration"
+msgstr "時間"
+
+#: info-gtk.c:911
+msgid "Duration (min)"
+msgstr "時間 (min)"
+
+#: info.c:312
+msgid "E"
+msgstr "E"
+
+#: planner.c:96
+#, c-format
+msgid "EAN%d"
+msgstr "EAN%d"
+
+#: planner-gtk.c:273
+msgid "EAN32"
+msgstr "EAN32"
+
+#: planner-gtk.c:274
+msgid "EAN36"
+msgstr "EAN36"
+
+#: info-gtk.c:99
+msgid "Edit"
+msgstr "編輯"
+
+#: gtk-gui.c:1632
+msgid "Edit Device Names"
+msgstr "編輯裝置名稱"
+
+#: gtk-gui.c:1490
+msgid "Edit Dive Computer Nicknames"
+msgstr "編輯潛水電腦別名"
+
+#: info-gtk.c:659
+msgid "Edit Trip Info"
+msgstr "編輯旅程資訊"
+
+#: divelist-gtk.c:1670
+msgid "Edit Trip Summary"
+msgstr "編輯旅程簡介"
+
+#: gtk-gui.c:1550
+msgid ""
+"Edit a dive computer nickname by double-clicking it in the relevant nickname"
+" field"
+msgstr "在相關連的別名欄位, 以雙按來編輯潛水電腦名稱"
+
+#: divelist-gtk.c:1644
+msgid "Edit dive"
+msgstr "編輯潛水"
+
+#: divelist-gtk.c:1703 divelist-gtk.c:1745
+msgid "Edit dive date/time"
+msgstr "編輯潛水日期/時間"
+
+#: divelist-gtk.c:1643
+msgid "Edit dives"
+msgstr "潛水編輯"
+
+#: info-gtk.c:535
+msgid "Edit multiple dives"
+msgstr "多支潛水編輯"
+
+#: info-gtk.c:369
+msgid "Edit trip summary"
+msgstr "編輯旅程概要"
+
+#: gtk-gui.c:1172
+msgid "Enable / Disable Events"
+msgstr "啟動/關閉事件"
+
+#: gtk-gui.c:1136
+msgid "Enable / Disable Tags"
+msgstr "啟動/關閉標籤"
+
+#: equipment.c:1013 equipment.c:1520
+msgid "End"
+msgstr "結束"
+
+#: planner-gtk.c:298
+msgid "Ending Depth"
+msgstr "結束深度"
+
+#: webservice.c:275
+msgid ""
+"Enter a user identifier and press 'Download'. Once the download is complete "
+"you can press 'Apply' if you wish to apply the changes."
+msgstr "輸入使用者Id, 按下\"下載\". 當下載成功後, 如果想要使用這些變動, 則按下\"套用\"."
+
+#: gtk-gui.c:1857 info-gtk.c:644
+msgid "Equipment"
+msgstr "裝備"
+
+#: divelist-gtk.c:1370
+msgid "Error"
+msgstr "錯誤"
+
+#: libdivecomputer.c:471
+msgid "Error obtaining water salinity"
+msgstr "得到錯誤的海水鹽度"
+
+#: libdivecomputer.c:419
+msgid "Error parsing the datetime"
+msgstr "日期時間解析錯誤"
+
+#: libdivecomputer.c:441
+msgid "Error parsing the divetime"
+msgstr "潛水時間解析錯誤"
+
+#: libdivecomputer.c:480
+msgid "Error parsing the gas mix"
+msgstr "混合氣體解析錯誤"
+
+#: libdivecomputer.c:461
+msgid "Error parsing the gas mix count"
+msgstr "混合氣體數量解析錯誤"
+
+#: libdivecomputer.c:451
+msgid "Error parsing the maxdepth"
+msgstr "最大深度解析錯誤"
+
+#: libdivecomputer.c:488
+msgid "Error parsing the samples"
+msgstr "樣本解析錯誤"
+
+#: libdivecomputer.c:677
+msgid "Error registering the cancellation handler."
+msgstr "錯誤的註冊取消程序."
+
+#: libdivecomputer.c:410
+msgid "Error registering the data"
+msgstr "錯誤的登錄資料"
+
+#: libdivecomputer.c:672
+msgid "Error registering the event handler."
+msgstr "錯誤的註冊程序."
+
+#: libdivecomputer.c:645
+#, c-format
+msgid "Event: systime=%<PRId64>, devtime=%u\n"
+msgstr "事件: systime=%<PRId64>, devtime=%u\n"
+
+#: libdivecomputer.c:622
+msgid "Event: waiting for user action"
+msgstr "事件: 等待使用者動作"
+
+#: divelist-gtk.c:1795
+msgid "Expand all"
+msgstr "全部展開"
+
+#: divelist-gtk.c:1524
+msgid "Export As UDDF File"
+msgstr "匯出成 UDDF 檔案"
+
+#: gtk-gui.c:1614
+msgid "Export UDDF..."
+msgstr "匯出 UDDF..."
+
+#: divelist-gtk.c:1649
+msgid "Export dive(s) to UDDF"
+msgstr "匯出(多支)潛水到 UDDF"
+
+#: gtk-gui.c:791
+msgid "Fahrenheit"
+msgstr "華氏"
+
+#: gtk-gui.c:122
+#, c-format
+msgid "Failed to open %i files."
+msgstr "無法開啟檔案 %i ."
+
+#: parse-xml.c:1594
+#, c-format
+msgid "Failed to parse '%s'"
+msgstr "無法解析訊息 '%s'"
+
+#: parse-xml.c:1593
+#, c-format
+msgid "Failed to parse '%s'.\n"
+msgstr "無法解析訊息 '%s' .\n"
+
+#: file.c:276
+#, c-format
+msgid "Failed to read '%s'"
+msgstr "無法讀取 '%s'"
+
+#: file.c:272
+#, c-format
+msgid "Failed to read '%s'.\n"
+msgstr "無法讀取 '%s' .\n"
+
+#: main.c:73
+msgid "Feb"
+msgstr "2月"
+
+#: gtk-gui.c:776
+msgid "Feet"
+msgstr "英呎"
+
+#: gtk-gui.c:1601
+msgid "File"
+msgstr "檔案"
+
+#: gtk-gui.c:1604
+msgid "Filter"
+msgstr "篩選器"
+
+#: download-dialog.c:397
+msgid "Force download of all dives"
+msgstr "強制下載所有潛水記錄"
+
+#: main.c:64
+msgid "Fri"
+msgstr "周五"
+
+#: gtk-gui.c:1007
+msgid "GFhigh"
+msgstr "GFhigh"
+
+#: planner-gtk.c:426
+msgid "GFhigh for plan"
+msgstr "計畫 GFhigh"
+
+#: gtk-gui.c:997
+msgid "GFlow"
+msgstr "GFlow"
+
+#: planner-gtk.c:425
+msgid "GFlow for plan"
+msgstr "計畫 GFlow"
+
+#: info-gtk.c:555
+msgid "GPS (WGS84 or GPS format)"
+msgstr "GPS (WGS84或GPS格式)"
+
+#. ++GETTEXT Gas Used is amount used
+#: print.c:203
+msgid "Gas Used"
+msgstr "使用氣體"
+
+#: statistics-gtk.c:617
+msgctxt "Amount"
+msgid "Gas Used"
+msgstr "使用氣體"
+
+#: planner-gtk.c:300
+msgctxt "Type of"
+msgid "Gas Used"
+msgstr "使用氣體"
+
+#: planner.c:578
+#, c-format
+msgid "Gas consumption:\n"
+msgstr "氣體消耗:\n"
+
+#: equipment.c:1023 print.c:201
+msgid "Gasmix"
+msgstr "氣體混合"
+
+#: gtk-gui.c:767
+msgid "General Settings"
+msgstr "一般設定"
+
+#: gtk-gui.c:1606
+msgid "Help"
+msgstr "幫助"
+
+#: webservice.c:296
+msgid "Idle"
+msgstr "閒置"
+
+#: gtk-gui.c:1613
+msgid "Import File(s)..."
+msgstr "匯入(多)檔案..."
+
+#: divelist-gtk.c:1370 gtk-gui.c:1630
+msgid "Info"
+msgstr "資訊"
+
+#: uemis-downloader.c:769
+msgid "Init Communication"
+msgstr "初始化通訊"
+
+#: gtk-gui.c:1635
+msgid "Input Plan"
+msgstr "輸入計畫"
+
+#: planner-gtk.c:145
+#, c-format
+msgid "Invalid depth - could not parse \"%s\""
+msgstr "深度錯誤 - 無法解析 \"%s\""
+
+#: planner-gtk.c:147
+msgid "Invalid depth - values deeper than 400m not supported"
+msgstr "深度錯誤 - 無法支持超過400m的深度計算"
+
+#: planner-gtk.c:118
+#, c-format
+msgid "Invalid gas for row %d"
+msgstr "第 %d 列氣瓶設定錯誤"
+
+#: planner-gtk.c:207
+msgid "Invalid starttime"
+msgstr "開始時間錯誤"
+
+#: webservice.c:27
+msgid "Invalid user identifier!"
+msgstr "錯誤的使用者Id!"
+
+#. ++GETTEXT: these are three letter months - we allow up to six code bytes
+#: main.c:73
+msgid "Jan"
+msgstr "1月"
+
+#: main.c:74
+msgid "Jul"
+msgstr "7月"
+
+#: main.c:73
+msgid "Jun"
+msgstr "6月"
+
+#: planner-gtk.c:398
+msgid "Last stop at 20 Feet"
+msgstr "最後於 20 英呎停留"
+
+#: planner-gtk.c:396
+msgid "Last stop at 6 Meters"
+msgstr "最後於 6 米停留"
+
+#: print.c:985
+msgid "Layout Options"
+msgstr "版面設定"
+
+#: gtk-gui.c:1279
+msgid "Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013"
+msgstr "Linus Torvalds, Dirk Hohndel與其他, 2011, 2012, 2013"
+
+#: gtk-gui.c:1628
+msgid "List"
+msgstr "列表"
+
+#: gtk-gui.c:785
+msgid "Liter"
+msgstr "Liter"
+
+#: divelist-gtk.c:825 info-gtk.c:374 info-gtk.c:550 info-gtk.c:999 print.c:503
+msgid "Location"
+msgstr "位置"
+
+#: gtk-gui.c:1602
+msgid "Log"
+msgstr "日誌"
+
+#: statistics-gtk.c:99
+msgctxt "Duration"
+msgid "Longest"
+msgstr "最長"
+
+#: statistics-gtk.c:553
+msgid "Longest Dive"
+msgstr "最長潛水"
+
+#: uemis.c:236
+msgid "Low Battery Alert"
+msgstr "電池低電量警示"
+
+#: uemis.c:234
+msgid "Low Battery Warning"
+msgstr "電池低電量提醒"
+
+#: gtk-gui.c:862
+msgid "Map provider"
+msgstr "地圖供應者"
+
+#: main.c:73
+msgid "Mar"
+msgstr "3月"
+
+#: divelist-gtk.c:1718 divelist-gtk.c:1720
+msgid "Mark invalid"
+msgstr "無效的標示"
+
+#: gps.c:53
+msgid "Mark location here"
+msgstr "標示此位置"
+
+#: divelist-gtk.c:1716
+msgid "Mark valid"
+msgstr "有效的標示"
+
+#: uemis.c:230
+msgid "Marker"
+msgstr "標記"
+
+#: print.c:502
+msgid "Master"
+msgstr "專長"
+
+#: uemis.c:224
+msgid "Max Deco Time Warning"
+msgstr "最大減壓時間提醒"
+
+#: statistics-gtk.c:560 statistics-gtk.c:598
+msgid "Max Depth"
+msgstr "最大深度"
+
+#: info-gtk.c:921
+#, c-format
+msgid "Max Depth (%s):"
+msgstr "最大深度 (%s)"
+
+#: statistics-gtk.c:568
+msgid "Max SAC"
+msgstr "最大 SAC"
+
+#: statistics-gtk.c:543
+msgid "Max Temp"
+msgstr "最高溫度"
+
+#: print.c:109
+#, c-format
+msgid ""
+"Max depth: %.*f %s\n"
+"Duration: %d min\n"
+"%s"
+msgstr "最大深度: %.*f %s\n時間: %d min\n%s"
+
+#: print.c:377
+#, c-format
+msgid "Max. CNS"
+msgstr "最大 CNS"
+
+#: equipment.c:1518
+msgid "MaxPress"
+msgstr "最大壓力"
+
+#: statistics-gtk.c:102
+msgctxt "Depth"
+msgid "Maximum"
+msgstr " 最大"
+
+#: statistics-gtk.c:105
+msgctxt "SAC"
+msgid "Maximum"
+msgstr "最大"
+
+#: statistics-gtk.c:108
+msgctxt "Temp"
+msgid "Maximum"
+msgstr "最高"
+
+#: main.c:73
+msgid "May"
+msgstr "5月"
+
+#: divelist-gtk.c:1635
+msgid "Merge dives"
+msgstr "合併潛水"
+
+#: divelist-gtk.c:1678
+msgid "Merge trip with trip above"
+msgstr "與上方旅程合併"
+
+#: divelist-gtk.c:1688
+msgid "Merge trip with trip below"
+msgstr "與下方旅程合併"
+
+#: gtk-gui.c:775
+msgid "Meter"
+msgstr "公尺"
+
+#: statistics-gtk.c:561
+msgid "Min Depth"
+msgstr "最小深度"
+
+#: statistics-gtk.c:569
+msgid "Min SAC"
+msgstr "最小 SAC"
+
+#: statistics-gtk.c:544
+msgid "Min Temp"
+msgstr "最低溫度"
+
+#: statistics-gtk.c:101
+msgctxt "Depth"
+msgid "Minimum"
+msgstr "最小"
+
+#: statistics-gtk.c:104
+msgctxt "SAC"
+msgid "Minimum"
+msgstr "最小"
+
+#: statistics-gtk.c:107
+msgctxt "Temp"
+msgid "Minimum"
+msgstr "最低"
+
+#: gtk-gui.c:841
+msgid "Misc. Options"
+msgstr "其餘選項"
+
+#: gtk-gui.c:1512
+msgid "Model"
+msgstr "模型"
+
+#: main.c:64
+msgid "Mon"
+msgstr "周一"
+
+#: gtk-gui.c:1275
+msgid "Multi-platform divelog software in C"
+msgstr "以C語言建立，跨平台潛水日誌軟體"
+
+#: info.c:311
+msgid "N"
+msgstr "N"
+
+#: gtk-gui.c:1607
+msgid "New"
+msgstr "建立"
+
+#: gtk-gui.c:1227
+msgid "New starting number"
+msgstr "新的開始編號"
+
+#: gtk-gui.c:1634
+msgid "Next DC"
+msgstr "下一個 DC"
+
+#: gtk-gui.c:1522 gtk-gui.c:2377
+msgid "Nickname"
+msgstr "別名"
+
+#: uemis.c:232
+msgid "No Tank Data"
+msgstr "無氣瓶資料"
+
+#: equipment.c:627
+msgid "No cylinders listed for this dive."
+msgstr "此次潛水無氣瓶記錄."
+
+#: info-gtk.c:379 info-gtk.c:635 info-gtk.c:1013
+msgid "Notes"
+msgstr "筆記"
+
+#: print.c:1025
+#, c-format
+msgid "Notes height (%d%% - %d%%)"
+msgstr "潛水筆記欄位高度 (%d%% - %d%%)"
+
+#: print.c:1003
+msgid "Notes on top"
+msgstr "潛水筆記在上方"
+
+#: main.c:74
+msgid "Nov"
+msgstr "11月"
+
+#: libdivecomputer.c:153
+msgid "OLF"
+msgstr "OLF"
+
+#: divelist-gtk.c:823 gtk-gui.c:878 print.c:361 statistics-gtk.c:615
+#, c-format
+msgid "OTU"
+msgstr "OTU"
+
+#: main.c:74
+msgid "Oct"
+msgstr "10月"
+
+#: libdivecomputer.c:770
+msgid "Odd pthread error return"
+msgstr "PThread 線程錯誤"
+
+#: gtk-gui.c:1569
+msgid "Ok to delete the selected entry?"
+msgstr "確認刪除選擇的連結?"
+
+#: gtk-gui.c:1127
+msgid "Only display dives with these tags:"
+msgstr "只顯示有這些標籤的潛水:"
+
+#: gtk-gui.c:291
+msgid "Open File"
+msgstr "開啟檔案"
+
+#: gtk-gui.c:1608
+msgid "Open..."
+msgstr "開啟..."
+
+#: print.c:995
+msgid "Ordering"
+msgstr "順序"
+
+#: print.c:1024
+#, c-format
+msgid "Other data height (%d%% - %d%%)"
+msgstr "其餘資料欄位的高度 (%d%% - %d%%)"
+
+#: print.c:173
+#, c-format
+msgid "Oxygen"
+msgstr "氧氣"
+
+#: libdivecomputer.c:153
+msgid "PO2"
+msgstr "PO2"
+
+#: uemis.c:210
+msgid "PO2 Ascend Alarm"
+msgstr "PO2 上升警告"
+
+#: uemis.c:208
+msgid "PO2 Ascend Warning"
+msgstr "PO2 上升提醒"
+
+#: uemis.c:205
+msgid "PO2 Green Warning"
+msgstr "PO2 提醒"
+
+#: gtk-gui.c:781
+msgid "PSI"
+msgstr "PSI"
+
+#: webservice.c:341
+msgid "Password"
+msgstr "密碼"
+
+#: info-gtk.c:565
+msgid "Pick on map"
+msgstr "地圖上選取"
+
+#: gtk-gui.c:1605
+msgid "Planner"
+msgstr "計畫"
+
+#: webservice.c:327
+msgid ""
+"Please enter your userid and password for divelogs.de. The selected dives "
+"will be added to your account"
+msgstr "請輸入你的 divelogs.de 使用者Id與密碼, 所選擇的潛水記錄會新增到你的帳戶"
+
+#: gtk-gui.c:752
+msgid "Preferences"
+msgstr "環境設定"
+
+#: gtk-gui.c:1619
+msgid "Preferences..."
+msgstr "環境設定..."
+
+#: equipment.c:1002 equipment.c:1008
+msgid "Pressure"
+msgstr "壓力"
+
+#: gtk-gui.c:779
+msgid "Pressure:"
+msgstr "壓力:"
+
+#: gtk-gui.c:1633
+msgid "Prev DC"
+msgstr "上一個 DC"
+
+#: print.c:989
+msgid "Print in color"
+msgstr "彩色列印"
+
+#: print.c:978
+msgid "Print only selected dives"
+msgstr "只列印所選擇的潛水"
+
+#: print.c:974
+msgid "Print selection"
+msgstr "列印選擇"
+
+#: print.c:939 print.c:946
+msgid "Print type"
+msgstr "列印類型"
+
+#: gtk-gui.c:1612
+msgid "Print..."
+msgstr "列印..."
+
+#: gtk-gui.c:1629
+msgid "Profile"
+msgstr "潛水記錄"
+
+#: gtk-gui.c:888
+msgid "Profile Settings"
+msgstr "潛水記錄設定"
+
+#: print.c:1023
+#, c-format
+msgid "Profile height (%d%% - %d%%)"
+msgstr "潛水記錄欄位高度 (%d%% - %d%%)"
+
+#: print.c:1000
+msgid "Profile on top"
+msgstr "潛水記錄在上方"
+
+#: gtk-gui.c:1625
+msgid "Quit"
+msgstr "結束"
+
+#: uemis.c:218
+msgid "RGT Alert"
+msgstr "RGT 警告"
+
+#: uemis.c:216
+msgid "RGT Warning"
+msgstr "RGT 提醒"
+
+#: info-gtk.c:581 info-gtk.c:1010
+msgid "Rating"
+msgstr "評分"
+
+#: uemis-downloader.c:364
+#, c-format
+msgid "Reading %s %s"
+msgstr "讀取%s %s"
+
+#: gtk-gui.c:2142
+msgid "Remove"
+msgstr "移除"
+
+#: divelist-gtk.c:1205 divelist-gtk.c:1693
+msgid "Remove Trip"
+msgstr "移除旅程"
+
+#: divelist-gtk.c:1789
+msgid "Remove dive from trip"
+msgstr "自旅程中移除潛水"
+
+#: gtk-gui.c:2176
+msgid "Remove event here"
+msgstr "移除事件"
+
+#: divelist-gtk.c:1787
+msgid "Remove selected dives from trip"
+msgstr "自旅程中移除選擇的潛水"
+
+#: gtk-gui.c:1218
+msgid "Renumber"
+msgstr "重新編號"
+
+#: gtk-gui.c:1620
+msgid "Renumber..."
+msgstr "重新編號..."
+
+#: download-dialog.c:153
+msgid "Retry"
+msgstr "重試"
+
+#: info.c:311
+msgid "S"
+msgstr "S"
+
+#: divelist-gtk.c:822 gtk-gui.c:820 print.c:395 statistics-gtk.c:92
+#: statistics-gtk.c:614
+#, c-format
+msgid "SAC"
+msgstr "SAC"
+
+#: planner-gtk.c:420
+msgid "SAC during decostop"
+msgstr "減壓停留時 SAC"
+
+#: planner-gtk.c:419
+msgid "SAC during dive"
+msgstr "潛水時 SAC"
+
+#: uemis.c:198
+msgid "Safety Stop Violation"
+msgstr "違反安全停留"
+
+#: main.c:64
+msgid "Sat"
+msgstr "周六"
+
+#: gtk-gui.c:1610
+msgid "Save As..."
+msgstr "另存..."
+
+#: gtk-gui.c:221
+msgid "Save Changes?"
+msgstr "儲存變更?"
+
+#: divelist-gtk.c:1020 gtk-gui.c:158
+msgid "Save File As"
+msgstr "另存新檔"
+
+#: divelist-gtk.c:1710
+msgid "Save as"
+msgstr "另存為"
+
+#: gtk-gui.c:1609
+msgid "Save..."
+msgstr "儲存..."
+
+#: planner-gtk.c:299
+msgid "Segment Time"
+msgstr "時間間隔"
+
+#: gtk-gui.c:1163
+msgid "Select Events"
+msgstr "選擇事件"
+
+#: gtk-gui.c:1623
+msgid "Select Events..."
+msgstr "選擇事件..."
+
+#: gtk-gui.c:1624
+msgid "Select Tags..."
+msgstr "選擇標籤..."
+
+#: main.c:74
+msgid "Sep"
+msgstr "9月"
+
+#: uemis-downloader.c:30
+msgid ""
+"Short write to req.txt file\n"
+"Is the Uemis Zurich plugged in correctly?"
+msgstr "無法寫入 req.txt 檔案\n請確認 Uemis Zurich 是否正確連接?"
+
+#: statistics-gtk.c:98
+msgctxt "Duration"
+msgid "Shortest"
+msgstr "最短"
+
+#: statistics-gtk.c:554
+msgid "Shortest Dive"
+msgstr "最短潛水"
+
+#: gtk-gui.c:799 gtk-gui.c:872
+msgid "Show Columns"
+msgstr "顯示欄位"
+
+#: gtk-gui.c:968
+msgid "Show EAD, END, EADD"
+msgstr "顯示 EAD, END, EADD"
+
+#: gtk-gui.c:951
+msgid "Show MOD"
+msgstr "顯示 MOD"
+
+#: gtk-gui.c:984
+msgid "Show calculated ceiling"
+msgstr "顯示計算的高度"
+
+#: gtk-gui.c:976
+msgid "Show dc reported ceiling in red"
+msgstr "以紅色顯示潛水電腦回報的高度"
+
+#: divelist-gtk.c:1761
+msgid "Show in map"
+msgstr "在地圖中顯示"
+
+#: gtk-gui.c:934
+msgid "Show pHe graph"
+msgstr "顯示 pHe 圖示"
+
+#: gtk-gui.c:915
+#, c-format
+msgid "Show pN%s graph"
+msgstr "顯示 pN%s 圖示"
+
+#: gtk-gui.c:896
+#, c-format
+msgid "Show pO%s graph"
+msgstr "顯示 pO%s 圖示"
+
+#: planner.c:217
+msgid "Simulated Dive"
+msgstr "潛水模擬"
+
+#: equipment.c:999 equipment.c:1517
+msgid "Size"
+msgstr "容量"
+
+#: print.c:1012
+#, c-format
+msgid "Sizing heights (%% of layout)"
+msgstr "調整高度 (%% 版面)"
+
+#: uemis.c:200
+msgid "Speed Alarm"
+msgstr "速度過快警示"
+
+#: uemis.c:203
+msgid "Speed Warning"
+msgstr "速度過快提醒"
+
+#: equipment.c:1010 equipment.c:1519
+msgid "Start"
+msgstr "開始"
+
+#: uemis-downloader.c:782
+msgid "Start download"
+msgstr "開始下載"
+
+#: statistics-gtk.c:532
+msgid "Statistics"
+msgstr "統計"
+
+#: statistics-gtk.c:468
+#, c-format
+msgid "Statistics %s"
+msgstr "統計 %s"
+
+#: gtk-gui.c:1865
+msgid "Stats"
+msgstr "統計"
+
+#: webservice.c:295
+msgid "Status"
+msgstr "狀態"
+
+#: planner.c:559
+#, c-format
+msgid "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"
+msgstr "在 %.*f %s 停留 %d:%02d min - 時間運行 %d:%02u 於 %s\n"
+
+#: parse-xml.c:438
+#, c-format
+msgid "Strange percentage reading %s\n"
+msgstr "有問題的讀取比例 %s\n"
+
+#: divelist-gtk.c:819 gtk-gui.c:830 info-gtk.c:582 info-gtk.c:1011
+msgid "Suit"
+msgstr "防寒衣"
+
+#. ++GETTEXT: these are three letter days - we allow up to six code bytes
+#: main.c:64
+msgid "Sun"
+msgstr "周日"
+
+#: statistics-gtk.c:592
+msgid "Surf Intv"
+msgstr "水面間隔"
+
+#: planner-gtk.c:393
+msgid "Surface Pressure (mbar)"
+msgstr "水面氣壓 (mbar)"
+
+#: planner.c:570
+#, c-format
+msgid "Switch gas to %s\n"
+msgstr "更換氣體至 %s\n"
+
+#: print.c:960
+msgid "Table print"
+msgstr "表格列印"
+
+#: info-gtk.c:628
+msgid "Tags are only shown if they are identical for all edited dives"
+msgstr "標籤只有在被識別為所有已編輯潛水使用時才會顯示"
+
+#: uemis.c:220
+msgid "Tank Change Suggested"
+msgstr "氣瓶更換建議"
+
+#: uemis.c:214
+msgid "Tank Pressure Info"
+msgstr "氣瓶壓力資訊"
+
+#: gtk-gui.c:870
+msgid "Tec Settings"
+msgstr "Tec 設定"
+
+#: gtk-gui.c:805
+msgid "Temp"
+msgstr "溫度"
+
+#: statistics-gtk.c:92
+msgid "Temperature"
+msgstr "溫度"
+
+#: gtk-gui.c:789
+msgid "Temperature:"
+msgstr "溫度:"
+
+#: gtk-gui.c:1631
+msgid "Three"
+msgstr "三欄顯示"
+
+#: main.c:64
+msgid "Thu"
+msgstr "周四"
+
+#: info-gtk.c:841
+msgid "Time"
+msgstr "時間"
+
+#: gtk-gui.c:1749
+msgid ""
+"To edit dive information\n"
+"double click on it in the dive list"
+msgstr "欲編輯潛水資訊\n只要在潛水表單上雙按即可"
+
+#: gtk-gui.c:1641
+msgid "Toggle Zoom"
+msgstr "變焦切換"
+
+#: planner.c:294
+msgid "Too many gas mixes"
+msgstr "太多氣體混合"
+
+#: planner-gtk.c:327
+msgid "Too many waypoints"
+msgstr "太多路徑點"
+
+#: statistics-gtk.c:96
+msgctxt "Duration"
+msgid "Total"
+msgstr "全部"
+
+#: statistics-gtk.c:551
+msgid "Total Time"
+msgstr "全部時間"
+
+#: print.c:340
+#, c-format
+msgid "Total Weight:"
+msgstr "總重量:"
+
+#: planner.c:550
+#, c-format
+msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
+msgstr "禁搭飛機 %.*f %s 在 %d:%02d min - 運行時間 %d:%02u 在 %s\n"
+
+#. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
+#: divelist.c:579
+#, c-format
+msgid "Trip %1$s, %2$s %3$d, %4$d (%5$d dive)"
+msgid_plural "Trip %1$s, %2$s %3$d, %4$d (%5$d dives)"
+msgstr[0] "旅程 %1$s, %2$s %3$d, %4$d (%5$d 潛水)"
+
+#: main.c:64
+msgid "Tue"
+msgstr "周二"
+
+#: equipment.c:1516 equipment.c:1544
+msgid "Type"
+msgstr "類型"
+
+#: uemis-downloader.c:28
+msgid ""
+"Uemis Zurich: File System is almost full\n"
+"Disconnect/reconnect the dive computer\n"
+"and click 'Retry'"
+msgstr "Uemis Zurich: 檔案系統使用空間已接近額滿\n請將潛水電腦中斷/重新連接\n並按下\"重試\"鈕"
+
+#: uemis-downloader.c:29
+msgid ""
+"Uemis Zurich: File System is full\n"
+"Disconnect/reconnect the dive computer\n"
+"and try again"
+msgstr "Uemis Zurich: 檔案系統使用空間已額滿\n請將潛水電腦中斷/重新連接\n並再次嘗試"
+
+#: uemis-downloader.c:771
+msgid "Uemis init failed"
+msgstr "Uemis 初始化失敗"
+
+#: libdivecomputer.c:699
+msgid "Unable to create libdivecomputer context"
+msgstr "無法建立 libdivecomputer 上下文"
+
+#: libdivecomputer.c:404
+#, c-format
+msgid "Unable to create parser for %s %s"
+msgstr "無法解析 %s %s"
+
+#: libdivecomputer.c:701
+#, c-format
+msgid "Unable to open %s %s (%s)"
+msgstr " 無法開啟 %s %s (%s)"
+
+#: gtk-gui.c:768
+msgid "Units"
+msgstr "單位"
+
+#: divelist-gtk.c:1650
+msgid "Upload dive(s) to divelogs.de"
+msgstr "上傳(多支)潛水至 divelogs.de"
+
+#: webservice.c:318
+msgid "Upload to divelogs.de"
+msgstr "上傳至 divelogs.de"
+
+#: gtk-gui.c:1615
+msgid "Upload to divelogs.de..."
+msgstr "上傳至 divelogs.de..."
+
+#: gps.c:212
+msgid "Use right click to mark dive location at cursor"
+msgstr "在滑鼠游標處, 按下右鍵來標示潛水位置"
+
+#: webservice.c:282 webservice.c:333
+msgid "User Identifier"
+msgstr "使用者 Id"
+
+#: gtk-gui.c:1627
+msgid "User Manual"
+msgstr "使用者說明"
+
+#: gtk-gui.c:1603
+msgid "View"
+msgstr "檢視"
+
+#: info-gtk.c:587 statistics-gtk.c:600
+msgid "Visibility"
+msgstr "能見度"
+
+#: gtk-gui.c:784
+msgid "Volume:"
+msgstr "容量:"
+
+#: info.c:312
+msgid "W"
+msgstr "W"
+
+#: planner-gtk.c:162
+msgid "Warning - extremely long dives can cause long calculation time"
+msgstr "注意 - 過長的潛水會需要較多的計算時間"
+
+#: planner-gtk.c:137
+msgid "Warning - planning very deep dives can take excessive amounts of time"
+msgstr "提醒 - 計畫過深的潛水會耗費大量的時間"
+
+#: statistics-gtk.c:606
+msgid "Water Temp"
+msgstr "水溫"
+
+#: webservice.c:163
+msgid "Webservice"
+msgstr "網頁服務"
+
+#: main.c:64
+msgid "Wed"
+msgstr "周三"
+
+#: equipment.c:1049 equipment.c:1643 gtk-gui.c:825
+msgid "Weight"
+msgstr "配重"
+
+#: equipment.c:1148 print.c:308
+#, c-format
+msgid "Weight System"
+msgstr "配重系統"
+
+#: gtk-gui.c:794
+msgid "Weight:"
+msgstr "重量:"
+
+#: gtk-gui.c:146
+msgid "XML file"
+msgstr "XML 檔案"
+
+#: statistics-gtk.c:92
+msgid "Year"
+msgstr "年"
+
+#: gtk-gui.c:1621 statistics-gtk.c:295
+msgid "Yearly Statistics"
+msgstr "年統計"
+
+#: gtk-gui.c:2363
+#, c-format
+msgid ""
+"You already have a dive computer of this model\n"
+"named %s\n"
+"Subsurface can maintain a nickname for this device to distinguish it from the existing one. The default is the model and device ID as shown below.\n"
+"If you don't want to name this dive computer click 'Cancel' and Subsurface will simply display its model as its name (which may mean that you cannot tell the two dive computers apart in the logs)."
+msgstr "你已經擁有此型號的潛水電腦\n名稱 %s\nSubsurface 能維護為此電腦所設定的別名, 來與其它存在的電腦做區隔. 預設是顯示型號與裝置ID.\n如果你不想要為此電腦命名, 按下\"取消\", Subsurface 會顯示其型號做為電腦名稱(這另外代表在日誌裡, 你可能會無法記錄所使用的電腦)."
+
+#: gtk-gui.c:231
+msgid ""
+"You have unsaved changes\n"
+"Would you like to save those before closing the datafile?"
+msgstr "你的資料變更尚未儲存. \n請問關閉資料檔前, 是否需要儲存這些變更? "
+
+#: gtk-gui.c:234 gtk-gui.c:237
+#, c-format
+msgid ""
+"You have unsaved changes to file: %s \n"
+"Would you like to save those before closing the datafile?"
+msgstr "你的資料變更尚未儲存至檔案: %s \n請問關閉資料檔前, 是否需要儲存這些變更? "
+
+#: divelist-gtk.c:463 planner.c:94 planner.c:786 planner.c:787 print.c:178
+#: profile.c:415
+#, c-format
+msgid "air"
+msgstr "air"
+
+#: libdivecomputer.c:153
+msgid "airtime"
+msgstr "空氣時間"
+
+#: statistics.c:21
+msgid "altitude"
+msgstr "高海拔"
+
+#: equipment.c:892
+msgid "ankle"
+msgstr "腳踝"
+
+#: libdivecomputer.c:149
+msgid "ascent"
+msgstr "上升"
+
+#: equipment.c:893
+msgid "backplate weight"
+msgstr "背板配重"
+
+#: dive.c:48
+msgid "bar"
+msgstr "bar"
+
+#: equipment.c:891
+msgid "belt"
+msgstr "配重帶"
+
+#: statistics.c:20
+msgid "boat"
+msgstr "船"
+
+#: gtk-gui.c:2116 libdivecomputer.c:150
+msgid "bookmark"
+msgstr "書籤"
+
+#: statistics.c:21
+msgid "cave"
+msgstr "洞穴"
+
+#: statistics.c:20
+msgid "cavern"
+msgstr "大地洞"
+
+#: libdivecomputer.c:149
+msgid "ceiling"
+msgstr "高度"
+
+#: libdivecomputer.c:152
+msgid "ceiling (safety stop)"
+msgstr "高度 (安全停留)"
+
+#: equipment.c:894
+msgid "clip-on"
+msgstr "吊掛式"
+
+#: dive.c:93 planner.c:959
+msgid "cuft"
+msgstr "cuft"
+
+#: uemis-downloader.c:384
+msgid "data"
+msgstr "資料"
+
+#: statistics.c:23
+msgid "deco"
+msgstr "減壓"
+
+#: libdivecomputer.c:149
+msgid "deco stop"
+msgstr "減壓停留"
+
+#: statistics.c:20
+msgid "deep"
+msgstr "深"
+
+#: libdivecomputer.c:152
+msgid "deepstop"
+msgstr "深停留"
+
+#: uemis-downloader.c:405
+msgid "divelog entry id"
+msgstr "潛水記錄連結 id"
+
+#: uemis-downloader.c:407
+msgid "divespot data id"
+msgstr "潛點資料 id"
+
+#: libdivecomputer.c:152
+msgid "divetime"
+msgstr "潛水時間"
+
+#: statistics.c:20
+msgid "drift"
+msgstr "放流"
+
+#: uemis-downloader.c:589
+msgid "drysuit"
+msgstr "乾式防寒衣"
+
+#: planner.c:788
+msgid "ean"
+msgstr "ean"
+
+#: statistics.c:263
+#, c-format
+msgid "for all dives"
+msgstr "針對所有潛水"
+
+#: statistics.c:259
+#, c-format
+msgid "for dive #%d"
+msgstr "針對潛水 #%d"
+
+#: statistics.c:217
+#, c-format
+msgid "for dives #"
+msgstr "針對潛水 #"
+
+#: statistics.c:261
+#, c-format
+msgid "for selected dive"
+msgstr "針對選擇的潛水"
+
+#: statistics.c:224
+#, c-format
+msgid "for selected dives"
+msgstr "針對選擇的潛水"
+
+#: statistics.c:22
+msgid "freshwater"
+msgstr "淡水"
+
+#: dive.c:119 divelist-gtk.c:815 info-gtk.c:921 info-gtk.c:932 planner.c:897
+msgid "ft"
+msgstr "ft"
+
+#: uemis-downloader.c:590
+msgid "full suit"
+msgstr "全身式防寒衣"
+
+#: libdivecomputer.c:151 libdivecomputer.c:154
+msgid "gaschange"
+msgstr "氣瓶更換"
+
+#: libdivecomputer.c:153
+msgid "heading"
+msgstr "標題"
+
+#: statistics.c:21
+msgid "ice"
+msgstr "冰"
+
+#: equipment.c:890
+msgid "integrated"
+msgstr "整合型"
+
+#: statistics.c:20
+msgid "invalid"
+msgstr " 無效"
+
+#: libdivecomputer.c:171
+msgid "invalid event number"
+msgstr "錯誤的事件編號"
+
+#: uemis-downloader.c:590
+msgid "jacket"
+msgstr "夾克式"
+
+#: dive.c:143 equipment.c:1068 gtk-gui.c:795
+msgid "kg"
+msgstr "kg"
+
+#: dive.c:88
+msgid "l"
+msgstr "l"
+
+#: statistics.c:21
+msgid "lake"
+msgstr "湖泊"
+
+#: dive.c:139 divelist-gtk.c:818 equipment.c:1070 gtk-gui.c:796
+msgid "lbs"
+msgstr "lbs"
+
+#: uemis-downloader.c:590
+msgid "long john"
+msgstr "長約翰式"
+
+#: dive.c:114 info-gtk.c:921 info-gtk.c:932
+msgid "m"
+msgstr "m"
+
+#: gtk-gui.c:956
+msgid "max ppO2"
+msgstr "最大 ppO2"
+
+#: divelist-gtk.c:824 gtk-gui.c:883
+msgid "maxCNS"
+msgstr "最大 CNS"
+
+#: libdivecomputer.c:153
+msgid "maxdepth"
+msgstr "最大深度"
+
+#: uemis-downloader.c:591
+msgid "membrane"
+msgstr "膜組織"
+
+#: divelist-gtk.c:816 planner.c:965
+msgid "min"
+msgstr "min"
+
+#: libdivecomputer.c:630
+#, c-format
+msgid "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
+msgstr "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"
+
+#: uemis-downloader.c:409
+msgid "more data dive id"
+msgstr "更多潛水記錄, 潛水編號 "
+
+#: statistics.c:198
+#, c-format
+msgid "more than %d days"
+msgstr "超過 %d日"
+
+#: statistics.c:22
+msgid "night"
+msgstr "夜潛"
+
+#: libdivecomputer.c:154
+msgid "non stop time"
+msgstr "無停留時間"
+
+#: libdivecomputer.c:149
+msgid "none"
+msgstr "無"
+
+#: gtk-gui.c:939
+msgid "pHe threshold"
+msgstr "pHe 門檻"
+
+#: gtk-gui.c:921
+#, c-format
+msgid "pN%s threshold"
+msgstr "pN%s 門檻"
+
+#: gtk-gui.c:902
+#, c-format
+msgid "pO%s threshold"
+msgstr "pO%s 門檻"
+
+#: dive.c:44
+msgid "pascal"
+msgstr "pascal"
+
+#: statistics.c:23
+msgid "photo"
+msgstr "照片"
+
+#: statistics.c:21
+msgid "pool"
+msgstr "泳池"
+
+#: dive.c:52
+msgid "psi"
+msgstr "psi"
+
+#: libdivecomputer.c:149
+msgid "rbt"
+msgstr "rbt"
+
+#: libdivecomputer.c:153
+msgid "rgbm"
+msgstr "rgbm"
+
+#: statistics.c:22
+msgid "river"
+msgstr "河流"
+
+#: libdivecomputer.c:150
+msgid "safety stop"
+msgstr "安全停留"
+
+#: libdivecomputer.c:151
+msgid "safety stop (mandatory)"
+msgstr "安全停留 (強制性)"
+
+#: libdivecomputer.c:151
+msgid "safety stop (voluntary)"
+msgstr "安全停留 (自發性)"
+
+#: uemis-downloader.c:589
+msgid "semidry"
+msgstr "半乾衣"
+
+#: statistics.c:20
+msgid "shore"
+msgstr "岸潛"
+
+#: uemis-downloader.c:590
+msgid "shorty"
+msgstr "短袖防寒衣"
+
+#: libdivecomputer.c:150
+msgid "surface"
+msgstr "水面"
+
+#: statistics.c:22
+msgid "teaching"
+msgstr "教學"
+
+#: libdivecomputer.c:154
+msgid "tissue level warning"
+msgstr "組織等級警告"
+
+#: statistics.c:22
+msgid "training"
+msgstr "訓練"
+
+#. ++GETTEXT the term translator-credits is magic - list the names of the
+#. tranlators here
+#: gtk-gui.c:1281
+msgid "translator-credits"
+msgstr "Chih, Kunhui\nTu, Weiting"
+
+#: libdivecomputer.c:150
+msgid "transmitter"
+msgstr "發射器"
+
+#: equipment.c:1409 equipment.c:1429
+msgid "unkn"
+msgstr "未知"
+
+#: equipment.c:649 libdivecomputer.c:152 print.c:321 statistics-gtk.c:361
+#: uemis-downloader.c:133
+msgid "unknown"
+msgstr "未知"
+
+#: equipment.c:540
+msgid "unspecified"
+msgstr "不明"
+
+#: uemis-downloader.c:590
+msgid "vest"
+msgstr "背心"
+
+#: statistics.c:23
+msgid "video"
+msgstr "攝影"
+
+#: libdivecomputer.c:150
+msgid "violation"
+msgstr "違反"
+
+#: equipment.c:1545
+msgid "weight"
+msgstr "重量"
+
+#: uemis-downloader.c:589
+msgid "wetsuit"
+msgstr "濕式防寒衣"
+
+#: libdivecomputer.c:149
+msgid "workload"
+msgstr "工作量"
+
+#: statistics.c:21
+msgid "wreck"
+msgstr "沈船"
