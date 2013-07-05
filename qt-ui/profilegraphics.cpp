@@ -1341,7 +1341,7 @@ void ToolTipItem::updateTitlePosition()
 	title->setBrush(Qt::white);
 
 	if (toolTips.size() > 0) {
-		double x1 = 0;
+		double x1 = 3;
 		double y1 = title->pos().y() + SPACING/2 + title->boundingRect().height();
 		double x2 = boundingRect().width() - 10;
 		double y2 = y1;
