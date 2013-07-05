@@ -185,6 +185,7 @@ void ProfileGraphicsView::clear()
 
 void ProfileGraphicsView::refresh()
 {
+	clear();
 	plot(current_dive, TRUE);
 }
 

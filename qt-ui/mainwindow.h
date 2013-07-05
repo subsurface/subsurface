@@ -92,6 +92,7 @@ private slots:
 	void on_actionDivePlanner_triggered();
 
 	/* monitor resize of the info-profile splitter */
+	void on_mainSplitter_splitterMoved(int pos, int idx);
 	void on_infoProfileSplitter_splitterMoved(int pos, int idx);
 
 	void current_dive_changed(int divenr);

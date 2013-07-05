@@ -81,7 +81,7 @@ void MainWindow::current_dive_changed(int divenr)
 
 void MainWindow::redrawProfile()
 {
-	ui->ProfileWidget->plot(get_dive(selected_dive));
+	ui->ProfileWidget->refresh();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -316,10 +316,16 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	view->show();
 }
 
+void MainWindow::on_mainSplitter_splitterMoved(int pos, int idx)
+{
+	redrawProfile();
+}
+
 void MainWindow::on_infoProfileSplitter_splitterMoved(int pos, int idx)
 {
 	/* always update the floating plus sign icons in the equipment tab */
 	ui->InfoWidget->equipmentPlusUpdate();
+	redrawProfile();
 }
 
 /**
@@ -345,6 +351,7 @@ void MainWindow::on_actionViewProfile_triggered()
 {
 	ui->infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui->mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
+	redrawProfile();
 }
 
 void MainWindow::on_actionViewInfo_triggered()
@@ -370,6 +377,7 @@ void MainWindow::on_actionViewAll_triggered()
 
 	// half and half?
 	ui->mainSplitter->setSizes( QList<int>() << 1 << 1);
+	redrawProfile();
 }
 
 void MainWindow::on_actionPreviousDC_triggered()
