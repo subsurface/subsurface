@@ -2,6 +2,8 @@
 #define PRINTOPTIONS_H
 
 #include <QWidget>
+#include <QSlider>
+#include <QLabel>
 #include "../display.h"
 
 namespace Ui {
@@ -13,11 +15,19 @@ class PrintOptions : public QWidget {
 Q_OBJECT
 
 public:
-	static PrintOptions *instance();
+	explicit PrintOptions(QWidget *parent = 0, struct options *printOpt = 0);
 
 private:
-	explicit PrintOptions(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	Ui::PrintOptions *ui;
+	void setLabelFromSlider(QSlider *slider, QLabel *label);
+	void initSliderWithLabel(QSlider *slider, QLabel *label, int value);
+	QString formatSliderValueText(int value);
+	struct options *printOptions;
+
+private slots:
+	void sliderPHeightMoved(int value);
+	void sliderOHeightMoved(int value);
+	void sliderNHeightMoved(int value);
 };
 
 #endif

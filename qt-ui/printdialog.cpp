@@ -18,7 +18,8 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	printOptions = tempOptions;
 	/* temporary.
 	 * add the PrintOptions widget and a Print button for testing purposes. */
-	optionsWidget = PrintOptions::instance();
+	optionsWidget = new PrintOptions(this, &printOptions);
+
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
 	layout->addWidget(optionsWidget);
@@ -27,7 +28,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
 	layout->addWidget(printButton);
 
-	setFixedSize(600, 400);
+	setFixedSize(520, 500);
 	setWindowTitle("Print");
 }
 
