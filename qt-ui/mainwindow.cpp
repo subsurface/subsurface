@@ -34,6 +34,7 @@
 #include "simplewidgets.h"
 #include "diveplanner.h"
 #include "about.h"
+#include "printdialog.h"
 
 static MainWindow* instance = 0;
 
@@ -218,7 +219,7 @@ void MainWindow::on_actionExportUDDF_triggered()
 
 void MainWindow::on_actionPrint_triggered()
 {
-	qDebug("actionPrint");
+	PrintDialog::instance()->runDialog();
 }
 
 void MainWindow::disableDcShortcuts()

@@ -53,6 +53,8 @@ HEADERS = \
 	qt-ui/diveplanner.h \
 	qt-ui/about.h \
 	qt-ui/graphicsview-common.h \
+	qt-ui/printdialog.h \
+	qt-ui/printoptions.h \
 
 
 SOURCES = \
@@ -94,6 +96,8 @@ SOURCES = \
 	qt-ui/diveplanner.cpp \
 	qt-ui/about.cpp \
 	qt-ui/graphicsview-common.cpp \
+	qt-ui/printdialog.cpp \
+	qt-ui/printoptions.cpp \
 	$(RESFILE)
 
 
