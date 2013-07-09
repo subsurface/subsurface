@@ -5,13 +5,14 @@
 # Translators:
 # Aret Leetsaar <aret.leetsaar@gmail.com>, 2013
 # Aret Leetsaar <aret.leetsaar@gmail.com>, 2013
+# peepk <peep.krusberg@eesti.ee>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: subsurface\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 21:53-0400\n"
-"PO-Revision-Date: 2013-07-05 09:20+0000\n"
-"Last-Translator: dirkhh <dirk@hohndel.org>\n"
+"PO-Revision-Date: 2013-07-06 16:10+0000\n"
+"Last-Translator: Aret Leetsaar <aret.leetsaar@gmail.com>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/projects/p/subsurface/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +37,7 @@ msgstr " Lae alla"
 
 #: download-dialog.c:385
 msgid " Please select dive computer and device. "
-msgstr " Vali kompuuter ja seade. "
+msgstr " Vali sukelsumiskompuuter ja seade "
 
 #: profile.c:429
 msgctxt "Starts with space!"
@@ -78,7 +79,7 @@ msgstr "%.0f%s of %s\n"
 #: print.c:88
 #, c-format
 msgid "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
-msgstr "%1$s%2$s, %3$s %4$d, %5$d   %6$d:%7$02d"
+msgstr "%1$s%2$s, %3$s %4$d, %5$d %6$d:%7$02d"
 
 #. ++GETTEXT 160 chars: weekday, monthname, day, year, hour, min
 #: print.c:566
@@ -160,7 +161,7 @@ msgstr "%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"
 msgid ""
 "%s\n"
 "In deco"
-msgstr "%s\nDekos"
+msgstr "%s⏎ Decos"
 
 #: profile.c:2208
 #, c-format
@@ -218,7 +219,7 @@ msgstr "%s\nT:%.1f %s"
 msgid ""
 "%s\n"
 "pHe:%.2fbar"
-msgstr "%s\npHe:%.2fbar"
+msgstr "%s⏎ pHe:%.2fbar"
 
 #: profile.c:2199
 #, c-format
@@ -232,7 +233,7 @@ msgstr "%s\npN%s:%.2fbar"
 msgid ""
 "%s\n"
 "pO%s:%.2fbar"
-msgstr "%s\npO%s:%.2fbar"
+msgstr "%s⏎ pO%s:%.2fbar"
 
 #: gtk-gui.c:2101
 #, c-format
@@ -251,11 +252,11 @@ msgstr "(%s) või (%s)"
 
 #: info-gtk.c:489
 msgid "(click to edit date/time)"
-msgstr "(klikka kuupäeva/aja toimetamiseks)"
+msgstr "(klikka kuupäeva/aja muutmiseks)"
 
 #: info-gtk.c:491
 msgid "(click to edit date/time/depth)"
-msgstr "(klikka kuupäeva/aja/sügavuse toimetamiseks)"
+msgstr "(klikka kuupäeva/aja/sügavuse muutmiseks)"
 
 #: statistics.c:265
 #, c-format
@@ -600,7 +601,7 @@ msgstr "Seade või ühenduspunkt"
 
 #: gtk-gui.c:847
 msgid "Display invalid dives"
-msgstr "Kuva valed sukeldumised"
+msgstr "Kuva veaga sukeldumised"
 
 #. ++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min
 #. <trailing text>
@@ -928,7 +929,7 @@ msgstr "Kõikide sukeldumiste jõuga allalaadimine"
 
 #: main.c:64
 msgid "Fri"
-msgstr "Re"
+msgstr "Reede"
 
 #: gtk-gui.c:1007
 msgid "GFhigh"
@@ -968,7 +969,7 @@ msgstr "Kasutatud gaas"
 #: planner.c:578
 #, c-format
 msgid "Gas consumption:\n"
-msgstr "Gaasikulu:\n"
+msgstr "Gaasi tarbimine:\n"
 
 #: equipment.c:1023 print.c:201
 msgid "Gasmix"
@@ -988,7 +989,7 @@ msgstr "Jõude"
 
 #: gtk-gui.c:1613
 msgid "Import File(s)..."
-msgstr "Impordi fail(id)..."
+msgstr "Impordi fail(id)"
 
 #: divelist-gtk.c:1370 gtk-gui.c:1630
 msgid "Info"
@@ -1080,7 +1081,7 @@ msgstr "Pikim sukeldumine"
 
 #: uemis.c:236
 msgid "Low Battery Alert"
-msgstr "Patarei tühjenemise alarm"
+msgstr "Patarei tühjenemise häire"
 
 #: uemis.c:234
 msgid "Low Battery Warning"
@@ -1125,7 +1126,7 @@ msgstr "Max sügavus"
 #: info-gtk.c:921
 #, c-format
 msgid "Max Depth (%s):"
-msgstr "Max sügavus (%s):"
+msgstr "Max sügavus (%s)"
 
 #: statistics-gtk.c:568
 msgid "Max SAC"
@@ -1224,7 +1225,7 @@ msgstr "Mudel"
 
 #: main.c:64
 msgid "Mon"
-msgstr "Es"
+msgstr "Esmasp"
 
 #: gtk-gui.c:1275
 msgid "Multi-platform divelog software in C"
@@ -1294,11 +1295,11 @@ msgstr "Imelik pthread viga"
 
 #: gtk-gui.c:1569
 msgid "Ok to delete the selected entry?"
-msgstr "Kas võib valitud kirje kustutada?"
+msgstr "Kas võib valitud kirje kustutada"
 
 #: gtk-gui.c:1127
 msgid "Only display dives with these tags:"
-msgstr "Näita sukeldumisi ainult nende märgistega:"
+msgstr "Näita sukeldumisi ainult nende märgistega"
 
 #: gtk-gui.c:291
 msgid "Open File"
@@ -1374,7 +1375,7 @@ msgstr "Rõhk"
 
 #: gtk-gui.c:779
 msgid "Pressure:"
-msgstr "Rõhk:"
+msgstr "Rõhk"
 
 #: gtk-gui.c:1633
 msgid "Prev DC"
@@ -1423,7 +1424,7 @@ msgstr "Välju"
 
 #: uemis.c:218
 msgid "RGT Alert"
-msgstr "RGT alarm"
+msgstr "RGT häire"
 
 #: uemis.c:216
 msgid "RGT Warning"
@@ -1494,7 +1495,7 @@ msgstr "Ohutuspeatuse rikkumine"
 
 #: main.c:64
 msgid "Sat"
-msgstr "La"
+msgstr "Laup"
 
 #: gtk-gui.c:1610
 msgid "Save As..."
@@ -1561,7 +1562,7 @@ msgstr "Näita EAD, END, EADD"
 
 #: gtk-gui.c:951
 msgid "Show MOD"
-msgstr "Näita MOD"
+msgstr "Show MOD"
 
 #: gtk-gui.c:984
 msgid "Show calculated ceiling"
@@ -1652,7 +1653,7 @@ msgstr "Ülikond"
 #. ++GETTEXT: these are three letter days - we allow up to six code bytes
 #: main.c:64
 msgid "Sun"
-msgstr "Pü"
+msgstr "Päike"
 
 #: statistics-gtk.c:592
 msgid "Surf Intv"
@@ -1669,7 +1670,7 @@ msgstr "Mine %s gaasile\n"
 
 #: print.c:960
 msgid "Table print"
-msgstr "Tabeli väljund"
+msgstr "Tabeli trükk"
 
 #: info-gtk.c:628
 msgid "Tags are only shown if they are identical for all edited dives"
@@ -1705,7 +1706,7 @@ msgstr "Kolm"
 
 #: main.c:64
 msgid "Thu"
-msgstr "Ne"
+msgstr "Neljap"
 
 #: info-gtk.c:841
 msgid "Time"
@@ -1746,7 +1747,7 @@ msgstr "Kogukaal:"
 #: planner.c:550
 #, c-format
 msgid "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"
-msgstr "Üleminek %.*f %s %d:%02d min jooksul - jooksev aeg %d:%02u on %s\n"
+msgstr "Üleminek %.*f %s %d:%02d min jooksul - käitusaeg %d:%02u on %s\n"
 
 #. ++GETTEXT 60 char buffer weekday, monthname, day of month, year, nr dives
 #: divelist.c:579
@@ -1758,7 +1759,7 @@ msgstr[1] "Väljasõit %1$s, %2$s %3$d, %4$d (%5$d sukeldumist)"
 
 #: main.c:64
 msgid "Tue"
-msgstr "Te"
+msgstr "Teisip"
 
 #: equipment.c:1516 equipment.c:1544
 msgid "Type"
@@ -1769,14 +1770,14 @@ msgid ""
 "Uemis Zurich: File System is almost full\n"
 "Disconnect/reconnect the dive computer\n"
 "and click 'Retry'"
-msgstr "Uemis Zurich: failisüsteem on peaaegu täis\nÜhenda lahti/taasühenda kompuuter ja kliki 'Uuesti'"
+msgstr "Uemis Surich: failisüsteem on peaaegu täis\nÜhenda lahti/taasühenda kompuuter ja kliki 'Uuesti'"
 
 #: uemis-downloader.c:29
 msgid ""
 "Uemis Zurich: File System is full\n"
 "Disconnect/reconnect the dive computer\n"
 "and try again"
-msgstr "Uemis Zurich: failisüsteem on täis\nÜhenda lahti/taasühenda kompuuter\nja proovi uuesti'"
+msgstr "Uemis Surich: failisüsteem on täis\nÜhenda lahti/taasühenda kompuuter\nja proovi uuesti'"
 
 #: uemis-downloader.c:771
 msgid "Uemis init failed"
@@ -1858,7 +1859,7 @@ msgstr "Veebiteenus"
 
 #: main.c:64
 msgid "Wed"
-msgstr "Ko"
+msgstr "Kolmap"
 
 #: equipment.c:1049 equipment.c:1643 gtk-gui.c:825
 msgid "Weight"
@@ -1871,7 +1872,7 @@ msgstr "Raskuste süsteem"
 
 #: gtk-gui.c:794
 msgid "Weight:"
-msgstr "Raskus:"
+msgstr "Raskus"
 
 #: gtk-gui.c:146
 msgid "XML file"
@@ -1999,7 +2000,7 @@ msgstr "logi kirje id"
 
 #: uemis-downloader.c:407
 msgid "divespot data id"
-msgstr "sukeldumiskoha andmete ID"
+msgstr "sukeldumiskoha andmete id"
 
 #: libdivecomputer.c:152
 msgid "divetime"
