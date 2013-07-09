@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>510</width>
-    <height>360</height>
+    <width>511</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>70</y>
+     <y>80</y>
      <width>489</width>
-     <height>71</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="title">
@@ -29,8 +29,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>141</width>
+      <y>30</y>
+      <width>461</width>
       <height>18</height>
      </rect>
     </property>
@@ -48,8 +48,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>81</width>
+      <y>50</y>
+      <width>461</width>
       <height>18</height>
      </rect>
     </property>
@@ -70,7 +70,7 @@
      <x>10</x>
      <y>10</y>
      <width>489</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -92,9 +92,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>10</y>
+      <y>20</y>
       <width>491</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="layoutPrintType">
@@ -156,9 +156,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>150</y>
+     <y>170</y>
      <width>489</width>
-     <height>71</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="title">
@@ -168,8 +168,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>91</width>
+      <y>30</y>
+      <width>461</width>
       <height>18</height>
      </rect>
     </property>
@@ -190,8 +190,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>91</width>
+      <y>50</y>
+      <width>461</width>
       <height>18</height>
      </rect>
     </property>
@@ -213,9 +213,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
+     <y>270</y>
      <width>489</width>
-     <height>111</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="title">
@@ -225,7 +225,7 @@
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>20</y>
+      <y>30</y>
       <width>211</width>
       <height>20</height>
      </rect>
@@ -244,7 +244,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>30</y>
       <width>201</width>
       <height>20</height>
      </rect>
@@ -266,7 +266,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>50</y>
+      <y>70</y>
       <width>201</width>
       <height>20</height>
      </rect>
@@ -288,7 +288,7 @@
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>50</y>
+      <y>70</y>
       <width>211</width>
       <height>20</height>
      </rect>
@@ -307,7 +307,7 @@
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>80</y>
+      <y>110</y>
       <width>211</width>
       <height>20</height>
      </rect>
@@ -323,7 +323,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>80</y>
+      <y>110</y>
       <width>201</width>
       <height>20</height>
      </rect>
@@ -347,9 +347,9 @@
    <widget class="QLabel" name="valuePHeight">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>20</y>
-      <width>21</width>
+      <x>220</x>
+      <y>30</y>
+      <width>31</width>
       <height>20</height>
      </rect>
     </property>
@@ -363,9 +363,9 @@
    <widget class="QLabel" name="valueOHeight">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>50</y>
-      <width>21</width>
+      <x>220</x>
+      <y>70</y>
+      <width>31</width>
       <height>20</height>
      </rect>
     </property>
@@ -379,9 +379,9 @@
    <widget class="QLabel" name="valueNHeight">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>80</y>
-      <width>21</width>
+      <x>220</x>
+      <y>110</y>
+      <width>31</width>
       <height>20</height>
      </rect>
     </property>
@@ -393,11 +393,6 @@
     </property>
    </widget>
   </widget>
-  <zorder>groupBox</zorder>
-  <zorder>printOptions</zorder>
-  <zorder>printType</zorder>
-  <zorder>ordering</zorder>
-  <zorder>sizingHeights</zorder>
  </widget>
  <resources/>
  <connections/>
