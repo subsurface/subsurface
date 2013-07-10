@@ -55,6 +55,7 @@ HEADERS = \
 	qt-ui/graphicsview-common.h \
 	qt-ui/printdialog.h \
 	qt-ui/printoptions.h \
+	qt-ui/printlayout.h \
 
 
 SOURCES = \
@@ -98,6 +99,7 @@ SOURCES = \
 	qt-ui/graphicsview-common.cpp \
 	qt-ui/printdialog.cpp \
 	qt-ui/printoptions.cpp \
+	qt-ui/printlayout.cpp \
 	$(RESFILE)
 
 

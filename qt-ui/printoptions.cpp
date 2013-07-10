@@ -21,7 +21,7 @@ void PrintOptions::setup(struct options *printOpt)
 	initSliderWithLabel(ui->sliderOHeight, ui->valueOHeight, printOptions->notes_height);
 	initSliderWithLabel(ui->sliderNHeight, ui->valueNHeight, printOptions->tanks_height);
 	// print type radio buttons
-	switch (printOptions->type)	{
+	switch (printOptions->type) {
 	case options::PRETTY:
 		ui->radioSixDives->setChecked(true);
 		break;

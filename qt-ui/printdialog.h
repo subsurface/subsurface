@@ -2,8 +2,10 @@
 #define PRINTDIALOG_H
 
 #include <QDialog>
+#include <QPrinter>
 #include "../display.h"
 #include "printoptions.h"
+#include "printlayout.h"
 
 // should be based on a custom QPrintDialog class
 class PrintDialog : public QDialog {
@@ -17,6 +19,8 @@ public:
 private:
 	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	PrintOptions *optionsWidget;
+	PrintLayout *printLayout;
+	QPrinter printer;
 
 private slots:
 	void printClicked();

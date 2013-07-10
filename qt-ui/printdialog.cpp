@@ -16,6 +16,10 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	// options template (are we storing these in the settings?)
 	struct options tempOptions = {options::PRETTY, 0, 2, false, 65, 15, 12};
 	printOptions = tempOptions;
+
+	// create a print layout and pass the printer and options
+	printLayout = new PrintLayout(this, &printer, &printOptions);
+
 	/* temporary.
 	 * add the PrintOptions widget and a Print button for testing purposes. */
 	optionsWidget = new PrintOptions(this, &printOptions);
@@ -40,4 +44,5 @@ void PrintDialog::runDialog()
 void PrintDialog::printClicked(void)
 {
 	// nop for now
+	printLayout->print();
 }
