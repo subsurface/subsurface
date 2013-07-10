@@ -1,4 +1,6 @@
 #include <QPainter>
+#include <QDesktopWidget>
+#include <QApplication>
 #include "mainwindow.h"
 #include "printlayout.h"
 
@@ -21,6 +23,8 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 
 void PrintLayout::print()
 {
+	// we call setup each time to check if the printer properties have changed
+	setup();
 	switch (printOptions->type) {
 	case options::PRETTY:
 		printSixDives();
@@ -32,6 +36,19 @@ void PrintLayout::print()
 		printTable();
 		break;
 	}
+}
+
+void PrintLayout::setup()
+{
+	QDesktopWidget *desktop = QApplication::desktop();
+	screenDpiX = desktop->physicalDpiX();
+	screenDpiY = desktop->physicalDpiX();
+
+	printerDpi = printer->resolution();
+	pageRect = printer->pageRect();
+
+	scaleX = (qreal)printerDpi/(qreal)screenDpiX;
+	scaleY = (qreal)printerDpi/(qreal)screenDpiY;
 }
 
 void PrintLayout::printSixDives()

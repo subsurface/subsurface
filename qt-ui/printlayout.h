@@ -20,7 +20,11 @@ private:
 	struct options *printOptions;
 
 	QPainter painter;
+	int screenDpiX, screenDpiY, printerDpi;
+	qreal scaleX, scaleY;
+	QRect pageRect;
 
+	void setup();
 	void printSixDives();
 	void printTwoDives();
 	void printTable();

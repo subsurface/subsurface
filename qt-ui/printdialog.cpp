@@ -43,6 +43,9 @@ void PrintDialog::runDialog()
 
 void PrintDialog::printClicked(void)
 {
-	// nop for now
+	// temporary
+	printer.setOutputFileName("print.pdf");
+	printer.setOutputFormat(QPrinter::PdfFormat);
+	// ---------
 	printLayout->print();
 }
