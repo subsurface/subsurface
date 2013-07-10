@@ -16,6 +16,7 @@ Q_OBJECT
 
 public:
 	explicit PrintOptions(QWidget *parent = 0, struct options *printOpt = 0);
+	void setup(struct options *printOpt);
 
 private:
 	Ui::PrintOptions *ui;
@@ -23,11 +24,19 @@ private:
 	void initSliderWithLabel(QSlider *slider, QLabel *label, int value);
 	QString formatSliderValueText(int value);
 	struct options *printOptions;
+	bool hasSetupSlots;
 
 private slots:
 	void sliderPHeightMoved(int value);
 	void sliderOHeightMoved(int value);
 	void sliderNHeightMoved(int value);
+	void radioSixDivesClicked(bool check);
+	void radioTwoDivesClicked(bool check);
+	void radioTablePrintClicked(bool check);
+	void printInColorClicked(bool check);
+	void printSelectedClicked(bool check);
+	void notesOnTopClicked(bool check);
+	void profileOnTopClicked(bool check);
 };
 
 #endif
