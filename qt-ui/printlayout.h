@@ -19,7 +19,7 @@ private:
 	QPrinter *printer;
 	struct options *printOptions;
 
-	QPainter painter;
+	QPainter *painter;
 	int screenDpiX, screenDpiY, printerDpi;
 	qreal scaleX, scaleY;
 	QRect pageRect;
@@ -28,6 +28,8 @@ private:
 	void printSixDives();
 	void printTwoDives();
 	void printTable();
+	QString insertTableHeadingRow();
+	QString insertTableDataRow();
 };
 
 #endif
