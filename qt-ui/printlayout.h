@@ -23,12 +23,17 @@ private:
 	qreal scaleX, scaleY;
 	QRect pageRect;
 
+	QStringList tableColumnNames;
+	QStringList tableColumnWidths;
+
 	void setup();
 	void printSixDives();
 	void printTwoDives();
 	void printTable();
 	QString insertTableHeadingRow();
-	QString insertTableDataRow(struct dive *dive);
+	QString insertTableHeadingCol(int);
+	QString insertTableDataRow(struct dive *);
+	QString insertTableDataCol(QString);
 };
 
 #endif

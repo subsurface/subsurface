@@ -18,12 +18,30 @@ struct options {
 };
 */
 
+#define TABLE_PRINT_COL 7
+
 PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct options *optionsPtr)
 {
 	dialog = dialogPtr;
 	printer = printerPtr;
 	printOptions = optionsPtr;
 	// painter = new QPainter(printer);
+
+	// table print settings
+	tableColumnNames.append(tr("Dive#"));
+	tableColumnNames.append(tr("Date"));
+	tableColumnNames.append(tr("Depth"));
+	tableColumnNames.append(tr("Duration"));
+	tableColumnNames.append(tr("Master"));
+	tableColumnNames.append(tr("Buddy"));
+	tableColumnNames.append(tr("Location"));
+	tableColumnWidths.append("7");
+	tableColumnWidths.append("10");
+	tableColumnWidths.append("10");
+	tableColumnWidths.append("10");
+	tableColumnWidths.append("15");
+	tableColumnWidths.append("15");
+	tableColumnWidths.append("100");
 }
 
 void PrintLayout::print()
@@ -84,16 +102,16 @@ void PrintLayout::printTable()
 		"table {" \
 		"	border-width: 1px;" \
 		"	border-style: solid;" \
-		"	border-color: black;" \
+		"	border-color: #999999;" \
 		"}" \
 		"th {" \
 		"	background-color: #eeeeee;" \
-		"	font-weight: bold;" \
-		"	font-size: large;" \
-		"	padding: 6px 10px 6px 10px;" \
+		"	font-size: small;" \
+		"	padding: 3px 5px 3px 5px;" \
 		"}" \
 		"td {" \
-		"	padding: 3px 10px 3px 10px;" \
+		"	font-size: small;" \
+		"	padding: 3px 5px 3px 5px;" \
 		"}" \
 		"</style>"
 	);
@@ -132,10 +150,44 @@ void PrintLayout::printTable()
 
 QString PrintLayout::insertTableHeadingRow()
 {
-	return "<tr><th align='left'>TITLE</th><th align='left'>TITLE 2</th></tr>";
+	int i;
+	QString ret("<tr>");
+	for (i = 0; i < TABLE_PRINT_COL; i++)
+		ret += insertTableHeadingCol(i);
+	ret += "</tr>";
+	return ret;
+}
+
+QString PrintLayout::insertTableHeadingCol(int col)
+{
+	QString ret("<th align='left' width='");
+	ret += tableColumnWidths.at(col);
+	ret += "%'>";
+	ret += tableColumnNames.at(col);
+	ret += "</th>";
+	return ret;
 }
 
 QString PrintLayout::insertTableDataRow(struct dive *dive)
 {
-	return "<tr><td>" + QString::number(dive->number) + "</td><td>hello2</td></tr>";
+	/*
+	// TODO date format
+	// struct tm tm;
+	len = snprintf(buffer, sizeof(buffer),
+			_("%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"),
+			weekday(tm.tm_wday),
+			monthname(tm.tm_mon),
+			tm.tm_mday, tm.tm_year + 1900,
+			tm.tm_hour, tm.tm_min
+			);
+	*/
+	QString ret("<tr>");
+	ret += insertTableDataCol(QString::number(dive->number));
+	ret += "</tr>";
+	return ret;
+}
+
+QString PrintLayout::insertTableDataCol(QString data)
+{
+	return "<td>" + data + "</td>";
 }
