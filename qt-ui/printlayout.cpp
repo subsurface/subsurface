@@ -3,9 +3,9 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QTextDocument>
-#include <QAbstractTextDocumentLayout>
 #include "mainwindow.h"
 #include "printlayout.h"
+#include "../dive.h"
 
 /*
 struct options {
@@ -86,25 +86,30 @@ void PrintLayout::printTable()
 	// setDefaultStyleSheet() doesn't work here?
 	QString htmlText = styleSheet + "<table cellspacing='0' width='100%'>";
 	QString htmlTextPrev;
-	int pageCountNew = 1, pageCount = 1;
+	int pageCountNew = 1, pageCount;
 	bool insertHeading = true;
 
-	while (pageCount < 3) { // should go trough dives (or selected) instead
+	int i;
+	struct dive *dive;
+	for_each_dive(i, dive) {
+		pageCount = pageCountNew;
+		if (!dive->selected && printOptions->print_selected) {
+			continue;
+		}
 		if (insertHeading) {
 			htmlText += insertTableHeadingRow();
 			insertHeading = false;
 		}
-		doc.setHtml(htmlText);
-		pageCount = doc.pageCount();
 		htmlTextPrev = htmlText;
-		htmlText += insertTableDataRow();
+		htmlText += insertTableDataRow(dive);
 		doc.setHtml(htmlText);
 		pageCountNew = doc.pageCount();
-		// if the page count increases here we revert and add a heading instead
+		/* if the page count increases after adding this row we 'revert'
+		 * and add a heading instead. */
 		if (pageCountNew > pageCount) {
 			htmlText = htmlTextPrev;
-			doc.setHtml(htmlText);
 			insertHeading = true;
+			i--;
 		}
 	}
 	htmlText += "</table>";
@@ -117,7 +122,7 @@ QString PrintLayout::insertTableHeadingRow()
 	return "<tr><th>TITLE</th><th>TITLE 2</th></tr>";
 }
 
-QString PrintLayout::insertTableDataRow()
+QString PrintLayout::insertTableDataRow(struct dive *dive)
 {
-	return "<tr><td>hello</td></tr><tr><td>hello</td></tr>";
+	return "<tr><td>" + QString::number(dive->number) + "</td><td>hello2</td></tr>";
 }

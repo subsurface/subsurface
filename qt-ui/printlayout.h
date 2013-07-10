@@ -6,6 +6,7 @@
 #include "../display.h"
 
 class PrintDialog;
+struct dive;
 
 class PrintLayout : public QObject {
 	Q_OBJECT
@@ -29,7 +30,7 @@ private:
 	void printTwoDives();
 	void printTable();
 	QString insertTableHeadingRow();
-	QString insertTableDataRow();
+	QString insertTableDataRow(struct dive *dive);
 };
 
 #endif
