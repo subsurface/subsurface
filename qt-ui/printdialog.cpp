@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QPrintPreviewDialog>
 
 PrintDialog *PrintDialog::instance()
 {
@@ -43,9 +44,15 @@ void PrintDialog::runDialog()
 
 void PrintDialog::printClicked(void)
 {
-	// temporary
-	printer.setOutputFileName("print.pdf");
-	printer.setOutputFormat(QPrinter::PdfFormat);
-	// ---------
+	// printer.setOutputFileName("print.pdf");
+	// printer.setOutputFormat(QPrinter::PdfFormat);
+	// temporary: use a preview dialog
+	QPrintPreviewDialog previewDialog(&printer, this);
+    QObject::connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
+    previewDialog.exec();
+}
+
+void PrintDialog::onPaintRequested(QPrinter *printerPtr)
+{
 	printLayout->print();
 }

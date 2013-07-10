@@ -24,6 +24,7 @@ private:
 
 private slots:
 	void printClicked();
+	void onPaintRequested(QPrinter *);
 };
 
 #endif
