@@ -74,15 +74,28 @@ void PrintLayout::printTable()
 {
 	QTextDocument doc;
 	QSizeF pageSize;
-    pageSize.setWidth(pageRect.width());
-    pageSize.setHeight(pageRect.height());
-    doc.setPageSize(pageSize);
+	pageSize.setWidth(pageRect.width());
+	pageSize.setHeight(pageRect.height());
+	doc.setPageSize(pageSize);
 
-	QString styleSheet = "<style type='text/css'>" \
-		"table { border-width: 1px; border-style: solid; border-color: black; }" \
-		"th { font-weight: bold; font-size: large; padding: 3px 10px 3px 10px; }" \
-		"td { padding: 3px 10px 3px 10px; }" \
-		"</style>";
+	QString styleSheet(
+		"<style type='text/css'>" \
+		"table {" \
+		"	border-width: 1px;" \
+		"	border-style: solid;" \
+		"	border-color: black;" \
+		"}" \
+		"th {" \
+		"	background-color: #eeeeee;" \
+		"	font-weight: bold;" \
+		"	font-size: large;" \
+		"	padding: 6px 10px 6px 10px;" \
+		"}" \
+		"td {" \
+		"	padding: 3px 10px 3px 10px;" \
+		"}" \
+		"</style>"
+	);
 	// setDefaultStyleSheet() doesn't work here?
 	QString htmlText = styleSheet + "<table cellspacing='0' width='100%'>";
 	QString htmlTextPrev;
@@ -92,10 +105,8 @@ void PrintLayout::printTable()
 	int i;
 	struct dive *dive;
 	for_each_dive(i, dive) {
-		pageCount = pageCountNew;
-		if (!dive->selected && printOptions->print_selected) {
+		if (!dive->selected && printOptions->print_selected)
 			continue;
-		}
 		if (insertHeading) {
 			htmlText += insertTableHeadingRow();
 			insertHeading = false;
@@ -103,6 +114,7 @@ void PrintLayout::printTable()
 		htmlTextPrev = htmlText;
 		htmlText += insertTableDataRow(dive);
 		doc.setHtml(htmlText);
+		pageCount = pageCountNew;
 		pageCountNew = doc.pageCount();
 		/* if the page count increases after adding this row we 'revert'
 		 * and add a heading instead. */
@@ -119,7 +131,7 @@ void PrintLayout::printTable()
 
 QString PrintLayout::insertTableHeadingRow()
 {
-	return "<tr><th>TITLE</th><th>TITLE 2</th></tr>";
+	return "<tr><th align='left'>TITLE</th><th align='left'>TITLE 2</th></tr>";
 }
 
 QString PrintLayout::insertTableDataRow(struct dive *dive)
