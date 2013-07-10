@@ -394,6 +394,18 @@
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>radioSixDives</tabstop>
+  <tabstop>radioTwoDives</tabstop>
+  <tabstop>radioTablePrint</tabstop>
+  <tabstop>printSelected</tabstop>
+  <tabstop>printInColor</tabstop>
+  <tabstop>profileOnTop</tabstop>
+  <tabstop>notesOnTop</tabstop>
+  <tabstop>sliderPHeight</tabstop>
+  <tabstop>sliderOHeight</tabstop>
+  <tabstop>sliderNHeight</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
