@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QSlider>
 #include <QLabel>
-#include "../display.h"
 
 namespace Ui {
 	class PrintOptions;

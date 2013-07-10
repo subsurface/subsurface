@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "printlayout.h"
 #include "../dive.h"
+#include "../display.h"
 
 /*
 struct options {

@@ -2,11 +2,9 @@
 #define PRINTLAYOUT_H
 
 #include <QPrinter>
-#include <QPainter>
-#include "../display.h"
+#include <QStringList>
 
 class PrintDialog;
-struct dive;
 
 class PrintLayout : public QObject {
 	Q_OBJECT
