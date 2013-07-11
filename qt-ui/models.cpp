@@ -926,21 +926,6 @@ QVariant TripItem::data(int column, int role) const
 	return ret;
 }
 
-struct DiveItem : public TreeItem {
-	enum Column {NR, DATE, RATING, DEPTH, DURATION, TEMPERATURE, TOTALWEIGHT,
-		SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
-
-	virtual QVariant data(int column, int role) const;
-	struct dive* dive;
-
-	QString displayDuration() const;
-	QString displayDepth() const;
-	QString displayTemperature() const;
-	QString displayWeight() const;
-	QString displaySac() const;
-	int weight() const;
-};
-
 static int nitrox_sort_value(struct dive *dive)
 {
 	int o2, he, o2low;
