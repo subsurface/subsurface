@@ -7,6 +7,7 @@
 #include "printlayout.h"
 #include "../dive.h"
 #include "../display.h"
+#include "models.h"
 
 /*
 struct options {
@@ -170,19 +171,19 @@ QString PrintLayout::insertTableHeadingCol(int col)
 
 QString PrintLayout::insertTableDataRow(struct dive *dive)
 {
-	/*
-	// TODO date format
-	// struct tm tm;
-	len = snprintf(buffer, sizeof(buffer),
-			_("%1$s, %2$s %3$d, %4$d   %5$dh%6$02d"),
-			weekday(tm.tm_wday),
-			monthname(tm.tm_mon),
-			tm.tm_mday, tm.tm_year + 1900,
-			tm.tm_hour, tm.tm_min
-			);
-	*/
+	// use the DiveItem class
+	struct DiveItem di;
+	di.dive = dive;
+
+	// fill row
 	QString ret("<tr>");
 	ret += insertTableDataCol(QString::number(dive->number));
+	ret += insertTableDataCol(di.displayDate());
+	ret += insertTableDataCol(di.displayDepth());
+	ret += insertTableDataCol(di.displayDuration());
+	ret += insertTableDataCol(dive->divemaster);
+	ret += insertTableDataCol(dive->buddy);
+	ret += insertTableDataCol(dive->location);
 	ret += "</tr>";
 	return ret;
 }
