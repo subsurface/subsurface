@@ -80,17 +80,17 @@ void PrintLayout::setup()
 	scaleY = (qreal)printerDpi/(qreal)screenDpiY;
 }
 
-void PrintLayout::printSixDives()
+void PrintLayout::printSixDives() const
 {
 	// nop
 }
 
-void PrintLayout::printTwoDives()
+void PrintLayout::printTwoDives() const
 {
 	// nop
 }
 
-void PrintLayout::printTable()
+void PrintLayout::printTable() const
 {
 	QTextDocument doc;
 	QSizeF pageSize;
@@ -149,7 +149,7 @@ void PrintLayout::printTable()
 	doc.print(printer);
 }
 
-QString PrintLayout::insertTableHeadingRow()
+QString PrintLayout::insertTableHeadingRow() const
 {
 	int i;
 	QString ret("<tr>");
@@ -159,7 +159,7 @@ QString PrintLayout::insertTableHeadingRow()
 	return ret;
 }
 
-QString PrintLayout::insertTableHeadingCol(int col)
+QString PrintLayout::insertTableHeadingCol(int col) const
 {
 	QString ret("<th align='left' width='");
 	ret += tableColumnWidths.at(col);
@@ -169,7 +169,7 @@ QString PrintLayout::insertTableHeadingCol(int col)
 	return ret;
 }
 
-QString PrintLayout::insertTableDataRow(struct dive *dive)
+QString PrintLayout::insertTableDataRow(struct dive *dive) const
 {
 	// use the DiveItem class
 	struct DiveItem di;
@@ -188,7 +188,7 @@ QString PrintLayout::insertTableDataRow(struct dive *dive)
 	return ret;
 }
 
-QString PrintLayout::insertTableDataCol(QString data)
+QString PrintLayout::insertTableDataCol(QString data) const
 {
 	return "<td>" + data + "</td>";
 }

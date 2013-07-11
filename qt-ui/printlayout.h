@@ -27,13 +27,13 @@ private:
 	QStringList tableColumnWidths;
 
 	void setup();
-	void printSixDives();
-	void printTwoDives();
-	void printTable();
-	QString insertTableHeadingRow();
-	QString insertTableHeadingCol(int);
-	QString insertTableDataRow(struct dive *);
-	QString insertTableDataCol(QString);
+	void printSixDives() const;
+	void printTwoDives() const;
+	void printTable() const;
+	QString insertTableHeadingRow() const;
+	QString insertTableHeadingCol(int) const;
+	QString insertTableDataRow(struct dive *) const;
+	QString insertTableDataCol(QString) const;
 };
 
 #endif
