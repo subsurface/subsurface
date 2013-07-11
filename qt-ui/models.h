@@ -142,6 +142,7 @@ struct DiveItem : public TreeItem {
 	virtual QVariant data(int column, int role) const;
 	struct dive* dive;
 
+	QString displayDate() const;
 	QString displayDuration() const;
 	QString displayDepth() const;
 	QString displayTemperature() const;

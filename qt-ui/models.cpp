@@ -971,7 +971,7 @@ QVariant DiveItem::data(int column, int role) const
 	case Qt::DisplayRole:
 		switch (column) {
 		case NR:		retVal = dive->number; break;
-		case DATE:		retVal = QString(get_dive_date_string(dive->when)); break;
+		case DATE:		retVal = displayDate(); break;
 		case DEPTH:		retVal = displayDepth(); break;
 		case DURATION:		retVal = displayDuration(); break;
 		case TEMPERATURE:	retVal = displayTemperature(); break;
@@ -994,6 +994,14 @@ QVariant DiveItem::data(int column, int role) const
 		retVal = QVariant::fromValue<void*>(dive);
 
 	return retVal;
+}
+
+QString DiveItem::displayDate() const
+{
+	char *buf = get_dive_date_string(dive->when);
+	QString date(buf);
+	free(buf);
+	return date;
 }
 
 QString DiveItem::displayDepth() const
