@@ -5,6 +5,7 @@
 #include <QTextDocument>
 #include <QAbstractTextDocumentLayout>
 #include "mainwindow.h"
+#include "profilegraphics.h"
 #include "printlayout.h"
 #include "../dive.h"
 #include "../display.h"
@@ -27,7 +28,6 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	dialog = dialogPtr;
 	printer = printerPtr;
 	printOptions = optionsPtr;
-	// painter = new QPainter(printer);
 
 	// table print settings
 	tableColumnNames.append(tr("Dive#"));
@@ -50,11 +50,6 @@ void PrintLayout::print()
 {
 	// we call setup each time to check if the printer properties have changed
 	setup();
-
-	// temp / debug
-	printTable();
-	return;
-	// ------------
 	switch (printOptions->type) {
 	case options::PRETTY:
 		printSixDives();
@@ -81,9 +76,45 @@ void PrintLayout::setup()
 	scaleY = (qreal)printerDpi/(qreal)screenDpiY;
 }
 
+// experimental
 void PrintLayout::printSixDives() const
 {
-	// nop
+	ProfileGraphicsView *profile = mainWindow()->graphics();
+	QPainter painter;
+	painter.begin(printer);
+	painter.setRenderHint(QPainter::Antialiasing);
+	// painter.setRenderHint(QPainter::HighQualityAntialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+	painter.scale(scaleX, scaleY);
+
+	profile->clear();
+	profile->setPrintMode(true);
+	QSize originalSize = profile->size();
+	profile->resize(pageRect.height()/scaleY, pageRect.width()/scaleX);
+
+	int i;
+	struct dive *dive;
+	bool firstPage = true;
+	for_each_dive(i, dive) {
+		if (!dive->selected && printOptions->print_selected)
+			continue;
+		// don't create a new page if still on first page
+		if (!firstPage)
+			printer->newPage();
+		else
+			firstPage = false;
+		profile->plot(dive, true);
+		QPixmap pm = QPixmap::grabWidget(profile);
+		QTransform transform;
+		transform.rotate(270);
+		pm = QPixmap(pm.transformed(transform));
+        painter.drawPixmap(0, 0, pm);
+	}
+	painter.end();
+	profile->setPrintMode(false);
+	profile->resize(originalSize);
+	profile->clear();
+	profile->plot(current_dive, true);
 }
 
 void PrintLayout::printTwoDives() const
