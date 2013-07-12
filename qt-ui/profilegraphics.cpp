@@ -46,6 +46,7 @@ extern int evn_used;
 
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0)
 {
+	printMode = false;
 	gc.printer = false;
 	fill_profile_color();
 	setScene(new QGraphicsScene());
@@ -189,6 +190,11 @@ void ProfileGraphicsView::refresh()
 	plot(current_dive, TRUE);
 }
 
+void ProfileGraphicsView::setPrintMode(bool mode)
+{
+	printMode = mode;
+}
+
 void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 {
 	struct divecomputer *dc;
@@ -214,6 +220,8 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	toolTip = new ToolTipItem();
 	installEventFilter(toolTip);
 	scene()->addItem(toolTip);
+	if (printMode)
+		toolTip->setVisible(false);
 
 	// Fix this for printing / screen later.
 	// plot_set_scale(scale_mode_t);
@@ -1106,7 +1114,8 @@ QGraphicsItemGroup *ProfileGraphicsView::plot_text(text_render_options_t *tro,co
 	textItem->setPen(Qt::NoPen);
 
 	group->setPos(point.x() + dx, point.y() + dy);
-	group->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	if (!printMode)
+		group->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	if (!parent)
 		scene()->addItem(group);
