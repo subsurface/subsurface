@@ -3,6 +3,7 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 #include "mainwindow.h"
 #include "printlayout.h"
 #include "../dive.h"
@@ -96,6 +97,7 @@ void PrintLayout::printTable() const
 	QSizeF pageSize;
 	pageSize.setWidth(pageRect.width());
 	pageSize.setHeight(pageRect.height());
+	doc.documentLayout()->setPaintDevice(printer);
 	doc.setPageSize(pageSize);
 
 	QString styleSheet(
