@@ -119,9 +119,11 @@ void PrintLayout::printTable() const
 		"</style>"
 	);
 	// setDefaultStyleSheet() doesn't work here?
+	const QString heading(insertTableHeadingRow());
+	const QString lineBreak("<br>");
 	QString htmlText = styleSheet + "<table cellspacing='0' width='100%'>";
 	QString htmlTextPrev;
-	int pageCountNew = 1, pageCount;
+	int pageCountNew = 1, pageCount = 0, lastPageWithHeading = 0;
 	bool insertHeading = true;
 
 	int i;
@@ -130,16 +132,33 @@ void PrintLayout::printTable() const
 		if (!dive->selected && printOptions->print_selected)
 			continue;
 		if (insertHeading) {
-			htmlText += insertTableHeadingRow();
+			htmlTextPrev = htmlText;
+			htmlText += heading;
+			doc.setHtml(htmlText);
+			pageCount = doc.pageCount();
+			// prevent adding two headings on the same page
+			if (pageCount == lastPageWithHeading) {
+				htmlText = htmlTextPrev;
+				// add line breaks until a new page is reached
+				while (pageCount == lastPageWithHeading) {
+					htmlTextPrev = htmlText;
+					htmlText += lineBreak;
+					doc.setHtml(htmlText);
+					pageCount = doc.pageCount();
+				}
+				// revert last line break from the new page and add heading
+				htmlText = htmlTextPrev;
+				htmlText += heading;
+			}
 			insertHeading = false;
+			lastPageWithHeading = pageCount;
 		}
 		htmlTextPrev = htmlText;
 		htmlText += insertTableDataRow(dive);
 		doc.setHtml(htmlText);
 		pageCount = pageCountNew;
 		pageCountNew = doc.pageCount();
-		/* if the page count increases after adding this row we 'revert'
-		 * and add a heading instead. */
+		// if the page count increases revert and add heading instead
 		if (pageCountNew > pageCount) {
 			htmlText = htmlTextPrev;
 			insertHeading = true;
