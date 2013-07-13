@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <QMap>
 #include <QMultiMap>
+#include <QNetworkProxy>
 
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
@@ -96,6 +97,10 @@ void init_ui(int *argcp, char ***argvp)
 	QVariant v;
 
 	application = new QApplication(*argcp, *argvp);
+
+        // tell Qt to use system proxies
+        // note: on Linux, "system" == "environment variables"
+        QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 	// the Gtk theme makes things unbearably ugly
 	// so switch to Oxygen in this case
