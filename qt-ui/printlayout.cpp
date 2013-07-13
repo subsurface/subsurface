@@ -108,7 +108,9 @@ void PrintLayout::printSixDives() const
 		QTransform transform;
 		transform.rotate(270);
 		pm = QPixmap(pm.transformed(transform));
-        painter.drawPixmap(0, 0, pm);
+		if (!printOptions->color_selected)
+			pm = convertPixmapToGrayscale(pm);
+		painter.drawPixmap(0, 0, pm);
 	}
 	painter.end();
 	profile->setPrintMode(false);
@@ -243,4 +245,18 @@ QString PrintLayout::insertTableDataRow(struct dive *dive) const
 QString PrintLayout::insertTableDataCol(QString data) const
 {
 	return "<td>" + data + "</td>";
+}
+
+// experimental
+QPixmap PrintLayout::convertPixmapToGrayscale(QPixmap pixmap) const
+{
+	QImage image = pixmap.toImage();
+	int gray, width = pixmap.width(), height = pixmap.height();
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			gray = qGray(image.pixel(i, j));
+			image.setPixel(i, j, qRgb(gray, gray, gray));
+		}
+	}
+    return pixmap.fromImage(image);
 }

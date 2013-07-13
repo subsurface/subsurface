@@ -34,6 +34,7 @@ private:
 	QString insertTableHeadingCol(int) const;
 	QString insertTableDataRow(struct dive *) const;
 	QString insertTableDataCol(QString) const;
+	QPixmap convertPixmapToGrayscale(QPixmap) const;
 };
 
 #endif
