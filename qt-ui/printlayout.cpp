@@ -88,7 +88,7 @@ void PrintLayout::printSixDives() const
 	painter.scale(scaleX, scaleY);
 
 	profile->clear();
-	profile->setPrintMode(true);
+	profile->setPrintMode(true, !printOptions->color_selected);
 	QSize originalSize = profile->size();
 	profile->resize(pageRect.height()/scaleY, pageRect.width()/scaleX);
 
@@ -108,8 +108,6 @@ void PrintLayout::printSixDives() const
 		QTransform transform;
 		transform.rotate(270);
 		pm = QPixmap(pm.transformed(transform));
-		if (!printOptions->color_selected)
-			pm = convertPixmapToGrayscale(pm);
 		painter.drawPixmap(0, 0, pm);
 	}
 	painter.end();
