@@ -1,7 +1,6 @@
 #include "profilegraphics.h"
 #include "mainwindow.h"
 #include "divelistview.h"
-#include "graphicsview-common.h"
 
 #include <QGraphicsScene>
 #include <QResizeEvent>
@@ -52,7 +51,6 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	fill_profile_color();
 	setScene(new QGraphicsScene());
 
-	setBackgroundBrush(profile_color[BACKGROUND].at(0));
 	scene()->installEventFilter(this);
 
 	setRenderHint(QPainter::Antialiasing);
@@ -197,6 +195,11 @@ void ProfileGraphicsView::setPrintMode(bool mode, bool grayscale)
 	isGrayscale = grayscale;
 }
 
+QColor ProfileGraphicsView::getColor(const color_indice_t i)
+{
+	return profile_color[i].at((isGrayscale) ? 1 : 0);
+}
+
 void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 {
 	struct divecomputer *dc;
@@ -214,6 +217,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	if (!isVisible() || !dive) {
 		return;
 	}
+	setBackgroundBrush(getColor(BACKGROUND));
 
 	// best place to put the focus stealer code.
 	setFocusProxy(mainWindow()->dive_list());
@@ -260,7 +264,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 
 	/* Bounding box */
 	QPen pen = defaultPen;
-	pen.setColor(profile_color[TIME_GRID].at(0));
+	pen.setColor(getColor(TIME_GRID));
 	QGraphicsRectItem *rect = new QGraphicsRectItem(profile_grid_area);
 	rect->setPen(pen);
 	scene()->addItem(rect);
@@ -348,7 +352,7 @@ void ProfileGraphicsView::plot_depth_scale()
 		case units::FEET: marker = 9144; break;	/* 30 ft */
 	}
 
-	QColor c(profile_color[DEPTH_GRID].first());
+	QColor c(getColor(DEPTH_GRID));
 
 	/* don't write depth labels all the way to the bottom as
 	 * there may be other graphs below the depth plot (like
@@ -374,7 +378,7 @@ void ProfileGraphicsView::plot_pp_text()
 	pp = floor(gc.pi.maxpp * 10.0) / 10.0 + 0.2;
 	dpp = pp > 4 ? 1.0 : 0.5;
 	hpos = gc.pi.entry[gc.pi.nr - 1].sec;
-	QColor c = profile_color[PP_LINES].first();
+	QColor c = getColor(PP_LINES);
 
 	for (m = 0.0; m <= pp; m += dpp) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
@@ -407,7 +411,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 	QColor c;
 	QPointF from, to;
 	if (prefs.pp_graphs.pn2) {
-		c = profile_color[PN2].first();
+		c = getColor(PN2);
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		for (i = 1; i < pi->nr; i++) {
@@ -418,7 +422,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 				from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		}
 
-		c = profile_color[PN2_ALERT].first();
+		c = getColor(PN2_ALERT);
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		for (i = 1; i < pi->nr; i++) {
@@ -431,7 +435,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 	}
 
 	if (prefs.pp_graphs.phe) {
-		c = profile_color[PHE].first();
+		c = getColor(PHE);
 		entry = pi->entry;
 
 		from = QPointF(SCALEGC(entry->sec, entry->phe));
@@ -443,7 +447,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 				from = QPointF(SCALEGC(entry->sec, entry->phe));
 		}
 
-		c = profile_color[PHE_ALERT].first();
+		c = getColor(PHE_ALERT);
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->phe));
 		for (i = 1; i < pi->nr; i++) {
@@ -455,7 +459,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 		}
 	}
 	if (prefs.pp_graphs.po2) {
-		c = profile_color[PO2].first();
+		c = getColor(PO2);
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->po2));
 		for (i = 1; i < pi->nr; i++) {
@@ -466,7 +470,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 				from = QPointF(SCALEGC(entry->sec, entry->po2));
 		}
 
-		c = profile_color[PO2_ALERT].first();
+		c = getColor(PO2_ALERT);
 		entry = pi->entry;
 		from = QPointF(SCALEGC(entry->sec, entry->po2));
 		for (i = 1; i < pi->nr; i++) {
@@ -749,9 +753,9 @@ QColor ProfileGraphicsView::get_sac_color(int sac, int avg_sac)
 			sac_index = 0;
 		if (sac_index > SAC_COLORS - 1)
 			sac_index = SAC_COLORS - 1;
-		return profile_color[ (color_indice_t) (SAC_COLORS_START_IDX + sac_index)].first();
+		return getColor((color_indice_t)(SAC_COLORS_START_IDX + sac_index));
 	}
-	return profile_color[SAC_DEFAULT].first();
+	return getColor(SAC_DEFAULT);
 }
 
 void ProfileGraphicsView::plot_events(struct divecomputer *dc)
@@ -802,7 +806,7 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	int x = SCALEXGC(ev->time.seconds);
 	int y = SCALEYGC(depth);
 
-	EventItem *item = new EventItem();
+	EventItem *item = new EventItem(0, isGrayscale);
 	item->setPos(x, y);
 	scene()->addItem(item);
 
@@ -868,7 +872,7 @@ void ProfileGraphicsView::plot_depth_profile()
 
 	last_gc = gc;
 
-	QColor c = profile_color[TIME_GRID].at(0);
+	QColor c = getColor(TIME_GRID);
 	for (i = incr; i < maxtime; i += incr) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(i, 0), SCALEGC(i, 1));
 		QPen pen(defaultPen);
@@ -905,7 +909,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 	maxline = MAX(gc.pi.maxdepth + marker, maxdepth * 2 / 3);
 
-	c = profile_color[DEPTH_GRID].at(0);
+	c = getColor(DEPTH_GRID);
 
 	for (i = marker; i < maxline; i += marker) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, i), SCALEGC(1, i));
@@ -916,7 +920,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 
 	gc.leftx = 0; gc.rightx = maxtime;
-	c = profile_color[MEAN_DEPTH].at(0);
+	c = getColor(MEAN_DEPTH);
 
 	/* Show mean depth */
 	if (! gc.printer) {
@@ -965,8 +969,8 @@ void ProfileGraphicsView::plot_depth_profile()
 			}
 		}
 	}
-	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
-	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
+	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
+	pat.setColorAt(0, getColor(DEPTH_TOP));
 
 	neatFill = new QGraphicsPolygonItem();
 	neatFill->setPolygon(p);
@@ -980,8 +984,8 @@ void ProfileGraphicsView::plot_depth_profile()
 	 * through so far) */
 	if (prefs.profile_dc_ceiling && prefs.profile_red_ceiling) {
 		p.clear();
-		pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
-		pat.setColorAt(1, profile_color[CEILING_DEEP].first());
+		pat.setColorAt(0, getColor(CEILING_SHALLOW));
+		pat.setColorAt(1, getColor(CEILING_DEEP));
 
 		entry = gc.pi.entry;
 		p.append(QPointF(SCALEGC(0, 0)));
@@ -1006,8 +1010,8 @@ void ProfileGraphicsView::plot_depth_profile()
 
 	/* finally, plot the calculated ceiling over all this */
 	if (prefs.profile_calc_ceiling) {
-		pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
-		pat.setColorAt(1, profile_color[CALC_CEILING_DEEP].first());
+		pat.setColorAt(0, getColor(CALC_CEILING_SHALLOW));
+		pat.setColorAt(1, getColor(CALC_CEILING_DEEP));
 
 		entry = gc.pi.entry;
 		p.clear();
@@ -1030,7 +1034,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	if (prefs.profile_calc_ceiling && prefs.calc_all_tissues){
 		int k;
 		for (k=0; k<16; k++){
-			pat.setColorAt(0, profile_color[CALC_CEILING_SHALLOW].first());
+			pat.setColorAt(0, getColor(CALC_CEILING_SHALLOW));
 			pat.setColorAt(1, QColor(100, 100, 100, 50));
 
 			entry = gc.pi.entry;
@@ -1051,8 +1055,8 @@ void ProfileGraphicsView::plot_depth_profile()
 	}
 	/* next show where we have been bad and crossed the dc's ceiling */
 	if (prefs.profile_dc_ceiling) {
-		pat.setColorAt(0, profile_color[CEILING_SHALLOW].first());
-		pat.setColorAt(1, profile_color[CEILING_DEEP].first());
+		pat.setColorAt(0, getColor(CEILING_SHALLOW));
+		pat.setColorAt(1, getColor(CEILING_DEEP));
 
 		entry = gc.pi.entry;
 		p.clear();
@@ -1085,7 +1089,7 @@ void ProfileGraphicsView::plot_depth_profile()
 		depth = entry->depth;
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(entry[-1].sec, entry[-1].depth), SCALEGC(sec, depth));
 		QPen pen(defaultPen);
-		pen.setColor(profile_color[ (color_indice_t) (VELOCITY_COLORS_START_IDX + entry->velocity)].first());
+		pen.setColor(getColor((color_indice_t)(VELOCITY_COLORS_START_IDX + entry->velocity)));
 		item->setPen(pen);
 		scene()->addItem(item);
 	}
@@ -1108,11 +1112,11 @@ QGraphicsItemGroup *ProfileGraphicsView::plot_text(text_render_options_t *tro,co
 	QPainterPathStroker stroker;
 	stroker.setWidth(3);
 	QGraphicsPathItem *strokedItem = new QGraphicsPathItem(stroker.createStroke(textPath), group);
-	strokedItem->setBrush(QBrush(profile_color[TEXT_BACKGROUND].first()));
+	strokedItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
 	strokedItem->setPen(Qt::NoPen);
 
 	QGraphicsPathItem *textItem = new QGraphicsPathItem(textPath, group);
-	textItem->setBrush(QBrush(profile_color[tro->color].first()));
+	textItem->setBrush(QBrush(getColor(tro->color)));
 	textItem->setPen(Qt::NoPen);
 
 	group->setPos(point.x() + dx, point.y() + dy);
@@ -1138,7 +1142,7 @@ void ProfileGraphicsView::plot_temperature_profile()
 
 	QPointF from;
 	QPointF to;
-	QColor color = profile_color[TEMP_PLOT].first();
+	QColor color = getColor(TEMP_PLOT);
 
 	for (int i = 0; i < gc.pi.nr; i++) {
 		struct plot_data *entry = gc.pi.entry + i;
@@ -1408,8 +1412,14 @@ bool ToolTipItem::eventFilter(QObject* view, QEvent* event)
 	return false;
 }
 
-EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
+QColor EventItem::getColor(const color_indice_t i)
 {
+	return profile_color[i].at((isGrayscale) ? 1 : 0);
+}
+
+EventItem::EventItem(QGraphicsItem* parent, bool grayscale): QGraphicsPolygonItem(parent)
+{
+	isGrayscale = grayscale;
 	setFlag(ItemIgnoresTransformations);
 	setFlag(ItemIsFocusable);
 	setAcceptHoverEvents(true);
@@ -1427,17 +1437,18 @@ EventItem::EventItem(QGraphicsItem* parent): QGraphicsPolygonItem(parent)
 	defaultPen.setCosmetic(true);
 
 	QPen pen = defaultPen;
-	pen.setBrush(QBrush(profile_color[ALERT_BG].first()));
+	pen.setBrush(QBrush(getColor(ALERT_BG)));
 
 	setPolygon(poly);
-	setBrush(QBrush(profile_color[ALERT_BG].first()));
+	setBrush(QBrush(getColor(ALERT_BG)));
 	setPen(pen);
 
-	QGraphicsLineItem *line = new QGraphicsLineItem(0,5,0,10, this);
-	line->setPen(QPen(Qt::black, 2));
+	QGraphicsLineItem *line = new QGraphicsLineItem(0, 5, 0, 10, this);
+	line->setPen(QPen(getColor(ALERT_FG), 2));
 
-	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2,2, this);
-	ball->setBrush(QBrush(Qt::black));
+	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2, 2, this);
+	ball->setBrush(QBrush(getColor(ALERT_FG)));
+	ball->setPen(QPen(getColor(ALERT_FG)));
 }
 
 GraphicsTextEditor::GraphicsTextEditor(QGraphicsItem* parent): QGraphicsTextItem(parent)

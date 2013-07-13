@@ -1,6 +1,7 @@
 #ifndef PROFILEGRAPHICS_H
 #define PROFILEGRAPHICS_H
 
+#include "graphicsview-common.h"
 #include "../display.h"
 #include <QGraphicsView>
 #include <QGraphicsItem>
@@ -60,12 +61,15 @@ private:
 class EventItem : public QGraphicsPolygonItem
 {
 public:
-	explicit EventItem(QGraphicsItem* parent = 0);
+	explicit EventItem(QGraphicsItem* parent = 0, bool grayscale = FALSE);
 
 private:
 	ToolTipItem *controller;
 	QString text;
 	QIcon icon;
+	bool isGrayscale;
+
+	QColor getColor(const color_indice_t i);
 };
 
 class GraphicsTextEditor : public QGraphicsTextItem{
@@ -125,6 +129,7 @@ private:
 	void plot_pp_text();
 	void plot_depth_scale();
 
+	QColor getColor(const color_indice_t i);
 	QColor get_sac_color(int sac, int avg_sac);
 	void scrollViewTo(const QPoint pos);
 
