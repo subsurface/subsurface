@@ -92,7 +92,7 @@ public:
 	void plot(struct dive *d, bool forceRedraw = FALSE);
 	bool eventFilter(QObject* obj, QEvent* event);
 	void clear();
-	void setPrintMode(bool);
+	void setPrintMode(bool mode, bool grayscale = FALSE);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
@@ -136,6 +136,7 @@ private:
 	struct divecomputer *diveDC;
 	int zoomLevel;
 	bool printMode;
+	bool isGrayscale;
 
 	// Top Level Items.
 	QGraphicsItem* profileGrid;

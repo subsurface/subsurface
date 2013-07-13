@@ -47,6 +47,7 @@ extern int evn_used;
 ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0)
 {
 	printMode = false;
+	isGrayscale = false;
 	gc.printer = false;
 	fill_profile_color();
 	setScene(new QGraphicsScene());
@@ -190,9 +191,10 @@ void ProfileGraphicsView::refresh()
 	plot(current_dive, TRUE);
 }
 
-void ProfileGraphicsView::setPrintMode(bool mode)
+void ProfileGraphicsView::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
+	isGrayscale = grayscale;
 }
 
 void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
