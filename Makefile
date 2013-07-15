@@ -32,7 +32,7 @@ XSLTFILES = xslt/*.xslt xslt/*.xsl
 
 EXTRA_FLAGS =  $(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 	       $(LIBDIVECOMPUTERCFLAGS) \
-	       $(LIBSOUPCFLAGS) $(GCONF2CFLAGS)
+	       $(LIBSOUPCFLAGS) $(GCONF2CFLAGS) -I.
 
 HEADERS = \
 	qt-ui/divelistview.h \
