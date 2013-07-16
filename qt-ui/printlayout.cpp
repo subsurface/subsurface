@@ -99,21 +99,21 @@ void PrintLayout::printTable() const
 	doc.setPageSize(pageSize);
 
 	QString styleSheet(
-		"<style type='text/css'>" \
-		"table {" \
-		"	border-width: 1px;" \
-		"	border-style: solid;" \
-		"	border-color: #999999;" \
-		"}" \
-		"th {" \
-		"	background-color: #eeeeee;" \
-		"	font-size: small;" \
-		"	padding: 3px 5px 3px 5px;" \
-		"}" \
-		"td {" \
-		"	font-size: small;" \
-		"	padding: 3px 5px 3px 5px;" \
-		"}" \
+		"<style type='text/css'>"
+		"table {"
+		"	border-width: 1px;"
+		"	border-style: solid;"
+		"	border-color: #999999;"
+		"}"
+		"th {"
+		"	background-color: #eeeeee;"
+		"	font-size: small;"
+		"	padding: 3px 5px 3px 5px;"
+		"}"
+		"td {"
+		"	font-size: small;"
+		"	padding: 3px 5px 3px 5px;"
+		"}" 
 		"</style>"
 	);
 	// setDefaultStyleSheet() doesn't work here?
