@@ -12,6 +12,8 @@
 #include <QComboBox>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QKeyEvent>
+#include <QAbstractItemView>
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 	QStyledItemDelegate(parent),
@@ -65,6 +67,7 @@ void ComboBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 		c->setEditText(data);
 }
 
+QComboBox *comboEditor;
 QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	QComboBox *comboDelegate = new QComboBox(parent);
@@ -73,7 +76,24 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	comboDelegate->setAutoCompletion(true);
 	comboDelegate->setAutoCompletionCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
+	comboDelegate->lineEdit()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
+	comboEditor = comboDelegate;
 	return comboDelegate;
+}
+
+bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
+{
+	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
+	if (event->type() == QEvent::KeyPress){
+		QKeyEvent *ev = static_cast<QKeyEvent*>(event);
+		if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
+			QString curr = comboEditor->currentText();
+			comboEditor->showPopup();
+			return true;
+		}
+	}
+
+    return QStyledItemDelegate::eventFilter(object, event);
 }
 
 void ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const

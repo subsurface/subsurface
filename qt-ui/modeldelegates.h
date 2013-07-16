@@ -2,6 +2,7 @@
 #define MODELDELEGATES_H
 
 #include <QStyledItemDelegate>
+class QComboBox;
 
 class StarWidgetsDelegate : public QStyledItemDelegate {
 	Q_OBJECT
@@ -20,8 +21,10 @@ public:
 	virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 	virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
     virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    virtual bool eventFilter(QObject* object, QEvent* event);
 protected:
 	QAbstractItemModel *model;
+	QComboBox *comboBox; // warning - it's null everytime a edit's finished.
 };
 
 class TankInfoDelegate : public ComboBoxDelegate{
