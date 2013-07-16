@@ -161,12 +161,14 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 		if (cyl->type.size.mliter != value.toInt()) {
 			cyl->type.size.mliter = value.toInt();
 			mark_divelist_changed(TRUE);
+			dataChanged(index, index);
 		}
 		break;
 	case WORKINGPRESS:
 		if (cyl->type.workingpressure.mbar != value.toInt()) {
 			cyl->type.workingpressure.mbar = value.toInt();
 			mark_divelist_changed(TRUE);
+			dataChanged(index, index);
 		}
 		break;
 	}
@@ -262,7 +264,8 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	}
-	return QAbstractItemModel::setData(index, value, role);
+	dataChanged(index, index);
+	return true;
 }
 
 int CylindersModel::rowCount(const QModelIndex& parent) const
@@ -408,6 +411,7 @@ void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
 		if (ws->weight.grams != value.toInt()) {
 			ws->weight.grams = value.toInt();
 			mark_divelist_changed(TRUE);
+			dataChanged(index, index);
 		}
 	}
 }
@@ -440,7 +444,8 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 		}
 		break;
 	}
-	return QAbstractItemModel::setData(index, value, role);
+	dataChanged(index, index);
+	return true;
 }
 
 Qt::ItemFlags WeightModel::flags(const QModelIndex& index) const
@@ -540,6 +545,7 @@ bool WSInfoModel::setData(const QModelIndex& index, const QVariant& value, int r
 		info->grams = value.toInt();
 		break;
 	}
+	emit dataChanged(index, index);
 	return TRUE;
 }
 
@@ -680,6 +686,7 @@ bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int
 		info->bar = value.toInt();
 		break;
 	}
+	emit dataChanged(index, index);
 	return TRUE;
 }
 
@@ -1275,6 +1282,7 @@ bool DiveComputerModel::setData(const QModelIndex& index, const QVariant& value,
 	dcWorkingMap.remove(node.model, node);
 	node.nickName = value.toString();
 	dcWorkingMap.insert(node.model, node);
+	emit dataChanged(index, index);
 	return true;
 }
 

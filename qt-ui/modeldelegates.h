@@ -22,9 +22,10 @@ public:
 	virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
     virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
     virtual bool eventFilter(QObject* object, QEvent* event);
+public slots:
+	void testActivation(const QString& s);
 protected:
 	QAbstractItemModel *model;
-	QComboBox *comboBox; // warning - it's null everytime a edit's finished.
 };
 
 class TankInfoDelegate : public ComboBoxDelegate{

@@ -67,7 +67,13 @@ void ComboBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 		c->setEditText(data);
 }
 
-QComboBox *comboEditor;
+struct CurrSelected{
+	QComboBox *comboEditor;
+	int currRow;
+	QString activeText;
+	QAbstractItemModel *model;
+} currCombo;
+
 QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	QComboBox *comboDelegate = new QComboBox(parent);
@@ -77,8 +83,17 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	comboDelegate->setAutoCompletionCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	comboDelegate->lineEdit()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
-	comboEditor = comboDelegate;
+	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
+	currCombo.comboEditor = comboDelegate;
+	currCombo.currRow = index.row();
+	currCombo.model = const_cast<QAbstractItemModel*>(index.model());
 	return comboDelegate;
+}
+
+void ComboBoxDelegate::testActivation(const QString& s)
+{
+	currCombo.activeText = s;
+	setModelData(currCombo.comboEditor, currCombo.model, QModelIndex());
 }
 
 bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
@@ -87,9 +102,7 @@ bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 	if (event->type() == QEvent::KeyPress){
 		QKeyEvent *ev = static_cast<QKeyEvent*>(event);
 		if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
-			QString curr = comboEditor->currentText();
-			comboEditor->showPopup();
-			return true;
+			currCombo.comboEditor->showPopup();
 		}
 	}
 
@@ -106,18 +119,16 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionV
     editor->setGeometry(defaultRect);
 }
 
-
 void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
 {
-	QComboBox *c = qobject_cast<QComboBox*>(editor);
-	CylindersModel *mymodel = qobject_cast<CylindersModel *>(model);
+	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
 	TankInfoModel *tanks = TankInfoModel::instance();
-	QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, c->currentText());
+	QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, currCombo.activeText);
 	int row;
 	if (matches.isEmpty()) {
 		// we need to add this
 		tanks->insertRows(tanks->rowCount(), 1);
-		tanks->setData(tanks->index(tanks->rowCount() -1, 0), c->currentText());
+		tanks->setData(tanks->index(tanks->rowCount() -1, 0), currCombo.activeText);
 		row = tanks->rowCount() - 1;
 	} else {
 		row = matches.first().row();
@@ -125,9 +136,9 @@ void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
 	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
-	mymodel->setData(model->index(thisindex.row(), CylindersModel::TYPE), c->currentText(), Qt::EditRole);
-	mymodel->passInData(model->index(thisindex.row(), CylindersModel::WORKINGPRESS), tankPressure);
-	mymodel->passInData(model->index(thisindex.row(), CylindersModel::SIZE), tankSize);
+	mymodel->setData(model->index(currCombo.currRow, CylindersModel::TYPE), currCombo.activeText, Qt::EditRole);
+	mymodel->passInData(model->index(currCombo.currRow, CylindersModel::WORKINGPRESS), tankPressure);
+	mymodel->passInData(model->index(currCombo.currRow, CylindersModel::SIZE), tankSize);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject* parent): ComboBoxDelegate(TankInfoModel::instance(), parent)
@@ -136,23 +147,23 @@ TankInfoDelegate::TankInfoDelegate(QObject* parent): ComboBoxDelegate(TankInfoMo
 
 void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
 {
-	QComboBox *c = qobject_cast<QComboBox*>(editor);
-	WeightModel *mymodel = qobject_cast<WeightModel *>(model);
+	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	WSInfoModel *wsim = WSInfoModel::instance();
-	QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, c->currentText());
+	QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, currCombo.activeText);
 	int row;
 	if (matches.isEmpty()) {
 		// we need to add this puppy
 		wsim->insertRows(wsim->rowCount(), 1);
-		wsim->setData(wsim->index(wsim->rowCount() - 1, 0), c->currentText());
+		wsim->setData(wsim->index(wsim->rowCount() - 1, 0), currCombo.activeText);
 		row = wsim->rowCount() - 1;
 	} else {
 		row = matches.first().row();
 	}
 	int grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
-	QVariant v = QString(c->currentText());
-	mymodel->setData(model->index(thisindex.row(), WeightModel::TYPE), v, Qt::EditRole);
-	mymodel->passInData(model->index(thisindex.row(), WeightModel::WEIGHT), grams);
+	QVariant v = QString(currCombo.activeText);
+	mymodel->setData(model->index(currCombo.currRow, WeightModel::TYPE), v, Qt::EditRole);
+	mymodel->passInData(model->index(currCombo.currRow, WeightModel::WEIGHT), grams);
+	qDebug() << "Fixme, every weigth is 0.0 grams. see:" << grams;
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject* parent): ComboBoxDelegate(WSInfoModel::instance(), parent)
