@@ -71,7 +71,7 @@ void PrintLayout::setup()
 {
 	QDesktopWidget *desktop = QApplication::desktop();
 	screenDpiX = desktop->physicalDpiX();
-	screenDpiY = desktop->physicalDpiX();
+	screenDpiY = desktop->physicalDpiY();
 
 	printerDpi = printer->resolution();
 	pageRect = printer->pageRect();
