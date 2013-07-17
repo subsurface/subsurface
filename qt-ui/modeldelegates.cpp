@@ -83,6 +83,7 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	comboDelegate->setAutoCompletionCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	comboDelegate->lineEdit()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
+	comboDelegate->view()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
@@ -100,9 +101,22 @@ bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
 	if (event->type() == QEvent::KeyPress){
-		QKeyEvent *ev = static_cast<QKeyEvent*>(event);
-		if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
-			currCombo.comboEditor->showPopup();
+		if (object == currCombo.comboEditor){ // the 'LineEdit' part
+			QKeyEvent *ev = static_cast<QKeyEvent*>(event);
+			if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
+				currCombo.comboEditor->showPopup();
+			}
+		}
+		else{	// the 'Drop Down Menu' part.
+			QKeyEvent *ev = static_cast<QKeyEvent*>(event);
+			if(    ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return
+				|| ev->key() == Qt::Key_Tab   || ev->key() == Qt::Key_Backtab
+				|| ev->key() == Qt::Key_Escape){
+				// treat Qt as a silly little boy - pretending that the key_return nwas pressed on the combo,
+				// instead of the list of choices. this can be extended later for
+				// other imputs, like tab navigation and esc.
+				QStyledItemDelegate::eventFilter(currCombo.comboEditor, event);
+			}
 		}
 	}
 
