@@ -78,7 +78,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	addWeight->setEnabled(false);
 
 	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), ui->cylinders->model(), SLOT(remove(QModelIndex)));
+	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui->weights, SIGNAL(clicked(QModelIndex)), ui->weights->model(), SLOT(remove(QModelIndex)));
+	connect(ui->weights, SIGNAL(clicked(QModelIndex)), this, SLOT(editWeigthWidget(QModelIndex)));
 
 	QFontMetrics metrics(defaultModelFont());
 	QFontMetrics metrics2(font());
@@ -532,5 +534,16 @@ void MainTab::initialUiSetup()
 			ui->weights->resizeColumnToContents(i);
 	}
 	s.endGroup();
+}
 
+void MainTab::editCylinderWidget(const QModelIndex& index)
+{
+	if (index.column() != CylindersModel::REMOVE)
+		ui->cylinders->edit(index);
+}
+
+void MainTab::editWeigthWidget(const QModelIndex& index)
+{
+	if (index.column() != WeightModel::REMOVE)
+		ui->weights->edit(index);
 }

@@ -60,6 +60,8 @@ public slots:
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
 	void tabChanged(int idx);
+	void editCylinderWidget(const QModelIndex& index);
+	void editWeigthWidget(const QModelIndex& index);
 
 private:
 	Ui::MainTab *ui;
