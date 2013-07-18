@@ -84,6 +84,8 @@ public:
 	void clear();
 	void update();
 	void setDive(struct dive *d);
+	cylinder_t *cylinderAt(const QModelIndex& index);
+
 public slots:
 	void remove(const QModelIndex& index);
 
