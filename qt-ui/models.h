@@ -114,6 +114,8 @@ public:
 	void clear();
 	void update();
 	void setDive(struct dive *d);
+	weightsystem_t *weightSystemAt(const QModelIndex& index);
+
 public slots:
 	void remove(const QModelIndex& index);
 

@@ -24,6 +24,7 @@ public:
     virtual bool eventFilter(QObject* object, QEvent* event);
 public slots:
 	void testActivation(const QString& s);
+	virtual void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 protected:
 	QAbstractItemModel *model;
 };
@@ -44,6 +45,8 @@ public:
 	explicit WSInfoDelegate(QObject* parent = 0);
 	virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
     virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+public slots:
+	void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 #endif
