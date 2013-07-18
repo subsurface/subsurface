@@ -58,6 +58,8 @@ QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
 
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject* parent): QStyledItemDelegate(parent), model(model)
 {
+	connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)),
+	this, SLOT(revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)));
 }
 
 void ComboBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
@@ -172,8 +174,6 @@ void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 
 TankInfoDelegate::TankInfoDelegate(QObject* parent): ComboBoxDelegate(TankInfoModel::instance(), parent)
 {
-	connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)),
-			this, SLOT(revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)));
 }
 
 void TankInfoDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
@@ -197,6 +197,20 @@ QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	currCylinderData.pressure = cyl->type.workingpressure.mbar;
 	currCylinderData.size = cyl->type.size.mliter;
 	return delegate;
+}
+
+struct RevertWeigthData {
+	QString type;
+	int weigth;
+} currWeigth;
+
+void WSInfoDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
+{
+	if (hint == QAbstractItemDelegate::NoHint || hint == QAbstractItemDelegate::RevertModelCache){
+		WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
+		mymodel->setData(IDX(WeightModel::TYPE), currWeigth.type, Qt::EditRole);
+		mymodel->passInData(IDX(WeightModel::WEIGHT), currWeigth.weigth);
+	}
 }
 
 void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
@@ -231,5 +245,11 @@ WSInfoDelegate::WSInfoDelegate(QObject* parent): ComboBoxDelegate(WSInfoModel::i
 
 QWidget* WSInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    return ComboBoxDelegate::createEditor(parent, option, index);
+	/* First, call the combobox-create editor, it will setup our globals. */
+	QWidget *editor = ComboBoxDelegate::createEditor(parent, option, index);
+	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
+	weightsystem_t *ws = mymodel->weightSystemAt(index);
+	currWeigth.type = ws->description;
+	currWeigth.weigth = ws->weight.grams;
+	return editor;
 }

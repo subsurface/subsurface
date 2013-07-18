@@ -348,6 +348,11 @@ WeightModel::WeightModel(QObject* parent): QAbstractTableModel(parent), current(
 {
 }
 
+weightsystem_t* WeightModel::weightSystemAt(const QModelIndex& index)
+{
+	return &current->weightsystem[index.row()];
+}
+
 void WeightModel::remove(const QModelIndex& index)
 {
 	if (index.column() != REMOVE) {
