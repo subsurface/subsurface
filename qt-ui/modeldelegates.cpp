@@ -14,6 +14,11 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QAbstractItemView>
+#include <boost/concept_check.hpp>
+
+// Gets the index of the model in the currentRow and column.
+// currCombo is defined below.
+#define IDX( XX ) mymodel->index(currCombo.currRow, XX)
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 	QStyledItemDelegate(parent),
@@ -133,6 +138,12 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionV
     editor->setGeometry(defaultRect);
 }
 
+struct RevertCylinderData{
+	QString type;
+	int pressure;
+	int size;
+} currCylinderData;
+
 void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
 {
 	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
@@ -154,13 +165,39 @@ void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 	if ( mymodel->data(thisindex, CylindersModel::TYPE).toString() == currCombo.activeText){
 		return;
 	}
-	mymodel->setData(model->index(currCombo.currRow, CylindersModel::TYPE), currCombo.activeText, Qt::EditRole);
-	mymodel->passInData(model->index(currCombo.currRow, CylindersModel::WORKINGPRESS), tankPressure);
-	mymodel->passInData(model->index(currCombo.currRow, CylindersModel::SIZE), tankSize);
+
+	mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, Qt::EditRole);
+	mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), tankPressure);
+	mymodel->passInData(IDX(CylindersModel::SIZE), tankSize);
 }
 
 TankInfoDelegate::TankInfoDelegate(QObject* parent): ComboBoxDelegate(TankInfoModel::instance(), parent)
 {
+	connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)),
+			this, SLOT(revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)));
+}
+
+void TankInfoDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
+{
+	if (hint == QAbstractItemDelegate::NoHint || hint == QAbstractItemDelegate::RevertModelCache){
+		CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
+		mymodel->setData(IDX(CylindersModel::TYPE), currCylinderData.type, Qt::EditRole);
+		mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), currCylinderData.pressure);
+		mymodel->passInData(IDX(CylindersModel::SIZE), currCylinderData.size);
+	}
+}
+
+QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+	// ncreate editor needs to be called before because it will populate a few
+	// things in the currCombo global var.
+	QWidget *delegate = ComboBoxDelegate::createEditor(parent, option, index);
+	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
+	cylinder_t *cyl = mymodel->cylinderAt(index);
+	currCylinderData.type = cyl->type.description;
+	currCylinderData.pressure = cyl->type.workingpressure.mbar;
+	currCylinderData.size = cyl->type.size.mliter;
+	return delegate;
 }
 
 void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& thisindex) const
@@ -184,11 +221,16 @@ void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, co
 	if (mymodel->data(thisindex, WeightModel::TYPE).toString() == currCombo.activeText){
 		return;
 	}
-	mymodel->setData(model->index(currCombo.currRow, WeightModel::TYPE), v, Qt::EditRole);
-	mymodel->passInData(model->index(currCombo.currRow, WeightModel::WEIGHT), grams);
+	mymodel->setData(IDX(WeightModel::TYPE), v, Qt::EditRole);
+	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
 	qDebug() << "Fixme, every weigth is 0.0 grams. see:" << grams;
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject* parent): ComboBoxDelegate(WSInfoModel::instance(), parent)
 {
+}
+
+QWidget* WSInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    return ComboBoxDelegate::createEditor(parent, option, index);
 }

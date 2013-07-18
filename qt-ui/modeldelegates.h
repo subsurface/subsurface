@@ -33,6 +33,9 @@ class TankInfoDelegate : public ComboBoxDelegate{
 public:
 	explicit TankInfoDelegate(QObject* parent = 0);
 	virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+public slots:
+	void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class WSInfoDelegate : public ComboBoxDelegate{
@@ -40,6 +43,7 @@ class WSInfoDelegate : public ComboBoxDelegate{
 public:
 	explicit WSInfoDelegate(QObject* parent = 0);
 	virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 };
 
 #endif

@@ -147,7 +147,13 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			ret = QIcon(":trash");
 		break;
 	}
+
 	return ret;
+}
+
+cylinder_t* CylindersModel::cylinderAt(const QModelIndex& index)
+{
+	return &current->cylinder[index.row()];
 }
 
 // this is our magic 'pass data in' function that allows the delegate to get
