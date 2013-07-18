@@ -150,6 +150,10 @@ void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
 	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
+	// don't fuck the other data, jimmy.
+	if ( mymodel->data(thisindex, CylindersModel::TYPE).toString() == currCombo.activeText){
+		return;
+	}
 	mymodel->setData(model->index(currCombo.currRow, CylindersModel::TYPE), currCombo.activeText, Qt::EditRole);
 	mymodel->passInData(model->index(currCombo.currRow, CylindersModel::WORKINGPRESS), tankPressure);
 	mymodel->passInData(model->index(currCombo.currRow, CylindersModel::SIZE), tankSize);
@@ -175,6 +179,11 @@ void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, co
 	}
 	int grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
 	QVariant v = QString(currCombo.activeText);
+
+	// don't set if it's the same as it was before setting.
+	if (mymodel->data(thisindex, WeightModel::TYPE).toString() == currCombo.activeText){
+		return;
+	}
 	mymodel->setData(model->index(currCombo.currRow, WeightModel::TYPE), v, Qt::EditRole);
 	mymodel->passInData(model->index(currCombo.currRow, WeightModel::WEIGHT), grams);
 	qDebug() << "Fixme, every weigth is 0.0 grams. see:" << grams;
