@@ -180,7 +180,7 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 	}
 }
 
-#define CHANGED(_t,_u1,_u2) value._t() != data(index, role).toString().replace(_u1,"").replace(_u2,"")._t()
+#define CHANGED(_t,_u1,_u2) value._t() != data(index, role).toString().remove(_u1).remove(_u2)._t()
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
@@ -223,13 +223,15 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case WORKINGPRESS:
 		if (CHANGED(toDouble, "psi", "bar")) {
-			if (value.toDouble() != 0.0) {
+			QString vString = value.toString();
+			vString.remove("psi").remove("bar");
+			if (vString.toDouble() != 0.0) {
 				TankInfoModel *tanks = TankInfoModel::instance();
 				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 				if (prefs.units.pressure == prefs.units.PSI)
-					cyl->type.workingpressure.mbar = psi_to_mbar(value.toDouble());
+					cyl->type.workingpressure.mbar = psi_to_mbar(vString.toDouble());
 				else
-					cyl->type.workingpressure.mbar = value.toDouble() * 1000;
+					cyl->type.workingpressure.mbar = vString.toDouble() * 1000;
 				if (!matches.isEmpty())
 					tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
 				mark_divelist_changed(TRUE);
@@ -259,13 +261,13 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case O2:
 		if (CHANGED(toDouble, "%", "%")) {
-			cyl->gasmix.o2.permille = value.toDouble() * 10 + 0.5;
+			cyl->gasmix.o2.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
 			mark_divelist_changed(TRUE);
 		}
 		break;
 	case HE:
 		if (CHANGED(toDouble, "%", "%")) {
-			cyl->gasmix.he.permille = value.toDouble() * 10 + 0.5;
+			cyl->gasmix.he.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
 			mark_divelist_changed(TRUE);
 		}
 		break;
