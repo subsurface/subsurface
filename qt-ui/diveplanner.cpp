@@ -246,7 +246,14 @@ void DivePlannerGraphics::keyRightAction()
 
 void DivePlannerGraphics::keyDeleteAction()
 {
-	if(scene()->selectedItems().count()){
+	int selCount = scene()->selectedItems().count();
+	if(selCount){
+
+		while(selCount--){
+			Button *btn = gases.takeLast();
+			delete btn;
+		}
+
 		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
 				handles.removeAll(handler);
@@ -254,6 +261,7 @@ void DivePlannerGraphics::keyDeleteAction()
 				delete i;
 			}
 		}
+
 		createDecoStops();
 	}
 }
@@ -368,6 +376,14 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	item->setPos(QPointF(xpos, ypos));
 	scene()->addItem(item);
 	handles << item;
+
+	Button *gasChooseBtn  = new Button();
+	gasChooseBtn ->setText(tr("Air"));
+	scene()->addItem(gasChooseBtn);
+	gasChooseBtn->setZValue(10);
+	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(changeGas()));
+
+	gases << gasChooseBtn;
 	createDecoStops();
 }
 
@@ -426,6 +442,17 @@ void DivePlannerGraphics::createDecoStops()
 	// Re-position the user generated dive handlers
 	Q_FOREACH(DiveHandler *h, handles){
 		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm / 1000));
+	}
+
+	int gasCount = gases.count();
+	for(int i = 0; i < gasCount; i++){
+		QPointF p1 = (i == 0) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[i-1]->pos();
+		QPointF p2 = handles[i]->pos();
+
+		QLineF line(p1, p2);
+		QPointF pos = line.pointAt(0.5);
+		gases[i]->setPos(pos);
+		qDebug() << "Adding a gas at" << pos;
 	}
 
 	// (re-) create the profile with different colors for segments that were

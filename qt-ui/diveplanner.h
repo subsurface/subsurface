@@ -28,7 +28,6 @@ public:
 	int mm;
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
-
 };
 
 class Ruler : public QGraphicsLineItem{
@@ -96,6 +95,12 @@ private:
 
 	/* This is the user-entered handles. */
 	QList<DiveHandler *> handles;
+
+	/* this is the user-entered gases.
+		This must be a button, so the
+		user cna click to choose a new gas.
+	 */
+	QList<Button*> gases;
 
 	/* those are the lines that follows the mouse. */
 	QGraphicsLineItem *verticalLine;
