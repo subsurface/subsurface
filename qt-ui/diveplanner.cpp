@@ -11,7 +11,10 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
 #include <QStringListModel>
-#include <boost/graph/graph_concepts.hpp>
+#include <QGraphicsProxyWidget>
+#include <QListView>
+#include <QDesktopWidget>
+#include <QModelIndex>
 
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
@@ -136,8 +139,14 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
 
-	QStringListModel *model = new QStringListModel(QStringList() << tr("AIR") << tr("EAN32") << tr("EAN36"));
+	// Prepare the stuff for the gas-choices.
+	gasChoices = new QStringListModel(QStringList() << tr("AIR") << tr("EAN32") << tr("EAN36"));
+	gasListView = new QListView();
+	gasListView->setWindowFlags(Qt::FramelessWindowHint);
+	gasListView->setModel(gasChoices);
+	gasListView->hide();
 
+	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
 	setRenderHint(QPainter::Antialiasing);
 }
 
@@ -363,15 +372,27 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	gasChooseBtn ->setText(tr("Air"));
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
-	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(selectGasClicked()));
+	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
 
 	gases << gasChooseBtn;
 	createDecoStops();
 }
 
-void DivePlannerGraphics::selectGasClicked()
+void DivePlannerGraphics::prepareSelectGas()
 {
+	currentGasChoice = static_cast<Button*>(sender());
+	QPoint c = QCursor::pos();
+	gasListView->setGeometry(c.x(), c.y(), 150, 100);
+	gasListView->show();
 }
+
+void DivePlannerGraphics::selectGas(const QModelIndex& index)
+{
+	QString gasSelected = gasListView->model()->data(index, Qt::DisplayRole).toString();
+	currentGasChoice->setText(gasSelected);
+	gasListView->hide();
+}
+
 
 void DivePlannerGraphics::createDecoStops()
 {

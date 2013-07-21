@@ -5,6 +5,10 @@
 #include <QGraphicsPathItem>
 #include <QDialog>
 
+class QListView;
+class QStringListModel;
+class QModelIndex;
+
 class Button : public QObject, public QGraphicsRectItem {
 	Q_OBJECT
 public:
@@ -86,7 +90,8 @@ private slots:
 	void decreaseDepth();;
 	void okClicked();
 	void cancelClicked();
-	void selectGasClicked();
+	void prepareSelectGas();
+	void selectGas(const QModelIndex& index);
 
 private:
 	void moveActiveHandler(const QPointF& pos);
@@ -102,6 +107,9 @@ private:
 		user cna click to choose a new gas.
 	 */
 	QList<Button*> gases;
+	QListView *gasListView;
+	QStringListModel *gasChoices;
+	Button *currentGasChoice;
 
 	/* those are the lines that follows the mouse. */
 	QGraphicsLineItem *verticalLine;
