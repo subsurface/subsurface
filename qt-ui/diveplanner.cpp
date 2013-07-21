@@ -110,6 +110,20 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	scene()->addItem(plusTime);
 	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
 
+	lessDepth = new Button();
+	lessDepth->setPixmap(QPixmap(":minimum"));
+	lessDepth->setPos(fromPercent(2, Qt::Horizontal), fromPercent(5, Qt::Vertical));
+	lessDepth->setToolTip("Decreases maximum depth by 10m");
+	scene()->addItem(lessDepth);
+	connect(lessDepth, SIGNAL(clicked()), this, SLOT(decreaseDepth()));
+
+	lessTime = new Button();
+	lessTime->setPixmap(QPixmap(":minimum"));
+	lessTime->setPos(fromPercent(92, Qt::Horizontal), fromPercent(95, Qt::Vertical));
+	lessTime->setToolTip("Decreases minimum dive time by 10m");
+	scene()->addItem(lessTime);
+	connect(lessTime, SIGNAL(clicked()), this, SLOT(decreaseTime()));
+
 	okBtn = new Button();
 	okBtn->setText(tr("Ok"));
 	okBtn->setPos(fromPercent(1, Qt::Horizontal), fromPercent(95, Qt::Vertical));
@@ -293,6 +307,31 @@ void DivePlannerGraphics::increaseTime()
 	timeLine->setMaximum( minMinutes );
 	timeLine->updateTicks();
 	createDecoStops();
+}
+
+void DivePlannerGraphics::decreaseDepth()
+{
+	if (depthLine->maximum() - 10 < MIN_DEEPNESS)
+		return;
+
+	Q_FOREACH(DiveHandler *d, handles){
+		if (depthLine->valueAt(d->pos()) > depthLine->maximum() - 10){
+			QMessageBox::warning(mainWindow(),
+				tr("Handler Position Error"),
+				tr("One or more of your stops will be lost with this operations, \n"
+					"Please, remove them first."));
+			return;
+		}
+	}
+
+	depthLine->setMaximum(depthLine->maximum() - 10);
+	depthLine->updateTicks();
+	createDecoStops();
+}
+
+void DivePlannerGraphics::decreaseTime()
+{
+
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)

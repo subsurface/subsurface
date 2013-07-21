@@ -85,6 +85,8 @@ private slots:
 	void keyRightAction();
 	void increaseTime();
 	void increaseDepth();
+	void decreaseTime();
+	void decreaseDepth();;
 	void okClicked();
 	void cancelClicked();
 
