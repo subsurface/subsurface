@@ -24,8 +24,6 @@ private:
 class DiveHandler : public QGraphicsEllipseItem{
 public:
 	DiveHandler();
-	QGraphicsLineItem *from;
-	QGraphicsLineItem *to;
 	int sec;
 	int mm;
 protected:

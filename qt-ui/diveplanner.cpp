@@ -332,12 +332,10 @@ void DivePlannerGraphics::decreaseDepth()
 void DivePlannerGraphics::decreaseTime()
 {
 	if (timeLine->maximum() -10 < TIME_INITIAL_MAX){
-		qDebug() << "oi";
 		return;
 	}
 	if (timeLine->maximum() - 10 < dpMaxTime){
 		qDebug() << timeLine->maximum() << dpMaxTime;
-		qDebug() << "Como?";
 		return;
 	}
 	minMinutes -= 10;
@@ -595,7 +593,7 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 	}
 }
 
-DiveHandler::DiveHandler(): QGraphicsEllipseItem(), from(0), to(0)
+DiveHandler::DiveHandler(): QGraphicsEllipseItem()
 {
 	setRect(-5,-5,10,10);
 	setFlag(QGraphicsItem::ItemIgnoresTransformations);
@@ -616,7 +614,6 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Ruler::setMaximum(double maximum)
 {
-	qDebug() << "Maximum set " << maximum;
 	max = maximum;
 }
 
