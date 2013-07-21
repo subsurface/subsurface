@@ -86,6 +86,7 @@ private slots:
 	void decreaseDepth();;
 	void okClicked();
 	void cancelClicked();
+	void selectGasClicked();
 
 private:
 	void moveActiveHandler(const QPointF& pos);

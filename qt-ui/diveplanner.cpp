@@ -10,6 +10,8 @@
 #include <QPushButton>
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
+#include <QStringListModel>
+#include <boost/graph/graph_concepts.hpp>
 
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
@@ -96,46 +98,24 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	diveBg->setPen(QPen(QBrush(),0));
 	scene()->addItem(diveBg);
 
-	plusDepth = new Button();
-	plusDepth->setPixmap(QPixmap(":plus"));
-	plusDepth->setPos(fromPercent(5, Qt::Horizontal), fromPercent(5, Qt::Vertical));
-	plusDepth->setToolTip("Increase maximum depth by 10m");
-	scene()->addItem(plusDepth);
-	connect(plusDepth, SIGNAL(clicked()), this, SLOT(increaseDepth()));
+#define ADDBTN(obj, icon, text, horizontal, vertical, tooltip, slot) \
+	obj = new Button(); \
+	obj->setPixmap(QPixmap(icon)); \
+	obj->setPos(fromPercent(horizontal, Qt::Horizontal), fromPercent(vertical, Qt::Vertical)); \
+	obj->setToolTip(tooltip); \
+	scene()->addItem(obj); \
+	connect(obj, SIGNAL(clicked()), this, SLOT(slot));
 
-	plusTime = new Button();
-	plusTime->setPixmap(QPixmap(":plus"));
-	plusTime->setPos(fromPercent(95, Qt::Horizontal), fromPercent(95, Qt::Vertical));
-	plusTime->setToolTip("Increase minimum dive time by 10m");
-	scene()->addItem(plusTime);
-	connect(plusTime, SIGNAL(clicked()), this, SLOT(increaseTime()));
+	ADDBTN(plusDepth, ":plus",   ""  , 5,  5, tr("Increase maximum depth by 10m"), increaseDepth());
+	ADDBTN(plusTime,  ":plus",   ""  , 95, 5, tr("Increase minimum time by 10m"), increaseTime());
+	ADDBTN(lessDepth, ":minimum",""  , 2,  5, tr("Decreases maximum depth by 10m"), decreaseDepth());
+	ADDBTN(lessTime,  ":minimum",""  , 92, 95, tr("Decreases minimum time by 10m"), decreaseTime());
 
-	lessDepth = new Button();
-	lessDepth->setPixmap(QPixmap(":minimum"));
-	lessDepth->setPos(fromPercent(2, Qt::Horizontal), fromPercent(5, Qt::Vertical));
-	lessDepth->setToolTip("Decreases maximum depth by 10m");
-	scene()->addItem(lessDepth);
-	connect(lessDepth, SIGNAL(clicked()), this, SLOT(decreaseDepth()));
+	ADDBTN(okBtn, "", tr("Ok"), 1, 95, "", okClicked());
+	ADDBTN(cancelBtn, "", tr("Cancel"), 0,0, "", cancelClicked());
 
-	lessTime = new Button();
-	lessTime->setPixmap(QPixmap(":minimum"));
-	lessTime->setPos(fromPercent(92, Qt::Horizontal), fromPercent(95, Qt::Vertical));
-	lessTime->setToolTip("Decreases minimum dive time by 10m");
-	scene()->addItem(lessTime);
-	connect(lessTime, SIGNAL(clicked()), this, SLOT(decreaseTime()));
-
-	okBtn = new Button();
-	okBtn->setText(tr("Ok"));
-	okBtn->setPos(fromPercent(1, Qt::Horizontal), fromPercent(95, Qt::Vertical));
-	scene()->addItem(okBtn);
-	connect(okBtn, SIGNAL(clicked()), this, SLOT(okClicked()));
-
-	cancelBtn = new Button();
-	cancelBtn->setText(tr("Cancel"));
-	cancelBtn->setPos(okBtn->pos().x() + okBtn->boundingRect().width() + fromPercent(2, Qt::Horizontal),
-					  fromPercent(95, Qt::Vertical));
-	scene()->addItem(cancelBtn);
-	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelClicked()));
+	cancelBtn->setPos(okBtn->pos().x() + okBtn->boundingRect().width()
+		+ fromPercent(2, Qt::Horizontal),  fromPercent(95, Qt::Vertical));
 
 	minMinutes = TIME_INITIAL_MAX;
 
@@ -155,6 +135,8 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	ADD_ACTION(Qt::Key_Left, keyLeftAction());
 	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
+
+	QStringListModel *model = new QStringListModel(QStringList() << tr("AIR") << tr("EAN32") << tr("EAN36"));
 
 	setRenderHint(QPainter::Antialiasing);
 }
@@ -381,10 +363,14 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 	gasChooseBtn ->setText(tr("Air"));
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
-	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(changeGas()));
+	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(selectGasClicked()));
 
 	gases << gasChooseBtn;
 	createDecoStops();
+}
+
+void DivePlannerGraphics::selectGasClicked()
+{
 }
 
 void DivePlannerGraphics::createDecoStops()
