@@ -110,9 +110,9 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	ADDBTN(plusTime,  ":plus",   ""  , 95, 5, tr("Increase minimum time by 10m"), increaseTime());
 	ADDBTN(lessDepth, ":minimum",""  , 2,  5, tr("Decreases maximum depth by 10m"), decreaseDepth());
 	ADDBTN(lessTime,  ":minimum",""  , 92, 95, tr("Decreases minimum time by 10m"), decreaseTime());
-
 	ADDBTN(okBtn, "", tr("Ok"), 1, 95, "", okClicked());
 	ADDBTN(cancelBtn, "", tr("Cancel"), 0,0, "", cancelClicked());
+#undef ADDBTN
 
 	cancelBtn->setPos(okBtn->pos().x() + okBtn->boundingRect().width()
 		+ fromPercent(2, Qt::Horizontal),  fromPercent(95, Qt::Vertical));
