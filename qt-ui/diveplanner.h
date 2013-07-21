@@ -130,6 +130,7 @@ private:
 	Button *cancelBtn; // rejects, and clears the dive plan.
 
 	int minMinutes; // this holds the minimum duration of the dive.
+	int dpMaxTime; // this is the time of the dive calculated by the deco.
 };
 
 #endif

@@ -331,7 +331,19 @@ void DivePlannerGraphics::decreaseDepth()
 
 void DivePlannerGraphics::decreaseTime()
 {
-
+	if (timeLine->maximum() -10 < TIME_INITIAL_MAX){
+		qDebug() << "oi";
+		return;
+	}
+	if (timeLine->maximum() - 10 < dpMaxTime){
+		qDebug() << timeLine->maximum() << dpMaxTime;
+		qDebug() << "Como?";
+		return;
+	}
+	minMinutes -= 10;
+	timeLine->setMaximum(timeLine->maximum() -10);
+	timeLine->updateTicks();
+	createDecoStops();
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -403,6 +415,8 @@ void DivePlannerGraphics::createDecoStops()
 
 	while(dp->next)
 		dp = dp->next;
+
+	dpMaxTime = dp->time / 60.0 + 5;
 
 	if (timeLine->maximum() < dp->time / 60.0 + 5 ||
 	    dp->time / 60.0 + 15 < timeLine->maximum()) {
@@ -602,6 +616,7 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Ruler::setMaximum(double maximum)
 {
+	qDebug() << "Maximum set " << maximum;
 	max = maximum;
 }
 
