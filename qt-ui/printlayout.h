@@ -1,10 +1,13 @@
 #ifndef PRINTLAYOUT_H
 #define PRINTLAYOUT_H
 
+#include <QObject>
 #include <QPrinter>
-#include <QStringList>
+#include <QList>
 
 class PrintDialog;
+class TablePrintModel;
+struct dive;
 
 class PrintLayout : public QObject {
 	Q_OBJECT
@@ -19,21 +22,21 @@ private:
 	struct options *printOptions;
 
 	QPainter *painter;
-	int screenDpiX, screenDpiY, printerDpi;
+	int screenDpiX, screenDpiY, printerDpi, scaledPageW, scaledPageH;
 	qreal scaleX, scaleY;
 	QRect pageRect;
 
-	QStringList tableColumnNames;
-	QStringList tableColumnWidths;
+	QList<QString> tablePrintColumnNames;
+	QList<unsigned int> tablePrintColumnWidths;
+	unsigned int tablePrintHeadingBackground;
 
 	void setup();
 	void printSixDives() const;
 	void printTwoDives() const;
-	void printTable() const;
-	QString insertTableHeadingRow() const;
-	QString insertTableHeadingCol(int) const;
-	QString insertTableDataRow(struct dive *) const;
-	QString insertTableDataCol(QString) const;
+	void printTable();
+	void addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const;
+	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;
+
 	QPixmap convertPixmapToGrayscale(QPixmap) const;
 };
 

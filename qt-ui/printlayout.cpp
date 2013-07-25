@@ -1,9 +1,10 @@
+#include <QtCore/qmath.h>
 #include <QDebug>
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QApplication>
-#include <QTextDocument>
-#include <QAbstractTextDocumentLayout>
+#include <QTableView>
+#include <QHeaderView>
 #include "mainwindow.h"
 #include "profilegraphics.h"
 #include "printlayout.h"
@@ -21,8 +22,6 @@ struct options {
 };
 */
 
-#define TABLE_PRINT_COL 7
-
 PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct options *optionsPtr)
 {
 	dialog = dialogPtr;
@@ -30,20 +29,21 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	printOptions = optionsPtr;
 
 	// table print settings
-	tableColumnNames.append(tr("Dive#"));
-	tableColumnNames.append(tr("Date"));
-	tableColumnNames.append(tr("Depth"));
-	tableColumnNames.append(tr("Duration"));
-	tableColumnNames.append(tr("Master"));
-	tableColumnNames.append(tr("Buddy"));
-	tableColumnNames.append(tr("Location"));
-	tableColumnWidths.append("7");
-	tableColumnWidths.append("10");
-	tableColumnWidths.append("10");
-	tableColumnWidths.append("10");
-	tableColumnWidths.append("15");
-	tableColumnWidths.append("15");
-	tableColumnWidths.append("100");
+	tablePrintHeadingBackground = 0xffeeeeee;
+	tablePrintColumnNames.append(tr("Dive#"));
+	tablePrintColumnNames.append(tr("Date"));
+	tablePrintColumnNames.append(tr("Depth"));
+	tablePrintColumnNames.append(tr("Duration"));
+	tablePrintColumnNames.append(tr("Master"));
+	tablePrintColumnNames.append(tr("Buddy"));
+	tablePrintColumnNames.append(tr("Location"));
+	tablePrintColumnWidths.append(7);
+	tablePrintColumnWidths.append(10);
+	tablePrintColumnWidths.append(10);
+	tablePrintColumnWidths.append(10);
+	tablePrintColumnWidths.append(15);
+	tablePrintColumnWidths.append(15);
+	tablePrintColumnWidths.append(33);
 }
 
 void PrintLayout::print()
@@ -74,6 +74,10 @@ void PrintLayout::setup()
 
 	scaleX = (qreal)printerDpi/(qreal)screenDpiX;
 	scaleY = (qreal)printerDpi/(qreal)screenDpiY;
+
+	// a printer page scalled to screen DPI
+	scaledPageW = pageRect.width() / scaleX;
+	scaledPageH = pageRect.height() / scaleY;
 }
 
 // experimental
@@ -90,7 +94,7 @@ void PrintLayout::printSixDives() const
 	profile->clear();
 	profile->setPrintMode(true, !printOptions->color_selected);
 	QSize originalSize = profile->size();
-	profile->resize(pageRect.height()/scaleY, pageRect.width()/scaleX);
+	profile->resize(scaledPageW, scaledPageH);
 
 	int i;
 	struct dive *dive;
@@ -122,127 +126,100 @@ void PrintLayout::printTwoDives() const
 	// nop
 }
 
-void PrintLayout::printTable() const
+void PrintLayout::printTable()
 {
-	QTextDocument doc;
-	QSizeF pageSize;
-	pageSize.setWidth(pageRect.width());
-	pageSize.setHeight(pageRect.height());
-	doc.documentLayout()->setPaintDevice(printer);
-	doc.setPageSize(pageSize);
+	// create and setup a table
+	QTableView table;
+	table.setAttribute(Qt::WA_DontShowOnScreen);
+	table.setSelectionMode(QAbstractItemView::NoSelection);
+	table.setFocusPolicy(Qt::NoFocus);
+	table.horizontalHeader()->setVisible(false);
+	table.horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+	table.verticalHeader()->setVisible(false);
+	table.verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	table.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	table.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	// fit table to one page initially
+	table.resize(scaledPageW,  scaledPageH);
 
-	QString styleSheet(
-		"<style type='text/css'>"
-		"table {"
-		"	border-width: 1px;"
-		"	border-style: solid;"
-		"	border-color: #999999;"
-		"}"
-		"th {"
-		"	background-color: #eeeeee;"
-		"	font-size: small;"
-		"	padding: 3px 5px 3px 5px;"
-		"}"
-		"td {"
-		"	font-size: small;"
-		"	padding: 3px 5px 3px 5px;"
-		"}" 
-		"</style>"
-	);
-	// setDefaultStyleSheet() doesn't work here?
-	const QString heading(insertTableHeadingRow());
-	const QString lineBreak("<br>");
-	QString htmlText = styleSheet + "<table cellspacing='0' width='100%'>";
-	QString htmlTextPrev;
-	int pageCountNew = 1, pageCount = 0, lastPageWithHeading = 0;
-	bool insertHeading = true;
-
-	int i;
+	// create and fill a table model
+	TablePrintModel model;
 	struct dive *dive;
+	int i, row = 0;
+	addTablePrintHeadingRow(&model, row); // add one heading row
+	row++;
 	for_each_dive(i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
-		if (insertHeading) {
-			htmlTextPrev = htmlText;
-			htmlText += heading;
-			doc.setHtml(htmlText);
-			pageCount = doc.pageCount();
-			// prevent adding two headings on the same page
-			if (pageCount == lastPageWithHeading) {
-				htmlText = htmlTextPrev;
-				// add line breaks until a new page is reached
-				while (pageCount == lastPageWithHeading) {
-					htmlTextPrev = htmlText;
-					htmlText += lineBreak;
-					doc.setHtml(htmlText);
-					pageCount = doc.pageCount();
-				}
-				// revert last line break from the new page and add heading
-				htmlText = htmlTextPrev;
-				htmlText += heading;
-			}
-			insertHeading = false;
-			lastPageWithHeading = pageCount;
-		}
-		htmlTextPrev = htmlText;
-		htmlText += insertTableDataRow(dive);
-		doc.setHtml(htmlText);
-		pageCount = pageCountNew;
-		pageCountNew = doc.pageCount();
-		// if the page count increases revert and add heading instead
-		if (pageCountNew > pageCount) {
-			htmlText = htmlTextPrev;
-			insertHeading = true;
+		addTablePrintDataRow(&model, row, dive);
+		row++;
+	}
+	table.setModel(&model); // set model to table
+	// resize columns to percentages from page width
+	for (int i = 0; i < model.columns; i++) {
+		int pw = qCeil((qreal)(tablePrintColumnWidths.at(i) * table.width()) / 100);
+		table.horizontalHeader()->resizeSection(i, pw);
+	}
+	// reset the model at this point
+	model.callReset();
+
+	// a list of vertical offsets where pages begin and some helpers
+	QList<unsigned int> pageIndexes;
+	pageIndexes.append(0);
+	int tableHeight = 0, rowH = 0, accH = 0;
+
+	// process all rows
+	for (int i = 0; i < model.rows; i++) {
+		rowH = table.rowHeight(i);
+		accH += rowH;
+		if (accH > scaledPageH) { // push a new page index and add a heading
+			pageIndexes.append(pageIndexes.last() + (accH - rowH));
+			addTablePrintHeadingRow(&model, i);
+			accH = 0;
 			i--;
 		}
+		tableHeight += rowH;
 	}
-	htmlText += "</table>";
-	doc.setHtml(htmlText);
-	doc.print(printer);
+	pageIndexes.append(pageIndexes.last() + accH);
+	// resize the whole widget so that it can be rendered
+	table.resize(scaledPageW, tableHeight);
+
+	// attach a painter and render pages by using pageIndexes
+	QPainter painter(printer);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+	painter.scale(scaleX, scaleY);
+	for (int i = 0; i < pageIndexes.size() - 1; i++) {
+		if (i > 0)
+			printer->newPage();
+		QRegion region(0, pageIndexes.at(i) - 1,
+		               table.width(),
+		               pageIndexes.at(i + 1) - pageIndexes.at(i) + 2);
+		table.render(&painter, QPoint(0, 0), region);
+	}
 }
 
-QString PrintLayout::insertTableHeadingRow() const
+void PrintLayout::addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const
 {
-	int i;
-	QString ret("<tr>");
-	for (i = 0; i < TABLE_PRINT_COL; i++)
-		ret += insertTableHeadingCol(i);
-	ret += "</tr>";
-	return ret;
-}
-
-QString PrintLayout::insertTableHeadingCol(int col) const
-{
-	QString ret("<th align='left' width='");
-	ret += tableColumnWidths.at(col);
-	ret += "%'>";
-	ret += tableColumnNames.at(col);
-	ret += "</th>";
-	return ret;
-}
-
-QString PrintLayout::insertTableDataRow(struct dive *dive) const
-{
-	// use the DiveItem class
 	struct DiveItem di;
 	di.dive = dive;
-
-	// fill row
-	QString ret("<tr>");
-	ret += insertTableDataCol(QString::number(dive->number));
-	ret += insertTableDataCol(di.displayDate());
-	ret += insertTableDataCol(di.displayDepth());
-	ret += insertTableDataCol(di.displayDuration());
-	ret += insertTableDataCol(dive->divemaster);
-	ret += insertTableDataCol(dive->buddy);
-	ret += insertTableDataCol(dive->location);
-	ret += "</tr>";
-	return ret;
+	model->insertRow();
+	model->setData(model->index(row, 0), QString::number(dive->number), Qt::DisplayRole);
+	model->setData(model->index(row, 1), di.displayDate(), Qt::DisplayRole);
+	model->setData(model->index(row, 2), di.displayDepth(), Qt::DisplayRole);
+	model->setData(model->index(row, 3), di.displayDuration(), Qt::DisplayRole);
+	model->setData(model->index(row, 4), dive->divemaster, Qt::DisplayRole);
+	model->setData(model->index(row, 5), dive->buddy, Qt::DisplayRole);
+	model->setData(model->index(row, 6), dive->location, Qt::DisplayRole);
 }
 
-QString PrintLayout::insertTableDataCol(QString data) const
+void PrintLayout::addTablePrintHeadingRow(TablePrintModel *model, int row) const
 {
-	return "<td>" + data + "</td>";
+	model->insertRow(row);
+	for (int i = 0; i < model->columns; i++) {
+		model->setData(model->index(row, i), tablePrintColumnNames.at(i), Qt::DisplayRole);
+		model->setData(model->index(row, i), tablePrintHeadingBackground, Qt::BackgroundRole);
+	}
 }
 
 // experimental
