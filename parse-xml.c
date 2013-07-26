@@ -1635,6 +1635,10 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 				/* 6 Mandatory safety stop ceiling error */
 				cur_event.name = strdup("violation");
 				break;
+			case 7:
+				/* 7 Below deco floor */
+				cur_event.name = strdup("below floor");
+				break;
 			case 8:
 				/* 8 Dive time alarm */
 				cur_event.name = strdup("divetime");
@@ -1652,6 +1656,10 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 			case 12:
 				/* 12 High ppO2 */
 				cur_event.name = strdup("PO2");
+				break;
+			case 13:
+				/* 13 Air time */
+				cur_event.name = strdup("airtime");
 				break;
 			case 18:
 				/* 18 Ceiling error */

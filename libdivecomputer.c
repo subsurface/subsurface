@@ -153,7 +153,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 		N_("none"), N_("deco stop"), N_("rbt"), N_("ascent"), N_("ceiling"), N_("workload"),
 		N_("transmitter"), N_("violation"), N_("bookmark"), N_("surface"), N_("safety stop"),
 		N_("gaschange"), N_("safety stop (voluntary)"), N_("safety stop (mandatory)"),
-		N_("deepstop"), N_("ceiling (safety stop)"), N_("unknown"), N_("divetime"),
+		N_("deepstop"), N_("ceiling (safety stop)"), N_("below floor"), N_("divetime"),
 		N_("maxdepth"), N_("OLF"), N_("PO2"), N_("airtime"), N_("rgbm"), N_("heading"),
 		N_("tissue level warning"), N_("gaschange"), N_("non stop time")
 	};
