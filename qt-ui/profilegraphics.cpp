@@ -830,8 +830,8 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	} else if (ev->name && name == "SP change") {
 		name += tr("Bailing out to OC");
 	} else {
-		name += ev->flags == SAMPLE_FLAGS_BEGIN ? tr("Starts with space!"," begin") :
-				ev->flags == SAMPLE_FLAGS_END ? tr("Starts with space!", " end") : "";
+		name += ev->flags == SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
+				ev->flags == SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}
 
 	//item->setToolTipController(toolTip);
