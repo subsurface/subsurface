@@ -35,21 +35,17 @@ bool DiveComputerNode::changesValues(const DiveComputerNode &b) const
 
 const DiveComputerNode *DiveComputerList::getExact(QString m, uint32_t d)
 {
-	if (dcMap.contains(m)) {
-		QList<DiveComputerNode> values = dcMap.values(m);
-		for (int i = 0; i < values.size(); i++)
-			if (values.at(i).deviceId == d)
-				return &values.at(i);
-	}
+	for (QMap<QString,DiveComputerNode>::iterator it = dcMap.find(m); it != dcMap.end() && it.key() == m; ++it)
+		if (it->deviceId == d)
+			return &*it;
 	return NULL;
 }
 
 const DiveComputerNode *DiveComputerList::get(QString m)
 {
-	if (dcMap.contains(m)) {
-		QList<DiveComputerNode> values = dcMap.values(m);
-		return &values.at(0);
-	}
+	QMap<QString,DiveComputerNode>::iterator it = dcMap.find(m);
+	if (it != dcMap.end())
+		return &*it;
 	return NULL;
 }
 
