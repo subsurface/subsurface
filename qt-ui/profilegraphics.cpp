@@ -1190,30 +1190,8 @@ void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 	textItem->setPos(SPACING + ICON_SMALL + SPACING, yValue);
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
-	toolTips[toolTip] = qMakePair(iconItem, textItem);
+	toolTips.push_back(qMakePair(iconItem, textItem));
 	expand();
-}
-
-void ToolTipItem::removeToolTip(const QString& toolTip)
-{
-	ToolTip toBeRemoved = toolTips[toolTip];
-	delete toBeRemoved.first;
-	delete toBeRemoved.second;
-	toolTips.remove(toolTip);
-
-	int toolTipIndex = 0;
-
-	// We removed a toolTip, let's move the others to the correct location
-	Q_FOREACH(ToolTip t, toolTips) {
-		double yValue = title->boundingRect().height() + SPACING + toolTipIndex * ICON_SMALL + SPACING;
-
-		// Icons can be null.
-		if (t.first)
-			t.first->setPos(SPACING, yValue);
-
-		t.second->setPos(SPACING + ICON_SMALL + SPACING, yValue);
-		toolTipIndex++;
-	}
 }
 
 void ToolTipItem::refresh(struct graphics_context *gc, QPointF pos)

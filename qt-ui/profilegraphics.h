@@ -35,7 +35,6 @@ public:
 	void expand();
 	void clear();
 	void addToolTip(const QString& toolTip, const QIcon& icon = QIcon());
-	void removeToolTip(const QString& toolTip);
 	void refresh(struct graphics_context* gc, QPointF pos);
 	bool isExpanded();
 	void persistPos();
@@ -48,7 +47,7 @@ public slots:
 
 private:
 	typedef QPair<QGraphicsPixmapItem*, QGraphicsSimpleTextItem*> ToolTip;
-	QMap<QString, ToolTip > toolTips;
+	QList<ToolTip> toolTips;
 	QGraphicsPathItem *background;
 	QGraphicsLineItem *separator;
 	QGraphicsSimpleTextItem *title;
