@@ -147,7 +147,7 @@ static void add_gps_point(OsmGpsMap *map, float latitude, float longitude)
 static void key_press_event(GtkWidget *window, GdkEventKey *event, gpointer data)
 {
 	if ((event->string != NULL && event->keyval == GDK_Escape) ||
-			(event->string != NULL && event->keyval == GDK_w && event->state & GDK_CONTROL_MASK)) {
+			(event->string != NULL && event->keyval == GDK_w && (event->state & GDK_CONTROL_MASK))) {
 		gtk_widget_destroy(window);
 	}
 }

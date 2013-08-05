@@ -34,6 +34,7 @@
 #include "display.h"
 #include "display-gtk.h"
 #include "webservice.h"
+#include "profile.h"
 
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include "satellite.h"
