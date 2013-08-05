@@ -16,7 +16,8 @@ $(DOCNAME).pdf: $(DOCSOURCE)
 	$(A2X) -f pdf $<
 
 $(HTMLDOC): $(DOCSOURCE)
-	$(ASCIIDOC) $<
+	@echo "if asciidoc isn't found no HTML documentation is produced but Subsurface is still functional"
+	$(ASCIIDOC) $< || true
 
 # Alternatively::
 $(DOCNAME).xhtml: $(DOCSOURCE)
