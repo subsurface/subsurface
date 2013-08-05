@@ -201,17 +201,17 @@ QWidget* TankInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	return delegate;
 }
 
-struct RevertWeigthData {
+struct RevertWeightData {
 	QString type;
-	int weigth;
-} currWeigth;
+	int weight;
+} currWeight;
 
 void WSInfoDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
 {
 	if (hint == QAbstractItemDelegate::NoHint || hint == QAbstractItemDelegate::RevertModelCache){
 		WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-		mymodel->setData(IDX(WeightModel::TYPE), currWeigth.type, Qt::EditRole);
-		mymodel->passInData(IDX(WeightModel::WEIGHT), currWeigth.weigth);
+		mymodel->setData(IDX(WeightModel::TYPE), currWeight.type, Qt::EditRole);
+		mymodel->passInData(IDX(WeightModel::WEIGHT), currWeight.weight);
 	}
 }
 
@@ -238,7 +238,7 @@ void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, co
 	}
 	mymodel->setData(IDX(WeightModel::TYPE), v, Qt::EditRole);
 	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
-	qDebug() << "Fixme, every weigth is 0.0 grams. see:" << grams;
+	qDebug() << "Fixme, every weight is 0.0 grams. see:" << grams;
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject* parent): ComboBoxDelegate(WSInfoModel::instance(), parent)
@@ -251,8 +251,8 @@ QWidget* WSInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewIte
 	QWidget *editor = ComboBoxDelegate::createEditor(parent, option, index);
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	weightsystem_t *ws = mymodel->weightSystemAt(index);
-	currWeigth.type = ws->description;
-	currWeigth.weigth = ws->weight.grams;
+	currWeight.type = ws->description;
+	currWeight.weight = ws->weight.grams;
 	return editor;
 }
 
