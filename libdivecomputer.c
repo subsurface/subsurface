@@ -7,7 +7,9 @@
 #include "device.h"
 #include "divelist.h"
 #include "display.h"
+#ifdef USE_GTK_UI
 #include "display-gtk.h"
+#endif
 
 #include "libdivecomputer.h"
 #include "libdivecomputer/version.h"
