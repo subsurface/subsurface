@@ -1197,7 +1197,7 @@ void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 void ToolTipItem::refresh(struct graphics_context *gc, QPointF pos)
 {
 	clear();
-	int time = (pos.x() * gc->maxtime) / scene()->sceneRect().width();
+	int time = (pos.x() * gc->maxtime) / gc->maxx;
 	char buffer[500];
 	get_plot_details(gc, time, buffer, 500);
 	addToolTip(QString(buffer));
