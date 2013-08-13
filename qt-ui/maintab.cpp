@@ -12,8 +12,10 @@
 #include "divelistview.h"
 #include "modeldelegates.h"
 #include "globe.h"
+#include "completionmodels.h"
 
 #include <QLabel>
+#include <QCompleter>
 #include <QDebug>
 #include <QSet>
 #include <QSettings>
@@ -94,6 +96,16 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->weights->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+
+	completers.buddy = new QCompleter(BuddyCompletionModel::instance(), ui->buddy);
+	completers.divemaster = new QCompleter(DiveMasterCompletionModel::instance(), ui->divemaster);
+	completers.location = new QCompleter(LocationCompletionModel::instance(), ui->location);
+	completers.suit = new QCompleter(SuitCompletionModel::instance(), ui->suit);
+	ui->buddy->setCompleter(completers.buddy);
+	ui->divemaster->setCompleter(completers.divemaster);
+	ui->location->setCompleter(completers.location);
+	ui->suit->setCompleter(completers.suit);
+
 	initialUiSetup();
 }
 
@@ -348,6 +360,10 @@ void MainTab::addWeight_clicked()
 
 void MainTab::reload()
 {
+	SuitCompletionModel::instance()->updateModel();
+	BuddyCompletionModel::instance()->updateModel();
+	LocationCompletionModel::instance()->updateModel();
+	DiveMasterCompletionModel::instance()->updateModel();
 }
 
 void MainTab::on_editAccept_clicked(bool edit)

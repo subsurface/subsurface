@@ -12,6 +12,8 @@
 
 #include "models.h"
 
+class QCompleter;
+
 namespace Ui
 {
 	class MainTab;
@@ -25,6 +27,13 @@ struct NotesBackup{
 	int rating;
 	int visibility;
 	QString divemaster;
+};
+
+struct Completers{
+	QCompleter *location;
+	QCompleter *divemaster;
+	QCompleter *buddy;
+	QCompleter *suit;
 };
 
 class MainTab : public QTabWidget
@@ -72,6 +81,7 @@ private:
 	QPushButton *addCylinder;
 	QPushButton *addWeight;
 	enum { NONE, DIVE, TRIP } editMode;
+	Completers completers;
 	void enableEdition();
 };
 
