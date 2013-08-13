@@ -72,6 +72,7 @@ private:
 	QPushButton *addCylinder;
 	QPushButton *addWeight;
 	enum { NONE, DIVE, TRIP } editMode;
+	void enableEdition();
 };
 
 #endif

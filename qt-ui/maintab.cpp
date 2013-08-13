@@ -52,7 +52,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->divemaster->installEventFilter(this);
 	ui->buddy->installEventFilter(this);
 	ui->suit->installEventFilter(this);
-	ui->notes->installEventFilter(this);
+	ui->notes->viewport()->installEventFilter(this);
 	ui->rating->installEventFilter(this);
 	ui->visibility->installEventFilter(this);
 
@@ -126,18 +126,27 @@ void MainTab::equipmentPlusUpdate()
 		addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
 }
 
+void MainTab::enableEdition()
+{
+	if (ui->editAccept->isVisible() || !currentDive)
+		return;
+
+	ui->editAccept->setChecked(true);
+	ui->editAccept->show();
+	ui->editReset->show();
+	on_editAccept_clicked(true);
+}
+
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
-	if (event->type() == QEvent::FocusIn || event->type() == QEvent::MouseButtonPress) {
-		if (ui->editAccept->isVisible() || !currentDive)
-			return false;
-
-		ui->editAccept->setChecked(true);
-		ui->editAccept->show();
-		ui->editReset->show();
-		on_editAccept_clicked(true);
+	if (event->type() == QEvent::FocusIn && (object == ui->rating || object == ui->visibility)){
+		enableEdition();
 	}
-	return false;
+
+	if (event->type() == QEvent::MouseButtonPress) {
+		enableEdition();
+	}
+	return false; // don't "eat" the event.
 }
 
 void MainTab::clearEquipment()
