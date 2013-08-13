@@ -561,6 +561,7 @@ void MainTab::initialUiSetup()
 			ui->weights->resizeColumnToContents(i);
 	}
 	s.endGroup();
+	reload();
 }
 
 void MainTab::editCylinderWidget(const QModelIndex& index)
