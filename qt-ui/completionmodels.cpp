@@ -1,6 +1,5 @@
 #include "completionmodels.h"
 #include "dive.h"
-#include <boost/graph/graph_concepts.hpp>
 
 #define CREATE_SINGLETON(X) \
 X* X::instance() \
