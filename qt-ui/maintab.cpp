@@ -234,6 +234,8 @@ void MainTab::updateDiveInfo(int dive)
 			ui->suit->setVisible(true);
 			ui->rating->setVisible(true);
 			ui->visibility->setVisible(true);
+			ui->BuddyLabel->setVisible(true);
+			ui->DivemasterLabel->setVisible(true);
 			ui->divemaster->setReadOnly(false);
 			ui->buddy->setReadOnly(false);
 			ui->suit->setReadOnly(false);
