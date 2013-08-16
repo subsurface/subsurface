@@ -517,43 +517,38 @@ void MainTab::on_editReset_clicked()
 	editMode = NONE;
 }
 #undef EDIT_TEXT2
-void MainTab::on_buddy_textChanged(const QString& text)
-{
-	if (editMode == NONE)
-		return;
-	struct dive *mydive;
-	for (int i = 0; i < dive_table.nr; i++) {
-		mydive = get_dive(i);
-		if (!mydive)
-			continue;
-		if (!mydive->selected)
-			continue;
 
-		EDIT_TEXT(mydive->buddy, text);
+#define EDIT_SELECTED_DIVES( WHAT ) \
+	if (editMode == NONE) \
+		return; \
+	struct dive *mydive; \
+\
+	for (int i = 0; i < dive_table.nr; i++) { \
+		mydive = get_dive(i); \
+		if (!mydive) \
+			continue; \
+		if (!mydive->selected) \
+			continue; \
+\
+		WHAT; \
 	}
 
+void markChangedWidget(QWidget *w){
 	QPalette p;
 	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
-	ui->buddy->setPalette(p);
+	w->setPalette(p);
+}
+
+void MainTab::on_buddy_textChanged(const QString& text)
+{
+	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->buddy, text) );
+	markChangedWidget(ui->buddy);
 }
 
 void MainTab::on_divemaster_textChanged(const QString& text)
 {
-	if (editMode == NONE)
-		return;
-	struct dive *mydive;
-	for (int i = 0; i < dive_table.nr; i++) {
-		mydive = get_dive(i);
-		if (!mydive)
-			continue;
-		if (!mydive->selected)
-			continue;
-
-		EDIT_TEXT(mydive->divemaster, text);
-	}
-	QPalette p;
-	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
-	ui->divemaster->setPalette(p);
+	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->divemaster, text) );
+	markChangedWidget(ui->divemaster);
 }
 
 void MainTab::on_location_textChanged(const QString& text)
@@ -565,40 +560,16 @@ void MainTab::on_location_textChanged(const QString& text)
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE){
-		struct dive *mydive;
-		for (int i = 0; i < dive_table.nr; i++) {
-			mydive = get_dive(i);
-			if (!mydive)
-				continue;
-			if (!mydive->selected)
-				continue;
-			EDIT_TEXT(mydive->location, text);
-		}
+		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) )
 	}
 
-	QPalette p;
-	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
-	ui->location->setPalette(p);
+	markChangedWidget(ui->location);
 }
 
 void MainTab::on_suit_textChanged(const QString& text)
 {
-	if (editMode == NONE)
-		return;
-	struct dive *mydive;
-	for (int i = 0; i < dive_table.nr; i++) {
-		mydive = get_dive(i);
-		if (!mydive)
-			continue;
-		if (!mydive->selected)
-			continue;
-
-		EDIT_TEXT(mydive->suit, text);
-	}
-
-	QPalette p;
-	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
-	ui->suit->setPalette(p);
+	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->suit, text) );
+	markChangedWidget(ui->suit);
 }
 
 void MainTab::on_notes_textChanged()
@@ -610,54 +581,21 @@ void MainTab::on_notes_textChanged()
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->notes, ui->notes->toPlainText());
 	} else if (editMode == DIVE) {
-		struct dive *mydive;
-		for (int i = 0; i < dive_table.nr; i++) {
-			mydive = get_dive(i);
-			if (!mydive)
-				continue;
-			if (!mydive->selected)
-				continue;
-
-			EDIT_TEXT(mydive->notes, ui->notes->toPlainText());
-		}
+		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->notes, ui->notes->toPlainText()) );
 	}
-
-	QPalette p;
-	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
-	ui->notes->setPalette(p);
+	markChangedWidget(ui->notes);
 }
 
 #undef EDIT_TEXT
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (editMode == NONE)
-		return;
-	struct dive *mydive;
-	for (int i = 0; i < dive_table.nr; i++) {
-		mydive = get_dive(i);
-		if (!mydive)
-			continue;
-		if (!mydive->selected)
-			continue;
-		mydive->rating  = value;
-	}
+	EDIT_SELECTED_DIVES(mydive->rating  = value );
 }
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	if (editMode == NONE)
-		return;
-	struct dive *mydive;
-	for (int i = 0; i < dive_table.nr; i++) {
-		mydive = get_dive(i);
-		if (!mydive)
-			continue;
-		if (!mydive->selected)
-			continue;
-
-		mydive->visibility = value;
-	}
+	EDIT_SELECTED_DIVES( mydive->visibility = value );
 }
 
 void MainTab::hideEvent(QHideEvent* event)
