@@ -19,6 +19,7 @@
 #include <QDebug>
 #include <QSet>
 #include <QSettings>
+#include <QPalette>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    ui(new Ui::MainTab()),
@@ -438,6 +439,12 @@ void MainTab::on_editAccept_clicked(bool edit)
 		}
 		editMode = NONE;
 	}
+	QPalette p;
+	ui->buddy->setPalette(p);
+	ui->notes->setPalette(p);
+	ui->location->setPalette(p);
+	ui->divemaster->setPalette(p);
+	ui->suit->setPalette(p);
 }
 
 #define EDIT_TEXT2(what, text) \
@@ -501,6 +508,12 @@ void MainTab::on_editReset_clicked()
 	ui->editAccept->hide();
 	ui->editReset->hide();
 	notesBackup.clear();
+	QPalette p;
+	ui->buddy->setPalette(p);
+	ui->notes->setPalette(p);
+	ui->location->setPalette(p);
+	ui->divemaster->setPalette(p);
+	ui->suit->setPalette(p);
 	editMode = NONE;
 }
 #undef EDIT_TEXT2
@@ -518,6 +531,10 @@ void MainTab::on_buddy_textChanged(const QString& text)
 
 		EDIT_TEXT(mydive->buddy, text);
 	}
+
+	QPalette p;
+	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	ui->buddy->setPalette(p);
 }
 
 void MainTab::on_divemaster_textChanged(const QString& text)
@@ -534,6 +551,9 @@ void MainTab::on_divemaster_textChanged(const QString& text)
 
 		EDIT_TEXT(mydive->divemaster, text);
 	}
+	QPalette p;
+	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	ui->divemaster->setPalette(p);
 }
 
 void MainTab::on_location_textChanged(const QString& text)
@@ -555,6 +575,10 @@ void MainTab::on_location_textChanged(const QString& text)
 			EDIT_TEXT(mydive->location, text);
 		}
 	}
+
+	QPalette p;
+	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	ui->location->setPalette(p);
 }
 
 void MainTab::on_suit_textChanged(const QString& text)
@@ -571,6 +595,10 @@ void MainTab::on_suit_textChanged(const QString& text)
 
 		EDIT_TEXT(mydive->suit, text);
 	}
+
+	QPalette p;
+	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	ui->suit->setPalette(p);
 }
 
 void MainTab::on_notes_textChanged()
@@ -593,6 +621,10 @@ void MainTab::on_notes_textChanged()
 			EDIT_TEXT(mydive->notes, ui->notes->toPlainText());
 		}
 	}
+
+	QPalette p;
+	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	ui->notes->setPalette(p);
 }
 
 #undef EDIT_TEXT
