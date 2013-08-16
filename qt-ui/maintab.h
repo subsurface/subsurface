@@ -9,11 +9,12 @@
 
 #include <QTabWidget>
 #include <QDialog>
+#include <QMap>
 
 #include "models.h"
 
 class QCompleter;
-
+struct dive;
 namespace Ui
 {
 	class MainTab;
@@ -76,8 +77,7 @@ private:
 	Ui::MainTab *ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
-	NotesBackup notesBackup;
-	struct dive* currentDive;
+	QMap<dive*, NotesBackup> notesBackup;
 	QPushButton *addCylinder;
 	QPushButton *addWeight;
 	enum { NONE, DIVE, TRIP } editMode;
