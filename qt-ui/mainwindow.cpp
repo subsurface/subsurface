@@ -15,7 +15,7 @@
 #include <QCloseEvent>
 #include <QApplication>
 #include <QFontMetrics>
-#include <QTextBrowser>
+#include <QWebView>
 #include <QTableView>
 #include "divelistview.h"
 #include "starwidget.h"
@@ -411,14 +411,14 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 void MainWindow::on_actionUserManual_triggered()
 {
 	if(!helpView){
-		helpView = new QTextBrowser();
+		helpView = new QWebView();
 	}
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath != "") {
 		QUrl url(searchPath.append("/user-manual.html"));
-		helpView->setSource(url);
+		helpView->setUrl(url);
 	} else {
-		helpView->setText(tr("Cannot find the Subsurface manual"));
+		helpView->setHtml(tr("Cannot find the Subsurface manual"));
 	}
 	helpView->show();
 }

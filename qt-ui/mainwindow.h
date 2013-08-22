@@ -29,7 +29,7 @@ class DiveListView;
 class GlobeGPS;
 class MainTab;
 class ProfileGraphicsView;
-class QTextBrowser;
+class QWebView;
 
 enum MainWindowTitleFormat { MWTF_DEFAULT, MWTF_FILENAME };
 
@@ -110,7 +110,7 @@ private:
 	Ui::MainWindow *ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
-	QTextBrowser *helpView;
+	QWebView *helpView;
 	QString filter();
 	bool askSaveChanges();
 	void writeSettings();
