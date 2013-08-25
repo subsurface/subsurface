@@ -15,20 +15,8 @@ struct device_data_t;
 class DownloadThread : public QThread{
 	Q_OBJECT
 public:
-	explicit DownloadThread(device_data_t* data);
+	explicit DownloadThread(QObject* parent, device_data_t* data);
 	virtual void run();
-private:
-	device_data_t *data;
-};
-
-class InterfaceThread : public QThread{
-	Q_OBJECT
-public:
-	InterfaceThread(QObject *parent, device_data_t *data);
-	virtual void run();
-
-signals:
-	void updateInterface(int value);
 private:
 	device_data_t *data;
 };
@@ -41,19 +29,29 @@ public:
 	static DownloadFromDCWidget *instance();
 	void reject();
 
+	enum states {
+		INITIAL,
+		DOWNLOADING,
+		CANCELLING,
+		CANCELLED,
+		DONE,
+	};
+
 public slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
-	void runDialog();
-	void stoppedDownloading();
 	void on_vendor_currentIndexChanged(const QString& vendor);
 
+	void onDownloadThreadFinished();
+	void updateProgressBar();
+	void runDialog();
+
 private:
-    void markChildrenAsDisabled();
-    void markChildrenAsEnabled();
+	void markChildrenAsDisabled();
+	void markChildrenAsEnabled();
 
 	Ui::DownloadFromDiveComputer *ui;
-	InterfaceThread *thread;
+	DownloadThread *thread;
 	bool downloading;
 
 	QStringList vendorList;
@@ -65,8 +63,13 @@ private:
 	QStringListModel *productModel;
 	void fill_computer_list();
 
+	QTimer *timer;
+
 public:
 	bool preferDownloaded();
+	void updateState(states state);
+	states currentState;
+
 };
 
 #endif

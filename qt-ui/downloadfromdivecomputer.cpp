@@ -10,6 +10,7 @@
 #include <QThread>
 #include <QDebug>
 #include <QStringListModel>
+#include <QTimer>
 
 struct product {
 	const char *product;
@@ -42,7 +43,8 @@ DownloadFromDCWidget *DownloadFromDCWidget::instance()
 }
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
-	QDialog(parent, f), ui(new Ui::DownloadFromDiveComputer), thread(0), downloading(false)
+	QDialog(parent, f), ui(new Ui::DownloadFromDiveComputer), thread(0), timer(new QTimer(this)),
+	currentState(INITIAL)
 {
 	ui->setupUi(this);
 	ui->progressBar->hide();
@@ -61,21 +63,77 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	}
 	if (default_dive_computer_device)
 		ui->device->setText(default_dive_computer_device);
+
+	timer->setInterval(200);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
+
+	updateState(INITIAL);
 }
 
 void DownloadFromDCWidget::runDialog()
 {
-	// Since the DownloadDialog is only
-	// created once, we need to do put some starting code here
-	ui->progressBar->hide();
-	markChildrenAsEnabled();
+	updateState(INITIAL);
 
 	exec();
 }
 
-void DownloadFromDCWidget::stoppedDownloading()
+void DownloadFromDCWidget::updateProgressBar()
 {
-	downloading = false;
+	ui->progressBar->setValue(progress_bar_fraction *100);
+}
+
+void DownloadFromDCWidget::updateState(states state)
+{
+	if (state == currentState)
+		return;
+
+	if (state == INITIAL) {
+		ui->progressBar->hide();
+		markChildrenAsEnabled();
+		timer->stop();
+	}
+
+	// tries to cancel an on going download
+	else if (currentState == DOWNLOADING && state == CANCELLING) {
+		import_thread_cancelled = true;
+		ui->cancel->setEnabled(false);
+	}
+
+	// user pressed cancel but the application isn't doing anything.
+	// means close the window
+	else if ((currentState == INITIAL || currentState == CANCELLED || currentState == DONE)
+		&& state == CANCELLING) {
+		timer->stop();
+		reject();
+	}
+
+	// A cancel is finished
+	else if (currentState == CANCELLING && (state == DONE || state == CANCELLED)) {
+		timer->stop();
+		state = CANCELLED;
+		ui->progressBar->setValue(0);
+		ui->progressbar->hide();
+		markChildrenAsEnabled();
+	}
+
+	// DOWNLOAD is finally done, close the dialog and go back to the main window
+	else if (currentState == DOWNLOADING && state == DONE) {
+		timer->stop();
+		ui->progressBar->setValue(100);
+		markChildrenAsEnabled();
+		accept();
+	}
+
+	// DOWNLOAD is started.
+	else if (state == DOWNLOADING) {
+		timer->start();
+		ui->progressBar->setValue(0);
+		ui->progressBar->show();
+		markChildrenAsDisabled();
+	}
+
+	// properly updating the widget state
+	currentState = state;
 }
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
@@ -136,28 +194,15 @@ void DownloadFromDCWidget::fill_computer_list()
 
 void DownloadFromDCWidget::on_cancel_clicked()
 {
-	import_thread_cancelled = true;
-	if (thread) {
-		thread->wait();
-		thread->deleteLater();
-		thread = 0;
-	}
-
-	// Confusing, but if the user press cancel during a download
-	// he probably want to cancel the download, not to close the window.
-	if (!downloading)
-		close();
+	updateState(CANCELLING);
 }
 
 void DownloadFromDCWidget::on_ok_clicked()
 {
-	if (downloading)
-		return;
+	updateState(DOWNLOADING);
 
-	markChildrenAsDisabled();
-	ui->progressBar->setValue(0);
-	ui->progressBar->show();
-
+	// I don't really think that create/destroy the thread
+	// is really necessary.
 	if (thread) {
 		thread->deleteLater();
 	}
@@ -172,14 +217,15 @@ void DownloadFromDCWidget::on_ok_clicked()
 	set_default_dive_computer(data.vendor, data.product);
 	set_default_dive_computer_device(data.devname);
 
-	thread = new InterfaceThread(this, &data);
-	connect(thread, SIGNAL(updateInterface(int)),
-			ui->progressBar, SLOT(setValue(int)), Qt::QueuedConnection); // Qt::QueuedConnection == threadsafe.
+	thread = new DownloadThread(this, &data);
 
-	connect(thread, SIGNAL(finished()), this, SLOT(close()));
+	connect(thread, SIGNAL(finished()),
+			this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
+
+	MainWindow *w = mainWindow();
+	connect(thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
 	thread->start();
-	downloading = true;
 }
 
 bool DownloadFromDCWidget::preferDownloaded()
@@ -191,8 +237,16 @@ void DownloadFromDCWidget::reject()
 {
 	// we don't want the download window being able to close
 	// while we're still downloading.
-	if (!downloading)
+	if (currentState != DOWNLOADING && currentState != CANCELLING)
 		QDialog::reject();
+}
+
+void DownloadFromDCWidget::onDownloadThreadFinished()
+{
+	if (currentState == DOWNLOADING)
+		updateState(DONE);
+	else
+		updateState(CANCELLED);
 }
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
@@ -214,37 +268,26 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui->forceDownload->setDisabled(false);
 	ui->preferDownloaded->setDisabled(false);
 	ui->ok->setDisabled(false);
+	ui->cancel->setDisabled(false);
 	ui->search->setDisabled(false);
 }
 
-DownloadThread::DownloadThread(device_data_t* data): data(data)
+DownloadThread::DownloadThread(QObject* parent, device_data_t* data): QThread(parent),
+	data(data)
 {
 }
 
 void DownloadThread::run()
 {
 	DownloadFromDCWidget *dfdcw = DownloadFromDCWidget::instance();
+
 	if (!strcmp(data->vendor, "Uemis"))
 		do_uemis_import(data->devname, data->force_download);
 	else
+		// TODO: implement error handling
 		do_libdivecomputer_import(data);
+
+	// I'm not sure if we should really process_dives even
+	// if there's an error or a cancelation
 	process_dives(TRUE, dfdcw->preferDownloaded());
-	dfdcw->stoppedDownloading();
-}
-
-InterfaceThread::InterfaceThread(QObject* parent, device_data_t* data): QThread(parent), data(data)
-{
-}
-
-void InterfaceThread::run()
-{
-	DownloadThread *download = new DownloadThread(data);
-	MainWindow *w = mainWindow();
-	connect(download, SIGNAL(finished()), w, SLOT(refreshDisplay()));
-	download->start();
-	while (download->isRunning()) {
-		msleep(200);
-		updateInterface(progress_bar_fraction *100);
-	}
-	updateInterface(100);
 }
