@@ -137,7 +137,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	// Prepare the stuff for the gas-choices.
 	gasChoices = new QStringListModel(QStringList() << tr("AIR") << tr("EAN32") << tr("EAN36"));
 	gasListView = new QListView();
-	gasListView->setWindowFlags(Qt::FramelessWindowHint);
+	gasListView->setWindowFlags(Qt::Popup);
 	gasListView->setModel(gasChoices);
 	gasListView->hide();
 
