@@ -988,7 +988,8 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 {
 	divepoints[row] = newData;
-	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS-1));
+	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 divedatapoint DivePlannerPointsModel::at(int row)
