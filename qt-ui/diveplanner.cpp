@@ -142,7 +142,33 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	gasListView->hide();
 
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(rowsInserted(const QModelIndex&,int,int)),
+			this, SLOT(pointInserted(const QModelIndex&, int, int)));
 	setRenderHint(QPainter::Antialiasing);
+}
+
+void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)
+{
+	qDebug() << "Adicionou";
+	divedatapoint point = DivePlannerPointsModel::instance()->at(start);
+	DiveHandler *item = new DiveHandler ();
+	double xpos = timeLine->posAtValue(point.time);
+	double ypos = depthLine->posAtValue(point.depth);
+	item->sec = point.time * 60;
+	item->mm = point.depth * 1000;
+	item->setPos(QPointF(xpos, ypos));
+	qDebug() << xpos << ypos;
+	scene()->addItem(item);
+	handles << item;
+
+	Button *gasChooseBtn = new Button();
+	gasChooseBtn ->setText(tr("Air"));
+	scene()->addItem(gasChooseBtn);
+	gasChooseBtn->setZValue(10);
+	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
+
+	gases << gasChooseBtn;
+	createDecoStops();
 }
 
 void DivePlannerGraphics::keyDownAction()
@@ -341,32 +367,31 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int meters = rint(depthLine->valueAt(mappedPos));
-	double xpos = timeLine->posAtValue(minutes);
-	double ypos = depthLine->posAtValue(meters);
-	Q_FOREACH(DiveHandler* handler, handles){
-		if (xpos == handler->pos().x()){
-			qDebug() << "There's already an point at that place.";
-			//TODO: Move this later to a KMessageWidget.
-			return;
-		}
-	}
+
+// 	Q_FOREACH(DiveHandler* handler, handles){
+// 		if (xpos == handler->pos().x()){
+// 			qDebug() << "There's already an point at that place.";
+// 			//TODO: Move this later to a KMessageWidget.
+// 			return;
+// 		}
+// 	}
 
 	DivePlannerPointsModel::instance()->addStop(meters, minutes, tr("Air"), 0);
-	DiveHandler  *item = new DiveHandler ();
-	item->sec = minutes * 60;
-	item->mm =  meters * 1000;
-	item->setPos(QPointF(xpos, ypos));
-	scene()->addItem(item);
-	handles << item;
-
-	Button *gasChooseBtn  = new Button();
-	gasChooseBtn ->setText(tr("Air"));
-	scene()->addItem(gasChooseBtn);
-	gasChooseBtn->setZValue(10);
-	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
-
-	gases << gasChooseBtn;
-	createDecoStops();
+// 	DiveHandler  *item = new DiveHandler ();
+// 	item->sec = minutes * 60;
+// 	item->mm =  meters * 1000;
+// 	item->setPos(QPointF(xpos, ypos));
+// 	scene()->addItem(item);
+// 	handles << item;
+//
+// 	Button *gasChooseBtn  = new Button();
+// 	gasChooseBtn ->setText(tr("Air"));
+// 	scene()->addItem(gasChooseBtn);
+// 	gasChooseBtn->setZValue(10);
+// 	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
+//
+// 	gases << gasChooseBtn;
+// 	createDecoStops();
 }
 
 void DivePlannerGraphics::prepareSelectGas()
@@ -751,7 +776,7 @@ void Ruler::setColor(const QColor& color)
 
 Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
 {
-	icon  = new QGraphicsPixmapItem(this);
+	icon = new QGraphicsPixmapItem(this);
 	text = new QGraphicsSimpleTextItem(this);
 	icon->setPos(0,0);
 	text->setPos(0,0);
@@ -939,3 +964,7 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 	return row;
 }
 
+divedatapoint DivePlannerPointsModel::at(int row)
+{
+	return divepoints.at(row);
+}

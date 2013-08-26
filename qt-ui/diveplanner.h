@@ -31,7 +31,7 @@ public:
 	 * @return the row number.
 	 */
 	int addStop(int meters, int minutes,const QString& gas, int ccpoint );
-
+	divedatapoint at(int row);
 public slots:
 	void setGFHigh(short gfhigh);
 	void setGFLow(short ghflow);
@@ -131,7 +131,7 @@ private slots:
 	void cancelPlan();
 	void prepareSelectGas();
 	void selectGas(const QModelIndex& index);
-
+	void pointInserted(const QModelIndex&, int start, int end);
 private:
 	void moveActiveHandler(const QPointF& pos);
 
