@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPathItem>
 #include <QDialog>
+#include <QAbstractTableModel>
 
 namespace Ui{
 	class DivePlanner;
@@ -12,6 +13,19 @@ namespace Ui{
 class QListView;
 class QStringListModel;
 class QModelIndex;
+
+class DivePlannerPointsModel : public QAbstractTableModel{
+	Q_OBJECT
+public:
+	static DivePlannerPointsModel* instance();
+	enum Sections{DEPTH, DURATION, GAS, CCSETPOINT, COLUMNS};
+    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+private:
+    explicit DivePlannerPointsModel(QObject* parent = 0);
+};
 
 class Button : public QObject, public QGraphicsRectItem {
 	Q_OBJECT

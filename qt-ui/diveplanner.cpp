@@ -792,4 +792,45 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
 DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f), ui(new Ui::DivePlanner())
 {
 	ui->setupUi(this);
+	ui->tablePoints->setModel(DivePlannerPointsModel::instance());
 }
+
+int DivePlannerPointsModel::columnCount(const QModelIndex& parent) const
+{
+	return COLUMNS;
+}
+
+QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
+{
+	return QVariant();
+}
+
+QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (role == Qt::DisplayRole){
+		switch(section){
+			case DEPTH: return tr("Final Depth");
+			case DURATION: return tr("Duration");
+			case GAS: return tr("Used Gas");
+			case CCSETPOINT: return tr("CC Set Point");
+		}
+	}
+	return QVariant();
+}
+
+int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const
+{
+	return 0;
+}
+
+DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent)
+{
+
+}
+
+DivePlannerPointsModel* DivePlannerPointsModel::instance()
+{
+	static DivePlannerPointsModel* self = new DivePlannerPointsModel();
+	return self;
+}
+
