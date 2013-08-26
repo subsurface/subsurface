@@ -238,12 +238,14 @@ void MainWindow::on_actionDivePlanner_triggered()
 {
 	disableDcShortcuts();
 	ui->stackedWidget->setCurrentIndex(1);
+	ui->infoPane->setCurrentIndex(1);
 }
 
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
 	ui->stackedWidget->setCurrentIndex(0);
+	ui->infoPane->setCurrentIndex(0);
 }
 
 

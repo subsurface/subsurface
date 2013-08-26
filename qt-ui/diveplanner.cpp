@@ -799,3 +799,8 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
 	event->ignore();
 	emit clicked();
 }
+
+DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f), ui(new Ui::DivePlanner())
+{
+	ui->setupUi(this);
+}

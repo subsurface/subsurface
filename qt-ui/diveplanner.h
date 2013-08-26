@@ -5,6 +5,10 @@
 #include <QGraphicsPathItem>
 #include <QDialog>
 
+namespace Ui{
+	class DivePlanner;
+};
+
 class QListView;
 class QStringListModel;
 class QModelIndex;
@@ -143,6 +147,14 @@ private:
 
 	int minMinutes; // this holds the minimum duration of the dive.
 	int dpMaxTime; // this is the time of the dive calculated by the deco.
+};
+
+class DivePlannerWidget : public QWidget {
+	Q_OBJECT
+public:
+    explicit DivePlannerWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+private:
+	Ui::DivePlanner *ui;
 };
 
 #endif
