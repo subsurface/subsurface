@@ -92,8 +92,8 @@ private slots:
 	void increaseDepth();
 	void decreaseTime();
 	void decreaseDepth();;
-	void okClicked();
-	void cancelClicked();
+
+	void cancelPlan();
 	void prepareSelectGas();
 	void selectGas(const QModelIndex& index);
 
@@ -142,8 +142,6 @@ private:
 	Button *plusDepth; // adds 10 meters to the depth ruler.
 	Button *lessTime;  // remove 10 minutes to the time ruler.
 	Button *lessDepth; // remove 10 meters to the depth ruler.
-	Button *okBtn;     // accepts, and creates a new dive based on the plan.
-	Button *cancelBtn; // rejects, and clears the dive plan.
 
 	int minMinutes; // this holds the minimum duration of the dive.
 	int dpMaxTime; // this is the time of the dive calculated by the deco.
