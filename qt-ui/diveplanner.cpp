@@ -882,8 +882,8 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 		switch(index.column()){
 			case GAS: return tr("Air");
 			case CCSETPOINT: return 0;
-			case DEPTH: return p.depth;
-			case DURATION: return p.time;
+			case DEPTH: return p.depth / 1000;
+			case DURATION: return p.time / 60;
 		}
 	}
 	return QVariant();
