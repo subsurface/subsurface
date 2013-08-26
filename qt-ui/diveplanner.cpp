@@ -959,6 +959,14 @@ void DivePlannerPointsModel::setStartTime(const QTime& t)
 int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas, int ccpoint)
 {
 	int row = divepoints.count();
+	// check if there's already a new stop before this one:
+	Q_FOREACH(const divedatapoint& dp, divepoints){
+		if (dp.time > minutes ){
+			return -1;
+		}
+	}
+
+	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
 	point.depth = meters;
