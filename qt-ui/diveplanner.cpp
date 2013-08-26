@@ -351,6 +351,7 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 		}
 	}
 
+	DivePlannerPointsModel::instance()->addStop(meters, minutes, tr("Air"), 0);
 	DiveHandler  *item = new DiveHandler ();
 	item->sec = minutes * 60;
 	item->mm =  meters * 1000;
@@ -382,7 +383,6 @@ void DivePlannerGraphics::selectGas(const QModelIndex& index)
 	currentGasChoice->setText(gasSelected);
 	gasListView->hide();
 }
-
 
 void DivePlannerGraphics::createDecoStops()
 {
@@ -793,6 +793,49 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 {
 	ui->setupUi(this);
 	ui->tablePoints->setModel(DivePlannerPointsModel::instance());
+	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
+	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
+	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
+	connect(ui->decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
+	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
+	connect(ui->lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
+	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
+	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
+}
+
+void DivePlannerWidget::startTimeChanged(const QTime& time)
+{
+	DivePlannerPointsModel::instance()->setStartTime(time);
+}
+
+void DivePlannerWidget::atmPressureChanged(const QString& pressure)
+{
+	DivePlannerPointsModel::instance()->setSurfacePressure(pressure.toInt());
+}
+
+void DivePlannerWidget::bottomSacChanged(const QString& bottomSac)
+{
+	DivePlannerPointsModel::instance()->setBottomSac(bottomSac.toInt());
+}
+
+void DivePlannerWidget::decoSacChanged(const QString& decosac)
+{
+	DivePlannerPointsModel::instance()->setDecoSac(decosac.toInt());
+}
+
+void DivePlannerWidget::gfhighChanged(const QString& gfhigh)
+{
+	DivePlannerPointsModel::instance()->setGFHigh(gfhigh.toShort());
+}
+
+void DivePlannerWidget::gflowChanged(const QString& gflow)
+{
+	DivePlannerPointsModel::instance()->setGFLow(gflow.toShort());
+}
+
+void DivePlannerWidget::lastStopChanged(bool checked)
+{
+	DivePlannerPointsModel::instance()->setLastStop6m(checked);
 }
 
 int DivePlannerPointsModel::columnCount(const QModelIndex& parent) const
@@ -802,12 +845,21 @@ int DivePlannerPointsModel::columnCount(const QModelIndex& parent) const
 
 QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 {
+	if(role == Qt::DisplayRole){
+		divedatapoint p = divepoints.at(index.row());
+		switch(index.column()){
+			case GAS: return tr("Air");
+			case CCSETPOINT: return 0;
+			case DEPTH: return p.depth;
+			case DURATION: return p.time;
+		}
+	}
 	return QVariant();
 }
 
 QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (role == Qt::DisplayRole){
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal){
 		switch(section){
 			case DEPTH: return tr("Final Depth");
 			case DURATION: return tr("Duration");
@@ -820,17 +872,70 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 
 int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const
 {
-	return 0;
+	return divepoints.count();
 }
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent)
 {
-
 }
 
 DivePlannerPointsModel* DivePlannerPointsModel::instance()
 {
 	static DivePlannerPointsModel* self = new DivePlannerPointsModel();
 	return self;
+}
+
+void DivePlannerPointsModel::createPlan()
+{
+
+}
+
+void DivePlannerPointsModel::setBottomSac(int sac)
+{
+	diveplan.bottomsac = sac;
+}
+
+void DivePlannerPointsModel::setDecoSac(int sac)
+{
+	diveplan.decosac = sac;
+}
+
+void DivePlannerPointsModel::setGFHigh(short int gfhigh)
+{
+	diveplan.gfhigh = gfhigh;
+}
+
+void DivePlannerPointsModel::setGFLow(short int ghflow)
+{
+	diveplan.gflow = ghflow;
+}
+
+void DivePlannerPointsModel::setSurfacePressure(int pressure)
+{
+	diveplan.surface_pressure = pressure;
+}
+
+void DivePlannerPointsModel::setLastStop6m(bool value)
+{
+}
+
+void DivePlannerPointsModel::setStartTime(const QTime& t)
+{
+	diveplan.when = t.msec();
+}
+
+int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas, int ccpoint)
+{
+	int row = divepoints.count();
+	beginInsertRows(QModelIndex(), row, row);
+	divedatapoint point;
+	point.depth = meters;
+	point.time = minutes;
+	point.o2 = 209;
+	point.he = 0;
+	point.po2 = 0;
+	divepoints.append( point );
+	endInsertRows();
+	return row;
 }
 

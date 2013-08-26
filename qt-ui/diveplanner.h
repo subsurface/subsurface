@@ -5,6 +5,9 @@
 #include <QGraphicsPathItem>
 #include <QDialog>
 #include <QAbstractTableModel>
+#include <QDateTime>
+
+#include "dive.h"
 
 namespace Ui{
 	class DivePlanner;
@@ -19,12 +22,30 @@ class DivePlannerPointsModel : public QAbstractTableModel{
 public:
 	static DivePlannerPointsModel* instance();
 	enum Sections{DEPTH, DURATION, GAS, CCSETPOINT, COLUMNS};
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+	/**
+	 * @return the row number.
+	 */
+	int addStop(int meters, int minutes,const QString& gas, int ccpoint );
+
+public slots:
+	void setGFHigh(short gfhigh);
+	void setGFLow(short ghflow);
+	void setSurfacePressure(int pressure);
+	void setBottomSac(int sac);
+	void setDecoSac(int sac);
+	void setStartTime(const QTime& t);
+	void setLastStop6m(bool value);
+	void createPlan();
+
 private:
-    explicit DivePlannerPointsModel(QObject* parent = 0);
+	explicit DivePlannerPointsModel(QObject* parent = 0);
+	struct diveplan diveplan;
+	QVector<divedatapoint> divepoints;
 };
 
 class Button : public QObject, public QGraphicsRectItem {
@@ -49,7 +70,7 @@ public:
 	int sec;
 	int mm;
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+	void mousePressEvent(QGraphicsSceneMouseEvent* event);
 };
 
 class Ruler : public QGraphicsLineItem{
@@ -165,6 +186,16 @@ class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
     explicit DivePlannerWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+
+public slots:
+	void startTimeChanged(const QTime& time);
+	void atmPressureChanged(const QString& pressure);
+	void bottomSacChanged(const QString& bottomSac);
+	void decoSacChanged(const QString& decosac);
+	void gflowChanged(const QString& gflow);
+	void gfhighChanged(const QString& gfhigh);
+	void lastStopChanged(bool checked);
+
 private:
 	Ui::DivePlanner *ui;
 };
