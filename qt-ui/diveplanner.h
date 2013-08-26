@@ -31,6 +31,7 @@ public:
 	 * @return the row number.
 	 */
 	int addStop(int meters, int minutes,const QString& gas, int ccpoint );
+	void editStop(int row, divedatapoint newData );
 	divedatapoint at(int row);
 public slots:
 	void setGFHigh(short gfhigh);

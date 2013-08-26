@@ -367,31 +367,7 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int meters = rint(depthLine->valueAt(mappedPos));
-
-// 	Q_FOREACH(DiveHandler* handler, handles){
-// 		if (xpos == handler->pos().x()){
-// 			qDebug() << "There's already an point at that place.";
-// 			//TODO: Move this later to a KMessageWidget.
-// 			return;
-// 		}
-// 	}
-
 	DivePlannerPointsModel::instance()->addStop(meters, minutes, tr("Air"), 0);
-// 	DiveHandler  *item = new DiveHandler ();
-// 	item->sec = minutes * 60;
-// 	item->mm =  meters * 1000;
-// 	item->setPos(QPointF(xpos, ypos));
-// 	scene()->addItem(item);
-// 	handles << item;
-//
-// 	Button *gasChooseBtn  = new Button();
-// 	gasChooseBtn ->setText(tr("Air"));
-// 	scene()->addItem(gasChooseBtn);
-// 	gasChooseBtn->setZValue(10);
-// 	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
-//
-// 	gases << gasChooseBtn;
-// 	createDecoStops();
 }
 
 void DivePlannerGraphics::prepareSelectGas()
@@ -633,8 +609,14 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 			}
 		}
 
-		activeDraggedHandler->sec = rint(timeLine->valueAt(mappedPos)) * 60;
-		activeDraggedHandler->mm = rint(depthLine->valueAt(mappedPos)) * 1000;
+		int pos = handles.indexOf(activeDraggedHandler);
+		divedatapoint data = DivePlannerPointsModel::instance()->at(pos);
+
+		data.depth = rint(depthLine->valueAt(mappedPos));
+		data.time = rint(timeLine->valueAt(mappedPos));
+
+		DivePlannerPointsModel::instance()->editStop(pos, data);
+
 		activeDraggedHandler->setBrush(QBrush(Qt::white));
 		activeDraggedHandler->setPos(QPointF(xpos, ypos));
 
@@ -962,6 +944,12 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 	divepoints.append( point );
 	endInsertRows();
 	return row;
+}
+
+void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
+{
+	divepoints[row] = newData;
+	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS-1));
 }
 
 divedatapoint DivePlannerPointsModel::at(int row)
