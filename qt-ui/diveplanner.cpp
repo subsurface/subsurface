@@ -956,13 +956,18 @@ void DivePlannerPointsModel::setStartTime(const QTime& t)
 	diveplan.when = t.msec();
 }
 
+bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2){
+	return p1.time <= p2.time;
+}
 int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas, int ccpoint)
 {
 	int row = divepoints.count();
 	// check if there's already a new stop before this one:
-	Q_FOREACH(const divedatapoint& dp, divepoints){
+	for(int i = 0; i < divepoints.count(); i++){
+		const divedatapoint& dp = divepoints.at(i);
 		if (dp.time > minutes ){
-			return -1;
+			row = i;
+			break;
 		}
 	}
 
@@ -975,6 +980,7 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 	point.he = 0;
 	point.po2 = 0;
 	divepoints.append( point );
+	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	endInsertRows();
 	return row;
 }
