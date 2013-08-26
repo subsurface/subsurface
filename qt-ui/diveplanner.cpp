@@ -25,9 +25,7 @@
 #define MAX_DEEPNESS 150
 #define MIN_DEEPNESS 40
 
-bool handlerLessThenMinutes(DiveHandler *d1, DiveHandler *d2){
-	return d1->sec < d2->sec;
-}
+static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 
 DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
 {
@@ -150,14 +148,11 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)
 {
 	qDebug() << "Adicionou";
-	divedatapoint point = DivePlannerPointsModel::instance()->at(start);
+	divedatapoint point = plannerModel->at(start);
 	DiveHandler *item = new DiveHandler ();
-	double xpos = timeLine->posAtValue(point.time);
-	double ypos = depthLine->posAtValue(point.depth);
-	item->sec = point.time * 60;
-	item->mm = point.depth * 1000;
+	double xpos = timeLine->posAtValue(point.time / 60);
+	double ypos = depthLine->posAtValue(point.depth / 1000);
 	item->setPos(QPointF(xpos, ypos));
-	qDebug() << xpos << ypos;
 	scene()->addItem(item);
 	handles << item;
 
@@ -176,12 +171,13 @@ void DivePlannerGraphics::keyDownAction()
 	if(scene()->selectedItems().count()){
 		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
-				if (handler->mm / 1000 >= depthLine->maximum())
+				int row = handles.indexOf(handler);
+				divedatapoint dp = plannerModel->at(row);
+				if (dp.depth / 1000 >= depthLine->maximum())
 					continue;
 
-				handler->mm += 1000;
-				double ypos = depthLine->posAtValue(handler->mm / 1000);
-				handler->setPos(handler->pos().x(), ypos);
+				dp.depth += 1000;
+				plannerModel->editStop(row, dp);
 			}
 		}
 		createDecoStops();
@@ -192,12 +188,14 @@ void DivePlannerGraphics::keyUpAction()
 {
 	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
-			if (handler->mm / 1000 <= 0)
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+
+			if (dp.depth / 1000 <= 0)
 				continue;
 
-			handler->mm -= 1000;
-			double ypos = depthLine->posAtValue(handler->mm / 1000);
-			handler->setPos(handler->pos().x(), ypos);
+			dp.depth -= 1000;
+			plannerModel->editStop(row, dp);
 		}
 	}
 	createDecoStops();
@@ -207,12 +205,15 @@ void DivePlannerGraphics::keyLeftAction()
 {
 	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
-			if (handler->sec / 60 <= 0)
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+
+			if (dp.time / 60 <= 0)
 				continue;
 
 			// don't overlap positions.
 			// maybe this is a good place for a 'goto'?
-			double xpos = timeLine->posAtValue((handler->sec - 60) / 60);
+			double xpos = timeLine->posAtValue((dp.time - 60) / 60);
 			bool nextStep = false;
 			Q_FOREACH(DiveHandler *h, handles){
 				if (h->pos().x() == xpos){
@@ -223,8 +224,8 @@ void DivePlannerGraphics::keyLeftAction()
 			if(nextStep)
 				continue;
 
-			handler->sec -= 60;
-			handler->setPos(xpos, handler->pos().y());
+			dp.time -= 60;
+			plannerModel->editStop(row, dp);
 		}
 	}
 	createDecoStops();
@@ -234,12 +235,14 @@ void DivePlannerGraphics::keyRightAction()
 {
 	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
-			if (handler->sec / 60 >= timeLine->maximum())
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+			if (dp.time / 60 >= timeLine->maximum())
 				continue;
 
 			// don't overlap positions.
 			// maybe this is a good place for a 'goto'?
-			double xpos = timeLine->posAtValue((handler->sec + 60) / 60);
+			double xpos = timeLine->posAtValue((dp.time + 60) / 60);
 			bool nextStep = false;
 			Q_FOREACH(DiveHandler *h, handles){
 				if (h->pos().x() == xpos){
@@ -250,8 +253,8 @@ void DivePlannerGraphics::keyRightAction()
 			if(nextStep)
 				continue;
 
-			handler->sec += 60;
-			handler->setPos(xpos, handler->pos().y());
+			dp.time += 60;
+			plannerModel->editStop(row, dp);
 		}
 	}	createDecoStops();
 }
@@ -367,7 +370,7 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int meters = rint(depthLine->valueAt(mappedPos));
-	DivePlannerPointsModel::instance()->addStop(meters, minutes, tr("Air"), 0);
+	plannerModel->addStop(meters * 1000, minutes * 60, tr("Air"), 0);
 }
 
 void DivePlannerGraphics::prepareSelectGas()
@@ -389,7 +392,8 @@ void DivePlannerGraphics::createDecoStops()
 {
 	qDeleteAll(lines);
 	lines.clear();
-	qSort(handles.begin(), handles.end(), handlerLessThenMinutes);
+	//TODO: fix.
+	//qSort(handles.begin(), handles.end(), handlerLessThenMinutes);
 
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
@@ -402,9 +406,12 @@ void DivePlannerGraphics::createDecoStops()
 	diveplan.gflow = 30;
 	diveplan.gfhigh = 70;
 	diveplan.surface_pressure = 1013;
+#if 0
 	DiveHandler *lastH = NULL;
+
 	Q_FOREACH(DiveHandler *h, handles) {
 		// these values need to come from the planner UI, eventually
+
 		int o2 = 209;
 		int he = 0;
 		int po2 = 0;
@@ -414,6 +421,22 @@ void DivePlannerGraphics::createDecoStops()
 		dp->entered = TRUE;
 		qDebug("time %d, depth %d", h->sec, h->mm);
 	}
+#else
+	int rowCount = plannerModel->rowCount();
+	int lastIndex = -1;
+	for(int i = 0; i < rowCount; i++){
+		// TODO: Dirk, the values already exists on the interface in the form of strings, can you
+		// give me a bit of help here?
+		divedatapoint thisPoint = plannerModel->at(i);
+		int o2 = 209;
+		int he = 0;
+		int po2 = 0;
+		int deltaT = lastIndex != -1 ? thisPoint.time - plannerModel->at(lastIndex).time : thisPoint.time;
+		lastIndex = i;
+		dp = plan_add_segment(&diveplan, deltaT, thisPoint.depth, o2, he, po2);
+	}
+#endif
+
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
@@ -438,8 +461,10 @@ void DivePlannerGraphics::createDecoStops()
 	}
 
 	// Re-position the user generated dive handlers
-	Q_FOREACH(DiveHandler *h, handles){
-		h->setPos(timeLine->posAtValue(h->sec / 60), depthLine->posAtValue(h->mm / 1000));
+	for(int i = 0; i < plannerModel->rowCount(); i++){
+		divedatapoint dp = plannerModel->at(i);
+		DiveHandler *h = handles.at(i);
+		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth / 1000));
 	}
 
 	int gasCount = gases.count();
@@ -610,12 +635,12 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 		}
 
 		int pos = handles.indexOf(activeDraggedHandler);
-		divedatapoint data = DivePlannerPointsModel::instance()->at(pos);
+		divedatapoint data = plannerModel->at(pos);
 
 		data.depth = rint(depthLine->valueAt(mappedPos));
 		data.time = rint(timeLine->valueAt(mappedPos));
 
-		DivePlannerPointsModel::instance()->editStop(pos, data);
+		plannerModel->editStop(pos, data);
 
 		activeDraggedHandler->setBrush(QBrush(Qt::white));
 		activeDraggedHandler->setPos(QPointF(xpos, ypos));
@@ -812,37 +837,37 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 
 void DivePlannerWidget::startTimeChanged(const QTime& time)
 {
-	DivePlannerPointsModel::instance()->setStartTime(time);
+	plannerModel->setStartTime(time);
 }
 
 void DivePlannerWidget::atmPressureChanged(const QString& pressure)
 {
-	DivePlannerPointsModel::instance()->setSurfacePressure(pressure.toInt());
+	plannerModel->setSurfacePressure(pressure.toInt());
 }
 
 void DivePlannerWidget::bottomSacChanged(const QString& bottomSac)
 {
-	DivePlannerPointsModel::instance()->setBottomSac(bottomSac.toInt());
+	plannerModel->setBottomSac(bottomSac.toInt());
 }
 
 void DivePlannerWidget::decoSacChanged(const QString& decosac)
 {
-	DivePlannerPointsModel::instance()->setDecoSac(decosac.toInt());
+	plannerModel->setDecoSac(decosac.toInt());
 }
 
 void DivePlannerWidget::gfhighChanged(const QString& gfhigh)
 {
-	DivePlannerPointsModel::instance()->setGFHigh(gfhigh.toShort());
+	plannerModel->setGFHigh(gfhigh.toShort());
 }
 
 void DivePlannerWidget::gflowChanged(const QString& gflow)
 {
-	DivePlannerPointsModel::instance()->setGFLow(gflow.toShort());
+	plannerModel->setGFLow(gflow.toShort());
 }
 
 void DivePlannerWidget::lastStopChanged(bool checked)
 {
-	DivePlannerPointsModel::instance()->setLastStop6m(checked);
+	plannerModel->setLastStop6m(checked);
 }
 
 int DivePlannerPointsModel::columnCount(const QModelIndex& parent) const

@@ -68,8 +68,6 @@ private:
 class DiveHandler : public QGraphicsEllipseItem{
 public:
 	DiveHandler();
-	int sec;
-	int mm;
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event);
 };
