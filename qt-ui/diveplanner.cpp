@@ -637,8 +637,8 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 		int pos = handles.indexOf(activeDraggedHandler);
 		divedatapoint data = plannerModel->at(pos);
 
-		data.depth = rint(depthLine->valueAt(mappedPos));
-		data.time = rint(timeLine->valueAt(mappedPos));
+		data.depth = rint(depthLine->valueAt(mappedPos)) * 1000;
+		data.time = rint(timeLine->valueAt(mappedPos)) * 60;
 
 		plannerModel->editStop(pos, data);
 
