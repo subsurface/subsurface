@@ -886,6 +886,11 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 			case DURATION: return p.time / 60;
 		}
 	}
+	if (role == Qt::DecorationRole){
+		switch(index.column()){
+			case REMOVE : return QIcon(":trash");
+		}
+	}
 	return QVariant();
 }
 

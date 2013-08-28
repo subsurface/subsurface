@@ -21,7 +21,7 @@ class DivePlannerPointsModel : public QAbstractTableModel{
 	Q_OBJECT
 public:
 	static DivePlannerPointsModel* instance();
-	enum Sections{DEPTH, DURATION, GAS, CCSETPOINT, COLUMNS};
+	enum Sections{REMOVE, DEPTH, DURATION, GAS, CCSETPOINT, COLUMNS};
 	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
