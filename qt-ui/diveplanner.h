@@ -183,6 +183,7 @@ private:
 
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT
+    void initialUiSetup();
 public:
     explicit DivePlannerWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
@@ -194,7 +195,8 @@ public slots:
 	void gflowChanged(const QString& gflow);
 	void gfhighChanged(const QString& gfhigh);
 	void lastStopChanged(bool checked);
-
+protected:
+    virtual void hideEvent(QHideEvent* );
 private:
 	Ui::DivePlanner *ui;
 };

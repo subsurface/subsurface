@@ -1,8 +1,10 @@
 #include "diveplanner.h"
 #include "graphicsview-common.h"
+#include "models.h"
 
 #include "../dive.h"
 #include "../divelist.h"
+
 #include <cmath>
 #include <QMouseEvent>
 #include <QDebug>
@@ -16,7 +18,7 @@
 #include <QListView>
 #include <QDesktopWidget>
 #include <QModelIndex>
-
+#include <QSettings>
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
 
@@ -833,8 +835,46 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui->lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
 	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
 	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
+
+	QFile cssFile(":table-css");
+	cssFile.open(QIODevice::ReadOnly);
+	QTextStream reader(&cssFile);
+	QString css = reader.readAll();
+
+	ui->tablePoints->setStyleSheet(css);
+	QFontMetrics metrics(defaultModelFont());
+
+	ui->tablePoints->horizontalHeader()->setResizeMode(DivePlannerPointsModel::REMOVE, QHeaderView::Fixed);
+	ui->tablePoints->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
+	initialUiSetup();
 }
 
+void DivePlannerWidget::hideEvent(QHideEvent* event)
+{
+	QSettings s;
+	s.beginGroup("DivePlanner");
+	s.beginGroup("PointTables");
+	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
+		s.setValue(QString("colwidth%1").arg(i), ui->tablePoints->columnWidth(i));
+	}
+	s.endGroup();
+	s.sync();
+}
+
+void DivePlannerWidget::initialUiSetup()
+{
+	QSettings s;
+	s.beginGroup("DivePlanner");
+	s.beginGroup("PointTables");
+	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
+		QVariant width = s.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui->tablePoints->setColumnWidth(i, width.toInt());
+		else
+			ui->tablePoints->resizeColumnToContents(i);
+	}
+	s.endGroup();
+}
 void DivePlannerWidget::startTimeChanged(const QTime& time)
 {
 	plannerModel->setStartTime(time);

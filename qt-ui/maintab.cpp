@@ -18,6 +18,8 @@
 #include <QCompleter>
 #include <QDebug>
 #include <QSet>
+#include <QTextStream>
+#include <QFile>
 #include <QSettings>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
@@ -85,7 +87,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui->weights, SIGNAL(clicked(QModelIndex)), this, SLOT(editWeigthWidget(QModelIndex)));
 
 	QFontMetrics metrics(defaultModelFont());
-	QFontMetrics metrics2(font());
 
 	ui->cylinders->horizontalHeader()->setResizeMode(CylindersModel::REMOVE, QHeaderView::Fixed);
 	ui->cylinders->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
@@ -106,6 +107,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->location->setCompleter(completers.location);
 	ui->suit->setCompleter(completers.suit);
 
+	QFile cssFile(":table-css");
+	cssFile.open(QIODevice::ReadOnly);
+	QTextStream reader(&cssFile);
+	QString css = reader.readAll();
+
+	ui->cylinders->setStyleSheet(css);
+	ui->weights->setStyleSheet(css);
 	initialUiSetup();
 }
 
