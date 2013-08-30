@@ -408,36 +408,22 @@ void DivePlannerGraphics::createDecoStops()
 	diveplan.gflow = 30;
 	diveplan.gfhigh = 70;
 	diveplan.surface_pressure = 1013;
-#if 0
-	DiveHandler *lastH = NULL;
 
-	Q_FOREACH(DiveHandler *h, handles) {
-		// these values need to come from the planner UI, eventually
-
-		int o2 = 209;
-		int he = 0;
-		int po2 = 0;
-		int deltaT = lastH ? h->sec - lastH->sec : h->sec;
-		lastH = h;
-		dp = plan_add_segment(&diveplan, deltaT, h->mm, o2, he, po2);
-		dp->entered = TRUE;
-		qDebug("time %d, depth %d", h->sec, h->mm);
-	}
-#else
 	int rowCount = plannerModel->rowCount();
 	int lastIndex = -1;
 	for(int i = 0; i < rowCount; i++){
 		// TODO: Dirk, the values already exists on the interface in the form of strings, can you
 		// give me a bit of help here?
 		divedatapoint thisPoint = plannerModel->at(i);
-		int o2 = 209;
-		int he = 0;
-		int po2 = 0;
+
+		int o2 = thisPoint.o2;
+		int he = thisPoint.he;
+		int po2 = thisPoint.po2;
 		int deltaT = lastIndex != -1 ? thisPoint.time - plannerModel->at(lastIndex).time : thisPoint.time;
 		lastIndex = i;
 		dp = plan_add_segment(&diveplan, deltaT, thisPoint.depth, o2, he, po2);
 	}
-#endif
+
 
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
