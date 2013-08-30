@@ -412,16 +412,10 @@ void DivePlannerGraphics::createDecoStops()
 	int rowCount = plannerModel->rowCount();
 	int lastIndex = -1;
 	for(int i = 0; i < rowCount; i++){
-		// TODO: Dirk, the values already exists on the interface in the form of strings, can you
-		// give me a bit of help here?
-		divedatapoint thisPoint = plannerModel->at(i);
-
-		int o2 = thisPoint.o2;
-		int he = thisPoint.he;
-		int po2 = thisPoint.po2;
-		int deltaT = lastIndex != -1 ? thisPoint.time - plannerModel->at(lastIndex).time : thisPoint.time;
+		divedatapoint p = plannerModel->at(i);
+		int deltaT = lastIndex != -1 ? p.time - plannerModel->at(lastIndex).time : p.time;
 		lastIndex = i;
-		dp = plan_add_segment(&diveplan, deltaT, thisPoint.depth, o2, he, po2);
+		dp = plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
 	}
 
 
