@@ -174,7 +174,6 @@ void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , i
 	handles << item;
 
 	Button *gasChooseBtn = new Button();
-	gasChooseBtn ->setText(tr("Air"));
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
 	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
@@ -481,17 +480,12 @@ void DivePlannerGraphics::createDecoStops()
 		divedatapoint dp = plannerModel->at(i);
 		DiveHandler *h = handles.at(i);
 		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth / 1000));
-	}
-
-	int gasCount = gases.count();
-	for(int i = 0; i < gasCount; i++){
-		divedatapoint p = plannerModel->at(i);
 		QPointF p1 = (i == 0) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[i-1]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setText( strForAir(p)	);
+		gases[i]->setText( strForAir(dp));
 	}
 
 	// (re-) create the profile with different colors for segments that were
