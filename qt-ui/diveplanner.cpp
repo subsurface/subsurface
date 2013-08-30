@@ -150,6 +150,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(rowsInserted(const QModelIndex&,int,int)),
 			this, SLOT(pointInserted(const QModelIndex&, int, int)));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createDecoStops()));
 	setRenderHint(QPainter::Antialiasing);
 }
 
@@ -905,10 +906,10 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 	if(role == Qt::DisplayRole){
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()){
-			case GAS: return tr("Air");
 			case CCSETPOINT: return 0;
 			case DEPTH: return p.depth / 1000;
 			case DURATION: return p.time / 60;
+			case GAS: return tr("Air");
 		}
 	}
 	if (role == Qt::DecorationRole){
@@ -921,6 +922,16 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 
 bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+	if(role == Qt::EditRole){
+		divedatapoint& p = divepoints[index.row()];
+		switch(index.column()){
+			case DEPTH: p.depth = value.toInt() * 1000; break;
+			case DURATION: p.time = value.toInt() * 60; break;
+			case CCSETPOINT: /* what do I do here? */
+			case GAS: break; /* what do I do here? */
+		}
+		editStop(index.row(), p);
+	}
     return QAbstractItemModel::setData(index, value, role);
 }
 

@@ -115,8 +115,6 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent* event);
 	virtual void mousePressEvent(QMouseEvent* event);
 	virtual void mouseReleaseEvent(QMouseEvent* event);
-
-	void createDecoStops();
 	bool isPointOutOfBoundaries(const QPointF& point);
 	void deleteTemporaryDivePlan(struct divedatapoint* dp);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
@@ -131,7 +129,7 @@ private slots:
 	void increaseDepth();
 	void decreaseTime();
 	void decreaseDepth();;
-
+	void createDecoStops();
 	void cancelPlan();
 	void prepareSelectGas();
 	void selectGas(const QModelIndex& index);
