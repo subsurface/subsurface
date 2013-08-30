@@ -158,9 +158,12 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	gasListView->hide();
 
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
-	connect(DivePlannerPointsModel::instance(), SIGNAL(rowsInserted(const QModelIndex&,int,int)),
+	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createDecoStops()));
+
+	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex&,int,int)),
 			this, SLOT(pointInserted(const QModelIndex&, int, int)));
-	connect(DivePlannerPointsModel::instance(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createDecoStops()));
+	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex&, int, int)),
+			this, SLOT(pointsRemoved(const QModelIndex&, int, int)));
 	setRenderHint(QPainter::Antialiasing);
 }
 
@@ -287,16 +290,40 @@ void DivePlannerGraphics::keyDeleteAction()
 			delete btn;
 		}
 
+		QVector<int> selectedIndexes;
 		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
-				handles.removeAll(handler);
-				scene()->removeItem(handler);
-				delete i;
+				selectedIndexes.push_back(handles.indexOf(handler));
 			}
 		}
-
+		plannerModel->removeSelectedPoints(selectedIndexes);
 		createDecoStops();
 	}
+}
+
+void DivePlannerGraphics::pointsRemoved(const QModelIndex& , int start, int end)
+{	// start and end are inclusive.
+	int num = (end - start) + 1;
+	for(int i = num; i != 0; i--){
+		delete handles.back();
+		handles.pop_back();
+	}
+	scene()->clearSelection();
+}
+
+bool intLessThan(int a, int b){
+	return a <= b;
+}
+void DivePlannerPointsModel::removeSelectedPoints(const QVector< int >& rows)
+{
+	int firstRow = rowCount() - rows.count();
+	QVector<int> v2 = rows;
+	std::sort(v2.begin(), v2.end(), intLessThan);
+	beginRemoveRows(QModelIndex(), firstRow, rowCount()-1);
+	for(int i = v2.count()-1; i >= 0; i--){
+		divepoints.remove(v2[i]);
+	}
+	endRemoveRows();
 }
 
 void DivePlannerGraphics::keyEscAction()
@@ -662,6 +689,10 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 	}
 	// mousePressEvent 'grabs' the mouse and keyboard, annoying.
 	ungrabMouse();
+
+	/* hack. Sometimes the keyboard is grabbed, sometime it's not,
+	so, let's force a grab and release, to get rid of a warning. */
+	grabKeyboard();
 	ungrabKeyboard();
 }
 

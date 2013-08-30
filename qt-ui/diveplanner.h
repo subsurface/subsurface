@@ -31,7 +31,7 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
     virtual Qt::ItemFlags flags(const QModelIndex& index) const;
-
+	void removeSelectedPoints(const QVector<int>& rows);
 	/**
 	 * @return the row number.
 	 */
@@ -134,6 +134,7 @@ private slots:
 	void prepareSelectGas();
 	void selectGas(const QModelIndex& index);
 	void pointInserted(const QModelIndex&, int start, int end);
+	void pointsRemoved(const QModelIndex&, int start, int end);
 private:
 	void moveActiveHandler(const QPointF& pos);
 
