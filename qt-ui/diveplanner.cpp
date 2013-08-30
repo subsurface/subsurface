@@ -2,27 +2,21 @@
 #include "graphicsview-common.h"
 #include "models.h"
 #include "modeldelegates.h"
+#include "ui_diveplanner.h"
+#include "mainwindow.h"
 
 #include "../dive.h"
 #include "../divelist.h"
 #include "../planner.h"
 
-#include <cmath>
 #include <QMouseEvent>
 #include <QDebug>
-#include <QGraphicsWidget>
-#include <QGraphicsProxyWidget>
-#include <QPushButton>
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
 #include <QStringListModel>
-#include <QGraphicsProxyWidget>
 #include <QListView>
-#include <QDesktopWidget>
 #include <QModelIndex>
 #include <QSettings>
-#include "ui_diveplanner.h"
-#include "mainwindow.h"
 
 #define TIME_INITIAL_MAX 30
 
@@ -196,7 +190,6 @@ void DivePlannerGraphics::keyDownAction()
 				plannerModel->editStop(row, dp);
 			}
 		}
-		createDecoStops();
 	}
 }
 
@@ -244,7 +237,6 @@ void DivePlannerGraphics::keyLeftAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	createDecoStops();
 }
 
 void DivePlannerGraphics::keyRightAction()
@@ -272,7 +264,7 @@ void DivePlannerGraphics::keyRightAction()
 			dp.time += 60;
 			plannerModel->editStop(row, dp);
 		}
-	}	createDecoStops();
+	}
 }
 
 void DivePlannerGraphics::keyDeleteAction()
@@ -286,7 +278,6 @@ void DivePlannerGraphics::keyDeleteAction()
 			}
 		}
 		plannerModel->removeSelectedPoints(selectedIndexes);
-		createDecoStops();
 	}
 }
 
@@ -324,7 +315,6 @@ void DivePlannerGraphics::keyEscAction()
 		scene()->clearSelection();
 		return;
 	}
-
 	cancelPlan();
 }
 
@@ -378,7 +368,6 @@ void DivePlannerGraphics::decreaseDepth()
 			return;
 		}
 	}
-
 	depthLine->setMaximum(depthLine->maximum() - 10);
 	depthLine->updateTicks();
 	createDecoStops();
