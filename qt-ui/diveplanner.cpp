@@ -5,7 +5,7 @@
 
 #include "../dive.h"
 #include "../divelist.h"
-
+#include "../planner.h"
 
 #include <cmath>
 #include <QMouseEvent>
@@ -30,8 +30,18 @@
 #define MIN_DEEPNESS 40
 
 QStringListModel *airTypes(){
-	static QStringListModel *self = new QStringListModel(QStringList() << QObject::tr("AIR") << QObject::tr("EAN32") << QObject::tr("EAN36"));
+	static QStringListModel *self = new QStringListModel(QStringList()
+		<< QObject::tr("AIR")
+		<< QObject::tr("EAN32")
+		<< QObject::tr("EAN36"));
 	return self;
+}
+
+QString strForAir(const divedatapoint& p){
+	return p.o2 == 209 ? QObject::tr("AIR")
+		: p.o2 == 320 ? QObject::tr("EAN32")
+		: p.o2 == 360 ? QObject::tr("EAN36")
+		: QObject::tr("Choose Gas");
 }
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
@@ -156,7 +166,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)
 {
-	qDebug() << "Adicionou";
 	divedatapoint point = plannerModel->at(start);
 	DiveHandler *item = new DiveHandler ();
 	double xpos = timeLine->posAtValue(point.time / 60);
@@ -393,7 +402,8 @@ void DivePlannerGraphics::prepareSelectGas()
 void DivePlannerGraphics::selectGas(const QModelIndex& index)
 {
 	QString gasSelected = gasListView->model()->data(index, Qt::DisplayRole).toString();
-	currentGasChoice->setText(gasSelected);
+	int idx = gases.indexOf(currentGasChoice);
+	plannerModel->setData(plannerModel->index(idx, DivePlannerPointsModel::GAS), gasSelected);
 	gasListView->hide();
 }
 
@@ -422,7 +432,6 @@ void DivePlannerGraphics::createDecoStops()
 		lastIndex = i;
 		dp = plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
 	}
-
 
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
@@ -456,13 +465,13 @@ void DivePlannerGraphics::createDecoStops()
 
 	int gasCount = gases.count();
 	for(int i = 0; i < gasCount; i++){
+		divedatapoint p = plannerModel->at(i);
 		QPointF p1 = (i == 0) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[i-1]->pos();
 		QPointF p2 = handles[i]->pos();
-
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		qDebug() << "Adding a gas at" << pos;
+		gases[i]->setText( strForAir(p)	);
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -909,7 +918,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 			case CCSETPOINT: return 0;
 			case DEPTH: return p.depth / 1000;
 			case DURATION: return p.time / 60;
-			case GAS: return tr("Air");
+			case GAS: return strForAir(p);
 		}
 	}
 	if (role == Qt::DecorationRole){
@@ -928,11 +937,19 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 			case DEPTH: p.depth = value.toInt() * 1000; break;
 			case DURATION: p.time = value.toInt() * 60; break;
 			case CCSETPOINT: /* what do I do here? */
-			case GAS: break; /* what do I do here? */
+			case GAS: {
+				int o2 = 0;
+				int he = 0;
+				QByteArray gasv = value.toByteArray();
+				if (validate_gas(gasv.data(), &o2, &he)) {
+					p.o2 = o2;
+					p.he = he;
+				}break;
+			}
 		}
 		editStop(index.row(), p);
 	}
-    return QAbstractItemModel::setData(index, value, role);
+	return QAbstractItemModel::setData(index, value, role);
 }
 
 QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const

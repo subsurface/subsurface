@@ -262,6 +262,10 @@ void AirTypesDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::E
 
 void AirTypesDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
+	if (!index.isValid())
+		return;
+	QComboBox *combo = qobject_cast<QComboBox*>(editor);
+	model->setData(index, QVariant(combo->currentText()));
 }
 
 AirTypesDelegate::AirTypesDelegate(QObject* parent) : ComboBoxDelegate(airTypes(), parent)

@@ -712,7 +712,6 @@ error_exit:
 	free(gaschanges);
 }
 
-#if USE_GTK_UI
 /*
  * Get a value in tenths (so "10.2" == 102, "9" = 90)
  *
@@ -980,6 +979,7 @@ int validate_volume(const char *text, int *sac)
 	return 1;
 }
 
+#if USE_GTK_UI
 struct diveplan diveplan = {};
 char *cache_data = NULL;
 struct dive *planned_dive = NULL;

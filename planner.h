@@ -1,6 +1,11 @@
 #ifndef PLANNER_H
 #define PLANNER_H
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern void plan(struct diveplan *diveplan, char **cache_datap, struct dive **divep, char **error_string_p);
 extern int validate_gas(const char *text, int *o2_p, int *he_p);
 extern int validate_time(const char *text, int *sec_p, int *rel_p);
@@ -19,4 +24,8 @@ extern char *cache_data;
 extern char *disclaimer;
 extern double plangflow, plangfhigh;
 
+
+#ifdef __cplusplus
+}
+#endif
 #endif /* PLANNER_H */
