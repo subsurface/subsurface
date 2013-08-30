@@ -128,7 +128,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	connect(obj, SIGNAL(clicked()), this, SLOT(slot));
 
 	ADDBTN(plusDepth, ":plus",   ""  , 5,  5, tr("Increase maximum depth by 10m"), increaseDepth());
-	ADDBTN(plusTime,  ":plus",   ""  , 95, 5, tr("Increase minimum time by 10m"), increaseTime());
+	ADDBTN(plusTime,  ":plus",   ""  , 95, 95, tr("Increase minimum time by 10m"), increaseTime());
 	ADDBTN(lessDepth, ":minimum",""  , 2,  5, tr("Decreases maximum depth by 10m"), decreaseDepth());
 	ADDBTN(lessTime,  ":minimum",""  , 92, 95, tr("Decreases minimum time by 10m"), decreaseTime());
 #undef ADDBTN
@@ -169,11 +169,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)
 {
-	divedatapoint point = plannerModel->at(start);
 	DiveHandler *item = new DiveHandler ();
-	double xpos = timeLine->posAtValue(point.time / 60);
-	double ypos = depthLine->posAtValue(point.depth / 1000);
-	item->setPos(QPointF(xpos, ypos));
 	scene()->addItem(item);
 	handles << item;
 
