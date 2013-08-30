@@ -284,12 +284,6 @@ void DivePlannerGraphics::keyDeleteAction()
 {
 	int selCount = scene()->selectedItems().count();
 	if(selCount){
-
-		while(selCount--){
-			Button *btn = gases.takeLast();
-			delete btn;
-		}
-
 		QVector<int> selectedIndexes;
 		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()){
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)){
@@ -307,8 +301,11 @@ void DivePlannerGraphics::pointsRemoved(const QModelIndex& , int start, int end)
 	for(int i = num; i != 0; i--){
 		delete handles.back();
 		handles.pop_back();
+		delete gases.back();
+		gases.pop_back();
 	}
 	scene()->clearSelection();
+	createDecoStops();
 }
 
 bool intLessThan(int a, int b){
@@ -853,6 +850,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui->setupUi(this);
 	ui->tablePoints->setModel(DivePlannerPointsModel::instance());
 	ui->tablePoints->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
+
+	connect(ui->tablePoints, SIGNAL(clicked(QModelIndex)), plannerModel, SLOT(removePoint(const QModelIndex)));
 	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
@@ -1094,4 +1093,14 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 divedatapoint DivePlannerPointsModel::at(int row)
 {
 	return divepoints.at(row);
+}
+
+void DivePlannerPointsModel::removePoint(const QModelIndex& index)
+{
+	if (index.column() != REMOVE)
+		return;
+
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
+	divepoints.remove(index.row());
+	endRemoveRows();
 }

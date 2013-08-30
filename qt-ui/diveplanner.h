@@ -32,6 +32,7 @@ public:
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
     virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	void removeSelectedPoints(const QVector<int>& rows);
+
 	/**
 	 * @return the row number.
 	 */
@@ -47,6 +48,7 @@ public slots:
 	void setStartTime(const QTime& t);
 	void setLastStop6m(bool value);
 	void createPlan();
+	void removePoint(const QModelIndex& index);
 
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
