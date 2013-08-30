@@ -3,6 +3,7 @@
 #include "../divelist.h"
 #include "starwidget.h"
 #include "models.h"
+#include "diveplanner.h"
 
 #include <QtDebug>
 #include <QPainter>
@@ -14,6 +15,7 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QAbstractItemView>
+#include <QStringListModel>
 
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
@@ -252,4 +254,16 @@ QWidget* WSInfoDelegate::createEditor(QWidget* parent, const QStyleOptionViewIte
 	currWeigth.type = ws->description;
 	currWeigth.weigth = ws->weight.grams;
 	return editor;
+}
+
+void AirTypesDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
+{
+}
+
+void AirTypesDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
+{
+}
+
+AirTypesDelegate::AirTypesDelegate(QObject* parent) : ComboBoxDelegate(airTypes(), parent)
+{
 }

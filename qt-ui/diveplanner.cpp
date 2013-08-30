@@ -1,9 +1,11 @@
 #include "diveplanner.h"
 #include "graphicsview-common.h"
 #include "models.h"
+#include "modeldelegates.h"
 
 #include "../dive.h"
 #include "../divelist.h"
+
 
 #include <cmath>
 #include <QMouseEvent>
@@ -26,6 +28,11 @@
 
 #define MAX_DEEPNESS 150
 #define MIN_DEEPNESS 40
+
+QStringListModel *airTypes(){
+	static QStringListModel *self = new QStringListModel(QStringList() << QObject::tr("AIR") << QObject::tr("EAN32") << QObject::tr("EAN36"));
+	return self;
+}
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 
@@ -135,10 +142,9 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 #undef ADD_ACTION
 
 	// Prepare the stuff for the gas-choices.
-	gasChoices = new QStringListModel(QStringList() << tr("AIR") << tr("EAN32") << tr("EAN36"));
 	gasListView = new QListView();
 	gasListView->setWindowFlags(Qt::Popup);
-	gasListView->setModel(gasChoices);
+	gasListView->setModel(airTypes());
 	gasListView->hide();
 
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
@@ -394,8 +400,6 @@ void DivePlannerGraphics::createDecoStops()
 {
 	qDeleteAll(lines);
 	lines.clear();
-	//TODO: fix.
-	//qSort(handles.begin(), handles.end(), handlerLessThenMinutes);
 
 	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
@@ -807,6 +811,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 {
 	ui->setupUi(this);
 	ui->tablePoints->setModel(DivePlannerPointsModel::instance());
+	ui->tablePoints->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
@@ -914,6 +919,11 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 	return QVariant();
 }
 
+bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    return QAbstractItemModel::setData(index, value, role);
+}
+
 QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal){
@@ -925,6 +935,11 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 		}
 	}
 	return QVariant();
+}
+
+Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex& index) const
+{
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
 int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const

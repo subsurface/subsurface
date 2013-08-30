@@ -49,4 +49,13 @@ public slots:
 	void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
+class AirTypesDelegate : public ComboBoxDelegate{
+	Q_OBJECT
+public:
+	explicit AirTypesDelegate(QObject* parent = 0);
+	virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+public slots:
+	void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint);
+};
+
 #endif
