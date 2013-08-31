@@ -65,7 +65,11 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 
 void DownloadFromDCWidget::runDialog()
 {
+	// Since the DownloadDialog is only
+	// created once, we need to do put some starting code here
 	ui->progressBar->hide();
+	markChildrenAsEnabled();
+
 	exec();
 }
 
@@ -138,7 +142,11 @@ void DownloadFromDCWidget::on_cancel_clicked()
 		thread->deleteLater();
 		thread = 0;
 	}
-	close();
+
+	// Confusing, but if the user press cancel during a download
+	// he probably want to cancel the download, not to close the window.
+	if (!downloading)
+		close();
 }
 
 void DownloadFromDCWidget::on_ok_clicked()
@@ -146,6 +154,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	if (downloading)
 		return;
 
+	markChildrenAsDisabled();
 	ui->progressBar->setValue(0);
 	ui->progressBar->show();
 
@@ -156,6 +165,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	data.devname = strdup(ui->device->text().toUtf8().data());
 	data.vendor = strdup(ui->vendor->currentText().toUtf8().data());
 	data.product = strdup(ui->product->currentText().toUtf8().data());
+
 	data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
 	data.force_download = ui->forceDownload->isChecked();
 	data.deviceid = data.diveid = 0;
@@ -175,6 +185,36 @@ void DownloadFromDCWidget::on_ok_clicked()
 bool DownloadFromDCWidget::preferDownloaded()
 {
 	return ui->preferDownloaded->isChecked();
+}
+
+void DownloadFromDCWidget::reject()
+{
+	// we don't want the download window being able to close
+	// while we're still downloading.
+	if (!downloading)
+		QDialog::reject();
+}
+
+void DownloadFromDCWidget::markChildrenAsDisabled()
+{
+	ui->device->setDisabled(true);
+	ui->vendor->setDisabled(true);
+	ui->product->setDisabled(true);
+	ui->forceDownload->setDisabled(true);
+	ui->preferDownloaded->setDisabled(true);
+	ui->ok->setDisabled(true);
+	ui->search->setDisabled(true);
+}
+
+void DownloadFromDCWidget::markChildrenAsEnabled()
+{
+	ui->device->setDisabled(false);
+	ui->vendor->setDisabled(false);
+	ui->product->setDisabled(false);
+	ui->forceDownload->setDisabled(false);
+	ui->preferDownloaded->setDisabled(false);
+	ui->ok->setDisabled(false);
+	ui->search->setDisabled(false);
 }
 
 DownloadThread::DownloadThread(device_data_t* data): data(data)

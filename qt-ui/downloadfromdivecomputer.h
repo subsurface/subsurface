@@ -24,7 +24,7 @@ private:
 class InterfaceThread : public QThread{
 	Q_OBJECT
 public:
-	InterfaceThread(QObject *parent, device_data_t *data) ;
+	InterfaceThread(QObject *parent, device_data_t *data);
 	virtual void run();
 
 signals:
@@ -39,13 +39,19 @@ class DownloadFromDCWidget : public QDialog{
 public:
 	explicit DownloadFromDCWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	static DownloadFromDCWidget *instance();
+	void reject();
+
 public slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
 	void runDialog();
 	void stoppedDownloading();
 	void on_vendor_currentIndexChanged(const QString& vendor);
+
 private:
+    void markChildrenAsDisabled();
+    void markChildrenAsEnabled();
+
 	Ui::DownloadFromDiveComputer *ui;
 	InterfaceThread *thread;
 	bool downloading;
@@ -58,6 +64,7 @@ private:
 	QStringListModel *vendorModel;
 	QStringListModel *productModel;
 	void fill_computer_list();
+
 public:
 	bool preferDownloaded();
 };

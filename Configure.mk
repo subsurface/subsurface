@@ -106,7 +106,7 @@ ifeq ($(strip $(QMAKE)),)
 $(error Could not find qmake or qmake-qt4 in $$PATH for the Qt4 version they failed)
 endif
 
-	QT_MODULES = QtGui QtSvg QtNetwork
+	QT_MODULES = QtGui QtSvg QtNetwork QtWebKit
 	QT_CORE = QtCore
 	MOC = $(shell $(PKGCONFIG) --variable=moc_location QtCore)
 	UIC = $(shell $(PKGCONFIG) --variable=uic_location QtGui)
