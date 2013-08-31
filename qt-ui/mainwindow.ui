@@ -452,7 +452,7 @@
   <customwidget>
    <class>MainTab</class>
    <extends>QWidget</extends>
-   <header>maintab.h</header>
+   <header>qt-ui/maintab.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
