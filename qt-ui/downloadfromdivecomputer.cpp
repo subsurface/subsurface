@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QStringListModel>
 #include <QTimer>
+#include <QMessageBox>
 
 struct product {
 	const char *product;
@@ -101,18 +102,18 @@ void DownloadFromDCWidget::updateState(states state)
 
 	// user pressed cancel but the application isn't doing anything.
 	// means close the window
-	else if ((currentState == INITIAL || currentState == CANCELLED || currentState == DONE)
+	else if ((currentState == INITIAL || currentState == CANCELLED || currentState == DONE || currentState == ERROR)
 		&& state == CANCELLING) {
 		timer->stop();
 		reject();
 	}
 
-	// A cancel is finished
+	// the cancelation process is finished
 	else if (currentState == CANCELLING && (state == DONE || state == CANCELLED)) {
 		timer->stop();
 		state = CANCELLED;
 		ui->progressBar->setValue(0);
-		ui->progressbar->hide();
+		ui->progressBar->hide();
 		markChildrenAsEnabled();
 	}
 
@@ -130,6 +131,15 @@ void DownloadFromDCWidget::updateState(states state)
 		ui->progressBar->setValue(0);
 		ui->progressBar->show();
 		markChildrenAsDisabled();
+	}
+
+	// got an error
+	else if (state == ERROR) {
+		QMessageBox::critical(this, tr("Error"), this->thread->error, QMessageBox::Ok);
+
+		markChildrenAsEnabled();
+		ui->progressBar->hide();
+		ui->ok->setText(tr("retry"));
 	}
 
 	// properly updating the widget state
@@ -243,9 +253,12 @@ void DownloadFromDCWidget::reject()
 
 void DownloadFromDCWidget::onDownloadThreadFinished()
 {
-	if (currentState == DOWNLOADING)
-		updateState(DONE);
-	else
+	if (currentState == DOWNLOADING) {
+		if (thread->error.isEmpty())
+			updateState(DONE);
+		else
+			updateState(ERROR);
+	} else
 		updateState(CANCELLED);
 }
 
@@ -277,17 +290,31 @@ DownloadThread::DownloadThread(QObject* parent, device_data_t* data): QThread(pa
 {
 }
 
+static QString str_error(const char *fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	const QString str = QString().vsprintf( fmt, args );
+	va_end(args);
+
+	return str;
+}
+
 void DownloadThread::run()
 {
 	DownloadFromDCWidget *dfdcw = DownloadFromDCWidget::instance();
+	const char *error;
 
 	if (!strcmp(data->vendor, "Uemis"))
-		do_uemis_import(data->devname, data->force_download);
+		error = do_uemis_import(data->devname, data->force_download);
 	else
-		// TODO: implement error handling
-		do_libdivecomputer_import(data);
+		error = do_libdivecomputer_import(data);
 
-	// I'm not sure if we should really process_dives even
+	if (error) {
+		this->error =  str_error(error, data->devname, data->vendor, data->product);
+	}
+
+	// I'm not sure if we should really call process_dives even
 	// if there's an error or a cancelation
 	process_dives(TRUE, dfdcw->preferDownloaded());
 }

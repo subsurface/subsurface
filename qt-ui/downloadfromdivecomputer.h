@@ -15,8 +15,10 @@ struct device_data_t;
 class DownloadThread : public QThread{
 	Q_OBJECT
 public:
-	explicit DownloadThread(QObject* parent, device_data_t* data);
+	DownloadThread(QObject* parent, device_data_t* data);
 	virtual void run();
+
+	QString error;
 private:
 	device_data_t *data;
 };
@@ -34,6 +36,7 @@ public:
 		DOWNLOADING,
 		CANCELLING,
 		CANCELLED,
+		ERROR,
 		DONE,
 	};
 
