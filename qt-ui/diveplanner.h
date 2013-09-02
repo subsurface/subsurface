@@ -48,7 +48,7 @@ public slots:
 	void setStartTime(const QTime& t);
 	void setLastStop6m(bool value);
 	void createPlan();
-	void removePoint(const QModelIndex& index);
+	void remove(const QModelIndex& index);
 
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
@@ -189,7 +189,6 @@ private:
 
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT
-    void initialUiSetup();
 public:
     explicit DivePlannerWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
@@ -201,8 +200,6 @@ public slots:
 	void gflowChanged(const QString& gflow);
 	void gfhighChanged(const QString& gfhigh);
 	void lastStopChanged(bool checked);
-protected:
-    virtual void hideEvent(QHideEvent* );
 private:
 	Ui::DivePlanner *ui;
 };

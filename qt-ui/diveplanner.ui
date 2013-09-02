@@ -37,15 +37,15 @@
    <item row="3" column="1">
     <widget class="QLineEdit" name="decoStopSAC"/>
    </item>
+   <item row="5" column="0">
+    <widget class="QLineEdit" name="lowGF"/>
+   </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
      <property name="text">
       <string>Low GF</string>
      </property>
     </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLineEdit" name="lowGF"/>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_3">
@@ -54,12 +54,18 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="0">
+    <widget class="QLineEdit" name="bottomSAC"/>
+   </item>
    <item row="4" column="1">
     <widget class="QLabel" name="label_6">
      <property name="text">
       <string>High GF</string>
      </property>
     </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="highGF"/>
    </item>
    <item row="2" column="1">
     <widget class="QLabel" name="label_4">
@@ -68,21 +74,12 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLineEdit" name="bottomSAC"/>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLineEdit" name="highGF"/>
-   </item>
    <item row="6" column="0">
     <widget class="QCheckBox" name="lastStop">
      <property name="text">
       <string>Last Stop at 6m</string>
      </property>
     </widget>
-   </item>
-   <item row="7" column="0" colspan="2">
-    <widget class="QTableView" name="tablePoints"/>
    </item>
    <item row="8" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -91,8 +88,26 @@
      </property>
     </widget>
    </item>
+   <item row="7" column="0" colspan="2">
+    <widget class="TableView" name="tableWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TableView</class>
+   <extends>QWidget</extends>
+   <header>tableview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

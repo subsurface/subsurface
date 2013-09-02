@@ -4,6 +4,7 @@
 #include "modeldelegates.h"
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
+#include "tableview.h"
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -17,6 +18,7 @@
 #include <QListView>
 #include <QModelIndex>
 #include <QSettings>
+#include <QTableView>
 
 #define TIME_INITIAL_MAX 30
 
@@ -827,10 +829,10 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
 DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f), ui(new Ui::DivePlanner())
 {
 	ui->setupUi(this);
-	ui->tablePoints->setModel(DivePlannerPointsModel::instance());
-	ui->tablePoints->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
-
-	connect(ui->tablePoints, SIGNAL(clicked(QModelIndex)), plannerModel, SLOT(removePoint(const QModelIndex)));
+	ui->tableWidget->setTitle(tr("Dive Planner Points"));
+	ui->tableWidget->setModel(DivePlannerPointsModel::instance());
+	ui->tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
+	connect(ui->tableWidget->view(), SIGNAL(clicked(QModelIndex)), plannerModel, SLOT(removePoint(const QModelIndex)));
 	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
@@ -839,46 +841,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui->lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
 	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
 	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
-
-	QFile cssFile(":table-css");
-	cssFile.open(QIODevice::ReadOnly);
-	QTextStream reader(&cssFile);
-	QString css = reader.readAll();
-
-	ui->tablePoints->setStyleSheet(css);
-	QFontMetrics metrics(defaultModelFont());
-
-	ui->tablePoints->horizontalHeader()->setResizeMode(DivePlannerPointsModel::REMOVE, QHeaderView::Fixed);
-	ui->tablePoints->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
-	initialUiSetup();
 }
 
-void DivePlannerWidget::hideEvent(QHideEvent* event)
-{
-	QSettings s;
-	s.beginGroup("DivePlanner");
-	s.beginGroup("PointTables");
-	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		s.setValue(QString("colwidth%1").arg(i), ui->tablePoints->columnWidth(i));
-	}
-	s.endGroup();
-	s.sync();
-}
-
-void DivePlannerWidget::initialUiSetup()
-{
-	QSettings s;
-	s.beginGroup("DivePlanner");
-	s.beginGroup("PointTables");
-	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i));
-		if (width.isValid())
-			ui->tablePoints->setColumnWidth(i, width.toInt());
-		else
-			ui->tablePoints->resizeColumnToContents(i);
-	}
-	s.endGroup();
-}
 void DivePlannerWidget::startTimeChanged(const QTime& time)
 {
 	plannerModel->setStartTime(time);
@@ -930,10 +894,13 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 			case GAS: return strForAir(p);
 		}
 	}
-	if (role == Qt::DecorationRole){
+	else if (role == Qt::DecorationRole){
 		switch(index.column()){
 			case REMOVE : return QIcon(":trash");
 		}
+	}
+	else if (role == Qt::FontRole){
+		return  defaultModelFont();
 	}
 	return QVariant();
 }
@@ -970,6 +937,9 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 			case GAS: return tr("Used Gas");
 			case CCSETPOINT: return tr("CC Set Point");
 		}
+	}
+	else if (role == Qt::FontRole){
+		return  defaultModelFont();
 	}
 	return QVariant();
 }
@@ -1074,7 +1044,7 @@ divedatapoint DivePlannerPointsModel::at(int row)
 	return divepoints.at(row);
 }
 
-void DivePlannerPointsModel::removePoint(const QModelIndex& index)
+void DivePlannerPointsModel::remove(const QModelIndex& index)
 {
 	if (index.column() != REMOVE)
 		return;

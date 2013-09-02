@@ -45,16 +45,9 @@ public:
 	void clearInfo();
 	void clearEquipment();
 	void reload();
-
 	bool eventFilter(QObject* , QEvent*);
-	virtual void resizeEvent(QResizeEvent*);
-	virtual void showEvent(QShowEvent*);
-    virtual void hideEvent(QHideEvent* );
-
 	void initialUiSetup();
 	void equipmentPlusUpdate();
-
-
 public slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();
@@ -68,7 +61,6 @@ public slots:
 	void on_notes_textChanged();
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
-	void tabChanged(int idx);
 	void editCylinderWidget(const QModelIndex& index);
 	void editWeigthWidget(const QModelIndex& index);
 
@@ -78,8 +70,6 @@ private:
 	CylindersModel *cylindersModel;
 	NotesBackup notesBackup;
 	struct dive* currentDive;
-	QPushButton *addCylinder;
-	QPushButton *addWeight;
 	enum { NONE, DIVE, TRIP } editMode;
 	Completers completers;
 	void enableEdition();

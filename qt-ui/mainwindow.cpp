@@ -326,8 +326,6 @@ void MainWindow::on_mainSplitter_splitterMoved(int pos, int idx)
 
 void MainWindow::on_infoProfileSplitter_splitterMoved(int pos, int idx)
 {
-	/* always update the floating plus sign icons in the equipment tab */
-	ui->InfoWidget->equipmentPlusUpdate();
 	redrawProfile();
 }
 

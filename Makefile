@@ -57,6 +57,7 @@ HEADERS = \
 	qt-ui/printoptions.h \
 	qt-ui/printlayout.h \
 	qt-ui/completionmodels.h \
+	qt-ui/tableview.h
 
 
 SOURCES = \
@@ -102,6 +103,7 @@ SOURCES = \
 	qt-ui/printoptions.cpp \
 	qt-ui/printlayout.cpp \
 	qt-ui/completionmodels.cpp \
+	qt-ui/tableview.cpp \
 	$(RESFILE)
 
 

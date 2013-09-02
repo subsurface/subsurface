@@ -18,8 +18,7 @@
 #include <QCompleter>
 #include <QDebug>
 #include <QSet>
-#include <QTextStream>
-#include <QFile>
+#include <QTableView>
 #include <QSettings>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
@@ -66,37 +65,19 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
 	}
+	ui->cylinders->setTitle(tr("Cylinders"));
+	ui->cylinders->setBtnToolTip(tr("Add Cylinder"));
+	connect(ui->cylinders, SIGNAL(addButtonClicked()), this, SLOT(addCylinder_clicked()));
 
-	/*Thid couldn't be done on the ui file because element
-	is floating, instead of being fixed on the layout. */
-	QIcon plusIcon(":plus");
-	addCylinder = new QPushButton(plusIcon, QString(), ui->cylindersGroup);
-	addCylinder->setFlat(true);
-	addCylinder->setToolTip(tr("Add Cylinder"));
-	connect(addCylinder, SIGNAL(clicked(bool)), this, SLOT(addCylinder_clicked()));
-	addCylinder->setEnabled(false);
-	addWeight = new QPushButton(plusIcon, QString(), ui->weightGroup);
-	addWeight->setFlat(true);
-	addWeight->setToolTip(tr("Add Weight System"));
-	connect(addWeight, SIGNAL(clicked(bool)), this, SLOT(addWeight_clicked()));
-	addWeight->setEnabled(false);
+	ui->weights->setTitle(tr("Weights"));
+	ui->weights->setBtnToolTip(tr("Add Weight System"));
+	connect(ui->weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
 
-	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), ui->cylinders->model(), SLOT(remove(QModelIndex)));
-	connect(ui->cylinders, SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
-	connect(ui->weights, SIGNAL(clicked(QModelIndex)), ui->weights->model(), SLOT(remove(QModelIndex)));
-	connect(ui->weights, SIGNAL(clicked(QModelIndex)), this, SLOT(editWeigthWidget(QModelIndex)));
+	connect(ui->cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
+	connect(ui->weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeigthWidget(QModelIndex)));
 
-	QFontMetrics metrics(defaultModelFont());
-
-	ui->cylinders->horizontalHeader()->setResizeMode(CylindersModel::REMOVE, QHeaderView::Fixed);
-	ui->cylinders->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
-	ui->cylinders->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
-
-	ui->weights->horizontalHeader()->setResizeMode (WeightModel::REMOVE , QHeaderView::Fixed);
-	ui->weights->verticalHeader()->setDefaultSectionSize( metrics.height() +8 );
-	ui->weights->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
-
-	connect(this, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+	ui->cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
+	ui->weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
 
 	completers.buddy = new QCompleter(BuddyCompletionModel::instance(), ui->buddy);
 	completers.divemaster = new QCompleter(DiveMasterCompletionModel::instance(), ui->divemaster);
@@ -106,44 +87,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->divemaster->setCompleter(completers.divemaster);
 	ui->location->setCompleter(completers.location);
 	ui->suit->setCompleter(completers.suit);
-
-	QFile cssFile(":table-css");
-	cssFile.open(QIODevice::ReadOnly);
-	QTextStream reader(&cssFile);
-	QString css = reader.readAll();
-
-	ui->cylinders->setStyleSheet(css);
-	ui->weights->setStyleSheet(css);
-	initialUiSetup();
-}
-
-// We need to manually position the 'plus' on cylinder and weight.
-void MainTab::resizeEvent(QResizeEvent* event)
-{
-	equipmentPlusUpdate();
-	QTabWidget::resizeEvent(event);
-}
-
-void MainTab::showEvent(QShowEvent* event)
-{
-	QTabWidget::showEvent(event);
-	equipmentPlusUpdate();
-}
-
-void MainTab::tabChanged(int idx)
-{
-	/* if the current tab has become of index 1 (i.e. the equipment tab) call update
-	 * for the plus signs */
-	if (idx == 1)
-		equipmentPlusUpdate();
-}
-
-void MainTab::equipmentPlusUpdate()
-{
-	if (ui->cylindersGroup->isVisible())
-		addCylinder->setGeometry(ui->cylindersGroup->contentsRect().width() - 30, 2, 24,24);
-	if (ui->weightGroup->isVisible())
-		addWeight->setGeometry(ui->weightGroup->contentsRect().width() - 30, 2, 24,24);
 }
 
 void MainTab::enableEdition()
@@ -199,12 +142,11 @@ void MainTab::clearStats()
 	ui->timeLimits->clear();
 }
 
-#define UPDATE_TEXT(d, field)				\
+#define UPDATE_TEXT(d, field)			\
 	if (!d || !d->field)				\
 		ui->field->setText("");			\
-	else						\
+	else								\
 		ui->field->setText(d->field)
-
 
 void MainTab::updateDiveInfo(int dive)
 {
@@ -315,8 +257,6 @@ void MainTab::updateDiveInfo(int dive)
 		ui->timeLimits->setMinimum(get_time_string(stats_selection.shortest_time.seconds, 0));
 		cylindersModel->setDive(d);
 		weightModel->setDive(d);
-		addCylinder->setEnabled(true);
-		addWeight->setEnabled(true);
 	} else {
 		/* make the fields read-only */
 		ui->location->setReadOnly(true);
@@ -343,8 +283,6 @@ void MainTab::updateDiveInfo(int dive)
 		ui->airPressureText->clear();
 		cylindersModel->clear();
 		weightModel->clear();
-		addCylinder->setEnabled(false);
-		addWeight->setEnabled(false);
 		ui->depthLimits->clear();
 		ui->sacLimits->clear();
 		ui->divesAllText->clear();
@@ -530,56 +468,14 @@ void MainTab::on_visibility_valueChanged(int value)
 	currentDive->visibility = value;
 }
 
-void MainTab::hideEvent(QHideEvent* event)
-{
-	QSettings s;
-	s.beginGroup("MainTab");
-	s.beginGroup("Cylinders");
-	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		s.setValue(QString("colwidth%1").arg(i), ui->cylinders->columnWidth(i));
-	}
-	s.endGroup();
-	s.beginGroup("Weights");
-	for (int i = 0; i < WeightModel::COLUMNS; i++) {
-		s.setValue(QString("colwidth%1").arg(i), ui->weights->columnWidth(i));
-	}
-	s.endGroup();
-	s.sync();
-}
-
-void MainTab::initialUiSetup()
-{
-	QSettings s;
-	s.beginGroup("MainTab");
-	s.beginGroup("Cylinders");
-	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i));
-		if (width.isValid())
-			ui->cylinders->setColumnWidth(i, width.toInt());
-		else
-			ui->cylinders->resizeColumnToContents(i);
-	}
-	s.endGroup();
-	s.beginGroup("Weights");
-	for (int i = 0; i < WeightModel::COLUMNS; i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i));
-		if (width.isValid())
-			ui->weights->setColumnWidth(i, width.toInt());
-		else
-			ui->weights->resizeColumnToContents(i);
-	}
-	s.endGroup();
-	reload();
-}
-
 void MainTab::editCylinderWidget(const QModelIndex& index)
 {
-	if (index.column() != CylindersModel::REMOVE)
+	if (index.isValid() && index.column() != CylindersModel::REMOVE)
 		ui->cylinders->edit(index);
 }
 
 void MainTab::editWeigthWidget(const QModelIndex& index)
 {
-	if (index.column() != WeightModel::REMOVE)
+	if (index.isValid() && index.column() != WeightModel::REMOVE)
 		ui->weights->edit(index);
 }

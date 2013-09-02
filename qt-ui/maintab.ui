@@ -14,7 +14,7 @@
    <string>TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>1</number>
   </property>
   <widget class="QWidget" name="notesTab">
    <attribute name="title">
@@ -147,53 +147,33 @@
    </attribute>
    <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <widget class="QGroupBox" name="cylindersGroup">
-       <property name="title">
-        <string>Cylinders</string>
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>0</number>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QTableView" name="cylinders">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="showGrid">
-           <bool>false</bool>
-          </property>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QGroupBox" name="weightGroup">
-       <property name="title">
-        <string>Weight</string>
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QTableView" name="weights">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="showGrid">
-           <bool>false</bool>
-          </property>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <widget class="TableView" name="cylinders" native="true"/>
+         <widget class="TableView" name="weights" native="true"/>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>
@@ -544,6 +524,12 @@
    <class>MinMaxAvgWidget</class>
    <extends>QWidget</extends>
    <header>simplewidgets.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TableView</class>
+   <extends>QWidget</extends>
+   <header>tableview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
