@@ -832,7 +832,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui->tableWidget->setTitle(tr("Dive Planner Points"));
 	ui->tableWidget->setModel(DivePlannerPointsModel::instance());
 	ui->tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
-	connect(ui->tableWidget->view(), SIGNAL(clicked(QModelIndex)), plannerModel, SLOT(removePoint(const QModelIndex)));
+
 	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
