@@ -888,7 +888,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(&tro, QPointF(i, 0), QString("%1:%2").arg(i/60).arg(i%60), timeMarkers);
+			plot_text(&tro, QPointF(i, 0), QString("%1:%2").arg(i/60).arg(i%60, 2, 10, QChar('0')), timeMarkers);
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
