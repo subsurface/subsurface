@@ -294,7 +294,8 @@ void MainWindow::on_actionAutoGroup_triggered()
 
 void MainWindow::on_actionToggleZoom_triggered()
 {
-	qDebug("actionToggleZoom");
+	zoomed_plot = !zoomed_plot;
+	ui->ProfileWidget->refresh();
 }
 
 void MainWindow::on_actionYearlyStatistics_triggered()
