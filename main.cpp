@@ -18,7 +18,6 @@ int main(int argc, char **argv)
 	int i;
 	bool no_filenames = TRUE;
 	const char *path;
-	char *error_message = NULL;
 
 	/* set up l18n - the search directory needs to change
 	 * so that it uses the correct system directory when
@@ -52,7 +51,7 @@ int main(int argc, char **argv)
 	if (no_filenames) {
 		files.push_back( QString(prefs.default_filename) );
 	}
-	process_dives(imported, FALSE);
+
 	parse_xml_exit();
 	subsurface_command_line_exit(&argc, &argv);
 	mainWindow()->loadFiles(files);
