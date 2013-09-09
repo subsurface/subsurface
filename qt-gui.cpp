@@ -159,8 +159,8 @@ const QString get_dc_nickname(const char *model, uint32_t deviceid)
 {
 	const DiveComputerNode *existNode = dcList.getExact(model, deviceid);
 	if (!existNode)
-		return QString("");
-	if (existNode->nickName != "")
+		return QString();
+	else if (!existNode->nickName.isEmpty())
 		return existNode->nickName;
 	else
 		return model;
