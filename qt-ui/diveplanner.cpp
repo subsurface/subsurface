@@ -983,26 +983,31 @@ void DivePlannerPointsModel::createPlan()
 void DivePlannerPointsModel::setBottomSac(int sac)
 {
 	diveplan.bottomsac = sac;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setDecoSac(int sac)
 {
 	diveplan.decosac = sac;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setGFHigh(short int gfhigh)
 {
 	diveplan.gfhigh = gfhigh;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setGFLow(short int ghflow)
 {
 	diveplan.gflow = ghflow;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
 {
 	diveplan.surface_pressure = pressure;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
@@ -1012,6 +1017,7 @@ void DivePlannerPointsModel::setLastStop6m(bool value)
 void DivePlannerPointsModel::setStartTime(const QTime& t)
 {
 	diveplan.when = t.msec();
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2){
