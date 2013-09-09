@@ -888,7 +888,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 	if(role == Qt::DisplayRole){
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()){
-			case CCSETPOINT: return 0;
+			case CCSETPOINT: return p.po2;
 			case DEPTH: return p.depth / 1000;
 			case DURATION: return p.time / 60;
 			case GAS: return strForAir(p);
@@ -912,7 +912,12 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 		switch(index.column()){
 			case DEPTH: p.depth = value.toInt() * 1000; break;
 			case DURATION: p.time = value.toInt() * 60; break;
-			case CCSETPOINT: /* what do I do here? */
+			case CCSETPOINT:{
+				int po2 = 0;
+				QByteArray gasv = value.toByteArray();
+				if (validate_po2(gasv.data(), &po2))
+					p.po2 = po2;
+			} break;
 			case GAS: {
 				int o2 = 0;
 				int he = 0;
