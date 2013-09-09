@@ -51,6 +51,8 @@ public:
 	// when the profile's visible.
 	void disableDcShortcuts();
 	void enableDcShortcuts();
+	void loadFiles(const QStringList files);
+	void importFiles(const QStringList importFiles);
 
 private slots:
 	/* file menu action */

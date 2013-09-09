@@ -1,16 +1,6 @@
-/* main.c */
-#include <locale.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include <libintl.h>
+#include "subsurfacestartup.h"
+#include <stdbool.h>
 #include <glib/gi18n.h>
-
-#include "dive.h"
-#include "divelist.h"
-#include "libdivecomputer.h"
-#include "version.h"
 
 struct preferences prefs;
 struct preferences default_prefs = {
@@ -49,8 +39,8 @@ struct units *get_units()
 /* random helper functions, used here or elsewhere */
 static int sortfn(const void *_a, const void *_b)
 {
-	const struct dive *a = *(void **)_a;
-	const struct dive *b = *(void **)_b;
+	const struct dive *a = (const struct dive*) *(void **)_a;
+	const struct dive *b = (const struct dive*) *(void **)_b;
 
 	if (a->when < b->when)
 		return -1;
@@ -86,7 +76,7 @@ const char *monthname(int mon)
 /*
  * track whether we switched to importing dives
  */
-static gboolean imported = FALSE;
+bool imported = FALSE;
 
 static void print_version() {
 	printf("Subsurface v%s, ", VERSION_STRING);
@@ -103,7 +93,7 @@ static void print_help() {
 	printf("\n --version             Prints current version\n\n");
 }
 
-static void parse_argument(const char *arg)
+void parse_argument(const char *arg)
 {
 	const char *p = arg+1;
 
@@ -122,10 +112,7 @@ static void parse_argument(const char *arg)
 				exit(0);
 			}
 			if (strcmp(arg, "--import") == 0) {
-				/* mark the dives so far as the base,
-				 * everything after is imported */
-				process_dives(FALSE, FALSE);
-				imported = TRUE;
+				imported = TRUE; /* mark the dives so far as the base, * everything after is imported */
 				return;
 			}
 			if (strcmp(arg, "--verbose") == 0) {
@@ -171,7 +158,7 @@ void renumber_dives(int nr)
  * I guess Burma and Liberia should trigger this too. I'm too
  * lazy to look up the territory names, though.
  */
-static void setup_system_prefs(void)
+void setup_system_prefs(void)
 {
 	const char *env;
 
@@ -193,60 +180,4 @@ static void setup_system_prefs(void)
 		return;
 
 	default_prefs.units = IMPERIAL_units;
-}
-
-int main(int argc, char **argv)
-{
-	int i;
-	gboolean no_filenames = TRUE;
-	const char *path;
-	char *error_message = NULL;
-
-	/* set up l18n - the search directory needs to change
-	 * so that it uses the correct system directory when
-	 * subsurface isn't run from the local directory */
-	path = subsurface_gettext_domainpath(argv[0]);
-	setlocale(LC_ALL, "");
-	bindtextdomain("subsurface", path);
-	bind_textdomain_codeset("subsurface", "utf-8");
-	textdomain("subsurface");
-
-	setup_system_prefs();
-	prefs = default_prefs;
-
-	subsurface_command_line_init(&argc, &argv);
-	parse_xml_init();
-
-	init_ui(&argc, &argv);
-
-	for (i = 1; i < argc; i++) {
-		const char *a = argv[i];
-		if (a[0] == '-') {
-			parse_argument(a);
-			continue;
-		}
-		set_filename(NULL, TRUE);
-
-		parse_file(a, &error_message);
-		if (no_filenames)
-		{
-			set_filename(a, TRUE);
-			no_filenames = FALSE;
-		}
-	}
-	if (no_filenames) {
-		const char *filename = prefs.default_filename;
-		parse_file(filename, NULL);
-		/* don't report errors - this file may not exist, but make
-		   sure we remember this as the filename in use */
-		set_filename(filename, FALSE);
-	}
-	process_dives(imported, FALSE);
-	parse_xml_exit();
-	subsurface_command_line_exit(&argc, &argv);
-
-	init_qt_ui(&argc, &argv, error_message); /* qt bit delayed until dives are parsed */
-	run_ui();
-	exit_ui();
-	return 0;
 }

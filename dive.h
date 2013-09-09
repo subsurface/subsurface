@@ -628,12 +628,6 @@ extern void add_event(struct divecomputer *dc, int time, int type, int flags, in
 
 /* UI related protopypes */
 
-extern void init_ui(int *argcp, char ***argvp);
-extern void init_qt_ui(int *argcp, char ***argvp, char *errormessage);
-
-extern void run_ui(void);
-extern void exit_ui(void);
-
 extern void report_error(GError* error);
 
 extern void add_cylinder_description(cylinder_type_t *);

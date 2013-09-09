@@ -117,22 +117,7 @@ void MainWindow::on_actionOpen_triggered()
 	QByteArray fileNamePtr = filename.toLocal8Bit();
 
 	on_actionClose_triggered();
-
-	char *error = NULL;
-	parse_file(fileNamePtr.data(), &error);
-	set_filename(fileNamePtr.data(), TRUE);
-	setTitle(MWTF_FILENAME);
-
-	if (error != NULL) {
-		showError(error);
-		free(error);
-	}
-	process_dives(FALSE, FALSE);
-
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	loadFiles( QStringList() << filename );
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -193,23 +178,7 @@ void MainWindow::on_actionImport_triggered()
 	settings.setValue("LastDir", fileInfo.dir().path());
 	settings.endGroup();
 
-	QByteArray fileNamePtr;
-	char *error = NULL;
-	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = fileNames.at(i).toLocal8Bit();
-		parse_file(fileNamePtr.data(), &error);
-		if (error != NULL) {
-			showError(error);
-			free(error);
-			error = NULL;
-		}
-	}
-	process_dives(FALSE, FALSE);
-
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	importFiles(fileNames);
 }
 
 void MainWindow::on_actionExportUDDF_triggered()
@@ -754,4 +723,50 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 		setWindowTitle("Subsurface: " + fileName);
 		break;
 	}
+}
+
+void MainWindow::importFiles(const QStringList fileNames)
+{
+	QByteArray fileNamePtr;
+	char *error = NULL;
+	for (int i = 0; i < fileNames.size(); ++i) {
+		fileNamePtr = fileNames.at(i).toLocal8Bit();
+		parse_file(fileNamePtr.data(), &error);
+		if (error != NULL) {
+			showError(error);
+			free(error);
+			error = NULL;
+		}
+	}
+	process_dives(TRUE, FALSE);
+
+	ui->InfoWidget->reload();
+	ui->globe->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
+	ui->ListWidget->setFocus();
+}
+
+void MainWindow::loadFiles(const QStringList fileNames)
+{
+	char *error = NULL;
+	QByteArray fileNamePtr;
+
+	for (int i = 0; i < fileNames.size(); ++i) {
+		fileNamePtr = fileNames.at(i).toLocal8Bit();
+		parse_file(fileNamePtr.data(), &error);
+		set_filename(fileNamePtr.data(), TRUE);
+		setTitle(MWTF_FILENAME);
+
+		if (error != NULL) {
+			showError(error);
+			free(error);
+		}
+	}
+
+	process_dives(FALSE, FALSE);
+
+	ui->InfoWidget->reload();
+	ui->globe->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
+	ui->ListWidget->setFocus();
 }

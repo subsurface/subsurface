@@ -68,9 +68,10 @@ SOURCES = \
 	equipment.c \
 	file.c \
 	info.c \
-	main.c \
+	main.cpp \
 	parse-xml.c \
 	planner.c \
+	subsurfacestartup.c \
 	profile.c \
 	save-xml.c \
 	sha1.c \

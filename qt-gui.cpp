@@ -70,18 +70,6 @@ static QApplication *application = NULL;
 int        error_count;
 const char *existing_filename;
 
-void init_qt_ui(int *argcp, char ***argvp, char *errormessage)
-{
-	application->installTranslator(new Translator(application));
-	MainWindow *window = new MainWindow();
-	window->showError(errormessage);
-	window->show();
-	if (existing_filename && existing_filename[0] != '\0')
-		window->setTitle(MWTF_FILENAME);
-	else
-		window->setTitle(MWTF_DEFAULT);
-}
-
 const char *getSetting(QSettings &s, QString name)
 {
 	QVariant v;
@@ -127,6 +115,15 @@ void init_ui(int *argcp, char ***argvp)
 	default_dive_computer_product = getSetting(s,"dive_computer_product");
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	s.endGroup();
+
+	application->installTranslator(new Translator(application));
+	MainWindow *window = new MainWindow();
+	window->show();
+	if (existing_filename && existing_filename[0] != '\0')
+		window->setTitle(MWTF_FILENAME);
+	else
+		window->setTitle(MWTF_DEFAULT);
+
 	return;
 }
 
