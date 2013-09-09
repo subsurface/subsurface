@@ -830,6 +830,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui->tableWidget->setModel(DivePlannerPointsModel::instance());
 	ui->tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 
+	connect(ui->tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
 	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
@@ -846,7 +847,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui->decoStopSAC->setText("17");
 	ui->lowGF->setText("30");
 	ui->highGF->setText("75");
-
 }
 
 void DivePlannerWidget::startTimeChanged(const QTime& time)
@@ -1026,6 +1026,18 @@ bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2){
 int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas, int ccpoint)
 {
 	int row = divepoints.count();
+	if(meters == 0 && minutes == 0){
+		if(row == 0){
+			meters = 10000;
+			minutes = 600;
+		}
+		else{
+			divedatapoint p = at(row-1);
+			meters = p.depth;
+			minutes = p.time + 600;
+		}
+	}
+
 	// check if there's already a new stop before this one:
 	for(int i = 0; i < divepoints.count(); i++){
 		const divedatapoint& dp = divepoints.at(i);
@@ -1048,6 +1060,7 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 		divedatapoint before = at(row-1);
 		point.o2 = before.o2;
 		point.he = before.he;
+		point.po2 = 0;
 	}
 	divepoints.append( point );
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);

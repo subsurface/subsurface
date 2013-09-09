@@ -36,11 +36,11 @@ public:
 	/**
 	 * @return the row number.
 	 */
-	int addStop(int meters, int minutes,const QString& gas, int ccpoint );
 	void editStop(int row, divedatapoint newData );
 	divedatapoint at(int row);
 	struct diveplan getDiveplan();
 public slots:
+	int addStop(int meters = 0, int minutes = 0,const QString& gas = QString(), int ccpoint = 0 );
 	void setGFHigh(short gfhigh);
 	void setGFLow(short ghflow);
 	void setSurfacePressure(int pressure);
