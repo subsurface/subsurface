@@ -98,9 +98,9 @@ void init_ui(int *argcp, char ***argvp)
 
 	application = new QApplication(*argcp, *argvp);
 
-        // tell Qt to use system proxies
-        // note: on Linux, "system" == "environment variables"
-        QNetworkProxyFactory::setUseSystemConfiguration(true);
+	// tell Qt to use system proxies
+	// note: on Linux, "system" == "environment variables"
+	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 	// the Gtk theme makes things unbearably ugly
 	// so switch to Oxygen in this case
