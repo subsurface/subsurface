@@ -1040,9 +1040,15 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 	divedatapoint point;
 	point.depth = meters;
 	point.time = minutes;
-	point.o2 = 209;
-	point.he = 0;
-	point.po2 = 0;
+	if (row == 0){
+		point.o2 = 209;
+		point.he = 0;
+		point.po2 = 0;
+	}else{
+		divedatapoint before = at(row-1);
+		point.o2 = before.o2;
+		point.he = before.he;
+	}
 	divepoints.append( point );
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	endInsertRows();
