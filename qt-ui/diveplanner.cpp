@@ -426,13 +426,10 @@ void DivePlannerGraphics::createDecoStops()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct diveplan diveplan;
+	struct diveplan diveplan = plannerModel->getDiveplan();
 	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
 	dp->entered = TRUE;
 	diveplan.dp = dp;
-	diveplan.gflow = 30;
-	diveplan.gfhigh = 70;
-	diveplan.surface_pressure = 1013;
 
 	int rowCount = plannerModel->rowCount();
 	int lastIndex = -1;
@@ -841,6 +838,15 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui->lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
 	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
 	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
+
+	/* set defaults. */
+	ui->startTime->setTime( QTime(1, 0) );
+	ui->ATMPressure->setText( "1013" );
+	ui->bottomSAC->setText("20");
+	ui->decoStopSAC->setText("17");
+	ui->lowGF->setText("30");
+	ui->highGF->setText("75");
+
 }
 
 void DivePlannerWidget::startTimeChanged(const QTime& time)
@@ -888,7 +894,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 	if(role == Qt::DisplayRole){
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()){
-			case CCSETPOINT: return 0;
+			case CCSETPOINT: return p.po2;
 			case DEPTH: return p.depth / 1000;
 			case DURATION: return p.time / 60;
 			case GAS: return strForAir(p);
@@ -912,7 +918,12 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 		switch(index.column()){
 			case DEPTH: p.depth = value.toInt() * 1000; break;
 			case DURATION: p.time = value.toInt() * 60; break;
-			case CCSETPOINT: /* what do I do here? */
+			case CCSETPOINT:{
+				int po2 = 0;
+				QByteArray gasv = value.toByteArray();
+				if (validate_po2(gasv.data(), &po2))
+					p.po2 = po2;
+			} break;
 			case GAS: {
 				int o2 = 0;
 				int he = 0;
@@ -972,26 +983,31 @@ void DivePlannerPointsModel::createPlan()
 void DivePlannerPointsModel::setBottomSac(int sac)
 {
 	diveplan.bottomsac = sac;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setDecoSac(int sac)
 {
 	diveplan.decosac = sac;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setGFHigh(short int gfhigh)
 {
 	diveplan.gfhigh = gfhigh;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setGFLow(short int ghflow)
 {
 	diveplan.gflow = ghflow;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
 {
 	diveplan.surface_pressure = pressure;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
@@ -1001,6 +1017,7 @@ void DivePlannerPointsModel::setLastStop6m(bool value)
 void DivePlannerPointsModel::setStartTime(const QTime& t)
 {
 	diveplan.when = t.msec();
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2){
@@ -1052,4 +1069,9 @@ void DivePlannerPointsModel::remove(const QModelIndex& index)
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	divepoints.remove(index.row());
 	endRemoveRows();
+}
+
+struct diveplan DivePlannerPointsModel::getDiveplan()
+{
+	return diveplan;
 }

@@ -108,7 +108,7 @@ void ComboBoxDelegate::testActivation(const QString& s)
 bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
-	if (event->type() == QEvent::KeyPress){
+	if (event->type() == QEvent::KeyPress || event->type() == QEvent::ShortcutOverride){
 		if (object == currCombo.comboEditor){ // the 'LineEdit' part
 			QKeyEvent *ev = static_cast<QKeyEvent*>(event);
 			if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){

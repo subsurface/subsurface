@@ -39,6 +39,7 @@ public:
 	int addStop(int meters, int minutes,const QString& gas, int ccpoint );
 	void editStop(int row, divedatapoint newData );
 	divedatapoint at(int row);
+	struct diveplan getDiveplan();
 public slots:
 	void setGFHigh(short gfhigh);
 	void setGFLow(short ghflow);
