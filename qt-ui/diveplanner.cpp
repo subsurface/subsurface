@@ -426,13 +426,10 @@ void DivePlannerGraphics::createDecoStops()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct diveplan diveplan;
+	struct diveplan diveplan = plannerModel->getDiveplan();
 	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
 	dp->entered = TRUE;
 	diveplan.dp = dp;
-	diveplan.gflow = 30;
-	diveplan.gfhigh = 70;
-	diveplan.surface_pressure = 1013;
 
 	int rowCount = plannerModel->rowCount();
 	int lastIndex = -1;
@@ -841,6 +838,15 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui->lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
 	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
 	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
+
+	/* set defaults. */
+	ui->startTime->setTime( QTime(1, 0) );
+	ui->ATMPressure->setText( "1013" );
+	ui->bottomSAC->setText("20");
+	ui->decoStopSAC->setText("17");
+	ui->lowGF->setText("30");
+	ui->highGF->setText("75");
+
 }
 
 void DivePlannerWidget::startTimeChanged(const QTime& time)
@@ -1057,4 +1063,9 @@ void DivePlannerPointsModel::remove(const QModelIndex& index)
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	divepoints.remove(index.row());
 	endRemoveRows();
+}
+
+struct diveplan DivePlannerPointsModel::getDiveplan()
+{
+	return diveplan;
 }
