@@ -831,7 +831,7 @@ static void record_weightsystem_changes(weightsystem_t *ws, struct ws_widget *we
  * we should pick up any other names from the dive
  * logs directly.
  */
-struct tank_info tank_info[100] = {
+struct tank_info_t tank_info[100] = {
 	/* Need an empty entry for the no-cylinder case */
 	{ "", },
 
@@ -925,7 +925,7 @@ bad_tank_info:
  * We hardcode the most common weight system types
  * This is a bit odd as the weight system types don't usually encode weight
  */
-struct ws_info ws_info[100] = {
+struct ws_info_t ws_info[100] = {
 	{ N_("integrated"), 0 },
 	{ N_("belt"), 0 },
 	{ N_("ankle"), 0 },
@@ -937,7 +937,7 @@ struct ws_info ws_info[100] = {
 static void fill_ws_list(GtkListStore *store)
 {
 	GtkTreeIter iter;
-	struct ws_info *info = ws_info;
+	struct ws_info_t *info = ws_info;
 
 	while (info->name) {
 		gtk_list_store_append(store, &iter);

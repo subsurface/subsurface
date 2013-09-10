@@ -549,7 +549,7 @@ bool WSInfoModel::insertRows(int row, int count, const QModelIndex& parent)
 
 bool WSInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-	struct ws_info *info = &ws_info[index.row()];
+	struct ws_info_t *info = &ws_info[index.row()];
 	switch(index.column()) {
 	case DESCRIPTION:
 		info->name = strdup(value.toByteArray().data());
@@ -577,7 +577,7 @@ QVariant WSInfoModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid()) {
 		return ret;
 	}
-	struct ws_info *info = &ws_info[index.row()];
+	struct ws_info_t *info = &ws_info[index.row()];
 
 	int gr = info->grams;
 	switch(role){
@@ -636,7 +636,7 @@ const QString& WSInfoModel::biggerString() const
 
 WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
 {
-	struct ws_info *info = ws_info;
+	struct ws_info_t *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++){
 		QString wsInfoName(info->name);
 		if( wsInfoName.count() > biggerEntry.count()){
@@ -652,7 +652,7 @@ WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
 
 void WSInfoModel::updateInfo()
 {
-	struct ws_info *info = ws_info;
+	struct ws_info_t *info = ws_info;
 	beginRemoveRows(QModelIndex(), 0, this->rows);
 	endRemoveRows();
 	for (info = ws_info; info->name; info++, rows++){
@@ -675,7 +675,7 @@ void WSInfoModel::update()
 		endRemoveRows();
 		rows = -1;
 	}
-	struct ws_info *info = ws_info;
+	struct ws_info_t *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++);
 
 	if (rows > -1) {
@@ -705,7 +705,7 @@ bool TankInfoModel::insertRows(int row, int count, const QModelIndex& parent)
 
 bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-	struct tank_info *info = &tank_info[index.row()];
+	struct tank_info_t *info = &tank_info[index.row()];
 	switch(index.column()) {
 	case DESCRIPTION:
 		info->name = strdup(value.toByteArray().data());
@@ -740,7 +740,7 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 		return defaultModelFont();
 	}
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
-		struct tank_info *info = &tank_info[index.row()];
+		struct tank_info_t *info = &tank_info[index.row()];
 		int ml = info->ml;
 		double bar = (info->psi) ? psi_to_bar(info->psi) : info->bar;
 
@@ -797,7 +797,7 @@ int TankInfoModel::rowCount(const QModelIndex& parent) const
 
 TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
 {
-	struct tank_info *info = tank_info;
+	struct tank_info_t *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++){
 		QString infoName(info->name);
 		if (infoName.count() > biggerEntry.count()){
@@ -818,7 +818,7 @@ void TankInfoModel::update()
 		endRemoveRows();
 		rows = -1;
 	}
-	struct tank_info *info = tank_info;
+	struct tank_info_t *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++);
 
 	if (rows > -1) {

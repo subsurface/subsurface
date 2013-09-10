@@ -732,17 +732,17 @@ struct event *get_next_event(struct event *event, char *name);
  * dialog
  */
 
-struct tank_info {
+struct tank_info_t {
 	const char *name;
 	int cuft, ml, psi, bar;
 };
-extern struct tank_info tank_info[100];
+extern struct tank_info_t tank_info[100];
 
-struct ws_info {
+struct ws_info_t {
 	const char *name;
 	int grams;
 };
-extern struct ws_info ws_info[100];
+extern struct ws_info_t ws_info[100];
 
 extern bool cylinder_nodata(cylinder_t *cyl);
 extern bool cylinder_none(void *_data);
