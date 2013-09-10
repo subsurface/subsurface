@@ -655,6 +655,7 @@ void WSInfoModel::updateInfo()
 	struct ws_info_t *info = ws_info;
 	beginRemoveRows(QModelIndex(), 0, this->rows);
 	endRemoveRows();
+	rows = -1;
 	for (info = ws_info; info->name; info++, rows++){
 		QString wsInfoName(info->name);
 		if( wsInfoName.count() > biggerEntry.count()){
