@@ -59,6 +59,7 @@ public:
 	const QString& biggerString() const;
 	void clear();
 	void update();
+	void updateInfo();
 private:
 	int rows;
 	QString biggerEntry;

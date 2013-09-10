@@ -744,6 +744,8 @@ void MainWindow::importFiles(const QStringList fileNames)
 	ui->globe->reload();
 	ui->ListWidget->reload(DiveTripModel::TREE);
 	ui->ListWidget->setFocus();
+	WSInfoModel *wsim = WSInfoModel::instance();
+	wsim->updateInfo();
 }
 
 void MainWindow::loadFiles(const QStringList fileNames)
@@ -769,4 +771,6 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	ui->globe->reload();
 	ui->ListWidget->reload(DiveTripModel::TREE);
 	ui->ListWidget->setFocus();
+	WSInfoModel *wsim = WSInfoModel::instance();
+	wsim->updateInfo();
 }

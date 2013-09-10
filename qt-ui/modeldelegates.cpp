@@ -238,7 +238,6 @@ void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, co
 	}
 	mymodel->setData(IDX(WeightModel::TYPE), v, Qt::EditRole);
 	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
-	qDebug() << "Fixme, every weight is 0.0 grams. see:" << grams;
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject* parent): ComboBoxDelegate(WSInfoModel::instance(), parent)

@@ -650,6 +650,24 @@ WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
 	}
 }
 
+void WSInfoModel::updateInfo()
+{
+	struct ws_info *info = ws_info;
+	beginRemoveRows(QModelIndex(), 0, this->rows);
+	endRemoveRows();
+	for (info = ws_info; info->name; info++, rows++){
+		QString wsInfoName(info->name);
+		if( wsInfoName.count() > biggerEntry.count()){
+			biggerEntry = wsInfoName;
+		}
+	}
+
+	if (rows > -1) {
+		beginInsertRows(QModelIndex(), 0, rows);
+		endInsertRows();
+	}
+}
+
 void WSInfoModel::update()
 {
 	if (rows > -1) {

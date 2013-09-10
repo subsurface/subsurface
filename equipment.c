@@ -473,11 +473,21 @@ void add_cylinder_description(cylinder_type_t *type)
 void add_weightsystem_description(weightsystem_t *weightsystem)
 {
 	const char *desc;
+	int i;
 
 	desc = weightsystem->description;
 	if (!desc)
 		return;
-	/* now do something with it... */
+	for (i = 0; i < 100 && ws_info[i].name != NULL; i++) {
+		if (strcmp(ws_info[i].name, desc) == 0) {
+			ws_info[i].grams = weightsystem->weight.grams;
+			return;
+		}
+	}
+	if (i < 100) {
+		ws_info[i].name = desc;
+		ws_info[i].grams = weightsystem->weight.grams;
+	}
 }
 
 #endif /* USE_GTK_UI */
