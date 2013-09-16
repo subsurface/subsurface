@@ -7,6 +7,9 @@
 #endif
 #include <gconf/gconf-client.h>
 #include <string.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <fnmatch.h>
 
 const char system_divelist_default_font[] = "Sans 8";
 
@@ -211,3 +214,46 @@ gboolean subsurface_launch_for_uri(const char* uri)
 	return TRUE;
 }
 #endif /* USE_GTK_UI */
+
+
+int enumerate_devices (device_callback_t callback, void *userdata)
+{
+	int index = -1;
+	DIR *dp = NULL;
+	struct dirent *ep = NULL;
+	size_t i;
+	const char *dirname = "/dev";
+	const char *patterns[] = {
+		"ttyUSB*",
+		"ttyS*",
+		"ttyACM*",
+		"rfcomm*",
+		NULL
+	};
+
+	dp = opendir (dirname);
+	if (dp == NULL) {
+		return -1;
+	}
+
+	while ((ep = readdir (dp)) != NULL) {
+		for (i = 0; patterns[i] != NULL; ++i) {
+			if (fnmatch (patterns[i], ep->d_name, 0) == 0) {
+				char filename[1024];
+				int n = snprintf (filename, sizeof (filename), "%s/%s", dirname, ep->d_name);
+				if (n >= sizeof (filename)) {
+					closedir (dp);
+					return -1;
+				}
+				callback (filename, userdata);
+				if (is_default_dive_computer_device(filename))
+					index = i;
+				break;
+			}
+		}
+	}
+	// TODO: list UEMIS mount point from /proc/mounts
+
+	closedir (dp);
+	return index;
+}

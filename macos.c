@@ -106,8 +106,8 @@ int subsurface_fill_device_list(GtkListStore *store)
 
 	dev = g_dir_open("/dev", 0, NULL);
 	while (dev && (name = g_dir_read_name(dev)) != NULL) {
-		if (strstr(name, "usbserial") ||
-		    (strstr(name, "SerialPort") && strstr(name, "cu"))) {
+	    if (strstr(name, "usbserial") ||
+			(strstr(name, "SerialPort") && strstr(name, "cu"))) {
 			int len = strlen(name) + 6;
 			char *devicename = malloc(len);
 			snprintf(devicename, len, "/dev/%s", name);
@@ -262,4 +262,44 @@ gboolean subsurface_launch_for_uri(const char* uri)
 	if (status)
 		return FALSE;
 	return TRUE;
+}
+
+int enumerate_devices (device_callback_t callback, void *userdata)
+{
+	int index = -1;
+	DIR *dp = NULL;
+	struct dirent *ep = NULL;
+	size_t i;
+	const char *dirname = "/dev";
+	const char *patterns[] = {
+		"tty.*",
+		"usbserial",
+		NULL
+	};
+
+	dp = opendir (dirname);
+	if (dp == NULL) {
+		return -1;
+	}
+
+	while ((ep = readdir (dp)) != NULL) {
+		for (i = 0; patterns[i] != NULL; ++i) {
+			if (fnmatch (patterns[i], ep->d_name, 0) == 0) {
+				char filename[1024];
+				int n = snprintf (filename, sizeof (filename), "%s/%s", d	irname, ep->d_name);
+				if (n >= sizeof (filename)) {
+					closedir (dp);
+					return -1;
+				}
+				callback (filename, userdata);
+				if (is_default_dive_computer_device(filename))
+					index = i;
+				break;
+			}
+		}
+	}
+	// TODO: list UEMIS mount point from /proc/mounts
+
+	closedir (dp);
+	return index;
 }

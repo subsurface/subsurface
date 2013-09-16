@@ -42,7 +42,11 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QLineEdit" name="device"/>
+    <widget class="QComboBox" name="device">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="3" column="2">
     <widget class="QToolButton" name="search">
