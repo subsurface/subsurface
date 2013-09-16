@@ -813,6 +813,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui->buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
 	connect(ui->buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(showProfile()));
+	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(refreshDisplay()));
 	connect(plannerModel, SIGNAL(planCanceled()), mainWindow(), SLOT(showProfile()));
 
 	/* set defaults. */
@@ -948,11 +949,6 @@ DivePlannerPointsModel* DivePlannerPointsModel::instance()
 {
 	static DivePlannerPointsModel* self = new DivePlannerPointsModel();
 	return self;
-}
-
-void DivePlannerPointsModel::createPlan()
-{
-
 }
 
 void DivePlannerPointsModel::setBottomSac(int sac)
@@ -1129,4 +1125,26 @@ void DivePlannerPointsModel::deleteTemporaryPlan(struct divedatapoint *dp)
 
 	deleteTemporaryPlan(dp->next);
 	free(dp);
+}
+
+void DivePlannerPointsModel::createPlan()
+{
+	// Ok, so, here the diveplan creates a dive,
+	// puts it on the dive list, and we need to remember
+	// to not delete it later. mumble. ;p
+		char *cache = NULL;
+	tempDive = NULL;
+	char *errorString = NULL;
+
+	createTemporaryPlan();
+	plan(&diveplan, &cache, &tempDive, &errorString);
+	mark_divelist_changed(TRUE);
+	diveplan.dp = NULL;
+
+	beginRemoveRows(QModelIndex(), 0, rowCount() -1 );
+	divepoints.clear();
+	endRemoveRows();
+	
+	//	show_error(error_string);
+	planCreated();
 }

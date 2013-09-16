@@ -130,7 +130,6 @@ protected:
 	virtual void mousePressEvent(QMouseEvent* event);
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 	bool isPointOutOfBoundaries(const QPointF& point);
-	void deleteTemporaryDivePlan(struct divedatapoint* dp);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 private slots:
 	void keyEscAction();
