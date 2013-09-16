@@ -317,7 +317,7 @@ void DivePlannerGraphics::keyEscAction()
 		scene()->clearSelection();
 		return;
 	}
-	cancelPlan();
+	plannerModel->cancelPlan();
 }
 
 qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientation)
@@ -325,18 +325,6 @@ qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientatio
 	qreal total = orientation == Qt::Horizontal ? sceneRect().width() : sceneRect().height();
 	qreal result = (total * percent) / 100;
 	return result;
-}
-
-void DivePlannerGraphics::cancelPlan()
-{
-	if (handles.size()){
-		if (QMessageBox::warning(mainWindow(), tr("Save the Plan?"),
-			tr("You have a working plan, \n are you sure that you wanna cancel it?"),
-				QMessageBox::Ok | QMessageBox::Cancel) != QMessageBox::Ok){
-				return;
-			}
-	}
-	mainWindow()->showProfile();
 }
 
 void DivePlannerGraphics::increaseDepth()
@@ -857,6 +845,12 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
 	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
 
+	// Creating the plan
+	connect(ui->buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
+	connect(ui->buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
+	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(showProfile()));
+	connect(plannerModel, SIGNAL(planCanceled()), mainWindow(), SLOT(showProfile()));
+
 	/* set defaults. */
 	ui->startTime->setTime( QTime(1, 0) );
 	ui->ATMPressure->setText( "1013" );
@@ -1110,4 +1104,20 @@ void DivePlannerPointsModel::remove(const QModelIndex& index)
 struct diveplan DivePlannerPointsModel::getDiveplan()
 {
 	return diveplan;
+}
+
+void DivePlannerPointsModel::cancelPlan()
+{
+	if(rowCount()){
+		if (QMessageBox::warning(mainWindow(), tr("Save the Plan?"),
+			tr("You have a working plan, \n are you sure that you wanna cancel it?"),
+				QMessageBox::Ok | QMessageBox::Cancel) != QMessageBox::Ok){
+				return;
+			}
+	}
+
+	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
+	divepoints.clear();
+	endRemoveRows();
+	emit planCanceled();
 }

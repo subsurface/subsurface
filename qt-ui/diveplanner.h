@@ -50,6 +50,11 @@ public slots:
 	void setLastStop6m(bool value);
 	void createPlan();
 	void remove(const QModelIndex& index);
+    void cancelPlan();
+
+signals:
+	void planCreated();
+	void planCanceled();
 
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
@@ -135,7 +140,6 @@ private slots:
 	void decreaseTime();
 	void decreaseDepth();;
 	void createDecoStops();
-	void cancelPlan();
 	void prepareSelectGas();
 	void selectGas(const QModelIndex& index);
 	void pointInserted(const QModelIndex&, int start, int end);

@@ -45,6 +45,7 @@ MainWindow* mainWindow()
 
 MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 {
+	instance = this;
 	ui->setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
@@ -59,7 +60,6 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 	ui->ListWidget->reloadHeaderActions();
 	ui->ListWidget->setFocus();
 	ui->globe->reload();
-	instance = this;
 }
 
 // this gets called after we download dives from a divecomputer
