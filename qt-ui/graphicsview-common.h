@@ -33,7 +33,6 @@ typedef enum {
 /* profile_color[color indice] = COLOR(screen color, b/w printer color, color printer}} printer & screen colours could be different */
 
 extern QMap<color_indice_t, QVector<QColor> > profile_color;
-
 void fill_profile_color();
 
 

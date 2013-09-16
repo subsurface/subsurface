@@ -55,3 +55,8 @@ void fill_profile_color()
 	profile_color[CALC_CEILING_DEEP]    = COLOR(APPLE1_HIGH_TRANS, BLACK1_HIGH_TRANS, APPLE1_HIGH_TRANS);
 	#undef COLOR
 }
+
+QColor getColor(const color_indice_t i, bool isGrayscale = false)
+{
+	return profile_color[i].at((isGrayscale) ? 1 : 0);
+}

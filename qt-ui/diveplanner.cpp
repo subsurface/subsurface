@@ -5,6 +5,7 @@
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
 #include "tableview.h"
+#include "graphicsview-common.h"
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -19,6 +20,7 @@
 #include <QModelIndex>
 #include <QSettings>
 #include <QTableView>
+#include <QColor>
 
 #define TIME_INITIAL_MAX 30
 
@@ -38,6 +40,11 @@ QString strForAir(const divedatapoint& p){
 		: p.o2 == 320 ? QObject::tr("EAN32")
 		: p.o2 == 360 ? QObject::tr("EAN36")
 		: QObject::tr("Choose Gas");
+}
+
+QColor getColor(const color_indice_t i)
+{
+	return profile_color[i].at(0);
 }
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
@@ -66,6 +73,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 		fromPercent(100, Qt::Horizontal),
 		fromPercent(0, Qt::Vertical)
 	);
+
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
 
@@ -73,6 +81,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeLine->setMinimum(0);
 	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
+	timeLine->setColor(getColor(TIME_GRID));
 	timeLine->setLine(
 		fromPercent(10, Qt::Horizontal),
 		fromPercent(90, Qt::Vertical),
@@ -81,7 +90,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	);
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
-	timeLine->setColor(profile_color[TIME_GRID].at(0));
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
 
@@ -97,7 +105,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	);
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
-	depthLine->setColor(profile_color[DEPTH_GRID].at(0));
+	depthLine->setColor(getColor(DEPTH_GRID));
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
 
@@ -749,7 +757,12 @@ double Ruler::minimum() const
 
 void Ruler::setColor(const QColor& color)
 {
-	setPen(QPen(color));
+	QPen defaultPen(color);
+	defaultPen.setJoinStyle(Qt::RoundJoin);
+	defaultPen.setCapStyle(Qt::RoundCap);
+	defaultPen.setWidth(2);
+	defaultPen.setCosmetic(true);
+	setPen(defaultPen);
 }
 
 Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
@@ -1139,12 +1152,13 @@ void DivePlannerPointsModel::createPlan()
 	createTemporaryPlan();
 	plan(&diveplan, &cache, &tempDive, &errorString);
 	mark_divelist_changed(TRUE);
-	diveplan.dp = NULL;
 
+	// Remove and clean the diveplan, so we don't delete
+	// the dive by mistake.
+	diveplan.dp = NULL;
 	beginRemoveRows(QModelIndex(), 0, rowCount() -1 );
 	divepoints.clear();
 	endRemoveRows();
-	
-	//	show_error(error_string);
+
 	planCreated();
 }
