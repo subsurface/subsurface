@@ -99,6 +99,8 @@ public:
 private:
 	Qt::Orientation orientation;
 	QList<QGraphicsLineItem*> ticks;
+	QGraphicsSimpleTextItem *minText;
+	QGraphicsSimpleTextItem *maxText;
 	double min;
 	double max;
 	double interval;

@@ -673,21 +673,38 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Ruler::setMaximum(double maximum)
 {
+	maxText->setText(QString::number(maximum));
+	if(orientation == Qt::Horizontal)
+		maxText->setPos( line().x2(), line().y2() -5 );
+	else
+		maxText->setPos( line().x1() - 50, line().y2());
 	max = maximum;
 }
 
 void Ruler::setMinimum(double minimum)
 {
+	minText->setText(QString::number(minimum));
+	if(orientation == Qt::Horizontal)
+		minText->setPos( line().x1(), line().y2() -5 );
+	else
+		minText->setPos( line().x1() - 50, line().y1());
 	min = minimum;
 }
 
-Ruler::Ruler() : orientation(Qt::Horizontal)
+Ruler::Ruler() : orientation(Qt::Horizontal),
+minText(new QGraphicsSimpleTextItem(this)),
+maxText(new QGraphicsSimpleTextItem(this))
 {
+	minText->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	maxText->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 }
 
 void Ruler::setOrientation(Qt::Orientation o)
 {
 	orientation = o;
+	// position the elements on the screen.
+	setMinimum(minimum());
+	setMaximum(maximum());
 }
 
 void Ruler::updateTicks()
