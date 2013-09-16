@@ -104,18 +104,19 @@ public:
 	qreal percentAt(const QPointF& p);
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
+	void setTextColor(const QColor& color);
 
 private:
 	Qt::Orientation orientation;
 	QList<QGraphicsLineItem*> ticks;
-	QGraphicsSimpleTextItem *minText;
-	QGraphicsSimpleTextItem *maxText;
+	QList<QGraphicsSimpleTextItem*> labels;
 	double min;
 	double max;
 	double interval;
 	double posBegin;
 	double posEnd;
 	double tickSize;
+	QColor textColor;
 };
 
 class DivePlannerGraphics : public QGraphicsView {

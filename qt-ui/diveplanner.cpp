@@ -90,6 +90,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	);
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
+	timeLine->setTextColor(getColor(TIME_TEXT));
 	timeLine->updateTicks();
 	scene()->addItem(timeLine);
 
@@ -106,6 +107,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
 	depthLine->setColor(getColor(DEPTH_GRID));
+	depthLine->setTextColor(getColor(SAMPLE_DEEP));
 	depthLine->updateTicks();
 	scene()->addItem(depthLine);
 
@@ -633,30 +635,21 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Ruler::setMaximum(double maximum)
 {
-	maxText->setText(QString::number(maximum));
-	if(orientation == Qt::Horizontal)
-		maxText->setPos( line().x2(), line().y2() -5 );
-	else
-		maxText->setPos( line().x1() - 50, line().y2());
 	max = maximum;
 }
 
 void Ruler::setMinimum(double minimum)
 {
-	minText->setText(QString::number(minimum));
-	if(orientation == Qt::Horizontal)
-		minText->setPos( line().x1(), line().y2() -5 );
-	else
-		minText->setPos( line().x1() - 50, line().y1());
 	min = minimum;
 }
 
-Ruler::Ruler() : orientation(Qt::Horizontal),
-minText(new QGraphicsSimpleTextItem(this)),
-maxText(new QGraphicsSimpleTextItem(this))
+void Ruler::setTextColor(const QColor& color)
 {
-	minText->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	maxText->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	textColor = color;
+}
+
+Ruler::Ruler() : orientation(Qt::Horizontal)
+{
 }
 
 void Ruler::setOrientation(Qt::Orientation o)
@@ -671,33 +664,61 @@ void Ruler::updateTicks()
 {
 	qDeleteAll(ticks);
 	ticks.clear();
+	qDeleteAll(labels);
+	labels.clear();
+
 	QLineF m = line();
 	QGraphicsLineItem *item = NULL;
+	QGraphicsSimpleTextItem *label = NULL;
+
+	double steps = (max - min) / interval;
+	qreal pos;
+	double currValue = min;
 
 	if (orientation == Qt::Horizontal) {
-		double steps = (max - min) / interval;
 		double stepSize = (m.x2() - m.x1()) / steps;
-		qreal pos;
-		for (pos = m.x1(); pos < m.x2(); pos += stepSize) {
+		for (pos = m.x1(); pos < m.x2(); pos += stepSize, currValue += interval) {
 			item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
 			item->setPen(pen());
 			ticks.push_back(item);
+
+			label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
+			label->setBrush(QBrush(textColor));
+			label->setFlag(ItemIgnoresTransformations);
+			label->setPos(pos - label->boundingRect().width()/2, m.y1() + tickSize + 5);
+			labels.push_back(label);
 		}
 		item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
 		item->setPen(pen());
 		ticks.push_back(item);
+
+		label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
+		label->setBrush(QBrush(textColor));
+		label->setFlag(ItemIgnoresTransformations);
+		label->setPos(pos - label->boundingRect().width()/2, m.y1() + tickSize + 5);
+		labels.push_back(label);
 	} else {
-		double steps = (max - min) / interval;
 		double stepSize = (m.y2() - m.y1()) / steps;
-		qreal pos;
-		for (pos = m.y1(); pos < m.y2(); pos += stepSize) {
+		for (pos = m.y1(); pos < m.y2(); pos += stepSize, currValue += interval) {
 			item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
 			item->setPen(pen());
 			ticks.push_back(item);
+
+			label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
+			label->setBrush(QBrush(textColor));
+			label->setFlag(ItemIgnoresTransformations);
+			label->setPos(m.x2() - 80, pos);
+			labels.push_back(label);
 		}
 		item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
 		item->setPen(pen());
 		ticks.push_back(item);
+
+		label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
+		label->setBrush(QBrush(textColor));
+		label->setFlag(ItemIgnoresTransformations);
+		label->setPos(m.x2() - 80, pos);
+		labels.push_back(label);
 	}
 }
 
