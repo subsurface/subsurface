@@ -51,6 +51,8 @@ public slots:
 	void createPlan();
 	void remove(const QModelIndex& index);
     void cancelPlan();
+    void createTemporaryPlan();
+    void deleteTemporaryPlan();
 
 signals:
 	void planCreated();
@@ -60,6 +62,8 @@ private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
 	struct diveplan diveplan;
 	QVector<divedatapoint> divepoints;
+	struct dive *tempDive;
+	void deleteTemporaryPlan(struct divedatapoint *dp);
 };
 
 class Button : public QObject, public QGraphicsRectItem {

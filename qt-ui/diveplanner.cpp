@@ -410,42 +410,14 @@ void DivePlannerGraphics::createDecoStops()
 	qDeleteAll(lines);
 	lines.clear();
 
-	// This needs to be done in the following steps:
-	// Get the user-input and calculate the dive info
-	// Not sure if this is the place to create the diveplan...
-	// We just start with a surface node at time = 0
+	plannerModel->createTemporaryPlan();
 	struct diveplan diveplan = plannerModel->getDiveplan();
-	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
-	dp->entered = TRUE;
-	diveplan.dp = dp;
-
-	int rowCount = plannerModel->rowCount();
-	int lastIndex = -1;
-	for(int i = 0; i < rowCount; i++){
-		divedatapoint p = plannerModel->at(i);
-		int deltaT = lastIndex != -1 ? p.time - plannerModel->at(lastIndex).time : p.time;
-		lastIndex = i;
-		dp = plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
+	struct divedatapoint *dp = diveplan.dp;
+	while(dp->next){
+		dp = dp->next;
 	}
 
-#if DEBUG_PLAN
-	dump_plan(&diveplan);
-#endif
-	char *cache = NULL;
-	struct dive *dive = NULL;
-	char *errorString = NULL;
-	plan(&diveplan, &cache, &dive, &errorString);
-#if DEBUG_PLAN
-	dump_plan(&diveplan);
-#endif
-
-	while(dp->next)
-		dp = dp->next;
-
-	dpMaxTime = dp->time / 60.0 + 5;
-
-	if (timeLine->maximum() < dp->time / 60.0 + 5 ||
-	    dp->time / 60.0 + 15 < timeLine->maximum()) {
+	if (timeLine->maximum() < dp->time / 60.0 + 5 || dp->time / 60.0 + 15 < timeLine->maximum()) {
 		double newMax = fmax(dp->time / 60.0 + 5, minMinutes);
 		timeLine->setMaximum(newMax);
 		timeLine->updateTicks();
@@ -471,6 +443,7 @@ void DivePlannerGraphics::createDecoStops()
 
 	QPolygonF poly;
 	poly.append(QPointF(lastx, lasty));
+
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
 		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
@@ -498,16 +471,7 @@ void DivePlannerGraphics::createDecoStops()
 	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
 	diveBg->setBrush(pat);
 
-	deleteTemporaryDivePlan(diveplan.dp);
-	delete_single_dive(get_divenr(dive));
-}
-
-void DivePlannerGraphics::deleteTemporaryDivePlan(divedatapoint* dp)
-{
-	if (!dp)
-		return;
-	deleteTemporaryDivePlan(dp->next);
-	free(dp);
+	plannerModel->deleteTemporaryPlan();
 }
 
 void DivePlannerGraphics::resizeEvent(QResizeEvent* event)
@@ -1120,4 +1084,49 @@ void DivePlannerPointsModel::cancelPlan()
 	divepoints.clear();
 	endRemoveRows();
 	emit planCanceled();
+}
+
+void DivePlannerPointsModel::createTemporaryPlan()
+{
+	// This needs to be done in the following steps:
+	// Get the user-input and calculate the dive info
+	// Not sure if this is the place to create the diveplan...
+	// We just start with a surface node at time = 0
+	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
+	dp->entered = TRUE;
+	diveplan.dp = dp;
+	int lastIndex = -1;
+	for(int i = 0; i < rowCount(); i++){
+		divedatapoint p = at(i);
+		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
+		lastIndex = i;
+		dp = plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
+	}
+#if DEBUG_PLAN
+	dump_plan(&diveplan);
+#endif
+	char *cache = NULL;
+	tempDive = NULL;
+	char *errorString = NULL;
+	plan(&diveplan, &cache, &tempDive, &errorString);
+#if DEBUG_PLAN
+	dump_plan(&diveplan);
+#endif
+}
+
+void DivePlannerPointsModel::deleteTemporaryPlan()
+{
+	deleteTemporaryPlan(diveplan.dp);
+	delete_single_dive(get_divenr(tempDive));
+	tempDive = NULL;
+}
+
+void DivePlannerPointsModel::deleteTemporaryPlan(struct divedatapoint *dp)
+{
+	if (!dp){
+		return;
+	}
+
+	deleteTemporaryPlan(dp->next);
+	free(dp);
 }
