@@ -41,7 +41,7 @@ ALL_OBJS = $(OBJS) $(MOC_OBJS)
 # Files for using Qt Creator
 CREATOR_FILES = $(NAME).config $(NAME).creator $(NAME).files $(NAME).includes
 
-all: $(NAME) doc
+all: $(TARGET) doc
 
 $(TARGET): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
 	@$(PRETTYECHO) '    LINK' $(TARGET)

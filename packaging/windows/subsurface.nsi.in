@@ -101,49 +101,28 @@ Section
     File ..\..\subsurface.exe
     File /r ..\..\xslt
     File dll\iconv.dll
-    File dll\libatk-1.0-0.dll
-    File dll\libcairo-2.dll
     File dll\libdivecomputer-0.dll
-    File dll\libffi-6.dll
-    File dll\libfontconfig-1.dll
-    File dll\libfreetype-6.dll
-    File mydll\freetype6.dll
-    File mydll\freetype-config
-    File dll\libgdk-win32-2.0-0.dll
-    File dll\libgdk_pixbuf-2.0-0.dll
-    File dll\libgio-2.0-0.dll
-    File dll\libglib-2.0-0.dll
-    File dll\libgmodule-2.0-0.dll
-    File dll\libgobject-2.0-0.dll
-    File dll\libgthread-2.0-0.dll
-    File dll\libgtk-win32-2.0-0.dll
     File dll\libintl-8.dll
-    File dll\libjasper-1.dll
-    File dll\libjpeg-62.dll
-    File mydll\libpango-1.0-0.dll
-    File mydll\libpangocairo-1.0-0.dll
-    File mydll\libpangoft2-1.0-0.dll
-    File mydll\libpangowin32-1.0-0.dll
-    File dll\libpixman-1-0.dll
     File dll\libpng15-15.dll
-    File dll\libtiff-3.dll
     File dll\libusb-1.0.dll
     File dll\libxml2-2.dll
     File dll\libxslt-1.dll
-    File dll\libexpat-1.dll
-    File dll\pthreadGC2.dll
     File dll\zlib1.dll
-    File dll\libzip-1.dll
-    File dll\libbz2-1.dll
-    File dll\libsoup-2.4-1.dll
-    File dll\libosmgpsmap-2.dll
+    File dll\libzip-2.dll
     File dll\libsqlite3-0.dll
-    File dll\libgnutls-26.dll
-    File dll\libgnutls-extra-26.dll
-    File dll\libgnutls-openssl-27.dll
-    File dll\libgnutlsxx-27.dll
-    File dll\libp11-kit-0.dll
-    File mydll\libgiognutls.dll
+    File dll\libgcc_s_sjlj-1.dll
+    File dll\libstdc++-6.dll
+    File dll\QtCore4.dll
+    File dll\QtGui4.dll
+    File dll\QtNetwork4.dll
+    File dll\QtSvg4.dll
+    File dll\QtWebKit4.dll
+    File dll\QtDeclarative4.dll
+    File dll\QtScript4.dll
+    File dll\QtSql4.dll
+    File dll\QtXmlPatterns4.dll
+    File dll\QtXml4.dll
+    File dll\libmarblewidget.dll
     File subsurface.ico
     File /r share
 
