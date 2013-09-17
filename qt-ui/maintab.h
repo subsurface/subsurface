@@ -22,6 +22,9 @@ namespace Ui
 
 struct NotesBackup{
 	QString location;
+	QString coordinates;
+	degrees_t latitude;
+	degrees_t longitude;
 	QString notes;
 	QString buddy;
 	QString suit;
@@ -56,6 +59,7 @@ public slots:
 	void on_editAccept_clicked(bool edit);
 	void on_editReset_clicked();
 	void on_location_textChanged(const QString& text);
+	void on_coordinates_textChanged(const QString& text);
 	void on_divemaster_textChanged(const QString& text);
 	void on_buddy_textChanged(const QString& text);
 	void on_suit_textChanged(const QString& text);

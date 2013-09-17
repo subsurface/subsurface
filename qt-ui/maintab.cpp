@@ -9,6 +9,7 @@
 #include "mainwindow.h"
 #include "../helpers.h"
 #include "../statistics.h"
+#include "../info.h"
 #include "divelistview.h"
 #include "modeldelegates.h"
 #include "globe.h"
@@ -41,6 +42,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// we start out with the fields read-only; once things are
 	// filled from a dive, they are made writeable
 	ui->location->setReadOnly(true);
+	ui->coordinates->setReadOnly(true);
 	ui->divemaster->setReadOnly(true);
 	ui->buddy->setReadOnly(true);
 	ui->suit->setReadOnly(true);
@@ -52,6 +54,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->editReset->hide();
 
 	ui->location->installEventFilter(this);
+	ui->coordinates->installEventFilter(this);
 	ui->divemaster->installEventFilter(this);
 	ui->buddy->installEventFilter(this);
 	ui->suit->installEventFilter(this);
@@ -169,9 +172,14 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, suit);
 	UPDATE_TEXT(d, divemaster);
 	UPDATE_TEXT(d, buddy);
+
 	if (d) {
+		char buffer[256];
+		print_gps_coordinates(buffer, sizeof buffer, d->latitude.udeg, d->longitude.udeg);
+		ui->coordinates->setText(buffer);
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 			// only use trip relevant fields
+			ui->coordinates->setVisible(false);
 			ui->divemaster->setVisible(false);
 			ui->DivemasterLabel->setVisible(false);
 			ui->buddy->setVisible(false);
@@ -192,11 +200,15 @@ void MainTab::updateDiveInfo(int dive)
 			ui->notes->setText(currentTrip->notes);
 		} else {
 			// make all the fields visible writeable
+			ui->coordinates->setVisible(true);
 			ui->divemaster->setVisible(true);
 			ui->buddy->setVisible(true);
 			ui->suit->setVisible(true);
+			ui->SuitLabel->setVisible(true);
 			ui->rating->setVisible(true);
+			ui->RatingLabel->setVisible(true);
 			ui->visibility->setVisible(true);
+			ui->visibilityLabel->setVisible(true);
 			ui->BuddyLabel->setVisible(true);
 			ui->DivemasterLabel->setVisible(true);
 			ui->divemaster->setReadOnly(false);
@@ -209,6 +221,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui->visibility->setCurrentStars(d->visibility);
 			// reset labels in case we last displayed trip notes
 			ui->location->setReadOnly(false);
+			ui->coordinates->setReadOnly(false);
 			ui->LocationLabel->setText(tr("Location"));
 			ui->notes->setReadOnly(false);
 			ui->NotesLabel->setText(tr("Notes"));
@@ -261,6 +274,7 @@ void MainTab::updateDiveInfo(int dive)
 	} else {
 		/* make the fields read-only */
 		ui->location->setReadOnly(true);
+		ui->coordinates->setReadOnly(true);
 		ui->divemaster->setReadOnly(true);
 		ui->buddy->setReadOnly(true);
 		ui->suit->setReadOnly(true);
@@ -316,6 +330,7 @@ void MainTab::reload()
 void MainTab::on_editAccept_clicked(bool edit)
 {
 	ui->location->setReadOnly(!edit);
+	ui->coordinates->setReadOnly(!edit);
 	ui->divemaster->setReadOnly(!edit);
 	ui->buddy->setReadOnly(!edit);
 	ui->suit->setReadOnly(!edit);
@@ -357,6 +372,9 @@ void MainTab::on_editAccept_clicked(bool edit)
 				notesBackup[mydive].location = QString(mydive->location);
 				notesBackup[mydive].rating = mydive->rating;
 				notesBackup[mydive].visibility = mydive->visibility;
+				notesBackup[mydive].latitude = mydive->latitude;
+				notesBackup[mydive].longitude = mydive->longitude;
+				notesBackup[mydive].coordinates  = ui->location->text();
 			}
 		editMode = DIVE;
 		}
@@ -376,12 +394,16 @@ void MainTab::on_editAccept_clicked(bool edit)
 			    notesBackup[curr].notes != ui->notes->toPlainText() ||
 			    notesBackup[curr].divemaster != ui->divemaster->text() ||
 			    notesBackup[curr].location  != ui->location->text() ||
+			    notesBackup[curr].coordinates != ui->coordinates->text() ||
 			    notesBackup[curr].rating 	!= ui->visibility->currentStars() ||
 			    notesBackup[curr].visibility != ui->rating->currentStars())
 
 				mark_divelist_changed(TRUE);
-			if (notesBackup[curr].location != ui->location->text())
+			if (notesBackup[curr].location != ui->location->text() ||
+			    notesBackup[curr].coordinates != ui->coordinates->text()) {
 				mainWindow()->globe()->reload();
+				mainWindow()->globe()->centerOn(current_dive);
+			}
 		}
 		editMode = NONE;
 	}
@@ -415,6 +437,7 @@ void MainTab::on_editReset_clicked()
 		struct dive *curr = current_dive;
 		ui->notes->setText(notesBackup[curr].notes );
 		ui->location->setText(notesBackup[curr].location);
+		ui->coordinates->setText(notesBackup[curr].coordinates);
 		ui->buddy->setText(notesBackup[curr].buddy);
 		ui->suit->setText(notesBackup[curr].suit);
 		ui->divemaster->setText(notesBackup[curr].divemaster);
@@ -435,6 +458,8 @@ void MainTab::on_editReset_clicked()
 			EDIT_TEXT2(mydive->notes, notesBackup[mydive].notes);
 			EDIT_TEXT2(mydive->divemaster, notesBackup[mydive].divemaster);
 			EDIT_TEXT2(mydive->location, notesBackup[mydive].location);
+			mydive->latitude = notesBackup[mydive].latitude;
+			mydive->longitude = notesBackup[mydive].longitude;
 			mydive->rating = notesBackup[mydive].rating;
 			mydive->visibility = notesBackup[mydive].visibility;
 		}
@@ -443,6 +468,7 @@ void MainTab::on_editReset_clicked()
 	ui->diveNotesMessage->animatedHide();
 
 	ui->location->setReadOnly(true);
+	ui->coordinates->setReadOnly(true);
 	ui->divemaster->setReadOnly(true);
 	ui->buddy->setReadOnly(true);
 	ui->suit->setReadOnly(true);
@@ -467,10 +493,9 @@ void MainTab::on_editReset_clicked()
 #define EDIT_SELECTED_DIVES( WHAT ) \
 	if (editMode == NONE) \
 		return; \
-	struct dive *mydive; \
 \
 	for (int i = 0; i < dive_table.nr; i++) { \
-		mydive = get_dive(i); \
+		struct dive *mydive = get_dive(i); \
 		if (!mydive) \
 			continue; \
 		if (!mydive->selected) \
@@ -506,6 +531,20 @@ void MainTab::on_location_textChanged(const QString& text)
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE){
+		struct dive* dive;
+		int i = 0;
+		for_each_dive(i, dive){
+			QString location(dive->location);
+			if (location == text &&
+					(dive->latitude.udeg || dive->longitude.udeg)){
+				EDIT_SELECTED_DIVES( mydive->latitude = dive->latitude )
+				EDIT_SELECTED_DIVES( mydive->longitude = dive->longitude )
+				char buffer[256];
+				print_gps_coordinates(buffer, sizeof buffer, dive->latitude.udeg, dive->longitude.udeg);
+				ui->coordinates->setText(buffer);
+				break;
+			}
+		}
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) )
 	}
 
@@ -533,6 +572,12 @@ void MainTab::on_notes_textChanged()
 }
 
 #undef EDIT_TEXT
+
+void MainTab::on_coordinates_textChanged(const QString& text)
+{
+	QByteArray textByteArray = text.toLocal8Bit();
+	EDIT_SELECTED_DIVES(gps_changed(mydive, NULL, textByteArray.data()));
+}
 
 void MainTab::on_rating_valueChanged(int value)
 {
