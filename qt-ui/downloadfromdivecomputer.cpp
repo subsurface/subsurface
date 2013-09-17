@@ -261,6 +261,10 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			updateState(DONE);
 		else
 			updateState(ERROR);
+
+		// I'm not sure if we should really call process_dives even
+		// if there's an error or a cancelation
+		process_dives(TRUE, preferDownloaded());
 	} else
 		updateState(CANCELLED);
 }
@@ -320,7 +324,6 @@ static QString str_error(const char *fmt, ...)
 
 void DownloadThread::run()
 {
-	DownloadFromDCWidget *dfdcw = DownloadFromDCWidget::instance();
 	const char *error;
 
 	if (!strcmp(data->vendor, "Uemis"))
@@ -331,8 +334,4 @@ void DownloadThread::run()
 	if (error) {
 		this->error =  str_error(error, data->devname, data->vendor, data->product);
 	}
-
-	// I'm not sure if we should really call process_dives even
-	// if there's an error or a cancelation
-	process_dives(TRUE, dfdcw->preferDownloaded());
 }
