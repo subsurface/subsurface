@@ -351,8 +351,8 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 		RegCloseKey(hKey);
 		return -1;
 	}
-
-	for (DWORD i = 0; i < count; ++i) {
+	DWORD i;
+	for (i = 0; i < count; ++i) {
 		// Get the value name, data and type.
 		char name[512], data[512];
 		DWORD name_len = sizeof (name);
@@ -379,7 +379,7 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 
 		callback (data, userdata);
 		index++;
-		if (is_default_dive_computer_device(filename))
+		if (is_default_dive_computer_device(name))
 			index = i;
 	}
 
