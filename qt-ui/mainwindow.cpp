@@ -65,9 +65,12 @@ MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
 // this gets called after we download dives from a divecomputer
 void MainWindow::refreshDisplay()
 {
-	if (selected_dive == -1)
-		current_dive_changed(dive_table.nr - 1);
-	ui->ListWidget->reload(DiveTripModel::CURRENT, false);
+	ui->InfoWidget->reload();
+	ui->globe->reload();
+	ui->ListWidget->reload(DiveTripModel::TREE);
+	ui->ListWidget->setFocus();
+	WSInfoModel *wsim = WSInfoModel::instance();
+	wsim->updateInfo();
 }
 
 void MainWindow::current_dive_changed(int divenr)
