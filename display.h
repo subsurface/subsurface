@@ -74,6 +74,10 @@ extern unsigned int amount_selected;
 
 extern int is_default_dive_computer_device(const char *);
 extern int is_default_dive_computer(const char *, const char *);
+
+typedef void (*device_callback_t) (const char *name, void *userdata);
+int enumerate_devices (device_callback_t callback, void *userdata);
+
 extern const char *default_dive_computer_vendor;
 extern const char *default_dive_computer_product;
 extern const char *default_dive_computer_device;

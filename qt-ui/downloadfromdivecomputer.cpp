@@ -51,6 +51,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	ui->progressBar->hide();
 	ui->progressBar->setMinimum(0);
 	ui->progressBar->setMaximum(100);
+
+	fill_device_list();
 	fill_computer_list();
 
 	vendorModel = new QStringListModel(vendorList);
@@ -63,7 +65,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 			ui->product->setCurrentIndex(ui->product->findText(default_dive_computer_product));
 	}
 	if (default_dive_computer_device)
-		ui->device->setText(default_dive_computer_device);
+		ui->device->setEditText(default_dive_computer_device);
 
 	timer->setInterval(200);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
@@ -89,6 +91,7 @@ void DownloadFromDCWidget::updateState(states state)
 		return;
 
 	if (state == INITIAL) {
+		fill_device_list();
 		ui->progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
@@ -217,7 +220,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 		thread->deleteLater();
 	}
 
-	data.devname = strdup(ui->device->text().toUtf8().data());
+	data.devname = strdup(ui->device->currentText().toUtf8().data());
 	data.vendor = strdup(ui->vendor->currentText().toUtf8().data());
 	data.product = strdup(ui->product->currentText().toUtf8().data());
 
@@ -283,6 +286,21 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui->ok->setDisabled(false);
 	ui->cancel->setDisabled(false);
 	ui->search->setDisabled(false);
+}
+
+static void fillDeviceList(const char *name, void *data)
+{
+	QComboBox *comboBox = (QComboBox *)data;
+	comboBox->addItem(name);
+}
+
+void DownloadFromDCWidget::fill_device_list()
+{
+	int deviceIndex;
+	ui->device->clear();
+	deviceIndex = enumerate_devices(fillDeviceList, ui->device);
+	if (deviceIndex >= 0)
+		ui->device->setCurrentIndex(deviceIndex);
 }
 
 DownloadThread::DownloadThread(QObject* parent, device_data_t* data): QThread(parent),

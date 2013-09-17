@@ -65,6 +65,7 @@ private:
 	QStringListModel *vendorModel;
 	QStringListModel *productModel;
 	void fill_computer_list();
+	void fill_device_list();
 
 	QTimer *timer;
 
