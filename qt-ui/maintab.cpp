@@ -20,12 +20,12 @@
 #include <QSet>
 #include <QTableView>
 #include <QSettings>
+#include <QPalette>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    ui(new Ui::MainTab()),
 				    weightModel(new WeightModel()),
 				    cylindersModel(new CylindersModel()),
-				    currentDive(0),
 				    editMode(NONE)
 {
 	ui->setupUi(this);
@@ -91,7 +91,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 void MainTab::enableEdition()
 {
-	if (ui->editAccept->isVisible() || !currentDive)
+	if (ui->editAccept->isVisible() || !selected_dive)
 		return;
 
 	ui->editAccept->setChecked(true);
@@ -150,6 +150,7 @@ void MainTab::clearStats()
 
 void MainTab::updateDiveInfo(int dive)
 {
+	editMode = NONE;
 	// This method updates ALL tabs whenever a new dive or trip is
 	// selected.
 	// If exactly one trip has been selected, we show the location / notes
@@ -162,7 +163,7 @@ void MainTab::updateDiveInfo(int dive)
 
 	process_selected_dives();
 	process_all_dives(d, &prevd);
-	currentDive = d;
+
 	UPDATE_TEXT(d, notes);
 	UPDATE_TEXT(d, location);
 	UPDATE_TEXT(d, suit);
@@ -325,24 +326,39 @@ void MainTab::on_editAccept_clicked(bool edit)
 	mainWindow()->dive_list()->setEnabled(!edit);
 
 	if (edit) {
+
+		// We may be editing one or more dives here. backup everything.
+		notesBackup.clear();
+
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 			// we are editing trip location and notes
 			ui->diveNotesMessage->setText(tr("This trip is being edited. Select Save or Undo when ready."));
 			ui->diveNotesMessage->animatedShow();
-			notesBackup.notes = ui->notes->toPlainText();
-			notesBackup.location = ui->location->text();
+			notesBackup[NULL].notes = ui->notes->toPlainText();
+			notesBackup[NULL].location = ui->location->text();
 			editMode = TRIP;
 		} else {
 			ui->diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
 			ui->diveNotesMessage->animatedShow();
-			notesBackup.buddy = ui->buddy->text();
-			notesBackup.suit = ui->suit->text();
-			notesBackup.notes = ui->notes->toPlainText();
-			notesBackup.divemaster = ui->divemaster->text();
-			notesBackup.location = ui->location->text();
-			notesBackup.rating = ui->rating->currentStars();
-			notesBackup.visibility = ui->visibility->currentStars();
-			editMode = DIVE;
+
+			// We may be editing one or more dives here. backup everything.
+			struct dive *mydive;
+			for (int i = 0; i < dive_table.nr; i++) {
+				mydive = get_dive(i);
+				if (!mydive)
+					continue;
+				if (!mydive->selected)
+					continue;
+
+				notesBackup[mydive].buddy = QString(mydive->buddy);
+				notesBackup[mydive].suit = QString(mydive->suit);
+				notesBackup[mydive].notes = QString(mydive->notes);
+				notesBackup[mydive].divemaster = QString(mydive->divemaster);
+				notesBackup[mydive].location = QString(mydive->location);
+				notesBackup[mydive].rating = mydive->rating;
+				notesBackup[mydive].visibility = mydive->visibility;
+			}
+		editMode = DIVE;
 		}
 	} else {
 		ui->diveNotesMessage->animatedHide();
@@ -350,38 +366,78 @@ void MainTab::on_editAccept_clicked(bool edit)
 		ui->editReset->hide();
 		/* now figure out if things have changed */
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
-			if (notesBackup.notes != ui->notes->toPlainText() ||
-			    notesBackup.location != ui->location->text())
+			if (notesBackup[NULL].notes != ui->notes->toPlainText() ||
+			    notesBackup[NULL].location != ui->location->text())
 				mark_divelist_changed(TRUE);
 		} else {
-			if (notesBackup.buddy != ui->buddy->text() ||
-			    notesBackup.suit != ui->suit->text() ||
-			    notesBackup.notes != ui->notes->toPlainText() ||
-			    notesBackup.divemaster != ui->divemaster->text() ||
-			    notesBackup.location != ui->location->text() ||
-			    notesBackup.visibility != ui->visibility->currentStars() ||
-			    notesBackup.rating != ui->rating->currentStars())
+			struct dive *curr = current_dive;
+			if (notesBackup[curr].buddy != ui->buddy->text() ||
+			    notesBackup[curr].suit != ui->suit->text() ||
+			    notesBackup[curr].notes != ui->notes->toPlainText() ||
+			    notesBackup[curr].divemaster != ui->divemaster->text() ||
+			    notesBackup[curr].location  != ui->location->text() ||
+			    notesBackup[curr].rating 	!= ui->visibility->currentStars() ||
+			    notesBackup[curr].visibility != ui->rating->currentStars())
+
 				mark_divelist_changed(TRUE);
-			if (notesBackup.location != ui->location->text())
+			if (notesBackup[curr].location != ui->location->text())
 				mainWindow()->globe()->reload();
 		}
 		editMode = NONE;
 	}
+	QPalette p;
+	ui->buddy->setPalette(p);
+	ui->notes->setPalette(p);
+	ui->location->setPalette(p);
+	ui->divemaster->setPalette(p);
+	ui->suit->setPalette(p);
 }
+
+#define EDIT_TEXT2(what, text) \
+	textByteArray = text.toLocal8Bit(); \
+	free(what);\
+	what = strdup(textByteArray.data());
+
+#define EDIT_TEXT(what, text) \
+	QByteArray textByteArray = text.toLocal8Bit(); \
+	free(what);\
+	what = strdup(textByteArray.data());
 
 void MainTab::on_editReset_clicked()
 {
 	if (!ui->editAccept->isChecked())
 		return;
 
-	ui->notes->setText(notesBackup.notes);
-	ui->location->setText(notesBackup.location);
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() != 1) {
-		ui->buddy->setText(notesBackup.buddy);
-		ui->suit->setText(notesBackup.suit);
-		ui->divemaster->setText(notesBackup.divemaster);
-		ui->rating->setCurrentStars(notesBackup.rating);
-		ui->visibility->setCurrentStars(notesBackup.visibility);
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1){
+		ui->notes->setText(notesBackup[NULL].notes );
+		ui->location->setText(notesBackup[NULL].location);
+	}else{
+		struct dive *curr = current_dive;
+		ui->notes->setText(notesBackup[curr].notes );
+		ui->location->setText(notesBackup[curr].location);
+		ui->buddy->setText(notesBackup[curr].buddy);
+		ui->suit->setText(notesBackup[curr].suit);
+		ui->divemaster->setText(notesBackup[curr].divemaster);
+		ui->rating->setCurrentStars(notesBackup[curr].rating);
+		ui->visibility->setCurrentStars(notesBackup[curr].visibility);
+
+		struct dive *mydive;
+		for (int i = 0; i < dive_table.nr; i++) {
+			mydive = get_dive(i);
+			if (!mydive)
+				continue;
+			if (!mydive->selected)
+				continue;
+
+			QByteArray textByteArray;
+			EDIT_TEXT2(mydive->buddy, notesBackup[mydive].buddy);
+			EDIT_TEXT2(mydive->suit, notesBackup[mydive].suit);
+			EDIT_TEXT2(mydive->notes, notesBackup[mydive].notes);
+			EDIT_TEXT2(mydive->divemaster, notesBackup[mydive].divemaster);
+			EDIT_TEXT2(mydive->location, notesBackup[mydive].location);
+			mydive->rating = notesBackup[mydive].rating;
+			mydive->visibility = notesBackup[mydive].visibility;
+		}
 	}
 	ui->editAccept->setChecked(false);
 	ui->diveNotesMessage->animatedHide();
@@ -397,75 +453,95 @@ void MainTab::on_editReset_clicked()
 
 	ui->editAccept->hide();
 	ui->editReset->hide();
+	notesBackup.clear();
+	QPalette p;
+	ui->buddy->setPalette(p);
+	ui->notes->setPalette(p);
+	ui->location->setPalette(p);
+	ui->divemaster->setPalette(p);
+	ui->suit->setPalette(p);
 	editMode = NONE;
 }
+#undef EDIT_TEXT2
 
-#define EDIT_TEXT(what, text) \
-	QByteArray textByteArray = text.toLocal8Bit(); \
-	free(what);\
-	what = strdup(textByteArray.data());
+#define EDIT_SELECTED_DIVES( WHAT ) \
+	if (editMode == NONE) \
+		return; \
+	struct dive *mydive; \
+\
+	for (int i = 0; i < dive_table.nr; i++) { \
+		mydive = get_dive(i); \
+		if (!mydive) \
+			continue; \
+		if (!mydive->selected) \
+			continue; \
+\
+		WHAT; \
+	}
+
+void markChangedWidget(QWidget *w){
+	QPalette p;
+	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	w->setPalette(p);
+}
 
 void MainTab::on_buddy_textChanged(const QString& text)
 {
-	if (!currentDive)
-		return;
-	EDIT_TEXT(currentDive->buddy, text);
+	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->buddy, text) );
+	markChangedWidget(ui->buddy);
 }
 
 void MainTab::on_divemaster_textChanged(const QString& text)
 {
-	if (!currentDive)
-		return;
-	EDIT_TEXT(currentDive->divemaster, text);
+	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->divemaster, text) );
+	markChangedWidget(ui->divemaster);
 }
 
 void MainTab::on_location_textChanged(const QString& text)
 {
+	if (editMode == NONE)
+		return;
 	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 		// we are editing a trip
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE){
-		if (!currentDive)
-			return;
-		EDIT_TEXT(currentDive->location, text);
+		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) )
 	}
+
+	markChangedWidget(ui->location);
 }
 
 void MainTab::on_suit_textChanged(const QString& text)
 {
-	if (!currentDive)
-		return;
-	EDIT_TEXT(currentDive->suit, text);
+	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->suit, text) );
+	markChangedWidget(ui->suit);
 }
 
 void MainTab::on_notes_textChanged()
 {
+	if (editMode == NONE)
+		return;
 	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 		// we are editing a trip
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->notes, ui->notes->toPlainText());
 	} else if (editMode == DIVE) {
-		if (!currentDive)
-			return;
-		EDIT_TEXT(currentDive->notes, ui->notes->toPlainText());
+		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->notes, ui->notes->toPlainText()) );
 	}
+	markChangedWidget(ui->notes);
 }
 
 #undef EDIT_TEXT
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	if (!currentDive)
-		return;
-	currentDive->rating = value;
+	EDIT_SELECTED_DIVES(mydive->rating  = value );
 }
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	if (!currentDive)
-		return;
-	currentDive->visibility = value;
+	EDIT_SELECTED_DIVES( mydive->visibility = value );
 }
 
 void MainTab::editCylinderWidget(const QModelIndex& index)

@@ -226,16 +226,7 @@ void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex&
 {
 	if (!current.isValid())
 		return;
-	const QAbstractItemModel *model = current.model();
-	int selectedDive = 0;
-	struct dive *dive = (struct dive*) model->data(current, DiveTripModel::DIVE_ROLE).value<void*>();
-	if (!dive)  // it's a trip! select first child.
-		dive = (struct dive*) model->data(current.child(0,0), DiveTripModel::DIVE_ROLE).value<void*>();
-	selectedDive = get_divenr(dive);
 	scrollTo(current);
-	if (selectedDive == selected_dive)
-		return;
-	Q_EMIT currentDiveChanged(selectedDive);
 }
 
 void DiveListView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
