@@ -1,6 +1,8 @@
 /* macos.c */
 /* implements Mac OS X specific functions */
 #include <stdlib.h>
+#include <dirent.h>
+#include <fnmatch.h>
 #include "dive.h"
 #include "display.h"
 #if USE_GTK_UI
@@ -286,7 +288,7 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 		for (i = 0; patterns[i] != NULL; ++i) {
 			if (fnmatch (patterns[i], ep->d_name, 0) == 0) {
 				char filename[1024];
-				int n = snprintf (filename, sizeof (filename), "%s/%s", d	irname, ep->d_name);
+				int n = snprintf (filename, sizeof (filename), "%s/%s", dirname, ep->d_name);
 				if (n >= sizeof (filename)) {
 					closedir (dp);
 					return -1;
