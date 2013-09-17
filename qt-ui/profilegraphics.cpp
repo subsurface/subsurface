@@ -1064,7 +1064,7 @@ void ProfileGraphicsView::plot_depth_profile()
 		for (i = 0; i < gc.pi.nr; i++, entry++)
 			p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 
-		for (i = gc.pi.nr - 1; i >= 0; i--, entry--) {
+		for (i-- , entry--; i >= 0; i--, entry--) {
 			if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
 				p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
 			} else {
