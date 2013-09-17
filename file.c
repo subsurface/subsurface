@@ -225,12 +225,8 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 
 static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, char **error)
 {
-	/* Suunto Dive Manager files: SDE */
-	if (!strcasecmp(fmt, "SDE"))
-		return try_to_open_zip(filename, mem, error);
-
-	/* divelogs.de files: DLD */
-	if (!strcasecmp(fmt, "DLD"))
+	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
+	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
 		return try_to_open_zip(filename, mem, error);
 
 #if ONCE_COCHRAN_IS_SUPPORTED
