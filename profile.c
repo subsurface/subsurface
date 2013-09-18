@@ -646,7 +646,14 @@ static int get_cylinder_index(struct dive *dive, struct event *ev)
 
 		delta_o2 = get_o2(&cyl->gasmix) - target_o2;
 		delta_he = get_he(&cyl->gasmix) - target_he;
-		distance = delta_o2 * delta_o2 + delta_he * delta_he;
+		distance = delta_o2 * delta_o2;
+
+		/* Check the event type to figure out if we should care about the he part.
+		 * 11 is SAMPLE_EVENT_GASCHANGE, aka without he
+		 * 25 is SAMPLE_EVENT_GASCHANGE2, aka with he
+		 */
+		if (ev->type == 25)
+			distance += delta_he * delta_he;
 		if (distance >= score)
 			continue;
 		score = distance;
