@@ -66,6 +66,7 @@ QString Translator::translate(const char *context, const char *sourceText,
 }
 
 static QApplication *application = NULL;
+static MainWindow *window = NULL;
 
 int        error_count;
 const char *existing_filename;
@@ -117,7 +118,7 @@ void init_ui(int *argcp, char ***argvp)
 	s.endGroup();
 
 	application->installTranslator(new Translator(application));
-	MainWindow *window = new MainWindow();
+	window = new MainWindow();
 	window->show();
 	if (existing_filename && existing_filename[0] != '\0')
 		window->setTitle(MWTF_FILENAME);
@@ -134,6 +135,7 @@ void run_ui(void)
 
 void exit_ui(void)
 {
+	delete window;
 	delete application;
 	if (existing_filename)
 		free((void *)existing_filename);
