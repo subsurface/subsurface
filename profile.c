@@ -1224,6 +1224,10 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 
 	depthvalue = get_depth_units(depth, NULL, &depth_unit);
 	snprintf(buf, bufsize, _("D:%.1f %s"), depthvalue, depth_unit);
+	if (prefs.show_time) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, _("%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
+	}
 	if (pressure) {
 		pressurevalue = get_pressure_units(pressure, &pressure_unit);
 		memcpy(buf2, buf, bufsize);

@@ -74,6 +74,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui->fontsize->setValue(prefs.font_size);
 	ui->defaultfilename->setText(prefs.default_filename);
 	ui->displayinvalid->setChecked(prefs.show_invalid);
+	ui->show_time->setChecked(prefs.show_time);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -114,6 +115,7 @@ void PreferencesDialog::setPrefsFromUi()
 	prefs.font_size = ui->fontsize->value();
 	prefs.default_filename = strdup(ui->defaultfilename->text().toUtf8().data());
 	prefs.display_invalid_dives = ui->displayinvalid->isChecked();
+	SP(show_time, ui->show_time);
 }
 
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
@@ -139,6 +141,7 @@ void PreferencesDialog::syncSettings()
 	SB("calcalltissues", ui->all_tissues);
 	s.setValue("gflow", ui->gflow->value());
 	s.setValue("gfhigh", ui->gfhigh->value());
+	SB("show_time", ui->show_time);
 	s.endGroup();
 
 	// Units
