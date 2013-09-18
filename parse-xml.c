@@ -776,7 +776,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	he = (he+5) / 10;
 	value = o2 + (he << 16);
 
-	add_event(dc, seconds, 11, 0, value, "gaschange");
+	add_event(dc, seconds, 25, 0, value, "gaschange");  /* SAMPLE_EVENT_GASCHANGE2 */
 }
 
 static void get_cylinderindex(char *buffer, void *_i)

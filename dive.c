@@ -1074,7 +1074,7 @@ static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
 	he = (he + 5) / 10;
 	value = o2 + (he << 16);
 
-	add_event(dc, 0, 11, 0, value, "gaschange");
+	add_event(dc, 0, 25, 0, value, "gaschange"); /* SAMPLE_EVENT_GASCHANGE2 */
 }
 
 static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
