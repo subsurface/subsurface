@@ -9,4 +9,8 @@ extern "C" {
 
   extern double buehlmann_N2_t_halflife[];
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif
