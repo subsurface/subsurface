@@ -10,6 +10,7 @@
 	<file alias="minimum">icons/minimum.svg</file>
 	<file alias="maximum">icons/maximum.svg</file>
 	<file alias="average">icons/average.svg</file>
+	<file alias="warning">icons/warning.png</file>
 	<file alias="table-css">qt-ui/css/tableviews.css</file>
  </qresource>
  </RCC>

@@ -132,10 +132,12 @@ void MainTab::enableEdition()
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
 	if (isEnabled() && event->type() == QEvent::FocusIn && (object == ui->rating || object == ui->visibility)){
+		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
 	}
 
 	if (isEnabled() && event->type() == QEvent::MouseButtonPress ) {
+		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
 	}
 	return false; // don't "eat" the event.
@@ -340,7 +342,8 @@ void MainTab::reload()
 void MainTab::acceptChanges()
 {
 	mainWindow()->dive_list()->setEnabled(true);
-
+	tabBar()->setTabIcon(0, QIcon()); // Notes
+	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui->diveNotesMessage->animatedHide();
 	ui->notesButtonBox->hide();
 	/* now figure out if things have changed */
@@ -388,6 +391,8 @@ void MainTab::acceptChanges()
 
 void MainTab::rejectChanges()
 {
+	tabBar()->setTabIcon(0, QIcon()); // Notes
+	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	mainWindow()->dive_list()->setEnabled(true);
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1){
 		ui->notes->setText(notesBackup[NULL].notes );
