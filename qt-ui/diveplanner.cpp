@@ -4,6 +4,7 @@
 #include "modeldelegates.h"
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
+#include "maintab.h"
 #include "tableview.h"
 #include "graphicsview-common.h"
 
@@ -1149,6 +1150,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	tempDive = NULL;
 	char *errorString = NULL;
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
+	mainWindow()->information()->updateDiveInfo(get_divenr(tempDive));
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif

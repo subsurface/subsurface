@@ -258,7 +258,11 @@ void MainWindow::on_actionAddDive_triggered()
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(false);
 	ui->stackedWidget->setCurrentIndex(1);
-	ui->infoPane->setCurrentIndex(1);
+	ui->infoPane->setCurrentIndex(0);
+	ui->InfoWidget->clearStats();
+	ui->InfoWidget->clearInfo();
+	ui->InfoWidget->clearEquipment();
+	ui->InfoWidget->updateDiveInfo(-1);
 }
 
 void MainWindow::on_actionRenumber_triggered()
