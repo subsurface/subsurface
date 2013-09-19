@@ -306,6 +306,7 @@ void MainTab::updateDiveInfo(int dive)
 	} else {
 		/* clear the fields */
 		ui->rating->setCurrentStars(0);
+		ui->coordinates->clear();
 		ui->sacText->clear();
 		ui->otuText->clear();
 		ui->oxygenHeliumText->clear();
