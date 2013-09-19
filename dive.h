@@ -622,6 +622,7 @@ extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded);
 extern void renumber_dives(int nr);
+extern void copy_samples(struct dive *s, struct dive *d);
 
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);

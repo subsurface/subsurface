@@ -14,6 +14,7 @@
 #include "modeldelegates.h"
 #include "globe.h"
 #include "completionmodels.h"
+#include "diveplanner.h"
 
 #include <QLabel>
 #include <QCompleter>
@@ -90,9 +91,15 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->suit->setCompleter(completers.suit);
 }
 
+void MainTab::addDiveStarted()
+{
+	enableEdition();
+	editMode = ADD;
+}
+
 void MainTab::enableEdition()
 {
-	if (!selected_dive)
+	if (selected_dive < 0 || editMode != NONE)
 		return;
 
 	mainWindow()->dive_list()->setEnabled(false);
@@ -383,6 +390,13 @@ void MainTab::acceptChanges()
 			mainWindow()->globe()->centerOn(current_dive);
 		}
 	}
+	if (editMode == ADD) {
+		// clean up the dive data (get duration, depth information from samples)
+		fixup_dive(current_dive);
+		DivePlannerPointsModel::instance()->cancelPlan();
+		mainWindow()->showProfile();
+		mainWindow()->refreshDisplay();
+	}
 	editMode = NONE;
 
 	QPalette p;
@@ -500,7 +514,7 @@ void MainTab::on_location_textChanged(const QString& text)
 		// we are editing a trip
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->location, text);
-	} else if (editMode == DIVE){
+	} else if (editMode == DIVE || editMode == ADD){
 		struct dive* dive;
 		int i = 0;
 		for_each_dive(i, dive){
@@ -535,7 +549,7 @@ void MainTab::on_notes_textChanged()
 		// we are editing a trip
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->notes, ui->notes->toPlainText());
-	} else if (editMode == DIVE) {
+	} else if (editMode == DIVE || editMode == ADD) {
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->notes, ui->notes->toPlainText()) );
 	}
 	markChangedWidget(ui->notes);

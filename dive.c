@@ -161,6 +161,19 @@ struct dive *alloc_dive(void)
 	return dive;
 }
 
+void copy_samples(struct dive* s, struct dive* d)
+{
+	/* instead of carefully copying them one by one and calling add_sample
+	 * over and over again, let's just copy the whole blob */
+	if (!s || !d)
+		return;
+	int nr = s->dc.samples;
+	d->dc.samples = nr;
+	d->dc.sample = malloc(nr * sizeof(struct sample));
+	if (d->dc.sample)
+		memcpy(d->dc.sample, s->dc.sample, nr * sizeof(struct sample));
+}
+
 struct sample *prepare_sample(struct divecomputer *dc)
 {
 	if (dc) {

@@ -1113,7 +1113,7 @@ struct diveplan DivePlannerPointsModel::getDiveplan()
 
 void DivePlannerPointsModel::cancelPlan()
 {
-	if(rowCount()){
+	if(mode == PLAN && rowCount()){
 		if (QMessageBox::warning(mainWindow(), tr("Save the Plan?"),
 			tr("You have a working plan, \n are you sure that you wanna cancel it?"),
 				QMessageBox::Ok | QMessageBox::Cancel) != QMessageBox::Ok){
@@ -1150,7 +1150,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	tempDive = NULL;
 	char *errorString = NULL;
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
-	mainWindow()->information()->updateDiveInfo(get_divenr(tempDive));
+	if (mode == ADD)
+		copy_samples(tempDive, current_dive);
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
