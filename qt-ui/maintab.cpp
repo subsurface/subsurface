@@ -134,7 +134,7 @@ void MainTab::enableEdition()
 			notesBackup[mydive].visibility = mydive->visibility;
 			notesBackup[mydive].latitude = mydive->latitude;
 			notesBackup[mydive].longitude = mydive->longitude;
-			notesBackup[mydive].coordinates  = ui->location->text();
+			notesBackup[mydive].coordinates  = ui->coordinates->text();
 		}
 		editMode = DIVE;
 	}
@@ -366,6 +366,11 @@ void MainTab::acceptChanges()
 			mark_divelist_changed(TRUE);
 	} else {
 		struct dive *curr = current_dive;
+		//Reset coordinates field, in case it contains garbage.
+		char buffer[256];
+		print_gps_coordinates(buffer, sizeof buffer
+			, current_dive->latitude.udeg, current_dive->longitude.udeg);
+		ui->coordinates->setText(buffer);
 		if (notesBackup[curr].buddy != ui->buddy->text() ||
 			notesBackup[curr].suit != ui->suit->text() ||
 			notesBackup[curr].notes != ui->notes->toPlainText() ||
@@ -388,6 +393,7 @@ void MainTab::acceptChanges()
 	ui->buddy->setPalette(p);
 	ui->notes->setPalette(p);
 	ui->location->setPalette(p);
+	ui->coordinates->setPalette(p);
 	ui->divemaster->setPalette(p);
 	ui->suit->setPalette(p);
 }
@@ -453,13 +459,14 @@ void MainTab::rejectChanges()
 	ui->buddy->setPalette(p);
 	ui->notes->setPalette(p);
 	ui->location->setPalette(p);
+	ui->coordinates->setPalette(p);
 	ui->divemaster->setPalette(p);
 	ui->suit->setPalette(p);
 	editMode = NONE;
 }
 #undef EDIT_TEXT2
 
-#define EDIT_SELECTED_DIVES( WHAT ) \
+#define EDIT_SELECTED_DIVES( WHAT ) do { \
 	if (editMode == NONE) \
 		return; \
 \
@@ -471,7 +478,8 @@ void MainTab::rejectChanges()
 			continue; \
 \
 		WHAT; \
-	}
+	} \
+} while(0)
 
 void markChangedWidget(QWidget *w){
 	QPalette p;
@@ -500,21 +508,26 @@ void MainTab::on_location_textChanged(const QString& text)
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE){
-		struct dive* dive;
-		int i = 0;
-		for_each_dive(i, dive){
-			QString location(dive->location);
-			if (location == text &&
-					(dive->latitude.udeg || dive->longitude.udeg)){
-				EDIT_SELECTED_DIVES( mydive->latitude = dive->latitude )
-				EDIT_SELECTED_DIVES( mydive->longitude = dive->longitude )
-				char buffer[256];
-				print_gps_coordinates(buffer, sizeof buffer, dive->latitude.udeg, dive->longitude.udeg);
-				ui->coordinates->setText(buffer);
-				break;
+		if (!ui->coordinates->isModified() ||
+		    ui->coordinates->text().trimmed().isEmpty()) {
+			struct dive* dive;
+			int i = 0;
+			for_each_dive(i, dive){
+				QString location(dive->location);
+				if (location == text &&
+				    (dive->latitude.udeg || dive->longitude.udeg)) {
+					EDIT_SELECTED_DIVES( mydive->latitude = dive->latitude );
+					EDIT_SELECTED_DIVES( mydive->longitude = dive->longitude );
+					char buffer[256];
+					print_gps_coordinates(buffer, sizeof buffer
+						, dive->latitude.udeg, dive->longitude.udeg);
+					ui->coordinates->setText(buffer);
+					markChangedWidget(ui->coordinates);
+					break;
+				}
 			}
 		}
-		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) )
+		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) );
 	}
 
 	markChangedWidget(ui->location);
@@ -545,7 +558,15 @@ void MainTab::on_notes_textChanged()
 void MainTab::on_coordinates_textChanged(const QString& text)
 {
 	QByteArray textByteArray = text.toLocal8Bit();
-	EDIT_SELECTED_DIVES(gps_changed(mydive, NULL, textByteArray.data()));
+	gboolean gpsChanged = FALSE;
+	EDIT_SELECTED_DIVES(gpsChanged |= gps_changed(mydive, NULL, textByteArray.data()));
+	if (gpsChanged) {
+		markChangedWidget(ui->coordinates);
+	} else {
+		QPalette p;
+		p.setBrush(QPalette::Base, QColor(Qt::red).lighter());
+		ui->coordinates->setPalette(p);
+	}
 }
 
 void MainTab::on_rating_valueChanged(int value)
