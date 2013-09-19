@@ -1148,7 +1148,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	char *cache = NULL;
 	tempDive = NULL;
 	char *errorString = NULL;
-	plan(&diveplan, &cache, &tempDive, &errorString);
+	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
@@ -1181,7 +1181,7 @@ void DivePlannerPointsModel::createPlan()
 	char *errorString = NULL;
 
 	createTemporaryPlan();
-	plan(&diveplan, &cache, &tempDive, &errorString);
+	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
 	mark_divelist_changed(TRUE);
 
 	// Remove and clean the diveplan, so we don't delete
