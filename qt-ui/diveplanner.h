@@ -149,7 +149,7 @@ private slots:
 	void pointInserted(const QModelIndex&, int start, int end);
 	void pointsRemoved(const QModelIndex&, int start, int end);
 private:
-	void moveActiveHandler(const QPointF& pos);
+	void moveActiveHandler(const QPointF& MappedPos, const int pos);
 
 	/* This are the lines of the plotted dive. */
 	QList<QGraphicsLineItem*> lines;

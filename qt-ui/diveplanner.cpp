@@ -427,7 +427,7 @@ void DivePlannerGraphics::createDecoStops()
 		dp = dp->next;
 	}
 
-	if (timeLine->maximum() < dp->time / 60.0 + 5 || dp->time / 60.0 + 15 < timeLine->maximum()) {
+	if (!activeDraggedHandler && (timeLine->maximum() < dp->time / 60.0 + 5 || dp->time / 60.0 + 15 < timeLine->maximum())) {
 		double newMax = fmax(dp->time / 60.0 + 5, minMinutes);
 		timeLine->setMaximum(newMax);
 		timeLine->updateTicks();
@@ -521,7 +521,7 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	depthString->setBrush( QColor(redDelta, greenDelta, blueDelta));
 
 	if (activeDraggedHandler)
-		moveActiveHandler(mappedPos);
+		moveActiveHandler(mappedPos, handles.indexOf(activeDraggedHandler));
 	if (!handles.count())
 		return;
 
@@ -534,13 +534,27 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	}
 }
 
-void DivePlannerGraphics::moveActiveHandler(const QPointF& pos)
+void DivePlannerGraphics::moveActiveHandler(const QPointF& mappedPos, const int pos)
 {
-	double xpos = timeLine->posAtValue(rint(timeLine->valueAt(pos)));
-	double ypos = depthLine->posAtValue(rint(depthLine->valueAt(pos)));
+
+	divedatapoint data = plannerModel->at(pos);
+	int minutes = rint(timeLine->valueAt(mappedPos));
+	int meters = rint(depthLine->valueAt(mappedPos));
+	double xpos = timeLine->posAtValue(minutes);
+	double ypos = depthLine->posAtValue(meters);
+
+	data.depth = rint(depthLine->valueAt(mappedPos)) * 1000;
+	data.time = rint(timeLine->valueAt(mappedPos)) * 60;
+
+	plannerModel->editStop(pos, data);
+
 	activeDraggedHandler->setPos(QPointF(xpos, ypos));
 	qDeleteAll(lines);
 	lines.clear();
+
+	createDecoStops();
+
+
 }
 
 bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
@@ -605,8 +619,8 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 		activeDraggedHandler->setBrush(QBrush(Qt::white));
 		activeDraggedHandler->setPos(QPointF(xpos, ypos));
 
-		createDecoStops();
 		activeDraggedHandler = 0;
+		createDecoStops();
 	}
 }
 
