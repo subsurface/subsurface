@@ -33,6 +33,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->cylinders->setModel(cylindersModel);
 	ui->weights->setModel(weightModel);
 	ui->diveNotesMessage->hide();
+	ui->notesButtonBox->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
 #ifdef __APPLE__
 	setDocumentMode(false);
@@ -41,17 +42,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 #endif
 	// we start out with the fields read-only; once things are
 	// filled from a dive, they are made writeable
-	ui->location->setReadOnly(true);
-	ui->coordinates->setReadOnly(true);
-	ui->divemaster->setReadOnly(true);
-	ui->buddy->setReadOnly(true);
-	ui->suit->setReadOnly(true);
-	ui->notes->setReadOnly(true);
-	ui->rating->setReadOnly(true);
-	ui->visibility->setReadOnly(true);
-
-	ui->editAccept->hide();
-	ui->editReset->hide();
+	setEnabled(false);
 
 	ui->location->installEventFilter(this);
 	ui->coordinates->installEventFilter(this);
@@ -78,7 +69,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(ui->cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui->weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeigthWidget(QModelIndex)));
-
+	connect(ui->notesButtonBox, SIGNAL(accepted()), this, SLOT(acceptChanges()));
+	connect(ui->notesButtonBox, SIGNAL(rejected()), this, SLOT(rejectChanges()));
 	ui->cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	ui->weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
 
@@ -94,22 +86,56 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 void MainTab::enableEdition()
 {
-	if (ui->editAccept->isVisible() || !selected_dive)
+	mainWindow()->dive_list()->setEnabled(false);
+	if (ui->notesButtonBox->isVisible() || !selected_dive)
 		return;
 
-	ui->editAccept->setChecked(true);
-	ui->editAccept->show();
-	ui->editReset->show();
-	on_editAccept_clicked(true);
+	// We may be editing one or more dives here. backup everything.
+	notesBackup.clear();
+	ui->notesButtonBox->show();
+
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+		// we are editing trip location and notes
+		ui->diveNotesMessage->setText(tr("This trip is being edited. Select Save or Undo when ready."));
+		ui->diveNotesMessage->animatedShow();
+		notesBackup[NULL].notes = ui->notes->toPlainText();
+		notesBackup[NULL].location = ui->location->text();
+		editMode = TRIP;
+	} else {
+		ui->diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
+		ui->diveNotesMessage->animatedShow();
+
+		// We may be editing one or more dives here. backup everything.
+		struct dive *mydive;
+		for (int i = 0; i < dive_table.nr; i++) {
+			mydive = get_dive(i);
+			if (!mydive)
+				continue;
+			if (!mydive->selected)
+				continue;
+
+			notesBackup[mydive].buddy = QString(mydive->buddy);
+			notesBackup[mydive].suit = QString(mydive->suit);
+			notesBackup[mydive].notes = QString(mydive->notes);
+			notesBackup[mydive].divemaster = QString(mydive->divemaster);
+			notesBackup[mydive].location = QString(mydive->location);
+			notesBackup[mydive].rating = mydive->rating;
+			notesBackup[mydive].visibility = mydive->visibility;
+			notesBackup[mydive].latitude = mydive->latitude;
+			notesBackup[mydive].longitude = mydive->longitude;
+			notesBackup[mydive].coordinates  = ui->location->text();
+		}
+		editMode = DIVE;
+	}
 }
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
-	if (event->type() == QEvent::FocusIn && (object == ui->rating || object == ui->visibility)){
+	if (isEnabled() && event->type() == QEvent::FocusIn && (object == ui->rating || object == ui->visibility)){
 		enableEdition();
 	}
 
-	if (event->type() == QEvent::MouseButtonPress) {
+	if (isEnabled() && event->type() == QEvent::MouseButtonPress ) {
 		enableEdition();
 	}
 	return false; // don't "eat" the event.
@@ -153,6 +179,9 @@ void MainTab::clearStats()
 
 void MainTab::updateDiveInfo(int dive)
 {
+	if(!isEnabled())
+		setEnabled(true);
+
 	editMode = NONE;
 	// This method updates ALL tabs whenever a new dive or trip is
 	// selected.
@@ -192,10 +221,8 @@ void MainTab::updateDiveInfo(int dive)
 			ui->visibilityLabel->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
-			ui->location->setReadOnly(false);
 			ui->LocationLabel->setText(tr("Trip Location"));
 			ui->location->setText(currentTrip->location);
-			ui->notes->setReadOnly(false);
 			ui->NotesLabel->setText(tr("Trip Notes"));
 			ui->notes->setText(currentTrip->notes);
 		} else {
@@ -211,19 +238,11 @@ void MainTab::updateDiveInfo(int dive)
 			ui->visibilityLabel->setVisible(true);
 			ui->BuddyLabel->setVisible(true);
 			ui->DivemasterLabel->setVisible(true);
-			ui->divemaster->setReadOnly(false);
-			ui->buddy->setReadOnly(false);
-			ui->suit->setReadOnly(false);
-			ui->rating->setReadOnly(false);
-			ui->visibility->setReadOnly(false);
 			/* and fill them from the dive */
 			ui->rating->setCurrentStars(d->rating);
 			ui->visibility->setCurrentStars(d->visibility);
 			// reset labels in case we last displayed trip notes
-			ui->location->setReadOnly(false);
-			ui->coordinates->setReadOnly(false);
 			ui->LocationLabel->setText(tr("Location"));
-			ui->notes->setReadOnly(false);
 			ui->NotesLabel->setText(tr("Notes"));
 		}
 		ui->maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
@@ -272,15 +291,6 @@ void MainTab::updateDiveInfo(int dive)
 		cylindersModel->setDive(d);
 		weightModel->setDive(d);
 	} else {
-		/* make the fields read-only */
-		ui->location->setReadOnly(true);
-		ui->coordinates->setReadOnly(true);
-		ui->divemaster->setReadOnly(true);
-		ui->buddy->setReadOnly(true);
-		ui->suit->setReadOnly(true);
-		ui->notes->setReadOnly(true);
-		ui->rating->setReadOnly(true);
-		ui->visibility->setReadOnly(true);
 		/* clear the fields */
 		ui->rating->setCurrentStars(0);
 		ui->sacText->clear();
@@ -327,86 +337,37 @@ void MainTab::reload()
 	DiveMasterCompletionModel::instance()->updateModel();
 }
 
-void MainTab::on_editAccept_clicked(bool edit)
+void MainTab::acceptChanges()
 {
-	ui->location->setReadOnly(!edit);
-	ui->coordinates->setReadOnly(!edit);
-	ui->divemaster->setReadOnly(!edit);
-	ui->buddy->setReadOnly(!edit);
-	ui->suit->setReadOnly(!edit);
-	ui->notes->setReadOnly(!edit);
-	ui->rating->setReadOnly(!edit);
-	ui->visibility->setReadOnly(!edit);
+	mainWindow()->dive_list()->setEnabled(true);
 
-	mainWindow()->dive_list()->setEnabled(!edit);
-
-	if (edit) {
-
-		// We may be editing one or more dives here. backup everything.
-		notesBackup.clear();
-
-		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
-			// we are editing trip location and notes
-			ui->diveNotesMessage->setText(tr("This trip is being edited. Select Save or Undo when ready."));
-			ui->diveNotesMessage->animatedShow();
-			notesBackup[NULL].notes = ui->notes->toPlainText();
-			notesBackup[NULL].location = ui->location->text();
-			editMode = TRIP;
-		} else {
-			ui->diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
-			ui->diveNotesMessage->animatedShow();
-
-			// We may be editing one or more dives here. backup everything.
-			struct dive *mydive;
-			for (int i = 0; i < dive_table.nr; i++) {
-				mydive = get_dive(i);
-				if (!mydive)
-					continue;
-				if (!mydive->selected)
-					continue;
-
-				notesBackup[mydive].buddy = QString(mydive->buddy);
-				notesBackup[mydive].suit = QString(mydive->suit);
-				notesBackup[mydive].notes = QString(mydive->notes);
-				notesBackup[mydive].divemaster = QString(mydive->divemaster);
-				notesBackup[mydive].location = QString(mydive->location);
-				notesBackup[mydive].rating = mydive->rating;
-				notesBackup[mydive].visibility = mydive->visibility;
-				notesBackup[mydive].latitude = mydive->latitude;
-				notesBackup[mydive].longitude = mydive->longitude;
-				notesBackup[mydive].coordinates  = ui->location->text();
-			}
-		editMode = DIVE;
-		}
+	ui->diveNotesMessage->animatedHide();
+	ui->notesButtonBox->hide();
+	/* now figure out if things have changed */
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+		if (notesBackup[NULL].notes != ui->notes->toPlainText() ||
+			notesBackup[NULL].location != ui->location->text())
+			mark_divelist_changed(TRUE);
 	} else {
-		ui->diveNotesMessage->animatedHide();
-		ui->editAccept->hide();
-		ui->editReset->hide();
-		/* now figure out if things have changed */
-		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
-			if (notesBackup[NULL].notes != ui->notes->toPlainText() ||
-			    notesBackup[NULL].location != ui->location->text())
-				mark_divelist_changed(TRUE);
-		} else {
-			struct dive *curr = current_dive;
-			if (notesBackup[curr].buddy != ui->buddy->text() ||
-			    notesBackup[curr].suit != ui->suit->text() ||
-			    notesBackup[curr].notes != ui->notes->toPlainText() ||
-			    notesBackup[curr].divemaster != ui->divemaster->text() ||
-			    notesBackup[curr].location  != ui->location->text() ||
-			    notesBackup[curr].coordinates != ui->coordinates->text() ||
-			    notesBackup[curr].rating 	!= ui->visibility->currentStars() ||
-			    notesBackup[curr].visibility != ui->rating->currentStars())
+		struct dive *curr = current_dive;
+		if (notesBackup[curr].buddy != ui->buddy->text() ||
+			notesBackup[curr].suit != ui->suit->text() ||
+			notesBackup[curr].notes != ui->notes->toPlainText() ||
+			notesBackup[curr].divemaster != ui->divemaster->text() ||
+			notesBackup[curr].location  != ui->location->text() ||
+			notesBackup[curr].coordinates != ui->coordinates->text() ||
+			notesBackup[curr].rating 	!= ui->visibility->currentStars() ||
+			notesBackup[curr].visibility != ui->rating->currentStars())
 
-				mark_divelist_changed(TRUE);
-			if (notesBackup[curr].location != ui->location->text() ||
-			    notesBackup[curr].coordinates != ui->coordinates->text()) {
-				mainWindow()->globe()->reload();
-				mainWindow()->globe()->centerOn(current_dive);
-			}
+			mark_divelist_changed(TRUE);
+		if (notesBackup[curr].location != ui->location->text() ||
+			notesBackup[curr].coordinates != ui->coordinates->text()) {
+			mainWindow()->globe()->reload();
+			mainWindow()->globe()->centerOn(current_dive);
 		}
-		editMode = NONE;
 	}
+	editMode = NONE;
+
 	QPalette p;
 	ui->buddy->setPalette(p);
 	ui->notes->setPalette(p);
@@ -425,11 +386,9 @@ void MainTab::on_editAccept_clicked(bool edit)
 	free(what);\
 	what = strdup(textByteArray.data());
 
-void MainTab::on_editReset_clicked()
+void MainTab::rejectChanges()
 {
-	if (!ui->editAccept->isChecked())
-		return;
-
+	mainWindow()->dive_list()->setEnabled(true);
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1){
 		ui->notes->setText(notesBackup[NULL].notes );
 		ui->location->setText(notesBackup[NULL].location);
@@ -464,21 +423,10 @@ void MainTab::on_editReset_clicked()
 			mydive->visibility = notesBackup[mydive].visibility;
 		}
 	}
-	ui->editAccept->setChecked(false);
 	ui->diveNotesMessage->animatedHide();
-
-	ui->location->setReadOnly(true);
-	ui->coordinates->setReadOnly(true);
-	ui->divemaster->setReadOnly(true);
-	ui->buddy->setReadOnly(true);
-	ui->suit->setReadOnly(true);
-	ui->notes->setReadOnly(true);
-	ui->rating->setReadOnly(true);
-	ui->visibility->setReadOnly(true);
 	mainWindow()->dive_list()->setEnabled(true);
 
-	ui->editAccept->hide();
-	ui->editReset->hide();
+	ui->notesButtonBox->hide();
 	notesBackup.clear();
 	QPalette p;
 	ui->buddy->setPalette(p);

@@ -24,14 +24,14 @@
     <item row="4" column="0" colspan="2">
      <widget class="QLineEdit" name="coordinates">
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
     <item row="11" column="0" colspan="2">
      <widget class="QTextEdit" name="notes">
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -45,28 +45,28 @@
     <item row="6" column="0">
      <widget class="QLineEdit" name="divemaster">
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
     <item row="8" column="1">
      <widget class="QLineEdit" name="suit">
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
     <item row="6" column="1">
      <widget class="QLineEdit" name="buddy">
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
     <item row="2" column="0" colspan="2">
      <widget class="QLineEdit" name="location">
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -126,30 +126,20 @@
       </item>
      </layout>
     </item>
-    <item row="12" column="1">
-     <widget class="QPushButton" name="editReset">
+    <item row="3" column="0">
+     <widget class="QLabel" name="CoordinatedLabel">
       <property name="text">
-       <string>Undo</string>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="0">
-     <widget class="QPushButton" name="editAccept">
-      <property name="text">
-       <string>Save</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
+       <string>Coordinates</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0" colspan="2">
      <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
     </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="CoordinatedLabel">
-      <property name="text">
-       <string>Coordinates</string>
+    <item row="12" column="0" colspan="2">
+     <widget class="QDialogButtonBox" name="notesButtonBox">
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
       </property>
      </widget>
     </item>
