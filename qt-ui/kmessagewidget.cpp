@@ -389,6 +389,7 @@ void KMessageWidget::animatedShow()
 void KMessageWidget::animatedHide()
 {
 	if (!isVisible()) {
+		hide();
 		return;
 	}
 

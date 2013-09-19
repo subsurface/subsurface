@@ -150,7 +150,7 @@
     <string>Equipment</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QWidget" name="widget" native="true">
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="spacing">
@@ -178,6 +178,16 @@
         </widget>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="KMessageWidget" name="diveEquipmentMessage" native="true"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QDialogButtonBox" name="equipmentButtonBox">
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </property>
      </widget>
     </item>
    </layout>
