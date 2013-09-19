@@ -164,7 +164,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	gasListView->hide();
 
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
-	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createDecoStops()));
+	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(drawProfile()));
 
 	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex&,int,int)),
 			this, SLOT(pointInserted(const QModelIndex&, int, int)));
@@ -185,7 +185,7 @@ void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , i
 	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
 
 	gases << gasChooseBtn;
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::keyDownAction()
@@ -219,7 +219,7 @@ void DivePlannerGraphics::keyUpAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::keyLeftAction()
@@ -303,7 +303,7 @@ void DivePlannerGraphics::pointsRemoved(const QModelIndex& , int start, int end)
 		gases.pop_back();
 	}
 	scene()->clearSelection();
-	createDecoStops();
+	drawProfile();
 }
 
 bool intLessThan(int a, int b){
@@ -343,7 +343,7 @@ void DivePlannerGraphics::increaseDepth()
 		return;
 	depthLine->setMaximum( depthLine->maximum() + 10);
 	depthLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::increaseTime()
@@ -351,7 +351,7 @@ void DivePlannerGraphics::increaseTime()
 	minMinutes += 10;
 	timeLine->setMaximum( minMinutes );
 	timeLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::decreaseDepth()
@@ -370,7 +370,7 @@ void DivePlannerGraphics::decreaseDepth()
 	}
 	depthLine->setMaximum(depthLine->maximum() - 10);
 	depthLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::decreaseTime()
@@ -385,7 +385,7 @@ void DivePlannerGraphics::decreaseTime()
 	minMinutes -= 10;
 	timeLine->setMaximum(timeLine->maximum() -10);
 	timeLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -415,7 +415,7 @@ void DivePlannerGraphics::selectGas(const QModelIndex& index)
 	gasListView->hide();
 }
 
-void DivePlannerGraphics::createDecoStops()
+void DivePlannerGraphics::drawProfile()
 {
 	qDeleteAll(lines);
 	lines.clear();
@@ -605,7 +605,7 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 		activeDraggedHandler->setBrush(QBrush(Qt::white));
 		activeDraggedHandler->setPos(QPointF(xpos, ypos));
 
-		createDecoStops();
+		drawProfile();
 		activeDraggedHandler = 0;
 	}
 }

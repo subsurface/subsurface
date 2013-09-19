@@ -147,7 +147,7 @@ private slots:
 	void increaseDepth();
 	void decreaseTime();
 	void decreaseDepth();;
-	void createDecoStops();
+	void drawProfile();
 	void prepareSelectGas();
 	void selectGas(const QModelIndex& index);
 	void pointInserted(const QModelIndex&, int start, int end);
