@@ -209,6 +209,7 @@ void MainWindow::enableDcShortcuts()
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	disableDcShortcuts();
+	DivePlannerPointsModel::instance()->setPlanMode(true);
 	ui->stackedWidget->setCurrentIndex(1);
 	ui->infoPane->setCurrentIndex(1);
 }
@@ -254,15 +255,10 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 
 void MainWindow::on_actionAddDive_triggered()
 {
-	struct dive *dive;
-	dive = alloc_dive();
-	record_dive(dive);
-	process_dives(FALSE, FALSE);
-
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	disableDcShortcuts();
+	DivePlannerPointsModel::instance()->setPlanMode(false);
+	ui->stackedWidget->setCurrentIndex(1);
+	ui->infoPane->setCurrentIndex(1);
 }
 
 void MainWindow::on_actionRenumber_triggered()

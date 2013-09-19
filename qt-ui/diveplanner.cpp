@@ -894,6 +894,16 @@ void DivePlannerWidget::lastStopChanged(bool checked)
 	plannerModel->setLastStop6m(checked);
 }
 
+void DivePlannerPointsModel::setPlanMode(bool isPlan)
+{
+	mode = isPlan ? PLAN : ADD;
+}
+
+bool DivePlannerPointsModel::isPlanner()
+{
+	return mode == PLAN;
+}
+
 int DivePlannerPointsModel::columnCount(const QModelIndex& parent) const
 {
 	return COLUMNS;

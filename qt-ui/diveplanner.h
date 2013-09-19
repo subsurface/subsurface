@@ -29,9 +29,12 @@ public:
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    virtual Qt::ItemFlags flags(const QModelIndex& index) const;
+	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	void removeSelectedPoints(const QVector<int>& rows);
+	enum Modes { PLAN, ADD };
+	void setPlanMode(bool);
+	bool isPlanner();
 
 	/**
 	 * @return the row number.
@@ -50,9 +53,9 @@ public slots:
 	void setLastStop6m(bool value);
 	void createPlan();
 	void remove(const QModelIndex& index);
-    void cancelPlan();
-    void createTemporaryPlan();
-    void deleteTemporaryPlan();
+	void cancelPlan();
+	void createTemporaryPlan();
+	void deleteTemporaryPlan();
 
 signals:
 	void planCreated();
@@ -61,6 +64,7 @@ signals:
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
 	struct diveplan diveplan;
+	Modes mode;
 	QVector<divedatapoint> divepoints;
 	struct dive *tempDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);
