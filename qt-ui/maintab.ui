@@ -156,16 +156,7 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <item>
@@ -547,6 +538,16 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>location</tabstop>
+  <tabstop>coordinates</tabstop>
+  <tabstop>divemaster</tabstop>
+  <tabstop>buddy</tabstop>
+  <tabstop>suit</tabstop>
+  <tabstop>notes</tabstop>
+  <tabstop>notesButtonBox</tabstop>
+  <tabstop>equipmentButtonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
