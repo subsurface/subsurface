@@ -624,9 +624,15 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 
-	/* if all we wanted was the dive just get us back to the surface */
+	/* if all we wanted was the dive just get us back to the surface
+	 * we ascend with 15ft / min to the safety stop and 7.5ft / min from there */
 	if (!add_deco) {
-		transitiontime = depth / 150; /* this still needs to be made configurable */
+		if (depth > 5000) {
+			transitiontime = depth / 75; /* this still needs to be made configurable */
+			plan_add_segment(diveplan, transitiontime, 5000, o2, he, po2);
+			depth = 5000;
+		}
+		transitiontime = 2 * depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
@@ -661,6 +667,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	gi = gaschangenr - 1;
 	stopidx += gaschangenr;
 	if (depth > stoplevels[stopidx]) {
+		/* right now all the transitions are at 30ft/min - this needs to be configurable */
 		transitiontime = (depth - stoplevels[stopidx]) / 150;
 #if DEBUG_PLAN & 2
 		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx] / 1000.0);
@@ -701,6 +708,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 #endif
 		if (wait_time)
 			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he, po2);
+		/* right now all the transitions are at 30ft/min - this needs to be configurable */
 		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
 #if DEBUG_PLAN & 2
 		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx - 1] / 1000.0);
