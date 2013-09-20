@@ -56,6 +56,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->notes->viewport()->installEventFilter(this);
 	ui->rating->installEventFilter(this);
 	ui->visibility->installEventFilter(this);
+	ui->airtemp->installEventFilter(this);
+	ui->watertemp->installEventFilter(this);
+	ui->dateTimeEdit->installEventFilter(this);
 
 	QList<QObject *> statisticsTabWidgets = ui->statisticsTab->children();
 	Q_FOREACH(QObject* obj, statisticsTabWidgets) {
@@ -142,6 +145,9 @@ void MainTab::enableEdition()
 			notesBackup[mydive].latitude = mydive->latitude;
 			notesBackup[mydive].longitude = mydive->longitude;
 			notesBackup[mydive].coordinates  = ui->coordinates->text();
+			notesBackup[mydive].airtemp = get_temperature_string(mydive->airtemp, true);
+			notesBackup[mydive].watertemp = get_temperature_string(mydive->watertemp, true);
+			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when - gettimezoneoffset()).toString(QString("M/d/yy h:mm"));
 		}
 		editMode = DIVE;
 	}
@@ -149,7 +155,12 @@ void MainTab::enableEdition()
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
-	if (isEnabled() && event->type() == QEvent::FocusIn && (object == ui->rating || object == ui->visibility)){
+	if (isEnabled() && event->type() == QEvent::KeyPress && object == ui->dateTimeEdit) {
+		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
+		enableEdition();
+	}
+
+	if (isEnabled() && event->type() == QEvent::FocusIn && (object == ui->rating || object == ui->visibility)) {
 		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
 	}
@@ -197,6 +208,13 @@ void MainTab::clearStats()
 	else								\
 		ui->field->setText(d->field)
 
+#define UPDATE_TEMP(d, field)			\
+	if (!d || d->field.mkelvin == 0)				\
+		ui->field->setText("");			\
+	else								\
+		ui->field->setText(get_temperature_string(d->field, TRUE));
+
+
 void MainTab::updateDiveInfo(int dive)
 {
 	if(!isEnabled())
@@ -221,7 +239,9 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, suit);
 	UPDATE_TEXT(d, divemaster);
 	UPDATE_TEXT(d, buddy);
-
+	UPDATE_TEMP(d, airtemp);
+	UPDATE_TEMP(d, watertemp);
+	ui->dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
 	if (d) {
 		char buffer[256];
 		print_gps_coordinates(buffer, sizeof buffer, d->latitude.udeg, d->longitude.udeg);
@@ -385,10 +405,13 @@ void MainTab::acceptChanges()
 			notesBackup[curr].divemaster != ui->divemaster->text() ||
 			notesBackup[curr].location  != ui->location->text() ||
 			notesBackup[curr].coordinates != ui->coordinates->text() ||
-			notesBackup[curr].rating 	!= ui->visibility->currentStars() ||
-			notesBackup[curr].visibility != ui->rating->currentStars())
-
+			notesBackup[curr].rating != ui->visibility->currentStars() ||
+			notesBackup[curr].airtemp != ui->airtemp->text() ||
+			notesBackup[curr].watertemp != ui->watertemp->text() ||
+			notesBackup[curr].datetime != ui->dateTimeEdit->dateTime().toString(QString("M/d/yy h:mm")) ||
+			notesBackup[curr].visibility != ui->rating->currentStars()) {
 			mark_divelist_changed(TRUE);
+		}
 		if (notesBackup[curr].location != ui->location->text() ||
 			notesBackup[curr].coordinates != ui->coordinates->text()) {
 			mainWindow()->globe()->reload();
@@ -414,6 +437,9 @@ void MainTab::acceptChanges()
 	ui->coordinates->setPalette(p);
 	ui->divemaster->setPalette(p);
 	ui->suit->setPalette(p);
+	ui->airtemp->setPalette(p);
+	ui->watertemp->setPalette(p);
+	ui->dateTimeEdit->setPalette(p);
 }
 
 #define EDIT_TEXT2(what, text) \
@@ -445,6 +471,9 @@ void MainTab::rejectChanges()
 		ui->divemaster->setText(notesBackup[curr].divemaster);
 		ui->rating->setCurrentStars(notesBackup[curr].rating);
 		ui->visibility->setCurrentStars(notesBackup[curr].visibility);
+		ui->airtemp->setText(notesBackup[curr].airtemp);
+		ui->watertemp->setText(notesBackup[curr].watertemp);
+		ui->dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime, QString("M/d/y h:mm")));
 
 		struct dive *mydive;
 		for (int i = 0; i < dive_table.nr; i++) {
@@ -480,6 +509,9 @@ void MainTab::rejectChanges()
 	ui->coordinates->setPalette(p);
 	ui->divemaster->setPalette(p);
 	ui->suit->setPalette(p);
+	ui->airtemp->setPalette(p);
+	ui->watertemp->setPalette(p);
+	ui->dateTimeEdit->setPalette(p);
 	if (editMode == ADD) {
 		// clean up
 		delete_single_dive(selected_dive);
@@ -523,6 +555,24 @@ void MainTab::on_divemaster_textChanged(const QString& text)
 {
 	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->divemaster, text) );
 	markChangedWidget(ui->divemaster);
+}
+
+void MainTab::on_airtemp_textChanged(const QString& text)
+{
+	EDIT_SELECTED_DIVES( mydive->airtemp.mkelvin = parseTemperatureToMkelvin(text) );
+	markChangedWidget(ui->airtemp);
+}
+
+void MainTab::on_watertemp_textChanged(const QString& text)
+{
+	EDIT_SELECTED_DIVES( mydive->watertemp.mkelvin = parseTemperatureToMkelvin(text) );
+	markChangedWidget(ui->watertemp);
+}
+
+void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime& datetime)
+{
+	EDIT_SELECTED_DIVES( mydive->when = datetime.toTime_t() + gettimezoneoffset() );
+	markChangedWidget(ui->dateTimeEdit);
 }
 
 void MainTab::on_location_textChanged(const QString& text)

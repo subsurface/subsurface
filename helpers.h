@@ -25,6 +25,8 @@ void set_default_dive_computer(const char *vendor, const char *product);
 void set_default_dive_computer_device(const char *name);
 QString getSubsurfaceDataPath(QString folderToFind);
 extern const QString get_dc_nickname(const char *model, uint32_t deviceid);
+int gettimezoneoffset();
+int parseTemperatureToMkelvin(const QString& text);
 
 extern DiveComputerList dcList;
 

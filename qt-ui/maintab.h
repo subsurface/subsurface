@@ -21,6 +21,9 @@ namespace Ui
 }
 
 struct NotesBackup{
+	QString airtemp;
+	QString watertemp;
+	QString datetime;
 	QString location;
 	QString coordinates;
 	degrees_t latitude;
@@ -64,6 +67,9 @@ public slots:
 	void on_buddy_textChanged(const QString& text);
 	void on_suit_textChanged(const QString& text);
 	void on_notes_textChanged();
+	void on_airtemp_textChanged(const QString& text);
+	void on_watertemp_textChanged(const QString& text);
+	void on_dateTimeEdit_dateTimeChanged(const QDateTime& datetime);
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
 	void editCylinderWidget(const QModelIndex& index);

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>505</width>
-    <height>459</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,70 +21,70 @@
     <string>Dive Notes</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout_3">
-    <item row="4" column="0" colspan="2">
+    <item row="6" column="0" colspan="2">
      <widget class="QLineEdit" name="coordinates">
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="11" column="0" colspan="2">
+    <item row="13" column="0" colspan="2">
      <widget class="QTextEdit" name="notes">
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="LocationLabel">
       <property name="text">
        <string>Location</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
+    <item row="8" column="0">
      <widget class="QLineEdit" name="divemaster">
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="8" column="1">
+    <item row="10" column="1">
      <widget class="QLineEdit" name="suit">
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
+    <item row="8" column="1">
      <widget class="QLineEdit" name="buddy">
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="2">
+    <item row="4" column="0" colspan="2">
      <widget class="QLineEdit" name="location">
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="7" column="0">
      <widget class="QLabel" name="DivemasterLabel">
       <property name="text">
        <string>Divemaster</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="7" column="1">
      <widget class="QLabel" name="BuddyLabel">
       <property name="text">
        <string>Buddy</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="0">
+    <item row="9" column="0">
      <layout class="QHBoxLayout" name="ratingVisibilityLabels">
       <item>
        <widget class="QLabel" name="RatingLabel">
@@ -102,21 +102,21 @@
       </item>
      </layout>
     </item>
-    <item row="7" column="1">
+    <item row="9" column="1">
      <widget class="QLabel" name="SuitLabel">
       <property name="text">
        <string>Suit</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="0">
+    <item row="11" column="0">
      <widget class="QLabel" name="NotesLabel">
       <property name="text">
        <string>Notes</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="0">
+    <item row="10" column="0">
      <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
       <item>
        <widget class="StarWidget" name="rating" native="true"/>
@@ -126,20 +126,62 @@
       </item>
      </layout>
     </item>
-    <item row="3" column="0">
+    <item row="5" column="0">
      <widget class="QLabel" name="CoordinatedLabel">
       <property name="text">
        <string>Coordinates</string>
       </property>
      </widget>
     </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="DateTimeLabel">
+      <property name="text">
+       <string>Starttime</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0" colspan="2">
      <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
     </item>
-    <item row="12" column="0" colspan="2">
+    <item row="14" column="0" colspan="2">
      <widget class="QDialogButtonBox" name="notesButtonBox">
       <property name="standardButtons">
        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QDateTimeEdit" name="dateTimeEdit">
+      <property name="displayFormat">
+       <string>M/d/yy h:mm</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <layout class="QHBoxLayout" name="airWaterTempLayout">
+      <item>
+       <widget class="QLineEdit" name="airtemp">
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="watertemp">
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="TemperaturesLabel">
+      <property name="text">
+       <string>air / water Temperatures</string>
       </property>
      </widget>
     </item>

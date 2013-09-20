@@ -36,6 +36,8 @@
 #include <QMap>
 #include <QMultiMap>
 #include <QNetworkProxy>
+#include <QDateTime>
+#include <QRegExp>
 
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
@@ -379,4 +381,33 @@ void call_for_each_dc(FILE *f, void (*callback)(FILE *, const char *, uint32_t,
 	}
 }
 
+int gettimezoneoffset()
+{
+	QDateTime dt1 = QDateTime::currentDateTime();
+	QDateTime dt2 = dt1.toUTC();
+	dt1.setTimeSpec(Qt::UTC);
+	return dt2.secsTo(dt1);
+}
+
+int parseTemperatureToMkelvin(const QString& text)
+{
+	int mkelvin;
+	QString numOnly = text;
+	numOnly.replace(",",".").remove(QRegExp("[^0-9.]"));
+	if (numOnly == "")
+		return 0;
+	double number = numOnly.toDouble();
+	switch (prefs.units.temperature) {
+	case units::CELSIUS:
+		mkelvin = C_to_mkelvin(number);
+		break;
+	case units::FAHRENHEIT:
+		mkelvin = F_to_mkelvin(number);
+		break;
+	default:
+		mkelvin = 0;
+	}
+	return mkelvin;
+
+}
 #include "qt-gui.moc"

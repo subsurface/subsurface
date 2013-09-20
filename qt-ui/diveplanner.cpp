@@ -11,6 +11,7 @@
 #include "../dive.h"
 #include "../divelist.h"
 #include "../planner.h"
+#include "helpers.h"
 
 #include <QMouseEvent>
 #include <QDebug>
@@ -1056,7 +1057,7 @@ void DivePlannerPointsModel::setLastStop6m(bool value)
 
 void DivePlannerPointsModel::setStartTime(const QTime& t)
 {
-	diveplan.when = (t.msec() + QDateTime::currentMSecsSinceEpoch()) / 1000 - Qt::OffsetFromUTC * 3600;
+	diveplan.when = (t.msec() + QDateTime::currentMSecsSinceEpoch()) / 1000 - gettimezoneoffset();
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
