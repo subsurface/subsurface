@@ -594,7 +594,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 }
 #endif
 
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, char **error_string_p)
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco, char **error_string_p)
 {
 	struct dive *dive;
 	struct sample *sample;
@@ -623,6 +623,19 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, c
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
+
+	/* if all we wanted was the dive just get us back to the surface */
+	if (!add_deco) {
+		transitiontime = depth / 150; /* this still needs to be made configurable */
+		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2);
+		/* re-create the dive */
+		delete_single_dive(dive_table.nr - 1);
+		*divep = dive = create_dive_from_plan(diveplan, error_string_p);
+		if (dive)
+			record_dive(dive);
+		return;
+	}
+
 	tissue_tolerance = tissue_at_end(dive, cached_datap, error_string_p);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
 #if DEBUG_PLAN & 4

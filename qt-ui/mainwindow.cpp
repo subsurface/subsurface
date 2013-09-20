@@ -36,6 +36,8 @@
 #include "about.h"
 #include "printdialog.h"
 
+#include "glib/gi18n.h"
+
 static MainWindow* instance = 0;
 
 MainWindow* mainWindow()
@@ -209,6 +211,7 @@ void MainWindow::enableDcShortcuts()
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	disableDcShortcuts();
+	DivePlannerPointsModel::instance()->setPlanMode(true);
 	ui->stackedWidget->setCurrentIndex(1);
 	ui->infoPane->setCurrentIndex(1);
 }
@@ -254,15 +257,25 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 
 void MainWindow::on_actionAddDive_triggered()
 {
-	struct dive *dive;
-	dive = alloc_dive();
+	// clear the selection
+	for (int i = 0; i < dive_table.nr; i++) {
+		struct dive *d = get_dive(i);
+		if (d && d->selected)
+			deselect_dive(i);
+	}
+	disableDcShortcuts();
+	DivePlannerPointsModel::instance()->setPlanMode(false);
+	// now cheat - create one dive that we use to store the info tab data in
+	struct dive *dive = alloc_dive();
+	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L;
+	dive->dc.model = _("manually added dive");
 	record_dive(dive);
-	process_dives(FALSE, FALSE);
-
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	select_dive(get_divenr(dive));
+	ui->InfoWidget->updateDiveInfo(selected_dive);
+	ui->stackedWidget->setCurrentIndex(1);
+	ui->infoPane->setCurrentIndex(0);
+	refreshDisplay();
+	ui->InfoWidget->addDiveStarted();
 }
 
 void MainWindow::on_actionRenumber_triggered()

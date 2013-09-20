@@ -68,13 +68,14 @@ public slots:
 	void on_visibility_valueChanged(int value);
 	void editCylinderWidget(const QModelIndex& index);
 	void editWeigthWidget(const QModelIndex& index);
+	void addDiveStarted();
 
 private:
 	Ui::MainTab *ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
 	QMap<dive*, NotesBackup> notesBackup;
-	enum { NONE, DIVE, TRIP } editMode;
+	enum { NONE, DIVE, TRIP, ADD } editMode;
 	Completers completers;
 	void enableEdition();
 };

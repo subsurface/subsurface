@@ -622,6 +622,7 @@ extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded);
 extern void renumber_dives(int nr);
+extern void copy_samples(struct dive *s, struct dive *d);
 
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
@@ -719,7 +720,7 @@ void free_dps(struct divedatapoint *dp);
 void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
 void dump_plan(struct diveplan *diveplan);
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, char **error_string_p);
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco, char **error_string_p);
 void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, char *name);

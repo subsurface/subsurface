@@ -4,6 +4,7 @@
 #include "modeldelegates.h"
 #include "ui_diveplanner.h"
 #include "mainwindow.h"
+#include "maintab.h"
 #include "tableview.h"
 #include "graphicsview-common.h"
 
@@ -164,7 +165,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	gasListView->hide();
 
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
-	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createDecoStops()));
+	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(drawProfile()));
 
 	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex&,int,int)),
 			this, SLOT(pointInserted(const QModelIndex&, int, int)));
@@ -185,7 +186,7 @@ void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , i
 	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
 
 	gases << gasChooseBtn;
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::keyDownAction()
@@ -219,7 +220,7 @@ void DivePlannerGraphics::keyUpAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::keyLeftAction()
@@ -303,7 +304,7 @@ void DivePlannerGraphics::pointsRemoved(const QModelIndex& , int start, int end)
 		gases.pop_back();
 	}
 	scene()->clearSelection();
-	createDecoStops();
+	drawProfile();
 }
 
 bool intLessThan(int a, int b){
@@ -343,7 +344,7 @@ void DivePlannerGraphics::increaseDepth()
 		return;
 	depthLine->setMaximum( depthLine->maximum() + 10);
 	depthLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::increaseTime()
@@ -351,7 +352,7 @@ void DivePlannerGraphics::increaseTime()
 	minMinutes += 10;
 	timeLine->setMaximum( minMinutes );
 	timeLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::decreaseDepth()
@@ -370,7 +371,7 @@ void DivePlannerGraphics::decreaseDepth()
 	}
 	depthLine->setMaximum(depthLine->maximum() - 10);
 	depthLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::decreaseTime()
@@ -385,7 +386,7 @@ void DivePlannerGraphics::decreaseTime()
 	minMinutes -= 10;
 	timeLine->setMaximum(timeLine->maximum() -10);
 	timeLine->updateTicks();
-	createDecoStops();
+	drawProfile();
 }
 
 void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
@@ -415,7 +416,7 @@ void DivePlannerGraphics::selectGas(const QModelIndex& index)
 	gasListView->hide();
 }
 
-void DivePlannerGraphics::createDecoStops()
+void DivePlannerGraphics::drawProfile()
 {
 	qDeleteAll(lines);
 	lines.clear();
@@ -552,7 +553,7 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& mappedPos, const int 
 	qDeleteAll(lines);
 	lines.clear();
 
-	createDecoStops();
+	drawProfile();
 
 
 }
@@ -620,7 +621,7 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 		activeDraggedHandler->setPos(QPointF(xpos, ypos));
 
 		activeDraggedHandler = 0;
-		createDecoStops();
+		drawProfile();
 	}
 }
 
@@ -908,6 +909,16 @@ void DivePlannerWidget::lastStopChanged(bool checked)
 	plannerModel->setLastStop6m(checked);
 }
 
+void DivePlannerPointsModel::setPlanMode(bool isPlan)
+{
+	mode = isPlan ? PLAN : ADD;
+}
+
+bool DivePlannerPointsModel::isPlanner()
+{
+	return mode == PLAN;
+}
+
 int DivePlannerPointsModel::columnCount(const QModelIndex& parent) const
 {
 	return COLUMNS;
@@ -1116,7 +1127,7 @@ struct diveplan DivePlannerPointsModel::getDiveplan()
 
 void DivePlannerPointsModel::cancelPlan()
 {
-	if(rowCount()){
+	if(mode == PLAN && rowCount()){
 		if (QMessageBox::warning(mainWindow(), tr("Save the Plan?"),
 			tr("You have a working plan, \n are you sure that you wanna cancel it?"),
 				QMessageBox::Ok | QMessageBox::Cancel) != QMessageBox::Ok){
@@ -1152,7 +1163,9 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	char *cache = NULL;
 	tempDive = NULL;
 	char *errorString = NULL;
-	plan(&diveplan, &cache, &tempDive, &errorString);
+	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
+	if (mode == ADD)
+		copy_samples(tempDive, current_dive);
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
@@ -1185,7 +1198,7 @@ void DivePlannerPointsModel::createPlan()
 	char *errorString = NULL;
 
 	createTemporaryPlan();
-	plan(&diveplan, &cache, &tempDive, &errorString);
+	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
 	mark_divelist_changed(TRUE);
 
 	// Remove and clean the diveplan, so we don't delete
