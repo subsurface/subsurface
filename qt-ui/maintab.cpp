@@ -470,6 +470,14 @@ void MainTab::rejectChanges()
 	ui->location->setPalette(p);
 	ui->divemaster->setPalette(p);
 	ui->suit->setPalette(p);
+	if (editMode == ADD) {
+		// clean up
+		delete_single_dive(selected_dive);
+		selected_dive = -1;
+		DivePlannerPointsModel::instance()->cancelPlan();
+		mainWindow()->showProfile();
+		mainWindow()->refreshDisplay();
+	}
 	editMode = NONE;
 }
 #undef EDIT_TEXT2
