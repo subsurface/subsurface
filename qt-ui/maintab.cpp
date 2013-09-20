@@ -403,6 +403,7 @@ void MainTab::acceptChanges()
 		DivePlannerPointsModel::instance()->cancelPlan();
 		mainWindow()->showProfile();
 		mainWindow()->refreshDisplay();
+		mark_divelist_changed(TRUE);
 	}
 	editMode = NONE;
 
