@@ -35,6 +35,7 @@ public:
 	enum Modes { PLAN, ADD };
 	void setPlanMode(bool);
 	bool isPlanner();
+	void createSimpleDive();
 
 	/**
 	 * @return the row number.

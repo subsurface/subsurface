@@ -274,6 +274,7 @@ void MainWindow::on_actionAddDive_triggered()
 	ui->InfoWidget->updateDiveInfo(selected_dive);
 	ui->stackedWidget->setCurrentIndex(1);
 	ui->infoPane->setCurrentIndex(0);
+	DivePlannerPointsModel::instance()->createSimpleDive();
 	refreshDisplay();
 	ui->InfoWidget->addDiveStarted();
 }
