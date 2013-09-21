@@ -164,6 +164,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	gasListView->setWindowFlags(Qt::Popup);
 	gasListView->setModel(airTypes());
 	gasListView->hide();
+	gasListView->installEventFilter(this);
 
 	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
 	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(drawProfile()));
@@ -173,6 +174,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex&, int, int)),
 			this, SLOT(pointsRemoved(const QModelIndex&, int, int)));
 	setRenderHint(QPainter::Antialiasing);
+}
+
+bool DivePlannerGraphics::eventFilter(QObject *object, QEvent* event)
+{
+	if (object == gasListView && event->type() == QEvent::KeyPress) {
+		QKeyEvent *ke =  static_cast<QKeyEvent *>(event);
+		if (ke->key() == Qt::Key_Escape)
+			gasListView->hide();
+	}
+	return false;
 }
 
 void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)

@@ -153,6 +153,7 @@ private slots:
 	void selectGas(const QModelIndex& index);
 	void pointInserted(const QModelIndex&, int start, int end);
 	void pointsRemoved(const QModelIndex&, int start, int end);
+	bool eventFilter(QObject *object, QEvent* event);
 private:
 	void moveActiveHandler(const QPointF& MappedPos, const int pos);
 
