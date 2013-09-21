@@ -414,10 +414,10 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 void DivePlannerPointsModel::createSimpleDive()
 {
-	plannerModel->addStop(18000, 1 * 60, tr("Air"), 0);
-	plannerModel->addStop(18000, 25 * 60, tr("Air"), 0);
-	plannerModel->addStop(9000, 26 * 60, tr("Air"), 0);
-	plannerModel->addStop(9000, 41 * 60, tr("Air"), 0);
+	plannerModel->addStop(15000, 1 * 60, tr("Air"), 0);
+	plannerModel->addStop(15000, 40 * 60, tr("Air"), 0);
+//	plannerModel->addStop(9000, 26 * 60, tr("Air"), 0);
+//	plannerModel->addStop(9000, 41 * 60, tr("Air"), 0);
 	plannerModel->addStop(5000, 42 * 60, tr("Air"), 0);
 	plannerModel->addStop(5000, 45 * 60, tr("Air"), 0);
 }
