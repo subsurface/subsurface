@@ -421,7 +421,9 @@ void MainTab::acceptChanges()
 	if (editMode == ADD) {
 		// clean up the dive data (get duration, depth information from samples)
 		fixup_dive(current_dive);
-		if (current_dive == get_dive(dive_table.nr - 1) && get_dive(dive_table.nr - 2)->number)
+		if (dive_table.nr == 1)
+			current_dive->number = 1;
+		else if (current_dive == get_dive(dive_table.nr - 1) && get_dive(dive_table.nr - 2)->number)
 			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
 		DivePlannerPointsModel::instance()->cancelPlan();
 		mainWindow()->showProfile();
