@@ -581,6 +581,9 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>dateTimeEdit</tabstop>
+  <tabstop>airtemp</tabstop>
+  <tabstop>watertemp</tabstop>
   <tabstop>location</tabstop>
   <tabstop>coordinates</tabstop>
   <tabstop>divemaster</tabstop>
