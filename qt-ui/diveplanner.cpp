@@ -560,9 +560,18 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 
 void DivePlannerGraphics::moveActiveHandler(const QPointF& mappedPos, const int pos)
 {
-
 	divedatapoint data = plannerModel->at(pos);
+	int mintime = 0, maxtime = (timeLine->maximum() + 10) * 60;
+	if (pos > 0)
+		mintime = plannerModel->at(pos - 1).time;
+	if (pos < plannerModel->size() - 1)
+		maxtime = plannerModel->at(pos + 1).time;
+
 	int minutes = rint(timeLine->valueAt(mappedPos));
+
+	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
+		return;
+
 	int meters = rint(depthLine->valueAt(mappedPos));
 	double xpos = timeLine->posAtValue(minutes);
 	double ypos = depthLine->posAtValue(meters);
@@ -617,32 +626,9 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (activeDraggedHandler) {
-		QPointF mappedPos = mapToScene(event->pos());
-		int minutes = rint(timeLine->valueAt(mappedPos));
-		int meters = rint(depthLine->valueAt(mappedPos));
-		double xpos = timeLine->posAtValue(minutes);
-		double ypos = depthLine->posAtValue(meters);
-		Q_FOREACH(DiveHandler* handler, handles){
-			if (xpos == handler->pos().x() && handler != activeDraggedHandler){
-				qDebug() << "There's already an point at that place.";
-				//TODO: Move this later to a KMessageWidget.
-				activeDraggedHandler->setPos(originalHandlerPos);
-				activeDraggedHandler = NULL;
-				return;
-			}
-		}
-
-		int pos = handles.indexOf(activeDraggedHandler);
-		divedatapoint data = plannerModel->at(pos);
-
-		data.depth = rint(depthLine->valueAt(mappedPos)) * 1000;
-		data.time = rint(timeLine->valueAt(mappedPos)) * 60;
-
-		plannerModel->editStop(pos, data);
-
+		/* we already deal with all the positioning in the life update,
+		 * so all we need to do here is change the color of the handler */
 		activeDraggedHandler->setBrush(QBrush(Qt::white));
-		activeDraggedHandler->setPos(QPointF(xpos, ypos));
-
 		activeDraggedHandler = 0;
 		drawProfile();
 	}
@@ -1126,6 +1112,11 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	divepoints[row] = newData;
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
+}
+
+int DivePlannerPointsModel::size()
+{
+	return divepoints.size();
 }
 
 divedatapoint DivePlannerPointsModel::at(int row)

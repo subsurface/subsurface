@@ -42,6 +42,7 @@ public:
 	 */
 	void editStop(int row, divedatapoint newData );
 	divedatapoint at(int row);
+	int size();
 	struct diveplan getDiveplan();
 public slots:
 	int addStop(int meters = 0, int minutes = 0,const QString& gas = QString(), int ccpoint = 0 );
