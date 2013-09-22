@@ -355,6 +355,9 @@ void MainTab::updateDiveInfo(int dive)
 		ui->tempLimits->clear();
 		ui->totalTimeAllText->clear();
 		ui->timeLimits->clear();
+		/* turns out this is non-trivial for a dateTimeEdit... this is a partial hack */
+		QLineEdit *le = ui->dateTimeEdit->findChild<QLineEdit*>();
+		le->setText("");
 	}
 }
 
