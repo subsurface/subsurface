@@ -16,7 +16,7 @@
 int main(int argc, char **argv)
 {
 	int i;
-	bool no_filenames = TRUE;
+	bool no_filenames = true;
 	const char *path;
 
 	/* set up l18n - the search directory needs to change
@@ -43,10 +43,12 @@ int main(int argc, char **argv)
 			parse_argument(a);
 			continue;
 		}
-		if (imported)
+		if (imported) {
 			importedFiles.push_back( QString(a) );
-		else
+		} else {
+			no_filenames = false;
 			files.push_back( QString(a) );
+		}
 	}
 	if (no_filenames) {
 		files.push_back( QString(prefs.default_filename) );
