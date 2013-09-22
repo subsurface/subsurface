@@ -217,7 +217,7 @@ void MainTab::clearStats()
 
 void MainTab::updateDiveInfo(int dive)
 {
-	if(!isEnabled())
+	if(!isEnabled() && dive != -1)
 		setEnabled(true);
 
 	editMode = NONE;
