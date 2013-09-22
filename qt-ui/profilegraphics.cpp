@@ -519,7 +519,8 @@ void ProfileGraphicsView::plot_cylinder_pressure_text()
 			if (!seen_cyl[cyl]) {
 				plot_pressure_value(mbar, entry->sec, LEFT, BOTTOM);
 				plot_gas_value(mbar, entry->sec, LEFT, TOP,
-					       entry->o2, entry->he);
+						get_o2(&dive->cylinder[cyl].gasmix),
+						get_he(&dive->cylinder[cyl].gasmix));
 				seen_cyl[cyl] = TRUE;
 			}
 		}

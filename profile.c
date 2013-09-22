@@ -840,8 +840,6 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 		entry->po2 = sample->po2 / 1000.0;
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
-		entry->o2 = dive->cylinder[entry->cylinderindex].gasmix.o2.permille;
-		entry->he = dive->cylinder[entry->cylinderindex].gasmix.he.permille;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		entry->temperature = sample->temperature.mkelvin;
 
@@ -854,12 +852,6 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 	plot_data[idx++].sec = lasttime+10;
 	plot_data[idx++].sec = lasttime+20;
 	pi->nr = idx;
-
-	/* make sure the first two entries have the correct gas */
-	plot_data[0].o2 = plot_data[2].o2;
-	plot_data[0].he = plot_data[2].he;
-	plot_data[1].o2 = plot_data[2].o2;
-	plot_data[1].he = plot_data[2].he;
 
 	return plot_data;
 }
