@@ -202,24 +202,25 @@ void MainTab::clearStats()
 	ui->timeLimits->clear();
 }
 
-#define UPDATE_TEXT(d, field)			\
+#define UPDATE_TEXT(d, field)				\
 	if (!d || !d->field)				\
 		ui->field->setText("");			\
-	else								\
+	else						\
 		ui->field->setText(d->field)
 
-#define UPDATE_TEMP(d, field)			\
-	if (!d || d->field.mkelvin == 0)				\
+#define UPDATE_TEMP(d, field)				\
+	if (!d || d->field.mkelvin == 0)		\
 		ui->field->setText("");			\
-	else								\
-		ui->field->setText(get_temperature_string(d->field, TRUE));
+	else						\
+		ui->field->setText(get_temperature_string(d->field, TRUE))
 
 
 void MainTab::updateDiveInfo(int dive)
 {
-	if(!isEnabled() && dive != -1)
+	if (!isEnabled() && dive != -1)
 		setEnabled(true);
-
+	if (isEnabled() && dive == -1)
+		setEnabled(false);
 	editMode = NONE;
 	// This method updates ALL tabs whenever a new dive or trip is
 	// selected.
