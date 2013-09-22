@@ -241,11 +241,11 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEXT(d, buddy);
 	UPDATE_TEMP(d, airtemp);
 	UPDATE_TEMP(d, watertemp);
-	ui->dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
 	if (d) {
 		char buffer[256];
 		print_gps_coordinates(buffer, sizeof buffer, d->latitude.udeg, d->longitude.udeg);
 		ui->coordinates->setText(buffer);
+		ui->dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 			// only use trip relevant fields
 			ui->coordinates->setVisible(false);
