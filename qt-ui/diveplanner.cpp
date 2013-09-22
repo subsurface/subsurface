@@ -26,10 +26,12 @@
 
 #define TIME_INITIAL_MAX 30
 
-#define MAX_DEEPNESS 150
-#define MIN_DEEPNESS 40
+#define MAX_DEPTH M_OR_FT(150, 450)
+#define MIN_DEPTH M_OR_FT(20, 60)
 
-QStringListModel *airTypes(){
+#define M_OR_FT(_m,_f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : ((_f) * 304.8))
+
+QStringListModel *airTypes() {
 	static QStringListModel *self = new QStringListModel(QStringList()
 		<< QObject::tr("AIR")
 		<< QObject::tr("EAN32")
@@ -98,8 +100,8 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 	depthLine = new Ruler();
 	depthLine->setMinimum(0);
-	depthLine->setMaximum(40);
-	depthLine->setTickInterval(10);
+	depthLine->setMaximum(M_OR_FT(40,120));
+	depthLine->setTickInterval(M_OR_FT(10,30));
 	depthLine->setLine(
 		fromPercent(10, Qt::Horizontal),
 		fromPercent(10, Qt::Vertical),
@@ -127,18 +129,23 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	diveBg->setPen(QPen(QBrush(),0));
 	scene()->addItem(diveBg);
 
-#define ADDBTN(obj, icon, text, horizontal, vertical, tooltip, slot) \
+#define ADDBTN(obj, icon, text, horizontal, vertical, tooltip, value, slot) \
 	obj = new Button(); \
 	obj->setPixmap(QPixmap(icon)); \
 	obj->setPos(fromPercent(horizontal, Qt::Horizontal), fromPercent(vertical, Qt::Vertical)); \
-	obj->setToolTip(tooltip); \
+	obj->setToolTip(QString(tooltip.arg(value))); \
 	scene()->addItem(obj); \
 	connect(obj, SIGNAL(clicked()), this, SLOT(slot));
 
-	ADDBTN(plusDepth, ":plus",   ""  , 5,  5, tr("Increase maximum depth by 10m"), increaseDepth());
-	ADDBTN(plusTime,  ":plus",   ""  , 95, 95, tr("Increase minimum time by 10m"), increaseTime());
-	ADDBTN(lessDepth, ":minimum",""  , 2,  5, tr("Decreases maximum depth by 10m"), decreaseDepth());
-	ADDBTN(lessTime,  ":minimum",""  , 92, 95, tr("Decreases minimum time by 10m"), decreaseTime());
+	QString incrText;
+	if (prefs.units.length == units::METERS)
+		incrText = tr("10m");
+	else
+		incrText = tr("30ft");
+	ADDBTN(plusDepth, ":plus",   ""  , 5,  5, tr("Increase maximum depth by %1"), incrText, increaseDepth());
+	ADDBTN(lessDepth, ":minimum",""  , 2,  5, tr("Decreases maximum depth by %1"), incrText, decreaseDepth());
+	ADDBTN(plusTime,  ":plus",   ""  , 95, 95, tr("Increase minimum time by %1"), tr("10min"), increaseTime());
+	ADDBTN(lessTime,  ":minimum",""  , 92, 95, tr("Decreases minimum time by %1"), tr("10min"), decreaseTime());
 #undef ADDBTN
 	minMinutes = TIME_INITIAL_MAX;
 
@@ -208,10 +215,10 @@ void DivePlannerGraphics::keyDownAction()
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)) {
 				int row = handles.indexOf(handler);
 				divedatapoint dp = plannerModel->at(row);
-				if (dp.depth / 1000 >= depthLine->maximum())
+				if (dp.depth >= depthLine->maximum())
 					continue;
 
-				dp.depth += 1000;
+				dp.depth += M_OR_FT(1,5);
 				plannerModel->editStop(row, dp);
 			}
 		}
@@ -225,10 +232,10 @@ void DivePlannerGraphics::keyUpAction()
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
 
-			if (dp.depth / 1000 <= 0)
+			if (dp.depth <= 0)
 				continue;
 
-			dp.depth -= 1000;
+			dp.depth -= M_OR_FT(1,5);
 			plannerModel->editStop(row, dp);
 		}
 	}
@@ -353,9 +360,9 @@ qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientatio
 
 void DivePlannerGraphics::increaseDepth()
 {
-	if (depthLine->maximum() + 10 > MAX_DEEPNESS)
+	if (depthLine->maximum() + M_OR_FT(10,30) > MAX_DEPTH)
 		return;
-	depthLine->setMaximum( depthLine->maximum() + 10);
+	depthLine->setMaximum( depthLine->maximum() + M_OR_FT(10,30));
 	depthLine->updateTicks();
 	drawProfile();
 }
@@ -370,11 +377,11 @@ void DivePlannerGraphics::increaseTime()
 
 void DivePlannerGraphics::decreaseDepth()
 {
-	if (depthLine->maximum() - 10 < MIN_DEEPNESS)
+	if (depthLine->maximum() - M_OR_FT(10,30) < MIN_DEPTH)
 		return;
 
-	Q_FOREACH(DiveHandler *d, handles){
-		if (depthLine->valueAt(d->pos()) > depthLine->maximum() - 10){
+	Q_FOREACH(DiveHandler *d, handles) {
+		if (depthLine->valueAt(d->pos()) > depthLine->maximum() - M_OR_FT(10,30)) {
 			QMessageBox::warning(mainWindow(),
 				tr("Handler Position Error"),
 				tr("One or more of your stops will be lost with this operations, \n"
@@ -382,7 +389,7 @@ void DivePlannerGraphics::decreaseDepth()
 			return;
 		}
 	}
-	depthLine->setMaximum(depthLine->maximum() - 10);
+	depthLine->setMaximum(depthLine->maximum() - M_OR_FT(10,30));
 	depthLine->updateTicks();
 	drawProfile();
 }
@@ -409,18 +416,18 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 		return;
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
-	int meters = rint(depthLine->valueAt(mappedPos));
-	plannerModel->addStop(meters * 1000, minutes * 60, tr("Air"), 0);
+	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1,1)) * M_OR_FT(1,1);
+	plannerModel->addStop(milimeters, minutes * 60, tr("Air"), 0);
 }
 
 void DivePlannerPointsModel::createSimpleDive()
 {
-	plannerModel->addStop(15000, 1 * 60, tr("Air"), 0);
-	plannerModel->addStop(15000, 40 * 60, tr("Air"), 0);
+	plannerModel->addStop(M_OR_FT(15,45), 1 * 60, tr("Air"), 0);
+	plannerModel->addStop(M_OR_FT(15,45), 40 * 60, tr("Air"), 0);
 //	plannerModel->addStop(9000, 26 * 60, tr("Air"), 0);
 //	plannerModel->addStop(9000, 41 * 60, tr("Air"), 0);
-	plannerModel->addStop(5000, 42 * 60, tr("Air"), 0);
-	plannerModel->addStop(5000, 45 * 60, tr("Air"), 0);
+	plannerModel->addStop(M_OR_FT(5,15), 42 * 60, tr("Air"), 0);
+	plannerModel->addStop(M_OR_FT(5,15), 45 * 60, tr("Air"), 0);
 }
 
 void DivePlannerGraphics::prepareSelectGas()
@@ -460,7 +467,7 @@ void DivePlannerGraphics::drawProfile()
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		divedatapoint dp = plannerModel->at(i);
 		DiveHandler *h = handles.at(i);
-		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth / 1000));
+		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth));
 		QPointF p1 = (i == 0) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[i-1]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
@@ -479,7 +486,7 @@ void DivePlannerGraphics::drawProfile()
 
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
-		double ypos = depthLine->posAtValue(dp->depth / 1000.0);
+		double ypos = depthLine->posAtValue(dp->depth);
 		if (!dp->entered) {
 			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
 			item->setPen(QPen(QBrush(Qt::red),0));
@@ -528,7 +535,7 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	verticalLine->setPos(mappedPos.x(), fromPercent(0, Qt::Vertical));
 	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), mappedPos.y());
 
-	depthString->setText(QString::number(rint(depthLine->valueAt(mappedPos))) + "m" );
+	depthString->setText(get_depth_string(depthLine->valueAt(mappedPos), true, false));
 	depthString->setPos(fromPercent(5, Qt::Horizontal), mappedPos.y());
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
 	timeString->setPos(mappedPos.x()+1, fromPercent(95, Qt::Vertical));
@@ -571,11 +578,11 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& mappedPos, const int 
 	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
 		return;
 
-	int meters = rint(depthLine->valueAt(mappedPos));
+	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1,1)) * M_OR_FT(1,1);
 	double xpos = timeLine->posAtValue(minutes);
-	double ypos = depthLine->posAtValue(meters);
+	double ypos = depthLine->posAtValue(milimeters);
 
-	data.depth = rint(depthLine->valueAt(mappedPos)) * 1000;
+	data.depth = milimeters;
 	data.time = rint(timeLine->valueAt(mappedPos)) * 60;
 
 	plannerModel->editStop(pos, data);
@@ -727,7 +734,7 @@ void Ruler::updateTicks()
 			item->setPen(pen());
 			ticks.push_back(item);
 
-			label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
+			label = new QGraphicsSimpleTextItem(get_depth_string(currValue, false, false), this);
 			label->setBrush(QBrush(textColor));
 			label->setFlag(ItemIgnoresTransformations);
 			label->setPos(m.x2() - 80, pos);
@@ -737,7 +744,7 @@ void Ruler::updateTicks()
 		item->setPen(pen());
 		ticks.push_back(item);
 
-		label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
+		label = new QGraphicsSimpleTextItem(get_depth_string(currValue, false, false), this);
 		label->setBrush(QBrush(textColor));
 		label->setFlag(ItemIgnoresTransformations);
 		label->setPos(m.x2() - 80, pos);
@@ -938,7 +945,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()) {
 			case CCSETPOINT: return p.po2;
-			case DEPTH: return p.depth / 1000;
+			case DEPTH: return p.depth;
 			case DURATION: return p.time / 60;
 			case GAS: return strForAir(p);
 		}
@@ -957,7 +964,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 	if(role == Qt::EditRole) {
 		divedatapoint& p = divepoints[index.row()];
 		switch(index.column()) {
-			case DEPTH: p.depth = value.toInt() * 1000; break;
+			case DEPTH: p.depth = value.toInt(); break;
 			case DURATION: p.time = value.toInt() * 60; break;
 			case CCSETPOINT:{
 				int po2 = 0;
@@ -1060,16 +1067,16 @@ bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2)
 	return p1.time <= p2.time;
 }
 
-int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas, int ccpoint)
+int DivePlannerPointsModel::addStop(int milimeters, int minutes, const QString& gas, int ccpoint)
 {
 	int row = divepoints.count();
-	if(meters == 0 && minutes == 0) {
+	if(milimeters == 0 && minutes == 0) {
 		if(row == 0) {
-			meters = 10000;
+			milimeters = M_OR_FT(10,30);
 			minutes = 600;
 		} else {
 			divedatapoint p = at(row-1);
-			meters = p.depth;
+			milimeters = p.depth;
 			minutes = p.time + 600;
 		}
 	}
@@ -1086,7 +1093,7 @@ int DivePlannerPointsModel::addStop(int meters, int minutes, const QString& gas,
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
-	point.depth = meters;
+	point.depth = milimeters;
 	point.time = minutes;
 	if (row == 0) {
 		point.o2 = 209;

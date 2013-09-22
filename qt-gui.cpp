@@ -195,15 +195,20 @@ void set_dc_nickname(struct dive *dive)
 	}
 }
 
-QString get_depth_string(depth_t depth, bool showunit)
+QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
-		double meters = depth.mm / 1000.0;
-		return QString("%1%2").arg(meters, 0, 'f', meters >= 20.0 ? 0 : 1 ).arg(showunit ? _("m") : "");
+		double meters = mm / 1000.0;
+		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0 ).arg(showunit ? _("m") : "");
 	} else {
-		double feet = mm_to_feet(depth.mm);
-		return QString("%1%2").arg(feet, 0, 'f', 1). arg(showunit ? _("ft") : "");
+		double feet = mm_to_feet(mm);
+		return QString("%1%2").arg(feet, 0, 'f', showdecimal ? 1 : 0). arg(showunit ? _("ft") : "");
 	}
+}
+
+QString get_depth_string(depth_t depth, bool showunit, bool showdecimal)
+{
+	return get_depth_string(depth.mm, showunit, showdecimal);
 }
 
 QString get_depth_unit()

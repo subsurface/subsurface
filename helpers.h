@@ -11,7 +11,8 @@
 #include "dive.h"
 #include "qthelper.h"
 
-QString get_depth_string(depth_t depth, bool showunit = false);
+QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
+QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
 QString get_depth_unit();
 QString get_weight_string(weight_t weight, bool showunit = false);
 QString get_weight_unit();
