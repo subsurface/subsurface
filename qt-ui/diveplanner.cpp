@@ -340,7 +340,8 @@ void DivePlannerGraphics::keyEscAction()
 		scene()->clearSelection();
 		return;
 	}
-	plannerModel->cancelPlan();
+	if (DivePlannerPointsModel::instance()->isPlanner())
+		plannerModel->cancelPlan();
 }
 
 qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientation)
@@ -602,7 +603,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 		return;
 	}
 
-    QPointF mappedPos = mapToScene(event->pos());
+	QPointF mappedPos = mapToScene(event->pos());
 	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())){
 		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
 			activeDraggedHandler = h;
