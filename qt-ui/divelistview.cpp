@@ -7,6 +7,7 @@
 #include "divelistview.h"
 #include "models.h"
 #include "modeldelegates.h"
+#include "mainwindow.h"
 #include "../display.h"
 #include <QApplication>
 #include <QHeaderView>
@@ -72,7 +73,7 @@ void DiveListView::selectDive(struct dive *dive, bool scrollto, bool toggle)
 		expand(parent);
 	flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
 	flags |= QItemSelectionModel::Rows;
-	selectionModel()->select( idx, flags);
+	selectionModel()->select(idx, flags);
 	if (scrollto)
 		scrollTo(idx, PositionAtCenter);
 }
@@ -330,9 +331,19 @@ void DiveListView::removeFromTrip()
 
 void DiveListView::deleteDive()
 {
+	int nr;
 	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
-	if (d)
+	if (d) {
+		nr = get_divenr(d);
 		delete_single_dive(get_index_for_dive(d));
+		if (amount_selected == 0) {
+			if (nr > 0)
+				select_dive(nr - 1);
+			else
+				mainWindow()->cleanUpEmpty();
+		}
+	}
+	mainWindow()->refreshDisplay();
 	reload(currentLayout, false);
 }
 

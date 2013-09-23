@@ -52,6 +52,7 @@ public:
 	void enableDcShortcuts();
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
+	void cleanUpEmpty();
 
 private slots:
 	/* file menu action */

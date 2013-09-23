@@ -134,6 +134,19 @@ void MainWindow::on_actionSaveAs_triggered()
 {
 	file_save_as();
 }
+
+void MainWindow::cleanUpEmpty()
+{
+	ui->InfoWidget->clearStats();
+	ui->InfoWidget->clearInfo();
+	ui->InfoWidget->clearEquipment();
+	ui->InfoWidget->updateDiveInfo(-1);
+	ui->ProfileWidget->clear();
+	ui->ListWidget->reload(DiveTripModel::TREE);
+	ui->globe->reload();
+	setTitle(MWTF_DEFAULT);
+}
+
 void MainWindow::on_actionClose_triggered()
 {
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
@@ -146,17 +159,7 @@ void MainWindow::on_actionClose_triggered()
 	/* clear the selection and the statistics */
 	selected_dive = -1;
 
-	//WARNING: Port this to Qt.
-	//process_selected_dives();
-
-	ui->InfoWidget->clearStats();
-	ui->InfoWidget->clearInfo();
-	ui->InfoWidget->clearEquipment();
-	ui->InfoWidget->updateDiveInfo(-1);
-	ui->ProfileWidget->clear();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->globe->reload();
-	setTitle(MWTF_DEFAULT);
+	cleanUpEmpty();
 	mark_divelist_changed(FALSE);
 
 	clear_events();
