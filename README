@@ -39,6 +39,13 @@ sudo port install qt4-mac marble libzip libtool libusb
 
 Then build libdivecomputer and Subsurface as described below.
 
+With the current version (and dependencies of marble), to run subsurface you have to once
+
+sudo port install dbus
+sudo launchctl load -w /Library/LaunchDaemons/org.freedesktop.dbus-system.plist
+launchctl load -w /Library/LaunchAgents/org.freedesktop.dbus-session.plist
+sudo chown -R ${USER} ~/Library/Preferences/KDE
+
 Subsurface - an Open Source Divelog
 ===================================
 
