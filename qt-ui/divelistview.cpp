@@ -400,7 +400,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	}
 	if (d)
 		popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
-	if (selectionModel()->selection().indexes().count() > 14)
+	if (amount_selected > 1)
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
