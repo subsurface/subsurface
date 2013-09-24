@@ -883,11 +883,11 @@ void delete_single_dive(int idx)
 	if (!dive)
 		return; /* this should never happen */
 	remove_dive_from_trip(dive);
+	if (dive->selected)
+		deselect_dive(idx);
 	for (i = idx; i < dive_table.nr - 1; i++)
 		dive_table.dives[i] = dive_table.dives[i+1];
 	dive_table.dives[--dive_table.nr] = NULL;
-	if (dive->selected)
-		amount_selected--;
 	/* free all allocations */
 	free(dive->dc.sample);
 	if (dive->location)

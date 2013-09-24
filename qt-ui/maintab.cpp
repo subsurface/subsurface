@@ -469,6 +469,11 @@ void MainTab::rejectChanges()
 		ui->notes->setText(notesBackup[NULL].notes );
 		ui->location->setText(notesBackup[NULL].location);
 	}else{
+		if (editMode == ADD) {
+			// clean up
+			delete_single_dive(selected_dive);
+			DivePlannerPointsModel::instance()->cancelPlan();
+		}
 		struct dive *curr = current_dive;
 		ui->notes->setText(notesBackup[curr].notes );
 		ui->location->setText(notesBackup[curr].location);
@@ -520,10 +525,8 @@ void MainTab::rejectChanges()
 	ui->watertemp->setPalette(p);
 	ui->dateTimeEdit->setPalette(p);
 	if (editMode == ADD) {
-		// clean up
-		delete_single_dive(selected_dive);
-		selected_dive = -1;
-		DivePlannerPointsModel::instance()->cancelPlan();
+		// more clean up
+		updateDiveInfo(selected_dive);
 		mainWindow()->showProfile();
 		mainWindow()->refreshDisplay();
 	}
