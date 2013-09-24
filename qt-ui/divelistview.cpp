@@ -290,6 +290,22 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	Q_EMIT currentDiveChanged(selected_dive);
 }
 
+void DiveListView::mergeDives()
+{
+	int i;
+        struct dive *dive, *maindive = NULL;
+
+        for_each_dive(i, dive) {
+                if (dive->selected) {
+			if (!maindive)
+				maindive = dive;
+			else
+				maindive = merge_two_dives(maindive, dive);
+                }
+        }
+	mainWindow()->refreshDisplay();
+}
+
 void DiveListView::merge_trip(const QModelIndex &a, int offset)
 {
 	int i = a.row() + offset;
@@ -384,6 +400,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	}
 	if (d)
 		popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
+	if (selectionModel()->selection().indexes().count() > 14)
+		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction * actionTaken = popup.exec(event->globalPos());

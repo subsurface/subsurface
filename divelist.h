@@ -43,7 +43,7 @@ extern dive_trip_t *find_matching_trip(timestamp_t when);
 extern void remove_dive_from_trip(struct dive *dive);
 extern dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive);
 extern void autogroup_dives(void);
-extern void merge_dive_index(int i, struct dive *a);
+extern struct dive *merge_two_dives(struct dive *a, struct dive *b);
 extern void select_dive(int idx);
 extern void deselect_dive(int idx);
 

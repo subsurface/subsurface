@@ -25,7 +25,7 @@
  * void clear_trip_indexes(void)
  * void delete_single_dive(int idx)
  * void add_single_dive(int idx, struct dive *dive)
- * void merge_dive_index(int i, struct dive *a)
+ * void merge_two_dives(struct dive *a, struct dive *b)
  * void select_dive(int idx)
  * void deselect_dive(int idx)
  * void mark_divelist_changed(int changed)
@@ -916,22 +916,24 @@ void add_single_dive(int idx, struct dive *dive)
 	}
 }
 
-void merge_dive_index(int i, struct dive *a)
+struct dive *merge_two_dives(struct dive *a, struct dive *b)
 {
-	struct dive *b = get_dive(i+1);
 	struct dive *res;
+	int i,j;
 
+	if (!a || !b)
+		return NULL;
+	i = get_index_for_dive(a);
+	j = get_index_for_dive(b);
 	res = merge_dives(a, b, b->when - a->when, FALSE);
 	if (!res)
-		return;
+		return NULL;
 
 	add_single_dive(i, res);
 	delete_single_dive(i+1);
-	delete_single_dive(i+1);
-#if USE_GTK_UI
-	dive_list_update_dives();
-#endif
+	delete_single_dive(j);
 	mark_divelist_changed(TRUE);
+	return res;
 }
 
 void select_dive(int idx)

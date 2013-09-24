@@ -42,6 +42,7 @@ public slots:
 	void fixMessyQtModelBehaviour();
 	void mergeTripAbove();
 	void mergeTripBelow();
+	void mergeDives();
 
 signals:
 	void currentDiveChanged(int divenr);
