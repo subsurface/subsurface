@@ -916,6 +916,30 @@ void add_single_dive(int idx, struct dive *dive)
 	}
 }
 
+bool consecutive_selected()
+{
+	struct dive *d;
+	int i;
+	bool consecutive = TRUE;
+	bool firstfound = FALSE;
+	bool lastfound = FALSE;
+
+	if (amount_selected == 0 || amount_selected == 1)
+		return TRUE;
+
+	for_each_dive(i, d) {
+		if (d->selected) {
+			if (!firstfound)
+				firstfound = TRUE;
+			else if (lastfound)
+				consecutive = FALSE;
+		} else if (firstfound) {
+			lastfound = TRUE;
+		}
+	}
+	return consecutive;
+}
+
 struct dive *merge_two_dives(struct dive *a, struct dive *b)
 {
 	struct dive *res;
