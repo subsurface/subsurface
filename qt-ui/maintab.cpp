@@ -446,6 +446,7 @@ void MainTab::acceptChanges()
 	ui->airtemp->setPalette(p);
 	ui->watertemp->setPalette(p);
 	ui->dateTimeEdit->setPalette(p);
+	mainWindow()->refreshDisplay();
 }
 
 #define EDIT_TEXT2(what, text) \
