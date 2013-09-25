@@ -148,6 +148,14 @@ void MainTab::enableEdition()
 			notesBackup[mydive].airtemp = get_temperature_string(mydive->airtemp, true);
 			notesBackup[mydive].watertemp = get_temperature_string(mydive->watertemp, true);
 			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when - gettimezoneoffset()).toString(QString("M/d/yy h:mm"));
+
+			// maybe this is a place for memset?
+			for (int i = 0; i < MAX_CYLINDERS; i++) {
+				notesBackup[mydive].cylinders[i] = mydive->cylinder[i];
+			}
+			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+				notesBackup[mydive].weigthsystem[i] = mydive->weightsystem[i];
+			}
 		}
 		editMode = DIVE;
 	}
@@ -507,7 +515,18 @@ void MainTab::rejectChanges()
 			mydive->longitude = notesBackup[mydive].longitude;
 			mydive->rating = notesBackup[mydive].rating;
 			mydive->visibility = notesBackup[mydive].visibility;
+
+			// maybe this is a place for memset?
+			for (int i = 0; i < MAX_CYLINDERS; i++) {
+				mydive->cylinder[i] = notesBackup[mydive].cylinders[i];
+			}
+			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+				mydive->weightsystem[i] = notesBackup[mydive].weigthsystem[i];
+			}
 		}
+		multiEditEquipmentPlaceholder = *get_dive(selected_dive);
+		cylindersModel->setDive(&multiEditEquipmentPlaceholder);
+		weightModel->setDive(&multiEditEquipmentPlaceholder);
 	}
 
 	ui->diveNotesMessage->animatedHide();

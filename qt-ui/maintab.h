@@ -34,6 +34,8 @@ struct NotesBackup{
 	int rating;
 	int visibility;
 	QString divemaster;
+	cylinder_t cylinders[MAX_CYLINDERS];
+	weightsystem_t weigthsystem[MAX_WEIGHTSYSTEMS ];
 };
 
 struct Completers{
