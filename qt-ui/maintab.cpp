@@ -431,8 +431,25 @@ void MainTab::acceptChanges()
 			mainWindow()->globe()->reload();
 			mainWindow()->globe()->centerOn(current_dive);
 		}
-		if (cylindersModel->changed || weightModel->changed)
+
+		if (cylindersModel->changed) {
 			mark_divelist_changed(TRUE);
+			Q_FOREACH(dive *d, notesBackup.keys()){
+				for(int i = 0; i < MAX_CYLINDERS; i++){
+					d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
+				}
+			}
+		}
+
+		if (weightModel->changed) {
+			mark_divelist_changed(TRUE);
+			Q_FOREACH(dive *d, notesBackup.keys()){
+				for(int i = 0; i < MAX_CYLINDERS; i++){
+					d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
+				}
+			}
+		}
+
 	}
 	if (editMode == ADD) {
 		// clean up the dive data (get duration, depth information from samples)
