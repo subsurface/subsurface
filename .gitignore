@@ -31,3 +31,5 @@ ui_*
 /subsurface.creator.user
 /subsurface.files
 /subsurface.includes
+*.kdev4
+callgrind.out.*
