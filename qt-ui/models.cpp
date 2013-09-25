@@ -166,14 +166,12 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 	case SIZE:
 		if (cyl->type.size.mliter != value.toInt()) {
 			cyl->type.size.mliter = value.toInt();
-			mark_divelist_changed(TRUE);
 			dataChanged(index, index);
 		}
 		break;
 	case WORKINGPRESS:
 		if (cyl->type.workingpressure.mbar != value.toInt()) {
 			cyl->type.workingpressure.mbar = value.toInt();
-			mark_divelist_changed(TRUE);
 			dataChanged(index, index);
 		}
 		break;
@@ -192,7 +190,6 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 			const char *text = ba.constData();
 			if (!cyl->type.description || strcmp(cyl->type.description, text)) {
 				cyl->type.description = strdup(text);
-				mark_divelist_changed(TRUE);
 				changed = true;
 			}
 		}
@@ -236,7 +233,6 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 					cyl->type.workingpressure.mbar = vString.toDouble() * 1000;
 				if (!matches.isEmpty())
 					tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
-				mark_divelist_changed(TRUE);
 				changed = true;
 			}
 		}
@@ -248,7 +244,6 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 					cyl->start.mbar = psi_to_mbar(value.toDouble());
 				else
 					cyl->start.mbar = value.toDouble() * 1000;
-				mark_divelist_changed(TRUE);
 				changed = true;
 			}
 		}
@@ -260,7 +255,6 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 					cyl->end.mbar = psi_to_mbar(value.toDouble());
 				else
 					cyl->end.mbar = value.toDouble() * 1000;
-				mark_divelist_changed(TRUE);
 				changed = true;
 			}
 		}
@@ -268,14 +262,12 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 	case O2:
 		if (CHANGED(toDouble, "%", "%")) {
 			cyl->gasmix.o2.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
-			mark_divelist_changed(TRUE);
 			changed = true;
 		}
 		break;
 	case HE:
 		if (CHANGED(toDouble, "%", "%")) {
 			cyl->gasmix.he.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
-			mark_divelist_changed(TRUE);
 			changed = true;
 		}
 		break;
@@ -352,7 +344,6 @@ void CylindersModel::remove(const QModelIndex& index)
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
 	remove_cylinder(current, index.row());
-	mark_divelist_changed(TRUE);
 	changed = true;
 	endRemoveRows();
 }
@@ -374,7 +365,6 @@ void WeightModel::remove(const QModelIndex& index)
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
 	remove_weightsystem(current, index.row());
-	mark_divelist_changed(TRUE);
 	changed = true;
 	endRemoveRows();
 }
@@ -435,7 +425,6 @@ void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
 	if (index.column() == WEIGHT) {
 		if (ws->weight.grams != value.toInt()) {
 			ws->weight.grams = value.toInt();
-			mark_divelist_changed(TRUE);
 			dataChanged(index, index);
 		}
 	}
@@ -451,7 +440,6 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 			const char *text = ba.constData();
 			if (!ws->description || strcmp(ws->description, text)) {
 				ws->description = strdup(text);
-				mark_divelist_changed(TRUE);
 				changed = true;
 			}
 		}

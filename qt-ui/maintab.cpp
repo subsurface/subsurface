@@ -431,6 +431,8 @@ void MainTab::acceptChanges()
 			mainWindow()->globe()->reload();
 			mainWindow()->globe()->centerOn(current_dive);
 		}
+		if (cylindersModel->changed || weightModel->changed)
+			mark_divelist_changed(TRUE);
 	}
 	if (editMode == ADD) {
 		// clean up the dive data (get duration, depth information from samples)
