@@ -434,8 +434,8 @@ void MainTab::acceptChanges()
 
 		if (cylindersModel->changed) {
 			mark_divelist_changed(TRUE);
-			Q_FOREACH(dive *d, notesBackup.keys()){
-				for(int i = 0; i < MAX_CYLINDERS; i++){
+			Q_FOREACH (dive *d, notesBackup.keys()) {
+				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
 				}
 			}
@@ -443,8 +443,8 @@ void MainTab::acceptChanges()
 
 		if (weightModel->changed) {
 			mark_divelist_changed(TRUE);
-			Q_FOREACH(dive *d, notesBackup.keys()){
-				for(int i = 0; i < MAX_CYLINDERS; i++){
+			Q_FOREACH (dive *d, notesBackup.keys()) {
+				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
 				}
 			}
