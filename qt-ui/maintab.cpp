@@ -448,6 +448,12 @@ void MainTab::acceptChanges()
 	}
 	editMode = NONE;
 
+	resetPallete();
+	mainWindow()->refreshDisplay();
+}
+
+void MainTab::resetPallete()
+{
 	QPalette p;
 	ui->buddy->setPalette(p);
 	ui->notes->setPalette(p);
@@ -458,8 +464,8 @@ void MainTab::acceptChanges()
 	ui->airtemp->setPalette(p);
 	ui->watertemp->setPalette(p);
 	ui->dateTimeEdit->setPalette(p);
-	mainWindow()->refreshDisplay();
 }
+
 
 #define EDIT_TEXT2(what, text) \
 	textByteArray = text.toLocal8Bit(); \
@@ -537,16 +543,7 @@ void MainTab::rejectChanges()
 	ui->notesButtonBox->hide();
 	ui->equipmentButtonBox->hide();
 	notesBackup.clear();
-	QPalette p;
-	ui->buddy->setPalette(p);
-	ui->notes->setPalette(p);
-	ui->location->setPalette(p);
-	ui->coordinates->setPalette(p);
-	ui->divemaster->setPalette(p);
-	ui->suit->setPalette(p);
-	ui->airtemp->setPalette(p);
-	ui->watertemp->setPalette(p);
-	ui->dateTimeEdit->setPalette(p);
+	resetPallete();
 	if (editMode == ADD) {
 		// more clean up
 		updateDiveInfo(selected_dive);

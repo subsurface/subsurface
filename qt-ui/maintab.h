@@ -94,6 +94,7 @@ private:
 	enum { NONE, DIVE, TRIP, ADD } editMode;
 	Completers completers;
 	void enableEdition();
+    void resetPallete();
 };
 
 #endif
