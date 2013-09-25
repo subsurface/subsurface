@@ -81,6 +81,14 @@ private:
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
 	QMap<dive*, NotesBackup> notesBackup;
+
+	/* since the multi-edition of the equipment is fairly more
+	 * complex than a single item, because it involves a Qt
+	 * Model to edit things, we are copying the first selected
+	 * dive to this structure, making all editions there,
+	 * then applying the changes on the other dives.*/
+	struct dive multiEditEquipmentPlaceholder;
+
 	enum { NONE, DIVE, TRIP, ADD } editMode;
 	Completers completers;
 	void enableEdition();

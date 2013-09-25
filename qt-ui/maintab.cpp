@@ -329,8 +329,10 @@ void MainTab::updateDiveInfo(int dive)
 		ui->timeLimits->setAverage(get_time_string(seconds, 0));
 		ui->timeLimits->setMaximum(get_time_string(stats_selection.longest_time.seconds, 0));
 		ui->timeLimits->setMinimum(get_time_string(stats_selection.shortest_time.seconds, 0));
-		cylindersModel->setDive(d);
-		weightModel->setDive(d);
+
+		multiEditEquipmentPlaceholder = *d;
+		cylindersModel->setDive(&multiEditEquipmentPlaceholder);
+		weightModel->setDive(&multiEditEquipmentPlaceholder);
 	} else {
 		/* clear the fields */
 		ui->rating->setCurrentStars(0);
