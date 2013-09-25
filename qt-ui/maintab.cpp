@@ -688,12 +688,18 @@ void MainTab::on_visibility_valueChanged(int value)
 
 void MainTab::editCylinderWidget(const QModelIndex& index)
 {
+	if (editMode == NONE)
+		enableEdition();
+
 	if (index.isValid() && index.column() != CylindersModel::REMOVE)
 		ui->cylinders->edit(index);
 }
 
 void MainTab::editWeigthWidget(const QModelIndex& index)
 {
+	if (editMode == NONE)
+		enableEdition();
+
 	if (index.isValid() && index.column() != WeightModel::REMOVE)
 		ui->weights->edit(index);
 }
