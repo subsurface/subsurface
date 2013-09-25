@@ -414,6 +414,7 @@ void ProfileGraphicsView::plot_pp_text()
 	double pp, dpp, m;
 	int hpos;
 	static text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
+	QGraphicsRectItem *pressureMarkers = new QGraphicsRectItem();
 
 	setup_pp_limits(&gc);
 	pp = floor(gc.pi.maxpp * 10.0) / 10.0 + 0.2;
@@ -427,8 +428,10 @@ void ProfileGraphicsView::plot_pp_text()
 		pen.setColor(c);
 		item->setPen(pen);
 		scene()->addItem(item);
-		plot_text(&tro, QPointF(hpos + 30, m), QString::number(m));
+		plot_text(&tro, QPointF(hpos, m), QString::number(m), pressureMarkers);
 	}
+	scene()->addItem(pressureMarkers);
+	pressureMarkers->setPos(pressureMarkers->pos().x() + 10, 0);
 }
 
 void ProfileGraphicsView::plot_add_line(int sec, double val, QColor c, QPointF &from)
