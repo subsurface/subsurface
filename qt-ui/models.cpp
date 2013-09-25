@@ -193,6 +193,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 			if (!cyl->type.description || strcmp(cyl->type.description, text)) {
 				cyl->type.description = strdup(text);
 				mark_divelist_changed(TRUE);
+				changed = true;
 			}
 		}
 		break;
@@ -218,6 +219,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 					if (!matches.isEmpty())
 						tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 				}
+				changed = true;
 			}
 		}
 		break;
@@ -235,6 +237,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 				if (!matches.isEmpty())
 					tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
 				mark_divelist_changed(TRUE);
+				changed = true;
 			}
 		}
 		break;
@@ -246,6 +249,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 				else
 					cyl->start.mbar = value.toDouble() * 1000;
 				mark_divelist_changed(TRUE);
+				changed = true;
 			}
 		}
 		break;
@@ -256,6 +260,8 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 					cyl->end.mbar = psi_to_mbar(value.toDouble());
 				else
 					cyl->end.mbar = value.toDouble() * 1000;
+				mark_divelist_changed(TRUE);
+				changed = true;
 			}
 		}
 		break;
@@ -263,12 +269,14 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		if (CHANGED(toDouble, "%", "%")) {
 			cyl->gasmix.o2.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
 			mark_divelist_changed(TRUE);
+			changed = true;
 		}
 		break;
 	case HE:
 		if (CHANGED(toDouble, "%", "%")) {
 			cyl->gasmix.he.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
 			mark_divelist_changed(TRUE);
+			changed = true;
 		}
 		break;
 	}
@@ -291,6 +299,7 @@ void CylindersModel::add()
 
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
+	changed = true;
 	endInsertRows();
 }
 
@@ -324,6 +333,7 @@ void CylindersModel::setDive(dive* d)
 	beginInsertRows(QModelIndex(), 0, amount-1);
 	rows = amount;
 	current = d;
+	changed = false;
 	endInsertRows();
 }
 
@@ -343,6 +353,7 @@ void CylindersModel::remove(const QModelIndex& index)
 	rows--;
 	remove_cylinder(current, index.row());
 	mark_divelist_changed(TRUE);
+	changed = true;
 	endRemoveRows();
 }
 
@@ -364,6 +375,7 @@ void WeightModel::remove(const QModelIndex& index)
 	rows--;
 	remove_weightsystem(current, index.row());
 	mark_divelist_changed(TRUE);
+	changed = true;
 	endRemoveRows();
 }
 
@@ -440,6 +452,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 			if (!ws->description || strcmp(ws->description, text)) {
 				ws->description = strdup(text);
 				mark_divelist_changed(TRUE);
+				changed = true;
 			}
 		}
 		break;
@@ -450,6 +463,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 			else
 				ws->weight.grams = value.toDouble() * 1000.0 + 0.5;
 			// now update the ws_info
+			changed = true;
 			WSInfoModel *wsim = WSInfoModel::instance();
 			QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, ws->description);
 			if (!matches.isEmpty())
@@ -505,6 +519,7 @@ void WeightModel::add()
 	int row = rows;
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
+	changed = true;
 	endInsertRows();
 }
 
@@ -530,6 +545,7 @@ void WeightModel::setDive(dive* d)
 	beginInsertRows(QModelIndex(), 0, amount-1);
 	rows = amount;
 	current = d;
+	changed = false;
 	endInsertRows();
 }
 

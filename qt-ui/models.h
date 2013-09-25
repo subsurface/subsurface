@@ -86,6 +86,7 @@ public:
 	void update();
 	void setDive(struct dive *d);
 	cylinder_t *cylinderAt(const QModelIndex& index);
+	bool changed;
 
 public slots:
 	void remove(const QModelIndex& index);
@@ -116,6 +117,7 @@ public:
 	void update();
 	void setDive(struct dive *d);
 	weightsystem_t *weightSystemAt(const QModelIndex& index);
+	bool changed;
 
 public slots:
 	void remove(const QModelIndex& index);
