@@ -149,6 +149,8 @@ protected:
 public slots:
 	void refresh();
 	void edit_dive_time(const QString& time);
+	void on_rulerAction();
+	void on_scaleAction();
 
 private:
 	void plot_depth_profile();
@@ -170,6 +172,9 @@ private:
 	void plot_pp_gas_profile();
 	void plot_pp_text();
 	void plot_depth_scale();
+
+
+	void addControlItems();
 
 	void create_ruler();
 	void add_ruler();
@@ -197,6 +202,7 @@ private:
 	QGraphicsItem* depthMarkers;
 	QGraphicsItem* diveComputer;
 	RulerItem *rulerItem;
+	QGraphicsProxyWidget *toolBarProxy;
 
 	// For 'Plan' mode.:
 	GraphicsTextEditor *depthEditor;

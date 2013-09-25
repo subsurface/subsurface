@@ -15,6 +15,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
+#include <QToolBar>
 #include <qtextdocument.h>
 #include <limits>
 
@@ -44,7 +45,7 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0), rulerItem(0)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0), rulerItem(0), toolBarProxy(0)
 {
 	printMode = false;
 	isGrayscale = false;
@@ -181,6 +182,11 @@ void ProfileGraphicsView::clear()
 		scene()->removeItem(toolTip);
 		toolTip->deleteLater();
 		toolTip = 0;
+	}
+	if(toolBarProxy) {
+		scene()->removeItem(toolBarProxy);
+		toolBarProxy->deleteLater();
+		toolBarProxy = 0;
 	}
 	if(rulerItem) {
 		remove_ruler();
@@ -349,6 +355,9 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		scene()->addItem(timeEditor);
 	}
 
+	if (!printMode)
+		addControlItems();
+
 	if (rulerEnabled && !printMode)
 		add_ruler();
 }
@@ -381,6 +390,23 @@ void ProfileGraphicsView::plot_depth_scale()
 	}
 	scene()->addItem(depthMarkers);
 	depthMarkers->setPos(depthMarkers->pos().x() - 10, 0);
+}
+
+void ProfileGraphicsView::addControlItems()
+{
+	QAction *scaleAction = new QAction(QIcon(":scale"), tr("Scale"), this);
+	QAction *rulerAction = new QAction(QIcon(":ruler"), tr("Ruler"), this);
+	QToolBar *toolBar = new QToolBar("", 0);
+	toolBar->addAction(rulerAction);
+	toolBar->addAction(scaleAction);
+	//make toolbar transparent
+	toolBar->setStyleSheet(QString::fromUtf8 ("background-color: rgba(255,255,255,0);"));
+
+	connect(scaleAction, SIGNAL(triggered()), this, SLOT(on_scaleAction()));
+	connect(rulerAction, SIGNAL(triggered()), this, SLOT(on_rulerAction()));
+	toolBarProxy = scene()->addWidget(toolBar);
+	//Put it into the lower right corner of the profile
+	toolBarProxy->setPos(gc.maxx-toolBar->width(), gc.maxy-toolBar->height());
 }
 
 void ProfileGraphicsView::plot_pp_text()
@@ -1238,6 +1264,18 @@ void ProfileGraphicsView::plot_temperature_profile()
 void ProfileGraphicsView::edit_dive_time(const QString& time)
 {
 	// this should set the full time of the dive.
+	refresh();
+}
+
+void ProfileGraphicsView::on_rulerAction()
+{
+	rulerEnabled = !rulerEnabled;
+	refresh();
+}
+
+void ProfileGraphicsView::on_scaleAction()
+{
+	zoomed_plot = !zoomed_plot;
 	refresh();
 }
 
