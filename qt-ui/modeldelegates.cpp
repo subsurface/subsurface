@@ -80,6 +80,7 @@ struct CurrSelected{
 	int currRow;
 	QString activeText;
 	QAbstractItemModel *model;
+	bool ignoreSelection;
 } currCombo;
 
 QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
@@ -90,9 +91,11 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	comboDelegate->setAutoCompletion(true);
 	comboDelegate->setAutoCompletionCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
+	comboDelegate->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	comboDelegate->lineEdit()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	comboDelegate->view()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
+	connect(comboDelegate, SIGNAL(activated(QString)), this, SLOT(fakeActivation()));
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel*>(index.model());
@@ -105,6 +108,23 @@ void ComboBoxDelegate::testActivation(const QString& s)
 	setModelData(currCombo.comboEditor, currCombo.model, QModelIndex());
 }
 
+// HACK, send a fake event so Qt thinks we hit 'enter' on the line edit.
+void ComboBoxDelegate::fakeActivation(){
+	/* this test is needed because as soon as I show the selector,
+	 * the first item gots selected, this sending an activated signal,
+	 * calling this fakeActivation code and setting as the current,
+	 * thig that we don't want. so, let's just set the ignoreSelection
+	 * to false and be happy, because the next activation  ( by click
+	 * or keypress) is real.
+	 */
+	if(currCombo.ignoreSelection){
+		currCombo.ignoreSelection = false;
+		return;
+	}
+	QKeyEvent ev(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+	QStyledItemDelegate::eventFilter(currCombo.comboEditor, &ev);
+}
+
 bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
@@ -112,6 +132,7 @@ bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 		if (object == currCombo.comboEditor){ // the 'LineEdit' part
 			QKeyEvent *ev = static_cast<QKeyEvent*>(event);
 			if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
+				currCombo.ignoreSelection = true;
 				currCombo.comboEditor->showPopup();
 			}
 		}

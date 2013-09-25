@@ -24,6 +24,8 @@ public:
     virtual bool eventFilter(QObject* object, QEvent* event);
 public slots:
 	void testActivation(const QString& s);
+	//HACK: try to get rid of this in the future.
+	void fakeActivation();
 	virtual void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 protected:
 	QAbstractItemModel *model;
