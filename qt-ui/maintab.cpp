@@ -42,7 +42,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 #ifdef __APPLE__
 	setDocumentMode(false);
 #else
-	setDocumentMode(true);
+	if (qApp->style()->objectName() == "gtk+")
+		setDocumentMode(false);
+	else
+		setDocumentMode(true);
 #endif
 	// we start out with the fields read-only; once things are
 	// filled from a dive, they are made writeable
