@@ -3,6 +3,7 @@
 #include "models.h"
 
 #include <QPushButton>
+#include <QLayout>
 #include <QFile>
 #include <QTextStream>
 #include <QSettings>
@@ -14,11 +15,16 @@ TableView::TableView(QWidget *parent) : QWidget(parent), ui(new Ui::TableView){
 	QTextStream reader(&cssFile);
 	QString css = reader.readAll();
 	ui->tableView->setStyleSheet(css);
-
+	/* There`s mostly a need for a Mac fix here too. */
+	if (qApp->style()->objectName() == "gtk+")
+		ui->groupBox->layout()->setContentsMargins(0, 9, 0, 0);
+	else
+		ui->groupBox->layout()->setContentsMargins(0, 0, 0, 0);
 	QIcon plusIcon(":plus");
 	plusBtn = new QPushButton(plusIcon, QString(), ui->groupBox);
 	plusBtn->setFlat(true);
 	plusBtn->setToolTip(tr("Add Cylinder"));
+	plusBtn->setIconSize(QSize(16,16));
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
