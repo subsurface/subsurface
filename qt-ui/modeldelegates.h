@@ -23,7 +23,7 @@ public:
     virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
     virtual bool eventFilter(QObject* object, QEvent* event);
 public slots:
-	void testActivation(const QString& s);
+	void testActivation(const QString& currString = QString());
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
 	virtual void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint) = 0;

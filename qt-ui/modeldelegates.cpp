@@ -95,6 +95,7 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	comboDelegate->lineEdit()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	comboDelegate->view()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
+	connect(comboDelegate->lineEdit(), SIGNAL(editingFinished()), this, SLOT(testActivation()));
 	connect(comboDelegate, SIGNAL(activated(QString)), this, SLOT(fakeActivation()));
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
@@ -102,9 +103,14 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	return comboDelegate;
 }
 
-void ComboBoxDelegate::testActivation(const QString& s)
+/* This Method is being called when the user *writes* something and press enter or tab,
+ * and it`s also called when the mouse walks over the list of choices from the ComboBox,
+ * One thing is important, if the user writes a *new* cylinder or weigth type, it will
+ * be ADDED to the list, and the user will need to fill the other data.
+ */
+void ComboBoxDelegate::testActivation(const QString& currText)
 {
-	currCombo.activeText = s;
+	currCombo.activeText = currText.isEmpty() ? currCombo.comboEditor->currentText() : currText;
 	setModelData(currCombo.comboEditor, currCombo.model, QModelIndex());
 }
 
