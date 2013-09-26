@@ -215,15 +215,15 @@ void MainWindow::on_actionDivePlanner_triggered()
 {
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(true);
-	ui->stackedWidget->setCurrentIndex(1);
-	ui->infoPane->setCurrentIndex(1);
+	ui->stackedWidget->setCurrentIndex(PLANNERPROFILE);
+	ui->infoPane->setCurrentIndex(PLANNERWIDGET);
 }
 
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
-	ui->stackedWidget->setCurrentIndex(0);
-	ui->infoPane->setCurrentIndex(0);
+	ui->stackedWidget->setCurrentIndex(PROFILE);
+	ui->infoPane->setCurrentIndex(MAINTAB);
 }
 
 
@@ -271,12 +271,12 @@ void MainWindow::on_actionAddDive_triggered()
 	// now cheat - create one dive that we use to store the info tab data in
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L;
-	dive->dc.model = _("manually added dive");
+	dive->dc.model = _("manually added dive"); // do not use tr here since it expects a char*.
 	record_dive(dive);
 	select_dive(get_divenr(dive));
 	ui->InfoWidget->updateDiveInfo(selected_dive);
-	ui->stackedWidget->setCurrentIndex(1);
-	ui->infoPane->setCurrentIndex(0);
+	ui->stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+	ui->infoPane->setCurrentIndex(MAINTAB);
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	refreshDisplay();
 	ui->InfoWidget->addDiveStarted();

@@ -37,6 +37,8 @@ class MainWindow : public QMainWindow
 Q_OBJECT
 public:
 	enum {COLLAPSED, EXPANDED};
+	enum StackWidgetIndexes{ PROFILE, PLANNERPROFILE};
+	enum InfoWidgetIndexes{ MAINTAB, PLANNERWIDGET};
 
 	MainWindow();
 	ProfileGraphicsView *graphics();
