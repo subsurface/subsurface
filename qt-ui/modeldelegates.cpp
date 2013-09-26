@@ -185,11 +185,6 @@ void TankInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
 	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
-	// don't fuck the other data, jimmy.
-	if ( mymodel->data(thisindex, CylindersModel::TYPE).toString() == currCombo.activeText){
-		return;
-	}
-
 	mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, Qt::EditRole);
 	mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), tankPressure);
 	mymodel->passInData(IDX(CylindersModel::SIZE), tankSize);
@@ -253,10 +248,6 @@ void WSInfoDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, co
 	int grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
 	QVariant v = QString(currCombo.activeText);
 
-	// don't set if it's the same as it was before setting.
-	if (mymodel->data(thisindex, WeightModel::TYPE).toString() == currCombo.activeText){
-		return;
-	}
 	mymodel->setData(IDX(WeightModel::TYPE), v, Qt::EditRole);
 	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
 }
