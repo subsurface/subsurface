@@ -14,88 +14,143 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Start Time</string>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="6" column="1">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>ATM Pressure</string>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QTimeEdit" name="startTime"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="ATMPressure"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="decoStopSAC"/>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLineEdit" name="lowGF"/>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Low GF</string>
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Bottom SAC</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLineEdit" name="bottomSAC"/>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>High GF</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLineEdit" name="highGF"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>SAC on DECO Stop</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QCheckBox" name="lastStop">
-     <property name="text">
-      <string>Last Stop at 6m</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0" colspan="2">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0" colspan="2">
-    <widget class="TableView" name="tableWidget" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>400</width>
+        <height>352</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="ATMPressure"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Bottom SAC</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>High GF</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>SAC on DECO Stop</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLineEdit" name="bottomSAC"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="decoStopSAC"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Low GF</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLineEdit" name="lowGF"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="highGF"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QCheckBox" name="lastStop">
+         <property name="text">
+          <string>Last Stop at 6m</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="TableView" name="tableWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0" colspan="2">
+        <widget class="QDialogButtonBox" name="buttonBox">
+         <property name="standardButtons">
+          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTimeEdit" name="startTime"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Start Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>ATM Pressure</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

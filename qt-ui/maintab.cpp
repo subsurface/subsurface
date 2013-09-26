@@ -93,6 +93,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->divemaster->setCompleter(completers.divemaster);
 	ui->location->setCompleter(completers.location);
 	ui->suit->setCompleter(completers.suit);
+
+	setMinimumHeight(0);
+	setMinimumWidth(0);
 }
 
 void MainTab::addDiveStarted()
@@ -315,7 +318,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui->airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
 			ui->airPressureText->clear();
-		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
+		(get_depth_string(stats_selection.max_depth, TRUE));
 		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
 		ui->depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
 		ui->sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));

@@ -887,6 +887,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui->decoStopSAC->setText("17");
 	ui->lowGF->setText("30");
 	ui->highGF->setText("75");
+
+	setMinimumWidth(0);
+	setMinimumHeight(0);
 }
 
 void DivePlannerWidget::startTimeChanged(const QTime& time)

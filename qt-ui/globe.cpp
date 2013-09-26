@@ -57,7 +57,11 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setShowOverviewMap(false);
 	setShowScaleBar(true);
 	setShowCompass(false);
-	connect(this, SIGNAL(mouseClickGeoPosition(qreal, qreal, GeoDataCoordinates::Unit)), this, SLOT(mouseClicked(qreal, qreal, GeoDataCoordinates::Unit)));
+	connect(this, SIGNAL(mouseClickGeoPosition(qreal, qreal, GeoDataCoordinates::Unit)),
+			this, SLOT(mouseClicked(qreal, qreal, GeoDataCoordinates::Unit)));
+
+	setMinimumHeight(0);
+	setMinimumWidth(0);
 }
 
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
