@@ -95,7 +95,6 @@ void init_ui(int *argcp, char ***argvp)
 
 	// the Gtk theme makes things unbearably ugly
 	// so switch to Oxygen in this case
-	qDebug() << application->style()->objectName();
 	if (application->style()->objectName() == "gtk+")
 		application->setStyle("Oxygen");
 

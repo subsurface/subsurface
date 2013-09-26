@@ -39,14 +39,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui->equipmentButtonBox->hide();
 	ui->diveNotesMessage->setCloseButtonVisible(false);
 	ui->diveEquipmentMessage->setCloseButtonVisible(false);
-#ifdef __APPLE__
-	setDocumentMode(false);
-#else
-	if (qApp->style()->objectName() == "gtk+")
-		setDocumentMode(false);
-	else
+
+	if (qApp->style()->objectName() == "oxygen")
 		setDocumentMode(true);
-#endif
+	else
+		setDocumentMode(false);
+
 	// we start out with the fields read-only; once things are
 	// filled from a dive, they are made writeable
 	setEnabled(false);
