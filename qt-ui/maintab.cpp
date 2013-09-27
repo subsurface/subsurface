@@ -96,6 +96,17 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	setMinimumHeight(0);
 	setMinimumWidth(0);
+
+	// Current display of things on Gnome3 looks like shit, so
+	// let`s fix that.
+	if (isGnome3Session()) {
+		QPalette p;
+		p.setColor(QPalette::Window, QColor(Qt::white));
+		ui->scrollArea->viewport()->setPalette(p);
+		ui->scrollArea_2->viewport()->setPalette(p);
+		ui->scrollArea_3->viewport()->setPalette(p);
+		ui->scrollArea_4->viewport()->setPalette(p);
+	}
 }
 
 void MainTab::addDiveStarted()

@@ -8,6 +8,9 @@
 #include <QSpinBox>
 #include <QButtonGroup>
 #include <QDebug>
+#include <QProcess>
+#include <QStringList>
+#include <QDebug>
 
 #include "../dive.h"
 
@@ -117,4 +120,19 @@ RenumberDialog::RenumberDialog(): QDialog(), ui( new Ui::RenumberDialog())
 {
 	ui->setupUi(this);
 	connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+}
+
+bool isGnome3Session()
+{
+#if defined(QT_OS_WIW) || defined(QT_OS_MAC)
+	return false;
+#else
+	if (qApp->style()->objectName() != "gtk+")
+		return false;
+	QProcess p;
+	p.start("pidof", QStringList() << "gnome-shell" );
+	p.waitForFinished(-1);
+	QString p_stdout = p.readAllStandardOutput();
+	return !p_stdout.isEmpty();
+#endif
 }

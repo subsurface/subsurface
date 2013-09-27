@@ -4,6 +4,7 @@
 #include "starwidget.h"
 #include "models.h"
 #include "diveplanner.h"
+#include "simplewidgets.h"
 
 #include <QtDebug>
 #include <QPainter>
@@ -16,6 +17,7 @@
 #include <QKeyEvent>
 #include <QAbstractItemView>
 #include <QStringListModel>
+#include <QApplication>
 
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
@@ -100,6 +102,16 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel*>(index.model());
+
+	// Current display of things on Gnome3 looks like shit, so
+	// let`s fix that.
+	if (isGnome3Session()) {
+		QPalette p;
+		p.setColor(QPalette::Window, QColor(Qt::white));
+		p.setColor(QPalette::Base, QColor(Qt::white));
+		comboDelegate->lineEdit()->setPalette(p);
+		comboDelegate->setPalette(p);
+	}
 	return comboDelegate;
 }
 

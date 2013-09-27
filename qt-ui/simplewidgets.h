@@ -43,4 +43,6 @@ private:
 	Ui::RenumberDialog *ui;
 };
 
+bool isGnome3Session();
+
 #endif

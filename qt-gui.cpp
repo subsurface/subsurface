@@ -93,11 +93,6 @@ void init_ui(int *argcp, char ***argvp)
 	// note: on Linux, "system" == "environment variables"
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-	// the Gtk theme makes things unbearably ugly
-	// so switch to Oxygen in this case
-	if (application->style()->objectName() == "gtk+")
-		application->setStyle("Oxygen");
-
 #if QT_VERSION < 0x050000
 	// ask QString in Qt 4 to interpret all char* as UTF-8,
 	// like Qt 5 does.
