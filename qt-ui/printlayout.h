@@ -19,9 +19,9 @@ public:
 private:
 	PrintDialog *dialog;
 	QPrinter *printer;
+	QPainter *painter;
 	struct options *printOptions;
 
-	QPainter *painter;
 	int screenDpiX, screenDpiY, printerDpi, scaledPageW, scaledPageH;
 	qreal scaleX, scaleY;
 	QRect pageRect;
@@ -31,8 +31,7 @@ private:
 	unsigned int tablePrintHeadingBackground;
 
 	void setup();
-	void printSixDives() const;
-	void printTwoDives() const;
+	void printProfileDives(int divesPerRow, int divesPerColumn);
 	void printTable();
 	void addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const;
 	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;

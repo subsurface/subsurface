@@ -26,6 +26,7 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 {
 	dialog = dialogPtr;
 	printer = printerPtr;
+	painter = NULL;
 	printOptions = optionsPtr;
 
 	// table print settings
@@ -52,10 +53,10 @@ void PrintLayout::print()
 	setup();
 	switch (printOptions->type) {
 	case options::PRETTY:
-		printSixDives();
+		printProfileDives(3, 2);
 		break;
 	case options::TWOPERPAGE:
-		printTwoDives();
+		printProfileDives(2, 1);
 		break;
 	case options::TABLE:
 		printTable();
@@ -80,50 +81,63 @@ void PrintLayout::setup()
 	scaledPageH = pageRect.height() / scaleY;
 }
 
-// experimental
-void PrintLayout::printSixDives() const
+void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 {
-	ProfileGraphicsView *profile = mainWindow()->graphics();
-	QPainter painter;
-	painter.begin(printer);
-	painter.setRenderHint(QPainter::Antialiasing);
-	// painter.setRenderHint(QPainter::HighQualityAntialiasing);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-	painter.scale(scaleX, scaleY);
+	// setup a painter
+	painter = new QPainter();
+	painter->begin(printer);
+	painter->setRenderHint(QPainter::Antialiasing);
+	painter->setRenderHint(QPainter::SmoothPixmapTransform);
+	painter->scale(scaleX, scaleY);
 
+	// setup the profile widget
+	ProfileGraphicsView *profile = mainWindow()->graphics();
 	profile->clear();
 	profile->setPrintMode(true, !printOptions->color_selected);
 	QSize originalSize = profile->size();
-	profile->resize(scaledPageW, scaledPageH);
+	// swap rows/col for landscape
+	if (printer->orientation() == QPrinter::Landscape) {
+		int swap = divesPerColumn;
+		divesPerColumn = divesPerRow;
+		divesPerRow = swap;
+	}
+	// estimate profile and table height and resize the widget
+	const int scaledW = scaledPageW / divesPerColumn;
+	const int scaledH = scaledPageH / divesPerRow;
+	/* make the table 1/3 of the reserved height. potentially this could depend
+	 * on orientation and other parameters as well. */
+	const int tableHeight = scaledH / 3;
+	profile->resize(scaledW, scaledH - tableHeight);
 
-	int i;
+	// plot the dives at specific rows and columns
+	int i, row = 0, col = 0;
 	struct dive *dive;
-	bool firstPage = true;
 	for_each_dive(i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
-		// don't create a new page if still on first page
-		if (!firstPage)
-			printer->newPage();
-		else
-			firstPage = false;
+		if (col == divesPerColumn) {
+			col = 0;
+			row++;
+			if (row == divesPerRow) {
+				row = 0;
+				printer->newPage();
+			}
+		}
 		profile->plot(dive, true);
 		QPixmap pm = QPixmap::grabWidget(profile);
-		QTransform transform;
-		transform.rotate(270);
-		pm = QPixmap(pm.transformed(transform));
-		painter.drawPixmap(0, 0, pm);
+		painter->drawPixmap(scaledW * col, scaledH * row, pm);
+		/* TODO: table should be drawn here, preferably by another function */
+		col++;
 	}
-	painter.end();
+
+	// cleanup
+	painter->end();
+	delete painter;
+	painter = NULL;
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
 	profile->clear();
 	profile->plot(current_dive, true);
-}
-
-void PrintLayout::printTwoDives() const
-{
-	// nop
 }
 
 void PrintLayout::printTable()
