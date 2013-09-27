@@ -658,6 +658,10 @@ const char *weekday(int wday);
 const char *monthname(int mon);
 
 #define UTF8_DEGREE "\xc2\xb0"
+#define UTF8_DELTA "\xce\x94"
+#define UTF8_UPWARDS_ARROW "\xE2\x86\x91"
+#define UTF8_DOWNWARDS_ARROW "\xE2\x86\x93"
+#define UTF8_AVERAGE "\xc3\xb8"
 #define UCS4_DEGREE 0xb0
 #define UTF8_SUBSCRIPT_2 "\xe2\x82\x82"
 #define UTF8_WHITESTAR "\xe2\x98\x86"

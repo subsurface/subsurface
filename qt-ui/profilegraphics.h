@@ -57,6 +57,49 @@ private:
 	QRectF nextRectangle;
 };
 
+class RulerItem;
+
+class RulerNodeItem : public QObject, public QGraphicsEllipseItem
+{
+	Q_OBJECT
+	friend class RulerItem;
+public:
+	explicit RulerNodeItem(QGraphicsItem* parent, graphics_context gc);
+	void setRuler(RulerItem *r);
+	void recalculate();
+
+protected:
+	QVariant itemChange(GraphicsItemChange change, const QVariant & value );
+
+private:
+	graphics_context gc;
+	struct plot_data *entry;
+	RulerItem* ruler;
+};
+
+class RulerItem : public QGraphicsObject
+{
+	Q_OBJECT
+public:
+	explicit RulerItem(QGraphicsItem* parent,
+			   RulerNodeItem *sourceMarker,
+			   RulerNodeItem *destMarker);
+	void recalculate();
+
+	RulerNodeItem* sourceNode() const;
+	RulerNodeItem* destNode() const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * widget = 0);
+	QRectF boundingRect() const;
+	QPainterPath shape() const;
+
+private:
+	QPointF startPoint, endPoint;
+	RulerNodeItem *source, *dest;
+	QString text;
+	int height;
+	int paint_direction;
+};
+
 class EventItem : public QGraphicsPolygonItem
 {
 public:
@@ -106,6 +149,8 @@ protected:
 public slots:
 	void refresh();
 	void edit_dive_time(const QString& time);
+	void on_rulerAction();
+	void on_scaleAction();
 
 private:
 	void plot_depth_profile();
@@ -128,6 +173,13 @@ private:
 	void plot_pp_text();
 	void plot_depth_scale();
 
+
+	void addControlItems();
+
+	void create_ruler();
+	void add_ruler();
+	void remove_ruler();
+
 	QColor getColor(const color_indice_t i);
 	QColor get_sac_color(int sac, int avg_sac);
 	void scrollViewTo(const QPoint pos);
@@ -139,6 +191,8 @@ private:
 	struct dive *dive;
 	struct divecomputer *diveDC;
 	int zoomLevel;
+
+	bool rulerEnabled;
 	bool printMode;
 	bool isGrayscale;
 
@@ -147,6 +201,8 @@ private:
 	QGraphicsItem* timeMarkers;
 	QGraphicsItem* depthMarkers;
 	QGraphicsItem* diveComputer;
+	RulerItem *rulerItem;
+	QGraphicsProxyWidget *toolBarProxy;
 
 	// For 'Plan' mode.:
 	GraphicsTextEditor *depthEditor;

@@ -3,6 +3,7 @@
  * uses cairo to draw it
  */
 #include <glib/gi18n.h>
+#include <limits.h>
 
 #include "dive.h"
 #include "display.h"
@@ -389,7 +390,8 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 		/* vertical velocity in mm/sec */
 		/* Linus wants to smooth this - let's at least look at the samples that aren't FAST or CRAZY */
 		if (entry[0].sec - entry[-1].sec) {
-			entry->velocity = velocity((entry[0].depth - entry[-1].depth) / (entry[0].sec - entry[-1].sec));
+			entry->speed = (entry[0].depth - entry[-1].depth) / (entry[0].sec - entry[-1].sec);
+			entry->velocity = velocity(entry->speed);
 			/* if our samples are short and we aren't too FAST*/
 			if (entry[0].sec - entry[-1].sec < 15 && entry->velocity < FAST) {
 				int past = -2;
@@ -400,6 +402,7 @@ static struct plot_info *analyze_plot_info(struct plot_info *pi)
 			}
 		} else {
 			entry->velocity = STABLE;
+			entry->speed = 0;
 		}
 	}
 
@@ -849,8 +852,8 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 	}
 
 	/* Add two final surface events */
-	plot_data[idx++].sec = lasttime+10;
-	plot_data[idx++].sec = lasttime+20;
+	plot_data[idx++].sec = lasttime+1;
+	plot_data[idx++].sec = lasttime+2;
 	pi->nr = idx;
 
 	return plot_data;
@@ -1212,14 +1215,16 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit;
 	char *buf2 = malloc(bufsize);
-	double depthvalue, tempvalue;
+	double depthvalue, tempvalue, speedvalue;
 
 	depthvalue = get_depth_units(depth, NULL, &depth_unit);
 	snprintf(buf, bufsize, _("D:%.1f %s"), depthvalue, depth_unit);
+
 	if (prefs.show_time) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, _("%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
 	}
+
 	if (pressure) {
 		pressurevalue = get_pressure_units(pressure, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
@@ -1230,6 +1235,14 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, _("%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
+
+	speedvalue = get_depth_units(abs(entry->speed), NULL, &depth_unit);
+	memcpy(buf2, buf, bufsize);
+	/* Ascending speeds are positive, descending are negative */
+	if (entry->speed > 0)
+		speedvalue *= -1;
+	snprintf(buf, bufsize, _("%s\nV:%.2f %s/s"), buf2, speedvalue, depth_unit);
+
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
@@ -1329,4 +1342,117 @@ void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufs
 	}
 	if (entry)
 		plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
+}
+
+/* Compare two plot_data entries and writes the results into a string */
+void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum)
+{
+	struct plot_data *start, *stop, *data;
+	const char *depth_unit, *pressure_unit;
+	char *buf2 = malloc(bufsize);
+	int avg_speed, max_speed, min_speed;
+	int delta_depth, avg_depth, max_depth, min_depth;
+	int bar_used, last_pressure, pressurevalue;
+	int count, last_sec, delta_time;
+
+	double depthvalue, speedvalue;
+
+	if (bufsize > 0)
+		buf[0] = '\0';
+	if (e1 == NULL || e2 == NULL)
+		return;
+
+	if (e1->sec < e2->sec) {
+		start = e1;
+		stop = e2;
+	} else if (e1->sec > e2->sec) {
+		start = e2;
+		stop = e1;
+	} else {
+		return;
+	}
+	count = 0;
+	max_speed = 0;
+	min_speed = INT_MAX;
+
+	delta_depth = abs(start->depth-stop->depth);
+	delta_time = abs(start->sec-stop->sec);
+	avg_depth = 0;
+	max_depth = 0;
+	min_depth = INT_MAX;
+	bar_used = 0;
+
+	last_sec = start->sec;
+	last_pressure = GET_PRESSURE(start);
+
+	while (data != stop) {
+		data = start+count;
+		if (sum)
+			avg_speed += abs(data->speed)*(data->sec-last_sec);
+		else
+			avg_speed += data->speed*(data->sec-last_sec);
+		avg_depth += data->depth*(data->sec-last_sec);
+
+		if (abs(data->speed) < min_speed)
+			min_speed = abs(data->speed);
+		if (abs(data->speed) > max_speed)
+			max_speed = abs(data->speed);
+
+		if (data->depth < min_depth)
+			min_depth = data->depth;
+		if (data->depth > max_depth)
+			max_depth = data->depth;
+		/* Try to detect gas changes */
+		if (GET_PRESSURE(data) > last_pressure+2000)
+			last_pressure = GET_PRESSURE(data);
+		else
+			bar_used += last_pressure-GET_PRESSURE(data);
+
+
+		count+=1;
+		last_sec = data->sec;
+		last_pressure = GET_PRESSURE(data);
+	}
+	avg_depth /= stop->sec-start->sec;
+	avg_speed /= stop->sec-start->sec;
+
+	snprintf(buf, bufsize, _("%sT: %d:%02d min"), UTF8_DELTA, delta_time/60, delta_time%60);
+	memcpy(buf2, buf, bufsize);
+
+	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	depthvalue = get_depth_units(min_depth, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s %sD:%.1f %s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	speedvalue = get_depth_units(min_speed, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s%sV:%.2f%s/s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	speedvalue = get_depth_units(max_speed, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s %sV:%.2f%s/s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	speedvalue = get_depth_units(avg_speed, NULL, &depth_unit);
+	snprintf(buf, bufsize, _("%s %sV:%.2f%s/s"), buf2, UTF8_AVERAGE, speedvalue, depth_unit);
+	memcpy(buf2, buf, bufsize);
+
+	/* Only print if gas has been used */
+	if (bar_used) {
+		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, _("%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+	}
+
+	free(buf2);
 }

@@ -15,7 +15,9 @@
 #include <QPropertyAnimation>
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
+#include <QToolBar>
 #include <qtextdocument.h>
+#include <limits>
 
 #include "../color.h"
 #include "../display.h"
@@ -43,10 +45,11 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0), rulerItem(0), toolBarProxy(0)
 {
 	printMode = false;
 	isGrayscale = false;
+	rulerEnabled = false;
 	gc.printer = false;
 	fill_profile_color();
 	setScene(new QGraphicsScene());
@@ -175,10 +178,22 @@ void ProfileGraphicsView::clear()
 {
 	resetTransform();
 	zoomLevel = 0;
-	if(toolTip){
+	if(toolTip) {
 		scene()->removeItem(toolTip);
 		toolTip->deleteLater();
 		toolTip = 0;
+	}
+	if(toolBarProxy) {
+		scene()->removeItem(toolBarProxy);
+		toolBarProxy->deleteLater();
+		toolBarProxy = 0;
+	}
+	if(rulerItem) {
+		remove_ruler();
+		rulerItem->destNode()->deleteLater();
+		rulerItem->sourceNode()->deleteLater();
+		rulerItem->deleteLater();
+		rulerItem=0;
 	}
 	scene()->clear();
 }
@@ -214,7 +229,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	dive = d;
 	diveDC = d ? dc : NULL;
 
-	if (!isVisible() || !dive) {
+	if (!isVisible() || !dive || !mainWindow()) {
 		return;
 	}
 	setBackgroundBrush(getColor(BACKGROUND));
@@ -273,6 +288,9 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	plot_depth_profile();
 
 	plot_events(dc);
+
+	if (rulerEnabled && !printMode)
+		create_ruler();
 
 	/* Temperature profile */
 	plot_temperature_profile();
@@ -336,6 +354,12 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		connect(timeEditor, SIGNAL(editingFinished(QString)), this, SLOT(edit_dive_time(QString)));
 		scene()->addItem(timeEditor);
 	}
+
+	if (!printMode)
+		addControlItems();
+
+	if (rulerEnabled && !printMode)
+		add_ruler();
 }
 
 void ProfileGraphicsView::plot_depth_scale()
@@ -368,11 +392,29 @@ void ProfileGraphicsView::plot_depth_scale()
 	depthMarkers->setPos(depthMarkers->pos().x() - 10, 0);
 }
 
+void ProfileGraphicsView::addControlItems()
+{
+	QAction *scaleAction = new QAction(QIcon(":scale"), tr("Scale"), this);
+	QAction *rulerAction = new QAction(QIcon(":ruler"), tr("Ruler"), this);
+	QToolBar *toolBar = new QToolBar("", 0);
+	toolBar->addAction(rulerAction);
+	toolBar->addAction(scaleAction);
+	//make toolbar transparent
+	toolBar->setStyleSheet(QString::fromUtf8 ("background-color: rgba(255,255,255,0);"));
+
+	connect(scaleAction, SIGNAL(triggered()), this, SLOT(on_scaleAction()));
+	connect(rulerAction, SIGNAL(triggered()), this, SLOT(on_rulerAction()));
+	toolBarProxy = scene()->addWidget(toolBar);
+	//Put it into the lower right corner of the profile
+	toolBarProxy->setPos(gc.maxx-toolBar->width(), gc.maxy-toolBar->height());
+}
+
 void ProfileGraphicsView::plot_pp_text()
 {
 	double pp, dpp, m;
 	int hpos;
 	static text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
+	QGraphicsRectItem *pressureMarkers = new QGraphicsRectItem();
 
 	setup_pp_limits(&gc);
 	pp = floor(gc.pi.maxpp * 10.0) / 10.0 + 0.2;
@@ -386,8 +428,10 @@ void ProfileGraphicsView::plot_pp_text()
 		pen.setColor(c);
 		item->setPen(pen);
 		scene()->addItem(item);
-		plot_text(&tro, QPointF(hpos + 30, m), QString::number(m));
+		plot_text(&tro, QPointF(hpos, m), QString::number(m), pressureMarkers);
 	}
+	scene()->addItem(pressureMarkers);
+	pressureMarkers->setPos(pressureMarkers->pos().x() + 10, 0);
 }
 
 void ProfileGraphicsView::plot_add_line(int sec, double val, QColor c, QPointF &from)
@@ -840,6 +884,57 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	item->setToolTip(name);
 }
 
+void ProfileGraphicsView::create_ruler()
+{
+	int x,y;
+	struct plot_info *pi = &gc.pi;
+	struct plot_data *data = pi->entry;
+
+	RulerNodeItem *first = new RulerNodeItem(0, gc);
+	RulerNodeItem *second = new RulerNodeItem(0, gc);
+
+	x = SCALEXGC(data->sec);
+	y = data->depth;
+
+	first->setPos(x,y);
+
+	data = pi->entry+(pi->nr-1);
+	x = SCALEXGC(data->sec);
+	y = data->depth;
+
+	second->setPos(x,y);
+	//Make sure that both points already have their entries
+	first->recalculate();
+	second->recalculate();
+
+	rulerItem = new RulerItem(0, first, second);
+	first->setRuler(rulerItem);
+	second->setRuler(rulerItem);
+}
+
+void ProfileGraphicsView::add_ruler()
+{
+	if (! scene()->items().contains(rulerItem)) {
+		scene()->addItem(rulerItem->sourceNode());
+		scene()->addItem(rulerItem->destNode());
+		scene()->addItem(rulerItem);
+		rulerItem->recalculate();
+	}
+}
+
+void ProfileGraphicsView::remove_ruler()
+{
+	if (rulerItem) {
+		if (scene()->items().contains(rulerItem))
+			scene()->removeItem(rulerItem);
+		if (scene()->items().contains(rulerItem->sourceNode()))
+			scene()->removeItem(rulerItem->sourceNode());
+		if (scene()->items().contains(rulerItem->destNode()))
+			scene()->removeItem(rulerItem->destNode());
+	}
+}
+
+
 void ProfileGraphicsView::plot_depth_profile()
 {
 	int i, incr;
@@ -888,7 +983,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	if (maxtime < 600) {
 		/* Be a bit more verbose with shorter dives */
 		for (i = incr; i < maxtime; i += incr)
-			plot_text(&tro, QPointF(i, 0), QString("%1:%2").arg(i/60).arg(i%60), timeMarkers);
+			plot_text(&tro, QPointF(i, 0), QString("%1:%2").arg(i/60).arg(i%60, 2, 10, QChar('0')), timeMarkers);
 	} else {
 		/* Only render the time on every second marker for normal dives */
 		for (i = incr; i < maxtime; i += 2 * incr)
@@ -1131,7 +1226,7 @@ QGraphicsItemGroup *ProfileGraphicsView::plot_text(text_render_options_t *tro,co
 
 void ProfileGraphicsView::resizeEvent(QResizeEvent *event)
 {
-	fitInView(sceneRect());
+	refresh();
 }
 
 void ProfileGraphicsView::plot_temperature_profile()
@@ -1172,6 +1267,18 @@ void ProfileGraphicsView::plot_temperature_profile()
 void ProfileGraphicsView::edit_dive_time(const QString& time)
 {
 	// this should set the full time of the dive.
+	refresh();
+}
+
+void ProfileGraphicsView::on_rulerAction()
+{
+	rulerEnabled = !rulerEnabled;
+	refresh();
+}
+
+void ProfileGraphicsView::on_scaleAction()
+{
+	zoomed_plot = !zoomed_plot;
 	refresh();
 }
 
@@ -1428,6 +1535,161 @@ EventItem::EventItem(QGraphicsItem* parent, bool grayscale): QGraphicsPolygonIte
 	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2, 2, this);
 	ball->setBrush(QBrush(getColor(ALERT_FG)));
 	ball->setPen(QPen(getColor(ALERT_FG)));
+}
+
+
+
+RulerNodeItem::RulerNodeItem(QGraphicsItem *parent, graphics_context context) : QGraphicsEllipseItem(parent), gc(context), entry(NULL) , ruler(NULL)
+{
+	setRect(QRect(QPoint(-8,8),QPoint(8,-8)));
+	setBrush(QColor(0xff, 0, 0, 127));
+	setPen(QColor("#FF0000"));
+	setFlag(QGraphicsItem::ItemIsMovable);
+	setFlag(ItemSendsGeometryChanges);
+	setFlag(ItemIgnoresTransformations);
+}
+
+void RulerNodeItem::setRuler(RulerItem *r)
+{
+	ruler = r;
+}
+
+void RulerNodeItem::recalculate()
+{
+	struct plot_info *pi = &gc.pi;
+	struct plot_data *data = pi->entry+(pi->nr-1);
+	uint16_t count = 0;
+	if (x() < 0) {
+		setPos(0, y());
+	}
+	else if (x() > SCALEXGC(data->sec)) {
+		setPos(SCALEXGC(data->sec), y());
+	}
+	else {
+		data = pi->entry;
+		count=0;
+		while (SCALEXGC(data->sec) < x() && count < pi->nr) {
+			data = pi->entry+count;
+			count++;
+		}
+		setPos(SCALEGC(data->sec, data->depth));
+		entry=data;
+	}
+}
+
+QVariant RulerNodeItem::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+	if(change == ItemPositionHasChanged) {
+		recalculate();
+		if(ruler != NULL)
+			ruler->recalculate();
+		if (scene()) {
+			scene()->update();
+		}
+	}
+	return QGraphicsEllipseItem::itemChange(change, value);
+}
+
+RulerItem::RulerItem(QGraphicsItem *parent, RulerNodeItem *sourceNode, RulerNodeItem *destNode) : QGraphicsObject(parent), source(sourceNode), dest(destNode)
+{
+	recalculate();
+}
+
+void RulerItem::recalculate()
+{
+	char buffer[500];
+	QPointF tmp;
+	QFont font;
+	QFontMetrics fm(font);
+
+	if (source == NULL || dest == NULL)
+		return;
+
+	prepareGeometryChange();
+	startPoint = mapFromItem(source, 0, 0);
+	endPoint = mapFromItem(dest, 0, 0);
+	if (startPoint.x() > endPoint.x()) {
+		tmp = endPoint;
+		endPoint = startPoint;
+		startPoint = tmp;
+	}
+	QLineF line(startPoint, endPoint);
+
+	compare_samples(source->entry, dest->entry, buffer, 500, 1);
+	text = QString(buffer);
+
+	QRect r = fm.boundingRect(QRect(QPoint(10,-1*INT_MAX), QPoint(line.length()-10, 0)), Qt::TextWordWrap, text);
+	if (r.height() < 10)
+		height = 10;
+	else
+		height = r.height();
+
+	QLineF line_n = line.normalVector();
+	line_n.setLength(height);
+	if (scene()) {
+		/* Determine whether we draw down or upwards */
+		if (scene()->sceneRect().contains(line_n.p2()) &&
+				scene()->sceneRect().contains(endPoint+QPointF(line_n.dx(),line_n.dy())))
+			paint_direction = -1;
+		else
+			paint_direction = 1;
+	}
+}
+
+RulerNodeItem *RulerItem::sourceNode() const
+{
+	return source;
+}
+
+RulerNodeItem *RulerItem::destNode() const
+{
+	return dest;
+}
+
+void RulerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	QLineF line(startPoint, endPoint);
+	QLineF line_n = line.normalVector();
+	painter->setPen(QColor(Qt::black));
+	painter->setBrush(Qt::NoBrush);
+	line_n.setLength(height);
+
+	if (paint_direction == 1)
+		line_n.setAngle(line_n.angle()+180);
+	painter->drawLine(line);
+	painter->drawLine(line_n);
+	painter->drawLine(line_n.p1() + QPointF(line.dx(), line.dy()), line_n.p2() + QPointF(line.dx(), line.dy()));
+
+	//Draw Text
+	painter->save();
+	painter->translate(startPoint.x(), startPoint.y());
+	painter->rotate(line.angle()*-1);
+	if (paint_direction == 1)
+		painter->translate(0, height);
+	painter->setPen(Qt::black);
+	painter->drawText(QRectF(QPointF(10,-1*height), QPointF(line.length()-10, 0)), Qt::TextWordWrap, text);
+	painter->restore();
+}
+
+QRectF RulerItem::boundingRect() const
+{
+	return shape().controlPointRect();
+}
+
+QPainterPath RulerItem::shape() const
+{
+	QPainterPath path;
+	QLineF line(startPoint, endPoint);
+	QLineF line_n = line.normalVector();
+	line_n.setLength(height);
+	if (paint_direction == 1)
+		line_n.setAngle(line_n.angle()+180);
+	path.moveTo(startPoint);
+	path.lineTo(line_n.p2());
+	path.lineTo(line_n.p2() + QPointF(line.dx(), line.dy()));
+	path.lineTo(endPoint);
+	path.lineTo(startPoint);
+	return path;
 }
 
 GraphicsTextEditor::GraphicsTextEditor(QGraphicsItem* parent): QGraphicsTextItem(parent)

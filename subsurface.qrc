@@ -12,5 +12,7 @@
 	<file alias="average">icons/average.svg</file>
 	<file alias="warning">icons/warning.png</file>
 	<file alias="table-css">qt-ui/css/tableviews.css</file>
+	<file alias="scale">icons/scale.svg</file>
+	<file alias="ruler">icons/ruler.svg</file>
  </qresource>
  </RCC>
