@@ -1915,6 +1915,7 @@ static struct xslt_files {
 	{ "UDDF", "uddf.xslt" },
 	{ "profile", "udcf.xslt" },
 	{ "Divinglog", "DivingLog.xslt" },
+	{ "csv", "csv2xml.xslt" },
 	{ NULL, }
 };
 
@@ -1925,6 +1926,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 	xsltStylesheetPtr xslt = NULL;
 	xmlNode *root_element = xmlDocGetRootElement(doc);
 	char *attribute;
+	char *params[3];
 
 	while ((info->root) && (strcasecmp(root_element->name, info->root) != 0)) {
 		info++;
@@ -1946,9 +1948,28 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 			parser_error(error, _("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
 			return doc;
 		}
-		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+
+		/*
+		 * params is only used for CSV import, but it does not
+		 * hurt if we supply unused parameters for other
+		 * transforms as well.
+		 *
+		 * We should have a GUI set the parameters but currently
+		 * we just have PoC how parameters would be handled.
+		 *
+		 * (Field 9 is temperature for XP5 import, field 15
+		 * is temperature for AP Logviewer.
+		 */
+
+		params[0] = strdup("tempField");
+		params[1] = strdup("15");
+		params[2] = NULL;
+
+		transformed = xsltApplyStylesheet(xslt, doc, (const char **)params);
 		xmlFreeDoc(doc);
 		xsltFreeStylesheet(xslt);
+		free(params[0]);
+		free(params[1]);
 		return transformed;
 	}
 	return doc;

@@ -97,6 +97,36 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, char **er
 	return success;
 }
 
+static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char **error)
+{
+	char *buf;
+
+	if (readfile(filename, mem) < 0) {
+		if (error) {
+			int len = strlen(_("Failed to read '%s'")) + strlen(filename);
+			*error = malloc(len);
+			snprintf(*error, len, _("Failed to read '%s'"), filename);
+		}
+
+		return 1;
+	}
+
+	/* Surround the CSV file content with XML tags to enable XSLT
+	 * parsing
+	 */
+	buf = realloc(mem->buffer, mem->size + strlen("<csv></csv>"));
+	if (buf != NULL) {
+		memmove(buf + 5, mem->buffer, mem->size);
+		memcpy(buf, "<csv>", 5);
+		memcpy(mem->buffer + mem->size + 5, "</csv>", 7);
+		mem->buffer = buf;
+		mem->size += strlen("<csv></csv>");
+	} else
+		return 1;
+
+	return 0;
+}
+
 static int try_to_open_db(const char *filename, struct memblock *mem, char **error)
 {
 	return parse_dm4_buffer(filename, mem->buffer, mem->size, &dive_table, error);
@@ -229,6 +259,10 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
 		return try_to_open_zip(filename, mem, error);
 
+	/* CSV files */
+	if (!strcasecmp(fmt, "CSV"))
+		return try_to_xslt_open_csv(filename, mem, error);
+
 #if ONCE_COCHRAN_IS_SUPPORTED
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
@@ -266,8 +300,9 @@ void parse_file(const char *filename, char **error)
 			return;
 
 		if (error) {
-			*error = malloc(1024);
-			snprintf(*error, 1024, _("Failed to read '%s'"), filename);
+			int len = strlen(_("Failed to read '%s'")) + strlen(filename);
+			*error = malloc(len);
+			snprintf(*error, len, _("Failed to read '%s'"), filename);
 		}
 
 		return;
