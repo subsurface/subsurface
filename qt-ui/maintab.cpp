@@ -461,8 +461,8 @@ void MainTab::acceptChanges()
 		if (weightModel->changed) {
 			mark_divelist_changed(TRUE);
 			Q_FOREACH (dive *d, notesBackup.keys()) {
-				for (int i = 0; i < MAX_CYLINDERS; i++) {
-					d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
+				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+					d->weightsystem[i] = multiEditEquipmentPlaceholder.weightsystem[i];
 				}
 			}
 		}

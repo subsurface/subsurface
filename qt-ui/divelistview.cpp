@@ -34,6 +34,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setSortingEnabled(false);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	const QFontMetrics metrics(defaultModelFont());
+	header()->setMinimumHeight(metrics.height() + 10);
 	QAction *showSearchBox = new QAction(tr("Show Search Box"), this);
 	showSearchBox->setShortcut( Qt::CTRL + Qt::Key_F);
 	showSearchBox->setShortcutContext(Qt::ApplicationShortcut);

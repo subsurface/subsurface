@@ -64,9 +64,8 @@ void TableView::setModel(QAbstractItemModel *model){
 	}
 	s.endGroup();
 
-	ui->tableView->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 	QFontMetrics metrics(defaultModelFont());
-	ui->tableView->verticalHeader()->setDefaultSectionSize( metrics.height() + 8 );
+	ui->tableView->horizontalHeader()->setMinimumHeight(metrics.height() + 10);
 }
 
 void TableView::fixPlusPosition()
