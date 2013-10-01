@@ -1236,12 +1236,12 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		snprintf(buf, bufsize, _("%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
 
-	speedvalue = get_depth_units(abs(entry->speed), NULL, &depth_unit);
+	speedvalue = get_depth_units(abs(entry->speed), NULL, &depth_unit)*60;
 	memcpy(buf2, buf, bufsize);
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	snprintf(buf, bufsize, _("%s\nV:%.2f %s/s"), buf2, speedvalue, depth_unit);
+	snprintf(buf, bufsize, _("%s\nV:%.1f %s/min"), buf2, speedvalue, depth_unit);
 
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
