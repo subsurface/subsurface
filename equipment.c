@@ -861,6 +861,8 @@ struct tank_info_t tank_info[100] = {
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
 	/* Common European steel cylinders */
+        { "3L 232 bar",   .ml = 3000,  .bar = 232 },
+        { "3L 300 bar",   .ml = 3000,  .bar = 300 },
 	{ "10L 300 bar",  .ml = 10000, .bar = 300 },
 	{ "12L 200 bar",  .ml = 12000, .bar = 200 },
 	{ "12L 232 bar",  .ml = 12000, .bar = 232 },
