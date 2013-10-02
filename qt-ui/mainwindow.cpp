@@ -415,7 +415,7 @@ void MainWindow::on_actionUserManual_triggered()
 QString MainWindow::filter()
 {
 	QString f;
-	f += "ALL ( *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
+	f += "ALL ( *.ssrf *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
 #ifdef LIBZIP
 	f += "*.sde *.SDE *.dld *.DLD ";
 #endif
@@ -424,6 +424,7 @@ QString MainWindow::filter()
 #endif
 	f += ");;";
 
+	f += "Subsurface (*.ssrf);;";
 	f += "XML (*.xml *.XML);;";
 	f += "UDDF (*.uddf);;";
 	f += "UDCF (*.udcf *.UDCF);;";
