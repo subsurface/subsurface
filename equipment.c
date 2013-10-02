@@ -840,6 +840,7 @@ struct tank_info_t tank_info[100] = {
 	{ "11.1 l", .ml = 11100 },
 
 	/* Most common AL cylinders */
+	{ "AL40",  .cuft =  40, .psi = 3000 },
 	{ "AL50",  .cuft =  50, .psi = 3000 },
 	{ "AL63",  .cuft =  63, .psi = 3000 },
 	{ "AL72",  .cuft =  72, .psi = 3000 },
