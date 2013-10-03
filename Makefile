@@ -107,6 +107,18 @@ SOURCES = \
 	main.cpp \
 	$(RESFILE)
 
+FORMS = \
+	qt-ui/about.ui \
+	qt-ui/divecomputermanagementdialog.ui \
+	qt-ui/diveplanner.ui \
+	qt-ui/downloadfromdivecomputer.ui \
+	qt-ui/maintab.ui \
+	qt-ui/mainwindow.ui \
+	qt-ui/preferences.ui \
+	qt-ui/printoptions.ui \
+	qt-ui/renumber.ui \
+	qt-ui/subsurfacewebservices.ui \
+	qt-ui/tableview.ui
 
 RESOURCES = $(NAME).qrc
 
@@ -155,7 +167,6 @@ MSGLANGS=$(notdir $(wildcard po/*.po))
 # Add files to the following variables if the auto-detection based on the
 # filename fails
 OBJS_NEEDING_MOC =
-OBJS_NEEDING_UIC =
 HEADERS_NEEDING_MOC =
 
 include Rules.mk

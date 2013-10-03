@@ -38,6 +38,11 @@ MOC_OBJS = $(HEADERS_NEEDING_MOC:.h=.moc.o)
 
 ALL_OBJS = $(OBJS) $(MOC_OBJS)
 
+# handling of uic
+UIC_HEADERS = $(patsubst %.ui, ui_%.h, $(subst qt-ui/,,$(FORMS)))
+vpath %.ui qt-ui
+vpath ui_%.h .uic
+
 # Files for using Qt Creator
 CREATOR_FILES = $(NAME).config $(NAME).creator $(NAME).files $(NAME).includes
 
@@ -46,6 +51,8 @@ all: $(TARGET) doc
 $(TARGET): gen_version_file $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
 	@$(PRETTYECHO) '    LINK' $(TARGET)
 	$(COMPILE_PREFIX)$(CXX) $(LDFLAGS) -o $(TARGET) $(ALL_OBJS) $(LIBS)
+
+uicables: $(UIC_HEADERS)
 
 gen_version_file $(VERSION_FILE):
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
@@ -178,10 +185,10 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
-%.o: %.cpp
+%.o: %.cpp uicables
 	@$(PRETTYECHO) '    CXX' $<
 	@mkdir -p .dep/$(@D)
-	$(COMPILE_PREFIX)$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
+	$(COMPILE_PREFIX)$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -I.uic -Iqt-ui -MD -MF .dep/$@.dep -c -o $@ $<
 
 # This rule is for running the moc on QObject subclasses defined in the .h
 # files.
@@ -203,16 +210,12 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 %.qrc:
 
 # This creates the ui headers.
-ui_%.h: %.ui
+ui_%.h: %.ui .uic
 	@$(PRETTYECHO) '    UIC' $<
-	$(COMPILE_PREFIX)$(UIC) $< -o $@
+	$(COMPILE_PREFIX)$(UIC) $< -o .uic/$@
 
-# This forces the creation of ui headers with the wrong path
-# This is required because the -MG option to the compiler outputs
-# unknown files with no path prefix
-ui_%.h: qt-ui/%.ui
-	@$(PRETTYECHO) '    UIC' $<
-	$(COMPILE_PREFIX)$(UIC) $< -o qt-ui/$@
+.uic:
+	$(COMPILE_PREFIX)mkdir $@
 
 share/locale/%.UTF-8/LC_MESSAGES/$(NAME).mo: po/%.po po/%.aliases
 	@$(PRETTYECHO) '    MSGFMT' $*.po
@@ -242,13 +245,13 @@ doc:
 
 clean:
 	rm -f $(ALL_OBJS) *~ $(NAME) $(NAME).exe po/*~ po/$(NAME)-new.pot \
-		$(VERSION_FILE) $(HEADERS_NEEDING_MOC:.h=.moc) *.moc qt-ui/*.moc qt-ui/ui_*.h
+		$(VERSION_FILE) $(HEADERS_NEEDING_MOC:.h=.moc) *.moc qt-ui/*.moc .uic/*.h
 	rm -f $(RESOURCES:.qrc=.qrc.cpp)
 	rm -rf share
 
 confclean: clean
 	rm -f $(CONFIGFILE)
-	rm -rf .dep
+	rm -rf .dep .uic
 
 distclean: confclean
 	rm -f $(CREATOR_FILES)
