@@ -117,7 +117,7 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 
 /* This Method is being called when the user *writes* something and press enter or tab,
  * and it`s also called when the mouse walks over the list of choices from the ComboBox,
- * One thing is important, if the user writes a *new* cylinder or weigth type, it will
+ * One thing is important, if the user writes a *new* cylinder or weight type, it will
  * be ADDED to the list, and the user will need to fill the other data.
  */
 void ComboBoxDelegate::testActivation(const QString& currText)

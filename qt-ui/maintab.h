@@ -32,7 +32,7 @@ struct NotesBackup{
 	int visibility;
 	QString divemaster;
 	cylinder_t cylinders[MAX_CYLINDERS];
-	weightsystem_t weigthsystem[MAX_WEIGHTSYSTEMS ];
+	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS ];
 };
 
 struct Completers{
@@ -72,7 +72,7 @@ public slots:
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);
 	void editCylinderWidget(const QModelIndex& index);
-	void editWeigthWidget(const QModelIndex& index);
+	void editWeightWidget(const QModelIndex& index);
 	void addDiveStarted();
 
 private:

@@ -74,7 +74,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
-	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeigthWidget(QModelIndex)));
+	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 	connect(ui.notesButtonBox, SIGNAL(accepted()), this, SLOT(acceptChanges()));
 	connect(ui.notesButtonBox, SIGNAL(rejected()), this, SLOT(rejectChanges()));
 	connect(ui.equipmentButtonBox, SIGNAL(accepted()), this, SLOT(acceptChanges()));
@@ -167,7 +167,7 @@ void MainTab::enableEdition()
 				notesBackup[mydive].cylinders[i] = mydive->cylinder[i];
 			}
 			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				notesBackup[mydive].weigthsystem[i] = mydive->weightsystem[i];
+				notesBackup[mydive].weightsystem[i] = mydive->weightsystem[i];
 			}
 		}
 		editMode = DIVE;
@@ -561,7 +561,7 @@ void MainTab::rejectChanges()
 				mydive->cylinder[i] = notesBackup[mydive].cylinders[i];
 			}
 			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				mydive->weightsystem[i] = notesBackup[mydive].weigthsystem[i];
+				mydive->weightsystem[i] = notesBackup[mydive].weightsystem[i];
 			}
 		}
 		multiEditEquipmentPlaceholder = *get_dive(selected_dive);
@@ -726,7 +726,7 @@ void MainTab::editCylinderWidget(const QModelIndex& index)
 		ui.cylinders->edit(index);
 }
 
-void MainTab::editWeigthWidget(const QModelIndex& index)
+void MainTab::editWeightWidget(const QModelIndex& index)
 {
 	if (editMode == NONE)
 		enableEdition();
