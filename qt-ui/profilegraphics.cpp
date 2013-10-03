@@ -819,8 +819,9 @@ void ProfileGraphicsView::plot_events(struct divecomputer *dc)
 
 void ProfileGraphicsView::plot_one_event(struct event *ev)
 {
-	int i, depth = 0;
+	int i;
 	struct plot_info *pi = &gc.pi;
+	struct plot_data *entry;
 
 	/* is plotting of this event disabled? */
 	if (ev->name) {
@@ -840,16 +841,15 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 		return;
 
 	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *data = pi->entry + i;
-		if (ev->time.seconds < data->sec)
+		entry = pi->entry + i;
+		if (ev->time.seconds < entry->sec)
 			break;
-		depth = data->depth;
 	}
 
 	/* draw a little triangular marker and attach tooltip */
 
 	int x = SCALEXGC(ev->time.seconds);
-	int y = SCALEYGC(depth);
+	int y = SCALEYGC(entry->depth);
 
 	EventItem *item = new EventItem(0, isGrayscale);
 	item->setPos(x, y);
@@ -859,13 +859,13 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	QString name = tr(ev->name);
 	if (ev->value) {
 		if (ev->name && name == "gaschange") {
-			unsigned int he = ev->value >> 16;
-			unsigned int o2 = ev->value & 0xffff;
+			int he = get_he(&dive->cylinder[entry->cylinderindex].gasmix);
+			int o2 = get_o2(&dive->cylinder[entry->cylinderindex].gasmix);
 
 			name += ": ";
-			name += (he) ? QString("%1/%2").arg(o2, he)
-				  : (o2 == 21) ? name += tr("air")
-				  : QString("%1% %2").arg(o2).arg("O" UTF8_SUBSCRIPT_2);
+			name += (he) ? QString("%1/%2").arg((o2 + 5) / 10).arg((he + 5) / 10)
+				  : is_air(o2, he) ? name += tr("air")
+				  : QString(tr("EAN%1")).arg((o2 + 5) / 10);
 
 		} else if (ev->name && !strcmp(ev->name, "SP change")) {
 			name += QString(":%1").arg((double) ev->value / 1000);
