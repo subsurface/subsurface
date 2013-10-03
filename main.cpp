@@ -10,6 +10,8 @@
 #include "version.h"
 #include "subsurfacestartup.h"
 #include "qt-ui/mainwindow.h"
+#include "qt-ui/diveplanner.h"
+#include "qt-ui/ui_tableview.h"
 
 #include <QStringList>
 
