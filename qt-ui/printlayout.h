@@ -5,8 +5,10 @@
 #include <QPrinter>
 #include <QList>
 
+class QTableView;
 class PrintDialog;
 class TablePrintModel;
+class ProfilePrintModel;
 struct dive;
 
 class PrintLayout : public QObject {
@@ -19,7 +21,6 @@ public:
 private:
 	PrintDialog *dialog;
 	QPrinter *printer;
-	QPainter *painter;
 	struct options *printOptions;
 
 	int screenDpiX, screenDpiY, printerDpi, scaledPageW, scaledPageH;
@@ -27,11 +28,14 @@ private:
 	QRect pageRect;
 
 	QList<QString> tablePrintColumnNames;
-	QList<unsigned int> tablePrintColumnWidths;
 	unsigned int tablePrintHeadingBackground;
+	QList<unsigned int> tablePrintColumnWidths;
+	unsigned int profilePrintTableMaxH;
+	QList<unsigned int> profilePrintColumnWidths, profilePrintRowHeights;
 
 	void setup();
 	void printProfileDives(int divesPerRow, int divesPerColumn);
+	QTableView *createProfileTable(ProfilePrintModel *model, const int tableW);
 	void printTable();
 	void addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const;
 	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;

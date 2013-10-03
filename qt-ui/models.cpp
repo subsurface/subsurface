@@ -1567,3 +1567,200 @@ int TablePrintModel::columnCount(const QModelIndex &parent) const
 	Q_UNUSED(parent);
 	return columns;
 }
+
+/*#################################################################
+ * #
+ * #	Profile Print Model
+ * #
+ * ################################################################
+ */
+
+ProfilePrintModel::ProfilePrintModel(QObject *parent)
+{
+}
+
+/* this is just a helper function to truncate C strings near 'maxlen' characters
+ * by finding word bounderies and adding '...' at the end of the truncated string.
+ * not really optimal for all languages!
+ */
+QString ProfilePrintModel::truncateString(char *str, const int maxlen) const
+{
+	if (!str)
+		return QString("");
+	QString trunc = QString(str);
+	const int len = trunc.length();
+	for (int i = 0; i < len; i++) {
+		char c = trunc.at(i).toAscii();
+		if (c == ' ' || c == '\n' || c == '\t') {
+			if (i > maxlen) {
+				trunc = trunc.left(i) + QString("...");
+				break;
+			}
+		}
+	}
+	return trunc;
+}
+
+void ProfilePrintModel::setDive(struct dive *divePtr)
+{
+	dive = divePtr;
+	// reset();
+}
+
+int ProfilePrintModel::rowCount(const QModelIndex &parent) const
+{
+	return 11;
+}
+
+int ProfilePrintModel::columnCount(const QModelIndex &parent) const
+{
+	return 7;
+}
+
+QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
+{
+	const int row = index.row();
+	const int col = index.column();
+
+	switch (role) {
+	case Qt::DisplayRole: {
+		struct DiveItem di;
+		di.dive = dive;
+		QString unit;
+		char buf[80];
+		const QString empty = QString("");
+		const QString unknown = QString(tr("unknown"));
+
+		// dive# + date, depth, location, duration
+		if (row == 0) {
+			if (col == 0)
+				return QString(tr("Dive #%1 - %2")).arg(dive->number).arg(di.displayDate());
+			if (col == 5) {
+				unit = (get_units()->length == units::METERS) ? "m" : "ft";
+				return QString(tr("Max depth: %1 %2")).arg(di.displayDepth()).arg(unit);
+			}
+		}
+		if (row == 1) {
+			if (col == 0)
+				return truncateString(dive->location, 32);
+			if (col == 5)
+				return QString(tr("Duration: %1 min")).arg(di.displayDuration());
+		}
+		// cylinder headings
+		if (row == 2) {
+			if (col == 0)
+				return QString(tr("Cylinder"));
+			if (col == 1)
+				return QString(tr("Gasmix"));
+			if (col == 2)
+				return QString(tr("Gas Used"));
+		}
+		// cylinder data
+		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
+			cylinder_t *cyl = &dive->cylinder[row - 3];
+			if (cyl->type.description) { // how do we check if a cylinder is added?
+				if (col == 0) {
+					if (cyl->type.description[0] != '\0')
+						return QString(cyl->type.description);
+					return unknown;
+				}
+				if (col == 1) {
+					get_gas_string(cyl->gasmix.o2.permille, cyl->gasmix.he.permille, buf, sizeof(buf));
+					return QString(buf);
+				}
+				if (col == 2) {
+					return get_cylinder_used_gas_string(cyl, true);
+				}
+			}
+		}
+		// dive notes
+		if (row == 10 && col == 0)
+			return truncateString(dive->notes, 64);
+		// sac, cns, otu - headings
+		if (col == 3) {
+			if (row == 2)
+				return QString(tr("SAC"));
+			if (row == 4)
+				return QString(tr("Max. CNS"));
+			if (row == 6)
+				return QString(tr("OTU"));
+		}
+		// sac, cns, otu - data
+		if (col == 4) {
+			if (row == 2)
+				return di.displaySac();
+			if (row == 4)
+				return QString::number(dive->maxcns);
+			if (row == 6)
+				return QString::number(dive->otu);
+		}
+		// weights heading
+		if (row == 2 && col == 5)
+			return QString(tr("Weights"));
+		// total weight
+		if (row == 9) {
+			weight_t tw = { total_weight(dive) };
+			if (tw.grams) {
+				if (col == 5)
+					return QString("Total weight");
+				if (col == 6)
+					return get_weight_string(tw, true);
+			}
+		}
+		// weight data
+		if (row > 2 && row < 10 && row - 3 < MAX_WEIGHTSYSTEMS) {
+			weightsystem_t *ws = &dive->weightsystem[row - 3];
+			if (ws->weight.grams) {
+				if (col == 5) {
+					if (ws->description && ws->description[0] != '\0')
+						return QString(ws->description);
+					return unknown;
+				}
+				if (col == 6) {
+					return get_weight_string(ws->weight, true);
+				}
+			}
+		}
+		return empty;
+	}
+	case Qt::FontRole: {
+		QFont font;
+		const int baseSize = 8;
+		// dive #
+		if (row == 0 && col == 0) {
+			font.setBold(true);
+			font.setPixelSize(baseSize + 1);
+			return QVariant::fromValue(font);
+		}
+		// dive location
+		if (row == 1 && col == 0) {
+			font.setPixelSize(baseSize);
+			font.setBold(true);
+			return QVariant::fromValue(font);
+		}
+		// depth/duration
+		if ((row == 0 || row == 1) && col == 5) {
+			font.setPixelSize(baseSize);
+			return QVariant::fromValue(font);
+		}
+		// notes
+		if (row == 9 && col == 0) {
+			font.setPixelSize(baseSize + 1);
+			return QVariant::fromValue(font);
+		}
+		font.setPixelSize(baseSize);
+		return QVariant::fromValue(font);
+	}
+	case Qt::TextAlignmentRole: {
+		unsigned int align = Qt::AlignCenter;
+		// dive #, location, notes
+		if ((row < 2 || row == 10) && col == 0)
+			align = Qt::AlignLeft | Qt::AlignVCenter;
+		// depth, duration
+		if (row < 2 && col == 5)
+			align = Qt::AlignRight | Qt::AlignVCenter;
+		return QVariant::fromValue(align);
+	}
+	} // switch (role)
+	return QVariant();
+}

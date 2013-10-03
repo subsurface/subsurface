@@ -300,3 +300,30 @@ void AirTypesDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 AirTypesDelegate::AirTypesDelegate(QObject* parent) : ComboBoxDelegate(airTypes(), parent)
 {
 }
+
+ProfilePrintDelegate::ProfilePrintDelegate(QObject *parent)
+	: QStyledItemDelegate(parent)
+{
+}
+
+/* this method overrides the default table drawing method and places grid lines only at certain rows and columns */
+void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	const QRect rect(option.rect);
+	const int row = index.row();
+	const int col = index.column();
+
+	// grid color
+	painter->setPen(QPen(QColor(0xff999999)));
+	// top line
+	if (row == 2 || row == 3 || row == 10 || col == 3 || col == 4)
+		painter->drawLine(rect.topLeft(), rect.topRight());
+	if (row > 1 && row < 10) {
+		// left line - draw always for these rows
+		painter->drawLine(rect.topLeft(), rect.bottomLeft());
+		// "fix" for missing (?) right line after col 5
+		if (col > 5 || (col > 4 && row == 2))
+			painter->drawLine(rect.topRight(), rect.bottomRight());
+	}
+	QStyledItemDelegate::paint(painter, option, index);
+}

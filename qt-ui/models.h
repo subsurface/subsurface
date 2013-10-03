@@ -274,4 +274,24 @@ public:
 	int columnCount(const QModelIndex &parent) const;
 };
 
+/* ProfilePrintModel:
+ * this model is used when printing a data table under a profile. it requires
+ * some exact usage of setSpan(..) on the target QTableView widget.
+ */
+class ProfilePrintModel : public QAbstractTableModel
+{
+	Q_OBJECT
+
+private:
+	struct dive *dive;
+	QString truncateString(char *str, const int maxlen) const;
+
+public:
+	ProfilePrintModel(QObject *parent = 0);
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	void setDive(struct dive *divePtr);
+};
+
 #endif
