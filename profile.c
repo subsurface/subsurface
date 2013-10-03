@@ -1372,6 +1372,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		return;
 	}
 	count = 0;
+	avg_speed = 0;
 	max_speed = 0;
 	min_speed = INT_MAX;
 
@@ -1385,6 +1386,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	last_sec = start->sec;
 	last_pressure = GET_PRESSURE(start);
 
+	data = start;
 	while (data != stop) {
 		data = start+count;
 		if (sum)
