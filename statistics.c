@@ -285,7 +285,7 @@ volume_t get_gas_used(struct dive *dive)
 		pressure_t start, end;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
-		end = cyl->end.mbar ?cyl->sample_end : cyl->sample_end;
+		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
 		if (start.mbar && end.mbar)
 			gas_used.mliter += gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
