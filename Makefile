@@ -68,7 +68,6 @@ SOURCES = \
 	equipment.c \
 	file.c \
 	info.c \
-	main.cpp \
 	parse-xml.c \
 	planner.c \
 	subsurfacestartup.c \
@@ -80,10 +79,9 @@ SOURCES = \
 	uemis.c \
 	uemis-downloader.c \
 	libdivecomputer.c \
-	qt-gui.cpp \
 	qthelper.cpp \
-	qt-ui/divelistview.cpp \
-	qt-ui/maintab.cpp \
+	qt-ui/simplewidgets.cpp \
+	qt-ui/tableview.cpp \
 	qt-ui/mainwindow.cpp \
 	qt-ui/models.cpp \
 	qt-ui/plotareascene.cpp \
@@ -94,17 +92,19 @@ SOURCES = \
 	qt-ui/kmessagewidget.cpp \
 	qt-ui/downloadfromdivecomputer.cpp \
 	qt-ui/preferences.cpp \
-	qt-ui/simplewidgets.cpp \
 	qt-ui/subsurfacewebservices.cpp \
 	qt-ui/divecomputermanagementdialog.cpp \
 	qt-ui/diveplanner.cpp \
+	qt-ui/divelistview.cpp \
 	qt-ui/about.cpp \
 	qt-ui/graphicsview-common.cpp \
 	qt-ui/printdialog.cpp \
 	qt-ui/printoptions.cpp \
 	qt-ui/printlayout.cpp \
 	qt-ui/completionmodels.cpp \
-	qt-ui/tableview.cpp \
+	qt-ui/maintab.cpp \
+	qt-gui.cpp \
+	main.cpp \
 	$(RESFILE)
 
 
