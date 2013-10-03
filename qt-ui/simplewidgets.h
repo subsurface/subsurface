@@ -7,6 +7,8 @@ class QAbstractButton;
 #include <QWidget>
 #include <QDialog>
 
+#include "ui_renumber.h"
+
 class MinMaxAvgWidget : public QWidget{
 	Q_OBJECT
 	Q_PROPERTY(double minimum READ minimum WRITE setMinimum)

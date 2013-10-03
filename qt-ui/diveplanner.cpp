@@ -2,7 +2,6 @@
 #include "graphicsview-common.h"
 #include "models.h"
 #include "modeldelegates.h"
-#include "ui_diveplanner.h"
 #include "mainwindow.h"
 #include "maintab.h"
 #include "tableview.h"

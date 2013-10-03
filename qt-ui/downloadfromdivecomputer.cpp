@@ -1,5 +1,4 @@
 #include "downloadfromdivecomputer.h"
-#include "ui_downloadfromdivecomputer.h"
 
 #include "../libdivecomputer.h"
 #include "../helpers.h"

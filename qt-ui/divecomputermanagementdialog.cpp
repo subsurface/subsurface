@@ -1,6 +1,5 @@
 #include "divecomputermanagementdialog.h"
 #include "models.h"
-#include "ui_divecomputermanagementdialog.h"
 #include "mainwindow.h"
 #include <QMessageBox>
 #include "../qthelper.h"

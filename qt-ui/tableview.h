@@ -7,13 +7,12 @@
  */
 #include <QWidget>
 
+#include "ui_tableview.h"
+
 class QPushButton;
 class QAbstractItemModel;
 class QModelIndex;
 class QTableView;
-namespace Ui{
-	class TableView;
-};
 
 class TableView : public QWidget {
 Q_OBJECT

@@ -1,5 +1,4 @@
 #include "preferences.h"
-#include "ui_preferences.h"
 #include <QSettings>
 #include <QDebug>
 

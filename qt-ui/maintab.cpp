@@ -5,7 +5,6 @@
  *
  */
 #include "maintab.h"
-#include "ui_maintab.h"
 #include "mainwindow.h"
 #include "../helpers.h"
 #include "../statistics.h"

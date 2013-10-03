@@ -1,12 +1,10 @@
 #ifndef DIVECOMPUTERMANAGEMENTDIALOG_H
 #define DIVECOMPUTERMANAGEMENTDIALOG_H
 #include <QDialog>
+#include "ui_divecomputermanagementdialog.h"
 
 class QModelIndex;
 class DiveComputerModel;
-namespace Ui{
-	class DiveComputerManagementDialog;
-};
 
 class DiveComputerManagementDialog : public QDialog{
 Q_OBJECT

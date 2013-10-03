@@ -6,10 +6,8 @@
 #include <QHash>
 #include <QMap>
 #include "../libdivecomputer.h"
+#include "ui_downloadfromdivecomputer.h"
 
-namespace Ui{
-	class DownloadFromDiveComputer;
-}
 struct device_data_t;
 
 class DownloadThread : public QThread{

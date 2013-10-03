@@ -4,7 +4,6 @@
  * classes for the main UI window in Subsurface
  */
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 #include <QVBoxLayout>
 #include <QFileDialog>

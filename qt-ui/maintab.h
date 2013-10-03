@@ -12,13 +12,10 @@
 #include <QMap>
 
 #include "models.h"
+#include "ui_maintab.h"
 
 class QCompleter;
 struct dive;
-namespace Ui
-{
-	class MainTab;
-}
 
 struct NotesBackup{
 	QString airtemp;

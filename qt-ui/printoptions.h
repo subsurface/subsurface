@@ -5,9 +5,7 @@
 #include <QSlider>
 #include <QLabel>
 
-namespace Ui {
-	class PrintOptions;
-};
+#include "ui_printoptions.h"
 
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {

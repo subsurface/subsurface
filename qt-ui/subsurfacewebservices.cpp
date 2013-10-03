@@ -1,5 +1,4 @@
 #include "subsurfacewebservices.h"
-#include "ui_subsurfacewebservices.h"
 #include "../webservice.h"
 
 #include <libxml/parser.h>

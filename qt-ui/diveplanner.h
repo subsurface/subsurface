@@ -8,10 +8,7 @@
 #include <QDateTime>
 
 #include "dive.h"
-
-namespace Ui{
-	class DivePlanner;
-};
+#include "ui_diveplanner.h"
 
 class QListView;
 class QStringListModel;

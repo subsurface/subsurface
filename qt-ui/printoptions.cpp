@@ -1,5 +1,4 @@
 #include "printoptions.h"
-#include "ui_printoptions.h"
 #include "../display.h"
 
 PrintOptions::PrintOptions(QWidget *parent, struct options *printOpt)

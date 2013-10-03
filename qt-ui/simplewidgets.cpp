@@ -14,8 +14,6 @@
 
 #include "../dive.h"
 
-#include "ui_renumber.h"
-
 class MinMaxAvgWidgetPrivate{
 public:
 	QLabel *avgIco, *avgValue;

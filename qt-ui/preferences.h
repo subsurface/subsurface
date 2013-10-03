@@ -5,9 +5,8 @@
 #include "../dive.h"
 #include "../pref.h"
 
-namespace Ui{
-class PreferencesDialog;
-}
+#include "ui_preferences.h"
+
 class QAbstractButton;
 
 class PreferencesDialog :public QDialog{

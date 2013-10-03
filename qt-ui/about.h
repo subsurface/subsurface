@@ -3,10 +3,7 @@
 
 #include <QDialog>
 #include <QPushButton>
-
-namespace Ui {
-	class SubsurfaceAbout;
-}
+#include "ui_about.h"
 
 class SubsurfaceAbout : public QDialog {
 	Q_OBJECT

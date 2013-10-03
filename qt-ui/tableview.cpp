@@ -1,5 +1,4 @@
 #include "tableview.h"
-#include "ui_tableview.h"
 #include "models.h"
 
 #include <QPushButton>

@@ -10,14 +10,11 @@
 #include <QMainWindow>
 #include <QAction>
 
+#include "ui_mainwindow.h"
+
 struct DiveList;
 class QSortFilterProxyModel;
 class DiveTripModel;
-
-namespace Ui
-{
-	class MainWindow;
-}
 
 class DiveInfo;
 class DiveNotes;
