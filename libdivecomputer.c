@@ -467,16 +467,28 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return rc;
 	}
 
-#ifdef DC_FIELD_SALINITY
-	// Check if the libdivecomputer version already supports salinity
-	double salinity = 1.03;
+#if DC_VERSION_CHECK(0, 3, 0)
+	// Check if the libdivecomputer version already supports salinity & atmospheric
+	dc_salinity_t salinity = {
+		.type = DC_WATER_SALT,
+		.density = 1.03
+	};
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, _("Error obtaining water salinity"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->salinity = salinity * 10000.0 + 0.5;
+	dive->dc.salinity = salinity.density * 10000.0 + 0.5;
+
+	double surface_pressure = 1.0;
+	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, _("Error obtaining surface pressure"));
+		dc_parser_destroy(parser);
+		return rc;
+	}
+	dive->dc.surface_pressure.mbar = surface_pressure * 1000.0 + 0.5;
 #endif
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
