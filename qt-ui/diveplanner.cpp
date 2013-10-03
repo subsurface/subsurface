@@ -23,6 +23,8 @@
 #include <QTableView>
 #include <QColor>
 
+#include <algorithm>
+
 #define TIME_INITIAL_MAX 30
 
 #define MAX_DEPTH M_OR_FT(150, 450)
