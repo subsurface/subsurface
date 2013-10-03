@@ -17,7 +17,7 @@ private:
 	explicit SubsurfaceAbout(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	QPushButton *licenseButton;
 	QPushButton *websiteButton;
-	Ui::SubsurfaceAbout *ui;
+	Ui::SubsurfaceAbout ui;
 };
 
 #endif

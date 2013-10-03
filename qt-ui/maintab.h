@@ -76,7 +76,7 @@ public slots:
 	void addDiveStarted();
 
 private:
-	Ui::MainTab *ui;
+	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
 	QMap<dive*, NotesBackup> notesBackup;

@@ -108,7 +108,7 @@ public slots:
 	void showProfile();
 
 private:
-	Ui::MainWindow *ui;
+	Ui::MainWindow ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QWebView *helpView;

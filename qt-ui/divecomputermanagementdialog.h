@@ -21,7 +21,7 @@ public  slots:
 
 private:
     explicit DiveComputerManagementDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    Ui::DiveComputerManagementDialog *ui;
+    Ui::DiveComputerManagementDialog ui;
 	DiveComputerModel *model;
 };
 

@@ -51,7 +51,7 @@ private:
 	void markChildrenAsDisabled();
 	void markChildrenAsEnabled();
 
-	Ui::DownloadFromDiveComputer *ui;
+	Ui::DownloadFromDiveComputer ui;
 	DownloadThread *thread;
 	bool downloading;
 

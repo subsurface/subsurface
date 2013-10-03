@@ -43,28 +43,28 @@ DownloadFromDCWidget *DownloadFromDCWidget::instance()
 }
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
-	QDialog(parent, f), ui(new Ui::DownloadFromDiveComputer), thread(0), timer(new QTimer(this)),
+    QDialog(parent, f), thread(0), timer(new QTimer(this)),
 	currentState(INITIAL)
 {
-	ui->setupUi(this);
-	ui->progressBar->hide();
-	ui->progressBar->setMinimum(0);
-	ui->progressBar->setMaximum(100);
+	ui.setupUi(this);
+	ui.progressBar->hide();
+	ui.progressBar->setMinimum(0);
+	ui.progressBar->setMaximum(100);
 
 	fill_device_list();
 	fill_computer_list();
 
 	vendorModel = new QStringListModel(vendorList);
-	ui->vendor->setModel(vendorModel);
+	ui.vendor->setModel(vendorModel);
 	if (default_dive_computer_vendor) {
-		ui->vendor->setCurrentIndex(ui->vendor->findText(default_dive_computer_vendor));
+		ui.vendor->setCurrentIndex(ui.vendor->findText(default_dive_computer_vendor));
 		productModel = new QStringListModel(productList[default_dive_computer_vendor]);
-		ui->product->setModel(productModel);
+		ui.product->setModel(productModel);
 		if (default_dive_computer_product)
-			ui->product->setCurrentIndex(ui->product->findText(default_dive_computer_product));
+			ui.product->setCurrentIndex(ui.product->findText(default_dive_computer_product));
 	}
 	if (default_dive_computer_device)
-		ui->device->setEditText(default_dive_computer_device);
+		ui.device->setEditText(default_dive_computer_device);
 
 	timer->setInterval(200);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
@@ -81,7 +81,7 @@ void DownloadFromDCWidget::runDialog()
 
 void DownloadFromDCWidget::updateProgressBar()
 {
-	ui->progressBar->setValue(progress_bar_fraction *100);
+	ui.progressBar->setValue(progress_bar_fraction *100);
 }
 
 void DownloadFromDCWidget::updateState(states state)
@@ -91,7 +91,7 @@ void DownloadFromDCWidget::updateState(states state)
 
 	if (state == INITIAL) {
 		fill_device_list();
-		ui->progressBar->hide();
+		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
 	}
@@ -99,7 +99,7 @@ void DownloadFromDCWidget::updateState(states state)
 	// tries to cancel an on going download
 	else if (currentState == DOWNLOADING && state == CANCELLING) {
 		import_thread_cancelled = true;
-		ui->cancel->setEnabled(false);
+		ui.cancel->setEnabled(false);
 	}
 
 	// user pressed cancel but the application isn't doing anything.
@@ -114,15 +114,15 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (currentState == CANCELLING && (state == DONE || state == CANCELLED)) {
 		timer->stop();
 		state = CANCELLED;
-		ui->progressBar->setValue(0);
-		ui->progressBar->hide();
+		ui.progressBar->setValue(0);
+		ui.progressBar->hide();
 		markChildrenAsEnabled();
 	}
 
 	// DOWNLOAD is finally done, close the dialog and go back to the main window
 	else if (currentState == DOWNLOADING && state == DONE) {
 		timer->stop();
-		ui->progressBar->setValue(100);
+		ui.progressBar->setValue(100);
 		markChildrenAsEnabled();
 		accept();
 	}
@@ -130,8 +130,8 @@ void DownloadFromDCWidget::updateState(states state)
 	// DOWNLOAD is started.
 	else if (state == DOWNLOADING) {
 		timer->start();
-		ui->progressBar->setValue(0);
-		ui->progressBar->show();
+		ui.progressBar->setValue(0);
+		ui.progressBar->show();
 		markChildrenAsDisabled();
 	}
 
@@ -140,8 +140,8 @@ void DownloadFromDCWidget::updateState(states state)
 		QMessageBox::critical(this, tr("Error"), this->thread->error, QMessageBox::Ok);
 
 		markChildrenAsEnabled();
-		ui->progressBar->hide();
-		ui->ok->setText(tr("retry"));
+		ui.progressBar->hide();
+		ui.ok->setText(tr("retry"));
 	}
 
 	// properly updating the widget state
@@ -150,12 +150,12 @@ void DownloadFromDCWidget::updateState(states state)
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
 {
-	QAbstractItemModel *currentModel = ui->product->model();
+	QAbstractItemModel *currentModel = ui.product->model();
 	if (!currentModel)
 		return;
 
 	productModel = new QStringListModel(productList[vendor]);
-	ui->product->setModel(productModel);
+	ui.product->setModel(productModel);
 
 	// Memleak - but deleting gives me a crash.
 	//currentModel->deleteLater();
@@ -219,12 +219,12 @@ void DownloadFromDCWidget::on_ok_clicked()
 		thread->deleteLater();
 	}
 
-	data.devname = strdup(ui->device->currentText().toUtf8().data());
-	data.vendor = strdup(ui->vendor->currentText().toUtf8().data());
-	data.product = strdup(ui->product->currentText().toUtf8().data());
+	data.devname = strdup(ui.device->currentText().toUtf8().data());
+	data.vendor = strdup(ui.vendor->currentText().toUtf8().data());
+	data.product = strdup(ui.product->currentText().toUtf8().data());
 
-	data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
-	data.force_download = ui->forceDownload->isChecked();
+	data.descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
+	data.force_download = ui.forceDownload->isChecked();
 	data.deviceid = data.diveid = 0;
 	set_default_dive_computer(data.vendor, data.product);
 	set_default_dive_computer_device(data.devname);
@@ -242,7 +242,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 bool DownloadFromDCWidget::preferDownloaded()
 {
-	return ui->preferDownloaded->isChecked();
+	return ui.preferDownloaded->isChecked();
 }
 
 void DownloadFromDCWidget::reject()
@@ -270,25 +270,25 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
 {
-	ui->device->setDisabled(true);
-	ui->vendor->setDisabled(true);
-	ui->product->setDisabled(true);
-	ui->forceDownload->setDisabled(true);
-	ui->preferDownloaded->setDisabled(true);
-	ui->ok->setDisabled(true);
-	ui->search->setDisabled(true);
+	ui.device->setDisabled(true);
+	ui.vendor->setDisabled(true);
+	ui.product->setDisabled(true);
+	ui.forceDownload->setDisabled(true);
+	ui.preferDownloaded->setDisabled(true);
+	ui.ok->setDisabled(true);
+	ui.search->setDisabled(true);
 }
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
 {
-	ui->device->setDisabled(false);
-	ui->vendor->setDisabled(false);
-	ui->product->setDisabled(false);
-	ui->forceDownload->setDisabled(false);
-	ui->preferDownloaded->setDisabled(false);
-	ui->ok->setDisabled(false);
-	ui->cancel->setDisabled(false);
-	ui->search->setDisabled(false);
+	ui.device->setDisabled(false);
+	ui.vendor->setDisabled(false);
+	ui.product->setDisabled(false);
+	ui.forceDownload->setDisabled(false);
+	ui.preferDownloaded->setDisabled(false);
+	ui.ok->setDisabled(false);
+	ui.cancel->setDisabled(false);
+	ui.search->setDisabled(false);
 }
 
 static void fillDeviceList(const char *name, void *data)
@@ -300,10 +300,10 @@ static void fillDeviceList(const char *name, void *data)
 void DownloadFromDCWidget::fill_device_list()
 {
 	int deviceIndex;
-	ui->device->clear();
-	deviceIndex = enumerate_devices(fillDeviceList, ui->device);
+	ui.device->clear();
+	deviceIndex = enumerate_devices(fillDeviceList, ui.device);
 	if (deviceIndex >= 0)
-		ui->device->setCurrentIndex(deviceIndex);
+		ui.device->setCurrentIndex(deviceIndex);
 }
 
 DownloadThread::DownloadThread(QObject* parent, device_data_t* data): QThread(parent),

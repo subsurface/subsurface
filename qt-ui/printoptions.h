@@ -16,7 +16,7 @@ public:
 	void setup(struct options *printOpt);
 
 private:
-	Ui::PrintOptions *ui;
+	Ui::PrintOptions ui;
 	void setLabelFromSlider(QSlider *slider, QLabel *label);
 	void initSliderWithLabel(QSlider *slider, QLabel *label, int value);
 	QString formatSliderValueText(int value);

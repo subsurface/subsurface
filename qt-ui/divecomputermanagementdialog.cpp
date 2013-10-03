@@ -6,12 +6,11 @@
 #include "../helpers.h"
 
 DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f),
-	ui( new Ui::DiveComputerManagementDialog()),
 	model(0)
 {
-	ui->setupUi(this);
+	ui.setupUi(this);
 	init();
-	connect(ui->tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(tryRemove(QModelIndex)));
+	connect(ui.tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(tryRemove(QModelIndex)));
 }
 
 void DiveComputerManagementDialog::init()
@@ -19,7 +18,7 @@ void DiveComputerManagementDialog::init()
 	if (model)
 		delete model;
 	model = new DiveComputerModel(dcList.dcMap);
-	ui->tableView->setModel(model);
+	ui.tableView->setModel(model);
 }
 
 DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
@@ -32,8 +31,8 @@ DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
 void DiveComputerManagementDialog::update()
 {
 	model->update();
-	ui->tableView->resizeColumnsToContents();
-	ui->tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
+	ui.tableView->resizeColumnsToContents();
+	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
 	layout()->activate();
 }
 

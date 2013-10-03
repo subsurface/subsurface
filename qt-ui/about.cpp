@@ -13,17 +13,16 @@ SubsurfaceAbout *SubsurfaceAbout::instance()
 }
 
 SubsurfaceAbout::SubsurfaceAbout(QWidget* parent, Qt::WindowFlags f)
-: ui( new Ui::SubsurfaceAbout())
 {
-	ui->setupUi(this);
-	ui->aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>" \
+	ui.setupUi(this);
+	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>" \
 		"Subsurface " VERSION_STRING "</span><br><br>" \
 		"Multi-platform divelog software in C<br>" \
 		"<span style='font-size: 8pt'>Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013</span>"));
 	licenseButton = new QPushButton(tr("&License"));
 	websiteButton = new QPushButton(tr("&Website"));
-	ui->buttonBox->addButton(licenseButton, QDialogButtonBox::ActionRole);
-	ui->buttonBox->addButton(websiteButton, QDialogButtonBox::ActionRole);
+	ui.buttonBox->addButton(licenseButton, QDialogButtonBox::ActionRole);
+	ui.buttonBox->addButton(websiteButton, QDialogButtonBox::ActionRole);
 	connect(licenseButton, SIGNAL(clicked(bool)), this, SLOT(licenseClicked()));
 	connect(websiteButton, SIGNAL(clicked(bool)), this, SLOT(websiteClicked()));
 }

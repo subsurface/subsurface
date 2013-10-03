@@ -216,7 +216,7 @@ public slots:
 	void gfhighChanged(const QString& gfhigh);
 	void lastStopChanged(bool checked);
 private:
-	Ui::DivePlanner *ui;
+	Ui::DivePlanner ui;
 };
 
 #endif

@@ -27,7 +27,7 @@ private:
 	void setUiFromPrefs();
 	void setPrefsFromUi();
 	void setUIFromSettings();
-	Ui::PreferencesDialog* ui;
+	Ui::PreferencesDialog ui;
 	struct preferences oldPrefs;
 };
 

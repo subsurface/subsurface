@@ -30,10 +30,6 @@ private:
 	MinMaxAvgWidgetPrivate *d;
 };
 
-namespace Ui{
-	class RenumberDialog;
-};
-
 class RenumberDialog : public QDialog {
 	Q_OBJECT
 public:
@@ -42,7 +38,7 @@ private slots:
 	void buttonClicked(QAbstractButton *button);
 private:
 	explicit RenumberDialog();
-	Ui::RenumberDialog *ui;
+	Ui::RenumberDialog ui;
 };
 
 bool isGnome3Session();

@@ -855,37 +855,37 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent* event)
 	emit clicked();
 }
 
-DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f), ui(new Ui::DivePlanner())
+DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
 {
-	ui->setupUi(this);
-	ui->tableWidget->setTitle(tr("Dive Planner Points"));
-	ui->tableWidget->setModel(DivePlannerPointsModel::instance());
-	ui->tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
+	ui.setupUi(this);
+	ui.tableWidget->setTitle(tr("Dive Planner Points"));
+	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 
-	connect(ui->tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
-	connect(ui->startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
-	connect(ui->ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
-	connect(ui->bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
-	connect(ui->decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
-	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
-	connect(ui->lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
-	connect(ui->highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
-	connect(ui->lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
+	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
+	connect(ui.startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
+	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
+	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
+	connect(ui.decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
+	connect(ui.highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
+	connect(ui.lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
+	connect(ui.highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
+	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
 
 	// Creating the plan
-	connect(ui->buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
-	connect(ui->buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
+	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
+	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(showProfile()));
 	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(refreshDisplay()));
 	connect(plannerModel, SIGNAL(planCanceled()), mainWindow(), SLOT(showProfile()));
 
 	/* set defaults. */
-	ui->startTime->setTime( QTime(1, 0) );
-	ui->ATMPressure->setText( "1013" );
-	ui->bottomSAC->setText("20");
-	ui->decoStopSAC->setText("17");
-	ui->lowGF->setText("30");
-	ui->highGF->setText("75");
+	ui.startTime->setTime( QTime(1, 0) );
+	ui.ATMPressure->setText( "1013" );
+	ui.bottomSAC->setText("20");
+	ui.decoStopSAC->setText("17");
+	ui.lowGF->setText("30");
+	ui.highGF->setText("75");
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);

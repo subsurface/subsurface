@@ -37,7 +37,7 @@ signals:
 	void addButtonClicked();
 
 private:
-    Ui::TableView *ui;
+    Ui::TableView ui;
 	QPushButton *plusBtn;
 };
 

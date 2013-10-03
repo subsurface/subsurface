@@ -44,32 +44,32 @@ MainWindow* mainWindow()
 	return instance;
 }
 
-MainWindow::MainWindow() : ui(new Ui::MainWindow()), helpView(0)
+MainWindow::MainWindow() : helpView(0)
 {
 	instance = this;
-	ui->setupUi(this);
+	ui.setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
-	connect(ui->ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+	connect(ui.ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ListWidget, SLOT(update()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ListWidget, SLOT(reloadHeaderActions()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui->ProfileWidget, SLOT(refresh()));
-	ui->mainErrorMessage->hide();
-	ui->ListWidget->reload(DiveTripModel::TREE);
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(update()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(reloadHeaderActions()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ProfileWidget, SLOT(refresh()));
+	ui.mainErrorMessage->hide();
+	ui.ListWidget->reload(DiveTripModel::TREE);
 	initialUiSetup();
 	readSettings();
-	ui->ListWidget->reloadHeaderActions();
-	ui->ListWidget->setFocus();
-	ui->globe->reload();
+	ui.ListWidget->reloadHeaderActions();
+	ui.ListWidget->setFocus();
+	ui.globe->reload();
 }
 
 // this gets called after we download dives from a divecomputer
 void MainWindow::refreshDisplay()
 {
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	ui.InfoWidget->reload();
+	ui.globe->reload();
+	ui.ListWidget->reload(DiveTripModel::TREE);
+	ui.ListWidget->setFocus();
 	WSInfoModel *wsim = WSInfoModel::instance();
 	wsim->updateInfo();
 }
@@ -78,15 +78,15 @@ void MainWindow::current_dive_changed(int divenr)
 {
 	if (divenr >= 0) {
 		select_dive(divenr);
-		ui->globe->centerOn(get_dive(selected_dive));
+		ui.globe->centerOn(get_dive(selected_dive));
 		redrawProfile();
 	}
-	ui->InfoWidget->updateDiveInfo(divenr);
+	ui.InfoWidget->updateDiveInfo(divenr);
 }
 
 void MainWindow::redrawProfile()
 {
-	ui->ProfileWidget->refresh();
+	ui.ProfileWidget->refresh();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -136,13 +136,13 @@ void MainWindow::on_actionSaveAs_triggered()
 
 void MainWindow::cleanUpEmpty()
 {
-	ui->InfoWidget->clearStats();
-	ui->InfoWidget->clearInfo();
-	ui->InfoWidget->clearEquipment();
-	ui->InfoWidget->updateDiveInfo(-1);
-	ui->ProfileWidget->clear();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->globe->reload();
+	ui.InfoWidget->clearStats();
+	ui.InfoWidget->clearInfo();
+	ui.InfoWidget->clearEquipment();
+	ui.InfoWidget->updateDiveInfo(-1);
+	ui.ProfileWidget->clear();
+	ui.ListWidget->reload(DiveTripModel::TREE);
+	ui.globe->reload();
 	setTitle(MWTF_DEFAULT);
 }
 
@@ -200,29 +200,29 @@ void MainWindow::on_actionPrint_triggered()
 
 void MainWindow::disableDcShortcuts()
 {
-	ui->actionPreviousDC->setShortcut(QKeySequence());
-	ui->actionNextDC->setShortcut(QKeySequence());
+	ui.actionPreviousDC->setShortcut(QKeySequence());
+	ui.actionNextDC->setShortcut(QKeySequence());
 }
 
 void MainWindow::enableDcShortcuts()
 {
-	ui->actionPreviousDC->setShortcut(Qt::Key_Left);
-	ui->actionNextDC->setShortcut(Qt::Key_Right);
+	ui.actionPreviousDC->setShortcut(Qt::Key_Left);
+	ui.actionNextDC->setShortcut(Qt::Key_Right);
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(true);
-	ui->stackedWidget->setCurrentIndex(PLANNERPROFILE);
-	ui->infoPane->setCurrentIndex(PLANNERWIDGET);
+	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE);
+	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }
 
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
-	ui->stackedWidget->setCurrentIndex(PROFILE);
-	ui->infoPane->setCurrentIndex(MAINTAB);
+	ui.stackedWidget->setCurrentIndex(PROFILE);
+	ui.infoPane->setCurrentIndex(MAINTAB);
 }
 
 
@@ -273,12 +273,12 @@ void MainWindow::on_actionAddDive_triggered()
 	dive->dc.model = _("manually added dive"); // do not use tr here since it expects a char*.
 	record_dive(dive);
 	select_dive(get_divenr(dive));
-	ui->InfoWidget->updateDiveInfo(selected_dive);
-	ui->stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
-	ui->infoPane->setCurrentIndex(MAINTAB);
+	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+	ui.infoPane->setCurrentIndex(MAINTAB);
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	refreshDisplay();
-	ui->InfoWidget->addDiveStarted();
+	ui.InfoWidget->addDiveStarted();
 }
 
 void MainWindow::on_actionRenumber_triggered()
@@ -294,7 +294,7 @@ void MainWindow::on_actionAutoGroup_triggered()
 void MainWindow::on_actionToggleZoom_triggered()
 {
 	zoomed_plot = !zoomed_plot;
-	ui->ProfileWidget->refresh();
+	ui.ProfileWidget->refresh();
 }
 
 void MainWindow::on_actionYearlyStatistics_triggered()
@@ -333,40 +333,40 @@ void MainWindow::on_infoProfileSplitter_splitterMoved(int pos, int idx)
 #define BEHAVIOR QList<int>()
 void MainWindow::on_actionViewList_triggered()
 {
-	ui->listGlobeSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
-	ui->mainSplitter->setSizes( BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.listGlobeSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.mainSplitter->setSizes( BEHAVIOR << COLLAPSED << EXPANDED);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
-	ui->infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui->mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 	redrawProfile();
 }
 
 void MainWindow::on_actionViewInfo_triggered()
 {
-	ui->infoProfileSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
-	ui->mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.infoProfileSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
 void MainWindow::on_actionViewGlobe_triggered()
 {
-	ui->mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui->listGlobeSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.listGlobeSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 }
 #undef BEHAVIOR
 
 void MainWindow::on_actionViewAll_triggered()
 {
 	// big number squash the info profile to it's minimum.
-	ui->infoProfileSplitter->setSizes(QList<int>() << 1 << 20000);
+	ui.infoProfileSplitter->setSizes(QList<int>() << 1 << 20000);
 
 	// big number squash the globe view.
-	ui->listGlobeSplitter->setSizes(QList<int>() << 2000 << 1 );
+	ui.listGlobeSplitter->setSizes(QList<int>() << 2000 << 1 );
 
 	// half and half?
-	ui->mainSplitter->setSizes( QList<int>() << 1 << 1);
+	ui.mainSplitter->setSizes( QList<int>() << 1 << 1);
 	redrawProfile();
 }
 
@@ -505,25 +505,25 @@ void MainWindow::initialUiSetup()
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size").value<QSize>();
 	resize(sz);
-	ui->mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-	ui->infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
-	ui->listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+	ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
-	ui->ListWidget->expandAll();
+	ui.ListWidget->expandAll();
 	for (i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++) {
 		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
-			ui->ListWidget->setColumnWidth(i, width.toInt());
+			ui.ListWidget->setColumnWidth(i, width.toInt());
 		else
-			ui->ListWidget->resizeColumnToContents(i);
+			ui.ListWidget->resizeColumnToContents(i);
 	}
-	ui->ListWidget->collapseAll();
-	ui->ListWidget->expand(ui->ListWidget->model()->index(0,0));
-	ui->ListWidget->scrollTo(ui->ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
+	ui.ListWidget->collapseAll();
+	ui.ListWidget->expand(ui.ListWidget->model()->index(0,0));
+	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
 	settings.endGroup();
 }
 
@@ -598,15 +598,15 @@ void MainWindow::writeSettings()
 
 	settings.beginGroup("MainWindow");
 	settings.setValue("size",size());
-	settings.setValue("mainSplitter", ui->mainSplitter->saveState());
-	settings.setValue("infoProfileSplitter", ui->infoProfileSplitter->saveState());
-	settings.setValue("listGlobeSplitter", ui->listGlobeSplitter->saveState());
+	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
+	settings.setValue("infoProfileSplitter", ui.infoProfileSplitter->saveState());
+	settings.setValue("listGlobeSplitter", ui.listGlobeSplitter->saveState());
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
 	for (i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++)
-		if (!ui->ListWidget->isColumnHidden(i))
-			settings.setValue(QString("colwidth%1").arg(i), ui->ListWidget->columnWidth(i));
+		if (!ui.ListWidget->isColumnHidden(i))
+			settings.setValue(QString("colwidth%1").arg(i), ui.ListWidget->columnWidth(i));
 	settings.endGroup();
 	settings.beginGroup("Units");
 	SAVE_VALUE("length", units.length);
@@ -665,22 +665,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 DiveListView* MainWindow::dive_list()
 {
-	return ui->ListWidget;
+	return ui.ListWidget;
 }
 
 GlobeGPS* MainWindow::globe()
 {
-	return ui->globe;
+	return ui.globe;
 }
 
 ProfileGraphicsView* MainWindow::graphics()
 {
-	return ui->ProfileWidget;
+	return ui.ProfileWidget;
 }
 
 MainTab* MainWindow::information()
 {
-	return ui->InfoWidget;
+	return ui.InfoWidget;
 }
 
 void MainWindow::file_save_as(void)
@@ -725,10 +725,10 @@ void MainWindow::showError(QString message)
 {
 	if (message.isEmpty())
 		return;
-	ui->mainErrorMessage->setText(message);
-	ui->mainErrorMessage->setCloseButtonVisible(true);
-	ui->mainErrorMessage->setMessageType(KMessageWidget::Error);
-	ui->mainErrorMessage->animatedShow();
+	ui.mainErrorMessage->setText(message);
+	ui.mainErrorMessage->setCloseButtonVisible(true);
+	ui.mainErrorMessage->setMessageType(KMessageWidget::Error);
+	ui.mainErrorMessage->animatedShow();
 }
 
 void MainWindow::setTitle(enum MainWindowTitleFormat format)
@@ -761,10 +761,10 @@ void MainWindow::importFiles(const QStringList fileNames)
 	}
 	process_dives(TRUE, FALSE);
 
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	ui.InfoWidget->reload();
+	ui.globe->reload();
+	ui.ListWidget->reload(DiveTripModel::TREE);
+	ui.ListWidget->setFocus();
 	WSInfoModel *wsim = WSInfoModel::instance();
 	wsim->updateInfo();
 }
@@ -788,10 +788,10 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 	process_dives(FALSE, FALSE);
 
-	ui->InfoWidget->reload();
-	ui->globe->reload();
-	ui->ListWidget->reload(DiveTripModel::TREE);
-	ui->ListWidget->setFocus();
+	ui.InfoWidget->reload();
+	ui.globe->reload();
+	ui.ListWidget->reload(DiveTripModel::TREE);
+	ui.ListWidget->setFocus();
 	WSInfoModel *wsim = WSInfoModel::instance();
 	wsim->updateInfo();
 }

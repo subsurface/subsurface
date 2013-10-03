@@ -108,16 +108,16 @@ RenumberDialog* RenumberDialog::instance()
 
 void RenumberDialog::buttonClicked(QAbstractButton* button)
 {
-	if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole){
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole){
 		qDebug() << "Renumbering.";
-		renumber_dives(ui->spinBox->value());
+		renumber_dives(ui.spinBox->value());
 	}
 }
 
-RenumberDialog::RenumberDialog(): QDialog(), ui( new Ui::RenumberDialog())
+RenumberDialog::RenumberDialog(): QDialog()
 {
-	ui->setupUi(this);
-	connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	ui.setupUi(this);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
 }
 
 bool isGnome3Session()
