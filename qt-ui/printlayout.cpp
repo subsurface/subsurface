@@ -266,6 +266,11 @@ void PrintLayout::printTable()
 	// fit table to one page initially
 	table.resize(scaledPageW,  scaledPageH);
 
+	// don't show border
+	table.setStyleSheet(
+		"QTableView { border: none }"
+	);
+
 	// create and fill a table model
 	TablePrintModel model;
 	struct dive *dive;
@@ -280,8 +285,14 @@ void PrintLayout::printTable()
 	}
 	table.setModel(&model); // set model to table
 	// resize columns to percentages from page width
+	int accW = 0;
+	int cols = model.columns;
+	int tableW = table.width();
 	for (int i = 0; i < model.columns; i++) {
-		int pw = qCeil((qreal)(tablePrintColumnWidths.at(i) * table.width()) / 100);
+		int pw = qCeil((qreal)(tablePrintColumnWidths.at(i) * table.width()) / 100.0);
+		accW += pw;
+		if (i == cols - 1 && accW > tableW) /* adjust last column */
+			pw -= accW - tableW;
 		table.horizontalHeader()->resizeSection(i, pw);
 	}
 	// reset the model at this point
@@ -318,7 +329,7 @@ void PrintLayout::printTable()
 			printer->newPage();
 		QRegion region(0, pageIndexes.at(i) - 1,
 		               table.width(),
-		               pageIndexes.at(i + 1) - pageIndexes.at(i) + 2);
+		               pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
 		table.render(&painter, QPoint(0, 0), region);
 	}
 }
