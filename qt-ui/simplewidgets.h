@@ -7,7 +7,7 @@ class QAbstractButton;
 #include <QWidget>
 #include <QDialog>
 
-#include "qt-ui/ui_renumber.h"
+#include "ui_renumber.h"
 
 class MinMaxAvgWidget : public QWidget{
 	Q_OBJECT
