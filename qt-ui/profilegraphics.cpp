@@ -1196,6 +1196,9 @@ QGraphicsItemGroup *ProfileGraphicsView::plot_text(text_render_options_t *tro,co
 	QFont fnt(font());
 	QFontMetrics fm(fnt);
 
+	if (printMode)
+		fnt.setPixelSize(10);
+
 	QPointF point(SCALEGC(pos.x(), pos.y())); // This is neded because of the SCALE macro.
 	double dx = tro->hpos * (fm.width(text));
 	double dy = tro->vpos * (fm.height());
