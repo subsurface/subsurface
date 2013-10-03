@@ -212,6 +212,7 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 # This creates the ui headers.
 ui_%.h: %.ui .uic
 	@$(PRETTYECHO) '    UIC' $<
+	@mkdir -p .uic/qt-ui
 	$(COMPILE_PREFIX)$(UIC) $< -o .uic/$@
 
 .uic:
