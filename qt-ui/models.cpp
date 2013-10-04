@@ -1107,17 +1107,7 @@ QString DiveItem::displaySac() const
 
 QString DiveItem::displayWeight() const
 {
-	QString str;
-
-	if (get_units()->weight == units::KG) {
-		int gr = weight() % 1000;
-		int kg = weight() / 1000;
-		str = QString("%1.%2").arg(kg).arg((unsigned)(gr) / 100);
-	} else {
-		double lbs = grams_to_lbs(weight());
-		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1 );
-	}
-
+	QString str = weight_string(weight());
 	return str;
 }
 

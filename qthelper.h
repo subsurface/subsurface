@@ -4,6 +4,7 @@
 #include <QMultiMap>
 #include <QString>
 #include <stdint.h>
+#include "dive.h"
 
 class DiveComputerNode {
 public:
@@ -31,5 +32,7 @@ public:
 	QMultiMap<QString, struct DiveComputerNode> dcMap;
 	QMultiMap<QString, struct DiveComputerNode> dcWorkingMap;
 };
+
+QString weight_string(int weight_in_grams);
 
 #endif // QTHELPER_H

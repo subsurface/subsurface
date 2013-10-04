@@ -216,14 +216,13 @@ QString get_depth_unit()
 
 QString get_weight_string(weight_t weight, bool showunit)
 {
-	if (prefs.units.weight == units::KG) {
-		int gr = weight.grams % 1000;
-		int kg = weight.grams / 1000;
-		return QString("%1.%2%3").arg(kg).arg((unsigned)(gr) / 100).arg(showunit ? _("kg") : "");
+	QString str = weight_string (weight.grams);
+	if (get_units()->weight == units::KG) {
+		str = QString ("%1%2").arg(str).arg(showunit ? _("kg") : "");
 	} else {
-		double lbs = grams_to_lbs(weight.grams);
-		return QString("%1%2").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1 ).arg(showunit ? _("lbs") : "");
+		str = QString ("%1%2").arg(str).arg(showunit ? _("lbs") : "");
 	}
+	return (str);
 }
 
 QString get_weight_unit()
