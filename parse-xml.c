@@ -20,6 +20,7 @@
 int verbose;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error);
+char *xslt_path;
 
 /* the dive table holds the overall dive list; target table points at
  * the table we are currently filling */
@@ -1851,9 +1852,6 @@ void parse_xml_exit(void)
 {
 	xmlCleanupParser();
 }
-
-/* Maybe we'll want a environment variable that can override this.. */
-static const char *xslt_path = XSLT ":xslt:.";
 
 static xsltStylesheetPtr try_get_stylesheet(const char *path, int len, const char *name)
 {

@@ -103,6 +103,7 @@ void init_ui(int *argcp, char ***argvp)
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
+	xslt_path = strdup(getSubsurfaceDataPath("xslt").toAscii().data());
 
 	QSettings s;
 	s.beginGroup("GeneralSettings");
