@@ -185,7 +185,7 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
-%.o: %.cpp uicables
+%.o: %.cpp $(UIC_HEADERS)
 	@$(PRETTYECHO) '    CXX' $<
 	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -I.uic -Iqt-ui -MD -MF .dep/$@.dep -c -o $@ $<
