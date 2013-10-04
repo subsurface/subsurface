@@ -160,6 +160,7 @@ extern double get_depth_units(unsigned int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int ml, int *frac, const char **units);
 extern double get_temp_units(unsigned int mk, const char **units);
 extern double get_weight_units(unsigned int grams, int *frac, const char **units);
+extern double get_vertical_speed_units(unsigned int mms, int *frac, const char **units);
 
 static inline double grams_to_lbs(int grams)
 {
@@ -476,6 +477,7 @@ struct units {
 	enum { BAR, PSI, PASCAL } pressure;
 	enum { CELSIUS, FAHRENHEIT, KELVIN } temperature;
 	enum { KG, LBS } weight;
+	enum { SECONDS, MINUTES } vertical_speed_time;
 };
 
 /*
@@ -490,7 +492,8 @@ struct units {
 	.volume = LITER,		\
 	.pressure = BAR,		\
 	.temperature = CELSIUS,		\
-	.weight = KG			\
+	.weight = KG,			\
+	.vertical_speed_time = MINUTES \
 }
 
 #define IMPERIAL_UNITS {		\
@@ -498,7 +501,8 @@ struct units {
 	.volume = CUFT,			\
 	.pressure = PSI,		\
 	.temperature = FAHRENHEIT,	\
-	.weight = LBS			\
+	.weight = LBS,			\
+	.vertical_speed_time = MINUTES \
 }
 extern const struct units SI_units, IMPERIAL_units;
 extern struct units xml_parsing_units;

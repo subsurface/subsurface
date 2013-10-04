@@ -127,6 +127,30 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	return d;
 }
 
+double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
+{
+	double d;
+	const char *unit;
+	const struct units *units_p = get_units();
+	const double time_factor = units_p->vertical_speed_time == MINUTES ? 60.0 : 1.0;
+
+	switch (units_p->length) {
+	case METERS:
+		d = mms / 1000.0 * time_factor;
+		unit = _((units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
+		break;
+	case FEET:
+		d = mm_to_feet(mms) * time_factor;
+		unit = _((units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
+		break;
+	}
+	if (frac)
+		*frac = d < 10;
+	if (units)
+		*units = unit;
+	return d;
+}
+
 double get_weight_units(unsigned int grams, int *frac, const char **units)
 {
 	int decimals;

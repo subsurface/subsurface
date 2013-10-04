@@ -1213,7 +1213,7 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 			int depth, int pressure, int temp, gboolean has_ndl)
 {
 	int pressurevalue, mod, ead, end, eadd;
-	const char *depth_unit, *pressure_unit, *temp_unit;
+	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
 	char *buf2 = malloc(bufsize);
 	double depthvalue, tempvalue, speedvalue;
 
@@ -1236,12 +1236,12 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		snprintf(buf, bufsize, _("%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
 
-	speedvalue = get_depth_units(abs(entry->speed), NULL, &depth_unit)*60;
+	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	snprintf(buf, bufsize, _("%s\nV:%.1f %s/min"), buf2, speedvalue, depth_unit);
+	snprintf(buf, bufsize, _("%s\nV:%.2f %s"), buf2, speedvalue, vertical_speed_unit);
 
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);

@@ -547,6 +547,7 @@ void MainWindow::readSettings()
 		GET_UNIT("temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
 		GET_UNIT("weight", weight, units::LBS, units::KG);
 	}
+	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
 	s.endGroup();
 	s.beginGroup("DisplayListColumns");
 	GET_BOOL("CYLINDER", visible_cols.cylinder);
@@ -614,6 +615,7 @@ void MainWindow::writeSettings()
 	SAVE_VALUE("volume", units.volume);
 	SAVE_VALUE("temperature", units.temperature);
 	SAVE_VALUE("weight", units.weight);
+	SAVE_VALUE("vertical_speed_time", units.vertical_speed_time);
 	settings.endGroup();
 	settings.beginGroup("DisplayListColumns");
 	SAVE_VALUE("TEMPERATURE", visible_cols.temperature);

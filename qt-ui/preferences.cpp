@@ -73,6 +73,8 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.defaultfilename->setText(prefs.default_filename);
 	ui.displayinvalid->setChecked(prefs.show_invalid);
 	ui.show_time->setChecked(prefs.show_time);
+	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
+	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -109,6 +111,7 @@ void PreferencesDialog::setPrefsFromUi()
 	prefs.units.pressure = ui.psi->isChecked() ? units::PSI : units::BAR;
 	prefs.units.volume = ui.cuft->isChecked() ? units::CUFT : units::LITER;
 	prefs.units.weight = ui.lbs->isChecked() ? units::LBS : units::KG;
+	prefs.units.vertical_speed_time = ui.vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS;
 	prefs.divelist_font = strdup(ui.font->font().family().toUtf8().data());
 	prefs.font_size = ui.fontsize->value();
 	prefs.default_filename = strdup(ui.defaultfilename->text().toUtf8().data());
@@ -151,6 +154,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("pressure", ui.psi->isChecked() ? units::PSI : units::BAR);
 	s.setValue("volume", ui.cuft->isChecked() ? units::CUFT : units::LITER);
 	s.setValue("weight", ui.lbs->isChecked() ? units::LBS : units::KG);
+	s.setValue("vertical_speed_time", ui.vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
 	s.endGroup();
 	// Defaults
 	s.beginGroup("GeneralSettings");

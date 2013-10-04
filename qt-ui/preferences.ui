@@ -402,6 +402,46 @@
           </widget>
          </item>
          <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QGroupBox">
+             <property name="title">
+              <string>Time units</string>
+             </property>
+             <layout class="QGridLayout">
+              <item row="0" column="0">
+               <widget class="QLabel">
+                <property name="text">
+                 <string>Ascent/Descent speed denominator</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QRadioButton" name="vertical_speed_minutes">
+                <property name="text">
+                 <string>Minutes</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">verticalSpeed</string>
+                </attribute>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QRadioButton" name="vertical_speed_seconds">
+                <property name="text">
+                 <string>Seconds</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">verticalSpeed</string>
+                </attribute>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -410,19 +450,6 @@
             <size>
              <width>20</width>
              <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
             </size>
            </property>
           </spacer>
@@ -999,5 +1026,6 @@
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="verticalSpeed"/>
  </buttongroups>
 </ui>
