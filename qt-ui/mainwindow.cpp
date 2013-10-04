@@ -16,6 +16,7 @@
 #include <QFontMetrics>
 #include <QWebView>
 #include <QTableView>
+#include <QDesktopWidget>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -504,11 +505,30 @@ void MainWindow::initialUiSetup()
 	int i;
 
 	settings.beginGroup("MainWindow");
-	QSize sz = settings.value("size").value<QSize>();
+	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
 	resize(sz);
-	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-	ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
-	ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+
+	if (settings.value("mainSplitter").isValid()){
+		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+		ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+		ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+	} else {
+		QList<int> mainSizes;
+		mainSizes.append( qApp->desktop()->size().height() * 0.7 );
+		mainSizes.append( qApp->desktop()->size().height() * 0.3 );
+		ui.mainSplitter->setSizes( mainSizes );
+
+		QList<int> infoProfileSizes;
+		infoProfileSizes.append( qApp->desktop()->size().width() * 0.3 );
+		infoProfileSizes.append( qApp->desktop()->size().width() * 0.7 );
+		ui.infoProfileSplitter->setSizes(infoProfileSizes);
+
+		QList<int> listGlobeSizes;
+		listGlobeSizes.append( qApp->desktop()->size().width() * 0.7 );
+		listGlobeSizes.append( qApp->desktop()->size().width() * 0.3 );
+		ui.listGlobeSplitter->setSizes(listGlobeSizes);
+	}
+
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
@@ -549,16 +569,6 @@ void MainWindow::readSettings()
 		GET_UNIT("weight", weight, units::LBS, units::KG);
 	}
 	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
-	s.endGroup();
-	s.beginGroup("DisplayListColumns");
-	GET_BOOL("CYLINDER", visible_cols.cylinder);
-	GET_BOOL("TEMPERATURE", visible_cols.temperature);
-	GET_BOOL("TOTALWEIGHT", visible_cols.totalweight);
-	GET_BOOL("SUIT", visible_cols.suit);
-	GET_BOOL("NITROX", visible_cols.nitrox);
-	GET_BOOL("OTU", visible_cols.otu);
-	GET_BOOL("MAXCNS", visible_cols.maxcns);
-	GET_BOOL("SAC", visible_cols.sac);
 	s.endGroup();
 	s.beginGroup("TecDetails");
 	GET_BOOL("po2graph", pp_graphs.po2);
@@ -617,16 +627,6 @@ void MainWindow::writeSettings()
 	SAVE_VALUE("temperature", units.temperature);
 	SAVE_VALUE("weight", units.weight);
 	SAVE_VALUE("vertical_speed_time", units.vertical_speed_time);
-	settings.endGroup();
-	settings.beginGroup("DisplayListColumns");
-	SAVE_VALUE("TEMPERATURE", visible_cols.temperature);
-	SAVE_VALUE("TOTALWEIGHT", visible_cols.totalweight);
-	SAVE_VALUE("SUIT", visible_cols.suit);
-	SAVE_VALUE("CYLINDER", visible_cols.cylinder);
-	SAVE_VALUE("NITROX", visible_cols.nitrox);
-	SAVE_VALUE("SAC", visible_cols.sac);
-	SAVE_VALUE("OTU", visible_cols.otu);
-	SAVE_VALUE("MAXCNS", visible_cols.maxcns);
 	settings.endGroup();
 	settings.beginGroup("TecDetails");
 	SAVE_VALUE("po2graph", pp_graphs.po2);
@@ -751,6 +751,9 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 
 void MainWindow::importFiles(const QStringList fileNames)
 {
+	if (fileNames.isEmpty())
+		return;
+
 	QByteArray fileNamePtr;
 	char *error = NULL;
 	for (int i = 0; i < fileNames.size(); ++i) {
@@ -774,6 +777,9 @@ void MainWindow::importFiles(const QStringList fileNames)
 
 void MainWindow::loadFiles(const QStringList fileNames)
 {
+	if (fileNames.isEmpty())
+		return;
+
 	char *error = NULL;
 	QByteArray fileNamePtr;
 

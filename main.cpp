@@ -52,9 +52,10 @@ int main(int argc, char **argv)
 		}
 	}
 	if (no_filenames) {
-		files.push_back( QString(prefs.default_filename) );
+		QString defaultFile(prefs.default_filename);
+		if (!defaultFile.isEmpty())
+			files.push_back( QString(prefs.default_filename) );
 	}
-
 	parse_xml_exit();
 	subsurface_command_line_exit(&argc, &argv);
 	mainWindow()->loadFiles(files);
