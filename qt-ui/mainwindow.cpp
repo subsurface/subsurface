@@ -748,6 +748,9 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 
 void MainWindow::importFiles(const QStringList fileNames)
 {
+	if (fileNames.isEmpty())
+		return;
+
 	QByteArray fileNamePtr;
 	char *error = NULL;
 	for (int i = 0; i < fileNames.size(); ++i) {
@@ -771,6 +774,9 @@ void MainWindow::importFiles(const QStringList fileNames)
 
 void MainWindow::loadFiles(const QStringList fileNames)
 {
+	if (fileNames.isEmpty())
+		return;
+
 	char *error = NULL;
 	QByteArray fileNamePtr;
 
