@@ -7,17 +7,6 @@ extern "C" {
 
 /* can't use 'bool' for the boolean values - different size in C and C++ */
 typedef struct {
-	short cylinder;
-	short temperature;
-	short totalweight;
-	short suit;
-	short nitrox;
-	short sac;
-	short otu;
-	short maxcns;
-} visible_cols_t;
-
-typedef struct {
 	short po2;
 	short pn2;
 	short phe;
@@ -30,7 +19,6 @@ struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
 	double font_size;
-	visible_cols_t visible_cols;
 	partial_pressure_graphs_t pp_graphs;
 	short mod;
 	double mod_ppO2;

@@ -81,15 +81,6 @@ void save_preferences(void)
 	SAVE_UNIT("fahrenheit", temperature, FAHRENHEIT);
 	SAVE_UNIT("lbs", weight, LBS);
 
-	SAVE_BOOL("TEMPERATURE", visible_cols.temperature);
-	SAVE_BOOL("TOTALWEIGHT", visible_cols.totalweight);
-	SAVE_BOOL("SUIT", visible_cols.suit);
-	SAVE_BOOL("CYLINDER", visible_cols.cylinder);
-	SAVE_BOOL("NITROX", visible_cols.nitrox);
-	SAVE_BOOL("SAC", visible_cols.sac);
-	SAVE_BOOL("OTU", visible_cols.otu);
-	SAVE_BOOL("MAXCNS", visible_cols.maxcns);
-
 	SAVE_STRING("divelist_font", divelist_font);
 
 	SAVE_BOOL("po2graph", pp_graphs.po2);
@@ -144,14 +135,6 @@ void load_preferences(void)
 	GET_UNIT("lbs", weight, KG, LBS);
 
 	/* an unset key is 'default' */
-	GET_BOOL("CYLINDER", visible_cols.cylinder);
-	GET_BOOL("TEMPERATURE", visible_cols.temperature);
-	GET_BOOL("TOTALWEIGHT", visible_cols.totalweight);
-	GET_BOOL("SUIT", visible_cols.suit);
-	GET_BOOL("NITROX", visible_cols.nitrox);
-	GET_BOOL("OTU", visible_cols.otu);
-	GET_BOOL("MAXCNS", visible_cols.maxcns);
-	GET_BOOL("SAC", visible_cols.sac);
 	GET_BOOL("po2graph", pp_graphs.po2);
 	GET_BOOL("pn2graph", pp_graphs.pn2);
 	GET_BOOL("phegraph", pp_graphs.phe);

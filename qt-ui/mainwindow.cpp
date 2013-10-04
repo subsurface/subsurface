@@ -549,16 +549,6 @@ void MainWindow::readSettings()
 		GET_UNIT("weight", weight, units::LBS, units::KG);
 	}
 	s.endGroup();
-	s.beginGroup("DisplayListColumns");
-	GET_BOOL("CYLINDER", visible_cols.cylinder);
-	GET_BOOL("TEMPERATURE", visible_cols.temperature);
-	GET_BOOL("TOTALWEIGHT", visible_cols.totalweight);
-	GET_BOOL("SUIT", visible_cols.suit);
-	GET_BOOL("NITROX", visible_cols.nitrox);
-	GET_BOOL("OTU", visible_cols.otu);
-	GET_BOOL("MAXCNS", visible_cols.maxcns);
-	GET_BOOL("SAC", visible_cols.sac);
-	s.endGroup();
 	s.beginGroup("TecDetails");
 	GET_BOOL("po2graph", pp_graphs.po2);
 	GET_BOOL("pn2graph", pp_graphs.pn2);
@@ -615,16 +605,6 @@ void MainWindow::writeSettings()
 	SAVE_VALUE("volume", units.volume);
 	SAVE_VALUE("temperature", units.temperature);
 	SAVE_VALUE("weight", units.weight);
-	settings.endGroup();
-	settings.beginGroup("DisplayListColumns");
-	SAVE_VALUE("TEMPERATURE", visible_cols.temperature);
-	SAVE_VALUE("TOTALWEIGHT", visible_cols.totalweight);
-	SAVE_VALUE("SUIT", visible_cols.suit);
-	SAVE_VALUE("CYLINDER", visible_cols.cylinder);
-	SAVE_VALUE("NITROX", visible_cols.nitrox);
-	SAVE_VALUE("SAC", visible_cols.sac);
-	SAVE_VALUE("OTU", visible_cols.otu);
-	SAVE_VALUE("MAXCNS", visible_cols.maxcns);
 	settings.endGroup();
 	settings.beginGroup("TecDetails");
 	SAVE_VALUE("po2graph", pp_graphs.po2);
