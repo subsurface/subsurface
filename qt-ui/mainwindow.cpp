@@ -16,6 +16,7 @@
 #include <QFontMetrics>
 #include <QWebView>
 #include <QTableView>
+#include <QDesktopWidget>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -503,7 +504,7 @@ void MainWindow::initialUiSetup()
 	int i;
 
 	settings.beginGroup("MainWindow");
-	QSize sz = settings.value("size").value<QSize>();
+	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
 	resize(sz);
 	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
 	ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
