@@ -506,9 +506,28 @@ void MainWindow::initialUiSetup()
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
 	resize(sz);
-	ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-	ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
-	ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+
+	if (settings.value("mainSplitter").isValid()){
+		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+		ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+		ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+	} else {
+		QList<int> mainSizes;
+		mainSizes.append( qApp->desktop()->size().height() * 0.7 );
+		mainSizes.append( qApp->desktop()->size().height() * 0.3 );
+		ui.mainSplitter->setSizes( mainSizes );
+
+		QList<int> infoProfileSizes;
+		infoProfileSizes.append( qApp->desktop()->size().width() * 0.3 );
+		infoProfileSizes.append( qApp->desktop()->size().width() * 0.7 );
+		ui.infoProfileSplitter->setSizes(infoProfileSizes);
+
+		QList<int> listGlobeSizes;
+		listGlobeSizes.append( qApp->desktop()->size().width() * 0.7 );
+		listGlobeSizes.append( qApp->desktop()->size().width() * 0.3 );
+		ui.listGlobeSplitter->setSizes(listGlobeSizes);
+	}
+
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
