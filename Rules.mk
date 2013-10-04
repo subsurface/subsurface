@@ -110,8 +110,8 @@ install-macosx: all
 		$(INSTALL) $$LOC/$(NAME).mo $(MACOSXINSTALL)/Contents/Resources/$$LOC/$(NAME).mo; \
 	done
 	@-if test ! -z "$(XSLT)"; then \
-		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/xslt; \
-		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXINSTALL)/Contents/Resources/xslt/; \
+		$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/Resources/share/xslt; \
+		$(INSTALL) -m 644 $(XSLTFILES) $(MACOSXINSTALL)/Contents/Resources/share/xslt/; \
 	fi
 	$(INSTALL) -d -m 755 $(MACOSXINSTALL)/Contents/resources/share/doc/$(NAME)
 	$(INSTALL) -m 644 Documentation/user-manual.html $(MACOSXINSTALL)/Contents/Resources/share/doc/$(NAME)
