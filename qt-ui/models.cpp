@@ -1114,7 +1114,8 @@ QString DiveItem::displayWeight() const
 		int kg = weight() / 1000;
 		str = QString("%1.%2").arg(kg).arg((unsigned)(gr) / 100);
 	} else {
-		str = QString("%1").arg((unsigned)(grams_to_lbs(weight())));
+		double lbs = grams_to_lbs(weight());
+		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1 );
 	}
 
 	return str;
