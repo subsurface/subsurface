@@ -30,9 +30,9 @@ DESKTOPFILE = $(NAME).desktop
 MANFILES = $(NAME).1
 XSLTFILES = xslt/*.xslt xslt/*.xsl
 
-EXTRA_FLAGS =  $(QTCXXFLAGS) $(GTKCFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
+EXTRA_FLAGS =  $(QTCXXFLAGS) $(GLIB2CFLAGS) $(XML2CFLAGS) \
 	       $(LIBDIVECOMPUTERCFLAGS) \
-	       $(LIBSOUPCFLAGS) $(GCONF2CFLAGS) -I. -DQT_NO_STL
+	       $(LIBSOUPCFLAGS) -I. -DQT_NO_STL
 
 HEADERS = \
 	qt-ui/divelistview.h \
@@ -131,12 +131,6 @@ endif
 ifneq ($(strip $(LIBXSLT)),)
        EXTRA_FLAGS += -DXSLT='"$(XSLTDIR)"' $(XSLCFLAGS)
 endif
-ifeq  ($(USE_GTK_UI),1)
-ifneq ($(strip $(LIBOSMGPSMAP)),)
-       SOURCES += gps.c
-       EXTRA_FLAGS += -DHAVE_OSM_GPS_MAP $(OSMGPSMAPFLAGS)
-endif
-endif
 
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	SOURCES += linux.c
@@ -159,8 +153,8 @@ else
 	TARGET = $(NAME).exe
 endif
 
-LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBGCONF2) $(LIBDIVECOMPUTER) \
-	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBOSMGPSMAP) $(LIBSOUP) $(LIBWINSOCK) $(MARBLELIBS)
+LIBS = $(LIBQT) $(LIBXML2) $(LIBXSLT) $(LIBSQLITE3) $(LIBDIVECOMPUTER) \
+	$(EXTRALIBS) $(LIBZIP) -lpthread -lm $(LIBSOUP) $(LIBWINSOCK) $(MARBLELIBS)
 
 MSGLANGS=$(notdir $(wildcard po/*.po))
 
