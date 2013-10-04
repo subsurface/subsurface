@@ -192,7 +192,16 @@ void DiveListView::reloadHeaderActions()
 			QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
 			QString settingName = QString("showColumn%1").arg(i);
 			QAction *a = new QAction(title, header());
-			bool shown = s.value(settingName, true).toBool();
+			bool showHeaderFirstRun = !(
+				i == DiveTripModel::MAXCNS
+				|| i == DiveTripModel::NITROX
+				|| i == DiveTripModel::OTU
+				|| i == DiveTripModel::TEMPERATURE
+				|| i == DiveTripModel::TOTALWEIGHT
+				|| i == DiveTripModel::SUIT
+				|| i == DiveTripModel::CYLINDER
+				|| i == DiveTripModel::SAC );
+			bool shown = s.value(settingName, showHeaderFirstRun).toBool();
 			a->setCheckable(true);
 			a->setChecked(shown);
 			a->setProperty("index", i);
