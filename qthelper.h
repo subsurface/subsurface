@@ -34,5 +34,6 @@ public:
 };
 
 QString weight_string(int weight_in_grams);
+bool gpsHasChanged(struct dive* dive, struct dive *master, const QString &gps_text);
 
 #endif // QTHELPER_H
