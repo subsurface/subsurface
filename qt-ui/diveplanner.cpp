@@ -1150,11 +1150,11 @@ struct diveplan DivePlannerPointsModel::getDiveplan()
 void DivePlannerPointsModel::cancelPlan()
 {
 	if (mode == PLAN && rowCount()) {
-		if (QMessageBox::warning(mainWindow(), tr("Save the Plan?"),
-			tr("You have a working plan, \n are you sure that you wanna cancel it?"),
-				QMessageBox::Ok | QMessageBox::Cancel) != QMessageBox::Ok) {
-				return;
-			}
+		if (QMessageBox::warning(mainWindow(), tr("Discard the Plan?"),
+			tr("You are about to discard your plan."),
+			QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
+			return;
+		}
 	}
 
 	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
