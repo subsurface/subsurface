@@ -215,8 +215,12 @@ ui_%.h: %.ui .uic
 	@mkdir -p .uic/qt-ui
 	$(COMPILE_PREFIX)$(UIC) $< -o .uic/$@
 
-.uic:
-	$(COMPILE_PREFIX)mkdir $@
+# This forces the creation of ui headers with the wrong path
+# This is required because the -MG option to the compiler outputs
+# unknown files with no path prefix
+ui_%.h: qt-ui/%.ui
+	@$(PRETTYECHO) '    UIC' $<
+	$(COMPILE_PREFIX)$(UIC) $< -o qt-ui/$@
 
 share/locale/%.UTF-8/LC_MESSAGES/$(NAME).mo: po/%.po po/%.aliases
 	@$(PRETTYECHO) '    MSGFMT' $*.po

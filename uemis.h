@@ -8,6 +8,10 @@
 #include <stdint.h>
 #include "dive.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void uemis_parse_divelog_binary(char *base64, void *divep);
 int uemis_get_weight_unit(int diveid);
 void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_t *longitude, degrees_t *latitude);
@@ -40,5 +44,9 @@ typedef struct {
 	uint8_t		cns;
 	uint8_t		flags[8];
 } __attribute((packed)) uemis_sample_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* UEMIS_H */

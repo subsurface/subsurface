@@ -2,10 +2,6 @@
 #define LIBDIVECOMPUTER_H
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* libdivecomputer */
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
@@ -13,6 +9,10 @@ extern "C" {
 
 /* handling uemis Zurich SDA files */
 #include "uemis.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* don't forget to include the UI toolkit specific display-XXX.h first
    to get the definition of progressbar_t */
