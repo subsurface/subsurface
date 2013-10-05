@@ -34,6 +34,10 @@ ifeq ($(CC), i686-w64-mingw32-gcc)
 else ifeq ($(UNAME), darwin)
 	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
 	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
+else ifneq ($(LIBDCDEVEL),)
+	LIBDIVECOMPUTERDIR = ../libdivecomputer
+	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
+	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/src/.libs/libdivecomputer.a
 else ifeq ($(shell $(PKGCONFIG) --exists libdivecomputer; echo $$?),0)
 	LIBDIVECOMPUTERINCLUDES = $(shell $(PKGCONFIG) --cflags libdivecomputer)
 	LIBDIVECOMPUTERARCHIVE = $(shell $(PKGCONFIG) --libs libdivecomputer)
@@ -43,11 +47,7 @@ libdc-local64 := $(wildcard /usr/local/lib64/libdivecomputer.a)
 libdc-usr := $(wildcard /usr/lib/libdivecomputer.a)
 libdc-usr64 := $(wildcard /usr/lib64/libdivecomputer.a)
 
-ifneq ($(LIBDCDEVEL),)
-	LIBDIVECOMPUTERDIR = ../libdivecomputer
-	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
-	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/src/.libs/libdivecomputer.a
-else ifneq ($(strip $(libdc-local)),)
+ifneq ($(strip $(libdc-local)),)
 	LIBDIVECOMPUTERDIR = /usr/local
 	LIBDIVECOMPUTERINCLUDES = -I$(LIBDIVECOMPUTERDIR)/include
 	LIBDIVECOMPUTERARCHIVE = $(LIBDIVECOMPUTERDIR)/lib/libdivecomputer.a
