@@ -118,7 +118,7 @@ Check with your Linux distribution how to install these packages.
 On Debian the package names are different; try libxml2-dev,
 libgtk2.0-dev, libglib2.0-dev, libgconf2-dev, libsoup2.4-dev,
 libosmgpsmap-dev, libsqlite3-dev, libxslt1-dev, libzip-dev,
-zlib1g-dev.
+zlib1g-dev (and libusb-1.0-0-dev if libdivecomputer is built with it).
 
 Note that contrary to earlier versions of Subsurface, starting in v3.1
 XSLT, LIBZIP and OSMGPSMAP are no longer optional but instead are
