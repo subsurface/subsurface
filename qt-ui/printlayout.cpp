@@ -139,6 +139,12 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	const int tableH = profilePrintTableMaxH;
 	// resize the profile widget
 	profile->resize(scaledW, scaledH - tableH - padPT);
+	// offset table or profile on top
+	int yOffsetProfile = 0, yOffsetTable = 0;
+	if (printOptions->notes_up)
+		yOffsetProfile = tableH + padPT;
+	else
+		yOffsetTable = scaledH - tableH;
 
 	// plot the dives at specific rows and columns on the page
 	int i, row = 0, col = 0;
@@ -158,13 +164,13 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		profile->plot(dive, true);
 		QPixmap profilePm = QPixmap::grabWidget(profile); // Qt4
 		painter.drawPixmap((scaledW + padW) * col,
-		                   (scaledH + padH) * row,
+		                   (scaledH + padH) * row + yOffsetProfile,
 		                   profilePm);
 		// draw a table
 		model.setDive(dive);
 		QPixmap tablePm = QPixmap::grabWidget(table); // Qt4
 		painter.drawPixmap((scaledW + padW) * col,
-		                   (scaledH + padH) * row + (scaledH - tableH),
+		                   (scaledH + padH) * row + yOffsetTable,
 		                   tablePm);
 		col++;
 	}
