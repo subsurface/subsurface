@@ -2,7 +2,9 @@
 /* maintains the internal dive list structure */
 #include <string.h>
 #include <stdio.h>
+#if 0
 #include <glib/gi18n.h>
+#endif
 
 #include "dive.h"
 
@@ -481,7 +483,7 @@ static void sanitize_cylinder_info(struct dive *dive)
 }
 
 /* some events should never be thrown away */
-static gboolean is_potentially_redundant(struct event *event)
+static bool is_potentially_redundant(struct event *event)
 {
 	if (!strcmp(event->name, "gaschange"))
 		return FALSE;
@@ -1585,7 +1587,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
  */
-struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded)
+struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded)
 {
 	if (likely_same_dive(a, b))
 		return merge_dives(a, b, 0, prefer_downloaded);
@@ -1810,7 +1812,7 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 	remove_redundant_dc(res, prefer_downloaded);
 }
 
-struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded)
+struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
 	struct dive *dl = NULL;
@@ -1877,7 +1879,7 @@ struct dive *find_dive_including(timestamp_t when)
 	return NULL;
 }
 
-gboolean dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
+bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
 {
 	return when - offset <= dive->when && dive->when + dive->duration.seconds <= when + offset;
 }

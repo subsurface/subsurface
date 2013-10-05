@@ -5,9 +5,14 @@
  * (c) Dirk Hohndel 2013
  */
 #include <libintl.h>
+#if 0
 #include <glib/gi18n.h>
+#else
+#define _(arg) arg
+#endif
 #include <unistd.h>
 #include <ctype.h>
+#include <string.h>
 #include "dive.h"
 #include "divelist.h"
 #include "planner.h"
@@ -47,7 +52,7 @@ void dump_plan(struct diveplan *diveplan)
 }
 #endif
 
-void set_last_stop(gboolean last_stop_6m)
+void set_last_stop(bool last_stop_6m)
 {
 	if (last_stop_6m == TRUE)
 		decostoplevels[1] = 6000;
@@ -69,7 +74,7 @@ void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 
 /* simple helper function to compare two permille values with
  * (rounded) percent granularity */
-static inline gboolean match_percent(int a, int b)
+static inline bool match_percent(int a, int b)
 {
 	return (a + 5) / 10 == (b + 5) / 10;
 }
@@ -337,7 +342,7 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 }
 
 /* return -1 to warn about potentially very long calculation */
-int add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, gboolean is_rel)
+int add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, bool is_rel)
 {
 	struct divedatapoint *pdp, *dp = get_nth_dp(diveplan, idx);
 	if (idx > 0) {
@@ -803,7 +808,7 @@ int validate_gas(const char *text, int *o2_p, int *he_p)
 	if (!text)
 		return 0;
 
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 
 	if (!*text)
@@ -820,7 +825,7 @@ int validate_gas(const char *text, int *o2_p, int *he_p)
 	}
 
 	/* We don't want any extra crud */
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -843,19 +848,19 @@ int validate_time(const char *text, int *sec_p, int *rel_p)
 	if (!text)
 		return 0;
 
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 
 	rel = 1;
 	if (*text == '+') {
 		rel = 1;
 		text++;
-		while (g_ascii_isspace(*text))
+		while (isspace(*text))
 			text++;
 	} else if (*text == '@') {
 		rel = 0;
 		text++;
-		while (g_ascii_isspace(*text))
+		while (isspace(*text))
 			text++;
 	}
 
@@ -892,7 +897,7 @@ int validate_time(const char *text, int *sec_p, int *rel_p)
 	}
 
 	/* Maybe we should accept 'min' at the end? */
-	if (g_ascii_isspace(*text))
+	if (isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -913,7 +918,7 @@ int validate_depth(const char *text, int *mm_p)
 	if (depth < 0)
 		return 0;
 
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 
 	imperial = get_units()->length == FEET;
@@ -924,7 +929,7 @@ int validate_depth(const char *text, int *mm_p)
 		imperial = 1;
 		text += 2;
 	}
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -952,10 +957,10 @@ int validate_po2(const char *text, int *mbar_po2)
 	if (po2 < 0)
 		return 0;
 
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 	if (*text)
 		return 0;
@@ -975,7 +980,7 @@ int validate_volume(const char *text, int *sac)
 	if (volume < 0)
 		return 0;
 
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 
 	imperial = get_units()->volume == CUFT;
@@ -986,11 +991,11 @@ int validate_volume(const char *text, int *sac)
 		imperial = 1;
 		text += 4;
 	}
-	while (g_ascii_isspace(*text) || *text == '/')
+	while (isspace(*text) || *text == '/')
 		text++;
 	if (!strncasecmp(text, _("min"), 3))
 		text += 3;
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 	if (*text)
 		return 0;

@@ -6,7 +6,13 @@
  * void process_all_dives(struct dive *dive, struct dive **prev_dive);
  * void get_selected_dives_text(char *buffer, int size);
  */
+#if 0
 #include <glib/gi18n.h>
+#else
+#define _(arg) arg
+#define N_(arg) arg
+#endif
+#include <string.h>
 #include <ctype.h>
 
 #include "dive.h"

@@ -12,7 +12,12 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#if 0
 #include <glib/gi18n.h>
+#else
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 #define __USE_XOPEN
 #include <time.h>
 #include <math.h>
@@ -166,8 +171,10 @@ void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
 	struct uemis_helper *hp = uemis_helper;
+#if 0	/* seems overkill */
 	if (!g_utf8_validate(text, -1, NULL))
 		return;
+#endif
 	while (hp) {
 		if (hp->divespot == divespot && hp->location) {
 			*hp->location = strdup(text);

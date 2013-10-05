@@ -38,7 +38,11 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#if 0
 #include <glib/gi18n.h>
+#else /* stupid */
+#define _(arg) arg
+#endif
 #include <assert.h>
 #include <zip.h>
 #include <libxslt/transform.h>
@@ -71,7 +75,7 @@ void dump_selection(void)
 }
 #endif
 
-void set_autogroup(gboolean value)
+void set_autogroup(bool value)
 {
 	/* if we keep the UI paradigm, this needs to toggle
 	 * the checkbox on the autogroup menu item */
@@ -456,7 +460,7 @@ double init_decompression(struct dive *dive)
 	int i, divenr = -1;
 	unsigned int surface_time;
 	timestamp_t when, lasttime = 0;
-	gboolean deco_init = FALSE;
+	bool deco_init = FALSE;
 	double tissue_tolerance, surface_pressure;
 
 	if (!dive)
@@ -534,6 +538,7 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
+#if USE_GTK_UI
 static void get_string(char **str, const char *s)
 {
 	int len;
@@ -563,6 +568,7 @@ void get_suit(struct dive *dive, char **str)
 {
 	get_string(str, dive->suit);
 }
+#endif
 
 #define MAX_DATE_STRING 256
 /* caller needs to free the string */
@@ -606,13 +612,24 @@ char *get_trip_date_string(timestamp_t when, int nr)
 	if (buffer) {
 		struct tm tm;
 		utc_mkdate(when, &tm);
-		snprintf(buffer, MAX_DATE_STRING,
-			/*++GETTEXT 60 char buffer monthname, year, nr dives */
-			ngettext("%1$s %2$d (%3$d dive)",
-				 "%1$s %2$d (%3$d dives)", nr),
-			monthname(tm.tm_mon),
-			tm.tm_year + 1900,
-			nr);
+		if (nr != 1) {
+			snprintf(buffer, MAX_DATE_STRING,
+#if 0
+				 /*++GETTEXT 60 char buffer monthname, year, nr dives */
+				 ngettext("%1$s %2$d (%3$d dive)",
+					  "%1$s %2$d (%3$d dives)", nr),
+#else
+				 _("%1$s %2$d (%3$d dives)"),
+#endif
+				 monthname(tm.tm_mon),
+				 tm.tm_year + 1900,
+				 nr);
+		} else {
+			snprintf(buffer, MAX_DATE_STRING,
+				 _("%1$s %2$d (1 dive)"),
+				 monthname(tm.tm_mon),
+				 tm.tm_year + 1900);
+		}
 	}
 	return buffer;
 }

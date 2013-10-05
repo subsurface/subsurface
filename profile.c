@@ -2,8 +2,14 @@
 /* creates all the necessary data for drawing the dive profile
  * uses cairo to draw it
  */
+#if 0
 #include <glib/gi18n.h>
+#else
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 #include <limits.h>
+#include <string.h>
 
 #include "dive.h"
 #include "display.h"
@@ -931,7 +937,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 	int i, cylinderindex;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *current;
-	gboolean missing_pr = FALSE;
+	bool missing_pr = FALSE;
 
 	cylinderindex = -1;
 	current = NULL;
@@ -1210,7 +1216,7 @@ struct divecomputer *select_dc(struct divecomputer *main)
 }
 
 static void plot_string(struct plot_data *entry, char *buf, int bufsize,
-			int depth, int pressure, int temp, gboolean has_ndl)
+			int depth, int pressure, int temp, bool has_ndl)
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;

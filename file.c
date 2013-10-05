@@ -4,7 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#if 0
 #include <glib/gi18n.h>
+#else /* stupid */
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 #include <zip.h>
 
 #include "dive.h"
@@ -24,7 +29,7 @@ int readfile(const char *filename, struct memblock *mem)
 	mem->buffer = NULL;
 	mem->size = 0;
 
-	fd = g_open(filename, O_RDONLY | O_BINARY, 0);
+	fd = open(filename, O_RDONLY | O_BINARY, 0);
 	if (fd < 0)
 		return fd;
 	ret = fstat(fd, &st);
@@ -232,7 +237,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		struct sample *sample;
 
 		errno = 0;
-		val = g_ascii_strtod(p,&end);
+		val = strtod(p,&end); // FIXME == localization issue
 		if (end == p)
 			break;
 		if (errno)

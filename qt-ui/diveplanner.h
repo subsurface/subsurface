@@ -8,7 +8,6 @@
 #include <QDateTime>
 
 #include "dive.h"
-#include "ui_diveplanner.h"
 
 class QListView;
 class QStringListModel;
@@ -201,6 +200,8 @@ private:
 	int minMinutes; // this holds the minimum duration of the dive.
 	int dpMaxTime; // this is the time of the dive calculated by the deco.
 };
+
+#include "ui_diveplanner.h"
 
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT

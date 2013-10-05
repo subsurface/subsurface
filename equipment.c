@@ -12,8 +12,12 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
+#if 0
 #include <glib/gi18n.h>
-
+#else /* stupid */
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 #include "dive.h"
 #include "display.h"
 #if USE_GTK_UI
@@ -186,7 +190,7 @@ static void set_weight_weight_spinbutton(struct ws_widget *ws_widget, int grams)
 static GtkTreeIter *found_match = NULL;
 static GtkTreeIter match_iter;
 
-static gboolean match_desc(GtkTreeModel *model,	GtkTreePath *path,
+static bool match_desc(GtkTreeModel *model,	GtkTreePath *path,
 			GtkTreeIter *iter, gpointer data)
 {
 	int match;
@@ -492,7 +496,7 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 
 #endif /* USE_GTK_UI */
 
-gboolean cylinder_nodata(cylinder_t *cyl)
+bool cylinder_nodata(cylinder_t *cyl)
 {
 	return	!cyl->type.size.mliter &&
 		!cyl->type.workingpressure.mbar &&
@@ -503,13 +507,13 @@ gboolean cylinder_nodata(cylinder_t *cyl)
 		!cyl->end.mbar;
 }
 
-static gboolean cylinder_nosamples(cylinder_t *cyl)
+static bool cylinder_nosamples(cylinder_t *cyl)
 {
 	return	!cyl->sample_start.mbar &&
 		!cyl->sample_end.mbar;
 }
 
-gboolean cylinder_none(void *_data)
+bool cylinder_none(void *_data)
 {
 	cylinder_t *cyl = _data;
 	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
@@ -517,19 +521,19 @@ gboolean cylinder_none(void *_data)
 
 /* descriptions are equal if they are both NULL or both non-NULL
    and the same text */
-static gboolean description_equal(const char *desc1, const char *desc2)
+static bool description_equal(const char *desc1, const char *desc2)
 {
 		return ((! desc1 && ! desc2) ||
 			(desc1 && desc2 && strcmp(desc1, desc2) == 0));
 }
 
-gboolean weightsystem_none(void *_data)
+bool weightsystem_none(void *_data)
 {
 	weightsystem_t *ws = _data;
 	return !ws->weight.grams && !ws->description;
 }
 
-gboolean no_weightsystems(weightsystem_t *ws)
+bool no_weightsystems(weightsystem_t *ws)
 {
 	int i;
 
@@ -539,13 +543,13 @@ gboolean no_weightsystems(weightsystem_t *ws)
 	return TRUE;
 }
 
-static gboolean one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
+static bool one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 {
 	return ws1->weight.grams == ws2->weight.grams &&
 		description_equal(ws1->description, ws2->description);
 }
 
-gboolean weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
+bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 {
 	int i;
 
@@ -601,7 +605,7 @@ static void *ws_ptr(struct dive *dive, int idx)
 static void show_equipment(struct dive *dive, int max,
 			struct equipment_list *equipment_list,
 			void*(*ptr_function)(struct dive*, int),
-			gboolean(*none_function)(void *),
+			bool(*none_function)(void *),
 			void(*set_one_function)(void*, GtkListStore*, GtkTreeIter *))
 {
 	int i, used;
@@ -861,8 +865,8 @@ struct tank_info_t tank_info[100] = {
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
 	/* Common European steel cylinders */
-        { "3L 232 bar",   .ml = 3000,  .bar = 232 },
-        { "3L 300 bar",   .ml = 3000,  .bar = 300 },
+	{ "3L 232 bar",   .ml = 3000,  .bar = 232 },
+	{ "3L 300 bar",   .ml = 3000,  .bar = 300 },
 	{ "10L 300 bar",  .ml = 10000, .bar = 300 },
 	{ "12L 200 bar",  .ml = 12000, .bar = 200 },
 	{ "12L 232 bar",  .ml = 12000, .bar = 232 },

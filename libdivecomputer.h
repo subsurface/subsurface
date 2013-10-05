@@ -24,7 +24,7 @@ typedef struct device_data_t {
 	dc_device_t *device;
 	dc_context_t *context;
 	int preexisting;
-	gboolean force_download;
+	bool force_download;
 } device_data_t;
 
 const char *do_libdivecomputer_import(device_data_t *data);

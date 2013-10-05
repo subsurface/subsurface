@@ -2,7 +2,7 @@
  *
  * UI toolkit independent logic used for the info frame
  *
- * gboolean gps_changed(struct dive *dive, struct dive *master, const char *gps_text);
+ * bool gps_changed(struct dive *dive, struct dive *master, const char *gps_text);
  * void print_gps_coordinates(char *buffer, int len, int lat, int lon);
  * void save_equipment_data(struct dive *dive);
  * void update_equipment_data(struct dive *dive, struct dive *master);
@@ -10,7 +10,7 @@
  * const char *get_window_title(struct dive *dive);
  * char *evaluate_string_change(const char *newstring, char **textp, const char *master);
  * int text_changed(const char *old, const char *new);
- * gboolean parse_gps_text(const char *gps_text, double *latitude, double *longitude);
+ * bool parse_gps_text(const char *gps_text, double *latitude, double *longitude);
  * int divename(char *buf, size_t size, struct dive *dive, char *trailer);
  */
 #include <stdio.h>
@@ -19,11 +19,18 @@
 #include <time.h>
 #include <ctype.h>
 #include <sys/time.h>
+#if 0
 #include <glib/gi18n.h>
+#else /* stupid */
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 
 #include "dive.h"
 #include "display.h"
 #include "divelist.h"
+
+#if USE_GTK_UI
 
 /* old is NULL or a valid string, new is a valid string
  * NOTE: NULL and "" need to be treated as "unchanged" */
@@ -177,12 +184,12 @@ static int string_advance_cardinal(const char *text, const char *look)
 }
 
 /* this has to be done with UTF8 as people might want to enter the degree symbol */
-gboolean parse_gps_text(const char *gps_text, double *latitude, double *longitude)
+bool parse_gps_text(const char *gps_text, double *latitude, double *longitude)
 {
 	const char *text = gps_text;
 	char *endptr;
-	gboolean south = FALSE;
-	gboolean west = FALSE;
+	bool south = FALSE;
+	bool west = FALSE;
 	double parselat, parselong;
 	gunichar degrees = UCS4_DEGREE;
 	gunichar c;
@@ -270,7 +277,7 @@ gboolean parse_gps_text(const char *gps_text, double *latitude, double *longitud
 	return TRUE;
 }
 
-gboolean gps_changed(struct dive *dive, struct dive *master, const char *gps_text)
+bool gps_changed(struct dive *dive, struct dive *master, const char *gps_text)
 {
 	double latitude, longitude;
 	int latudeg, longudeg;
@@ -295,13 +302,15 @@ gboolean gps_changed(struct dive *dive, struct dive *master, const char *gps_tex
 	dive->longitude.udeg = longudeg;
 	return TRUE;
 }
-
+#endif
 /* take latitude and longitude in udeg and print them in a human readable
  * form, without losing precision */
 void print_gps_coordinates(char *buffer, int len, int lat, int lon)
 {
 	unsigned int latdeg, londeg;
+#if 0
 	double latmin, lonmin;
+#endif
 	char *lath, *lonh, dbuf_lat[32], dbuf_lon[32];
 
 	if (!lat && !lon) {
@@ -314,11 +323,18 @@ void print_gps_coordinates(char *buffer, int len, int lat, int lon)
 	lon = abs(lon);
 	latdeg = lat / 1000000;
 	londeg = lon / 1000000;
+#if 0
 	latmin = (lat % 1000000) * 60.0 / 1000000.0;
 	lonmin = (lon % 1000000) * 60.0 / 1000000.0;
 	*dbuf_lat = *dbuf_lon = 0;
 	g_ascii_formatd(dbuf_lat, sizeof(dbuf_lat), "%8.5f", latmin);
 	g_ascii_formatd(dbuf_lon, sizeof(dbuf_lon), "%8.5f", lonmin);
+#else
+	int ilatmin = (lat % 1000000) * 60;
+	int ilonmin = (lon % 1000000) * 60;
+	snprintf(dbuf_lat, sizeof(dbuf_lat), "%2d.%05d", ilatmin / 1000000, (ilatmin % 1000000) / 10);
+	snprintf(dbuf_lon, sizeof(dbuf_lon), "%2d.%05d", ilonmin / 1000000, (ilonmin % 1000000) / 10);
+#endif
 	if (!*dbuf_lat || !*dbuf_lon) {
 		*buffer = 0;
 		return;

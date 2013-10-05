@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <inttypes.h>
+#include <string.h>
+#if 0
 #include <glib/gi18n.h>
+#else
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 
 #include "dive.h"
 #include "device.h"
@@ -26,7 +32,7 @@ const char *progress_bar_text = "";
 double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns;
-static gboolean in_deco, first_temp_is_air;
+static bool in_deco, first_temp_is_air;
 
 #if USE_GTK_UI
 static GError *error(const char *fmt, ...)

@@ -1,7 +1,9 @@
 /* qt-gui.cpp */
 /* Qt UI implementation */
 #include <libintl.h>
+#if 0
 #include <glib/gi18n.h>
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -64,7 +66,10 @@ Translator::Translator(QObject *parent):
 QString Translator::translate(const char *context, const char *sourceText,
 			      const char *disambiguation) const
 {
+	return sourceText;
+#if 0
 	return gettext(sourceText);
+#endif
 }
 
 static QApplication *application = NULL;
@@ -141,7 +146,7 @@ void exit_ui(void)
 		free((void *)default_dive_computer_device);
 }
 
-void set_filename(const char *filename, gboolean force)
+void set_filename(const char *filename, bool force)
 {
 	if (!force && existing_filename)
 		return;

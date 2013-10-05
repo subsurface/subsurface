@@ -13,11 +13,17 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#if 0
 #include <glib/gi18n.h>
+#else
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 
 #include "libdivecomputer.h"
 #include "uemis.h"
@@ -55,7 +61,7 @@ static int mbuf_size = 0;
 struct argument_block {
 	const char *mountpath;
 	progressbar_t *progress;
-	gboolean force_download;
+	bool force_download;
 };
 #endif
 
@@ -98,7 +104,7 @@ static void uemis_ts(char *buffer, void *_when)
 /* float minutes */
 static void uemis_duration(char *buffer, duration_t *duration)
 {
-	duration->seconds = g_ascii_strtod(buffer, NULL) * 60 + 0.5;
+	duration->seconds = ascii_strtod(buffer, NULL) * 60 + 0.5;
 }
 
 /* int cm */
@@ -135,7 +141,7 @@ static void uemis_add_string(char *buffer, char **text)
 static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
-		lbs_to_grams(g_ascii_strtod(buffer, NULL)) : g_ascii_strtod(buffer, NULL) * 1000;
+		lbs_to_grams(ascii_strtod(buffer, NULL)) : ascii_strtod(buffer, NULL) * 1000;
 	weight->description = strdup(_("unknown"));
 }
 
@@ -172,18 +178,36 @@ static long bytes_available(int file)
 static int number_of_file(char *path)
 {
 	int count = 0;
-	GDir *dir = g_dir_open(path, 0, NULL);
-	while (g_dir_read_name(dir))
-		count++;
-	g_dir_close(dir);
+	DIR * dirp;
+	struct dirent * entry;
+
+	dirp = opendir(path);
+	while ((entry = readdir(dirp)) != NULL) {
+		if (entry->d_type == DT_REG) { /* If the entry is a regular file */
+			count++;
+		}
+	}
+	closedir(dirp);
 	return count;
+}
+
+static char *build_filename(const char *path, const char *name)
+{
+	int len = strlen(path) + strlen(name) + 1;
+	char *buf = malloc(len);
+#if WIN32
+	snprintf(buf, len, "%s\%s", path, name);
+#else
+	snprintf(buf, len, "%s/%s", path, name);
+#endif
+	return buf;
 }
 
 /* Check if there's a req.txt file and get the starting filenr from it.
  * Test for the maximum number of ANS files (I believe this is always
  * 4000 but in case there are differences depending on firmware, this
  * code is easy enough */
-static gboolean uemis_init(const char *path)
+static bool uemis_init(const char *path)
 {
 	char *ans_path;
 	int i;
@@ -191,8 +215,8 @@ static gboolean uemis_init(const char *path)
 	if (!path)
 		return FALSE;
 	/* let's check if this is indeed a Uemis DC */
-	reqtxt_path = g_build_filename(path, "/req.txt", NULL);
-	reqtxt_file = g_open(reqtxt_path, O_RDONLY, 0666);
+	reqtxt_path = build_filename(path,"req.txt");
+	reqtxt_file = open(reqtxt_path, O_RDONLY, 0666);
 	if (!reqtxt_file) {
 #if UEMIS_DEBUG & 1
 		fprintf(debugfile, ":EE req.txt can't be opened\n");
@@ -218,9 +242,9 @@ static gboolean uemis_init(const char *path)
 
 	/* It would be nice if we could simply go back to the first set of
 	 * ANS files. But with a FAT filesystem that isn't possible */
-	ans_path = g_build_filename(path, "ANS", NULL);
+	ans_path = build_filename(path, "ANS");
 	number_of_files = number_of_file(ans_path);
-	g_free(ans_path);
+	free(ans_path);
 	/* initialize the array in which we collect the answers */
 	for (i = 0; i < NUM_PARAM_BUFS; i++)
 		param_buff[i] = "";
@@ -274,7 +298,7 @@ static char *next_segment(char *buf, int *offset, int size)
 {
 	int i = *offset;
 	int seg_size;
-	gboolean done = FALSE;
+	bool done = FALSE;
 	char *segment;
 
 	while (!done) {
@@ -319,7 +343,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 }
 
 /* are there more ANS files we can check? */
-static gboolean next_file(int max)
+static bool next_file(int max)
 {
 	if (filenr >= max)
 		return FALSE;
@@ -380,7 +404,7 @@ static void uemis_increased_timeout(int *timeout)
 }
 
 /* send a request to the dive computer and collect the answer */
-static gboolean uemis_get_answer(const char *path, char *request, int n_param_in,
+static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			int n_param_out, char **error_text)
 {
 	int i = 0, file_length;
@@ -388,17 +412,17 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 	char fl[13];
 	char tmp[101];
 	char *what = _("data");
-	gboolean searching = TRUE;
-	gboolean assembling_mbuf = FALSE;
-	gboolean ismulti = FALSE;
-	gboolean found_answer = FALSE;
-	gboolean more_files = TRUE;
-	gboolean answer_in_mbuf = FALSE;
+	bool searching = TRUE;
+	bool assembling_mbuf = FALSE;
+	bool ismulti = FALSE;
+	bool found_answer = FALSE;
+	bool more_files = TRUE;
+	bool answer_in_mbuf = FALSE;
 	char *ans_path;
 	int ans_file;
 	int timeout = UEMIS_LONG_TIMEOUT;
 
-	reqtxt_file = g_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+	reqtxt_file = open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 	snprintf(sb, BUFLEN, "n%04d12345678", filenr);
 	str_append_with_delim(sb, request);
 	for (i = 0; i < n_param_in; i++)
@@ -438,8 +462,8 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 			return FALSE;
 		progress_bar_fraction = filenr / 4000.0;
 		snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
-		ans_path = g_build_filename(path, "ANS", fl, NULL);
-		ans_file = g_open(ans_path, O_RDONLY, 0666);
+		ans_path = build_filename(build_filename(path, "ANS"), fl);
+		ans_file = open(ans_path, O_RDONLY, 0666);
 		read(ans_file, tmp, 100);
 		close(ans_file);
 #if UEMIS_DEBUG & 8
@@ -453,7 +477,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 		pbuf[3] = 0;
 		fprintf(debugfile, "::t %s \"%s...\"\n", ans_path, pbuf);
 #endif
-		g_free(ans_path);
+		free(ans_path);
 		if (tmp[0] == '1') {
 			searching = FALSE;
 			if (tmp[1] == 'm') {
@@ -468,7 +492,7 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 					more_files = FALSE;
 					assembling_mbuf = FALSE;
 				}
-				reqtxt_file = g_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+				reqtxt_file = open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 				trigger_response(reqtxt_file, "n", filenr, file_length);
 			}
 		} else {
@@ -478,15 +502,15 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 				assembling_mbuf = FALSE;
 				searching = FALSE;
 			}
-			reqtxt_file = g_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+			reqtxt_file = open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 			trigger_response(reqtxt_file, "r", filenr, file_length);
 			uemis_increased_timeout(&timeout);
 		}
 		if (ismulti && more_files && tmp[0] == '1') {
 			int size;
 			snprintf(fl, 13, "ANS%d.TXT", assembling_mbuf ? filenr - 2 : filenr - 1);
-			ans_path = g_build_filename(path, "ANS", fl, NULL);
-			ans_file = g_open(ans_path, O_RDONLY, 0666);
+			ans_path = build_filename(build_filename(path, "ANS"), fl);
+			ans_file = open(ans_path, O_RDONLY, 0666);
 			size = bytes_available(ans_file);
 			if (size > 3) {
 				char *buf = malloc(size - 2);
@@ -509,8 +533,8 @@ static gboolean uemis_get_answer(const char *path, char *request, int n_param_in
 
 		if (!ismulti) {
 			snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
-			ans_path = g_build_filename(path, "ANS", fl, NULL);
-			ans_file = g_open(ans_path, O_RDONLY, 0666);
+			ans_path = build_filename(build_filename(path, "ANS"), fl);
+			ans_file = open(ans_path, O_RDONLY, 0666);
 			size = bytes_available(ans_file);
 			if (size > 3) {
 				buf = malloc(size - 2);
@@ -575,9 +599,9 @@ static void parse_divespot(char *buf)
 					"%s%s", len ? ", " : "", val);
 		} else if (!strcmp(type, "float")) {
 			if (!strcmp(tag, "longitude"))
-				longitude = g_ascii_strtod(val, NULL);
+				longitude = ascii_strtod(val, NULL);
 			else if (!strcmp(tag, "latitude"))
-				latitude = g_ascii_strtod(val, NULL);
+				latitude = ascii_strtod(val, NULL);
 		}
 	} while (tag && *tag);
 	uemis_set_divelocation(divespot, locationstring, latitude, longitude);
@@ -637,14 +661,14 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the adresses of those fields for every dive that references the divespot. */
-static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr, gboolean keep_number, int *for_dive)
+static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr, bool keep_number, int *for_dive)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
-	gboolean done = FALSE;
+	bool done = FALSE;
 	int inbuflen = strlen(inbuf);
 	char *endptr = buf + inbuflen;
-	gboolean log = FALSE;
+	bool log = FALSE;
 	char *sections[10];
 	int s, nr_sections = 0;
 	struct dive *dive = NULL;
@@ -767,7 +791,7 @@ char *do_uemis_import(const char *mountpath, short force_download)
 	char *deviceid = NULL;
 	char *result = NULL;
 	char *endptr;
-	gboolean success, keep_number = FALSE, once = TRUE;
+	bool success, keep_number = FALSE, once = TRUE;
 
 	if (dive_table.nr == 0)
 		keep_number = TRUE;
@@ -898,7 +922,7 @@ static void *pthread_wrapper(void *_data)
 /* this simply ends the dialog without a response and asks not to be fired again
  * as we set this function up in every loop while uemis_download is waiting for
  * the download to finish */
-static gboolean timeout_func(gpointer _data)
+static bool timeout_func(gpointer _data)
 {
 	GtkDialog *dialog = _data;
 	if (!import_thread_cancelled)
@@ -907,7 +931,7 @@ static gboolean timeout_func(gpointer _data)
 }
 
 GError *uemis_download(const char *mountpath, progressbar_t *progress,
-			GtkDialog *dialog, gboolean force_download)
+			GtkDialog *dialog, bool force_download)
 {
 	pthread_t pthread;
 	void *retval;

@@ -169,8 +169,8 @@ const char *system_default_filename(void)
 	char *buffer;
 	int len;
 
-	home = g_get_home_dir();
-	user = g_get_user_name();
+	home = getenv("HOME");
+	user = getenv("LOGNAME");
 	len = strlen(home) + strlen(user) + 45;
 	buffer = malloc(len);
 	snprintf(buffer, len, "%s/Library/Application Support/Subsurface/%s.xml", home, user);
@@ -242,22 +242,22 @@ void subsurface_ui_setup(GtkSettings *settings, GtkWidget *menubar,
 }
 #endif /* UES_GTK_UI */
 
-void subsurface_command_line_init(gint *argc, gchar ***argv)
+void subsurface_command_line_init(int *argc, char ***argv)
 {
 	/* this is a no-op */
 }
 
-void subsurface_command_line_exit(gint *argc, gchar ***argv)
+void subsurface_command_line_exit(int *argc, char ***argv)
 {
 	/* this is a no-op */
 }
 
-gboolean subsurface_os_feature_available(os_feature_t f)
+int subsurface_os_feature_available(os_feature_t f)
 {
 	return TRUE;
 }
 
-gboolean subsurface_launch_for_uri(const char* uri)
+int subsurface_launch_for_uri(const char* uri)
 {
 	CFURLRef urlref = CFURLCreateWithBytes(NULL, uri, strlen(uri), kCFStringEncodingMacRoman, NULL);
 	OSStatus status = LSOpenCFURLRef(urlref, NULL);

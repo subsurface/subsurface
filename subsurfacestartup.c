@@ -1,7 +1,12 @@
 #include "subsurfacestartup.h"
 #include <stdbool.h>
+#include <string.h>
+#if 0
 #include <glib/gi18n.h>
-
+#else /* stupid */
+#define _(arg) arg
+#define N_(arg) arg
+#endif
 struct preferences prefs;
 struct preferences default_prefs = {
 	.units = SI_UNITS,

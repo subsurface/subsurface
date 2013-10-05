@@ -5,9 +5,14 @@
 #include <stdint.h>
 #include <time.h>
 #include <math.h>
+#include <sys/param.h>
 
+#if 0
 #include <glib.h>
 #include <glib/gstdio.h>
+#else /* this is stupid - this doesn't deal with translations anymore */
+#define _(arg) arg
+#endif
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
 
@@ -18,8 +23,16 @@ extern "C" {
 #else
 #if __STDC_VERSION__ >= 199901L
 #include <stdbool.h>
+#define TRUE true
+#define FALSE false
 #else
 typedef int bool;
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
 #endif
 #endif
 
@@ -99,7 +112,7 @@ extern int dive_mask;
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
-typedef gint64 timestamp_t;
+typedef int64_t timestamp_t;
 
 typedef struct {
 	int seconds;
@@ -257,7 +270,7 @@ static inline int get_he(const struct gasmix *mix)
 	return mix->he.permille;
 }
 
-static inline gboolean is_air(int o2, int he)
+static inline bool is_air(int o2, int he)
 {
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
@@ -279,7 +292,7 @@ struct sample {
 	duration_t ndl;
 	duration_t stoptime;
 	depth_t stopdepth;
-	gboolean in_deco;
+	bool in_deco;
 	int cns;
 	int po2;
 };
@@ -296,7 +309,7 @@ struct event {
 	struct event *next;
 	duration_t time;
 	int type, flags, value;
-	gboolean deleted;
+	bool deleted;
 	char name[];
 };
 
@@ -355,7 +368,7 @@ struct dive {
 	dive_trip_t *divetrip;
 	struct dive *next, **pprev;
 	int selected;
-	gboolean downloaded;
+	bool downloaded;
 	timestamp_t when;
 	char *location;
 	char *notes;
@@ -394,7 +407,7 @@ static inline void copy_gps_location(struct dive *from, struct dive *to)
 	}
 }
 
-static inline int get_surface_pressure_in_mbar(const struct dive *dive, gboolean non_null)
+static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
 {
 	int mbar = dive->surface_pressure.mbar;
 	if (!mbar && non_null)
@@ -576,16 +589,17 @@ static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid
 	return NULL;
 }
 extern struct dive *find_dive_including(timestamp_t when);
-extern gboolean dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
+extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
+extern double ascii_strtod(char *, char **);
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, char **error);
 extern void parse_xml_exit(void);
-extern void set_filename(const char *filename, gboolean force);
+extern void set_filename(const char *filename, bool force);
 
 extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct dive_table *table, char **error);
 
@@ -606,7 +620,7 @@ extern void show_yearly_stats(void);
 
 extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
-extern void save_dives_logic(const char *filename, gboolean select_only);
+extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
 
 extern xsltStylesheetPtr get_stylesheet(const char *name);
@@ -625,8 +639,8 @@ extern void finish_sample(struct divecomputer *dc);
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
-extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded);
-extern struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded);
+extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);
+extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern void renumber_dives(int nr);
 extern void copy_samples(struct dive *s, struct dive *d);
 
@@ -635,7 +649,7 @@ extern void add_event(struct divecomputer *dc, int time, int type, int flags, in
 
 /* UI related protopypes */
 
-extern void report_error(GError* error);
+// extern void report_error(GError* error);
 
 extern void add_cylinder_description(cylinder_type_t *);
 extern void add_weightsystem_description(weightsystem_t *);
@@ -647,14 +661,14 @@ extern int evn_foreach(void (*callback)(const char *, int *, void *), void *data
 extern void clear_events(void);
 
 extern int add_new_dive(struct dive *dive);
-extern gboolean edit_trip(dive_trip_t *trip);
-extern int edit_dive_info(struct dive *dive, gboolean newdive);
+extern bool edit_trip(dive_trip_t *trip);
+extern int edit_dive_info(struct dive *dive, bool newdive);
 extern int edit_multi_dive_info(struct dive *single_dive);
 extern void dive_list_update_dives(void);
 extern void flush_divelist(struct dive *dive);
 
 extern void set_dc_nickname(struct dive *dive);
-extern void set_autogroup(gboolean value);
+extern void set_autogroup(bool value);
 extern int total_weight(struct dive *);
 
 #define DIVE_ERROR_PARSE 1
@@ -687,17 +701,17 @@ typedef enum {
 
 extern const char *existing_filename;
 extern const char *subsurface_gettext_domainpath(char *);
-extern gboolean subsurface_os_feature_available(os_feature_t);
-extern gboolean subsurface_launch_for_uri(const char *);
-extern void subsurface_command_line_init(gint *, gchar ***);
-extern void subsurface_command_line_exit(gint *, gchar ***);
+extern bool subsurface_os_feature_available(os_feature_t);
+extern bool subsurface_launch_for_uri(const char *);
+extern void subsurface_command_line_init(int *, char ***);
+extern void subsurface_command_line_exit(int *, char ***);
 
 #define FRACTION(n,x) ((unsigned)(n)/(x)),((unsigned)(n)%(x))
 
 extern double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
-extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth);
+extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
 extern void set_gf(short gflow, short gfhigh);
 extern void cache_deco_state(double, char **datap);
 extern double restore_deco_state(char *data);
@@ -708,7 +722,7 @@ struct divedatapoint {
 	int o2;
 	int he;
 	int po2;
-	gboolean entered;
+	bool entered;
 	struct divedatapoint *next;
 };
 

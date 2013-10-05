@@ -13,7 +13,7 @@
 #include "../divelist.h"
 
 struct dive_table gps_location_table;
-static gboolean merge_locations_into_dives(void);
+static bool merge_locations_into_dives(void);
 
 SubsurfaceWebServices* SubsurfaceWebServices::instance()
 {
@@ -177,7 +177,7 @@ unsigned int SubsurfaceWebServices::download_dialog_parse_response(const QByteAr
 		return status;
 }
 
-static gboolean is_automatic_fix(struct dive *gpsfix)
+static bool is_automatic_fix(struct dive *gpsfix)
 {
 	if (gpsfix && gpsfix->location &&
 	    (!strcmp(gpsfix->location, "automatic fix") ||
@@ -188,7 +188,7 @@ static gboolean is_automatic_fix(struct dive *gpsfix)
 
 #define SAME_GROUP 6 * 3600   // six hours
 
-static gboolean merge_locations_into_dives(void)
+static bool merge_locations_into_dives(void)
 {
 	int i, nr = 0, changed = 0;
 	struct dive *gpsfix, *last_named_fix = NULL, *dive;

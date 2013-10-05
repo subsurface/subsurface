@@ -120,7 +120,7 @@ ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(
 	QTCXXFLAGS += -fPIE
 endif
 
-LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
+# LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
 ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
 	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
 	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
@@ -135,13 +135,13 @@ LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 LIBXML2 = $(shell $(XML2CONFIG) --libs)
 LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
-GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
-GTKCFLAGS += $(shell $(PKGCONFIG) --cflags gtk+-2.0)
+#GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
+#GTKCFLAGS += $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 XSLCFLAGS = $(shell $(XSLCONFIG) --cflags)
 OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap 2> /dev/null)
 LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
-LIBSOUPCFLAGS = $(shell $(PKGCONFIG) --cflags libsoup-2.4)
-LIBSOUP = $(shell $(PKGCONFIG) --libs libsoup-2.4)
+#LIBSOUPCFLAGS = $(shell $(PKGCONFIG) --cflags libsoup-2.4)
+#LIBSOUP = $(shell $(PKGCONFIG) --libs libsoup-2.4)
 
 LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
 ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))

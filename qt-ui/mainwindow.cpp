@@ -20,7 +20,6 @@
 #include "divelistview.h"
 #include "starwidget.h"
 
-#include "glib.h"
 #include "../dive.h"
 #include "../divelist.h"
 #include "../pref.h"
@@ -35,8 +34,6 @@
 #include "diveplanner.h"
 #include "about.h"
 #include "printdialog.h"
-
-#include "glib/gi18n.h"
 
 static MainWindow* instance = 0;
 
