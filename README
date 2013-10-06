@@ -46,6 +46,55 @@ sudo launchctl load -w /Library/LaunchDaemons/org.freedesktop.dbus-system.plist
 launchctl load -w /Library/LaunchAgents/org.freedesktop.dbus-session.plist
 sudo chown -R ${USER} ~/Library/Preferences/KDE
 
+Buildling the Qt version under MacOSX, using dependencies from Homebrew
+-----------------------------------------------------------------------
+
+1)  Install Homebrew
+
+$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+
+2) Install needed dependencies
+
+$ brew install asciidoc libzip qt sqlite cmake libusb pkg-config
+
+3) Make the brew version of sqlite the default
+
+$ brew link --force sqlite
+
+4) Install Marble
+
+$ mkdir -p ~/src/marble/build
+$ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
+$ cd ~/src/marble/sources
+$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ~/src/marble/sources
+$ make
+$ sudo make install
+$ cd src/lib
+$ mkdir -p /usr/local/include/marble
+$ cp $(find . -name '*.h') /usr/local/include/marble/
+$ cp *dylib /usr/local/lib/
+
+5) Install Libdivecomputer
+
+$ brew install automake libtool
+$ cd ~/src
+$ git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
+$ cd libdivecomputer
+$ git checkout release-0.4
+$ autoreconf --install
+$ ./configure
+$ make
+$ sudo make install
+
+6) Compile Subsurface
+
+$ cd ~/src
+$ git clone git://subsurface.hohndel.org/subsurface.git
+$ cd subsurface
+$ git checkout -t hohndel/glib-removal-hack
+$ make
+
+
 Subsurface - an Open Source Divelog
 ===================================
 
