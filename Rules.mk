@@ -52,8 +52,6 @@ $(TARGET): gen_version_file $(UIC_HEADERS) $(ALL_OBJS) $(INFOPLIST)
 	@$(PRETTYECHO) '    LINK' $(TARGET)
 	$(COMPILE_PREFIX)$(CXX) $(LDFLAGS) -o $(TARGET) $(ALL_OBJS) $(LIBS)
 
-uicables: $(UIC_HEADERS)
-
 gen_version_file $(VERSION_FILE):
 ifneq ($(STORED_VERSION_STRING),$(VERSION_STRING))
 	$(info updating $(VERSION_FILE) to $(VERSION_STRING))
