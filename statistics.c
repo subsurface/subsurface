@@ -318,7 +318,11 @@ bool is_gas_used(struct dive *dive, int idx)
 					if (is_air(o2, he)) {
 						if (is_air(event_o2 * 10, event_he * 10))
 							used = TRUE;
-					} else if (he == event_he * 10 && o2 == event_o2 * 10) {
+					} else if (event->type == 25 && he == event_he * 10 && o2 == event_o2 * 10) {
+						/* SAMPLE_EVENT_GASCHANGE2(25) contains both o2 and he */
+						used = TRUE;
+					} else if (o2 == event_o2 * 10) {
+						/* SAMPLE_EVENT_GASCHANGE(11) only contains o2 */
 						used = TRUE;
 					}
 				}
