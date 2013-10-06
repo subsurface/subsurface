@@ -113,20 +113,14 @@ endif
 	RCC = $(shell $(PKGCONFIG) --variable=rcc_location QtGui)
 #endif
 
-# we need GLIB2CFLAGS for gettext
-QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES)) $(GLIB2CFLAGS)
+QTCXXFLAGS = $(shell $(PKGCONFIG) --cflags $(QT_MODULES))
 LIBQT = $(shell $(PKGCONFIG) --libs $(QT_MODULES))
 ifneq ($(filter reduce_relocations, $(shell $(PKGCONFIG) --variable qt_config $(QT_CORE))), )
 	QTCXXFLAGS += -fPIE
 endif
 
-# LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
-ifneq (,$(filter $(UNAME),linux kfreebsd gnu))
-	LIBGCONF2 = $(shell $(PKGCONFIG) --libs gconf-2.0)
-	GCONF2CFLAGS =  $(shell $(PKGCONFIG) --cflags gconf-2.0)
-else ifeq ($(UNAME), darwin)
+ifeq ($(UNAME), darwin)
 	LDFLAGS += -framework CoreFoundation -framework CoreServices
-	GTK_MAC_BUNDLER = ~/.local/bin/gtk-mac-bundler
 endif
 
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
@@ -135,13 +129,7 @@ LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 LIBXML2 = $(shell $(XML2CONFIG) --libs)
 LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
-#GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
-#GTKCFLAGS += $(shell $(PKGCONFIG) --cflags gtk+-2.0)
 XSLCFLAGS = $(shell $(XSLCONFIG) --cflags)
-OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap 2> /dev/null)
-LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
-#LIBSOUPCFLAGS = $(shell $(PKGCONFIG) --cflags libsoup-2.4)
-#LIBSOUP = $(shell $(PKGCONFIG) --libs libsoup-2.4)
 
 LIBZIP = $(shell $(PKGCONFIG) --libs libzip 2> /dev/null)
 ZIPFLAGS = $(strip $(shell $(PKGCONFIG) --cflags libzip 2> /dev/null))
@@ -171,20 +159,10 @@ configure $(CONFIGURE): Configure.mk
 	MOC = $(MOC)\\\
 	UIC = $(UIC)\\\
 	RCC = $(RCC)\\\
-	LIBGTK = $(LIBGTK)\\\
-	GTKCFLAGS = $(GTKCFLAGS)\\\
-	LIBGCONF2 = $(LIBGCONF2)\\\
-	GCONF2CFLAGS = $(GCONF2CFLAGS)\\\
-	GTK_MAC_BUNDLER = $(GTK_MAC_BUNDLER)\\\
 	LIBXML2 = $(LIBXML2)\\\
 	LIBXSLT = $(LIBXSLT)\\\
 	XML2CFLAGS = $(XML2CFLAGS)\\\
-	GLIB2CFLAGS = $(GLIB2CFLAGS)\\\
 	XSLCFLAGS = $(XSLCFLAGS)\\\
-	OSMGPSMAPFLAGS = $(OSMGPSMAPFLAGS)\\\
-	LIBOSMGPSMAP = $(LIBOSMGPSMAP)\\\
-	LIBSOUPCFLAGS = $(LIBSOUPCFLAGS)\\\
-	LIBSOUP = $(LIBSOUP)\\\
 	LIBZIP = $(LIBZIP)\\\
 	ZIPFLAGS = $(ZIPFLAGS)\\\
 	LIBSQLITE3 = $(LIBSQLITE3)\\\
