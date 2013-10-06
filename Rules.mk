@@ -261,6 +261,7 @@ confclean: clean
 	rm -rf .dep .uic
 
 distclean: confclean
+	$(MAKE) -C Documentation clean
 	rm -f $(CREATOR_FILES)
 
 release:
