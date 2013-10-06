@@ -66,10 +66,7 @@ Translator::Translator(QObject *parent):
 QString Translator::translate(const char *context, const char *sourceText,
 			      const char *disambiguation) const
 {
-	return sourceText;
-#if 0
 	return gettext(sourceText);
-#endif
 }
 #endif
 

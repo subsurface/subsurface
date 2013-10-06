@@ -534,38 +534,6 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
-#if USE_GTK_UI
-static void get_string(char **str, const char *s)
-{
-	int len;
-	char *n;
-
-	if (!s)
-		s = "";
-	len = g_utf8_strlen(s, -1);
-	if (len > 60)
-		len = 60;
-	n = malloc(len * sizeof(gunichar) + 1);
-	g_utf8_strncpy(n, s, len);
-	*str = n;
-}
-
-void get_location(struct dive *dive, char **str)
-{
-	get_string(str, dive->location);
-}
-
-void get_cylinder(struct dive *dive, char **str)
-{
-	get_string(str, dive->cylinder[0].type.description);
-}
-
-void get_suit(struct dive *dive, char **str)
-{
-	get_string(str, dive->suit);
-}
-#endif
-
 #define MAX_DATE_STRING 256
 /* caller needs to free the string */
 char *get_dive_date_string(timestamp_t when)
@@ -610,7 +578,7 @@ char *get_trip_date_string(timestamp_t when, int nr)
 		utc_mkdate(when, &tm);
 		if (nr != 1) {
 			snprintf(buffer, MAX_DATE_STRING,
-#if 0
+#if PLURAL_HANDLING_IN_TRANLATION
 				 /*++GETTEXT 60 char buffer monthname, year, nr dives */
 				 ngettext("%1$s %2$d (%3$d dive)",
 					  "%1$s %2$d (%3$d dives)", nr),

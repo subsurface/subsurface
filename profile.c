@@ -8,9 +8,6 @@
 
 #include "dive.h"
 #include "display.h"
-#if USE_GTK_UI
-#include "display-gtk.h"
-#endif
 #include "divelist.h"
 
 #include "profile.h"
@@ -27,24 +24,6 @@ static struct plot_data *last_pi_entry = NULL;
 
 #define cairo_set_line_width_scaled(cr, w) \
 	cairo_set_line_width((cr), (w) * plot_scale);
-
-#if USE_GTK_UI
-
-/* keep the last used gc around so we can invert the SCALEX calculation in
- * order to calculate a time value for an x coordinate */
-static struct graphics_context last_gc;
-int x_to_time(double x)
-{
-	int seconds = (x - last_gc.drawing_area.x) / last_gc.maxx * (last_gc.rightx - last_gc.leftx) + last_gc.leftx;
-	return (seconds > 0) ? seconds : 0;
-}
-
-/* x offset into the drawing area */
-int x_abs(double x)
-{
-	return x - last_gc.drawing_area.x;
-}
-#endif /* USE_GTK_UI */
 
 /* debugging tool - not normally used */
 static void dump_pi (struct plot_info *pi)
@@ -204,54 +183,6 @@ void setup_pp_limits(struct graphics_context *gc)
 	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
 	gc->bottomy = -gc->topy / 20;
 }
-
-
-#if 0
-
-static void plot_smoothed_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	int i;
-	struct plot_data *entry = pi->entry;
-
-	set_source_rgba(gc, SMOOTHED);
-	move_to(gc, entry->sec, entry->smoothed);
-	for (i = 1; i < pi->nr; i++) {
-		entry++;
-		line_to(gc, entry->sec, entry->smoothed);
-	}
-	cairo_stroke(gc->cr);
-}
-
-static void plot_minmax_profile_minute(struct graphics_context *gc, struct plot_info *pi,
-				int index)
-{
-	int i;
-	struct plot_data *entry = pi->entry;
-
-	set_source_rgba(gc, MINUTE);
-	move_to(gc, entry->sec, entry->min[index]->depth);
-	for (i = 1; i < pi->nr; i++) {
-		entry++;
-		line_to(gc, entry->sec, entry->min[index]->depth);
-	}
-	for (i = 1; i < pi->nr; i++) {
-		line_to(gc, entry->sec, entry->max[index]->depth);
-		entry--;
-	}
-	cairo_close_path(gc->cr);
-	cairo_fill(gc->cr);
-}
-
-static void plot_minmax_profile(struct graphics_context *gc, struct plot_info *pi)
-{
-	if (gc->printer)
-		return;
-	plot_minmax_profile_minute(gc, pi, 2);
-	plot_minmax_profile_minute(gc, pi, 1);
-	plot_minmax_profile_minute(gc, pi, 0);
-}
-
-#endif /* USE_GTK_UI */
 
 int get_cylinder_pressure_range(struct graphics_context *gc)
 {
