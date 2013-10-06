@@ -86,9 +86,9 @@ QString weight_string(int weight_in_grams)
 		int gr = weight_in_grams % 1000;
 		int kg = weight_in_grams / 1000;
 	if (kg >= 20.0) {
-		  str = QString("0");
+		str = QString("0");
 	} else {
-		  str = QString("%1.%2").arg(kg).arg((unsigned)(gr) / 100);
+		str = QString("%1.%2").arg(kg).arg((unsigned)(gr) / 100);
 	}
 	} else {
 		double lbs = grams_to_lbs(weight_in_grams);

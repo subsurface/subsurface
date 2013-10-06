@@ -4,12 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#if 0
-#include <glib/gi18n.h>
-#else /* stupid */
-#define _(arg) arg
-#define N_(arg) arg
-#endif
+#include "gettext.h"
 #include <zip.h>
 
 #include "dive.h"
@@ -108,9 +103,9 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 
 	if (readfile(filename, mem) < 0) {
 		if (error) {
-			int len = strlen(_("Failed to read '%s'")) + strlen(filename);
+			int len = strlen(tr("Failed to read '%s'")) + strlen(filename);
 			*error = malloc(len);
-			snprintf(*error, len, _("Failed to read '%s'"), filename);
+			snprintf(*error, len, tr("Failed to read '%s'"), filename);
 		}
 
 		return 1;
@@ -305,9 +300,9 @@ void parse_file(const char *filename, char **error)
 			return;
 
 		if (error) {
-			int len = strlen(_("Failed to read '%s'")) + strlen(filename);
+			int len = strlen(tr("Failed to read '%s'")) + strlen(filename);
 			*error = malloc(len);
-			snprintf(*error, len, _("Failed to read '%s'"), filename);
+			snprintf(*error, len, tr("Failed to read '%s'"), filename);
 		}
 
 		return;

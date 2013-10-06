@@ -1,12 +1,7 @@
 #include "subsurfacestartup.h"
 #include <stdbool.h>
 #include <string.h>
-#if 0
-#include <glib/gi18n.h>
-#else /* stupid */
-#define _(arg) arg
-#define N_(arg) arg
-#endif
+#include "gettext.h"
 struct preferences prefs;
 struct preferences default_prefs = {
 	.units = SI_UNITS,
@@ -63,19 +58,19 @@ const char *weekday(int wday)
 {
 	static const char wday_array[7][7] = {
 		/*++GETTEXT: these are three letter days - we allow up to six code bytes */
-		N_("Sun"), N_("Mon"), N_("Tue"), N_("Wed"), N_("Thu"), N_("Fri"), N_("Sat")
+		QT_TR_NOOP("Sun"), QT_TR_NOOP("Mon"), QT_TR_NOOP("Tue"), QT_TR_NOOP("Wed"), QT_TR_NOOP("Thu"), QT_TR_NOOP("Fri"), QT_TR_NOOP("Sat")
 	};
-	return _(wday_array[wday]);
+	return tr(wday_array[wday]);
 }
 
 const char *monthname(int mon)
 {
 	static const char month_array[12][7] = {
 		/*++GETTEXT: these are three letter months - we allow up to six code bytes*/
-		N_("Jan"), N_("Feb"), N_("Mar"), N_("Apr"), N_("May"), N_("Jun"),
-		N_("Jul"), N_("Aug"), N_("Sep"), N_("Oct"), N_("Nov"), N_("Dec"),
+		QT_TR_NOOP("Jan"), QT_TR_NOOP("Feb"), QT_TR_NOOP("Mar"), QT_TR_NOOP("Apr"), QT_TR_NOOP("May"), QT_TR_NOOP("Jun"),
+		QT_TR_NOOP("Jul"), QT_TR_NOOP("Aug"), QT_TR_NOOP("Sep"), QT_TR_NOOP("Oct"), QT_TR_NOOP("Nov"), QT_TR_NOOP("Dec"),
 	};
-	return _(month_array[mon]);
+	return tr(month_array[mon]);
 }
 
 /*
@@ -131,7 +126,7 @@ void parse_argument(const char *arg)
 			/* fallthrough */
 		case 'p':
 			/* ignore process serial number argument when run as native macosx app */
-			if (strncmp(arg, "-psn_", 5) == 0) {
+			if (strncmp(arg, "-psQT_TR_NOOP(", 5) == 0) {
 				return;
 			}
 			/* fallthrough */

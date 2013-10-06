@@ -38,11 +38,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#if 0
-#include <glib/gi18n.h>
-#else /* stupid */
-#define _(arg) arg
-#endif
+#include "gettext.h"
 #include <assert.h>
 #include <zip.h>
 #include <libxslt/transform.h>
@@ -580,7 +576,7 @@ char *get_dive_date_string(timestamp_t when)
 		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
 			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min */
-			_("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
+			tr("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
 			weekday(tm.tm_wday),
 			monthname(tm.tm_mon),
 			tm.tm_mday, tm.tm_year + 1900,
@@ -597,7 +593,7 @@ char *get_short_dive_date_string(timestamp_t when)
 		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
 			/*++GETTEXT 40 char buffer monthname, day of month, year, hour:min */
-			_("%1$s %2$d, %3$d\n%4$02d:%5$02d"),
+			tr("%1$s %2$d, %3$d\n%4$02d:%5$02d"),
 			monthname(tm.tm_mon),
 			tm.tm_mday, tm.tm_year +1900,
 			tm.tm_hour, tm.tm_min);
@@ -619,14 +615,14 @@ char *get_trip_date_string(timestamp_t when, int nr)
 				 ngettext("%1$s %2$d (%3$d dive)",
 					  "%1$s %2$d (%3$d dives)", nr),
 #else
-				 _("%1$s %2$d (%3$d dives)"),
+				 tr("%1$s %2$d (%3$d dives)"),
 #endif
 				 monthname(tm.tm_mon),
 				 tm.tm_year + 1900,
 				 nr);
 		} else {
 			snprintf(buffer, MAX_DATE_STRING,
-				 _("%1$s %2$d (1 dive)"),
+				 tr("%1$s %2$d (1 dive)"),
 				 monthname(tm.tm_mon),
 				 tm.tm_year + 1900);
 		}
@@ -657,7 +653,7 @@ char *get_nitrox_string(struct dive *dive)
 			else
 				snprintf(buffer, MAX_NITROX_STRING, "%d" UTF8_ELLIPSIS "%d", o2low, o2);
 		else
-			strcpy(buffer, _("air"));
+			strcpy(buffer, tr("air"));
 	}
 	return buffer;
 }

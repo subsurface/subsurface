@@ -6,7 +6,6 @@
 extern "C" {
 #endif
 
-extern void plan(struct diveplan *diveplan, char **cache_datap, struct dive **divep, bool add_plan, char **error_string_p);
 extern int validate_gas(const char *text, int *o2_p, int *he_p);
 extern int validate_time(const char *text, int *sec_p, int *rel_p);
 extern int validate_depth(const char *text, int *mm_p);

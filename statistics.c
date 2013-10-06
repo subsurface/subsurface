@@ -6,12 +6,7 @@
  * void process_all_dives(struct dive *dive, struct dive **prev_dive);
  * void get_selected_dives_text(char *buffer, int size);
  */
-#if 0
-#include <glib/gi18n.h>
-#else
-#define _(arg) arg
-#define N_(arg) arg
-#endif
+#include "gettext.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -23,10 +18,10 @@
 /* mark for translation but don't translate here as these terms are used
  * in save-xml.c */
 char *dtag_names[DTAG_NR] = {
-	N_("invalid"), N_("boat"), N_("shore"), N_("drift"), N_("deep"), N_("cavern"),
-	N_("ice"), N_("wreck"), N_("cave"), N_("altitude"), N_("pool"), N_("lake"),
-	N_("river"), N_("night"), N_("freshwater"), N_("training"), N_("teaching"),
-	N_("photo"), N_("video"), N_("deco")
+	QT_TR_NOOP("invalid"), QT_TR_NOOP("boat"), QT_TR_NOOP("shore"), QT_TR_NOOP("drift"), QT_TR_NOOP("deep"), QT_TR_NOOP("cavern"),
+	QT_TR_NOOP("ice"), QT_TR_NOOP("wreck"), QT_TR_NOOP("cave"), QT_TR_NOOP("altitude"), QT_TR_NOOP("pool"), QT_TR_NOOP("lake"),
+	QT_TR_NOOP("river"), QT_TR_NOOP("night"), QT_TR_NOOP("freshwater"), QT_TR_NOOP("training"), QT_TR_NOOP("teaching"),
+	QT_TR_NOOP("photo"), QT_TR_NOOP("video"), QT_TR_NOOP("deco")
 };
 
 static stats_t stats;
@@ -201,15 +196,15 @@ char *get_time_string(int seconds, int maxdays)
 {
 	static char buf[80];
 	if (maxdays && seconds > 3600 * 24 * maxdays) {
-		snprintf(buf, sizeof(buf), _("more than %d days"), maxdays);
+		snprintf(buf, sizeof(buf), tr("more than %d days"), maxdays);
 	} else {
 		int days = seconds / 3600 / 24;
 		int hours = (seconds - days * 3600 * 24) / 3600;
 		int minutes = (seconds - days * 3600 * 24 - hours * 3600) / 60;
 		if (days > 0)
-			snprintf(buf, sizeof(buf), _("%dd %dh %dmin"), days, hours, minutes);
+			snprintf(buf, sizeof(buf), tr("%dd %dh %dmin"), days, hours, minutes);
 		else
-			snprintf(buf, sizeof(buf), _("%dh %dmin"), hours, minutes);
+			snprintf(buf, sizeof(buf), tr("%dh %dmin"), hours, minutes);
 	}
 	return buf;
 }
@@ -220,14 +215,14 @@ static void get_ranges(char *buffer, int size)
 	int i, len;
 	int first, last = -1;
 
-	snprintf(buffer, size, _("for dives #"));
+	snprintf(buffer, size, tr("for dives #"));
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = get_dive(i);
 		if (! dive->selected)
 			continue;
 		if (dive->number < 1) {
 			/* uhh - weird numbers - bail */
-			snprintf(buffer, size, _("for selected dives"));
+			snprintf(buffer, size, tr("for selected dives"));
 			return;
 		}
 		len = strlen(buffer);
@@ -262,13 +257,13 @@ void get_selected_dives_text(char *buffer, int size)
 {
 	if (amount_selected == 1) {
 		if (current_dive)
-			snprintf(buffer, size, _("for dive #%d"), current_dive->number);
+			snprintf(buffer, size, tr("for dive #%d"), current_dive->number);
 		else
-			snprintf(buffer, size, _("for selected dive"));
+			snprintf(buffer, size, tr("for selected dive"));
 	} else if (amount_selected == dive_table.nr) {
-		snprintf(buffer, size, _("for all dives"));
+		snprintf(buffer, size, tr("for all dives"));
 	} else if (amount_selected == 0) {
-		snprintf(buffer, size, _("(no dives)"));
+		snprintf(buffer, size, tr("(no dives)"));
 	} else {
 		get_ranges(buffer, size);
 		if (strlen(buffer) == size -1) {
@@ -358,10 +353,10 @@ char *get_gaslist(struct dive *dive)
 		o2 = get_o2(&cyl->gasmix);
 		he = get_he(&cyl->gasmix);
 		if (is_air(o2, he))
-			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", _("air"));
+			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", tr("air"));
 		else
 			if (he == 0)
-				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? _(", EAN%d") : _("EAN%d"),
+				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? tr(", EAN%d") : tr("EAN%d"),
 					 (o2 + 5) / 10);
 			else
 				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
@@ -369,6 +364,6 @@ char *get_gaslist(struct dive *dive)
 		offset = strlen(buf);
 	}
 	if (*buf == '\0')
-		strncpy(buf, _("air"), MAXBUF);
+		strncpy(buf, tr("air"), MAXBUF);
 	return buf;
 }

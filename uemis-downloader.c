@@ -18,12 +18,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-#if 0
-#include <glib/gi18n.h>
-#else
-#define _(arg) arg
-#define N_(arg) arg
-#endif
+#include "gettext.h"
 
 #include "libdivecomputer.h"
 #include "uemis.h"
@@ -33,9 +28,9 @@
 #if USE_GTK_UI
 #include "display-gtk.h"
 #endif
-#define ERR_FS_ALMOST_FULL N_("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
-#define ERR_FS_FULL N_("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
-#define ERR_FS_SHORT_WRITE N_("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
+#define ERR_FS_ALMOST_FULL QT_TR_NOOP("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
+#define ERR_FS_FULL QT_TR_NOOP("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
+#define ERR_FS_SHORT_WRITE QT_TR_NOOP("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
 
@@ -119,7 +114,7 @@ static void uemis_get_index(char *buffer, int *idx)
 }
 
 /* space separated */
-static void uemis_add_string(char *buffer, char **text)
+static void uemis_add_string(const char *buffer, char **text)
 {
 	/* do nothing if this is an empty buffer (Uemis sometimes returns a single
 	 * space for empty buffers) */
@@ -142,7 +137,7 @@ static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
 		lbs_to_grams(ascii_strtod(buffer, NULL)) : ascii_strtod(buffer, NULL) * 1000;
-	weight->description = strdup(_("unknown"));
+	weight->description = strdup(tr("unknown"));
 }
 
 static struct dive *uemis_start_dive(uint32_t deviceid)
@@ -383,7 +378,7 @@ static char *first_object_id_val(char* buf)
 /* ultra-simplistic; it doesn't deal with the case when the object_id is
  * split across two chunks. It also doesn't deal with the discrepancy between
  * object_id and dive number as understood by the dive computer */
-static void show_progress(char *buf, char *what)
+static void show_progress(char *buf, const char *what)
 {
 	char *val = first_object_id_val(buf);
 	if (val) {
@@ -391,7 +386,7 @@ static void show_progress(char *buf, char *what)
 #if UEMIS_DEBUG & 2
 		fprintf(debugfile,"reading %s %s\n", what, val);
 #endif
-		uemis_info(_("Reading %s %s"), what, val);
+		uemis_info(tr("Reading %s %s"), what, val);
 		free(val);
 	}
 }
@@ -405,13 +400,13 @@ static void uemis_increased_timeout(int *timeout)
 
 /* send a request to the dive computer and collect the answer */
 static bool uemis_get_answer(const char *path, char *request, int n_param_in,
-			int n_param_out, char **error_text)
+			int n_param_out, const char **error_text)
 {
 	int i = 0, file_length;
 	char sb[BUFLEN];
 	char fl[13];
 	char tmp[101];
-	char *what = _("data");
+	const char *what = tr("data");
 	bool searching = TRUE;
 	bool assembling_mbuf = FALSE;
 	bool ismulti = FALSE;
@@ -432,11 +427,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		answer_in_mbuf = TRUE;
 		str_append_with_delim(sb, "");
 		if (! strcmp(request, "getDivelogs"))
-			what = _("divelog entry id");
+			what = tr("divelog entry id");
 		else if (!strcmp(request, "getDivespot"))
-			what = _("divespot data id");
+			what = tr("divespot data id");
 		else if (!strcmp(request, "getDive"))
-			what = _("more data dive id");
+			what = tr("more data dive id");
 	}
 	str_append_with_delim(sb, "");
 	file_length = strlen(sb);
@@ -446,11 +441,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	fprintf(debugfile,"::w req.txt \"%s\"\n", sb);
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
-		*error_text = _(ERR_FS_SHORT_WRITE);
+		*error_text = tr(ERR_FS_SHORT_WRITE);
 		return FALSE;
 	}
 	if (! next_file(number_of_files)) {
-		*error_text = _(ERR_FS_FULL);
+		*error_text = tr(ERR_FS_FULL);
 		more_files = FALSE;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -488,7 +483,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				assembling_mbuf = FALSE;
 			if (assembling_mbuf) {
 				if (! next_file(number_of_files)) {
-					*error_text = _(ERR_FS_FULL);
+					*error_text = tr(ERR_FS_FULL);
 					more_files = FALSE;
 					assembling_mbuf = FALSE;
 				}
@@ -497,7 +492,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			}
 		} else {
 			if (! next_file(number_of_files - 1)) {
-				*error_text = _(ERR_FS_FULL);
+				*error_text = tr(ERR_FS_FULL);
 				more_files = FALSE;
 				assembling_mbuf = FALSE;
 				searching = FALSE;
@@ -616,9 +611,9 @@ static void track_divespot(char *val, int diveid, char **location, degrees_t *la
 	return;
 }
 
-static char *suit[] = { "", N_("wetsuit"), N_("semidry"), N_("drysuit") };
-static char *suit_type[] = { "", N_("shorty"), N_("vest"), N_("long john"), N_("jacket"), N_("full suit"), N_("2 pcs full suit") };
-static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", N_("membrane") };
+static char *suit[] = { "", QT_TR_NOOP("wetsuit"), QT_TR_NOOP("semidry"), QT_TR_NOOP("drysuit") };
+static char *suit_type[] = { "", QT_TR_NOOP("shorty"), QT_TR_NOOP("vest"), QT_TR_NOOP("long john"), QT_TR_NOOP("jacket"), QT_TR_NOOP("full suit"), QT_TR_NOOP("2 pcs full suit") };
+static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TR_NOOP("membrane") };
 
 static void parse_tag(struct dive *dive, char *tag, char *val)
 {
@@ -640,13 +635,13 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 		uemis_add_string(val, &dive->notes);
 	} else if (!strcmp(tag, "u8DiveSuit")) {
 		if (*suit[atoi(val)])
-			uemis_add_string(_(suit[atoi(val)]), &dive->suit);
+			uemis_add_string(tr(suit[atoi(val)]), &dive->suit);
 	} else if (!strcmp(tag, "u8DiveSuitType")) {
 		if (*suit_type[atoi(val)])
-			uemis_add_string(_(suit_type[atoi(val)]), &dive->suit);
+			uemis_add_string(tr(suit_type[atoi(val)]), &dive->suit);
 	} else if (!strcmp(tag, "u8SuitThickness")) {
 		if (*suit_thickness[atoi(val)])
-			uemis_add_string(_(suit_thickness[atoi(val)]), &dive->suit);
+			uemis_add_string(tr(suit_thickness[atoi(val)]), &dive->suit);
 	}
 }
 
@@ -782,22 +777,22 @@ static char *uemis_get_divenr(char *deviceidstr)
 	return strdup(divenr);
 }
 
-char *do_uemis_import(const char *mountpath, short force_download)
+const char *do_uemis_import(const char *mountpath, short force_download)
 {
 	char *newmax = NULL;
 	int start, end, i, offset;
 	uint32_t deviceidnr;
 	char objectid[10];
 	char *deviceid = NULL;
-	char *result = NULL;
+	const char *result = NULL;
 	char *endptr;
 	bool success, keep_number = FALSE, once = TRUE;
 
 	if (dive_table.nr == 0)
 		keep_number = TRUE;
-	uemis_info(_("Init Communication"));
+	uemis_info(tr("Init Communication"));
 	if (! uemis_init(mountpath))
-		return _("Uemis init failed");
+		return tr("Uemis init failed");
 	if (! uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 		goto bail;
 	deviceid = strdup(param_buff[0]);
@@ -808,7 +803,7 @@ char *do_uemis_import(const char *mountpath, short force_download)
 	/* param_buff[0] is still valid */
 	if (! uemis_get_answer(mountpath, "initSession", 1, 6, &result))
 		goto bail;
-	uemis_info(_("Start download"));
+	uemis_info(tr("Start download"));
 	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &result))
 		goto bail;
 	/* before starting the long download, check if user pressed cancel */
@@ -844,7 +839,7 @@ char *do_uemis_import(const char *mountpath, short force_download)
 			break;
 		/* finally, if the memory is getting too full, maybe we better stop, too */
 		if (progress_bar_fraction > 0.85) {
-			result = _(ERR_FS_ALMOST_FULL);
+			result = tr(ERR_FS_ALMOST_FULL);
 			break;
 		}
 		/* clean up mbuf */
@@ -902,7 +897,7 @@ bail:
 	(void) uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 	if (! strcmp(param_buff[0], "error")) {
 		if (! strcmp(param_buff[2],"Out of Memory"))
-			result = _(ERR_FS_FULL);
+			result = tr(ERR_FS_FULL);
 		else
 			result = param_buff[2];
 	}
@@ -959,7 +954,7 @@ GError *uemis_download(const char *mountpath, progressbar_t *progress,
 				import_thread_cancelled = TRUE;
 		} else {
 			update_progressbar(args.progress, progress_bar_fraction);
-			update_progressbar_text(args.progress, _("Cancelled, exiting cleanly..."));
+			update_progressbar_text(args.progress, tr("Cancelled, exiting cleanly..."));
 			usleep(100000);
 		}
 	}

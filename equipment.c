@@ -12,12 +12,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
-#if 0
-#include <glib/gi18n.h>
-#else /* stupid */
-#define _(arg) arg
-#define N_(arg) arg
-#endif
+#include "gettext.h"
+#define QT_TR_NOOP(arg) arg
 #include "dive.h"
 #include "display.h"
 #if USE_GTK_UI
@@ -933,11 +929,11 @@ bad_tank_info:
  * This is a bit odd as the weight system types don't usually encode weight
  */
 struct ws_info_t ws_info[100] = {
-	{ N_("integrated"), 0 },
-	{ N_("belt"), 0 },
-	{ N_("ankle"), 0 },
-	{ N_("backplate weight"), 0 },
-	{ N_("clip-on"), 0 },
+	{ QT_TR_NOOP("integrated"), 0 },
+	{ QT_TR_NOOP("belt"), 0 },
+	{ QT_TR_NOOP("ankle"), 0 },
+	{ QT_TR_NOOP("backplate weight"), 0 },
+	{ QT_TR_NOOP("clip-on"), 0 },
 };
 
 #if USE_GTK_UI

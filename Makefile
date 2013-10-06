@@ -79,6 +79,7 @@ SOURCES = \
 	uemis.c \
 	uemis-downloader.c \
 	libdivecomputer.c \
+	gettextfromc.cpp \
 	qthelper.cpp \
 	qt-ui/simplewidgets.cpp \
 	qt-ui/tableview.cpp \

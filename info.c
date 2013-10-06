@@ -19,13 +19,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <sys/time.h>
-#if 0
-#include <glib/gi18n.h>
-#else /* stupid */
-#define _(arg) arg
-#define N_(arg) arg
-#endif
-
+#include "gettext.h"
 #include "dive.h"
 #include "display.h"
 #include "divelist.h"
@@ -92,7 +86,7 @@ int divename(char *buf, size_t size, struct dive *dive, char *trailer)
 
 	utc_mkdate(dive->when, &tm);
 	/*++GETTEXT 80 char buffer: dive nr, weekday, month, day, year, hour, min <trailing text>*/
-	return snprintf(buf, size, _("Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d %8$s"),
+	return snprintf(buf, size, tr("Dive #%1$d - %2$s %3$02d/%4$02d/%5$04d at %6$d:%7$02d %8$s"),
 		dive->number,
 		weekday(tm.tm_wday),
 		tm.tm_mon+1, tm.tm_mday,
@@ -134,7 +128,7 @@ const char *get_window_title(struct dive *dive)
 				len1 = g_utf8_strlen(text, -1);
 				sz = (len1 + 32) * sizeof(gunichar);
 				buffer = malloc(sz);
-				snprintf(buffer, sz, _("Dive #%d - "), dive->number);
+				snprintf(buffer, sz, tr("Dive #%d - "), dive->number);
 				g_utf8_strncpy(buffer + strlen(buffer), text, len1);
 				text = buffer;
 			}
@@ -176,7 +170,7 @@ static int string_advance_cardinal(const char *text, const char *look)
 	int len = strlen(look);
 	if (!strncasecmp(text, look, len))
 		return len;
-	trans = _(look);
+	trans = tr(look);
 	len = strlen(trans);
 	if (!strncasecmp(text, trans, len))
 		return len;
@@ -311,14 +305,15 @@ void print_gps_coordinates(char *buffer, int len, int lat, int lon)
 #if 0
 	double latmin, lonmin;
 #endif
-	char *lath, *lonh, dbuf_lat[32], dbuf_lon[32];
+	const char *lath, *lonh;
+	char dbuf_lat[32], dbuf_lon[32];
 
 	if (!lat && !lon) {
 		*buffer = 0;
 		return;
 	}
-	lath = lat >= 0 ? _("N") : _("S");
-	lonh = lon >= 0 ? _("E") : _("W");
+	lath = lat >= 0 ? tr("N") : tr("S");
+	lonh = lon >= 0 ? tr("E") : tr("W");
 	lat = abs(lat);
 	lon = abs(lon);
 	latdeg = lat / 1000000;

@@ -11,12 +11,9 @@
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
-#if 0
-#include <glib/gi18n.h>
-#else /* stupid */
-#define _(arg) arg
-#define N_(arg) arg
-#endif
+
+#include "gettext.h"
+
 #include<sqlite3.h>
 
 #include "dive.h"
@@ -541,7 +538,7 @@ static void percent(char *buffer, void *_fraction)
 			break;
 		}
 	default:
-		printf(_("Strange percentage reading %s\n"), buffer);
+		printf(tr("Strange percentage reading %s\n"), buffer);
 		break;
 	}
 }
@@ -1687,8 +1684,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 		free((char *)res);
 
 	if (!doc) {
-		fprintf(stderr, _("Failed to parse '%s'.\n"), url);
-		parser_error(error, _("Failed to parse '%s'"), url);
+		fprintf(stderr, tr("Failed to parse '%s'.\n"), url);
+		parser_error(error, tr("Failed to parse '%s'"), url);
 		return;
 	}
 	reset_all();
@@ -1886,7 +1883,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, _("Database query get_events failed.\n"));
+		fprintf(stderr, tr("Database query get_events failed.\n"));
 		return 1;
 	}
 
@@ -1921,14 +1918,14 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	retval = sqlite3_open(url,&handle);
 
 	if(retval) {
-		fprintf(stderr, _("Database connection failed '%s'.\n"), url);
+		fprintf(stderr, tr("Database connection failed '%s'.\n"), url);
 		return 1;
 	}
 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, _("Database query failed '%s'.\n"), url);
+		fprintf(stderr, tr("Database query failed '%s'.\n"), url);
 		return 1;
 	}
 
@@ -2040,7 +2037,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
-			parser_error(error, _("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
+			parser_error(error, tr("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
 			return doc;
 		}
 

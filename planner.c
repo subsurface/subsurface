@@ -4,18 +4,13 @@
  *
  * (c) Dirk Hohndel 2013
  */
-#include <libintl.h>
-#if 0
-#include <glib/gi18n.h>
-#else
-#define _(arg) arg
-#endif
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
 #include "dive.h"
 #include "divelist.h"
 #include "planner.h"
+#include "gettext.h"
 
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
@@ -96,15 +91,15 @@ static int get_gasidx(struct dive *dive, int o2, int he)
 void get_gas_string(int o2, int he, char *text, int len)
 {
 	if (is_air(o2, he))
-		snprintf(text, len, _("air"));
+		snprintf(text, len, tr("air"));
 	else if (he == 0)
-		snprintf(text, len, _("EAN%d"), (o2 + 5) / 10);
+		snprintf(text, len, tr("EAN%d"), (o2 + 5) / 10);
 	else
 		snprintf(text, len, "(%d/%d)",  (o2 + 5) / 10, (he + 5) / 10);
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-double tissue_at_end(struct dive *dive, char **cached_datap, char **error_string_p)
+double tissue_at_end(struct dive *dive, char **cached_datap, const char **error_string_p)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -133,7 +128,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap, char **error_string
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &o2, &he);
 		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
-			snprintf(buf, sizeof(buf),_("Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
+			snprintf(buf, sizeof(buf),tr("Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
 			*error_string_p = buf;
 			gasidx = 0;
 		}
@@ -151,7 +146,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap, char **error_string
 }
 
 /* how many seconds until we can ascend to the next stop? */
-int time_at_last_depth(struct dive *dive, int o2, int he, int next_stop, char **cached_data_p, char **error_string_p)
+int time_at_last_depth(struct dive *dive, int o2, int he, int next_stop, char **cached_data_p, const char **error_string_p)
 {
 	int depth, gasidx;
 	double surface_pressure, tissue_tolerance;
@@ -194,11 +189,11 @@ int add_gas(struct dive *dive, int o2, int he)
 	mix->he.permille = he;
 	/* since air is stored as 0/0 we need to set a name or an air cylinder
 	 * would be seen as unset (by cylinder_nodata()) */
-	cyl->type.description = strdup(_("Cylinder for planning"));
+	cyl->type.description = strdup(tr("Cylinder for planning"));
 	return i;
 }
 
-struct dive *create_dive_from_plan(struct diveplan *diveplan, char **error_string)
+struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error_string)
 {
 	struct dive *dive;
 	struct divedatapoint *dp;
@@ -219,7 +214,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, char **error_strin
 	dive->when = diveplan->when;
 	dive->dc.surface_pressure.mbar = diveplan->surface_pressure;
 	dc = &dive->dc;
-	dc->model = strdup(_("Simulated Dive"));
+	dc->model = strdup(tr("Simulated Dive"));
 	dp = diveplan->dp;
 
 	/* let's start with the gas given on the first segment */
@@ -296,7 +291,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, char **error_strin
 
 gas_error_exit:
 	free(dive);
-	*error_string = _("Too many gas mixes");
+	*error_string = tr("Too many gas mixes");
 	return NULL;
 }
 
@@ -513,7 +508,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	if (!dp)
 		return;
 
-	snprintf(buffer, sizeof(buffer), _("%s\nSubsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
+	snprintf(buffer, sizeof(buffer), tr("%s\nSubsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
 					disclaimer, plangflow * 100, plangfhigh * 100);
 	/* we start with gas 0, then check if that was changed */
 	o2 = dive->cylinder[0].gasmix.o2.permille;
@@ -554,7 +549,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		if (dp->depth != lastdepth) {
 			used = diveplan->bottomsac / 1000.0 * depth_to_mbar((dp->depth + lastdepth) / 2, dive) *
 						(dp->time - lasttime) / 60;
-			snprintf(buffer + len, sizeof(buffer) - len, _("Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
+			snprintf(buffer + len, sizeof(buffer) - len, tr("Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
 							FRACTION(dp->time, 60),
@@ -563,7 +558,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 			/* we use deco SAC rate during the calculated deco stops, bottom SAC rate everywhere else */
 			int sac = dp->entered ? diveplan->bottomsac : diveplan->decosac;
 			used = sac / 1000.0 * depth_to_mbar(dp->depth, dive) * (dp->time - lasttime) / 60;
-			snprintf(buffer + len, sizeof(buffer) - len, _("Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"),
+			snprintf(buffer + len, sizeof(buffer) - len, tr("Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
 							FRACTION(dp->time, 60),
@@ -574,7 +569,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		get_gas_string(newo2, newhe, gas, sizeof(gas));
 		if (o2 != newo2 || he != newhe) {
 			len = strlen(buffer);
-			snprintf(buffer + len, sizeof(buffer) - len, _("Switch gas to %s\n"), gas);
+			snprintf(buffer + len, sizeof(buffer) - len, tr("Switch gas to %s\n"), gas);
 		}
 		o2 = newo2;
 		he = newhe;
@@ -582,7 +577,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		lastdepth = dp->depth;
 	} while ((dp = dp->next) != NULL);
 	len = strlen(buffer);
-	snprintf(buffer + len, sizeof(buffer) - len, _("Gas consumption:\n"));
+	snprintf(buffer + len, sizeof(buffer) - len, tr("Gas consumption:\n"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
@@ -593,13 +588,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 		volume = get_volume_units(consumption[gasidx], NULL, &unit);
 		get_gas_string(dive->cylinder[gasidx].gasmix.o2.permille,
 				dive->cylinder[gasidx].gasmix.he.permille, gas, sizeof(gas));
-		snprintf(buffer + len, sizeof(buffer) - len, _("%.0f%s of %s\n"), volume, unit, gas);
+		snprintf(buffer + len, sizeof(buffer) - len, tr("%.0f%s of %s\n"), volume, unit, gas);
 	}
 	dive->notes = strdup(buffer);
 }
 #endif
 
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco, char **error_string_p)
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco, const char **error_string_p)
 {
 	struct dive *dive;
 	struct sample *sample;
@@ -814,9 +809,9 @@ int validate_gas(const char *text, int *o2_p, int *he_p)
 	if (!*text)
 		return 0;
 
-	if (!strcasecmp(text, _("air"))) {
-		o2 = O2_IN_AIR; he = 0; text += strlen(_("air"));
-	} else if (!strncasecmp(text, _("ean"), 3)) {
+	if (!strcasecmp(text, tr("air"))) {
+		o2 = O2_IN_AIR; he = 0; text += strlen(tr("air"));
+	} else if (!strncasecmp(text, tr("ean"), 3)) {
 		o2 = get_permille(text+3, &text); he = 0;
 	} else {
 		o2 = get_permille(text, &text); he = 0;
@@ -925,7 +920,7 @@ int validate_depth(const char *text, int *mm_p)
 	if (*text == 'm') {
 		imperial = 0;
 		text++;
-	} else if (!strcasecmp(text, _("ft"))) {
+	} else if (!strcasecmp(text, tr("ft"))) {
 		imperial = 1;
 		text += 2;
 	}
@@ -987,13 +982,13 @@ int validate_volume(const char *text, int *sac)
 	if (*text == 'l') {
 		imperial = 0;
 		text++;
-	} else if (!strncasecmp(text, _("cuft"), 4)) {
+	} else if (!strncasecmp(text, tr("cuft"), 4)) {
 		imperial = 1;
 		text += 4;
 	}
 	while (isspace(*text) || *text == '/')
 		text++;
-	if (!strncasecmp(text, _("min"), 3))
+	if (!strncasecmp(text, tr("min"), 3))
 		text += 3;
 	while (isspace(*text))
 		text++;

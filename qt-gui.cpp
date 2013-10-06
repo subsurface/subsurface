@@ -1,9 +1,5 @@
 /* qt-gui.cpp */
 /* Qt UI implementation */
-#include <libintl.h>
-#if 0
-#include <glib/gi18n.h>
-#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -41,11 +37,15 @@
 #include <QDateTime>
 #include <QRegExp>
 
+#include <gettextfromc.h>
+#define tr(arg) gettextFromC::instance()->tr(arg)
+
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
 DiveComputerList dcList;
 
+#if 0
 class Translator: public QTranslator
 {
 	Q_OBJECT
@@ -71,6 +71,7 @@ QString Translator::translate(const char *context, const char *sourceText,
 	return gettext(sourceText);
 #endif
 }
+#endif
 
 static QApplication *application = NULL;
 static MainWindow *window = NULL;
@@ -120,7 +121,6 @@ void init_ui(int *argcp, char ***argvp)
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	s.endGroup();
 
-	application->installTranslator(new Translator(application));
 	window = new MainWindow();
 	window->show();
 	if (existing_filename && existing_filename[0] != '\0')
@@ -200,10 +200,10 @@ QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
 		double meters = mm / 1000.0;
-		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0 ).arg(showunit ? _("m") : "");
+		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0 ).arg(showunit ? tr("m") : "");
 	} else {
 		double feet = mm_to_feet(mm);
-		return QString("%1%2").arg(feet, 0, 'f', showdecimal ? 1 : 0). arg(showunit ? _("ft") : "");
+		return QString("%1%2").arg(feet, 0, 'f', showdecimal ? 1 : 0). arg(showunit ? tr("ft") : "");
 	}
 }
 
@@ -224,9 +224,9 @@ QString get_weight_string(weight_t weight, bool showunit)
 {
 	QString str = weight_string (weight.grams);
 	if (get_units()->weight == units::KG) {
-		str = QString ("%1%2").arg(str).arg(showunit ? _("kg") : "");
+		str = QString ("%1%2").arg(str).arg(showunit ? tr("kg") : "");
 	} else {
-		str = QString ("%1%2").arg(str).arg(showunit ? _("lbs") : "");
+		str = QString ("%1%2").arg(str).arg(showunit ? tr("lbs") : "");
 	}
 	return (str);
 }
@@ -275,11 +275,11 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 	if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
 		return QString("%1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
-								.arg(showunit ? _("C") : "");
+								.arg(showunit ? tr("C") : "");
 	} else {
 		double fahrenheit = mkelvin_to_F(temp.mkelvin);
 		return QString("%1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
-								.arg(showunit ? _("F") : "");
+								.arg(showunit ? tr("F") : "");
 	}
 }
 
@@ -295,10 +295,10 @@ QString get_volume_string(volume_t volume, bool showunit)
 {
 	if (prefs.units.volume == units::LITER) {
 		double liter = volume.mliter / 1000.0;
-		return QString("%1%2").arg(liter, 0, 'f', liter >= 40.0 ? 0 : 1 ).arg(showunit ? _("l") : "");
+		return QString("%1%2").arg(liter, 0, 'f', liter >= 40.0 ? 0 : 1 ).arg(showunit ? tr("l") : "");
 	} else {
 		double cuft = ml_to_cuft(volume.mliter);
-		return QString("%1%2").arg(cuft, 0, 'f', cuft >= 20.0 ? 0 : (cuft >= 2.0 ? 1 : 2)).arg(showunit ? _("cuft") : "");
+		return QString("%1%2").arg(cuft, 0, 'f', cuft >= 20.0 ? 0 : (cuft >= 2.0 ? 1 : 2)).arg(showunit ? tr("cuft") : "");
 	}
 }
 
@@ -314,10 +314,10 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 {
 	if (prefs.units.pressure == units::BAR) {
 		double bar = pressure.mbar / 1000.0;
-		return QString("%1%2").arg(bar, 0, 'f', 1).arg(showunit ? _("bar") : "");
+		return QString("%1%2").arg(bar, 0, 'f', 1).arg(showunit ? tr("bar") : "");
 	} else {
 		double psi = mbar_to_PSI(pressure.mbar);
-		return QString("%1%2").arg(psi, 0, 'f', 0).arg(showunit ? _("psi") : "");
+		return QString("%1%2").arg(psi, 0, 'f', 0).arg(showunit ? tr("psi") : "");
 	}
 }
 
