@@ -249,9 +249,11 @@ doc:
 	$(MAKE) -C Documentation doc
 
 clean:
-	rm -f $(ALL_OBJS) *~ $(NAME) $(NAME).exe po/*~ po/$(NAME)-new.pot \
-		$(VERSION_FILE) $(HEADERS_NEEDING_MOC:.h=.moc) *.moc qt-ui/*.moc .uic/*.h
-	rm -f $(RESOURCES:.qrc=.qrc.cpp)
+	rm -f $(ALL_OBJS) *~ $(NAME) $(VERSION_FILE) \
+		$(NAME).exe po/*~ po/$(NAME)-new.pot \
+		*.moc qt-ui/*.moc \
+		$(UIC_HEADERS:%=qt-ui/%) .uic/*.h \
+		$(RESOURCES:.qrc=.qrc.cpp)
 	rm -rf share
 
 confclean: clean
