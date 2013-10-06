@@ -65,7 +65,7 @@ $ brew link --force sqlite
 
 $ mkdir -p ~/src/marble/build
 $ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
-$ cd ~/src/marble/sources
+$ cd ~/src/marble/build
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ~/src/marble/sources
 $ make
 $ sudo make install
@@ -91,7 +91,6 @@ $ sudo make install
 $ cd ~/src
 $ git clone git://subsurface.hohndel.org/subsurface.git
 $ cd subsurface
-$ git checkout -t hohndel/glib-removal-hack
 $ make
 
 
