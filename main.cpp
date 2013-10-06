@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <libintl.h>
 
 #include "qt-gui.h"
 #include "version.h"
@@ -18,6 +17,7 @@ int main(int argc, char **argv)
 {
 	int i;
 	bool no_filenames = true;
+#if 0
 	const char *path;
 
 	/* set up l18n - the search directory needs to change
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	bindtextdomain("subsurface", path);
 	bind_textdomain_codeset("subsurface", "utf-8");
 	textdomain("subsurface");
-
+#endif
 	setup_system_prefs();
 	prefs = default_prefs;
 

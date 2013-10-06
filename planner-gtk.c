@@ -4,7 +4,6 @@
  *
  * (c) Dirk Hohndel 2013
  */
-#include <libintl.h>
 #include <glib/gi18n.h>
 #include <unistd.h>
 #include <ctype.h>

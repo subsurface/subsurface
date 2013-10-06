@@ -30,8 +30,8 @@ const char *system_default_filename(void)
 	char *buffer;
 	int len;
 
-	home = g_get_home_dir();
-	user = g_get_user_name();
+	home = getenv("HOME");
+	user = getenv("LOGNAME");
 	len = strlen(home) + strlen(user) + 17;
 	buffer = malloc(len);
 	snprintf(buffer, len, "%s/subsurface/%s.xml", home, user);
@@ -49,17 +49,17 @@ const char *subsurface_gettext_domainpath(char *argv0)
 	}
 }
 
-void subsurface_command_line_init(gint *argc, gchar ***argv)
+void subsurface_command_line_init(int *argc, char ***argv)
 {
 	/* this is a no-op */
 }
 
-void subsurface_command_line_exit(gint *argc, gchar ***argv)
+void subsurface_command_line_exit(int *argc, char ***argv)
 {
 	/* this is a no-op */
 }
 
-gboolean subsurface_os_feature_available(os_feature_t f)
+bool subsurface_os_feature_available(os_feature_t f)
 {
 	return TRUE;
 }

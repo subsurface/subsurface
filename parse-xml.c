@@ -11,7 +11,9 @@
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
-#include <glib/gi18n.h>
+
+#include "gettext.h"
+
 #include<sqlite3.h>
 
 #include "dive.h"
@@ -129,7 +131,7 @@ struct {
 	const char *nickname, *serial_nr, *firmware;
 } dc;
 } cur_settings;
-static gboolean in_settings = FALSE;
+static bool in_settings = FALSE;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
@@ -235,13 +237,101 @@ enum number_type {
 	FLOAT
 };
 
+double ascii_strtod(char *str, char **ptr)
+{
+	char *p;
+
+	if (ptr == (char **)0)
+		return atof (str);
+
+	p = str;
+
+	while (isspace (*p))
+		++p;
+
+	if (*p == '+' || *p == '-')
+		++p;
+
+	/* INF or INFINITY.  */
+	if ((p[0] == 'i' || p[0] == 'I')
+	    && (p[1] == 'n' || p[1] == 'N')
+	    && (p[2] == 'f' || p[2] == 'F'))
+	{
+		if ((p[3] == 'i' || p[3] == 'I')
+		    && (p[4] == 'n' || p[4] == 'N')
+		    && (p[5] == 'i' || p[5] == 'I')
+		    && (p[6] == 't' || p[6] == 'T')
+		    && (p[7] == 'y' || p[7] == 'Y'))
+		{
+			*ptr = p + 7;
+			return atof (str);
+		}
+		else
+		{
+			*ptr = p + 3;
+			return atof (str);
+		}
+	}
+
+	/* NAN or NAN(foo).  */
+	if ((p[0] == 'n' || p[0] == 'N')
+	    && (p[1] == 'a' || p[1] == 'A')
+	    && (p[2] == 'n' || p[2] == 'N'))
+	{
+		p += 3;
+		if (*p == '(')
+		{
+			++p;
+			while (*p != '\0' && *p != ')')
+				++p;
+			if (*p == ')')
+				++p;
+		}
+		*ptr = p;
+		return atof (str);
+	}
+
+	/* digits, with 0 or 1 periods in it.  */
+	if (isdigit (*p) || *p == '.')
+	{
+		int got_dot = 0;
+		while (isdigit (*p) || (!got_dot && *p == '.'))
+		{
+			if (*p == '.')
+				got_dot = 1;
+			++p;
+		}
+
+		/* Exponent.  */
+		if (*p == 'e' || *p == 'E')
+		{
+			int i;
+			i = 1;
+			if (p[i] == '+' || p[i] == '-')
+				++i;
+			if (isdigit (p[i]))
+			{
+				while (isdigit (p[i]))
+			++i;
+		*ptr = p + i;
+		return atof (str);
+			}
+		}
+		*ptr = p;
+		return atof (str);
+	}
+	/* Didn't find any digits.  Doesn't look like a number.  */
+	*ptr = str;
+	return 0.0;
+}
+
 static enum number_type parse_float(char *buffer, double *res, char **endp)
 {
 	double val;
-	static gboolean first_time = TRUE;
+	static bool first_time = TRUE;
 
 	errno = 0;
-	val = g_ascii_strtod(buffer, endp);
+	val = ascii_strtod(buffer, endp);
 	if (errno || *endp == buffer)
 		return NEITHER;
 	if (**endp == ',') {
@@ -255,7 +345,7 @@ static enum number_type parse_float(char *buffer, double *res, char **endp)
 			}
 			/* Try again */
 			**endp = '.';
-			val = g_ascii_strtod(buffer, endp);
+			val = ascii_strtod(buffer, endp);
 		}
 	}
 
@@ -436,7 +526,7 @@ static void percent(char *buffer, void *_fraction)
 	case FLOAT:
 		/* Turn fractions into percent unless explicit.. */
 		if (val <= 1.0) {
-			while (g_ascii_isspace(*end))
+			while (isspace(*end))
 				end++;
 			if (*end != '%')
 				val *= 100;
@@ -448,7 +538,7 @@ static void percent(char *buffer, void *_fraction)
 			break;
 		}
 	default:
-		printf(_("Strange percentage reading %s\n"), buffer);
+		printf(tr("Strange percentage reading %s\n"), buffer);
 		break;
 	}
 }
@@ -487,10 +577,10 @@ static void utf8_string(char *buffer, void *_res)
 {
 	int size;
 	char *res;
-	while (g_ascii_isspace(*buffer))
+	while (isspace(*buffer))
 		buffer++;
 	size = strlen(buffer);
-	while (size && g_ascii_isspace(buffer[size-1]))
+	while (size && isspace(buffer[size-1]))
 		size--;
 	if (!size)
 		return;
@@ -521,7 +611,7 @@ static void get_rating(char *buffer, void *_i)
 static void double_to_permil(char *buffer, void *_i)
 {
 	int *i = _i;
-	*i = g_ascii_strtod(buffer, NULL) * 1000.0 + 0.5;
+	*i = ascii_strtod(buffer, NULL) * 1000.0 + 0.5;
 }
 
 static void hex_value(char *buffer, void *_i)
@@ -976,7 +1066,7 @@ static degrees_t parse_degrees(char *buf, char **end)
 	int sign = 1, decimals = 6, value = 0;
 	degrees_t ret;
 
-	while (g_ascii_isspace(*buf))
+	while (isspace(*buf))
 		buf++;
 	switch (*buf) {
 	case '-':
@@ -1181,7 +1271,7 @@ static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *
  * to make a dive valid, but if it has no location, no date and no
  * samples I'm pretty sure it's useless.
  */
-static gboolean is_dive(void)
+static bool is_dive(void)
 {
 	return (cur_dive &&
 		(cur_dive->location || cur_dive->when || cur_dive->dc.samples));
@@ -1594,8 +1684,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 		free((char *)res);
 
 	if (!doc) {
-		fprintf(stderr, _("Failed to parse '%s'.\n"), url);
-		parser_error(error, _("Failed to parse '%s'"), url);
+		fprintf(stderr, tr("Failed to parse '%s'.\n"), url);
+		parser_error(error, tr("Failed to parse '%s'"), url);
 		return;
 	}
 	reset_all();
@@ -1793,7 +1883,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, _("Database query get_events failed.\n"));
+		fprintf(stderr, tr("Database query get_events failed.\n"));
 		return 1;
 	}
 
@@ -1828,14 +1918,14 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	retval = sqlite3_open(url,&handle);
 
 	if(retval) {
-		fprintf(stderr, _("Database connection failed '%s'.\n"), url);
+		fprintf(stderr, tr("Database connection failed '%s'.\n"), url);
 		return 1;
 	}
 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, _("Database query failed '%s'.\n"), url);
+		fprintf(stderr, tr("Database query failed '%s'.\n"), url);
 		return 1;
 	}
 
@@ -1863,7 +1953,11 @@ static xsltStylesheetPtr try_get_stylesheet(const char *path, int len, const cha
 		return NULL;
 
 	memcpy(filename, path, len);
-	filename[len] = G_DIR_SEPARATOR;
+#ifdef WIN32
+	filename[len] = '\\';
+#else
+	filename[len] = '/';
+#endif
 	memcpy(filename + len + 1, name, namelen+1);
 
 	ret = NULL;
@@ -1943,7 +2037,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
-			parser_error(error, _("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
+			parser_error(error, tr("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
 			return doc;
 		}
 

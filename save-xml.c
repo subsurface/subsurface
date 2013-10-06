@@ -125,12 +125,12 @@ static void show_utf8(FILE *f, const char *text, const char *pre, const char *po
 
 	if (!text)
 		return;
-	while (g_ascii_isspace(*text))
+	while (isspace(*text))
 		text++;
 	len = strlen(text);
 	if (!len)
 		return;
-	while (len && g_ascii_isspace(text[len-1]))
+	while (len && isspace(text[len-1]))
 		len--;
 	/* FIXME! Quoting! */
 	fputs(pre, f);
@@ -549,13 +549,13 @@ void save_dives(const char *filename)
 	save_dives_logic(filename, FALSE);
 }
 
-void save_dives_logic(const char *filename, const gboolean select_only)
+void save_dives_logic(const char *filename, const bool select_only)
 {
 	int i;
 	struct dive *dive;
 	dive_trip_t *trip;
 
-	FILE *f = g_fopen(filename, "w");
+	FILE *f = fopen(filename, "w");
 
 	if (!f)
 		return;

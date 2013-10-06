@@ -12,7 +12,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <glib/gi18n.h>
+
+#include "gettext.h"
 #define __USE_XOPEN
 #include <time.h>
 #include <math.h>
@@ -166,8 +167,10 @@ void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
 	struct uemis_helper *hp = uemis_helper;
+#if 0	/* seems overkill */
 	if (!g_utf8_validate(text, -1, NULL))
 		return;
+#endif
 	while (hp) {
 		if (hp->divespot == divespot && hp->location) {
 			*hp->location = strdup(text);
@@ -195,45 +198,45 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	static int lastndl;
 
 	if (flags[1] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Safety Stop Violation"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Safety Stop Violation"));
 	if (flags[1] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Speed Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Speed Alarm"));
 #if WANT_CRAZY_WARNINGS
 	if (flags[1] & 0x06) /* both bits 1 and 2 are a warning */
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Speed Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Speed Warning"));
 	if (flags[1] & 0x10)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("PO2 Green Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("PO2 Green Warning"));
 #endif
 	if (flags[1] & 0x20)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("PO2 Ascend Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("PO2 Ascend Warning"));
 	if (flags[1] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("PO2 Ascend Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("PO2 Ascend Alarm"));
 	/* flags[2] reflects the deco / time bar
 	 * flags[3] reflects more display details on deco and pO2 */
 	if (flags[4] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Tank Pressure Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Tank Pressure Info"));
 	if (flags[4] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("RGT Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("RGT Warning"));
 	if (flags[4] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("RGT Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("RGT Alert"));
 	if (flags[4] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Tank Change Suggested"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Tank Change Suggested"));
 	if (flags[4] & 0x80)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Depth Limit Exceeded"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Depth Limit Exceeded"));
 	if (flags[5] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Max Deco Time Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Max Deco Time Warning"));
 	if (flags[5] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Dive Time Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Dive Time Info"));
 	if (flags[5] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Dive Time Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Dive Time Alert"));
 	if (flags[5] & 0x10)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Marker"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Marker"));
 	if (flags[6] & 0x02)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("No Tank Data"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("No Tank Data"));
 	if (flags[6] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Low Battery Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Low Battery Warning"));
 	if (flags[6] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, N_("Low Battery Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TR_NOOP("Low Battery Alert"));
 	/* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
 

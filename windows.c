@@ -60,7 +60,7 @@ void subsurface_set_conf_int(const char *name, int value)
 	RegSetValueEx(hkey, (LPCTSTR)name, 0, REG_DWORD, (const BYTE *)&value, 4);
 }
 
-void subsurface_set_conf_bool(const char *name, int value)
+void subsurface_set_conf_bool(const char *name, bool value)
 {
 	subsurface_set_conf_int(name, value);
 }
@@ -305,7 +305,7 @@ void subsurface_command_line_exit(gint *argc, gchar ***argv)
 	g_free(*argv);
 }
 
-gboolean subsurface_launch_for_uri(const char* uri)
+bool subsurface_launch_for_uri(const char* uri)
 {
 	gboolean ret = FALSE;
 	wchar_t *wuri = (wchar_t *)g_utf8_to_utf16(uri, -1, NULL, NULL, NULL);
@@ -320,7 +320,7 @@ gboolean subsurface_launch_for_uri(const char* uri)
 }
 
 /* check if we are running a newer OS version */
-gboolean subsurface_os_feature_available(os_feature_t f)
+bool subsurface_os_feature_available(os_feature_t f)
 {
 	switch (f) {
 	case UTF8_FONT_WITH_STARS:

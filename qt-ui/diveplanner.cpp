@@ -1184,7 +1184,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 	char *cache = NULL;
 	tempDive = NULL;
-	char *errorString = NULL;
+	const char *errorString = NULL;
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
 	if (mode == ADD)
 		copy_samples(tempDive, current_dive);
@@ -1216,7 +1216,7 @@ void DivePlannerPointsModel::createPlan()
 	// to not delete it later. mumble. ;p
 	char *cache = NULL;
 	tempDive = NULL;
-	char *errorString = NULL;
+	const char *errorString = NULL;
 
 	createTemporaryPlan();
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);

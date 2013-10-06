@@ -29,10 +29,11 @@ public:
 	void rmDC(QString m, uint32_t d);
 	DiveComputerNode matchDC(QString m, uint32_t d);
 	DiveComputerNode matchModel(QString m);
-	QMultiMap<QString, struct DiveComputerNode> dcMap;
-	QMultiMap<QString, struct DiveComputerNode> dcWorkingMap;
+	QMultiMap<QString, class DiveComputerNode> dcMap;
+	QMultiMap<QString, class DiveComputerNode> dcWorkingMap;
 };
 
 QString weight_string(int weight_in_grams);
+bool gpsHasChanged(struct dive* dive, struct dive *master, const QString &gps_text);
 
 #endif // QTHELPER_H

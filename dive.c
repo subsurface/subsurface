@@ -2,8 +2,7 @@
 /* maintains the internal dive list structure */
 #include <string.h>
 #include <stdio.h>
-#include <glib/gi18n.h>
-
+#include "gettext.h"
 #include "dive.h"
 
 void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
@@ -41,15 +40,15 @@ int get_pressure_units(unsigned int mb, const char **units)
 	switch (units_p->pressure) {
 	case PASCAL:
 		pressure = mb * 100;
-		unit = _("pascal");
+		unit = tr("pascal");
 		break;
 	case BAR:
 		pressure = (mb + 500) / 1000;
-		unit = _("bar");
+		unit = tr("bar");
 		break;
 	case PSI:
 		pressure = mbar_to_PSI(mb);
-		unit = _("psi");
+		unit = tr("psi");
 		break;
 	}
 	if (units)
@@ -85,12 +84,12 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	switch (units_p->volume) {
 	case LITER:
 		vol = ml / 1000.0;
-		unit = _("l");
+		unit = tr("l");
 		decimals = 1;
 		break;
 	case CUFT:
 		vol = ml_to_cuft(ml);
-		unit = _("cuft");
+		unit = tr("cuft");
 		decimals = 2;
 		break;
 	}
@@ -111,12 +110,12 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	switch (units_p->length) {
 	case METERS:
 		d = mm / 1000.0;
-		unit = _("m");
+		unit = tr("m");
 		decimals = d < 20;
 		break;
 	case FEET:
 		d = mm_to_feet(mm);
-		unit = _("ft");
+		unit = tr("ft");
 		decimals = 0;
 		break;
 	}
@@ -137,11 +136,11 @@ double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
 	switch (units_p->length) {
 	case METERS:
 		d = mms / 1000.0 * time_factor;
-		unit = _((units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
+		unit = tr((units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
 		break;
 	case FEET:
 		d = mm_to_feet(mms) * time_factor;
-		unit = _((units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
+		unit = tr((units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
 		break;
 	}
 	if (frac)
@@ -160,11 +159,11 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 
 	if (units_p->weight == LBS) {
 		value = grams_to_lbs(grams);
-		unit = _("lbs");
+		unit = tr("lbs");
 		decimals = 0;
 	} else {
 		value = grams / 1000.0;
-		unit = _("kg");
+		unit = tr("kg");
 		decimals = 1;
 	}
 	if (frac)
@@ -481,7 +480,7 @@ static void sanitize_cylinder_info(struct dive *dive)
 }
 
 /* some events should never be thrown away */
-static gboolean is_potentially_redundant(struct event *event)
+static bool is_potentially_redundant(struct event *event)
 {
 	if (!strcmp(event->name, "gaschange"))
 		return FALSE;
@@ -960,7 +959,7 @@ static char *merge_text(const char *a, const char *b)
 	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
-	sprintf(res, _("(%s) or (%s)"), a, b);
+	sprintf(res, tr("(%s) or (%s)"), a, b);
 	return res;
 }
 
@@ -1585,7 +1584,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
  */
-struct dive *try_to_merge(struct dive *a, struct dive *b, gboolean prefer_downloaded)
+struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded)
 {
 	if (likely_same_dive(a, b))
 		return merge_dives(a, b, 0, prefer_downloaded);
@@ -1810,7 +1809,7 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 	remove_redundant_dc(res, prefer_downloaded);
 }
 
-struct dive *merge_dives(struct dive *a, struct dive *b, int offset, gboolean prefer_downloaded)
+struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
 	struct dive *dl = NULL;
@@ -1877,7 +1876,7 @@ struct dive *find_dive_including(timestamp_t when)
 	return NULL;
 }
 
-gboolean dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
+bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
 {
 	return when - offset <= dive->when && dive->when + dive->duration.seconds <= when + offset;
 }

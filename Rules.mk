@@ -48,7 +48,7 @@ CREATOR_FILES = $(NAME).config $(NAME).creator $(NAME).files $(NAME).includes
 
 all: $(TARGET) doc
 
-$(TARGET): gen_version_file $(UIC_HEADERS) $(ALL_OBJS) $(MSGOBJS) $(INFOPLIST)
+$(TARGET): gen_version_file $(UIC_HEADERS) $(ALL_OBJS) $(INFOPLIST)
 	@$(PRETTYECHO) '    LINK' $(TARGET)
 	$(COMPILE_PREFIX)$(CXX) $(LDFLAGS) -o $(TARGET) $(ALL_OBJS) $(LIBS)
 

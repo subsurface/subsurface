@@ -249,7 +249,7 @@ double restore_deco_state(char *data)
 	return tissue_tolerance;
 }
 
-unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, gboolean smooth)
+unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth)
 {
 	unsigned int depth;
 	double pressure_delta;

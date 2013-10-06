@@ -38,7 +38,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include <glib/gi18n.h>
+#include "gettext.h"
 #include <assert.h>
 #include <zip.h>
 #include <libxslt/transform.h>
@@ -71,7 +71,7 @@ void dump_selection(void)
 }
 #endif
 
-void set_autogroup(gboolean value)
+void set_autogroup(bool value)
 {
 	/* if we keep the UI paradigm, this needs to toggle
 	 * the checkbox on the autogroup menu item */
@@ -456,7 +456,7 @@ double init_decompression(struct dive *dive)
 	int i, divenr = -1;
 	unsigned int surface_time;
 	timestamp_t when, lasttime = 0;
-	gboolean deco_init = FALSE;
+	bool deco_init = FALSE;
 	double tissue_tolerance, surface_pressure;
 
 	if (!dive)
@@ -534,36 +534,6 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
-static void get_string(char **str, const char *s)
-{
-	int len;
-	char *n;
-
-	if (!s)
-		s = "";
-	len = g_utf8_strlen(s, -1);
-	if (len > 60)
-		len = 60;
-	n = malloc(len * sizeof(gunichar) + 1);
-	g_utf8_strncpy(n, s, len);
-	*str = n;
-}
-
-void get_location(struct dive *dive, char **str)
-{
-	get_string(str, dive->location);
-}
-
-void get_cylinder(struct dive *dive, char **str)
-{
-	get_string(str, dive->cylinder[0].type.description);
-}
-
-void get_suit(struct dive *dive, char **str)
-{
-	get_string(str, dive->suit);
-}
-
 #define MAX_DATE_STRING 256
 /* caller needs to free the string */
 char *get_dive_date_string(timestamp_t when)
@@ -574,7 +544,7 @@ char *get_dive_date_string(timestamp_t when)
 		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
 			/*++GETTEXT 60 char buffer weekday, monthname, day of month, year, hour:min */
-			_("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
+			tr("%1$s, %2$s %3$d, %4$d %5$02d:%6$02d"),
 			weekday(tm.tm_wday),
 			monthname(tm.tm_mon),
 			tm.tm_mday, tm.tm_year + 1900,
@@ -591,7 +561,7 @@ char *get_short_dive_date_string(timestamp_t when)
 		utc_mkdate(when, &tm);
 		snprintf(buffer, MAX_DATE_STRING,
 			/*++GETTEXT 40 char buffer monthname, day of month, year, hour:min */
-			_("%1$s %2$d, %3$d\n%4$02d:%5$02d"),
+			tr("%1$s %2$d, %3$d\n%4$02d:%5$02d"),
 			monthname(tm.tm_mon),
 			tm.tm_mday, tm.tm_year +1900,
 			tm.tm_hour, tm.tm_min);
@@ -606,13 +576,24 @@ char *get_trip_date_string(timestamp_t when, int nr)
 	if (buffer) {
 		struct tm tm;
 		utc_mkdate(when, &tm);
-		snprintf(buffer, MAX_DATE_STRING,
-			/*++GETTEXT 60 char buffer monthname, year, nr dives */
-			ngettext("%1$s %2$d (%3$d dive)",
-				 "%1$s %2$d (%3$d dives)", nr),
-			monthname(tm.tm_mon),
-			tm.tm_year + 1900,
-			nr);
+		if (nr != 1) {
+			snprintf(buffer, MAX_DATE_STRING,
+#if PLURAL_HANDLING_IN_TRANLATION
+				 /*++GETTEXT 60 char buffer monthname, year, nr dives */
+				 ngettext("%1$s %2$d (%3$d dive)",
+					  "%1$s %2$d (%3$d dives)", nr),
+#else
+				 tr("%1$s %2$d (%3$d dives)"),
+#endif
+				 monthname(tm.tm_mon),
+				 tm.tm_year + 1900,
+				 nr);
+		} else {
+			snprintf(buffer, MAX_DATE_STRING,
+				 tr("%1$s %2$d (1 dive)"),
+				 monthname(tm.tm_mon),
+				 tm.tm_year + 1900);
+		}
 	}
 	return buffer;
 }
@@ -640,7 +621,7 @@ char *get_nitrox_string(struct dive *dive)
 			else
 				snprintf(buffer, MAX_NITROX_STRING, "%d" UTF8_ELLIPSIS "%d", o2low, o2);
 		else
-			strcpy(buffer, _("air"));
+			strcpy(buffer, tr("air"));
 	}
 	return buffer;
 }

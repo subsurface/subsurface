@@ -14,6 +14,7 @@
 #include "globe.h"
 #include "completionmodels.h"
 #include "diveplanner.h"
+#include "qthelper.h"
 
 #include <QLabel>
 #include <QCompleter>
@@ -695,9 +696,8 @@ void MainTab::on_notes_textChanged()
 
 void MainTab::on_coordinates_textChanged(const QString& text)
 {
-	QByteArray textByteArray = text.toLocal8Bit();
-	gboolean gpsChanged = FALSE;
-	EDIT_SELECTED_DIVES(gpsChanged |= gps_changed(mydive, NULL, textByteArray.data()));
+	bool gpsChanged = FALSE;
+	EDIT_SELECTED_DIVES(gpsChanged |= gpsHasChanged(mydive, NULL, text));
 	if (gpsChanged) {
 		markChangedWidget(ui.coordinates);
 	} else {
