@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <libintl.h>
 
 #include "qt-gui.h"
 #include "version.h"

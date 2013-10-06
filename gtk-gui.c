@@ -8,8 +8,6 @@
  * functions. It's renamed back to gtk-ui.c to keep the old Gtk code
  * around for reference in case we still need it... all that has now been
  * ripped out of qt-gui.cpp */
-#include <libintl.h>
-#include <glib/gi18n.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

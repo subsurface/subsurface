@@ -42,7 +42,7 @@ void subsurface_set_conf(const char *name, const char *value)
 	CFPreferencesSetAppValue(CFSTR_VAR(name), CFSTR_VAR(value), SUBSURFACE_PREFERENCES);
 }
 
-void subsurface_set_conf_bool(const char *name, int value)
+void subsurface_set_conf_bool(const char *name, bool value)
 {
 	CFPreferencesSetAppValue(CFSTR_VAR(name),
 		value ? kCFBooleanTrue : kCFBooleanFalse, SUBSURFACE_PREFERENCES);
@@ -252,12 +252,12 @@ void subsurface_command_line_exit(int *argc, char ***argv)
 	/* this is a no-op */
 }
 
-int subsurface_os_feature_available(os_feature_t f)
+bool subsurface_os_feature_available(os_feature_t f)
 {
 	return TRUE;
 }
 
-int subsurface_launch_for_uri(const char* uri)
+bool subsurface_launch_for_uri(const char* uri)
 {
 	CFURLRef urlref = CFURLCreateWithBytes(NULL, uri, strlen(uri), kCFStringEncodingMacRoman, NULL);
 	OSStatus status = LSOpenCFURLRef(urlref, NULL);

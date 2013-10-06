@@ -1,5 +1,3 @@
-#include <libintl.h>
-#include <glib/gi18n.h>
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"

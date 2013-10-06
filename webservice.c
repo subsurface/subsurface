@@ -1,4 +1,3 @@
-#include <libintl.h>
 #include <glib/gi18n.h>
 #include <libsoup/soup.h>
 #include <libxml/tree.h>
