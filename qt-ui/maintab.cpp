@@ -328,7 +328,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui.airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
 			ui.airPressureText->clear();
-		(get_depth_string(stats_selection.max_depth, TRUE));
+        ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
 		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
 		ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
 		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));
