@@ -92,7 +92,7 @@ int get_maxdepth(struct plot_info *pi)
 		md = ROUND_UP(mm+3000, 10000);
 	} else {
 		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
-		md = MAX(30000, ROUND_UP(mm+3000, 10000));
+		md = MAX((unsigned)30000, ROUND_UP(mm+3000, 10000));
 	}
 	md += pi->maxpp * 9000;
 	return md;

@@ -144,6 +144,10 @@ create-macosx-bundle: all
 sign-macosx-bundle: all
 	codesign -s "3A8CE62A483083EDEA5581A61E770EC1FA8BECE8" /Applications/$(CAPITALIZED_NAME).app/Contents/MacOS/$(NAME)-bin
 
+$(RESFILE): packaging/windows/subsurface.rc
+	@$(PRETTYECHO) '    WINDRES' $<
+	@i686-w64-mingw32-windres -O coff -i $< -o $@
+
 install-cross-windows: all
 	$(INSTALL) -d -m 755 $(WINDOWSSTAGING)/share/locale
 	for MSG in $(WINMSGDIRS); do\

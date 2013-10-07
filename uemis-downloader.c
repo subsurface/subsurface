@@ -148,9 +148,11 @@ static int number_of_file(char *path)
 
 	dirp = opendir(path);
 	while ((entry = readdir(dirp)) != NULL) {
-		if (entry->d_type == DT_REG) { /* If the entry is a regular file */
+#ifndef WIN32
+		if (entry->d_type == DT_REG) /* If the entry is a regular file */
+#endif
 			count++;
-		}
+
 	}
 	closedir(dirp);
 	return count;

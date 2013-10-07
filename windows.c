@@ -14,7 +14,8 @@ const char *system_default_filename(void)
 	char *buffer;
 	int len;
 
-	user = g_get_user_name();
+	/* I don't think this works on Windows */
+	user = getenv("LOGNAME");
 	if (! SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, datapath))) {
 		datapath[0] = '.';
 		datapath[1] = '\0';
@@ -29,14 +30,14 @@ const char *system_default_filename(void)
 extern int __wgetmainargs(int *, wchar_t ***, wchar_t ***, int, int *);
 
 /* expand-convert the UTF-16 argument list to a list of UTF-8 strings */
-void subsurface_command_line_init(gint *argc, gchar ***argv)
+void subsurface_command_line_init(int *argc, char ***argv)
 {
 	wchar_t **wargv, **wenviron, *p, path[MAX_PATH] = {0};
-	gchar **argv_new;
-	gchar *s;
+	char **argv_new;
+	char *s;
 	/* for si we assume that a struct address will equal the address
 	 * of its first and only int member */
-	gint i, n, ret, si;
+	int i, n, ret, si;
 
 	/* change the current process path to the module path, so that we can
 	 * access relative folders such as ./share and ./xslt */
@@ -51,23 +52,25 @@ void subsurface_command_line_init(gint *argc, gchar ***argv)
 	 * lifespan as the process heap. */
 	ret = __wgetmainargs(&n, &wargv, &wenviron, TRUE, &si);
 	if (ret < 0) {
-		g_warning("Cannot convert command line");
+		fprintf(stderr, "Cannot convert command line");
 		return;
 	}
-	argv_new = g_malloc(sizeof(gchar *) * (n + 1));
+	argv_new = malloc(sizeof(char *) * (n + 1));
 
+#if MISSING_GLIB_FUNCTIONS
 	for (i = 0; i < n; ++i) {
 		s = g_utf16_to_utf8((gunichar2 *)wargv[i], -1, NULL, NULL, NULL);
 		if (!s) {
-			g_warning("Cannot convert command line argument (%d) to UTF-8", (i + 1));
+			fprintf(stderr, "Cannot convert command line argument (%d) to UTF-8", (i + 1));
 			s = "\0";
-		}	else if (!g_utf8_validate(s, -1, NULL)) {
-			g_warning("Cannot validate command line argument '%s' (%d)", s, (i + 1));
-			g_free(s);
+		} else if (!g_utf8_validate(s, -1, NULL)) {
+			fprintf(stderr,"Cannot validate command line argument '%s' (%d)", s, (i + 1));
+			free(s);
 			s = "\0";
 		}
 		argv_new[i] = s;
 	}
+#endif
 	argv_new[n] = NULL;
 
 	/* update the argument list and count */
@@ -78,12 +81,12 @@ void subsurface_command_line_init(gint *argc, gchar ***argv)
 }
 
 /* once done, free the argument list */
-void subsurface_command_line_exit(gint *argc, gchar ***argv)
+void subsurface_command_line_exit(int *argc, char ***argv)
 {
 	int i;
 	for (i = 0; i < *argc; i++)
-		g_free((*argv)[i]);
-	g_free(*argv);
+		free((*argv)[i]);
+	free(*argv);
 }
 
 /* check if we are running a newer OS version */
