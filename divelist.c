@@ -22,7 +22,6 @@
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
  * void autogroup_dives(void)
- * void clear_trip_indexes(void)
  * void delete_single_dive(int idx)
  * void add_single_dive(int idx, struct dive *dive)
  * void merge_two_dives(struct dive *a, struct dive *b)
@@ -90,43 +89,6 @@ dive_trip_t *find_trip_by_idx(int idx)
 		trip = trip->next;
 	}
 	return NULL;
-}
-
-int dive_nr_sort(int idx_a, int idx_b, timestamp_t when_a, timestamp_t when_b)
-{
-	struct dive *a, *b;
-	dive_trip_t *tripa = NULL, *tripb = NULL;
-
-	if (idx_a < 0) {
-		a = NULL;
-		tripa = find_trip_by_idx(idx_a);
-	} else {
-		a = get_dive(idx_a);
-		if (a)
-			tripa = a->divetrip;
-	}
-
-	if (idx_b < 0) {
-		b = NULL;
-		tripb = find_trip_by_idx(idx_b);
-	} else {
-		b = get_dive(idx_b);
-		if (b)
-			tripb = b->divetrip;
-	}
-
-	/*
-	 * Compare dive dates within the same trip (or when there
-	 * are no trips involved at all). But if we have two
-	 * different trips use the trip dates for comparison
-	 */
-	if (tripa != tripb) {
-		if (tripa)
-			when_a = tripa->when;
-		if (tripb)
-			when_b = tripb->when;
-	}
-	return when_a - when_b;
 }
 
 int trip_has_selected_dives(dive_trip_t *trip)
@@ -844,14 +806,6 @@ void autogroup_dives(void)
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
-}
-
-void clear_trip_indexes(void)
-{
-	dive_trip_t *trip;
-
-	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->index = 0;
 }
 
 /* this implements the mechanics of removing the dive from the table,

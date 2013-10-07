@@ -8,10 +8,6 @@ extern "C" {
 #define SCALE_SCREEN 1.0
 #define SCALE_PRINT (1.0 / get_screen_dpi())
 
-extern void repaint_dive(void);
-extern void do_print(void);
-
-// Commented out because I don't know how to get the dpi on a paint device yet.
 extern double get_screen_dpi(void);
 
 /* Plot info with smoothing, velocity indication
@@ -29,17 +25,7 @@ struct plot_info {
 };
 
 /*
-// I'm not sure if this is needed anymore - but keeping this here
-// so I wont break stuff trying to redo the well.
-*/
-
-/*
- * Cairo scaling really is horribly horribly mis-designed.
- *
- * Which is sad, because I really like Cairo otherwise. But
- * the fact that the line width is scaled with the same scale
- * as the coordinate system is a f*&%ing disaster. So we
- * can't use it, and instead have this butt-ugly wrapper thing..
+ * handy datastructure to keep all of our scaling data in one place
  */
 struct graphics_context {
 	int printer;
@@ -52,13 +38,8 @@ struct graphics_context {
 
 typedef enum { SC_SCREEN, SC_PRINT } scale_mode_t;
 
-extern void plot(struct graphics_context *gc, struct dive *dive, scale_mode_t scale);
 extern struct divecomputer *select_dc(struct divecomputer *main);
-extern void init_profile_background(struct graphics_context *gc);
-extern void attach_tooltip(int x, int y, int w, int h, const char *text, struct event *event);
 extern void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufsize);
-extern int x_to_time(double x);
-extern int x_abs(double x);
 
 struct options {
 	enum { PRETTY, TABLE, TWOPERPAGE } type;

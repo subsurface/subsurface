@@ -321,14 +321,6 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 		plot_pp_text();
 	}
 
-	/* now shift the translation back by half the margin;
-	 * this way we can draw the vertical scales on both sides */
-	//cairo_translate(gc->cr, -drawing_area->x / 2.0, 0);
-
-	//gc->maxx += drawing_area->x;
-	//gc->leftx = -(drawing_area->x / drawing_area->width) / 2.0;
-	//gc->rightx = 1.0 - gc->leftx;
-
 	plot_depth_scale();
 
 #if 0

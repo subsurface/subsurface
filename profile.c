@@ -1,6 +1,5 @@
 /* profile.c */
 /* creates all the necessary data for drawing the dive profile
- * uses cairo to draw it
  */
 #include "gettext.h"
 #include <limits.h>
@@ -21,9 +20,6 @@ char dc_number = 0;
 
 
 static struct plot_data *last_pi_entry = NULL;
-
-#define cairo_set_line_width_scaled(cr, w) \
-	cairo_set_line_width((cr), (w) * plot_scale);
 
 /* debugging tool - not normally used */
 static void dump_pi (struct plot_info *pi)

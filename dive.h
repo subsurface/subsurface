@@ -611,20 +611,6 @@ extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct d
 
 extern void parse_file(const char *filename, char **error);
 
-extern void show_dive_info(struct dive *);
-
-extern void show_dive_equipment(struct dive *, int w_idx);
-extern void clear_equipment_widgets(void);
-
-extern void show_dive_stats(struct dive *);
-extern void clear_stats_widgets(void);
-
-extern void show_gps_locations(void);
-extern void show_gps_location(struct dive *, void (*callback)(float, float));
-
-extern void show_yearly_stats(void);
-
-extern void update_dive(struct dive *new_dive);
 extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
@@ -667,8 +653,6 @@ extern int add_new_dive(struct dive *dive);
 extern bool edit_trip(dive_trip_t *trip);
 extern int edit_dive_info(struct dive *dive, bool newdive);
 extern int edit_multi_dive_info(struct dive *single_dive);
-extern void dive_list_update_dives(void);
-extern void flush_divelist(struct dive *dive);
 
 extern void set_dc_nickname(struct dive *dive);
 extern void set_autogroup(bool value);
