@@ -700,13 +700,7 @@ const char *monthname(int mon);
 #define FIVE_STARS	UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR UTF8_BLACKSTAR
 extern const char *star_strings[];
 
-/* enum holding list of OS features */
-typedef enum {
-	UTF8_FONT_WITH_STARS
-} os_feature_t;
-
 extern const char *existing_filename;
-extern bool subsurface_os_feature_available(os_feature_t);
 extern void subsurface_command_line_init(int *, char ***);
 extern void subsurface_command_line_exit(int *, char ***);
 

@@ -89,21 +89,6 @@ void subsurface_command_line_exit(int *argc, char ***argv)
 	free(*argv);
 }
 
-/* check if we are running a newer OS version */
-bool subsurface_os_feature_available(os_feature_t f)
-{
-	switch (f) {
-	case UTF8_FONT_WITH_STARS:
-		if ((GetVersion() & 0xff) < 6)
-			return FALSE; /* version less than Vista */
-		else
-			return TRUE;
-		break;
-	default:
-		return TRUE;
-	}
-}
-
 int enumerate_devices (device_callback_t callback, void *userdata)
 {
 	// Open the registry key.

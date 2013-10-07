@@ -48,11 +48,6 @@ void subsurface_command_line_exit(int *argc, char ***argv)
 	/* this is a no-op */
 }
 
-bool subsurface_os_feature_available(os_feature_t f)
-{
-	return TRUE;
-}
-
 int enumerate_devices (device_callback_t callback, void *userdata)
 {
 	int index = -1;
