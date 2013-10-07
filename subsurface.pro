@@ -3,6 +3,9 @@ include(subsurface-configure.pri)
 QT = core gui network webkit svg
 INCLUDEPATH += qt-ui $$PWD
 
+mac: TARGET = Subsurface
+else: TARGET = subsurface
+
 VERSION = 3.1
 
 HEADERS = \
@@ -127,13 +130,30 @@ all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
 
 DESKTOP_FILE = subsurface.desktop
-ICON = subsurface-icon.svg
+mac: ICON = packaging/macosx/Subsurface.icns
+else: ICON = subsurface-icon.svg
 MANPAGE = subsurface.1
-XSLT_FILES = xslt/*.xslt xslt/*.xsl
+XSLT_FILES = xslt
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
 MARBLEDIR = marbledata/maps
 
-OTHER_FILES += $$DESKTOPFILE $$ICON $$MANPAGE $$XSLT_FILES $$DOC_FILES $$MARBLEDIR
+# This information will go into the Windows .rc file and linked into the .exe
+QMAKE_TARGET_COMPANY = subsurface team
+QMAKE_TARGET_DESCRIPTION = subsurface dive log
+QMAKE_TARGET_COPYRIGHT = Linus Torvalds, Dirk Hohndel and others
+
+# And this is the Mac Info.plist file
+# qmake automatically generates sed rules to replace:
+#  token                qmake expansion
+#  @ICON@               $$ICON
+#  @TYPEINFO@           first 4 chars of $$QMAKE_PKGINFO_TYPEINFO
+#  @EXECUTABLE@         $$QMAKE_ORIG_TARGET
+#  @LIBRARY@            $$QMAKE_ORIG_TARGET
+#  @SHORT_VERSION@      $$VER_MAJ.$$VER_MIN
+QMAKE_INFO_PLIST = packaging/macosx/Info.plist.in
+
+OTHER_FILES += $$DESKTOPFILE $$ICON $$MANPAGE $$XSLT_FILES $$DOC_FILES $$MARBLEDIR \
+        $$QMAKE_INFO_PLIST
 
 include(subsurface-gen-version.pri)
 include(subsurface-install.pri)

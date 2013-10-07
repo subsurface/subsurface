@@ -17,6 +17,6 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>CFBUNDLEVERSION_TOKEN</string>
+	<string>@SHORT_VERSION@</string>
 </dict>
 </plist>
