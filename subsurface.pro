@@ -126,4 +126,14 @@ doc.commands += $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
 
+DESKTOP_FILE = subsurface.desktop
+ICON = subsurface-icon.svg
+MANPAGE = subsurface.1
+XSLT_FILES = xslt/*.xslt xslt/*.xsl
+DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
+MARBLEDIR = marbledata/maps
+
+OTHER_FILES += $$DESKTOPFILE $$ICON $$MANPAGE $$XSLT_FILES $$DOC_FILES $$MARBLEDIR
+
 include(subsurface-gen-version.pri)
+include(subsurface-install.pri)
