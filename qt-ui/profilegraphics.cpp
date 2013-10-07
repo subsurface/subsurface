@@ -995,7 +995,7 @@ void ProfileGraphicsView::plot_depth_profile()
 		marker = 9144;
 		break;	/* 30 ft */
 	}
-	maxline = MAX(gc.pi.maxdepth + marker, maxdepth * 2 / 3);
+	maxline = qMax(gc.pi.maxdepth + marker, maxdepth * 2 / 3);
 
 	c = getColor(DEPTH_GRID);
 
