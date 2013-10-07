@@ -323,11 +323,13 @@ double ascii_strtod(char *str, char **ptr)
 done:
 	if (!numbers)
 		goto no_conversion;
-	*ptr = p-1;
+	if (ptr)
+		*ptr = p-1;
 	return sign ? -val : val;
 
 no_conversion:
-	*ptr = str;
+	if (ptr)
+		*ptr = str;
 	return 0.0;
 }
 
