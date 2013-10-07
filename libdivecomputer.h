@@ -7,8 +7,7 @@
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
 
-/* handling uemis Zurich SDA files */
-#include "uemis.h"
+#include "dive.h"
 
 #ifdef __cplusplus
 extern "C" {

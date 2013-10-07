@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-#include "dive.h"
-
 typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
 
 struct divecomputer;
