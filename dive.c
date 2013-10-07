@@ -2,6 +2,7 @@
 /* maintains the internal dive list structure */
 #include <string.h>
 #include <stdio.h>
+#include <limits.h>
 #include "gettext.h"
 #include "dive.h"
 
