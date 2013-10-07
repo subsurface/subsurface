@@ -10,21 +10,17 @@
  * Zurich) but did not actually use any of his copyrighted code, therefore the license under which
  * he released his code does not apply to this new implementation in C
  */
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <dirent.h>
 #include <stdio.h>
-#include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-#include "gettext.h"
 
+#include "gettext.h"
 #include "libdivecomputer.h"
 #include "uemis.h"
-#include "dive.h"
 #include "divelist.h"
-#include "display.h"
+
 #define ERR_FS_ALMOST_FULL QT_TR_NOOP("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
 #define ERR_FS_FULL QT_TR_NOOP("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
 #define ERR_FS_SHORT_WRITE QT_TR_NOOP("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")

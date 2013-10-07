@@ -10,8 +10,6 @@ extern int validate_gas(const char *text, int *o2_p, int *he_p);
 extern int validate_po2(const char *text, int *mbar_po2);
 extern timestamp_t current_time_notz(void);
 extern void show_planned_dive(char **error_string_p);
-extern int add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, bool is_rel);
-extern void add_po2_to_nth_dp(struct diveplan *diveplan, int idx, int po2);
 extern void set_last_stop(bool last_stop_6m);
 
 extern struct diveplan diveplan;

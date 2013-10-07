@@ -336,45 +336,6 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 	return dp;
 }
 
-/* return -1 to warn about potentially very long calculation */
-int add_duration_to_nth_dp(struct diveplan *diveplan, int idx, int duration, bool is_rel)
-{
-	struct divedatapoint *pdp, *dp = get_nth_dp(diveplan, idx);
-	if (idx > 0) {
-		pdp = get_nth_dp(diveplan, idx - 1);
-		if (duration && (is_rel || duration <= pdp->time))
-			duration += pdp->time;
-	}
-	dp->time = duration;
-	if (duration > 180 * 60)
-		return -1;
-	return 0;
-}
-
-/* this function is ONLY called from the dialog callback - so it
- * marks this entry as 'entered'.
- * Do NOT call from other parts of the planning code without changing
- * that logic */
-void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth)
-{
-	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
-	dp->depth = depth;
-	dp->entered = TRUE;
-}
-
-void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he)
-{
-	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
-	dp->o2 = o2;
-	dp->he = he;
-}
-
-void add_po2_to_nth_dp(struct diveplan *diveplan, int idx, int po2)
-{
-	struct divedatapoint *dp = get_nth_dp(diveplan, idx);
-	dp->po2 = po2;
-}
-
 void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
 	struct divedatapoint **lastdp = &diveplan->dp;

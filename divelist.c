@@ -12,9 +12,6 @@
  * int get_divenr(struct dive *dive)
  * double init_decompression(struct dive *dive)
  * void update_cylinder_related_info(struct dive *dive)
- * void get_location(struct dive *dive, char **str)
- * void get_cylinder(struct dive *dive, char **str)
- * void get_suit(struct dive *dive, char **str)
  * void dump_trip_list(void)
  * dive_trip_t *find_matching_trip(timestamp_t when)
  * void insert_trip(dive_trip_t **dive_trip_p)
@@ -99,38 +96,6 @@ int trip_has_selected_dives(dive_trip_t *trip)
 			return 1;
 	}
 	return 0;
-}
-
-/* Get the values as we want to show them. Whole feet. But meters with one decimal for
- * values less than 20m, without decimals for larger values */
-void get_depth_values(int depth, int *depth_int, int *depth_decimal, int *show_decimal)
-{
-	int integer, frac;
-
-	*show_decimal = 1;
-	switch (prefs.units.length) {
-	case METERS:
-		/* To tenths of meters */
-		depth = (depth + 49) / 100;
-		integer = depth / 10;
-		frac = depth % 10;
-		if (integer < 20)
-			break;
-		if (frac >= 5)
-			integer++;
-		*show_decimal = 0;
-		break;
-	case FEET:
-		integer = mm_to_feet(depth) + 0.5;
-		*show_decimal = 0;
-		break;
-	default:
-		/* can't happen */
-		return;
-	}
-	*depth_int = integer;
-	if (*show_decimal)
-		*depth_decimal = frac;
 }
 
 /*

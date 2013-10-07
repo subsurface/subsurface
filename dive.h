@@ -649,11 +649,6 @@ extern void remember_event(const char *eventname);
 extern int evn_foreach(void (*callback)(const char *, int *, void *), void *data);
 extern void clear_events(void);
 
-extern int add_new_dive(struct dive *dive);
-extern bool edit_trip(dive_trip_t *trip);
-extern int edit_dive_info(struct dive *dive, bool newdive);
-extern int edit_multi_dive_info(struct dive *single_dive);
-
 extern void set_dc_nickname(struct dive *dive);
 extern void set_autogroup(bool value);
 extern int total_weight(struct dive *);
@@ -717,9 +712,6 @@ struct diveplan {
 };
 
 struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2);
-void add_depth_to_nth_dp(struct diveplan *diveplan, int idx, int depth);
-void add_gas_to_nth_dp(struct diveplan *diveplan, int idx, int o2, int he);
-void free_dps(struct divedatapoint *dp);
 void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
 void dump_plan(struct diveplan *diveplan);

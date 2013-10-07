@@ -6,17 +6,10 @@
  *
  * Licensed under the MIT license.
  */
-
-#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
-#include <stdlib.h>
 
 #include "gettext.h"
-#define __USE_XOPEN
-#include <time.h>
-#include <math.h>
 
 #include "dive.h"
 #include "uemis.h"
