@@ -91,7 +91,8 @@ private:
 	enum { NONE, DIVE, TRIP, ADD } editMode;
 	Completers completers;
 	void enableEdition();
-    void resetPallete();
+	void resetPallete();
+	QString printGPSCoords(int lat, int lon);
 };
 
 #endif

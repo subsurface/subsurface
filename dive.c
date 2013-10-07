@@ -771,10 +771,6 @@ struct dive *fixup_dive(struct dive *dive)
 	int i;
 	struct divecomputer *dc;
 
-	add_people(dive->buddy);
-	add_people(dive->divemaster);
-	add_location(dive->location);
-	add_suit(dive->suit);
 	sanitize_cylinder_info(dive);
 	dive->maxcns = dive->cns;
 

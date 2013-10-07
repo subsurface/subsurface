@@ -8,7 +8,6 @@
 #include "mainwindow.h"
 #include "../helpers.h"
 #include "../statistics.h"
-#include "../info.h"
 #include "divelistview.h"
 #include "modeldelegates.h"
 #include "globe.h"
@@ -265,9 +264,7 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEMP(d, airtemp);
 	UPDATE_TEMP(d, watertemp);
 	if (d) {
-		char buffer[256];
-		print_gps_coordinates(buffer, sizeof buffer, d->latitude.udeg, d->longitude.udeg);
-		ui.coordinates->setText(buffer);
+		ui.coordinates->setText(printGPSCoords(d->latitude.udeg, d->longitude.udeg));
 		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 			// only use trip relevant fields
@@ -328,7 +325,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui.airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
 			ui.airPressureText->clear();
-        ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
+		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
 		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
 		ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
 		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));
@@ -425,10 +422,7 @@ void MainTab::acceptChanges()
 	} else {
 		struct dive *curr = current_dive;
 		//Reset coordinates field, in case it contains garbage.
-		char buffer[256];
-		print_gps_coordinates(buffer, sizeof buffer
-			, current_dive->latitude.udeg, current_dive->longitude.udeg);
-		ui.coordinates->setText(buffer);
+		ui.coordinates->setText(printGPSCoords(current_dive->latitude.udeg, current_dive->longitude.udeg));
 		if (notesBackup[curr].buddy != ui.buddy->text() ||
 			notesBackup[curr].suit != ui.suit->text() ||
 			notesBackup[curr].notes != ui.notes->toPlainText() ||
@@ -657,10 +651,7 @@ void MainTab::on_location_textChanged(const QString& text)
 				    (dive->latitude.udeg || dive->longitude.udeg)) {
 					EDIT_SELECTED_DIVES( mydive->latitude = dive->latitude );
 					EDIT_SELECTED_DIVES( mydive->longitude = dive->longitude );
-					char buffer[256];
-					print_gps_coordinates(buffer, sizeof buffer
-						, dive->latitude.udeg, dive->longitude.udeg);
-					ui.coordinates->setText(buffer);
+					ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
 					markChangedWidget(ui.coordinates);
 					break;
 				}
@@ -733,4 +724,27 @@ void MainTab::editWeightWidget(const QModelIndex& index)
 
 	if (index.isValid() && index.column() != WeightModel::REMOVE)
 		ui.weights->edit(index);
+}
+
+QString MainTab::printGPSCoords(int lat, int lon)
+{
+	unsigned int latdeg, londeg;
+	unsigned int ilatmin, ilonmin;
+	QString lath, lonh, result;
+
+	if (!lat && !lon)
+		return QString("");
+
+	lath = lat >= 0 ? tr("N") : tr("S");
+	lonh = lon >= 0 ? tr("E") : tr("W");
+	lat = abs(lat);
+	lon = abs(lon);
+	latdeg = lat / 1000000;
+	londeg = lon / 1000000;
+	ilatmin = (lat % 1000000) * 60;
+	ilonmin = (lon % 1000000) * 60;
+	result.sprintf("%s%u%s %2d.%05d\' , %s%u%s %2d.%05d\'",
+		       lath.toLocal8Bit().data(), latdeg, UTF8_DEGREE, ilatmin / 1000000, (ilatmin % 1000000) / 10,
+		       lonh.toLocal8Bit().data(), londeg, UTF8_DEGREE, ilonmin / 1000000, (ilonmin % 1000000) / 10);
+	return result;
 }
