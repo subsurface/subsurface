@@ -33,3 +33,9 @@ ui_*
 /subsurface.includes
 *.kdev4
 callgrind.out.*
+
+.rcc
+.moc
+.uic
+.obj
+subsurface.pro.user*

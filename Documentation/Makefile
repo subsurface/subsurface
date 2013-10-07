@@ -7,20 +7,20 @@ BROWSER = firefox
 
 all: doc $(addprefix $(DOCNAME).,pdf text)
 
-doc: $(HTMLDOC)
+doc: $(OUT)$(HTMLDOC)
 
-$(DOCNAME).text: $(DOCSOURCE)
+$(OUT)$(DOCNAME).text: $(DOCSOURCE)
 	$(A2X) -f text $<
 
-$(DOCNAME).pdf: $(DOCSOURCE)
+$(OUT)$(DOCNAME).pdf: $(DOCSOURCE)
 	$(A2X) -f pdf $<
 
-$(HTMLDOC): $(DOCSOURCE)
+$(OUT)$(HTMLDOC): $(DOCSOURCE)
 	@echo "if asciidoc isn't found no HTML documentation is produced but Subsurface is still functional"
 	$(ASCIIDOC) $< || true
 
 # Alternatively::
-$(DOCNAME).xhtml: $(DOCSOURCE)
+$(OUT)$(DOCNAME).xhtml: $(DOCSOURCE)
 	$(A2X) --icons -f xhtml $<
 
 show: $(HTMLDOC)
