@@ -694,9 +694,7 @@ typedef enum {
 } os_feature_t;
 
 extern const char *existing_filename;
-extern const char *subsurface_gettext_domainpath(char *);
 extern bool subsurface_os_feature_available(os_feature_t);
-extern bool subsurface_launch_for_uri(const char *);
 extern void subsurface_command_line_init(int *, char ***);
 extern void subsurface_command_line_exit(int *, char ***);
 

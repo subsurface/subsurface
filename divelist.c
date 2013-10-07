@@ -46,7 +46,6 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
-#include "webservice.h"
 
 static short dive_list_changed = FALSE;
 

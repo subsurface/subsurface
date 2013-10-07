@@ -496,7 +496,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 	return stoplevels;
 }
 
-#if USE_GTK_UI
+#if DO_WE_WANT_THIS_IN_QT
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 {
 	char buffer[20000];
@@ -722,12 +722,11 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		record_dive(dive);
 		stopidx--;
 	}
-#if USE_GTK_UI
+
+#if DO_WE_WANT_THIS_IN_QT
 	add_plan_to_notes(diveplan, dive);
-	/* now make the dive visible in the dive list */
-	report_dives(FALSE, FALSE);
-	show_and_select_dive(dive);
 #endif
+
 error_exit:
 	free(stoplevels);
 	free(gaschanges);
@@ -756,30 +755,6 @@ static int get_tenths(const char *begin, const char **endp)
 		do {
 			end++;
 		} while (isdigit(*end));
-	}
-	*endp = end;
-	return value;
-}
-
-static int get_thousandths(const char *begin, const char **endp)
-{
-	char *end;
-	int value = strtol(begin, &end, 10);
-
-	if (begin == end)
-		return -1;
-	value *= 1000;
-
-	/* now deal with up to three more digits after decimal point */
-	if (*end == '.') {
-		int factor = 100;
-		do {
-			++end;
-			if (!isdigit(*end))
-				break;
-			value += (*end - '0') * factor;
-			factor /= 10;
-		} while (factor);
 	}
 	*endp = end;
 	return value;
@@ -835,112 +810,6 @@ int validate_gas(const char *text, int *o2_p, int *he_p)
 	return 1;
 }
 
-int validate_time(const char *text, int *sec_p, int *rel_p)
-{
-	int min, sec, rel;
-	char *end;
-
-	if (!text)
-		return 0;
-
-	while (isspace(*text))
-		text++;
-
-	rel = 1;
-	if (*text == '+') {
-		rel = 1;
-		text++;
-		while (isspace(*text))
-			text++;
-	} else if (*text == '@') {
-		rel = 0;
-		text++;
-		while (isspace(*text))
-			text++;
-	}
-
-	min = strtol(text, &end, 10);
-	if (text == end)
-		return 0;
-
-	if (min < 0 || min > 1000)
-		return 0;
-
-	/* Ok, minutes look ok */
-	text = end;
-	sec = 0;
-	if (*text == ':') {
-		text++;
-		sec = strtol(text, &end, 10);
-		if (end != text+2)
-			return 0;
-		if (sec < 0)
-			return 0;
-		text = end;
-		if (*text == ':') {
-			if (sec >= 60)
-				return 0;
-			min = min*60 + sec;
-			text++;
-			sec = strtol(text, &end, 10);
-			if (end != text+2)
-				return 0;
-			if (sec < 0)
-				return 0;
-			text = end;
-		}
-	}
-
-	/* Maybe we should accept 'min' at the end? */
-	if (isspace(*text))
-		text++;
-	if (*text)
-		return 0;
-
-	*sec_p = min*60 + sec;
-	*rel_p = rel;
-	return 1;
-}
-
-int validate_depth(const char *text, int *mm_p)
-{
-	int depth, imperial;
-
-	if (!text)
-		return 0;
-
-	depth = get_tenths(text, &text);
-	if (depth < 0)
-		return 0;
-
-	while (isspace(*text))
-		text++;
-
-	imperial = get_units()->length == FEET;
-	if (*text == 'm') {
-		imperial = 0;
-		text++;
-	} else if (!strcasecmp(text, tr("ft"))) {
-		imperial = 1;
-		text += 2;
-	}
-	while (isspace(*text))
-		text++;
-	if (*text)
-		return 0;
-
-	if (imperial) {
-		depth = feet_to_mm(depth / 10.0);
-	} else {
-		depth *= 100;
-	}
-	*mm_p = depth;
-	/* we don't support extreme depths */
-	if (depth > 400000)
-		return 0;
-	return 1;
-}
-
 int validate_po2(const char *text, int *mbar_po2)
 {
 	int po2;
@@ -964,78 +833,3 @@ int validate_po2(const char *text, int *mbar_po2)
 	return 1;
 }
 
-int validate_volume(const char *text, int *sac)
-{
-	int volume, imperial;
-
-	if (!text)
-		return 0;
-
-	volume = get_thousandths(text, &text);
-	if (volume < 0)
-		return 0;
-
-	while (isspace(*text))
-		text++;
-
-	imperial = get_units()->volume == CUFT;
-	if (*text == 'l') {
-		imperial = 0;
-		text++;
-	} else if (!strncasecmp(text, tr("cuft"), 4)) {
-		imperial = 1;
-		text += 4;
-	}
-	while (isspace(*text) || *text == '/')
-		text++;
-	if (!strncasecmp(text, tr("min"), 3))
-		text += 3;
-	while (isspace(*text))
-		text++;
-	if (*text)
-		return 0;
-	if (imperial)
-		volume = cuft_to_l(volume) + 0.5;	/* correct for mcuft -> ml */
-	*sac = volume;
-	return 1;
-}
-
-#if USE_GTK_UI
-struct diveplan diveplan = {};
-char *cache_data = NULL;
-struct dive *planned_dive = NULL;
-
-/* make a copy of the diveplan so far and display the corresponding dive */
-void show_planned_dive(char **error_string_p)
-{
-	struct diveplan tempplan;
-	struct divedatapoint *dp, **dpp;
-
-	memcpy(&tempplan, &diveplan, sizeof(struct diveplan));
-	dpp = &tempplan.dp;
-	dp = diveplan.dp;
-	while (dp && *dpp) {
-		*dpp = malloc(sizeof(struct divedatapoint));
-		memcpy(*dpp, dp, sizeof(struct divedatapoint));
-		dp = dp->next;
-		dpp = &(*dpp)->next;
-	}
-#if DEBUG_PLAN & 1
-	printf("in show_planned_dive:\n");
-	dump_plan(&tempplan);
-#endif
-	plan(&tempplan, &cache_data, &planned_dive, error_string_p);
-	free_dps(tempplan.dp);
-}
-
-/* Subsurface follows the lead of most divecomputers to use times
- * without timezone - so all times are implicitly assumed to be
- * local time of the dive location; so in order to give the current
- * time in that way we actually need to add the timezone offset */
-timestamp_t current_time_notz(void)
-{
-	time_t now = time(NULL);
-	struct tm *local = localtime(&now);
-	return utc_mktime(local);
-}
-#endif

@@ -26,9 +26,6 @@ struct preferences default_prefs = {
 	.font_size = 14.0,
 	.show_invalid = FALSE,
 	.show_time = FALSE,
-#ifdef USE_GTK_UI
-	.map_provider = OSM_GPS_MAP_SOURCE_VIRTUAL_EARTH_HYBRID,
-#endif
 };
 
 struct units *get_units()

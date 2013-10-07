@@ -7,9 +7,6 @@
 #include "device.h"
 #include "divelist.h"
 #include "display.h"
-#ifdef USE_GTK_UI
-#include "display-gtk.h"
-#endif
 
 #include "libdivecomputer.h"
 #include "libdivecomputer/version.h"
@@ -27,21 +24,6 @@ double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns;
 static bool in_deco, first_temp_is_air;
-
-#if USE_GTK_UI
-static GError *error(const char *fmt, ...)
-{
-	va_list args;
-	GError *error;
-
-	va_start(args, fmt);
-	error = g_error_new_valist(
-		g_quark_from_string("subsurface"),
-		DIVE_ERROR_PARSE, fmt, args);
-	va_end(args);
-	return error;
-}
-#endif
 
 static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 {

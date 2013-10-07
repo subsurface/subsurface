@@ -9,21 +9,6 @@
 
 const char system_divelist_default_font[] = "Sans 8";
 
-void subsurface_flush_conf(void)
-{
-	/* this is a no-op */
-}
-
-void subsurface_close_conf(void)
-{
-	/* this is a no-op */
-}
-
-const char *subsurface_icon_name()
-{
-	return "subsurface-icon.svg";
-}
-
 const char *system_default_filename(void)
 {
 	const char *home, *user;
@@ -36,17 +21,6 @@ const char *system_default_filename(void)
 	buffer = malloc(len);
 	snprintf(buffer, len, "%s/subsurface/%s.xml", home, user);
 	return buffer;
-}
-
-const char *subsurface_gettext_domainpath(char *argv0)
-{
-	if (argv0[0] == '.') {
-		/* we're starting a local copy */
-		return "./share/locale";
-	} else {
-		/* subsurface is installed, so system dir should be fine */
-		return NULL;
-	}
 }
 
 void subsurface_command_line_init(int *argc, char ***argv)

@@ -25,9 +25,6 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
-#if USE_GTK_UI
-#include "display-gtk.h"
-#endif
 #define ERR_FS_ALMOST_FULL QT_TR_NOOP("Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
 #define ERR_FS_FULL QT_TR_NOOP("Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
 #define ERR_FS_SHORT_WRITE QT_TR_NOOP("Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
@@ -52,34 +49,7 @@ static int number_of_files;
 static char *mbuf = NULL;
 static int mbuf_size = 0;
 
-#if USE_GTK_UI
-struct argument_block {
-	const char *mountpath;
-	progressbar_t *progress;
-	bool force_download;
-};
-#endif
-
 static int nr_divespots = 0;
-
-#if USE_GTK_UI
-static int import_thread_done = 0, import_thread_cancelled;
-static const char *progress_bar_text = "";
-static double progress_bar_fraction = 0.0;
-
-static GError *error(const char *fmt, ...)
-{
-	va_list args;
-	GError *error;
-
-	va_start(args, fmt);
-	error = g_error_new_valist(
-		g_quark_from_string("subsurface"),
-		DIVE_ERROR_PARSE, fmt, args);
-	va_end(args);
-	return error;
-}
-#endif
 
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
@@ -905,63 +875,3 @@ bail:
 	return result;
 }
 
-#if USE_GTK_UI
-static void *pthread_wrapper(void *_data)
-{
-	struct argument_block *args = _data;
-	const char *err_string = do_uemis_download(args);
-	import_thread_done = 1;
-	return (void *)err_string;
-}
-
-/* this simply ends the dialog without a response and asks not to be fired again
- * as we set this function up in every loop while uemis_download is waiting for
- * the download to finish */
-static bool timeout_func(gpointer _data)
-{
-	GtkDialog *dialog = _data;
-	if (!import_thread_cancelled)
-		gtk_dialog_response(dialog, GTK_RESPONSE_NONE);
-	return FALSE;
-}
-
-GError *uemis_download(const char *mountpath, progressbar_t *progress,
-			GtkDialog *dialog, bool force_download)
-{
-	pthread_t pthread;
-	void *retval;
-	struct argument_block args = {mountpath, progress, force_download};
-
-	/* I'm sure there is some better interface for waiting on a thread in a UI main loop */
-	import_thread_done = 0;
-	progress_bar_text = "";
-	progress_bar_fraction = 0.0;
-	pthread_create(&pthread, NULL, pthread_wrapper, &args);
-	/* loop here until the import is done or was cancelled by the user;
-	 * in order to get control back from gtk we register a timeout function
-	 * that ends the dialog with no response every 100ms; we then update the
-	 * progressbar and setup the timeout again - unless of course the user
-	 * pressed cancel, in which case we just wait for the download thread
-	 * to react to that and exit */
-	while (!import_thread_done) {
-		if (!import_thread_cancelled) {
-			int result;
-			g_timeout_add(100, timeout_func, dialog);
-			update_progressbar(args.progress, progress_bar_fraction);
-			update_progressbar_text(args.progress, progress_bar_text);
-			result = gtk_dialog_run(dialog);
-			if (result == GTK_RESPONSE_CANCEL)
-				import_thread_cancelled = TRUE;
-		} else {
-			update_progressbar(args.progress, progress_bar_fraction);
-			update_progressbar_text(args.progress, tr("Cancelled, exiting cleanly..."));
-			usleep(100000);
-		}
-	}
-	if (pthread_join(pthread, &retval) < 0)
-		return error("Pthread return with error");
-	if (retval)
-		return error(retval);
-	return NULL;
-}
-#endif
