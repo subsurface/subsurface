@@ -39,8 +39,9 @@ MOC_OBJS = $(HEADERS_NEEDING_MOC:.h=.moc.o)
 ALL_OBJS = $(OBJS) $(MOC_OBJS)
 
 # handling of uic
-UIC_HEADERS = $(patsubst %.ui, ui_%.h, $(subst qt-ui/,,$(FORMS)))
-vpath %.ui qt-ui
+UIC_HEADERS = $(patsubst qt-ui/%.ui, .uic/ui_%.h, $(FORMS))
+# Needs to exist before we add path
+$(shell mkdir -p .uic)
 vpath ui_%.h .uic
 
 # Files for using Qt Creator
@@ -187,7 +188,7 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CC) $(CFLAGS) $(EXTRA_FLAGS) -MD -MF .dep/$@.dep -c -o $@ $<
 
-%.o: %.cpp $(UIC_HEADERS)
+%.o: %.cpp
 	@$(PRETTYECHO) '    CXX' $<
 	@mkdir -p .dep/$(@D)
 	$(COMPILE_PREFIX)$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) -I.uic -Iqt-ui -MD -MF .dep/$@.dep -c -o $@ $<
@@ -211,18 +212,11 @@ MOCFLAGS = $(filter -I%, $(CXXFLAGS) $(EXTRA_FLAGS)) $(filter -D%, $(CXXFLAGS) $
 	$(COMPILE_PREFIX)$(RCC) $< -o $@
 %.qrc:
 
-# This creates the ui headers.
-ui_%.h: %.ui .uic
+# Create the .ui headers in .uic searched by vpath
+# Added to include path in cpp rule
+.uic/ui_%.h: qt-ui/%.ui
 	@$(PRETTYECHO) '    UIC' $<
-	@mkdir -p .uic/qt-ui
-	$(COMPILE_PREFIX)$(UIC) $< -o .uic/$@
-
-# This forces the creation of ui headers with the wrong path
-# This is required because the -MG option to the compiler outputs
-# unknown files with no path prefix
-ui_%.h: qt-ui/%.ui
-	@$(PRETTYECHO) '    UIC' $<
-	$(COMPILE_PREFIX)$(UIC) $< -o qt-ui/$@
+	$(COMPILE_PREFIX)$(UIC) $< -o $@
 
 share/locale/%.UTF-8/LC_MESSAGES/$(NAME).mo: po/%.po po/%.aliases
 	@$(PRETTYECHO) '    MSGFMT' $*.po
@@ -254,7 +248,7 @@ clean:
 	rm -f $(ALL_OBJS) *~ $(NAME) $(VERSION_FILE) \
 		$(NAME).exe po/*~ po/$(NAME)-new.pot \
 		*.moc qt-ui/*.moc \
-		$(UIC_HEADERS:%=qt-ui/%) .uic/*.h \
+		.uic/*.h \
 		$(RESOURCES:.qrc=.qrc.cpp)
 	rm -rf share
 
