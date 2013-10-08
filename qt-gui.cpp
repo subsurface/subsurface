@@ -269,7 +269,9 @@ QString get_cylinder_used_gas_string(cylinder_t *cyl, bool showunit)
 
 QString get_temperature_string(temperature_t temp, bool showunit)
 {
-	if (prefs.units.temperature == units::CELSIUS) {
+	if (temp.mkelvin == 0) {
+		return "";  //temperature not defined
+	} else if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
 		return QString("%1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
 								.arg(showunit ? tr("C") : "");
