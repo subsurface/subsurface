@@ -692,7 +692,7 @@ extern double restore_deco_state(char *data);
 
 struct divedatapoint {
 	int time;
-	int depth;
+	unsigned int depth;
 	int o2;
 	int he;
 	int po2;

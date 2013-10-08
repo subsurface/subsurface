@@ -12,12 +12,12 @@
 #include "planner.h"
 #include "gettext.h"
 
-int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
-		     30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
-		     60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
-		     90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
-		     180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
-		     320000, 340000, 360000, 380000
+unsigned int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
+				  30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
+				  60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
+				  90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
+				  180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
+				  320000, 340000, 360000, 380000
 };
 double plangflow, plangfhigh;
 char *disclaimer;
@@ -146,7 +146,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap, const char **error_
 }
 
 /* how many seconds until we can ascend to the next stop? */
-int time_at_last_depth(struct dive *dive, int o2, int he, int next_stop, char **cached_data_p, const char **error_string_p)
+static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int next_stop, char **cached_data_p, const char **error_string_p)
 {
 	int depth, gasidx;
 	double surface_pressure, tissue_tolerance;
@@ -360,7 +360,7 @@ struct divedatapoint * plan_add_segment(struct diveplan *diveplan, int duration,
 }
 
 struct gaschanges {
-	int depth;
+	unsigned int depth;
 	int gasidx;
 };
 
@@ -405,11 +405,11 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 }
 
 /* sort all the stops into one ordered list */
-static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
+static unsigned int *sort_stops(unsigned int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 {
 	int i, gi, di;
 	int total = dnr + gnr;
-	int *stoplevels = malloc(total * sizeof(int));
+	unsigned int *stoplevels = malloc(total * sizeof(int));
 
 	/* no gaschanges */
 	if (gnr == 0) {
@@ -560,12 +560,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	struct dive *dive;
 	struct sample *sample;
 	int wait_time, o2, he, po2;
-	int ceiling, depth, transitiontime;
-	int stopidx, gi;
+	int transitiontime, gi;
+	unsigned int stopidx, depth, ceiling;
 	double tissue_tolerance;
 	struct gaschanges *gaschanges;
 	int gaschangenr;
-	int *stoplevels;
+	unsigned int *stoplevels;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	if (!diveplan->surface_pressure)

@@ -23,7 +23,7 @@
 struct buehlmann_config {
   double  satmult;		//! safety at inert gas accumulation as percentage of effect (more than 100).
   double  desatmult;		//! safety at inert gas depletion as percentage of effect (less than 100).
-  int  last_deco_stop_in_mtr;	//! depth of last_deco_stop.
+  unsigned int  last_deco_stop_in_mtr;	//! depth of last_deco_stop.
   double  gf_high;		//! gradient factor high (at surface).
   double  gf_low;		//! gradient factor low (at bottom/start of deco calculation).
   double  gf_low_position_min;	//! gf_low_position below surface_min_shallow.
