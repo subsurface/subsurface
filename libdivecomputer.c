@@ -453,7 +453,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Check if the libdivecomputer version already supports salinity & atmospheric
 	dc_salinity_t salinity = {
 		.type = DC_WATER_SALT,
-		.density = 1.03
+		.density = SEAWATER_SALINITY/10.0
 	};
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
@@ -461,7 +461,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dc_parser_destroy(parser);
 		return rc;
 	}
-	dive->dc.salinity = salinity.density * 10000.0 + 0.5;
+	dive->dc.salinity = salinity.density * 10.0 + 0.5;
 
 	double surface_pressure = 1.0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
