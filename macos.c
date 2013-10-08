@@ -38,16 +38,6 @@ const char *system_default_filename(void)
 	return buffer;
 }
 
-void subsurface_command_line_init(int *argc, char ***argv)
-{
-	/* this is a no-op */
-}
-
-void subsurface_command_line_exit(int *argc, char ***argv)
-{
-	/* this is a no-op */
-}
-
 int enumerate_devices (device_callback_t callback, void *userdata)
 {
 	int index = -1;

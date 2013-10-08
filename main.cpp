@@ -32,23 +32,23 @@ int main(int argc, char **argv)
 	setup_system_prefs();
 	prefs = default_prefs;
 
-	subsurface_command_line_init(&argc, &argv);
 	init_ui(&argc, &argv);
 	parse_xml_init();
 
 	QStringList files;
 	QStringList importedFiles;
-	for (i = 1; i < argc; i++) {
-		const char *a = argv[i];
-		if (a[0] == '-') {
-			parse_argument(a);
+	QStringList arguments = QCoreApplication::arguments();
+	for (i = 1; i < arguments.length(); i++) {
+		QString a = arguments.at(i);
+		if (a.at(0) == '-') {
+			parse_argument(a.toLocal8Bit().data());
 			continue;
 		}
 		if (imported) {
-			importedFiles.push_back( QString(a) );
+			importedFiles.push_back(a);
 		} else {
 			no_filenames = false;
-			files.push_back( QString(a) );
+			files.push_back(a);
 		}
 	}
 	if (no_filenames) {
@@ -57,7 +57,6 @@ int main(int argc, char **argv)
 			files.push_back( QString(prefs.default_filename) );
 	}
 	parse_xml_exit();
-	subsurface_command_line_exit(&argc, &argv);
 	mainWindow()->loadFiles(files);
 	mainWindow()->importFiles(importedFiles);
 	run_ui();
