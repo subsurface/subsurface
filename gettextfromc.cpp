@@ -4,7 +4,7 @@
 
 char *gettextFromC::gettext(const char *text)
 {
-	return tr(text).toLocal8Bit().data();
+	return strdup(tr(text).toLocal8Bit().data());
 }
 
 gettextFromC* gettextFromC::instance()
