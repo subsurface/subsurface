@@ -15,7 +15,7 @@ const char *system_default_filename(void)
 	int len;
 
 	/* I don't think this works on Windows */
-	user = getenv("LOGNAME");
+	user = getenv("USERNAME");
 	if (! SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, datapath))) {
 		datapath[0] = '.';
 		datapath[1] = '\0';
