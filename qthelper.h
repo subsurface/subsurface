@@ -5,6 +5,10 @@
 #include <QString>
 #include <stdint.h>
 #include "dive.h"
+#include <QTranslator>
+
+// global pointers for our translation
+extern QTranslator *qtTranslator, *ssrfTranslator;
 
 class DiveComputerNode {
 public:

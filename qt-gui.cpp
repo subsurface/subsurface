@@ -36,6 +36,7 @@
 #include <QNetworkProxy>
 #include <QDateTime>
 #include <QRegExp>
+#include <QLibraryInfo>
 
 #include <gettextfromc.h>
 #define tr(arg) gettextFromC::instance()->tr(arg)
@@ -44,31 +45,6 @@ const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
 DiveComputerList dcList;
-
-#if 0
-class Translator: public QTranslator
-{
-	Q_OBJECT
-
-public:
-	Translator(QObject *parent = 0);
-	~Translator() {}
-
-	virtual QString	translate(const char *context, const char *sourceText,
-				  const char *disambiguation = NULL) const;
-};
-
-Translator::Translator(QObject *parent):
-	QTranslator(parent)
-{
-}
-
-QString Translator::translate(const char *context, const char *sourceText,
-			      const char *disambiguation) const
-{
-	return gettext(sourceText);
-}
-#endif
 
 static QApplication *application = NULL;
 static MainWindow *window = NULL;
@@ -107,6 +83,22 @@ void init_ui(int *argcp, char ***argvp)
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
 	xslt_path = strdup(getSubsurfaceDataPath("xslt").toAscii().data());
+
+	QLocale loc;
+	if (loc.uiLanguages().first() != "en-US") {
+		qtTranslator = new QTranslator;
+		if (qtTranslator->load(loc,"qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+			application->installTranslator(qtTranslator);
+		} else {
+			qDebug() << "can't find Qt localization for locale" << loc.uiLanguages().first();
+		}
+		ssrfTranslator = new QTranslator;
+		if (ssrfTranslator->load(loc,"subsurface", "_")) {
+			application->installTranslator(ssrfTranslator);
+		} else {
+			qDebug() << "can't find Subsurface localization for locale" << loc.uiLanguages().first();
+		}
+	}
 
 	QSettings s;
 	s.beginGroup("GeneralSettings");
