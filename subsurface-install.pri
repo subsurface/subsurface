@@ -39,11 +39,6 @@ mac {
     WINDOWSSTAGING = packaging/windows
 
     deploy.path = $$WINDOWSSTAGING
-    for(qtlib, $$list(QtCore QtGui QtNetwork QtWebKit QtSvg QtXml QtDeclarative)) {
-        CONFIG(debug, debug|release): deploy.files += $$[QT_INSTALL_BINS]/$${qtlib}d4.dll
-        else: deploy.files += $$[QT_INSTALL_BINS]/$${qtlib}4.dll
-    }
-
     deploy.files += $$marbledir.files $$xslt.files $$doc.files
     target.path = $$WINDOWSSTAGING
     INSTALLS += deploy target
@@ -53,6 +48,16 @@ mac {
     qt_conf.commands += $${nltab}echo \'Plugins=plugins\' >> $@
     qt_conf.target = $$PWD/packaging/windows/qt.conf
     install.depends += qt_conf
+
+    !win32-msvc* {
+        !equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$(CC) -dumpmachine`-objdump
+        dlls.commands += perl $$PWD/scripts/win-ldd.pl $(DESTDIR_TARGET)
+        dlls.commands += `$(CC) -print-search-dirs | $(SED) -n \'/^libraries: =/{s///;s/:/\\n/g;p;q;}\' | $(SED) -E \'s,/lib/?\\\$\$,/bin,\'`
+        dlls.commands += $$LIBS
+        dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
+        dlls.depends = $(DESTDIR_TARGET)
+        install.depends += dlls
+    }
 } else {
     # Linux install rules
     # On Linux, we can count on packagers doing the right thing
