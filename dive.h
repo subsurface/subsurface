@@ -646,7 +646,11 @@ extern void add_event(struct divecomputer *dc, int time, int type, int flags, in
 extern void add_cylinder_description(cylinder_type_t *);
 extern void add_weightsystem_description(weightsystem_t *);
 extern void remember_event(const char *eventname);
-extern int evn_foreach(void (*callback)(const char *, int *, void *), void *data);
+
+#if WE_DONT_USE_THIS /* this is a missing feature in Qt - selecting which events to display */
+extern int evn_foreach(void (*callback)(const char *, bool *, void *), void *data);
+#endif /* WE_DONT_USE_THIS */
+
 extern void clear_events(void);
 
 extern void set_dc_nickname(struct dive *dive);

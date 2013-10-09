@@ -99,7 +99,8 @@ struct ev_select *ev_namelist;
 int evn_allocated;
 int evn_used;
 
-int evn_foreach(void (*callback)(const char *, int *, void *), void *data)
+#if WE_DONT_USE_THIS /* we need to implement event filters in Qt */
+int evn_foreach(void (*callback)(const char *, bool *, void *), void *data)
 {
 	int i;
 
@@ -109,6 +110,7 @@ int evn_foreach(void (*callback)(const char *, int *, void *), void *data)
 	}
 	return i;
 }
+#endif /* WE_DONT_USE_THIS */
 
 void clear_events(void)
 {
