@@ -28,7 +28,8 @@ CONFIG += exceptions_off
 # Check if we have pkg-config
 equals($$QMAKE_HOST.os, "Windows"):NUL=NUL
 else:NUL=/dev/null
-system(pkg-config --version 2>$$NUL >$$NUL) {
+PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
+!isEmpty(PKG_CONFIG_OUT) {
     CONFIG += link_pkgconfig
 } else {
     message("pkg-config not found, no detection performed. See README for details")
