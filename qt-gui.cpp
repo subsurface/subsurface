@@ -438,4 +438,3 @@ int parseTemperatureToMkelvin(const QString& text)
 	return mkelvin;
 
 }
-#include "qt-gui.moc"
