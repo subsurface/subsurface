@@ -50,7 +50,7 @@ mac {
     install.depends += qt_conf
 
     !win32-msvc* {
-        !equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$(CC) -dumpmachine`-objdump
+        #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$(CC) -dumpmachine`-objdump
         dlls.commands += perl $$PWD/scripts/win-ldd.pl $(DESTDIR_TARGET)
         dlls.commands += `$(CC) -print-search-dirs | $(SED) -n \'/^libraries: =/{s///;s/:/\\n/g;p;q;}\' | $(SED) -E \'s,/lib/?\\\$\$,/bin,\'`
         dlls.commands += $$LIBS
