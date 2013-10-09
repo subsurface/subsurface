@@ -52,25 +52,25 @@ $ brew link --force sqlite
 $ mkdir -p ~/src/marble/build
 $ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
 $ cd ~/src/marble/build
-$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ~/src/marble/sources
-$ make
-$ sudo make install
+$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ..
 $ cd src/lib
-$ mkdir -p /usr/local/include/marble
-$ cp $(find . -name '*.h') /usr/local/include/marble/
+$ make -j4
 $ cp *dylib /usr/local/lib/
+$ mkdir -p /usr/local/include/marble
+$ cd ../../../source/src/lib
+$ cp $(find . -name '*.h') /usr/local/include/marble/
 
 5) Install Libdivecomputer
 
 $ brew install automake libtool
 $ cd ~/src
-$ git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
+$ git clone git://git.libdivecomputer.org/libdivecomputer
 $ cd libdivecomputer
 $ git checkout release-0.4
 $ autoreconf --install
 $ ./configure
 $ make
-$ sudo make install
+$ make install
 
 6) Compile Subsurface
 
@@ -79,7 +79,7 @@ $ git clone git://subsurface.hohndel.org/subsurface.git
 $ cd subsurface
 $ qmake
 $ make
-$ sudo make install
+$ sudo make install_mac_bundle
 
 After the above is done, Subsurface will be installed to
 /Applications.
