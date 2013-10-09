@@ -60,7 +60,7 @@ PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
 # And libdivecomputer is only built with it if libusb-1.0 is
 # installed. So get libusb if it exists, but don't complain
 # about it if it doesn't.
-#link_pkgconfig: packagesExist(libusb-1.0): PKGCONFIG += libusb-1.0
+link_pkgconfig: packagesExist(libusb-1.0): PKGCONFIG += libusb-1.0
 
 #
 # Find libxml2 and libxslt
