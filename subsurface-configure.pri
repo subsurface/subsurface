@@ -42,11 +42,6 @@ PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
     # find it next to our sources
     INCLUDEPATH += ../libdivecomputer/include
     LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
-    # Libusb-1.0 is only required if libdivecomputer was built with it.
-    # And libdivecomputer is only built with it if libusb-1.0 is
-    # installed. So get libusb if it exists, but don't complain
-    # about it if it doesn't.
-    LIBS += $$system(pkg-config --libs libusb-1.0 2> /dev/null)
 } else:exists(/usr/local/lib/libdivecomputer.a) {
     LIBS += /usr/local/lib/libdivecomputer.a
 } else:exists(/usr/local/lib64/libdivecomputer.a) {
