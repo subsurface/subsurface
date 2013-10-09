@@ -8,6 +8,9 @@
 *-g++*: QMAKE_CFLAGS += -Werror=int-to-pointer-cast -Werror=pointer-to-int-cast -Werror=implicit-int
 !win32-msvc*: QMAKE_CFLAGS += -std=gnu99
 
+# Don't turn warnings on (but don't suppress them either)
+CONFIG -= warn_on warn_off
+
 # Check if we have pkg-config
 equals($$QMAKE_HOST.os, "Windows"):NUL=NUL
 else:NUL=/dev/null
