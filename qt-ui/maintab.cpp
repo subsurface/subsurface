@@ -559,9 +559,14 @@ void MainTab::rejectChanges()
 				mydive->weightsystem[i] = notesBackup[mydive].weightsystem[i];
 			}
 		}
-		multiEditEquipmentPlaceholder = *get_dive(selected_dive);
-		cylindersModel->setDive(&multiEditEquipmentPlaceholder);
-		weightModel->setDive(&multiEditEquipmentPlaceholder);
+		if (selected_dive > 0) {
+			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
+			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
+			weightModel->setDive(&multiEditEquipmentPlaceholder);
+		} else {
+			cylindersModel->clear();
+			weightModel->clear();
+		}
 	}
 
 	ui.diveNotesMessage->animatedHide();
