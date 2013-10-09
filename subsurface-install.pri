@@ -39,9 +39,10 @@ mac {
     WINDOWSSTAGING = packaging/windows
 
     deploy.path = $$WINDOWSSTAGING
-    deploy.files += $$marbledir.files $$xslt.files $$doc.files
+    deploy.files += $$xslt.files $$doc.files
     target.path = $$WINDOWSSTAGING
-    INSTALLS += deploy target
+    marbledir.path = $$WINDOWSSTAGING/data
+    INSTALLS += deploy marbledir target
 
     qt_conf.commands = echo \'[Paths]\' > $@
     qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
