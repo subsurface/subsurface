@@ -100,6 +100,9 @@ LIBS *= $$XML2_LIBS $$XSLT_LIBS
 #  sqlite3
 link_pkgconfig: PKGCONFIG += libzip sqlite3
 
+# Add libiconv if needed
+link_pkgconfig: packagesExist(libiconv): PKGCONFIG += libiconv
+
 #
 # Find libmarble
 #
