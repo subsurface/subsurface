@@ -11,6 +11,10 @@
 # Don't turn warnings on (but don't suppress them either)
 CONFIG -= warn_on warn_off
 
+# Turn exceptions off
+!win32-msvc*: QMAKE_CXXFLAGS += -fno-exceptions
+CONFIG += exceptions_off
+
 # Check if we have pkg-config
 equals($$QMAKE_HOST.os, "Windows"):NUL=NUL
 else:NUL=/dev/null
