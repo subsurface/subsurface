@@ -29,8 +29,12 @@ extern "C" {
 #else
 #if __STDC_VERSION__ >= 199901L
 #include <stdbool.h>
+#ifndef TRUE
 #define TRUE true
+#endif
+#ifndef FALSE
 #define FALSE false
+#endif
 #else
 typedef int bool;
 #ifndef TRUE
