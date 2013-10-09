@@ -51,8 +51,8 @@ mac {
 
     !win32-msvc* {
         #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$(CC) -dumpmachine`-objdump
+        dlls.commands += PATH=\$\$PATH:`$(CC) -print-search-dirs | $(SED) -nE \'/^libraries: =/{s///;s,/lib/?(:|\\\$\$),/bin\\1,g;p;q;}\'`
         dlls.commands += perl $$PWD/scripts/win-ldd.pl $(DESTDIR_TARGET)
-        dlls.commands += `$(CC) -print-search-dirs | $(SED) -n \'/^libraries: =/{s///;s/:/\\n/g;p;q;}\' | $(SED) -E \'s,/lib/?\\\$\$,/bin,\'`
         dlls.commands += $$LIBS
         dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
         dlls.depends = $(DESTDIR_TARGET)

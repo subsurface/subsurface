@@ -2,7 +2,7 @@
 use strict;
 my %deploy;
 my $objdump = $ENV{objdump} ? $ENV{objdump} : "i686-w64-mingw32-objdump";
-my @searchdirs;
+my @searchdirs = split(/:/, $ENV{PATH});
 
 sub addDependenciesFor($) {
     open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
