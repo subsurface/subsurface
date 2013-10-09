@@ -79,7 +79,7 @@ $ git clone git://subsurface.hohndel.org/subsurface.git
 $ cd subsurface
 $ qmake
 $ make
-$ sudo make install_mac_bundle
+$ make install_mac_bundle
 
 After the above is done, Subsurface will be installed to
 /Applications.
