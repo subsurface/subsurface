@@ -136,6 +136,7 @@ MANPAGE = subsurface.1
 XSLT_FILES = xslt
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
 MARBLEDIR = marbledata/maps
+DEPLOYMENT_PLUGIN += imageformats/qjpeg
 
 # This information will go into the Windows .rc file and linked into the .exe
 QMAKE_TARGET_COMPANY = subsurface team

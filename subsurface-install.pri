@@ -45,7 +45,7 @@ mac {
 
     qt_conf.commands = echo \'[Paths]\' > $@
     qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
-    qt_conf.commands += $${nltab}echo \'Plugins=plugins\' >> $@
+    qt_conf.commands += $${nltab}echo \'Plugins=.\' >> $@
     qt_conf.target = $$PWD/packaging/windows/qt.conf
     install.depends += qt_conf
 
@@ -53,6 +53,12 @@ mac {
         #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$(CC) -dumpmachine`-objdump
         dlls.commands += PATH=\$\$PATH:`$(CC) -print-search-dirs | $(SED) -nE \'/^libraries: =/{s///;s,/lib/?(:|\\\$\$),/bin\\1,g;p;q;}\'`
         dlls.commands += perl $$PWD/scripts/win-ldd.pl $(DESTDIR_TARGET)
+
+        for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
+            CONFIG(debug, debug|release): dlls.commands += $$[QT_INSTALL_PLUGINS]/$${plugin}d4.dll
+            else: dlls.commands += $$[QT_INSTALL_PLUGINS]/$${plugin}4.dll
+        }
+
         dlls.commands += $$LIBS
         dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
         dlls.depends = $(DESTDIR_TARGET)
