@@ -48,9 +48,9 @@ PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
     # about it if it doesn't.
     LIBS += $$system(pkg-config --libs libusb-1.0 2> /dev/null)
 } else:exists(/usr/local/lib/libdivecomputer.a) {
-    LIBS += -L/usr/local/lib -ldivecomputer
+    LIBS += /usr/local/lib/libdivecomputer.a
 } else:exists(/usr/local/lib64/libdivecomputer.a) {
-    LIBS += -L/usr/local/lib64 -ldivecomputer
+    LIBS += /usr/local/lib64/libdivecomputer.a
 } else:link_pkgconfig {
     # find it via pkg-config
     PKGCONFIG += libdivecomputer
