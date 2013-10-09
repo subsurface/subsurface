@@ -7,10 +7,10 @@ nltab = $$escape_expand(\\n\\t)
 mac {
     # OS X bundling rules
     #  "make mac-deploy" deploys the external libs (Qt, libdivecomputer, libusb, etc.) into the bundle
-    #  "make install" installs the bundle to /Application
+    #  "make install" installs the bundle to /Applications
     #  "make mac-create-dmg" creates Subsurface.dmg
 
-    mac_bundle.path = /Application
+    mac_bundle.path = /Applications
     mac_bundle.files = Subsurface.app
     mac_bundle.CONFIG += no_check_exist directory
     INSTALLS += mac_bundle
