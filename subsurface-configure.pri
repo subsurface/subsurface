@@ -10,7 +10,8 @@
 # these warnings are in general just wrong and annoying - but should be
 # turned on every once in a while in case they do show the occasional
 # actual bug
-*-g++*: QMAKE_CFLAGS += -Wno-unused-result -Wno-maybe-uninitialized -Wno-pointer-sign -fno-strict-overflow
+*-g++* | *-clang*: QMAKE_CFLAGS += -Wno-unused-result -Wno-maybe-uninitialized -Wno-pointer-sign -fno-strict-overflow
+*-clang*: QMAKE_CFLAGS += -Wno-format-security
 *-g++*: QMAKE_CXXFLAGS += -Wno-maybe-uninitialized -fno-strict-overflow
 
 
