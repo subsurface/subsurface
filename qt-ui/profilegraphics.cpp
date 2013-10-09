@@ -217,7 +217,7 @@ QColor ProfileGraphicsView::getColor(const color_indice_t i)
 
 void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 {
-	struct divecomputer *dc;
+	struct divecomputer *dc = NULL;
 
 	if (d)
 		dc = select_dc(&d->dc);
@@ -247,7 +247,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	// Fix this for printing / screen later.
 	// plot_set_scale(scale_mode_t);
 
-	if (!dc->samples) {
+	if (!dc || !dc->samples) {
 		dc = fake_dc(dc);
 	}
 
