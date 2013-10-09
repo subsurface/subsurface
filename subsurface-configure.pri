@@ -73,7 +73,16 @@ XML2_CFLAGS = $$system(xml2-config --cflags 2>$$NUL)
 XSLT_CFLAGS = $$system(xslt-config --cflags 2>$$NUL)
 XML2_LIBS = $$system(xml2-config --libs 2>$$NUL)
 XSLT_LIBS = $$system(xslt-config --libs 2>$$NUL)
+
 link_pkgconfig {
+    isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS) {
+        XML2_CFLAGS = $$system(pkg-config --cflags libxml2 2> $$NUL)
+        XML2_LIBS = $$system(pkg-config --libs libxml2 2> $$NUL)
+    }
+    isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS) {
+        XSLT_CFLAGS = $$system(pkg-config --cflags libxslt 2> $$NUL)
+        XSLT_LIBS = $$system(pkg-config --libs libxslt 2> $$NUL)
+    }
     isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS): \
         error("Could not find libxml2. Did you forget to install it?")
     isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS): \
