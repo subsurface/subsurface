@@ -1,6 +1,7 @@
-#ifndef GETTEXT_H
-#define GETTEXT_H
+#ifndef GETTEXTFROMC_H
+#define GETTEXTFROMC_H
 
+#include <QHash>
 
 extern "C" const char *gettext(const char *text);
 
@@ -9,7 +10,9 @@ class gettextFromC
 Q_DECLARE_TR_FUNCTIONS(gettextFromC)
 public:
 	static gettextFromC *instance();
-	char *gettext(const char *text);
+	const char *gettext(const char *text);
+	void reset(void);
+	QHash <const char *, QByteArray> translationCache;
 };
 
-#endif // GETTEXT_H
+#endif // GETTEXTFROMC_H
