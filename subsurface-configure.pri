@@ -30,7 +30,12 @@ system(pkg-config --version 2>$$NUL >$$NUL) {
 !isEmpty(LIBDCDEVEL) {
     # find it next to our sources
     INCLUDEPATH += ../libdivecomputer/include
-    LIBS += -L../libdivecomputer/src/.libs -ldivecomputer
+    LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
+    # Libusb-1.0 is only required if libdivecomputer was built with it.
+    # And libdivecomputer is only built with it if libusb-1.0 is
+    # installed. So get libusb if it exists, but don't complain
+    # about it if it doesn't.
+    LIBS += $$system(pkg-config --libs libusb-1.0 2> /dev/null)
 } else:exists(/usr/local/lib/libdivecomputer.a) {
     LIBS += -L/usr/local/lib -ldivecomputer
 } else:exists(/usr/local/lib64/libdivecomputer.a) {
