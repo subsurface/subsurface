@@ -87,21 +87,29 @@ void init_ui(int *argcp, char ***argvp)
 	xslt_path = strdup(getSubsurfaceDataPath("xslt").toAscii().data());
 
 	QLocale loc;
+	QString uiLang = loc.uiLanguages().first();
+	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
+	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
+		QLocale loc2(loc.bcp47Name());
+		loc = loc2;
+		uiLang = loc2.uiLanguages().first();
+	}
+
 	// we don't have translations for English - if we don't check for this
 	// Qt will proceed to load the second language in preference order - not what we want
 	// on Linux this tends to be en-US, but on the Mac it's just en
-	if (!loc.uiLanguages().first().startsWith("en")) {
+	if (!uiLang.startsWith("en")) {
 		qtTranslator = new QTranslator;
 		if (qtTranslator->load(loc,"qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 			application->installTranslator(qtTranslator);
 		} else {
-			qDebug() << "can't find Qt localization for locale" << loc.uiLanguages().first();
+			qDebug() << "can't find Qt localization for locale" << uiLang;
 		}
 		ssrfTranslator = new QTranslator;
 		if (ssrfTranslator->load(loc,"subsurface", "_")) {
 			application->installTranslator(ssrfTranslator);
 		} else {
-			qDebug() << "can't find Subsurface localization for locale" << loc.uiLanguages().first();
+			qDebug() << "can't find Subsurface localization for locale" << uiLang;
 		}
 	}
 
