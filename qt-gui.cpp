@@ -106,7 +106,9 @@ void init_ui(int *argcp, char ***argvp)
 			qDebug() << "can't find Qt localization for locale" << uiLang;
 		}
 		ssrfTranslator = new QTranslator;
-		if (ssrfTranslator->load(loc,"subsurface", "_")) {
+		if (ssrfTranslator->load(loc,"subsurface", "_") ||
+				ssrfTranslator->load(loc,"subsurface", "_", getSubsurfaceDataPath("translations")) ||
+				ssrfTranslator->load(loc,"subsurface", "_", getSubsurfaceDataPath("../translations"))) {
 			application->installTranslator(ssrfTranslator);
 		} else {
 			qDebug() << "can't find Subsurface localization for locale" << uiLang;
