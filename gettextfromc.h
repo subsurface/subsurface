@@ -3,14 +3,14 @@
 
 #include <QHash>
 
-extern "C" const char *gettext(const char *text);
+extern "C" const char *trGettext(const char *text);
 
 class gettextFromC
 {
 Q_DECLARE_TR_FUNCTIONS(gettextFromC)
 public:
 	static gettextFromC *instance();
-	const char *gettext(const char *text);
+	const char *trGettext(const char *text);
 	void reset(void);
 	QHash <const char *, QByteArray> translationCache;
 };

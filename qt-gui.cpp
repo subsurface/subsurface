@@ -41,7 +41,7 @@
 #include <gettextfromc.h>
 
 // this will create a warning when executing lupdate
-#define translate(_context, arg) gettextFromC::instance()->tr("gettextFromC",arg)
+#define translate(_context, arg) gettextFromC::instance()->tr(arg)
 
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;

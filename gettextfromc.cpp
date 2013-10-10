@@ -2,7 +2,7 @@
 #include <QString>
 #include <gettextfromc.h>
 
-const char *gettextFromC::gettext(const char *text)
+const char *gettextFromC::trGettext(const char *text)
 {
 	QByteArray &result = translationCache[text];
 	if (result.isEmpty())
@@ -21,7 +21,7 @@ gettextFromC* gettextFromC::instance()
 	return self;
 }
 
-extern "C" const char *gettext(const char *text)
+extern "C" const char *trGettext(const char *text)
 {
-	return gettextFromC::instance()->gettext(text);
+	return gettextFromC::instance()->trGettext(text);
 }
