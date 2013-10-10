@@ -55,19 +55,19 @@ const char *weekday(int wday)
 {
 	static const char wday_array[7][7] = {
 		/*++GETTEXT: these are three letter days - we allow up to six code bytes */
-		QT_TR_NOOP("Sun"), QT_TR_NOOP("Mon"), QT_TR_NOOP("Tue"), QT_TR_NOOP("Wed"), QT_TR_NOOP("Thu"), QT_TR_NOOP("Fri"), QT_TR_NOOP("Sat")
+		QT_TRANSLATE_NOOP("gettextFromC","Sun"), QT_TRANSLATE_NOOP("gettextFromC","Mon"), QT_TRANSLATE_NOOP("gettextFromC","Tue"), QT_TRANSLATE_NOOP("gettextFromC","Wed"), QT_TRANSLATE_NOOP("gettextFromC","Thu"), QT_TRANSLATE_NOOP("gettextFromC","Fri"), QT_TRANSLATE_NOOP("gettextFromC","Sat")
 	};
-	return tr(wday_array[wday]);
+	return translate("gettextFromC",wday_array[wday]);
 }
 
 const char *monthname(int mon)
 {
 	static const char month_array[12][7] = {
 		/*++GETTEXT: these are three letter months - we allow up to six code bytes*/
-		QT_TR_NOOP("Jan"), QT_TR_NOOP("Feb"), QT_TR_NOOP("Mar"), QT_TR_NOOP("Apr"), QT_TR_NOOP("May"), QT_TR_NOOP("Jun"),
-		QT_TR_NOOP("Jul"), QT_TR_NOOP("Aug"), QT_TR_NOOP("Sep"), QT_TR_NOOP("Oct"), QT_TR_NOOP("Nov"), QT_TR_NOOP("Dec"),
+		QT_TRANSLATE_NOOP("gettextFromC","Jan"), QT_TRANSLATE_NOOP("gettextFromC","Feb"), QT_TRANSLATE_NOOP("gettextFromC","Mar"), QT_TRANSLATE_NOOP("gettextFromC","Apr"), QT_TRANSLATE_NOOP("gettextFromC","May"), QT_TRANSLATE_NOOP("gettextFromC","Jun"),
+		QT_TRANSLATE_NOOP("gettextFromC","Jul"), QT_TRANSLATE_NOOP("gettextFromC","Aug"), QT_TRANSLATE_NOOP("gettextFromC","Sep"), QT_TRANSLATE_NOOP("gettextFromC","Oct"), QT_TRANSLATE_NOOP("gettextFromC","Nov"), QT_TRANSLATE_NOOP("gettextFromC","Dec"),
 	};
-	return tr(month_array[mon]);
+	return translate("gettextFromC",month_array[mon]);
 }
 
 /*

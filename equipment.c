@@ -158,11 +158,11 @@ struct tank_info_t tank_info[100] = {
  * This is a bit odd as the weight system types don't usually encode weight
  */
 struct ws_info_t ws_info[100] = {
-	{ QT_TR_NOOP("integrated"), 0 },
-	{ QT_TR_NOOP("belt"), 0 },
-	{ QT_TR_NOOP("ankle"), 0 },
-	{ QT_TR_NOOP("backplate weight"), 0 },
-	{ QT_TR_NOOP("clip-on"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC","integrated"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC","belt"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC","ankle"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC","backplate weight"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC","clip-on"), 0 },
 };
 
 void remove_cylinder(struct dive *dive, int idx)

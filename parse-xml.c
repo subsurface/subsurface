@@ -546,7 +546,7 @@ static void percent(char *buffer, void *_fraction)
 			break;
 		}
 	default:
-		printf(tr("Strange percentage reading %s\n"), buffer);
+		printf(translate("gettextFromC","Strange percentage reading %s\n"), buffer);
 		break;
 	}
 }
@@ -1692,8 +1692,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 		free((char *)res);
 
 	if (!doc) {
-		fprintf(stderr, tr("Failed to parse '%s'.\n"), url);
-		parser_error(error, tr("Failed to parse '%s'"), url);
+		fprintf(stderr, translate("gettextFromC","Failed to parse '%s'.\n"), url);
+		parser_error(error, translate("gettextFromC","Failed to parse '%s'"), url);
 		return;
 	}
 	reset_all();
@@ -1891,7 +1891,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, tr("Database query get_events failed.\n"));
+		fprintf(stderr, translate("gettextFromC","Database query get_events failed.\n"));
 		return 1;
 	}
 
@@ -1926,14 +1926,14 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	retval = sqlite3_open(url,&handle);
 
 	if(retval) {
-		fprintf(stderr, tr("Database connection failed '%s'.\n"), url);
+		fprintf(stderr, translate("gettextFromC","Database connection failed '%s'.\n"), url);
 		return 1;
 	}
 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, tr("Database query failed '%s'.\n"), url);
+		fprintf(stderr, translate("gettextFromC","Database query failed '%s'.\n"), url);
 		return 1;
 	}
 
@@ -2045,7 +2045,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
-			parser_error(error, tr("Can't open stylesheet (%s)/%s"), xslt_path, info->file);
+			parser_error(error, translate("gettextFromC","Can't open stylesheet (%s)/%s"), xslt_path, info->file);
 			return doc;
 		}
 

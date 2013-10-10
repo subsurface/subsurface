@@ -106,7 +106,7 @@ int evn_foreach(void (*callback)(const char *, bool *, void *), void *data)
 
 	for (i = 0; i < evn_used; i++) {
 		/* here we display an event name on screen - so translate */
-		callback(tr(ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
+		callback(translate("gettextFromC",ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
 	}
 	return i;
 }
@@ -1148,22 +1148,22 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 	double depthvalue, tempvalue, speedvalue;
 
 	depthvalue = get_depth_units(depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("D:%.1f %s"), depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","D:%.1f %s"), depthvalue, depth_unit);
 
 	if (prefs.show_time) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
 	}
 
 	if (pressure) {
 		pressurevalue = get_pressure_units(pressure, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nP:%d %s"), buf2, pressurevalue, pressure_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nP:%d %s"), buf2, pressurevalue, pressure_unit);
 	}
 	if (temp) {
 		tempvalue = get_temp_units(temp, &temp_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
 
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
@@ -1171,19 +1171,19 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	snprintf(buf, bufsize, tr("%s\nV:%.2f %s"), buf2, speedvalue, vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s\nV:%.2f %s"), buf2, speedvalue, vertical_speed_unit);
 
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
 		if (prefs.calc_all_tissues){
 			int k;
 			for (k=0; k<16; k++){
 				if (entry->ceilings[k]){
 					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
 					memcpy(buf2, buf, bufsize);
-					snprintf(buf, bufsize, tr("%s\nTissue %.0fmin: %.0f %s"), buf2, buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+					snprintf(buf, bufsize, translate("gettextFromC","%s\nTissue %.0fmin: %.0f %s"), buf2, buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
 				}
 			}
 		}
@@ -1194,62 +1194,62 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		if (entry->ndl) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				snprintf(buf, bufsize, tr("%s\nSafetystop:%umin @ %.0f %s"), buf2, DIV_UP(entry->stoptime, 60),
+				snprintf(buf, bufsize, translate("gettextFromC","%s\nSafetystop:%umin @ %.0f %s"), buf2, DIV_UP(entry->stoptime, 60),
 					depthvalue, depth_unit);
 			else
-				snprintf(buf, bufsize, tr("%s\nSafetystop:unkn time @ %.0f %s"), buf2,
+				snprintf(buf, bufsize, translate("gettextFromC","%s\nSafetystop:unkn time @ %.0f %s"), buf2,
 					depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				snprintf(buf, bufsize, tr("%s\nDeco:%umin @ %.0f %s"), buf2, DIV_UP(entry->stoptime, 60),
+				snprintf(buf, bufsize, translate("gettextFromC","%s\nDeco:%umin @ %.0f %s"), buf2, DIV_UP(entry->stoptime, 60),
 					depthvalue, depth_unit);
 			else
-				snprintf(buf, bufsize, tr("%s\nDeco:unkn time @ %.0f %s"), buf2,
+				snprintf(buf, bufsize, translate("gettextFromC","%s\nDeco:unkn time @ %.0f %s"), buf2,
 					depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
 		/* this means we had in_deco set but don't have a stop depth */
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nIn deco"), buf2);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nIn deco"), buf2);
 	} else if (has_ndl) {
 		memcpy(buf2, buf, bufsize);
 		if (entry->ndl == -1)
-			snprintf(buf, bufsize, tr("%s\nNDL:-"), buf2);
+			snprintf(buf, bufsize, translate("gettextFromC","%s\nNDL:-"), buf2);
 		else
-			snprintf(buf, bufsize, tr("%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
+			snprintf(buf, bufsize, translate("gettextFromC","%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
 	}
 	if (entry->tts) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nTTS:%umin"), buf2, DIV_UP(entry->tts, 60));
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nTTS:%umin"), buf2, DIV_UP(entry->tts, 60));
 	}
 	if (entry->cns) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nCNS:%u%%"), buf2, entry->cns);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nCNS:%u%%"), buf2, entry->cns);
 	}
 	if (prefs.pp_graphs.po2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\npO%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->po2);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\npO%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->po2);
 	}
 	if (prefs.pp_graphs.pn2) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\npN%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->pn2);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\npN%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->pn2);
 	}
 	if (prefs.pp_graphs.phe) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\npHe:%.2fbar"), buf2, entry->phe);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\npHe:%.2fbar"), buf2, entry->phe);
 	}
 	if (prefs.mod) {
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nMOD:%d%s"), buf2, mod, depth_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nMOD:%d%s"), buf2, mod, depth_unit);
 	}
 	if (prefs.ead) {
 		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
 		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
 		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"), buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"), buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
 	}
 	free(buf2);
 }
@@ -1348,42 +1348,42 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	avg_depth /= stop->sec-start->sec;
 	avg_speed /= stop->sec-start->sec;
 
-	snprintf(buf, bufsize, tr("%sT: %d:%02d min"), UTF8_DELTA, delta_time/60, delta_time%60);
+	snprintf(buf, bufsize, translate("gettextFromC","%sT: %d:%02d min"), UTF8_DELTA, delta_time/60, delta_time%60);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(min_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s %sD:%.1f %s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f %s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_depth_units(min_speed, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s%sV:%.2f%s/s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s%sV:%.2f%s/s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_depth_units(max_speed, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s %sV:%.2f%s/s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s/s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_depth_units(avg_speed, NULL, &depth_unit);
-	snprintf(buf, bufsize, tr("%s %sV:%.2f%s/s"), buf2, UTF8_AVERAGE, speedvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s/s"), buf2, UTF8_AVERAGE, speedvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	/* Only print if gas has been used */
 	if (bar_used) {
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, tr("%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
 	}
 
 	free(buf2);

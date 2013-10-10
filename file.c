@@ -103,9 +103,9 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 
 	if (readfile(filename, mem) < 0) {
 		if (error) {
-			int len = strlen(tr("Failed to read '%s'")) + strlen(filename);
+			int len = strlen(translate("gettextFromC","Failed to read '%s'")) + strlen(filename);
 			*error = malloc(len);
-			snprintf(*error, len, tr("Failed to read '%s'"), filename);
+			snprintf(*error, len, translate("gettextFromC","Failed to read '%s'"), filename);
 		}
 
 		return 1;
@@ -300,9 +300,9 @@ void parse_file(const char *filename, char **error)
 			return;
 
 		if (error) {
-			int len = strlen(tr("Failed to read '%s'")) + strlen(filename);
+			int len = strlen(translate("gettextFromC","Failed to read '%s'")) + strlen(filename);
 			*error = malloc(len);
-			snprintf(*error, len, tr("Failed to read '%s'"), filename);
+			snprintf(*error, len, translate("gettextFromC","Failed to read '%s'"), filename);
 		}
 
 		return;

@@ -18,10 +18,10 @@
 /* mark for translation but don't translate here as these terms are used
  * in save-xml.c */
 char *dtag_names[DTAG_NR] = {
-	QT_TR_NOOP("invalid"), QT_TR_NOOP("boat"), QT_TR_NOOP("shore"), QT_TR_NOOP("drift"), QT_TR_NOOP("deep"), QT_TR_NOOP("cavern"),
-	QT_TR_NOOP("ice"), QT_TR_NOOP("wreck"), QT_TR_NOOP("cave"), QT_TR_NOOP("altitude"), QT_TR_NOOP("pool"), QT_TR_NOOP("lake"),
-	QT_TR_NOOP("river"), QT_TR_NOOP("night"), QT_TR_NOOP("freshwater"), QT_TR_NOOP("training"), QT_TR_NOOP("teaching"),
-	QT_TR_NOOP("photo"), QT_TR_NOOP("video"), QT_TR_NOOP("deco")
+	QT_TRANSLATE_NOOP("gettextFromC","invalid"), QT_TRANSLATE_NOOP("gettextFromC","boat"), QT_TRANSLATE_NOOP("gettextFromC","shore"), QT_TRANSLATE_NOOP("gettextFromC","drift"), QT_TRANSLATE_NOOP("gettextFromC","deep"), QT_TRANSLATE_NOOP("gettextFromC","cavern"),
+	QT_TRANSLATE_NOOP("gettextFromC","ice"), QT_TRANSLATE_NOOP("gettextFromC","wreck"), QT_TRANSLATE_NOOP("gettextFromC","cave"), QT_TRANSLATE_NOOP("gettextFromC","altitude"), QT_TRANSLATE_NOOP("gettextFromC","pool"), QT_TRANSLATE_NOOP("gettextFromC","lake"),
+	QT_TRANSLATE_NOOP("gettextFromC","river"), QT_TRANSLATE_NOOP("gettextFromC","night"), QT_TRANSLATE_NOOP("gettextFromC","freshwater"), QT_TRANSLATE_NOOP("gettextFromC","training"), QT_TRANSLATE_NOOP("gettextFromC","teaching"),
+	QT_TRANSLATE_NOOP("gettextFromC","photo"), QT_TRANSLATE_NOOP("gettextFromC","video"), QT_TRANSLATE_NOOP("gettextFromC","deco")
 };
 
 static stats_t stats;
@@ -196,15 +196,15 @@ char *get_time_string(int seconds, int maxdays)
 {
 	static char buf[80];
 	if (maxdays && seconds > 3600 * 24 * maxdays) {
-		snprintf(buf, sizeof(buf), tr("more than %d days"), maxdays);
+		snprintf(buf, sizeof(buf), translate("gettextFromC","more than %d days"), maxdays);
 	} else {
 		int days = seconds / 3600 / 24;
 		int hours = (seconds - days * 3600 * 24) / 3600;
 		int minutes = (seconds - days * 3600 * 24 - hours * 3600) / 60;
 		if (days > 0)
-			snprintf(buf, sizeof(buf), tr("%dd %dh %dmin"), days, hours, minutes);
+			snprintf(buf, sizeof(buf), translate("gettextFromC","%dd %dh %dmin"), days, hours, minutes);
 		else
-			snprintf(buf, sizeof(buf), tr("%dh %dmin"), hours, minutes);
+			snprintf(buf, sizeof(buf), translate("gettextFromC","%dh %dmin"), hours, minutes);
 	}
 	return buf;
 }
@@ -215,14 +215,14 @@ static void get_ranges(char *buffer, int size)
 	int i, len;
 	int first, last = -1;
 
-	snprintf(buffer, size, tr("for dives #"));
+	snprintf(buffer, size, translate("gettextFromC","for dives #"));
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = get_dive(i);
 		if (! dive->selected)
 			continue;
 		if (dive->number < 1) {
 			/* uhh - weird numbers - bail */
-			snprintf(buffer, size, tr("for selected dives"));
+			snprintf(buffer, size, translate("gettextFromC","for selected dives"));
 			return;
 		}
 		len = strlen(buffer);
@@ -257,13 +257,13 @@ void get_selected_dives_text(char *buffer, int size)
 {
 	if (amount_selected == 1) {
 		if (current_dive)
-			snprintf(buffer, size, tr("for dive #%d"), current_dive->number);
+			snprintf(buffer, size, translate("gettextFromC","for dive #%d"), current_dive->number);
 		else
-			snprintf(buffer, size, tr("for selected dive"));
+			snprintf(buffer, size, translate("gettextFromC","for selected dive"));
 	} else if (amount_selected == dive_table.nr) {
-		snprintf(buffer, size, tr("for all dives"));
+		snprintf(buffer, size, translate("gettextFromC","for all dives"));
 	} else if (amount_selected == 0) {
-		snprintf(buffer, size, tr("(no dives)"));
+		snprintf(buffer, size, translate("gettextFromC","(no dives)"));
 	} else {
 		get_ranges(buffer, size);
 		if (strlen(buffer) == size -1) {
@@ -357,10 +357,10 @@ char *get_gaslist(struct dive *dive)
 		o2 = get_o2(&cyl->gasmix);
 		he = get_he(&cyl->gasmix);
 		if (is_air(o2, he))
-			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", tr("air"));
+			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", translate("gettextFromC","air"));
 		else
 			if (he == 0)
-				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? tr(", EAN%d") : tr("EAN%d"),
+				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? translate("gettextFromC",", EAN%d") : translate("gettextFromC","EAN%d"),
 					 (o2 + 5) / 10);
 			else
 				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
@@ -368,6 +368,6 @@ char *get_gaslist(struct dive *dive)
 		offset = strlen(buf);
 	}
 	if (*buf == '\0')
-		strncpy(buf, tr("air"), MAXBUF);
+		strncpy(buf, translate("gettextFromC","air"), MAXBUF);
 	return buf;
 }

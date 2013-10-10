@@ -132,12 +132,12 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	/* we mark these for translation here, but we store the untranslated strings
 	 * and only translate them when they are displayed on screen */
 	static const char *events[] = {
-		QT_TR_NOOP("none"), QT_TR_NOOP("deco stop"), QT_TR_NOOP("rbt"), QT_TR_NOOP("ascent"), QT_TR_NOOP("ceiling"), QT_TR_NOOP("workload"),
-		QT_TR_NOOP("transmitter"), QT_TR_NOOP("violation"), QT_TR_NOOP("bookmark"), QT_TR_NOOP("surface"), QT_TR_NOOP("safety stop"),
-		QT_TR_NOOP("gaschange"), QT_TR_NOOP("safety stop (voluntary)"), QT_TR_NOOP("safety stop (mandatory)"),
-		QT_TR_NOOP("deepstop"), QT_TR_NOOP("ceiling (safety stop)"), QT_TR_NOOP("below floor"), QT_TR_NOOP("divetime"),
-		QT_TR_NOOP("maxdepth"), QT_TR_NOOP("OLF"), QT_TR_NOOP("PO2"), QT_TR_NOOP("airtime"), QT_TR_NOOP("rgbm"), QT_TR_NOOP("heading"),
-		QT_TR_NOOP("tissue level warning"), QT_TR_NOOP("gaschange"), QT_TR_NOOP("non stop time")
+		QT_TRANSLATE_NOOP("gettextFromC","none"), QT_TRANSLATE_NOOP("gettextFromC","deco stop"), QT_TRANSLATE_NOOP("gettextFromC","rbt"), QT_TRANSLATE_NOOP("gettextFromC","ascent"), QT_TRANSLATE_NOOP("gettextFromC","ceiling"), QT_TRANSLATE_NOOP("gettextFromC","workload"),
+		QT_TRANSLATE_NOOP("gettextFromC","transmitter"), QT_TRANSLATE_NOOP("gettextFromC","violation"), QT_TRANSLATE_NOOP("gettextFromC","bookmark"), QT_TRANSLATE_NOOP("gettextFromC","surface"), QT_TRANSLATE_NOOP("gettextFromC","safety stop"),
+		QT_TRANSLATE_NOOP("gettextFromC","gaschange"), QT_TRANSLATE_NOOP("gettextFromC","safety stop (voluntary)"), QT_TRANSLATE_NOOP("gettextFromC","safety stop (mandatory)"),
+		QT_TRANSLATE_NOOP("gettextFromC","deepstop"), QT_TRANSLATE_NOOP("gettextFromC","ceiling (safety stop)"), QT_TRANSLATE_NOOP("gettextFromC","below floor"), QT_TRANSLATE_NOOP("gettextFromC","divetime"),
+		QT_TRANSLATE_NOOP("gettextFromC","maxdepth"), QT_TRANSLATE_NOOP("gettextFromC","OLF"), QT_TRANSLATE_NOOP("gettextFromC","PO2"), QT_TRANSLATE_NOOP("gettextFromC","airtime"), QT_TRANSLATE_NOOP("gettextFromC","rgbm"), QT_TRANSLATE_NOOP("gettextFromC","heading"),
+		QT_TRANSLATE_NOOP("gettextFromC","tissue level warning"), QT_TRANSLATE_NOOP("gettextFromC","gaschange"), QT_TRANSLATE_NOOP("gettextFromC","non stop time")
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
@@ -154,7 +154,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	 * Other evens might be more interesting, but for now we just print them out.
 	 */
 	type = value.event.type;
-	name = QT_TR_NOOP("invalid event number");
+	name = QT_TRANSLATE_NOOP("gettextFromC","invalid event number");
 	if (type < nr_events)
 		name = events[type];
 
@@ -387,13 +387,13 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, tr("Unable to create parser for %s %s"), devdata->vendor, devdata->product);
+		dev_info(devdata, translate("gettextFromC","Unable to create parser for %s %s"), devdata->vendor, devdata->product);
 		return rc;
 	}
 
 	rc = dc_parser_set_data(parser, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, tr("Error registering the data"));
+		dev_info(devdata, translate("gettextFromC","Error registering the data"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -402,7 +402,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive = alloc_dive();
 	rc = dc_parser_get_datetime(parser, &dt);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, tr("Error parsing the datetime"));
+		dev_info(devdata, translate("gettextFromC","Error parsing the datetime"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -419,12 +419,12 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->when = dive->dc.when = utc_mktime(&tm);
 
 	// Parse the divetime.
-	dev_info(devdata, tr("Dive %d: %s %d %04d"), import_dive_number,
+	dev_info(devdata, translate("gettextFromC","Dive %d: %s %d %04d"), import_dive_number,
 		monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field (parser, DC_FIELD_DIVETIME, 0, &divetime);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, tr("Error parsing the divetime"));
+		dev_info(devdata, translate("gettextFromC","Error parsing the divetime"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -434,7 +434,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	double maxdepth = 0.0;
 	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, tr("Error parsing the maxdepth"));
+		dev_info(devdata, translate("gettextFromC","Error parsing the maxdepth"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -444,7 +444,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	unsigned int ngases = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, tr("Error parsing the gas mix count"));
+		dev_info(devdata, translate("gettextFromC","Error parsing the gas mix count"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -457,7 +457,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	};
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, tr("Error obtaining water salinity"));
+		dev_info(devdata, translate("gettextFromC","Error obtaining water salinity"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -466,7 +466,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	double surface_pressure = 1.0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, tr("Error obtaining surface pressure"));
+		dev_info(devdata, translate("gettextFromC","Error obtaining surface pressure"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -475,7 +475,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, tr("Error parsing the gas mix"));
+		dev_info(devdata, translate("gettextFromC","Error parsing the gas mix"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -483,7 +483,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, tr("Error parsing the samples"));
+		dev_info(devdata, translate("gettextFromC","Error parsing the samples"));
 		dc_parser_destroy(parser);
 		return rc;
 	}
@@ -610,7 +610,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 	switch (event) {
 	case DC_EVENT_WAITING:
-		dev_info(devdata, tr("Event: waiting for user action"));
+		dev_info(devdata, translate("gettextFromC","Event: waiting for user action"));
 		break;
 	case DC_EVENT_PROGRESS:
 		if (!progress->maximum)
@@ -618,7 +618,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		progress_bar_fraction = (double) progress->current / (double) progress->maximum;
 		break;
 	case DC_EVENT_DEVINFO:
-		dev_info(devdata, tr("model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"),
+		dev_info(devdata, translate("gettextFromC","model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"),
 			devinfo->model, devinfo->model,
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
@@ -633,7 +633,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 		break;
 	case DC_EVENT_CLOCK:
-			dev_info(devdata, tr("Event: systime=%"PRId64", devtime=%u\n"),
+			dev_info(devdata, translate("gettextFromC","Event: systime=%"PRId64", devtime=%u\n"),
 			(uint64_t)clock->systime, clock->devtime);
 		break;
 	default:
@@ -660,16 +660,16 @@ static const char *do_device_import(device_data_t *data)
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK;
 	rc = dc_device_set_events(device, events, event_cb, data);
 	if (rc != DC_STATUS_SUCCESS)
-		return tr("Error registering the event handler.");
+		return translate("gettextFromC","Error registering the event handler.");
 
 	// Register the cancellation handler.
 	rc = dc_device_set_cancel(device, cancel_cb, data);
 	if (rc != DC_STATUS_SUCCESS)
-		return tr("Error registering the cancellation handler.");
+		return translate("gettextFromC","Error registering the cancellation handler.");
 
 	rc = import_device_data(device, data);
 	if (rc != DC_STATUS_SUCCESS)
-		return tr("Dive data import error");
+		return translate("gettextFromC","Dive data import error");
 
 	/* All good */
 	return NULL;
@@ -687,9 +687,9 @@ const char *do_libdivecomputer_import(device_data_t *data)
 
 	rc = dc_context_new(&data->context);
 	if (rc != DC_STATUS_SUCCESS)
-		return tr("Unable to create libdivecomputer context");
+		return translate("gettextFromC","Unable to create libdivecomputer context");
 
-	err = tr("Unable to open %s %s (%s)");
+	err = translate("gettextFromC","Unable to open %s %s (%s)");
 	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		err = do_device_import(data);

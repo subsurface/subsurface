@@ -41,15 +41,15 @@ int get_pressure_units(unsigned int mb, const char **units)
 	switch (units_p->pressure) {
 	case PASCAL:
 		pressure = mb * 100;
-		unit = tr("pascal");
+		unit = translate("gettextFromC","pascal");
 		break;
 	case BAR:
 		pressure = (mb + 500) / 1000;
-		unit = tr("bar");
+		unit = translate("gettextFromC","bar");
 		break;
 	case PSI:
 		pressure = mbar_to_PSI(mb);
-		unit = tr("psi");
+		unit = translate("gettextFromC","psi");
 		break;
 	}
 	if (units)
@@ -85,12 +85,12 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	switch (units_p->volume) {
 	case LITER:
 		vol = ml / 1000.0;
-		unit = tr("l");
+		unit = translate("gettextFromC","l");
 		decimals = 1;
 		break;
 	case CUFT:
 		vol = ml_to_cuft(ml);
-		unit = tr("cuft");
+		unit = translate("gettextFromC","cuft");
 		decimals = 2;
 		break;
 	}
@@ -111,12 +111,12 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	switch (units_p->length) {
 	case METERS:
 		d = mm / 1000.0;
-		unit = tr("m");
+		unit = translate("gettextFromC","m");
 		decimals = d < 20;
 		break;
 	case FEET:
 		d = mm_to_feet(mm);
-		unit = tr("ft");
+		unit = translate("gettextFromC","ft");
 		decimals = 0;
 		break;
 	}
@@ -137,11 +137,11 @@ double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
 	switch (units_p->length) {
 	case METERS:
 		d = mms / 1000.0 * time_factor;
-		unit = tr((units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
+		unit = translate("gettextFromC",(units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
 		break;
 	case FEET:
 		d = mm_to_feet(mms) * time_factor;
-		unit = tr((units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
+		unit = translate("gettextFromC",(units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
 		break;
 	}
 	if (frac)
@@ -160,11 +160,11 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 
 	if (units_p->weight == LBS) {
 		value = grams_to_lbs(grams);
-		unit = tr("lbs");
+		unit = translate("gettextFromC","lbs");
 		decimals = 0;
 	} else {
 		value = grams / 1000.0;
-		unit = tr("kg");
+		unit = translate("gettextFromC","kg");
 		decimals = 1;
 	}
 	if (frac)
@@ -956,7 +956,7 @@ static char *merge_text(const char *a, const char *b)
 	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
-	sprintf(res, tr("(%s) or (%s)"), a, b);
+	sprintf(res, translate("gettextFromC","(%s) or (%s)"), a, b);
 	return res;
 }
 
