@@ -126,7 +126,7 @@ win32 {
 #
 # misc
 #
-!equals(V, 1): CONFIG += silent
+!equals(V, 1): !win32: CONFIG += silent
 MOC_DIR = .moc
 UI_DIR = .uic
 RCC_DIR = .rcc
