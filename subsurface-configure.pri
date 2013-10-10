@@ -42,20 +42,28 @@ PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
     # find it next to our sources
     INCLUDEPATH += ../libdivecomputer/include
     LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
+    LIBDC_LA = ../libdivecomputer/src/libdivecomputer.la
 } else:exists(/usr/local/lib/libdivecomputer.a) {
     LIBS += /usr/local/lib/libdivecomputer.a
+    LIBDC_LA = /usr/local/lib/libdivecomputer.la
 } else:exists(/usr/local/lib64/libdivecomputer.a) {
     LIBS += /usr/local/lib64/libdivecomputer.a
+    LIBDC_LA = /usr/local/lib64/libdivecomputer.la
 } else:link_pkgconfig {
-    # find it via pkg-config
-    PKGCONFIG += libdivecomputer
+    # find it via pkg-config, but we need to pass the --static flag,
+    # so we can't use the PKGCONFIG variable.
+    LIBS += $$system("pkg-config --static --libs libdivecomputer")
+    LIBDC_CFLAGS = $$system("pkg-config --static --cflags libdivecomputer")
+    QMAKE_CFLAGS += $$LIBDC_CFLAGS
+    QMAKE_CXXFLAGS += $$LIBDC_CFLAGS
+    unset(LIBDC_CFLAGS)
 }
 
-# Libusb-1.0 is only required if libdivecomputer was built with it.
-# And libdivecomputer is only built with it if libusb-1.0 is
-# installed. So get libusb if it exists, but don't complain
-# about it if it doesn't.
-link_pkgconfig: packagesExist(libusb-1.0): PKGCONFIG += libusb-1.0
+!isEmpty(LIBDC_LA):exists($$LIBDC_LA) {
+    # Source the libtool .la file to get the dependent libs
+    LIBS += $$system(". $$LIBDC_LA && echo \$dependency_libs")
+    unset(LIBDC_LA)
+}
 
 #
 # Find libxml2 and libxslt
