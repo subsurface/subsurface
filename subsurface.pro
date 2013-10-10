@@ -122,7 +122,26 @@ FORMS = \
 
 RESOURCES = subsurface.qrc
 
-TRANSLATIONS = subsurface_de.ts 
+TRANSLATIONS = \
+	subsurface_bg_BG.ts \
+	subsurface_ca_ES.ts \
+	subsurface_da_DK.ts \
+	subsurface_de_CH.ts \
+	subsurface_de_DE.ts \
+	subsurface_es_ES.ts \
+	subsurface_et_EE.ts \
+	subsurface_fi_FI.ts \
+	subsurface_fr_FR.ts \
+	subsurface_hr_HR.ts \
+	subsurface_it_IT.ts \
+	subsurface_nb_NO.ts \
+	subsurface_nl_NL.ts \
+	subsurface_pl_PL.ts \
+	subsurface_pt_BR.ts \
+	subsurface_pt_PT.ts \
+	subsurface_ru_RU.ts \
+	subsurface_sk_SK.ts \
+	subsurface_sv_SE.ts
 
 doc.commands = $(CHK_DIR_EXISTS) Documentation || $(MKDIR) Documentation
 doc.commands += $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation doc
