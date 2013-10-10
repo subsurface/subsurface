@@ -584,6 +584,22 @@
          </widget>
         </item>
         <item row="4" column="0">
+         <widget class="QGroupBox">
+          <property name="title">
+           <string>Salinity</string>
+          </property>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="salinityText">
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <spacer>
           <property name="orientation">
            <enum>Qt::Vertical</enum>

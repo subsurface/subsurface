@@ -195,6 +195,8 @@ bool MainTab::eventFilter(QObject* object, QEvent* event)
 
 void MainTab::clearEquipment()
 {
+	cylindersModel->clear();
+	weightModel->clear();
 }
 
 void MainTab::clearInfo()
@@ -211,6 +213,7 @@ void MainTab::clearInfo()
 	ui.waterTemperatureText->clear();
 	ui.airTemperatureText->clear();
 	ui.airPressureText->clear();
+	ui.salinityText->clear();
 }
 
 void MainTab::clearStats()
@@ -325,6 +328,10 @@ void MainTab::updateDiveInfo(int dive)
 			ui.airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
 		else
 			ui.airPressureText->clear();
+		if (d->salinity)
+			ui.salinityText->setText(QString("%1g/l").arg(d->salinity/10.0));
+		else
+			ui.salinityText->clear();
 		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
 		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
 		ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
@@ -354,29 +361,12 @@ void MainTab::updateDiveInfo(int dive)
 		weightModel->setDive(&multiEditEquipmentPlaceholder);
 	} else {
 		/* clear the fields */
+		clearInfo();
+		clearStats();
+		clearEquipment();
 		ui.rating->setCurrentStars(0);
 		ui.coordinates->clear();
-		ui.sacText->clear();
-		ui.otuText->clear();
-		ui.oxygenHeliumText->clear();
-		ui.dateText->clear();
-		ui.diveTimeText->clear();
-		ui.surfaceIntervalText->clear();
-		ui.maximumDepthText->clear();
-		ui.averageDepthText->clear();
 		ui.visibility->setCurrentStars(0);
-		ui.waterTemperatureText->clear();
-		ui.airTemperatureText->clear();
-		ui.gasUsedText->clear();
-		ui.airPressureText->clear();
-		cylindersModel->clear();
-		weightModel->clear();
-		ui.depthLimits->clear();
-		ui.sacLimits->clear();
-		ui.divesAllText->clear();
-		ui.tempLimits->clear();
-		ui.totalTimeAllText->clear();
-		ui.timeLimits->clear();
 		/* turns out this is non-trivial for a dateTimeEdit... this is a partial hack */
 		QLineEdit *le = ui.dateTimeEdit->findChild<QLineEdit*>();
 		le->setText("");
