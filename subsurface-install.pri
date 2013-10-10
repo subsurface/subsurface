@@ -1,6 +1,7 @@
 marbledir.files = $$MARBLEDIR
 xslt.files = $$XSLT_FILES
 doc.files = $$DOC_FILES
+translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 
 nltab = $$escape_expand(\\n\\t)
 
@@ -16,12 +17,13 @@ mac {
     INSTALLS += mac_bundle
     install.depends += mac-deploy
 
-    datadir = Contents/Resources/share/subsurface
+    datadir = Contents/Resources/share
     marbledir.path = Contents/Resources/data
     xslt.path = $$datadir
-    doc.path = Contents/Resources/share/doc/subsurface
+    doc.path = $$datadir/doc
+    translation.path = Contents/Resources/translations
     doc.files = $$files($$doc.files)
-    QMAKE_BUNDLE_DATA += marbledir xslt doc
+    QMAKE_BUNDLE_DATA += marbledir xslt doc translation
 
     mac_deploy.target = mac-deploy
     mac_deploy.commands += $$[QT_INSTALL_BINS]/macdeployqt $${TARGET}.app
