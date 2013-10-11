@@ -6,55 +6,55 @@ my @searchdirs;
 my @systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|/c/windows|i, qr|/c/winnt|);
 
 sub addDependenciesFor($) {
-    open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
-    while (<OBJDUMP>) {
-        last if /^The Import Tables/;
-    }
-    while (<OBJDUMP>) {
-        next unless /DLL Name: (.*)/;
-        $deploy{$1} = 0 unless defined($deploy{$1});
-        last if /^\w/;
-    }
-    close OBJDUMP;
+	open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
+	while (<OBJDUMP>) {
+		last if /^The Import Tables/;
+	}
+	while (<OBJDUMP>) {
+		next unless /DLL Name: (.*)/;
+		$deploy{$1} = 0 unless defined($deploy{$1});
+		last if /^\w/;
+	}
+	close OBJDUMP;
 }
 
 sub findMissingDependencies {
-    for my $name (keys %deploy) {
-        next if $deploy{$name};
-        my $path;
-        for my $dir (@searchdirs) {
-            my $fpath = "$dir/$name";
-            my $lcfpath = "$dir/" . lc($name);
-            if (-e $fpath) {
-                $path = $fpath;
-            } elsif (-e $lcfpath) {
-                $path = $lcfpath;
-            } else {
-                next;
-            }
-            addDependenciesFor($path);
-            last;
-        }
+	for my $name (keys %deploy) {
+		next if $deploy{$name};
+		my $path;
+		for my $dir (@searchdirs) {
+			my $fpath = "$dir/$name";
+			my $lcfpath = "$dir/" . lc($name);
+			if (-e $fpath) {
+				$path = $fpath;
+			} elsif (-e $lcfpath) {
+				$path = $lcfpath;
+			} else {
+				next;
+			}
+			addDependenciesFor($path);
+			last;
+		}
 
-        $path = "/missing/file" unless $path;
-        $deploy{$name} = $path;
-    }
+		$path = "/missing/file" unless $path;
+		$deploy{$name} = $path;
+	}
 }
 
 for (@ARGV) {
-    s/^-L//;
-    next if /^-/;
-    if (-d $_) {
-        push @searchdirs, $_;
-    } elsif (-f $_) {
-        # Add $_'s path to the search list too
-        my $dirname = $_;
-        $dirname =~ s,/[^/]+$,,;
-        push @searchdirs, $dirname;
+	s/^-L//;
+	next if /^-/;
+	if (-d $_) {
+		push @searchdirs, $_;
+	} elsif (-f $_) {
+		# Add $_'s path to the search list too
+		my $dirname = $_;
+		$dirname =~ s,/[^/]+$,,;
+		push @searchdirs, $dirname;
 
-        $deploy{$_} = $_;
-        addDependenciesFor($_);
-    }
+		$deploy{$_} = $_;
+		addDependenciesFor($_);
+	}
 }
 
 # Append PATH to @searchdirs
@@ -62,29 +62,29 @@ for (@ARGV) {
 
 # Remove system dirs from @searchdirs
 @searchdirs = grep {
-    my $sys = 0;
-    for my $rx (@systemdirs) {
-        if ($_ =~ $rx) {
-            $sys = 1;
-            last;
-        }
-    }
-    !$sys;
+	my $sys = 0;
+	for my $rx (@systemdirs) {
+		if ($_ =~ $rx) {
+			$sys = 1;
+			last;
+		}
+	}
+	!$sys;
 } @searchdirs;
 
 while (1) {
-    findMissingDependencies();
+	findMissingDependencies();
 
-    my $i = 0;
-    while (my ($name, $path) = each(%deploy)) {
-        next if $path;
-        ++$i;
-        last;
-    }
-    last if $i == 0;
+	my $i = 0;
+	while (my ($name, $path) = each(%deploy)) {
+		next if $path;
+		++$i;
+		last;
+	}
+	last if $i == 0;
 }
 
 for (sort values %deploy) {
-    next if $_ eq "/missing/file";
-    print "$_\n";
+	next if $_ eq "/missing/file";
+	print "$_\n";
 }
