@@ -1140,14 +1140,14 @@ struct divecomputer *select_dc(struct divecomputer *main)
 }
 
 static void plot_string(struct plot_data *entry, char *buf, int bufsize,
-			int depth, int pressure, int temp, bool has_ndl)
+			bool has_ndl)
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
 	char *buf2 = malloc(bufsize);
 	double depthvalue, tempvalue, speedvalue;
 
-	depthvalue = get_depth_units(depth, NULL, &depth_unit);
+	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
 	snprintf(buf, bufsize, translate("gettextFromC","D:%.1f %s"), depthvalue, depth_unit);
 
 	if (prefs.show_time) {
@@ -1155,13 +1155,13 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
 	}
 
-	if (pressure) {
-		pressurevalue = get_pressure_units(pressure, &pressure_unit);
+	if (GET_PRESSURE(entry)) {
+		pressurevalue = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nP:%d %s"), buf2, pressurevalue, pressure_unit);
 	}
-	if (temp) {
-		tempvalue = get_temp_units(temp, &temp_unit);
+	if (entry->temperature) {
+		tempvalue = get_temp_units(entry->temperature, &temp_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
@@ -1257,21 +1257,16 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufsize)
 {
 	struct plot_info *pi = &gc->pi;
-	int pressure = 0, temp = 0;
 	struct plot_data *entry = NULL;
 	int i;
 
 	for (i = 0; i < pi->nr; i++) {
 		entry = pi->entry + i;
-		if (entry->temperature)
-			temp = entry->temperature;
-		if (GET_PRESSURE(entry))
-			pressure = GET_PRESSURE(entry);
 		if (entry->sec >= time)
 			break;
 	}
 	if (entry)
-		plot_string(entry, buf, bufsize, entry->depth, pressure, temp, pi->has_ndl);
+		plot_string(entry, buf, bufsize, pi->has_ndl);
 }
 
 /* Compare two plot_data entries and writes the results into a string */
