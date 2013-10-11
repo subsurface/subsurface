@@ -27,3 +27,4 @@ callgrind.out.*
 .obj
 Makefile
 subsurface.pro.user*
+Subsurface.app
