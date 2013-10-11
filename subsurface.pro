@@ -143,6 +143,17 @@ TRANSLATIONS = \
 	translations/subsurface_sk_SK.ts \
 	translations/subsurface_sv_SE.ts
 
+QTTRANSLATIONS = \
+	qt_da.qm \
+	qt_de.qm \
+	qt_es.qm \
+	qt_fr.qm \
+	qt_pl.qm \
+	qt_pt.qm \
+	qt_ru.qm \
+	qt_sk.qm \
+	qt_sv.qm
+
 doc.commands += $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
