@@ -55,16 +55,16 @@ mac {
     !win32-msvc* {
         #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$$QMAKE_CC -dumpmachine`-objdump
         dlls.commands += PATH=\$\$PATH:`$$QMAKE_CC -print-search-dirs | sed -nE \'/^libraries: =/{s///;s,/lib/?(:|\$\$),/bin\\1,g;p;q;}\'`
-        dlls.commands += perl $$PWD/scripts/win-ldd.pl $(DESTDIR_TARGET)
+        dlls.commands += perl $$PWD/scripts/win-ldd.pl \$^
 
         for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
-            CONFIG(debug, debug|release): dlls.commands += $$[QT_INSTALL_PLUGINS]/$${plugin}d4.dll
-            else: dlls.commands += $$[QT_INSTALL_PLUGINS]/$${plugin}4.dll
+            CONFIG(debug, debug|release): dlls.depends += $$[QT_INSTALL_PLUGINS]/$${plugin}d4.dll
+            else: dlls.depends += $$[QT_INSTALL_PLUGINS]/$${plugin}4.dll
         }
 
         dlls.commands += $$LIBS
         dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
-        dlls.depends = $(DESTDIR_TARGET)
+        dlls.depends += $(DESTDIR_TARGET)
         install.depends += dlls
     }
 } else {
