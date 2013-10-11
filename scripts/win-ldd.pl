@@ -2,7 +2,7 @@
 use strict;
 my %deploy;
 my $objdump = $ENV{objdump} ? $ENV{objdump} : "objdump";
-my @searchdirs = split(/:/, $ENV{PATH});
+my @searchdirs;
 
 sub addDependenciesFor($) {
     open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
@@ -46,10 +46,18 @@ for (@ARGV) {
     if (-d $_) {
         push @searchdirs, $_;
     } elsif (-f $_) {
+        # Add $_'s path to the search list too
+        my $dirname = $_;
+        $dirname =~ s,/[^/]+$,,;
+        push @searchdirs, $dirname;
+
         $deploy{$_} = $_;
         addDependenciesFor($_);
     }
 }
+
+# Append PATH to @searchdirs
+@searchdirs = (@searchdirs, split(/:/, $ENV{PATH}));
 
 while (1) {
     findMissingDependencies();
