@@ -32,7 +32,7 @@ private:
 
 /* Encapsulates the tank_info global variable
  * to show on Qt's Model View System.*/
-class TankInfoModel : public QAbstractTableModel {
+class TankInfoModel : public CleanerTableModel {
 Q_OBJECT
 public:
 	static TankInfoModel* instance();
@@ -40,8 +40,6 @@ public:
 	enum Column {DESCRIPTION, ML, BAR};
 	TankInfoModel();
 
-	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
@@ -207,14 +205,12 @@ private:
 	Layout currentLayout;
 };
 
-class DiveComputerModel : public QAbstractTableModel
+class DiveComputerModel : public CleanerTableModel
 {
 	Q_OBJECT
 public:
-	enum {REMOVE, MODEL, ID, NICKNAME, COLUMNS};
+	enum {REMOVE, MODEL, ID, NICKNAME};
 	DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap, QObject *parent = 0);
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual Qt::ItemFlags flags(const QModelIndex& index) const;

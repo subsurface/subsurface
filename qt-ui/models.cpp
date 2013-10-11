@@ -674,11 +674,6 @@ void TankInfoModel::clear()
 {
 }
 
-int TankInfoModel::columnCount(const QModelIndex& parent) const
-{
-	return 3;
-}
-
 QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
@@ -711,41 +706,14 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 	return ret;
 }
 
-QVariant TankInfoModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	QVariant ret;
-
-	if (orientation != Qt::Horizontal)
-		return ret;
-
-	switch(role){
-		case Qt::FontRole:
-			ret = defaultModelFont();
-			break;
-		case Qt::DisplayRole:
-			switch(section) {
-			case BAR:
-				ret = tr("Bar");
-				break;
-			case ML:
-				ret = tr("Ml");
-				break;
-			case DESCRIPTION:
-				ret = tr("Description");
-				break;
-			}
-			break;
-	}
-	return ret;
-}
-
 int TankInfoModel::rowCount(const QModelIndex& parent) const
 {
 	return rows+1;
 }
 
-TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
+TankInfoModel::TankInfoModel() :  rows(-1)
 {
+	setHeaderDataStrings( QStringList() << tr("Description") << tr("Ml") << tr("Bar"));
 	struct tank_info_t *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++){
 		QString infoName(info->name);
@@ -1163,29 +1131,11 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
  *####################################################################
  */
 
-DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap, QObject* parent): QAbstractTableModel(parent)
+DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap, QObject* parent): CleanerTableModel()
 {
+	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
 	dcWorkingMap = dcMap;
 	numRows = 0;
-}
-
-int DiveComputerModel::columnCount(const QModelIndex& parent) const
-{
-	return COLUMNS;
-}
-
-QVariant DiveComputerModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	QVariant ret;
-	if (role != Qt::DisplayRole || orientation != Qt::Horizontal){
-		return ret;
-	}
-	switch(section){
-		case ID:	ret = tr("Device ID"); break;
-		case MODEL:	ret = tr("Model"); break;
-		case NICKNAME:	ret = tr("Nickname"); break;
-	}
-	return ret;
 }
 
 QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
