@@ -103,7 +103,8 @@ void init_ui(int *argcp, char ***argvp)
 		if (qtTranslator->load(loc,"qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 			application->installTranslator(qtTranslator);
 		} else {
-			qDebug() << "can't find Qt localization for locale" << uiLang;
+			qDebug() << "can't find Qt localization for locale" << uiLang <<
+				    "searching in" << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 		}
 		ssrfTranslator = new QTranslator;
 		if (ssrfTranslator->load(loc,"subsurface", "_") ||
