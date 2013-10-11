@@ -65,7 +65,6 @@ static QVariant percent_string(fraction_t fraction)
 
 	if (!permille)
 		return QVariant();
-
 	return QString("%1%").arg(permille / 10.0, 0, 'f', 1);
 }
 
@@ -643,9 +642,8 @@ WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
 	struct ws_info_t *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++){
 		QString wsInfoName(info->name);
-		if( wsInfoName.count() > biggerEntry.count()){
+		if( wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
-		}
 	}
 
 	if (rows > -1) {
@@ -662,9 +660,8 @@ void WSInfoModel::updateInfo()
 	rows = -1;
 	for (info = ws_info; info->name; info++, rows++){
 		QString wsInfoName(info->name);
-		if( wsInfoName.count() > biggerEntry.count()){
+		if( wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
-		}
 	}
 
 	if (rows > -1) {
@@ -805,9 +802,8 @@ TankInfoModel::TankInfoModel() : QAbstractTableModel(), rows(-1)
 	struct tank_info_t *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++){
 		QString infoName(info->name);
-		if (infoName.count() > biggerEntry.count()){
+		if (infoName.count() > biggerEntry.count())
 			biggerEntry = infoName;
-		}
 	}
 
 	if (rows > -1) {
@@ -929,7 +925,6 @@ int TreeModel::rowCount(const QModelIndex& parent) const
 		parentItem = static_cast<TreeItem*>(parent.internalPointer());
 
 	int amount = parentItem->children.count();
-
 	return amount;
 }
 
@@ -1081,27 +1076,22 @@ QString DiveItem::displayDuration() const
 QString DiveItem::displayTemperature() const
 {
 	QString str;
-
 	if (!dive->watertemp.mkelvin)
 		return str;
-
 	if (get_units()->temperature == units::CELSIUS)
 		str = QString::number(mkelvin_to_C(dive->watertemp.mkelvin), 'f', 1);
 	else
 		str = QString::number(mkelvin_to_F(dive->watertemp.mkelvin), 'f', 1);
-
 	return str;
 }
 
 QString DiveItem::displaySac() const
 {
 	QString str;
-
 	if (get_units()->volume == units::LITER)
 		str = QString::number(dive->sac / 1000.0, 'f', 1);
 	else
 		str = QString::number(ml_to_cuft(dive->sac), 'f', 2);
-
 	return str;
 }
 
@@ -1499,20 +1489,13 @@ QVariant TablePrintModel::data(const QModelIndex &index, int role) const
 		return QColor(list.at(index.row())->colorBackground);
 	if (role == Qt::DisplayRole)
 		switch (index.column()) {
-			case 0:
-				return list.at(index.row())->number;
-			case 1:
-				return list.at(index.row())->date;
-			case 2:
-				return list.at(index.row())->depth;
-			case 3:
-				return list.at(index.row())->duration;
-			case 4:
-				return list.at(index.row())->divemaster;
-			case 5:
-				return list.at(index.row())->buddy;
-			case 6:
-				return list.at(index.row())->location;
+			case 0: return list.at(index.row())->number;
+			case 1: return list.at(index.row())->date;
+			case 2:	return list.at(index.row())->depth;
+			case 3: return list.at(index.row())->duration;
+			case 4:	return list.at(index.row())->divemaster;
+			case 5:	return list.at(index.row())->buddy;
+			case 6:	return list.at(index.row())->location;
 		}
 	return QVariant();
 }
@@ -1522,20 +1505,13 @@ bool TablePrintModel::setData(const QModelIndex &index, const QVariant &value, i
 	if (index.isValid()) {
 		if (role == Qt::DisplayRole) {
 			switch (index.column()) {
-			case 0:
-				list.at(index.row())->number = value.toString();
-			case 1:
-				list.at(index.row())->date = value.toString();
-			case 2:
-				list.at(index.row())->depth = value.toString();
-			case 3:
-				list.at(index.row())->duration = value.toString();
-			case 4:
-				list.at(index.row())->divemaster = value.toString();
-			case 5:
-				list.at(index.row())->buddy = value.toString();
-			case 6:
-				list.at(index.row())->location = value.toString();
+			case 0: list.at(index.row())->number = value.toString();
+			case 1: list.at(index.row())->date = value.toString();
+			case 2: list.at(index.row())->depth = value.toString();
+			case 3: list.at(index.row())->duration = value.toString();
+			case 4: list.at(index.row())->divemaster = value.toString();
+			case 5: list.at(index.row())->buddy = value.toString();
+			case 6: list.at(index.row())->location = value.toString();
 			}
 			return true;
 		}
@@ -1616,19 +1592,18 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 	case Qt::DisplayRole: {
 		struct DiveItem di;
-		di.dive = dive;
-		QString unit;
+		di.dive = dive;;
 		char buf[80];
-		const QString empty = QString("");
-		const QString unknown = QString(tr("unknown"));
+
+		const QString unknown = tr("unknown");
 
 		// dive# + date, depth, location, duration
 		if (row == 0) {
 			if (col == 0)
-				return QString(tr("Dive #%1 - %2")).arg(dive->number).arg(di.displayDate());
+				return tr("Dive #%1 - %2").arg(dive->number).arg(di.displayDate());
 			if (col == 5) {
-				unit = (get_units()->length == units::METERS) ? "m" : "ft";
-				return QString(tr("Max depth: %1 %2")).arg(di.displayDepth()).arg(unit);
+				QString unit = (get_units()->length == units::METERS) ? "m" : "ft";
+				return tr("Max depth: %1 %2").arg(di.displayDepth()).arg(unit);
 			}
 		}
 		if (row == 1) {
@@ -1640,11 +1615,11 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		// cylinder headings
 		if (row == 2) {
 			if (col == 0)
-				return QString(tr("Cylinder"));
+				return tr("Cylinder");
 			if (col == 1)
-				return QString(tr("Gasmix"));
+				return tr("Gasmix");
 			if (col == 2)
-				return QString(tr("Gas Used"));
+				return tr("Gas Used");
 		}
 		// cylinder data
 		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
@@ -1670,11 +1645,11 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		// sac, cns, otu - headings
 		if (col == 3) {
 			if (row == 2)
-				return QString(tr("SAC"));
+				return tr("SAC");
 			if (row == 4)
-				return QString(tr("Max. CNS"));
+				return tr("Max. CNS");
 			if (row == 6)
-				return QString(tr("OTU"));
+				return tr("OTU");
 		}
 		// sac, cns, otu - data
 		if (col == 4) {
@@ -1687,13 +1662,13 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		}
 		// weights heading
 		if (row == 2 && col == 5)
-			return QString(tr("Weights"));
+			return tr("Weights");
 		// total weight
 		if (row == 9) {
 			weight_t tw = { total_weight(dive) };
 			if (tw.grams) {
 				if (col == 5)
-					return QString("Total weight");
+					return tr("Total weight");
 				if (col == 6)
 					return get_weight_string(tw, true);
 			}
@@ -1712,7 +1687,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 				}
 			}
 		}
-		return empty;
+		return QString();
 	}
 	case Qt::FontRole: {
 		QFont font;

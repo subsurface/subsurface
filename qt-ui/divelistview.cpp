@@ -52,9 +52,8 @@ void DiveListView::fixMessyQtModelBehaviour()
 {
 	QAbstractItemModel *m = model();
 	for(int i = 0; i < model()->rowCount(); i++){
-		if (m->rowCount( m->index(i, 0) ) != 0){
+		if (m->rowCount( m->index(i, 0) ) != 0)
 			setFirstColumnSpanned(i, QModelIndex(), true);
-		}
 	}
 }
 
@@ -88,13 +87,11 @@ void DiveListView::showSearchEdit()
 
 bool DiveListView::eventFilter(QObject* , QEvent* event)
 {
-	if(event->type() != QEvent::KeyPress){
+	if(event->type() != QEvent::KeyPress)
 		return false;
-	}
 	QKeyEvent *keyEv = static_cast<QKeyEvent*>(event);
-	if (keyEv->key() != Qt::Key_Escape){
+	if (keyEv->key() != Qt::Key_Escape)
 		return false;
-	}
 
 	searchBox->clear();
 	searchBox->hide();

@@ -38,9 +38,8 @@ void DiveComputerManagementDialog::update()
 
 void DiveComputerManagementDialog::tryRemove(const QModelIndex& index)
 {
-	if (index.column() != DiveComputerModel::REMOVE){
+	if (index.column() != DiveComputerModel::REMOVE)
 		return;
-	}
 
 	QMessageBox::StandardButton response = QMessageBox::question(
 		this,
@@ -49,9 +48,8 @@ void DiveComputerManagementDialog::tryRemove(const QModelIndex& index)
 		QMessageBox::Ok | QMessageBox::Cancel
 	);
 
-	if (response == QMessageBox::Ok){
+	if (response == QMessageBox::Ok)
 		model->remove(index);
-	}
 }
 
 void DiveComputerManagementDialog::accept()

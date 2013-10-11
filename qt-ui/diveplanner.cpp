@@ -211,17 +211,15 @@ void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , i
 
 void DivePlannerGraphics::keyDownAction()
 {
-	if (scene()->selectedItems().count()) {
-		Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()) {
-			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)) {
-				int row = handles.indexOf(handler);
-				divedatapoint dp = plannerModel->at(row);
-				if (dp.depth >= depthLine->maximum())
-					continue;
+	Q_FOREACH(QGraphicsItem *i, scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler*>(i)) {
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+			if (dp.depth >= depthLine->maximum())
+				continue;
 
-				dp.depth += M_OR_FT(1,5);
-				plannerModel->editStop(row, dp);
-			}
+			dp.depth += M_OR_FT(1,5);
+			plannerModel->editStop(row, dp);
 		}
 	}
 }
@@ -397,13 +395,9 @@ void DivePlannerGraphics::decreaseDepth()
 
 void DivePlannerGraphics::decreaseTime()
 {
-	if (timeLine->maximum() - 10 < TIME_INITIAL_MAX) {
+	if (timeLine->maximum() - 10 < TIME_INITIAL_MAX || timeLine->maximum() - 10 < dpMaxTime)
 		return;
-	}
-	if (timeLine->maximum() - 10 < dpMaxTime) {
-		qDebug() << timeLine->maximum() << dpMaxTime;
-		return;
-	}
+
 	minMinutes -= 10;
 	timeLine->setMaximum(timeLine->maximum() - 10);
 	timeLine->updateTicks();
@@ -575,7 +569,6 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& mappedPos, const int 
 		maxtime = plannerModel->at(pos + 1).time;
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
-
 	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
 		return;
 
@@ -591,10 +584,7 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF& mappedPos, const int 
 	activeDraggedHandler->setPos(QPointF(xpos, ypos));
 	qDeleteAll(lines);
 	lines.clear();
-
 	drawProfile();
-
-
 }
 
 bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF& point)
@@ -758,7 +748,6 @@ void Ruler::setTickSize(qreal size)
 	tickSize = size;
 }
 
-
 void Ruler::setTickInterval(double i)
 {
 	interval = i;
@@ -795,7 +784,6 @@ qreal Ruler::percentAt(const QPointF& p)
 	double percent = value / size;
 	return percent;
 }
-
 
 double Ruler::maximum() const
 {
@@ -1228,6 +1216,5 @@ void DivePlannerPointsModel::createPlan()
 	beginRemoveRows(QModelIndex(), 0, rowCount() -1 );
 	divepoints.clear();
 	endRemoveRows();
-
 	planCreated();
 }

@@ -68,14 +68,12 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 
 	timer->setInterval(200);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
-
 	updateState(INITIAL);
 }
 
 void DownloadFromDCWidget::runDialog()
 {
 	updateState(INITIAL);
-
 	exec();
 }
 
@@ -324,13 +322,10 @@ static QString str_error(const char *fmt, ...)
 void DownloadThread::run()
 {
 	const char *error;
-
 	if (!strcmp(data->vendor, "Uemis"))
 		error = do_uemis_import(data->devname, data->force_download);
 	else
 		error = do_libdivecomputer_import(data);
-
-	if (error) {
+	if (error)
 		this->error =  str_error(error, data->devname, data->vendor, data->product);
-	}
 }

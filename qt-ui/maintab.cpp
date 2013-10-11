@@ -238,7 +238,6 @@ void MainTab::clearStats()
 	else						\
 		ui.field->setText(get_temperature_string(d->field, TRUE))
 
-
 void MainTab::updateDiveInfo(int dive)
 {
 	if (!isEnabled() && dive != -1)
@@ -482,7 +481,6 @@ void MainTab::resetPallete()
 	ui.watertemp->setPalette(p);
 	ui.dateTimeEdit->setPalette(p);
 }
-
 
 #define EDIT_TEXT2(what, text) \
 	textByteArray = text.toLocal8Bit(); \

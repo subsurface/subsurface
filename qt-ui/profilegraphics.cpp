@@ -67,8 +67,6 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
-
-
 }
 
 /* since we cannot use translate() directly on the scene we hack on
@@ -286,7 +284,6 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 
 	/* Depth profile */
 	plot_depth_profile();
-
 	plot_events(dc);
 
 	if (rulerEnabled && !printMode)
@@ -300,11 +297,8 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 
 	/* Text on top of all graphs.. */
 	plot_temperature_text();
-
 	plot_depth_text();
-
 	plot_cylinder_pressure_text();
-
 	plot_deco_text();
 
 	/* Put the dive computer name in the lower left corner */
@@ -649,7 +643,6 @@ void ProfileGraphicsView::plot_depth_sample(struct plot_data *entry,text_render_
 	plot_text(tro, QPointF(sec, entry->depth), QString("%1").arg(d, 0, 'f', 1));
 }
 
-
 void ProfileGraphicsView::plot_temperature_text()
 {
 	int i;
@@ -768,12 +761,10 @@ void ProfileGraphicsView::plot_cylinder_pressure(struct divecomputer *dc)
 			scene()->addItem(item);
 		}
 
-
 		from = QPointF(SCALEGC(entry->sec, mbar));
 		last_index = entry->cylinderindex;
 	}
 }
-
 
 /* set the color for the pressure plot according to temporary sac rate
  * as compared to avg_sac; the calculation simply maps the delta between
@@ -925,7 +916,6 @@ void ProfileGraphicsView::remove_ruler()
 			scene()->removeItem(rulerItem->destNode());
 	}
 }
-
 
 void ProfileGraphicsView::plot_depth_profile()
 {
@@ -1324,7 +1314,6 @@ void ToolTipItem::clear()
 
 void ToolTipItem::setRect(const QRectF& r)
 {
-
 	// qDeleteAll(childItems());
 	delete background;
 
@@ -1355,7 +1344,6 @@ void ToolTipItem::setRect(const QRectF& r)
 	updateTitlePosition();
 }
 
-
 void ToolTipItem::collapse()
 {
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
@@ -1370,10 +1358,8 @@ void ToolTipItem::collapse()
 
 void ToolTipItem::expand()
 {
-
-	if (!title) {
+	if (!title)
 		return;
-	}
 
 	double width = 0, height = title->boundingRect().height() + SPACING;
 	Q_FOREACH(ToolTip t, toolTips) {
@@ -1417,7 +1403,6 @@ ToolTipItem::~ToolTipItem()
 {
 	clear();
 }
-
 
 void ToolTipItem::updateTitlePosition()
 {
@@ -1531,8 +1516,6 @@ EventItem::EventItem(QGraphicsItem* parent, bool grayscale): QGraphicsPolygonIte
 	ball->setBrush(QBrush(getColor(ALERT_FG)));
 	ball->setPen(QPen(getColor(ALERT_FG)));
 }
-
-
 
 RulerNodeItem::RulerNodeItem(QGraphicsItem *parent, graphics_context context) : QGraphicsEllipseItem(parent), gc(context), entry(NULL) , ruler(NULL)
 {
