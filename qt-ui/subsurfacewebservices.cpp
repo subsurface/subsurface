@@ -32,7 +32,6 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 	ui.userID->setText(s.value("webservice_uid").toString());
 }
 
-
 static void clear_table(struct dive_table *table)
 {
 	int i;

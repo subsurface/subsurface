@@ -25,11 +25,16 @@ QFont defaultModelFont()
 	return font;
 }
 
-CylindersModel::CylindersModel(QObject* parent): QAbstractTableModel(parent), current(0), rows(0)
+CleanerTableModel::CleanerTableModel(): QAbstractTableModel()
 {
 }
 
-QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
+int CleanerTableModel::columnCount(const QModelIndex& parent) const
+{
+	return headers.count();
+}
+
+QVariant CleanerTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	QVariant ret;
 
@@ -41,22 +46,19 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 		ret = defaultModelFont();
 		break;
 	case Qt::DisplayRole:
-		switch(section) {
-		case TYPE:		ret = tr("Type"); break;
-		case SIZE:		ret = tr("Size"); break;
-		case WORKINGPRESS:	ret = tr("WorkPress"); break;
-		case START:		ret = tr("StartPress"); break;
-		case END:		ret = tr("EndPress  "); break;
-		case O2:		ret = tr("O2% "); break;
-		case HE:		ret = tr("He% "); break;
-		}
+		return headers.at(section);
 	}
-	return ret;
 }
 
-int CylindersModel::columnCount(const QModelIndex& parent) const
+void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 {
-	return COLUMNS;
+	headers = newHeaders;
+}
+
+CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
+{
+	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE,};
+	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") <<  tr("O2%") << tr("HE"));
 }
 
 static QVariant percent_string(fraction_t fraction)
