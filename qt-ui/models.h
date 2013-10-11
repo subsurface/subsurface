@@ -109,14 +109,12 @@ private:
 
 /* Encapsulation of the Weight Model, that represents
  * the current weights on a dive. */
-class WeightModel : public QAbstractTableModel {
+class WeightModel : public CleanerTableModel {
 Q_OBJECT
 public:
-	enum Column {REMOVE, TYPE, WEIGHT, COLUMNS};
+	enum Column {REMOVE, TYPE, WEIGHT};
 
 	explicit WeightModel(QObject *parent = 0);
-	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ Qt::ItemFlags flags(const QModelIndex& index) const;

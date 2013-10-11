@@ -46,8 +46,9 @@ QVariant CleanerTableModel::headerData(int section, Qt::Orientation orientation,
 		ret = defaultModelFont();
 		break;
 	case Qt::DisplayRole:
-		return headers.at(section);
+		ret = headers.at(section);
 	}
+	return ret;
 }
 
 void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
@@ -349,8 +350,10 @@ void CylindersModel::remove(const QModelIndex& index)
 	endRemoveRows();
 }
 
-WeightModel::WeightModel(QObject* parent): QAbstractTableModel(parent), current(0), rows(0)
+WeightModel::WeightModel(QObject* parent): current(0), rows(0)
 {
+	//enum Column {REMOVE, TYPE, WEIGHT};
+	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
 }
 
 weightsystem_t* WeightModel::weightSystemAt(const QModelIndex& index)
@@ -376,11 +379,6 @@ void WeightModel::clear()
 		beginRemoveRows(QModelIndex(), 0, rows-1);
 		endRemoveRows();
 	}
-}
-
-int WeightModel::columnCount(const QModelIndex& parent) const
-{
-	return COLUMNS;
 }
 
 QVariant WeightModel::data(const QModelIndex& index, int role) const
@@ -474,30 +472,6 @@ Qt::ItemFlags WeightModel::flags(const QModelIndex& index) const
 int WeightModel::rowCount(const QModelIndex& parent) const
 {
 	return rows;
-}
-
-QVariant WeightModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	QVariant ret;
-	if (orientation == Qt::Vertical)
-		return ret;
-
-	switch (role) {
-	case Qt::FontRole:
-		ret = defaultModelFont();
-		break;
-	case Qt::DisplayRole:
-		switch(section) {
-		case TYPE:
-			ret = tr("Type");
-			break;
-		case WEIGHT:
-			ret = tr("Weight");
-			break;
-		}
-		break;
-	}
-	return ret;
 }
 
 void WeightModel::add()
