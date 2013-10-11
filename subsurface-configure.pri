@@ -26,9 +26,10 @@ CONFIG -= warn_on warn_off
 CONFIG += exceptions_off
 
 # Check if we have pkg-config
+isEmpty(PKG_CONFIG):PKG_CONFIG=pkg-config
 equals($$QMAKE_HOST.os, "Windows"):NUL=NUL
 else:NUL=/dev/null
-PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
+PKG_CONFIG_OUT = $$system($$PKG_CONFIG --version 2> $$NUL)
 !isEmpty(PKG_CONFIG_OUT) {
     CONFIG += link_pkgconfig
 } else {
@@ -43,6 +44,8 @@ PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
     INCLUDEPATH += ../libdivecomputer/include
     LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
     LIBDC_LA = ../libdivecomputer/src/libdivecomputer.la
+} else:!isEmpty(CROSS_PATH):exists($${CROSS_PATH}"/lib/libdivecomputer.a"):exists($${CROSS_PATH}"/lib/libusb-1.0.a") {
+    LIBS += $${CROSS_PATH}"/lib/libdivecomputer.a" $${CROSS_PATH}"/lib/libusb-1.0.a"
 } else:exists(/usr/local/lib/libdivecomputer.a) {
     LIBS += /usr/local/lib/libdivecomputer.a
     LIBDC_LA = /usr/local/lib/libdivecomputer.la
@@ -52,8 +55,8 @@ PKG_CONFIG_OUT = $$system(pkg-config --version 2> $$NUL)
 } else:link_pkgconfig {
     # find it via pkg-config, but we need to pass the --static flag,
     # so we can't use the PKGCONFIG variable.
-    LIBS += $$system("pkg-config --static --libs libdivecomputer")
-    LIBDC_CFLAGS = $$system("pkg-config --static --cflags libdivecomputer")
+    LIBS += $$system($$PKG_CONFIG --static --libs libdivecomputer)
+    LIBDC_CFLAGS = $$system($$PKG_CONFIG --static --cflags libdivecomputer)
     QMAKE_CFLAGS += $$LIBDC_CFLAGS
     QMAKE_CXXFLAGS += $$LIBDC_CFLAGS
     unset(LIBDC_CFLAGS)
@@ -79,12 +82,12 @@ XSLT_LIBS = $$system(xslt-config --libs 2>$$NUL)
 
 link_pkgconfig {
     isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS) {
-        XML2_CFLAGS = $$system(pkg-config --cflags libxml2 2> $$NUL)
-        XML2_LIBS = $$system(pkg-config --libs libxml2 2> $$NUL)
+        XML2_CFLAGS = $$system($$PKG_CONFIG --cflags libxml2 2> $$NUL)
+        XML2_LIBS = $$system($$PKG_CONFIG --libs libxml2 2> $$NUL)
     }
     isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS) {
-        XSLT_CFLAGS = $$system(pkg-config --cflags libxslt 2> $$NUL)
-        XSLT_LIBS = $$system(pkg-config --libs libxslt 2> $$NUL)
+        XSLT_CFLAGS = $$system($$PKG_CONFIG --cflags libxslt 2> $$NUL)
+        XSLT_LIBS = $$system($$PKG_CONFIG --libs libxslt 2> $$NUL)
     }
     isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS): \
         error("Could not find libxml2. Did you forget to install it?")
@@ -126,7 +129,7 @@ win32 {
 #
 # misc
 #
-!equals(V, 1): !win32: CONFIG += silent
+!equals(V, 1): !equals($$QMAKE_HOST.os, "Windows"): CONFIG += silent
 MOC_DIR = .moc
 UI_DIR = .uic
 RCC_DIR = .rcc
