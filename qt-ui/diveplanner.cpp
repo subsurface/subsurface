@@ -937,7 +937,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()) {
 			case CCSETPOINT: return p.po2;
-			case DEPTH: return p.depth;
+			case DEPTH: return rint(get_depth_units(p.depth, NULL, NULL));
 			case DURATION: return p.time / 60;
 			case GAS: return strForAir(p);
 		}
@@ -956,7 +956,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 	if(role == Qt::EditRole) {
 		divedatapoint& p = divepoints[index.row()];
 		switch(index.column()) {
-			case DEPTH: p.depth = value.toInt(); break;
+			case DEPTH: p.depth = units_to_depth(value.toInt()); break;
 			case DURATION: p.time = value.toInt() * 60; break;
 			case CCSETPOINT:{
 				int po2 = 0;

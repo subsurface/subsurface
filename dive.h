@@ -185,6 +185,8 @@ extern double get_temp_units(unsigned int mk, const char **units);
 extern double get_weight_units(unsigned int grams, int *frac, const char **units);
 extern double get_vertical_speed_units(unsigned int mms, int *frac, const char **units);
 
+extern unsigned int units_to_depth(double depth);
+
 static inline double grams_to_lbs(int grams)
 {
 	return grams / 453.6;

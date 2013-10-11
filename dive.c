@@ -101,6 +101,13 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	return vol;
 }
 
+unsigned int units_to_depth(double depth)
+{
+	if (get_units()->length == METERS)
+		return rint(depth * 1000);
+	return feet_to_mm(depth);
+}
+
 double get_depth_units(unsigned int mm, int *frac, const char **units)
 {
 	int decimals;
