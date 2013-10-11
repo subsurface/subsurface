@@ -21,7 +21,7 @@ $ git clone git://git.libdivecomputer.org/libdivecomputer
 $ cd libdivecomputer
 $ git checkout release-0.4
 $ autoreconf --install
-$ ./configure
+$ ./configure --disable-shared
 $ make
 $ sudo make install
 
@@ -68,7 +68,7 @@ $ git clone git://git.libdivecomputer.org/libdivecomputer
 $ cd libdivecomputer
 $ git checkout release-0.4
 $ autoreconf --install
-$ ./configure
+$ ./configure --disable-shared
 $ make
 $ make install
 
@@ -103,7 +103,7 @@ The best way to get libdivecomputer to build appears to be
 $ git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
 $ cd libdivecomputer
 $ git checkout release-0.4
-$ mingw32-configure
+$ mingw32-configure --disable-shared
 $ mingw32-make
 $ sudo mingw32-make install
 
