@@ -55,7 +55,7 @@ private:
 };
 
 /* Encapsulate ws_info */
-class WSInfoModel : public QAbstractTableModel {
+class WSInfoModel : public CleanerTableModel {
 Q_OBJECT
 public:
 	static WSInfoModel* instance();
@@ -63,8 +63,6 @@ public:
 	enum Column {DESCRIPTION, GR};
 	WSInfoModel();
 
-	/*reimp*/ QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	/*reimp*/ int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	/*reimp*/ int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	/*reimp*/ bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());

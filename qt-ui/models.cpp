@@ -545,11 +545,6 @@ void WSInfoModel::clear()
 {
 }
 
-int WSInfoModel::columnCount(const QModelIndex& parent) const
-{
-	return 2;
-}
-
 QVariant WSInfoModel::data(const QModelIndex& index, int role) const
 {
 	QVariant ret;
@@ -578,31 +573,6 @@ QVariant WSInfoModel::data(const QModelIndex& index, int role) const
 	return ret;
 }
 
-QVariant WSInfoModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	QVariant ret;
-
-	if (orientation != Qt::Horizontal)
-		return ret;
-
-	switch(role){
-		case Qt::FontRole :
-			ret = defaultModelFont();
-			break;
-		case Qt::DisplayRole :
-			switch(section) {
-				case GR:
-					ret = tr("kg");
-					break;
-				case DESCRIPTION:
-					ret = tr("Description");
-					break;
-			}
-			break;
-	}
-	return ret;
-}
-
 int WSInfoModel::rowCount(const QModelIndex& parent) const
 {
 	return rows+1;
@@ -613,8 +583,9 @@ const QString& WSInfoModel::biggerString() const
 	return biggerEntry;
 }
 
-WSInfoModel::WSInfoModel() : QAbstractTableModel(), rows(-1)
+WSInfoModel::WSInfoModel() : rows(-1)
 {
+	setHeaderDataStrings( QStringList() << tr("Description") << tr("kg"));
 	struct ws_info_t *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++){
 		QString wsInfoName(info->name);
