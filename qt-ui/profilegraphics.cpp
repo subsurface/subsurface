@@ -293,7 +293,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	plot_temperature_profile();
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure(dc);
+	plot_cylinder_pressure();
 
 	/* Text on top of all graphs.. */
 	plot_temperature_text();
@@ -691,7 +691,7 @@ void ProfileGraphicsView::plot_single_temp_text(int sec, int mkelvin)
 	plot_text(&tro, QPointF(sec, mkelvin), QString("%1%2").arg(deg, 0, 'f', 1).arg(unit)); //"%.2g%s"
 }
 
-void ProfileGraphicsView::plot_cylinder_pressure(struct divecomputer *dc)
+void ProfileGraphicsView::plot_cylinder_pressure()
 {
 	int i;
 	int last = -1, last_index = -1;

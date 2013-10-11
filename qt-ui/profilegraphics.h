@@ -158,7 +158,7 @@ private:
 	void plot_events(struct divecomputer *dc);
 	void plot_one_event(struct event *event);
 	void plot_temperature_profile();
-	void plot_cylinder_pressure(struct divecomputer *dc);
+	void plot_cylinder_pressure();
 	void plot_temperature_text();
 	void plot_single_temp_text(int sec, int mkelvin);
 	void plot_depth_text();
