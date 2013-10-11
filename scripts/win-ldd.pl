@@ -1,7 +1,7 @@
 #!perl
 use strict;
 my %deploy;
-my $objdump = $ENV{objdump} ? $ENV{objdump} : "i686-w64-mingw32-objdump";
+my $objdump = $ENV{objdump} ? $ENV{objdump} : "objdump";
 my @searchdirs = split(/:/, $ENV{PATH});
 
 sub addDependenciesFor($) {
