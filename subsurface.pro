@@ -143,8 +143,7 @@ TRANSLATIONS = \
 	translations/subsurface_sk_SK.ts \
 	translations/subsurface_sv_SE.ts
 
-doc.commands = $(CHK_DIR_EXISTS) Documentation || $(MKDIR) Documentation
-doc.commands += $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation doc
+doc.commands += $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
 
