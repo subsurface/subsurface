@@ -3,6 +3,7 @@ use strict;
 my %deploy;
 my $objdump = $ENV{objdump} ? $ENV{objdump} : "objdump";
 my @searchdirs;
+my @systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|/c/windows|i, qr|/c/winnt|);
 
 sub addDependenciesFor($) {
     open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
@@ -58,6 +59,18 @@ for (@ARGV) {
 
 # Append PATH to @searchdirs
 @searchdirs = (@searchdirs, split(/:/, $ENV{PATH}));
+
+# Remove system dirs from @searchdirs
+@searchdirs = grep {
+    my $sys = 0;
+    for my $rx (@systemdirs) {
+        if ($_ =~ $rx) {
+            $sys = 1;
+            last;
+        }
+    }
+    !$sys;
+} @searchdirs;
 
 while (1) {
     findMissingDependencies();
