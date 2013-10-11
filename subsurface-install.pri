@@ -119,12 +119,10 @@ XSLTDIR = $(DATADIR)/subsurface
 		else: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 	}
 	isEmpty(TS_DIR):TS_DIR = translations
-	TSQM.target = .translations
-	TSQM.name = lrelease subsurface.pro
-	TSQM.depends = $$TRANSLATIONS
+	TSQM.input = TRANSLATIONS
 	TSQM.output = $$TS_DIR/${QMAKE_FILE_BASE}.qm
-	TSQM.commands = $$QMAKE_LRELEASE subsurface.pro && echo "OK" > .translations
-	QMAKE_EXTRA_TARGETS += TSQM
-	PRE_TARGETDEPS += .translations
+	TSQM.CONFIG += no_link target_predeps
+	TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm $$TS_DIR/${QMAKE_FILE_BASE}.qm
+	QMAKE_EXTRA_COMPILERS += TSQM
 }
 QMAKE_EXTRA_TARGETS += install $$install.depends
