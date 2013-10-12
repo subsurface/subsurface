@@ -3,7 +3,7 @@ use strict;
 my %deploy;
 my $objdump = $ENV{objdump} ? $ENV{objdump} : "objdump";
 my @searchdirs;
-my @systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|/c/windows|i, qr|/c/winnt|);
+my @systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|^/c/windows|i, qr|^/c/winnt|);
 
 sub addDependenciesFor($) {
 	open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
@@ -50,7 +50,7 @@ for (@ARGV) {
 		# Add $_'s path to the search list too
 		my $dirname = $_;
 		$dirname =~ s,/[^/]+$,,;
-		push @searchdirs, $dirname;
+		unshift @searchdirs, $dirname;
 
 		$deploy{$_} = $_;
 		addDependenciesFor($_);
