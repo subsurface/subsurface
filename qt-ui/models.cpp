@@ -59,7 +59,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 {
 	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE,};
-	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") <<  tr("O2%") << tr("HE"));
+	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("HE"));
 }
 
 static QVariant percent_string(fraction_t fraction)
