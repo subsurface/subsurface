@@ -164,7 +164,7 @@ else: ICON = subsurface-icon.svg
 MANPAGE = subsurface.1
 XSLT_FILES = xslt
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
-MARBLEDIR = marbledata/maps
+MARBLEDIR = marbledata/maps marbledata/bitmaps
 DEPLOYMENT_PLUGIN += imageformats/qjpeg
 
 # This information will go into the Windows .rc file and linked into the .exe
