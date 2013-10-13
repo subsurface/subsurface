@@ -57,7 +57,10 @@ mac {
     !win32-msvc* {
         #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$$QMAKE_CC -dumpmachine`-objdump
         dlls.commands += PATH=\$\$PATH:`$$QMAKE_CC -print-search-dirs | sed -nE \'/^libraries: =/{s///;s,/lib/?(:|\$\$),/bin\\1,g;p;q;}\'`
-        dlls.commands += perl $$PWD/scripts/win-ldd.pl \$^
+        dlls.commands += perl $$PWD/scripts/win-ldd.pl
+        equals(QMAKE_HOST.os, "Windows"): EXE_SUFFIX = .exe
+        CONFIG(debug, debug|release): dlls.commands += $$PWD/debug/subsurface$$EXE_SUFFIX
+        else: dlls.commands += $$PWD/release/$$TARGET$$EXE_SUFFIX
 
         for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
             CONFIG(debug, debug|release): dlls.depends += $$[QT_INSTALL_PLUGINS]/$${plugin}d4.dll
