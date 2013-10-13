@@ -323,12 +323,13 @@ void CylindersModel::setDive(dive* d)
 			break;
 		}
 	}
-
-	beginInsertRows(QModelIndex(), 0, amount-1);
 	rows = amount;
 	current = d;
 	changed = false;
-	endInsertRows();
+	if (amount > 0) {
+		beginInsertRows(QModelIndex(), 0, amount - 1);
+		endInsertRows();
+	}
 }
 
 Qt::ItemFlags CylindersModel::flags(const QModelIndex& index) const
@@ -504,12 +505,13 @@ void WeightModel::setDive(dive* d)
 			break;
 		}
 	}
-
-	beginInsertRows(QModelIndex(), 0, amount-1);
 	rows = amount;
 	current = d;
 	changed = false;
-	endInsertRows();
+	if (amount > 0) {
+		beginInsertRows(QModelIndex(), 0, amount - 1);
+		endInsertRows();
+	}
 }
 
 WSInfoModel* WSInfoModel::instance()
