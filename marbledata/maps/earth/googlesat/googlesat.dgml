@@ -26,13 +26,13 @@
                     <sourcedir format="JPG"> earth/googlesat </sourcedir>
                     <storageLayout levelZeroColumns="1" levelZeroRows="1" maximumTileLevel="20" mode="Custom" />
                     <projection name="Mercator" />
-                    <downloadUrl protocol="http" host="khm.google.com" path="/kh/v=124&amp;hl=de&amp;x={x}&amp;s=&amp;y={y}&amp;z={zoomLevel}&amp;s=Ga" />
+                    <downloadUrl protocol="http" host="mt0.google.com" path="/vt/lyrs=s&amp;hl=en&amp;x={x}&amp;s=&amp;y={y}&amp;z={zoomLevel}&amp;s=Ga" />
                 </texture>
                 <texture name="streets" expire="604800" >
                     <sourcedir format="PNG"> earth/googlesat/streets </sourcedir>
                     <storageLayout levelZeroColumns="1" levelZeroRows="1" maximumTileLevel="20" mode="Custom" />
                     <projection name="Mercator" />
-                    <downloadUrl protocol="http" host="mt.google.com" path="/vt/lyrs=h@126&amp;hl=de&amp;x={x}&amp;s=&amp;y={y}&amp;z={zoomLevel}&amp;s=Ga" />
+                    <downloadUrl protocol="http" host="mt.google.com" path="/vt/lyrs=h@126&amp;hl=en&amp;x={x}&amp;s=&amp;y={y}&amp;z={zoomLevel}&amp;s=Ga" />
                     <blending name="OverpaintBlending" />
                 </texture>
                 <texture name="bicycle" expire="604800" >
