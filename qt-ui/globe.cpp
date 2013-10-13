@@ -62,6 +62,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 
 	setMinimumHeight(0);
 	setMinimumWidth(0);
+	editingDiveCoords = 0;
 }
 
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
