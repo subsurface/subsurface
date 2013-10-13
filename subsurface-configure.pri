@@ -129,7 +129,7 @@ win32 {
 #
 # misc
 #
-!equals(V, 1): !equals($$QMAKE_HOST.os, "Windows"): CONFIG += silent
+!equals(V, 1): !equals(QMAKE_HOST.os, "Windows"): CONFIG += silent
 MOC_DIR = .moc
 UI_DIR = .uic
 RCC_DIR = .rcc
