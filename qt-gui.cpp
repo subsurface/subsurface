@@ -390,7 +390,7 @@ QString getSubsurfaceDataPath(QString folderToFind)
 
 	// first check if we are running in the build dir, so this
 	// is just subdirectory of the current directory
-	execdir = QCoreApplication::applicationDirPath();
+	execdir = QDir::currentPath();
 	folder = QDir(execdir.append(QDir::separator()).append(folderToFind));
 	if (folder.exists())
 		return folder.absolutePath();
