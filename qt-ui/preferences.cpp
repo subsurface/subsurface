@@ -1,6 +1,7 @@
 #include "preferences.h"
 #include <QSettings>
 #include <QDebug>
+#include <QFileDialog>
 
 PreferencesDialog* PreferencesDialog::instance()
 {
@@ -193,3 +194,9 @@ void PreferencesDialog::buttonClicked(QAbstractButton* button)
 
 
 #undef SB
+
+void PreferencesDialog::on_chooseFile_clicked()
+{
+    QFileInfo fi(system_default_filename());
+    ui.defaultfilename->setText(QFileDialog::getOpenFileName(this, tr("Open Default Log File"), fi.absolutePath(), tr("XML Files (*.xml)")));
+}

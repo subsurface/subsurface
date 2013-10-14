@@ -18,6 +18,7 @@ signals:
 	void settingsChanged();
 public slots:
 	void buttonClicked(QAbstractButton* button);
+	void on_chooseFile_clicked();
 	void syncSettings();
 	void restorePrefs();
 	void rememberPrefs();
