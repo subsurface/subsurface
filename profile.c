@@ -203,7 +203,7 @@ int get_cylinder_pressure_range(struct graphics_context *gc)
 
 
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
-int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
+static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
 	int index = entry1->cylinderindex;
 	cylinder_t *cyl;
@@ -821,6 +821,31 @@ static void populate_cylinder_pressure_data(int idx, int start, int end, struct 
 	}
 }
 
+static void calculate_sac(struct dive *dive, struct plot_info *pi)
+{
+	int i = 0, last = 0;
+	struct plot_data *last_entry = NULL;
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry+i;
+		if (!last_entry || last_entry->cylinderindex != entry->cylinderindex) {
+			last = i;
+			last_entry = entry;
+			entry->sac = get_local_sac(entry, pi->entry + i + 1, dive);
+		} else {
+			int j;
+			entry->sac = 0;
+			for (j = last; j < i; j++)
+				entry->sac += get_local_sac(pi->entry + j, pi->entry + j + 1, dive);
+			entry->sac /= (i - last);
+			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
+				last++;
+				last_entry = pi->entry + last;
+			}
+		}
+	}
+}
+
 static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_info *pi)
 {
 	/* We should try to see if it has interesting pressure data here */
@@ -1102,6 +1127,9 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 
 	/* .. calculate missing pressure entries */
 	populate_pressure_information(dive, dc, pi);
+
+	/* Calculate sac */
+	calculate_sac(dive, pi);
 
 	/* Then, calculate partial pressures and deco information */
 	if (prefs.profile_calc_ceiling)

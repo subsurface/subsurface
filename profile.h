@@ -28,6 +28,7 @@ struct plot_data {
 	int stopdepth;
 	int cns;
 	int smoothed;
+	int sac;
 	double po2, pn2, phe;
 	double mod, ead, end, eadd;
 	velocity_t velocity;
@@ -62,8 +63,6 @@ int get_maxtime(struct plot_info *pi);
  * take into account the additional verical space needed to plot
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi);
-
-int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive);
 
 void setup_pp_limits(struct graphics_context *gc);
 

@@ -694,11 +694,9 @@ void ProfileGraphicsView::plot_single_temp_text(int sec, int mkelvin)
 void ProfileGraphicsView::plot_cylinder_pressure()
 {
 	int i;
-	int last = -1, last_index = -1;
+	int last_index = -1;
 	int lift_pen = FALSE;
 	int first_plot = TRUE;
-	int sac = 0;
-	struct plot_data *last_entry = NULL;
 
 	if (!get_cylinder_pressure_range(&gc))
 		return;
@@ -711,29 +709,13 @@ void ProfileGraphicsView::plot_cylinder_pressure()
 		mbar = GET_PRESSURE(entry);
 		if (entry->cylinderindex != last_index) {
 			lift_pen = TRUE;
-			last_entry = NULL;
 		}
 		if (!mbar) {
 			lift_pen = TRUE;
 			continue;
 		}
-		if (!last_entry) {
-			last = i;
-			last_entry = entry;
-			sac = get_local_sac(entry, gc.pi.entry + i + 1, dive);
-		} else {
-			int j;
-			sac = 0;
-			for (j = last; j < i; j++)
-				sac += get_local_sac(gc.pi.entry + j, gc.pi.entry + j + 1, dive);
-			sac /= (i - last);
-			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
-				last++;
-				last_entry = gc.pi.entry + last;
-			}
-		}
 
-		QColor c = get_sac_color(sac, dive->sac);
+		QColor c = get_sac_color(entry->sac, dive->sac);
 
 		if (lift_pen) {
 			if (!first_plot && entry->cylinderindex == last_index) {
