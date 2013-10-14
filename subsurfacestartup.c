@@ -27,6 +27,7 @@ struct preferences default_prefs = {
 	.font_size = 14.0,
 	.show_invalid = FALSE,
 	.show_time = FALSE,
+	.show_sac = FALSE,
 };
 
 struct units *get_units()

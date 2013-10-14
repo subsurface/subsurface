@@ -587,6 +587,7 @@ void MainWindow::readSettings()
 	GET_INT("gfhigh", gfhigh);
 	set_gf(prefs.gflow, prefs.gfhigh);
 	GET_BOOL("show_time", show_time);
+	GET_BOOL("show_sac", show_sac);
 	s.endGroup();
 
 	s.beginGroup("Display");

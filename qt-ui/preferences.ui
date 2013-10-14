@@ -724,6 +724,17 @@
               </item>
              </layout>
             </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11b">
+              <item>
+               <widget class="QCheckBox" name="show_sac">
+                <property name="text">
+                 <string>Show SAC</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </widget>
          </item>

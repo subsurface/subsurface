@@ -74,6 +74,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.defaultfilename->setText(prefs.default_filename);
 	ui.displayinvalid->setChecked(prefs.show_invalid);
 	ui.show_time->setChecked(prefs.show_time);
+	ui.show_sac->setChecked(prefs.show_sac);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
 }
@@ -118,6 +119,7 @@ void PreferencesDialog::setPrefsFromUi()
 	prefs.default_filename = strdup(ui.defaultfilename->text().toUtf8().data());
 	prefs.display_invalid_dives = ui.displayinvalid->isChecked();
 	SP(show_time, ui.show_time);
+	SP(show_sac, ui.show_sac);
 }
 
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
@@ -144,6 +146,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("gflow", ui.gflow->value());
 	s.setValue("gfhigh", ui.gfhigh->value());
 	SB("show_time", ui.show_time);
+	SB("show_sac", ui.show_sac);
 	s.endGroup();
 
 	// Units
