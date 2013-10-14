@@ -114,6 +114,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 
 	// setup the profile widget
 	ProfileGraphicsView *profile = mainWindow()->graphics();
+	const int profileFrameStyle = profile->frameStyle();
+	profile->setFrameStyle(QFrame::NoFrame);
 	profile->clear();
 	profile->setPrintMode(true, !printOptions->color_selected);
 	QSize originalSize = profile->size();
@@ -178,6 +180,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	// cleanup
 	painter.end();
 	delete table;
+	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
 	profile->clear();
