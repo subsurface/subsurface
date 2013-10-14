@@ -119,7 +119,62 @@ $ make create-windows-installer
 Building Subsurface on Windows
 ------------------------------
 
-This is still work in progress.
+1) Install msys-git:
+http://msysgit.github.io
+
+Tools part of MSYS are required for building Subsurface, while you also
+need Git to be upstream and contribute to the project.
+Make sure that the msys/bin (or git/bin) folder is in PATH.
+
+2) Install Qt
+http://qt-project.org/downloads
+
+Subsurface is currently built against Qt 4.8.5.
+
+3) Install a MinGW toolchain
+https://docs.google.com/open?id=0B4D8x6CJEmtuczdiQklwMEs4RUU
+
+Qt 4.8.5 comes without a compiler and you will have to download it from
+a separate location. Other compiler may work, but there are no guaranties for
+that. Make sure that the mingw/bin folder is in PATH.
+
+4) Install Libdivecomputer
+Use similar steps to the previous section, without the sudo command.
+
+5) Install CMake (required for building Marble):
+http://www.cmake.org/cmake/resources/software.html
+
+Make sure that the cmake/bin folder is in PATH.
+
+5) Download and build Marble
+http://marble.kde.org/sources.php
+http://techbase.kde.org/Projects/Marble/WindowsCompiling#Compiling_Marble_using_MingW
+
+Make sure you build both the Debug and Release versions.
+
+6) Install pkg-config
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.26-1_win32.zip
+
+pkg-config depends on DLL files such as libglib-2.0-0.dll and has to be in
+PATH, so it's best that you copy the executable to msys/bin.
+
+7) Install other dependencies
+Subsurface also depends on the following libraries:
+
+* libxml2
+http://www.xmlsoft.org/downloads.html
+* libxslt
+http://xmlsoft.org/XSLT/
+* libusb-1.0
+http://sourceforge.net/apps/trac/libusb-win32/wiki
+* zlib
+http://www.zlib.net/
+* libzip
+http://www.nih.at/libzip/
+
+Once you have the libraries, create .pc files (pkg-config) for them and place
+the files in a folder that is indicated by the PKG_CONFIG_PATH environment
+variable - e.g. PKG_CONFIG_PATH=c:\msys\pkg-config
 
 To build subsurface, use:
 
