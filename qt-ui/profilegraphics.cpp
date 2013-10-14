@@ -1037,8 +1037,8 @@ void ProfileGraphicsView::plot_depth_profile()
 	/* Show any ceiling we may have encountered */
 	if (prefs.profile_dc_ceiling) {
 		for (i = gc.pi.nr - 1; i >= 0; i--, entry--) {
-			if (entry->ndl) {
-				/* non-zero NDL implies this is a safety stop, no ceiling */
+			if (!entry->in_deco) {
+				/* not in deco implies this is a safety stop, no ceiling */
 				p.append(QPointF(SCALEGC(entry->sec, 0)));
 			} else if (entry->stopdepth < entry->depth) {
 				p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
@@ -1068,8 +1068,8 @@ void ProfileGraphicsView::plot_depth_profile()
 		entry = gc.pi.entry;
 		p.append(QPointF(SCALEGC(0, 0)));
 		for (i = 0; i < gc.pi.nr; i++, entry++) {
-			if (entry->ndl == 0 && entry->stopdepth) {
-				if (entry->ndl == 0 && entry->stopdepth < entry->depth) {
+			if (entry->in_deco && entry->stopdepth) {
+				if (entry->stopdepth < entry->depth) {
 					p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
 				} else {
 					p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
@@ -1143,7 +1143,7 @@ void ProfileGraphicsView::plot_depth_profile()
 			p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
 
 		for (i-- , entry--; i >= 0; i--, entry--) {
-			if (entry->ndl == 0 && entry->stopdepth > entry->depth) {
+			if (entry->in_deco && entry->stopdepth > entry->depth) {
 				p.append(QPointF(SCALEGC(entry->sec, entry->stopdepth)));
 			} else {
 				p.append(QPointF(SCALEGC(entry->sec, entry->depth)));
