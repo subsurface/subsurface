@@ -22,6 +22,7 @@
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
 #define IDX( XX ) mymodel->index(currCombo.currRow, XX)
+static bool keyboardFinished = false;
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 	QStyledItemDelegate(parent),
@@ -91,11 +92,12 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 	comboDelegate->lineEdit()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	comboDelegate->view()->installEventFilter( const_cast<QObject*>(qobject_cast<const QObject*>(this)));
 	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
-	connect(comboDelegate->lineEdit(), SIGNAL(editingFinished()), this, SLOT(testActivation()));
 	connect(comboDelegate, SIGNAL(activated(QString)), this, SLOT(fakeActivation()));
+	connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), this, SLOT(fixTabBehavior()));
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel*>(index.model());
+	keyboardFinished = false;
 
 	// Current display of things on Gnome3 looks like shit, so
 	// let`s fix that.
@@ -137,6 +139,16 @@ void ComboBoxDelegate::fakeActivation(){
 	QStyledItemDelegate::eventFilter(currCombo.comboEditor, &ev);
 }
 
+// This 'reverts' the model data to what we actually choosed,
+// becaus e a TAB is being understood by Qt as 'cancel' while
+// we are on a QComboBox ( but not on a QLineEdit.
+void ComboBoxDelegate::fixTabBehavior()
+{
+	if(keyboardFinished){
+		setModelData(0,0,QModelIndex());
+	}
+}
+
 bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
@@ -146,6 +158,10 @@ bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 			if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
 				currCombo.ignoreSelection = true;
 				currCombo.comboEditor->showPopup();
+			}
+			if(ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return){
+				currCombo.activeText  = currCombo.comboEditor->currentText();
+				keyboardFinished = true;
 			}
 		}
 		else{	// the 'Drop Down Menu' part.

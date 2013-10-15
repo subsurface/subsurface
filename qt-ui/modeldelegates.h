@@ -27,6 +27,7 @@ public slots:
 	void testActivation(const QString& currString = QString());
 	//HACK: try to get rid of this in the future.
 	void fakeActivation();
+	void fixTabBehavior();
 	virtual void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 protected:
 	QAbstractItemModel *model;
