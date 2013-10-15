@@ -365,17 +365,3 @@ void PrintLayout::addTablePrintHeadingRow(TablePrintModel *model, int row) const
 		model->setData(model->index(row, i), tablePrintHeadingBackground, Qt::BackgroundRole);
 	}
 }
-
-// experimental
-QPixmap PrintLayout::convertPixmapToGrayscale(QPixmap pixmap) const
-{
-	QImage image = pixmap.toImage();
-	int gray, width = pixmap.width(), height = pixmap.height();
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			gray = qGray(image.pixel(i, j));
-			image.setPixel(i, j, qRgb(gray, gray, gray));
-		}
-	}
-    return pixmap.fromImage(image);
-}

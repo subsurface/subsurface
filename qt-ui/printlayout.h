@@ -39,8 +39,6 @@ private:
 	void printTable();
 	void addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const;
 	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;
-
-	QPixmap convertPixmapToGrayscale(QPixmap) const;
 };
 
 #endif
