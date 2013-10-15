@@ -34,6 +34,7 @@
 #define RED1                  QColor::fromRgbF( 1.0, 0.0, 0.0, 1 )
 
 // Monochromes
+#define BLACK1                QColor::fromRgbF( 0.0, 0.0, 0.0, 1 )
 #define BLACK1_LOW_TRANS      QColor::fromRgbF( 0.0, 0.0, 0.0, 0.75 )
 #define BLACK1_HIGH_TRANS     QColor::fromRgbF( 0.0, 0.0, 0.0, 0.25 )
 #define TUNDORA1_MED_TRANS    QColor::fromRgbF( 0.3, 0.3, 0.3, 0.5 )
