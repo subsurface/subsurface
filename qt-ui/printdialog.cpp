@@ -44,10 +44,6 @@ void PrintDialog::runDialog()
 
 void PrintDialog::printClicked(void)
 {
-	// printer.setOutputFileName("print.pdf");
-	// printer.setOutputFormat(QPrinter::PdfFormat);
-	// temporary: use a preview dialog
-	printer.setResolution(300);
 	QPrintPreviewDialog previewDialog(&printer, this);
     QObject::connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
     previewDialog.exec();
