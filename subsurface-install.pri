@@ -33,7 +33,7 @@ mac {
 
     mac_dmg.target = mac-create-dmg
     mac_dmg.commands = $$mac_deploy.commands -dmg
-    mac_dmg.commands += $${nltab}$(MOVE) $${TARGET}.dmg $${TARGET}-$${VERSION}.dmg
+    mac_dmg.commands += $${nltab}$(MOVE) $${TARGET}.dmg $${TARGET}-$${FULL_VERSION}.dmg
     QMAKE_EXTRA_TARGETS += mac_deploy mac_dmg
 } else: win32 {
     # Windows bundling rules
