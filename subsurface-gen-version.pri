@@ -7,7 +7,7 @@ exists(.git/HEAD): {
     GIT_HEAD = .git/HEAD
     VERSION_SCRIPT = $$PWD/scripts/get-version
     # always use linux here -------------------vvv    so we get the true full version
-    FULL_VERSION = $$system("$$VERSION_SCRIPT linux")
+    FULL_VERSION = "`$$VERSION_SCRIPT linux`"
     version_h.depends = $$VERSION_SCRIPT
     version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`$$VERSION_SCRIPT $$VER_OS`\\\" > ${QMAKE_FILE_OUT}
     version_h.input = GIT_HEAD
