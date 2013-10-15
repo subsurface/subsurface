@@ -78,10 +78,10 @@ void setup_pp_limits(struct graphics_context *gc);
 #define TEXT_SCALE 1.0
 #endif
 
-#define DEPTH_TEXT_SIZE (10 * TEXT_SCALE)
-#define PRESSURE_TEXT_SIZE (10 * TEXT_SCALE)
-#define DC_TEXT_SIZE (10.5 * TEXT_SCALE)
-#define PP_TEXT_SIZE (11 * TEXT_SCALE)
+#define DEPTH_TEXT_SIZE (12 * TEXT_SCALE)
+#define PRESSURE_TEXT_SIZE (12 * TEXT_SCALE)
+#define DC_TEXT_SIZE (12 * TEXT_SCALE)
+#define PP_TEXT_SIZE (12 * TEXT_SCALE)
 #define TEMP_TEXT_SIZE (12 * TEXT_SCALE)
 
 #define RIGHT (-1.0)
