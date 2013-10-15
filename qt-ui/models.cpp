@@ -964,8 +964,8 @@ QString DiveItem::displayDepth() const
 	const int scale = 1000;
 	QString fract, str;
 	if (get_units()->length == units::METERS) {
-		fract = QString::number((unsigned)(dive->maxdepth.mm % scale) / 10);
-		str = QString("%1.%2").arg((unsigned)(dive->maxdepth.mm / scale)).arg(fract, 2, QChar('0'));
+		fract = QString::number((unsigned)(dive->maxdepth.mm % scale) / 100);
+		str = QString("%1.%2").arg((unsigned)(dive->maxdepth.mm / scale)).arg(fract, 1, QChar('0'));
 	}
 	if (get_units()->length == units::FEET) {
 		str = QString::number(mm_to_feet(dive->maxdepth.mm),'f',0);
@@ -1006,9 +1006,9 @@ QString DiveItem::displaySac() const
 {
 	QString str;
 	if (get_units()->volume == units::LITER)
-		str = QString::number(dive->sac / 1000.0, 'f', 1);
+		str = QString::number(dive->sac / 1000.0, 'f', 1).append(tr(" l/min"));
 	else
-		str = QString::number(ml_to_cuft(dive->sac), 'f', 2);
+		str = QString::number(ml_to_cuft(dive->sac), 'f', 2).append(tr(" cuft/min"));
 	return str;
 }
 
@@ -1540,7 +1540,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		}
 		// dive notes
 		if (row == 10 && col == 0)
-			return truncateString(dive->notes, 64);
+			return truncateString(dive->notes, 640);
 		// sac, cns, otu - headings
 		if (col == 3) {
 			if (row == 2)
