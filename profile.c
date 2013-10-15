@@ -1086,7 +1086,8 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 	pi = &gc->pi;
 
 	/* reset deco information to start the calculation */
-	init_decompression(dive);
+	if (prefs.profile_calc_ceiling)
+		init_decompression(dive);
 
 	/* Create the new plot data */
 	if (last_pi_entry)
@@ -1103,7 +1104,9 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 	populate_pressure_information(dive, dc, pi);
 
 	/* Then, calculate partial pressures and deco information */
-	calculate_deco_information(dive, dc, pi);
+	if (prefs.profile_calc_ceiling)
+		calculate_deco_information(dive, dc, pi);
+
 	pi->meandepth = dive->dc.meandepth.mm;
 
 	if (0) /* awesome for debugging - not useful otherwise */
