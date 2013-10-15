@@ -44,7 +44,7 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	profilePrintColumnWidths.append(dw - 5);
 	profilePrintColumnWidths.append(dw + 5);
 	profilePrintColumnWidths.append(dw - 5); // fit to 100%
-	const int sr = 8; // smallest row height in pixels
+	const int sr = 9; // smallest row height in pixels
 	profilePrintRowHeights.append(sr + 2);
 	profilePrintRowHeights.append(sr + 7);
 	profilePrintRowHeights.append(sr);
@@ -133,7 +133,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	const int scaledW = ESTIMATE_DIVE_DIM(scaledPageW, divesPerColumn, padW);
 	const int scaledH = ESTIMATE_DIVE_DIM(scaledPageH, divesPerRow, padH);
 	// padding in pixels between profile and table
-	const int padPT = 10;
+	const int padPT = 5;
 	// create a model and table
 	ProfilePrintModel model;
 	QTableView *table = createProfileTable(&model, scaledW);

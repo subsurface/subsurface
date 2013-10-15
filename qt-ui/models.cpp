@@ -1590,7 +1590,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 	}
 	case Qt::FontRole: {
 		QFont font;
-		const int baseSize = 8;
+		const int baseSize = 9;
 		// dive #
 		if (row == 0 && col == 0) {
 			font.setBold(true);
