@@ -1,0 +1,54 @@
+<divelog program='subsurface' version='2'>
+<dives>
+<dive number='29' date='2011-12-13' time='09:26:12' duration='3:16 min'>
+  <location>under water</location>
+  <notes>Short dive with pressure sensor information</notes>
+  <cylinder size='12.036 l' workpressure='202.6 bar' description='AL85' />
+  <divecomputer model='Uemis Zurich' deviceid='e04d0248' diveid='00000031'>
+  <depth max='2.51 m' mean='1.676 m' />
+  <temperature air='25.2 C' water='24.8 C' />
+  <surface pressure='1.024 bar' />
+  <event time='0:10 min' name='Tank Pressure Info' />
+  <sample time='0:05 min' depth='1.77 m' temp='25.2 C' pressure='79.65 bar' ndl='99:00 min' />
+  <sample time='0:10 min' depth='1.67 m' pressure='79.53 bar' />
+  <sample time='0:16 min' depth='1.84 m' pressure='79.27 bar' />
+  <sample time='0:21 min' depth='2.17 m' />
+  <sample time='0:26 min' depth='1.92 m' pressure='79.13 bar' />
+  <sample time='0:31 min' depth='1.78 m' pressure='78.97 bar' />
+  <sample time='0:36 min' depth='2.15 m' pressure='78.81 bar' />
+  <sample time='0:41 min' depth='2.07 m' pressure='78.65 bar' />
+  <sample time='0:46 min' depth='2.24 m' temp='25.1 C' pressure='78.54 bar' />
+  <sample time='0:51 min' depth='2.4 m' temp='25.2 C' pressure='78.44 bar' />
+  <sample time='0:56 min' depth='2.24 m' pressure='78.34 bar' />
+  <sample time='1:01 min' depth='2.15 m' temp='25.1 C' pressure='78.2 bar' />
+  <sample time='1:06 min' depth='1.91 m' pressure='78.06 bar' />
+  <sample time='1:11 min' depth='2.09 m' temp='25.2 C' pressure='77.94 bar' />
+  <sample time='1:16 min' depth='2.06 m' pressure='77.82 bar' />
+  <sample time='1:21 min' depth='2.16 m' temp='25.1 C' pressure='77.71 bar' />
+  <sample time='1:26 min' depth='1.95 m' pressure='77.55 bar' />
+  <sample time='1:31 min' depth='2.16 m' temp='25.2 C' pressure='77.4 bar' />
+  <sample time='1:36 min' depth='2.3 m' temp='25.1 C' pressure='77.23 bar' />
+  <sample time='1:41 min' depth='1.9 m' pressure='76.79 bar' />
+  <sample time='1:46 min' depth='1.79 m' />
+  <sample time='1:51 min' depth='2.07 m' pressure='76.36 bar' />
+  <sample time='1:56 min' depth='1.98 m' />
+  <sample time='2:01 min' depth='2.11 m' pressure='76.19 bar' />
+  <sample time='2:06 min' depth='2.32 m' pressure='76.05 bar' />
+  <sample time='2:11 min' depth='1.96 m' pressure='75.94 bar' />
+  <sample time='2:16 min' depth='1.75 m' pressure='75.8 bar' />
+  <sample time='2:21 min' depth='1.85 m' pressure='75.69 bar' />
+  <sample time='2:25 min' depth='1.94 m' pressure='75.57 bar' />
+  <sample time='2:30 min' depth='1.86 m' pressure='75.42 bar' />
+  <sample time='2:36 min' depth='1.76 m' pressure='75.29 bar' />
+  <sample time='2:41 min' depth='1.85 m' pressure='75.15 bar' />
+  <sample time='2:46 min' depth='1.62 m' pressure='75.05 bar' />
+  <sample time='2:51 min' depth='1.62 m' pressure='74.95 bar' />
+  <sample time='2:56 min' depth='1.36 m' pressure='74.86 bar' />
+  <sample time='3:01 min' depth='1.14 m' pressure='74.73 bar' />
+  <sample time='3:06 min' depth='0.0 m' temp='25.0 C' pressure='74.61 bar' />
+  <sample time='3:12 min' depth='1.07 m' pressure='74.36 bar' />
+  <sample time='3:16 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
