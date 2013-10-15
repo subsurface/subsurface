@@ -8,7 +8,7 @@ exists(.git/HEAD): {
     VERSION_SCRIPT = $$PWD/scripts/get-version
     # always use linux here -------------------vvv    so we get the true full version
     FULL_VERSION = "`$$VERSION_SCRIPT linux`"
-    version_h.depends = $$VERSION_SCRIPT
+    version_h.depends = $$VERSION_SCRIPT $$system(sed \'s/ref: \\(.*\\)/.git\\/\\1/\' $$GIT_HEAD)
     version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`$$VERSION_SCRIPT $$VER_OS`\\\" > ${QMAKE_FILE_OUT}
     version_h.input = GIT_HEAD
     version_h.output = $$VERSION_FILE
