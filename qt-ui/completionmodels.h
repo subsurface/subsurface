@@ -6,7 +6,7 @@
 class BuddyCompletionModel : public QStringListModel {
 	Q_OBJECT
 public:
-    static BuddyCompletionModel* instance();
+	static BuddyCompletionModel* instance();
 	void updateModel();
 };
 

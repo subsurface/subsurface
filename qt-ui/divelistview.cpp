@@ -301,16 +301,16 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 void DiveListView::mergeDives()
 {
 	int i;
-        struct dive *dive, *maindive = NULL;
+	struct dive *dive, *maindive = NULL;
 
-        for_each_dive(i, dive) {
-                if (dive->selected) {
+	for_each_dive(i, dive) {
+		if (dive->selected) {
 			if (!maindive)
 				maindive = dive;
 			else
 				maindive = merge_two_dives(maindive, dive);
-                }
-        }
+		}
+	}
 	mainWindow()->refreshDisplay();
 }
 

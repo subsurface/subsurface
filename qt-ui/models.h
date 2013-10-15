@@ -22,8 +22,8 @@ class CleanerTableModel : public QAbstractTableModel{
 	Q_OBJECT
 public:
 	CleanerTableModel();
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 protected:
 	void setHeaderDataStrings(const QStringList& headers);
 private:
@@ -194,8 +194,8 @@ public:
 	enum Layout{TREE, LIST, CURRENT};
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    DiveTripModel(QObject* parent = 0);
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	DiveTripModel(QObject* parent = 0);
 	Layout layout() const;
 	void setLayout(Layout layout);
 

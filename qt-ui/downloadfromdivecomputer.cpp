@@ -251,7 +251,7 @@ void DownloadFromDCWidget::reject()
 		QDialog::reject();
 }
 
-void DownloadFromDCWidget::onDownloadThreadFinished()
+void DownloadFromDCWidget::onFinished()
 {
 	if (currentState == DOWNLOADING) {
 		if (thread->error.isEmpty())

@@ -21,8 +21,8 @@ public:
 	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject* parent = 0);
 	virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 	virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual bool eventFilter(QObject* object, QEvent* event);
+	virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+	virtual bool eventFilter(QObject* object, QEvent* event);
 public slots:
 	void testActivation(const QString& currString = QString());
 	//HACK: try to get rid of this in the future.
@@ -37,7 +37,7 @@ class TankInfoDelegate : public ComboBoxDelegate{
 public:
 	explicit TankInfoDelegate(QObject* parent = 0);
 	virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+	virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 public slots:
 	void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint);
 };
@@ -47,7 +47,7 @@ class WSInfoDelegate : public ComboBoxDelegate{
 public:
 	explicit WSInfoDelegate(QObject* parent = 0);
 	virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+	virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 public slots:
 	void revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint);
 };

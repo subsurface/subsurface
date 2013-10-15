@@ -166,14 +166,14 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		profile->plot(dive, true);
 		QPixmap profilePm = QPixmap::grabWidget(profile); // Qt4
 		painter.drawPixmap((scaledW + padW) * col,
-		                   (scaledH + padH) * row + yOffsetProfile,
-		                   profilePm);
+				   (scaledH + padH) * row + yOffsetProfile,
+				   profilePm);
 		// draw a table
 		model.setDive(dive);
 		QPixmap tablePm = QPixmap::grabWidget(table); // Qt4
 		painter.drawPixmap((scaledW + padW) * col,
-		                   (scaledH + padH) * row + yOffsetTable,
-		                   tablePm);
+				   (scaledH + padH) * row + yOffsetTable,
+				   tablePm);
 		col++;
 	}
 
@@ -337,8 +337,8 @@ void PrintLayout::printTable()
 		if (i > 0)
 			printer->newPage();
 		QRegion region(0, pageIndexes.at(i) - 1,
-		               table.width(),
-		               pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
+			       table.width(),
+			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
 		table.render(&painter, QPoint(0, 0), region);
 	}
 }

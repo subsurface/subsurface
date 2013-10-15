@@ -99,10 +99,10 @@ class KMessageWidget : public QFrame
     Q_PROPERTY(QIcon icon READ icon WRITE setIcon)
 public:
     enum MessageType {
-        Positive,
-        Information,
-        Warning,
-        Error
+	Positive,
+	Information,
+	Warning,
+	Error
     };
 
     /**

@@ -10,7 +10,7 @@ class DiveComputerManagementDialog : public QDialog{
 Q_OBJECT
 
 public:
-    static DiveComputerManagementDialog *instance();
+	static DiveComputerManagementDialog *instance();
 	void update();
 	void init();
 
@@ -20,8 +20,8 @@ public  slots:
 	void reject();
 
 private:
-    explicit DiveComputerManagementDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    Ui::DiveComputerManagementDialog ui;
+	explicit DiveComputerManagementDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	Ui::DiveComputerManagementDialog ui;
 	DiveComputerModel *model;
 };
 

@@ -117,11 +117,11 @@ private:
 class GraphicsTextEditor : public QGraphicsTextItem{
 	Q_OBJECT
 public:
-    GraphicsTextEditor(QGraphicsItem* parent = 0);
+	GraphicsTextEditor(QGraphicsItem* parent = 0);
 
 protected:
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
-    virtual void keyReleaseEvent(QKeyEvent* event);
+	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
+	virtual void keyReleaseEvent(QKeyEvent* event);
 
 signals:
 	void textChanged(const QString& text);

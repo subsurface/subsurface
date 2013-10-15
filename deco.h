@@ -5,9 +5,8 @@
 extern "C" {
 #endif
 
-  extern double tolerated_by_tissue[];
-
-  extern double buehlmann_N2_t_halflife[];
+extern double tolerated_by_tissue[];
+extern double buehlmann_N2_t_halflife[];
 
 #ifdef __cplusplus
 }

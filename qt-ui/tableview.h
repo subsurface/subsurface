@@ -30,14 +30,14 @@ public:
 	void edit(const QModelIndex& index);
 	QTableView *view();
 protected:
-    virtual void showEvent(QShowEvent* );
-    virtual void resizeEvent(QResizeEvent* );
+	virtual void showEvent(QShowEvent* );
+	virtual void resizeEvent(QResizeEvent* );
 
 signals:
 	void addButtonClicked();
 
 private:
-    Ui::TableView ui;
+	Ui::TableView ui;
 	QPushButton *plusBtn;
 };
 
