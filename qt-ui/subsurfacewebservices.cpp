@@ -47,7 +47,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 		case QDialogButtonBox::ApplyRole:{
 			clear_table(&gps_location_table);
 			QByteArray url = tr("Webservice").toLocal8Bit();
-			parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL);
+			parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL, NULL);
 
 			/* now merge the data in the gps_location table into the dive_table */
 			if (merge_locations_into_dives()) {

@@ -21,7 +21,7 @@
 
 int verbose;
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error);
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **error);
 char *xslt_path;
 
 /* the dive table holds the overall dive list; target table points at
@@ -1681,7 +1681,7 @@ const char *preprocess_divelog_de(const char *buffer)
 }
 
 void parse_xml_buffer(const char *url, const char *buffer, int size,
-			struct dive_table *table, char **error)
+			struct dive_table *table, const char **params, char **error)
 {
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
@@ -1698,7 +1698,7 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	}
 	reset_all();
 	dive_start();
-	doc = test_xslt_transforms(doc, error);
+	doc = test_xslt_transforms(doc, params, error);
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
@@ -2019,14 +2019,13 @@ static struct xslt_files {
 	{ NULL, }
 };
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
+static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **error)
 {
 	struct xslt_files *info = xslt_files;
 	xmlDoc *transformed;
 	xsltStylesheetPtr xslt = NULL;
 	xmlNode *root_element = xmlDocGetRootElement(doc);
 	char *attribute;
-	char *params[3];
 
 	while ((info->root) && (strcasecmp(root_element->name, info->root) != 0)) {
 		info++;
@@ -2048,28 +2047,10 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, char **error)
 			parser_error(error, translate("gettextFromC","Can't open stylesheet (%s)/%s"), xslt_path, info->file);
 			return doc;
 		}
-
-		/*
-		 * params is only used for CSV import, but it does not
-		 * hurt if we supply unused parameters for other
-		 * transforms as well.
-		 *
-		 * We should have a GUI set the parameters but currently
-		 * we just have PoC how parameters would be handled.
-		 *
-		 * (Field 9 is temperature for XP5 import, field 15
-		 * is temperature for AP Logviewer.
-		 */
-
-		params[0] = strdup("tempField");
-		params[1] = strdup("15");
-		params[2] = NULL;
-
-		transformed = xsltApplyStylesheet(xslt, doc, (const char **)params);
+		transformed = xsltApplyStylesheet(xslt, doc, params);
 		xmlFreeDoc(doc);
 		xsltFreeStylesheet(xslt);
-		free(params[0]);
-		free(params[1]);
+
 		return transformed;
 	}
 	return doc;

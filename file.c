@@ -72,7 +72,7 @@ static void zip_read(struct zip_file *file, char **error, const char *filename)
 		mem = realloc(mem, size);
 	}
 	mem[read] = 0;
-	parse_xml_buffer(filename, mem, read, &dive_table, error);
+	parse_xml_buffer(filename, mem, read, &dive_table, NULL, error);
 	free(mem);
 }
 
@@ -286,7 +286,7 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, char *
 	if (fmt && open_by_filename(filename, fmt+1, mem, error))
 		return;
 
-	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, error);
+	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL, error);
 }
 
 void parse_file(const char *filename, char **error)
@@ -317,5 +317,54 @@ void parse_file(const char *filename, char **error)
 	}
 
 	parse_file_buffer(filename, &mem, error);
+	free(mem.buffer);
+}
+
+#define MAXCOLDIGITS 3
+#define MAXCOLS 100
+void parse_csv_file(const char *filename, int time, int depth, int temp, char **error)
+{
+	struct memblock mem;
+	char *params[7];
+	char timebuf[MAXCOLDIGITS];
+	char depthbuf[MAXCOLDIGITS];
+	char tempbuf[MAXCOLDIGITS];
+
+	if (time >= MAXCOLS || depth >= MAXCOLS || temp >= MAXCOLS) {
+		int len = strlen(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d")) + MAXCOLDIGITS;
+		*error = malloc(len);
+		snprintf(*error, len, translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
+
+		return;
+	}
+	snprintf(timebuf, MAXCOLDIGITS, "%d", time);
+	snprintf(depthbuf, MAXCOLDIGITS, "%d", depth);
+	snprintf(tempbuf, MAXCOLDIGITS, "%d", temp);
+
+	params[0] = "timeField";
+	params[1] = timebuf;
+	params[2] = "depthField";
+	params[3] = depthbuf;
+	params[4] = "tempField";
+	params[5] = tempbuf;
+	params[6] = NULL;
+
+	if (filename == NULL)
+		return;
+
+	if (readfile(filename, &mem) < 0) {
+		if (error) {
+			int len = strlen(translate("gettextFromC","Failed to read '%s'")) + strlen(filename);
+			*error = malloc(len);
+			snprintf(*error, len, translate("gettextFromC","Failed to read '%s'"), filename);
+		}
+
+		return;
+	}
+
+	if (try_to_xslt_open_csv(filename, &mem, error))
+		return;
+
+	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params, error);
 	free(mem.buffer);
 }

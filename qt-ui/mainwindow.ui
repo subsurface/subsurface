@@ -183,6 +183,7 @@
     <addaction name="actionClose"/>
     <addaction name="separator"/>
     <addaction name="actionImport"/>
+    <addaction name="actionImportCSV"/>
     <addaction name="actionExportUDDF"/>
     <addaction name="separator"/>
     <addaction name="actionPrint"/>
@@ -440,6 +441,13 @@
    <property name="text">
     <string>Dive Planner</string>
    </property>
+  </action>
+  <action name="actionImportCSV">
+    <property name="text">
+      <string>Import CSV</string>
+    </property>
+      <property name="toolTip">
+    </property>
   </action>
  </widget>
  <customwidgets>

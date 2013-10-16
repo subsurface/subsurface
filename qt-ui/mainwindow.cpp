@@ -34,6 +34,7 @@
 #include "diveplanner.h"
 #include "about.h"
 #include "printdialog.h"
+#include "csvimportdialog.h"
 
 static MainWindow* instance = 0;
 
@@ -793,6 +794,20 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	}
 
 	process_dives(FALSE, FALSE);
+
+	ui.InfoWidget->reload();
+	ui.globe->reload();
+	ui.ListWidget->reload(DiveTripModel::TREE);
+	ui.ListWidget->setFocus();
+	WSInfoModel *wsim = WSInfoModel::instance();
+	wsim->updateInfo();
+}
+
+void MainWindow::on_actionImportCSV_triggered()
+{
+	CSVImportDialog *csvImport = new(CSVImportDialog);
+	csvImport->show();
+	process_dives(TRUE, FALSE);
 
 	ui.InfoWidget->reload();
 	ui.globe->reload();

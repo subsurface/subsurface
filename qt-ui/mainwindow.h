@@ -99,6 +99,8 @@ private slots:
 	void current_dive_changed(int divenr);
 	void initialUiSetup();
 
+	void on_actionImportCSV_triggered();
+
 protected:
 	void closeEvent(QCloseEvent *);
 
