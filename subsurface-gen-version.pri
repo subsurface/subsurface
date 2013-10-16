@@ -8,8 +8,8 @@ exists(.git/HEAD): {
     VERSION_SCRIPT = $$PWD/scripts/get-version
     # always use linux here -------------------vvv    so we get the true full version
     FULL_VERSION = "`$$VERSION_SCRIPT linux`"
-    version_h.depends = $$VERSION_SCRIPT $$PWD/.git/$$system("git rev-parse --symbolic-full-name HEAD")
-    version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`$$VERSION_SCRIPT $$VER_OS`\\\" > ${QMAKE_FILE_OUT}
+    version_h.depends = $$VERSION_SCRIPT $$PWD/.git/$$system("GIT_DIR=$$PWD/.git git rev-parse --symbolic-full-name HEAD")
+    version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT $$VER_OS`\\\" > ${QMAKE_FILE_OUT}
     version_h.input = GIT_HEAD
     version_h.output = $$VERSION_FILE
     version_h.variable_out = GENERATED_FILES
