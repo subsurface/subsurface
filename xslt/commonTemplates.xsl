@@ -107,7 +107,7 @@
   <xsl:template name="sec2time">
     <xsl:param name="timeSec"/>
 
-    <xsl:value-of select="concat(round($timeSec div 60), ':', format-number($timeSec mod 60, '00'))"/>
+    <xsl:value-of select="concat(floor($timeSec div 60), ':', format-number($timeSec mod 60, '00'))"/>
   </xsl:template>
 
   <!-- Calculate sum of all parameters, and strip any unit following the
