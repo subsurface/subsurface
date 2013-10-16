@@ -453,3 +453,43 @@ int parseTemperatureToMkelvin(const QString& text)
 	return mkelvin;
 
 }
+
+QString get_dive_date_string(timestamp_t when)
+{
+	struct tm tm;
+	utc_mkdate(when, &tm);
+	return translate("gettextFromC", "%1, %2 %3, %4 %5:%6")
+		.arg(weekday(tm.tm_wday))
+		.arg(monthname(tm.tm_mon))
+		.arg(tm.tm_mday)
+		.arg(tm.tm_year + 1900)
+		.arg(tm.tm_hour, 2, 10, QChar('0'))
+		.arg(tm.tm_min, 2, 10, QChar('0'));
+}
+
+QString get_short_dive_date_string(timestamp_t when)
+{
+	struct tm tm;
+	utc_mkdate(when, &tm);
+	return translate("gettextFromC", "%1 %2, %3\n%4:%5")
+		.arg(monthname(tm.tm_mon))
+		.arg(tm.tm_mday)
+		.arg(tm.tm_year + 1900)
+		.arg(tm.tm_hour, 2, 10, QChar('0'))
+		.arg(tm.tm_min, 2, 10, QChar('0'));
+}
+
+QString get_trip_date_string(timestamp_t when, int nr)
+{
+	struct tm tm;
+	utc_mkdate(when, &tm);
+	if (nr != 1)
+		return translate("gettextFromC", "%1 %2 (%3 dives)")
+			.arg(monthname(tm.tm_mon))
+			.arg(tm.tm_year + 1900)
+			.arg(nr);
+	else
+		return translate("gettextFromC", "%1 %2 (1 dive)")
+			.arg(monthname(tm.tm_mon))
+			.arg(tm.tm_year + 1900);
+}

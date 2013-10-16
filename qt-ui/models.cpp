@@ -873,7 +873,7 @@ QVariant TripItem::data(int column, int role) const
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 			case DiveTripModel::NR:
-			ret = QString(trip->location) + ", " + QString(get_trip_date_string(trip->when, trip->nrdives));
+			ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives);
 			break;
 		}
 	}
@@ -953,10 +953,7 @@ QVariant DiveItem::data(int column, int role) const
 
 QString DiveItem::displayDate() const
 {
-	char *buf = get_dive_date_string(dive->when);
-	QString date(buf);
-	free(buf);
-	return date;
+	return get_dive_date_string(dive->when);
 }
 
 QString DiveItem::displayDepth() const

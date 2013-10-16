@@ -29,6 +29,9 @@ QString getSubsurfaceDataPath(QString folderToFind);
 extern const QString get_dc_nickname(const char *model, uint32_t deviceid);
 int gettimezoneoffset();
 int parseTemperatureToMkelvin(const QString& text);
+QString get_dive_date_string(timestamp_t when);
+QString get_short_dive_date_string(timestamp_t when);
+QString get_trip_date_string(timestamp_t when, int nr);
 
 extern DiveComputerList dcList;
 
