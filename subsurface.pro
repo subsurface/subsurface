@@ -123,6 +123,7 @@ FORMS = \
 RESOURCES = subsurface.qrc
 
 TRANSLATIONS = \
+	translations/subsurface_source.ts \
 	translations/subsurface_bg_BG.ts \
 	translations/subsurface_ca_ES.ts \
 	translations/subsurface_da_DK.ts \
