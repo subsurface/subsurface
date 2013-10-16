@@ -15,7 +15,6 @@
 #include "uemis.h"
 #include "device.h"
 #include "webservice.h"
-#include "version.h"
 #include "libdivecomputer.h"
 #include "qt-ui/mainwindow.h"
 #include "helpers.h"

@@ -6,7 +6,6 @@
 #include <time.h>
 
 #include "qt-gui.h"
-#include "version.h"
 #include "subsurfacestartup.h"
 #include "qt-ui/mainwindow.h"
 #include "qt-ui/diveplanner.h"

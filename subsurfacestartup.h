@@ -4,7 +4,6 @@
 #include "dive.h"
 #include "divelist.h"
 #include "libdivecomputer.h"
-#include "version.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

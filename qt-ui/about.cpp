@@ -1,5 +1,5 @@
 #include "about.h"
-#include "version.h"
+#include "ssrf-version.h"
 #include <QDebug>
 #include <QDialogButtonBox>
 #include <QNetworkReply>

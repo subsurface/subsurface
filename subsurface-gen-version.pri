@@ -1,5 +1,5 @@
-# Generate the version.h file
-VERSION_FILE = version.h
+# Generate the ssrf-version.h file
+VERSION_FILE = ssrf-version.h
 macx: VER_OS = darwin
 unix: !macx: VER_OS = linux
 win32: VER_OS = win

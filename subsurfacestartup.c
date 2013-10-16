@@ -1,4 +1,5 @@
 #include "subsurfacestartup.h"
+#include "ssrf-version.h"
 #include <stdbool.h>
 #include <string.h>
 #include "gettext.h"
