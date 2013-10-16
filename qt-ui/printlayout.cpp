@@ -162,18 +162,19 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 				printer->newPage();
 			}
 		}
+		QTransform origTransform = painter.transform();
+
 		// draw a profile
+		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
 		profile->plot(dive, true);
-		QPixmap profilePm = QPixmap::grabWidget(profile); // Qt4
-		painter.drawPixmap((scaledW + padW) * col,
-				   (scaledH + padH) * row + yOffsetProfile,
-				   profilePm);
+		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
+		painter.setTransform(origTransform);
+
 		// draw a table
+		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetTable);
 		model.setDive(dive);
-		QPixmap tablePm = QPixmap::grabWidget(table); // Qt4
-		painter.drawPixmap((scaledW + padW) * col,
-				   (scaledH + padH) * row + yOffsetTable,
-				   tablePm);
+		table->render(&painter);
+		painter.setTransform(origTransform);
 		col++;
 	}
 
