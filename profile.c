@@ -1166,7 +1166,7 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nTemp:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
 
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
