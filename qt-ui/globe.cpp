@@ -7,6 +7,7 @@
 #include "../helpers.h"
 
 #include <QDebug>
+#include <QTimer>
 
 #include <marble/AbstractFloatItem.h>
 #include <marble/GeoDataPlacemark.h>
@@ -63,6 +64,9 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setMinimumHeight(0);
 	setMinimumWidth(0);
 	editingDiveCoords = 0;
+	fixZoomTimer = new QTimer();
+	connect(fixZoomTimer, SIGNAL(timeout()), this, SLOT(fixZoom()));
+	fixZoomTimer->setSingleShot(true);
 }
 
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
@@ -178,8 +182,20 @@ void GlobeGPS::centerOn(dive* dive)
 	if (!zoom())
 		zoomView(zoomFromDistance(3));
 
+	if (!fixZoomTimer->isActive())
+	    currentZoomLevel = zoom();
+	// From the marble source code, the maximum time of
+	// 'spin and fit' is 2 seconds, so wait a bit them zoom again.
+	fixZoomTimer->start(2100);
+
 	centerOn(longitude,latitude, true);
 }
+
+void GlobeGPS::fixZoom()
+{
+  zoomView(currentZoomLevel, Marble::Linear);
+}
+
 
 void GlobeGPS::prepareForGetDiveCoordinates(dive* dive)
 {

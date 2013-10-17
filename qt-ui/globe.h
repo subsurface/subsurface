@@ -13,25 +13,28 @@ struct dive;
 
 class GlobeGPS : public MarbleWidget{
 	Q_OBJECT
-	void prepareForGetDiveCoordinates(struct dive* dive);
 public:
 	using MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void centerOn(struct dive* dive);
-	void resizeEvent(QResizeEvent *event);
 
 protected:
-	virtual void mousePressEvent(QMouseEvent* event);
+	/* reimp */ void resizeEvent(QResizeEvent *event);
+	/* reimp */ void mousePressEvent(QMouseEvent* event);
 
 private:
+	void prepareForGetDiveCoordinates(struct dive* dive);
 	GeoDataDocument *loadedDives;
 	struct dive* editingDiveCoords;
 	KMessageWidget* messageWidget;
+	QTimer *fixZoomTimer;
+	int currentZoomLevel;
 
 public slots:
 	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
+	void fixZoom();
 };
 
 #endif
