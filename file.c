@@ -260,8 +260,12 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 		return try_to_open_zip(filename, mem, error);
 
 	/* CSV files */
-	if (!strcasecmp(fmt, "CSV"))
-		return try_to_xslt_open_csv(filename, mem, error);
+	if (!strcasecmp(fmt, "CSV")) {
+		int len = strlen(translate("gettextFromC","Failed to read '%s'. Use import for CSV files.")) + strlen(filename);
+		*error = malloc(len);
+		snprintf(*error, len, translate("gettextFromC","Failed to read '%s'. Use import for CSV files."), filename);
+		return 1;
+	}
 
 #if ONCE_COCHRAN_IS_SUPPORTED
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
