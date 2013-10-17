@@ -28,9 +28,12 @@
   <xsl:template name="printLine">
     <xsl:param name="line"/>
     <xsl:param name="remaining"/>
-    <xsl:call-template name="printFields">
-      <xsl:with-param name="line" select="$line"/>
-    </xsl:call-template>
+
+    <xsl:if test="substring-before($line, $fs) != substring-before(substring-before($remaining, $lf), $fs)">
+      <xsl:call-template name="printFields">
+        <xsl:with-param name="line" select="$line"/>
+      </xsl:call-template>
+    </xsl:if>
     <xsl:if test="$remaining != ''">
       <xsl:call-template name="printLine">
         <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
