@@ -287,7 +287,13 @@ void MainWindow::on_actionRenumber_triggered()
 
 void MainWindow::on_actionAutoGroup_triggered()
 {
-	qDebug("actionAutoGroup");
+	autogroup = ui.actionAutoGroup->isChecked();
+	if (autogroup)
+		autogroup_dives();
+	else
+		remove_autogen_trips();
+	refreshDisplay();
+	mark_divelist_changed(true);
 }
 
 void MainWindow::on_actionToggleZoom_triggered()
@@ -802,6 +808,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	ui.ListWidget->setFocus();
 	WSInfoModel *wsim = WSInfoModel::instance();
 	wsim->updateInfo();
+	ui.actionAutoGroup->setChecked(autogroup);
 }
 
 void MainWindow::on_actionImportCSV_triggered()
