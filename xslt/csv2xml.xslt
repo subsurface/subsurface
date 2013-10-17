@@ -2,6 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
+  <xsl:param name="timeField" select="timeField"/>
+  <xsl:param name="depthField" select="depthField"/>
   <xsl:param name="tempField" select="tempField"/>
   <xsl:output method="xml" indent="yes"/>
 
@@ -42,7 +44,7 @@
 
     <xsl:variable name="value">
       <xsl:call-template name="getFieldByIndex">
-        <xsl:with-param name="index" select="0"/>
+        <xsl:with-param name="index" select="$timeField"/>
         <xsl:with-param name="line" select="$line"/>
       </xsl:call-template>
     </xsl:variable>
@@ -77,7 +79,7 @@
 
         <xsl:attribute name="depth">
           <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="1"/>
+            <xsl:with-param name="index" select="$depthField"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:attribute>
