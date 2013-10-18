@@ -40,6 +40,7 @@ public slots:
 	void mergeTripAbove();
 	void mergeTripBelow();
 	void mergeDives();
+	void saveSelectedDivesAs();
 
 signals:
 	void currentDiveChanged(int divenr);

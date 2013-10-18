@@ -19,6 +19,7 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QMenu>
+#include <QFileDialog>
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	currentHeaderClicked(-1), searchBox(new QLineEdit(this))
@@ -410,6 +411,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
+	if (amount_selected >= 1)
+		popup.addAction(tr("Save As"), this, SLOT(saveSelectedDivesAs()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction * actionTaken = popup.exec(event->globalPos());
@@ -419,4 +422,14 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		this->setAnimated(true);
 	}
 	event->accept();
+}
+
+void DiveListView::saveSelectedDivesAs()
+{
+	QString fileName = QFileDialog::getOpenFileName(mainWindow(), tr("Save Dives As..."), QDir::homePath());
+	if (fileName.isEmpty())
+		return;
+
+	QByteArray bt = fileName.toLocal8Bit();
+	save_dives_logic(bt.data(), TRUE);
 }
