@@ -1308,7 +1308,7 @@ void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufs
 void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum)
 {
 	struct plot_data *start, *stop, *data;
-	const char *depth_unit, *pressure_unit;
+	const char *depth_unit, *pressure_unit, *vertical_speed_unit;
 	char *buf2 = malloc(bufsize);
 	int avg_speed, max_speed, min_speed;
 	int delta_depth, avg_depth, max_depth, min_depth;
@@ -1397,16 +1397,16 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
-	speedvalue = get_depth_units(min_speed, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s%sV:%.2f%s/s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, depth_unit);
+	speedvalue = get_vertical_speed_units(abs(min_speed), NULL, &vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
-	speedvalue = get_depth_units(max_speed, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s/s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, depth_unit);
+	speedvalue = get_vertical_speed_units(abs(max_speed), NULL, &vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
-	speedvalue = get_depth_units(avg_speed, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s/s"), buf2, UTF8_AVERAGE, speedvalue, depth_unit);
+	speedvalue = get_vertical_speed_units(abs(avg_speed), NULL, &vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s"), buf2, UTF8_AVERAGE, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	/* Only print if gas has been used */
