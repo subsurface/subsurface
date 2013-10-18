@@ -412,7 +412,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1)
-		popup.addAction(tr("Save As"), this, SLOT(saveSelectedDivesAs()));
+		popup.addAction(tr("save As"), this, SLOT(saveSelectedDivesAs()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction * actionTaken = popup.exec(event->globalPos());
@@ -426,9 +426,26 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 
 void DiveListView::saveSelectedDivesAs()
 {
+	QSettings settings;
+	QString lastDir = QDir::homePath();
+
+	settings.beginGroup("FileDialog");
+	if (settings.contains("LastDir")) {
+		if(QDir::setCurrent(settings.value("LastDir").toString())) {
+			lastDir = settings.value("LastDir").toString();
+		}
+	}
+	settings.endGroup();
+
 	QString fileName = QFileDialog::getOpenFileName(mainWindow(), tr("Save Dives As..."), QDir::homePath());
 	if (fileName.isEmpty())
 		return;
+
+	// Keep last open dir
+	QFileInfo fileInfo(fileName);
+	settings.beginGroup("FileDialog");
+	settings.setValue("LastDir",fileInfo.dir().path());
+	settings.endGroup();
 
 	QByteArray bt = fileName.toLocal8Bit();
 	save_dives_logic(bt.data(), TRUE);
