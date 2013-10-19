@@ -189,7 +189,13 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionExportUDDF_triggered()
 {
-	qDebug("actionExportUDDF");
+	QString filename;
+	QFileInfo fi(system_default_filename());
+
+	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), fi.absolutePath(),
+						tr("UDDF files (*.uddf *.UDDF)"));
+	if (!filename.isNull() && !filename.isEmpty())
+		export_dives_uddf((const char *)filename.toStdString().c_str(), false);
 }
 
 void MainWindow::on_actionPrint_triggered()

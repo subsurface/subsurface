@@ -621,6 +621,7 @@ extern void parse_csv_file(const char *filename, int time, int depth, int temp, 
 extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
+extern void export_dives_uddf(const char *filename, const bool selected);
 
 extern xsltStylesheetPtr get_stylesheet(const char *name);
 

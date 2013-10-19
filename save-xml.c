@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "dive.h"
 #include "device.h"
@@ -599,5 +600,64 @@ void save_dives_logic(const char *filename, const bool select_only)
 		}
 	}
 	fprintf(f, "</dives>\n</divelog>\n");
+	fclose(f);
+}
+
+void export_dives_uddf(const char *filename, const bool selected)
+{
+	FILE *f;
+	size_t streamsize;
+	char *membuf;
+	xmlDoc *doc;
+	xsltStylesheetPtr xslt = NULL;
+	xmlDoc *transformed;
+
+	if (!filename)
+		return;
+
+	/* Save XML to file and convert it into a memory buffer */
+	save_dives_logic(filename, selected);
+	f = fopen(filename, "r");
+	fseek(f, 0, SEEK_END);
+	streamsize = ftell(f);
+	rewind(f);
+
+	membuf = malloc(streamsize + 1);
+	if (!membuf || !fread(membuf, streamsize, 1, f)) {
+		fprintf(stderr, "Failed to read memory buffer\n");
+		return;
+	}
+	membuf[streamsize] = 0;
+	fclose(f);
+	unlink(filename);
+
+	/*
+	 * Parse the memory buffer into XML document and
+	 * transform it to UDDF format, finally dumping
+	 * the XML into a character buffer.
+	 */
+	doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
+	if (!doc) {
+		fprintf(stderr, "Failed to read XML memory\n");
+		return;
+	}
+	free((void *)membuf);
+
+	/* Convert to UDDF format */
+	xslt = get_stylesheet("uddf-export.xslt");
+
+	if (!xslt) {
+		fprintf(stderr, "Failed to open UDDF conversion stylesheet\n");
+		return;
+	}
+	transformed = xsltApplyStylesheet(xslt, doc, NULL);
+	xsltFreeStylesheet(xslt);
+	xmlFreeDoc(doc);
+
+	/* Write the transformed XML to file */
+	f = fopen(filename, "w");
+	xmlDocFormatDump(f, transformed, 1);
+	xmlFreeDoc(transformed);
+
 	fclose(f);
 }
