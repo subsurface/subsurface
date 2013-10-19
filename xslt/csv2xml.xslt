@@ -5,6 +5,8 @@
   <xsl:param name="timeField" select="timeField"/>
   <xsl:param name="depthField" select="depthField"/>
   <xsl:param name="tempField" select="tempField"/>
+  <xsl:param name="date" select="date"/>
+  <xsl:param name="time" select="time"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -15,6 +17,12 @@
     <divelog program="subsurface-import" version="2">
       <dives>
         <dive>
+          <xsl:attribute name="date">
+            <xsl:value-of select="concat(substring($date, 1, 4), '-', substring($date, 5, 2), '-', substring($date, 7, 2))"/>
+          </xsl:attribute>
+          <xsl:attribute name="time">
+            <xsl:value-of select="concat(substring($time, 2, 2), ':', substring($time, 4, 2))"/>
+          </xsl:attribute>
           <divecomputerid deviceid="ffffffff" model="stone" />
           <xsl:call-template name="printLine">
             <xsl:with-param name="line" select="substring-before(//csv, $lf)"/>

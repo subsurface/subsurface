@@ -6,6 +6,7 @@
 #include <errno.h>
 #include "gettext.h"
 #include <zip.h>
+#include <time.h>
 
 #include "dive.h"
 #include "file.h"
@@ -326,24 +327,35 @@ void parse_file(const char *filename, char **error)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-void parse_csv_file(const char *filename, int time, int depth, int temp, char **error)
+void parse_csv_file(const char *filename, int timef, int depthf, int tempf, char **error)
 {
 	struct memblock mem;
-	char *params[7];
+	char *params[11];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
+	time_t now;
+	struct tm *timep;
+	char curdate[9];
+	char curtime[6];
 
-	if (time >= MAXCOLS || depth >= MAXCOLS || temp >= MAXCOLS) {
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS) {
 		int len = strlen(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d")) + MAXCOLDIGITS;
 		*error = malloc(len);
 		snprintf(*error, len, translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
 		return;
 	}
-	snprintf(timebuf, MAXCOLDIGITS, "%d", time);
-	snprintf(depthbuf, MAXCOLDIGITS, "%d", depth);
-	snprintf(tempbuf, MAXCOLDIGITS, "%d", temp);
+	snprintf(timebuf, MAXCOLDIGITS, "%d", timef);
+	snprintf(depthbuf, MAXCOLDIGITS, "%d", depthf);
+	snprintf(tempbuf, MAXCOLDIGITS, "%d", tempf);
+	time(&now);
+	timep = localtime(&now);
+	strftime(curdate, sizeof(curdate), "%Y%m%d", timep);
+
+	/* As the parameter is numeric, we need to ensure that the leading zero
+	* is not discarded during the transform, thus prepend time with 1 */
+	strftime(curtime, sizeof(curtime), "1%H%M", timep);
 
 	params[0] = "timeField";
 	params[1] = timebuf;
@@ -351,7 +363,11 @@ void parse_csv_file(const char *filename, int time, int depth, int temp, char **
 	params[3] = depthbuf;
 	params[4] = "tempField";
 	params[5] = tempbuf;
-	params[6] = NULL;
+	params[6] = "date";
+	params[7] = curdate;
+	params[8] = "time";
+	params[9] = curtime;
+	params[10] = NULL;
 
 	if (filename == NULL)
 		return;
