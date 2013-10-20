@@ -215,14 +215,14 @@ static void get_ranges(char *buffer, int size)
 	int i, len;
 	int first, last = -1;
 
-	snprintf(buffer, size, translate("gettextFromC","for dives #"));
+	snprintf(buffer, size, "%s", translate("gettextFromC","for dives #"));
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = get_dive(i);
 		if (! dive->selected)
 			continue;
 		if (dive->number < 1) {
 			/* uhh - weird numbers - bail */
-			snprintf(buffer, size, translate("gettextFromC","for selected dives"));
+			snprintf(buffer, size, "%s", translate("gettextFromC","for selected dives"));
 			return;
 		}
 		len = strlen(buffer);
@@ -259,11 +259,11 @@ void get_selected_dives_text(char *buffer, int size)
 		if (current_dive)
 			snprintf(buffer, size, translate("gettextFromC","for dive #%d"), current_dive->number);
 		else
-			snprintf(buffer, size, translate("gettextFromC","for selected dive"));
+			snprintf(buffer, size, "%s", translate("gettextFromC","for selected dive"));
 	} else if (amount_selected == dive_table.nr) {
-		snprintf(buffer, size, translate("gettextFromC","for all dives"));
+		snprintf(buffer, size, "%s", translate("gettextFromC","for all dives"));
 	} else if (amount_selected == 0) {
-		snprintf(buffer, size, translate("gettextFromC","(no dives)"));
+		snprintf(buffer, size, "%s", translate("gettextFromC","(no dives)"));
 	} else {
 		get_ranges(buffer, size);
 		if (strlen(buffer) == size -1) {

@@ -91,7 +91,7 @@ static int get_gasidx(struct dive *dive, int o2, int he)
 void get_gas_string(int o2, int he, char *text, int len)
 {
 	if (is_air(o2, he))
-		snprintf(text, len, translate("gettextFromC","air"));
+		snprintf(text, len, "%s", translate("gettextFromC","air"));
 	else if (he == 0)
 		snprintf(text, len, translate("gettextFromC","EAN%d"), (o2 + 5) / 10);
 	else

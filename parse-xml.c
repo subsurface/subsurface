@@ -1891,7 +1891,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC","Database query get_events failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC","Database query get_events failed.\n"));
 		return 1;
 	}
 
