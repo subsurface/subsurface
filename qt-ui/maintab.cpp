@@ -428,7 +428,6 @@ void MainTab::acceptChanges()
 		if (notesBackup[curr].location != ui.location->text() ||
 			notesBackup[curr].coordinates != ui.coordinates->text()) {
 			mainWindow()->globe()->reload();
-			mainWindow()->globe()->centerOn(current_dive);
 		}
 
 		if (cylindersModel->changed) {
