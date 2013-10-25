@@ -16,6 +16,7 @@ struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
 WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
+, reply(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
