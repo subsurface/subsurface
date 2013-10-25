@@ -15,6 +15,26 @@
 struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
+WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
+{
+	ui.setupUi(this);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.download, SIGNAL(clicked(bool)), this, SLOT(startDownload()));
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+
+}
+
+void WebServices::hidePassword()
+{
+	ui.password->hide();
+	ui.passLabel->hide();
+}
+
+void WebServices::hideUpload()
+{
+	ui.upload->hide();
+}
+
 SubsurfaceWebServices* SubsurfaceWebServices::instance()
 {
 	static SubsurfaceWebServices *self = new SubsurfaceWebServices();
@@ -24,12 +44,10 @@ SubsurfaceWebServices* SubsurfaceWebServices::instance()
 
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 {
-	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
-	connect(ui.download, SIGNAL(clicked(bool)), this, SLOT(startDownload()));
-	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	QSettings s;
 	ui.userID->setText(s.value("webservice_uid").toString());
+	hidePassword();
+	hideUpload();
 }
 
 static void clear_table(struct dive_table *table)
@@ -56,7 +74,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 
 			/* store last entered uid in config */
 			QSettings s;
-			s.setValue("webservice_uid", ui.userID->text());
+			s.setValue("subsurface_webservice_uid", ui.userID->text());
 			s.sync();
 			hide();
 			close();
@@ -133,11 +151,6 @@ void SubsurfaceWebServices::setStatusText(int status)
 	case DD_STATUS_OK:			  text = tr("Download Success!"); break;
 	}
 	ui.status->setText(text);
-}
-
-void SubsurfaceWebServices::runDialog()
-{
-	exec();
 }
 
 /* requires that there is a <download> or <error> tag under the <root> tag */
