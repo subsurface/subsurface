@@ -46,7 +46,7 @@ SubsurfaceWebServices* SubsurfaceWebServices::instance()
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 {
 	QSettings s;
-	ui.userID->setText(s.value("webservice_uid").toString());
+	ui.userID->setText(s.value("subsurface_webservice_uid").toString());
 	hidePassword();
 	hideUpload();
 }
