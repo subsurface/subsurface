@@ -121,7 +121,6 @@ private:
 	void redrawProfile();
 	void file_save();
 	void file_save_as();
-	void setupSplitters();
 };
 
 MainWindow *mainWindow();
