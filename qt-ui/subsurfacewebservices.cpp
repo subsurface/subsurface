@@ -269,7 +269,9 @@ static bool merge_locations_into_dives(void)
 
 DivelogsDeWebServices* DivelogsDeWebServices::instance()
 {
-
+	static DivelogsDeWebServices *self = new DivelogsDeWebServices();
+	self->setAttribute(Qt::WA_QuitOnClose, false);
+	return self;
 }
 
 DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)

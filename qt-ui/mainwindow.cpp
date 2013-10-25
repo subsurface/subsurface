@@ -255,6 +255,11 @@ void MainWindow::on_actionDownloadWeb_triggered()
 	SubsurfaceWebServices::instance()->exec();
 }
 
+void MainWindow::on_actionDivelogs_de_triggered()
+{
+	DivelogsDeWebServices::instance()->exec();
+}
+
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
 	DiveComputerManagementDialog::instance()->init();
