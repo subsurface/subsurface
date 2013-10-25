@@ -18,7 +18,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -39,7 +48,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -52,7 +70,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -70,7 +97,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -83,7 +119,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -169,7 +214,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>32</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -196,8 +241,15 @@
     <property name="title">
      <string>Log</string>
     </property>
-    <addaction name="actionDownloadDC"/>
-    <addaction name="actionDownloadWeb"/>
+    <widget class="QMenu" name="menuDownloads">
+     <property name="title">
+      <string>Downloads/Uploads</string>
+     </property>
+     <addaction name="actionDownloadDC"/>
+     <addaction name="actionDownloadWeb"/>
+     <addaction name="actionDivelogs_de"/>
+    </widget>
+    <addaction name="menuDownloads"/>
     <addaction name="actionEditDeviceNames"/>
     <addaction name="separator"/>
     <addaction name="actionAddDive"/>
@@ -206,6 +258,7 @@
     <addaction name="actionAutoGroup"/>
     <addaction name="actionToggleZoom"/>
     <addaction name="actionYearlyStatistics"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -317,7 +370,7 @@
   </action>
   <action name="actionDownloadDC">
    <property name="text">
-    <string>Download from Dive computer</string>
+    <string>Dive computer</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -325,7 +378,7 @@
   </action>
   <action name="actionDownloadWeb">
    <property name="text">
-    <string>Download from Web Service</string>
+    <string>Subsurface Service</string>
    </property>
   </action>
   <action name="actionEditDeviceNames">
@@ -451,6 +504,11 @@
    </property>
    <property name="toolTip">
     <string>Import CSV</string>
+   </property>
+  </action>
+  <action name="actionDivelogs_de">
+   <property name="text">
+    <string>Divelogs.de</string>
    </property>
   </action>
  </widget>
