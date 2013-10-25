@@ -36,6 +36,12 @@ void WebServices::hideUpload()
 	ui.upload->hide();
 }
 
+// #
+// #
+// #		Subsurface Web Service Implementation.
+// #
+// #
+
 SubsurfaceWebServices* SubsurfaceWebServices::instance()
 {
 	static SubsurfaceWebServices *self = new SubsurfaceWebServices();
@@ -253,4 +259,50 @@ static bool merge_locations_into_dives(void)
 		}
 	}
 	return changed > 0;
+}
+
+// #
+// #
+// #		Divelogs DE  Web Service Implementation.
+// #
+// #
+
+DivelogsDeWebServices* DivelogsDeWebServices::instance()
+{
+
+}
+
+DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)
+{
+
+}
+
+void DivelogsDeWebServices::startUpload()
+{
+
+}
+
+void DivelogsDeWebServices::startDownload()
+{
+
+}
+
+void DivelogsDeWebServices::downloadFinished()
+{
+
+}
+
+void DivelogsDeWebServices::setStatusText(int status)
+{
+
+}
+
+void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError error)
+{
+
+}
+
+void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
+{
+
 }
