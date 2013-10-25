@@ -37,6 +37,10 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 		"rfcomm*",
 		NULL
 	};
+	FILE *file;
+	char *line = NULL;
+	char *fname;
+	size_t len;
 
 	dp = opendir (dirname);
 	if (dp == NULL) {
@@ -59,8 +63,37 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 			}
 		}
 	}
-	// TODO: list UEMIS mount point from /proc/mounts
-
 	closedir (dp);
+
+	file = fopen("/proc/mounts", "r");
+	if (file == NULL)
+		return index;
+
+	while ((getline(&line, &len, file)) != -1) {
+		char *ptr = strstr(line, "UEMISSDA");
+		if (ptr) {
+			char *end = ptr, *start = ptr;
+			while (start > line && *start != ' ')
+				start--;
+			if (*start == ' ')
+				start++;
+			while (*end != ' ' && *end != '\0')
+				end++;
+
+			*end = '\0';
+			fname = strdup(start);
+
+			callback(fname, userdata);
+
+			if (is_default_dive_computer_device(fname))
+				index = i;
+			i++;
+			free((void *)fname);
+	   }
+	}
+
+	free(line);
+	fclose(file);
+
 	return index;
 }
