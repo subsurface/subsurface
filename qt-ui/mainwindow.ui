@@ -214,12 +214,12 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>18</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
@@ -239,11 +239,11 @@
    </widget>
    <widget class="QMenu" name="menuLog">
     <property name="title">
-     <string>Log</string>
+     <string>&amp;Log</string>
     </property>
     <widget class="QMenu" name="menuDownloads">
      <property name="title">
-      <string>Downloads/Uploads</string>
+      <string>&amp;Downloads/Uploads</string>
      </property>
      <addaction name="actionDownloadDC"/>
      <addaction name="actionDownloadWeb"/>
@@ -262,7 +262,7 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionViewAll"/>
     <addaction name="actionViewList"/>
@@ -277,13 +277,13 @@
    </widget>
    <widget class="QMenu" name="menuFilter">
     <property name="title">
-     <string>Filter</string>
+     <string>F&amp;ilter</string>
     </property>
     <addaction name="actionSelectEvents"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAboutSubsurface"/>
     <addaction name="actionUserManual"/>
@@ -296,6 +296,9 @@
   </widget>
   <action name="actionNew">
    <property name="text">
+    <string>&amp;New</string>
+   </property>
+   <property name="toolTip">
     <string>New</string>
    </property>
    <property name="shortcut">
@@ -304,6 +307,9 @@
   </action>
   <action name="actionOpen">
    <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="toolTip">
     <string>Open</string>
    </property>
    <property name="shortcut">
@@ -312,6 +318,9 @@
   </action>
   <action name="actionSave">
    <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="toolTip">
     <string>Save</string>
    </property>
    <property name="shortcut">
@@ -320,6 +329,9 @@
   </action>
   <action name="actionSaveAs">
    <property name="text">
+    <string>Save &amp;as</string>
+   </property>
+   <property name="toolTip">
     <string>Save as</string>
    </property>
    <property name="shortcut">
@@ -328,6 +340,9 @@
   </action>
   <action name="actionClose">
    <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="toolTip">
     <string>Close</string>
    </property>
    <property name="shortcut">
@@ -336,7 +351,10 @@
   </action>
   <action name="actionImport">
    <property name="text">
-    <string>Import Files</string>
+    <string>&amp;Import Files</string>
+   </property>
+   <property name="toolTip">
+    <string>&amp;Import Files</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
@@ -344,12 +362,12 @@
   </action>
   <action name="actionExportUDDF">
    <property name="text">
-    <string>Export UDDF</string>
+    <string>Export &amp;UDDF</string>
    </property>
   </action>
   <action name="actionPrint">
    <property name="text">
-    <string>Print</string>
+    <string>&amp;Print</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
@@ -357,12 +375,12 @@
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences</string>
+    <string>Pr&amp;eferences</string>
    </property>
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -370,7 +388,7 @@
   </action>
   <action name="actionDownloadDC">
    <property name="text">
-    <string>Dive computer</string>
+    <string>Dive &amp;computer</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -378,22 +396,22 @@
   </action>
   <action name="actionDownloadWeb">
    <property name="text">
-    <string>Subsurface Service</string>
+    <string>&amp;Subsurface Service</string>
    </property>
   </action>
   <action name="actionEditDeviceNames">
    <property name="text">
-    <string>Edit Device Names</string>
+    <string>&amp;Edit Device Names</string>
    </property>
   </action>
   <action name="actionAddDive">
    <property name="text">
-    <string>Add Dive</string>
+    <string>&amp;Add Dive</string>
    </property>
   </action>
   <action name="actionRenumber">
    <property name="text">
-    <string>Renumber</string>
+    <string>&amp;Renumber</string>
    </property>
   </action>
   <action name="actionAutoGroup">
@@ -401,22 +419,22 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Auto Group</string>
+    <string>Auto &amp;Group</string>
    </property>
   </action>
   <action name="actionToggleZoom">
    <property name="text">
-    <string>Toggle Zoom</string>
+    <string>Toggle &amp;Zoom</string>
    </property>
   </action>
   <action name="actionYearlyStatistics">
    <property name="text">
-    <string>Yearly Statistics</string>
+    <string>&amp;Yearly Statistics</string>
    </property>
   </action>
   <action name="actionViewList">
    <property name="text">
-    <string>View List</string>
+    <string>View &amp;List</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+2</string>
@@ -424,7 +442,7 @@
   </action>
   <action name="actionViewProfile">
    <property name="text">
-    <string>View Profile</string>
+    <string>View &amp;Profile</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+3</string>
@@ -432,7 +450,7 @@
   </action>
   <action name="actionViewInfo">
    <property name="text">
-    <string>View Info</string>
+    <string>View &amp;Info</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+4</string>
@@ -440,7 +458,7 @@
   </action>
   <action name="actionViewAll">
    <property name="text">
-    <string>View All</string>
+    <string>View &amp;All</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+1</string>
@@ -464,7 +482,7 @@
   </action>
   <action name="actionSelectEvents">
    <property name="text">
-    <string>Select Events</string>
+    <string>&amp;Select Events</string>
    </property>
   </action>
   <action name="actionInputPlan">
@@ -474,12 +492,12 @@
   </action>
   <action name="actionAboutSubsurface">
    <property name="text">
-    <string>About Subsurface</string>
+    <string>&amp;About Subsurface</string>
    </property>
   </action>
   <action name="actionUserManual">
    <property name="text">
-    <string>User Manual</string>
+    <string>User &amp;Manual</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -495,7 +513,7 @@
   </action>
   <action name="actionDivePlanner">
    <property name="text">
-    <string>Dive Planner</string>
+    <string>&amp;Dive Planner</string>
    </property>
   </action>
   <action name="actionImportCSV">
@@ -503,12 +521,12 @@
     <string>Import CSV</string>
    </property>
    <property name="toolTip">
-    <string>Import CSV</string>
+    <string>Import CS&amp;V</string>
    </property>
   </action>
   <action name="actionDivelogs_de">
    <property name="text">
-    <string>Divelogs.de</string>
+    <string>&amp;Divelogs.de</string>
    </property>
   </action>
  </widget>
