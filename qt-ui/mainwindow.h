@@ -69,6 +69,7 @@ private slots:
 	/* log menu actions */
 	void on_actionDownloadDC_triggered();
 	void on_actionDownloadWeb_triggered();
+	void on_actionDivelogs_de_triggered();
 	void on_actionEditDeviceNames_triggered();
 	void on_actionAddDive_triggered();
 	void on_actionRenumber_triggered();
@@ -120,7 +121,6 @@ private:
 	void redrawProfile();
 	void file_save();
 	void file_save_as();
-	void setupSplitters();
 };
 
 MainWindow *mainWindow();

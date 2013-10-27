@@ -15,6 +15,33 @@
 struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
+WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
+, reply(0)
+{
+	ui.setupUi(this);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.download, SIGNAL(clicked(bool)), this, SLOT(startDownload()));
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+
+}
+
+void WebServices::hidePassword()
+{
+	ui.password->hide();
+	ui.passLabel->hide();
+}
+
+void WebServices::hideUpload()
+{
+	ui.upload->hide();
+}
+
+// #
+// #
+// #		Subsurface Web Service Implementation.
+// #
+// #
+
 SubsurfaceWebServices* SubsurfaceWebServices::instance()
 {
 	static SubsurfaceWebServices *self = new SubsurfaceWebServices();
@@ -24,12 +51,10 @@ SubsurfaceWebServices* SubsurfaceWebServices::instance()
 
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 {
-	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
-	connect(ui.download, SIGNAL(clicked(bool)), this, SLOT(startDownload()));
-	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	QSettings s;
-	ui.userID->setText(s.value("webservice_uid").toString());
+	ui.userID->setText(s.value("subsurface_webservice_uid").toString());
+	hidePassword();
+	hideUpload();
 }
 
 static void clear_table(struct dive_table *table)
@@ -56,7 +81,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 
 			/* store last entered uid in config */
 			QSettings s;
-			s.setValue("webservice_uid", ui.userID->text());
+			s.setValue("subsurface_webservice_uid", ui.userID->text());
 			s.sync();
 			hide();
 			close();
@@ -133,11 +158,6 @@ void SubsurfaceWebServices::setStatusText(int status)
 	case DD_STATUS_OK:			  text = tr("Download Success!"); break;
 	}
 	ui.status->setText(text);
-}
-
-void SubsurfaceWebServices::runDialog()
-{
-	exec();
 }
 
 /* requires that there is a <download> or <error> tag under the <root> tag */
@@ -239,4 +259,52 @@ static bool merge_locations_into_dives(void)
 		}
 	}
 	return changed > 0;
+}
+
+// #
+// #
+// #		Divelogs DE  Web Service Implementation.
+// #
+// #
+
+DivelogsDeWebServices* DivelogsDeWebServices::instance()
+{
+	static DivelogsDeWebServices *self = new DivelogsDeWebServices();
+	self->setAttribute(Qt::WA_QuitOnClose, false);
+	return self;
+}
+
+DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)
+{
+
+}
+
+void DivelogsDeWebServices::startUpload()
+{
+
+}
+
+void DivelogsDeWebServices::startDownload()
+{
+
+}
+
+void DivelogsDeWebServices::downloadFinished()
+{
+
+}
+
+void DivelogsDeWebServices::setStatusText(int status)
+{
+
+}
+
+void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError error)
+{
+
+}
+
+void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
+{
+
 }

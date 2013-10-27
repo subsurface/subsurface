@@ -119,7 +119,7 @@ FORMS = \
 	qt-ui/preferences.ui \
 	qt-ui/printoptions.ui \
 	qt-ui/renumber.ui \
-	qt-ui/subsurfacewebservices.ui \
+	qt-ui/webservices.ui \
 	qt-ui/tableview.ui \
     qt-ui/csvimportdialog.ui
 
