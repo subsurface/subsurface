@@ -280,7 +280,8 @@ void MainWindow::on_actionAddDive_triggered()
 	// now cheat - create one dive that we use to store the info tab data in
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L;
-	dive->dc.model = tr("manually added dive").toLocal8Bit().constData(); // do not use tr here since it expects a char*.
+	const char* model = strdup(tr("manulaly added dive").toLocal8Bit().constData());
+	dive->dc.model = model; // do not use tr here since it expects a char*.
 	record_dive(dive);
 	select_dive(get_divenr(dive));
 	ui.InfoWidget->updateDiveInfo(selected_dive);
