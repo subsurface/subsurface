@@ -46,6 +46,8 @@ class MainTab : public QTabWidget
 {
 	Q_OBJECT
 public:
+	enum EditMode { NONE, DIVE, TRIP, ADD, MANUALLY_ADDED_DIVE };
+
 	MainTab(QWidget *parent);
 	void clearStats();
 	void clearInfo();
@@ -74,8 +76,10 @@ public slots:
 	void editCylinderWidget(const QModelIndex& index);
 	void editWeightWidget(const QModelIndex& index);
 	void addDiveStarted();
+	void enableEdition(EditMode newEditMode = NONE);
 
 private:
+	EditMode editMode;
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
@@ -88,9 +92,7 @@ private:
 	 * then applying the changes on the other dives.*/
 	struct dive multiEditEquipmentPlaceholder;
 
-	enum { NONE, DIVE, TRIP, ADD } editMode;
 	Completers completers;
-	void enableEdition();
 	void resetPallete();
 	QString printGPSCoords(int lat, int lon);
 };

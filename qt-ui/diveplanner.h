@@ -54,7 +54,8 @@ public slots:
 	void cancelPlan();
 	void createTemporaryPlan();
 	void deleteTemporaryPlan();
-
+	void loadFromDive(dive* d);
+	void undoEdition();
 signals:
 	void planCreated();
 	void planCanceled();
@@ -66,6 +67,7 @@ private:
 	QVector<divedatapoint> divepoints;
 	struct dive *tempDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);
+	QVector<sample> backupSamples; // For editing added dives.
 };
 
 class Button : public QObject, public QGraphicsRectItem {

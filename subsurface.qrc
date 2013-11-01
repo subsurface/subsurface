@@ -6,6 +6,7 @@
 	<file alias="trash">icons/trash.png</file>
 	<file alias="units">icons/units.png</file>
 	<file alias="advanced">icons/advanced.png</file>
+	<file alias="edit">icons/advanced.png</file>
 	<file alias="graph">icons/graph.png</file>
 	<file alias="minimum">icons/minimum.svg</file>
 	<file alias="maximum">icons/maximum.svg</file>
