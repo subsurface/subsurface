@@ -54,6 +54,7 @@ public slots:
 	void cancelPlan();
 	void createTemporaryPlan();
 	void deleteTemporaryPlan();
+	void loadFromDive(dive* d);
 
 signals:
 	void planCreated();

@@ -819,3 +819,23 @@ void MainWindow::on_actionImportCSV_triggered()
 	process_dives(TRUE, FALSE);
 	refreshDisplay();
 }
+
+
+void MainWindow::editCurrentDive()
+{
+	struct dive *d = current_dive;
+	QString defaultDC(d->dc.model);
+	
+	if (defaultDC == tr("manually added dive")){
+		disableDcShortcuts();
+		DivePlannerPointsModel::instance()->setPlanMode(false);
+		ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+		ui.infoPane->setCurrentIndex(MAINTAB);
+		DivePlannerPointsModel::instance()->loadFromDive(d);
+		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+	}
+	else if (defaultDC == tr("Simulated Dive")){
+		
+	}
+	
+}

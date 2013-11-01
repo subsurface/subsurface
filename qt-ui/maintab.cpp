@@ -113,7 +113,7 @@ void MainTab::addDiveStarted()
 	editMode = ADD;
 }
 
-void MainTab::enableEdition()
+void MainTab::enableEdition(EditMode newEditMode)
 {
 	if (selected_dive < 0 || editMode != NONE)
 		return;
@@ -170,7 +170,8 @@ void MainTab::enableEdition()
 				notesBackup[mydive].weightsystem[i] = mydive->weightsystem[i];
 			}
 		}
-		editMode = DIVE;
+
+		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
 }
 
@@ -449,7 +450,7 @@ void MainTab::acceptChanges()
 		}
 
 	}
-	if (editMode == ADD) {
+	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// clean up the dive data (get duration, depth information from samples)
 		fixup_dive(current_dive);
 		if (dive_table.nr == 1)
@@ -563,7 +564,7 @@ void MainTab::rejectChanges()
 	ui.equipmentButtonBox->hide();
 	notesBackup.clear();
 	resetPallete();
-	if (editMode == ADD) {
+	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
 		updateDiveInfo(selected_dive);
 		mainWindow()->showProfile();

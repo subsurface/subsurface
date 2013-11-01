@@ -109,6 +109,7 @@ public slots:
 	void readSettings();
 	void refreshDisplay();
 	void showProfile();
+	void editCurrentDive();
 
 private:
 	Ui::MainWindow ui;
