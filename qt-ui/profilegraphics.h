@@ -171,7 +171,7 @@ private:
 	void plot_depth_scale();
 
 
-	void addControlItems();
+	void addControlItems(struct dive *d);
 
 	void create_ruler();
 	void add_ruler();

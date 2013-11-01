@@ -342,7 +342,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	}
 
 	if (!printMode)
-		addControlItems();
+		addControlItems(d);
 
 	if (rulerEnabled && !printMode)
 		add_ruler();
@@ -378,20 +378,28 @@ void ProfileGraphicsView::plot_depth_scale()
 	depthMarkers->setPos(depthMarkers->pos().x() - 10, 0);
 }
 
-void ProfileGraphicsView::addControlItems()
+void ProfileGraphicsView::addControlItems(struct dive *d)
 {
 	QAction *scaleAction = new QAction(QIcon(":scale"), tr("Scale"), this);
 	QAction *rulerAction = new QAction(QIcon(":ruler"), tr("Ruler"), this);
 	QToolBar *toolBar = new QToolBar("", 0);
 	toolBar->addAction(rulerAction);
 	toolBar->addAction(scaleAction);
+	toolBar->setOrientation(Qt::Vertical);
 	//make toolbar transparent
-	toolBar->setStyleSheet(QString::fromUtf8 ("background-color: rgba(255,255,255,0);"));
+	//toolBar->setStyleSheet(QString::fromUtf8 ("background-color: rgba(255,255,255,0);"));
 
 	connect(scaleAction, SIGNAL(triggered()), this, SLOT(on_scaleAction()));
 	connect(rulerAction, SIGNAL(triggered()), this, SLOT(on_rulerAction()));
-	toolBarProxy = scene()->addWidget(toolBar);
 	//Put it into the lower right corner of the profile
+
+	QString defaultDC(d->dc.model);
+	if (defaultDC == tr("manually added dive") || defaultDC == tr("Simulated Dive")) {
+		QAction *editAction = new QAction(QIcon(":edit"), tr("Edit"), this);
+		toolBar->addAction(editAction);
+		connect(editAction, SIGNAL(triggered()), mainWindow(), SLOT(editCurrentDive()));
+	}
+	toolBarProxy = scene()->addWidget(toolBar);
 	toolBarProxy->setPos(gc.maxx-toolBar->width(), gc.maxy-toolBar->height());
 }
 
