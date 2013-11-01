@@ -783,13 +783,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 		}
 	}
 	process_dives(TRUE, FALSE);
-
-	ui.InfoWidget->reload();
-	ui.globe->reload();
-	ui.ListWidget->reload(DiveTripModel::TREE);
-	ui.ListWidget->setFocus();
-	WSInfoModel *wsim = WSInfoModel::instance();
-	wsim->updateInfo();
+	refreshDisplay();
 }
 
 void MainWindow::loadFiles(const QStringList fileNames)
@@ -814,25 +808,14 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 	process_dives(FALSE, FALSE);
 
-	ui.InfoWidget->reload();
-	ui.globe->reload();
-	ui.ListWidget->reload(DiveTripModel::TREE);
-	ui.ListWidget->setFocus();
-	WSInfoModel *wsim = WSInfoModel::instance();
-	wsim->updateInfo();
+	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
 void MainWindow::on_actionImportCSV_triggered()
 {
-	CSVImportDialog *csvImport = new(CSVImportDialog);
+	CSVImportDialog *csvImport = new CSVImportDialog();
 	csvImport->show();
 	process_dives(TRUE, FALSE);
-
-	ui.InfoWidget->reload();
-	ui.globe->reload();
-	ui.ListWidget->reload(DiveTripModel::TREE);
-	ui.ListWidget->setFocus();
-	WSInfoModel *wsim = WSInfoModel::instance();
-	wsim->updateInfo();
+	refreshDisplay();
 }
