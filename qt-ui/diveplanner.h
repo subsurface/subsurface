@@ -55,7 +55,7 @@ public slots:
 	void createTemporaryPlan();
 	void deleteTemporaryPlan();
 	void loadFromDive(dive* d);
-
+	void undoEdition();
 signals:
 	void planCreated();
 	void planCanceled();

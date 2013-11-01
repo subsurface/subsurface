@@ -507,6 +507,9 @@ void MainTab::rejectChanges()
 			delete_single_dive(selected_dive);
 			DivePlannerPointsModel::instance()->cancelPlan();
 		}
+		else if (editMode == MANUALLY_ADDED_DIVE ){
+			DivePlannerPointsModel::instance()->undoEdition();
+		}
 		struct dive *curr = current_dive;
 		ui.notes->setText(notesBackup[curr].notes );
 		ui.location->setText(notesBackup[curr].location);

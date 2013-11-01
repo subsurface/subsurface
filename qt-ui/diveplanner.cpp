@@ -1197,6 +1197,16 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 }
 
+void DivePlannerPointsModel::undoEdition()
+{
+	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
+	divepoints.clear();
+	endRemoveRows();
+	Q_FOREACH(const sample &s, backupSamples){
+		plannerModel->addStop(s.depth.mm, s.time.seconds, tr("Air"), 0);
+	}
+}
+
 void DivePlannerPointsModel::deleteTemporaryPlan()
 {
 	deleteTemporaryPlan(diveplan.dp);

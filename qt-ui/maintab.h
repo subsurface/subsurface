@@ -46,7 +46,8 @@ class MainTab : public QTabWidget
 {
 	Q_OBJECT
 public:
-	enum EditMode { NONE, DIVE, TRIP, ADD, MANUALLY_ADDED_DIVE } editMode;
+	enum EditMode { NONE, DIVE, TRIP, ADD, MANUALLY_ADDED_DIVE };
+
 	MainTab(QWidget *parent);
 	void clearStats();
 	void clearInfo();
@@ -78,6 +79,7 @@ public slots:
 	void enableEdition(EditMode newEditMode = NONE);
 
 private:
+	EditMode editMode;
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
