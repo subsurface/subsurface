@@ -12,7 +12,7 @@ public:
 	static gettextFromC *instance();
 	const char *trGettext(const char *text);
 	void reset(void);
-	QHash <const char *, QByteArray> translationCache;
+	QHash <QByteArray , QByteArray> translationCache;
 };
 
 #endif // GETTEXTFROMC_H

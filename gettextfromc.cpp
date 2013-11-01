@@ -4,7 +4,7 @@
 
 const char *gettextFromC::trGettext(const char *text)
 {
-	QByteArray &result = translationCache[text];
+	QByteArray &result = translationCache[QByteArray(text)];
 	if (result.isEmpty())
 		result = tr(text).toUtf8();
 	return result.constData();
