@@ -427,23 +427,17 @@ void DivePlannerPointsModel::createSimpleDive()
 
 void DivePlannerPointsModel::loadFromDive(dive* d)
 {
-	int totalSamples = d->dc.samples -2; // removes begin and end.
-	
 	/* We need to make a copy, because
 	 * as soon as the model is modified, it will
 	 * remove all samples from the current dive.
-	 * 
-	 * TODO: keep a backup of the values,
-	 * so we can restore. 
 	 * */
-	QList<QPair<int,int> > values;
+	backupSamples.clear();
 	for(int i = 1; i < d->dc.samples-1; i++){
-		struct sample &s = d->dc.sample[i];
-		values.append( qMakePair(s.depth.mm, s.time.seconds));
+		backupSamples.push_back( d->dc.sample[i]);
 	}
 
-	for(int i = 0; i < totalSamples; i++){
-		plannerModel->addStop(values[i].first, values[i].second, tr("Air"), 0);
+	Q_FOREACH(const sample &s, backupSamples){
+		plannerModel->addStop(s.depth.mm, s.time.seconds, tr("Air"), 0);
 	}
 }
 
