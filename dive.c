@@ -1846,11 +1846,12 @@ struct divetag *taglist_get_tag(struct tag_entry *tag_list, const char *tag)
 	struct tag_entry *tmp;
 	tmp = tag_list->next;
 	while(tmp != NULL) {
-		if (tmp->tag != NULL)
+		if (tmp->tag != NULL) {
 			if (strcmp(tmp->tag->name, tag) == 0)
 				return tmp->tag;
 			else
 				tmp = tmp->next;
+		}
 	}
 	return NULL;
 }
