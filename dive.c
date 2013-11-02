@@ -6,6 +6,8 @@
 #include "gettext.h"
 #include "dive.h"
 
+struct tag_entry *g_tag_list = NULL;
+
 void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev, **p;
@@ -189,6 +191,7 @@ struct dive *alloc_dive(void)
 	if (!dive)
 		exit(1);
 	memset(dive, 0, sizeof(*dive));
+	taglist_init(&(dive->tag_list));
 	return dive;
 }
 
@@ -1813,6 +1816,161 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 	remove_redundant_dc(res, prefer_downloaded);
 }
 
+int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len) {
+	int i = 0;
+	struct tag_entry *tmp;
+	tmp = tag_list->next;
+	memset(buffer, 0, len);
+	while(tmp != NULL) {
+		int newlength = strlen(tmp->tag->name);
+		if (i > 0)
+			newlength += 2;
+		if ((i+newlength) < len) {
+			if (i > 0) {
+				strcpy(buffer+i, ", ");
+				strcpy(buffer+i+2, tmp->tag->name);
+			} else {
+				strcpy(buffer, tmp->tag->name);
+			}
+		} else {
+			return i;
+		}
+		i += newlength;
+		tmp = tmp->next;
+	}
+	return i;
+}
+
+struct divetag *taglist_get_tag(struct tag_entry *tag_list, const char *tag)
+{
+	struct tag_entry *tmp;
+	tmp = tag_list->next;
+	while(tmp != NULL) {
+		if (tmp->tag != NULL)
+			if (strcmp(tmp->tag->name, tag) == 0)
+				return tmp->tag;
+			else
+				tmp = tmp->next;
+	}
+	return NULL;
+}
+
+static inline void taglist_free_divetag(struct divetag *tag) {
+	if (tag->name != NULL)
+		free(tag->name);
+	if (tag->source != NULL)
+		free(tag->source);
+	free(tag);
+}
+
+/* Add a tag to the tag_list, keep the list sorted */
+static struct divetag *taglist_add_divetag(struct tag_entry *tag_list, struct divetag *tag)
+{
+	struct tag_entry *tmp, *last;
+	last = tag_list;
+	tmp = tag_list->next;
+	while(1) {
+		if (tmp == NULL || strcmp(tmp->tag->name, tag->name) > 0) {
+			/* Insert in front of it */
+			last->next = malloc(sizeof(struct tag_entry));
+			last->next->next = tmp;
+			last->next->tag = tag;
+			return last->next->tag;
+		} else if (strcmp(tmp->tag->name, tag->name) == 0) {
+			/* Already in list */
+			return tmp->tag;
+		} else {
+			last = tmp;
+			tmp = tmp->next;
+		}
+	}
+}
+
+struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag)
+{
+	struct divetag *ret_tag, *new_tag;
+	const char *translation;
+	new_tag = malloc(sizeof(struct divetag));
+
+	translation = translate("gettextFromC", tag);
+	if (strcmp(tag, translation) == 0) {
+		new_tag->source = NULL;
+		new_tag->name = malloc(strlen(tag)+1);
+		memcpy(new_tag->name, tag, strlen(tag)+1);
+	} else {
+		new_tag->name = malloc(strlen(translation)+1);
+		memcpy(new_tag->name, translation, strlen(translation)+1);
+		new_tag->source = malloc(strlen(tag)+1);
+		memcpy(new_tag->source, tag, strlen(tag)+1);
+	}
+	/* Try to insert new_tag into g_tag_list if we are not operating on it */
+	if (tag_list != g_tag_list) {
+		ret_tag = taglist_add_divetag(g_tag_list, new_tag);
+		/* g_tag_list already contains new_tag, free the duplicate */
+		if (ret_tag != new_tag)
+			taglist_free_divetag(new_tag);
+		ret_tag = taglist_add_divetag(tag_list, ret_tag);
+	} else {
+		ret_tag = taglist_add_divetag(tag_list, new_tag);
+		if (ret_tag != new_tag)
+			taglist_free_divetag(new_tag);
+	}
+	return ret_tag;
+}
+
+void taglist_init(struct tag_entry **tag_list) {
+	*tag_list = malloc(sizeof(struct tag_entry));
+	(*tag_list)->next = NULL;
+	(*tag_list)->tag = NULL;
+}
+
+/* Clear everything but the first element */
+void taglist_clear(struct tag_entry *tag_list) {
+	struct tag_entry *current_tag_entry, *next;
+	current_tag_entry = tag_list->next;
+	while (current_tag_entry != NULL) {
+		next = current_tag_entry->next;
+		free(current_tag_entry);
+		current_tag_entry = next;
+	}
+	tag_list->next = NULL;
+}
+
+/* Merge src1 and src2, write to *dst */
+static void taglist_merge(struct tag_entry *dst, struct tag_entry *src1, struct tag_entry *src2)
+{
+	struct tag_entry *current_tag_entry;
+	current_tag_entry = src1->next;
+	while (current_tag_entry != NULL) {
+		taglist_add_divetag(dst, current_tag_entry->tag);
+		current_tag_entry = current_tag_entry->next;
+	}
+	current_tag_entry = src2->next;
+	while (current_tag_entry != NULL) {
+		taglist_add_divetag(dst, current_tag_entry->tag);
+		current_tag_entry = current_tag_entry->next;
+	}
+}
+
+void taglist_init_global()
+{
+	int i;
+	const char* default_tags[] = {
+		QT_TRANSLATE_NOOP("gettextFromC", "boat"), QT_TRANSLATE_NOOP("gettextFromC", "shore"), QT_TRANSLATE_NOOP("gettextFromC", "drift"),
+		QT_TRANSLATE_NOOP("gettextFromC", "deep"), QT_TRANSLATE_NOOP("gettextFromC", "cavern") , QT_TRANSLATE_NOOP("gettextFromC", "ice"),
+		QT_TRANSLATE_NOOP("gettextFromC", "wreck"), QT_TRANSLATE_NOOP("gettextFromC", "cave"), QT_TRANSLATE_NOOP("gettextFromC", "altitude"),
+		QT_TRANSLATE_NOOP("gettextFromC", "pool"), QT_TRANSLATE_NOOP("gettextFromC", "lake"), QT_TRANSLATE_NOOP("gettextFromC", "river"),
+		QT_TRANSLATE_NOOP("gettextFromC", "night"), QT_TRANSLATE_NOOP("gettextFromC", "fresh"), QT_TRANSLATE_NOOP("gettextFromC", "student"),
+		QT_TRANSLATE_NOOP("gettextFromC", "instructor"), QT_TRANSLATE_NOOP("gettextFromC", "photo"), QT_TRANSLATE_NOOP("gettextFromC", "video"),
+		QT_TRANSLATE_NOOP("gettextFromC", "deco")
+	};
+
+	taglist_init(&g_tag_list);
+
+	for(i=0; i<sizeof(default_tags)/sizeof(char*); i++)
+		taglist_add_tag(g_tag_list, default_tags[i]);
+}
+
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
@@ -1841,7 +1999,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
-	MERGE_NONZERO(res, a, b, dive_tags);
+	taglist_merge(res->tag_list, a->tag_list, b->tag_list);
 	merge_equipment(res, a, b);
 	merge_airtemps(res, a, b);
 	if (dl) {

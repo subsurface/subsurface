@@ -15,15 +15,6 @@
 #include "divelist.h"
 #include "statistics.h"
 
-/* mark for translation but don't translate here as these terms are used
- * in save-xml.c */
-char *dtag_names[DTAG_NR] = {
-	QT_TRANSLATE_NOOP("gettextFromC","invalid"), QT_TRANSLATE_NOOP("gettextFromC","boat"), QT_TRANSLATE_NOOP("gettextFromC","shore"), QT_TRANSLATE_NOOP("gettextFromC","drift"), QT_TRANSLATE_NOOP("gettextFromC","deep"), QT_TRANSLATE_NOOP("gettextFromC","cavern"),
-	QT_TRANSLATE_NOOP("gettextFromC","ice"), QT_TRANSLATE_NOOP("gettextFromC","wreck"), QT_TRANSLATE_NOOP("gettextFromC","cave"), QT_TRANSLATE_NOOP("gettextFromC","altitude"), QT_TRANSLATE_NOOP("gettextFromC","pool"), QT_TRANSLATE_NOOP("gettextFromC","lake"),
-	QT_TRANSLATE_NOOP("gettextFromC","river"), QT_TRANSLATE_NOOP("gettextFromC","night"), QT_TRANSLATE_NOOP("gettextFromC","freshwater"), QT_TRANSLATE_NOOP("gettextFromC","training"), QT_TRANSLATE_NOOP("gettextFromC","teaching"),
-	QT_TRANSLATE_NOOP("gettextFromC","photo"), QT_TRANSLATE_NOOP("gettextFromC","video"), QT_TRANSLATE_NOOP("gettextFromC","deco")
-};
-
 static stats_t stats;
 stats_t stats_selection;
 stats_t *stats_monthly = NULL;

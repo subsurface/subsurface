@@ -59,34 +59,6 @@ typedef int bool;
 #define SEAWATER_SALINITY	10300
 #define FRESHWATER_SALINITY	10000
 
-/* Dive tag definitions */
-#define DTAG_INVALID		(1 << 0)
-#define DTAG_BOAT		(1 << 1)
-#define DTAG_SHORE		(1 << 2)
-#define DTAG_DRIFT		(1 << 3)
-#define DTAG_DEEP		(1 << 4)
-#define DTAG_CAVERN		(1 << 5)
-#define DTAG_ICE		(1 << 6)
-#define DTAG_WRECK		(1 << 7)
-#define DTAG_CAVE		(1 << 8)
-#define DTAG_ALTITUDE		(1 << 9)
-#define DTAG_POOL		(1 << 10)
-#define DTAG_LAKE		(1 << 11)
-#define DTAG_RIVER		(1 << 12)
-#define DTAG_NIGHT		(1 << 13)
-#define DTAG_FRESH		(1 << 14)
-#define DTAG_FRESH_NR		14
-#define DTAG_STUDENT		(1 << 15)
-#define DTAG_INSTRUCTOR		(1 << 16)
-#define DTAG_PHOTO		(1 << 17)
-#define DTAG_VIDEO		(1 << 18)
-#define DTAG_DECO		(1 << 19)
-#define DTAG_NR			20
-/* defined in statistics.c */
-extern char *dtag_names[DTAG_NR];
-extern int dtag_shown[DTAG_NR];
-extern int dive_mask;
-
 /*
  * Some silly typedefs to make our units very explicit.
  *
@@ -309,6 +281,45 @@ struct sample {
 	int po2;
 };
 
+struct divetag {
+	/*
+	 * The name of the divetag. If a translation is available, name contains
+	 * the translated tag
+	 */
+	char *name;
+	/*
+	 * If a translation is available, we write the original tag to source.
+	 * This enables us to write a non-localized tag to the xml file.
+	 */
+	char *source;
+};
+
+struct tag_entry {
+	struct divetag *tag;
+	struct tag_entry *next;
+};
+
+/*
+ * divetags are only stored once, each dive only contains
+ * a list of tag_entries which then point to the divetags
+ * in the global g_tag_list
+ */
+
+extern struct tag_entry *g_tag_list;
+
+struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag);
+
+/*
+ * Writes all divetags in tag_list to buffer, limited by the buffer's (len)gth.
+ * Returns the characters written
+ */
+int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len);
+
+void taglist_init(struct tag_entry **tag_list);
+void taglist_clear(struct tag_entry *tag_list);
+void taglist_init_global();
+
+
 /*
  * Events are currently pretty meaningless. This is
  * just based on the random data that libdivecomputer
@@ -399,7 +410,7 @@ struct dive {
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity; // kg per 10000 l
-	int dive_tags;
+	struct tag_entry *tag_list;
 
 	struct divecomputer dc;
 };

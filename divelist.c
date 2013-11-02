@@ -735,6 +735,11 @@ void delete_single_dive(int idx)
 		free((void *)dive->buddy);
 	if (dive->suit)
 		free((void *)dive->suit);
+	if (dive->tag_list) {
+		taglist_clear(dive->tag_list);
+		/* Remove head of list */
+		free((void *)dive->tag_list);
+	}
 	free(dive);
 }
 
@@ -800,8 +805,6 @@ void select_dive(int idx)
 	struct dive *dive = get_dive(idx);
 	if (dive) {
 		/* never select an invalid dive that isn't displayed */
-		if (dive->dive_tags & DTAG_INVALID && !prefs.display_invalid_dives)
-			return;
 		if (!dive->selected) {
 			dive->selected = 1;
 			amount_selected++;

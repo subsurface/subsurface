@@ -210,26 +210,53 @@ static void divedatetime(char *buffer, void *_when)
 	}
 }
 
+enum ParseState {FINDSTART, FINDEND};
 static void divetags(char *buffer, void *_tags)
 {
-	int *tags = _tags;
-	int i;
-
-	for (i = 0; i < DTAG_NR; i++) {
-		if (strstr(buffer, dtag_names[i])) {
-			/* stupidly we have 'cave' and 'cavern' */
-			if (1 << i == DTAG_CAVE) {
-				char *cave = strstr(buffer, "cave");
-				while (cave && !strncmp(cave, "cavern", strlen("cavern"))) {
-					cave++;
-					cave = strstr(cave, "cave");
+	struct tag_entry *tags = _tags;
+	char tag[128];
+	int i = 0, start = 0, end = 0;
+	enum ParseState state = FINDEND;
+	i=0;
+	while(i < strlen(buffer)) {
+		if (buffer[i] == ',') {
+			if (state == FINDSTART) {
+				/* Detect empty tags */
+			} else if (state == FINDEND) {
+				/* Found end of tag */
+				if (i > 1) {
+					if(buffer[i-1] != '\\') {
+						strncpy(tag, buffer+start, end-start+1);
+						tag[end-start+1] = '\0';
+						state=FINDSTART;
+						taglist_add_tag(tags, tag);
+					}
+				} else {
+					state=FINDSTART;
 				}
-				if (!cave)
-					continue;
 			}
-			*tags |= (1 << i);
+		} else if (buffer[i] == ' ') {
+			/* Handled */
+		} else {
+			/* Found start of tag */
+			if (state == FINDSTART) {
+				state = FINDEND;
+				start = i;
+			} else if (state == FINDEND) {
+				end=i;
+			}
 		}
-	}
+		i++;
+    }
+    if (state == FINDEND) {
+	    if (end < start)
+		    end = strlen(buffer)-1;
+	    if (strlen(buffer) > 0) {
+		    strncpy(tag, buffer+start, end-start+1);
+		    tag[end-start+1] = '\0';
+		    taglist_add_tag(tags, tag);
+	    }
+    }
 }
 
 enum number_type {
@@ -1161,7 +1188,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH(".number", get_index, &dive->number))
 		return;
-	if (MATCH(".tags", divetags, &dive->dive_tags))
+	if (MATCH(".tags", divetags, dive->tag_list))
 		return;
 	if (MATCH(".tripflag", get_tripflag, &dive->tripflag))
 		return;

@@ -392,20 +392,28 @@ static void save_events(FILE *f, struct event *ev)
 	}
 }
 
-static void save_tags(FILE *f, int tags)
+static void save_tags(FILE *f, struct tag_entry *tag_list)
 {
-	int i, more = 0;
+	int more = 0;
+	struct tag_entry *tmp = tag_list->next;
 
-	fprintf(f, " tags='");
-	for (i = 0; i < DTAG_NR; i++) {
-		if (tags & (1 << i)) {
+	/* Only write tag attribute if the list contains at least one item  */
+	if (tmp != NULL) {
+		fprintf(f, " tags='");
+
+		while (tmp != NULL) {
 			if (more)
 				fprintf(f, ", ");
-			fprintf(f, "%s", dtag_names[i]);
+			/* If the tag has been translated, write the source to the xml file */
+			if (tmp->tag->source != NULL)
+				fprintf(f, "%s", tmp->tag->source);
+			else
+				fprintf(f, "%s", tmp->tag->name);
+			tmp = tmp->next;
 			more = 1;
 		}
+		fprintf(f, "'");
 	}
-	fprintf(f, "'");
 }
 
 static void show_date(FILE *f, timestamp_t when)
@@ -468,8 +476,8 @@ void save_dive(FILE *f, struct dive *dive)
 		fprintf(f, " rating='%d'", dive->rating);
 	if (dive->visibility)
 		fprintf(f, " visibility='%d'", dive->visibility);
-	if (dive->dive_tags)
-		save_tags(f, dive->dive_tags);
+	if (dive->tag_list != NULL)
+		save_tags(f, dive->tag_list);
 
 	show_date(f, dive->when);
 	fprintf(f, " duration='%u:%02u min'>\n",
