@@ -104,6 +104,9 @@ void parse_argument(const char *arg)
 		case 'v':
 			verbose++;
 			continue;
+		case 'q':
+			quit++;
+			continue;
 		case '-':
 			/* long options with -- */
 			if (strcmp(arg, "--help") == 0) {

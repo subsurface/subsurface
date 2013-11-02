@@ -19,7 +19,7 @@
 #include "dive.h"
 #include "device.h"
 
-int verbose;
+int verbose, quit;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **error);
 char *xslt_path;
@@ -95,12 +95,16 @@ static void nonmatch(const char *type, const char *name, char *buffer)
 typedef void (*matchfn_t)(char *buffer, void *);
 
 static int match(const char *pattern, int plen,
-		 const char *name, int nlen,
+		 const char *name,
 		 matchfn_t fn, char *buf, void *data)
 {
-	if (plen > nlen)
+	switch (name[plen]) {
+	case '\0': case '.':
+		break;
+	default:
 		return 0;
-	if (memcmp(pattern, name + nlen - plen, plen))
+	}
+	if (memcmp(pattern, name, plen))
 		return 0;
 	fn(buf, data);
 	return 1;
@@ -626,7 +630,7 @@ static void utf8_string(char *buffer, void *_res)
 }
 
 #define MATCH(pattern, fn, dest) \
-	match(pattern, strlen(pattern), name, len, fn, buf, dest)
+	match(pattern, strlen(pattern), name, fn, buf, dest)
 
 static void get_index(char *buffer, void *_i)
 {
@@ -741,12 +745,12 @@ static void psi_or_bar(char *buffer, void *_pressure)
 	}
 }
 
-static int divinglog_fill_sample(struct sample *sample, const char *name, int len, char *buf)
+static int divinglog_fill_sample(struct sample *sample, const char *name, char *buf)
 {
-	return	MATCH(".p.time", sampletime, &sample->time) ||
-		MATCH(".p.depth", depth, &sample->depth) ||
-		MATCH(".p.temp", fahrenheit, &sample->temperature) ||
-		MATCH(".p.press1", psi_or_bar, &sample->cylinderpressure) ||
+	return	MATCH("time.p", sampletime, &sample->time) ||
+		MATCH("depth.p", depth, &sample->depth) ||
+		MATCH("temp.p", fahrenheit, &sample->temperature) ||
+		MATCH("press1.p", psi_or_bar, &sample->cylinderpressure) ||
 		0;
 }
 
@@ -761,13 +765,13 @@ static void uddf_gasswitch(char *buffer, void *_sample)
 	add_gas_switch_event(dive, dc, seconds, idx);
 }
 
-static int uddf_fill_sample(struct sample *sample, const char *name, int len, char *buf)
+static int uddf_fill_sample(struct sample *sample, const char *name, char *buf)
 {
-	return	MATCH(".divetime", sampletime, &sample->time) ||
-		MATCH(".depth", depth, &sample->depth) ||
-		MATCH(".temperature", temperature, &sample->temperature) ||
-		MATCH(".tankpressure", pressure, &sample->cylinderpressure) ||
-		MATCH(".switchmix.ref", uddf_gasswitch, sample) ||
+	return	MATCH("divetime", sampletime, &sample->time) ||
+		MATCH("depth", depth, &sample->depth) ||
+		MATCH("temperature", temperature, &sample->temperature) ||
+		MATCH("tankpressure", pressure, &sample->cylinderpressure) ||
+		MATCH("ref.switchmix", uddf_gasswitch, sample) ||
 		0;
 }
 
@@ -781,11 +785,10 @@ static void eventtime(char *buffer, void *_duration)
 
 static void try_to_match_autogroup(const char *name, char *buf)
 {
-	int len = strlen(name);
 	int autogroupvalue;
 
 	start_match("autogroup", name, buf);
-	if (MATCH(".autogroup.state", get_index, &autogroupvalue)) {
+	if (MATCH("state.autogroup", get_index, &autogroupvalue)) {
 		set_autogroup(autogroupvalue);
 		return;
 	}
@@ -794,18 +797,16 @@ static void try_to_match_autogroup(const char *name, char *buf)
 
 static void try_to_fill_dc_settings(const char *name, char *buf)
 {
-	int len = strlen(name);
-
 	start_match("divecomputerid", name, buf);
-	if (MATCH("divecomputerid.model", utf8_string, &cur_settings.dc.model))
+	if (MATCH("model.divecomputerid", utf8_string, &cur_settings.dc.model))
 		return;
-	if (MATCH("divecomputerid.deviceid", hex_value, &cur_settings.dc.deviceid))
+	if (MATCH("deviceid.divecomputerid", hex_value, &cur_settings.dc.deviceid))
 		return;
-	if (MATCH("divecomputerid.nickname", utf8_string, &cur_settings.dc.nickname))
+	if (MATCH("nickname.divecomputerid", utf8_string, &cur_settings.dc.nickname))
 		return;
-	if (MATCH("divecomputerid.serial", utf8_string, &cur_settings.dc.serial_nr))
+	if (MATCH("serial.divecomputerid", utf8_string, &cur_settings.dc.serial_nr))
 		return;
-	if (MATCH("divecomputerid.firmware", utf8_string, &cur_settings.dc.firmware))
+	if (MATCH("firmware.divecomputerid", utf8_string, &cur_settings.dc.firmware))
 		return;
 
 	nonmatch("divecomputerid", name, buf);
@@ -813,53 +814,51 @@ static void try_to_fill_dc_settings(const char *name, char *buf)
 
 static void try_to_fill_event(const char *name, char *buf)
 {
-	int len = strlen(name);
-
 	start_match("event", name, buf);
-	if (MATCH(".event", utf8_string, &cur_event.name))
+	if (MATCH("event", utf8_string, &cur_event.name))
 		return;
-	if (MATCH(".name", utf8_string, &cur_event.name))
+	if (MATCH("name", utf8_string, &cur_event.name))
 		return;
-	if (MATCH(".time", eventtime, &cur_event.time))
+	if (MATCH("time", eventtime, &cur_event.time))
 		return;
-	if (MATCH(".type", get_index, &cur_event.type))
+	if (MATCH("type", get_index, &cur_event.type))
 		return;
-	if (MATCH(".flags", get_index, &cur_event.flags))
+	if (MATCH("flags", get_index, &cur_event.flags))
 		return;
-	if (MATCH(".value", get_index, &cur_event.value))
+	if (MATCH("value", get_index, &cur_event.value))
 		return;
 	nonmatch("event", name, buf);
 }
 
-static int match_dc_data_fields(struct divecomputer *dc, const char *name, int len, char *buf)
+static int match_dc_data_fields(struct divecomputer *dc, const char *name, char *buf)
 {
-	if (MATCH(".maxdepth", depth, &dc->maxdepth))
+	if (MATCH("maxdepth", depth, &dc->maxdepth))
 		return 1;
-	if (MATCH(".meandepth", depth, &dc->meandepth))
+	if (MATCH("meandepth", depth, &dc->meandepth))
 		return 1;
-	if (MATCH(".depth.max", depth, &dc->maxdepth))
+	if (MATCH("max.depth", depth, &dc->maxdepth))
 		return 1;
-	if (MATCH(".depth.mean", depth, &dc->meandepth))
+	if (MATCH("mean.depth", depth, &dc->meandepth))
 		return 1;
-	if (MATCH(".duration", duration, &dc->duration))
+	if (MATCH("duration", duration, &dc->duration))
 		return 1;
-	if (MATCH(".divetime", duration, &dc->duration))
+	if (MATCH("divetime", duration, &dc->duration))
 		return 1;
-	if (MATCH(".divetimesec", duration, &dc->duration))
+	if (MATCH("divetimesec", duration, &dc->duration))
 		return 1;
-	if (MATCH(".surfacetime", duration, &dc->surfacetime))
+	if (MATCH("surfacetime", duration, &dc->surfacetime))
 		return 1;
-	if (MATCH(".airtemp", temperature, &dc->airtemp))
+	if (MATCH("airtemp", temperature, &dc->airtemp))
 		return 1;
-	if (MATCH(".watertemp", temperature, &dc->watertemp))
+	if (MATCH("watertemp", temperature, &dc->watertemp))
 		return 1;
-	if (MATCH(".temperature.air", temperature, &dc->airtemp))
+	if (MATCH("air.temperature", temperature, &dc->airtemp))
 		return 1;
-	if (MATCH(".temperature.water", temperature, &dc->watertemp))
+	if (MATCH("water.temperature", temperature, &dc->watertemp))
 		return 1;
-	if (MATCH(".surface.pressure", pressure, &dc->surface_pressure))
+	if (MATCH("pressure.surface", pressure, &dc->surface_pressure))
 		return 1;
-	if (MATCH(".water.salinity", salinity, &dc->salinity))
+	if (MATCH("salinity.water", salinity, &dc->salinity))
 		return 1;
 
 	return 0;
@@ -868,22 +867,20 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, int l
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 {
-	int len = strlen(name);
-
 	start_match("divecomputer", name, buf);
 
-	if (MATCH(".date", divedate, &dc->when))
+	if (MATCH("date", divedate, &dc->when))
 		return;
-	if (MATCH(".time", divetime, &dc->when))
+	if (MATCH("time", divetime, &dc->when))
 		return;
-	if (MATCH(".model", utf8_string, &dc->model))
+	if (MATCH("model", utf8_string, &dc->model))
 		return;
-	if (MATCH(".deviceid", hex_value, &dc->deviceid))
+	if (MATCH("deviceid", hex_value, &dc->deviceid))
 		return;
-	if (MATCH(".diveid", hex_value, &dc->diveid))
+	if (MATCH("diveid", hex_value, &dc->diveid))
 		return;
 
-	if (match_dc_data_fields(dc, name, len, buf))
+	if (match_dc_data_fields(dc, name, buf))
 		return;
 
 	nonmatch("divecomputer", name, buf);
@@ -925,51 +922,50 @@ static void get_sensor(char *buffer, void *_i)
 /* We're in samples - try to convert the random xml value to something useful */
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
-	int len = strlen(name);
 	int in_deco;
 
 	start_match("sample", name, buf);
-	if (MATCH(".sample.pressure", pressure, &sample->cylinderpressure))
+	if (MATCH("pressure.sample", pressure, &sample->cylinderpressure))
 		return;
-	if (MATCH(".sample.cylpress", pressure, &sample->cylinderpressure))
+	if (MATCH("cylpress.sample", pressure, &sample->cylinderpressure))
 		return;
-	if (MATCH(".sample.cylinderindex", get_cylinderindex, &sample->sensor))
+	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor))
 		return;
-	if (MATCH(".sample.sensor", get_sensor, &sample->sensor))
+	if (MATCH("sensor.sample", get_sensor, &sample->sensor))
 		return;
-	if (MATCH(".sample.depth", depth, &sample->depth))
+	if (MATCH("depth.sample", depth, &sample->depth))
 		return;
-	if (MATCH(".sample.temp", temperature, &sample->temperature))
+	if (MATCH("temp.sample", temperature, &sample->temperature))
 		return;
-	if (MATCH(".sample.temperature", temperature, &sample->temperature))
+	if (MATCH("temperature.sample", temperature, &sample->temperature))
 		return;
-	if (MATCH(".sample.sampletime", sampletime, &sample->time))
+	if (MATCH("sampletime.sample", sampletime, &sample->time))
 		return;
-	if (MATCH(".sample.time", sampletime, &sample->time))
+	if (MATCH("time.sample", sampletime, &sample->time))
 		return;
-	if (MATCH(".sample.ndl", sampletime, &sample->ndl))
+	if (MATCH("ndl.sample", sampletime, &sample->ndl))
 		return;
-	if (MATCH(".sample.in_deco", get_index, &in_deco)) {
+	if (MATCH("in_deco.sample", get_index, &in_deco)) {
 		sample->in_deco = (in_deco == 1);
 		return;
 	}
-	if (MATCH(".sample.stoptime", sampletime, &sample->stoptime))
+	if (MATCH("stoptime.sample", sampletime, &sample->stoptime))
 		return;
-	if (MATCH(".sample.stopdepth", depth, &sample->stopdepth))
+	if (MATCH("stopdepth.sample", depth, &sample->stopdepth))
 		return;
-	if (MATCH(".sample.cns", get_index, &sample->cns))
+	if (MATCH("cns.sample", get_index, &sample->cns))
 		return;
-	if (MATCH(".sample.po2", double_to_permil, &sample->po2))
+	if (MATCH("po2.sample", double_to_permil, &sample->po2))
 		return;
 
 	switch (import_source) {
 	case DIVINGLOG:
-		if (divinglog_fill_sample(sample, name, len, buf))
+		if (divinglog_fill_sample(sample, name, buf))
 			return;
 		break;
 
 	case UDDF:
-		if (uddf_fill_sample(sample, name, len, buf))
+		if (uddf_fill_sample(sample, name, buf))
 			return;
 		break;
 
@@ -1004,23 +1000,23 @@ static void divinglog_place(char *place, void *_location)
 	country = NULL;
 }
 
-static int divinglog_dive_match(struct dive *dive, const char *name, int len, char *buf)
+static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
 {
-	return	MATCH(".divedate", divedate, &dive->when) ||
-		MATCH(".entrytime", divetime, &dive->when) ||
-		MATCH(".divetime", duration, &dive->dc.duration) ||
-		MATCH(".depth", depth, &dive->dc.maxdepth) ||
-		MATCH(".depthavg", depth, &dive->dc.meandepth) ||
-		MATCH(".tanktype", utf8_string, &dive->cylinder[0].type.description) ||
-		MATCH(".tanksize", cylindersize, &dive->cylinder[0].type.size) ||
-		MATCH(".presw", pressure, &dive->cylinder[0].type.workingpressure) ||
-		MATCH(".press", pressure, &dive->cylinder[0].start) ||
-		MATCH(".prese", pressure, &dive->cylinder[0].end) ||
-		MATCH(".comments", utf8_string, &dive->notes) ||
-		MATCH(".buddy.names", utf8_string, &dive->buddy) ||
-		MATCH(".country.name", utf8_string, &country) ||
-		MATCH(".city.name", utf8_string, &city) ||
-		MATCH(".place.name", divinglog_place, &dive->location) ||
+	return	MATCH("divedate", divedate, &dive->when) ||
+		MATCH("entrytime", divetime, &dive->when) ||
+		MATCH("divetime", duration, &dive->dc.duration) ||
+		MATCH("depth", depth, &dive->dc.maxdepth) ||
+		MATCH("depthavg", depth, &dive->dc.meandepth) ||
+		MATCH("tanktype", utf8_string, &dive->cylinder[0].type.description) ||
+		MATCH("tanksize", cylindersize, &dive->cylinder[0].type.size) ||
+		MATCH("presw", pressure, &dive->cylinder[0].type.workingpressure) ||
+		MATCH("press", pressure, &dive->cylinder[0].start) ||
+		MATCH("prese", pressure, &dive->cylinder[0].end) ||
+		MATCH("comments", utf8_string, &dive->notes) ||
+		MATCH("names.buddy", utf8_string, &dive->buddy) ||
+		MATCH("name.country", utf8_string, &country) ||
+		MATCH("name.city", utf8_string, &city) ||
+		MATCH("name.place", divinglog_place, &dive->location) ||
 		0;
 }
 
@@ -1078,16 +1074,16 @@ uddf_datedata(mday, 0)
 uddf_datedata(hour, 0)
 uddf_datedata(min, 0)
 
-static int uddf_dive_match(struct dive *dive, const char *name, int len, char *buf)
+static int uddf_dive_match(struct dive *dive, const char *name, char *buf)
 {
-	return	MATCH(".datetime", uddf_datetime, &dive->when) ||
-		MATCH(".diveduration", duration, &dive->dc.duration) ||
-		MATCH(".greatestdepth", depth, &dive->dc.maxdepth) ||
-		MATCH(".date.year", uddf_year, &dive->when) ||
-		MATCH(".date.month", uddf_mon, &dive->when) ||
-		MATCH(".date.day", uddf_mday, &dive->when) ||
-		MATCH(".time.hour", uddf_hour, &dive->when) ||
-		MATCH(".time.minute", uddf_min, &dive->when) ||
+	return	MATCH("datetime", uddf_datetime, &dive->when) ||
+		MATCH("diveduration", duration, &dive->dc.duration) ||
+		MATCH("greatestdepth", depth, &dive->dc.maxdepth) ||
+		MATCH("year.date", uddf_year, &dive->when) ||
+		MATCH("month.date", uddf_mon, &dive->when) ||
+		MATCH("day.date", uddf_mday, &dive->when) ||
+		MATCH("hour.time", uddf_hour, &dive->when) ||
+		MATCH("minute.time", uddf_min, &dive->when) ||
 		0;
 }
 
@@ -1167,18 +1163,16 @@ static void gps_location(char *buffer, void *_dive)
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
-	int len = strlen(name);
-
 	start_match("dive", name, buf);
 
 	switch (import_source) {
 	case DIVINGLOG:
-		if (divinglog_dive_match(dive, name, len, buf))
+		if (divinglog_dive_match(dive, name, buf))
 			return;
 		break;
 
 	case UDDF:
-		if (uddf_dive_match(dive, name, len, buf))
+		if (uddf_dive_match(dive, name, buf))
 			return;
 		break;
 
@@ -1186,88 +1180,88 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		break;
 	}
 
-	if (MATCH(".number", get_index, &dive->number))
+	if (MATCH("number", get_index, &dive->number))
 		return;
-	if (MATCH(".tags", divetags, dive->tag_list))
+	if (MATCH("tags", divetags, dive->tag_list))
 		return;
-	if (MATCH(".tripflag", get_tripflag, &dive->tripflag))
+	if (MATCH("tripflag", get_tripflag, &dive->tripflag))
 		return;
-	if (MATCH(".date", divedate, &dive->when))
+	if (MATCH("date", divedate, &dive->when))
 		return;
-	if (MATCH(".time", divetime, &dive->when))
+	if (MATCH("time", divetime, &dive->when))
 		return;
-	if (MATCH(".datetime", divedatetime, &dive->when))
+	if (MATCH("datetime", divedatetime, &dive->when))
 		return;
 	/*
 	 * Legacy format note: per-dive depths and duration get saved
 	 * in the first dive computer entry
 	 */
-	if (match_dc_data_fields(&dive->dc, name, len, buf))
+	if (match_dc_data_fields(&dive->dc, name, buf))
 		return;
 
-	if (MATCH(".cylinderstartpressure", pressure, &dive->cylinder[0].start))
+	if (MATCH("cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
-	if (MATCH(".cylinderendpressure", pressure, &dive->cylinder[0].end))
+	if (MATCH("cylinderendpressure", pressure, &dive->cylinder[0].end))
 		return;
-	if (MATCH(".gps", gps_location, dive))
+	if (MATCH("gps", gps_location, dive))
 		return;
-	if (MATCH(".Place", gps_location, dive))
+	if (MATCH("Place", gps_location, dive))
 		return;
-	if (MATCH(".latitude", gps_lat, dive))
+	if (MATCH("latitude", gps_lat, dive))
 		return;
-	if (MATCH(".sitelat", gps_lat, dive))
+	if (MATCH("sitelat", gps_lat, dive))
 		return;
-	if (MATCH(".lat", gps_lat, dive))
+	if (MATCH("lat", gps_lat, dive))
 		return;
-	if (MATCH(".longitude", gps_long, dive))
+	if (MATCH("longitude", gps_long, dive))
 		return;
-	if (MATCH(".sitelon", gps_long, dive))
+	if (MATCH("sitelon", gps_long, dive))
 		return;
-	if (MATCH(".lon", gps_long, dive))
+	if (MATCH("lon", gps_long, dive))
 		return;
-	if (MATCH(".location", utf8_string, &dive->location))
+	if (MATCH("location", utf8_string, &dive->location))
 		return;
-	if (MATCH("dive.name", utf8_string, &dive->location))
+	if (MATCH("name.dive", utf8_string, &dive->location))
 		return;
-	if (MATCH(".suit", utf8_string, &dive->suit))
+	if (MATCH("suit", utf8_string, &dive->suit))
 		return;
-	if (MATCH(".divesuit", utf8_string, &dive->suit))
+	if (MATCH("divesuit", utf8_string, &dive->suit))
 		return;
-	if (MATCH(".notes", utf8_string, &dive->notes))
+	if (MATCH("notes", utf8_string, &dive->notes))
 		return;
-	if (MATCH(".divemaster", utf8_string, &dive->divemaster))
+	if (MATCH("divemaster", utf8_string, &dive->divemaster))
 		return;
-	if (MATCH(".buddy", utf8_string, &dive->buddy))
+	if (MATCH("buddy", utf8_string, &dive->buddy))
 		return;
-	if (MATCH("dive.rating", get_rating, &dive->rating))
+	if (MATCH("rating.dive", get_rating, &dive->rating))
 		return;
-	if (MATCH("dive.visibility", get_rating, &dive->visibility))
+	if (MATCH("visibility.dive", get_rating, &dive->visibility))
 		return;
-	if (MATCH(".cylinder.size", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
+	if (MATCH("size.cylinder", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
 		return;
-	if (MATCH(".cylinder.workpressure", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))
+	if (MATCH("workpressure.cylinder", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))
 		return;
-	if (MATCH(".cylinder.description", utf8_string, &dive->cylinder[cur_cylinder_index].type.description))
+	if (MATCH("description.cylinder", utf8_string, &dive->cylinder[cur_cylinder_index].type.description))
 		return;
-	if (MATCH(".cylinder.start", pressure, &dive->cylinder[cur_cylinder_index].start))
+	if (MATCH("start.cylinder", pressure, &dive->cylinder[cur_cylinder_index].start))
 		return;
-	if (MATCH(".cylinder.end", pressure, &dive->cylinder[cur_cylinder_index].end))
+	if (MATCH("end.cylinder", pressure, &dive->cylinder[cur_cylinder_index].end))
 		return;
-	if (MATCH(".weightsystem.description", utf8_string, &dive->weightsystem[cur_ws_index].description))
+	if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[cur_ws_index].description))
 		return;
-	if (MATCH(".weightsystem.weight", weight, &dive->weightsystem[cur_ws_index].weight))
+	if (MATCH("weight.weightsystem", weight, &dive->weightsystem[cur_ws_index].weight))
 		return;
 	if (MATCH("weight", weight, &dive->weightsystem[cur_ws_index].weight))
 		return;
-	if (MATCH(".o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
+	if (MATCH("o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
 		return;
-	if (MATCH(".o2percent", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
+	if (MATCH("o2percent", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
 		return;
-	if (MATCH(".n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
+	if (MATCH("n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
 		return;
-	if (MATCH(".he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
+	if (MATCH("he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
 		return;
-	if (MATCH(".divetemperature.air", temperature, &dive->airtemp))
+	if (MATCH("air.divetemperature", temperature, &dive->airtemp))
 		return;
 
 	nonmatch("dive", name, buf);
@@ -1276,19 +1270,17 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 /* We're in the top-level trip xml. Try to convert whatever value to a trip value */
 static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *buf)
 {
-	int len = strlen(name);
-
 	start_match("trip", name, buf);
 
 	dive_trip_t *dive_trip = *dive_trip_p;
 
-	if (MATCH(".date", divedate, &dive_trip->when))
+	if (MATCH("date", divedate, &dive_trip->when))
 		return;
-	if (MATCH(".time", divetime, &dive_trip->when))
+	if (MATCH("time", divetime, &dive_trip->when))
 		return;
-	if (MATCH(".location", utf8_string, &dive_trip->location))
+	if (MATCH("location", utf8_string, &dive_trip->location))
 		return;
-	if (MATCH(".notes", utf8_string, &dive_trip->notes))
+	if (MATCH("notes", utf8_string, &dive_trip->notes))
 		return;
 
 	nonmatch("trip", name, buf);
@@ -1522,32 +1514,41 @@ static void entry(const char *name, char *buf)
 
 static const char *nodename(xmlNode *node, char *buf, int len)
 {
+	int levels = 2;
+	char *p = buf;
+
 	if (!node || !node->name)
 		return "root";
 
-	buf += len;
-	*--buf = 0;
-	len--;
+	if (node->parent && !strcmp(node->name, "text"))
+		node = node->parent;
+
+	/* Make sure it's always NUL-terminated */
+	p[--len] = 0;
 
 	for(;;) {
 		const char *name = node->name;
-		int i = strlen(name);
-		while (--i >= 0) {
-			unsigned char c = name[i];
-			*--buf = tolower(c);
+		char c;
+		while ((c = *name++) != 0) {
+			/* Cheaper 'tolower()' for ASCII */
+			c = (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c;
+			*p++ = c;
 			if (!--len)
 				return buf;
 		}
+		*p = 0;
 		node = node->parent;
 		if (!node || !node->name)
 			return buf;
-		*--buf = '.';
+		*p++ = '.';
 		if (!--len)
+			return buf;
+		if (!--levels)
 			return buf;
 	}
 }
 
-#define MAXNAME 64
+#define MAXNAME 32
 
 static void visit_one_node(xmlNode *node)
 {
@@ -1558,10 +1559,6 @@ static void visit_one_node(xmlNode *node)
 	content = node->content;
 	if (!content || xmlIsBlankNode(node))
 		return;
-
-	/* Don't print out the node name if it is "text" */
-	while (!node->name || !strcmp(node->name, "text"))
-		node = node->parent;
 
 	name = nodename(node, buffer, sizeof(buffer));
 
