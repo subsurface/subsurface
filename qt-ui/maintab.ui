@@ -37,8 +37,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>513</width>
-         <height>468</height>
+         <width>501</width>
+         <height>535</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -102,6 +102,13 @@
           </item>
          </layout>
         </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QLineEdit" name="location">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="0">
          <widget class="QLabel" name="LocationLabel">
           <property name="text">
@@ -109,8 +116,22 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QLineEdit" name="location">
+        <item row="11" column="0">
+         <widget class="QLabel" name="TagLabel">
+          <property name="text">
+           <string>Tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLineEdit" name="coordinates">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLineEdit" name="divemaster">
           <property name="readOnly">
            <bool>false</bool>
           </property>
@@ -123,8 +144,15 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="QLineEdit" name="coordinates">
+        <item row="7" column="1">
+         <widget class="QLabel" name="BuddyLabel">
+          <property name="text">
+           <string>Buddy</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QLineEdit" name="buddy">
           <property name="readOnly">
            <bool>false</bool>
           </property>
@@ -137,22 +165,8 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
-         <widget class="QLabel" name="BuddyLabel">
-          <property name="text">
-           <string>Buddy</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLineEdit" name="divemaster">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QLineEdit" name="buddy">
+        <item row="10" column="1">
+         <widget class="QLineEdit" name="suit">
           <property name="readOnly">
            <bool>false</bool>
           </property>
@@ -176,6 +190,13 @@
           </item>
          </layout>
         </item>
+        <item row="14" column="0" colspan="2">
+         <widget class="QTextEdit" name="notes">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="9" column="1">
          <widget class="QLabel" name="SuitLabel">
           <property name="text">
@@ -193,31 +214,42 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="1">
-         <widget class="QLineEdit" name="suit">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
+        <item row="13" column="0">
          <widget class="QLabel" name="NotesLabel">
           <property name="text">
            <string>Notes</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
-         <widget class="QTextEdit" name="notes">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0" colspan="2">
+        <item row="15" column="0" colspan="2">
          <widget class="QDialogButtonBox" name="notesButtonBox">
           <property name="standardButtons">
            <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0" colspan="2">
+         <widget class="TagWidget" name="tagWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
           </property>
          </widget>
         </item>
@@ -248,8 +280,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>513</width>
-         <height>468</height>
+         <width>515</width>
+         <height>473</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -335,8 +367,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>513</width>
-         <height>468</height>
+         <width>515</width>
+         <height>473</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -584,7 +616,7 @@
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QGroupBox">
+         <widget class="QGroupBox" name="groupBox">
           <property name="title">
            <string>Salinity</string>
           </property>
@@ -642,8 +674,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>513</width>
-         <height>468</height>
+         <width>515</width>
+         <height>473</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -801,6 +833,11 @@
    <extends>QWidget</extends>
    <header>tableview.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TagWidget</class>
+   <extends>QPlainTextEdit</extends>
+   <header>qt-ui/tagwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

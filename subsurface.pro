@@ -56,7 +56,9 @@ HEADERS = \
 	subsurfacestartup.h \
 	uemis.h \
 	webservice.h \
-	qt-ui/csvimportdialog.h
+	qt-ui/csvimportdialog.h \
+	qt-ui/tagwidget.h \
+	qt-ui/groupedlineedit.h
 
 SOURCES =  \
 	deco.c \
@@ -103,7 +105,9 @@ SOURCES =  \
 	time.c \
 	uemis.c \
 	uemis-downloader.c \
-	qt-ui/csvimportdialog.cpp
+	qt-ui/csvimportdialog.cpp \
+	qt-ui/tagwidget.cpp \
+	qt-ui/groupedlineedit.cpp
 
 linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
@@ -121,7 +125,7 @@ FORMS = \
 	qt-ui/renumber.ui \
 	qt-ui/webservices.ui \
 	qt-ui/tableview.ui \
-    qt-ui/csvimportdialog.ui
+	qt-ui/csvimportdialog.ui
 
 RESOURCES = subsurface.qrc
 

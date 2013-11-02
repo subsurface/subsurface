@@ -31,4 +31,11 @@ public:
 	void updateModel();
 };
 
+class TagCompletionModel : public QStringListModel {
+	Q_OBJECT
+public:
+	static TagCompletionModel* instance();
+	void updateModel();
+};
+
 #endif
