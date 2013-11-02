@@ -1,10 +1,12 @@
 #include "tagwidget.h"
 #include <QPair>
 #include <QDebug>
+#include <QAbstractItemView>
 
 TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL)
 {
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(reparse()));
+	connect(this, SIGNAL(textChanged()), this, SLOT(reparse()));
 
 	addColor(QColor(0x00, 0xAE, 0xFF));
 	addColor(QColor(0x00, 0x78, 0xB0));
@@ -15,6 +17,7 @@ void TagWidget::setCompleter(QCompleter *completer)
 	m_completer = completer;
 	m_completer->setWidget(this);
 	connect(m_completer, SIGNAL(activated(QString)), this, SLOT(completionSelected(QString)));
+	connect(m_completer, SIGNAL(highlighted(QString)), this, SLOT(completionSelected(QString)));
 }
 
 QPair<int,int> TagWidget::getCursorTagPosition() {
@@ -98,7 +101,18 @@ void TagWidget::reparse()
 		currentText = "";
 	if (m_completer) {
 		m_completer->setCompletionPrefix(currentText);
-		m_completer->complete();
+		if (m_completer->completionCount() == 1) {
+			if (m_completer->currentCompletion() == currentText) {
+				QAbstractItemView *popup = m_completer->popup();
+				if (popup)
+					popup->hide();
+				}
+			else
+				m_completer->complete();
+
+		} else {
+			m_completer->complete();
+		}
 	}
 }
 
@@ -133,3 +147,21 @@ void TagWidget::clear() {
 	GroupedLineEdit::clear();
 	blockSignals(false);
 }
+
+void TagWidget::keyPressEvent(QKeyEvent *e) {
+	switch (e->key()) {
+	case Qt::Key_Return:
+	case Qt::Key_Enter:
+		/*
+		 * Fake the QLineEdit behaviour by simply
+		 * closing the QAbstractViewitem
+		 */
+		if (m_completer) {
+			QAbstractItemView *popup = m_completer->popup();
+			if (popup)
+				popup->hide();
+		}
+	}
+	GroupedLineEdit::keyPressEvent(e);
+}
+

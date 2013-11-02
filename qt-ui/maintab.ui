@@ -840,6 +840,24 @@
    <header>qt-ui/tagwidget.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>dateTimeEdit</tabstop>
+  <tabstop>airtemp</tabstop>
+  <tabstop>watertemp</tabstop>
+  <tabstop>location</tabstop>
+  <tabstop>coordinates</tabstop>
+  <tabstop>divemaster</tabstop>
+  <tabstop>buddy</tabstop>
+  <tabstop>suit</tabstop>
+  <tabstop>tagWidget</tabstop>
+  <tabstop>notes</tabstop>
+  <tabstop>notesButtonBox</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>equipmentButtonBox</tabstop>
+  <tabstop>scrollArea_3</tabstop>
+  <tabstop>scrollArea_4</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
