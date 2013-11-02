@@ -1,4 +1,11 @@
-/* Original License:
+/*
+ * Copyright (c) 2013 Maximilian Güntner <maximilian.guentner@gmail.com>
+ *
+ * This file is subject to the terms and conditions of version 2 of
+ * the GNU General Public License.  See the file gpl-2.0.txt in the main
+ * directory of this archive for more details.
+ *
+ * Original License:
  *
  * This file is part of the Nepomuk widgets collection
  *  Copyright (c) 2013 Denis Steckelmacher <steckdenis@yahoo.fr>
