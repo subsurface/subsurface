@@ -19,6 +19,8 @@ public:
 public slots:
         void reparse();
 	void completionSelected(QString);
+protected:
+	void keyPressEvent(QKeyEvent *e);
 private:
         QCompleter *m_completer;
 };
