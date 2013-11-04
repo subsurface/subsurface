@@ -286,6 +286,7 @@ void MainTab::updateDiveInfo(int dive)
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 			// only use trip relevant fields
 			ui.coordinates->setVisible(false);
+			ui.CoordinatedLabel->setVisible(false);
 			ui.divemaster->setVisible(false);
 			ui.DivemasterLabel->setVisible(false);
 			ui.buddy->setVisible(false);
@@ -296,6 +297,8 @@ void MainTab::updateDiveInfo(int dive)
 			ui.RatingLabel->setVisible(false);
 			ui.visibility->setVisible(false);
 			ui.visibilityLabel->setVisible(false);
+			ui.tagWidget->setVisible(false);
+			ui.TagLabel->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
 			ui.LocationLabel->setText(tr("Trip Location"));
@@ -305,6 +308,7 @@ void MainTab::updateDiveInfo(int dive)
 		} else {
 			// make all the fields visible writeable
 			ui.coordinates->setVisible(true);
+			ui.CoordinatedLabel->setVisible(true);
 			ui.divemaster->setVisible(true);
 			ui.buddy->setVisible(true);
 			ui.suit->setVisible(true);
@@ -315,6 +319,8 @@ void MainTab::updateDiveInfo(int dive)
 			ui.visibilityLabel->setVisible(true);
 			ui.BuddyLabel->setVisible(true);
 			ui.DivemasterLabel->setVisible(true);
+			ui.TagLabel->setVisible(true);
+			ui.tagWidget->setVisible(true);
 			/* and fill them from the dive */
 			ui.rating->setCurrentStars(d->rating);
 			ui.visibility->setCurrentStars(d->visibility);
