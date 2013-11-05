@@ -67,7 +67,7 @@ void MainWindow::refreshDisplay()
 {
 	ui.InfoWidget->reload();
 	ui.globe->reload();
-	ui.ListWidget->reload(DiveTripModel::TREE);
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->setFocus();
 	WSInfoModel *wsim = WSInfoModel::instance();
 	wsim->updateInfo();
@@ -825,7 +825,7 @@ void MainWindow::editCurrentDive()
 {
 	struct dive *d = current_dive;
 	QString defaultDC(d->dc.model);
-	
+
 	if (defaultDC == tr("manually added dive")){
 		disableDcShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(false);
@@ -835,7 +835,6 @@ void MainWindow::editCurrentDive()
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
 	else if (defaultDC == tr("Simulated Dive")){
-		
+		// this looks like something is missing here
 	}
-	
 }
