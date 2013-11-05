@@ -41,6 +41,9 @@ mac {
     # which libs we need.
     # The only target is "make install", which copies everything into packaging/windows
     WINDOWSSTAGING = packaging/windows
+    NSIFILE = $$WINDOWSSTAGING/subsurface.nsi
+    NSIINPUTFILE = $$WINDOWSSTAGING/subsurface.nsi.in
+    MAKENSIS = /usr/bin/makensis
 
     deploy.path = $$WINDOWSSTAGING
     deploy.files += $$xslt.files $$doc.files
@@ -58,7 +61,8 @@ mac {
         #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$$QMAKE_CC -dumpmachine`-objdump
         dlls.commands += PATH=\$\$PATH:`$$QMAKE_CC -print-search-dirs | sed -nE \'/^libraries: =/{s///;s,/lib/?(:|\$\$),/bin\\1,g;p;q;}\'`
         dlls.commands += perl $$PWD/scripts/win-ldd.pl
-        equals(QMAKE_HOST.os, "Windows"): EXE_SUFFIX = .exe
+        # equals(QMAKE_HOST.os, "Windows"): EXE_SUFFIX = .exe
+        EXE_SUFFIX = .exe
         CONFIG(debug, debug|release): dlls.commands += $$PWD/debug/subsurface$$EXE_SUFFIX
         else: dlls.commands += $$PWD/release/$$TARGET$$EXE_SUFFIX
 
@@ -70,7 +74,14 @@ mac {
         dlls.commands += $$LIBS
         dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
         dlls.depends += $(DESTDIR_TARGET)
-        install.depends += dlls
+
+        nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/\' > $$NSIFILE
+        nsis.depends += $$NSIINPUTFILE
+        nsis.target = $$NSISFILE
+        installer.commands += $$MAKENSIS $$NSIFILE
+        installer.target = installer
+        installer.depends = nsis
+        install.depends += dlls nsis installer
     }
 } else {
     # Linux install rules

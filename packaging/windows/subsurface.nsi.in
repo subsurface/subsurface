@@ -98,8 +98,10 @@ Section
     Delete "$INSTDIR\*.dll"
 
     # Files to include in installer
-    File ..\..\subsurface.exe
-    File /r ..\..\xslt
+    File subsurface.exe
+    File /r xslt
+    File /r data
+    File /r images
     File dll\iconv.dll
     File dll\libdivecomputer-0.dll
     File dll\libintl-8.dll
@@ -124,7 +126,6 @@ Section
     File dll\QtXml4.dll
     File dll\libmarblewidget.dll
     File subsurface.ico
-    File /r share
 
     # Store installation folder in registry
     WriteRegStr HKCU "Software\Subsurface" "" $INSTDIR

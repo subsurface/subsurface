@@ -8,6 +8,8 @@ exists(.git/HEAD): {
     VERSION_SCRIPT = $$PWD/scripts/get-version
     # always use linux here -------------------vvv    so we get the true full version
     FULL_VERSION = "`$$VERSION_SCRIPT linux`"
+    PRODVERSION_STRING = $$system("sh scripts/get-version win $$FULL_VERSION || $${VERSION}.0.0")
+    VERSION_STRING = $$system("sh scripts/get-version linux $$FULL_VERSION || $${VERSION}")
     version_h.depends = $$VERSION_SCRIPT $$PWD/.git/$$system("GIT_DIR=$$PWD/.git git rev-parse --symbolic-full-name HEAD")
     version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT $$VER_OS`\\\" > ${QMAKE_FILE_OUT}
     version_h.input = GIT_HEAD
