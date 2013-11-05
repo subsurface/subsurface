@@ -309,10 +309,12 @@ void DiveListView::mergeDives()
 
 	for_each_dive(i, dive) {
 		if (dive->selected) {
-			if (!maindive)
+			if (!maindive) {
 				maindive = dive;
-			else
+			} else {
 				maindive = merge_two_dives(maindive, dive);
+				i--; // otherwise we skip a dive in the freshly changed list
+			}
 		}
 	}
 	mainWindow()->refreshDisplay();
