@@ -48,7 +48,8 @@ signals:
 
 private:
 	bool mouseClickSelection;
-	int currentHeaderClicked;
+	int sortColumn;
+	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;
 	QLineEdit *searchBox;
 	QModelIndex contextMenuIndex;
