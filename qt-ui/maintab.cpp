@@ -137,9 +137,14 @@ void MainTab::enableEdition(EditMode newEditMode)
 		notesBackup[NULL].location = ui.location->text();
 		editMode = TRIP;
 	} else {
-		ui.diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
+		if (amount_selected > 1) {
+			ui.diveNotesMessage->setText(tr("Multiple dives are being edited. Select Save or Undo when ready."));
+			ui.diveEquipmentMessage->setText(tr("Multiple dives are being edited. Select Save or Undo when ready."));
+		} else {
+			ui.diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
+			ui.diveEquipmentMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
+		}
 		ui.diveNotesMessage->animatedShow();
-		ui.diveEquipmentMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
 		ui.diveEquipmentMessage->animatedShow();
 
 		// We may be editing one or more dives here. backup everything.
