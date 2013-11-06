@@ -588,7 +588,7 @@ void MainTab::rejectChanges()
 				mydive->weightsystem[i] = notesBackup[mydive].weightsystem[i];
 			}
 		}
-		if (selected_dive > 0) {
+		if (selected_dive >= 0) {
 			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
 			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
 			weightModel->setDive(&multiEditEquipmentPlaceholder);
