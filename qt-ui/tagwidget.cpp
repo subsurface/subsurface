@@ -152,6 +152,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e) {
 	switch (e->key()) {
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
+	case Qt::Key_Tab:
 		/*
 		 * Fake the QLineEdit behaviour by simply
 		 * closing the QAbstractViewitem
@@ -162,6 +163,13 @@ void TagWidget::keyPressEvent(QKeyEvent *e) {
 				popup->hide();
 		}
 	}
-	GroupedLineEdit::keyPressEvent(e);
+	if (e->key() == Qt::Key_Tab) { // let's pretend this is a comma instead
+		QKeyEvent *fakeEvent = new QKeyEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
+		qDebug() << "sending comma instead";
+		GroupedLineEdit::keyPressEvent(fakeEvent);
+		free(fakeEvent);
+	} else {
+		GroupedLineEdit::keyPressEvent(e);
+	}
 }
 
