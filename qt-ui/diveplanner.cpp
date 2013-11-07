@@ -437,6 +437,7 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	}
 
 	Q_FOREACH(const sample &s, backupSamples){
+		// we need to use the correct gas
 		plannerModel->addStop(s.depth.mm, s.time.seconds, tr("Air"), 0);
 	}
 }
@@ -1190,8 +1191,10 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	tempDive = NULL;
 	const char *errorString = NULL;
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
-	if (mode == ADD)
+	if (mode == ADD) {
 		copy_samples(tempDive, current_dive);
+		copy_cylinders(tempDive, current_dive);
+	}
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif

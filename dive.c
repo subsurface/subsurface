@@ -195,7 +195,16 @@ struct dive *alloc_dive(void)
 	return dive;
 }
 
-void copy_samples(struct dive* s, struct dive* d)
+void copy_cylinders(struct dive *s, struct dive *d)
+{
+	int i;
+	if (!s || !d)
+		return;
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		d->cylinder[i] = s->cylinder[i];
+}
+
+void copy_samples(struct dive *s, struct dive *d)
 {
 	/* instead of carefully copying them one by one and calling add_sample
 	 * over and over again, let's just copy the whole blob */
