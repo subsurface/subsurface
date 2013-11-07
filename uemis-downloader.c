@@ -156,7 +156,7 @@ static int number_of_file(char *path)
 
 static char *build_filename(const char *path, const char *name)
 {
-	int len = strlen(path) + strlen(name) + 1;
+	int len = strlen(path) + strlen(name) + 2;
 	char *buf = malloc(len);
 #if WIN32
 	snprintf(buf, len, "%s\%s", path, name);
