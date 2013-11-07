@@ -279,7 +279,7 @@ void MainWindow::on_actionAddDive_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(false);
 	// now cheat - create one dive that we use to store the info tab data in
 	struct dive *dive = alloc_dive();
-	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L;
+	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
 	const char* model = strdup(tr("manually added dive").toLocal8Bit().constData());
 	dive->dc.model = model; // do not use tr here since it expects a char*.
 	record_dive(dive);
