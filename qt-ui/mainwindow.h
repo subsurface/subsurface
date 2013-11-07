@@ -36,6 +36,7 @@ public:
 	enum {COLLAPSED, EXPANDED};
 	enum StackWidgetIndexes{ PROFILE, PLANNERPROFILE};
 	enum InfoWidgetIndexes{ MAINTAB, PLANNERWIDGET};
+	enum CurrentState{ VIEWALL, GLOBE_MAXIMIZED, INFO_MAXIMIZED, PROFILE_MAXIMIZED, LIST_MAXIMIZED};
 
 	MainWindow();
 	ProfileGraphicsView *graphics();
@@ -116,12 +117,15 @@ private:
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QWebView *helpView;
+	CurrentState state;
 	QString filter();
 	bool askSaveChanges();
 	void writeSettings();
 	void redrawProfile();
 	void file_save();
 	void file_save_as();
+	void beginChangeState(CurrentState s);
+	void saveSplitterSizes();
 };
 
 MainWindow *mainWindow();

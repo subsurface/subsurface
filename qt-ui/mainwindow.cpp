@@ -349,12 +349,14 @@ void MainWindow::on_infoProfileSplitter_splitterMoved(int pos, int idx)
 #define BEHAVIOR QList<int>()
 void MainWindow::on_actionViewList_triggered()
 {
+	beginChangeState(LIST_MAXIMIZED);
 	ui.listGlobeSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 	ui.mainSplitter->setSizes( BEHAVIOR << COLLAPSED << EXPANDED);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
+	beginChangeState(PROFILE_MAXIMIZED);
 	ui.infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 	redrawProfile();
@@ -362,12 +364,14 @@ void MainWindow::on_actionViewProfile_triggered()
 
 void MainWindow::on_actionViewInfo_triggered()
 {
+	beginChangeState(INFO_MAXIMIZED);
 	ui.infoProfileSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 	ui.mainSplitter->setSizes( BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
 void MainWindow::on_actionViewGlobe_triggered()
 {
+	beginChangeState(GLOBE_MAXIMIZED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.listGlobeSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 }
@@ -375,15 +379,45 @@ void MainWindow::on_actionViewGlobe_triggered()
 
 void MainWindow::on_actionViewAll_triggered()
 {
-	// big number squash the info profile to it's minimum.
-	ui.infoProfileSplitter->setSizes(QList<int>() << 1 << 20000);
+	beginChangeState(VIEWALL);
+	QSettings settings;
+	settings.beginGroup("MainWindow");
+	if (settings.value("mainSplitter").isValid()){
+		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+		ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
+		ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+	} else {
+		QList<int> mainSizes;
+		mainSizes.append( qApp->desktop()->size().height() * 0.7 );
+		mainSizes.append( qApp->desktop()->size().height() * 0.3 );
+		ui.mainSplitter->setSizes( mainSizes );
 
-	// big number squash the globe view.
-	ui.listGlobeSplitter->setSizes(QList<int>() << 2000 << 1 );
+		QList<int> infoProfileSizes;
+		infoProfileSizes.append( qApp->desktop()->size().width() * 0.3 );
+		infoProfileSizes.append( qApp->desktop()->size().width() * 0.7 );
+		ui.infoProfileSplitter->setSizes(infoProfileSizes);
 
-	// half and half?
-	ui.mainSplitter->setSizes( QList<int>() << 1 << 1);
+		QList<int> listGlobeSizes;
+		listGlobeSizes.append( qApp->desktop()->size().width() * 0.7 );
+		listGlobeSizes.append( qApp->desktop()->size().width() * 0.3 );
+		ui.listGlobeSplitter->setSizes(listGlobeSizes);
+	}
 	redrawProfile();
+}
+
+void MainWindow::beginChangeState(CurrentState s){
+	if (state == VIEWALL){
+		saveSplitterSizes();
+	}
+	state = s;
+}
+
+void MainWindow::saveSplitterSizes(){
+	QSettings settings;
+	settings.beginGroup("MainWindow");
+	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
+	settings.setValue("infoProfileSplitter", ui.infoProfileSplitter->saveState());
+	settings.setValue("listGlobeSplitter", ui.listGlobeSplitter->saveState());
 }
 
 void MainWindow::on_actionPreviousDC_triggered()
@@ -523,28 +557,14 @@ void MainWindow::initialUiSetup()
 	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
 	resize(sz);
 
-	if (settings.value("mainSplitter").isValid()){
-		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-		ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
-		ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
-	} else {
-		QList<int> mainSizes;
-		mainSizes.append( qApp->desktop()->size().height() * 0.7 );
-		mainSizes.append( qApp->desktop()->size().height() * 0.3 );
-		ui.mainSplitter->setSizes( mainSizes );
-
-		QList<int> infoProfileSizes;
-		infoProfileSizes.append( qApp->desktop()->size().width() * 0.3 );
-		infoProfileSizes.append( qApp->desktop()->size().width() * 0.7 );
-		ui.infoProfileSplitter->setSizes(infoProfileSizes);
-
-		QList<int> listGlobeSizes;
-		listGlobeSizes.append( qApp->desktop()->size().width() * 0.7 );
-		listGlobeSizes.append( qApp->desktop()->size().width() * 0.3 );
-		ui.listGlobeSplitter->setSizes(listGlobeSizes);
+	CurrentState state = (CurrentState) settings.value("lastState", 0).toInt();
+	switch(state){
+		case VIEWALL: on_actionViewAll_triggered(); break;
+		case GLOBE_MAXIMIZED : on_actionViewGlobe_triggered(); break;
+		case INFO_MAXIMIZED : on_actionViewInfo_triggered(); break;
+		case LIST_MAXIMIZED : on_actionViewList_triggered(); break;
+		case PROFILE_MAXIMIZED : on_actionViewProfile_triggered(); break;
 	}
-
-	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
@@ -625,10 +645,11 @@ void MainWindow::writeSettings()
 	QSettings settings;
 
 	settings.beginGroup("MainWindow");
+	settings.setValue("lastState", (int) state);
 	settings.setValue("size",size());
-	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
-	settings.setValue("infoProfileSplitter", ui.infoProfileSplitter->saveState());
-	settings.setValue("listGlobeSplitter", ui.listGlobeSplitter->saveState());
+	if (state == VIEWALL){
+		saveSplitterSizes();
+	}
 	settings.endGroup();
 
 	settings.beginGroup("ListWidget");
