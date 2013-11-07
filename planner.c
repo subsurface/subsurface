@@ -214,7 +214,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 	dive->when = diveplan->when;
 	dive->dc.surface_pressure.mbar = diveplan->surface_pressure;
 	dc = &dive->dc;
-	dc->model = strdup(translate("gettextFromC","Simulated Dive"));
+	dc->model = "planned dive"; /* do not translate here ! */
 	dp = diveplan->dp;
 
 	/* let's start with the gas given on the first segment */

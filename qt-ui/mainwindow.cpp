@@ -280,8 +280,7 @@ void MainWindow::on_actionAddDive_triggered()
 	// now cheat - create one dive that we use to store the info tab data in
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
-	const char* model = strdup(tr("manually added dive").toLocal8Bit().constData());
-	dive->dc.model = model; // do not use tr here since it expects a char*.
+	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
 	record_dive(dive);
 	select_dive(get_divenr(dive));
 	ui.InfoWidget->updateDiveInfo(selected_dive);
@@ -826,7 +825,7 @@ void MainWindow::editCurrentDive()
 	struct dive *d = current_dive;
 	QString defaultDC(d->dc.model);
 
-	if (defaultDC == tr("manually added dive")){
+	if (defaultDC == "manually added dive"){
 		disableDcShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(false);
 		ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
@@ -834,7 +833,7 @@ void MainWindow::editCurrentDive()
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
-	else if (defaultDC == tr("Simulated Dive")){
+	else if (defaultDC == "planned dive"){
 		// this looks like something is missing here
 	}
 }

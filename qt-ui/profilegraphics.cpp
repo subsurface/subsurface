@@ -394,7 +394,7 @@ void ProfileGraphicsView::addControlItems(struct dive *d)
 	//Put it into the lower right corner of the profile
 
 	QString defaultDC(d->dc.model);
-	if (defaultDC == tr("manually added dive") || defaultDC == tr("Simulated Dive")) {
+	if (defaultDC == "manually added dive" || defaultDC == "planned dive") {
 		QAction *editAction = new QAction(QIcon(":edit"), tr("Edit"), this);
 		toolBar->addAction(editAction);
 		connect(editAction, SIGNAL(triggered()), mainWindow(), SLOT(editCurrentDive()));
