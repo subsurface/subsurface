@@ -49,6 +49,7 @@ signals:
 
 private:
 	bool mouseClickSelection;
+	QList<int> expandedRows;
 	int sortColumn;
 	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;
@@ -56,6 +57,8 @@ private:
 	QModelIndex contextMenuIndex;
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setupUi();
+	void backupExpandedRows();
+	void restoreExpandedRows();
 };
 
 #endif // DIVELISTVIEW_H

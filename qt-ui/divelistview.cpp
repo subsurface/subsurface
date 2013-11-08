@@ -66,15 +66,8 @@ DiveListView::~DiveListView()
 void DiveListView::setupUi(){
 	QSettings settings;
 	static bool firstRun = true;
-	QList<int> expandedColumns;
-	if(!firstRun){
-		for(int i = 0; i < model()->rowCount(); i++){
-			if(isExpanded( model()->index(i, 0) )){
-				expandedColumns.push_back(i);
-			}
-		}
-	}
-
+	if(firstRun)
+		backupExpandedRows();
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
@@ -89,18 +82,27 @@ void DiveListView::setupUi(){
 			setColumnWidth(i, 100);
 	}
 	settings.endGroup();
-
-	if(firstRun){
-		Q_FOREACH(const int &i, expandedColumns){
-			setExpanded( model()->index(i, 0), true );
-		}
-	}else{
+	if(firstRun)
+		restoreExpandedRows();
+	else
 		collapseAll();
-	}
-
 	firstRun = false;
 }
 
+void DiveListView::backupExpandedRows(){
+	expandedRows.clear();
+	for(int i = 0; i < model()->rowCount(); i++){
+		if(isExpanded( model()->index(i, 0) )){
+			expandedRows.push_back(i);
+		}
+	}
+}
+
+void DiveListView::restoreExpandedRows(){
+	Q_FOREACH(const int &i, expandedRows){
+		setExpanded( model()->index(i, 0), true );
+	}
+}
 void DiveListView::fixMessyQtModelBehaviour()
 {
 	QAbstractItemModel *m = model();
@@ -184,9 +186,15 @@ void DiveListView::headerClicked(int i)
 		sortByColumn(i, currentOrder);
 	} else {
 		// clear the model, repopulate with new indexes.
+		if(currentLayout == DiveTripModel::TREE){
+			backupExpandedRows();
+		}
 		reload(newLayout, false);
 		currentOrder = Qt::DescendingOrder;
 		sortByColumn(i, currentOrder);
+		if (newLayout == DiveTripModel::TREE){
+			restoreExpandedRows();
+		}
 	}
 
 	// repopulate the selections.
