@@ -616,7 +616,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
 		if (decostoplevels[stopidx] >= depth)
 			break;
-	stopidx--;
+	if (stopidx > 0)
+		stopidx--;
 
 	/* so now we know the first decostop level above us
 	 * NOTE, this could be the surface or a long list of potential stops
