@@ -565,7 +565,7 @@ void MainWindow::initialUiSetup()
 		case LIST_MAXIMIZED : on_actionViewList_triggered(); break;
 		case PROFILE_MAXIMIZED : on_actionViewProfile_triggered(); break;
 	}
-
+	settings.endGroup();
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
