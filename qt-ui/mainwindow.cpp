@@ -60,6 +60,8 @@ MainWindow::MainWindow() : helpView(0)
 	ui.ListWidget->reloadHeaderActions();
 	ui.ListWidget->setFocus();
 	ui.globe->reload();
+	ui.ListWidget->expand(ui.ListWidget->model()->index(0,0));
+	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
 }
 
 // this gets called after we download dives from a divecomputer

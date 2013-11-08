@@ -65,6 +65,16 @@ DiveListView::~DiveListView()
 
 void DiveListView::setupUi(){
 	QSettings settings;
+	static bool firstRun = true;
+	QList<int> expandedColumns;
+	if(!firstRun){
+		for(int i = 0; i < model()->rowCount(); i++){
+			if(isExpanded( model()->index(i, 0) )){
+				expandedColumns.push_back(i);
+			}
+		}
+	}
+
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
@@ -77,12 +87,18 @@ void DiveListView::setupUi(){
 			setColumnWidth(i, width.toInt());
 		else
 			setColumnWidth(i, 100);
-
 	}
 	settings.endGroup();
-	collapseAll();
-	expand(model()->index(0,0));
-	scrollTo(model()->index(0,0), QAbstractItemView::PositionAtCenter);
+
+	if(firstRun){
+		Q_FOREACH(const int &i, expandedColumns){
+			setExpanded( model()->index(i, 0), true );
+		}
+	}else{
+		collapseAll();
+	}
+
+	firstRun = false;
 }
 
 void DiveListView::fixMessyQtModelBehaviour()
