@@ -431,6 +431,13 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	 * as soon as the model is modified, it will
 	 * remove all samples from the current dive.
 	 * */
+
+	/* On the safe side, clear everything before
+	 editing the new dive. */
+	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
+	divepoints.clear();
+	endRemoveRows();
+
 	backupSamples.clear();
 	for(int i = 1; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
