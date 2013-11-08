@@ -41,7 +41,7 @@ QStringListModel *airTypes() {
 }
 
 QString strForAir(const divedatapoint& p) {
-	return p.o2 == 209 ? QObject::tr("AIR")
+	return is_air(p.o2, p.he) ? QObject::tr("AIR")
 		: p.o2 == 320 ? QObject::tr("EAN32")
 		: p.o2 == 360 ? QObject::tr("EAN36")
 		: QObject::tr("Choose Gas");
