@@ -54,9 +54,9 @@ MainWindow::MainWindow() : helpView(0)
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ProfileWidget, SLOT(refresh()));
 	ui.mainErrorMessage->hide();
-	ui.ListWidget->reload(DiveTripModel::TREE);
 	initialUiSetup();
 	readSettings();
+	ui.ListWidget->reload(DiveTripModel::TREE);
 	ui.ListWidget->reloadHeaderActions();
 	ui.ListWidget->setFocus();
 	ui.globe->reload();
@@ -566,21 +566,6 @@ void MainWindow::initialUiSetup()
 		case PROFILE_MAXIMIZED : on_actionViewProfile_triggered(); break;
 	}
 	settings.endGroup();
-	settings.beginGroup("ListWidget");
-	/* if no width are set, use the calculated width for each column;
-	 * for that to work we need to temporarily expand all rows */
-	ui.ListWidget->expandAll();
-	for (i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++) {
-		QVariant width = settings.value(QString("colwidth%1").arg(i));
-		if (width.isValid())
-			ui.ListWidget->setColumnWidth(i, width.toInt());
-		else
-			ui.ListWidget->resizeColumnToContents(i);
-	}
-	ui.ListWidget->collapseAll();
-	ui.ListWidget->expand(ui.ListWidget->model()->index(0,0));
-	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
-	settings.endGroup();
 }
 
 void MainWindow::readSettings()
@@ -652,11 +637,6 @@ void MainWindow::writeSettings()
 	}
 	settings.endGroup();
 
-	settings.beginGroup("ListWidget");
-	for (i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++)
-		if (!ui.ListWidget->isColumnHidden(i))
-			settings.setValue(QString("colwidth%1").arg(i), ui.ListWidget->columnWidth(i));
-	settings.endGroup();
 	settings.beginGroup("Units");
 	SAVE_VALUE("length", units.length);
 	SAVE_VALUE("pressure", units.pressure);

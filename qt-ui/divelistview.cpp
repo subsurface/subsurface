@@ -47,6 +47,42 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 	selectedTrips.clear();
+
+	setupUi();
+}
+
+DiveListView::~DiveListView()
+{
+	QSettings settings;
+	settings.beginGroup("ListWidget");
+	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++){
+		if (isColumnHidden(i))
+			continue;
+		settings.setValue(QString("colwidth%1").arg(i), columnWidth(i));
+	}
+	settings.endGroup();
+}
+
+void DiveListView::setupUi(){
+	QSettings settings;
+	settings.beginGroup("ListWidget");
+	/* if no width are set, use the calculated width for each column;
+	 * for that to work we need to temporarily expand all rows */
+	expandAll();
+	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++) {
+		if(isColumnHidden(i))
+			continue;
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			setColumnWidth(i, width.toInt());
+		else
+			setColumnWidth(i, 100);
+
+	}
+	settings.endGroup();
+	collapseAll();
+	expand(model()->index(0,0));
+	scrollTo(model()->index(0,0), QAbstractItemView::PositionAtCenter);
 }
 
 void DiveListView::fixMessyQtModelBehaviour()
@@ -178,6 +214,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 				setCurrentIndex(firstDiveOrTrip);
 		}
 	}
+	setupUi();
 }
 
 void DiveListView::reloadHeaderActions()

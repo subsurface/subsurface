@@ -19,6 +19,7 @@ class DiveListView : public QTreeView
 	Q_OBJECT
 public:
 	DiveListView(QWidget *parent = 0);
+	~DiveListView();
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 	void currentChanged(const QModelIndex& current, const QModelIndex& previous);
 	void reload(DiveTripModel::Layout layout, bool forceSort = true);
@@ -54,6 +55,7 @@ private:
 	QLineEdit *searchBox;
 	QModelIndex contextMenuIndex;
 	void merge_trip(const QModelIndex &a, const int offset);
+	void setupUi();
 };
 
 #endif // DIVELISTVIEW_H
