@@ -439,7 +439,6 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	for(int i = 0; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
 	}
-
 	save_dive(stdout, current_dive);
 	save_dive(stdout, backupDive);
 	Q_FOREACH(const sample &s, backupSamples){
@@ -495,9 +494,11 @@ void DivePlannerGraphics::drawProfile()
 		QPointF p1 = (i == 0) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[i-1]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
-		QPointF pos = line.pointAt(0.5);
-		gases[i]->setPos(pos);
-		gases[i]->setText( strForAir(dp));
+		if (i > 0) {
+			QPointF pos = line.pointAt(0.5);
+			gases[i]->setPos(pos);
+			gases[i]->setText(strForAir(plannerModel->at(i-1)));
+		}
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -965,10 +966,15 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 	if(role == Qt::DisplayRole) {
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()) {
-			case CCSETPOINT: return p.po2;
-			case DEPTH: return rint(get_depth_units(p.depth, NULL, NULL));
-			case DURATION: return p.time / 60;
-			case GAS: return strForAir(p);
+		case CCSETPOINT: return p.po2;
+		case DEPTH: return rint(get_depth_units(p.depth, NULL, NULL));
+		case DURATION: return p.time / 60;
+		case GAS:
+			if (index.row() > 0) {
+				p = divepoints.at(index.row() - 1);
+				return strForAir(p);
+			}
+			return "";
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch(index.column()) {
@@ -985,23 +991,30 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 	if(role == Qt::EditRole) {
 		divedatapoint& p = divepoints[index.row()];
 		switch(index.column()) {
-			case DEPTH: p.depth = units_to_depth(value.toInt()); break;
-			case DURATION: p.time = value.toInt() * 60; break;
-			case CCSETPOINT:{
-				int po2 = 0;
-				QByteArray gasv = value.toByteArray();
-				if (validate_po2(gasv.data(), &po2))
-					p.po2 = po2;
-			} break;
-			case GAS: {
-				int o2 = 0;
-				int he = 0;
-				QByteArray gasv = value.toByteArray();
-				if (validate_gas(gasv.data(), &o2, &he)) {
-					p.o2 = o2;
-					p.he = he;
-				}break;
+		case DEPTH: p.depth = units_to_depth(value.toInt()); break;
+		case DURATION: p.time = value.toInt() * 60; break;
+		case CCSETPOINT: {
+			int po2 = 0;
+			QByteArray gasv = value.toByteArray();
+			if (validate_po2(gasv.data(), &po2))
+				p.po2 = po2;
 			}
+			break;
+		case GAS: {
+			if (index.row() == 0) {
+				qDebug() << "how can index.row be 0???";
+				return false;
+			}
+			divedatapoint& pp = divepoints[index.row() - 1];
+			int o2 = 0;
+			int he = 0;
+			QByteArray gasv = value.toByteArray();
+			if (validate_gas(gasv.data(), &o2, &he)) {
+				pp.o2 = o2;
+				pp.he = he;
+			}
+			}
+			break;
 		}
 		editStop(index.row(), p);
 	}
@@ -1107,6 +1120,13 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 	// check if there's already a new stop before this one:
 	for (int i = 0; i < divepoints.count(); i++) {
 		const divedatapoint& dp = divepoints.at(i);
+		if (dp.time == minutes) {
+			row = i;
+			beginRemoveRows(QModelIndex(), row, row);
+			divepoints.remove(row);
+			endRemoveRows();
+			break;
+		}
 		if (dp.time > minutes ) {
 			row = i;
 			break;
