@@ -195,6 +195,20 @@ struct dive *alloc_dive(void)
 	return dive;
 }
 
+/* only copies events from the first dive computer */
+void copy_events(struct dive *s, struct dive *d)
+{
+	struct event *ev;
+	if (!s || !d)
+		return;
+	ev = s->dc.events;
+	d->dc.events = NULL;
+	while (ev != NULL) {
+		add_event(&d->dc, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
+		ev = ev->next;
+	}
+}
+
 void copy_cylinders(struct dive *s, struct dive *d)
 {
 	int i;

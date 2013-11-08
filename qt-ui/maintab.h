@@ -94,7 +94,6 @@ private:
 	 * dive to this structure, making all editions there,
 	 * then applying the changes on the other dives.*/
 	struct dive multiEditEquipmentPlaceholder;
-
 	Completers completers;
 	void resetPallete();
 	void saveTags();

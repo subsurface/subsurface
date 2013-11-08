@@ -412,17 +412,16 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1,1)) * M_OR_FT(1,1);
-	plannerModel->addStop(milimeters, minutes * 60, tr("Air"), 0);
+	plannerModel->addStop(milimeters, minutes * 60, O2_IN_AIR, 0, 0);
 }
 
 void DivePlannerPointsModel::createSimpleDive()
 {
-	plannerModel->addStop(M_OR_FT(15,45), 1 * 60, tr("Air"), 0);
-	plannerModel->addStop(M_OR_FT(15,45), 40 * 60, tr("Air"), 0);
-//	plannerModel->addStop(9000, 26 * 60, tr("Air"), 0);
-//	plannerModel->addStop(9000, 41 * 60, tr("Air"), 0);
-	plannerModel->addStop(M_OR_FT(5,15), 42 * 60, tr("Air"), 0);
-	plannerModel->addStop(M_OR_FT(5,15), 45 * 60, tr("Air"), 0);
+	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
+	plannerModel->addStop(M_OR_FT(15,45), 1 * 60, O2_IN_AIR, 0, 0);
+	plannerModel->addStop(M_OR_FT(15,45), 40 * 60, O2_IN_AIR, 0, 0);
+	plannerModel->addStop(M_OR_FT(5,15), 42 * 60, O2_IN_AIR, 0, 0);
+	plannerModel->addStop(M_OR_FT(5,15), 45 * 60, O2_IN_AIR, 0, 0);
 }
 
 void DivePlannerPointsModel::loadFromDive(dive* d)
@@ -431,14 +430,23 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	 * as soon as the model is modified, it will
 	 * remove all samples from the current dive.
 	 * */
+	struct dive *backupDive = alloc_dive();
+	backupDive->when = current_dive->when; // do we need anything else?
+	copy_samples(current_dive, backupDive);
+	copy_cylinders(current_dive, backupDive);
+	copy_events(current_dive, backupDive);
 	backupSamples.clear();
-	for(int i = 1; i < d->dc.samples-1; i++){
+	for(int i = 0; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
 	}
 
+	save_dive(stdout, current_dive);
+	save_dive(stdout, backupDive);
 	Q_FOREACH(const sample &s, backupSamples){
-		// we need to use the correct gas
-		plannerModel->addStop(s.depth.mm, s.time.seconds, tr("Air"), 0);
+		int o2 = 0, he = 0;
+		get_gas_from_events(&backupDive->dc, s.time.seconds, &o2, &he);
+		qDebug() << "time / depth" << s.time.seconds << s.depth.mm << "o2/he" << o2 << he;
+		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
 	}
 }
 
@@ -466,6 +474,10 @@ void DivePlannerGraphics::drawProfile()
 	plannerModel->createTemporaryPlan();
 	struct diveplan diveplan = plannerModel->getDiveplan();
 	struct divedatapoint *dp = diveplan.dp;
+	if (!dp) {
+		plannerModel->deleteTemporaryPlan();
+		return;
+	}
 	while(dp->next)
 		dp = dp->next;
 
@@ -1076,9 +1088,10 @@ bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2)
 	return p1.time <= p2.time;
 }
 
-int DivePlannerPointsModel::addStop(int milimeters, int minutes, const QString& gas, int ccpoint)
+int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he, int ccpoint)
 {
 	int row = divepoints.count();
+#if 0 // this seems bogus
 	if(milimeters == 0 && minutes == 0) {
 		if(row == 0) {
 			milimeters = M_OR_FT(10,30);
@@ -1089,6 +1102,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, const QString& 
 			minutes = p.time + 600;
 		}
 	}
+#endif
 
 	// check if there's already a new stop before this one:
 	for (int i = 0; i < divepoints.count(); i++) {
@@ -1104,16 +1118,9 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, const QString& 
 	divedatapoint point;
 	point.depth = milimeters;
 	point.time = minutes;
-	if (row == 0) {
-		point.o2 = 209;
-		point.he = 0;
-		point.po2 = 0;
-	} else {
-		divedatapoint before = at(row-1);
-		point.o2 = before.o2;
-		point.he = before.he;
-		point.po2 = 0;
-	}
+	point.o2 = o2;
+	point.he = he;
+	point.po2 = ccpoint;
 	divepoints.append( point );
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	endInsertRows();
@@ -1174,8 +1181,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
-	dp->entered = TRUE;
+	struct divedatapoint *dp = NULL; // create_dp(0, 0, 209, 0, 0);
+//	dp->entered = TRUE;
 	diveplan.dp = dp;
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
@@ -1194,6 +1201,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	if (mode == ADD) {
 		copy_samples(tempDive, current_dive);
 		copy_cylinders(tempDive, current_dive);
+		copy_events(tempDive, current_dive);
 	}
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
@@ -1206,7 +1214,9 @@ void DivePlannerPointsModel::undoEdition()
 	divepoints.clear();
 	endRemoveRows();
 	Q_FOREACH(const sample &s, backupSamples){
-		plannerModel->addStop(s.depth.mm, s.time.seconds, tr("Air"), 0);
+		int o2, he;
+		get_gas_from_events(&current_dive->dc, s.time.seconds, &o2, &he);
+		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
 	}
 }
 

@@ -538,14 +538,13 @@ void MainTab::rejectChanges()
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1){
 		ui.notes->setText(notesBackup[NULL].notes );
 		ui.location->setText(notesBackup[NULL].location);
-	}else{
+	} else {
 		if (editMode == ADD) {
 			// clean up
 			delete_single_dive(selected_dive);
 			DivePlannerPointsModel::instance()->cancelPlan();
-		}
-		else if (editMode == MANUALLY_ADDED_DIVE ){
-			DivePlannerPointsModel::instance()->undoEdition();
+		} else if (editMode == MANUALLY_ADDED_DIVE ) {
+			DivePlannerPointsModel::instance()->undoEdition(); // that's BOGUS... just copy the original dive back and be done with it...
 		}
 		struct dive *curr = current_dive;
 		ui.notes->setText(notesBackup[curr].notes );
