@@ -21,6 +21,7 @@ class DivePlannerPointsModel : public QAbstractTableModel{
 public:
 	static DivePlannerPointsModel* instance();
 	enum Sections{REMOVE, DEPTH, DURATION, GAS, CCSETPOINT, COLUMNS};
+	enum Mode { NOTHING, PLAN, ADD };
 	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -28,11 +29,11 @@ public:
 	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	void removeSelectedPoints(const QVector<int>& rows);
-	enum Modes { PLAN, ADD };
-	void setPlanMode(bool);
+	void setPlanMode(Mode mode);
 	bool isPlanner();
 	void createSimpleDive();
-
+	void clear();
+	Mode currentMode() const;
 	/**
 	 * @return the row number.
 	 */
@@ -63,7 +64,7 @@ signals:
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
 	struct diveplan diveplan;
-	Modes mode;
+	Mode mode;
 	QVector<divedatapoint> divepoints;
 	struct dive *tempDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);

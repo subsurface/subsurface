@@ -497,6 +497,7 @@ void MainTab::acceptChanges()
 		mainWindow()->showProfile();
 		mainWindow()->refreshDisplay();
 		mark_divelist_changed(TRUE);
+		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
 	editMode = NONE;
 
@@ -610,6 +611,7 @@ void MainTab::rejectChanges()
 		updateDiveInfo(selected_dive);
 		mainWindow()->showProfile();
 		mainWindow()->refreshDisplay();
+		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
 	editMode = NONE;
 }

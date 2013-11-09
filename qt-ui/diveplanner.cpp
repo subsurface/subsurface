@@ -431,13 +431,6 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	 * as soon as the model is modified, it will
 	 * remove all samples from the current dive.
 	 * */
-
-	/* On the safe side, clear everything before
-	 editing the new dive. */
-	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
-	divepoints.clear();
-	endRemoveRows();
-
 	backupSamples.clear();
 	for(int i = 1; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
@@ -940,9 +933,9 @@ void DivePlannerWidget::lastStopChanged(bool checked)
 	plannerModel->setLastStop6m(checked);
 }
 
-void DivePlannerPointsModel::setPlanMode(bool isPlan)
+void DivePlannerPointsModel::setPlanMode(Mode m)
 {
-	mode = isPlan ? PLAN : ADD;
+	mode = m;
 }
 
 bool DivePlannerPointsModel::isPlanner()
@@ -1028,7 +1021,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const
 	return divepoints.count();
 }
 
-DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent)
+DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent), mode(NOTHING)
 {
 }
 
@@ -1168,12 +1161,23 @@ void DivePlannerPointsModel::cancelPlan()
 			return;
 		}
 	}
+	clear();
+	emit planCanceled();
+	setPlanMode(NOTHING);
+}
 
+DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
+{
+	return mode;
+}
+
+void DivePlannerPointsModel::clear()
+{
 	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 	divepoints.clear();
 	endRemoveRows();
-	emit planCanceled();
 }
+
 
 void DivePlannerPointsModel::createTemporaryPlan()
 {
@@ -1209,9 +1213,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 
 void DivePlannerPointsModel::undoEdition()
 {
-	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
-	divepoints.clear();
-	endRemoveRows();
+	clear();
 	Q_FOREACH(const sample &s, backupSamples){
 		plannerModel->addStop(s.depth.mm, s.time.seconds, tr("Air"), 0);
 	}
@@ -1249,8 +1251,7 @@ void DivePlannerPointsModel::createPlan()
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
 	diveplan.dp = NULL;
-	beginRemoveRows(QModelIndex(), 0, rowCount() -1 );
-	divepoints.clear();
-	endRemoveRows();
+	clear();
 	planCreated();
+	setPlanMode(NOTHING);
 }

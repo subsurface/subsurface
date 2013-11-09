@@ -219,8 +219,14 @@ void MainWindow::enableDcShortcuts()
 
 void MainWindow::on_actionDivePlanner_triggered()
 {
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING){
+		qDebug() << DivePlannerPointsModel::instance()->currentMode();
+		QMessageBox::warning(this, tr("Warning"), "First finish the current edition before trying to do another." );
+		return;
+	}
 	disableDcShortcuts();
-	DivePlannerPointsModel::instance()->setPlanMode(true);
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	DivePlannerPointsModel::instance()->clear();
 	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE);
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }
@@ -271,6 +277,11 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 
 void MainWindow::on_actionAddDive_triggered()
 {
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING){
+		QMessageBox::warning(this, tr("Warning"), "First finish the current edition before trying to do another." );
+		return;
+	}
+
 	// clear the selection
 	for (int i = 0; i < dive_table.nr; i++) {
 		struct dive *d = get_dive(i);
@@ -278,7 +289,8 @@ void MainWindow::on_actionAddDive_triggered()
 			deselect_dive(i);
 	}
 	disableDcShortcuts();
-	DivePlannerPointsModel::instance()->setPlanMode(false);
+	DivePlannerPointsModel::instance()->clear();
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	// now cheat - create one dive that we use to store the info tab data in
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
@@ -825,12 +837,17 @@ void MainWindow::on_actionImportCSV_triggered()
 
 void MainWindow::editCurrentDive()
 {
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING){
+		QMessageBox::warning(this, tr("Warning"), "First finish the current edition before trying to do another." );
+		return;
+	}
+
 	struct dive *d = current_dive;
 	QString defaultDC(d->dc.model);
-
+	DivePlannerPointsModel::instance()->clear();
 	if (defaultDC == "manually added dive"){
 		disableDcShortcuts();
-		DivePlannerPointsModel::instance()->setPlanMode(false);
+		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
 		ui.infoPane->setCurrentIndex(MAINTAB);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
