@@ -1085,6 +1085,8 @@ void DivePlannerPointsModel::setSurfacePressure(int pressure)
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
+	set_last_stop(value);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::setStartTime(const QTime& t)
