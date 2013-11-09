@@ -106,6 +106,7 @@ void DownloadFromDCWidget::updateState(states state)
 		&& state == CANCELLING) {
 		timer->stop();
 		reject();
+		ui.ok->setText(tr("OK"));
 	}
 
 	// the cancelation process is finished
@@ -122,6 +123,7 @@ void DownloadFromDCWidget::updateState(states state)
 		timer->stop();
 		ui.progressBar->setValue(100);
 		markChildrenAsEnabled();
+		ui.ok->setText(tr("OK"));
 		accept();
 	}
 
@@ -139,7 +141,7 @@ void DownloadFromDCWidget::updateState(states state)
 
 		markChildrenAsEnabled();
 		ui.progressBar->hide();
-		ui.ok->setText(tr("retry"));
+		ui.ok->setText(tr("Retry"));
 	}
 
 	// properly updating the widget state
