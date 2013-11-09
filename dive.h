@@ -653,6 +653,7 @@ extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern void renumber_dives(int nr);
+extern void copy_events(struct dive *s, struct dive *d);
 extern void copy_cylinders(struct dive *s, struct dive *d);
 extern void copy_samples(struct dive *s, struct dive *d);
 

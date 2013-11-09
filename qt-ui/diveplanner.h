@@ -42,7 +42,7 @@ public:
 	int size();
 	struct diveplan getDiveplan();
 public slots:
-	int addStop(int meters = 0, int minutes = 0,const QString& gas = QString(), int ccpoint = 0 );
+	int addStop(int meters = 0, int minutes = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
 	void setGFHigh(short gfhigh);
 	void setGFLow(short ghflow);
 	void setSurfacePressure(int pressure);
