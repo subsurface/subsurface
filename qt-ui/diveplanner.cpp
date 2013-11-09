@@ -548,7 +548,7 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), mappedPos.y());
 
 	depthString->setText(get_depth_string(depthLine->valueAt(mappedPos), true, false));
-	depthString->setPos(fromPercent(5, Qt::Horizontal), mappedPos.y());
+	depthString->setPos(fromPercent(1, Qt::Horizontal), mappedPos.y());
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
 	timeString->setPos(mappedPos.x()+1, fromPercent(95, Qt::Vertical));
 
