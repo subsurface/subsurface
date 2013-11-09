@@ -62,6 +62,12 @@ CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("HE"));
 }
 
+CylindersModel *CylindersModel::instance()
+{
+	static CylindersModel *self = new CylindersModel();
+	return self;
+}
+
 static QVariant percent_string(fraction_t fraction)
 {
 	int permille = fraction.permille;

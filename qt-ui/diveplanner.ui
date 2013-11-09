@@ -116,7 +116,7 @@
         </widget>
        </item>
        <item row="7" column="0" colspan="2">
-        <widget class="TableView" name="tableWidget" native="true">
+        <widget class="TableView" name="cylinderTableWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -126,6 +126,16 @@
         </widget>
        </item>
        <item row="8" column="0" colspan="2">
+        <widget class="TableView" name="tableWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" colspan="2">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="standardButtons">
           <set>QDialogButtonBox::Abort|QDialogButtonBox::Save</set>

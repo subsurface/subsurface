@@ -226,6 +226,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->clear();
+	CylindersModel::instance()->clear();
 	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE);
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }

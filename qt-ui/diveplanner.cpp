@@ -878,7 +878,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui.tableWidget->setTitle(tr("Dive Planner Points"));
 	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
-
+	ui.cylinderTableWidget->setTitle(tr("Available Gases"));
+	ui.cylinderTableWidget->setModel(CylindersModel::instance());
+//	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), CylindersModel::instance(), SLOT(add()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
@@ -1190,6 +1192,7 @@ void DivePlannerPointsModel::cancelPlan()
 	clear();
 	emit planCanceled();
 	setPlanMode(NOTHING);
+	CylindersModel::instance()->update();
 }
 
 DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
@@ -1283,4 +1286,5 @@ void DivePlannerPointsModel::createPlan()
 	clear();
 	planCreated();
 	setPlanMode(NOTHING);
+	CylindersModel::instance()->update();
 }

@@ -25,7 +25,7 @@
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    weightModel(new WeightModel()),
-				    cylindersModel(new CylindersModel()),
+				    cylindersModel(CylindersModel::instance()),
 				    editMode(NONE)
 {
 	ui.setupUi(this);
