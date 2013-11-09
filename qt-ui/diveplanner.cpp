@@ -487,18 +487,16 @@ void DivePlannerGraphics::drawProfile()
 	}
 
 	// Re-position the user generated dive handlers
-	for (int i = 0; i < plannerModel->rowCount(); i++) {
+	for (int i = 1; i < plannerModel->rowCount(); i++) {
 		divedatapoint dp = plannerModel->at(i);
 		DiveHandler *h = handles.at(i);
 		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth));
-		QPointF p1 = (i == 0) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[i-1]->pos();
+		QPointF p1 = handles[i-1]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
-		if (i > 0) {
-			QPointF pos = line.pointAt(0.5);
-			gases[i]->setPos(pos);
-			gases[i]->setText(strForAir(plannerModel->at(i-1)));
-		}
+		QPointF pos = line.pointAt(0.5);
+		gases[i]->setPos(pos);
+		gases[i]->setText(strForAir(plannerModel->at(i-1)));
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -1104,21 +1102,21 @@ bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2)
 int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he, int ccpoint)
 {
 	int row = divepoints.count();
-#if 0 // this seems bogus
-	if(milimeters == 0 && minutes == 0) {
-		if(row == 0) {
-			milimeters = M_OR_FT(10,30);
-			minutes = 600;
-		} else {
-			divedatapoint p = at(row-1);
-			milimeters = p.depth;
-			minutes = p.time + 600;
-		}
+	if(row == 0) {
+		beginInsertRows(QModelIndex(), row, row);
+		divedatapoint point;
+		point.depth = 0;
+		point.time = 0;
+		point.o2 = o2;
+		point.he = he;
+		point.po2 = ccpoint;
+		divepoints.append( point );
+		endInsertRows();
+		row++;
 	}
-#endif
 
 	// check if there's already a new stop before this one:
-	for (int i = 0; i < divepoints.count(); i++) {
+	for (int i = 0; i < row; i++) {
 		const divedatapoint& dp = divepoints.at(i);
 		if (dp.time == minutes) {
 			row = i;
