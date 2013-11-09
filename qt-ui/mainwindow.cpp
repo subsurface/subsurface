@@ -220,7 +220,6 @@ void MainWindow::enableDcShortcuts()
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING){
-		qDebug() << DivePlannerPointsModel::instance()->currentMode();
 		QMessageBox::warning(this, tr("Warning"), "First finish the current edition before trying to do another." );
 		return;
 	}
