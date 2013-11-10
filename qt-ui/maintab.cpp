@@ -253,6 +253,11 @@ void MainTab::clearStats()
 	else						\
 		ui.field->setText(get_temperature_string(d->field, TRUE))
 
+bool MainTab::isEditing()
+{
+	return editMode != NONE;
+}
+
 void MainTab::updateDiveInfo(int dive)
 {
 	if (!isEnabled() && dive != -1)

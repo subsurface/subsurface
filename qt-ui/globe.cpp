@@ -71,6 +71,10 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
+	// don't mess with the selection while the user is editing a dive
+	if (mainWindow()->information()->isEditing())
+		return;
+
 	GeoDataCoordinates here(lon, lat, unit);
 	long lon_udeg = rint(1000000 * here.longitude(GeoDataCoordinates::Degree));
 	long lat_udeg = rint(1000000 * here.latitude(GeoDataCoordinates::Degree));

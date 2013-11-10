@@ -58,6 +58,7 @@ public:
 	bool eventFilter(QObject* , QEvent*);
 	void initialUiSetup();
 	void equipmentPlusUpdate();
+	bool isEditing();
 public slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();
