@@ -439,8 +439,6 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	for(int i = 0; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
 	}
-	save_dive(stdout, current_dive);
-	save_dive(stdout, backupDive);
 	Q_FOREACH(const sample &s, backupSamples){
 		int o2 = 0, he = 0;
 		get_gas_from_events(&backupDive->dc, s.time.seconds, &o2, &he);
@@ -880,8 +878,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 	ui.cylinderTableWidget->setTitle(tr("Available Gases"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
-//	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), CylindersModel::instance(), SLOT(add()));
+	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addCylinder_clicked()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
+	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
@@ -908,6 +907,15 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+}
+
+void DivePlannerPointsModel::addCylinder_clicked()
+{
+	qDebug() << "add Cylinder clicked";
+	if (!stagingDive)
+		stagingDive = alloc_dive();
+	CylindersModel::instance()->setDive(stagingDive);
+	CylindersModel::instance()->add();
 }
 
 void DivePlannerWidget::startTimeChanged(const QTime& time)
@@ -1192,6 +1200,9 @@ void DivePlannerPointsModel::cancelPlan()
 	clear();
 	emit planCanceled();
 	setPlanMode(NOTHING);
+	free(stagingDive);
+	stagingDive = NULL;
+	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
 }
 
@@ -1205,6 +1216,7 @@ void DivePlannerPointsModel::clear()
 	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 	divepoints.clear();
 	endRemoveRows();
+	CylindersModel::instance()->clear();
 }
 
 
@@ -1286,5 +1298,8 @@ void DivePlannerPointsModel::createPlan()
 	clear();
 	planCreated();
 	setPlanMode(NOTHING);
+	free(stagingDive);
+	stagingDive = NULL;
+	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
 }

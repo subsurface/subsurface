@@ -43,6 +43,7 @@ public:
 	struct diveplan getDiveplan();
 public slots:
 	int addStop(int meters = 0, int minutes = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
+	void addCylinder_clicked();
 	void setGFHigh(short gfhigh);
 	void setGFLow(short ghflow);
 	void setSurfacePressure(int pressure);
@@ -69,6 +70,7 @@ private:
 	struct dive *tempDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
+	struct dive *stagingDive;
 };
 
 class Button : public QObject, public QGraphicsRectItem {
