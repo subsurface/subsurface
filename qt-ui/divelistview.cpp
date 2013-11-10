@@ -433,6 +433,7 @@ void DiveListView::deleteDive()
 			else
 				mainWindow()->cleanUpEmpty();
 		}
+		mark_divelist_changed(TRUE);
 	}
 	mainWindow()->refreshDisplay();
 	reload(currentLayout, false);
