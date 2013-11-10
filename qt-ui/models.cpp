@@ -320,7 +320,8 @@ void CylindersModel::setDive(dive* d)
 {
 	if (current)
 		clear();
-
+	if (!d)
+		return;
 	int amount = MAX_CYLINDERS;
 	for(int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cylinder = &d->cylinder[i];
