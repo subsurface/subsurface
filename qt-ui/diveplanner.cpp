@@ -878,6 +878,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 	ui.cylinderTableWidget->setTitle(tr("Available Gases"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
+	ui.cylinderTableWidget->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addCylinder_clicked()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
