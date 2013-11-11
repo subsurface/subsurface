@@ -14,7 +14,7 @@ class QStringListModel;
 class QModelIndex;
 
 // Return a Model containing the air types.
-QStringListModel *airTypes();
+QStringListModel *gasSelectionModel();
 
 class DivePlannerPointsModel : public QAbstractTableModel{
 	Q_OBJECT
@@ -41,6 +41,7 @@ public:
 	divedatapoint at(int row);
 	int size();
 	struct diveplan getDiveplan();
+	QStringList &getGasList();
 public slots:
 	int addStop(int meters = 0, int minutes = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
 	void addCylinder_clicked();

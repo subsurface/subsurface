@@ -32,19 +32,25 @@
 
 #define M_OR_FT(_m,_f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : ((_f) * 304.8))
 
-QStringListModel *airTypes() {
+QStringListModel *gasSelectionModel() {
 	static QStringListModel *self = new QStringListModel(QStringList()
-		<< QObject::tr("AIR")
-		<< QObject::tr("EAN32")
-		<< QObject::tr("EAN36"));
+		<< QObject::tr("AIR"));
+	self->setStringList(DivePlannerPointsModel::instance()->getGasList());
 	return self;
 }
 
-QString strForAir(const divedatapoint& p) {
-	return is_air(p.o2, p.he) ? QObject::tr("AIR")
-		: p.o2 == 320 ? QObject::tr("EAN32")
-		: p.o2 == 360 ? QObject::tr("EAN36")
-		: QObject::tr("Choose Gas");
+QString gasToStr(const int o2Permille, const int hePermille) {
+	uint o2 = (o2Permille + 5) / 10, he = (hePermille + 5) / 10;
+	QString result = is_air(o2Permille, hePermille) ? QObject::tr("AIR")
+							: he == 0 ? QString("EAN%1").arg(o2, 2, 10, QChar('0'))
+								  : QString("%1/%2").arg(o2).arg(he);
+	qDebug() << o2 << he << result;
+	return result;
+}
+
+QString dpGasToStr(const divedatapoint& p)
+{
+	return gasToStr(p.o2, p.he);
 }
 
 QColor getColor(const color_indice_t i)
@@ -170,7 +176,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	// Prepare the stuff for the gas-choices.
 	gasListView = new QListView();
 	gasListView->setWindowFlags(Qt::Popup);
-	gasListView->setModel(airTypes());
+	gasListView->setModel(gasSelectionModel());
 	gasListView->hide();
 	gasListView->installEventFilter(this);
 
@@ -446,11 +452,31 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	}
 }
 
+QStringList& DivePlannerPointsModel::getGasList()
+{
+	static QStringList list;
+	list.clear();
+	if (!stagingDive) {
+		list.push_back(tr("AIR"));
+	} else {
+		for (int i = 0; i < MAX_CYLINDERS; i++) {
+			cylinder_t *cyl = &stagingDive->cylinder[i];
+			if (cylinder_nodata(cyl))
+				break;
+			list.push_back(gasToStr(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
+		}
+	}
+	qDebug() << list;
+	return list;
+}
+
 void DivePlannerGraphics::prepareSelectGas()
 {
+	QStringListModel *model = qobject_cast<QStringListModel*>(gasListView->model());
 	currentGasChoice = static_cast<Button*>(sender());
 	QPoint c = QCursor::pos();
 	gasListView->setGeometry(c.x(), c.y(), 150, 100);
+	model->setStringList(DivePlannerPointsModel::instance()->getGasList());
 	gasListView->show();
 }
 
@@ -459,6 +485,7 @@ void DivePlannerGraphics::selectGas(const QModelIndex& index)
 	QString gasSelected = gasListView->model()->data(index, Qt::DisplayRole).toString();
 	int idx = gases.indexOf(currentGasChoice);
 	plannerModel->setData(plannerModel->index(idx, DivePlannerPointsModel::GAS), gasSelected);
+	qDebug() << "gas selected:" << gasSelected;
 	gasListView->hide();
 }
 
@@ -493,7 +520,7 @@ void DivePlannerGraphics::drawProfile()
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setText(strForAir(plannerModel->at(i-1)));
+		gases[i]->setText(dpGasToStr(plannerModel->at(i-1)));
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -980,7 +1007,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 		case GAS:
 			if (index.row() > 0) {
 				p = divepoints.at(index.row() - 1);
-				return strForAir(p);
+				return dpGasToStr(p);
 			}
 			return "";
 		}
