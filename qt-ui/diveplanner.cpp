@@ -1169,7 +1169,10 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 			break;
 		}
 	}
-
+	if (row > 1 && o2 == -1) { // this means "take the current gas"
+		o2 = divepoints.at(row - 1).o2;
+		he = divepoints.at(row - 1).he;
+	}
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
