@@ -290,7 +290,7 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEMP(d, airtemp);
 	UPDATE_TEMP(d, watertemp);
 	if (d) {
-		ui.coordinates->setText(printGPSCoords(d->latitude.udeg, d->longitude.udeg));
+		updateGpsCoordinates(d);
 		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 			// only use trip relevant fields
@@ -453,7 +453,7 @@ void MainTab::acceptChanges()
 	} else {
 		struct dive *curr = current_dive;
 		//Reset coordinates field, in case it contains garbage.
-		ui.coordinates->setText(printGPSCoords(current_dive->latitude.udeg, current_dive->longitude.udeg));
+		updateGpsCoordinates(curr);
 		if (notesBackup[curr].buddy != ui.buddy->text() ||
 			notesBackup[curr].suit != ui.suit->text() ||
 			notesBackup[curr].notes != ui.notes->toPlainText() ||
@@ -566,7 +566,6 @@ void MainTab::rejectChanges()
 		struct dive *curr = current_dive;
 		ui.notes->setText(notesBackup[curr].notes );
 		ui.location->setText(notesBackup[curr].location);
-		ui.coordinates->setText(notesBackup[curr].coordinates);
 		ui.buddy->setText(notesBackup[curr].buddy);
 		ui.suit->setText(notesBackup[curr].suit);
 		ui.divemaster->setText(notesBackup[curr].divemaster);
@@ -604,6 +603,7 @@ void MainTab::rejectChanges()
 				mydive->weightsystem[i] = notesBackup[mydive].weightsystem[i];
 			}
 		}
+		updateGpsCoordinates(curr);
 		if (selected_dive >= 0) {
 			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
 			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
@@ -717,6 +717,7 @@ void MainTab::on_location_textChanged(const QString& text)
 				    (dive->latitude.udeg || dive->longitude.udeg)) {
 					EDIT_SELECTED_DIVES( mydive->latitude = dive->latitude );
 					EDIT_SELECTED_DIVES( mydive->longitude = dive->longitude );
+					//Don't use updateGpsCoordinates() since we don't want to set modified state yet
 					ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
 					markChangedWidget(ui.coordinates);
 					break;
@@ -813,4 +814,11 @@ QString MainTab::printGPSCoords(int lat, int lon)
 		       lath.toLocal8Bit().data(), latdeg, UTF8_DEGREE, ilatmin / 1000000, (ilatmin % 1000000) / 10,
 		       lonh.toLocal8Bit().data(), londeg, UTF8_DEGREE, ilonmin / 1000000, (ilonmin % 1000000) / 10);
 	return result;
+}
+
+void MainTab::updateGpsCoordinates(const struct dive *dive)
+{
+	ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
+	ui.coordinates->setModified(dive->latitude.udeg || dive->longitude.udeg);
+
 }
