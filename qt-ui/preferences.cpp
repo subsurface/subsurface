@@ -46,6 +46,8 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.increment_3m->setChecked(prefs.calc_ceiling_3m_incr);
 	ui.all_tissues->setEnabled(ui.calculated_ceiling->isChecked());
 	ui.all_tissues->setChecked(prefs.calc_all_tissues);
+	ui.calc_ndl_tts->setEnabled(ui.calculated_ceiling->isChecked());
+	ui.calc_ndl_tts->setChecked(prefs.calc_ndl_tts);
 	ui.groupBox->setEnabled(ui.personalize->isChecked());
 
 	ui.gflow->setValue(prefs.gflow);
@@ -104,6 +106,7 @@ void PreferencesDialog::setPrefsFromUi()
 	SP(profile_red_ceiling, ui.red_ceiling);
 	SP(profile_calc_ceiling, ui.calculated_ceiling);
 	SP(calc_ceiling_3m_incr, ui.increment_3m);
+	SP(calc_ndl_tts, ui.calc_ndl_tts);
 	SP(calc_all_tissues, ui.all_tissues);
 	prefs.gflow = ui.gflow->value();
 	prefs.gfhigh = ui.gfhigh->value();
@@ -142,6 +145,7 @@ void PreferencesDialog::syncSettings()
 	SB("redceiling", ui.red_ceiling);
 	SB("calcceiling", ui.calculated_ceiling);
 	SB("calcceiling3m", ui.increment_3m);
+	SB("calcndltts", ui.calc_ndl_tts);
 	SB("calcalltissues", ui.all_tissues);
 	s.setValue("gflow", ui.gflow->value());
 	s.setValue("gfhigh", ui.gfhigh->value());

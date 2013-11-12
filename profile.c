@@ -1014,6 +1014,11 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			entry->ceilings[k] = deco_allowed_depth(tolerated_by_tissue[k], surface_pressure, dive, 1);
 
 		/* calculate DECO STOP / TTS / NDL */
+
+		/* bail if we shouldn't */
+		if (!prefs.calc_ndl_tts)
+			continue;
+
 		/* We are going to mess up deco state, so store it for later restore */
 		char *cache_data = NULL;
 		cache_deco_state(tissue_tolerance, &cache_data);

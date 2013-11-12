@@ -711,6 +711,16 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QCheckBox" name="calc_ndl_tts">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+				<string>Calculate NDL/TTS</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -985,6 +995,22 @@
    <sender>calculated_ceiling</sender>
    <signal>clicked(bool)</signal>
    <receiver>increment_3m</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>327</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>668</x>
+     <y>327</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>calculated_ceiling</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>calc_ndl_tts</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

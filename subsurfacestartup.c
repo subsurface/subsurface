@@ -22,6 +22,7 @@ struct preferences default_prefs = {
 	.profile_red_ceiling  = FALSE,
 	.profile_calc_ceiling = FALSE,
 	.calc_ceiling_3m_incr = FALSE,
+	.calc_ndl_tts = FALSE,
 	.gflow = 30,
 	.gfhigh = 75,
 	.font_size = 14.0,

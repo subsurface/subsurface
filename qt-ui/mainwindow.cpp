@@ -618,6 +618,7 @@ void MainWindow::readSettings()
 	GET_BOOL("dcceiling", profile_dc_ceiling);
 	GET_BOOL("calcceiling", profile_calc_ceiling);
 	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);
+	GET_BOOL("calcndltts", calc_ndl_tts);
 	GET_BOOL("calcalltissues", calc_all_tissues);
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
