@@ -544,6 +544,7 @@ void MainTab::resetPallete()
 
 void MainTab::rejectChanges()
 {
+	EditMode lastMode = editMode;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 
@@ -552,11 +553,11 @@ void MainTab::rejectChanges()
 		ui.notes->setText(notesBackup[NULL].notes );
 		ui.location->setText(notesBackup[NULL].location);
 	} else {
-		if (editMode == ADD) {
+		if (lastMode == ADD) {
 			// clean up
 			DivePlannerPointsModel::instance()->cancelPlan();
 			delete_single_dive(selected_dive);
-		} else if (editMode == MANUALLY_ADDED_DIVE ) {
+		} else if (lastMode == MANUALLY_ADDED_DIVE ) {
 			DivePlannerPointsModel::instance()->undoEdition(); // that's BOGUS... just copy the original dive back and be done with it...
 		}
 		struct dive *curr = current_dive;
@@ -617,7 +618,7 @@ void MainTab::rejectChanges()
 	ui.equipmentButtonBox->hide();
 	notesBackup.clear();
 	resetPallete();
-	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
+	if (lastMode == ADD || lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
 		updateDiveInfo(selected_dive);
 		mainWindow()->showProfile();

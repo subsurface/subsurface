@@ -68,6 +68,7 @@ MainWindow::MainWindow() : helpView(0)
 void MainWindow::refreshDisplay()
 {
 	ui.InfoWidget->reload();
+	ui.ProfileWidget->refresh();
 	ui.globe->reload();
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->setFocus();
