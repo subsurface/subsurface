@@ -7,7 +7,7 @@
 #include <QTextStream>
 #include <QSettings>
 
-TableView::TableView(QWidget *parent) : QTableView(parent)
+TableView::TableView(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	QFile cssFile(":table-css");

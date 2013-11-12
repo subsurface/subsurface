@@ -14,7 +14,7 @@ class QAbstractItemModel;
 class QModelIndex;
 class QTableView;
 
-class TableView : public QTableView {
+class TableView : public QWidget {
 Q_OBJECT
 public:
 	TableView(QWidget *parent = 0);
