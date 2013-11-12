@@ -1193,7 +1193,6 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
 	}
-
 	if (GET_PRESSURE(entry)) {
 		pressurevalue = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
 		memcpy(buf2, buf, bufsize);
@@ -1204,7 +1203,6 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nTemp:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
-
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 	/* Ascending speeds are positive, descending are negative */
@@ -1212,20 +1210,37 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		speedvalue *= -1;
 	snprintf(buf, bufsize, translate("gettextFromC","%s\nV:%.2f %s"), buf2, speedvalue, vertical_speed_unit);
 
-	if (entry->ceiling) {
-		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
+	if (entry->sac && prefs.show_sac) {
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
-		if (prefs.calc_all_tissues){
-			int k;
-			for (k=0; k<16; k++){
-				if (entry->ceilings[k]){
-					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-					memcpy(buf2, buf, bufsize);
-					snprintf(buf, bufsize, translate("gettextFromC","%s\nTissue %.0fmin: %.0f %s"), buf2, buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
-				}
-			}
-		}
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nSAC:%2.1fl/min"), buf2, entry->sac / 1000.0);
+	}
+	if (entry->cns) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nCNS:%u%%"), buf2, entry->cns);
+	}
+	if (prefs.pp_graphs.po2) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\npO%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->po2);
+	}
+	if (prefs.pp_graphs.pn2) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\npN%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->pn2);
+	}
+	if (prefs.pp_graphs.phe) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\npHe:%.2fbar"), buf2, entry->phe);
+	}
+	if (prefs.mod) {
+		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nMOD:%d%s"), buf2, mod, depth_unit);
+	}
+	if (prefs.ead) {
+		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
+		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
+		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"), buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
@@ -1255,41 +1270,24 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
 	}
-	if (entry->sac && prefs.show_sac) {
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nSAC:%2.1fl/min"), buf2, entry->sac / 1000.0);
-	}
 	if (entry->tts) {
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nTTS:%umin"), buf2, DIV_UP(entry->tts, 60));
 	}
-	if (entry->cns) {
+	if (entry->ceiling) {
+		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nCNS:%u%%"), buf2, entry->cns);
-	}
-	if (prefs.pp_graphs.po2) {
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\npO%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->po2);
-	}
-	if (prefs.pp_graphs.pn2) {
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\npN%s:%.2fbar"), buf2, UTF8_SUBSCRIPT_2, entry->pn2);
-	}
-	if (prefs.pp_graphs.phe) {
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\npHe:%.2fbar"), buf2, entry->phe);
-	}
-	if (prefs.mod) {
-		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nMOD:%d%s"), buf2, mod, depth_unit);
-	}
-	if (prefs.ead) {
-		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
-		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
-		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nEAD:%d%s\nEND:%d%s\nEADD:%d%s"), buf2, ead, depth_unit, end, depth_unit, eadd, depth_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
+		if (prefs.calc_all_tissues){
+			int k;
+			for (k=0; k<16; k++){
+				if (entry->ceilings[k]){
+					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
+					memcpy(buf2, buf, bufsize);
+					snprintf(buf, bufsize, translate("gettextFromC","%s\nTissue %.0fmin: %.0f %s"), buf2, buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+				}
+			}
+		}
 	}
 	free(buf2);
 }
