@@ -934,15 +934,123 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 		list_free(track_pr[i]);
 }
 
+/* calculate DECO STOP / TTS / NDL */
+static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, struct dive *dive, double surface_pressure) {
+	/* FIXME: This should be configurable */
+	/* ascent speed up to first deco stop */
+	const int ascent_s_per_step = 1;
+	const int ascent_mm_per_step = 200; /* 12 m/min */
+	/* ascent speed between deco stops */
+	const int ascent_s_per_deco_step = 1;
+	const int ascent_mm_per_deco_step = 16; /* 1 m/min */
+	/* how long time steps in deco calculations? */
+	const int time_stepsize = 10;
+	const int deco_stepsize = 3000;
+	/* at what depth is the current deco-step? */
+	int next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
+	int ascent_depth = entry->depth;
+	/* at what time should we give up and say that we got enuff NDL? */
+	const int max_ndl = 7200;
+	int cylinderindex = entry->cylinderindex;
+
+	/* If we don't have a ceiling yet, calculate ndl. Don't try to calculate
+	 * a ndl for lower values than 3m it would take forever */
+	if (next_stop == 0) {
+		if(entry->depth < 3000) {
+			entry->ndl = max_ndl;
+			return;
+		}
+		/* stop if the ndl is above max_ndl seconds, and call it plenty of time */
+		while (entry->ndl < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
+			entry->ndl += time_stepsize;
+			tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
+					&dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+		}
+		/* we don't need to calculate anything else */
+		return;
+	}
+
+	/* Add segments for movement to stopdepth */
+	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts += ascent_s_per_step) {
+		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+				&dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->po2 * 1000, dive);
+		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
+	}
+	ascent_depth = next_stop;
+
+	/* And how long is the current deco-step? */
+	entry->stoptime = 0;
+	entry->stopdepth = next_stop;
+	next_stop -= deco_stepsize;
+
+	/* And how long is the total TTS */
+	while(next_stop >= 0) {
+		/* save the time for the first stop to show in the graph */
+		if (ascent_depth == entry->stopdepth)
+			entry->stoptime += time_stepsize;
+
+		entry->tts += time_stepsize;
+		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+				&dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+
+		if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
+			/* move to the next stop and add the travel between stops */
+			for (; ascent_depth > next_stop ; ascent_depth -= ascent_mm_per_deco_step, entry->tts += ascent_s_per_deco_step)
+				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+						&dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->po2 * 1000, dive);
+			ascent_depth = next_stop;
+			next_stop -= deco_stepsize;
+		}
+	}
+}
+
+/* Let's try to do some deco calculations.
+ * Needs to be run before calculate_gas_information so we know that if we have a po2, where in ccr-mode.
+ */
 static void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i;
-	double amb_pressure;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, TRUE)) / 1000.0;
+	double tissue_tolerance = 0;
+	for (i = 1; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
+		for (j = t0+1; j <= t1; j++) {
+			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
+			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
+					&dive->cylinder[entry->cylinderindex].gasmix, 1, entry->po2 * 1000, dive);
+			tissue_tolerance = min_pressure;
+		}
+		if (t0 == t1)
+			entry->ceiling = (entry - 1)->ceiling;
+		else
+			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+		for (j=0; j<16; j++)
+			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
+
+		/* should we do more calculations? */
+		if (prefs.calc_ndl_tts) {
+			/* We are going to mess up deco state, so store it for later restore */
+			char *cache_data = NULL;
+			cache_deco_state(tissue_tolerance, &cache_data);
+			calculate_ndl_tts(tissue_tolerance, entry, dive, surface_pressure);
+			/* Restore "real" deco state for next real time step */
+			tissue_tolerance = restore_deco_state(cache_data);
+			free(cache_data);
+		}
+	}
+#if DECO_CALC_DEBUG & 1
+	dump_tissues();
+#endif
+}
+
+static void calculate_gas_information(struct dive *dive,  struct plot_info *pi)
+{
+	int i;
+	double amb_pressure;
 
 	for (i = 1; i < pi->nr; i++) {
-		int fo2, fhe, j, k, t0, t1;
-		double tissue_tolerance;
+		int fo2, fhe;
 		struct plot_data *entry = pi->entry + i;
 		int cylinderindex = entry->cylinderindex;
 
@@ -950,14 +1058,12 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 		double ratio = (double)fhe / (1000.0 - fo2);
-		int ccrdive = 0;
 
 		if (entry->po2) {
 			/* we have an O2 partial pressure in the sample - so this
 			 * is likely a CC dive... use that instead of the value
 			 * from the cylinder info */
 			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
-			ccrdive = 1;
 			entry->po2 = po2;
 			entry->phe = (amb_pressure - po2) * ratio;
 			entry->pn2 = amb_pressure - po2 - entry->phe;
@@ -995,113 +1101,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			pi->maxpp = entry->phe;
 		if (entry->pn2 > pi->maxpp && prefs.pp_graphs.pn2)
 			pi->maxpp = entry->pn2;
-
-		/* and now let's try to do some deco calculations */
-		t0 = (entry - 1)->sec;
-		t1 = entry->sec;
-		tissue_tolerance = 0;
-		for (j = t0+1; j <= t1; j++) {
-			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
-			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-							&dive->cylinder[cylinderindex].gasmix, 1, ccrdive ? entry->po2 * 1000 : 0, dive);
-			tissue_tolerance = min_pressure;
-		}
-		if (t0 == t1)
-			entry->ceiling = (entry - 1)->ceiling;
-		else
-			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
-		for (k=0; k<16; k++)
-			entry->ceilings[k] = deco_allowed_depth(tolerated_by_tissue[k], surface_pressure, dive, 1);
-
-		/* calculate DECO STOP / TTS / NDL */
-
-		/* bail if we shouldn't */
-		if (!prefs.calc_ndl_tts)
-			continue;
-
-		/* We are going to mess up deco state, so store it for later restore */
-		char *cache_data = NULL;
-		cache_deco_state(tissue_tolerance, &cache_data);
-
-		/* should we calculate a stop depth and time or have dc already done that? */
-		if (entry->ceiling && !entry->stopdepth) {
-			/* FIXME: This should be configurable */
-			/* ascent speed up to first deco stop */
-			const int ascent_s_per_step = 1;
-			const int ascent_mm_per_step = 200; /* 12 m/min */
-			/* ascent speed between deco stops */
-			const int ascent_s_per_deco_step = 1;
-			const int ascent_mm_per_deco_step = 16; /* 1 m/min */
-			/* how long time steps in deco calculations? */
-			const int time_stepsize = 10;
-			const int deco_stepsize = 3000;
-			/* at what depth is the current deco-step? */
-			int next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
-			int ascent_depth = entry->depth;
-			entry->tts = 0;
-
-			/* Add segments for movement to stopdepth */
-			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts += ascent_s_per_step) {
-				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					&dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, ccrdive ? entry->po2 * 1000 : 0, dive);
-				next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
-			}
-			ascent_depth = next_stop;
-
-			/* And how long is the current deco-step? */
-			entry->stoptime = 0;
-			entry->stopdepth = next_stop;
-			next_stop -= deco_stepsize;
-
-			/* And how long is the total TTS */
-			while(next_stop >= 0) {
-				/* save the time for the first stop to show in the graph */
-				if (ascent_depth == entry->stopdepth)
-					entry->stoptime += time_stepsize;
-
-				entry->tts += time_stepsize;
-				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					&dive->cylinder[cylinderindex].gasmix, time_stepsize, ccrdive ? entry->po2 * 1000 : 0, dive);
-
-				if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
-					/* move to the next stop and add the travel between stops */
-					for (; ascent_depth > next_stop ; ascent_depth -= ascent_mm_per_deco_step, entry->tts += ascent_s_per_deco_step)
-						tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-							&dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, ccrdive ? entry->po2 * 1000 : 0, dive);
-					ascent_depth = next_stop;
-					next_stop -= deco_stepsize;
-				}
-			}
-		} else if (!entry->ndl) {
-			/* FIXME: This should be configurable */
-			const int time_stepsize = 60;
-			const int max_ndl = 7200;
-			entry->ndl = max_ndl;
-			pi->has_ndl = TRUE;
-
-			/* don't try to calculate a ndl for lower values than 3m
-			 * it would take forever */
-			if (entry->depth > 3000) {
-				entry->ndl = 0;
-				/* stop if the ndl is above max_ndl seconds, and call it plenty of time */
-				while (entry->ndl < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
-					entry->ndl += time_stepsize;
-					tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
-							&dive->cylinder[cylinderindex].gasmix, time_stepsize, ccrdive ? entry->po2 * 1000 : 0, dive);
-				}
-			}
-		}
-
-		/* Restore "real" deco state for next real time step */
-		if (cache_data) {
-			tissue_tolerance = restore_deco_state(cache_data);
-			free(cache_data);
-		}
 	}
-
-#if DECO_CALC_DEBUG & 1
-	dump_tissues();
-#endif
 }
 
 /*
@@ -1139,9 +1139,12 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 	/* Calculate sac */
 	calculate_sac(dive, pi);
 
-	/* Then, calculate partial pressures and deco information */
+	/* Then, calculate deco information */
 	if (prefs.profile_calc_ceiling)
 		calculate_deco_information(dive, dc, pi);
+
+	/* And finaly calculate gas partial pressures */
+	calculate_gas_information(dive, pi);
 
 	pi->meandepth = dive->dc.meandepth.mm;
 
