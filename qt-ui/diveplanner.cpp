@@ -418,7 +418,7 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1,1)) * M_OR_FT(1,1);
-	plannerModel->addStop(milimeters, minutes * 60, O2_IN_AIR, 0, 0);
+	plannerModel->addStop(milimeters, minutes * 60, -1, 0, 0);
 }
 
 void DivePlannerPointsModel::createSimpleDive()
@@ -511,16 +511,20 @@ void DivePlannerGraphics::drawProfile()
 	}
 
 	// Re-position the user generated dive handlers
+	int last = 0;
 	for (int i = 1; i < plannerModel->rowCount(); i++) {
 		divedatapoint dp = plannerModel->at(i);
+		if (dp.time == 0) // those are the magic entries for tanks
+			continue;
 		DiveHandler *h = handles.at(i);
 		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth));
-		QPointF p1 = handles[i-1]->pos();
+		QPointF p1 = handles[last]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setText(dpGasToStr(plannerModel->at(i-1)));
+		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
+		last = i;
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -532,6 +536,8 @@ void DivePlannerGraphics::drawProfile()
 	poly.append(QPointF(lastx, lasty));
 
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
+		if (dp->time == 0) // magic entry for available tank
+			continue;
 		double xpos = timeLine->posAtValue(dp->time / 60.0);
 		double ypos = depthLine->posAtValue(dp->depth);
 		if (!dp->entered) {
@@ -944,10 +950,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 
 void DivePlannerPointsModel::addCylinder_clicked()
 {
-	qDebug() << "add Cylinder clicked";
-	if (!stagingDive)
-		stagingDive = alloc_dive();
-	CylindersModel::instance()->setDive(stagingDive);
 	CylindersModel::instance()->add();
 }
 
@@ -1009,12 +1011,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 		case CCSETPOINT: return p.po2;
 		case DEPTH: return rint(get_depth_units(p.depth, NULL, NULL));
 		case DURATION: return p.time / 60;
-		case GAS:
-			if (index.row() > 0) {
-				p = divepoints.at(index.row() - 1);
-				return dpGasToStr(p);
-			}
-			return "";
+		case GAS: return dpGasToStr(p);
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch(index.column()) {
@@ -1028,6 +1025,8 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 
 bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+	int o2 = 0;
+	int he = 0;
 	if(role == Qt::EditRole) {
 		divedatapoint& p = divepoints[index.row()];
 		switch(index.column()) {
@@ -1040,19 +1039,11 @@ bool DivePlannerPointsModel::setData(const QModelIndex& index, const QVariant& v
 				p.po2 = po2;
 			}
 			break;
-		case GAS: {
-			if (index.row() == 0) {
-				qDebug() << "how can index.row be 0???";
-				return false;
-			}
-			divedatapoint& pp = divepoints[index.row() - 1];
-			int o2 = 0;
-			int he = 0;
+		case GAS:
 			QByteArray gasv = value.toByteArray();
 			if (validate_gas(gasv.data(), &o2, &he)) {
-				pp.o2 = o2;
-				pp.he = he;
-			}
+				p.o2 = o2;
+				p.he = he;
 			}
 			break;
 		}
@@ -1143,10 +1134,38 @@ bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2)
 	return p1.time <= p2.time;
 }
 
+bool DivePlannerPointsModel::addGas(int o2, int he)
+{
+	cylinder_t *cyl = stagingDive->cylinder;
+	if (is_air(o2, he))
+		o2 = 0;
+
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (cylinder_nodata(cyl)) {
+			cyl->type.description = strdup("Cylinder for planning");
+			cyl->gasmix.o2.permille = o2;
+			cyl->gasmix.he.permille = he;
+			CylindersModel::instance()->setDive(stagingDive);
+			return true;
+		}
+		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he)
+			return true;
+	}
+	qDebug("too many gases");
+	return false;
+}
+
 int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he, int ccpoint)
 {
 	int row = divepoints.count();
+	if (o2 != -1)
+		if (!addGas(o2, he))
+			qDebug("addGas failed"); // FIXME add error propagation
 	if(row == 0) {
+		if (o2 == -1) {
+			o2 = O2_IN_AIR;
+			(void)addGas(o2, 0); // I know this is the first gas - won't fail
+		}
 		beginInsertRows(QModelIndex(), row, row);
 		divedatapoint point;
 		point.depth = 0;
@@ -1249,6 +1268,10 @@ DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 
 void DivePlannerPointsModel::clear()
 {
+	if (!stagingDive)
+		stagingDive = alloc_dive();
+	memset(stagingDive->cylinder, 0, MAX_CYLINDERS * sizeof(cylinder_t));
+	CylindersModel::instance()->setDive(stagingDive);
 	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 	divepoints.clear();
 	endRemoveRows();
@@ -1262,8 +1285,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct divedatapoint *dp = NULL; // create_dp(0, 0, 209, 0, 0);
-//	dp->entered = TRUE;
+	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
+	dp->entered = TRUE;
 	diveplan.dp = dp;
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
@@ -1272,12 +1295,20 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		dp = plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
 	}
-#if DEBUG_PLAN
-	dump_plan(&diveplan);
-#endif
 	char *cache = NULL;
 	tempDive = NULL;
 	const char *errorString = NULL;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = &stagingDive->cylinder[i];
+		if (cyl->depth.mm) {
+			dp = create_dp(0, cyl->depth.mm, cyl->gasmix.o2.permille, cyl->gasmix.he.permille, 0);
+			dp->next = diveplan.dp->next;
+			diveplan.dp->next = dp;
+		}
+	}
+#if DEBUG_PLAN
+	dump_plan(&diveplan);
+#endif
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
 	if (mode == ADD) {
 		copy_samples(tempDive, current_dive);

@@ -65,6 +65,7 @@ signals:
 
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
+	bool addGas(int o2, int he);
 	struct diveplan diveplan;
 	Mode mode;
 	QVector<divedatapoint> divepoints;

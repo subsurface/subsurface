@@ -233,7 +233,6 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 		int time = dp->time;
 		int depth = dp->depth;
 
-#if 0 // the new planner doesn't use that any more
 		if (time == 0) {
 			/* special entries that just inform the algorithm about
 			 * additional gases that are available */
@@ -242,7 +241,6 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 			dp = dp->next;
 			continue;
 		}
-#endif
 		if (!o2 && !he) {
 			o2 = oldo2;
 			he = oldhe;
@@ -258,14 +256,14 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 		/* Create new gas, and gas change event if necessary;
 		 * Sadly, we inherited our gaschange event from libdivecomputer which only
 		 * support percentage values, so round the entries */
-		if (time == 0 || o2 != oldo2 || he != oldhe) {
+		if (o2 != oldo2 || he != oldhe) {
 			int plano2 = (o2 + 5) / 10 * 10;
 			int planhe = (he + 5) / 10 * 10;
 			int value;
 			if (add_gas(dive, plano2, planhe) < 0)
 				goto gas_error_exit;
 			value = (plano2 / 10) | ((planhe / 10) << 16);
-			add_event(dc, time, 25, 0, value, "gaschange"); // SAMPLE_EVENT_GASCHANGE2
+			add_event(dc, lasttime, 25, 0, value, "gaschange"); // SAMPLE_EVENT_GASCHANGE2
 			oldo2 = o2; oldhe = he;
 		}
 		/* Create sample */
@@ -350,7 +348,7 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		lastdp = &(*lastdp)->next;
 	}
 	*lastdp = dp;
-	if (ldp)
+	if (ldp && dp->time != 0)
 		dp->time += lasttime;
 }
 
@@ -565,9 +563,9 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	int transitiontime, gi;
 	unsigned int stopidx, depth, ceiling;
 	double tissue_tolerance;
-	struct gaschanges *gaschanges;
+	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
-	unsigned int *stoplevels;
+	unsigned int *stoplevels = NULL;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	if (!diveplan->surface_pressure)
@@ -613,6 +611,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 #endif
 	if (depth < ceiling) /* that's not good... */
 		depth = ceiling;
+	if (depth == 0 && ceiling == 0) /* we are done here */
+		goto done;
 	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
 		if (decostoplevels[stopidx] >= depth)
 			break;
@@ -686,6 +686,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		record_dive(dive);
 		stopidx--;
 	}
+
+done:
 
 #if DO_WE_WANT_THIS_IN_QT
 	add_plan_to_notes(diveplan, dive);
