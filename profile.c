@@ -1076,7 +1076,7 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 			/* FIXME: This should be configurable */
 			const int time_stepsize = 60;
 			const int max_ndl = 7200;
-			entry->ndl = -1;
+			entry->ndl = max_ndl;
 			pi->has_ndl = TRUE;
 
 			/* don't try to calculate a ndl for lower values than 3m
@@ -1253,10 +1253,7 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nIn deco"), buf2);
 	} else if (has_ndl) {
 		memcpy(buf2, buf, bufsize);
-		if (entry->ndl == -1)
-			snprintf(buf, bufsize, translate("gettextFromC","%s\nNDL:-"), buf2);
-		else
-			snprintf(buf, bufsize, translate("gettextFromC","%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nNDL:%umin"), buf2, DIV_UP(entry->ndl, 60));
 	}
 	if (entry->sac && prefs.show_sac) {
 		memcpy(buf2, buf, bufsize);
