@@ -261,6 +261,9 @@ bool MainTab::isEditing()
 
 void MainTab::updateDiveInfo(int dive)
 {
+	// don't execute this while adding a dive
+	if (editMode == ADD)
+		return;
 	if (!isEnabled() && dive != -1)
 		setEnabled(true);
 	if (isEnabled() && dive == -1)

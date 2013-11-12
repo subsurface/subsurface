@@ -286,8 +286,8 @@ void MainWindow::on_actionAddDive_triggered()
 	// clear the selection
 	dive_list()->unselectDives();
 	disableDcShortcuts();
-	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+
 	// now cheat - create one dive that we use to store the info tab data in
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
@@ -297,11 +297,12 @@ void MainWindow::on_actionAddDive_triggered()
 	// accepting the dive
 	select_dive(get_divenr(dive));
 	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.InfoWidget->addDiveStarted();
 	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
 	ui.infoPane->setCurrentIndex(MAINTAB);
+	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	refreshDisplay();
-	ui.InfoWidget->addDiveStarted();
 }
 
 void MainWindow::on_actionRenumber_triggered()
