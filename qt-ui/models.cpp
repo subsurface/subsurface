@@ -175,7 +175,7 @@ cylinder_t* CylindersModel::cylinderAt(const QModelIndex& index)
 // so we only implement the two columns we care about
 void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 {
-	cylinder_t *cyl = &current->cylinder[index.row()];
+	cylinder_t *cyl = cylinderAt(index);
 	switch(index.column()) {
 	case SIZE:
 		if (cyl->type.size.mliter != value.toInt()) {
@@ -196,7 +196,7 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-	cylinder_t *cyl = &current->cylinder[index.row()];
+	cylinder_t *cyl = cylinderAt(index);
 	switch(index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
@@ -1510,7 +1510,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 	case Qt::DisplayRole: {
 		struct DiveItem di;
-		di.dive = dive;;
+		di.dive = dive;
 		char buf[80];
 
 		const QString unknown = tr("unknown");
