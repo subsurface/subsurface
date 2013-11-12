@@ -420,7 +420,7 @@ void MainWindow::on_actionViewAll_triggered()
 }
 
 void MainWindow::beginChangeState(CurrentState s){
-	if (state == VIEWALL){
+	if (state == VIEWALL && state != s){
 		saveSplitterSizes();
 	}
 	state = s;
@@ -566,12 +566,11 @@ void MainWindow::initialUiSetup()
 {
 	QSettings settings;
 	int i;
-
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
 	resize(sz);
 
-	CurrentState state = (CurrentState) settings.value("lastState", 0).toInt();
+	state = (CurrentState) settings.value("lastState", 0).toInt();
 	switch(state){
 		case VIEWALL: on_actionViewAll_triggered(); break;
 		case GLOBE_MAXIMIZED : on_actionViewGlobe_triggered(); break;
