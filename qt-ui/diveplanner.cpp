@@ -905,6 +905,11 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
 	ui.cylinderTableWidget->setTitle(tr("Available Gases"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
+	// the setColumnHidden calls don't seem to work????
+	ui.cylinderTableWidget->setColumnHidden(CylindersModel::START, true);
+	ui.cylinderTableWidget->setColumnHidden(CylindersModel::END, true);
+	ui.cylinderTableWidget->setColumnHidden(CylindersModel::DEPTH, false);
+
 	ui.cylinderTableWidget->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addCylinder_clicked()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));

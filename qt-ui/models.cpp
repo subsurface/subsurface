@@ -58,8 +58,8 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 
 CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 {
-	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE,};
-	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("HE"));
+	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
+	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("HE") << tr("Switch at"));
 }
 
 CylindersModel *CylindersModel::instance()
@@ -147,6 +147,12 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		case HE:
 			ret = percent_string(cyl->gasmix.he);
+			break;
+		case DEPTH:
+			if (prefs.units.length == prefs.units.FEET)
+				ret = mm_to_feet(cyl->depth.mm);
+			else
+				ret = cyl->depth.mm / 1000;
 			break;
 		}
 		break;
@@ -279,6 +285,15 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 			changed = true;
 		}
 		break;
+	case DEPTH:
+		if (CHANGED(toDouble, "ft", "m")) {
+			if (value.toInt() != 0) {
+				if (prefs.units.length == prefs.units.FEET)
+					cyl->depth.mm = feet_to_mm(value.toString().remove("ft").remove("m").toInt());
+				else
+					cyl->depth.mm = value.toString().remove("ft").remove("m").toInt() * 1000;
+			}
+		}
 	}
 	dataChanged(index, index);
 	return true;
