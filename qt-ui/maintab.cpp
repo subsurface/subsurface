@@ -497,9 +497,15 @@ void MainTab::acceptChanges()
 		fixup_dive(current_dive);
 		if (dive_table.nr == 1)
 			current_dive->number = 1;
-		else if (current_dive == get_dive(dive_table.nr - 1) && get_dive(dive_table.nr - 2)->number)
+		else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
 			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
 		DivePlannerPointsModel::instance()->cancelPlan();
+		// now make sure the selection logic is in a sane state
+		// it's ok to hold on to the dive pointer for this short stretch of code
+		// unselectDives() doesn't mess with the dive_table at all
+		struct dive *addedDive = current_dive;
+		mainWindow()->dive_list()->unselectDives();
+		mainWindow()->dive_list()->selectDive(addedDive, true, true);
 		mainWindow()->showProfile();
 		mainWindow()->refreshDisplay();
 		mark_divelist_changed(TRUE);
@@ -548,8 +554,8 @@ void MainTab::rejectChanges()
 	} else {
 		if (editMode == ADD) {
 			// clean up
-			delete_single_dive(selected_dive);
 			DivePlannerPointsModel::instance()->cancelPlan();
+			delete_single_dive(selected_dive);
 		} else if (editMode == MANUALLY_ADDED_DIVE ) {
 			DivePlannerPointsModel::instance()->undoEdition(); // that's BOGUS... just copy the original dive back and be done with it...
 		}

@@ -1251,8 +1251,9 @@ void DivePlannerPointsModel::cancelPlan()
 	}
 	clear();
 	emit planCanceled();
+	if (mode != ADD)
+		free(stagingDive);
 	setPlanMode(NOTHING);
-	free(stagingDive);
 	stagingDive = NULL;
 	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
@@ -1265,9 +1266,13 @@ DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 
 void DivePlannerPointsModel::clear()
 {
-	if (!stagingDive)
-		stagingDive = alloc_dive();
-	memset(stagingDive->cylinder, 0, MAX_CYLINDERS * sizeof(cylinder_t));
+	if (mode == ADD) {
+		stagingDive = current_dive;
+	} else {
+		if (!stagingDive)
+			stagingDive = alloc_dive();
+		memset(stagingDive->cylinder, 0, MAX_CYLINDERS * sizeof(cylinder_t));
+	}
 	CylindersModel::instance()->setDive(stagingDive);
 	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 	divepoints.clear();

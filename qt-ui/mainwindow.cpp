@@ -283,11 +283,7 @@ void MainWindow::on_actionAddDive_triggered()
 	}
 
 	// clear the selection
-	for (int i = 0; i < dive_table.nr; i++) {
-		struct dive *d = get_dive(i);
-		if (d && d->selected)
-			deselect_dive(i);
-	}
+	dive_list()->unselectDives();
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
@@ -296,6 +292,8 @@ void MainWindow::on_actionAddDive_triggered()
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
 	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
 	record_dive(dive);
+	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
+	// accepting the dive
 	select_dive(get_divenr(dive));
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
