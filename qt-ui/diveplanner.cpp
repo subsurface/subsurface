@@ -44,7 +44,6 @@ QString gasToStr(const int o2Permille, const int hePermille) {
 	QString result = is_air(o2Permille, hePermille) ? QObject::tr("AIR")
 							: he == 0 ? QString("EAN%1").arg(o2, 2, 10, QChar('0'))
 								  : QString("%1/%2").arg(o2).arg(he);
-	qDebug() << o2 << he << result;
 	return result;
 }
 
@@ -466,7 +465,6 @@ QStringList& DivePlannerPointsModel::getGasList()
 			list.push_back(gasToStr(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
 		}
 	}
-	qDebug() << list;
 	return list;
 }
 
@@ -485,7 +483,6 @@ void DivePlannerGraphics::selectGas(const QModelIndex& index)
 	QString gasSelected = gasListView->model()->data(index, Qt::DisplayRole).toString();
 	int idx = gases.indexOf(currentGasChoice);
 	plannerModel->setData(plannerModel->index(idx, DivePlannerPointsModel::GAS), gasSelected);
-	qDebug() << "gas selected:" << gasSelected;
 	gasListView->hide();
 }
 
