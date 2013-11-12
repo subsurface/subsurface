@@ -707,7 +707,7 @@ void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct gra
 static struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int idx, maxtime, nr, i;
-	int lastdepth, lasttime;
+	int lastdepth, lasttime, lasttemp = 0;
 	struct plot_data *plot_data;
 
 	maxtime = pi->maxtime;
@@ -774,7 +774,10 @@ static struct plot_data *populate_plot_entries(struct dive *dive, struct divecom
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
-		entry->temperature = sample->temperature.mkelvin;
+		if (sample->temperature.mkelvin)
+			entry->temperature = lasttemp = sample->temperature.mkelvin;
+		else
+			entry->temperature = lasttemp;
 
 		lasttime = time;
 		lastdepth = depth;
