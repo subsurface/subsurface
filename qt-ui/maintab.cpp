@@ -572,8 +572,14 @@ void MainTab::rejectChanges()
 		ui.visibility->setCurrentStars(notesBackup[curr].visibility);
 		ui.airtemp->setText(notesBackup[curr].airtemp);
 		ui.watertemp->setText(notesBackup[curr].watertemp);
-		ui.dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime, QString("M/d/y h:mm")));
 		ui.tagWidget->setText(notesBackup[curr].tags);
+		// it's a little harder to do the right thing for the date time widget
+		if (curr) {
+			ui.dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime, QString("M/d/y h:mm")));
+		} else {
+			QLineEdit *le = ui.dateTimeEdit->findChild<QLineEdit*>();
+			le->setText("");
+		}
 
 		struct dive *mydive;
 		for (int i = 0; i < dive_table.nr; i++) {
@@ -610,6 +616,7 @@ void MainTab::rejectChanges()
 		} else {
 			cylindersModel->clear();
 			weightModel->clear();
+			setEnabled(false);
 		}
 	}
 
@@ -817,7 +824,10 @@ QString MainTab::printGPSCoords(int lat, int lon)
 
 void MainTab::updateGpsCoordinates(const struct dive *dive)
 {
-	ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
-	ui.coordinates->setModified(dive->latitude.udeg || dive->longitude.udeg);
-
+	if (dive) {
+		ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
+		ui.coordinates->setModified(dive->latitude.udeg || dive->longitude.udeg);
+	} else {
+		ui.coordinates->clear();
+	}
 }
