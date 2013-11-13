@@ -508,7 +508,7 @@ void DiveListView::saveSelectedDivesAs()
 	}
 	settings.endGroup();
 
-	QString fileName = QFileDialog::getOpenFileName(mainWindow(), tr("Save Dives As..."), QDir::homePath());
+	QString fileName = QFileDialog::getSaveFileName(mainWindow(), tr("Save Dives As..."), QDir::homePath());
 	if (fileName.isEmpty())
 		return;
 
