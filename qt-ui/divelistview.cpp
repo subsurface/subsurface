@@ -119,6 +119,8 @@ void DiveListView::unselectDives()
 
 void DiveListView::selectDive(struct dive *dive, bool scrollto, bool toggle)
 {
+	if (dive == NULL)
+		return;
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QModelIndexList match = m->match(m->index(0,0), DiveTripModel::NR, dive->number, 1, Qt::MatchRecursive);
 	QItemSelectionModel::SelectionFlags flags;
@@ -227,7 +229,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		return;
 
 	sortByColumn(sortColumn, currentOrder);
-	if (amount_selected && selected_dive >= 0) {
+	if (amount_selected && current_dive != NULL) {
 		selectDive(current_dive, true);
 	} else {
 		QModelIndex firstDiveOrTrip = m->index(0,0);
