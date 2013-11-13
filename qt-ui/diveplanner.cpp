@@ -1303,6 +1303,11 @@ void DivePlannerPointsModel::tanksUpdated()
 			// either nothing relevant changed, or exactly ONE gasmix changed
 			for (int i = 0; i < gases.length(); i++) {
 				if (gases.at(i) != oldGases.at(i)) {
+					if (oldGases.count(oldGases.at(i)) > 1) {
+						// we had this gas more than once, so don't
+						// change segments that used this gas as it still exists
+						break;
+					}
 					for (int j = 0; j < rowCount(); j++) {
 						divedatapoint& p = divepoints[j];
 						int o2 = oldGases.at(i).first;
