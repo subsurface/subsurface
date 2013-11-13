@@ -474,8 +474,7 @@ void MainTab::acceptChanges()
 
 		if (notesBackup[curr].tags != ui.tagWidget->text())
 			saveTags();
-
-		if (cylindersModel->changed) {
+		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(TRUE);
 			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -494,6 +493,7 @@ void MainTab::acceptChanges()
 		}
 
 	}
+	save_dive(stdout, current_dive);
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// clean up the dive data (get duration, depth information from samples)
 		fixup_dive(current_dive);
