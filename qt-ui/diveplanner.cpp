@@ -1138,7 +1138,7 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (cylinder_nodata(cyl)) {
-			cyl->type.description = strdup("Cylinder for planning");
+			fill_default_cylinder(cyl);
 			cyl->gasmix.o2.permille = o2;
 			cyl->gasmix.he.permille = he;
 			CylindersModel::instance()->setDive(stagingDive);

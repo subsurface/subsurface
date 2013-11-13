@@ -168,6 +168,13 @@ static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int ne
 	return wait;
 }
 
+void fill_default_cylinder(cylinder_t *cyl)
+{
+	cyl->type.description = strdup("AL80");
+	cyl->type.size.mliter = 11097;
+	cyl->type.workingpressure.mbar = 206843;
+}
+
 int add_gas(struct dive *dive, int o2, int he)
 {
 	int i;
@@ -185,11 +192,10 @@ int add_gas(struct dive *dive, int o2, int he)
 	if (i == MAX_CYLINDERS) {
 		return -1;
 	}
+	/* let's make it our default cylinder (right now hardcoded as AL80) */
+	fill_default_cylinder(cyl);
 	mix->o2.permille = o2;
 	mix->he.permille = he;
-	/* since air is stored as 0/0 we need to set a name or an air cylinder
-	 * would be seen as unset (by cylinder_nodata()) */
-	cyl->type.description = strdup(translate("gettextFromC","Cylinder for planning"));
 	return i;
 }
 
