@@ -23,7 +23,6 @@ struct plot_data {
 	int ceiling;
 	int ceilings[16];
 	int ndl;
-	int tts;
 	int stoptime;
 	int stopdepth;
 	int cns;
@@ -36,6 +35,12 @@ struct plot_data {
 	struct plot_data *min[3];
 	struct plot_data *max[3];
 	int avg[3];
+	/* values calculated by us */
+	unsigned int in_deco_calc:1;
+	int ndl_calc;
+	int tts_calc;
+	int stoptime_calc;
+	int stopdepth_calc;
 };
 
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
