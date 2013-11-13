@@ -444,10 +444,12 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	for(int i = 0; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
 	}
+	int lasttime = 0;
 	Q_FOREACH(const sample &s, backupSamples){
 		int o2 = 0, he = 0;
-		get_gas_from_events(&backupDive->dc, s.time.seconds, &o2, &he);
+		get_gas_from_events(&backupDive->dc, lasttime, &o2, &he);
 		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
+		lasttime = s.time.seconds;
 	}
 }
 
