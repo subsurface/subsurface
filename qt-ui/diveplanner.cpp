@@ -1132,11 +1132,11 @@ bool divePointsLessThan(const divedatapoint& p1, const divedatapoint& p2)
 
 bool DivePlannerPointsModel::addGas(int o2, int he)
 {
-	cylinder_t *cyl = stagingDive->cylinder;
 	if (is_air(o2, he))
 		o2 = 0;
 
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = &stagingDive->cylinder[i];
 		if (cylinder_nodata(cyl)) {
 			fill_default_cylinder(cyl);
 			cyl->gasmix.o2.permille = o2;
