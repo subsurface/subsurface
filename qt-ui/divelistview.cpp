@@ -37,6 +37,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	const QFontMetrics metrics(defaultModelFont());
 	header()->setMinimumHeight(metrics.height() + 10);
+	header()->setStretchLastSection(true);
 	QAction *showSearchBox = new QAction(tr("Show Search Box"), this);
 	showSearchBox->setShortcut( Qt::CTRL + Qt::Key_F);
 	showSearchBox->setShortcutContext(Qt::ApplicationShortcut);
@@ -87,6 +88,18 @@ void DiveListView::setupUi(){
 	else
 		collapseAll();
 	firstRun = false;
+	setColumnWidth(lastVisibleColumn(), 10);
+}
+
+int DiveListView::lastVisibleColumn()
+{
+	int lastColumn = -1;
+	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++) {
+		if(isColumnHidden(i))
+			continue;
+		lastColumn = i;
+	}
+	return lastColumn;
 }
 
 void DiveListView::backupExpandedRows(){
@@ -320,6 +333,7 @@ void DiveListView::toggleColumnVisibilityByIndex()
 	s.endGroup();
 	s.sync();
 	setColumnHidden(action->property("index").toInt(), !action->isChecked());
+	setColumnWidth(lastVisibleColumn(), 10);
 }
 
 void DiveListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)

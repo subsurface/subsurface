@@ -62,6 +62,7 @@ private:
 	void setupUi();
 	void backupExpandedRows();
 	void restoreExpandedRows();
+	int lastVisibleColumn();
 };
 
 #endif // DIVELISTVIEW_H
