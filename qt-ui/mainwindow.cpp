@@ -120,9 +120,6 @@ void MainWindow::on_actionOpen_triggered()
 	settings.setValue("LastDir",fileInfo.dir().path());
 	settings.endGroup();
 
-	// Needed to convert to char*
-	QByteArray fileNamePtr = filename.toLocal8Bit();
-
 	on_actionClose_triggered();
 	loadFiles( QStringList() << filename );
 }
