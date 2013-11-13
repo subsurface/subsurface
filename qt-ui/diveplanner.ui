@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>352</height>
+    <width>515</width>
+    <height>591</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,8 +45,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>400</width>
-        <height>352</height>
+        <width>515</width>
+        <height>591</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
@@ -118,7 +118,7 @@
        <item row="7" column="0" colspan="2">
         <widget class="TableView" name="cylinderTableWidget" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
