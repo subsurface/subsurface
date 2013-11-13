@@ -1263,6 +1263,64 @@ DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 	return mode;
 }
 
+QList<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
+{
+	QList<QPair<int, int> > l;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = &d->cylinder[i];
+		if (!cylinder_nodata(cyl))
+			l.push_back(QPair<int, int>(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
+	}
+	return l;
+}
+void DivePlannerPointsModel::rememberTanks()
+{
+	oldGases = collectGases(stagingDive);
+}
+
+bool DivePlannerPointsModel::tankInUse(int o2, int he)
+{
+	for (int j = 0; j < rowCount(); j++) {
+		divedatapoint& p = divepoints[j];
+		if (p.time == 0) // special entries that hold the available gases
+			continue;
+		if ((p.o2 == o2 && p.he == he) ||
+		    (is_air(p.o2, p.he) && is_air(o2, he)))
+			return true;
+	}
+	return false;
+}
+
+void DivePlannerPointsModel::tanksUpdated()
+{
+	if (mode == ADD) {
+		// we don't know exactly what changed - what we care about is
+		// "did a gas change on us". So we look through the diveplan to
+		// see if there is a gas that is now missing and if there is, we
+		// replace it with the matching new gas.
+		QList<QPair<int,int> > gases = collectGases(stagingDive);
+		if (gases.length() == oldGases.length()) {
+			// either nothing relevant changed, or exactly ONE gasmix changed
+			for (int i = 0; i < gases.length(); i++) {
+				if (gases.at(i) != oldGases.at(i)) {
+					for (int j = 0; j < rowCount(); j++) {
+						divedatapoint& p = divepoints[j];
+						int o2 = oldGases.at(i).first;
+						int he = oldGases.at(i).second;
+						if (p.o2 == o2 && p.he == he ||
+						    (is_air(p.o2, p.he) && (is_air(o2, he) || (o2 == 0 && he == 0)))) {
+							p.o2 = gases.at(i).first;
+							p.he = gases.at(i).second;
+						}
+					}
+					break;
+				}
+			}
+		}
+		emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
+	}
+}
+
 void DivePlannerPointsModel::clear()
 {
 	if (mode == ADD) {
@@ -1312,8 +1370,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
 	if (mode == ADD) {
+		// copy the samples and events, but don't overwrite the cylinders
 		copy_samples(tempDive, current_dive);
-		copy_cylinders(tempDive, current_dive);
 		copy_events(tempDive, current_dive);
 	}
 #if DEBUG_PLAN

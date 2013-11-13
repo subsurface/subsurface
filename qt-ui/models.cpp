@@ -5,6 +5,8 @@
  *
  */
 #include "models.h"
+#include "diveplanner.h"
+#include "mainwindow.h"
 #include "../helpers.h"
 #include "../dive.h"
 #include "../device.h"
@@ -17,6 +19,7 @@
 #include <QBrush>
 #include <QFont>
 #include <QIcon>
+#include <QMessageBox>
 
 QFont defaultModelFont()
 {
@@ -196,6 +199,10 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+	bool addDiveMode = DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING;
+	if (addDiveMode)
+		DivePlannerPointsModel::instance()->rememberTanks();
+
 	cylinder_t *cyl = cylinderAt(index);
 	switch(index.column()) {
 	case TYPE:
@@ -296,6 +303,8 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 	}
 	dataChanged(index, index);
+	if (addDiveMode)
+		DivePlannerPointsModel::instance()->tanksUpdated();
 	return true;
 }
 
@@ -311,7 +320,7 @@ void CylindersModel::add()
 	}
 
 	int row = rows;
-
+	fill_default_cylinder(&current->cylinder[row]);
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
 	changed = true;
@@ -364,6 +373,14 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex& index) const
 void CylindersModel::remove(const QModelIndex& index)
 {
 	if (index.column() != REMOVE) {
+		return;
+	}
+	cylinder_t *cyl = &current->cylinder[index.row()];
+	if (DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) {
+		QMessageBox::warning(mainWindow(),
+				     tr("Cylinder cannot be removed"),
+				     tr("This gas in use. Only cylinders that are not used in the dive can be removed."),
+				     QMessageBox::Ok);
 		return;
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.

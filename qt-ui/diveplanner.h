@@ -34,6 +34,9 @@ public:
 	void createSimpleDive();
 	void clear();
 	Mode currentMode() const;
+	void tanksUpdated();
+	void rememberTanks();
+	bool tankInUse(int o2, int he);
 	/**
 	 * @return the row number.
 	 */
@@ -42,6 +45,8 @@ public:
 	int size();
 	struct diveplan getDiveplan();
 	QStringList &getGasList();
+	QList<QPair<int, int> > collectGases(dive *d);
+
 public slots:
 	int addStop(int meters = 0, int minutes = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
 	void addCylinder_clicked();
@@ -73,6 +78,7 @@ private:
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
 	struct dive *stagingDive;
+	QList<QPair<int, int> > oldGases;
 };
 
 class Button : public QObject, public QGraphicsRectItem {
