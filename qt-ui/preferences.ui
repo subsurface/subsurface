@@ -620,7 +620,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="maxppo2">
+               <widget class="QDoubleSpinBox" name="maxppo2">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
