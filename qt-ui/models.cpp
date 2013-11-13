@@ -195,7 +195,9 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 	}
 }
 
-#define CHANGED(_t,_u1,_u2) value._t() != data(index, role).toString().remove(_u1).remove(_u2)._t()
+#define CHANGED(_t,_u1,_u2) \
+	value.toString().remove(_u1).remove(_u2)._t() !=  \
+	data(index, role).toString().remove(_u1).remove(_u2)._t()
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
