@@ -104,25 +104,21 @@ int DiveListView::lastVisibleColumn()
 
 void DiveListView::backupExpandedRows(){
 	expandedRows.clear();
-	for(int i = 0; i < model()->rowCount(); i++){
-		if(isExpanded( model()->index(i, 0) )){
+	for(int i = 0; i < model()->rowCount(); i++)
+		if(isExpanded( model()->index(i, 0) ))
 			expandedRows.push_back(i);
-		}
-	}
 }
 
 void DiveListView::restoreExpandedRows(){
-	Q_FOREACH(const int &i, expandedRows){
+	Q_FOREACH(const int &i, expandedRows)
 		setExpanded( model()->index(i, 0), true );
-	}
 }
 void DiveListView::fixMessyQtModelBehaviour()
 {
 	QAbstractItemModel *m = model();
-	for(int i = 0; i < model()->rowCount(); i++){
+	for(int i = 0; i < model()->rowCount(); i++)
 		if (m->rowCount( m->index(i, 0) ) != 0)
 			setFirstColumnSpanned(i, QModelIndex(), true);
-	}
 }
 
 // this only remembers dives that were selected, not trips
@@ -278,6 +274,9 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		}
 	}
 	setupUi();
+	QModelIndex curr = selectionModel()->currentIndex();
+	if (curr.parent().isValid() && !isExpanded(curr.parent()))
+		expand(curr.parent());
 }
 
 void DiveListView::reloadHeaderActions()
