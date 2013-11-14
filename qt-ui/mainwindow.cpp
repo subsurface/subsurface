@@ -296,6 +296,7 @@ void MainWindow::on_actionAddDive_triggered()
 	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
 	// accepting the dive
 	select_dive(get_divenr(dive));
+	ui.InfoWidget->setCurrentIndex(0);
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.InfoWidget->addDiveStarted();
 	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
