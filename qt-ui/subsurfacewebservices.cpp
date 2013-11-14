@@ -70,36 +70,36 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 {
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	switch(ui.buttonBox->buttonRole(button)){
-		case QDialogButtonBox::ApplyRole:{
-			clear_table(&gps_location_table);
-			QByteArray url = tr("Webservice").toLocal8Bit();
-			parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL, NULL);
+	case QDialogButtonBox::ApplyRole:{
+		clear_table(&gps_location_table);
+		QByteArray url = tr("Webservice").toLocal8Bit();
+		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL, NULL);
 
-			/* now merge the data in the gps_location table into the dive_table */
-			if (merge_locations_into_dives()) {
-				mark_divelist_changed(TRUE);
-			}
-
-			/* store last entered uid in config */
-			QSettings s;
-			s.setValue("subsurface_webservice_uid", ui.userID->text().toUpper());
-			s.sync();
-			hide();
-			close();
+		/* now merge the data in the gps_location table into the dive_table */
+		if (merge_locations_into_dives()) {
+			mark_divelist_changed(TRUE);
 		}
+
+		/* store last entered uid in config */
+		QSettings s;
+		s.setValue("subsurface_webservice_uid", ui.userID->text().toUpper());
+		s.sync();
+		hide();
+		close();
+	}
 		break;
-		case QDialogButtonBox::RejectRole:
-			// we may want to clean up after ourselves, but this
-			// makes Subsurface throw a SIGSEGV...
-			// manager->deleteLater();
-			// reply->deleteLater();
-			ui.progressBar->setMaximum(1);
-			break;
-		case QDialogButtonBox::HelpRole:
-			QDesktopServices::openUrl(QUrl("http://api.hohndel.org"));
-			break;
-		default:
-			break;
+	case QDialogButtonBox::RejectRole:
+		// we may want to clean up after ourselves, but this
+		// makes Subsurface throw a SIGSEGV...
+		// manager->deleteLater();
+		// reply->deleteLater();
+		ui.progressBar->setMaximum(1);
+		break;
+	case QDialogButtonBox::HelpRole:
+		QDesktopServices::openUrl(QUrl("http://api.hohndel.org"));
+		break;
+	default:
+		break;
 	}
 }
 
@@ -120,7 +120,7 @@ void SubsurfaceWebServices::startDownload()
 
 	connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-			this, SLOT(downloadError(QNetworkReply::NetworkError)));
+		this, SLOT(downloadError(QNetworkReply::NetworkError)));
 }
 
 void SubsurfaceWebServices::downloadFinished()
@@ -167,7 +167,7 @@ void SubsurfaceWebServices::download_dialog_traverse_xml(xmlNodePtr node, unsign
 	xmlNodePtr cur_node;
 	for (cur_node = node; cur_node; cur_node = cur_node->next) {
 		if ((!strcmp((const char *)cur_node->name, (const char *)"download")) &&
-			  (!strcmp((const char *)xmlNodeGetContent(cur_node), (const char *)"ok"))) {
+				(!strcmp((const char *)xmlNodeGetContent(cur_node), (const char *)"ok"))) {
 			*download_status = DD_STATUS_OK;
 			return;
 		}	else if (!strcmp((const char *)cur_node->name, (const char *)"error")) {
@@ -192,16 +192,16 @@ unsigned int SubsurfaceWebServices::download_dialog_parse_response(const QByteAr
 	}
 	if (root->children)
 		download_dialog_traverse_xml(root->children, &status);
-	end:
-		xmlFreeDoc(doc);
-		return status;
+end:
+	xmlFreeDoc(doc);
+	return status;
 }
 
 static bool is_automatic_fix(struct dive *gpsfix)
 {
 	if (gpsfix && gpsfix->location &&
-	    (!strcmp(gpsfix->location, "automatic fix") ||
-	     !strcmp(gpsfix->location, "Auto-created dive")))
+			(!strcmp(gpsfix->location, "automatic fix") ||
+			 !strcmp(gpsfix->location, "Auto-created dive")))
 		return TRUE;
 	return FALSE;
 }
@@ -223,9 +223,9 @@ static bool merge_locations_into_dives(void)
 				struct tm tm;
 				utc_mkdate(gpsfix->when, &tm);
 				printf("found dive named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
-					gpsfix->location,
-					tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-					tm.tm_hour, tm.tm_min, tm.tm_sec);
+				       gpsfix->location,
+				       tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+				       tm.tm_hour, tm.tm_min, tm.tm_sec);
 #endif
 				changed++;
 				copy_gps_location(gpsfix, dive);
@@ -252,9 +252,9 @@ static bool merge_locations_into_dives(void)
 				utc_mkdate(gpsfix->when, &tm);
 #if DEBUG_WEBSERVICE
 				printf("didn't find dive matching gps fix named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
-					gpsfix->location,
-					tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-					tm.tm_hour, tm.tm_min, tm.tm_sec);
+				       gpsfix->location,
+				       tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+				       tm.tm_hour, tm.tm_min, tm.tm_sec);
 #endif
 			}
 		}

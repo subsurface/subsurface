@@ -13,7 +13,7 @@ class QNetworkReply;
 class WebServices : public QDialog{
 	Q_OBJECT
 public:
-    explicit WebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit WebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void hidePassword();
 	void hideUpload();
 
@@ -41,7 +41,7 @@ private slots:
 	void downloadError(QNetworkReply::NetworkError error);
 	void startUpload(){} /*no op*/
 private:
-    explicit SubsurfaceWebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit SubsurfaceWebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray& length);
@@ -57,9 +57,9 @@ private slots:
 	void buttonClicked(QAbstractButton* button);
 	void downloadFinished();
 	void downloadError(QNetworkReply::NetworkError error);
-    void startUpload();
+	void startUpload();
 private:
-    explicit DivelogsDeWebServices (QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit DivelogsDeWebServices (QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray& length);
