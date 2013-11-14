@@ -17,6 +17,8 @@ public:
 	void hidePassword();
 	void hideUpload();
 
+	static QNetworkAccessManager *manager();
+
 private slots:
 	virtual void startDownload() = 0;
 	virtual void startUpload() = 0;
@@ -25,7 +27,6 @@ private slots:
 protected:
 	Ui::WebServices ui;
 	QNetworkReply *reply;
-	QNetworkAccessManager *manager;
 	QByteArray downloadedData;
 };
 
