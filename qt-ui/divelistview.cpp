@@ -112,6 +112,30 @@ void DiveListView::fixMessyQtModelBehaviour()
 	}
 }
 
+// this only remembers dives that were selected, not trips
+void DiveListView::rememberSelection()
+{
+	selectedDives.clear();
+	QItemSelection selection = selectionModel()->selection();
+	Q_FOREACH(const QModelIndex& index , selection.indexes()) {
+		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
+			continue;
+		struct dive *d = (struct dive *) index.data(DiveTripModel::DIVE_ROLE).value<void*>();
+		if (d)
+			selectedDives.push_front(get_divenr(d));
+	}
+}
+
+void DiveListView::restoreSelection()
+{
+	unselectDives();
+	Q_FOREACH(int i, selectedDives) {
+		struct dive *d = get_dive(i);
+		if (d)
+			selectDive(d);
+	}
+}
+
 void DiveListView::unselectDives()
 {
 	selectionModel()->clearSelection();

@@ -26,6 +26,8 @@ public:
 	bool eventFilter(QObject* , QEvent* );
 	void unselectDives();
 	void selectDive(struct dive *, bool scrollto = false, bool toggle = false);
+	void rememberSelection();
+	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
 	QSet<dive_trip_t *> selectedTrips;
 
@@ -50,6 +52,7 @@ signals:
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;
+	QList<int> selectedDives;
 	int sortColumn;
 	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;

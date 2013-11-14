@@ -108,7 +108,7 @@ protected:
 
 public slots:
 	void readSettings();
-	void refreshDisplay();
+	void refreshDisplay(bool recreateDiveList = true);
 	void showProfile();
 	void editCurrentDive();
 

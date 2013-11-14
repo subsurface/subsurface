@@ -493,7 +493,6 @@ void MainTab::acceptChanges()
 		}
 
 	}
-	save_dive(stdout, current_dive);
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// clean up the dive data (get duration, depth information from samples)
 		fixup_dive(current_dive);
@@ -558,7 +557,6 @@ void MainTab::rejectChanges()
 		if (lastMode == ADD) {
 			// clean up
 			DivePlannerPointsModel::instance()->cancelPlan();
-			delete_single_dive(selected_dive);
 		} else if (lastMode == MANUALLY_ADDED_DIVE ) {
 			DivePlannerPointsModel::instance()->undoEdition(); // that's BOGUS... just copy the original dive back and be done with it...
 		}
@@ -609,6 +607,11 @@ void MainTab::rejectChanges()
 			}
 		}
 		updateGpsCoordinates(curr);
+		if (lastMode == ADD) {
+			delete_single_dive(selected_dive);
+			mainWindow()->dive_list()->reload(DiveTripModel::CURRENT);
+			mainWindow()->dive_list()->restoreSelection();
+		}
 		if (selected_dive >= 0) {
 			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
 			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
@@ -627,14 +630,15 @@ void MainTab::rejectChanges()
 	ui.equipmentButtonBox->hide();
 	notesBackup.clear();
 	resetPallete();
+	editMode = NONE;
 	if (lastMode == ADD || lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
 		updateDiveInfo(selected_dive);
 		mainWindow()->showProfile();
-		mainWindow()->refreshDisplay();
+		// we already reloaded the divelist above, so don't recreate it or we'll lose the selection
+		mainWindow()->refreshDisplay(false);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
-	editMode = NONE;
 }
 #undef EDIT_TEXT2
 

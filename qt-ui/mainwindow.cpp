@@ -65,12 +65,13 @@ MainWindow::MainWindow() : helpView(0)
 }
 
 // this gets called after we download dives from a divecomputer
-void MainWindow::refreshDisplay()
+void MainWindow::refreshDisplay(bool recreateDiveList)
 {
 	ui.InfoWidget->reload();
 	ui.ProfileWidget->refresh();
 	ui.globe->reload();
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
+	if (recreateDiveList)
+		ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->setFocus();
 	WSInfoModel *wsim = WSInfoModel::instance();
 	wsim->updateInfo();
@@ -282,8 +283,7 @@ void MainWindow::on_actionAddDive_triggered()
 		QMessageBox::warning(this, tr("Warning"), "First finish the current edition before trying to do another." );
 		return;
 	}
-
-	// clear the selection
+	dive_list()->rememberSelection();
 	dive_list()->unselectDives();
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
