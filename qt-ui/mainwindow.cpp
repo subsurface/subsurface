@@ -99,11 +99,10 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	QString lastDir = lastUsedDir();
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastDir, filter());
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastUsedDir(), filter());
 	if (filename.isEmpty())
 		return;
-	updateLastUsedDir(filename);
+	updateLastUsedDir(QFileInfo(filename).dir().path());
 	on_actionClose_triggered();
 	loadFiles( QStringList() << filename );
 }
@@ -150,12 +149,9 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-	QString lastDir = lastUsedDir();
-
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Import Files"), lastDir, filter());
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Import Files"), lastUsedDir(), filter());
 	if (!fileNames.size())
 		return; // no selection
-
 	updateLastUsedDir(QFileInfo(fileNames.at(0)).dir().path());
 	importFiles(fileNames);
 }
@@ -181,10 +177,8 @@ void MainWindow::updateLastUsedDir(const QString& dir)
 
 void MainWindow::on_actionExportUDDF_triggered()
 {
-	QString filename;
 	QFileInfo fi(system_default_filename());
-
-	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), fi.absolutePath(),
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save File as"), fi.absolutePath(),
 						tr("UDDF files (*.uddf *.UDDF)"));
 	if (!filename.isNull() && !filename.isEmpty())
 		export_dives_uddf((const char *)filename.toStdString().c_str(), false);
@@ -227,7 +221,6 @@ void MainWindow::showProfile()
 	ui.stackedWidget->setCurrentIndex(PROFILE);
 	ui.infoPane->setCurrentIndex(MAINTAB);
 }
-
 
 void MainWindow::on_actionPreferences_triggered()
 {
@@ -819,7 +812,6 @@ void MainWindow::on_actionImportCSV_triggered()
 	process_dives(TRUE, FALSE);
 	refreshDisplay();
 }
-
 
 void MainWindow::editCurrentDive()
 {
