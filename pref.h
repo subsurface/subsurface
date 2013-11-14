@@ -36,7 +36,6 @@ struct preferences {
 	short show_invalid;
 	short unit_system;
 	struct units units;
-	short show_time;
 	short show_sac;
 };
 enum unit_system_values { METRIC, IMPERIAL, PERSONALIZE };

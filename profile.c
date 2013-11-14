@@ -1193,12 +1193,7 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 	double depthvalue, tempvalue, speedvalue;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","D:%.1f %s"), depthvalue, depth_unit);
-
-	if (prefs.show_time) {
-		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%d:%02d"), buf2, FRACTION(entry->sec, 60));
-	}
+	snprintf(buf, bufsize, translate("gettextFromC","@:%d:%02d\nD:%.1f %s"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
 	if (GET_PRESSURE(entry)) {
 		pressurevalue = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
 		memcpy(buf2, buf, bufsize);
@@ -1207,7 +1202,7 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s\nTemp:%.1f %s"), buf2, tempvalue, temp_unit);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nT:%.1f %s"), buf2, tempvalue, temp_unit);
 	}
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);

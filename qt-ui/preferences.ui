@@ -724,17 +724,6 @@
              </layout>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_11">
-              <item>
-               <widget class="QCheckBox" name="show_time">
-                <property name="text">
-                 <string>Show time</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
              <layout class="QHBoxLayout" name="horizontalLayout_11b">
               <item>
                <widget class="QCheckBox" name="show_sac">
