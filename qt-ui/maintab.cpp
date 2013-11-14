@@ -353,6 +353,8 @@ void MainTab::updateDiveInfo(int dive)
 		ui.diveTimeText->setText(QString::number((int)((d->duration.seconds + 30) / 60)));
 		if (prevd)
 			ui.surfaceIntervalText->setText(get_time_string(d->when - (prevd->when + prevd->duration.seconds), 4));
+		else
+			ui.surfaceIntervalText->clear();
 		if ((sacVal.mliter = d->sac) > 0)
 			ui.sacText->setText(get_volume_string(sacVal, TRUE).append(tr("/min")));
 		else
@@ -510,13 +512,16 @@ void MainTab::acceptChanges()
 		mainWindow()->dive_list()->unselectDives();
 		mainWindow()->dive_list()->selectDive(addedDive, true, true);
 		mainWindow()->showProfile();
-		mainWindow()->refreshDisplay();
 		mark_divelist_changed(TRUE);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
 	editMode = NONE;
 
 	resetPallete();
+	// now comes the scary moment... we need to re-sort dive table in case this dive wasn't the last
+	// so now all pointers become invalid
+	// fingers crossed that we aren't holding on to anything here
+	sort_table(&dive_table);
 	mainWindow()->refreshDisplay();
 }
 
