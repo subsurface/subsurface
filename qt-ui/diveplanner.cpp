@@ -925,13 +925,13 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addCylinder_clicked()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
-	connect(ui.startTime, SIGNAL(timeChanged(QTime)), this, SLOT(startTimeChanged(QTime)));
+	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
 	connect(ui.decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
-	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
+	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 
 	// Creating the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
@@ -957,11 +957,6 @@ void DivePlannerPointsModel::addCylinder_clicked()
 	CylindersModel::instance()->add();
 }
 
-void DivePlannerWidget::startTimeChanged(const QTime& time)
-{
-	plannerModel->setStartTime(time);
-}
-
 void DivePlannerWidget::atmPressureChanged(const QString& pressure)
 {
 	plannerModel->setSurfacePressure(pressure.toInt());
@@ -975,11 +970,6 @@ void DivePlannerWidget::bottomSacChanged(const QString& bottomSac)
 void DivePlannerWidget::decoSacChanged(const QString& decosac)
 {
 	plannerModel->setDecoSac(decosac.toInt());
-}
-
-void DivePlannerWidget::lastStopChanged(bool checked)
-{
-	plannerModel->setLastStop6m(checked);
 }
 
 void DivePlannerPointsModel::setPlanMode(Mode m)

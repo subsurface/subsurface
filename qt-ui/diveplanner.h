@@ -223,11 +223,9 @@ public:
     explicit DivePlannerWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
 public slots:
-	void startTimeChanged(const QTime& time);
 	void atmPressureChanged(const QString& pressure);
 	void bottomSacChanged(const QString& bottomSac);
 	void decoSacChanged(const QString& decosac);
-	void lastStopChanged(bool checked);
 private:
 	Ui::DivePlanner ui;
 };
