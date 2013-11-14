@@ -16,6 +16,79 @@
 struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
+static bool is_automatic_fix(struct dive *gpsfix)
+{
+	if (gpsfix && gpsfix->location &&
+			(!strcmp(gpsfix->location, "automatic fix") ||
+			 !strcmp(gpsfix->location, "Auto-created dive")))
+		return TRUE;
+	return FALSE;
+}
+
+#define SAME_GROUP 6 * 3600   // six hours
+
+static bool merge_locations_into_dives(void)
+{
+	int i, nr = 0, changed = 0;
+	struct dive *gpsfix, *last_named_fix = NULL, *dive;
+
+	sort_table(&gps_location_table);
+
+	for_each_gps_location(i, gpsfix) {
+		if (is_automatic_fix(gpsfix)) {
+			dive = find_dive_including(gpsfix->when);
+			if (dive && !dive_has_gps_location(dive)) {
+#if DEBUG_WEBSERVICE
+				struct tm tm;
+				utc_mkdate(gpsfix->when, &tm);
+				printf("found dive named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
+				       gpsfix->location,
+				       tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+				       tm.tm_hour, tm.tm_min, tm.tm_sec);
+#endif
+				changed++;
+				copy_gps_location(gpsfix, dive);
+			}
+		} else {
+			if (last_named_fix && dive_within_time_range(last_named_fix, gpsfix->when, SAME_GROUP)) {
+				nr++;
+			} else {
+				nr = 1;
+				last_named_fix = gpsfix;
+			}
+			dive = find_dive_n_near(gpsfix->when, nr, SAME_GROUP);
+			if (dive) {
+				if (!dive_has_gps_location(dive)) {
+					copy_gps_location(gpsfix, dive);
+					changed++;
+				}
+				if (!dive->location) {
+					dive->location = strdup(gpsfix->location);
+					changed++;
+				}
+			} else {
+				struct tm tm;
+				utc_mkdate(gpsfix->when, &tm);
+#if DEBUG_WEBSERVICE
+				printf("didn't find dive matching gps fix named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
+				       gpsfix->location,
+				       tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+				       tm.tm_hour, tm.tm_min, tm.tm_sec);
+#endif
+			}
+		}
+	}
+	return changed > 0;
+}
+
+static void clear_table(struct dive_table *table)
+{
+	int i;
+	for (i = 0; i < table->nr; i++)
+		free(table->dives[i]);
+	table->nr = 0;
+}
+
 WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
 , reply(0)
 {
@@ -61,14 +134,6 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 	ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
 	hidePassword();
 	hideUpload();
-}
-
-static void clear_table(struct dive_table *table)
-{
-	int i;
-	for (i = 0; i < table->nr; i++)
-		free(table->dives[i]);
-	table->nr = 0;
 }
 
 void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
@@ -195,71 +260,6 @@ unsigned int SubsurfaceWebServices::download_dialog_parse_response(const QByteAr
 end:
 	xmlFreeDoc(doc);
 	return status;
-}
-
-static bool is_automatic_fix(struct dive *gpsfix)
-{
-	if (gpsfix && gpsfix->location &&
-			(!strcmp(gpsfix->location, "automatic fix") ||
-			 !strcmp(gpsfix->location, "Auto-created dive")))
-		return TRUE;
-	return FALSE;
-}
-
-#define SAME_GROUP 6 * 3600   // six hours
-
-static bool merge_locations_into_dives(void)
-{
-	int i, nr = 0, changed = 0;
-	struct dive *gpsfix, *last_named_fix = NULL, *dive;
-
-	sort_table(&gps_location_table);
-
-	for_each_gps_location(i, gpsfix) {
-		if (is_automatic_fix(gpsfix)) {
-			dive = find_dive_including(gpsfix->when);
-			if (dive && !dive_has_gps_location(dive)) {
-#if DEBUG_WEBSERVICE
-				struct tm tm;
-				utc_mkdate(gpsfix->when, &tm);
-				printf("found dive named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
-				       gpsfix->location,
-				       tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-				       tm.tm_hour, tm.tm_min, tm.tm_sec);
-#endif
-				changed++;
-				copy_gps_location(gpsfix, dive);
-			}
-		} else {
-			if (last_named_fix && dive_within_time_range(last_named_fix, gpsfix->when, SAME_GROUP)) {
-				nr++;
-			} else {
-				nr = 1;
-				last_named_fix = gpsfix;
-			}
-			dive = find_dive_n_near(gpsfix->when, nr, SAME_GROUP);
-			if (dive) {
-				if (!dive_has_gps_location(dive)) {
-					copy_gps_location(gpsfix, dive);
-					changed++;
-				}
-				if (!dive->location) {
-					dive->location = strdup(gpsfix->location);
-					changed++;
-				}
-			} else {
-				struct tm tm;
-				utc_mkdate(gpsfix->when, &tm);
-#if DEBUG_WEBSERVICE
-				printf("didn't find dive matching gps fix named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
-				       gpsfix->location,
-				       tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-				       tm.tm_hour, tm.tm_min, tm.tm_sec);
-#endif
-			}
-		}
-	}
-	return changed > 0;
 }
 
 // #
