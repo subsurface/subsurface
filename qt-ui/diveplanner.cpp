@@ -1321,7 +1321,7 @@ void DivePlannerPointsModel::tanksUpdated()
 						divedatapoint& p = divepoints[j];
 						int o2 = oldGases.at(i).first;
 						int he = oldGases.at(i).second;
-						if (p.o2 == o2 && p.he == he ||
+						if ((p.o2 == o2 && p.he == he) ||
 						    (is_air(p.o2, p.he) && (is_air(o2, he) || (o2 == 0 && he == 0)))) {
 							p.o2 = gases.at(i).first;
 							p.he = gases.at(i).second;

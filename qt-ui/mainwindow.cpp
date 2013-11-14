@@ -566,7 +566,6 @@ bool MainWindow::askSaveChanges()
 void MainWindow::initialUiSetup()
 {
 	QSettings settings;
-	int i;
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
 	resize(sz);
@@ -641,7 +640,6 @@ void MainWindow::readSettings()
 
 void MainWindow::writeSettings()
 {
-	int i;
 	QSettings settings;
 
 	settings.beginGroup("MainWindow");

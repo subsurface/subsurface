@@ -83,11 +83,11 @@ public slots:
 	void enableEdition(EditMode newEditMode = NONE);
 
 private:
-	EditMode editMode;
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
 	QMap<dive*, NotesBackup> notesBackup;
+	EditMode editMode;
 
 	/* since the multi-edition of the equipment is fairly more
 	 * complex than a single item, because it involves a Qt
