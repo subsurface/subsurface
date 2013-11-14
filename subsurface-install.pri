@@ -47,6 +47,7 @@ mac {
 
     deploy.path = $$WINDOWSSTAGING
     deploy.files += $$xslt.files $$doc.files
+    deploy.CONFIG += no_check_exist
     target.path = $$WINDOWSSTAGING
     marbledir.path = $$WINDOWSSTAGING/data
     INSTALLS += deploy marbledir target
@@ -118,6 +119,8 @@ XSLTDIR = $(DATADIR)/subsurface
     xslt.path = /$(XSLTDIR)
     marbledir.path = /$(DATADIR)/subsurface
     doc.path = /$(DOCDIR)
+
+    doc.CONFIG += no_check_exist
 
     # FIXME: Linguist translations
     #l10n_install.commands = for LOC in $$files(share/locale/*/LC_MESSAGES); do \
