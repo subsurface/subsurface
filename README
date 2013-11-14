@@ -1,15 +1,23 @@
 
-This is the README file for the latest git version of Subsurface.
+This is the README file for the 3.9 Beta version of Subsurface.
 
 After the release of Subsurface 3.1 we merged the Qt branch into
-master and are now developing the Qt port of Subsurface in the master
-branch. At this stage the Qt version is not functional as a divelog -
-edit and import capabilities are missing and many other areas need
-more work. So unless you are planning to participate in the ongoing
-development you most likely want to switch to the Gtk branch as that
-will get you the latest version of the fully functional Subsurface.
+master and started developing the Qt port of Subsurface in the master
+branch. At this stage the Qt version has reached mostly functional parity
+with version 3.1. There are some minor items still missing, but in others
+it far surpasses what was available in 3.1
 
-git checkout Gtk
+The developers feel that this version is reasonably stable, but it has
+known bugs - please check trac.hohndel.org. Do not use this on your "real"
+dive log files unless you have good backups. Check the XML files after you
+make changes to make sure that what you saved on disk reasonably resembles
+what you intended to do.
+
+And most importantly, please provide us with feedback.
+
+
+
+Everything below has not been updated for 3.9.
 
 Subsurface - an Open Source Divelog
 ===================================

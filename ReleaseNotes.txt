@@ -1,8 +1,8 @@
-			Subsurface 3.1
-			==============
+			Subsurface 3.9 Beta
+			===================
 
-The Subsurface developer team is proud to announce the release of the
-latest version of Subsurface.
+The Subsurface developer team is proud to announce the first beta release
+of the latest version of Subsurface.
 
 Subsurface is an open source divelog program that runs on Windows, Mac
 and Linux.
@@ -24,8 +24,8 @@ many more.
 
 Subsurface allows the user to print out a detailed log book including
 dive profiles and other relevant information. The program is localized
-in more than a dozen languages and well supported by an active
-developer community.
+in more than a dozen languages (but the localization in the first beta
+is mostly incomplete) and well supported by an active developer community.
 
 One of the major strengths of Subsurface is its support of a wide range
 of dive computers (most common dive computers are supported with the help
@@ -38,9 +38,19 @@ available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
+New in version 3.9 (compared to Subsurface 3.1):
+------------------------------------------------
+
+I don't even know where to begin. This is a complete rewrite of the UI.
+The basic concepts are the same, most of the basic features are the same,
+but trying to create a concise list of changes that summarizes the more
+than 1100 commits that have gone in since 3.1 seems a daunting task.
+
+Maybe we'll come up with something better in time for the next beta (or at
+least for the final release of Subsurface 4.0).
 
 New in version 3.1 (compared to Subsurface 3.0.2):
-----------------------------------------------------
+--------------------------------------------------
 
 - track tags for dives (things like 'boat', 'shore', 'deep', etc)
 - enable filtering by tags
