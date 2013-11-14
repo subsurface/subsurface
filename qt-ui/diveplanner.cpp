@@ -1154,6 +1154,9 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 	    struct divedatapoint& t = divepoints.last();
 	    milimeters = t.depth;
 	    minutes = t.time + 600; // 10 minutes.
+	} else if (minutes == 0 && milimeters == 0 && row == 0) {
+	    milimeters = M_OR_FT(5, 15); // 5m / 15ft
+	    minutes = 600; // 10 min
 	}
 	if (o2 != -1)
 		if (!addGas(o2, he))
