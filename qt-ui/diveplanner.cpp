@@ -1302,37 +1302,35 @@ bool DivePlannerPointsModel::tankInUse(int o2, int he)
 
 void DivePlannerPointsModel::tanksUpdated()
 {
-	if (mode == ADD) {
-		// we don't know exactly what changed - what we care about is
-		// "did a gas change on us". So we look through the diveplan to
-		// see if there is a gas that is now missing and if there is, we
-		// replace it with the matching new gas.
-		QList<QPair<int,int> > gases = collectGases(stagingDive);
-		if (gases.length() == oldGases.length()) {
-			// either nothing relevant changed, or exactly ONE gasmix changed
-			for (int i = 0; i < gases.length(); i++) {
-				if (gases.at(i) != oldGases.at(i)) {
-					if (oldGases.count(oldGases.at(i)) > 1) {
-						// we had this gas more than once, so don't
-						// change segments that used this gas as it still exists
-						break;
-					}
-					for (int j = 0; j < rowCount(); j++) {
-						divedatapoint& p = divepoints[j];
-						int o2 = oldGases.at(i).first;
-						int he = oldGases.at(i).second;
-						if ((p.o2 == o2 && p.he == he) ||
-						    (is_air(p.o2, p.he) && (is_air(o2, he) || (o2 == 0 && he == 0)))) {
-							p.o2 = gases.at(i).first;
-							p.he = gases.at(i).second;
-						}
-					}
+	// we don't know exactly what changed - what we care about is
+	// "did a gas change on us". So we look through the diveplan to
+	// see if there is a gas that is now missing and if there is, we
+	// replace it with the matching new gas.
+	QList<QPair<int,int> > gases = collectGases(stagingDive);
+	if (gases.length() == oldGases.length()) {
+		// either nothing relevant changed, or exactly ONE gasmix changed
+		for (int i = 0; i < gases.length(); i++) {
+			if (gases.at(i) != oldGases.at(i)) {
+				if (oldGases.count(oldGases.at(i)) > 1) {
+					// we had this gas more than once, so don't
+					// change segments that used this gas as it still exists
 					break;
 				}
+				for (int j = 0; j < rowCount(); j++) {
+					divedatapoint& p = divepoints[j];
+					int o2 = oldGases.at(i).first;
+					int he = oldGases.at(i).second;
+					if ((p.o2 == o2 && p.he == he) ||
+					    (is_air(p.o2, p.he) && (is_air(o2, he) || (o2 == 0 && he == 0)))) {
+						p.o2 = gases.at(i).first;
+						p.he = gases.at(i).second;
+					}
+				}
+				break;
 			}
 		}
-		emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 	}
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
 void DivePlannerPointsModel::clear()
