@@ -1683,3 +1683,11 @@ void GasSelectionModel::repopulate()
 {
     setStringList(DivePlannerPointsModel::instance()->getGasList());
 }
+
+QVariant GasSelectionModel::data(const QModelIndex& index, int role) const
+{
+	if(role == Qt::FontRole){
+		return defaultModelFont();
+	}
+	return QStringListModel::data(index, role);
+}
