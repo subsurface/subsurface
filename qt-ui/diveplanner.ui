@@ -78,7 +78,7 @@
        <item row="4" column="1">
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>High GF</string>
+          <string>GFHigh</string>
          </property>
         </widget>
        </item>
@@ -98,15 +98,32 @@
        <item row="4" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Low GF</string>
+          <string>GFLow</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0">
-        <widget class="QLineEdit" name="lowGF"/>
+        <widget class="QSpinBox" name="gflow">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="highGF"/>
+        <widget class="QSpinBox" name="gfhigh">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item row="6" column="0">
         <widget class="QCheckBox" name="lastStop">

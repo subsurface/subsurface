@@ -929,9 +929,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
 	connect(ui.decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
-	connect(ui.highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
-	connect(ui.lowGF, SIGNAL(textChanged(QString)), this, SLOT(gflowChanged(QString)));
-	connect(ui.highGF, SIGNAL(textChanged(QString)), this, SLOT(gfhighChanged(QString)));
+	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
+	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(lastStopChanged(bool)));
 
 	// Creating the plan
@@ -946,8 +945,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui.ATMPressure->setText( "1013" );
 	ui.bottomSAC->setText("20");
 	ui.decoStopSAC->setText("17");
-	ui.lowGF->setText("30");
-	ui.highGF->setText("75");
+	ui.gflow->setValue(30);
+	ui.gfhigh->setValue(75);
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
@@ -976,16 +975,6 @@ void DivePlannerWidget::bottomSacChanged(const QString& bottomSac)
 void DivePlannerWidget::decoSacChanged(const QString& decosac)
 {
 	plannerModel->setDecoSac(decosac.toInt());
-}
-
-void DivePlannerWidget::gfhighChanged(const QString& gfhigh)
-{
-	plannerModel->setGFHigh(gfhigh.toShort());
-}
-
-void DivePlannerWidget::gflowChanged(const QString& gflow)
-{
-	plannerModel->setGFLow(gflow.toShort());
 }
 
 void DivePlannerWidget::lastStopChanged(bool checked)
@@ -1104,13 +1093,13 @@ void DivePlannerPointsModel::setDecoSac(int sac)
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
-void DivePlannerPointsModel::setGFHigh(short int gfhigh)
+void DivePlannerPointsModel::setGFHigh(const int gfhigh)
 {
 	diveplan.gfhigh = gfhigh;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));
 }
 
-void DivePlannerPointsModel::setGFLow(short int ghflow)
+void DivePlannerPointsModel::setGFLow(const int ghflow)
 {
 	diveplan.gflow = ghflow;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount()-1, COLUMNS-1));

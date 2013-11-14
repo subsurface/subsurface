@@ -51,8 +51,8 @@ public:
 public slots:
 	int addStop(int meters = 0, int minutes = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
 	void addCylinder_clicked();
-	void setGFHigh(short gfhigh);
-	void setGFLow(short ghflow);
+	void setGFHigh(const int gfhigh);
+	void setGFLow(const int ghflow);
 	void setSurfacePressure(int pressure);
 	void setBottomSac(int sac);
 	void setDecoSac(int sac);
@@ -227,8 +227,6 @@ public slots:
 	void atmPressureChanged(const QString& pressure);
 	void bottomSacChanged(const QString& bottomSac);
 	void decoSacChanged(const QString& decosac);
-	void gflowChanged(const QString& gflow);
-	void gfhighChanged(const QString& gfhigh);
 	void lastStopChanged(bool checked);
 private:
 	Ui::DivePlanner ui;
