@@ -10,6 +10,7 @@
 #include <QAbstractTableModel>
 #include <QCoreApplication>
 #include <QStringList>
+#include <QStringListModel>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -296,6 +297,15 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	void setDive(struct dive *divePtr);
+};
+
+class GasSelectionModel : public QStringListModel{
+	Q_OBJECT
+public:
+	static GasSelectionModel* instance();
+	Qt::ItemFlags flags(const QModelIndex& index) const;
+public slots:
+	void repopulate();
 };
 
 #endif

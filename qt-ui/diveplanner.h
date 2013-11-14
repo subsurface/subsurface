@@ -13,9 +13,6 @@ class QListView;
 class QStringListModel;
 class QModelIndex;
 
-// Return a Model containing the air types.
-QStringListModel *gasSelectionModel();
-
 class DivePlannerPointsModel : public QAbstractTableModel{
 	Q_OBJECT
 public:

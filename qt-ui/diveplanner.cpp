@@ -32,13 +32,6 @@
 
 #define M_OR_FT(_m,_f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : ((_f) * 304.8))
 
-QStringListModel *gasSelectionModel() {
-	static QStringListModel *self = new QStringListModel(QStringList()
-		<< QObject::tr("AIR"));
-	self->setStringList(DivePlannerPointsModel::instance()->getGasList());
-	return self;
-}
-
 QString gasToStr(const int o2Permille, const int hePermille) {
 	uint o2 = (o2Permille + 5) / 10, he = (hePermille + 5) / 10;
 	QString result = is_air(o2Permille, hePermille) ? QObject::tr("AIR")
@@ -175,7 +168,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	// Prepare the stuff for the gas-choices.
 	gasListView = new QListView();
 	gasListView->setWindowFlags(Qt::Popup);
-	gasListView->setModel(gasSelectionModel());
+	gasListView->setModel(GasSelectionModel::instance());
 	gasListView->hide();
 	gasListView->installEventFilter(this);
 
@@ -490,7 +483,6 @@ void DivePlannerGraphics::prepareSelectGas()
 	currentGasChoice = static_cast<Button*>(sender());
 	QPoint c = QCursor::pos();
 	gasListView->setGeometry(c.x(), c.y(), 150, 100);
-	model->setStringList(DivePlannerPointsModel::instance()->getGasList());
 	gasListView->show();
 }
 
@@ -931,6 +923,14 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addCylinder_clicked()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
+
+	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+		GasSelectionModel::instance(), SLOT(repopulate()));
+	connect(CylindersModel::instance(), SIGNAL(rowsInserted(QModelIndex,int,int)),
+		GasSelectionModel::instance(), SLOT(repopulate()));
+	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex,int,int)),
+		GasSelectionModel::instance(), SLOT(repopulate()));
+
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));

@@ -307,7 +307,7 @@ void AirTypesDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 	model->setData(index, QVariant(combo->currentText()));
 }
 
-AirTypesDelegate::AirTypesDelegate(QObject* parent) : ComboBoxDelegate(gasSelectionModel(), parent)
+AirTypesDelegate::AirTypesDelegate(QObject* parent) : ComboBoxDelegate(GasSelectionModel::instance(), parent)
 {
 }
 
