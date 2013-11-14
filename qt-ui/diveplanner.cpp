@@ -422,7 +422,7 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent* event)
 
 void DivePlannerPointsModel::createSimpleDive()
 {
-	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
+//	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
 	plannerModel->addStop(M_OR_FT(15,45), 1 * 60, O2_IN_AIR, 0, 0);
 	plannerModel->addStop(M_OR_FT(15,45), 40 * 60, O2_IN_AIR, 0, 0);
 	plannerModel->addStop(M_OR_FT(5,15), 42 * 60, O2_IN_AIR, 0, 0);
@@ -517,7 +517,7 @@ void DivePlannerGraphics::drawProfile()
 
 	// Re-position the user generated dive handlers
 	int last = 0;
-	for (int i = 1; i < plannerModel->rowCount(); i++) {
+	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		divedatapoint dp = plannerModel->at(i);
 		if (dp.time == 0) // those are the magic entries for tanks
 			continue;
@@ -1161,6 +1161,11 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 	if (o2 != -1)
 		if (!addGas(o2, he))
 			qDebug("addGas failed"); // FIXME add error propagation
+	/*
+	 * Dirk, is this really necessary or it's just something that you forgot
+	 * to remove? this is adding a bit of pain to fix some issues on the planner,
+	 * so I'm commenting this out untill you have a bit of time to look at it.
+	 *
 	if(row == 0) {
 		if (o2 == -1) {
 			o2 = O2_IN_AIR;
@@ -1176,7 +1181,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 		divepoints.append( point );
 		endInsertRows();
 		row++;
-	}
+	} */
 
 	// check if there's already a new stop before this one:
 	for (int i = 0; i < row; i++) {
