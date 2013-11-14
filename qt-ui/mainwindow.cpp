@@ -99,27 +99,11 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	QSettings settings;
-	QString lastDir = QDir::homePath();
-
-	settings.beginGroup("FileDialog");
-	if (settings.contains("LastDir")) {
-		if(QDir::setCurrent(settings.value("LastDir").toString())) {
-			lastDir = settings.value("LastDir").toString();
-		}
-	}
-	settings.endGroup();
-
+	QString lastDir = lastUsedDir();
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastDir, filter());
 	if (filename.isEmpty())
 		return;
-
-	// Keep last open dir
-	QFileInfo fileInfo(filename);
-	settings.beginGroup("FileDialog");
-	settings.setValue("LastDir",fileInfo.dir().path());
-	settings.endGroup();
-
+	updateLastUsedDir(filename);
 	on_actionClose_triggered();
 	loadFiles( QStringList() << filename );
 }
@@ -166,6 +150,18 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
+	QString lastDir = lastUsedDir();
+
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Import Files"), lastDir, filter());
+	if (!fileNames.size())
+		return; // no selection
+
+	updateLastUsedDir(QFileInfo(fileNames.at(0)).dir().path());
+	importFiles(fileNames);
+}
+
+QString MainWindow::lastUsedDir()
+{
 	QSettings settings;
 	QString lastDir = QDir::homePath();
 
@@ -173,19 +169,14 @@ void MainWindow::on_actionImport_triggered()
 	if (settings.contains("LastDir"))
 		if (QDir::setCurrent(settings.value("LastDir").toString()))
 			lastDir = settings.value("LastDir").toString();
-	settings.endGroup();
+	return lastDir;
+}
 
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Import Files"), lastDir, filter());
-	if (!fileNames.size())
-		return; // no selection
-
-	// Keep last open dir
-	QFileInfo fileInfo(fileNames.at(0));
-	settings.beginGroup("FileDialog");
-	settings.setValue("LastDir", fileInfo.dir().path());
-	settings.endGroup();
-
-	importFiles(fileNames);
+void MainWindow::updateLastUsedDir(const QString& dir)
+{
+	QSettings s;
+	s.beginGroup("FileDialog");
+	s.setValue("LastDir", dir);
 }
 
 void MainWindow::on_actionExportUDDF_triggered()

@@ -126,6 +126,8 @@ private:
 	void file_save_as();
 	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
+	QString lastUsedDir();
+	void updateLastUsedDir(const QString& s);
 };
 
 MainWindow *mainWindow();
