@@ -1149,6 +1149,12 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he, int ccpoint)
 {
 	int row = divepoints.count();
+	if (minutes == 0 && milimeters == 0 && row != 0){
+	    /* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
+	    struct divedatapoint& t = divepoints.last();
+	    milimeters = t.depth;
+	    minutes = t.time + 600; // 10 minutes.
+	}
 	if (o2 != -1)
 		if (!addGas(o2, he))
 			qDebug("addGas failed"); // FIXME add error propagation
