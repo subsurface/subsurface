@@ -945,8 +945,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	ui.ATMPressure->setText( "1013" );
 	ui.bottomSAC->setText("20");
 	ui.decoStopSAC->setText("17");
-	ui.gflow->setValue(30);
-	ui.gfhigh->setValue(75);
+	ui.gflow->setValue(prefs.gflow);
+	ui.gfhigh->setValue(prefs.gfhigh);
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
