@@ -37,6 +37,7 @@ public:
 	void tanksUpdated();
 	void rememberTanks();
 	bool tankInUse(int o2, int he);
+	void copyCylinders(struct dive *d);
 	/**
 	 * @return the row number.
 	 */

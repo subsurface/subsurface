@@ -444,6 +444,8 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	for(int i = 0; i < d->dc.samples-1; i++){
 		backupSamples.push_back( d->dc.sample[i]);
 	}
+	copy_cylinders(current_dive, stagingDive); // this way the correct cylinder data is shown
+	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
 	Q_FOREACH(const sample &s, backupSamples){
 		int o2 = 0, he = 0;
@@ -451,6 +453,11 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
 		lasttime = s.time.seconds;
 	}
+}
+
+void DivePlannerPointsModel::copyCylinders(dive *d)
+{
+	copy_cylinders(stagingDive, d);
 }
 
 QStringList& DivePlannerPointsModel::getGasList()

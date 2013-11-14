@@ -474,7 +474,9 @@ void MainTab::acceptChanges()
 
 		if (notesBackup[curr].tags != ui.tagWidget->text())
 			saveTags();
-		if (editMode != ADD && cylindersModel->changed) {
+		if (editMode == MANUALLY_ADDED_DIVE) {
+			DivePlannerPointsModel::instance()->copyCylinders(curr);
+		} else if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(TRUE);
 			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
