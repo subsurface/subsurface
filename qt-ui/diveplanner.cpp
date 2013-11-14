@@ -191,9 +191,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 
 bool DivePlannerGraphics::eventFilter(QObject *object, QEvent* event)
 {
-	if (object == gasListView && event->type() == QEvent::KeyPress) {
+	if (object != gasListView)
+		return false;
+	if (event->type() == QEvent::KeyPress) {
 		QKeyEvent *ke =  static_cast<QKeyEvent *>(event);
 		if (ke->key() == Qt::Key_Escape)
+			gasListView->hide();
+	}
+	if (event->type() == QEvent::MouseButtonPress){
+		QMouseEvent *me = static_cast<QMouseEvent *>(event);
+		if (!gasListView->geometry().contains(me->pos()))
 			gasListView->hide();
 	}
 	return false;
