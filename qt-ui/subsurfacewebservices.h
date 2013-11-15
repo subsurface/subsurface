@@ -25,6 +25,8 @@ private slots:
 	virtual void buttonClicked(QAbstractButton* button) = 0;
 
 protected:
+	void resetState();
+
 	Ui::WebServices ui;
 	QNetworkReply *reply;
 	QByteArray downloadedData;

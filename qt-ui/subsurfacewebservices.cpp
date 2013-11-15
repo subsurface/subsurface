@@ -115,6 +115,14 @@ QNetworkAccessManager *WebServices::manager()
 	return manager;
 }
 
+void WebServices::resetState()
+{
+	ui.download->setEnabled(true);
+	ui.progressBar->reset();
+	ui.progressBar->setRange(0,1);
+	ui.status->setText(QString());
+}
+
 // #
 // #
 // #		Subsurface Web Service Implementation.
@@ -156,12 +164,13 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 		s.sync();
 		hide();
 		close();
+		resetState();
 	}
 		break;
 	case QDialogButtonBox::RejectRole:
 		// we may want to clean up after ourselves
 		// reply->deleteLater();
-		ui.progressBar->setMaximum(1);
+		resetState();
 		break;
 	case QDialogButtonBox::HelpRole:
 		QDesktopServices::openUrl(QUrl("http://api.hohndel.org"));
@@ -208,9 +217,8 @@ void SubsurfaceWebServices::downloadFinished()
 
 void SubsurfaceWebServices::downloadError(QNetworkReply::NetworkError)
 {
-	ui.download->setEnabled(true);
-	ui.progressBar->setRange(0,1);
-	ui.status->setText(QString::number((int)QNetworkRequest::HttpStatusCodeAttribute));
+	resetState();
+	ui.status->setText(tr("Download error: %1").arg(reply->errorString()));
 	reply->deleteLater();
 }
 
