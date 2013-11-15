@@ -95,7 +95,9 @@ WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
 	connect(ui.download, SIGNAL(clicked(bool)), this, SLOT(startDownload()));
+	connect(&timeout, SIGNAL(timeout()), this, SLOT(downloadTimedOut()));
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+	timeout.setSingleShot(true);
 }
 
 void WebServices::hidePassword()
@@ -113,6 +115,17 @@ QNetworkAccessManager *WebServices::manager()
 {
 	static QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
 	return manager;
+}
+
+void WebServices::downloadTimedOut()
+{
+	if (!reply)
+		return;
+
+	reply->deleteLater();
+	reply = NULL;
+	resetState();
+	ui.status->setText(tr("Download timed out"));
 }
 
 void WebServices::updateProgress(qint64 current, qint64 total)
@@ -144,6 +157,8 @@ void WebServices::connectSignalsForDownload(QNetworkReply *reply)
 		this, SLOT(downloadError(QNetworkReply::NetworkError)));
 	connect(reply, SIGNAL(downloadProgress(qint64,qint64)), this,
 		SLOT(updateProgress(qint64,qint64)));
+
+	timeout.start(30000); // 30s
 }
 
 void WebServices::resetState()

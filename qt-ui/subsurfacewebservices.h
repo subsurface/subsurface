@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QNetworkReply>
+#include <QTimer>
 #include <libxml/tree.h>
 
 #include "ui_webservices.h"
@@ -23,6 +24,7 @@ private slots:
 	virtual void startDownload() = 0;
 	virtual void startUpload() = 0;
 	virtual void buttonClicked(QAbstractButton* button) = 0;
+	virtual void downloadTimedOut();
 
 protected slots:
 	void updateProgress(qint64 current, qint64 total);
@@ -33,6 +35,7 @@ protected:
 
 	Ui::WebServices ui;
 	QNetworkReply *reply;
+	QTimer timeout;
 	QByteArray downloadedData;
 };
 
