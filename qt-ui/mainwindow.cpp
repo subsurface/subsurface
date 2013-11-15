@@ -269,7 +269,7 @@ void MainWindow::on_actionDownloadWeb_triggered()
 
 void MainWindow::on_actionDivelogs_de_triggered()
 {
-	DivelogsDeWebServices::instance()->exec();
+	DivelogsDeWebServices::instance()->downloadDives();
 }
 
 void MainWindow::on_actionEditDeviceNames_triggered()

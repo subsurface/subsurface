@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QNetworkReply>
+#include <QTemporaryFile>
 #include <QTimer>
 #include <libxml/tree.h>
 
@@ -10,6 +11,7 @@
 
 class QAbstractButton;
 class QNetworkReply;
+class QHttpMultiPart;
 
 class WebServices : public QDialog{
 	Q_OBJECT
@@ -17,6 +19,7 @@ public:
 	explicit WebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void hidePassword();
 	void hideUpload();
+	void hideDownload();
 
 	static QNetworkAccessManager *manager();
 
@@ -32,6 +35,7 @@ protected slots:
 protected:
 	void resetState();
 	void connectSignalsForDownload(QNetworkReply *reply);
+	void connectSignalsForUpload();
 
 	Ui::WebServices ui;
 	QNetworkReply *reply;
@@ -61,18 +65,27 @@ class DivelogsDeWebServices : public WebServices {
 	Q_OBJECT
 public:
 	static DivelogsDeWebServices * instance();
+	void downloadDives();
+	void uploadDives(QIODevice *dldContent);
 
 private slots:
 	void startDownload();
 	void buttonClicked(QAbstractButton* button);
+	void saveToZipFile();
+	void listDownloadFinished();
 	void downloadFinished();
+	void uploadFinished();
 	void downloadError(QNetworkReply::NetworkError error);
+	void uploadError(QNetworkReply::NetworkError error);
 	void startUpload();
 private:
 	explicit DivelogsDeWebServices (QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray& length);
+
+	QHttpMultiPart *multipart;
+	QTemporaryFile zipFile;
 };
 
 #endif
