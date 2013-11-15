@@ -431,9 +431,9 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
 
-	if (!trip_a->location)
+	if (!trip_a->location && trip_b->location)
 		trip_a->location = strdup(trip_b->location);
-	if (!trip_a->notes)
+	if (!trip_a->notes && trip_b->notes)
 		trip_a->notes = strdup(trip_b->notes);
 	while (trip_b->dives)
 		add_dive_to_trip(trip_b->dives, trip_a);
