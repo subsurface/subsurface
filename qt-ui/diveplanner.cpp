@@ -1150,38 +1150,17 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 {
 	int row = divepoints.count();
 	if (minutes == 0 && milimeters == 0 && row != 0){
-	    /* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
-	    struct divedatapoint& t = divepoints.last();
-	    milimeters = t.depth;
-	    minutes = t.time + 600; // 10 minutes.
+		/* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
+		struct divedatapoint& t = divepoints.last();
+		milimeters = t.depth;
+		minutes = t.time + 600; // 10 minutes.
 	} else if (minutes == 0 && milimeters == 0 && row == 0) {
-	    milimeters = M_OR_FT(5, 15); // 5m / 15ft
-	    minutes = 600; // 10 min
+		milimeters = M_OR_FT(5, 15); // 5m / 15ft
+		minutes = 600; // 10 min
 	}
 	if (o2 != -1)
 		if (!addGas(o2, he))
 			qDebug("addGas failed"); // FIXME add error propagation
-	/*
-	 * Dirk, is this really necessary or it's just something that you forgot
-	 * to remove? this is adding a bit of pain to fix some issues on the planner,
-	 * so I'm commenting this out untill you have a bit of time to look at it.
-	 *
-	if(row == 0) {
-		if (o2 == -1) {
-			o2 = O2_IN_AIR;
-			(void)addGas(o2, 0); // I know this is the first gas - won't fail
-		}
-		beginInsertRows(QModelIndex(), row, row);
-		divedatapoint point;
-		point.depth = 0;
-		point.time = 0;
-		point.o2 = o2;
-		point.he = he;
-		point.po2 = ccpoint;
-		divepoints.append( point );
-		endInsertRows();
-		row++;
-	} */
 
 	// check if there's already a new stop before this one:
 	for (int i = 0; i < row; i++) {
@@ -1198,9 +1177,28 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 			break;
 		}
 	}
-	if (row > 1 && o2 == -1) { // this means "take the current gas"
-		o2 = divepoints.at(row - 1).o2;
-		he = divepoints.at(row - 1).he;
+	if (o2 == -1) {
+		qDebug() << "default Gas";
+		if (row > 0) {
+			qDebug() << "from left";
+			o2 = divepoints.at(row - 1).o2;
+			he = divepoints.at(row - 1).he;
+		} else {
+			// when we add a first data point we need to make sure that there is a
+			// tank for it to use;
+			// first check to the right, then to the left, but if there's nothing,
+			// we simply default to AIR
+			if (row < divepoints.count()) {
+				qDebug() << "from right";
+				o2 = divepoints.at(row).o2;
+				he = divepoints.at(row).he;
+			} else {
+				qDebug() << "have to create tank of AIR" << row << divepoints.count();
+				o2 = O2_IN_AIR;
+				if (!addGas(o2, 0))
+					qDebug("addGas failed"); // FIXME add error propagation
+			}
+		}
 	}
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
