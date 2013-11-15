@@ -106,7 +106,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 void SubsurfaceWebServices::startDownload()
 {
 	QUrl url("http://api.hohndel.org/api/dive/get/");
-	url.setQueryItems( QList<QPair<QString,QString> >() << qMakePair(QString("login"), ui.userID->text().toUpper()));
+	url.addQueryItem("login", ui.userID->text().toUpper());
 
 	manager = new QNetworkAccessManager(this);
 	QNetworkRequest request;
@@ -140,7 +140,7 @@ void SubsurfaceWebServices::downloadFinished()
 	reply->deleteLater();
 }
 
-void SubsurfaceWebServices::downloadError(QNetworkReply::NetworkError error)
+void SubsurfaceWebServices::downloadError(QNetworkReply::NetworkError)
 {
 	ui.download->setEnabled(true);
 	ui.progressBar->setRange(0,1);
