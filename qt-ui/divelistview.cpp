@@ -452,10 +452,15 @@ void DiveListView::mergeTripBelow()
 
 void DiveListView::removeFromTrip()
 {
+	int i;
 	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
-	remove_dive_from_trip(d);
+	for_each_dive(i, d) {
+		if (d->selected)
+			remove_dive_from_trip(d);
+	}
+	mark_divelist_changed(TRUE);
 	reload(currentLayout, false);
 }
 
@@ -468,12 +473,9 @@ void DiveListView::newTripAbove()
 		return;
 	rememberSelection();
 	trip = create_and_hookup_trip_from_dive(d);
-	if (d->selected) {
-		for_each_dive(idx, d) {
-			if (!d->selected)
-				continue;
+	for_each_dive(idx, d) {
+		if (d->selected)
 			add_dive_to_trip(d, trip);
-		}
 	}
 	trip->expanded = 1;
 	mark_divelist_changed(TRUE);
@@ -483,19 +485,27 @@ void DiveListView::newTripAbove()
 
 void DiveListView::deleteDive()
 {
-	int nr;
+	int i, nr;
 	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
-	if (d) {
-		nr = get_divenr(d);
-		delete_single_dive(get_index_for_dive(d));
-		if (amount_selected == 0) {
-			if (nr > 0)
-				select_dive(nr - 1);
-			else
-				mainWindow()->cleanUpEmpty();
-		}
-		mark_divelist_changed(TRUE);
+	if (!d)
+		return;
+	// after a dive is deleted the ones following it move forward in the dive_table
+	// so instead of using the for_each_dive macro I'm using an explicit for loop
+	// to make this easier to understand
+	for (i = 0; i < dive_table.nr; i++) {
+		d = get_dive(i);
+		if (!d->selected)
+			continue;
+		delete_single_dive(i);
+		i--; // so the next dive isn't skipped... it's now #i
 	}
+	if (amount_selected == 0) {
+		if (i > 0)
+			select_dive(nr - 1);
+		else
+			mainWindow()->cleanUpEmpty();
+	}
+	mark_divelist_changed(TRUE);
 	mainWindow()->refreshDisplay();
 	reload(currentLayout, false);
 }
@@ -528,16 +538,16 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
 		collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
 		if (d) {
-			popup.addAction(tr("Remove dive from trip"), this, SLOT(removeFromTrip()));
-			popup.addAction(tr("Create new trip above"), this, SLOT(newTripAbove()));
+			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
+			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
 		}
 		if (trip) {
-			popup.addAction(tr("Merge trip with trip above"), this, SLOT(mergeTripAbove()));
-			popup.addAction(tr("Merge trip with trip below"), this, SLOT(mergeTripBelow()));
+			popup.addAction(tr("merge trip with trip above"), this, SLOT(mergeTripAbove()));
+			popup.addAction(tr("merge trip with trip below"), this, SLOT(mergeTripBelow()));
 		}
 	}
 	if (d)
-		popup.addAction(tr("delete dive"), this, SLOT(deleteDive()));
+		popup.addAction(tr("delete dive(s)"), this, SLOT(deleteDive()));
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1) {
