@@ -89,6 +89,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	completers.location = new QCompleter(LocationCompletionModel::instance(), ui.location);
 	completers.suit = new QCompleter(SuitCompletionModel::instance(), ui.suit);
 	completers.tags = new QCompleter(TagCompletionModel::instance(), ui.tagWidget);
+	completers.tags->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.buddy->setCompleter(completers.buddy);
 	ui.divemaster->setCompleter(completers.divemaster);
 	ui.location->setCompleter(completers.location);
