@@ -171,6 +171,7 @@ mac: ICON = packaging/macosx/Subsurface.icns
 else: ICON = subsurface-icon.svg
 MANPAGE = subsurface.1
 XSLT_FILES = xslt
+ICONS_FILES = icons
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
 MARBLEDIR = marbledata/maps marbledata/bitmaps
 DEPLOYMENT_PLUGIN += imageformats/qjpeg

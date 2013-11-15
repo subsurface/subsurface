@@ -102,6 +102,7 @@ Section
     File /r xslt
     File /r data
     File /r images
+    File /r icons
     File dll\iconv.dll
     File dll\libdivecomputer-0.dll
     File dll\libintl-8.dll

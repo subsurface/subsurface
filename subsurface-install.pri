@@ -1,5 +1,6 @@
 marbledir.files = $$MARBLEDIR
 xslt.files = $$XSLT_FILES
+icons.files = $$ICONS_FILES
 doc.files = $$DOC_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 qttranslation.files = $$join(QTTRANSLATIONS," "$$[QT_INSTALL_TRANSLATIONS]/,$$[QT_INSTALL_TRANSLATIONS]/)
@@ -46,7 +47,7 @@ mac {
     MAKENSIS = /usr/bin/makensis
 
     deploy.path = $$WINDOWSSTAGING
-    deploy.files += $$xslt.files $$doc.files
+    deploy.files += $$xslt.files $$doc.files $$icons.files
     deploy.CONFIG += no_check_exist
     target.path = $$WINDOWSSTAGING
     marbledir.path = $$WINDOWSSTAGING/data
@@ -81,8 +82,9 @@ mac {
         nsis.target = $$NSISFILE
         installer.commands += $$MAKENSIS $$NSIFILE
         installer.target = installer
-        installer.depends = nsis
-        install.depends += dlls nsis installer
+        installer.depends = nsis install
+        QMAKE_EXTRA_TARGETS = installer nsis
+        install.depends += dlls
     }
 } else {
     # Linux install rules
