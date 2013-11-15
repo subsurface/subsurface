@@ -200,6 +200,7 @@ public:
 	DiveTripModel(QObject* parent = 0);
 	Layout layout() const;
 	void setLayout(Layout layout);
+	void deleteSelectedDives();
 
 private:
 	void setupModelData();
