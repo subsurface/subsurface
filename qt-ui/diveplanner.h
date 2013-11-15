@@ -95,11 +95,15 @@ private:
 	QGraphicsSimpleTextItem *text;
 };
 
-class DiveHandler : public QGraphicsEllipseItem{
+class DiveHandler : public QObject, public QGraphicsEllipseItem{
+Q_OBJECT
 public:
 	DiveHandler();
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event);
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
+public slots:
+	void selfRemove();
 };
 
 class Ruler : public QGraphicsLineItem{
@@ -118,7 +122,6 @@ public:
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
 	void setTextColor(const QColor& color);
-
 private:
 	Qt::Orientation orientation;
 	QList<QGraphicsLineItem*> ticks;
@@ -210,6 +213,8 @@ private:
 
 	int minMinutes; // this holds the minimum duration of the dive.
 	int dpMaxTime; // this is the time of the dive calculated by the deco.
+
+	friend class DiveHandler;
 };
 
 #include "ui_diveplanner.h"

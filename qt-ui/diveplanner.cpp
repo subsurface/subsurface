@@ -673,11 +673,13 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent* event)
 	}
 
 	QPointF mappedPos = mapToScene(event->pos());
-	Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())) {
-		if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
-			activeDraggedHandler = h;
-			activeDraggedHandler->setBrush(Qt::red);
-			originalHandlerPos = activeDraggedHandler->pos();
+	if (event->button() == Qt::LeftButton){
+		Q_FOREACH(QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())) {
+			if (DiveHandler *h = qgraphicsitem_cast<DiveHandler*>(item)) {
+				activeDraggedHandler = h;
+				activeDraggedHandler->setBrush(Qt::red);
+				originalHandlerPos = activeDraggedHandler->pos();
+			}
 		}
 	}
 	QGraphicsView::mousePressEvent(event);
@@ -703,8 +705,25 @@ DiveHandler::DiveHandler(): QGraphicsEllipseItem()
 	setZValue(2);
 }
 
+void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
+{
+	QMenu m;
+	m.addAction(QObject::tr("Remove this Point"), this, SLOT(selfRemove()));
+	m.exec(event->screenPos());
+}
+
+void DiveHandler::selfRemove()
+{
+	setSelected(true);
+	DivePlannerGraphics *view = qobject_cast<DivePlannerGraphics*>(scene()->views().first());
+	view->keyDeleteAction();
+}
+
 void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
+	if (event->button() != Qt::LeftButton)
+		return;
+
 	if (event->modifiers().testFlag(Qt::ControlModifier)) {
 		setSelected(true);
 	}
