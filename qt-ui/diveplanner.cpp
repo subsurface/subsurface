@@ -1197,9 +1197,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 		}
 	}
 	if (o2 == -1) {
-		qDebug() << "default Gas";
 		if (row > 0) {
-			qDebug() << "from left";
 			o2 = divepoints.at(row - 1).o2;
 			he = divepoints.at(row - 1).he;
 		} else {
@@ -1208,11 +1206,9 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 			// first check to the right, then to the left, but if there's nothing,
 			// we simply default to AIR
 			if (row < divepoints.count()) {
-				qDebug() << "from right";
 				o2 = divepoints.at(row).o2;
 				he = divepoints.at(row).he;
 			} else {
-				qDebug() << "have to create tank of AIR" << row << divepoints.count();
 				o2 = O2_IN_AIR;
 				if (!addGas(o2, 0))
 					qDebug("addGas failed"); // FIXME add error propagation
