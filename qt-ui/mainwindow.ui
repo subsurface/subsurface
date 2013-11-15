@@ -192,7 +192,6 @@
      <string>&amp;Log</string>
     </property>
     <addaction name="actionAddDive"/>
-    <addaction name="actionDivePlanner"/>
     <addaction name="separator"/>
     <addaction name="actionRenumber"/>
     <addaction name="actionAutoGroup"/>
