@@ -536,7 +536,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (currentLayout == DiveTripModel::TREE) {
 		popup.addAction(tr("expand all"), this, SLOT(expandAll()));
 		popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
-		collapseAction = popup.addAction(tr("collapse"), this, SLOT(collapseAll()));
+		collapseAction = popup.addAction(tr("collapse others"), this, SLOT(collapseAll()));
 		if (d) {
 			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
@@ -560,6 +560,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (actionTaken == collapseAction && collapseAction) {
 		this->setAnimated(false);
 		selectDive(current_dive, true);
+		scrollTo(selectedIndexes().first());
 		this->setAnimated(true);
 	}
 	event->accept();
