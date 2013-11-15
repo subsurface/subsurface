@@ -115,6 +115,37 @@ QNetworkAccessManager *WebServices::manager()
 	return manager;
 }
 
+void WebServices::updateProgress(qint64 current, qint64 total)
+{
+	if (!reply)
+		return;
+
+	if (total >= INT_MAX / 2) {
+		// over a gigabyte!
+		if (total >= Q_INT64_C(1) << 47) {
+			total >>= 16;
+			current >>= 16;
+		}
+		total >>= 16;
+		current >>= 16;
+	}
+	ui.progressBar->setRange(0, total);
+	ui.progressBar->setValue(current);
+	ui.status->setText(tr("Downloading..."));
+
+	// reset the timer: 30 seconds after we last got any data
+	timeout.start();
+}
+
+void WebServices::connectSignalsForDownload(QNetworkReply *reply)
+{
+	connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+		this, SLOT(downloadError(QNetworkReply::NetworkError)));
+	connect(reply, SIGNAL(downloadProgress(qint64,qint64)), this,
+		SLOT(updateProgress(qint64,qint64)));
+}
+
 void WebServices::resetState()
 {
 	ui.download->setEnabled(true);
@@ -170,6 +201,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 	case QDialogButtonBox::RejectRole:
 		// we may want to clean up after ourselves
 		// reply->deleteLater();
+		reply = NULL;
 		resetState();
 		break;
 	case QDialogButtonBox::HelpRole:
@@ -193,14 +225,14 @@ void SubsurfaceWebServices::startDownload()
 	ui.progressBar->setRange(0,0); // this makes the progressbar do an 'infinite spin'
 	ui.download->setEnabled(false);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-
-	connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
-	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-		this, SLOT(downloadError(QNetworkReply::NetworkError)));
+	connectSignalsForDownload(reply);
 }
 
 void SubsurfaceWebServices::downloadFinished()
 {
+	if (!reply)
+		return;
+
 	ui.progressBar->setRange(0,1);
 	downloadedData = reply->readAll();
 
@@ -213,6 +245,7 @@ void SubsurfaceWebServices::downloadFinished()
 		ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 	}
 	reply->deleteLater();
+	reply = NULL;
 }
 
 void SubsurfaceWebServices::downloadError(QNetworkReply::NetworkError)
@@ -220,6 +253,7 @@ void SubsurfaceWebServices::downloadError(QNetworkReply::NetworkError)
 	resetState();
 	ui.status->setText(tr("Download error: %1").arg(reply->errorString()));
 	reply->deleteLater();
+	reply = NULL;
 }
 
 void SubsurfaceWebServices::setStatusText(int status)

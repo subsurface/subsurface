@@ -24,8 +24,12 @@ private slots:
 	virtual void startUpload() = 0;
 	virtual void buttonClicked(QAbstractButton* button) = 0;
 
+protected slots:
+	void updateProgress(qint64 current, qint64 total);
+
 protected:
 	void resetState();
+	void connectSignalsForDownload(QNetworkReply *reply);
 
 	Ui::WebServices ui;
 	QNetworkReply *reply;
