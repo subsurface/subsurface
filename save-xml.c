@@ -406,9 +406,9 @@ static void save_tags(FILE *f, struct tag_entry *tag_list)
 				fprintf(f, ", ");
 			/* If the tag has been translated, write the source to the xml file */
 			if (tmp->tag->source != NULL)
-				fprintf(f, "%s", tmp->tag->source);
+				quote(f, tmp->tag->source, 0);
 			else
-				fprintf(f, "%s", tmp->tag->name);
+				quote(f, tmp->tag->name, 0);
 			tmp = tmp->next;
 			more = 1;
 		}
