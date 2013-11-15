@@ -141,6 +141,7 @@ void MainWindow::on_actionClose_triggered()
 	/* clear the selection and the statistics */
 	selected_dive = -1;
 
+	existing_filename = NULL;
 	cleanUpEmpty();
 	mark_divelist_changed(FALSE);
 
