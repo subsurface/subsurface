@@ -137,10 +137,12 @@ bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
 		return true;
 	}
 
-	// This will "Eat" the default tooltip behavior.
+	// This will "Eat" the default tooltip behavior if it is not on the toolBar.
 	if (event->type() == QEvent::GraphicsSceneHelp) {
-		event->ignore();
-		return true;
+		if(!toolBarProxy->geometry().contains(mapFromGlobal(QCursor::pos()))){
+			event->ignore();
+			return true;
+		}
 	}
 	return QGraphicsView::eventFilter(obj, event);
 }
@@ -383,6 +385,8 @@ void ProfileGraphicsView::addControlItems(struct dive *d)
 	QAction *scaleAction = new QAction(QIcon(":scale"), tr("Scale"), this);
 	QAction *rulerAction = new QAction(QIcon(":ruler"), tr("Ruler"), this);
 	QToolBar *toolBar = new QToolBar("", 0);
+	rulerAction->setToolTip(tr("Show a ruler to nit pecking your dive"));
+	scaleAction->setToolTip(tr("Scale your dive to screen size"));
 	toolBar->addAction(rulerAction);
 	toolBar->addAction(scaleAction);
 	toolBar->setOrientation(Qt::Vertical);
