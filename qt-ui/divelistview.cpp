@@ -274,9 +274,15 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		}
 	}
 	setupUi();
-	QModelIndex curr = selectionModel()->currentIndex();
-	if (curr.parent().isValid() && !isExpanded(curr.parent()))
-		expand(curr.parent());
+	if(selectedIndexes().count()){
+		QModelIndex curr = selectedIndexes().first();
+		curr = curr.parent().isValid() ? curr.parent() : curr;
+		if(!isExpanded(curr)){
+			setAnimated(false);
+			expand(curr);
+			setAnimated(true);
+		}
+	}
 }
 
 void DiveListView::reloadHeaderActions()
