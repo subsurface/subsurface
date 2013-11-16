@@ -115,7 +115,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 			mainWindow()->dive_list()->unselectDives();
 			clear = false;
 		}
-		mainWindow()->dive_list()->selectDive(dive, first, toggle);
+		mainWindow()->dive_list()->selectDive(idx, first, toggle);
 		first = false;
 	}
 }

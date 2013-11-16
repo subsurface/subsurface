@@ -25,7 +25,7 @@ public:
 	void reload(DiveTripModel::Layout layout, bool forceSort = true);
 	bool eventFilter(QObject* , QEvent* );
 	void unselectDives();
-	void selectDive(struct dive *, bool scrollto = false, bool toggle = false);
+	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);

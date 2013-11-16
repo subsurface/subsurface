@@ -511,7 +511,7 @@ void MainTab::acceptChanges()
 		// unselectDives() doesn't mess with the dive_table at all
 		struct dive *addedDive = current_dive;
 		mainWindow()->dive_list()->unselectDives();
-		mainWindow()->dive_list()->selectDive(addedDive, true, true);
+		mainWindow()->dive_list()->selectDive(selected_dive, true, true);
 		mainWindow()->showProfile();
 		mark_divelist_changed(TRUE);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);

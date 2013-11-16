@@ -989,6 +989,9 @@ QVariant DiveItem::data(int column, int role) const
 	if (role == DiveTripModel::DIVE_ROLE)
 		retVal = QVariant::fromValue<void*>(dive);
 
+	if(role == DiveTripModel::DIVE_IDX){
+		retVal = get_divenr(dive);
+	}
 	return retVal;
 }
 
@@ -1196,23 +1199,6 @@ QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
 		ret = QIcon(":trash");
 	}
 	return ret;
-}
-
-void DiveTripModel::deleteSelectedDives()
-{
-	// after a dive is deleted the ones following it move forward in the dive_table
-	// so instead of using the for_each_dive macro I'm using an explicit for loop
-	// to make this easier to understand
-	beginRemoveRows(index(0,0), 0, rowCount()-1);
-	for (int i = 0; i < dive_table.nr; i++) {
-		struct dive *d = get_dive(i);
-		if (!d->selected)
-			continue;
-		delete_single_dive(i);
-		i--; // so the next dive isn't skipped... it's now #i
-	}
-	endRemoveRows();
-	setupModelData();
 }
 
 int DiveComputerModel::rowCount(const QModelIndex& parent) const
