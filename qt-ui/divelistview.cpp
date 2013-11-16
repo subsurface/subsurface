@@ -159,6 +159,11 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 	flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
 	flags |= QItemSelectionModel::Rows;
 	selectionModel()->select(idx, flags);
+	if(idx.parent().isValid()){
+		setAnimated(false);
+		expand(idx.parent());
+		setAnimated(true);
+	}
 	if (scrollto)
 		scrollTo(idx, PositionAtCenter);
 }
