@@ -227,9 +227,9 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QAbstractItemModel *oldModel = m->sourceModel();
-	if (oldModel)
+	if (oldModel){
 		oldModel->deleteLater();
-
+	}
 	DiveTripModel *tripModel = new DiveTripModel(this);
 	tripModel->setLayout(layout);
 
@@ -347,12 +347,12 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 				if (child && child->divetrip)
 					selectedTrips.remove(child->divetrip);
 				while (child) {
-					deselect_dive(get_index_for_dive(child));
+					deselect_dive(get_divenr(child));
 					child = child->next;
 				}
 			}
 		} else {
-			deselect_dive(get_index_for_dive(dive));
+			deselect_dive(get_divenr(dive));
 		}
 	}
 	Q_FOREACH(const QModelIndex& index, newSelected.indexes()) {
@@ -368,7 +368,7 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 				if (child && child->divetrip)
 					selectedTrips.insert(child->divetrip);
 				while (child) {
-					select_dive(get_index_for_dive(child));
+					select_dive(get_divenr(child));
 					child = child->next;
 				}
 				selection.select(index.child(0,0), index.child(model->rowCount(index) -1 , 0));
@@ -378,7 +378,7 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 					expand(index);
 			}
 		} else {
-			select_dive(get_index_for_dive(dive));
+			select_dive(get_divenr(dive));
 		}
 	}
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);

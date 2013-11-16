@@ -368,10 +368,12 @@ static void add_dive_to_deco(struct dive *dive)
 
 int get_divenr(struct dive *dive)
 {
-	int divenr = -1;
-	while (++divenr < dive_table.nr && get_dive(divenr) != dive)
-		;
-	return divenr;
+	int i;
+	struct dive *d;
+	for_each_dive(i, d)
+		if (d == dive)
+			return i;
+	return -1;
 }
 
 static struct gasmix air = { .o2.permille = O2_IN_AIR };
@@ -787,8 +789,8 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 
 	if (!a || !b)
 		return NULL;
-	i = get_index_for_dive(a);
-	j = get_index_for_dive(b);
+	i = get_divenr(a);
+	j = get_divenr(b);
 	res = merge_dives(a, b, b->when - a->when, FALSE);
 	if (!res)
 		return NULL;
