@@ -73,8 +73,7 @@ void MainWindow::refreshDisplay(bool recreateDiveList)
 	if (recreateDiveList)
 		ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->setFocus();
-	WSInfoModel *wsim = WSInfoModel::instance();
-	wsim->updateInfo();
+	WSInfoModel::instance()->updateInfo();
 }
 
 void MainWindow::current_dive_changed(int divenr)
