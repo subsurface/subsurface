@@ -255,6 +255,9 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 			setAnimated(true);
 		}
 	}
+	if(currentLayout == DiveTripModel::TREE){
+		fixMessyQtModelBehaviour();
+	}
 }
 
 void DiveListView::reloadHeaderActions()
@@ -485,7 +488,6 @@ void DiveListView::deleteDive()
 	}
 	mark_divelist_changed(TRUE);
 	mainWindow()->refreshDisplay();
-	reload(currentLayout, false);
 }
 
 void DiveListView::testSlot()
