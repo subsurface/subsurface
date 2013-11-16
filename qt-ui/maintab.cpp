@@ -130,20 +130,20 @@ void MainTab::enableEdition(EditMode newEditMode)
 
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
 		// we are editing trip location and notes
-		ui.diveNotesMessage->setText(tr("This trip is being edited. Select Save or Undo when ready."));
+		ui.diveNotesMessage->setText(tr("This trip is being edited. Select Save or Cancel when done."));
 		ui.diveNotesMessage->animatedShow();
-		ui.diveEquipmentMessage->setText(tr("This trip is being edited. Select Save or Undo when ready."));
+		ui.diveEquipmentMessage->setText(tr("This trip is being edited. Select Save or Cancel when done."));
 		ui.diveEquipmentMessage->animatedShow();
 		notesBackup[NULL].notes = ui.notes->toPlainText();
 		notesBackup[NULL].location = ui.location->text();
 		editMode = TRIP;
 	} else {
 		if (amount_selected > 1) {
-			ui.diveNotesMessage->setText(tr("Multiple dives are being edited. Select Save or Undo when ready."));
-			ui.diveEquipmentMessage->setText(tr("Multiple dives are being edited. Select Save or Undo when ready."));
+			ui.diveNotesMessage->setText(tr("Multiple dives are being edited. Select Save or Cancel when done."));
+			ui.diveEquipmentMessage->setText(tr("Multiple dives are being edited. Select Save or Cancel when done."));
 		} else {
-			ui.diveNotesMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
-			ui.diveEquipmentMessage->setText(tr("This dive is being edited. Select Save or Undo when ready."));
+			ui.diveNotesMessage->setText(tr("This dive is being edited. Select Save or Cancel when done."));
+			ui.diveEquipmentMessage->setText(tr("This dive is being edited. Select Save or Cancel when done."));
 		}
 		ui.diveNotesMessage->animatedShow();
 		ui.diveEquipmentMessage->animatedShow();
