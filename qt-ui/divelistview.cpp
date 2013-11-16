@@ -388,6 +388,18 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 	Q_EMIT currentDiveChanged(selected_dive);
 }
 
+static bool can_merge(const struct dive *a, const struct dive *b)
+{
+	if (!a || !b)
+		return false;
+	if (a->when > b->when)
+		return false;
+	/* Don't merge dives if there's more than half an hour between them */
+	if (a->when + a->duration.seconds + 30*60 < b->when)
+		return false;
+	return true;
+}
+
 void DiveListView::mergeDives()
 {
 	int i;
@@ -395,7 +407,7 @@ void DiveListView::mergeDives()
 
 	for_each_dive(i, dive) {
 		if (dive->selected) {
-			if (!maindive) {
+			if (!can_merge(maindive, dive)) {
 				maindive = dive;
 			} else {
 				maindive = merge_two_dives(maindive, dive);
