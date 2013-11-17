@@ -222,13 +222,20 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	if (!editingDiveCoords)
 		return;
 
-	editingDiveCoords->latitude.udeg = lrint(lat * 1000000.0);
-	editingDiveCoords->longitude.udeg = lrint(lon * 1000000.0);
+	/* change everything on the selection. */
+	int i;
+	struct dive* dive;
+	for_each_dive(i, dive){
+		if(!dive->selected)
+			continue;
+		dive->latitude.udeg = lrint(lat * 1000000.0);
+		dive->longitude.udeg = lrint(lon * 1000000.0);
+	}
 	centerOn(lon, lat, true);
-	reload();
 	editingDiveCoords = 0;
-	messageWidget->animatedHide();
 	mark_divelist_changed(TRUE);
+	messageWidget->animatedHide();
+	mainWindow()->refreshDisplay();
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent* event)
