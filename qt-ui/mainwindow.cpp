@@ -98,8 +98,9 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	if (ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), "Please save or undo the current dive edit before opening a new file." );
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
+	   ui.InfoWidget->isEditing()) {
+		QMessageBox::warning(this, tr("Warning"), "Please save or cancel the current dive edit before opening a new file." );
 		return;
 	}
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastUsedDir(), filter());
@@ -134,8 +135,9 @@ void MainWindow::cleanUpEmpty()
 
 void MainWindow::on_actionClose_triggered()
 {
-	if (ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), "Please save or undo the current dive edit before closing the file." );
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
+	   ui.InfoWidget->isEditing()) {
+		QMessageBox::warning(this, tr("Warning"), "Please save or cancel the current dive edit before closing the file." );
 		return;
 	}
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
@@ -214,7 +216,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 {
 	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	   ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), "Please save or undo the current dive edit before trying to plan a dive." );
+		QMessageBox::warning(this, tr("Warning"), "Please save or cancel the current dive edit before trying to plan a dive." );
 		return;
 	}
 	disableDcShortcuts();
@@ -239,6 +241,11 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
+	   ui.InfoWidget->isEditing()) {
+		QMessageBox::warning(this, tr("Warning"), "Please save or cancel the current dive edit before closing the file." );
+		return;
+	}
 	if (unsaved_changes() && (askSaveChanges() == FALSE))
 		return;
 	writeSettings();
@@ -272,7 +279,7 @@ void MainWindow::on_actionAddDive_triggered()
 {
 	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	   ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), "Please save or undo the current dive edit before trying to add a dive." );
+		QMessageBox::warning(this, tr("Warning"), "Please save or cancel the current dive edit before trying to add a dive." );
 		return;
 	}
 	dive_list()->rememberSelection();
