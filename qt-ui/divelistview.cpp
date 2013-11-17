@@ -152,6 +152,8 @@ void DiveListView::unselectDives()
 
 void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 {
+	if( i == -1)
+		return;
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	QModelIndexList match = m->match(m->index(0,0), DiveTripModel::DIVE_IDX, i, 2, Qt::MatchRecursive);
 	QItemSelectionModel::SelectionFlags flags;
