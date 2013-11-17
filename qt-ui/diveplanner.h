@@ -82,10 +82,9 @@ private:
 class Button : public QObject, public QGraphicsRectItem {
 	Q_OBJECT
 public:
-	explicit Button(QObject* parent = 0);
+	Button(QObject* parent = 0, QGraphicsItem *itemParent = 0);
 	void setText(const QString& text);
 	void setPixmap(const QPixmap& pixmap);
-
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 signals:
@@ -93,6 +92,20 @@ signals:
 private:
 	QGraphicsPixmapItem *icon;
 	QGraphicsSimpleTextItem *text;
+};
+
+
+class ExpanderGraphics : public QGraphicsRectItem {
+public:
+	ExpanderGraphics(QGraphicsItem *parent = 0);
+
+	QGraphicsPixmapItem *icon;
+	Button *increaseBtn;
+	Button *decreaseBtn;
+private:
+	QGraphicsPixmapItem *bg;
+	QGraphicsPixmapItem *leftWing;
+	QGraphicsPixmapItem *rightWing;
 };
 
 class DiveHandler : public QObject, public QGraphicsEllipseItem{
@@ -206,10 +219,8 @@ private:
 	QGraphicsSimpleTextItem *depthString;
 
 	/* Buttons */
-	Button *plusTime;  // adds 10 minutes to the time ruler.
-	Button *plusDepth; // adds 10 meters to the depth ruler.
-	Button *lessTime;  // remove 10 minutes to the time ruler.
-	Button *lessDepth; // remove 10 meters to the depth ruler.
+	ExpanderGraphics *depthHandler;
+	ExpanderGraphics *timeHandler;
 
 	int minMinutes; // this holds the minimum duration of the dive.
 	int dpMaxTime; // this is the time of the dive calculated by the deco.

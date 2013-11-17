@@ -87,9 +87,9 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeLine->setColor(getColor(TIME_GRID));
 	timeLine->setLine(
 		fromPercent(10, Qt::Horizontal),
-		fromPercent(90, Qt::Vertical),
+		fromPercent(85, Qt::Vertical),
 		fromPercent(90, Qt::Horizontal),
-		fromPercent(90, Qt::Vertical)
+		fromPercent(85, Qt::Vertical)
 	);
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
@@ -105,7 +105,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 		fromPercent(10, Qt::Horizontal),
 		fromPercent(10, Qt::Vertical),
 		fromPercent(10, Qt::Horizontal),
-		fromPercent(90, Qt::Vertical)
+		fromPercent(85, Qt::Vertical)
 	);
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
@@ -128,26 +128,33 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	diveBg->setPen(QPen(QBrush(),0));
 	scene()->addItem(diveBg);
 
-#define ADDBTN(obj, icon, text, horizontal, vertical, tooltip, value, slot) \
-	obj = new Button(); \
-	obj->setPixmap(QPixmap(icon)); \
-	obj->setPos(fromPercent(horizontal, Qt::Horizontal), fromPercent(vertical, Qt::Vertical)); \
-	obj->setToolTip(QString(tooltip.arg(value))); \
-	scene()->addItem(obj); \
-	connect(obj, SIGNAL(clicked()), this, SLOT(slot));
-
 	QString incrText;
 	if (prefs.units.length == units::METERS)
 		incrText = tr("10m");
 	else
 		incrText = tr("30ft");
-	ADDBTN(plusDepth, ":plus",   ""  , 5,  5, tr("Increase maximum depth by %1"), incrText, increaseDepth());
-	ADDBTN(lessDepth, ":minimum",""  , 2,  5, tr("Decreases maximum depth by %1"), incrText, decreaseDepth());
-	ADDBTN(plusTime,  ":plus",   ""  , 95, 95, tr("Increase minimum time by %1"), tr("10min"), increaseTime());
-	ADDBTN(lessTime,  ":minimum",""  , 92, 95, tr("Decreases minimum time by %1"), tr("10min"), decreaseTime());
-#undef ADDBTN
-	minMinutes = TIME_INITIAL_MAX;
 
+	timeHandler = new ExpanderGraphics();
+	timeHandler->increaseBtn->setPixmap(QString(":plan_plus"));
+	timeHandler->decreaseBtn->setPixmap(QString(":plan_minus"));
+	timeHandler->icon->setPixmap(QString(":icon_time"));
+	connect(timeHandler->increaseBtn, SIGNAL(clicked()), this, SLOT(increaseTime()));
+	connect(timeHandler->decreaseBtn, SIGNAL(clicked()), this, SLOT(decreaseTime()));
+	timeHandler->setPos(fromPercent(83, Qt::Horizontal), fromPercent(85, Qt::Vertical));
+	timeHandler->setZValue(-2);
+	scene()->addItem(timeHandler);
+
+	depthHandler = new ExpanderGraphics();
+	depthHandler->increaseBtn->setPixmap(QString(":arrow_up"));
+	depthHandler->decreaseBtn->setPixmap(QString(":arrow_down"));
+	depthHandler->icon->setPixmap(QString(":icon_depth"));
+	connect(depthHandler->increaseBtn, SIGNAL(clicked()), this, SLOT(increaseDepth()));
+	connect(depthHandler->decreaseBtn, SIGNAL(clicked()), this, SLOT(decreaseDepth()));
+	depthHandler->setPos(fromPercent(0, Qt::Horizontal), fromPercent(85, Qt::Vertical));
+	depthHandler->setZValue(-2);
+	scene()->addItem(depthHandler);
+
+	minMinutes = TIME_INITIAL_MAX;
 	QAction *action = NULL;
 
 #define ADD_ACTION( SHORTCUT, Slot ) \
@@ -888,7 +895,7 @@ void Ruler::setColor(const QColor& color)
 	setPen(defaultPen);
 }
 
-Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
+Button::Button(QObject* parent, QGraphicsItem *itemParent): QObject(parent), QGraphicsRectItem(itemParent)
 {
 	icon = new QGraphicsPixmapItem(this);
 	text = new QGraphicsSimpleTextItem(this);
@@ -900,7 +907,7 @@ Button::Button(QObject* parent): QObject(parent), QGraphicsRectItem()
 
 void Button::setPixmap(const QPixmap& pixmap)
 {
-	icon->setPixmap(pixmap.scaled(20,20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	icon->setPixmap(pixmap);
 	if(pixmap.isNull())
 		icon->hide();
 	else
@@ -1454,4 +1461,47 @@ void DivePlannerPointsModel::createPlan()
 	stagingDive = NULL;
 	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
+}
+
+ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent): QGraphicsRectItem(parent)
+{
+	icon = new QGraphicsPixmapItem(this);
+	bg = new QGraphicsPixmapItem(this);
+	leftWing = new QGraphicsPixmapItem(this);
+	rightWing = new QGraphicsPixmapItem(this);
+
+	QPixmap p;
+	#define CREATE(item, pixmap) \
+	p = QPixmap(QString( pixmap ));\
+	item->setPixmap(p); \
+
+	CREATE(icon, ":icon_time");
+	CREATE(bg, ":round_base");
+	CREATE(leftWing, ":left_wing");
+	CREATE(rightWing, ":right_wing");
+	#undef CREATE
+
+	decreaseBtn = new Button(0, this);
+	increaseBtn = new Button(0, this);
+	decreaseBtn->setPixmap(QPixmap(":arrow_down"));
+	increaseBtn->setPixmap(QPixmap(":arrow_up"));
+
+	icon->setFlag(ItemIgnoresTransformations);
+	bg->setFlag(ItemIgnoresTransformations);
+	leftWing->setFlag(ItemIgnoresTransformations);
+	rightWing->setFlag(ItemIgnoresTransformations);
+	decreaseBtn->setFlag(ItemIgnoresTransformations);
+	increaseBtn->setFlag(ItemIgnoresTransformations);
+	setFlag(ItemIgnoresTransformations);
+	leftWing->setZValue(-2);
+	rightWing->setZValue(-2);
+	bg->setZValue(-1);
+
+	leftWing->setPos(0,0);
+	bg->setPos(leftWing->pos().x() + leftWing->boundingRect().width() -60, 5);
+	rightWing->setPos(leftWing->pos().x() + leftWing->boundingRect().width() - 20, 0);
+	decreaseBtn->setPos(leftWing->pos().x(), leftWing->pos().y() );
+	increaseBtn->setPos(rightWing->pos().x(), rightWing->pos().y() );
+	icon->setPos(bg->pos().x(), bg->pos().y() - 5);
+	setTransformOriginPoint(transformOriginPoint().x(), transformOriginPoint().y() - childrenBoundingRect().height());
 }
