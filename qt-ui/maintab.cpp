@@ -509,7 +509,6 @@ void MainTab::acceptChanges()
 		// now make sure the selection logic is in a sane state
 		// it's ok to hold on to the dive pointer for this short stretch of code
 		// unselectDives() doesn't mess with the dive_table at all
-		struct dive *addedDive = current_dive;
 		mainWindow()->dive_list()->unselectDives();
 		mainWindow()->dive_list()->selectDive(selected_dive, true, true);
 		mainWindow()->showProfile();

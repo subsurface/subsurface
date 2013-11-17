@@ -481,7 +481,6 @@ QStringList& DivePlannerPointsModel::getGasList()
 
 void DivePlannerGraphics::prepareSelectGas()
 {
-	QStringListModel *model = qobject_cast<QStringListModel*>(gasListView->model());
 	currentGasChoice = static_cast<Button*>(sender());
 	QPoint c = QCursor::pos();
 	gasListView->setGeometry(c.x(), c.y(), 150, 100);
