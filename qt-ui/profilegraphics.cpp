@@ -139,7 +139,7 @@ bool ProfileGraphicsView::eventFilter(QObject* obj, QEvent* event)
 
 	// This will "Eat" the default tooltip behavior if it is not on the toolBar.
 	if (event->type() == QEvent::GraphicsSceneHelp) {
-		if(!toolBarProxy->geometry().contains(mapFromGlobal(QCursor::pos()))){
+		if(toolBarProxy && !toolBarProxy->geometry().contains(mapFromGlobal(QCursor::pos()))){
 			event->ignore();
 			return true;
 		}
