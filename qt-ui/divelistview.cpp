@@ -437,7 +437,11 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 		trip_a->notes = strdup(trip_b->notes);
 	while (trip_b->dives)
 		add_dive_to_trip(trip_b->dives, trip_a);
+	rememberSelection();
 	reload(currentLayout, false);
+	fixMessyQtModelBehaviour();
+	restoreSelection();
+	mark_divelist_changed(TRUE);
 }
 
 void DiveListView::mergeTripAbove()

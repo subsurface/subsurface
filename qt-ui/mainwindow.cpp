@@ -145,6 +145,7 @@ void MainWindow::on_actionClose_triggered()
 	while (dive_table.nr)
 		delete_single_dive(0);
 
+	dive_list()->selectedTrips.clear();
 	/* clear the selection and the statistics */
 	selected_dive = -1;
 
