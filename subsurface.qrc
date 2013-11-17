@@ -15,5 +15,14 @@
 	<file alias="table-css">qt-ui/css/tableviews.css</file>
 	<file alias="scale">icons/scale.svg</file>
 	<file alias="ruler">icons/ruler.svg</file>
+	<file alias="arrow_up">icons/planner/arrow_up.png</file>
+	<file alias="arrow_down">icons/planner/arrow_down.png</file>
+	<file alias="icon_time">icons/planner/icon_time.png</file>
+	<file alias="icon_depth">icons/planner/icon_depth.png</file>
+	<file alias="round_base">icons/planner/round_base.png</file>
+	<file alias="right_wing">icons/planner/right_wing.png</file>
+	<file alias="left_wing">icons/planner/left_wing.png</file>
+	<file alias="plan_minus">icons/planner/minus.png</file>
+	<file alias="plan_plus">icons/planner/plus.png</file>
  </qresource>
  </RCC>
