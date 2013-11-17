@@ -472,12 +472,8 @@ QString MainWindow::filter()
 {
 	QString f;
 	f += "ALL ( *.ssrf *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
-#ifdef LIBZIP
 	f += "*.sde *.SDE *.dld *.DLD ";
-#endif
-#ifdef SQLITE3
 	f += "*.db";
-#endif
 	f += ");;";
 
 	f += "Subsurface (*.ssrf);;";
@@ -486,13 +482,9 @@ QString MainWindow::filter()
 	f += "UDCF (*.udcf *.UDCF);;";
 	f += "JLB  (*.jlb *.JLB);;";
 
-#ifdef LIBZIP
 	f += "SDE (*.sde *.SDE);;";
 	f += "DLD (*.dld *.DLD);;";
-#endif
-#ifdef SQLITE3
 	f += "DB (*.db)";
-#endif
 
 	return f;
 }
