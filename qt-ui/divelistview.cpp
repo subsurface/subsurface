@@ -464,8 +464,11 @@ void DiveListView::removeFromTrip()
 		if (d->selected)
 			remove_dive_from_trip(d);
 	}
-	mark_divelist_changed(TRUE);
+	rememberSelection();
 	reload(currentLayout, false);
+	fixMessyQtModelBehaviour();
+	restoreSelection();
+	mark_divelist_changed(TRUE);
 }
 
 void DiveListView::newTripAbove()
@@ -482,9 +485,55 @@ void DiveListView::newTripAbove()
 			add_dive_to_trip(d, trip);
 	}
 	trip->expanded = 1;
+	reload(currentLayout, false);
+	fixMessyQtModelBehaviour();
+	mark_divelist_changed(TRUE);
+	restoreSelection();
+}
+
+void DiveListView::addToTripAbove()
+{
+	int idx, delta = (currentOrder == Qt::AscendingOrder) ? -1 : +1;
+	dive_trip_t *trip = NULL;
+	struct dive *pd;
+	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
+	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
+		return;
+	rememberSelection();
+	if (d->selected) { // we are right-clicking on one of possibly many selected dive(s)
+		// find the top selected dive, depending on the list order
+		if (delta == 1) {
+			for_each_dive(idx, d) {
+				if (d->selected)
+					pd = d;
+			}
+			d = pd; // this way we have the chronologically last
+		} else {
+			for_each_dive(idx, d) {
+				if (d->selected)
+					break; // now that's the chronologically first
+			}
+		}
+	}
+	// now find the trip "above" in the dive list
+	if ((pd = get_dive(get_divenr(d) + delta)) != NULL) {
+		trip = pd->divetrip;
+	}
+	if (!pd || !trip)
+		// previous dive wasn't in a trip, so something is wrong
+		return;
+	add_dive_to_trip(d, trip);
+	if (d->selected) { // there are possibly other selected dives that we should add
+		for_each_dive(idx, d) {
+			if (d->selected)
+				add_dive_to_trip(d, trip);
+		}
+	}
+	trip->expanded = 1;
 	mark_divelist_changed(TRUE);
 	reload(currentLayout, false);
 	restoreSelection();
+	fixMessyQtModelBehaviour();
 }
 
 void DiveListView::deleteDive()
@@ -518,6 +567,7 @@ void DiveListView::deleteDive()
 		selectDive(lastDiveNr);
 		rememberSelection();
 	}
+	fixMessyQtModelBehaviour();
 }
 
 void DiveListView::testSlot()
@@ -550,6 +600,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		if (d) {
 			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
+			popup.addAction(tr("add dive(s) to trip immideately above"), this, SLOT(addToTripAbove()));
 		}
 		if (trip) {
 			popup.addAction(tr("merge trip with trip above"), this, SLOT(mergeTripAbove()));
