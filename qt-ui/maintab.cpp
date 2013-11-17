@@ -169,7 +169,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 			notesBackup[mydive].coordinates  = ui.coordinates->text();
 			notesBackup[mydive].airtemp = get_temperature_string(mydive->airtemp, true);
 			notesBackup[mydive].watertemp = get_temperature_string(mydive->watertemp, true);
-			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when - gettimezoneoffset()).toString(QString("M/d/yy h:mm"));
+			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when - gettimezoneoffset()).toString();
 			char buf[1024];
 			taglist_get_tagstring(mydive->tag_list, buf, 1024);
 			notesBackup[mydive].tags = QString(buf);
@@ -465,7 +465,7 @@ void MainTab::acceptChanges()
 			notesBackup[curr].rating != ui.visibility->currentStars() ||
 			notesBackup[curr].airtemp != ui.airtemp->text() ||
 			notesBackup[curr].watertemp != ui.watertemp->text() ||
-			notesBackup[curr].datetime != ui.dateTimeEdit->dateTime().toString(QString("M/d/yy h:mm")) ||
+			notesBackup[curr].datetime != ui.dateTimeEdit->dateTime().toString() ||
 			notesBackup[curr].visibility != ui.rating->currentStars() ||
 			notesBackup[curr].tags != ui.tagWidget->text()) {
 			mark_divelist_changed(TRUE);
@@ -581,7 +581,7 @@ void MainTab::rejectChanges()
 		ui.tagWidget->setText(notesBackup[curr].tags);
 		// it's a little harder to do the right thing for the date time widget
 		if (curr) {
-			ui.dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime, QString("M/d/y h:mm")));
+			ui.dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime));
 		} else {
 			QLineEdit *le = ui.dateTimeEdit->findChild<QLineEdit*>();
 			le->setText("");

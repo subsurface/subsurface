@@ -76,9 +76,6 @@
         </item>
         <item row="2" column="0">
          <widget class="QDateTimeEdit" name="dateTimeEdit">
-          <property name="displayFormat">
-           <string>M/d/yy h:mm</string>
-          </property>
           <property name="calendarPopup">
            <bool>true</bool>
           </property>
