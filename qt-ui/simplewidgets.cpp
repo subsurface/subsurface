@@ -134,9 +134,15 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
 		amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
 		if (ui.backwards->isChecked())
 			amount *= -1;
-
-		shift_times(amount);
-		mainWindow()->refreshDisplay();
+		if (amount != 0) {
+			// DANGER, DANGER - this could get our dive_table unsorted...
+			shift_times(amount);
+			sort_table(&dive_table);
+			mark_divelist_changed(TRUE);
+			mainWindow()->dive_list()->rememberSelection();
+			mainWindow()->refreshDisplay();
+			mainWindow()->dive_list()->restoreSelection();
+		}
 	}
 }
 
