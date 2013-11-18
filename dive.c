@@ -2072,3 +2072,15 @@ struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset)
 	}
 	return NULL;
 }
+
+void shift_times(const timestamp_t amount)
+{
+	int i;
+	struct dive *dive;
+
+	for_each_dive (i, dive) {
+		if (!dive->selected)
+			continue;
+		dive->when += amount;
+	}
+}

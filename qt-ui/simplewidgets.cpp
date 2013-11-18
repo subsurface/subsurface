@@ -13,6 +13,7 @@
 #include <QDebug>
 
 #include "../dive.h"
+#include "mainwindow.h"
 
 class MinMaxAvgWidgetPrivate{
 public:
@@ -114,6 +115,32 @@ void RenumberDialog::buttonClicked(QAbstractButton* button)
 }
 
 RenumberDialog::RenumberDialog(): QDialog()
+{
+	ui.setupUi(this);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+}
+
+ShiftTimesDialog* ShiftTimesDialog::instance()
+{
+	static ShiftTimesDialog* self = new ShiftTimesDialog();
+	return self;
+}
+
+void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
+{
+	int amount;
+
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole){
+		amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
+		if (ui.backwards->isChecked())
+			amount *= -1;
+
+		shift_times(amount);
+		mainWindow()->refreshDisplay();
+	}
+}
+
+ShiftTimesDialog::ShiftTimesDialog(): QDialog()
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
