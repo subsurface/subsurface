@@ -1416,9 +1416,11 @@ void DivePlannerPointsModel::undoEdition()
 {
 	clear();
 	Q_FOREACH(const sample &s, backupSamples){
-		int o2, he;
-		get_gas_from_events(&current_dive->dc, s.time.seconds, &o2, &he);
-		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
+		if (s.time.seconds > 0) {
+			int o2, he;
+			get_gas_from_events(&current_dive->dc, s.time.seconds, &o2, &he);
+			plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
+		}
 	}
 }
 
