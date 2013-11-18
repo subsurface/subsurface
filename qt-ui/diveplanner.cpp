@@ -442,26 +442,28 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	 * as soon as the model is modified, it will
 	 * remove all samples from the current dive.
 	 * */
-	struct dive *backupDive = alloc_dive();
-	backupDive->when = current_dive->when; // do we need anything else?
-	copy_samples(current_dive, backupDive);
-	copy_cylinders(current_dive, backupDive);
-	copy_events(current_dive, backupDive);
-	backupSamples.clear();
-	for(int i = 0; i < d->dc.samples-1; i++){
-		backupSamples.push_back( d->dc.sample[i]);
-	}
+	memcpy(&backupDive, current_dive, sizeof(struct dive));
+	copy_samples(current_dive, &backupDive);
+	copy_events(current_dive, &backupDive);
 	copy_cylinders(current_dive, stagingDive); // this way the correct cylinder data is shown
 	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
-	Q_FOREACH(const sample &s, backupSamples){
-		int o2 = 0, he = 0;
+	// we start with the first gas and see if it was changed
+	int o2 = backupDive.cylinder[0].gasmix.o2.permille;
+	int he = backupDive.cylinder[0].gasmix.he.permille;
+	for (int i = 0; i < backupDive.dc.samples; i++) {
+		const sample &s = backupDive.dc.sample[i];
 		if (s.time.seconds == 0)
 			continue;
-		get_gas_from_events(&backupDive->dc, lasttime, &o2, &he);
+		get_gas_from_events(&backupDive.dc, lasttime, &o2, &he);
 		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
 		lasttime = s.time.seconds;
 	}
+}
+
+void DivePlannerPointsModel::restoreBackupDive()
+{
+	memcpy(current_dive, &backupDive, sizeof(struct dive));
 }
 
 void DivePlannerPointsModel::copyCylinders(dive *d)
@@ -1410,18 +1412,6 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
-}
-
-void DivePlannerPointsModel::undoEdition()
-{
-	clear();
-	Q_FOREACH(const sample &s, backupSamples){
-		if (s.time.seconds > 0) {
-			int o2, he;
-			get_gas_from_events(&current_dive->dc, s.time.seconds, &o2, &he);
-			plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
-		}
-	}
 }
 
 void DivePlannerPointsModel::deleteTemporaryPlan()

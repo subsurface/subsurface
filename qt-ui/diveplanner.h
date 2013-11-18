@@ -61,7 +61,8 @@ public slots:
 	void createTemporaryPlan();
 	void deleteTemporaryPlan();
 	void loadFromDive(dive* d);
-	void undoEdition();
+	void restoreBackupDive();
+
 signals:
 	void planCreated();
 	void planCanceled();
@@ -73,6 +74,7 @@ private:
 	Mode mode;
 	QVector<divedatapoint> divepoints;
 	struct dive *tempDive;
+	struct dive backupDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
 	struct dive *stagingDive;

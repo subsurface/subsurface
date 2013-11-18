@@ -57,6 +57,8 @@ void set_last_stop(bool last_stop_6m)
 
 void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 {
+	// we don't modify the values passed in if nothing is found
+	// so don't call with uninitialized o2/he !
 	struct event *event = dc->events;
 	while (event && event->time.seconds <= time) {
 		if (!strcmp(event->name, "gaschange")) {

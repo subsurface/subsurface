@@ -565,7 +565,9 @@ void MainTab::rejectChanges()
 			// clean up
 			DivePlannerPointsModel::instance()->cancelPlan();
 		} else if (lastMode == MANUALLY_ADDED_DIVE ) {
-			DivePlannerPointsModel::instance()->undoEdition(); // that's BOGUS... just copy the original dive back and be done with it...
+			// when we tried to edit a manually added dive, we destroyed
+			// the dive we edited, so let's just restore it from backup
+			DivePlannerPointsModel::instance()->restoreBackupDive();
 		}
 		struct dive *curr = current_dive;
 		ui.notes->setText(notesBackup[curr].notes );
