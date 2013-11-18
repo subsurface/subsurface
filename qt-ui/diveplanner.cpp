@@ -1478,12 +1478,6 @@ ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent): QGraphicsRectItem(par
 	decreaseBtn->setPixmap(QPixmap(":arrow_down"));
 	increaseBtn->setPixmap(QPixmap(":arrow_up"));
 
-	icon->setFlag(ItemIgnoresTransformations);
-	bg->setFlag(ItemIgnoresTransformations);
-	leftWing->setFlag(ItemIgnoresTransformations);
-	rightWing->setFlag(ItemIgnoresTransformations);
-	decreaseBtn->setFlag(ItemIgnoresTransformations);
-	increaseBtn->setFlag(ItemIgnoresTransformations);
 	setFlag(ItemIgnoresTransformations);
 	leftWing->setZValue(-2);
 	rightWing->setZValue(-2);
