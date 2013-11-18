@@ -140,7 +140,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeHandler->icon->setPixmap(QString(":icon_time"));
 	connect(timeHandler->increaseBtn, SIGNAL(clicked()), this, SLOT(increaseTime()));
 	connect(timeHandler->decreaseBtn, SIGNAL(clicked()), this, SLOT(decreaseTime()));
-	timeHandler->setPos(fromPercent(83, Qt::Horizontal), fromPercent(85, Qt::Vertical));
+	timeHandler->setPos(fromPercent(83, Qt::Horizontal), fromPercent(100, Qt::Vertical));
 	timeHandler->setZValue(-2);
 	scene()->addItem(timeHandler);
 
@@ -150,7 +150,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthHandler->icon->setPixmap(QString(":icon_depth"));
 	connect(depthHandler->increaseBtn, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 	connect(depthHandler->decreaseBtn, SIGNAL(clicked()), this, SLOT(decreaseDepth()));
-	depthHandler->setPos(fromPercent(0, Qt::Horizontal), fromPercent(85, Qt::Vertical));
+	depthHandler->setPos(fromPercent(0, Qt::Horizontal), fromPercent(100, Qt::Vertical));
 	depthHandler->setZValue(-2);
 	scene()->addItem(depthHandler);
 
@@ -1489,5 +1489,11 @@ ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent): QGraphicsRectItem(par
 	decreaseBtn->setPos(leftWing->pos().x(), leftWing->pos().y() );
 	increaseBtn->setPos(rightWing->pos().x(), rightWing->pos().y() );
 	icon->setPos(bg->pos().x(), bg->pos().y() - 5);
-	setTransformOriginPoint(transformOriginPoint().x(), transformOriginPoint().y() - childrenBoundingRect().height());
+
+	//I need to bottom align the items, I need to make the 0,0 ( orgin ) to be
+	// the bottom of this item, so shift everything up.
+	QRectF r = childrenBoundingRect();
+	Q_FOREACH(QGraphicsItem *i, childItems()){
+		i->setPos(i->pos().x(), i->pos().y() - r.height());
+	}
 }
