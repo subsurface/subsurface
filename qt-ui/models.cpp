@@ -284,14 +284,20 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case O2:
 		if (CHANGED(toDouble, "%", "%")) {
-			cyl->gasmix.o2.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
-			changed = true;
+			int o2 = value.toString().remove('%').toDouble() * 10 + 0.5;
+			if (cyl->gasmix.he.permille + o2 <= 1000) {
+				cyl->gasmix.o2.permille = o2;
+				changed = true;
+			}
 		}
 		break;
 	case HE:
 		if (CHANGED(toDouble, "%", "%")) {
-			cyl->gasmix.he.permille = value.toString().remove('%').toDouble() * 10 + 0.5;
-			changed = true;
+			int he = value.toString().remove('%').toDouble() * 10 + 0.5;
+			if (cyl->gasmix.o2.permille + he <= 1000) {
+				cyl->gasmix.he.permille = he;
+				changed = true;
+			}
 		}
 		break;
 	case DEPTH:
