@@ -850,7 +850,7 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 			name += QString(":%1").arg(ev->value);
 		}
 	} else if (ev->name && name == "SP change") {
-		name += tr("Bailing out to OC");
+		name += "\n" + tr("Bailing out to OC");
 	} else {
 		name += ev->flags == SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
 				ev->flags == SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
