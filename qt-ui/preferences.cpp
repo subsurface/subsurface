@@ -38,6 +38,9 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.po2Threshold->setValue(prefs.pp_graphs.po2_threshold);
 	ui.pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
 	ui.ead_end_eadd->setChecked(prefs.ead);
+	ui.mod->setChecked(prefs.mod);
+	ui.maxppo2->setEnabled(ui.mod->isChecked());
+	ui.maxppo2->setValue(prefs.mod_ppO2);
 	ui.dc_reported_ceiling->setChecked(prefs.profile_dc_ceiling);
 	ui.red_ceiling->setEnabled(ui.dc_reported_ceiling->isChecked());
 	ui.red_ceiling->setChecked(prefs.profile_red_ceiling);
@@ -101,6 +104,8 @@ void PreferencesDialog::setPrefsFromUi()
 	prefs.pp_graphs.po2_threshold = ui.po2Threshold->value();
 	prefs.pp_graphs.pn2_threshold = ui.pn2Threshold->value();
 	SP(ead, ui.ead_end_eadd);
+	SP(mod, ui.mod);
+	prefs.mod_ppO2 = ui.maxppo2->value();
 	SP(profile_dc_ceiling, ui.dc_reported_ceiling);
 	SP(profile_red_ceiling, ui.red_ceiling);
 	SP(profile_calc_ceiling, ui.calculated_ceiling);
@@ -139,6 +144,8 @@ void PreferencesDialog::syncSettings()
 	s.setValue("po2threshold", ui.po2Threshold->value());
 	s.setValue("pn2threshold", ui.pn2Threshold->value());
 	SB("ead", ui.ead_end_eadd);
+	SB("mod", ui.mod);
+	s.setValue("modppo2", ui.maxppo2->value());
 	SB("dcceiling", ui.dc_reported_ceiling);
 	SB("redceiling", ui.red_ceiling);
 	SB("calcceiling", ui.calculated_ceiling);
