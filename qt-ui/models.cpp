@@ -1020,6 +1020,9 @@ bool DiveItem::setData(const QModelIndex& index, const QVariant& value, int role
 		return false;
 
 	int v = value.toInt();
+	if (v == 0)
+		return false;
+
 	int i;
 	struct dive *d;
 	for_each_dive(i, d){
