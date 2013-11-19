@@ -1498,4 +1498,5 @@ ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent): QGraphicsRectItem(par
 	Q_FOREACH(QGraphicsItem *i, childItems()){
 		i->setPos(i->pos().x(), i->pos().y() - r.height());
 	}
+	setScale(0.7);
 }
