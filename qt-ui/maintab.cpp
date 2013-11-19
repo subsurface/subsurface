@@ -745,8 +745,8 @@ void MainTab::on_location_textChanged(const QString& text)
 			}
 		}
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) );
+		mainWindow()->globe()->repopulateLabels();
 	}
-
 	markChangedWidget(ui.location);
 }
 
