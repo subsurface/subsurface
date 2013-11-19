@@ -59,6 +59,7 @@ public:
 	void initialUiSetup();
 	void equipmentPlusUpdate();
 	bool isEditing();
+	void updateCoordinatesText(qreal lat, qreal lon);
 public slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();

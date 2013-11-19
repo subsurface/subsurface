@@ -18,6 +18,7 @@ public:
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void centerOn(struct dive* dive);
+	void diveEditMode();
 
 protected:
 	/* reimp */ void resizeEvent(QResizeEvent *event);

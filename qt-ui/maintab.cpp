@@ -123,6 +123,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 		return;
 
 	mainWindow()->dive_list()->setEnabled(false);
+	mainWindow()->globe()->diveEditMode();
 	// We may be editing one or more dives here. backup everything.
 	notesBackup.clear();
 	ui.notesButtonBox->show();
@@ -833,6 +834,13 @@ QString MainTab::printGPSCoords(int lat, int lon)
 		       lath.toLocal8Bit().data(), latdeg, UTF8_DEGREE, ilatmin / 1000000, (ilatmin % 1000000) / 10,
 		       lonh.toLocal8Bit().data(), londeg, UTF8_DEGREE, ilonmin / 1000000, (ilonmin % 1000000) / 10);
 	return result;
+}
+
+void MainTab::updateCoordinatesText(qreal lat, qreal lon)
+{
+	int ulat = rint(lat * 1000000);
+	int ulon = rint(lon * 1000000);
+	ui.coordinates->setText(printGPSCoords(ulat, ulon));
 }
 
 void MainTab::updateGpsCoordinates(const struct dive *dive)
