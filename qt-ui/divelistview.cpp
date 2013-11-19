@@ -140,6 +140,7 @@ void DiveListView::rememberSelection()
 void DiveListView::restoreSelection()
 {
 	unselectDives();
+	selectedTrips.clear(); // I wish we didn't lose those...
 	Q_FOREACH(int i, selectedDives) {
 		selectDive(i);
 	}
