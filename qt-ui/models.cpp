@@ -929,7 +929,10 @@ QVariant TripItem::data(int column, int role) const
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 			case DiveTripModel::NR:
-			ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives);
+			if (trip->location && *trip->location)
+				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives);
+			else
+				ret = get_trip_date_string(trip->when, trip->nrdives);
 			break;
 		}
 	}

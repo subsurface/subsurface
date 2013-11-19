@@ -600,7 +600,7 @@ static void delete_trip(dive_trip_t *trip)
 	free(trip);
 }
 
-static void find_new_trip_start_time(dive_trip_t *trip)
+void find_new_trip_start_time(dive_trip_t *trip)
 {
 	struct dive *dive = trip->dives;
 	timestamp_t when = dive->when;

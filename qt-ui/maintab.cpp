@@ -13,6 +13,7 @@
 #include "globe.h"
 #include "completionmodels.h"
 #include "diveplanner.h"
+#include "divelist.h"
 #include "qthelper.h"
 
 #include <QLabel>
@@ -498,6 +499,10 @@ void MainTab::acceptChanges()
 			}
 		}
 
+	}
+	if (current_dive->divetrip) {
+		current_dive->divetrip->when = current_dive->when;
+		find_new_trip_start_time(current_dive->divetrip);
 	}
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// clean up the dive data (get duration, depth information from samples)
