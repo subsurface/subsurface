@@ -810,6 +810,11 @@ TreeItem::~TreeItem()
 	qDeleteAll(children);
 }
 
+Qt::ItemFlags TreeItem::flags(const QModelIndex& index) const
+{
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
 int TreeItem::row() const
 {
 	if (parent)
@@ -844,6 +849,10 @@ QVariant TreeModel::data(const QModelIndex& index, int role) const
 		return defaultModelFont();
 	else
 		return val;
+}
+
+bool TreeItem::setData(const QModelIndex& index, const QVariant& value, int role)
+{
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex& parent)
@@ -995,6 +1004,34 @@ QVariant DiveItem::data(int column, int role) const
 	return retVal;
 }
 
+Qt::ItemFlags DiveItem::flags(const QModelIndex& index) const
+{
+	if(index.column() == NR){
+		return TreeItem::flags(index) | Qt::ItemIsEditable;
+	}
+	return TreeItem::flags(index);
+}
+
+bool DiveItem::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	if (role != Qt::EditRole)
+		return false;
+	if (index.column() != NR)
+		return false;
+
+	int v = value.toInt();
+	int i;
+	struct dive *d;
+	for_each_dive(i, d){
+		if (d->number == v)
+			return false;
+	}
+
+	dive->number = value.toInt();
+	mark_divelist_changed(TRUE);
+	return true;
+}
+
 QString DiveItem::displayDate() const
 {
 	return get_dive_date_string(dive->when);
@@ -1075,7 +1112,8 @@ Qt::ItemFlags DiveTripModel::flags(const QModelIndex& index) const
 	if (!index.isValid())
 		return 0;
 
-	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	TripItem *item = static_cast<TripItem*>(index.internalPointer());
+	return item->flags(index);
 }
 
 QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -1166,6 +1204,15 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
 	currentLayout = layout;
 	setupModelData();
 }
+
+bool DiveTripModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+	DiveItem *diveItem = dynamic_cast<DiveItem*>(item);
+	if(!diveItem)
+		return false;
+	return diveItem->setData(index, value, role);}
+
 
 /*####################################################################
  *

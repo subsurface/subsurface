@@ -144,6 +144,9 @@ public:
 	virtual ~TreeItem();
 	TreeItem();
 	virtual QVariant data (int column, int role) const;
+	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+
 	int row() const;
 	QList<TreeItem*> children;
 	TreeItem *parent;
@@ -155,7 +158,8 @@ struct DiveItem : public TreeItem {
 
 	virtual QVariant data(int column, int role) const;
 	struct dive* dive;
-
+	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	QString displayDate() const;
 	QString displayDuration() const;
 	QString displayDepth() const;
@@ -174,7 +178,6 @@ class TreeModel : public QAbstractItemModel
 public:
 	TreeModel(QObject *parent = 0);
 	virtual ~TreeModel();
-
 	virtual   QVariant data(const QModelIndex &index, int role) const;
 	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	/*reimp*/ int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -197,6 +200,7 @@ public:
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	DiveTripModel(QObject* parent = 0);
 	Layout layout() const;
 	void setLayout(Layout layout);
