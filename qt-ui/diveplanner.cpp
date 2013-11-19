@@ -675,9 +675,25 @@ DiveHandler::DiveHandler(): QGraphicsEllipseItem()
 	setZValue(2);
 }
 
+int DiveHandler::parentIndex()
+{
+	DivePlannerGraphics *view = qobject_cast<DivePlannerGraphics*>(scene()->views().first());
+	return view->handles.indexOf(this);
+}
+
 void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
 	QMenu m;
+	GasSelectionModel *model = GasSelectionModel::instance();
+	model->repopulate();
+	int rowCount = model->rowCount();
+	for(int i = 0; i < rowCount; i++){
+		QAction *action = new QAction(&m);
+		action->setText( model->data(model->index(i, 0),Qt::DisplayRole).toString());
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
+		m.addAction(action);
+	}
+	m.addSeparator();
 	m.addAction(QObject::tr("Remove this Point"), this, SLOT(selfRemove()));
 	m.exec(event->screenPos());
 }
@@ -687,6 +703,13 @@ void DiveHandler::selfRemove()
 	setSelected(true);
 	DivePlannerGraphics *view = qobject_cast<DivePlannerGraphics*>(scene()->views().first());
 	view->keyDeleteAction();
+}
+
+void DiveHandler::changeGas()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
+	plannerModel->setData(index, action->text());
 }
 
 void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent* event)

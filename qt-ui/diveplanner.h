@@ -117,8 +117,11 @@ public:
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
+private:
+	int parentIndex();
 public slots:
 	void selfRemove();
+	void changeGas();
 };
 
 class Ruler : public QGraphicsLineItem{
