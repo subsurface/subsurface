@@ -268,7 +268,7 @@ void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
-volume_t get_gas_used(struct dive *dive)
+void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 {
 	int idx;
 	volume_t gas_used = { 0 };
@@ -279,9 +279,8 @@ volume_t get_gas_used(struct dive *dive)
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
 		if (start.mbar && end.mbar)
-			gas_used.mliter += gas_volume(cyl, start) - gas_volume(cyl, end);
+			gases[idx].mliter = gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
-	return gas_used;
 }
 
 bool is_gas_used(struct dive *dive, int idx)
@@ -347,15 +346,19 @@ char *get_gaslist(struct dive *dive)
 		cyl = &dive->cylinder[idx];
 		o2 = get_o2(&cyl->gasmix);
 		he = get_he(&cyl->gasmix);
+		if (offset > 0) {
+			strncpy(buf + offset, "\n", MAXBUF - offset);
+			offset = strlen(buf);
+		}
 		if (is_air(o2, he))
-			snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %s" : "%s", translate("gettextFromC","air"));
+			strncpy(buf + offset, translate("gettextFromC","air"), MAXBUF - offset);
 		else
 			if (he == 0)
-				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? translate("gettextFromC",", EAN%d") : translate("gettextFromC","EAN%d"),
-					 (o2 + 5) / 10);
+				snprintf(buf + offset, MAXBUF - offset,
+					translate("gettextFromC","EAN%d"), (o2 + 5) / 10);
 			else
-				snprintf(buf + offset, MAXBUF - offset, (offset > 0) ? ", %d/%d" : "%d/%d",
-				 (o2 + 5) / 10, (he + 5) / 10);
+				snprintf(buf + offset, MAXBUF - offset,
+					"%d/%d", (o2 + 5) / 10, (he + 5) / 10);
 		offset = strlen(buf);
 	}
 	if (*buf == '\0')

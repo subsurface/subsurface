@@ -350,7 +350,12 @@ void MainTab::updateDiveInfo(int dive)
 		ui.otuText->setText(QString("%1").arg(d->otu));
 		ui.waterTemperatureText->setText(get_temperature_string(d->watertemp, TRUE));
 		ui.airTemperatureText->setText(get_temperature_string(d->airtemp, TRUE));
-		ui.gasUsedText->setText(get_volume_string(get_gas_used(d), TRUE));
+		volume_t gases[MAX_CYLINDERS] = { 0 };
+		get_gas_used(d, gases);
+		QString volumes = get_volume_string(gases[0], TRUE);
+		for(int i=1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++)
+			volumes.append("\n" + get_volume_string(gases[i], TRUE));
+		ui.gasUsedText->setText(volumes);
 		ui.oxygenHeliumText->setText(get_gaslist(d));
 		ui.dateText->setText(get_short_dive_date_string(d->when));
 		ui.diveTimeText->setText(QString::number((int)((d->duration.seconds + 30) / 60)));
