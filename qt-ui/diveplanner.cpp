@@ -557,16 +557,30 @@ void DivePlannerGraphics::showEvent(QShowEvent* event)
 void DivePlannerGraphics::mouseMoveEvent(QMouseEvent* event)
 {
 	QPointF mappedPos = mapToScene(event->pos());
-	if (isPointOutOfBoundaries(mappedPos))
+
+
+	double xpos = timeLine->valueAt(mappedPos);
+	double ypos = depthLine->valueAt(mappedPos);
+
+	xpos =  (xpos > timeLine->maximum()) ? timeLine->posAtValue(timeLine->maximum())
+		: (xpos < timeLine->minimum()) ? timeLine->posAtValue(timeLine->minimum())
+		: timeLine->posAtValue(xpos);
+
+	ypos =  (ypos > depthLine->maximum()) ? depthLine->posAtValue(depthLine->maximum())
+		: ( ypos < depthLine->minimum()) ? depthLine->posAtValue(depthLine->minimum())
+		: depthLine->posAtValue(ypos);
+
+	verticalLine->setPos(xpos, fromPercent(0, Qt::Vertical));
+	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), ypos);
+
+	depthString->setPos(fromPercent(1, Qt::Horizontal), ypos);
+	timeString->setPos(xpos+1, fromPercent(95, Qt::Vertical));
+
+	if(isPointOutOfBoundaries(mappedPos))
 		return;
 
-	verticalLine->setPos(mappedPos.x(), fromPercent(0, Qt::Vertical));
-	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), mappedPos.y());
-
 	depthString->setText(get_depth_string(depthLine->valueAt(mappedPos), true, false));
-	depthString->setPos(fromPercent(1, Qt::Horizontal), mappedPos.y());
 	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
-	timeString->setPos(mappedPos.x()+1, fromPercent(95, Qt::Vertical));
 
 	// calculate the correct color for the depthString.
 	// QGradient doesn't returns it's interpolation, meh.
