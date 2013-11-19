@@ -8,6 +8,16 @@
 
 struct tag_entry *g_tag_list = NULL;
 
+static const char* default_tags[] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "boat"), QT_TRANSLATE_NOOP("gettextFromC", "shore"), QT_TRANSLATE_NOOP("gettextFromC", "drift"),
+	QT_TRANSLATE_NOOP("gettextFromC", "deep"), QT_TRANSLATE_NOOP("gettextFromC", "cavern") , QT_TRANSLATE_NOOP("gettextFromC", "ice"),
+	QT_TRANSLATE_NOOP("gettextFromC", "wreck"), QT_TRANSLATE_NOOP("gettextFromC", "cave"), QT_TRANSLATE_NOOP("gettextFromC", "altitude"),
+	QT_TRANSLATE_NOOP("gettextFromC", "pool"), QT_TRANSLATE_NOOP("gettextFromC", "lake"), QT_TRANSLATE_NOOP("gettextFromC", "river"),
+	QT_TRANSLATE_NOOP("gettextFromC", "night"), QT_TRANSLATE_NOOP("gettextFromC", "fresh"), QT_TRANSLATE_NOOP("gettextFromC", "student"),
+	QT_TRANSLATE_NOOP("gettextFromC", "instructor"), QT_TRANSLATE_NOOP("gettextFromC", "photo"), QT_TRANSLATE_NOOP("gettextFromC", "video"),
+	QT_TRANSLATE_NOOP("gettextFromC", "deco")
+};
+
 void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev, **p;
@@ -1912,20 +1922,28 @@ static struct divetag *taglist_add_divetag(struct tag_entry *tag_list, struct di
 
 struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag)
 {
+	int i = 0, is_default_tag = 0;
 	struct divetag *ret_tag, *new_tag;
 	const char *translation;
 	new_tag = malloc(sizeof(struct divetag));
 
-	translation = translate("gettextFromC", tag);
-	if (strcmp(tag, translation) == 0) {
-		new_tag->source = NULL;
-		new_tag->name = malloc(strlen(tag)+1);
-		memcpy(new_tag->name, tag, strlen(tag)+1);
-	} else {
+	for (i=0; i<sizeof(default_tags)/sizeof(char*); i++) {
+		if (strcmp(default_tags[i], tag) == 0) {
+			is_default_tag = 1;
+			break;
+		}
+	}
+	/* Only translate default tags */
+	if (is_default_tag) {
+		translation = translate("gettextFromC", tag);
 		new_tag->name = malloc(strlen(translation)+1);
 		memcpy(new_tag->name, translation, strlen(translation)+1);
 		new_tag->source = malloc(strlen(tag)+1);
 		memcpy(new_tag->source, tag, strlen(tag)+1);
+	} else {
+		new_tag->source = NULL;
+		new_tag->name = malloc(strlen(tag)+1);
+		memcpy(new_tag->name, tag, strlen(tag)+1);
 	}
 	/* Try to insert new_tag into g_tag_list if we are not operating on it */
 	if (tag_list != g_tag_list) {
@@ -1979,16 +1997,6 @@ static void taglist_merge(struct tag_entry *dst, struct tag_entry *src1, struct 
 void taglist_init_global()
 {
 	int i;
-	const char* default_tags[] = {
-		QT_TRANSLATE_NOOP("gettextFromC", "boat"), QT_TRANSLATE_NOOP("gettextFromC", "shore"), QT_TRANSLATE_NOOP("gettextFromC", "drift"),
-		QT_TRANSLATE_NOOP("gettextFromC", "deep"), QT_TRANSLATE_NOOP("gettextFromC", "cavern") , QT_TRANSLATE_NOOP("gettextFromC", "ice"),
-		QT_TRANSLATE_NOOP("gettextFromC", "wreck"), QT_TRANSLATE_NOOP("gettextFromC", "cave"), QT_TRANSLATE_NOOP("gettextFromC", "altitude"),
-		QT_TRANSLATE_NOOP("gettextFromC", "pool"), QT_TRANSLATE_NOOP("gettextFromC", "lake"), QT_TRANSLATE_NOOP("gettextFromC", "river"),
-		QT_TRANSLATE_NOOP("gettextFromC", "night"), QT_TRANSLATE_NOOP("gettextFromC", "fresh"), QT_TRANSLATE_NOOP("gettextFromC", "student"),
-		QT_TRANSLATE_NOOP("gettextFromC", "instructor"), QT_TRANSLATE_NOOP("gettextFromC", "photo"), QT_TRANSLATE_NOOP("gettextFromC", "video"),
-		QT_TRANSLATE_NOOP("gettextFromC", "deco")
-	};
-
 	taglist_init(&g_tag_list);
 
 	for(i=0; i<sizeof(default_tags)/sizeof(char*); i++)
