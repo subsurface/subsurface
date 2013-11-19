@@ -174,14 +174,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
 
-	// Prepare the stuff for the gas-choices.
-	gasListView = new QListView();
-	gasListView->setWindowFlags(Qt::Popup);
-	gasListView->setModel(GasSelectionModel::instance());
-	gasListView->hide();
-	gasListView->installEventFilter(this);
-
-	connect(gasListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectGas(QModelIndex)));
 	connect(plannerModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(drawProfile()));
 
 	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex&,int,int)),
@@ -191,34 +183,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	setRenderHint(QPainter::Antialiasing);
 }
 
-bool DivePlannerGraphics::eventFilter(QObject *object, QEvent* event)
-{
-	if (object != gasListView)
-		return false;
-	if (event->type() == QEvent::KeyPress) {
-		QKeyEvent *ke =  static_cast<QKeyEvent *>(event);
-		if (ke->key() == Qt::Key_Escape)
-			gasListView->hide();
-	}
-	if (event->type() == QEvent::MouseButtonPress){
-		QMouseEvent *me = static_cast<QMouseEvent *>(event);
-		if (!gasListView->geometry().contains(me->pos()))
-			gasListView->hide();
-	}
-	return false;
-}
-
 void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)
 {
 	DiveHandler *item = new DiveHandler ();
 	scene()->addItem(item);
 	handles << item;
 
-	Button *gasChooseBtn = new Button();
+	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
-	connect(gasChooseBtn, SIGNAL(clicked()), this, SLOT(prepareSelectGas()));
-
+	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	gases << gasChooseBtn;
 	drawProfile();
 }
@@ -488,22 +462,6 @@ QStringList& DivePlannerPointsModel::getGasList()
 		}
 	}
 	return list;
-}
-
-void DivePlannerGraphics::prepareSelectGas()
-{
-	currentGasChoice = static_cast<Button*>(sender());
-	QPoint c = QCursor::pos();
-	gasListView->setGeometry(c.x(), c.y(), 150, 100);
-	gasListView->show();
-}
-
-void DivePlannerGraphics::selectGas(const QModelIndex& index)
-{
-	QString gasSelected = gasListView->model()->data(index, Qt::DisplayRole).toString();
-	int idx = gases.indexOf(currentGasChoice);
-	plannerModel->setData(plannerModel->index(idx, DivePlannerPointsModel::GAS), gasSelected);
-	gasListView->hide();
 }
 
 void DivePlannerGraphics::drawProfile()

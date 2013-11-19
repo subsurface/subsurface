@@ -175,11 +175,8 @@ private slots:
 	void decreaseTime();
 	void decreaseDepth();;
 	void drawProfile();
-	void prepareSelectGas();
-	void selectGas(const QModelIndex& index);
 	void pointInserted(const QModelIndex&, int start, int end);
 	void pointsRemoved(const QModelIndex&, int start, int end);
-	bool eventFilter(QObject *object, QEvent* event);
 private:
 	void moveActiveHandler(const QPointF& MappedPos, const int pos);
 
@@ -188,15 +185,7 @@ private:
 
 	/* This is the user-entered handles. */
 	QList<DiveHandler *> handles;
-
-	/* this is the user-entered gases.
-		This must be a button, so the
-		user cna click to choose a new gas.
-	 */
-	QList<Button*> gases;
-	QListView *gasListView;
-	QStringListModel *gasChoices;
-	Button *currentGasChoice;
+	QList<QGraphicsSimpleTextItem*> gases;
 
 	/* those are the lines that follows the mouse. */
 	QGraphicsLineItem *verticalLine;
