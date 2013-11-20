@@ -496,6 +496,9 @@ static inline int pressure_time(struct dive *dive, struct divecomputer *dc, stru
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth)/2;
 
+	if (depth <= SURFACE_THRESHOLD)
+		return 0;
+
 	return depth_to_mbar(depth, dive) * time;
 }
 
