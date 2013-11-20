@@ -889,12 +889,10 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
 	/* The gas switch event format is insane. It will be fixed, I think */
-	int o2 = dive->cylinder[idx].gasmix.o2.permille;
-	int he = dive->cylinder[idx].gasmix.he.permille;
+	int o2 = get_o2(&dive->cylinder[idx].gasmix);
+	int he = get_he(&dive->cylinder[idx].gasmix);
 	int value;
 
-	if (!o2)
-		o2 = O2_IN_AIR;
 	o2 = (o2+5) / 10;
 	he = (he+5) / 10;
 	value = o2 + (he << 16);
