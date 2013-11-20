@@ -116,9 +116,6 @@ void init_ui(int *argcp, char ***argvp)
 	}
 
 	QSettings s;
-	s.beginGroup("GeneralSettings");
-	prefs.default_filename = getSetting(s, "default_filename");
-	s.endGroup();
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
 	default_dive_computer_product = getSetting(s,"dive_computer_product");

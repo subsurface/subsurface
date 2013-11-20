@@ -21,7 +21,6 @@
 #include <QDebug>
 #include <QSet>
 #include <QTableView>
-#include <QSettings>
 #include <QPalette>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),

@@ -36,7 +36,6 @@ TableView::~TableView()
 		s.setValue(QString("colwidth%1").arg(i), ui.tableView->columnWidth(i));
 	}
 	s.endGroup();
-	s.sync();
 }
 
 void TableView::setBtnToolTip(const QString& tooltip)

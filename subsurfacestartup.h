@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-extern struct preferences prefs;
-extern struct preferences default_prefs;
 extern bool imported;
 
 void setup_system_prefs(void);

@@ -1557,7 +1557,6 @@ void ToolTipItem::persistPos()
 	s.beginGroup("ProfileMap");
 	s.setValue("tooltip_position", currentPos);
 	s.endGroup();
-	s.sync();
 }
 
 void ToolTipItem::readPos()

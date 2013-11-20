@@ -77,7 +77,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.font->setFont(QString(prefs.divelist_font));
 	ui.fontsize->setValue(prefs.font_size);
 	ui.defaultfilename->setText(prefs.default_filename);
-	ui.displayinvalid->setChecked(prefs.show_invalid);
+	ui.displayinvalid->setChecked(prefs.display_invalid_dives);
 	ui.show_sac->setChecked(prefs.show_sac);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
@@ -86,46 +86,12 @@ void PreferencesDialog::setUiFromPrefs()
 void PreferencesDialog::restorePrefs()
 {
 	prefs = oldPrefs;
+	setUiFromPrefs();
 }
 
 void PreferencesDialog::rememberPrefs()
 {
 	oldPrefs = prefs;
-}
-
-#define SP(V, B) prefs.V = (int)(B->isChecked() ? 1 : 0)
-
-void PreferencesDialog::setPrefsFromUi()
-{
-	SP(pp_graphs.phe, ui.phe);
-	SP(pp_graphs.po2, ui.po2);
-	SP(pp_graphs.pn2, ui.pn2);
-	prefs.pp_graphs.phe_threshold = ui.pheThreshold->value();
-	prefs.pp_graphs.po2_threshold = ui.po2Threshold->value();
-	prefs.pp_graphs.pn2_threshold = ui.pn2Threshold->value();
-	SP(ead, ui.ead_end_eadd);
-	SP(mod, ui.mod);
-	prefs.mod_ppO2 = ui.maxppo2->value();
-	SP(profile_dc_ceiling, ui.dc_reported_ceiling);
-	SP(profile_red_ceiling, ui.red_ceiling);
-	SP(profile_calc_ceiling, ui.calculated_ceiling);
-	SP(calc_ceiling_3m_incr, ui.increment_3m);
-	SP(calc_ndl_tts, ui.calc_ndl_tts);
-	SP(calc_all_tissues, ui.all_tissues);
-	prefs.gflow = ui.gflow->value();
-	prefs.gfhigh = ui.gfhigh->value();
-	prefs.unit_system = ui.metric->isChecked() ? METRIC : (ui.imperial->isChecked() ? IMPERIAL : PERSONALIZE);
-	prefs.units.temperature = ui.fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS;
-	prefs.units.length = ui.feet->isChecked() ? units::FEET : units::METERS;
-	prefs.units.pressure = ui.psi->isChecked() ? units::PSI : units::BAR;
-	prefs.units.volume = ui.cuft->isChecked() ? units::CUFT : units::LITER;
-	prefs.units.weight = ui.lbs->isChecked() ? units::LBS : units::KG;
-	prefs.units.vertical_speed_time = ui.vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS;
-	prefs.divelist_font = strdup(ui.font->font().family().toUtf8().data());
-	prefs.font_size = ui.fontsize->value();
-	prefs.default_filename = strdup(ui.defaultfilename->text().toUtf8().data());
-	prefs.display_invalid_dives = ui.displayinvalid->isChecked();
-	SP(show_sac, ui.show_sac);
 }
 
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
@@ -170,9 +136,12 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 	// Defaults
 	s.beginGroup("GeneralSettings");
-	s.value("table_fonts", ui.font->font().family());
-	s.value("font_size", ui.fontsize->value());
 	s.value("default_filename", ui.defaultfilename->text());
+	s.endGroup();
+
+	s.beginGroup("Display");
+	s.value("divelist_font", ui.font->font().family());
+	s.value("font_size", ui.fontsize->value());
 	s.value("displayinvalid", ui.displayinvalid->isChecked());
 	s.endGroup();
 	s.sync();
@@ -185,16 +154,12 @@ void PreferencesDialog::buttonClicked(QAbstractButton* button)
 	switch(ui.buttonBox->standardButton(button)){
 	case QDialogButtonBox::Discard:
 		restorePrefs();
-		setUiFromPrefs();
-		syncSettings();
 		close();
 		break;
 	case QDialogButtonBox::Apply:
-		setPrefsFromUi();
 		syncSettings();
 		break;
 	case QDialogButtonBox::FirstButton:
-		setPrefsFromUi();
 		syncSettings();
 		close();
 		break;

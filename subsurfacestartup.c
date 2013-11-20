@@ -26,7 +26,7 @@ struct preferences default_prefs = {
 	.gflow = 30,
 	.gfhigh = 75,
 	.font_size = 14.0,
-	.show_invalid = FALSE,
+	.display_invalid_dives = FALSE,
 	.show_sac = FALSE,
 };
 
