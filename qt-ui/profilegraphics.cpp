@@ -142,8 +142,8 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
 		m.addAction(action);
 		action = new QAction(&m);
-		action->setText("Hide events of that type");
-		action->setData(event->globalPos());
+		action->setText("Hide similar events");
+		action->setData(QVariant::fromValue<void*>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
 		break;
@@ -173,10 +173,24 @@ void ProfileGraphicsView::changeGas()
 void ProfileGraphicsView::hideEvents()
 {
 	QAction *action = qobject_cast<QAction*>(sender());
-	QPoint globalPos = action->data().toPoint();
-	QPoint viewPos = mapFromGlobal(globalPos);
-	QPointF scenePos = mapToScene(viewPos);
-	qDebug() << "Hide Event";
+	EventItem *item = static_cast<EventItem*>(action->data().value<void*>());
+	struct event *event = item->ev;
+
+	if (QMessageBox::question(mainWindow(),
+				  tr("Hide events"),
+				  tr("Hide all %1 events?").arg(event->name),
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok){
+		if (event->name) {
+			for (int i = 0; i < evn_used; i++) {
+				if (! strcmp(event->name, ev_namelist[i].ev_name)) {
+					ev_namelist[i].plot_ev = false;
+					break;
+				}
+			}
+		}
+		mark_divelist_changed(TRUE);
+		plot(current_dive, TRUE);
+	}
 }
 
 void ProfileGraphicsView::removeEvent()
@@ -199,8 +213,8 @@ void ProfileGraphicsView::removeEvent()
 			free(event);
 		}
 		mark_divelist_changed(TRUE);
+		plot(current_dive, TRUE);
 	}
-	plot(current_dive, TRUE);
 }
 
 
