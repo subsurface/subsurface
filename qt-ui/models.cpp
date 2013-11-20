@@ -859,6 +859,7 @@ QVariant TreeModel::data(const QModelIndex& index, int role) const
 
 bool TreeItem::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+	return false;
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex& parent)
