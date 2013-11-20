@@ -26,7 +26,6 @@ public slots:
 private:
 	explicit PreferencesDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();
-	void setUIFromSettings();
 	Ui::PreferencesDialog ui;
 	struct preferences oldPrefs;
 };

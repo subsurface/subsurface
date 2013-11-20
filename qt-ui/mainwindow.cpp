@@ -564,6 +564,13 @@ bool MainWindow::askSaveChanges()
 	else							\
 		prefs.field = default_prefs.field
 
+#define GET_TXT(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = strdup(v.toString().toUtf8().constData());			\
+	else							\
+		prefs.field = default_prefs.field
+
 
 void MainWindow::initialUiSetup()
 {
@@ -623,7 +630,8 @@ void MainWindow::readSettings()
 	GET_BOOL("calcalltissues", calc_all_tissues);
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
-	set_gf(prefs.gflow, prefs.gfhigh);
+	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
+	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
 	GET_BOOL("show_sac", show_sac);
 	s.endGroup();
 

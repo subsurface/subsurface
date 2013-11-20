@@ -55,6 +55,7 @@ void PreferencesDialog::setUiFromPrefs()
 
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
+	ui.gf_low_at_maxdepth->setChecked(prefs.gf_low_at_maxdepth);
 
 	// units
 	if (prefs.unit_system == METRIC)
@@ -111,7 +112,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("pn2threshold", ui.pn2Threshold->value());
 	SB("ead", ui.ead_end_eadd);
 	SB("mod", ui.mod);
-	s.setValue("modppo2", ui.maxppo2->value());
+	s.setValue("modppO2", ui.maxppo2->value());
 	SB("dcceiling", ui.dc_reported_ceiling);
 	SB("redceiling", ui.red_ceiling);
 	SB("calcceiling", ui.calculated_ceiling);
@@ -120,6 +121,7 @@ void PreferencesDialog::syncSettings()
 	SB("calcalltissues", ui.all_tissues);
 	s.setValue("gflow", ui.gflow->value());
 	s.setValue("gfhigh", ui.gfhigh->value());
+	SB("gf_low_at_maxdepth", ui.gf_low_at_maxdepth);
 	SB("show_sac", ui.show_sac);
 	s.endGroup();
 

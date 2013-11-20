@@ -763,6 +763,13 @@
             <item row="1" column="1">
              <widget class="QSpinBox" name="gfhigh"/>
             </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QCheckBox" name="gf_low_at_maxdepth">
+              <property name="text">
+               <string>GFLow at max depth</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>

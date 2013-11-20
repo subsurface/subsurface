@@ -25,6 +25,7 @@ struct preferences default_prefs = {
 	.calc_ndl_tts = FALSE,
 	.gflow = 30,
 	.gfhigh = 75,
+	.gf_low_at_maxdepth = FALSE,
 	.font_size = 14.0,
 	.display_invalid_dives = FALSE,
 	.show_sac = FALSE,

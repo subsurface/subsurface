@@ -574,7 +574,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	int gaschangenr;
 	unsigned int *stoplevels = NULL;
 
-	set_gf(diveplan->gflow, diveplan->gfhigh);
+	set_gf(diveplan->gflow, diveplan->gfhigh, default_prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	if (*divep)

@@ -715,7 +715,7 @@ extern double add_segment(double pressure, const struct gasmix *gasmix, int peri
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
-extern void set_gf(short gflow, short gfhigh);
+extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
 extern void cache_deco_state(double, char **datap);
 extern double restore_deco_state(char *data);
 

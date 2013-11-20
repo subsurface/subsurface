@@ -31,9 +31,8 @@ struct preferences {
 	short calc_ndl_tts;
 	short gflow;
 	short gfhigh;
-	int map_provider;
+	bool gf_low_at_maxdepth;
 	short display_invalid_dives;
-	short show_invalid;
 	short unit_system;
 	struct units units;
 	short show_sac;
