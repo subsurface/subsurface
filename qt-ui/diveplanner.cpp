@@ -449,13 +449,14 @@ void DivePlannerPointsModel::copyCylinders(dive *d)
 
 QStringList& DivePlannerPointsModel::getGasList()
 {
+	struct dive *activeDive = isPlanner() ? stagingDive : current_dive;
 	static QStringList list;
 	list.clear();
-	if (!stagingDive) {
+	if (!activeDive) {
 		list.push_back(tr("AIR"));
 	} else {
 		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			cylinder_t *cyl = &stagingDive->cylinder[i];
+			cylinder_t *cyl = &activeDive->cylinder[i];
 			if (cylinder_nodata(cyl))
 				break;
 			list.push_back(gasToStr(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
