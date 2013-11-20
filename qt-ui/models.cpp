@@ -1732,18 +1732,18 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags GasSelectionModel::flags(const QModelIndex& index) const
 {
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 GasSelectionModel* GasSelectionModel::instance()
 {
-    static GasSelectionModel* self = new GasSelectionModel();
-    return self;
+	static GasSelectionModel* self = new GasSelectionModel();
+	return self;
 }
 
 void GasSelectionModel::repopulate()
 {
-    setStringList(DivePlannerPointsModel::instance()->getGasList());
+	setStringList(DivePlannerPointsModel::instance()->getGasList());
 }
 
 QVariant GasSelectionModel::data(const QModelIndex& index, int role) const
