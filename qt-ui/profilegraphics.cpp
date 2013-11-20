@@ -188,7 +188,6 @@ void ProfileGraphicsView::hideEvents()
 				}
 			}
 		}
-		mark_divelist_changed(TRUE);
 		plot(current_dive, TRUE);
 	}
 }
