@@ -100,7 +100,8 @@ private:
 class EventItem : public QGraphicsPolygonItem
 {
 public:
-	explicit EventItem(QGraphicsItem* parent = 0, bool grayscale = FALSE);
+	explicit EventItem(struct event *ev, QGraphicsItem* parent = 0, bool grayscale = FALSE);
+	struct event* ev;
 
 private:
 	ToolTipItem *controller;

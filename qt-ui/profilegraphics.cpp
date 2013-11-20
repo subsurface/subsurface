@@ -17,6 +17,7 @@
 #include <QMouseEvent>
 #include <QToolBar>
 #include <qtextdocument.h>
+#include <QMessageBox>
 #include <limits>
 
 #include "../color.h"
@@ -137,7 +138,7 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 			continue;
 		QAction *action = new QAction(&m);
 		action->setText("Remove Event");
-		action->setData(event->globalPos()); // so we know what to remove.
+		action->setData(QVariant::fromValue<void*>(item)); // so we know what to remove.
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
 		m.addAction(action);
 		action = new QAction(&m);
@@ -181,11 +182,27 @@ void ProfileGraphicsView::hideEvents()
 void ProfileGraphicsView::removeEvent()
 {
 	QAction *action = qobject_cast<QAction*>(sender());
-	QPoint globalPos = action->data().toPoint();
-	QPoint viewPos = mapFromGlobal(globalPos);
-	QPointF scenePos = mapToScene(viewPos);
-	qDebug() << "Remove Event";
+	EventItem *item = static_cast<EventItem*>(action->data().value<void*>());
+	struct event *event = item->ev;
+
+	if (QMessageBox::question(mainWindow(),
+				  tr("Remove the selected event?"),
+				  tr("%1 @ %2:%3").arg(event->name)
+				  .arg(event->time.seconds / 60)
+				  .arg(event->time.seconds % 60, 2, 10, QChar('0')),
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok){
+		struct event **ep = &current_dc->events;
+		while (ep && *ep != event)
+			ep = &(*ep)->next;
+		if (ep) {
+			*ep = event->next;
+			free(event);
+		}
+		mark_divelist_changed(TRUE);
+	}
+	plot(current_dive, TRUE);
 }
+
 
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
@@ -903,7 +920,7 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	int x = SCALEXGC(ev->time.seconds);
 	int y = SCALEYGC(entry->depth);
 
-	EventItem *item = new EventItem(0, isGrayscale);
+	EventItem *item = new EventItem(ev, 0, isGrayscale);
 	item->setPos(x, y);
 	scene()->addItem(item);
 
@@ -1536,9 +1553,8 @@ QColor EventItem::getColor(const color_indice_t i)
 	return profile_color[i].at((isGrayscale) ? 1 : 0);
 }
 
-EventItem::EventItem(QGraphicsItem* parent, bool grayscale): QGraphicsPolygonItem(parent)
+EventItem::EventItem(struct event *ev, QGraphicsItem* parent, bool grayscale): QGraphicsPolygonItem(parent), isGrayscale(grayscale), ev(ev)
 {
-	isGrayscale = grayscale;
 	setFlag(ItemIgnoresTransformations);
 	setFlag(ItemIsFocusable);
 	setAcceptHoverEvents(true);
