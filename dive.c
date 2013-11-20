@@ -5,6 +5,7 @@
 #include <limits.h>
 #include "gettext.h"
 #include "dive.h"
+#include "planner.h"
 
 struct tag_entry *g_tag_list = NULL;
 
@@ -336,6 +337,47 @@ static void fixup_dc_duration(struct divecomputer *dc)
 	if (duration) {
 		dc->duration.seconds = duration;
 		dc->meandepth.mm = (depthtime + duration/2) / duration;
+	}
+}
+
+void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
+{
+	int i;
+	int depthtime[MAX_CYLINDERS] = {0,};
+	int lasttime = 0, lastdepth = 0;
+	int idx = 0;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		mean[i] = duration[i] = 0;
+	struct event *ev = get_next_event(dc->events, "gaschange");
+	if (!ev) {
+		// special case - no gas changes
+		mean[0] = dc->meandepth.mm;
+		duration[0] = dc->duration.seconds;
+		return;
+	}
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+		int time = sample->time.seconds;
+		int depth = sample->depth.mm;
+		if (ev && time >= ev->time.seconds) {
+			int o2 = (ev->value & 0xFFFF) * 10;
+			int he = (ev->value >> 16) * 10;
+			idx = get_gasidx(dive, o2, he);
+			ev = get_next_event(ev->next, "gaschange");
+		}
+
+		/* We ignore segments at the surface */
+		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
+			duration[idx] += time - lasttime;
+			depthtime[idx] += (time - lasttime) * (depth + lastdepth) / 2;
+		}
+		lastdepth = depth;
+		lasttime = time;
+	}
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (duration[i])
+			mean[i] = (depthtime[i] + duration[i] / 2) / duration[i];
 	}
 }
 

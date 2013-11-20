@@ -353,8 +353,25 @@ void MainTab::updateDiveInfo(int dive)
 		volume_t gases[MAX_CYLINDERS] = { 0 };
 		get_gas_used(d, gases);
 		QString volumes = get_volume_string(gases[0], TRUE);
-		for(int i=1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++)
+		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
+		per_cylinder_mean_depth(d, select_dc(&d->dc), mean, duration);
+		volume_t sac;
+		QString SACs;
+		if (mean[0] && duration[0]) {
+			sac.mliter = gases[0].mliter * 1000.0 / (depth_to_mbar(mean[0], d) * duration[0] / 60.0);
+			SACs = get_volume_string(sac, TRUE).append(tr("/min"));
+		} else {
+			SACs = QString(tr("unknown"));
+		}
+		for(int i=1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++) {
 			volumes.append("\n" + get_volume_string(gases[i], TRUE));
+			if (duration[i]) {
+				sac.mliter = gases[i].mliter * 1000.0 / (depth_to_mbar(mean[i], d) * duration[i] / 60);
+				SACs.append("\n" + get_volume_string(sac, TRUE).append(tr("/min")));
+			} else {
+				SACs.append("\n");
+			}
+		}
 		ui.gasUsedText->setText(volumes);
 		ui.oxygenHeliumText->setText(get_gaslist(d));
 		ui.dateText->setText(get_short_dive_date_string(d->when));
@@ -363,8 +380,8 @@ void MainTab::updateDiveInfo(int dive)
 			ui.surfaceIntervalText->setText(get_time_string(d->when - (prevd->when + prevd->duration.seconds), 4));
 		else
 			ui.surfaceIntervalText->clear();
-		if ((sacVal.mliter = d->sac) > 0)
-			ui.sacText->setText(get_volume_string(sacVal, TRUE).append(tr("/min")));
+		if (mean[0])
+			ui.sacText->setText(SACs);
 		else
 			ui.sacText->clear();
 		if (d->surface_pressure.mbar)
