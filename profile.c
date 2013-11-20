@@ -553,7 +553,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	}
 }
 
-static int get_cylinder_index(struct dive *dive, struct event *ev)
+int get_cylinder_index(struct dive *dive, struct event *ev)
 {
 	int i;
 	int best = 0, score = INT_MAX;

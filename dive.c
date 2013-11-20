@@ -361,11 +361,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
 		if (ev && time >= ev->time.seconds) {
-			int o2 = (ev->value & 0xFFFF) * 10;
-			int he = (ev->value >> 16) * 10;
-			int tank = get_gasidx(dive, o2, he);
-			if (tank >= 0)
-				idx = tank; // should never happen unless the input file is inconsistent
+			idx = get_cylinder_index(dive, ev);
 			ev = get_next_event(ev->next, "gaschange");
 		}
 		/* We ignore segments at the surface */
