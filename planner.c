@@ -76,7 +76,7 @@ static inline bool match_percent(int a, int b)
 	return (a + 5) / 10 == (b + 5) / 10;
 }
 
-static int get_gasidx(struct dive *dive, int o2, int he)
+int get_gasidx(struct dive *dive, int o2, int he)
 {
 	int gasidx = -1;
 

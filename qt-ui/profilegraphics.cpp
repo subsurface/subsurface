@@ -26,6 +26,7 @@
 #include "../profile.h"
 #include "../device.h"
 #include "../helpers.h"
+#include "../planner.h"
 
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
@@ -167,7 +168,12 @@ void ProfileGraphicsView::changeGas()
 	QPoint viewPos = mapFromGlobal(globalPos);
 	QPointF scenePos = mapToScene(viewPos);
 	QString gas = action->text();
-	qDebug() << "Change Gas Event" << gas;
+	int o2, he;
+	validate_gas(gas.toUtf8().constData(), &o2, &he);
+	int seconds = scenePos.x() / gc.maxx * (gc.rightx - gc.leftx) + gc.leftx;
+	add_gas_switch_event(current_dive, current_dc, seconds, get_gasidx(current_dive, o2, he));
+	mark_divelist_changed(TRUE);
+	plot(current_dive, TRUE);
 }
 
 void ProfileGraphicsView::hideEvents()
