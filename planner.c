@@ -267,11 +267,10 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 		if (o2 != oldo2 || he != oldhe) {
 			int plano2 = (o2 + 5) / 10 * 10;
 			int planhe = (he + 5) / 10 * 10;
-			int value;
-			if (add_gas(dive, plano2, planhe) < 0)
+			int idx;
+			if (idx = add_gas(dive, plano2, planhe) < 0)
 				goto gas_error_exit;
-			value = (plano2 / 10) | ((planhe / 10) << 16);
-			add_event(dc, lasttime, 25, 0, value, "gaschange"); // SAMPLE_EVENT_GASCHANGE2
+			add_gas_switch_event(dive, dc, lasttime, idx);
 			oldo2 = o2; oldhe = he;
 		}
 		/* Create sample */
