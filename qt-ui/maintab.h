@@ -63,7 +63,7 @@ public:
 public slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();
-	void updateDiveInfo(int dive);
+	void updateDiveInfo(int dive = selected_dive);
 	void acceptChanges();
 	void rejectChanges();
 	void on_location_textChanged(const QString& text);
