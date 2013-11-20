@@ -112,6 +112,81 @@ void ProfileGraphicsView::wheelEvent(QWheelEvent* event)
 	toolTip->setPos(mapToScene(toolTipPos).x(), mapToScene(toolTipPos).y());
 }
 
+void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
+{
+	if(selected_dive == -1)
+		return;
+	QMenu m;
+	QMenu *gasChange = m.addMenu("Add Gas Change");
+	GasSelectionModel *model = GasSelectionModel::instance();
+	model->repopulate();
+	int rowCount = model->rowCount();
+	for(int i = 0; i < rowCount; i++){
+		QAction *action = new QAction(&m);
+		action->setText( model->data(model->index(i, 0),Qt::DisplayRole).toString());
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
+		action->setData(event->globalPos());
+		gasChange->addAction(action);
+	}
+	QAction *action = m.addAction("Add Bookmark", this, SLOT(addBookmark()));
+	action->setData(event->globalPos());
+	QList<QGraphicsItem*> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
+	Q_FOREACH(QGraphicsItem *i, itemsAtPos){
+		EventItem *item = dynamic_cast<EventItem*>(i);
+		if(!item)
+			continue;
+		QAction *action = new QAction(&m);
+		action->setText("Remove Event");
+		action->setData(event->globalPos()); // so we know what to remove.
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
+		m.addAction(action);
+		action = new QAction(&m);
+		action->setText("Hide events of that type");
+		action->setData(event->globalPos());
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
+		m.addAction(action);
+		break;
+	}
+	m.exec(event->globalPos());
+}
+
+void ProfileGraphicsView::addBookmark()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	QPoint globalPos = action->data().toPoint();
+	QPoint viewPos = mapFromGlobal(globalPos);
+	QPointF scenePos = mapToScene(viewPos);
+	qDebug() << "Add Bookmark";
+}
+
+void ProfileGraphicsView::changeGas()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	QPoint globalPos = action->data().toPoint();
+	QPoint viewPos = mapFromGlobal(globalPos);
+	QPointF scenePos = mapToScene(viewPos);
+	QString gas = action->text();
+	qDebug() << "Change Gas Event" << gas;
+}
+
+void ProfileGraphicsView::hideEvents()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	QPoint globalPos = action->data().toPoint();
+	QPoint viewPos = mapFromGlobal(globalPos);
+	QPointF scenePos = mapToScene(viewPos);
+	qDebug() << "Hide Event";
+}
+
+void ProfileGraphicsView::removeEvent()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	QPoint globalPos = action->data().toPoint();
+	QPoint viewPos = mapFromGlobal(globalPos);
+	QPointF scenePos = mapToScene(viewPos);
+	qDebug() << "Remove Event";
+}
+
 void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
 	if (!toolTip)
