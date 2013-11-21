@@ -44,7 +44,11 @@
             </xsl:for-each>
           </equipment>
         </owner>
+
+        <xsl:apply-templates select="//buddy"/>
       </diver>
+
+      <xsl:apply-templates select="//location"/>
 
       <!-- Define all the unique gases found in the dive log -->
       <gasdefinitions>
@@ -107,13 +111,56 @@
     </uddf>
   </xsl:template>
 
+  <xsl:key name="buddy" match="buddy" use="."/>
+  <xsl:template match="buddy">
+    <xsl:if test="generate-id() = generate-id(key('buddy', normalize-space(.)))">
+      <buddy>
+        <xsl:attribute name="id">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+        <personal>
+          <first_name>
+            <xsl:value-of select="."/>
+          </first_name>
+        </personal>
+      </buddy>
+      </xsl:if>
+  </xsl:template>
+
+  <xsl:key name="location" match="location" use="."/>
+  <xsl:template match="location">
+    <xsl:if test="generate-id() = generate-id(key('location', normalize-space(.)))">
+      <dive_site>
+        <xsl:attribute name="id">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+        <name>
+          <xsl:value-of select="."/>
+        </name>
+        <geography>
+          <location>
+            <xsl:value-of select="."/>
+          </location>
+          <gps>
+            <latitude>
+              <xsl:value-of select="substring-before(@gps, ' ')"/>
+            </latitude>
+            <longitude>
+              <xsl:value-of select="substring-after(@gps, ' ')"/>
+            </longitude>
+          </gps>
+        </geography>
+      </dive_site>
+      </xsl:if>
+  </xsl:template>
+
   <xsl:template match="dive">
     <dive id="{generate-id(.)}">
 
       <informationbeforedive>
-        <xsl:if test="node()/temperature/@air != ''">
+        <xsl:if test="temperature/@air|divetemperature/@air != ''">
           <airtemperature>
-            <xsl:value-of select="format-number(substring-before(node()/temperature/@air, ' ') + 273.15, '0.00')"/>
+            <xsl:value-of select="format-number(substring-before(temperature/@air|divetemperature/@air, ' ') + 273.15, '0.00')"/>
           </airtemperature>
         </xsl:if>
         <datetime>
@@ -122,6 +169,20 @@
         <divenumber>
           <xsl:value-of select="./@number"/>
         </divenumber>
+        <xsl:if test="buddy != ''">
+          <buddy_ref>
+            <xsl:attribute name="ref">
+              <xsl:value-of select="buddy"/>
+            </xsl:attribute>
+          </buddy_ref>
+        </xsl:if>
+        <xsl:if test="location != ''">
+          <dive_site_ref>
+            <xsl:attribute name="ref">
+              <xsl:value-of select="location"/>
+            </xsl:attribute>
+          </dive_site_ref>
+        </xsl:if>
       </informationbeforedive>
 
       <samples>
@@ -250,9 +311,9 @@
             </xsl:call-template>
           </diveduration>
         </xsl:if>
-        <xsl:if test="node()/temperature/@water != ''">
+        <xsl:if test="temperature/@water|divetemperature/@water != ''">
           <lowesttemperature>
-            <xsl:value-of select="format-number(substring-before(node()/temperature/@water, ' ') + 273.15, '0.00')"/>
+            <xsl:value-of select="format-number(substring-before(temperature/@water|divetemperature/@water, ' ') + 273.15, '0.00')"/>
           </lowesttemperature>
         </xsl:if>
         <notes>
@@ -272,6 +333,25 @@
             </xsl:choose>
           </ratingvalue>
         </rating>
+        <visibility>
+            <xsl:choose>
+              <xsl:when test="./@visibility = 1">
+                <xsl:value-of select="1"/>
+              </xsl:when>
+              <xsl:when test="./@visibility = 2">
+                <xsl:value-of select="3"/>
+              </xsl:when>
+              <xsl:when test="./@visibility = 3">
+                <xsl:value-of select="5"/>
+              </xsl:when>
+              <xsl:when test="./@visibility = 4">
+                <xsl:value-of select="10"/>
+              </xsl:when>
+              <xsl:when test="./@visibility = 5">
+                <xsl:value-of select="15"/>
+              </xsl:when>
+            </xsl:choose>
+        </visibility>
       </informationafterdive>
 
     </dive>
