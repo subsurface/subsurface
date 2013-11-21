@@ -330,6 +330,7 @@ void parse_file(const char *filename, char **error)
 void parse_csv_file(const char *filename, int timef, int depthf, int tempf, char **error)
 {
 	struct memblock mem;
+	int pnr=0;
 	char *params[11];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
@@ -357,17 +358,17 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, char
 	* is not discarded during the transform, thus prepend time with 1 */
 	strftime(curtime, sizeof(curtime), "1%H%M", timep);
 
-	params[0] = "timeField";
-	params[1] = timebuf;
-	params[2] = "depthField";
-	params[3] = depthbuf;
-	params[4] = "tempField";
-	params[5] = tempbuf;
-	params[6] = "date";
-	params[7] = curdate;
-	params[8] = "time";
-	params[9] = curtime;
-	params[10] = NULL;
+	params[pnr++] = "timeField";
+	params[pnr++] = timebuf;
+	params[pnr++] = "depthField";
+	params[pnr++] = depthbuf;
+	params[pnr++] = "tempField";
+	params[pnr++] = tempbuf;
+	params[pnr++] = "date";
+	params[pnr++] = curdate;
+	params[pnr++] = "time";
+	params[pnr++] = curtime;
+	params[pnr++] = NULL;
 
 	if (filename == NULL)
 		return;
