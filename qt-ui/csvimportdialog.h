@@ -22,10 +22,8 @@ private slots:
 	void on_buttonBox_accepted();
 	void on_CSVFileSelector_clicked();
 	void on_knownImports_currentIndexChanged(int index);
-	void on_CSVTime_valueChanged(int arg1);
-	void on_CSVDepth_valueChanged(int arg1);
-	void on_CSVTemperature_valueChanged(int arg1);
 	void on_CSVFile_textEdited();
+	void unknownImports(int);
 
 private:
 	void unknownImports();

@@ -24,6 +24,10 @@ CSVImportDialog::CSVImportDialog(QWidget *parent) :
 	ui->CSVSeparator->addItem("Tab");
 	ui->knownImports->setCurrentIndex(1);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+
+	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
+	connect(ui->CSVTime, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
+	connect(ui->CSVTemperature, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
 }
 
 CSVImportDialog::~CSVImportDialog()
@@ -73,17 +77,7 @@ void CSVImportDialog::on_knownImports_currentIndexChanged(int index)
 	ui->CSVTemperature->blockSignals(false);
 }
 
-void CSVImportDialog::on_CSVTime_valueChanged(int arg1)
-{
-	unknownImports();
-}
-
-void CSVImportDialog::on_CSVDepth_valueChanged(int arg1)
-{
-	unknownImports();
-}
-
-void CSVImportDialog::on_CSVTemperature_valueChanged(int arg1)
+void CSVImportDialog::unknownImports(int arg1)
 {
 	unknownImports();
 }
