@@ -182,9 +182,9 @@ void ProfileGraphicsView::hideEvents()
 	EventItem *item = static_cast<EventItem*>(action->data().value<void*>());
 	struct event *event = item->ev;
 
-	if (QMessageBox::question(mainWindow(),
+	if (QMessageBox::question(mainWindow(), TITLE_OR_TEXT(
 				  tr("Hide events"),
-				  tr("Hide all %1 events?").arg(event->name),
+				  tr("Hide all %1 events?").arg(event->name)),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok){
 		if (event->name) {
 			for (int i = 0; i < evn_used; i++) {
@@ -204,11 +204,11 @@ void ProfileGraphicsView::removeEvent()
 	EventItem *item = static_cast<EventItem*>(action->data().value<void*>());
 	struct event *event = item->ev;
 
-	if (QMessageBox::question(mainWindow(),
+	if (QMessageBox::question(mainWindow(), TITLE_OR_TEXT(
 				  tr("Remove the selected event?"),
 				  tr("%1 @ %2:%3").arg(event->name)
 				  .arg(event->time.seconds / 60)
-				  .arg(event->time.seconds % 60, 2, 10, QChar('0')),
+				  .arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok){
 		struct event **ep = &current_dc->events;
 		while (ep && *ep != event)

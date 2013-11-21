@@ -137,7 +137,7 @@ void DownloadFromDCWidget::updateState(states state)
 
 	// got an error
 	else if (state == ERROR) {
-		QMessageBox::critical(this, tr("Error"), this->thread->error, QMessageBox::Ok);
+		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), this->thread->error), QMessageBox::Ok);
 
 		markChildrenAsEnabled();
 		ui.progressBar->hide();

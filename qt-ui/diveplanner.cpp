@@ -1272,8 +1272,8 @@ struct diveplan DivePlannerPointsModel::getDiveplan()
 void DivePlannerPointsModel::cancelPlan()
 {
 	if (mode == PLAN && rowCount()) {
-		if (QMessageBox::warning(mainWindow(), tr("Discard the Plan?"),
-			tr("You are about to discard your plan."),
+		if (QMessageBox::warning(mainWindow(), TITLE_OR_TEXT(tr("Discard the Plan?"),
+			tr("You are about to discard your plan.")),
 			QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
 			return;
 		}
