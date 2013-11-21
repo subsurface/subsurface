@@ -271,7 +271,6 @@ void get_selected_dives_text(char *buffer, int size)
 void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 {
 	int idx;
-	volume_t gas_used = { 0 };
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
 		cylinder_t *cyl = &dive->cylinder[idx];
 		pressure_t start, end;

@@ -275,7 +275,6 @@ void MainTab::updateDiveInfo(int dive)
 	// If exactly one trip has been selected, we show the location / notes
 	// for the trip in the Info tab, otherwise we show the info of the
 	// selected_dive
-	volume_t sacVal;
 	temperature_t temp;
 	struct dive *prevd;
 	struct dive *d = get_dive(dive);
