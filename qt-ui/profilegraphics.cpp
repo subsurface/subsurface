@@ -158,7 +158,10 @@ void ProfileGraphicsView::addBookmark()
 	QPoint globalPos = action->data().toPoint();
 	QPoint viewPos = mapFromGlobal(globalPos);
 	QPointF scenePos = mapToScene(viewPos);
-	qDebug() << "Add Bookmark";
+	int seconds = scenePos.x() / gc.maxx * (gc.rightx - gc.leftx) + gc.leftx;
+	add_event(current_dc, seconds, SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
+	mark_divelist_changed(TRUE);
+	plot(current_dive, TRUE);
 }
 
 void ProfileGraphicsView::changeGas()
