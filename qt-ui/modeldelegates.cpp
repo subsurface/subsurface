@@ -224,7 +224,11 @@ TankInfoDelegate::TankInfoDelegate(QObject* parent): ComboBoxDelegate(TankInfoMo
 
 void TankInfoDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (hint == QAbstractItemDelegate::NoHint || hint == QAbstractItemDelegate::RevertModelCache){
+	if (
+#if !defined __APPLE__
+	    hint == QAbstractItemDelegate::NoHint ||
+#endif
+	    hint == QAbstractItemDelegate::RevertModelCache) {
 		CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
 		mymodel->setData(IDX(CylindersModel::TYPE), currCylinderData.type, Qt::EditRole);
 		mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), currCylinderData.pressure);
