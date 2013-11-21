@@ -6,8 +6,8 @@
 
 const CSVImportDialog::CSVAppConfig CSVImportDialog::CSVApps[CSVAPPS] = {
 		{"", },
-		{"APD Log Viewer", 0, 1, 15, "Tab"},
-		{"XP5", 0, 1, 9, "Tab"},
+		{"APD Log Viewer", 0, 1, 15, 6, "Tab"},
+		{"XP5", 0, 1, 9, -1, "Tab"},
 		{NULL,}
 };
 
@@ -29,6 +29,8 @@ CSVImportDialog::CSVImportDialog(QWidget *parent) :
 	connect(ui->CSVTime, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
 	connect(ui->CSVTemperature, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
 	connect(ui->temperatureCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports(bool)));
+	connect(ui->CSVpo2, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
+	connect(ui->po2CheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports(bool)));
 }
 
 CSVImportDialog::~CSVImportDialog()
@@ -41,7 +43,10 @@ void CSVImportDialog::on_buttonBox_accepted()
 {
 	char *error = NULL;
 
-	parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value(), ui->CSVDepth->value(), VALUE_IF_CHECKED(CSVTemperature), &error);
+	parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value(),
+			ui->CSVDepth->value(), VALUE_IF_CHECKED(CSVTemperature),
+			VALUE_IF_CHECKED(CSVpo2),
+			&error);
 	if (error != NULL) {
 
 		mainWindow()->showError(error);
@@ -82,6 +87,7 @@ void CSVImportDialog::on_knownImports_currentIndexChanged(int index)
 	ui->CSVTime->blockSignals(false);
 	ui->CSVDepth->blockSignals(false);
 	SET_VALUE_AND_CHECKBOX(CSVTemperature, temperatureCheckBox, CSVApps[index].temperature);
+	SET_VALUE_AND_CHECKBOX(CSVpo2, po2CheckBox, CSVApps[index].po2);
 }
 
 void CSVImportDialog::unknownImports(bool arg1)

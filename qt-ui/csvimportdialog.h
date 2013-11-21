@@ -37,6 +37,7 @@ private:
 		int time;
 		int depth;
 		int temperature;
+		int po2;
 		QString separator;
 	};
 
