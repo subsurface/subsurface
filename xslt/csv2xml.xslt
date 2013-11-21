@@ -96,10 +96,14 @@
         </xsl:attribute>
 
         <xsl:attribute name="temp">
-          <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="$tempField"/>
-            <xsl:with-param name="line" select="$line"/>
-          </xsl:call-template>
+          <xsl:choose>
+            <xsl:when test="$tempField >= 0">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$tempField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:when>
+          </xsl:choose>
         </xsl:attribute>
       </sample>
     </xsl:if>

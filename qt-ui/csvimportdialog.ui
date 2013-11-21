@@ -100,93 +100,62 @@
    <property name="title">
     <string>Field Configuration</string>
    </property>
-   <widget class="QSpinBox" name="CSVTime">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>30</y>
-      <width>56</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>0</number>
-    </property>
-    <property name="value">
-     <number>0</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="CSVDepth">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>70</y>
-      <width>56</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>0</number>
-    </property>
-    <property name="value">
-     <number>1</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="CSVTemperature">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>110</y>
-      <width>56</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>0</number>
-    </property>
-    <property name="value">
-     <number>15</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>41</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Time</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>70</y>
-      <width>51</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Depth</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>110</y>
-      <width>41</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Temp</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="CSVTime">
+      <property name="minimum">
+       <number>0</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Time</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QSpinBox" name="CSVDepth">
+      <property name="minimum">
+       <number>0</number>
+      </property>
+      <property name="value">
+       <number>1</number>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Depth</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QSpinBox" name="CSVTemperature">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="temperatureCheckBox">
+      <property name="text">
+       <string>Temp</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>CSVTime</zorder>
+   <zorder>CSVDepth</zorder>
+   <zorder>temperatureCheckBox</zorder>
+   <zorder>CSVTemperature</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">
@@ -248,6 +217,12 @@
      <y>274</y>
     </hint>
    </hints>
+  </connection>
+  <connection>
+   <sender>temperatureCheckBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>CSVTemperature</receiver>
+   <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
 </ui>

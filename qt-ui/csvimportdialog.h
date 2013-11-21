@@ -24,6 +24,7 @@ private slots:
 	void on_knownImports_currentIndexChanged(int index);
 	void on_CSVFile_textEdited();
 	void unknownImports(int);
+	void unknownImports(bool);
 
 private:
 	void unknownImports();
