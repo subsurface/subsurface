@@ -954,9 +954,12 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 			int o2 = get_o2(&dive->cylinder[entry->cylinderindex].gasmix);
 
 			name += ": ";
-			name += (he) ? QString("%1/%2").arg((o2 + 5) / 10).arg((he + 5) / 10)
-				  : is_air(o2, he) ? name += tr("air")
-				  : QString(tr("EAN%1")).arg((o2 + 5) / 10);
+			if (he)
+				name += QString("%1/%2").arg((o2 + 5) / 10).arg((he + 5) / 10);
+			else if(is_air(o2, he))
+				name += tr("air");
+			else
+				name += QString(tr("EAN%1")).arg((o2 + 5) / 10);
 
 		} else if (ev->name && !strcmp(ev->name, "SP change")) {
 			name += QString(":%1").arg((double) ev->value / 1000);
