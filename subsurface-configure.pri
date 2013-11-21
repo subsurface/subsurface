@@ -11,9 +11,12 @@
 # turned on every once in a while in case they do show the occasional
 # actual bug
 *-g++* | *-clang*: QMAKE_CFLAGS += -Wno-unused-result -Wno-pointer-sign -fno-strict-overflow
-*-g++*: QMAKE_CFLAGS += -Wno-maybe-uninitialized
 *-clang*: QMAKE_CFLAGS += -Wno-format-security
-*-g++*: QMAKE_CXXFLAGS += -Wno-maybe-uninitialized -fno-strict-overflow
+*-g++*: QMAKE_CXXFLAGS += -fno-strict-overflow
+!mac: {
+*-g++*: QMAKE_CXXFLAGS += -Wno-maybe-uninitialized
+*-g++*: QMAKE_CFLAGS += -Wno-maybe-uninitialized
+}
 
 
 !win32-msvc*: QMAKE_CFLAGS += -std=gnu99
