@@ -126,19 +126,19 @@
         </xsl:attribute>
       </xsl:if>
 
-      <xsl:if test="condition/visibility != '' and condition/visibility != 0">
+      <xsl:if test="condition/visibility|informationafterdive/visibility != '' and condition/visibility|informationafterdive/visibility != 0">
         <xsl:attribute name="visibility">
           <xsl:choose>
-            <xsl:when test="condition/visibility &lt; 1">
+            <xsl:when test="condition/visibility|informationafterdive/visibility &lt; 1">
               <xsl:value-of select="1"/>
             </xsl:when>
-            <xsl:when test="condition/visibility &lt;= 3">
+            <xsl:when test="condition/visibility|informationafterdive/visibility &lt;= 3">
               <xsl:value-of select="2"/>
             </xsl:when>
-            <xsl:when test="condition/visibility &lt;= 5">
+            <xsl:when test="condition/visibility|informationafterdive/visibility &lt;= 5">
               <xsl:value-of select="3"/>
             </xsl:when>
-            <xsl:when test="condition/visibility &lt;= 10">
+            <xsl:when test="condition/visibility|informationafterdive/visibility &lt;= 10">
               <xsl:value-of select="4"/>
             </xsl:when>
             <xsl:otherwise>
@@ -148,41 +148,71 @@
         </xsl:attribute>
       </xsl:if>
 
-      <xsl:if test="condition/air_temp != ''">
+      <xsl:if test="informationafterdive/rating/ratingvalue != '' and informationafterdive/rating/ratingvalue != 0">
+        <xsl:attribute name="rating">
+          <xsl:choose>
+            <xsl:when test="informationafterdive/rating/ratingvalue &lt; 2">
+              <xsl:value-of select="0"/>
+            </xsl:when>
+            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 2">
+              <xsl:value-of select="1"/>
+            </xsl:when>
+            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 4">
+              <xsl:value-of select="2"/>
+            </xsl:when>
+            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 6">
+              <xsl:value-of select="3"/>
+            </xsl:when>
+            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 8">
+              <xsl:value-of select="4"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="5"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </xsl:if>
+
+      <xsl:if test="condition/air_temp|informationbeforedive/airtemperature != ''">
         <divetemperature>
           <xsl:attribute name="air">
-            <xsl:value-of select="concat(format-number(condition/air_temp - 273.15, '0.0'), ' C')"/>
+            <xsl:value-of select="concat(format-number(condition/air_temp|informationbeforedive/airtemperature - 273.15, '0.0'), ' C')"/>
           </xsl:attribute>
         </divetemperature>
       </xsl:if>
 
-      <xsl:if test="dive_site_ref/@ref != ''">
+      <xsl:if test="dive_site_ref/@ref|informationbeforedive/dive_site_ref/@ref != ''">
         <location>
           <xsl:variable name="ref">
-            <xsl:value-of select="dive_site_ref/@ref"/>
+            <xsl:value-of select="dive_site_ref/@ref|informationbeforedive/dive_site_ref/@ref"/>
           </xsl:variable>
+          <xsl:if test="//dive_site[@id=$ref]/geography/gps/longitude != ''">
+            <xsl:attribute name="gps">
+              <xsl:value-of select="concat(//dive_site[@id=$ref]/geography/gps/latitude, ' ', //dive_site[@id=$ref]/geography/gps/longitude)"/>
+            </xsl:attribute>
           <xsl:for-each select="//dive_site[@id=$ref]/geography/location|//dive_site[@id=$ref]/name">
             <xsl:value-of select="."/>
             <xsl:if test=". != '' and following-sibling::*[1]/* != ''"> / </xsl:if>
           </xsl:for-each>
+          </xsl:if>
         </location>
       </xsl:if>
 
-      <xsl:if test="buddy_ref/@ref != ''">
+      <xsl:if test="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref != ''">
         <buddy>
           <xsl:variable name="ref">
-            <xsl:value-of select="buddy_ref/@ref"/>
+            <xsl:value-of select="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref"/>
           </xsl:variable>
-          <xsl:for-each select="//diver[@id=$ref]/personal/first_name|//diver[@id=$ref]/personal/nick_name|//diver[@id=$ref]/personal/family_name">
+          <xsl:for-each select="//diver[@id=$ref]/personal/first_name|//diver[@id=$ref]/personal/nick_name|//diver[@id=$ref]/personal/family_name|//diver/buddy[@id=$ref]/personal/first_name|//diver/buddy[@id=$ref]/personal/nick_name|//diver/buddy[@id=$ref]/personal/family_name">
             <xsl:value-of select="."/>
             <xsl:if test=". != '' and (following-sibling::*[1] != '' or following-sibling::*[2] != '')"> / </xsl:if>
           </xsl:for-each>
         </buddy>
       </xsl:if>
 
-      <xsl:if test="note/text != ''">
+      <xsl:if test="note/text|informationafterdive/notes/para != ''">
         <notes>
-          <xsl:value-of select="note/text"/>
+          <xsl:value-of select="note/text|informationafterdive/notes/para"/>
         </notes>
       </xsl:if>
 
@@ -216,11 +246,20 @@
             <xsl:variable name="idx">
               <xsl:value-of select="./tank_ref/@ref"/>
             </xsl:variable>
+            <xsl:variable name="gas">
+              <xsl:value-of select="./gas_ref/@ref"/>
+            </xsl:variable>
             <xsl:attribute name="size">
               <xsl:value-of select="//equipment[@id=$idx]/tank/volume"/>
             </xsl:attribute>
             <xsl:attribute name="description">
               <xsl:value-of select="//equipment[@id=$idx]/general/name"/>
+            </xsl:attribute>
+            <xsl:attribute name="o2">
+              <xsl:value-of select="//gas_mix[@id=$gas]/o2"/>
+            </xsl:attribute>
+            <xsl:attribute name="he">
+              <xsl:value-of select="//gas_mix[@id=$gas]/he"/>
             </xsl:attribute>
             <xsl:attribute name="start">
               <xsl:value-of select="concat(substring-before(./pressure_start, '.') div 100000, ' bar')"/>
