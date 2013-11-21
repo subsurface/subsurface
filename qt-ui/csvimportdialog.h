@@ -38,6 +38,7 @@ private:
 		int depth;
 		int temperature;
 		int po2;
+		int cns;
 		QString separator;
 	};
 

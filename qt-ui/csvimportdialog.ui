@@ -166,6 +166,23 @@
       </property>
      </widget>
     </item>
+    <item row="4" column="1">
+     <widget class="QSpinBox" name="CSVcns">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QCheckBox" name="cnsCheckBox">
+      <property name="text">
+       <string>Cns</string>
+      </property>
+     </widget>
+    </item>
    </layout>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
@@ -175,6 +192,8 @@
    <zorder>CSVTemperature</zorder>
    <zorder>po2CheckBox</zorder>
    <zorder>CSVpo2</zorder>
+   <zorder>cnsCheckBox</zorder>
+   <zorder>CSVcns</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">
@@ -247,6 +266,12 @@
    <sender>po2CheckBox</sender>
    <signal>clicked(bool)</signal>
    <receiver>CSVpo2</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>cnsCheckBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>CSVcns</receiver>
    <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
