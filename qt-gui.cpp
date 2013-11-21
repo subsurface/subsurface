@@ -83,6 +83,8 @@ void init_ui(int *argcp, char ***argvp)
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
+	// find plugins installed in the application directory (without this SVGs don't work on Windows)
+	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	xslt_path = strdup(getSubsurfaceDataPath("xslt").toAscii().data());
 
 	QLocale loc;
