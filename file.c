@@ -327,22 +327,23 @@ void parse_file(const char *filename, char **error)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, char **error)
+void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, char **error)
 {
 	struct memblock mem;
 	int pnr=0;
-	char *params[15];
+	char *params[17];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
 	char po2buf[MAXCOLDIGITS];
 	char cnsbuf[MAXCOLDIGITS];
+	char stopdepthbuf[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep;
 	char curdate[9];
 	char curtime[6];
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS) {
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS ) {
 		int len = strlen(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d")) + MAXCOLDIGITS;
 		*error = malloc(len);
 		snprintf(*error, len, translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
@@ -354,6 +355,7 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	snprintf(tempbuf, MAXCOLDIGITS, "%d", tempf);
 	snprintf(po2buf, MAXCOLDIGITS, "%d", po2f);
 	snprintf(cnsbuf, MAXCOLDIGITS, "%d", cnsf);
+	snprintf(stopdepthbuf, MAXCOLDIGITS, "%d", stopdepthf);
 	time(&now);
 	timep = localtime(&now);
 	strftime(curdate, sizeof(curdate), "%Y%m%d", timep);
@@ -372,6 +374,8 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	params[pnr++] = po2buf;
 	params[pnr++] = "cnsField";
 	params[pnr++] = cnsbuf;
+	params[pnr++] = "stopdepthField";
+	params[pnr++] = stopdepthbuf;
 	params[pnr++] = "date";
 	params[pnr++] = curdate;
 	params[pnr++] = "time";

@@ -183,6 +183,23 @@
       </property>
      </widget>
     </item>
+    <item row="5" column="1">
+     <widget class="QSpinBox" name="CSVstopdepth">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QCheckBox" name="stopdepthCheckBox">
+      <property name="text">
+       <string>Stopdepth</string>
+      </property>
+     </widget>
+    </item>
    </layout>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
@@ -194,6 +211,8 @@
    <zorder>CSVpo2</zorder>
    <zorder>cnsCheckBox</zorder>
    <zorder>CSVcns</zorder>
+   <zorder>stopdepthCheckBox</zorder>
+   <zorder>CSVstopdepth</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">
@@ -272,6 +291,12 @@
    <sender>cnsCheckBox</sender>
    <signal>clicked(bool)</signal>
    <receiver>CSVcns</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>stopdepthCheckBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>CSVstopdepth</receiver>
    <slot>setEnabled(bool)</slot>
   </connection>
  </connections>

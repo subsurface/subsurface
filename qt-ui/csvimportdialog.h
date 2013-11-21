@@ -39,6 +39,7 @@ private:
 		int temperature;
 		int po2;
 		int cns;
+		int stopdepth;
 		QString separator;
 	};
 

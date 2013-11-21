@@ -7,6 +7,7 @@
   <xsl:param name="tempField" select="tempField"/>
   <xsl:param name="po2Field" select="po2Field"/>
   <xsl:param name="cnsField" select="cnsField"/>
+  <xsl:param name="otuField" select="otuField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
   <xsl:output method="xml" indent="yes"/>
@@ -124,6 +125,17 @@
               <xsl:when test="$cnsField >= 0">
                 <xsl:call-template name="getFieldByIndex">
                   <xsl:with-param name="index" select="$cnsField"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:when>
+          </xsl:choose>
+        </xsl:attribute>
+
+        <xsl:attribute name="otu">
+          <xsl:choose>
+              <xsl:when test="$otuField >= 0">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$otuField"/>
                   <xsl:with-param name="line" select="$line"/>
                 </xsl:call-template>
               </xsl:when>
