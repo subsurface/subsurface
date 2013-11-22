@@ -163,6 +163,11 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 		if (index.column() == REMOVE)
 			ret = QIcon(":trash");
 		break;
+
+	case Qt::ToolTipRole:
+		if (index.column() == REMOVE)
+			ret = tr("Clicking here will remove this cylinder.");
+		break;
 	}
 
 	return ret;
@@ -458,6 +463,10 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
 			ret = QIcon(":trash");
+		break;
+	case Qt::ToolTipRole:
+		if (index.column() == REMOVE)
+			ret = tr("Clicking here will remove this weigthsystem.");
 		break;
 	}
 	return ret;
@@ -1255,8 +1264,11 @@ QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
 		}
 	}
 
-	if (role ==  Qt::DecorationRole && index.column() == REMOVE){
-		ret = QIcon(":trash");
+	if (index.column() == REMOVE){
+		switch(role){
+			case Qt::DecorationRole : ret = QIcon(":trash"); break;
+			case Qt::ToolTipRole : ret = tr("Clicking here will remove this divecomputer."); break;
+		}
 	}
 	return ret;
 }
