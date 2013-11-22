@@ -656,7 +656,7 @@ static void double_to_permil(char *buffer, void *_i)
 static void hex_value(char *buffer, void *_i)
 {
 	uint32_t *i = _i;
-	*i = strtol(buffer, NULL, 16);
+	*i = strtoul(buffer, NULL, 16);
 }
 
 static void get_tripflag(char *buffer, void *_tf)
