@@ -51,6 +51,10 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	setProjection(Marble::Spherical);
 
 	setAnimationsEnabled(true);
+	Q_FOREACH(AbstractFloatItem *i, floatItems()){
+		i->setVisible(false);
+	}
+
 	setShowClouds(false);
 	setShowBorders(false);
 	setShowPlaces(true);
