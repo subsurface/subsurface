@@ -106,7 +106,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	}
 	case Qt::TextAlignmentRole:
 		ret = Qt::AlignCenter;
-		break;
+	break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
 		switch(index.column()) {
@@ -447,8 +447,8 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 		ret = defaultModelFont();
 		break;
 	case Qt::TextAlignmentRole:
-		ret = Qt::AlignRight;
-		break;
+		ret = Qt::AlignCenter;
+	break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
 		switch(index.column()) {
