@@ -38,6 +38,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 			foundGoogleMap = true;
 	if (!foundGoogleMap) {
 		subsurfaceDataPath = getSubsurfaceDataPath("marbledata");
+		qDebug() << subsurfaceDataPath;
 		if (subsurfaceDataPath != "")
 			MarbleDirs::setMarbleDataPath(subsurfaceDataPath);
 	}
@@ -67,6 +68,25 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 	fixZoomTimer = new QTimer();
 	connect(fixZoomTimer, SIGNAL(timeout()), this, SLOT(fixZoom()));
 	fixZoomTimer->setSingleShot(true);
+	installEventFilter(this);
+}
+
+bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
+{
+	// This disables Zooming when a double click occours on the scene.
+	if (ev->type() == QEvent::MouseButtonDblClick)
+		return true;
+	// This disables the Marble's Context Menu
+	// we need to move this to our 'contextMenuEvent'
+	// if we plan to do a different one in the future.
+	if (ev->type() == QEvent::ContextMenu)
+		return true;
+	if (ev->type() == QEvent::MouseButtonPress){
+		QMouseEvent *e = static_cast<QMouseEvent*>(ev);
+		if(e->button() == Qt::RightButton)
+			return true;
+	}
+    return QObject::eventFilter(obj,ev );
 }
 
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)

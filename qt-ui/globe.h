@@ -20,11 +20,10 @@ public:
 	void repopulateLabels();
 	void centerOn(struct dive* dive);
 	void diveEditMode();
-
+	bool eventFilter(QObject*, QEvent*);
 protected:
 	/* reimp */ void resizeEvent(QResizeEvent *event);
 	/* reimp */ void mousePressEvent(QMouseEvent* event);
-
 private:
 	void prepareForGetDiveCoordinates(struct dive* dive);
 	GeoDataDocument *loadedDives;
