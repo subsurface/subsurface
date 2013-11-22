@@ -92,14 +92,8 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
 		switch (index.column()) {
-		case START:
-			if (!cyl->start.mbar)
-				font.setItalic(true);
-			break;
-		case END:
-			if (!cyl->end.mbar)
-				font.setItalic(true);
-			break;
+		case START: font.setItalic(!cyl->start.mbar); break;
+		case END: font.setItalic(!cyl->end.mbar); break;
 		}
 		ret = font;
 		break;
