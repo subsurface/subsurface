@@ -54,12 +54,10 @@ void TableView::setModel(QAbstractItemModel *model){
 
 	QSettings s;
 	s.beginGroup(objectName());
-	for (int i = 0; i < ui.tableView->model()->columnCount(); i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i));
-		if (width.isValid())
-			ui.tableView->setColumnWidth(i, width.toInt());
-		else
-			ui.tableView->resizeColumnToContents(i);
+	const int columnCount = ui.tableView->model()->columnCount();
+	for (int i = 0; i < columnCount; i++) {
+		QVariant width = s.value(QString("colwidth%1").arg(i), i == CylindersModel::REMOVE ? 30 : 80 );
+		ui.tableView->setColumnWidth(i, width.toInt());
 	}
 	s.endGroup();
 
