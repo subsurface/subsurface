@@ -396,26 +396,41 @@ void MainWindow::on_actionViewGlobe_triggered()
 void MainWindow::on_actionViewAll_triggered()
 {
 	beginChangeState(VIEWALL);
+	static QList<int> mainSizes;
+	const int appH = qApp->desktop()->size().height();
+	const int appW = qApp->desktop()->size().width();
+	if (mainSizes.empty()){
+		mainSizes.append( appH * 0.7 );
+		mainSizes.append( appH * 0.3 );
+	}
+	static QList<int> infoProfileSizes;
+	if (infoProfileSizes.empty()){
+		infoProfileSizes.append( appW * 0.3 );
+		infoProfileSizes.append( appW * 0.7 );
+	}
+
+	static QList<int> listGlobeSizes;
+	if(listGlobeSizes.empty()){
+		listGlobeSizes.append( appW * 0.7 );
+		listGlobeSizes.append( appW * 0.3 );
+	}
+
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	if (settings.value("mainSplitter").isValid()){
 		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
 		ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
 		ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+		if(ui.mainSplitter->sizes().first() == 0 || ui.mainSplitter->sizes().last() == 0)
+			ui.mainSplitter->setSizes(mainSizes);
+		if(ui.infoProfileSplitter->sizes().first() == 0 || ui.infoProfileSplitter->sizes().last() == 0)
+			ui.infoProfileSplitter->setSizes(infoProfileSizes);
+		if(ui.listGlobeSplitter->sizes().first() == 0 || ui.listGlobeSplitter->sizes().last() == 0)
+			ui.listGlobeSplitter->setSizes(listGlobeSizes);
+
 	} else {
-		QList<int> mainSizes;
-		mainSizes.append( qApp->desktop()->size().height() * 0.7 );
-		mainSizes.append( qApp->desktop()->size().height() * 0.3 );
 		ui.mainSplitter->setSizes( mainSizes );
-
-		QList<int> infoProfileSizes;
-		infoProfileSizes.append( qApp->desktop()->size().width() * 0.3 );
-		infoProfileSizes.append( qApp->desktop()->size().width() * 0.7 );
 		ui.infoProfileSplitter->setSizes(infoProfileSizes);
-
-		QList<int> listGlobeSizes;
-		listGlobeSizes.append( qApp->desktop()->size().width() * 0.7 );
-		listGlobeSizes.append( qApp->desktop()->size().width() * 0.3 );
 		ui.listGlobeSplitter->setSizes(listGlobeSizes);
 	}
 	redrawProfile();
