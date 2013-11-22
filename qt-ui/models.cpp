@@ -105,7 +105,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 		break;
 	}
 	case Qt::TextAlignmentRole:
-		ret = Qt::AlignHCenter;
+		ret = Qt::AlignCenter;
 		break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
