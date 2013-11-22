@@ -28,19 +28,21 @@
 
 #include "groupedlineedit.h"
 
-#include <QtGui/QStyleOptionFrameV3>
-#include <QtGui/QFontMetrics>
-#include <QtGui/QApplication>
-#include <QtGui/QScrollBar>
-#include <QtGui/QTextDocument>
-#include <QtGui/QTextBlock>
-#include <QtGui/QTextLayout>
-#include <QtGui/QTextLine>
-#include <QtGui/QPainter>
-#include <QtGui/QPainterPath>
-#include <QtGui/QBrush>
-#include <QtGui/QColor>
-#include <QtGui/QPalette>
+#include <QFontMetrics>
+#include <QStyleOptionFrameV3>
+#include <QFontMetrics>
+#include <QApplication>
+#include <QScrollBar>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextLayout>
+#include <QTextLine>
+#include <QPainter>
+#include <QPainterPath>
+#include <QBrush>
+#include <QColor>
+#include <QPalette>
+#include <QDebug>
 
 struct GroupedLineEdit::Private {
 	struct Block {
@@ -175,7 +177,12 @@ void GroupedLineEdit::keyPressEvent(QKeyEvent *e)
 
 void GroupedLineEdit::paintEvent(QPaintEvent *e)
 {
-
+#if !defined __APPLE__
+	// for reasons we don't understand, yet, touching the painter
+	// here (even drawing the fill rect) causes the QPlainTextEdit
+	// paintEvent to not draw the text on MacOS.
+	// So as a workaround until this is better understood we need
+	// to disable the eye candy
 	QTextLine line = document()->findBlock(0).layout()->lineAt(0);
 	QPainter painter(viewport());
 
@@ -203,6 +210,6 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 		painter.setBrush(i.next().lighter(180));
 		painter.drawPath(path);
 	}
-
+#endif
 	QPlainTextEdit::paintEvent(e);
 }
