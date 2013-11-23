@@ -54,7 +54,7 @@ struct atomics_gas_info {
 #define COBALT_CFATBAR 2
 #define COBALT_WETINDL 3
 
-static void get_tanksize(device_data_t *devdata, const unsigned char *data, cylinder_t *cyl, int idx)
+static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cylinder_t *cyl, int idx)
 {
 	/* I don't like this kind of match... I'd love to have an ID and
 	 * a firmware version or... something; and even better, just get
@@ -69,7 +69,7 @@ static void get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 		 * right data */
 		if (*(uint32_t *)data != 0xFFFEFFFE) {
 			printf("incorrect header for Atomics dive\n");
-			return;
+			return FALSE;
 		}
 		atomics_gas_info = (void*)(data + COBALT_HEADER);
 		switch (atomics_gas_info[idx].tankspecmethod) {
@@ -89,7 +89,9 @@ static void get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 			cyl[idx].type.size.mliter = atomics_gas_info[idx].tanksize * 100;
 			break;
 		}
+		return TRUE;
 	}
+	return FALSE;
 }
 
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
@@ -121,7 +123,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
 
-		get_tanksize(devdata, data, dive->cylinder, i);
+		if (!get_tanksize(devdata, data, dive->cylinder, i))
+			fill_default_cylinder(&dive->cylinder[i]);
 	}
 	return DC_STATUS_SUCCESS;
 }
