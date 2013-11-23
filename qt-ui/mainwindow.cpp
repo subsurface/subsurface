@@ -721,6 +721,10 @@ void MainWindow::file_save_as(void)
 	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), default_filename,
 						tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 	if (!filename.isNull() && !filename.isEmpty()) {
+
+		if(ui.InfoWidget->isEditing())
+			ui.InfoWidget->acceptChanges();
+
 		save_dives(filename.toUtf8().data());
 		set_filename(filename.toUtf8().data(), TRUE);
 		setTitle(MWTF_FILENAME);
@@ -734,6 +738,9 @@ void MainWindow::file_save(void)
 
 	if (!existing_filename)
 		return file_save_as();
+
+	if(ui.InfoWidget->isEditing())
+		ui.InfoWidget->acceptChanges();
 
 	current_default = prefs.default_filename;
 	if (strcmp(existing_filename, current_default) ==  0) {
