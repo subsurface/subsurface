@@ -652,6 +652,7 @@ void MainWindow::readSettings()
 
 	s.beginGroup("GeneralSettings");
 	GET_TXT("default_filename", default_filename);
+	GET_TXT("default_cylinder", default_cylinder);
 	s.endGroup();
 
 	s.beginGroup("Display");

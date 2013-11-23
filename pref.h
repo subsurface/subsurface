@@ -18,6 +18,7 @@ typedef struct {
 struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
+	const char *default_cylinder;
 	double font_size;
 	partial_pressure_graphs_t pp_graphs;
 	short mod;

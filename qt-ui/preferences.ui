@@ -163,7 +163,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <layout class="QHBoxLayout" name="horizontalLayout_3b">
               <item>
                <widget class="QLineEdit" name="defaultfilename"/>
               </item>
@@ -189,6 +189,29 @@
                <string/>
               </property>
              </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_6">
+           <property name="title">
+            <string>Default Cylinder</string>
+           </property>
+           <layout class="QFormLayout" name="formLayout_6">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Use Default Cylinder</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLineEdit" name="defaultcylinder"/>
+             </item>
+            </layout>
             </item>
            </layout>
           </widget>
@@ -252,7 +275,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox">
+          <widget class="QGroupBox" name="groupBox11">
            <property name="title">
             <string/>
            </property>
@@ -404,13 +427,13 @@
          <item>
           <layout class="QHBoxLayout">
            <item>
-            <widget class="QGroupBox">
+            <widget class="QGroupBox" name="groupBox">
              <property name="title">
               <string>Time units</string>
              </property>
              <layout class="QGridLayout">
               <item row="0" column="0">
-               <widget class="QLabel">
+               <widget class="QLabel" name="label13">
                 <property name="text">
                  <string>Ascent/Descent speed denominator</string>
                 </property>
@@ -717,7 +740,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-				<string>Calculate NDL/TTS</string>
+                 <string>Calculate NDL/TTS</string>
                 </property>
                </widget>
               </item>
