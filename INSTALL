@@ -37,7 +37,7 @@ Building the Qt version under MacOSX
 
 1)  Install Homebrew
 
-$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 
 2) Install needed dependencies
 
@@ -57,7 +57,7 @@ $ cd src/lib
 $ make -j4
 $ cp *dylib /usr/local/lib/
 $ mkdir -p /usr/local/include/marble
-$ cd ../../../source/src/lib
+$ cd ../../../sources/src/lib
 $ cp $(find . -name '*.h') /usr/local/include/marble/
 
 5) Install Libdivecomputer
