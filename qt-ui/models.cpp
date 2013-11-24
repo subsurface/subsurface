@@ -1364,7 +1364,13 @@ QVariant YearStatisticsItem::data(int column, int role) const
 		return ret;
 	}
 	switch(column) {
-	case YEAR:		ret =  stats_interval.period; break;
+	case YEAR:
+		if (stats_interval.is_trip) {
+			ret = stats_interval.location;
+		} else {
+			ret =  stats_interval.period;
+		}
+		break;
 	case DIVES:		ret =  stats_interval.selection_size; break;
 	case TOTAL_TIME:	ret = get_time_string(stats_interval.total_time.seconds, 0); break;
 	case AVERAGE_TIME:	ret = get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size); break;
@@ -1409,7 +1415,7 @@ QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientat
 
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
 		switch(section) {
-		case YEAR:		val = tr("Year \n > Month"); break;
+		case YEAR:		val = tr("Year \n > Month / Trip"); break;
 		case DIVES:		val = tr("#"); break;
 		case TOTAL_TIME:	val = tr("Duration \n Total"); break;
 		case AVERAGE_TIME:	val = tr("\nAverage"); break;
@@ -1443,6 +1449,18 @@ void YearlyStatisticsModel::update_yearly_stats()
 			item->children.append(iChild);
 			iChild->parent = item;
 			month++;
+		}
+		rootItem->children.append(item);
+		item->parent = rootItem;
+	}
+
+
+	if (stats_by_trip != NULL ) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats_by_trip[0]);
+		for (i = 1; stats_by_trip != NULL && stats_by_trip[i].is_trip; ++i) {
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_trip[i]);
+			item->children.append(iChild);
+			iChild->parent = item;
 		}
 		rootItem->children.append(item);
 		item->parent = rootItem;

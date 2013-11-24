@@ -31,10 +31,13 @@ typedef struct {
 	unsigned int selection_size;
 	unsigned int total_sac_time;
 	bool is_year;
+	bool is_trip;
+	char *location;
 } stats_t;
 extern stats_t stats_selection;
 extern stats_t *stats_yearly;
 extern stats_t *stats_monthly;
+extern stats_t *stats_by_trip;
 
 extern char *get_time_string(int seconds, int maxdays);
 extern char *get_minutes(int seconds);

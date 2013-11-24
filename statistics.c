@@ -19,6 +19,7 @@ static stats_t stats;
 stats_t stats_selection;
 stats_t *stats_monthly = NULL;
 stats_t *stats_yearly = NULL;
+stats_t *stats_by_trip = NULL;
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
@@ -95,6 +96,8 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	int year_iter = 0;
 	int month_iter = 0;
 	int prev_month = 0, prev_year = 0;
+	int trip_iter = 0;
+	dive_trip_t *trip_ptr = 0;
 	unsigned int size;
 
 	*prev_dive = NULL;
@@ -112,15 +115,19 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	if (stats_yearly != NULL) {
 		free(stats_yearly);
 		free(stats_monthly);
+		free(stats_by_trip);
 	}
 	size = sizeof(stats_t) * (dive_table.nr + 1);
 	stats_yearly = malloc(size);
 	stats_monthly = malloc(size);
-	if (!stats_yearly || !stats_monthly)
+	stats_by_trip = malloc(size);
+	if (!stats_yearly || !stats_monthly || !stats_by_trip)
 		return;
 	memset(stats_yearly, 0, size);
 	memset(stats_monthly, 0, size);
+	memset(stats_by_trip, 0, size);
 	stats_yearly[0].is_year = TRUE;
+	stats_by_trip[0].is_trip = TRUE;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -147,6 +154,22 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		}
 		stats_yearly[year_iter].selection_size++;
 		stats_yearly[year_iter].period = current_year;
+
+		if (trip_ptr != dp->divetrip) {
+			trip_ptr = dp->divetrip;
+			trip_iter++;
+		}
+
+		/* stats_by_trip[0] is all the dives combined */
+		stats_by_trip[0].selection_size++;
+		process_dive(dp, &(stats_by_trip[0]));
+		stats_by_trip[0].is_trip = TRUE;
+		stats_by_trip[0].location = strdup("All (by trip stats)");
+
+		process_dive(dp, &(stats_by_trip[trip_iter]));
+		stats_by_trip[trip_iter].selection_size++;
+		stats_by_trip[trip_iter].is_trip = TRUE;
+		stats_by_trip[trip_iter].location = dp->divetrip->location;
 
 		/* monthly statistics */
 		if (current_month == 0) {
