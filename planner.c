@@ -208,7 +208,7 @@ int add_gas(struct dive *dive, int o2, int he)
 	if (i == MAX_CYLINDERS) {
 		return -1;
 	}
-	/* let's make it our default cylinder (right now hardcoded as AL80) */
+	/* let's make it our default cylinder */
 	fill_default_cylinder(cyl);
 	mix->o2.permille = o2;
 	mix->he.permille = he;

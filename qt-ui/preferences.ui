@@ -209,7 +209,7 @@
             <item row="0" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QLineEdit" name="defaultcylinder"/>
+              <widget class="QComboBox" name="default_cylinder"/>
              </item>
             </layout>
             </item>
