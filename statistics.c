@@ -155,21 +155,23 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		stats_yearly[year_iter].selection_size++;
 		stats_yearly[year_iter].period = current_year;
 
-		if (trip_ptr != dp->divetrip) {
-			trip_ptr = dp->divetrip;
-			trip_iter++;
+		if (dp->divetrip != NULL) {
+			if (trip_ptr != dp->divetrip) {
+				trip_ptr = dp->divetrip;
+				trip_iter++;
+			}
+
+			/* stats_by_trip[0] is all the dives combined */
+			stats_by_trip[0].selection_size++;
+			process_dive(dp, &(stats_by_trip[0]));
+			stats_by_trip[0].is_trip = TRUE;
+			stats_by_trip[0].location = strdup("All (by trip stats)");
+
+			process_dive(dp, &(stats_by_trip[trip_iter]));
+			stats_by_trip[trip_iter].selection_size++;
+			stats_by_trip[trip_iter].is_trip = TRUE;
+			stats_by_trip[trip_iter].location = dp->divetrip->location;
 		}
-
-		/* stats_by_trip[0] is all the dives combined */
-		stats_by_trip[0].selection_size++;
-		process_dive(dp, &(stats_by_trip[0]));
-		stats_by_trip[0].is_trip = TRUE;
-		stats_by_trip[0].location = strdup("All (by trip stats)");
-
-		process_dive(dp, &(stats_by_trip[trip_iter]));
-		stats_by_trip[trip_iter].selection_size++;
-		stats_by_trip[trip_iter].is_trip = TRUE;
-		stats_by_trip[trip_iter].location = dp->divetrip->location;
 
 		/* monthly statistics */
 		if (current_month == 0) {
