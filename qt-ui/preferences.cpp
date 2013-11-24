@@ -139,8 +139,8 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 	// Defaults
 	s.beginGroup("GeneralSettings");
-	s.value("default_filename", ui.defaultfilename->text());
-	s.value("default_cylinder", ui.defaultcylinder->text());
+	s.setValue("default_filename", ui.defaultfilename->text());
+	s.setValue("default_cylinder", ui.defaultcylinder->text());
 	s.endGroup();
 
 	s.beginGroup("Display");

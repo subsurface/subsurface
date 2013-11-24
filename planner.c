@@ -172,9 +172,23 @@ static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int ne
 
 void fill_default_cylinder(cylinder_t *cyl)
 {
-	cyl->type.description = strdup("AL80");
-	cyl->type.size.mliter = 11097;
-	cyl->type.workingpressure.mbar = 206843;
+	if (prefs.default_cylinder) {
+		struct tank_info_t *ti = tank_info;
+		while (ti->name != NULL) {
+			if (strcmp(ti->name, prefs.default_cylinder) == 0) {
+				cyl->type.description = strdup(prefs.default_cylinder);
+				if (ti->ml) {
+					cyl->type.size.mliter = ti->ml;
+					cyl->type.workingpressure.mbar = ti->bar * 1000;
+				} else {
+					cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
+					cyl->type.size.mliter = cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi));
+				}
+				return;
+			}
+			ti++;
+		}
+	}
 }
 
 int add_gas(struct dive *dive, int o2, int he)
@@ -268,7 +282,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 			int plano2 = (o2 + 5) / 10 * 10;
 			int planhe = (he + 5) / 10 * 10;
 			int idx;
-            if ((idx = add_gas(dive, plano2, planhe)) < 0)
+	    if ((idx = add_gas(dive, plano2, planhe)) < 0)
 				goto gas_error_exit;
 			add_gas_switch_event(dive, dc, lasttime, idx);
 			oldo2 = o2; oldhe = he;
