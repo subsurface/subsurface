@@ -293,6 +293,7 @@ void MainTab::updateDiveInfo(int dive)
 		updateGpsCoordinates(d);
 		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
 			ui.coordinates->setVisible(false);
 			ui.CoordinatedLabel->setVisible(false);
@@ -318,6 +319,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui.NotesLabel->setText(tr("Trip Notes"));
 			ui.notes->setText(currentTrip->notes);
 		} else {
+			setTabText(0, tr("Dive Notes"));
 			// make all the fields visible writeable
 			ui.coordinates->setVisible(true);
 			ui.CoordinatedLabel->setVisible(true);
