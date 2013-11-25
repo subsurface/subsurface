@@ -99,49 +99,41 @@
           </xsl:call-template>
         </xsl:attribute>
 
-        <xsl:attribute name="temp">
-          <xsl:choose>
-            <xsl:when test="$tempField >= 0">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$tempField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
-            </xsl:when>
-          </xsl:choose>
-        </xsl:attribute>
+        <xsl:if test="$tempField >= 0">
+          <xsl:attribute name="temp">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$tempField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
 
-        <xsl:attribute name="po2">
-          <xsl:choose>
-              <xsl:when test="$po2Field >= 0">
-                <xsl:call-template name="getFieldByIndex">
-                  <xsl:with-param name="index" select="$po2Field"/>
-                  <xsl:with-param name="line" select="$line"/>
-                </xsl:call-template>
-              </xsl:when>
-          </xsl:choose>
-        </xsl:attribute>
+        <xsl:if test="$po2Field >= 0">
+          <xsl:attribute name="po2">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$po2Field"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
 
-        <xsl:attribute name="cns">
-          <xsl:choose>
-              <xsl:when test="$cnsField >= 0">
-                <xsl:call-template name="getFieldByIndex">
-                  <xsl:with-param name="index" select="$cnsField"/>
-                  <xsl:with-param name="line" select="$line"/>
-                </xsl:call-template>
-              </xsl:when>
-          </xsl:choose>
-        </xsl:attribute>
+        <xsl:if test="$cnsField >= 0">
+          <xsl:attribute name="cns">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$cnsField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
 
-        <xsl:attribute name="otu">
-          <xsl:choose>
-              <xsl:when test="$otuField >= 0">
-                <xsl:call-template name="getFieldByIndex">
-                  <xsl:with-param name="index" select="$otuField"/>
-                  <xsl:with-param name="line" select="$line"/>
-                </xsl:call-template>
-              </xsl:when>
-          </xsl:choose>
-        </xsl:attribute>
+        <xsl:if test="$otuField >= 0">
+          <xsl:attribute name="otu">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$otuField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
 
         <xsl:if test="$stopdepthField >= 0">
           <xsl:variable name="stopdepth">
