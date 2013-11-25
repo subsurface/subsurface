@@ -8,6 +8,7 @@
   <xsl:param name="po2Field" select="po2Field"/>
   <xsl:param name="cnsField" select="cnsField"/>
   <xsl:param name="otuField" select="otuField"/>
+  <xsl:param name="stopdepthField" select="stopdepthField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
   <xsl:output method="xml" indent="yes"/>
@@ -141,6 +142,25 @@
               </xsl:when>
           </xsl:choose>
         </xsl:attribute>
+
+        <xsl:if test="$stopdepthField >= 0">
+          <xsl:variable name="stopdepth">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$stopdepthField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:attribute name="stopdepth">
+            <xsl:copy-of select="$stopdepth"/>
+          </xsl:attribute>
+
+          <xsl:attribute name="in_deco">
+            <xsl:choose>
+              <xsl:when test="$stopdepth > 0">1</xsl:when>
+              <xsl:otherwise>0</xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </xsl:if>
       </sample>
     </xsl:if>
   </xsl:template>
