@@ -62,11 +62,9 @@ public slots:
 	void deleteTemporaryPlan();
 	void loadFromDive(dive* d);
 	void restoreBackupDive();
-
 signals:
 	void planCreated();
 	void planCanceled();
-
 private:
 	explicit DivePlannerPointsModel(QObject* parent = 0);
 	bool addGas(int o2, int he);
@@ -140,6 +138,8 @@ public:
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
 	void setTextColor(const QColor& color);
+	int unitSystem;
+
 private:
 	Qt::Orientation orientation;
 	QList<QGraphicsLineItem*> ticks;
@@ -166,6 +166,8 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 	bool isPointOutOfBoundaries(const QPointF& point);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
+public slots:
+	void settingsChanged();
 private slots:
 	void keyEscAction();
 	void keyDeleteAction();

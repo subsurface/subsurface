@@ -112,6 +112,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->setColor(getColor(DEPTH_GRID));
 	depthLine->setTextColor(getColor(SAMPLE_DEEP));
 	depthLine->updateTicks();
+	depthLine->unitSystem = prefs.units.length;
 	scene()->addItem(depthLine);
 
 	timeString = new QGraphicsSimpleTextItem();
@@ -181,6 +182,16 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex&, int, int)),
 			this, SLOT(pointsRemoved(const QModelIndex&, int, int)));
 	setRenderHint(QPainter::Antialiasing);
+}
+
+void DivePlannerGraphics::settingsChanged()
+{
+	if (depthLine->unitSystem == prefs.units.length)
+		return;
+
+	depthLine->setTickInterval(M_OR_FT(10,30));
+	depthLine->updateTicks();
+	depthLine->unitSystem = prefs.units.length;
 }
 
 void DivePlannerGraphics::pointInserted(const QModelIndex& parent, int start , int end)
@@ -788,7 +799,7 @@ void Ruler::updateTicks()
 
 	if (orientation == Qt::Horizontal) {
 		double stepSize = (m.x2() - m.x1()) / steps;
-		for (pos = m.x1(); pos < m.x2(); pos += stepSize, currValue += interval) {
+		for (pos = m.x1(); pos <= m.x2(); pos += stepSize, currValue += interval) {
 			item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
 			item->setPen(pen());
 			ticks.push_back(item);
@@ -799,18 +810,9 @@ void Ruler::updateTicks()
 			label->setPos(pos - label->boundingRect().width()/2, m.y1() + tickSize + 5);
 			labels.push_back(label);
 		}
-		item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
-		item->setPen(pen());
-		ticks.push_back(item);
-
-		label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
-		label->setBrush(QBrush(textColor));
-		label->setFlag(ItemIgnoresTransformations);
-		label->setPos(pos - label->boundingRect().width()/2, m.y1() + tickSize + 5);
-		labels.push_back(label);
 	} else {
 		double stepSize = (m.y2() - m.y1()) / steps;
-		for (pos = m.y1(); pos < m.y2(); pos += stepSize, currValue += interval) {
+		for (pos = m.y1(); pos <= m.y2(); pos += stepSize, currValue += interval) {
 			item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
 			item->setPen(pen());
 			ticks.push_back(item);
@@ -821,15 +823,6 @@ void Ruler::updateTicks()
 			label->setPos(m.x2() - 80, pos);
 			labels.push_back(label);
 		}
-		item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
-		item->setPen(pen());
-		ticks.push_back(item);
-
-		label = new QGraphicsSimpleTextItem(get_depth_string(currValue, false, false), this);
-		label->setBrush(QBrush(textColor));
-		label->setFlag(ItemIgnoresTransformations);
-		label->setPos(m.x2() - 80, pos);
-		labels.push_back(label);
 	}
 }
 
