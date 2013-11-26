@@ -78,7 +78,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0)
 bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 {
 	// This disables Zooming when a double click occours on the scene.
-	if (ev->type() == QEvent::MouseButtonDblClick)
+	if (ev->type() == QEvent::MouseButtonDblClick && !editingDiveCoords)
 		return true;
 	// This disables the Marble's Context Menu
 	// we need to move this to our 'contextMenuEvent'
