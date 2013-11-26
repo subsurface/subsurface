@@ -30,7 +30,7 @@
 #define MAX_DEPTH M_OR_FT(150, 450)
 #define MIN_DEPTH M_OR_FT(20, 60)
 
-#define M_OR_FT(_m,_f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : ((_f) * 304.8))
+#define M_OR_FT(_m,_f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
 
 QString gasToStr(const int o2Permille, const int hePermille) {
 	uint o2 = (o2Permille + 5) / 10, he = (hePermille + 5) / 10;

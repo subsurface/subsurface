@@ -203,7 +203,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->cylinderpressure.mbar = value.pressure.value * 1000 + 0.5;
 		break;
 	case DC_SAMPLE_TEMPERATURE:
-		sample->temperature.mkelvin = value.temperature * 1000 + ZERO_C_IN_MKELVIN + 0.5;
+		sample->temperature.mkelvin = C_to_mkelvin(value.temperature);
 		break;
 	case DC_SAMPLE_EVENT:
 		handle_event(dc, sample, value);

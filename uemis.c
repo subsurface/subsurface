@@ -293,7 +293,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 
 	datalen = uemis_convert_base64(base64, &data);
 
-	dive->dc.airtemp.mkelvin = *(uint16_t *)(data + 45) * 100 + ZERO_C_IN_MKELVIN;
+	dive->dc.airtemp.mkelvin = C_to_mkelvin(*(uint16_t *)(data + 45));
 	dive->dc.surface_pressure.mbar = *(uint16_t *)(data + 43);
 	if (*(uint8_t *)(data + 19))
 		dive->dc.salinity = SEAWATER_SALINITY; /* avg grams per 10l sea water */
@@ -351,7 +351,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		sample = prepare_sample(dc);
 		sample->time.seconds = u_sample->dive_time;
 		sample->depth.mm = rel_mbar_to_depth(u_sample->water_pressure, dive);
-		sample->temperature.mkelvin = (u_sample->dive_temperature * 100) + ZERO_C_IN_MKELVIN;
+		sample->temperature.mkelvin = C_to_mkelvin(u_sample->dive_temperature);
 		sample->sensor = active;
 		sample->cylinderpressure.mbar =
 			(u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;

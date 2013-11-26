@@ -424,7 +424,7 @@ static void pressure(char *buffer, void *_press)
 				mbar = mbar * 1000;
 			break;
 		case PSI:
-			mbar = val.fp * 68.95;
+			mbar = psi_to_mbar(val.fp);
 			break;
 		}
 		if (mbar > 5 && mbar < 500000) {
@@ -462,7 +462,7 @@ static void depth(char *buffer, void *_depth)
 			depth->mm = val.fp * 1000 + 0.5;
 			break;
 		case FEET:
-			depth->mm = val.fp * 304.8 + 0.5;
+			depth->mm = feet_to_mm(val.fp);
 			break;
 		}
 		break;
@@ -483,7 +483,7 @@ static void weight(char *buffer, void *_weight)
 			weight->grams = val.fp * 1000 + 0.5;
 			break;
 		case LBS:
-			weight->grams = val.fp * 453.6 + 0.5;
+			weight->grams = lbs_to_grams(val.fp);
 			break;
 		}
 		break;
@@ -504,10 +504,10 @@ static void temperature(char *buffer, void *_temperature)
 			temperature->mkelvin = val.fp * 1000;
 			break;
 		case CELSIUS:
-			temperature->mkelvin = val.fp * 1000 + ZERO_C_IN_MKELVIN + 0.5;
+			temperature->mkelvin = C_to_mkelvin(val.fp);
 			break;
 		case FAHRENHEIT:
-			temperature->mkelvin = (val.fp + 459.67) * 5000/9;
+			temperature->mkelvin = F_to_mkelvin(val.fp);
 			break;
 		}
 		break;
@@ -1862,9 +1862,9 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	if (data[6])
 		cur_dive->dc.maxdepth.mm = atof(data[6]) * 1000;
 	if (data[8])
-		cur_dive->dc.airtemp.mkelvin = (atoi(data[8]) + 273.15) * 1000;
+		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
-		cur_dive->dc.watertemp.mkelvin  = (atoi(data[9]) + 273.15) * 1000;
+		cur_dive->dc.watertemp.mkelvin  = C_to_mkelvin(atoi(data[9]));
 
 	/*
 	 * TODO: handle multiple cylinders
@@ -1904,7 +1904,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 			cur_sample->depth.mm = cur_dive->dc.maxdepth.mm;
 
 		if (tempBlob)
-			cur_sample->temperature.mkelvin = (tempBlob[i] + 273.15) * 1000;
+			cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
 		if (data[19] && data[19][0])
 			cur_sample->cylinderpressure.mbar = pressureBlob[i] ;
 		sample_end();
