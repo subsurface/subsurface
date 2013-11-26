@@ -5,6 +5,7 @@
 #include <QString>
 #include <stdint.h>
 #include "dive.h"
+#include "divelist.h"
 #include <QTranslator>
 
 // global pointers for our translation
@@ -40,4 +41,5 @@ public:
 QString weight_string(int weight_in_grams);
 bool gpsHasChanged(struct dive* dive, struct dive *master, const QString &gps_text);
 
+QList<int> getDivesInTrip(dive_trip_t *trip);
 #endif // QTHELPER_H

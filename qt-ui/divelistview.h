@@ -29,8 +29,7 @@ public:
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
-	QSet<dive_trip_t *> selectedTrips;
-
+	QList<dive_trip_t*> selectedTrips();
 public slots:
 	void toggleColumnVisibilityByIndex();
 	void reloadHeaderActions();
@@ -55,17 +54,20 @@ signals:
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;
-	QList<int> selectedDives;
 	int sortColumn;
 	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;
 	QLineEdit *searchBox;
 	QModelIndex contextMenuIndex;
+
+	/* if dive_trip_t is null, there's no problem. */
+	QMultiHash<dive_trip_t *, int> selectedDives;
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setupUi();
 	void backupExpandedRows();
 	void restoreExpandedRows();
 	int lastVisibleColumn();
+	void selectTrip ( dive_trip_t* trip );
 };
 
 #endif // DIVELISTVIEW_H

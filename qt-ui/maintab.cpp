@@ -129,7 +129,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	ui.notesButtonBox->show();
 	ui.equipmentButtonBox->show();
 
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		ui.diveNotesMessage->setText(tr("This trip is being edited. Select Save or Cancel when done."));
 		ui.diveNotesMessage->animatedShow();
@@ -292,7 +292,7 @@ void MainTab::updateDiveInfo(int dive)
 	if (d) {
 		updateGpsCoordinates(d);
 		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
-		if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+		if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
 			ui.coordinates->setVisible(false);
@@ -313,7 +313,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui.airtemp->setVisible(false);
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
-			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
+			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
 			ui.LocationLabel->setText(tr("Trip Location"));
 			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip Notes"));
@@ -472,7 +472,7 @@ void MainTab::acceptChanges()
 	ui.notesButtonBox->hide();
 	ui.equipmentButtonBox->hide();
 	/* now figure out if things have changed */
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
 			notesBackup[NULL].location != ui.location->text())
 			mark_divelist_changed(TRUE);
@@ -585,7 +585,7 @@ void MainTab::rejectChanges()
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 
 	mainWindow()->dive_list()->setEnabled(true);
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1){
+	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1){
 		ui.notes->setText(notesBackup[NULL].notes );
 		ui.location->setText(notesBackup[NULL].location);
 	} else {
@@ -749,9 +749,9 @@ void MainTab::on_location_textChanged(const QString& text)
 {
 	if (editMode == NONE)
 		return;
-	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing a trip
-		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
+		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE || editMode == ADD){
 		if (!ui.coordinates->isModified() ||
@@ -787,9 +787,9 @@ void MainTab::on_notes_textChanged()
 {
 	if (editMode == NONE)
 		return;
-	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips.count() == 1) {
+	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing a trip
-		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips.begin();
+		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
 		EDIT_TEXT(currentTrip->notes, ui.notes->toPlainText());
 	} else if (editMode == DIVE || editMode == ADD) {
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->notes, ui.notes->toPlainText()) );

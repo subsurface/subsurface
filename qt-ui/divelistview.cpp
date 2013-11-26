@@ -47,8 +47,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	searchBox->hide();
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
-	selectedTrips.clear();
-
 	setupUi();
 }
 
@@ -133,22 +131,64 @@ void DiveListView::rememberSelection()
 			continue;
 		struct dive *d = (struct dive *) index.data(DiveTripModel::DIVE_ROLE).value<void*>();
 		if (d)
-			selectedDives.push_front(get_divenr(d));
+			selectedDives.insert(d->divetrip, get_divenr(d));
 	}
 }
 
 void DiveListView::restoreSelection()
 {
 	unselectDives();
-	selectedTrips.clear(); // I wish we didn't lose those...
-	Q_FOREACH(int i, selectedDives) {
-		selectDive(i);
+	Q_FOREACH(dive_trip_t *trip, selectedDives.keys()){
+		QList<int> divesOnTrip = getDivesInTrip(trip);
+		QList<int> selectedDivesOnTrip = selectedDives.values(trip);
+
+		// Trip was not selected, let's select single-dives.
+		if (trip == NULL || divesOnTrip.count() != selectedDivesOnTrip.count()){
+			Q_FOREACH(int i, selectedDivesOnTrip){
+				selectDive(i);
+			}
+		}else{
+			selectTrip(trip);
+			Q_FOREACH(int i, selectedDivesOnTrip){
+				selectDive(i);
+			}
+		}
 	}
+}
+
+void DiveListView::selectTrip ( dive_trip_t* trip )
+{
+	if (!trip)
+		return;
+
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
+	QModelIndexList match = m->match(m->index(0,0), DiveTripModel::TRIP_ROLE, QVariant::fromValue<void*>(trip), 2, Qt::MatchRecursive);
+	QItemSelectionModel::SelectionFlags flags;
+	if (!match.count())
+		return;
+	QModelIndex idx = match.first();
+	flags =  QItemSelectionModel::Select;
+	flags |= QItemSelectionModel::Rows;
+	selectionModel()->select(idx, flags);
+	expand(idx);
 }
 
 void DiveListView::unselectDives()
 {
 	selectionModel()->clearSelection();
+}
+
+QList< dive_trip_t* > DiveListView::selectedTrips()
+{
+	QModelIndexList indexes = selectionModel()->selectedRows();
+	QList<dive_trip_t*> ret;
+	Q_FOREACH(const QModelIndex& index, indexes){
+		dive_trip_t *trip = static_cast<dive_trip_t*>(index.data(DiveTripModel::TRIP_ROLE).value<void*>());
+		if(!trip)
+			continue;
+		ret.push_back(trip);
+	}
+	return ret;
 }
 
 void DiveListView::selectDive(int i, bool scrollto, bool toggle)
@@ -347,8 +387,6 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
 				struct dive *child = (struct dive*) model->data(index.child(0,0), DiveTripModel::DIVE_ROLE).value<void*>();
-				if (child && child->divetrip)
-					selectedTrips.remove(child->divetrip);
 				while (child) {
 					deselect_dive(get_divenr(child));
 					child = child->next;
@@ -368,8 +406,6 @@ void DiveListView::selectionChanged(const QItemSelection& selected, const QItemS
 			if (model->rowCount(index)) {
 				QItemSelection selection;
 				struct dive *child = (struct dive*) model->data(index.child(0,0), DiveTripModel::DIVE_ROLE).value<void*>();
-				if (child && child->divetrip)
-					selectedTrips.insert(child->divetrip);
 				while (child) {
 					select_dive(get_divenr(child));
 					child = child->next;
