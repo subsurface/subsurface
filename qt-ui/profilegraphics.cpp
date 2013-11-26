@@ -232,9 +232,7 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 		return;
 
 	toolTip->refresh(&gc,  mapToScene(event->pos()));
-
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
-
 	scrollViewTo(event->pos());
 
 	if (zoomLevel == 0)
@@ -1569,6 +1567,9 @@ void ToolTipItem::readPos()
 	QPointF value = scene()->views().at(0)->mapToScene(
 		s.value("tooltip_position").toPoint()
 	);
+	if (!scene()->sceneRect().contains(value)){
+		value = QPointF(0,0);
+	}
 	setPos(value);
 }
 
