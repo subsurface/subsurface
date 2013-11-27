@@ -353,19 +353,16 @@ void CylindersModel::setDive(dive* d)
 		clear();
 	if (!d)
 		return;
-	int amount = MAX_CYLINDERS;
+	rows = 0;
 	for(int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cylinder = &d->cylinder[i];
-		if (cylinder_none(cylinder)) {
-			amount = i;
-			break;
+		if (!cylinder_none(&d->cylinder[i])) {
+			rows = i+1;
 		}
 	}
-	rows = amount;
 	current = d;
 	changed = false;
-	if (amount > 0) {
-		beginInsertRows(QModelIndex(), 0, amount - 1);
+	if (rows > 0) {
+		beginInsertRows(QModelIndex(), 0, rows-1);
 		endInsertRows();
 	}
 }
