@@ -57,6 +57,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local
 $ cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ../sources
 $ cd src/lib
 $ make -j4
+$ install_name_tool -id /usr/local/lib/`echo libmarblewidget.??.dylib` libmarblewidget.dylib
 $ cp *dylib /usr/local/lib/
 $ mkdir -p /usr/local/include/marble
 $ cd ../../../sources/src/lib
