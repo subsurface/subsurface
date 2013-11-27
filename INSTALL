@@ -53,6 +53,8 @@ $ mkdir -p ~/src/marble/build
 $ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
 $ cd ~/src/marble/build
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ../sources
+ - or -
+$ cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ../sources
 $ cd src/lib
 $ make -j4
 $ cp *dylib /usr/local/lib/
@@ -100,12 +102,23 @@ included in the packaging/Windows directory.
 
 The best way to get libdivecomputer to build appears to be
 
-$ git clone git://libdivecomputer.git.sourceforge.net/gitroot/libdivecomputer/libdivecomputer
+$ git clone git://git.libdivecomputer.org/libdivecomputer
 $ cd libdivecomputer
 $ git checkout release-0.4
 $ mingw32-configure --disable-shared
 $ mingw32-make
 $ sudo mingw32-make install
+
+To compile Marble, use:
+
+$ mkdir -p ~/src/marble/build
+$ git clone -b v4.11.2 git://anongit.kde.org/marble ~/src/marble/sources
+$ cd ~/src/marble/build
+$ mingw32-cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE ../sources
+ - or -
+$ mingw32-cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE ../sources
+$ mingw32-make -j4
+$ mingw32-make install
 
 To compile Subsurface, use:
 
