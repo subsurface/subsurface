@@ -513,7 +513,7 @@ void ProfileGraphicsView::addControlItems(struct dive *d)
 	QAction *scaleAction = new QAction(QIcon(":scale"), tr("Scale"), this);
 	QAction *rulerAction = new QAction(QIcon(":ruler"), tr("Ruler"), this);
 	QToolBar *toolBar = new QToolBar("", 0);
-	rulerAction->setToolTip(tr("Show a ruler to nit pecking your dive"));
+	rulerAction->setToolTip(tr("Measure properties of dive segments"));
 	scaleAction->setToolTip(tr("Scale your dive to screen size"));
 	toolBar->addAction(rulerAction);
 	toolBar->addAction(scaleAction);
