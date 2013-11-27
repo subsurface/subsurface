@@ -301,18 +301,29 @@ static void save_cylinder_info(FILE *f, struct dive *dive)
 	}
 }
 
+static int nr_weightsystems(struct dive *dive)
+{
+	int nr;
+
+	for (nr = MAX_WEIGHTSYSTEMS; nr; --nr) {
+		weightsystem_t *ws = dive->weightsystem+nr-1;
+		if (!weightsystem_none(ws))
+			break;
+	}
+	return nr;
+}
+
 static void save_weightsystem_info(FILE *f, struct dive *dive)
 {
-	int i;
+	int i, nr;
 
-	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+	nr = nr_weightsystems(dive);
+
+	for (i = 0; i < nr; i++) {
 		weightsystem_t *ws = dive->weightsystem+i;
 		int grams = ws->weight.grams;
 		const char *description = ws->description;
 
-		/* No weight information at all? */
-		if (grams == 0)
-			return;
 		fprintf(f, "  <weightsystem");
 		show_milli(f, " weight='", grams, " kg", "'");
 		show_utf8(f, description, " description='", "'", 1);
