@@ -549,8 +549,10 @@ void MainTab::acceptChanges()
 	// now comes the scary moment... we need to re-sort dive table in case this dive wasn't the last
 	// so now all pointers become invalid
 	// fingers crossed that we aren't holding on to anything here
+	mainWindow()->dive_list()->rememberSelection();
 	sort_table(&dive_table);
 	mainWindow()->refreshDisplay();
+	mainWindow()->dive_list()->restoreSelection();
 }
 
 void MainTab::resetPallete()
