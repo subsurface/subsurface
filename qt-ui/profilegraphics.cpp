@@ -545,17 +545,26 @@ void ProfileGraphicsView::plot_pp_text()
 
 	setup_pp_limits(&gc);
 	pp = floor(gc.pi.maxpp * 10.0) / 10.0 + 0.2;
-	dpp = pp > 4 ? 1.0 : 0.5;
+	dpp = pp > 4 ? 0.5 : 0.2;
 	hpos = gc.pi.entry[gc.pi.nr - 1].sec;
 	QColor c = getColor(PP_LINES);
 
+	bool alt = false;
 	for (m = 0.0; m <= pp; m += dpp) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
 		QPen pen(defaultPen);
 		pen.setColor(c);
+		if ( QString::number(m).toDouble() != QString::number(m).toInt()){
+			pen.setStyle(Qt::DashLine);
+			pen.setWidthF(1.2);
+		}
 		item->setPen(pen);
 		scene()->addItem(item);
-		plot_text(&tro, QPointF(hpos, m), QString::number(m), pressureMarkers);
+		qreal textPos = hpos;
+		if (alt)
+			textPos += 30;
+		alt = !alt;
+		plot_text(&tro, QPointF(textPos, m), QString::number(m), pressureMarkers);
 	}
 	scene()->addItem(pressureMarkers);
 	pressureMarkers->setPos(pressureMarkers->pos().x() + 10, 0);
