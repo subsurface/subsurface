@@ -293,20 +293,6 @@ void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
-void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
-{
-	int idx;
-	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
-		cylinder_t *cyl = &dive->cylinder[idx];
-		pressure_t start, end;
-
-		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
-		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
-		if (start.mbar && end.mbar)
-			gases[idx].mliter = gas_volume(cyl, start) - gas_volume(cyl, end);
-	}
-}
-
 bool is_gas_used(struct dive *dive, int idx)
 {
 	cylinder_t *cyl = &dive->cylinder[idx];
@@ -352,6 +338,23 @@ bool is_gas_used(struct dive *dive, int idx)
 	if (idx == 0 && !firstGasExplicit)
 		used = TRUE;
 	return used;
+}
+
+void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
+{
+	int idx;
+	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
+		cylinder_t *cyl = &dive->cylinder[idx];
+		pressure_t start, end;
+
+		if (!is_gas_used(dive, idx))
+			continue;
+
+		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
+		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
+		if (start.mbar && end.mbar)
+			gases[idx].mliter = gas_volume(cyl, start) - gas_volume(cyl, end);
+	}
 }
 
 #define MAXBUF 80
