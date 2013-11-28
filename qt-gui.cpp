@@ -435,7 +435,7 @@ int parseTemperatureToMkelvin(const QString& text)
 {
 	int mkelvin;
 	QString numOnly = text;
-	numOnly.replace(",",".").remove(QRegExp("[^0-9.]"));
+	numOnly.replace(",",".").remove(QRegExp("[^-0-9.]"));
 	if (numOnly == "")
 		return 0;
 	double number = numOnly.toDouble();
