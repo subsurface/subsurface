@@ -20,6 +20,7 @@
 #include <QCompleter>
 #include <QDebug>
 #include <QSet>
+#include <QSettings>
 #include <QTableView>
 #include <QPalette>
 
@@ -109,6 +110,48 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		ui.scrollArea_3->viewport()->setPalette(p);
 		ui.scrollArea_4->viewport()->setPalette(p);
 	}
+	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+	QSettings s;
+	s.beginGroup("cylinders_dialog");
+	for(int i = 0; i < CylindersModel::COLUMNS; i++){
+		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
+			  continue;
+		bool checked = s.value(QString("column%1_hidden").arg(i)).toBool();
+		QAction *action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
+		action->setCheckable(true);
+		action->setData(i);
+		action->setChecked(!checked);
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(toggleTriggeredColumn()));
+		ui.cylinders->view()->setColumnHidden(i, checked);
+		ui.cylinders->view()->horizontalHeader()->addAction(action);
+	}
+}
+
+MainTab::~MainTab()
+{
+	QSettings s;
+	s.beginGroup("cylinders_dialog");
+	for(int i = 0; i < CylindersModel::COLUMNS; i++){
+		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
+			  continue;
+		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
+	}
+}
+
+void MainTab::toggleTriggeredColumn()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	int col = action->data().toInt();
+	QTableView *view = ui.cylinders->view();
+
+	if(action->isChecked()){
+		view->showColumn(col);
+		if(view->columnWidth(col) <= 15)
+			view->setColumnWidth(col, 80);
+	}
+	else
+		view->hideColumn(col);
 }
 
 void MainTab::addDiveStarted()

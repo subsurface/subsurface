@@ -51,6 +51,7 @@ public:
 	enum EditMode { NONE, DIVE, TRIP, ADD, MANUALLY_ADDED_DIVE };
 
 	MainTab(QWidget *parent);
+	~MainTab();
 	void clearStats();
 	void clearInfo();
 	void clearEquipment();
@@ -82,7 +83,7 @@ public slots:
 	void editWeightWidget(const QModelIndex& index);
 	void addDiveStarted();
 	void enableEdition(EditMode newEditMode = NONE);
-
+	void toggleTriggeredColumn();
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
