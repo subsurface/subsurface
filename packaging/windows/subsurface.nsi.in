@@ -110,7 +110,7 @@ Section
     File libxml2-2.dll
     File libxslt-1.dll
     File zlib1.dll
-    File libzip-2.dll
+    File libzip*.dll
     File libsqlite3-0.dll
     File libgcc_s_sjlj-1.dll
     File libstdc++-6.dll
