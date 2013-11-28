@@ -13,7 +13,7 @@
 *-g++* | *-clang*: QMAKE_CFLAGS += -Wno-unused-result -Wno-pointer-sign -fno-strict-overflow
 *-clang*: QMAKE_CFLAGS += -Wno-format-security
 *-g++*: QMAKE_CXXFLAGS += -fno-strict-overflow
-!mac: {
+!win32: !mac: {
 *-g++*: QMAKE_CXXFLAGS += -Wno-maybe-uninitialized
 *-g++*: QMAKE_CFLAGS += -Wno-maybe-uninitialized
 }
