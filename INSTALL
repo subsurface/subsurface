@@ -93,6 +93,13 @@ $ qmake
 $ make
 $ make mac-create-dmg
 
+NOTES: macdeployqt assumes that the plugins are located "next" to the
+frameworks. The frameworks are linked from /usr/local/lib - but the
+plugins are not in /usr/local/plugins.
+The easiest workaround is to create a symbolic link from
+/usr/local/plugins to /usr/local/Cellar/qt/4.8.5/plugins (or whatever
+version of Qt you have built earlier).
+
 Cross-building Subsurface on Linux for Windows
 ----------------------------------------------
 
