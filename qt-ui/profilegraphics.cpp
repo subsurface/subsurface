@@ -1527,7 +1527,7 @@ ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), back
 {
 	title = new QGraphicsSimpleTextItem(tr("Information"), this);
 	separator = new QGraphicsLineItem(this);
-	setFlags(ItemIgnoresTransformations | ItemIsMovable);
+	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
 	status = COLLAPSED;
 	updateTitlePosition();
 	setZValue(99);
