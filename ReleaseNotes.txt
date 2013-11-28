@@ -61,6 +61,13 @@ Known issues:
 - Translations are extremely incomplete
 - Documentation has just been started
 
+These last two points are important. Because if you have always wondered
+"oh I wish I could contribute, too bad I can't program" - this is your
+chance. ANYONE can help us with Documentation, and almost anyone (ok, this
+does require that you speak a language besides English) can help with
+translations. Please send us email at subsurface@hohndel.org if you would
+like to contribute.
+
 
 New in version 3.1 (compared to Subsurface 3.0.2):
 --------------------------------------------------
