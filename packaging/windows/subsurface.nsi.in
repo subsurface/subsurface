@@ -127,9 +127,9 @@ Section
     # Create shortcuts
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-        CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Subsurface.lnk" "$INSTDIR\subsurface.exe"
+        CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Subsurface.lnk" "$INSTDIR\subsurface.exe" "" "$INSTDIR\subsurface.ico" 0
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall Subsurface.lnk" "$INSTDIR\Uninstall.exe"
-        CreateShortCut "$DESKTOP\Subsurface.lnk" "$INSTDIR\subsurface.exe" ""
+        CreateShortCut "$DESKTOP\Subsurface.lnk" "$INSTDIR\subsurface.exe" "" "$INSTDIR\subsurface.ico" 0
     !insertmacro MUI_STARTMENU_WRITE_END
 
     # Create the uninstaller
