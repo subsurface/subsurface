@@ -1,8 +1,8 @@
-			Subsurface 3.9 Beta
-			===================
+			Subsurface 3.9.1 Beta
+			=====================
 
-The Subsurface developer team is proud to announce the first beta release
-of the latest version of Subsurface.
+The Subsurface developer team is proud to announce the first public beta
+release of the latest version of Subsurface.
 
 Subsurface is an open source divelog program that runs on Windows, Mac
 and Linux.
@@ -38,16 +38,29 @@ available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
-New in version 3.9 (compared to Subsurface 3.1):
-------------------------------------------------
+New in version 3.9.1 (compared to Subsurface 3.1):
+--------------------------------------------------
 
 I don't even know where to begin. This is a complete rewrite of the UI.
 The basic concepts are the same, most of the basic features are the same,
 but trying to create a concise list of changes that summarizes the more
 than 1100 commits that have gone in since 3.1 seems a daunting task.
 
-Maybe we'll come up with something better in time for the next beta (or at
-least for the final release of Subsurface 4.0).
+Maybe we'll come up with something better in time for the final release of
+Subsurface 4.0.
+
+Known issues:
+
+- integration with divelogs.de is still missing
+- on Windows the maps may or may not show - if you get a black window with
+  partial white outlines and the little dive flags for locations
+- we have reports of occasional crashes on Windows when trying to close
+  the window by clicking on the little x in the window decoration
+  instead of using Alt-F4, Ctrl-q, or File->Quit
+- Filter->Select Events is not implemented
+- Translations are extremely incomplete
+- Documentation has just been started
+
 
 New in version 3.1 (compared to Subsurface 3.0.2):
 --------------------------------------------------

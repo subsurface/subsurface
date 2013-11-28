@@ -1,5 +1,5 @@
 
-This is the README file for the 3.9 Beta version of Subsurface.
+This is the README file for the second 3.9 Beta version of Subsurface.
 
 After the release of Subsurface 3.1 we merged the Qt branch into
 master and started developing the Qt port of Subsurface in the master
@@ -12,6 +12,8 @@ known bugs - please check trac.hohndel.org. Do not use this on your "real"
 dive log files unless you have good backups. Check the XML files after you
 make changes to make sure that what you saved on disk reasonably resembles
 what you intended to do.
+
+Please check the ReleaseNotes.txt for known issues.
 
 And most importantly, please provide us with feedback.
 
