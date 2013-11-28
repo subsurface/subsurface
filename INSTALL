@@ -132,10 +132,16 @@ To compile Subsurface, use:
 
 $ git clone git://subsurface.hohndel.org/subsurface.git
 $ cd subsurface
-$ i686-w64-mingw32-qmake-qt4
-$ make
-$ make install
-$ make create-windows-installer
+$ packaging/windows/mingw-make.sh
+$ packaging/windows/mingw-make.sh install
+$ packaging/windows/mingw-make.sh installer
+
+The last step assumes that you have a link from packaging/windows/dll to
+the correct directory in your MinGW installation. On my machine that is
+/usr/i686-w64-mingw32/sys-root/mingw/bin
+Similarly, the paths used in packaging/windows/mingw-make.sh may need to
+be adjusted according to your distributions layout
+
 
 Building Subsurface on Windows
 ------------------------------
@@ -204,7 +210,7 @@ $ cd subsurface
 $ qmake
 $ make
 $ make install
-$ make create-windows-installer
+$ make installer
 
 Build options
 -------------
