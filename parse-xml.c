@@ -1551,7 +1551,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 static void visit_one_node(xmlNode *node)
 {
 	char *content;
-	char buffer[MAXNAME];
+	static char buffer[MAXNAME];
 	const char *name;
 
 	content = node->content;
