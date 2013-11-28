@@ -106,6 +106,7 @@ Section
     File iconv.dll
     File libdivecomputer-0.dll
     File libpng15-15.dll
+    File libjpeg-*.dll
     File libusb-1.0.dll
     File libxml2-2.dll
     File libxslt-1.dll
@@ -114,17 +115,8 @@ Section
     File libsqlite3-0.dll
     File libgcc_s_sjlj-1.dll
     File libstdc++-6.dll
-    File QtCore4.dll
-    File QtGui4.dll
-    File QtNetwork4.dll
-    File QtSvg4.dll
-    File QtWebKit4.dll
-    File QtDeclarative4.dll
-    File QtScript4.dll
-    File QtSql4.dll
-    File QtXmlPatterns4.dll
-    File QtXml4.dll
-    File libmarblewidget.dll
+    File libmarblewidget*dll
+    File Qt*4.dll
     File subsurface.ico
 
     # Store installation folder in registry
