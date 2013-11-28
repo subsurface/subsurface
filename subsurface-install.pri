@@ -42,8 +42,8 @@ mac {
     # which libs we need.
     # The only target is "make install", which copies everything into packaging/windows
     WINDOWSSTAGING = packaging/windows
-    NSIFILE = $$WINDOWSSTAGING/subsurface.nsi
-    NSIINPUTFILE = $$WINDOWSSTAGING/subsurface.nsi.in
+    NSIFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi
+    NSIINPUTFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi.in
     MAKENSIS = /usr/bin/makensis
 
     deploy.path = $$WINDOWSSTAGING
@@ -65,8 +65,8 @@ mac {
         dlls.commands += perl $$PWD/scripts/win-ldd.pl
         # equals(QMAKE_HOST.os, "Windows"): EXE_SUFFIX = .exe
         EXE_SUFFIX = .exe
-        CONFIG(debug, debug|release): dlls.commands += $$PWD/debug/subsurface$$EXE_SUFFIX
-        else: dlls.commands += $$PWD/release/$$TARGET$$EXE_SUFFIX
+        CONFIG(debug, debug|release): dlls.commands += $$OUT_PWD/debug/subsurface$$EXE_SUFFIX
+        else: dlls.commands += $$OUT_PWD/release/$$TARGET$$EXE_SUFFIX
 
         for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
             CONFIG(debug, debug|release): dlls.depends += $$[QT_INSTALL_PLUGINS]/$${plugin}d4.dll
