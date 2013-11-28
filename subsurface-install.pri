@@ -55,9 +55,36 @@ mac {
 
     qt_conf.commands = echo \'[Paths]\' > $@
     qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
-    qt_conf.commands += $${nltab}echo \'Plugins=.\' >> $@
     qt_conf.target = $$PWD/packaging/windows/qt.conf
     install.depends += qt_conf
+
+    # Plugin code
+    defineTest(deployPlugin) {
+        plugin = $$1
+        plugintype = $$dirname(1)
+        CONFIG(debug, debug|release): plugin = $${plugin}d4.dll
+        else: plugin = $${plugin}4.dll
+
+        abs_plugin = $$[QT_INSTALL_PLUGINS]/$$plugin
+        ABS_DEPLOYMENT_PLUGIN += $$abs_plugin
+        export(ABS_DEPLOYMENT_PLUGIN)
+
+        safe_name = $$replace(1, /, _)
+        INSTALLS += $$safe_name
+
+        # Work around qmake bug in Qt4 that it can't handle $${xx}.yy properly
+        eval(safe_name_files = $${safe_name}.files)
+        eval(safe_name_path = $${safe_name}.path)
+        $$safe_name_files = $$abs_plugin
+        $$safe_name_path = $$WINDOWSSTAGING/plugins/$$plugintype
+        export($$safe_name_files)
+        export($$safe_name_path)
+        export(INSTALLS)
+    }
+    # Convert plugin names to the relative DLL path
+    for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
+        deployPlugin($$plugin)
+    }
 
     !win32-msvc* {
         #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$$QMAKE_CC -dumpmachine`-objdump
@@ -68,12 +95,7 @@ mac {
         CONFIG(debug, debug|release): dlls.commands += $$OUT_PWD/debug/subsurface$$EXE_SUFFIX
         else: dlls.commands += $$OUT_PWD/release/$$TARGET$$EXE_SUFFIX
 
-        for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
-            CONFIG(debug, debug|release): dlls.depends += $$[QT_INSTALL_PLUGINS]/$${plugin}d4.dll
-            else: dlls.depends += $$[QT_INSTALL_PLUGINS]/$${plugin}4.dll
-        }
-
-        dlls.commands += $$LIBS
+        dlls.commands += $$ABS_DEPLOYMENT_PLUGIN $$LIBS
         dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
         dlls.depends += $(DESTDIR_TARGET)
 

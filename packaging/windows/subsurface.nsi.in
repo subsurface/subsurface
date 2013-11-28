@@ -103,6 +103,7 @@ Section
     File /r data
     File /r images
     File /r icons
+    File /r plugins
     File iconv.dll
     File libdivecomputer-0.dll
     File libpng15-15.dll

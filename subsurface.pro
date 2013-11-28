@@ -175,7 +175,12 @@ XSLT_FILES = xslt
 ICONS_FILES = icons
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
 MARBLEDIR = marbledata/maps marbledata/bitmaps
-DEPLOYMENT_PLUGIN += imageformats/qjpeg
+
+#DEPLOYMENT_PLUGIN += bearer/qnativewifibearer
+DEPLOYMENT_PLUGIN += codecs/qcncodecs codecs/qjpcodecs codecs/qkrcodecs codecs/qtwcodecs
+DEPLOYMENT_PLUGIN += imageformats/qgif imageformats/qjpeg imageformats/qsvg
+DEPLOYMENT_PLUGIN += iconengines/qsvgicon
+#DEPLOYMENT_PLUGIN += sqldrivers/qsqlite
 
 # This information will go into the Windows .rc file and linked into the .exe
 QMAKE_TARGET_COMPANY = subsurface team
