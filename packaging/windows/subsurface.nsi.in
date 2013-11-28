@@ -119,6 +119,7 @@ Section
     File libmarblewidget*dll
     File Qt*4.dll
     File subsurface.ico
+    File qt.conf
 
     # Store installation folder in registry
     WriteRegStr HKCU "Software\Subsurface" "" $INSTDIR
