@@ -105,7 +105,6 @@ Section
     File /r icons
     File iconv.dll
     File libdivecomputer-0.dll
-    File libintl-8.dll
     File libpng15-15.dll
     File libusb-1.0.dll
     File libxml2-2.dll
