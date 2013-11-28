@@ -295,49 +295,25 @@ void get_selected_dives_text(char *buffer, int size)
 
 bool is_gas_used(struct dive *dive, int idx)
 {
-	cylinder_t *cyl = &dive->cylinder[idx];
-	int o2, he;
-	struct divecomputer *dc;
-	bool used = FALSE;
+	struct divecomputer *dc = &dive->dc;
 	bool firstGasExplicit = FALSE;
-	if (cylinder_none(cyl))
+	if (cylinder_none(&dive->cylinder[idx]))
 		return FALSE;
 
-	o2 = get_o2(&cyl->gasmix);
-	he = get_he(&cyl->gasmix);
-	dc = &dive->dc;
 	while (dc) {
-		struct event *event = dc->events;
+		struct event *event = get_next_event(dc->events, "gaschange");
 		while (event) {
-			if (event->value) {
-				if (event->name && !strcmp(event->name, "gaschange")) {
-					unsigned int event_he = event->value >> 16;
-					unsigned int event_o2 = event->value & 0xffff;
-					if (event->time.seconds < 30)
-						firstGasExplicit = TRUE;
-					if (is_air(o2, he)) {
-						if (is_air(event_o2 * 10, event_he * 10))
-							used = TRUE;
-					} else if (event->type == 25 && he == event_he * 10 && o2 == event_o2 * 10) {
-						/* SAMPLE_EVENT_GASCHANGE2(25) contains both o2 and he */
-						used = TRUE;
-					} else if (o2 == event_o2 * 10) {
-						/* SAMPLE_EVENT_GASCHANGE(11) only contains o2 */
-						used = TRUE;
-					}
-				}
-			}
-			if (used)
-				break;
-			event = event->next;
+			if (event->time.seconds < 30)
+				firstGasExplicit = TRUE;
+			if (get_cylinder_index(dive, event) == idx)
+				return TRUE;
+			event = get_next_event(event->next, "gaschange");
 		}
-		if (used)
-			break;
 		dc = dc->next;
 	}
 	if (idx == 0 && !firstGasExplicit)
-		used = TRUE;
-	return used;
+		return TRUE;
+	return FALSE;
 }
 
 void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
