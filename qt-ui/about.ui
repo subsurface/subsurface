@@ -61,7 +61,7 @@
    <item>
     <widget class="QLabel" name="aboutLabel">
      <property name="text">
-      <string>TextLabel</string>
+      <string></string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
