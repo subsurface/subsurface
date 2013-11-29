@@ -646,19 +646,29 @@ static void fixup_duration(struct dive *dive)
 	dive->duration.seconds = duration;
 }
 
-static void fixup_watertemp(struct dive *dive)
+/*
+ * What do the dive computers say the water temperature is?
+ * (not in the samples, but as dc property for dcs that support that)
+ */
+unsigned int dc_watertemp(struct divecomputer *dc)
 {
-	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	for_each_dc(dive, dc) {
+	do {
 		if (dc->watertemp.mkelvin) {
 			sum += dc->watertemp.mkelvin;
 			nr++;
 		}
-	}
-	if (nr)
-		dive->watertemp.mkelvin = (sum + nr / 2) / nr;
+	} while ((dc = dc->next) != NULL);
+	if (!nr)
+		return 0;
+	return (sum + nr / 2) / nr;
+}
+
+static void fixup_watertemp(struct dive *dive)
+{
+	if (!dive->watertemp.mkelvin)
+		dive->watertemp.mkelvin = dc_watertemp(&dive->dc);
 }
 
 /*

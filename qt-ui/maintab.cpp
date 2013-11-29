@@ -759,13 +759,13 @@ void MainTab::on_divemaster_textChanged(const QString& text)
 
 void MainTab::on_airtemp_textChanged(const QString& text)
 {
-	EDIT_SELECTED_DIVES( mydive->airtemp.mkelvin = parseTemperatureToMkelvin(text) );
+	EDIT_SELECTED_DIVES( select_dc(&mydive->dc)->airtemp.mkelvin = parseTemperatureToMkelvin(text) );
 	markChangedWidget(ui.airtemp);
 }
 
 void MainTab::on_watertemp_textChanged(const QString& text)
 {
-	EDIT_SELECTED_DIVES( mydive->watertemp.mkelvin = parseTemperatureToMkelvin(text) );
+	EDIT_SELECTED_DIVES( select_dc(&mydive->dc)->watertemp.mkelvin = parseTemperatureToMkelvin(text) );
 	markChangedWidget(ui.watertemp);
 }
 

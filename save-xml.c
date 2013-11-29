@@ -153,13 +153,16 @@ static void save_depths(FILE *f, struct divecomputer *dc)
 
 static void save_dive_temperature(FILE *f, struct dive *dive)
 {
-	if (!dive->airtemp.mkelvin)
+	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
 		return;
-	if (dive->airtemp.mkelvin == dc_airtemp(&dive->dc))
+	if (dive->airtemp.mkelvin == dc_airtemp(&dive->dc) || dive->watertemp.mkelvin == dc_watertemp(&dive->dc))
 		return;
 
 	fputs("  <divetemperature", f);
-	show_temperature(f, dive->airtemp, " air='", "'");
+	if (dive->airtemp.mkelvin && dive->airtemp.mkelvin != dc_airtemp(&dive->dc))
+		show_temperature(f, dive->airtemp, " air='", "'");
+	if (dive->watertemp.mkelvin && dive->watertemp.mkelvin != dc_watertemp(&dive->dc))
+		show_temperature(f, dive->watertemp, " water='", "'");
 	fputs("/>\n", f);
 }
 
