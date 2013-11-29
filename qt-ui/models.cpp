@@ -758,7 +758,7 @@ int TankInfoModel::rowCount(const QModelIndex& parent) const
 
 TankInfoModel::TankInfoModel() :  rows(-1)
 {
-	setHeaderDataStrings( QStringList() << tr("Description") << tr("Ml") << tr("Bar"));
+	setHeaderDataStrings( QStringList() << tr("Description") << tr("ml") << tr("bar"));
 	struct tank_info_t *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++){
 		QString infoName(info->name);
