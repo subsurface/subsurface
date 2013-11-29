@@ -10,9 +10,6 @@
     <height>517</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>TabWidget</string>
-  </property>
   <property name="currentIndex">
    <number>0</number>
   </property>
