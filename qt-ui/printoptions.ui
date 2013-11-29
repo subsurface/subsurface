@@ -10,9 +10,6 @@
     <height>453</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <widget class="QGroupBox" name="printOptions">
    <property name="geometry">
     <rect>
