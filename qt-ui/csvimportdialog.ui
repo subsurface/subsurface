@@ -121,7 +121,7 @@
          <item row="3" column="0">
           <widget class="QCheckBox" name="po2CheckBox">
            <property name="text">
-            <string>Po2</string>
+            <string>PO2</string>
            </property>
           </widget>
          </item>
