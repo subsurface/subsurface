@@ -91,7 +91,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 			// we may want to clean up after ourselves, but this
 			// makes Subsurface throw a SIGSEGV...
 			// manager->deleteLater();
-			reply->deleteLater();
+			// reply->deleteLater();
 			ui.progressBar->setMaximum(1);
 			break;
 		case QDialogButtonBox::HelpRole:
