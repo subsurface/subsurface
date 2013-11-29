@@ -638,7 +638,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>max PP02</string>
+                 <string>max PPO2</string>
                 </property>
                </widget>
               </item>
