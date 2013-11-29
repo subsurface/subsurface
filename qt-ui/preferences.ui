@@ -751,7 +751,7 @@
               <item>
                <widget class="QCheckBox" name="show_sac">
                 <property name="text">
-                 <string>Show SAC</string>
+                 <string>SAC</string>
                 </property>
                </widget>
               </item>
