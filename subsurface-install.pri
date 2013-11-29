@@ -141,7 +141,7 @@ XSLTDIR = $(DATADIR)/subsurface
     icon.files = $$ICON
 
     xslt.path = /$(XSLTDIR)
-    marbledir.path = /$(DATADIR)/subsurface
+    marbledir.path = /$(DATADIR)/subsurface/data
     doc.path = /$(DOCDIR)
 
     doc.CONFIG += no_check_exist
