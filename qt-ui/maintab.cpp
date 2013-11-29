@@ -713,6 +713,7 @@ void MainTab::rejectChanges()
 	notesBackup.clear();
 	resetPallete();
 	editMode = NONE;
+	mainWindow()->globe()->reload();
 	if (lastMode == ADD || lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
 		updateDiveInfo(selected_dive);

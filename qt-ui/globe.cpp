@@ -185,11 +185,11 @@ void GlobeGPS::repopulateLabels()
 
 void GlobeGPS::reload()
 {
-	if (editingDiveCoords) {
-		editingDiveCoords = 0;
-		if (messageWidget->isVisible())
-			messageWidget->animatedHide();
-	}
+	editingDiveCoords = 0;
+
+	if (messageWidget->isVisible())
+		messageWidget->animatedHide();
+
 	repopulateLabels();
 }
 
