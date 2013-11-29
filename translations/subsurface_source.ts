@@ -4,62 +4,62 @@
 <context>
     <name>CSVImportDialog</name>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="42"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="26"/>
         <source>Import File (CSV)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="64"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="35"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="78"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="124"/>
+        <source>PO2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/csvimportdialog.ui" line="192"/>
         <source>Field Separator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="101"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="60"/>
         <source>Field Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="117"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="14"/>
+        <source>Import CSV file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/csvimportdialog.ui" line="76"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="134"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="93"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="148"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="107"/>
         <source>Temp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="165"/>
-        <source>Po2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="182"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="141"/>
         <source>Cns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="199"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="158"/>
         <source>Stopdepth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="227"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="210"/>
         <source>Pre-configured imports</source>
         <translation type="unfinished"></translation>
     </message>
@@ -542,259 +542,254 @@ Please, remove them first.</source>
 <context>
     <name>MainTab</name>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="14"/>
-        <source>TabWidget</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/maintab.ui" line="21"/>
-        <location filename="../qt-ui/maintab.cpp" line="322"/>
+        <location filename="../qt-ui/maintab.ui" line="18"/>
+        <location filename="../qt-ui/maintab.cpp" line="365"/>
         <source>Dive Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="66"/>
+        <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Starttime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="73"/>
+        <location filename="../qt-ui/maintab.ui" line="70"/>
         <source>air / water Temperatures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="112"/>
-        <location filename="../qt-ui/maintab.cpp" line="345"/>
+        <location filename="../qt-ui/maintab.ui" line="109"/>
+        <location filename="../qt-ui/maintab.cpp" line="388"/>
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="140"/>
+        <location filename="../qt-ui/maintab.ui" line="137"/>
         <source>Coordinates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="161"/>
+        <location filename="../qt-ui/maintab.ui" line="158"/>
         <source>Divemaster</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="147"/>
+        <location filename="../qt-ui/maintab.ui" line="144"/>
         <source>Buddy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="119"/>
+        <location filename="../qt-ui/maintab.ui" line="116"/>
         <source>Tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="177"/>
+        <location filename="../qt-ui/maintab.ui" line="174"/>
         <source>Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="184"/>
+        <location filename="../qt-ui/maintab.ui" line="181"/>
         <source>Visibility</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="200"/>
+        <location filename="../qt-ui/maintab.ui" line="197"/>
         <source>Suit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="217"/>
-        <location filename="../qt-ui/maintab.cpp" line="346"/>
+        <location filename="../qt-ui/maintab.ui" line="214"/>
+        <location filename="../qt-ui/maintab.cpp" line="389"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="261"/>
+        <location filename="../qt-ui/maintab.ui" line="258"/>
         <source>Equipment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="348"/>
+        <location filename="../qt-ui/maintab.ui" line="345"/>
         <source>Dive Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="390"/>
+        <location filename="../qt-ui/maintab.ui" line="387"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="409"/>
+        <location filename="../qt-ui/maintab.ui" line="406"/>
         <source>Interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="428"/>
+        <location filename="../qt-ui/maintab.ui" line="425"/>
         <source>Gases Used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="447"/>
+        <location filename="../qt-ui/maintab.ui" line="444"/>
         <source>Gas Consumed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="466"/>
-        <location filename="../qt-ui/maintab.ui" line="721"/>
+        <location filename="../qt-ui/maintab.ui" line="463"/>
+        <location filename="../qt-ui/maintab.ui" line="718"/>
         <source>SAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="485"/>
+        <location filename="../qt-ui/maintab.ui" line="482"/>
         <source>Max. Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="504"/>
+        <location filename="../qt-ui/maintab.ui" line="501"/>
         <source>Ave. Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="523"/>
+        <location filename="../qt-ui/maintab.ui" line="520"/>
         <source>OTU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="542"/>
+        <location filename="../qt-ui/maintab.ui" line="539"/>
         <source>Air Pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="561"/>
+        <location filename="../qt-ui/maintab.ui" line="558"/>
         <source>Air Temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="580"/>
+        <location filename="../qt-ui/maintab.ui" line="577"/>
         <source>Water Temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="599"/>
+        <location filename="../qt-ui/maintab.ui" line="596"/>
         <source>Dive Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="618"/>
+        <location filename="../qt-ui/maintab.ui" line="615"/>
         <source>Salinity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="655"/>
+        <location filename="../qt-ui/maintab.ui" line="652"/>
         <source>Stats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="697"/>
+        <location filename="../qt-ui/maintab.ui" line="694"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="709"/>
+        <location filename="../qt-ui/maintab.ui" line="706"/>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="733"/>
+        <location filename="../qt-ui/maintab.ui" line="730"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="745"/>
+        <location filename="../qt-ui/maintab.ui" line="742"/>
         <source>Total Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="764"/>
+        <location filename="../qt-ui/maintab.ui" line="761"/>
         <source>Dives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="69"/>
+        <location filename="../qt-ui/maintab.cpp" line="70"/>
         <source>Cylinders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="70"/>
+        <location filename="../qt-ui/maintab.cpp" line="71"/>
         <source>Add Cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="73"/>
+        <location filename="../qt-ui/maintab.cpp" line="74"/>
         <source>Weights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="74"/>
+        <location filename="../qt-ui/maintab.cpp" line="75"/>
         <source>Add Weight System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="317"/>
+        <location filename="../qt-ui/maintab.cpp" line="360"/>
         <source>Trip Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="296"/>
-        <location filename="../qt-ui/maintab.cpp" line="319"/>
+        <location filename="../qt-ui/maintab.cpp" line="339"/>
+        <location filename="../qt-ui/maintab.cpp" line="362"/>
         <source>Trip Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="134"/>
-        <location filename="../qt-ui/maintab.cpp" line="136"/>
+        <location filename="../qt-ui/maintab.cpp" line="177"/>
+        <location filename="../qt-ui/maintab.cpp" line="179"/>
         <source>This trip is being edited. Select Save or Cancel when done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="143"/>
-        <location filename="../qt-ui/maintab.cpp" line="144"/>
+        <location filename="../qt-ui/maintab.cpp" line="186"/>
+        <location filename="../qt-ui/maintab.cpp" line="187"/>
         <source>Multiple dives are being edited. Select Save or Cancel when done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="146"/>
-        <location filename="../qt-ui/maintab.cpp" line="147"/>
+        <location filename="../qt-ui/maintab.cpp" line="189"/>
+        <location filename="../qt-ui/maintab.cpp" line="190"/>
         <source>This dive is being edited. Select Save or Cancel when done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="362"/>
-        <location filename="../qt-ui/maintab.cpp" line="370"/>
-        <location filename="../qt-ui/maintab.cpp" line="399"/>
-        <location filename="../qt-ui/maintab.cpp" line="400"/>
-        <location filename="../qt-ui/maintab.cpp" line="401"/>
+        <location filename="../qt-ui/maintab.cpp" line="405"/>
+        <location filename="../qt-ui/maintab.cpp" line="413"/>
+        <location filename="../qt-ui/maintab.cpp" line="442"/>
+        <location filename="../qt-ui/maintab.cpp" line="443"/>
+        <location filename="../qt-ui/maintab.cpp" line="444"/>
         <source>/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="364"/>
+        <location filename="../qt-ui/maintab.cpp" line="407"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="854"/>
+        <location filename="../qt-ui/maintab.cpp" line="897"/>
         <source>N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="854"/>
+        <location filename="../qt-ui/maintab.cpp" line="897"/>
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="855"/>
+        <location filename="../qt-ui/maintab.cpp" line="898"/>
         <source>E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="855"/>
+        <location filename="../qt-ui/maintab.cpp" line="898"/>
         <source>W</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1200,11 +1195,6 @@ Please, remove them first.</source>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/preferences.ui" line="80"/>
         <source>Defaults</source>
         <translation type="unfinished"></translation>
@@ -1412,11 +1402,6 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="641"/>
-        <source>max PP02</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/preferences.ui" line="657"/>
         <source>EAD END EADD</source>
         <translation type="unfinished"></translation>
@@ -1452,11 +1437,6 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="754"/>
-        <source>Show SAC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/preferences.ui" line="792"/>
         <source>GFLow at max depth</source>
         <translation type="unfinished"></translation>
@@ -1464,6 +1444,21 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="766"/>
         <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="14"/>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="641"/>
+        <source>max PPO2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="754"/>
+        <source>SAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1677,30 +1672,30 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="723"/>
-        <location filename="../qt-ui/profilegraphics.cpp" line="975"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="732"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="984"/>
         <source>air</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="725"/>
-        <location filename="../qt-ui/profilegraphics.cpp" line="977"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="734"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="986"/>
         <source>EAN%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="985"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="994"/>
         <source>Bailing out to OC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="987"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="996"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="988"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="997"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"></translation>
@@ -1941,19 +1936,19 @@ Please, remove them first.</source>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="761"/>
-        <source>Ml</source>
+        <source>ml</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="761"/>
-        <source>Bar</source>
+        <source>bar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ToolTipItem</name>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="1519"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="1528"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2164,8 +2159,8 @@ Maximum</source>
         <location filename="../planner.c" line="96"/>
         <location filename="../planner.c" line="774"/>
         <location filename="../planner.c" line="775"/>
-        <location filename="../statistics.c" line="381"/>
-        <location filename="../statistics.c" line="392"/>
+        <location filename="../statistics.c" line="357"/>
+        <location filename="../statistics.c" line="368"/>
         <source>air</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2484,7 +2479,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../planner.c" line="98"/>
-        <location filename="../statistics.c" line="385"/>
+        <location filename="../statistics.c" line="361"/>
         <source>EAN%d</source>
         <translation type="unfinished"></translation>
     </message>
