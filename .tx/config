@@ -2,7 +2,7 @@
 host = https://www.transifex.com
 
 [subsurface.subsurface4]
-file_filter = translations/susurface_<lang>.ts
+file_filter = translations/subsurface_<lang>.ts
 source_file = translations/subsurface_source.ts
 source_lang = en
 type = TS
