@@ -52,7 +52,7 @@ SubsurfaceWebServices* SubsurfaceWebServices::instance()
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 {
 	QSettings s;
-	ui.userID->setText(s.value("subsurface_webservice_uid").toString());
+	ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
 	hidePassword();
 	hideUpload();
 }
@@ -81,7 +81,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 
 			/* store last entered uid in config */
 			QSettings s;
-			s.setValue("subsurface_webservice_uid", ui.userID->text());
+			s.setValue("subsurface_webservice_uid", ui.userID->text().toUpper());
 			s.sync();
 			hide();
 			close();
@@ -105,7 +105,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 void SubsurfaceWebServices::startDownload()
 {
 	QUrl url("http://api.hohndel.org/api/dive/get/");
-	url.setQueryItems( QList<QPair<QString,QString> >() << qMakePair(QString("login"), ui.userID->text()));
+	url.setQueryItems( QList<QPair<QString,QString> >() << qMakePair(QString("login"), ui.userID->text().toUpper()));
 
 	manager = new QNetworkAccessManager(this);
 	QNetworkRequest request;
