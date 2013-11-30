@@ -1689,22 +1689,6 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			font.setPixelSize(baseSize + 1);
 			return QVariant::fromValue(font);
 		}
-		// dive location
-		if (row == 1 && col == 0) {
-			font.setBold(true);
-			font.setPixelSize(baseSize);
-			return QVariant::fromValue(font);
-		}
-		// depth/duration
-		if ((row == 0 || row == 1) && col == 4) {
-			font.setPixelSize(baseSize);
-			return QVariant::fromValue(font);
-		}
-		// notes
-		if (row > 5 && col == 0) {
-			font.setPixelSize(baseSize + 1);
-			return QVariant::fromValue(font);
-		}
 		font.setPixelSize(baseSize);
 		return QVariant::fromValue(font);
 	}

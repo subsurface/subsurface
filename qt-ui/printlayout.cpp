@@ -42,9 +42,9 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	profilePrintColumnWidths.append(dw - 3);
 	profilePrintColumnWidths.append(dw - 3);
 	profilePrintColumnWidths.append(dw + 6); // fit to 100%
-	const int sr = 10; // smallest row height in pixels
-	profilePrintRowHeights.append(sr + 2);
-	profilePrintRowHeights.append(sr + 5);
+	const int sr = 12; // smallest row height in pixels
+	profilePrintRowHeights.append(sr);
+	profilePrintRowHeights.append(sr + 4);
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr);
