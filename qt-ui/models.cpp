@@ -1563,28 +1563,6 @@ ProfilePrintModel::ProfilePrintModel(QObject *parent)
 {
 }
 
-/* this is just a helper function to truncate C strings near 'maxlen' characters
- * by finding word bounderies and adding '...' at the end of the truncated string.
- * not really optimal for all languages!
- */
-QString ProfilePrintModel::truncateString(char *str, const int maxlen) const
-{
-	if (!str)
-		return QString("");
-	QString trunc = QString(str);
-	const int len = trunc.length();
-	for (int i = 0; i < len; i++) {
-		char c = trunc.at(i).toAscii();
-		if (c == ' ' || c == '\n' || c == '\t') {
-			if (i > maxlen) {
-				trunc = trunc.left(i) + QString("...");
-				break;
-			}
-		}
-	}
-	return trunc;
-}
-
 void ProfilePrintModel::setDive(struct dive *divePtr)
 {
 	dive = divePtr;
@@ -1618,15 +1596,15 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		if (row == 0) {
 			if (col == 0)
 				return tr("Dive #%1 - %2").arg(dive->number).arg(di.displayDate());
-			if (col == 5) {
+			if (col == 4) {
 				QString unit = (get_units()->length == units::METERS) ? "m" : "ft";
 				return tr("Max depth: %1 %2").arg(di.displayDepth()).arg(unit);
 			}
 		}
 		if (row == 1) {
 			if (col == 0)
-				return truncateString(dive->location, 32);
-			if (col == 5)
+				return QString(dive->location);
+			if (col == 4)
 				return QString(tr("Duration: %1 min")).arg(di.displayDuration());
 		}
 		// cylinder headings
@@ -1658,7 +1636,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		}
 		// dive notes
 		if (row == 10 && col == 0)
-			return truncateString(dive->notes, 640);
+			return QString(dive->notes);
 		// sac, cns, otu - headings
 		if (col == 3) {
 			if (row == 2)
