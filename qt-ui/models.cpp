@@ -1625,6 +1625,19 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			if (row == 7)
 				return QString(dive->notes);
 		}
+		// more headings
+		if (row == 4) {
+			if (col == 0)
+				return tr("Divemaster:");
+			if (col == 1)
+				return tr("Buddy:");
+			if (col == 2)
+				return tr("Suit:");
+			if (col == 3)
+				return tr("Viz:");
+			if (col == 4)
+				return tr("Rating:");
+		}
 		/*
 		// cylinder data
 		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
