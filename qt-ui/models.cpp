@@ -1638,6 +1638,33 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			if (col == 4)
 				return tr("Rating:");
 		}
+		// values for gas, sac, etc...
+		if (row == 3) {
+			if (col == 0) {
+				int added = 0;
+				const char *desc;
+				QString gases;
+				for (int i = 0; i < MAX_CYLINDERS; i++) {
+					desc = dive->cylinder[i].type.description;
+					// if has a description and if such gas is not already present
+					if (desc && gases.indexOf(QString(desc)) == -1) {
+						if (added > 0)
+							gases += QString(" / ");
+						gases += QString(desc);
+						added++;
+					}
+				}
+				return gases;
+			}
+			if (col == 2)
+				return QString::number(dive->maxcns);
+			if (col == 3)
+				return di.displaySac();
+			if (col == 4) {
+				weight_t tw = { total_weight(dive) };
+				return get_weight_string(tw, true);
+			}
+		}
 		/*
 		// cylinder data
 		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
