@@ -35,7 +35,8 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	layout->addWidget(optionsWidget);
 
 	setFixedSize(520, 320);
-	setWindowTitle("Print");
+	setWindowTitle(tr("Print"));
+	setWindowIcon(QIcon(":subsurface-icon"));
 }
 
 void PrintDialog::runDialog()
