@@ -1717,17 +1717,17 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		}
 		// dive location
 		if (row == 1 && col == 0) {
-			font.setPixelSize(baseSize);
 			font.setBold(true);
+			font.setPixelSize(baseSize);
 			return QVariant::fromValue(font);
 		}
 		// depth/duration
-		if ((row == 0 || row == 1) && col == 5) {
+		if ((row == 0 || row == 1) && col == 4) {
 			font.setPixelSize(baseSize);
 			return QVariant::fromValue(font);
 		}
 		// notes
-		if (row == 9 && col == 0) {
+		if (row > 5 && col == 0) {
 			font.setPixelSize(baseSize + 1);
 			return QVariant::fromValue(font);
 		}
@@ -1735,12 +1735,10 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		return QVariant::fromValue(font);
 	}
 	case Qt::TextAlignmentRole: {
-		unsigned int align = Qt::AlignCenter;
-		// dive #, location, notes
-		if ((row < 2 || row == 10) && col == 0)
-			align = Qt::AlignLeft | Qt::AlignVCenter;
-		// depth, duration
-		if (row < 2 && col == 5)
+		// everything is aligned to the left
+		unsigned int align = Qt::AlignLeft;
+		// align depth and duration right
+		if (row < 2 && col == 4)
 			align = Qt::AlignRight | Qt::AlignVCenter;
 		return QVariant::fromValue(align);
 	}
