@@ -770,8 +770,21 @@ void Ruler::setTextColor(const QColor& color)
 	textColor = color;
 }
 
+void Ruler::eraseAll()
+{
+	qDeleteAll(ticks);
+	ticks.clear();
+	qDeleteAll(labels);
+	labels.clear();
+}
+
 Ruler::Ruler() : orientation(Qt::Horizontal)
 {
+}
+
+Ruler::~Ruler()
+{
+	eraseAll();
 }
 
 void Ruler::setOrientation(Qt::Orientation o)
@@ -784,10 +797,7 @@ void Ruler::setOrientation(Qt::Orientation o)
 
 void Ruler::updateTicks()
 {
-	qDeleteAll(ticks);
-	ticks.clear();
-	qDeleteAll(labels);
-	labels.clear();
+	eraseAll();
 
 	QLineF m = line();
 	QGraphicsLineItem *item = NULL;

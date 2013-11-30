@@ -125,6 +125,7 @@ public slots:
 class Ruler : public QGraphicsLineItem{
 public:
 	Ruler();
+	~Ruler();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
@@ -141,6 +142,8 @@ public:
 	int unitSystem;
 
 private:
+	void eraseAll();
+
 	Qt::Orientation orientation;
 	QList<QGraphicsLineItem*> ticks;
 	QList<QGraphicsSimpleTextItem*> labels;
