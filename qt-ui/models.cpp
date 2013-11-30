@@ -1665,74 +1665,19 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 				return get_weight_string(tw, true);
 			}
 		}
-		/*
-		// cylinder data
-		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
-			cylinder_t *cyl = &dive->cylinder[row - 3];
-			if (cyl->type.description) { // how do we check if a cylinder is added?
-				if (col == 0) {
-					if (cyl->type.description[0] != '\0')
-						return QString(cyl->type.description);
-					return unknown;
-				}
-				if (col == 1) {
-					get_gas_string(cyl->gasmix.o2.permille, cyl->gasmix.he.permille, buf, sizeof(buf));
-					return QString(buf);
-				}
-				if (col == 2) {
-					return get_cylinder_used_gas_string(cyl, true);
-				}
-			}
+		// values for DM, buddy, suit, etc...
+		if (row == 5) {
+			if (col == 0)
+				return QString(dive->divemaster);
+			if (col == 1)
+				return QString(dive->buddy);
+			if (col == 2)
+				return QString(dive->suit);
+			if (col == 3)
+				return (dive->visibility) ? QString::number(dive->visibility).append(" / 5") : QString();
+			if (col == 4)
+				return (dive->rating) ? QString::number(dive->rating).append(" / 5") : QString();
 		}
-		// dive notes
-		if (row == 10 && col == 0)
-			return QString(dive->notes);
-		// sac, cns, otu - headings
-		if (col == 3) {
-			if (row == 2)
-				return tr("SAC");
-			if (row == 4)
-				return tr("Max. CNS");
-			if (row == 6)
-				return tr("OTU");
-		}
-		// sac, cns, otu - data
-		if (col == 4) {
-			if (row == 2)
-				return di.displaySac();
-			if (row == 4)
-				return QString::number(dive->maxcns);
-			if (row == 6)
-				return QString::number(dive->otu);
-		}
-		// weights heading
-		if (row == 2 && col == 5)
-			return tr("Weights");
-		// total weight
-		if (row == 9) {
-			weight_t tw = { total_weight(dive) };
-			if (tw.grams) {
-				if (col == 5)
-					return tr("Total weight");
-				if (col == 6)
-					return get_weight_string(tw, true);
-			}
-		}
-		// weight data
-		if (row > 2 && row < 10 && row - 3 < MAX_WEIGHTSYSTEMS) {
-			weightsystem_t *ws = &dive->weightsystem[row - 3];
-			if (ws->weight.grams) {
-				if (col == 5) {
-					if (ws->description && ws->description[0] != '\0')
-						return QString(ws->description);
-					return unknown;
-				}
-				if (col == 6) {
-					return get_weight_string(ws->weight, true);
-				}
-			}
-		}
-		*/
 		return QString();
 	}
 	case Qt::FontRole: {
