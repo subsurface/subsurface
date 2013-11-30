@@ -17,8 +17,8 @@ void gettextFromC::reset(void)
 
 gettextFromC* gettextFromC::instance()
 {
-	static gettextFromC *self = new gettextFromC();
-	return self;
+	static QScopedPointer<gettextFromC> self(new gettextFromC());
+	return self.data();
 }
 
 extern "C" const char *trGettext(const char *text)

@@ -1,4 +1,5 @@
 #include "printdialog.h"
+#include "mainwindow.h"
 
 #include <QDebug>
 #include <QPushButton>
@@ -7,7 +8,7 @@
 
 PrintDialog *PrintDialog::instance()
 {
-	static PrintDialog *self = new PrintDialog();
+	static PrintDialog *self = new PrintDialog(mainWindow());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }

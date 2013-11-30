@@ -106,7 +106,7 @@ void MinMaxAvgWidget::setMinimum(const QString& minimum)
 
 RenumberDialog* RenumberDialog::instance()
 {
-	static RenumberDialog* self = new RenumberDialog();
+	static RenumberDialog* self = new RenumberDialog(mainWindow());
 	return self;
 }
 
@@ -118,7 +118,7 @@ void RenumberDialog::buttonClicked(QAbstractButton* button)
 	}
 }
 
-RenumberDialog::RenumberDialog(): QDialog()
+RenumberDialog::RenumberDialog(QWidget *parent): QDialog(parent)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
@@ -126,7 +126,7 @@ RenumberDialog::RenumberDialog(): QDialog()
 
 ShiftTimesDialog* ShiftTimesDialog::instance()
 {
-	static ShiftTimesDialog* self = new ShiftTimesDialog();
+	static ShiftTimesDialog* self = new ShiftTimesDialog(mainWindow());
 	return self;
 }
 
@@ -150,7 +150,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
 	}
 }
 
-ShiftTimesDialog::ShiftTimesDialog(): QDialog()
+ShiftTimesDialog::ShiftTimesDialog(QWidget *parent): QDialog(parent)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));

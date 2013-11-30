@@ -1104,8 +1104,8 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableM
 
 DivePlannerPointsModel* DivePlannerPointsModel::instance()
 {
-	static DivePlannerPointsModel* self = new DivePlannerPointsModel();
-	return self;
+	static QScopedPointer<DivePlannerPointsModel> self(new DivePlannerPointsModel());
+	return self.data();
 }
 
 void DivePlannerPointsModel::setBottomSac(int sac)

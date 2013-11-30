@@ -1,5 +1,6 @@
 #include "subsurfacewebservices.h"
 #include "../webservice.h"
+#include "mainwindow.h"
 
 #include <libxml/parser.h>
 
@@ -44,7 +45,7 @@ void WebServices::hideUpload()
 
 SubsurfaceWebServices* SubsurfaceWebServices::instance()
 {
-	static SubsurfaceWebServices *self = new SubsurfaceWebServices();
+	static SubsurfaceWebServices *self = new SubsurfaceWebServices(mainWindow());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }
@@ -269,7 +270,7 @@ static bool merge_locations_into_dives(void)
 
 DivelogsDeWebServices* DivelogsDeWebServices::instance()
 {
-	static DivelogsDeWebServices *self = new DivelogsDeWebServices();
+	static DivelogsDeWebServices *self = new DivelogsDeWebServices(mainWindow());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }

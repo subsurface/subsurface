@@ -39,7 +39,7 @@ public:
 private slots:
 	void buttonClicked(QAbstractButton *button);
 private:
-	explicit RenumberDialog();
+	explicit RenumberDialog(QWidget *parent);
 	Ui::RenumberDialog ui;
 };
 
@@ -50,7 +50,7 @@ public:
 private slots:
 	void buttonClicked(QAbstractButton *button);
 private:
-	explicit ShiftTimesDialog();
+	explicit ShiftTimesDialog(QWidget *parent);
 	Ui::ShiftTimesDialog ui;
 };
 

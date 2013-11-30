@@ -1,11 +1,12 @@
 #include "completionmodels.h"
 #include "dive.h"
+#include "mainwindow.h"
 
 #define CREATE_SINGLETON(X) \
 X* X::instance() \
 { \
-	static X* self = new X(); \
-	return self; \
+	static QScopedPointer<X> self(new X()); \
+	return self.data(); \
 }
 
 CREATE_SINGLETON(BuddyCompletionModel);

@@ -1,5 +1,6 @@
 #include "about.h"
 #include "ssrf-version.h"
+#include "mainwindow.h"
 #include <QDebug>
 #include <QDialogButtonBox>
 #include <QNetworkReply>
@@ -7,7 +8,7 @@
 
 SubsurfaceAbout *SubsurfaceAbout::instance()
 {
-	static SubsurfaceAbout *self = new SubsurfaceAbout();
+	static SubsurfaceAbout *self = new SubsurfaceAbout(mainWindow());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }

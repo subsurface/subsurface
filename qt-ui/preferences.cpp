@@ -1,11 +1,12 @@
 #include "preferences.h"
+#include "mainwindow.h"
 #include <QSettings>
 #include <QDebug>
 #include <QFileDialog>
 
 PreferencesDialog* PreferencesDialog::instance()
 {
-	static PreferencesDialog *dialog = new PreferencesDialog();
+	static PreferencesDialog *dialog = new PreferencesDialog(mainWindow());
 	dialog->setAttribute(Qt::WA_QuitOnClose, false);
 	return dialog;
 }

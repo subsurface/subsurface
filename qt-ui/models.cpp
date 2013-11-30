@@ -67,8 +67,8 @@ CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 
 CylindersModel *CylindersModel::instance()
 {
-	static CylindersModel *self = new CylindersModel();
-	return self;
+	static QScopedPointer<CylindersModel> self(new CylindersModel());
+	return self.data();
 }
 
 static QVariant percent_string(fraction_t fraction)
@@ -559,8 +559,8 @@ void WeightModel::setDive(dive* d)
 
 WSInfoModel* WSInfoModel::instance()
 {
-	static WSInfoModel *self = new WSInfoModel();
-	return self;
+	static QScopedPointer<WSInfoModel> self(new WSInfoModel());
+	return self.data();
 }
 
 bool WSInfoModel::insertRows(int row, int count, const QModelIndex& parent)
@@ -680,8 +680,8 @@ void WSInfoModel::update()
 
 TankInfoModel* TankInfoModel::instance()
 {
-	static TankInfoModel *self = new TankInfoModel();
-	return self;
+	static QScopedPointer<TankInfoModel> self(new TankInfoModel());
+	return self.data();
 }
 
 const QString& TankInfoModel::biggerString() const
@@ -1711,8 +1711,8 @@ Qt::ItemFlags GasSelectionModel::flags(const QModelIndex& index) const
 
 GasSelectionModel* GasSelectionModel::instance()
 {
-	static GasSelectionModel* self = new GasSelectionModel();
-	return self;
+	static QScopedPointer<GasSelectionModel> self(new GasSelectionModel());
+	return self.data();
 }
 
 void GasSelectionModel::repopulate()
