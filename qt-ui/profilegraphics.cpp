@@ -1604,7 +1604,7 @@ QColor EventItem::getColor(const color_indice_t i)
 	return profile_color[i].at((isGrayscale) ? 1 : 0);
 }
 
-EventItem::EventItem(struct event *ev, QGraphicsItem* parent, bool grayscale): QGraphicsPolygonItem(parent), isGrayscale(grayscale), ev(ev)
+EventItem::EventItem(struct event *ev, QGraphicsItem* parent, bool grayscale): QGraphicsPolygonItem(parent), ev(ev), isGrayscale(grayscale)
 {
 	setFlag(ItemIgnoresTransformations);
 	setFlag(ItemIsFocusable);
