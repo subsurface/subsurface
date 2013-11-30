@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Renumber</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/subsurface-icon</normalon>
+   </iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
     <number>0</number>
@@ -51,7 +56,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

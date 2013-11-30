@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Edit Dive Computer Nicknames</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/subsurface-icon</normalon>
+   </iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTableView" name="tableView">
@@ -33,7 +38,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

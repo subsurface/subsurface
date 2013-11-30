@@ -7,11 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>141</height>
+    <height>169</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Download Location Data</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/subsurface-icon</normalon>
+   </iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="0">
@@ -89,7 +94,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

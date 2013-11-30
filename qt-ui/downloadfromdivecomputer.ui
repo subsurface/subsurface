@@ -7,11 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>331</width>
-    <height>199</height>
+    <height>241</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Download From Dive Computer</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/subsurface-icon</normalon>
+   </iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -109,6 +114,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
  <connections/>
 </ui>

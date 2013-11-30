@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Import CSV file</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/subsurface-icon</normalon>
+   </iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -251,7 +256,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
