@@ -1593,12 +1593,12 @@ void ProfilePrintModel::setDive(struct dive *divePtr)
 
 int ProfilePrintModel::rowCount(const QModelIndex &parent) const
 {
-	return 11;
+	return 12;
 }
 
 int ProfilePrintModel::columnCount(const QModelIndex &parent) const
 {
-	return 7;
+	return 5;
 }
 
 QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
