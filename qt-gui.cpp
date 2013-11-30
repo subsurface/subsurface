@@ -218,9 +218,9 @@ QString get_depth_string(depth_t depth, bool showunit, bool showdecimal)
 QString get_depth_unit()
 {
 	if (prefs.units.length == units::METERS)
-		return "m";
+		return QString("%1").arg(translate("gettextFromC","m"));
 	else
-		return "ft";
+		return QString("%1").arg(translate("gettextFromC","ft"));
 }
 
 QString get_weight_string(weight_t weight, bool showunit)
@@ -237,9 +237,9 @@ QString get_weight_string(weight_t weight, bool showunit)
 QString get_weight_unit()
 {
 	if (prefs.units.weight == units::KG)
-		return "kg";
+		return QString("%1").arg(translate("gettextFromC","kg"));
 	else
-		return "lbs";
+		return QString("%1").arg(translate("gettextFromC","lbs"));
 }
 
 /* these methods retrieve used gas per cylinder */
