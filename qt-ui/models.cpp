@@ -1607,14 +1607,16 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			if (col == 4)
 				return QString(tr("Duration: %1 min")).arg(di.displayDuration());
 		}
-		// cylinder headings
+		// headings
 		if (row == 2) {
 			if (col == 0)
-				return tr("Cylinder");
-			if (col == 1)
-				return tr("Gasmix");
+				return tr("Gas Used:");
 			if (col == 2)
-				return tr("Gas Used");
+				return tr("SAC:");
+			if (col == 3)
+				return tr("Max. CNS:");
+			if (col == 4)
+				return tr("Weights:");
 		}
 		// cylinder data
 		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
