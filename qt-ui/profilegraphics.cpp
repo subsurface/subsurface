@@ -244,7 +244,6 @@ void ProfileGraphicsView::mouseMoveEvent(QMouseEvent* event)
 
 	toolTip->refresh(&gc,  mapToScene(event->pos()));
 	QPoint toolTipPos = mapFromScene(toolTip->pos());
-	QPoint toolBarPos = mapFromScene(toolBarProxy->pos());
 	scrollViewTo(event->pos());
 
 	if (zoomLevel == 0)
