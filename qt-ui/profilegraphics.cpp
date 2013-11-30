@@ -130,7 +130,7 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 	if(selected_dive == -1)
 		return;
 	QMenu m;
-	QMenu *gasChange = m.addMenu("Add Gas Change");
+	QMenu *gasChange = m.addMenu(tr("Add Gas Change"));
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
 	int rowCount = model->rowCount();
@@ -141,7 +141,7 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		action->setData(event->globalPos());
 		gasChange->addAction(action);
 	}
-	QAction *action = m.addAction("Add Bookmark", this, SLOT(addBookmark()));
+	QAction *action = m.addAction(tr("Add Bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
 	QList<QGraphicsItem*> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
 	Q_FOREACH(QGraphicsItem *i, itemsAtPos){
@@ -149,12 +149,12 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		if(!item)
 			continue;
 		QAction *action = new QAction(&m);
-		action->setText("Remove Event");
+		action->setText(tr("Remove Event"));
 		action->setData(QVariant::fromValue<void*>(item)); // so we know what to remove.
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
 		m.addAction(action);
 		action = new QAction(&m);
-		action->setText("Hide similar events");
+		action->setText(tr("Hide similar events"));
 		action->setData(QVariant::fromValue<void*>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
