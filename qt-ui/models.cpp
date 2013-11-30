@@ -1657,9 +1657,9 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 				return gases;
 			}
 			if (col == 2)
-				return QString::number(dive->maxcns);
-			if (col == 3)
 				return di.displaySac();
+			if (col == 3)
+				return QString::number(dive->maxcns);
 			if (col == 4) {
 				weight_t tw = { total_weight(dive) };
 				return get_weight_string(tw, true);
