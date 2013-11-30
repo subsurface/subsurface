@@ -637,7 +637,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		if (d) {
 			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
-			popup.addAction(tr("add dive(s) to trip immideately above"), this, SLOT(addToTripAbove()));
+			popup.addAction(tr("add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
 		}
 		if (trip) {
 			popup.addAction(tr("merge trip with trip above"), this, SLOT(mergeTripAbove()));

@@ -112,7 +112,7 @@ void SubsurfaceWebServices::startDownload()
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");
 	reply = manager->get(request);
-	ui.status->setText(tr("Wait a bit untill we have something..."));
+	ui.status->setText(tr("Wait a bit until we have something..."));
 	ui.progressBar->setRange(0,0); // this makes the progressbar do an 'infinite spin'
 	ui.download->setEnabled(false);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
