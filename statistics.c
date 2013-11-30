@@ -127,7 +127,6 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	memset(stats_monthly, 0, size);
 	memset(stats_by_trip, 0, size);
 	stats_yearly[0].is_year = TRUE;
-	stats_by_trip[0].is_trip = TRUE;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */

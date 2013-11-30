@@ -1448,7 +1448,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 	}
 
 
-	if (stats_by_trip != NULL ) {
+	if (stats_by_trip != NULL && stats_by_trip[0].is_trip == TRUE) {
 		YearStatisticsItem *item = new YearStatisticsItem(stats_by_trip[0]);
 		for (i = 1; stats_by_trip != NULL && stats_by_trip[i].is_trip; ++i) {
 			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_trip[i]);
