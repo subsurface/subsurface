@@ -63,7 +63,8 @@ void StarWidget::setCurrentStars(int value)
 
 StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
 	QWidget(parent, f),
-	current(0)
+	current(0),
+	readOnly(false)
 {
 	if (!activeStar) {
 		activeStar = new QPixmap();

@@ -30,10 +30,11 @@ protected:
 
 private:
 	int current;
+	bool readOnly;
+
 	static QPixmap* activeStar;
 	static QPixmap* inactiveStar;
 	QPixmap grayImage(QPixmap *coloredImg);
-	bool readOnly;
 };
 
 #endif // STARWIDGET_H
