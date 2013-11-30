@@ -213,7 +213,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 			notesBackup[mydive].coordinates  = ui.coordinates->text();
 			notesBackup[mydive].airtemp = get_temperature_string(mydive->airtemp, true);
 			notesBackup[mydive].watertemp = get_temperature_string(mydive->watertemp, true);
-			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when - gettimezoneoffset()).toString();
+			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when).toUTC().toString();
 			char buf[1024];
 			taglist_get_tagstring(mydive->tag_list, buf, 1024);
 			notesBackup[mydive].tags = QString(buf);
@@ -334,7 +334,7 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEMP(d, watertemp);
 	if (d) {
 		updateGpsCoordinates(d);
-		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when - gettimezoneoffset()));
+		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when).toUTC());
 		if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
@@ -772,7 +772,9 @@ void MainTab::on_watertemp_textChanged(const QString& text)
 
 void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime& datetime)
 {
-	EDIT_SELECTED_DIVES( mydive->when = datetime.toTime_t() + gettimezoneoffset() );
+	QDateTime dateTimeUtc(datetime);
+	dateTimeUtc.setTimeSpec(Qt::UTC);
+	EDIT_SELECTED_DIVES( mydive->when = dateTimeUtc.toTime_t() );
 	markChangedWidget(ui.dateTimeEdit);
 }
 
