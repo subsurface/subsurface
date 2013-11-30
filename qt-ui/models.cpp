@@ -62,7 +62,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 {
 	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
-	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("HE") << tr("Switch at"));
+	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("He%") << tr("Switch at"));
 }
 
 CylindersModel *CylindersModel::instance()
@@ -1137,19 +1137,19 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 		case Qt::DisplayRole :
 			switch (section) {
 			case NR:		ret = tr("#"); break;
-			case DATE:		ret = tr("Date"); break;
+			case DATE:		ret = tr("date"); break;
 			case RATING:	ret = UTF8_BLACKSTAR; break;
 			case DEPTH:		ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft"); break;
 			case DURATION:	ret = tr("min"); break;
 			case TEMPERATURE:ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F"); break;
 			case TOTALWEIGHT:ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs"); break;
-			case SUIT:		ret = tr("Suit"); break;
-			case CYLINDER:	ret = tr("Cyl"); break;
+			case SUIT:		ret = tr("suit"); break;
+			case CYLINDER:	ret = tr("cyl"); break;
 			case NITROX:	ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2); break;
 			case SAC:		ret = tr("SAC"); break;
 			case OTU:		ret = tr("OTU"); break;
 			case MAXCNS:	ret = tr("maxCNS"); break;
-			case LOCATION:	ret = tr("Location"); break;
+			case LOCATION:	ret = tr("location"); break;
 			}break;
 	}
 
