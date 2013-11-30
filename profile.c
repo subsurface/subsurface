@@ -1414,7 +1414,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f %s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
