@@ -1618,6 +1618,14 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			if (col == 4)
 				return tr("Weights:");
 		}
+		// notes
+		if (col == 0) {
+			if (row == 6)
+				return tr("Notes:");
+			if (row == 7)
+				return QString(dive->notes);
+		}
+		/*
 		// cylinder data
 		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
 			cylinder_t *cyl = &dive->cylinder[row - 3];
@@ -1684,6 +1692,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 				}
 			}
 		}
+		*/
 		return QString();
 	}
 	case Qt::FontRole: {
