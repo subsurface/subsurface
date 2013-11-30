@@ -61,7 +61,11 @@ double MinMaxAvgWidget::minimum() const
 }
 
 MinMaxAvgWidget::MinMaxAvgWidget(QWidget* parent)
-: d(new MinMaxAvgWidgetPrivate(this)){
+	: d(new MinMaxAvgWidgetPrivate(this)){
+}
+
+MinMaxAvgWidget::~MinMaxAvgWidget()
+{
 }
 
 void MinMaxAvgWidget::clear()

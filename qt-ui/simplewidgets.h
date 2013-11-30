@@ -17,6 +17,7 @@ class MinMaxAvgWidget : public QWidget{
 	Q_PROPERTY(double average READ average WRITE setAverage)
 public:
 	MinMaxAvgWidget(QWidget *parent);
+	~MinMaxAvgWidget();
 	double minimum() const;
 	double maximum() const;
 	double average() const;
@@ -28,7 +29,7 @@ public:
 	void setAverage(const QString& average);
 	void clear();
 private:
-	MinMaxAvgWidgetPrivate *d;
+	QScopedPointer<MinMaxAvgWidgetPrivate> d;
 };
 
 class RenumberDialog : public QDialog {
