@@ -1334,7 +1334,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	struct plot_data *start, *stop, *data;
 	const char *depth_unit, *pressure_unit, *vertical_speed_unit;
 	char *buf2 = malloc(bufsize);
-	int avg_speed, max_speed, min_speed;
+	int avg_speed, max_asc_speed, max_desc_speed;
 	int delta_depth, avg_depth, max_depth, min_depth;
 	int bar_used, last_pressure, pressurevalue;
 	int count, last_sec, delta_time;
@@ -1357,8 +1357,8 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	}
 	count = 0;
 	avg_speed = 0;
-	max_speed = 0;
-	min_speed = INT_MAX;
+	max_asc_speed = 0;
+	max_desc_speed = 0;
 
 	delta_depth = abs(start->depth-stop->depth);
 	delta_time = abs(start->sec-stop->sec);
@@ -1379,10 +1379,10 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			avg_speed += data->speed*(data->sec-last_sec);
 		avg_depth += data->depth*(data->sec-last_sec);
 
-		if (abs(data->speed) < min_speed)
-			min_speed = abs(data->speed);
-		if (abs(data->speed) > max_speed)
-			max_speed = abs(data->speed);
+		if (data->speed > max_desc_speed)
+			max_desc_speed = data->speed;
+		if (data->speed < max_asc_speed)
+			max_asc_speed = data->speed;
 
 		if (data->depth < min_depth)
 			min_depth = data->depth;
@@ -1421,11 +1421,11 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
-	speedvalue = get_vertical_speed_units(abs(min_speed), NULL, &vertical_speed_unit);
+	speedvalue = get_vertical_speed_units(abs(max_desc_speed), NULL, &vertical_speed_unit);
 	snprintf(buf, bufsize, translate("gettextFromC","%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
-	speedvalue = get_vertical_speed_units(abs(max_speed), NULL, &vertical_speed_unit);
+	speedvalue = get_vertical_speed_units(abs(max_asc_speed), NULL, &vertical_speed_unit);
 	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
