@@ -2,27 +2,27 @@
 <context>
     <name>CSVImportDialog</name>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="26"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="31"/>
         <source>Import File (CSV)</source>
         <translation>Bestand Importeren (CSV)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="35"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="40"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="124"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="129"/>
         <source>PO2</source>
         <translation>PO2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="192"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="197"/>
         <source>Field Separator</source>
         <translation>Scheiding tussen velden</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="60"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="65"/>
         <source>Field Configuration</source>
         <translation>Veld Configuratie</translation>
     </message>
@@ -32,32 +32,32 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="76"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="81"/>
         <source>Time</source>
         <translation>Tijd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="93"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="98"/>
         <source>Depth</source>
         <translation>Diepte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="107"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="112"/>
         <source>Temp</source>
         <translation>Temperatuur</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="141"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="146"/>
         <source>Cns</source>
         <translation>Cns</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="158"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="163"/>
         <source>Stopdepth</source>
         <translation>Stop diepte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/csvimportdialog.ui" line="210"/>
+        <location filename="../qt-ui/csvimportdialog.ui" line="215"/>
         <source>Pre-configured imports</source>
         <translation>Vooraf ingestelde import</translation>
     </message>
@@ -192,6 +192,11 @@ duikcomputer wilt verwijderen?</translation>
         <location filename="../qt-ui/divelistview.cpp" line="41"/>
         <source>Show Search Box</source>
         <translation>Zoekvak Tonen</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelistview.cpp" line="316"/>
+        <source>Visible:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="631"/>
@@ -351,32 +356,32 @@ Verwijder deze eerst.</translation>
         <translation>AIR</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1070"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1080"/>
         <source>Final Depth</source>
         <translation>Eind diepte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1071"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1081"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1072"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1082"/>
         <source>Used Gas</source>
         <translation>Verbruikt Gas</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1073"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1083"/>
         <source>CC Set Point</source>
         <translation>CC Set Point</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1268"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1278"/>
         <source>Discard the Plan?</source>
         <translation>Plan verwijderen?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1269"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1279"/>
         <source>You are about to discard your plan.</source>
         <translation>U staat op het punt het plan te verwijderen</translation>
     </message>
@@ -384,17 +389,17 @@ Verwijder deze eerst.</translation>
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="934"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="944"/>
         <source>Dive Planner Points</source>
         <translation>Duikplanner punten</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="937"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="947"/>
         <source>Available Gases</source>
         <translation>Beschikbare Gassen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="954"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="964"/>
         <source>add dive data point</source>
         <translation>duik punt toevoegen</translation>
     </message>
@@ -494,42 +499,42 @@ Verwijder deze eerst.</translation>
         <translation>Download uit duikcomputer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="20"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
         <source>Vendor</source>
         <translation>Merk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="27"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="32"/>
         <source>Dive Computer</source>
         <translation>Duikcomputer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="40"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="45"/>
         <source>Device or Mount Point</source>
         <translation>Toestel of Aankoppelpunt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="54"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="59"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="61"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="66"/>
         <source>Force download of all dives</source>
         <translation>Forceer download van alle duiken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="68"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
         <source>Always prefer downloaded dives</source>
         <translation>Altijd gedownloade duiken gebruiken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="90"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="95"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="97"/>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="102"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -1190,254 +1195,254 @@ Verwijder deze eerst.</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="80"/>
+        <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
         <translation>Standaardinstellingen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="90"/>
+        <location filename="../qt-ui/preferences.ui" line="95"/>
         <source>Units</source>
         <translation>Eenheden</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="100"/>
+        <location filename="../qt-ui/preferences.ui" line="105"/>
         <source>Graph</source>
         <translation>Grafiek</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="126"/>
+        <location filename="../qt-ui/preferences.ui" line="131"/>
         <source>Lists and Tables</source>
         <translation>Lijsten en Tabellen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="132"/>
+        <location filename="../qt-ui/preferences.ui" line="137"/>
         <source>Font</source>
         <translation>Lettertype</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="142"/>
+        <location filename="../qt-ui/preferences.ui" line="147"/>
         <source>Font size</source>
         <translation>Lettertype grootte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="155"/>
+        <location filename="../qt-ui/preferences.ui" line="160"/>
         <source>Dives</source>
         <translation>Duiken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="161"/>
+        <location filename="../qt-ui/preferences.ui" line="166"/>
         <source>Default Dive file</source>
         <translation>Standaard Duikbestand</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="173"/>
+        <location filename="../qt-ui/preferences.ui" line="178"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="182"/>
+        <location filename="../qt-ui/preferences.ui" line="187"/>
         <source>Display Invalid</source>
         <translation>Ongeldig Scherm</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="199"/>
+        <location filename="../qt-ui/preferences.ui" line="204"/>
         <source>Default Cylinder</source>
         <translation>Standaard fles</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="205"/>
+        <location filename="../qt-ui/preferences.ui" line="210"/>
         <source>Use Default Cylinder</source>
         <translation>Gebruik standaard fles</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="241"/>
+        <location filename="../qt-ui/preferences.ui" line="246"/>
         <source>System</source>
         <translation>Systeem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="248"/>
+        <location filename="../qt-ui/preferences.ui" line="253"/>
         <source>Metric</source>
         <translation>Metrisch</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="258"/>
+        <location filename="../qt-ui/preferences.ui" line="263"/>
         <source>Imperial</source>
         <translation>Imperiaal</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="268"/>
+        <location filename="../qt-ui/preferences.ui" line="273"/>
         <source>Personalize</source>
         <translation>Personaliseren</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="292"/>
+        <location filename="../qt-ui/preferences.ui" line="297"/>
         <source>Depth</source>
         <translation>Diepte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="299"/>
+        <location filename="../qt-ui/preferences.ui" line="304"/>
         <source>Meter</source>
         <translation>meter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="309"/>
+        <location filename="../qt-ui/preferences.ui" line="314"/>
         <source>Feet</source>
         <translation>voet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="319"/>
+        <location filename="../qt-ui/preferences.ui" line="324"/>
         <source>Pressure</source>
         <translation>Druk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="326"/>
+        <location filename="../qt-ui/preferences.ui" line="331"/>
         <source>Bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="336"/>
+        <location filename="../qt-ui/preferences.ui" line="341"/>
         <source>Psi</source>
         <translation>Psi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="346"/>
+        <location filename="../qt-ui/preferences.ui" line="351"/>
         <source>Volume</source>
         <translation>Volume</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="353"/>
+        <location filename="../qt-ui/preferences.ui" line="358"/>
         <source>Liter</source>
         <translation>liter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="363"/>
+        <location filename="../qt-ui/preferences.ui" line="368"/>
         <source>CuFt</source>
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="373"/>
+        <location filename="../qt-ui/preferences.ui" line="378"/>
         <source>Temperature</source>
         <translation>Temperatuur</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="380"/>
+        <location filename="../qt-ui/preferences.ui" line="385"/>
         <source>Celsius</source>
         <translation>celsius</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="390"/>
+        <location filename="../qt-ui/preferences.ui" line="395"/>
         <source>Fahrenheit</source>
         <translation>fahrenheit</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="400"/>
+        <location filename="../qt-ui/preferences.ui" line="405"/>
         <source>Weight</source>
         <translation>Gewicht</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="407"/>
+        <location filename="../qt-ui/preferences.ui" line="412"/>
         <source>Kg</source>
         <translation>Kg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="417"/>
+        <location filename="../qt-ui/preferences.ui" line="422"/>
         <source>lbs</source>
         <translation>US pond</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="432"/>
+        <location filename="../qt-ui/preferences.ui" line="437"/>
         <source>Time units</source>
         <translation>Tijdseenheden</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="438"/>
+        <location filename="../qt-ui/preferences.ui" line="443"/>
         <source>Ascent/Descent speed denominator</source>
         <translation>Stijg-/daalsnelheid noemer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="445"/>
+        <location filename="../qt-ui/preferences.ui" line="450"/>
         <source>Minutes</source>
         <translation>Minuten</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="455"/>
+        <location filename="../qt-ui/preferences.ui" line="460"/>
         <source>Seconds</source>
         <translation>Seconden</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="487"/>
+        <location filename="../qt-ui/preferences.ui" line="492"/>
         <source>Show</source>
         <translation>Toon</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="495"/>
+        <location filename="../qt-ui/preferences.ui" line="500"/>
         <source>pO2</source>
         <translation>pO2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="518"/>
-        <location filename="../qt-ui/preferences.ui" line="559"/>
-        <location filename="../qt-ui/preferences.ui" line="600"/>
+        <location filename="../qt-ui/preferences.ui" line="523"/>
+        <location filename="../qt-ui/preferences.ui" line="564"/>
+        <location filename="../qt-ui/preferences.ui" line="605"/>
         <source>threshold</source>
         <translation>drempelwaarde</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="536"/>
+        <location filename="../qt-ui/preferences.ui" line="541"/>
         <source>pN2</source>
         <translation>pN2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="577"/>
+        <location filename="../qt-ui/preferences.ui" line="582"/>
         <source>pHe</source>
         <translation>pHe</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="618"/>
+        <location filename="../qt-ui/preferences.ui" line="623"/>
         <source>MOD</source>
         <translation>MOD</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="657"/>
+        <location filename="../qt-ui/preferences.ui" line="662"/>
         <source>EAD END EADD</source>
         <translation>EAD END EADD</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="666"/>
+        <location filename="../qt-ui/preferences.ui" line="671"/>
         <source>Dive computer reported ceiling</source>
         <translation>Plafond gerapporteerd door duikcomputer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="689"/>
+        <location filename="../qt-ui/preferences.ui" line="694"/>
         <source>draw ceiling red</source>
         <translation>plafond in het rood tekenen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="700"/>
+        <location filename="../qt-ui/preferences.ui" line="705"/>
         <source>Calculated ceiling</source>
         <translation>Berekend plafond</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="723"/>
+        <location filename="../qt-ui/preferences.ui" line="728"/>
         <source>show all tissues</source>
         <translation>alle compartimenten tonen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="733"/>
+        <location filename="../qt-ui/preferences.ui" line="738"/>
         <source>3m increments</source>
         <translation>3m stappen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="743"/>
+        <location filename="../qt-ui/preferences.ui" line="748"/>
         <source>Calculate NDL/TTS</source>
         <translation>NDL/TTS Berekenen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="792"/>
+        <location filename="../qt-ui/preferences.ui" line="797"/>
         <source>GFLow at max depth</source>
         <translation>GFLow op max diepte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="766"/>
+        <location filename="../qt-ui/preferences.ui" line="771"/>
         <source>Misc</source>
         <translation>Allerlei</translation>
     </message>
@@ -1447,32 +1452,32 @@ Verwijder deze eerst.</translation>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="641"/>
+        <location filename="../qt-ui/preferences.ui" line="646"/>
         <source>max PPO2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="754"/>
+        <location filename="../qt-ui/preferences.ui" line="759"/>
         <source>SAC</source>
         <translation>Gasverbruik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="772"/>
+        <location filename="../qt-ui/preferences.ui" line="777"/>
         <source>GFLow</source>
         <translation>GFLow</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="782"/>
+        <location filename="../qt-ui/preferences.ui" line="787"/>
         <source>GFHigh</source>
         <translation>GFHigh</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="186"/>
+        <location filename="../qt-ui/preferences.cpp" line="187"/>
         <source>Open Default Log File</source>
         <translation>Standaard Logboek Openen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="186"/>
+        <location filename="../qt-ui/preferences.cpp" line="187"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML bestanden (*.ssrf *.xml *.XML)</translation>
     </message>
@@ -1483,6 +1488,11 @@ Verwijder deze eerst.</translation>
         <location filename="../qt-ui/printdialog.cpp" line="32"/>
         <source>&amp;Print</source>
         <translation>Afdrukken</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/printdialog.cpp" line="39"/>
+        <source>Print</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1835,7 +1845,7 @@ Verwijder deze eerst.</translation>
         <translation>Hernummeren</translation>
     </message>
     <message>
-        <location filename="../qt-ui/renumber.ui" line="26"/>
+        <location filename="../qt-ui/renumber.ui" line="31"/>
         <source>New starting number</source>
         <translation>Nieuw beginnummer</translation>
     </message>
@@ -1848,22 +1858,22 @@ Verwijder deze eerst.</translation>
         <translation>Geselecteerde tijdsstippen verschuiven</translation>
     </message>
     <message>
-        <location filename="../qt-ui/shifttimes.ui" line="32"/>
+        <location filename="../qt-ui/shifttimes.ui" line="37"/>
         <source>Shift times of selected dives by</source>
         <translation>Geselecteerde tijdsstippen verschuiven met</translation>
     </message>
     <message>
-        <location filename="../qt-ui/shifttimes.ui" line="68"/>
+        <location filename="../qt-ui/shifttimes.ui" line="73"/>
         <source>h:mm</source>
         <translation>u:mm</translation>
     </message>
     <message>
-        <location filename="../qt-ui/shifttimes.ui" line="78"/>
+        <location filename="../qt-ui/shifttimes.ui" line="83"/>
         <source>earlier</source>
         <translation>vroeger</translation>
     </message>
     <message>
-        <location filename="../qt-ui/shifttimes.ui" line="85"/>
+        <location filename="../qt-ui/shifttimes.ui" line="90"/>
         <source>later</source>
         <translation>later</translation>
     </message>
@@ -1876,17 +1886,17 @@ Verwijder deze eerst.</translation>
         <translation>Over Subsurface</translation>
     </message>
     <message>
-        <location filename="../qt-ui/about.cpp" line="18"/>
+        <location filename="../qt-ui/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013&lt;/span&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/about.cpp" line="22"/>
+        <location filename="../qt-ui/about.cpp" line="23"/>
         <source>&amp;License</source>
         <translation>&amp;Licentie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/about.cpp" line="23"/>
+        <location filename="../qt-ui/about.cpp" line="24"/>
         <source>&amp;Website</source>
         <translation>&amp;Website</translation>
     </message>
@@ -1894,37 +1904,37 @@ Verwijder deze eerst.</translation>
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="74"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="75"/>
         <source>Webservice</source>
         <translation>Webservice</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="115"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="116"/>
         <source>Wait a bit until we have something...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="131"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="132"/>
         <source>Download Finished</source>
         <translation>Download beëindigd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="155"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="156"/>
         <source>Connection Error: </source>
         <translation>Verbindingsfout:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="156"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="157"/>
         <source>Invalid user identifier!</source>
         <translation>Ongeldige gebruikersidentificatie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="157"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="158"/>
         <source>Cannot parse response!</source>
         <translation>Kan antwoord niet parsen!</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="158"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="159"/>
         <source>Download Success!</source>
         <translation>Laden succesvol voltooid!</translation>
     </message>
@@ -1984,32 +1994,32 @@ Verwijder deze eerst.</translation>
         <translation>Locatie gegevens downloaden</translation>
     </message>
     <message>
-        <location filename="../qt-ui/webservices.ui" line="20"/>
+        <location filename="../qt-ui/webservices.ui" line="25"/>
         <source>Status:</source>
         <translation>Status:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/webservices.ui" line="27"/>
+        <location filename="../qt-ui/webservices.ui" line="32"/>
         <source>Enter your ID here</source>
         <translation>Geef uw ID in</translation>
     </message>
     <message>
-        <location filename="../qt-ui/webservices.ui" line="34"/>
+        <location filename="../qt-ui/webservices.ui" line="39"/>
         <source>Download</source>
         <translation>Downloaden</translation>
     </message>
     <message>
-        <location filename="../qt-ui/webservices.ui" line="58"/>
+        <location filename="../qt-ui/webservices.ui" line="63"/>
         <source>User ID</source>
         <translation>Gebruikers ID</translation>
     </message>
     <message>
-        <location filename="../qt-ui/webservices.ui" line="72"/>
+        <location filename="../qt-ui/webservices.ui" line="77"/>
         <source>Password</source>
         <translation>Wachtwoord</translation>
     </message>
     <message>
-        <location filename="../qt-ui/webservices.ui" line="86"/>
+        <location filename="../qt-ui/webservices.ui" line="91"/>
         <source>Upload</source>
         <translation>Uploaden</translation>
     </message>
