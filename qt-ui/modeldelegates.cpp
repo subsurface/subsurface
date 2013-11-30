@@ -335,7 +335,10 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	if (row == 7)
 		painter->drawLine(rect.bottomLeft(), rect.bottomRight());
 	// vertical lines
-	if (row > 1)
+	if (row > 1) {
 		painter->drawLine(rect.topLeft(), rect.bottomLeft());
+		if (col == 4 || (col == 0 && row > 5))
+			painter->drawLine(rect.topRight(), rect.bottomRight());
+	}
 	QStyledItemDelegate::paint(painter, option, index);
 }
