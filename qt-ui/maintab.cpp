@@ -352,8 +352,9 @@ void MainTab::updateDiveInfo(int dive)
 			ui.visibilityLabel->setVisible(false);
 			ui.tagWidget->setVisible(false);
 			ui.TagLabel->setVisible(false);
-			ui.TemperaturesLabel->setVisible(false);
+			ui.airTempLabel->setVisible(false);
 			ui.airtemp->setVisible(false);
+			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
@@ -378,8 +379,9 @@ void MainTab::updateDiveInfo(int dive)
 			ui.DivemasterLabel->setVisible(true);
 			ui.TagLabel->setVisible(true);
 			ui.tagWidget->setVisible(true);
-			ui.TemperaturesLabel->setVisible(true);
+			ui.airTempLabel->setVisible(true);
 			ui.airtemp->setVisible(true);
+			ui.waterTempLabel->setVisible(true);
 			ui.watertemp->setVisible(true);
 			/* and fill them from the dive */
 			ui.rating->setCurrentStars(d->rating);

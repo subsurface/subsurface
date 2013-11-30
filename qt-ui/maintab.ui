@@ -65,11 +65,22 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="TemperaturesLabel">
-          <property name="text">
-           <string>air / water Temperatures</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="temperatureLabels">
+          <item>
+           <widget class="QLabel" name="airTempLabel">
+            <property name="text">
+             <string>Air temp</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="waterTempLabel">
+            <property name="text">
+             <string>Water temp</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item row="2" column="0">
          <widget class="QDateTimeEdit" name="dateTimeEdit">
