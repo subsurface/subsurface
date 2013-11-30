@@ -14,6 +14,13 @@ PrintOptions::PrintOptions(QWidget *parent, struct options *printOpt)
 
 void PrintOptions::setup(struct options *printOpt)
 {
+	/* these options are not supported ATM and we hide them.
+	 * basically the entire PrintDialog class needs re-implementation, so that
+	 * the paper size, DPI and all other options are displayed in one dialog.
+	 * this way we can print directly or do an optional preview first.
+	 */
+	ui.sizingHeights->setVisible(false);
+
 	printOptions = printOpt;
 	// layout height sliders
 	initSliderWithLabel(ui.sliderPHeight, ui.valuePHeight, printOptions->profile_height);
