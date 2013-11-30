@@ -36,17 +36,15 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	tablePrintColumnWidths.append(15);
 	tablePrintColumnWidths.append(33);
 	// profile print settings
-	const int dw = 15; // base percentage
+	const int dw = 20; // base percentage
 	profilePrintColumnWidths.append(dw);
 	profilePrintColumnWidths.append(dw);
-	profilePrintColumnWidths.append(dw);
-	profilePrintColumnWidths.append(dw);
-	profilePrintColumnWidths.append(dw - 5);
-	profilePrintColumnWidths.append(dw + 5);
-	profilePrintColumnWidths.append(dw - 5); // fit to 100%
-	const int sr = 9; // smallest row height in pixels
-	profilePrintRowHeights.append(sr + 2);
-	profilePrintRowHeights.append(sr + 7);
+	profilePrintColumnWidths.append(dw - 3);
+	profilePrintColumnWidths.append(dw - 3);
+	profilePrintColumnWidths.append(dw + 6); // fit to 100%
+	const int sr = 12; // smallest row height in pixels
+	profilePrintRowHeights.append(sr);
+	profilePrintRowHeights.append(sr + 4);
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr);
@@ -55,7 +53,8 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr);
-	profilePrintRowHeights.append(sr + 12);
+	profilePrintRowHeights.append(sr);
+	profilePrintRowHeights.append(sr);
 }
 
 void PrintLayout::print()
@@ -211,23 +210,15 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	 * changes made here reflect on ProfilePrintModel::data(). */
 	const int cols = model->columnCount();
 	const int rows = model->rowCount();
-	// top section
-	table->setSpan(0,  0, 1, cols - 2);
-	table->setSpan(1,  0, 1, cols - 2);
-	table->setSpan(10, 0, 1, cols);
-	table->setSpan(0,  5, 1, 2);
-	table->setSpan(1,  5, 1, 12);
-	// sac, cns, otu
-	table->setSpan(2, 3, 2, 1);
-	table->setSpan(4, 3, 2, 1);
-	table->setSpan(6, 3, 2, 1);
-	table->setSpan(8, 3, 2, 1);
-	table->setSpan(2, 4, 2, 1);
-	table->setSpan(4, 4, 2, 1);
-	table->setSpan(6, 4, 2, 1);
-	table->setSpan(8, 4, 2, 1);
-	// weights
-	table->setSpan(2, 5, 1, 2);
+	// info on top
+	table->setSpan(0, 0, 1, 4);
+	table->setSpan(1, 0, 1, 4);
+	// gas used
+	table->setSpan(2, 0, 1, 2);
+	table->setSpan(3, 0, 1, 2);
+	// notes
+	table->setSpan(6, 0, 1, 5);
+	table->setSpan(7, 0, 5, 5);
 
 	/* resize row heights to the 'profilePrintRowHeights' indexes.
 	 * profilePrintTableMaxH will then hold the table height. */

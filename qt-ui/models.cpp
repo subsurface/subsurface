@@ -1563,28 +1563,6 @@ ProfilePrintModel::ProfilePrintModel(QObject *parent)
 {
 }
 
-/* this is just a helper function to truncate C strings near 'maxlen' characters
- * by finding word bounderies and adding '...' at the end of the truncated string.
- * not really optimal for all languages!
- */
-QString ProfilePrintModel::truncateString(char *str, const int maxlen) const
-{
-	if (!str)
-		return QString("");
-	QString trunc = QString(str);
-	const int len = trunc.length();
-	for (int i = 0; i < len; i++) {
-		char c = trunc.at(i).toAscii();
-		if (c == ' ' || c == '\n' || c == '\t') {
-			if (i > maxlen) {
-				trunc = trunc.left(i) + QString("...");
-				break;
-			}
-		}
-	}
-	return trunc;
-}
-
 void ProfilePrintModel::setDive(struct dive *divePtr)
 {
 	dive = divePtr;
@@ -1593,12 +1571,12 @@ void ProfilePrintModel::setDive(struct dive *divePtr)
 
 int ProfilePrintModel::rowCount(const QModelIndex &parent) const
 {
-	return 11;
+	return 12;
 }
 
 int ProfilePrintModel::columnCount(const QModelIndex &parent) const
 {
-	return 7;
+	return 5;
 }
 
 QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
@@ -1618,91 +1596,87 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		if (row == 0) {
 			if (col == 0)
 				return tr("Dive #%1 - %2").arg(dive->number).arg(di.displayDate());
-			if (col == 5) {
+			if (col == 4) {
 				QString unit = (get_units()->length == units::METERS) ? "m" : "ft";
 				return tr("Max depth: %1 %2").arg(di.displayDepth()).arg(unit);
 			}
 		}
 		if (row == 1) {
 			if (col == 0)
-				return truncateString(dive->location, 32);
-			if (col == 5)
+				return QString(dive->location);
+			if (col == 4)
 				return QString(tr("Duration: %1 min")).arg(di.displayDuration());
 		}
-		// cylinder headings
+		// headings
 		if (row == 2) {
 			if (col == 0)
-				return tr("Cylinder");
-			if (col == 1)
-				return tr("Gasmix");
+				return tr("Gas Used:");
 			if (col == 2)
-				return tr("Gas Used");
+				return tr("SAC:");
+			if (col == 3)
+				return tr("Max. CNS:");
+			if (col == 4)
+				return tr("Weights:");
 		}
-		// cylinder data
-		if (row > 2 && row < 10 && row - 3 < MAX_CYLINDERS) {
-			cylinder_t *cyl = &dive->cylinder[row - 3];
-			if (cyl->type.description) { // how do we check if a cylinder is added?
-				if (col == 0) {
-					if (cyl->type.description[0] != '\0')
-						return QString(cyl->type.description);
-					return unknown;
-				}
-				if (col == 1) {
-					get_gas_string(cyl->gasmix.o2.permille, cyl->gasmix.he.permille, buf, sizeof(buf));
-					return QString(buf);
-				}
-				if (col == 2) {
-					return get_cylinder_used_gas_string(cyl, true);
-				}
-			}
-		}
-		// dive notes
-		if (row == 10 && col == 0)
-			return truncateString(dive->notes, 640);
-		// sac, cns, otu - headings
-		if (col == 3) {
-			if (row == 2)
-				return tr("SAC");
-			if (row == 4)
-				return tr("Max. CNS");
+		// notes
+		if (col == 0) {
 			if (row == 6)
-				return tr("OTU");
+				return tr("Notes:");
+			if (row == 7)
+				return QString(dive->notes);
 		}
-		// sac, cns, otu - data
-		if (col == 4) {
-			if (row == 2)
-				return di.displaySac();
-			if (row == 4)
+		// more headings
+		if (row == 4) {
+			if (col == 0)
+				return tr("Divemaster:");
+			if (col == 1)
+				return tr("Buddy:");
+			if (col == 2)
+				return tr("Suit:");
+			if (col == 3)
+				return tr("Viz:");
+			if (col == 4)
+				return tr("Rating:");
+		}
+		// values for gas, sac, etc...
+		if (row == 3) {
+			if (col == 0) {
+				int added = 0;
+				const char *desc;
+				QString gases;
+				for (int i = 0; i < MAX_CYLINDERS; i++) {
+					desc = dive->cylinder[i].type.description;
+					// if has a description and if such gas is not already present
+					if (desc && gases.indexOf(QString(desc)) == -1) {
+						if (added > 0)
+							gases += QString(" / ");
+						gases += QString(desc);
+						added++;
+					}
+				}
+				return gases;
+			}
+			if (col == 2)
 				return QString::number(dive->maxcns);
-			if (row == 6)
-				return QString::number(dive->otu);
-		}
-		// weights heading
-		if (row == 2 && col == 5)
-			return tr("Weights");
-		// total weight
-		if (row == 9) {
-			weight_t tw = { total_weight(dive) };
-			if (tw.grams) {
-				if (col == 5)
-					return tr("Total weight");
-				if (col == 6)
-					return get_weight_string(tw, true);
+			if (col == 3)
+				return di.displaySac();
+			if (col == 4) {
+				weight_t tw = { total_weight(dive) };
+				return get_weight_string(tw, true);
 			}
 		}
-		// weight data
-		if (row > 2 && row < 10 && row - 3 < MAX_WEIGHTSYSTEMS) {
-			weightsystem_t *ws = &dive->weightsystem[row - 3];
-			if (ws->weight.grams) {
-				if (col == 5) {
-					if (ws->description && ws->description[0] != '\0')
-						return QString(ws->description);
-					return unknown;
-				}
-				if (col == 6) {
-					return get_weight_string(ws->weight, true);
-				}
-			}
+		// values for DM, buddy, suit, etc...
+		if (row == 5) {
+			if (col == 0)
+				return QString(dive->divemaster);
+			if (col == 1)
+				return QString(dive->buddy);
+			if (col == 2)
+				return QString(dive->suit);
+			if (col == 3)
+				return (dive->visibility) ? QString::number(dive->visibility).append(" / 5") : QString();
+			if (col == 4)
+				return (dive->rating) ? QString::number(dive->rating).append(" / 5") : QString();
 		}
 		return QString();
 	}
@@ -1715,32 +1689,14 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			font.setPixelSize(baseSize + 1);
 			return QVariant::fromValue(font);
 		}
-		// dive location
-		if (row == 1 && col == 0) {
-			font.setPixelSize(baseSize);
-			font.setBold(true);
-			return QVariant::fromValue(font);
-		}
-		// depth/duration
-		if ((row == 0 || row == 1) && col == 5) {
-			font.setPixelSize(baseSize);
-			return QVariant::fromValue(font);
-		}
-		// notes
-		if (row == 9 && col == 0) {
-			font.setPixelSize(baseSize + 1);
-			return QVariant::fromValue(font);
-		}
 		font.setPixelSize(baseSize);
 		return QVariant::fromValue(font);
 	}
 	case Qt::TextAlignmentRole: {
-		unsigned int align = Qt::AlignCenter;
-		// dive #, location, notes
-		if ((row < 2 || row == 10) && col == 0)
-			align = Qt::AlignLeft | Qt::AlignVCenter;
-		// depth, duration
-		if (row < 2 && col == 5)
+		// everything is aligned to the left
+		unsigned int align = Qt::AlignLeft;
+		// align depth and duration right
+		if (row < 2 && col == 4)
 			align = Qt::AlignRight | Qt::AlignVCenter;
 		return QVariant::fromValue(align);
 	}

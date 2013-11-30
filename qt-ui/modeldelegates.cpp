@@ -329,14 +329,15 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
 	// grid color
 	painter->setPen(QPen(QColor(0xff999999)));
-	// top line
-	if (row == 2 || row == 3 || row == 10 || col == 3 || col == 4)
+	// horizontal lines
+	if (row == 2 || row == 4 || row == 6)
 		painter->drawLine(rect.topLeft(), rect.topRight());
-	if (row > 1 && row < 10) {
-		// left line - draw always for these rows
+	if (row == 7)
+		painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+	// vertical lines
+	if (row > 1) {
 		painter->drawLine(rect.topLeft(), rect.bottomLeft());
-		// "fix" for missing (?) right line after col 5
-		if (col > 5 || (col > 4 && row == 2))
+		if (col == 4 || (col == 0 && row > 5))
 			painter->drawLine(rect.topRight(), rect.bottomRight());
 	}
 	QStyledItemDelegate::paint(painter, option, index);
