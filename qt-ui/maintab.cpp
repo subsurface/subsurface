@@ -166,12 +166,11 @@ void MainTab::enableEdition(EditMode newEditMode)
 		return;
 
 	mainWindow()->dive_list()->setEnabled(false);
-	mainWindow()->globe()->diveEditMode();
+	mainWindow()->globe()->prepareForGetDiveCoordinates();
 	// We may be editing one or more dives here. backup everything.
 	notesBackup.clear();
 	ui.notesButtonBox->show();
 	ui.equipmentButtonBox->show();
-
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		ui.diveNotesMessage->setText(tr("This trip is being edited. Select Save or Cancel when done."));

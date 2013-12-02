@@ -19,23 +19,24 @@ public:
 	void reload();
 	void repopulateLabels();
 	void centerOn(struct dive* dive);
-	void diveEditMode();
 	bool eventFilter(QObject*, QEvent*);
 protected:
 	/* reimp */ void resizeEvent(QResizeEvent *event);
 	/* reimp */ void mousePressEvent(QMouseEvent* event);
+	/* reimp */ void contextMenuEvent(QContextMenuEvent*);
 private:
-	void prepareForGetDiveCoordinates(struct dive* dive);
 	GeoDataDocument *loadedDives;
-	struct dive* editingDiveCoords;
 	KMessageWidget* messageWidget;
 	QTimer *fixZoomTimer;
 	int currentZoomLevel;
+	bool editingDiveLocation;
 
 public slots:
 	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void fixZoom();
+	void prepareForGetDiveCoordinates();
+
 };
 
 #endif
