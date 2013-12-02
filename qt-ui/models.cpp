@@ -1587,7 +1587,6 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 	case Qt::DisplayRole: {
 		struct DiveItem di;
 		di.dive = dive;
-		char buf[80];
 
 		const QString unknown = tr("unknown");
 
