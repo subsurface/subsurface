@@ -34,10 +34,18 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->setModel(weightModel);
 	ui.diveNotesMessage->hide();
 	ui.diveEquipmentMessage->hide();
-	ui.notesButtonBox->hide();
-	ui.equipmentButtonBox->hide();
 	ui.diveNotesMessage->setCloseButtonVisible(false);
 	ui.diveEquipmentMessage->setCloseButtonVisible(false);
+
+	QAction *action = new QAction(tr("Save"), this);
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
+	ui.diveEquipmentMessage->addAction(action);
+	ui.diveNotesMessage->addAction(action);
+
+	action = new QAction(tr("Cancel"), this);
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+	ui.diveEquipmentMessage->addAction(action);
+	ui.diveNotesMessage->addAction(action);
 
 	if (qApp->style()->objectName() == "oxygen")
 		setDocumentMode(true);
@@ -77,10 +85,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
-	connect(ui.notesButtonBox, SIGNAL(accepted()), this, SLOT(acceptChanges()));
-	connect(ui.notesButtonBox, SIGNAL(rejected()), this, SLOT(rejectChanges()));
-	connect(ui.equipmentButtonBox, SIGNAL(accepted()), this, SLOT(acceptChanges()));
-	connect(ui.equipmentButtonBox, SIGNAL(rejected()), this, SLOT(rejectChanges()));
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
@@ -169,8 +173,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	mainWindow()->globe()->prepareForGetDiveCoordinates();
 	// We may be editing one or more dives here. backup everything.
 	notesBackup.clear();
-	ui.notesButtonBox->show();
-	ui.equipmentButtonBox->show();
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		ui.diveNotesMessage->setText(tr("This trip is being edited. Select Save or Cancel when done."));
@@ -513,8 +515,6 @@ void MainTab::acceptChanges()
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.diveNotesMessage->animatedHide();
 	ui.diveEquipmentMessage->animatedHide();
-	ui.notesButtonBox->hide();
-	ui.equipmentButtonBox->hide();
 	/* now figure out if things have changed */
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
@@ -715,8 +715,6 @@ void MainTab::rejectChanges()
 	ui.diveNotesMessage->animatedHide();
 	ui.diveEquipmentMessage->animatedHide();
 	mainWindow()->dive_list()->setEnabled(true);
-	ui.notesButtonBox->hide();
-	ui.equipmentButtonBox->hide();
 	notesBackup.clear();
 	resetPallete();
 	editMode = NONE;

@@ -34,8 +34,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>501</width>
-         <height>535</height>
+         <width>493</width>
+         <height>586</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -170,6 +170,13 @@
           </property>
          </widget>
         </item>
+        <item row="14" column="0" colspan="2">
+         <widget class="QTextEdit" name="notes">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="10" column="1">
          <widget class="QLineEdit" name="suit">
           <property name="readOnly">
@@ -195,10 +202,10 @@
           </item>
          </layout>
         </item>
-        <item row="14" column="0" colspan="2">
-         <widget class="QTextEdit" name="notes">
-          <property name="readOnly">
-           <bool>false</bool>
+        <item row="13" column="0">
+         <widget class="QLabel" name="NotesLabel">
+          <property name="text">
+           <string>Notes</string>
           </property>
          </widget>
         </item>
@@ -218,20 +225,6 @@
            <widget class="StarWidget" name="visibility" native="true"/>
           </item>
          </layout>
-        </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="NotesLabel">
-          <property name="text">
-           <string>Notes</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="0" colspan="2">
-         <widget class="QDialogButtonBox" name="notesButtonBox">
-          <property name="standardButtons">
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
-          </property>
-         </widget>
         </item>
         <item row="12" column="0" colspan="2">
          <widget class="TagWidget" name="tagWidget">
@@ -285,8 +278,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>515</width>
-         <height>473</height>
+         <width>507</width>
+         <height>459</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -338,13 +331,6 @@
           </layout>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QDialogButtonBox" name="equipmentButtonBox">
-          <property name="standardButtons">
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </widget>
@@ -372,8 +358,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>515</width>
-         <height>473</height>
+         <width>492</width>
+         <height>375</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -679,8 +665,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>515</width>
-         <height>473</height>
+         <width>323</width>
+         <height>130</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -857,9 +843,7 @@
   <tabstop>suit</tabstop>
   <tabstop>tagWidget</tabstop>
   <tabstop>notes</tabstop>
-  <tabstop>notesButtonBox</tabstop>
   <tabstop>scrollArea_2</tabstop>
-  <tabstop>equipmentButtonBox</tabstop>
   <tabstop>scrollArea_3</tabstop>
   <tabstop>scrollArea_4</tabstop>
  </tabstops>
