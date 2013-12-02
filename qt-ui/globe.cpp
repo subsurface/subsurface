@@ -149,12 +149,12 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 		if (lat_diff > resolve || lon_diff > resolve)
 			continue;
 
-		if (clear) {
-			mainWindow()->dive_list()->unselectDives();
-			clear = false;
-		}
 		selectedDiveIds.push_back(idx);
 		first = false;
+	}
+	if (clear) {
+		mainWindow()->dive_list()->unselectDives();
+		clear = false;
 	}
 	mainWindow()->dive_list()->selectDives(selectedDiveIds);
 }
