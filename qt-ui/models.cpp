@@ -445,7 +445,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 	case Qt::EditRole:
 		switch(index.column()) {
 		case TYPE:
-			ret = QString(ws->description);
+			ret = gettextFromC::instance()->tr(ws->description);
 			break;
 		case WEIGHT:
 			ret = get_weight_string(ws->weight, TRUE);
@@ -484,10 +484,8 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 	switch(index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
-			QByteArray ba = value.toString().toUtf8();
-			const char *text = ba.constData();
-			if (!ws->description || strcmp(ws->description, text)) {
-				ws->description = strdup(text);
+			if (!ws->description || gettextFromC::instance()->tr(ws->description) != value.toString()) {
+				ws->description = strdup(value.toString().toUtf8().constData());
 				changed = true;
 			}
 		}
@@ -501,7 +499,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 			// now update the ws_info
 			changed = true;
 			WSInfoModel *wsim = WSInfoModel::instance();
-			QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, ws->description);
+			QModelIndexList matches = wsim->match(wsim->index(0,0), Qt::DisplayRole, gettextFromC::instance()->tr(ws->description));
 			if (!matches.isEmpty())
 				wsim->setData(wsim->index(matches.first().row(), WSInfoModel::GR), ws->weight.grams);
 		}
@@ -634,7 +632,7 @@ WSInfoModel::WSInfoModel() : rows(-1)
 	setHeaderDataStrings( QStringList() << tr("Description") << tr("kg"));
 	struct ws_info_t *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++){
-		QString wsInfoName(info->name);
+		QString wsInfoName = gettextFromC::instance()->tr(info->name);
 		if( wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
 	}
@@ -652,7 +650,7 @@ void WSInfoModel::updateInfo()
 	endRemoveRows();
 	rows = -1;
 	for (info = ws_info; info->name; info++, rows++){
-		QString wsInfoName(info->name);
+		QString wsInfoName = gettextFromC::instance()->tr(info->name);
 		if( wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
 	}
