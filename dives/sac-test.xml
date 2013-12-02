@@ -34,10 +34,10 @@ We have exactly 100 ATM of gas in a 10l cylinder, average 10m for 25min</notes>
   <notes>SAC should be 20l/min (0.7063 cuft/min)
 We have exactly 100 ATM of gas in 15l of cylinder, average 20m for 25min</notes>
   <cylinder size='10.0 l' description='10l' start='202.6 bar' end='101.3 bar' />
-  <cylinder size='5.0 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <cylinder size='5.0 l' description='10l' o2='22.0%' start='202.6 bar' end='101.3 bar' />
   <divecomputer>
   <depth max='40.0 m' mean='20.0 m' />
-  <event time='17:00 min' name='gaschange' />
+  <event time='17:00 min' type='25' value='22' name='gaschange' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='5:00 min' depth='20.0 m' />
   <sample time='10:00 min' depth='40.0 m' />
@@ -52,10 +52,10 @@ We have exactly 100 ATM of gas in 15l of cylinder, average 20m for 25min</notes>
 This adds a 5-minute surface time to the middle of the dive.
 We have exactly 100 ATM of gas in 15l of cylinder, average 20m for 25min</notes>
   <cylinder size='10.0 l' description='10l' start='202.6 bar' end='101.3 bar' />
-  <cylinder size='5.0 l' description='10l' start='202.6 bar' end='101.3 bar' />
+  <cylinder size='5.0 l' description='10l' o2='22.0%' start='202.6 bar' end='101.3 bar' />
   <divecomputer>
   <depth max='40.0 m' mean='16.666 m' />
-  <event time='22:00 min' name='gaschange' />
+  <event time='22:00 min' type='25' value='22' name='gaschange' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='5:00 min' depth='20.0 m' />
   <sample time='10:00 min' depth='40.0 m' />
