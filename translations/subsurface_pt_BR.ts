@@ -9,7 +9,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="40"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="129"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
@@ -92,17 +92,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
         <source>StartPress</source>
-        <translation type="unfinished"/>
+        <translation>Pressão inicial</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
         <source>EndPress</source>
-        <translation type="unfinished"/>
+        <translation>Pressão final</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
         <source>O2%</source>
-        <translation type="unfinished"/>
+        <translation>O2%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
@@ -154,7 +154,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1235"/>
         <source>Model</source>
-        <translation type="unfinished"/>
+        <translation>Modelo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1235"/>
@@ -177,7 +177,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1096"/>
         <source> l/min</source>
-        <translation type="unfinished"/>
+        <translation>l/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1098"/>
@@ -327,12 +327,12 @@
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="134"/>
         <source>10m</source>
-        <translation type="unfinished"/>
+        <translation>10m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="136"/>
         <source>30ft</source>
-        <translation type="unfinished"/>
+        <translation>30ft</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="384"/>
@@ -356,7 +356,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1080"/>
         <source>Final Depth</source>
-        <translation type="unfinished"/>
+        <translation>Profundidade final</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1081"/>
@@ -376,7 +376,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1278"/>
         <source>Discard the Plan?</source>
-        <translation type="unfinished"/>
+        <translation>Descartar o planejamento?</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1279"/>
@@ -476,7 +476,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="109"/>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="126"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="140"/>
@@ -494,7 +494,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
         <source>Download From Dive Computer</source>
-        <translation type="unfinished"/>
+        <translation>Baixar dados do computador de mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
@@ -504,7 +504,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="32"/>
         <source>Dive Computer</source>
-        <translation type="unfinished"/>
+        <translation>Computador de mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="45"/>
@@ -514,27 +514,27 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="59"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="66"/>
         <source>Force download of all dives</source>
-        <translation type="unfinished"/>
+        <translation>Forçar baixar todos os mergulhos</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
         <source>Always prefer downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Sempre preferir mergulhos baixados</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="95"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="102"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -554,7 +554,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="148"/>
         <source>Coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Coordenadas</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="169"/>
@@ -599,18 +599,18 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="208"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Roupa</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="225"/>
         <location filename="../qt-ui/maintab.cpp" line="391"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Notas</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="269"/>
         <source>Equipment</source>
-        <translation type="unfinished"/>
+        <translation>Equipamento</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="356"/>
@@ -625,7 +625,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="417"/>
         <source>Interval</source>
-        <translation type="unfinished"/>
+        <translation>Intervalo</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="436"/>
@@ -646,12 +646,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="493"/>
         <source>Max. Depth</source>
-        <translation type="unfinished"/>
+        <translation>Profundidade máxima</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="512"/>
         <source>Ave. Depth</source>
-        <translation type="unfinished"/>
+        <translation>Profundidade Média</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="531"/>
@@ -666,12 +666,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
         <source>Air Temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura do Ar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="588"/>
         <source>Water Temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura da água</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="607"/>
@@ -681,7 +681,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="626"/>
         <source>Salinity</source>
-        <translation type="unfinished"/>
+        <translation>Salinidade</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="663"/>
@@ -769,7 +769,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/maintab.cpp" line="445"/>
         <location filename="../qt-ui/maintab.cpp" line="446"/>
         <source>/min</source>
-        <translation type="unfinished"/>
+        <translation>/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="409"/>
@@ -802,7 +802,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="215"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="174"/>
@@ -842,7 +842,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="251"/>
         <source>Ctrl+N</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+N</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="256"/>
@@ -857,7 +857,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="262"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="267"/>
@@ -872,7 +872,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="273"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="278"/>
@@ -883,7 +883,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="284"/>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="289"/>
@@ -894,7 +894,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="295"/>
         <source>Ctrl+W</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
@@ -906,7 +906,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="306"/>
         <source>Ctrl+I</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="311"/>
@@ -1041,7 +1041,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="322"/>
         <source>Ctrl+P</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+P</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="327"/>
@@ -1051,42 +1051,42 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="338"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="346"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="364"/>
         <source>Add Dive</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="383"/>
         <source>Auto Group</source>
-        <translation type="unfinished"/>
+        <translation>Auto agrupar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="404"/>
         <source>Ctrl+2</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+2</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="412"/>
         <source>Ctrl+3</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+3</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="420"/>
         <source>Ctrl+4</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+4</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="428"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+1</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="433"/>
@@ -1096,7 +1096,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="436"/>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Esquerda</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="441"/>
@@ -1106,12 +1106,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="444"/>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Direita</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="449"/>
         <source>Select Events</source>
-        <translation type="unfinished"/>
+        <translation>Selecionar eventos</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="454"/>
@@ -1126,12 +1126,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="467"/>
         <source>F1</source>
-        <translation type="unfinished"/>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Ctrl+5</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+5</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="110"/>
@@ -1195,7 +1195,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation type="unfinished"/>
+        <translation>Padrões</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
@@ -1205,7 +1205,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="105"/>
         <source>Graph</source>
-        <translation type="unfinished"/>
+        <translation>Gráfico</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="131"/>
@@ -1220,7 +1220,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="147"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Tamanho da fonte</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="160"/>
@@ -1235,7 +1235,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="178"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="187"/>
@@ -1270,7 +1270,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="273"/>
         <source>Personalize</source>
-        <translation type="unfinished"/>
+        <translation>Personalizar</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="297"/>
@@ -1305,7 +1305,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="351"/>
         <source>Volume</source>
-        <translation type="unfinished"/>
+        <translation>Volume</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="358"/>
@@ -1350,7 +1350,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="437"/>
         <source>Time units</source>
-        <translation type="unfinished"/>
+        <translation>Unidades de tempo</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="443"/>
@@ -1370,7 +1370,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="492"/>
         <source>Show</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="500"/>
@@ -1536,17 +1536,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="23"/>
         <source>Print options</source>
-        <translation type="unfinished"/>
+        <translation>Imprimir opções</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>Print only selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Imprimir somente mergulhos selecionados</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="60"/>
         <source>Print in color</source>
-        <translation type="unfinished"/>
+        <translation>Imprimir colorido</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="86"/>
@@ -1571,7 +1571,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="162"/>
         <source>Ordering</source>
-        <translation type="unfinished"/>
+        <translation>Ordenando</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="180"/>
@@ -1608,7 +1608,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/printoptions.ui" line="370"/>
         <location filename="../qt-ui/printoptions.ui" line="386"/>
         <source>0</source>
-        <translation type="unfinished"/>
+        <translation>0</translation>
     </message>
 </context>
 <context>
@@ -1840,7 +1840,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/renumber.ui" line="14"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>Renumerar</translation>
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="31"/>
@@ -2027,7 +2027,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="400"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="400"/>
@@ -2117,7 +2117,7 @@ Maximum</source>
     <message>
         <location filename="../dive.c" line="57"/>
         <source>pascal</source>
-        <translation type="unfinished"/>
+        <translation>pascal</translation>
     </message>
     <message>
         <location filename="../dive.c" line="61"/>

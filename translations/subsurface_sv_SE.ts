@@ -196,7 +196,7 @@ radera den valda dykdatorn?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="316"/>
         <source>Visible:</source>
-        <translation type="unfinished"/>
+        <translation>Synlig:</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="631"/>
@@ -1492,7 +1492,7 @@ vänligen ta bort dessa först.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>Print</source>
-        <translation type="unfinished"/>
+        <translation>Skriv ut</translation>
     </message>
 </context>
 <context>

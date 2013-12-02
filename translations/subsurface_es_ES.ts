@@ -29,7 +29,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="14"/>
         <source>Import CSV file</source>
-        <translation type="unfinished"/>
+        <translation>Importar archivo CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="81"/>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
         <source>He%</source>
-        <translation type="unfinished"/>
+        <translation>He%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="163"/>
@@ -196,7 +196,7 @@ ordenador seleccionado ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="316"/>
         <source>Visible:</source>
-        <translation type="unfinished"/>
+        <translation>Visible:</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="631"/>
@@ -226,7 +226,7 @@ ordenador seleccionado ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="637"/>
         <source>add dive(s) to trip immediately above</source>
-        <translation type="unfinished"/>
+        <translation>Añadir inmersión(es) al viaje de arriba</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="640"/>
@@ -256,7 +256,7 @@ ordenador seleccionado ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="651"/>
         <source>shift times</source>
-        <translation type="unfinished"/>
+        <translation>Variar horas</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="678"/>
@@ -338,7 +338,7 @@ ordenador seleccionado ?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="384"/>
         <source>Handler Position Error</source>
-        <translation type="unfinished"/>
+        <translation>Error en la posición del punto</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="385"/>
@@ -414,7 +414,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1140"/>
         <source>date</source>
-        <translation type="unfinished"/>
+        <translation>fecha</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1142"/>
@@ -444,17 +444,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1146"/>
         <source>suit</source>
-        <translation type="unfinished"/>
+        <translation>traje</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1147"/>
         <source>cyl</source>
-        <translation type="unfinished"/>
+        <translation>bot</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1152"/>
         <source>location</source>
-        <translation type="unfinished"/>
+        <translation>ubicación</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1149"/>
@@ -571,17 +571,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Start time</source>
-        <translation type="unfinished"/>
+        <translation>Hora de inicio</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <source>Air temp</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura del aire</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <source>Water temp</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura del agua</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="127"/>
@@ -923,7 +923,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="319"/>
         <source>&amp;Print</source>
-        <translation>&amp;Imprimir</translation>
+        <translation>Im&amp;primir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="330"/>
@@ -938,7 +938,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="343"/>
         <source>Import from &amp;dive computer</source>
-        <translation>Importar &amp;del ordenador de buceo</translation>
+        <translation>Importar del or&amp;denador de buceo</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="351"/>
@@ -1028,7 +1028,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="488"/>
         <source>Import CSV</source>
-        <translation>Importar CSD</translation>
+        <translation>Importar CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="491"/>
@@ -1103,7 +1103,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="441"/>
         <source>Next DC</source>
-        <translation>Siguiente DC</translation>
+        <translation>Siguiente ordenador</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="444"/>
@@ -1197,7 +1197,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation type="unfinished"/>
+        <translation>Predeterminadas</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
@@ -1454,7 +1454,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="646"/>
         <source>max PPO2</source>
-        <translation type="unfinished"/>
+        <translation>max PPO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="759"/>
@@ -1487,12 +1487,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="32"/>
         <source>&amp;Print</source>
-        <translation>&amp;Imprimir</translation>
+        <translation>Im&amp;primir</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>Print</source>
-        <translation type="unfinished"/>
+        <translation>Imprimir</translation>
     </message>
 </context>
 <context>
@@ -1618,27 +1618,27 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="133"/>
         <source>Add Gas Change</source>
-        <translation type="unfinished"/>
+        <translation>Añadir cambio de gas</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="144"/>
         <source>Add Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Añadir marcador</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="152"/>
         <source>Remove Event</source>
-        <translation type="unfinished"/>
+        <translation>Borrar evento</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="157"/>
         <source>Hide similar events</source>
-        <translation type="unfinished"/>
+        <translation>Ocultar eventos similares</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="200"/>
         <source>Hide events</source>
-        <translation>Ocultar eeventos</translation>
+        <translation>Ocultar eventos</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="201"/>
@@ -1664,7 +1664,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="466"/>
         <source>Set Duration: 10 minutes</source>
-        <translation type="unfinished"/>
+        <translation>Fijar duración: 10 minutos</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="512"/>
@@ -1746,52 +1746,52 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1613"/>
         <source>Gas Used:</source>
-        <translation type="unfinished"/>
+        <translation>Gas usado:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1615"/>
         <source>SAC:</source>
-        <translation type="unfinished"/>
+        <translation>CAS:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1617"/>
         <source>Max. CNS:</source>
-        <translation type="unfinished"/>
+        <translation>Max. CNS:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1619"/>
         <source>Weights:</source>
-        <translation type="unfinished"/>
+        <translation>Lastre:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1624"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Notas:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1631"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Divemaster:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1633"/>
         <source>Buddy:</source>
-        <translation type="unfinished"/>
+        <translation>Compañero:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1635"/>
         <source>Suit:</source>
-        <translation type="unfinished"/>
+        <translation>Traje:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1637"/>
         <source>Viz:</source>
-        <translation type="unfinished"/>
+        <translation>Visibilidad:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1639"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Calificación:</translation>
     </message>
 </context>
 <context>
@@ -1814,7 +1814,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/globe.cpp" line="251"/>
         <source>Editing dive - move the map and double-click to set the dive location</source>
-        <translation type="unfinished"/>
+        <translation>Editando la inmersión - mueve el mapa y haz doble clic para fijar la posición del buceo</translation>
     </message>
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="58"/>
@@ -1855,27 +1855,27 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="20"/>
         <source>Shift selected times</source>
-        <translation type="unfinished"/>
+        <translation>Variar las horas seleccionadas</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="37"/>
         <source>Shift times of selected dives by</source>
-        <translation type="unfinished"/>
+        <translation>Variar las horas de las inmersiones seleccionadas en</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="73"/>
         <source>h:mm</source>
-        <translation type="unfinished"/>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="83"/>
         <source>earlier</source>
-        <translation type="unfinished"/>
+        <translation>más pronto</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="90"/>
         <source>later</source>
-        <translation type="unfinished"/>
+        <translation>más tarde</translation>
     </message>
 </context>
 <context>
@@ -1888,7 +1888,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software de registro de inmersiones multiplataforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.cpp" line="23"/>
@@ -1898,7 +1898,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/about.cpp" line="24"/>
         <source>&amp;Website</source>
-        <translation>&amp;Página web</translation>
+        <translation>Página &amp;web</translation>
     </message>
 </context>
 <context>
@@ -1911,7 +1911,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="116"/>
         <source>Wait a bit until we have something...</source>
-        <translation type="unfinished"/>
+        <translation>Espera un momento a que tengamos algo ...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="132"/>
@@ -1957,7 +1957,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="761"/>
         <source>ml</source>
-        <translation type="unfinished"/>
+        <translation>ml</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="761"/>
@@ -1991,22 +1991,22 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Download Location Data</source>
-        <translation type="unfinished"/>
+        <translation>Descargar datos de ubicación</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
         <source>Status:</source>
-        <translation type="unfinished"/>
+        <translation>Status:</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="32"/>
         <source>Enter your ID here</source>
-        <translation type="unfinished"/>
+        <translation>Introduce aquí tu ID</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="39"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Descargar</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="63"/>
@@ -2021,7 +2021,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="91"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Subir</translation>
     </message>
 </context>
 <context>
@@ -2039,7 +2039,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="460"/>
         <source>Clicking here will remove this weigthsystem.</source>
-        <translation type="unfinished"/>
+        <translation>Pulsar aquí borrará este sistema de lastre.</translation>
     </message>
 </context>
 <context>
@@ -2048,7 +2048,8 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/models.cpp" line="1411"/>
         <source>Year 
  &gt; Month / Trip</source>
-        <translation type="unfinished"/>
+        <translation>Año
+&gt; Mes / Viaje</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1412"/>
@@ -2236,13 +2237,13 @@ Media</translation>
         <location filename="../file.c" line="265"/>
         <location filename="../file.c" line="267"/>
         <source>Failed to read &apos;%s&apos;. Use import for CSV files.</source>
-        <translation type="unfinished"/>
+        <translation>Falló al leer &apos;%s&apos;. Usa &quot;Importar&quot; para archivos CSV.</translation>
     </message>
     <message>
         <location filename="../file.c" line="347"/>
         <location filename="../file.c" line="349"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
-        <translation type="unfinished"/>
+        <translation>El máximo número de columnas que soporta importar CSV es %d</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
@@ -2334,7 +2335,7 @@ Media</translation>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
-        <translation type="unfinished"/>
+        <translation>por debajo del techo</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
@@ -2631,13 +2632,15 @@ Parada de seguridad:%umin @ %.0f %s</translation>
         <location filename="../profile.c" line="1199"/>
         <source>@:%d:%02d
 D:%.1f %s</source>
-        <translation type="unfinished"/>
+        <translation>@:%d:%02d
+P:%.1f %s</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1219"/>
         <source>%s
 SAC:%2.1fl/min</source>
-        <translation type="unfinished"/>
+        <translation>%s
+CAS:%2.1fl/min</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1258"/>
@@ -2724,25 +2727,29 @@ EADD:%d%s</translation>
         <location filename="../profile.c" line="1280"/>
         <source>%s
 Deco:%umin @ %.0f %s (calc)</source>
-        <translation type="unfinished"/>
+        <translation>%s
+Deco:%umin @ %.0f %s (calc)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1289"/>
         <source>%s
 In deco (calc)</source>
-        <translation type="unfinished"/>
+        <translation>%s
+En deco (calc)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1292"/>
         <source>%s
 NDL:%umin (calc)</source>
-        <translation type="unfinished"/>
+        <translation>%s
+NDL:%umin (calc)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1296"/>
         <source>%s
 TTS:%umin (calc)</source>
-        <translation type="unfinished"/>
+        <translation>%s
+TTS:%umin (calc)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1405"/>
@@ -2766,13 +2773,13 @@ TTS:%umin (calc)</source>
     <message>
         <location filename="../profile.c" line="1425"/>
         <source>%s%sV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1429"/>
         <location filename="../profile.c" line="1433"/>
         <source>%s %sV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1440"/>
@@ -2792,23 +2799,24 @@ TTS:%umin (calc)</source>
     <message>
         <location filename="../qt-gui.cpp" line="460"/>
         <source>%1, %2 %3, %4 %5:%6</source>
-        <translation type="unfinished"/>
+        <translation>%1, %2 %3, %4 %5:%6</translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="473"/>
         <source>%1 %2, %3
 %4:%5</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2, %3
+%4:%5</translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="486"/>
         <source>%1 %2 (%3 dives)</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 inmersiones)</translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="491"/>
         <source>%1 %2 (1 dive)</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (1 inmersión)</translation>
     </message>
     <message>
         <location filename="../dive.c" line="13"/>
@@ -2878,12 +2886,12 @@ TTS:%umin (calc)</source>
     <message>
         <location filename="../dive.c" line="17"/>
         <source>fresh</source>
-        <translation type="unfinished"/>
+        <translation>agua dulce</translation>
     </message>
     <message>
         <location filename="../dive.c" line="17"/>
         <source>student</source>
-        <translation type="unfinished"/>
+        <translation>estudiante</translation>
     </message>
     <message>
         <location filename="../dive.c" line="18"/>
@@ -2898,7 +2906,7 @@ TTS:%umin (calc)</source>
     <message>
         <location filename="../dive.c" line="18"/>
         <source>instructor</source>
-        <translation type="unfinished"/>
+        <translation>instructor</translation>
     </message>
     <message>
         <location filename="../dive.c" line="19"/>

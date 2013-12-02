@@ -196,7 +196,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="316"/>
         <source>Visible:</source>
-        <translation type="unfinished"/>
+        <translation>Visible:</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="631"/>
@@ -1492,7 +1492,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>Print</source>
-        <translation type="unfinished"/>
+        <translation>Imprimer</translation>
     </message>
 </context>
 <context>

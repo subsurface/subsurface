@@ -112,7 +112,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="65"/>
         <source>He%</source>
-        <translation type="unfinished"/>
+        <translation>He%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="163"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="316"/>
         <source>Visible:</source>
-        <translation type="unfinished"/>
+        <translation>Synlig:</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="631"/>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="637"/>
         <source>add dive(s) to trip immediately above</source>
-        <translation type="unfinished"/>
+        <translation>legg dykk til turen over</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="640"/>
@@ -413,7 +413,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1140"/>
         <source>date</source>
-        <translation type="unfinished"/>
+        <translation>dato</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1142"/>
@@ -443,17 +443,17 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1146"/>
         <source>suit</source>
-        <translation type="unfinished"/>
+        <translation>drakt</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1147"/>
         <source>cyl</source>
-        <translation type="unfinished"/>
+        <translation>flaske</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1152"/>
         <source>location</source>
-        <translation type="unfinished"/>
+        <translation>sted</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1149"/>
@@ -570,17 +570,17 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Start time</source>
-        <translation type="unfinished"/>
+        <translation>Starttid</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <source>Air temp</source>
-        <translation type="unfinished"/>
+        <translation>Lufttemp.</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <source>Water temp</source>
-        <translation type="unfinished"/>
+        <translation>Vanntemp.</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="127"/>
@@ -972,7 +972,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="388"/>
         <source>Toggle &amp;Zoom</source>
-        <translation>Bytt %zoom</translation>
+        <translation>Bytt &amp;zoom</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="393"/>
@@ -1017,7 +1017,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="480"/>
         <source>P&amp;lan Dive</source>
-        <translation>P%lanlegg dykk</translation>
+        <translation>P&amp;lanlegg dykk</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="483"/>
@@ -1032,7 +1032,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="491"/>
         <source>Import CS&amp;V</source>
-        <translation>Importer CS%V</translation>
+        <translation>Importer CS&amp;V</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="496"/>
@@ -1491,7 +1491,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>Print</source>
-        <translation type="unfinished"/>
+        <translation>Skriv ut</translation>
     </message>
 </context>
 <context>
@@ -1617,22 +1617,22 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="133"/>
         <source>Add Gas Change</source>
-        <translation type="unfinished"/>
+        <translation>Legg til gassbytte</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="144"/>
         <source>Add Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Legg til bokmerke</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="152"/>
         <source>Remove Event</source>
-        <translation type="unfinished"/>
+        <translation>Fjern hendelse</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="157"/>
         <source>Hide similar events</source>
-        <translation type="unfinished"/>
+        <translation>Skjul lignende hendelser</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="200"/>
@@ -1745,52 +1745,52 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1613"/>
         <source>Gas Used:</source>
-        <translation type="unfinished"/>
+        <translation>Gass brukt:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1615"/>
         <source>SAC:</source>
-        <translation type="unfinished"/>
+        <translation>SAC:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1617"/>
         <source>Max. CNS:</source>
-        <translation type="unfinished"/>
+        <translation>Mac. CNS:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1619"/>
         <source>Weights:</source>
-        <translation type="unfinished"/>
+        <translation>Vekter:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1624"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Notater:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1631"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Dykkeleder:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1633"/>
         <source>Buddy:</source>
-        <translation type="unfinished"/>
+        <translation>Buddy:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1635"/>
         <source>Suit:</source>
-        <translation type="unfinished"/>
+        <translation>Drakt:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1637"/>
         <source>Viz:</source>
-        <translation type="unfinished"/>
+        <translation>Sikt:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1639"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Vurdering:</translation>
     </message>
 </context>
 <context>
@@ -1887,7 +1887,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multiplattform dykkelogg&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel med flere, 2011, 2012, 2013&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.cpp" line="23"/>
@@ -1910,7 +1910,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="116"/>
         <source>Wait a bit until we have something...</source>
-        <translation type="unfinished"/>
+        <translation>Vent litt...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="132"/>

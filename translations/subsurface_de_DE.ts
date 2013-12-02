@@ -195,7 +195,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="316"/>
         <source>Visible:</source>
-        <translation type="unfinished"/>
+        <translation>Sichtbar:</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="631"/>
@@ -626,7 +626,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="417"/>
         <source>Interval</source>
-        <translation>Intervall</translation>
+        <translation>Oberflächenpause</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="436"/>
@@ -1491,7 +1491,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>Print</source>
-        <translation type="unfinished"/>
+        <translation>Drucken</translation>
     </message>
 </context>
 <context>

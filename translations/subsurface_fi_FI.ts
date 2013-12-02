@@ -1492,7 +1492,7 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>Print</source>
-        <translation type="unfinished"/>
+        <translation>Tulosta</translation>
     </message>
 </context>
 <context>
