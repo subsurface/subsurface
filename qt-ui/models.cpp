@@ -12,6 +12,7 @@
 #include "../device.h"
 #include "../statistics.h"
 #include "../qthelper.h"
+#include "../gettextfromc.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -610,7 +611,7 @@ QVariant WSInfoModel::data(const QModelIndex& index, int role) const
 					ret = gr;
 					break;
 				case DESCRIPTION:
-					ret = QString(info->name);
+					ret = gettextFromC::instance()->tr(info->name);
 					break;
 			}
 			break;
@@ -761,7 +762,7 @@ TankInfoModel::TankInfoModel() :  rows(-1)
 	setHeaderDataStrings( QStringList() << tr("Description") << tr("ml") << tr("bar"));
 	struct tank_info_t *info = tank_info;
 	for (info = tank_info; info->name; info++, rows++){
-		QString infoName(info->name);
+		QString infoName = gettextFromC::instance()->tr(info->name);
 		if (infoName.count() > biggerEntry.count())
 			biggerEntry = infoName;
 	}
