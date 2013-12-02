@@ -27,6 +27,7 @@
 #include "../device.h"
 #include "../helpers.h"
 #include "../planner.h"
+#include "../gettextfromc.h"
 
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
@@ -969,10 +970,10 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	item->setPos(x, y);
 	scene()->addItem(item);
 
-	/* we display the event on screen - so translate */
-	QString name = tr(ev->name);
+	/* we display the event on screen - so translate (with the correct context for events) */
+	QString name = gettextFromC::instance()->tr(ev->name);
 	if (ev->value) {
-		if (ev->name && name == "gaschange") {
+		if (ev->name && strcmp(ev->name, "gaschange") == 0) {
 			int he = get_he(&dive->cylinder[entry->cylinderindex].gasmix);
 			int o2 = get_o2(&dive->cylinder[entry->cylinderindex].gasmix);
 
