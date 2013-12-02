@@ -594,7 +594,10 @@ void MainWindow::initialUiSetup()
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
-	resize(sz);
+	if (settings.value("maximized", isMaximized()).value<bool>())
+		showMaximized();
+	else
+		resize(sz);
 
 	state = (CurrentState) settings.value("lastState", 0).toInt();
 	switch(state){
@@ -670,7 +673,9 @@ void MainWindow::writeSettings()
 
 	settings.beginGroup("MainWindow");
 	settings.setValue("lastState", (int) state);
-	settings.setValue("size",size());
+	settings.setValue("maximized", isMaximized());
+	if (!isMaximized())
+		settings.setValue("size", size());
 	if (state == VIEWALL){
 		saveSplitterSizes();
 	}
