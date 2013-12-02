@@ -135,6 +135,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	bool clear = !(QApplication::keyboardModifiers() && Qt::ControlModifier);
 	bool toggle = !clear;
 	bool first = true;
+	QList<int> selectedDiveIds;
 	for_each_dive(idx, dive) {
 		long lat_diff, lon_diff;
 		if (!dive_has_gps_location(dive))
@@ -152,9 +153,10 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 			mainWindow()->dive_list()->unselectDives();
 			clear = false;
 		}
-		mainWindow()->dive_list()->selectDive(idx, first, toggle);
+		selectedDiveIds.push_back(idx);
 		first = false;
 	}
+	mainWindow()->dive_list()->selectDives(selectedDiveIds);
 }
 
 void GlobeGPS::repopulateLabels()

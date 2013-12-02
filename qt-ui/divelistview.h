@@ -26,6 +26,7 @@ public:
 	bool eventFilter(QObject* , QEvent* );
 	void unselectDives();
 	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
+	void selectDives(const QList<int>& newDiveSelection);
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
