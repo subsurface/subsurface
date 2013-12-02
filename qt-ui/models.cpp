@@ -485,7 +485,16 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 	case TYPE:
 		if (!value.isNull()) {
 			if (!ws->description || gettextFromC::instance()->tr(ws->description) != value.toString()) {
-				ws->description = strdup(value.toString().toUtf8().constData());
+				// loop over translations to see if one matches
+				int i = -1;
+				while(ws_info[++i].name) {
+					if (gettextFromC::instance()->tr(ws_info[i].name) == value.toString()) {
+						ws->description = ws_info[i].name;
+						break;
+					}
+				}
+				if (ws_info[i].name == NULL) // didn't find a match
+					ws->description = strdup(value.toString().toUtf8().constData());
 				changed = true;
 			}
 		}
