@@ -1013,7 +1013,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 /* Let's try to do some deco calculations.
  * Needs to be run before calculate_gas_information so we know that if we have a po2, where in ccr-mode.
  */
-static void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
 	int i;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, TRUE)) / 1000.0;
@@ -1034,8 +1034,9 @@ static void calculate_deco_information(struct dive *dive, struct divecomputer *d
 		for (j=0; j<16; j++)
 			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
 
-		/* should we do more calculations? */
-		if (prefs.calc_ndl_tts) {
+		/* should we do more calculations?
+		 * We don't for print-mode because this info doesn't show up there */
+		if (prefs.calc_ndl_tts && !print_mode) {
 			/* We are going to mess up deco state, so store it for later restore */
 			char *cache_data = NULL;
 			cache_deco_state(tissue_tolerance, &cache_data);
@@ -1117,7 +1118,7 @@ static void calculate_gas_information(struct dive *dive,  struct plot_info *pi)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
+struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc, bool print_mode)
 {
 	struct plot_info *pi;
 
@@ -1147,7 +1148,7 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 
 	/* Then, calculate deco information */
 	if (prefs.profile_calc_ceiling)
-		calculate_deco_information(dive, dc, pi);
+		calculate_deco_information(dive, dc, pi, print_mode);
 
 	/* And finaly calculate gas partial pressures */
 	calculate_gas_information(dive, pi);

@@ -403,7 +403,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	gc.maxy = (profile_grid_area.height() - 2 * profile_grid_area.y());
 
 	/* This is per-dive-computer */
-	gc.pi = *create_plot_info(dive, dc, &gc);
+	gc.pi = *create_plot_info(dive, dc, &gc, printMode);
 
 	/* Bounding box */
 	QPen pen = defaultPen;
