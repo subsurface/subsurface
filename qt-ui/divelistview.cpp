@@ -228,7 +228,6 @@ void DiveListView::selectDives(const QList< int >& newDiveSelection)
 
 	QItemSelection newDeselected = selectionModel()->selection();
 	QModelIndexList diveList;
-	QModelIndexList tripList;
 
 	int firstSelectedDive = -1;
 	/* context for temp. variables. */{
@@ -246,29 +245,18 @@ void DiveListView::selectDives(const QList< int >& newDiveSelection)
 		diveList.append(m->match(m->index(0,0), DiveTripModel::DIVE_IDX,
 			i, 2, Qt::MatchRecursive).first());
 	}
-
 	Q_FOREACH(const QModelIndex& idx, diveList){
 		selectionModel()->select(idx, flags);
-		if(idx.parent().isValid()){
-			if(tripList.contains(idx.parent()))
-				continue;
-			tripList.append(idx.parent());
-		}
-	}
-
-	Q_FOREACH(const QModelIndex& idx, tripList){
-		if(!isExpanded(idx)){
-			expand(idx);
+		if(idx.parent().isValid() && !isExpanded(idx.parent())){
+			expand(idx.parent());
 		}
 	}
 	setAnimated(true);
-
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 		this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 		this, SLOT(currentChanged(QModelIndex,QModelIndex)));
-
 	Q_EMIT currentDiveChanged(selected_dive);
 	const QModelIndex& idx = m->match(m->index(0,0), DiveTripModel::DIVE_IDX,selected_dive, 2, Qt::MatchRecursive).first();
 	scrollTo(idx);
