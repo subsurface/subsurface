@@ -263,6 +263,9 @@
    </attribute>
    <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
+     <widget class="KMessageWidget" name="diveEquipmentMessage" native="true"/>
+    </item>
+    <item row="1" column="0">
      <widget class="QScrollArea" name="scrollArea_2">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -298,9 +301,6 @@
         <property name="spacing">
          <number>2</number>
         </property>
-        <item row="0" column="0">
-         <widget class="KMessageWidget" name="diveEquipmentMessage" native="true"/>
-        </item>
         <item row="1" column="0">
          <widget class="QWidget" name="widget" native="true">
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -343,6 +343,9 @@
    </attribute>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
+     <widget class="KMessageWidget" name="diveInfoMessage" native="true"/>
+    </item>
+    <item row="1" column="0">
      <widget class="QScrollArea" name="scrollArea_3">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -650,6 +653,9 @@
    </attribute>
    <layout class="QGridLayout" name="gridLayout1">
     <item row="0" column="1">
+     <widget class="KMessageWidget" name="diveStatisticsMessage" native="true"/>
+    </item>
+    <item row="1" column="1">
      <widget class="QScrollArea" name="scrollArea_4">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>

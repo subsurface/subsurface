@@ -32,20 +32,15 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.setupUi(this);
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
-	ui.diveNotesMessage->hide();
-	ui.diveEquipmentMessage->hide();
-	ui.diveNotesMessage->setCloseButtonVisible(false);
-	ui.diveEquipmentMessage->setCloseButtonVisible(false);
+	closeMessage();
 
 	QAction *action = new QAction(tr("Save"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
-	ui.diveEquipmentMessage->addAction(action);
-	ui.diveNotesMessage->addAction(action);
+	addMessageAction(action);
 
 	action = new QAction(tr("Cancel"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
-	ui.diveEquipmentMessage->addAction(action);
-	ui.diveNotesMessage->addAction(action);
+	addMessageAction(action);
 
 	if (qApp->style()->objectName() == "oxygen")
 		setDocumentMode(true);
@@ -164,6 +159,43 @@ void MainTab::addDiveStarted()
 	editMode = ADD;
 }
 
+void MainTab::addMessageAction(QAction* action)
+{
+	ui.diveEquipmentMessage->addAction(action);
+	ui.diveNotesMessage->addAction(action);
+	ui.diveInfoMessage->addAction(action);
+	ui.diveStatisticsMessage->addAction(action);
+}
+
+void MainTab::hideMessage()
+{
+	ui.diveNotesMessage->animatedHide();
+	ui.diveEquipmentMessage->animatedHide();
+	ui.diveInfoMessage->animatedHide();
+	ui.diveStatisticsMessage->animatedHide();
+}
+
+void MainTab::closeMessage()
+{
+	hideMessage();
+	ui.diveNotesMessage->setCloseButtonVisible(false);
+	ui.diveEquipmentMessage->setCloseButtonVisible(false);
+	ui.diveInfoMessage->setCloseButtonVisible(false);
+	ui.diveStatisticsMessage->setCloseButtonVisible(false);
+}
+
+void MainTab::displayMessage(QString str)
+{
+	ui.diveNotesMessage->setText(str);
+	ui.diveNotesMessage->animatedShow();
+	ui.diveEquipmentMessage->setText(str);
+	ui.diveEquipmentMessage->animatedShow();
+	ui.diveInfoMessage->setText(str);
+	ui.diveInfoMessage->animatedShow();
+	ui.diveStatisticsMessage->setText(str);
+	ui.diveStatisticsMessage->animatedShow();
+}
+
 void MainTab::enableEdition(EditMode newEditMode)
 {
 	if (selected_dive < 0 || editMode != NONE)
@@ -175,23 +207,16 @@ void MainTab::enableEdition(EditMode newEditMode)
 	notesBackup.clear();
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
-		ui.diveNotesMessage->setText(tr("This trip is being edited."));
-		ui.diveNotesMessage->animatedShow();
-		ui.diveEquipmentMessage->setText(tr("This trip is being edited."));
-		ui.diveEquipmentMessage->animatedShow();
+		displayMessage(tr("This trip is being edited."));
 		notesBackup[NULL].notes = ui.notes->toPlainText();
 		notesBackup[NULL].location = ui.location->text();
 		editMode = TRIP;
 	} else {
 		if (amount_selected > 1) {
-			ui.diveNotesMessage->setText(tr("Multiple dives are being edited."));
-			ui.diveEquipmentMessage->setText(tr("Multiple dives are being edited."));
+			displayMessage(tr("Multiple dives are being edited."));
 		} else {
-			ui.diveNotesMessage->setText(tr("This dive is being edited."));
-			ui.diveEquipmentMessage->setText(tr("This dive is being edited."));
+			displayMessage(tr("This dive is being edited."));
 		}
-		ui.diveNotesMessage->animatedShow();
-		ui.diveEquipmentMessage->animatedShow();
 
 		// We may be editing one or more dives here. backup everything.
 		struct dive *mydive;
@@ -513,8 +538,7 @@ void MainTab::acceptChanges()
 	mainWindow()->dive_list()->setEnabled(true);
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
-	ui.diveNotesMessage->animatedHide();
-	ui.diveEquipmentMessage->animatedHide();
+	hideMessage();
 	/* now figure out if things have changed */
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
@@ -712,8 +736,7 @@ void MainTab::rejectChanges()
 		}
 	}
 
-	ui.diveNotesMessage->animatedHide();
-	ui.diveEquipmentMessage->animatedHide();
+	hideMessage();
 	mainWindow()->dive_list()->setEnabled(true);
 	notesBackup.clear();
 	resetPallete();

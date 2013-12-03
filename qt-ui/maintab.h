@@ -82,6 +82,10 @@ public slots:
 	void editCylinderWidget(const QModelIndex& index);
 	void editWeightWidget(const QModelIndex& index);
 	void addDiveStarted();
+	void addMessageAction(QAction* action);
+	void hideMessage();
+	void closeMessage();
+	void displayMessage(QString str);
 	void enableEdition(EditMode newEditMode = NONE);
 	void toggleTriggeredColumn();
 private:
