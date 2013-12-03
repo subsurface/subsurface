@@ -1,7 +1,9 @@
 #include "qthelper.h"
+#include "qt-ui/mainwindow.h"
 #include <QRegExp>
 #include <QDebug>
 
+#define tr(_arg) mainWindow()->information()->tr(_arg)
 DiveComputerList::DiveComputerList()
 {
 
@@ -105,7 +107,9 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 		*longitude = 0.0;
 		return true;
 	}
-	QRegExp r("\\s*([SN])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)\\.(\\d+)[^EW]*([EW])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)\\.(\\d+)");
+	QString regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)\\.(\\d+)[^EW%3%4]*([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)\\.(\\d+)")
+			.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
+	QRegExp r(regExp);
 	if (r.indexIn(gps_text) != 8) {
 		// qDebug() << "Hemisphere" << r.cap(1) << "deg" << r.cap(2) << "min" << r.cap(3) << "decimal" << r.cap(4);
 		// qDebug() << "Hemisphere" << r.cap(5) << "deg" << r.cap(6) << "min" << r.cap(7) << "decimal" << r.cap(8);
