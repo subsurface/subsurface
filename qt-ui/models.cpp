@@ -63,7 +63,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 {
 	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
-	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  tr("O2%") << tr("He%") << tr("Switch at"));
+	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%") << tr("Switch at"));
 }
 
 CylindersModel *CylindersModel::instance()

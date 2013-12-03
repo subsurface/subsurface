@@ -365,8 +365,6 @@ void DiveListView::reloadHeaderActions()
 	// Populate the context menu of the headers that will show
 	// the menu to show / hide columns.
 	if (!header()->actions().size()) {
-		QAction *visibleAction = new QAction(tr("Visible:"), header());
-		header()->addAction(visibleAction);
 		QSettings s;
 		s.beginGroup("DiveListColumnState");
 		for(int i = 0; i < model()->columnCount(); i++) {

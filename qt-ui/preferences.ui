@@ -301,7 +301,7 @@
             <item row="0" column="1">
              <widget class="QRadioButton" name="meter">
               <property name="text">
-               <string>Meter</string>
+	       <string>meter</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup</string>
@@ -311,7 +311,7 @@
             <item row="0" column="2">
              <widget class="QRadioButton" name="feet">
               <property name="text">
-               <string>Feet</string>
+	       <string>feet</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup</string>
@@ -328,7 +328,7 @@
             <item row="1" column="1">
              <widget class="QRadioButton" name="bar">
               <property name="text">
-               <string>Bar</string>
+	       <string>bar</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_2</string>
@@ -338,7 +338,7 @@
             <item row="1" column="2">
              <widget class="QRadioButton" name="psi">
               <property name="text">
-               <string>Psi</string>
+	       <string>psi</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_2</string>
@@ -355,7 +355,7 @@
             <item row="2" column="1">
              <widget class="QRadioButton" name="liter">
               <property name="text">
-               <string>Liter</string>
+	       <string>liter</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_3</string>
@@ -365,7 +365,7 @@
             <item row="2" column="2">
              <widget class="QRadioButton" name="cuft">
               <property name="text">
-               <string>CuFt</string>
+	       <string>cu ft</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_3</string>
@@ -382,7 +382,7 @@
             <item row="3" column="1">
              <widget class="QRadioButton" name="celsius">
               <property name="text">
-               <string>Celsius</string>
+	       <string>celsius</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_4</string>
@@ -392,7 +392,7 @@
             <item row="3" column="2">
              <widget class="QRadioButton" name="fahrenheit">
               <property name="text">
-               <string>Fahrenheit</string>
+	       <string>fahrenheit</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_4</string>
@@ -409,7 +409,7 @@
             <item row="4" column="1">
              <widget class="QRadioButton" name="kgs">
               <property name="text">
-               <string>Kg</string>
+	       <string>kg</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_5</string>
@@ -497,7 +497,7 @@
               <item>
                <widget class="QCheckBox" name="po2">
                 <property name="text">
-                 <string>pO2</string>
+		 <string>pO₂</string>
                 </property>
                </widget>
               </item>
@@ -538,7 +538,7 @@
               <item>
                <widget class="QCheckBox" name="pn2">
                 <property name="text">
-                 <string>pN2</string>
+		 <string>pN₂</string>
                 </property>
                </widget>
               </item>
@@ -643,7 +643,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>max PPO2</string>
+		 <string>max ppO₂</string>
                 </property>
                </widget>
               </item>
