@@ -295,6 +295,9 @@ void MainWindow::on_actionAddDive_triggered()
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
 	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
+
+	dive->latitude.udeg = 0;
+	dive->longitude.udeg = 0;
 	record_dive(dive);
 	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
 	// accepting the dive
@@ -306,7 +309,7 @@ void MainWindow::on_actionAddDive_triggered()
 	ui.infoPane->setCurrentIndex(MAINTAB);
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->createSimpleDive();
-	refreshDisplay();
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
 }
 
 void MainWindow::on_actionRenumber_triggered()

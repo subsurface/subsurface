@@ -602,11 +602,6 @@ void MainTab::acceptChanges()
 		else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
 			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
 		DivePlannerPointsModel::instance()->cancelPlan();
-		// now make sure the selection logic is in a sane state
-		// it's ok to hold on to the dive pointer for this short stretch of code
-		// unselectDives() doesn't mess with the dive_table at all
-		mainWindow()->dive_list()->unselectDives();
-		mainWindow()->dive_list()->selectDive(selected_dive, true, true);
 		mainWindow()->showProfile();
 		mark_divelist_changed(TRUE);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
@@ -619,7 +614,7 @@ void MainTab::acceptChanges()
 	}
 
 	resetPallete();
-	if(editMode == ADD){
+	if(editMode == ADD || editMode == MANUALLY_ADDED_DIVE){
 		mainWindow()->dive_list()->unselectDives();
 		struct dive *d = get_dive(dive_table.nr -1 );
 		// HACK. this shouldn't be here. but apparently it's
@@ -630,14 +625,16 @@ void MainTab::acceptChanges()
 		for_each_dive(i,d){
 			if (d->selected) break;
 		}
+		editMode = NONE;
+		mainWindow()->refreshDisplay();
 		mainWindow()->dive_list()->selectDive( i, true );
 	}else{
+		editMode = NONE;
 		mainWindow()->dive_list()->rememberSelection();
 		sort_table(&dive_table);
 		mainWindow()->refreshDisplay();
 		mainWindow()->dive_list()->restoreSelection();
 	}
-	editMode = NONE;
 }
 
 void MainTab::resetPallete()
