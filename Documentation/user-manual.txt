@@ -1,5 +1,5 @@
 Subsurface 4.0 User Manual
-===========================
+==========================
 :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg, Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem Ferguson
 :revnumber: 4.0
 :revdate: December 2013
@@ -11,8 +11,6 @@ Subsurface 4.0 User Manual
 Welcome as a user of _subsurface_, an advanced dive logging programme with extensive infrastructure to describe, organise and interpret scuba and free dives. _subsurface_ runs on many harware platforms and software environments. These include Linux (many distros), Mac (OS/X) and Windows (Win XP or later). The scope of this document is the use of the _subsurface_ program. To install the software, consult the *Downloads* page on the http://subsurface.hohndel.org/[_subsurface_ web site]. Please discuss issues with this program by writing email to mailto:subsurface@hohndel.org[our mailing list] and report bugs at http://trac.hohndel.org[our bugtracker].  For instructions on how to build the software and (if needed) its dependencies please consult the README file included with the source code.
 
 *Audience*: Recreational Scuba Divers, Free Divers, Tec Divers, Professional Divers
-
-
 
 [[S_StartUsing]]
 Start Using the Program
@@ -443,9 +441,9 @@ button). Then do the following:
 This file can now be opened in _subsurface_ (as described in the previous sections).
 
 [[S_Importingkenozooid]]
-==== Importing dives from *kenozooid*
+==== Importing dives from *Kenozooid*
 
-_kenozooid_ uses UDDF to store dives and is tested to work with _subsurface_.
+_Kenozooid_ uses UDDF to store dives and is tested to work with _subsurface_.
 Make sure you are not using compressed files when importing to _subsurface_
  or uncompress them manually beforehand.
 
@@ -582,9 +580,14 @@ Measurements of *depth differences* can be achieved by using the button with two
 
 The dive profile can include further information that is typically more interesting for tec divers. Enabling these is described in the section entitled Setting up Preferences. Basically you can include graphs of the *partial pressures* of O2, N2, and He during the dive as well as a calculated and dive computer reported deco ceilings (only visible for deep, long, or repetitive dives). The partial pressure graphs are added below the profile data, the calculated ceiling is shown as a green overlay on top of the dive profile. Above the profile the currently used gradient factors are shown (e.g. GF 35/75). Please note that these are NOT the gradient factors in use by the dive computer in question, but the gradient factors used by _subsurface_ to calculate deco obligations during the dive.
 
-The graph can also include the dive computer reported *ceiling* (or more precisely, the first deco stop that the dive computer recorded – note that not all dive computers record this information and make it available for download; for example all of the Suunto dive computers fail to make this very useful data available to divelog software). Because of the differences in used algorithms and amount of data available (and taken into consideration) at the time of the calculation it is unlikely that both of these are the same; this can be true even if the same algorithm and gradient factors are used. It is also quite common that _subsurface_ calculates a ceiling for non-decompression dives when the dive computer stayed in non-deco mode during the whole dive (represented by the [green]#dark green# section in the profile at the beginning of this section). This is caused by the fact that _subsurface_’s calculations describe the deco obligation at that point in time during a dive, while dive computers usually take the upcoming ascent into account. During the ascent some excess Nitrogen (and possibly Helium) are already breathed off so even though the diver technically encountered a ceiling at depth, the dive still does not require an explicit deco stop. This feature allows dive computers to offer longer non-stop bottom time.
+The graph can also include the dive computer reported *ceiling* (or more precisely, the first deco stop that the dive computer recorded – note that not all dive computers record this information and make it available for download; for example all of the Suunto dive computers fail to make this very useful data available to divelog software). Because of the differences in used algorithms and amount of data available (and taken into consideration) at the time of the calculation it is unlikely that both of these are the same; this can be true even if the same algorithm and _gradient factors_(see below) are used. It is also quite common that _subsurface_ calculates a ceiling for non-decompression dives when the dive computer stayed in non-deco mode during the whole dive (represented by the [green]#dark green# section in the profile at the beginning of this section). This is caused by the fact that _subsurface_’s calculations describe the deco obligation at that point in time during a dive, while dive computers usually take the upcoming ascent into account. During the ascent some excess Nitrogen (and possibly Helium) are already breathed off so even though the diver technically encountered a ceiling at depth, the dive still does not require an explicit deco stop. This feature allows dive computers to offer longer non-stop bottom time.
 
-[red]#Needed here: a full length discussion of the GFs and the ceiling calculations#
+For a more detailed explanation of _gradient factors_, use the following links:
+
+- link:References/GradientFactors1.html[Watts K. 2006. Gradient factors for dummies. Rebreatherworld.].
+
+- link:References/UnderstandingM-values.pdf[Baker EC. 1998. Understanding M-values. _Immersed_ Vol. 3, No. 3.]
+
 
 == Organising the logbook
 
@@ -884,15 +887,18 @@ this, but it is reported to be solved sometimes by one of these steps:
  * switch off WiFi while using Bluetooth
 
 
-
-
-
-== APPENDIX C: Important Sections that need writing:
+== APPENDIX C: Important Sections that need writing, revision and editing:
 
 Please add any topics you think are important:
 
 * Setting the preferences
 
-* The Main Menu items need to be covered, providing in-document links where appropriate:
+* The Main Menu items need to be covered systematically, providing in-document links where appropriate:
 
 * Importing GPS positions from subsurface mobile API
+
+* Importing data from other electronic resources - Present information comes from subsurface 3.1.1 manual. How much of it is still valid? Needs to be verified.
+
+* Importing data from dive computers - Appendices A and B come mainly from subsurface 3.1.1 manual. How much of it is still valid? Needs to be verified. Difficult work, but **critical** for the success of subsurface.
+
+* A short technical section on Gradient Factors and GFMin for the uninitiated. This should probably follow the section on dive profiles with in-document link(s) to the Preferences section where GFs are specified.
