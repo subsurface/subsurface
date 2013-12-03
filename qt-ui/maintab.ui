@@ -18,6 +18,9 @@
     <string>Dive Notes</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout_3">
+    <item row="2" column="1">
+     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
+    </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
       <property name="frameShape">
@@ -54,9 +57,6 @@
         <property name="spacing">
          <number>2</number>
         </property>
-        <item row="0" column="0" colspan="2">
-         <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="DateTimeLabel">
           <property name="text">
