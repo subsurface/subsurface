@@ -614,7 +614,8 @@ void MainTab::acceptChanges()
 	// each dive that was selected might have had the temperatures in its active divecomputer changed
 	// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
 	Q_FOREACH(dive *d, notesBackup.keys()) {
-		fixup_dive(d);
+		if (d)
+			fixup_dive(d);
 	}
 
 	editMode = NONE;
