@@ -158,7 +158,7 @@ XSLTDIR = $(DATADIR)/subsurface
 }
 !isEmpty(TRANSLATIONS) {
 	isEmpty(QMAKE_LRELEASE) {
-		win32: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+		win32: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
 		else: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 	}
 	isEmpty(TS_DIR):TS_DIR = translations
