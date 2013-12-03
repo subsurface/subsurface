@@ -185,6 +185,7 @@ private:
 	QColor getColor(const color_indice_t i);
 	QColor get_sac_color(int sac, int avg_sac);
 	void scrollViewTo(const QPoint pos);
+	void createPPLegend(QString tr, const QColor& c, QPointF& legendPos);
 
 	QPen defaultPen;
 	QBrush defaultBrush;

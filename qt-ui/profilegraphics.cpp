@@ -590,6 +590,8 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 	setup_pp_limits(&gc);
 	QColor c;
 	QPointF from, to;
+	QPointF legendPos = QPointF(scene()->sceneRect().width() * 0.4, scene()->sceneRect().height() - 15);
+
 	if (prefs.pp_graphs.pn2) {
 		c = getColor(PN2);
 		entry = pi->entry;
@@ -612,6 +614,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			else
 				from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		}
+		createPPLegend(tr("Pn2"),getColor(PN2), legendPos);
 	}
 
 	if (prefs.pp_graphs.phe) {
@@ -637,6 +640,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			else
 				from = QPointF(SCALEGC(entry->sec, entry->phe));
 		}
+		createPPLegend(tr("PHE"),getColor(PHE), legendPos);
 	}
 	if (prefs.pp_graphs.po2) {
 		c = getColor(PO2);
@@ -660,7 +664,22 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			 else
 				from = QPointF(SCALEGC(entry->sec, entry->po2));
 		}
+		createPPLegend(tr("PO2"),getColor(PO2), legendPos);
 	}
+}
+
+void ProfileGraphicsView::createPPLegend(QString title, const QColor& c, QPointF& legendPos)
+{
+	QGraphicsRectItem *rect = new QGraphicsRectItem(0, 0, 16, 16);
+	rect->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	rect->setBrush(QBrush(c));
+	rect->setPos(legendPos);
+	QGraphicsSimpleTextItem *text = new QGraphicsSimpleTextItem(title);
+	text->setPos(legendPos.x() + rect->boundingRect().width() + 5, legendPos.y() - 6);
+	text->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	scene()->addItem(rect);
+	scene()->addItem(text);
+	legendPos.setX( legendPos.x() + 100);
 }
 
 void ProfileGraphicsView::plot_deco_text()
