@@ -34,41 +34,41 @@ equals($$QMAKE_HOST.os, "Windows"):NUL=NUL
 else:NUL=/dev/null
 PKG_CONFIG_OUT = $$system($$PKG_CONFIG --version 2> $$NUL)
 !isEmpty(PKG_CONFIG_OUT) {
-    CONFIG += link_pkgconfig
+	CONFIG += link_pkgconfig
 } else {
-    message("pkg-config not found, no detection performed. See README for details")
+	message("pkg-config not found, no detection performed. See README for details")
 }
 
 #
 # Find libdivecomputer
 #
 !isEmpty(LIBDCDEVEL) {
-    # find it next to our sources
-    INCLUDEPATH += ../libdivecomputer/include
-    LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
-    LIBDC_LA = ../libdivecomputer/src/libdivecomputer.la
+	# find it next to our sources
+	INCLUDEPATH += ../libdivecomputer/include
+	LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
+	LIBDC_LA = ../libdivecomputer/src/libdivecomputer.la
 } else:!isEmpty(CROSS_PATH):exists($${CROSS_PATH}"/lib/libdivecomputer.a"):exists($${CROSS_PATH}"/lib/libusb-1.0.a") {
-    LIBS += $${CROSS_PATH}"/lib/libdivecomputer.a" $${CROSS_PATH}"/lib/libusb-1.0.a"
+	LIBS += $${CROSS_PATH}"/lib/libdivecomputer.a" $${CROSS_PATH}"/lib/libusb-1.0.a"
 } else:exists(/usr/local/lib/libdivecomputer.a) {
-    LIBS += /usr/local/lib/libdivecomputer.a
-    LIBDC_LA = /usr/local/lib/libdivecomputer.la
+	LIBS += /usr/local/lib/libdivecomputer.a
+	LIBDC_LA = /usr/local/lib/libdivecomputer.la
 } else:exists(/usr/local/lib64/libdivecomputer.a) {
-    LIBS += /usr/local/lib64/libdivecomputer.a
-    LIBDC_LA = /usr/local/lib64/libdivecomputer.la
+	LIBS += /usr/local/lib64/libdivecomputer.a
+	LIBDC_LA = /usr/local/lib64/libdivecomputer.la
 } else:link_pkgconfig {
-    # find it via pkg-config, but we need to pass the --static flag,
-    # so we can't use the PKGCONFIG variable.
-    LIBS += $$system($$PKG_CONFIG --static --libs libdivecomputer)
-    LIBDC_CFLAGS = $$system($$PKG_CONFIG --static --cflags libdivecomputer)
-    QMAKE_CFLAGS += $$LIBDC_CFLAGS
-    QMAKE_CXXFLAGS += $$LIBDC_CFLAGS
-    unset(LIBDC_CFLAGS)
+	# find it via pkg-config, but we need to pass the --static flag,
+	# so we can't use the PKGCONFIG variable.
+	LIBS += $$system($$PKG_CONFIG --static --libs libdivecomputer)
+	LIBDC_CFLAGS = $$system($$PKG_CONFIG --static --cflags libdivecomputer)
+	QMAKE_CFLAGS += $$LIBDC_CFLAGS
+	QMAKE_CXXFLAGS += $$LIBDC_CFLAGS
+	unset(LIBDC_CFLAGS)
 }
 
 !isEmpty(LIBDC_LA):exists($$LIBDC_LA) {
-    # Source the libtool .la file to get the dependent libs
-    LIBS += $$system(". $$LIBDC_LA && echo \$dependency_libs")
-    unset(LIBDC_LA)
+	# Source the libtool .la file to get the dependent libs
+	LIBS += $$system(". $$LIBDC_LA && echo \$dependency_libs")
+	unset(LIBDC_LA)
 }
 
 #
@@ -84,18 +84,18 @@ XML2_LIBS = $$system(xml2-config --libs 2>$$NUL)
 XSLT_LIBS = $$system(xslt-config --libs 2>$$NUL)
 
 link_pkgconfig {
-    isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS) {
-        XML2_CFLAGS = $$system($$PKG_CONFIG --cflags libxml2 2> $$NUL)
-        XML2_LIBS = $$system($$PKG_CONFIG --libs libxml2 2> $$NUL)
-    }
-    isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS) {
-        XSLT_CFLAGS = $$system($$PKG_CONFIG --cflags libxslt 2> $$NUL)
-        XSLT_LIBS = $$system($$PKG_CONFIG --libs libxslt 2> $$NUL)
-    }
-    isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS): \
-        error("Could not find libxml2. Did you forget to install it?")
-    isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS): \
-        error("Could not find libxslt. Did you forget to install it?")
+	isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS) {
+		XML2_CFLAGS = $$system($$PKG_CONFIG --cflags libxml2 2> $$NUL)
+		XML2_LIBS = $$system($$PKG_CONFIG --libs libxml2 2> $$NUL)
+	}
+	isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS) {
+		XSLT_CFLAGS = $$system($$PKG_CONFIG --cflags libxslt 2> $$NUL)
+		XSLT_LIBS = $$system($$PKG_CONFIG --libs libxslt 2> $$NUL)
+	}
+	isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS): \
+		error("Could not find libxml2. Did you forget to install it?")
+	isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS): \
+		error("Could not find libxslt. Did you forget to install it?")
 }
 
 QMAKE_CFLAGS *= $$XML2_CFLAGS $$XSLT_CFLAGS
@@ -125,8 +125,8 @@ else: LIBS += -lmarblewidget
 # Platform-specific changes
 #
 win32 {
-    LIBS += -lwsock32
-    DEFINES -= UNICODE
+	LIBS += -lwsock32
+	DEFINES -= UNICODE
 }
 
 #

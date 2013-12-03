@@ -1,4 +1,4 @@
-marbledir.files = $$MARBLEDIR
+marbledirh.files = $$MARBLEDIR
 xslt.files = $$XSLT_FILES
 icons.files = $$ICONS_FILES
 doc.files = $$DOC_FILES
@@ -8,115 +8,115 @@ qttranslation.files = $$join(QTTRANSLATIONS," "$$[QT_INSTALL_TRANSLATIONS]/,$$[Q
 nltab = $$escape_expand(\\n\\t)
 
 mac {
-    # OS X bundling rules
-    #  "make mac-deploy" deploys the external libs (Qt, libdivecomputer, libusb, etc.) into the bundle
-    #  "make install" installs the bundle to /Applications
-    #  "make mac-create-dmg" creates Subsurface.dmg
+	# OS X bundling rules
+	#  "make mac-deploy" deploys the external libs (Qt, libdivecomputer, libusb, etc.) into the bundle
+	#  "make install" installs the bundle to /Applications
+	#  "make mac-create-dmg" creates Subsurface.dmg
 
-    mac_bundle.path = /Applications
-    mac_bundle.files = Subsurface.app
-    mac_bundle.CONFIG += no_check_exist directory
-    INSTALLS += mac_bundle
-    install.depends += mac-deploy
+	mac_bundle.path = /Applications
+	mac_bundle.files = Subsurface.app
+	mac_bundle.CONFIG += no_check_exist directory
+	INSTALLS += mac_bundle
+	install.depends += mac-deploy
 
-    datadir = Contents/Resources/share
-    marbledir.path = Contents/Resources/data
-    xslt.path = $$datadir
-    doc.path = $$datadir/doc
-    translation.path = Contents/Resources/translations
-    qttranslation.path = Contents/Resources/translations
-    doc.files = $$files($$doc.files)
-    QMAKE_BUNDLE_DATA += marbledir xslt doc translation qttranslation
+	datadir = Contents/Resources/share
+	marbledir.path = Contents/Resources/data
+	xslt.path = $$datadir
+	doc.path = $$datadir/doc
+	translation.path = Contents/Resources/translations
+	qttranslation.path = Contents/Resources/translations
+	doc.files = $$files($$doc.files)
+	QMAKE_BUNDLE_DATA += marbledir xslt doc translation qttranslation
 
-    mac_deploy.target = mac-deploy
-    mac_deploy.commands += $$[QT_INSTALL_BINS]/macdeployqt $${TARGET}.app
-    !isEmpty(V):mac_deploy.commands += -verbose=1
+	mac_deploy.target = mac-deploy
+	mac_deploy.commands += $$[QT_INSTALL_BINS]/macdeployqt $${TARGET}.app
+	!isEmpty(V):mac_deploy.commands += -verbose=1
 
-    mac_dmg.target = mac-create-dmg
-    mac_dmg.commands = $$mac_deploy.commands -dmg
-    mac_dmg.commands += $${nltab}$(MOVE) $${TARGET}.dmg $${TARGET}-$${FULL_VERSION}.dmg
-    QMAKE_EXTRA_TARGETS += mac_deploy mac_dmg
+	mac_dmg.target = mac-create-dmg
+	mac_dmg.commands = $$mac_deploy.commands -dmg
+	mac_dmg.commands += $${nltab}$(MOVE) $${TARGET}.dmg $${TARGET}-$${FULL_VERSION}.dmg
+	QMAKE_EXTRA_TARGETS += mac_deploy mac_dmg
 } else: win32 {
-    # Windows bundling rules
-    # We don't have a helpful tool like macdeployqt for Windows, so we hardcode
-    # which libs we need.
-    # The only target is "make install", which copies everything into packaging/windows
-    WINDOWSSTAGING = packaging/windows
-    NSIFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi
-    NSIINPUTFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi.in
-    MAKENSIS = /usr/bin/makensis
+	# Windows bundling rules
+	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
+	# which libs we need.
+	# The only target is "make install", which copies everything into packaging/windows
+	WINDOWSSTAGING = packaging/windows
+	NSIFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi
+	NSIINPUTFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi.in
+	MAKENSIS = /usr/bin/makensis
 
-    deploy.path = $$WINDOWSSTAGING
-    deploy.files += $$xslt.files $$doc.files $$icons.files
-    deploy.CONFIG += no_check_exist
-    target.path = $$WINDOWSSTAGING
-    marbledir.path = $$WINDOWSSTAGING/data
-    INSTALLS += deploy marbledir target
+	deploy.path = $$WINDOWSSTAGING
+	deploy.files += $$xslt.files $$doc.files $$icons.files
+	deploy.CONFIG += no_check_exist
+	target.path = $$WINDOWSSTAGING
+	marbledir.path = $$WINDOWSSTAGING/data
+	INSTALLS += deploy marbledir target
 
-    qt_conf.commands = echo \'[Paths]\' > $@
-    qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
-    qt_conf.target = $$PWD/packaging/windows/qt.conf
-    install.depends += qt_conf
+	qt_conf.commands = echo \'[Paths]\' > $@
+	qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
+	qt_conf.target = $$PWD/packaging/windows/qt.conf
+	install.depends += qt_conf
 
-    # Plugin code
-    defineTest(deployPlugin) {
-        plugin = $$1
-        plugintype = $$dirname(1)
-        CONFIG(debug, debug|release): plugin = $${plugin}d4.dll
-        else: plugin = $${plugin}4.dll
+	# Plugin code
+	defineTest(deployPlugin) {
+		plugin = $$1
+		plugintype = $$dirname(1)
+		CONFIG(debug, debug|release): plugin = $${plugin}d4.dll
+		else: plugin = $${plugin}4.dll
 
-        abs_plugin = $$[QT_INSTALL_PLUGINS]/$$plugin
-        ABS_DEPLOYMENT_PLUGIN += $$abs_plugin
-        export(ABS_DEPLOYMENT_PLUGIN)
+		abs_plugin = $$[QT_INSTALL_PLUGINS]/$$plugin
+		ABS_DEPLOYMENT_PLUGIN += $$abs_plugin
+		export(ABS_DEPLOYMENT_PLUGIN)
 
-        safe_name = $$replace(1, /, _)
-        INSTALLS += $$safe_name
+		safe_name = $$replace(1, /, _)
+		INSTALLS += $$safe_name
 
-        # Work around qmake bug in Qt4 that it can't handle $${xx}.yy properly
-        eval(safe_name_files = $${safe_name}.files)
-        eval(safe_name_path = $${safe_name}.path)
-        $$safe_name_files = $$abs_plugin
-        $$safe_name_path = $$WINDOWSSTAGING/plugins/$$plugintype
-        export($$safe_name_files)
-        export($$safe_name_path)
-        export(INSTALLS)
-    }
-    # Convert plugin names to the relative DLL path
-    for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
-        deployPlugin($$plugin)
-    }
+		# Work around qmake bug in Qt4 that it can't handle $${xx}.yy properly
+		eval(safe_name_files = $${safe_name}.files)
+		eval(safe_name_path = $${safe_name}.path)
+		$$safe_name_files = $$abs_plugin
+		$$safe_name_path = $$WINDOWSSTAGING/plugins/$$plugintype
+		export($$safe_name_files)
+		export($$safe_name_path)
+		export(INSTALLS)
+	}
+	# Convert plugin names to the relative DLL path
+	for(plugin, $$list($$DEPLOYMENT_PLUGIN)) {
+		deployPlugin($$plugin)
+	}
 
-    !win32-msvc* {
-        #!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$$QMAKE_CC -dumpmachine`-objdump
-        dlls.commands += PATH=\$\$PATH:`$$QMAKE_CC -print-search-dirs | sed -nE \'/^libraries: =/{s///;s,/lib/?(:|\$\$),/bin\\1,g;p;q;}\'`
-        dlls.commands += perl $$PWD/scripts/win-ldd.pl
-        # equals(QMAKE_HOST.os, "Windows"): EXE_SUFFIX = .exe
-        EXE_SUFFIX = .exe
-        CONFIG(debug, debug|release): dlls.commands += $$OUT_PWD/debug/subsurface$$EXE_SUFFIX
-        else: dlls.commands += $$OUT_PWD/release/$$TARGET$$EXE_SUFFIX
+	!win32-msvc* {
+		#!equals($$QMAKE_HOST.os, "Windows"): dlls.commands += OBJDUMP=`$$QMAKE_CC -dumpmachine`-objdump
+		dlls.commands += PATH=\$\$PATH:`$$QMAKE_CC -print-search-dirs | sed -nE \'/^libraries: =/{s///;s,/lib/?(:|\$\$),/bin\\1,g;p;q;}\'`
+		dlls.commands += perl $$PWD/scripts/win-ldd.pl
+		# equals(QMAKE_HOST.os, "Windows"): EXE_SUFFIX = .exe
+		EXE_SUFFIX = .exe
+		CONFIG(debug, debug|release): dlls.commands += $$OUT_PWD/debug/subsurface$$EXE_SUFFIX
+		else: dlls.commands += $$OUT_PWD/release/$$TARGET$$EXE_SUFFIX
 
-        dlls.commands += $$ABS_DEPLOYMENT_PLUGIN $$LIBS
-        dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
-        dlls.depends += $(DESTDIR_TARGET)
+		dlls.commands += $$ABS_DEPLOYMENT_PLUGIN $$LIBS
+		dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
+		dlls.depends += $(DESTDIR_TARGET)
 
-        nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/\' > $$NSIFILE
-        nsis.depends += $$NSIINPUTFILE
-        nsis.target = $$NSISFILE
-        installer.commands += $$MAKENSIS $$NSIFILE
-        installer.target = installer
-        installer.depends = nsis install
-        QMAKE_EXTRA_TARGETS = installer nsis
-        install.depends += dlls
-    }
+		nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/\' > $$NSIFILE
+		nsis.depends += $$NSIINPUTFILE
+		nsis.target = $$NSISFILE
+		installer.commands += $$MAKENSIS $$NSIFILE
+		installer.target = installer
+		installer.depends = nsis install
+		QMAKE_EXTRA_TARGETS = installer nsis
+		install.depends += dlls
+	}
 } else {
-    # Linux install rules
-    # On Linux, we can count on packagers doing the right thing
-    # We just need to drop a few files here and there
+	# Linux install rules
+	# On Linux, we can count on packagers doing the right thing
+	# We just need to drop a few files here and there
 
-    # This is a fake rule just to create some rules in the target file
-    nl = $$escape_expand(\\n)
-    dummy.target = dummy-only-for-var-expansion
-    dummy.commands  = $${nl}prefix = /usr$${nl}\
+	# This is a fake rule just to create some rules in the target file
+	nl = $$escape_expand(\\n)
+	dummy.target = dummy-only-for-var-expansion
+	dummy.commands  = $${nl}prefix = /usr$${nl}\
 BINDIR = $(prefix)/bin$${nl}\
 DATADIR = $(prefix)/share$${nl}\
 DOCDIR = $(DATADIR)/doc/subsurface$${nl}\
@@ -125,36 +125,36 @@ ICONPATH = $(DATADIR)/icons/hicolor$${nl}\
 ICONDIR = $(ICONPATH)/scalable/apps$${nl}\
 MANDIR = $(DATADIR)/man/man1$${nl}\
 XSLTDIR = $(DATADIR)/subsurface
-    QMAKE_EXTRA_TARGETS += dummy
+	QMAKE_EXTRA_TARGETS += dummy
 
-    WINDOWSSTAGING = ./packaging/windows
+	WINDOWSSTAGING = ./packaging/windows
 
-    target.path = /$(BINDIR)
-    target.files = $$TARGET
+	target.path = /$(BINDIR)
+	target.files = $$TARGET
 
-    desktop.path = /$(DESKTOPDIR)
-    desktop.files = $$DESKTOP_FILE
-    manpage.path = /$(MANDIR)
-    manpage.files = $$MANPAGE
+	desktop.path = /$(DESKTOPDIR)
+	desktop.files = $$DESKTOP_FILE
+	manpage.path = /$(MANDIR)
+	manpage.files = $$MANPAGE
 
-    icon.path = /$(ICONDIR)
-    icon.files = $$ICON
+	icon.path = /$(ICONDIR)
+	icon.files = $$ICON
 
-    xslt.path = /$(XSLTDIR)
-    marbledir.path = /$(DATADIR)/subsurface/data
-    doc.path = /$(DOCDIR)
+	xslt.path = /$(XSLTDIR)
+	marbledir.path = /$(DATADIR)/subsurface/data
+	doc.path = /$(DOCDIR)
 
-    doc.CONFIG += no_check_exist
+	doc.CONFIG += no_check_exist
 
-    # FIXME: Linguist translations
-    #l10n_install.commands = for LOC in $$files(share/locale/*/LC_MESSAGES); do \
-    #                $(INSTALL_PROGRAM) -d $(INSTALL_ROOT)/$(prefix)/$$LOC; \
-    #                $(INSTALL_FILE) $$LOC/subsurface.mo $(INSTALL_ROOT)/$(prefix)/$$LOC/subsurface.mo; \
-    #        done
-    #install.depends += l10n_install
+	# FIXME: Linguist translations
+	#l10n_install.commands = for LOC in $$files(share/locale/*/LC_MESSAGES); do \
+	#	$(INSTALL_PROGRAM) -d $(INSTALL_ROOT)/$(prefix)/$$LOC; \
+	#	$(INSTALL_FILE) $$LOC/subsurface.mo $(INSTALL_ROOT)/$(prefix)/$$LOC/subsurface.mo; \
+	#done
+	#install.depends += l10n_install
 
-    INSTALLS += target desktop icon manpage xslt doc marbledir
-    install.target = install
+	INSTALLS += target desktop icon manpage xslt doc marbledir
+	install.target = install
 }
 !isEmpty(TRANSLATIONS) {
 	isEmpty(QMAKE_LRELEASE) {
