@@ -618,16 +618,26 @@ void MainTab::acceptChanges()
 			fixup_dive(d);
 	}
 
-	editMode = NONE;
-
 	resetPallete();
-	// now comes the scary moment... we need to re-sort dive table in case this dive wasn't the last
-	// so now all pointers become invalid
-	// fingers crossed that we aren't holding on to anything here
-	mainWindow()->dive_list()->rememberSelection();
-	sort_table(&dive_table);
-	mainWindow()->refreshDisplay();
-	mainWindow()->dive_list()->restoreSelection();
+	if(editMode == ADD){
+		mainWindow()->dive_list()->unselectDives();
+		struct dive *d = get_dive(dive_table.nr -1 );
+		// HACK. this shouldn't be here. but apparently it's
+		// how we can know what was the newly added dive.
+		d->selected = true;
+		sort_table(&dive_table);
+		int i = 0;
+		for_each_dive(i,d){
+			if (d->selected) break;
+		}
+		mainWindow()->dive_list()->selectDive( i, true );
+	}else{
+		mainWindow()->dive_list()->rememberSelection();
+		sort_table(&dive_table);
+		mainWindow()->refreshDisplay();
+		mainWindow()->dive_list()->restoreSelection();
+	}
+	editMode = NONE;
 }
 
 void MainTab::resetPallete()
