@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPrintPreviewDialog>
+#include <QPrintDialog>
 
 PrintDialog *PrintDialog::instance()
 {
@@ -30,9 +31,16 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
 
+	QHBoxLayout *hLayout = new QHBoxLayout();
+	layout->addLayout(hLayout);
+
+	QPushButton *previewButton = new QPushButton(tr("&Preview"));
+	connect(previewButton, SIGNAL(clicked(bool)), this, SLOT(previewClicked()));
+	hLayout->addWidget(previewButton);
+
 	QPushButton *printButton = new QPushButton(tr("&Print"));
 	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
-	layout->addWidget(printButton);
+	hLayout->addWidget(printButton);
 
 	QProgressBar *progressBar = new QProgressBar();
 	connect(printLayout, SIGNAL(signalProgress(int)), progressBar, SLOT(setValue(int)));
@@ -53,11 +61,18 @@ void PrintDialog::runDialog()
 	exec();
 }
 
-void PrintDialog::printClicked(void)
+void PrintDialog::previewClicked(void)
 {
 	QPrintPreviewDialog previewDialog(&printer, this);
-    QObject::connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
-    previewDialog.exec();
+	QObject::connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
+	previewDialog.exec();
+}
+
+void PrintDialog::printClicked(void)
+{
+	QPrintDialog printDialog(&printer, this);
+	if (printDialog.exec() == QDialog::Accepted)
+		printLayout->print();
 }
 
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)

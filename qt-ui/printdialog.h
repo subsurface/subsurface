@@ -23,6 +23,7 @@ private:
 	QPrinter printer;
 
 private slots:
+	void previewClicked();
 	void printClicked();
 	void onPaintRequested(QPrinter *);
 };
