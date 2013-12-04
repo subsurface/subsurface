@@ -4,8 +4,9 @@
 #include <QDialog>
 #include <QPrinter>
 #include "../display.h"
-#include "printoptions.h"
-#include "printlayout.h"
+
+class PrintOptions;
+class PrintLayout;
 
 // should be based on a custom QPrintDialog class
 class PrintDialog : public QDialog {

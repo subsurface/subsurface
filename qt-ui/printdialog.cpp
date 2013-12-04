@@ -1,4 +1,6 @@
 #include "printdialog.h"
+#include "printoptions.h"
+#include "printlayout.h"
 #include "mainwindow.h"
 
 #include <QDebug>

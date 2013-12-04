@@ -7,9 +7,10 @@
 #include <QHeaderView>
 #include "mainwindow.h"
 #include "profilegraphics.h"
-#include "printlayout.h"
 #include "../dive.h"
 #include "../display.h"
+#include "printdialog.h"
+#include "printlayout.h"
 #include "models.h"
 #include "modeldelegates.h"
 
