@@ -46,7 +46,7 @@ public:
 	QList<QPair<int, int> > collectGases(dive *d);
 
 public slots:
-	int addStop(int meters = 0, int minutes = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
+	int addStop(int millimeters = 0, int seconds = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int ghflow);

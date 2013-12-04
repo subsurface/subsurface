@@ -1176,17 +1176,17 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 	return false;
 }
 
-int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he, int ccpoint)
+int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he, int ccpoint)
 {
 	int row = divepoints.count();
-	if (minutes == 0 && milimeters == 0 && row != 0){
+	if (seconds == 0 && milimeters == 0 && row != 0){
 		/* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
 		struct divedatapoint& t = divepoints.last();
 		milimeters = t.depth;
-		minutes = t.time + 600; // 10 minutes.
-	} else if (minutes == 0 && milimeters == 0 && row == 0) {
+		seconds = t.time + 600; // 10 minutes.
+	} else if (seconds == 0 && milimeters == 0 && row == 0) {
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
-		minutes = 600; // 10 min
+		seconds = 600; // 10 min
 	}
 	if (o2 != -1)
 		if (!addGas(o2, he))
@@ -1195,14 +1195,14 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 	// check if there's already a new stop before this one:
 	for (int i = 0; i < row; i++) {
 		const divedatapoint& dp = divepoints.at(i);
-		if (dp.time == minutes) {
+		if (dp.time == seconds) {
 			row = i;
 			beginRemoveRows(QModelIndex(), row, row);
 			divepoints.remove(row);
 			endRemoveRows();
 			break;
 		}
-		if (dp.time > minutes ) {
+		if (dp.time > seconds ) {
 			row = i;
 			break;
 		}
@@ -1230,7 +1230,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int minutes, int o2, int he,
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
 	point.depth = milimeters;
-	point.time = minutes;
+	point.time = seconds;
 	point.o2 = o2;
 	point.he = he;
 	point.po2 = ccpoint;
