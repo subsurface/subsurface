@@ -24,8 +24,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	// create a print layout and pass the printer and options
 	printLayout = new PrintLayout(this, &printer, &printOptions);
 
-	/* temporary.
-	 * add the PrintOptions widget and a Print button for testing purposes. */
+	// create a print options object and pass our options struct
 	optionsWidget = new PrintOptions(this, &printOptions);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
