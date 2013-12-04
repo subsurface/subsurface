@@ -101,24 +101,21 @@
        </item>
        <item row="5" column="0">
         <widget class="QSpinBox" name="gflow">
-         <property name="suffix">
-          <string>%</string>
-         </property>
          <property name="minimum">
           <number>1</number>
          </property>
          <property name="maximum">
-          <number>100</number>
+          <number>150</number>
          </property>
         </widget>
        </item>
        <item row="5" column="1">
         <widget class="QSpinBox" name="gfhigh">
-         <property name="suffix">
-          <string>%</string>
-         </property>
          <property name="minimum">
           <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>150</number>
          </property>
         </widget>
        </item>

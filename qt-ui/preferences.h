@@ -22,6 +22,9 @@ public slots:
 	void syncSettings();
 	void restorePrefs();
 	void rememberPrefs();
+	void gflowChanged(int gf);
+	void gfhighChanged(int gf);
+
 
 private:
 	explicit PreferencesDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);

@@ -779,7 +779,14 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QSpinBox" name="gflow"/>
+             <widget class="QSpinBox" name="gflow">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>150</number>
+              </property>
+             </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_20">
@@ -789,7 +796,14 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QSpinBox" name="gfhigh"/>
+             <widget class="QSpinBox" name="gfhigh">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>150</number>
+              </property>
+             </widget>
             </item>
             <item row="2" column="0" colspan="2">
              <widget class="QCheckBox" name="gf_low_at_maxdepth">

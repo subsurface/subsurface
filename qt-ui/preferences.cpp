@@ -15,8 +15,26 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
+	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
 	setUiFromPrefs();
 	rememberPrefs();
+}
+
+void PreferencesDialog::gflowChanged(int gf)
+{
+	if (gf > 100)
+		ui.gflow->setStyleSheet("* { color: red; }");
+	else
+		ui.gflow->setStyleSheet("");
+}
+
+void PreferencesDialog::gfhighChanged(int gf)
+{
+	if (gf > 100)
+		ui.gfhigh->setStyleSheet("* { color: red; }");
+	else
+		ui.gfhigh->setStyleSheet("");
 }
 
 void PreferencesDialog::showEvent(QShowEvent *event)
