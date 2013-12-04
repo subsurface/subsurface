@@ -438,7 +438,7 @@ void DivePlannerPointsModel::loadFromDive(dive* d)
 	// we start with the first gas and see if it was changed
 	int o2 = backupDive.cylinder[0].gasmix.o2.permille;
 	int he = backupDive.cylinder[0].gasmix.he.permille;
-	for (int i = 0; i < backupDive.dc.samples; i++) {
+	for (int i = 0; i < backupDive.dc.samples - 1; i++) {
 		const sample &s = backupDive.dc.sample[i];
 		if (s.time.seconds == 0)
 			continue;
