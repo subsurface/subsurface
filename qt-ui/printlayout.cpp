@@ -115,6 +115,12 @@ void PrintLayout::estimateTotalDives(struct dive *dive, int *i, int *total) cons
 
 void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 {
+	int i, row = 0, col = 0, printed = 0, total = 0;
+	struct dive *dive;
+	estimateTotalDives(dive, &i, &total);
+	if (!total)
+		return;
+
 	// setup a painter
 	QPainter painter;
 	painter.begin(printer);
@@ -159,8 +165,6 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		yOffsetTable = scaledH - tableH;
 
 	// plot the dives at specific rows and columns on the page
-	int i, row = 0, col = 0;
-	struct dive *dive;
 	for_each_dive(i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
@@ -186,6 +190,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		table->render(&painter);
 		painter.setTransform(origTransform);
 		col++;
+		printed++;
+		emit signalProgress((printed * 100) / total);
 	}
 
 	// cleanup
