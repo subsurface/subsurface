@@ -93,14 +93,16 @@ void PrintLayout::setup()
 }
 
 // go trought the dive table and find how many dives we are a going to print
-void PrintLayout::estimateTotalDives(struct dive *dive, int *i, int *total) const
+int PrintLayout::estimateTotalDives() const
 {
-	*total = 0;
-	for_each_dive(*i, dive) {
+	int total = 0, i = 0;
+	struct dive *dive;
+	for_each_dive(i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
-		(*total)++;
+		total++;
 	}
+	return total;
 }
 
 /* the used formula here is:
@@ -116,9 +118,8 @@ void PrintLayout::estimateTotalDives(struct dive *dive, int *i, int *total) cons
 
 void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 {
-	int i, row = 0, col = 0, printed = 0, total = 0;
+	int i, row = 0, col = 0, printed = 0, total = estimateTotalDives();
 	struct dive *dive;
-	estimateTotalDives(dive, &i, &total);
 	if (!total)
 		return;
 
@@ -273,8 +274,7 @@ void PrintLayout::printTable()
 {
 	struct dive *dive;
 	const int stage = 33; // there are 3 stages in this routine: 100% / 3 ~= 33%
-	int i, row = 0, total, progress;
-	estimateTotalDives(dive, &i, &total);
+	int i, row = 0, progress, total = estimateTotalDives();
 	if (!total)
 		return;
 

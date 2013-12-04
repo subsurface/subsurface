@@ -34,7 +34,7 @@ private:
 	QList<unsigned int> profilePrintColumnWidths, profilePrintRowHeights;
 
 	void setup();
-	void estimateTotalDives(struct dive *dive, int *i, int *total) const;
+	int estimateTotalDives() const;
 	void printProfileDives(int divesPerRow, int divesPerColumn);
 	QTableView *createProfileTable(ProfilePrintModel *model, const int tableW);
 	void printTable();
