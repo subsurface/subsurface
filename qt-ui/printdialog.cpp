@@ -48,7 +48,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(closeClicked()));
 	hLayout->addWidget(closeButton);
 
-	QProgressBar *progressBar = new QProgressBar();
+	progressBar = new QProgressBar();
 	connect(printLayout, SIGNAL(signalProgress(int)), progressBar, SLOT(setValue(int)));
 	progressBar->setMinimum(0);
 	progressBar->setMaximum(100);
@@ -64,6 +64,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 
 void PrintDialog::runDialog()
 {
+	progressBar->setValue(0);
 	exec();
 }
 

@@ -5,6 +5,7 @@
 #include <QPrinter>
 #include "../display.h"
 
+class QProgressBar;
 class PrintOptions;
 class PrintLayout;
 
@@ -21,6 +22,7 @@ private:
 	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	PrintOptions *optionsWidget;
 	PrintLayout *printLayout;
+	QProgressBar *progressBar;
 	QPrinter printer;
 
 private slots:
