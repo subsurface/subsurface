@@ -605,7 +605,7 @@ void DivelogsDeWebServices::downloadFinished()
 	if (!zip)
 		::close(duppedfd);
 #else
-	struct zip *zip = zip_open(zipFile.fileName(), 0, &errorcode);
+	struct zip *zip = zip_open(zipFile.fileName().toLocal8Bit().data(), 0, &errorcode);
 #endif
 	if (!zip) {
 		char buf[512];
