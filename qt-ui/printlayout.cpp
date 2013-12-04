@@ -91,6 +91,17 @@ void PrintLayout::setup()
 	scaledPageH = pageRect.height() / scaleY;
 }
 
+// go trought the dive table and find how many dives we are a going to print
+void PrintLayout::estimateTotalDives(struct dive *dive, int *i, int *total) const
+{
+	*total = 0;
+	for_each_dive(*i, dive) {
+		if (!dive->selected && printOptions->print_selected)
+			continue;
+		(*total)++;
+	}
+}
+
 /* the used formula here is:
  * s = (S - (n - 1) * p) / n
  * where:

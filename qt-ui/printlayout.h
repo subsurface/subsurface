@@ -34,11 +34,15 @@ private:
 	QList<unsigned int> profilePrintColumnWidths, profilePrintRowHeights;
 
 	void setup();
+	void estimateTotalDives(struct dive *dive, int *i, int *total) const;
 	void printProfileDives(int divesPerRow, int divesPerColumn);
 	QTableView *createProfileTable(ProfilePrintModel *model, const int tableW);
 	void printTable();
 	void addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const;
 	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;
+
+signals:
+    void signalProgress(int);
 };
 
 #endif
