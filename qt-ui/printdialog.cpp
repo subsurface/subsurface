@@ -3,7 +3,9 @@
 
 #include <QDebug>
 #include <QPushButton>
+#include <QProgressBar>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QPrintPreviewDialog>
 
 PrintDialog *PrintDialog::instance()
@@ -32,6 +34,13 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	QPushButton *printButton = new QPushButton(tr("&Print"));
 	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
 	layout->addWidget(printButton);
+
+	QProgressBar *progressBar = new QProgressBar();
+	connect(printLayout, SIGNAL(signalProgress(int)), progressBar, SLOT(setValue(int)));
+	progressBar->setMinimum(0);
+	progressBar->setMaximum(100);
+	progressBar->setTextVisible(false);
+	layout->addWidget(progressBar);
 
 	layout->addWidget(optionsWidget);
 
