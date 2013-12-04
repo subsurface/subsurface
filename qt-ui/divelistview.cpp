@@ -391,10 +391,9 @@ void DiveListView::reloadHeaderActions()
 		}
 		s.endGroup();
 	} else {
-		// Skip first QAction item ( static text Visible )
 		for(int i = 0; i < model()->columnCount(); i++) {
 			QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
-			header()->actions()[i+1]->setText( title );
+			header()->actions()[i]->setText(title);
 		}
 	}
 }
