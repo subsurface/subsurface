@@ -540,16 +540,16 @@ void ProfileGraphicsView::plot_pp_text()
 {
 	double pp, dpp, m;
 	int hpos;
-	static text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, MIDDLE};
+	static text_render_options_t tro = {PP_TEXT_SIZE, PP_LINES, LEFT, -0.75};
 	QGraphicsRectItem *pressureMarkers = new QGraphicsRectItem();
 
 	setup_pp_limits(&gc);
 	pp = floor(gc.pi.maxpp * 10.0) / 10.0 + 0.2;
-	dpp = pp > 4 ? 0.5 : 0.2;
+	dpp = pp > 4 ? 0.5 : 0.25;
 	hpos = gc.pi.entry[gc.pi.nr - 1].sec;
 	QColor c = getColor(PP_LINES);
 
-	bool alt = false;
+	bool alt = true;
 	for (m = 0.0; m <= pp; m += dpp) {
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
 		QPen pen(defaultPen);
@@ -562,9 +562,8 @@ void ProfileGraphicsView::plot_pp_text()
 		scene()->addItem(item);
 		qreal textPos = hpos;
 		if (alt)
-			textPos += 30;
+			plot_text(&tro, QPointF(textPos, m), QString::number(m), pressureMarkers);
 		alt = !alt;
-		plot_text(&tro, QPointF(textPos, m), QString::number(m), pressureMarkers);
 	}
 	scene()->addItem(pressureMarkers);
 	pressureMarkers->setPos(pressureMarkers->pos().x() + 10, 0);
