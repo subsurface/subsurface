@@ -22,6 +22,7 @@ CSVImportDialog::CSVImportDialog(QWidget *parent) :
 		ui->knownImports->addItem(CSVApps[i].name);
 
 	ui->CSVSeparator->addItem("Tab");
+	ui->CSVSeparator->addItem(",");
 	ui->knownImports->setCurrentIndex(1);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
@@ -52,6 +53,7 @@ void CSVImportDialog::on_buttonBox_accepted()
 			VALUE_IF_CHECKED(CSVpo2),
 			VALUE_IF_CHECKED(CSVcns),
 			VALUE_IF_CHECKED(CSVstopdepth),
+			ui->CSVSeparator->currentIndex(),
 			&error);
 	if (error != NULL) {
 

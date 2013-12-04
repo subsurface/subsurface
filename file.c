@@ -327,17 +327,18 @@ void parse_file(const char *filename, char **error)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, char **error)
+void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, int sepidx, char **error)
 {
 	struct memblock mem;
 	int pnr=0;
-	char *params[17];
+	char *params[19];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
 	char po2buf[MAXCOLDIGITS];
 	char cnsbuf[MAXCOLDIGITS];
 	char stopdepthbuf[MAXCOLDIGITS];
+	char separator_index[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep;
 	char curdate[9];
@@ -356,6 +357,7 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	snprintf(po2buf, MAXCOLDIGITS, "%d", po2f);
 	snprintf(cnsbuf, MAXCOLDIGITS, "%d", cnsf);
 	snprintf(stopdepthbuf, MAXCOLDIGITS, "%d", stopdepthf);
+	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	time(&now);
 	timep = localtime(&now);
 	strftime(curdate, sizeof(curdate), "%Y%m%d", timep);
@@ -380,6 +382,8 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	params[pnr++] = curdate;
 	params[pnr++] = "time";
 	params[pnr++] = curtime;
+	params[pnr++] = "separatorIndex";
+	params[pnr++] = separator_index;
 	params[pnr++] = NULL;
 
 	if (filename == NULL)

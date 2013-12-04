@@ -11,11 +11,17 @@
   <xsl:param name="stopdepthField" select="stopdepthField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
+  <xsl:param name="separatorIndex" select="separatorIndex"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
 </xsl:text></xsl:variable>
-  <xsl:variable name="fs"><xsl:text>	</xsl:text></xsl:variable>
+  <xsl:variable name="fs">
+    <xsl:choose>
+      <xsl:when test="$separatorIndex = 0"><xsl:text>	</xsl:text></xsl:when>
+      <xsl:otherwise><xsl:text>,</xsl:text></xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
   <xsl:template match="/">
     <divelog program="subsurface-import" version="2">
