@@ -270,6 +270,13 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 
 void PrintLayout::printTable()
 {
+	struct dive *dive;
+	const int stage = 33; // there are 3 stages in this routine: 100% / 3 ~= 33%
+	int i, row = 0, total, progress;
+	estimateTotalDives(dive, &i, &total);
+	if (!total)
+		return;
+
 	// create and setup a table
 	QTableView table;
 	table.setAttribute(Qt::WA_DontShowOnScreen);
@@ -291,15 +298,16 @@ void PrintLayout::printTable()
 
 	// create and fill a table model
 	TablePrintModel model;
-	struct dive *dive;
-	int i, row = 0;
 	addTablePrintHeadingRow(&model, row); // add one heading row
 	row++;
+	progress = 0;
 	for_each_dive(i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
 		addTablePrintDataRow(&model, row, dive);
 		row++;
+		progress++;
+		emit signalProgress((progress * stage) / total);
 	}
 	table.setModel(&model); // set model to table
 	// resize columns to percentages from page width
@@ -322,7 +330,9 @@ void PrintLayout::printTable()
 	int tableHeight = 0, rowH = 0, accH = 0;
 
 	// process all rows
-	for (int i = 0; i < model.rows; i++) {
+	progress = 0;
+	total = model.rows;
+	for (int i = 0; i < total; i++) {
 		rowH = table.rowHeight(i);
 		accH += rowH;
 		if (accH > scaledPageH) { // push a new page index and add a heading
@@ -332,6 +342,8 @@ void PrintLayout::printTable()
 			i--;
 		}
 		tableHeight += rowH;
+		progress++;
+		emit signalProgress(stage + (progress * stage) / total);
 	}
 	pageIndexes.append(pageIndexes.last() + accH);
 	// resize the whole widget so that it can be rendered
@@ -342,13 +354,17 @@ void PrintLayout::printTable()
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 	painter.scale(scaleX, scaleY);
-	for (int i = 0; i < pageIndexes.size() - 1; i++) {
+	total = pageIndexes.size() - 1;
+	progress = 0;
+	for (int i = 0; i < total; i++) {
 		if (i > 0)
 			printer->newPage();
 		QRegion region(0, pageIndexes.at(i) - 1,
 			       table.width(),
 			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
 		table.render(&painter, QPoint(0, 0), region);
+		progress++;
+		emit signalProgress((stage << 1) + (progress * (stage + 1)) / total);
 	}
 }
 
