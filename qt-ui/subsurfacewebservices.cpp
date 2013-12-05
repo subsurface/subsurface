@@ -98,6 +98,81 @@ static void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
+static char *prepare_dives_for_divelogs(const bool selected)
+{
+	int i;
+	struct dive *dive;
+	FILE *f;
+	char filename[PATH_MAX], *tempfile;
+	size_t streamsize;
+	char *membuf;
+	xmlDoc *doc;
+	xsltStylesheetPtr xslt = NULL;
+	xmlDoc *transformed;
+	struct zip_source *s[dive_table.nr];
+	struct zip *zip;
+	char *error = NULL;
+	char *parsed = NULL, *endat = NULL;
+
+	QTemporaryFile zipFile;
+	zipFile.setFileTemplate(QDir::tempPath() + "/import-XXXXXX.dld");
+	tempfile = zipFile.fileName().toLocal8Bit().data();
+	zip = zip_open(tempfile, ZIP_CREATE, NULL);
+
+	if (!zip || !amount_selected)
+		return NULL;
+
+	/* walk the dive list in chronological order */
+	for (i = 0; i < dive_table.nr; i++) {
+		dive = get_dive(i);
+		if (!dive)
+			continue;
+		if (selected && !dive->selected)
+			continue;
+		f = tmpfile();
+		if (!f)
+			return NULL;
+		save_dive(f, dive);
+		fseek(f, 0, SEEK_END);
+		streamsize = ftell(f);
+		rewind(f);
+		membuf = (char *)malloc(streamsize + 1);
+		if (!membuf || !fread(membuf, streamsize, 1, f))
+			return NULL;
+		membuf[streamsize] = 0;
+		fclose(f);
+		/*
+		 * Parse the memory buffer into XML document and
+		 * transform it to divelogs.de format, finally dumping
+		 * the XML into a character buffer.
+		 */
+		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
+		if (!doc)
+			continue;
+		free((void *)membuf);
+		xslt = get_stylesheet("divelogs-export.xslt");
+		if (!xslt)
+			return NULL;
+		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+		xsltFreeStylesheet(xslt);
+		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
+		xmlFreeDoc(doc);
+		xmlFreeDoc(transformed);
+		/*
+		 * Save the XML document into a zip file.
+		 */
+		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
+		s[i] = zip_source_buffer(zip, membuf, streamsize, 1);
+		if (s[i]) {
+			int64_t ret = zip_add(zip, filename, s[i]);
+			if (ret == -1)
+				fprintf(stderr, "failed to include dive %d\n", i);
+		}
+	}
+	zip_close(zip);
+	return tempfile;
+}
+
 WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
 , reply(0)
 {
@@ -446,6 +521,18 @@ void DivelogsDeWebServices::downloadDives()
 	exec();
 }
 
+void DivelogsDeWebServices::prepareDivesForUpload()
+{
+	char *file = prepare_dives_for_divelogs(true);
+	if (file) {
+		QFile f(file);
+		free(file);
+		uploadDives((QIODevice *)&f);
+		return;
+	}
+	// FIXME: show error
+}
+
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 {
 	QHttpMultiPart mp(QHttpMultiPart::FormDataType);
@@ -639,6 +726,25 @@ void DivelogsDeWebServices::uploadFinished()
 	QByteArray xmlData = reply->readAll();
 
 	// ### FIXME: what's the format?
+	/*
+		// char *error;
+		if (error) {
+			parsed = strstr(error, "<Login>");
+			endat = strstr(error, "</divelogsDataImport>");
+			if (parsed && endat)
+				*endat = '\0';
+		}
+		if (error && strstr(error, "failed"))
+			type = GTK_MESSAGE_ERROR;
+		else
+			type = GTK_MESSAGE_INFO;
+	}
+	if (parsed)
+		divelogs_status_dialog(parsed, type);
+	else if (error)
+		divelogs_status_dialog(error, type);
+	free(error);
+	*/
 }
 
 void DivelogsDeWebServices::setStatusText(int status)
