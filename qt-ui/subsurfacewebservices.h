@@ -3,29 +3,43 @@
 
 #include <QDialog>
 #include <QNetworkReply>
+#include <QTemporaryFile>
+#include <QTimer>
 #include <libxml/tree.h>
 
 #include "ui_webservices.h"
 
 class QAbstractButton;
 class QNetworkReply;
+class QHttpMultiPart;
 
 class WebServices : public QDialog{
 	Q_OBJECT
 public:
-    explicit WebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit WebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void hidePassword();
 	void hideUpload();
+	void hideDownload();
+
+	static QNetworkAccessManager *manager();
 
 private slots:
 	virtual void startDownload() = 0;
 	virtual void startUpload() = 0;
 	virtual void buttonClicked(QAbstractButton* button) = 0;
+	virtual void downloadTimedOut();
+
+protected slots:
+	void updateProgress(qint64 current, qint64 total);
 
 protected:
+	void resetState();
+	void connectSignalsForDownload(QNetworkReply *reply);
+	void connectSignalsForUpload();
+
 	Ui::WebServices ui;
 	QNetworkReply *reply;
-	QNetworkAccessManager *manager;
+	QTimer timeout;
 	QByteArray downloadedData;
 };
 
@@ -41,7 +55,7 @@ private slots:
 	void downloadError(QNetworkReply::NetworkError error);
 	void startUpload(){} /*no op*/
 private:
-    explicit SubsurfaceWebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit SubsurfaceWebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray& length);
@@ -51,18 +65,27 @@ class DivelogsDeWebServices : public WebServices {
 	Q_OBJECT
 public:
 	static DivelogsDeWebServices * instance();
+	void downloadDives();
+	void uploadDives(QIODevice *dldContent);
 
 private slots:
 	void startDownload();
 	void buttonClicked(QAbstractButton* button);
+	void saveToZipFile();
+	void listDownloadFinished();
 	void downloadFinished();
+	void uploadFinished();
 	void downloadError(QNetworkReply::NetworkError error);
-    void startUpload();
+	void uploadError(QNetworkReply::NetworkError error);
+	void startUpload();
 private:
-    explicit DivelogsDeWebServices (QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit DivelogsDeWebServices (QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray& length);
+
+	QHttpMultiPart *multipart;
+	QTemporaryFile zipFile;
 };
 
 #endif
