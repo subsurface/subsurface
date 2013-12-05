@@ -8,7 +8,7 @@ Subsurface 4.0 User Manual
 :numbered:
 :website: http://subsurface.hohndel.org
 
-Welcome as a user of _subsurface_, an advanced dive logging programme with extensive infrastructure to describe, organise and interpret scuba and free dives. _subsurface_ runs on many harware platforms and software environments. These include Linux (many distros), Mac (OS/X) and Windows (Win XP or later). The scope of this document is the use of the _subsurface_ program. To install the software, consult the *Downloads* page on the http://subsurface.hohndel.org/[_subsurface_ web site]. Please discuss issues with this program by writing email to mailto:subsurface@hohndel.org[our mailing list] and report bugs at http://trac.hohndel.org[our bugtracker].  For instructions on how to build the software and (if needed) its dependencies please consult the README file included with the source code.
+Welcome as a user of _subsurface_, an advanced dive logging programme with extensive infrastructure to describe, organise and interpret scuba and free dives. _subsurface_ runs on many hardware platforms and software environments. These include Linux (many distros), Mac (OS/X) and Windows (Win XP or later). The scope of this document is the use of the _subsurface_ program. To install the software, consult the *Downloads* page on the http://subsurface.hohndel.org/[_subsurface_ web site]. Please discuss issues with this program by writing email to mailto:subsurface@hohndel.org[our mailing list] and report bugs at http://trac.hohndel.org[our bugtracker].  For instructions on how to build the software and (if needed) its dependencies please consult the README file included with the source code.
 
 *Audience*: Recreational Scuba Divers, Free Divers, Tec Divers, Professional Divers
 
@@ -61,7 +61,7 @@ This is achieved by selecting _File -> New Logbook_ from the main menu. All exis
 [[S_GetInformation]]
 == How to obtain dive information to store in your logbook
 
-There are several ways ways to obtain dive information to view:
+There are several ways to obtain dive information to view:
 
 1. Enter dive information by hand. This is typically useful if the diver did not use a dive computer and dives were recorded in a written logbook.
 
@@ -121,7 +121,7 @@ The Equipment tab allows the user to enter information about the type of cylinde
 
 image::images/BlueEditBar.png["Blue edit bar",align="center"]
 
-indicates that one is in the process of adding equipment information for the dive.This is a highly interactive part of _subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
+indicates that one is in the process of adding equipment information for the dive. This is a highly interactive part of _subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
 
 *Cylinders*: The cylinder information is entered through a dialogue that looks like this:
 
@@ -141,7 +141,7 @@ Finally you need to type in the gas mixture that you used. If you used air, you 
 
 image::images/CylinderDataEntry3.png["Example: a completed cylinder dive information table",align="center"]
 
-*Weights*: Informtion about the weighting system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + icon on the top right of the weights dialogue, the table looks like this:
+*Weights*: Information about the weighting system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + icon on the top right of the weights dialogue, the table looks like this:
 
 image::images/WeightsDataEntry1.png["The Weights dialogue",align="center"]
 
@@ -160,7 +160,7 @@ The *Dive Profile* (a graphical representation of the depth of your dive as a fu
 
 image::images/DiveProfile1.png["Initial dive profile",align="center"]
 
-_Configuring the dive profile_: When one moves the cursor around the dive profile, its position is indicated by two red lines as shown above. The depth and time that the cursor represents are indicated, repectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself copmrises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-clicking on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
+_Configuring the dive profile_: When one moves the cursor around the dive profile, its position is indicated by two red lines as shown above. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-clicking on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
 
 image::images/DiveProfile2.png["Edited dive profile",align="center"]
 
@@ -229,7 +229,7 @@ When download of the dive information is complete, all the imported dives appear
 If one selects a particular dive, the Dive Profile panel shows an informative graph of dive depth against time for that particular dive.
 
 [[S_EditDiveInfo]]
-==== Updating the dive unformation imported from your dive computer.
+==== Updating the dive information imported from your dive computer.
 
 The information from your dive computer is not complete and one needs to add more details in order to have a more complete record of your dives. To do this, use the *Dive Notes* and the *Equipment* tabs on the top left hand of the _subsurface_ window.
 
@@ -241,7 +241,7 @@ image::images/AddDive2.png["The Dive Notes tab",align="center"]
 
 The *Starttime* field contains five data items reflecting the date and the time of the dive, as supplied by the dive computer. It should therefore not be necessary to edit this, but one could make changes by clicking the down-arrow on the right of that field one can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
 
-*Air/water temperatures*: Air and water temperatures during the dive are shown in these fields to the right of the Starttime. Many dive computers supply water temperature information and this field may therefore not require editing. If editing is requied, one does not need to type in units of temperature: subsurface supplies these automatically, only a number is required. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
+*Air/water temperatures*: Air and water temperatures during the dive are shown in these fields to the right of the Starttime. Many dive computers supply water temperature information and this field may therefore not require editing. If editing is required, one does not need to type in units of temperature: subsurface supplies these automatically, only a number is required. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
 
 *Location*: Here type in text that describes the site where you did this dive, e.g. "Tihany, Lake Balaton, Hungary".
 
@@ -278,7 +278,7 @@ The Equipment tab allows the user to enter information about the type of cylinde
 
 image::images/BlueEditBar.png["Blue edit bar",align="center"]
 
-indicates that one is in the process of adding equipment information for the dive.This is a highly interactive part of _subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
+indicates that one is in the process of adding equipment information for the dive. This is a highly interactive part of _subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
 
 *Cylinders*: The cylinder information is entered through a dialogue that looks like this:
 
@@ -298,7 +298,7 @@ Finally you need to type in the gas mixture that you used. If you used air, you 
 
 image::images/CylinderDataEntry3.png["Example: a completed cylinder dive information table",align="center"]
 
-*Weights*: Informtion about the weighting system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + icon on the top right of the weights dialogue, the table looks like this:
+*Weights*: Information about the weighting system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + icon on the top right of the weights dialogue, the table looks like this:
 
 image::images/WeightsDataEntry1.png["The Weights dialogue",align="center"]
 
@@ -453,7 +453,7 @@ Make sure you are not using compressed files when importing to _subsurface_
 _subsurface_ supports UDDF as a generic import format.
 Some attributes in your file may not get processed properly.
 
-Please report your findings for UDDF data from sources different from those descibed
+Please report your findings for UDDF data from sources different from those described
 in this document at http://trac.hohndel.org[our bugtracker] or send an email to
 mailto:subsurface@hohndel.org[our mailing list].
 
@@ -546,7 +546,7 @@ will most likely differ from the one display at the DR5.
 
 === The *Dive Info* tab (for individual dives)
 
-The Dive Info tab gives some summary information about a particular dive that has been selected in the *Dive List*. Useful information here includes the surface interval before the dive, the maximum and mean depths of the dive, the gas volume consumed, the surface air consumption (SAC) and the number oxygen toxycity units (OTU) incurred.
+The Dive Info tab gives some summary information about a particular dive that has been selected in the *Dive List*. Useful information here includes the surface interval before the dive, the maximum and mean depths of the dive, the gas volume consumed, the surface air consumption (SAC) and the number oxygen toxicity units (OTU) incurred.
 
 === The *Stats* tab (for groups of dives)
 
@@ -606,7 +606,7 @@ The context menu is used in many manipulations described below.
 
 Dives are normally numbered incrementally from non-recent dives (low sequence numbers) to recent dives (having the highest sequence numbers). The numbering of the dives is not always consistent. For instance, when non-recent dives are added to the dive list the numbering does not automatically follow on because of the dives that are more recent in date/time than the newly-added dive that has an older date/time. Therefore one sometimes needs to renumber the dives. This is performed by selecting (from the Main menu) Log -> Renumber. You are given a choice with respect to the lowest sequence number to be used. Completing this operation results in new sequence numbers (based on date/time) for the dives in the *Dive List* panel.
 
-=== Grouping dives into trips and manipilating trips
+=== Grouping dives into trips and manipulating trips
 
 If one dives regularly, the dive list can rapidly become very long. _subsurface_ can group dives into _trips_. It performs this by grouping dives that have date/times that are not separated in time by more than two days, thus creating a single heading for each diving trip represented in the dive log. Below is an ungrouped dive list (on the left) as well as a grouped dive list with several trips (on the right):
 
@@ -631,7 +631,7 @@ When one right-clicks on a selected trip title in the *Dive List* panel, the con
 
 ==== Splitting a single trip into more than one trip
 
-If a trip incudes five dives, one can split this trip into two trips (trip 1: top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top three dives. The resulting context menu allows one create a new trip by choosing the option *Create new trip above*. The top three dives are then grouped into a separate trip. See below, the selection and context menu on the left, the completed action on the right:
+If a trip includes five dives, one can split this trip into two trips (trip 1: top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top three dives. The resulting context menu allows one create a new trip by choosing the option *Create new trip above*. The top three dives are then grouped into a separate trip. See below, the selection and context menu on the left, the completed action on the right:
 
 image::images/SplitDive3a.png["Example: Split a trip into 2 trips",align="center"]
 
@@ -651,7 +651,7 @@ Selected dives can be moved from the trip to which they belong and placed within
 
 === Shift the start time of dive(s)
 
-Sometimes it is necessary to adjust the start time of a dive. This may apply to situations where dives are performed in different time zones or when the dive computer has an erroneous time. Select and right-click the dive(s) to be adjusted. This brings up the context menu. Select *Shift times*. Specify the time (in hours and minutes) by which the dives should be adjusted and click on the option indicating whetehr the time adjustment shoulf be forwards or backwards.
+Sometimes it is necessary to adjust the start time of a dive. This may apply to situations where dives are performed in different time zones or when the dive computer has an erroneous time. Select and right-click the dive(s) to be adjusted. This brings up the context menu. Select *Shift times*. Specify the time (in hours and minutes) by which the dives should be adjusted and click on the option indicating whether the time adjustment should be forwards or backwards.
 
 === Merge dives into a single dive
 
@@ -696,11 +696,11 @@ Here one can choose between metric and imperial measures of depth, pressure, vol
 This panel allows two type of selections:
 
 * *Show*: Here one specifies the amount of information that is shown as part of the dive profile:
-** Gas pressure graphs: _subsurface_ can display the pressures of the gases with which you dive. If you dive breathing air, then the only important gas is nitrogen. You can instruct _subsurface_ to plot the nitrogen pressure during your dive. If you dive breathing nitrox, then you acn selct a graph of both the nitrogen and oxygen pressures during your dive. If you dive with trimix or heliox, you can select the display of the helium pressure as well. For each of these graphs you can specify a threshold value on the right-hand side of the panel. If any of the graphs go above this threshold level, the graph is highlighted in red, indicationg that the threshold value has been exceeded (see figure below).
+** Gas pressure graphs: _subsurface_ can display the pressures of the gases with which you dive. If you dive breathing air, then the only important gas is nitrogen. You can instruct _subsurface_ to plot the nitrogen pressure during your dive. If you dive breathing nitrox, then you can select a graph of both the nitrogen and oxygen pressures during your dive. If you dive with trimix or heliox, you can select the display of the helium pressure as well. For each of these graphs you can specify a threshold value on the right-hand side of the panel. If any of the graphs go above this threshold level, the graph is highlighted in red, indication that the threshold value has been exceeded (see figure below).
 
 ** Ceiling: Ascent ceilings arise when a direct ascent to the surface exposes the diver to decompression sickness (DCS) and it is necessary to either ascend slower or to perform decompression stop(s) before ascending to the surface. _subsurface_ can indicate these ceilings above which the diver should not ascend at a particular point in time (see the green-shaded areas in the figure in the section on <<S_DiveProfile,Dive Profiles>>) and in the figure below:
 
-*** If one checks *Calculted ceiling*, then a ceiling is shown if it exists for a particular dive (*A* in figure below)
+*** If one checks *Calculated ceiling*, then a ceiling is shown if it exists for a particular dive (*A* in figure below)
 
 *** If one checks *show all tissues*, the ceiling is shown for the tissue compartments following the Bühlmann model (*B* in figure below).
 
@@ -711,7 +711,7 @@ shown by checking *Dive computer reported ceiling* and it can be drawn in red by
 
 ** If a _Maximum operating depth (MOD)_ or an _Effective air depth (EAD)_ applies to a dive profile, these can be shown by checking the appropriate boxes.
 
-** If a _Maximum parial pressure of oxygen (maxPPO2)_ applies to dives, then this can be specifies in the appropriate text box. In addition, if a _no-decompression limit(NDL)_ is to be shown in the *info* box, then check the appropriate box.
+** If a _Maximum partial pressure of oxygen (maxPPO2)_ applies to dives, then this can be specifies in the appropriate text box. In addition, if a _no-decompression limit(NDL)_ is to be shown in the *info* box, then check the appropriate box.
 
 
 image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
@@ -722,7 +722,7 @@ image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
   ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
 
 
-== APPENDIX A: Operating system pecific information for importing dive information from dive computer.
+== APPENDIX A: Operating system specific information for importing dive information from dive computer.
 
 === Make sure that your OS has the required drivers installed
 [icon="images/icons/drivers.jpg"]
@@ -873,7 +873,7 @@ address shown there
 your dive computer with the bluetooth stack of your computer, copy/paste
 the MAC address from the output of 'hcitool scanning'
 
-Unforturnately on Linux binding to a communication device has to be done
+Unfortunately on Linux binding to a communication device has to be done
 manually by running:
 
  * +sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+ - bind the dive
