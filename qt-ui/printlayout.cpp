@@ -328,7 +328,7 @@ void PrintLayout::printTable()
 	// a list of vertical offsets where pages begin and some helpers
 	QList<unsigned int> pageIndexes;
 	pageIndexes.append(0);
-	int tableHeight = 0, rowH = 0, accH = 0;
+	int tableHeight = 0, rowH = 0, accH = 0, headings = 0;
 
 	// process all rows
 	progress = 0;
@@ -339,6 +339,7 @@ void PrintLayout::printTable()
 		if (accH > scaledPageH) { // push a new page index and add a heading
 			pageIndexes.append(pageIndexes.last() + (accH - rowH));
 			addTablePrintHeadingRow(&model, i);
+			headings += rowH; // last row was moved to a new page; compensate!
 			accH = 0;
 			i--;
 		}
@@ -346,7 +347,7 @@ void PrintLayout::printTable()
 		progress++;
 		emit signalProgress(stage + (progress * stage) / total);
 	}
-	pageIndexes.append(pageIndexes.last() + accH);
+	pageIndexes.append(pageIndexes.last() + accH + headings);
 	// resize the whole widget so that it can be rendered
 	table.resize(scaledPageW, tableHeight);
 
