@@ -9,6 +9,7 @@
   <temperature air='25.2 C' water='24.8 C' />
   <surface pressure='1.024 bar' />
   <event time='0:10 min' name='Tank Pressure Info' />
+  <event time='0:40 min' name='bookmark' />
   <sample time='0:05 min' depth='1.77 m' temp='25.2 C' pressure='79.65 bar' ndl='99:00 min' />
   <sample time='0:10 min' depth='1.67 m' pressure='79.53 bar' />
   <sample time='0:16 min' depth='1.84 m' pressure='79.27 bar' />

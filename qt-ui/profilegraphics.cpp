@@ -1626,37 +1626,13 @@ QColor EventItem::getColor(const color_indice_t i)
 	return profile_color[i].at((isGrayscale) ? 1 : 0);
 }
 
-EventItem::EventItem(struct event *ev, QGraphicsItem* parent, bool grayscale): QGraphicsPolygonItem(parent), ev(ev), isGrayscale(grayscale)
+EventItem::EventItem(struct event *ev, QGraphicsItem* parent, bool grayscale): QGraphicsPixmapItem(parent), ev(ev), isGrayscale(grayscale)
 {
-	setFlag(ItemIgnoresTransformations);
-	setFlag(ItemIsFocusable);
-	setAcceptHoverEvents(true);
-
-	QPolygonF poly;
-	poly.push_back(QPointF(-8, 16));
-	poly.push_back(QPointF(8, 16));
-	poly.push_back(QPointF(0, 0));
-	poly.push_back(QPointF(-8, 16));
-
-	QPen defaultPen ;
-	defaultPen.setJoinStyle(Qt::RoundJoin);
-	defaultPen.setCapStyle(Qt::RoundCap);
-	defaultPen.setWidth(2);
-	defaultPen.setCosmetic(true);
-
-	QPen pen = defaultPen;
-	pen.setBrush(QBrush(getColor(ALERT_BG)));
-
-	setPolygon(poly);
-	setBrush(QBrush(getColor(ALERT_BG)));
-	setPen(pen);
-
-	QGraphicsLineItem *line = new QGraphicsLineItem(0, 5, 0, 10, this);
-	line->setPen(QPen(getColor(ALERT_FG), 2));
-
-	QGraphicsEllipseItem *ball = new QGraphicsEllipseItem(-1, 12, 2, 2, this);
-	ball->setBrush(QBrush(getColor(ALERT_FG)));
-	ball->setPen(QPen(getColor(ALERT_FG)));
+	if(ev->name && strcmp(ev->name, "bookmark") == 0) {
+		setPixmap( QPixmap(QString(":flag")).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	} else {
+		setPixmap( QPixmap(QString(":warning")).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	}
 }
 
 RulerNodeItem::RulerNodeItem(QGraphicsItem *parent, graphics_context context) : QGraphicsEllipseItem(parent), gc(context), entry(NULL) , ruler(NULL)

@@ -20,6 +20,7 @@
 	<file alias="scale">icons/scale.png</file>
 <!--	<file alias="ruler">icons/ruler.svg</file> -->
 	<file alias="ruler">icons/ruler.png</file>
+	<file alias="flag">icons/flag.png</file>
 	<file alias="arrow_up">icons/planner/arrow_up.png</file>
 	<file alias="arrow_down">icons/planner/arrow_down.png</file>
 	<file alias="icon_time">icons/planner/icon_time.png</file>
