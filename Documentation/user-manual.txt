@@ -1,6 +1,7 @@
 Subsurface 4.0 User Manual
 ==========================
 :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg, Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem Ferguson
+
 :revnumber: 4.0
 :revdate: December 2013
 :toc:
@@ -54,9 +55,9 @@ at all. This is because the program doesn't have any dive information available.
 3) Save the information in your logbook.
 
 [[S_NewLogbook]]
-How to create a new logbook
----------------------------
-This is achieved by selecting _File -> New Logbook_ from the main menu. All existing dive data are cleared so that new information can be added.
+Creating a new logbook
+----------------------
+This is achieved by selecting _File -> New Logbook_ from the main menu. All existing dive data are cleared so that new information can be added. Existing dive data can be saved before a new logbook is created.
 
 [[S_GetInformation]]
 == How to obtain dive information to store in your logbook
@@ -70,7 +71,7 @@ There are several ways to obtain dive information to view:
 3. Import dive information from another file format. This is discussed in more detail below.
 
 [[S_EnterData]]
-=== How to enter dive information by hand
+=== Entering dive information by hand
 
 This is usually the approach for dives without a dive computer. The basic record of information within _subsurface_ is a dive. The most important information in a simple written dive logbook includes dive type, date, time, duration of dive, depth of dive, name of buddy and of dive master and some remarks about the dive. _subsurface_ can store much more information than this for each dive. In order to add a dive to your dive log, click on _Log -> Add Dive_. The program then shows three panels to enter information for a dive: two tabs in the *Info* panel (*Dive Notes* and *Equipment*), as well as the *profile* panel that displays a graphical profile of each dive. These panels are respectively marked [red]#A#, [red]#B# and [red]#C# in the figure below. We will now consider each of the tabs used for data entry.
 
@@ -174,7 +175,7 @@ image::images/DiveProfile4.png["Example: Completed dive profile",align="center"]
 
 ==== Saving the hand-entered dive information
 
-The information entered in the *Dive Notes* tab, the *Equipment* tab as well as the dive profile can now be saved in your logbook by using the two buttons on the bottom right hand of the Dive Notes tab. If one clicks Save, the dive data are saved. If one clicks Cancel, the newly entered dive data are deleted. When one exits _subsurface_ there is a final prompt to confirm that the new data should be saved.
+The information entered in the *Dive Notes* tab, the *Equipment* tab as well as the dive profile can now be saved in your logbook by using the two buttons on the top right hand of the Dive Notes tab. If one clicks _Save_, the dive data are saved. If a logbook file hasn't been selected before, one can now select name and place to store the logbook otherwise it is saved in the already opened logbook. If one clicks _Cancel_, the newly entered dive data are deleted. When one exits _subsurface_ there is a final prompt to confirm that the new data should be saved.
 
 
 [[S_ImportNewDives]]
@@ -314,7 +315,7 @@ image::images/WeightsDataEntry3.png["Example: A completed weights information ta
 
 The information entered in the *Dive Notes* tab, the *Equipment* tab can be saved with all the other information of your dives in your logbook by using the two buttons on the bottom right hand of the Dive Notes tab. If one clicks Save, the dive data are saved. If one clicks Cancel, the newly entered dive data are deleted, although the dive profile obtained from the dive computer will be retained. When one exits _subsurface_ there is a final prompt to confirm that the new data should be saved.
 
-=== How to import dive information from other digital data sources or other data formats
+=== Importing dive information from other digital data sources or other data formats
 
 [[S_ImportingAlienDiveLogs]]
 
@@ -328,6 +329,174 @@ the same dive and merges the information as best as it can. If
 there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be substantially different) _subsurface_
 will not create duplicate entries.
+
+[[S_ImportingDivesSuunto]]
+==== Importing dives from *Suunto Divemanager 3 (DM3)*
+
+Before you can start importing dives from 'Suunto Divemanager', you first
+have to export the dives you want to import. _subsurface_ does not import
+directly from the 'Suunto Divemanager' log files. The following procedures
+can be used for Linux and Windows.
+
+
+===== Export from *Suunto Divemanager*
+
+ - Start 'Suunto Divemanager' and log in with the name containing the logs
+ - Do not start the import wizard to import dives from your computer.
+ - In the navigation tree on the left side of the program-window, select your dives.
+ - Within the list of dives, select the dives you would like to import later:
+	* To select certain dives: hold 'ctrl' and click the dive
+	* To select all dives:  Select the first dive, hold down shift and select the last dive
+ - With the dives marked, use the program menu 'File -> Export'
+ - The export pop-up will show
+ - Within this pop-up, there is one field called Export Path.
+	* Click the button browse next to the field Export Path
+		** A file-manager like window pops up
+		** Navigate to the directory where you want to store the Divelog.SDE file
+		** Optional change the name of the file you want to save
+		** Click 'Save'
+	* You are back in the Export pop-up. Press the button 'Export'
+ - Your dives are now exported to the file Divelogs.SDE.
+
+===== Reading Suunto Divemanager Export in Subsurface
+
+The file Divelogs.SDE can now be opened (or imported) in
+_subsurface_.
+
+[[S_ImportingDivesSuuntoDM4]]
+==== Importing dives from *Suunto Divemanager 4 (DM4)*
+
+To import divelog from 'Suunto DM4', you need to locate the DM4 database
+where the dives are stored. You can either look for the original
+database or take a backup of the dives. Both methods are described here.
+
+===== Locating the Suunto DM4 database
+
+ * Start Suunto DM4
+ * Select 'Help -> About'
+ * Click 'Copy' after text 'Copy log folder path to clipboard'
+ * Now open Windows Explorer
+ * Paste the address to the path box at the top of the File Explorer
+ * The database is called DM4.db
+
+===== Backing up Suunto DM4
+
+ * Start Suunto DM4
+ * Select 'File - Create backup'
+ * From the file menu select the location and name for the backup, we'll
+   use DM4 in here with the default extension .bak
+ * Click 'Save'
+ * Your dives are now exported to the file DM4.bak
+
+===== Reading Suunto DM4 backup in _subsurface_
+
+Importing the logs from DM4 does not require any special steps. You just
+do the following:
+
+ * Open the following menu 'File -> Import File(s)'
+ * Browse your directories to the location where your DM4 backup is
+   stored
+ * Select the backup file you want to import and click 'Open'
+
+It is also possible to do the importing from command line:
+
+      subsurface MyDives.xml --import DM4.bak
+
+==== Importing from Mares Dive Organiser V2.1
+
+Mares Dive Organiser is a Windows application. The dive log is kept as a Microsoft SQL Compact Edition data base with a .SDF filename extension. The data base includes all Dive Organiser-registered divers on the particular computer and all Mares dive computers used. The safest way to obtain a copy of this data base is, within Dive Organiser, to select Database -> Backup from the main menu and to back up the data base to your desk top. This creates a zipped file DiveOrganiserxxxxx.dbf. Rename the file to DiveOrganiserxxxxx.zip. Inside the zipped directory is a file _DiveOrganiser.sdf_. Extract it from the zipped folder to your Desktop.
+
+Then use _www.divelogs.de_ as a mechanism to extract the dive information from the file. Create a user account in divelogs.de , then select Import Logbook -> Dive Organiser from the menu on the left hand side. Follow the instructions carefully to transfer the information from the Dive Organiser data base to divelogs.de.
+
+Then follow the instructions below to import dives from divelogs.de to _subsurface_.
+
+
+[[S_ImportingDivelogsDe]]
+==== Importing dives from *divelogs.de*
+
+Before you can start importing dives from divelogs.de, you first
+have to export the dives you want to import. The exported .DLD file can
+be imported to Subsurface either from command line or from GUI.
+
+[red]#Full istructions need to be included here#
+
+[[S_ImportingDR5]]
+==== Importing dives from Heinrichs Weikamp DR5
+
+When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF file for every dive.
+Mark all the dives you'd like to
+import or open, _subsurface_ is tested to work with DR5.
+Note: The DR5 does not seem to store gradient factors nor deco information, so for
+_subsurface_ it is not possible to display them. Adjust the gradient
+factors in the Tec Settings in _subsurface_ to generate a deco overlay in the _subsurface_ *Dive Profile* panel
+to get deco displayed but please note that the deco calculated by _subsurface_
+will most likely differ from the one display at the DR5.
+
+
+===== Export from divelogs.de
+
+ - Login to https://en.divelogs.de using your user name and password.
+ - Go to the 'Export Logbook' page
+ - Choose 'DLD Export of your logbook' and save the resulting yourUserName.DLD file
+
+===== Import divelogs.de to Subsurface
+
+The import works similarly as importing any other divelogs. Just do the
+following steps on Subsurface:
+
+ - Open the following menu 'File - Import File(s)'
+ - Browse your directories to the location where yourUserName.DLD is
+ - Select the log file and click OK
+
+After a few moments, you see your existing logs in -subsurface_. Now you can
+edit your dives like explained in the section <<S_EditDiveInfo, Updating the Dive Information>>.
+
+The fields that are currently not imported are: weather, visibility and
+boat.
+
+It is also possible to import the .DLD data using the command line:
+
+      subsurface MyDives.xml --import yourUserName.DLD
+
+==== Importing dives from *MacDive*
+
+Importing logs from MacDive is as easy as it gets. Do the following
+steps in Subsurface:
+
+ - Open the following menu _File - Import File(s)_
+ - Browse your directories to the location where your MacDive logs are
+   stored
+ - Select the log file(s) you want to import and click 'open'
+ - Click the OK button in the popup
+
+After a few moments, you see your existing logs in _subsurface_. Now you can
+edit your dives like explained in the section <<S_EditDiveInfo, Updating the Dive Information>>.
+
+_subsurface_ imports all the relevant dive information
+excluding the used equipment and diver name.
+
+It is also possible to do the import from command line:
+
+      subsurface MyDives.xml --import MacDiveDives.xml
+
+[[S_ImportingDivinglog]]
+==== Importing dives from *DivingLog 5.0*
+
+Before you can start importing dives from _DivingLog_ you first have to
+export those dives. Unfortunately DivingLog XML files give us no
+indication on the preferences set on your system. So in order for
+_subsurface_ to be able to successfully import XML files from DivingLog
+you first need to make sure that your copy of DivingLog is configured
+to use the Metric system (you can easily change this in 'File ->
+Preferences -> Units and Language' by clicking the 'Metric'
+button). Then do the following:
+
+ - Open the 'File -> Export -> XML' menu
+ - Select the dives that you want to export
+ - Click on the export button and select the filename
+ - Rename the backup file to extension .db
+
+This file can now be opened in _subsurface_ (as described in the previous sections).
 
 [[S_ImportingDivesJDiveLog]]
 ==== Importing dives from *JDiveLog*
@@ -367,79 +536,6 @@ import the dives from JdivelogDives.jlb. You can now save the combined
 divelog back as MyDives.xml.
 
 
-[[S_ImportingMacDive]]
-==== Importing dives from *MacDive*
-
-Importing logs from MacDive is as easy as it gets. Do the following
-steps in Subsurface:
-
- - Open the following menu _File - Import File(s)_
- - Browse your directories to the location where your MacDive logs are
-   stored
- - Select the log file(s) you want to import and click 'open'
- - Click the OK button in the popup
-
-After a few moments, you see your existing logs in _subsurface_. Now you can
-edit your dives like explained in the section <<S_EditDiveInfo, Updating the Dive Information>>.
-
-_subsurface_ imports all the relevant dive information
-excluding the used equipment and diver name.
-
-It is also possible to do the import from command line:
-
-      subsurface MyDives.xml --import MacDiveDives.xml
-
-[[S_ImportingDivelogsDe]]
-==== Importing dives from *divelogs.de*
-
-Before you can start importing dives from divelogs.de, you first
-have to export the dives you want to import. The exported .DLD file can
-be imported to Subsurface either from command line or from GUI.
-
-===== Export from divelogs.de
-
- - Login to https://en.divelogs.de using your user name and password.
- - Go to the 'Export Logbook' page
- - Choose 'DLD Export of your logbook' and save the resulting yourUserName.DLD file
-
-===== Import divelogs.de to Subsurface
-
-The import works similarly as importing any other divelogs. Just do the
-following steps on Subsurface:
-
- - Open the following menu 'File - Import File(s)'
- - Browse your directories to the location where yourUserName.DLD is
- - Select the log file and click OK
-
-After a few moments, you see your existing logs in -subsurface_. Now you can
-edit your dives like explained in the section <<S_EditDiveInfo, Updating the Dive Information>>.
-
-The fields that are currently not imported are: weather, visibility and
-boat.
-
-It is also possible to import the .DLD data using the command line:
-
-      subsurface MyDives.xml --import yourUserName.DLD
-
-[[S_ImportingDivinglog]]
-==== Importing dives from *DivingLog 5.0*
-
-Before you can start importing dives from _DivingLog_ you first have to
-export those dives. Unfortunately DivingLog XML files give us no
-indication on the preferences set on your system. So in order for
-_subsurface_ to be able to successfully import XML files from DivingLog
-you first need to make sure that your copy of DivingLog is configured
-to use the Metric system (you can easily change this in 'File ->
-Preferences -> Units and Language' by clicking the 'Metric'
-button). Then do the following:
-
- - Open the 'File -> Export -> XML' menu
- - Select the dives that you want to export
- - Click on the export button and select the filename
- - Rename the backup file to extension .db
-
-This file can now be opened in _subsurface_ (as described in the previous sections).
-
 [[S_Importingkenozooid]]
 ==== Importing dives from *Kenozooid*
 
@@ -453,96 +549,14 @@ Make sure you are not using compressed files when importing to _subsurface_
 _subsurface_ supports UDDF as a generic import format.
 Some attributes in your file may not get processed properly.
 
-Please report your findings for UDDF data from sources different from those described
+Please report your findings for UDDF data from sources different from those descibed
 in this document at http://trac.hohndel.org[our bugtracker] or send an email to
 mailto:subsurface@hohndel.org[our mailing list].
 
-[[S_ImportingDivesSuunto]]
-==== Importing dives from *Suunto Divemanager 3*
-
-Before you can start importing dives from 'Suunto Divemanager', you first
-have to export the dives you want to import. _subsurface_ does not import
-directly from the 'Suunto Divemanager' log files. The following procedures
-can be used for Linux and Windows.
-
-===== Export from *Suunto Divemanager*
-
- - Start 'Suunto Divemanager' and log in with the name containing the logs
- - Do not start the import wizard to import dives from your computer.
- - In the navigation tree on the left side of the program-window, select your dives.
- - Within the list of dives, select the dives you would like to import later:
-	* To select certain dives: hold 'ctrl' and click the dive
-	* To select all dives:  Select the first dive, hold down shift and select the last dive
- - With the dives marked, use the program menu 'File -> Export'
- - The export pop-up will show
- - Within this pop-up, there is one field called Export Path.
-	* Click the button browse next to the field Export Path
-		** A file-manager like window pops up
-		** Navigate to the directory where you want to store the Divelog.SDE file
-		** Optional change the name of the file you want to save
-		** Click 'Save'
-	* You are back in the Export pop-up. Press the button 'Export'
- - Your dives are now exported to the file Divelogs.SDE.
-
-===== Reading Suunto Divemanager Export in Subsurface
-
-The file Divelogs.SDE can now be opened (or imported) in
-_subsurface_.
-
-[[S_ImportingDivesSuuntoDM4]]
-==== Importing dives from *Suunto DM4*
-
-To import divelog from 'Suunto DM4', you need to locate the DM4 database
-where the dives are stored. You can either look for the original
-database or take a backup of the dives. Both methods are described here.
-
-===== Locating the Suunto DM4 database
-
- * Start Suunto DM4
- * Select 'Help -> About'
- * Click 'Copy' after text 'Copy log folder path to clipboard'
- * Now open Windows Explorer
- * Paste the address to the path box at the top of the File Explorer
- * The database is called DM4.db
-
-===== Backing up Suunto DM4
-
- * Start Suunto DM4
- * Select 'File - Create backup'
- * From the file menu select the location and name for the backup, we'll
-   use DM4 in here with the default extension .bak
- * Click 'Save'
- * Your dives are now exported to the file DM4.bak
-
-===== Reading Suunto DM4 backup in _subsurface_
-
-Importing the logs from DM4 does not require any special steps. You just
-do the following:
-
- * Open the following menu 'File -> Import File(s)'
- * Browse your directories to the location where your DM4 backup is
-   stored
- * Select the backup file you want to import and click 'Open'
-
-It is also possible to do the importing from command line:
-
-      subsurface MyDives.xml --import DM4.bak
-
-[[S_ImportingDR5]]
-==== Importing dives from Heinrichs Weikamp DR5
-
-When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF file for every dive.
-Mark all the dives you'd like to
-import or open, _subsurface_ is tested to work with DR5.
-Note: The DR5 does not seem to store gradient factors nor deco information, so for
-_subsurface_ it is not possible to display them. Adjust the gradient
-factors in the Tec Settings in _subsurface_ to generate a deco overlay in the _subsurface_ *Dive Profile* panel
-to get deco displayed but please note that the deco calculated by _subsurface_
-will most likely differ from the one display at the DR5.
 
 [red]#Needed here: Careful check of the current accuracy of the information and detail description of import from other digital sources, divelogs.de etc.#
 
-== How to obtain more information about dives entered into the logbook
+== Obtaining more information about dives entered into the logbook
 
 === The *Dive Info* tab (for individual dives)
 
@@ -590,12 +604,20 @@ For a more detailed explanation of _gradient factors_, use the following links:
 - link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 
+=== The *Information Box*
 
-== Organising the logbook
+The Information box displays a large range of information pertaining to the dive profile. Normally the Information Box is located to the top left of the *Dive Profile* panel. If the mouse points outside of the *Dive Profile* panel, then only the top line of the Information Box is visible (see left-hand part of figure below). The Information Box can be moved around in the *Dive Profile* panel by click-dragging it with the mouse so that it is not obstructing important detail. The position of the Information Box is saved and used again during subsequent dive analyses.
+
+image::images/InfoBox.png["Figure: Information Box",align="centre"]
+
+The moment the mouse points inside the *Dive Profile* panel, it expands and shows many data items. In this situation, the data reflect the time point along the dive profile indicated by the mouse (see right-hand part of figure above where the Information Box reflects the situation at the position of the cursor [arrow] in that image). Therefore, moving the cursor in the horizontal direction allows the Information Box to show information for any point along the dive profile. In this mode, the Information Box gives extensive statistics about depth, gas and ceiling characteristics of the particular dive. These include: Time period into the dive (indicated by a @), depth, cylider pressure (P), temperature, ascent/descent rate, surface air consumption (SAC), oxygen partial pressure, maximum operating depth, effective air depth (EAD), effective nitrigen depth (END), equivalent air density depth (EADD), Decompression requirements at that instand in time (Deco), time to surface (TTS), the calculated ceiling, as well as the calculated ceiling for several Bühlmann tissue compartments.
+
+
+== Organising the logbook (Manipulating groups of dives)
 
 === The context menu
 
-Many actions within _subsurface_ are dependent on a context menu that is used to manipulate single dives or groups of dives. The context menu is found by selecting a dive or a group of dives and then right-clicking.
+Many actions within _subsurface_ are dependent on a context menu that is used mostly to manipulate  groups of dives. The context menu is found by selecting a dive or a group of dives and then right-clicking.
 
 image::images/ContextMenu.png["Figure: Context Menu",align="left"]
 
@@ -713,14 +735,11 @@ shown by checking *Dive computer reported ceiling* and it can be drawn in red by
 
 ** If a _Maximum partial pressure of oxygen (maxPPO2)_ applies to dives, then this can be specifies in the appropriate text box. In addition, if a _no-decompression limit(NDL)_ is to be shown in the *info* box, then check the appropriate box.
 
-
 image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
-
 
 * *Misc*: Here one can set the _gradient factors_ used while diving. GF_Low is the gradient factor at deep depths and GF_High is used just below the surface. At intermediate depths gradient factor between GF_Low and GF_High are used. Gradient factors add conservatism to the nitrogen exposure during a dive, in a similar way that many dive computers have a conservatism setting. The lower the value of a gradient factor, the more conservative the calculations are with respect to nitrogen loading and the lower the ascent ceilings are. Gradient factors of 25/60 are considered conservative and values of 60/90 are considered harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the deepest depth of a dive. For more information see:
 
   ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
-
 
 == APPENDIX A: Operating system specific information for importing dive information from dive computer.
 
@@ -886,7 +905,6 @@ For downloading dives in subsurface you have then to specify +/dev/rfcomm0+
 as device name to use.
 
 
-
 == APPENDIX B: Dive Computer specific information for importing dive information.
 
 
@@ -947,6 +965,8 @@ Please add any topics you think are important:
 * The Main Menu items need to be covered systematically, providing in-document links where appropriate:
 
 * Importing GPS positions from subsurface mobile API
+
+* Importing/exporting to divelogs.de
 
 * Importing data from other electronic resources - Present information comes from subsurface 3.1.1 manual. How much of it is still valid? Needs to be verified.
 
