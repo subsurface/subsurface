@@ -8,6 +8,7 @@
 #include "models.h"
 #include "modeldelegates.h"
 #include "mainwindow.h"
+#include "subsurfacewebservices.h"
 #include "../display.h"
 #include <QApplication>
 #include <QHeaderView>
@@ -726,6 +727,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("export As UDDF"), this, SLOT(exportSelectedDivesAsUDDF()));
 		popup.addAction(tr("shift times"), this, SLOT(shiftTimes()));
 	}
+	if (d)
+		popup.addAction(tr("upload dive(s) to divelogs.de"), this, SLOT(uploadToDivelogsDE()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction * actionTaken = popup.exec(event->globalPos());
@@ -780,4 +783,9 @@ void DiveListView::exportSelectedDivesAsUDDF()
 void DiveListView::shiftTimes()
 {
 	ShiftTimesDialog::instance()->show();
+}
+
+void DiveListView::uploadToDivelogsDE()
+{
+	DivelogsDeWebServices::instance()->prepareDivesForUpload();
 }

@@ -49,6 +49,7 @@ public slots:
 	void saveSelectedDivesAs();
 	void exportSelectedDivesAsUDDF();
 	void shiftTimes();
+	void uploadToDivelogsDE();
 
 signals:
 	void currentDiveChanged(int divenr);
