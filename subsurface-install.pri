@@ -46,6 +46,7 @@ mac {
 	NSIINPUTFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi.in
 	MAKENSIS = /usr/bin/makensis
 
+	CONFIG -= copy_dir_files
 	deploy.path = $$WINDOWSSTAGING
 	deploy.files += $$xslt.files $$doc.files $$icons.files
 	deploy.CONFIG += no_check_exist
