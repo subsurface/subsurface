@@ -17,6 +17,7 @@
 #include <QWebView>
 #include <QTableView>
 #include <QDesktopWidget>
+#include <QDesktopServices>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -489,6 +490,8 @@ void MainWindow::on_actionUserManual_triggered()
 {
 	if(!helpView){
 		helpView = new QWebView();
+		helpView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+		connect(helpView, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
 	}
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath != "") {
@@ -498,6 +501,11 @@ void MainWindow::on_actionUserManual_triggered()
 		helpView->setHtml(tr("Cannot find the Subsurface manual"));
 	}
 	helpView->show();
+}
+
+void MainWindow::linkClickedSlot(QUrl url)
+{
+	QDesktopServices::openUrl(url);
 }
 
 QString MainWindow::filter()

@@ -9,6 +9,7 @@
 
 #include <QMainWindow>
 #include <QAction>
+#include <QUrl>
 
 #include "ui_mainwindow.h"
 
@@ -102,6 +103,7 @@ private slots:
 	void initialUiSetup();
 
 	void on_actionImportCSV_triggered();
+	void linkClickedSlot(QUrl url);
 
 protected:
 	void closeEvent(QCloseEvent *);
