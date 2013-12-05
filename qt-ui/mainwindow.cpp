@@ -135,7 +135,8 @@ void MainWindow::cleanUpEmpty()
 	ui.ProfileWidget->clear();
 	ui.ListWidget->reload(DiveTripModel::TREE);
 	ui.globe->reload();
-	setTitle(MWTF_DEFAULT);
+	if (!existing_filename)
+		setTitle(MWTF_DEFAULT);
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -790,6 +791,10 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 		setWindowTitle("Subsurface");
 		break;
 	case MWTF_FILENAME:
+		if (!existing_filename) {
+			setTitle(MWTF_DEFAULT);
+			return;
+		}
 		QFile f(existing_filename);
 		QFileInfo fileInfo(f);
 		QString fileName(fileInfo.fileName());
