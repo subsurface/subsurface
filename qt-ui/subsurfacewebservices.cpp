@@ -4,6 +4,7 @@
 
 #include <libxml/parser.h>
 #include <zip.h>
+#include <errno.h>
 
 #include <QDir>
 #include <QHttpMultiPart>
