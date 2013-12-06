@@ -16,6 +16,8 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
+#include <QSettings>
 #include <QColor>
 #include <QBrush>
 #include <QFont>
@@ -318,7 +320,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 
 int CylindersModel::rowCount(const QModelIndex& parent) const
 {
-	return 	rows;
+	return	rows;
 }
 
 void CylindersModel::add()
@@ -1749,4 +1751,51 @@ QVariant GasSelectionModel::data(const QModelIndex& index, int role) const
 		return defaultModelFont();
 	}
 	return QStringListModel::data(index, role);
+}
+
+// Language Model, The Model to populate the list of possible Languages.
+
+LanguageModel* LanguageModel::instance()
+{
+	static LanguageModel *self = new LanguageModel();
+	QLocale l;
+	return self;
+}
+
+LanguageModel::LanguageModel(QObject* parent): QAbstractListModel(parent)
+{
+	QSettings s;
+	QDir d;
+	d.setCurrent( getSubsurfaceDataPath("translations") );
+	QStringList result = d.entryList();
+	Q_FOREACH(const QString& s, result){
+		if ( !s.endsWith(".qm") ){
+			continue;
+		}
+		languages.push_back(s);
+	}
+}
+
+QVariant LanguageModel::data(const QModelIndex& index, int role) const
+{
+	QLocale loc;
+	if(!index.isValid())
+		return QVariant();
+	switch(role){
+		case Qt::DisplayRole:{
+			QString currentString = languages.at(index.row());
+			QLocale l( currentString.remove("subsurface_"));
+			return l.countryToString(l.country());
+		}break;
+	case Qt::UserRole:{
+			QString currentString = languages.at(index.row());
+			return currentString.remove("subsurface_");
+		}break;
+	}
+	return QVariant();
+}
+
+int LanguageModel::rowCount(const QModelIndex& parent) const
+{
+	return languages.count();
 }

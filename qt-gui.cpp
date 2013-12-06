@@ -87,8 +87,12 @@ void init_ui(int *argcp, char ***argvp)
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	xslt_path = strdup(getSubsurfaceDataPath("xslt").toAscii().data());
 
-	QLocale loc;
+	QSettings s;
+	s.beginGroup("Language");
+	QLocale loc(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
 	QString uiLang = loc.uiLanguages().first();
+	s.endGroup();
+
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
 		QLocale loc2(loc.bcp47Name());
@@ -117,7 +121,6 @@ void init_ui(int *argcp, char ***argvp)
 		}
 	}
 
-	QSettings s;
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
 	default_dive_computer_product = getSetting(s,"dive_computer_product");

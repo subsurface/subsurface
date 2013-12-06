@@ -3,11 +3,13 @@
 #include <QSettings>
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
 
 PreferencesDialog* PreferencesDialog::instance()
 {
 	static PreferencesDialog *dialog = new PreferencesDialog(mainWindow());
 	dialog->setAttribute(Qt::WA_QuitOnClose, false);
+	LanguageModel::instance();
 	return dialog;
 }
 
@@ -107,6 +109,15 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.show_sac->setChecked(prefs.show_sac);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
+
+	ui.languageView->setModel( LanguageModel::instance() );
+
+	QSettings s;
+	s.beginGroup("Language");
+	QAbstractItemModel *m = ui.languageView->model();
+	QModelIndexList languages = m->match( m->index(0,0), Qt::DisplayRole, s.value("UiLanguage").toString());
+	if (languages.count())
+		ui.languageView->setCurrentIndex(languages.first());
 }
 
 void PreferencesDialog::restorePrefs()
@@ -173,6 +184,14 @@ void PreferencesDialog::syncSettings()
 	s.value("displayinvalid", ui.displayinvalid->isChecked());
 	s.endGroup();
 	s.sync();
+
+	QLocale loc;
+	s.beginGroup("Language");
+	if (s.value("UiLanguage").toString() != ui.languageView->currentIndex().data(Qt::UserRole)){
+		QMessageBox::warning(mainWindow(), tr("Restart required"),
+				     tr("To correctly load a new language you must restart Subsurface."));
+	}
+	s.setValue("UiLanguage", ui.languageView->currentIndex().data(Qt::UserRole));
 
 	emit settingsChanged();
 }

@@ -110,6 +110,16 @@
          </iconset>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Language</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/advanced</normalon>
+         </iconset>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -121,7 +131,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page_2">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -301,7 +311,7 @@
             <item row="0" column="1">
              <widget class="QRadioButton" name="meter">
               <property name="text">
-	       <string>meter</string>
+               <string>meter</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup</string>
@@ -311,7 +321,7 @@
             <item row="0" column="2">
              <widget class="QRadioButton" name="feet">
               <property name="text">
-	       <string>feet</string>
+               <string>feet</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup</string>
@@ -328,7 +338,7 @@
             <item row="1" column="1">
              <widget class="QRadioButton" name="bar">
               <property name="text">
-	       <string>bar</string>
+               <string>bar</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_2</string>
@@ -338,7 +348,7 @@
             <item row="1" column="2">
              <widget class="QRadioButton" name="psi">
               <property name="text">
-	       <string>psi</string>
+               <string>psi</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_2</string>
@@ -355,7 +365,7 @@
             <item row="2" column="1">
              <widget class="QRadioButton" name="liter">
               <property name="text">
-	       <string>liter</string>
+               <string>liter</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_3</string>
@@ -365,7 +375,7 @@
             <item row="2" column="2">
              <widget class="QRadioButton" name="cuft">
               <property name="text">
-	       <string>cu ft</string>
+               <string>cu ft</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_3</string>
@@ -382,7 +392,7 @@
             <item row="3" column="1">
              <widget class="QRadioButton" name="celsius">
               <property name="text">
-	       <string>celsius</string>
+               <string>celsius</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_4</string>
@@ -392,7 +402,7 @@
             <item row="3" column="2">
              <widget class="QRadioButton" name="fahrenheit">
               <property name="text">
-	       <string>fahrenheit</string>
+               <string>fahrenheit</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_4</string>
@@ -409,7 +419,7 @@
             <item row="4" column="1">
              <widget class="QRadioButton" name="kgs">
               <property name="text">
-	       <string>kg</string>
+               <string>kg</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">buttonGroup_5</string>
@@ -497,7 +507,7 @@
               <item>
                <widget class="QCheckBox" name="po2">
                 <property name="text">
-		 <string>pO₂</string>
+                 <string>pO₂</string>
                 </property>
                </widget>
               </item>
@@ -538,7 +548,7 @@
               <item>
                <widget class="QCheckBox" name="pn2">
                 <property name="text">
-		 <string>pN₂</string>
+                 <string>pN₂</string>
                 </property>
                </widget>
               </item>
@@ -643,7 +653,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-		 <string>max ppO₂</string>
+                 <string>max ppO₂</string>
                 </property>
                </widget>
               </item>
@@ -814,6 +824,13 @@
             </item>
            </layout>
           </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page_4">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QListView" name="languageView"/>
          </item>
         </layout>
        </widget>
@@ -1098,9 +1115,9 @@
   <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

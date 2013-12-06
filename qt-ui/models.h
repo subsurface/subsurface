@@ -234,7 +234,7 @@ private:
 class YearlyStatisticsModel : public TreeModel {
 	Q_OBJECT
 public:
-	enum { 	YEAR,DIVES,TOTAL_TIME,AVERAGE_TIME,SHORTEST_TIME,LONGEST_TIME,AVG_DEPTH,MIN_DEPTH,
+	enum {	YEAR,DIVES,TOTAL_TIME,AVERAGE_TIME,SHORTEST_TIME,LONGEST_TIME,AVG_DEPTH,MIN_DEPTH,
 		MAX_DEPTH,AVG_SAC,MIN_SAC,MAX_SAC,AVG_TEMP,MIN_TEMP,MAX_TEMP,COLUMNS};
 
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -312,4 +312,16 @@ public slots:
 	void repopulate();
 };
 
+
+class LanguageModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	static LanguageModel* instance();
+	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+private:
+	LanguageModel(QObject* parent = 0);
+
+	QStringList languages;
+};
 #endif
