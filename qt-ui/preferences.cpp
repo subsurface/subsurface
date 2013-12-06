@@ -114,10 +114,11 @@ void PreferencesDialog::setUiFromPrefs()
 
 	QSettings s;
 	s.beginGroup("Language");
-	QAbstractItemModel *m = ui.languageView->model();
-	QModelIndexList languages = m->match( m->index(0,0), Qt::DisplayRole, s.value("UiLanguage").toString());
-	if (languages.count())
-		ui.languageView->setCurrentIndex(languages.first());
+	ui.languageSystemDefault->setChecked(s.value("UseSystemLanguage").toBool());
+	  QAbstractItemModel *m = ui.languageView->model();
+	  QModelIndexList languages = m->match( m->index(0,0), Qt::UserRole, s.value("UiLanguage").toString());
+	  if (languages.count())
+		  ui.languageView->setCurrentIndex(languages.first());
 }
 
 void PreferencesDialog::restorePrefs()
@@ -187,10 +188,12 @@ void PreferencesDialog::syncSettings()
 
 	QLocale loc;
 	s.beginGroup("Language");
-	if (s.value("UiLanguage").toString() != ui.languageView->currentIndex().data(Qt::UserRole)){
+	if (s.value("UiLanguage").toString() != ui.languageView->currentIndex().data(Qt::UserRole) ||
+	    s.value("UseSystemLanguage").toBool() != ui.languageSystemDefault->isChecked()) {
 		QMessageBox::warning(mainWindow(), tr("Restart required"),
 				     tr("To correctly load a new language you must restart Subsurface."));
 	}
+	s.setValue("UseSystemLanguage", ui.languageSystemDefault->isChecked());
 	s.setValue("UiLanguage", ui.languageView->currentIndex().data(Qt::UserRole));
 
 	emit settingsChanged();

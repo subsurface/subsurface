@@ -1772,24 +1772,24 @@ LanguageModel::LanguageModel(QObject* parent): QAbstractListModel(parent)
 		if ( !s.endsWith(".qm") ){
 			continue;
 		}
-		languages.push_back(s);
+		languages.push_back( (s == "subsurface_source.qm") ? "English" : s);
 	}
 }
 
 QVariant LanguageModel::data(const QModelIndex& index, int role) const
 {
 	QLocale loc;
+	QString currentString = languages.at(index.row());
 	if(!index.isValid())
 		return QVariant();
 	switch(role){
 		case Qt::DisplayRole:{
-			QString currentString = languages.at(index.row());
 			QLocale l( currentString.remove("subsurface_"));
-			return l.countryToString(l.country());
+			return currentString == "English" ? currentString : l.countryToString(l.country());
 		}break;
 	case Qt::UserRole:{
 			QString currentString = languages.at(index.row());
-			return currentString.remove("subsurface_");
+			return currentString == "English" ? "en_US" : currentString.remove("subsurface_");
 		}break;
 	}
 	return QVariant();
