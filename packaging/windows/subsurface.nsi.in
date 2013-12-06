@@ -104,6 +104,7 @@ Section
     File /r images
     File /r icons
     File /r plugins
+    File /r translations
     File iconv.dll
     File libdivecomputer-0.dll
     File libpng15-15.dll
