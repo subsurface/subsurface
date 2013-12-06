@@ -147,14 +147,9 @@ XSLTDIR = $(DATADIR)/subsurface
 
 	doc.CONFIG += no_check_exist
 
-	# FIXME: Linguist translations
-	#l10n_install.commands = for LOC in $$files(share/locale/*/LC_MESSAGES); do \
-	#	$(INSTALL_PROGRAM) -d $(INSTALL_ROOT)/$(prefix)/$$LOC; \
-	#	$(INSTALL_FILE) $$LOC/subsurface.mo $(INSTALL_ROOT)/$(prefix)/$$LOC/subsurface.mo; \
-	#done
-	#install.depends += l10n_install
+	translation.path = /$(DATADIR)/subsurface/translations
 
-	INSTALLS += target desktop icon manpage xslt doc marbledir
+	INSTALLS += target desktop icon manpage xslt doc marbledir translation
 	install.target = install
 }
 !isEmpty(TRANSLATIONS) {
