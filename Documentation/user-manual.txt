@@ -741,6 +741,111 @@ image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
 
   ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
 
+[[S_Companion]]
+== Importing GPS coordinates with Subsurface companion.
+If you have an Android device with GPS, you can achieve the coordinates of the point where you are diving and automatically pass them to your Subsurface divelog. You only need:
+
+- [red]#Register in Subsurface companion page.# http://api.hohndel.org/login/ You'll receive a confirmation mail with instructions and your *DIVERID*, this id will give you access to the companion app capabilities.
+
+- [red]#Download the app.# You can download it from https://play.google.com/store/apps/details?id=org.subsurface or http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface .
+
+=== Using Subsurface companion app.
+
+On first use the app has three options:
+
+* +Create a new account.+  Equivalent to register in Subsurface companion page.
+
+* +Retrieve an account.+  This is the option you would use if someway have forgot your DIVERID. You should receive an email whith it.
+
+* +Use an existing account.+ You'll be prompted to introduce your DIVERID.
+
+The app stores your ID and don't ask for it again unless you use the _Disconnect_ menu option commented below.
+
+Now you're ready to get a dive position and send it to the server.  The android display will look like next image, but without any dive.
+
+image::images/companion_1.png["Entry display for companion app",align="center"]
+
+Typing the "+" icon on the right you will be prompted for a name for the dive point (or asked first for the GPS activation if this was turned off), and you will get a register in the display with the name of the dive point, date and time.   As you can see in the image above, there are two kind of register, those with a little arrow up and those without it.  The arrow up means the dive is stored in the device, but hasn't been sent to the server.
+
+Now we want to send the dive to the server. There are several ways of doing this. Easiest is simply selecting the dive as seen in this image
+
+image::images/companion_2.png["Selecting dive points",align="center"]
+
+and typing the right arrow will send it to the server.  Be careful, the trash on the right means exactly what it's supossed to mean, it would delete de dive point.
+
+Well, the new dive point is stored in the server and can be downloaded to Subsurface divinglog whenever you register your dive in it.  If returning from a dive trip, and you have been lucky, there can be lots of dive points coordinates ready to be saved on your divelog.  We will see how to do this later.
+
+Next step would be adjust your preferences in the _Settings_ menu option.  Let's see the options we would get by opening the menu.
+
+image::images/companion_3.png["Menu options displayed",align="center"]
+
+
+==== Settings
+
+===== Server and account
+
+- +Web-service URL.+ Predefined. It's actually http://api.hohndel.org/
+
+- +User ID.+ Obtained by registering as indicated above. The easiest way to introduce it is simply copy+paste from the confirmation mail but, off course, you can type it char by char.
+
+===== Synchronization
+
+- +Synchronize on startup.+ If selected, dives in android device and those on the web service will synchronize each time you start the app.
+
+- +Upload new dives.+ If selected, each time you add a dive it'll automatically be sent to the server.
+
+===== Background service
+Instead of take a unique position, you can leave the service running on background on your device. This setting will define the behaviour of the service.
+
+- +Min duration.+ In minutes. The app'll try to get a position each X minutes until you stop it.
+
+- +Min distance.+ In meters. Minimum distance between two position fixes.
+
+- +Name template.+ Te name the app'll use when saving the position fixes.
+
+[NOTE]
+_How background service works?_ Let's asume we've set 5 minutes and 50 meters in the parameters above, the app will fix a position, then another one each 5 minutes. If this 2nd (3rd, 4th ...) is in a radius of 50 meters from the previous one, the position won't be saved. After another 5 minutes there will be a new try, and so on.  This way, if we are in a static position, we'll only get a fix, but if we're moving we can have a nice trace of our journey.
+
+===== Other
+
+- +Mailing List.+ The mail box for Subsurface. You can send an email to the subsurface mailing list.
+
+- +Subsurface website.+ A link to the URL of subsurface web
+
+- +Version.+ Displays the current version of the companion app.
+
+==== Search
+
+Here you can search your saved dive points by the name you gave them or by date and hour.
+
+==== Start service
+
+Initiates the _background service_. It'll work depending on the previously fixed settings.
+
+==== Disconect
+
+Badly named option. It disconects your app from the server by reseting your ID in the app. It will send you to the first display where can create an account, retrive the ID for an existing one or use your own ID. Useful if you are downloading the dive positions for another registered user with your android device.
+
+==== Send all locations
+
+As expected, this option will send all locations stored in the android device to the server.
+
+=== Downloading dive locations to your Subsurface divelog
+
+First you will have downloaded your dive/s from your DC or created them manually.  Now you want to get the GPS coordinates from the server. The download dialog can be reached via _Ctrl+G_ or from Subsurface's main menu _Import -> Import GPS data from Subsurface Service_
+
+image::images/Downloading_GPS.png["Initial downloading GPS dialog ",align="center"]
+
+On first use the DIVERID will be blanked, so you'll have to put it here as usual.  Then simply clik on the _Download_ button and the download begins.  When ended you'll get the next
+
+image::images/Downloading_GPS_2.png["After downloading",align="center"]
+
+Note the _Apply_ button now active, click on it and, luckily, you'll be done.  Subsurface's logic should apply the coordinates and names you gave them for all the new dives.
+
+[NOTE]
+_Features, issues and tips._  Automatically applying of GPS data to the dives is a task very dependent on a correct time.  Note that there might be a difference between time in your DC and time in your android device, if you have a little one there'll be no problem and the logic will work fine, but if it's big Subsurface will be unable to identify the dive which matches the coordinates, and nothing will happen. The ideal is have a correct time in your DC (or in the android device, whichever is wrong)  but this may be not possible.  A dirty hack is editing manually the time in Subsurface's log _before_ downloading the GPS data. If the correct time was the erased one, then simply edit it back manually again _after_ downloading.
+
+
 == APPENDIX A: Operating system specific information for importing dive information from dive computer.
 
 === Make sure that your OS has the required drivers installed
