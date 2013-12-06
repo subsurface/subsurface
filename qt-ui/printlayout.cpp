@@ -273,7 +273,7 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 void PrintLayout::printTable()
 {
 	struct dive *dive;
-	const int stage = 33; // there are 3 stages in this routine: 100% / 3 ~= 33%
+	int done = 0; // percents done
 	int i, row = 0, progress, total = estimateTotalDives();
 	if (!total)
 		return;
@@ -308,8 +308,9 @@ void PrintLayout::printTable()
 		addTablePrintDataRow(&model, row, dive);
 		row++;
 		progress++;
-		emit signalProgress((progress * stage) / total);
+		emit signalProgress((progress * 10) / total);
 	}
+	done = 10;
 	table.setModel(&model); // set model to table
 	// resize columns to percentages from page width
 	int accW = 0;
@@ -328,27 +329,44 @@ void PrintLayout::printTable()
 	// a list of vertical offsets where pages begin and some helpers
 	QList<unsigned int> pageIndexes;
 	pageIndexes.append(0);
-	int tableHeight = 0, rowH = 0, accH = 0, headings = 0;
 
-	// process all rows
-	progress = 0;
-	total = model.rows;
-	for (int i = 0; i < total; i++) {
-		rowH = table.rowHeight(i);
-		accH += rowH;
-		if (accH > scaledPageH) { // push a new page index and add a heading
-			pageIndexes.append(pageIndexes.last() + (accH - rowH));
-			addTablePrintHeadingRow(&model, i);
-			headings += rowH; // last row was moved to a new page; compensate!
-			accH = 0;
-			i--;
+	/* the algorithm bellow processes the table rows in multiple passes,
+	 * compensating for loss of space due to moving rows on a new page instead
+	 * of truncating them.
+	 * there is a 'passes' array defining how much percents of the total
+	 * progress each will take. given, the first and last stage of this function
+	 * use 10% each, then the sum of passes[] here should be 80%.
+	 * two should be enough! */
+	const int passes[] = { 70, 10 };
+	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings;
+	bool isHeading = false;
+
+	for (int pass = 0; pass < sizeof(passes); pass++) {
+		progress = headings = accH = 0;
+		total = model.rows - lastAccIndex;
+		for (int i = lastAccIndex; i < model.rows; i++) {
+			rowH = table.rowHeight(i);
+			accH += rowH;
+			if (isHeading) {
+				headings += rowH;
+				isHeading = false;
+			}
+			if (accH > scaledPageH) {
+				lastAccIndex = i;
+				pageIndexes.append(pageIndexes.last() + (accH - rowH));
+				addTablePrintHeadingRow(&model, i);
+				isHeading = true;
+				accH = 0;
+				i--;
+			}
+			tableHeight += table.rowHeight(i);
+			progress++;
+			emit signalProgress(done + (progress * passes[pass]) / total);
 		}
-		tableHeight += rowH;
-		progress++;
-		emit signalProgress(stage + (progress * stage) / total);
+		done += passes[pass];
 	}
+	done = 90;
 	pageIndexes.append(pageIndexes.last() + accH + headings);
-	// resize the whole widget so that it can be rendered
 	table.resize(scaledPageW, tableHeight);
 
 	// attach a painter and render pages by using pageIndexes
@@ -366,7 +384,7 @@ void PrintLayout::printTable()
 			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
 		table.render(&painter, QPoint(0, 0), region);
 		progress++;
-		emit signalProgress((stage << 1) + (progress * (stage + 1)) / total);
+		emit signalProgress(done + (progress * 10) / total);
 	}
 }
 
