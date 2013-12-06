@@ -3,7 +3,14 @@ xslt.files = $$XSLT_FILES
 icons.files = $$ICONS_FILES
 doc.files = $$DOC_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
-qttranslation.files = $$join(QTTRANSLATIONS," "$$[QT_INSTALL_TRANSLATIONS]/,$$[QT_INSTALL_TRANSLATIONS]/)
+exists($$[QT_INSTALL_TRANSLATIONS]) {
+	qt_translation_dir = $$[QT_INSTALL_TRANSLATIONS]/
+} else: exists(/usr/share/qt4/translations) {
+	# On some cross-compilation environments, the translations are either missing or not
+	# where they're expected to be. In such cases, try copying from the system.
+	qt_translation_dir = /usr/share/qt4/translations
+}
+qttranslation.files = $$join(QTTRANSLATIONS," "$$qt_translation_dir/,$$qt_translation_dir/)
 
 nltab = $$escape_expand(\\n\\t)
 
@@ -53,6 +60,10 @@ mac {
 	target.path = $$WINDOWSSTAGING
 	marbledir.path = $$WINDOWSSTAGING/data
 	INSTALLS += deploy marbledir target
+
+	translation.path = $$WINDOWSSTAGING/translations
+	qttranslation.path = $$WINDOWSSTAGING/translations
+	INSTALLS += translation qttranslation
 
 	qt_conf.commands = echo \'[Paths]\' > $@
 	qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
