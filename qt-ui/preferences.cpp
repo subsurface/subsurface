@@ -23,21 +23,16 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	rememberPrefs();
 }
 
+#define DANGER_GF ( gf > 100 ) ? "* { color: red; }" : ""
 void PreferencesDialog::gflowChanged(int gf)
 {
-	if (gf > 100)
-		ui.gflow->setStyleSheet("* { color: red; }");
-	else
-		ui.gflow->setStyleSheet("");
+	ui.gflow->setStyleSheet(DANGER_GF);
 }
-
 void PreferencesDialog::gfhighChanged(int gf)
 {
-	if (gf > 100)
-		ui.gfhigh->setStyleSheet("* { color: red; }");
-	else
-		ui.gfhigh->setStyleSheet("");
+	ui.gfhigh->setStyleSheet(DANGER_GF);
 }
+#undef DANGER_GF
 
 void PreferencesDialog::showEvent(QShowEvent *event)
 {
