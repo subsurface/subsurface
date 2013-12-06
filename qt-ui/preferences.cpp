@@ -179,9 +179,9 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 
 	s.beginGroup("Display");
-	s.value("divelist_font", ui.font->font().family());
-	s.value("font_size", ui.fontsize->value());
-	s.value("displayinvalid", ui.displayinvalid->isChecked());
+	s.setValue("divelist_font", ui.font->font().family());
+	s.setValue("font_size", ui.fontsize->value());
+	s.setValue("displayinvalid", ui.displayinvalid->isChecked());
 	s.endGroup();
 	s.sync();
 
