@@ -403,10 +403,11 @@ QString getSubsurfaceDataPath(QString folderToFind)
 
 	// next check for the Linux typical $(prefix)/share/subsurface
 	execdir = QCoreApplication::applicationDirPath();
-	folder = QDir(execdir.replace("bin", "share/subsurface/").append(folderToFind));
-	if (folder.exists())
-		return folder.absolutePath();
-
+	if (execdir.contains("bin")) {
+		folder = QDir(execdir.replace("bin", "share/subsurface/").append(folderToFind));
+		if (folder.exists())
+			return folder.absolutePath();
+	}
 	// then look for the usual location on a Mac
 	execdir = QCoreApplication::applicationDirPath();
 	folder = QDir(execdir.append("/../Resources/share/").append(folderToFind));

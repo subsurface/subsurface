@@ -1766,6 +1766,7 @@ LanguageModel::LanguageModel(QObject* parent): QAbstractListModel(parent)
 {
 	QSettings s;
 	QDir d;
+	QString cwd = d.currentPath();
 	d.setCurrent( getSubsurfaceDataPath("translations") );
 	QStringList result = d.entryList();
 	Q_FOREACH(const QString& s, result){
@@ -1774,6 +1775,7 @@ LanguageModel::LanguageModel(QObject* parent): QAbstractListModel(parent)
 		}
 		languages.push_back( (s == "subsurface_source.qm") ? "English" : s);
 	}
+	d.setCurrent(cwd);
 }
 
 QVariant LanguageModel::data(const QModelIndex& index, int role) const
