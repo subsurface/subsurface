@@ -194,87 +194,87 @@ remover o computador de mergulho seleccionado?</translation>
         <translation>Mostrar caixa de busca</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="380"/>
+        <location filename="../qt-ui/divelistview.cpp" line="368"/>
         <source>Visible:</source>
         <translation>Visível:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="695"/>
+        <location filename="../qt-ui/divelistview.cpp" line="683"/>
         <source>expand all</source>
         <translation>expandir todos</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="696"/>
+        <location filename="../qt-ui/divelistview.cpp" line="684"/>
         <source>collapse all</source>
         <translation>colapsar todos</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="697"/>
+        <location filename="../qt-ui/divelistview.cpp" line="685"/>
         <source>collapse others</source>
         <translation>colapsar outros</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="699"/>
+        <location filename="../qt-ui/divelistview.cpp" line="687"/>
         <source>remove dive(s) from trip</source>
         <translation>remover mergulho(s) desta viagem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="700"/>
+        <location filename="../qt-ui/divelistview.cpp" line="688"/>
         <source>create new trip above</source>
         <translation>criar nova viagem acima</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="701"/>
+        <location filename="../qt-ui/divelistview.cpp" line="689"/>
         <source>add dive(s) to trip immediately above</source>
         <translation>adicionar mergulho(s) à viagem imediatamente acima</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="704"/>
+        <location filename="../qt-ui/divelistview.cpp" line="692"/>
         <source>merge trip with trip above</source>
         <translation>juntar viagem com a viagem acima</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="705"/>
+        <location filename="../qt-ui/divelistview.cpp" line="693"/>
         <source>merge trip with trip below</source>
         <translation>juntar viagem com a viagem abaixo</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="709"/>
+        <location filename="../qt-ui/divelistview.cpp" line="697"/>
         <source>delete dive(s)</source>
         <translation>eliminar mergulho(s)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="713"/>
+        <location filename="../qt-ui/divelistview.cpp" line="701"/>
         <source>save As</source>
         <translation>salvar como</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="714"/>
+        <location filename="../qt-ui/divelistview.cpp" line="702"/>
         <source>export As UDDF</source>
         <translation>exportar como UDDF</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="715"/>
+        <location filename="../qt-ui/divelistview.cpp" line="703"/>
         <source>shift times</source>
         <translation>mudar os tempos</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="742"/>
+        <location filename="../qt-ui/divelistview.cpp" line="730"/>
         <source>Save Dives As...</source>
         <translation>Gravar mergulhos como...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="761"/>
+        <location filename="../qt-ui/divelistview.cpp" line="749"/>
         <source>Save File as</source>
         <translation>Salvar aquivo como</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="762"/>
+        <location filename="../qt-ui/divelistview.cpp" line="750"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
         <translation>Ficheiros UDDF  (*.uddf *.UDDF)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="711"/>
+        <location filename="../qt-ui/divelistview.cpp" line="699"/>
         <source>merge selected dives</source>
         <translation>mesclar mergulhos selecionados</translation>
     </message>
@@ -289,7 +289,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="85"/>
         <source>SAC on DECO Stop</source>
-        <translation>Consumo no patamar de descompressão</translation>
+        <translation>Consumo na parada de descompressão</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="78"/>
@@ -310,7 +310,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="128"/>
         <source>Last Stop at 6m</source>
-        <translation>Última paragem aos 6 m</translation>
+        <translation>Última parada aos 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="177"/>
@@ -368,7 +368,7 @@ Por favor, remova-os primeiro</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1082"/>
         <source>Used Gas</source>
-        <translation>Gás usado</translation>
+        <translation>Gás utilizado</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1083"/>
@@ -383,7 +383,7 @@ Por favor, remova-os primeiro</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1279"/>
         <source>You are about to discard your plan.</source>
-        <translation>Está prestes a eliminar o plano.</translation>
+        <translation>Está prestes a eliminar o planejamento.</translation>
     </message>
 </context>
 <context>
@@ -496,7 +496,7 @@ Por favor, remova-os primeiro</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
         <source>Download From Dive Computer</source>
-	<translation>Baixar dados do computador de mergulho</translation>
+        <translation>Baixar dados do computador de mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
@@ -696,7 +696,7 @@ Por favor, remova-os primeiro</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="649"/>
         <source>Stats</source>
-        <translation type="unfinished"/>
+        <translation>Estatísticas</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="691"/>
@@ -1159,6 +1159,22 @@ Por favor, remova-os primeiro</translation>
         <translation>Abrir arquivo</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="144"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="250"/>
+        <source>Please save or cancel the current dive edit before closing the file.</source>
+        <translation>Por favor, salve ou cancele o mergulho atual antes de fechar o arquivo.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="223"/>
+        <source>Please save or cancel the current dive edit before trying to plan a dive.</source>
+        <translation>Por favor, salve ou cancele o mergulho atual antes de planejar um mergulho.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="286"/>
+        <source>Please save or cancel the current dive edit before trying to add a dive.</source>
+        <translation>Por favor, salve ou cancele o mergulho atual antes de tentar asicionar um mergulho.</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="495"/>
         <source>Cannot find the Subsurface manual</source>
         <translation>Não foi possível encontrar o manual do Subsurface</translation>
@@ -1184,6 +1200,11 @@ Por favor, remova-os primeiro</translation>
         <translation>As alterações serão perdidas se não forem gravadas.</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="847"/>
+        <source>First finish the current edition before trying to do another.</source>
+        <translation>Primeiro termine a edição atual antes de editar outro.</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="196"/>
         <location filename="../qt-ui/mainwindow.cpp" line="729"/>
         <source>Save File as</source>
@@ -1198,6 +1219,11 @@ Por favor, remova-os primeiro</translation>
         <location filename="../qt-ui/mainwindow.cpp" line="847"/>
         <source>Warning</source>
         <translation>Aviso</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="107"/>
+        <source>Please save or cancel the current dive edit before opening a new file.</source>
+        <translation>Por favor, salve ou cancele o mergulho atual antes de abrir um novo arquivo.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="197"/>
@@ -1825,7 +1851,7 @@ Por favor, remova-os primeiro</translation>
         <translation>Remover este ponto</translation>
     </message>
     <message>
-        <location filename="../qt-ui/globe.cpp" line="245"/>
+        <location filename="../qt-ui/globe.cpp" line="244"/>
         <source>No location data - move the map and double-click to set the dive location</source>
         <translation>Não existem coordenadas - mova o mapa e dê um duplo clique para seleccionar o local de mergulho</translation>
     </message>
@@ -3100,7 +3126,7 @@ O Uemis Zurich está bem ligado?</translation>
     <message>
         <location filename="../uemis-downloader.c" line="357"/>
         <source>Reading %s %s</source>
-        <translation>A ler %s %s</translation>
+        <translation>Lendo %s %s</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="377"/>

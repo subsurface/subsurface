@@ -194,87 +194,87 @@ radera den valda dykdatorn?</translation>
         <translation>Visa sökruta</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="380"/>
+        <location filename="../qt-ui/divelistview.cpp" line="368"/>
         <source>Visible:</source>
         <translation>Synlig:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="695"/>
+        <location filename="../qt-ui/divelistview.cpp" line="683"/>
         <source>expand all</source>
         <translation>Expandera alla</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="696"/>
+        <location filename="../qt-ui/divelistview.cpp" line="684"/>
         <source>collapse all</source>
         <translation>Sammanslå alla</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="697"/>
+        <location filename="../qt-ui/divelistview.cpp" line="685"/>
         <source>collapse others</source>
         <translation>kollapsa andra</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="699"/>
+        <location filename="../qt-ui/divelistview.cpp" line="687"/>
         <source>remove dive(s) from trip</source>
         <translation>ta bort dyk från resmål</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="700"/>
+        <location filename="../qt-ui/divelistview.cpp" line="688"/>
         <source>create new trip above</source>
         <translation>skapa nytt resmål ovan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="701"/>
+        <location filename="../qt-ui/divelistview.cpp" line="689"/>
         <source>add dive(s) to trip immediately above</source>
         <translation>lägg till dyk(en) till resmål direkt ovan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="704"/>
+        <location filename="../qt-ui/divelistview.cpp" line="692"/>
         <source>merge trip with trip above</source>
         <translation>sammanfoga resmål med resmål ovan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="705"/>
+        <location filename="../qt-ui/divelistview.cpp" line="693"/>
         <source>merge trip with trip below</source>
         <translation>sammanfoga resmål med resmål nedan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="709"/>
+        <location filename="../qt-ui/divelistview.cpp" line="697"/>
         <source>delete dive(s)</source>
         <translation>radera dyk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="713"/>
+        <location filename="../qt-ui/divelistview.cpp" line="701"/>
         <source>save As</source>
         <translation>Spara som</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="714"/>
+        <location filename="../qt-ui/divelistview.cpp" line="702"/>
         <source>export As UDDF</source>
         <translation>Exportera som UDDF fil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="715"/>
+        <location filename="../qt-ui/divelistview.cpp" line="703"/>
         <source>shift times</source>
         <translation>skifta tider</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="742"/>
+        <location filename="../qt-ui/divelistview.cpp" line="730"/>
         <source>Save Dives As...</source>
         <translation>Spara dyk som...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="761"/>
+        <location filename="../qt-ui/divelistview.cpp" line="749"/>
         <source>Save File as</source>
         <translation>Spara fil som</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="762"/>
+        <location filename="../qt-ui/divelistview.cpp" line="750"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
         <translation>UDDF filer (*.uddf *.UDDF)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="711"/>
+        <location filename="../qt-ui/divelistview.cpp" line="699"/>
         <source>merge selected dives</source>
         <translation>Sammanslå dyk</translation>
     </message>
@@ -1159,6 +1159,22 @@ vänligen ta bort dessa först.</translation>
         <translation>Öppna fil</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="144"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="250"/>
+        <source>Please save or cancel the current dive edit before closing the file.</source>
+        <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du stänger filen.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="223"/>
+        <source>Please save or cancel the current dive edit before trying to plan a dive.</source>
+        <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker planera ett dyk.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="286"/>
+        <source>Please save or cancel the current dive edit before trying to add a dive.</source>
+        <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker lägga till ett dyk.</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="495"/>
         <source>Cannot find the Subsurface manual</source>
         <translation>Kan inte hitta Subsurface manualen</translation>
@@ -1184,6 +1200,11 @@ vänligen ta bort dessa först.</translation>
         <translation>Ändringar förloras om du inte sparar dom.</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="847"/>
+        <source>First finish the current edition before trying to do another.</source>
+        <translation>Först avsluta den aktuella upplagan du försöker göra en annan.</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="196"/>
         <location filename="../qt-ui/mainwindow.cpp" line="729"/>
         <source>Save File as</source>
@@ -1198,6 +1219,11 @@ vänligen ta bort dessa först.</translation>
         <location filename="../qt-ui/mainwindow.cpp" line="847"/>
         <source>Warning</source>
         <translation>Varning</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="107"/>
+        <source>Please save or cancel the current dive edit before opening a new file.</source>
+        <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker öppna en ny fil.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="197"/>
@@ -1825,7 +1851,7 @@ vänligen ta bort dessa först.</translation>
         <translation>Ta bort denna punkt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/globe.cpp" line="245"/>
+        <location filename="../qt-ui/globe.cpp" line="244"/>
         <source>No location data - move the map and double-click to set the dive location</source>
         <translation>Inga platsuppgifter - flytta kartan och dubbelklicka för att ställa in dykplats</translation>
     </message>

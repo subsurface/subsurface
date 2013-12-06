@@ -194,87 +194,87 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
         <translation>Montrer la barre de recherche</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="380"/>
+        <location filename="../qt-ui/divelistview.cpp" line="368"/>
         <source>Visible:</source>
         <translation>Visible:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="695"/>
+        <location filename="../qt-ui/divelistview.cpp" line="683"/>
         <source>expand all</source>
         <translation>tout déplier</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="696"/>
+        <location filename="../qt-ui/divelistview.cpp" line="684"/>
         <source>collapse all</source>
         <translation>tout replier</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="697"/>
+        <location filename="../qt-ui/divelistview.cpp" line="685"/>
         <source>collapse others</source>
         <translation>replier les autres</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="699"/>
+        <location filename="../qt-ui/divelistview.cpp" line="687"/>
         <source>remove dive(s) from trip</source>
         <translation>retirer plongée(s) du groupe</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="700"/>
+        <location filename="../qt-ui/divelistview.cpp" line="688"/>
         <source>create new trip above</source>
         <translation>créer un nouveau groupe au-dessus</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="701"/>
+        <location filename="../qt-ui/divelistview.cpp" line="689"/>
         <source>add dive(s) to trip immediately above</source>
         <translation>ajouter plongée(s) au groupe immédiatement au-dessus</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="704"/>
+        <location filename="../qt-ui/divelistview.cpp" line="692"/>
         <source>merge trip with trip above</source>
         <translation>fusionner le groupe avec le groupe au-dessus</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="705"/>
+        <location filename="../qt-ui/divelistview.cpp" line="693"/>
         <source>merge trip with trip below</source>
         <translation>fusionner le groupe avec le groupe au dessous</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="709"/>
+        <location filename="../qt-ui/divelistview.cpp" line="697"/>
         <source>delete dive(s)</source>
         <translation>supprimer plongée(s)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="713"/>
+        <location filename="../qt-ui/divelistview.cpp" line="701"/>
         <source>save As</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="714"/>
+        <location filename="../qt-ui/divelistview.cpp" line="702"/>
         <source>export As UDDF</source>
         <translation>Exporter comme un fichier UDDF</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="715"/>
+        <location filename="../qt-ui/divelistview.cpp" line="703"/>
         <source>shift times</source>
         <translation>décaler l&apos;heure</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="742"/>
+        <location filename="../qt-ui/divelistview.cpp" line="730"/>
         <source>Save Dives As...</source>
         <translation>Enregistrer les plongées sous...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="761"/>
+        <location filename="../qt-ui/divelistview.cpp" line="749"/>
         <source>Save File as</source>
         <translation>Enregistrer le fichier sous</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="762"/>
+        <location filename="../qt-ui/divelistview.cpp" line="750"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
         <translation>Fichiers UDDF (*.uddf *.UDDF)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="711"/>
+        <location filename="../qt-ui/divelistview.cpp" line="699"/>
         <source>merge selected dives</source>
         <translation>fusionner les plongées sélectionnées</translation>
     </message>
@@ -1159,6 +1159,22 @@ Veuillez d&apos;abord les supprimer.</translation>
         <translation>Ouvrir un Fichier</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="144"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="250"/>
+        <source>Please save or cancel the current dive edit before closing the file.</source>
+        <translation>Veuillez enregistrer ou annuler vos modifications en cours avant de fermer le fichier.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="223"/>
+        <source>Please save or cancel the current dive edit before trying to plan a dive.</source>
+        <translation>Veuillez enregistrer ou annuler vos modifications en cours avant de démarrer une planification.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="286"/>
+        <source>Please save or cancel the current dive edit before trying to add a dive.</source>
+        <translation>Veuillez enregistrer ou annuler vos modifications en cours avant d&apos;ajouter une nouvelle plongée.</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="495"/>
         <source>Cannot find the Subsurface manual</source>
         <translation>Impossible de trouver le manuel de Subsurface</translation>
@@ -1184,6 +1200,11 @@ Veuillez d&apos;abord les supprimer.</translation>
         <translation>Les modifications seront perdues si vous ne les enregistrez pas.</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="847"/>
+        <source>First finish the current edition before trying to do another.</source>
+        <translation>Veuillez finir votre modification en cours avant d&apos;en faire une autre.</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="196"/>
         <location filename="../qt-ui/mainwindow.cpp" line="729"/>
         <source>Save File as</source>
@@ -1198,6 +1219,11 @@ Veuillez d&apos;abord les supprimer.</translation>
         <location filename="../qt-ui/mainwindow.cpp" line="847"/>
         <source>Warning</source>
         <translation>Avertissement</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="107"/>
+        <source>Please save or cancel the current dive edit before opening a new file.</source>
+        <translation>Veuillez enregistrer ou annuler vos modifications en cours avant d&apos;ouvrir un nouveau fichier.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="197"/>
@@ -1825,7 +1851,7 @@ Veuillez d&apos;abord les supprimer.</translation>
         <translation>Supprimer ce point</translation>
     </message>
     <message>
-        <location filename="../qt-ui/globe.cpp" line="245"/>
+        <location filename="../qt-ui/globe.cpp" line="244"/>
         <source>No location data - move the map and double-click to set the dive location</source>
         <translation>Pas d&apos;information de localisation - déplacez la carte et double cliquez pour définir le lieu de plongée</translation>
     </message>
