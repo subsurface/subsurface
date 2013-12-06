@@ -497,6 +497,8 @@ void MainWindow::on_actionUserManual_triggered()
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath != "") {
 		QUrl url(searchPath.append("/user-manual.html"));
+		helpView->setWindowTitle(tr("User Manual"));
+		helpView->setWindowIcon(QIcon(":/subsurface-icon"));
 		helpView->setUrl(url);
 	} else {
 		helpView->setHtml(tr("Cannot find the Subsurface manual"));
