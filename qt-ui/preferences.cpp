@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSortFilterProxyModel>
 
 PreferencesDialog* PreferencesDialog::instance()
 {
@@ -105,7 +106,11 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
 
-	ui.languageView->setModel( LanguageModel::instance() );
+	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
+	filterModel->setSourceModel(LanguageModel::instance());
+	filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	ui.languageView->setModel(filterModel);
+	connect(ui.languageFilter, SIGNAL(textChanged(QString)), filterModel, SLOT(setFilterFixedString(QString)));
 
 	QSettings s;
 	s.beginGroup("Language");
