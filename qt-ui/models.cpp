@@ -1536,7 +1536,23 @@ bool TablePrintModel::setData(const QModelIndex &index, const QVariant &value, i
 			case 3: list.at(index.row())->duration = value.toString();
 			case 4: list.at(index.row())->divemaster = value.toString();
 			case 5: list.at(index.row())->buddy = value.toString();
-			case 6: list.at(index.row())->location = value.toString();
+			case 6: {
+				/* truncate if there are more than N lines of text,
+				 * we don't want a row to be larger that a single page! */
+				QString s = value.toString();
+				const int maxLines = 15;
+				int count = 0;
+				for (int i = 0; i < s.length(); i++) {
+					if (s.at(i) != QChar('\n'))
+						continue;
+					count++;
+					if (count > maxLines) {
+						s = s.left(i - 1);
+						break;
+					}
+				}
+				list.at(index.row())->location = s;
+			}
 			}
 			return true;
 		}
