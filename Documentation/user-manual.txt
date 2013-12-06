@@ -728,7 +728,7 @@ one can see more dives on a screen.
 
   ** *Dives*: Here one needs to specify the directory and file name of your electronic dive log book. This is a file with filename extension .xml. _Subsurface_ will then automatically load the dive log book specified.
 
-  ** *Display invalid*:  [red]#??????????????????????????#
+  ** *Display invalid*:  Dives can be marked as invalid (when you want to hide dives that you don't consider valid dives, e.g. pool dives, but still want to keep them in the dive log). This controls whether those dives are displayed in the dive list.
 
   ** *Use Default cylinder*: Here one can specify the default cylinder listed in the *Equipment* tab of the *Dive Notes* panel.
 
