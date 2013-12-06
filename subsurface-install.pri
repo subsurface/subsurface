@@ -1,4 +1,4 @@
-marbledirh.files = $$MARBLEDIR
+marbledir.files = $$MARBLEDIR
 xslt.files = $$XSLT_FILES
 icons.files = $$ICONS_FILES
 doc.files = $$DOC_FILES
