@@ -878,6 +878,11 @@ void MainWindow::editCurrentDive()
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
 	else if (defaultDC == "planned dive"){
-		// this looks like something is missing here
+		disableDcShortcuts();
+		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+		ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+		ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+		DivePlannerPointsModel::instance()->loadFromDive(d);
+		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
 }
