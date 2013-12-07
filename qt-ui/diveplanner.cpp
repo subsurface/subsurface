@@ -1393,19 +1393,18 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct divedatapoint *dp = create_dp(0, 0, 0, 0, 0);
-	dp->entered = TRUE;
-	diveplan.dp = dp;
+	diveplan.dp = NULL;
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
 		divedatapoint p = at(i);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
-		dp = plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
+		plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
 	}
 	char *cache = NULL;
 	tempDive = NULL;
 	const char *errorString = NULL;
+	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &stagingDive->cylinder[i];
 		if (cyl->depth.mm) {
