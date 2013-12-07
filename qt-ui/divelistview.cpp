@@ -622,6 +622,31 @@ void DiveListView::addToTripAbove()
 	fixMessyQtModelBehaviour();
 }
 
+void DiveListView::markDiveInvalid()
+{
+	int i;
+	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
+	if (!d)
+		return;
+	for_each_dive (i, d) {
+		if (!d->selected)
+			continue;
+		// now mark the dive invalid... how do we do THAT?
+		// d->invalid = true;
+	}
+	if (amount_selected == 0) {
+		mainWindow()->cleanUpEmpty();
+	}
+	mark_divelist_changed(TRUE);
+	mainWindow()->refreshDisplay();
+	if(prefs.display_invalid_dives == FALSE) {
+		clearSelection();
+		// select top dive that isn't marked invalid
+		rememberSelection();
+	}
+	fixMessyQtModelBehaviour();
+}
+
 void DiveListView::deleteDive()
 {
 	int i;
@@ -690,8 +715,12 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("merge trip with trip below"), this, SLOT(mergeTripBelow()));
 		}
 	}
-	if (d)
+	if (d) {
 		popup.addAction(tr("delete dive(s)"), this, SLOT(deleteDive()));
+#if 0
+		popup.addAction(tr("mark dive(s) invalid", this, SLOT(markDiveInvalid())));
+#endif
+	}
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1) {
