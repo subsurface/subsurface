@@ -543,6 +543,7 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 	if (filename) {
 		QFile f(filename);
 		if (f.exists()) {
+			f.open(QIODevice::ReadOnly);
 			uploadDives((QIODevice *)&f);
 			f.close();
 			f.remove();
@@ -744,18 +745,21 @@ void DivelogsDeWebServices::uploadFinished()
 	// an error condition, such as a failed login
 	QByteArray xmlData = reply->readAll();
 	char *resp = xmlData.data();
-	// qDebug() << resp;
 	if (resp) {
 		char *parsed = strstr(resp, "<Login>");
-		// char *endat = strstr(resp, "</divelogsDataImport>");
 		if (parsed) {
-			if (strstr(resp, "failed"))
-				ui.status->setText(tr("Login failed"));
-			else
+			if (strstr(resp, "<Login>succeeded</Login>")) {
+				if (strstr(resp, "<FileCopy>failed</FileCopy>")) {
+					ui.status->setText(tr("Upload failed"));
+					return;
+				}
 				ui.status->setText(tr("Upload successful"));
-		} else {
-			ui.status->setText(tr("Cannot parse response"));
+				return;
+			}
+			ui.status->setText(tr("Login failed"));
+			return;
 		}
+		ui.status->setText(tr("Cannot parse response"));
 	}
 }
 
