@@ -110,6 +110,7 @@ void PreferencesDialog::setUiFromPrefs()
 	filterModel->setSourceModel(LanguageModel::instance());
 	filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	ui.languageView->setModel(filterModel);
+	filterModel->sort(0);
 	connect(ui.languageFilter, SIGNAL(textChanged(QString)), filterModel, SLOT(setFilterFixedString(QString)));
 
 	QSettings s;
