@@ -172,22 +172,27 @@ static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int ne
 
 void fill_default_cylinder(cylinder_t *cyl)
 {
-	if (prefs.default_cylinder) {
-		struct tank_info_t *ti = tank_info;
-		while (ti->name != NULL) {
-			if (strcmp(ti->name, prefs.default_cylinder) == 0) {
-				cyl->type.description = strdup(prefs.default_cylinder);
-				if (ti->ml) {
-					cyl->type.size.mliter = ti->ml;
-					cyl->type.workingpressure.mbar = ti->bar * 1000;
-				} else {
-					cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
-					cyl->type.size.mliter = cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi));
-				}
-				return;
-			}
-			ti++;
-		}
+	const char *cyl_name = prefs.default_cylinder != NULL ? prefs.default_cylinder : "AL80";
+	struct tank_info_t *ti = tank_info;
+	struct tank_info_t *al80 = NULL;
+
+	while (ti->name != NULL) {
+		if (strcmp(ti->name, cyl_name) == 0)
+			break;
+		if (strcmp(ti->name, "AL80") == 0)
+			al80 = ti;
+		ti++;
+	}
+	if (ti->name == NULL)
+		ti = al80;
+	cyl->type.description = strdup(ti->name);
+	if (ti->ml) {
+		cyl->type.size.mliter = ti->ml;
+		cyl->type.workingpressure.mbar = ti->bar * 1000;
+	} else {
+		cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
+		if (ti->psi)
+			cyl->type.size.mliter = cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi));
 	}
 }
 
