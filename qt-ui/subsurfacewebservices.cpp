@@ -150,7 +150,9 @@ void WebServices::updateProgress(qint64 current, qint64 total)
 {
 	if (!reply)
 		return;
-
+	if (total == -1) {
+		total = INT_MAX / 2 - 1;
+	}
 	if (total >= INT_MAX / 2) {
 		// over a gigabyte!
 		if (total >= Q_INT64_C(1) << 47) {
@@ -616,20 +618,8 @@ void DivelogsDeWebServices::downloadFinished()
 		zipFile.close();
 		return;
 	}
-
-	quint64 entries = zip_get_num_entries(zip, 0);
-	for (quint64 i = 0; i < entries; ++i) {
-		struct zip_file *zip_file = zip_fopen_index(zip, i, 0);
-		if (!zip_file) {
-			QMessageBox::critical(this, tr("Corrupted download"),
-					      tr("The archive contains corrupt data:\n%1").arg(QString::fromLocal8Bit(zip_strerror(zip))));
-			goto close_zip;
-		}
-
-		// ### FIXME: What do I do with this?
-
-		zip_fclose(zip_file);
-	}
+	// now allow the user to cancel or accept
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
 close_zip:
 	zip_close(zip);
@@ -672,6 +662,22 @@ void DivelogsDeWebServices::uploadError(QNetworkReply::NetworkError error)
 
 void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 {
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 
+	switch(ui.buttonBox->buttonRole(button)){
+	case QDialogButtonBox::ApplyRole:{
+		char *errorptr = NULL;
+		parse_file(zipFile.fileName().toUtf8().constData(), &errorptr);
+		// ### FIXME: do something useful with the error - but there shouldn't be one, right?
+		if (errorptr)
+			qDebug() << errorptr;
+
+		hide();
+		close();
+		resetState();
+		mark_divelist_changed(TRUE);
+		mainWindow()->refreshDisplay();
+	}
+	}
 }
 
