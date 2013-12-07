@@ -4,6 +4,7 @@
  *
  * (c) Dirk Hohndel 2013
  */
+#include <assert.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
@@ -409,6 +410,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 				i++;
 			}
 			gaschanges[i].depth = dp->depth;
+			gaschanges[i].gasidx = -1;
 			do {
 				if (dive->cylinder[j].gasmix.o2.permille == dp->o2 &&
 				    dive->cylinder[j].gasmix.he.permille == dp->he) {
@@ -417,6 +419,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 				}
 				j++;
 			} while (j < MAX_CYLINDERS);
+			assert(gaschanges[i].gasidx != -1);
 		}
 		dp = dp->next;
 	}
