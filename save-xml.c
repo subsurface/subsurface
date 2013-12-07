@@ -155,7 +155,7 @@ static void save_dive_temperature(FILE *f, struct dive *dive)
 {
 	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
 		return;
-	if (dive->airtemp.mkelvin == dc_airtemp(&dive->dc) || dive->watertemp.mkelvin == dc_watertemp(&dive->dc))
+	if (dive->airtemp.mkelvin == dc_airtemp(&dive->dc) && dive->watertemp.mkelvin == dc_watertemp(&dive->dc))
 		return;
 
 	fputs("  <divetemperature", f);
