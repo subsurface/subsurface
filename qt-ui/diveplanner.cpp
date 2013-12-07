@@ -1200,6 +1200,12 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 	} else if (seconds == 0 && milimeters == 0 && row == 0) {
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
 		seconds = 600; // 10 min
+		//Default to the first defined gas, if we got one.
+		cylinder_t *cyl = &stagingDive->cylinder[0];
+		if (cyl) {
+			o2 = cyl->gasmix.o2.permille;
+			he = cyl->gasmix.he.permille;
+		}
 	}
 	if (o2 != -1)
 		if (!addGas(o2, he))
