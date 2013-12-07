@@ -724,27 +724,19 @@ void DivelogsDeWebServices::uploadFinished()
 	// check what the server sent us: it might contain
 	// an error condition, such as a failed login
 	QByteArray xmlData = reply->readAll();
-
-	// ### FIXME: what's the format?
-	/*
-		// char *error;
-		if (error) {
-			parsed = strstr(error, "<Login>");
-			endat = strstr(error, "</divelogsDataImport>");
-			if (parsed && endat)
-				*endat = '\0';
+	char *resp = xmlData.data();
+	if (resp) {
+		char *parsed = strstr(resp, "<Login>");
+		// char *endat = strstr(resp, "</divelogsDataImport>");
+		if (parsed) {
+			if (strstr(resp, "failed"))
+				ui.status->setText(tr("Login failed"));
+			else
+				ui.status->setText(tr("Upload successful"));
+		} else {
+			ui.status->setText(tr("Cannot parse response"));
 		}
-		if (error && strstr(error, "failed"))
-			type = GTK_MESSAGE_ERROR;
-		else
-			type = GTK_MESSAGE_INFO;
 	}
-	if (parsed)
-		divelogs_status_dialog(parsed, type);
-	else if (error)
-		divelogs_status_dialog(error, type);
-	free(error);
-	*/
 }
 
 void DivelogsDeWebServices::setStatusText(int status)
