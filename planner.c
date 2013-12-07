@@ -197,7 +197,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 	}
 }
 
-int add_gas(struct dive *dive, int o2, int he)
+static int add_gas(struct dive *dive, int o2, int he)
 {
 	int i;
 	struct gasmix *mix;
