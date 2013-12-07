@@ -296,10 +296,10 @@ void SubsurfaceWebServices::setStatusText(int status)
 {
 	QString text;
 	switch (status)	{
-	case DD_STATUS_ERROR_CONNECT: text = tr("Connection Error: ");		break;
-	case DD_STATUS_ERROR_ID:	  text = tr("Invalid user identifier!"); break;
-	case DD_STATUS_ERROR_PARSE:	  text = tr("Cannot parse response!");	break;
-	case DD_STATUS_OK:			  text = tr("Download Success!"); break;
+	case DD_STATUS_ERROR_CONNECT:	text = tr("Connection Error: ");	break;
+	case DD_STATUS_ERROR_ID:	text = tr("Invalid user identifier!");	break;
+	case DD_STATUS_ERROR_PARSE:	text = tr("Cannot parse response!");	break;
+	case DD_STATUS_OK:		text = tr("Download Success!");		break;
 	}
 	ui.status->setText(text);
 }
@@ -356,80 +356,80 @@ struct DiveListResult
 
 static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 {
-    /* XML format seems to be:
-     * <DiveDateReader version="1.0">
-     *   <DiveDates>
-     *     <date diveLogsId="nnn" lastModified="YYYY-MM-DD hh:mm:ss">DD.MM.YYYY hh:mm</date>
-     *     [repeat <date></date>]
-     *   </DiveDates>
-     * </DiveDateReader>
-     */
-    QXmlStreamReader reader(xmlData);
-    const QString invalidXmlError = DivelogsDeWebServices::tr("Invalid response from server");
-    bool seenDiveDates = false;
-    DiveListResult result;
-    result.idCount = 0;
+	/* XML format seems to be:
+	 * <DiveDateReader version="1.0">
+	 *   <DiveDates>
+	 *     <date diveLogsId="nnn" lastModified="YYYY-MM-DD hh:mm:ss">DD.MM.YYYY hh:mm</date>
+	 *     [repeat <date></date>]
+	 *   </DiveDates>
+	 * </DiveDateReader>
+	 */
+	QXmlStreamReader reader(xmlData);
+	const QString invalidXmlError = DivelogsDeWebServices::tr("Invalid response from server");
+	bool seenDiveDates = false;
+	DiveListResult result;
+	result.idCount = 0;
 
-    if (reader.readNextStartElement() && reader.name() != "DiveDateReader") {
-	    result.errorCondition = invalidXmlError;
-	    result.errorDetails =
-			    DivelogsDeWebServices::tr("Expected XML tag 'DiveDateReader', got instead '%1")
-			    .arg(reader.name().toString());
-	    goto out;
-    }
+	if (reader.readNextStartElement() && reader.name() != "DiveDateReader") {
+		result.errorCondition = invalidXmlError;
+		result.errorDetails =
+				DivelogsDeWebServices::tr("Expected XML tag 'DiveDateReader', got instead '%1")
+				.arg(reader.name().toString());
+		goto out;
+	}
 
-    while (reader.readNextStartElement()) {
-	    if (reader.name() != "DiveDates") {
-		    if (reader.name() == "Login") {
-			    QString status = reader.readElementText();
-			    // qDebug() << "Login status:" << status;
+	while (reader.readNextStartElement()) {
+		if (reader.name() != "DiveDates") {
+			if (reader.name() == "Login") {
+				QString status = reader.readElementText();
+				// qDebug() << "Login status:" << status;
 
-			    // Note: there has to be a better way to determine a successful login...
-			    if (status == "failed") {
-				    result.errorCondition = "Login failed";
-				    goto out;
-			    }
-		    } else {
-			    // qDebug() << "Skipping" << reader.name();
-		    }
-		    continue;
-	    }
+				// Note: there has to be a better way to determine a successful login...
+				if (status == "failed") {
+					result.errorCondition = "Login failed";
+					goto out;
+				}
+			} else {
+				// qDebug() << "Skipping" << reader.name();
+			}
+			continue;
+		}
 
-	    // process <DiveDates>
-	    seenDiveDates = true;
-	    while (reader.readNextStartElement()) {
-		    if (reader.name() != "date") {
-			    // qDebug() << "Skipping" << reader.name();
-			    continue;
-		    }
-		    QStringRef id = reader.attributes().value("divelogsId");
-		    // qDebug() << "Found" << reader.name() << "with id =" << id;
-		    if (!id.isEmpty()) {
-			    result.idList += id.toLatin1();
-			    result.idList += ',';
-			    ++result.idCount;
-		    }
+		// process <DiveDates>
+		seenDiveDates = true;
+		while (reader.readNextStartElement()) {
+			if (reader.name() != "date") {
+				// qDebug() << "Skipping" << reader.name();
+				continue;
+			}
+			QStringRef id = reader.attributes().value("divelogsId");
+			// qDebug() << "Found" << reader.name() << "with id =" << id;
+			if (!id.isEmpty()) {
+				result.idList += id.toLatin1();
+				result.idList += ',';
+				++result.idCount;
+			}
 
-		    reader.skipCurrentElement();
-	    }
-    }
+			reader.skipCurrentElement();
+		}
+	}
 
-    // chop the ending comma, if any
-    result.idList.chop(1);
+	// chop the ending comma, if any
+	result.idList.chop(1);
 
-    if (!seenDiveDates) {
-	    result.errorCondition = invalidXmlError;
-	    result.errorDetails = DivelogsDeWebServices::tr("Expected XML tag 'DiveDates' not found");
-    }
+	if (!seenDiveDates) {
+		result.errorCondition = invalidXmlError;
+		result.errorDetails = DivelogsDeWebServices::tr("Expected XML tag 'DiveDates' not found");
+	}
 
 out:
-    if (reader.hasError()) {
-	    // if there was an XML error, overwrite the result or other error conditions
-	    result.errorCondition = invalidXmlError;
-	    result.errorDetails = DivelogsDeWebServices::tr("Malformed XML response. Line %1: %2")
-				  .arg(reader.lineNumber()).arg(reader.errorString());
-    }
-    return result;
+	if (reader.hasError()) {
+		// if there was an XML error, overwrite the result or other error conditions
+		result.errorCondition = invalidXmlError;
+		result.errorDetails = DivelogsDeWebServices::tr("Malformed XML response. Line %1: %2")
+				.arg(reader.lineNumber()).arg(reader.errorString());
+	}
+	return result;
 }
 
 DivelogsDeWebServices* DivelogsDeWebServices::instance()
