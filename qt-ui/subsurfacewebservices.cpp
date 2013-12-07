@@ -112,15 +112,20 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
 	char *error = NULL;
-	char *parsed = NULL, *endat = NULL;
 
-	QTemporaryFile zipFile;
-	zipFile.setFileTemplate(QDir::tempPath() + "/import-XXXXXX.dld");
-	tempfile = zipFile.fileName().toLocal8Bit().data();
+	/* generate a random filename and create/open that file with zip_open */
+	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
+	tempfile = tempfileQ.toLocal8Bit().data();
 	zip = zip_open(tempfile, ZIP_CREATE, NULL);
 
-	if (!zip || !amount_selected)
+	if (!zip) {
+		fprintf(stderr, "divelog.de-upload: cannot open file as zip\n");
 		return NULL;
+	}
+	if (!amount_selected) {
+		fprintf(stderr, "divelog.de-upload: no dives selected\n");
+		return NULL;
+	}
 
 	/* walk the dive list in chronological order */
 	for (i = 0; i < dive_table.nr; i++) {
@@ -130,15 +135,19 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		if (selected && !dive->selected)
 			continue;
 		f = tmpfile();
-		if (!f)
+		if (!f) {
+			fprintf(stderr, "divelog.de-upload: cannot create temp file\n");
 			return NULL;
+		}
 		save_dive(f, dive);
 		fseek(f, 0, SEEK_END);
 		streamsize = ftell(f);
 		rewind(f);
 		membuf = (char *)malloc(streamsize + 1);
-		if (!membuf || !fread(membuf, streamsize, 1, f))
+		if (!membuf || !fread(membuf, streamsize, 1, f)) {
+			fprintf(stderr, "divelog.de-upload: memory error\n");
 			return NULL;
+		}
 		membuf[streamsize] = 0;
 		fclose(f);
 		/*
@@ -147,12 +156,17 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		 * the XML into a character buffer.
 		 */
 		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
-		if (!doc)
+		if (!doc) {
+			fprintf(stderr, "divelog.de-upload: xml error\n");
 			continue;
+		}
 		free((void *)membuf);
+		// this call is overriding our local variable tempfile! not a good sign!
 		xslt = get_stylesheet("divelogs-export.xslt");
-		if (!xslt)
+		if (!xslt) {
+			fprintf(stderr, "divelog.de-upload: missing stylesheet\n");
 			return NULL;
+		}
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
 		xsltFreeStylesheet(xslt);
 		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
@@ -166,10 +180,12 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		if (s[i]) {
 			int64_t ret = zip_add(zip, filename, s[i]);
 			if (ret == -1)
-				fprintf(stderr, "failed to include dive %d\n", i);
+				fprintf(stderr, "divelog.de-upload: failed to include dive %d\n", i);
 		}
 	}
 	zip_close(zip);
+	/* let's call this again */
+	tempfile = tempfileQ.toLocal8Bit().data();
 	return tempfile;
 }
 
@@ -523,14 +539,17 @@ void DivelogsDeWebServices::downloadDives()
 
 void DivelogsDeWebServices::prepareDivesForUpload()
 {
-	char *file = prepare_dives_for_divelogs(true);
-	if (file) {
-		QFile f(file);
-		free(file);
-		uploadDives((QIODevice *)&f);
-		return;
+	char *filename = prepare_dives_for_divelogs(true);
+	if (filename) {
+		QFile f(filename);
+		if (f.exists()) {
+			uploadDives((QIODevice *)&f);
+			f.close();
+			f.remove();
+			return;
+		}
+		mainWindow()->showError(QString("Cannot create file: ").append(filename));
 	}
-	// FIXME: show error
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
@@ -725,6 +744,7 @@ void DivelogsDeWebServices::uploadFinished()
 	// an error condition, such as a failed login
 	QByteArray xmlData = reply->readAll();
 	char *resp = xmlData.data();
+	// qDebug() << resp;
 	if (resp) {
 		char *parsed = strstr(resp, "<Login>");
 		// char *endat = strstr(resp, "</divelogsDataImport>");
@@ -795,4 +815,3 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 		break;
 	}
 }
-
