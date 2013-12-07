@@ -1,5 +1,5 @@
 
-This is the README file for the second 3.9 Beta version of Subsurface.
+This is the README file for the 3.9.2 Beta version of Subsurface.
 
 After the release of Subsurface 3.1 we merged the Qt branch into
 master and started developing the Qt port of Subsurface in the master
@@ -7,8 +7,11 @@ branch. At this stage the Qt version has reached mostly functional parity
 with version 3.1. There are some minor items still missing, but in others
 it far surpasses what was available in 3.1
 
-The developers feel that this version is reasonably stable, but it has
-known bugs - please check trac.hohndel.org. Do not use this on your "real"
+The developers feel that this version is quite stable and we think we are
+close to a final release of Subsurface 4.0. There are a small handful of
+known bugs - please check trac.hohndel.org.
+
+Much as we are optimistic about 3.9.2, please do not use this on your "real"
 dive log files unless you have good backups. Check the XML files after you
 make changes to make sure that what you saved on disk reasonably resembles
 what you intended to do.
@@ -19,7 +22,7 @@ And most importantly, please provide us with feedback.
 
 
 
-Everything below has not been updated for 3.9.
+Everything below has not been updated since 3.1.1
 
 Subsurface - an Open Source Divelog
 ===================================
