@@ -635,7 +635,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	if (depth == 0 && ceiling == 0) /* we are done here */
 		goto done;
 	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
-		if (decostoplevels[stopidx] >= depth)
+		if (decostoplevels[stopidx] >= ceiling)
 			break;
 	if (stopidx > 0)
 		stopidx--;
