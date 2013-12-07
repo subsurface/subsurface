@@ -53,13 +53,14 @@ mac {
 	NSIINPUTFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi.in
 	MAKENSIS = /usr/bin/makensis
 
+	doc.path = $$WINDOWSSTAGING/Documentation
 	CONFIG -= copy_dir_files
 	deploy.path = $$WINDOWSSTAGING
-	deploy.files += $$xslt.files $$doc.files $$icons.files
+	deploy.files += $$xslt.files $$icons.files
 	deploy.CONFIG += no_check_exist
 	target.path = $$WINDOWSSTAGING
 	marbledir.path = $$WINDOWSSTAGING/data
-	INSTALLS += deploy marbledir target
+	INSTALLS += deploy marbledir target doc
 
 	translation.path = $$WINDOWSSTAGING/translations
 	qttranslation.path = $$WINDOWSSTAGING/translations

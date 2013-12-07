@@ -104,6 +104,7 @@ Section
     File /r images
     File /r icons
     File /r plugins
+    File /r Documentation
     File /r translations
     File iconv.dll
     File libdivecomputer-0.dll
@@ -160,8 +161,16 @@ Section "Uninstall"
     Delete "$INSTDIR\subsurface.exe"
     Delete "$INSTDIR\subsurface.ico"
     Delete "$INSTDIR\Uninstall.exe"
+    Delete "$INSTDIR\qt.conf"
     RMDir /r "$INSTDIR\share"
     RMDir /r "$INSTDIR\xslt"
+    RMDir /r "$INSTDIR\data"
+    RMDir /r "$INSTDIR\icons"
+    RMDir /r "$INSTDIR\images"
+    RMDir /r "$INSTDIR\translations"
+    RMDir /r "$INSTDIR\oldshare"
+    RMDir /r "$INSTDIR\plugins"
+    RMDir /r "$INSTDIR\Documentation"
     RMDir "$INSTDIR"
 
     # Remove shortcuts
