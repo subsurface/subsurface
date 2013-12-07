@@ -341,7 +341,7 @@ void PrintLayout::printTable()
 	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings;
 	bool isHeading = false;
 
-	for (int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
+	for (unsigned int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
 		progress = headings = accH = 0;
 		total = model.rows - lastAccIndex;
 		for (int i = lastAccIndex; i < model.rows; i++) {
