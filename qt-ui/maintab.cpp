@@ -123,7 +123,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 			"    subcontrol-position: top center;"
 			"    padding: 0 3px;"
 			"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-			"    stop: 0 #0E0E0, stop: 1 #FFFFFF);"
+			"    stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
 			"}");
 		Q_FOREACH(QGroupBox *box, findChildren<QGroupBox*>()){
 			box->setStyleSheet(gnomeCss);
