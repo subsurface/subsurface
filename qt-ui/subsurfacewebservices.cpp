@@ -1,7 +1,6 @@
 #include "subsurfacewebservices.h"
 #include "../webservice.h"
 #include "mainwindow.h"
-
 #include <libxml/parser.h>
 #include <zip.h>
 #include <errno.h>
@@ -663,22 +662,39 @@ void DivelogsDeWebServices::uploadError(QNetworkReply::NetworkError error)
 void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 {
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-
 	switch(ui.buttonBox->buttonRole(button)){
 	case QDialogButtonBox::ApplyRole:{
-		char *errorptr = NULL;
-		parse_file(zipFile.fileName().toUtf8().constData(), &errorptr);
+		/* parse file and import dives */
+		char *error = NULL;
+		parse_file(zipFile.fileName().toLocal8Bit().data(), &error);
+		if (error != NULL) {
+			mainWindow()->showError(error);
+			free(error);
+		}
 		process_dives(TRUE, FALSE);
-		// ### FIXME: do something useful with the error - but there shouldn't be one, right?
-		if (errorptr)
-			qDebug() << errorptr;
+		mainWindow()->refreshDisplay();
 
+		/* store last entered user/pass in config */
+		QSettings s;
+		s.setValue("divelogde_user", ui.userID->text());
+		s.setValue("divelogde_pass", ui.password->text());
+		s.sync();
 		hide();
 		close();
 		resetState();
-		mark_divelist_changed(TRUE);
-		mainWindow()->refreshDisplay();
 	}
+		break;
+	case QDialogButtonBox::RejectRole:
+		// these two seem to be causing a crash:
+		// reply->deleteLater();
+		// reply = NULL;
+		resetState();
+		break;
+	case QDialogButtonBox::HelpRole:
+		QDesktopServices::openUrl(QUrl("http://divelogs.de"));
+		break;
+	default:
+		break;
 	}
 }
 
