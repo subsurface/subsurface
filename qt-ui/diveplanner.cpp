@@ -1194,6 +1194,9 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 		struct divedatapoint& t = divepoints.last();
 		milimeters = t.depth;
 		seconds = t.time + 600; // 10 minutes.
+		o2 = t.o2;
+		he = t.he;
+		ccpoint = t.po2;
 	} else if (seconds == 0 && milimeters == 0 && row == 0) {
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
 		seconds = 600; // 10 min
