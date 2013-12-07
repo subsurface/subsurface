@@ -820,7 +820,8 @@ void deselect_dive(int idx)
 	struct dive *dive = get_dive(idx);
 	if (dive && dive->selected) {
 		dive->selected = 0;
-		amount_selected--;
+		if (amount_selected)
+			amount_selected--;
 		if (selected_dive == idx && amount_selected > 0) {
 			/* pick a different dive as selected */
 			while (--selected_dive >= 0) {
