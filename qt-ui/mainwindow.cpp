@@ -86,8 +86,8 @@ void MainWindow::current_dive_changed(int divenr)
 	if (divenr >= 0) {
 		select_dive(divenr);
 		ui.globe->centerOn(get_dive(selected_dive));
-		redrawProfile();
 	}
+	redrawProfile();
 	ui.InfoWidget->updateDiveInfo(divenr);
 }
 
