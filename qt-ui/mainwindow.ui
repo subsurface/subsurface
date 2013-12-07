@@ -329,6 +329,9 @@
    <property name="shortcut">
     <string>Ctrl+,</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionQuit">
    <property name="text">
@@ -336,6 +339,9 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="actionDownloadDC">
@@ -457,6 +463,9 @@
   <action name="actionAboutSubsurface">
    <property name="text">
     <string>About Subsurface</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionUserManual">
