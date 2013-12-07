@@ -1039,7 +1039,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex& index, int role) const
 	if(role == Qt::DisplayRole) {
 		divedatapoint p = divepoints.at(index.row());
 		switch(index.column()) {
-		case CCSETPOINT: return p.po2;
+		case CCSETPOINT: return (double) p.po2 / 1000;
 		case DEPTH: return rint(get_depth_units(p.depth, NULL, NULL));
 		case DURATION: return p.time / 60;
 		case GAS: return dpGasToStr(p);
