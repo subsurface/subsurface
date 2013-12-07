@@ -114,16 +114,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			// we can't use get_volume_string because the idiotic imperial tank
 			// sizes take working pressure into account...
 			if (cyl->type.size.mliter) {
-				double volume;
-				int mbar = cyl->type.workingpressure.mbar;
-
-				if (mbar && prefs.units.volume == prefs.units.CUFT) {
-					volume = ml_to_cuft(cyl->type.size.mliter);
-					volume *= bar_to_atm(mbar / 1000.0);
-				} else {
-					volume = cyl->type.size.mliter / 1000.0;
-				}
-				ret = QString("%1").arg(volume, 0, 'f', 1);
+				ret = get_volume_string(cyl->type.size, TRUE);
 			}
 			break;
 		case WORKINGPRESS:
@@ -132,15 +123,15 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		case START:
 			if (cyl->start.mbar)
-				ret = get_pressure_string(cyl->start, FALSE);
+				ret = get_pressure_string(cyl->start, TRUE);
 			else if (cyl->sample_start.mbar)
-				ret = get_pressure_string(cyl->sample_start, FALSE);
+				ret = get_pressure_string(cyl->sample_start, TRUE);
 			break;
 		case END:
 			if (cyl->end.mbar)
-				ret = get_pressure_string(cyl->end, FALSE);
+				ret = get_pressure_string(cyl->end, TRUE);
 			else if (cyl->sample_end.mbar)
-				ret = get_pressure_string(cyl->sample_end, FALSE);
+				ret = get_pressure_string(cyl->sample_end, TRUE);
 			break;
 		case O2:
 			ret = percent_string(cyl->gasmix.o2);
@@ -149,10 +140,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			ret = percent_string(cyl->gasmix.he);
 			break;
 		case DEPTH:
-			if (prefs.units.length == prefs.units.FEET)
-				ret = mm_to_feet(cyl->depth.mm);
-			else
-				ret = cyl->depth.mm / 1000;
+			ret = get_depth_string(cyl->depth, TRUE);
 			break;
 		}
 		break;
