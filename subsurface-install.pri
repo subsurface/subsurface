@@ -160,6 +160,7 @@ XSLTDIR = $(DATADIR)/subsurface
 	doc.CONFIG += no_check_exist
 
 	translation.path = /$(DATADIR)/subsurface/translations
+	translation.CONFIG += no_check_exist
 
 	INSTALLS += target desktop icon manpage xslt doc marbledir translation
 	install.target = install
