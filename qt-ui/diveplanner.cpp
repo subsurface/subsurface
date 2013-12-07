@@ -1393,7 +1393,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
-	struct divedatapoint *dp = create_dp(0, 0, 209, 0, 0);
+	struct divedatapoint *dp = create_dp(0, 0, 0, 0, 0);
 	dp->entered = TRUE;
 	diveplan.dp = dp;
 	int lastIndex = -1;
