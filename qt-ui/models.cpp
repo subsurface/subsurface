@@ -1756,10 +1756,9 @@ LanguageModel::LanguageModel(QObject* parent): QAbstractListModel(parent)
 	QDir d(getSubsurfaceDataPath("translations"));
 	QStringList result = d.entryList();
 	Q_FOREACH(const QString& s, result){
-		if ( !s.endsWith(".qm") ){
-			continue;
+		if ( s.startsWith("subsurface_") && s.endsWith(".qm") ){
+			languages.push_back( (s == "subsurface_source.qm") ? "English" : s);
 		}
-		languages.push_back( (s == "subsurface_source.qm") ? "English" : s);
 	}
 }
 
