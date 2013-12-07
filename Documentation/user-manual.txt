@@ -843,9 +843,9 @@ Here you can search your saved dive points by the name you gave them or by date 
 
 Initiates the _background service_. It'll work depending on the previously fixed settings.
 
-==== Disconect
+==== Disconnect
 
-Badly named option. It disconects your app from the server by reseting your ID in the app. It will send you to the first display where can create an account, retrive the ID for an existing one or use your own ID. Useful if you are downloading the dive positions for another registered user with your android device.
+Badly named option. It disconnects your app from the server by resetting your ID in the app. It will send you to the first display where you can create an account, retrieve the ID for an existing one or use your own ID. Useful if you are downloading the dive positions for another registered user with your android device.
 
 ==== Send all locations
 
