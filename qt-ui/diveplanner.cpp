@@ -1454,6 +1454,20 @@ void DivePlannerPointsModel::createPlan()
 
 	createTemporaryPlan();
 	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
+	copy_cylinders(stagingDive, tempDive);
+	int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
+	per_cylinder_mean_depth(tempDive, select_dc(&tempDive->dc), mean, duration);
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = tempDive->cylinder+i;
+		if (cylinder_none(cyl))
+			continue;
+		// FIXME: The epic assumption that all the cylinders after the first is deco
+		int sac = i ? diveplan.decosac : diveplan.bottomsac;
+		cyl->start.mbar = cyl->type.workingpressure.mbar;
+		int consumption = ((depth_to_mbar(mean[i], tempDive) * duration[i] / 60) * sac) / ( cyl->type.size.mliter / 1000);
+		cyl->end.mbar = cyl->start.mbar - consumption;
+	}
+
 	mark_divelist_changed(TRUE);
 
 	// Remove and clean the diveplan, so we don't delete
