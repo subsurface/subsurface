@@ -115,9 +115,9 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 		// qDebug() << "Hemisphere" << r.cap(5) << "deg" << r.cap(6) << "min" << r.cap(7) << "decimal" << r.cap(8);
 		*latitude = r.cap(2).toInt() + (r.cap(3) + QString(".") + r.cap(4)).toDouble() / 60.0;
 		*longitude = r.cap(6).toInt() + (r.cap(7) + QString(".") + r.cap(8)).toDouble() / 60.0;
-		if (r.cap(1) == "S")
+		if (r.cap(1) == "S" || r.cap(1) == tr("S"))
 			*latitude *= -1.0;
-		if (r.cap(5) == "W")
+		if (r.cap(5) == "W" || r.cap(5) == tr("W"))
 			*longitude *= -1.0;
 		// qDebug("%s -> %8.5f / %8.5f", gps_text.toLocal8Bit().data(), *latitude, *longitude);
 		return true;
