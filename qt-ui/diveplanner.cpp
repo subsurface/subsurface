@@ -484,17 +484,27 @@ void DivePlannerGraphics::drawProfile()
 	plannerModel->createTemporaryPlan();
 	struct diveplan diveplan = plannerModel->getDiveplan();
 	struct divedatapoint *dp = diveplan.dp;
+	unsigned int max_depth = 0;
+
 	if (!dp) {
 		plannerModel->deleteTemporaryPlan();
 		return;
 	}
-	while(dp->next)
+	while(dp->next) {
+		if (dp->depth > max_depth)
+			max_depth = dp->depth;
 		dp = dp->next;
+	}
 
 	if (!activeDraggedHandler && (timeLine->maximum() < dp->time / 60.0 + 5 || dp->time / 60.0 + 15 < timeLine->maximum())) {
 		double newMax = fmax(dp->time / 60.0 + 5, minMinutes);
 		timeLine->setMaximum(newMax);
 		timeLine->updateTicks();
+	}
+	if (!activeDraggedHandler && (depthLine->maximum() < max_depth + M_OR_FT(10,30) || max_depth + M_OR_FT(10,30) < depthLine->maximum())) {
+		double newMax = fmax(max_depth + M_OR_FT(10,30), M_OR_FT(40,120));
+		depthLine->setMaximum(newMax);
+		depthLine->updateTicks();
 	}
 
 	// Re-position the user generated dive handlers
