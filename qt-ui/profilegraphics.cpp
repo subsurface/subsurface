@@ -613,7 +613,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			else
 				from = QPointF(SCALEGC(entry->sec, entry->pn2));
 		}
-		createPPLegend(tr("Pn2"),getColor(PN2), legendPos);
+		createPPLegend(trUtf8("pN" UTF8_SUBSCRIPT_2),getColor(PN2), legendPos);
 	}
 
 	if (prefs.pp_graphs.phe) {
@@ -639,7 +639,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			else
 				from = QPointF(SCALEGC(entry->sec, entry->phe));
 		}
-		createPPLegend(tr("PHE"),getColor(PHE), legendPos);
+		createPPLegend(trUtf8("pHe"),getColor(PHE), legendPos);
 	}
 	if (prefs.pp_graphs.po2) {
 		c = getColor(PO2);
@@ -663,7 +663,7 @@ void ProfileGraphicsView::plot_pp_gas_profile()
 			 else
 				from = QPointF(SCALEGC(entry->sec, entry->po2));
 		}
-		createPPLegend(tr("PO2"),getColor(PO2), legendPos);
+		createPPLegend(trUtf8("pO" UTF8_SUBSCRIPT_2),getColor(PO2), legendPos);
 	}
 }
 
