@@ -131,7 +131,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page_2">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -290,7 +290,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox11">
+          <widget class="QGroupBox" name="units_group">
            <property name="title">
             <string/>
            </property>
@@ -1131,7 +1131,7 @@
   <connection>
    <sender>personalize</sender>
    <signal>toggled(bool)</signal>
-   <receiver>groupBox</receiver>
+   <receiver>units_group</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

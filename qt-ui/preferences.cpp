@@ -68,7 +68,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.all_tissues->setChecked(prefs.calc_all_tissues);
 	ui.calc_ndl_tts->setEnabled(ui.calculated_ceiling->isChecked());
 	ui.calc_ndl_tts->setChecked(prefs.calc_ndl_tts);
-	ui.groupBox->setEnabled(ui.personalize->isChecked());
+	ui.units_group->setEnabled(ui.personalize->isChecked());
 
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
@@ -92,6 +92,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.cuft->setChecked(prefs.units.volume == units::CUFT);
 	ui.kgs->setChecked(prefs.units.weight == units::KG);
 	ui.lbs->setChecked(prefs.units.weight == units::LBS);
+
 	ui.font->setFont(QString(prefs.divelist_font));
 	ui.fontsize->setValue(prefs.font_size);
 	ui.defaultfilename->setText(prefs.default_filename);
