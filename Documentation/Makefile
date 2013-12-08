@@ -4,6 +4,8 @@ HTMLDOC = $(DOCNAME).html
 ASCIIDOC = asciidoc
 A2X = a2x
 BROWSER = firefox
+THEME = compact_wf
+PWD = $(realpath .)
 
 all: doc $(addprefix $(DOCNAME).,pdf text)
 
@@ -17,7 +19,7 @@ $(OUT)$(DOCNAME).pdf: $(DOCSOURCE)
 
 $(OUT)$(HTMLDOC): $(DOCSOURCE)
 	@echo "if asciidoc isn't found no HTML documentation is produced but Subsurface is still functional"
-	$(ASCIIDOC) $< || true
+	$(ASCIIDOC) -a themedir=$(PWD) --theme $(THEME) $< || true
 
 # Alternatively::
 $(OUT)$(DOCNAME).xhtml: $(DOCSOURCE)
