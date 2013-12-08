@@ -543,9 +543,7 @@ void DiveListView::mergeTripBelow()
 void DiveListView::removeFromTrip()
 {
 	int i;
-	struct dive *d = (struct dive *) contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void*>();
-	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
-		return;
+	struct dive *d;
 	for_each_dive(i, d) {
 		if (d->selected)
 			remove_dive_from_trip(d);
