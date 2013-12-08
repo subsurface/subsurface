@@ -90,7 +90,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.psi->setChecked(prefs.units.pressure == units::PSI);
 	ui.liter->setChecked(prefs.units.volume == units::LITER);
 	ui.cuft->setChecked(prefs.units.volume == units::CUFT);
-	ui.kgs->setChecked(prefs.units.weight == units::KG);
+	ui.kg->setChecked(prefs.units.weight == units::KG);
 	ui.lbs->setChecked(prefs.units.weight == units::LBS);
 
 	ui.font->setFont(QString(prefs.divelist_font));
