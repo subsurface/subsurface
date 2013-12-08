@@ -668,6 +668,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 	case QDialogButtonBox::ApplyRole:{
 		char *errorptr = NULL;
 		parse_file(zipFile.fileName().toUtf8().constData(), &errorptr);
+		process_dives(TRUE, FALSE);
 		// ### FIXME: do something useful with the error - but there shouldn't be one, right?
 		if (errorptr)
 			qDebug() << errorptr;
