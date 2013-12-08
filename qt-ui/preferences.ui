@@ -1176,6 +1176,66 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>feet</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>meter</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>psi</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>bar</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cuft</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>liter</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fahrenheit</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>celsius</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lbs</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kg</receiver>
+   <slot>setChecked(bool)</slot>
+  </connection>
  </connections>
  <buttongroups>
   <buttongroup name="buttonGroup"/>
