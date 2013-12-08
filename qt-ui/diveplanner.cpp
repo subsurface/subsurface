@@ -158,6 +158,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	scene()->addItem(depthHandler);
 
 	minMinutes = TIME_INITIAL_MAX;
+	minDepth = M_OR_FT(40,120);
 	QAction *action = NULL;
 
 #define ADD_ACTION( SHORTCUT, Slot ) \
@@ -360,7 +361,8 @@ void DivePlannerGraphics::increaseDepth()
 {
 	if (depthLine->maximum() + M_OR_FT(10,30) > MAX_DEPTH)
 		return;
-	depthLine->setMaximum( depthLine->maximum() + M_OR_FT(10,30));
+	minDepth += M_OR_FT(10,30);
+	depthLine->setMaximum( minDepth );
 	depthLine->updateTicks();
 	drawProfile();
 }
@@ -387,7 +389,8 @@ void DivePlannerGraphics::decreaseDepth()
 			return;
 		}
 	}
-	depthLine->setMaximum(depthLine->maximum() - M_OR_FT(10,30));
+	minDepth -= M_OR_FT(10,30);
+	depthLine->setMaximum( minDepth );
 	depthLine->updateTicks();
 	drawProfile();
 }
@@ -502,7 +505,7 @@ void DivePlannerGraphics::drawProfile()
 		timeLine->updateTicks();
 	}
 	if (!activeDraggedHandler && (depthLine->maximum() < max_depth + M_OR_FT(10,30) || max_depth + M_OR_FT(10,30) < depthLine->maximum())) {
-		double newMax = fmax(max_depth + M_OR_FT(10,30), M_OR_FT(40,120));
+		double newMax = fmax(max_depth + M_OR_FT(10,30), minDepth);
 		depthLine->setMaximum(newMax);
 		depthLine->updateTicks();
 	}

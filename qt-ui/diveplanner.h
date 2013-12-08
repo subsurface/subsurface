@@ -221,7 +221,8 @@ private:
 	ExpanderGraphics *depthHandler;
 	ExpanderGraphics *timeHandler;
 
-	int minMinutes; // this holds the minimum duration of the dive.
+	int minMinutes; // this holds the minimum requested window time
+	int minDepth; // this holds the minimum requested window depth
 	int dpMaxTime; // this is the time of the dive calculated by the deco.
 
 	friend class DiveHandler;
