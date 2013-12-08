@@ -762,6 +762,10 @@ image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
 
   ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
 
+[NOTE]
++Important concept.+
+There are opposite definitions for _EAD_ and _END_ depending on people and even organisations. Subsurface has choosen that *_EAD_ means Equivalent Air Depth considering both oxygen and nitrogen narcotics*, while *_END_ would mean Equivalent Nitrogen Depth (ignoring oxygen)*. This way, _EAD_ would be a measure for the narcotic potential of a gas, while _END_ would be more related to nitrogen absortion by tissues. So, when diving NITROX, _EAD_ will remain the same (or almost) than real depth, while _END_ would be the interesting depth for deco calculations.
+
 [[S_Companion]]
 == Importing GPS coordinates with Subsurface companion.
 If you have an Android device with GPS, you can achieve the coordinates of the point where you are diving and automatically pass them to your Subsurface divelog. You only need:
