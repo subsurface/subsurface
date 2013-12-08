@@ -237,6 +237,9 @@ void DownloadFromDCWidget::on_ok_clicked()
 	MainWindow *w = mainWindow();
 	connect(thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
+	// before we start, remember where the dive_table ended
+	previousLast = dive_table.nr;
+
 	thread->start();
 }
 
@@ -262,10 +265,18 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			updateState(ERROR);
 
 		// I'm not sure if we should really call process_dives even
-		// if there's an error or a cancelation
-		process_dives(TRUE, preferDownloaded());
-	} else
+		// if there's an error
+		if (import_thread_cancelled) {
+			// walk backwards so we don't keep moving the dives
+			// down in the dive_table
+			for (int i = dive_table.nr - 1; i >= previousLast; i--)
+				delete_single_dive(i);
+		} else {
+			process_dives(TRUE, preferDownloaded());
+		}
+	} else {
 		updateState(CANCELLED);
+	}
 }
 
 void DownloadFromDCWidget::markChildrenAsDisabled()

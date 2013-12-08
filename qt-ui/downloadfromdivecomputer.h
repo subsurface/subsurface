@@ -59,6 +59,7 @@ private:
 	QHash<QString, QStringList> productList;
 	QMap<QString, dc_descriptor_t *> descriptorLookup;
 	device_data_t data;
+	int previousLast;
 
 	QStringListModel *vendorModel;
 	QStringListModel *productModel;
