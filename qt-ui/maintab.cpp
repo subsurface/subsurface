@@ -442,7 +442,7 @@ void MainTab::updateDiveInfo(int dive)
 		ui.otuText->setText(QString("%1").arg(d->otu));
 		ui.waterTemperatureText->setText(get_temperature_string(d->watertemp, TRUE));
 		ui.airTemperatureText->setText(get_temperature_string(d->airtemp, TRUE));
-		volume_t gases[MAX_CYLINDERS] = { 0 };
+		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(d, gases);
 		QString volumes = get_volume_string(gases[0], TRUE);
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
