@@ -94,7 +94,7 @@ This panel contains the date, time and place information for a particular dive, 
 
 image::images/AddDive2.png["The Dive Notes tab",align="center"]
 
-The *Starttime* field contains five data items reflecting the date and the time of the dive. By clicking the down-arrow on the right of that field one can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
+The *Starttime* field reflects the date and the time of the dive. By clicking the down-arrow on the right of that field one can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
 
 *Air/water temperatures*: Type in the air and water temperatures during the dive into these fields to the right of the Starttime. You do not need to type in units of temperature: Subsurface supplies these automatically, you only need type the number. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
 
