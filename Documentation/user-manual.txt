@@ -110,9 +110,9 @@ b. You can find the coordinates on the world map in the bottom right hand part o
 c. You can obtain the coordinates from the _Subsurface_ Companion app if your mobile phone has a GPS and you stored the coordinates of the dive site using your mobile or tablet.
 xref:S_Companion[Click here for more information]
 
-*Divemaster*: Enter the name of the divemaster during the dive.
+*Divemaster*: Enter the name of the divemaster for the dive.
 
-*Buddy*: Enter the name of your buddy during the dive.
+*Buddy*: Enter the name of the buddy who accompanied you on the dive.
 
 *Suit*: Enter the type of diving suit you used for the dive. Your descriptions of diving suits are remembered within a particular logbook so that a similar description during later dives will re-use your original description, should you wish this to happen.
 
