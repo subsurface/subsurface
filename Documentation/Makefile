@@ -4,7 +4,7 @@ HTMLDOC = $(DOCNAME).html
 ASCIIDOC = asciidoc
 A2X = a2x
 BROWSER = firefox
-THEME = compact_wf
+THEME = compact_subsurface
 PWD = $(realpath .)
 
 all: doc $(addprefix $(DOCNAME).,pdf text)
