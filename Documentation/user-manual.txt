@@ -124,7 +124,7 @@ xref:S_Companion[Click here for more information]
 
 *Notes*: Type any additional information here.
 
-The *Save* and *Cancel* buttons are used to save all the information for the whole dive after ALL the other information has been added. Do NOT use them before also completing the *Equipment* tab as well as the *Dive Profile*. Here is an example of a completed Dive Notes panel:
+The *Save* and *Cancel* buttons are used to save all the information for tabs in the info panel and in the dive profile panel, so there's no need to use them until ALL other information has been added. Here is an example of a completed Dive Notes panel:
 
 image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="center"]
 
