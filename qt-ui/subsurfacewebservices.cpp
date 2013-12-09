@@ -767,6 +767,8 @@ void DivelogsDeWebServices::uploadFinished()
 
 	ui.progressBar->setRange(0,1);
 	ui.upload->setEnabled(true);
+	ui.userID->setEnabled(true);
+	ui.password->setEnabled(true);
 	ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Done"));
