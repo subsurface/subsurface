@@ -200,6 +200,7 @@ WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
 	connect(&timeout, SIGNAL(timeout()), this, SLOT(downloadTimedOut()));
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	timeout.setSingleShot(true);
+	defaultApplyText = ui.buttonBox->button(QDialogButtonBox::Apply)->text();
 }
 
 void WebServices::hidePassword()
@@ -281,6 +282,7 @@ void WebServices::resetState()
 	ui.progressBar->reset();
 	ui.progressBar->setRange(0,1);
 	ui.status->setText(QString());
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setText(defaultApplyText);
 }
 
 // #
@@ -536,6 +538,8 @@ DivelogsDeWebServices* DivelogsDeWebServices::instance()
 
 void DivelogsDeWebServices::downloadDives()
 {
+	uploadMode = false;
+	resetState();
 	hideUpload();
 	exec();
 }
@@ -573,6 +577,10 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 	multipart = &mp;
 	hideDownload();
 	resetState();
+	uploadMode = true;
+	ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(true);
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Done"));
 	exec();
 
 	multipart = NULL;
@@ -585,6 +593,7 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 
 DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)
 {
+	uploadMode = false;
 	QSettings s;
 	ui.userID->setText(s.value("divelogde_user").toString());
 	ui.password->setText(s.value("divelogde_pass").toString());
@@ -758,6 +767,9 @@ void DivelogsDeWebServices::uploadFinished()
 
 	ui.progressBar->setRange(0,1);
 	ui.upload->setEnabled(true);
+	ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+	ui.buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Done"));
 	ui.status->setText(tr("Upload finished"));
 
 	// check what the server sent us: it might contain
@@ -807,6 +819,13 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	switch(ui.buttonBox->buttonRole(button)){
 	case QDialogButtonBox::ApplyRole:{
+		/* in 'uploadMode' button is called 'Done' and closes the dialog */
+		if (uploadMode) {
+			hide();
+			close();
+			resetState();
+			break;
+		}
 		/* parse file and import dives */
 		char *error = NULL;
 		parse_file(zipFile.fileName().toLocal8Bit().data(), &error);

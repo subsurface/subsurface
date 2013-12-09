@@ -41,6 +41,7 @@ protected:
 	QNetworkReply *reply;
 	QTimer timeout;
 	QByteArray downloadedData;
+	QString defaultApplyText;
 };
 
 class SubsurfaceWebServices : public WebServices {
@@ -87,6 +88,7 @@ private:
 
 	QHttpMultiPart *multipart;
 	QTemporaryFile zipFile;
+	bool uploadMode;
 };
 
 #endif
