@@ -56,6 +56,7 @@ MainWindow::MainWindow() : helpView(0)
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ProfileWidget, SLOT(refresh()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.InfoWidget, SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlanner, SLOT(settingsChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
 
 	ui.mainErrorMessage->hide();
 	initialUiSetup();
@@ -67,6 +68,7 @@ MainWindow::MainWindow() : helpView(0)
 	ui.ListWidget->expand(ui.ListWidget->model()->index(0,0));
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
 	ui.divePlanner->settingsChanged();
+	ui.divePlannerWidget->settingsChanged();
 }
 
 // this gets called after we download dives from a divecomputer

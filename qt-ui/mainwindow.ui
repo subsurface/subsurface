@@ -53,7 +53,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="DivePlannerWidget" name="widget" native="true"/>
+           <widget class="DivePlannerWidget" name="divePlannerWidget" native="true"/>
           </item>
          </layout>
         </widget>

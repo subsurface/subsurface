@@ -1002,6 +1002,12 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	setMinimumHeight(0);
 }
 
+void DivePlannerWidget::settingsChanged()
+{
+	ui.gflow->setValue(prefs.gflow);
+	ui.gfhigh->setValue(prefs.gfhigh);
+}
+
 void DivePlannerPointsModel::addCylinder_clicked()
 {
 	CylindersModel::instance()->add();
@@ -1402,6 +1408,9 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	// Not sure if this is the place to create the diveplan...
 	// We just start with a surface node at time = 0
+	if (!stagingDive)
+		return;
+
 	diveplan.dp = NULL;
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
