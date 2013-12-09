@@ -1396,9 +1396,11 @@ void DivePlannerPointsModel::clear()
 		memset(stagingDive->cylinder, 0, MAX_CYLINDERS * sizeof(cylinder_t));
 	}
 	CylindersModel::instance()->setDive(stagingDive);
-	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
-	divepoints.clear();
-	endRemoveRows();
+	if (rowCount() > 0) {
+		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+		divepoints.clear();
+		endRemoveRows();
+	}
 	CylindersModel::instance()->clear();
 }
 
