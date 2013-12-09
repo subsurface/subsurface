@@ -291,6 +291,9 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, char *
 	if (fmt && open_by_filename(filename, fmt+1, mem, error))
 		return;
 
+	if (!mem->size || !mem->buffer)
+		return;
+
 	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL, error);
 }
 
