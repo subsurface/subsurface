@@ -104,7 +104,6 @@ public:
 	struct event* ev;
 
 private:
-	ToolTipItem *controller;
 	QString text;
 	bool isGrayscale;
 

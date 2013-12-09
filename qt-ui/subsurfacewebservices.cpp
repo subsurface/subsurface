@@ -111,7 +111,6 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	xmlDoc *transformed;
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
-	char *error = NULL;
 	const QString errPrefix("divelog.de-upload:");
 
 	/* generate a random filename and create/open that file with zip_open */
@@ -755,7 +754,6 @@ void DivelogsDeWebServices::downloadFinished()
 	// now allow the user to cancel or accept
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
-close_zip:
 	zip_close(zip);
 	zipFile.close();
 }

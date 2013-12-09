@@ -150,8 +150,6 @@ private:
 	double min;
 	double max;
 	double interval;
-	double posBegin;
-	double posEnd;
 	double tickSize;
 	QColor textColor;
 };

@@ -492,8 +492,6 @@ void ProfileGraphicsView::plot_depth_scale()
 		case units::FEET: marker = 9144; break;	/* 30 ft */
 	}
 
-	QColor c(getColor(DEPTH_GRID));
-
 	/* don't write depth labels all the way to the bottom as
 	 * there may be other graphs below the depth plot (like
 	 * partial pressure graphs) where this would look out
