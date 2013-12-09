@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Download Location Data</string>
+   <string>Webservice Connection</string>
   </property>
   <property name="windowIcon">
    <iconset>
