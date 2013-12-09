@@ -585,6 +585,11 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f)
 
 void DivelogsDeWebServices::startUpload()
 {
+	QSettings s;
+	s.setValue("divelogde_user", ui.userID->text());
+	s.setValue("divelogde_pass", ui.password->text());
+	s.sync();
+
 	ui.status->setText(tr("Uploading dive list..."));
 	ui.progressBar->setRange(0,0); // this makes the progressbar do an 'infinite spin'
 	ui.upload->setEnabled(false);
