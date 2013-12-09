@@ -112,6 +112,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
 	char *error = NULL;
+	const QString errPrefix("divelog.de-upload:");
 
 	/* generate a random filename and create/open that file with zip_open */
 	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
@@ -119,11 +120,11 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	zip = zip_open(tempfile, ZIP_CREATE, NULL);
 
 	if (!zip) {
-		fprintf(stderr, "divelog.de-upload: cannot open file as zip\n");
+		qDebug() << errPrefix << "cannot open file as zip";
 		return NULL;
 	}
 	if (!amount_selected) {
-		fprintf(stderr, "divelog.de-upload: no dives selected\n");
+		qDebug() << errPrefix << "no dives selected";
 		return NULL;
 	}
 
@@ -136,7 +137,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 			continue;
 		f = tmpfile();
 		if (!f) {
-			fprintf(stderr, "divelog.de-upload: cannot create temp file\n");
+			qDebug() << errPrefix << "cannot create temp file";
 			return NULL;
 		}
 		save_dive(f, dive);
@@ -145,7 +146,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		rewind(f);
 		membuf = (char *)malloc(streamsize + 1);
 		if (!membuf || !fread(membuf, streamsize, 1, f)) {
-			fprintf(stderr, "divelog.de-upload: memory error\n");
+			qDebug() << errPrefix << "memory error";
 			return NULL;
 		}
 		membuf[streamsize] = 0;
@@ -157,14 +158,14 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		 */
 		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
 		if (!doc) {
-			fprintf(stderr, "divelog.de-upload: xml error\n");
-			continue;
+			qDebug() << errPrefix << "xml error";
+			return NULL;
 		}
 		free((void *)membuf);
 		// this call is overriding our local variable tempfile! not a good sign!
 		xslt = get_stylesheet("divelogs-export.xslt");
 		if (!xslt) {
-			fprintf(stderr, "divelog.de-upload: missing stylesheet\n");
+			qDebug() << errPrefix << "missing stylesheet";
 			return NULL;
 		}
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
@@ -180,7 +181,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		if (s[i]) {
 			int64_t ret = zip_add(zip, filename, s[i]);
 			if (ret == -1)
-				fprintf(stderr, "divelog.de-upload: failed to include dive %d\n", i);
+				qDebug() << errPrefix << "failed to include dive:" << i;
 		}
 	}
 	zip_close(zip);
