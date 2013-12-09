@@ -539,6 +539,7 @@ void DivelogsDeWebServices::downloadDives()
 
 void DivelogsDeWebServices::prepareDivesForUpload()
 {
+	QString errorText(tr("Cannot create DLD file"));
 	char *filename = prepare_dives_for_divelogs(true);
 	if (filename) {
 		QFile f(filename);
@@ -549,8 +550,10 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 			f.remove();
 			return;
 		}
-		mainWindow()->showError(QString("Cannot create file: ").append(filename));
+		mainWindow()->showError(errorText.append(": ").append(filename));
+		return;
 	}
+	mainWindow()->showError(errorText.append("!"));
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
