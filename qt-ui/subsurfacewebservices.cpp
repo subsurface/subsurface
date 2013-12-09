@@ -557,7 +557,10 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 {
 	QHttpMultiPart mp(QHttpMultiPart::FormDataType);
 	QHttpPart part;
-	part.setRawHeader("Content-Disposition", "form-data; name=\"userfile\"");
+	QFile *f = (QFile *)dldContent;
+	QFileInfo fi(*f);
+	QString args("form-data; name=\"userfile\"; filename=\"" + fi.absoluteFilePath() + "\"");
+	part.setRawHeader("Content-Disposition", args.toLatin1());
 	part.setBodyDevice(dldContent);
 	mp.append(part);
 
