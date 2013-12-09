@@ -1119,6 +1119,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent), mode(NOTHING), stagingDive(NULL)
 {
+	diveplan.dp = NULL;
 }
 
 DivePlannerPointsModel* DivePlannerPointsModel::instance()
