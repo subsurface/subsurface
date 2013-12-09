@@ -28,7 +28,7 @@ toc::[]
 Start Using the Program
 -----------------------
 
-The _Subsurface_ window comprises a *Main Menu* (File Edit View Search Tools Documents Help) at the top of the window with four panels underneath:
+The _Subsurface_ window comprises a *Main Menu* (File Import Log View Filter Help) at the top of the window with four panels underneath:
 
 1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. One can select and highlight a dive on the dive list by clicking on it.
 
