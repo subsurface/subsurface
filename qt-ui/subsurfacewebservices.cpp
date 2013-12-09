@@ -327,9 +327,11 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 	}
 		break;
 	case QDialogButtonBox::RejectRole:
-		// we may want to clean up after ourselves
-		// reply->deleteLater();
-		reply = NULL;
+		if (reply != NULL && reply->isOpen()) {
+			reply->abort();
+			delete reply;
+			reply = NULL;
+		}
 		resetState();
 		break;
 	case QDialogButtonBox::HelpRole:
@@ -569,10 +571,15 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 
 	multipart = &mp;
 	hideDownload();
+	resetState();
 	exec();
-	multipart = NULL;
 
-	delete reply; // we need to ensure it has stopped using our QHttpMultiPart
+	multipart = NULL;
+	if (reply != NULL && reply->isOpen()) {
+		reply->abort();
+		delete reply;
+		reply = NULL;
+	}
 }
 
 DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)
@@ -755,6 +762,8 @@ void DivelogsDeWebServices::uploadFinished()
 	// check what the server sent us: it might contain
 	// an error condition, such as a failed login
 	QByteArray xmlData = reply->readAll();
+	reply->deleteLater();
+	reply = NULL;
 	char *resp = xmlData.data();
 	if (resp) {
 		char *parsed = strstr(resp, "<Login>");
@@ -782,7 +791,7 @@ void DivelogsDeWebServices::setStatusText(int status)
 void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError)
 {
 	resetState();
-	ui.status->setText(tr("Download error: %1").arg(reply->errorString()));
+	ui.status->setText(tr("Error: %1").arg(reply->errorString()));
 	reply->deleteLater();
 	reply = NULL;
 }
@@ -820,7 +829,6 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 	case QDialogButtonBox::RejectRole:
 		// these two seem to be causing a crash:
 		// reply->deleteLater();
-		// reply = NULL;
 		resetState();
 		break;
 	case QDialogButtonBox::HelpRole:
