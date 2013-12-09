@@ -9,8 +9,8 @@ including this header file but this needs to be revisited before an
 actual release.
 
 On Fedora you need qt-devel, marble-devel, libzip-devel,
-libxml2-devel, libxslt-devel, libsqlite3x-devel. If you are going to
-compile libdivecomputer, you need to libusb-devel too.
+libxml2-devel, libxslt-devel, libsqlite3x-devel, libudev-devel. If you are going
+to compile libdivecomputer, you need to libusb-devel too.
 
 On Debian the package names are different; try libxml2-dev,
 libsqlite3-dev, libxslt1-dev, libzip-dev (and libusb-1.0-0-dev if
@@ -31,6 +31,8 @@ $ cd subsurface
 $ qmake
 $ make
 $ sudo make install     [optionally, add: prefix=/usr/local]
+
+Note: on Fedora qmake will appear as qmake-qt4
 
 Building the Qt version under MacOSX
 ------------------------------------
