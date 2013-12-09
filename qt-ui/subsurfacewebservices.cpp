@@ -1,7 +1,6 @@
 #include "subsurfacewebservices.h"
 #include "../webservice.h"
 #include "mainwindow.h"
-
 #include <libxml/parser.h>
 #include <zip.h>
 #include <errno.h>
@@ -97,6 +96,97 @@ static void clear_table(struct dive_table *table)
 	for (i = 0; i < table->nr; i++)
 		free(table->dives[i]);
 	table->nr = 0;
+}
+
+static char *prepare_dives_for_divelogs(const bool selected)
+{
+	int i;
+	struct dive *dive;
+	FILE *f;
+	char filename[PATH_MAX], *tempfile;
+	size_t streamsize;
+	char *membuf;
+	xmlDoc *doc;
+	xsltStylesheetPtr xslt = NULL;
+	xmlDoc *transformed;
+	struct zip_source *s[dive_table.nr];
+	struct zip *zip;
+	char *error = NULL;
+
+	/* generate a random filename and create/open that file with zip_open */
+	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
+	tempfile = tempfileQ.toLocal8Bit().data();
+	zip = zip_open(tempfile, ZIP_CREATE, NULL);
+
+	if (!zip) {
+		fprintf(stderr, "divelog.de-upload: cannot open file as zip\n");
+		return NULL;
+	}
+	if (!amount_selected) {
+		fprintf(stderr, "divelog.de-upload: no dives selected\n");
+		return NULL;
+	}
+
+	/* walk the dive list in chronological order */
+	for (i = 0; i < dive_table.nr; i++) {
+		dive = get_dive(i);
+		if (!dive)
+			continue;
+		if (selected && !dive->selected)
+			continue;
+		f = tmpfile();
+		if (!f) {
+			fprintf(stderr, "divelog.de-upload: cannot create temp file\n");
+			return NULL;
+		}
+		save_dive(f, dive);
+		fseek(f, 0, SEEK_END);
+		streamsize = ftell(f);
+		rewind(f);
+		membuf = (char *)malloc(streamsize + 1);
+		if (!membuf || !fread(membuf, streamsize, 1, f)) {
+			fprintf(stderr, "divelog.de-upload: memory error\n");
+			return NULL;
+		}
+		membuf[streamsize] = 0;
+		fclose(f);
+		/*
+		 * Parse the memory buffer into XML document and
+		 * transform it to divelogs.de format, finally dumping
+		 * the XML into a character buffer.
+		 */
+		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
+		if (!doc) {
+			fprintf(stderr, "divelog.de-upload: xml error\n");
+			continue;
+		}
+		free((void *)membuf);
+		// this call is overriding our local variable tempfile! not a good sign!
+		xslt = get_stylesheet("divelogs-export.xslt");
+		if (!xslt) {
+			fprintf(stderr, "divelog.de-upload: missing stylesheet\n");
+			return NULL;
+		}
+		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+		xsltFreeStylesheet(xslt);
+		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
+		xmlFreeDoc(doc);
+		xmlFreeDoc(transformed);
+		/*
+		 * Save the XML document into a zip file.
+		 */
+		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
+		s[i] = zip_source_buffer(zip, membuf, streamsize, 1);
+		if (s[i]) {
+			int64_t ret = zip_add(zip, filename, s[i]);
+			if (ret == -1)
+				fprintf(stderr, "divelog.de-upload: failed to include dive %d\n", i);
+		}
+	}
+	zip_close(zip);
+	/* let's call this again */
+	tempfile = tempfileQ.toLocal8Bit().data();
+	return tempfile;
 }
 
 WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
@@ -237,9 +327,11 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 	}
 		break;
 	case QDialogButtonBox::RejectRole:
-		// we may want to clean up after ourselves
-		// reply->deleteLater();
-		reply = NULL;
+		if (reply != NULL && reply->isOpen()) {
+			reply->abort();
+			delete reply;
+			reply = NULL;
+		}
 		resetState();
 		break;
 	case QDialogButtonBox::HelpRole:
@@ -447,20 +539,47 @@ void DivelogsDeWebServices::downloadDives()
 	exec();
 }
 
+void DivelogsDeWebServices::prepareDivesForUpload()
+{
+	QString errorText(tr("Cannot create DLD file"));
+	char *filename = prepare_dives_for_divelogs(true);
+	if (filename) {
+		QFile f(filename);
+		if (f.exists()) {
+			f.open(QIODevice::ReadOnly);
+			uploadDives((QIODevice *)&f);
+			f.close();
+			f.remove();
+			return;
+		}
+		mainWindow()->showError(errorText.append(": ").append(filename));
+		return;
+	}
+	mainWindow()->showError(errorText.append("!"));
+}
+
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 {
 	QHttpMultiPart mp(QHttpMultiPart::FormDataType);
 	QHttpPart part;
-	part.setRawHeader("Content-Disposition", "form-data; name=\"userfile\"");
+	QFile *f = (QFile *)dldContent;
+	QFileInfo fi(*f);
+	QString args("form-data; name=\"userfile\"; filename=\"" + fi.absoluteFilePath() + "\"");
+	part.setRawHeader("Content-Disposition", args.toLatin1());
 	part.setBodyDevice(dldContent);
 	mp.append(part);
 
 	multipart = &mp;
 	hideDownload();
+	resetState();
 	exec();
-	multipart = NULL;
 
-	delete reply; // we need to ensure it has stopped using our QHttpMultiPart
+	multipart = NULL;
+	if (reply != NULL && reply->isOpen()) {
+		reply->abort();
+		delete reply;
+		reply = NULL;
+	}
 }
 
 DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)
@@ -473,6 +592,11 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f)
 
 void DivelogsDeWebServices::startUpload()
 {
+	QSettings s;
+	s.setValue("divelogde_user", ui.userID->text());
+	s.setValue("divelogde_pass", ui.password->text());
+	s.sync();
+
 	ui.status->setText(tr("Uploading dive list..."));
 	ui.progressBar->setRange(0,0); // this makes the progressbar do an 'infinite spin'
 	ui.upload->setEnabled(false);
@@ -638,8 +762,25 @@ void DivelogsDeWebServices::uploadFinished()
 	// check what the server sent us: it might contain
 	// an error condition, such as a failed login
 	QByteArray xmlData = reply->readAll();
-
-	// ### FIXME: what's the format?
+	reply->deleteLater();
+	reply = NULL;
+	char *resp = xmlData.data();
+	if (resp) {
+		char *parsed = strstr(resp, "<Login>");
+		if (parsed) {
+			if (strstr(resp, "<Login>succeeded</Login>")) {
+				if (strstr(resp, "<FileCopy>failed</FileCopy>")) {
+					ui.status->setText(tr("Upload failed"));
+					return;
+				}
+				ui.status->setText(tr("Upload successful"));
+				return;
+			}
+			ui.status->setText(tr("Login failed"));
+			return;
+		}
+		ui.status->setText(tr("Cannot parse response"));
+	}
 }
 
 void DivelogsDeWebServices::setStatusText(int status)
@@ -650,7 +791,7 @@ void DivelogsDeWebServices::setStatusText(int status)
 void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError)
 {
 	resetState();
-	ui.status->setText(tr("Download error: %1").arg(reply->errorString()));
+	ui.status->setText(tr("Error: %1").arg(reply->errorString()));
 	reply->deleteLater();
 	reply = NULL;
 }
@@ -663,22 +804,37 @@ void DivelogsDeWebServices::uploadError(QNetworkReply::NetworkError error)
 void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 {
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-
 	switch(ui.buttonBox->buttonRole(button)){
 	case QDialogButtonBox::ApplyRole:{
-		char *errorptr = NULL;
-		parse_file(zipFile.fileName().toUtf8().constData(), &errorptr);
+		/* parse file and import dives */
+		char *error = NULL;
+		parse_file(zipFile.fileName().toLocal8Bit().data(), &error);
+		if (error != NULL) {
+			mainWindow()->showError(error);
+			free(error);
+		}
 		process_dives(TRUE, FALSE);
-		// ### FIXME: do something useful with the error - but there shouldn't be one, right?
-		if (errorptr)
-			qDebug() << errorptr;
+		mainWindow()->refreshDisplay();
 
+		/* store last entered user/pass in config */
+		QSettings s;
+		s.setValue("divelogde_user", ui.userID->text());
+		s.setValue("divelogde_pass", ui.password->text());
+		s.sync();
 		hide();
 		close();
 		resetState();
-		mark_divelist_changed(TRUE);
-		mainWindow()->refreshDisplay();
 	}
+		break;
+	case QDialogButtonBox::RejectRole:
+		// these two seem to be causing a crash:
+		// reply->deleteLater();
+		resetState();
+		break;
+	case QDialogButtonBox::HelpRole:
+		QDesktopServices::openUrl(QUrl("http://divelogs.de"));
+		break;
+	default:
+		break;
 	}
 }
-
