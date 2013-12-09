@@ -97,6 +97,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>userID</tabstop>
+  <tabstop>password</tabstop>
+  <tabstop>download</tabstop>
+  <tabstop>upload</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../subsurface.qrc"/>
  </resources>
