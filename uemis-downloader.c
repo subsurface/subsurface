@@ -644,15 +644,20 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 		/* this is a divelog */
 		log = TRUE;
 		tp = next_token(&bp);
-		if (strcmp(tp,"1.0") != 0)
+		if (strcmp(tp,"1.0") != 0) {
+			free(buf);
 			return;
+		}
 	} else if (strcmp(tp, "dive") == 0) {
 		/* this is dive detail */
 		tp = next_token(&bp);
-		if (strcmp(tp,"1.0") != 0)
+		if (strcmp(tp,"1.0") != 0) {
+			free(buf);
 			return;
+		}
 	} else {
 		/* don't understand the buffer */
+		free(buf);
 		return;
 	}
 	if (log)
