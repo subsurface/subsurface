@@ -314,7 +314,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="174"/>
         <source>Start Time</source>
-        <translation>Początek o</translation>
+        <translation>Początek</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="181"/>
@@ -674,7 +674,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Start time</source>
-        <translation>Początek o</translation>
+        <translation>Początek</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
@@ -740,7 +740,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="444"/>
         <source>Gas Consumed</source>
-        <translation>Zużycie gazu</translation>
+        <translation>Zużyty gaz</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="463"/>
@@ -2182,7 +2182,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Połączenie z usługą internetową</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>

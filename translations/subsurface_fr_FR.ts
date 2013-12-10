@@ -112,7 +112,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>O</source>
-        <translation type="unfinished"/>
+        <translation>O</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="154"/>
@@ -241,7 +241,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation>marquer la/les plongée(s) comme invalides</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
@@ -261,7 +261,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>Télécharger la/les plongée(s) vers divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
@@ -496,13 +496,13 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de créer le fichier DLD</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Terminé</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
@@ -539,27 +539,27 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="786"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Echec du téléchargement</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargement terminé avec succès</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="792"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Echec de connexion</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="795"/>
         <source>Cannot parse response</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;analyser la réponse</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="773"/>
@@ -1483,7 +1483,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="837"/>
         <source>System Default</source>
-        <translation type="unfinished"/>
+        <translation>Paramètre par défaut</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="857"/>
@@ -1635,7 +1635,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="196"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez redémarrer Subsurface pour prendre en compte la nouvelle langue.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="229"/>
@@ -1653,17 +1653,17 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>&amp;Preview</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Prévisualisation</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="43"/>
         <source>P&amp;rint</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Impression</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="47"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="61"/>
@@ -1870,7 +1870,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation>pN</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
@@ -1880,7 +1880,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation>pO</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
@@ -2182,7 +2182,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Connexion au Webservice</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -2217,7 +2217,7 @@ Veuillez d&apos;abord les supprimer.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="237"/>
         <source>Operation timed out</source>
-        <translation type="unfinished"/>
+        <translation>Temps de réponse dépassé pour l&apos;opération</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="258"/>

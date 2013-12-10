@@ -241,7 +241,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation>Märgista sukeldumine/sukeldumised ebaõnnestunuks</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
@@ -261,12 +261,12 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>lae sukeldumised divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
         <source>Save Dives As...</source>
-        <translation>Salvesta sukeldumised nimega</translation>
+        <translation>Salvesta sukeldumised nimega...</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="776"/>
@@ -491,79 +491,80 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="525"/>
         <source>Malformed XML response. Line %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Vigane XML vastus. Rida %1: %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
-        <translation type="unfinished"/>
+        <translation>Ei suuda luua DLD faili</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
         <source>Uploading dive list...</source>
-        <translation type="unfinished"/>
+        <translation>Sukeldumiste listi üleslaadimine...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="640"/>
         <source>Downloading dive list...</source>
-        <translation type="unfinished"/>
+        <translation>Sukeldumiste listi allalaadimine...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="688"/>
         <source>Downloading %1 dives...</source>
-        <translation type="unfinished"/>
+        <translation>Laen alla %1 sukeldumist...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="732"/>
         <source>Download finished - %1</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimine lõppenud - %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="749"/>
         <source>Corrupted download</source>
-        <translation type="unfinished"/>
+        <translation>Vigane allalaadimine</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="750"/>
         <source>The archive could not be opened:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Arhiivi ei saa avada:
+%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="786"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Üleslaadimine ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation>Üleslaadimine edukas</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="792"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Sisselogimine ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="795"/>
         <source>Cannot parse response</source>
-        <translation type="unfinished"/>
+        <translation>Ei suuda vastust tuvastada</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="773"/>
         <source>Upload finished</source>
-        <translation type="unfinished"/>
+        <translation>Üleslaadimine lõppenud</translation>
     </message>
 </context>
 <context>
@@ -590,7 +591,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
         <source>Download From Dive Computer</source>
-        <translation>Lae kompuutrist</translation>
+        <translation>Lae sukeldumiskompuutrist</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
@@ -729,12 +730,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="406"/>
         <source>Interval</source>
-        <translation>Intervall</translation>
+        <translation>Pinnaintervall</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="425"/>
         <source>Gases Used</source>
-        <translation>Kasutatud gaasid</translation>
+        <translation>Kasutatud gaas(id)</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="444"/>
@@ -760,7 +761,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="520"/>
         <source>OTU</source>
-        <translation>Hapnikumürgistuse ühik (OTU)</translation>
+        <translation>OTU</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="539"/>
@@ -780,7 +781,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="596"/>
         <source>Dive Time</source>
-        <translation>Sukeldumise aeg</translation>
+        <translation>Sukeldumise koguaeg</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="615"/>
@@ -810,12 +811,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="745"/>
         <source>Total Time</source>
-        <translation>Koguaeg</translation>
+        <translation>Aeg kokku</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="764"/>
         <source>Dives</source>
-        <translation>Sukeldumised</translation>
+        <translation>Sukeldumisi kokku</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="73"/>
@@ -1362,12 +1363,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="147"/>
         <source>Font</source>
-        <translation>Kirjatüüp</translation>
+        <translation>Font</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="157"/>
         <source>Font size</source>
-        <translation>Kirjatüübi suurus</translation>
+        <translation>Fondi suurus</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="170"/>
@@ -1412,7 +1413,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="273"/>
         <source>Imperial</source>
-        <translation>Briti</translation>
+        <translation>Briti/Ameerika</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="283"/>
@@ -1472,17 +1473,17 @@ palun eemalda need esmalt.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="510"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="551"/>
         <source>pN₂</source>
-        <translation type="unfinished"/>
+        <translation>pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="837"/>
         <source>System Default</source>
-        <translation type="unfinished"/>
+        <translation>Süsteemi vaikeväärtus</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="857"/>
@@ -1517,7 +1518,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="447"/>
         <source>Time units</source>
-        <translation>Aja ühikud</translation>
+        <translation>Ajaühikud</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="453"/>
@@ -1559,7 +1560,7 @@ palun eemalda need esmalt.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="656"/>
         <source>max ppO₂</source>
-        <translation type="unfinished"/>
+        <translation>max ppO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="672"/>
@@ -1629,12 +1630,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="195"/>
         <source>Restart required</source>
-        <translation type="unfinished"/>
+        <translation>Nõutav taaskäivitus</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="196"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Uue keele kasutuselevõtuks tuleb Subsurface taaskäivitada.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="229"/>
@@ -1748,7 +1749,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="162"/>
         <source>Ordering</source>
-        <translation>Tellimus</translation>
+        <translation>Järjestus</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="180"/>
@@ -1778,7 +1779,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="338"/>
         <source>Notes height (0% - 52%)</source>
-        <translation>Märkuste osa suurus (0% - 52%)</translation>
+        <translation>Märkmete osa suurus (0% - 52%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="354"/>
@@ -1869,7 +1870,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation>pN</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
@@ -1879,7 +1880,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation>pO</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
@@ -2019,7 +2020,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/globe.cpp" line="242"/>
         <source>Move the map and double-click to set the dive location</source>
-        <translation type="unfinished"/>
+        <translation>Liigu kaardil soovitud kohta ja märgi topeltklikiga sukeldumiskoht</translation>
     </message>
 </context>
 <context>
@@ -2068,7 +2069,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/about.ui" line="23"/>
         <source>About Subsurface</source>
-        <translation>Subsurface kohta</translation>
+        <translation>Programmist</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.cpp" line="19"/>
@@ -2101,12 +2102,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="372"/>
         <source>Download finished</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimine lõppenud</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="386"/>
         <source>Download error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimise viga: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
@@ -2181,7 +2182,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Veebiteenuse ühendus</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -2216,12 +2217,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="237"/>
         <source>Operation timed out</source>
-        <translation type="unfinished"/>
+        <translation>Toiming aegus</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="258"/>
         <source>Transfering data...</source>
-        <translation type="unfinished"/>
+        <translation>Andmete ülekanne...</translation>
     </message>
 </context>
 <context>
@@ -2411,7 +2412,7 @@ Maksimum</translation>
     <message>
         <location filename="../equipment.c" line="163"/>
         <source>ankle</source>
-        <translation>hüppeliiges</translation>
+        <translation>pahkluu</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="164"/>
@@ -2640,12 +2641,12 @@ Maksimum</translation>
     <message>
         <location filename="../libdivecomputer.c" line="616"/>
         <source>Event: waiting for user action</source>
-        <translation>Sündmus: ootan kasutaja tegevust</translation>
+        <translation>Sündmus: ootan kasutaja sekkumist</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="624"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
-        <translation>mudel=%u (0x%08x), püsivara=%u (0x%08x), seeranr=%u (0x%08x)</translation>
+        <translation>mudel=%u (0x%08x), püsivara=%u (0x%08x), seerianr=%u (0x%08x)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="666"/>
@@ -2867,7 +2868,8 @@ Deko:teadmata aeg @ %.0f %s</translation>
         <location filename="../profile.c" line="1273"/>
         <source>%s
 In deco</source>
-        <translation>%s⏎ Decos</translation>
+        <translation>%s
+Dekos</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1276"/>
@@ -2887,7 +2889,8 @@ CNS:%u%%</translation>
         <location filename="../profile.c" line="1228"/>
         <source>%s
 pO%s:%.2fbar</source>
-        <translation>%s⏎ pO%s:%.2fbar</translation>
+        <translation>%s
+pO%s:%.2fbar</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1232"/>
@@ -3032,7 +3035,7 @@ TTS:%umin (calc)</translation>
     <message>
         <location filename="../dive.c" line="14"/>
         <source>deep</source>
-        <translation>süva</translation>
+        <translation>sügav</translation>
     </message>
     <message>
         <location filename="../dive.c" line="14"/>
@@ -3047,12 +3050,12 @@ TTS:%umin (calc)</translation>
     <message>
         <location filename="../dive.c" line="15"/>
         <source>wreck</source>
-        <translation>vraki</translation>
+        <translation>vrakk</translation>
     </message>
     <message>
         <location filename="../dive.c" line="15"/>
         <source>cave</source>
-        <translation>koopa</translation>
+        <translation>koobas</translation>
     </message>
     <message>
         <location filename="../dive.c" line="15"/>
@@ -3431,12 +3434,12 @@ Kas Uemis Zurich on ühendatud korrektselt?</translation>
     <message>
         <location filename="../uemis.c" line="222"/>
         <source>Dive Time Info</source>
-        <translation>Sukeldumise aja info</translation>
+        <translation>Sukeldumise kestuse info</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="224"/>
         <source>Dive Time Alert</source>
-        <translation>Sukeldumise aja hoiatus</translation>
+        <translation>Sukeldumise kestuse hoiatus</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="226"/>

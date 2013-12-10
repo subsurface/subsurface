@@ -241,7 +241,7 @@ radera den valda dykdatorn?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation>Markera dyk som ogiltiga</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
@@ -261,7 +261,7 @@ radera den valda dykdatorn?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>Ladda upp dyk till divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
@@ -496,13 +496,13 @@ vänligen ta bort dessa först.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
-        <translation type="unfinished"/>
+        <translation>Kan inte skapa DLD fil</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Klar</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
@@ -539,27 +539,27 @@ vänligen ta bort dessa först.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="786"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Uppladdning misslyckades</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation>Nedladdning lyckades</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="792"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Inloggning misslyckades</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="795"/>
         <source>Cannot parse response</source>
-        <translation type="unfinished"/>
+        <translation>Kan inte tolka respons</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fel: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="773"/>
@@ -1870,7 +1870,7 @@ vänligen ta bort dessa först.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation>pN</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
@@ -1880,7 +1880,7 @@ vänligen ta bort dessa först.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation>pO</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
@@ -2182,7 +2182,7 @@ vänligen ta bort dessa först.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Anslutning till webbtjänst</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>

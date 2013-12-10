@@ -112,7 +112,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>O</source>
-        <translation type="unfinished"/>
+        <translation>O</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="154"/>
@@ -495,13 +495,13 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
-        <translation type="unfinished"/>
+        <translation>Kann DLD Datei nicht erzeugen</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Fertig</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
@@ -557,7 +557,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fehler: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="773"/>
@@ -1351,7 +1351,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="115"/>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation>Sprache</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="141"/>
@@ -1426,12 +1426,12 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="314"/>
         <source>meter</source>
-        <translation type="unfinished"/>
+        <translation>Meter</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="324"/>
         <source>feet</source>
-        <translation type="unfinished"/>
+        <translation>Fuss</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="341"/>
@@ -1446,7 +1446,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="368"/>
         <source>liter</source>
-        <translation type="unfinished"/>
+        <translation>Liter</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="378"/>
@@ -1456,12 +1456,12 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="395"/>
         <source>celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsius</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="405"/>
         <source>fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Fahrenheit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="422"/>
@@ -1471,17 +1471,17 @@ Bitte entferne diese zuerst.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="510"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="551"/>
         <source>pN₂</source>
-        <translation type="unfinished"/>
+        <translation>pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="837"/>
         <source>System Default</source>
-        <translation type="unfinished"/>
+        <translation>Systemeinstellung</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="857"/>
@@ -1558,7 +1558,7 @@ Bitte entferne diese zuerst.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="656"/>
         <source>max ppO₂</source>
-        <translation type="unfinished"/>
+        <translation>max. ppO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="672"/>
@@ -1868,7 +1868,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation>pN</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
@@ -1878,7 +1878,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation>pO</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
@@ -2180,7 +2180,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung mit Webservice</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>

@@ -1565,7 +1565,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="672"/>
         <source>EAD END EADD</source>
-        <translation>PEA PEN EADD</translation>
+        <translation>PEA PNE EADD</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="681"/>
@@ -2182,7 +2182,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Conexión al servicio web</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -2921,7 +2921,7 @@ END:%d%s
 EADD:%d%s</source>
         <translation>%s
 PEA:%d%s
-PEN:%d%s
+PNE:%d%s
 EADD:%d%s</translation>
     </message>
     <message>

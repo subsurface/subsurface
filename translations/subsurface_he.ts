@@ -240,7 +240,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation>לא להתחשב בצלילות</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>העלה צלילות לאתר divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="71"/>
         <source>Bottom SAC</source>
-        <translation type="unfinished"/>
+        <translation>צריכת גז בעומק מירבי</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="85"/>
@@ -495,13 +495,13 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה ביצירת קובץ DLD</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>סיים</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
@@ -537,27 +537,27 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="786"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation>ההעלאה נכשלה</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation>ההעלאה הסתיימה בהצלחה</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="792"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation>שגיאת התחברות (הזדהות)</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="795"/>
         <source>Cannot parse response</source>
-        <translation type="unfinished"/>
+        <translation>תשובה לא ברורה</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="773"/>
@@ -839,13 +839,13 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="408"/>
         <source>Trip Location</source>
-        <translation type="unfinished"/>
+        <translation>מיקום</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="386"/>
         <location filename="../qt-ui/maintab.cpp" line="410"/>
         <source>Trip Notes</source>
-        <translation type="unfinished"/>
+        <translation>הערות</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="37"/>
@@ -884,17 +884,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="456"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>לא ידוע</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="960"/>
         <source>N</source>
-        <translation type="unfinished"/>
+        <translation>צ</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="960"/>
         <source>S</source>
-        <translation type="unfinished"/>
+        <translation>ד</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="961"/>
@@ -904,7 +904,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="961"/>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation>מע</translation>
     </message>
 </context>
 <context>
@@ -952,7 +952,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="251"/>
         <source>Ctrl+N</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+N</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="256"/>
@@ -967,7 +967,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="262"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="267"/>
@@ -982,7 +982,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="273"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="278"/>
@@ -993,7 +993,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="284"/>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="289"/>
@@ -1004,7 +1004,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="295"/>
         <source>Ctrl+W</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
@@ -1016,7 +1016,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="306"/>
         <source>Ctrl+I</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="311"/>
@@ -1151,7 +1151,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="322"/>
         <source>Ctrl+P</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+P</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="327"/>
@@ -1161,12 +1161,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="341"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="352"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="370"/>
@@ -1181,22 +1181,22 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="410"/>
         <source>Ctrl+2</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+2</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="418"/>
         <source>Ctrl+3</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+3</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="426"/>
         <source>Ctrl+4</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+4</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="434"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+1</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="439"/>
@@ -1236,12 +1236,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="476"/>
         <source>F1</source>
-        <translation type="unfinished"/>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="484"/>
         <source>Ctrl+5</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+5</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="113"/>
@@ -1568,22 +1568,22 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="681"/>
         <source>Dive computer reported ceiling</source>
-        <translation type="unfinished"/>
+        <translation>עומק מקסימלי שדווח ע&quot;י מחשב הצלילה</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="704"/>
         <source>draw ceiling red</source>
-        <translation type="unfinished"/>
+        <translation>סמן עומק מקסימלי באדום</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="715"/>
         <source>Calculated ceiling</source>
-        <translation type="unfinished"/>
+        <translation>עומק מקסימלי מחושב</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="738"/>
         <source>show all tissues</source>
-        <translation type="unfinished"/>
+        <translation>הצג כל סוגי רקמות</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="748"/>
@@ -1603,7 +1603,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="781"/>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>שונות</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="14"/>
@@ -1674,7 +1674,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="25"/>
         <source>Dive#</source>
-        <translation type="unfinished"/>
+        <translation>מספר צלילה</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="26"/>
@@ -1694,7 +1694,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="29"/>
         <source>Master</source>
-        <translation type="unfinished"/>
+        <translation>מדריך</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="30"/>
@@ -1784,7 +1784,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/printoptions.ui" line="370"/>
         <location filename="../qt-ui/printoptions.ui" line="386"/>
         <source>0</source>
-        <translation type="unfinished"/>
+        <translation>0</translation>
     </message>
 </context>
 <context>
@@ -1833,7 +1833,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/profilegraphics.cpp" line="387"/>
         <location filename="../qt-ui/profilegraphics.cpp" line="389"/>
         <source>unknown divecomputer</source>
-        <translation type="unfinished"/>
+        <translation>מחשב צלילה לא מוכר</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="467"/>
@@ -1843,12 +1843,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="511"/>
         <source>Scale</source>
-        <translation type="unfinished"/>
+        <translation>קנה מידה</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="512"/>
         <source>Ruler</source>
-        <translation type="unfinished"/>
+        <translation>סרגל</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="514"/>
@@ -1868,7 +1868,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation>pN</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
@@ -1878,7 +1878,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation>pO</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
@@ -1915,7 +1915,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1606"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>לא ידוע</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1611"/>
@@ -2095,17 +2095,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="356"/>
         <source>Connecting...</source>
-        <translation type="unfinished"/>
+        <translation>מתחבר...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="372"/>
         <source>Download finished</source>
-        <translation type="unfinished"/>
+        <translation>ההורדה הסתיימה</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="386"/>
         <source>Download error: %1</source>
-        <translation type="unfinished"/>
+        <translation>שגיאת הורדה: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
@@ -2215,12 +2215,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="237"/>
         <source>Operation timed out</source>
-        <translation type="unfinished"/>
+        <translation>הפעולה נכשלה</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="258"/>
         <source>Transfering data...</source>
-        <translation type="unfinished"/>
+        <translation>מעביר נתונים...</translation>
     </message>
 </context>
 <context>
@@ -3224,7 +3224,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="106"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>לא ידוע</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="357"/>

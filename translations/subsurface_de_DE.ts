@@ -2181,7 +2181,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung mit Webservice</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
