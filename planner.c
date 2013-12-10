@@ -614,15 +614,9 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 
-	/* if all we wanted was the dive just get us back to the surface
-	 * we ascend with 15ft / min to the safety stop and 7.5ft / min from there */
+	/* if all we wanted was the dive just get us back to the surface */
 	if (!add_deco) {
-		if (depth > 5000) {
-			transitiontime = depth / 75; /* this still needs to be made configurable */
-			plan_add_segment(diveplan, transitiontime, 5000, o2, he, po2);
-			depth = 5000;
-		}
-		transitiontime = 2 * depth / 75; /* this still needs to be made configurable */
+		transitiontime = depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
