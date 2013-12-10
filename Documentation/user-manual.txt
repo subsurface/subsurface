@@ -237,7 +237,7 @@ Often, dive computers retain all their dives even though these dives have been i
 [IMPORTANT]
 In the case of *communication failure* then check the following:
 1) Is the dive computer still in PC-communication or Upload mode?
-2) Is the battery of the dive computer fully loaded? If not then load or replace the battery.
+2) Is the battery of the dive computer fully charged? If not then charge or replace the battery.
 3) Is the cable faulty? Does the cable work perfectly using other software? Has it worked before, or is this the first time you are using the cable?
 4) Consult *Appendix A* and make sure you specified the correct Mount Point (see above). If your _Subsurface_ computer does not recognise the USB adaptor by showing an appropriate device name next to the Mount Point, then there is a possibility that the cable or USB adaptor is faulty. A faulty cable is the most common cause of communcation failure between dive computer and _Subsurface_ computer.
 
