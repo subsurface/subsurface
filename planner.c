@@ -438,11 +438,11 @@ static unsigned int *sort_stops(unsigned int *dstops, int dnr, struct gaschanges
 {
 	int i, gi, di;
 	int total = dnr + gnr;
-	unsigned int *stoplevels = malloc(total * sizeof(int));
+	unsigned int *stoplevels = malloc(total * sizeof(unsigned int));
 
 	/* no gaschanges */
 	if (gnr == 0) {
-		memcpy(stoplevels, dstops, dnr * sizeof(int));
+		memcpy(stoplevels, dstops, dnr * sizeof(unsigned int));
 		return stoplevels;
 	}
 	i = total - 1;
