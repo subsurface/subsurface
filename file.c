@@ -122,8 +122,10 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 		memcpy(mem->buffer + mem->size + 5, "</csv>", 7);
 		mem->buffer = buf;
 		mem->size += strlen("<csv></csv>");
-	} else
+	} else {
+		free(mem->buffer);
 		return 1;
+	}
 
 	return 0;
 }
