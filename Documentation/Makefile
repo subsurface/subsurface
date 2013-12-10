@@ -19,7 +19,7 @@ $(OUT)$(DOCNAME).pdf: $(DOCSOURCE)
 
 $(OUT)$(HTMLDOC): $(DOCSOURCE)
 	@echo "if asciidoc isn't found no HTML documentation is produced but Subsurface is still functional"
-	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) $< || true
+	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a stylesdir=$(PWD) $< || true
 
 # Alternatively::
 $(OUT)$(DOCNAME).xhtml: $(DOCSOURCE)
