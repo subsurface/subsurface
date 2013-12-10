@@ -638,18 +638,21 @@ void MainTab::acceptChanges()
 	if(editMode == ADD || editMode == MANUALLY_ADDED_DIVE){
 		mainWindow()->dive_list()->unselectDives();
 		struct dive *d = get_dive(dive_table.nr -1 );
-		// HACK. this shouldn't be here. but apparently it's
-		// how we can know what was the newly added dive.
+		// mark the dive as remembered (abusing the selected flag)
+		// and then clear that flag out on the other side of the sort_table()
 		d->selected = true;
 		sort_table(&dive_table);
 		int i = 0;
 		for_each_dive(i,d){
-			if (d->selected) break;
+			if (d->selected) {
+				d->selected = false;
+				break;
+			}
 		}
 		editMode = NONE;
 		mainWindow()->refreshDisplay();
 		mainWindow()->dive_list()->selectDive( i, true );
-	}else{
+	} else {
 		editMode = NONE;
 		mainWindow()->dive_list()->rememberSelection();
 		sort_table(&dive_table);
