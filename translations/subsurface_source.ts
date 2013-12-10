@@ -375,12 +375,12 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1306"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1307"/>
         <source>Discard the Plan?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="1307"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="1308"/>
         <source>You are about to discard your plan.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -474,63 +474,63 @@ Please, remove them first.</source>
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="465"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="464"/>
         <source>Invalid response from server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="473"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="472"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="519"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="518"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="526"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="525"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="549"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="583"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="610"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
         <source>Uploading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="641"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="640"/>
         <source>Downloading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="689"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="688"/>
         <source>Downloading %1 dives...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="733"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="732"/>
         <source>Download finished - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="750"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="749"/>
         <source>Corrupted download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="751"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="750"/>
         <source>The archive could not be opened:
 %1</source>
         <translation type="unfinished"></translation>
@@ -888,22 +888,22 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="957"/>
+        <location filename="../qt-ui/maintab.cpp" line="960"/>
         <source>N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="957"/>
+        <location filename="../qt-ui/maintab.cpp" line="960"/>
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="958"/>
+        <location filename="../qt-ui/maintab.cpp" line="961"/>
         <source>E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="958"/>
+        <location filename="../qt-ui/maintab.cpp" line="961"/>
         <source>W</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1842,70 +1842,70 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="513"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="511"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="514"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="512"/>
         <source>Ruler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="516"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="514"/>
         <source>Measure properties of dive segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="517"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="515"/>
         <source>Scale your dive to screen size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="530"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="528"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="616"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="642"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
         <source>pHe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="666"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="1004"/>
+        <source>air</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="754"/>
         <location filename="../qt-ui/profilegraphics.cpp" line="1006"/>
-        <source>air</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="756"/>
-        <location filename="../qt-ui/profilegraphics.cpp" line="1008"/>
         <source>EAN%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="1016"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="1014"/>
         <source>Bailing out to OC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="1018"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="1016"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="1019"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="1017"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"></translation>
@@ -2089,42 +2089,42 @@ Please, remove them first.</source>
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="315"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="314"/>
         <source>Webservice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="357"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="356"/>
         <source>Connecting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="373"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="372"/>
         <source>Download finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="387"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="386"/>
         <source>Download error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="396"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
         <source>Connection Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="397"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="396"/>
         <source>Invalid user identifier!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="398"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="397"/>
         <source>Cannot parse response!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="399"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="398"/>
         <source>Download Success!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2158,7 +2158,7 @@ Please, remove them first.</source>
 <context>
     <name>ToolTipItem</name>
     <message>
-        <location filename="../qt-ui/profilegraphics.cpp" line="1550"/>
+        <location filename="../qt-ui/profilegraphics.cpp" line="1548"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2180,7 +2180,7 @@ Please, remove them first.</source>
     <name>WebServices</name>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
-        <source>Download Location Data</source>
+        <source>Webservice Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2214,12 +2214,12 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="238"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="237"/>
         <source>Operation timed out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="259"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="258"/>
         <source>Transfering data...</source>
         <translation type="unfinished"></translation>
     </message>
