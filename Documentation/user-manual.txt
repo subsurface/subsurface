@@ -787,6 +787,39 @@ In order to save the WHOLE dive log (i.e. all trips and dives), select *File* fr
 
 In order to save only one or more dives or one or two trips, select the appropriate dives or trips in the *Dive List* panel. Then right-click the selected dives to bring up the context menu. To save in _Subsurface_ XML format, select _Save as_ from the context menu. To save in UDDF format, select _Export as UDDF_ from the context menu.
 
+
+[[S_PrintDivelog]]
+== Printing your dive log
+
+_Subsurface_ provides a simple interface to print your whole dive log or only a few selected dives, including dive profiles and other contextual information.
+
+There are two decisions required:
+
+- Should the whole dive log be printed or only part of it? If only part of the dive log is required, then select the required dives from the *Dive List* panel.
+- What gas partial pressure information is required on the dive profile? Select the appropriate information from the Main Menu: _File->Preferences->Graph_.
+
+Now one needs to select the print options. To do this, select _File->Print_ from the Main menu. The following dialogue appears (see the image on the left [A], below):
+
+image::images/PrintDivelog.jpg["FIGURE: Print dialogue",align="center"]
+
+Under _Print type_ one needs to select one of three options:
+
+- Print the Dive List. Do do this, select _Table Print_.
+- Print the full dive records (dive profiles and all other information) at 6 dives per printed page. Do do this, select _6 dives per page_.
+- Print the full dive records (dive profiles and all other information) at 2 dives per printed page. Do do this, select _2 dives per page_.
+
+Under _Print options_ one needs to select:
+
+- Printing only the dives that have been selected from the dive list prior to activating the print dialogue, achieved by checking the box _Print only selected dives_.
+- Printing in colour, achieved by checking the box with _Print in color_.
+
+The _Ordering_ affects the layout of the page (or part of it) for each dive. The dive profile could be printed at the top of each dive, with the textual information underneath, or it could be printed with the textual information at the top with the dive profile underneath. Select the appropriate option in the print dialogue. See the image on the right (B), above which has a layout with text above the dive profile.
+
+One can _Preview_ the printed page by selecting the _Preview_ button on the dialogue. After preview, changes to the options in the print dialogue can be made to give a layout that fits personal taste.
+
+Now, select the _Print_ button in the dialogue. This activates the regular print dialogue used by you operating system, allowing one to choose a printer and to set its properties. Remember to set the print resolution of the printer to an appropriate value by changing the printer properties. Finally, print the dives. Above on the right (B) is an example of the output for one particular dive.
+
+
 [[S_Preferences]]
 == Setting your *Preferences* for _Subsurface_
 
@@ -848,21 +881,21 @@ This section describes the functions and operation of the items in the Main Menu
 - _Save as_: - Save the current logbook or the currently selected dives within the present logbook under a different filename.
 - _Close_ -  Close the dive logbook that is currenly open.
 - <<S_ExportLog,_Export UDDF_>> -  Export the currently open dive logbook (or the selected dives in the logbook) in UDDF format.
-- _Print_ -  Print the currently open logbook.
+- <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - _Quit_ - Quit _Subsurface_.
 
 === Import
-- <<S_ImportDiveComputer,Import from dive computer>> - Import dive information from a dive computer.
-- <<S_ImportingUDDF,Import Files>> - Import dive information from a file in UDDF or in another _Subsurface_-compatible format.
-- Import CSV - Import dive information from a data file in CSV format.
-- <<S_Companion,Import GPS data from Subsurface Service>> - Load GPS coordinates from the _Subsurface_ mobile phone app.
-- <<S_ImportingDivelogsDe,Import from Divelogs.de>> - Import dive information from _en.Divelogs.de_.
+- <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive information from a dive computer.
+- <<S_ImportingUDDF,_Import Files_>> - Import dive information from a file in UDDF or in another _Subsurface_-compatible format.
+- _Import CSV_ - Import dive information from a data file in CSV format.
+- <<S_Companion,_Import GPS data from Subsurface Service_>> - Load GPS coordinates from the _Subsurface_ mobile phone app.
+- <<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive information from _en.Divelogs.de_.
 
 === Log
-- <<S_EnterData,Add Dive>> - Manually add a new dive to the *Dive List* panel.
-- <<S_Renumber,Renumber>> - Renumber the dives listed in the *Dive List* panel.
-- <<S_Group,Auto Group>> - Group the dives in the *Dive List* panel into dive trips.
+- <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
+- <<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List* panel.
+- <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive trips.
 - _Edit Device Names_ - Edit the names of dive computers.
 
 === View
