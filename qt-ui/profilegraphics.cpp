@@ -956,7 +956,7 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 {
 	int i;
 	struct plot_info *pi = &gc.pi;
-	struct plot_data *entry;
+	struct plot_data *entry = NULL;
 
 	/* is plotting of this event disabled? */
 	if (ev->name) {
@@ -980,6 +980,10 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 		if (ev->time.seconds < entry->sec)
 			break;
 	}
+
+	/* If we didn't find the right event, don't dereference null */
+	if (entry == NULL)
+		return;
 
 	/* draw a little triangular marker and attach tooltip */
 
