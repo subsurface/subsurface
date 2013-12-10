@@ -1344,8 +1344,10 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 
 	if (bufsize > 0)
 		buf[0] = '\0';
-	if (e1 == NULL || e2 == NULL)
+	if (e1 == NULL || e2 == NULL) {
+		free(buf2);
 		return;
+	}
 
 	if (e1->sec < e2->sec) {
 		start = e1;
@@ -1354,6 +1356,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		start = e2;
 		stop = e1;
 	} else {
+		free(buf2);
 		return;
 	}
 	count = 0;
