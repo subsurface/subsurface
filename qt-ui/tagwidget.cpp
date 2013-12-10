@@ -166,7 +166,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e) {
 	if (e->key() == Qt::Key_Tab) { // let's pretend this is a comma instead
 		QKeyEvent *fakeEvent = new QKeyEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
 		GroupedLineEdit::keyPressEvent(fakeEvent);
-		free(fakeEvent);
+		delete fakeEvent;
 	} else {
 		GroupedLineEdit::keyPressEvent(e);
 	}
