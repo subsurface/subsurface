@@ -550,6 +550,7 @@ static void duration(char *buffer, void *_time)
 		char *dot = strchr(mybuffer,'.');
 		*dot = ':';
 		sampletime(mybuffer, _time);
+		free(mybuffer);
 	} else {
 		sampletime(buffer, _time);
 	}
