@@ -1422,6 +1422,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
 	}
+	if (!diveplan.dp)
+		return;
 	char *cache = NULL;
 	tempDive = NULL;
 	const char *errorString = NULL;
