@@ -394,16 +394,6 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	if (filename == NULL)
 		return;
 
-	if (readfile(filename, &mem) < 0) {
-		if (error) {
-			int len = strlen(translate("gettextFromC","Failed to read '%s'")) + strlen(filename);
-			*error = malloc(len);
-			snprintf(*error, len, translate("gettextFromC","Failed to read '%s'"), filename);
-		}
-
-		return;
-	}
-
 	if (try_to_xslt_open_csv(filename, &mem, error))
 		return;
 
