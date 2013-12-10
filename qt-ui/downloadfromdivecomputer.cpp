@@ -335,6 +335,7 @@ static QString str_error(const char *fmt, ...)
 void DownloadThread::run()
 {
 	const char *error;
+	import_thread_cancelled = false;
 	if (!strcmp(data->vendor, "Uemis"))
 		error = do_uemis_import(data->devname, data->force_download);
 	else
