@@ -443,7 +443,7 @@ double init_decompression(struct dive *dive)
 #endif
 	}
 	if (!deco_init) {
-		double surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
+		surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
 		clear_deco(surface_pressure);
 #if DECO_CALC_DEBUG & 2
 		printf("no previous dive\n");
