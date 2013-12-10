@@ -386,6 +386,7 @@ double init_decompression(struct dive *dive)
 	timestamp_t when, lasttime = 0;
 	bool deco_init = FALSE;
 	double tissue_tolerance, surface_pressure;
+	tissue_tolerance = surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
 
 	if (!dive)
 		return 0.0;
