@@ -115,15 +115,17 @@ static char *prepare_dives_for_divelogs(const bool selected)
 
 	/* generate a random filename and create/open that file with zip_open */
 	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	tempfile = tempfileQ.toLocal8Bit().data();
+	tempfile = strdup(tempfileQ.toLocal8Bit().data());
 	zip = zip_open(tempfile, ZIP_CREATE, NULL);
 
 	if (!zip) {
 		qDebug() << errPrefix << "cannot open file as zip";
+		free((void *)tempfile);
 		return NULL;
 	}
 	if (!amount_selected) {
 		qDebug() << errPrefix << "no dives selected";
+		free((void *)tempfile);
 		return NULL;
 	}
 
@@ -137,6 +139,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		f = tmpfile();
 		if (!f) {
 			qDebug() << errPrefix << "cannot create temp file";
+			free((void *)tempfile);
 			return NULL;
 		}
 		save_dive(f, dive);
@@ -146,6 +149,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		membuf = (char *)malloc(streamsize + 1);
 		if (!membuf || !fread(membuf, streamsize, 1, f)) {
 			qDebug() << errPrefix << "memory error";
+			free((void *)tempfile);
 			return NULL;
 		}
 		membuf[streamsize] = 0;
@@ -158,6 +162,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
 		if (!doc) {
 			qDebug() << errPrefix << "xml error";
+			free((void *)tempfile);
 			return NULL;
 		}
 		free((void *)membuf);
@@ -165,6 +170,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		xslt = get_stylesheet("divelogs-export.xslt");
 		if (!xslt) {
 			qDebug() << errPrefix << "missing stylesheet";
+			free((void *)tempfile);
 			return NULL;
 		}
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
@@ -184,8 +190,6 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		}
 	}
 	zip_close(zip);
-	/* let's call this again */
-	tempfile = tempfileQ.toLocal8Bit().data();
 	return tempfile;
 }
 
@@ -554,9 +558,11 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 			uploadDives((QIODevice *)&f);
 			f.close();
 			f.remove();
+			free((void *)filename);
 			return;
 		}
 		mainWindow()->showError(errorText.append(": ").append(filename));
+		free((void *)filename);
 		return;
 	}
 	mainWindow()->showError(errorText.append("!"));
