@@ -166,7 +166,7 @@ Use the dropdown list to select your type of weighting system. In the *Weight* f
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
 
-Do NOT select the _Save_ button before you have completed the dive profile.
+You do NOT need to click the _Save_ button before you have completed the dive profile.
 
 ==== Creating a Dive Profile
 
