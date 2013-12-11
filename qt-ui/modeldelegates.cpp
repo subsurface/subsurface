@@ -19,6 +19,11 @@
 #include <QStringListModel>
 #include <QApplication>
 
+QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+	return QSize(50,22);
+}
+
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
 #define IDX( XX ) mymodel->index(currCombo.currRow, XX)

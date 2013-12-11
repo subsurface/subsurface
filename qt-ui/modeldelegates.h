@@ -5,6 +5,12 @@
 class QComboBox;
 class QPainter;
 
+class DiveListDelegate : public QStyledItemDelegate{
+public:
+	DiveListDelegate(){}
+	QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+};
+
 class StarWidgetsDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:

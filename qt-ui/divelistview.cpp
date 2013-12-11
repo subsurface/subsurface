@@ -22,14 +22,6 @@
 #include <QMenu>
 #include <QFileDialog>
 
-class DiveListDelegate : public QStyledItemDelegate{
-public:
-	DiveListDelegate(){}
-	QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const {
-		return QSize(50,22);
-	}
-};
-
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(new QLineEdit(this))
 {

@@ -1,5 +1,6 @@
 #include "tableview.h"
 #include "models.h"
+#include "modeldelegates.h"
 
 #include <QPushButton>
 #include <QLayout>
@@ -10,11 +11,7 @@
 TableView::TableView(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
-	QFile cssFile(":table-css");
-	cssFile.open(QIODevice::ReadOnly);
-	QTextStream reader(&cssFile);
-	QString css = reader.readAll();
-	ui.tableView->setStyleSheet(css);
+	ui.tableView->setItemDelegate(new DiveListDelegate);
 	/* There`s mostly a need for a Mac fix here too. */
 	if (qApp->style()->objectName() == "gtk+")
 		ui.groupBox->layout()->setContentsMargins(0, 9, 0, 0);
