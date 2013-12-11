@@ -657,7 +657,6 @@ The Dive Info tab gives some summary information about a particular dive that ha
 === The *Stats* tab (for groups of dives)
 
 The Stats tab gives summary statistics for more than one dive, assuming that more than one dive have been selected in the *Dive List*. Select more than one dive by the standard Ctrl-click or Shift-click of the mouse. If only one dive has been selected, figures pertaining to only that dive are given. This tab shows the number of dives selected, the total amount of dive time in these dives, as well as the minimum, maximum and mean for the dive duration, dive depth, water temperature and surface air consumption (SAC).
-ter
 [[S_DiveProfile]]
 === The *Dive Profile*
 
