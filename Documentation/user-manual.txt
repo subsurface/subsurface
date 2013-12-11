@@ -672,7 +672,7 @@ Of all the panels in _Subsurface_, the Dive Profile contains the most detailed i
 |Dark green|< 1.5|< 1.5
 |=====================
 
-The profile also includes depth readings for the peaks in the graph. Thus you should see the depth of the deepest point and other peaks. Mean depth is marked with a horizontal red line.
+The profile also includes depth readings for the peaks and troughs in the graph. Thus you should see the depth of the deepest point and other peaks. Mean depth is marked with a horizontal red line.
 
 The *air consumption* graph displays the tank pressure and its change during the dive. The air consumption takes depth into account so that even when manually entering the start and end pressures the graph is not a straight line. Similarly to the depth graph the tank pressure gives you information about the momentary SAC rate (Surface Air Consumption – often also called RMV – Respiratory Minute Volume) when using an air integrated dive computer. Here the color coding is not relative to some absolute values but relative to the average normalized air consumption during the dive. So areas that are red or orange indicate times of increased normalized air consumption while dark green reflects times when the diver was using less gas than average. The color coding is obviously only possible when a tank sensor is connected and tank pressure readings during the dive are available.
 
