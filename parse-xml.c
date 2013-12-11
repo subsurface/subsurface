@@ -249,16 +249,16 @@ static void divetags(char *buffer, void *_tags)
 			}
 		}
 		i++;
-    }
-    if (state == FINDEND) {
-	    if (end < start)
-		    end = strlen(buffer)-1;
-	    if (strlen(buffer) > 0) {
+	}
+	if (state == FINDEND) {
+		if (end < start)
+			end = strlen(buffer)-1;
+		if (strlen(buffer) > 0) {
 			buffer[end-start+1] = '\0';
 			state=FINDSTART;
 			taglist_add_tag(tags, buffer+start);
-	    }
-    }
+		}
+	}
 }
 
 enum number_type {
@@ -514,7 +514,7 @@ static void temperature(char *buffer, void *_temperature)
 	}
 	/* temperatures outside -40C .. +70C should be ignored */
 	if (temperature->mkelvin < ZERO_C_IN_MKELVIN - 40000 ||
-	    temperature->mkelvin > ZERO_C_IN_MKELVIN + 70000)
+		temperature->mkelvin > ZERO_C_IN_MKELVIN + 70000)
 		temperature->mkelvin = 0;
 }
 
