@@ -41,12 +41,13 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 		return;
 
 	int rating = value.toInt();
+	int deltaY = option.rect.height()/2 - StarWidget::starActive().height() /2 ;
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	for(int i = 0; i < rating; i++)
-		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y(), StarWidget::starActive());
+		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, StarWidget::starActive());
 	for(int i = rating; i < TOTALSTARS; i++)
-		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y(), StarWidget::starInactive());
+		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, StarWidget::starInactive());
 	painter->restore();
 }
 

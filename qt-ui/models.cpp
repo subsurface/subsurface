@@ -952,10 +952,10 @@ QVariant DiveItem::data(int column, int role) const
 		case DATE: /* fall through */
 		case SUIT: /* fall through */
 		case LOCATION:
-			retVal = Qt::AlignLeft;
+			retVal = int(Qt::AlignLeft | Qt::AlignVCenter);
 			break;
 		default:
-			retVal = Qt::AlignRight;
+			retVal = int(Qt::AlignRight | Qt::AlignVCenter);
 			break;
 		}
 		break;
