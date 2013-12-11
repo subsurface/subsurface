@@ -262,7 +262,11 @@ struct RevertWeightData {
 
 void WSInfoDelegate::revertModelData(QWidget* widget, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (hint == QAbstractItemDelegate::NoHint || hint == QAbstractItemDelegate::RevertModelCache){
+	if (
+#if !defined __APPLE__
+	    hint == QAbstractItemDelegate::NoHint ||
+#endif
+	    hint == QAbstractItemDelegate::RevertModelCache) {
 		WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 		mymodel->setData(IDX(WeightModel::TYPE), currWeight.type, Qt::EditRole);
 		mymodel->passInData(IDX(WeightModel::WEIGHT), currWeight.weight);
