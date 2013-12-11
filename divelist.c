@@ -266,10 +266,12 @@ static int calculate_cns(struct dive *dive)
 	divenr = get_divenr(dive);
 	if (divenr) {
 		prev_dive = get_dive(divenr -1 );
-		endtime = prev_dive->when + prev_dive->duration.seconds;
-		if (prev_dive && dive->when < (endtime + 3600 * 12)) {
-			cns = calculate_cns(prev_dive);
-			cns = cns * 1/pow(2, (dive->when - endtime) / (90.0 * 60.0));
+		if (prev_dive) {
+			endtime = prev_dive->when + prev_dive->duration.seconds;
+			if (dive->when < (endtime + 3600 * 12)) {
+				cns = calculate_cns(prev_dive);
+				cns = cns * 1/pow(2, (dive->when - endtime) / (90.0 * 60.0));
+			}
 		}
 	}
 	/* Caclulate the cns for each sample in this dive and sum them */
