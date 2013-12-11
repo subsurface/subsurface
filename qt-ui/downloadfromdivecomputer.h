@@ -8,8 +8,6 @@
 #include "../libdivecomputer.h"
 #include "ui_downloadfromdivecomputer.h"
 
-struct device_data_t;
-
 class DownloadThread : public QThread{
 	Q_OBJECT
 public:
