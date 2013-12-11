@@ -218,7 +218,6 @@ enum ParseState {FINDSTART, FINDEND};
 static void divetags(char *buffer, void *_tags)
 {
 	struct tag_entry *tags = _tags;
-	char tag[128];
 	int i = 0, start = 0, end = 0;
 	enum ParseState state = FINDEND;
 	i=0;
@@ -230,10 +229,9 @@ static void divetags(char *buffer, void *_tags)
 				/* Found end of tag */
 				if (i > 1) {
 					if(buffer[i-1] != '\\') {
-						strncpy(tag, buffer+start, end-start+1);
-						tag[end-start+1] = '\0';
+						buffer[end-start+1] = '\0';
 						state=FINDSTART;
-						taglist_add_tag(tags, tag);
+						taglist_add_tag(tags, buffer+start);
 					}
 				} else {
 					state=FINDSTART;
@@ -256,9 +254,9 @@ static void divetags(char *buffer, void *_tags)
 	    if (end < start)
 		    end = strlen(buffer)-1;
 	    if (strlen(buffer) > 0) {
-		    strncpy(tag, buffer+start, end-start+1);
-		    tag[end-start+1] = '\0';
-		    taglist_add_tag(tags, tag);
+			buffer[end-start+1] = '\0';
+			state=FINDSTART;
+			taglist_add_tag(tags, buffer+start);
 	    }
     }
 }
