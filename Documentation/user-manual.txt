@@ -1104,7 +1104,7 @@ Subsurface issue) is that you cannot download more than about 40-50
 dives without running out of memory on the SDA. This will usually only
 happen the very first time you download dives from the Uemis Zurich -
 normally when downloading at the end of a day or even after a dive
-trip, the capacity is sufficient. If Subsurface displays and error
+trip, the capacity is sufficient. If Subsurface displays an error
 that the dive computer ran out of space the solution is straight
 forward.  Disconnect the SDA, turn it off and on again, and reconnect
 it. You can now retry (or start a new download session) and the
