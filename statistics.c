@@ -228,7 +228,7 @@ char *get_time_string(int seconds, int maxdays)
 static void get_ranges(char *buffer, int size)
 {
 	int i, len;
-	int first, last = -1;
+	int first = -1, last = -1;
 
 	snprintf(buffer, size, "%s", translate("gettextFromC","for dives #"));
 	for (i = 0; i < dive_table.nr; i++) {
