@@ -266,7 +266,7 @@ static char *next_segment(char *buf, int *offset, int size)
 
 	while (!done) {
 		if (i < size) {
-			if (buf[i] == '\\' && i < size - 1 &&
+			if (i < size - 1 && buf[i] == '\\' &&
 				(buf[i+1] == '\\' || buf[i+1] == '{'))
 				memcpy(buf + i, buf + i + 1, size - i - 1);
 			else if (buf[i] == '{')
