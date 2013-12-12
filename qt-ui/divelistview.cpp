@@ -548,7 +548,7 @@ void DiveListView::removeFromTrip()
 	struct dive *d;
 	for_each_dive(i, d) {
 		if (d->selected)
-			remove_dive_from_trip(d);
+			remove_dive_from_trip(d, FALSE);
 	}
 	rememberSelection();
 	reload(currentLayout, false);

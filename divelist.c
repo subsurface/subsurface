@@ -615,7 +615,7 @@ void find_new_trip_start_time(dive_trip_t *trip)
 	trip->when = when;
 }
 
-void remove_dive_from_trip(struct dive *dive)
+void remove_dive_from_trip(struct dive *dive, short was_autogen)
 {
 	struct dive *next, **pprev;
 	dive_trip_t *trip = dive->divetrip;
@@ -631,7 +631,10 @@ void remove_dive_from_trip(struct dive *dive)
 		next->pprev = pprev;
 
 	dive->divetrip = NULL;
-	dive->tripflag = NO_TRIP;
+	if (was_autogen)
+		dive->tripflag = TF_NONE;
+	else
+		dive->tripflag = NO_TRIP;
 	assert(trip->nrdives > 0);
 	if (!--trip->nrdives)
 		delete_trip(trip);
@@ -644,7 +647,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	if (dive->divetrip == trip)
 		return;
 	assert(trip->when);
-	remove_dive_from_trip(dive);
+	remove_dive_from_trip(dive, FALSE);
 	trip->nrdives++;
 	dive->divetrip = trip;
 	dive->tripflag = ASSIGNED_TRIP;
@@ -722,7 +725,7 @@ void delete_single_dive(int idx)
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return; /* this should never happen */
-	remove_dive_from_trip(dive);
+	remove_dive_from_trip(dive, FALSE);
 	if (dive->selected)
 		deselect_dive(idx);
 	for (i = idx; i < dive_table.nr - 1; i++)
@@ -863,7 +866,7 @@ void remove_autogen_trips()
 		dive_trip_t *trip = dive->divetrip;
 
 		if (trip && trip->autogen)
-			remove_dive_from_trip(dive);
+			remove_dive_from_trip(dive, TRUE);
 	}
 }
 

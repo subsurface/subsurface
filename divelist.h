@@ -23,7 +23,7 @@ extern int trip_has_selected_dives(dive_trip_t *trip);
 extern void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(struct dive *dive);
 extern dive_trip_t *find_matching_trip(timestamp_t when);
-extern void remove_dive_from_trip(struct dive *dive);
+extern void remove_dive_from_trip(struct dive *dive, short was_autogen);
 extern dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive);
 extern void autogroup_dives(void);
 extern struct dive *merge_two_dives(struct dive *a, struct dive *b);
