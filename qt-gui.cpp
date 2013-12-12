@@ -92,7 +92,7 @@ void init_ui(int *argcp, char ***argvp)
 	QLocale loc;
 
 	if (!s.value("UseSystemLanguage", true).toBool()){
-	    loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
+		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
 	}
 
 	QString uiLang = loc.uiLanguages().first();
