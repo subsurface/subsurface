@@ -322,7 +322,7 @@ image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive informat
 
 *Weights*: Information about the weight system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + button on the top right of the weights dialogue, the table looks like this:
 
-image::images/WeightsDataEntry1.kpg["FIGURE:The Weights dialogue",align="center"]
+image::images/WeightsDataEntry1.jpg["FIGURE:The Weights dialogue",align="center"]
 
 If you click on the *Type* field, a dropdown list becomes accessible through a down-arrow:
 
