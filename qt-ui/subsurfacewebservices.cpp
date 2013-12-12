@@ -760,6 +760,15 @@ void DivelogsDeWebServices::downloadFinished()
 	// now allow the user to cancel or accept
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
+	quint64 entries;
+#if defined(LIBZIP_VERSION_MAJOR)
+        entries = zip_get_num_entries(zip, 0);
+#else
+        // old version of libzip
+	entries = zip_get_num_files(zip);
+#endif
+
+
 	zip_close(zip);
 	zipFile.close();
 }
