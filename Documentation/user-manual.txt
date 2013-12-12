@@ -652,7 +652,7 @@ The Dive Info tab gives some summary information about a particular dive that ha
 
 === The *Stats* tab (for groups of dives)
 
-The Stats tab gives summary statistics for more than one dive, assuming that more than one dive have been selected in the *Dive List*. Select more than one dive by the standard Ctrl-click or Shift-click of the mouse. If only one dive has been selected, figures pertaining to only that dive are given. This tab shows the number of dives selected, the total amount of dive time in these dives, as well as the minimum, maximum and mean for the dive duration, dive depth, water temperature and surface air consumption (SAC).
+The Stats tab gives summary statistics for more than one dive, assuming that more than one dive have been highlighted in the *Dive List*. Highlight more than one dive by the standard Ctrl-click or Shift-click of the mouse. If only one dive has been selected, figures pertaining to only that dive are given. This tab shows the number of dives selected, the total amount of dive time in these dives, as well as the minimum, maximum and mean for the dive duration, dive depth, water temperature and surface air consumption (SAC).
 [[S_DiveProfile]]
 === The *Dive Profile*
 
@@ -660,7 +660,7 @@ image::images/Profile2.png["Typical dive profile",align="center"]
 
 Of all the panels in _Subsurface_, the Dive Profile contains the most detailed information about each dive. The main item in the Dive profile is the graph of dive depth as a function of time. In addition to the obvious information of the depth it also shows the ascent and descent rate compared to the recommended speed of going up or down in the water column. This information is given using different colors:
 |====================
-|*Colour*|*Descent speed (m/s)*|*Ascent speed (m/s)*
+|*Colour*|*Descent speed (m/min)*|*Ascent speed (m/min)*
 |Red|> 30|> 18
 |Orange|18 - 30|9 - 18
 |Yellow|9 - 18|4 - 9
