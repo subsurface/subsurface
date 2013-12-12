@@ -874,6 +874,7 @@ image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
   ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 === Languages
+A checkbox allows to use the _System Default_ language which in most cases will be the correct setting; with this Subsurface simply runs in the same language / country settins as the underlying OS. If this is for some reason undesirable one can uncheck this checkbox and pick a language / country combination from the list of included localizations.
 
 == Description of the Subsurface Main Menu items
 
