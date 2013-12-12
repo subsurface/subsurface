@@ -341,14 +341,12 @@ The information entered in the *Dive Notes* tab, the *Equipment* tab can be save
 [[S_ImportingAlienDiveLogs]]
 
 Maybe you have a lot of dives logged using other dive log software. You don't have to type all information by hand into
-_Subsurface_, because you can probably import your divelog. _Subsurface_ will import divelogs from a range of other dive log software, including
-XML exports from DivingLog, divelogs.de and Suunto
-DiveManager. Native format of JDiveLog and MacDive are imported as well.
+_Subsurface_, because you can probably import your divelog. _Subsurface_ will import divelogs from a range of other dive log software. Some software is supported natively (e.g. divelogs.de, JDiveLog, MacDive, and Suunto DM4), for others you have to export your logbook to XML and then _Subsurface_ can import that XML file (Suunto DM3, DivingLog). _Subsurface_ can also import UDDF and UDCF files that are used by some divelog software and even some divecomputers like the Heinrichs & Weikamp DR5. Finally, for some divelog software we currently suggest to import your logbook first into a webservice like divelogs.de and then import them from there with _Subsurface_, as divelogs.de supports a few additional logbook formats that _Subsurface_ currently cannot parse. 
 
 When importing dives, _Subsurface_ tries to detect multiple records for
 the same dive and merges the information as best as it can. If
 there are no time zone issues (or other reasons that would cause the
-beginning time of the dives to be almost simmultaneous) _Subsurface_
+beginning time of the dives to be significantly different) _Subsurface_
 will not create duplicate entries.
 
 [[S_ImportingDivesSuunto]]
@@ -358,7 +356,6 @@ Before you can start importing dives from 'Suunto Divemanager', you first
 have to export the dives you want to import. _Subsurface_ does not import
 directly from the 'Suunto Divemanager' log files. The following procedures
 can be used for Linux and Windows.
-
 
 ===== Export from *Suunto Divemanager*
 
@@ -439,18 +436,6 @@ The import of dive information from _divelogs.de_ is simple, using a single dial
 
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 
-
-[[S_ImportingDR5]]
-==== Importing dives from Heinrichs Weikamp DR5
-
-When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF file for every dive.
-Mark all the dives you'd like to
-import or open, _Subsurface_ is tested to work with DR5.
-Note: The DR5 does not seem to store gradient factors nor deco information, so for
-_Subsurface_ it is not possible to display them. Adjust the gradient
-factors in the Tec Settings in _Subsurface_ to generate a deco overlay in the _Subsurface_ *Dive Profile* panel
-to get deco displayed but please note that the deco calculated by _Subsurface_
-will most likely differ from the one display at the DR5.
 
 ==== Importing dives from *MacDive*
 
@@ -541,6 +526,18 @@ Make sure you are not using compressed files when importing to _Subsurface_
 
 _Subsurface_ supports UDDF as a generic import format.
 Some attributes in your file may not get processed properly. Select _Import->Import Files_ from the Main Menu. Then select the UDDF file to be imported.
+
+[[S_ImportingDR5]]
+==== Importing dives from Heinrichs Weikamp DR5
+
+When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF file for every dive.
+Mark all the dives you'd like to import or open.
+Note: The DR5 does not seem to store gradient factors nor deco information, so for
+_Subsurface_ it is not possible to display them. Adjust the gradient
+factors in the Tec Settings in _Subsurface_ to generate a deco overlay in the _Subsurface_ *Dive Profile* panel
+to get deco displayed but please note that the deco calculated by _Subsurface_
+will most likely differ from the one display at the DR5.
+
 
 
 [[S_Companion]]
