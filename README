@@ -1,67 +1,18 @@
 
-This is the README file for the 3.9.2 Beta version of Subsurface.
+This is the README file for Subsurface 4.0.
 
 After the release of Subsurface 3.1 we merged the Qt branch into
 master and started developing the Qt port of Subsurface in the master
-branch. At this stage the Qt version has reached mostly functional parity
-with version 3.1. There are some minor items still missing, but in others
-it far surpasses what was available in 3.1
+branch. At this stage the Qt version has by and large reached
+functional parity with version 3.1; two notable features are missing:
+the filter by event type and the dive planner. The user experience and
+look and feel on the other hand far surpass what was available in 3.1
 
-The developers feel that this version is quite stable and we think we are
-close to a final release of Subsurface 4.0. There are a small handful of
-known bugs - please check trac.hohndel.org.
+As always in a massive rewrite like this, there are still a small
+handful of known bugs and issues - please check ReleaseNotes.tzt and
+our bug tracker at trac.hohndel.org.
 
-Much as we are optimistic about 3.9.2, please do not use this on your "real"
-dive log files unless you have good backups. Check the XML files after you
-make changes to make sure that what you saved on disk reasonably resembles
-what you intended to do.
-
-Please check the ReleaseNotes.txt for known issues.
-
-And most importantly, please provide us with feedback.
-
-
-
-Everything below has not been updated since 3.1.1
-
-Subsurface - an Open Source Divelog
-===================================
-
-Subsurface is an open source divelog program that runs on Windows, Mac
-and Linux.
-
-With Subsurface the user can download dive information directly from a
-large number of supported dive computers. Subsurface is able to track
-single- and multi-tank dives using air, Nitrox or TriMix. It displays
-a dive profile with all related information including air consumption
-and alarms. It also allows logging of information like weights and
-exposure protection used, dive masters and dive buddies and enables
-the user to rate dives and provide additional dive notes.
-
-With Subsurface the user can track dive locations including GPS
-coordinates (which can also be conveniently entered using a map
-interface). Subsurface calculates a wide variety of statistics of the
-user's diving and keeps track of information like the user's SAC rate,
-partial pressures of O2, N2 and He, calculated deco information, and
-many more.
-
-Subsurface allows the user to print out a detailed log book including
-dive profiles and other relevant information. The program is localized
-in more than a dozen languages and well supported by an active
-developer community.
-
-One of the major strengths of Subsurface is its support of a wide range
-of dive computers (most common dive computers are supported with the help
-of libdivecomputer); a detailed list is at
-http://subsurface.hohndel.org/documentation/supported-dive-computers).
-Subsurface can also import existing dive logs from several sources
-including MacDive, Suunto DM3/DM4, JDiveLog and divelogs.de. Another
-strength is its ability to visualize the depth profile (and, if
-available, the tank pressure curve) in very innovative ways that give
-the user additional information on relative velocity (and momentary
-air consumption) during the dive through the coloring of the graphs.
-
-The latest public version is Subsurface 3.1, released in May of 2013.
+The latest public version is Subsurface 4.0, released in December of 2013.
 
 License: GPLv2
 
@@ -77,15 +28,16 @@ You can also browse the sources via gitweb at git.hohndel.org
 If you want the latest release (instead of the bleeding edge
 development version) you can either get this via
 
-git checkout v3.1  (or whatever the last release is)
+git checkout v4.0  (or whatever the last release is)
 
 if you have already cloned the git repository as shown above or you
 can get a tar ball from
 
-http://subsurface.hohndel.org/downloads/Subsurface-3.1.tgz
+http://subsurface.hohndel.org/downloads/Subsurface-4.0.tgz
 
-Usage:
-======
+
+Basic Usage:
+============
 
 Install and start from the desktop (or you can run it locally from the
 build directory).
@@ -96,61 +48,20 @@ You can give a data file as command line argument, or Subsurface picks a
 default file for you when started from the desktop or without an argument.
 
 If you have a dive computer supported by libdivecomputer, you can just
-select "Download from Divecomputer" from the Log menu, tell it what dive
-computer you have (and where it is connected if you need to), and hit
-"OK".
+select "Import from Divecomputer" from the "Import" menu, select which
+dive computer you have (and where it is connected if you need to), and
+hit "OK".
 
-The latest list of supported dive computers can be found at
-http://subsurface.hohndel.org/documentation/supported-dive-computers/
+The latest list of supported dive computers can be found in the file
+SupportedDivecomputers.txt
 
-At the time of the 3.1 release they were:
-Atomics Aquatics
-	Cobalt
-Cressi / Zeagle / Mares
-	Edy, Nemo Sport
-	N2iTiON3
-	Leonardo
-Mares
-	Nemo, Nemo Excel, Nemo Apneist,...
-	Puck, Puck Air, Nemo Air, Nemo Wide,...
-	Darwin, Darwin Air, M1, M2, Airlab
-	Icon HD, Icon HD Net Ready, Nemo Wide 2
-Oceanic / Aeris / Sherwood / Hollis / Genesis / Tusa (Pelagic)
-	VT Pro, Versa Pro, Pro Plus 2, Pro Plus 3, Wisdom, Atmos 2, Atmos AI, Atmos Elite,...
-	Veo 250, Veo 180Nx, XR2, React Pro, React Pro White, DG02, Insight,...
-	Atom 2.0, VT3, Datamask, Geo, Geo 2.0, Veo 2.0, Veo 3.0, Pro Plus 2.1,
-	Compumask, Elite T3, Epic, Manta, IQ-900 (Zen), IQ-950 (Zen Air), IQ-750 (Element II),...
-Heinrichs Weikamp
-	OSTC, OSTC Mk.2, OSTC 2N, OSTC3
-	Frog
-Reefnet
-	Sensus
-	Sensus Pro
-	Sensus Ultra
-Shearwater
-	Predator, Petrel
-Suunto
-	Solution
-	Eon, Solution Alpha and Solution Nitrox/Vario
-	Vyper, Cobra, Vytec, Vytec DS, D3, Spyder, Gekko, Mosquito, Stinger, Zoop
-	Vyper2, Cobra2, Cobra3, Vyper Air and HelO2
-	DX, D9, D6, D4, D9tx, D6i and D4i
-Uemis
-	Zurich
-Uwatec
-	Aladin
-	Memo Mouse
-	Smart, Galileo (infraread)
-Zeagle
-	N2iTiON 3
-
-
-More detailed end user instructions can be found at Documentation/user-manual.html
-and http://subsurface.hohndel.org/documentation/user-manual/
+Much more detailed end user instructions can be found from inside
+Subsurface by selecting Help (typically F1). When building from source
+this is also available as Documentation/user-manual.html
 
 
 Contributing:
--------------
+=============
 
 There is a mailing list for developers: subsurface@hohndel.org
 Go to http://lists.hohndel.org/cgi-bin/mailman/listinfo/subsurface
@@ -188,16 +99,8 @@ shortlog, and should summarize the change in one readable line of text,
 independently of the longer explanation.
 
 
-
-CREDITS:
-========
-
-This file was originally started by Linus.
-The initial instructions for building on a Mac were provided by Henrik Brautaset Aronsen
-Jef Driessen helped creating the cross-building instructions for Windows
-
 A bit of Subsurface history:
-----------------------------
+============================
 
 In fall of 2011, when a forced lull in kernel development gave him an
 opportunity to start on a new endeavor, Linus Torvalds decided to tackle
@@ -209,3 +112,5 @@ a large number of dive computers and several existing divelog programs. It
 provides advanced visualization of the key information provided by a
 modern dive computer and allows the user to track a wide variety of data
 about their diving.
+
+In fall of 2012 Dirk Hohndel took over as maintainer of Subsurface
