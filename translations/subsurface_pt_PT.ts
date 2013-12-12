@@ -2182,7 +2182,7 @@ Por favor, remova-os primeiro</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ligação ao serviço web</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>

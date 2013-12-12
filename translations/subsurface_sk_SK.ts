@@ -4,7 +4,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="31"/>
         <source>Import File (CSV)</source>
-        <translation>Importuj súbor </translation>
+        <translation>Import súboru (CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="40"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="14"/>
         <source>Import CSV file</source>
-        <translation>Importuj CSV súbor</translation>
+        <translation>Import CSV súboru</translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="81"/>
@@ -87,17 +87,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>WorkPress</source>
-        <translation type="unfinished"/>
+        <translation>Max. tlak</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>StartPress</source>
-        <translation type="unfinished"/>
+        <translation>Poč. tlak</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>EndPress</source>
-        <translation type="unfinished"/>
+        <translation>Konc. tlak</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
@@ -246,7 +246,7 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
         <source>save As</source>
-        <translation>ulož ako</translation>
+        <translation>uložiť ako</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="727"/>
@@ -256,7 +256,7 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="728"/>
         <source>shift times</source>
-        <translation type="unfinished"/>
+        <translation>posun času</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
@@ -266,12 +266,12 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
         <source>Save Dives As...</source>
-        <translation>Ulož ponory ako...</translation>
+        <translation>Uložiť ponory ako...</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="776"/>
         <source>Save File as</source>
-        <translation>Ulož súbor ako</translation>
+        <translation>Uložiť súbor ako</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="777"/>
@@ -448,7 +448,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1145"/>
         <source>cyl</source>
-        <translation type="unfinished"/>
+        <translation>fl.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1150"/>
@@ -631,7 +631,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="102"/>
         <source>Cancel</source>
-        <translation>Zruš</translation>
+        <translation>Zrušiť</translation>
     </message>
 </context>
 <context>
@@ -659,7 +659,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="148"/>
         <source>Coordinates</source>
-        <translation>Koordináty</translation>
+        <translation>Súradnice</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="169"/>
@@ -669,12 +669,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="155"/>
         <source>Buddy</source>
-        <translation>Partner</translation>
+        <translation>Buddy</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Start time</source>
-        <translation type="unfinished"/>
+        <translation>Začiatok ponoru</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
@@ -730,7 +730,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="406"/>
         <source>Interval</source>
-        <translation>Interval</translation>
+        <translation>Povrch. interval</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="425"/>
@@ -852,12 +852,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="37"/>
         <source>Save</source>
-        <translation>Ulož</translation>
+        <translation>Uložiť</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="41"/>
         <source>Cancel</source>
-        <translation>Zruš</translation>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="231"/>
@@ -959,7 +959,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="256"/>
         <source>&amp;Open logbook</source>
-        <translation>&amp;Otvor logbook</translation>
+        <translation>&amp;Otvoriť logbook</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="259"/>
@@ -974,12 +974,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="267"/>
         <source>&amp;Save</source>
-        <translation>&amp;Ulož</translation>
+        <translation>&amp;Uložiť</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="270"/>
         <source>Save</source>
-        <translation>Ulož</translation>
+        <translation>Uložiť</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="273"/>
@@ -1013,7 +1013,7 @@ Vymaž ich prosím.</translation>
         <location filename="../qt-ui/mainwindow.ui" line="303"/>
         <location filename="../qt-ui/mainwindow.cpp" line="171"/>
         <source>Import Files</source>
-        <translation>Importuj súbory</translation>
+        <translation>Import súborov</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="306"/>
@@ -1033,7 +1033,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="319"/>
         <source>&amp;Print</source>
-        <translation>&amp;Tlač</translation>
+        <translation>&amp;Tlačiť</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="330"/>
@@ -1053,7 +1053,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="357"/>
         <source>Import &amp;GPS data from Subsurface Service</source>
-        <translation>Import &amp;GPS data z Subsurface služby</translation>
+        <translation>Import &amp;GPS dát zo Subsurface služby</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="360"/>
@@ -1113,7 +1113,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="431"/>
         <source>All</source>
-        <translation>Všetky</translation>
+        <translation>Všetko</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="473"/>
@@ -1208,7 +1208,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="442"/>
         <source>Left</source>
-        <translation>Ľavý</translation>
+        <translation>Šipka v ľavo</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="447"/>
@@ -1218,7 +1218,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="450"/>
         <source>Right</source>
-        <translation>Pravý</translation>
+        <translation>Šipka v pravo</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="455"/>
@@ -1305,7 +1305,7 @@ Vymaž ich prosím.</translation>
         <location filename="../qt-ui/mainwindow.cpp" line="200"/>
         <location filename="../qt-ui/mainwindow.cpp" line="745"/>
         <source>Save File as</source>
-        <translation>Ulož súbor ako</translation>
+        <translation>Uložiť súbor ako</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="110"/>
@@ -1508,7 +1508,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="415"/>
         <source>Weight</source>
-        <translation>Závažie</translation>
+        <translation>Hmotnosť</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="432"/>
@@ -1635,7 +1635,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="196"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation>Na korrektné nahratie nového jazyka je potrebné reštartovať Subsurface.</translation>
+        <translation>Na korektné nahratie nového jazyka je potrebné reštartovať Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="229"/>
@@ -1663,12 +1663,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="47"/>
         <source>&amp;Close</source>
-        <translation>&amp;Zatvor</translation>
+        <translation>&amp;Zatvoriť</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="61"/>
         <source>Print</source>
-        <translation>Tlač</translation>
+        <translation>Tlačiť</translation>
     </message>
 </context>
 <context>
@@ -1701,7 +1701,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="30"/>
         <source>Buddy</source>
-        <translation>Partner</translation>
+        <translation>Buddy</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="31"/>
@@ -1799,7 +1799,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="145"/>
         <source>Add Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Pridať Bookmark</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="153"/>
@@ -1995,7 +1995,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="736"/>
         <source>Remove this Point</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť tento bod</translation>
     </message>
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="58"/>
@@ -2041,12 +2041,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="20"/>
         <source>Shift selected times</source>
-        <translation type="unfinished"/>
+        <translation>Posun vybraných časov</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="37"/>
         <source>Shift times of selected dives by</source>
-        <translation type="unfinished"/>
+        <translation>Posuň čas vybraných ponorov o</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="73"/>
@@ -2235,7 +2235,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="391"/>
         <source>Weight</source>
-        <translation>Závažie</translation>
+        <translation>Hmotnosť</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="451"/>
@@ -2318,7 +2318,7 @@ Maximum</translation>
         <location filename="../qt-ui/models.cpp" line="1421"/>
         <source>Temp. (%1)
  Average</source>
-        <translation>Teml. (%1)
+        <translation>Temp. (%1)
  Priemer</translation>
     </message>
 </context>
@@ -2740,7 +2740,7 @@ based on GFlow = %.0f and GFhigh = %.0f
 </source>
         <translation>%s
 Subsurface plan ponoru
-zrátaný s  GFlow = %.0f a GFhigh = %.0f
+zrátaný s GFlow = %.0f a GFhigh = %.0f
 
 </translation>
     </message>

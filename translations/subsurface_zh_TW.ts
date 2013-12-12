@@ -87,17 +87,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>WorkPress</source>
-        <translation>WorkPress</translation>
+        <translation>工作壓力</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>StartPress</source>
-        <translation>StartPress</translation>
+        <translation>開始壓力</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>EndPress</source>
-        <translation>EndPress</translation>
+        <translation>結束壓力</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1233"/>
         <source>Model</source>
-        <translation>模型</translation>
+        <translation>型號</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1233"/>
@@ -289,12 +289,12 @@
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="71"/>
         <source>Bottom SAC</source>
-        <translation>水底耗氣量 SAC</translation>
+        <translation>水底耗氣率</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="85"/>
         <source>SAC on DECO Stop</source>
-        <translation>減壓停留耗氣量 SAC</translation>
+        <translation>減壓停留耗氣率</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="78"/>
@@ -319,7 +319,7 @@
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="181"/>
         <source>ATM Pressure</source>
-        <translation>ATM 壓力</translation>
+        <translation>大氣壓力</translation>
     </message>
 </context>
 <context>
@@ -352,7 +352,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="470"/>
         <source>AIR</source>
-        <translation>AIR</translation>
+        <translation>空氣</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1099"/>
@@ -362,7 +362,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1100"/>
         <source>Duration</source>
-        <translation>時間</translation>
+        <translation>區間</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1101"/>
@@ -458,12 +458,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1147"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>耗氣率</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1148"/>
         <source>OTU</source>
-        <translation>OTU</translation>
+        <translation>氧容許量 OTU</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1149"/>
@@ -648,7 +648,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/maintab.ui" line="18"/>
         <location filename="../qt-ui/maintab.cpp" line="413"/>
         <source>Dive Notes</source>
-        <translation>潛水筆記</translation>
+        <translation>潛水記錄</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="120"/>
@@ -679,7 +679,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <source>Air temp</source>
-        <translation>陸上溫度</translation>
+        <translation>氣溫</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
@@ -730,12 +730,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="406"/>
         <source>Interval</source>
-        <translation>區間</translation>
+        <translation>水面休息時間</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="425"/>
         <source>Gases Used</source>
-        <translation>消耗氣體</translation>
+        <translation>使用氣體</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="444"/>
@@ -746,7 +746,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/maintab.ui" line="463"/>
         <location filename="../qt-ui/maintab.ui" line="721"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>耗氣率</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="482"/>
@@ -761,17 +761,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="520"/>
         <source>OTU</source>
-        <translation>OTU</translation>
+        <translation>氧容許量 OTU</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="539"/>
         <source>Air Pressure</source>
-        <translation>殘壓</translation>
+        <translation>氣壓</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="558"/>
         <source>Air Temperature</source>
-        <translation>陸上溫度</translation>
+        <translation>氣溫</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="577"/>
@@ -806,7 +806,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/maintab.ui" line="733"/>
         <source>Duration</source>
-        <translation>時間</translation>
+        <translation>區間</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="745"/>
@@ -847,7 +847,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/maintab.cpp" line="386"/>
         <location filename="../qt-ui/maintab.cpp" line="410"/>
         <source>Trip Notes</source>
-        <translation>旅程比季</translation>
+        <translation>旅程記錄</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="37"/>
@@ -1103,7 +1103,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="415"/>
         <source>Profile</source>
-        <translation>描述</translation>
+        <translation>資訊</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="423"/>
@@ -1123,7 +1123,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="481"/>
         <source>Globe</source>
-        <translation>Globe</translation>
+        <translation>地圖位置</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="489"/>
@@ -1398,7 +1398,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="220"/>
         <source>Use Default Cylinder</source>
-        <translation>使用預設氣瓶</translation>
+        <translation>使用的預設氣瓶</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="256"/>
@@ -1508,7 +1508,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="415"/>
         <source>Weight</source>
-        <translation>配重</translation>
+        <translation>重量</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="432"/>
@@ -1523,7 +1523,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="453"/>
         <source>Ascent/Descent speed denominator</source>
-        <translation>上升／下降速度分母</translation>
+        <translation>上升/下降速度單位</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="460"/>
@@ -1590,7 +1590,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="748"/>
         <source>3m increments</source>
-        <translation>每 3m 增加</translation>
+        <translation>3m 增量</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="758"/>
@@ -1615,7 +1615,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="769"/>
         <source>SAC</source>
-        <translation>SAC</translation>
+        <translation>耗氣率</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="787"/>
@@ -1691,7 +1691,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="28"/>
         <source>Duration</source>
-        <translation>時間</translation>
+        <translation>區間</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="29"/>
@@ -1754,12 +1754,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="180"/>
         <source>Profile on top</source>
-        <translation>潛水記錄在上方</translation>
+        <translation>潛水資訊在上方</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="202"/>
         <source>Notes on top</source>
-        <translation>潛水筆記在上方</translation>
+        <translation>潛水記錄在上方</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="219"/>
@@ -1769,17 +1769,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="256"/>
         <source>Profile height (43% - 85%)</source>
-        <translation>潛水記錄欄位高度 (43% - 85%)</translation>
+        <translation>潛水資訊欄位高度 (43% - 85%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="278"/>
         <source>Other data height (8% - 17%)</source>
-        <translation>其餘資料欄位的高度 (8% - 17%)</translation>
+        <translation>其餘資料欄位高度 (8% - 17%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="338"/>
         <source>Notes height (0% - 52%)</source>
-        <translation>潛水筆記欄位高度 (0% - 52%)</translation>
+        <translation>記錄欄位高度 (0% - 52%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="354"/>
@@ -1819,7 +1819,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="202"/>
         <source>Hide all %1 events?</source>
-        <translation>隱藏所有 %1 事件？</translation>
+        <translation>隱藏所有 %1 事件?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="223"/>
@@ -1855,7 +1855,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="514"/>
         <source>Measure properties of dive segments</source>
-        <translation>潛水項目的量測設定</translation>
+        <translation>各潛水項目的量測設定</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="515"/>
@@ -1932,7 +1932,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1621"/>
         <source>Duration: %1 min</source>
-        <translation>時間: %1 min</translation>
+        <translation>區間: %1 min</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1626"/>
@@ -1942,7 +1942,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1628"/>
         <source>SAC:</source>
-        <translation>SAC: </translation>
+        <translation>耗氣率: </translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1630"/>
@@ -1957,17 +1957,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1637"/>
         <source>Notes:</source>
-        <translation>記錄：</translation>
+        <translation>記錄:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1644"/>
         <source>Divemaster:</source>
-        <translation>導潛：</translation>
+        <translation>導潛:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1646"/>
         <source>Buddy:</source>
-        <translation>潛伴：</translation>
+        <translation>潛伴:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1648"/>
@@ -1990,7 +1990,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="37"/>
         <source>AIR</source>
-        <translation>AIR</translation>
+        <translation>空氣</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="736"/>
@@ -2020,7 +2020,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/globe.cpp" line="242"/>
         <source>Move the map and double-click to set the dive location</source>
-        <translation>移動地圖, 並且雙擊來設定潛水位置</translation>
+        <translation>在地圖上移動, 並且雙擊來設定潛水位置</translation>
     </message>
 </context>
 <context>
@@ -2079,12 +2079,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/about.cpp" line="23"/>
         <source>&amp;License</source>
-        <translation>&amp; 許可</translation>
+        <translation>版權</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.cpp" line="24"/>
         <source>&amp;Website</source>
-        <translation>&amp; 網站</translation>
+        <translation>網站</translation>
     </message>
 </context>
 <context>
@@ -2235,7 +2235,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="391"/>
         <source>Weight</source>
-        <translation>配重</translation>
+        <translation>重量</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="451"/>
@@ -2261,7 +2261,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/models.cpp" line="1411"/>
         <source>Duration 
  Total</source>
-        <translation>時間 
+        <translation>區間 
 全部</translation>
     </message>
     <message>
@@ -2314,7 +2314,7 @@ Maximum</source>
         <location filename="../qt-ui/models.cpp" line="1418"/>
         <source>SAC (%1)
  Average</source>
-        <translation>SAC (%1)
+        <translation>耗氣率 (%1)
 平均</translation>
     </message>
     <message>
@@ -2469,7 +2469,7 @@ Maximum</source>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
         <source>ceiling</source>
-        <translation>高度</translation>
+        <translation>深度</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
@@ -2525,7 +2525,7 @@ Maximum</source>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>ceiling (safety stop)</source>
-        <translation>高度 (安全停留)</translation>
+        <translation>深度 (安全停留)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
@@ -2841,7 +2841,7 @@ D:%.1f %s</translation>
         <source>%s
 SAC:%2.1fl/min</source>
         <translation>%s
-SAC:%2.1fl/min</translation>
+耗氣率:%2.1fl/min</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1259"/>
