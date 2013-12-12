@@ -52,9 +52,9 @@ packages by running
 $ apt-get build-dep subsurface
 
 If you want to install the required packages individually instead you
-need libqt4-dev, libmarble-dev, libzip-dev, libxml2-dev,
-libsqlite3-dev, libxslt1-dev, libzip-dev (and libusb-1.0-0-dev if
-you're going to compile libdivecomputer).
+need libqt4-dev, qt4-qmake, libxml2-dev, libxslt1-dev, zlib1g-dev,
+libzip-dev, libmarble-dev, libsqlite3-dev, libqtwebkit-dev
+(and libusb-1.0-0-dev if you're going to compile libdivecomputer).
 
 Unfortunately the marble version in Debian stable (and possibly
 Ubuntu) appears to be missing essential header files used in
