@@ -155,6 +155,8 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		membuf = (char *)malloc(streamsize + 1);
 		if (!membuf || !fread(membuf, streamsize, 1, f)) {
 			qDebug() << errPrefix << "memory error";
+			fclose(f);
+			free((void *)membuf);
 			free((void *)tempfile);
 			return NULL;
 		}
@@ -168,6 +170,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
 		if (!doc) {
 			qDebug() << errPrefix << "xml error";
+			free((void *)membuf);
 			free((void *)tempfile);
 			return NULL;
 		}
