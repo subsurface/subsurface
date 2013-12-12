@@ -165,7 +165,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		 * transform it to divelogs.de format, finally dumping
 		 * the XML into a character buffer.
 		 */
-		doc = xmlReadMemory(membuf, strlen(membuf), "divelog", NULL, 0);
+		xmlDoc *doc = xmlReadMemory(membuf, streamsize, "divelog", NULL, 0);
 		if (!doc) {
 			qDebug() << errPrefix << "xml error";
 			free((void *)membuf);
