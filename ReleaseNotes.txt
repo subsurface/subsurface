@@ -1,8 +1,8 @@
-			Subsurface 3.9.2 Beta
-			=====================
+			Subsurface 4.0
+			==============
 
-The Subsurface developer team is proud to announce the second public beta
-release of the latest version of Subsurface.
+The Subsurface developer team is proud to announce the release of the
+next major version of Subsurface.
 
 Subsurface is an open source divelog program that runs on Windows, Mac
 and Linux.
@@ -24,36 +24,57 @@ many more.
 
 Subsurface allows the user to print out a detailed log book including
 dive profiles and other relevant information. The program is localized
-in more than a dozen languages (but the localization in the first beta
-is mostly incomplete) and well supported by an active developer community.
+in about 20 languages and well supported by an active developer
+community.
 
 One of the major strengths of Subsurface is its support of a wide range
 of dive computers (most common dive computers are supported with the help
-of libdivecomputer); a detailed list is at
-http://subsurface.hohndel.org/documentation/supported-dive-computers).
-Subsurface can also import existing dive logs from several sources
+of libdivecomputer); a detailed list is in the SupportedDivecomputers.txt
+file. Subsurface can also import existing dive logs from several sources
 including MacDive, Suunto DM3/DM4, JDiveLog and divelogs.de. Another
 strength is its ability to visualize the depth profile (and, if
 available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
-New in version 3.9.2 (compared to Subsurface 3.1):
+New in version 4.0 (compared to Subsurface 3.1):
 --------------------------------------------------
 
-I don't even know where to begin. This is a complete rewrite of the UI.
-The basic concepts are the same, most of the basic features are the same,
-but trying to create a concise list of changes that summarizes the more
-than 1100 commits that have gone in since 3.1 seems a daunting task.
+With version 4.0 the Subsurface team switched to a different UI
+toolkit. This caused the need to do a complete rewrite of a large
+chunk of the Subsurface code base. We decided to keep much of the
+logic and core of the existing code around, but used the opportunity
+for quite a bit of cleanup and many improvements.
 
-Maybe we'll come up with something better in time for the final release of
-Subsurface 4.0.
+The basic concepts are the same, most of the basic features are the
+same, but trying to create a concise list of changes that summarizes
+the more than 1700 commits that have gone in since version 3.1 seems a
+daunting task.
+
+Here are some of the highlights:
+
+- new map widget with a spinning globe to visualize dive locations
+- much more "native" look and feel under Windows and Mac
+- ability to edit dives "in place": simply click on an entry in the
+  Dive Notes or Equipment tabs to start editing
+- more data about each dive is presented in the Dive Notes and can
+  be edited without separate dialogs and without having to go through
+  context menues
+- graphical editor for dive profiles for manually added dives
+- better information overlay for the dive profile
+- addition of a "ruler" tool in the profile window that allows
+  measuring of many properties between two points in the profile
+- better tag system with both predefined user-specified free text tags
+- better integration with divelogs.de (upload support)
+- ability to show the user manual from within the application without
+  a life internet connection and without opening the manual in an
+  external browser window
+- better statistics (with per-trip statistics available)
 
 Known issues:
 
-- upload to divelogs.de is still missing
 - Filter->Select Events is not implemented
-
+- Dive planner has been disabled for now
 
 New in version 3.1 (compared to Subsurface 3.0.2):
 --------------------------------------------------
