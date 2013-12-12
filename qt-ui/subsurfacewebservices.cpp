@@ -118,6 +118,12 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
 
+	xslt = get_stylesheet("divelogs-export.xslt");
+	if (!xslt) {
+		qDebug() << errPrefix << "missing stylesheet";
+		return NULL;
+	}
+
 	/* generate a random filename and create/open that file with zip_open */
 	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
 	tempfile = strdup(tempfileQ.toLocal8Bit().data());
@@ -166,15 +172,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 			return NULL;
 		}
 		free((void *)membuf);
-		// this call is overriding our local variable tempfile! not a good sign!
-		xslt = get_stylesheet("divelogs-export.xslt");
-		if (!xslt) {
-			qDebug() << errPrefix << "missing stylesheet";
-			free((void *)tempfile);
-			return NULL;
-		}
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
-		xsltFreeStylesheet(xslt);
 		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
 		xmlFreeDoc(doc);
 		xmlFreeDoc(transformed);
@@ -190,6 +188,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		}
 	}
 	zip_close(zip);
+	xsltFreeStylesheet(xslt);
 	return tempfile;
 }
 
