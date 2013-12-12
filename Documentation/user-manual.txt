@@ -32,7 +32,7 @@ Start Using the Program
 
 The _Subsurface_ window is usually divided into four panels and has a *Main Menu* (File Import Log View Filter Help) at the top of the window (for Windows and Linux) or the top of the screen (for Mac and Ubuntu Unity). The screen shots in this manual were taken on a Ubuntu system, so they don't show the main menu as part of the _Subsurface_ window. The four panels are
 
-1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. One can select and highlight a dive on the dive list by clicking on it. In most situations one can also use the cursor up/down keys to swititch between dives.
+1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. You can select and highlight a dive on the dive list by clicking on it. In most situations you can also use the cursor up/down keys to swititch between dives.
 
 2) The *Dive Map* to the bottom right, showing your dive sites on a world map and centered on the site of the last selected dive.
 
@@ -40,7 +40,7 @@ The _Subsurface_ window is usually divided into four panels and has a *Main Menu
 
 4) The *Dive Profile* to the top right, showing a graphical profile of the highlighted dive in the dive list.
 
-One can drag the dividers between panels in order to change the size of any of the panels. _Subsurface_ remembers the position of the dividers, so the next time _Subsurface_ starts it uses the positions of the dividers when the program was executed previously.
+You can drag the dividers between panels in order to change the size of any of the panels. _Subsurface_ remembers the position of the dividers, so the next time _Subsurface_ starts it uses the positions of the dividers when the program was executed previously.
 
 _Subsurface_ uses two concpets when deciding which data to show in the different panels. The dive location, detailed information and profile of the _selected dive_ are shown in the respective panels. You can also highlight more than one dive. In this case the last dive highlighted is the _selected dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab of the *Dive Info* panel.
 
@@ -63,7 +63,7 @@ You can determine which of the four panels you wish to see by selecting the *Vie
 
 Like many other functions that can be accessed via the Main Menu, these options can be triggered using keyboard shortcuts as well. The shortcuts for your system are listed in the menu entries. Since different OSs use different shortcut keys we won't try to always list them here in the user manual.
 
-When one starts the program for the first time, it shows no information at all. This is because the program doesn't have any dive information available. In the following sections we will describe how to create a new logbook.
+When you start the program for the first time, it shows no information at all. This is because the program doesn't have any dive information available. In the following sections we will describe how to create a new logbook.
 
 [[S_NewLogbook]]
 Creating a new logbook
@@ -90,11 +90,11 @@ image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
 
 ==== Dive Notes
 
-This panel contains the date, time and place information for a particular dive, environmental conditions, co-divers and buddies, as well as some descriptive information. The message in a blue box at the top of the panel indicates that you are in the process of adding information about your dive. If one clicks on the *Dive Notes* tab, the following fields are visible:
+This panel contains the date, time and place information for a particular dive, environmental conditions, co-divers and buddies, as well as some descriptive information. The message in a blue box at the top of the panel indicates that you are in the process of adding information about your dive. If you click on the *Dive Notes* tab, the following fields are visible:
 
 image::images/AddDive2.jpg["FIGURE: The Dive Notes tab",align="center"]
 
-The *Starttime* field reflects the date and the time of the dive. By clicking the down-arrow on the right of that field one can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
+The *Starttime* field reflects the date and the time of the dive. By clicking the down-arrow on the right of that field you can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
 
 *Air/water temperatures*: Type in the air and water temperatures during the dive into these fields to the right of the Starttime. You do not need to type in units of temperature: Subsurface supplies these automatically, you only need type the number. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
 
@@ -133,13 +133,13 @@ The Equipment tab allows the user to enter information about the type of cylinde
 
 image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
 
-indicates that one is in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
+indicates that you are in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
 
 *Cylinders*: The cylinder information is entered through a dialogue that looks like this:
 
 image::images/CylinderDataEntry1.jpg["FIGURE:Initial cylinder dialogue",align="center"]
 
-The + button at the top right allows one to add more cylinders for this dive. The dark dustbin icon on the left allows one to delete information for a cylinder.
+The + button at the top right allows you to add more cylinders for this dive. The dark dustbin icon on the left allows you to delete information for a cylinder.
 
 Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type. If you wish to change this, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
 
@@ -169,11 +169,11 @@ You do NOT need to click the _Save_ button before you have completed the dive pr
 
 ==== Creating a Dive Profile
 
-The *Dive Profile* (a graphical representation of the depth of your dive as a function of time) is indicated in the panel on the top right hand of the _Subsurface_ window. When you manually add a dive to your logbook, _Subsurface_ presents a default dive profile that one needs to modify to best represent the dive being described:
+The *Dive Profile* (a graphical representation of the depth of your dive as a function of time) is indicated in the panel on the top right hand of the _Subsurface_ window. When you manually add a dive to your logbook, _Subsurface_ presents a default dive profile that you need to modify to best represent the dive being described:
 
 image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
 
-_Configuring the dive profile_: When one moves the cursor around the dive profile, its position is indicated by two red lines as shown above. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-click on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
+_Configuring the dive profile_: When you moves the cursor around the dive profile, its position is indicated by two red lines as shown above. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-click on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
 
 image::images/DiveProfile2.jpg["FIGURE: Edited dive profile",align="center"]
 
@@ -187,7 +187,7 @@ image::images/DiveProfile4.jpg["FIGURE: Completed dive profile",align="center"]
 
 ==== Saving the hand-entered dive information
 
-The information entered in the *Dive Notes* tab, the *Equipment* tab as well as the *Dive Profile* can now be saved in your logbook by using the two buttons on the top right hand of the Dive Notes tab. If one clicks _Save_, the dive data are saved. If a logbook file hasn't been selected before, one can now select the file name and directory to store the logbook, otherwise it is saved in the already opened logbook. If one clicks _Cancel_, the newly entered dive data are deleted. When one exits _Subsurface_ there is a final prompt to confirm that the new data should be saved.
+The information entered in the *Dive Notes* tab, the *Equipment* tab as well as the *Dive Profile* can now be saved in your logbook by using the two buttons on the top right hand of the Dive Notes tab. If you click _Save_, the dive data are saved. If a logbook file hasn't been selected before, you can now select the file name and directory to store the logbook, otherwise it is saved in the already opened logbook. If you click _Cancel_, the newly entered dive data are deleted. When you exit _Subsurface_ there is a final prompt to confirm that the new data should be saved.
 
 
 [[S_ImportDiveComputer]]
@@ -222,7 +222,7 @@ Now it is time to hook up your dive computer to your PC:
 
 image::images/ImportFromDC1.jpg["FIGURE: Download dialogue 1",align="center"]
 
-Often, dive computers retain all their dives even though these dives have been imported to _Subsurface_. However it is not necessary to import dives that have already been imported previously. For that reason _Subsurface_ only imports dives that have not been uploaded before. This is beneficial for saving the battery power of your dive computer. If, for some reason, one wishes to import ALL dives in the dive computer, one can tick the box labeled _Force download of all dives_.
+Often, dive computers retain all their dives even though these dives have been imported to _Subsurface_. However it is not necessary to import dives that have already been imported previously. For that reason _Subsurface_ only imports dives that have not been uploaded before. This is beneficial for saving the battery power of your dive computer. If, for some reason, you wish to import ALL dives in the dive computer, you can tick the box labeled _Force download of all dives_.
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the *vendor* drop-down list select the make of your computer, e.g. Suunto, Oceanic, Uwatec, Mares. On the *Dive Computer* drop-down list, select the model name of your dive computer, e.g. D4 (Suunto), Veo200 (Oceanic), or Puck (Mares).
 
@@ -248,22 +248,22 @@ In the case of *communication failure* then check the following:
 image::images/ImportFromDC2.jpg["FIGURE: Download dialogue 2",align="center"]
 
 When download of the dive information is complete, all the imported dives appear in the Dive List, sorted by date and time. Disconnect and switch off the dive computer to conserve its battery power.
-If one selects a particular dive, the Dive Profile panel shows an informative graph of dive depth against time for that particular dive.
+If you select a particular dive, the Dive Profile panel shows an informative graph of dive depth against time for that particular dive.
 
 [[S_EditDiveInfo]]
 ==== Updating the dive information imported from your dive computer.
 
-The information from your dive computer is not complete and one needs to add more details in order to have a more complete record of your dives. To do this, use the *Dive Notes* and the *Equipment* tabs on the top left hand of the _Subsurface_ window.
+The information from your dive computer is not complete and you need to add more details in order to have a more complete record of your dives. To do this, use the *Dive Notes* and the *Equipment* tabs on the top left hand of the _Subsurface_ window.
 
 ==== Dive Notes
 
-The date and time of the dive, gas mixture and perhaps water temperature is shown as obtained from the dive computer, but one needs to add some information by hand in order for a more complete dive record. The message in a blue box at the top of the panel indicates that one is in the process of adding information about a dive. If one clicks on the *Dive Notes* tab, the following fields are visible:
+The date and time of the dive, gas mixture and perhaps water temperature is shown as obtained from the dive computer, but you need to add some information by hand in order for a more complete dive record. The message in a blue box at the top of the panel indicates that you are in the process of adding information about a dive. If you click on the *Dive Notes* tab, the following fields are visible:
 
 image::images/AddDive3.jpg["FIGURE: The Dive Notes tab",align="center"]
 
-The *Starttime* field contains five data items reflecting the date and the time of the dive, as supplied by the dive computer. It should therefore not be necessary to edit this, but one could make changes by clicking the down-arrow on the right of that field one can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
+The *Starttime* field contains five data items reflecting the date and the time of the dive, as supplied by the dive computer. It should therefore not be necessary to edit this, but you could make changes by clicking the down-arrow on the right of that field you can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
 
-*Air/water temperatures*: Air and water temperatures during the dive are shown in these fields to the right of the Starttime. Many dive computers supply water temperature information and this field may therefore not require editing. If editing is required, one does not need to type in units of temperature: Subsurface supplies these automatically, only a number is required. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
+*Air/water temperatures*: Air and water temperatures during the dive are shown in these fields to the right of the Starttime. Many dive computers supply water temperature information and this field may therefore not require editing. If editing is required, you do not need to type in units of temperature: Subsurface supplies these automatically, only a number is required. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
 
 *Location*: Here type in text that describes the site where you did this dive, e.g. "Tihany, Lake Balaton, Hungary".
 
@@ -300,13 +300,13 @@ The Equipment tab allows the user to enter information about the type of cylinde
 
 image::images/BlueEditBar.jpg["FIGURE: Blue edit bar",align="center"]
 
-indicates that one is in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
+indicates that you are in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
 
 *Cylinders*: The cylinder information is entered through a dialogue that looks like this:
 
 image::images/CylinderDataEntry1.jpg["FIGURE: Initial cylinder dialogue",align="center"]
 
-In most cases _Subsurface_ obtains the gas used from the dive computer and automatically inserts the gas composition(% ogygen) in the table. The + button at the top right allows one to add more cylinders for this dive. The dark dustbin icon on the left allows one to delete information for a cylinder.
+In most cases _Subsurface_ obtains the gas used from the dive computer and automatically inserts the gas composition(% ogygen) in the table. The + button at the top right allows you to add more cylinders for this dive. The dark dustbin icon on the left allows you to delete information for a cylinder.
 
 Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type. If you wish to change this, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
 
@@ -334,7 +334,7 @@ image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information tab
 
 ==== Saving the updated dive information
 
-The information entered in the *Dive Notes* tab, the *Equipment* tab can be saved with all the other information of your dives in your logbook by using the two buttons on the top right hand of the *Dive Notes* tab. If one clicks _Save_, the dive data are saved. If one clicks _Cancel_, the newly entered dive data are deleted, although the dive profile obtained from the dive computer will be retained. When one exits _Subsurface_ there is a final prompt to confirm that the new data should be saved.
+The information entered in the *Dive Notes* tab, the *Equipment* tab can be saved with all the other information of your dives in your logbook by using the two buttons on the top right hand of the *Dive Notes* tab. If you click _Save_, the dive data are saved. If you click _Cancel_, the newly entered dive data are deleted, although the dive profile obtained from the dive computer will be retained. When you exit _Subsurface_ there is a final prompt to confirm that the new data should be saved.
 
 === Importing dive information from other digital data sources or other data formats
 
@@ -435,7 +435,7 @@ Then follow the instructions below to import dives from divelogs.de to _Subsurfa
 [[S_ImportingDivelogsDe]]
 ==== Importing dives from *divelogs.de*
 
-The import of dive information from _divelogs.de_ is simple, using a single dialogue box. Select _Import->Import form Divelogs.de_ from the Main Menu. This brings up a dialogue box (see figure on left [A] below). One needs to enter a user-ID and password for _divelogs.de_ into the appropriate fields. Then select the _Download_ button. Download from _divelogs.de_ starts immediately, evident on a progress bar in the dialogue box. At the and of the download, the successful status is indicated (see figure on the right [B], below). Select the _Apply_ button. The imported dives appear in the *Dive List* panel.
+The import of dive information from _divelogs.de_ is simple, using a single dialogue box. Select _Import->Import form Divelogs.de_ from the Main Menu. This brings up a dialogue box (see figure on left [A] below). You need to enter a user-ID and password for _divelogs.de_ into the appropriate fields. Then select the _Download_ button. Download from _divelogs.de_ starts immediately, evident on a progress bar in the dialogue box. At the and of the download, the successful status is indicated (see figure on the right [B], below). Select the _Apply_ button. The imported dives appear in the *Dive List* panel.
 
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 
@@ -496,7 +496,7 @@ This file can now be opened in _Subsurface_ (as described in the previous sectio
 
 JDiveLog stores its information in files with the extension of .jlb that contain all the information that has been stored except images in XML format.
 
-By using  _File -> Import File(s)_ from the main menu one gets a popup asking
+By using  _File -> Import File(s)_ from the main menu you get a popup asking
 for the file name.  To import your JDiveLog file(s) do the following:
 
  - Open _File - Import File(s)_ on the menu
@@ -589,9 +589,9 @@ Selecting the _Settings_ menu option results in the right hand image above (C ).
 
 ====== Synchronization
 
-- _Synchronize on startup._ If selected, dives in the Android device and those on the web service will synchronize each time one starts the app.
+- _Synchronize on startup._ If selected, dives in the Android device and those on the web service will synchronize each time you start the app.
 
-- _Upload new dives._ If selected, each time one adds a dive location it will automatically be sent to the server.
+- _Upload new dives._ If selected, each time you add a dive location it will automatically be sent to the server.
 
 ===== Background service
 Instead of entering a unique dive location, you can leave the service running in the background on your device, continuously collecting GPS locations.
@@ -627,7 +627,7 @@ Initiates the _background service_ depending on the previously defined settings.
 
 ===== Disconect
 
-Badly named option. It disconects your app from the server by reseting your ID in the app, showing the first screen where one can create an account, retrieve the ID for an existing one or use your own ID. Disconneting is useful if one downloads the dive positions of another registered diver using the your Android device.
+Badly named option. It disconects your app from the server by reseting your ID in the app, showing the first screen where you can create an account, retrieve the ID for an existing one or use your own ID. Disconneting is useful if you download the dive positions of another registered diver using the your Android device.
 
 ===== Send all locations
 
@@ -636,7 +636,7 @@ This option sends all locations stored in the Android device to the server.
 
 ==== Downloading dive locations to your Subsurface divelog
 
-One has to download dive/s from a dive computer or enter dives manually into _Subsurface_ before obtaining the GPS coordinates from the server. The download dialog can be reached via _Ctrl+G_ or from the _Subsurface_ main menu _Import -> Import GPS data from Subsurface Service_, resulting in the image on the left (A), below. On first use the DIVERID text box will be blank. Provide the DIVERID. Then select the _Download_ button and the download begins. When this is completed one sees the creen on the right (B), below:
+You have to download dive/s from a dive computer or enter dives manually into _Subsurface_ before obtaining the GPS coordinates from the server. The download dialog can be reached via _Ctrl+G_ or from the _Subsurface_ main menu _Import -> Import GPS data from Subsurface Service_, resulting in the image on the left (A), below. On first use the DIVERID text box will be blank. Provide the DIVERID. Then select the _Download_ button and the download begins. When this is completed you see the screen on the right (B), below:
 
 image::images/DownloadGPS.jpg["FIGURE: Downloading Companion app GPS data",align="center"]
 
@@ -720,35 +720,35 @@ The context menu is used in many manipulations described below.
 [[S_Renumber]]
 === Renumbering the dives
 
-Dives are normally numbered incrementally from non-recent dives (low sequence numbers) to recent dives (having the highest sequence numbers). The numbering of the dives is not always consistent. For instance, when non-recent dives are added to the dive list the numbering does not automatically follow on because of the dives that are more recent in date/time than the newly-added dive that has an older date/time. Therefore one sometimes needs to renumber the dives. This is performed by selecting (from the Main menu) Log -> Renumber. You are given a choice with respect to the lowest sequence number to be used. Completing this operation results in new sequence numbers (based on date/time) for the dives in the *Dive List* panel.
+Dives are normally numbered incrementally from non-recent dives (low sequence numbers) to recent dives (having the highest sequence numbers). The numbering of the dives is not always consistent. For instance, when non-recent dives are added to the dive list the numbering does not automatically follow on because of the dives that are more recent in date/time than the newly-added dive that has an older date/time. Therefore you sometimes may need to renumber the dives. This is performed by selecting (from the Main menu) Log -> Renumber. You are given a choice with respect to the lowest sequence number to be used. Completing this operation results in new sequence numbers (based on date/time) for the dives in the *Dive List* panel.
 
 [[S_Group]]
 === Grouping dives into trips and manipulating trips
 
-If one dives regularly, the dive list can rapidly become very long. _Subsurface_ can group dives into _trips_. It performs this by grouping dives that have date/times that are not separated in time by more than two days, thus creating a single heading for each diving trip represented in the dive log. Below is an ungrouped dive list (A, on the left) as well as a grouped dive list with several trips (B, on the right):
+If you dive regularly, the dive list can rapidly become very long. _Subsurface_ can group dives into _trips_. It performs this by grouping dives that have date/times that are not separated in time by more than two days, thus creating a single heading for each diving trip represented in the dive log. Below is an ungrouped dive list (A, on the left) as well as a grouped dive list with several trips (B, on the right):
 
 image::images/Group2.jpg["Figure: Grouping dives",align="center"]
 
 Grouping into trips allows a rapid way of accessing individual dives without having to scan long lists of dives. In order to group the dives in a dive list, (from the Main Menu) select Log -> Autogroup. The *Dive List* panel now shows only the titles for the trips.
 
 ==== Viewing the dives during a particular trip
-Once when the dives have been grouped into trips, one can expand one or more trips by clicking the arrow-head on the left of each trip title. This expands the selected trip, revealing the individual dives performed during the trip.
+Once when the dives have been grouped into trips, you can expand one or more trips by clicking the arrow-head on the left of each trip title. This expands the selected trip, revealing the individual dives performed during the trip.
 
 ==== Editing the title and associated information for a particular trip
 
-Normally, in the dive list, minimal information is included in the trip title. One can add much more information about a trip by selecting its trip title from the dive list. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here you can add or edit information about the date/time, the trip location and any other general comment about the trip as a whole (e.g. the dive company you dived with, the general weather during the trip). After entering this information, select *Save* from the buttons at the bottom right of the *Trip Notes* tab. The trip title in the *Dive List* panel should now reflect some of the edited information.
+Normally, in the dive list, minimal information is included in the trip title. You can add much more information about a trip by selecting its trip title from the dive list. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here you can add or edit information about the date/time, the trip location and any other general comment about the trip as a whole (e.g. the dive company you dived with, the general weather during the trip). After entering this information, select *Save* from the buttons at the bottom right of the *Trip Notes* tab. The trip title in the *Dive List* panel should now reflect some of the edited information.
 
 ==== Collapsing or expanding dive information for different trips
 
-If one right-clicks after selecting a particular trip in the dive list, the resulting context menu allows several possibilities to expand or collapse dives within trips. This includes expanding all trips, collapsing all trips and collapsing all trips except the selected one.
+If you right-click after selecting a particular trip in the dive list, the resulting context menu allows several possibilities to expand or collapse dives within trips. This includes expanding all trips, collapsing all trips and collapsing all trips except the selected one.
 
 ==== Merging dives from more than one trip into a single trip
 
-When one right-clicks on a selected trip title in the *Dive List* panel, the context menu allows the merging of trips by either merging of the selected trip with the trip below or with the trip above.
+When you right-click on a selected trip title in the *Dive List* panel, the context menu allows the merging of trips by either merging of the selected trip with the trip below or with the trip above.
 
 ==== Splitting a single trip into more than one trip
 
-If a trip includes five dives, one can split this trip into two trips (trip 1: top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top three dives. The resulting context menu allows one create a new trip by choosing the option *Create new trip above*. The top three dives are then grouped into a separate trip. See below, the selection and context menu on the left (A), the completed action on the right (B):
+If a trip includes five dives, you can split this trip into two trips (trip 1: top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top three dives. The resulting context menu allows you to create a new trip by choosing the option *Create new trip above*. The top three dives are then grouped into a separate trip. See below, the selection and context menu on the left (A), the completed action on the right (B):
 
 image::images/SplitDive3a.jpg["FIGURE: Split a trip into 2 trips",align="center"]
 
@@ -756,11 +756,11 @@ image::images/SplitDive3a.jpg["FIGURE: Split a trip into 2 trips",align="center"
 
 === Delete a dive from the dive log
 
-Dives can be permanently deleted from the dive log by selecting and right-clicking them to bring up the context menu, and then selecting *Delete dive*. Typically this would apply to a case where one wishes to delete workshop calibration dives of the dive computer or dives of extremely short duration.
+Dives can be permanently deleted from the dive log by selecting and right-clicking them to bring up the context menu, and then selecting *Delete dive*. Typically this would apply to a case where you wish to delete workshop calibration dives of the dive computer or dives of extremely short duration.
 
 === Unlink a dive from a trip
 
-One can unlink dives from the trip to which they belong. Select and right-click the dives to bring up the context menu. Then select *Remove dive(s) from trip*. The dives that have been unlinked now appear immediately above the trip to which they belonged.
+You can unlink dives from the trip to which they belong. Select and right-click the dives to bring up the context menu. Then select *Remove dive(s) from trip*. The dives that have been unlinked now appear immediately above the trip to which they belonged.
 
 === Add a dive to the trip immediately above
 
@@ -772,7 +772,7 @@ Sometimes it is necessary to adjust the start time of a dive. This may apply to 
 
 === Merge dives into a single dive
 
-Sometimes a dive is briefly interrupted, e.g. if a diver returns to the surface for a few minutes, resulting in two or more dives being recorded by the dive computer and appearing as different dives in the *Dive List* panel. One can merge these dives onto a single dive by selecting the appropriate dives and right-clicking them to bring up the context menu. Then select *Merge selected dives*. It may be necessary to edit the dive information in the *Dive Notes* panel to reflect events or conditions that apply to the merged dive. The figure below shows the depth profile two such dives that were merged:
+Sometimes a dive is briefly interrupted, e.g. if a diver returns to the surface for a few minutes, resulting in two or more dives being recorded by the dive computer and appearing as different dives in the *Dive List* panel. You can merge these dives onto a single dive by selecting the appropriate dives and right-clicking them to bring up the context menu. Then select *Merge selected dives*. It may be necessary to edit the dive information in the *Dive Notes* panel to reflect events or conditions that apply to the merged dive. The figure below shows the depth profile two such dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
 
@@ -800,62 +800,62 @@ There are two decisions required:
 - Should the whole dive log be printed or only part of it? If only part of the dive log is required, then select the required dives from the *Dive List* panel.
 - What gas partial pressure information is required on the dive profile? Select the appropriate information from the Main Menu: _File->Preferences->Graph_.
 
-Now one needs to select the print options. To do this, select _File->Print_ from the Main menu. The following dialogue appears (see the image on the left [A], below):
+Now you need to select the print options. To do this, select _File->Print_ from the Main menu. The following dialogue appears (see the image on the left [A], below):
 
 image::images/PrintDivelog.jpg["FIGURE: Print dialogue",align="center"]
 
-Under _Print type_ one needs to select one of three options:
+Under _Print type_ you need to select one of three options:
 
 - Print the Dive List. Do do this, select _Table Print_.
 - Print the full dive records (dive profiles and all other information) at 6 dives per printed page. Do do this, select _6 dives per page_.
 - Print the full dive records (dive profiles and all other information) at 2 dives per printed page. Do do this, select _2 dives per page_.
 
-Under _Print options_ one needs to select:
+Under _Print options_ you need to select:
 
 - Printing only the dives that have been selected from the dive list prior to activating the print dialogue, achieved by checking the box _Print only selected dives_.
 - Printing in colour, achieved by checking the box with _Print in color_.
 
 The _Ordering_ affects the layout of the page (or part of it) for each dive. The dive profile could be printed at the top of each dive, with the textual information underneath, or it could be printed with the textual information at the top with the dive profile underneath. Select the appropriate option in the print dialogue. See the image on the right (B), above which has a layout with text above the dive profile.
 
-One can _Preview_ the printed page by selecting the _Preview_ button on the dialogue. After preview, changes to the options in the print dialogue can be made to give a layout that fits personal taste.
+You can _Preview_ the printed page by selecting the _Preview_ button on the dialogue. After preview, changes to the options in the print dialogue can be made to give a layout that fits personal taste.
 
-Now, select the _Print_ button in the dialogue. This activates the regular print dialogue used by you operating system, allowing one to choose a printer and to set its properties. Remember to set the print resolution of the printer to an appropriate value by changing the printer properties. Finally, print the dives. Above on the right (B) is an example of the output for one particular dive.
+Now, select the _Print_ button in the dialogue. This activates the regular print dialogue used by you operating system, allowing you to choose a printer and to set its properties. Remember to set the print resolution of the printer to an appropriate value by changing the printer properties. Finally, print the dives. Above on the right (B) is an example of the output for one particular dive.
 
 
 [[S_Preferences]]
 == Setting your *Preferences* for _Subsurface_
 
-There are several settings within _Subsurface_ that the user can specify. These are found when selecting _File->Preferences_. The settings are performed in four groups: *Defaults*, *Units*, *Graph* and *Language*. All four sections operate on the same principles: specify the settings you wish to change, then save these using the *Apply* button. After applying the new settings one can leave the settings panel by selecting *OK*.
+There are several settings within _Subsurface_ that the user can specify. These are found when selecting _File->Preferences_. The settings are performed in four groups: *Defaults*, *Units*, *Graph* and *Language*. All four sections operate on the same principles: specify the settings you wish to change, then save these using the *Apply* button. After applying the new settings you can leave the settings panel by selecting *OK*.
 
 === Defaults
 
 There are four settings in the *Defaults* panel:
 
-  ** *Lists and tables*: Here one can specify the font type and font size of the Dive Table panel. By decreasing the font size of the Dive table,
-one can see more dives on a screen.
+  ** *Lists and tables*: Here you can specify the font type and font size of the Dive Table panel. By decreasing the font size of the Dive table,
+you can see more dives on a screen.
 
-  ** *Dives*: Here one needs to specify the directory and file name of your electronic dive log book. This is a file with filename extension .xml. _Subsurface_ will then automatically load the dive log book specified.
+  ** *Dives*: Here you need to specify the directory and file name of your electronic dive log book. This is a file with filename extension .xml. _Subsurface_ will then automatically load the dive log book specified.
 
   ** *Display invalid*:  Dives can be marked as invalid (when you want to hide dives that you don't consider valid dives, e.g. pool dives, but still want to keep them in the dive log). This controls whether those dives are displayed in the dive list.
 
-  ** *Use Default cylinder*: Here one can specify the default cylinder listed in the *Equipment* tab of the *Dive Notes* panel.
+  ** *Use Default cylinder*: Here you can specify the default cylinder listed in the *Equipment* tab of the *Dive Notes* panel.
 
 === Units
-Here one can choose between metric and imperial measures of depth, pressure, volume, temperature and mass. By selecting the Metric or Imperial radio button at the top, one can specify that all units are in the chosen measurement system. Alternatively, if one selects the *Personalise* radio button, one can select a mixture with some measurements being metric while others are in imperial measures.
+Here you can choose between metric and imperial measures of depth, pressure, volume, temperature and mass. By selecting the Metric or Imperial radio button at the top, you can specify that all units are in the chosen measurement system. Alternatively, if you select the *Personalise* radio button, you can select a mixture with some measurements being metric while others are in imperial measures.
 
 === Graph
 This panel allows two type of selections:
 
-* *Show*: Here one specifies the amount of information that is shown as part of the dive profile:
+* *Show*: Here you specify the amount of information that is shown as part of the dive profile:
 ** Gas pressure graphs: _Subsurface_ can display the pressures of the gases with which you dive. If you dive breathing air, then the only important gas is nitrogen. You can instruct _Subsurface_ to plot the nitrogen pressure during your dive. If you dive breathing nitrox, then you can select a graph of both the nitrogen and oxygen pressures during your dive. If you dive with trimix or heliox, you can select the display of the helium pressure as well. For each of these graphs you can specify a threshold value on the right-hand side of the panel. If any of the graphs go above this threshold level, the graph is highlighted in red, indication that the threshold value has been exceeded (see figure below).
 
 ** Ceiling: Ascent ceilings arise when a direct ascent to the surface exposes the diver to decompression sickness (DCS) and it is necessary to either ascend slower or to perform decompression stop(s) before ascending to the surface. _Subsurface_ can indicate these ceilings above which the diver should not ascend at a particular point in time (see the green-shaded areas in the figure in the section on <<S_DiveProfile,Dive Profiles>>) and in the figure below:
 
-*** If one checks *Calculated ceiling*, then a ceiling is shown if it exists for a particular dive (*A* in figure below)
+*** If you check *Calculated ceiling*, then a ceiling is shown if it exists for a particular dive (*A* in figure below)
 
-*** If one checks *show all tissues*, the ceiling is shown for the tissue compartments following the Bühlmann model (*B* in figure below).
+*** If you check *show all tissues*, the ceiling is shown for the tissue compartments following the Bühlmann model (*B* in figure below).
 
-*** If one checks *3m increments*, then the ceiling is indicated in 3m-increments (*C* in figure below).
+*** If you check *3m increments*, then the ceiling is indicated in 3m-increments (*C* in figure below).
 
 *** If the dive computer itself calculates a ceiling and makes it available to _Subsurface_ during upload of dives, this can be
 shown by checking *Dive computer reported ceiling* and it can be drawn in red by checking *Draw ceiling red*.
@@ -866,14 +866,14 @@ shown by checking *Dive computer reported ceiling* and it can be drawn in red by
 
 image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
 
-* *Misc*: Here one can set the _gradient factors_ used while diving. GF_Low is the gradient factor at deep depths and GF_High is used just below the surface. At intermediate depths gradient factor between GF_Low and GF_High are used. Gradient factors add conservatism to the nitrogen exposure during a dive, in a similar way that many dive computers have a conservatism setting. The lower the value of a gradient factor, the more conservative the calculations are with respect to nitrogen loading and the lower the ascent ceilings are. Gradient factors of 25/60 are considered conservative and values of 60/90 are considered harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the deepest depth of a dive. For more information see:
+* *Misc*: Here you can set the _gradient factors_ used while diving. GF_Low is the gradient factor at deep depths and GF_High is used just below the surface. At intermediate depths gradient factor between GF_Low and GF_High are used. Gradient factors add conservatism to the nitrogen exposure during a dive, in a similar way that many dive computers have a conservatism setting. The lower the value of a gradient factor, the more conservative the calculations are with respect to nitrogen loading and the lower the ascent ceilings are. Gradient factors of 25/60 are considered conservative and values of 60/90 are considered harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the deepest depth of a dive. For more information see:
 
   ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
 
   ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 === Languages
-A checkbox allows to use the _System Default_ language which in most cases will be the correct setting; with this Subsurface simply runs in the same language / country settins as the underlying OS. If this is for some reason undesirable one can uncheck this checkbox and pick a language / country combination from the list of included localizations.
+A checkbox allows to use the _System Default_ language which in most cases will be the correct setting; with this Subsurface simply runs in the same language / country settins as the underlying OS. If this is for some reason undesirable you can uncheck this checkbox and pick a language / country combination from the list of included localizations.
 
 == Description of the Subsurface Main Menu items
 
