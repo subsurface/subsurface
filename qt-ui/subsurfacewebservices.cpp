@@ -110,7 +110,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	struct dive *dive;
 	FILE *f;
 	char filename[PATH_MAX], *tempfile;
-	size_t streamsize;
+	int streamsize;
 	char *membuf;
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
@@ -173,7 +173,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		}
 		free((void *)membuf);
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
-		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, (int *)&streamsize);
+		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, &streamsize);
 		xmlFreeDoc(doc);
 		xmlFreeDoc(transformed);
 		/*
