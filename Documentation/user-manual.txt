@@ -826,7 +826,7 @@ Now, select the _Print_ button in the dialogue. This activates the regular print
 [[S_Preferences]]
 == Setting your *Preferences* for _Subsurface_
 
-There are several settings within _Subsurface_ that the user can specify. These are found when selecting _File->Preferences_. The settings are performed in three groups: *Defaults*, *Units* and *Graph*. All three sections operate on the same principles: specify the settings you wish to change, then save these using the *Apply* button. After applying the new settings one can leave the settings panel by selecting *OK*.
+There are several settings within _Subsurface_ that the user can specify. These are found when selecting _File->Preferences_. The settings are performed in four groups: *Defaults*, *Units*, *Graph* and *Language*. All four sections operate on the same principles: specify the settings you wish to change, then save these using the *Apply* button. After applying the new settings one can leave the settings panel by selecting *OK*.
 
 === Defaults
 
@@ -872,6 +872,8 @@ image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
   ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
 
   ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+
+=== Languages
 
 == Description of the Subsurface Main Menu items
 
