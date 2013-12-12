@@ -559,8 +559,7 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 	char *filename = prepare_dives_for_divelogs(true);
 	if (filename) {
 		QFile f(filename);
-		if (f.exists()) {
-			f.open(QIODevice::ReadOnly);
+		if (f.open(QIODevice::ReadOnly)) {
 			uploadDives((QIODevice *)&f);
 			f.close();
 			f.remove();
