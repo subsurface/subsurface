@@ -145,8 +145,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		f = tmpfile();
 		if (!f) {
 			qDebug() << errPrefix << "cannot create temp file";
-			free((void *)tempfile);
-			return NULL;
+			goto error_close_zip;
 		}
 		save_dive(f, dive);
 		fseek(f, 0, SEEK_END);
@@ -157,8 +156,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 			qDebug() << errPrefix << "memory error";
 			fclose(f);
 			free((void *)membuf);
-			free((void *)tempfile);
-			return NULL;
+			goto error_close_zip;
 		}
 		membuf[streamsize] = 0;
 		fclose(f);
@@ -171,8 +169,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 		if (!doc) {
 			qDebug() << errPrefix << "xml error";
 			free((void *)membuf);
-			free((void *)tempfile);
-			return NULL;
+			goto error_close_zip;
 		}
 		free((void *)membuf);
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
@@ -193,6 +190,13 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	zip_close(zip);
 	xsltFreeStylesheet(xslt);
 	return tempfile;
+
+error_close_zip:
+	zip_close(zip);
+	QFile::remove(tempfileQ);
+	free(tempfile);
+	xsltFreeStylesheet(xslt);
+	return NULL;
 }
 
 WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
