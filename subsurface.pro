@@ -49,7 +49,6 @@ HEADERS = \
 	qt-ui/starwidget.h \
 	qt-ui/subsurfacewebservices.h \
 	qt-ui/tableview.h \
-	satellite.h \
 	sha1.h \
 	statistics.h \
 	subsurface-icon.h \
