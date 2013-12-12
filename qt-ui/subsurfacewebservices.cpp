@@ -100,6 +100,12 @@ static void clear_table(struct dive_table *table)
 
 static char *prepare_dives_for_divelogs(const bool selected)
 {
+	const QString errPrefix("divelog.de-upload:");
+	if (!amount_selected) {
+		qDebug() << errPrefix << "no dives selected";
+		return NULL;
+	}
+
 	int i;
 	struct dive *dive;
 	FILE *f;
@@ -111,7 +117,6 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	xmlDoc *transformed;
 	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
-	const QString errPrefix("divelog.de-upload:");
 
 	/* generate a random filename and create/open that file with zip_open */
 	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
@@ -120,11 +125,6 @@ static char *prepare_dives_for_divelogs(const bool selected)
 
 	if (!zip) {
 		qDebug() << errPrefix << "cannot open file as zip";
-		free((void *)tempfile);
-		return NULL;
-	}
-	if (!amount_selected) {
-		qDebug() << errPrefix << "no dives selected";
 		free((void *)tempfile);
 		return NULL;
 	}
