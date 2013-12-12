@@ -23,6 +23,7 @@
 #include <QSettings>
 #include <QTableView>
 #include <QPalette>
+#include <QScrollBar>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    weightModel(new WeightModel()),
@@ -633,7 +634,7 @@ void MainTab::acceptChanges()
 		if (d)
 			fixup_dive(d);
 	}
-
+	int scrolledBy = mainWindow()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if(editMode == ADD || editMode == MANUALLY_ADDED_DIVE){
 		mainWindow()->dive_list()->unselectDives();
@@ -659,6 +660,7 @@ void MainTab::acceptChanges()
 		mainWindow()->refreshDisplay();
 		mainWindow()->dive_list()->restoreSelection();
 	}
+	mainWindow()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 }
 
 void MainTab::resetPallete()
