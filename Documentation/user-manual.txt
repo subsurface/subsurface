@@ -695,6 +695,10 @@ For a more detailed explanation of _gradient factors_, use the following links:
 - link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 
+=== The context menu
+
+The context menu for the Dive Profile is accessed by right-clicking while the mouse cursor is over the Dive Profile panel. The menu allows the creation of Bookmarks or Gas Change Event markers other than the ones that might have been imported from a Dive Computer. Markers are placed against the depth profile line and with the time of the event set by where the mouse cursor was when the right mouse button was initially clicked to bring up the menu. Gas Change events open a further selection of which gas is being switched to, the list based on the available gases defined in the Equipment Tab. By right-clicking while over an existing marker, the menu extends adding options to allow deletion of the marker or to allow all markers of that type to be hidden.
+
 === The *Information Box*
 
 The Information box displays a large range of information pertaining to the dive profile. Normally the Information Box is located to the top left of the *Dive Profile* panel. If the mouse points outside of the *Dive Profile* panel, then only the top line of the Information Box is visible (see left-hand part of figure (A) below). The Information Box can be moved around in the *Dive Profile* panel by click-dragging it with the mouse so that it is not obstructing important detail. The position of the Information Box is saved and used again during subsequent dive analyses.
