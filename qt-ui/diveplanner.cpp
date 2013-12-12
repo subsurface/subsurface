@@ -500,13 +500,13 @@ void DivePlannerGraphics::drawProfile()
 	}
 
 	if (!activeDraggedHandler && (timeLine->maximum() < dp->time / 60.0 + 5 || dp->time / 60.0 + 15 < timeLine->maximum())) {
-		double newMax = fmax(dp->time / 60.0 + 5, minMinutes);
-		timeLine->setMaximum(newMax);
+		minMinutes = fmax(dp->time / 60.0 + 5, minMinutes);
+		timeLine->setMaximum(minMinutes);
 		timeLine->updateTicks();
 	}
 	if (!activeDraggedHandler && (depthLine->maximum() < max_depth + M_OR_FT(10,30) || max_depth + M_OR_FT(10,30) < depthLine->maximum())) {
-		double newMax = fmax(max_depth + M_OR_FT(10,30), minDepth);
-		depthLine->setMaximum(newMax);
+		minDepth  = fmax(max_depth + M_OR_FT(10,30), minDepth);
+		depthLine->setMaximum(minDepth);
 		depthLine->updateTicks();
 	}
 
