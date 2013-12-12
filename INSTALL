@@ -49,8 +49,7 @@ to compile libdivecomputer, you need libusb-devel, too.
 
 On Debian style distributions you can install the required development
 packages by running
-$ apt-get builddep subsurface
-FIXME FIXME FIXME - check bug #199 for correct command
+$ apt-get build-dep subsurface
 
 If you want to install the required packages individually instead you
 need libqt4-dev, libmarble-dev, libzip-dev, libxml2-dev,
