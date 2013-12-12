@@ -222,11 +222,11 @@ Now it is time to hook up your dive computer to your PC:
 
 image::images/ImportFromDC1.jpg["FIGURE: Download dialogue 1",align="center"]
 
-Often, dive computers retain all their dives even though these dives have been imported to _Subsurface_. However it is not necessary to import dives that have already been imported previously. For that reason _Subsurface_ only imports dives that have not been uploaded before. This is beneficial for saving the battery power of your dive computer. If, for some reason, you wish to import ALL dives in the dive computer, you can tick the box labeled _Force download of all dives_.
+Dive computers tend to keep a certain number of dives in their memory, even though these dives have already been imported to _Subsurface_. For that reason _Subsurface_ only imports dives that have not been uploaded before. This makes the download process faster on most dive computers and also savies battery power of your dive computer (at least for those not charging while connected via USB). If, for some reason, you wish to import ALL dives from the dive computer, even though some may already be in the logbook, you can tick the box labeled _Force download of all dives_.
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the *vendor* drop-down list select the make of your computer, e.g. Suunto, Oceanic, Uwatec, Mares. On the *Dive Computer* drop-down list, select the model name of your dive computer, e.g. D4 (Suunto), Veo200 (Oceanic), or Puck (Mares).
 
- - The *Device or Mount Point* dropdown list contains the USB or Bluetooth port name that _Subsurface_ needs in order to communicate with your dive computer. Select the appropriate port name. Consult *Appendix A* for technical details to find the appropriate port information for your dive computer and, in some cases, to do the correct settings to the operating system of your _Subsurface_ computer.
+ - The *Device or Mount Point* dropdown list contains the USB or Bluetooth port name that _Subsurface_ needs in order to communicate with your dive computer. Select the appropriate port name. Consult *Appendix A* for technical details to find the appropriate port information for your dive computer and, in some cases, how to do the correct settings to the operating system of your _Subsurface_ computer.
 
  -  Click the _OK_ button.
 
@@ -238,12 +238,12 @@ In the case of *communication failure* then check the following:
 1) Is the dive computer still in PC-communication or Upload mode?
 2) Is the battery of the dive computer fully charged? If not then charge or replace the battery.
 3) Is the cable faulty? Does the cable work perfectly using other software? Has it worked before, or is this the first time you are using the cable?
-4) Consult *Appendix A* and make sure you specified the correct Mount Point (see above). If your _Subsurface_ computer does not recognise the USB adaptor by showing an appropriate device name next to the Mount Point, then there is a possibility that the cable or USB adaptor is faulty. A faulty cable is the most common cause of communcation failure between dive computer and _Subsurface_ computer.
+4) Consult *Appendix A* and make sure you specified the correct Mount Point (see above). If your _Subsurface_ computer does not recognise the USB adaptor by showing an appropriate device name next to the Mount Point, then there is a possibility that the cable or USB adaptor is faulty. A faulty cable is the most common cause of communcation failure between dive computer and _Subsurface_ computer. It is also possible that your _Subsurface_ computer is missing required drivers to interact with the download cable and connected dive computer.
 
 
  - With communication established, watch how your data is retrieved from your dive computer!
    Depending on your make of computer and/or number of dives, this
-   could take some time. Please be patient. The _Download_ dialogue shows a progress bar at the bottom of the dialogue:
+   could take some time. Please be patient. The _Download_ dialogue shows a progress bar at the bottom of the dialogue (but for some dive computers the progress information could be way off as we cannot determine until after all data was downloaded how much downloadable data there is):
 
 image::images/ImportFromDC2.jpg["FIGURE: Download dialogue 2",align="center"]
 
