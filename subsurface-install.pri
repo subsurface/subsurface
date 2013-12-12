@@ -1,6 +1,5 @@
 marbledir.files = $$MARBLEDIR
 xslt.files = $$XSLT_FILES
-icons.files = $$ICONS_FILES
 doc.files = $$DOC_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 exists($$[QT_INSTALL_TRANSLATIONS]) {
@@ -56,7 +55,7 @@ mac {
 	doc.path = $$WINDOWSSTAGING/Documentation
 	CONFIG -= copy_dir_files
 	deploy.path = $$WINDOWSSTAGING
-	deploy.files += $$xslt.files $$icons.files
+	deploy.files += $$xslt.files
 	deploy.CONFIG += no_check_exist
 	target.path = $$WINDOWSSTAGING
 	marbledir.path = $$WINDOWSSTAGING/data
@@ -134,8 +133,6 @@ BINDIR = $(prefix)/bin$${nl}\
 DATADIR = $(prefix)/share$${nl}\
 DOCDIR = $(DATADIR)/doc/subsurface$${nl}\
 DESKTOPDIR = $(DATADIR)/applications$${nl}\
-ICONPATH = $(DATADIR)/icons/hicolor$${nl}\
-ICONDIR = $(ICONPATH)/scalable/apps$${nl}\
 MANDIR = $(DATADIR)/man/man1$${nl}\
 XSLTDIR = $(DATADIR)/subsurface
 	QMAKE_EXTRA_TARGETS += dummy
@@ -150,9 +147,6 @@ XSLTDIR = $(DATADIR)/subsurface
 	manpage.path = /$(MANDIR)
 	manpage.files = $$MANPAGE
 
-	icon.path = /$(ICONDIR)
-	icon.files = $$ICON
-
 	xslt.path = /$(XSLTDIR)
 	marbledir.path = /$(DATADIR)/subsurface/data
 	doc.path = /$(DOCDIR)
@@ -162,7 +156,7 @@ XSLTDIR = $(DATADIR)/subsurface
 	translation.path = /$(DATADIR)/subsurface/translations
 	translation.CONFIG += no_check_exist
 
-	INSTALLS += target desktop icon manpage xslt doc marbledir translation
+	INSTALLS += target desktop manpage xslt doc marbledir translation
 	install.target = install
 }
 !isEmpty(TRANSLATIONS) {
