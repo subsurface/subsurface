@@ -100,7 +100,7 @@ static void clear_table(struct dive_table *table)
 
 static char *prepare_dives_for_divelogs(const bool selected)
 {
-	const QString errPrefix("divelog.de-upload:");
+	static const char errPrefix[] = "divelog.de-upload:";
 	if (!amount_selected) {
 		qDebug() << errPrefix << "no dives selected";
 		return NULL;
