@@ -68,12 +68,12 @@ When you start the program for the first time, it shows no information at all. T
 [[S_NewLogbook]]
 Creating a new logbook
 ----------------------
-This is achieved by selecting _File -> New Logbook_ from the main menu. All existing dive data are cleared so that new information can be added. Existing dive data can be saved before a new logbook is created.
+Select _File -> New Logbook_ from the main menu. All existing dive data are cleared so that new information can be added. If there is unsaved data in an open logbook, _Subsurface_ will ask you if you want to save the open logbook before a new logbook is created.
 
 [[S_GetInformation]]
 == How to obtain dive information to store in your logbook
 
-There are several ways to obtain dive information to view:
+There are several ways to add dive information to your logbook:
 
 1. Enter dive information by hand. This is typically useful if the diver did not use a dive computer and dives were recorded in a written logbook.
 
@@ -84,7 +84,7 @@ There are several ways to obtain dive information to view:
 [[S_EnterData]]
 === Entering dive information by hand
 
-This is usually the approach for dives without a dive computer. The basic record of information within _Subsurface_ is a dive. The most important information in a simple written dive logbook includes dive type, date, time, duration of dive, depth of dive, name of buddy and of dive master and some remarks about the dive. _Subsurface_ can store much more information than this for each dive. In order to add a dive to your dive log, select _Log -> Add Dive_ from the Main Menu. The program then shows three panels to enter information for a dive: two tabs in the *Info* panel (*Dive Notes* and *Equipment*), as well as the *profile* panel that displays a graphical profile of each dive. These panels are respectively marked [red]#A#, [red]#B# and [red]#C# in the figure below. We will now consider each of the tabs used for data entry.
+This is usually the approach for dives without a dive computer. The basic record of information within _Subsurface_ is a dive. The most important information in a simple written dive logbook usually includes dive type, date, time, duration, depth, the names of your dive buddy and of the dive master or dive guide, and some remarks about the dive. _Subsurface_ can store much more information than this for each dive. In order to add a dive to your dive log, select _Log -> Add Dive_ from the Main Menu. The program then shows three panels to enter information for a dive: two tabs in the *Info* panel (*Dive Notes* and *Equipment*), as well as the *profile* panel that displays a graphical profile of each dive. These panels are respectively marked [red]#A#, [red]#B# and [red]#C# in the figure below. We will now consider each of the tabs used for data entry.
 
 image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
 
@@ -96,30 +96,30 @@ image::images/AddDive2.jpg["FIGURE: The Dive Notes tab",align="center"]
 
 The *Starttime* field reflects the date and the time of the dive. By clicking the down-arrow on the right of that field you can display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
 
-*Air/water temperatures*: Type in the air and water temperatures during the dive into these fields to the right of the Starttime. You do not need to type in units of temperature: Subsurface supplies these automatically, you only need type the number. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
+*Air and water temperatures*: Type in the air and water temperatures during the dive into these fields to the right of the Starttime. You do not need to type in units of temperature: Subsurface supplies these automatically, you only need type the number. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
 
-*Location*: Here type in text that describes the site where you did this dive, e.g. "Tihany, Lake Balaton, Hungary".
+*Location*: Here you enter the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary". Auto completion of location names will make this easier when you frequently dive at the same sites.
 
 *Coordinates*: The geographic coordinates of the dive site should be entered here. These can come from three sources:
 
 a. You can enter the coordinates by hand if you happen to know what they are. You need to enter them as decimal degrees, e.g: N30° 13.49760' , E30° 49.30788'.
 
-b. You can find the coordinates on the world map in the bottom right hand part of the Subsurface window. The map displays a green bar indicating "No location data - move the map and double-click to set the location". Upon a double-click at the appropriate place, the green bar disappears and the coordinates are stored (Sometimes the coordinates are not shown in the Dive Notes immediately but only appear when you save the data for your dive). [red]#[[Bug??]]#
+b. You can find the coordinates on the world map in the bottom right hand part of the Subsurface window. The map displays a green bar indicating "No location data - move the map and double-click to set the location". Upon a double-click at the appropriate place, the green bar disappears and the coordinates are stored.
 
-c. You can obtain the coordinates from the _Subsurface_ Companion app if your mobile phone has a GPS and you stored the coordinates of the dive site using your mobile or tablet.
+c. You can obtain the coordinates from the _Subsurface_ Companion app if you have an Android device with GPS and you stored the coordinates of the dive site using that device.
 xref:S_Companion[Click here for more information]
 
-*Divemaster*: Enter the name of the divemaster for the dive.
+*Divemaster*: Enter the name of the dive master or dive guide for this dive. Again, this field offers auto completion based on the list of dive masters in the current logbook.
 
-*Buddy*: Enter the name of the buddy who accompanied you on the dive.
+*Buddy*: Enter the name(s) of the buddy / buddies who accompanied you on the dive. Auto completion based on the list of buddies in the current logbook is offered.
 
-*Suit*: Enter the type of diving suit you used for the dive. Your descriptions of diving suits are remembered within a particular logbook so that a similar description during later dives will re-use your original description, should you wish this to happen.
+*Suit*: Enter the type of diving suit you used for the dive. Just as with the other items auto completion of the suit description is available.
 
 *Rating*: Here you can provide a subjective overall rating of the dive on a 5-point scale by clicking the appropriate star on the rating scale.
 
 *Visibility*: You can provide a rating of visibility during the dive on a 5-point scale by clicking the appropriate star.
 
-*Tags*: You may enter tags here (separate them by commas) that describe the type of dive you performed. Examples of common tags are boat, drift, training, cave. _Subsurface_ has many built-in tags. If you start to type a tag, the program will list the tags that correspond to your typing. For instance, if you typed +cav+, then the tags *cave* and *cavern* are shown for the user to choose from.
+*Tags*: You may enter tags here (separate them by commas) that describe the type of dive you performed. Examples of common tags are boat, drift, training, cave, etc. _Subsurface_ has many built-in tags. Auto completion is once again offered.  For instance, if you typed +cav+, then the tags *cave* and *cavern* are shown for the user to choose from.
 
 *Notes*: Type any additional information here.
 
@@ -129,7 +129,7 @@ image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="
 
 ==== Equipment
 
-The Equipment tab allows the user to enter information about the type of cylinder and gas used, as well as the weighting for a dive. The message in a blue box at the top of the panel:
+The Equipment tab allows the user to enter information about the type of cylinder and gas used, as well as the weights used for a dive. The message in a blue box at the top of the panel:
 
 image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
 
@@ -141,7 +141,7 @@ image::images/CylinderDataEntry1.jpg["FIGURE:Initial cylinder dialogue",align="c
 
 The + button at the top right allows you to add more cylinders for this dive. The dark dustbin icon on the left allows you to delete information for a cylinder.
 
-Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type. If you wish to change this, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
+Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type (you can change this default in the preferences if you usually dive with a different type of tank). If you wish to change the tank used on this dive, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
 
 image::images/CylinderDataEntry2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
@@ -153,7 +153,7 @@ Finally you need to type in the gas mixture that you used. If you used air, you 
 
 image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
-*Weights*: Information about the weighting system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + button on the top right of the weights dialogue, the table looks like this:
+*Weights*: Information about the weight system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + button on the top right of the weights dialogue, the table looks like this:
 
 image::images/WeightsDataEntry1.jpg["FIGURE: The Weights dialogue",align="center"]
 
@@ -161,7 +161,7 @@ If you click on the *Type* field, a dropdown list becomes accessible through a d
 
 image::images/WeightsDataEntry2.jpg["FIGURE: Weights type drop-down list button",align="center"]
 
-Use the dropdown list to select your type of weighting system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weighting system by adding an additional system using the + button on the top right hand. Weighting systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
+Use the dropdown list to select your type of weight system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weight system by adding an additional system using the + button on the top right hand. Weight systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
 
@@ -173,11 +173,11 @@ The *Dive Profile* (a graphical representation of the depth of your dive as a fu
 
 image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
 
-_Configuring the dive profile_: When you moves the cursor around the dive profile, its position is indicated by two red lines as shown above. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-click on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
+_Modifying the dive profile_: When you move the cursor around the dive profile, its position is indicated by two red lines as shown above. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-click on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
 
 image::images/DiveProfile2.jpg["FIGURE: Edited dive profile",align="center"]
 
-_Specifying the gas composition:_ The gas composition used is clearly indicated along the line segments of the dive profile. This defaults to the first gas mixture specified in the *Equipment* tab, which was air in the case of the profile illustrated above. The gas mixtures of segments of the dive profile can be edited. This is performed by clicking on the gas description for a particular waypoint and selecting the appropriate choice from the context menu. Changing the gas for a waypoint affects the gas shown in the segment _to the left_ of that waypoint. Note that only the gases defined in the *Equipment* tab appear in the context menu:
+_Specifying the gas composition:_ The gas composition used is clearly indicated along the line segments of the dive profile. This defaults to the first gas mixture specified in the *Equipment* tab, which was air in the case of the profile illustrated above. The gas mixtures of segments of the dive profile can be edited. This is done by clicking on the gas description for a particular waypoint and selecting the appropriate choice from the context menu. Changing the gas for a waypoint affects the gas shown in the segment _to the left_ of that waypoint. Note that only the gases defined in the *Equipment* tab appear in the context menu:
 
 image::images/DiveProfile3.jpg["FIGURE: Gas composition context menu",align="center"]
 
@@ -187,7 +187,7 @@ image::images/DiveProfile4.jpg["FIGURE: Completed dive profile",align="center"]
 
 ==== Saving the hand-entered dive information
 
-The information entered in the *Dive Notes* tab, the *Equipment* tab as well as the *Dive Profile* can now be saved in your logbook by using the two buttons on the top right hand of the Dive Notes tab. If you click _Save_, the dive data are saved. If a logbook file hasn't been selected before, you can now select the file name and directory to store the logbook, otherwise it is saved in the already opened logbook. If you click _Cancel_, the newly entered dive data are deleted. When you exit _Subsurface_ there is a final prompt to confirm that the new data should be saved.
+The information entered in the *Dive Notes* tab, the *Equipment* tab as well as the *Dive Profile* can now be saved in your logbook by using the two buttons on the top right hand of the Dive Notes tab. If you click _Save_, the dive data are saved in the current logbook. If you click _Cancel_, the newly entered dive data are discarded. When you exit _Subsurface_ it will prompt you to save the logbook with the new dive(s) on your computer.
 
 
 [[S_ImportDiveComputer]]
@@ -296,7 +296,7 @@ image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="
 
 ==== Equipment
 
-The Equipment tab allows the user to enter information about the type of cylinder and gas you used, as well as the weighting for that dive. The message in a blue box at the top of the panel:
+The Equipment tab allows the user to enter information about the type of cylinder and gas you used, as well as the weights used for that dive. The message in a blue box at the top of the panel:
 
 image::images/BlueEditBar.jpg["FIGURE: Blue edit bar",align="center"]
 
@@ -320,7 +320,7 @@ Finally you need to type in the gas mixture that you used. If you used air, you 
 
 image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
-*Weights*: Information about the weighting system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + button on the top right of the weights dialogue, the table looks like this:
+*Weights*: Information about the weight system used during a dive can be entered using a dialogue very similar to that of the cylinder information. If you click the + button on the top right of the weights dialogue, the table looks like this:
 
 image::images/WeightsDataEntry1.kpg["FIGURE:The Weights dialogue",align="center"]
 
@@ -328,7 +328,7 @@ If you click on the *Type* field, a dropdown list becomes accessible through a d
 
 image::images/WeightsDataEntry2.jpg["FIGURE:Weights type drop-down list button",align="center"]
 
-Use the dropdown list to select your type of weighting system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weighting system by adding an additional system using the + button on the top right hand. Weighting systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
+Use the dropdown list to select your type of weight system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weight system by adding an additional system using the + button on the top right hand. Weight systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
 
