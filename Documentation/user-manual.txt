@@ -30,43 +30,40 @@ toc::[]
 Start Using the Program
 -----------------------
 
-The _Subsurface_ window comprises a *Main Menu* (File Import Log View Filter Help) at the top of the window with four panels underneath:
+The _Subsurface_ window is usually divided into four panels and has a *Main Menu* (File Import Log View Filter Help) at the top of the window (for Windows and Linux) or the top of the screen (for Mac and Ubuntu Unity). The screen shots in this manual were taken on a Ubuntu system, so they don't show the main menu as part of the _Subsurface_ window. The four panels are
 
-1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. One can select and highlight a dive on the dive list by clicking on it.
+1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. One can select and highlight a dive on the dive list by clicking on it. In most situations one can also use the cursor up/down keys to swititch between dives.
 
-2) The *Dive Map* to the bottom right, showing your dive sites on a world map and centered on the site of the dive highlighted in the dive list.
+2) The *Dive Map* to the bottom right, showing your dive sites on a world map and centered on the site of the last selected dive.
 
-3) The *Dive Info* to the top left, giving textual information on the highlighted dive in the dive list.
+3) The *Dive Info* to the top left, giving more detailed information on the selected dive, including some statistics for the selected dive and all highlighted dive(s).
 
 4) The *Dive Profile* to the top right, showing a graphical profile of the highlighted dive in the dive list.
 
-One can drag the dividers between panels in order to change the size of any of the panels. _Subsurface_ remembers the position of the dividers: if one launches _Subsurface_, it uses the positions of the dividers when the program was executed previously.
+One can drag the dividers between panels in order to change the size of any of the panels. _Subsurface_ remembers the position of the dividers, so the next time _Subsurface_ starts it uses the positions of the dividers when the program was executed previously.
+
+_Subsurface_ uses two concpets when deciding which data to show in the different panels. The dive location, detailed information and profile of the _selected dive_ are shown in the respective panels. You can also highlight more than one dive. In this case the last dive highlighted is the _selected dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab of the *Dive Info* panel.
 
 [[S_ViewPanels]]
 
 image::images/main_window.jpg["The Main Window",align="center"]
 
 
-You can determine which of the four panels you wish to see by selecting *View* option on the main menu and which gives the user several choices of display:
+You can determine which of the four panels you wish to see by selecting the *View* option on the main menu and which gives the user several choices of display:
 
-*All*: show all four of the above panels.
+*All*: show all four of the panels as in the screenshot above.
 
-*Divelist*: Show only the Dive List. One can select and highlight a dive on the dive list by clicking on it.
+*Divelist*: Show only the Dive List.
 
-*Profile*: Show only the Dive Profile of the highlighted dive in the dive list.
+*Profile*: Show only the Dive Profile of the selected dive.
 
-*Info*: Show only the Dive Notes about the highlighted dive.
+*Info*: Show only the Dive Notes about the last selected dive and statistics for all highlighted dives.
 
-*Globe*: Show only the world map, centered on the highlighted dive.
+*Globe*: Show only the world map, centered on the last selected dive.
 
-When one starts the program for the first time, it shows no information
-at all. This is because the program doesn't have any dive information available. One now needs to do three things:
+Like many other functions that can be accessed via the Main Menu, these options can be triggered using keyboard shortcuts as well. The shortcuts for your system are listed in the menu entries. Since different OSs use different shortcut keys we won't try to always list them here in the user manual.
 
-1) Create a new logbook in which you can store dive data.
-
-2) Enter information in the new logbook.
-
-3) Save your logbook.
+When one starts the program for the first time, it shows no information at all. This is because the program doesn't have any dive information available. In the following sections we will describe how to create a new logbook.
 
 [[S_NewLogbook]]
 Creating a new logbook
