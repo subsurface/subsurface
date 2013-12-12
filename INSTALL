@@ -1,20 +1,66 @@
-Building the Qt version under Linux
------------------------------------
+Building Subsurface from Source
+===============================
 
-On Debian you need libqt4-dev, libmarble-dev, libzip-dev.
-Unfortunately the marble version in Debian stable (and possibly
-Ubuntu) appears broken and missing essential header files used in the
-current git version of Subsurface. We hack around this right now by
-including this header file but this needs to be revisited before an
-actual release.
+Subsurface uses a few open source libraries and frameworks to do its
+job. The most important ones include libdivecomputer, Qt4, Marble
+(more precisely libmarble; this is what causes the need for Qt4 as
+Marble as of the time of this writing hasn't been ported to Qt5, yet),
+libxml2, libxslt, libsqlite3, and libzip.
+
+Below are instructions for building Subsurface under some popular
+Linux distributions, for building Subsurface using Homebrew on a Mac,
+and for cross-building Subsurface for Windows. The lack of a working
+package management system for Windows makes it really painful to build
+Subsurface natively under Windows, we have some hints how to do so
+here as well.
+
+
+Build options for Subsurface
+----------------------------
+
+The following options are recognised when passed to qmake:
+
+ -config debug        Create a debug build
+ -config release      Create a release build
+		      The default depends on how Qt was built.
+ V=1                  Disable the "silent" build mode
+ LIBDCDEVEL=1         Search for libdivecomputer in ../libdivecomputer
+ INCLUDEPATH+=xxx     Add xxx to the include paths to the compiler
+		      (pass the actual path, without -I)
+ LIBS+=xxx            Add xxx to the linker flags. -l and -L options are
+		      recognised.
+
+The INCLUDEPATH and LIBS options are useful to tell the buildsystem
+about non-standard installation paths for the dependencies (such as
+Marble). They can be repeated as often as needed, or multiple
+arguments can be passed on the same switch, separated by a space. For
+example:
+
+  qmake LIBS+="-L$HOME/marble/lib -L$HOME/libdivecomputer/lib" \
+	INCLUDEPATH+="$HOME/marble/include $HOME/libdivecomputer/include"
+
+
+Building Subsurface 4 under Linux
+---------------------------------
 
 On Fedora you need qt-devel, marble-devel, libzip-devel,
 libxml2-devel, libxslt-devel, libsqlite3x-devel, libudev-devel. If you are going
-to compile libdivecomputer, you need to libusb-devel too.
+to compile libdivecomputer, you need libusb-devel, too.
 
-On Debian the package names are different; try libxml2-dev,
+On Debian style distributions you can install the required development
+packages by running
+$ apt-get builddep subsurface
+FIXME FIXME FIXME - check bug #199 for correct command
+
+If you want to install the required packages individually instead you
+need libqt4-dev, libmarble-dev, libzip-dev, libxml2-dev,
 libsqlite3-dev, libxslt1-dev, libzip-dev (and libusb-1.0-0-dev if
 you're going to compile libdivecomputer).
+
+Unfortunately the marble version in Debian stable (and possibly
+Ubuntu) appears to be missing essential header files used in
+Subsurface. We hack around this right now by including this header
+file but that of course causes potential version conflicts.
 
 To compile libdivecomputer:
 $ git clone git://git.libdivecomputer.org/libdivecomputer
@@ -28,7 +74,7 @@ $ sudo make install
 To compile Subsurface:
 $ git clone git://subsurface.hohndel.org/subsurface.git
 $ cd subsurface
-$ qmake
+$ qmake # qmake-qt4 on some flavors of Linux
 $ make
 $ sudo make install     [optionally, add: prefix=/usr/local]
 
@@ -52,7 +98,7 @@ $ brew link --force sqlite
 4) Install Marble
 
 $ mkdir -p ~/src/marble/build
-$ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
+$ git clone -b 4.11.2 git://anongit.kde.org/marble ~/src/marble/sources
 $ cd ~/src/marble/build
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ../sources
  - or -
@@ -106,14 +152,15 @@ Cross-building Subsurface on Linux for Windows
 ----------------------------------------------
 
 Subsurface builds nicely with MinGW - the official builds are done as
-cross builds under Linux (currently on Fedora 17). A shell script to do
+cross builds under Linux (currently on Fedora 19). A shell script to do
 that (plus the .nsi file to create the installer with makensis) are
-included in the packaging/Windows directory.
+included in the packaging/windows directory.
 
 The best way to get libdivecomputer to build appears to be
 
-$ git clone git://git.libdivecomputer.org/libdivecomputer
-$ cd libdivecomputer
+$ mkdir -p ~/src
+$ git clone git://git.libdivecomputer.org/libdivecomputer ~/src/libdivecomputer
+$ cd ~/src/libdivecomputer
 $ git checkout release-0.4
 $ mingw32-configure --disable-shared
 $ mingw32-make
@@ -132,8 +179,9 @@ $ mingw32-make install
 
 To compile Subsurface, use:
 
-$ git clone git://subsurface.hohndel.org/subsurface.git
-$ cd subsurface
+$ mkdir -p ~/src/subsurface
+$ git clone git://subsurface.hohndel.org/subsurface.git ~/src/subsurface
+$ cd ~/src/subsurface
 $ packaging/windows/mingw-make.sh
 $ packaging/windows/mingw-make.sh install
 $ packaging/windows/mingw-make.sh installer
@@ -213,27 +261,3 @@ $ qmake
 $ make
 $ make install
 $ make installer
-
-Build options
--------------
-
-The following options are recognised when passed to qmake:
-
- -config debug        Create a debug build
- -config release      Create a release build
-                      The default depends on how Qt was built.
- V=1                  Disable the "silent" build mode
- LIBDCDEVEL=1         Search for libdivecomputer in ../libdivecomputer
- INCLUDEPATH+=xxx     Add xxx to the include paths to the compiler
-                      (pass the actual path, without -I)
- LIBS+=xxx            Add xxx to the linker flags. -l and -L options are
-                      recognised.
-
-The INCLUDEPATH and LIBS options are useful to tell the buildsystem
-about non-standard installation paths for the dependencies (such as
-Marble). They can be repeated as often as needed, or multiple
-arguments can be passed on the same switch, separated by a space. For
-example:
-
-  qmake LIBS+="-L$HOME/marble/lib -L$HOME/libdivecomputer/lib" \
-        INCLUDEPATH+="$HOME/marble/include $HOME/libdivecomputer/include"
