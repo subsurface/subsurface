@@ -112,7 +112,6 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	char filename[PATH_MAX], *tempfile;
 	int streamsize;
 	char *membuf;
-	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
 	struct zip_source *s[dive_table.nr];
