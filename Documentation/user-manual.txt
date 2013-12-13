@@ -18,7 +18,7 @@ image::images/SubsurfaceBanner.png["Banner",align="center"]
 [blue]#_Version 4.0,  December 2013_#
 
 
-Welcome as a user of _Subsurface_, an advanced dive logging programme with extensive infrastructure to describe, organise and interpret scuba and free dives._Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for many more hardware platforms and software environments where Qt and libdivecomputer are available.
+Welcome as a user of _Subsurface_, an advanced dive logging programme with extensive infrastructure to describe, organise and interpret scuba and free dives. _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for many more hardware platforms and software environments where Qt and libdivecomputer are available.
 
 The scope of this document is the use of the _Subsurface_ program. To install the software, consult the _Downloads_ page on the http://subsurface.hohndel.org/[_Subsurface_ web site]. Please discuss issues with this program by sending an email to mailto:subsurface@hohndel.org[our mailing list] and report bugs at http://trac.hohndel.org[our bugtracker].  For instructions on how to build the software and (if needed) its dependencies please consult the INSTALL file included with the source code.
 
@@ -44,10 +44,11 @@ You can drag the dividers between panels in order to change the size of any of t
 
 If one dive is selected, the dive location, detailed information and profile of the _selected dive_ are shown in the respective panels. On the other hand, if one highlights more than one dive the last heighlighted dive is the _selected dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab of the *Dive Info* panel.
 
+//^
+
 [[S_ViewPanels]]
 
 image::images/main_window.jpg["The Main Window",align="center"]
-
 
 You can determine which of the four panels you wish to see by selecting the *View* option on the main menu and which gives the user several choices of display:
 
