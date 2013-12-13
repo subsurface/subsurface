@@ -410,9 +410,13 @@ QString getSubsurfaceDataPath(QString folderToFind)
 		if (folder.exists())
 			return folder.absolutePath();
 	}
-	// then look for the usual location on a Mac
+	// then look for the usual locations on a Mac
 	execdir = QCoreApplication::applicationDirPath();
 	folder = QDir(execdir.append("/../Resources/share/").append(folderToFind));
+	if (folder.exists())
+		return folder.absolutePath();
+	execdir = QCoreApplication::applicationDirPath();
+	folder = QDir(execdir.append("/../Resources/").append(folderToFind));
 	if (folder.exists())
 		return folder.absolutePath();
 	return QString("");
