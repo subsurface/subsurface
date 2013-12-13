@@ -262,26 +262,26 @@ The date and time of the dive, gas mixture and perhaps water temperature is show
 
 image::images/AddDive3.jpg["FIGURE: The Dive Notes tab",align="center"]
 
-The *Starttime* field contains five data items reflecting the date and the time of the dive, as supplied by the dive computer. It should therefore not be necessary to edit this, but you could make changes by clicking the down-arrow on the right of that field to display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
+The *Starttime* field reflects the date and the time of the dive, as supplied by the dive computer. It should therefore not be necessary to edit this, but you could make changes by clicking the down-arrow on the right of that field to display a calendar from which you can choose the correct date. The hour and minutes values can also be edited by clicking on each of them in the text box and by overtyping the information displayed.
 
 *Air/water temperatures*: Air and water temperatures during the dive are shown in these fields to the right of the Starttime. Many dive computers supply water temperature information and this field may therefore not require editing. If editing is required, you do not need to type in units of temperature: Subsurface supplies these automatically, only a number is required. (The units selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric or imperial units are displayed)
 
-*Location*: Here type in text that describes the site where you did this dive, e.g. "Tihany, Lake Balaton, Hungary".
+*Location*: Here type in text that describes the site where you did this dive, e.g. "Tihany, Lake Balaton, Hungary". Auto completion of location names will make this easier when you frequently dive at the same sites.
 
 *Coordinates*: The geographic coordinates of the dive site should be entered here. These can come from three sources:
 
 a. You can enter the coordinates by hand if you happen to know what they are. You need to enter them as decimal degrees, e.g: N30° 13.49760', E30° 49.30788'.
 
-b. You can find the coordinates on the world map in the bottom right hand part of the Subsurface window. The map displays a green bar indicating "No location data - move the map and double-click to set the location". Upon a double-click at the appropriate place, the green bar disappears and the coordinates are stored (Sometimes the coordinates are not shown in the Dive Notes immediately but only appear when you save the data for your dive). [red]#[[Bug??]]#
+b. You can find the coordinates on the world map in the bottom right hand part of the Subsurface window. The map displays a green bar indicating "No location data - move the map and double-click to set the location". Upon a double-click at the appropriate place, the green bar disappears and the coordinates are stored.
 
-c. You can obtain the coordinates from the _Subsurface_ Companion app if your mobile phone has a GPS and you stored the coordinates of the dive sites on your mobile or tablet.
+c. You can obtain the coordinates from the _Subsurface_ Companion app if you have an Android device with GPS and you stored the coordinates of the dive site using that device.
 xref:S_Companion[Click here for more information]
 
-*Divemaster*: Enter the name of the divemaster during the dive.
+*Divemaster*: Enter the name of the dive master or dive guide for this dive. Again, this field offers auto completion based on the list of dive masters in the current logbook.
 
-*Buddy*: Enter the name of your buddy during the dive.
+*Buddy*: Enter the name(s) of the buddy / buddies who accompanied you on the dive. Auto completion based on the list of buddies in the current logbook is offered.
 
-*Suit*: Enter the type of diving suit you used for the dive. Your descriptions of diving suits are remembered within a particular logbook so that a similar description during later dives will re-use your original description, should you wish this to happen.
+*Suit*: Enter the type of diving suit you used for the dive. Just as with the other items auto completion of the suit description is available.
 
 *Rating*: Here you can provide a subjective overall rating of the dive on a 5-point scale by clicking the appropriate star on the rating scale.
 
@@ -291,7 +291,7 @@ xref:S_Companion[Click here for more information]
 
 *Notes*: Type any additional information here.
 
-The *Save* and *Cancel* buttons are used to save all the information for the whole dive after ALL the other information has been added. Do NOT use them before also completing the Equipment tab. Here is an example of a completed Dive Notes panel:
+The *Save* and *Cancel* buttons are used to save all the information for tabs in the info panel and in the dive profile panel, so there's no need to use them until ALL other information has been added. Here is an example of a completed Dive Notes panel:
 
 image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="center"]
 
@@ -309,7 +309,7 @@ image::images/CylinderDataEntry1.jpg["FIGURE: Initial cylinder dialogue",align="
 
 In most cases _Subsurface_ obtains the gas used from the dive computer and automatically inserts the gas composition(% ogygen) in the table. The + button at the top right allows you to add more cylinders for this dive. The dark dustbin icon on the left allows you to delete information for a cylinder.
 
-Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type. If you wish to change this, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
+Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type (you can change this default in the preferences if you usually dive with a different type of tank). If you wish to change the tank used on this dive, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
 
 image::images/CylinderDataEntry2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
