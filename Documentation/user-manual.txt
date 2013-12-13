@@ -62,7 +62,7 @@ You can determine which of the four panels you wish to see by selecting the *Vie
 
 *Globe*: Show only the world map, centered on the last selected dive.
 
-Like many other functions that can be accessed via the Main Menu, these options can be triggered using keyboard shortcuts as well. The shortcuts for your system are listed in the menu entries. Since different OSs use different shortcut keys we won't try to always list them here in the user manual.
+Like many other functions that can be accessed via the Main Menu, these options can be triggered using keyboard shortcuts as well. The shortcuts for your system are shown with an underline in the menu entries. Since different Operating Systems and your chosen language may cause _Subsurface_ to use different shortcut keys we won't try to list them here in the user manual.
 
 When you start the program for the first time, it shows no information at all. This is because the program doesn't have any dive information available. In the following sections we will describe how to create a new logbook.
 
