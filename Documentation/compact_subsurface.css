@@ -1,9 +1,10 @@
 /*
- * compact.css, version 1.3
- * Author:  Alex Efros <powerman@powerman.name>
+ * compact_subsurface.css, a special style sheet for Subsurface,
+ *  modified by Willem Ferguson and derived from:
+ *		compact.css, version 1.3 by Alex Efros <powerman@powerman.name>
  * Licence: Public Domain
  *
- * Usage: asciidoc -a theme=compact ...
+ * Usage: asciidoc -a theme=compact_subsurface ...
  */
 
 *   { padding: 0;  margin: 0; }
