@@ -220,19 +220,18 @@ static void divetags(char *buffer, void *_tags)
 	struct tag_entry *tags = _tags;
 	int i = 0, start = 0, end = 0;
 	enum ParseState state = FINDEND;
-	i=0;
-	while(i < strlen(buffer)) {
+	int len = buffer ? strlen(buffer) : 0;
+
+	while(i < len) {
 		if (buffer[i] == ',') {
 			if (state == FINDSTART) {
 				/* Detect empty tags */
 			} else if (state == FINDEND) {
 				/* Found end of tag */
-				if (i > 1) {
-					if(buffer[i-1] != '\\') {
-						buffer[end-start+1] = '\0';
+				if (i > 0 && buffer[i - 1] != '\\') {
+						buffer[i] = '\0';
 						state=FINDSTART;
 						taglist_add_tag(tags, buffer+start);
-					}
 				} else {
 					state=FINDSTART;
 				}
@@ -245,18 +244,17 @@ static void divetags(char *buffer, void *_tags)
 				state = FINDEND;
 				start = i;
 			} else if (state == FINDEND) {
-				end=i;
+				end = i;
 			}
 		}
 		i++;
 	}
 	if (state == FINDEND) {
 		if (end < start)
-			end = strlen(buffer)-1;
-		if (strlen(buffer) > 0) {
-			buffer[end-start+1] = '\0';
-			state=FINDSTART;
-			taglist_add_tag(tags, buffer+start);
+			end = len - 1;
+		if (len > 0) {
+			buffer[end + 1] = '\0';
+			taglist_add_tag(tags, buffer + start);
 		}
 	}
 }

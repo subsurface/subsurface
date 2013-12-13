@@ -1,0 +1,62 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='29' tags='boat, wreck' date='2011-12-13' time='06:35:00' duration='30:00 min'>
+  <location>irrelevant dive location</location>
+  <notes>This is a dive that has two tags, boat and wreck</notes>
+  <divecomputer model='Model Product' deviceid='e04d0248' diveid='00000002'>
+  <depth max='20.1 m' mean='18.293 m' />
+  <temperature water='20.0 C' />
+  <sample time='0:06 min' depth='1.86 m' temp='20.0 C' ndl='99:00 min' />
+  <sample time='1:00 min' depth='20.1 m' />
+  <sample time='27:00 min' depth='20.1 m' />
+  <sample time='28:00 min' depth='3.0 m' />
+  <sample time='29:00 min' depth='3.0 m' />
+  <sample time='30:00 min' depth='0.3 m' />
+  </divecomputer>
+</dive>
+<dive number='30' tags='' date='2011-12-13' time='07:35:00' duration='30:00 min'>
+  <location>irrelevant dive location</location>
+  <notes>This is a dive that has an empty tags property in the XML file</notes>
+  <divecomputer model='Model Product' deviceid='e04d0248' diveid='00000002'>
+  <depth max='20.1 m' mean='18.293 m' />
+  <temperature water='20.0 C' />
+  <sample time='0:06 min' depth='1.86 m' temp='20.0 C' ndl='99:00 min' />
+  <sample time='1:00 min' depth='20.1 m' />
+  <sample time='27:00 min' depth='20.1 m' />
+  <sample time='28:00 min' depth='3.0 m' />
+  <sample time='29:00 min' depth='3.0 m' />
+  <sample time='30:00 min' depth='0.3 m' />
+  </divecomputer>
+</dive>
+<dive number='31' tags=',' date='2011-12-13' time='08:35:00' duration='30:00 min'>
+  <location>irrelevant dive location</location>
+  <notes>This is a dive that has a tags property with just a comma in the XML file</notes>
+  <divecomputer model='Model Product' deviceid='e04d0248' diveid='00000002'>
+  <depth max='20.1 m' mean='18.293 m' />
+  <temperature water='20.0 C' />
+  <sample time='0:06 min' depth='1.86 m' temp='20.0 C' ndl='99:00 min' />
+  <sample time='1:00 min' depth='20.1 m' />
+  <sample time='27:00 min' depth='20.1 m' />
+  <sample time='28:00 min' depth='3.0 m' />
+  <sample time='29:00 min' depth='3.0 m' />
+  <sample time='30:00 min' depth='0.3 m' />
+  </divecomputer>
+</dive>
+<dive number='32' tags='a, boat' date='2011-12-13' time='09:35:00' duration='30:00 min'>
+  <location>irrelevant dive location</location>
+  <notes>This is a dive that has a single letter tag 'a' (plus the boat tag)</notes>
+  <divecomputer model='Model Product' deviceid='e04d0248' diveid='00000002'>
+  <depth max='20.1 m' mean='18.293 m' />
+  <temperature water='20.0 C' />
+  <sample time='0:06 min' depth='1.86 m' temp='20.0 C' ndl='99:00 min' />
+  <sample time='1:00 min' depth='20.1 m' />
+  <sample time='27:00 min' depth='20.1 m' />
+  <sample time='28:00 min' depth='3.0 m' />
+  <sample time='29:00 min' depth='3.0 m' />
+  <sample time='30:00 min' depth='0.3 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
