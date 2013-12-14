@@ -32,9 +32,9 @@ Start Using the Program
 
 The _Subsurface_ window is usually divided into four panels and has a *Main Menu* (File Import Log View Filter Help) at the top of the window (for Windows and Linux) or the top of the screen (for Mac and Ubuntu Unity). The screen shots in this manual were taken on a Ubuntu system, so they don't show the main menu as part of the _Subsurface_ window. The four panels are
 
-1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. You can select and highlight a dive on the dive list by clicking on it. In most situations you can also use the cursor up/down keys to swititch between dives.
+1) The *Dive List* to the bottom left containing a list of all the dives in your dive log. You can select and highlight a dive on the dive list by clicking on it. In most situations you can also use the cursor up/down keys to switch between dives.
 
-2) The *Dive Map* to the bottom right, showing your dive sites on a world map and centered on the site of the last selected dive.
+2) The *Dive Map* to the bottom right, showing your dive sites on a world map and centred on the site of the last selected dive.
 
 3) The *Dive Info* to the top left, giving more detailed information on the selected dive, including some statistics for the selected dive or for all highlighted dive(s).
 
@@ -42,7 +42,7 @@ The _Subsurface_ window is usually divided into four panels and has a *Main Menu
 
 You can drag the dividers between panels in order to change the size of any of the panels. _Subsurface_ remembers the position of the dividers, so the next time _Subsurface_ starts it uses the positions of the dividers when the program was executed previously.
 
-If one dive is selected, the dive location, detailed information and profile of the _selected dive_ are shown in the respective panels. On the other hand, if one highlights more than one dive the last heighlighted dive is the _selected dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab of the *Dive Info* panel.
+If one dive is selected, the dive location, detailed information and profile of the _selected dive_ are shown in the respective panels. On the other hand, if one highlights more than one dive the last highlighted dive is the _selected dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab of the *Dive Info* panel.
 
 //^
 
@@ -60,7 +60,7 @@ You can determine which of the four panels you wish to see by selecting the *Vie
 
 *Info*: Show only the Dive Notes about the last selected dive and statistics for all highlighted dives.
 
-*Globe*: Show only the world map, centered on the last selected dive.
+*Globe*: Show only the world map, centred on the last selected dive.
 
 Like many other functions that can be accessed via the Main Menu, these options can be triggered using keyboard shortcuts as well. The shortcuts for your system are shown with an underline in the menu entries. Since different Operating Systems and your chosen language may cause _Subsurface_ to use different shortcut keys we won't try to list them here in the user manual.
 
@@ -134,7 +134,7 @@ The Equipment tab allows the user to enter information about the type of cylinde
 
 image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
 
-indicates that you are in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
+indicates that you are in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top right-hand panel).
 
 *Cylinders*: The cylinder information is entered through a dialogue that looks like this:
 
@@ -146,7 +146,7 @@ Start by selecting a cylinder type. The AL80 cylinder is shown as the default cy
 
 image::images/CylinderDataEntry2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
-Use the dropdown list to select the cylinder type you used for this dive. The *Size* of the cylinder as well as its working pressure (*WorkPress*) will automatically be shown in the dialogue.
+Use the drop-down list to select the cylinder type you used for this dive. The *Size* of the cylinder as well as its working pressure (*WorkPress*) will automatically be shown in the dialogue.
 
 Now you need to indicate the starting pressure and the ending pressure of the gas used during your dive. The unit of pressure (metric/imperial) corresponds to the setting you chose in the preferences [red]#[[LINK]]#.
 
@@ -158,11 +158,11 @@ image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive informat
 
 image::images/WeightsDataEntry1.jpg["FIGURE: The Weights dialogue",align="center"]
 
-If you click on the *Type* field, a dropdown list becomes accessible through a down-arrow:
+If you click on the *Type* field, a drop-down list becomes accessible through a down-arrow:
 
 image::images/WeightsDataEntry2.jpg["FIGURE: Weights type drop-down list button",align="center"]
 
-Use the dropdown list to select your type of weight system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weight system by adding an additional system using the + button on the top right hand. Weight systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
+Use the drop-down list to select your type of weight system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weight system by adding an additional system using the + button on the top right hand. Weight systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
 
@@ -174,7 +174,8 @@ The *Dive Profile* (a graphical representation of the depth of your dive as a fu
 
 image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
 
-_Modifying the dive profile_: When you move the cursor around the dive profile, its position is indicated by two red lines as shown below. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m. If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-click on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
+_Modifying the dive profile_: When you move the cursor around the dive profile, its position is indicated by two red lines as shown below. The depth and time that the cursor represents are indicated, respectively on the left hand and bottom axes. The units (metric/imperial) on the axes are determined by the *preference* settings [red]#[[LINK]]#. The dive profile itself comprises several line segments demarcated by waypoints (white dots on the profile, as shown above). The default dive depth is 15m.
+If your dive depth was 21m then you need to drag the appropriate waypoints downwards to represent 21m. To add a waypoint, double-click on any line segment. To remove a waypoint, right-click on it and choose "Remove this point" from the context menu. You will also need to drag the waypoints to represent an accurate time duration for your dive. Below is a dive profile that represents a dive to 21m for 31 min., followed by a 3 minute safety stop at 5m.
 
 image::images/DiveProfile2.jpg["FIGURE: Edited dive profile",align="center"]
 
@@ -227,7 +228,7 @@ Dive computers tend to keep a certain number of dives in their memory, even thou
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the *vendor* drop-down list select the make of your computer, e.g. Suunto, Oceanic, Uwatec, Mares. On the *Dive Computer* drop-down list, select the model name of your dive computer, e.g. D4 (Suunto), Veo200 (Oceanic), or Puck (Mares).
 
- - The *Device or Mount Point* dropdown list contains the USB or Bluetooth port name that _Subsurface_ needs in order to communicate with your dive computer. Select the appropriate port name. Consult *Appendix A* and *Appendix B* for technical details to find the appropriate port information for your dive computer and, in some cases, how to do the correct settings to the operating system of your _Subsurface_ computer.
+ - The *Device or Mount Point* drop-down list contains the USB or Bluetooth port name that _Subsurface_ needs in order to communicate with your dive computer. Select the appropriate port name. Consult *Appendix A* and *Appendix B* for technical details to find the appropriate port information for your dive computer and, in some cases, how to do the correct settings to the operating system of your _Subsurface_ computer.
 
  -  Click the _OK_ button.
 
@@ -239,7 +240,7 @@ In the case of *communication failure* then check the following:
 1) Is the dive computer still in PC-communication or Upload mode?
 2) Is the battery of the dive computer fully charged? If not then charge or replace the battery.
 3) Is the cable faulty? Does the cable work perfectly using other software? Has it worked before, or is this the first time you are using the cable?
-4) Consult *Appendix A* and make sure you specified the correct Mount Point (see above). If your _Subsurface_ computer does not recognise the USB adaptor by showing an appropriate device name next to the Mount Point, then there is a possibility that the cable or USB adaptor is faulty. A faulty cable is the most common cause of communcation failure between dive computer and _Subsurface_ computer. It is also possible that your _Subsurface_ computer is missing required drivers to interact with the download cable and connected dive computer.
+4) Consult *Appendix A* and make sure you specified the correct Mount Point (see above). If your _Subsurface_ computer does not recognise the USB adaptor by showing an appropriate device name next to the Mount Point, then there is a possibility that the cable or USB adaptor is faulty. A faulty cable is the most common cause of communication failure between dive computer and _Subsurface_ computer. It is also possible that your _Subsurface_ computer is missing required drivers to interact with the download cable and connected dive computer.
 
 
  - With communication established, watch how your data is retrieved from your dive computer!
@@ -301,19 +302,19 @@ The Equipment tab allows the user to enter information about the type of cylinde
 
 image::images/BlueEditBar.jpg["FIGURE: Blue edit bar",align="center"]
 
-indicates that you are in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top righthand panel).
+indicates that you are in the process of adding equipment information for the dive. This is a highly interactive part of _Subsurface_ and the information on cylinders and gases (entered here) determines the behaviour of the dive profile (top right-hand panel).
 
 *Cylinders*: The cylinder information is entered through a dialogue that looks like this:
 
 image::images/CylinderDataEntry1.jpg["FIGURE: Initial cylinder dialogue",align="center"]
 
-In most cases _Subsurface_ obtains the gas used from the dive computer and automatically inserts the gas composition(% ogygen) in the table. The + button at the top right allows you to add more cylinders for this dive. The dark dustbin icon on the left allows you to delete information for a cylinder.
+In most cases _Subsurface_ obtains the gas used from the dive computer and automatically inserts the gas composition(% oxygen) in the table. The + button at the top right allows you to add more cylinders for this dive. The dark dustbin icon on the left allows you to delete information for a cylinder.
 
-Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type (you can change this default in the preferences if you usually dive with a different type of tank). If you wish to change the tank used on this dive, click on the AL80. This will bring up a dropdown list, accessible through a down-arrow:
+Start by selecting a cylinder type. The AL80 cylinder is shown as the default cylinder type (you can change this default in the preferences if you usually dive with a different type of tank). If you wish to change the tank used on this dive, click on the AL80. This will bring up a drop-down list, accessible through a down-arrow:
 
 image::images/CylinderDataEntry2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
-Use the dropdown list to select the cylinder type you used for this dive. The *Size* of the cylinder as well as its working pressure (*WorkPress*) will automatically be shown in the dialogue.
+Use the drop-down list to select the cylinder type you used for this dive. The *Size* of the cylinder as well as its working pressure (*WorkPress*) will automatically be shown in the dialogue.
 
 Now you need to indicate the starting pressure and the ending pressure of the specified gas during your dive. The unit of pressure (metric/imperial) corresponds to the setting you chose in the preferences [red]#[[LINK]]#.
 
@@ -325,11 +326,11 @@ image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive informat
 
 image::images/WeightsDataEntry1.jpg["FIGURE:The Weights dialogue",align="center"]
 
-If you click on the *Type* field, a dropdown list becomes accessible through a down-arrow:
+If you click on the *Type* field, a drop-down list becomes accessible through a down-arrow:
 
 image::images/WeightsDataEntry2.jpg["FIGURE:Weights type drop-down list button",align="center"]
 
-Use the dropdown list to select your type of weight system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weight system by adding an additional system using the + button on the top right hand. Weight systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
+Use the drop-down list to select your type of weight system. In the *Weight* field, type in the weight used during the dive. It is possible to enter information for more than one weight system by adding an additional system using the + button on the top right hand. Weight systems can be deleted using the dustbin icon on the left hand. Here is an example of information for a dive with two types of weights: integrated and a weight belt:
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
 
@@ -447,7 +448,7 @@ steps in Subsurface:
  - Browse your directories to the location where your MacDive logs are
    stored
  - Select the log file(s) you want to import and click 'open'
- - Click the OK button in the popup
+ - Click the OK button in the pop-up
 
 After a few moments, you see your existing logs in _Subsurface_. Now you can
 edit your dives like explained in the section <<S_EditDiveInfo, Updating the Dive Information>>.
@@ -482,13 +483,13 @@ This file can now be opened in _Subsurface_ (as described in the previous sectio
 
 JDiveLog stores its information in files with the extension of .jlb that contain all the information  except images  in XML format.
 
-By using  _File -> Import File(s)_ from the Main Menu you get a popup asking
+By using  _File -> Import File(s)_ from the Main Menu you get a pop-up asking
 for the file name.  To import your JDiveLog file(s) do the following:
 
  - Open _File -> Import File(s)_ on the menu
  - Browse your directories to the location where your *.jlb file is
  - Select your existing *.jlb file and click 'open'
- - Click the OK button in the popup
+ - Click the OK button in the pop-up
 
 After a few moments, you see your existing logs in _Subsurface_. Now you can
 edit your dives like explained in the section <<S_EditDiveInfo, Updating the Dive Information>>.
@@ -552,13 +553,13 @@ Touching the "+" icon on the top right to add a new dive site. You will be promp
 
 There are several ways to send dives to the server; the easiest is by simply selecting the dive. See middle image below (B):
 
-image::images/Companion.jpg["FIGURE: Screen shots (A-C) of compannion app",align="center"]
+image::images/Companion.jpg["FIGURE: Screen shots (A-C) of companion app",align="center"]
 
 Touching the right arrow will send it to the server.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Be careful, the trash on the right means exactly what it is supossed to mean, it deletes the dive location(s).
+Be careful, the trash on the right means exactly what it is supposed to mean, it deletes the dive location(s).
 
 The new dive points are now stored on the server and can be downloaded to the _Subsurface_ dive log whenever you upload or add your dive to _Subsurface_. After a dive trip using the Companion app, all dive locations are ready to be saved on your Subsurface dive log (see below).
 
@@ -592,7 +593,7 @@ The settings below define the behaviour of the service:
 
 [icon="images/icons/info.jpg"]
 [TIP]
-_How does the background service work?_ Let's asume we've set 5 minutes and 50 meters in the settings above, the app will fix a location, then another one each 5 minutes. If this 2nd (3rd, 4th ...) location is within a radius of 50 meters from the previous one, it is not saved. After another 5 minutes there will be a new try, and so on.  This way, if we are in a static position, we'll only get one location fix, but if we travel we can have a trace of our journey.
+_How does the background service work?_ Let's assume we've set 5 minutes and 50 meters in the settings above, the app will fix a location, then another one each 5 minutes. If this 2nd (3rd, 4th ...) location is within a radius of 50 meters from the previous one, it is not saved. After another 5 minutes there will be a new try, and so on.  This way, if we are in a static position, we'll only get one location fix, but if we travel we can have a trace of our journey.
 
 ===== Other
 
@@ -610,9 +611,9 @@ Here you can search your saved dive locations by the name or by date and hour.
 
 Initiates the _background service_ depending on the previously defined settings.
 
-===== Disconect
+===== Disconnect
 
-This is a badly named option. It disconects your app from the server by reseting your ID in the app, showing the first screen where you can create an account, retrieve the ID for an existing one or use your own ID. Disconnecting is useful if you download the dive positions of another registered diver using the your Android device.
+This is a badly named option. It disconnects your app from the server by resetting your ID in the app, showing the first screen where you can create an account, retrieve the ID for an existing one or use your own ID. Disconnecting is useful if you download the dive positions of another registered diver using the your Android device.
 
 ===== Send all locations
 
@@ -646,7 +647,7 @@ The Stats tab gives summary statistics for more than one dive, assuming that mor
 
 image::images/Profile2.png["Typical dive profile",align="center"]
 
-Of all the panels in _Subsurface_, the Dive Profile contains the most detailed information about each dive. The main item in the Dive profile is the graph of dive depth as a function of time. In addition to the obvious information of the depth it also shows the ascent and descent rate compared to the recommended speed of going up or down in the water column. This information is given using different colors:
+Of all the panels in _Subsurface_, the Dive Profile contains the most detailed information about each dive. The main item in the Dive profile is the graph of dive depth as a function of time. In addition to the obvious information of the depth it also shows the ascent and descent rate compared to the recommended speed of going up or down in the water column. This information is given using different colours:
 |====================
 |*Colour*|*Descent speed (m/min)*|*Ascent speed (m/min)*
 |Red|> 30|> 18
@@ -658,7 +659,7 @@ Of all the panels in _Subsurface_, the Dive Profile contains the most detailed i
 
 The profile also includes depth readings for the peaks and troughs in the graph. Thus you should see the depth of the deepest point and other peaks. Mean depth is marked with a horizontal red line.
 
-The *air consumption* graph displays the tank pressure and its change during the dive. The air consumption takes depth into account so that even when manually entering the start and end pressures the graph is not a straight line. Similarly to the depth graph the tank pressure gives you information about the momentary SAC rate (Surface Air Consumption – often also called RMV – Respiratory Minute Volume) when using an air integrated dive computer. Here the color coding is not relative to some absolute values but relative to the average normalized air consumption during the dive. So areas that are red or orange indicate times of increased normalized air consumption while dark green reflects times when the diver was using less gas than average. The color coding is obviously only possible when a tank sensor is connected and tank pressure readings during the dive are available.
+The *air consumption* graph displays the tank pressure and its change during the dive. The air consumption takes depth into account so that even when manually entering the start and end pressures the graph is not a straight line. Similarly to the depth graph the tank pressure gives you information about the momentary SAC rate (Surface Air Consumption – often also called RMV – Respiratory Minute Volume) when using an air integrated dive computer. Here the colour coding is not relative to some absolute values but relative to the average normalized air consumption during the dive. So areas that are red or orange indicate times of increased normalized air consumption while dark green reflects times when the diver was using less gas than average. The colour coding is obviously only possible when a tank sensor is connected and tank pressure readings during the dive are available.
 
 *Water temperature* is displayed with its own blue line with temperature values placed adjacent to significant changes.
 
@@ -858,7 +859,7 @@ image::images/Ceilings.png["Figure: Ceiling with 3m resolution",align="center"]
   ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 === Languages
-A checkbox allows one to use the _System Default_ language which in most cases will be the correct setting; with this _Subsurface_ simply runs in the same language / country settins as the underlying OS. If this is for some reason undesirable you can uncheck this checkbox and pick a language / country combination from the list of included localizations.
+A checkbox allows one to use the _System Default_ language which in most cases will be the correct setting; with this _Subsurface_ simply runs in the same language / country settings as the underlying OS. If this is for some reason undesirable you can uncheck this checkbox and pick a language / country combination from the list of included localizations.
 
 == Description of the Subsurface Main Menu items
 
@@ -869,7 +870,7 @@ This section describes the functions and operation of the items in the Main Menu
 - _Open logbook_ - This opens the file manager in order to select a dive logbook to open.
 - _Save_ - Save the dive logbook that is currently open.
 - _Save as_: - Save the current logbook or the currently selected dives within the present logbook under a different filename.
-- _Close_ -  Close the dive logbook that is currenly open.
+- _Close_ -  Close the dive logbook that is currently open.
 - <<S_ExportLog,_Export UDDF_>> -  Export the currently open dive logbook (or the selected dives in the logbook) in UDDF format.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
@@ -912,7 +913,7 @@ This section describes the functions and operation of the items in the Main Menu
 [icon="images/icons/drivers.jpg"]
 [NOTE]
 The operating system of your desktop computer needs the appropriate drivers in order to
-communicate with your dive computer in whichever way your dive computer prefers (e.g. bluetooth, USB, infra-red).
+communicate with your dive computer in whichever way your dive computer prefers (e.g. bluetooth, USB, infrared).
 
 	* On Linux this means you need to have the correct kernel
 	  module loaded. Most distributions will do this automatically
@@ -1034,7 +1035,7 @@ depending on your system, running +initd+ or +systemd+. This might be different 
 also involve loading modules specific to your hardware. In case your system is
 running +systemd+, manually run +sudo systemctl start bluetooth.service+ to enable
 it, in case of +initd+, run something like +sudo rc.config start bluetoothd+ or
-+sudo /etc/init.d/buetooth start+.
++sudo /etc/init.d/bluetooth start+.
 
 Pairing should be straight forward. Using Gnome3 for instance will show a
 bluetooth icon in the upper right corner of your desktop where you select 'Set
