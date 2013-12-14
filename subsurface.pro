@@ -132,7 +132,6 @@ RESOURCES = subsurface.qrc
 TRANSLATIONS = \
 	translations/subsurface_source.ts \
 	translations/subsurface_bg_BG.ts \
-	translations/subsurface_ca_ES.ts \
 	translations/subsurface_da_DK.ts \
 	translations/subsurface_de_CH.ts \
 	translations/subsurface_de_DE.ts \
@@ -140,7 +139,6 @@ TRANSLATIONS = \
 	translations/subsurface_et_EE.ts \
 	translations/subsurface_fi_FI.ts \
 	translations/subsurface_fr_FR.ts \
-	translations/subsurface_hr_HR.ts \
 	translations/subsurface_it_IT.ts \
 	translations/subsurface_nb_NO.ts \
 	translations/subsurface_nl_NL.ts \
@@ -151,9 +149,7 @@ TRANSLATIONS = \
 	translations/subsurface_sk_SK.ts \
 	translations/subsurface_sv_SE.ts \
 	translations/subsurface_zh_TW.ts \
-	translations/subsurface_he.ts \
-	translations/subsurface_vi.ts \
-	translations/subsurface_id.ts
+	translations/subsurface_he.ts
 
 QTTRANSLATIONS = \
 	qt_da.qm \
