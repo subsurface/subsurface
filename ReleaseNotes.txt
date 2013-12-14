@@ -12,7 +12,7 @@ large number of supported dive computers. Subsurface is able to track
 single- and multi-tank dives using air, Nitrox or TriMix. It displays
 a dive profile with all related information including air consumption
 and alarms. It also allows logging of information like weights and
-exposure protection used, dive masters and dive buddies and enables
+exposure protection used, dive masters and dive buddies, and enables
 the user to rate dives and provide additional dive notes.
 
 With Subsurface the user can track dive locations including GPS
@@ -48,7 +48,7 @@ for quite a bit of cleanup and many improvements.
 
 The basic concepts are the same, most of the basic features are the
 same, but trying to create a concise list of changes that summarizes
-the more than 1700 commits that have gone in since version 3.1 seems a
+the more than 1600 commits that have gone in since version 3.1 seems a
 daunting task.
 
 Here are some of the highlights:
@@ -65,7 +65,7 @@ Here are some of the highlights:
 - addition of a "ruler" tool in the profile window that allows
   measuring of many properties between two points in the profile
 - better tag system with both predefined user-specified free text tags
-- better integration with divelogs.de (upload support)
+- better integration with divelogs.de (upload & download support)
 - ability to show the user manual from within the application without
   a life internet connection and without opening the manual in an
   external browser window
@@ -75,6 +75,8 @@ Known issues:
 
 - Filter->Select Events is not implemented
 - Dive planner has been disabled for now
+
+
 
 New in version 3.1 (compared to Subsurface 3.0.2):
 --------------------------------------------------

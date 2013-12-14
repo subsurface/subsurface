@@ -1,15 +1,26 @@
 
 This is the README file for Subsurface 4.0.
 
-After the release of Subsurface 3.1 we merged the Qt branch into
-master and started developing the Qt port of Subsurface in the master
-branch. At this stage the Qt version has by and large reached
-functional parity with version 3.1; two notable features are missing:
-the filter by event type and the dive planner. The user experience and
-look and feel on the other hand far surpass what was available in 3.1
+After the release of Subsurface 3.1 the Subsurface developer team
+decided to make a major change in the development direction of the
+project. We switched to Qt as our UI toolkit and slowly, step by step
+replaced all the Gtk with corresponding Qt code.
+
+This caused lots of changes, from adding C++ code, switching build
+systems to use qmake, to refactoring the tightly intervoven UI and
+logic code that we had up until 3.1. The vast majority of this work
+was done by just a handful of people with Tomaz Canabrava carrying the
+biggest part of the load. As we had hoped, the switch to Qt brought us
+many new active developers and the Qt community has been extremely
+helpful supporting us when we ran into trouble.
+
+At this stage the Qt version has by and large reached functional
+parity with version 3.1; two notable features are missing: the filter
+by event type and the dive planner. The user experience and look and
+feel on the other hand far surpass what was available in 3.1.
 
 As always in a massive rewrite like this, there are still a small
-handful of known bugs and issues - please check ReleaseNotes.tzt and
+handful of known bugs and issues - please check ReleaseNotes.txt and
 our bug tracker at trac.hohndel.org.
 
 The latest public version is Subsurface 4.0, released in December of 2013.
@@ -39,13 +50,14 @@ http://subsurface.hohndel.org/downloads/Subsurface-4.0.tgz
 Basic Usage:
 ============
 
-Install and start from the desktop (or you can run it locally from the
-build directory).
+Install and start from the desktop, or you can run it locally from the
+build directory:
 
-./subsurface
+$ ./subsurface
 
-You can give a data file as command line argument, or Subsurface picks a
-default file for you when started from the desktop or without an argument.
+You can give a data file as command line argument, or (once you have
+set this up in the Preferences) Subsurface picks a default file for
+you when started from the desktop or without an argument.
 
 If you have a dive computer supported by libdivecomputer, you can just
 select "Import from Divecomputer" from the "Import" menu, select which
