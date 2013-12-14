@@ -261,7 +261,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation>lae sukeldumised divelogs.de</translation>
+        <translation>lae sukeldumised divelogs.de keskkonda</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
@@ -400,7 +400,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="977"/>
         <source>add dive data point</source>
-        <translation>lisa sukeldumise andmdete punkt</translation>
+        <translation>lisa sukeldumise andmete punkt</translation>
     </message>
 </context>
 <context>
@@ -481,12 +481,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="472"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>Oodatava XML tag-i  &apos;DiveDateReader&apos; asemel on &apos;%1&apos;</translation>
+        <translation>Oodatava XML märgendi  &apos;DiveDateReader&apos; asemel on &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="518"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
-        <translation>XML tag-i &apos;DiveDates&apos; ei leitud</translation>
+        <translation>Oodatud XML märgendit &apos;DiveDates&apos; ei leitud</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="525"/>
@@ -689,7 +689,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="127"/>
         <source>Tags</source>
-        <translation>Sildid</translation>
+        <translation>Märgendid</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="192"/>
@@ -781,7 +781,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="596"/>
         <source>Dive Time</source>
-        <translation>Sukeldumise koguaeg</translation>
+        <translation>Põhjaaeg</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="615"/>
@@ -924,7 +924,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="189"/>
         <source>&amp;Log</source>
-        <translation>&amp;Log</translation>
+        <translation>&amp;Logi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="200"/>
@@ -1033,7 +1033,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="319"/>
         <source>&amp;Print</source>
-        <translation>&amp;Prindi</translation>
+        <translation>&amp;Väljastus</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="330"/>
@@ -1325,7 +1325,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="201"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
-        <translation>UDDF files (*.uddf *.UDDF)</translation>
+        <translation>UDDF failid (*.uddf *.UDDF)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="746"/>
@@ -2187,7 +2187,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
         <source>Status:</source>
-        <translation>Staatus</translation>
+        <translation>Staatus:</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="32"/>
@@ -2530,7 +2530,7 @@ Maksimum</translation>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>divetime</source>
-        <translation>sukeldumisaeg</translation>
+        <translation>põhjaaeg</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
@@ -2606,7 +2606,7 @@ Maksimum</translation>
     <message>
         <location filename="../libdivecomputer.c" line="430"/>
         <source>Error parsing the divetime</source>
-        <translation>Viga sukeldumise kestuse tuvastamisel</translation>
+        <translation>Viga põhjaaja tuvastamisel</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="440"/>
@@ -2935,21 +2935,21 @@ Deco:%umin @ %.0f %s (calc)</translation>
         <source>%s
 In deco (calc)</source>
         <translation>%s
-In deco (calc)</translation>
+Dekos (arvutatud)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1293"/>
         <source>%s
 NDL:%umin (calc)</source>
         <translation>%s
-NDL:%umin (calc)</translation>
+NDL:%umin (arvutatud)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1297"/>
         <source>%s
 TTS:%umin (calc)</source>
         <translation>%s
-TTS:%umin (calc)</translation>
+TTS:%umin (arvutatud)</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1406"/>
@@ -3434,12 +3434,12 @@ Kas Uemis Zurich on ühendatud korrektselt?</translation>
     <message>
         <location filename="../uemis.c" line="222"/>
         <source>Dive Time Info</source>
-        <translation>Sukeldumise kestuse info</translation>
+        <translation>Põhjaaja info</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="224"/>
         <source>Dive Time Alert</source>
-        <translation>Sukeldumise kestuse hoiatus</translation>
+        <translation>Põhjaaja hoiatus</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="226"/>

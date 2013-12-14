@@ -220,17 +220,17 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="710"/>
         <source>add dive(s) to trip immediately above</source>
-        <translation>Tauchgäng(e) zum Trip darüber hinzufügen</translation>
+        <translation>Tauchgäng(e) zur Reise darüber hinzufügen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="713"/>
         <source>merge trip with trip above</source>
-        <translation>Reise mit der Reise darüber verbinden</translation>
+        <translation>Reise mit Reise darüber verbinden</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="714"/>
         <source>merge trip with trip below</source>
-        <translation>Reise mit der Reise darunter verbinden</translation>
+        <translation>Reise mit Reise darunter verbinden</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="718"/>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>mark dive(s) invalid</source>
-        <translation>Kennzeichne Tauchgang(gänge) als ungültig</translation>
+        <translation>Tauchgang(gänge) als ungültig kennzeichnen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
@@ -840,7 +840,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="408"/>
         <source>Trip Location</source>
-        <translation>Reise Ort</translation>
+        <translation>Ziel der Reise</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="386"/>
@@ -2249,7 +2249,7 @@ Bitte entferne diese zuerst.</translation>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>Jahr 
- &gt; Monat / Trip</translation>
+ &gt; Monat / Reise</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1410"/>

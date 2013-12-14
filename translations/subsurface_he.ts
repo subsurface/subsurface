@@ -14,7 +14,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="129"/>
         <source>PO2</source>
-        <translation type="unfinished"/>
+        <translation>PO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="197"/>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="85"/>
         <source>SAC on DECO Stop</source>
-        <translation type="unfinished"/>
+        <translation>צריכת גז בעצירת דקומפרסיה</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="78"/>
@@ -457,7 +457,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1147"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>צריכת אוויר</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1148"/>
@@ -744,7 +744,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/maintab.ui" line="463"/>
         <location filename="../qt-ui/maintab.ui" line="721"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>צריכת אויר</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="482"/>
@@ -1436,12 +1436,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="341"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="351"/>
         <source>psi</source>
-        <translation type="unfinished"/>
+        <translation>psi</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="368"/>
@@ -1588,7 +1588,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="748"/>
         <source>3m increments</source>
-        <translation type="unfinished"/>
+        <translation>רווחים של 3 מטר</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="758"/>
@@ -1613,7 +1613,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="769"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>צריכת אויר</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="787"/>
@@ -1638,7 +1638,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="229"/>
         <source>Open Default Log File</source>
-        <translation type="unfinished"/>
+        <translation>פתח יומן ברירת מחדל</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="229"/>
@@ -1762,22 +1762,22 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="219"/>
         <source>Sizing heights (% of layout)</source>
-        <translation type="unfinished"/>
+        <translation>סקלות גובה (באחוזים)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="256"/>
         <source>Profile height (43% - 85%)</source>
-        <translation type="unfinished"/>
+        <translation>גובה פרופיל (43% - 85%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="278"/>
         <source>Other data height (8% - 17%)</source>
-        <translation type="unfinished"/>
+        <translation>גובה שאר המידע (8% - 17%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="338"/>
         <source>Notes height (0% - 52%)</source>
-        <translation type="unfinished"/>
+        <translation>גובה הערות (0% - 52%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="354"/>
@@ -1838,7 +1838,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="467"/>
         <source>Set Duration: 10 minutes</source>
-        <translation type="unfinished"/>
+        <translation>קבע זמן: 10 דקות</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="511"/>
@@ -1890,7 +1890,7 @@ Please, remove them first.</source>
         <location filename="../qt-ui/profilegraphics.cpp" line="754"/>
         <location filename="../qt-ui/profilegraphics.cpp" line="1006"/>
         <source>EAN%1</source>
-        <translation type="unfinished"/>
+        <translation>EAN%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="1014"/>
@@ -1920,17 +1920,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="1611"/>
         <source>Dive #%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>צלילות מס %1 - %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1614"/>
         <source>Max depth: %1 %2</source>
-        <translation type="unfinished"/>
+        <translation>עומק מקסימלי: %1 %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1621"/>
         <source>Duration: %1 min</source>
-        <translation type="unfinished"/>
+        <translation>זמן: %1 דקות</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1626"/>
@@ -2026,12 +2026,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/renumber.ui" line="14"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>מספר מחדש</translation>
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="31"/>
         <source>New starting number</source>
-        <translation type="unfinished"/>
+        <translation>מספר התחלתי חדש</translation>
     </message>
 </context>
 <context>
@@ -2077,12 +2077,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/about.cpp" line="23"/>
         <source>&amp;License</source>
-        <translation type="unfinished"/>
+        <translation>&amp;רישיון</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.cpp" line="24"/>
         <source>&amp;Website</source>
-        <translation type="unfinished"/>
+        <translation>&amp;אתר אינטרנט</translation>
     </message>
 </context>
 <context>
@@ -2090,7 +2090,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="314"/>
         <source>Webservice</source>
-        <translation type="unfinished"/>
+        <translation>שרות איטרנט</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="356"/>
@@ -2110,22 +2110,22 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
         <source>Connection Error: </source>
-        <translation type="unfinished"/>
+        <translation>שגיאת חיבור:</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="396"/>
         <source>Invalid user identifier!</source>
-        <translation type="unfinished"/>
+        <translation>שם משתמש לא חוקי!</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="397"/>
         <source>Cannot parse response!</source>
-        <translation type="unfinished"/>
+        <translation>תשובה לא מובנת!</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="398"/>
         <source>Download Success!</source>
-        <translation type="unfinished"/>
+        <translation>ההורדה הצליחה!</translation>
     </message>
 </context>
 <context>
@@ -2141,7 +2141,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="759"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>תיאור</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="759"/>
@@ -2151,7 +2151,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="759"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
 </context>
 <context>
@@ -2159,7 +2159,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="1548"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>מידע נוסף</translation>
     </message>
 </context>
 <context>
@@ -2167,7 +2167,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="631"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>תיאור</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="631"/>
@@ -2258,31 +2258,36 @@ Please, remove them first.</source>
         <location filename="../qt-ui/models.cpp" line="1411"/>
         <source>Duration 
  Total</source>
-        <translation type="unfinished"/>
+        <translation>משך
+כולל</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1412"/>
         <source>
 Average</source>
-        <translation type="unfinished"/>
+        <translation>
+ממוצע</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1413"/>
         <source>
 Shortest</source>
-        <translation type="unfinished"/>
+        <translation>
+קצר ביותר</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1414"/>
         <source>
 Longest</source>
-        <translation type="unfinished"/>
+        <translation>
+ארוך ביותר</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1415"/>
         <source>Depth (%1)
  Average</source>
-        <translation type="unfinished"/>
+        <translation>עומק (%1)
+ממוצע</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1416"/>
@@ -2290,7 +2295,8 @@ Longest</source>
         <location filename="../qt-ui/models.cpp" line="1422"/>
         <source>
 Minimum</source>
-        <translation type="unfinished"/>
+        <translation>
+מינימום</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1417"/>
@@ -2298,19 +2304,22 @@ Minimum</source>
         <location filename="../qt-ui/models.cpp" line="1423"/>
         <source>
 Maximum</source>
-        <translation type="unfinished"/>
+        <translation>
+מקסימום</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1418"/>
         <source>SAC (%1)
  Average</source>
-        <translation type="unfinished"/>
+        <translation>צריכת אויר (%1)
+ממוצע</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1421"/>
         <source>Temp. (%1)
  Average</source>
-        <translation type="unfinished"/>
+        <translation>טמפ&apos; (%1)
+ממוצע</translation>
     </message>
 </context>
 <context>
@@ -2318,31 +2327,31 @@ Maximum</source>
     <message>
         <location filename="../dive.c" line="57"/>
         <source>pascal</source>
-        <translation type="unfinished"/>
+        <translation>פסקל</translation>
     </message>
     <message>
         <location filename="../dive.c" line="61"/>
         <location filename="../qt-gui.cpp" line="330"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
     <message>
         <location filename="../dive.c" line="65"/>
         <location filename="../qt-gui.cpp" line="333"/>
         <source>psi</source>
-        <translation type="unfinished"/>
+        <translation>psi</translation>
     </message>
     <message>
         <location filename="../dive.c" line="101"/>
         <location filename="../qt-gui.cpp" line="311"/>
         <source>l</source>
-        <translation type="unfinished"/>
+        <translation>l</translation>
     </message>
     <message>
         <location filename="../dive.c" line="106"/>
         <location filename="../qt-gui.cpp" line="314"/>
         <source>cuft</source>
-        <translation type="unfinished"/>
+        <translation>cuft</translation>
     </message>
     <message>
         <location filename="../dive.c" line="134"/>
@@ -2375,7 +2384,7 @@ Maximum</source>
     <message>
         <location filename="../dive.c" line="1051"/>
         <source>(%s) or (%s)</source>
-        <translation type="unfinished"/>
+        <translation>(%S) או (%S)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="488"/>
@@ -2390,7 +2399,7 @@ Maximum</source>
     <message>
         <location filename="../equipment.c" line="161"/>
         <source>integrated</source>
-        <translation type="unfinished"/>
+        <translation>איטגרל</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="162"/>
@@ -2405,7 +2414,7 @@ Maximum</source>
     <message>
         <location filename="../equipment.c" line="164"/>
         <source>backplate weight</source>
-        <translation type="unfinished"/>
+        <translation>משקל פלטת גב</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="165"/>
@@ -2420,7 +2429,7 @@ Maximum</source>
         <location filename="../file.c" line="397"/>
         <location filename="../file.c" line="399"/>
         <source>Failed to read &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>קריאה מ&apos;%S&apos; נכשלה</translation>
     </message>
     <message>
         <location filename="../file.c" line="265"/>
@@ -2437,12 +2446,12 @@ Maximum</source>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
         <source>none</source>
-        <translation type="unfinished"/>
+        <translation>אין</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
         <source>deco stop</source>
-        <translation type="unfinished"/>
+        <translation>עצירה לדיקומפרסיה</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
@@ -2452,68 +2461,68 @@ Maximum</source>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
         <source>ascent</source>
-        <translation type="unfinished"/>
+        <translation>עליה</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
         <source>ceiling</source>
-        <translation type="unfinished"/>
+        <translation>תקרה</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="138"/>
         <source>workload</source>
-        <translation type="unfinished"/>
+        <translation>עומס</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>transmitter</source>
-        <translation type="unfinished"/>
+        <translation>משדר</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>violation</source>
-        <translation type="unfinished"/>
+        <translation>חריגה</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>bookmark</source>
-        <translation type="unfinished"/>
+        <translation>סימניה</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>surface</source>
-        <translation type="unfinished"/>
+        <translation>שטח</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>safety stop</source>
-        <translation type="unfinished"/>
+        <translation>עצירת בטיחות</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <location filename="../libdivecomputer.c" line="143"/>
         <source>gaschange</source>
-        <translation type="unfinished"/>
+        <translation>החלפת גז</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>safety stop (voluntary)</source>
-        <translation type="unfinished"/>
+        <translation>עצירת בטיחות (יזומה)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>safety stop (mandatory)</source>
-        <translation type="unfinished"/>
+        <translation>עצירת בטיחות (חובה)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>deepstop</source>
-        <translation type="unfinished"/>
+        <translation>עצירה בעומק</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>ceiling (safety stop)</source>
-        <translation type="unfinished"/>
+        <translation>תקרה (עצירת בטיחות)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
@@ -2529,7 +2538,7 @@ Maximum</source>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>maxdepth</source>
-        <translation type="unfinished"/>
+        <translation>עומק מקס&apos;</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
@@ -2539,37 +2548,37 @@ Maximum</source>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>PO2</source>
-        <translation type="unfinished"/>
+        <translation>PO2</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>airtime</source>
-        <translation type="unfinished"/>
+        <translation>זמן אויר</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>rgbm</source>
-        <translation type="unfinished"/>
+        <translation>rgbm</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>heading</source>
-        <translation type="unfinished"/>
+        <translation>כותרת</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
         <source>tissue level warning</source>
-        <translation type="unfinished"/>
+        <translation>אזהרת רמות רקמות</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
         <source>non stop time</source>
-        <translation type="unfinished"/>
+        <translation>זמן ללא עצירה</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="160"/>
         <source>invalid event number</source>
-        <translation type="unfinished"/>
+        <translation>מס&apos; ארוע שגוי</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="393"/>

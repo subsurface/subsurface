@@ -2181,7 +2181,7 @@ Fjern dem før du gjør dette.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Forbindelse til nettjeneste</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>

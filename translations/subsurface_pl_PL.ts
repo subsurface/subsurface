@@ -1824,7 +1824,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="223"/>
         <source>Remove the selected event?</source>
-        <translation>Usunąc wybrane znaczniki?</translation>
+        <translation>Usunąć wybrane znaczniki?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="224"/>

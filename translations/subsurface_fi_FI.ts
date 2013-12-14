@@ -241,7 +241,7 @@ poistaa valitun sukellustietokoneen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation>Merkitse sukellukset epäkelvoiksi</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
@@ -261,7 +261,7 @@ poistaa valitun sukellustietokoneen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="731"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>lähetä sukellukset divelogs.de -sivustolle</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="757"/>
@@ -496,13 +496,13 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Cannot create DLD file</source>
-        <translation type="unfinished"/>
+        <translation>DLD -tiedoston luominen epäonnistui</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="772"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="609"/>
@@ -539,27 +539,27 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="786"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Lähetys epäonnistui</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation>Lähetys onnistui</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="792"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Kirjautuminen epäonnistui</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="795"/>
         <source>Cannot parse response</source>
-        <translation type="unfinished"/>
+        <translation>Vastauksen jäsentäminen ei onnistu!</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Virhe: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="773"/>
@@ -1871,7 +1871,7 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="614"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation>pN</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="640"/>
@@ -1881,7 +1881,7 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="664"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation>pO</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="752"/>
@@ -2183,7 +2183,7 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys verkkopalveluun</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
