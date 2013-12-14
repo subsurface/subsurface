@@ -601,7 +601,11 @@ void MainTab::acceptChanges()
 			mark_divelist_changed(TRUE);
 			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
-					d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
+					if (notesBackup.keys().count() > 1)
+						// only copy the cylinder type, none of the other values
+						d->cylinder[i].type = multiEditEquipmentPlaceholder.cylinder[i].type;
+					else
+						d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
 				}
 			}
 		}
