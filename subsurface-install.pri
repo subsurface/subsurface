@@ -131,7 +131,7 @@ mac {
 	dummy.commands  = $${nl}prefix = /usr$${nl}\
 BINDIR = $(prefix)/bin$${nl}\
 DATADIR = $(prefix)/share$${nl}\
-DOCDIR = $(DATADIR)/doc/subsurface$${nl}\
+DOCDIR = $(DATADIR)/subsurface/Documentation$${nl}\
 DESKTOPDIR = $(DATADIR)/applications$${nl}\
 MANDIR = $(DATADIR)/man/man1$${nl}\
 XSLTDIR = $(DATADIR)/subsurface
