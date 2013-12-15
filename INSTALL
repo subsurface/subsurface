@@ -18,7 +18,7 @@ here as well.
 Build options for Subsurface
 ----------------------------
 
-The following options are recognised when passed to qmake:
+The following options are recognized when passed to qmake:
 
  -config debug        Create a debug build
  -config release      Create a release build
@@ -28,7 +28,7 @@ The following options are recognised when passed to qmake:
  INCLUDEPATH+=xxx     Add xxx to the include paths to the compiler
 		      (pass the actual path, without -I)
  LIBS+=xxx            Add xxx to the linker flags. -l and -L options are
-		      recognised.
+		      recognized.
 
 The INCLUDEPATH and LIBS options are useful to tell the buildsystem
 about non-standard installation paths for the dependencies (such as
