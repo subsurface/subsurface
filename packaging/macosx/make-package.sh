@@ -9,19 +9,8 @@
 #
 # run this from the top subsurface directory
 
-# adjust to your install location of gtk-mac-bundler. I appear to need at
-# least 0.7.2
-BUNDLER=../.local/bin/gtk-mac-bundler
-BUNDLER_SRC=$HOME/gtk-mac-bundler
-
 # install location of yourway-create-dmg
 DMGCREATE=../yoursway-create-dmg/create-dmg
-
-# This is the directory into which MacPorts, libdivecomputer and all the
-# other components have been installed
-PREFIX=/Applications/Subsurface.app/Contents/Resources
-
-INFOPLIST=./packaging/macosx/Info.plist
 
 # same git version magic as in the Makefile
 # for the naming of volume and dmg we don't need the "always 3 digits"
@@ -29,35 +18,18 @@ INFOPLIST=./packaging/macosx/Info.plist
 # is better
 VERSION=$(./scripts/get-version linux)
 
-# gtk-mac-bundler allegedly supports signing by setting this environment
-# variable, but this fails as we change the shared objects below and all
-# the signatures become invalid.
-# export APPLICATION_CERT=Dirk
-
-# force rebuilding of Info.plist
-rm $INFOPLIST
 
 # first build and install Subsurface and then clean up the staging area
+sudo rm -rf ./Subsurface.app
 make
-make install-macosx
+sudo make mac-deploy
+
+# copy things into staging so we can create a nice DMG
 rm -rf ./staging
+mkdir ./staging
+cp -a ./Subsurface.app ./staging
 
-# now populate it with the bundle
-$BUNDLER packaging/macosx/subsurface.bundle
-
-# correct the paths and names
-cd staging/Subsurface.app/Contents
-for i in Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders/*; do
-	$BUNDLER_SRC/bundler/run-install-name-tool-change.sh $i $PREFIX Resources change
-done
-for i in Resources/lib/*.dylib; do
-	install_name_tool -id "@executable_path/../$i" $i
-done
-
-cd ../../..
-
-codesign -s Dirk ./staging/Subsurface.app/Contents/MacOS/subsurface \
-	./staging/Subsurface.app/Contents/MacOS/subsurface-bin
+sudo sh ./packaging/macosx/sign
 
 if [ -f ./Subsurface-$VERSION.dmg ]; then
 	rm ./Subsurface-$VERSION.dmg.bak
@@ -67,5 +39,5 @@ fi
 $DMGCREATE --background ./packaging/macosx/DMG-Background.png \
 	--window-size 500 300 --icon-size 96 --volname Subsurface-$VERSION \
 	--app-drop-link 380 205 \
-	--volicon ~/subsurface/packaging/macosx/Subsurface.icns \
+	--volicon ~/src/subsurface/packaging/macosx/Subsurface.icns \
 	--icon "Subsurface" 110 205 ./Subsurface-$VERSION.dmg ./staging

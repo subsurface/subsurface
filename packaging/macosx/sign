@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo -- signing staging/Subsurface.app
+cd staging
+
+#echo -- signing application
+#
+#codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app/Contents/MacOS/Subsurface
+
+echo -- signing Qt frameworks
+
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/4/QtCore
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtDeclarative.framework/Versions/4/QtDeclarative
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/4/QtGui
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/4/QtScript
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/4/QtSql
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/4/QtSvg
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/4/QtWebkit
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/4/QtXmlPatterns
+
+echo -- signing plugins
+find ./Subsurface.app/Contents/PlugIns -name \*.dylib | xargs codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 
+
+echo -- finally sign .app
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 ./Subsurface.app
