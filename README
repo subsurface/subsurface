@@ -6,13 +6,14 @@ decided to make a major change in the development direction of the
 project. We switched to Qt as our UI toolkit and slowly, step by step
 replaced all the Gtk with corresponding Qt code.
 
-This caused lots of changes, from adding C++ code, switching build
-systems to use qmake, to refactoring the tightly intervoven UI and
-logic code that we had up until 3.1. The vast majority of this work
-was done by just a handful of people with Tomaz Canabrava carrying the
-biggest part of the load. As we had hoped, the switch to Qt brought us
-many new active developers and the Qt community has been extremely
-helpful supporting us when we ran into trouble.
+This caused lots of changes, from adding C++ to the list of
+programming languages used, to switching build systems to qmake, to
+refactoring the tightly interwoven UI and logic code that we had up
+until 3.1. The vast majority of this work was done by just a handful
+of people with Tomaz Canabrava carrying the biggest part of the
+load. As we had hoped, the switch to Qt brought us many new active
+developers and the Qt community has been extremely helpful supporting
+us when we ran into trouble.
 
 At this stage the Qt version has by and large reached functional
 parity with version 3.1; two notable features are missing: the filter
