@@ -28,10 +28,9 @@ mac {
 	datadir = Contents/Resources/share
 	marbledir.path = Contents/Resources/data
 	xslt.path = $$datadir
-	doc.path = $$datadir/doc
+	doc.path = $$datadir/Documentation
 	translation.path = Contents/Resources/translations
 	qttranslation.path = Contents/Resources/translations
-	doc.files = $$files($$doc.files)
 	QMAKE_BUNDLE_DATA += marbledir xslt doc translation qttranslation
 
 	mac_deploy.target = mac-deploy
