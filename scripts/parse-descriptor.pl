@@ -15,9 +15,9 @@ while (<$fh>) {
 	    printf(", %s", $mod);
 	} else {
 	    if ($lastVend eq "") {
-		printf("<ul><li>%s\n\t<ul>\n\t    <li>%s", $vend, $mod);
+		printf("<dl><dt>%s</dt><dd>\n\t<ul>\n\t    <li>%s", $vend, $mod);
 	    } else {
-		printf("</li>\n\t</ul>\n    </li>\n    <li>%s\n\t<ul>\n\t    <li>%s", $vend, $mod);
+		printf("</li>\n\t</ul>\n    </dd>\n    <dt>%s</dt><dd>\n\t<ul>\n\t    <li>%s", $vend, $mod);
 	    }
 	}
     } else {
@@ -34,6 +34,6 @@ while (<$fh>) {
     $lastVend = $vend;
 }
 if ($type eq "html") {
-    print("</li>\n\t</ul>\n    </li>\n<ul>");
+    print("</li>\n\t</ul>\n    </dd>\n</dl>");
 }
 close $fh;
