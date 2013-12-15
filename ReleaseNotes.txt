@@ -75,6 +75,7 @@ Known issues:
 
 - Filter->Select Events is not implemented
 - Dive planner has been disabled for now
+- https support for divelogs.de on Windows is disabled
 
 
 
