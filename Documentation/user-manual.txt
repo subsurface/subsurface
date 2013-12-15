@@ -9,7 +9,7 @@
 :numbered:
 // :website: http://subsurface.hohndel.org
 
-image::images/SubsurfaceBanner.png["Banner",align="center"]
+image::images/Subsurface4Banner.png["Banner",align="center"]
 
 [big]#USER MANUAL#
 
