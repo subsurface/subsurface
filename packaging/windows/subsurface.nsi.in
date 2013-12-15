@@ -118,6 +118,7 @@ Section
     File libgcc_s_sjlj-1.dll
     File libstdc++-6.dll
     File libmarblewidget*dll
+    File libssl-10.dll
     File Qt*4.dll
     File subsurface.ico
     File qt.conf

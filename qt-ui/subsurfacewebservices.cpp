@@ -623,7 +623,11 @@ void DivelogsDeWebServices::startUpload()
 	ui.password->setEnabled(false);
 
 	QNetworkRequest request;
+#ifdef WIN32
+	request.setUrl(QUrl("http://divelogs.de/DivelogsDirectImport.php"));
+#else
 	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
+#endif
 	request.setRawHeader("Accept", "text/xml, application/xml");
 
 	QHttpPart part;
@@ -654,7 +658,11 @@ void DivelogsDeWebServices::startDownload()
 	ui.password->setEnabled(false);
 
 	QNetworkRequest request;
+#ifdef WIN32
+	request.setUrl(QUrl("http://divelogs.de/xml_available_dives.php"));
+#else
 	request.setUrl(QUrl("https://divelogs.de/xml_available_dives.php"));
+#endif
 	request.setRawHeader("Accept", "text/xml, application/xml");
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
@@ -766,9 +774,9 @@ void DivelogsDeWebServices::downloadFinished()
 
 	quint64 entries;
 #if defined(LIBZIP_VERSION_MAJOR)
-        entries = zip_get_num_entries(zip, 0);
+	entries = zip_get_num_entries(zip, 0);
 #else
-        // old version of libzip
+	// old version of libzip
 	entries = zip_get_num_files(zip);
 #endif
 
