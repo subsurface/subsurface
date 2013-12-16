@@ -687,12 +687,12 @@ void MainTab::resetPallete()
 }
 
 #define EDIT_TEXT2(what, text) \
-	textByteArray = text.toLocal8Bit(); \
+	textByteArray = text.toUtf8(); \
 	free(what);\
 	what = strdup(textByteArray.data());
 
 #define EDIT_TEXT(what, text) \
-	QByteArray textByteArray = text.toLocal8Bit(); \
+	QByteArray textByteArray = text.toUtf8(); \
 	free(what);\
 	what = strdup(textByteArray.data());
 
@@ -976,8 +976,8 @@ QString MainTab::printGPSCoords(int lat, int lon)
 	ilatmin = (lat % 1000000) * 60;
 	ilonmin = (lon % 1000000) * 60;
 	result.sprintf("%s%u%s %2d.%05d\' , %s%u%s %2d.%05d\'",
-		       lath.toLocal8Bit().data(), latdeg, UTF8_DEGREE, ilatmin / 1000000, (ilatmin % 1000000) / 10,
-		       lonh.toLocal8Bit().data(), londeg, UTF8_DEGREE, ilonmin / 1000000, (ilonmin % 1000000) / 10);
+		       lath.toUtf8().data(), latdeg, UTF8_DEGREE, ilatmin / 1000000, (ilatmin % 1000000) / 10,
+		       lonh.toUtf8().data(), londeg, UTF8_DEGREE, ilonmin / 1000000, (ilonmin % 1000000) / 10);
 	return result;
 }
 
