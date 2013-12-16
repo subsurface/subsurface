@@ -1,5 +1,4 @@
 marbledir.files = $$MARBLEDIR
-xslt.files = $$XSLT_FILES
 doc.files = $$DOC_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 exists($$[QT_INSTALL_TRANSLATIONS]) {
@@ -27,11 +26,10 @@ mac {
 
 	datadir = Contents/Resources/share
 	marbledir.path = Contents/Resources/data
-	xslt.path = $$datadir
 	doc.path = $$datadir/Documentation
 	translation.path = Contents/Resources/translations
 	qttranslation.path = Contents/Resources/translations
-	QMAKE_BUNDLE_DATA += marbledir xslt doc translation qttranslation
+	QMAKE_BUNDLE_DATA += marbledir doc translation qttranslation
 
 	mac_deploy.target = mac-deploy
 	mac_deploy.commands += $$[QT_INSTALL_BINS]/macdeployqt $${TARGET}.app
@@ -54,7 +52,6 @@ mac {
 	doc.path = $$WINDOWSSTAGING/Documentation
 	CONFIG -= copy_dir_files
 	deploy.path = $$WINDOWSSTAGING
-	deploy.files += $$xslt.files
 	deploy.CONFIG += no_check_exist
 	target.path = $$WINDOWSSTAGING
 	marbledir.path = $$WINDOWSSTAGING/data
@@ -127,13 +124,12 @@ mac {
 	# This is a fake rule just to create some rules in the target file
 	nl = $$escape_expand(\\n)
 	dummy.target = dummy-only-for-var-expansion
-	dummy.commands  = $${nl}prefix = /usr$${nl}\
+	dummy.commands	= $${nl}prefix = /usr$${nl}\
 BINDIR = $(prefix)/bin$${nl}\
 DATADIR = $(prefix)/share$${nl}\
 DOCDIR = $(DATADIR)/subsurface/Documentation$${nl}\
 DESKTOPDIR = $(DATADIR)/applications$${nl}\
 MANDIR = $(DATADIR)/man/man1$${nl}\
-XSLTDIR = $(DATADIR)/subsurface
 	QMAKE_EXTRA_TARGETS += dummy
 
 	WINDOWSSTAGING = ./packaging/windows
@@ -146,7 +142,6 @@ XSLTDIR = $(DATADIR)/subsurface
 	manpage.path = /$(MANDIR)
 	manpage.files = $$MANPAGE
 
-	xslt.path = /$(XSLTDIR)
 	marbledir.path = /$(DATADIR)/subsurface/data
 	doc.path = /$(DOCDIR)
 
@@ -155,7 +150,7 @@ XSLTDIR = $(DATADIR)/subsurface
 	translation.path = /$(DATADIR)/subsurface/translations
 	translation.CONFIG += no_check_exist
 
-	INSTALLS += target desktop manpage xslt doc marbledir translation
+	INSTALLS += target desktop manpage doc marbledir translation
 	install.target = install
 }
 !isEmpty(TRANSLATIONS) {

@@ -1970,57 +1970,6 @@ void parse_xml_exit(void)
 	xmlCleanupParser();
 }
 
-static xsltStylesheetPtr try_get_stylesheet(const char *path, int len, const char *name)
-{
-	xsltStylesheetPtr ret;
-	int namelen = strlen(name);
-	char *filename = malloc(len+1+namelen+1);
-
-	if (!filename)
-		return NULL;
-
-	memcpy(filename, path, len);
-#ifdef WIN32
-	filename[len] = '\\';
-#else
-	filename[len] = '/';
-#endif
-	memcpy(filename + len + 1, name, namelen+1);
-
-	ret = NULL;
-	if (!access(filename, R_OK))
-		ret = xsltParseStylesheetFile(filename);
-	free(filename);
-
-	return ret;
-}
-
-xsltStylesheetPtr get_stylesheet(const char *name)
-{
-	const char *path, *next;
-
-	path = getenv("SUBSURFACE_XSLT_PATH");
-	if (!path)
-		path = xslt_path;
-
-	do {
-		int len;
-		xsltStylesheetPtr ret;
-
-		next = strchr(path, ':');
-		len = strlen(path);
-		if (next) {
-			len = next - path;
-			next++;
-		}
-		ret = try_get_stylesheet(path, len, name);
-		if (ret)
-			return ret;
-	} while ((path = next) != NULL);
-
-	return NULL;
-}
-
 static struct xslt_files {
 	const char *root;
 	const char *file;

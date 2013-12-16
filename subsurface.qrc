@@ -29,5 +29,17 @@
 	<file alias="left_wing">icons/planner/left_wing.png</file>
 	<file alias="plan_minus">icons/planner/minus.png</file>
 	<file alias="plan_plus">icons/planner/plus.png</file>
+        <file>xslt/commonTemplates.xsl</file>
+        <file>xslt/csv2xml.xslt</file>
+        <file>xslt/divelogs-export.xslt</file>
+        <file>xslt/divelogs.xslt</file>
+        <file>xslt/DivingLog.xslt</file>
+        <file>xslt/jdivelog2subsurface.xslt</file>
+        <file>xslt/MacDive.xslt</file>
+        <file>xslt/SuuntoDM4.xslt</file>
+        <file>xslt/SuuntoSDM.xslt</file>
+        <file>xslt/udcf.xslt</file>
+        <file>xslt/uddf-export.xslt</file>
+        <file>xslt/uddf.xslt</file>
  </qresource>
  </RCC>

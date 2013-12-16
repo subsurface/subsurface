@@ -9,6 +9,8 @@
 #include <sys/time.h>
 #include <ctype.h>
 
+#include <libxslt/documents.h>
+
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
@@ -35,6 +37,7 @@
 #include <QNetworkProxy>
 #include <QDateTime>
 #include <QRegExp>
+#include <QResource>
 #include <QLibraryInfo>
 
 #include <gettextfromc.h>
@@ -506,4 +509,37 @@ QString get_trip_date_string(timestamp_t when, int nr)
 		return translate("gettextFromC", "%1 %2 (1 dive)")
 			.arg(monthname(tm.tm_mon))
 			.arg(tm.tm_year + 1900);
+}
+
+static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
+{
+	QFile f(QLatin1String(":/xslt/") + (const char *)uri);
+	if (!f.open(QIODevice::ReadOnly))
+		return NULL;
+
+	/* Load and parse the data */
+	QByteArray source = f.readAll();
+
+	xmlDocPtr doc = xmlParseMemory(source, source.size());
+	return doc;
+}
+
+xsltStylesheetPtr get_stylesheet(const char *name)
+{
+	// this needs to be done only once, but doesn't hurt to run every time
+	xsltSetLoaderFunc(get_stylesheet_doc);
+
+	// get main document:
+	xmlDocPtr doc = get_stylesheet_doc((const xmlChar *)name, NULL, 0, NULL, XSLT_LOAD_START);
+	if (!doc)
+		return NULL;
+
+//	xsltSetGenericErrorFunc(stderr, NULL);
+	xsltStylesheetPtr xslt = xsltParseStylesheetDoc(doc);
+	if (!xslt) {
+		xmlFreeDoc(doc);
+		return NULL;
+	}
+
+	return xslt;
 }
