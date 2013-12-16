@@ -88,7 +88,6 @@ void init_ui(int *argcp, char ***argvp)
 	QCoreApplication::setApplicationName("Subsurface");
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
-	xslt_path = strdup(getSubsurfaceDataPath("xslt").toAscii().data());
 
 	QSettings s;
 	s.beginGroup("Language");

@@ -637,8 +637,6 @@ extern void shift_times(const timestamp_t amount);
 
 extern xsltStylesheetPtr get_stylesheet(const char *name);
 
-extern char *xslt_path;
-
 extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
 

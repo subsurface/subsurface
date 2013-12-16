@@ -22,7 +22,6 @@
 int verbose, quit;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **error);
-char *xslt_path;
 
 /* the dive table holds the overall dive list; target table points at
  * the table we are currently filling */
@@ -2012,7 +2011,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **err
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
-			parser_error(error, translate("gettextFromC","Can't open stylesheet (%s)/%s"), xslt_path, info->file);
+			parser_error(error, translate("gettextFromC","Can't open stylesheet %s"), info->file);
 			return doc;
 		}
 		transformed = xsltApplyStylesheet(xslt, doc, params);
