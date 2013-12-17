@@ -129,7 +129,8 @@ BINDIR = $(prefix)/bin$${nl}\
 DATADIR = $(prefix)/share$${nl}\
 DOCDIR = $(DATADIR)/subsurface/Documentation$${nl}\
 DESKTOPDIR = $(DATADIR)/applications$${nl}\
-MANDIR = $(DATADIR)/man/man1$${nl}\
+MANDIR = $(DATADIR)/man/man1$${nl}
+
 	QMAKE_EXTRA_TARGETS += dummy
 
 	WINDOWSSTAGING = ./packaging/windows
