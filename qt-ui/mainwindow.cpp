@@ -700,6 +700,13 @@ void MainWindow::writeSettings()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
+	   ui.InfoWidget->isEditing()) {
+		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before closing the file."));
+		event->ignore();
+		return;
+	}
+
 	if (helpView && helpView->isVisible()){
 		helpView->close();
 		helpView->deleteLater();
