@@ -870,7 +870,7 @@ void MainWindow::on_actionImportCSV_triggered()
 
 void MainWindow::editCurrentDive()
 {
-	if(DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING){
+	if(information()->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING){
 		QMessageBox::warning(this, tr("Warning"), tr("First finish the current edition before trying to do another."));
 		return;
 	}
