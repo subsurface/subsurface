@@ -117,10 +117,10 @@ void PreferencesDialog::setUiFromPrefs()
 	QSettings s;
 	s.beginGroup("Language");
 	ui.languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
-	  QAbstractItemModel *m = ui.languageView->model();
-	  QModelIndexList languages = m->match( m->index(0,0), Qt::UserRole, s.value("UiLanguage").toString());
-	  if (languages.count())
-		  ui.languageView->setCurrentIndex(languages.first());
+	QAbstractItemModel *m = ui.languageView->model();
+	QModelIndexList languages = m->match( m->index(0,0), Qt::UserRole, s.value("UiLanguage").toString());
+	if (languages.count())
+		ui.languageView->setCurrentIndex(languages.first());
 }
 
 void PreferencesDialog::restorePrefs()
