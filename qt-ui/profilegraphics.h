@@ -150,6 +150,7 @@ public slots:
 	void on_scaleAction();
 	void changeGas();
 	void hideEvents();
+	void unhideEvents();
 	void removeEvent();
 	void addBookmark();
 private:

@@ -161,6 +161,17 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		m.addAction(action);
 		break;
 	}
+	bool some_hidden = false;
+	for (int i = 0; i < evn_used; i++) {
+		if (ev_namelist[i].plot_ev == false) {
+			some_hidden = true;
+			break;
+		}
+	}
+	if (some_hidden) {
+		action = m.addAction(tr("Unhde all events"), this, SLOT(unhideEvents()));
+		action->setData(event->globalPos());
+	}
 	m.exec(event->globalPos());
 }
 
@@ -211,6 +222,15 @@ void ProfileGraphicsView::hideEvents()
 		}
 		plot(current_dive, TRUE);
 	}
+}
+
+void ProfileGraphicsView::unhideEvents()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	for (int i = 0; i < evn_used; i++) {
+		ev_namelist[i].plot_ev = true;
+	}
+	plot(current_dive, TRUE);
 }
 
 void ProfileGraphicsView::removeEvent()

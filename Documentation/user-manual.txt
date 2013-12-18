@@ -682,7 +682,7 @@ For a more detailed explanation of _gradient factors_, use the following links:
 
 === The Dive Profile context menu
 
-The context menu for the Dive Profile is accessed by right-clicking while the mouse cursor is over the Dive Profile panel. The menu allows the creation of Bookmarks or Gas Change Event markers other than the ones that might have been imported from a Dive Computer. Markers are placed against the depth profile line and with the time of the event set by where the mouse cursor was when the right mouse button was initially clicked to bring up the menu. Gas Change events open a further selection of which gas is being switched to, the list based on the available gases defined in the Equipment Tab. By right-clicking while over an existing marker, the menu extends adding options to allow deletion of the marker or to allow all markers of that type to be hidden.
+The context menu for the Dive Profile is accessed by right-clicking while the mouse cursor is over the Dive Profile panel. The menu allows the creation of Bookmarks or Gas Change Event markers other than the ones that might have been imported from a Dive Computer. Markers are placed against the depth profile line and with the time of the event set by where the mouse cursor was when the right mouse button was initially clicked to bring up the menu. Gas Change events open a further selection of which gas is being switched to, the list based on the available gases defined in the Equipment Tab. By right-clicking while over an existing marker, the menu extends adding options to allow deletion of the marker or to allow all markers of that type to be hidden. Hidden events can be restored to view by selecteing Unhide all events from the context menu.
 
 === The *Information Box*
 
