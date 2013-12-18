@@ -677,6 +677,9 @@ void MainWindow::readSettings()
 	s.endGroup();
 
 	s.beginGroup("Display");
+	QFont defaultFont = s.value("divelist_font", qApp->font()).value<QFont>();
+	defaultFont.setPointSizeF(s.value("font_size", qApp->font().pointSizeF()).toFloat());
+	qApp->setFont(defaultFont);
 	GET_TXT("divelist_font", divelist_font);
 	GET_INT("font_size", font_size);
 	GET_INT("displayinvalid", display_invalid_dives);

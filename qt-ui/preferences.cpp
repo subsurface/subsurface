@@ -93,7 +93,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.kg->setChecked(prefs.units.weight == units::KG);
 	ui.lbs->setChecked(prefs.units.weight == units::LBS);
 
-	ui.font->setFont(QString(prefs.divelist_font));
+	ui.font->setCurrentFont(QString(prefs.divelist_font));
 	ui.fontsize->setValue(prefs.font_size);
 	ui.defaultfilename->setText(prefs.default_filename);
 	ui.default_cylinder->clear();
@@ -182,7 +182,7 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 
 	s.beginGroup("Display");
-	s.setValue("divelist_font", ui.font->font().family());
+	s.setValue("divelist_font", ui.font->currentFont());
 	s.setValue("font_size", ui.fontsize->value());
 	s.setValue("displayinvalid", ui.displayinvalid->isChecked());
 	s.endGroup();
