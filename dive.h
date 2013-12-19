@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <math.h>
+#include <zip.h>
 
 /* Windows has no MIN/MAX macros - so let's just roll our own */
 #define MIN(x, y) ({                \
@@ -632,6 +633,12 @@ extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
 extern void export_dives_uddf(const char *filename, const bool selected);
+
+extern int subsurface_open(const char *path, int oflags, mode_t mode);
+extern FILE *subsurface_fopen(const char *path, const char *mode);
+extern void *subsurface_opendir(const char *path);
+extern struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp);
+extern int subsurface_zip_close(struct zip *zip);
 
 extern void shift_times(const timestamp_t amount);
 

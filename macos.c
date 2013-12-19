@@ -9,6 +9,9 @@
 #include <CoreServices/CoreServices.h>
 #include <mach-o/dyld.h>
 #include <sys/syslimits.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <dirent.h>
 
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
@@ -76,4 +79,30 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 
 	closedir (dp);
 	return index;
+}
+
+/* NOP wrappers to comform with windows.c */
+int subsurface_open(const char *path, int oflags, mode_t mode)
+{
+	return open(path, oflags, mode);
+}
+
+FILE *subsurface_fopen(const char *path, const char *mode)
+{
+	return fopen(path, mode);
+}
+
+void *subsurface_opendir(const char *path)
+{
+	return (void *)opendir(path);
+}
+
+struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp)
+{
+	return zip_open(path, flags, errorp);
+}
+
+int subsurface_zip_close(struct zip *zip)
+{
+	return zip_close(zip);
 }

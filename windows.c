@@ -4,6 +4,11 @@
 #include "display.h"
 #include <windows.h>
 #include <shlobj.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <assert.h>
+#include <dirent.h>
+#include <zip.h>
 
 const char system_divelist_default_font[] = "Sans 8";
 
@@ -77,4 +82,92 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 
 	RegCloseKey(hKey);
 	return index;
+}
+
+/* this function converts a utf-8 string to win32's utf-16 2 byte string.
+ * the caller function should manage the allocated memory.
+ */
+static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
+{
+	assert(utf8 != NULL);
+	assert(file != NULL);
+	assert(line);
+	/* estimate buffer size */
+	const int sz = strlen(utf8) + 1;
+	wchar_t *utf16 = (wchar_t *)malloc(sizeof(wchar_t) * sz);
+	if (!utf16) {
+		fprintf(stderr, "%s:%d: %s %d.", file, line, "cannot allocate buffer of size", sz);
+		return NULL;
+	}
+	if (MultiByteToWideChar(CP_UTF8, 0, utf8, -1, utf16, sz))
+		return utf16;
+	fprintf(stderr, "%s:%d: %s", file, line, "cannot convert string.");
+	free((void *)utf16);
+	return NULL;
+}
+
+#define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
+
+/* bellow we provide a set of wrappers for some I/O functions to use wchar_t.
+ * on win32 this solves the issue that we need paths to be utf-16 encoded.
+ */
+int subsurface_open(const char *path, int oflags, mode_t mode)
+{
+	int ret = -1;
+	wchar_t *wpath = utf8_to_utf16(path);
+	if (wpath) {
+		ret = _wopen(wpath, oflags, mode);
+		free((void *)wpath);
+		return ret;
+	}
+	return ret;
+}
+
+FILE *subsurface_fopen(const char *path, const char *mode)
+{
+	FILE *ret = NULL;
+	wchar_t *wpath = utf8_to_utf16(path);
+	if (wpath) {
+		const int len = strlen(mode);
+		wchar_t wmode[len + 1];
+		for (int i = 0; i < len; i++)
+			wmode[i] = (wchar_t)mode[i];
+		wmode[len] = 0;
+		ret = _wfopen(wpath, wmode);
+		free((void *)wpath);
+		return ret;
+	}
+	return ret;
+}
+
+/* here we return a void pointer instead of _WDIR or DIR pointer */
+void *subsurface_opendir(const char *path)
+{
+	_WDIR *ret = NULL;
+	wchar_t *wpath = utf8_to_utf16(path);
+	if (wpath) {
+		ret = _wopendir(wpath);
+		free((void *)wpath);
+		return (void *)ret;
+	}
+	return (void *)ret;
+}
+
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
+/* we use zip_fdopen since zip_open doesn't have a wchar_t version */
+struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp)
+{
+	int fd = subsurface_open(path, O_RDONLY | O_BINARY, 0);
+	struct zip *ret = zip_fdopen(fd, flags, errorp);
+	if (!ret)
+		close(fd);
+	return ret;
+}
+
+int subsurface_zip_close(struct zip *zip)
+{
+	return zip_close(zip);
 }
