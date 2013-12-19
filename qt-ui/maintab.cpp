@@ -668,6 +668,7 @@ void MainTab::acceptChanges()
 		mainWindow()->dive_list()->restoreSelection();
 	}
 	mainWindow()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
+	mainWindow()->dive_list()->setFocus();
 }
 
 void MainTab::resetPallete()
@@ -791,6 +792,7 @@ void MainTab::rejectChanges()
 		mainWindow()->refreshDisplay(false);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
+	mainWindow()->dive_list()->setFocus();
 }
 #undef EDIT_TEXT2
 
