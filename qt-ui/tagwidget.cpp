@@ -2,14 +2,33 @@
 #include <QPair>
 #include <QDebug>
 #include <QAbstractItemView>
+#include <QSettings>
+#include <QFont>
 
 TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL)
 {
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(reparse()));
 	connect(this, SIGNAL(textChanged()), this, SLOT(reparse()));
 
-	addColor(QColor(0x00, 0xAE, 0xFF));
-	addColor(QColor(0x00, 0x78, 0xB0));
+	QColor textColor = palette().color(QPalette::Text);
+	qreal h, s, l, a;
+	textColor.getHslF(&h, &s, &l, &a);
+	// I use dark themes
+	if (l <= 0.3 ){ // very dark text. get a brigth background
+		addColor( QColor(Qt::red).lighter(120) );
+		addColor( QColor(Qt::green).lighter(120) );
+		addColor( QColor(Qt::blue).lighter(120) );
+	}
+	else if ( l <= 0.6 ){ // moderated dark text. get a somewhat brigth background
+		addColor( QColor(Qt::red).lighter(60) );
+		addColor( QColor(Qt::green).lighter(60) );
+		addColor( QColor(Qt::blue).lighter(60) );
+	}
+	else{
+		addColor( QColor(Qt::red).darker(120) );
+		addColor( QColor(Qt::green).darker(120) );
+		addColor( QColor(Qt::blue).darker(120) );
+	} // light text. get a dark background.
 }
 
 void TagWidget::setCompleter(QCompleter *completer)
