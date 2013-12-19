@@ -179,7 +179,7 @@ static bool uemis_init(const char *path)
 		return FALSE;
 	/* let's check if this is indeed a Uemis DC */
 	reqtxt_path = build_filename(path,"req.txt");
-	reqtxt_file = open(reqtxt_path, O_RDONLY, 0666);
+	reqtxt_file = subsurface_open(reqtxt_path, O_RDONLY, 0666);
 	if (!reqtxt_file) {
 #if UEMIS_DEBUG & 1
 		fprintf(debugfile, ":EE req.txt can't be opened\n");
@@ -385,7 +385,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	int ans_file;
 	int timeout = UEMIS_LONG_TIMEOUT;
 
-	reqtxt_file = open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+	reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 	snprintf(sb, BUFLEN, "n%04d12345678", filenr);
 	str_append_with_delim(sb, request);
 	for (i = 0; i < n_param_in; i++)
@@ -426,7 +426,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		progress_bar_fraction = filenr / 4000.0;
 		snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
 		ans_path = build_filename(build_filename(path, "ANS"), fl);
-		ans_file = open(ans_path, O_RDONLY, 0666);
+		ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 		read(ans_file, tmp, 100);
 		close(ans_file);
 #if UEMIS_DEBUG & 8
@@ -455,7 +455,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 					more_files = FALSE;
 					assembling_mbuf = FALSE;
 				}
-				reqtxt_file = open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+				reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 				trigger_response(reqtxt_file, "n", filenr, file_length);
 			}
 		} else {
@@ -465,7 +465,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				assembling_mbuf = FALSE;
 				searching = FALSE;
 			}
-			reqtxt_file = open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+			reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 			trigger_response(reqtxt_file, "r", filenr, file_length);
 			uemis_increased_timeout(&timeout);
 		}
@@ -473,7 +473,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			int size;
 			snprintf(fl, 13, "ANS%d.TXT", assembling_mbuf ? filenr - 2 : filenr - 1);
 			ans_path = build_filename(build_filename(path, "ANS"), fl);
-			ans_file = open(ans_path, O_RDONLY, 0666);
+			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			size = bytes_available(ans_file);
 			if (size > 3) {
 				char *buf = malloc(size - 2);
@@ -497,7 +497,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		if (!ismulti) {
 			snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
 			ans_path = build_filename(build_filename(path, "ANS"), fl);
-			ans_file = open(ans_path, O_RDONLY, 0666);
+			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			size = bytes_available(ans_file);
 			if (size > 3) {
 				buf = malloc(size - 2);

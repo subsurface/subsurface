@@ -578,7 +578,7 @@ void save_dives_logic(const char *filename, const bool select_only)
 	struct dive *dive;
 	dive_trip_t *trip;
 
-	FILE *f = fopen(filename, "w");
+	FILE *f = subsurface_fopen(filename, "w");
 
 	if (!f)
 		return;
@@ -639,7 +639,7 @@ void export_dives_uddf(const char *filename, const bool selected)
 
 	/* Save XML to file and convert it into a memory buffer */
 	save_dives_logic(filename, selected);
-	f = fopen(filename, "r");
+	f = subsurface_fopen(filename, "r");
 	fseek(f, 0, SEEK_END);
 	streamsize = ftell(f);
 	rewind(f);
@@ -677,7 +677,7 @@ void export_dives_uddf(const char *filename, const bool selected)
 	xmlFreeDoc(doc);
 
 	/* Write the transformed XML to file */
-	f = fopen(filename, "w");
+	f = subsurface_fopen(filename, "w");
 	xmlDocFormatDump(f, transformed, 1);
 	xmlFreeDoc(transformed);
 

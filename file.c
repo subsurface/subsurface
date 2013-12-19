@@ -25,7 +25,7 @@ int readfile(const char *filename, struct memblock *mem)
 	mem->buffer = NULL;
 	mem->size = 0;
 
-	fd = open(filename, O_RDONLY | O_BINARY, 0);
+	fd = subsurface_open(filename, O_RDONLY | O_BINARY, 0);
 	if (fd < 0)
 		return fd;
 	ret = fstat(fd, &st);
@@ -81,7 +81,7 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, char **er
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
-	struct zip *zip = zip_open(filename, ZIP_CHECKCONS, NULL);
+	struct zip *zip = subsurface_zip_open_readonly(filename, ZIP_CHECKCONS, NULL);
 
 	if (zip) {
 		int index;
@@ -93,7 +93,7 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, char **er
 			zip_fclose(file);
 			success++;
 		}
-		zip_close(zip);
+		subsurface_zip_close(zip);
 	}
 	return success;
 }
