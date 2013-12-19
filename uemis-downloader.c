@@ -139,18 +139,33 @@ static long bytes_available(int file)
 static int number_of_file(char *path)
 {
 	int count = 0;
-	DIR * dirp;
-	struct dirent * entry;
+#ifdef WIN32
+	struct _wdirent *entry;
+	_WDIR *dirp = (_WDIR *)subsurface_opendir(path);
+#else
+	struct dirent *entry;
+	DIR *dirp = (DIR *)subsurface_opendir(path);
+#endif
 
-	dirp = opendir(path);
-	while (dirp && (entry = readdir(dirp)) != NULL) {
-#ifndef WIN32
+	while (dirp) {
+#ifdef WIN32
+		entry = _wreaddir(dirp);
+		if (!entry)
+			break;
+#else
+		entry = readdir(dirp);
+		if (!entry)
+			break;
 		if (entry->d_type == DT_REG) /* If the entry is a regular file */
 #endif
 			count++;
 
 	}
+#ifdef WIN32
+	_wclosedir(dirp);
+#else
 	closedir(dirp);
+#endif
 	return count;
 }
 
