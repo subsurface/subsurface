@@ -294,10 +294,10 @@ bool MainTab::eventFilter(QObject* object, QEvent* event)
 	// MouseButtonPress in any widget (not all will ever get this), KeyPress in the dateTimeEdit,
 	// FocusIn for the starWidgets or RequestSoftwareInputPanel for tagWidget start the editing
 	if (isEnabled() && editMode == NONE &&
-	    (event->type() == QEvent::MouseButtonPress) ||
+	    ((event->type() == QEvent::MouseButtonPress) ||
 	    (event->type() == QEvent::KeyPress && object == ui.dateTimeEdit) ||
 	    (event->type() == QEvent::FocusIn && (object == ui.rating || object == ui.visibility)) ||
-	    (event->type() == QEvent::RequestSoftwareInputPanel && object == ui.tagWidget)) {
+	    (event->type() == QEvent::RequestSoftwareInputPanel && object == ui.tagWidget))) {
 		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
 	}
