@@ -1941,7 +1941,7 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 	 * time. We also need epoch, not seconds since year 1. */
 	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
-	retval = sqlite3_open(url,&handle);
+	retval = sqlite3_open(url, &handle);
 
 	if(retval) {
 		fprintf(stderr, translate("gettextFromC","Database connection failed '%s'.\n"), url);
