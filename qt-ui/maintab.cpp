@@ -281,23 +281,27 @@ void MainTab::enableEdition(EditMode newEditMode)
 
 bool MainTab::eventFilter(QObject* object, QEvent* event)
 {
+	if (!isEnabled())
+		return false;
+
+	if (editMode != NONE)
+		return false;
 	// we want to prevent the user from accidentally enabling editMode:
 	// for the tagWidget we ignore FocusIn - that's both a click and starting the scroll wheel
 	// this means a click by itself won't start edit mode - but typing something will
-	if (isEnabled() && editMode == NONE && object->objectName() == "tagWidget" &&
+	if (object->objectName() == "tagWidget" &&
 	    event->type() == QEvent::FocusIn)
 		return true;
 	// for the dateTimeEdit widget we need to ignore Wheel events as well (as long as we aren't editing)
-	if (isEnabled() && editMode == NONE && object->objectName() == "dateTimeEdit" &&
+	if (object->objectName() == "dateTimeEdit" &&
 	    (event->type() == QEvent::FocusIn || event->type() == QEvent::Wheel))
 		return true;
 	// MouseButtonPress in any widget (not all will ever get this), KeyPress in the dateTimeEdit,
 	// FocusIn for the starWidgets or RequestSoftwareInputPanel for tagWidget start the editing
-	if (isEnabled() && editMode == NONE &&
-	    ((event->type() == QEvent::MouseButtonPress) ||
+	if ((event->type() == QEvent::MouseButtonPress) ||
 	    (event->type() == QEvent::KeyPress && object == ui.dateTimeEdit) ||
 	    (event->type() == QEvent::FocusIn && (object == ui.rating || object == ui.visibility)) ||
-	    (event->type() == QEvent::RequestSoftwareInputPanel && object == ui.tagWidget))) {
+	    (event->type() == QEvent::RequestSoftwareInputPanel && object == ui.tagWidget)) {
 		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
 	}

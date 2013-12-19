@@ -65,7 +65,6 @@ signals:
 protected:
 	virtual void paintEvent(QPaintEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
-
 private:
 	struct Private;
 	Private *d;
