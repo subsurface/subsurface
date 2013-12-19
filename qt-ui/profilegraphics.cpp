@@ -226,7 +226,6 @@ void ProfileGraphicsView::hideEvents()
 
 void ProfileGraphicsView::unhideEvents()
 {
-	QAction *action = qobject_cast<QAction*>(sender());
 	for (int i = 0; i < evn_used; i++) {
 		ev_namelist[i].plot_ev = true;
 	}
