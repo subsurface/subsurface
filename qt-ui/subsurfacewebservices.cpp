@@ -125,7 +125,7 @@ static char *prepare_dives_for_divelogs(const bool selected)
 
 	/* generate a random filename and create/open that file with zip_open */
 	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	tempfile = strdup(tempfileQ.toLocal8Bit().data());
+	tempfile = strdup(tempfileQ.toUtf8().data());
 	zip = zip_open(tempfile, ZIP_CREATE, NULL);
 
 	if (!zip) {
@@ -759,7 +759,7 @@ void DivelogsDeWebServices::downloadFinished()
 	if (!zip)
 		::close(duppedfd);
 #else
-	struct zip *zip = zip_open(zipFile.fileName().toLocal8Bit().data(), 0, &errorcode);
+	struct zip *zip = zip_open(zipFile.fileName().toUtf8().data(), 0, &errorcode);
 #endif
 	if (!zip) {
 		char buf[512];
@@ -855,7 +855,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 		}
 		/* parse file and import dives */
 		char *error = NULL;
-		parse_file(zipFile.fileName().toLocal8Bit().data(), &error);
+		parse_file(zipFile.fileName().toUtf8().data(), &error);
 		if (error != NULL) {
 			mainWindow()->showError(error);
 			free(error);

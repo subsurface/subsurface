@@ -825,7 +825,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 	QByteArray fileNamePtr;
 	char *error = NULL;
 	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = fileNames.at(i).toLocal8Bit();
+		fileNamePtr = fileNames.at(i).toUtf8();
 		parse_file(fileNamePtr.data(), &error);
 		if (error != NULL) {
 			showError(error);
@@ -846,7 +846,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	QByteArray fileNamePtr;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = fileNames.at(i).toLocal8Bit();
+		fileNamePtr = fileNames.at(i).toUtf8();
 		parse_file(fileNamePtr.data(), &error);
 		set_filename(fileNamePtr.data(), TRUE);
 		setTitle(MWTF_FILENAME);
