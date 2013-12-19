@@ -44,7 +44,7 @@ QPair<int,int> TagWidget::getCursorTagPosition() {
 		start = 0;
 		end = 0;
 	}
-	return QPair<int,int>(start,end);
+	return qMakePair(start,end);
 }
 
 enum ParseState {FINDSTART, FINDEND};
