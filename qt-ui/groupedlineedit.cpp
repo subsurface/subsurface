@@ -187,8 +187,6 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 	QPainter painter(viewport());
 
 	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
-
 	painter.fillRect(0, 0, viewport()->width(), viewport()->height(), palette().base());
 
 	QVectorIterator<QColor> i(d->colors);
