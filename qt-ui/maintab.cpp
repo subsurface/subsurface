@@ -31,6 +31,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    editMode(NONE)
 {
 	ui.setupUi(this);
+	ui.tagWidget->setFocusPolicy(Qt::StrongFocus); // Don't get focus by 'Wheel'
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
 	closeMessage();
@@ -286,12 +287,6 @@ bool MainTab::eventFilter(QObject* object, QEvent* event)
 
 	if (editMode != NONE)
 		return false;
-	// we want to prevent the user from accidentally enabling editMode:
-	// for the tagWidget we ignore FocusIn - that's both a click and starting the scroll wheel
-	// this means a click by itself won't start edit mode - but typing something will
-	if (object->objectName() == "tagWidget" &&
-	    event->type() == QEvent::FocusIn)
-		return true;
 	// for the dateTimeEdit widget we need to ignore Wheel events as well (as long as we aren't editing)
 	if (object->objectName() == "dateTimeEdit" &&
 	    (event->type() == QEvent::FocusIn || event->type() == QEvent::Wheel))
