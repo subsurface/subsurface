@@ -21,6 +21,7 @@ char dc_number = 0;
 
 static struct plot_data *last_pi_entry = NULL;
 
+#ifdef DEBUG_PI
 /* debugging tool - not normally used */
 static void dump_pi (struct plot_info *pi)
 {
@@ -43,6 +44,7 @@ static void dump_pi (struct plot_info *pi)
 	}
 	printf("   }\n");
 }
+#endif
 
 #define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
 #define DIV_UP(x,y) (((x)+(y)-1)/(y))
@@ -398,6 +400,7 @@ static void list_free(pr_track_t *list)
 	free(list);
 }
 
+#ifdef DEBUG_PR_TRACK
 static void dump_pr_track(pr_track_t **track_pr)
 {
 	int cyl;
@@ -412,6 +415,7 @@ static void dump_pr_track(pr_track_t **track_pr)
 		}
 	}
 }
+#endif
 
 /*
  * This looks at the pressures for one cylinder, and
@@ -508,10 +512,10 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	struct plot_data *entry;
 	int cur_pr[MAX_CYLINDERS];
 
-	if (0) {
-		/* another great debugging tool */
-		dump_pr_track(track_pr);
-	}
+#ifdef DEBUG_PR_TRACK
+	/* another great debugging tool */
+	dump_pr_track(track_pr);
+#endif
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (!track_pr[cyl])
 			continue;
@@ -1155,8 +1159,10 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 
 	pi->meandepth = dive->dc.meandepth.mm;
 
-	if (0) /* awesome for debugging - not useful otherwise */
-		dump_pi(pi);
+#ifdef DEBUG_PI
+	/* awesome for debugging - not useful otherwise */
+	dump_pi(pi);
+#endif
 	return analyze_plot_info(pi);
 }
 

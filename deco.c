@@ -187,6 +187,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 	return tissue_tolerance_calc(dive);
 }
 
+#ifdef DECO_CALC_DEBUG
 void dump_tissues()
 {
 	int ci;
@@ -198,6 +199,7 @@ void dump_tissues()
 		printf(" %6.3e", tissue_he_sat[ci]);
 	printf("\n");
 }
+#endif
 
 void clear_deco(double surface_pressure)
 {
