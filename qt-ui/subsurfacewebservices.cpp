@@ -753,7 +753,7 @@ void DivelogsDeWebServices::downloadFinished()
 
 	int errorcode;
 	zipFile.seek(0);
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) && defined(LIBZIP_VERSION_MAJOR)
 	int duppedfd = dup(zipFile.handle());
 	struct zip *zip = zip_fdopen(duppedfd, 0, &errorcode);
 	if (!zip)

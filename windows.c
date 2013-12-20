@@ -157,14 +157,19 @@ void *subsurface_opendir(const char *path)
 #define O_BINARY 0
 #endif
 
-/* we use zip_fdopen since zip_open doesn't have a wchar_t version */
 struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp)
 {
+#if defined(LIBZIP_VERSION_MAJOR)
+	/* libzip 0.10 has zip_fdopen, let's use it since zip_open doesn't have a
+	 * wchar_t version */
 	int fd = subsurface_open(path, O_RDONLY | O_BINARY, 0);
 	struct zip *ret = zip_fdopen(fd, flags, errorp);
 	if (!ret)
 		close(fd);
 	return ret;
+#else
+	return zip_open(path, flags, errorp);
+#endif
 }
 
 int subsurface_zip_close(struct zip *zip)
