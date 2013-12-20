@@ -27,7 +27,9 @@ public slots:
 protected:
 	/*reimp*/ void mouseReleaseEvent(QMouseEvent* );
 	/*reimp*/ void paintEvent(QPaintEvent* );
-
+	/*reimp*/ void focusInEvent(QFocusEvent*);
+	/*reimp*/ void focusOutEvent(QFocusEvent*);
+	/*reimp*/ void keyPressEvent(QKeyEvent*);
 private:
 	int current;
 	bool readOnly;

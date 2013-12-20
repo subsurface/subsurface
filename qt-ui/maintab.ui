@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
-    <height>517</height>
+    <width>690</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="currentIndex">
@@ -37,8 +37,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>493</width>
-         <height>586</height>
+         <width>662</width>
+         <height>644</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -219,10 +219,18 @@
         <item row="10" column="0">
          <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
           <item>
-           <widget class="StarWidget" name="rating" native="true"/>
+           <widget class="StarWidget" name="rating" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="StarWidget" name="visibility" native="true"/>
+           <widget class="StarWidget" name="visibility" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -281,8 +289,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>507</width>
-         <height>459</height>
+         <width>662</width>
+         <height>644</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -361,8 +369,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>492</width>
-         <height>375</height>
+         <width>662</width>
+         <height>644</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -671,8 +679,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>323</width>
-         <height>130</height>
+         <width>662</width>
+         <height>644</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -846,6 +854,8 @@
   <tabstop>coordinates</tabstop>
   <tabstop>divemaster</tabstop>
   <tabstop>buddy</tabstop>
+  <tabstop>rating</tabstop>
+  <tabstop>visibility</tabstop>
   <tabstop>suit</tabstop>
   <tabstop>tagWidget</tabstop>
   <tabstop>notes</tabstop>
