@@ -10,7 +10,16 @@
 # these warnings are in general just wrong and annoying - but should be
 # turned on every once in a while in case they do show the occasional
 # actual bug
-*-g++* | *-clang*: QMAKE_CFLAGS += -Wno-unused-result -Wno-pointer-sign -fno-strict-overflow
+# turns out the gcc 4.2 (as used on MacOS 10.6) doesn't have no-unused-result, yet
+*-clang*: QMAKE_CFLAGS += -Wno-unused-result -Wno-pointer-sign -fno-strict-overflow
+*-g++*: {
+	system( g++ --version | grep -e "4\\.2\\." > /dev/null ) {
+		QMAKE_CFLAGS += -Wno-pointer-sign -fno-strict-overflow
+	} else {
+		QMAKE_CFLAGS += -Wno-unused-result -Wno-pointer-sign -fno-strict-overflow
+	}
+}
+
 *-clang*: QMAKE_CFLAGS += -Wno-format-security
 *-g++*: QMAKE_CXXFLAGS += -fno-strict-overflow
 !win32: !mac: {
