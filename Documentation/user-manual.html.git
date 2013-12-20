@@ -1,0 +1,2875 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<title></title>
+<style type="text/css">
+/*
+ * compact_subsurface.css, a special style sheet for Subsurface,
+ *  modified by Willem Ferguson and derived from:
+ *		compact.css, version 1.3 by Alex Efros <powerman@powerman.name>
+ * Licence: Public Domain
+ *
+ * Usage: asciidoc -a theme=compact_subsurface ...
+ */
+
+*   { padding: 0;  margin: 0; }
+img { border: 0; }
+
+/*** Layout ***/
+
+body                        { margin: 10px 20px; }
+#header br                  { display: none; }
+#revnumber                  { display: block; }
+#toc                        { margin: 1em 0; }
+.toclevel2                  { margin-left: 1em; }
+.toclevel3		    { margin-left: 2em; }
+#footer                     { margin-top: 2em; }
+
+#preamble .sectionbody,
+h2,
+h3,
+h4,
+h5                          { margin: 1em 0 0 0; }
+
+.admonitionblock,
+.listingblock,
+.sidebarblock,
+.exampleblock,
+.tableblock,
+.literalblock               { margin: 1em 0; }
+.admonitionblock td.icon    { padding-right: 0.5em; }
+.admonitionblock td.content { padding-left:  0.5em; }
+.listingblock .content      { padding: 0.5em; }
+.sidebarblock > .content    { padding: 0.5em; }
+.exampleblock > .content    { padding: 0 0.5em; }
+.tableblock caption         { padding: 0 0 0.5em 0; }
+.tableblock thead th,
+.tableblock tbody td,
+.tableblock tfoot td        { padding: 0 0.5em; }
+.quoteblock                 { padding: 0 2.0em; }
+
+.paragraph                  { margin: 1em 0 0 0; }
+.sidebarblock .paragraph:first-child,
+.exampleblock .paragraph:first-child,
+.admonitionblock .paragraph:first-child  { margin: 0; }
+
+   .ulist,    .olist,    .dlist,    .hdlist,    .qlist   { margin: 1em 0; }
+li .ulist, li .olist, li .dlist, li .hdlist, li .qlist,
+dd .ulist, dd .olist, dd .dlist, dd .hdlist, dd .qlist   { margin: 0; }
+ul                          { margin-left: 1.5em; }
+ol                          { margin-left: 2em; }
+dd                          { margin-left: 3em; }
+td.hdlist1                  { padding-right: 1em; }
+
+/*** Fonts ***/
+
+body                        { font-family: Verdana, sans-serif; }
+#header                     { font-family: Arial,   sans-serif; }
+#header h1                  { font-family: Arial,   sans-serif; }
+#footer                     { font-family: Georgia, serif;      }
+#email                      { font-size: 0.85em; }
+#revnumber                  { font-size: 0.75em; }
+#toc                        { font-size: 0.9em;  }
+#toctitle                   { font-weight: bold; }
+#footer                     { font-size: 0.8em; }
+
+h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
+h2                          { font-size: 1.5em; }
+.sectionbody                { font-size: 0.85em; }
+.sectionbody .sectionbody   { font-size: inherit; }
+h3                          { font-size: 159%; } /* 1.35em */
+h4                          { font-size: 141%; } /* 1.2em */
+h5                          { font-size: 118%; } /* 1em */
+.title                      { font-size: 106%;   /* 0.9em */
+			      font-weight: bold;
+			    }
+
+tt, .monospaced             { font-family: monospace; font-size: 106%; } /* 0.9em */
+dt, td.hdlist1, .qlist em   { font-family: Times New Roman, serif;
+			      font-size: 118%;   /* 1em */
+			      font-style: italic;
+			    }
+.tableblock tfoot td        { font-weight: bold; }
+
+/*** Colors and Backgrounds ***/
+
+h1                          { color: #527bbd; border-bottom: 2px solid silver; }
+#footer                     {                 border-top:    2px solid silver; }
+
+h2                          { color: #527bbd; border-bottom: 2px solid silver; }
+h3                          { color: #5D7EAE; border-bottom: 2px solid silver; }
+h3                          { display: inline-block; }
+h4,h5                       { color: #5D7EAE; }
+
+.admonitionblock td.content { border-left: 2px solid silver; }
+.listingblock .content      { background: #f4f4f4;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.sidebarblock > .content    { background: #ffffee;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.exampleblock > .content    {                   border-left: 2px solid silver; }
+.quoteblock                 {                   border-left: 5px solid #e0e0e0; }
+.tableblock table {
+    border-collapse: collapse;
+    border-width: 3px;
+    border-color: #527bbd;
+}
+.tableblock table[frame=hsides] { border-style: solid none; }
+.tableblock table[frame=border] { border-style: solid;      }
+.tableblock table[frame=void]   { border-style: none;       }
+.tableblock table[frame=vsides] { border-style: none solid; }
+.tableblock table[rules=all] tbody tr *,
+.tableblock table[rules=rows] tbody tr * {
+    border-top: 1px solid #527bbd;
+}
+.tableblock table[rules=all] tr *,
+.tableblock table[rules=cols] tr * {
+    border-left: 1px solid #527bbd;
+}
+.tableblock table tbody tr:first-child * {
+    border-top: 1px solid white; /* none don't work here... %-[] */
+}
+.tableblock table tr *:first-child {
+    border-left: none;
+}
+.tableblock table[frame] thead tr *,
+.tableblock table[frame] thead tr * {
+    border-top: 1px solid white;
+    border-bottom: 2px solid #527bbd;
+}
+.tableblock table tr td p.table,
+.tableblock table tr td p.table * {
+    border: 0px;
+}
+
+tt, .monospaced             { color: navy; }
+
+li                          { color: #a0a0a0; }
+li > *                      { color: black; }
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+/*** Misc ***/
+
+.admonitionblock td.icon    { vertical-align: top; }
+.attribution                { text-align: right; }
+
+ul                          { list-style-type: disc; }
+ol.arabic                   { list-style-type: decimal; }
+ol.loweralpha               { list-style-type: lower-alpha; }
+ol.upperalpha               { list-style-type: upper-alpha; }
+ol.lowerroman               { list-style-type: lower-roman; }
+ol.upperroman               { list-style-type: upper-roman; }
+.hdlist td                  { vertical-align: top; }
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(3);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Subsurface4Banner.png" alt="Banner" />
+</div>
+</div>
+<div class="paragraph"><p><span class="big">USER MANUAL</span></p></div>
+<div class="paragraph"><p><strong>Manual authors</strong>: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg, Linus Torvalds,
+Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem Ferguson, Salvador Cuñat</p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.0,  December 2013</em></span></p></div>
+<div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging programme with
+extensive infrastructure to describe, organise and interpret scuba and free dives.
+<em>Subsurface</em> binaries are available for Windows PCs (Win XP or later), Intel
+based Macs (OS/X) and many Linux distributions. <em>Subsurface</em> can be built for
+many more hardware platforms and software environments where Qt and libdivecomputer
+are available.</p></div>
+<div class="paragraph"><p>The scope of this document is the use of the <em>Subsurface</em> program. To install
+the software, consult the <em>Downloads</em> page on the
+<a href="http://subsurface.hohndel.org/"><em>Subsurface</em> web site</a>.
+Please discuss issues with this program by sending an email to
+<a href="mailto:subsurface@hohndel.org">our mailing list</a> and report bugs at
+<a href="http://trac.hohndel.org">our bugtracker</a>.  For instructions on how to build the
+software and (if needed) its dependencies please consult the INSTALL file
+included with the source code.</p></div>
+<div class="paragraph"><p><strong>Audience</strong>: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
+Di vers</p></div>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+<div class="sect1">
+<h2 id="S_StartUsing">1. Start Using the Program</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels and has a <strong>Main
+Menu</strong> (File Import Log View Filter Help) at the top of the window (for Windows
+and Linux) or the top of the screen (for Mac and Ubuntu Unity). The screen shots
+in this manual were taken on an Ubuntu system, so they don&#8217;t show the main menu
+as part of the <em>Subsurface</em> window. The four panels are:</p></div>
+<div class="paragraph"><p>1) The <strong>Dive List</strong> to the bottom left containing a list of all the dives in your
+dive log. You can select and highlight a dive on the dive list by clicking on
+it. In most situations you can also use the cursor up/down keys to switch
+between dives.</p></div>
+<div class="paragraph"><p>2) The <strong>Dive Map</strong> to the bottom right, showing your dive sites on a world map
+and centred on the site of the last selected dive.</p></div>
+<div class="paragraph"><p>3) The <strong>Dive Info</strong> to the top left, giving more detailed information on the
+selected dive, including some statistics for the selected dive or for all
+highlighted dive(s).</p></div>
+<div class="paragraph"><p>4) The <strong>Dive Profile</strong> to the top right, showing a graphical profile of the
+highlighted dive in the dive list.</p></div>
+<div class="paragraph"><p>You can drag the dividers between panels in order to change the size of any of
+the panels. <em>Subsurface</em> remembers the position of the dividers, so the next
+time <em>Subsurface</em> starts it uses the positions of the dividers when the program
+was executed previously.</p></div>
+<div class="paragraph"><p>If one dive is selected, the dive location, detailed information and profile of
+the <em>selected dive</em> are shown in the respective panels. On the other hand, if
+one highlights more than one dive the last highlighted dive is the <em>selected
+dive</em>, but summary data of all <em>highlighted dives</em> is shown in the <strong>Stats</strong> tab
+of the <strong>Dive Info</strong> panel.</p></div>
+<div class="imageblock" id="S_ViewPanels" style="text-align:center;">
+<div class="content">
+<img src="images/main_window.jpg" alt="The Main Window" />
+</div>
+</div>
+<div class="paragraph"><p>You can determine which of the four panels you wish to see by selecting the
+<strong>View</strong> option on the main menu and which gives the user several choices of
+display:</p></div>
+<div class="paragraph"><p><strong>All</strong>: show all four of the panels as in the screenshot above.</p></div>
+<div class="paragraph"><p><strong>Divelist</strong>: Show only the Dive List.</p></div>
+<div class="paragraph"><p><strong>Profile</strong>: Show only the Dive Profile of the selected dive.</p></div>
+<div class="paragraph"><p><strong>Info</strong>: Show only the Dive Notes about the last selected dive and statistics for
+all highlighted dives.</p></div>
+<div class="paragraph"><p><strong>Globe</strong>: Show only the world map, centred on the last selected dive.</p></div>
+<div class="paragraph"><p>Like many other functions that can be accessed via the Main Menu, these options
+can be triggered using keyboard shortcuts as well. The shortcuts for your system
+are shown with an underline in the menu entries. Since different Operating
+Systems and your chosen language may cause <em>Subsurface</em> to use different
+shortcut keys we won&#8217;t try to list them here in the user manual.</p></div>
+<div class="paragraph"><p>When you start the program for the first time, it shows no information at all.
+This is because the program doesn&#8217;t have any dive information available. In the
+following sections we will describe how to create a new logbook.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_NewLogbook">2. Creating a new logbook</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Select <em>File &#8594; New Logbook</em> from the main menu. All existing dive data are
+cleared so that new information can be added. If there is unsaved data in an open
+logbook, <em>Subsurface</em> will ask you if you want to save the open logbook before
+a new logbook is created.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_GetInformation">3. How to obtain dive information to store in your logbook</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are several ways to add dive information to your logbook:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Enter dive information by hand. This is typically useful if the diver did not
+use a dive computer and dives were recorded in a written logbook.
+</p>
+</li>
+<li>
+<p>
+Import dive information directly from a dive computer if it is supported by
+<em>Subsurface</em>. The latest list of dive computers supported by <em>Subsurface</em> can
+be found at:
+<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">Supported dive computers</a>.
+</p>
+</li>
+<li>
+<p>
+Import dive information from another data base or file format. This is
+discussed in more detail below.
+</p>
+</li>
+</ol></div>
+<div class="sect2">
+<h3 id="S_EnterData">3.1. Entering dive information by hand</h3>
+<div class="paragraph"><p>This is usually the approach for dives without a dive computer. The basic record
+of information within <em>Subsurface</em> is a dive. The most important information
+in a simple written dive logbook usually includes dive type, date, time,
+duration, depth, the names of your dive buddy and of the dive master or dive guide,
+and some remarks about the dive. <em>Subsurface</em> can store much more information
+than this for each dive. In order to add a dive to your dive log, select <em>Log
+&#8594; Add Dive</em> from the Main Menu. The program then shows three panels to enter
+information for a dive: two tabs in the <strong>Info</strong> panel (<strong>Dive Notes</strong> and
+<strong>Equipment</strong>), as well as the <strong>profile</strong> panel that displays a graphical profile of
+each dive. These panels are respectively marked <span class="red">A</span>, <span class="red">B</span> and <span class="red">C</span>
+in the figure below. We will now consider each of the tabs used for data entry.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/AddDive1.jpg" alt="FIGURE: Add dive" />
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dive_notes">3.1.1. Dive Notes</h4>
+<div class="paragraph"><p>This panel contains the date, time and place information for a particular dive,
+environmental conditions, co-divers and buddies, as well as some descriptive
+information. The message in a blue box at the top of the panel indicates that
+you are in the process of adding information about your dive. If you click on
+the <strong>Dive Notes</strong> tab, the following fields are visible:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/AddDive2.jpg" alt="FIGURE: The Dive Notes tab" />
+</div>
+</div>
+<div class="paragraph"><p>The <strong>Starttime</strong> field reflects the date and the time of the dive. By clicking
+the down-arrow on the right of that field you can display a calendar from which
+you can choose the correct date. The hour and minutes values can also be edited
+by clicking on each of them in the text box and by overtyping the information
+displayed.</p></div>
+<div class="paragraph"><p><strong>Air and water temperatures</strong>: Type in the air and water temperatures during the
+dive into these fields to the right of the Starttime. You do not need to type
+in units of temperature: Subsurface supplies these automatically, you only need
+type the number. (The units selected in the <em>Preferences</em> <span class="red"><a id="URL link"></a></span>
+will determine whether metric or imperial units are displayed)</p></div>
+<div class="paragraph"><p><strong>Location</strong>: Here you enter the name of the dive site, e.g. "Tihany, Lake Balaton,
+Hungary". Auto completion of location names will make this easier when you
+frequently dive at the same sites.</p></div>
+<div class="paragraph"><p><strong>Coordinates</strong>: The geographic coordinates of the dive site should be entered
+here. These can come from three sources:</p></div>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+You can enter the coordinates by hand if you happen to know what they are.
+You need to enter them as decimal degrees, e.g: N30° 13.49760' , E30° 49.30788'.
+</p>
+</li>
+<li>
+<p>
+You can find the coordinates on the world map in the bottom right hand part
+of the Subsurface window. The map displays a green bar indicating "No location
+data - move the map and double-click to set the location". Upon a double-click
+at the appropriate place, the green bar disappears and the coordinates are
+stored.
+</p>
+</li>
+<li>
+<p>
+You can obtain the coordinates from the <em>Subsurface</em> Companion app if you
+have an Android device with GPS and you stored the coordinates of the dive site
+using that device.
+<a href="#S_Companion">Click here for more information</a>
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p><strong>Divemaster</strong>: Enter the name of the dive master or dive guide for this dive.
+Again, this field offers auto completion based on the list of dive masters in the
+current logbook.</p></div>
+<div class="paragraph"><p><strong>Buddy</strong>: Enter the name(s) of the buddy / buddies who accompanied you on the
+dive. Auto completion based on the list of buddies in the current logbook is
+offered.</p></div>
+<div class="paragraph"><p><strong>Suit</strong>: Enter the type of diving suit you used for the dive. Just as with the
+other items auto completion of the suit description is available.</p></div>
+<div class="paragraph"><p><strong>Rating</strong>: Here you can provide a subjective overall rating of the dive on a
+5-point scale by clicking the appropriate star on the rating scale.</p></div>
+<div class="paragraph"><p><strong>Visibility</strong>: You can provide a rating of visibility during the dive on a
+5-point scale by clicking the appropriate star.</p></div>
+<div class="paragraph"><p><strong>Tags</strong>: You may enter tags here (separate them by commas) that describe the type
+of dive you performed. Examples of common tags are boat, drift, training, cave
+etc. <em>Subsurface</em> has many built-in tags. Auto completion is once again offered.
+For instance, if you typed <code>cav</code>, then the tags <strong>cave</strong> and <strong>cavern</strong> are shown
+for the user to choose from.</p></div>
+<div class="paragraph"><p><strong>Notes</strong>: Type any additional information here.</p></div>
+<div class="paragraph"><p>The <strong>Save</strong> and <strong>Cancel</strong> buttons are used to save all the information for tabs in
+the info panel and in the dive profile panel, so there&#8217;s no need to use them
+until ALL other information has been added. Here is an example of a completed
+Dive Notes panel:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CompletedDiveInfo.jpg" alt="FIGURE: A completed Dive Notes tab" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_equipment">3.1.2. Equipment</h4>
+<div class="paragraph"><p>The Equipment tab allows the user to enter information about the type of cylinder
+and gas used, as well as the weights used for a dive. The message in a blue
+box at the top of the panel:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/BlueEditBar.jpg" alt="Blue edit bar" />
+</div>
+</div>
+<div class="paragraph"><p>indicates that you are in the process of adding equipment information for the
+dive. This is a highly interactive part of <em>Subsurface</em> and the information on
+cylinders and gases (entered here) determines the behaviour of the dive profile
+(top right-hand panel).</p></div>
+<div class="paragraph"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
+like this:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry1.jpg" alt="FIGURE:Initial cylinder dialogue" />
+</div>
+</div>
+<div class="paragraph"><p>The + button at the top right allows you to add more cylinders for this dive.
+The dark dustbin icon on the left allows you to delete information for a
+cylinder.</p></div>
+<div class="paragraph"><p>Start by selecting a cylinder type. The AL80 cylinder is shown as the default
+cylinder type (you can change this default in the preferences if you usually
+dive with a different type of tank). If you wish to change the tank used on this
+dive, click on the AL80. This will bring up a dropdown list, accessible through
+a down-arrow:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry2.jpg" alt="FIGURE:The cylinder drop-down list button" />
+</div>
+</div>
+<div class="paragraph"><p>Use the drop-down list to select the cylinder type you used for this dive. The
+<strong>Size</strong> of the cylinder as well as its working pressure (<strong>WorkPress</strong>) will auto
+matically be shown in the dialogue.</p></div>
+<div class="paragraph"><p>Now you need to indicate the starting pressure and the ending pressure of the
+gas used during your dive. The unit of pressure (metric/imperial) corresponds
+to the setting you chose in the preferences <span class="red"><a id="LINK"></a></span>.</p></div>
+<div class="paragraph"><p>Finally you need to type in the gas mixture that you used. If you used air, you
+can enter 21% or leave the field blank. If you used nitrox or trimix, specify
+the percentage of oxygen and the percentage of helium. Leave any inappropriate
+fields empty. Add information for any additional cylinders by using the + button
+at the top right hand. Here is an example of a complete description for a
+dive using two cylinders (air and EAN40):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry3.jpg" alt="FIGURE: a completed cylinder dive information table" />
+</div>
+</div>
+<div class="paragraph"><p><strong>Weights</strong>: Information about the weight system used during a dive can be entered
+using a dialogue very similar to that of the cylinder information. If you
+click the + button on the top right of the weights dialogue, the table looks like
+this:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry1.jpg" alt="FIGURE: The Weights dialogue" />
+</div>
+</div>
+<div class="paragraph"><p>If you click on the <strong>Type</strong> field, a drop-down list becomes accessible through a
+down-arrow:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry2.jpg" alt="FIGURE: Weights type drop-down list button" />
+</div>
+</div>
+<div class="paragraph"><p>Use the drop-down list to select your type of weight system. In the <strong>Weight</strong>
+field, type in the weight used during the dive. It is possible to enter
+information for more than one weight system by adding an additional system using
+the + button on the top right hand. Weight systems can be deleted using the dustbin
+icon on the left hand. Here is an example of information for a dive with two
+types of weights: integrated and a weight belt:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry3.jpg" alt="FIGURE: A completed weights information table" />
+</div>
+</div>
+<div class="paragraph"><p>You do NOT need to click the <em>Save</em> button before you have completed the dive
+profile.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_creating_a_dive_profile">3.1.3. Creating a Dive Profile</h4>
+<div class="paragraph"><p>The <strong>Dive Profile</strong> (a graphical representation of the depth of your dive as a
+function of time) is indicated in the panel on the top right hand of the
+<em>Subsurface</em> window. When you manually add a dive to your logbook, <em>Subsurface</em>
+presents a default dive profile that you need to modify to best represent the dive
+being described:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile1.jpg" alt="FIGURE: Initial dive profile" />
+</div>
+</div>
+<div class="paragraph"><p><em>Modifying the dive profile</em>: When you move the cursor around the dive profile,
+its position is indicated by two red lines as shown below. The depth and time
+that the cursor represents are indicated, respectively on the left hand and
+bottom axes. The units (metric/imperial) on the axes are determined by the
+<strong>preference</strong> settings <span class="red"><a id="LINK"></a></span>. The dive profile itself comprises several
+line segments demarcated by waypoints (white dots on the profile, as shown
+above). The default dive depth is 15m.
+If your dive depth was 21m then you need to drag the appropriate waypoints
+downwards to represent 21m. To add a waypoint, double-click on any line segment.
+To remove a waypoint, right-click on it and choose "Remove this point" from the
+context menu. You will also need to drag the waypoints to represent an accurate
+time duration for your dive. Below is a dive profile that represents a dive
+to 21m for 31 min., followed by a 3 minute safety stop at 5m.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile2.jpg" alt="FIGURE: Edited dive profile" />
+</div>
+</div>
+<div class="paragraph"><p><em>Specifying the gas composition:</em> The gas composition used is clearly indicated
+along the line segments of the dive profile. This defaults to the first gas
+mixture specified in the <strong>Equipment</strong> tab, which was air in the case of the
+profile illustrated above. The gas mixtures of segments of the dive profile can be
+edited. This is done by clicking on the gas description for a particular
+waypoint and selecting the appropriate choice from the context menu. Changing the
+gas for a waypoint affects the gas shown in the segment <em>to the left</em> of that
+waypoint. Note that only the gases defined in the <strong>Equipment</strong> tab appear in the
+context menu:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile3.jpg" alt="FIGURE: Gas composition context menu" />
+</div>
+</div>
+<div class="paragraph"><p>Below is the profile of a dive to 21m for 31 min. with a switch from air to
+EAN40 on the ascent. In this case the first cylinder in the <strong>Equipment</strong> tab
+contained air and the second cylinder contained EAN40.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile4.jpg" alt="FIGURE: Completed dive profile" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_saving_the_hand_entered_dive_information">3.1.4. Saving the hand-entered dive information</h4>
+<div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab, the <strong>Equipment</strong> tab as well as
+the <strong>Dive Profile</strong> can now be saved in your logbook by using the two buttons
+on the top right hand of the Dive Notes tab. If you click <em>Save</em>, the dive data
+are saved in the current logbook. If you click <em>Cancel</em>, the newly entered
+dive data are discarded. When you exit <em>Subsurface</em> it will prompt you to save
+the logbook with the new dive(s) on your computer.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportDiveComputer">3.2. Importing new dive information from your Dive Computer</h3>
+<div class="sect3">
+<h4 id="_connecting_and_importing_data_from_a_dive_computer">3.2.1. Connecting and importing data from a dive computer.</h4>
+<div class="paragraph"><p>The use of dive computers allows collecting a large amount of information about
+each dive, e.g. a detailed record of depth, durations, rates of ascent/descent
+and of gas partial pressures. <em>Subsurface</em> can capture this information and
+present it to you as part of the dive information. <em>Subsurface</em> can obtain dive
+information from a wide range of dive computers. The latest list of supported
+dive computers can be found at:
+<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">Supported dive computers</a>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">Several dive computers consume more power when they are in their
+PC-Communication mode. <strong>This could drain your battery</strong>. We therefore
+recommend that you check if your dive computer is recharging when
+connected to the USB port of a PC. For example, several Suunto and Mares dive
+computers do not recharge through the USB connection. Please consult the manual
+of your dive computer if you are unsure if it will recharge or drain its
+batteries while connected to the USB port.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>To import dive information from a dive computer to your computer with <em>Subsurface</em>,
+it is necessary that the two pieces of equipment must communicate. This
+involves setting up the communications port (or mount point) of the computer
+with <em>Subsurface</em> that communicates with the dive computer. In order to set up
+this communication, you need to find the appropriate information to instruct
+<em>Subsurface</em> where and how to import the dive information. <strong>Appendix A</strong> provides
+the technical information to help you achieve this for different operating
+systems and <strong>Appendix B</strong> has dive computer specific information.</p></div>
+<div class="paragraph"><p>Now it is time to hook up your dive computer to your PC:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Connect your interface cable to a free USB port (or set up the Infrared
+        or Bluetooth connection as described later in this manual)
+</p>
+</li>
+<li>
+<p>
+Put your dive computer into PC Communication mode.
+        (You should consult the manual of your specific dive computer for
+your brand and type)
+</p>
+</li>
+<li>
+<p>
+In <em>Subsurface</em>, from the Main Menu, select <em>Import &#8594; Import From Dive Computer</em>.
+The following dialogue appears:
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/ImportFromDC1.jpg" alt="FIGURE: Download dialogue 1" />
+</div>
+</div>
+<div class="paragraph"><p>Dive computers tend to keep a certain number of dives in their memory, even
+though these dives have already been imported to <em>Subsurface</em>. For that reason
+<em>Subsurface</em> only imports dives that have not been uploaded before. This makes
+the download process faster on most dive computers and also saves battery power
+of your dive computer (at least for those not charging while connected via USB).
+If, for some reason, you wish to import ALL dives from the dive computer,
+even though some may already be in the logbook, you can tick the box labeled
+<em>Force download of all dives</em>.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+The dialogue has two drop-down lists, <strong>Vendor</strong> and <strong>Dive Computer</strong>. On the
+<strong>vendor</strong> drop-down list select the make of your computer, e.g. Suunto, Oceanic,
+Uwatec, Mares. On the <strong>Dive Computer</strong> drop-down list, select the model name of
+your dive computer, e.g. D4 (Suunto), Veo200 (Oceanic), or Puck (Mares).
+</p>
+</li>
+<li>
+<p>
+The <strong>Device or Mount Point</strong> drop-down list contains the USB or Bluetooth port
+name that <em>Subsurface</em> needs in order to communicate with your dive computer.
+Select the appropriate port name. Consult <strong>Appendix A</strong> and <strong>Appendix B</strong> for
+technical details to find the appropriate port information for your dive
+computer and, in some cases, how to do the correct settings to the operating system
+of your <em>Subsurface</em> computer.
+</p>
+</li>
+<li>
+<p>
+Click the <em>OK</em> button.
+</p>
+</li>
+<li>
+<p>
+If there is a problem in communicating with your dive computer, an error
+message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
+(Puck Pro)". In this case, consult <strong>Appendix A</strong> for information specific to the
+operating system of your <em>Subsurface</em> computer and consult <strong>Appendix B</strong> for
+information specific to some dive computers.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">In the case of <strong>communication failure</strong> then check the following:
+1) Is the dive computer still in PC-communication or Upload mode?
+2) Is the battery of the dive computer fully charged? If not then charge or
+replace the battery.
+3) Is the cable faulty? Does the cable work perfectly using other software? Has
+it worked before, or is this the first time you are using the cable?
+4) Consult <strong>Appendix A</strong> and make sure you specified the correct Mount Point
+(see above). If your <em>Subsurface</em> computer does not recognise the USB adaptor by
+showing an appropriate device name next to the Mount Point, then there is a
+possibility that the cable or USB adaptor is faulty. A faulty cable is the most
+common cause of communication failure between dive computer and <em>Subsurface</em>
+computer. It is also possible that your <em>Subsurface</em> computer is missing required
+drivers to interact with the download cable and connected dive computer.</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+With communication established, watch how your data is retrieved from your
+dive computer!
+Depending on your make of computer and/or number of dives, this
+could take some time. Please be patient. The <em>Download</em> dialogue shows a
+progress bar at the bottom of the dialogue (but for some dive computers the
+progress information could be inaccurate as we cannot determine until after all
+data was downloaded how much downloadable data there is):
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/ImportFromDC2.jpg" alt="FIGURE: Download dialogue 2" />
+</div>
+</div>
+<div class="paragraph"><p>When download of the dive information is complete, all the imported dives appear
+in the Dive List, sorted by date and time. Disconnect and switch off the dive
+computer to conserve its battery power.
+If you select a particular dive, the Dive Profile panel shows an informative
+graph of dive depth against time for that particular dive.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_EditDiveInfo">3.2.2. Updating the dive information imported from your dive computer.</h4>
+<div class="paragraph"><p>The information from your dive computer is not complete and you need to add more
+details in order to have a more complete record of your dives. To do this, use
+the <strong>Dive Notes</strong> and the <strong>Equipment</strong> tabs on the top left hand of the
+<em>Subsurface</em> window.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_dive_notes_2">3.2.3. Dive Notes</h4>
+<div class="paragraph"><p>The date and time of the dive, gas mixture and perhaps water temperature is
+shown as obtained from the dive computer, but you need to add some information by
+hand in order for a more complete dive record. The message in a blue box at
+the top of the panel indicates that you are in the process of adding information
+about a dive. If you click on the <strong>Dive Notes</strong> tab, the following fields are
+visible:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/AddDive3.jpg" alt="FIGURE: The Dive Notes tab" />
+</div>
+</div>
+<div class="paragraph"><p>The <strong>Starttime</strong> field reflects the date and the time of the dive, as supplied by
+the dive computer. It should therefore not be necessary to edit this, but you
+could make changes by clicking the down-arrow on the right of that field to
+display a calendar from which you can choose the correct date. The hour and
+minutes values can also be edited by clicking on each of them in the text box
+and by overtyping the information displayed.</p></div>
+<div class="paragraph"><p><strong>Air/water temperatures</strong>: Air and water temperatures during the dive are shown
+in these fields to the right of the Starttime. Many dive computers supply water
+temperature information and this field may therefore not require editing. If
+editing is required, you do not need to type in units of temperature:
+Subsurface supplies these automatically, only a number is required. (The units
+selected in the <em>Preferences</em> <span class="red"><a id="URL link"></a></span> will determine whether metric
+or imperial units are displayed)</p></div>
+<div class="paragraph"><p><strong>Location</strong>: Here type in text that describes the site where you did this dive,
+e.g. "Tihany, Lake Balaton, Hungary". Auto completion of location names will
+make this easier when you frequently dive at the same sites.</p></div>
+<div class="paragraph"><p><strong>Coordinates</strong>: The geographic coordinates of the dive site should be entered
+here. These can come from three sources:</p></div>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+You can enter the coordinates by hand if you happen to know what they are.
+You need to enter them as decimal degrees, e.g: N30° 13.49760', E30° 49.30788'.
+</p>
+</li>
+<li>
+<p>
+You can find the coordinates on the world map in the bottom right hand part
+of the Subsurface window. The map displays a green bar indicating "No location
+data - move the map and double-click to set the location". Upon a double-click
+at the appropriate place, the green bar disappears and the coordinates are
+stored.
+</p>
+</li>
+<li>
+<p>
+You can obtain the coordinates from the <em>Subsurface</em> Companion app if you
+have an Android device with GPS and you stored the coordinates of the dive site
+using that device.
+<a href="#S_Companion">Click here for more information</a>
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p><strong>Divemaster</strong>: Enter the name of the dive master or dive guide for this dive.
+Again, this field offers auto completion based on the list of dive masters in
+the current logbook.</p></div>
+<div class="paragraph"><p><strong>Buddy</strong>: Enter the name(s) of the buddy / buddies who accompanied you on the
+dive. Auto completion based on the list of buddies in the current logbook is
+offered.</p></div>
+<div class="paragraph"><p><strong>Suit</strong>: Enter the type of diving suit you used for the dive. Just as with the
+other items auto completion of the suit description is available.</p></div>
+<div class="paragraph"><p><strong>Rating</strong>: Here you can provide a subjective overall rating of the dive on a
+5-point scale by clicking the appropriate star on the rating scale.</p></div>
+<div class="paragraph"><p><strong>Visibility</strong>: You can provide a rating of visibility during the dive on a
+5-point scale by clicking the appropriate star.</p></div>
+<div class="paragraph"><p><strong>Tags</strong>: You may enter tags here (separate them by commas) that describe the type
+of dive you performed. Examples of common tags are boat, drift, training, cave.
+<em>Subsurface</em> has many built-in tags. If you start to type a tag, the program
+will list the tags that correspond to your typing. For instance, if you typed
+<code>cav</code>, then the tags <strong>cave</strong> and <strong>cavern</strong> are shown for the user to choose from.</p></div>
+<div class="paragraph"><p><strong>Notes</strong>: Type any additional information here.</p></div>
+<div class="paragraph"><p>The <strong>Save</strong> and <strong>Cancel</strong> buttons are used to save all the information for tabs
+in the info panel and in the dive profile panel, so there&#8217;s no need to use them
+until ALL other information has been added. Here is an example of a completed
+Dive Notes panel:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CompletedDiveInfo.jpg" alt="FIGURE: A completed Dive Notes tab" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_equipment_2">3.2.4. Equipment</h4>
+<div class="paragraph"><p>The Equipment tab allows the user to enter information about the type of
+cylinder and gas you used, as well as the weights used for that dive. The message
+in a blue box at the top of the panel:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/BlueEditBar.jpg" alt="FIGURE: Blue edit bar" />
+</div>
+</div>
+<div class="paragraph"><p>indicates that you are in the process of adding equipment information for the
+dive. This is a highly interactive part of <em>Subsurface</em> and the information on
+cylinders and gases (entered here) determines the behaviour of the dive profile
+(top right-hand panel).</p></div>
+<div class="paragraph"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
+like this:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry1.jpg" alt="FIGURE: Initial cylinder dialogue" />
+</div>
+</div>
+<div class="paragraph"><p>In most cases <em>Subsurface</em> obtains the gas used from the dive computer and
+automatically inserts the gas composition(% oxygen) in the table. The + button at
+the top right allows you to add more cylinders for this dive. The dark dustbin
+icon on the left allows you to delete information for a cylinder.</p></div>
+<div class="paragraph"><p>Start by selecting a cylinder type. The AL80 cylinder is shown as the default
+cylinder type (you can change this default in the preferences if you usually
+dive with a different type of tank). If you wish to change the tank used on this
+dive, click on the AL80. This will bring up a drop-down list, accessible through
+a down-arrow:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry2.jpg" alt="FIGURE: The cylinder drop-down list button" />
+</div>
+</div>
+<div class="paragraph"><p>Use the drop-down list to select the cylinder type you used for this dive. The
+<strong>Size</strong> of the cylinder as well as its working pressure (<strong>WorkPress</strong>) will
+automatically be shown in the dialogue.</p></div>
+<div class="paragraph"><p>Now you need to indicate the starting pressure and the ending pressure of the
+specified gas during your dive. The unit of pressure (metric/imperial)
+corresponds to the setting you chose in the preferences <span class="red"><a id="LINK"></a></span>.</p></div>
+<div class="paragraph"><p>Finally you need to type in the gas mixture that you used. If you used air, you
+can enter 21% or leave the field blank. If you used nitrox or trimix, specify
+the percentage of oxygen and the percentage of helium. Leave any inappropriate
+fields empty. Add information for any additional cylinders by using the<br />
+button at the top right hand. Here is an example of a complete description for a
+dive using two cylinders (air and EAN40):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry3.jpg" alt="FIGURE: a completed cylinder dive information table" />
+</div>
+</div>
+<div class="paragraph"><p><strong>Weights</strong>: Information about the weight system used during a dive can be entered
+using a dialogue very similar to that of the cylinder information. If you click
+the + button on the top right of the weights dialogue, the table looks like
+this:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry1.jpg" alt="FIGURE:The Weights dialogue" />
+</div>
+</div>
+<div class="paragraph"><p>If you click on the <strong>Type</strong> field, a drop-down list becomes accessible through a
+down-arrow:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry2.jpg" alt="FIGURE:Weights type drop-down list button" />
+</div>
+</div>
+<div class="paragraph"><p>Use the drop-down list to select your type of weight system. In the <strong>Weight</strong>
+field, type in the weight used during the dive. It is possible to enter
+information for more than one weight system by adding an additional system
+using the + button on the top right hand. Weight systems can be deleted using
+the dustbin icon on the left hand. Here is an example of information for a dive
+with two types of weights: integrated and a weight belt:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry3.jpg" alt="FIGURE: A completed weights information table" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_saving_the_updated_dive_information">3.2.5. Saving the updated dive information</h4>
+<div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab, the <strong>Equipment</strong> tab can be
+saved with all the other information of your dives in your logbook by using the
+two buttons on the top right hand of the <strong>Dive Notes</strong> tab. If you click <em>Save</em>,
+the dive data are saved. If you click <em>Cancel</em>, the newly entered dive data are
+deleted, although the dive profile obtained from the dive computer will be
+retained. When you exit <em>Subsurface</em> there is a final prompt to confirm that
+the new data should be saved.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_importing_dive_information_from_other_digital_data_sources_or_other_data_formats">3.3. Importing dive information from other digital data sources or other data formats</h3>
+<div class="paragraph" id="S_ImportingAlienDiveLogs"><p>Maybe you have a lot of dives logged using other dive log software. You don&#8217;t
+have to type all information by hand into <em>Subsurface</em>, because you can probably
+import your divelog. <em>Subsurface</em> will import divelogs from a range of other
+dive log software. Some software is supported natively (e.g. divelogs.de,
+JDiveLog, MacDive, and Suunto DM4), for others you have to export your logbook
+to XML and then <em>Subsurface</em> can import that XML file (Suunto DM3, DivingLog).
+<em>Subsurface</em> can also import UDDF and UDCF files that are used by some divelog
+software and even some divecomputers like the Heinrichs &amp; Weikamp DR5. Finally,
+for some divelog software we currently suggest to import your logbook first
+into a webservice like <em>divelogs.de</em> and then import them from there with
+<em>Subsurface</em>, as divelogs.de supports a few additional logbook formats that
+<em>Subsurface</em> currently cannot parse.</p></div>
+<div class="paragraph"><p>When importing dives, <em>Subsurface</em> tries to detect multiple records for
+the same dive and merges the information as best as it can. If
+there are no time zone issues (or other reasons that would cause the
+beginning time of the dives to be significantly different) <em>Subsurface</em>
+will not create duplicate entries.</p></div>
+<div class="sect3">
+<h4 id="S_ImportingDivesSuunto">3.3.1. Importing dives from <strong>Suunto Divemanager 3 (DM3)</strong></h4>
+<div class="paragraph"><p>Before you can start importing dives from <em>Suunto Divemanager</em>, you first
+have to export the dives you want to import. <em>Subsurface</em> does not import
+directly from the <em>Suunto Divemanager</em> log files. The following procedures
+can be used for Linux and Windows.</p></div>
+<div class="sect4">
+<h5 id="_export_from_strong_suunto_divemanager_strong">Export from <strong>Suunto Divemanager</strong></h5>
+<div class="ulist"><ul>
+<li>
+<p>
+Start <em>Suunto Divemanager</em> and log in with the name containing the logs
+</p>
+</li>
+<li>
+<p>
+Do not start the import wizard to import dives from your computer.
+</p>
+</li>
+<li>
+<p>
+In the navigation tree on the left side of the program-window, select your
+dives.
+</p>
+</li>
+<li>
+<p>
+Within the list of dives, select the dives you would like to import later:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+To select certain dives: hold <em>ctrl</em> and click the dive
+</p>
+</li>
+<li>
+<p>
+To select all dives:  Select the first dive, hold down shift and select the
+last dive
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+With the dives marked, use the program menu <em>File &#8594; Export</em>
+</p>
+</li>
+<li>
+<p>
+The export pop-up will show
+</p>
+</li>
+<li>
+<p>
+Within this pop-up, there is one field called Export Path.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Click the browse button next to the field Export Path
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+A file-manager like window pops up
+</p>
+</li>
+<li>
+<p>
+Navigate to the directory where you want to store the Divelog.SDE file
+</p>
+</li>
+<li>
+<p>
+Optionally change the name of the file you want to save
+</p>
+</li>
+<li>
+<p>
+Click <em>Save</em>
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+You are back in the Export pop-up. Press the button <em>Export</em>
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Your dives are now exported to the file Divelogs.SDE.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_reading_suunto_divemanager_export_in_subsurface">Reading Suunto Divemanager Export in Subsurface</h5>
+<div class="paragraph"><p>The file Divelogs.SDE can now be opened (or imported) in <em>Subsurface</em>.</p></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingDivesSuuntoDM4">3.3.2. Importing dives from <strong>Suunto Divemanager 4 (DM4)</strong></h4>
+<div class="paragraph"><p>To import divelog from <em>Suunto DM4</em>, you need to locate the DM4 database
+where the dives are stored. You can either look for the original
+database or take a backup of the dives. Both methods are described here.</p></div>
+<div class="sect4">
+<h5 id="_locating_the_suunto_dm4_database">Locating the Suunto DM4 database</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+Start Suunto DM4
+</p>
+</li>
+<li>
+<p>
+Select <em>Help &#8594; About</em>
+</p>
+</li>
+<li>
+<p>
+Click <em>Copy</em> after text <em>Copy log folder path to clipboard</em>
+</p>
+</li>
+<li>
+<p>
+Now open Windows Explorer
+</p>
+</li>
+<li>
+<p>
+Paste the address to the path box at the top of the File Explorer
+</p>
+</li>
+<li>
+<p>
+The database is called DM4.db
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_backing_up_suunto_dm4">Backing up Suunto DM4</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+Start Suunto DM4
+</p>
+</li>
+<li>
+<p>
+Select <em>File - Create backup</em>
+</p>
+</li>
+<li>
+<p>
+From the file menu select the location and name for the backup, we&#8217;ll
+   use DM4 in here with the default extension .bak
+</p>
+</li>
+<li>
+<p>
+Click <em>Save</em>
+</p>
+</li>
+<li>
+<p>
+Your dives are now exported to the file DM4.bak
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_reading_suunto_dm4_backup_in_em_subsurface_em">Reading Suunto DM4 backup in <em>Subsurface</em></h5>
+<div class="paragraph"><p>Importing the logs from DM4 does not require any special steps. You just
+do the following:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Open the following menu <em>File &#8594; Import File(s)</em>
+</p>
+</li>
+<li>
+<p>
+Browse your directories to the location where your DM4 backup is
+   stored
+</p>
+</li>
+<li>
+<p>
+Select the backup file you want to import and click <em>Open</em>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is also possible to do the importing from command line:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>subsurface MyDives.xml --import DM4.bak</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_importing_from_mares_dive_organiser_v2_1">3.3.3. Importing from Mares Dive Organiser V2.1</h4>
+<div class="paragraph"><p>Mares Dive Organiser is a Windows application. The dive log is kept as a
+Microsoft SQL Compact Edition data base with a .SDF filename extension. The
+data base includes all Dive Organiser-registered divers on the particular
+computer and all Mares dive computers used. The safest way to obtain a copy
+of this data base is, within Dive Organiser, to select Database &#8594; Backup
+from the main menu and to back up the data base to your desk top. This
+creates a zipped file DiveOrganiserxxxxx.dbf. Rename the file to
+DiveOrganiserxxxxx.zip. Inside the zipped directory is a file <em>DiveOrganiser.sdf</em>.
+Extract it from the zipped folder to your Desktop.</p></div>
+<div class="paragraph"><p>Then use <em>www.divelogs.de</em> as a mechanism to extract the dive information from
+the file. Create a user account in divelogs.de , log into that web site, then
+select Import Logbook &#8594; Dive Organiser from the menu on the left hand side.
+Follow the instructions carefully to transfer the dive information from the
+Dive Organiser data base to divelogs.de.</p></div>
+<div class="paragraph"><p>Then follow the instructions below to import dives from divelogs.de to
+<em>Subsurface</em>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingDivelogsDe">3.3.4. Importing dives from <strong>divelogs.de</strong></h4>
+<div class="paragraph"><p>The import of dive information from <em>divelogs.de</em> is simple, using a single
+dialogue box. Select <em>Import&#8594;Import form Divelogs.de</em> from the Main Menu. This
+brings up a dialogue box (see figure on left [A] below). You need to enter a
+user-ID and password for <em>divelogs.de</em> into the appropriate fields. Then select
+the <em>Download</em> button. Download from <em>divelogs.de</em> starts immediately, evident
+on a progress bar in the dialogue box. At the and of the download, the
+successful status is indicated (see figure on the right [B], below). Select the
+<em>Apply</em> button. The imported dives appear in the <strong>Dive List</strong> panel.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Divelogs1.jpg" alt="FIGURE:Download from Divelogs.de" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_importing_dives_from_strong_macdive_strong">3.3.5. Importing dives from <strong>MacDive</strong></h4>
+<div class="paragraph"><p>Importing logs from MacDive is as easy as it gets. Do the following
+steps in Subsurface:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Open the following menu <em>File - Import File(s)</em>
+</p>
+</li>
+<li>
+<p>
+Browse your directories to the location where your MacDive logs are
+   stored
+</p>
+</li>
+<li>
+<p>
+Select the log file(s) you want to import and click <em>open</em>
+</p>
+</li>
+<li>
+<p>
+Click the OK button in the pop-up
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>After a few moments, you see your existing logs in <em>Subsurface</em>. Now you can
+edit your dives like explained in the section <a href="#S_EditDiveInfo">Updating the Dive Information</a>.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> imports all the relevant dive information
+excluding the used equipment and diver name.</p></div>
+<div class="paragraph"><p>It is also possible to do the import from command line:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>subsurface MyDives.xml --import MacDiveDives.xml</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingDivinglog">3.3.6. Importing dives from <strong>DivingLog 5.0</strong></h4>
+<div class="paragraph"><p>Before you can start importing dives from <em>DivingLog</em> you first have to
+export those dives. Unfortunately DivingLog XML files give us no
+indication on the preferences set on your system. So in order for
+<em>Subsurface</em> to be able to successfully import XML files from DivingLog
+you first need to make sure that your copy of DivingLog is configured
+to use the Metric system (you can easily change this in <em>File &#8594;
+Preferences &#8594; Units and Language</em> by clicking the <em>Metric</em>
+button). Then do the following:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+In Divinglog open the <em>File &#8594; Export &#8594; XML</em> menu
+</p>
+</li>
+<li>
+<p>
+Select the dives that you want to export
+</p>
+</li>
+<li>
+<p>
+Click on the export button and select the filename
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This file can now be opened in <em>Subsurface</em> (as described in the previous
+sections).</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingDivesJDiveLog">3.3.7. Importing dives from <strong>JDiveLog</strong></h4>
+<div class="paragraph"><p>JDiveLog stores its information in files with the extension of .jlb that contain
+all the information  except images  in XML format.</p></div>
+<div class="paragraph"><p>By using  <em>File &#8594; Import File(s)</em> from the Main Menu you get a pop-up asking
+for the file name.  To import your JDiveLog file(s) do the following:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Open <em>File &#8594; Import File(s)</em> on the menu
+</p>
+</li>
+<li>
+<p>
+Browse your directories to the location where your *.jlb file is
+</p>
+</li>
+<li>
+<p>
+Select your existing *.jlb file and click <em>open</em>
+</p>
+</li>
+<li>
+<p>
+Click the OK button in the pop-up
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>After a few moments, you see your existing logs in <em>Subsurface</em>. Now you can
+edit your dives like explained in the section <a href="#S_EditDiveInfo">Updating the Dive Information</a>.</p></div>
+<div class="paragraph"><p>Information that is imported from JDiveLog into the <strong>location</strong> field:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Extended dive location information
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Information that is merged into the <strong>notes</strong> field:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Used amount of weight
+</p>
+</li>
+<li>
+<p>
+Used type of suit
+</p>
+</li>
+<li>
+<p>
+Used type of gloves
+</p>
+</li>
+<li>
+<p>
+Type of dive
+</p>
+</li>
+<li>
+<p>
+Dive activity
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Alternatively, you can start <em>Subsurface</em> with the --import command line
+which will have the same effect:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>subsurface MyDives.xml --import JDiveLogDives.jlb</code></pre>
+</div></div>
+<div class="paragraph"><p>will open your divelog (assuming that&#8217;s called MyDives.xml) and then
+import the dives from JdivelogDives.jlb. You can now save the combined
+divelog back as MyDives.xml.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_Importingkenozooid">3.3.8. Importing dives from <strong>Kenozooid</strong></h4>
+<div class="paragraph"><p><em>Kenozooid</em> uses UDDF to store dives and is tested to work with <em>Subsurface</em>.
+Make sure you are not using compressed files when importing to <em>Subsurface</em>
+or uncompress them manually beforehand.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingUDDF">3.3.9. Importing UDDF Dives</h4>
+<div class="paragraph"><p><em>Subsurface</em> supports UDDF as a generic import format.
+Some attributes in your file may not get processed properly. Select
+<em>Import&#8594;Import Files</em> from the Main Menu. Then select the UDDF file to
+be imported.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_Companion">3.4. Importing GPS coordinates with the Subsurface Companion app for mobile phones</h3>
+<div class="paragraph"><p>If you have an Android device with GPS, you can obtain the coordinates of the
+place where you are diving and automatically pass them to your Subsurface
+divelog. To do this you need to:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Register on the <a href="http://api.hohndel.org/login/">Subsurface companion web page</a>.
+You will receive a confirmation mail with instructions and a personal <strong>DIVERID</strong>,
+a long number that gives access to the companion app capabilities.
+</p>
+</li>
+<li>
+<p>
+Download the app from
+<a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play Store</a> or from <a href="http://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
+</p>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_using_the_subsurface_companion_app_on_your_smartphone">3.4.1. Using the Subsurface companion app on your smartphone</h4>
+<div class="paragraph"><p>On first use the app has three options:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Create a new account.</em>  Equivalent to registering in Subsurface companion page.
+</p>
+</li>
+<li>
+<p>
+<em>Retrieve an account.</em>  If you forgot your DIVERID you will receive an email
+to recover the number.
+</p>
+</li>
+<li>
+<p>
+<em>Use an existing account.</em> You are prompted for your DIVERID. The app saves
+your DIVERID and does not ask for it again unless you use the <em>Disconnect</em> menu
+option (see below).
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Now you&#8217;re ready to get a dive position and send it to the server. The Android
+display will look like the left hand image (A) below, but without any dive.</p></div>
+<div class="paragraph"><p>Touching the "+" icon on the top right to add a new dive site. You will be
+prompted for a place name (or asked to activate the GPS if it was turned off).
+The main screen shows a list of dive locations, each with place name, date and
+time. Some dives may have an arrow-up icon on the selection box to the left (see
+image B in the middle, below) indicating that they require upload to the server.</p></div>
+<div class="paragraph"><p>There are several ways to send dives to the server; the easiest is by simply
+selecting the dive. See middle image below (B):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion.jpg" alt="FIGURE: Screen shots (A-C) of companion app" />
+</div>
+</div>
+<div class="paragraph"><p>Touching the right arrow will send it to the server.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Be careful, the trash on the right means exactly what it is supposed to mean,
+it deletes the dive location(s).</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The new dive points are now stored on the server and can be downloaded to the
+<em>Subsurface</em> dive log whenever you upload or add your dive to <em>Subsurface</em>.
+After a dive trip using the Companion app, all dive locations are ready to be
+saved on your Subsurface dive log (see below).</p></div>
+<div class="sect4">
+<h5 id="_settings_on_the_companion_app">Settings on the Companion app</h5>
+<div class="paragraph"><p>Selecting the <em>Settings</em> menu option results in the right hand image above &#169;.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_server_and_account">Server and account</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Web-service URL.</em> This is predefined (<a href="http://api.hohndel.org/">http://api.hohndel.org/</a>)
+</p>
+</li>
+<li>
+<p>
+<em>User ID.</em> Obtained by registering as indicated above. The easiest way to
+introduce it is simply to copy and paste from the confirmation mail but, off
+course, you can type it each character at a time.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_synchronization">Synchronization</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Synchronize on startup.</em> If selected, dives in the Android device and those
+on the web service will synchronize each time you start the app.
+</p>
+</li>
+<li>
+<p>
+<em>Upload new dives.</em> If selected, each time you add a dive location it will
+automatically be sent to the server.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_background_service">Background service</h5>
+<div class="paragraph"><p>Instead of entering a unique dive location, you can leave the service running
+in the background on your device, continuously collecting GPS locations.</p></div>
+<div class="paragraph"><p>The settings below define the behaviour of the service:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Min duration.</em> In minutes. The app&#8217;ll try to get a position each X minutes
+until you stop it.
+</p>
+</li>
+<li>
+<p>
+<em>Min distance.</em> In meters. Minimum distance between two position fixes.
+</p>
+</li>
+<li>
+<p>
+<em>Name template.</em> The name the app will use when saving the position fixes.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/info.jpg" alt="Tip" />
+</td>
+<td class="content"><em>How does the background service work?</em> Let&#8217;s assume we&#8217;ve set 5 minutes and 50
+meters in the settings above, the app will fix a location, then another one
+each 5 minutes. If this 2nd (3rd, 4th &#8230;) location is within a radius of 50
+meters from the previous one, it is not saved. After another 5 minutes there will
+be a new try, and so on.  This way, if we are in a static position, we&#8217;ll only
+get one location fix, but if we travel we can have a trace of our journey.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_other">Other</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Mailing List.</em> The mail box for <em>Subsurface</em>. You can send an email to the
+Subsurface mailing list.
+</p>
+</li>
+<li>
+<p>
+<em>Subsurface website.</em> A link to the URL of Subsurface web
+</p>
+</li>
+<li>
+<p>
+<em>Version.</em> Displays the current version of the companion app.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_search">Search</h5>
+<div class="paragraph"><p>Here you can search your saved dive locations by the name or by date and hour.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_start_service">Start service</h5>
+<div class="paragraph"><p>Initiates the <em>background service</em> depending on the previously defined settings.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_disconnect">Disconnect</h5>
+<div class="paragraph"><p>This is a badly named option. It disconnects your app from the server by
+resetting your ID in the app, showing the first screen where you can create an
+account, retrieve the ID for an existing one or use your own ID. Disconnecting
+is useful if you download the dive positions of another registered diver using
+your Android device.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_send_all_locations">Send all locations</h5>
+<div class="paragraph"><p>This option sends all locations stored in the Android device to the server.</p></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_downloading_dive_locations_to_your_subsurface_divelog">3.4.2. Downloading dive locations to your Subsurface divelog</h4>
+<div class="paragraph"><p>You have to download dive(s) from a dive computer or enter dives manually into
+<em>Subsurface</em> before obtaining the GPS coordinates from the server. The download
+dialog can be reached via <em>Ctrl+G</em> or from the <em>Subsurface</em> Main Menu <em>Import
+&#8594; Import GPS data from Subsurface Service</em>, resulting in the image on the
+left (A), below. On first use the DIVERID text box will be blank. Provide the
+DIVERID. Then select the <em>Download</em> button and the download begins. When this
+is completed you see the screen on the right (B), below:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DownloadGPS.jpg" alt="FIGURE: Downloading Companion app GPS data" />
+</div>
+</div>
+<div class="paragraph"><p>Note that the <em>Apply</em> button is now active. Click on it to update the locations
+of the newly entered or uploaded dives in <em>Subsurface</em> which applies the
+coordinates and names you gave them for all the new dives that match the date-times
+of the uploaded GPS localities.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/info.jpg" alt="Note" />
+</td>
+<td class="content">Features, issues and tips._  Since <em>Subsurface</em> matches GPS locations from the
+Android device and dive information from your dive computer based on date-time
+data, automatic assignment of GPS data to dives is dependent on agreement of
+date and time between these two devices. If there is a large difference between
+the time in your dive computer and the time in your Android device,
+<em>Subsurface</em> is unable to identify the dive that matches a location and nothing
+happens. Similar date-times may be not always be possible.  A dirty hack is
+manually editing the date-time of a dive in Subsurface&#8217;s Dive List <em>before</em>
+downloading the GPS data and then to edit the date-time back again <em>after</em>
+downloading GPS data.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_obtaining_more_information_about_dives_entered_into_the_logbook">4. Obtaining more information about dives entered into the logbook</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_strong_dive_info_strong_tab_for_individual_dives">4.1. The <strong>Dive Info</strong> tab (for individual dives)</h3>
+<div class="paragraph"><p>The Dive Info tab gives some summary information about a particular dive that
+has been selected in the <strong>Dive List</strong>. Useful information here includes the
+surface interval before the dive, the maximum and mean depths of the dive, the
+gas volume consumed, the surface air consumption (SAC) and the number oxygen
+toxicity units (OTU) incurred.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_the_strong_stats_strong_tab_for_groups_of_dives">4.2. The <strong>Stats</strong> tab (for groups of dives)</h3>
+<div class="paragraph"><p>The Stats tab gives summary statistics for more than one dive, assuming that
+more than one dive have been selected in the <strong>Dive List</strong>. Highlight more than
+one dive by the standard Ctrl-click or Shift-click of the mouse. If only one
+dive has been selected, figures pertaining to only that dive are given. This tab
+shows the number of dives selected, the total amount of dive time in these dives,
+as well as the minimum, maximum and mean for the dive duration, dive depth,
+water temperature and surface air consumption (SAC).</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_DiveProfile">4.3. The <strong>Dive Profile</strong></h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Profile2.png" alt="Typical dive profile" />
+</div>
+</div>
+<div class="paragraph"><p>Of all the panels in <em>Subsurface</em>, the Dive Profile contains the most detailed
+information about each dive. The main item in the Dive profile is the graph of
+dive depth as a function of time. In addition to the obvious information of
+the depth it also shows the ascent and descent rate compared to the recommended
+speed of going up or down in the water column. This information is given using
+different colours:</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Colour</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Descent speed (m/min)</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Ascent speed (m/min)</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Red</p></td>
+<td align="left" valign="top"><p class="table">&gt; 30</p></td>
+<td align="left" valign="top"><p class="table">&gt; 18</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Orange</p></td>
+<td align="left" valign="top"><p class="table">18 - 30</p></td>
+<td align="left" valign="top"><p class="table">9 - 18</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Yellow</p></td>
+<td align="left" valign="top"><p class="table">9 - 18</p></td>
+<td align="left" valign="top"><p class="table">4 - 9</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Light green</p></td>
+<td align="left" valign="top"><p class="table">1.5 - 9</p></td>
+<td align="left" valign="top"><p class="table">1.5 - 4</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Dark green</p></td>
+<td align="left" valign="top"><p class="table">&lt; 1.5</p></td>
+<td align="left" valign="top"><p class="table">&lt; 1.5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p>The profile also includes depth readings for the peaks and troughs in the graph.
+Thus you should see the depth of the deepest point and other peaks. Mean depth
+is marked with a horizontal red line.</p></div>
+<div class="paragraph"><p>The <strong>air consumption</strong> graph displays the tank pressure and its change during the
+dive. The air consumption takes depth into account so that even when manually
+entering the start and end pressures the graph is not a straight line.
+Similarly to the depth graph the tank pressure gives you information about the
+momentary SAC rate (Surface Air Consumption – often also called RMV – Respiratory
+Minute Volume) when using an air integrated dive computer. Here the colour
+coding is not relative to some absolute values but relative to the average
+normalised air consumption during the dive. So areas that are red or orange indicate
+times of increased normalized air consumption while dark green reflects times
+when the diver was using less gas than average. The colour coding is obviously
+only possible when a tank sensor is connected and tank pressure readings during
+the dive are available.</p></div>
+<div class="paragraph"><p><strong>Water temperature</strong> is displayed with its own blue line with temperature values
+placed adjacent to significant changes.</p></div>
+<div class="paragraph"><p>It is possible to <strong>zoom</strong> into the profile graph. This is done either by using
+the scroll wheel / scroll gesture of your mouse or trackpad. By default
+<em>Subsurface</em> always shows a profile area large enough for at least 30 minutes and 30m
+ (100ft) – this way short or shallow dives are intuitively recognizable; something
+that free divers clearly won’t care about.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/MeasuringBar.png" alt="FIGURE: Measuring Bar" />
+</div>
+</div>
+<div class="paragraph"><p>Measurements of <strong>depth differences</strong> can be achieved by using the button with
+two vertical bars at the right of the dive profile panel (see above figure,
+bottom right). Drag the red dots to the two points on the dive profile which
+you would like to measure. Information is given along the line connecting the
+two red dots.</p></div>
+<div class="paragraph"><p>The dive profile can include further information that is typically more
+interesting for tec divers. Enabling these is described in the section entitled
+Setting up Preferences. Basically you can include graphs of the <strong>partial pressures</strong>
+of O2, N2, and He during the dive as well as a calculated and dive computer
+reported deco ceilings (only visible for deep, long, or repetitive dives). The
+partial pressure graphs are added below the profile data, the calculated ceiling
+is shown as a green overlay on top of the dive profile. Above the profile the
+currently used gradient factors are shown (e.g. GF 35/75). Please note that
+these are NOT the gradient factors in use by the dive computer in question,
+but the gradient factors used by <em>Subsurface</em> to calculate deco obligations
+during the dive.</p></div>
+<div class="paragraph"><p>The graph can also include the dive computer reported <strong>ceiling</strong> (or more
+precisely, the first deco stop that the dive computer recorded – note that not
+all dive computers record this information and make it available for download;
+for example all of the Suunto dive computers fail to make this very useful data
+available to divelog software). Because of the differences in used algorithms
+and amount of data available (and factors taken into consideration) at the time
+of the calculation it is unlikely that both of these are the same; this can be
+true even if the same algorithm and <em>gradient factors</em> (see below) are used.
+It is also quite common that <em>Subsurface</em> calculates a ceiling for
+non-decompression dives when the dive computer stayed in non-deco mode during
+the whole dive (represented by the <span class="green">dark green</span> section in the profile
+at the beginning of this section). This is caused by the fact that <em>Subsurface’s</em>
+calculations describe the deco obligation at that point in time during a dive,
+while dive computers usually take the upcoming ascent into account. During the
+ascent some excess Nitrogen (and possibly Helium) are already breathed off so even
+though the diver technically encountered a ceiling at depth, the dive still does
+not require an explicit deco stop. This feature allows dive computers to offer
+longer non-stop bottom time.</p></div>
+<div class="paragraph"><p>For a more detailed explanation of <em>gradient factors</em>, use the following links:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values, by Erik Baker, 1988, <em>Immersed</em> Vol. 3, No. 3.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin Watts</a>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_the_dive_profile_context_menu">4.4. The Dive Profile context menu</h3>
+<div class="paragraph"><p>The context menu for the Dive Profile is accessed by right-clicking while the
+mouse cursor is over the Dive Profile panel. The menu allows the creation of
+Bookmarks or Gas Change Event markers other than the ones that might have been
+imported from a Dive Computer. Markers are placed against the depth profile line
+and with the time of the event set by where the mouse cursor was when the right
+mouse button was initially clicked to bring up the menu. Gas Change events
+open a further selection of which gas is being switched to, the list based on
+the available gases defined in the Equipment Tab. By right-clicking while over
+an existing marker, the menu extends adding options to allow deletion of the
+marker or to allow all markers of that type to be hidden. Hidden events can be
+restored to view by selecteing Unhide all events from the context menu.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_the_strong_information_box_strong">4.5. The <strong>Information Box</strong></h3>
+<div class="paragraph"><p>The Information box displays a large range of information pertaining to the dive
+profile. Normally the Information Box is located to the top left of the <strong>Dive
+Profile</strong> panel. If the mouse points outside of the <strong>Dive Profile</strong> panel, then
+only the top line of the Information Box is visible (see left-hand part of
+figure (A) below). The Information Box can be moved around in the <strong>Dive Profile</strong>
+panel by click-dragging it with the mouse so that it is not obstructing
+important detail. The position of the Information Box is saved and used again
+during subsequent dive analyses.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
+</div>
+</div>
+<div class="paragraph"><p>The moment the mouse points inside the <strong>Dive Profile</strong> panel, it expands and
+shows many data items. In this situation, the data reflect the time point along
+the dive profile indicated by the mouse (see right-hand part of figure (B) above
+where the Information Box reflects the situation at the position of the cursor
+[arrow] in that image). Therefore, moving the cursor in the horizontal
+direction allows the Information Box to show information for any point along the
+dive profile.
+In this mode, the Information Box gives extensive statistics about depth, gas
+and ceiling characteristics of the particular dive. These include: Time period
+into the dive (indicated by a @), depth, cylinder pressure (P), temperature,
+ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
+maximum operating depth, effective air depth (EAD), effective narcotic depth
+(END), equivalent air density depth (EADD), decompression requirements at that
+instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
+as the calculated ceiling for several Bühlmann tissue compartments.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_organising_the_logbook_manipulating_groups_of_dives">5. Organising the logbook (Manipulating groups of dives)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_dive_list_context_menu">5.1. The Dive List context menu</h3>
+<div class="paragraph"><p>Many actions within <em>Subsurface</em> are dependent on a context menu that is used
+mostly to manipulate  groups of dives. The context menu is found by selecting
+a dive or a group of dives and then right-clicking.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/ContextMenu.png" alt="Figure: Context Menu" />
+</div>
+</div>
+<div class="paragraph"><p>The context menu is used in many manipulations described below.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_Renumber">5.2. Renumbering the dives</h3>
+<div class="paragraph"><p>Dives are normally numbered incrementally from non-recent dives (low sequence
+numbers) to recent dives (having the highest sequence numbers). The numbering
+of the dives is not always consistent. For instance, when non-recent dives are
+added to the dive list the numbering does not automatically follow on because
+of the dives that are more recent in date/time than the newly-added dive that
+has an older date/time. Therefore you sometimes may need to renumber the dives.
+This is performed by selecting (from the Main Menu) <em>Log &#8594; Renumber</em>. You are
+given a choice with respect to the lowest sequence number to be used.
+Completing this operation results in new sequence numbers (based on date/time)
+for the dives in the <strong>Dive List</strong> panel.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_Group">5.3. Grouping dives into trips and manipulating trips</h3>
+<div class="paragraph"><p>If you dive regularly, the dive list can rapidly become very long. <em>Subsurface</em>
+can group dives into <em>trips</em>. It performs this by grouping dives that have
+date/times that are not separated in time by more than two days, thus creating
+a single heading for each diving trip represented in the dive log. Below is an
+ungrouped dive list (A, on the left) as well as a grouped dive list with
+several trips (B, on the right):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Group2.jpg" alt="Figure: Grouping dives" />
+</div>
+</div>
+<div class="paragraph"><p>Grouping into trips allows a rapid way of accessing individual dives without
+having to scan long lists of dives. In order to group the dives in a dive list,
+(from the Main Menu) select <em>Log &#8594; Autogroup</em>. The <strong>Dive List</strong> panel now shows
+only the titles for the trips.</p></div>
+<div class="sect3">
+<h4 id="_viewing_the_dives_during_a_particular_trip">5.3.1. Viewing the dives during a particular trip</h4>
+<div class="paragraph"><p>Once when the dives have been grouped into trips, you can expand one or more
+trips by clicking the arrow-head on the left of each trip title. This expands
+the selected trip, revealing the individual dives performed during the trip.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">5.3.2. Editing the title and associated information for a particular trip</h4>
+<div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip title.
+You can add much more information about a trip by selecting its trip title from
+the dive list. This shows a <strong>Trip Notes</strong> tab in the <strong>Dive Notes</strong> panel. Here
+you can add or edit information about the date/time, the trip location and any
+other general comment about the trip as a whole (e.g. the dive company you
+dived with, the general weather during the trip). After entering this
+information, select <strong>Save</strong> from the buttons at the top right of the <strong>Trip Notes</strong>
+tab. The trip title in the <strong>Dive List</strong> panel should now reflect some of the
+edited information.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_collapsing_or_expanding_dive_information_for_different_trips">5.3.3. Collapsing or expanding dive information for different trips</h4>
+<div class="paragraph"><p>If you right-click after selecting a particular trip in the dive list, the
+resulting context menu allows several possibilities to expand or collapse dives
+within trips. This includes expanding all trips, collapsing all trips and
+collapsing all trips except the selected one.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_merging_dives_from_more_than_one_trip_into_a_single_trip">5.3.4. Merging dives from more than one trip into a single trip</h4>
+<div class="paragraph"><p>When you right-click on a selected trip title in the <strong>Dive List</strong> panel, the
+context menu allows the merging of trips by either merging of the selected trip
+with the trip below or with the trip above.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_splitting_a_single_trip_into_more_than_one_trip">5.3.5. Splitting a single trip into more than one trip</h4>
+<div class="paragraph"><p>If a trip includes five dives, you can split this trip into two trips (trip 1:
+top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top
+three dives. The resulting context menu allows you to create a new trip by
+choosing the option <strong>Create new trip above</strong>. The top three dives are then grouped
+into a separate trip. See below, the selection and context menu on the left (A),
+the completed action on the right (B):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/SplitDive3a.jpg" alt="FIGURE: Split a trip into 2 trips" />
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulating_single_dives">6. Manipulating single dives</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_delete_a_dive_from_the_dive_log">6.1. Delete a dive from the dive log</h3>
+<div class="paragraph"><p>Dives can be permanently deleted from the dive log by selecting and
+right-clicking them to bring up the context menu, and then selecting <strong>Delete
+x dive</strong>. Typically this would apply to a case where you wish to delete workshop
+calibration dives of the dive computer or dives of extremely short duration.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_unlink_a_dive_from_a_trip">6.2. Unlink a dive from a trip</h3>
+<div class="paragraph"><p>You can unlink dives from the trip to which they belong. Select and right-click
+the dives to bring up the context menu. Then select <strong>Remove dive(s) from trip</strong>.
+The dives that have been unlinked now appear immediately above the trip to
+which they belonged.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_add_a_dive_to_the_trip_immediately_above">6.3. Add a dive to the trip immediately above</h3>
+<div class="paragraph"><p>Selected dives can be moved from the trip to which they belong and placed within
+the trip immediately above the currently active trip. Select and right-click
+the dives to bring up the context menu, then select <strong>Add dive(s) to trip
+immediately above</strong>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_shift_the_start_time_of_dive_s">6.4. Shift the start time of dive(s)</h3>
+<div class="paragraph"><p>Sometimes it is necessary to adjust the start time of a dive. This may apply to
+situations where dives are performed in different time zones or when the dive
+computer has an erroneous time. Select and right-click the dive(s) to be
+adjusted. This brings up the context menu. Select <strong>Shift times</strong>. Specify the time
+(in hours and minutes) by which the dives should be adjusted and click on the
+option indicating whether the time adjustment should be forwards or backwards.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_merge_dives_into_a_single_dive">6.5. Merge dives into a single dive</h3>
+<div class="paragraph"><p>Sometimes a dive is briefly interrupted, e.g. if a diver returns to the surface
+for a few minutes, resulting in two or more dives being recorded by the dive
+computer and appearing as different dives in the <strong>Dive List</strong> panel. You can
+merge these dives onto a single dive by selecting the appropriate dives and
+right-clicking them to bring up the context menu. Then select <strong>Merge selected
+dives</strong>. It may be necessary to edit the dive information in the <strong>Dive Notes</strong>
+panelto reflect events or conditions that apply to the merged dive. The figure
+below shows the depth profile two such dives that were merged:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/MergedDive.png" alt="Example: Merged dive" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_ExportLog">7. Exporting the dive log or parts of the dive log</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>A dive log can be saved in two formats:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Subsurface</em> XML format. This is the native format used by <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Universal Dive Data format (UDDF). See <a href="http://uddf.org">http://uddf.org</a> for more information.
+UDDF is a generic format that enables communication among many dive computers
+and computer programs.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In order to save the WHOLE dive log (i.e. all trips and dives), select <strong>File</strong>
+from the Main menu. To save in <em>Subsurface</em> XML format, select <em>File &#8594; Save
+as</em>. To save in UDDF format, select <em>File &#8594; Export UDDF</em>.</p></div>
+<div class="paragraph"><p>In order to save only one or more dives or one or two trips, select the
+appropriate dives or trips in the <strong>Dive List</strong> panel. Then right-click the
+selected dives to bring up the context menu. To save in <em>Subsurface</em> XML
+format, select <em>Save as</em> from the context menu. To save in UDDF format, select
+<em>Export as UDDF</em> from the context menu.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_PrintDivelog">8. Printing your dive log</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>Subsurface</em> provides a simple interface to print your whole dive log or only a
+few selected dives, including dive profiles and other contextual information.</p></div>
+<div class="paragraph"><p>Before printing, two decisions are required:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Should the whole dive log be printed or only part of it? If only part of the
+dive log is required, then select the required dives from the <strong>Dive List</strong> panel.
+</p>
+</li>
+<li>
+<p>
+What gas partial pressure information is required on the dive profile? Select
+the appropriate information from the Main Menu: <em>File&#8594;Preferences&#8594;Graph</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Now you need to select the print options. To do this, select <em>File&#8594;Print</em> from
+the Main menu. The following dialogue appears (see the image on the left [A],
+below):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/PrintDivelog.jpg" alt="FIGURE: Print dialogue" />
+</div>
+</div>
+<div class="paragraph"><p>Under <em>Print type</em> you need to select one of three options:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Print the Dive List. Do do this, select <em>Table Print</em>.
+</p>
+</li>
+<li>
+<p>
+Print the full dive records (dive profiles and all other information) at 6
+dives per printed page. To do this, select <em>6 dives per page</em>.
+</p>
+</li>
+<li>
+<p>
+Print the full dive records (dive profiles and all other information) at 2
+dives per printed page. To do this, select <em>2 dives per page</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Under <em>Print options</em> you need to select:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Printing only the dives that have been selected from the dive list prior to
+activating the print dialogue, achieved by checking the box <em>Print only
+selected dives</em>.
+</p>
+</li>
+<li>
+<p>
+Printing in colour, achieved by checking the box with <em>Print in color</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The <em>Ordering</em> affects the layout of the page (or part of it) for each dive.
+The dive profile could be printed at the top of each dive, with the textual
+information underneath, or it could be printed with the textual information at
+the top with the dive profile underneath. Select the appropriate option in the
+print dialogue. See the image on the right (B), above which has a layout with
+text above the dive profile.</p></div>
+<div class="paragraph"><p>You can <em>Preview</em> the printed page by selecting the <em>Preview</em> button on the
+dialogue. After preview, changes to the options in the print dialogue can be made
+to give a layout that fits personal taste.</p></div>
+<div class="paragraph"><p>Now, select the <em>Print</em> button in the dialogue. This activates the regular print
+dialogue used by your operating system, allowing you to choose a printer and
+to set its properties. Remember to set the print resolution of the printer to
+an appropriate value by changing the printer properties. Finally, print the
+dives. Above on the right (B) is an example of the output for one particular
+dive.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_Preferences">9. Setting your <strong>Preferences</strong> for <em>Subsurface</em></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are several settings within <em>Subsurface</em> that the user can specify. These
+are found when selecting <em>File&#8594;Preferences</em>. The settings are performed in
+four groups: <strong>Defaults</strong>, <strong>Units</strong>, <strong>Graph</strong> and <strong>Language</strong>. All four sections
+operate on the same principles: specify the settings you wish to change, then
+save these using the <strong>Apply</strong> button. After applying all the new settings you can
+leave the settings panel by selecting <strong>OK</strong>.</p></div>
+<div class="sect2">
+<h3 id="_defaults">9.1. Defaults</h3>
+<div class="paragraph"><p>There are four settings in the <strong>Defaults</strong> panel:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Lists and tables</strong>: Here you can specify the font type and font size of the
+Dive Table panel. By decreasing the font size of the Dive table,
+you can see more dives on a screen.
+</p>
+</li>
+<li>
+<p>
+<strong>Dives</strong>: Here you need to specify the directory and file name of your
+electronic dive log book. This is a file with filename extension .xml. When
+launched, <em>Subsurface</em> will then automatically load the dive log book specified.
+</p>
+</li>
+<li>
+<p>
+<strong>Display invalid</strong>:  Dives can be marked as invalid (when you want to hide
+dives that you don&#8217;t consider valid dives, e.g. pool dives, but still want to
+keep them in the dive log). This controls whether those dives are displayed in
+the dive list.
+</p>
+</li>
+<li>
+<p>
+<strong>Use Default cylinder</strong>: Here you can specify the default cylinder listed in
+the <strong>Equipment</strong> tab of the <strong>Dive Notes</strong> panel.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_units">9.2. Units</h3>
+<div class="paragraph"><p>Here you can choose between metric and imperial measures of depth, pressure,
+volume, temperature and mass. By selecting the Metric or Imperial radio button
+at the top, you can specify that all units are in the chosen measurement system
+. Alternatively, if you select the <strong>Personalise</strong> radio button, you can select
+a mixture with some measurements being metric while others are in imperial
+measures.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_graph">9.3. Graph</h3>
+<div class="paragraph"><p>This panel allows two type of selections:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Show</strong>: Here you specify the amount of information that is shown as part of
+the dive profile:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Gas pressure graphs: <em>Subsurface</em> can display the pressures of the gases
+with which you dive. If you dive breathing air, then the only important gas is
+nitrogen. You can instruct <em>Subsurface</em> to plot the nitrogen pressure during
+your dive. If you dive breathing nitrox, then you can select a graph of both the
+nitrogen and oxygen pressures during your dive. If you dive with trimix or
+heliox, you can select the display of the helium pressure as well. For each of
+these graphs you can specify a threshold value on the right-hand side of the
+panel. If any of the graphs go above this threshold level, the graph is
+highlighted in red, indication that the threshold value has been exceeded (see
+figure below).
+</p>
+</li>
+<li>
+<p>
+Ceiling: Ascent ceilings arise when a direct ascent to the surface exposes
+the diver to decompression sickness (DCS) and it is necessary to either ascend
+slower or to perform decompression stop(s) before ascending to the surface.
+<em>Subsurface</em> can indicate these ceilings above which the diver should not ascend
+at a particular point in time (see the green-shaded areas in the figure in the
+section on <a href="#S_DiveProfile">Dive Profiles</a>) and in the figure below:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+If you check <strong>Calculated ceiling</strong>, then a ceiling is shown if it exists for
+a particular dive (<strong>A</strong> in figure below)
+</p>
+</li>
+<li>
+<p>
+If you check <strong>show all tissues</strong>, the ceiling is shown for the tissue
+compartments following the Bühlmann model (<strong>B</strong> in figure below).
+</p>
+</li>
+<li>
+<p>
+If you check <strong>3m increments</strong>, then the ceiling is indicated in 3m-increments
+(<strong>C</strong> in figure below).
+</p>
+</li>
+<li>
+<p>
+If the dive computer itself calculates a ceiling and makes it available to
+<em>Subsurface</em> during upload of dives, this can be
+shown by checking <strong>Dive computer reported ceiling</strong> and it can be drawn in red by
+checking <strong>Draw ceiling red</strong>.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+If a <em>Maximum operating depth (MOD)</em> or an <em>Equivalent air depth (EAD)</em>
+applies to a dive profile, these can be shown by checking the appropriate boxes.
+</p>
+</li>
+<li>
+<p>
+If a <em>Maximum partial pressure of oxygen (maxPPO2)</em> applies to dives, then
+this can be specified in the appropriate text box. In addition, if a
+<em>no-decompression limit (NDL)</em> is to be shown in the <strong>info</strong> box, then check the
+appropriate box.
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Ceilings.png" alt="Figure: Ceiling with 3m resolution" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Misc</strong>: Here you can set the <em>gradient factors</em> used while diving. GF_Low is
+the gradient factor at deep depths and GF_High is used just below the surface.
+At intermediate depths gradient factors between GF_Low and GF_High are used.
+Gradient factors add conservatism to the nitrogen exposure during a dive, in a
+similar way that many dive computers have a conservatism setting. The lower
+the value of a gradient factor, the more conservative the calculations are with
+respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
+factors of 25/60 are considered conservative and values of 60/90 are considered
+harsh. Checking <strong>GFLow at max depth</strong> box causes GF_Low to be used at the
+deepest depth of a dive. For more information see:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, , <em>Immersed</em> Vol. 3, No. 3.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin
+ Watts</a>
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_languages">9.4. Languages</h3>
+<div class="paragraph"><p>A checkbox allows one to use the <em>System Default</em> language which in most cases
+will be the correct setting; with this <em>Subsurface</em> simply runs in the same
+language / country settings as the underlying OS. If this is for some reason
+undesirable you can uncheck this checkbox and pick a language / country
+combination from the list of included localizations.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description_of_the_subsurface_main_menu_items">10. Description of the Subsurface Main Menu items</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This section describes the functions and operation of the items in the Main Menu
+of Subsurface. Several of the items below are links to sections of this manual
+dealing with the appropriate operations.</p></div>
+<div class="sect2">
+<h3 id="_file">10.1. File</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_NewLogbook"><em>New Logbook</em></a> - Close the currently open dive logbook and
+clear all dive information.
+</p>
+</li>
+<li>
+<p>
+<em>Open logbook</em> - This opens the file manager in order to select a dive
+logbook to open.
+</p>
+</li>
+<li>
+<p>
+<em>Save</em> - Save the dive logbook that is currently open.
+</p>
+</li>
+<li>
+<p>
+<em>Save as</em>: - Save the current logbook or the currently selected dives within
+the present logbook under a different filename.
+</p>
+</li>
+<li>
+<p>
+<em>Close</em> -  Close the dive logbook that is currently open.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ExportLog"><em>Export UDDF</em></a> -  Export the currently open dive logbook (or
+the selected dives in the logbook) in UDDF format.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_PrintDivelog"><em>Print</em></a> -  Print the currently open logbook.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Preferences"><em>Preferences</em></a> -  Set the <em>Subsurface</em> preferences.
+</p>
+</li>
+<li>
+<p>
+<em>Quit</em> - Quit <em>Subsurface</em>.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_import">10.2. Import</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_ImportDiveComputer"><em>Import from dive computer</em></a> - Import dive information
+from a dive computer.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ImportingUDDF"><em>Import Files</em></a> - Import dive information from a file in
+UDDF or in another <em>Subsurface</em>-compatible format.
+</p>
+</li>
+<li>
+<p>
+<em>Import CSV</em> - Import dive information from a data file in CSV format.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Companion"><em>Import GPS data from Subsurface Service</em></a> - Load GPS
+coordinates from the <em>Subsurface</em> mobile phone app.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ImportingDivelogsDe"><em>Import from Divelogs.de</em></a> - Import dive information
+from <em>www.Divelogs.de</em>.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_log">10.3. Log</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_EnterData"><em>Add Dive</em></a> - Manually add a new dive to the <strong>Dive List</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Renumber"><em>Renumber</em></a> - Renumber the dives listed in the <strong>Dive List</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Group"><em>Auto Group</em></a> - Group the dives in the <strong>Dive List</strong> panel into dive
+trips.
+</p>
+</li>
+<li>
+<p>
+<em>Edit Device Names</em> - Edit the names of dive computers.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_view">10.4. View</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>All</em></a> - View the four main <em>Subsurface</em> panels
+simmultaneously.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Dive List</em></a> - View only the <strong>Dive List</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Profile</em></a> - View only the <strong>Dive Profile</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Info</em></a> - View only the <strong>Dive Notes</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Globe</em></a> - View only the <strong>World Map</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<em>Yearly Statistics</em> - Display summary statistics about dives during the last
+year.
+</p>
+</li>
+<li>
+<p>
+<em>Prev DC</em> - Switch to next dive computer.
+</p>
+</li>
+<li>
+<p>
+<em>Next DC</em> - Switch to previous dive computer.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_filter">10.5. Filter</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Select Events</em> - This option is not implemented yet.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_help">10.6. Help</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>About Subsurface</em> - Show a panel with the version number of <em>Subsurface</em> as
+well as licensing information.
+</p>
+</li>
+<li>
+<p>
+<em>User Manual</em> - Open a window showing this user manual.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">11. APPENDIX A: Operating system specific information for importing dive information from a dive computer.</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_make_sure_that_your_os_has_the_required_drivers_installed">11.1. Make sure that your OS has the required drivers installed</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/drivers.jpg" alt="Note" />
+</td>
+<td class="content">The operating system of your desktop computer needs the appropriate drivers in
+order to communicate with your dive computer in whichever way your dive
+computer prefers (e.g. bluetooth, USB, infrared).</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+On Linux this means you need to have the correct kernel
+          module loaded. Most distributions will do this automatically
+          for you. Make sure you have read/write permissions to that
+          port. On Ubuntu that could mean you should run the command
+          following command in a terminal window:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><code>+sudo adduser+ [your_username] +dialout+</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+On Windows, the OS should offer to download the correct
+          driver once you connect your dive computer to the USB port.
+</p>
+</li>
+<li>
+<p>
+On a Mac you at times have to manually hunt for the correct
+          driver. For example the correct driver for the Mares Puck
+          devices can be found as Mac_OSX_VCP_Driver.zip at
+          <a href="http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges">http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges</a>
+          <span class="red">(see further hints in <a href="#AppendixB">Appendix B</a>)</span>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="S_HowFindDeviceName">11.2. How to Find the Device Name for USB devices</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/usb.jpg" alt="Note" />
+</td>
+<td class="content">When you connect your dive computer by using a USB connector, usually
+<em>Subsurface</em> will either propose a drop down list that contains the
+correct device name (or mount point for the Uemis Zurich), or it will
+disable the device select drop down if no device name is needed at
+all. In the rare cases where this doesn&#8217;t work here are some
+instructions on ways to find out what your device name is:</td>
+</tr></table>
+</div>
+<div class="paragraph"><div class="title">On Windows:</div><p>Simply try COM1, COM2, etc. The drop down list should contain all connected COM
+devices.</p></div>
+<div class="paragraph"><div class="title">On MacOS:</div><p>The drop down box should find all connected dive computers.</p></div>
+<div class="paragraph"><div class="title">On Linux:</div><p>Try the following:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Disconnect your USB cable of your dive computer
+</p>
+</li>
+<li>
+<p>
+Open a terminal
+</p>
+</li>
+<li>
+<p>
+Type the command: <em>dmesg</em> and press enter
+</p>
+</li>
+<li>
+<p>
+Plug in your USB cable of your dive computer
+</p>
+</li>
+<li>
+<p>
+Type the command: <em>dmesg</em> and press enter
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Within your terminal you should see a message similar to this one:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>usb 2-1.1: new full speed USB device number 14 using ehci_hcd
+usbcore: registered new interface driver usbserial
+USB Serial support registered for generic
+usbcore: registered new interface driver usbserial_generic
+usbserial: USB Serial Driver core
+USB Serial support registered for FTDI USB Serial Device
+ftdi_sio 2-1.1:1.0: FTDI USB Serial Device converter detected
+usb 2-1.1: Detected FT232BM
+usb 2-1.1: Number of endpoints 2
+usb 2-1.1: Endpoint 1 MaxPacketSize 64
+usb 2-1.1: Endpoint 2 MaxPacketSize 64
+usb 2-1.1: Setting MaxPacketSize 64
+usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB3
+usbcore: registered new interface driver ftdi_sio
+ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver</code></pre>
+</div></div>
+<div class="paragraph"><p>You see that in the third line from the bottom, the USB adapter is
+detected and is connected to <code>ttyUSB3</code>. Now you use this information in
+the import settings as <code>/dev/ttyUSB3</code>. Your dive computer interface is
+connected and you should be able to import your dives.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_HowFindBluetoothDeviceName">11.3. Setting up bluetooth enabled devices</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/bluetooth.jpg" alt="Note" />
+</td>
+<td class="content">For dive computers communicating through bluetooth like the Heinrichs
+Weikamp Frog or the Shearwater Predator and Petrel there is a
+different procedure to get the devices name to communicate with
+<em>Subsurface</em>. In general it consists of these steps:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+enable bluetooth on your computer
+</p>
+</li>
+<li>
+<p>
+pairing the device
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Do not forget to set your divecomputer in Bluetooth or upload mode before
+Paring and Downloading logs. If you use a Shearwater Predator/Petrel just select
+<em>Dive Log &#8594; Upload Log</em> and wait until you see the <em>Wait PC</em> message.</p></div>
+<div class="paragraph"><div class="title">On Windows:</div><p>Bluetooth is most likely already enabled. For pairing the device choose
+Control Panel&#8594;Bluetooth Devices&#8594;Add Wireless Device
+This should bring up a dialog showing your dive computer (in Bluetooth mode) and
+allowing to pair it. For bluetooth pairing of your dive computer refer to the
+manufacturer&#8217;s user guide. The dive computer should then show up in the list of
+Bluetooth devices and you may then right click on it and choose Properties&#8594;COM
+Ports to identify the port used for your dive computer. If there are several
+ports listed, use the one saying "Outgoing" instead of "Incoming".</p></div>
+<div class="paragraph"><p>For downloading to <em>Subsurface</em>, the drop down list should contain this COM
+port already. If not, enter it manually.</p></div>
+<div class="paragraph"><p>Note: If you have issues downloading from your dive computer in other software
+afterwards try to remove the pairing with your dive computer.</p></div>
+<div class="paragraph"><div class="title">On MacOS:</div><p>Click on the Bluetooth symbol in the menu bar and select <em>Set up
+Bluetooth Device&#8230;</em>. Make sure that your dive computer is in upload
+mode; it should then show up in the list of devices. Select it and go
+through the pairing process. This step should only be needed once for
+initial setup.</p></div>
+<div class="paragraph"><p>Once the pairing is completed the correct device will be shown in the
+<em>Device or Mount Point</em> drop down in the <em>Subsurface</em> <strong>Import</strong> dialog.</p></div>
+<div class="paragraph"><div class="title">On Linux</div><p>Ensure sure bluetooth is enabled on the <em>Subsurface</em> computer.
+On most common distributions this should be true out of the box. If not then
+depending on your system, running <code>initd</code> or <code>systemd</code>. This might be different
+and also involve loading modules specific to your hardware. In case your system is
+running <code>systemd</code>, manually run <code>sudo systemctl start bluetooth.service</code> to enable
+it, in case of <code>initd</code>, run something like <code>sudo rc.config start bluetoothd</code> or
+<code>sudo /etc/init.d/bluetooth start</code>.</p></div>
+<div class="paragraph"><p>Pairing should be straight forward. Using Gnome3 for instance will show a
+bluetooth icon in the upper right corner of your desktop where you select <em>Set
+up New Device</em>. This should show you a dialog where you are able to select your
+dive computer (in bluetooth mode) and pair it. If you have issues with PIN
+setting try manually setting <em>0000</em>.</p></div>
+<div class="paragraph"><p>You may also use a manual approach by using such commands:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>sudo hciconfig</code> - shows the bluetooth devices available on your
+computer (not dive computer), most likely you will see a hci0, if not
+try <em>sudo hcitool -a</em> to see inactive devices and try to run <em>sudo
+hciconfig hci0 up</em> to bring them up
+</p>
+</li>
+<li>
+<p>
+<code>sudo hcitool scanning</code>- use this to get a list of bluetooth enabled
+client devices, watch out for your dive computer and remember the MAC
+address shown there
+</p>
+</li>
+<li>
+<p>
+<code>sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4</code> - this will pair
+your dive computer with the bluetooth stack of your computer, copy/paste
+the MAC address from the output of <em>hcitool scanning</em>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Unfortunately on Linux binding to a communication device has to be done
+manually by running:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4</code> - bind the dive
+computer to a communication device in your computer, in case rfcomm is
+already taken just use rfcomm1 or up, please copy/paste the MAC address
+from the output of <em>hcitool scanning</em>, the MAC shown in here will not
+work for you.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>For downloading dives in Subsurface you have then to specify <code>/dev/rfcomm0</code>
+as device name to use.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">12. APPENDIX B: Dive Computer specific information for importing dive information.</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="S_ImportUemis">12.1. Import from a Uemis Zurich</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/iumis.jpg" alt="Note" />
+</td>
+<td class="content">Things are very similar to a normal USB-connected dive computer when downloadin
+g dives from a Uemis Zurich
+dive computer (which certainly is one of the ones that DO recharge when
+connected to the USB port). The main difference is that you don&#8217;t enter a
+device name, but instead the location where the UEMISSDA file system is
+mounted once you connect the dive computer. On Windows this is a drive letter (
+often <em>E:</em> or <em>F:</em>), on a Mac this is
+<em>/Volumes/UEMISSDA</em> and on Linux systems this differs depending on the
+distribution that you use. On Fedora it usually is
+<em>/var/run/media/&lt;your_username&gt;/UEMISSDA</em>. In all cases <em>Subsurface</em>
+should suggest the correct location in the drop down list.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Once you have selected this as device name you can download the
+dives from the Uemis Zurich. One technical issue with the Uemis Zurich
+download implementation (this is a firmware limitation, not a
+<em>Subsurface</em> issue) is that you cannot download more than about 40-50
+dives without running out of memory on the SDA. This will usually only
+happen the very first time you download dives from the Uemis Zurich -
+normally when downloading at the end of a day or even after a dive
+trip, the capacity is sufficient. If <em>Subsurface</em> displays an error
+that the dive computer ran out of space the solution is straight
+forward.  Disconnect the SDA, turn it off and on again, and reconnect
+it. You can now retry (or start a new download session) and the
+download will continue where it stopped the last time you tried. You
+may have to do this more than once, depending on how many dives you
+have stored on your dive computer.</p></div>
+<div class="paragraph"><p>At this point <em>Subsurface</em> downloads most of the information that is
+stored on the SDA, including information about dive spots and
+equipment. Buddy information is not yet downloaded.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingDR5">12.2. Importing dives from Heinrichs Weikamp DR5</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/HW_DR5.jpg" alt="Note" />
+</td>
+<td class="content">When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF file
+for every dive.
+Mark all the dives you&#8217;d like to import or open.
+Note: The DR5 does not seem to store gradient factors nor deco information, so
+for <em>Subsurface</em> it is not possible to display them. Adjust the gradient
+factors in the Tec Settings in <em>Subsurface</em> to generate a deco overlay in the _
+Subsurface_ <strong>Dive Profile</strong> panel
+to get deco displayed but please note that the deco calculated by <em>Subsurface</em>
+will most likely differ from the one displayed on the DR5.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_import_from_shearwater_predator_using_bluetooth">12.3. Import from Shearwater Predator using bluetooth</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/predator.jpg" alt="Note" />
+</td>
+<td class="content">Using a Shearwater Predator you may be able to pair Bluetooth but then encounter
+issues when downloading, showing errors like <em>Slip RX: unexp. SLIP END</em> on the Predator.
+This might also be seen, when using other dive log software and operating
+systems than Linux. We have no detailed idea about the source and how to fix
+this, but it is reported to be solved sometimes by one of these steps:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+use the bluetooth dongle which came with the Shearwater Predator instead of
+   the built-in one of your computer
+</p>
+</li>
+<li>
+<p>
+switch to different bluetooth drivers for your hardware
+</p>
+</li>
+<li>
+<p>
+switch off WiFi while using Bluetooth
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2013-12-19 07:22:47 PST
+</div>
+</div>
+</body>
+</html>
