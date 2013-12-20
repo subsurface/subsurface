@@ -98,11 +98,11 @@ static void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
-bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
+bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected, QString *errorMsg)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 	if (!amount_selected) {
-		qDebug() << errPrefix << "no dives selected";
+		*errorMsg = tr("no dives were selected");
 		return false;
 	}
 
@@ -123,10 +123,14 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		return false;
 	}
 
-	zip = zip_open(QFile::encodeName(tempfile), ZIP_CREATE, NULL);
 
+	int error_code;
+	zip = zip_open(QFile::encodeName(tempfile), ZIP_CREATE, &error_code);
 	if (!zip) {
-		qDebug() << errPrefix << "cannot open file as zip";
+		char buffer[1024];
+		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
+		*errorMsg = tr("failed to create zip file for upload: %1")
+			    .arg(QString::fromLocal8Bit(buffer));
 		return false;
 	}
 
@@ -139,7 +143,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			continue;
 		f = tmpfile();
 		if (!f) {
-			qDebug() << errPrefix << "cannot create temp file";
+			*errorMsg = tr("cannot create temporary file: %1").arg(qt_error_string());
 			goto error_close_zip;
 		}
 		save_dive(f, dive);
@@ -148,7 +152,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		rewind(f);
 		membuf = (char *)malloc(streamsize + 1);
 		if (!membuf || !fread(membuf, streamsize, 1, f)) {
-			qDebug() << errPrefix << "memory error";
+			*errorMsg = tr("internal error: %1").arg(qt_error_string());
 			fclose(f);
 			free((void *)membuf);
 			goto error_close_zip;
@@ -162,7 +166,8 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		 */
 		xmlDoc *doc = xmlReadMemory(membuf, streamsize, "divelog", NULL, 0);
 		if (!doc) {
-			qDebug() << errPrefix << "xml error";
+			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
+			*errorMsg = tr("internal error");
 			free((void *)membuf);
 			goto error_close_zip;
 		}
@@ -549,11 +554,11 @@ void DivelogsDeWebServices::downloadDives()
 
 void DivelogsDeWebServices::prepareDivesForUpload()
 {
-	QString errorText(tr("Cannot create DLD file"));
+	QString errorText;
 
 	/* generate a random filename and create/open that file with zip_open */
 	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	if (prepare_dives_for_divelogs(filename, true)) {
+	if (prepare_dives_for_divelogs(filename, true, &errorText)) {
 		QFile f(filename);
 		if (f.open(QIODevice::ReadOnly)) {
 			uploadDives((QIODevice *)&f);
@@ -561,10 +566,8 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 			f.remove();
 			return;
 		}
-		mainWindow()->showError(errorText.append(": ").append(filename));
-		return;
 	}
-	mainWindow()->showError(errorText.append("!"));
+	mainWindow()->showError(errorText);
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
