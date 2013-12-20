@@ -133,7 +133,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		int streamsize;
 		char *membuf;
 		xmlDoc *transformed;
-		struct zip_source *s[dive_table.nr];
+		struct zip_source *s;
 
 		/*
 		 * Get the i'th dive in XML format so we can process it.
@@ -187,9 +187,9 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		 * Save the XML document into a zip file.
 		 */
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
-		s[i] = zip_source_buffer(zip, membuf, streamsize, 1);
-		if (s[i]) {
-			int64_t ret = zip_add(zip, filename, s[i]);
+		s = zip_source_buffer(zip, membuf, streamsize, 1);
+		if (s) {
+			int64_t ret = zip_add(zip, filename, s);
 			if (ret == -1)
 				qDebug() << errPrefix << "failed to include dive:" << i;
 		}
