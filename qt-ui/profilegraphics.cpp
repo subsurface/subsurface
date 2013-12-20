@@ -505,11 +505,7 @@ void ProfileGraphicsView::plot_depth_scale()
 	/* Depth markers: every 30 ft or 10 m*/
 	maxdepth = get_maxdepth(&gc.pi);
 	gc.topy = 0; gc.bottomy = maxdepth;
-
-	switch (prefs.units.length) {
-		case units::METERS: marker = 10000; break;
-		case units::FEET: marker = 9144; break;	/* 30 ft */
-	}
+	marker = M_OR_FT(10,30);
 
 	/* don't write depth labels all the way to the bottom as
 	 * there may be other graphs below the depth plot (like
@@ -1155,14 +1151,7 @@ void ProfileGraphicsView::plot_depth_profile()
 	/* Depth markers: every 30 ft or 10 m*/
 	gc.leftx = 0; gc.rightx = 1.0;
 	gc.topy = 0; gc.bottomy = maxdepth;
-	switch (prefs.units.length) {
-	case units::METERS:
-		marker = 10000;
-		break;
-	case units::FEET:
-		marker = 9144;
-		break;	/* 30 ft */
-	}
+	marker = M_OR_FT(10,30);
 	maxline = qMax(gc.pi.maxdepth + marker, maxdepth * 2 / 3);
 
 	c = getColor(DEPTH_GRID);
