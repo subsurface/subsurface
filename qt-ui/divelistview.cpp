@@ -765,7 +765,7 @@ void DiveListView::saveSelectedDivesAs()
 	settings.setValue("LastDir",fileInfo.dir().path());
 	settings.endGroup();
 
-	QByteArray bt = fileName.toLocal8Bit();
+	QByteArray bt = QFile::encodeName(fileName);
 	save_dives_logic(bt.data(), TRUE);
 }
 

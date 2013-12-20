@@ -66,6 +66,18 @@ const char *getSetting(QSettings &s, QString name)
 	return NULL;
 }
 
+#ifdef Q_OS_WIN
+static QByteArray encodeUtf8(const QString &fname)
+{
+	return fname.toUtf8();
+}
+
+static QString decodeUtf8(const QByteArray &fname)
+{
+	return QString::fromUtf8(fname);
+}
+#endif
+
 void init_ui(int *argcp, char ***argvp)
 {
 	QVariant v;
@@ -82,6 +94,10 @@ void init_ui(int *argcp, char ***argvp)
 	// 106 is "UTF-8", this is faster than lookup by name
 	// [http://www.iana.org/assignments/character-sets/character-sets.xml]
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
+#  ifdef Q_OS_WIN
+	QFile::setDecodingFunction(decodeUtf8);
+	QFile::setEncodingFunction(encodeUtf8);
+#  endif
 #endif
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");

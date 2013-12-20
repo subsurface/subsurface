@@ -759,7 +759,7 @@ void DivelogsDeWebServices::downloadFinished()
 	if (!zip)
 		::close(duppedfd);
 #else
-	struct zip *zip = zip_open(zipFile.fileName().toUtf8().data(), 0, &errorcode);
+	struct zip *zip = zip_open(QFile::encodeName(zipFile.fileName()), 0, &errorcode);
 #endif
 	if (!zip) {
 		char buf[512];
@@ -855,7 +855,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 		}
 		/* parse file and import dives */
 		char *error = NULL;
-		parse_file(zipFile.fileName().toUtf8().data(), &error);
+		parse_file(QFile::encodeName(zipFile.fileName()), &error);
 		if (error != NULL) {
 			mainWindow()->showError(error);
 			free(error);
