@@ -267,7 +267,7 @@ double ascii_strtod(char *str, char **ptr)
 {
 	char *p = str, c, *ep;
 	double val = 0.0;
-	double decimal;
+	double decimal = 1.0;
 	int sign = 0, esign = 0;
 	int numbers = 0, dot = 0;
 
@@ -290,7 +290,6 @@ double ascii_strtod(char *str, char **ptr)
 			if (dot)
 				goto done;
 			dot = 1;
-			decimal = 1.0;
 			continue;
 		}
 		if (c >= '0' && c <= '9') {
@@ -399,7 +398,7 @@ static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 
 static void pressure(char *buffer, void *_press)
 {
-	double mbar;
+	double mbar = 0.0;
 	pressure_t *pressure = _press;
 	union int_or_float val;
 

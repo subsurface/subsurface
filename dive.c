@@ -57,6 +57,7 @@ int get_pressure_units(unsigned int mb, const char **units)
 		unit = translate("gettextFromC","pascal");
 		break;
 	case BAR:
+	default:
 		pressure = (mb + 500) / 1000;
 		unit = translate("gettextFromC","bar");
 		break;
@@ -97,6 +98,7 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 
 	switch (units_p->volume) {
 	case LITER:
+	default:
 		vol = ml / 1000.0;
 		unit = translate("gettextFromC","l");
 		decimals = 1;
@@ -130,6 +132,7 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 
 	switch (units_p->length) {
 	case METERS:
+	default:
 		d = mm / 1000.0;
 		unit = translate("gettextFromC","m");
 		decimals = d < 20;
@@ -156,6 +159,7 @@ double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
 
 	switch (units_p->length) {
 	case METERS:
+	default:
 		d = mms / 1000.0 * time_factor;
 		unit = translate("gettextFromC",(units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
 		break;
