@@ -106,15 +106,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		return false;
 	}
 
-	int i;
-	struct dive *dive;
-	FILE *f;
-	char filename[PATH_MAX];
-	int streamsize;
-	char *membuf;
 	xsltStylesheetPtr xslt = NULL;
-	xmlDoc *transformed;
-	struct zip_source *s[dive_table.nr];
 	struct zip *zip;
 
 	xslt = get_stylesheet("divelogs-export.xslt");
@@ -135,8 +127,19 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	}
 
 	/* walk the dive list in chronological order */
-	for (i = 0; i < dive_table.nr; i++) {
-		dive = get_dive(i);
+	for (int i = 0; i < dive_table.nr; i++) {
+		FILE *f;
+		char filename[PATH_MAX];
+		int streamsize;
+		char *membuf;
+		xmlDoc *transformed;
+		struct zip_source *s[dive_table.nr];
+
+		/*
+		 * Get the i'th dive in XML format so we can process it.
+		 * We need to save to a file before we can reload it back into memory...
+		 */
+		struct dive *dive = get_dive(i);
 		if (!dive)
 			continue;
 		if (selected && !dive->selected)
@@ -150,6 +153,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		fseek(f, 0, SEEK_END);
 		streamsize = ftell(f);
 		rewind(f);
+
 		membuf = (char *)malloc(streamsize + 1);
 		if (!membuf || !fread(membuf, streamsize, 1, f)) {
 			*errorMsg = tr("internal error: %1").arg(qt_error_string());
@@ -159,6 +163,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		}
 		membuf[streamsize] = 0;
 		fclose(f);
+
 		/*
 		 * Parse the memory buffer into XML document and
 		 * transform it to divelogs.de format, finally dumping
@@ -172,10 +177,12 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			goto error_close_zip;
 		}
 		free((void *)membuf);
+
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
 		xmlDocDumpMemory(transformed, (xmlChar **) &membuf, &streamsize);
 		xmlFreeDoc(doc);
 		xmlFreeDoc(transformed);
+
 		/*
 		 * Save the XML document into a zip file.
 		 */
