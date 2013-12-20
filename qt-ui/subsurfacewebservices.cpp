@@ -98,18 +98,18 @@ static void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
-static char *prepare_dives_for_divelogs(const bool selected)
+static bool prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 	if (!amount_selected) {
 		qDebug() << errPrefix << "no dives selected";
-		return NULL;
+		return false;
 	}
 
 	int i;
 	struct dive *dive;
 	FILE *f;
-	char filename[PATH_MAX], *tempfile;
+	char filename[PATH_MAX];
 	int streamsize;
 	char *membuf;
 	xsltStylesheetPtr xslt = NULL;
@@ -120,18 +120,14 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	xslt = get_stylesheet("divelogs-export.xslt");
 	if (!xslt) {
 		qDebug() << errPrefix << "missing stylesheet";
-		return NULL;
+		return false;
 	}
 
-	/* generate a random filename and create/open that file with zip_open */
-	QString tempfileQ = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	tempfile = strdup(tempfileQ.toUtf8().data());
-	zip = zip_open(tempfile, ZIP_CREATE, NULL);
+	zip = zip_open(QFile::encodeName(tempfile), ZIP_CREATE, NULL);
 
 	if (!zip) {
 		qDebug() << errPrefix << "cannot open file as zip";
-		free((void *)tempfile);
-		return NULL;
+		return false;
 	}
 
 	/* walk the dive list in chronological order */
@@ -188,14 +184,13 @@ static char *prepare_dives_for_divelogs(const bool selected)
 	}
 	zip_close(zip);
 	xsltFreeStylesheet(xslt);
-	return tempfile;
+	return true;
 
 error_close_zip:
 	zip_close(zip);
-	QFile::remove(tempfileQ);
-	free(tempfile);
+	QFile::remove(tempfile);
 	xsltFreeStylesheet(xslt);
-	return NULL;
+	return false;
 }
 
 WebServices::WebServices(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
@@ -555,18 +550,18 @@ void DivelogsDeWebServices::downloadDives()
 void DivelogsDeWebServices::prepareDivesForUpload()
 {
 	QString errorText(tr("Cannot create DLD file"));
-	char *filename = prepare_dives_for_divelogs(true);
-	if (filename) {
+
+	/* generate a random filename and create/open that file with zip_open */
+	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
+	if (prepare_dives_for_divelogs(filename, true)) {
 		QFile f(filename);
 		if (f.open(QIODevice::ReadOnly)) {
 			uploadDives((QIODevice *)&f);
 			f.close();
 			f.remove();
-			free((void *)filename);
 			return;
 		}
 		mainWindow()->showError(errorText.append(": ").append(filename));
-		free((void *)filename);
 		return;
 	}
 	mainWindow()->showError(errorText.append("!"));
