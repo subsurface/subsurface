@@ -98,7 +98,7 @@ static void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
-static bool prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
+bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 	if (!amount_selected) {
