@@ -169,7 +169,7 @@ displayed.
 *Air and water temperatures*: Type in the air and water temperatures during the
 dive into these fields to the right of the Starttime. You do not need to type
 in units of temperature: Subsurface supplies these automatically, you only need
-type the number. (The units selected in the 'Preferences' [red]#[[URL link]]#
+type the number. (The units selected in the 'Preferences'
 will determine whether metric or imperial units are displayed)
 
 *Location*: Here you enter the name of the dive site, e.g. "Tihany, Lake Balaton,
@@ -310,7 +310,7 @@ _Modifying the dive profile_: When you move the cursor around the dive profile,
 its position is indicated by two red lines as shown below. The depth and time
 that the cursor represents are indicated, respectively on the left hand and
 bottom axes. The units (metric/imperial) on the axes are determined by the
-*preference* settings [red]#[[LINK]]#. The dive profile itself comprises several
+*preference* settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15m.
 If your dive depth was 21m then you need to drag the appropriate waypoints
@@ -490,7 +490,7 @@ in these fields to the right of the Starttime. Many dive computers supply water
 temperature information and this field may therefore not require editing. If
 editing is required, you do not need to type in units of temperature:
 Subsurface supplies these automatically, only a number is required. (The units
-selected in the 'Preferences' [red]#[[URL link]]# will determine whether metric
+selected in the 'Preferences' will determine whether metric
 or imperial units are displayed)
 
 *Location*: Here type in text that describes the site where you did this dive,
@@ -583,7 +583,7 @@ automatically be shown in the dialogue.
 
 Now you need to indicate the starting pressure and the ending pressure of the
 specified gas during your dive. The unit of pressure (metric/imperial)
-corresponds to the setting you chose in the preferences [red]#[[LINK]]#.
+corresponds to the setting you chose in the preferences.
 
 Finally you need to type in the gas mixture that you used. If you used air, you
 can enter 21% or leave the field blank. If you used nitrox or trimix, specify
@@ -1561,7 +1561,6 @@ computer prefers (e.g. bluetooth, USB, infrared).
 	  driver. For example the correct driver for the Mares Puck
 	  devices can be found as Mac_OSX_VCP_Driver.zip at
 	  http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
-	  [red]#(see further hints in <<AppendixB,Appendix B>>)#
 
 [[S_HowFindDeviceName]]
 === How to Find the Device Name for USB devices
