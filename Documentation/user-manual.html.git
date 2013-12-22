@@ -556,7 +556,7 @@ displayed.</p></div>
 <div class="paragraph"><p><strong>Air and water temperatures</strong>: Type in the air and water temperatures during the
 dive into these fields to the right of the Starttime. You do not need to type
 in units of temperature: Subsurface supplies these automatically, you only need
-type the number. (The units selected in the <em>Preferences</em> <span class="red"><a id="URL link"></a></span>
+type the number. (The units selected in the <em>Preferences</em>
 will determine whether metric or imperial units are displayed)</p></div>
 <div class="paragraph"><p><strong>Location</strong>: Here you enter the name of the dive site, e.g. "Tihany, Lake Balaton,
 Hungary". Auto completion of location names will make this easier when you
@@ -655,11 +655,13 @@ a down-arrow:</p></div>
 matically be shown in the dialogue.</p></div>
 <div class="paragraph"><p>Now you need to indicate the starting pressure and the ending pressure of the
 gas used during your dive. The unit of pressure (metric/imperial) corresponds
-to the setting you chose in the preferences <span class="red"><a id="LINK"></a></span>.</p></div>
+to the setting you chose in the preferences.</p></div>
 <div class="paragraph"><p>Finally you need to type in the gas mixture that you used. If you used air, you
 can enter 21% or leave the field blank. If you used nitrox or trimix, specify
 the percentage of oxygen and the percentage of helium. Leave any inappropriate
-fields empty. Add information for any additional cylinders by using the + button
+fields empty. After typing the information for the cylinder then
+either press <em>ENTER</em> on the keyboard or click outside the cell that contains
+the cursor. Add information for any additional cylinders by using the + button
 at the top right hand. Here is an example of a complete description for a
 dive using two cylinders (air and EAN40):</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -684,7 +686,9 @@ down-arrow:</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Use the drop-down list to select your type of weight system. In the <strong>Weight</strong>
-field, type in the weight used during the dive. It is possible to enter
+field, type in the weight used during the dive. After typing the information
+for the weight system either press <em>ENTER</em> on the keyboard or click outside the
+cell that contains the cursor. It is possible to enter
 information for more than one weight system by adding an additional system using
 the + button on the top right hand. Weight systems can be deleted using the dustbin
 icon on the left hand. Here is an example of information for a dive with two
@@ -713,7 +717,7 @@ being described:</p></div>
 its position is indicated by two red lines as shown below. The depth and time
 that the cursor represents are indicated, respectively on the left hand and
 bottom axes. The units (metric/imperial) on the axes are determined by the
-<strong>preference</strong> settings <span class="red"><a id="LINK"></a></span>. The dive profile itself comprises several
+<strong>preference</strong> settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15m.
 If your dive depth was 21m then you need to drag the appropriate waypoints
@@ -937,7 +941,7 @@ in these fields to the right of the Starttime. Many dive computers supply water
 temperature information and this field may therefore not require editing. If
 editing is required, you do not need to type in units of temperature:
 Subsurface supplies these automatically, only a number is required. (The units
-selected in the <em>Preferences</em> <span class="red"><a id="URL link"></a></span> will determine whether metric
+selected in the <em>Preferences</em> will determine whether metric
 or imperial units are displayed)</p></div>
 <div class="paragraph"><p><strong>Location</strong>: Here type in text that describes the site where you did this dive,
 e.g. "Tihany, Lake Balaton, Hungary". Auto completion of location names will
@@ -1037,11 +1041,13 @@ a down-arrow:</p></div>
 automatically be shown in the dialogue.</p></div>
 <div class="paragraph"><p>Now you need to indicate the starting pressure and the ending pressure of the
 specified gas during your dive. The unit of pressure (metric/imperial)
-corresponds to the setting you chose in the preferences <span class="red"><a id="LINK"></a></span>.</p></div>
+corresponds to the setting you chose in the preferences.</p></div>
 <div class="paragraph"><p>Finally you need to type in the gas mixture that you used. If you used air, you
 can enter 21% or leave the field blank. If you used nitrox or trimix, specify
 the percentage of oxygen and the percentage of helium. Leave any inappropriate
-fields empty. Add information for any additional cylinders by using the<br />
+fields empty. After typing the information for the cylinder
+either press <em>ENTER</em> on the keyboard or click outside the cell that contains
+the cursor. Add information for any additional cylinders by using the<br />
 button at the top right hand. Here is an example of a complete description for a
 dive using two cylinders (air and EAN40):</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -1066,7 +1072,9 @@ down-arrow:</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Use the drop-down list to select your type of weight system. In the <strong>Weight</strong>
-field, type in the weight used during the dive. It is possible to enter
+field, type in the weight used during the dive. After specifying the weight
+system either press <em>ENTER</em> on the keyboard or click outside the cell with the cursor.
+It is possible to enter
 information for more than one weight system by adding an additional system
 using the + button on the top right hand. Weight systems can be deleted using
 the dustbin icon on the left hand. Here is an example of information for a dive
@@ -2028,7 +2036,7 @@ the completed action on the right (B):</p></div>
 <h3 id="_delete_a_dive_from_the_dive_log">6.1. Delete a dive from the dive log</h3>
 <div class="paragraph"><p>Dives can be permanently deleted from the dive log by selecting and
 right-clicking them to bring up the context menu, and then selecting <strong>Delete
-x dive</strong>. Typically this would apply to a case where you wish to delete workshop
+dive(s)</strong>. Typically this would apply to a case where you wish to delete workshop
 calibration dives of the dive computer or dives of extremely short duration.</p></div>
 </div>
 <div class="sect2">
@@ -2592,7 +2600,6 @@ On a Mac you at times have to manually hunt for the correct
           driver. For example the correct driver for the Mares Puck
           devices can be found as Mac_OSX_VCP_Driver.zip at
           <a href="http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges">http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges</a>
-          <span class="red">(see further hints in <a href="#AppendixB">Appendix B</a>)</span>
 </p>
 </li>
 </ul></div>
@@ -2779,8 +2786,8 @@ as device name to use.</p></div>
 <td class="icon">
 <img src="images/icons/iumis.jpg" alt="Note" />
 </td>
-<td class="content">Things are very similar to a normal USB-connected dive computer when downloadin
-g dives from a Uemis Zurich
+<td class="content">Things are very similar to a normal USB-connected dive computer when
+downloading dives from a Uemis Zurich
 dive computer (which certainly is one of the ones that DO recharge when
 connected to the USB port). The main difference is that you don&#8217;t enter a
 device name, but instead the location where the UEMISSDA file system is
@@ -2868,7 +2875,7 @@ switch off WiFi while using Bluetooth
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-19 07:22:47 PST
+Last updated 2013-12-23 09:39:23 PST
 </div>
 </div>
 </body>

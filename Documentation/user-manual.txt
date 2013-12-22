@@ -261,12 +261,14 @@ matically be shown in the dialogue.
 
 Now you need to indicate the starting pressure and the ending pressure of the
 gas used during your dive. The unit of pressure (metric/imperial) corresponds
-to the setting you chose in the preferences [red]#[[LINK]]#.
+to the setting you chose in the preferences.
 
 Finally you need to type in the gas mixture that you used. If you used air, you
 can enter 21% or leave the field blank. If you used nitrox or trimix, specify
 the percentage of oxygen and the percentage of helium. Leave any inappropriate
-fields empty. Add information for any additional cylinders by using the + button
+fields empty. After typing the information for the cylinder then
+either press _ENTER_ on the keyboard or click outside the cell that contains
+the cursor. Add information for any additional cylinders by using the + button
 at the top right hand. Here is an example of a complete description for a
 dive using two cylinders (air and EAN40):
 
@@ -285,7 +287,9 @@ down-arrow:
 image::images/WeightsDataEntry2.jpg["FIGURE: Weights type drop-down list button",align="center"]
 
 Use the drop-down list to select your type of weight system. In the *Weight*
-field, type in the weight used during the dive. It is possible to enter
+field, type in the weight used during the dive. After typing the information
+for the weight system either press _ENTER_ on the keyboard or click outside the
+cell that contains the cursor. It is possible to enter
 information for more than one weight system by adding an additional system using
 the + button on the top right hand. Weight systems can be deleted using the dustbin
 icon on the left hand. Here is an example of information for a dive with two
@@ -588,7 +592,9 @@ corresponds to the setting you chose in the preferences.
 Finally you need to type in the gas mixture that you used. If you used air, you
 can enter 21% or leave the field blank. If you used nitrox or trimix, specify
 the percentage of oxygen and the percentage of helium. Leave any inappropriate
-fields empty. Add information for any additional cylinders by using the +
+fields empty. After typing the information for the cylinder
+either press _ENTER_ on the keyboard or click outside the cell that contains
+the cursor. Add information for any additional cylinders by using the +
 button at the top right hand. Here is an example of a complete description for a
 dive using two cylinders (air and EAN40):
 
@@ -607,7 +613,9 @@ down-arrow:
 image::images/WeightsDataEntry2.jpg["FIGURE:Weights type drop-down list button",align="center"]
 
 Use the drop-down list to select your type of weight system. In the *Weight*
-field, type in the weight used during the dive. It is possible to enter
+field, type in the weight used during the dive. After specifying the weight
+system either press _ENTER_ on the keyboard or click outside the cell with the cursor.
+It is possible to enter
 information for more than one weight system by adding an additional system
 using the + button on the top right hand. Weight systems can be deleted using
 the dustbin icon on the left hand. Here is an example of information for a dive
@@ -1255,7 +1263,7 @@ image::images/SplitDive3a.jpg["FIGURE: Split a trip into 2 trips",align="center"
 
 Dives can be permanently deleted from the dive log by selecting and
 right-clicking them to bring up the context menu, and then selecting *Delete
-x dive*. Typically this would apply to a case where you wish to delete workshop
+dive(s)*. Typically this would apply to a case where you wish to delete workshop
 calibration dives of the dive computer or dives of extremely short duration.
 
 === Unlink a dive from a trip
