@@ -657,6 +657,7 @@ static const char *do_device_import(device_data_t *data)
 {
 	dc_status_t rc;
 	dc_device_t *device = data->device;
+	int dump = 0; /* TODO: Enable memory dump from the UI somehow. */
 
 	data->model = str_printf("%s %s", data->vendor, data->product);
 
@@ -671,7 +672,24 @@ static const char *do_device_import(device_data_t *data)
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Error registering the cancellation handler.");
 
-	rc = dc_device_foreach(device, dive_cb, data);
+	if (dump) {
+		dc_buffer_t *buffer = dc_buffer_new (0);
+
+		rc = dc_device_dump (device, buffer);
+		if (rc == DC_STATUS_SUCCESS) {
+			/* TODO: Should the filename (and directory) be configurable? */
+			FILE* fp = fopen ("subsurface.bin", "wb");
+			if (fp != NULL) {
+				fwrite (dc_buffer_get_data (buffer), 1, dc_buffer_get_size (buffer), fp);
+				fclose (fp);
+			}
+		}
+
+		dc_buffer_free (buffer);
+	} else {
+		rc = dc_device_foreach(device, dive_cb, data);
+	}
+
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Dive data import error");
 
