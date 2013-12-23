@@ -516,12 +516,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	return 1;
 }
 
-
-static dc_status_t import_device_data(dc_device_t *device, device_data_t *devicedata)
-{
-	return dc_device_foreach(device, dive_cb, devicedata);
-}
-
 /*
  * The device ID for libdivecomputer devices is the first 32-bit word
  * of the SHA1 hash of the model/firmware/serial numbers.
@@ -677,7 +671,7 @@ static const char *do_device_import(device_data_t *data)
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Error registering the cancellation handler.");
 
-	rc = import_device_data(device, data);
+	rc = dc_device_foreach(device, dive_cb, data);
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Dive data import error");
 
