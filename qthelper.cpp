@@ -114,16 +114,16 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 	// so handle the three formats we understand separately
 	if (gps_text.count(QChar('"')) == 2) {
 		gpsStyle = SECONDS;
-		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)\\.(\\d+)[^EW%3%4]*"
-					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)\\.(\\d+)")
+		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)[,\\.](\\d+)[^EW%3%4]*"
+					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)[,\\.](\\d+)")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	} else if (gps_text.count(QChar('\'')) == 2) {
 		gpsStyle = MINUTES;
-		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)\\.(\\d+)[^EW%3%4]*"
-					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)\\.(\\d+)")
+		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[,\\.](\\d+)[^EW%3%4]*"
+					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[,\\.](\\d+)")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	} else {
-		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)\\.(\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)\\.(\\d+)")
+		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)[,\\.](\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)[,\\.](\\d+)")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	}
 	QRegExp r(regExp);
@@ -157,7 +157,6 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 		// qDebug("%s -> %8.5f / %8.5f", gps_text.toLocal8Bit().data(), *latitude, *longitude);
 		return true;
 	}
-	qDebug() << "rejected";
 	return false;
 }
 
