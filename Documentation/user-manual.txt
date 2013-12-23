@@ -1710,8 +1710,8 @@ as device name to use.
 
 [icon="images/icons/iumis.jpg"]
 [NOTE]
-Things are very similar to a normal USB-connected dive computer when downloadin
-g dives from a Uemis Zurich
+Things are very similar to a normal USB-connected dive computer when
+downloading dives from a Uemis Zurich
 dive computer (which certainly is one of the ones that DO recharge when
 connected to the USB port). The main difference is that you don't enter a
 device name, but instead the location where the UEMISSDA file system is
