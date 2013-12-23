@@ -679,26 +679,56 @@ static const char *do_device_import(device_data_t *data)
 	return NULL;
 }
 
+static void
+logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
+{
+	const char *loglevels[] = {"NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL"};
+
+	FILE *fp = (FILE *) userdata;
+
+	if (loglevel == DC_LOGLEVEL_ERROR || loglevel == DC_LOGLEVEL_WARNING) {
+		fprintf(fp, "%s: %s [in %s:%d (%s)]\n", loglevels[loglevel], msg, file, line, function);
+	} else {
+		fprintf(fp, "%s: %s\n", loglevels[loglevel], msg);
+	}
+}
+
 const char *do_libdivecomputer_import(device_data_t *data)
 {
 	dc_status_t rc;
 	const char *err;
+	FILE *fp = NULL;
 
 	import_dive_number = 0;
 	first_temp_is_air = 0;
 	data->device = NULL;
 	data->context = NULL;
 
+	/* TODO: Enable logging from the UI somehow. */
+	/* TODO: Should the filename (and directory) be configurable? */
+	fp = fopen("subsurface.log", "w");
+
 	rc = dc_context_new(&data->context);
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Unable to create libdivecomputer context");
+
+	if (fp) {
+		dc_context_set_loglevel(data->context, DC_LOGLEVEL_ALL);
+		dc_context_set_logfunc(data->context, logfunc, fp);
+	}
 
 	err = translate("gettextFromC","Unable to open %s %s (%s)");
 	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		err = do_device_import(data);
+		/* TODO: Show the logfile to the user on error. */
 		dc_device_close(data->device);
 	}
 	dc_context_free(data->context);
+
+	if (fp) {
+		fclose(fp);
+	}
+
 	return err;
 }
