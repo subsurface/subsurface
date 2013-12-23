@@ -920,11 +920,12 @@ void MainTab::on_notes_textChanged()
 
 void MainTab::on_coordinates_textChanged(const QString& text)
 {
-	bool gpsChanged = FALSE;
-	EDIT_SELECTED_DIVES(gpsChanged |= gpsHasChanged(mydive, NULL, text));
+	bool gpsChanged = false;
+	bool parsed = false;
+	EDIT_SELECTED_DIVES(gpsChanged |= gpsHasChanged(mydive, current_dive, text, &parsed));
 	if (gpsChanged) {
 		markChangedWidget(ui.coordinates);
-	} else {
+	} else if (!parsed) {
 		QPalette p;
 		p.setBrush(QPalette::Base, QColor(Qt::red).lighter());
 		ui.coordinates->setPalette(p);
