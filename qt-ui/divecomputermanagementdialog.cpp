@@ -15,8 +15,7 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget* parent, Qt::
 
 void DiveComputerManagementDialog::init()
 {
-	if (model)
-		delete model;
+	delete model;
 	model = new DiveComputerModel(dcList.dcMap);
 	ui.tableView->setModel(model);
 }
