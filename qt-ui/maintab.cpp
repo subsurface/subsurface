@@ -813,7 +813,12 @@ void MainTab::rejectChanges()
 
 void markChangedWidget(QWidget *w){
 	QPalette p;
-	p.setBrush(QPalette::Base, QColor(Qt::yellow).lighter());
+	qreal h, s, l, a;
+	qApp->palette().color(QPalette::Text).getHslF(&h, &s, &l, &a);
+	p.setBrush(QPalette::Base, ( l <= 0.3 ) ? QColor(Qt::yellow).lighter()
+				  :( l <= 0.6 ) ? QColor(Qt::yellow).light()
+				  :/* else */     QColor(Qt::yellow).darker(300)
+				  );
 	w->setPalette(p);
 }
 
