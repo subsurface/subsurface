@@ -1329,7 +1329,7 @@ QVector<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &d->cylinder[i];
 		if (!cylinder_nodata(cyl))
-			l.push_back(QPair<int, int>(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
+			l.push_back(qMakePair(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
 	}
 	return l;
 }
