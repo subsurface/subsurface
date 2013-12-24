@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPrinter>
 #include <QList>
+#include <QVector>
 
 class QTableView;
 class PrintDialog;
@@ -27,7 +28,7 @@ private:
 	qreal scaleX, scaleY;
 	QRect pageRect;
 
-	QList<QString> tablePrintColumnNames;
+	QVector<QString> tablePrintColumnNames;
 	unsigned int tablePrintHeadingBackground;
 	QList<unsigned int> tablePrintColumnWidths;
 	unsigned int profilePrintTableMaxH;

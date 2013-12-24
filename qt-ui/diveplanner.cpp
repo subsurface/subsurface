@@ -1323,9 +1323,9 @@ DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 	return mode;
 }
 
-QList<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
+QVector<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
 {
-	QList<QPair<int, int> > l;
+	QVector<QPair<int, int> > l;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &d->cylinder[i];
 		if (!cylinder_nodata(cyl))
@@ -1357,10 +1357,10 @@ void DivePlannerPointsModel::tanksUpdated()
 	// "did a gas change on us". So we look through the diveplan to
 	// see if there is a gas that is now missing and if there is, we
 	// replace it with the matching new gas.
-	QList<QPair<int,int> > gases = collectGases(stagingDive);
-	if (gases.length() == oldGases.length()) {
+	QVector<QPair<int,int> > gases = collectGases(stagingDive);
+	if (gases.count() == oldGases.count()) {
 		// either nothing relevant changed, or exactly ONE gasmix changed
-		for (int i = 0; i < gases.length(); i++) {
+		for (int i = 0; i < gases.count(); i++) {
 			if (gases.at(i) != oldGases.at(i)) {
 				if (oldGases.count(oldGases.at(i)) > 1) {
 					// we had this gas more than once, so don't

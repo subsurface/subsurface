@@ -43,7 +43,7 @@ public:
 	int size();
 	struct diveplan getDiveplan();
 	QStringList &getGasList();
-	QList<QPair<int, int> > collectGases(dive *d);
+	QVector<QPair<int, int> > collectGases(dive *d);
 
 public slots:
 	int addStop(int millimeters = 0, int seconds = 0, int o2 = 0, int he = 0, int ccpoint = 0 );
@@ -76,7 +76,7 @@ private:
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
 	struct dive *stagingDive;
-	QList<QPair<int, int> > oldGases;
+	QVector<QPair<int, int> > oldGases;
 };
 
 class Button : public QObject, public QGraphicsRectItem {
