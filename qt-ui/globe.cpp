@@ -235,7 +235,7 @@ void GlobeGPS::centerOn(dive* dive)
 
 void GlobeGPS::fixZoom()
 {
-  zoomView(currentZoomLevel, Marble::Linear);
+	zoomView(currentZoomLevel, Marble::Linear);
 }
 
 void GlobeGPS::prepareForGetDiveCoordinates()
