@@ -4,7 +4,7 @@
   xmlns:u1="http://www.streit.cc/uddf/3.1/"
   exclude-result-prefixes="u u1"
   version="1.0">
-  <xsl:import href="commonTemplates.xsl"/>
+  <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" indent="yes"/>
 

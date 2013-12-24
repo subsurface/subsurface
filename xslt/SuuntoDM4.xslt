@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:u="http://schemas.datacontract.org/2004/07/Suunto.Diving.Dal"
   version="1.0">
-  <xsl:import href="commonTemplates.xsl"/>
+  <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" indent="yes"/>
 
