@@ -56,7 +56,6 @@ void CSVImportDialog::on_buttonBox_accepted()
 			ui->CSVSeparator->currentIndex(),
 			&error);
 	if (error != NULL) {
-
 		mainWindow()->showError(error);
 		free(error);
 		error = NULL;
@@ -70,10 +69,7 @@ void CSVImportDialog::on_CSVFileSelector_clicked()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV Log File"), ".", tr("CSV Files (*.csv);;All Files(*)"));
 	ui->CSVFile->setText(filename);
-	if (filename.isEmpty())
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-	else
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!filename.isEmpty());
 }
 
 #define SET_VALUE_AND_CHECKBOX(CSV, BOX, VAL) ({\
@@ -117,8 +113,5 @@ void CSVImportDialog::unknownImports()
 
 void CSVImportDialog::on_CSVFile_textEdited()
 {
-	if (ui->CSVFile->text().isEmpty())
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-	else
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!ui->CSVFile->text().isEmpty());
 }
