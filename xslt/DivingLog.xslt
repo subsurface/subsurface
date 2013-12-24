@@ -148,6 +148,30 @@
         <xsl:value-of select="Comments"/>
       </notes>
 
+      <!-- Trying to detect if depth samples are in Imperial or Metric
+           units. This is based on an assumption that maximum depth of
+           a dive is recorded in metric and if samples contain bigger
+           values, they must be imperial.
+           -->
+
+      <xsl:variable name="max">
+        <xsl:for-each select="Profile/P/Depth">
+          <xsl:sort select="." data-type="number" order="descending"/>
+          <xsl:if test="position() = 1"><xsl:value-of select="."/></xsl:if>
+        </xsl:for-each>
+      </xsl:variable>
+
+      <xsl:variable name="depthUnit">
+        <xsl:choose>
+          <xsl:when test="$max &gt; Depth + 1">
+            <xsl:value-of select="'imperial'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'metric'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
       <divecomputer>
         <xsl:if test="Computer != ''">
           <xsl:attribute name="model">
@@ -181,7 +205,14 @@
             <xsl:value-of select="Press1"/>
           </xsl:attribute>
           <xsl:attribute name="depth">
-            <xsl:value-of select="Depth"/>
+            <xsl:call-template name="depthConvert">
+              <xsl:with-param name="depth">
+                <xsl:value-of select="Depth"/>
+              </xsl:with-param>
+              <xsl:with-param name="depthUnit">
+                <xsl:value-of select="$depthUnit"/>
+              </xsl:with-param>
+            </xsl:call-template>
           </xsl:attribute>
         </sample>
       </xsl:for-each>
@@ -195,9 +226,17 @@
   <!-- convert depth to meters -->
   <xsl:template name="depthConvert">
     <xsl:param name="depth"/>
+    <xsl:param name="depthUnit"/>
 
     <xsl:if test="$depth != ''">
-      <xsl:value-of select="concat($depth, ' m')"/>
+      <xsl:choose>
+        <xsl:when test="$depthUnit = 'imperial'">
+          <xsl:value-of select="concat(format-number($depth div 3.2808, '##.#'), ' m')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat($depth, ' m')"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
   </xsl:template>
   <!-- end convert depth -->
