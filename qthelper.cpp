@@ -114,13 +114,13 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 	// so handle the three formats we understand separately
 	if (gps_text.count(QChar('"')) == 2) {
 		gpsStyle = SECONDS;
-		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)[,\\.](\\d+)[^EW%3%4]*"
-					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)[,\\.](\\d+)")
+		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
+					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	} else if (gps_text.count(QChar('\'')) == 2) {
 		gpsStyle = MINUTES;
-		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[,\\.](\\d+)[^EW%3%4]*"
-					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[,\\.](\\d+)")
+		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
+					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	} else {
 		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)[,\\.](\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)[,\\.](\\d+)")
@@ -133,15 +133,15 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 		switch(gpsStyle) {
 		case SECONDS:
 			*latitude = r.cap(2).toInt() + r.cap(3).toInt() / 60.0 +
-					(r.cap(4) + QString(".") + r.cap(5)).toDouble() / 3600.0;
-			*longitude = r.cap(7).toInt() + r.cap(8).toInt() / 60.0 +
-					(r.cap(9) + QString(".") + r.cap(10)).toDouble() / 3600.0;
-			eastWest = 6;
+					(r.cap(4) + QString(".") + r.cap(6)).toDouble() / 3600.0;
+			*longitude = r.cap(8).toInt() + r.cap(9).toInt() / 60.0 +
+					(r.cap(10) + QString(".") + r.cap(12)).toDouble() / 3600.0;
+			eastWest = 7;
 			break;
 		case MINUTES:
-			*latitude = r.cap(2).toInt() + (r.cap(3) + QString(".") + r.cap(4)).toDouble() / 60.0;
-			*longitude = r.cap(6).toInt() + (r.cap(7) + QString(".") + r.cap(8)).toDouble() / 60.0;
-			eastWest = 5;
+			*latitude = r.cap(2).toInt() + (r.cap(3) + QString(".") + r.cap(5)).toDouble() / 60.0;
+			*longitude = r.cap(7).toInt() + (r.cap(8) + QString(".") + r.cap(10)).toDouble() / 60.0;
+			eastWest = 6;
 			break;
 		case DECIMAL:
 		default:
