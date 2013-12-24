@@ -39,7 +39,6 @@ HEADERS = \
 	qt-ui/mainwindow.h \
 	qt-ui/modeldelegates.h \
 	qt-ui/models.h \
-	qt-ui/plotareascene.h \
 	qt-ui/preferences.h \
 	qt-ui/printdialog.h \
 	qt-ui/printlayout.h \
@@ -87,7 +86,6 @@ SOURCES =  \
 	qt-ui/mainwindow.cpp \
 	qt-ui/modeldelegates.cpp \
 	qt-ui/models.cpp \
-	qt-ui/plotareascene.cpp \
 	qt-ui/preferences.cpp \
 	qt-ui/printdialog.cpp \
 	qt-ui/printlayout.cpp \
