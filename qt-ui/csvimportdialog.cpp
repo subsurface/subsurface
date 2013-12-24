@@ -68,7 +68,7 @@ void CSVImportDialog::on_buttonBox_accepted()
 
 void CSVImportDialog::on_CSVFileSelector_clicked()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV Log File"), ".", tr("CSV Files (*.csv)"));
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV Log File"), ".", tr("CSV Files (*.csv);;All Files(*)"));
 	ui->CSVFile->setText(filename);
 	if (filename.isEmpty())
 		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
