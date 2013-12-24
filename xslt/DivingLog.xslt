@@ -108,6 +108,12 @@
           </xsl:attribute>
         </xsl:if>
 
+        <xsl:if test="Gas != ''">
+          <xsl:attribute name="o2">
+            <xsl:value-of select="substring-after(substring-before(Gas, ')'), 'O2=')"/>
+          </xsl:attribute>
+        </xsl:if>
+
         <xsl:if test="He != ''">
           <xsl:attribute name="he">
             <xsl:value-of select="concat(He, '%')"/>
