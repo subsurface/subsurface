@@ -179,19 +179,27 @@ frequently dive at the same sites.
 *Coordinates*: The geographic coordinates of the dive site should be entered
 here. These can come from three sources:
 
-a. You can enter the coordinates by hand if you happen to know what they are.
-You need to enter them as decimal degrees, e.g: N30° 13.49760' , E30° 49.30788'.
-
-b. You can find the coordinates on the world map in the bottom right hand part
+a. You can find the coordinates on the world map in the bottom right hand part
 of the Subsurface window. The map displays a green bar indicating "No location
 data - move the map and double-click to set the location". Upon a double-click
 at the appropriate place, the green bar disappears and the coordinates are
 stored.
 
-c. You can obtain the coordinates from the _Subsurface_ Companion app if you
+b. You can obtain the coordinates from the _Subsurface_ Companion app if you
 have an Android device with GPS and you stored the coordinates of the dive site
 using that device.
 xref:S_Companion[Click here for more information]
+
+c. One can enter the coordinates by hand if they are known, using one of
+three formats with latitude followed by longitude:
+
+	Degrees and decimal minutes, e.g: N30° 13.49760' , E30° 49.30788'
+	Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
+	Decimal degrees, e.g. 30.22496 , 30.821798
+
+Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a negative
+value, e.g. -30.22496
+
 
 *Divemaster*: Enter the name of the dive master or dive guide for this dive.
 Again, this field offers auto completion based on the list of dive masters in the
@@ -426,13 +434,13 @@ of your _Subsurface_ computer.
 
  - If there is a problem in communicating with your dive computer, an error
 message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
-(Puck Pro)". In this case, consult *Appendix A* for information specific to the
-operating system of your _Subsurface_ computer and consult *Appendix B* for
-information specific to some dive computers.
+(Puck Pro)", see the text in the box below.
 
+
+****
 [icon="images/icons/important.png"]
 [IMPORTANT]
-In the case of *communication failure* then check the following:
+Check the following:
 1) Is the dive computer still in PC-communication or Upload mode?
 2) Is the battery of the dive computer fully charged? If not then charge or
 replace the battery.
@@ -446,6 +454,26 @@ common cause of communication failure between dive computer and _Subsurface_
 computer. It is also possible that your _Subsurface_ computer is missing required
 drivers to interact with the download cable and connected dive computer.
 
+If all the above points are in order and there is a failure to download the dive data,
+then perform a download with the following
+two check boxes checked in the download dialogue discussed above:
+
+	Save libdivecomputer logfile
+	Save libdivecomputer dumpfile
+
+When checking each of these boxes, the user is prompted to select a folder to save
+the file into. The default folder is the one in which the _Subsurface_ dive log is
+kept. After downloading, no dives are shown in the *Dive List* but two files are created
+in the folder selected above:
+
+	subsurface.log
+	subsurface.bin
+
+Send these files to the _Subsurface_ mail list: _subsurface@hohndel.org_ and
+request that the files be analysed, providing your dive computer make and model
+as well as contextual information about the dives recorded on the dive
+computer.
+****
 
  - With communication established, watch how your data is retrieved from your
 dive computer!
@@ -504,19 +532,26 @@ make this easier when you frequently dive at the same sites.
 *Coordinates*: The geographic coordinates of the dive site should be entered
 here. These can come from three sources:
 
-a. You can enter the coordinates by hand if you happen to know what they are.
-You need to enter them as decimal degrees, e.g: N30° 13.49760', E30° 49.30788'.
-
-b. You can find the coordinates on the world map in the bottom right hand part
+a. You can find the coordinates on the world map in the bottom right hand part
 of the Subsurface window. The map displays a green bar indicating "No location
 data - move the map and double-click to set the location". Upon a double-click
 at the appropriate place, the green bar disappears and the coordinates are
 stored.
 
-c. You can obtain the coordinates from the _Subsurface_ Companion app if you
+b. You can obtain the coordinates from the _Subsurface_ Companion app if you
 have an Android device with GPS and you stored the coordinates of the dive site
 using that device.
 xref:S_Companion[Click here for more information]
+
+c. One can enter the coordinates by hand if they are known, using one of
+three formats with latitude followed by longitude:
+
+	Degrees and decimal minutes, e.g: N30° 13.49760' , E30° 49.30788'
+	Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
+	Decimal degrees, e.g. 30.22496 , 30.821798
+
+Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a negative
+value, e.g. -30.22496.
 
 *Divemaster*: Enter the name of the dive master or dive guide for this dive.
 Again, this field offers auto completion based on the list of dive masters in
@@ -845,7 +880,6 @@ will open your divelog (assuming that's called MyDives.xml) and then
 import the dives from JdivelogDives.jlb. You can now save the combined
 divelog back as MyDives.xml.
 
-
 [[S_Importingkenozooid]]
 ==== Importing dives from *Kenozooid*
 
@@ -860,6 +894,77 @@ _Subsurface_ supports UDDF as a generic import format.
 Some attributes in your file may not get processed properly. Select
 _Import->Import Files_ from the Main Menu. Then select the UDDF file to
 be imported.
+
+[[S_ImportingCSV]]
+==== Importing dives in CSV format
+
+Sometimes dive computers export dive information as files with
+_comma-separated variables_ (.CSV). For example, the APD Inspiration and Evolution
+closed circuit rebreather (CCR) systems export dive information in CSV format that
+normally contains information about a single dive only. These
+files can easily be imported into _Subsurface_. CSV files are normally organised into
+a single line that provides the titles of the data columns, followed by the data, one
+record per line. CSV files can be opened with a normal text editor. Here is a highly
+simplified and shortened example of a CSV file from an APD rebreather:
+
+	Dive Time (s)	Depth (m)	PPO2 - Setpoint (Bar)	PPO2 - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
+	0	0.0	0.70	0.81	13.1
+	0	1.2	0.70	0.71	13.1
+	0	0.0	0.70	0.71	13.1
+	0	1.2	0.70	0.71	13.2
+	0	1.2	0.70	0.71	13.1
+	10	1.6	0.70	0.72	12.7
+	20	1.6	0.70	0.71	12.6
+	30	1.7	0.70	0.71	12.6
+	40	1.8	0.70	0.68	12.5
+	50	1.6	0.70	0.68	12.5
+	60	2.4	0.70	0.69	12.5
+	70	3.5	0.70	0.69	12.4
+	80	4.2	0.70	0.72	12.5
+	90	4.0	0.70	0.71	12.4
+
+Note that each title may comprise more than one word, for instance 'Dive Time (s)'
+in the above data example. Before being able to import the data to _Subsurface_ one first
+needs to know:
+
+a. Which character separates the different colums within a single line of data? This
+field separator should be either a comma (,) or a TAB character. This could be determined
+by opening the file with a text editor. If it is commma-delimited, then the comma
+characters between the values are clearly visible. If no commas are evident, the file
+is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
+
+b. Which data columns need to be imported into _Subsurface_?. The Dive Time and
+Depth colums are always required. Open the file using a text editor and note the
+titles of the columns to be imported and their column positions. For instance
+for the above example:
+
+	Time:		column 1
+	Depth:		column 2
+	Temperature:	column 5
+	ppO2:		column 4
+
+Armed with this information, the import into _Subsurface_ is straightforward. Select
+_Import->Import CSV_ from the main menu. The following dialogue appears:
+
+image::images/CSVDownload.jpg["FIGURE: CSV download dialogue",align="center"]
+
+Specify the name of the CSV file or select it from the browser button on the right.
+There are pre-configured definitions for some dive computers, e.g. the APD
+rebreathers. If your dive computer is on this list, select it using the dropdown
+box labeled _Pre-configured imports_, click _OK_ and the dive will be imported and
+listed in the *Dive List* tab of _Subsurface_.
+
+If your dive computer is not on the pre-configured list, then select the _Field
+Separator_ (TAB or comma) for your CSV file, using the appropriate
+dropdown list. Lastly, indicate which columns in the CSV file contain which data
+variables. For each data column used for import, check the appropriate check box
+and indicate in which column these data are found. For instance, the image above
+corresponds to the dialogue that would apply to the CSV data set described above
+the image. *NB:* Note that column numbers are specified with a number that is
+numerically ONE LESS than the true sequnce number of that column. Having performed
+the column specification, select the _OK_ button and the dive will be imported and
+listed in the *Dive List* tab of _Subsurface_.
+
 
 [[S_Companion]]
 === Importing GPS coordinates with the Subsurface Companion app for mobile phones
@@ -1257,30 +1362,30 @@ the completed action on the right (B):
 
 image::images/SplitDive3a.jpg["FIGURE: Split a trip into 2 trips",align="center"]
 
-== Manipulating single dives
+=== Manipulating single dives
 
-=== Delete a dive from the dive log
+==== Delete a dive from the dive log
 
 Dives can be permanently deleted from the dive log by selecting and
 right-clicking them to bring up the context menu, and then selecting *Delete
 dive(s)*. Typically this would apply to a case where you wish to delete workshop
 calibration dives of the dive computer or dives of extremely short duration.
 
-=== Unlink a dive from a trip
+==== Unlink a dive from a trip
 
 You can unlink dives from the trip to which they belong. Select and right-click
 the dives to bring up the context menu. Then select *Remove dive(s) from trip*.
 The dives that have been unlinked now appear immediately above the trip to
 which they belonged.
 
-=== Add a dive to the trip immediately above
+==== Add a dive to the trip immediately above
 
 Selected dives can be moved from the trip to which they belong and placed within
 the trip immediately above the currently active trip. Select and right-click
 the dives to bring up the context menu, then select *Add dive(s) to trip
 immediately above*.
 
-=== Shift the start time of dive(s)
+==== Shift the start time of dive(s)
 
 Sometimes it is necessary to adjust the start time of a dive. This may apply to
 situations where dives are performed in different time zones or when the dive
@@ -1289,7 +1394,7 @@ adjusted. This brings up the context menu. Select *Shift times*. Specify the tim
 (in hours and minutes) by which the dives should be adjusted and click on the
 option indicating whether the time adjustment should be forwards or backwards.
 
-=== Merge dives into a single dive
+==== Merge dives into a single dive
 
 Sometimes a dive is briefly interrupted, e.g. if a diver returns to the surface
 for a few minutes, resulting in two or more dives being recorded by the dive
