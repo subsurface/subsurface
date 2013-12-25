@@ -185,6 +185,27 @@
         </xsl:if>
       </informationbeforedive>
 
+      <!-- We get sample interval from the time between first and second
+           sample to include all events in the existing samples.
+           -->
+      <xsl:variable name="timefirst">
+        <xsl:call-template name="time2sec">
+          <xsl:with-param name="time">
+            <xsl:value-of select="./divecomputer[1]/sample[1]/@time"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:variable name="timesecond">
+        <xsl:call-template name="time2sec">
+          <xsl:with-param name="time">
+            <xsl:value-of select="./divecomputer[1]/sample[2]/@time"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:variable name="delta">
+        <xsl:value-of select="$timesecond - $timefirst"/>
+      </xsl:variable>
+
       <samples>
         <xsl:for-each select="./divecomputer[1]/sample">
           <waypoint>
@@ -214,41 +235,56 @@
                  to the one in UDDF specification.
             -->
             <xsl:variable name="time">
-              <xsl:value-of select="./@time"/>
+              <xsl:call-template name="time2sec">
+                <xsl:with-param name="time">
+                  <xsl:value-of select="./@time"/>
+                </xsl:with-param>
+              </xsl:call-template>
             </xsl:variable>
-            <xsl:if test="preceding-sibling::event/@time = $time">
-              <xsl:if test="preceding-sibling::event[@time=$time and @name='gaschange']/@name">
+
+            <!-- Event is included in waypoint when:
+                 sample_time - $delta < event_time <= sample_time
+
+                 This should include all the events that occurred
+                 between the samples. This also introduces inaccuracy in
+                 the timestamp of events, but it is either that or a
+                 crafted waypoint, with inaccurate depth.
+                 -->
+              <xsl:if test="preceding-sibling::event[substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&lt;=$time and substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&gt;($time - $delta) and @name='gaschange']/@name">
 
                 <!-- Gas change is a reference to the gases section, as
                      the gases index was pure o2 value, we can directly
                      use Subsurfaces reference here.
                 -->
+                <xsl:for-each select="preceding-sibling::event[substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&lt;=$time and substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&gt;($time - $delta) and @name='gaschange']/@value">
                 <switchmix>
                   <xsl:attribute name="ref">
-                    <xsl:value-of select="preceding-sibling::event[@time=$time and @name='gaschange']/@value"/>
+                    <xsl:value-of select="."/>
                   </xsl:attribute>
                 </switchmix>
-              </xsl:if>
+              </xsl:for-each>
+            </xsl:if>
 
-              <xsl:if test="preceding-sibling::event[@time=$time and @name='heading']/@name">
+              <xsl:if test="preceding-sibling::event[substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&lt;=$time and substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&gt;($time - $delta) and @name='heading']/@name">
+                <xsl:for-each select="preceding-sibling::event[substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&lt;=$time and substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&gt;($time - $delta) and @name='heading']/@value">
                 <heading>
-                  <xsl:value-of select="preceding-sibling::event[@time=$time and @name='heading']/@value"/>
+                  <xsl:value-of select="."/>
                 </heading>
-              </xsl:if>
+              </xsl:for-each>
+            </xsl:if>
 
               <!-- We'll just print the alarm text from our event name
                    as is, deco and surface are specified in UDDF
                    specification but the rest is not recognized and
                    there is no equivalent available.
               -->
-              <xsl:if test="preceding-sibling::event[@time=$time and not(@name='heading' or @name='gaschange')]/@name">
-                <alarm>
-                  <xsl:for-each select="preceding-sibling::event[@time=$time and not(@name='heading' or @name='gaschange')]/@name">
+              <xsl:if test="preceding-sibling::event[substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&lt;=$time and substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&gt;($time - $delta) and not(@name='heading' or @name='gaschange')]/@name">
+                <xsl:for-each select="preceding-sibling::event[substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&lt;=$time and substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')&gt;($time - $delta) and not(@name='heading' or @name='gaschange')]/@name">
+                  <alarm>
                     <xsl:value-of select="."/>
-                  </xsl:for-each>
-                </alarm>
+                  </alarm>
+                </xsl:for-each>
               </xsl:if>
-            </xsl:if>
           </waypoint>
         </xsl:for-each>
       </samples>
