@@ -44,6 +44,10 @@ public slots:
 	void onDownloadThreadFinished();
 	void updateProgressBar();
 	void runDialog();
+	void checkLogFile(int state);
+	void checkDumpFile(int state);
+	void pickDumpFile();
+	void pickLogFile();
 
 private:
 	void markChildrenAsDisabled();
@@ -63,7 +67,8 @@ private:
 	QStringListModel *productModel;
 	void fill_computer_list();
 	void fill_device_list();
-
+	QString logFile;
+	QString dumpFile;
 	QTimer *timer;
 
 public:

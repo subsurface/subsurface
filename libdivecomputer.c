@@ -9,7 +9,6 @@
 #include "display.h"
 
 #include "libdivecomputer.h"
-#include "libdivecomputer/version.h"
 
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H
@@ -19,6 +18,8 @@
   #define NOT_FROG
 #endif
 
+char *dumpfile_name;
+char *logfile_name;
 const char *progress_bar_text = "";
 double progress_bar_fraction = 0.0;
 
@@ -657,7 +658,6 @@ static const char *do_device_import(device_data_t *data)
 {
 	dc_status_t rc;
 	dc_device_t *device = data->device;
-	int dump = 0; /* TODO: Enable memory dump from the UI somehow. */
 
 	data->model = str_printf("%s %s", data->vendor, data->product);
 
@@ -672,13 +672,12 @@ static const char *do_device_import(device_data_t *data)
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Error registering the cancellation handler.");
 
-	if (dump) {
+	if (data->libdc_dump) {
 		dc_buffer_t *buffer = dc_buffer_new (0);
 
 		rc = dc_device_dump (device, buffer);
 		if (rc == DC_STATUS_SUCCESS) {
-			/* TODO: Should the filename (and directory) be configurable? */
-			FILE* fp = fopen ("subsurface.bin", "wb");
+			FILE* fp = subsurface_fopen(dumpfile_name, "wb");
 			if (fp != NULL) {
 				fwrite (dc_buffer_get_data (buffer), 1, dc_buffer_get_size (buffer), fp);
 				fclose (fp);
@@ -722,9 +721,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	data->device = NULL;
 	data->context = NULL;
 
-	/* TODO: Enable logging from the UI somehow. */
-	/* TODO: Should the filename (and directory) be configurable? */
-	fp = fopen("subsurface.log", "w");
+	if (data->libdc_log)
+		fp = subsurface_fopen(logfile_name, "w");
 
 	rc = dc_context_new(&data->context);
 	if (rc != DC_STATUS_SUCCESS)

@@ -24,6 +24,8 @@ typedef struct device_data_t {
 	dc_context_t *context;
 	int preexisting;
 	bool force_download;
+	bool libdc_log;
+	bool libdc_dump;
 } device_data_t;
 
 const char *do_libdivecomputer_import(device_data_t *data);
@@ -32,6 +34,8 @@ const char *do_uemis_import(const char *mountpath, short force_download);
 extern int import_thread_cancelled;
 extern const char *progress_bar_text;
 extern double progress_bar_fraction;
+extern char *logfile_name;
+extern char *dumpfile_name;
 
 #ifdef __cplusplus
 }

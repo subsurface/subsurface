@@ -1,6 +1,9 @@
 #include "qthelper.h"
 #include "qt-ui/mainwindow.h"
+#include "qt-gui.h"
 #include <QRegExp>
+#include <QDir>
+#include <QFileDialog>
 #include <QDebug>
 
 #define tr(_arg) mainWindow()->information()->tr(_arg)
@@ -197,4 +200,3 @@ QList< int > getDivesInTrip ( dive_trip_t* trip )
 	}
 	return ret;
 }
-

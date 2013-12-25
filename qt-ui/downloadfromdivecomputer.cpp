@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QStringListModel>
 #include <QTimer>
+#include <QFileDialog>
 #include <QMessageBox>
 
 struct product {
@@ -43,7 +44,7 @@ DownloadFromDCWidget *DownloadFromDCWidget::instance()
 }
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
-    QDialog(parent, f), thread(0), timer(new QTimer(this)),
+	QDialog(parent, f), thread(0), timer(new QTimer(this)),
 	currentState(INITIAL)
 {
 	ui.setupUi(this);
@@ -54,6 +55,12 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	fill_device_list();
 	fill_computer_list();
 
+	ui.chooseDumpFile->setEnabled(ui.dumpToFile->isChecked());
+	connect(ui.chooseDumpFile, SIGNAL(clicked()), this, SLOT(pickDumpFile()));
+	connect(ui.dumpToFile, SIGNAL(stateChanged(int)), this, SLOT(checkDumpFile(int)));
+	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
+	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
+	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
 	vendorModel = new QStringListModel(vendorList);
 	ui.vendor->setModel(vendorModel);
 	if (default_dive_computer_vendor) {
@@ -246,6 +253,46 @@ void DownloadFromDCWidget::on_ok_clicked()
 bool DownloadFromDCWidget::preferDownloaded()
 {
 	return ui.preferDownloaded->isChecked();
+}
+
+void DownloadFromDCWidget::checkLogFile(int state)
+{
+	ui.chooseLogFile->setEnabled(state == Qt::Checked);
+	data.libdc_log = (state == Qt::Checked);
+	if (state == Qt::Checked && logFile.isEmpty()) {
+		pickLogFile();
+	}
+}
+
+void DownloadFromDCWidget::pickLogFile()
+{
+	QString filename = existing_filename ? : prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
+	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for divecomputer download logfile"),
+					       filename, tr("Log files (*.log)"));
+	if (!logFile.isEmpty())
+		logfile_name = strdup(logFile.toUtf8().data());
+}
+
+void DownloadFromDCWidget::checkDumpFile(int state)
+{
+	ui.chooseDumpFile->setEnabled(state == Qt::Checked);
+	data.libdc_dump = (state == Qt::Checked);
+	if (state == Qt::Checked && dumpFile.isEmpty()) {
+		pickDumpFile();
+	}
+}
+
+void DownloadFromDCWidget::pickDumpFile()
+{
+	QString filename = existing_filename ? : prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
+	dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for divecomputer binary dump file"),
+						filename, tr("Dump files (*.bin)"));
+	if (!dumpFile.isEmpty())
+		dumpfile_name = strdup(dumpFile.toUtf8().data());
 }
 
 void DownloadFromDCWidget::reject()
