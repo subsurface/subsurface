@@ -70,6 +70,7 @@ private:
 	QString logFile;
 	QString dumpFile;
 	QTimer *timer;
+	bool dumpWarningShown;
 
 public:
 	bool preferDownloaded();

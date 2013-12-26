@@ -45,7 +45,7 @@ DownloadFromDCWidget *DownloadFromDCWidget::instance()
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	QDialog(parent, f), thread(0), timer(new QTimer(this)),
-	currentState(INITIAL)
+	currentState(INITIAL), dumpWarningShown(false)
 {
 	ui.setupUi(this);
 	ui.progressBar->hide();
@@ -279,8 +279,14 @@ void DownloadFromDCWidget::checkDumpFile(int state)
 {
 	ui.chooseDumpFile->setEnabled(state == Qt::Checked);
 	data.libdc_dump = (state == Qt::Checked);
-	if (state == Qt::Checked && dumpFile.isEmpty()) {
-		pickDumpFile();
+	if (state == Qt::Checked) {
+		if (dumpFile.isEmpty())
+			pickDumpFile();
+		if (!dumpWarningShown) {
+			QMessageBox::warning(this, tr("Warning"),
+					     tr("Saving the libdivecomputer dump will NOT download dives to the dive list."));
+			dumpWarningShown = true;
+		}
 	}
 }
 
