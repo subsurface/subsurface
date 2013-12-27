@@ -178,8 +178,7 @@ void MainTab::toggleTriggeredColumn()
 
 void MainTab::addDiveStarted()
 {
-	enableEdition();
-	editMode = ADD;
+	enableEdition(ADD);
 }
 
 void MainTab::addMessageAction(QAction* action)
@@ -221,9 +220,15 @@ void MainTab::displayMessage(QString str)
 
 void MainTab::enableEdition(EditMode newEditMode)
 {
-	if (selected_dive < 0 || editMode != NONE)
+	if (current_dive == NULL || editMode != NONE)
 		return;
-
+	if ((newEditMode == DIVE || newEditMode == NONE) &&
+	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
+		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
+		// so exit this function here after editCurrentDive() returns
+		mainWindow()->editCurrentDive();
+		return;
+	}
 	mainWindow()->dive_list()->setEnabled(false);
 	mainWindow()->globe()->prepareForGetDiveCoordinates();
 	// We may be editing one or more dives here. backup everything.
@@ -915,7 +920,7 @@ void MainTab::on_notes_textChanged()
 		// we are editing a trip
 		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
 		EDIT_TEXT(currentTrip->notes, ui.notes->toPlainText());
-	} else if (editMode == DIVE || editMode == ADD) {
+	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->notes, ui.notes->toPlainText()) );
 	}
 	markChangedWidget(ui.notes);
