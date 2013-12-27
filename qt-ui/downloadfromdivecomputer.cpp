@@ -45,7 +45,7 @@ DownloadFromDCWidget *DownloadFromDCWidget::instance()
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	QDialog(parent, f), thread(0), timer(new QTimer(this)),
-	currentState(INITIAL), dumpWarningShown(false)
+	dumpWarningShown(false), currentState(INITIAL)
 {
 	ui.setupUi(this);
 	ui.progressBar->hide();
