@@ -129,6 +129,8 @@ BINDIR = $(prefix)/bin$${nl}\
 DATADIR = $(prefix)/share$${nl}\
 DOCDIR = $(DATADIR)/subsurface/Documentation$${nl}\
 DESKTOPDIR = $(DATADIR)/applications$${nl}\
+ICONPATH = $(DATADIR)/icons/hicolor$${nl}\
+ICONDIR = $(ICONPATH)/scalable/apps$${nl}\
 MANDIR = $(DATADIR)/man/man1$${nl}
 
 	QMAKE_EXTRA_TARGETS += dummy
@@ -143,6 +145,9 @@ MANDIR = $(DATADIR)/man/man1$${nl}
 	manpage.path = /$(MANDIR)
 	manpage.files = $$MANPAGE
 
+	icon.path = /$(ICONDIR)
+	icon.files = $$ICON
+
 	marbledir.path = /$(DATADIR)/subsurface/data
 	doc.path = /$(DOCDIR)
 
@@ -151,7 +156,7 @@ MANDIR = $(DATADIR)/man/man1$${nl}
 	translation.path = /$(DATADIR)/subsurface/translations
 	translation.CONFIG += no_check_exist
 
-	INSTALLS += target desktop manpage doc marbledir translation
+	INSTALLS += target desktop manpage doc marbledir translation icon
 	install.target = install
 }
 !isEmpty(TRANSLATIONS) {
