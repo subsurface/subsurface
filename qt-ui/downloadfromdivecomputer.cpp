@@ -70,6 +70,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 		if (default_dive_computer_product)
 			ui.product->setCurrentIndex(ui.product->findText(default_dive_computer_product));
 	}
+	connect(ui.product, SIGNAL(currentIndexChanged(int)), this, SLOT(on_product_currentIndexChanged()), Qt::UniqueConnection);
 	if (default_dive_computer_device)
 		ui.device->setEditText(default_dive_computer_device);
 
@@ -166,6 +167,22 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString& vendor)
 
 	// Memleak - but deleting gives me a crash.
 	//currentModel->deleteLater();
+}
+
+void DownloadFromDCWidget::on_product_currentIndexChanged()
+{
+	// Set up the DC descriptor
+	dc_descriptor_t *descriptor = NULL;
+	descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
+
+	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
+	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
+		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
+		ui.device->setEnabled(true);
+	} else {
+		// otherwise disable the device node box
+		ui.device->setEnabled(false);
+	}
 }
 
 void DownloadFromDCWidget::fill_computer_list()
