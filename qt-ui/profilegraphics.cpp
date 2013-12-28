@@ -495,6 +495,8 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 
 	if (rulerEnabled && !printMode)
 		add_ruler();
+
+	gc.rightx = get_maxtime(&gc.pi);
 }
 
 void ProfileGraphicsView::plot_depth_scale()
