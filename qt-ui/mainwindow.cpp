@@ -75,6 +75,7 @@ MainWindow::MainWindow() : helpView(0)
 void MainWindow::refreshDisplay(bool recreateDiveList)
 {
 	ui.InfoWidget->reload();
+	TankInfoModel::instance()->update();
 	ui.ProfileWidget->refresh();
 	ui.globe->reload();
 	if (recreateDiveList)
