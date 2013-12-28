@@ -340,6 +340,38 @@
         </event>
       </xsl:for-each>
 
+      <xsl:for-each select="samples/waypoint/alarm|u:samples/u:waypoint/u:alarm|u1:samples/u1:waypoint/u1:alarm">
+        <event>
+          <xsl:attribute name="time">
+            <xsl:call-template name="timeConvert">
+              <xsl:with-param name="timeSec">
+                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:attribute>
+
+          <xsl:attribute name="name">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </event>
+      </xsl:for-each>
+
+      <xsl:for-each select="samples/waypoint/heading|u:samples/u:waypoint/u:heading|u1:samples/u1:waypoint/u1:heading">
+        <event name="heading">
+          <xsl:attribute name="time">
+            <xsl:call-template name="timeConvert">
+              <xsl:with-param name="timeSec">
+                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:attribute>
+
+          <xsl:attribute name="value">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </event>
+      </xsl:for-each>
+
       <xsl:for-each select="samples/waypoint|u:samples/u:waypoint|u1:samples/u1:waypoint|samples/d">
         <sample>
           <xsl:attribute name="time">
