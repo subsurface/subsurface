@@ -377,6 +377,7 @@ void MainTab::updateDiveInfo(int dive)
 	temperature_t temp;
 	struct dive *prevd;
 	struct dive *d = get_dive(dive);
+	char buf[1024];
 
 	process_selected_dives();
 	process_all_dives(d, &prevd);
@@ -418,6 +419,8 @@ void MainTab::updateDiveInfo(int dive)
 			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip Notes"));
 			ui.notes->setText(currentTrip->notes);
+			clearEquipment();
+			ui.equipmentTab->setEnabled(false);
 		} else {
 			setTabText(0, tr("Dive Notes"));
 			// make all the fields visible writeable
@@ -445,6 +448,12 @@ void MainTab::updateDiveInfo(int dive)
 			// reset labels in case we last displayed trip notes
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
+			ui.equipmentTab->setEnabled(true);
+			multiEditEquipmentPlaceholder = *d;
+			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
+			weightModel->setDive(&multiEditEquipmentPlaceholder);
+			taglist_get_tagstring(d->tag_list, buf, 1024);
+			ui.tagWidget->setText(QString(buf));
 		}
 		ui.maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
 		ui.averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
@@ -517,15 +526,6 @@ void MainTab::updateDiveInfo(int dive)
 		ui.timeLimits->setAverage(get_time_string(seconds, 0));
 		ui.timeLimits->setMaximum(get_time_string(stats_selection.longest_time.seconds, 0));
 		ui.timeLimits->setMinimum(get_time_string(stats_selection.shortest_time.seconds, 0));
-
-
-		char buf[1024];
-		taglist_get_tagstring(d->tag_list, buf, 1024);
-		ui.tagWidget->setText(QString(buf));
-
-		multiEditEquipmentPlaceholder = *d;
-		cylindersModel->setDive(&multiEditEquipmentPlaceholder);
-		weightModel->setDive(&multiEditEquipmentPlaceholder);
 	} else {
 		/* clear the fields */
 		clearInfo();
@@ -569,6 +569,7 @@ void MainTab::acceptChanges()
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
+	ui.equipmentTab->setEnabled(true);
 	/* now figure out if things have changed */
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
