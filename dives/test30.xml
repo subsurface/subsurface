@@ -1,0 +1,30 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='33' date='2013-12-28' time='06:56:12' duration='46:06 min'>
+  <notes>Dive with test events, can be used to test approximation of depth when exporting dives.</notes>
+  <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' start='100.0 bar' end='60.0 bar' />
+  <cylinder size='6.934 l' workpressure='206.843 bar' description='AL50' o2='36.0%' start='200.0 bar' end='50.0 bar' />
+  <divecomputer model='manually added dive'>
+  <depth max='25.0 m' mean='17.901 m' />
+  <event time='0:00 min' type='25' value='36' name='gaschange' />
+  <event time='0:35 min' type='23' value='110' name='heading' />
+  <event time='5:30 min' type='8' name='bookmark' />
+  <event time='6:35 min' type='8' name='bookmark' />
+  <event time='7:00 min' type='8' name='bookmark' />
+  <event time='15:00 min' type='25' value='32' name='gaschange' />
+  <event time='25:12 min' type='25' value='36' name='gaschange' />
+  <event time='39:00 min' type='23' value='345' name='heading' />
+  <event time='41:10 min' type='25' value='36' name='gaschange' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:00 min' depth='15.0 m' />
+  <sample time='20:00 min' depth='25.0 m' />
+  <sample time='40:00 min' depth='15.0 m' />
+  <sample time='42:00 min' depth='5.0 m' />
+  <sample time='45:00 min' depth='5.0 m' />
+  <sample time='46:06 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
