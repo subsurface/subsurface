@@ -271,6 +271,39 @@
         </xsl:for-each>
       </xsl:if>
 
+      <xsl:for-each select="tankdata|u:tankdata|u1:tankdata">
+        <cylinder>
+          <xsl:variable name="gas">
+            <xsl:value-of select="link/@ref|u:link/@ref|u1:link/@ref"/>
+          </xsl:variable>
+
+          <xsl:if test="tankvolume|u:tankvolume|u1:tankvolume != ''">
+            <xsl:attribute name="size">
+              <xsl:value-of select="tankvolume|u:tankvolume|u1:tankvolume"/>
+            </xsl:attribute>
+          </xsl:if>
+
+          <xsl:attribute name="o2">
+            <xsl:value-of select="//gasdefinitions/mix[@id=$gas]/o2|//u:gasdefinitions/u:mix[@id=$gas]/u:o2|//u1:gasdefinitions/u1:mix[@id=$gas]/u1:o2"/>
+          </xsl:attribute>
+          <xsl:attribute name="he">
+            <xsl:value-of select="//gasdefinitions/mix[@id=$gas]/he|//u:gasdefinitions/u:mix[@id=$gas]/u:he|//u1:gasdefinitions/u1:mix[@id=$gas]/u1:he"/>
+          </xsl:attribute>
+
+          <xsl:if test="tankpressurebegin|u:tankpressurebegin|u1:tankpressurebegin != ''">
+            <xsl:attribute name="start">
+              <xsl:value-of select="concat(format-number(tankpressurebegin|u:tankpressurebegin|u1:tankpressurebegin div 100000, '#.#'), ' bar')"/>
+            </xsl:attribute>
+          </xsl:if>
+
+          <xsl:if test="tankpressureend|u:tankpressureend|u1:tankpressureend != ''">
+            <xsl:attribute name="end">
+              <xsl:value-of select="concat(format-number(tankpressureend|u:tankpressureend|u1:tankpressureend div 100000, '#.#'), ' bar')"/>
+            </xsl:attribute>
+          </xsl:if>
+        </cylinder>
+      </xsl:for-each>
+
       <xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions|/u1:uddf/u1:gasdefinitions"/>
       <depth>
         <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth|max_depth">
