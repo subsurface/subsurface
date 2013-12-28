@@ -59,32 +59,6 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="gasdefinitions|u:gasdefinitions|u1:gasdefinitions|gas_def">
-    <xsl:for-each select="mix|u:mix|u1:mix|gas_mix">
-      <cylinder>
-        <xsl:attribute name="description">
-          <xsl:value-of select="name|u:name|u1:name|mixname"/>
-        </xsl:attribute>
-
-        <xsl:attribute name="o2">
-          <xsl:call-template name="gasConvert">
-            <xsl:with-param name="mix">
-              <xsl:value-of select="o2|u:o2|u1:o2"/>
-            </xsl:with-param>
-          </xsl:call-template>
-        </xsl:attribute>
-
-        <xsl:attribute name="he">
-          <xsl:call-template name="gasConvert">
-            <xsl:with-param name="mix">
-              <xsl:value-of select="he|u:he|u1:he"/>
-            </xsl:with-param>
-          </xsl:call-template>
-        </xsl:attribute>
-      </cylinder>
-    </xsl:for-each>
-  </xsl:template>
-
   <xsl:template match="dive|u:dive|u1:dive">
     <dive>
       <!-- Count the amount of temeprature samples during the dive -->
@@ -304,7 +278,6 @@
         </cylinder>
       </xsl:for-each>
 
-      <xsl:apply-templates select="/uddf/gasdefinitions|/u:uddf/u:gasdefinitions|/u1:uddf/u1:gasdefinitions"/>
       <depth>
         <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth|max_depth">
           <xsl:attribute name="max">
