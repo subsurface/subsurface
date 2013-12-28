@@ -58,7 +58,6 @@ public:
 	void reload();
 	bool eventFilter(QObject* , QEvent*);
 	void initialUiSetup();
-	void equipmentPlusUpdate();
 	bool isEditing();
 	void updateCoordinatesText(qreal lat, qreal lon);
 public slots:
