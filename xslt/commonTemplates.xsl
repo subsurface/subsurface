@@ -153,4 +153,16 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="depth2mm">
+    <xsl:param name="depth"/>
+
+    <xsl:value-of select="format-number(substring-before($depth, ' '), '#.##') * 1000"/>
+  </xsl:template>
+
+  <xsl:template name="mm2depth">
+    <xsl:param name="depth"/>
+
+    <xsl:value-of select="concat(floor($depth div 1000), '.', format-number($depth mod 1000, '00'))"/>
+  </xsl:template>
+
 </xsl:stylesheet>
