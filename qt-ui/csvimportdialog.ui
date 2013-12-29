@@ -68,10 +68,10 @@
          <item row="0" column="1">
           <widget class="QSpinBox" name="CSVTime">
            <property name="minimum">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="value">
-            <number>0</number>
+            <number>1</number>
            </property>
           </widget>
          </item>
@@ -85,10 +85,10 @@
          <item row="1" column="1">
           <widget class="QSpinBox" name="CSVDepth">
            <property name="minimum">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="value">
-            <number>1</number>
+            <number>2</number>
            </property>
           </widget>
          </item>
@@ -101,6 +101,9 @@
          </item>
          <item row="2" column="1">
           <widget class="QSpinBox" name="CSVTemperature">
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -115,6 +118,9 @@
          </item>
          <item row="3" column="1">
           <widget class="QSpinBox" name="CSVpo2">
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -132,6 +138,9 @@
          </item>
          <item row="4" column="1">
           <widget class="QSpinBox" name="CSVcns">
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -149,6 +158,9 @@
          </item>
          <item row="5" column="1">
           <widget class="QSpinBox" name="CSVstopdepth">
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="enabled">
             <bool>false</bool>
            </property>

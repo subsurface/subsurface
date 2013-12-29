@@ -6,8 +6,8 @@
 
 const CSVImportDialog::CSVAppConfig CSVImportDialog::CSVApps[CSVAPPS] = {
 		{"", },
-		{"APD Log Viewer", 0, 1, 15, 6, 17, 18, "Tab"},
-		{"XP5", 0, 1, 9, -1, -1, -1, "Tab"},
+		{"APD Log Viewer", 1, 2, 16, 7, 18, 19, "Tab"},
+		{"XP5", 1, 2, 10, -1, -1, -1, "Tab"},
 		{NULL,}
 };
 
@@ -43,13 +43,13 @@ CSVImportDialog::~CSVImportDialog()
 	delete ui;
 }
 
-#define VALUE_IF_CHECKED(x) (ui->x->isEnabled() ? ui->x->value() : -1)
+#define VALUE_IF_CHECKED(x) (ui->x->isEnabled() ? ui->x->value() - 1: -1)
 void CSVImportDialog::on_buttonBox_accepted()
 {
 	char *error = NULL;
 
-	parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value(),
-			ui->CSVDepth->value(), VALUE_IF_CHECKED(CSVTemperature),
+	parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value() - 1,
+			ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
 			VALUE_IF_CHECKED(CSVpo2),
 			VALUE_IF_CHECKED(CSVcns),
 			VALUE_IF_CHECKED(CSVstopdepth),
