@@ -26,6 +26,9 @@ private slots:
 	void unknownImports(int);
 	void unknownImports(bool);
 
+	void on_DiveLogFileSelector_clicked();
+	void on_DiveLogFile_editingFinished();
+
 private:
 	void unknownImports();
 

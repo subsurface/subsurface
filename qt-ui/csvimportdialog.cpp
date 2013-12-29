@@ -48,17 +48,41 @@ void CSVImportDialog::on_buttonBox_accepted()
 {
 	char *error = NULL;
 
-	parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value() - 1,
-			ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
-			VALUE_IF_CHECKED(CSVpo2),
-			VALUE_IF_CHECKED(CSVcns),
-			VALUE_IF_CHECKED(CSVstopdepth),
-			ui->CSVSeparator->currentIndex(),
-			&error);
-	if (error != NULL) {
-		mainWindow()->showError(error);
-		free(error);
-		error = NULL;
+	if (ui->tabWidget->currentIndex() == 0) {
+		QStringList fileNames = ui->DiveLogFile->text().split(";");
+
+		/*
+	if (ui->ImportAdvanced->isChecked()) {
+		for (int i = 0; i < fileNames.size(); ++i) {
+			parse_xml_file_units(fileNames.at(i).toUtf8().data(),
+					     ui->XMLImportFormat->currentIndex(), ui->XMLImportUnits->currentIndex(),
+					     &error);
+		}
+		if (error != NULL) {
+
+			mainWindow()->showError(error);
+			free(error);
+			error = NULL;
+		}
+	} else {
+	*/
+		mainWindow()->importFiles(fileNames);
+		return;
+		//}
+
+	} else {
+		parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value() - 1,
+				ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
+				VALUE_IF_CHECKED(CSVpo2),
+				VALUE_IF_CHECKED(CSVcns),
+				VALUE_IF_CHECKED(CSVstopdepth),
+				ui->CSVSeparator->currentIndex(),
+				&error);
+		if (error != NULL) {
+			mainWindow()->showError(error);
+			free(error);
+			error = NULL;
+		}
 	}
 	process_dives(TRUE, FALSE);
 
@@ -114,4 +138,22 @@ void CSVImportDialog::unknownImports()
 void CSVImportDialog::on_CSVFile_textEdited()
 {
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!ui->CSVFile->text().isEmpty());
+}
+
+void CSVImportDialog::on_DiveLogFileSelector_clicked()
+{
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Dive Log File"), ".", tr("XML Files (*.xml);;UDDF/UDCF Files(*.uddf *.udcf);;All Files(*)"));
+	ui->DiveLogFile->setText(fileNames.join(";"));
+	if (fileNames.size())
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	else
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+}
+
+void CSVImportDialog::on_DiveLogFile_editingFinished()
+{
+	if (ui->DiveLogFile->text().size())
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	else
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }

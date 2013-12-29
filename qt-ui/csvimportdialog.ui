@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>432</width>
-    <height>330</height>
+    <width>515</width>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,28 +20,293 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <family>Droid Sans [unknown]</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
-     <property name="title">
-      <string>Import File (CSV)</string>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLineEdit" name="CSVFile"/>
-      </item>
-      <item>
-       <widget class="QToolButton" name="CSVFileSelector">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Import Dive Log File</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>DiveLog</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_8">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>441</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Import File</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLineEdit" name="DiveLogFile"/>
+        </item>
+        <item>
+         <widget class="QToolButton" name="DiveLogFileSelector">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>CSV</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>441</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Import File</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLineEdit" name="CSVFile"/>
+        </item>
+        <item>
+         <widget class="QToolButton" name="CSVFileSelector">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>88</y>
+         <width>281</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Field Separator</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QComboBox" name="CSVSeparator"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>159</y>
+         <width>281</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Pre-configured imports</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QComboBox" name="knownImports">
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>88</y>
+         <width>185</width>
+         <height>246</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Field Configuration</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="CSVpo2">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="CSVDepth">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="CSVTemperature">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Depth</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QSpinBox" name="CSVstopdepth">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="stopdepthCheckBox">
+          <property name="text">
+           <string>Stopdepth</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="po2CheckBox">
+          <property name="text">
+           <string>PO2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Time</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="temperatureCheckBox">
+          <property name="text">
+           <string>Temp</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="CSVTime">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="CSVcns">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="cnsCheckBox">
+          <property name="text">
+           <string>Cns</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+       <zorder>label</zorder>
+       <zorder>label_2</zorder>
+       <zorder>CSVTime</zorder>
+       <zorder>CSVDepth</zorder>
+       <zorder>temperatureCheckBox</zorder>
+       <zorder>CSVTemperature</zorder>
+       <zorder>po2CheckBox</zorder>
+       <zorder>CSVpo2</zorder>
+       <zorder>cnsCheckBox</zorder>
+       <zorder>CSVcns</zorder>
+       <zorder>stopdepthCheckBox</zorder>
+       <zorder>CSVstopdepth</zorder>
+      </widget>
+     </widget>
     </widget>
    </item>
    <item>
@@ -50,147 +315,18 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="title">
-         <string>Field Configuration</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="1">
-          <widget class="QSpinBox" name="CSVTime">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="value">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Time</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="CSVDepth">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="value">
-            <number>2</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Depth</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="CSVTemperature">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="temperatureCheckBox">
-           <property name="text">
-            <string>Temp</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QSpinBox" name="CSVpo2">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QCheckBox" name="po2CheckBox">
-           <property name="text">
-            <string>PO2</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QSpinBox" name="CSVcns">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QCheckBox" name="cnsCheckBox">
-           <property name="text">
-            <string>Cns</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QSpinBox" name="CSVstopdepth">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QCheckBox" name="stopdepthCheckBox">
-           <property name="text">
-            <string>Stopdepth</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-        <zorder>label</zorder>
-        <zorder>label_2</zorder>
-        <zorder>CSVTime</zorder>
-        <zorder>CSVDepth</zorder>
-        <zorder>temperatureCheckBox</zorder>
-        <zorder>CSVTemperature</zorder>
-        <zorder>po2CheckBox</zorder>
-        <zorder>CSVpo2</zorder>
-        <zorder>cnsCheckBox</zorder>
-        <zorder>CSVcns</zorder>
-        <zorder>stopdepthCheckBox</zorder>
-        <zorder>CSVstopdepth</zorder>
-       </widget>
-      </item>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QWidget" name="verticalWidget" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -203,53 +339,6 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
-          <widget class="QGroupBox" name="groupBox_2">
-           <property name="title">
-            <string>Field Separator</string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QComboBox" name="CSVSeparator"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_4">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="title">
-            <string>Pre-configured imports</string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QComboBox" name="knownImports">
-              <property name="currentIndex">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item>
           <widget class="QDialogButtonBox" name="buttonBox">
            <property name="orientation">
@@ -268,9 +357,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../subsurface.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
