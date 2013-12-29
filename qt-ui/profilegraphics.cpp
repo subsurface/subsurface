@@ -169,7 +169,7 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		}
 	}
 	if (some_hidden) {
-		action = m.addAction(tr("Unhde all events"), this, SLOT(unhideEvents()));
+		action = m.addAction(tr("Unhide all events"), this, SLOT(unhideEvents()));
 		action->setData(event->globalPos());
 	}
 	m.exec(event->globalPos());
