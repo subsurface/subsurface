@@ -628,11 +628,7 @@ void DivelogsDeWebServices::startUpload()
 	ui.password->setEnabled(false);
 
 	QNetworkRequest request;
-#ifdef WIN32
-	request.setUrl(QUrl("http://divelogs.de/DivelogsDirectImport.php"));
-#else
 	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
-#endif
 	request.setRawHeader("Accept", "text/xml, application/xml");
 
 	QHttpPart part;
@@ -663,11 +659,7 @@ void DivelogsDeWebServices::startDownload()
 	ui.password->setEnabled(false);
 
 	QNetworkRequest request;
-#ifdef WIN32
-	request.setUrl(QUrl("http://divelogs.de/xml_available_dives.php"));
-#else
 	request.setUrl(QUrl("https://divelogs.de/xml_available_dives.php"));
-#endif
 	request.setRawHeader("Accept", "text/xml, application/xml");
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
@@ -711,8 +703,7 @@ void DivelogsDeWebServices::listDownloadFinished()
 	ui.status->setText(tr("Downloading %1 dives...").arg(diveList.idCount));
 
 	QNetworkRequest request;
-//	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectExport.php"));
-	request.setUrl(QUrl("http://divelogs.de/DivelogsDirectExport.php"));
+	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectExport.php"));
 	request.setRawHeader("Accept", "application/zip, */*");
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 

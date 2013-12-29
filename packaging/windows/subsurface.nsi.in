@@ -106,7 +106,7 @@ Section
     File /r translations
     File iconv.dll
     File libdivecomputer-0.dll
-    File libpng15-15.dll
+    File libpng16-16.dll
     File libjpeg-*.dll
     File libusb-1.0.dll
     File libxml2-2.dll
@@ -118,6 +118,8 @@ Section
     File libstdc++-6.dll
     File libmarblewidget*dll
     File libssl-10.dll
+    File libeay32.dll
+    File ssleay32.dll
     File Qt*4.dll
     File subsurface.ico
     File qt.conf
