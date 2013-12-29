@@ -1876,7 +1876,7 @@ Please, remove them first.</source>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="172"/>
-        <source>Unhde all events</source>
+        <source>Unhide all events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

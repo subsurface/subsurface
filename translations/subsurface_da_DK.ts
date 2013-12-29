@@ -69,7 +69,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.cpp" line="70"/>
         <source>CSV Files (*.csv);;All Files(*)</source>
-        <translation type="unfinished"/>
+        <translation>CSV Filer (*.csv);;Alle Filer(*)</translation>
     </message>
 </context>
 <context>
@@ -496,27 +496,27 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="105"/>
         <source>no dives were selected</source>
-        <translation type="unfinished"/>
+        <translation>ingen valgte dyk</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="124"/>
         <source>failed to create zip file for upload: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke danne en zip fil til upload: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="149"/>
         <source>cannot create temporary file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke danne midlertidig fil: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="159"/>
         <source>internal error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Intern fejl: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="175"/>
         <source>internal error</source>
-        <translation type="unfinished"/>
+        <translation>Intern fejl</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="597"/>
@@ -608,12 +608,12 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="289"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Vælg logfil for dykkercomputer download</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="290"/>
         <source>Log files (*.log)</source>
-        <translation type="unfinished"/>
+        <translation>Logfiler (*.log)</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="303"/>
@@ -628,7 +628,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="315"/>
         <source>Choose file for divecomputer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation>Vælg fil for dykkercomputerens binære dump fil</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="316"/>
@@ -688,12 +688,12 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="118"/>
         <source>Save libdivecomputer logfile</source>
-        <translation type="unfinished"/>
+        <translation>Gem libdivecomputer logfil</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="125"/>
         <source>Save libdivecomputer dumpfile</source>
-        <translation type="unfinished"/>
+        <translation>Gem dumpfil fra libdivecomputer</translation>
     </message>
 </context>
 <context>
@@ -1150,7 +1150,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
         <source>&amp;Yearly Statistics</source>
-        <translation>&amp;Yearly Statistik</translation>
+        <translation>&amp;Årlig Statistik</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="371"/>
@@ -1877,8 +1877,8 @@ slet dem venligst først.</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="172"/>
-        <source>Unhde all events</source>
-        <translation type="unfinished"/>
+        <source>Unhide all events</source>
+        <translation>Vis alle hændelser</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="212"/>
@@ -2783,7 +2783,7 @@ Gennemsnit</translation>
     <message>
         <location filename="../parse-xml.c" line="2013"/>
         <source>Can&apos;t open stylesheet %s</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke åbne stylesheet %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="99"/>

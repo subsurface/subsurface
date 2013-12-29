@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk_SK" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="sk_SK">
 <context>
     <name>CSVImportDialog</name>
     <message>
@@ -54,7 +56,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="175"/>
         <source>Stopdepth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="227"/>
@@ -69,7 +71,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.cpp" line="70"/>
         <source>CSV Files (*.csv);;All Files(*)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -337,7 +339,7 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="384"/>
         <source>Handler Position Error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="385"/>
@@ -372,7 +374,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1100"/>
         <source>CC Set Point</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1305"/>
@@ -390,7 +392,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="955"/>
         <source>Dive Planner Points</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="958"/>
@@ -400,7 +402,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="975"/>
         <source>add dive data point</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -496,27 +498,27 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="105"/>
         <source>no dives were selected</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="124"/>
         <source>failed to create zip file for upload: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="149"/>
         <source>cannot create temporary file: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="159"/>
         <source>internal error: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="175"/>
         <source>internal error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="597"/>
@@ -608,12 +610,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="289"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="290"/>
         <source>Log files (*.log)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="303"/>
@@ -623,17 +625,17 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="304"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="315"/>
         <source>Choose file for divecomputer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="316"/>
         <source>Dump files (*.bin)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -688,12 +690,12 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="118"/>
         <source>Save libdivecomputer logfile</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="125"/>
         <source>Save libdivecomputer dumpfile</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1145,7 +1147,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="363"/>
         <source>Toggle &amp;Zoom</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
@@ -1587,7 +1589,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="453"/>
         <source>Ascent/Descent speed denominator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="460"/>
@@ -1828,7 +1830,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="219"/>
         <source>Sizing heights (% of layout)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="256"/>
@@ -1877,8 +1879,8 @@ Vymaž ich prosím.</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="172"/>
-        <source>Unhde all events</source>
-        <translation type="unfinished"/>
+        <source>Unhide all events</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="212"/>
@@ -1909,7 +1911,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="486"/>
         <source>Set Duration: 10 minutes</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="528"/>
@@ -1924,7 +1926,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="531"/>
         <source>Measure properties of dive segments</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="532"/>
@@ -2046,7 +2048,7 @@ Vymaž ich prosím.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1650"/>
         <source>Viz:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1652"/>
@@ -2600,7 +2602,7 @@ Maximum</translation>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
@@ -2746,7 +2748,7 @@ Maximum</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1712"/>
-        <source>Failed to parse '%s'.
+        <source>Failed to parse &apos;%s&apos;.
 </source>
         <translation>Chyba pri spracovaní &apos;%s&apos;.
 </translation>
@@ -2765,14 +2767,14 @@ Maximum</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1946"/>
-        <source>Database connection failed '%s'.
+        <source>Database connection failed &apos;%s&apos;.
 </source>
         <translation>Spojenie s databázou zlýhalo &apos;%s&apos;.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1953"/>
-        <source>Database query failed '%s'.
+        <source>Database query failed &apos;%s&apos;.
 </source>
         <translation>Požiadavka na databázu zlyhala &apos;%s&apos;.
 </translation>
@@ -2780,7 +2782,7 @@ Maximum</translation>
     <message>
         <location filename="../parse-xml.c" line="2013"/>
         <source>Can&apos;t open stylesheet %s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../planner.c" line="99"/>

@@ -69,7 +69,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.cpp" line="70"/>
         <source>CSV Files (*.csv);;All Files(*)</source>
-        <translation type="unfinished"/>
+        <translation>CSV -tiedostot (*.csv);;Kaikki tiedostot(*)</translation>
     </message>
 </context>
 <context>
@@ -496,27 +496,27 @@ poista ensin pysähdykset.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="105"/>
         <source>no dives were selected</source>
-        <translation type="unfinished"/>
+        <translation>sukelluksia ei ole valittu</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="124"/>
         <source>failed to create zip file for upload: %1</source>
-        <translation type="unfinished"/>
+        <translation>zip -tiedoston luonti vientiä varten epäonnistui: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="149"/>
         <source>cannot create temporary file: %1</source>
-        <translation type="unfinished"/>
+        <translation>väliaikaistiedoston luominen ei onnistu: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="159"/>
         <source>internal error: %1</source>
-        <translation type="unfinished"/>
+        <translation>sisäinen virhe: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="175"/>
         <source>internal error</source>
-        <translation type="unfinished"/>
+        <translation>sisäinen virhe</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="597"/>
@@ -1878,7 +1878,7 @@ poista ensin pysähdykset.</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="172"/>
-        <source>Unhde all events</source>
+        <source>Unhide all events</source>
         <translation type="unfinished"/>
     </message>
     <message>

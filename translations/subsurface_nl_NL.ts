@@ -69,7 +69,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.cpp" line="70"/>
         <source>CSV Files (*.csv);;All Files(*)</source>
-        <translation>CSV Bestanden (*.csv); Alle Bestanden (*)</translation>
+        <translation>CSV Bestanden (*.csv);;Alle Bestanden (*)</translation>
     </message>
 </context>
 <context>
@@ -1877,7 +1877,7 @@ Verwijder deze eerst.</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="172"/>
-        <source>Unhde all events</source>
+        <source>Unhide all events</source>
         <translation>Toon alle gebeurtenissen</translation>
     </message>
     <message>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="it_IT">
 <context>
     <name>CSVImportDialog</name>
     <message>
@@ -54,7 +56,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="175"/>
         <source>Stopdepth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/csvimportdialog.ui" line="227"/>
@@ -69,7 +71,7 @@
     <message>
         <location filename="../qt-ui/csvimportdialog.cpp" line="70"/>
         <source>CSV Files (*.csv);;All Files(*)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -87,22 +89,22 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>WorkPress</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>StartPress</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>EndPress</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>Switch at</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
@@ -112,7 +114,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="68"/>
         <source>O</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="154"/>
@@ -206,7 +208,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="707"/>
         <source>collapse others</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="709"/>
@@ -241,7 +243,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="721"/>
         <source>mark dive(s) invalid</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="727"/>
@@ -256,12 +258,12 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="729"/>
         <source>shift times</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="732"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="758"/>
@@ -319,7 +321,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="181"/>
         <source>ATM Pressure</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -400,7 +402,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="975"/>
         <source>add dive data point</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -448,7 +450,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1145"/>
         <source>cyl</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1150"/>
@@ -476,114 +478,114 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="480"/>
         <source>Invalid response from server</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="488"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="534"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="541"/>
         <source>Malformed XML response. Line %1: %2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="105"/>
         <source>no dives were selected</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="124"/>
         <source>failed to create zip file for upload: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="149"/>
         <source>cannot create temporary file: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="159"/>
         <source>internal error: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="175"/>
         <source>internal error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="597"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="786"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="624"/>
         <source>Uploading dive list...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="655"/>
         <source>Downloading dive list...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="703"/>
         <source>Downloading %1 dives...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="746"/>
         <source>Download finished - %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="763"/>
         <source>Corrupted download</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="764"/>
         <source>The archive could not be opened:
 %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="800"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="803"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="806"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="809"/>
         <source>Cannot parse response</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="821"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="787"/>
         <source>Upload finished</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -607,12 +609,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="289"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="290"/>
         <source>Log files (*.log)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="303"/>
@@ -622,17 +624,17 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="304"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="315"/>
         <source>Choose file for divecomputer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="316"/>
         <source>Dump files (*.bin)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -655,7 +657,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
         <source>Device or Mount Point</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="59"/>
@@ -687,12 +689,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="118"/>
         <source>Save libdivecomputer logfile</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="125"/>
         <source>Save libdivecomputer dumpfile</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1144,7 +1146,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="363"/>
         <source>Toggle &amp;Zoom</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
@@ -1316,17 +1318,17 @@ Per favore, rimuovile prima.</translation>
         <location filename="../qt-ui/mainwindow.cpp" line="255"/>
         <location filename="../qt-ui/mainwindow.cpp" line="709"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="228"/>
         <source>Please save or cancel the current dive edit before trying to plan a dive.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="291"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="503"/>
@@ -1361,7 +1363,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="878"/>
         <source>First finish the current edition before trying to do another.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="201"/>
@@ -1383,7 +1385,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="111"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="202"/>
@@ -1416,7 +1418,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="115"/>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="141"/>
@@ -1491,12 +1493,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="314"/>
         <source>meter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="324"/>
         <source>feet</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="341"/>
@@ -1511,22 +1513,22 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="368"/>
         <source>liter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="378"/>
         <source>cu ft</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="395"/>
         <source>celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="405"/>
         <source>fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="422"/>
@@ -1536,17 +1538,17 @@ Per favore, rimuovile prima.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="510"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="551"/>
         <source>pN₂</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="837"/>
         <source>System Default</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="857"/>
@@ -1623,7 +1625,7 @@ Per favore, rimuovile prima.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="656"/>
         <source>max ppO₂</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="672"/>
@@ -1638,7 +1640,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="704"/>
         <source>draw ceiling red</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="715"/>
@@ -1693,12 +1695,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="196"/>
         <source>Restart required</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="197"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="230"/>
@@ -1716,17 +1718,17 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="39"/>
         <source>&amp;Preview</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="43"/>
         <source>P&amp;rint</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="47"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="61"/>
@@ -1827,22 +1829,22 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="219"/>
         <source>Sizing heights (% of layout)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="256"/>
         <source>Profile height (43% - 85%)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="278"/>
         <source>Other data height (8% - 17%)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="338"/>
         <source>Notes height (0% - 52%)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="354"/>
@@ -1876,8 +1878,8 @@ Per favore, rimuovile prima.</translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="172"/>
-        <source>Unhde all events</source>
-        <translation type="unfinished"/>
+        <source>Unhide all events</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="212"/>
@@ -1923,7 +1925,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="531"/>
         <source>Measure properties of dive segments</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="532"/>
@@ -1938,7 +1940,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="631"/>
         <source>pN</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="657"/>
@@ -1948,7 +1950,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="681"/>
         <source>pO</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/profilegraphics.cpp" line="769"/>
@@ -2045,7 +2047,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1650"/>
         <source>Viz:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1652"/>
@@ -2088,7 +2090,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/globe.cpp" line="238"/>
         <source>Move the map and double-click to set the dive location</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2109,12 +2111,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="20"/>
         <source>Shift selected times</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="37"/>
         <source>Shift times of selected dives by</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="73"/>
@@ -2170,12 +2172,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="388"/>
         <source>Download finished</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="402"/>
         <source>Download error: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="411"/>
@@ -2250,7 +2252,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -2285,12 +2287,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="253"/>
         <source>Operation timed out</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="274"/>
         <source>Transfering data...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2749,7 +2751,7 @@ Media</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1712"/>
-        <source>Failed to parse '%s'.
+        <source>Failed to parse &apos;%s&apos;.
 </source>
         <translation>Impossibile analizzare &apos;%s&apos;.
 </translation>
@@ -2768,14 +2770,14 @@ Media</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1946"/>
-        <source>Database connection failed '%s'.
+        <source>Database connection failed &apos;%s&apos;.
 </source>
         <translation>Connessione al database fallita &apos;%s&apos;.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1953"/>
-        <source>Database query failed '%s'.
+        <source>Database query failed &apos;%s&apos;.
 </source>
         <translation>Interrogazione al database fallita &apos;%s&apos;.
 </translation>
@@ -2783,7 +2785,7 @@ Media</translation>
     <message>
         <location filename="../parse-xml.c" line="2013"/>
         <source>Can&apos;t open stylesheet %s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../planner.c" line="99"/>
@@ -2871,7 +2873,7 @@ T:%.1f %s</source>
         <location filename="../profile.c" line="1222"/>
         <source>%s
 V:%.2f %s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1308"/>
@@ -2884,7 +2886,7 @@ Calcolo ceiling %.0f %s</translation>
         <location filename="../profile.c" line="1315"/>
         <source>%s
 Tissue %.0fmin: %.0f %s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1262"/>
@@ -2896,13 +2898,13 @@ Safetystop:%umin @ %.0f %s</source>
         <location filename="../profile.c" line="1206"/>
         <source>@:%d:%02d
 D:%.1f %s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1226"/>
         <source>%s
 SAC:%2.1fl/min</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1265"/>
@@ -2979,7 +2981,7 @@ EADD:%d%s</translation>
         <location filename="../profile.c" line="1287"/>
         <source>%s
 Deco:%umin @ %.0f %s (calc)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1296"/>
@@ -3005,36 +3007,36 @@ TTS:%umin (calc)</translation>
     <message>
         <location filename="../profile.c" line="1412"/>
         <source>%sT: %d:%02d min</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1416"/>
         <location filename="../profile.c" line="1420"/>
         <location filename="../profile.c" line="1424"/>
         <source>%s %sD:%.1f%s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1428"/>
         <source>%s %sD:%.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1432"/>
         <source>%s%sV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1436"/>
         <location filename="../profile.c" line="1440"/>
         <source>%s %sV:%.2f%s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../profile.c" line="1447"/>
         <source>%s %sP:%d %s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="309"/>
@@ -3049,7 +3051,7 @@ TTS:%umin (calc)</translation>
     <message>
         <location filename="../qt-gui.cpp" line="493"/>
         <source>%1, %2 %3, %4 %5:%6</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="506"/>
