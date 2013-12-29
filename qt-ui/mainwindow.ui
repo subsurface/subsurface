@@ -197,8 +197,7 @@
      <string>&amp;Import</string>
     </property>
     <addaction name="actionDownloadDC"/>
-    <addaction name="actionImport"/>
-    <addaction name="actionImportCSV"/>
+    <addaction name="actionImportDiveLog"/>
     <addaction name="actionDownloadWeb"/>
     <addaction name="actionDivelogs_de"/>
    </widget>
@@ -262,17 +261,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
-   </property>
-  </action>
-  <action name="actionImport">
-   <property name="text">
-    <string>Import Files</string>
-   </property>
-   <property name="toolTip">
-    <string>Import Files</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="actionExportUDDF">
@@ -461,12 +449,15 @@
     <string>Ctrl+L</string>
    </property>
   </action>
-  <action name="actionImportCSV">
+  <action name="actionImportDiveLog">
    <property name="text">
-    <string>Import CSV</string>
+    <string>Import Files</string>
    </property>
    <property name="toolTip">
-    <string>Import CS&amp;V</string>
+    <string>Import Files</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="actionDivelogs_de">

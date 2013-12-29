@@ -1,5 +1,5 @@
-#ifndef CSVIMPORTDIALOG_H
-#define CSVIMPORTDIALOG_H
+#ifndef DIVELOGIMPORTDIALOG_H
+#define DIVELOGIMPORTDIALOG_H
 
 #include <QDialog>
 #include <QModelIndex>
@@ -50,4 +50,4 @@ private:
 	static const CSVAppConfig CSVApps[CSVAPPS];
 };
 
-#endif // CSVIMPORTDIALOG_H
+#endif // DIVELOGIMPORTDIALOG_H

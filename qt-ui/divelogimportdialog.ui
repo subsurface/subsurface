@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CSVImportDialog</class>
- <widget class="QDialog" name="CSVImportDialog">
+ <class>DiveLogImportDialog</class>
+ <widget class="QDialog" name="DiveLogImportDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Import CSV file</string>
+   <string>Import dive log file</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -362,7 +362,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>CSVImportDialog</receiver>
+   <receiver>DiveLogImportDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -378,7 +378,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>CSVImportDialog</receiver>
+   <receiver>DiveLogImportDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

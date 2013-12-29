@@ -35,7 +35,7 @@
 #include "diveplanner.h"
 #include "about.h"
 #include "printdialog.h"
-#include "csvimportdialog.h"
+#include "divelogimportdialog.h"
 
 static MainWindow* instance = 0;
 
@@ -165,15 +165,6 @@ void MainWindow::on_actionClose_triggered()
 	mark_divelist_changed(FALSE);
 
 	clear_events();
-}
-
-void MainWindow::on_actionImport_triggered()
-{
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Import Files"), lastUsedDir(), filter());
-	if (!fileNames.size())
-		return; // no selection
-	updateLastUsedDir(QFileInfo(fileNames.at(0)).dir().path());
-	importFiles(fileNames);
 }
 
 QString MainWindow::lastUsedDir()
@@ -864,10 +855,10 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
-void MainWindow::on_actionImportCSV_triggered()
+void MainWindow::on_actionImportDiveLog_triggered()
 {
-	CSVImportDialog *csvImport = new CSVImportDialog();
-	csvImport->show();
+	DiveLogImportDialog *diveLogImport = new DiveLogImportDialog();
+	diveLogImport->show();
 	process_dives(TRUE, FALSE);
 	refreshDisplay();
 }
