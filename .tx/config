@@ -7,3 +7,7 @@ source_file = translations/subsurface_source.ts
 source_lang = en
 type = TS
 
+[subsurface.terms]
+source_file = terms
+source_lang = en
+type = txt

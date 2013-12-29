@@ -1,0 +1,121 @@
+Do not translate this file.
+This just tries to collect some of the terms you will run into
+when translating Subsurface
+
+SAC		 Surface equivalent air consumption
+		 The air consumed during a dive at different
+		 depth is adjusted for depth/pressure to give
+		 an easy to understand air consumption number
+
+OTU		 Oxygen Toxicity Unit - a measurement how O₂
+		 negatively impacts the lung tissue. This number
+		 has no unit, the values are rather abstract
+
+CNS		 Central Nervous System Oxygen Toxicity - a
+		 measurement how O₂ negatively impacts the
+		 central nervous system - this is a percentage
+		 or a number <= 1
+
+maxCNS		 the highest CNS value during a dive
+
+PO2, PN2, PHe	 These are all partial pressures of the three
+PO₂, PN₂	 gases Oxygen (O2 or O₂), Nitrogen (N2 or N₂)
+		 and Helium (He).
+
+O₂%, He%	 The fraction of Oxygen and Helium in a gas.
+		 The partial pressure is therefore the pressure
+		 of the gas times the fraction of the specific
+		 component. E.g. a gas with O₂% = 30 (also called
+		 30% Nitrox or EAN30) at 30m depth (where the
+		 pressure is 4atm) therefore has a PO₂ of
+		 4 * 0.30 = 1.2
+
+CSV		 Comma separated values - a common file format
+
+TSV		 Tab separated values - a common file format
+
+Stopdepth	 The depth at which the diver needs to wait for
+		 some time in order to "off-gas". Also deco stop.
+
+WorkPress	 Working Pressure of a tank - the pressure it should
+		 be filled to
+
+StartPress	 Starting Pressure - at the beginning of a dive
+
+EndPress	 Ending Pressure - at the end of a dive
+
+Switch at	 the depth at which the diver wants to switch to
+		 a certain gas
+
+Device ID	 Unique ID for a specific dive computer
+
+trip		 dives are grouped into "trips" based on their
+		 individual start time. As soon as there are more than
+		 48h between dives the automated algorithm will start
+		 a new trip
+
+UDDF		 standardized file format
+
+GFHigh, GFLow	 Gradient Factors of the Buehlman algorithm. These
+		 impact the way the deco obligations are calculated
+		 in Subsurface. Typically these are between 20 and 100.
+		 Lower is more conservative (i.e., more deco). It's
+		 possible to use values below 20 and above 100 in
+		 certain circumstances, but 70/30 is much more common.
+
+CC		 Closed circuit - short for "repreather diving"
+
+OC		 Open circuit - traditional scuba
+
+CC Set Point	 Rebreathers often are run with a fixed PO₂ - the "set point"
+
+Bailing out to OC
+		 in a rebreather dive the dive switches to their emergency
+		 OC equipment
+
+Auto Group	 automatically arrange dives into trips
+
+Ceiling		 when the diver is "in deco", i.e., when the diver cannot
+		 directly ascend to the surface but has to put in "stops"
+		 to give their body time to "off gas" (reduce the amount of N₂
+		 and potentially He in the body), there is a minimum depth
+		 they should not climb above - that's the ceiling. Often a
+		 diver will do a deco stop well below the ceiling
+
+Viz		 short for visibility
+
+belt, ankle	 weight system types - a backplate is used mostly by tech
+backplate,	 divers to mount the tanks on (recreational divers have a BC,
+integrated,	 tech divers usually a backplate and a wing)
+clip-on
+
+rbt		 remaining bottom time
+
+rgt		 remainint gas time
+
+workload	 is this a strenous dive?
+
+deepstop	 stop well below the ceiling
+
+safety stop	 stop at the end of a recreational dive, typically
+		 3 minutes at 5 meters
+
+below floor	 event showing dive is below the depth where the dive
+		 is acruing additional deco time
+
+OLF		 Oxygen Limit Fraction; Suunto specific term for CNS
+
+rgbm		 reduced gradient bubble method - alternative deco
+		 algorithm
+
+non stop time	 amount of time the diver can stay at the current depth
+NDL		 without going into deco
+
+EAD		 equivalent air depth
+
+END		 effective equivalent Nitrogen depth
+
+EADD		 equivalent air density depth
+
+TTS		 time to surface (including deco stop and reasonable
+		 ascent speed)
