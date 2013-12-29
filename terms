@@ -63,7 +63,7 @@ GFHigh, GFLow	 Gradient Factors of the Buehlman algorithm. These
 		 possible to use values below 20 and above 100 in
 		 certain circumstances, but 70/30 is much more common.
 
-CC		 Closed circuit - short for "repreather diving"
+CC		 Closed circuit - short for "rebreather diving"
 
 OC		 Open circuit - traditional scuba
 
