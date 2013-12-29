@@ -960,8 +960,7 @@ dropdown list. Lastly, indicate which columns in the CSV file contain which data
 variables. For each data column used for import, check the appropriate check box
 and indicate in which column these data are found. For instance, the image above
 corresponds to the dialogue that would apply to the CSV data set described above
-the image. *NB:* Note that column numbers are specified with a number that is
-numerically ONE LESS than the true sequnce number of that column. Having performed
+the image. Having performed
 the column specification, select the _OK_ button and the dive will be imported and
 listed in the *Dive List* tab of _Subsurface_.
 
