@@ -451,10 +451,10 @@
   </action>
   <action name="actionImportDiveLog">
    <property name="text">
-    <string>Import Files</string>
+    <string>Import Log Files</string>
    </property>
    <property name="toolTip">
-    <string>Import Files</string>
+    <string>Import divelog files from other applications</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
