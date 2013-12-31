@@ -78,7 +78,7 @@ int get_maxtime(struct plot_info *pi)
 }
 
 /* get the maximum depth to which we want to plot
- * take into account the additional verical space needed to plot
+ * take into account the additional vertical space needed to plot
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi)
 {

@@ -259,7 +259,7 @@ static int calculate_cns(struct dive *dive)
 	if (dive->cns)
 		return dive->cns;
 	/*
-	 * Do we start with a cns loading from a privious dive?
+	 * Do we start with a cns loading from a previous dive?
 	 * Check if we did a dive 12 hours prior, and what cns we had from that.
 	 * Then apply ha 90min halftime to see whats left.
 	 */
