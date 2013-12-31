@@ -104,8 +104,9 @@ QString weight_string(int weight_in_grams)
 
 bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 {
-	enum { SECONDS, MINUTES, DECIMAL } gpsStyle = DECIMAL;
+	enum { ISO6709D, SECONDS, MINUTES, DECIMAL } gpsStyle = ISO6709D;
 	int eastWest = 4;
+	int northSouth = 1;
 	QString regExp;
 	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
 	if (gps_text.trimmed() == "") {
@@ -114,8 +115,16 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 		return true;
 	}
 	// trying to parse all formats in one regexp might be possible, but it seems insane
-	// so handle the three formats we understand separately
-	if (gps_text.count(QChar('"')) == 2) {
+	// so handle the four formats we understand separately
+
+	// ISO 6709 Annex D representation
+	// http://en.wikipedia.org/wiki/ISO_6709#Representation_at_the_human_interface_.28Annex_D.29
+	if (gps_text.at(0).isDigit()) {
+		gpsStyle = ISO6709D;
+		regExp = QString("(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([NS%1%2])"
+					 "\\s*(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([EW%3%4])")
+				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W"));
+	} else if (gps_text.count(QChar('"')) == 2) {
 		gpsStyle = SECONDS;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
 					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
@@ -126,6 +135,7 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 					 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	} else {
+		gpsStyle = DECIMAL;
 		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)[,\\.](\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)[,\\.](\\d+)")
 				.arg(tr("N")).arg(tr("S")).arg(tr("E")).arg(tr("W")).arg(tr("E")).arg(tr("W"));
 	}
@@ -134,6 +144,14 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 		// qDebug() << "Hemisphere" << r.cap(1) << "deg" << r.cap(2) << "min" << r.cap(3) << "decimal" << r.cap(4);
 		// qDebug() << "Hemisphere" << r.cap(5) << "deg" << r.cap(6) << "min" << r.cap(7) << "decimal" << r.cap(8);
 		switch(gpsStyle) {
+		case ISO6709D:
+			*latitude = r.cap(1).toInt() + r.cap(2).toInt() / 60.0 +
+					(r.cap(3) + QString(".") + r.cap(5)).toDouble() / 3600.0;
+			*longitude = r.cap(7).toInt() + r.cap(8).toInt() / 60.0 +
+					(r.cap(9) + QString(".") + r.cap(11)).toDouble() / 3600.0;
+			northSouth = 6;
+			eastWest = 12;
+			break;
 		case SECONDS:
 			*latitude = r.cap(2).toInt() + r.cap(3).toInt() / 60.0 +
 					(r.cap(4) + QString(".") + r.cap(6)).toDouble() / 3600.0;
@@ -147,15 +165,14 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 			eastWest = 6;
 			break;
 		case DECIMAL:
-		default:
+			default:
 			*latitude = (r.cap(2) + QString(".") + r.cap(3)).toDouble();
 			*longitude = (r.cap(5) + QString(".") + r.cap(6)).toDouble();
-			eastWest = 4;
 			break;
 		}
-		if (r.cap(1) == "S" || r.cap(1) == tr("S") || r.cap(1) == "-")
+		if (r.cap(northSouth) == "S" || r.cap(northSouth) == tr("S") || r.cap(northSouth) == "-")
 			*latitude *= -1.0;
-		if (r.cap(eastWest) == "W" || r.cap(5) == tr("W") || r.cap(5) == "-")
+		if (r.cap(eastWest) == "W" || r.cap(eastWest) == tr("W") || r.cap(eastWest) == "-")
 			*longitude *= -1.0;
 		// qDebug("%s -> %8.5f / %8.5f", gps_text.toLocal8Bit().data(), *latitude, *longitude);
 		return true;
