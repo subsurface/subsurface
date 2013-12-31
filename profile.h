@@ -41,6 +41,7 @@ struct plot_data {
 	int tts_calc;
 	int stoptime_calc;
 	int stopdepth_calc;
+        int pressure_time;
 };
 
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);
