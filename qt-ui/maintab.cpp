@@ -974,7 +974,8 @@ void MainTab::editWeightWidget(const QModelIndex& index)
 QString MainTab::printGPSCoords(int lat, int lon)
 {
 	unsigned int latdeg, londeg;
-	unsigned int ilatmin, ilonmin;
+	unsigned int latmin, lonmin;
+	double  latsec, lonsec;
 	QString lath, lonh, result;
 
 	if (!lat && !lon)
@@ -986,11 +987,13 @@ QString MainTab::printGPSCoords(int lat, int lon)
 	lon = abs(lon);
 	latdeg = lat / 1000000;
 	londeg = lon / 1000000;
-	ilatmin = (lat % 1000000) * 60;
-	ilonmin = (lon % 1000000) * 60;
-	result.sprintf("%s%u%s %2d.%05d\' , %s%u%s %2d.%05d\'",
-		       lath.toUtf8().data(), latdeg, UTF8_DEGREE, ilatmin / 1000000, (ilatmin % 1000000) / 10,
-		       lonh.toUtf8().data(), londeg, UTF8_DEGREE, ilonmin / 1000000, (ilonmin % 1000000) / 10);
+	latmin = (lat % 1000000) * 60;
+	lonmin = (lon % 1000000) * 60;
+	latsec = (latmin % 1000000) * 60;
+	lonsec = (lonmin % 1000000) * 60;
+	result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
+		       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
+		       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
 	return result;
 }
 
