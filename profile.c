@@ -422,14 +422,14 @@ struct pr_interpolate_struct {
 	int start;
 	int end;
 	int pressure_time;
-        int acc_pressure_time;
+	int acc_pressure_time;
 };
 
 #ifdef DEBUG_PR_INTERPOLATE
-static void dump_pr_interpolate(pr_interpolate_t interpolate_pr)
+static void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 {
-    printf("INTERPOLATE: start %d - end %d - pt %d - acc_pt %d\n",
-            interpolate_pr.start, interpolate_pr.end, interpolate_pr.pressure_time, interpolate_pr.acc_pressure_time);
+    printf("Interpolate for entry %d: start %d - end %d - pt %d - acc_pt %d\n", i,
+	    interpolate_pr.start, interpolate_pr.end, interpolate_pr.pressure_time, interpolate_pr.acc_pressure_time);
 }
 #endif
 
@@ -489,7 +489,7 @@ static void fill_missing_segment_pressures(pr_track_t *list)
 			if (pt_sum)
 				pressure -= (start-end)*(double)pt/pt_sum;
 			list->end = pressure;
-                        if (list == tmp)
+			if (list == tmp)
 				break;
 			list = list->next;
 			list->start = pressure;
@@ -516,6 +516,9 @@ static inline int pressure_time(struct dive *dive, struct divecomputer *dc, stru
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth)/2;
 
+	if (depth <= SURFACE_THRESHOLD)
+		return 0;
+
 	return depth_to_mbar(depth, dive) * time;
 }
 
@@ -523,13 +526,12 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 {
 	struct pr_interpolate_struct interpolate;
 	int i;
-	struct plot_data *entry, *cur_entry;
+	struct plot_data *entry;
 
 	interpolate.start = segment->start;
 	interpolate.end = segment->end;
 	interpolate.acc_pressure_time = 0;
 	interpolate.pressure_time = 0;
-	cur_entry = pi->entry + cur;
 
 	for (i = 0; i < pi->nr; i++) {
 		entry = pi->entry + i;
@@ -544,7 +546,9 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 			interpolate.pressure_time = 0;
 			if (SENSOR_PRESSURE(entry))
 				interpolate.start = SENSOR_PRESSURE(entry);
-		} else if (i < cur) {
+			continue;
+		}
+		if (i < cur) {
 			if (SENSOR_PRESSURE(entry)) {
 				interpolate.start = SENSOR_PRESSURE(entry);
 				interpolate.acc_pressure_time = 0;
@@ -553,15 +557,17 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 				interpolate.acc_pressure_time += entry->pressure_time;
 				interpolate.pressure_time += entry->pressure_time;
 			}
-		} else if (i == cur) {
+			continue;
+		}
+		if (i == cur) {
 			interpolate.acc_pressure_time += entry->pressure_time;
 			interpolate.pressure_time += entry->pressure_time;
-		} else {
-			interpolate.pressure_time += entry->pressure_time;
-			if (SENSOR_PRESSURE(entry)) {
-				interpolate.end = SENSOR_PRESSURE(entry);
-				break;
-			}
+			continue;
+		}
+		interpolate.pressure_time += entry->pressure_time;
+		if (SENSOR_PRESSURE(entry)) {
+			interpolate.end = SENSOR_PRESSURE(entry);
+			break;
 		}
 	}
 	return interpolate;
@@ -589,7 +595,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	for (i = 1; i < pi->nr; i++) {
 		double magic;
 		pr_track_t *segment;
-                pr_interpolate_t interpolate;
+		pr_interpolate_t interpolate;
 
 		entry = pi->entry + i;
 		cyl = entry->cylinderindex;
@@ -599,7 +605,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			continue;
 		}
 
-                /* Find the right pressure segment for this entry.. */
+		/* Find the right pressure segment for this entry.. */
 		segment = track_pr[cyl];
 		while (segment && segment->t_end < entry->sec)
 			segment = segment->next;
@@ -610,9 +616,9 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			continue;
 		}
 
-                interpolate = get_pr_interpolate_data(segment, pi, i);
+		interpolate = get_pr_interpolate_data(segment, pi, i);
 #ifdef DEBUG_PR_INTERPOLATE
-                dump_pr_interpolate(interpolate);
+		dump_pr_interpolate(i, interpolate);
 #endif
 		/* Overall pressure change over total pressure-time for this segment*/
 		magic = (interpolate.end - interpolate.start) / (double) interpolate.pressure_time;
@@ -969,7 +975,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		if (current) {
-                        entry->pressure_time = pressure_time(dive, dc, entry-1, entry);
+			entry->pressure_time = pressure_time(dive, dc, entry-1, entry);
 			current->pressure_time += entry->pressure_time;
 			current->t_end = entry->sec;
 		}
