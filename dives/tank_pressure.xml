@@ -1,0 +1,24 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='1' date='2013-12-27' time='08:43:03' duration='27:00 min'>
+  <location gps='-15.815569 -47.796887'/>
+  <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' start='200.0 bar' end='10.0 bar' />
+  <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='22.0%' start='200.0 bar' end='100.0 bar' />
+  <divecomputer model='manually added dive'>
+  <depth max='110.0 m' mean='35.37 m' />
+  <event time='3:00 min' type='25' value='22' name='gaschange' />
+  <event time='13:00 min' type='25' value='21' name='gaschange' />
+  <event time='15:00 min' type='25' value='22' name='gaschange' />
+  <event time='25:00 min' type='25' value='21' name='gaschange' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='3:00 min' depth='110.0 m' />
+  <sample time='13:00 min' depth='20.0 m' />
+  <sample time='15:00 min' depth='10.0 m' />
+  <sample time='25:00 min' depth='10.0 m' />
+  <sample time='27:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
