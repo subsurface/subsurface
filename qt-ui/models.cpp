@@ -186,11 +186,12 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 }
 
 #define CHANGED(_t,_u1,_u2) \
-	value.toString().remove(_u1).remove(_u2)._t() !=  \
+	(vString = value.toString().remove(_u1).remove(_u2))._t() !=  \
 	data(index, role).toString().remove(_u1).remove(_u2)._t()
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+	QString vString;
 	bool addDiveMode = DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING;
 	if (addDiveMode)
 		DivePlannerPointsModel::instance()->rememberTanks();
@@ -210,18 +211,18 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 	case SIZE:
 		if (CHANGED(toDouble, "cuft", "l")) {
 			// if units are CUFT then this value is meaningless until we have working pressure
-			if (value.toDouble() != 0.0) {
+			if (vString.toDouble() != 0.0) {
 				TankInfoModel *tanks = TankInfoModel::instance();
 				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 				int mbar = cyl->type.workingpressure.mbar;
 				int mliter;
 
 				if (mbar && prefs.units.volume == prefs.units.CUFT) {
-					double liters = cuft_to_l(value.toDouble());
+					double liters = cuft_to_l(vString.toDouble());
 					liters /= bar_to_atm(mbar / 1000.0);
 					mliter = rint(liters * 1000);
 				} else {
-					mliter = rint(value.toDouble() * 1000);
+					mliter = rint(vString.toDouble() * 1000);
 				}
 				if (cyl->type.size.mliter != mliter) {
 					mark_divelist_changed(TRUE);
@@ -235,8 +236,6 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case WORKINGPRESS:
 		if (CHANGED(toDouble, "psi", "bar")) {
-			QString vString = value.toString();
-			vString.remove("psi").remove("bar");
 			if (vString.toDouble() != 0.0) {
 				TankInfoModel *tanks = TankInfoModel::instance();
 				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
@@ -252,29 +251,29 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case START:
 		if (CHANGED(toDouble, "psi", "bar")) {
-			if (value.toDouble() != 0.0) {
+			if (vString.toDouble() != 0.0) {
 				if (prefs.units.pressure == prefs.units.PSI)
-					cyl->start.mbar = psi_to_mbar(value.toDouble());
+					cyl->start.mbar = psi_to_mbar(vString.toDouble());
 				else
-					cyl->start.mbar = value.toDouble() * 1000;
+					cyl->start.mbar = vString.toDouble() * 1000;
 				changed = true;
 			}
 		}
 		break;
 	case END:
 		if (CHANGED(toDouble, "psi", "bar")) {
-			if (value.toDouble() != 0.0) {
+			if (vString.toDouble() != 0.0) {
 				if (prefs.units.pressure == prefs.units.PSI)
-					cyl->end.mbar = psi_to_mbar(value.toDouble());
+					cyl->end.mbar = psi_to_mbar(vString.toDouble());
 				else
-					cyl->end.mbar = value.toDouble() * 1000;
+					cyl->end.mbar = vString.toDouble() * 1000;
 				changed = true;
 			}
 		}
 		break;
 	case O2:
 		if (CHANGED(toDouble, "%", "%")) {
-			int o2 = value.toString().remove('%').toDouble() * 10 + 0.5;
+			int o2 = vString.toDouble() * 10 + 0.5;
 			if (cyl->gasmix.he.permille + o2 <= 1000) {
 				cyl->gasmix.o2.permille = o2;
 				changed = true;
@@ -283,7 +282,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case HE:
 		if (CHANGED(toDouble, "%", "%")) {
-			int he = value.toString().remove('%').toDouble() * 10 + 0.5;
+			int he = vString.toDouble() * 10 + 0.5;
 			if (cyl->gasmix.o2.permille + he <= 1000) {
 				cyl->gasmix.he.permille = he;
 				changed = true;
@@ -292,11 +291,11 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		break;
 	case DEPTH:
 		if (CHANGED(toDouble, "ft", "m")) {
-			if (value.toInt() != 0) {
+			if (vString.toInt() != 0) {
 				if (prefs.units.length == prefs.units.FEET)
-					cyl->depth.mm = feet_to_mm(value.toString().remove("ft").remove("m").toInt());
+					cyl->depth.mm = feet_to_mm(vString.toInt());
 				else
-					cyl->depth.mm = value.toString().remove("ft").remove("m").toInt() * 1000;
+					cyl->depth.mm = vString.toInt() * 1000;
 			}
 		}
 	}
@@ -470,21 +469,22 @@ void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
 
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+	QString vString = value.toString();
 	weightsystem_t *ws = &current->weightsystem[index.row()];
 	switch(index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
-			if (!ws->description || gettextFromC::instance()->tr(ws->description) != value.toString()) {
+			if (!ws->description || gettextFromC::instance()->tr(ws->description) != vString) {
 				// loop over translations to see if one matches
 				int i = -1;
 				while(ws_info[++i].name) {
-					if (gettextFromC::instance()->tr(ws_info[i].name) == value.toString()) {
+					if (gettextFromC::instance()->tr(ws_info[i].name) == vString) {
 						ws->description = ws_info[i].name;
 						break;
 					}
 				}
 				if (ws_info[i].name == NULL) // didn't find a match
-					ws->description = strdup(value.toString().toUtf8().constData());
+					ws->description = strdup(vString.toUtf8().constData());
 				changed = true;
 			}
 		}
@@ -492,9 +492,9 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 	case WEIGHT:
 		if (CHANGED(toDouble, "kg", "lbs")) {
 			if (prefs.units.weight == prefs.units.LBS)
-				ws->weight.grams = lbs_to_grams(value.toDouble());
+				ws->weight.grams = lbs_to_grams(vString.toDouble());
 			else
-				ws->weight.grams = value.toDouble() * 1000.0 + 0.5;
+				ws->weight.grams = vString.toDouble() * 1000.0 + 0.5;
 			// now update the ws_info
 			changed = true;
 			WSInfoModel *wsim = WSInfoModel::instance();
