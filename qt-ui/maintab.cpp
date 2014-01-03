@@ -223,6 +223,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (current_dive == NULL || editMode != NONE)
 		return;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
+	    current_dive->dc.model &&
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
 		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
 		// so exit this function here after editCurrentDive() returns
