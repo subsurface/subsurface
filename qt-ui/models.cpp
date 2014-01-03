@@ -467,6 +467,25 @@ void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
 	}
 }
 
+double string_to_grams(char *str)
+{
+	char *end;
+	double value = strtod_flags(str, &end, 0);
+
+	while (isspace(*end))
+		end++;
+	if (!strncmp(end, "kg", 2))
+		goto kg;
+	if (!strncmp(end, "lbs", 3))
+		goto lbs;
+	if (prefs.units.weight == prefs.units.LBS)
+		goto lbs;
+kg:
+	return rint(value * 1000);
+lbs:
+	return lbs_to_grams(value);
+}
+
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	QString vString = value.toString();
@@ -490,11 +509,8 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 		}
 		break;
 	case WEIGHT:
-		if (CHANGED(toDouble, "kg", "lbs")) {
-			if (prefs.units.weight == prefs.units.LBS)
-				ws->weight.grams = lbs_to_grams(vString.toDouble());
-			else
-				ws->weight.grams = vString.toDouble() * 1000.0 + 0.5;
+		if (CHANGED(data, "", "")) {
+			ws->weight.grams = string_to_grams(vString.toUtf8().data());
 			// now update the ws_info
 			changed = true;
 			WSInfoModel *wsim = WSInfoModel::instance();
