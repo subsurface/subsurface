@@ -111,11 +111,8 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			ret = QString(cyl->type.description);
 			break;
 		case SIZE:
-			// we can't use get_volume_string because the idiotic imperial tank
-			// sizes take working pressure into account...
-			if (cyl->type.size.mliter) {
-				ret = get_volume_string(cyl->type.size, TRUE);
-			}
+			if (cyl->type.size.mliter)
+				ret = get_volume_string(cyl->type.size, TRUE, cyl->type.workingpressure.mbar);
 			break;
 		case WORKINGPRESS:
 			if (cyl->type.workingpressure.mbar)

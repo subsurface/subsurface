@@ -322,13 +322,15 @@ QString get_temp_unit()
 		return QString(UTF8_DEGREE "F");
 }
 
-QString get_volume_string(volume_t volume, bool showunit)
+QString get_volume_string(volume_t volume, bool showunit, unsigned int mbar)
 {
 	if (prefs.units.volume == units::LITER) {
 		double liter = volume.mliter / 1000.0;
 		return QString("%1%2").arg(liter, 0, 'f', liter >= 40.0 ? 0 : 1 ).arg(showunit ? translate("gettextFromC","l") : "");
 	} else {
 		double cuft = ml_to_cuft(volume.mliter);
+		if (mbar)
+			cuft *= bar_to_atm(mbar / 1000.0);
 		return QString("%1%2").arg(cuft, 0, 'f', cuft >= 20.0 ? 0 : (cuft >= 2.0 ? 1 : 2)).arg(showunit ? translate("gettextFromC","cuft") : "");
 	}
 }
