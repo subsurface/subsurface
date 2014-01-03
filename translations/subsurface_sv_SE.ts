@@ -117,17 +117,17 @@
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="154"/>
+        <location filename="../qt-ui/models.cpp" line="151"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Klicka här för att ta bort denna flaska</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="376"/>
+        <location filename="../qt-ui/models.cpp" line="372"/>
         <source>Cylinder cannot be removed</source>
         <translation>Flaska kan inte tas bort</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="377"/>
+        <location filename="../qt-ui/models.cpp" line="373"/>
         <source>This gas in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Denna gas används. Bara flaskor som inte används kan tas bort</translation>
     </message>
@@ -155,22 +155,22 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DiveComputerModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1233"/>
+        <location filename="../qt-ui/models.cpp" line="1246"/>
         <source>Model</source>
         <translation>Modell</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1233"/>
+        <location filename="../qt-ui/models.cpp" line="1246"/>
         <source>Device ID</source>
         <translation>Enhetsid</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1233"/>
+        <location filename="../qt-ui/models.cpp" line="1246"/>
         <source>Nickname</source>
         <translation>Enhetsnamn</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1255"/>
+        <location filename="../qt-ui/models.cpp" line="1268"/>
         <source>Clicking here will remove this divecomputer.</source>
         <translation>Klicka här för att ta bort denna dykdator</translation>
     </message>
@@ -178,12 +178,12 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DiveItem</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1094"/>
+        <location filename="../qt-ui/models.cpp" line="1107"/>
         <source> l/min</source>
         <translation> l/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1096"/>
+        <location filename="../qt-ui/models.cpp" line="1109"/>
         <source> cuft/min</source>
         <translation> cuft/min</translation>
     </message>
@@ -408,67 +408,67 @@ vänligen ta bort dessa först.</translation>
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1137"/>
+        <location filename="../qt-ui/models.cpp" line="1150"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1138"/>
+        <location filename="../qt-ui/models.cpp" line="1151"/>
         <source>date</source>
         <translation>datum</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1140"/>
+        <location filename="../qt-ui/models.cpp" line="1153"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1140"/>
+        <location filename="../qt-ui/models.cpp" line="1153"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1141"/>
+        <location filename="../qt-ui/models.cpp" line="1154"/>
         <source>min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1143"/>
+        <location filename="../qt-ui/models.cpp" line="1156"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1143"/>
+        <location filename="../qt-ui/models.cpp" line="1156"/>
         <source>lbs</source>
         <translation>pund</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1144"/>
+        <location filename="../qt-ui/models.cpp" line="1157"/>
         <source>suit</source>
         <translation>dräkt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1145"/>
+        <location filename="../qt-ui/models.cpp" line="1158"/>
         <source>cyl</source>
         <translation>flaska</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1150"/>
+        <location filename="../qt-ui/models.cpp" line="1163"/>
         <source>location</source>
         <translation>plats</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1147"/>
+        <location filename="../qt-ui/models.cpp" line="1160"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1148"/>
+        <location filename="../qt-ui/models.cpp" line="1161"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1149"/>
+        <location filename="../qt-ui/models.cpp" line="1162"/>
         <source>maxCNS</source>
         <translation>maxCNS</translation>
     </message>
@@ -1986,72 +1986,72 @@ vänligen ta bort dessa först.</translation>
 <context>
     <name>ProfilePrintModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1606"/>
+        <location filename="../qt-ui/models.cpp" line="1619"/>
         <source>unknown</source>
         <translation>okänd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1611"/>
+        <location filename="../qt-ui/models.cpp" line="1624"/>
         <source>Dive #%1 - %2</source>
         <translation>Dyk #%1 - %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1614"/>
+        <location filename="../qt-ui/models.cpp" line="1627"/>
         <source>Max depth: %1 %2</source>
         <translation>Maxdjup: %1 %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1621"/>
+        <location filename="../qt-ui/models.cpp" line="1634"/>
         <source>Duration: %1 min</source>
         <translation>Varaktighet: %1 min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1626"/>
+        <location filename="../qt-ui/models.cpp" line="1639"/>
         <source>Gas Used:</source>
         <translation>Gas använd:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1628"/>
+        <location filename="../qt-ui/models.cpp" line="1641"/>
         <source>SAC:</source>
         <translation>SAC:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1630"/>
+        <location filename="../qt-ui/models.cpp" line="1643"/>
         <source>Max. CNS:</source>
         <translation>Max. CNS:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1632"/>
+        <location filename="../qt-ui/models.cpp" line="1645"/>
         <source>Weights:</source>
         <translation>Vikter:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1637"/>
+        <location filename="../qt-ui/models.cpp" line="1650"/>
         <source>Notes:</source>
         <translation>Anteckningar:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1644"/>
+        <location filename="../qt-ui/models.cpp" line="1657"/>
         <source>Divemaster:</source>
         <translation>Divemaster:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1646"/>
+        <location filename="../qt-ui/models.cpp" line="1659"/>
         <source>Buddy:</source>
         <translation>Parkamrat:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1648"/>
+        <location filename="../qt-ui/models.cpp" line="1661"/>
         <source>Suit:</source>
         <translation>Dräkt:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1650"/>
+        <location filename="../qt-ui/models.cpp" line="1663"/>
         <source>Viz:</source>
         <translation>Sikt:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1652"/>
+        <location filename="../qt-ui/models.cpp" line="1665"/>
         <source>Rating:</source>
         <translation>Ranking:</translation>
     </message>
@@ -2212,17 +2212,17 @@ vänligen ta bort dessa först.</translation>
 <context>
     <name>TankInfoModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="759"/>
+        <location filename="../qt-ui/models.cpp" line="772"/>
         <source>Description</source>
         <translation>Beskrivning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="759"/>
+        <location filename="../qt-ui/models.cpp" line="772"/>
         <source>ml</source>
         <translation>ml</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="759"/>
+        <location filename="../qt-ui/models.cpp" line="772"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -2238,12 +2238,12 @@ vänligen ta bort dessa först.</translation>
 <context>
     <name>WSInfoModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="631"/>
+        <location filename="../qt-ui/models.cpp" line="644"/>
         <source>Description</source>
         <translation>Beskrivning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="631"/>
+        <location filename="../qt-ui/models.cpp" line="644"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -2299,17 +2299,17 @@ vänligen ta bort dessa först.</translation>
 <context>
     <name>WeightModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="391"/>
+        <location filename="../qt-ui/models.cpp" line="387"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="391"/>
+        <location filename="../qt-ui/models.cpp" line="387"/>
         <source>Weight</source>
         <translation>Vikt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="451"/>
+        <location filename="../qt-ui/models.cpp" line="447"/>
         <source>Clicking here will remove this weigthsystem.</source>
         <translation>Klicka här för att ta bort detta viktsystem</translation>
     </message>
@@ -2317,76 +2317,76 @@ vänligen ta bort dessa först.</translation>
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1409"/>
+        <location filename="../qt-ui/models.cpp" line="1422"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>År
 &gt; Månad / Resmål</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1410"/>
+        <location filename="../qt-ui/models.cpp" line="1423"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1411"/>
+        <location filename="../qt-ui/models.cpp" line="1424"/>
         <source>Duration 
  Total</source>
         <translation>Varaktighet
 Total</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1412"/>
+        <location filename="../qt-ui/models.cpp" line="1425"/>
         <source>
 Average</source>
         <translation>Genomsnitt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1413"/>
+        <location filename="../qt-ui/models.cpp" line="1426"/>
         <source>
 Shortest</source>
         <translation>Kortaste</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1414"/>
+        <location filename="../qt-ui/models.cpp" line="1427"/>
         <source>
 Longest</source>
         <translation>Längsta</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1415"/>
+        <location filename="../qt-ui/models.cpp" line="1428"/>
         <source>Depth (%1)
  Average</source>
         <translation>Djup (%1)
 Medel</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1416"/>
-        <location filename="../qt-ui/models.cpp" line="1419"/>
-        <location filename="../qt-ui/models.cpp" line="1422"/>
+        <location filename="../qt-ui/models.cpp" line="1429"/>
+        <location filename="../qt-ui/models.cpp" line="1432"/>
+        <location filename="../qt-ui/models.cpp" line="1435"/>
         <source>
 Minimum</source>
         <translation>
 Minimum</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1417"/>
-        <location filename="../qt-ui/models.cpp" line="1420"/>
-        <location filename="../qt-ui/models.cpp" line="1423"/>
+        <location filename="../qt-ui/models.cpp" line="1430"/>
+        <location filename="../qt-ui/models.cpp" line="1433"/>
+        <location filename="../qt-ui/models.cpp" line="1436"/>
         <source>
 Maximum</source>
         <translation>
 Maximum</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1418"/>
+        <location filename="../qt-ui/models.cpp" line="1431"/>
         <source>SAC (%1)
  Average</source>
         <translation>SAC (%1)
 Medel</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1421"/>
+        <location filename="../qt-ui/models.cpp" line="1434"/>
         <source>Temp. (%1)
  Average</source>
         <translation>Temp. (%1)
@@ -2402,13 +2402,13 @@ Medel</translation>
     </message>
     <message>
         <location filename="../dive.c" line="62"/>
-        <location filename="../qt-gui.cpp" line="348"/>
+        <location filename="../qt-gui.cpp" line="350"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../dive.c" line="66"/>
-        <location filename="../qt-gui.cpp" line="351"/>
+        <location filename="../qt-gui.cpp" line="353"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -2420,7 +2420,7 @@ Medel</translation>
     </message>
     <message>
         <location filename="../dive.c" line="108"/>
-        <location filename="../qt-gui.cpp" line="332"/>
+        <location filename="../qt-gui.cpp" line="334"/>
         <source>cuft</source>
         <translation>ft³</translation>
     </message>
@@ -2740,47 +2740,47 @@ Medel</translation>
         <translation>Kunde inte öppna fil %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="575"/>
+        <location filename="../parse-xml.c" line="480"/>
         <source>Strange percentage reading %s
 </source>
         <translation>Konstig procent läsning %s
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1712"/>
+        <location filename="../parse-xml.c" line="1617"/>
         <source>Failed to parse &apos;%s&apos;.
 </source>
         <translation>Kunde inte läsa &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1713"/>
+        <location filename="../parse-xml.c" line="1618"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Kunde inte läsa &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1911"/>
+        <location filename="../parse-xml.c" line="1816"/>
         <source>Database query get_events failed.
 </source>
         <translation>Databasfråga get_events misslyckades.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1946"/>
+        <location filename="../parse-xml.c" line="1851"/>
         <source>Database connection failed &apos;%s&apos;.
 </source>
         <translation>Databasanslutning misslyckades &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1953"/>
+        <location filename="../parse-xml.c" line="1858"/>
         <source>Database query failed &apos;%s&apos;.
 </source>
         <translation>Databasfråga misslyckades &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2013"/>
+        <location filename="../parse-xml.c" line="1918"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3064,24 +3064,24 @@ TTS:%umin (calc)</translation>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="493"/>
+        <location filename="../qt-gui.cpp" line="495"/>
         <source>%1, %2 %3, %4 %5:%6</source>
         <translation>%1, %2 %3, %4 %5:%6</translation>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="506"/>
+        <location filename="../qt-gui.cpp" line="508"/>
         <source>%1 %2, %3
 %4:%5</source>
         <translation>%1 %2, %3
 %4:%5</translation>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="519"/>
+        <location filename="../qt-gui.cpp" line="521"/>
         <source>%1 %2 (%3 dives)</source>
         <translation>%1 %2 (%3 dyk)</translation>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="524"/>
+        <location filename="../qt-gui.cpp" line="526"/>
         <source>%1 %2 (1 dive)</source>
         <translation>%1 %2 (1 dyk)</translation>
     </message>
