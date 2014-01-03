@@ -98,6 +98,7 @@ SOURCES =  \
 	save-xml.c \
 	sha1.c \
 	statistics.c \
+	strtod.c \
 	subsurfacestartup.c \
 	time.c \
 	uemis.c \

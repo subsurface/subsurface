@@ -618,7 +618,6 @@ struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
-extern double ascii_strtod(char *, char **);
 extern void parse_xml_init(void);
 extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, const char **params, char **error);
 extern void parse_xml_exit(void);
@@ -782,6 +781,19 @@ extern bool no_weightsystems(weightsystem_t *ws);
 extern bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
+
+/*
+ * String handling.
+ */
+#define STRTOD_NO_SIGN		0x01
+#define STRTOD_NO_DOT		0x02
+#define STRTOD_NO_COMMA		0x04
+#define STRTOD_NO_EXPONENT	0x08
+extern double strtod_flags(char *str, char **ptr, unsigned int flags);
+
+#define STRTOD_ASCII (STRTOD_NO_COMMA)
+
+#define ascii_strtod(str,ptr) strtod_flags(str,ptr,STRTOD_ASCII)
 
 #ifdef __cplusplus
 }
