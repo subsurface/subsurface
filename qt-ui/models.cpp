@@ -468,12 +468,14 @@ double string_to_grams(char *str)
 {
 	char *end;
 	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_kg = WeightModel::tr("kg");
+	QString local_lbs = WeightModel::tr("lbs");
 
-	while (isspace(*end))
-		end++;
-	if (!strncmp(end, "kg", 2))
+	if (rest.startsWith("kg") || rest.startsWith(local_kg))
 		goto kg;
-	if (!strncmp(end, "lbs", 3))
+	// using just "lb" instead of "lbs" is intentional - some people might enter the singular
+	if (rest.startsWith("lb") || rest.startsWith(local_lbs))
 		goto lbs;
 	if (prefs.units.weight == prefs.units.LBS)
 		goto lbs;
