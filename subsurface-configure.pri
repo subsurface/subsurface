@@ -26,6 +26,8 @@
 *-g++*: QMAKE_CXXFLAGS += -Wno-maybe-uninitialized
 *-g++*: QMAKE_CFLAGS += -Wno-maybe-uninitialized
 }
+mac: QMAKE_CLAGS += -mmacosx-version-min=10.5
+mac: QMAKE_CXXLAGS += -mmacosx-version-min=10.5
 
 
 !win32-msvc*: QMAKE_CFLAGS += -std=gnu99
