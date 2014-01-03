@@ -1,5 +1,5 @@
 
-This is the README file for Subsurface 4.0.
+This is the README file for Subsurface 4.0.1
 
 After the release of Subsurface 3.1 the Subsurface developer team
 decided to make a major change in the development direction of the
@@ -24,7 +24,7 @@ As always in a massive rewrite like this, there are still a small
 handful of known bugs and issues - please check ReleaseNotes.txt and
 our bug tracker at trac.hohndel.org.
 
-The latest public version is Subsurface 4.0, released in December of 2013.
+The latest public version is Subsurface 4.0.1, released in January of 2014.
 
 License: GPLv2
 
@@ -40,12 +40,12 @@ You can also browse the sources via gitweb at git.hohndel.org
 If you want the latest release (instead of the bleeding edge
 development version) you can either get this via
 
-git checkout v4.0  (or whatever the last release is)
+git checkout v4.0.1  (or whatever the last release is)
 
 if you have already cloned the git repository as shown above or you
 can get a tar ball from
 
-http://subsurface.hohndel.org/downloads/Subsurface-4.0.tgz
+http://subsurface.hohndel.org/downloads/Subsurface-4.0.1.tgz
 
 
 Basic Usage:

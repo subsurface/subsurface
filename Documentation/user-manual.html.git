@@ -410,7 +410,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><span class="big">USER MANUAL</span></p></div>
 <div class="paragraph"><p><strong>Manual authors</strong>: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg, Linus Torvalds,
 Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem Ferguson, Salvador Cuñat</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.0,  December 2013</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.0.1,  January 2014</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging programme with
 extensive infrastructure to describe, organise and interpret scuba and free dives.
 <em>Subsurface</em> binaries are available for Windows PCs (Win XP or later), Intel
@@ -566,12 +566,6 @@ here. These can come from three sources:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
 <p>
-You can enter the coordinates by hand if you happen to know what they are.
-You need to enter them as decimal degrees, e.g: N30° 13.49760' , E30° 49.30788'.
-</p>
-</li>
-<li>
-<p>
 You can find the coordinates on the world map in the bottom right hand part
 of the Subsurface window. The map displays a green bar indicating "No location
 data - move the map and double-click to set the location". Upon a double-click
@@ -587,7 +581,21 @@ using that device.
 <a href="#S_Companion">Click here for more information</a>
 </p>
 </li>
+<li>
+<p>
+One can enter the coordinates by hand if they are known, using one of
+three formats with latitude followed by longitude:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><code>Degrees and decimal minutes, e.g: N30° 13.49760' , E30° 49.30788'
+Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
+Decimal degrees, e.g. 30.22496 , 30.821798</code></pre>
+</div></div>
+</li>
 </ol></div>
+<div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a negative
+value, e.g. -30.22496</p></div>
 <div class="paragraph"><p><strong>Divemaster</strong>: Enter the name of the dive master or dive guide for this dive.
 Again, this field offers auto completion based on the list of dive masters in the
 current logbook.</p></div>
@@ -860,18 +868,18 @@ Click the <em>OK</em> button.
 <p>
 If there is a problem in communicating with your dive computer, an error
 message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
-(Puck Pro)". In this case, consult <strong>Appendix A</strong> for information specific to the
-operating system of your <em>Subsurface</em> computer and consult <strong>Appendix B</strong> for
-information specific to some dive computers.
+(Puck Pro)", see the text in the box below.
 </p>
 </li>
 </ul></div>
+<div class="sidebarblock">
+<div class="content">
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">In the case of <strong>communication failure</strong> then check the following:
+<td class="content">Check the following:
 1) Is the dive computer still in PC-communication or Upload mode?
 2) Is the battery of the dive computer fully charged? If not then charge or
 replace the battery.
@@ -886,6 +894,28 @@ computer. It is also possible that your <em>Subsurface</em> computer is missing 
 drivers to interact with the download cable and connected dive computer.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>If all the above points are in order and there is a failure to download the dive data,
+then perform a download with the following
+two check boxes checked in the download dialogue discussed above:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Save libdivecomputer logfile
+Save libdivecomputer dumpfile</code></pre>
+</div></div>
+<div class="paragraph"><p>When checking each of these boxes, the user is prompted to select a folder to save
+the file into. The default folder is the one in which the <em>Subsurface</em> dive log is
+kept. After downloading, no dives are shown in the <strong>Dive List</strong> but two files are created
+in the folder selected above:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>subsurface.log
+subsurface.bin</code></pre>
+</div></div>
+<div class="paragraph"><p>Send these files to the <em>Subsurface</em> mail list: <em>subsurface@hohndel.org</em> and
+request that the files be analysed, providing your dive computer make and model
+as well as contextual information about the dives recorded on the dive
+computer.</p></div>
+</div></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -951,12 +981,6 @@ here. These can come from three sources:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
 <p>
-You can enter the coordinates by hand if you happen to know what they are.
-You need to enter them as decimal degrees, e.g: N30° 13.49760', E30° 49.30788'.
-</p>
-</li>
-<li>
-<p>
 You can find the coordinates on the world map in the bottom right hand part
 of the Subsurface window. The map displays a green bar indicating "No location
 data - move the map and double-click to set the location". Upon a double-click
@@ -972,7 +996,21 @@ using that device.
 <a href="#S_Companion">Click here for more information</a>
 </p>
 </li>
+<li>
+<p>
+One can enter the coordinates by hand if they are known, using one of
+three formats with latitude followed by longitude:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><code>Degrees and decimal minutes, e.g: N30° 13.49760' , E30° 49.30788'
+Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
+Decimal degrees, e.g. 30.22496 , 30.821798</code></pre>
+</div></div>
+</li>
 </ol></div>
+<div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a negative
+value, e.g. -30.22496.</p></div>
 <div class="paragraph"><p><strong>Divemaster</strong>: Enter the name of the dive master or dive guide for this dive.
 Again, this field offers auto completion based on the list of dive masters in
 the current logbook.</p></div>
@@ -1510,6 +1548,85 @@ Some attributes in your file may not get processed properly. Select
 <em>Import&#8594;Import Files</em> from the Main Menu. Then select the UDDF file to
 be imported.</p></div>
 </div>
+<div class="sect3">
+<h4 id="S_ImportingCSV">3.3.10. Importing dives in CSV format</h4>
+<div class="paragraph"><p>Sometimes dive computers export dive information as files with
+<em>comma-separated variables</em> (.CSV). For example, the APD Inspiration and Evolution
+closed circuit rebreather (CCR) systems export dive information in CSV format that
+normally contains information about a single dive only. These
+files can easily be imported into <em>Subsurface</em>. CSV files are normally organised into
+a single line that provides the titles of the data columns, followed by the data, one
+record per line. CSV files can be opened with a normal text editor. Here is a highly
+simplified and shortened example of a CSV file from an APD rebreather:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Dive Time (s)   Depth (m)       PPO2 - Setpoint (Bar)   PPO2 - C1 Cell 1 (Bar)  Ambient temp. (Celsius)
+0       0.0     0.70    0.81    13.1
+0       1.2     0.70    0.71    13.1
+0       0.0     0.70    0.71    13.1
+0       1.2     0.70    0.71    13.2
+0       1.2     0.70    0.71    13.1
+10      1.6     0.70    0.72    12.7
+20      1.6     0.70    0.71    12.6
+30      1.7     0.70    0.71    12.6
+40      1.8     0.70    0.68    12.5
+50      1.6     0.70    0.68    12.5
+60      2.4     0.70    0.69    12.5
+70      3.5     0.70    0.69    12.4
+80      4.2     0.70    0.72    12.5
+90      4.0     0.70    0.71    12.4</code></pre>
+</div></div>
+<div class="paragraph"><p>Note that each title may comprise more than one word, for instance <em>Dive Time (s)</em>
+in the above data example. Before being able to import the data to <em>Subsurface</em> one first
+needs to know:</p></div>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+Which character separates the different colums within a single line of data? This
+field separator should be either a comma (,) or a TAB character. This could be determined
+by opening the file with a text editor. If it is commma-delimited, then the comma
+characters between the values are clearly visible. If no commas are evident, the file
+is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
+</p>
+</li>
+<li>
+<p>
+Which data columns need to be imported into <em>Subsurface</em>?. The Dive Time and
+Depth colums are always required. Open the file using a text editor and note the
+titles of the columns to be imported and their column positions. For instance
+for the above example:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><code>Time:           column 1
+Depth:          column 2
+Temperature:    column 5
+ppO2:           column 4</code></pre>
+</div></div>
+</li>
+</ol></div>
+<div class="paragraph"><p>Armed with this information, the import into <em>Subsurface</em> is straightforward. Select
+<em>Import&#8594;Import CSV</em> from the main menu. The following dialogue appears:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CSVDownload.jpg" alt="FIGURE: CSV download dialogue" />
+</div>
+</div>
+<div class="paragraph"><p>Specify the name of the CSV file or select it from the browser button on the right.
+There are pre-configured definitions for some dive computers, e.g. the APD
+rebreathers. If your dive computer is on this list, select it using the dropdown
+box labeled <em>Pre-configured imports</em>, click <em>OK</em> and the dive will be imported and
+listed in the <strong>Dive List</strong> tab of <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>If your dive computer is not on the pre-configured list, then select the <em>Field
+Separator</em> (TAB or comma) for your CSV file, using the appropriate
+dropdown list. Lastly, indicate which columns in the CSV file contain which data
+variables. For each data column used for import, check the appropriate check box
+and indicate in which column these data are found. For instance, the image above
+corresponds to the dialogue that would apply to the CSV data set described above
+the image. Having performed
+the column specification, select the <em>OK</em> button and the dive will be imported and
+listed in the <strong>Dive List</strong> tab of <em>Subsurface</em>.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="S_Companion">3.4. Importing GPS coordinates with the Subsurface Companion app for mobile phones</h3>
@@ -2027,34 +2144,31 @@ the completed action on the right (B):</p></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_manipulating_single_dives">6. Manipulating single dives</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_delete_a_dive_from_the_dive_log">6.1. Delete a dive from the dive log</h3>
+<h3 id="_manipulating_single_dives">5.4. Manipulating single dives</h3>
+<div class="sect3">
+<h4 id="_delete_a_dive_from_the_dive_log">5.4.1. Delete a dive from the dive log</h4>
 <div class="paragraph"><p>Dives can be permanently deleted from the dive log by selecting and
 right-clicking them to bring up the context menu, and then selecting <strong>Delete
 dive(s)</strong>. Typically this would apply to a case where you wish to delete workshop
 calibration dives of the dive computer or dives of extremely short duration.</p></div>
 </div>
-<div class="sect2">
-<h3 id="_unlink_a_dive_from_a_trip">6.2. Unlink a dive from a trip</h3>
+<div class="sect3">
+<h4 id="_unlink_a_dive_from_a_trip">5.4.2. Unlink a dive from a trip</h4>
 <div class="paragraph"><p>You can unlink dives from the trip to which they belong. Select and right-click
 the dives to bring up the context menu. Then select <strong>Remove dive(s) from trip</strong>.
 The dives that have been unlinked now appear immediately above the trip to
 which they belonged.</p></div>
 </div>
-<div class="sect2">
-<h3 id="_add_a_dive_to_the_trip_immediately_above">6.3. Add a dive to the trip immediately above</h3>
+<div class="sect3">
+<h4 id="_add_a_dive_to_the_trip_immediately_above">5.4.3. Add a dive to the trip immediately above</h4>
 <div class="paragraph"><p>Selected dives can be moved from the trip to which they belong and placed within
 the trip immediately above the currently active trip. Select and right-click
 the dives to bring up the context menu, then select <strong>Add dive(s) to trip
 immediately above</strong>.</p></div>
 </div>
-<div class="sect2">
-<h3 id="_shift_the_start_time_of_dive_s">6.4. Shift the start time of dive(s)</h3>
+<div class="sect3">
+<h4 id="_shift_the_start_time_of_dive_s">5.4.4. Shift the start time of dive(s)</h4>
 <div class="paragraph"><p>Sometimes it is necessary to adjust the start time of a dive. This may apply to
 situations where dives are performed in different time zones or when the dive
 computer has an erroneous time. Select and right-click the dive(s) to be
@@ -2062,8 +2176,8 @@ adjusted. This brings up the context menu. Select <strong>Shift times</strong>. 
 (in hours and minutes) by which the dives should be adjusted and click on the
 option indicating whether the time adjustment should be forwards or backwards.</p></div>
 </div>
-<div class="sect2">
-<h3 id="_merge_dives_into_a_single_dive">6.5. Merge dives into a single dive</h3>
+<div class="sect3">
+<h4 id="_merge_dives_into_a_single_dive">5.4.5. Merge dives into a single dive</h4>
 <div class="paragraph"><p>Sometimes a dive is briefly interrupted, e.g. if a diver returns to the surface
 for a few minutes, resulting in two or more dives being recorded by the dive
 computer and appearing as different dives in the <strong>Dive List</strong> panel. You can
@@ -2080,8 +2194,9 @@ below shows the depth profile two such dives that were merged:</p></div>
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="S_ExportLog">7. Exporting the dive log or parts of the dive log</h2>
+<h2 id="S_ExportLog">6. Exporting the dive log or parts of the dive log</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>A dive log can be saved in two formats:</p></div>
 <div class="ulist"><ul>
@@ -2109,7 +2224,7 @@ format, select <em>Save as</em> from the context menu. To save in UDDF format, s
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_PrintDivelog">8. Printing your dive log</h2>
+<h2 id="S_PrintDivelog">7. Printing your dive log</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> provides a simple interface to print your whole dive log or only a
 few selected dives, including dive profiles and other contextual information.</p></div>
@@ -2189,7 +2304,7 @@ dive.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Preferences">9. Setting your <strong>Preferences</strong> for <em>Subsurface</em></h2>
+<h2 id="S_Preferences">8. Setting your <strong>Preferences</strong> for <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>There are several settings within <em>Subsurface</em> that the user can specify. These
 are found when selecting <em>File&#8594;Preferences</em>. The settings are performed in
@@ -2198,7 +2313,7 @@ operate on the same principles: specify the settings you wish to change, then
 save these using the <strong>Apply</strong> button. After applying all the new settings you can
 leave the settings panel by selecting <strong>OK</strong>.</p></div>
 <div class="sect2">
-<h3 id="_defaults">9.1. Defaults</h3>
+<h3 id="_defaults">8.1. Defaults</h3>
 <div class="paragraph"><p>There are four settings in the <strong>Defaults</strong> panel:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2232,7 +2347,7 @@ the <strong>Equipment</strong> tab of the <strong>Dive Notes</strong> panel.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_units">9.2. Units</h3>
+<h3 id="_units">8.2. Units</h3>
 <div class="paragraph"><p>Here you can choose between metric and imperial measures of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
 at the top, you can specify that all units are in the chosen measurement system
@@ -2241,7 +2356,7 @@ a mixture with some measurements being metric while others are in imperial
 measures.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_graph">9.3. Graph</h3>
+<h3 id="_graph">8.3. Graph</h3>
 <div class="paragraph"><p>This panel allows two type of selections:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2355,7 +2470,7 @@ deepest depth of a dive. For more information see:
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_languages">9.4. Languages</h3>
+<h3 id="_languages">8.4. Languages</h3>
 <div class="paragraph"><p>A checkbox allows one to use the <em>System Default</em> language which in most cases
 will be the correct setting; with this <em>Subsurface</em> simply runs in the same
 language / country settings as the underlying OS. If this is for some reason
@@ -2365,13 +2480,13 @@ combination from the list of included localizations.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_description_of_the_subsurface_main_menu_items">10. Description of the Subsurface Main Menu items</h2>
+<h2 id="_description_of_the_subsurface_main_menu_items">9. Description of the Subsurface Main Menu items</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>This section describes the functions and operation of the items in the Main Menu
 of Subsurface. Several of the items below are links to sections of this manual
 dealing with the appropriate operations.</p></div>
 <div class="sect2">
-<h3 id="_file">10.1. File</h3>
+<h3 id="_file">9.1. File</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2425,7 +2540,7 @@ the selected dives in the logbook) in UDDF format.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_import">10.2. Import</h3>
+<h3 id="_import">9.2. Import</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2459,7 +2574,7 @@ from <em>www.Divelogs.de</em>.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_log">10.3. Log</h3>
+<h3 id="_log">9.3. Log</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2485,7 +2600,7 @@ trips.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_view">10.4. View</h3>
+<h3 id="_view">9.4. View</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2532,7 +2647,7 @@ year.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_filter">10.5. Filter</h3>
+<h3 id="_filter">9.5. Filter</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2542,7 +2657,7 @@ year.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_help">10.6. Help</h3>
+<h3 id="_help">9.6. Help</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2560,10 +2675,10 @@ well as licensing information.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">11. APPENDIX A: Operating system specific information for importing dive information from a dive computer.</h2>
+<h2 id="_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">10. APPENDIX A: Operating system specific information for importing dive information from a dive computer.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_make_sure_that_your_os_has_the_required_drivers_installed">11.1. Make sure that your OS has the required drivers installed</h3>
+<h3 id="_make_sure_that_your_os_has_the_required_drivers_installed">10.1. Make sure that your OS has the required drivers installed</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2605,7 +2720,7 @@ On a Mac you at times have to manually hunt for the correct
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">11.2. How to Find the Device Name for USB devices</h3>
+<h3 id="S_HowFindDeviceName">10.2. How to Find the Device Name for USB devices</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2675,7 +2790,7 @@ the import settings as <code>/dev/ttyUSB3</code>. Your dive computer interface i
 connected and you should be able to import your dives.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindBluetoothDeviceName">11.3. Setting up bluetooth enabled devices</h3>
+<h3 id="S_HowFindBluetoothDeviceName">10.3. Setting up bluetooth enabled devices</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2777,10 +2892,10 @@ as device name to use.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">12. APPENDIX B: Dive Computer specific information for importing dive information.</h2>
+<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">11. APPENDIX B: Dive Computer specific information for importing dive information.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_ImportUemis">12.1. Import from a Uemis Zurich</h3>
+<h3 id="S_ImportUemis">11.1. Import from a Uemis Zurich</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2818,7 +2933,7 @@ stored on the SDA, including information about dive spots and
 equipment. Buddy information is not yet downloaded.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">12.2. Importing dives from Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingDR5">11.2. Importing dives from Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2837,7 +2952,7 @@ will most likely differ from the one displayed on the DR5.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_import_from_shearwater_predator_using_bluetooth">12.3. Import from Shearwater Predator using bluetooth</h3>
+<h3 id="_import_from_shearwater_predator_using_bluetooth">11.3. Import from Shearwater Predator using bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2875,7 +2990,7 @@ switch off WiFi while using Bluetooth
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-23 09:39:23 PST
+Last updated 2014-01-03 03:13:57 PST
 </div>
 </div>
 </body>

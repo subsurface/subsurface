@@ -1,8 +1,8 @@
-			Subsurface 4.0
-			==============
+			Subsurface 4.0.1
+			================
 
 The Subsurface developer team is proud to announce the release of the
-next major version of Subsurface.
+next minor update of Subsurface.
 
 Subsurface is an open source divelog program that runs on Windows, Mac
 and Linux.
@@ -37,8 +37,26 @@ available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
-New in version 4.0 (compared to Subsurface 3.1):
+New in version 4.0.1 (compared to Subsurface 4.0):
 --------------------------------------------------
+
+- fixed several bugs handling non-ASCII text both in dive info text
+  fields as well as in Windows file names
+- added support for generating libdivecomputer log and dump files
+- many improvements for import and export of other file formats
+- XSLT files are built-in as resources, avoiding issues with not
+  finding them
+- support more GPS coordinate formats
+- fixed several bugs around editing of manually entered dives
+- fixed several bugs with entering data for weights and tanks
+- increase the number of tracked weight systems to 6
+- fixed font setting in preferences
+- improved look and feel when running dark themes
+- support older versions of Mac OS/X with default DMG (>= 10.5)
+- enable https in Windows binaries
+
+New in version 4.0 (compared to Subsurface 3.1):
+------------------------------------------------
 
 With version 4.0 the Subsurface team switched to a different UI
 toolkit. This caused the need to do a complete rewrite of a large
