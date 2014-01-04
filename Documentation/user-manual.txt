@@ -38,7 +38,7 @@ software and (if needed) its dependencies please consult the INSTALL file
 included with the source code.
 
 *Audience*: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
-Di vers
+Divers
 
 toc::[]
 
