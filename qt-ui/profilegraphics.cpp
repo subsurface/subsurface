@@ -1177,6 +1177,11 @@ void ProfileGraphicsView::plot_depth_profile()
 		pen.setColor(c);
 		item->setPen(pen);
 		scene()->addItem(item);
+
+		struct text_render_options tro = {DEPTH_TEXT_SIZE, MEAN_DEPTH, LEFT, TOP};
+		plot_text(&tro, QPointF(gc.leftx, gc.pi.meandepth), QString("%1").arg(QString::number(gc.pi.meandepth / 1000.0, 'f', 1)), item);
+		tro.hpos = RIGHT;
+		plot_text(&tro, QPointF(gc.pi.entry[gc.pi.nr - 1].sec, gc.pi.meandepth), QString("%1").arg(QString::number(gc.pi.meandepth / 1000.0, 'f', 1)), item);
 	}
 
 #if 0
