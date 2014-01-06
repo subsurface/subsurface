@@ -203,7 +203,7 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 	QModelIndex idx = match.first();
 	flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
 	flags |= QItemSelectionModel::Rows;
-	selectionModel()->select(idx, flags);
+	selectionModel()->setCurrentIndex(idx, flags);
 	if(idx.parent().isValid()){
 		setAnimated(false);
 		expand(idx.parent());
