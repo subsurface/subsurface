@@ -412,9 +412,10 @@ struct dive {
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity; // kg per 10000 l
-	struct tag_entry *tag_list;
 
+	struct tag_entry *tag_list;
 	struct divecomputer dc;
+	int id; // unique ID for this dive
 };
 
 static inline int dive_has_gps_location(struct dive *dive)
@@ -611,6 +612,21 @@ static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid
 	}
 	return NULL;
 }
+// this is very different from get_dive_by_diveid() (which is only used
+// by the UEMIS downloader) -- this uses the unique diveID to allow us
+// to hold an identifier for a dive across operations that might change
+// the dive_table
+static inline struct dive *getDiveById(int id)
+{
+	int i;
+	struct dive *dive = NULL;
+
+	for_each_dive(i, dive) {
+		if (dive->id == id)
+			break;
+	}
+	return dive;
+}
 extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
@@ -654,6 +670,7 @@ extern void finish_sample(struct divecomputer *dc);
 
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
+extern int getUniqID(struct dive *d);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern unsigned int dc_watertemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);

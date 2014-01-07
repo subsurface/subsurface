@@ -892,6 +892,7 @@ struct dive *fixup_dive(struct dive *dive)
 		weightsystem_t *ws = dive->weightsystem + i;
 		add_weightsystem_description(ws);
 	}
+	dive->id = getUniqID(dive);
 
 	return dive;
 }
