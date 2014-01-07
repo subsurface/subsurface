@@ -610,6 +610,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	const dc_event_progress_t *progress = data;
 	const dc_event_devinfo_t *devinfo = data;
 	const dc_event_clock_t *clock = data;
+	const dc_event_vendor_t *vendor = data;
 	device_data_t *devdata = userdata;
 	unsigned int serial;
 
@@ -627,6 +628,12 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			devinfo->model, devinfo->model,
 			devinfo->firmware, devinfo->firmware,
 			devinfo->serial, devinfo->serial);
+		if (devdata->libdc_logfile) {
+			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
+				devinfo->model, devinfo->model,
+				devinfo->firmware, devinfo->firmware,
+				devinfo->serial, devinfo->serial);
+		}
 		/*
 		 * libdivecomputer doesn't give serial numbers in the proper string form,
 		 * so we have to see if we can do some vendor-specific munging.
@@ -640,6 +647,18 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	case DC_EVENT_CLOCK:
 			dev_info(devdata, translate("gettextFromC","Event: systime=%"PRId64", devtime=%u\n"),
 			(uint64_t)clock->systime, clock->devtime);
+		if (devdata->libdc_logfile) {
+			fprintf(devdata->libdc_logfile, "Event: systime=%"PRId64", devtime=%u\n",
+				(uint64_t)clock->systime, clock->devtime);
+		}
+		break;
+	case DC_EVENT_VENDOR:
+		if (devdata->libdc_logfile) {
+			fprintf(devdata->libdc_logfile, "Event: vendor=");
+			for (unsigned int i = 0; i < vendor->size; ++i)
+				fprintf(devdata->libdc_logfile, "%02X", vendor->data[i]);
+			fprintf(devdata->libdc_logfile,"\n");
+		}
 		break;
 	default:
 		break;
@@ -662,7 +681,7 @@ static const char *do_device_import(device_data_t *data)
 	data->model = str_printf("%s %s", data->vendor, data->product);
 
 	// Register the event handler.
-	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK;
+	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR;
 	rc = dc_device_set_events(device, events, event_cb, data);
 	if (rc != DC_STATUS_SUCCESS)
 		return translate("gettextFromC","Error registering the event handler.");
@@ -723,6 +742,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 
 	if (data->libdc_log && logfile_name)
 		fp = subsurface_fopen(logfile_name, "w");
+
+	data->libdc_logfile = fp;
 
 	rc = dc_context_new(&data->context);
 	if (rc != DC_STATUS_SUCCESS)
