@@ -114,6 +114,8 @@ static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
 int subsurface_open(const char *path, int oflags, mode_t mode)
 {
 	int ret = -1;
+	if (!path)
+		return -1;
 	wchar_t *wpath = utf8_to_utf16(path);
 	if (wpath) {
 		ret = _wopen(wpath, oflags, mode);
@@ -126,6 +128,8 @@ int subsurface_open(const char *path, int oflags, mode_t mode)
 FILE *subsurface_fopen(const char *path, const char *mode)
 {
 	FILE *ret = NULL;
+	if (!path)
+		return ret;
 	wchar_t *wpath = utf8_to_utf16(path);
 	if (wpath) {
 		const int len = strlen(mode);
@@ -144,6 +148,8 @@ FILE *subsurface_fopen(const char *path, const char *mode)
 void *subsurface_opendir(const char *path)
 {
 	_WDIR *ret = NULL;
+	if (!path)
+		return ret;
 	wchar_t *wpath = utf8_to_utf16(path);
 	if (wpath) {
 		ret = _wopendir(wpath);
