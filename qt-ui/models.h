@@ -101,7 +101,7 @@ public slots:
 	void remove(const QModelIndex& index);
 
 private:
-	struct dive *current;
+	int currentId;
 	int rows;
 };
 
@@ -130,7 +130,7 @@ public slots:
 	void remove(const QModelIndex& index);
 
 private:
-	struct dive *current;
+	int currentId;
 	int rows;
 };
 
@@ -157,7 +157,7 @@ struct DiveItem : public TreeItem {
 		SUIT, CYLINDER, NITROX, SAC, OTU, MAXCNS, LOCATION, COLUMNS };
 
 	virtual QVariant data(int column, int role) const;
-	struct dive* dive;
+	int diveId;
 	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	QString displayDate() const;
@@ -291,7 +291,7 @@ class ProfilePrintModel : public QAbstractTableModel
 	Q_OBJECT
 
 private:
-	struct dive *dive;
+	int diveId;
 	QString truncateString(char *str, const int maxlen) const;
 
 public:

@@ -62,7 +62,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 	headers = newHeaders;
 }
 
-CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
+CylindersModel::CylindersModel(QObject* parent): currentId(0), rows(0)
 {
 	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%") << tr("Switch at"));
@@ -90,6 +90,8 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
 
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	switch (role) {
 	case Qt::FontRole: {
@@ -157,6 +159,8 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 
 cylinder_t* CylindersModel::cylinderAt(const QModelIndex& index)
 {
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	return &current->cylinder[index.row()];
 }
 
@@ -314,6 +318,8 @@ void CylindersModel::add()
 	}
 
 	int row = rows;
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	fill_default_cylinder(&current->cylinder[row]);
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
@@ -323,6 +329,8 @@ void CylindersModel::add()
 
 void CylindersModel::update()
 {
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	setDive(current);
 }
 
@@ -336,6 +344,7 @@ void CylindersModel::clear()
 
 void CylindersModel::setDive(dive* d)
 {
+	struct dive *current = getDiveById(currentId);
 	if (current)
 		clear();
 	if (!d)
@@ -346,7 +355,7 @@ void CylindersModel::setDive(dive* d)
 			rows = i+1;
 		}
 	}
-	current = d;
+	currentId = d->id;
 	changed = false;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows-1);
@@ -366,6 +375,8 @@ void CylindersModel::remove(const QModelIndex& index)
 	if (index.column() != REMOVE) {
 		return;
 	}
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	if (DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) {
 		QMessageBox::warning(mainWindow(), TITLE_OR_TEXT(
@@ -381,7 +392,7 @@ void CylindersModel::remove(const QModelIndex& index)
 	endRemoveRows();
 }
 
-WeightModel::WeightModel(QObject* parent): current(0), rows(0)
+WeightModel::WeightModel(QObject* parent): currentId(0), rows(0)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
@@ -389,6 +400,8 @@ WeightModel::WeightModel(QObject* parent): current(0), rows(0)
 
 weightsystem_t* WeightModel::weightSystemAt(const QModelIndex& index)
 {
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	return &current->weightsystem[index.row()];
 }
 
@@ -397,6 +410,8 @@ void WeightModel::remove(const QModelIndex& index)
 	if (index.column() != REMOVE) {
 		return;
 	}
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
 	remove_weightsystem(current, index.row());
@@ -418,6 +433,8 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
 		return ret;
 
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	weightsystem_t *ws = &current->weightsystem[index.row()];
 
 	switch (role) {
@@ -455,6 +472,8 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 // so we only implement the two columns we care about
 void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
 {
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	weightsystem_t *ws = &current->weightsystem[index.row()];
 	if (index.column() == WEIGHT) {
 		if (ws->weight.grams != value.toInt()) {
@@ -488,6 +507,8 @@ lbs:
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	QString vString = value.toString();
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	weightsystem_t *ws = &current->weightsystem[index.row()];
 	switch(index.column()) {
 	case TYPE:
@@ -549,11 +570,14 @@ void WeightModel::add()
 
 void WeightModel::update()
 {
+	struct dive *current = getDiveById(currentId);
+	Q_ASSERT(current != NULL);
 	setDive(current);
 }
 
 void WeightModel::setDive(dive* d)
 {
+	struct dive *current = getDiveById(currentId);
 	if (current)
 		clear();
 	rows = 0;
@@ -562,7 +586,7 @@ void WeightModel::setDive(dive* d)
 			rows = i+1;
 		}
 	}
-	current = d;
+	currentId = d->id;
 	changed = false;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows-1);
@@ -960,6 +984,8 @@ static int nitrox_sort_value(struct dive *dive)
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
@@ -1048,21 +1074,26 @@ bool DiveItem::setData(const QModelIndex& index, const QVariant& value, int role
 		if (d->number == v)
 			return false;
 	}
-
-	dive->number = value.toInt();
+	d = getDiveById(diveId);
+	Q_ASSERT(d != NULL);
+	d->number = value.toInt();
 	mark_divelist_changed(TRUE);
 	return true;
 }
 
 QString DiveItem::displayDate() const
 {
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	return get_dive_date_string(dive->when);
 }
 
 QString DiveItem::displayDepth() const
 {
-	const int scale = 1000;
 	QString fract, str;
+	const int scale = 1000;
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	if (get_units()->length == units::METERS) {
 		fract = QString::number((unsigned)(dive->maxdepth.mm % scale) / 100);
 		str = QString("%1.%2").arg((unsigned)(dive->maxdepth.mm / scale)).arg(fract, 1, QChar('0'));
@@ -1076,6 +1107,8 @@ QString DiveItem::displayDepth() const
 QString DiveItem::displayDuration() const
 {
 	int hrs, mins, secs;
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	secs = dive->duration.seconds % 60;
 	mins = dive->duration.seconds / 60;
 	hrs = mins / 60;
@@ -1093,6 +1126,8 @@ QString DiveItem::displayDuration() const
 QString DiveItem::displayTemperature() const
 {
 	QString str;
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	if (!dive->watertemp.mkelvin)
 		return str;
 	if (get_units()->temperature == units::CELSIUS)
@@ -1105,6 +1140,8 @@ QString DiveItem::displayTemperature() const
 QString DiveItem::displaySac() const
 {
 	QString str;
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	if (get_units()->volume == units::LITER)
 		str = QString::number(dive->sac / 1000.0, 'f', 1).append(tr(" l/min"));
 	else
@@ -1120,6 +1157,8 @@ QString DiveItem::displayWeight() const
 
 int DiveItem::weight() const
 {
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != 0);
 	weight_t tw = { total_weight(dive) };
 	return tw.grams;
 }
@@ -1187,7 +1226,7 @@ void DiveTripModel::setupModelData()
 		dive_trip_t* trip = dive->divetrip;
 
 		DiveItem* diveItem = new DiveItem();
-		diveItem->dive = dive;
+		diveItem->diveId = dive->id;
 
 		if (!trip || currentLayout == LIST) {
 			diveItem->parent = rootItem;
@@ -1594,7 +1633,7 @@ ProfilePrintModel::ProfilePrintModel(QObject *parent)
 
 void ProfilePrintModel::setDive(struct dive *divePtr)
 {
-	dive = divePtr;
+	diveId = divePtr->id;
 	// reset();
 }
 
@@ -1615,8 +1654,10 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 
 	switch (role) {
 	case Qt::DisplayRole: {
+		struct dive *dive = getDiveById(diveId);
+		Q_ASSERT(dive != NULL);
 		struct DiveItem di;
-		di.dive = dive;
+		di.diveId = diveId;
 
 		const QString unknown = tr("unknown");
 

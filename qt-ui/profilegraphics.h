@@ -190,7 +190,7 @@ private:
 	QBrush defaultBrush;
 	ToolTipItem *toolTip;
 	graphics_context gc;
-	struct dive *dive;
+	int diveId;
 	struct divecomputer *diveDC;
 	int zoomLevel;
 

@@ -391,7 +391,7 @@ void PrintLayout::printTable()
 void PrintLayout::addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const
 {
 	struct DiveItem di;
-	di.dive = dive;
+	di.diveId = dive->id;
 	model->insertRow();
 	model->setData(model->index(row, 0), QString::number(dive->number), Qt::DisplayRole);
 	model->setData(model->index(row, 1), di.displayDate(), Qt::DisplayRole);

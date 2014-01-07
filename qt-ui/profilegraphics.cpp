@@ -52,7 +52,7 @@ extern int evn_used;
 QPoint(viewport()->geometry().width() - toolBarProxy->boundingRect().width(), \
 viewport()->geometry().height() - toolBarProxy->boundingRect().height() )
 
-ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , dive(0), diveDC(0), rulerItem(0), toolBarProxy(0)
+ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent), toolTip(0) , diveId(0), diveDC(0), rulerItem(0), toolBarProxy(0)
 {
 	printMode = false;
 	isGrayscale = false;
@@ -313,8 +313,8 @@ void ProfileGraphicsView::showEvent(QShowEvent* event)
 	// but the dive was not ploted.
 	// force a replot by modifying the dive
 	// hold by the view, and issuing a plot.
-	if (dive && !scene()->items().count()) {
-		dive = 0;
+	if (diveId && !scene()->items().count()) {
+		diveId = 0;
 		plot(get_dive(selected_dive));
 	}
 	if (toolBarProxy)
@@ -369,14 +369,14 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	if (d)
 		dc = select_dc(&d->dc);
 
-	if (!forceRedraw && dive == d && (d && dc == diveDC))
+	if (!forceRedraw && getDiveById(diveId) == d && (d && dc == diveDC))
 		return;
 
 	clear();
-	dive = d;
+	diveId = d ? d->id : 0;
 	diveDC = d ? dc : NULL;
 
-	if (!isVisible() || !dive || !mainWindow()) {
+	if (!isVisible() || !d || !mainWindow()) {
 		return;
 	}
 	setBackgroundBrush(getColor(BACKGROUND));
@@ -415,14 +415,14 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	 * Set up limits that are independent of
 	 * the dive computer
 	 */
-	calculate_max_limits(dive, dc, &gc);
+	calculate_max_limits(d, dc, &gc);
 
 	QRectF profile_grid_area = scene()->sceneRect();
 	gc.maxx = (profile_grid_area.width() - 2 * profile_grid_area.x());
 	gc.maxy = (profile_grid_area.height() - 2 * profile_grid_area.y());
 
 	/* This is per-dive-computer */
-	gc.pi = *create_plot_info(dive, dc, &gc, printMode);
+	gc.pi = *create_plot_info(d, dc, &gc, printMode);
 
 	/* Bounding box */
 	QPen pen = defaultPen;
@@ -483,7 +483,7 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 
 	if(mode == PLAN){
 		timeEditor = new GraphicsTextEditor();
-		timeEditor->setPlainText( dive->duration.seconds ? QString::number(dive->duration.seconds/60) : tr("Set Duration: 10 minutes"));
+		timeEditor->setPlainText(d->duration.seconds ? QString::number(d->duration.seconds/60) : tr("Set Duration: 10 minutes"));
 		timeEditor->setPos(profile_grid_area.width() - timeEditor->boundingRect().width(), timeMarkers->y());
 		timeEditor->document();
 		connect(timeEditor, SIGNAL(editingFinished(QString)), this, SLOT(edit_dive_time(QString)));
@@ -720,6 +720,8 @@ void ProfileGraphicsView::plot_cylinder_pressure_text()
 	int last_time[MAX_CYLINDERS] = { 0, };
 	struct plot_data *entry;
 	struct plot_info *pi = &gc.pi;
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 
 	if (!get_cylinder_pressure_range(&gc))
 		return;
@@ -888,6 +890,8 @@ void ProfileGraphicsView::plot_cylinder_pressure()
 	if (!get_cylinder_pressure_range(&gc))
 		return;
 
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	QPointF from, to;
 	for (i = 0; i < gc.pi.nr; i++) {
 		int mbar;
@@ -1006,7 +1010,8 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 
 	int x = SCALEXGC(ev->time.seconds);
 	int y = SCALEYGC(entry->depth);
-
+	struct dive *dive = getDiveById(diveId);
+	Q_ASSERT(dive != NULL);
 	EventItem *item = new EventItem(ev, 0, isGrayscale);
 	item->setPos(x, y);
 	scene()->addItem(item);
