@@ -676,7 +676,7 @@ static const char *do_device_import(device_data_t *data)
 		dc_buffer_t *buffer = dc_buffer_new (0);
 
 		rc = dc_device_dump (device, buffer);
-		if (rc == DC_STATUS_SUCCESS) {
+		if (rc == DC_STATUS_SUCCESS && dumpfile_name) {
 			FILE* fp = subsurface_fopen(dumpfile_name, "wb");
 			if (fp != NULL) {
 				fwrite (dc_buffer_get_data (buffer), 1, dc_buffer_get_size (buffer), fp);
@@ -721,7 +721,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	data->device = NULL;
 	data->context = NULL;
 
-	if (data->libdc_log)
+	if (data->libdc_log && logfile_name)
 		fp = subsurface_fopen(logfile_name, "w");
 
 	rc = dc_context_new(&data->context);
