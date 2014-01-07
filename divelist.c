@@ -792,6 +792,7 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 {
 	struct dive *res;
 	int i,j;
+	int id = a->id;
 
 	if (!a || !b)
 		return NULL;
@@ -804,6 +805,10 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	add_single_dive(i, res);
 	delete_single_dive(i+1);
 	delete_single_dive(j);
+	// now make sure that we keep the id of the first dive.
+	// why?
+	// because this way one of the previously selected ids is still around
+	res->id = id;
 	mark_divelist_changed(TRUE);
 	return res;
 }
@@ -956,6 +961,7 @@ void process_dives(bool is_imported, bool prefer_imported)
 		struct dive *prev = pp[0];
 		struct dive *dive = pp[1];
 		struct dive *merged;
+		int id;
 
 		/* only try to merge overlapping dives - or if one of the dives has
 		 * zero duration (that might be a gps marker from the webservice) */
@@ -967,6 +973,9 @@ void process_dives(bool is_imported, bool prefer_imported)
 		if (!merged)
 			continue;
 
+		// remember the earlier dive's id
+		id = prev->id;
+
 		/* careful - we might free the dive that last points to. Oops... */
 		if (last == prev || last == dive)
 			last = merged;
@@ -976,6 +985,8 @@ void process_dives(bool is_imported, bool prefer_imported)
 		add_single_dive(i, merged);
 		delete_single_dive(i+1);
 		delete_single_dive(i+1);
+		// keep the id or the first dive for the merged dive
+		merged->id = id;
 	}
 	/* make sure no dives are still marked as downloaded */
 	for (i = 1; i < dive_table.nr; i++)
