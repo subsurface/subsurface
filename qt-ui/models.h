@@ -101,7 +101,7 @@ public slots:
 	void remove(const QModelIndex& index);
 
 private:
-	int currentId;
+	struct dive *current;
 	int rows;
 };
 
@@ -130,7 +130,7 @@ public slots:
 	void remove(const QModelIndex& index);
 
 private:
-	int currentId;
+	struct dive *current;
 	int rows;
 };
 
