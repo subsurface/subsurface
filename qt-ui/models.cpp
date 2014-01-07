@@ -985,7 +985,6 @@ QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
 	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != NULL);
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
@@ -1001,6 +1000,7 @@ QVariant DiveItem::data(int column, int role) const
 		}
 		break;
 		case DiveTripModel::SORT_ROLE:
+		Q_ASSERT(dive != NULL);
 		switch (column) {
 		case NR:		retVal = (qulonglong) dive->when; break;
 		case DATE:		retVal = (qulonglong) dive->when; break;
@@ -1019,6 +1019,7 @@ QVariant DiveItem::data(int column, int role) const
 		}
 		break;
 	case Qt::DisplayRole:
+		Q_ASSERT(dive != NULL);
 		switch (column) {
 		case NR:		retVal = dive->number; break;
 		case DATE:		retVal = displayDate(); break;
@@ -1037,13 +1038,15 @@ QVariant DiveItem::data(int column, int role) const
 		break;
 	}
 
-	if (role == DiveTripModel::STAR_ROLE)
+	if (role == DiveTripModel::STAR_ROLE) {
+		Q_ASSERT(dive != NULL);
 		retVal = dive->rating;
-
-	if (role == DiveTripModel::DIVE_ROLE)
+	}
+	if (role == DiveTripModel::DIVE_ROLE) {
 		retVal = QVariant::fromValue<void*>(dive);
-
+	}
 	if(role == DiveTripModel::DIVE_IDX){
+		Q_ASSERT(dive != NULL);
 		retVal = get_divenr(dive);
 	}
 	return retVal;
