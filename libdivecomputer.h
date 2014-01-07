@@ -26,6 +26,7 @@ typedef struct device_data_t {
 	bool force_download;
 	bool libdc_log;
 	bool libdc_dump;
+	FILE *libdc_logfile;
 } device_data_t;
 
 const char *do_libdivecomputer_import(device_data_t *data);
