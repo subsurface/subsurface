@@ -11,12 +11,13 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 		{NULL,}
 };
 
-DiveLogImportDialog::DiveLogImportDialog(QWidget *parent) :
+DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 	QDialog(parent),
 	selector(true),
 	ui(new Ui::DiveLogImportDialog)
 {
 	ui->setupUi(this);
+	fileNames = *fn;
 
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
@@ -24,7 +25,6 @@ DiveLogImportDialog::DiveLogImportDialog(QWidget *parent) :
 	ui->CSVSeparator->addItem("Tab");
 	ui->CSVSeparator->addItem(",");
 	ui->knownImports->setCurrentIndex(1);
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
 	connect(ui->CSVTime, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
@@ -48,30 +48,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	char *error = NULL;
 
-	if (ui->tabWidget->currentIndex() == 0) {
-		QStringList fileNames = ui->DiveLogFile->text().split(";");
-
-		/*
-	if (ui->ImportAdvanced->isChecked()) {
-		for (int i = 0; i < fileNames.size(); ++i) {
-			parse_xml_file_units(fileNames.at(i).toUtf8().data(),
-					     ui->XMLImportFormat->currentIndex(), ui->XMLImportUnits->currentIndex(),
-					     &error);
-		}
-		if (error != NULL) {
-
-			mainWindow()->showError(error);
-			free(error);
-			error = NULL;
-		}
-	} else {
-	*/
-		mainWindow()->importFiles(fileNames);
-		return;
-		//}
-
-	} else {
-		parse_csv_file(ui->CSVFile->text().toUtf8().data(), ui->CSVTime->value() - 1,
+	for (int i = 0; i < fileNames.size(); ++i) {
+		parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
 				ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
 				VALUE_IF_CHECKED(CSVpo2),
 				VALUE_IF_CHECKED(CSVcns),
@@ -87,13 +65,6 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	process_dives(TRUE, FALSE);
 
 	mainWindow()->refreshDisplay();
-}
-
-void DiveLogImportDialog::on_CSVFileSelector_clicked()
-{
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV Log File"), ".", tr("CSV Files (*.csv);;All Files(*)"));
-	ui->CSVFile->setText(filename);
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!filename.isEmpty());
 }
 
 #define SET_VALUE_AND_CHECKBOX(CSV, BOX, VAL) ({\
@@ -133,27 +104,4 @@ void DiveLogImportDialog::unknownImports(int arg1)
 void DiveLogImportDialog::unknownImports()
 {
 	ui->knownImports->setCurrentIndex(0);
-}
-
-void DiveLogImportDialog::on_CSVFile_textEdited()
-{
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!ui->CSVFile->text().isEmpty());
-}
-
-void DiveLogImportDialog::on_DiveLogFileSelector_clicked()
-{
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Dive Log File"), ".", tr("XML Files (*.xml);;UDDF/UDCF Files(*.uddf *.udcf);;All Files(*)"));
-	ui->DiveLogFile->setText(fileNames.join(";"));
-	if (fileNames.size())
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-	else
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-}
-
-void DiveLogImportDialog::on_DiveLogFile_editingFinished()
-{
-	if (ui->DiveLogFile->text().size())
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-	else
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }

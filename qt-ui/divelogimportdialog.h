@@ -15,24 +15,20 @@ class DiveLogImportDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit DiveLogImportDialog(QWidget *parent = 0);
+	explicit DiveLogImportDialog(QStringList *fn, QWidget *parent = 0);
 	~DiveLogImportDialog();
 
 private slots:
 	void on_buttonBox_accepted();
-	void on_CSVFileSelector_clicked();
 	void on_knownImports_currentIndexChanged(int index);
-	void on_CSVFile_textEdited();
 	void unknownImports(int);
 	void unknownImports(bool);
-
-	void on_DiveLogFileSelector_clicked();
-	void on_DiveLogFile_editingFinished();
 
 private:
 	void unknownImports();
 
 	bool selector;
+	QStringList fileNames;
 	Ui::DiveLogImportDialog *ui;
 
 	struct CSVAppConfig {

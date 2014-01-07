@@ -857,10 +857,24 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 void MainWindow::on_actionImportDiveLog_triggered()
 {
-	DiveLogImportDialog *diveLogImport = new DiveLogImportDialog();
-	diveLogImport->show();
-	process_dives(TRUE, FALSE);
-	refreshDisplay();
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Dive Log File"), lastUsedDir(), tr("Dive Log Files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML Files (*.xml);;UDDF/UDCF Files(*.uddf *.udcf);;JDiveLog Files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)"));
+
+	if (fileNames.isEmpty())
+		return;
+	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
+
+	QStringList logFiles = fileNames.filter( QRegExp("^.*\\.(?!csv)", Qt::CaseInsensitive) ) ;
+	QStringList csvFiles = fileNames.filter(".csv", Qt::CaseInsensitive);
+	if (logFiles.size()) {
+		importFiles(logFiles);
+	}
+
+	if (csvFiles.size()) {
+		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(&csvFiles);
+		diveLogImport->show();
+		process_dives(TRUE, FALSE);
+		refreshDisplay();
+	}
 }
 
 void MainWindow::editCurrentDive()
