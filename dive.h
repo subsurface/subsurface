@@ -799,6 +799,9 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 }
 #endif
 
+extern weight_t string_to_weight(const char *str);
+extern depth_t string_to_depth(const char *str);
+
 #include "pref.h"
 
 #endif /* DIVE_H */
