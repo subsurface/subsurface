@@ -117,7 +117,7 @@ endif
 # about it if it doesn't.
 LIBUSB = $(shell $(PKGCONFIG) --libs libusb-1.0 2> /dev/null)
 
-LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-2.0 glib-2.0)
+LIBGTK = $(shell $(PKGCONFIG) --libs gtk+-3.0 glib-2.0)
 LIBDIVECOMPUTERCFLAGS = $(LIBDIVECOMPUTERINCLUDES)
 LIBDIVECOMPUTER = $(LIBDIVECOMPUTERARCHIVE) $(LIBUSB)
 
@@ -125,10 +125,10 @@ LIBXML2 = $(shell $(XML2CONFIG) --libs)
 LIBXSLT = $(shell $(XSLCONFIG) --libs)
 XML2CFLAGS = $(shell $(XML2CONFIG) --cflags)
 GLIB2CFLAGS = $(shell $(PKGCONFIG) --cflags glib-2.0)
-GTKCFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-2.0)
+GTKCFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-3.0)
 CFLAGS += $(shell $(XSLCONFIG) --cflags)
-OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap 2> /dev/null)
-LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap 2> /dev/null)
+OSMGPSMAPFLAGS += $(shell $(PKGCONFIG) --cflags osmgpsmap-1.0 2> /dev/null)
+LIBOSMGPSMAP += $(shell $(PKGCONFIG) --libs osmgpsmap-1.0 2> /dev/null)
 ifneq ($(strip $(LIBOSMGPSMAP)),)
 	GPSOBJ = gps.o
 	CFLAGS += -DHAVE_OSM_GPS_MAP

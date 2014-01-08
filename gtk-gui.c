@@ -1289,7 +1289,7 @@ static void about_dialog(GtkWidget *w, gpointer data)
 #else
 	g_signal_connect(GTK_ABOUT_DIALOG(dialog), "activate-link", G_CALLBACK(about_dialog_link_cb), NULL);
 #endif
-	g_object_set(GTK_OBJECT(dialog),
+	g_object_set(G_OBJECT(dialog),
 		"title", _("About Subsurface"),
 		"program-name", "Subsurface",
 		"comments", _("Multi-platform divelog software in C"),
