@@ -428,8 +428,8 @@ struct pr_interpolate_struct {
 #ifdef DEBUG_PR_INTERPOLATE
 static void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 {
-    printf("Interpolate for entry %d: start %d - end %d - pt %d - acc_pt %d\n", i,
-	    interpolate_pr.start, interpolate_pr.end, interpolate_pr.pressure_time, interpolate_pr.acc_pressure_time);
+	printf("Interpolate for entry %d: start %d - end %d - pt %d - acc_pt %d\n", i,
+	       interpolate_pr.start, interpolate_pr.end, interpolate_pr.pressure_time, interpolate_pr.acc_pressure_time);
 }
 #endif
 
@@ -620,12 +620,15 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 #ifdef DEBUG_PR_INTERPOLATE
 		dump_pr_interpolate(i, interpolate);
 #endif
-		/* Overall pressure change over total pressure-time for this segment*/
-		magic = (interpolate.end - interpolate.start) / (double) interpolate.pressure_time;
+		/* if this segment had pressure time, set the interpolated pressure */
+		if (interpolate.pressure_time) {
+			/* Overall pressure change over total pressure-time for this segment*/
+			magic = (interpolate.end - interpolate.start) / (double) interpolate.pressure_time;
 
-		/* Use that overall pressure change to update the current pressure */
-		cur_pr[cyl] = interpolate.start + magic * interpolate.acc_pressure_time + 0.5;
-		INTERPOLATED_PRESSURE(entry) = cur_pr[cyl];
+			/* Use that overall pressure change to update the current pressure */
+			cur_pr[cyl] = interpolate.start + magic * interpolate.acc_pressure_time + 0.5;
+			INTERPOLATED_PRESSURE(entry) = cur_pr[cyl];
+		}
 	}
 }
 
