@@ -620,15 +620,15 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 #ifdef DEBUG_PR_INTERPOLATE
 		dump_pr_interpolate(i, interpolate);
 #endif
-		/* if this segment had pressure time, set the interpolated pressure */
+		/* if this segment has pressure time, calculate a new interpolated pressure */
 		if (interpolate.pressure_time) {
 			/* Overall pressure change over total pressure-time for this segment*/
 			magic = (interpolate.end - interpolate.start) / (double) interpolate.pressure_time;
 
 			/* Use that overall pressure change to update the current pressure */
 			cur_pr[cyl] = interpolate.start + magic * interpolate.acc_pressure_time + 0.5;
-			INTERPOLATED_PRESSURE(entry) = cur_pr[cyl];
 		}
+		INTERPOLATED_PRESSURE(entry) = cur_pr[cyl];
 	}
 }
 
