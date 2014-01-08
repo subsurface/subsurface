@@ -789,7 +789,7 @@ extern void remove_weightsystem(struct dive *dive, int idx);
 #define STRTOD_NO_DOT		0x02
 #define STRTOD_NO_COMMA		0x04
 #define STRTOD_NO_EXPONENT	0x08
-extern double strtod_flags(char *str, char **ptr, unsigned int flags);
+extern double strtod_flags(const char *str, const char **ptr, unsigned int flags);
 
 #define STRTOD_ASCII (STRTOD_NO_COMMA)
 

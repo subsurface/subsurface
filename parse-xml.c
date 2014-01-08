@@ -263,7 +263,7 @@ enum number_type {
 	FLOAT
 };
 
-static enum number_type parse_float(char *buffer, double *res, char **endp)
+static enum number_type parse_float(const char *buffer, double *res, const char **endp)
 {
 	double val;
 	static bool first_time = TRUE;
@@ -281,9 +281,8 @@ static enum number_type parse_float(char *buffer, double *res, char **endp)
 				fprintf(stderr, "Floating point value with decimal comma (%s)?\n", buffer);
 				first_time = FALSE;
 			}
-			/* Try again */
-			**endp = '.';
-			val = ascii_strtod(buffer, endp);
+			/* Try again in permissive mode*/
+			val = strtod_flags(buffer, endp, 0);
 		}
 	}
 
@@ -297,7 +296,7 @@ union int_or_float {
 
 static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 {
-	char *end;
+	const char *end;
 	return parse_float(buffer, &res->fp, &end);
 }
 
@@ -459,7 +458,7 @@ static void percent(char *buffer, void *_fraction)
 {
 	fraction_t *fraction = _fraction;
 	double val;
-	char *end;
+	const char *end;
 
 	switch (parse_float(buffer, &val, &end)) {
 	case FLOAT:
