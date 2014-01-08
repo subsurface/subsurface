@@ -1,0 +1,15 @@
+<dives>
+  <program name='subsurface' version='1'></program>
+  <dive number='0' date='2011-01-01' time='08:00:00' duration='20:00 min'>
+    <depth max='30.00 m' />
+  </dive>
+  <dive number='0' date='2011-01-01' time='08:25:00' duration='8:00 min'>
+    <depth max='11.00 m' />
+  </dive>
+  <dive number='0' date='2011-01-01' time='08:35:00' duration='10:00 min'>
+    <depth max='8.00 m' />
+  </dive>
+  <dive number='0' date='2011-01-01' time='08:50:00' duration='3:00 min'>
+    <depth max='20.00 m' />
+  </dive>
+</dives>
