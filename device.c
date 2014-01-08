@@ -12,10 +12,10 @@
  * To do that, we generate a 6-point profile:
  *
  *  (0, 0)
- *  (t0, max_d)
  *  (t1, max_d)
- *  (t2, d)
+ *  (t2, max_d)
  *  (t3, d)
+ *  (t4, d)
  *  (max_t, 0)
  *
  * with the same ascent/descent rates between the
@@ -80,6 +80,28 @@ static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, doubl
 	return 1;
 }
 
+/* we have no average depth; instead of making up a random average depth
+ * we should assume either a PADI recrangular profile (for short and/or
+ * shallow dives) or more reasonably a six point profile with a 3 minute
+ * safety stop at 5m */
+static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double slope)
+{
+	// shallow or short dives are just trapecoids based on the given slope
+	if (max_d < 10000 || max_t < 600) {
+		s[1].time.seconds = max_d / slope; s[1].depth.mm = max_d;
+		s[2].time.seconds = max_t - max_d / slope; s[2].depth.mm = max_d;
+	} else {
+		s[1].time.seconds = max_d / slope;
+		s[1].depth.mm = max_d;
+		s[2].time.seconds = max_t - max_d / slope - 180;
+		s[2].depth.mm = max_d;
+		s[3].time.seconds = max_t - 5000 / slope - 180;
+		s[3].depth.mm = 5000;
+		s[4].time.seconds = max_t - 5000 / slope;
+		s[4].depth.mm = 5000;
+	}
+}
+
 struct divecomputer* fake_dc(struct divecomputer* dc)
 {
 	static struct sample fake[6];
@@ -105,7 +127,17 @@ struct divecomputer* fake_dc(struct divecomputer* dc)
 	 * a reasonable average, let's just make something
 	 * up. Note that 'avg_d == max_d' is _not_ a reasonable
 	 * average.
-	 */
+	 * We explicitly treat avg_d == 0 differently */
+	if (avg_d == 0) {
+		/* we try for a sane slope, but bow to the insanity of
+		 * the user supplied data */
+		fill_samples_no_avg(fake, max_d, max_t, MAX(2.0 * max_d / max_t, 5000.0 / 60));
+		if(fake[3].time.seconds == 0) { // just a 4 point profile
+			fakedc.samples = 4;
+			fake[3].time.seconds = max_t;
+		}
+		return &fakedc;
+	}
 	if (avg_d < max_d / 10 || avg_d >= max_d) {
 		avg_d = (max_d+10000)/3;
 		if (avg_d > max_d)
