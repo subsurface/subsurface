@@ -287,14 +287,8 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case DEPTH:
-		if (CHANGED(toDouble, "ft", "m")) {
-			if (vString.toInt() != 0) {
-				if (prefs.units.length == prefs.units.FEET)
-					cyl->depth.mm = feet_to_mm(vString.toInt());
-				else
-					cyl->depth.mm = vString.toInt() * 1000;
-			}
-		}
+		if (CHANGED(data, "", ""))
+			cyl->depth = string_to_depth(vString.toUtf8().data());
 	}
 	dataChanged(index, index);
 	if (addDiveMode)
@@ -486,6 +480,29 @@ kg:
 lbs:
 	weight.grams = lbs_to_grams(value);
 	return weight;
+}
+
+depth_t string_to_depth(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_ft = WeightModel::tr("ft");
+	QString local_m = WeightModel::tr("m");
+	depth_t depth;
+
+	if (rest.startsWith("m") || rest.startsWith(local_m))
+		goto m;
+	if (rest.startsWith("ft") || rest.startsWith(local_ft))
+		goto ft;
+	if (prefs.units.length == prefs.units.FEET)
+		goto ft;
+m:
+	depth.mm = rint(value * 1000);
+	return depth;
+ft:
+	depth.mm = feet_to_mm(value);
+	return depth;
 }
 
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
