@@ -464,9 +464,9 @@ void WeightModel::passInData(const QModelIndex& index, const QVariant& value)
 	}
 }
 
-weight_t string_to_weight(char *str)
+weight_t string_to_weight(const char *str)
 {
-	char *end;
+	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
 	QString local_kg = WeightModel::tr("kg");

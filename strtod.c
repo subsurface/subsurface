@@ -29,9 +29,10 @@
 #include <ctype.h>
 #include "dive.h"
 
-double strtod_flags(char *str, char **ptr, unsigned int flags)
+double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 {
-	char *p = str, c, *ep;
+	char c;
+	const char *p = str, *ep;
 	double val = 0.0;
 	double decimal = 1.0;
 	int sign = 0, esign = 0;
