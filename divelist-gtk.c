@@ -373,7 +373,9 @@ static void nr_data_func(GtkTreeViewColumn *col,
 	} else {
 		/* make dives that are not in trips stand out */
 		dive = get_dive(idx);
-		if (!DIVE_IN_TRIP(dive))
+		if (dive == NULL)
+			*buffer = '\0';
+		else if (!DIVE_IN_TRIP(dive))
 			snprintf(buffer, sizeof(buffer), "<b>%d</b>", nr);
 		else
 			snprintf(buffer, sizeof(buffer), "%d", nr);
