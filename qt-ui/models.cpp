@@ -182,9 +182,9 @@ void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 	}
 }
 
-#define CHANGED(_t,_u1,_u2) \
-	(vString = value.toString().remove(_u1).remove(_u2))._t() !=  \
-	data(index, role).toString().remove(_u1).remove(_u2)._t()
+/* Has the string value changed */
+#define CHANGED() \
+	(vString = value.toString()) != data(index, role).toString()
 
 bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
@@ -206,7 +206,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case SIZE:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			TankInfoModel *tanks = TankInfoModel::instance();
 			QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 
@@ -218,7 +218,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case WORKINGPRESS:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			TankInfoModel *tanks = TankInfoModel::instance();
 			QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 			cyl->type.workingpressure = string_to_pressure(vString.toUtf8().data());
@@ -228,31 +228,31 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case START:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			cyl->start = string_to_pressure(vString.toUtf8().data());
 			changed = true;
 		}
 		break;
 	case END:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			cyl->end = string_to_pressure(vString.toUtf8().data());
 			changed = true;
 		}
 		break;
 	case O2:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			cyl->gasmix.o2 = string_to_fraction(vString.toUtf8().data());
 			changed = true;
 		}
 		break;
 	case HE:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			cyl->gasmix.he = string_to_fraction(vString.toUtf8().data());
 			changed = true;
 		}
 		break;
 	case DEPTH:
-		if (CHANGED(data, "", ""))
+		if (CHANGED())
 			cyl->depth = string_to_depth(vString.toUtf8().data());
 	}
 	dataChanged(index, index);
@@ -558,7 +558,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 		}
 		break;
 	case WEIGHT:
-		if (CHANGED(data, "", "")) {
+		if (CHANGED()) {
 			ws->weight = string_to_weight(vString.toUtf8().data());
 			// now update the ws_info
 			changed = true;
