@@ -56,7 +56,8 @@ HEADERS = \
 	webservice.h \
 	qt-ui/divelogimportdialog.h \
 	qt-ui/tagwidget.h \
-	qt-ui/groupedlineedit.h
+	qt-ui/groupedlineedit.h \
+	qt-ui/usermanual.h
 
 SOURCES =  \
 	deco.c \
@@ -105,7 +106,8 @@ SOURCES =  \
 	uemis-downloader.c \
 	qt-ui/divelogimportdialog.cpp \
 	qt-ui/tagwidget.cpp \
-	qt-ui/groupedlineedit.cpp
+	qt-ui/groupedlineedit.cpp \
+	qt-ui/usermanual.cpp
 
 linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
@@ -124,7 +126,8 @@ FORMS = \
 	qt-ui/shifttimes.ui \
 	qt-ui/webservices.ui \
 	qt-ui/tableview.ui \
-	qt-ui/divelogimportdialog.ui
+	qt-ui/divelogimportdialog.ui \
+	qt-ui/usermanual.ui
 
 RESOURCES = subsurface.qrc
 
