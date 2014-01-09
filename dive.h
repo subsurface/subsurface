@@ -803,6 +803,7 @@ extern weight_t string_to_weight(const char *str);
 extern depth_t string_to_depth(const char *str);
 extern pressure_t string_to_pressure(const char *str);
 extern volume_t string_to_volume(const char *str, pressure_t workp);
+extern fraction_t string_to_fraction(const char *str);
 
 #include "pref.h"
 

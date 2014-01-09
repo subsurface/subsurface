@@ -240,21 +240,15 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case O2:
-		if (CHANGED(toDouble, "%", "%")) {
-			int o2 = vString.toDouble() * 10 + 0.5;
-			if (cyl->gasmix.he.permille + o2 <= 1000) {
-				cyl->gasmix.o2.permille = o2;
-				changed = true;
-			}
+		if (CHANGED(data, "", "")) {
+			cyl->gasmix.o2 = string_to_fraction(vString.toUtf8().data());
+			changed = true;
 		}
 		break;
 	case HE:
-		if (CHANGED(toDouble, "%", "%")) {
-			int he = vString.toDouble() * 10 + 0.5;
-			if (cyl->gasmix.o2.permille + he <= 1000) {
-				cyl->gasmix.he.permille = he;
-				changed = true;
-			}
+		if (CHANGED(data, "", "")) {
+			cyl->gasmix.he = string_to_fraction(vString.toUtf8().data());
+			changed = true;
 		}
 		break;
 	case DEPTH:
@@ -529,6 +523,16 @@ cuft:
 l:
 	volume.mliter = rint(value * 1000);
 	return volume;
+}
+
+fraction_t string_to_fraction(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	fraction_t fraction;
+
+	fraction.permille = rint(value * 10);
+	return fraction;
 }
 
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
