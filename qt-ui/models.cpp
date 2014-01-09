@@ -232,40 +232,25 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case WORKINGPRESS:
-		if (CHANGED(toDouble, "psi", "bar")) {
-			if (vString.toDouble() != 0.0) {
-				TankInfoModel *tanks = TankInfoModel::instance();
-				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
-				if (prefs.units.pressure == prefs.units.PSI)
-					cyl->type.workingpressure.mbar = psi_to_mbar(vString.toDouble());
-				else
-					cyl->type.workingpressure.mbar = vString.toDouble() * 1000;
-				if (!matches.isEmpty())
-					tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
-				changed = true;
-			}
+		if (CHANGED(data, "", "")) {
+			TankInfoModel *tanks = TankInfoModel::instance();
+			QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
+			cyl->type.workingpressure = string_to_pressure(vString.toUtf8().data());
+			if (!matches.isEmpty())
+				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
+			changed = true;
 		}
 		break;
 	case START:
-		if (CHANGED(toDouble, "psi", "bar")) {
-			if (vString.toDouble() != 0.0) {
-				if (prefs.units.pressure == prefs.units.PSI)
-					cyl->start.mbar = psi_to_mbar(vString.toDouble());
-				else
-					cyl->start.mbar = vString.toDouble() * 1000;
-				changed = true;
-			}
+		if (CHANGED(data, "", "")) {
+			cyl->start = string_to_pressure(vString.toUtf8().data());
+			changed = true;
 		}
 		break;
 	case END:
-		if (CHANGED(toDouble, "psi", "bar")) {
-			if (vString.toDouble() != 0.0) {
-				if (prefs.units.pressure == prefs.units.PSI)
-					cyl->end.mbar = psi_to_mbar(vString.toDouble());
-				else
-					cyl->end.mbar = vString.toDouble() * 1000;
-				changed = true;
-			}
+		if (CHANGED(data, "", "")) {
+			cyl->end = string_to_pressure(vString.toUtf8().data());
+			changed = true;
 		}
 		break;
 	case O2:
@@ -503,6 +488,29 @@ m:
 ft:
 	depth.mm = feet_to_mm(value);
 	return depth;
+}
+
+pressure_t string_to_pressure(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_psi = CylindersModel::tr("psi");
+	QString local_bar = CylindersModel::tr("bar");
+	pressure_t pressure;
+
+	if (rest.startsWith("bar") || rest.startsWith(local_bar))
+		goto bar;
+	if (rest.startsWith("psi") || rest.startsWith(local_psi))
+		goto psi;
+	if (prefs.units.pressure == prefs.units.PSI)
+		goto psi;
+bar:
+	pressure.mbar = rint(value * 1000);
+	return pressure;
+psi:
+	pressure.mbar = psi_to_mbar(value);
+	return pressure;
 }
 
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)
