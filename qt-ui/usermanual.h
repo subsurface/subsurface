@@ -8,7 +8,7 @@ namespace Ui {
 class UserManual;
 }
 
-class UserManual : public QWidget
+class UserManual : public QMainWindow
 {
 	Q_OBJECT
 

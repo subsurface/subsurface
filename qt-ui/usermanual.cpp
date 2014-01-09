@@ -6,7 +6,7 @@
 #include "../helpers.h"
 
 UserManual::UserManual(QWidget *parent) :
-	QWidget(parent),
+	QMainWindow(parent),
 	ui(new Ui::UserManual)
 {
 	ui->setupUi(this);
@@ -21,12 +21,12 @@ UserManual::UserManual(QWidget *parent) :
 	actionHideSearch->setShortcutContext(Qt::WindowShortcut);
 	addAction(actionHideSearch);
 
+	setWindowTitle(tr("User Manual"));
+
 	ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath != "") {
 		QUrl url(searchPath.append("/user-manual.html"));
-		ui->webView->setWindowTitle(tr("User Manual"));
-		ui->webView->setWindowIcon(QIcon(":/subsurface-icon"));
 		ui->webView->setUrl(url);
 	} else {
 		ui->webView->setHtml(tr("Cannot find the Subsurface manual"));
@@ -56,7 +56,7 @@ void UserManual::hideSearchPanel()
 
 void UserManual::search(QString text, QWebPage::FindFlags flags = 0)
 {
-	if (ui->webView->findText(text, flags) || text.length() == 0) {
+	if (ui->webView->findText(text, QWebPage::FindWrapsAroundDocument|flags) || text.length() == 0) {
 		ui->searchEdit->setStyleSheet("");
 	} else {
 		ui->searchEdit->setStyleSheet("QLineEdit{background: red;}");
