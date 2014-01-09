@@ -206,29 +206,15 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		}
 		break;
 	case SIZE:
-		if (CHANGED(toDouble, "cuft", "l")) {
-			// if units are CUFT then this value is meaningless until we have working pressure
-			if (vString.toDouble() != 0.0) {
-				TankInfoModel *tanks = TankInfoModel::instance();
-				QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
-				int mbar = cyl->type.workingpressure.mbar;
-				int mliter;
+		if (CHANGED(data, "", "")) {
+			TankInfoModel *tanks = TankInfoModel::instance();
+			QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 
-				if (mbar && prefs.units.volume == prefs.units.CUFT) {
-					double liters = cuft_to_l(vString.toDouble());
-					liters /= bar_to_atm(mbar / 1000.0);
-					mliter = rint(liters * 1000);
-				} else {
-					mliter = rint(vString.toDouble() * 1000);
-				}
-				if (cyl->type.size.mliter != mliter) {
-					mark_divelist_changed(TRUE);
-					cyl->type.size.mliter = mliter;
-					if (!matches.isEmpty())
-						tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
-				}
-				changed = true;
-			}
+			cyl->type.size = string_to_volume(vString.toUtf8().data(), cyl->type.workingpressure);
+			mark_divelist_changed(TRUE);
+			if (!matches.isEmpty())
+				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
+			changed = true;
 		}
 		break;
 	case WORKINGPRESS:
@@ -511,6 +497,38 @@ bar:
 psi:
 	pressure.mbar = psi_to_mbar(value);
 	return pressure;
+}
+
+/* Imperial cylinder volumes need working pressure to be meaningful */
+volume_t string_to_volume(const char *str, pressure_t workp)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_l = CylindersModel::tr("l");
+	QString local_cuft = CylindersModel::tr("cuft");
+	volume_t volume;
+
+	if (rest.startsWith("l") || rest.startsWith(local_l))
+		goto l;
+	if (rest.startsWith("cuft") || rest.startsWith(local_cuft))
+		goto cuft;
+	/*
+	 * If we don't have explicit units, and there is no working
+	 * pressure, we're going to assume "liter" even in imperial
+	 * measurements.
+	 */
+	if (!workp.mbar)
+		goto l;
+	if (prefs.units.volume == prefs.units.LITER)
+		goto l;
+cuft:
+	if (workp.mbar)
+		value /= bar_to_atm(workp.mbar / 1000.0);
+	value = cuft_to_l(value);
+l:
+	volume.mliter = rint(value * 1000);
+	return volume;
 }
 
 bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int role)

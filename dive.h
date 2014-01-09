@@ -802,6 +802,7 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 extern weight_t string_to_weight(const char *str);
 extern depth_t string_to_depth(const char *str);
 extern pressure_t string_to_pressure(const char *str);
+extern volume_t string_to_volume(const char *str, pressure_t workp);
 
 #include "pref.h"
 
