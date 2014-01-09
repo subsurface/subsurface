@@ -1,4 +1,4 @@
-			Subsurface 4.0.1
+			Subsurface 4.0.2
 			================
 
 The Subsurface developer team is proud to announce the release of the
@@ -36,6 +36,23 @@ strength is its ability to visualize the depth profile (and, if
 available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
+
+New in version 4.0.2 (compared to Subsurface 4.0.1):
+----------------------------------------------------
+
+- fixed potential crash when importing dive data without dive computer
+  model information
+- improve parsing of equipment data; this now accepts localized units
+  as well as input in units that are not the display units (so if you
+  run Subsurface in metric, but went diving in a place where weights
+  are in US Pounds (lbs), you can now enter the weight in lbs and
+  Subsurface does the right thing)
+- fix temperature conversion when downloading data from Uemis SDA
+- improve autocompletion to always be case insensitive
+- improve selection handling in the dive list
+- include event data in libdivecomputer dump
+- improve profiles generated for dives with no depth samples and no
+  average depth
 
 New in version 4.0.1 (compared to Subsurface 4.0):
 --------------------------------------------------

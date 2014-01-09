@@ -6,7 +6,7 @@ INCLUDEPATH += qt-ui $$PWD
 mac: TARGET = Subsurface
 else: TARGET = subsurface
 
-VERSION = 4.0.1
+VERSION = 4.0.2
 
 HEADERS = \
 	color.h \
