@@ -31,6 +31,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
+	model->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	setModel(model);
 	connect(model, SIGNAL(layoutChanged()), this, SLOT(fixMessyQtModelBehaviour()));
 
