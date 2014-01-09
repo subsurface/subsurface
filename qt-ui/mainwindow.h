@@ -12,6 +12,7 @@
 #include <QUrl>
 
 #include "ui_mainwindow.h"
+#include "usermanual.h"
 
 struct DiveList;
 class QSortFilterProxyModel;
@@ -102,7 +103,6 @@ private slots:
 	void initialUiSetup();
 
 	void on_actionImportDiveLog_triggered();
-	void linkClickedSlot(QUrl url);
 
 protected:
 	void closeEvent(QCloseEvent *);
@@ -117,7 +117,7 @@ private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
-	QWebView *helpView;
+	UserManual *helpView;
 	CurrentState state;
 	QString filter();
 	bool askSaveChanges();

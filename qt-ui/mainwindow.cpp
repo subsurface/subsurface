@@ -484,25 +484,9 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 void MainWindow::on_actionUserManual_triggered()
 {
 	if(!helpView){
-		helpView = new QWebView();
-		helpView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
-		connect(helpView, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
-	}
-	QString searchPath = getSubsurfaceDataPath("Documentation");
-	if (searchPath != "") {
-		QUrl url(searchPath.append("/user-manual.html"));
-		helpView->setWindowTitle(tr("User Manual"));
-		helpView->setWindowIcon(QIcon(":/subsurface-icon"));
-		helpView->setUrl(url);
-	} else {
-		helpView->setHtml(tr("Cannot find the Subsurface manual"));
+		helpView = new UserManual();
 	}
 	helpView->show();
-}
-
-void MainWindow::linkClickedSlot(QUrl url)
-{
-	QDesktopServices::openUrl(url);
 }
 
 QString MainWindow::filter()
