@@ -338,6 +338,8 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	view->setWindowModality(Qt::NonModal);
 	view->setMinimumWidth(600);
 	view->setAttribute(Qt::WA_QuitOnClose, false);
+	view->setWindowTitle(tr("Yearly Statistics"));
+	view->setWindowIcon(QIcon(":subsurface-icon"));
 	view->show();
 }
 
