@@ -2064,6 +2064,14 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	if (prefer_downloaded && b->downloaded)
 		dl = b;
 
+	/*
+	 * Did the user ask us to merge dives in the dive list?
+	 * We may want to just join the dive computers, not try to
+	 * interleave them at some offset.
+	 */
+	if (offset && likely_same_dive(a, b))
+		offset = 0;
+
 	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
