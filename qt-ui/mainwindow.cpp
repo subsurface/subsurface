@@ -57,6 +57,7 @@ MainWindow::MainWindow() : helpView(0)
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.InfoWidget, SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlanner, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
 
 	ui.mainErrorMessage->hide();
 	initialUiSetup();
@@ -647,6 +648,7 @@ void MainWindow::readSettings()
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
 	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
 	GET_BOOL("show_sac", show_sac);
+	GET_BOOL("display_unused_tanks", display_unused_tanks);
 	s.endGroup();
 
 	s.beginGroup("GeneralSettings");

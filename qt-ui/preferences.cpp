@@ -103,6 +103,7 @@ void PreferencesDialog::setUiFromPrefs()
 			ui.default_cylinder->setCurrentIndex(i);
 	}
 	ui.displayinvalid->setChecked(prefs.display_invalid_dives);
+	ui.display_unused_tanks->setChecked(prefs.display_unused_tanks);
 	ui.show_sac->setChecked(prefs.show_sac);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
@@ -162,6 +163,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("gfhigh", ui.gfhigh->value());
 	SB("gf_low_at_maxdepth", ui.gf_low_at_maxdepth);
 	SB("show_sac", ui.show_sac);
+	SB("display_unused_tanks", ui.display_unused_tanks);
 	s.endGroup();
 
 	// Units

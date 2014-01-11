@@ -301,7 +301,8 @@ void CylindersModel::setDive(dive* d)
 		return;
 	rows = 0;
 	for(int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(&d->cylinder[i])) {
+		if (!cylinder_none(&d->cylinder[i]) &&
+		    (prefs.display_unused_tanks || d->cylinder[i].used)) {
 			rows = i+1;
 		}
 	}

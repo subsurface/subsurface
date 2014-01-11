@@ -145,6 +145,7 @@ typedef struct {
 	struct gasmix gasmix;
 	pressure_t start, end, sample_start, sample_end;
 	depth_t depth;
+	bool used;
 } cylinder_t;
 
 typedef struct {

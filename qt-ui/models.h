@@ -47,6 +47,7 @@ public:
 	/*reimp*/ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	const QString& biggerString() const;
 	void clear();
+public slots:
 	void update();
 private:
 	int rows;

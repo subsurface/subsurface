@@ -594,6 +594,32 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	return previous;
 }
 
+/* mark all tanks that we switch to in this dive computer's data as used */
+static void mark_used_tanks(struct dive *dive, struct divecomputer *dc)
+{
+	struct event *ev = get_next_event(dc->events, "gaschange");
+	// unless there is a gas change in the first 30 seconds we can
+	// always mark the first cylinder as used
+	if (!ev || ev->time.seconds > 30)
+		dive->cylinder[0].used = true;
+	while (ev) {
+		int idx = get_cylinder_index(dive, ev);
+		dive->cylinder[idx].used = true;
+		ev = get_next_event(ev->next, "gaschange");
+	}
+}
+
+/* walk all divecomputers to find the unused tanks in this dive */
+static void check_for_unused_tanks(struct dive *dive)
+{
+	int i;
+	struct divecomputer *dc;
+
+	for_each_dc(dive, dc) {
+		mark_used_tanks(dive, dc);
+	}
+}
+
 static void fixup_surface_pressure(struct dive *dive)
 {
 	struct divecomputer *dc;
@@ -879,7 +905,7 @@ struct dive *fixup_dive(struct dive *dive)
 	fixup_duration(dive);
 	fixup_watertemp(dive);
 	fixup_airtemp(dive);
-
+	check_for_unused_tanks(dive);
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);

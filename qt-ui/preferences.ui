@@ -772,6 +772,17 @@
               </item>
              </layout>
             </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11c">
+              <item>
+               <widget class="QCheckBox" name="display_unused_tanks">
+                <property name="text">
+                 <string>unused tanks</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </widget>
          </item>
