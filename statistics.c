@@ -365,5 +365,7 @@ char *get_gaslist(struct dive *dive)
 	}
 	if (*buf == '\0')
 		strncpy(buf, translate("gettextFromC","air"), MAXBUF);
+
+	buf[MAXBUF - 1] = '\0';
 	return buf;
 }
