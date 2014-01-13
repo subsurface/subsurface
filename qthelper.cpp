@@ -119,7 +119,8 @@ bool parseGpsText(const QString& gps_text, double *latitude, double *longitude)
 
 	// ISO 6709 Annex D representation
 	// http://en.wikipedia.org/wiki/ISO_6709#Representation_at_the_human_interface_.28Annex_D.29
-	if (gps_text.at(0).isDigit() && gps_text.count(UTF8_DEGREE) > 0) {
+	// e.g. 52°49'02.388"N 1°36'17.388"E
+	if (gps_text.at(0).isDigit() && (gps_text.count(",") % 2) == 0) {
 		gpsStyle = ISO6709D;
 		regExp = QString("(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([NS%1%2])"
 					 "\\s*(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([EW%3%4])")
