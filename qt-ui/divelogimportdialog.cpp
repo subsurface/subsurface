@@ -24,6 +24,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 
 	ui->CSVSeparator->addItem("Tab");
 	ui->CSVSeparator->addItem(",");
+        ui->CSVSeparator->addItem(";");
 	ui->knownImports->setCurrentIndex(1);
 
 	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
