@@ -21,12 +21,9 @@ public:
 private slots:
 	void on_buttonBox_accepted();
 	void on_knownImports_currentIndexChanged(int index);
-	void unknownImports(int);
-	void unknownImports(bool);
-
-private:
 	void unknownImports();
 
+private:
 	bool selector;
 	QStringList fileNames;
 	Ui::DiveLogImportDialog *ui;

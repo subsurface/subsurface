@@ -27,16 +27,17 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 	ui->CSVSeparator->addItem(";");
 	ui->knownImports->setCurrentIndex(1);
 
-	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
-	connect(ui->CSVTime, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
-	connect(ui->CSVTemperature, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
-	connect(ui->temperatureCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports(bool)));
-	connect(ui->CSVpo2, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
-	connect(ui->po2CheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports(bool)));
-	connect(ui->CSVcns, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
-	connect(ui->cnsCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports(bool)));
-	connect(ui->CSVstopdepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
-	connect(ui->stopdepthCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports(bool)));
+	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->CSVTime, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->CSVTemperature, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->temperatureCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+	connect(ui->CSVpo2, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->po2CheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+	connect(ui->CSVcns, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->cnsCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+	connect(ui->CSVstopdepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->stopdepthCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+	connect(ui->CSVSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(unknownImports()));
 }
 
 DiveLogImportDialog::~DiveLogImportDialog()
@@ -95,16 +96,6 @@ void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 	if (separator_index != -1)
 		ui->CSVSeparator->setCurrentIndex(separator_index);
 	ui->CSVSeparator->blockSignals(false);
-}
-
-void DiveLogImportDialog::unknownImports(bool arg1)
-{
-	unknownImports();
-}
-
-void DiveLogImportDialog::unknownImports(int arg1)
-{
-	unknownImports();
 }
 
 void DiveLogImportDialog::unknownImports()
