@@ -226,6 +226,8 @@ void DownloadFromDCWidget::fill_computer_list()
 		productList["Uemis"].push_back("Zurich");
 
 	descriptorLookup[QString("UemisZurich")] = (dc_descriptor_t *)mydescriptor;
+
+	qSort(vendorList);
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
