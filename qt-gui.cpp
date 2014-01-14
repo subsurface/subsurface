@@ -447,10 +447,16 @@ void create_device_node(const char *model, uint32_t deviceid, const char *serial
 	dcList.addDC(model, deviceid, nickname, serial, firmware);
 }
 
+bool compareDC(const DiveComputerNode &a, const DiveComputerNode &b)
+{
+	return a.deviceId < b.deviceId;
+}
+
 void call_for_each_dc(FILE *f, void (*callback)(FILE *, const char *, uint32_t,
 						const char *, const char *, const char *))
 {
 	QList<DiveComputerNode> values = dcList.dcMap.values();
+	qSort(values.begin(), values.end(), compareDC);
 	for (int i = 0; i < values.size(); i++) {
 		const DiveComputerNode *node = &values.at(i);
 		callback(f, node->model.toUtf8().data(), node->deviceId, node->nickName.toUtf8().data(),
