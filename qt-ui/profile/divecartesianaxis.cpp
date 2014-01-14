@@ -44,48 +44,18 @@ void DiveCartesianAxis::setOrientation(Qt::Orientation o)
 
 void DiveCartesianAxis::updateTicks()
 {
-	qDeleteAll(ticks);
-	ticks.clear();
-	qDeleteAll(labels);
-	labels.clear();
-
 	QLineF m = line();
-	DiveLineItem *item = NULL;
-	DiveTextItem *label = NULL;
-
+	QGraphicsView *view = scene()->views().first();
 	double steps = (max - min) / interval;
-	qreal pos;
 	double currValue = min;
 
-	if (orientation == Qt::Horizontal) {
-		double stepSize = (m.x2() - m.x1()) / steps;
-		for (pos = m.x1(); pos <= m.x2(); pos += stepSize, currValue += interval) {
-			item = new DiveLineItem(this);
-			item->setLine(pos, m.y1(), pos, m.y1() + tickSize);
-			item->setPen(pen());
-			ticks.push_back(item);
-
-			label = new DiveTextItem(this);
-			label->setText(QString::number(currValue));
-			label->setBrush(QBrush(textColor));
-			label->setFlag(ItemIgnoresTransformations);
-			label->setPos(pos - label->boundingRect().width()/2, m.y1() + tickSize + 5);
-			labels.push_back(label);
-		}
-	} else {
-		double stepSize = (m.y2() - m.y1()) / steps;
-		for (pos = m.y1(); pos <= m.y2(); pos += stepSize, currValue += interval) {
-			item = new DiveLineItem(this);
-			item->setLine(m.x1(), pos, m.x1() - tickSize, pos);
-			item->setPen(pen());
-			ticks.push_back(item);
-
-			label = new DiveTextItem(this);
-			label->setText(get_depth_string(currValue, false, false));
-			label->setBrush(QBrush(textColor));
-			label->setFlag(ItemIgnoresTransformations);
-			label->setPos(m.x2() - 80, pos);
-			labels.push_back(label);
+	// Remove the uneeded Ticks / Texts.
+	if (ticks.size() > steps){
+		while (ticks.size() > steps){
+			DiveLineItem *removedLine = ticks.takeLast();
+			removedLine->animatedHide();
+			DiveTextItem *removedText = labels.takeLast();
+			removedText->animatedHide();
 		}
 	}
 }
