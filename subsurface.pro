@@ -62,7 +62,8 @@ HEADERS = \
 	qt-ui/divelogimportdialog.h \
 	qt-ui/tagwidget.h \
 	qt-ui/groupedlineedit.h \
-	qt-ui/usermanual.h
+	qt-ui/usermanual.h \
+	qt-ui/profile/profilewidget2.h
 
 SOURCES =  \
 	deco.c \
@@ -112,7 +113,8 @@ SOURCES =  \
 	qt-ui/divelogimportdialog.cpp \
 	qt-ui/tagwidget.cpp \
 	qt-ui/groupedlineedit.cpp \
-	qt-ui/usermanual.cpp
+	qt-ui/usermanual.cpp \
+	qt-ui/profile/profilewidget2.cpp
 
 linux*: SOURCES += linux.c
 mac: SOURCES += macos.c

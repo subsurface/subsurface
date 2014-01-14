@@ -71,7 +71,31 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="ProfileGraphicsView" name="ProfileWidget"/>
+           <widget class="QTabWidget" name="tabWidget">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>Old Profile</string>
+             </attribute>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="ProfileGraphicsView" name="ProfileWidget"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>New Profile</string>
+             </attribute>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="ProfileWidget2" name="graphicsView"/>
+              </item>
+             </layout>
+            </widget>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -135,7 +159,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>32</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -520,6 +544,11 @@
    <extends>QWidget</extends>
    <header>diveplanner.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ProfileWidget2</class>
+   <extends>QGraphicsView</extends>
+   <header>qt-ui/profile/profilewidget2.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
