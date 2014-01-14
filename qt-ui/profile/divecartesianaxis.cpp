@@ -78,6 +78,36 @@ void DiveCartesianAxis::updateTicks()
 		}
 	}
 
+	// Add's the rest of the needed Ticks / Text.
+	for(int i = ticks.size(); i < steps; i++,  currValue += interval){
+		qreal childPos = begin + i * stepSize;
+		DiveLineItem *item = new DiveLineItem(this);
+		item->setPen(pen());
+		ticks.push_back(item);
+
+		DiveTextItem *label = new DiveTextItem(this);
+		label->setText(textForValue(currValue));
+		label->setBrush(QBrush(textColor));
+
+		labels.push_back(label);
+		if(orientation == Qt::Horizontal){
+			item->setLine(0, 0, 0, tickSize);
+			item->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene
+			item->animateMoveTo(childPos, m.y1() + tickSize); // anim it to scene.
+			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
+			label->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene);
+			label->animateMoveTo(childPos, m.y1() + tickSize);
+		}
+		else{
+			item->setLine(0, 0, tickSize, 0);
+			item->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
+			item->animateMoveTo(m.x1() - tickSize, childPos);
+			label->setAlignment(Qt::AlignVCenter| Qt::AlignRight);
+			label->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
+			label->animateMoveTo(m.x1() - tickSize, childPos);
+		}
+	}
+
 }
 
 QString DiveCartesianAxis::textForValue(double value)
