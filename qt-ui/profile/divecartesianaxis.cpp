@@ -58,6 +58,26 @@ void DiveCartesianAxis::updateTicks()
 			removedText->animatedHide();
 		}
 	}
+
+	// Move the remaining Ticks / Text to it's corerct position
+	// Regartind the possibly new values for the Axis
+	qreal begin = orientation == Qt::Horizontal ? m.x1() : m.y1();
+	qreal end = orientation == Qt::Horizontal ? m.x2() : m.y2();
+	double stepSize =  orientation == Qt::Horizontal ? (m.x2() - m.x1()) : (m.y2() - m.y1());
+	stepSize = stepSize / steps;
+	for(int i = 0, count = ticks.size(); i < count; i++, currValue += interval){
+		qreal childPos = begin + i * stepSize;
+		labels[i]->setText(textForValue(currValue));
+		if ( orientation == Qt::Horizontal ){
+			ticks[i]->animateMoveTo(childPos, m.y1() + tickSize);
+			labels[i]->animateMoveTo(childPos, m.y1() + tickSize);
+		}
+		else{
+			ticks[i]->animateMoveTo(m.x1() - tickSize, childPos);
+			labels[i]->animateMoveTo(m.x1() - tickSize, childPos);
+		}
+	}
+
 }
 
 QString DiveCartesianAxis::textForValue(double value)
