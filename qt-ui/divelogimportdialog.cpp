@@ -24,7 +24,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 
 	ui->CSVSeparator->addItem("Tab");
 	ui->CSVSeparator->addItem(",");
-        ui->CSVSeparator->addItem(";");
+	ui->CSVSeparator->addItem(";");
 	ui->knownImports->setCurrentIndex(1);
 
 	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports(int)));
@@ -90,6 +90,11 @@ void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 	SET_VALUE_AND_CHECKBOX(CSVpo2, po2CheckBox, CSVApps[index].po2);
 	SET_VALUE_AND_CHECKBOX(CSVcns, cnsCheckBox, CSVApps[index].cns);
 	SET_VALUE_AND_CHECKBOX(CSVstopdepth, stopdepthCheckBox, CSVApps[index].stopdepth);
+	ui->CSVSeparator->blockSignals(true);
+	int separator_index = ui->CSVSeparator->findText(CSVApps[index].separator);
+	if (separator_index != -1)
+		ui->CSVSeparator->setCurrentIndex(separator_index);
+	ui->CSVSeparator->blockSignals(false);
 }
 
 void DiveLogImportDialog::unknownImports(bool arg1)
