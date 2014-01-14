@@ -68,7 +68,8 @@ HEADERS = \
 	qt-ui/profile/divepixmapitem.h \
 	qt-ui/profile/divelineitem.h \
 	qt-ui/profile/divetextitem.h \
-	qt-ui/profile/animationfunctions.h
+	qt-ui/profile/animationfunctions.h \
+	qt-ui/profile/divecartesianaxis.h
 
 SOURCES =  \
 	deco.c \
@@ -124,7 +125,8 @@ SOURCES =  \
 	qt-ui/profile/divepixmapitem.cpp \
 	qt-ui/profile/divelineitem.cpp \
 	qt-ui/profile/divetextitem.cpp \
-	qt-ui/profile/animationfunctions.cpp
+	qt-ui/profile/animationfunctions.cpp \
+	qt-ui/profile/divecartesianaxis.cpp
 
 linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
