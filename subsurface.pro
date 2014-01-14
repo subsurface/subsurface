@@ -63,7 +63,8 @@ HEADERS = \
 	qt-ui/tagwidget.h \
 	qt-ui/groupedlineedit.h \
 	qt-ui/usermanual.h \
-	qt-ui/profile/profilewidget2.h
+	qt-ui/profile/profilewidget2.h \
+	qt-ui/profile/diverectitem.h
 
 SOURCES =  \
 	deco.c \
@@ -114,7 +115,8 @@ SOURCES =  \
 	qt-ui/tagwidget.cpp \
 	qt-ui/groupedlineedit.cpp \
 	qt-ui/usermanual.cpp \
-	qt-ui/profile/profilewidget2.cpp
+	qt-ui/profile/profilewidget2.cpp \
+	qt-ui/profile/diverectitem.cpp
 
 linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
