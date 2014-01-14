@@ -290,6 +290,22 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>CSVTime</tabstop>
+  <tabstop>CSVDepth</tabstop>
+  <tabstop>temperatureCheckBox</tabstop>
+  <tabstop>CSVTemperature</tabstop>
+  <tabstop>po2CheckBox</tabstop>
+  <tabstop>CSVpo2</tabstop>
+  <tabstop>cnsCheckBox</tabstop>
+  <tabstop>CSVcns</tabstop>
+  <tabstop>stopdepthCheckBox</tabstop>
+  <tabstop>CSVstopdepth</tabstop>
+  <tabstop>CSVSeparator</tabstop>
+  <tabstop>knownImports</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
