@@ -1,4 +1,5 @@
 #include "divetextitem.h"
+#include "animationfunctions.h"
 #include <QPropertyAnimation>
 
 DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsSimpleTextItem(parent)
@@ -38,17 +39,10 @@ void DiveTextItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* opti
 
 void DiveTextItem::animatedHide()
 {
-	QPropertyAnimation *animation = new QPropertyAnimation(this, "opacity");
-	connect(animation, SIGNAL(finished()), SLOT(deleteLater()));
-	animation->setStartValue(1);
-	animation->setEndValue(0);
-	animation->start(QAbstractAnimation::DeleteWhenStopped);
+	Animations::hide(this);
 }
 
 void DiveTextItem::animateMoveTo(qreal x, qreal y)
 {
-	QPropertyAnimation *animation = new QPropertyAnimation(this, "pos");
-	animation->setStartValue(property("pos").toPointF());
-	animation->setEndValue(QPointF(x, y));
-	animation->start(QAbstractAnimation::DeleteWhenStopped);
+	Animations::moveTo(this, x, y);
 }
