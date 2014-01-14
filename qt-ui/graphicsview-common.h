@@ -34,7 +34,6 @@ typedef enum {
 
 extern QMap<color_indice_t, QVector<QColor> > profile_color;
 void fill_profile_color();
-
-
+QColor getColor(const color_indice_t i);
 
 #endif

@@ -305,7 +305,7 @@ static velocity_t velocity(int speed)
 	return v;
 }
 
-static struct plot_info *analyze_plot_info(struct plot_info *pi)
+struct plot_info *analyze_plot_info(struct plot_info *pi)
 {
 	int i;
 	int nr = pi->nr;
@@ -783,7 +783,7 @@ void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct gra
 	pi->maxtemp = maxtemp;
 }
 
-static struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int idx, maxtime, nr, i;
 	int lastdepth, lasttime, lasttemp = 0;

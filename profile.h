@@ -49,6 +49,8 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 int setup_temperature_limits(struct graphics_context *gc);
 int get_cylinder_pressure_range(struct graphics_context *gc);
 void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum);
+struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi);
+struct plot_info *analyze_plot_info(struct plot_info *pi);
 
 struct ev_select {
 	char *ev_name;
