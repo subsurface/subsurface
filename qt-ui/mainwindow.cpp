@@ -469,6 +469,16 @@ void MainWindow::on_actionNextDC_triggered()
 	redrawProfile();
 }
 
+void MainWindow::on_actionFullScreen_triggered(bool checked)
+{
+	if (checked) {
+		setWindowState(windowState() | Qt::WindowFullScreen);
+	}
+	else {
+		setWindowState(windowState() & ~Qt::WindowFullScreen);
+	}
+}
+
 void MainWindow::on_actionSelectEvents_triggered()
 {
 	qDebug("actionSelectEvents");

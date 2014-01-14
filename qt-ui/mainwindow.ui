@@ -178,6 +178,7 @@
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
     <addaction name="separator"/>
+    <addaction name="actionFullScreen"/>
    </widget>
    <widget class="QMenu" name="menuFilter">
     <property name="title">
@@ -463,6 +464,20 @@
   <action name="actionDivelogs_de">
    <property name="text">
     <string>Import from Divelogs.de</string>
+   </property>
+  </action>
+  <action name="actionFullScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Full Screen</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle Full Screen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
    </property>
   </action>
  </widget>
