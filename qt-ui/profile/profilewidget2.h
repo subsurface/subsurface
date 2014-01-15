@@ -2,7 +2,6 @@
 #define PROFILEWIDGET2_H
 
 #include <QGraphicsView>
-#include <QStateMachine>
 
 // /* The idea of this widget is to display and edit the profile.
 //  * It has:
@@ -15,8 +14,15 @@
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
 #include "graphicsview-common.h"
-
+struct DivePlotDataModel;
+struct DivePixmapItem;
+struct DiveRectItem;
+struct DepthAxis;
+struct DiveCartesianAxis;
+struct DiveProfileItem;
+struct TimeAxis;
 struct dive;
+struct QStateMachine;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -44,6 +50,18 @@ signals:
 	void startShowGasState();
 	void startShowTissueState();
 	void startHideTissueState();
+private:
+	DivePlotDataModel *dataModel;
+	State currentState;
+	QStateMachine *stateMachine;
+
+	DivePixmapItem *background ;
+	DepthAxis *profileYAxis ;
+	DiveCartesianAxis *gasYAxis;
+	TimeAxis *timeAxis;
+	DiveRectItem *depthController;
+	DiveRectItem *timeController;
+	DiveProfileItem *diveProfileItem;
 };
 
 #endif
