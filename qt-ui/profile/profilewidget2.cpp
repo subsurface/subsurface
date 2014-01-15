@@ -203,6 +203,12 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 		s->addAnimation(profileAxisAnim);
 	}
 
+		// Configuration so we can search for the States later, and it helps debugging.
+	emptyState->setObjectName("Empty State");
+	profileState->setObjectName("Profile State");
+	addState->setObjectName("Add State");
+	editState->setObjectName("Edit State");
+	planState->setObjectName("Plan State");
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
