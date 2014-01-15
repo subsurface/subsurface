@@ -178,3 +178,8 @@ void DiveCartesianAxis::setColor(const QColor& color)
 	defaultPen.setCosmetic(true);
 	setPen(defaultPen);
 }
+
+QString DepthAxis::textForValue(double value)
+{
+	return get_depth_string(value, false, false);
+}

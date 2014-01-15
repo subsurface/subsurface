@@ -43,4 +43,9 @@ protected:
 	QColor textColor;
 };
 
+class DepthAxis : public DiveCartesianAxis {
+protected:
+    QString textForValue(double value);
+};
+
 #endif
