@@ -219,9 +219,14 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	hHeader->setVisible(false);
-	hHeader->setResizeMode(QHeaderView::Fixed);
 	vHeader->setVisible(false);
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+	hHeader->setResizeMode(QHeaderView::Fixed);
 	vHeader->setResizeMode(QHeaderView::Fixed);
+#else
+	hHeader->setSectionResizeMode(QHeaderView::Fixed);
+	vHeader->setSectionResizeMode(QHeaderView::Fixed);
+#endif
 	// set the model
 	table->setModel(model);
 
@@ -284,9 +289,14 @@ void PrintLayout::printTable()
 	table.setSelectionMode(QAbstractItemView::NoSelection);
 	table.setFocusPolicy(Qt::NoFocus);
 	table.horizontalHeader()->setVisible(false);
-	table.horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	table.verticalHeader()->setVisible(false);
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+	table.horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	table.verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+#else
+	table.horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+	table.verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+#endif
 	table.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	table.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	// fit table to one page initially
