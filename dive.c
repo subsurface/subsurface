@@ -612,7 +612,6 @@ static void mark_used_tanks(struct dive *dive, struct divecomputer *dc)
 /* walk all divecomputers to find the unused tanks in this dive */
 static void check_for_unused_tanks(struct dive *dive)
 {
-	int i;
 	struct divecomputer *dc;
 
 	for_each_dc(dive, dc) {
