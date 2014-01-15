@@ -14,7 +14,6 @@
 #include <QCloseEvent>
 #include <QApplication>
 #include <QFontMetrics>
-#include <QWebView>
 #include <QTableView>
 #include <QDesktopWidget>
 #include <QDesktopServices>
