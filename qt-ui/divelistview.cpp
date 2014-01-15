@@ -320,7 +320,11 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		layout = currentLayout;
 	else
 		currentLayout = layout;
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 	header()->setClickable(true);
+#else
+	header()->setSectionsClickable(true);
+#endif
 	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
 
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
