@@ -157,7 +157,7 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <widget class="QLineEdit" name="buddy">
+		 <widget class="TagWidget" name="buddy">
           <property name="readOnly">
            <bool>false</bool>
           </property>

@@ -834,8 +834,9 @@ void markChangedWidget(QWidget *w){
 	w->setPalette(p);
 }
 
-void MainTab::on_buddy_textChanged(const QString& text)
+void MainTab::on_buddy_textChanged()
 {
+	QString text = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts).join(", ");
 	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->buddy, text) );
 	markChangedWidget(ui.buddy);
 }
