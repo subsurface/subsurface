@@ -9,6 +9,8 @@
 #include <QStateMachine>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
+#include <QMenu>
+#include <QContextMenuEvent>
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
@@ -216,7 +218,14 @@ void ProfileWidget2::settingsChanged()
 
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
 {
-
+	// this menu should be completely replaced when things are working.
+	QMenu m;
+	m.addAction("Set Empty", this, SIGNAL(startEmptyState()));
+	m.addAction("Set Profile", this, SIGNAL(startProfileState()));
+	m.addAction("Set Add", this, SIGNAL(startAddState()));
+	m.addAction("Set Edit", this, SIGNAL(startEditState()));
+	m.addAction("Set Plan", this, SIGNAL(startPlanState()));
+	m.exec(event->globalPos());
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
