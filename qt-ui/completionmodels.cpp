@@ -32,7 +32,20 @@ void Class::updateModel() \
 	setStringList(list); \
 }
 
-CREATE_UPDATE_METHOD(BuddyCompletionModel, buddy);
+void BuddyCompletionModel::updateModel()
+{
+	QSet<QString> set;
+	struct dive* dive;
+	int i = 0;
+	for_each_dive(i, dive){
+		QString buddy(dive->buddy);
+		foreach (const QString &value, buddy.split(",", QString::SkipEmptyParts)) {
+			set.insert(value.trimmed());
+		}
+	}
+	setStringList(set.toList());
+}
+
 CREATE_UPDATE_METHOD(DiveMasterCompletionModel, divemaster);
 CREATE_UPDATE_METHOD(LocationCompletionModel, location);
 CREATE_UPDATE_METHOD(SuitCompletionModel, suit);
