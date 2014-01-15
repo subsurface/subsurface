@@ -209,6 +209,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	addState->setObjectName("Add State");
 	editState->setObjectName("Edit State");
 	planState->setObjectName("Plan State");
+
+	// Starting the transitions:
+	stateMachine->start();
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
