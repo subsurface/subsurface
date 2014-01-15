@@ -13,7 +13,9 @@
 
 // -> does not appear to be needed #include "marble_export.h"
 
-#include <QtCore/QAbstractItemModel>
+#include <QAbstractItemModel>
+
+class QItemSelectionModel;
 
 namespace Marble
 {
@@ -72,6 +74,8 @@ class MARBLE_EXPORT GeoDataTreeModel : public QAbstractItemModel
 
     void reset();
 
+    QItemSelectionModel *selectionModel();
+
 public Q_SLOTS:
 
     /**
@@ -82,11 +86,11 @@ public Q_SLOTS:
     void setRootDocument( GeoDataDocument *document );
     GeoDataDocument* rootDocument();
 
-    int addFeature( GeoDataContainer *parent, GeoDataFeature *feature );
+    int addFeature( GeoDataContainer *parent, GeoDataFeature *feature, int row = -1 );
 
     bool removeFeature( GeoDataContainer *parent, int index );
 
-    bool removeFeature( GeoDataFeature *feature );
+    int removeFeature( const GeoDataFeature *feature );
 
     void updateFeature( GeoDataFeature *feature );
 
