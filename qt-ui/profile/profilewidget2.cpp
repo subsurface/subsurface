@@ -252,10 +252,12 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	 * shown.
 	 */
 	struct plot_info pInfo = calculate_max_limits_new(d, currentdc);
+	int maxtime = get_maxtime(&pInfo);
+	int maxdepth = get_maxdepth(&pInfo);
 
-	profileYAxis->setMaximum(pInfo.maxdepth);
+	profileYAxis->setMaximum(qMax<long>(pInfo.maxdepth + M_OR_FT(10,30), maxdepth * 2 / 3));
 	profileYAxis->updateTicks();
-	timeAxis->setMaximum(pInfo.maxtime);
+	timeAxis->setMaximum(maxtime);
 	timeAxis->updateTicks();
 	dataModel->setDive(current_dive, pInfo);
 
