@@ -1639,6 +1639,7 @@ simmultaneously.
 year.
 - _Prev DC_ - Switch to next dive computer.
 - _Next DC_ - Switch to previous dive computer.
+- _Full Screen_ - Toggles Full Screen mode.
 
 === Filter
 - _Select Events_ - This option is not implemented yet.
