@@ -7,7 +7,7 @@ class QPainter;
 
 class DiveListDelegate : public QStyledItemDelegate{
 public:
-	DiveListDelegate(){}
+	explicit DiveListDelegate(QObject *parent = 0): QStyledItemDelegate(parent){}
 	QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 };
 

@@ -31,7 +31,7 @@ QFont defaultModelFont()
 	return font;
 }
 
-CleanerTableModel::CleanerTableModel(): QAbstractTableModel()
+CleanerTableModel::CleanerTableModel(QObject *parent): QAbstractTableModel(parent)
 {
 }
 
@@ -343,7 +343,7 @@ void CylindersModel::remove(const QModelIndex& index)
 	endRemoveRows();
 }
 
-WeightModel::WeightModel(QObject* parent): current(0), rows(0)
+WeightModel::WeightModel(QObject* parent): CleanerTableModel(parent), current(0), rows(0)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));

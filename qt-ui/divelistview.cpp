@@ -25,9 +25,9 @@
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(new QLineEdit(this))
 {
-	setItemDelegate(new DiveListDelegate );
+	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
-	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate());
+	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate(this));
 	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns

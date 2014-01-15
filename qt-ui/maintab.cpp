@@ -26,7 +26,7 @@
 #include <QScrollBar>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
-				    weightModel(new WeightModel()),
+				    weightModel(new WeightModel(this)),
 				    cylindersModel(CylindersModel::instance()),
 				    editMode(NONE)
 {
@@ -83,8 +83,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 
-	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
-	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate());
+	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
+	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	completers.buddy = new QCompleter(BuddyCompletionModel::instance(), ui.buddy);
 	completers.divemaster = new QCompleter(DiveMasterCompletionModel::instance(), ui.divemaster);

@@ -11,7 +11,7 @@
 TableView::TableView(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
-	ui.tableView->setItemDelegate(new DiveListDelegate);
+	ui.tableView->setItemDelegate(new DiveListDelegate(this));
 	/* There`s mostly a need for a Mac fix here too. */
 	if (qApp->style()->objectName() == "gtk+")
 		ui.groupBox->layout()->setContentsMargins(0, 9, 0, 0);

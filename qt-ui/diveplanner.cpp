@@ -960,7 +960,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	view->setColumnHidden(CylindersModel::START, true);
 	view->setColumnHidden(CylindersModel::END, true);
 	view->setColumnHidden(CylindersModel::DEPTH, false);
-	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate());
+	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	connect(ui.cylinderTableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addCylinder_clicked()));
 	connect(ui.tableWidget, SIGNAL(addButtonClicked()), DivePlannerPointsModel::instance(), SLOT(addStop()));
 

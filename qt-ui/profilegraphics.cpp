@@ -60,7 +60,7 @@ ProfileGraphicsView::ProfileGraphicsView(QWidget* parent) : QGraphicsView(parent
 	rulerEnabled = false;
 	gc.printer = false;
 	fill_profile_color();
-	setScene(new QGraphicsScene());
+	setScene(new QGraphicsScene(this));
 
 	scene()->installEventFilter(this);
 

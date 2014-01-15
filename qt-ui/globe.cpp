@@ -68,7 +68,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0), edit
 
 	setMinimumHeight(0);
 	setMinimumWidth(0);
-	fixZoomTimer = new QTimer();
+	fixZoomTimer = new QTimer(this);
 	connect(fixZoomTimer, SIGNAL(timeout()), this, SLOT(fixZoom()));
 	fixZoomTimer->setSingleShot(true);
 	installEventFilter(this);
