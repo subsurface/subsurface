@@ -22,6 +22,10 @@
 #  include <unistd.h> // for dup(2)
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#   include <QUrlQuery>
+#endif
+
 struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
@@ -369,7 +373,13 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 void SubsurfaceWebServices::startDownload()
 {
 	QUrl url("http://api.hohndel.org/api/dive/get/");
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 	url.addQueryItem("login", ui.userID->text().toUpper());
+#else
+	QUrlQuery query;
+	query.addQueryItem("login", ui.userID->text().toUpper());
+	url.setQuery(query);
+#endif
 
 	QNetworkRequest request;
 	request.setUrl(url);
