@@ -146,6 +146,7 @@ void TagWidget::completionSelected(QString completion) {
 		setText(completion.append(", "));
 		setCursorPosition(text().length());
 	}
+	emit(textChanged());
 }
 
 void TagWidget::setCursorPosition(int position) {
