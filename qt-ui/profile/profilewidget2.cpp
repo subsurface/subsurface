@@ -215,8 +215,3 @@ void ProfileWidget2::fixBackgroundPos()
 	bg->setPixmap(p);
 	bg->setX(mapToScene(x, 0).x());
 }
-
-void ProfileWidget2::showEvent(QShowEvent* event)
-{
-
-}

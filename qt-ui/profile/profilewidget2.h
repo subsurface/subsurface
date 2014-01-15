@@ -39,7 +39,6 @@ public slots: // Necessary to call from QAction's signals.
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent* event);
 	virtual void resizeEvent(QResizeEvent* event);
-	virtual void showEvent(QShowEvent* event);
 
 signals:
 	void startProfileState();
