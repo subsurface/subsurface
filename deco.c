@@ -27,9 +27,9 @@ struct buehlmann_config {
   double  gf_high;		//! gradient factor high (at surface).
   double  gf_low;		//! gradient factor low (at bottom/start of deco calculation).
   double  gf_low_position_min;	//! gf_low_position below surface_min_shallow.
-  bool    gf_low_at_maxdepth;	//! if TRUE, gf_low applies at max depth instead of at deepest ceiling.
+  bool    gf_low_at_maxdepth;	//! if true, gf_low applies at max depth instead of at deepest ceiling.
 };
-struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 2.0, FALSE };
+struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 2.0, false };
 
 const double buehlmann_N2_a[] = {1.1696, 1.0, 0.8618, 0.7562,
 				 0.62, 0.5043, 0.441, 0.4,
@@ -92,7 +92,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	double ret_tolerance_limit_ambient_pressure = 0.0;
 	double gf_high = buehlmann_config.gf_high;
 	double gf_low = buehlmann_config.gf_low;
-	double surface = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
+	double surface = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 
 	for (ci = 0; ci < 16; ci++)
 	{

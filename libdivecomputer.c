@@ -70,7 +70,7 @@ static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 		 * right data */
 		if (*(uint32_t *)data != 0xFFFEFFFE) {
 			printf("incorrect header for Atomics dive\n");
-			return FALSE;
+			return false;
 		}
 		atomics_gas_info = (void*)(data + COBALT_HEADER);
 		switch (atomics_gas_info[idx].tankspecmethod) {
@@ -90,9 +90,9 @@ static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 			cyl[idx].type.size.mliter = atomics_gas_info[idx].tanksize * 100;
 			break;
 		}
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
@@ -247,15 +247,15 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		if (value.deco.type == DC_DECO_NDL) {
 			sample->ndl.seconds = ndl = value.deco.time;
 			sample->stopdepth.mm = stopdepth = value.deco.depth * 1000.0 + 0.5;
-			sample->in_deco = in_deco = FALSE;
+			sample->in_deco = in_deco = false;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
-			sample->in_deco = in_deco = TRUE;
+			sample->in_deco = in_deco = true;
 			sample->stopdepth.mm = stopdepth = value.deco.depth * 1000.0 + 0.5;
 			sample->stoptime.seconds = stoptime = value.deco.time;
 			ndl = 0;
 		} else if (value.deco.type == DC_DECO_SAFETYSTOP) {
-			sample->in_deco = in_deco = FALSE;
+			sample->in_deco = in_deco = false;
 			sample->stopdepth.mm = stopdepth = value.deco.depth * 1000.0 + 0.5;
 			sample->stoptime.seconds = stoptime = value.deco.time;
 		}
@@ -394,7 +394,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	/* reset the deco / ndl data */
 	ndl = stoptime = stopdepth = 0;
-	in_deco = FALSE;
+	in_deco = false;
 
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
@@ -511,9 +511,9 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dive->dc.sample[0].temperature.mkelvin = 0;
 	}
 
-	dive->downloaded = TRUE;
+	dive->downloaded = true;
 	record_dive(dive);
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	return 1;
 }
 

@@ -8,28 +8,28 @@ struct preferences default_prefs = {
 	.units = SI_UNITS,
 	.unit_system = METRIC,
 	.pp_graphs = {
-		.po2 = FALSE,
-		.pn2 = FALSE,
-		.phe = FALSE,
+		.po2 = false,
+		.pn2 = false,
+		.phe = false,
 		.po2_threshold =  1.6,
 		.pn2_threshold =  4.0,
 		.phe_threshold = 13.0,
 	},
-	.mod  = FALSE,
+	.mod  = false,
 	.mod_ppO2  = 1.6,
-	.ead  = FALSE,
-	.profile_dc_ceiling = TRUE,
-	.profile_red_ceiling  = FALSE,
-	.profile_calc_ceiling = FALSE,
-	.calc_ceiling_3m_incr = FALSE,
-	.calc_ndl_tts = FALSE,
+	.ead  = false,
+	.profile_dc_ceiling = true,
+	.profile_red_ceiling  = false,
+	.profile_calc_ceiling = false,
+	.calc_ceiling_3m_incr = false,
+	.calc_ndl_tts = false,
 	.gflow = 30,
 	.gfhigh = 75,
-	.gf_low_at_maxdepth = FALSE,
+	.gf_low_at_maxdepth = false,
 	.font_size = 14.0,
-	.display_invalid_dives = FALSE,
-	.show_sac = FALSE,
-	.display_unused_tanks = FALSE
+	.display_invalid_dives = false,
+	.show_sac = false,
+	.display_unused_tanks = false
 };
 
 struct units *get_units()
@@ -77,7 +77,7 @@ const char *monthname(int mon)
 /*
  * track whether we switched to importing dives
  */
-bool imported = FALSE;
+bool imported = false;
 
 static void print_version() {
 	printf("Subsurface v%s, ", VERSION_STRING);
@@ -116,7 +116,7 @@ void parse_argument(const char *arg)
 				exit(0);
 			}
 			if (strcmp(arg, "--import") == 0) {
-				imported = TRUE; /* mark the dives so far as the base, * everything after is imported */
+				imported = true; /* mark the dives so far as the base, * everything after is imported */
 				return;
 			}
 			if (strcmp(arg, "--verbose") == 0) {
@@ -149,7 +149,7 @@ void renumber_dives(int nr)
 		struct dive *dive = dive_table.dives[i];
 		dive->number = nr + i;
 	}
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 }
 
 /*

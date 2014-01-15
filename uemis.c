@@ -252,20 +252,20 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	stopdepth = rel_mbar_to_depth(u_sample->hold_depth, dive);
 	if ((flags[3] & 1) | (flags[5] & 2)) {
 		/* deco */
-		sample->in_deco = TRUE;
+		sample->in_deco = true;
 		sample->stopdepth.mm = stopdepth;
 		sample->stoptime.seconds = u_sample->hold_time *60;
 		sample->ndl.seconds = 0;
 	} else if (flags[0] & 128) {
 		/* safety stop - distinguished from deco stop by having
 		 * both ndl and stop information */
-		sample->in_deco = FALSE;
+		sample->in_deco = false;
 		sample->stopdepth.mm = stopdepth;
 		sample->stoptime.seconds = u_sample->hold_time *60;
 		sample->ndl.seconds = lastndl;
 	} else {
 		/* NDL */
-		sample->in_deco = FALSE;
+		sample->in_deco = false;
 		lastndl = sample->ndl.seconds = u_sample->hold_time *60;
 		sample->stopdepth.mm = 0;
 		sample->stoptime.seconds = 0;

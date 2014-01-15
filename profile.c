@@ -138,7 +138,7 @@ void remember_event(const char *eventname)
 			return;
 	}
 	ev_namelist[evn_used].ev_name = strdup(eventname);
-	ev_namelist[evn_used].plot_ev = TRUE;
+	ev_namelist[evn_used].plot_ev = true;
 	evn_used++;
 }
 
@@ -195,12 +195,12 @@ int get_cylinder_pressure_range(struct graphics_context *gc)
 		gc->bottomy = 0;
 	gc->topy = gc->pi.maxpressure * 1.5;
 	if (!gc->pi.maxpressure)
-		return FALSE;
+		return false;
 
 	while (gc->pi.endtempcoord <= SCALEY(gc, gc->pi.minpressure - (gc->topy) * 0.1))
 		gc->bottomy -=  gc->topy * 0.1 * gc->maxy/abs(gc->maxy);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -968,7 +968,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 	int i, cylinderindex;
 	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
 	pr_track_t *current;
-	bool missing_pr = FALSE;
+	bool missing_pr = false;
 
 	cylinderindex = -1;
 	current = NULL;
@@ -1051,7 +1051,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	}
 
 	/* We are in deco */
-	entry->in_deco_calc = TRUE;
+	entry->in_deco_calc = true;
 
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
@@ -1093,7 +1093,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 static void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
 	int i;
-	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, TRUE)) / 1000.0;
+	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	double tissue_tolerance = 0;
 	for (i = 1; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;

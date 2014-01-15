@@ -570,12 +570,12 @@ static void sanitize_cylinder_info(struct dive *dive)
 static bool is_potentially_redundant(struct event *event)
 {
 	if (!strcmp(event->name, "gaschange"))
-		return FALSE;
+		return false;
 	if (!strcmp(event->name, "bookmark"))
-		return FALSE;
+		return false;
 	if (!strcmp(event->name, "heading"))
-		return FALSE;
-	return TRUE;
+		return false;
+	return true;
 }
 
 /* match just by name - we compare the details in the code that uses this helper */
@@ -760,7 +760,7 @@ static void fixup_dc_events(struct divecomputer *dc)
 			if (prev && prev->value == event->value &&
 			    prev->flags == event->flags &&
 			    event->time.seconds - prev->time.seconds < 61)
-				event->deleted = TRUE;
+				event->deleted = true;
 		}
 		event = event->next;
 	}
@@ -1053,7 +1053,7 @@ add_sample_b:
 		if (as->stopdepth.mm)
 			sample.stopdepth = as->stopdepth;
 		if (as->in_deco)
-			sample.in_deco = TRUE;
+			sample.in_deco = true;
 
 		merge_one_sample(&sample, at, res);
 

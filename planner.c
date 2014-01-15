@@ -50,7 +50,7 @@ void dump_plan(struct diveplan *diveplan)
 
 void set_last_stop(bool last_stop_6m)
 {
-	if (last_stop_6m == TRUE)
+	if (last_stop_6m == true)
 		decostoplevels[1] = 6000;
 	else
 		decostoplevels[1] = 3000;
@@ -341,7 +341,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po
 	dp->o2 = o2;
 	dp->he = he;
 	dp->po2 = po2;
-	dp->entered = FALSE;
+	dp->entered = false;
 	dp->next = NULL;
 	return dp;
 }

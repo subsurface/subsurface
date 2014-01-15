@@ -134,7 +134,7 @@ struct {
 	const char *nickname, *serial_nr, *firmware;
 } dc;
 } cur_settings;
-static bool in_settings = FALSE;
+static bool in_settings = false;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
@@ -266,7 +266,7 @@ enum number_type {
 static enum number_type parse_float(const char *buffer, double *res, const char **endp)
 {
 	double val;
-	static bool first_time = TRUE;
+	static bool first_time = true;
 
 	errno = 0;
 	val = ascii_strtod(buffer, endp);
@@ -279,7 +279,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 			 * that information available */
 			if (first_time) {
 				fprintf(stderr, "Floating point value with decimal comma (%s)?\n", buffer);
-				first_time = FALSE;
+				first_time = false;
 			}
 			/* Try again in permissive mode*/
 			val = strtod_flags(buffer, endp, 0);
@@ -1222,12 +1222,12 @@ static void reset_dc_settings(void)
 
 static void settings_start(void)
 {
-	in_settings = TRUE;
+	in_settings = true;
 }
 
 static void settings_end(void)
 {
-	in_settings = FALSE;
+	in_settings = false;
 }
 
 static void dc_settings_start(void)

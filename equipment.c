@@ -91,8 +91,8 @@ bool no_weightsystems(weightsystem_t *ws)
 
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		if (!weightsystem_none(ws + i))
-			return FALSE;
-	return TRUE;
+			return false;
+	return true;
 }
 
 static bool one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
@@ -107,8 +107,8 @@ bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		if (!one_weightsystem_equal(ws1 + i, ws2 + i))
-			return FALSE;
-	return TRUE;
+			return false;
+	return true;
 }
 
 /*

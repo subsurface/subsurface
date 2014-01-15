@@ -43,9 +43,9 @@
 #include "divelist.h"
 #include "display.h"
 
-static short dive_list_changed = FALSE;
+static short dive_list_changed = false;
 
-short autogroup = FALSE;
+short autogroup = false;
 
 dive_trip_t *dive_trip_list;
 
@@ -386,9 +386,9 @@ double init_decompression(struct dive *dive)
 	int i, divenr = -1;
 	unsigned int surface_time;
 	timestamp_t when, lasttime = 0;
-	bool deco_init = FALSE;
+	bool deco_init = false;
 	double tissue_tolerance, surface_pressure;
-	tissue_tolerance = surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
+	tissue_tolerance = surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 
 	if (!dive)
 		return 0.0;
@@ -411,10 +411,10 @@ double init_decompression(struct dive *dive)
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip)
 			continue;
-		surface_pressure = get_surface_pressure_in_mbar(pdive, TRUE) / 1000.0;
+		surface_pressure = get_surface_pressure_in_mbar(pdive, true) / 1000.0;
 		if (!deco_init) {
 			clear_deco(surface_pressure);
-			deco_init = TRUE;
+			deco_init = true;
 #if DECO_CALC_DEBUG & 2
 			dump_tissues();
 #endif
@@ -437,7 +437,7 @@ double init_decompression(struct dive *dive)
 	/* add the final surface time */
 	if (lasttime && dive->when > lasttime) {
 		surface_time = dive->when - lasttime;
-		surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
+		surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time,60));
@@ -445,7 +445,7 @@ double init_decompression(struct dive *dive)
 #endif
 	}
 	if (!deco_init) {
-		surface_pressure = get_surface_pressure_in_mbar(dive, TRUE) / 1000.0;
+		surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 		clear_deco(surface_pressure);
 #if DECO_CALC_DEBUG & 2
 		printf("no previous dive\n");
@@ -647,7 +647,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	if (dive->divetrip == trip)
 		return;
 	assert(trip->when);
-	remove_dive_from_trip(dive, FALSE);
+	remove_dive_from_trip(dive, false);
 	trip->nrdives++;
 	dive->divetrip = trip;
 	dive->tripflag = ASSIGNED_TRIP;
@@ -725,7 +725,7 @@ void delete_single_dive(int idx)
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return; /* this should never happen */
-	remove_dive_from_trip(dive, FALSE);
+	remove_dive_from_trip(dive, false);
 	if (dive->selected)
 		deselect_dive(idx);
 	for (i = idx; i < dive_table.nr - 1; i++)
@@ -768,21 +768,21 @@ bool consecutive_selected()
 {
 	struct dive *d;
 	int i;
-	bool consecutive = TRUE;
-	bool firstfound = FALSE;
-	bool lastfound = FALSE;
+	bool consecutive = true;
+	bool firstfound = false;
+	bool lastfound = false;
 
 	if (amount_selected == 0 || amount_selected == 1)
-		return TRUE;
+		return true;
 
 	for_each_dive(i, d) {
 		if (d->selected) {
 			if (!firstfound)
-				firstfound = TRUE;
+				firstfound = true;
 			else if (lastfound)
-				consecutive = FALSE;
+				consecutive = false;
 		} else if (firstfound) {
-			lastfound = TRUE;
+			lastfound = true;
 		}
 	}
 	return consecutive;
@@ -798,7 +798,7 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 		return NULL;
 	i = get_divenr(a);
 	j = get_divenr(b);
-	res = merge_dives(a, b, b->when - a->when, FALSE);
+	res = merge_dives(a, b, b->when - a->when, false);
 	if (!res)
 		return NULL;
 
@@ -809,7 +809,7 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	// why?
 	// because this way one of the previously selected ids is still around
 	res->id = id;
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	return res;
 }
 
@@ -871,7 +871,7 @@ void remove_autogen_trips()
 		dive_trip_t *trip = dive->divetrip;
 
 		if (trip && trip->autogen)
-			remove_dive_from_trip(dive, TRUE);
+			remove_dive_from_trip(dive, true);
 	}
 }
 
@@ -990,7 +990,7 @@ void process_dives(bool is_imported, bool prefer_imported)
 	}
 	/* make sure no dives are still marked as downloaded */
 	for (i = 1; i < dive_table.nr; i++)
-		dive_table.dives[i]->downloaded = FALSE;
+		dive_table.dives[i]->downloaded = false;
 
 	if (is_imported) {
 		/* If there are dives in the table, are they numbered */
@@ -999,6 +999,6 @@ void process_dives(bool is_imported, bool prefer_imported)
 
 		/* did we add dives to the dive table? */
 		if (preexisting != dive_table.nr)
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 	}
 }

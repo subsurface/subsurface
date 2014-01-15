@@ -28,23 +28,7 @@
 #ifdef __cplusplus
 extern "C" {
 #else
-#if __STDC_VERSION__ >= 199901L
 #include <stdbool.h>
-#ifndef TRUE
-#define TRUE true
-#endif
-#ifndef FALSE
-#define FALSE false
-#endif
-#else
-typedef int bool;
-#ifndef TRUE
-#define TRUE 1
-#endif
-#ifndef FALSE
-#define FALSE 0
-#endif
-#endif
 #endif
 
 #define O2_IN_AIR		209     // permille

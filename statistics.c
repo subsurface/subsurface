@@ -126,7 +126,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	memset(stats_yearly, 0, size);
 	memset(stats_monthly, 0, size);
 	memset(stats_by_trip, 0, size);
-	stats_yearly[0].is_year = TRUE;
+	stats_yearly[0].is_year = true;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -147,7 +147,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		if (current_year != tm.tm_year + 1900) {
 			current_year = tm.tm_year + 1900;
 			process_dive(dp, &(stats_yearly[++year_iter]));
-			stats_yearly[year_iter].is_year = TRUE;
+			stats_yearly[year_iter].is_year = true;
 		} else {
 			process_dive(dp, &(stats_yearly[year_iter]));
 		}
@@ -163,12 +163,12 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 			/* stats_by_trip[0] is all the dives combined */
 			stats_by_trip[0].selection_size++;
 			process_dive(dp, &(stats_by_trip[0]));
-			stats_by_trip[0].is_trip = TRUE;
+			stats_by_trip[0].is_trip = true;
 			stats_by_trip[0].location = strdup("All (by trip stats)");
 
 			process_dive(dp, &(stats_by_trip[trip_iter]));
 			stats_by_trip[trip_iter].selection_size++;
-			stats_by_trip[trip_iter].is_trip = TRUE;
+			stats_by_trip[trip_iter].is_trip = true;
 			stats_by_trip[trip_iter].location = dp->divetrip->location;
 		}
 
@@ -295,24 +295,24 @@ void get_selected_dives_text(char *buffer, int size)
 static bool is_gas_used(struct dive *dive, int idx)
 {
 	struct divecomputer *dc = &dive->dc;
-	bool firstGasExplicit = FALSE;
+	bool firstGasExplicit = false;
 	if (cylinder_none(&dive->cylinder[idx]))
-		return FALSE;
+		return false;
 
 	while (dc) {
 		struct event *event = get_next_event(dc->events, "gaschange");
 		while (event) {
 			if (event->time.seconds < 30)
-				firstGasExplicit = TRUE;
+				firstGasExplicit = true;
 			if (get_cylinder_index(dive, event) == idx)
-				return TRUE;
+				return true;
 			event = get_next_event(event->next, "gaschange");
 		}
 		dc = dc->next;
 	}
 	if (idx == 0 && !firstGasExplicit)
-		return TRUE;
-	return FALSE;
+		return true;
+	return false;
 }
 
 void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])

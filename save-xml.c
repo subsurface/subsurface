@@ -569,7 +569,7 @@ static void save_one_device(FILE *f, const char * model, uint32_t deviceid,
 
 void save_dives(const char *filename)
 {
-	save_dives_logic(filename, FALSE);
+	save_dives_logic(filename, false);
 }
 
 void save_dives_logic(const char *filename, const bool select_only)

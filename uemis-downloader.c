@@ -109,7 +109,7 @@ static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 static struct dive *uemis_start_dive(uint32_t deviceid)
 {
 	struct dive *dive = alloc_dive();
-	dive->downloaded = TRUE;
+	dive->downloaded = true;
 	dive->dc.model = strdup("Uemis Zurich");
 	dive->dc.deviceid = deviceid;
 	return dive;
@@ -191,7 +191,7 @@ static bool uemis_init(const char *path)
 	int i;
 
 	if (!path)
-		return FALSE;
+		return false;
 	/* let's check if this is indeed a Uemis DC */
 	reqtxt_path = build_filename(path,"req.txt");
 	reqtxt_file = subsurface_open(reqtxt_path, O_RDONLY, 0666);
@@ -199,7 +199,7 @@ static bool uemis_init(const char *path)
 #if UEMIS_DEBUG & 1
 		fprintf(debugfile, ":EE req.txt can't be opened\n");
 #endif
-		return FALSE;
+		return false;
 	}
 	if (bytes_available(reqtxt_file) > 5) {
 		char tmp[6];
@@ -209,7 +209,7 @@ static bool uemis_init(const char *path)
 		fprintf(debugfile, "::r req.txt \"%s\"\n", tmp);
 #endif
 		if (sscanf(tmp + 1, "%d", &filenr) != 1)
-			return FALSE;
+			return false;
 	} else {
 		filenr = 0;
 #if UEMIS_DEBUG & 2
@@ -226,7 +226,7 @@ static bool uemis_init(const char *path)
 	/* initialize the array in which we collect the answers */
 	for (i = 0; i < NUM_PARAM_BUFS; i++)
 		param_buff[i] = "";
-	return TRUE;
+	return true;
 }
 
 static void str_append_with_delim(char *s, char *t)
@@ -276,7 +276,7 @@ static char *next_segment(char *buf, int *offset, int size)
 {
 	int i = *offset;
 	int seg_size;
-	bool done = FALSE;
+	bool done = false;
 	char *segment;
 
 	while (!done) {
@@ -285,10 +285,10 @@ static char *next_segment(char *buf, int *offset, int size)
 				(buf[i+1] == '\\' || buf[i+1] == '{'))
 				memcpy(buf + i, buf + i + 1, size - i - 1);
 			else if (buf[i] == '{')
-				done = TRUE;
+				done = true;
 			i++;
 		} else {
-			done = TRUE;
+			done = true;
 		}
 	}
 	seg_size = i - *offset - 1;
@@ -324,9 +324,9 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 static bool next_file(int max)
 {
 	if (filenr >= max)
-		return FALSE;
+		return false;
 	filenr++;
-	return TRUE;
+	return true;
 }
 
 static char *first_object_id_val(char* buf)
@@ -390,12 +390,12 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	char fl[13];
 	char tmp[101];
 	const char *what = translate("gettextFromC","data");
-	bool searching = TRUE;
-	bool assembling_mbuf = FALSE;
-	bool ismulti = FALSE;
-	bool found_answer = FALSE;
-	bool more_files = TRUE;
-	bool answer_in_mbuf = FALSE;
+	bool searching = true;
+	bool assembling_mbuf = false;
+	bool ismulti = false;
+	bool found_answer = false;
+	bool more_files = true;
+	bool answer_in_mbuf = false;
 	char *ans_path;
 	int ans_file;
 	int timeout = UEMIS_LONG_TIMEOUT;
@@ -407,7 +407,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		str_append_with_delim(sb, param_buff[i]);
 	if (! strcmp(request, "getDivelogs") || ! strcmp(request, "getDeviceData") || ! strcmp(request, "getDirectory") ||
 		! strcmp(request, "getDivespot") || ! strcmp(request, "getDive")) {
-		answer_in_mbuf = TRUE;
+		answer_in_mbuf = true;
 		str_append_with_delim(sb, "");
 		if (! strcmp(request, "getDivelogs"))
 			what = translate("gettextFromC","divelog entry id");
@@ -425,11 +425,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
 		*error_text = translate("gettextFromC",ERR_FS_SHORT_WRITE);
-		return FALSE;
+		return false;
 	}
 	if (! next_file(number_of_files)) {
 		*error_text = translate("gettextFromC",ERR_FS_FULL);
-		more_files = FALSE;
+		more_files = false;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
 	usleep(timeout);
@@ -437,7 +437,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	mbuf_size = 0;
 	while (searching || assembling_mbuf) {
 		if (import_thread_cancelled)
-			return FALSE;
+			return false;
 		progress_bar_fraction = filenr / 4000.0;
 		snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
 		ans_path = build_filename(build_filename(path, "ANS"), fl);
@@ -457,18 +457,18 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #endif
 		free(ans_path);
 		if (tmp[0] == '1') {
-			searching = FALSE;
+			searching = false;
 			if (tmp[1] == 'm') {
-				assembling_mbuf = TRUE;
-				ismulti = TRUE;
+				assembling_mbuf = true;
+				ismulti = true;
 			}
 			if (tmp[2] == 'e')
-				assembling_mbuf = FALSE;
+				assembling_mbuf = false;
 			if (assembling_mbuf) {
 				if (! next_file(number_of_files)) {
 					*error_text = translate("gettextFromC",ERR_FS_FULL);
-					more_files = FALSE;
-					assembling_mbuf = FALSE;
+					more_files = false;
+					assembling_mbuf = false;
 				}
 				reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 				trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -476,9 +476,9 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		} else {
 			if (! next_file(number_of_files - 1)) {
 				*error_text = translate("gettextFromC",ERR_FS_FULL);
-				more_files = FALSE;
-				assembling_mbuf = FALSE;
-				searching = FALSE;
+				more_files = false;
+				assembling_mbuf = false;
+				searching = false;
 			}
 			reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 			trigger_response(reqtxt_file, "r", filenr, file_length);
@@ -529,7 +529,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			close(ans_file);
 			free(ans_path);
 		} else {
-			ismulti = FALSE;
+			ismulti = false;
 		}
 #if UEMIS_DEBUG & 8
 		fprintf(debugfile,":r: %s\n", buf);
@@ -537,7 +537,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		if (!answer_in_mbuf)
 			for (i = 0; i < n_param_out && j < size; i++)
 				param_buff[i] = next_segment(buf, &j, size);
-		found_answer = TRUE;
+		found_answer = true;
 		free(buf);
 	}
 #if UEMIS_DEBUG & 1
@@ -643,10 +643,10 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
-	bool done = FALSE;
+	bool done = false;
 	int inbuflen = strlen(inbuf);
 	char *endptr = buf + inbuflen;
-	bool log = FALSE;
+	bool log = false;
 	char *sections[10];
 	int s, nr_sections = 0;
 	struct dive *dive = NULL;
@@ -657,7 +657,7 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 	tp = next_token(&bp);
 	if (strcmp(tp, "divelog") == 0) {
 		/* this is a divelog */
-		log = TRUE;
+		log = true;
 		tp = next_token(&bp);
 		if (strcmp(tp,"1.0") != 0) {
 			free(buf);
@@ -720,22 +720,22 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 			parse_tag(dive, tag, val);
 		}
 		if (log && ! strcmp(tag, "file_content"))
-			done = TRUE;
+			done = true;
 		/* done with one dive (got the file_content tag), but there could be more:
 		 * a '{' indicates the end of the record - but we need to see another "{{"
 		 * later in the buffer to know that the next record is complete (it could
 		 * be a short read because of some error */
 		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
-			done = FALSE;
+			done = false;
 			record_dive(dive);
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 			dive = uemis_start_dive(deviceid);
 		}
 	}
 	if (log) {
 		if (dive->dc.diveid) {
 			record_dive(dive);
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 		} else { /* partial dive */
 			free(dive);
 		}
@@ -774,10 +774,10 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 	char *deviceid = NULL;
 	const char *result = NULL;
 	char *endptr;
-	bool success, keep_number = FALSE, once = TRUE;
+	bool success, keep_number = false, once = true;
 
 	if (dive_table.nr == 0)
-		keep_number = TRUE;
+		keep_number = true;
 	uemis_info(translate("gettextFromC","Init Communication"));
 	if (! uemis_init(mountpath))
 		return translate("gettextFromC","Uemis init failed");
@@ -817,7 +817,7 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 			if (t && atoi(t) > start)
 				start = atoi(t);
 			free(t);
-			once = FALSE;
+			once = false;
 		}
 		/* if the user clicked cancel, exit gracefully */
 		if (import_thread_cancelled)
@@ -856,7 +856,7 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
 		if (mbuf) {
 			int divenr;
-			process_raw_buffer(deviceidnr, mbuf, &newmax, FALSE, &divenr);
+			process_raw_buffer(deviceidnr, mbuf, &newmax, false, &divenr);
 			if (divenr > -1 && divenr != i) {
 				offset = i - divenr;
 #if UEMIS_DEBUG & 2
@@ -869,7 +869,7 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 		if (!success || import_thread_cancelled)
 			break;
 	}
-	success = TRUE;
+	success = true;
 	for (i = 0; i <= nr_divespots; i++) {
 		char divespotnr[10];
 		snprintf(divespotnr, sizeof(divespotnr), "%d", i);
