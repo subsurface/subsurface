@@ -196,7 +196,24 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
 {
+	QGraphicsView::resizeEvent(event);
+	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 
+	if(!stateMachine->configuration().count())
+		return;
+
+	if ((*stateMachine->configuration().begin())->objectName() == "Empty State"){
+		fixBackgroundPos();
+	}
+}
+
+void ProfileWidget2::fixBackgroundPos()
+{
+	QPixmap p = QPixmap(":background").scaledToHeight(viewport()->height());
+	int x = viewport()->width()/2 - p.width()/2;
+	DivePixmapItem *bg = background;
+	bg->setPixmap(p);
+	bg->setX(mapToScene(x, 0).x());
 }
 
 void ProfileWidget2::showEvent(QShowEvent* event)

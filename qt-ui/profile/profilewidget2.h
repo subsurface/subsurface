@@ -26,6 +26,7 @@ struct QStateMachine;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
+    void fixBackgroundPos();
 public:
 	enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
 	enum Items{BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
