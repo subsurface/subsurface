@@ -125,6 +125,9 @@ void MainWindow::on_actionOpen_triggered()
 	loadFiles( QStringList() << filename );
 }
 
+QTabWidget *MainWindow::tabWidget(){
+	return ui.tabWidget;
+}
 void MainWindow::on_actionSave_triggered()
 {
 	file_save();

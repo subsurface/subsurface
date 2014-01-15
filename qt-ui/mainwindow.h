@@ -55,7 +55,7 @@ public:
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
 	void cleanUpEmpty();
-
+	QTabWidget *tabWidget();
 private slots:
 	/* file menu action */
 	void on_actionNew_triggered();

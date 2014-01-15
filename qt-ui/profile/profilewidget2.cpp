@@ -12,6 +12,11 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 
+#ifndef QT_NO_DEBUG
+#include <QTableView>
+#include "mainwindow.h"
+#endif
+
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
 	dataModel(new DivePlotDataModel(this)),
@@ -212,6 +217,12 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 	// Starting the transitions:
 	stateMachine->start();
+
+#ifndef QT_NO_DEBUG
+	QTableView *diveDepthTableView = new QTableView();
+	diveDepthTableView->setModel(dataModel);
+	mainWindow()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
+#endif
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
