@@ -319,6 +319,9 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 	ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
 	hidePassword();
 	hideUpload();
+	ui.progressBar->setFormat("Enter User ID and click Download");
+	ui.progressBar->setRange(0,1);
+	ui.progressBar->setValue(-1);
 }
 
 void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
@@ -370,6 +373,7 @@ void SubsurfaceWebServices::startDownload()
 	request.setRawHeader("Accept", "text/xml");
 	reply = manager()->get(request);
 	ui.status->setText(tr("Connecting..."));
+	ui.progressBar->setEnabled(true);
 	ui.progressBar->setRange(0,0); // this makes the progressbar do an 'infinite spin'
 	ui.download->setEnabled(false);
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
@@ -382,6 +386,8 @@ void SubsurfaceWebServices::downloadFinished()
 		return;
 
 	ui.progressBar->setRange(0,1);
+	ui.progressBar->setValue(1);
+	ui.progressBar->setFormat("%p%");
 	downloadedData = reply->readAll();
 
 	ui.download->setEnabled(true);

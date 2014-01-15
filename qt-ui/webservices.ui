@@ -31,6 +31,11 @@
      <property name="placeholderText">
       <string>Enter your ID here</string>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>420</width>
+      </size>
+     </property>
     </widget>
    </item>
    <item row="0" column="2">
