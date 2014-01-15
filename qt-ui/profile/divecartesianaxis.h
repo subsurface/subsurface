@@ -48,4 +48,8 @@ protected:
     QString textForValue(double value);
 };
 
+class TimeAxis : public DiveCartesianAxis {
+protected:
+    QString textForValue(double value);
+};
 #endif

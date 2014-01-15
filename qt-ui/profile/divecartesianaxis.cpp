@@ -183,3 +183,8 @@ QString DepthAxis::textForValue(double value)
 {
 	return get_depth_string(value, false, false);
 }
+
+QString TimeAxis::textForValue(double value)
+{
+    return QString::number(value / 60);
+}
