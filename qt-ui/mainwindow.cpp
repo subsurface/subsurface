@@ -91,18 +91,19 @@ void MainWindow::current_dive_changed(int divenr)
 		ui.globe->centerOn(get_dive(selected_dive));
 	}
 	redrawProfile();
-	ui.InfoWidget->updateDiveInfo(divenr);
-}
 
-void MainWindow::redrawProfile()
-{
-	ui.ProfileWidget->refresh();
 	/* It looks like it's a bit too cumberstone to send *one* dive using a QList,
 	 * but this is just futureproofness, it's the best way in the future to show more than
 	 * a single profile plot on the canvas. I know that we are using only one right now,
 	 * but let's keep like this so it's easy to change when we need? :)
 	 */
 	ui.graphicsView->plotDives( QList<dive*>() << (current_dive) );
+	ui.InfoWidget->updateDiveInfo(divenr);
+}
+
+void MainWindow::redrawProfile()
+{
+	ui.ProfileWidget->refresh();
 }
 
 void MainWindow::on_actionNew_triggered()
