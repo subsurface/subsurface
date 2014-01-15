@@ -872,7 +872,7 @@ void MainTab::saveTags()
 		QString tag;
 		taglist_clear(mydive->tag_list);
 		foreach (tag, ui.tagWidget->getBlockStringList())
-			taglist_add_tag(mydive->tag_list, tag.toAscii().data());
+			taglist_add_tag(mydive->tag_list, tag.toUtf8().data());
 	);
 }
 
