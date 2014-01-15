@@ -108,6 +108,24 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QSignalTransition *tEditToPlan = editState->addTransition(this, SIGNAL(startPlanState()), planState);
 	QSignalTransition *tEditToProfile = editState->addTransition(this, SIGNAL(startProfileState()), profileState);
 	QSignalTransition *tEditToAdd = editState->addTransition(this, SIGNAL(startAddState()), addState);
+
+		// Constants:
+	const int backgroundOnCanvas = 0;
+	const int backgroundOffCanvas = 110;
+	const int profileYAxisOnCanvas = 3;
+	const int profileYAxisOffCanvas = profileYAxis->boundingRect().width() - 10;
+	const int gasYAxisOnCanvas = gasYAxis->boundingRect().width();
+	const int depthControllerOnCanvas = sceneRect().height() - depthController->boundingRect().height();
+	const int timeControllerOnCanvas = sceneRect().height() - timeController->boundingRect().height();
+	const int gasYAxisOffCanvas = gasYAxis->boundingRect().width() - 10;
+	const int timeAxisOnCanvas = sceneRect().height() - timeAxis->boundingRect().height() - 4;
+	const int timeAxisOffCanvas = sceneRect().height() + timeAxis->boundingRect().height();
+	const int timeAxisEditMode = sceneRect().height() - timeAxis->boundingRect().height() - depthController->boundingRect().height();
+	const int depthControllerOffCanvas = sceneRect().height() + depthController->boundingRect().height();
+	const int timeControllerOffCanvas = sceneRect().height() + timeController->boundingRect().height();
+	const QLineF profileYAxisExpanded = QLineF(0,0,0,timeAxisOnCanvas);
+	const QLineF timeAxisLine = QLineF(0, 0, 96, 0);
+
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
