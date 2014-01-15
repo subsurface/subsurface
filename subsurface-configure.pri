@@ -111,7 +111,7 @@ link_pkgconfig {
 
 QMAKE_CFLAGS *= $$XML2_CFLAGS $$XSLT_CFLAGS
 QMAKE_CXXFLAGS *= $$XML2_CFLAGS $$XSLT_CFLAGS
-LIBS *= $$XML2_LIBS $$XSLT_LIBS
+LIBS *= $$XSLT_LIBS $$XML2_LIBS
 
 #
 # Find other pkg-config-based projects
