@@ -100,7 +100,7 @@ private:
 class EventItem : public QGraphicsPixmapItem
 {
 public:
-	explicit EventItem(struct event *ev, QGraphicsItem* parent = 0, bool grayscale = FALSE);
+	explicit EventItem(struct event *ev, QGraphicsItem* parent = 0, bool grayscale = false);
 	struct event* ev;
 
 private:
@@ -131,10 +131,10 @@ public:
 	enum Mode{DIVE, PLAN};
 
 	ProfileGraphicsView(QWidget* parent = 0);
-	void plot(struct dive *d, bool forceRedraw = FALSE);
+	void plot(struct dive *d, bool forceRedraw = false);
 	bool eventFilter(QObject* obj, QEvent* event);
 	void clear();
-	void setPrintMode(bool mode, bool grayscale = FALSE);
+	void setPrintMode(bool mode, bool grayscale = false);
 
 protected:
 	void resizeEvent(QResizeEvent *event);

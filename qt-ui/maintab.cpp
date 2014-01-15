@@ -358,7 +358,7 @@ void MainTab::clearStats()
 	if (!d || d->field.mkelvin == 0)		\
 		ui.field->setText("");			\
 	else						\
-		ui.field->setText(get_temperature_string(d->field, TRUE))
+		ui.field->setText(get_temperature_string(d->field, true))
 
 bool MainTab::isEditing()
 {
@@ -461,29 +461,29 @@ void MainTab::updateDiveInfo(int dive)
 			taglist_get_tagstring(d->tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
 		}
-		ui.maximumDepthText->setText(get_depth_string(d->maxdepth, TRUE));
-		ui.averageDepthText->setText(get_depth_string(d->meandepth, TRUE));
+		ui.maximumDepthText->setText(get_depth_string(d->maxdepth, true));
+		ui.averageDepthText->setText(get_depth_string(d->meandepth, true));
 		ui.otuText->setText(QString("%1").arg(d->otu));
-		ui.waterTemperatureText->setText(get_temperature_string(d->watertemp, TRUE));
-		ui.airTemperatureText->setText(get_temperature_string(d->airtemp, TRUE));
+		ui.waterTemperatureText->setText(get_temperature_string(d->watertemp, true));
+		ui.airTemperatureText->setText(get_temperature_string(d->airtemp, true));
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(d, gases);
-		QString volumes = get_volume_string(gases[0], TRUE);
+		QString volumes = get_volume_string(gases[0], true);
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 		per_cylinder_mean_depth(d, select_dc(&d->dc), mean, duration);
 		volume_t sac;
 		QString SACs;
 		if (mean[0] && duration[0]) {
 			sac.mliter = gases[0].mliter * 1000.0 / (depth_to_mbar(mean[0], d) * duration[0] / 60.0);
-			SACs = get_volume_string(sac, TRUE).append(tr("/min"));
+			SACs = get_volume_string(sac, true).append(tr("/min"));
 		} else {
 			SACs = QString(tr("unknown"));
 		}
 		for(int i=1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++) {
-			volumes.append("\n" + get_volume_string(gases[i], TRUE));
+			volumes.append("\n" + get_volume_string(gases[i], true));
 			if (duration[i]) {
 				sac.mliter = gases[i].mliter * 1000.0 / (depth_to_mbar(mean[i], d) * duration[i] / 60);
-				SACs.append("\n" + get_volume_string(sac, TRUE).append(tr("/min")));
+				SACs.append("\n" + get_volume_string(sac, true).append(tr("/min")));
 			} else {
 				SACs.append("\n");
 			}
@@ -509,17 +509,17 @@ void MainTab::updateDiveInfo(int dive)
 			ui.salinityText->setText(QString("%1g/l").arg(d->salinity/10.0));
 		else
 			ui.salinityText->clear();
-		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, TRUE));
-		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, TRUE));
-		ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, TRUE));
-		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, TRUE).append(tr("/min")));
-		ui.sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, TRUE).append(tr("/min")));
-		ui.sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, TRUE).append(tr("/min")));
+		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
+		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true));
+		ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
+		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
+		ui.sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, true).append(tr("/min")));
+		ui.sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, true).append(tr("/min")));
 		ui.divesAllText->setText(QString::number(stats_selection.selection_size));
 		temp.mkelvin = stats_selection.max_temp;
-		ui.tempLimits->setMaximum(get_temperature_string(temp, TRUE));
+		ui.tempLimits->setMaximum(get_temperature_string(temp, true));
 		temp.mkelvin = stats_selection.min_temp;
-		ui.tempLimits->setMinimum(get_temperature_string(temp, TRUE));
+		ui.tempLimits->setMinimum(get_temperature_string(temp, true));
 		if (stats_selection.combined_temp && stats_selection.combined_count) {
 			const char *unit;
 			get_temp_units(0, &unit);
@@ -580,7 +580,7 @@ void MainTab::acceptChanges()
 	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
 		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
 			notesBackup[NULL].location != ui.location->text())
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 	} else {
 		struct dive *curr = current_dive;
 		//Reset coordinates field, in case it contains garbage.
@@ -597,7 +597,7 @@ void MainTab::acceptChanges()
 			notesBackup[curr].datetime != ui.dateTimeEdit->dateTime().toString() ||
 			notesBackup[curr].visibility != ui.rating->currentStars() ||
 			notesBackup[curr].tags != ui.tagWidget->text()) {
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 		}
 		if (notesBackup[curr].location != ui.location->text() ||
 			notesBackup[curr].coordinates != ui.coordinates->text()) {
@@ -609,7 +609,7 @@ void MainTab::acceptChanges()
 		if (editMode == MANUALLY_ADDED_DIVE) {
 			DivePlannerPointsModel::instance()->copyCylinders(curr);
 		} else if (editMode != ADD && cylindersModel->changed) {
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					if (notesBackup.keys().count() > 1)
@@ -622,7 +622,7 @@ void MainTab::acceptChanges()
 		}
 
 		if (weightModel->changed) {
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 					d->weightsystem[i] = multiEditEquipmentPlaceholder.weightsystem[i];
@@ -644,7 +644,7 @@ void MainTab::acceptChanges()
 			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
 		DivePlannerPointsModel::instance()->cancelPlan();
 		mainWindow()->showProfile();
-		mark_divelist_changed(TRUE);
+		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
 	// each dive that was selected might have had the temperatures in its active divecomputer changed

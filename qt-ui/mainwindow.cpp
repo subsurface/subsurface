@@ -149,7 +149,7 @@ void MainWindow::on_actionClose_triggered()
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before closing the file."));
 		return;
 	}
-	if (unsaved_changes() && (askSaveChanges() == FALSE))
+	if (unsaved_changes() && (askSaveChanges() == false))
 		return;
 
 	/* free the dives and trips */
@@ -162,7 +162,7 @@ void MainWindow::on_actionClose_triggered()
 
 	existing_filename = NULL;
 	cleanUpEmpty();
-	mark_divelist_changed(FALSE);
+	mark_divelist_changed(false);
 
 	clear_events();
 }
@@ -246,7 +246,7 @@ void MainWindow::on_actionQuit_triggered()
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before closing the file."));
 		return;
 	}
-	if (unsaved_changes() && (askSaveChanges() == FALSE))
+	if (unsaved_changes() && (askSaveChanges() == false))
 		return;
 	writeSettings();
 	QApplication::quit();
@@ -560,7 +560,7 @@ bool MainWindow::askSaveChanges()
 #define GET_BOOL(name, field)					\
 	v = s.value(QString(name));				\
 	if (v.isValid())					\
-		prefs.field = v.toInt() ? TRUE : FALSE;		\
+		prefs.field = v.toInt() ? true : false;		\
 	else							\
 		prefs.field = default_prefs.field
 
@@ -704,7 +704,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		helpView->deleteLater();
 	}
 
-	if (unsaved_changes() && (askSaveChanges() == FALSE)) {
+	if (unsaved_changes() && (askSaveChanges() == false)) {
 		event->ignore();
 		return;
 	}
@@ -749,9 +749,9 @@ void MainWindow::file_save_as(void)
 			ui.InfoWidget->acceptChanges();
 
 		save_dives(filename.toUtf8().data());
-		set_filename(filename.toUtf8().data(), TRUE);
+		set_filename(filename.toUtf8().data(), true);
 		setTitle(MWTF_FILENAME);
-		mark_divelist_changed(FALSE);
+		mark_divelist_changed(false);
 	}
 }
 
@@ -774,7 +774,7 @@ void MainWindow::file_save(void)
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
 	save_dives(existing_filename);
-	mark_divelist_changed(FALSE);
+	mark_divelist_changed(false);
 }
 
 void MainWindow::showError(QString message)
@@ -822,7 +822,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 			error = NULL;
 		}
 	}
-	process_dives(TRUE, FALSE);
+	process_dives(true, false);
 	refreshDisplay();
 }
 
@@ -837,7 +837,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		parse_file(fileNamePtr.data(), &error);
-		set_filename(fileNamePtr.data(), TRUE);
+		set_filename(fileNamePtr.data(), true);
 		setTitle(MWTF_FILENAME);
 
 		if (error != NULL) {
@@ -846,7 +846,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 		}
 	}
 
-	process_dives(FALSE, FALSE);
+	process_dives(false, false);
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
@@ -869,7 +869,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	if (csvFiles.size()) {
 		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(&csvFiles);
 		diveLogImport->show();
-		process_dives(TRUE, FALSE);
+		process_dives(true, false);
 		refreshDisplay();
 	}
 }

@@ -1490,7 +1490,7 @@ void DivePlannerPointsModel::createPlan()
 		cyl->end.mbar = cyl->start.mbar - consumption;
 	}
 
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.

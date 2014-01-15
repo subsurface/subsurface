@@ -142,7 +142,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
 			// DANGER, DANGER - this could get our dive_table unsorted...
 			shift_times(amount);
 			sort_table(&dive_table);
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 			mainWindow()->dive_list()->rememberSelection();
 			mainWindow()->refreshDisplay();
 			mainWindow()->dive_list()->restoreSelection();

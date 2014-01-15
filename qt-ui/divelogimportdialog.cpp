@@ -64,7 +64,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			error = NULL;
 		}
 	}
-	process_dives(TRUE, FALSE);
+	process_dives(true, false);
 
 	mainWindow()->refreshDisplay();
 }

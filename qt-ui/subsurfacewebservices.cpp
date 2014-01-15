@@ -34,8 +34,8 @@ static bool is_automatic_fix(struct dive *gpsfix)
 	if (gpsfix && gpsfix->location &&
 			(!strcmp(gpsfix->location, "automatic fix") ||
 			 !strcmp(gpsfix->location, "Auto-created dive")))
-		return TRUE;
-	return FALSE;
+		return true;
+	return false;
 }
 
 #define SAME_GROUP 6 * 3600   // six hours
@@ -339,7 +339,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 			mainWindow()->globe()->repopulateLabels();
 			mainWindow()->globe()->centerOn(current_dive);
 			mainWindow()->information()->updateDiveInfo(selected_dive);
@@ -866,7 +866,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 			mainWindow()->showError(error);
 			free(error);
 		}
-		process_dives(TRUE, FALSE);
+		process_dives(true, false);
 		mainWindow()->refreshDisplay();
 
 		/* store last entered user/pass in config */

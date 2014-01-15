@@ -112,23 +112,23 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			break;
 		case SIZE:
 			if (cyl->type.size.mliter)
-				ret = get_volume_string(cyl->type.size, TRUE, cyl->type.workingpressure.mbar);
+				ret = get_volume_string(cyl->type.size, true, cyl->type.workingpressure.mbar);
 			break;
 		case WORKINGPRESS:
 			if (cyl->type.workingpressure.mbar)
-				ret = get_pressure_string(cyl->type.workingpressure, TRUE);
+				ret = get_pressure_string(cyl->type.workingpressure, true);
 			break;
 		case START:
 			if (cyl->start.mbar)
-				ret = get_pressure_string(cyl->start, TRUE);
+				ret = get_pressure_string(cyl->start, true);
 			else if (cyl->sample_start.mbar)
-				ret = get_pressure_string(cyl->sample_start, TRUE);
+				ret = get_pressure_string(cyl->sample_start, true);
 			break;
 		case END:
 			if (cyl->end.mbar)
-				ret = get_pressure_string(cyl->end, TRUE);
+				ret = get_pressure_string(cyl->end, true);
 			else if (cyl->sample_end.mbar)
-				ret = get_pressure_string(cyl->sample_end, TRUE);
+				ret = get_pressure_string(cyl->sample_end, true);
 			break;
 		case O2:
 			ret = percent_string(cyl->gasmix.o2);
@@ -137,7 +137,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 			ret = percent_string(cyl->gasmix.he);
 			break;
 		case DEPTH:
-			ret = get_depth_string(cyl->depth, TRUE);
+			ret = get_depth_string(cyl->depth, true);
 			break;
 		}
 		break;
@@ -211,7 +211,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 			QModelIndexList matches = tanks->match(tanks->index(0,0), Qt::DisplayRole, cyl->type.description);
 
 			cyl->type.size = string_to_volume(vString.toUtf8().data(), cyl->type.workingpressure);
-			mark_divelist_changed(TRUE);
+			mark_divelist_changed(true);
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
 			changed = true;
@@ -394,7 +394,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 			ret = gettextFromC::instance()->tr(ws->description);
 			break;
 		case WEIGHT:
-			ret = get_weight_string(ws->weight, TRUE);
+			ret = get_weight_string(ws->weight, true);
 			break;
 		}
 		break;
@@ -647,7 +647,7 @@ bool WSInfoModel::setData(const QModelIndex& index, const QVariant& value, int r
 		break;
 	}
 	emit dataChanged(index, index);
-	return TRUE;
+	return true;
 }
 
 void WSInfoModel::clear()
@@ -776,7 +776,7 @@ bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int
 		break;
 	}
 	emit dataChanged(index, index);
-	return TRUE;
+	return true;
 }
 
 void TankInfoModel::clear()
@@ -1107,7 +1107,7 @@ bool DiveItem::setData(const QModelIndex& index, const QVariant& value, int role
 	d = getDiveById(diveId);
 	Q_ASSERT(d != NULL);
 	d->number = value.toInt();
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	return true;
 }
 
@@ -1400,7 +1400,7 @@ void DiveComputerModel::dropWorkingList()
 void DiveComputerModel::keepWorkingList()
 {
 	if (dcList.dcMap != dcWorkingMap)
-		mark_divelist_changed(TRUE);
+		mark_divelist_changed(true);
 	dcList.dcMap = dcWorkingMap;
 }
 
@@ -1530,7 +1530,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 	}
 
 
-	if (stats_by_trip != NULL && stats_by_trip[0].is_trip == TRUE) {
+	if (stats_by_trip != NULL && stats_by_trip[0].is_trip == true) {
 		YearStatisticsItem *item = new YearStatisticsItem(stats_by_trip[0]);
 		for (i = 1; stats_by_trip != NULL && stats_by_trip[i].is_trip; ++i) {
 			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_trip[i]);
