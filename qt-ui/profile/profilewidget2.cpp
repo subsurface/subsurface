@@ -5,7 +5,9 @@
 #include "divecartesianaxis.h"
 #include "diveprofileitem.h"
 #include "helpers.h"
+
 #include <QStateMachine>
+#include <QSignalTransition>
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
@@ -61,6 +63,51 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	}
 
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+
+		//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
+	stateMachine = new QStateMachine(this);
+
+	// TopLevel States
+	QState *emptyState = new QState();
+	QState *profileState = new QState();
+	QState *editState = new QState();
+	QState *addState = new QState();
+	QState *planState = new QState();
+
+	// Conections:
+	stateMachine->addState(emptyState);
+	stateMachine->addState(profileState);
+	stateMachine->addState(editState);
+	stateMachine->addState(addState);
+	stateMachine->addState(planState);
+	stateMachine->setInitialState(emptyState);
+
+	// All Empty State Connections.
+	QSignalTransition *tEmptyToProfile = emptyState->addTransition(this, SIGNAL(startProfileState()), profileState);
+	QSignalTransition *tEmptyToAdd = emptyState->addTransition(this, SIGNAL(startAddState()), addState);
+	QSignalTransition *tEmptyToPlan = emptyState->addTransition(this, SIGNAL(startPlanState()), planState);
+
+	// All Plan Connections
+	QSignalTransition *tPlanToEmpty = planState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
+	QSignalTransition *tPlanToProfile = planState->addTransition(this, SIGNAL(startProfileState()), profileState);
+	QSignalTransition *tPlanToAdd = planState->addTransition(this, SIGNAL(startAddState()), addState);
+
+	// All Add Dive Connections
+	QSignalTransition *tAddToEmpty = addState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
+	QSignalTransition *tAddToPlan = addState->addTransition(this, SIGNAL(startPlanState()), planState);
+	QSignalTransition *tAddToProfile = addState->addTransition(this, SIGNAL(startProfileState()), profileState);
+
+	// All Profile State Connections
+	QSignalTransition *tProfileToEdit = profileState->addTransition(this, SIGNAL(startEditState()), editState);
+	QSignalTransition *tProfileToEmpty = profileState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
+	QSignalTransition *tProfileToPlan = profileState->addTransition(this, SIGNAL(startPlanState()), planState);
+	QSignalTransition *tProfileToAdd = profileState->addTransition(this, SIGNAL(startAddState()), addState);
+
+	// All "Edit" state connections
+	QSignalTransition *tEditToEmpty = editState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
+	QSignalTransition *tEditToPlan = editState->addTransition(this, SIGNAL(startPlanState()), planState);
+	QSignalTransition *tEditToProfile = editState->addTransition(this, SIGNAL(startProfileState()), profileState);
+	QSignalTransition *tEditToAdd = editState->addTransition(this, SIGNAL(startAddState()), addState);
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
