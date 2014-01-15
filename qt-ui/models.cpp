@@ -274,6 +274,8 @@ void CylindersModel::add()
 
 	int row = rows;
 	fill_default_cylinder(&current->cylinder[row]);
+	// mark the cylinder as 'used' since it was manually added
+	current->cylinder[row].used = true;
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
 	changed = true;

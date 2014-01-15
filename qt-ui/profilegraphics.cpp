@@ -198,6 +198,9 @@ void ProfileGraphicsView::changeGas()
 	validate_gas(gas.toUtf8().constData(), &o2, &he);
 	int seconds = scenePos.x() / gc.maxx * (gc.rightx - gc.leftx) + gc.leftx;
 	add_gas_switch_event(current_dive, current_dc, seconds, get_gasidx(current_dive, o2, he));
+	// this means we potentially have a new tank that is being used and needs to be shown
+	fixup_dive(current_dive);
+	mainWindow()->information()->updateDiveInfo(selected_dive);
 	mark_divelist_changed(true);
 	plot(current_dive, true);
 }
