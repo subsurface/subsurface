@@ -88,9 +88,6 @@
       </xsl:call-template>
     </xsl:variable>
 
-    <!-- First field should be dive time. If the value is not numeric,
-         we'll skip it. (We do also allow time in h:m:s notation.) -->
-
     <xsl:if test="number($value) = $value or number(substring-before($value, ':')) = substring-before($value, ':')">
       <sample>
         <xsl:attribute name="time">
@@ -192,7 +189,14 @@
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="substring-before($line,$fs)"/>
+        <xsl:choose>
+          <xsl:when test="substring-before($line,$fs) != ''">
+            <xsl:value-of select="substring-before($line,$fs)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$line"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
