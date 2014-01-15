@@ -1577,7 +1577,8 @@ void TablePrintModel::insertRow(int index)
 
 void TablePrintModel::callReset()
 {
-	reset();
+	beginResetModel();
+	endResetModel();
 }
 
 QVariant TablePrintModel::data(const QModelIndex &index, int role) const
