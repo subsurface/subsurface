@@ -8,6 +8,7 @@
 
 #include <QStateMachine>
 #include <QSignalTransition>
+#include <QPropertyAnimation>
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
@@ -175,6 +176,30 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	planState->assignProperty(timeAxis, "y", timeAxisEditMode);
 	planState->assignProperty(depthController, "y", depthControllerOnCanvas);
 	planState->assignProperty(timeController, "y", timeControllerOnCanvas);
+
+	// All animations for the State Transitions.
+	QPropertyAnimation *backgroundYAnim = new QPropertyAnimation(background, "y");
+	QPropertyAnimation *depthAxisAnim = new QPropertyAnimation(profileYAxis, "x");
+	QPropertyAnimation *gasAxisanim = new QPropertyAnimation(gasYAxis, "x");
+	QPropertyAnimation *timeAxisAnim = new QPropertyAnimation(timeAxis, "y");
+	QPropertyAnimation *depthControlAnim = new QPropertyAnimation(depthController, "y");
+	QPropertyAnimation *timeControlAnim = new QPropertyAnimation(timeController, "y");
+	QPropertyAnimation *profileAxisAnim = new QPropertyAnimation(profileYAxis, "line");
+
+// Animations
+	QList<QSignalTransition*> transitions;
+	transitions << tAddToEmpty << tAddToPlan << tAddToProfile << tEditToAdd << tEditToEmpty << tEditToPlan
+	<< tEditToProfile << tEmptyToAdd << tEmptyToPlan << tEmptyToProfile << tProfileToAdd << tProfileToEdit
+	<< tProfileToEmpty << tProfileToPlan << tPlanToAdd << tPlanToEmpty << tPlanToProfile;
+	Q_FOREACH(QSignalTransition *s, transitions){
+		s->addAnimation(backgroundYAnim);
+		s->addAnimation(depthAxisAnim);
+		s->addAnimation(gasAxisanim);
+		s->addAnimation(timeAxisAnim);
+		s->addAnimation(depthControlAnim);
+		s->addAnimation(timeControlAnim);
+		s->addAnimation(profileAxisAnim);
+	}
 
 }
 
