@@ -5,6 +5,7 @@
 #include "divecartesianaxis.h"
 #include "diveprofileitem.h"
 #include "helpers.h"
+#include "profile.h"
 
 #include <QStateMachine>
 #include <QSignalTransition>
@@ -228,7 +229,47 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDives(QList<dive*> dives)
 {
+	// I Know that it's a list, but currently we are
+	// using just the first.
+	struct dive *d = dives.first();
+	if(!d)
+		return;
 
+	// Here we need to probe for the limits of the dive.
+	// There's already a function that does exactly that,
+	// but it's using the graphics context, and I need to
+	// replace that.
+	struct divecomputer *currentdc = select_dc(&d->dc);
+	Q_ASSERT(currentdc);
+
+	/* This struct holds all the data that's about to be plotted.
+	 * I'm not sure this is the best approach ( but since we are
+	 * interpolating some points of the Dive, maybe it is... )
+	 * The  Calculation of the points should be done per graph,
+	 * so I'll *not* calculate everything if something is not being
+	 * shown.
+	 */
+	struct plot_info pInfo = calculate_max_limits_new(d, currentdc);
+
+	profileYAxis->setMaximum(pInfo.maxdepth);
+	profileYAxis->updateTicks();
+	timeAxis->setMaximum(pInfo.maxtime);
+	timeAxis->updateTicks();
+	dataModel->setDive(current_dive, pInfo);
+
+	if(diveProfileItem){
+		//diveProfileItem->animateDelete();
+		scene()->removeItem(diveProfileItem);
+		delete diveProfileItem;
+	}
+	diveProfileItem = new DiveProfileItem();
+	diveProfileItem->setHorizontalAxis(timeAxis);
+	diveProfileItem->setVerticalAxis(profileYAxis);
+	diveProfileItem->setModel(dataModel);
+	diveProfileItem->setVerticalDataColumn(DivePlotDataModel::DEPTH);
+	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	scene()->addItem(diveProfileItem);
+	emit startProfileState();
 }
 
 void ProfileWidget2::settingsChanged()

@@ -717,6 +717,67 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
 }
 
+
+struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *dc)
+{
+	struct plot_info pi;
+	int maxdepth = dive->maxdepth.mm;
+	int maxtime = 0;
+	int maxpressure = 0, minpressure = INT_MAX;
+	int mintemp = dive->mintemp.mkelvin;
+	int maxtemp = dive->maxtemp.mkelvin;
+	int cyl;
+
+	/* Get the per-cylinder maximum pressure if they are manual */
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		unsigned int mbar = dive->cylinder[cyl].start.mbar;
+		if (mbar > maxpressure)
+			maxpressure = mbar;
+	}
+
+	/* Then do all the samples from all the dive computers */
+	do {
+		int i = dc->samples;
+		int lastdepth = 0;
+		struct sample *s = dc->sample;
+
+		while (--i >= 0) {
+			int depth = s->depth.mm;
+			int pressure = s->cylinderpressure.mbar;
+			int temperature = s->temperature.mkelvin;
+
+			if (!mintemp && temperature < mintemp)
+				mintemp = temperature;
+			if (temperature > maxtemp)
+				maxtemp = temperature;
+
+			if (pressure && pressure < minpressure)
+				minpressure = pressure;
+			if (pressure > maxpressure)
+				maxpressure = pressure;
+
+			if (depth > maxdepth)
+				maxdepth = s->depth.mm;
+			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) &&
+			    s->time.seconds > maxtime)
+				maxtime = s->time.seconds;
+			lastdepth = depth;
+			s++;
+		}
+	} while ((dc = dc->next) != NULL);
+
+	if (minpressure > maxpressure)
+		minpressure = 0;
+
+	pi.maxdepth = maxdepth;
+	pi.maxtime = maxtime;
+	pi.maxpressure = maxpressure;
+	pi.minpressure = minpressure;
+	pi.mintemp = mintemp;
+	pi.maxtemp = maxtemp;
+	return pi;
+}
+
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
 {
 	struct plot_info *pi;
