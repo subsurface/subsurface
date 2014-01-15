@@ -60,6 +60,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 		scene()->addItem(item);
 	}
 
+	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
