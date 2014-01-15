@@ -126,6 +126,56 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	const QLineF profileYAxisExpanded = QLineF(0,0,0,timeAxisOnCanvas);
 	const QLineF timeAxisLine = QLineF(0, 0, 96, 0);
 
+		// State Defaults:
+	// Empty State, everything but the background is hidden.
+	emptyState->assignProperty(this, "backgroundBrush", QBrush(Qt::white));
+	emptyState->assignProperty(background, "y",  backgroundOnCanvas);
+	emptyState->assignProperty(profileYAxis, "x", profileYAxisOffCanvas);
+	emptyState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
+	emptyState->assignProperty(timeAxis, "y", timeAxisOffCanvas);
+	emptyState->assignProperty(depthController, "y", depthControllerOffCanvas);
+	emptyState->assignProperty(timeController, "y", timeControllerOffCanvas);
+
+		// Profile, everything but the background, depthController and timeController are shown.
+	profileState->assignProperty(this, "backgroundBrush", getColor(::BACKGROUND));
+	profileState->assignProperty(background, "y",  backgroundOffCanvas);
+	profileState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
+	profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
+	profileState->assignProperty(gasYAxis, "x", 0);
+	profileState->assignProperty(timeAxis, "y", timeAxisOnCanvas);
+	profileState->assignProperty(depthController, "y", depthControllerOffCanvas);
+	profileState->assignProperty(timeController, "y", timeControllerOffCanvas);
+
+	// Edit, everything but the background and gasYAxis are shown.
+	editState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));
+	editState->assignProperty(background, "y",  backgroundOffCanvas);
+	editState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
+	editState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
+	editState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
+	editState->assignProperty(timeAxis, "y", timeAxisEditMode);
+	editState->assignProperty(depthController, "y", depthControllerOnCanvas);
+	editState->assignProperty(timeController, "y", timeControllerOnCanvas);
+
+	// Add, everything but the background and gasYAxis are shown.
+	addState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));
+	addState->assignProperty(background, "y",  backgroundOffCanvas);
+	addState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
+	addState->assignProperty(profileYAxis, "rect", profileYAxisExpanded);
+	addState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
+	addState->assignProperty(timeAxis, "y", timeAxisEditMode);
+	addState->assignProperty(depthController, "y", depthControllerOnCanvas);
+	addState->assignProperty(timeController, "y", timeControllerOnCanvas);
+
+	// Plan, everything but the background and gasYAxis are shown.
+	planState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));
+	planState->assignProperty(background, "y",  backgroundOffCanvas);
+	planState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
+	planState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
+	planState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
+	planState->assignProperty(timeAxis, "y", timeAxisEditMode);
+	planState->assignProperty(depthController, "y", depthControllerOnCanvas);
+	planState->assignProperty(timeController, "y", timeControllerOnCanvas);
+
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
