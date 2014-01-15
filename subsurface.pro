@@ -1,6 +1,11 @@
 include(subsurface-configure.pri)
 
-QT = core gui network webkit svg
+QT = core gui network svg
+lessThan(QT_MAJOR_VERSION, 5) {
+	QT += webkit
+} else {
+	QT += webkitwidgets
+}
 INCLUDEPATH += qt-ui $$PWD
 
 mac: TARGET = Subsurface
