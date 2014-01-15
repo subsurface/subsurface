@@ -336,6 +336,9 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
 			mark_divelist_changed(TRUE);
+			mainWindow()->globe()->repopulateLabels();
+			mainWindow()->globe()->centerOn(current_dive);
+			mainWindow()->information()->updateDiveInfo(selected_dive);
 		}
 
 		/* store last entered uid in config */
