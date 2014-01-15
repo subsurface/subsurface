@@ -4,6 +4,7 @@
 #include "diverectitem.h"
 #include "divecartesianaxis.h"
 #include "diveprofileitem.h"
+#include "helpers.h"
 #include <QStateMachine>
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
@@ -33,6 +34,32 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileYAxis->setOrientation(Qt::Vertical);
 	gasYAxis->setOrientation(Qt::Vertical);
 	timeAxis->setOrientation(Qt::Horizontal);
+
+		// Defaults of the Axis Coordinates:
+	profileYAxis->setMinimum(0);
+	profileYAxis->setTickInterval(M_OR_FT(10,30)); //TODO: This one should be also hooked up on the Settings change.
+	timeAxis->setMinimum(0);
+	timeAxis->setTickInterval(600); // 10 to 10 minutes?
+
+	// Default Sizes of the Items.
+	profileYAxis->setLine(0, 0, 0, 90);
+	profileYAxis->setX(2);
+	profileYAxis->setTickSize(1);
+	gasYAxis->setLine(0, 0, 0, 20);
+	timeAxis->setLine(0,0,96,0);
+	timeAxis->setX(3);
+	timeAxis->setTickSize(1);
+	depthController->setRect(0, 0, 10, 5);
+	timeController->setRect(0, 0, 10, 5);
+	timeController->setX(sceneRect().width() - timeController->boundingRect().width()); // Position it on the right spot.
+
+	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
+	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis
+		<< timeAxis << depthController << timeController;
+	Q_FOREACH(QGraphicsItem *item, stateItems){
+		scene()->addItem(item);
+	}
+
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
