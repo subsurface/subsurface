@@ -30,7 +30,7 @@
 #ifndef __GROUPEDLINEEDIT_H__
 #define __GROUPEDLINEEDIT_H__
 
-#include <QtGui/QPlainTextEdit>
+#include <QPlainTextEdit>
 #include <QStringList>
 
 class GroupedLineEdit : public QPlainTextEdit
