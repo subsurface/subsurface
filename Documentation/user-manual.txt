@@ -191,9 +191,10 @@ using that device.
 xref:S_Companion[Click here for more information]
 
 c. One can enter the coordinates by hand if they are known, using one of
-three formats with latitude followed by longitude:
+four formats with latitude followed by longitude:
 
-	Degrees and decimal minutes, e.g: N30° 13.49760' , E30° 49.30788'
+	ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E
+	Degrees and decimal minutes, e.g. N30° 13.49760' , E30° 49.30788'
 	Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
 	Decimal degrees, e.g. 30.22496 , 30.821798
 
