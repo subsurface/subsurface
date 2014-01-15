@@ -683,7 +683,7 @@ void DivelogsDeWebServices::startDownload()
 	body.addQueryItem("user", ui.userID->text());
 	body.addQueryItem("pass", ui.password->text());
 
-	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1())
+	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
 #endif
 	connect(reply, SIGNAL(finished()), this, SLOT(listDownloadFinished()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -729,7 +729,7 @@ void DivelogsDeWebServices::listDownloadFinished()
 	body.addQueryItem("pass", ui.password->text());
 	body.addQueryItem("ids", diveList.idList);
 
-	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1())
+	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
 #endif
 
 	connect(reply, SIGNAL(readyRead()), this, SLOT(saveToZipFile()));
