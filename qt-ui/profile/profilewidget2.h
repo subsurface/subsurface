@@ -14,6 +14,8 @@
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
 #include "graphicsview-common.h"
+
+class DiveEventItem;
 struct DivePlotDataModel;
 struct DivePixmapItem;
 struct DiveRectItem;
@@ -24,6 +26,7 @@ struct TimeAxis;
 struct dive;
 struct QStateMachine;
 struct DiveCartesianPlane;
+struct plot_info;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -57,6 +60,10 @@ private:
 	QStateMachine *stateMachine;
 
 	DivePixmapItem *background ;
+	// All those here should probably be merged into one structure,
+	// So it's esyer to replicate for more dives later.
+	// In the meantime, keep it here.
+	struct plot_info *plotInfo;
 	DepthAxis *profileYAxis ;
 	DiveCartesianAxis *gasYAxis;
 	TimeAxis *timeAxis;
@@ -64,6 +71,7 @@ private:
 	DiveRectItem *timeController;
 	DiveProfileItem *diveProfileItem;
 	DiveCartesianPlane *cartesianPlane;
+	QList<DiveEventItem*> eventItems;
 };
 
 #endif

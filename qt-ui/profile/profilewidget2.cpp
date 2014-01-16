@@ -6,12 +6,14 @@
 #include "diveprofileitem.h"
 #include "helpers.h"
 #include "profile.h"
+#include "diveeventitem.h"
 
 #include <QStateMachine>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
 #include <QMenu>
 #include <QContextMenuEvent>
+
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -262,6 +264,8 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	int maxtime = get_maxtime(&pInfo);
 	int maxdepth = get_maxdepth(&pInfo);
 
+	// It seems that I'll have a lot of boilerplate setting the model / axis for
+	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(qMax<long>(pInfo.maxdepth + M_OR_FT(10,30), maxdepth * 2 / 3));
 	profileYAxis->updateTicks();
 	timeAxis->setMaximum(maxtime);
@@ -280,6 +284,21 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	diveProfileItem->setVerticalDataColumn(DivePlotDataModel::DEPTH);
 	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	scene()->addItem(diveProfileItem);
+
+	qDeleteAll(eventItems);
+	eventItems.clear();
+
+	struct event *event = currentdc->events;
+	while (event) {
+		DiveEventItem *item = new DiveEventItem();
+		item->setHorizontalAxis(timeAxis);
+		item->setVerticalAxis(profileYAxis);
+		item->setModel(dataModel);
+		item->setEvent(event);
+		scene()->addItem(item);
+		eventItems.push_back(item);
+		event = event->next;
+	}
 	emit startProfileState();
 }
 
