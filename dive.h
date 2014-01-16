@@ -627,7 +627,7 @@ extern void set_filename(const char *filename, bool force);
 extern int parse_dm4_buffer(const char *url, const char *buf, int size, struct dive_table *table, char **error);
 
 extern void parse_file(const char *filename, char **error);
-extern void parse_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int stopdepthf, int sepidx, char **error);
+extern void parse_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, char **error);
 
 extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, bool select_only);

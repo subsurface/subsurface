@@ -98,7 +98,7 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, char **er
 	return success;
 }
 
-static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char **error)
+static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char **error, const char *tag)
 {
 	char *buf;
 
@@ -114,14 +114,33 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 
 	/* Surround the CSV file content with XML tags to enable XSLT
 	 * parsing
+	 *
+	 * Tag markers take: strlen("<></>") = 5
 	 */
-	buf = realloc(mem->buffer, mem->size + strlen("<csv></csv>"));
+	buf = realloc(mem->buffer, mem->size + 5 + strlen(tag) * 2);
 	if (buf != NULL) {
-		memmove(buf + 5, buf, mem->size);
-		memcpy(buf, "<csv>", 5);
-		memcpy(buf + mem->size + 5, "</csv>", 7);
-		mem->size += strlen("<csv></csv>");
+		char *starttag = NULL;
+		char *endtag = NULL;
+
+		starttag = malloc(3 + strlen(tag));
+		endtag = malloc(4 + strlen(tag));
+
+		if (starttag == NULL || endtag == NULL) {
+			*error = strdup("Memory allocation failed in __func__\n");
+			return 1;
+		}
+
+		sprintf(starttag, "<%s>", tag);
+		sprintf(endtag, "</%s>", tag);
+
+		memmove(buf + 2 + strlen(tag), buf, mem->size);
+		memcpy(buf, starttag, 2 + strlen(tag));
+		memcpy(buf + mem->size + 2 + strlen(tag), endtag, 4 + strlen(tag));
+		mem->size += (5 + 2 * strlen(tag));
 		mem->buffer = buf;
+
+		free(starttag);
+		free(endtag);
 	} else {
 		/* we can atleast try to strdup a error... */
 		*error = strdup("realloc failed in __func__\n");
@@ -330,7 +349,7 @@ void parse_file(const char *filename, char **error)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, int sepidx, char **error)
+void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, char **error)
 {
 	struct memblock mem;
 	int pnr=0;
@@ -392,7 +411,7 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	if (filename == NULL)
 		return;
 
-	if (try_to_xslt_open_csv(filename, &mem, error))
+	if (try_to_xslt_open_csv(filename, &mem, error, csvtemplate))
 		return;
 
 	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params, error);
