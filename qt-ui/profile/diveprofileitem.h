@@ -47,8 +47,15 @@ protected:
 class DiveProfileItem : public AbstractProfilePolygonItem{
 	Q_OBJECT
 public:
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-    virtual void modelDataChanged();
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void modelDataChanged();
 };
 
+class DiveTemperatureItem : public AbstractProfilePolygonItem{
+	Q_OBJECT
+public:
+	DiveTemperatureItem();
+	virtual void modelDataChanged();
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+};
 #endif

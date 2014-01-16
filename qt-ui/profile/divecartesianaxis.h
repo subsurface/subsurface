@@ -46,12 +46,18 @@ protected:
 
 class DepthAxis : public DiveCartesianAxis {
 protected:
-    QString textForValue(double value);
+	QString textForValue(double value);
 };
 
 class TimeAxis : public DiveCartesianAxis {
 protected:
-    QString textForValue(double value);
+	QString textForValue(double value);
+};
+
+class TemperatureAxis : public DiveCartesianAxis{
+	Q_OBJECT
+protected:
+	QString textForValue(double value);
 };
 
 // This is a try. Maybe the CartesianPlane should have the X and Y

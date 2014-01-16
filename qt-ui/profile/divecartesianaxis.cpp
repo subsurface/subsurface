@@ -143,15 +143,16 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 	QPointF p = pos();
 
 	double size = max - min;
-	double percent = value / size;
+	double distanceFromOrigin = value - min;
+	double percent = (value - min) / size;
 	double realSize = orientation == Qt::Horizontal ?
 				m.x2() - m.x1() :
 				m.y2() - m.y1();
 	double retValue = realSize * percent;
-	retValue =  (orientation == Qt::Horizontal) ?
+	double adjusted =  (orientation == Qt::Horizontal) ?
 				retValue + m.x1() + p.x() :
 				retValue + m.y1() + p.y();
-	return retValue;
+	return adjusted;
 }
 
 qreal DiveCartesianAxis::percentAt(const QPointF& p)
@@ -191,6 +192,12 @@ QString TimeAxis::textForValue(double value)
 {
 	return QString::number(value / 60);
 }
+
+QString TemperatureAxis::textForValue(double value)
+{
+    return QString::number(mkelvin_to_C( (int) value));
+}
+
 
 void DiveCartesianPlane::setLeftAxis(DiveCartesianAxis* axis)
 {

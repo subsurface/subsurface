@@ -15,6 +15,7 @@
 //  */
 #include "graphicsview-common.h"
 
+class TemperatureAxis;
 class DiveEventItem;
 struct DivePlotDataModel;
 struct DivePixmapItem;
@@ -26,6 +27,7 @@ struct TimeAxis;
 struct dive;
 struct QStateMachine;
 struct DiveCartesianPlane;
+struct DiveTemperatureItem;
 struct plot_info;
 
 class ProfileWidget2 : public QGraphicsView {
@@ -66,11 +68,13 @@ private:
 	struct plot_info *plotInfo;
 	DepthAxis *profileYAxis ;
 	DiveCartesianAxis *gasYAxis;
+	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;
 	DiveRectItem *depthController;
 	DiveRectItem *timeController;
 	DiveProfileItem *diveProfileItem;
 	DiveCartesianPlane *cartesianPlane;
+	DiveTemperatureItem *temperatureItem;
 	QList<DiveEventItem*> eventItems;
 };
 

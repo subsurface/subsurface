@@ -6,6 +6,7 @@
 #include <QPen>
 #include <QPainter>
 #include <QLinearGradient>
+#include <QDebug>
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(): QObject(), QGraphicsPolygonItem(),
 	hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
@@ -96,4 +97,38 @@ void DiveProfileItem::modelDataChanged(){
 	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
 	pat.setColorAt(0, getColor(DEPTH_TOP));
 	setBrush(QBrush(pat));
+}
+
+DiveTemperatureItem::DiveTemperatureItem()
+{
+	QPen pen;
+	pen.setBrush(QBrush(getColor(::TEMP_PLOT)));
+	pen.setCosmetic(true);
+	pen.setWidth(2);
+	setPen(pen);
+}
+
+void DiveTemperatureItem::modelDataChanged()
+{
+	// We don't have enougth data to calculate things, quit.
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
+		return;
+
+	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
+	QPolygonF poly;
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
+		qreal verticalValue = dataModel->index(i, vDataColumn).data().toReal();
+		if(!verticalValue)
+			continue;
+		qreal horizontalValue = dataModel->index(i, hDataColumn).data().toReal();
+		QPointF point( hAxis->posAtValue(horizontalValue), vAxis->posAtValue(verticalValue));
+		poly.append(point);
+	}
+	setPolygon(poly);
+}
+
+void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+	painter->setPen(pen());
+	painter->drawPolyline(polygon());
 }

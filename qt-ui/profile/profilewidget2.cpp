@@ -13,7 +13,7 @@
 #include <QPropertyAnimation>
 #include <QMenu>
 #include <QContextMenuEvent>
-
+#include <QDebug>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -27,6 +27,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	stateMachine(new QStateMachine(this)),
 	background (new DivePixmapItem()),
 	profileYAxis(new DepthAxis()),
+	temperatureAxis(new TemperatureAxis()),
 	gasYAxis(new DiveCartesianAxis()),
 	timeAxis(new TimeAxis()),
 	depthController(new DiveRectItem()),
@@ -60,6 +61,13 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileYAxis->setX(2);
 	profileYAxis->setTickSize(1);
 	gasYAxis->setLine(0, 0, 0, 20);
+
+	temperatureAxis->setOrientation(Qt::Vertical);
+	temperatureAxis->setLine(0, 60, 0, 90);
+	temperatureAxis->setX(3);
+	temperatureAxis->setTickSize(2);
+	temperatureAxis->setTickInterval(300);
+
 	timeAxis->setLine(0,0,96,0);
 	timeAxis->setX(3);
 	timeAxis->setTickSize(1);
@@ -73,7 +81,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
 	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis <<
-							timeAxis << depthController << timeController;
+							timeAxis << depthController << timeController << temperatureAxis;
 	Q_FOREACH(QGraphicsItem *item, stateItems) {
 		scene()->addItem(item);
 	}
@@ -268,6 +276,9 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(qMax<long>(pInfo.maxdepth + M_OR_FT(10,30), maxdepth * 2 / 3));
 	profileYAxis->updateTicks();
+	temperatureAxis->setMinimum(pInfo.mintemp);
+	temperatureAxis->setMaximum(pInfo.maxtemp);
+	temperatureAxis->updateTicks();
 	timeAxis->setMaximum(maxtime);
 	timeAxis->updateTicks();
 	dataModel->setDive(current_dive, pInfo);
@@ -299,6 +310,20 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		eventItems.push_back(item);
 		event = event->next;
 	}
+
+	if(temperatureItem){
+		scene()->removeItem(temperatureItem);
+		delete temperatureItem;
+	}
+	temperatureItem = new DiveTemperatureItem();
+	temperatureItem->setHorizontalAxis(timeAxis);
+	temperatureItem->setVerticalAxis(temperatureAxis);
+	temperatureItem->setModel(dataModel);
+	temperatureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
+	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	scene()->addItem(temperatureItem);
+
+
 	emit startProfileState();
 }
 
