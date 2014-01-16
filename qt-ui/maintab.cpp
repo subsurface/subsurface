@@ -95,7 +95,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	completers.divemaster->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.location->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.suit->setCaseSensitivity(Qt::CaseInsensitive);
-	completers.buddy->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.tags->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.buddy->setCompleter(completers.buddy);
 	ui.divemaster->setCompleter(completers.divemaster);
