@@ -15,8 +15,8 @@
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
-#include "mainwindow.h"
 #endif
+#include "mainwindow.h"
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
