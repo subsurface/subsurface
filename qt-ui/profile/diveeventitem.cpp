@@ -5,7 +5,7 @@
 #include <QDebug>
 
 DiveEventItem::DiveEventItem(QObject* parent): DivePixmapItem(parent),
-	vAxis(NULL), hAxis(NULL), internalEvent(NULL), dataModel(NULL)
+	vAxis(NULL), hAxis(NULL), dataModel(NULL), internalEvent(NULL)
 {
 	setFlag(ItemIgnoresTransformations);
 }
@@ -40,11 +40,11 @@ void DiveEventItem::setEvent(struct event* ev)
 void DiveEventItem::setupPixmap()
 {
 #define EVENT_PIXMAP( PIX ) QPixmap(QString(PIX)).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-	if(!internalEvent->name){
+	if (!internalEvent->name) {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if ((strcmp(internalEvent->name, "bookmark") == 0)) {
 		setPixmap(EVENT_PIXMAP(":flag"));
-	} else if(strcmp(internalEvent->name, "heading") == 0){
+	} else if(strcmp(internalEvent->name, "heading") == 0) {
 		setPixmap(EVENT_PIXMAP(":flag"));
 	} else {
 		setPixmap(EVENT_PIXMAP(":warning"));
@@ -104,15 +104,15 @@ void DiveEventItem::eventVisibilityChanged(const QString& eventName, bool visibl
 
 void DiveEventItem::recalculatePos()
 {
-	if (!vAxis || !hAxis || !internalEvent || !dataModel){
+	if (!vAxis || !hAxis || !internalEvent || !dataModel) {
 		return;
 	}
 	QModelIndexList result = dataModel->match(dataModel->index(0,DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds );
-	if(result.isEmpty()){
+	if (result.isEmpty()) {
 		hide();
 		return;
 	}
-	if(!isVisible()){
+	if (!isVisible()) {
 		show();
 	}
 	int depth = dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();

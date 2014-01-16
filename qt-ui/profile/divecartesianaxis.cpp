@@ -161,7 +161,8 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 	QPointF p = pos();
 
 	double size = max - min;
-	double distanceFromOrigin = value - min;
+	// unused for now:
+	// double distanceFromOrigin = value - min;
 	double percent = (value - min) / size;
 
 	double realSize = orientation == LeftToRight || orientation == RightToLeft?
@@ -169,9 +170,8 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 				m.y2() - m.y1();
 
 	// Inverted axis, just invert the percentage.
-	if(orientation == RightToLeft || orientation == BottomToTop){
+	if (orientation == RightToLeft || orientation == BottomToTop)
 		percent = 1 - percent;
-	}
 
 	double retValue = realSize * percent;
 	double adjusted =
@@ -222,7 +222,7 @@ QString TimeAxis::textForValue(double value)
 
 QString TemperatureAxis::textForValue(double value)
 {
-    return QString::number(mkelvin_to_C( (int) value));
+	return QString::number(mkelvin_to_C( (int) value));
 }
 
 
@@ -275,9 +275,11 @@ void DiveCartesianPlane::setup()
 
 	// This creates a Grid around the axis, creating the cartesian plane.
 	const int top = leftAxis->posAtValue(leftAxis->minimum());
-	const int bottom = leftAxis->posAtValue(leftAxis->maximum());
+	// unused for now:
+	// const int bottom = leftAxis->posAtValue(leftAxis->maximum());
 	const int left = bottomAxis->posAtValue(bottomAxis->minimum());
-	const int right = bottomAxis->posAtValue(bottomAxis->maximum());
+	// unused for now:
+	// const int right = bottomAxis->posAtValue(bottomAxis->maximum());
 
 	setRect(0, 0, horizontalSize, verticalSize);
 	setPos(left, top);
