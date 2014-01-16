@@ -7,7 +7,7 @@
 #include "display.h"
 #include <QDebug>
 
-DivePlotDataModel::DivePlotDataModel(QObject* parent): QAbstractTableModel(parent), plotData(NULL), sampleCount(0)
+DivePlotDataModel::DivePlotDataModel(QObject* parent): QAbstractTableModel(parent), sampleCount(0), plotData(NULL)
 {
 
 }

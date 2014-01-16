@@ -46,7 +46,8 @@ void DiveCartesianAxis::setOrientation(Qt::Orientation o)
 void DiveCartesianAxis::updateTicks()
 {
 	QLineF m = line();
-	QGraphicsView *view = scene()->views().first();
+	// unused so far:
+	// QGraphicsView *view = scene()->views().first();
 	double steps = (max - min) / interval;
 	double currValue = min;
 
@@ -63,7 +64,8 @@ void DiveCartesianAxis::updateTicks()
 	// Move the remaining Ticks / Text to it's corerct position
 	// Regartind the possibly new values for the Axis
 	qreal begin = orientation == Qt::Horizontal ? m.x1() : m.y1();
-	qreal end = orientation == Qt::Horizontal ? m.x2() : m.y2();
+	// unused so far:
+	// qreal end = orientation == Qt::Horizontal ? m.x2() : m.y2();
 	double stepSize =  orientation == Qt::Horizontal ? (m.x2() - m.x1()) : (m.y2() - m.y1());
 	stepSize = stepSize / steps;
 	for (int i = 0, count = ticks.size(); i < count; i++, currValue += interval) {

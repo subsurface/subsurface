@@ -8,7 +8,7 @@
 #include <QLinearGradient>
 
 DiveProfileItem::DiveProfileItem(): QObject(), QGraphicsPolygonItem(),
-	hAxis(NULL), hDataColumn(-1), dataModel(NULL), vAxis(NULL), vDataColumn(-1)
+	hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
 
 }

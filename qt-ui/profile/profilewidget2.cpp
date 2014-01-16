@@ -118,12 +118,13 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QSignalTransition *tEditToProfile = editState->addTransition(this, SIGNAL(startProfileState()), profileState);
 	QSignalTransition *tEditToAdd = editState->addTransition(this, SIGNAL(startAddState()), addState);
 
-		// Constants:
+	// Constants:
 	const int backgroundOnCanvas = 0;
 	const int backgroundOffCanvas = 110;
 	const int profileYAxisOnCanvas = 3;
 	const int profileYAxisOffCanvas = profileYAxis->boundingRect().width() - 10;
-	const int gasYAxisOnCanvas = gasYAxis->boundingRect().width();
+	// unused so far:
+	// const int gasYAxisOnCanvas = gasYAxis->boundingRect().width();
 	const int depthControllerOnCanvas = sceneRect().height() - depthController->boundingRect().height();
 	const int timeControllerOnCanvas = sceneRect().height() - timeController->boundingRect().height();
 	const int gasYAxisOffCanvas = gasYAxis->boundingRect().width() - 10;
@@ -133,7 +134,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	const int depthControllerOffCanvas = sceneRect().height() + depthController->boundingRect().height();
 	const int timeControllerOffCanvas = sceneRect().height() + timeController->boundingRect().height();
 	const QLineF profileYAxisExpanded = QLineF(0,0,0,timeAxisOnCanvas);
-	const QLineF timeAxisLine = QLineF(0, 0, 96, 0);
+	// unused so far:
+	// const QLineF timeAxisLine = QLineF(0, 0, 96, 0);
 
 	// State Defaults:
 	// Empty State, everything but the background is hidden.
