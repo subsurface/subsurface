@@ -46,7 +46,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	gasYAxis->setOrientation(Qt::Vertical);
 	timeAxis->setOrientation(Qt::Horizontal);
 
-		// Defaults of the Axis Coordinates:
+	// Defaults of the Axis Coordinates:
 	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10,30)); //TODO: This one should be also hooked up on the Settings change.
 	timeAxis->setMinimum(0);
@@ -65,15 +65,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	timeController->setX(sceneRect().width() - timeController->boundingRect().width()); // Position it on the right spot.
 
 	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
-	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis
-		<< timeAxis << depthController << timeController;
-	Q_FOREACH(QGraphicsItem *item, stateItems){
+	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis <<
+							timeAxis << depthController << timeController;
+	Q_FOREACH(QGraphicsItem *item, stateItems) {
 		scene()->addItem(item);
 	}
 
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
-		//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
+	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
 	stateMachine = new QStateMachine(this);
 
 	// TopLevel States
@@ -135,7 +135,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	const QLineF profileYAxisExpanded = QLineF(0,0,0,timeAxisOnCanvas);
 	const QLineF timeAxisLine = QLineF(0, 0, 96, 0);
 
-		// State Defaults:
+	// State Defaults:
 	// Empty State, everything but the background is hidden.
 	emptyState->assignProperty(this, "backgroundBrush", QBrush(Qt::white));
 	emptyState->assignProperty(background, "y",  backgroundOnCanvas);
@@ -145,7 +145,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	emptyState->assignProperty(depthController, "y", depthControllerOffCanvas);
 	emptyState->assignProperty(timeController, "y", timeControllerOffCanvas);
 
-		// Profile, everything but the background, depthController and timeController are shown.
+	// Profile, everything but the background, depthController and timeController are shown.
 	profileState->assignProperty(this, "backgroundBrush", getColor(::BACKGROUND));
 	profileState->assignProperty(background, "y",  backgroundOffCanvas);
 	profileState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
@@ -196,10 +196,10 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 // Animations
 	QList<QSignalTransition*> transitions;
-	transitions << tAddToEmpty << tAddToPlan << tAddToProfile << tEditToAdd << tEditToEmpty << tEditToPlan
-	<< tEditToProfile << tEmptyToAdd << tEmptyToPlan << tEmptyToProfile << tProfileToAdd << tProfileToEdit
-	<< tProfileToEmpty << tProfileToPlan << tPlanToAdd << tPlanToEmpty << tPlanToProfile;
-	Q_FOREACH(QSignalTransition *s, transitions){
+	transitions << tAddToEmpty << tAddToPlan << tAddToProfile << tEditToAdd << tEditToEmpty << tEditToPlan <<
+		       tEditToProfile << tEmptyToAdd << tEmptyToPlan << tEmptyToProfile << tProfileToAdd <<
+		       tProfileToEdit << tProfileToEmpty << tProfileToPlan << tPlanToAdd << tPlanToEmpty << tPlanToProfile;
+	Q_FOREACH(QSignalTransition *s, transitions) {
 		s->addAnimation(backgroundYAnim);
 		s->addAnimation(depthAxisAnim);
 		s->addAnimation(gasAxisanim);
@@ -232,7 +232,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	// I Know that it's a list, but currently we are
 	// using just the first.
 	struct dive *d = dives.first();
-	if(!d)
+	if (!d)
 		return;
 
 	// Here we need to probe for the limits of the dive.
@@ -257,7 +257,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	timeAxis->updateTicks();
 	dataModel->setDive(current_dive, pInfo);
 
-	if(diveProfileItem){
+	if (diveProfileItem) {
 		//diveProfileItem->animateDelete();
 		scene()->removeItem(diveProfileItem);
 		delete diveProfileItem;
@@ -294,10 +294,10 @@ void ProfileWidget2::resizeEvent(QResizeEvent* event)
 	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 
-	if(!stateMachine->configuration().count())
+	if (!stateMachine->configuration().count())
 		return;
 
-	if ((*stateMachine->configuration().begin())->objectName() == "Empty State"){
+	if ((*stateMachine->configuration().begin())->objectName() == "Empty State") {
 		fixBackgroundPos();
 	}
 }
@@ -305,7 +305,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent* event)
 void ProfileWidget2::fixBackgroundPos()
 {
 	QPixmap p = QPixmap(":background").scaledToHeight(viewport()->height());
-	int x = viewport()->width()/2 - p.width()/2;
+	int x = viewport()->width() / 2 - p.width() / 2;
 	DivePixmapItem *bg = background;
 	bg->setPixmap(p);
 	bg->setX(mapToScene(x, 0).x());

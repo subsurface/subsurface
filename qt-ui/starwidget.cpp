@@ -55,7 +55,7 @@ void StarWidget::paintEvent(QPaintEvent* event)
 	for(int i = current; i < TOTALSTARS; i++)
 		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starInactive());
 
-	if(hasFocus()){
+	if (hasFocus()) {
 		QStyleOptionFocusRect option;
 		option.initFrom(this);
 		option.backgroundColor = palette().color(QPalette::Background);
@@ -135,12 +135,12 @@ void StarWidget::focusOutEvent(QFocusEvent* event)
 
 void StarWidget::keyPressEvent(QKeyEvent* event)
 {
-	if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Right){
-		if (currentStars() < TOTALSTARS){
+	if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Right) {
+		if (currentStars() < TOTALSTARS) {
 			setCurrentStars( currentStars()+1);
 		}
-	}else if(event->key() == Qt::Key_Down || event->key() == Qt::Key_Left){
-		if(currentStars() > 0){
+	} else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Left) {
+		if (currentStars() > 0) {
 			setCurrentStars( currentStars()-1);
 		}
 	}

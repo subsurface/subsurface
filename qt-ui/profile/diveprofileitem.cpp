@@ -10,6 +10,7 @@
 DiveProfileItem::DiveProfileItem(): QObject(), QGraphicsPolygonItem(),
 	hAxis(NULL), hDataColumn(-1), dataModel(NULL), vAxis(NULL), vDataColumn(-1)
 {
+
 }
 
 void DiveProfileItem::setHorizontalAxis(DiveCartesianAxis* horizontal)
@@ -54,7 +55,7 @@ void DiveProfileItem::modelDataChanged()
 	// is an array of QPointF's, so we basically get the point from the model, convert
 	// to our coordinates, store. no painting is done here.
 	QPolygonF poly;
-	for(int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++){
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		qreal horizontalValue = dataModel->index(i, hDataColumn).data().toReal();
 		qreal verticalValue = dataModel->index(i, vDataColumn).data().toReal();
 		QPointF point( hAxis->posAtValue(horizontalValue), vAxis->posAtValue(verticalValue));
@@ -70,7 +71,7 @@ void DiveProfileItem::modelDataChanged()
 	setBrush(QBrush(pat));
 }
 
-void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget){
+void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
 	Q_UNUSED(widget);
 
 	// This paints the Polygon + Background. I'm setting the pen to QPen() so we don't get a black line here,
@@ -84,7 +85,7 @@ void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	// This paints the colors of the velocities.
-	for(int i = 1, count = dataModel->rowCount(); i < count; i++){
+	for (int i = 1, count = dataModel->rowCount(); i < count; i++) {
 		QModelIndex colorIndex = dataModel->index(i, DivePlotDataModel::COLOR);
 		pen.setBrush(QBrush(colorIndex.data(Qt::BackgroundRole).value<QColor>()));
 		painter->setPen(pen);

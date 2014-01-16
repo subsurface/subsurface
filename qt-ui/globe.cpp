@@ -51,7 +51,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0), edit
 	setProjection(Marble::Spherical);
 
 	setAnimationsEnabled(true);
-	Q_FOREACH(AbstractFloatItem *i, floatItems()){
+	Q_FOREACH(AbstractFloatItem *i, floatItems()) {
 		i->setVisible(false);
 	}
 
@@ -82,13 +82,13 @@ bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 	// This disables the Marble's Context Menu
 	// we need to move this to our 'contextMenuEvent'
 	// if we plan to do a different one in the future.
-	if (ev->type() == QEvent::ContextMenu){
+	if (ev->type() == QEvent::ContextMenu) {
 		contextMenuEvent(static_cast<QContextMenuEvent*>(ev));
 		return true;
 	}
-	if (ev->type() == QEvent::MouseButtonPress){
+	if (ev->type() == QEvent::MouseButtonPress) {
 		QMouseEvent *e = static_cast<QMouseEvent*>(ev);
-		if(e->button() == Qt::RightButton)
+		 if (e->button() == Qt::RightButton)
 			return true;
 	}
 	return QObject::eventFilter(obj,ev );
@@ -145,7 +145,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 
 		selectedDiveIds.push_back(idx);
 	}
-	if(selectedDiveIds.empty())
+	if (selectedDiveIds.empty())
 		return;
 	if (clear) {
 		mainWindow()->dive_list()->unselectDives();
@@ -258,8 +258,8 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	/* change everything on the selection. */
 	int i;
 	struct dive* dive;
-	for_each_dive(i, dive){
-		if(!dive->selected)
+	for_each_dive(i, dive) {
+		if (!dive->selected)
 			continue;
 		dive->latitude.udeg = lrint(lat * 1000000.0);
 		dive->longitude.udeg = lrint(lon * 1000000.0);

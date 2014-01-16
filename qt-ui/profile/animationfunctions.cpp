@@ -2,7 +2,7 @@
 #include <QPropertyAnimation>
 #include <QPointF>
 
-namespace Animations{
+namespace Animations {
 
 void hide(QObject* obj)
 {

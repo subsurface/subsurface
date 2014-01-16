@@ -14,17 +14,15 @@ TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NUL
 	qreal h, s, l, a;
 	textColor.getHslF(&h, &s, &l, &a);
 	// I use dark themes
-	if (l <= 0.3 ){ // very dark text. get a brigth background
+	if (l <= 0.3 ) { // very dark text. get a brigth background
 		addColor( QColor(Qt::red).lighter(120) );
 		addColor( QColor(Qt::green).lighter(120) );
 		addColor( QColor(Qt::blue).lighter(120) );
-	}
-	else if ( l <= 0.6 ){ // moderated dark text. get a somewhat brigth background
+	} else if ( l <= 0.6 ) { // moderated dark text. get a somewhat brigth background
 		addColor( QColor(Qt::red).lighter(60) );
 		addColor( QColor(Qt::green).lighter(60) );
 		addColor( QColor(Qt::blue).lighter(60) );
-	}
-	else{
+	} else {
 		addColor( QColor(Qt::red).darker(120) );
 		addColor( QColor(Qt::green).darker(120) );
 		addColor( QColor(Qt::blue).darker(120) );
@@ -80,7 +78,7 @@ void TagWidget::highlight() {
 			} else if (state == FINDEND) {
 				/* Found end of tag */
 				if (i > 1) {
-					if(text().at(i-1) != '\\') {
+					if (text().at(i-1) != '\\') {
 						addBlock(start, end);
 						state = FINDSTART;
 					}
@@ -125,10 +123,9 @@ void TagWidget::reparse()
 				QAbstractItemView *popup = m_completer->popup();
 				if (popup)
 					popup->hide();
-				}
-			else
+			} else {
 				m_completer->complete();
-
+			}
 		} else {
 			m_completer->complete();
 		}
@@ -141,8 +138,7 @@ void TagWidget::completionSelected(QString completion) {
 	if (pos.first >= 0 && pos.second > 0) {
 		setText(text().remove(pos.first, pos.second-pos.first).insert(pos.first, completion));
 		setCursorPosition(pos.first+completion.length());
-	}
-	else {
+	} else {
 		setText(completion.append(", "));
 		setCursorPosition(text().length());
 	}

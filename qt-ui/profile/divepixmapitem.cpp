@@ -2,4 +2,5 @@
 
 DivePixmapItem::DivePixmapItem(QObject* parent): QObject(parent), QGraphicsPixmapItem()
 {
+
 }

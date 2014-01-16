@@ -1097,7 +1097,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	/* If we don't have a ceiling yet, calculate ndl. Don't try to calculate
 	 * a ndl for lower values than 3m it would take forever */
 	if (next_stop == 0) {
-		if(entry->depth < 3000) {
+		if (entry->depth < 3000) {
 			entry->ndl = max_ndl;
 			return;
 		}
@@ -1440,10 +1440,10 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC","%s\nCalculated ceiling %.0f %s"), buf2, depthvalue, depth_unit);
-		if (prefs.calc_all_tissues){
+		if (prefs.calc_all_tissues) {
 			int k;
-			for (k=0; k<16; k++){
-				if (entry->ceilings[k]){
+			for (k=0; k<16; k++) {
+				if (entry->ceilings[k]) {
 					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
 					memcpy(buf2, buf, bufsize);
 					snprintf(buf, bufsize, translate("gettextFromC","%s\nTissue %.0fmin: %.0f %s"), buf2, buehlmann_N2_t_halflife[k], depthvalue, depth_unit);

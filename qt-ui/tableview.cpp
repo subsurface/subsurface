@@ -45,7 +45,8 @@ void TableView::setTitle(const QString& title)
 	ui.groupBox->setTitle(title);
 }
 
-void TableView::setModel(QAbstractItemModel *model){
+void TableView::setModel(QAbstractItemModel *model)
+{
 	ui.tableView->setModel(model);
 	connect(ui.tableView, SIGNAL(clicked(QModelIndex)), model, SLOT(remove(QModelIndex)));
 
@@ -80,10 +81,12 @@ void TableView::showEvent(QShowEvent* event)
 	fixPlusPosition();
 }
 
-void TableView::edit(const QModelIndex& index){
+void TableView::edit(const QModelIndex& index)
+{
 	ui.tableView->edit(index);
 }
 
-QTableView *TableView::view(){
+QTableView *TableView::view()
+{
 	return ui.tableView;
 }

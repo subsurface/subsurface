@@ -1,0 +1,63 @@
+- all indentation is tabs (set to 8 char) with the exception of
+  continuation lines that are alligned with tabs and then spaces
+
+- all keywords followed by a '(' have a space in between
+
+	if (condition)
+
+	for (i = 0; i < 5; i++)
+
+- function calls do NOT have a space between their name and argument
+
+	i = some_function(argument);
+
+- usually there is no space on the inside of parenthesis (see examples
+  above)
+
+- function / method implementations have their opening curly braces in
+  column 1
+
+- all other opening curly braces follow at the end of the line, with a
+  space separating them:
+
+	if (condition) {
+		dosomething();
+	}
+
+- both sides of an if / else clause either use or do not use curly braces:
+
+	if (condition)
+		i = 4;
+	else
+		j = 6;
+
+	if (condition) {
+		i = 6;
+	} else {
+		i = 4;
+		j = 6;
+	}
+
+- use space to make visual separation easier
+
+	a = b + 3 + e / 4;
+
+- continuation lines have the operator / comma at the end
+
+	if (very_long_conditiont_1 ||
+	    condition_2)
+
+	b = a + (c + d +
+		 f + z);
+
+- unfortunate inconsistency:
+  -- C code usually uses underscores to structure names
+
+	variable_in_C
+
+  -- C++ code usually uses camelCase
+
+	variableInCPlusPlus
+
+  where the two meet, use your best judgment and go for best consistency
+  (i.e., where does the variable "originate")

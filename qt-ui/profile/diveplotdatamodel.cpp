@@ -23,19 +23,19 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 		return QVariant();
 
 	plot_data item = plotData[index.row()];
-	if (role == Qt::DisplayRole){
-		switch(index.column()){
-			case DEPTH: return item.depth;
-			case TIME: return item.sec;
-			case PRESSURE: return item.pressure[0];
-			case TEMPERATURE: return item.temperature;
-			case COLOR: return item.velocity;
-			case USERENTERED: return false;
+	if (role == Qt::DisplayRole) {
+		switch (index.column()) {
+			case DEPTH:		return item.depth;
+			case TIME:		return item.sec;
+			case PRESSURE:		return item.pressure[0];
+			case TEMPERATURE:	return item.temperature;
+			case COLOR:		return item.velocity;
+			case USERENTERED:	return false;
 		}
 	}
-	if (role == Qt::BackgroundRole){
-		switch(index.column()){
-			case COLOR: return getColor((color_indice_t)(VELOCITY_COLORS_START_IDX + item.velocity));
+	if (role == Qt::BackgroundRole) {
+		switch (index.column()) {
+			case COLOR:	return getColor((color_indice_t)(VELOCITY_COLORS_START_IDX + item.velocity));
 		}
 	}
 	return QVariant();
@@ -54,20 +54,20 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	if (role != Qt::DisplayRole)
 		return QVariant();
 
-	switch(section){
-		case DEPTH: return tr("Depth");
-		case TIME: return tr("Time");
-		case PRESSURE: return tr("Pressure");
-		case TEMPERATURE: return tr("Temperature");
-		case COLOR: return tr("Color");
-		case USERENTERED: return tr("User Entered");
+	switch (section) {
+		case DEPTH:		return tr("Depth");
+		case TIME:		return tr("Time");
+		case PRESSURE:		return tr("Pressure");
+		case TEMPERATURE:	return tr("Temperature");
+		case COLOR:		return tr("Color");
+		case USERENTERED:	return tr("User Entered");
 	}
 	return QVariant();
 }
 
 void DivePlotDataModel::clear()
 {
-	if(rowCount() != 0){
+	if (rowCount() != 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
 		endRemoveRows();
 	}

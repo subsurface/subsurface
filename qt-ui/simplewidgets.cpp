@@ -15,13 +15,13 @@
 #include "../dive.h"
 #include "mainwindow.h"
 
-class MinMaxAvgWidgetPrivate{
+class MinMaxAvgWidgetPrivate {
 public:
 	QLabel *avgIco, *avgValue;
 	QLabel *minIco, *minValue;
 	QLabel *maxIco, *maxValue;
 
-	MinMaxAvgWidgetPrivate(MinMaxAvgWidget *owner){
+	MinMaxAvgWidgetPrivate(MinMaxAvgWidget *owner) {
 		avgIco = new QLabel(owner);
 		avgIco->setPixmap(QIcon(":/average").pixmap(16,16));
 		avgIco->setToolTip(QObject::tr("Average"));
@@ -60,8 +60,9 @@ double MinMaxAvgWidget::minimum() const
 	return d->minValue->text().toDouble();
 }
 
-MinMaxAvgWidget::MinMaxAvgWidget(QWidget* parent)
-	: d(new MinMaxAvgWidgetPrivate(this)){
+MinMaxAvgWidget::MinMaxAvgWidget(QWidget* parent) : d(new MinMaxAvgWidgetPrivate(this))
+{
+
 }
 
 MinMaxAvgWidget::~MinMaxAvgWidget()
@@ -112,7 +113,7 @@ RenumberDialog* RenumberDialog::instance()
 
 void RenumberDialog::buttonClicked(QAbstractButton* button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole){
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		qDebug() << "Renumbering.";
 		renumber_dives(ui.spinBox->value());
 	}
@@ -134,7 +135,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
 {
 	int amount;
 
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole){
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
 		if (ui.backwards->isChecked())
 			amount *= -1;

@@ -331,8 +331,8 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 {
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-	switch(ui.buttonBox->buttonRole(button)){
-	case QDialogButtonBox::ApplyRole:{
+	switch (ui.buttonBox->buttonRole(button)) {
+	case QDialogButtonBox::ApplyRole: {
 		clear_table(&gps_location_table);
 		QByteArray url = tr("Webservice").toLocal8Bit();
 		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL, NULL);
@@ -408,7 +408,7 @@ void SubsurfaceWebServices::downloadFinished()
 
 	uint resultCode = download_dialog_parse_response(downloadedData);
 	setStatusText(resultCode);
-	if (resultCode == DD_STATUS_OK){
+	if (resultCode == DD_STATUS_OK) {
 		ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 	}
 	reply->deleteLater();
@@ -426,7 +426,7 @@ void SubsurfaceWebServices::downloadError(QNetworkReply::NetworkError)
 void SubsurfaceWebServices::setStatusText(int status)
 {
 	QString text;
-	switch (status)	{
+	switch (status) {
 	case DD_STATUS_ERROR_CONNECT:	text = tr("Connection Error: ");	break;
 	case DD_STATUS_ERROR_ID:	text = tr("Invalid user identifier!");	break;
 	case DD_STATUS_ERROR_PARSE:	text = tr("Cannot parse response!");	break;
@@ -850,8 +850,8 @@ void DivelogsDeWebServices::uploadError(QNetworkReply::NetworkError error)
 void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 {
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-	switch(ui.buttonBox->buttonRole(button)){
-	case QDialogButtonBox::ApplyRole:{
+	switch (ui.buttonBox->buttonRole(button)) {
+	case QDialogButtonBox::ApplyRole: {
 		/* in 'uploadMode' button is called 'Done' and closes the dialog */
 		if (uploadMode) {
 			hide();

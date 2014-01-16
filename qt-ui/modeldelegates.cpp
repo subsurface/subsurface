@@ -26,13 +26,14 @@ QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
 
 // Gets the index of the model in the currentRow and column.
 // currCombo is defined below.
-#define IDX( XX ) mymodel->index(currCombo.currRow, XX)
+#define IDX(_XX) mymodel->index(currCombo.currRow, (_XX))
 static bool keyboardFinished = false;
 
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget* parent):
 	QStyledItemDelegate(parent),
 	parentWidget(parent)
 {
+
 }
 
 void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
@@ -46,12 +47,12 @@ void StarWidgetsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 		return;
 
 	int rating = value.toInt();
-	int deltaY = option.rect.height()/2 - StarWidget::starActive().height() /2 ;
+	int deltaY = option.rect.height() / 2 - StarWidget::starActive().height() / 2 ;
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing, true);
-	for(int i = 0; i < rating; i++)
+	for (int i = 0; i < rating; i++)
 		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, StarWidget::starActive());
-	for(int i = rating; i < TOTALSTARS; i++)
+	for (int i = rating; i < TOTALSTARS; i++)
 		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, StarWidget::starInactive());
 	painter->restore();
 }
@@ -64,7 +65,7 @@ QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject* parent): QStyledItemDelegate(parent), model(model)
 {
 	connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)),
-	this, SLOT(revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)));
+		this, SLOT(revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint)));
 }
 
 void ComboBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
@@ -78,7 +79,7 @@ void ComboBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 		c->setEditText(data);
 }
 
-struct CurrSelected{
+struct CurrSelected {
 	QComboBox *comboEditor;
 	int currRow;
 	QString activeText;
@@ -129,7 +130,7 @@ void ComboBoxDelegate::testActivation(const QString& currText)
 }
 
 // HACK, send a fake event so Qt thinks we hit 'enter' on the line edit.
-void ComboBoxDelegate::fakeActivation(){
+void ComboBoxDelegate::fakeActivation() {
 	/* this test is needed because as soon as I show the selector,
 	 * the first item gots selected, this sending an activated signal,
 	 * calling this fakeActivation code and setting as the current,
@@ -137,7 +138,7 @@ void ComboBoxDelegate::fakeActivation(){
 	 * to false and be happy, because the next activation  ( by click
 	 * or keypress) is real.
 	 */
-	if(currCombo.ignoreSelection){
+	if (currCombo.ignoreSelection) {
 		currCombo.ignoreSelection = false;
 		return;
 	}
@@ -150,7 +151,7 @@ void ComboBoxDelegate::fakeActivation(){
 // we are on a QComboBox ( but not on a QLineEdit.
 void ComboBoxDelegate::fixTabBehavior()
 {
-	if(keyboardFinished){
+	if (keyboardFinished) {
 		setModelData(0,0,QModelIndex());
 	}
 }
@@ -158,23 +159,22 @@ void ComboBoxDelegate::fixTabBehavior()
 bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 {
 	// Reacts on Key_UP and Key_DOWN to show the QComboBox - list of choices.
-	if (event->type() == QEvent::KeyPress || event->type() == QEvent::ShortcutOverride){
-		if (object == currCombo.comboEditor){ // the 'LineEdit' part
+	if (event->type() == QEvent::KeyPress || event->type() == QEvent::ShortcutOverride) {
+		if (object == currCombo.comboEditor) { // the 'LineEdit' part
 			QKeyEvent *ev = static_cast<QKeyEvent*>(event);
-			if(ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down){
+			if (ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down) {
 				currCombo.ignoreSelection = true;
 				currCombo.comboEditor->showPopup();
 			}
-			if(ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return){
+			if (ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return) {
 				currCombo.activeText  = currCombo.comboEditor->currentText();
 				keyboardFinished = true;
 			}
-		}
-		else{	// the 'Drop Down Menu' part.
+		} else {	// the 'Drop Down Menu' part.
 			QKeyEvent *ev = static_cast<QKeyEvent*>(event);
-			if(    ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return
-				|| ev->key() == Qt::Key_Tab   || ev->key() == Qt::Key_Backtab
-				|| ev->key() == Qt::Key_Escape){
+			if (ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return ||
+			    ev->key() == Qt::Key_Tab   || ev->key() == Qt::Key_Backtab ||
+			    ev->key() == Qt::Key_Escape) {
 				// treat Qt as a silly little boy - pretending that the key_return nwas pressed on the combo,
 				// instead of the list of choices. this can be extended later for
 				// other imputs, like tab navigation and esc.
@@ -183,7 +183,7 @@ bool ComboBoxDelegate::eventFilter(QObject* object, QEvent* event)
 		}
 	}
 
-    return QStyledItemDelegate::eventFilter(object, event);
+	return QStyledItemDelegate::eventFilter(object, event);
 }
 
 void ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
@@ -193,10 +193,10 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionV
 	defaultRect.setY( defaultRect.y() -1);
 	defaultRect.setWidth( defaultRect.width() + 2);
 	defaultRect.setHeight( defaultRect.height() + 2);
-    editor->setGeometry(defaultRect);
+	editor->setGeometry(defaultRect);
 }
 
-struct RevertCylinderData{
+struct RevertCylinderData {
 	QString type;
 	int pressure;
 	int size;

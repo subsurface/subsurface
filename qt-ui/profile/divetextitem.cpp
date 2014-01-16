@@ -29,9 +29,9 @@ void DiveTextItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* opti
 //
 // // 	if (internalAlignFlags & Qt::AlignLeft )
 // // 		painter->translate(); // This is the default, uneeded.
-// 	if(internalAlignFlags & Qt::AlignHCenter)
+// 	if (internalAlignFlags & Qt::AlignHCenter)
 // 		painter->translate(-rect.width()/2, 0);
-// 	else if(internalAlignFlags & Qt::AlignRight)
+// 	else if (internalAlignFlags & Qt::AlignRight)
 // 		painter->translate(-rect.width(), 0);
 
 	QGraphicsSimpleTextItem::paint(painter, option, widget);

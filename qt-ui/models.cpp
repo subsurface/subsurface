@@ -64,7 +64,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList& newHeaders)
 
 CylindersModel::CylindersModel(QObject* parent): current(0), rows(0)
 {
-	//	enum{REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
+	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings( QStringList() <<  "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") <<  trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%") << tr("Switch at"));
 }
 
@@ -106,7 +106,7 @@ QVariant CylindersModel::data(const QModelIndex& index, int role) const
 	break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
-		switch(index.column()) {
+		switch (index.column()) {
 		case TYPE:
 			ret = QString(cyl->type.description);
 			break;
@@ -166,7 +166,7 @@ cylinder_t* CylindersModel::cylinderAt(const QModelIndex& index)
 void CylindersModel::passInData(const QModelIndex& index, const QVariant& value)
 {
 	cylinder_t *cyl = cylinderAt(index);
-	switch(index.column()) {
+	switch (index.column()) {
 	case SIZE:
 		if (cyl->type.size.mliter != value.toInt()) {
 			cyl->type.size.mliter = value.toInt();
@@ -194,7 +194,7 @@ bool CylindersModel::setData(const QModelIndex& index, const QVariant& value, in
 		DivePlannerPointsModel::instance()->rememberTanks();
 
 	cylinder_t *cyl = cylinderAt(index);
-	switch(index.column()) {
+	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
 			QByteArray ba = value.toByteArray();
@@ -391,7 +391,7 @@ QVariant WeightModel::data(const QModelIndex& index, int role) const
 	break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
-		switch(index.column()) {
+		switch (index.column()) {
 		case TYPE:
 			ret = gettextFromC::instance()->tr(ws->description);
 			break;
@@ -542,7 +542,7 @@ bool WeightModel::setData(const QModelIndex& index, const QVariant& value, int r
 {
 	QString vString = value.toString();
 	weightsystem_t *ws = &current->weightsystem[index.row()];
-	switch(index.column()) {
+	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
 			if (!ws->description || gettextFromC::instance()->tr(ws->description) != vString) {
@@ -640,7 +640,7 @@ bool WSInfoModel::insertRows(int row, int count, const QModelIndex& parent)
 bool WSInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	struct ws_info_t *info = &ws_info[index.row()];
-	switch(index.column()) {
+	switch (index.column()) {
 	case DESCRIPTION:
 		info->name = strdup(value.toByteArray().data());
 		break;
@@ -665,13 +665,13 @@ QVariant WSInfoModel::data(const QModelIndex& index, int role) const
 	struct ws_info_t *info = &ws_info[index.row()];
 
 	int gr = info->grams;
-	switch(role){
+	switch (role) {
 		case Qt::FontRole :
 			ret = defaultModelFont();
 			break;
 		case Qt::DisplayRole :
 		case Qt::EditRole :
-			switch(index.column()) {
+			switch (index.column()) {
 				case GR:
 					ret = gr;
 					break;
@@ -698,9 +698,9 @@ WSInfoModel::WSInfoModel() : rows(-1)
 {
 	setHeaderDataStrings( QStringList() << tr("Description") << tr("kg"));
 	struct ws_info_t *info = ws_info;
-	for (info = ws_info; info->name; info++, rows++){
+	for (info = ws_info; info->name; info++, rows++) {
 		QString wsInfoName = gettextFromC::instance()->tr(info->name);
-		if( wsInfoName.count() > biggerEntry.count())
+		if ( wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
 	}
 
@@ -716,9 +716,9 @@ void WSInfoModel::updateInfo()
 	beginRemoveRows(QModelIndex(), 0, this->rows);
 	endRemoveRows();
 	rows = -1;
-	for (info = ws_info; info->name; info++, rows++){
+	for (info = ws_info; info->name; info++, rows++) {
 		QString wsInfoName = gettextFromC::instance()->tr(info->name);
-		if( wsInfoName.count() > biggerEntry.count())
+		if ( wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
 	}
 
@@ -766,7 +766,7 @@ bool TankInfoModel::insertRows(int row, int count, const QModelIndex& parent)
 bool TankInfoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	struct tank_info_t *info = &tank_info[index.row()];
-	switch(index.column()) {
+	switch (index.column()) {
 	case DESCRIPTION:
 		info->name = strdup(value.toByteArray().data());
 		break;
@@ -791,7 +791,7 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid()) {
 		return ret;
 	}
-	if (role == Qt::FontRole){
+	if (role == Qt::FontRole) {
 		return defaultModelFont();
 	}
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
@@ -802,7 +802,7 @@ QVariant TankInfoModel::data(const QModelIndex& index, int role) const
 		if (info->cuft && info->psi)
 			ml = cuft_to_l(info->cuft) * 1000 / bar_to_atm(bar);
 
-		switch(index.column()) {
+		switch (index.column()) {
 			case BAR:
 				ret = bar * 1000;
 				break;
@@ -826,7 +826,7 @@ TankInfoModel::TankInfoModel() :  rows(-1)
 {
 	setHeaderDataStrings( QStringList() << tr("Description") << tr("ml") << tr("bar"));
 	struct tank_info_t *info = tank_info;
-	for (info = tank_info; info->name; info++, rows++){
+	for (info = tank_info; info->name; info++, rows++) {
 		QString infoName = gettextFromC::instance()->tr(info->name);
 		if (infoName.count() > biggerEntry.count())
 			biggerEntry = infoName;
@@ -1074,7 +1074,7 @@ QVariant DiveItem::data(int column, int role) const
 	if (role == DiveTripModel::DIVE_ROLE) {
 		retVal = QVariant::fromValue<void*>(dive);
 	}
-	if(role == DiveTripModel::DIVE_IDX){
+	if (role == DiveTripModel::DIVE_IDX) {
 		Q_ASSERT(dive != NULL);
 		retVal = get_divenr(dive);
 	}
@@ -1083,7 +1083,7 @@ QVariant DiveItem::data(int column, int role) const
 
 Qt::ItemFlags DiveItem::flags(const QModelIndex& index) const
 {
-	if(index.column() == NR){
+	if (index.column() == NR) {
 		return TreeItem::flags(index) | Qt::ItemIsEditable;
 	}
 	return TreeItem::flags(index);
@@ -1102,7 +1102,7 @@ bool DiveItem::setData(const QModelIndex& index, const QVariant& value, int role
 
 	int i;
 	struct dive *d;
-	for_each_dive(i, d){
+	for_each_dive(i, d) {
 		if (d->number == v)
 			return false;
 	}
@@ -1215,7 +1215,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 	if (orientation == Qt::Vertical)
 		return ret;
 
-	switch(role){
+	switch (role) {
 		case Qt::FontRole :
 			ret = defaultModelFont(); break;
 		case Qt::DisplayRole :
@@ -1244,7 +1244,7 @@ void DiveTripModel::setupModelData()
 {
 	int i = dive_table.nr;
 
-	if (rowCount()){
+	if (rowCount()) {
 		beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 		endRemoveRows();
 	}
@@ -1281,7 +1281,7 @@ void DiveTripModel::setupModelData()
 		tripItem->children.push_back(diveItem);
 	}
 
-	if (rowCount()){
+	if (rowCount()) {
 		beginInsertRows(QModelIndex(), 0, rowCount() - 1);
 		endInsertRows();
 	}
@@ -1302,7 +1302,7 @@ bool DiveTripModel::setData(const QModelIndex& index, const QVariant& value, int
 {
 	TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
 	DiveItem *diveItem = dynamic_cast<DiveItem*>(item);
-	if(!diveItem)
+	if (!diveItem)
 		return false;
 	return diveItem->setData(index, value, role);}
 
@@ -1327,16 +1327,16 @@ QVariant DiveComputerModel::data(const QModelIndex& index, int role) const
 	DiveComputerNode node = values.at(index.row());
 
 	QVariant ret;
-	if (role == Qt::DisplayRole || role == Qt::EditRole){
-		switch(index.column()){
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
+		switch (index.column()) {
 			case ID:	ret = QString("0x").append(QString::number(node.deviceId, 16)); break;
 			case MODEL:	ret = node.model; break;
 			case NICKNAME:	ret = node.nickName; break;
 		}
 	}
 
-	if (index.column() == REMOVE){
-		switch(role){
+	if (index.column() == REMOVE) {
+		switch (role) {
 			case Qt::DecorationRole : ret = QIcon(":trash"); break;
 			case Qt::ToolTipRole : ret = tr("Clicking here will remove this divecomputer."); break;
 		}
@@ -1354,13 +1354,13 @@ void DiveComputerModel::update()
 	QList<DiveComputerNode> values = dcWorkingMap.values();
 	int count = values.count();
 
-	if(numRows){
+	if (numRows) {
 		beginRemoveRows(QModelIndex(), 0, numRows-1);
 		numRows = 0;
 		endRemoveRows();
 	}
 
-	if (count){
+	if (count) {
 		beginInsertRows(QModelIndex(), 0, count-1);
 		numRows = count;
 		endInsertRows();
@@ -1413,7 +1413,7 @@ void DiveComputerModel::keepWorkingList()
  * ################################################################
  */
 
-class YearStatisticsItem : public TreeItem{
+class YearStatisticsItem : public TreeItem {
 public:
 	enum {YEAR, DIVES, TOTAL_TIME, AVERAGE_TIME, SHORTEST_TIME, LONGEST_TIME, AVG_DEPTH, MIN_DEPTH,
 		MAX_DEPTH, AVG_SAC, MIN_SAC, MAX_SAC, AVG_TEMP, MIN_TEMP, MAX_TEMP, COLUMNS};
@@ -1440,7 +1440,7 @@ QVariant YearStatisticsItem::data(int column, int role) const
 	} else if (role != Qt::DisplayRole) {
 		return ret;
 	}
-	switch(column) {
+	switch (column) {
 	case YEAR:
 		if (stats_interval.is_trip) {
 			ret = stats_interval.location;
@@ -1491,7 +1491,7 @@ QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientat
 		  val = defaultModelFont();
 
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-		switch(section) {
+		switch (section) {
 		case YEAR:		val = tr("Year \n > Month / Trip"); break;
 		case DIVES:		val = tr("#"); break;
 		case TOTAL_TIME:	val = tr("Duration \n Total"); break;
@@ -1824,7 +1824,7 @@ void GasSelectionModel::repopulate()
 
 QVariant GasSelectionModel::data(const QModelIndex& index, int role) const
 {
-	if(role == Qt::FontRole){
+	if (role == Qt::FontRole) {
 		return defaultModelFont();
 	}
 	return QStringListModel::data(index, role);
@@ -1844,8 +1844,8 @@ LanguageModel::LanguageModel(QObject* parent): QAbstractListModel(parent)
 	QSettings s;
 	QDir d(getSubsurfaceDataPath("translations"));
 	QStringList result = d.entryList();
-	Q_FOREACH(const QString& s, result){
-		if ( s.startsWith("subsurface_") && s.endsWith(".qm") ){
+	Q_FOREACH(const QString& s, result) {
+		if ( s.startsWith("subsurface_") && s.endsWith(".qm") ) {
 			languages.push_back( (s == "subsurface_source.qm") ? "English" : s);
 		}
 	}
@@ -1855,14 +1855,14 @@ QVariant LanguageModel::data(const QModelIndex& index, int role) const
 {
 	QLocale loc;
 	QString currentString = languages.at(index.row());
-	if(!index.isValid())
+	if (!index.isValid())
 		return QVariant();
-	switch(role){
-		case Qt::DisplayRole:{
+	switch (role) {
+		case Qt::DisplayRole: {
 			QLocale l( currentString.remove("subsurface_"));
 			return currentString == "English" ? currentString : QString("%1 (%2)").arg(l.languageToString(l.language())).arg(l.countryToString(l.country()));
 		}break;
-	case Qt::UserRole:{
+	case Qt::UserRole: {
 			QString currentString = languages.at(index.row());
 			return currentString == "English" ? "en_US" : currentString.remove("subsurface_");
 		}break;

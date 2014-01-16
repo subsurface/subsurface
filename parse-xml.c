@@ -1628,10 +1628,10 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 extern int dm4_events(void *handle, int columns, char **data, char **column)
 {
 	event_start();
-	if(data[1])
+	if (data[1])
 		cur_event.time.seconds = atoi(data[1]);
 
-	if(data[2]) {
+	if (data[2]) {
 		switch (atoi(data[2])) {
 			case 1:
 				/* 1 Mandatory Safety Stop */
@@ -1728,7 +1728,7 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 
 extern int dm4_tags(void *handle, int columns, char **data, char **column)
 {
-	if(data[0])
+	if (data[0])
 		taglist_add_tag(cur_dive->tag_list, data[0]);
 
 	return 0;
@@ -1874,7 +1874,7 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 
 	retval = sqlite3_open(url, &handle);
 
-	if(retval) {
+	if (retval) {
 		fprintf(stderr, translate("gettextFromC","Database connection failed '%s'.\n"), url);
 		return 1;
 	}

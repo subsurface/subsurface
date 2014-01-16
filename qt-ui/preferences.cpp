@@ -206,7 +206,7 @@ void PreferencesDialog::syncSettings()
 
 void PreferencesDialog::buttonClicked(QAbstractButton* button)
 {
-	switch(ui.buttonBox->standardButton(button)){
+	switch (ui.buttonBox->standardButton(button)) {
 	case QDialogButtonBox::Discard:
 		restorePrefs();
 		close();

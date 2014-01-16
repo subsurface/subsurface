@@ -132,7 +132,7 @@ struct divecomputer* fake_dc(struct divecomputer* dc)
 		/* we try for a sane slope, but bow to the insanity of
 		 * the user supplied data */
 		fill_samples_no_avg(fake, max_d, max_t, MAX(2.0 * max_d / max_t, 5000.0 / 60));
-		if(fake[3].time.seconds == 0) { // just a 4 point profile
+		if (fake[3].time.seconds == 0) { // just a 4 point profile
 			fakedc.samples = 4;
 			fake[3].time.seconds = max_t;
 		}

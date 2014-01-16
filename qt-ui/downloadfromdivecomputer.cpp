@@ -32,7 +32,7 @@ struct mydescriptor {
 	unsigned int model;
 };
 
-namespace DownloadFromDcGlobal{
+namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
