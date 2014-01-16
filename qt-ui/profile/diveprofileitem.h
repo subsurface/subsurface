@@ -21,22 +21,22 @@
 class DiveCartesianAxis;
 class QAbstractTableModel;
 
-class DiveProfileItem : public QObject, public QGraphicsPolygonItem{
+class AbstractProfilePolygonItem : public QObject, public QGraphicsPolygonItem{
 	Q_OBJECT
 	Q_PROPERTY(QPointF pos WRITE setPos READ pos)
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
-	DiveProfileItem();
+	AbstractProfilePolygonItem();
 	void setVerticalAxis(DiveCartesianAxis *vertical);
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
 	void setModel(QAbstractTableModel *model);
 	void setHorizontalDataColumn(int column);
 	void setVerticalDataColumn(int column);
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 public slots:
-	void modelDataChanged();
-private:
+	virtual void modelDataChanged();
+protected:
 	DiveCartesianAxis *hAxis;
 	DiveCartesianAxis *vAxis;
 	QAbstractTableModel *dataModel;
@@ -44,5 +44,11 @@ private:
 	int vDataColumn;
 };
 
+class DiveProfileItem : public AbstractProfilePolygonItem{
+	Q_OBJECT
+public:
+    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+    virtual void modelDataChanged();
+};
 
 #endif

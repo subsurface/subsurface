@@ -14,19 +14,19 @@ DiveEventItem::DiveEventItem(QObject* parent): DivePixmapItem(parent),
 void DiveEventItem::setHorizontalAxis(DiveCartesianAxis* axis)
 {
 	hAxis = axis;
-	recalculate();
+	recalculatePos();
 }
 
 void DiveEventItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
-	recalculate();
+	recalculatePos();
 }
 
 void DiveEventItem::setVerticalAxis(DiveCartesianAxis* axis)
 {
 	vAxis = axis;
-	recalculate();
+	recalculatePos();
 }
 
 void DiveEventItem::setEvent(struct event* ev)
@@ -34,7 +34,7 @@ void DiveEventItem::setEvent(struct event* ev)
 	internalEvent = ev;
 	setupPixmap();
 	setupToolTipString();
-	recalculate();
+	recalculatePos();
 }
 
 void DiveEventItem::setupPixmap()
@@ -102,12 +102,11 @@ void DiveEventItem::eventVisibilityChanged(const QString& eventName, bool visibl
 
 }
 
-void DiveEventItem::recalculate()
+void DiveEventItem::recalculatePos()
 {
 	if (!vAxis || !hAxis || !internalEvent || !dataModel){
 		return;
 	}
-	qDebug() << "Calculating.";
 	QModelIndexList result = dataModel->match(dataModel->index(0,DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds );
 	if(result.isEmpty()){
 		hide();
