@@ -61,3 +61,17 @@
 
   where the two meet, use your best judgment and go for best consistency
   (i.e., where does the variable "originate")
+
+- switch statements with blocks are a little bit special (to avoid indenting
+  too far)
+
+	switch (foo) {
+	case FIRST:
+		whatever();
+		break;
+	case SECOND: {
+		int i;
+		for (i = 0; i < 5; i++)
+			do_something(i);
+	}
+	}
