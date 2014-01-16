@@ -278,7 +278,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	profileYAxis->updateTicks();
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
-	temperatureAxis->updateTicks();
+	//temperatureAxis->updateTicks();
 	timeAxis->setMaximum(maxtime);
 	timeAxis->updateTicks();
 	dataModel->setDive(current_dive, pInfo);
