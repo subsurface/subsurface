@@ -27,7 +27,7 @@ void DiveCartesianAxis::setTextColor(const QColor& color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis() : orientation(Qt::Horizontal)
+DiveCartesianAxis::DiveCartesianAxis() : orientation(LeftToRight)
 {
 
 }
@@ -37,12 +37,9 @@ DiveCartesianAxis::~DiveCartesianAxis()
 
 }
 
-void DiveCartesianAxis::setOrientation(Qt::Orientation o)
+void DiveCartesianAxis::setOrientation(Orientation o)
 {
 	orientation = o;
-	// position the elements on the screen.
-	setMinimum(minimum());
-	setMaximum(maximum());
 }
 
 void DiveCartesianAxis::updateTicks()
@@ -65,15 +62,32 @@ void DiveCartesianAxis::updateTicks()
 
 	// Move the remaining Ticks / Text to it's corerct position
 	// Regartind the possibly new values for the Axis
-	qreal begin = orientation == Qt::Horizontal ? m.x1() : m.y1();
-	// unused so far:
-	// qreal end = orientation == Qt::Horizontal ? m.x2() : m.y2();
-	double stepSize =  orientation == Qt::Horizontal ? (m.x2() - m.x1()) : (m.y2() - m.y1());
+	qreal begin, stepSize;
+	if (orientation == TopToBottom) {
+		begin = m.y1();
+		stepSize = (m.y2() - m.y1());
+	} else if (orientation == BottomToTop) {
+		begin = m.y2();
+		stepSize = (m.y2() - m.y1());
+	} else if (orientation == LeftToRight ) {
+		begin = m.x1();
+		stepSize = (m.x2() - m.x1());
+	} else if (orientation == RightToLeft) {
+		begin = m.x2();
+		stepSize = (m.x2() - m.x1());
+	}
 	stepSize = stepSize / steps;
+
+
 	for (int i = 0, count = ticks.size(); i < count; i++, currValue += interval) {
-		qreal childPos = begin + i * stepSize;
+		qreal childPos;
+		if (orientation == TopToBottom || orientation == LeftToRight) {
+			childPos = begin + i * stepSize;
+		} else {
+			childPos = begin - i * stepSize;
+		}
 		labels[i]->setText(textForValue(currValue));
-		if ( orientation == Qt::Horizontal ) {
+		if ( orientation == LeftToRight || orientation == RightToLeft) {
 			ticks[i]->animateMoveTo(childPos, m.y1() + tickSize);
 			labels[i]->animateMoveTo(childPos, m.y1() + tickSize);
 		} else {
@@ -84,7 +98,12 @@ void DiveCartesianAxis::updateTicks()
 
 	// Add's the rest of the needed Ticks / Text.
 	for (int i = ticks.size(); i < steps; i++,  currValue += interval) {
-		qreal childPos = begin + i * stepSize;
+		qreal childPos;
+		if (orientation == TopToBottom || orientation == LeftToRight) {
+		childPos = begin + i * stepSize;
+		} else {
+			childPos = begin - i * stepSize;
+		}
 		DiveLineItem *item = new DiveLineItem(this);
 		item->setPen(pen());
 		ticks.push_back(item);
@@ -94,7 +113,7 @@ void DiveCartesianAxis::updateTicks()
 		label->setBrush(QBrush(textColor));
 
 		labels.push_back(label);
-		if (orientation == Qt::Horizontal) {
+		if (orientation == RightToLeft || orientation == LeftToRight) {
 			item->setLine(0, 0, 0, tickSize);
 			item->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene
 			item->animateMoveTo(childPos, m.y1() + tickSize); // anim it to scene.
@@ -110,7 +129,6 @@ void DiveCartesianAxis::updateTicks()
 			label->animateMoveTo(m.x1() - tickSize, childPos);
 		}
 	}
-
 }
 
 QString DiveCartesianAxis::textForValue(double value)
@@ -131,7 +149,7 @@ void DiveCartesianAxis::setTickInterval(double i)
 qreal DiveCartesianAxis::valueAt(const QPointF& p)
 {
 	QLineF m = line();
-	double retValue =  orientation == Qt::Horizontal ?
+	double retValue =  orientation == LeftToRight || RightToLeft?
 				max * (p.x() - m.x1()) / (m.x2() - m.x1()) :
 				max * (p.y() - m.y1()) / (m.y2() - m.y1());
 	return retValue;
@@ -145,13 +163,22 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 	double size = max - min;
 	double distanceFromOrigin = value - min;
 	double percent = (value - min) / size;
-	double realSize = orientation == Qt::Horizontal ?
+
+	double realSize = orientation == LeftToRight || orientation == RightToLeft?
 				m.x2() - m.x1() :
 				m.y2() - m.y1();
+
+	// Inverted axis, just invert the percentage.
+	if(orientation == RightToLeft || orientation == BottomToTop){
+		percent = 1 - percent;
+	}
+
 	double retValue = realSize * percent;
-	double adjusted =  (orientation == Qt::Horizontal) ?
-				retValue + m.x1() + p.x() :
-				retValue + m.y1() + p.y();
+	double adjusted =
+		orientation == LeftToRight ?  retValue + m.x1() + p.x() :
+		orientation == RightToLeft ?  retValue + m.x1() + p.x() :
+		orientation == TopToBottom ?  retValue + m.y1() + p.y() :
+		/* entation == BottomToTop */ retValue + m.y1() + p.y() ;
 	return adjusted;
 }
 

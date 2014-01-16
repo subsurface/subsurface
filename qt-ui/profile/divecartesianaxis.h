@@ -13,12 +13,13 @@ class DiveCartesianAxis : public QObject, public QGraphicsLineItem{
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
+	enum Orientation{TopToBottom, BottomToTop, LeftToRight, RightToLeft};
 	DiveCartesianAxis();
 	virtual ~DiveCartesianAxis();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
-	void setOrientation(Qt::Orientation orientation);
+	void setOrientation(Orientation orientation);
 	void setTickSize(qreal size);
 	void updateTicks();
 	double minimum() const;
@@ -34,7 +35,7 @@ signals:
 protected:
 	virtual QString textForValue(double value);
 
-	Qt::Orientation orientation;
+	Orientation orientation;
 	QList<DiveLineItem*> ticks;
 	QList<DiveTextItem*> labels;
 	double min;

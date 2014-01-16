@@ -46,9 +46,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 	// Creating the needed items.
 	// ORDER: {BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
-	profileYAxis->setOrientation(Qt::Vertical);
-	gasYAxis->setOrientation(Qt::Vertical);
-	timeAxis->setOrientation(Qt::Horizontal);
+	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
+	gasYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
+	timeAxis->setOrientation(DiveCartesianAxis::LeftToRight);
 
 	// Defaults of the Axis Coordinates:
 	profileYAxis->setMinimum(0);
@@ -62,7 +62,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileYAxis->setTickSize(1);
 	gasYAxis->setLine(0, 0, 0, 20);
 
-	temperatureAxis->setOrientation(Qt::Vertical);
+	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setLine(0, 60, 0, 90);
 	temperatureAxis->setX(3);
 	temperatureAxis->setTickSize(2);
