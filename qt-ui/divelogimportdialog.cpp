@@ -8,6 +8,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 		{"", },
 		{"APD Log Viewer", 1, 2, 16, 7, 18, 19, "Tab"},
 		{"XP5", 1, 2, 10, -1, -1, -1, "Tab"},
+		{"SensusCSV", 10, 11, -1, -1, -1, -1, ","},
 		{NULL,}
 };
 
@@ -18,6 +19,9 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 {
 	ui->setupUi(this);
 	fileNames = *fn;
+
+	/* Add indexes of XSLTs requiring special handling to the list */
+	specialCSV << 3;
 
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
@@ -49,7 +53,6 @@ DiveLogImportDialog::~DiveLogImportDialog()
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	char *error = NULL;
-
 	for (int i = 0; i < fileNames.size(); ++i) {
 		parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
 				ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
@@ -57,6 +60,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				VALUE_IF_CHECKED(CSVcns),
 				VALUE_IF_CHECKED(CSVstopdepth),
 				ui->CSVSeparator->currentIndex(),
+				specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
 				&error);
 		if (error != NULL) {
 			mainWindow()->showError(error);
@@ -78,6 +82,11 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		})
 void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 {
+	if (specialCSV.contains(index)) {
+		ui->groupBox_3->setEnabled(false);
+	} else {
+		ui->groupBox_3->setEnabled(true);
+	}
 	if (index == 0)
 		return;
 
@@ -100,5 +109,6 @@ void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 
 void DiveLogImportDialog::unknownImports()
 {
-	ui->knownImports->setCurrentIndex(0);
+	if (!specialCSV.contains(ui->knownImports->currentIndex()))
+		ui->knownImports->setCurrentIndex(0);
 }

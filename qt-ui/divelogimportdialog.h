@@ -27,6 +27,7 @@ private:
 	bool selector;
 	QStringList fileNames;
 	Ui::DiveLogImportDialog *ui;
+	QList<int> specialCSV;
 
 	struct CSVAppConfig {
 		QString name;
@@ -39,7 +40,7 @@ private:
 		QString separator;
 	};
 
-#define CSVAPPS 4
+#define CSVAPPS 5
 	static const CSVAppConfig CSVApps[CSVAPPS];
 };
 
