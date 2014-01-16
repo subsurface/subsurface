@@ -1914,6 +1914,7 @@ static struct xslt_files {
 	{ "profile", "udcf.xslt" },
 	{ "Divinglog", "DivingLog.xslt" },
 	{ "csv", "csv2xml.xslt" },
+	{ "sensuscsv", "sensuscsv.xslt" },
 	{ NULL, }
 };
 

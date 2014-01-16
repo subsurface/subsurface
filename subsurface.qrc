@@ -41,5 +41,6 @@
         <file>xslt/udcf.xslt</file>
         <file>xslt/uddf-export.xslt</file>
         <file>xslt/uddf.xslt</file>
+        <file>xslt/sensuscsv.xslt</file>
  </qresource>
  </RCC>
