@@ -23,6 +23,7 @@ struct DiveProfileItem;
 struct TimeAxis;
 struct dive;
 struct QStateMachine;
+struct DiveCartesianPlane;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -62,6 +63,7 @@ private:
 	DiveRectItem *depthController;
 	DiveRectItem *timeController;
 	DiveProfileItem *diveProfileItem;
+	DiveCartesianPlane *cartesianPlane;
 };
 
 #endif

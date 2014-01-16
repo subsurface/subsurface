@@ -13,11 +13,13 @@
 void DiveCartesianAxis::setMaximum(double maximum)
 {
 	max = maximum;
+	emit sizeChanged();
 }
 
 void DiveCartesianAxis::setMinimum(double minimum)
 {
 	min = minimum;
+	emit sizeChanged();
 }
 
 void DiveCartesianAxis::setTextColor(const QColor& color)
@@ -188,4 +190,85 @@ QString DepthAxis::textForValue(double value)
 QString TimeAxis::textForValue(double value)
 {
 	return QString::number(value / 60);
+}
+
+void DiveCartesianPlane::setLeftAxis(DiveCartesianAxis* axis)
+{
+	leftAxis = axis;
+	connect(leftAxis, SIGNAL(sizeChanged()), this, SLOT(setup()));
+	if (bottomAxis)
+		setup();
+}
+
+void DiveCartesianPlane::setBottomAxis(DiveCartesianAxis* axis)
+{
+	bottomAxis = axis;
+	connect(bottomAxis, SIGNAL(sizeChanged()), this, SLOT(setup()));
+	if (leftAxis)
+		setup();
+}
+
+QLineF DiveCartesianPlane::horizontalLine() const
+{
+	return (bottomAxis) ? bottomAxis->line() : QLineF() ;
+}
+
+void DiveCartesianPlane::setHorizontalLine(QLineF line)
+{
+	if ( horizontalSize == line.length())
+		return;
+	horizontalSize = line.length();
+	setup();
+}
+
+void DiveCartesianPlane::setVerticalLine(QLineF line)
+{
+	if (verticalSize == line.length())
+		return;
+	verticalSize = line.length();
+	setup();
+}
+
+QLineF DiveCartesianPlane::verticalLine() const
+{
+	return (leftAxis) ? leftAxis->line() : QLineF() ;
+}
+
+void DiveCartesianPlane::setup()
+{
+	if (!leftAxis || !bottomAxis || !scene())
+		return;
+
+	// This creates a Grid around the axis, creating the cartesian plane.
+	const int top = leftAxis->posAtValue(leftAxis->minimum());
+	const int bottom = leftAxis->posAtValue(leftAxis->maximum());
+	const int left = bottomAxis->posAtValue(bottomAxis->minimum());
+	const int right = bottomAxis->posAtValue(bottomAxis->maximum());
+
+	setRect(0, 0, horizontalSize, verticalSize);
+	setPos(left, top);
+
+	qDeleteAll(horizontalLines);
+	qDeleteAll(verticalLines);
+	horizontalLines.clear();
+	verticalLines.clear();
+
+	// DEPTH is M_OR_FEET(10,30), Minutes are 600, per line.
+	for (int i = leftAxis->minimum(), max = leftAxis->maximum(); i < max; i += M_OR_FT(10,30)) {
+		DiveLineItem *line = new DiveLineItem();
+		line->setLine(0, 0, horizontalSize, 0);
+		line->setPos(left,leftAxis->posAtValue(i));
+		line->setZValue(-1);
+		horizontalLines.push_back(line);
+		scene()->addItem(line);
+	}
+
+	for (int i = bottomAxis->minimum(), max = bottomAxis->maximum(); i < max; i += 600) { // increments by 10 minutes.
+		DiveLineItem *line = new DiveLineItem();
+		line->setLine(0, 0, 0, verticalSize);
+		line->setPos(bottomAxis->posAtValue(i), top);
+		line->setZValue(-1);
+		verticalLines.push_back(line);
+		scene()->addItem(line);
+	}
 }

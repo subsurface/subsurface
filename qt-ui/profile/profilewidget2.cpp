@@ -29,7 +29,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	timeAxis(new TimeAxis()),
 	depthController(new DiveRectItem()),
 	timeController(new DiveRectItem()),
-	diveProfileItem(new DiveProfileItem())
+	diveProfileItem(new DiveProfileItem()),
+	cartesianPlane(new DiveCartesianPlane())
 {
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0, 0, 100, 100);
@@ -63,6 +64,10 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	depthController->setRect(0, 0, 10, 5);
 	timeController->setRect(0, 0, 10, 5);
 	timeController->setX(sceneRect().width() - timeController->boundingRect().width()); // Position it on the right spot.
+
+	cartesianPlane->setBottomAxis(timeAxis);
+	cartesianPlane->setLeftAxis(profileYAxis);
+	scene()->addItem(cartesianPlane);
 
 	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
 	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis <<
@@ -156,6 +161,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileState->assignProperty(timeAxis, "y", timeAxisOnCanvas);
 	profileState->assignProperty(depthController, "y", depthControllerOffCanvas);
 	profileState->assignProperty(timeController, "y", timeControllerOffCanvas);
+	profileState->assignProperty(cartesianPlane, "verticalLine", profileYAxisExpanded);
+	profileState->assignProperty(cartesianPlane, "horizontalLine", timeAxis->line());
 
 	// Edit, everything but the background and gasYAxis are shown.
 	editState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));

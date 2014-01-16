@@ -29,7 +29,8 @@ public:
 	void setColor(const QColor& color);
 	void setTextColor(const QColor& color);
 	int unitSystem;
-
+signals:
+	void sizeChanged();
 protected:
 	virtual QString textForValue(double value);
 
@@ -51,5 +52,29 @@ protected:
 class TimeAxis : public DiveCartesianAxis {
 protected:
     QString textForValue(double value);
+};
+
+// This is a try. Maybe the CartesianPlane should have the X and Y
+// axis and handle things internally?
+class DiveCartesianPlane :public QObject, public QGraphicsRectItem{
+	Q_OBJECT
+	Q_PROPERTY(QLineF verticalLine READ verticalLine WRITE setVerticalLine)
+	Q_PROPERTY(QLineF horizontalLine READ horizontalLine WRITE setHorizontalLine)
+public:
+	void setLeftAxis(DiveCartesianAxis *axis);
+	void setBottomAxis(DiveCartesianAxis *axis);
+	void setHorizontalLine(QLineF line);
+	void setVerticalLine(QLineF line);
+	QLineF horizontalLine() const;
+	QLineF verticalLine() const;
+public slots:
+	void setup();
+private:
+	DiveCartesianAxis *leftAxis;
+	DiveCartesianAxis *bottomAxis;
+	QList<DiveLineItem*> verticalLines;
+	QList<DiveLineItem*> horizontalLines;
+	qreal verticalSize;
+	qreal horizontalSize;
 };
 #endif
