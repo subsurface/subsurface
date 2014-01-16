@@ -83,6 +83,7 @@ SOURCES =  \
 	gettextfromc.cpp \
 	libdivecomputer.c \
 	main.cpp \
+	membuffer.c \
 	parse-xml.c \
 	planner.c \
 	profile.c \

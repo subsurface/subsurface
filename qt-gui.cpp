@@ -452,7 +452,7 @@ bool compareDC(const DiveComputerNode &a, const DiveComputerNode &b)
 	return a.deviceId < b.deviceId;
 }
 
-void call_for_each_dc(FILE *f, void (*callback)(FILE *, const char *, uint32_t,
+void call_for_each_dc(void *f, void (*callback)(void *, const char *, uint32_t,
 						const char *, const char *, const char *))
 {
 	QList<DiveComputerNode> values = dcList.dcMap.values();
