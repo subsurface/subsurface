@@ -4,10 +4,11 @@
 #include "dive.h"
 #include "divelist.h"
 #include "libdivecomputer.h"
-#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
+#else
+#include <stdbool.h>
 #endif
 
 extern bool imported;
